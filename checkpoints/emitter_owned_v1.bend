@@ -16227,10 +16227,17 @@ def cps_provider_8_foreign_kont_nat(v_1: Bool) -> String:
     case False{}:
       "$k"
 
+def cps_provider_8_foreign_answer_kont(v_1: Bool, v_3: Maybe<&2, BIR.Descriptor>, +v_6: Map<&2, String>) -> String:
+  match v_3:
+    case Some{+v_9}:
+      cps_provider_8_foreign_kont(v_1, cps_provider_8_js_text_descriptor(v_9, v_6), cps_provider_8_js_f32_descriptor(v_9, v_6))
+    case None{}:
+      cps_provider_8_foreign_kont(v_1, False{}, False{})
+
 def cps_provider_8_foreign_request(+v_1: String, v_3: Nat, v_5: List<&2, BIR.Descriptor>, v_7: Bool, v_8: BIR.Descriptor, +v_11: Map<&2, String>) -> String:
   v_15 = cps_provider_8_foreign_parameters(v_3, 0n)
-  v_23 = cps_provider_8_cat(["({$:", cps_provider_8_js_quote(v_1), ",args:[", String.join(cps_provider_8_foreign_arguments(v_15, v_5, v_11), ","), "],kont:", cps_provider_8_foreign_kont(v_7, cps_provider_8_js_text_descriptor(v_8, v_11), cps_provider_8_js_f32_descriptor(v_8, v_11)), "})"])
-  cps_provider_8_cat(["$D[", cps_provider_8_js_quote(v_1), "]=", cps_provider_8_foreign_arrow(List.append(&2, String, v_15, ["$k"]), v_23), ";\n"])
+  v_22 = cps_provider_8_cat(["({$:", cps_provider_8_js_quote(v_1), ",args:[", String.join(cps_provider_8_foreign_arguments(v_15, v_5, v_11), ","), "],kont:", cps_provider_8_foreign_answer_kont(v_7, cps_provider_8_js_io_answer(v_8, v_11), v_11), "})"])
+  cps_provider_8_cat(["$D[", cps_provider_8_js_quote(v_1), "]=", cps_provider_8_foreign_arrow(List.append(&2, String, v_15, ["$k"]), v_22), ";\n"])
 
 def cps_provider_8_foreign_arguments(v_2: List<&2, String>, v_4: List<&2, BIR.Descriptor>, +v_7: Map<&2, String>) -> List<&2, String>:
   match v_2:

@@ -2143,6 +2143,7 @@ type EmitterRequestGroup24 is Type:
   EmitterRequest_cps_provider_8_foreign_kont{v_1: Bool, v_3: Bool, v_5: Bool}
   EmitterRequest_cps_provider_8_foreign_kont_scalar{v_1: Bool, v_3: Bool}
   EmitterRequest_cps_provider_8_foreign_kont_nat{v_1: Bool}
+  EmitterRequest_cps_provider_8_foreign_answer_kont{v_1: Bool, v_3: Maybe<&2, BIR.Descriptor>, +v_6: Map<&2, String>}
   EmitterRequest_cps_provider_8_foreign_request{+v_1: String, v_3: Nat, v_5: List<&2, BIR.Descriptor>, v_7: Bool, v_8: BIR.Descriptor, +v_11: Map<&2, String>}
   EmitterRequest_cps_provider_8_foreign_arguments{v_2: List<&2, String>, v_4: List<&2, BIR.Descriptor>, +v_7: Map<&2, String>}
   EmitterRequest_cps_provider_8_foreign_argument{v_1: Bool, v_3: String}
@@ -2196,9 +2197,9 @@ type EmitterRequestGroup24 is Type:
   EmitterRequest_cps_provider_8_leave_after_split{v_0: BIR.Block, v_2: U32, v_4: Bool}
   EmitterRequest_cps_provider_8_leave_here{v_1: Bool, v_3: Bool}
   EmitterRequest_cps_provider_8_leave_after_region{v_1: Bool, v_2: BIR.Block, v_3: BIR.Block, v_5: U32, v_7: Bool, v_9: U32}
-  EmitterRequest_cps_provider_8_split_op{v_0: BIR.Op}
 
 type EmitterRequestGroup25 is Type:
+  EmitterRequest_cps_provider_8_split_op{v_0: BIR.Op}
   EmitterRequest_cps_provider_8_reads_new{}
   EmitterRequest_cps_provider_8_reads_local{v_1: U32, v_3: cps_provider_8_Reads}
   EmitterRequest_cps_provider_8_reads_slot{v_1: U32, v_3: cps_provider_8_Reads}
@@ -2262,9 +2263,9 @@ type EmitterRequestGroup25 is Type:
   EmitterRequest_cps_provider_8_native_declaration{+v_1: String, v_2: BIR.Primitive, +v_4: List<&2, BIR.Quantity>}
   EmitterRequest_cps_provider_8_declarations{v_1: List<&2, BIR.Declaration>, +v_4: Map<&2, String>, v_6: Nat}
   EmitterRequest_cps_provider_8_field_names{v_3: List<&2, Maybe<&2, String>>}
-  EmitterRequest_cps_provider_8_constructor_layout{v_0: BIR.ConstructorLayout}
 
 type EmitterRequestGroup26 is Type:
+  EmitterRequest_cps_provider_8_constructor_layout{v_0: BIR.ConstructorLayout}
   EmitterRequest_cps_provider_8_constructor_layout_source{+v_1: String, v_3: String, v_5: String}
   EmitterRequest_cps_provider_8_constructor_layouts{v_1: List<&2, BIR.ConstructorLayout>}
   EmitterRequest_cps_provider_8_descriptor_field_types{v_1: List<&2, BIR.DescriptorField>}
@@ -2328,9 +2329,9 @@ type EmitterRequestGroup26 is Type:
   EmitterRequest_cps_provider_8_js_runtime_cli{}
   EmitterRequest_cps_provider_8_js_runtime_io{}
   EmitterRequest_cps_provider_8_js_runtime_show{}
-  EmitterRequest_cps_provider_8_js_runtime_type{}
 
 type EmitterRequestGroup27 is Type:
+  EmitterRequest_cps_provider_8_js_runtime_type{}
   EmitterRequest_cps_provider_8_js_runtime_type_names{}
   EmitterRequest_cps_provider_8_js_runtime_type_patterns{}
   EmitterRequest_cps_provider_8_js_runtime_type_eval{}
@@ -2394,9 +2395,9 @@ type EmitterRequestGroup27 is Type:
   EmitterRequest_cps_provider_10_native_match_descriptor_node_9{v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_2: Scope.ArenaGlobalScope, v_3: Ast.Quantity, v_5: U32}
   EmitterRequest_cps_provider_10_native_match_descriptor_node_10{v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_3: Maybe<&2, Ast.Quantity>}
   EmitterRequest_cps_provider_10_native_match_descriptor_node_11{v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_2: BIR.Descriptor}
-  EmitterRequest_cps_provider_10_native_match_descriptor_node_12{v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_2: Scope.ArenaGlobalScope, v_4: U32}
 
 type EmitterRequestGroup28 is Type:
+  EmitterRequest_cps_provider_10_native_match_descriptor_node_12{v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_2: Scope.ArenaGlobalScope, v_4: U32}
   EmitterRequest_cps_provider_10_native_match_descriptor_node_13{v_2: cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_4: String}
   EmitterRequest_cps_provider_10_native_match_descriptor_node_14{v_2: cps_provider_10_CatalogResult<String>, v_3: Scope.ArenaGlobalScope, v_5: U32, v_7: U32}
   EmitterRequest_cps_provider_10_native_match_descriptor_node_15{v_2: cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_3: Scope.ArenaGlobalScope, v_5: U32}
@@ -2460,9 +2461,9 @@ type EmitterRequestGroup28 is Type:
   EmitterRequest_cps_provider_10_get_type_functions{v_1: cps_provider_10_Catalog}
   EmitterRequest_cps_provider_10_get_next_code{v_1: cps_provider_10_Catalog}
   EmitterRequest_cps_provider_10_get_ending{v_1: cps_provider_10_Catalog}
-  EmitterRequest_cps_provider_10_native_match_insert_definition_0{v_2: Maybe<&2, cps_provider_10_Definition>, +v_4: String, v_6: cps_provider_10_Definition, +v_9: Map<&2, cps_provider_10_Definition>}
 
 type EmitterRequestGroup29 is Type:
+  EmitterRequest_cps_provider_10_native_match_insert_definition_0{v_2: Maybe<&2, cps_provider_10_Definition>, +v_4: String, v_6: cps_provider_10_Definition, +v_9: Map<&2, cps_provider_10_Definition>}
   EmitterRequest_cps_provider_10_insert_definition{+v_1: String, v_3: cps_provider_10_Definition, +v_6: Map<&2, cps_provider_10_Definition>}
   EmitterRequest_cps_provider_10_native_match_insert_constructor_0{v_2: Maybe<&2, cps_provider_10_Constructor>, +v_4: String, v_6: cps_provider_10_Constructor, +v_9: Map<&2, cps_provider_10_Constructor>}
   EmitterRequest_cps_provider_10_insert_constructor{+v_1: String, v_3: cps_provider_10_Constructor, +v_6: Map<&2, cps_provider_10_Constructor>}
@@ -2526,9 +2527,9 @@ type EmitterRequestGroup29 is Type:
   EmitterRequest_cps_provider_10_native_match_live_parameter_types_2{v_4: Sigma<&1, &1, Arena.Arena, _ => U32>, v_5: Scope.ArenaGlobalScope, v_7: List<&2, BIR.Descriptor>, v_9: U32, v_11: U32}
   EmitterRequest_cps_provider_10_native_match_live_parameter_types_1{v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Binder>, v_4: Scope.ArenaGlobalScope, v_6: List<&2, BIR.Descriptor>, v_8: U32, v_10: U32}
   EmitterRequest_cps_provider_10_live_parameter_binder{v_0: Arena.Arena, v_1: Arena.Binder, v_2: Scope.ArenaGlobalScope, v_4: List<&2, BIR.Descriptor>, v_6: U32, v_8: U32}
-  EmitterRequest_cps_provider_10_live_parameter_quantity{v_0: BIR.Quantity, v_1: Arena.Arena, v_3: U32, v_4: Scope.ArenaGlobalScope, v_6: List<&2, BIR.Descriptor>, v_8: U32, v_10: U32}
 
 type EmitterRequestGroup30 is Type:
+  EmitterRequest_cps_provider_10_live_parameter_quantity{v_0: BIR.Quantity, v_1: Arena.Arena, v_3: U32, v_4: Scope.ArenaGlobalScope, v_6: List<&2, BIR.Descriptor>, v_8: U32, v_10: U32}
   EmitterRequest_cps_provider_10_definition_foreign{v_0: Arena.Arena, v_1: IR.DefBody, v_3: String, v_5: String, v_7: String, v_8: Ast.SourceSpan, v_9: IR.Words, v_10: IR.OptionalTerm, v_11: Scope.ArenaGlobalScope}
   EmitterRequest_cps_provider_10_definition_fast{v_1: Bool, v_3: Bool, v_5: List<&2, BIR.Parameter>, v_7: Maybe<&2, BIR.Primitive>, v_10: Maybe<&2, cps_provider_10_Foreign>}
   EmitterRequest_cps_provider_10_definition_primitive{v_1: Bool, v_4: Maybe<&2, cps_provider_10_Foreign>, v_6: Bool, v_8: String}
@@ -2592,6 +2593,8 @@ type EmitterRequestGroup30 is Type:
   EmitterRequest_cps_provider_10_live_binder{v_0: Arena.Binder, v_2: U32, v_4: cps_provider_10_Telescope}
   EmitterRequest_cps_provider_10_primitive_arity{v_0: BIR.Primitive}
   EmitterRequest_cps_provider_10_constructor_field{v_1: cps_provider_10_Constructor, v_3: U32}
+
+type EmitterRequestGroup31 is Type:
   EmitterRequest_cps_provider_10_constructor_field_at{v_3: List<&2, Maybe<&2, String>>, v_5: List<&2, BIR.Quantity>, v_7: Nat, v_9: U32}
 
 type EmitterRequest is Type:
@@ -2626,6 +2629,7 @@ type EmitterRequest is Type:
   EmitterRequestGroup_28{request: EmitterRequestGroup28}
   EmitterRequestGroup_29{request: EmitterRequestGroup29}
   EmitterRequestGroup_30{request: EmitterRequestGroup30}
+  EmitterRequestGroup_31{request: EmitterRequestGroup31}
 
 def emitter_result_group_0(request: EmitterRequestGroup0) -> Type:
   match request:
@@ -4247,6 +4251,7 @@ def emitter_result_group_24(request: EmitterRequestGroup24) -> Type:
     case EmitterRequest_cps_provider_8_foreign_kont{_, _, _}: String
     case EmitterRequest_cps_provider_8_foreign_kont_scalar{_, _}: String
     case EmitterRequest_cps_provider_8_foreign_kont_nat{_}: String
+    case EmitterRequest_cps_provider_8_foreign_answer_kont{_, _, _}: String
     case EmitterRequest_cps_provider_8_foreign_request{_, _, _, _, _, _}: String
     case EmitterRequest_cps_provider_8_foreign_arguments{_, _, _}: List<&2, String>
     case EmitterRequest_cps_provider_8_foreign_argument{_, _}: String
@@ -4300,10 +4305,10 @@ def emitter_result_group_24(request: EmitterRequestGroup24) -> Type:
     case EmitterRequest_cps_provider_8_leave_after_split{_, _, _}: Bool
     case EmitterRequest_cps_provider_8_leave_here{_, _}: Bool
     case EmitterRequest_cps_provider_8_leave_after_region{_, _, _, _, _, _}: Bool
-    case EmitterRequest_cps_provider_8_split_op{_}: Bool
 
 def emitter_result_group_25(request: EmitterRequestGroup25) -> Type:
   match request:
+    case EmitterRequest_cps_provider_8_split_op{_}: Bool
     case EmitterRequest_cps_provider_8_reads_new{}: cps_provider_8_Reads
     case EmitterRequest_cps_provider_8_reads_local{_, _}: cps_provider_8_Reads
     case EmitterRequest_cps_provider_8_reads_slot{_, _}: cps_provider_8_Reads
@@ -4367,10 +4372,10 @@ def emitter_result_group_25(request: EmitterRequestGroup25) -> Type:
     case EmitterRequest_cps_provider_8_native_declaration{_, _, _}: String
     case EmitterRequest_cps_provider_8_declarations{_, _, _}: String
     case EmitterRequest_cps_provider_8_field_names{_}: List<&2, String>
-    case EmitterRequest_cps_provider_8_constructor_layout{_}: String
 
 def emitter_result_group_26(request: EmitterRequestGroup26) -> Type:
   match request:
+    case EmitterRequest_cps_provider_8_constructor_layout{_}: String
     case EmitterRequest_cps_provider_8_constructor_layout_source{_, _, _}: String
     case EmitterRequest_cps_provider_8_constructor_layouts{_}: String
     case EmitterRequest_cps_provider_8_descriptor_field_types{_}: List<&2, String>
@@ -4434,10 +4439,10 @@ def emitter_result_group_26(request: EmitterRequestGroup26) -> Type:
     case EmitterRequest_cps_provider_8_js_runtime_cli{}: String
     case EmitterRequest_cps_provider_8_js_runtime_io{}: String
     case EmitterRequest_cps_provider_8_js_runtime_show{}: String
-    case EmitterRequest_cps_provider_8_js_runtime_type{}: String
 
 def emitter_result_group_27(request: EmitterRequestGroup27) -> Type:
   match request:
+    case EmitterRequest_cps_provider_8_js_runtime_type{}: String
     case EmitterRequest_cps_provider_8_js_runtime_type_names{}: String
     case EmitterRequest_cps_provider_8_js_runtime_type_patterns{}: String
     case EmitterRequest_cps_provider_8_js_runtime_type_eval{}: String
@@ -4501,10 +4506,10 @@ def emitter_result_group_27(request: EmitterRequestGroup27) -> Type:
     case EmitterRequest_cps_provider_10_native_match_descriptor_node_9{_, _, _, _}: cps_provider_10_CatalogResult<BIR.Descriptor>
     case EmitterRequest_cps_provider_10_native_match_descriptor_node_10{_, _}: cps_provider_10_CatalogResult<BIR.Descriptor>
     case EmitterRequest_cps_provider_10_native_match_descriptor_node_11{_, _}: cps_provider_10_CatalogResult<BIR.Descriptor>
-    case EmitterRequest_cps_provider_10_native_match_descriptor_node_12{_, _, _}: cps_provider_10_CatalogResult<BIR.Descriptor>
 
 def emitter_result_group_28(request: EmitterRequestGroup28) -> Type:
   match request:
+    case EmitterRequest_cps_provider_10_native_match_descriptor_node_12{_, _, _}: cps_provider_10_CatalogResult<BIR.Descriptor>
     case EmitterRequest_cps_provider_10_native_match_descriptor_node_13{_, _}: cps_provider_10_CatalogResult<BIR.Descriptor>
     case EmitterRequest_cps_provider_10_native_match_descriptor_node_14{_, _, _, _}: cps_provider_10_CatalogResult<BIR.Descriptor>
     case EmitterRequest_cps_provider_10_native_match_descriptor_node_15{_, _, _}: cps_provider_10_CatalogResult<BIR.Descriptor>
@@ -4568,10 +4573,10 @@ def emitter_result_group_28(request: EmitterRequestGroup28) -> Type:
     case EmitterRequest_cps_provider_10_get_type_functions{_}: List<&2, BIR.TypeFunction>
     case EmitterRequest_cps_provider_10_get_next_code{_}: U32
     case EmitterRequest_cps_provider_10_get_ending{_}: BIR.Ending
-    case EmitterRequest_cps_provider_10_native_match_insert_definition_0{_, _, _, _}: Map<&2, cps_provider_10_Definition>
 
 def emitter_result_group_29(request: EmitterRequestGroup29) -> Type:
   match request:
+    case EmitterRequest_cps_provider_10_native_match_insert_definition_0{_, _, _, _}: Map<&2, cps_provider_10_Definition>
     case EmitterRequest_cps_provider_10_insert_definition{_, _, _}: Map<&2, cps_provider_10_Definition>
     case EmitterRequest_cps_provider_10_native_match_insert_constructor_0{_, _, _, _}: Map<&2, cps_provider_10_Constructor>
     case EmitterRequest_cps_provider_10_insert_constructor{_, _, _}: Map<&2, cps_provider_10_Constructor>
@@ -4635,10 +4640,10 @@ def emitter_result_group_29(request: EmitterRequestGroup29) -> Type:
     case EmitterRequest_cps_provider_10_native_match_live_parameter_types_2{_, _, _, _, _}: cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>
     case EmitterRequest_cps_provider_10_native_match_live_parameter_types_1{_, _, _, _, _}: cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>
     case EmitterRequest_cps_provider_10_live_parameter_binder{_, _, _, _, _, _}: cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>
-    case EmitterRequest_cps_provider_10_live_parameter_quantity{_, _, _, _, _, _, _}: cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>
 
 def emitter_result_group_30(request: EmitterRequestGroup30) -> Type:
   match request:
+    case EmitterRequest_cps_provider_10_live_parameter_quantity{_, _, _, _, _, _, _}: cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>
     case EmitterRequest_cps_provider_10_definition_foreign{_, _, _, _, _, _, _, _, _}: cps_provider_10_CatalogResult<Maybe<&2, cps_provider_10_Foreign>>
     case EmitterRequest_cps_provider_10_definition_fast{_, _, _, _, _}: Bool
     case EmitterRequest_cps_provider_10_definition_primitive{_, _, _, _}: Maybe<&2, BIR.Primitive>
@@ -4702,6 +4707,9 @@ def emitter_result_group_30(request: EmitterRequestGroup30) -> Type:
     case EmitterRequest_cps_provider_10_live_binder{_, _, _}: cps_provider_10_Telescope
     case EmitterRequest_cps_provider_10_primitive_arity{_}: Nat
     case EmitterRequest_cps_provider_10_constructor_field{_, _}: Maybe<&2, cps_provider_10_ConstructorField>
+
+def emitter_result_group_31(request: EmitterRequestGroup31) -> Type:
+  match request:
     case EmitterRequest_cps_provider_10_constructor_field_at{_, _, _, _}: Maybe<&2, cps_provider_10_ConstructorField>
 
 def emitter_result(request: EmitterRequest) -> Type:
@@ -4737,6 +4745,7 @@ def emitter_result(request: EmitterRequest) -> Type:
     case EmitterRequestGroup_28{inner}: emitter_result_group_28(inner)
     case EmitterRequestGroup_29{inner}: emitter_result_group_29(inner)
     case EmitterRequestGroup_30{inner}: emitter_result_group_30(inner)
+    case EmitterRequestGroup_31{inner}: emitter_result_group_31(inner)
 
 type EmitterValue<-A: Type> is Type:
   EmitterValue{value: A}
@@ -25277,71 +25286,82 @@ def emitter_body_cps_provider_8_foreign_kont_nat(v_1: Bool) -> EmitterProgress<S
     case False{}:
       EmitterFinished{EmitterValue{"$k"}}
 
-def emitter_continuation_2341(v_15: List<&2, String>, v_23: String, v_1010483: String, +v_1010484: String) -> EmitterProgress<String>:
-  v_1010485 = {"]=" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_foreign_arrow{List.append(&2, String, v_15, ["$k"]), v_23}}, False{}, v_1010491 => emitter_body_cps_provider_8_foreign_arrow(List.append(&2, String, v_15, ["$k"]), v_23), v_1010490 => +v_1010486 = emitter_unbox(String, v_1010490); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010483, v_1010484, v_1010485, v_1010486, ";\n"]}}, False{}, v_1010489 => emitter_body_cps_provider_8_cat([v_1010483, v_1010484, v_1010485, v_1010486, ";\n"]), v_1010488 => +v_1010487 = emitter_unbox(String, v_1010488); EmitterFinished{EmitterValue{v_1010487}}}}
+def emitter_match_2341(v_3: Maybe<&2, BIR.Descriptor>, v_1: Bool, +v_6: Map<&2, String>) -> EmitterProgress<String>:
+  match v_3:
+    case Some{+v_9}:
+      v_1010472 = {v_1 : Bool}
+      EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_text_descriptor{v_9, v_6}}, v_1010477 => +v_1010473 = emitter_unbox(Bool, v_1010477); EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_f32_descriptor{v_9, v_6}}, v_1010476 => +v_1010474 = emitter_unbox(Bool, v_1010476); emitter_body_cps_provider_8_foreign_kont(v_1010472, v_1010473, v_1010474)}}
+    case None{}:
+      emitter_body_cps_provider_8_foreign_kont(v_1, False{}, False{})
 
-def emitter_continuation_2342(+v_1010482: String, +v_1: String, v_15: List<&2, String>) -> EmitterProgress<String>:
-  v_23 = v_1010482
-  v_1010483 = {"$D[" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_1}}, False{}, v_1010493 => emitter_body_cps_provider_8_js_quote(v_1), v_1010492 => +v_1010484 = emitter_unbox(String, v_1010492); emitter_continuation_2341(v_15, v_23, v_1010483, v_1010484)}
+def emitter_body_cps_provider_8_foreign_answer_kont(v_1: Bool, v_3: Maybe<&2, BIR.Descriptor>, +v_6: Map<&2, String>) -> EmitterProgress<String>:
+  emitter_match_2341(v_3, v_1, v_6)
 
-def emitter_continuation_2343(v_7: Bool, +v_8: BIR.Descriptor, +v_11: Map<&2, String>, v_1010473: String, +v_1010474: String, v_1010475: String, +v_1010476: List<&2, String>, +v_1: String, v_15: List<&2, String>) -> EmitterProgress<String>:
-  v_1010477 = {"],kont:" : String}
-  v_1010478 = {v_7 : Bool}
-  EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_text_descriptor{v_8, v_11}}, v_1010499 => +v_1010479 = emitter_unbox(Bool, v_1010499); EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_f32_descriptor{v_8, v_11}}, v_1010498 => +v_1010480 = emitter_unbox(Bool, v_1010498); EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_foreign_kont{v_1010478, v_1010479, v_1010480}}, False{}, v_1010497 => emitter_body_cps_provider_8_foreign_kont(v_1010478, v_1010479, v_1010480), v_1010496 => +v_1010481 = emitter_unbox(String, v_1010496); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010473, v_1010474, v_1010475, String.join(v_1010476, ","), v_1010477, v_1010481, "})"]}}, False{}, v_1010495 => emitter_body_cps_provider_8_cat([v_1010473, v_1010474, v_1010475, String.join(v_1010476, ","), v_1010477, v_1010481, "})"]), v_1010494 => +v_1010482 = emitter_unbox(String, v_1010494); emitter_continuation_2342(v_1010482, v_1, v_15)}}}}
+def emitter_continuation_2342(v_15: List<&2, String>, v_22: String, v_1010489: String, +v_1010490: String) -> EmitterProgress<String>:
+  v_1010491 = {"]=" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_foreign_arrow{List.append(&2, String, v_15, ["$k"]), v_22}}, False{}, v_1010497 => emitter_body_cps_provider_8_foreign_arrow(List.append(&2, String, v_15, ["$k"]), v_22), v_1010496 => +v_1010492 = emitter_unbox(String, v_1010496); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010489, v_1010490, v_1010491, v_1010492, ";\n"]}}, False{}, v_1010495 => emitter_body_cps_provider_8_cat([v_1010489, v_1010490, v_1010491, v_1010492, ";\n"]), v_1010494 => +v_1010493 = emitter_unbox(String, v_1010494); EmitterFinished{EmitterValue{v_1010493}}}}
 
-def emitter_continuation_2344(+v_15: List<&2, String>, v_5: List<&2, BIR.Descriptor>, +v_11: Map<&2, String>, v_7: Bool, v_8: BIR.Descriptor, v_1010473: String, +v_1010474: String, +v_1: String) -> EmitterProgress<String>:
-  v_1010475 = {",args:[" : String}
-  EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_foreign_arguments{v_15, v_5, v_11}}, v_1010500 => +v_1010476 = emitter_unbox(List<&2, String>, v_1010500); emitter_continuation_2343(v_7, v_8, v_11, v_1010473, v_1010474, v_1010475, v_1010476, v_1, v_15)}
+def emitter_continuation_2343(+v_1010488: String, +v_1: String, v_15: List<&2, String>) -> EmitterProgress<String>:
+  v_22 = v_1010488
+  v_1010489 = {"$D[" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_1}}, False{}, v_1010499 => emitter_body_cps_provider_8_js_quote(v_1), v_1010498 => +v_1010490 = emitter_unbox(String, v_1010498); emitter_continuation_2342(v_15, v_22, v_1010489, v_1010490)}
 
-def emitter_continuation_2345(+v_1010472: List<&2, String>, +v_1: String, v_5: List<&2, BIR.Descriptor>, +v_11: Map<&2, String>, v_7: Bool, v_8: BIR.Descriptor) -> EmitterProgress<String>:
-  v_15 = v_1010472
-  v_1010473 = {"({$:" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_1}}, False{}, v_1010502 => emitter_body_cps_provider_8_js_quote(v_1), v_1010501 => +v_1010474 = emitter_unbox(String, v_1010501); emitter_continuation_2344(v_15, v_5, v_11, v_7, v_8, v_1010473, v_1010474, v_1)}
+def emitter_continuation_2344(v_7: Bool, v_8: BIR.Descriptor, +v_11: Map<&2, String>, v_1010480: String, +v_1010481: String, v_1010482: String, +v_1010483: List<&2, String>, +v_1: String, v_15: List<&2, String>) -> EmitterProgress<String>:
+  v_1010484 = {"],kont:" : String}
+  v_1010485 = {v_7 : Bool}
+  EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_io_answer{v_8, v_11}}, v_1010504 => +v_1010486 = emitter_unbox(Maybe<&2, BIR.Descriptor>, v_1010504); EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_foreign_answer_kont{v_1010485, v_1010486, v_11}}, False{}, v_1010503 => emitter_body_cps_provider_8_foreign_answer_kont(v_1010485, v_1010486, v_11), v_1010502 => +v_1010487 = emitter_unbox(String, v_1010502); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010480, v_1010481, v_1010482, String.join(v_1010483, ","), v_1010484, v_1010487, "})"]}}, False{}, v_1010501 => emitter_body_cps_provider_8_cat([v_1010480, v_1010481, v_1010482, String.join(v_1010483, ","), v_1010484, v_1010487, "})"]), v_1010500 => +v_1010488 = emitter_unbox(String, v_1010500); emitter_continuation_2343(v_1010488, v_1, v_15)}}}
+
+def emitter_continuation_2345(+v_15: List<&2, String>, v_5: List<&2, BIR.Descriptor>, +v_11: Map<&2, String>, v_7: Bool, v_8: BIR.Descriptor, v_1010480: String, +v_1010481: String, +v_1: String) -> EmitterProgress<String>:
+  v_1010482 = {",args:[" : String}
+  EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_foreign_arguments{v_15, v_5, v_11}}, v_1010505 => +v_1010483 = emitter_unbox(List<&2, String>, v_1010505); emitter_continuation_2344(v_7, v_8, v_11, v_1010480, v_1010481, v_1010482, v_1010483, v_1, v_15)}
+
+def emitter_continuation_2346(+v_1010479: List<&2, String>, +v_1: String, v_5: List<&2, BIR.Descriptor>, +v_11: Map<&2, String>, v_7: Bool, v_8: BIR.Descriptor) -> EmitterProgress<String>:
+  v_15 = v_1010479
+  v_1010480 = {"({$:" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_1}}, False{}, v_1010507 => emitter_body_cps_provider_8_js_quote(v_1), v_1010506 => +v_1010481 = emitter_unbox(String, v_1010506); emitter_continuation_2345(v_15, v_5, v_11, v_7, v_8, v_1010480, v_1010481, v_1)}
 
 def emitter_body_cps_provider_8_foreign_request(+v_1: String, v_3: Nat, v_5: List<&2, BIR.Descriptor>, v_7: Bool, v_8: BIR.Descriptor, +v_11: Map<&2, String>) -> EmitterProgress<String>:
-  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_foreign_parameters{v_3, 0n}}, False{}, v_1010504 => emitter_body_cps_provider_8_foreign_parameters(v_3, 0n), v_1010503 => +v_1010472 = emitter_unbox(List<&2, String>, v_1010503); emitter_continuation_2345(v_1010472, v_1, v_5, v_11, v_7, v_8)}
+  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_foreign_parameters{v_3, 0n}}, False{}, v_1010509 => emitter_body_cps_provider_8_foreign_parameters(v_3, 0n), v_1010508 => +v_1010479 = emitter_unbox(List<&2, String>, v_1010508); emitter_continuation_2346(v_1010479, v_1, v_5, v_11, v_7, v_8)}
 
-def emitter_match_2346(v_4: List<&2, BIR.Descriptor>, v_12: String, v_13: List<&2, String>, +v_7: Map<&2, String>) -> EmitterProgress<List<&2, String>>:
+def emitter_match_2347(v_4: List<&2, BIR.Descriptor>, v_12: String, v_13: List<&2, String>, +v_7: Map<&2, String>) -> EmitterProgress<List<&2, String>>:
   match v_4:
     case []:
-      v_1010505 = {v_12 : String}
-      EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_foreign_arguments{v_13, [], v_7}}, v_1010507 => +v_1010506 = emitter_unbox(List<&2, String>, v_1010507); EmitterFinished{EmitterValue{v_1010505 <> v_1010506}}}
+      v_1010510 = {v_12 : String}
+      EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_foreign_arguments{v_13, [], v_7}}, v_1010512 => +v_1010511 = emitter_unbox(List<&2, String>, v_1010512); EmitterFinished{EmitterValue{v_1010510 <> v_1010511}}}
     case +v_17 <> v_18:
-      EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_text_descriptor{v_17, v_7}}, v_1010513 => +v_1010508 = emitter_unbox(Bool, v_1010513); EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_foreign_argument{v_1010508, v_12}}, v_1010512 => +v_1010509 = emitter_unbox(String, v_1010512); EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_foreign_arguments{v_13, v_18, v_7}}, v_1010511 => +v_1010510 = emitter_unbox(List<&2, String>, v_1010511); EmitterFinished{EmitterValue{v_1010509 <> v_1010510}}}}}
+      EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_text_descriptor{v_17, v_7}}, v_1010518 => +v_1010513 = emitter_unbox(Bool, v_1010518); EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_foreign_argument{v_1010513, v_12}}, v_1010517 => +v_1010514 = emitter_unbox(String, v_1010517); EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_foreign_arguments{v_13, v_18, v_7}}, v_1010516 => +v_1010515 = emitter_unbox(List<&2, String>, v_1010516); EmitterFinished{EmitterValue{v_1010514 <> v_1010515}}}}}
 
 def emitter_body_cps_provider_8_foreign_arguments(v_2: List<&2, String>, v_4: List<&2, BIR.Descriptor>, +v_7: Map<&2, String>) -> EmitterProgress<List<&2, String>>:
   match v_2:
     case []:
       EmitterFinished{EmitterValue{[]}}
     case v_12 <> v_13:
-      emitter_match_2346(v_4, v_12, v_13, v_7)
+      emitter_match_2347(v_4, v_12, v_13, v_7)
 
 def emitter_body_cps_provider_8_foreign_argument(v_1: Bool, v_3: String) -> EmitterProgress<String>:
   match v_1:
     case True{}:
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{["str_out(", v_3, ")"]}}, False{}, v_1010516 => emitter_body_cps_provider_8_cat(["str_out(", v_3, ")"]), v_1010515 => +v_1010514 = emitter_unbox(String, v_1010515); EmitterFinished{EmitterValue{v_1010514}}}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{["str_out(", v_3, ")"]}}, False{}, v_1010521 => emitter_body_cps_provider_8_cat(["str_out(", v_3, ")"]), v_1010520 => +v_1010519 = emitter_unbox(String, v_1010520); EmitterFinished{EmitterValue{v_1010519}}}
     case False{}:
       EmitterFinished{EmitterValue{v_3}}
 
 def emitter_body_cps_provider_8_js_text_descriptor(v_0: BIR.Descriptor, +v_3: Map<&2, String>) -> EmitterProgress<Bool>:
-  EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_descriptor_head{v_0}}, v_1010520 => +v_1010517 = emitter_unbox(Maybe<&2, cps_provider_8_JSDescriptorHead>, v_1010520); EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_text_head{v_1010517, v_3}}, v_1010519 => +v_1010518 = emitter_unbox(Bool, v_1010519); EmitterFinished{EmitterValue{v_1010518}}}}
+  EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_descriptor_head{v_0}}, v_1010525 => +v_1010522 = emitter_unbox(Maybe<&2, cps_provider_8_JSDescriptorHead>, v_1010525); EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_text_head{v_1010522, v_3}}, v_1010524 => +v_1010523 = emitter_unbox(Bool, v_1010524); EmitterFinished{EmitterValue{v_1010523}}}}
 
 def emitter_body_cps_provider_8_js_text_head(v_2: Maybe<&2, cps_provider_8_JSDescriptorHead>, +v_5: Map<&2, String>) -> EmitterProgress<Bool>:
   match v_2:
     case Some{cps_provider_8_JSDescriptorHead{+v_9, _}}:
-      EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_native_is{v_5, v_9, "Char"}}, v_1010524 => +v_1010521 = emitter_unbox(Bool, v_1010524); EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_native_is{v_5, v_9, "String"}}, v_1010523 => +v_1010522 = emitter_unbox(Bool, v_1010523); EmitterFinished{EmitterValue{Bool.or(v_1010521, v_1010522)}}}}
+      EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_native_is{v_5, v_9, "Char"}}, v_1010529 => +v_1010526 = emitter_unbox(Bool, v_1010529); EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_native_is{v_5, v_9, "String"}}, v_1010528 => +v_1010527 = emitter_unbox(Bool, v_1010528); EmitterFinished{EmitterValue{Bool.or(v_1010526, v_1010527)}}}}
     case None{}:
       EmitterFinished{EmitterValue{False{}}}
 
 def emitter_body_cps_provider_8_js_f32_descriptor(v_0: BIR.Descriptor, +v_3: Map<&2, String>) -> EmitterProgress<Bool>:
-  EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_descriptor_head{v_0}}, v_1010528 => +v_1010525 = emitter_unbox(Maybe<&2, cps_provider_8_JSDescriptorHead>, v_1010528); EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_f32_head{v_1010525, v_3}}, v_1010527 => +v_1010526 = emitter_unbox(Bool, v_1010527); EmitterFinished{EmitterValue{v_1010526}}}}
+  EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_descriptor_head{v_0}}, v_1010533 => +v_1010530 = emitter_unbox(Maybe<&2, cps_provider_8_JSDescriptorHead>, v_1010533); EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_f32_head{v_1010530, v_3}}, v_1010532 => +v_1010531 = emitter_unbox(Bool, v_1010532); EmitterFinished{EmitterValue{v_1010531}}}}
 
 def emitter_body_cps_provider_8_js_f32_head(v_2: Maybe<&2, cps_provider_8_JSDescriptorHead>, +v_5: Map<&2, String>) -> EmitterProgress<Bool>:
   match v_2:
     case Some{cps_provider_8_JSDescriptorHead{v_9, _}}:
-      EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_native_is{v_5, v_9, "F32"}}, v_1010530 => +v_1010529 = emitter_unbox(Bool, v_1010530); EmitterFinished{EmitterValue{v_1010529}}}
+      EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_native_is{v_5, v_9, "F32"}}, v_1010535 => +v_1010534 = emitter_unbox(Bool, v_1010535); EmitterFinished{EmitterValue{v_1010534}}}
     case None{}:
       EmitterFinished{EmitterValue{False{}}}
 
@@ -25356,11 +25376,11 @@ def emitter_body_cps_provider_8_js_descriptor_head(v_0: BIR.Descriptor) -> Emitt
     case BIR.DescriptorNamedPlus{v_20, _, v_22}:
       EmitterFinished{EmitterValue{Some{cps_provider_8_JSDescriptorHead{v_20, v_22}}}}
     case BIR.DescriptorFill{v_25, v_26}:
-      EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_descriptor_head{v_25}}, v_1010534 => +v_1010531 = emitter_unbox(Maybe<&2, cps_provider_8_JSDescriptorHead>, v_1010534); EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_descriptor_head_fill{v_1010531, v_26}}, v_1010533 => +v_1010532 = emitter_unbox(Maybe<&2, cps_provider_8_JSDescriptorHead>, v_1010533); EmitterFinished{EmitterValue{v_1010532}}}}
+      EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_descriptor_head{v_25}}, v_1010539 => +v_1010536 = emitter_unbox(Maybe<&2, cps_provider_8_JSDescriptorHead>, v_1010539); EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_descriptor_head_fill{v_1010536, v_26}}, v_1010538 => +v_1010537 = emitter_unbox(Maybe<&2, cps_provider_8_JSDescriptorHead>, v_1010538); EmitterFinished{EmitterValue{v_1010537}}}}
     case BIR.DescriptorPlus{v_31, v_32}:
-      EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_descriptor_head{v_31}}, v_1010538 => +v_1010535 = emitter_unbox(Maybe<&2, cps_provider_8_JSDescriptorHead>, v_1010538); EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_descriptor_head_fill{v_1010535, v_32}}, v_1010537 => +v_1010536 = emitter_unbox(Maybe<&2, cps_provider_8_JSDescriptorHead>, v_1010537); EmitterFinished{EmitterValue{v_1010536}}}}
+      EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_descriptor_head{v_31}}, v_1010543 => +v_1010540 = emitter_unbox(Maybe<&2, cps_provider_8_JSDescriptorHead>, v_1010543); EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_descriptor_head_fill{v_1010540, v_32}}, v_1010542 => +v_1010541 = emitter_unbox(Maybe<&2, cps_provider_8_JSDescriptorHead>, v_1010542); EmitterFinished{EmitterValue{v_1010541}}}}
     case BIR.DescriptorApplication{v_37, v_38}:
-      EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_descriptor_head{v_37}}, v_1010542 => +v_1010539 = emitter_unbox(Maybe<&2, cps_provider_8_JSDescriptorHead>, v_1010542); EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_descriptor_head_applied{v_1010539, v_38}}, v_1010541 => +v_1010540 = emitter_unbox(Maybe<&2, cps_provider_8_JSDescriptorHead>, v_1010541); EmitterFinished{EmitterValue{v_1010540}}}}
+      EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_descriptor_head{v_37}}, v_1010547 => +v_1010544 = emitter_unbox(Maybe<&2, cps_provider_8_JSDescriptorHead>, v_1010547); EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_descriptor_head_applied{v_1010544, v_38}}, v_1010546 => +v_1010545 = emitter_unbox(Maybe<&2, cps_provider_8_JSDescriptorHead>, v_1010546); EmitterFinished{EmitterValue{v_1010545}}}}
     case _:
       EmitterFinished{EmitterValue{None{}}}
 
@@ -25379,7 +25399,7 @@ def emitter_body_cps_provider_8_js_descriptor_head_applied(v_2: Maybe<&2, cps_pr
       EmitterFinished{EmitterValue{None{}}}
 
 def emitter_body_cps_provider_8_js_native_is(+v_2: Map<&2, String>, v_4: String, v_6: String) -> EmitterProgress<Bool>:
-  EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_native_is_found{IndexLookup.find(String, v_2, v_4), v_6}}, v_1010544 => +v_1010543 = emitter_unbox(Bool, v_1010544); EmitterFinished{EmitterValue{v_1010543}}}
+  EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_native_is_found{IndexLookup.find(String, v_2, v_4), v_6}}, v_1010549 => +v_1010548 = emitter_unbox(Bool, v_1010549); EmitterFinished{EmitterValue{v_1010548}}}
 
 def emitter_body_cps_provider_8_js_native_is_found(v_2: Maybe<&2, String>, v_4: String) -> EmitterProgress<Bool>:
   match v_2:
@@ -25389,19 +25409,19 @@ def emitter_body_cps_provider_8_js_native_is_found(v_2: Maybe<&2, String>, v_4: 
       EmitterFinished{EmitterValue{False{}}}
 
 def emitter_body_cps_provider_8_js_io_answer(v_0: BIR.Descriptor, +v_3: Map<&2, String>) -> EmitterProgress<Maybe<&2, BIR.Descriptor>>:
-  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_descriptor_head{v_0}}, False{}, v_1010549 => emitter_body_cps_provider_8_js_descriptor_head(v_0), v_1010548 => +v_1010545 = emitter_unbox(Maybe<&2, cps_provider_8_JSDescriptorHead>, v_1010548); EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_io_answer_head{v_1010545, v_3}}, v_1010547 => +v_1010546 = emitter_unbox(Maybe<&2, BIR.Descriptor>, v_1010547); EmitterFinished{EmitterValue{v_1010546}}}}
+  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_descriptor_head{v_0}}, False{}, v_1010554 => emitter_body_cps_provider_8_js_descriptor_head(v_0), v_1010553 => +v_1010550 = emitter_unbox(Maybe<&2, cps_provider_8_JSDescriptorHead>, v_1010553); EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_io_answer_head{v_1010550, v_3}}, v_1010552 => +v_1010551 = emitter_unbox(Maybe<&2, BIR.Descriptor>, v_1010552); EmitterFinished{EmitterValue{v_1010551}}}}
 
 def emitter_body_cps_provider_8_js_io_answer_head(v_2: Maybe<&2, cps_provider_8_JSDescriptorHead>, +v_5: Map<&2, String>) -> EmitterProgress<Maybe<&2, BIR.Descriptor>>:
   match v_2:
     case Some{cps_provider_8_JSDescriptorHead{v_9, v_10}}:
-      EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_native_is{v_5, v_9, "IO"}}, False{}, v_1010554 => emitter_body_cps_provider_8_js_native_is(v_5, v_9, "IO"), v_1010553 => +v_1010550 = emitter_unbox(Bool, v_1010553); EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_io_answer_named{v_1010550, v_10}}, v_1010552 => +v_1010551 = emitter_unbox(Maybe<&2, BIR.Descriptor>, v_1010552); EmitterFinished{EmitterValue{v_1010551}}}}
+      EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_native_is{v_5, v_9, "IO"}}, False{}, v_1010559 => emitter_body_cps_provider_8_js_native_is(v_5, v_9, "IO"), v_1010558 => +v_1010555 = emitter_unbox(Bool, v_1010558); EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_io_answer_named{v_1010555, v_10}}, v_1010557 => +v_1010556 = emitter_unbox(Maybe<&2, BIR.Descriptor>, v_1010557); EmitterFinished{EmitterValue{v_1010556}}}}
     case None{}:
       EmitterFinished{EmitterValue{None{}}}
 
 def emitter_body_cps_provider_8_js_io_answer_named(v_1: Bool, v_3: List<&2, BIR.Descriptor>) -> EmitterProgress<Maybe<&2, BIR.Descriptor>>:
   match v_1:
     case True{}:
-      EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_first_descriptor{v_3}}, v_1010556 => +v_1010555 = emitter_unbox(Maybe<&2, BIR.Descriptor>, v_1010556); EmitterFinished{EmitterValue{v_1010555}}}
+      EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_first_descriptor{v_3}}, v_1010561 => +v_1010560 = emitter_unbox(Maybe<&2, BIR.Descriptor>, v_1010561); EmitterFinished{EmitterValue{v_1010560}}}
     case False{}:
       EmitterFinished{EmitterValue{None{}}}
 
@@ -25413,12 +25433,12 @@ def emitter_body_cps_provider_8_js_first_descriptor(v_1: List<&2, BIR.Descriptor
       EmitterFinished{EmitterValue{Some{v_5}}}
 
 def emitter_body_cps_provider_8_js_nat_descriptor(v_0: BIR.Descriptor, +v_3: Map<&2, String>) -> EmitterProgress<Bool>:
-  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_descriptor_head{v_0}}, False{}, v_1010561 => emitter_body_cps_provider_8_js_descriptor_head(v_0), v_1010560 => +v_1010557 = emitter_unbox(Maybe<&2, cps_provider_8_JSDescriptorHead>, v_1010560); EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_nat_descriptor_head{v_1010557, v_3}}, v_1010559 => +v_1010558 = emitter_unbox(Bool, v_1010559); EmitterFinished{EmitterValue{v_1010558}}}}
+  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_descriptor_head{v_0}}, False{}, v_1010566 => emitter_body_cps_provider_8_js_descriptor_head(v_0), v_1010565 => +v_1010562 = emitter_unbox(Maybe<&2, cps_provider_8_JSDescriptorHead>, v_1010565); EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_nat_descriptor_head{v_1010562, v_3}}, v_1010564 => +v_1010563 = emitter_unbox(Bool, v_1010564); EmitterFinished{EmitterValue{v_1010563}}}}
 
 def emitter_body_cps_provider_8_js_nat_descriptor_head(v_2: Maybe<&2, cps_provider_8_JSDescriptorHead>, +v_5: Map<&2, String>) -> EmitterProgress<Bool>:
   match v_2:
     case Some{cps_provider_8_JSDescriptorHead{v_9, v_10}}:
-      EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_native_is{v_5, v_9, "Nat"}}, False{}, v_1010566 => emitter_body_cps_provider_8_js_native_is(v_5, v_9, "Nat"), v_1010565 => +v_1010562 = emitter_unbox(Bool, v_1010565); EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_nat_descriptor_named{v_1010562, v_10}}, v_1010564 => +v_1010563 = emitter_unbox(Bool, v_1010564); EmitterFinished{EmitterValue{v_1010563}}}}
+      EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_native_is{v_5, v_9, "Nat"}}, False{}, v_1010571 => emitter_body_cps_provider_8_js_native_is(v_5, v_9, "Nat"), v_1010570 => +v_1010567 = emitter_unbox(Bool, v_1010570); EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_nat_descriptor_named{v_1010567, v_10}}, v_1010569 => +v_1010568 = emitter_unbox(Bool, v_1010569); EmitterFinished{EmitterValue{v_1010568}}}}
     case None{}:
       EmitterFinished{EmitterValue{False{}}}
 
@@ -25433,7 +25453,7 @@ def emitter_body_cps_provider_8_js_bool_of_parameter(v_1: cps_provider_8_JSParam
   EmitterFinished{EmitterValue{emitter_pure_cps_provider_8_js_bool_of_parameter(v_1)}}
 
 def emitter_body_cps_provider_8_js_nat_answer(v_0: BIR.Descriptor, +v_3: Map<&2, String>) -> EmitterProgress<Bool>:
-  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_io_answer{v_0, v_3}}, False{}, v_1010571 => emitter_body_cps_provider_8_js_io_answer(v_0, v_3), v_1010570 => +v_1010567 = emitter_unbox(Maybe<&2, BIR.Descriptor>, v_1010570); EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_nat_answer_io{v_1010567, v_3}}, v_1010569 => +v_1010568 = emitter_unbox(Bool, v_1010569); EmitterFinished{EmitterValue{v_1010568}}}}
+  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_io_answer{v_0, v_3}}, False{}, v_1010576 => emitter_body_cps_provider_8_js_io_answer(v_0, v_3), v_1010575 => +v_1010572 = emitter_unbox(Maybe<&2, BIR.Descriptor>, v_1010575); EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_nat_answer_io{v_1010572, v_3}}, v_1010574 => +v_1010573 = emitter_unbox(Bool, v_1010574); EmitterFinished{EmitterValue{v_1010573}}}}
 
 def emitter_body_cps_provider_8_js_nat_answer_io(v_1: Maybe<&2, BIR.Descriptor>, +v_4: Map<&2, String>) -> EmitterProgress<Bool>:
   match v_1:
@@ -25442,51 +25462,51 @@ def emitter_body_cps_provider_8_js_nat_answer_io(v_1: Maybe<&2, BIR.Descriptor>,
     case None{}:
       EmitterFinished{EmitterValue{False{}}}
 
-def emitter_continuation_2361(v_9: List<&2, BIR.Arg>, +v_1010574: String) -> EmitterProgress<String>:
-  v_1010575 = {"(" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_arguments{v_9}}, False{}, v_1010581 => emitter_body_cps_provider_8_arguments(v_9), v_1010580 => +v_1010576 = emitter_unbox(List<&2, String>, v_1010580); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010574, v_1010575, String.join(v_1010576, ","), ")"]}}, False{}, v_1010579 => emitter_body_cps_provider_8_cat([v_1010574, v_1010575, String.join(v_1010576, ","), ")"]), v_1010578 => +v_1010577 = emitter_unbox(String, v_1010578); EmitterFinished{EmitterValue{v_1010577}}}}
+def emitter_continuation_2362(v_9: List<&2, BIR.Arg>, +v_1010579: String) -> EmitterProgress<String>:
+  v_1010580 = {"(" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_arguments{v_9}}, False{}, v_1010586 => emitter_body_cps_provider_8_arguments(v_9), v_1010585 => +v_1010581 = emitter_unbox(List<&2, String>, v_1010585); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010579, v_1010580, String.join(v_1010581, ","), ")"]}}, False{}, v_1010584 => emitter_body_cps_provider_8_cat([v_1010579, v_1010580, String.join(v_1010581, ","), ")"]), v_1010583 => +v_1010582 = emitter_unbox(String, v_1010583); EmitterFinished{EmitterValue{v_1010582}}}}
 
-def emitter_continuation_2362(v_33: BIR.Atom, v_1010595: String, +v_1010596: String) -> EmitterProgress<String>:
-  v_1010597 = {"," : String}
-  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_atom{v_33}}, False{}, v_1010603 => emitter_body_cps_provider_8_atom(v_33), v_1010602 => +v_1010598 = emitter_unbox(String, v_1010602); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010595, v_1010596, v_1010597, v_1010598, "))"]}}, False{}, v_1010601 => emitter_body_cps_provider_8_cat([v_1010595, v_1010596, v_1010597, v_1010598, "))"]), v_1010600 => +v_1010599 = emitter_unbox(String, v_1010600); EmitterFinished{EmitterValue{v_1010599}}}}
+def emitter_continuation_2363(v_33: BIR.Atom, v_1010600: String, +v_1010601: String) -> EmitterProgress<String>:
+  v_1010602 = {"," : String}
+  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_atom{v_33}}, False{}, v_1010608 => emitter_body_cps_provider_8_atom(v_33), v_1010607 => +v_1010603 = emitter_unbox(String, v_1010607); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010600, v_1010601, v_1010602, v_1010603, "))"]}}, False{}, v_1010606 => emitter_body_cps_provider_8_cat([v_1010600, v_1010601, v_1010602, v_1010603, "))"]), v_1010605 => +v_1010604 = emitter_unbox(String, v_1010605); EmitterFinished{EmitterValue{v_1010604}}}}
 
-def emitter_continuation_2363(v_59: String, +v_1010623: String) -> EmitterProgress<String>:
-  v_1010624 = {"[" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_59}}, False{}, v_1010630 => emitter_body_cps_provider_8_js_quote(v_59), v_1010629 => +v_1010625 = emitter_unbox(String, v_1010629); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010623, v_1010624, v_1010625, "]"]}}, False{}, v_1010628 => emitter_body_cps_provider_8_cat([v_1010623, v_1010624, v_1010625, "]"]), v_1010627 => +v_1010626 = emitter_unbox(String, v_1010627); EmitterFinished{EmitterValue{v_1010626}}}}
+def emitter_continuation_2364(v_59: String, +v_1010628: String) -> EmitterProgress<String>:
+  v_1010629 = {"[" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_59}}, False{}, v_1010635 => emitter_body_cps_provider_8_js_quote(v_59), v_1010634 => +v_1010630 = emitter_unbox(String, v_1010634); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010628, v_1010629, v_1010630, "]"]}}, False{}, v_1010633 => emitter_body_cps_provider_8_cat([v_1010628, v_1010629, v_1010630, "]"]), v_1010632 => +v_1010631 = emitter_unbox(String, v_1010632); EmitterFinished{EmitterValue{v_1010631}}}}
 
 def emitter_body_cps_provider_8_operation(v_0: BIR.Op) -> EmitterProgress<String>:
   match v_0:
     case BIR.Copy{v_3}:
       emitter_body_cps_provider_8_atom(v_3)
     case BIR.PrimitiveCall{v_8, v_9, _}:
-      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_primitive_name{v_8}}, v_1010582 => +v_1010574 = emitter_unbox(String, v_1010582); emitter_continuation_2361(v_9, v_1010574)}
+      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_primitive_name{v_8}}, v_1010587 => +v_1010579 = emitter_unbox(String, v_1010587); emitter_continuation_2362(v_9, v_1010579)}
     case BIR.Closure{v_17, v_18, v_19}:
       emitter_body_cps_provider_8_closure(v_17, v_18, v_19)
     case BIR.Direct{v_23, v_24}:
-      v_1010584 = {"run_loop(" : String}
-      v_1010585 = {v_23 : U32}
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_arguments{v_24}}, False{}, v_1010594 => emitter_body_cps_provider_8_arguments(v_24), v_1010593 => +v_1010586 = emitter_unbox(List<&2, String>, v_1010593); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_call{v_1010585, v_1010586}}, False{}, v_1010592 => emitter_body_cps_provider_8_call(v_1010585, v_1010586), v_1010591 => +v_1010587 = emitter_unbox(String, v_1010591); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010584, v_1010587, ")"]}}, False{}, v_1010590 => emitter_body_cps_provider_8_cat([v_1010584, v_1010587, ")"]), v_1010589 => +v_1010588 = emitter_unbox(String, v_1010589); EmitterFinished{EmitterValue{v_1010588}}}}}
+      v_1010589 = {"run_loop(" : String}
+      v_1010590 = {v_23 : U32}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_arguments{v_24}}, False{}, v_1010599 => emitter_body_cps_provider_8_arguments(v_24), v_1010598 => +v_1010591 = emitter_unbox(List<&2, String>, v_1010598); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_call{v_1010590, v_1010591}}, False{}, v_1010597 => emitter_body_cps_provider_8_call(v_1010590, v_1010591), v_1010596 => +v_1010592 = emitter_unbox(String, v_1010596); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010589, v_1010592, ")"]}}, False{}, v_1010595 => emitter_body_cps_provider_8_cat([v_1010589, v_1010592, ")"]), v_1010594 => +v_1010593 = emitter_unbox(String, v_1010594); EmitterFinished{EmitterValue{v_1010593}}}}}
     case BIR.Apply{v_31, BIR.Arg{_, v_33}}:
-      v_1010595 = {"run_loop(run_tail(" : String}
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_atom{v_31}}, False{}, v_1010605 => emitter_body_cps_provider_8_atom(v_31), v_1010604 => +v_1010596 = emitter_unbox(String, v_1010604); emitter_continuation_2362(v_33, v_1010595, v_1010596)}
+      v_1010600 = {"run_loop(run_tail(" : String}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_atom{v_31}}, False{}, v_1010610 => emitter_body_cps_provider_8_atom(v_31), v_1010609 => +v_1010601 = emitter_unbox(String, v_1010609); emitter_continuation_2363(v_33, v_1010600, v_1010601)}
     case BIR.LoadSymbol{_, v_40}:
-      v_1010606 = {"$D[" : String}
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_40}}, False{}, v_1010612 => emitter_body_cps_provider_8_js_quote(v_40), v_1010611 => +v_1010607 = emitter_unbox(String, v_1010611); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010606, v_1010607, "]"]}}, False{}, v_1010610 => emitter_body_cps_provider_8_cat([v_1010606, v_1010607, "]"]), v_1010609 => +v_1010608 = emitter_unbox(String, v_1010609); EmitterFinished{EmitterValue{v_1010608}}}}
+      v_1010611 = {"$D[" : String}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_40}}, False{}, v_1010617 => emitter_body_cps_provider_8_js_quote(v_40), v_1010616 => +v_1010612 = emitter_unbox(String, v_1010616); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010611, v_1010612, "]"]}}, False{}, v_1010615 => emitter_body_cps_provider_8_cat([v_1010611, v_1010612, "]"]), v_1010614 => +v_1010613 = emitter_unbox(String, v_1010614); EmitterFinished{EmitterValue{v_1010613}}}}
     case BIR.Construct{_, v_47, v_48}:
-      v_1010613 = {"({$:" : String}
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_47}}, False{}, v_1010622 => emitter_body_cps_provider_8_js_quote(v_47), v_1010621 => +v_1010614 = emitter_unbox(String, v_1010621); EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_record_fields{v_48}}, False{}, v_1010620 => emitter_body_cps_provider_8_record_fields(v_48), v_1010619 => +v_1010615 = emitter_unbox(String, v_1010619); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010613, v_1010614, v_1010615, "})"]}}, False{}, v_1010618 => emitter_body_cps_provider_8_cat([v_1010613, v_1010614, v_1010615, "})"]), v_1010617 => +v_1010616 = emitter_unbox(String, v_1010617); EmitterFinished{EmitterValue{v_1010616}}}}}
+      v_1010618 = {"({$:" : String}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_47}}, False{}, v_1010627 => emitter_body_cps_provider_8_js_quote(v_47), v_1010626 => +v_1010619 = emitter_unbox(String, v_1010626); EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_record_fields{v_48}}, False{}, v_1010625 => emitter_body_cps_provider_8_record_fields(v_48), v_1010624 => +v_1010620 = emitter_unbox(String, v_1010624); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010618, v_1010619, v_1010620, "})"]}}, False{}, v_1010623 => emitter_body_cps_provider_8_cat([v_1010618, v_1010619, v_1010620, "})"]), v_1010622 => +v_1010621 = emitter_unbox(String, v_1010622); EmitterFinished{EmitterValue{v_1010621}}}}}
     case BIR.Project{v_56, _, _, v_59}:
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_atom{v_56}}, False{}, v_1010632 => emitter_body_cps_provider_8_atom(v_56), v_1010631 => +v_1010623 = emitter_unbox(String, v_1010631); emitter_continuation_2363(v_59, v_1010623)}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_atom{v_56}}, False{}, v_1010637 => emitter_body_cps_provider_8_atom(v_56), v_1010636 => +v_1010628 = emitter_unbox(String, v_1010636); emitter_continuation_2364(v_59, v_1010628)}
     case BIR.HasTag{v_66, _, v_68}:
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_atom{v_66}}, False{}, v_1010637 => emitter_body_cps_provider_8_atom(v_66), v_1010636 => +v_1010633 = emitter_unbox(String, v_1010636); EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_tag_test{v_1010633, v_68}}, v_1010635 => +v_1010634 = emitter_unbox(String, v_1010635); EmitterFinished{EmitterValue{v_1010634}}}}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_atom{v_66}}, False{}, v_1010642 => emitter_body_cps_provider_8_atom(v_66), v_1010641 => +v_1010638 = emitter_unbox(String, v_1010641); EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_tag_test{v_1010638, v_68}}, v_1010640 => +v_1010639 = emitter_unbox(String, v_1010640); EmitterFinished{EmitterValue{v_1010639}}}}
 
 def emitter_body_cps_provider_8_tag_test(+v_1: String, v_3: String) -> EmitterProgress<String>:
-  v_1010638 = {"(" : String}
-  v_1010639 = {v_1 : String}
-  v_1010640 = {"&&" : String}
-  v_1010641 = {v_1 : String}
-  v_1010642 = {".$===" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_3}}, False{}, v_1010648 => emitter_body_cps_provider_8_js_quote(v_3), v_1010647 => +v_1010643 = emitter_unbox(String, v_1010647); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010638, v_1010639, v_1010640, v_1010641, v_1010642, v_1010643, ")"]}}, False{}, v_1010646 => emitter_body_cps_provider_8_cat([v_1010638, v_1010639, v_1010640, v_1010641, v_1010642, v_1010643, ")"]), v_1010645 => +v_1010644 = emitter_unbox(String, v_1010645); EmitterFinished{EmitterValue{v_1010644}}}}
+  v_1010643 = {"(" : String}
+  v_1010644 = {v_1 : String}
+  v_1010645 = {"&&" : String}
+  v_1010646 = {v_1 : String}
+  v_1010647 = {".$===" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_3}}, False{}, v_1010653 => emitter_body_cps_provider_8_js_quote(v_3), v_1010652 => +v_1010648 = emitter_unbox(String, v_1010652); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010643, v_1010644, v_1010645, v_1010646, v_1010647, v_1010648, ")"]}}, False{}, v_1010651 => emitter_body_cps_provider_8_cat([v_1010643, v_1010644, v_1010645, v_1010646, v_1010647, v_1010648, ")"]), v_1010650 => +v_1010649 = emitter_unbox(String, v_1010650); EmitterFinished{EmitterValue{v_1010649}}}}
 
 def emitter_body_cps_provider_8_tag_subject_same(v_0: BIR.Atom, v_1: BIR.Atom) -> EmitterProgress<Bool>:
   match v_0, v_1:
@@ -25507,203 +25527,203 @@ def emitter_body_cps_provider_8_tagged_region_checked(v_1: Bool, v_3: cps_provid
 def emitter_body_cps_provider_8_tagged_region(v_0: BIR.Block) -> EmitterProgress<Maybe<&2, cps_provider_8_TaggedRegion>>:
   match v_0:
     case BIR.Region{+v_12, BIR.Let{+v_13, BIR.HasTag{+v_14, _, v_16}, BIR.Branch{BIR.Local{v_17}, v_18, BIR.LeaveRegion{v_19}}}, v_20}:
-      v_1010649 = {U32.is_eq(v_12, v_19) : Bool}
-      v_1010650 = {U32.is_eq(v_13, v_17) : Bool}
-      EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_tag_subject_same{v_14, v_14}}, False{}, v_1010656 => emitter_body_cps_provider_8_tag_subject_same(v_14, v_14), v_1010655 => +v_1010651 = emitter_unbox(Bool, v_1010655); EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_tagged_region_checked{Bool.and(v_1010649, Bool.and(v_1010650, v_1010651)), cps_provider_8_TaggedRegion{v_12, v_13, v_14, v_16, v_18, v_20}}}, False{}, v_1010654 => emitter_body_cps_provider_8_tagged_region_checked(Bool.and(v_1010649, Bool.and(v_1010650, v_1010651)), cps_provider_8_TaggedRegion{v_12, v_13, v_14, v_16, v_18, v_20}), v_1010653 => +v_1010652 = emitter_unbox(Maybe<&2, cps_provider_8_TaggedRegion>, v_1010653); EmitterFinished{EmitterValue{v_1010652}}}}
+      v_1010654 = {U32.is_eq(v_12, v_19) : Bool}
+      v_1010655 = {U32.is_eq(v_13, v_17) : Bool}
+      EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_tag_subject_same{v_14, v_14}}, False{}, v_1010661 => emitter_body_cps_provider_8_tag_subject_same(v_14, v_14), v_1010660 => +v_1010656 = emitter_unbox(Bool, v_1010660); EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_tagged_region_checked{Bool.and(v_1010654, Bool.and(v_1010655, v_1010656)), cps_provider_8_TaggedRegion{v_12, v_13, v_14, v_16, v_18, v_20}}}, False{}, v_1010659 => emitter_body_cps_provider_8_tagged_region_checked(Bool.and(v_1010654, Bool.and(v_1010655, v_1010656)), cps_provider_8_TaggedRegion{v_12, v_13, v_14, v_16, v_18, v_20}), v_1010658 => +v_1010657 = emitter_unbox(Maybe<&2, cps_provider_8_TaggedRegion>, v_1010658); EmitterFinished{EmitterValue{v_1010657}}}}
     case _:
       EmitterFinished{EmitterValue{None{}}}
 
 def emitter_body_cps_provider_8_tag_unseen(v_2: Maybe<&2, Bool>) -> EmitterProgress<Bool>:
   EmitterFinished{EmitterValue{emitter_pure_cps_provider_8_tag_unseen(v_2)}}
 
-def emitter_match_2368(v_4: cps_provider_8_TaggedRegion, v_2: BIR.Atom, v_8: List<&2, cps_provider_8_TagArm>, v_11: Map<&2, Bool>, v_13: Nat) -> EmitterProgress<cps_provider_8_TagGroup>:
+def emitter_match_2369(v_4: cps_provider_8_TaggedRegion, v_2: BIR.Atom, v_8: List<&2, cps_provider_8_TagArm>, v_11: Map<&2, Bool>, v_13: Nat) -> EmitterProgress<cps_provider_8_TagGroup>:
   match v_4:
     case cps_provider_8_TaggedRegion{+v_21, v_22, _, +v_24, +v_25, v_26}:
-      EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_region_needs_frame{v_25, v_21}}, v_1010660 => +v_1010657 = emitter_unbox(Bool, v_1010660); EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_tag_group_arm{v_1010657, v_2, v_26, cps_provider_8_TagArm{v_21, v_22, v_24, v_25} <> v_8, Map.set(&2, Bool, v_11, v_24, True{}), v_13}}, v_1010659 => +v_1010658 = emitter_unbox(cps_provider_8_TagGroup, v_1010659); EmitterFinished{EmitterValue{v_1010658}}}}
+      EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_region_needs_frame{v_25, v_21}}, v_1010665 => +v_1010662 = emitter_unbox(Bool, v_1010665); EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_tag_group_arm{v_1010662, v_2, v_26, cps_provider_8_TagArm{v_21, v_22, v_24, v_25} <> v_8, Map.set(&2, Bool, v_11, v_24, True{}), v_13}}, v_1010664 => +v_1010663 = emitter_unbox(cps_provider_8_TagGroup, v_1010664); EmitterFinished{EmitterValue{v_1010663}}}}
 
-def emitter_match_2369(v_1: Bool, v_8: List<&2, cps_provider_8_TagArm>, v_5: BIR.Block, v_13: Nat, v_4: cps_provider_8_TaggedRegion, v_2: BIR.Atom, v_11: Map<&2, Bool>) -> EmitterProgress<cps_provider_8_TagGroup>:
+def emitter_match_2370(v_1: Bool, v_8: List<&2, cps_provider_8_TagArm>, v_5: BIR.Block, v_13: Nat, v_4: cps_provider_8_TaggedRegion, v_2: BIR.Atom, v_11: Map<&2, Bool>) -> EmitterProgress<cps_provider_8_TagGroup>:
   match v_1:
     case False{}:
       EmitterFinished{EmitterValue{cps_provider_8_TagGroup{v_8, v_5, v_13}}}
     case True{}:
-      emitter_match_2368(v_4, v_2, v_8, v_11, v_13)
+      emitter_match_2369(v_4, v_2, v_8, v_11, v_13)
 
 def emitter_body_cps_provider_8_tag_group_selected(v_1: Bool, v_2: BIR.Atom, v_4: cps_provider_8_TaggedRegion, v_5: BIR.Block, v_8: List<&2, cps_provider_8_TagArm>, v_11: Map<&2, Bool>, v_13: Nat) -> EmitterProgress<cps_provider_8_TagGroup>:
-  emitter_match_2369(v_1, v_8, v_5, v_13, v_4, v_2, v_11)
+  emitter_match_2370(v_1, v_8, v_5, v_13, v_4, v_2, v_11)
 
-def emitter_match_2370(v_1: Bool, v_6: List<&2, cps_provider_8_TagArm>, v_3: BIR.Block, v_11: Nat, v_2: BIR.Atom, v_9: Map<&2, Bool>) -> EmitterProgress<cps_provider_8_TagGroup>:
+def emitter_match_2371(v_1: Bool, v_6: List<&2, cps_provider_8_TagArm>, v_3: BIR.Block, v_11: Nat, v_2: BIR.Atom, v_9: Map<&2, Bool>) -> EmitterProgress<cps_provider_8_TagGroup>:
   match v_1:
     case True{}:
       EmitterFinished{EmitterValue{cps_provider_8_TagGroup{v_6, v_3, v_11}}}
     case False{}:
-      EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_tag_group{v_2, v_3, v_6, v_9, Nat.add(v_11, 1n)}}, v_1010662 => +v_1010661 = emitter_unbox(cps_provider_8_TagGroup, v_1010662); EmitterFinished{EmitterValue{v_1010661}}}
+      EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_tag_group{v_2, v_3, v_6, v_9, Nat.add(v_11, 1n)}}, v_1010667 => +v_1010666 = emitter_unbox(cps_provider_8_TagGroup, v_1010667); EmitterFinished{EmitterValue{v_1010666}}}
 
 def emitter_body_cps_provider_8_tag_group_arm(v_1: Bool, v_2: BIR.Atom, v_3: BIR.Block, v_6: List<&2, cps_provider_8_TagArm>, v_9: Map<&2, Bool>, v_11: Nat) -> EmitterProgress<cps_provider_8_TagGroup>:
-  emitter_match_2370(v_1, v_6, v_3, v_11, v_2, v_9)
+  emitter_match_2371(v_1, v_6, v_3, v_11, v_2, v_9)
 
-def emitter_match_2371(+v_15: cps_provider_8_TaggedRegion, +v_3: BIR.Atom, +v_10: Map<&2, Bool>, v_4: BIR.Block, v_7: List<&2, cps_provider_8_TagArm>, v_12: Nat) -> EmitterProgress<cps_provider_8_TagGroup>:
+def emitter_match_2372(+v_15: cps_provider_8_TaggedRegion, +v_3: BIR.Atom, +v_10: Map<&2, Bool>, v_4: BIR.Block, v_7: List<&2, cps_provider_8_TagArm>, v_12: Nat) -> EmitterProgress<cps_provider_8_TagGroup>:
   match v_15:
     case cps_provider_8_TaggedRegion{_, _, v_24, +v_25, _, _}:
-      EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_tag_subject_same{v_3, v_24}}, False{}, v_1010668 => emitter_body_cps_provider_8_tag_subject_same(v_3, v_24), v_1010667 => +v_1010663 = emitter_unbox(Bool, v_1010667); EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_tag_group_selected{Bool.and(v_1010663, emitter_pure_cps_provider_8_tag_unseen(IndexLookup.find(Bool, v_10, v_25))), v_3, v_15, v_4, v_7, v_10, v_12}}, False{}, v_1010666 => emitter_body_cps_provider_8_tag_group_selected(Bool.and(v_1010663, emitter_pure_cps_provider_8_tag_unseen(IndexLookup.find(Bool, v_10, v_25))), v_3, v_15, v_4, v_7, v_10, v_12), v_1010665 => +v_1010664 = emitter_unbox(cps_provider_8_TagGroup, v_1010665); EmitterFinished{EmitterValue{v_1010664}}}}
+      EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_tag_subject_same{v_3, v_24}}, False{}, v_1010673 => emitter_body_cps_provider_8_tag_subject_same(v_3, v_24), v_1010672 => +v_1010668 = emitter_unbox(Bool, v_1010672); EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_tag_group_selected{Bool.and(v_1010668, emitter_pure_cps_provider_8_tag_unseen(IndexLookup.find(Bool, v_10, v_25))), v_3, v_15, v_4, v_7, v_10, v_12}}, False{}, v_1010671 => emitter_body_cps_provider_8_tag_group_selected(Bool.and(v_1010668, emitter_pure_cps_provider_8_tag_unseen(IndexLookup.find(Bool, v_10, v_25))), v_3, v_15, v_4, v_7, v_10, v_12), v_1010670 => +v_1010669 = emitter_unbox(cps_provider_8_TagGroup, v_1010670); EmitterFinished{EmitterValue{v_1010669}}}}
 
-def emitter_match_2372(v_2: Maybe<&2, cps_provider_8_TaggedRegion>, v_7: List<&2, cps_provider_8_TagArm>, v_4: BIR.Block, v_12: Nat, +v_3: BIR.Atom, +v_10: Map<&2, Bool>) -> EmitterProgress<cps_provider_8_TagGroup>:
+def emitter_match_2373(v_2: Maybe<&2, cps_provider_8_TaggedRegion>, v_7: List<&2, cps_provider_8_TagArm>, v_4: BIR.Block, v_12: Nat, +v_3: BIR.Atom, +v_10: Map<&2, Bool>) -> EmitterProgress<cps_provider_8_TagGroup>:
   match v_2:
     case None{}:
       EmitterFinished{EmitterValue{cps_provider_8_TagGroup{v_7, v_4, v_12}}}
     case Some{+v_15}:
-      emitter_match_2371(v_15, v_3, v_10, v_4, v_7, v_12)
+      emitter_match_2372(v_15, v_3, v_10, v_4, v_7, v_12)
 
 def emitter_body_cps_provider_8_tag_group_view(v_2: Maybe<&2, cps_provider_8_TaggedRegion>, +v_3: BIR.Atom, v_4: BIR.Block, v_7: List<&2, cps_provider_8_TagArm>, +v_10: Map<&2, Bool>, v_12: Nat) -> EmitterProgress<cps_provider_8_TagGroup>:
-  emitter_match_2372(v_2, v_7, v_4, v_12, v_3, v_10)
+  emitter_match_2373(v_2, v_7, v_4, v_12, v_3, v_10)
 
 def emitter_body_cps_provider_8_tag_group(v_0: BIR.Atom, +v_1: BIR.Block, v_4: List<&2, cps_provider_8_TagArm>, v_7: Map<&2, Bool>, v_9: Nat) -> EmitterProgress<cps_provider_8_TagGroup>:
-  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_tagged_region{v_1}}, False{}, v_1010672 => emitter_body_cps_provider_8_tagged_region(v_1), v_1010671 => +v_1010669 = emitter_unbox(Maybe<&2, cps_provider_8_TaggedRegion>, v_1010671); emitter_body_cps_provider_8_tag_group_view(v_1010669, v_0, v_1, v_4, v_7, v_9)}
+  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_tagged_region{v_1}}, False{}, v_1010677 => emitter_body_cps_provider_8_tagged_region(v_1), v_1010676 => +v_1010674 = emitter_unbox(Maybe<&2, cps_provider_8_TaggedRegion>, v_1010676); emitter_body_cps_provider_8_tag_group_view(v_1010674, v_0, v_1, v_4, v_7, v_9)}
 
-def emitter_continuation_2373(v_15: List<&2, cps_provider_8_TagArm>, v_4: cps_provider_8_JsCtx, v_1010673: String, +v_1010674: String, v_1010675: String, v_1010676: String, v_1010677: String, +v_1010678: String, v_1010679: String, +v_1010680: String) -> EmitterProgress<String>:
-  v_1010681 = {"}break;}" : String}
-  EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_tag_arms{v_15, v_4}}, v_1010686 => +v_1010682 = emitter_unbox(String, v_1010686); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010673, v_1010674, v_1010675, v_1010676, v_1010677, v_1010678, v_1010679, v_1010680, v_1010681, v_1010682]}}, False{}, v_1010685 => emitter_body_cps_provider_8_cat([v_1010673, v_1010674, v_1010675, v_1010676, v_1010677, v_1010678, v_1010679, v_1010680, v_1010681, v_1010682]), v_1010684 => +v_1010683 = emitter_unbox(String, v_1010684); EmitterFinished{EmitterValue{v_1010683}}}}
+def emitter_continuation_2374(v_15: List<&2, cps_provider_8_TagArm>, v_4: cps_provider_8_JsCtx, v_1010678: String, +v_1010679: String, v_1010680: String, v_1010681: String, v_1010682: String, +v_1010683: String, v_1010684: String, +v_1010685: String) -> EmitterProgress<String>:
+  v_1010686 = {"}break;}" : String}
+  EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_tag_arms{v_15, v_4}}, v_1010691 => +v_1010687 = emitter_unbox(String, v_1010691); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010678, v_1010679, v_1010680, v_1010681, v_1010682, v_1010683, v_1010684, v_1010685, v_1010686, v_1010687]}}, False{}, v_1010690 => emitter_body_cps_provider_8_cat([v_1010678, v_1010679, v_1010680, v_1010681, v_1010682, v_1010683, v_1010684, v_1010685, v_1010686, v_1010687]), v_1010689 => +v_1010688 = emitter_unbox(String, v_1010689); EmitterFinished{EmitterValue{v_1010688}}}}
 
-def emitter_continuation_2374(v_14: BIR.Block, +v_4: cps_provider_8_JsCtx, v_15: List<&2, cps_provider_8_TagArm>, v_1010673: String, +v_1010674: String, v_1010675: String, v_1010676: String, v_1010677: String, +v_1010678: String) -> EmitterProgress<String>:
-  v_1010679 = {"=true;" : String}
-  EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_block{v_14, v_4}}, v_1010687 => +v_1010680 = emitter_unbox(String, v_1010687); emitter_continuation_2373(v_15, v_4, v_1010673, v_1010674, v_1010675, v_1010676, v_1010677, v_1010678, v_1010679, v_1010680)}
+def emitter_continuation_2375(v_14: BIR.Block, +v_4: cps_provider_8_JsCtx, v_15: List<&2, cps_provider_8_TagArm>, v_1010678: String, +v_1010679: String, v_1010680: String, v_1010681: String, v_1010682: String, +v_1010683: String) -> EmitterProgress<String>:
+  v_1010684 = {"=true;" : String}
+  EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_block{v_14, v_4}}, v_1010692 => +v_1010685 = emitter_unbox(String, v_1010692); emitter_continuation_2374(v_15, v_4, v_1010678, v_1010679, v_1010680, v_1010681, v_1010682, v_1010683, v_1010684, v_1010685)}
 
-def emitter_continuation_2375(v_11: U32, v_12: U32, v_14: BIR.Block, v_4: cps_provider_8_JsCtx, v_15: List<&2, cps_provider_8_TagArm>, v_1010673: String, +v_1010674: String) -> EmitterProgress<String>:
-  v_1010675 = {":{$case" : String}
-  v_1010676 = {U32.show(v_11) : String}
-  v_1010677 = {":{const " : String}
-  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_local{v_12}}, False{}, v_1010689 => emitter_body_cps_provider_8_local(v_12), v_1010688 => +v_1010678 = emitter_unbox(String, v_1010688); emitter_continuation_2374(v_14, v_4, v_15, v_1010673, v_1010674, v_1010675, v_1010676, v_1010677, v_1010678)}
+def emitter_continuation_2376(v_11: U32, v_12: U32, v_14: BIR.Block, v_4: cps_provider_8_JsCtx, v_15: List<&2, cps_provider_8_TagArm>, v_1010678: String, +v_1010679: String) -> EmitterProgress<String>:
+  v_1010680 = {":{$case" : String}
+  v_1010681 = {U32.show(v_11) : String}
+  v_1010682 = {":{const " : String}
+  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_local{v_12}}, False{}, v_1010694 => emitter_body_cps_provider_8_local(v_12), v_1010693 => +v_1010683 = emitter_unbox(String, v_1010693); emitter_continuation_2375(v_14, v_4, v_15, v_1010678, v_1010679, v_1010680, v_1010681, v_1010682, v_1010683)}
 
 def emitter_body_cps_provider_8_tag_arms(v_2: List<&2, cps_provider_8_TagArm>, v_4: cps_provider_8_JsCtx) -> EmitterProgress<String>:
   match v_2:
     case []:
       EmitterFinished{EmitterValue{""}}
     case cps_provider_8_TagArm{v_11, v_12, v_13, v_14} <> v_15:
-      v_1010673 = {"case " : String}
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_13}}, False{}, v_1010691 => emitter_body_cps_provider_8_js_quote(v_13), v_1010690 => +v_1010674 = emitter_unbox(String, v_1010690); emitter_continuation_2375(v_11, v_12, v_14, v_4, v_15, v_1010673, v_1010674)}
+      v_1010678 = {"case " : String}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_13}}, False{}, v_1010696 => emitter_body_cps_provider_8_js_quote(v_13), v_1010695 => +v_1010679 = emitter_unbox(String, v_1010695); emitter_continuation_2376(v_11, v_12, v_14, v_4, v_15, v_1010678, v_1010679)}
 
-def emitter_continuation_2377(v_3: BIR.Block, v_5: cps_provider_8_JsCtx, v_1010692: String, v_1010693: String, v_1010694: String, +v_1010695: String) -> EmitterProgress<String>:
-  v_1010696 = {"}" : String}
-  EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_block{v_3, v_5}}, v_1010701 => +v_1010697 = emitter_unbox(String, v_1010701); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010692, v_1010693, v_1010694, v_1010695, v_1010696, v_1010697]}}, False{}, v_1010700 => emitter_body_cps_provider_8_cat([v_1010692, v_1010693, v_1010694, v_1010695, v_1010696, v_1010697]), v_1010699 => +v_1010698 = emitter_unbox(String, v_1010699); EmitterFinished{EmitterValue{v_1010698}}}}
+def emitter_continuation_2378(v_3: BIR.Block, v_5: cps_provider_8_JsCtx, v_1010697: String, v_1010698: String, v_1010699: String, +v_1010700: String) -> EmitterProgress<String>:
+  v_1010701 = {"}" : String}
+  EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_block{v_3, v_5}}, v_1010706 => +v_1010702 = emitter_unbox(String, v_1010706); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010697, v_1010698, v_1010699, v_1010700, v_1010701, v_1010702]}}, False{}, v_1010705 => emitter_body_cps_provider_8_cat([v_1010697, v_1010698, v_1010699, v_1010700, v_1010701, v_1010702]), v_1010704 => +v_1010703 = emitter_unbox(String, v_1010704); EmitterFinished{EmitterValue{v_1010703}}}}
 
 def emitter_body_cps_provider_8_ordinary_region(v_1: U32, v_2: BIR.Block, v_3: BIR.Block, +v_5: cps_provider_8_JsCtx) -> EmitterProgress<String>:
-  v_1010692 = {"$case" : String}
-  v_1010693 = {U32.show(v_1) : String}
-  v_1010694 = {":{" : String}
-  EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_block{v_2, v_5}}, v_1010702 => +v_1010695 = emitter_unbox(String, v_1010702); emitter_continuation_2377(v_3, v_5, v_1010692, v_1010693, v_1010694, v_1010695)}
+  v_1010697 = {"$case" : String}
+  v_1010698 = {U32.show(v_1) : String}
+  v_1010699 = {":{" : String}
+  EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_block{v_2, v_5}}, v_1010707 => +v_1010700 = emitter_unbox(String, v_1010707); emitter_continuation_2378(v_3, v_5, v_1010697, v_1010698, v_1010699, v_1010700)}
 
-def emitter_continuation_2378(v_6: BIR.Block, v_12: cps_provider_8_JsCtx, v_1010704: String, +v_1010705: String, v_1010706: String, +v_1010707: String) -> EmitterProgress<String>:
-  v_1010708 = {"}" : String}
-  EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_block{v_6, v_12}}, v_1010713 => +v_1010709 = emitter_unbox(String, v_1010713); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010704, v_1010705, v_1010706, v_1010707, v_1010708, v_1010709]}}, False{}, v_1010712 => emitter_body_cps_provider_8_cat([v_1010704, v_1010705, v_1010706, v_1010707, v_1010708, v_1010709]), v_1010711 => +v_1010710 = emitter_unbox(String, v_1010711); EmitterFinished{EmitterValue{v_1010710}}}}
+def emitter_continuation_2379(v_6: BIR.Block, v_12: cps_provider_8_JsCtx, v_1010709: String, +v_1010710: String, v_1010711: String, +v_1010712: String) -> EmitterProgress<String>:
+  v_1010713 = {"}" : String}
+  EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_block{v_6, v_12}}, v_1010718 => +v_1010714 = emitter_unbox(String, v_1010718); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010709, v_1010710, v_1010711, v_1010712, v_1010713, v_1010714]}}, False{}, v_1010717 => emitter_body_cps_provider_8_cat([v_1010709, v_1010710, v_1010711, v_1010712, v_1010713, v_1010714]), v_1010716 => +v_1010715 = emitter_unbox(String, v_1010716); EmitterFinished{EmitterValue{v_1010715}}}}
 
-def emitter_continuation_2379(v_5: List<&2, cps_provider_8_TagArm>, +v_12: cps_provider_8_JsCtx, v_6: BIR.Block, v_1010704: String, +v_1010705: String) -> EmitterProgress<String>:
-  v_1010706 = {"?.$){" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_tag_arms{List.reverse(&2, cps_provider_8_TagArm, v_5), v_12}}, False{}, v_1010715 => emitter_body_cps_provider_8_tag_arms(List.reverse(&2, cps_provider_8_TagArm, v_5), v_12), v_1010714 => +v_1010707 = emitter_unbox(String, v_1010714); emitter_continuation_2378(v_6, v_12, v_1010704, v_1010705, v_1010706, v_1010707)}
+def emitter_continuation_2380(v_5: List<&2, cps_provider_8_TagArm>, +v_12: cps_provider_8_JsCtx, v_6: BIR.Block, v_1010709: String, +v_1010710: String) -> EmitterProgress<String>:
+  v_1010711 = {"?.$){" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_tag_arms{List.reverse(&2, cps_provider_8_TagArm, v_5), v_12}}, False{}, v_1010720 => emitter_body_cps_provider_8_tag_arms(List.reverse(&2, cps_provider_8_TagArm, v_5), v_12), v_1010719 => +v_1010712 = emitter_unbox(String, v_1010719); emitter_continuation_2379(v_6, v_12, v_1010709, v_1010710, v_1010711, v_1010712)}
 
-def emitter_match_2380(v_1: Bool, v_8: U32, v_9: BIR.Block, v_10: BIR.Block, v_12: cps_provider_8_JsCtx, v_2: BIR.Atom, v_5: List<&2, cps_provider_8_TagArm>, v_6: BIR.Block) -> EmitterProgress<String>:
+def emitter_match_2381(v_1: Bool, v_8: U32, v_9: BIR.Block, v_10: BIR.Block, v_12: cps_provider_8_JsCtx, v_2: BIR.Atom, v_5: List<&2, cps_provider_8_TagArm>, v_6: BIR.Block) -> EmitterProgress<String>:
   match v_1:
     case False{}:
       emitter_body_cps_provider_8_ordinary_region(v_8, v_9, v_10, v_12)
     case True{}:
-      v_1010704 = {"switch(" : String}
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_atom{v_2}}, False{}, v_1010717 => emitter_body_cps_provider_8_atom(v_2), v_1010716 => +v_1010705 = emitter_unbox(String, v_1010716); emitter_continuation_2379(v_5, v_12, v_6, v_1010704, v_1010705)}
+      v_1010709 = {"switch(" : String}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_atom{v_2}}, False{}, v_1010722 => emitter_body_cps_provider_8_atom(v_2), v_1010721 => +v_1010710 = emitter_unbox(String, v_1010721); emitter_continuation_2380(v_5, v_12, v_6, v_1010709, v_1010710)}
 
 def emitter_body_cps_provider_8_tag_render_selected(v_1: Bool, v_2: BIR.Atom, v_5: List<&2, cps_provider_8_TagArm>, v_6: BIR.Block, v_8: U32, v_9: BIR.Block, v_10: BIR.Block, v_12: cps_provider_8_JsCtx) -> EmitterProgress<String>:
-  emitter_match_2380(v_1, v_8, v_9, v_10, v_12, v_2, v_5, v_6)
+  emitter_match_2381(v_1, v_8, v_9, v_10, v_12, v_2, v_5, v_6)
 
 def emitter_body_cps_provider_8_tag_render_group(v_1: cps_provider_8_TagGroup, v_2: BIR.Atom, v_4: U32, v_5: BIR.Block, v_6: BIR.Block, v_8: cps_provider_8_JsCtx) -> EmitterProgress<String>:
   match v_1:
     case cps_provider_8_TagGroup{v_13, v_14, +v_15}:
-      EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_tag_render_selected{Nat.is_gt(v_15, 2n), v_2, v_13, v_14, v_4, v_5, v_6, v_8}}, False{}, v_1010720 => emitter_body_cps_provider_8_tag_render_selected(Nat.is_gt(v_15, 2n), v_2, v_13, v_14, v_4, v_5, v_6, v_8), v_1010719 => +v_1010718 = emitter_unbox(String, v_1010719); EmitterFinished{EmitterValue{v_1010718}}}
+      EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_tag_render_selected{Nat.is_gt(v_15, 2n), v_2, v_13, v_14, v_4, v_5, v_6, v_8}}, False{}, v_1010725 => emitter_body_cps_provider_8_tag_render_selected(Nat.is_gt(v_15, 2n), v_2, v_13, v_14, v_4, v_5, v_6, v_8), v_1010724 => +v_1010723 = emitter_unbox(String, v_1010724); EmitterFinished{EmitterValue{v_1010723}}}
 
-def emitter_match_2382(v_12: cps_provider_8_TaggedRegion, v_4: U32, v_5: BIR.Block, v_6: BIR.Block, v_8: cps_provider_8_JsCtx) -> EmitterProgress<String>:
+def emitter_match_2383(v_12: cps_provider_8_TaggedRegion, v_4: U32, v_5: BIR.Block, v_6: BIR.Block, v_8: cps_provider_8_JsCtx) -> EmitterProgress<String>:
   match v_12:
     case cps_provider_8_TaggedRegion{v_19, v_20, +v_21, +v_22, v_23, v_24}:
-      EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_tag_group{v_21, v_24, [cps_provider_8_TagArm{v_19, v_20, v_22, v_23}], Map.set(&2, Bool, Map.new(&2, Bool), v_22, True{}), 1n}}, False{}, v_1010725 => emitter_body_cps_provider_8_tag_group(v_21, v_24, [cps_provider_8_TagArm{v_19, v_20, v_22, v_23}], Map.set(&2, Bool, Map.new(&2, Bool), v_22, True{}), 1n), v_1010724 => +v_1010722 = emitter_unbox(cps_provider_8_TagGroup, v_1010724); emitter_body_cps_provider_8_tag_render_group(v_1010722, v_21, v_4, v_5, v_6, v_8)}
+      EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_tag_group{v_21, v_24, [cps_provider_8_TagArm{v_19, v_20, v_22, v_23}], Map.set(&2, Bool, Map.new(&2, Bool), v_22, True{}), 1n}}, False{}, v_1010730 => emitter_body_cps_provider_8_tag_group(v_21, v_24, [cps_provider_8_TagArm{v_19, v_20, v_22, v_23}], Map.set(&2, Bool, Map.new(&2, Bool), v_22, True{}), 1n), v_1010729 => +v_1010727 = emitter_unbox(cps_provider_8_TagGroup, v_1010729); emitter_body_cps_provider_8_tag_render_group(v_1010727, v_21, v_4, v_5, v_6, v_8)}
 
 def emitter_body_cps_provider_8_region_view(v_2: Maybe<&2, cps_provider_8_TaggedRegion>, v_4: U32, v_5: BIR.Block, v_6: BIR.Block, v_8: cps_provider_8_JsCtx) -> EmitterProgress<String>:
   match v_2:
     case None{}:
       emitter_body_cps_provider_8_ordinary_region(v_4, v_5, v_6, v_8)
     case Some{v_12}:
-      emitter_match_2382(v_12, v_4, v_5, v_6, v_8)
+      emitter_match_2383(v_12, v_4, v_5, v_6, v_8)
 
-def emitter_match_2384(+v_1010726: Bool, +v_1: U32, +v_2: BIR.Block, +v_3: BIR.Block, v_5: cps_provider_8_JsCtx) -> EmitterProgress<String>:
-  match v_1010726:
+def emitter_match_2385(+v_1010731: Bool, +v_1: U32, +v_2: BIR.Block, +v_3: BIR.Block, v_5: cps_provider_8_JsCtx) -> EmitterProgress<String>:
+  match v_1010731:
     case True{}:
-      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_region_frame{v_1, v_2, v_3, v_5}}, v_1010728 => +v_1010727 = emitter_unbox(String, v_1010728); EmitterFinished{EmitterValue{v_1010727}}}
+      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_region_frame{v_1, v_2, v_3, v_5}}, v_1010733 => +v_1010732 = emitter_unbox(String, v_1010733); EmitterFinished{EmitterValue{v_1010732}}}
     case False{}:
-      EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_tagged_region{BIR.Region{v_1, v_2, v_3}}}, False{}, v_1010732 => emitter_body_cps_provider_8_tagged_region(BIR.Region{v_1, v_2, v_3}), v_1010731 => +v_1010729 = emitter_unbox(Maybe<&2, cps_provider_8_TaggedRegion>, v_1010731); emitter_body_cps_provider_8_region_view(v_1010729, v_1, v_2, v_3, v_5)}
+      EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_tagged_region{BIR.Region{v_1, v_2, v_3}}}, False{}, v_1010737 => emitter_body_cps_provider_8_tagged_region(BIR.Region{v_1, v_2, v_3}), v_1010736 => +v_1010734 = emitter_unbox(Maybe<&2, cps_provider_8_TaggedRegion>, v_1010736); emitter_body_cps_provider_8_region_view(v_1010734, v_1, v_2, v_3, v_5)}
 
 def emitter_body_cps_provider_8_region(+v_1: U32, +v_2: BIR.Block, +v_3: BIR.Block, v_5: cps_provider_8_JsCtx) -> EmitterProgress<String>:
-  EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_region_needs_frame{v_2, v_1}}, v_1010733 => +v_1010726 = emitter_unbox(Bool, v_1010733); emitter_match_2384(v_1010726, v_1, v_2, v_3, v_5)}
+  EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_region_needs_frame{v_2, v_1}}, v_1010738 => +v_1010731 = emitter_unbox(Bool, v_1010738); emitter_match_2385(v_1010731, v_1, v_2, v_3, v_5)}
 
-def emitter_continuation_2385(v_20: BIR.Block, v_2: cps_provider_8_JsCtx, v_1010743: String, +v_1010744: String, v_1010745: String, +v_1010746: String) -> EmitterProgress<String>:
-  v_1010747 = {"}else{" : String}
-  EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_block{v_20, v_2}}, v_1010752 => +v_1010748 = emitter_unbox(String, v_1010752); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010743, v_1010744, v_1010745, v_1010746, v_1010747, v_1010748, "}"]}}, False{}, v_1010751 => emitter_body_cps_provider_8_cat([v_1010743, v_1010744, v_1010745, v_1010746, v_1010747, v_1010748, "}"]), v_1010750 => +v_1010749 = emitter_unbox(String, v_1010750); EmitterFinished{EmitterValue{v_1010749}}}}
+def emitter_continuation_2386(v_20: BIR.Block, v_2: cps_provider_8_JsCtx, v_1010748: String, +v_1010749: String, v_1010750: String, +v_1010751: String) -> EmitterProgress<String>:
+  v_1010752 = {"}else{" : String}
+  EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_block{v_20, v_2}}, v_1010757 => +v_1010753 = emitter_unbox(String, v_1010757); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010748, v_1010749, v_1010750, v_1010751, v_1010752, v_1010753, "}"]}}, False{}, v_1010756 => emitter_body_cps_provider_8_cat([v_1010748, v_1010749, v_1010750, v_1010751, v_1010752, v_1010753, "}"]), v_1010755 => +v_1010754 = emitter_unbox(String, v_1010755); EmitterFinished{EmitterValue{v_1010754}}}}
 
-def emitter_continuation_2386(v_19: BIR.Block, +v_2: cps_provider_8_JsCtx, v_20: BIR.Block, v_1010743: String, +v_1010744: String) -> EmitterProgress<String>:
-  v_1010745 = {"){" : String}
-  EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_block{v_19, v_2}}, v_1010753 => +v_1010746 = emitter_unbox(String, v_1010753); emitter_continuation_2385(v_20, v_2, v_1010743, v_1010744, v_1010745, v_1010746)}
+def emitter_continuation_2387(v_19: BIR.Block, +v_2: cps_provider_8_JsCtx, v_20: BIR.Block, v_1010748: String, +v_1010749: String) -> EmitterProgress<String>:
+  v_1010750 = {"){" : String}
+  EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_block{v_19, v_2}}, v_1010758 => +v_1010751 = emitter_unbox(String, v_1010758); emitter_continuation_2386(v_20, v_2, v_1010748, v_1010749, v_1010750, v_1010751)}
 
-def emitter_continuation_2387(v_47: BIR.Atom, v_1010770: String, +v_1010771: String) -> EmitterProgress<String>:
-  v_1010772 = {"," : String}
-  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_atom{v_47}}, False{}, v_1010778 => emitter_body_cps_provider_8_atom(v_47), v_1010777 => +v_1010773 = emitter_unbox(String, v_1010777); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010770, v_1010771, v_1010772, v_1010773, ");"]}}, False{}, v_1010776 => emitter_body_cps_provider_8_cat([v_1010770, v_1010771, v_1010772, v_1010773, ");"]), v_1010775 => +v_1010774 = emitter_unbox(String, v_1010775); EmitterFinished{EmitterValue{v_1010774}}}}
+def emitter_continuation_2388(v_47: BIR.Atom, v_1010775: String, +v_1010776: String) -> EmitterProgress<String>:
+  v_1010777 = {"," : String}
+  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_atom{v_47}}, False{}, v_1010783 => emitter_body_cps_provider_8_atom(v_47), v_1010782 => +v_1010778 = emitter_unbox(String, v_1010782); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010775, v_1010776, v_1010777, v_1010778, ");"]}}, False{}, v_1010781 => emitter_body_cps_provider_8_cat([v_1010775, v_1010776, v_1010777, v_1010778, ");"]), v_1010780 => +v_1010779 = emitter_unbox(String, v_1010780); EmitterFinished{EmitterValue{v_1010779}}}}
 
 def emitter_body_cps_provider_8_block(v_0: BIR.Block, v_2: cps_provider_8_JsCtx) -> EmitterProgress<String>:
   match v_0:
     case BIR.Return{v_5}:
-      v_1010734 = {"return " : String}
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_atom{v_5}}, False{}, v_1010740 => emitter_body_cps_provider_8_atom(v_5), v_1010739 => +v_1010735 = emitter_unbox(String, v_1010739); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010734, v_1010735, ";"]}}, False{}, v_1010738 => emitter_body_cps_provider_8_cat([v_1010734, v_1010735, ";"]), v_1010737 => +v_1010736 = emitter_unbox(String, v_1010737); EmitterFinished{EmitterValue{v_1010736}}}}
+      v_1010739 = {"return " : String}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_atom{v_5}}, False{}, v_1010745 => emitter_body_cps_provider_8_atom(v_5), v_1010744 => +v_1010740 = emitter_unbox(String, v_1010744); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010739, v_1010740, ";"]}}, False{}, v_1010743 => emitter_body_cps_provider_8_cat([v_1010739, v_1010740, ";"]), v_1010742 => +v_1010741 = emitter_unbox(String, v_1010742); EmitterFinished{EmitterValue{v_1010741}}}}
     case BIR.Let{v_11, v_12, v_13}:
-      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_let_step{v_11, v_12, v_13, v_2}}, v_1010742 => +v_1010741 = emitter_unbox(String, v_1010742); EmitterFinished{EmitterValue{v_1010741}}}
+      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_let_step{v_11, v_12, v_13, v_2}}, v_1010747 => +v_1010746 = emitter_unbox(String, v_1010747); EmitterFinished{EmitterValue{v_1010746}}}
     case BIR.Branch{v_18, v_19, v_20}:
-      v_1010743 = {"if(" : String}
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_atom{v_18}}, False{}, v_1010755 => emitter_body_cps_provider_8_atom(v_18), v_1010754 => +v_1010744 = emitter_unbox(String, v_1010754); emitter_continuation_2386(v_19, v_2, v_20, v_1010743, v_1010744)}
+      v_1010748 = {"if(" : String}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_atom{v_18}}, False{}, v_1010760 => emitter_body_cps_provider_8_atom(v_18), v_1010759 => +v_1010749 = emitter_unbox(String, v_1010759); emitter_continuation_2387(v_19, v_2, v_20, v_1010748, v_1010749)}
     case BIR.Region{v_28, v_29, v_30}:
       emitter_body_cps_provider_8_region(v_28, v_29, v_30, v_2)
     case BIR.LeaveRegion{v_33}:
-      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_leave_step{v_33, v_2}}, v_1010758 => +v_1010757 = emitter_unbox(String, v_1010758); EmitterFinished{EmitterValue{v_1010757}}}
+      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_leave_step{v_33, v_2}}, v_1010763 => +v_1010762 = emitter_unbox(String, v_1010763); EmitterFinished{EmitterValue{v_1010762}}}
     case BIR.TailDirect{v_37, v_38}:
-      v_1010759 = {"return " : String}
-      v_1010760 = {v_37 : U32}
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_arguments{v_38}}, False{}, v_1010769 => emitter_body_cps_provider_8_arguments(v_38), v_1010768 => +v_1010761 = emitter_unbox(List<&2, String>, v_1010768); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_tail_call{v_1010760, v_1010761}}, False{}, v_1010767 => emitter_body_cps_provider_8_tail_call(v_1010760, v_1010761), v_1010766 => +v_1010762 = emitter_unbox(String, v_1010766); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010759, v_1010762, ";"]}}, False{}, v_1010765 => emitter_body_cps_provider_8_cat([v_1010759, v_1010762, ";"]), v_1010764 => +v_1010763 = emitter_unbox(String, v_1010764); EmitterFinished{EmitterValue{v_1010763}}}}}
+      v_1010764 = {"return " : String}
+      v_1010765 = {v_37 : U32}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_arguments{v_38}}, False{}, v_1010774 => emitter_body_cps_provider_8_arguments(v_38), v_1010773 => +v_1010766 = emitter_unbox(List<&2, String>, v_1010773); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_tail_call{v_1010765, v_1010766}}, False{}, v_1010772 => emitter_body_cps_provider_8_tail_call(v_1010765, v_1010766), v_1010771 => +v_1010767 = emitter_unbox(String, v_1010771); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010764, v_1010767, ";"]}}, False{}, v_1010770 => emitter_body_cps_provider_8_cat([v_1010764, v_1010767, ";"]), v_1010769 => +v_1010768 = emitter_unbox(String, v_1010769); EmitterFinished{EmitterValue{v_1010768}}}}}
     case BIR.TailApply{v_45, BIR.Arg{_, v_47}}:
-      v_1010770 = {"return run_tail(" : String}
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_atom{v_45}}, False{}, v_1010780 => emitter_body_cps_provider_8_atom(v_45), v_1010779 => +v_1010771 = emitter_unbox(String, v_1010779); emitter_continuation_2387(v_47, v_1010770, v_1010771)}
+      v_1010775 = {"return run_tail(" : String}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_atom{v_45}}, False{}, v_1010785 => emitter_body_cps_provider_8_atom(v_45), v_1010784 => +v_1010776 = emitter_unbox(String, v_1010784); emitter_continuation_2388(v_47, v_1010775, v_1010776)}
     case BIR.Failure{v_52}:
-      v_1010781 = {"throw " : String}
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_52}}, False{}, v_1010787 => emitter_body_cps_provider_8_js_quote(v_52), v_1010786 => +v_1010782 = emitter_unbox(String, v_1010786); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010781, v_1010782, ";"]}}, False{}, v_1010785 => emitter_body_cps_provider_8_cat([v_1010781, v_1010782, ";"]), v_1010784 => +v_1010783 = emitter_unbox(String, v_1010784); EmitterFinished{EmitterValue{v_1010783}}}}
+      v_1010786 = {"throw " : String}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_52}}, False{}, v_1010792 => emitter_body_cps_provider_8_js_quote(v_52), v_1010791 => +v_1010787 = emitter_unbox(String, v_1010791); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010786, v_1010787, ";"]}}, False{}, v_1010790 => emitter_body_cps_provider_8_cat([v_1010786, v_1010787, ";"]), v_1010789 => +v_1010788 = emitter_unbox(String, v_1010789); EmitterFinished{EmitterValue{v_1010788}}}}
 
-def emitter_continuation_2389(v_9: BIR.Block, +v_17: cps_provider_8_JsCtx, v_1010791: String, +v_1010792: String, v_1010793: String, v_1010794: String, v_1010795: String, +v_1010796: String) -> EmitterProgress<String>:
-  v_1010797 = {"}\n" : String}
-  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_conts{v_9, v_17}}, v_1010802 => +v_1010798 = emitter_unbox(List<&2, String>, v_1010802); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010791, v_1010792, v_1010793, v_1010794, v_1010795, v_1010796, v_1010797, String.join(v_1010798, "")]}}, False{}, v_1010801 => emitter_body_cps_provider_8_cat([v_1010791, v_1010792, v_1010793, v_1010794, v_1010795, v_1010796, v_1010797, String.join(v_1010798, "")]), v_1010800 => +v_1010799 = emitter_unbox(String, v_1010800); EmitterFinished{EmitterValue{v_1010799}}}}
+def emitter_continuation_2390(v_9: BIR.Block, +v_17: cps_provider_8_JsCtx, v_1010796: String, +v_1010797: String, v_1010798: String, v_1010799: String, v_1010800: String, +v_1010801: String) -> EmitterProgress<String>:
+  v_1010802 = {"}\n" : String}
+  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_conts{v_9, v_17}}, v_1010807 => +v_1010803 = emitter_unbox(List<&2, String>, v_1010807); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010796, v_1010797, v_1010798, v_1010799, v_1010800, v_1010801, v_1010802, String.join(v_1010803, "")]}}, False{}, v_1010806 => emitter_body_cps_provider_8_cat([v_1010796, v_1010797, v_1010798, v_1010799, v_1010800, v_1010801, v_1010802, String.join(v_1010803, "")]), v_1010805 => +v_1010804 = emitter_unbox(String, v_1010805); EmitterFinished{EmitterValue{v_1010804}}}}
 
-def emitter_continuation_2390(v_14: List<&2, String>, +v_9: BIR.Block, +v_17: cps_provider_8_JsCtx, v_1010791: String, +v_1010792: String) -> EmitterProgress<String>:
-  v_1010793 = {"(" : String}
-  v_1010794 = {String.join(List.append(&2, String, v_14, ["$td=0"]), ",") : String}
-  v_1010795 = {"){" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_block{v_9, v_17}}, False{}, v_1010804 => emitter_body_cps_provider_8_block(v_9, v_17), v_1010803 => +v_1010796 = emitter_unbox(String, v_1010803); emitter_continuation_2389(v_9, v_17, v_1010791, v_1010792, v_1010793, v_1010794, v_1010795, v_1010796)}
+def emitter_continuation_2391(v_14: List<&2, String>, +v_9: BIR.Block, +v_17: cps_provider_8_JsCtx, v_1010796: String, +v_1010797: String) -> EmitterProgress<String>:
+  v_1010798 = {"(" : String}
+  v_1010799 = {String.join(List.append(&2, String, v_14, ["$td=0"]), ",") : String}
+  v_1010800 = {"){" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_block{v_9, v_17}}, False{}, v_1010809 => emitter_body_cps_provider_8_block(v_9, v_17), v_1010808 => +v_1010801 = emitter_unbox(String, v_1010808); emitter_continuation_2390(v_9, v_17, v_1010796, v_1010797, v_1010798, v_1010799, v_1010800, v_1010801)}
 
-def emitter_continuation_2391(+v_1010790: cps_provider_8_JsCtx, v_6: U32, v_14: List<&2, String>, v_9: BIR.Block) -> EmitterProgress<String>:
-  +v_17 = v_1010790
-  v_1010791 = {"function " : String}
-  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_code_name{v_6}}, False{}, v_1010806 => emitter_body_cps_provider_8_code_name(v_6), v_1010805 => +v_1010792 = emitter_unbox(String, v_1010805); emitter_continuation_2390(v_14, v_9, v_17, v_1010791, v_1010792)}
+def emitter_continuation_2392(+v_1010795: cps_provider_8_JsCtx, v_6: U32, v_14: List<&2, String>, v_9: BIR.Block) -> EmitterProgress<String>:
+  +v_17 = v_1010795
+  v_1010796 = {"function " : String}
+  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_code_name{v_6}}, False{}, v_1010811 => emitter_body_cps_provider_8_code_name(v_6), v_1010810 => +v_1010797 = emitter_unbox(String, v_1010810); emitter_continuation_2391(v_14, v_9, v_17, v_1010796, v_1010797)}
 
-def emitter_continuation_2392(+v_1010788: List<&2, String>, +v_1010789: List<&2, String>, +v_6: U32, v_9: BIR.Block) -> EmitterProgress<String>:
-  v_14 = List.append(&2, String, v_1010788, v_1010789)
-  EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_ctx{U32.show(v_6)}}, v_1010807 => +v_1010790 = emitter_unbox(cps_provider_8_JsCtx, v_1010807); emitter_continuation_2391(v_1010790, v_6, v_14, v_9)}
+def emitter_continuation_2393(+v_1010793: List<&2, String>, +v_1010794: List<&2, String>, +v_6: U32, v_9: BIR.Block) -> EmitterProgress<String>:
+  v_14 = List.append(&2, String, v_1010793, v_1010794)
+  EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_ctx{U32.show(v_6)}}, v_1010812 => +v_1010795 = emitter_unbox(cps_provider_8_JsCtx, v_1010812); emitter_continuation_2392(v_1010795, v_6, v_14, v_9)}
 
 def emitter_body_cps_provider_8_code(v_0: BIR.Code) -> EmitterProgress<String>:
   match v_0:
     case BIR.Code{v_6, v_7, v_8, v_9}:
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_capture_names{v_7, 0}}, False{}, v_1010811 => emitter_body_cps_provider_8_capture_names(v_7, 0), v_1010810 => +v_1010788 = emitter_unbox(List<&2, String>, v_1010810); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_parameter_names{v_8}}, False{}, v_1010809 => emitter_body_cps_provider_8_parameter_names(v_8), v_1010808 => +v_1010789 = emitter_unbox(List<&2, String>, v_1010808); emitter_continuation_2392(v_1010788, v_1010789, v_6, v_9)}}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_capture_names{v_7, 0}}, False{}, v_1010816 => emitter_body_cps_provider_8_capture_names(v_7, 0), v_1010815 => +v_1010793 = emitter_unbox(List<&2, String>, v_1010815); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_parameter_names{v_8}}, False{}, v_1010814 => emitter_body_cps_provider_8_parameter_names(v_8), v_1010813 => +v_1010794 = emitter_unbox(List<&2, String>, v_1010813); emitter_continuation_2393(v_1010793, v_1010794, v_6, v_9)}}
 
 def emitter_body_cps_provider_8_codes(v_1: List<&2, BIR.Code>) -> EmitterProgress<String>:
   match v_1:
     case []:
       EmitterFinished{EmitterValue{""}}
     case v_5 <> v_6:
-      EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_code{v_5}}, False{}, v_1010819 => emitter_body_cps_provider_8_code(v_5), v_1010818 => +v_1010812 = emitter_unbox(String, v_1010818); EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_codes{v_6}}, v_1010817 => +v_1010813 = emitter_unbox(String, v_1010817); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010812, v_1010813]}}, False{}, v_1010816 => emitter_body_cps_provider_8_cat([v_1010812, v_1010813]), v_1010815 => +v_1010814 = emitter_unbox(String, v_1010815); EmitterFinished{EmitterValue{v_1010814}}}}}
+      EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_code{v_5}}, False{}, v_1010824 => emitter_body_cps_provider_8_code(v_5), v_1010823 => +v_1010817 = emitter_unbox(String, v_1010823); EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_codes{v_6}}, v_1010822 => +v_1010818 = emitter_unbox(String, v_1010822); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010817, v_1010818]}}, False{}, v_1010821 => emitter_body_cps_provider_8_cat([v_1010817, v_1010818]), v_1010820 => +v_1010819 = emitter_unbox(String, v_1010820); EmitterFinished{EmitterValue{v_1010819}}}}}
 
 def emitter_body_cps_provider_8_js_ctx(v_1: String) -> EmitterProgress<cps_provider_8_JsCtx>:
   EmitterFinished{EmitterValue{cps_provider_8_JsCtx{v_1, []}}}
@@ -25719,17 +25739,17 @@ def emitter_body_cps_provider_8_js_ctx_owner(v_1: cps_provider_8_JsCtx) -> Emitt
 def emitter_body_cps_provider_8_js_ctx_has(v_1: cps_provider_8_JsCtx, v_3: U32) -> EmitterProgress<Bool>:
   match v_1:
     case cps_provider_8_JsCtx{_, v_8}:
-      EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_frame_has{v_8, v_3}}, v_1010821 => +v_1010820 = emitter_unbox(Bool, v_1010821); EmitterFinished{EmitterValue{v_1010820}}}
+      EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_frame_has{v_8, v_3}}, v_1010826 => +v_1010825 = emitter_unbox(Bool, v_1010826); EmitterFinished{EmitterValue{v_1010825}}}
 
-def emitter_match_2397(v_2: List<&2, U32>, +v_4: U32) -> EmitterProgress<Bool>:
+def emitter_match_2398(v_2: List<&2, U32>, +v_4: U32) -> EmitterProgress<Bool>:
   match v_2:
     case []:
       EmitterFinished{EmitterValue{False{}}}
     case +v_8 <> v_9:
-      EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_frame_has_one{U32.is_eq(v_8, v_4), v_9, v_4}}, v_1010823 => +v_1010822 = emitter_unbox(Bool, v_1010823); EmitterFinished{EmitterValue{v_1010822}}}
+      EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_frame_has_one{U32.is_eq(v_8, v_4), v_9, v_4}}, v_1010828 => +v_1010827 = emitter_unbox(Bool, v_1010828); EmitterFinished{EmitterValue{v_1010827}}}
 
 def emitter_body_cps_provider_8_frame_has(v_2: List<&2, U32>, v_4: U32) -> EmitterProgress<Bool>:
-  emitter_match_2397(v_2, v_4)
+  emitter_match_2398(v_2, v_4)
 
 def emitter_body_cps_provider_8_frame_has_one(v_1: Bool, v_4: List<&2, U32>, v_6: U32) -> EmitterProgress<Bool>:
   match v_1:
@@ -25739,45 +25759,45 @@ def emitter_body_cps_provider_8_frame_has_one(v_1: Bool, v_4: List<&2, U32>, v_6
       emitter_body_cps_provider_8_frame_has(v_4, v_6)
 
 def emitter_body_cps_provider_8_cont_name(v_1: U32) -> EmitterProgress<String>:
-  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{["$k", U32.show(v_1)]}}, False{}, v_1010827 => emitter_body_cps_provider_8_cat(["$k", U32.show(v_1)]), v_1010826 => +v_1010825 = emitter_unbox(String, v_1010826); EmitterFinished{EmitterValue{v_1010825}}}
+  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{["$k", U32.show(v_1)]}}, False{}, v_1010832 => emitter_body_cps_provider_8_cat(["$k", U32.show(v_1)]), v_1010831 => +v_1010830 = emitter_unbox(String, v_1010831); EmitterFinished{EmitterValue{v_1010830}}}
 
 def emitter_body_cps_provider_8_thunk_name(v_1: String, v_3: U32) -> EmitterProgress<String>:
-  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{["$r", v_1, "_", U32.show(v_3)]}}, False{}, v_1010830 => emitter_body_cps_provider_8_cat(["$r", v_1, "_", U32.show(v_3)]), v_1010829 => +v_1010828 = emitter_unbox(String, v_1010829); EmitterFinished{EmitterValue{v_1010828}}}
+  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{["$r", v_1, "_", U32.show(v_3)]}}, False{}, v_1010835 => emitter_body_cps_provider_8_cat(["$r", v_1, "_", U32.show(v_3)]), v_1010834 => +v_1010833 = emitter_unbox(String, v_1010834); EmitterFinished{EmitterValue{v_1010833}}}
 
 def emitter_body_cps_provider_8_region_needs_frame(v_0: BIR.Block, v_2: U32) -> EmitterProgress<Bool>:
-  EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_leave_after_split{v_0, v_2, False{}}}, v_1010832 => +v_1010831 = emitter_unbox(Bool, v_1010832); EmitterFinished{EmitterValue{v_1010831}}}
+  EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_leave_after_split{v_0, v_2, False{}}}, v_1010837 => +v_1010836 = emitter_unbox(Bool, v_1010837); EmitterFinished{EmitterValue{v_1010836}}}
 
-def emitter_match_2399(v_0: BIR.Block, +v_2: U32, +v_4: Bool) -> EmitterProgress<Bool>:
+def emitter_match_2400(v_0: BIR.Block, +v_2: U32, +v_4: Bool) -> EmitterProgress<Bool>:
   match v_0:
     case BIR.LeaveRegion{v_7}:
       EmitterFinished{EmitterValue{emitter_pure_cps_provider_8_leave_here(U32.is_eq(v_7, v_2), v_4)}}
     case BIR.Let{_, v_13, v_14}:
-      EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_leave_after_split{v_14, v_2, Bool.or(v_4, emitter_pure_cps_provider_8_split_op(v_13))}}, v_1010834 => +v_1010833 = emitter_unbox(Bool, v_1010834); EmitterFinished{EmitterValue{v_1010833}}}
+      EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_leave_after_split{v_14, v_2, Bool.or(v_4, emitter_pure_cps_provider_8_split_op(v_13))}}, v_1010839 => +v_1010838 = emitter_unbox(Bool, v_1010839); EmitterFinished{EmitterValue{v_1010838}}}
     case BIR.Branch{_, v_21, v_22}:
-      EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_leave_after_split{v_21, v_2, v_4}}, v_1010838 => +v_1010835 = emitter_unbox(Bool, v_1010838); EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_leave_after_split{v_22, v_2, v_4}}, v_1010837 => +v_1010836 = emitter_unbox(Bool, v_1010837); EmitterFinished{EmitterValue{Bool.or(v_1010835, v_1010836)}}}}
+      EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_leave_after_split{v_21, v_2, v_4}}, v_1010843 => +v_1010840 = emitter_unbox(Bool, v_1010843); EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_leave_after_split{v_22, v_2, v_4}}, v_1010842 => +v_1010841 = emitter_unbox(Bool, v_1010842); EmitterFinished{EmitterValue{Bool.or(v_1010840, v_1010841)}}}}
     case BIR.Region{v_28, +v_29, v_30}:
-      EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_leave_after_split{v_29, v_2, v_4}}, v_1010842 => +v_1010839 = emitter_unbox(Bool, v_1010842); EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_leave_after_region{v_1010839, v_29, v_30, v_2, v_4, v_28}}, v_1010841 => +v_1010840 = emitter_unbox(Bool, v_1010841); EmitterFinished{EmitterValue{v_1010840}}}}
+      EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_leave_after_split{v_29, v_2, v_4}}, v_1010847 => +v_1010844 = emitter_unbox(Bool, v_1010847); EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_leave_after_region{v_1010844, v_29, v_30, v_2, v_4, v_28}}, v_1010846 => +v_1010845 = emitter_unbox(Bool, v_1010846); EmitterFinished{EmitterValue{v_1010845}}}}
     case _:
       EmitterFinished{EmitterValue{False{}}}
 
 def emitter_body_cps_provider_8_leave_after_split(v_0: BIR.Block, v_2: U32, v_4: Bool) -> EmitterProgress<Bool>:
-  emitter_match_2399(v_0, v_2, v_4)
+  emitter_match_2400(v_0, v_2, v_4)
 
 def emitter_body_cps_provider_8_leave_here(v_1: Bool, v_3: Bool) -> EmitterProgress<Bool>:
   EmitterFinished{EmitterValue{emitter_pure_cps_provider_8_leave_here(v_1, v_3)}}
 
-def emitter_match_2400(v_1: Bool, v_3: BIR.Block, v_5: U32, v_7: Bool, v_2: BIR.Block, v_9: U32) -> EmitterProgress<Bool>:
+def emitter_match_2401(v_1: Bool, v_3: BIR.Block, v_5: U32, v_7: Bool, v_2: BIR.Block, v_9: U32) -> EmitterProgress<Bool>:
   match v_1:
     case True{}:
       EmitterFinished{EmitterValue{True{}}}
     case False{}:
-      v_1010843 = {v_3 : BIR.Block}
-      v_1010844 = {v_5 : U32}
-      v_1010845 = {v_7 : Bool}
-      EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_region_needs_frame{v_2, v_9}}, False{}, v_1010851 => emitter_body_cps_provider_8_region_needs_frame(v_2, v_9), v_1010850 => +v_1010846 = emitter_unbox(Bool, v_1010850); EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_leave_after_split{v_1010843, v_1010844, Bool.or(v_1010845, v_1010846)}}, False{}, v_1010849 => emitter_body_cps_provider_8_leave_after_split(v_1010843, v_1010844, Bool.or(v_1010845, v_1010846)), v_1010848 => +v_1010847 = emitter_unbox(Bool, v_1010848); EmitterFinished{EmitterValue{v_1010847}}}}
+      v_1010848 = {v_3 : BIR.Block}
+      v_1010849 = {v_5 : U32}
+      v_1010850 = {v_7 : Bool}
+      EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_region_needs_frame{v_2, v_9}}, False{}, v_1010856 => emitter_body_cps_provider_8_region_needs_frame(v_2, v_9), v_1010855 => +v_1010851 = emitter_unbox(Bool, v_1010855); EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_leave_after_split{v_1010848, v_1010849, Bool.or(v_1010850, v_1010851)}}, False{}, v_1010854 => emitter_body_cps_provider_8_leave_after_split(v_1010848, v_1010849, Bool.or(v_1010850, v_1010851)), v_1010853 => +v_1010852 = emitter_unbox(Bool, v_1010853); EmitterFinished{EmitterValue{v_1010852}}}}
 
 def emitter_body_cps_provider_8_leave_after_region(v_1: Bool, v_2: BIR.Block, v_3: BIR.Block, v_5: U32, v_7: Bool, v_9: U32) -> EmitterProgress<Bool>:
-  emitter_match_2400(v_1, v_3, v_5, v_7, v_2, v_9)
+  emitter_match_2401(v_1, v_3, v_5, v_7, v_2, v_9)
 
 def emitter_body_cps_provider_8_split_op(v_0: BIR.Op) -> EmitterProgress<Bool>:
   EmitterFinished{EmitterValue{emitter_pure_cps_provider_8_split_op(v_0)}}
@@ -25785,21 +25805,21 @@ def emitter_body_cps_provider_8_split_op(v_0: BIR.Op) -> EmitterProgress<Bool>:
 def emitter_body_cps_provider_8_reads_new() -> EmitterProgress<cps_provider_8_Reads>:
   EmitterFinished{EmitterValue{cps_provider_8_Reads{[], []}}}
 
-def emitter_match_2401(v_3: cps_provider_8_Reads, v_1: U32) -> EmitterProgress<cps_provider_8_Reads>:
+def emitter_match_2402(v_3: cps_provider_8_Reads, v_1: U32) -> EmitterProgress<cps_provider_8_Reads>:
   match v_3:
     case cps_provider_8_Reads{v_7, v_8}:
       EmitterFinished{EmitterValue{cps_provider_8_Reads{v_1 <> v_7, v_8}}}
 
 def emitter_body_cps_provider_8_reads_local(v_1: U32, v_3: cps_provider_8_Reads) -> EmitterProgress<cps_provider_8_Reads>:
-  emitter_match_2401(v_3, v_1)
+  emitter_match_2402(v_3, v_1)
 
-def emitter_match_2402(v_3: cps_provider_8_Reads, v_1: U32) -> EmitterProgress<cps_provider_8_Reads>:
+def emitter_match_2403(v_3: cps_provider_8_Reads, v_1: U32) -> EmitterProgress<cps_provider_8_Reads>:
   match v_3:
     case cps_provider_8_Reads{v_7, v_8}:
       EmitterFinished{EmitterValue{cps_provider_8_Reads{v_7, v_1 <> v_8}}}
 
 def emitter_body_cps_provider_8_reads_slot(v_1: U32, v_3: cps_provider_8_Reads) -> EmitterProgress<cps_provider_8_Reads>:
-  emitter_match_2402(v_3, v_1)
+  emitter_match_2403(v_3, v_1)
 
 def emitter_body_cps_provider_8_atom_reads(v_0: BIR.Atom, v_2: cps_provider_8_Reads) -> EmitterProgress<cps_provider_8_Reads>:
   match v_0:
@@ -25820,12 +25840,12 @@ def emitter_body_cps_provider_8_args_reads(v_1: List<&2, BIR.Arg>, v_3: cps_prov
     case []:
       EmitterFinished{EmitterValue{v_3}}
     case +v_7 <> v_8:
-      v_1010855 = {v_8 : List<&2, BIR.Arg>}
-      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_arg_reads{v_7, v_3}}, False{}, v_1010860 => emitter_body_cps_provider_8_arg_reads(v_7, v_3), v_1010859 => +v_1010856 = emitter_unbox(cps_provider_8_Reads, v_1010859); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_args_reads{v_1010855, v_1010856}}, v_1010858 => +v_1010857 = emitter_unbox(cps_provider_8_Reads, v_1010858); EmitterFinished{EmitterValue{v_1010857}}}}
+      v_1010860 = {v_8 : List<&2, BIR.Arg>}
+      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_arg_reads{v_7, v_3}}, False{}, v_1010865 => emitter_body_cps_provider_8_arg_reads(v_7, v_3), v_1010864 => +v_1010861 = emitter_unbox(cps_provider_8_Reads, v_1010864); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_args_reads{v_1010860, v_1010861}}, v_1010863 => +v_1010862 = emitter_unbox(cps_provider_8_Reads, v_1010863); EmitterFinished{EmitterValue{v_1010862}}}}
 
 def emitter_body_cps_provider_8_apply_reads(v_0: BIR.Atom, v_1: BIR.Arg, v_3: cps_provider_8_Reads) -> EmitterProgress<cps_provider_8_Reads>:
-  v_1010861 = {v_1 : BIR.Arg}
-  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_atom_reads{v_0, v_3}}, False{}, v_1010865 => emitter_body_cps_provider_8_atom_reads(v_0, v_3), v_1010864 => +v_1010862 = emitter_unbox(cps_provider_8_Reads, v_1010864); emitter_body_cps_provider_8_arg_reads(v_1010861, v_1010862)}
+  v_1010866 = {v_1 : BIR.Arg}
+  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_atom_reads{v_0, v_3}}, False{}, v_1010870 => emitter_body_cps_provider_8_atom_reads(v_0, v_3), v_1010869 => +v_1010867 = emitter_unbox(cps_provider_8_Reads, v_1010869); emitter_body_cps_provider_8_arg_reads(v_1010866, v_1010867)}
 
 def emitter_body_cps_provider_8_field_reads(v_0: BIR.Field, v_2: cps_provider_8_Reads) -> EmitterProgress<cps_provider_8_Reads>:
   match v_0:
@@ -25837,8 +25857,8 @@ def emitter_body_cps_provider_8_fields_reads(v_1: List<&2, BIR.Field>, v_3: cps_
     case []:
       EmitterFinished{EmitterValue{v_3}}
     case +v_7 <> v_8:
-      v_1010867 = {v_8 : List<&2, BIR.Field>}
-      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_field_reads{v_7, v_3}}, False{}, v_1010872 => emitter_body_cps_provider_8_field_reads(v_7, v_3), v_1010871 => +v_1010868 = emitter_unbox(cps_provider_8_Reads, v_1010871); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_fields_reads{v_1010867, v_1010868}}, v_1010870 => +v_1010869 = emitter_unbox(cps_provider_8_Reads, v_1010870); EmitterFinished{EmitterValue{v_1010869}}}}
+      v_1010872 = {v_8 : List<&2, BIR.Field>}
+      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_field_reads{v_7, v_3}}, False{}, v_1010877 => emitter_body_cps_provider_8_field_reads(v_7, v_3), v_1010876 => +v_1010873 = emitter_unbox(cps_provider_8_Reads, v_1010876); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_fields_reads{v_1010872, v_1010873}}, v_1010875 => +v_1010874 = emitter_unbox(cps_provider_8_Reads, v_1010875); EmitterFinished{EmitterValue{v_1010874}}}}
 
 def emitter_body_cps_provider_8_op_reads(v_0: BIR.Op, v_2: cps_provider_8_Reads) -> EmitterProgress<cps_provider_8_Reads>:
   match v_0:
@@ -25866,15 +25886,15 @@ def emitter_body_cps_provider_8_block_reads(v_0: BIR.Block, v_2: cps_provider_8_
     case BIR.Return{v_5}:
       emitter_body_cps_provider_8_atom_reads(v_5, v_2)
     case BIR.Let{_, v_11, v_12}:
-      v_1010882 = {v_12 : BIR.Block}
-      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_op_reads{v_11, v_2}}, False{}, v_1010887 => emitter_body_cps_provider_8_op_reads(v_11, v_2), v_1010886 => +v_1010883 = emitter_unbox(cps_provider_8_Reads, v_1010886); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_block_reads{v_1010882, v_1010883}}, v_1010885 => +v_1010884 = emitter_unbox(cps_provider_8_Reads, v_1010885); EmitterFinished{EmitterValue{v_1010884}}}}
+      v_1010887 = {v_12 : BIR.Block}
+      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_op_reads{v_11, v_2}}, False{}, v_1010892 => emitter_body_cps_provider_8_op_reads(v_11, v_2), v_1010891 => +v_1010888 = emitter_unbox(cps_provider_8_Reads, v_1010891); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_block_reads{v_1010887, v_1010888}}, v_1010890 => +v_1010889 = emitter_unbox(cps_provider_8_Reads, v_1010890); EmitterFinished{EmitterValue{v_1010889}}}}
     case BIR.Branch{v_18, v_19, v_20}:
-      v_1010888 = {v_20 : BIR.Block}
-      v_1010889 = {v_19 : BIR.Block}
-      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_atom_reads{v_18, v_2}}, False{}, v_1010896 => emitter_body_cps_provider_8_atom_reads(v_18, v_2), v_1010895 => +v_1010890 = emitter_unbox(cps_provider_8_Reads, v_1010895); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_block_reads{v_1010889, v_1010890}}, v_1010894 => +v_1010891 = emitter_unbox(cps_provider_8_Reads, v_1010894); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_block_reads{v_1010888, v_1010891}}, v_1010893 => +v_1010892 = emitter_unbox(cps_provider_8_Reads, v_1010893); EmitterFinished{EmitterValue{v_1010892}}}}}
+      v_1010893 = {v_20 : BIR.Block}
+      v_1010894 = {v_19 : BIR.Block}
+      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_atom_reads{v_18, v_2}}, False{}, v_1010901 => emitter_body_cps_provider_8_atom_reads(v_18, v_2), v_1010900 => +v_1010895 = emitter_unbox(cps_provider_8_Reads, v_1010900); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_block_reads{v_1010894, v_1010895}}, v_1010899 => +v_1010896 = emitter_unbox(cps_provider_8_Reads, v_1010899); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_block_reads{v_1010893, v_1010896}}, v_1010898 => +v_1010897 = emitter_unbox(cps_provider_8_Reads, v_1010898); EmitterFinished{EmitterValue{v_1010897}}}}}
     case BIR.Region{_, v_28, v_29}:
-      v_1010897 = {v_29 : BIR.Block}
-      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_block_reads{v_28, v_2}}, v_1010901 => +v_1010898 = emitter_unbox(cps_provider_8_Reads, v_1010901); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_block_reads{v_1010897, v_1010898}}, v_1010900 => +v_1010899 = emitter_unbox(cps_provider_8_Reads, v_1010900); EmitterFinished{EmitterValue{v_1010899}}}}
+      v_1010902 = {v_29 : BIR.Block}
+      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_block_reads{v_28, v_2}}, v_1010906 => +v_1010903 = emitter_unbox(cps_provider_8_Reads, v_1010906); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_block_reads{v_1010902, v_1010903}}, v_1010905 => +v_1010904 = emitter_unbox(cps_provider_8_Reads, v_1010905); EmitterFinished{EmitterValue{v_1010904}}}}
     case BIR.TailDirect{_, v_35}:
       emitter_body_cps_provider_8_args_reads(v_35, v_2)
     case BIR.TailApply{v_39, v_40}:
@@ -25885,25 +25905,25 @@ def emitter_body_cps_provider_8_block_reads(v_0: BIR.Block, v_2: cps_provider_8_
 def emitter_body_cps_provider_8_block_binds(v_0: BIR.Block, v_3: Map<&2, Bool>) -> EmitterProgress<Map<&2, Bool>>:
   match v_0:
     case BIR.Let{v_9, _, v_11}:
-      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_block_binds{v_11, Map.set(&2, Bool, v_3, U32.show(v_9), True{})}}, v_1010905 => +v_1010904 = emitter_unbox(Map<&2, Bool>, v_1010905); EmitterFinished{EmitterValue{v_1010904}}}
+      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_block_binds{v_11, Map.set(&2, Bool, v_3, U32.show(v_9), True{})}}, v_1010910 => +v_1010909 = emitter_unbox(Map<&2, Bool>, v_1010910); EmitterFinished{EmitterValue{v_1010909}}}
     case BIR.Branch{_, v_18, v_19}:
-      v_1010906 = {v_19 : BIR.Block}
-      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_block_binds{v_18, v_3}}, v_1010910 => +v_1010907 = emitter_unbox(Map<&2, Bool>, v_1010910); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_block_binds{v_1010906, v_1010907}}, v_1010909 => +v_1010908 = emitter_unbox(Map<&2, Bool>, v_1010909); EmitterFinished{EmitterValue{v_1010908}}}}
+      v_1010911 = {v_19 : BIR.Block}
+      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_block_binds{v_18, v_3}}, v_1010915 => +v_1010912 = emitter_unbox(Map<&2, Bool>, v_1010915); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_block_binds{v_1010911, v_1010912}}, v_1010914 => +v_1010913 = emitter_unbox(Map<&2, Bool>, v_1010914); EmitterFinished{EmitterValue{v_1010913}}}}
     case BIR.Region{_, v_26, v_27}:
-      v_1010911 = {v_27 : BIR.Block}
-      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_block_binds{v_26, v_3}}, v_1010915 => +v_1010912 = emitter_unbox(Map<&2, Bool>, v_1010915); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_block_binds{v_1010911, v_1010912}}, v_1010914 => +v_1010913 = emitter_unbox(Map<&2, Bool>, v_1010914); EmitterFinished{EmitterValue{v_1010913}}}}
+      v_1010916 = {v_27 : BIR.Block}
+      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_block_binds{v_26, v_3}}, v_1010920 => +v_1010917 = emitter_unbox(Map<&2, Bool>, v_1010920); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_block_binds{v_1010916, v_1010917}}, v_1010919 => +v_1010918 = emitter_unbox(Map<&2, Bool>, v_1010919); EmitterFinished{EmitterValue{v_1010918}}}}
     case _:
       EmitterFinished{EmitterValue{v_3}}
 
-def emitter_match_2411(+v_1010918: cps_provider_8_Reads, v_0: BIR.Block, v_3: Maybe<&2, U32>) -> EmitterProgress<cps_provider_8_Caps>:
-  match v_1010918:
+def emitter_match_2412(+v_1010923: cps_provider_8_Reads, v_0: BIR.Block, v_3: Maybe<&2, U32>) -> EmitterProgress<cps_provider_8_Caps>:
+  match v_1010923:
     case cps_provider_8_Reads{v_9, v_10}:
-      v_1010919 = {v_9 : List<&2, U32>}
-      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_block_binds{v_0, Map.new(&2, Bool)}}, False{}, v_1010926 => emitter_body_cps_provider_8_block_binds(v_0, Map.new(&2, Bool)), v_1010925 => +v_1010920 = emitter_unbox(Map<&2, Bool>, v_1010925); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_caps_local_filter{v_1010919, v_1010920, v_3, []}}, v_1010924 => +v_1010921 = emitter_unbox(List<&2, U32>, v_1010924); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_caps_slot_filter{v_10, []}}, v_1010923 => +v_1010922 = emitter_unbox(List<&2, U32>, v_1010923); EmitterFinished{EmitterValue{cps_provider_8_Caps{v_1010921, v_1010922}}}}}}
+      v_1010924 = {v_9 : List<&2, U32>}
+      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_block_binds{v_0, Map.new(&2, Bool)}}, False{}, v_1010931 => emitter_body_cps_provider_8_block_binds(v_0, Map.new(&2, Bool)), v_1010930 => +v_1010925 = emitter_unbox(Map<&2, Bool>, v_1010930); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_caps_local_filter{v_1010924, v_1010925, v_3, []}}, v_1010929 => +v_1010926 = emitter_unbox(List<&2, U32>, v_1010929); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_caps_slot_filter{v_10, []}}, v_1010928 => +v_1010927 = emitter_unbox(List<&2, U32>, v_1010928); EmitterFinished{EmitterValue{cps_provider_8_Caps{v_1010926, v_1010927}}}}}}
 
 def emitter_body_cps_provider_8_caps_of(+v_0: BIR.Block, v_3: Maybe<&2, U32>) -> EmitterProgress<cps_provider_8_Caps>:
-  v_1010916 = {v_0 : BIR.Block}
-  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_reads_new{}}, False{}, v_1010930 => emitter_body_cps_provider_8_reads_new, v_1010929 => +v_1010917 = emitter_unbox(cps_provider_8_Reads, v_1010929); EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_block_reads{v_1010916, v_1010917}}, False{}, v_1010928 => emitter_body_cps_provider_8_block_reads(v_1010916, v_1010917), v_1010927 => +v_1010918 = emitter_unbox(cps_provider_8_Reads, v_1010927); emitter_match_2411(v_1010918, v_0, v_3)}}
+  v_1010921 = {v_0 : BIR.Block}
+  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_reads_new{}}, False{}, v_1010935 => emitter_body_cps_provider_8_reads_new, v_1010934 => +v_1010922 = emitter_unbox(cps_provider_8_Reads, v_1010934); EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_block_reads{v_1010921, v_1010922}}, False{}, v_1010933 => emitter_body_cps_provider_8_block_reads(v_1010921, v_1010922), v_1010932 => +v_1010923 = emitter_unbox(cps_provider_8_Reads, v_1010932); emitter_match_2412(v_1010923, v_0, v_3)}}
 
 def emitter_body_cps_provider_8_caps_locals(v_1: cps_provider_8_Caps) -> EmitterProgress<List<&2, U32>>:
   EmitterFinished{EmitterValue{emitter_pure_cps_provider_8_caps_locals(v_1)}}
@@ -25914,77 +25934,77 @@ def emitter_body_cps_provider_8_caps_slots(v_1: cps_provider_8_Caps) -> EmitterP
 def emitter_body_cps_provider_8_cap_total(+v_1: cps_provider_8_Caps) -> EmitterProgress<Nat>:
   EmitterFinished{EmitterValue{Nat.add(List.length(&2, U32, emitter_pure_cps_provider_8_caps_locals(v_1)), List.length(&2, U32, emitter_pure_cps_provider_8_caps_slots(v_1)))}}
 
-def emitter_match_2412(v_2: List<&2, U32>, v_11: List<&2, U32>, +v_5: Map<&2, Bool>, +v_8: Maybe<&2, U32>) -> EmitterProgress<List<&2, U32>>:
+def emitter_match_2413(v_2: List<&2, U32>, v_11: List<&2, U32>, +v_5: Map<&2, Bool>, +v_8: Maybe<&2, U32>) -> EmitterProgress<List<&2, U32>>:
   match v_2:
     case []:
       EmitterFinished{EmitterValue{v_11}}
     case +v_16 <> v_17:
-      v_1010931 = {v_17 : List<&2, U32>}
-      v_1010932 = {v_5 : Map<&2, Bool>}
-      v_1010933 = {v_8 : Maybe<&2, U32>}
-      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_caps_local_one{v_16, v_5, v_8, v_11}}, v_1010937 => +v_1010934 = emitter_unbox(List<&2, U32>, v_1010937); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_caps_local_filter{v_1010931, v_1010932, v_1010933, v_1010934}}, v_1010936 => +v_1010935 = emitter_unbox(List<&2, U32>, v_1010936); EmitterFinished{EmitterValue{v_1010935}}}}
+      v_1010936 = {v_17 : List<&2, U32>}
+      v_1010937 = {v_5 : Map<&2, Bool>}
+      v_1010938 = {v_8 : Maybe<&2, U32>}
+      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_caps_local_one{v_16, v_5, v_8, v_11}}, v_1010942 => +v_1010939 = emitter_unbox(List<&2, U32>, v_1010942); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_caps_local_filter{v_1010936, v_1010937, v_1010938, v_1010939}}, v_1010941 => +v_1010940 = emitter_unbox(List<&2, U32>, v_1010941); EmitterFinished{EmitterValue{v_1010940}}}}
 
 def emitter_body_cps_provider_8_caps_local_filter(v_2: List<&2, U32>, v_5: Map<&2, Bool>, v_8: Maybe<&2, U32>, v_11: List<&2, U32>) -> EmitterProgress<List<&2, U32>>:
-  emitter_match_2412(v_2, v_11, v_5, v_8)
+  emitter_match_2413(v_2, v_11, v_5, v_8)
 
-def emitter_match_2413(v_1010938: Maybe<&2, Bool>, v_10: List<&2, U32>, v_1: U32, v_7: Maybe<&2, U32>) -> EmitterProgress<List<&2, U32>>:
-  match v_1010938:
+def emitter_match_2414(v_1010943: Maybe<&2, Bool>, v_10: List<&2, U32>, v_1: U32, v_7: Maybe<&2, U32>) -> EmitterProgress<List<&2, U32>>:
+  match v_1010943:
     case Some{_}:
       EmitterFinished{EmitterValue{v_10}}
     case None{}:
-      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_caps_local_keep{v_1, v_7, v_10}}, v_1010940 => +v_1010939 = emitter_unbox(List<&2, U32>, v_1010940); EmitterFinished{EmitterValue{v_1010939}}}
+      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_caps_local_keep{v_1, v_7, v_10}}, v_1010945 => +v_1010944 = emitter_unbox(List<&2, U32>, v_1010945); EmitterFinished{EmitterValue{v_1010944}}}
 
 def emitter_body_cps_provider_8_caps_local_one(+v_1: U32, v_4: Map<&2, Bool>, v_7: Maybe<&2, U32>, v_10: List<&2, U32>) -> EmitterProgress<List<&2, U32>>:
-  v_1010938 = {IndexLookup.find(Bool, v_4, U32.show(v_1)) : Maybe<&2, Bool>}
-  emitter_match_2413(v_1010938, v_10, v_1, v_7)
+  v_1010943 = {IndexLookup.find(Bool, v_4, U32.show(v_1)) : Maybe<&2, Bool>}
+  emitter_match_2414(v_1010943, v_10, v_1, v_7)
 
-def emitter_match_2414(v_4: Maybe<&2, U32>, +v_1: U32, v_7: List<&2, U32>) -> EmitterProgress<List<&2, U32>>:
+def emitter_match_2415(v_4: Maybe<&2, U32>, +v_1: U32, v_7: List<&2, U32>) -> EmitterProgress<List<&2, U32>>:
   match v_4:
     case None{}:
-      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_caps_add{v_1, v_7}}, v_1010942 => +v_1010941 = emitter_unbox(List<&2, U32>, v_1010942); EmitterFinished{EmitterValue{v_1010941}}}
+      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_caps_add{v_1, v_7}}, v_1010947 => +v_1010946 = emitter_unbox(List<&2, U32>, v_1010947); EmitterFinished{EmitterValue{v_1010946}}}
     case Some{v_12}:
-      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_caps_local_same{U32.is_eq(v_1, v_12), v_1, v_7}}, v_1010944 => +v_1010943 = emitter_unbox(List<&2, U32>, v_1010944); EmitterFinished{EmitterValue{v_1010943}}}
+      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_caps_local_same{U32.is_eq(v_1, v_12), v_1, v_7}}, v_1010949 => +v_1010948 = emitter_unbox(List<&2, U32>, v_1010949); EmitterFinished{EmitterValue{v_1010948}}}
 
 def emitter_body_cps_provider_8_caps_local_keep(v_1: U32, v_4: Maybe<&2, U32>, v_7: List<&2, U32>) -> EmitterProgress<List<&2, U32>>:
-  emitter_match_2414(v_4, v_1, v_7)
+  emitter_match_2415(v_4, v_1, v_7)
 
-def emitter_match_2415(v_1: Bool, v_6: List<&2, U32>, v_3: U32) -> EmitterProgress<List<&2, U32>>:
+def emitter_match_2416(v_1: Bool, v_6: List<&2, U32>, v_3: U32) -> EmitterProgress<List<&2, U32>>:
   match v_1:
     case True{}:
       EmitterFinished{EmitterValue{v_6}}
     case False{}:
-      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_caps_add{v_3, v_6}}, v_1010946 => +v_1010945 = emitter_unbox(List<&2, U32>, v_1010946); EmitterFinished{EmitterValue{v_1010945}}}
+      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_caps_add{v_3, v_6}}, v_1010951 => +v_1010950 = emitter_unbox(List<&2, U32>, v_1010951); EmitterFinished{EmitterValue{v_1010950}}}
 
 def emitter_body_cps_provider_8_caps_local_same(v_1: Bool, v_3: U32, v_6: List<&2, U32>) -> EmitterProgress<List<&2, U32>>:
-  emitter_match_2415(v_1, v_6, v_3)
+  emitter_match_2416(v_1, v_6, v_3)
 
 def emitter_body_cps_provider_8_caps_slot_filter(v_2: List<&2, U32>, v_5: List<&2, U32>) -> EmitterProgress<List<&2, U32>>:
   match v_2:
     case []:
       EmitterFinished{EmitterValue{v_5}}
     case +v_10 <> v_11:
-      v_1010947 = {v_11 : List<&2, U32>}
-      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_caps_add{v_10, v_5}}, v_1010951 => +v_1010948 = emitter_unbox(List<&2, U32>, v_1010951); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_caps_slot_filter{v_1010947, v_1010948}}, v_1010950 => +v_1010949 = emitter_unbox(List<&2, U32>, v_1010950); EmitterFinished{EmitterValue{v_1010949}}}}
+      v_1010952 = {v_11 : List<&2, U32>}
+      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_caps_add{v_10, v_5}}, v_1010956 => +v_1010953 = emitter_unbox(List<&2, U32>, v_1010956); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_caps_slot_filter{v_1010952, v_1010953}}, v_1010955 => +v_1010954 = emitter_unbox(List<&2, U32>, v_1010955); EmitterFinished{EmitterValue{v_1010954}}}}
 
-def emitter_match_2417(+v_1010952: Bool, v_4: List<&2, U32>, v_1: U32) -> EmitterProgress<List<&2, U32>>:
-  match v_1010952:
+def emitter_match_2418(+v_1010957: Bool, v_4: List<&2, U32>, v_1: U32) -> EmitterProgress<List<&2, U32>>:
+  match v_1010957:
     case True{}:
       EmitterFinished{EmitterValue{v_4}}
     case False{}:
       EmitterFinished{EmitterValue{v_1 <> v_4}}
 
 def emitter_body_cps_provider_8_caps_add(+v_1: U32, +v_4: List<&2, U32>) -> EmitterProgress<List<&2, U32>>:
-  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_caps_in{v_4, v_1}}, v_1010953 => +v_1010952 = emitter_unbox(Bool, v_1010953); emitter_match_2417(v_1010952, v_4, v_1)}
+  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_caps_in{v_4, v_1}}, v_1010958 => +v_1010957 = emitter_unbox(Bool, v_1010958); emitter_match_2418(v_1010957, v_4, v_1)}
 
-def emitter_match_2418(v_2: List<&2, U32>, +v_4: U32) -> EmitterProgress<Bool>:
+def emitter_match_2419(v_2: List<&2, U32>, +v_4: U32) -> EmitterProgress<Bool>:
   match v_2:
     case []:
       EmitterFinished{EmitterValue{False{}}}
     case +v_8 <> v_9:
-      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_caps_in_one{U32.is_eq(v_8, v_4), v_9, v_4}}, v_1010955 => +v_1010954 = emitter_unbox(Bool, v_1010955); EmitterFinished{EmitterValue{v_1010954}}}
+      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_caps_in_one{U32.is_eq(v_8, v_4), v_9, v_4}}, v_1010960 => +v_1010959 = emitter_unbox(Bool, v_1010960); EmitterFinished{EmitterValue{v_1010959}}}
 
 def emitter_body_cps_provider_8_caps_in(v_2: List<&2, U32>, v_4: U32) -> EmitterProgress<Bool>:
-  emitter_match_2418(v_2, v_4)
+  emitter_match_2419(v_2, v_4)
 
 def emitter_body_cps_provider_8_caps_in_one(v_1: Bool, v_4: List<&2, U32>, v_6: U32) -> EmitterProgress<Bool>:
   match v_1:
@@ -25993,310 +26013,310 @@ def emitter_body_cps_provider_8_caps_in_one(v_1: Bool, v_4: List<&2, U32>, v_6: 
     case False{}:
       emitter_body_cps_provider_8_caps_in(v_4, v_6)
 
-def emitter_continuation_2420(v_3: BIR.Block, v_5: cps_provider_8_JsCtx, v_1010961: String, +v_1010962: String, v_1010963: String, +v_1010964: String) -> EmitterProgress<String>:
-  v_1010965 = {";" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_block{v_3, v_5}}, False{}, v_1010971 => emitter_body_cps_provider_8_block(v_3, v_5), v_1010970 => +v_1010966 = emitter_unbox(String, v_1010970); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010961, v_1010962, v_1010963, v_1010964, v_1010965, v_1010966]}}, False{}, v_1010969 => emitter_body_cps_provider_8_cat([v_1010961, v_1010962, v_1010963, v_1010964, v_1010965, v_1010966]), v_1010968 => +v_1010967 = emitter_unbox(String, v_1010968); EmitterFinished{EmitterValue{v_1010967}}}}
+def emitter_continuation_2421(v_3: BIR.Block, v_5: cps_provider_8_JsCtx, v_1010966: String, +v_1010967: String, v_1010968: String, +v_1010969: String) -> EmitterProgress<String>:
+  v_1010970 = {";" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_block{v_3, v_5}}, False{}, v_1010976 => emitter_body_cps_provider_8_block(v_3, v_5), v_1010975 => +v_1010971 = emitter_unbox(String, v_1010975); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010966, v_1010967, v_1010968, v_1010969, v_1010970, v_1010971]}}, False{}, v_1010974 => emitter_body_cps_provider_8_cat([v_1010966, v_1010967, v_1010968, v_1010969, v_1010970, v_1010971]), v_1010973 => +v_1010972 = emitter_unbox(String, v_1010973); EmitterFinished{EmitterValue{v_1010972}}}}
 
-def emitter_continuation_2421(v_2: BIR.Op, v_3: BIR.Block, v_5: cps_provider_8_JsCtx, v_1010961: String, +v_1010962: String) -> EmitterProgress<String>:
-  v_1010963 = {"=" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_operation{v_2}}, False{}, v_1010973 => emitter_body_cps_provider_8_operation(v_2), v_1010972 => +v_1010964 = emitter_unbox(String, v_1010972); emitter_continuation_2420(v_3, v_5, v_1010961, v_1010962, v_1010963, v_1010964)}
+def emitter_continuation_2422(v_2: BIR.Op, v_3: BIR.Block, v_5: cps_provider_8_JsCtx, v_1010966: String, +v_1010967: String) -> EmitterProgress<String>:
+  v_1010968 = {"=" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_operation{v_2}}, False{}, v_1010978 => emitter_body_cps_provider_8_operation(v_2), v_1010977 => +v_1010969 = emitter_unbox(String, v_1010977); emitter_continuation_2421(v_3, v_5, v_1010966, v_1010967, v_1010968, v_1010969)}
 
-def emitter_match_2422(+v_2: BIR.Op, v_1: U32, v_3: BIR.Block, v_5: cps_provider_8_JsCtx) -> EmitterProgress<String>:
+def emitter_match_2423(+v_2: BIR.Op, v_1: U32, v_3: BIR.Block, v_5: cps_provider_8_JsCtx) -> EmitterProgress<String>:
   match v_2:
     case BIR.Direct{v_9, v_10}:
-      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_split_direct{v_1, v_9, v_10, v_3}}, v_1010958 => +v_1010957 = emitter_unbox(String, v_1010958); EmitterFinished{EmitterValue{v_1010957}}}
+      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_split_direct{v_1, v_9, v_10, v_3}}, v_1010963 => +v_1010962 = emitter_unbox(String, v_1010963); EmitterFinished{EmitterValue{v_1010962}}}
     case BIR.Apply{v_14, v_15}:
-      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_split_apply{v_1, v_14, v_15, v_3}}, v_1010960 => +v_1010959 = emitter_unbox(String, v_1010960); EmitterFinished{EmitterValue{v_1010959}}}
+      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_split_apply{v_1, v_14, v_15, v_3}}, v_1010965 => +v_1010964 = emitter_unbox(String, v_1010965); EmitterFinished{EmitterValue{v_1010964}}}
     case _:
-      v_1010961 = {"const " : String}
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_local{v_1}}, False{}, v_1010975 => emitter_body_cps_provider_8_local(v_1), v_1010974 => +v_1010962 = emitter_unbox(String, v_1010974); emitter_continuation_2421(v_2, v_3, v_5, v_1010961, v_1010962)}
+      v_1010966 = {"const " : String}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_local{v_1}}, False{}, v_1010980 => emitter_body_cps_provider_8_local(v_1), v_1010979 => +v_1010967 = emitter_unbox(String, v_1010979); emitter_continuation_2422(v_2, v_3, v_5, v_1010966, v_1010967)}
 
 def emitter_body_cps_provider_8_let_step(v_1: U32, v_2: BIR.Op, v_3: BIR.Block, v_5: cps_provider_8_JsCtx) -> EmitterProgress<String>:
-  emitter_match_2422(v_2, v_1, v_3, v_5)
+  emitter_match_2423(v_2, v_1, v_3, v_5)
 
 def emitter_body_cps_provider_8_split_direct(v_1: U32, v_3: U32, +v_5: List<&2, BIR.Arg>, v_6: BIR.Block) -> EmitterProgress<String>:
   +v_9 = List.length(&2, BIR.Arg, v_5)
-  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_split_direct_selected{Bool.and(Nat.is_gt(v_9, 0n), Nat.is_le(v_9, 32n)), v_1, v_3, v_5, v_6, v_9}}, v_1010977 => +v_1010976 = emitter_unbox(String, v_1010977); EmitterFinished{EmitterValue{v_1010976}}}
+  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_split_direct_selected{Bool.and(Nat.is_gt(v_9, 0n), Nat.is_le(v_9, 32n)), v_1, v_3, v_5, v_6, v_9}}, v_1010982 => +v_1010981 = emitter_unbox(String, v_1010982); EmitterFinished{EmitterValue{v_1010981}}}
 
 def emitter_body_cps_provider_8_split_direct_selected(v_1: Bool, v_3: U32, v_5: U32, v_7: List<&2, BIR.Arg>, v_8: BIR.Block, v_10: Nat) -> EmitterProgress<String>:
   match v_1:
     case True{}:
-      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_split_direct_args{v_3, v_5, v_7, v_8, v_10}}, v_1010979 => +v_1010978 = emitter_unbox(String, v_1010979); EmitterFinished{EmitterValue{v_1010978}}}
+      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_split_direct_args{v_3, v_5, v_7, v_8, v_10}}, v_1010984 => +v_1010983 = emitter_unbox(String, v_1010984); EmitterFinished{EmitterValue{v_1010983}}}
     case False{}:
-      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_split_direct_many{v_3, v_5, v_7, v_8}}, v_1010981 => +v_1010980 = emitter_unbox(String, v_1010981); EmitterFinished{EmitterValue{v_1010980}}}
+      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_split_direct_many{v_3, v_5, v_7, v_8}}, v_1010986 => +v_1010985 = emitter_unbox(String, v_1010986); EmitterFinished{EmitterValue{v_1010985}}}
 
-def emitter_continuation_2424(+v_12: cps_provider_8_Caps, v_1010983: String, +v_1010984: String, v_1010985: String, +v_1010986: String, +v_1010987: String, +v_1010988: String, v_1010989: String, +v_1010990: String, v_1010991: String, v_1010992: String, v_1010993: String, +v_1010994: String) -> EmitterProgress<String>:
-  v_1010995 = {",$sp-" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_cap_total{v_12}}, False{}, v_1011001 => emitter_body_cps_provider_8_cap_total(v_12), v_1011000 => +v_1010996 = emitter_unbox(Nat, v_1011000); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010983, v_1010984, v_1010985, v_1010986, v_1010987, v_1010988, v_1010989, v_1010990, v_1010991, v_1010992, v_1010993, v_1010994, v_1010995, Nat.show(v_1010996), ");}"]}}, False{}, v_1010999 => emitter_body_cps_provider_8_cat([v_1010983, v_1010984, v_1010985, v_1010986, v_1010987, v_1010988, v_1010989, v_1010990, v_1010991, v_1010992, v_1010993, v_1010994, v_1010995, Nat.show(v_1010996), ");}"]), v_1010998 => +v_1010997 = emitter_unbox(String, v_1010998); EmitterFinished{EmitterValue{v_1010997}}}}
+def emitter_continuation_2425(+v_12: cps_provider_8_Caps, v_1010988: String, +v_1010989: String, v_1010990: String, +v_1010991: String, +v_1010992: String, +v_1010993: String, v_1010994: String, +v_1010995: String, v_1010996: String, v_1010997: String, v_1010998: String, +v_1010999: String) -> EmitterProgress<String>:
+  v_1011000 = {",$sp-" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_cap_total{v_12}}, False{}, v_1011006 => emitter_body_cps_provider_8_cap_total(v_12), v_1011005 => +v_1011001 = emitter_unbox(Nat, v_1011005); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010988, v_1010989, v_1010990, v_1010991, v_1010992, v_1010993, v_1010994, v_1010995, v_1010996, v_1010997, v_1010998, v_1010999, v_1011000, Nat.show(v_1011001), ");}"]}}, False{}, v_1011004 => emitter_body_cps_provider_8_cat([v_1010988, v_1010989, v_1010990, v_1010991, v_1010992, v_1010993, v_1010994, v_1010995, v_1010996, v_1010997, v_1010998, v_1010999, v_1011000, Nat.show(v_1011001), ");}"]), v_1011003 => +v_1011002 = emitter_unbox(String, v_1011003); EmitterFinished{EmitterValue{v_1011002}}}}
 
-def emitter_continuation_2425(v_8: Nat, v_1: U32, +v_12: cps_provider_8_Caps, v_1010983: String, +v_1010984: String, v_1010985: String, +v_1010986: String, +v_1010987: String, +v_1010988: String, v_1010989: String, +v_1010990: String) -> EmitterProgress<String>:
-  v_1010991 = {"," : String}
-  v_1010992 = {Nat.show(v_8) : String}
-  v_1010993 = {"," : String}
-  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_cont_name{v_1}}, False{}, v_1011003 => emitter_body_cps_provider_8_cont_name(v_1), v_1011002 => +v_1010994 = emitter_unbox(String, v_1011002); emitter_continuation_2424(v_12, v_1010983, v_1010984, v_1010985, v_1010986, v_1010987, v_1010988, v_1010989, v_1010990, v_1010991, v_1010992, v_1010993, v_1010994)}
+def emitter_continuation_2426(v_8: Nat, v_1: U32, +v_12: cps_provider_8_Caps, v_1010988: String, +v_1010989: String, v_1010990: String, +v_1010991: String, +v_1010992: String, +v_1010993: String, v_1010994: String, +v_1010995: String) -> EmitterProgress<String>:
+  v_1010996 = {"," : String}
+  v_1010997 = {Nat.show(v_8) : String}
+  v_1010998 = {"," : String}
+  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_cont_name{v_1}}, False{}, v_1011008 => emitter_body_cps_provider_8_cont_name(v_1), v_1011007 => +v_1010999 = emitter_unbox(String, v_1011007); emitter_continuation_2425(v_12, v_1010988, v_1010989, v_1010990, v_1010991, v_1010992, v_1010993, v_1010994, v_1010995, v_1010996, v_1010997, v_1010998, v_1010999)}
 
-def emitter_continuation_2426(v_3: U32, v_8: Nat, v_1: U32, +v_12: cps_provider_8_Caps, v_1010983: String, +v_1010984: String, v_1010985: String, +v_1010986: String, +v_1010987: String, +v_1010988: String) -> EmitterProgress<String>:
-  v_1010989 = {"return $split(" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_code_name{v_3}}, False{}, v_1011005 => emitter_body_cps_provider_8_code_name(v_3), v_1011004 => +v_1010990 = emitter_unbox(String, v_1011004); emitter_continuation_2425(v_8, v_1, v_12, v_1010983, v_1010984, v_1010985, v_1010986, v_1010987, v_1010988, v_1010989, v_1010990)}
+def emitter_continuation_2427(v_3: U32, v_8: Nat, v_1: U32, +v_12: cps_provider_8_Caps, v_1010988: String, +v_1010989: String, v_1010990: String, +v_1010991: String, +v_1010992: String, +v_1010993: String) -> EmitterProgress<String>:
+  v_1010994 = {"return $split(" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_code_name{v_3}}, False{}, v_1011010 => emitter_body_cps_provider_8_code_name(v_3), v_1011009 => +v_1010995 = emitter_unbox(String, v_1011009); emitter_continuation_2426(v_8, v_1, v_12, v_1010988, v_1010989, v_1010990, v_1010991, v_1010992, v_1010993, v_1010994, v_1010995)}
 
-def emitter_continuation_2427(+v_12: cps_provider_8_Caps, +v_8: Nat, v_3: U32, v_1: U32, v_1010983: String, +v_1010984: String) -> EmitterProgress<String>:
-  v_1010985 = {";" : String}
-  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_cap_stores{emitter_pure_cps_provider_8_caps_locals(v_12)}}, v_1011008 => +v_1010986 = emitter_unbox(String, v_1011008); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_slot_stores{emitter_pure_cps_provider_8_caps_slots(v_12)}}, v_1011007 => +v_1010987 = emitter_unbox(String, v_1011007); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_arg_moves{v_8, 0n}}, v_1011006 => +v_1010988 = emitter_unbox(String, v_1011006); emitter_continuation_2426(v_3, v_8, v_1, v_12, v_1010983, v_1010984, v_1010985, v_1010986, v_1010987, v_1010988)}}}
+def emitter_continuation_2428(+v_12: cps_provider_8_Caps, +v_8: Nat, v_3: U32, v_1: U32, v_1010988: String, +v_1010989: String) -> EmitterProgress<String>:
+  v_1010990 = {";" : String}
+  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_cap_stores{emitter_pure_cps_provider_8_caps_locals(v_12)}}, v_1011013 => +v_1010991 = emitter_unbox(String, v_1011013); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_slot_stores{emitter_pure_cps_provider_8_caps_slots(v_12)}}, v_1011012 => +v_1010992 = emitter_unbox(String, v_1011012); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_arg_moves{v_8, 0n}}, v_1011011 => +v_1010993 = emitter_unbox(String, v_1011011); emitter_continuation_2427(v_3, v_8, v_1, v_12, v_1010988, v_1010989, v_1010990, v_1010991, v_1010992, v_1010993)}}}
 
-def emitter_continuation_2428(+v_1010982: cps_provider_8_Caps, v_5: List<&2, BIR.Arg>, v_8: Nat, v_3: U32, v_1: U32) -> EmitterProgress<String>:
-  +v_12 = v_1010982
-  v_1010983 = {"{const " : String}
-  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_arg_temps{v_5, 0n}}, v_1011009 => +v_1010984 = emitter_unbox(String, v_1011009); emitter_continuation_2427(v_12, v_8, v_3, v_1, v_1010983, v_1010984)}
+def emitter_continuation_2429(+v_1010987: cps_provider_8_Caps, v_5: List<&2, BIR.Arg>, v_8: Nat, v_3: U32, v_1: U32) -> EmitterProgress<String>:
+  +v_12 = v_1010987
+  v_1010988 = {"{const " : String}
+  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_arg_temps{v_5, 0n}}, v_1011014 => +v_1010989 = emitter_unbox(String, v_1011014); emitter_continuation_2428(v_12, v_8, v_3, v_1, v_1010988, v_1010989)}
 
 def emitter_body_cps_provider_8_split_direct_args(+v_1: U32, v_3: U32, v_5: List<&2, BIR.Arg>, v_6: BIR.Block, v_8: Nat) -> EmitterProgress<String>:
-  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_caps_of{v_6, Some{v_1}}}, False{}, v_1011011 => emitter_body_cps_provider_8_caps_of(v_6, Some{v_1}), v_1011010 => +v_1010982 = emitter_unbox(cps_provider_8_Caps, v_1011010); emitter_continuation_2428(v_1010982, v_5, v_8, v_3, v_1)}
+  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_caps_of{v_6, Some{v_1}}}, False{}, v_1011016 => emitter_body_cps_provider_8_caps_of(v_6, Some{v_1}), v_1011015 => +v_1010987 = emitter_unbox(cps_provider_8_Caps, v_1011015); emitter_continuation_2429(v_1010987, v_5, v_8, v_3, v_1)}
 
-def emitter_continuation_2429(+v_10: cps_provider_8_Caps, +v_1011013: String, +v_1011014: String, v_1011015: String, +v_1011016: String, v_1011017: String, +v_1011018: List<&2, String>, v_1011019: String, +v_1011020: String) -> EmitterProgress<String>:
-  v_1011021 = {",$sp-" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_cap_total{v_10}}, False{}, v_1011027 => emitter_body_cps_provider_8_cap_total(v_10), v_1011026 => +v_1011022 = emitter_unbox(Nat, v_1011026); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011013, v_1011014, v_1011015, v_1011016, v_1011017, String.join(v_1011018, ","), v_1011019, v_1011020, v_1011021, Nat.show(v_1011022), ");"]}}, False{}, v_1011025 => emitter_body_cps_provider_8_cat([v_1011013, v_1011014, v_1011015, v_1011016, v_1011017, String.join(v_1011018, ","), v_1011019, v_1011020, v_1011021, Nat.show(v_1011022), ");"]), v_1011024 => +v_1011023 = emitter_unbox(String, v_1011024); EmitterFinished{EmitterValue{v_1011023}}}}
+def emitter_continuation_2430(+v_10: cps_provider_8_Caps, +v_1011018: String, +v_1011019: String, v_1011020: String, +v_1011021: String, v_1011022: String, +v_1011023: List<&2, String>, v_1011024: String, +v_1011025: String) -> EmitterProgress<String>:
+  v_1011026 = {",$sp-" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_cap_total{v_10}}, False{}, v_1011032 => emitter_body_cps_provider_8_cap_total(v_10), v_1011031 => +v_1011027 = emitter_unbox(Nat, v_1011031); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011018, v_1011019, v_1011020, v_1011021, v_1011022, String.join(v_1011023, ","), v_1011024, v_1011025, v_1011026, Nat.show(v_1011027), ");"]}}, False{}, v_1011030 => emitter_body_cps_provider_8_cat([v_1011018, v_1011019, v_1011020, v_1011021, v_1011022, String.join(v_1011023, ","), v_1011024, v_1011025, v_1011026, Nat.show(v_1011027), ");"]), v_1011029 => +v_1011028 = emitter_unbox(String, v_1011029); EmitterFinished{EmitterValue{v_1011028}}}}
 
-def emitter_continuation_2430(v_1: U32, +v_10: cps_provider_8_Caps, +v_1011013: String, +v_1011014: String, v_1011015: String, +v_1011016: String, v_1011017: String, +v_1011018: List<&2, String>) -> EmitterProgress<String>:
-  v_1011019 = {"]," : String}
-  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_cont_name{v_1}}, False{}, v_1011029 => emitter_body_cps_provider_8_cont_name(v_1), v_1011028 => +v_1011020 = emitter_unbox(String, v_1011028); emitter_continuation_2429(v_10, v_1011013, v_1011014, v_1011015, v_1011016, v_1011017, v_1011018, v_1011019, v_1011020)}
+def emitter_continuation_2431(v_1: U32, +v_10: cps_provider_8_Caps, +v_1011018: String, +v_1011019: String, v_1011020: String, +v_1011021: String, v_1011022: String, +v_1011023: List<&2, String>) -> EmitterProgress<String>:
+  v_1011024 = {"]," : String}
+  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_cont_name{v_1}}, False{}, v_1011034 => emitter_body_cps_provider_8_cont_name(v_1), v_1011033 => +v_1011025 = emitter_unbox(String, v_1011033); emitter_continuation_2430(v_10, v_1011018, v_1011019, v_1011020, v_1011021, v_1011022, v_1011023, v_1011024, v_1011025)}
 
-def emitter_continuation_2431(v_5: List<&2, BIR.Arg>, v_1: U32, +v_10: cps_provider_8_Caps, +v_1011013: String, +v_1011014: String, v_1011015: String, +v_1011016: String) -> EmitterProgress<String>:
-  v_1011017 = {",[" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_arguments{v_5}}, False{}, v_1011031 => emitter_body_cps_provider_8_arguments(v_5), v_1011030 => +v_1011018 = emitter_unbox(List<&2, String>, v_1011030); emitter_continuation_2430(v_1, v_10, v_1011013, v_1011014, v_1011015, v_1011016, v_1011017, v_1011018)}
+def emitter_continuation_2432(v_5: List<&2, BIR.Arg>, v_1: U32, +v_10: cps_provider_8_Caps, +v_1011018: String, +v_1011019: String, v_1011020: String, +v_1011021: String) -> EmitterProgress<String>:
+  v_1011022 = {",[" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_arguments{v_5}}, False{}, v_1011036 => emitter_body_cps_provider_8_arguments(v_5), v_1011035 => +v_1011023 = emitter_unbox(List<&2, String>, v_1011035); emitter_continuation_2431(v_1, v_10, v_1011018, v_1011019, v_1011020, v_1011021, v_1011022, v_1011023)}
 
-def emitter_continuation_2432(v_3: U32, v_5: List<&2, BIR.Arg>, v_1: U32, +v_10: cps_provider_8_Caps, +v_1011013: String, +v_1011014: String) -> EmitterProgress<String>:
-  v_1011015 = {"return $splitm(" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_code_name{v_3}}, False{}, v_1011033 => emitter_body_cps_provider_8_code_name(v_3), v_1011032 => +v_1011016 = emitter_unbox(String, v_1011032); emitter_continuation_2431(v_5, v_1, v_10, v_1011013, v_1011014, v_1011015, v_1011016)}
+def emitter_continuation_2433(v_3: U32, v_5: List<&2, BIR.Arg>, v_1: U32, +v_10: cps_provider_8_Caps, +v_1011018: String, +v_1011019: String) -> EmitterProgress<String>:
+  v_1011020 = {"return $splitm(" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_code_name{v_3}}, False{}, v_1011038 => emitter_body_cps_provider_8_code_name(v_3), v_1011037 => +v_1011021 = emitter_unbox(String, v_1011037); emitter_continuation_2432(v_5, v_1, v_10, v_1011018, v_1011019, v_1011020, v_1011021)}
 
-def emitter_continuation_2433(+v_1011012: cps_provider_8_Caps, v_3: U32, v_5: List<&2, BIR.Arg>, v_1: U32) -> EmitterProgress<String>:
-  +v_10 = v_1011012
-  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_cap_stores{emitter_pure_cps_provider_8_caps_locals(v_10)}}, v_1011035 => +v_1011013 = emitter_unbox(String, v_1011035); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_slot_stores{emitter_pure_cps_provider_8_caps_slots(v_10)}}, v_1011034 => +v_1011014 = emitter_unbox(String, v_1011034); emitter_continuation_2432(v_3, v_5, v_1, v_10, v_1011013, v_1011014)}}
+def emitter_continuation_2434(+v_1011017: cps_provider_8_Caps, v_3: U32, v_5: List<&2, BIR.Arg>, v_1: U32) -> EmitterProgress<String>:
+  +v_10 = v_1011017
+  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_cap_stores{emitter_pure_cps_provider_8_caps_locals(v_10)}}, v_1011040 => +v_1011018 = emitter_unbox(String, v_1011040); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_slot_stores{emitter_pure_cps_provider_8_caps_slots(v_10)}}, v_1011039 => +v_1011019 = emitter_unbox(String, v_1011039); emitter_continuation_2433(v_3, v_5, v_1, v_10, v_1011018, v_1011019)}}
 
 def emitter_body_cps_provider_8_split_direct_many(+v_1: U32, v_3: U32, v_5: List<&2, BIR.Arg>, v_6: BIR.Block) -> EmitterProgress<String>:
-  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_caps_of{v_6, Some{v_1}}}, False{}, v_1011037 => emitter_body_cps_provider_8_caps_of(v_6, Some{v_1}), v_1011036 => +v_1011012 = emitter_unbox(cps_provider_8_Caps, v_1011036); emitter_continuation_2433(v_1011012, v_3, v_5, v_1)}
+  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_caps_of{v_6, Some{v_1}}}, False{}, v_1011042 => emitter_body_cps_provider_8_caps_of(v_6, Some{v_1}), v_1011041 => +v_1011017 = emitter_unbox(cps_provider_8_Caps, v_1011041); emitter_continuation_2434(v_1011017, v_3, v_5, v_1)}
 
-def emitter_continuation_2434(+v_8: cps_provider_8_Caps, +v_1011039: String, +v_1011040: String, v_1011041: String, +v_1011042: String, v_1011043: String, +v_1011044: String, v_1011045: String, +v_1011046: String) -> EmitterProgress<String>:
-  v_1011047 = {",$sp-" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_cap_total{v_8}}, False{}, v_1011053 => emitter_body_cps_provider_8_cap_total(v_8), v_1011052 => +v_1011048 = emitter_unbox(Nat, v_1011052); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011039, v_1011040, v_1011041, v_1011042, v_1011043, v_1011044, v_1011045, v_1011046, v_1011047, Nat.show(v_1011048), ");"]}}, False{}, v_1011051 => emitter_body_cps_provider_8_cat([v_1011039, v_1011040, v_1011041, v_1011042, v_1011043, v_1011044, v_1011045, v_1011046, v_1011047, Nat.show(v_1011048), ");"]), v_1011050 => +v_1011049 = emitter_unbox(String, v_1011050); EmitterFinished{EmitterValue{v_1011049}}}}
+def emitter_continuation_2435(+v_8: cps_provider_8_Caps, +v_1011044: String, +v_1011045: String, v_1011046: String, +v_1011047: String, v_1011048: String, +v_1011049: String, v_1011050: String, +v_1011051: String) -> EmitterProgress<String>:
+  v_1011052 = {",$sp-" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_cap_total{v_8}}, False{}, v_1011058 => emitter_body_cps_provider_8_cap_total(v_8), v_1011057 => +v_1011053 = emitter_unbox(Nat, v_1011057); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011044, v_1011045, v_1011046, v_1011047, v_1011048, v_1011049, v_1011050, v_1011051, v_1011052, Nat.show(v_1011053), ");"]}}, False{}, v_1011056 => emitter_body_cps_provider_8_cat([v_1011044, v_1011045, v_1011046, v_1011047, v_1011048, v_1011049, v_1011050, v_1011051, v_1011052, Nat.show(v_1011053), ");"]), v_1011055 => +v_1011054 = emitter_unbox(String, v_1011055); EmitterFinished{EmitterValue{v_1011054}}}}
 
-def emitter_continuation_2435(v_1: U32, +v_8: cps_provider_8_Caps, +v_1011039: String, +v_1011040: String, v_1011041: String, +v_1011042: String, v_1011043: String, +v_1011044: String) -> EmitterProgress<String>:
-  v_1011045 = {"," : String}
-  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_cont_name{v_1}}, False{}, v_1011055 => emitter_body_cps_provider_8_cont_name(v_1), v_1011054 => +v_1011046 = emitter_unbox(String, v_1011054); emitter_continuation_2434(v_8, v_1011039, v_1011040, v_1011041, v_1011042, v_1011043, v_1011044, v_1011045, v_1011046)}
+def emitter_continuation_2436(v_1: U32, +v_8: cps_provider_8_Caps, +v_1011044: String, +v_1011045: String, v_1011046: String, +v_1011047: String, v_1011048: String, +v_1011049: String) -> EmitterProgress<String>:
+  v_1011050 = {"," : String}
+  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_cont_name{v_1}}, False{}, v_1011060 => emitter_body_cps_provider_8_cont_name(v_1), v_1011059 => +v_1011051 = emitter_unbox(String, v_1011059); emitter_continuation_2435(v_8, v_1011044, v_1011045, v_1011046, v_1011047, v_1011048, v_1011049, v_1011050, v_1011051)}
 
-def emitter_continuation_2436(v_3: BIR.Arg, v_1: U32, +v_8: cps_provider_8_Caps, +v_1011039: String, +v_1011040: String, v_1011041: String, +v_1011042: String) -> EmitterProgress<String>:
-  v_1011043 = {"," : String}
-  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_arg_atom{v_3}}, v_1011056 => +v_1011044 = emitter_unbox(String, v_1011056); emitter_continuation_2435(v_1, v_8, v_1011039, v_1011040, v_1011041, v_1011042, v_1011043, v_1011044)}
+def emitter_continuation_2437(v_3: BIR.Arg, v_1: U32, +v_8: cps_provider_8_Caps, +v_1011044: String, +v_1011045: String, v_1011046: String, +v_1011047: String) -> EmitterProgress<String>:
+  v_1011048 = {"," : String}
+  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_arg_atom{v_3}}, v_1011061 => +v_1011049 = emitter_unbox(String, v_1011061); emitter_continuation_2436(v_1, v_8, v_1011044, v_1011045, v_1011046, v_1011047, v_1011048, v_1011049)}
 
-def emitter_continuation_2437(v_2: BIR.Atom, v_3: BIR.Arg, v_1: U32, +v_8: cps_provider_8_Caps, +v_1011039: String, +v_1011040: String) -> EmitterProgress<String>:
-  v_1011041 = {"return $split1(" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_atom{v_2}}, False{}, v_1011058 => emitter_body_cps_provider_8_atom(v_2), v_1011057 => +v_1011042 = emitter_unbox(String, v_1011057); emitter_continuation_2436(v_3, v_1, v_8, v_1011039, v_1011040, v_1011041, v_1011042)}
+def emitter_continuation_2438(v_2: BIR.Atom, v_3: BIR.Arg, v_1: U32, +v_8: cps_provider_8_Caps, +v_1011044: String, +v_1011045: String) -> EmitterProgress<String>:
+  v_1011046 = {"return $split1(" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_atom{v_2}}, False{}, v_1011063 => emitter_body_cps_provider_8_atom(v_2), v_1011062 => +v_1011047 = emitter_unbox(String, v_1011062); emitter_continuation_2437(v_3, v_1, v_8, v_1011044, v_1011045, v_1011046, v_1011047)}
 
-def emitter_continuation_2438(+v_1011038: cps_provider_8_Caps, v_2: BIR.Atom, v_3: BIR.Arg, v_1: U32) -> EmitterProgress<String>:
-  +v_8 = v_1011038
-  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_cap_stores{emitter_pure_cps_provider_8_caps_locals(v_8)}}, v_1011060 => +v_1011039 = emitter_unbox(String, v_1011060); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_slot_stores{emitter_pure_cps_provider_8_caps_slots(v_8)}}, v_1011059 => +v_1011040 = emitter_unbox(String, v_1011059); emitter_continuation_2437(v_2, v_3, v_1, v_8, v_1011039, v_1011040)}}
+def emitter_continuation_2439(+v_1011043: cps_provider_8_Caps, v_2: BIR.Atom, v_3: BIR.Arg, v_1: U32) -> EmitterProgress<String>:
+  +v_8 = v_1011043
+  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_cap_stores{emitter_pure_cps_provider_8_caps_locals(v_8)}}, v_1011065 => +v_1011044 = emitter_unbox(String, v_1011065); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_slot_stores{emitter_pure_cps_provider_8_caps_slots(v_8)}}, v_1011064 => +v_1011045 = emitter_unbox(String, v_1011064); emitter_continuation_2438(v_2, v_3, v_1, v_8, v_1011044, v_1011045)}}
 
 def emitter_body_cps_provider_8_split_apply(+v_1: U32, v_2: BIR.Atom, v_3: BIR.Arg, v_4: BIR.Block) -> EmitterProgress<String>:
-  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_caps_of{v_4, Some{v_1}}}, False{}, v_1011062 => emitter_body_cps_provider_8_caps_of(v_4, Some{v_1}), v_1011061 => +v_1011038 = emitter_unbox(cps_provider_8_Caps, v_1011061); emitter_continuation_2438(v_1011038, v_2, v_3, v_1)}
+  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_caps_of{v_4, Some{v_1}}}, False{}, v_1011067 => emitter_body_cps_provider_8_caps_of(v_4, Some{v_1}), v_1011066 => +v_1011043 = emitter_unbox(cps_provider_8_Caps, v_1011066); emitter_continuation_2439(v_1011043, v_2, v_3, v_1)}
 
 def emitter_body_cps_provider_8_arg_atom(v_0: BIR.Arg) -> EmitterProgress<String>:
   match v_0:
     case BIR.Arg{_, v_5}:
       emitter_body_cps_provider_8_atom(v_5)
 
-def emitter_match_2440(v_1: List<&2, BIR.Arg>, +v_3: Nat) -> EmitterProgress<String>:
+def emitter_match_2441(v_1: List<&2, BIR.Arg>, +v_3: Nat) -> EmitterProgress<String>:
   match v_1:
     case []:
       EmitterFinished{EmitterValue{""}}
     case +v_7 <> v_8:
-      v_1011064 = {"$a" : String}
-      v_1011065 = {Nat.show(v_3) : String}
-      v_1011066 = {"=" : String}
-      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_arg_atom{v_7}}, False{}, v_1011074 => emitter_body_cps_provider_8_arg_atom(v_7), v_1011073 => +v_1011067 = emitter_unbox(String, v_1011073); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_arg_temps_tail{v_8, Nat.add(v_3, 1n)}}, v_1011072 => +v_1011068 = emitter_unbox(String, v_1011072); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011064, v_1011065, v_1011066, v_1011067, v_1011068]}}, False{}, v_1011071 => emitter_body_cps_provider_8_cat([v_1011064, v_1011065, v_1011066, v_1011067, v_1011068]), v_1011070 => +v_1011069 = emitter_unbox(String, v_1011070); EmitterFinished{EmitterValue{v_1011069}}}}}
+      v_1011069 = {"$a" : String}
+      v_1011070 = {Nat.show(v_3) : String}
+      v_1011071 = {"=" : String}
+      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_arg_atom{v_7}}, False{}, v_1011079 => emitter_body_cps_provider_8_arg_atom(v_7), v_1011078 => +v_1011072 = emitter_unbox(String, v_1011078); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_arg_temps_tail{v_8, Nat.add(v_3, 1n)}}, v_1011077 => +v_1011073 = emitter_unbox(String, v_1011077); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011069, v_1011070, v_1011071, v_1011072, v_1011073]}}, False{}, v_1011076 => emitter_body_cps_provider_8_cat([v_1011069, v_1011070, v_1011071, v_1011072, v_1011073]), v_1011075 => +v_1011074 = emitter_unbox(String, v_1011075); EmitterFinished{EmitterValue{v_1011074}}}}}
 
 def emitter_body_cps_provider_8_arg_temps(v_1: List<&2, BIR.Arg>, v_3: Nat) -> EmitterProgress<String>:
-  emitter_match_2440(v_1, v_3)
+  emitter_match_2441(v_1, v_3)
 
-def emitter_match_2441(+v_1: List<&2, BIR.Arg>, v_3: Nat) -> EmitterProgress<String>:
+def emitter_match_2442(+v_1: List<&2, BIR.Arg>, v_3: Nat) -> EmitterProgress<String>:
   match v_1:
     case []:
       EmitterFinished{EmitterValue{""}}
     case _:
-      v_1011075 = {"," : String}
-      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_arg_temps{v_1, v_3}}, False{}, v_1011081 => emitter_body_cps_provider_8_arg_temps(v_1, v_3), v_1011080 => +v_1011076 = emitter_unbox(String, v_1011080); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011075, v_1011076]}}, False{}, v_1011079 => emitter_body_cps_provider_8_cat([v_1011075, v_1011076]), v_1011078 => +v_1011077 = emitter_unbox(String, v_1011078); EmitterFinished{EmitterValue{v_1011077}}}}
+      v_1011080 = {"," : String}
+      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_arg_temps{v_1, v_3}}, False{}, v_1011086 => emitter_body_cps_provider_8_arg_temps(v_1, v_3), v_1011085 => +v_1011081 = emitter_unbox(String, v_1011085); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011080, v_1011081]}}, False{}, v_1011084 => emitter_body_cps_provider_8_cat([v_1011080, v_1011081]), v_1011083 => +v_1011082 = emitter_unbox(String, v_1011083); EmitterFinished{EmitterValue{v_1011082}}}}
 
 def emitter_body_cps_provider_8_arg_temps_tail(v_1: List<&2, BIR.Arg>, v_3: Nat) -> EmitterProgress<String>:
-  emitter_match_2441(v_1, v_3)
+  emitter_match_2442(v_1, v_3)
 
 def emitter_body_cps_provider_8_arg_moves(+v_1: Nat, +v_3: Nat) -> EmitterProgress<String>:
-  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_arg_moves_at{Nat.is_lt(v_3, v_1), v_1, v_3}}, v_1011083 => +v_1011082 = emitter_unbox(String, v_1011083); EmitterFinished{EmitterValue{v_1011082}}}
+  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_arg_moves_at{Nat.is_lt(v_3, v_1), v_1, v_3}}, v_1011088 => +v_1011087 = emitter_unbox(String, v_1011088); EmitterFinished{EmitterValue{v_1011087}}}
 
-def emitter_match_2442(v_1: Bool, +v_5: Nat, v_3: Nat) -> EmitterProgress<String>:
+def emitter_match_2443(v_1: Bool, +v_5: Nat, v_3: Nat) -> EmitterProgress<String>:
   match v_1:
     case True{}:
-      v_1011084 = {"$tailArgs[" : String}
-      v_1011085 = {Nat.show(v_5) : String}
-      v_1011086 = {"]=$a" : String}
-      v_1011087 = {Nat.show(v_5) : String}
-      v_1011088 = {";" : String}
-      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_arg_moves{v_3, Nat.add(v_5, 1n)}}, False{}, v_1011094 => emitter_body_cps_provider_8_arg_moves(v_3, Nat.add(v_5, 1n)), v_1011093 => +v_1011089 = emitter_unbox(String, v_1011093); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011084, v_1011085, v_1011086, v_1011087, v_1011088, v_1011089]}}, False{}, v_1011092 => emitter_body_cps_provider_8_cat([v_1011084, v_1011085, v_1011086, v_1011087, v_1011088, v_1011089]), v_1011091 => +v_1011090 = emitter_unbox(String, v_1011091); EmitterFinished{EmitterValue{v_1011090}}}}
+      v_1011089 = {"$tailArgs[" : String}
+      v_1011090 = {Nat.show(v_5) : String}
+      v_1011091 = {"]=$a" : String}
+      v_1011092 = {Nat.show(v_5) : String}
+      v_1011093 = {";" : String}
+      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_arg_moves{v_3, Nat.add(v_5, 1n)}}, False{}, v_1011099 => emitter_body_cps_provider_8_arg_moves(v_3, Nat.add(v_5, 1n)), v_1011098 => +v_1011094 = emitter_unbox(String, v_1011098); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011089, v_1011090, v_1011091, v_1011092, v_1011093, v_1011094]}}, False{}, v_1011097 => emitter_body_cps_provider_8_cat([v_1011089, v_1011090, v_1011091, v_1011092, v_1011093, v_1011094]), v_1011096 => +v_1011095 = emitter_unbox(String, v_1011096); EmitterFinished{EmitterValue{v_1011095}}}}
     case False{}:
       EmitterFinished{EmitterValue{""}}
 
 def emitter_body_cps_provider_8_arg_moves_at(v_1: Bool, v_3: Nat, v_5: Nat) -> EmitterProgress<String>:
-  emitter_match_2442(v_1, v_5, v_3)
+  emitter_match_2443(v_1, v_5, v_3)
 
-def emitter_continuation_2443(v_7: List<&2, U32>, v_1011095: String, +v_1011096: String) -> EmitterProgress<String>:
-  v_1011097 = {";" : String}
-  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_cap_stores{v_7}}, v_1011102 => +v_1011098 = emitter_unbox(String, v_1011102); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011095, v_1011096, v_1011097, v_1011098]}}, False{}, v_1011101 => emitter_body_cps_provider_8_cat([v_1011095, v_1011096, v_1011097, v_1011098]), v_1011100 => +v_1011099 = emitter_unbox(String, v_1011100); EmitterFinished{EmitterValue{v_1011099}}}}
+def emitter_continuation_2444(v_7: List<&2, U32>, v_1011100: String, +v_1011101: String) -> EmitterProgress<String>:
+  v_1011102 = {";" : String}
+  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_cap_stores{v_7}}, v_1011107 => +v_1011103 = emitter_unbox(String, v_1011107); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011100, v_1011101, v_1011102, v_1011103]}}, False{}, v_1011106 => emitter_body_cps_provider_8_cat([v_1011100, v_1011101, v_1011102, v_1011103]), v_1011105 => +v_1011104 = emitter_unbox(String, v_1011105); EmitterFinished{EmitterValue{v_1011104}}}}
 
 def emitter_body_cps_provider_8_cap_stores(v_2: List<&2, U32>) -> EmitterProgress<String>:
   match v_2:
     case []:
       EmitterFinished{EmitterValue{""}}
     case +v_6 <> v_7:
-      v_1011095 = {"$stArgs[$sp++]=" : String}
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_local{v_6}}, False{}, v_1011104 => emitter_body_cps_provider_8_local(v_6), v_1011103 => +v_1011096 = emitter_unbox(String, v_1011103); emitter_continuation_2443(v_7, v_1011095, v_1011096)}
+      v_1011100 = {"$stArgs[$sp++]=" : String}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_local{v_6}}, False{}, v_1011109 => emitter_body_cps_provider_8_local(v_6), v_1011108 => +v_1011101 = emitter_unbox(String, v_1011108); emitter_continuation_2444(v_7, v_1011100, v_1011101)}
 
-def emitter_continuation_2445(v_7: List<&2, U32>, v_1011105: String, +v_1011106: String) -> EmitterProgress<String>:
-  v_1011107 = {";" : String}
-  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_slot_stores{v_7}}, v_1011112 => +v_1011108 = emitter_unbox(String, v_1011112); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011105, v_1011106, v_1011107, v_1011108]}}, False{}, v_1011111 => emitter_body_cps_provider_8_cat([v_1011105, v_1011106, v_1011107, v_1011108]), v_1011110 => +v_1011109 = emitter_unbox(String, v_1011110); EmitterFinished{EmitterValue{v_1011109}}}}
+def emitter_continuation_2446(v_7: List<&2, U32>, v_1011110: String, +v_1011111: String) -> EmitterProgress<String>:
+  v_1011112 = {";" : String}
+  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_slot_stores{v_7}}, v_1011117 => +v_1011113 = emitter_unbox(String, v_1011117); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011110, v_1011111, v_1011112, v_1011113]}}, False{}, v_1011116 => emitter_body_cps_provider_8_cat([v_1011110, v_1011111, v_1011112, v_1011113]), v_1011115 => +v_1011114 = emitter_unbox(String, v_1011115); EmitterFinished{EmitterValue{v_1011114}}}}
 
 def emitter_body_cps_provider_8_slot_stores(v_2: List<&2, U32>) -> EmitterProgress<String>:
   match v_2:
     case []:
       EmitterFinished{EmitterValue{""}}
     case +v_6 <> v_7:
-      v_1011105 = {"$stArgs[$sp++]=" : String}
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_capture{v_6}}, False{}, v_1011114 => emitter_body_cps_provider_8_capture(v_6), v_1011113 => +v_1011106 = emitter_unbox(String, v_1011113); emitter_continuation_2445(v_7, v_1011105, v_1011106)}
+      v_1011110 = {"$stArgs[$sp++]=" : String}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_capture{v_6}}, False{}, v_1011119 => emitter_body_cps_provider_8_capture(v_6), v_1011118 => +v_1011111 = emitter_unbox(String, v_1011118); emitter_continuation_2446(v_7, v_1011110, v_1011111)}
 
-def emitter_continuation_2447(+v_4: Nat, v_9: List<&2, U32>, v_1011115: String, +v_1011116: String) -> EmitterProgress<String>:
-  v_1011117 = {"=$stArgs[$base+" : String}
-  v_1011118 = {Nat.show(v_4) : String}
-  v_1011119 = {"];" : String}
-  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_cap_binds{v_9, Nat.add(v_4, 1n)}}, v_1011124 => +v_1011120 = emitter_unbox(String, v_1011124); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011115, v_1011116, v_1011117, v_1011118, v_1011119, v_1011120]}}, False{}, v_1011123 => emitter_body_cps_provider_8_cat([v_1011115, v_1011116, v_1011117, v_1011118, v_1011119, v_1011120]), v_1011122 => +v_1011121 = emitter_unbox(String, v_1011122); EmitterFinished{EmitterValue{v_1011121}}}}
+def emitter_continuation_2448(+v_4: Nat, v_9: List<&2, U32>, v_1011120: String, +v_1011121: String) -> EmitterProgress<String>:
+  v_1011122 = {"=$stArgs[$base+" : String}
+  v_1011123 = {Nat.show(v_4) : String}
+  v_1011124 = {"];" : String}
+  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_cap_binds{v_9, Nat.add(v_4, 1n)}}, v_1011129 => +v_1011125 = emitter_unbox(String, v_1011129); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011120, v_1011121, v_1011122, v_1011123, v_1011124, v_1011125]}}, False{}, v_1011128 => emitter_body_cps_provider_8_cat([v_1011120, v_1011121, v_1011122, v_1011123, v_1011124, v_1011125]), v_1011127 => +v_1011126 = emitter_unbox(String, v_1011127); EmitterFinished{EmitterValue{v_1011126}}}}
 
 def emitter_body_cps_provider_8_cap_binds(v_2: List<&2, U32>, v_4: Nat) -> EmitterProgress<String>:
   match v_2:
     case []:
       EmitterFinished{EmitterValue{""}}
     case +v_8 <> v_9:
-      v_1011115 = {"const " : String}
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_local{v_8}}, False{}, v_1011126 => emitter_body_cps_provider_8_local(v_8), v_1011125 => +v_1011116 = emitter_unbox(String, v_1011125); emitter_continuation_2447(v_4, v_9, v_1011115, v_1011116)}
+      v_1011120 = {"const " : String}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_local{v_8}}, False{}, v_1011131 => emitter_body_cps_provider_8_local(v_8), v_1011130 => +v_1011121 = emitter_unbox(String, v_1011130); emitter_continuation_2448(v_4, v_9, v_1011120, v_1011121)}
 
-def emitter_continuation_2449(+v_4: Nat, v_9: List<&2, U32>, v_1011127: String, +v_1011128: String) -> EmitterProgress<String>:
-  v_1011129 = {"=$stArgs[$base+" : String}
-  v_1011130 = {Nat.show(v_4) : String}
-  v_1011131 = {"];" : String}
-  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_slot_binds{v_9, Nat.add(v_4, 1n)}}, v_1011136 => +v_1011132 = emitter_unbox(String, v_1011136); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011127, v_1011128, v_1011129, v_1011130, v_1011131, v_1011132]}}, False{}, v_1011135 => emitter_body_cps_provider_8_cat([v_1011127, v_1011128, v_1011129, v_1011130, v_1011131, v_1011132]), v_1011134 => +v_1011133 = emitter_unbox(String, v_1011134); EmitterFinished{EmitterValue{v_1011133}}}}
+def emitter_continuation_2450(+v_4: Nat, v_9: List<&2, U32>, v_1011132: String, +v_1011133: String) -> EmitterProgress<String>:
+  v_1011134 = {"=$stArgs[$base+" : String}
+  v_1011135 = {Nat.show(v_4) : String}
+  v_1011136 = {"];" : String}
+  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_slot_binds{v_9, Nat.add(v_4, 1n)}}, v_1011141 => +v_1011137 = emitter_unbox(String, v_1011141); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011132, v_1011133, v_1011134, v_1011135, v_1011136, v_1011137]}}, False{}, v_1011140 => emitter_body_cps_provider_8_cat([v_1011132, v_1011133, v_1011134, v_1011135, v_1011136, v_1011137]), v_1011139 => +v_1011138 = emitter_unbox(String, v_1011139); EmitterFinished{EmitterValue{v_1011138}}}}
 
 def emitter_body_cps_provider_8_slot_binds(v_2: List<&2, U32>, v_4: Nat) -> EmitterProgress<String>:
   match v_2:
     case []:
       EmitterFinished{EmitterValue{""}}
     case +v_8 <> v_9:
-      v_1011127 = {"const " : String}
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_capture{v_8}}, False{}, v_1011138 => emitter_body_cps_provider_8_capture(v_8), v_1011137 => +v_1011128 = emitter_unbox(String, v_1011137); emitter_continuation_2449(v_4, v_9, v_1011127, v_1011128)}
+      v_1011132 = {"const " : String}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_capture{v_8}}, False{}, v_1011143 => emitter_body_cps_provider_8_capture(v_8), v_1011142 => +v_1011133 = emitter_unbox(String, v_1011142); emitter_continuation_2450(v_4, v_9, v_1011132, v_1011133)}
 
-def emitter_continuation_2451(+v_8: cps_provider_8_Caps, v_2: BIR.Block, v_4: cps_provider_8_JsCtx, v_1011140: String, +v_1011141: String, v_1011142: String, +v_1011143: String) -> EmitterProgress<String>:
-  v_1011144 = {",$base,$td=0){" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_cap_binds{emitter_pure_cps_provider_8_caps_locals(v_8), 0n}}, False{}, v_1011156 => emitter_body_cps_provider_8_cap_binds(emitter_pure_cps_provider_8_caps_locals(v_8), 0n), v_1011155 => +v_1011145 = emitter_unbox(String, v_1011155); EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_slot_binds{emitter_pure_cps_provider_8_caps_slots(v_8), List.length(&2, U32, emitter_pure_cps_provider_8_caps_locals(v_8))}}, False{}, v_1011154 => emitter_body_cps_provider_8_slot_binds(emitter_pure_cps_provider_8_caps_slots(v_8), List.length(&2, U32, emitter_pure_cps_provider_8_caps_locals(v_8))), v_1011153 => +v_1011146 = emitter_unbox(String, v_1011153); EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_block{v_2, v_4}}, False{}, v_1011152 => emitter_body_cps_provider_8_block(v_2, v_4), v_1011151 => +v_1011147 = emitter_unbox(String, v_1011151); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011140, v_1011141, v_1011142, v_1011143, v_1011144, v_1011145, v_1011146, v_1011147, "}\n"]}}, False{}, v_1011150 => emitter_body_cps_provider_8_cat([v_1011140, v_1011141, v_1011142, v_1011143, v_1011144, v_1011145, v_1011146, v_1011147, "}\n"]), v_1011149 => +v_1011148 = emitter_unbox(String, v_1011149); EmitterFinished{EmitterValue{v_1011148}}}}}}
+def emitter_continuation_2452(+v_8: cps_provider_8_Caps, v_2: BIR.Block, v_4: cps_provider_8_JsCtx, v_1011145: String, +v_1011146: String, v_1011147: String, +v_1011148: String) -> EmitterProgress<String>:
+  v_1011149 = {",$base,$td=0){" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_cap_binds{emitter_pure_cps_provider_8_caps_locals(v_8), 0n}}, False{}, v_1011161 => emitter_body_cps_provider_8_cap_binds(emitter_pure_cps_provider_8_caps_locals(v_8), 0n), v_1011160 => +v_1011150 = emitter_unbox(String, v_1011160); EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_slot_binds{emitter_pure_cps_provider_8_caps_slots(v_8), List.length(&2, U32, emitter_pure_cps_provider_8_caps_locals(v_8))}}, False{}, v_1011159 => emitter_body_cps_provider_8_slot_binds(emitter_pure_cps_provider_8_caps_slots(v_8), List.length(&2, U32, emitter_pure_cps_provider_8_caps_locals(v_8))), v_1011158 => +v_1011151 = emitter_unbox(String, v_1011158); EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_block{v_2, v_4}}, False{}, v_1011157 => emitter_body_cps_provider_8_block(v_2, v_4), v_1011156 => +v_1011152 = emitter_unbox(String, v_1011156); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011145, v_1011146, v_1011147, v_1011148, v_1011149, v_1011150, v_1011151, v_1011152, "}\n"]}}, False{}, v_1011155 => emitter_body_cps_provider_8_cat([v_1011145, v_1011146, v_1011147, v_1011148, v_1011149, v_1011150, v_1011151, v_1011152, "}\n"]), v_1011154 => +v_1011153 = emitter_unbox(String, v_1011154); EmitterFinished{EmitterValue{v_1011153}}}}}}
 
-def emitter_continuation_2452(v_1: U32, +v_8: cps_provider_8_Caps, v_2: BIR.Block, v_4: cps_provider_8_JsCtx, v_1011140: String, +v_1011141: String) -> EmitterProgress<String>:
-  v_1011142 = {"(" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_local{v_1}}, False{}, v_1011158 => emitter_body_cps_provider_8_local(v_1), v_1011157 => +v_1011143 = emitter_unbox(String, v_1011157); emitter_continuation_2451(v_8, v_2, v_4, v_1011140, v_1011141, v_1011142, v_1011143)}
+def emitter_continuation_2453(v_1: U32, +v_8: cps_provider_8_Caps, v_2: BIR.Block, v_4: cps_provider_8_JsCtx, v_1011145: String, +v_1011146: String) -> EmitterProgress<String>:
+  v_1011147 = {"(" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_local{v_1}}, False{}, v_1011163 => emitter_body_cps_provider_8_local(v_1), v_1011162 => +v_1011148 = emitter_unbox(String, v_1011162); emitter_continuation_2452(v_8, v_2, v_4, v_1011145, v_1011146, v_1011147, v_1011148)}
 
-def emitter_continuation_2453(+v_1011139: cps_provider_8_Caps, +v_1: U32, v_2: BIR.Block, v_4: cps_provider_8_JsCtx) -> EmitterProgress<String>:
-  +v_8 = v_1011139
-  v_1011140 = {"function " : String}
-  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_cont_name{v_1}}, False{}, v_1011160 => emitter_body_cps_provider_8_cont_name(v_1), v_1011159 => +v_1011141 = emitter_unbox(String, v_1011159); emitter_continuation_2452(v_1, v_8, v_2, v_4, v_1011140, v_1011141)}
+def emitter_continuation_2454(+v_1011144: cps_provider_8_Caps, +v_1: U32, v_2: BIR.Block, v_4: cps_provider_8_JsCtx) -> EmitterProgress<String>:
+  +v_8 = v_1011144
+  v_1011145 = {"function " : String}
+  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_cont_name{v_1}}, False{}, v_1011165 => emitter_body_cps_provider_8_cont_name(v_1), v_1011164 => +v_1011146 = emitter_unbox(String, v_1011164); emitter_continuation_2453(v_1, v_8, v_2, v_4, v_1011145, v_1011146)}
 
 def emitter_body_cps_provider_8_cont_of(+v_1: U32, +v_2: BIR.Block, v_4: cps_provider_8_JsCtx) -> EmitterProgress<String>:
-  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_caps_of{v_2, Some{v_1}}}, False{}, v_1011162 => emitter_body_cps_provider_8_caps_of(v_2, Some{v_1}), v_1011161 => +v_1011139 = emitter_unbox(cps_provider_8_Caps, v_1011161); emitter_continuation_2453(v_1011139, v_1, v_2, v_4)}
+  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_caps_of{v_2, Some{v_1}}}, False{}, v_1011167 => emitter_body_cps_provider_8_caps_of(v_2, Some{v_1}), v_1011166 => +v_1011144 = emitter_unbox(cps_provider_8_Caps, v_1011166); emitter_continuation_2454(v_1011144, v_1, v_2, v_4)}
 
-def emitter_continuation_2454(+v_10: cps_provider_8_Caps, v_4: BIR.Block, v_6: cps_provider_8_JsCtx, v_1011164: String, +v_1011165: String) -> EmitterProgress<String>:
-  v_1011166 = {"($x,$base,$td=0){" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_cap_binds{emitter_pure_cps_provider_8_caps_locals(v_10), 0n}}, False{}, v_1011178 => emitter_body_cps_provider_8_cap_binds(emitter_pure_cps_provider_8_caps_locals(v_10), 0n), v_1011177 => +v_1011167 = emitter_unbox(String, v_1011177); EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_slot_binds{emitter_pure_cps_provider_8_caps_slots(v_10), List.length(&2, U32, emitter_pure_cps_provider_8_caps_locals(v_10))}}, False{}, v_1011176 => emitter_body_cps_provider_8_slot_binds(emitter_pure_cps_provider_8_caps_slots(v_10), List.length(&2, U32, emitter_pure_cps_provider_8_caps_locals(v_10))), v_1011175 => +v_1011168 = emitter_unbox(String, v_1011175); EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_block{v_4, v_6}}, False{}, v_1011174 => emitter_body_cps_provider_8_block(v_4, v_6), v_1011173 => +v_1011169 = emitter_unbox(String, v_1011173); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011164, v_1011165, v_1011166, v_1011167, v_1011168, v_1011169, "}\n"]}}, False{}, v_1011172 => emitter_body_cps_provider_8_cat([v_1011164, v_1011165, v_1011166, v_1011167, v_1011168, v_1011169, "}\n"]), v_1011171 => +v_1011170 = emitter_unbox(String, v_1011171); EmitterFinished{EmitterValue{v_1011170}}}}}}
+def emitter_continuation_2455(+v_10: cps_provider_8_Caps, v_4: BIR.Block, v_6: cps_provider_8_JsCtx, v_1011169: String, +v_1011170: String) -> EmitterProgress<String>:
+  v_1011171 = {"($x,$base,$td=0){" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_cap_binds{emitter_pure_cps_provider_8_caps_locals(v_10), 0n}}, False{}, v_1011183 => emitter_body_cps_provider_8_cap_binds(emitter_pure_cps_provider_8_caps_locals(v_10), 0n), v_1011182 => +v_1011172 = emitter_unbox(String, v_1011182); EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_slot_binds{emitter_pure_cps_provider_8_caps_slots(v_10), List.length(&2, U32, emitter_pure_cps_provider_8_caps_locals(v_10))}}, False{}, v_1011181 => emitter_body_cps_provider_8_slot_binds(emitter_pure_cps_provider_8_caps_slots(v_10), List.length(&2, U32, emitter_pure_cps_provider_8_caps_locals(v_10))), v_1011180 => +v_1011173 = emitter_unbox(String, v_1011180); EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_block{v_4, v_6}}, False{}, v_1011179 => emitter_body_cps_provider_8_block(v_4, v_6), v_1011178 => +v_1011174 = emitter_unbox(String, v_1011178); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011169, v_1011170, v_1011171, v_1011172, v_1011173, v_1011174, "}\n"]}}, False{}, v_1011177 => emitter_body_cps_provider_8_cat([v_1011169, v_1011170, v_1011171, v_1011172, v_1011173, v_1011174, "}\n"]), v_1011176 => +v_1011175 = emitter_unbox(String, v_1011176); EmitterFinished{EmitterValue{v_1011175}}}}}}
 
-def emitter_continuation_2455(+v_1011163: cps_provider_8_Caps, v_1: String, v_3: U32, v_4: BIR.Block, v_6: cps_provider_8_JsCtx) -> EmitterProgress<String>:
-  +v_10 = v_1011163
-  v_1011164 = {"function " : String}
-  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_thunk_name{v_1, v_3}}, False{}, v_1011180 => emitter_body_cps_provider_8_thunk_name(v_1, v_3), v_1011179 => +v_1011165 = emitter_unbox(String, v_1011179); emitter_continuation_2454(v_10, v_4, v_6, v_1011164, v_1011165)}
+def emitter_continuation_2456(+v_1011168: cps_provider_8_Caps, v_1: String, v_3: U32, v_4: BIR.Block, v_6: cps_provider_8_JsCtx) -> EmitterProgress<String>:
+  +v_10 = v_1011168
+  v_1011169 = {"function " : String}
+  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_thunk_name{v_1, v_3}}, False{}, v_1011185 => emitter_body_cps_provider_8_thunk_name(v_1, v_3), v_1011184 => +v_1011170 = emitter_unbox(String, v_1011184); emitter_continuation_2455(v_10, v_4, v_6, v_1011169, v_1011170)}
 
 def emitter_body_cps_provider_8_thunk_of(v_1: String, v_3: U32, +v_4: BIR.Block, v_6: cps_provider_8_JsCtx) -> EmitterProgress<String>:
-  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_caps_of{v_4, None{}}}, False{}, v_1011182 => emitter_body_cps_provider_8_caps_of(v_4, None{}), v_1011181 => +v_1011163 = emitter_unbox(cps_provider_8_Caps, v_1011181); emitter_continuation_2455(v_1011163, v_1, v_3, v_4, v_6)}
+  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_caps_of{v_4, None{}}}, False{}, v_1011187 => emitter_body_cps_provider_8_caps_of(v_4, None{}), v_1011186 => +v_1011168 = emitter_unbox(cps_provider_8_Caps, v_1011186); emitter_continuation_2456(v_1011168, v_1, v_3, v_4, v_6)}
 
-def emitter_continuation_2456(v_2: BIR.Block, v_5: cps_provider_8_JsCtx, v_1: U32, +v_1011184: String, +v_1011185: String, v_1011186: String, +v_1011187: String, v_1011188: String, +v_1011189: Nat, v_1011190: String, +v_1011191: Nat) -> EmitterProgress<String>:
-  v_1011192 = {");" : String}
-  v_1011193 = {v_2 : BIR.Block}
-  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_ctx_inside{v_5, v_1}}, False{}, v_1011202 => emitter_body_cps_provider_8_js_ctx_inside(v_5, v_1), v_1011201 => +v_1011194 = emitter_unbox(cps_provider_8_JsCtx, v_1011201); EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_block{v_1011193, v_1011194}}, False{}, v_1011200 => emitter_body_cps_provider_8_block(v_1011193, v_1011194), v_1011199 => +v_1011195 = emitter_unbox(String, v_1011199); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011184, v_1011185, v_1011186, v_1011187, v_1011188, Nat.show(v_1011189), v_1011190, Nat.show(v_1011191), v_1011192, v_1011195]}}, False{}, v_1011198 => emitter_body_cps_provider_8_cat([v_1011184, v_1011185, v_1011186, v_1011187, v_1011188, Nat.show(v_1011189), v_1011190, Nat.show(v_1011191), v_1011192, v_1011195]), v_1011197 => +v_1011196 = emitter_unbox(String, v_1011197); EmitterFinished{EmitterValue{v_1011196}}}}}
+def emitter_continuation_2457(v_2: BIR.Block, v_5: cps_provider_8_JsCtx, v_1: U32, +v_1011189: String, +v_1011190: String, v_1011191: String, +v_1011192: String, v_1011193: String, +v_1011194: Nat, v_1011195: String, +v_1011196: Nat) -> EmitterProgress<String>:
+  v_1011197 = {");" : String}
+  v_1011198 = {v_2 : BIR.Block}
+  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_ctx_inside{v_5, v_1}}, False{}, v_1011207 => emitter_body_cps_provider_8_js_ctx_inside(v_5, v_1), v_1011206 => +v_1011199 = emitter_unbox(cps_provider_8_JsCtx, v_1011206); EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_block{v_1011198, v_1011199}}, False{}, v_1011205 => emitter_body_cps_provider_8_block(v_1011198, v_1011199), v_1011204 => +v_1011200 = emitter_unbox(String, v_1011204); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011189, v_1011190, v_1011191, v_1011192, v_1011193, Nat.show(v_1011194), v_1011195, Nat.show(v_1011196), v_1011197, v_1011200]}}, False{}, v_1011203 => emitter_body_cps_provider_8_cat([v_1011189, v_1011190, v_1011191, v_1011192, v_1011193, Nat.show(v_1011194), v_1011195, Nat.show(v_1011196), v_1011197, v_1011200]), v_1011202 => +v_1011201 = emitter_unbox(String, v_1011202); EmitterFinished{EmitterValue{v_1011201}}}}}
 
-def emitter_continuation_2457(+v_9: cps_provider_8_Caps, v_2: BIR.Block, v_5: cps_provider_8_JsCtx, v_1: U32, +v_1011184: String, +v_1011185: String, v_1011186: String, +v_1011187: String, v_1011188: String, +v_1011189: Nat) -> EmitterProgress<String>:
-  v_1011190 = {"," : String}
-  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_cap_total{v_9}}, False{}, v_1011204 => emitter_body_cps_provider_8_cap_total(v_9), v_1011203 => +v_1011191 = emitter_unbox(Nat, v_1011203); emitter_continuation_2456(v_2, v_5, v_1, v_1011184, v_1011185, v_1011186, v_1011187, v_1011188, v_1011189, v_1011190, v_1011191)}
+def emitter_continuation_2458(+v_9: cps_provider_8_Caps, v_2: BIR.Block, v_5: cps_provider_8_JsCtx, v_1: U32, +v_1011189: String, +v_1011190: String, v_1011191: String, +v_1011192: String, v_1011193: String, +v_1011194: Nat) -> EmitterProgress<String>:
+  v_1011195 = {"," : String}
+  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_cap_total{v_9}}, False{}, v_1011209 => emitter_body_cps_provider_8_cap_total(v_9), v_1011208 => +v_1011196 = emitter_unbox(Nat, v_1011208); emitter_continuation_2457(v_2, v_5, v_1, v_1011189, v_1011190, v_1011191, v_1011192, v_1011193, v_1011194, v_1011195, v_1011196)}
 
-def emitter_continuation_2458(+v_9: cps_provider_8_Caps, v_2: BIR.Block, v_5: cps_provider_8_JsCtx, v_1: U32, +v_1011184: String, +v_1011185: String, v_1011186: String, +v_1011187: String) -> EmitterProgress<String>:
-  v_1011188 = {",$sp-" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_cap_total{v_9}}, False{}, v_1011206 => emitter_body_cps_provider_8_cap_total(v_9), v_1011205 => +v_1011189 = emitter_unbox(Nat, v_1011205); emitter_continuation_2457(v_9, v_2, v_5, v_1, v_1011184, v_1011185, v_1011186, v_1011187, v_1011188, v_1011189)}
+def emitter_continuation_2459(+v_9: cps_provider_8_Caps, v_2: BIR.Block, v_5: cps_provider_8_JsCtx, v_1: U32, +v_1011189: String, +v_1011190: String, v_1011191: String, +v_1011192: String) -> EmitterProgress<String>:
+  v_1011193 = {",$sp-" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_cap_total{v_9}}, False{}, v_1011211 => emitter_body_cps_provider_8_cap_total(v_9), v_1011210 => +v_1011194 = emitter_unbox(Nat, v_1011210); emitter_continuation_2458(v_9, v_2, v_5, v_1, v_1011189, v_1011190, v_1011191, v_1011192, v_1011193, v_1011194)}
 
-def emitter_continuation_2459(+v_5: cps_provider_8_JsCtx, +v_1: U32, +v_9: cps_provider_8_Caps, v_2: BIR.Block, +v_1011184: String, +v_1011185: String) -> EmitterProgress<String>:
-  v_1011186 = {"$frame(" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_thunk_name{emitter_pure_cps_provider_8_js_ctx_owner(v_5), v_1}}, False{}, v_1011208 => emitter_body_cps_provider_8_thunk_name(emitter_pure_cps_provider_8_js_ctx_owner(v_5), v_1), v_1011207 => +v_1011187 = emitter_unbox(String, v_1011207); emitter_continuation_2458(v_9, v_2, v_5, v_1, v_1011184, v_1011185, v_1011186, v_1011187)}
+def emitter_continuation_2460(+v_5: cps_provider_8_JsCtx, +v_1: U32, +v_9: cps_provider_8_Caps, v_2: BIR.Block, +v_1011189: String, +v_1011190: String) -> EmitterProgress<String>:
+  v_1011191 = {"$frame(" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_thunk_name{emitter_pure_cps_provider_8_js_ctx_owner(v_5), v_1}}, False{}, v_1011213 => emitter_body_cps_provider_8_thunk_name(emitter_pure_cps_provider_8_js_ctx_owner(v_5), v_1), v_1011212 => +v_1011192 = emitter_unbox(String, v_1011212); emitter_continuation_2459(v_9, v_2, v_5, v_1, v_1011189, v_1011190, v_1011191, v_1011192)}
 
-def emitter_continuation_2460(+v_1011183: cps_provider_8_Caps, v_5: cps_provider_8_JsCtx, v_1: U32, v_2: BIR.Block) -> EmitterProgress<String>:
-  +v_9 = v_1011183
-  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_cap_stores{emitter_pure_cps_provider_8_caps_locals(v_9)}}, False{}, v_1011212 => emitter_body_cps_provider_8_cap_stores(emitter_pure_cps_provider_8_caps_locals(v_9)), v_1011211 => +v_1011184 = emitter_unbox(String, v_1011211); EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_slot_stores{emitter_pure_cps_provider_8_caps_slots(v_9)}}, False{}, v_1011210 => emitter_body_cps_provider_8_slot_stores(emitter_pure_cps_provider_8_caps_slots(v_9)), v_1011209 => +v_1011185 = emitter_unbox(String, v_1011209); emitter_continuation_2459(v_5, v_1, v_9, v_2, v_1011184, v_1011185)}}
+def emitter_continuation_2461(+v_1011188: cps_provider_8_Caps, v_5: cps_provider_8_JsCtx, v_1: U32, v_2: BIR.Block) -> EmitterProgress<String>:
+  +v_9 = v_1011188
+  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_cap_stores{emitter_pure_cps_provider_8_caps_locals(v_9)}}, False{}, v_1011217 => emitter_body_cps_provider_8_cap_stores(emitter_pure_cps_provider_8_caps_locals(v_9)), v_1011216 => +v_1011189 = emitter_unbox(String, v_1011216); EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_slot_stores{emitter_pure_cps_provider_8_caps_slots(v_9)}}, False{}, v_1011215 => emitter_body_cps_provider_8_slot_stores(emitter_pure_cps_provider_8_caps_slots(v_9)), v_1011214 => +v_1011190 = emitter_unbox(String, v_1011214); emitter_continuation_2460(v_5, v_1, v_9, v_2, v_1011189, v_1011190)}}
 
 def emitter_body_cps_provider_8_region_frame(v_1: U32, v_2: BIR.Block, v_3: BIR.Block, v_5: cps_provider_8_JsCtx) -> EmitterProgress<String>:
-  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_caps_of{v_3, None{}}}, False{}, v_1011214 => emitter_body_cps_provider_8_caps_of(v_3, None{}), v_1011213 => +v_1011183 = emitter_unbox(cps_provider_8_Caps, v_1011213); emitter_continuation_2460(v_1011183, v_5, v_1, v_2)}
+  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_caps_of{v_3, None{}}}, False{}, v_1011219 => emitter_body_cps_provider_8_caps_of(v_3, None{}), v_1011218 => +v_1011188 = emitter_unbox(cps_provider_8_Caps, v_1011218); emitter_continuation_2461(v_1011188, v_5, v_1, v_2)}
 
-def emitter_match_2461(+v_1011215: Bool, v_3: cps_provider_8_JsCtx, v_1: U32) -> EmitterProgress<String>:
-  match v_1011215:
+def emitter_match_2462(+v_1011220: Bool, v_3: cps_provider_8_JsCtx, v_1: U32) -> EmitterProgress<String>:
+  match v_1011220:
     case True{}:
-      v_1011216 = {"$leaveThunk=" : String}
-      EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_thunk_name{emitter_pure_cps_provider_8_js_ctx_owner(v_3), v_1}}, False{}, v_1011222 => emitter_body_cps_provider_8_thunk_name(emitter_pure_cps_provider_8_js_ctx_owner(v_3), v_1), v_1011221 => +v_1011217 = emitter_unbox(String, v_1011221); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011216, v_1011217, ";return $LEAVE_PENDING;"]}}, False{}, v_1011220 => emitter_body_cps_provider_8_cat([v_1011216, v_1011217, ";return $LEAVE_PENDING;"]), v_1011219 => +v_1011218 = emitter_unbox(String, v_1011219); EmitterFinished{EmitterValue{v_1011218}}}}
+      v_1011221 = {"$leaveThunk=" : String}
+      EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_thunk_name{emitter_pure_cps_provider_8_js_ctx_owner(v_3), v_1}}, False{}, v_1011227 => emitter_body_cps_provider_8_thunk_name(emitter_pure_cps_provider_8_js_ctx_owner(v_3), v_1), v_1011226 => +v_1011222 = emitter_unbox(String, v_1011226); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011221, v_1011222, ";return $LEAVE_PENDING;"]}}, False{}, v_1011225 => emitter_body_cps_provider_8_cat([v_1011221, v_1011222, ";return $LEAVE_PENDING;"]), v_1011224 => +v_1011223 = emitter_unbox(String, v_1011224); EmitterFinished{EmitterValue{v_1011223}}}}
     case False{}:
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{["break $case", U32.show(v_1), ";"]}}, False{}, v_1011225 => emitter_body_cps_provider_8_cat(["break $case", U32.show(v_1), ";"]), v_1011224 => +v_1011223 = emitter_unbox(String, v_1011224); EmitterFinished{EmitterValue{v_1011223}}}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{["break $case", U32.show(v_1), ";"]}}, False{}, v_1011230 => emitter_body_cps_provider_8_cat(["break $case", U32.show(v_1), ";"]), v_1011229 => +v_1011228 = emitter_unbox(String, v_1011229); EmitterFinished{EmitterValue{v_1011228}}}
 
 def emitter_body_cps_provider_8_leave_step(+v_1: U32, +v_3: cps_provider_8_JsCtx) -> EmitterProgress<String>:
-  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_ctx_has{v_3, v_1}}, False{}, v_1011227 => emitter_body_cps_provider_8_js_ctx_has(v_3, v_1), v_1011226 => +v_1011215 = emitter_unbox(Bool, v_1011226); emitter_match_2461(v_1011215, v_3, v_1)}
+  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_ctx_has{v_3, v_1}}, False{}, v_1011232 => emitter_body_cps_provider_8_js_ctx_has(v_3, v_1), v_1011231 => +v_1011220 = emitter_unbox(Bool, v_1011231); emitter_match_2462(v_1011220, v_3, v_1)}
 
-def emitter_match_2462(v_0: BIR.Block, +v_2: cps_provider_8_JsCtx) -> EmitterProgress<List<&2, String>>:
+def emitter_match_2463(v_0: BIR.Block, +v_2: cps_provider_8_JsCtx) -> EmitterProgress<List<&2, String>>:
   match v_0:
     case BIR.Let{v_8, v_9, v_10}:
-      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_conts_let{v_8, v_9, v_10, v_2}}, v_1011229 => +v_1011228 = emitter_unbox(List<&2, String>, v_1011229); EmitterFinished{EmitterValue{v_1011228}}}
+      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_conts_let{v_8, v_9, v_10, v_2}}, v_1011234 => +v_1011233 = emitter_unbox(List<&2, String>, v_1011234); EmitterFinished{EmitterValue{v_1011233}}}
     case BIR.Branch{_, v_16, v_17}:
-      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_conts{v_16, v_2}}, v_1011233 => +v_1011230 = emitter_unbox(List<&2, String>, v_1011233); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_conts{v_17, v_2}}, v_1011232 => +v_1011231 = emitter_unbox(List<&2, String>, v_1011232); EmitterFinished{EmitterValue{List.append(&2, String, v_1011230, v_1011231)}}}}
+      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_conts{v_16, v_2}}, v_1011238 => +v_1011235 = emitter_unbox(List<&2, String>, v_1011238); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_conts{v_17, v_2}}, v_1011237 => +v_1011236 = emitter_unbox(List<&2, String>, v_1011237); EmitterFinished{EmitterValue{List.append(&2, String, v_1011235, v_1011236)}}}}
     case BIR.Region{v_24, v_25, v_26}:
-      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_conts_region{v_24, v_25, v_26, v_2}}, v_1011235 => +v_1011234 = emitter_unbox(List<&2, String>, v_1011235); EmitterFinished{EmitterValue{v_1011234}}}
+      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_conts_region{v_24, v_25, v_26, v_2}}, v_1011240 => +v_1011239 = emitter_unbox(List<&2, String>, v_1011240); EmitterFinished{EmitterValue{v_1011239}}}
     case _:
       EmitterFinished{EmitterValue{[]}}
 
 def emitter_body_cps_provider_8_conts(v_0: BIR.Block, v_2: cps_provider_8_JsCtx) -> EmitterProgress<List<&2, String>>:
-  emitter_match_2462(v_0, v_2)
+  emitter_match_2463(v_0, v_2)
 
-def emitter_match_2463(v_1011236: Bool, v_1: U32, +v_3: BIR.Block, +v_5: cps_provider_8_JsCtx) -> EmitterProgress<List<&2, String>>:
-  match v_1011236:
+def emitter_match_2464(v_1011241: Bool, v_1: U32, +v_3: BIR.Block, +v_5: cps_provider_8_JsCtx) -> EmitterProgress<List<&2, String>>:
+  match v_1011241:
     case True{}:
-      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_cont_of{v_1, v_3, v_5}}, False{}, v_1011242 => emitter_body_cps_provider_8_cont_of(v_1, v_3, v_5), v_1011241 => +v_1011237 = emitter_unbox(String, v_1011241); EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_conts{v_3, v_5}}, False{}, v_1011240 => emitter_body_cps_provider_8_conts(v_3, v_5), v_1011239 => +v_1011238 = emitter_unbox(List<&2, String>, v_1011239); EmitterFinished{EmitterValue{v_1011237 <> v_1011238}}}}
+      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_cont_of{v_1, v_3, v_5}}, False{}, v_1011247 => emitter_body_cps_provider_8_cont_of(v_1, v_3, v_5), v_1011246 => +v_1011242 = emitter_unbox(String, v_1011246); EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_conts{v_3, v_5}}, False{}, v_1011245 => emitter_body_cps_provider_8_conts(v_3, v_5), v_1011244 => +v_1011243 = emitter_unbox(List<&2, String>, v_1011244); EmitterFinished{EmitterValue{v_1011242 <> v_1011243}}}}
     case False{}:
       emitter_body_cps_provider_8_conts(v_3, v_5)
 
 def emitter_body_cps_provider_8_conts_let(v_1: U32, v_2: BIR.Op, v_3: BIR.Block, v_5: cps_provider_8_JsCtx) -> EmitterProgress<List<&2, String>>:
-  v_1011236 = {emitter_pure_cps_provider_8_split_op(v_2) : Bool}
-  emitter_match_2463(v_1011236, v_1, v_3, v_5)
+  v_1011241 = {emitter_pure_cps_provider_8_split_op(v_2) : Bool}
+  emitter_match_2464(v_1011241, v_1, v_3, v_5)
 
-def emitter_continuation_2464(v_2: BIR.Block, +v_5: cps_provider_8_JsCtx, v_1: U32, v_3: BIR.Block, +v_1011245: String) -> EmitterProgress<List<&2, String>>:
-  v_1011246 = {v_2 : BIR.Block}
-  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_ctx_inside{v_5, v_1}}, False{}, v_1011255 => emitter_body_cps_provider_8_js_ctx_inside(v_5, v_1), v_1011254 => +v_1011247 = emitter_unbox(cps_provider_8_JsCtx, v_1011254); EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_conts{v_1011246, v_1011247}}, False{}, v_1011253 => emitter_body_cps_provider_8_conts(v_1011246, v_1011247), v_1011252 => +v_1011248 = emitter_unbox(List<&2, String>, v_1011252); EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_conts{v_3, v_5}}, False{}, v_1011251 => emitter_body_cps_provider_8_conts(v_3, v_5), v_1011250 => +v_1011249 = emitter_unbox(List<&2, String>, v_1011250); EmitterFinished{EmitterValue{v_1011245 <> List.append(&2, String, v_1011248, v_1011249)}}}}}
+def emitter_continuation_2465(v_2: BIR.Block, +v_5: cps_provider_8_JsCtx, v_1: U32, v_3: BIR.Block, +v_1011250: String) -> EmitterProgress<List<&2, String>>:
+  v_1011251 = {v_2 : BIR.Block}
+  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_ctx_inside{v_5, v_1}}, False{}, v_1011260 => emitter_body_cps_provider_8_js_ctx_inside(v_5, v_1), v_1011259 => +v_1011252 = emitter_unbox(cps_provider_8_JsCtx, v_1011259); EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_conts{v_1011251, v_1011252}}, False{}, v_1011258 => emitter_body_cps_provider_8_conts(v_1011251, v_1011252), v_1011257 => +v_1011253 = emitter_unbox(List<&2, String>, v_1011257); EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_conts{v_3, v_5}}, False{}, v_1011256 => emitter_body_cps_provider_8_conts(v_3, v_5), v_1011255 => +v_1011254 = emitter_unbox(List<&2, String>, v_1011255); EmitterFinished{EmitterValue{v_1011250 <> List.append(&2, String, v_1011253, v_1011254)}}}}}
 
-def emitter_match_2465(+v_1011244: Bool, +v_5: cps_provider_8_JsCtx, +v_1: U32, +v_3: BIR.Block, v_2: BIR.Block) -> EmitterProgress<List<&2, String>>:
-  match v_1011244:
+def emitter_match_2466(+v_1011249: Bool, +v_5: cps_provider_8_JsCtx, +v_1: U32, +v_3: BIR.Block, v_2: BIR.Block) -> EmitterProgress<List<&2, String>>:
+  match v_1011249:
     case True{}:
-      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_thunk_of{emitter_pure_cps_provider_8_js_ctx_owner(v_5), v_1, v_3, v_5}}, False{}, v_1011257 => emitter_body_cps_provider_8_thunk_of(emitter_pure_cps_provider_8_js_ctx_owner(v_5), v_1, v_3, v_5), v_1011256 => +v_1011245 = emitter_unbox(String, v_1011256); emitter_continuation_2464(v_2, v_5, v_1, v_3, v_1011245)}
+      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_thunk_of{emitter_pure_cps_provider_8_js_ctx_owner(v_5), v_1, v_3, v_5}}, False{}, v_1011262 => emitter_body_cps_provider_8_thunk_of(emitter_pure_cps_provider_8_js_ctx_owner(v_5), v_1, v_3, v_5), v_1011261 => +v_1011250 = emitter_unbox(String, v_1011261); emitter_continuation_2465(v_2, v_5, v_1, v_3, v_1011250)}
     case False{}:
-      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_conts{v_2, v_5}}, False{}, v_1011263 => emitter_body_cps_provider_8_conts(v_2, v_5), v_1011262 => +v_1011258 = emitter_unbox(List<&2, String>, v_1011262); EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_conts{v_3, v_5}}, False{}, v_1011261 => emitter_body_cps_provider_8_conts(v_3, v_5), v_1011260 => +v_1011259 = emitter_unbox(List<&2, String>, v_1011260); EmitterFinished{EmitterValue{List.append(&2, String, v_1011258, v_1011259)}}}}
+      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_conts{v_2, v_5}}, False{}, v_1011268 => emitter_body_cps_provider_8_conts(v_2, v_5), v_1011267 => +v_1011263 = emitter_unbox(List<&2, String>, v_1011267); EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_conts{v_3, v_5}}, False{}, v_1011266 => emitter_body_cps_provider_8_conts(v_3, v_5), v_1011265 => +v_1011264 = emitter_unbox(List<&2, String>, v_1011265); EmitterFinished{EmitterValue{List.append(&2, String, v_1011263, v_1011264)}}}}
 
 def emitter_body_cps_provider_8_conts_region(+v_1: U32, +v_2: BIR.Block, v_3: BIR.Block, v_5: cps_provider_8_JsCtx) -> EmitterProgress<List<&2, String>>:
-  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_region_needs_frame{v_2, v_1}}, False{}, v_1011265 => emitter_body_cps_provider_8_region_needs_frame(v_2, v_1), v_1011264 => +v_1011244 = emitter_unbox(Bool, v_1011264); emitter_match_2465(v_1011244, v_5, v_1, v_3, v_2)}
+  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_region_needs_frame{v_2, v_1}}, False{}, v_1011270 => emitter_body_cps_provider_8_region_needs_frame(v_2, v_1), v_1011269 => +v_1011249 = emitter_unbox(Bool, v_1011269); emitter_match_2466(v_1011249, v_5, v_1, v_3, v_2)}
 
 def emitter_body_cps_provider_8_primitive_name(v_0: BIR.Primitive) -> EmitterProgress<String>:
   match v_0:
@@ -26772,433 +26792,433 @@ def emitter_body_cps_provider_8_quantities(v_1: List<&2, BIR.Quantity>) -> Emitt
     case []:
       EmitterFinished{EmitterValue{[]}}
     case v_6 <> v_7:
-      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_quantity{v_6}}, False{}, v_1011271 => emitter_body_cps_provider_8_quantity(v_6), v_1011270 => +v_1011267 = emitter_unbox(String, v_1011270); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_quantities{v_7}}, v_1011269 => +v_1011268 = emitter_unbox(List<&2, String>, v_1011269); EmitterFinished{EmitterValue{v_1011267 <> v_1011268}}}}
+      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_quantity{v_6}}, False{}, v_1011276 => emitter_body_cps_provider_8_quantity(v_6), v_1011275 => +v_1011272 = emitter_unbox(String, v_1011275); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_quantities{v_7}}, v_1011274 => +v_1011273 = emitter_unbox(List<&2, String>, v_1011274); EmitterFinished{EmitterValue{v_1011272 <> v_1011273}}}}
 
-def emitter_continuation_2471(v_9: List<&2, BIR.DescriptorPattern>, v_1011279: String, +v_1011280: String) -> EmitterProgress<String>:
-  v_1011281 = {",s:\"\",i:{},fields:[" : String}
-  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor_patterns{v_9}}, v_1011286 => +v_1011282 = emitter_unbox(List<&2, String>, v_1011286); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011279, v_1011280, v_1011281, String.join(v_1011282, ","), "]})"]}}, False{}, v_1011285 => emitter_body_cps_provider_8_cat([v_1011279, v_1011280, v_1011281, String.join(v_1011282, ","), "]})"]), v_1011284 => +v_1011283 = emitter_unbox(String, v_1011284); EmitterFinished{EmitterValue{v_1011283}}}}
+def emitter_continuation_2472(v_9: List<&2, BIR.DescriptorPattern>, v_1011284: String, +v_1011285: String) -> EmitterProgress<String>:
+  v_1011286 = {",s:\"\",i:{},fields:[" : String}
+  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor_patterns{v_9}}, v_1011291 => +v_1011287 = emitter_unbox(List<&2, String>, v_1011291); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011284, v_1011285, v_1011286, String.join(v_1011287, ","), "]})"]}}, False{}, v_1011290 => emitter_body_cps_provider_8_cat([v_1011284, v_1011285, v_1011286, String.join(v_1011287, ","), "]})"]), v_1011289 => +v_1011288 = emitter_unbox(String, v_1011289); EmitterFinished{EmitterValue{v_1011288}}}}
 
 def emitter_body_cps_provider_8_descriptor_pattern(v_0: BIR.DescriptorPattern) -> EmitterProgress<String>:
   match v_0:
     case BIR.DescriptorBinder{v_3}:
-      v_1011272 = {"({v:true,q:" : String}
-      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_quantity{v_3}}, False{}, v_1011278 => emitter_body_cps_provider_8_quantity(v_3), v_1011277 => +v_1011273 = emitter_unbox(String, v_1011277); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011272, v_1011273, "})"]}}, False{}, v_1011276 => emitter_body_cps_provider_8_cat([v_1011272, v_1011273, "})"]), v_1011275 => +v_1011274 = emitter_unbox(String, v_1011275); EmitterFinished{EmitterValue{v_1011274}}}}
+      v_1011277 = {"({v:true,q:" : String}
+      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_quantity{v_3}}, False{}, v_1011283 => emitter_body_cps_provider_8_quantity(v_3), v_1011282 => +v_1011278 = emitter_unbox(String, v_1011282); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011277, v_1011278, "})"]}}, False{}, v_1011281 => emitter_body_cps_provider_8_cat([v_1011277, v_1011278, "})"]), v_1011280 => +v_1011279 = emitter_unbox(String, v_1011280); EmitterFinished{EmitterValue{v_1011279}}}}
     case BIR.DescriptorConstructorPattern{v_8, v_9}:
-      v_1011279 = {"({c:" : String}
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_8}}, False{}, v_1011288 => emitter_body_cps_provider_8_js_quote(v_8), v_1011287 => +v_1011280 = emitter_unbox(String, v_1011287); emitter_continuation_2471(v_9, v_1011279, v_1011280)}
+      v_1011284 = {"({c:" : String}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_8}}, False{}, v_1011293 => emitter_body_cps_provider_8_js_quote(v_8), v_1011292 => +v_1011285 = emitter_unbox(String, v_1011292); emitter_continuation_2472(v_9, v_1011284, v_1011285)}
 
 def emitter_body_cps_provider_8_descriptor_patterns(v_1: List<&2, BIR.DescriptorPattern>) -> EmitterProgress<List<&2, String>>:
   match v_1:
     case []:
       EmitterFinished{EmitterValue{[]}}
     case v_6 <> v_7:
-      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor_pattern{v_6}}, False{}, v_1011293 => emitter_body_cps_provider_8_descriptor_pattern(v_6), v_1011292 => +v_1011289 = emitter_unbox(String, v_1011292); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor_patterns{v_7}}, v_1011291 => +v_1011290 = emitter_unbox(List<&2, String>, v_1011291); EmitterFinished{EmitterValue{v_1011289 <> v_1011290}}}}
+      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor_pattern{v_6}}, False{}, v_1011298 => emitter_body_cps_provider_8_descriptor_pattern(v_6), v_1011297 => +v_1011294 = emitter_unbox(String, v_1011297); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor_patterns{v_7}}, v_1011296 => +v_1011295 = emitter_unbox(List<&2, String>, v_1011296); EmitterFinished{EmitterValue{v_1011294 <> v_1011295}}}}
 
 def emitter_body_cps_provider_8_descriptors(v_1: List<&2, BIR.Descriptor>) -> EmitterProgress<List<&2, String>>:
   match v_1:
     case []:
       EmitterFinished{EmitterValue{[]}}
     case v_6 <> v_7:
-      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_6}}, v_1011297 => +v_1011294 = emitter_unbox(String, v_1011297); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptors{v_7}}, v_1011296 => +v_1011295 = emitter_unbox(List<&2, String>, v_1011296); EmitterFinished{EmitterValue{v_1011294 <> v_1011295}}}}
+      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_6}}, v_1011302 => +v_1011299 = emitter_unbox(String, v_1011302); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptors{v_7}}, v_1011301 => +v_1011300 = emitter_unbox(List<&2, String>, v_1011301); EmitterFinished{EmitterValue{v_1011299 <> v_1011300}}}}
 
-def emitter_continuation_2475(v_6: List<&2, BIR.Descriptor>, v_1011301: String, +v_1011302: String) -> EmitterProgress<String>:
-  v_1011303 = {",a:[" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptors{v_6}}, False{}, v_1011309 => emitter_body_cps_provider_8_descriptors(v_6), v_1011308 => +v_1011304 = emitter_unbox(List<&2, String>, v_1011308); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011301, v_1011302, v_1011303, String.join(v_1011304, ","), "],s:\"\",i:{}})"]}}, False{}, v_1011307 => emitter_body_cps_provider_8_cat([v_1011301, v_1011302, v_1011303, String.join(v_1011304, ","), "],s:\"\",i:{}})"]), v_1011306 => +v_1011305 = emitter_unbox(String, v_1011306); EmitterFinished{EmitterValue{v_1011305}}}}
+def emitter_continuation_2476(v_6: List<&2, BIR.Descriptor>, v_1011306: String, +v_1011307: String) -> EmitterProgress<String>:
+  v_1011308 = {",a:[" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptors{v_6}}, False{}, v_1011314 => emitter_body_cps_provider_8_descriptors(v_6), v_1011313 => +v_1011309 = emitter_unbox(List<&2, String>, v_1011313); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011306, v_1011307, v_1011308, String.join(v_1011309, ","), "],s:\"\",i:{}})"]}}, False{}, v_1011312 => emitter_body_cps_provider_8_cat([v_1011306, v_1011307, v_1011308, String.join(v_1011309, ","), "],s:\"\",i:{}})"]), v_1011311 => +v_1011310 = emitter_unbox(String, v_1011311); EmitterFinished{EmitterValue{v_1011310}}}}
 
-def emitter_continuation_2476(v_25: BIR.Descriptor, v_1011331: String, +v_1011332: String) -> EmitterProgress<String>:
-  v_1011333 = {",right:" : String}
-  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_25}}, v_1011338 => +v_1011334 = emitter_unbox(String, v_1011338); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011331, v_1011332, v_1011333, v_1011334, "})"]}}, False{}, v_1011337 => emitter_body_cps_provider_8_cat([v_1011331, v_1011332, v_1011333, v_1011334, "})"]), v_1011336 => +v_1011335 = emitter_unbox(String, v_1011336); EmitterFinished{EmitterValue{v_1011335}}}}
+def emitter_continuation_2477(v_25: BIR.Descriptor, v_1011336: String, +v_1011337: String) -> EmitterProgress<String>:
+  v_1011338 = {",right:" : String}
+  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_25}}, v_1011343 => +v_1011339 = emitter_unbox(String, v_1011343); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011336, v_1011337, v_1011338, v_1011339, "})"]}}, False{}, v_1011342 => emitter_body_cps_provider_8_cat([v_1011336, v_1011337, v_1011338, v_1011339, "})"]), v_1011341 => +v_1011340 = emitter_unbox(String, v_1011341); EmitterFinished{EmitterValue{v_1011340}}}}
 
-def emitter_continuation_2477(v_34: BIR.Descriptor, v_1011340: String, +v_1011341: String, v_1011342: String, +v_1011343: String) -> EmitterProgress<String>:
-  v_1011344 = {",body:" : String}
-  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_34}}, v_1011349 => +v_1011345 = emitter_unbox(String, v_1011349); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011340, v_1011341, v_1011342, v_1011343, v_1011344, v_1011345, "})"]}}, False{}, v_1011348 => emitter_body_cps_provider_8_cat([v_1011340, v_1011341, v_1011342, v_1011343, v_1011344, v_1011345, "})"]), v_1011347 => +v_1011346 = emitter_unbox(String, v_1011347); EmitterFinished{EmitterValue{v_1011346}}}}
+def emitter_continuation_2478(v_34: BIR.Descriptor, v_1011345: String, +v_1011346: String, v_1011347: String, +v_1011348: String) -> EmitterProgress<String>:
+  v_1011349 = {",body:" : String}
+  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_34}}, v_1011354 => +v_1011350 = emitter_unbox(String, v_1011354); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011345, v_1011346, v_1011347, v_1011348, v_1011349, v_1011350, "})"]}}, False{}, v_1011353 => emitter_body_cps_provider_8_cat([v_1011345, v_1011346, v_1011347, v_1011348, v_1011349, v_1011350, "})"]), v_1011352 => +v_1011351 = emitter_unbox(String, v_1011352); EmitterFinished{EmitterValue{v_1011351}}}}
 
-def emitter_continuation_2478(v_32: BIR.Quantity, v_34: BIR.Descriptor, v_1011340: String, +v_1011341: String) -> EmitterProgress<String>:
-  v_1011342 = {",q:" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_quantity{v_32}}, False{}, v_1011351 => emitter_body_cps_provider_8_quantity(v_32), v_1011350 => +v_1011343 = emitter_unbox(String, v_1011350); emitter_continuation_2477(v_34, v_1011340, v_1011341, v_1011342, v_1011343)}
+def emitter_continuation_2479(v_32: BIR.Quantity, v_34: BIR.Descriptor, v_1011345: String, +v_1011346: String) -> EmitterProgress<String>:
+  v_1011347 = {",q:" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_quantity{v_32}}, False{}, v_1011356 => emitter_body_cps_provider_8_quantity(v_32), v_1011355 => +v_1011348 = emitter_unbox(String, v_1011355); emitter_continuation_2478(v_34, v_1011345, v_1011346, v_1011347, v_1011348)}
 
-def emitter_continuation_2479(v_41: Maybe<&2, BIR.Quantity>, v_1011353: String, +v_1011354: String) -> EmitterProgress<String>:
-  v_1011355 = {",q:" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_optional_quantity{v_41}}, False{}, v_1011361 => emitter_body_cps_provider_8_optional_quantity(v_41), v_1011360 => +v_1011356 = emitter_unbox(String, v_1011360); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011353, v_1011354, v_1011355, v_1011356, "})"]}}, False{}, v_1011359 => emitter_body_cps_provider_8_cat([v_1011353, v_1011354, v_1011355, v_1011356, "})"]), v_1011358 => +v_1011357 = emitter_unbox(String, v_1011358); EmitterFinished{EmitterValue{v_1011357}}}}
+def emitter_continuation_2480(v_41: Maybe<&2, BIR.Quantity>, v_1011358: String, +v_1011359: String) -> EmitterProgress<String>:
+  v_1011360 = {",q:" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_optional_quantity{v_41}}, False{}, v_1011366 => emitter_body_cps_provider_8_optional_quantity(v_41), v_1011365 => +v_1011361 = emitter_unbox(String, v_1011365); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011358, v_1011359, v_1011360, v_1011361, "})"]}}, False{}, v_1011364 => emitter_body_cps_provider_8_cat([v_1011358, v_1011359, v_1011360, v_1011361, "})"]), v_1011363 => +v_1011362 = emitter_unbox(String, v_1011363); EmitterFinished{EmitterValue{v_1011362}}}}
 
-def emitter_continuation_2480(v_49: List<&2, BIR.Descriptor>, v_1011363: String, +v_1011364: String) -> EmitterProgress<String>:
-  v_1011365 = {",a:[" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptors{v_49}}, False{}, v_1011371 => emitter_body_cps_provider_8_descriptors(v_49), v_1011370 => +v_1011366 = emitter_unbox(List<&2, String>, v_1011370); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011363, v_1011364, v_1011365, String.join(v_1011366, ","), "],s:\"\",i:{}})"]}}, False{}, v_1011369 => emitter_body_cps_provider_8_cat([v_1011363, v_1011364, v_1011365, String.join(v_1011366, ","), "],s:\"\",i:{}})"]), v_1011368 => +v_1011367 = emitter_unbox(String, v_1011368); EmitterFinished{EmitterValue{v_1011367}}}}
+def emitter_continuation_2481(v_49: List<&2, BIR.Descriptor>, v_1011368: String, +v_1011369: String) -> EmitterProgress<String>:
+  v_1011370 = {",a:[" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptors{v_49}}, False{}, v_1011376 => emitter_body_cps_provider_8_descriptors(v_49), v_1011375 => +v_1011371 = emitter_unbox(List<&2, String>, v_1011375); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011368, v_1011369, v_1011370, String.join(v_1011371, ","), "],s:\"\",i:{}})"]}}, False{}, v_1011374 => emitter_body_cps_provider_8_cat([v_1011368, v_1011369, v_1011370, String.join(v_1011371, ","), "],s:\"\",i:{}})"]), v_1011373 => +v_1011372 = emitter_unbox(String, v_1011373); EmitterFinished{EmitterValue{v_1011372}}}}
 
-def emitter_continuation_2481(v_56: BIR.Descriptor, v_1011374: String, +v_1011375: String) -> EmitterProgress<String>:
-  v_1011376 = {",arg:" : String}
-  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_56}}, v_1011381 => +v_1011377 = emitter_unbox(String, v_1011381); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011374, v_1011375, v_1011376, v_1011377, "})"]}}, False{}, v_1011380 => emitter_body_cps_provider_8_cat([v_1011374, v_1011375, v_1011376, v_1011377, "})"]), v_1011379 => +v_1011378 = emitter_unbox(String, v_1011379); EmitterFinished{EmitterValue{v_1011378}}}}
+def emitter_continuation_2482(v_56: BIR.Descriptor, v_1011379: String, +v_1011380: String) -> EmitterProgress<String>:
+  v_1011381 = {",arg:" : String}
+  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_56}}, v_1011386 => +v_1011382 = emitter_unbox(String, v_1011386); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011379, v_1011380, v_1011381, v_1011382, "})"]}}, False{}, v_1011385 => emitter_body_cps_provider_8_cat([v_1011379, v_1011380, v_1011381, v_1011382, "})"]), v_1011384 => +v_1011383 = emitter_unbox(String, v_1011384); EmitterFinished{EmitterValue{v_1011383}}}}
 
-def emitter_continuation_2482(v_65: BIR.Descriptor, v_1011383: String, v_1011384: String, v_1011385: String, +v_1011386: String) -> EmitterProgress<String>:
-  v_1011387 = {",body:" : String}
-  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_65}}, v_1011392 => +v_1011388 = emitter_unbox(String, v_1011392); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011383, v_1011384, v_1011385, v_1011386, v_1011387, v_1011388, "})"]}}, False{}, v_1011391 => emitter_body_cps_provider_8_cat([v_1011383, v_1011384, v_1011385, v_1011386, v_1011387, v_1011388, "})"]), v_1011390 => +v_1011389 = emitter_unbox(String, v_1011390); EmitterFinished{EmitterValue{v_1011389}}}}
+def emitter_continuation_2483(v_65: BIR.Descriptor, v_1011388: String, v_1011389: String, v_1011390: String, +v_1011391: String) -> EmitterProgress<String>:
+  v_1011392 = {",body:" : String}
+  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_65}}, v_1011397 => +v_1011393 = emitter_unbox(String, v_1011397); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011388, v_1011389, v_1011390, v_1011391, v_1011392, v_1011393, "})"]}}, False{}, v_1011396 => emitter_body_cps_provider_8_cat([v_1011388, v_1011389, v_1011390, v_1011391, v_1011392, v_1011393, "})"]), v_1011395 => +v_1011394 = emitter_unbox(String, v_1011395); EmitterFinished{EmitterValue{v_1011394}}}}
 
-def emitter_continuation_2483(v_72: BIR.Descriptor, v_1011394: String, +v_1011395: List<&2, String>) -> EmitterProgress<String>:
-  v_1011396 = {"],body:" : String}
-  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_72}}, v_1011401 => +v_1011397 = emitter_unbox(String, v_1011401); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011394, String.join(v_1011395, ","), v_1011396, v_1011397, "})"]}}, False{}, v_1011400 => emitter_body_cps_provider_8_cat([v_1011394, String.join(v_1011395, ","), v_1011396, v_1011397, "})"]), v_1011399 => +v_1011398 = emitter_unbox(String, v_1011399); EmitterFinished{EmitterValue{v_1011398}}}}
+def emitter_continuation_2484(v_72: BIR.Descriptor, v_1011399: String, +v_1011400: List<&2, String>) -> EmitterProgress<String>:
+  v_1011401 = {"],body:" : String}
+  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_72}}, v_1011406 => +v_1011402 = emitter_unbox(String, v_1011406); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011399, String.join(v_1011400, ","), v_1011401, v_1011402, "})"]}}, False{}, v_1011405 => emitter_body_cps_provider_8_cat([v_1011399, String.join(v_1011400, ","), v_1011401, v_1011402, "})"]), v_1011404 => +v_1011403 = emitter_unbox(String, v_1011404); EmitterFinished{EmitterValue{v_1011403}}}}
 
-def emitter_continuation_2484(v_81: BIR.Descriptor, v_1011404: String, +v_1011405: List<&2, String>, v_1011406: String, +v_1011407: List<&2, String>) -> EmitterProgress<String>:
-  v_1011408 = {"],body:" : String}
-  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_81}}, v_1011413 => +v_1011409 = emitter_unbox(String, v_1011413); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011404, String.join(v_1011405, ","), v_1011406, String.join(v_1011407, ","), v_1011408, v_1011409, "})"]}}, False{}, v_1011412 => emitter_body_cps_provider_8_cat([v_1011404, String.join(v_1011405, ","), v_1011406, String.join(v_1011407, ","), v_1011408, v_1011409, "})"]), v_1011411 => +v_1011410 = emitter_unbox(String, v_1011411); EmitterFinished{EmitterValue{v_1011410}}}}
+def emitter_continuation_2485(v_81: BIR.Descriptor, v_1011409: String, +v_1011410: List<&2, String>, v_1011411: String, +v_1011412: List<&2, String>) -> EmitterProgress<String>:
+  v_1011413 = {"],body:" : String}
+  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_81}}, v_1011418 => +v_1011414 = emitter_unbox(String, v_1011418); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011409, String.join(v_1011410, ","), v_1011411, String.join(v_1011412, ","), v_1011413, v_1011414, "})"]}}, False{}, v_1011417 => emitter_body_cps_provider_8_cat([v_1011409, String.join(v_1011410, ","), v_1011411, String.join(v_1011412, ","), v_1011413, v_1011414, "})"]), v_1011416 => +v_1011415 = emitter_unbox(String, v_1011416); EmitterFinished{EmitterValue{v_1011415}}}}
 
-def emitter_continuation_2485(v_79: List<&2, BIR.DescriptorPattern>, v_81: BIR.Descriptor, v_1011404: String, +v_1011405: List<&2, String>) -> EmitterProgress<String>:
-  v_1011406 = {"],pat:[" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor_patterns{v_79}}, False{}, v_1011415 => emitter_body_cps_provider_8_descriptor_patterns(v_79), v_1011414 => +v_1011407 = emitter_unbox(List<&2, String>, v_1011414); emitter_continuation_2484(v_81, v_1011404, v_1011405, v_1011406, v_1011407)}
+def emitter_continuation_2486(v_79: List<&2, BIR.DescriptorPattern>, v_81: BIR.Descriptor, v_1011409: String, +v_1011410: List<&2, String>) -> EmitterProgress<String>:
+  v_1011411 = {"],pat:[" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor_patterns{v_79}}, False{}, v_1011420 => emitter_body_cps_provider_8_descriptor_patterns(v_79), v_1011419 => +v_1011412 = emitter_unbox(List<&2, String>, v_1011419); emitter_continuation_2485(v_81, v_1011409, v_1011410, v_1011411, v_1011412)}
 
-def emitter_continuation_2486(v_89: List<&2, BIR.Descriptor>, v_1011418: String, +v_1011419: List<&2, String>) -> EmitterProgress<String>:
-  v_1011420 = {"],cases:[" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptors{v_89}}, False{}, v_1011426 => emitter_body_cps_provider_8_descriptors(v_89), v_1011425 => +v_1011421 = emitter_unbox(List<&2, String>, v_1011425); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011418, String.join(v_1011419, ","), v_1011420, String.join(v_1011421, ","), "]})"]}}, False{}, v_1011424 => emitter_body_cps_provider_8_cat([v_1011418, String.join(v_1011419, ","), v_1011420, String.join(v_1011421, ","), "]})"]), v_1011423 => +v_1011422 = emitter_unbox(String, v_1011423); EmitterFinished{EmitterValue{v_1011422}}}}
+def emitter_continuation_2487(v_89: List<&2, BIR.Descriptor>, v_1011423: String, +v_1011424: List<&2, String>) -> EmitterProgress<String>:
+  v_1011425 = {"],cases:[" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptors{v_89}}, False{}, v_1011431 => emitter_body_cps_provider_8_descriptors(v_89), v_1011430 => +v_1011426 = emitter_unbox(List<&2, String>, v_1011430); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011423, String.join(v_1011424, ","), v_1011425, String.join(v_1011426, ","), "]})"]}}, False{}, v_1011429 => emitter_body_cps_provider_8_cat([v_1011423, String.join(v_1011424, ","), v_1011425, String.join(v_1011426, ","), "]})"]), v_1011428 => +v_1011427 = emitter_unbox(String, v_1011428); EmitterFinished{EmitterValue{v_1011427}}}}
 
-def emitter_continuation_2487(v_96: BIR.Descriptor, v_1011429: String, +v_1011430: List<&2, String>) -> EmitterProgress<String>:
-  v_1011431 = {"],body:" : String}
-  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_96}}, v_1011436 => +v_1011432 = emitter_unbox(String, v_1011436); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011429, String.join(v_1011430, ","), v_1011431, v_1011432, "})"]}}, False{}, v_1011435 => emitter_body_cps_provider_8_cat([v_1011429, String.join(v_1011430, ","), v_1011431, v_1011432, "})"]), v_1011434 => +v_1011433 = emitter_unbox(String, v_1011434); EmitterFinished{EmitterValue{v_1011433}}}}
+def emitter_continuation_2488(v_96: BIR.Descriptor, v_1011434: String, +v_1011435: List<&2, String>) -> EmitterProgress<String>:
+  v_1011436 = {"],body:" : String}
+  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_96}}, v_1011441 => +v_1011437 = emitter_unbox(String, v_1011441); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011434, String.join(v_1011435, ","), v_1011436, v_1011437, "})"]}}, False{}, v_1011440 => emitter_body_cps_provider_8_cat([v_1011434, String.join(v_1011435, ","), v_1011436, v_1011437, "})"]), v_1011439 => +v_1011438 = emitter_unbox(String, v_1011439); EmitterFinished{EmitterValue{v_1011438}}}}
 
-def emitter_continuation_2488(v_103: BIR.Descriptor, v_1011439: String, +v_1011440: String) -> EmitterProgress<String>:
-  v_1011441 = {",body:" : String}
-  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_103}}, v_1011446 => +v_1011442 = emitter_unbox(String, v_1011446); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011439, v_1011440, v_1011441, v_1011442, "})"]}}, False{}, v_1011445 => emitter_body_cps_provider_8_cat([v_1011439, v_1011440, v_1011441, v_1011442, "})"]), v_1011444 => +v_1011443 = emitter_unbox(String, v_1011444); EmitterFinished{EmitterValue{v_1011443}}}}
+def emitter_continuation_2489(v_103: BIR.Descriptor, v_1011444: String, +v_1011445: String) -> EmitterProgress<String>:
+  v_1011446 = {",body:" : String}
+  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_103}}, v_1011451 => +v_1011447 = emitter_unbox(String, v_1011451); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011444, v_1011445, v_1011446, v_1011447, "})"]}}, False{}, v_1011450 => emitter_body_cps_provider_8_cat([v_1011444, v_1011445, v_1011446, v_1011447, "})"]), v_1011449 => +v_1011448 = emitter_unbox(String, v_1011449); EmitterFinished{EmitterValue{v_1011448}}}}
 
-def emitter_continuation_2489(v_112: BIR.Descriptor, v_1011448: String, +v_1011449: String, v_1011450: String, +v_1011451: String) -> EmitterProgress<String>:
-  v_1011452 = {",ty:" : String}
-  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_112}}, v_1011457 => +v_1011453 = emitter_unbox(String, v_1011457); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011448, v_1011449, v_1011450, v_1011451, v_1011452, v_1011453, "})"]}}, False{}, v_1011456 => emitter_body_cps_provider_8_cat([v_1011448, v_1011449, v_1011450, v_1011451, v_1011452, v_1011453, "})"]), v_1011455 => +v_1011454 = emitter_unbox(String, v_1011455); EmitterFinished{EmitterValue{v_1011454}}}}
+def emitter_continuation_2490(v_112: BIR.Descriptor, v_1011453: String, +v_1011454: String, v_1011455: String, +v_1011456: String) -> EmitterProgress<String>:
+  v_1011457 = {",ty:" : String}
+  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_112}}, v_1011462 => +v_1011458 = emitter_unbox(String, v_1011462); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011453, v_1011454, v_1011455, v_1011456, v_1011457, v_1011458, "})"]}}, False{}, v_1011461 => emitter_body_cps_provider_8_cat([v_1011453, v_1011454, v_1011455, v_1011456, v_1011457, v_1011458, "})"]), v_1011460 => +v_1011459 = emitter_unbox(String, v_1011460); EmitterFinished{EmitterValue{v_1011459}}}}
 
-def emitter_continuation_2490(v_111: BIR.Descriptor, v_112: BIR.Descriptor, v_1011448: String, +v_1011449: String) -> EmitterProgress<String>:
-  v_1011450 = {",right:" : String}
-  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_111}}, v_1011458 => +v_1011451 = emitter_unbox(String, v_1011458); emitter_continuation_2489(v_112, v_1011448, v_1011449, v_1011450, v_1011451)}
+def emitter_continuation_2491(v_111: BIR.Descriptor, v_112: BIR.Descriptor, v_1011453: String, +v_1011454: String) -> EmitterProgress<String>:
+  v_1011455 = {",right:" : String}
+  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_111}}, v_1011463 => +v_1011456 = emitter_unbox(String, v_1011463); emitter_continuation_2490(v_112, v_1011453, v_1011454, v_1011455, v_1011456)}
 
-def emitter_continuation_2491(v_125: List<&2, BIR.Descriptor>, v_1011470: String, +v_1011471: String) -> EmitterProgress<String>:
-  v_1011472 = {",a:[" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptors{v_125}}, False{}, v_1011478 => emitter_body_cps_provider_8_descriptors(v_125), v_1011477 => +v_1011473 = emitter_unbox(List<&2, String>, v_1011477); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011470, v_1011471, v_1011472, String.join(v_1011473, ","), "],f:1})"]}}, False{}, v_1011476 => emitter_body_cps_provider_8_cat([v_1011470, v_1011471, v_1011472, String.join(v_1011473, ","), "],f:1})"]), v_1011475 => +v_1011474 = emitter_unbox(String, v_1011475); EmitterFinished{EmitterValue{v_1011474}}}}
+def emitter_continuation_2492(v_125: List<&2, BIR.Descriptor>, v_1011475: String, +v_1011476: String) -> EmitterProgress<String>:
+  v_1011477 = {",a:[" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptors{v_125}}, False{}, v_1011483 => emitter_body_cps_provider_8_descriptors(v_125), v_1011482 => +v_1011478 = emitter_unbox(List<&2, String>, v_1011482); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011475, v_1011476, v_1011477, String.join(v_1011478, ","), "],f:1})"]}}, False{}, v_1011481 => emitter_body_cps_provider_8_cat([v_1011475, v_1011476, v_1011477, String.join(v_1011478, ","), "],f:1})"]), v_1011480 => +v_1011479 = emitter_unbox(String, v_1011480); EmitterFinished{EmitterValue{v_1011479}}}}
 
-def emitter_continuation_2492(v_132: List<&2, BIR.Descriptor>, v_1011480: String, +v_1011481: String) -> EmitterProgress<String>:
-  v_1011482 = {",a:[" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptors{v_132}}, False{}, v_1011488 => emitter_body_cps_provider_8_descriptors(v_132), v_1011487 => +v_1011483 = emitter_unbox(List<&2, String>, v_1011487); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011480, v_1011481, v_1011482, String.join(v_1011483, ","), "],f:2})"]}}, False{}, v_1011486 => emitter_body_cps_provider_8_cat([v_1011480, v_1011481, v_1011482, String.join(v_1011483, ","), "],f:2})"]), v_1011485 => +v_1011484 = emitter_unbox(String, v_1011485); EmitterFinished{EmitterValue{v_1011484}}}}
+def emitter_continuation_2493(v_132: List<&2, BIR.Descriptor>, v_1011485: String, +v_1011486: String) -> EmitterProgress<String>:
+  v_1011487 = {",a:[" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptors{v_132}}, False{}, v_1011493 => emitter_body_cps_provider_8_descriptors(v_132), v_1011492 => +v_1011488 = emitter_unbox(List<&2, String>, v_1011492); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011485, v_1011486, v_1011487, String.join(v_1011488, ","), "],f:2})"]}}, False{}, v_1011491 => emitter_body_cps_provider_8_cat([v_1011485, v_1011486, v_1011487, String.join(v_1011488, ","), "],f:2})"]), v_1011490 => +v_1011489 = emitter_unbox(String, v_1011490); EmitterFinished{EmitterValue{v_1011489}}}}
 
-def emitter_continuation_2493(v_141: List<&2, BIR.Descriptor>, v_1011490: String, +v_1011491: String, v_1011492: String, +v_1011493: String) -> EmitterProgress<String>:
-  v_1011494 = {",a:[" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptors{v_141}}, False{}, v_1011500 => emitter_body_cps_provider_8_descriptors(v_141), v_1011499 => +v_1011495 = emitter_unbox(List<&2, String>, v_1011499); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011490, v_1011491, v_1011492, v_1011493, v_1011494, String.join(v_1011495, ","), "],s:\"\",i:{},f:1})"]}}, False{}, v_1011498 => emitter_body_cps_provider_8_cat([v_1011490, v_1011491, v_1011492, v_1011493, v_1011494, String.join(v_1011495, ","), "],s:\"\",i:{},f:1})"]), v_1011497 => +v_1011496 = emitter_unbox(String, v_1011497); EmitterFinished{EmitterValue{v_1011496}}}}
+def emitter_continuation_2494(v_141: List<&2, BIR.Descriptor>, v_1011495: String, +v_1011496: String, v_1011497: String, +v_1011498: String) -> EmitterProgress<String>:
+  v_1011499 = {",a:[" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptors{v_141}}, False{}, v_1011505 => emitter_body_cps_provider_8_descriptors(v_141), v_1011504 => +v_1011500 = emitter_unbox(List<&2, String>, v_1011504); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011495, v_1011496, v_1011497, v_1011498, v_1011499, String.join(v_1011500, ","), "],s:\"\",i:{},f:1})"]}}, False{}, v_1011503 => emitter_body_cps_provider_8_cat([v_1011495, v_1011496, v_1011497, v_1011498, v_1011499, String.join(v_1011500, ","), "],s:\"\",i:{},f:1})"]), v_1011502 => +v_1011501 = emitter_unbox(String, v_1011502); EmitterFinished{EmitterValue{v_1011501}}}}
 
-def emitter_continuation_2494(v_140: BIR.Descriptor, v_141: List<&2, BIR.Descriptor>, v_1011490: String, +v_1011491: String) -> EmitterProgress<String>:
-  v_1011492 = {",h:" : String}
-  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_140}}, v_1011501 => +v_1011493 = emitter_unbox(String, v_1011501); emitter_continuation_2493(v_141, v_1011490, v_1011491, v_1011492, v_1011493)}
+def emitter_continuation_2495(v_140: BIR.Descriptor, v_141: List<&2, BIR.Descriptor>, v_1011495: String, +v_1011496: String) -> EmitterProgress<String>:
+  v_1011497 = {",h:" : String}
+  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_140}}, v_1011506 => +v_1011498 = emitter_unbox(String, v_1011506); emitter_continuation_2494(v_141, v_1011495, v_1011496, v_1011497, v_1011498)}
 
-def emitter_continuation_2495(v_151: List<&2, BIR.Descriptor>, v_1011504: String, +v_1011505: String, v_1011506: String, +v_1011507: String) -> EmitterProgress<String>:
-  v_1011508 = {",a:[" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptors{v_151}}, False{}, v_1011514 => emitter_body_cps_provider_8_descriptors(v_151), v_1011513 => +v_1011509 = emitter_unbox(List<&2, String>, v_1011513); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011504, v_1011505, v_1011506, v_1011507, v_1011508, String.join(v_1011509, ","), "],s:\"\",i:{},f:2})"]}}, False{}, v_1011512 => emitter_body_cps_provider_8_cat([v_1011504, v_1011505, v_1011506, v_1011507, v_1011508, String.join(v_1011509, ","), "],s:\"\",i:{},f:2})"]), v_1011511 => +v_1011510 = emitter_unbox(String, v_1011511); EmitterFinished{EmitterValue{v_1011510}}}}
+def emitter_continuation_2496(v_151: List<&2, BIR.Descriptor>, v_1011509: String, +v_1011510: String, v_1011511: String, +v_1011512: String) -> EmitterProgress<String>:
+  v_1011513 = {",a:[" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptors{v_151}}, False{}, v_1011519 => emitter_body_cps_provider_8_descriptors(v_151), v_1011518 => +v_1011514 = emitter_unbox(List<&2, String>, v_1011518); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011509, v_1011510, v_1011511, v_1011512, v_1011513, String.join(v_1011514, ","), "],s:\"\",i:{},f:2})"]}}, False{}, v_1011517 => emitter_body_cps_provider_8_cat([v_1011509, v_1011510, v_1011511, v_1011512, v_1011513, String.join(v_1011514, ","), "],s:\"\",i:{},f:2})"]), v_1011516 => +v_1011515 = emitter_unbox(String, v_1011516); EmitterFinished{EmitterValue{v_1011515}}}}
 
-def emitter_continuation_2496(v_150: BIR.Descriptor, v_151: List<&2, BIR.Descriptor>, v_1011504: String, +v_1011505: String) -> EmitterProgress<String>:
-  v_1011506 = {",h:" : String}
-  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_150}}, v_1011515 => +v_1011507 = emitter_unbox(String, v_1011515); emitter_continuation_2495(v_151, v_1011504, v_1011505, v_1011506, v_1011507)}
+def emitter_continuation_2497(v_150: BIR.Descriptor, v_151: List<&2, BIR.Descriptor>, v_1011509: String, +v_1011510: String) -> EmitterProgress<String>:
+  v_1011511 = {",h:" : String}
+  EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_150}}, v_1011520 => +v_1011512 = emitter_unbox(String, v_1011520); emitter_continuation_2496(v_151, v_1011509, v_1011510, v_1011511, v_1011512)}
 
 def emitter_body_cps_provider_8_descriptor(v_0: BIR.Descriptor) -> EmitterProgress<String>:
   match v_0:
     case BIR.DescriptorNull{}:
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{["null"]}}, False{}, v_1011300 => emitter_body_cps_provider_8_cat(["null"]), v_1011299 => +v_1011298 = emitter_unbox(String, v_1011299); EmitterFinished{EmitterValue{v_1011298}}}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{["null"]}}, False{}, v_1011305 => emitter_body_cps_provider_8_cat(["null"]), v_1011304 => +v_1011303 = emitter_unbox(String, v_1011304); EmitterFinished{EmitterValue{v_1011303}}}
     case BIR.DescriptorRef{v_5, v_6}:
-      v_1011301 = {"({r:" : String}
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_5}}, False{}, v_1011311 => emitter_body_cps_provider_8_js_quote(v_5), v_1011310 => +v_1011302 = emitter_unbox(String, v_1011310); emitter_continuation_2475(v_6, v_1011301, v_1011302)}
+      v_1011306 = {"({r:" : String}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_5}}, False{}, v_1011316 => emitter_body_cps_provider_8_js_quote(v_5), v_1011315 => +v_1011307 = emitter_unbox(String, v_1011315); emitter_continuation_2476(v_6, v_1011306, v_1011307)}
     case BIR.DescriptorParameter{v_11}:
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{["({p:", Nat.show(v_11), "})"]}}, False{}, v_1011314 => emitter_body_cps_provider_8_cat(["({p:", Nat.show(v_11), "})"]), v_1011313 => +v_1011312 = emitter_unbox(String, v_1011313); EmitterFinished{EmitterValue{v_1011312}}}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{["({p:", Nat.show(v_11), "})"]}}, False{}, v_1011319 => emitter_body_cps_provider_8_cat(["({p:", Nat.show(v_11), "})"]), v_1011318 => +v_1011317 = emitter_unbox(String, v_1011318); EmitterFinished{EmitterValue{v_1011317}}}
     case BIR.DescriptorQuantityKind{}:
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{["({k:\"QK\"})"]}}, False{}, v_1011317 => emitter_body_cps_provider_8_cat(["({k:\"QK\"})"]), v_1011316 => +v_1011315 = emitter_unbox(String, v_1011316); EmitterFinished{EmitterValue{v_1011315}}}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{["({k:\"QK\"})"]}}, False{}, v_1011322 => emitter_body_cps_provider_8_cat(["({k:\"QK\"})"]), v_1011321 => +v_1011320 = emitter_unbox(String, v_1011321); EmitterFinished{EmitterValue{v_1011320}}}
     case BIR.DescriptorQuantity{v_15}:
-      v_1011318 = {"({k:\"Q\",v:" : String}
-      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_quantity{v_15}}, False{}, v_1011324 => emitter_body_cps_provider_8_quantity(v_15), v_1011323 => +v_1011319 = emitter_unbox(String, v_1011323); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011318, v_1011319, "})"]}}, False{}, v_1011322 => emitter_body_cps_provider_8_cat([v_1011318, v_1011319, "})"]), v_1011321 => +v_1011320 = emitter_unbox(String, v_1011321); EmitterFinished{EmitterValue{v_1011320}}}}
+      v_1011323 = {"({k:\"Q\",v:" : String}
+      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_quantity{v_15}}, False{}, v_1011329 => emitter_body_cps_provider_8_quantity(v_15), v_1011328 => +v_1011324 = emitter_unbox(String, v_1011328); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011323, v_1011324, "})"]}}, False{}, v_1011327 => emitter_body_cps_provider_8_cat([v_1011323, v_1011324, "})"]), v_1011326 => +v_1011325 = emitter_unbox(String, v_1011326); EmitterFinished{EmitterValue{v_1011325}}}}
     case BIR.DescriptorKind{v_19}:
-      v_1011325 = {"({kind:" : String}
-      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_19}}, v_1011330 => +v_1011326 = emitter_unbox(String, v_1011330); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011325, v_1011326, "})"]}}, False{}, v_1011329 => emitter_body_cps_provider_8_cat([v_1011325, v_1011326, "})"]), v_1011328 => +v_1011327 = emitter_unbox(String, v_1011328); EmitterFinished{EmitterValue{v_1011327}}}}
+      v_1011330 = {"({kind:" : String}
+      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_19}}, v_1011335 => +v_1011331 = emitter_unbox(String, v_1011335); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011330, v_1011331, "})"]}}, False{}, v_1011334 => emitter_body_cps_provider_8_cat([v_1011330, v_1011331, "})"]), v_1011333 => +v_1011332 = emitter_unbox(String, v_1011333); EmitterFinished{EmitterValue{v_1011332}}}}
     case BIR.DescriptorMinimum{v_24, v_25}:
-      v_1011331 = {"({min:" : String}
-      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_24}}, v_1011339 => +v_1011332 = emitter_unbox(String, v_1011339); emitter_continuation_2476(v_25, v_1011331, v_1011332)}
+      v_1011336 = {"({min:" : String}
+      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_24}}, v_1011344 => +v_1011337 = emitter_unbox(String, v_1011344); emitter_continuation_2477(v_25, v_1011336, v_1011337)}
     case BIR.DescriptorArrow{v_32, v_33, v_34}:
-      v_1011340 = {"({all:" : String}
-      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_33}}, v_1011352 => +v_1011341 = emitter_unbox(String, v_1011352); emitter_continuation_2478(v_32, v_34, v_1011340, v_1011341)}
+      v_1011345 = {"({all:" : String}
+      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_33}}, v_1011357 => +v_1011346 = emitter_unbox(String, v_1011357); emitter_continuation_2479(v_32, v_34, v_1011345, v_1011346)}
     case BIR.DescriptorLambda{v_41, v_42}:
-      v_1011353 = {"({lam:" : String}
-      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_42}}, v_1011362 => +v_1011354 = emitter_unbox(String, v_1011362); emitter_continuation_2479(v_41, v_1011353, v_1011354)}
+      v_1011358 = {"({lam:" : String}
+      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_42}}, v_1011367 => +v_1011359 = emitter_unbox(String, v_1011367); emitter_continuation_2480(v_41, v_1011358, v_1011359)}
     case BIR.DescriptorConstructor{v_48, v_49}:
-      v_1011363 = {"({c:" : String}
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_48}}, False{}, v_1011373 => emitter_body_cps_provider_8_js_quote(v_48), v_1011372 => +v_1011364 = emitter_unbox(String, v_1011372); emitter_continuation_2480(v_49, v_1011363, v_1011364)}
+      v_1011368 = {"({c:" : String}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_48}}, False{}, v_1011378 => emitter_body_cps_provider_8_js_quote(v_48), v_1011377 => +v_1011369 = emitter_unbox(String, v_1011377); emitter_continuation_2481(v_49, v_1011368, v_1011369)}
     case BIR.DescriptorApplication{v_55, v_56}:
-      v_1011374 = {"({app:" : String}
-      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_55}}, v_1011382 => +v_1011375 = emitter_unbox(String, v_1011382); emitter_continuation_2481(v_56, v_1011374, v_1011375)}
+      v_1011379 = {"({app:" : String}
+      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_55}}, v_1011387 => +v_1011380 = emitter_unbox(String, v_1011387); emitter_continuation_2482(v_56, v_1011379, v_1011380)}
     case BIR.DescriptorSubstitution{v_63, v_64, v_65}:
-      v_1011383 = {"({sub:" : String}
-      v_1011384 = {Nat.show(v_63) : String}
-      v_1011385 = {",value:" : String}
-      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_64}}, v_1011393 => +v_1011386 = emitter_unbox(String, v_1011393); emitter_continuation_2482(v_65, v_1011383, v_1011384, v_1011385, v_1011386)}
+      v_1011388 = {"({sub:" : String}
+      v_1011389 = {Nat.show(v_63) : String}
+      v_1011390 = {",value:" : String}
+      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_64}}, v_1011398 => +v_1011391 = emitter_unbox(String, v_1011398); emitter_continuation_2483(v_65, v_1011388, v_1011389, v_1011390, v_1011391)}
     case BIR.DescriptorLet{v_71, v_72}:
-      v_1011394 = {"({let:[" : String}
-      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptors{v_71}}, False{}, v_1011403 => emitter_body_cps_provider_8_descriptors(v_71), v_1011402 => +v_1011395 = emitter_unbox(List<&2, String>, v_1011402); emitter_continuation_2483(v_72, v_1011394, v_1011395)}
+      v_1011399 = {"({let:[" : String}
+      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptors{v_71}}, False{}, v_1011408 => emitter_body_cps_provider_8_descriptors(v_71), v_1011407 => +v_1011400 = emitter_unbox(List<&2, String>, v_1011407); emitter_continuation_2484(v_72, v_1011399, v_1011400)}
     case BIR.DescriptorLocal{v_79, v_80, v_81}:
-      v_1011404 = {"({local:[" : String}
-      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptors{v_80}}, False{}, v_1011417 => emitter_body_cps_provider_8_descriptors(v_80), v_1011416 => +v_1011405 = emitter_unbox(List<&2, String>, v_1011416); emitter_continuation_2485(v_79, v_81, v_1011404, v_1011405)}
+      v_1011409 = {"({local:[" : String}
+      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptors{v_80}}, False{}, v_1011422 => emitter_body_cps_provider_8_descriptors(v_80), v_1011421 => +v_1011410 = emitter_unbox(List<&2, String>, v_1011421); emitter_continuation_2486(v_79, v_81, v_1011409, v_1011410)}
     case BIR.DescriptorMatch{v_88, v_89}:
-      v_1011418 = {"({match:[" : String}
-      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptors{v_88}}, False{}, v_1011428 => emitter_body_cps_provider_8_descriptors(v_88), v_1011427 => +v_1011419 = emitter_unbox(List<&2, String>, v_1011427); emitter_continuation_2486(v_89, v_1011418, v_1011419)}
+      v_1011423 = {"({match:[" : String}
+      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptors{v_88}}, False{}, v_1011433 => emitter_body_cps_provider_8_descriptors(v_88), v_1011432 => +v_1011424 = emitter_unbox(List<&2, String>, v_1011432); emitter_continuation_2487(v_89, v_1011423, v_1011424)}
     case BIR.DescriptorCase{v_95, v_96}:
-      v_1011429 = {"({pat:[" : String}
-      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor_patterns{v_95}}, False{}, v_1011438 => emitter_body_cps_provider_8_descriptor_patterns(v_95), v_1011437 => +v_1011430 = emitter_unbox(List<&2, String>, v_1011437); emitter_continuation_2487(v_96, v_1011429, v_1011430)}
+      v_1011434 = {"({pat:[" : String}
+      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor_patterns{v_95}}, False{}, v_1011443 => emitter_body_cps_provider_8_descriptor_patterns(v_95), v_1011442 => +v_1011435 = emitter_unbox(List<&2, String>, v_1011442); emitter_continuation_2488(v_96, v_1011434, v_1011435)}
     case BIR.DescriptorBind{v_102, v_103}:
-      v_1011439 = {"({bind:" : String}
-      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_102}}, v_1011447 => +v_1011440 = emitter_unbox(String, v_1011447); emitter_continuation_2488(v_103, v_1011439, v_1011440)}
+      v_1011444 = {"({bind:" : String}
+      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_102}}, v_1011452 => +v_1011445 = emitter_unbox(String, v_1011452); emitter_continuation_2489(v_103, v_1011444, v_1011445)}
     case BIR.DescriptorEquality{v_110, v_111, v_112}:
-      v_1011448 = {"({k:\"E\",left:" : String}
-      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_110}}, v_1011459 => +v_1011449 = emitter_unbox(String, v_1011459); emitter_continuation_2490(v_111, v_112, v_1011448, v_1011449)}
+      v_1011453 = {"({k:\"E\",left:" : String}
+      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_110}}, v_1011464 => +v_1011454 = emitter_unbox(String, v_1011464); emitter_continuation_2491(v_111, v_112, v_1011453, v_1011454)}
     case BIR.DescriptorReflexivity{}:
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{["({k:\"Refl\"})"]}}, False{}, v_1011462 => emitter_body_cps_provider_8_cat(["({k:\"Refl\"})"]), v_1011461 => +v_1011460 = emitter_unbox(String, v_1011461); EmitterFinished{EmitterValue{v_1011460}}}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{["({k:\"Refl\"})"]}}, False{}, v_1011467 => emitter_body_cps_provider_8_cat(["({k:\"Refl\"})"]), v_1011466 => +v_1011465 = emitter_unbox(String, v_1011466); EmitterFinished{EmitterValue{v_1011465}}}
     case BIR.DescriptorFailure{v_119}:
-      v_1011463 = {"({fail:" : String}
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_119}}, False{}, v_1011469 => emitter_body_cps_provider_8_js_quote(v_119), v_1011468 => +v_1011464 = emitter_unbox(String, v_1011468); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011463, v_1011464, "})"]}}, False{}, v_1011467 => emitter_body_cps_provider_8_cat([v_1011463, v_1011464, "})"]), v_1011466 => +v_1011465 = emitter_unbox(String, v_1011466); EmitterFinished{EmitterValue{v_1011465}}}}
+      v_1011468 = {"({fail:" : String}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_119}}, False{}, v_1011474 => emitter_body_cps_provider_8_js_quote(v_119), v_1011473 => +v_1011469 = emitter_unbox(String, v_1011473); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011468, v_1011469, "})"]}}, False{}, v_1011472 => emitter_body_cps_provider_8_cat([v_1011468, v_1011469, "})"]), v_1011471 => +v_1011470 = emitter_unbox(String, v_1011471); EmitterFinished{EmitterValue{v_1011470}}}}
     case BIR.DescriptorFill{v_124, v_125}:
-      v_1011470 = {"({sugar:" : String}
-      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_124}}, v_1011479 => +v_1011471 = emitter_unbox(String, v_1011479); emitter_continuation_2491(v_125, v_1011470, v_1011471)}
+      v_1011475 = {"({sugar:" : String}
+      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_124}}, v_1011484 => +v_1011476 = emitter_unbox(String, v_1011484); emitter_continuation_2492(v_125, v_1011475, v_1011476)}
     case BIR.DescriptorPlus{v_131, v_132}:
-      v_1011480 = {"({sugar:" : String}
-      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_131}}, v_1011489 => +v_1011481 = emitter_unbox(String, v_1011489); emitter_continuation_2492(v_132, v_1011480, v_1011481)}
+      v_1011485 = {"({sugar:" : String}
+      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_131}}, v_1011494 => +v_1011486 = emitter_unbox(String, v_1011494); emitter_continuation_2493(v_132, v_1011485, v_1011486)}
     case BIR.DescriptorNamedFill{v_139, v_140, v_141}:
-      v_1011490 = {"({r:" : String}
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_139}}, False{}, v_1011503 => emitter_body_cps_provider_8_js_quote(v_139), v_1011502 => +v_1011491 = emitter_unbox(String, v_1011502); emitter_continuation_2494(v_140, v_141, v_1011490, v_1011491)}
+      v_1011495 = {"({r:" : String}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_139}}, False{}, v_1011508 => emitter_body_cps_provider_8_js_quote(v_139), v_1011507 => +v_1011496 = emitter_unbox(String, v_1011507); emitter_continuation_2495(v_140, v_141, v_1011495, v_1011496)}
     case BIR.DescriptorNamedPlus{v_149, v_150, v_151}:
-      v_1011504 = {"({r:" : String}
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_149}}, False{}, v_1011517 => emitter_body_cps_provider_8_js_quote(v_149), v_1011516 => +v_1011505 = emitter_unbox(String, v_1011516); emitter_continuation_2496(v_150, v_151, v_1011504, v_1011505)}
+      v_1011509 = {"({r:" : String}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_149}}, False{}, v_1011522 => emitter_body_cps_provider_8_js_quote(v_149), v_1011521 => +v_1011510 = emitter_unbox(String, v_1011521); emitter_continuation_2497(v_150, v_151, v_1011509, v_1011510)}
 
 def emitter_body_cps_provider_8_deferred(v_1: String, v_3: String) -> EmitterProgress<String>:
-  v_1011518 = {"Object.defineProperty($D," : String}
-  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_1}}, False{}, v_1011524 => emitter_body_cps_provider_8_js_quote(v_1), v_1011523 => +v_1011519 = emitter_unbox(String, v_1011523); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011518, v_1011519, ",{enumerable:true,configurable:true,get(){const $base0=$ksp,$sp0=$sp;return run_base(", v_3, ",$base0,$sp0);}});\n"]}}, False{}, v_1011522 => emitter_body_cps_provider_8_cat([v_1011518, v_1011519, ",{enumerable:true,configurable:true,get(){const $base0=$ksp,$sp0=$sp;return run_base(", v_3, ",$base0,$sp0);}});\n"]), v_1011521 => +v_1011520 = emitter_unbox(String, v_1011521); EmitterFinished{EmitterValue{v_1011520}}}}
+  v_1011523 = {"Object.defineProperty($D," : String}
+  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_1}}, False{}, v_1011529 => emitter_body_cps_provider_8_js_quote(v_1), v_1011528 => +v_1011524 = emitter_unbox(String, v_1011528); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011523, v_1011524, ",{enumerable:true,configurable:true,get(){const $base0=$ksp,$sp0=$sp;return run_base(", v_3, ",$base0,$sp0);}});\n"]}}, False{}, v_1011527 => emitter_body_cps_provider_8_cat([v_1011523, v_1011524, ",{enumerable:true,configurable:true,get(){const $base0=$ksp,$sp0=$sp;return run_base(", v_3, ",$base0,$sp0);}});\n"]), v_1011526 => +v_1011525 = emitter_unbox(String, v_1011526); EmitterFinished{EmitterValue{v_1011525}}}}
 
-def emitter_continuation_2498(v_11: U32, v_12: List<&2, BIR.Parameter>, v_1011525: String, +v_1011526: String) -> EmitterProgress<String>:
-  v_1011527 = {"]=" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_closure{v_11, [], v_12}}, False{}, v_1011533 => emitter_body_cps_provider_8_closure(v_11, [], v_12), v_1011532 => +v_1011528 = emitter_unbox(String, v_1011532); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011525, v_1011526, v_1011527, v_1011528, ";\n"]}}, False{}, v_1011531 => emitter_body_cps_provider_8_cat([v_1011525, v_1011526, v_1011527, v_1011528, ";\n"]), v_1011530 => +v_1011529 = emitter_unbox(String, v_1011530); EmitterFinished{EmitterValue{v_1011529}}}}
+def emitter_continuation_2499(v_11: U32, v_12: List<&2, BIR.Parameter>, v_1011530: String, +v_1011531: String) -> EmitterProgress<String>:
+  v_1011532 = {"]=" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_closure{v_11, [], v_12}}, False{}, v_1011538 => emitter_body_cps_provider_8_closure(v_11, [], v_12), v_1011537 => +v_1011533 = emitter_unbox(String, v_1011537); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011530, v_1011531, v_1011532, v_1011533, ";\n"]}}, False{}, v_1011536 => emitter_body_cps_provider_8_cat([v_1011530, v_1011531, v_1011532, v_1011533, ";\n"]), v_1011535 => +v_1011534 = emitter_unbox(String, v_1011535); EmitterFinished{EmitterValue{v_1011534}}}}
 
-def emitter_continuation_2499(+v_1011537: cps_provider_8_JsCtx, v_18: String, +v_19: BIR.Block) -> EmitterProgress<String>:
-  +v_23 = v_1011537
-  v_1011538 = {v_18 : String}
-  v_1011539 = {"(()=>{" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_block{v_19, v_23}}, False{}, v_1011554 => emitter_body_cps_provider_8_block(v_19, v_23), v_1011553 => +v_1011540 = emitter_unbox(String, v_1011553); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011539, v_1011540, "})()"]}}, False{}, v_1011552 => emitter_body_cps_provider_8_cat([v_1011539, v_1011540, "})()"]), v_1011551 => +v_1011541 = emitter_unbox(String, v_1011551); EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_deferred{v_1011538, v_1011541}}, False{}, v_1011550 => emitter_body_cps_provider_8_deferred(v_1011538, v_1011541), v_1011549 => +v_1011542 = emitter_unbox(String, v_1011549); EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_conts{v_19, v_23}}, False{}, v_1011548 => emitter_body_cps_provider_8_conts(v_19, v_23), v_1011547 => +v_1011543 = emitter_unbox(List<&2, String>, v_1011547); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011542, String.join(v_1011543, "")]}}, False{}, v_1011546 => emitter_body_cps_provider_8_cat([v_1011542, String.join(v_1011543, "")]), v_1011545 => +v_1011544 = emitter_unbox(String, v_1011545); EmitterFinished{EmitterValue{v_1011544}}}}}}}
+def emitter_continuation_2500(+v_1011542: cps_provider_8_JsCtx, v_18: String, +v_19: BIR.Block) -> EmitterProgress<String>:
+  +v_23 = v_1011542
+  v_1011543 = {v_18 : String}
+  v_1011544 = {"(()=>{" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_block{v_19, v_23}}, False{}, v_1011559 => emitter_body_cps_provider_8_block(v_19, v_23), v_1011558 => +v_1011545 = emitter_unbox(String, v_1011558); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011544, v_1011545, "})()"]}}, False{}, v_1011557 => emitter_body_cps_provider_8_cat([v_1011544, v_1011545, "})()"]), v_1011556 => +v_1011546 = emitter_unbox(String, v_1011556); EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_deferred{v_1011543, v_1011546}}, False{}, v_1011555 => emitter_body_cps_provider_8_deferred(v_1011543, v_1011546), v_1011554 => +v_1011547 = emitter_unbox(String, v_1011554); EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_conts{v_19, v_23}}, False{}, v_1011553 => emitter_body_cps_provider_8_conts(v_19, v_23), v_1011552 => +v_1011548 = emitter_unbox(List<&2, String>, v_1011552); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011547, String.join(v_1011548, "")]}}, False{}, v_1011551 => emitter_body_cps_provider_8_cat([v_1011547, String.join(v_1011548, "")]), v_1011550 => +v_1011549 = emitter_unbox(String, v_1011550); EmitterFinished{EmitterValue{v_1011549}}}}}}}
 
-def emitter_match_2500(v_0: BIR.Declaration, v_5: Nat, +v_3: Map<&2, String>) -> EmitterProgress<String>:
+def emitter_match_2501(v_0: BIR.Declaration, v_5: Nat, +v_3: Map<&2, String>) -> EmitterProgress<String>:
   match v_0:
     case BIR.FunctionDeclaration{v_10, v_11, v_12}:
-      v_1011525 = {"$D[" : String}
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_10}}, False{}, v_1011535 => emitter_body_cps_provider_8_js_quote(v_10), v_1011534 => +v_1011526 = emitter_unbox(String, v_1011534); emitter_continuation_2498(v_11, v_12, v_1011525, v_1011526)}
+      v_1011530 = {"$D[" : String}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_10}}, False{}, v_1011540 => emitter_body_cps_provider_8_js_quote(v_10), v_1011539 => +v_1011531 = emitter_unbox(String, v_1011539); emitter_continuation_2499(v_11, v_12, v_1011530, v_1011531)}
     case BIR.LazyDeclaration{v_18, v_19}:
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{["L", Nat.show(v_5)]}}, False{}, v_1011558 => emitter_body_cps_provider_8_cat(["L", Nat.show(v_5)]), v_1011557 => +v_1011536 = emitter_unbox(String, v_1011557); EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_ctx{v_1011536}}, False{}, v_1011556 => emitter_body_cps_provider_8_js_ctx(v_1011536), v_1011555 => +v_1011537 = emitter_unbox(cps_provider_8_JsCtx, v_1011555); emitter_continuation_2499(v_1011537, v_18, v_19)}}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{["L", Nat.show(v_5)]}}, False{}, v_1011563 => emitter_body_cps_provider_8_cat(["L", Nat.show(v_5)]), v_1011562 => +v_1011541 = emitter_unbox(String, v_1011562); EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_ctx{v_1011541}}, False{}, v_1011561 => emitter_body_cps_provider_8_js_ctx(v_1011541), v_1011560 => +v_1011542 = emitter_unbox(cps_provider_8_JsCtx, v_1011560); emitter_continuation_2500(v_1011542, v_18, v_19)}}
     case BIR.NativeDeclaration{v_32, v_33, v_34}:
-      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_native_declaration{v_32, v_33, v_34}}, v_1011560 => +v_1011559 = emitter_unbox(String, v_1011560); EmitterFinished{EmitterValue{v_1011559}}}
+      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_native_declaration{v_32, v_33, v_34}}, v_1011565 => +v_1011564 = emitter_unbox(String, v_1011565); EmitterFinished{EmitterValue{v_1011564}}}
     case BIR.ForeignDeclaration{v_45, _, v_47, v_48, v_49, _, _, v_52, v_53}:
-      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_foreign_declaration{v_45, v_47, v_49, v_48, v_52, v_53, v_3}}, v_1011562 => +v_1011561 = emitter_unbox(String, v_1011562); EmitterFinished{EmitterValue{v_1011561}}}
+      EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_foreign_declaration{v_45, v_47, v_49, v_48, v_52, v_53, v_3}}, v_1011567 => +v_1011566 = emitter_unbox(String, v_1011567); EmitterFinished{EmitterValue{v_1011566}}}
 
 def emitter_body_cps_provider_8_declaration(v_0: BIR.Declaration, +v_3: Map<&2, String>, v_5: Nat) -> EmitterProgress<String>:
-  emitter_match_2500(v_0, v_5, v_3)
+  emitter_match_2501(v_0, v_5, v_3)
 
 def emitter_body_cps_provider_8_foreign_declaration(+v_1: String, v_3: String, v_6: List<&2, String>, v_8: Nat, v_10: List<&2, BIR.Descriptor>, v_11: BIR.Descriptor, +v_14: Map<&2, String>) -> EmitterProgress<String>:
-  EmitterDirect{Bool, EmitterRequestGroup_22{EmitterRequest_cps_provider_8_js_source{v_6}}, False{}, v_1011567 => emitter_body_cps_provider_8_js_source(v_6), v_1011566 => +v_1011563 = emitter_unbox(Maybe<&2, String>, v_1011566); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_foreign_source{v_1011563, v_1, v_3, v_8, v_10, v_11, v_14}}, v_1011565 => +v_1011564 = emitter_unbox(String, v_1011565); EmitterFinished{EmitterValue{v_1011564}}}}
+  EmitterDirect{Bool, EmitterRequestGroup_22{EmitterRequest_cps_provider_8_js_source{v_6}}, False{}, v_1011572 => emitter_body_cps_provider_8_js_source(v_6), v_1011571 => +v_1011568 = emitter_unbox(Maybe<&2, String>, v_1011571); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_foreign_source{v_1011568, v_1, v_3, v_8, v_10, v_11, v_14}}, v_1011570 => +v_1011569 = emitter_unbox(String, v_1011570); EmitterFinished{EmitterValue{v_1011569}}}}
 
-def emitter_match_2501(v_2: Maybe<&2, String>, +v_4: String, v_8: Nat, v_10: List<&2, BIR.Descriptor>, +v_11: BIR.Descriptor, +v_14: Map<&2, String>, +v_6: String) -> EmitterProgress<String>:
+def emitter_match_2502(v_2: Maybe<&2, String>, +v_4: String, v_8: Nat, v_10: List<&2, BIR.Descriptor>, +v_11: BIR.Descriptor, +v_14: Map<&2, String>, +v_6: String) -> EmitterProgress<String>:
   match v_2:
     case Some{_}:
-      +v_1011568 = {v_4 : String}
-      v_1011569 = {v_8 : Nat}
-      v_1011570 = {v_10 : List<&2, BIR.Descriptor>}
-      EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_nat_answer{v_11, v_14}}, False{}, v_1011574 => emitter_body_cps_provider_8_js_nat_answer(v_11, v_14), v_1011573 => +v_1011571 = emitter_unbox(Bool, v_1011573); emitter_body_cps_provider_8_foreign_request(v_1011568, v_1011569, v_1011570, v_1011571, v_11, v_14)}
+      +v_1011573 = {v_4 : String}
+      v_1011574 = {v_8 : Nat}
+      v_1011575 = {v_10 : List<&2, BIR.Descriptor>}
+      EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_nat_answer{v_11, v_14}}, False{}, v_1011579 => emitter_body_cps_provider_8_js_nat_answer(v_11, v_14), v_1011578 => +v_1011576 = emitter_unbox(Bool, v_1011578); emitter_body_cps_provider_8_foreign_request(v_1011573, v_1011574, v_1011575, v_1011576, v_11, v_14)}
     case None{}:
-      v_1011575 = {v_4 : String}
-      v_1011576 = {"(()=>{throw new Error(" : String}
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{String.append("bend: foreign definition has no .js import: ", v_6)}}, False{}, v_1011583 => emitter_body_cps_provider_8_js_quote(String.append("bend: foreign definition has no .js import: ", v_6)), v_1011582 => +v_1011577 = emitter_unbox(String, v_1011582); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011576, v_1011577, ")})()"]}}, False{}, v_1011581 => emitter_body_cps_provider_8_cat([v_1011576, v_1011577, ")})()"]), v_1011580 => +v_1011578 = emitter_unbox(String, v_1011580); emitter_body_cps_provider_8_deferred(v_1011575, v_1011578)}}
+      v_1011580 = {v_4 : String}
+      v_1011581 = {"(()=>{throw new Error(" : String}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{String.append("bend: foreign definition has no .js import: ", v_6)}}, False{}, v_1011588 => emitter_body_cps_provider_8_js_quote(String.append("bend: foreign definition has no .js import: ", v_6)), v_1011587 => +v_1011582 = emitter_unbox(String, v_1011587); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011581, v_1011582, ")})()"]}}, False{}, v_1011586 => emitter_body_cps_provider_8_cat([v_1011581, v_1011582, ")})()"]), v_1011585 => +v_1011583 = emitter_unbox(String, v_1011585); emitter_body_cps_provider_8_deferred(v_1011580, v_1011583)}}
 
 def emitter_body_cps_provider_8_foreign_source(v_2: Maybe<&2, String>, +v_4: String, +v_6: String, v_8: Nat, v_10: List<&2, BIR.Descriptor>, v_11: BIR.Descriptor, +v_14: Map<&2, String>) -> EmitterProgress<String>:
-  emitter_match_2501(v_2, v_4, v_8, v_10, v_11, v_14, v_6)
+  emitter_match_2502(v_2, v_4, v_8, v_10, v_11, v_14, v_6)
 
-def emitter_continuation_2502(+v_1: String, v_1011584: String, +v_1011585: String, v_1011586: String, +v_1011587: String, v_1011588: String, +v_1011589: String, v_1011590: String, v_1011591: String, v_1011592: String, +v_1011593: List<&2, String>) -> EmitterProgress<String>:
-  v_1011594 = {"],intrinsic:$D[" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_1}}, False{}, v_1011600 => emitter_body_cps_provider_8_js_quote(v_1), v_1011599 => +v_1011595 = emitter_unbox(String, v_1011599); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011584, v_1011585, v_1011586, v_1011587, v_1011588, v_1011589, v_1011590, v_1011591, v_1011592, String.join(v_1011593, ","), v_1011594, v_1011595, "]};\n"]}}, False{}, v_1011598 => emitter_body_cps_provider_8_cat([v_1011584, v_1011585, v_1011586, v_1011587, v_1011588, v_1011589, v_1011590, v_1011591, v_1011592, String.join(v_1011593, ","), v_1011594, v_1011595, "]};\n"]), v_1011597 => +v_1011596 = emitter_unbox(String, v_1011597); EmitterFinished{EmitterValue{v_1011596}}}}
+def emitter_continuation_2503(+v_1: String, v_1011589: String, +v_1011590: String, v_1011591: String, +v_1011592: String, v_1011593: String, +v_1011594: String, v_1011595: String, v_1011596: String, v_1011597: String, +v_1011598: List<&2, String>) -> EmitterProgress<String>:
+  v_1011599 = {"],intrinsic:$D[" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_1}}, False{}, v_1011605 => emitter_body_cps_provider_8_js_quote(v_1), v_1011604 => +v_1011600 = emitter_unbox(String, v_1011604); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011589, v_1011590, v_1011591, v_1011592, v_1011593, v_1011594, v_1011595, v_1011596, v_1011597, String.join(v_1011598, ","), v_1011599, v_1011600, "]};\n"]}}, False{}, v_1011603 => emitter_body_cps_provider_8_cat([v_1011589, v_1011590, v_1011591, v_1011592, v_1011593, v_1011594, v_1011595, v_1011596, v_1011597, String.join(v_1011598, ","), v_1011599, v_1011600, "]};\n"]), v_1011602 => +v_1011601 = emitter_unbox(String, v_1011602); EmitterFinished{EmitterValue{v_1011601}}}}
 
-def emitter_continuation_2503(+v_4: List<&2, BIR.Quantity>, +v_1: String, v_1011584: String, +v_1011585: String, v_1011586: String, +v_1011587: String, v_1011588: String, +v_1011589: String) -> EmitterProgress<String>:
-  v_1011590 = {"]={n:" : String}
-  v_1011591 = {Nat.show(List.length(&2, BIR.Quantity, v_4)) : String}
-  v_1011592 = {",q:[" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_quantities{v_4}}, False{}, v_1011602 => emitter_body_cps_provider_8_quantities(v_4), v_1011601 => +v_1011593 = emitter_unbox(List<&2, String>, v_1011601); emitter_continuation_2502(v_1, v_1011584, v_1011585, v_1011586, v_1011587, v_1011588, v_1011589, v_1011590, v_1011591, v_1011592, v_1011593)}
+def emitter_continuation_2504(+v_4: List<&2, BIR.Quantity>, +v_1: String, v_1011589: String, +v_1011590: String, v_1011591: String, +v_1011592: String, v_1011593: String, +v_1011594: String) -> EmitterProgress<String>:
+  v_1011595 = {"]={n:" : String}
+  v_1011596 = {Nat.show(List.length(&2, BIR.Quantity, v_4)) : String}
+  v_1011597 = {",q:[" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_quantities{v_4}}, False{}, v_1011607 => emitter_body_cps_provider_8_quantities(v_4), v_1011606 => +v_1011598 = emitter_unbox(List<&2, String>, v_1011606); emitter_continuation_2503(v_1, v_1011589, v_1011590, v_1011591, v_1011592, v_1011593, v_1011594, v_1011595, v_1011596, v_1011597, v_1011598)}
 
-def emitter_continuation_2504(+v_1: String, +v_4: List<&2, BIR.Quantity>, v_1011584: String, +v_1011585: String, v_1011586: String, +v_1011587: String) -> EmitterProgress<String>:
-  v_1011588 = {";\n$TYPEF[" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_1}}, False{}, v_1011604 => emitter_body_cps_provider_8_js_quote(v_1), v_1011603 => +v_1011589 = emitter_unbox(String, v_1011603); emitter_continuation_2503(v_4, v_1, v_1011584, v_1011585, v_1011586, v_1011587, v_1011588, v_1011589)}
+def emitter_continuation_2505(+v_1: String, +v_4: List<&2, BIR.Quantity>, v_1011589: String, +v_1011590: String, v_1011591: String, +v_1011592: String) -> EmitterProgress<String>:
+  v_1011593 = {";\n$TYPEF[" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_1}}, False{}, v_1011609 => emitter_body_cps_provider_8_js_quote(v_1), v_1011608 => +v_1011594 = emitter_unbox(String, v_1011608); emitter_continuation_2504(v_4, v_1, v_1011589, v_1011590, v_1011591, v_1011592, v_1011593, v_1011594)}
 
-def emitter_continuation_2505(v_2: BIR.Primitive, +v_1: String, +v_4: List<&2, BIR.Quantity>, v_1011584: String, +v_1011585: String) -> EmitterProgress<String>:
-  v_1011586 = {"]=" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_primitive_public{v_2}}, False{}, v_1011606 => emitter_body_cps_provider_8_primitive_public(v_2), v_1011605 => +v_1011587 = emitter_unbox(String, v_1011605); emitter_continuation_2504(v_1, v_4, v_1011584, v_1011585, v_1011586, v_1011587)}
+def emitter_continuation_2506(v_2: BIR.Primitive, +v_1: String, +v_4: List<&2, BIR.Quantity>, v_1011589: String, +v_1011590: String) -> EmitterProgress<String>:
+  v_1011591 = {"]=" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_primitive_public{v_2}}, False{}, v_1011611 => emitter_body_cps_provider_8_primitive_public(v_2), v_1011610 => +v_1011592 = emitter_unbox(String, v_1011610); emitter_continuation_2505(v_1, v_4, v_1011589, v_1011590, v_1011591, v_1011592)}
 
 def emitter_body_cps_provider_8_native_declaration(+v_1: String, v_2: BIR.Primitive, +v_4: List<&2, BIR.Quantity>) -> EmitterProgress<String>:
-  v_1011584 = {"$D[" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_1}}, False{}, v_1011608 => emitter_body_cps_provider_8_js_quote(v_1), v_1011607 => +v_1011585 = emitter_unbox(String, v_1011607); emitter_continuation_2505(v_2, v_1, v_4, v_1011584, v_1011585)}
+  v_1011589 = {"$D[" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_1}}, False{}, v_1011613 => emitter_body_cps_provider_8_js_quote(v_1), v_1011612 => +v_1011590 = emitter_unbox(String, v_1011612); emitter_continuation_2506(v_2, v_1, v_4, v_1011589, v_1011590)}
 
-def emitter_match_2506(v_1: List<&2, BIR.Declaration>, +v_4: Map<&2, String>, +v_6: Nat) -> EmitterProgress<String>:
+def emitter_match_2507(v_1: List<&2, BIR.Declaration>, +v_4: Map<&2, String>, +v_6: Nat) -> EmitterProgress<String>:
   match v_1:
     case []:
       EmitterFinished{EmitterValue{""}}
     case v_10 <> v_11:
-      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_declaration{v_10, v_4, v_6}}, False{}, v_1011616 => emitter_body_cps_provider_8_declaration(v_10, v_4, v_6), v_1011615 => +v_1011609 = emitter_unbox(String, v_1011615); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_declarations{v_11, v_4, Nat.add(v_6, 1n)}}, v_1011614 => +v_1011610 = emitter_unbox(String, v_1011614); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011609, v_1011610]}}, False{}, v_1011613 => emitter_body_cps_provider_8_cat([v_1011609, v_1011610]), v_1011612 => +v_1011611 = emitter_unbox(String, v_1011612); EmitterFinished{EmitterValue{v_1011611}}}}}
+      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_declaration{v_10, v_4, v_6}}, False{}, v_1011621 => emitter_body_cps_provider_8_declaration(v_10, v_4, v_6), v_1011620 => +v_1011614 = emitter_unbox(String, v_1011620); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_declarations{v_11, v_4, Nat.add(v_6, 1n)}}, v_1011619 => +v_1011615 = emitter_unbox(String, v_1011619); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011614, v_1011615]}}, False{}, v_1011618 => emitter_body_cps_provider_8_cat([v_1011614, v_1011615]), v_1011617 => +v_1011616 = emitter_unbox(String, v_1011617); EmitterFinished{EmitterValue{v_1011616}}}}}
 
 def emitter_body_cps_provider_8_declarations(v_1: List<&2, BIR.Declaration>, +v_4: Map<&2, String>, v_6: Nat) -> EmitterProgress<String>:
-  emitter_match_2506(v_1, v_4, v_6)
+  emitter_match_2507(v_1, v_4, v_6)
 
 def emitter_body_cps_provider_8_field_names(v_3: List<&2, Maybe<&2, String>>) -> EmitterProgress<List<&2, String>>:
   match v_3:
     case []:
       EmitterFinished{EmitterValue{[]}}
     case v_8 <> v_9:
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_optional_text{v_8}}, False{}, v_1011621 => emitter_body_cps_provider_8_optional_text(v_8), v_1011620 => +v_1011617 = emitter_unbox(String, v_1011620); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_field_names{v_9}}, v_1011619 => +v_1011618 = emitter_unbox(List<&2, String>, v_1011619); EmitterFinished{EmitterValue{v_1011617 <> v_1011618}}}}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_optional_text{v_8}}, False{}, v_1011626 => emitter_body_cps_provider_8_optional_text(v_8), v_1011625 => +v_1011622 = emitter_unbox(String, v_1011625); EmitterPending{EmitterRequestGroup_25{EmitterRequest_cps_provider_8_field_names{v_9}}, v_1011624 => +v_1011623 = emitter_unbox(List<&2, String>, v_1011624); EmitterFinished{EmitterValue{v_1011622 <> v_1011623}}}}
 
 def emitter_body_cps_provider_8_constructor_layout(v_0: BIR.ConstructorLayout) -> EmitterProgress<String>:
   match v_0:
     case BIR.ConstructorLayout{_, v_7, v_8, v_9}:
-      +v_1011622 = {v_7 : String}
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_optional_text{v_8}}, False{}, v_1011630 => emitter_body_cps_provider_8_optional_text(v_8), v_1011629 => +v_1011623 = emitter_unbox(String, v_1011629); EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_field_names{v_9}}, False{}, v_1011628 => emitter_body_cps_provider_8_field_names(v_9), v_1011627 => +v_1011624 = emitter_unbox(List<&2, String>, v_1011627); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_constructor_layout_source{v_1011622, v_1011623, String.join(v_1011624, ",")}}, v_1011626 => +v_1011625 = emitter_unbox(String, v_1011626); EmitterFinished{EmitterValue{v_1011625}}}}}
+      +v_1011627 = {v_7 : String}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_optional_text{v_8}}, False{}, v_1011635 => emitter_body_cps_provider_8_optional_text(v_8), v_1011634 => +v_1011628 = emitter_unbox(String, v_1011634); EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_field_names{v_9}}, False{}, v_1011633 => emitter_body_cps_provider_8_field_names(v_9), v_1011632 => +v_1011629 = emitter_unbox(List<&2, String>, v_1011632); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_constructor_layout_source{v_1011627, v_1011628, String.join(v_1011629, ",")}}, v_1011631 => +v_1011630 = emitter_unbox(String, v_1011631); EmitterFinished{EmitterValue{v_1011630}}}}}
 
-def emitter_continuation_2509(v_5: String, +v_1: String, v_1011631: String, +v_1011632: String, v_3: String) -> EmitterProgress<String>:
-  v_1011633 = {"]=[" : String}
-  v_1011634 = {v_5 : String}
-  v_1011635 = {"];\n$PRIMITIVES[" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_1}}, False{}, v_1011641 => emitter_body_cps_provider_8_js_quote(v_1), v_1011640 => +v_1011636 = emitter_unbox(String, v_1011640); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011631, v_1011632, v_1011633, v_1011634, v_1011635, v_1011636, "]=", v_3, ";\n"]}}, False{}, v_1011639 => emitter_body_cps_provider_8_cat([v_1011631, v_1011632, v_1011633, v_1011634, v_1011635, v_1011636, "]=", v_3, ";\n"]), v_1011638 => +v_1011637 = emitter_unbox(String, v_1011638); EmitterFinished{EmitterValue{v_1011637}}}}
+def emitter_continuation_2510(v_5: String, +v_1: String, v_1011636: String, +v_1011637: String, v_3: String) -> EmitterProgress<String>:
+  v_1011638 = {"]=[" : String}
+  v_1011639 = {v_5 : String}
+  v_1011640 = {"];\n$PRIMITIVES[" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_1}}, False{}, v_1011646 => emitter_body_cps_provider_8_js_quote(v_1), v_1011645 => +v_1011641 = emitter_unbox(String, v_1011645); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011636, v_1011637, v_1011638, v_1011639, v_1011640, v_1011641, "]=", v_3, ";\n"]}}, False{}, v_1011644 => emitter_body_cps_provider_8_cat([v_1011636, v_1011637, v_1011638, v_1011639, v_1011640, v_1011641, "]=", v_3, ";\n"]), v_1011643 => +v_1011642 = emitter_unbox(String, v_1011643); EmitterFinished{EmitterValue{v_1011642}}}}
 
 def emitter_body_cps_provider_8_constructor_layout_source(+v_1: String, v_3: String, v_5: String) -> EmitterProgress<String>:
-  v_1011631 = {"$FIELDS[" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_1}}, False{}, v_1011643 => emitter_body_cps_provider_8_js_quote(v_1), v_1011642 => +v_1011632 = emitter_unbox(String, v_1011642); emitter_continuation_2509(v_5, v_1, v_1011631, v_1011632, v_3)}
+  v_1011636 = {"$FIELDS[" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_1}}, False{}, v_1011648 => emitter_body_cps_provider_8_js_quote(v_1), v_1011647 => +v_1011637 = emitter_unbox(String, v_1011647); emitter_continuation_2510(v_5, v_1, v_1011636, v_1011637, v_3)}
 
 def emitter_body_cps_provider_8_constructor_layouts(v_1: List<&2, BIR.ConstructorLayout>) -> EmitterProgress<String>:
   match v_1:
     case []:
       EmitterFinished{EmitterValue{""}}
     case v_5 <> v_6:
-      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_constructor_layout{v_5}}, False{}, v_1011651 => emitter_body_cps_provider_8_constructor_layout(v_5), v_1011650 => +v_1011644 = emitter_unbox(String, v_1011650); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_constructor_layouts{v_6}}, v_1011649 => +v_1011645 = emitter_unbox(String, v_1011649); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011644, v_1011645]}}, False{}, v_1011648 => emitter_body_cps_provider_8_cat([v_1011644, v_1011645]), v_1011647 => +v_1011646 = emitter_unbox(String, v_1011647); EmitterFinished{EmitterValue{v_1011646}}}}}
+      EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_constructor_layout{v_5}}, False{}, v_1011656 => emitter_body_cps_provider_8_constructor_layout(v_5), v_1011655 => +v_1011649 = emitter_unbox(String, v_1011655); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_constructor_layouts{v_6}}, v_1011654 => +v_1011650 = emitter_unbox(String, v_1011654); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011649, v_1011650]}}, False{}, v_1011653 => emitter_body_cps_provider_8_cat([v_1011649, v_1011650]), v_1011652 => +v_1011651 = emitter_unbox(String, v_1011652); EmitterFinished{EmitterValue{v_1011651}}}}}
 
 def emitter_body_cps_provider_8_descriptor_field_types(v_1: List<&2, BIR.DescriptorField>) -> EmitterProgress<List<&2, String>>:
   match v_1:
     case []:
       EmitterFinished{EmitterValue{[]}}
     case BIR.DescriptorField{_, _, v_10} <> v_11:
-      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_10}}, False{}, v_1011656 => emitter_body_cps_provider_8_descriptor(v_10), v_1011655 => +v_1011652 = emitter_unbox(String, v_1011655); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_descriptor_field_types{v_11}}, v_1011654 => +v_1011653 = emitter_unbox(List<&2, String>, v_1011654); EmitterFinished{EmitterValue{v_1011652 <> v_1011653}}}}
+      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_10}}, False{}, v_1011661 => emitter_body_cps_provider_8_descriptor(v_10), v_1011660 => +v_1011657 = emitter_unbox(String, v_1011660); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_descriptor_field_types{v_11}}, v_1011659 => +v_1011658 = emitter_unbox(List<&2, String>, v_1011659); EmitterFinished{EmitterValue{v_1011657 <> v_1011658}}}}
 
 def emitter_body_cps_provider_8_descriptor_field_quantities(v_1: List<&2, BIR.DescriptorField>) -> EmitterProgress<List<&2, String>>:
   match v_1:
     case []:
       EmitterFinished{EmitterValue{[]}}
     case BIR.DescriptorField{_, v_9, _} <> v_11:
-      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_quantity{v_9}}, False{}, v_1011661 => emitter_body_cps_provider_8_quantity(v_9), v_1011660 => +v_1011657 = emitter_unbox(String, v_1011660); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_descriptor_field_quantities{v_11}}, v_1011659 => +v_1011658 = emitter_unbox(List<&2, String>, v_1011659); EmitterFinished{EmitterValue{v_1011657 <> v_1011658}}}}
+      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_quantity{v_9}}, False{}, v_1011666 => emitter_body_cps_provider_8_quantity(v_9), v_1011665 => +v_1011662 = emitter_unbox(String, v_1011665); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_descriptor_field_quantities{v_11}}, v_1011664 => +v_1011663 = emitter_unbox(List<&2, String>, v_1011664); EmitterFinished{EmitterValue{v_1011662 <> v_1011663}}}}
 
 def emitter_body_cps_provider_8_descriptor_field_names(v_1: List<&2, BIR.DescriptorField>) -> EmitterProgress<List<&2, String>>:
   match v_1:
     case []:
       EmitterFinished{EmitterValue{[]}}
     case BIR.DescriptorField{v_8, _, _} <> v_11:
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_optional_text{v_8}}, False{}, v_1011666 => emitter_body_cps_provider_8_optional_text(v_8), v_1011665 => +v_1011662 = emitter_unbox(String, v_1011665); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_descriptor_field_names{v_11}}, v_1011664 => +v_1011663 = emitter_unbox(List<&2, String>, v_1011664); EmitterFinished{EmitterValue{v_1011662 <> v_1011663}}}}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_optional_text{v_8}}, False{}, v_1011671 => emitter_body_cps_provider_8_optional_text(v_8), v_1011670 => +v_1011667 = emitter_unbox(String, v_1011670); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_descriptor_field_names{v_11}}, v_1011669 => +v_1011668 = emitter_unbox(List<&2, String>, v_1011669); EmitterFinished{EmitterValue{v_1011667 <> v_1011668}}}}
 
-def emitter_continuation_2514(+v_5: List<&2, BIR.DescriptorField>, v_1011667: String, +v_1011668: String, v_1011669: String, +v_1011670: List<&2, String>, v_1011671: String, +v_1011672: List<&2, String>) -> EmitterProgress<String>:
-  v_1011673 = {"],fields:[" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_descriptor_field_names{v_5}}, False{}, v_1011679 => emitter_body_cps_provider_8_descriptor_field_names(v_5), v_1011678 => +v_1011674 = emitter_unbox(List<&2, String>, v_1011678); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011667, v_1011668, v_1011669, String.join(v_1011670, ","), v_1011671, String.join(v_1011672, ","), v_1011673, String.join(v_1011674, ","), "]}"]}}, False{}, v_1011677 => emitter_body_cps_provider_8_cat([v_1011667, v_1011668, v_1011669, String.join(v_1011670, ","), v_1011671, String.join(v_1011672, ","), v_1011673, String.join(v_1011674, ","), "]}"]), v_1011676 => +v_1011675 = emitter_unbox(String, v_1011676); EmitterFinished{EmitterValue{v_1011675}}}}
+def emitter_continuation_2515(+v_5: List<&2, BIR.DescriptorField>, v_1011672: String, +v_1011673: String, v_1011674: String, +v_1011675: List<&2, String>, v_1011676: String, +v_1011677: List<&2, String>) -> EmitterProgress<String>:
+  v_1011678 = {"],fields:[" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_descriptor_field_names{v_5}}, False{}, v_1011684 => emitter_body_cps_provider_8_descriptor_field_names(v_5), v_1011683 => +v_1011679 = emitter_unbox(List<&2, String>, v_1011683); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011672, v_1011673, v_1011674, String.join(v_1011675, ","), v_1011676, String.join(v_1011677, ","), v_1011678, String.join(v_1011679, ","), "]}"]}}, False{}, v_1011682 => emitter_body_cps_provider_8_cat([v_1011672, v_1011673, v_1011674, String.join(v_1011675, ","), v_1011676, String.join(v_1011677, ","), v_1011678, String.join(v_1011679, ","), "]}"]), v_1011681 => +v_1011680 = emitter_unbox(String, v_1011681); EmitterFinished{EmitterValue{v_1011680}}}}
 
-def emitter_continuation_2515(+v_5: List<&2, BIR.DescriptorField>, v_1011667: String, +v_1011668: String, v_1011669: String, +v_1011670: List<&2, String>) -> EmitterProgress<String>:
-  v_1011671 = {"],q:[" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_descriptor_field_quantities{v_5}}, False{}, v_1011681 => emitter_body_cps_provider_8_descriptor_field_quantities(v_5), v_1011680 => +v_1011672 = emitter_unbox(List<&2, String>, v_1011680); emitter_continuation_2514(v_5, v_1011667, v_1011668, v_1011669, v_1011670, v_1011671, v_1011672)}
+def emitter_continuation_2516(+v_5: List<&2, BIR.DescriptorField>, v_1011672: String, +v_1011673: String, v_1011674: String, +v_1011675: List<&2, String>) -> EmitterProgress<String>:
+  v_1011676 = {"],q:[" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_descriptor_field_quantities{v_5}}, False{}, v_1011686 => emitter_body_cps_provider_8_descriptor_field_quantities(v_5), v_1011685 => +v_1011677 = emitter_unbox(List<&2, String>, v_1011685); emitter_continuation_2515(v_5, v_1011672, v_1011673, v_1011674, v_1011675, v_1011676, v_1011677)}
 
-def emitter_continuation_2516(+v_5: List<&2, BIR.DescriptorField>, v_1011667: String, +v_1011668: String) -> EmitterProgress<String>:
-  v_1011669 = {"]:{types:[" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_descriptor_field_types{v_5}}, False{}, v_1011683 => emitter_body_cps_provider_8_descriptor_field_types(v_5), v_1011682 => +v_1011670 = emitter_unbox(List<&2, String>, v_1011682); emitter_continuation_2515(v_5, v_1011667, v_1011668, v_1011669, v_1011670)}
+def emitter_continuation_2517(+v_5: List<&2, BIR.DescriptorField>, v_1011672: String, +v_1011673: String) -> EmitterProgress<String>:
+  v_1011674 = {"]:{types:[" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_descriptor_field_types{v_5}}, False{}, v_1011688 => emitter_body_cps_provider_8_descriptor_field_types(v_5), v_1011687 => +v_1011675 = emitter_unbox(List<&2, String>, v_1011687); emitter_continuation_2516(v_5, v_1011672, v_1011673, v_1011674, v_1011675)}
 
 def emitter_body_cps_provider_8_descriptor_arm(v_0: BIR.DescriptorArm) -> EmitterProgress<String>:
   match v_0:
     case BIR.DescriptorArm{v_4, +v_5}:
-      v_1011667 = {"[" : String}
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_4}}, False{}, v_1011685 => emitter_body_cps_provider_8_js_quote(v_4), v_1011684 => +v_1011668 = emitter_unbox(String, v_1011684); emitter_continuation_2516(v_5, v_1011667, v_1011668)}
+      v_1011672 = {"[" : String}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_4}}, False{}, v_1011690 => emitter_body_cps_provider_8_js_quote(v_4), v_1011689 => +v_1011673 = emitter_unbox(String, v_1011689); emitter_continuation_2517(v_5, v_1011672, v_1011673)}
 
 def emitter_body_cps_provider_8_descriptor_arms(v_1: List<&2, BIR.DescriptorArm>) -> EmitterProgress<List<&2, String>>:
   match v_1:
     case []:
       EmitterFinished{EmitterValue{[]}}
     case v_6 <> v_7:
-      EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_descriptor_arm{v_6}}, False{}, v_1011690 => emitter_body_cps_provider_8_descriptor_arm(v_6), v_1011689 => +v_1011686 = emitter_unbox(String, v_1011689); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_descriptor_arms{v_7}}, v_1011688 => +v_1011687 = emitter_unbox(List<&2, String>, v_1011688); EmitterFinished{EmitterValue{v_1011686 <> v_1011687}}}}
+      EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_descriptor_arm{v_6}}, False{}, v_1011695 => emitter_body_cps_provider_8_descriptor_arm(v_6), v_1011694 => +v_1011691 = emitter_unbox(String, v_1011694); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_descriptor_arms{v_7}}, v_1011693 => +v_1011692 = emitter_unbox(List<&2, String>, v_1011693); EmitterFinished{EmitterValue{v_1011691 <> v_1011692}}}}
 
 def emitter_body_cps_provider_8_parameter_info(v_1: String, v_3: Nat, v_5: Nat) -> EmitterProgress<String>:
-  v_1011691 = {"$PARAMS[" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_1}}, False{}, v_1011697 => emitter_body_cps_provider_8_js_quote(v_1), v_1011696 => +v_1011692 = emitter_unbox(String, v_1011696); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011691, v_1011692, "]={q:", Nat.show(v_3), ",n:", Nat.show(v_5), "};\n"]}}, False{}, v_1011695 => emitter_body_cps_provider_8_cat([v_1011691, v_1011692, "]={q:", Nat.show(v_3), ",n:", Nat.show(v_5), "};\n"]), v_1011694 => +v_1011693 = emitter_unbox(String, v_1011694); EmitterFinished{EmitterValue{v_1011693}}}}
+  v_1011696 = {"$PARAMS[" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_1}}, False{}, v_1011702 => emitter_body_cps_provider_8_js_quote(v_1), v_1011701 => +v_1011697 = emitter_unbox(String, v_1011701); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011696, v_1011697, "]={q:", Nat.show(v_3), ",n:", Nat.show(v_5), "};\n"]}}, False{}, v_1011700 => emitter_body_cps_provider_8_cat([v_1011696, v_1011697, "]={q:", Nat.show(v_3), ",n:", Nat.show(v_5), "};\n"]), v_1011699 => +v_1011698 = emitter_unbox(String, v_1011699); EmitterFinished{EmitterValue{v_1011698}}}}
 
-def emitter_continuation_2519(v_13: List<&2, BIR.DescriptorArm>, +v_1011698: String, v_1011699: String, +v_1011700: String, v_1011701: String, +v_1011702: String, v_1011703: String, +v_1011704: String) -> EmitterProgress<String>:
-  v_1011705 = {",arms:{" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_descriptor_arms{v_13}}, False{}, v_1011711 => emitter_body_cps_provider_8_descriptor_arms(v_13), v_1011710 => +v_1011706 = emitter_unbox(List<&2, String>, v_1011710); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011698, v_1011699, v_1011700, v_1011701, v_1011702, v_1011703, v_1011704, v_1011705, String.join(v_1011706, ","), "}};\n"]}}, False{}, v_1011709 => emitter_body_cps_provider_8_cat([v_1011698, v_1011699, v_1011700, v_1011701, v_1011702, v_1011703, v_1011704, v_1011705, String.join(v_1011706, ","), "}};\n"]), v_1011708 => +v_1011707 = emitter_unbox(String, v_1011708); EmitterFinished{EmitterValue{v_1011707}}}}
+def emitter_continuation_2520(v_13: List<&2, BIR.DescriptorArm>, +v_1011703: String, v_1011704: String, +v_1011705: String, v_1011706: String, +v_1011707: String, v_1011708: String, +v_1011709: String) -> EmitterProgress<String>:
+  v_1011710 = {",arms:{" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_descriptor_arms{v_13}}, False{}, v_1011716 => emitter_body_cps_provider_8_descriptor_arms(v_13), v_1011715 => +v_1011711 = emitter_unbox(List<&2, String>, v_1011715); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011703, v_1011704, v_1011705, v_1011706, v_1011707, v_1011708, v_1011709, v_1011710, String.join(v_1011711, ","), "}};\n"]}}, False{}, v_1011714 => emitter_body_cps_provider_8_cat([v_1011703, v_1011704, v_1011705, v_1011706, v_1011707, v_1011708, v_1011709, v_1011710, String.join(v_1011711, ","), "}};\n"]), v_1011713 => +v_1011712 = emitter_unbox(String, v_1011713); EmitterFinished{EmitterValue{v_1011712}}}}
 
-def emitter_continuation_2520(v_10: Maybe<&2, String>, v_13: List<&2, BIR.DescriptorArm>, +v_1011698: String, v_1011699: String, +v_1011700: String, v_1011701: String, +v_1011702: String) -> EmitterProgress<String>:
-  v_1011703 = {",native:" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_optional_text{v_10}}, False{}, v_1011713 => emitter_body_cps_provider_8_optional_text(v_10), v_1011712 => +v_1011704 = emitter_unbox(String, v_1011712); emitter_continuation_2519(v_13, v_1011698, v_1011699, v_1011700, v_1011701, v_1011702, v_1011703, v_1011704)}
+def emitter_continuation_2521(v_10: Maybe<&2, String>, v_13: List<&2, BIR.DescriptorArm>, +v_1011703: String, v_1011704: String, +v_1011705: String, v_1011706: String, +v_1011707: String) -> EmitterProgress<String>:
+  v_1011708 = {",native:" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_optional_text{v_10}}, False{}, v_1011718 => emitter_body_cps_provider_8_optional_text(v_10), v_1011717 => +v_1011709 = emitter_unbox(String, v_1011717); emitter_continuation_2520(v_13, v_1011703, v_1011704, v_1011705, v_1011706, v_1011707, v_1011708, v_1011709)}
 
-def emitter_continuation_2521(v_9: String, v_10: Maybe<&2, String>, v_13: List<&2, BIR.DescriptorArm>, +v_1011698: String, v_1011699: String, +v_1011700: String) -> EmitterProgress<String>:
-  v_1011701 = {"]={name:" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_9}}, False{}, v_1011715 => emitter_body_cps_provider_8_js_quote(v_9), v_1011714 => +v_1011702 = emitter_unbox(String, v_1011714); emitter_continuation_2520(v_10, v_13, v_1011698, v_1011699, v_1011700, v_1011701, v_1011702)}
+def emitter_continuation_2522(v_9: String, v_10: Maybe<&2, String>, v_13: List<&2, BIR.DescriptorArm>, +v_1011703: String, v_1011704: String, +v_1011705: String) -> EmitterProgress<String>:
+  v_1011706 = {"]={name:" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_9}}, False{}, v_1011720 => emitter_body_cps_provider_8_js_quote(v_9), v_1011719 => +v_1011707 = emitter_unbox(String, v_1011719); emitter_continuation_2521(v_10, v_13, v_1011703, v_1011704, v_1011705, v_1011706, v_1011707)}
 
-def emitter_continuation_2522(+v_8: String, v_9: String, v_10: Maybe<&2, String>, v_13: List<&2, BIR.DescriptorArm>, +v_1011698: String) -> EmitterProgress<String>:
-  v_1011699 = {"$TYPE[" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_8}}, False{}, v_1011717 => emitter_body_cps_provider_8_js_quote(v_8), v_1011716 => +v_1011700 = emitter_unbox(String, v_1011716); emitter_continuation_2521(v_9, v_10, v_13, v_1011698, v_1011699, v_1011700)}
+def emitter_continuation_2523(+v_8: String, v_9: String, v_10: Maybe<&2, String>, v_13: List<&2, BIR.DescriptorArm>, +v_1011703: String) -> EmitterProgress<String>:
+  v_1011704 = {"$TYPE[" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_8}}, False{}, v_1011722 => emitter_body_cps_provider_8_js_quote(v_8), v_1011721 => +v_1011705 = emitter_unbox(String, v_1011721); emitter_continuation_2522(v_9, v_10, v_13, v_1011703, v_1011704, v_1011705)}
 
 def emitter_body_cps_provider_8_family(v_0: BIR.Family) -> EmitterProgress<String>:
   match v_0:
     case BIR.Family{+v_8, v_9, v_10, v_11, v_12, v_13}:
-      EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_parameter_info{v_8, v_11, v_12}}, False{}, v_1011719 => emitter_body_cps_provider_8_parameter_info(v_8, v_11, v_12), v_1011718 => +v_1011698 = emitter_unbox(String, v_1011718); emitter_continuation_2522(v_8, v_9, v_10, v_13, v_1011698)}
+      EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_parameter_info{v_8, v_11, v_12}}, False{}, v_1011724 => emitter_body_cps_provider_8_parameter_info(v_8, v_11, v_12), v_1011723 => +v_1011703 = emitter_unbox(String, v_1011723); emitter_continuation_2523(v_8, v_9, v_10, v_13, v_1011703)}
 
 def emitter_body_cps_provider_8_families(v_1: List<&2, BIR.Family>) -> EmitterProgress<String>:
   match v_1:
     case []:
       EmitterFinished{EmitterValue{""}}
     case v_5 <> v_6:
-      EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_family{v_5}}, False{}, v_1011727 => emitter_body_cps_provider_8_family(v_5), v_1011726 => +v_1011720 = emitter_unbox(String, v_1011726); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_families{v_6}}, v_1011725 => +v_1011721 = emitter_unbox(String, v_1011725); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011720, v_1011721]}}, False{}, v_1011724 => emitter_body_cps_provider_8_cat([v_1011720, v_1011721]), v_1011723 => +v_1011722 = emitter_unbox(String, v_1011723); EmitterFinished{EmitterValue{v_1011722}}}}}
+      EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_family{v_5}}, False{}, v_1011732 => emitter_body_cps_provider_8_family(v_5), v_1011731 => +v_1011725 = emitter_unbox(String, v_1011731); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_families{v_6}}, v_1011730 => +v_1011726 = emitter_unbox(String, v_1011730); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011725, v_1011726]}}, False{}, v_1011729 => emitter_body_cps_provider_8_cat([v_1011725, v_1011726]), v_1011728 => +v_1011727 = emitter_unbox(String, v_1011728); EmitterFinished{EmitterValue{v_1011727}}}}}
 
-def emitter_continuation_2525(v_11: BIR.Descriptor, +v_1011728: String, v_1011729: String, +v_1011730: String, v_1011731: String, v_1011732: String, v_1011733: String, +v_1011734: String) -> EmitterProgress<String>:
-  v_1011735 = {",body:" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_11}}, False{}, v_1011741 => emitter_body_cps_provider_8_descriptor(v_11), v_1011740 => +v_1011736 = emitter_unbox(String, v_1011740); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011728, v_1011729, v_1011730, v_1011731, v_1011732, v_1011733, v_1011734, v_1011735, v_1011736, "};\n"]}}, False{}, v_1011739 => emitter_body_cps_provider_8_cat([v_1011728, v_1011729, v_1011730, v_1011731, v_1011732, v_1011733, v_1011734, v_1011735, v_1011736, "};\n"]), v_1011738 => +v_1011737 = emitter_unbox(String, v_1011738); EmitterFinished{EmitterValue{v_1011737}}}}
+def emitter_continuation_2526(v_11: BIR.Descriptor, +v_1011733: String, v_1011734: String, +v_1011735: String, v_1011736: String, v_1011737: String, v_1011738: String, +v_1011739: String) -> EmitterProgress<String>:
+  v_1011740 = {",body:" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_11}}, False{}, v_1011746 => emitter_body_cps_provider_8_descriptor(v_11), v_1011745 => +v_1011741 = emitter_unbox(String, v_1011745); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011733, v_1011734, v_1011735, v_1011736, v_1011737, v_1011738, v_1011739, v_1011740, v_1011741, "};\n"]}}, False{}, v_1011744 => emitter_body_cps_provider_8_cat([v_1011733, v_1011734, v_1011735, v_1011736, v_1011737, v_1011738, v_1011739, v_1011740, v_1011741, "};\n"]), v_1011743 => +v_1011742 = emitter_unbox(String, v_1011743); EmitterFinished{EmitterValue{v_1011742}}}}
 
-def emitter_continuation_2526(+v_10: Nat, v_8: Maybe<&2, String>, v_11: BIR.Descriptor, +v_1011728: String, v_1011729: String, +v_1011730: String) -> EmitterProgress<String>:
-  v_1011731 = {"]={n:" : String}
-  v_1011732 = {Nat.show(v_10) : String}
-  v_1011733 = {",native:" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_optional_text{v_8}}, False{}, v_1011743 => emitter_body_cps_provider_8_optional_text(v_8), v_1011742 => +v_1011734 = emitter_unbox(String, v_1011742); emitter_continuation_2525(v_11, v_1011728, v_1011729, v_1011730, v_1011731, v_1011732, v_1011733, v_1011734)}
+def emitter_continuation_2527(+v_10: Nat, v_8: Maybe<&2, String>, v_11: BIR.Descriptor, +v_1011733: String, v_1011734: String, +v_1011735: String) -> EmitterProgress<String>:
+  v_1011736 = {"]={n:" : String}
+  v_1011737 = {Nat.show(v_10) : String}
+  v_1011738 = {",native:" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_optional_text{v_8}}, False{}, v_1011748 => emitter_body_cps_provider_8_optional_text(v_8), v_1011747 => +v_1011739 = emitter_unbox(String, v_1011747); emitter_continuation_2526(v_11, v_1011733, v_1011734, v_1011735, v_1011736, v_1011737, v_1011738, v_1011739)}
 
-def emitter_continuation_2527(+v_7: String, +v_10: Nat, v_8: Maybe<&2, String>, v_11: BIR.Descriptor, +v_1011728: String) -> EmitterProgress<String>:
-  v_1011729 = {"$TYPEF[" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_7}}, False{}, v_1011745 => emitter_body_cps_provider_8_js_quote(v_7), v_1011744 => +v_1011730 = emitter_unbox(String, v_1011744); emitter_continuation_2526(v_10, v_8, v_11, v_1011728, v_1011729, v_1011730)}
+def emitter_continuation_2528(+v_7: String, +v_10: Nat, v_8: Maybe<&2, String>, v_11: BIR.Descriptor, +v_1011733: String) -> EmitterProgress<String>:
+  v_1011734 = {"$TYPEF[" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_7}}, False{}, v_1011750 => emitter_body_cps_provider_8_js_quote(v_7), v_1011749 => +v_1011735 = emitter_unbox(String, v_1011749); emitter_continuation_2527(v_10, v_8, v_11, v_1011733, v_1011734, v_1011735)}
 
 def emitter_body_cps_provider_8_type_function(v_0: BIR.TypeFunction) -> EmitterProgress<String>:
   match v_0:
     case BIR.TypeFunction{+v_7, v_8, v_9, +v_10, v_11}:
-      EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_parameter_info{v_7, v_9, v_10}}, False{}, v_1011747 => emitter_body_cps_provider_8_parameter_info(v_7, v_9, v_10), v_1011746 => +v_1011728 = emitter_unbox(String, v_1011746); emitter_continuation_2527(v_7, v_10, v_8, v_11, v_1011728)}
+      EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_parameter_info{v_7, v_9, v_10}}, False{}, v_1011752 => emitter_body_cps_provider_8_parameter_info(v_7, v_9, v_10), v_1011751 => +v_1011733 = emitter_unbox(String, v_1011751); emitter_continuation_2528(v_7, v_10, v_8, v_11, v_1011733)}
 
 def emitter_body_cps_provider_8_type_functions(v_1: List<&2, BIR.TypeFunction>) -> EmitterProgress<String>:
   match v_1:
     case []:
       EmitterFinished{EmitterValue{""}}
     case v_5 <> v_6:
-      EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_type_function{v_5}}, False{}, v_1011755 => emitter_body_cps_provider_8_type_function(v_5), v_1011754 => +v_1011748 = emitter_unbox(String, v_1011754); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_type_functions{v_6}}, v_1011753 => +v_1011749 = emitter_unbox(String, v_1011753); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011748, v_1011749]}}, False{}, v_1011752 => emitter_body_cps_provider_8_cat([v_1011748, v_1011749]), v_1011751 => +v_1011750 = emitter_unbox(String, v_1011751); EmitterFinished{EmitterValue{v_1011750}}}}}
+      EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_type_function{v_5}}, False{}, v_1011760 => emitter_body_cps_provider_8_type_function(v_5), v_1011759 => +v_1011753 = emitter_unbox(String, v_1011759); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_type_functions{v_6}}, v_1011758 => +v_1011754 = emitter_unbox(String, v_1011758); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011753, v_1011754]}}, False{}, v_1011757 => emitter_body_cps_provider_8_cat([v_1011753, v_1011754]), v_1011756 => +v_1011755 = emitter_unbox(String, v_1011756); EmitterFinished{EmitterValue{v_1011755}}}}}
 
 def emitter_body_cps_provider_8_js_parameter(+v_0: BIR.Descriptor, +v_3: Map<&2, String>) -> EmitterProgress<cps_provider_8_JSParameter>:
-  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_descriptor_head{v_0}}, False{}, v_1011760 => emitter_body_cps_provider_8_js_descriptor_head(v_0), v_1011759 => +v_1011756 = emitter_unbox(Maybe<&2, cps_provider_8_JSDescriptorHead>, v_1011759); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_js_parameter_head{v_1011756, v_3, v_0}}, v_1011758 => +v_1011757 = emitter_unbox(cps_provider_8_JSParameter, v_1011758); EmitterFinished{EmitterValue{v_1011757}}}}
+  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_descriptor_head{v_0}}, False{}, v_1011765 => emitter_body_cps_provider_8_js_descriptor_head(v_0), v_1011764 => +v_1011761 = emitter_unbox(Maybe<&2, cps_provider_8_JSDescriptorHead>, v_1011764); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_js_parameter_head{v_1011761, v_3, v_0}}, v_1011763 => +v_1011762 = emitter_unbox(cps_provider_8_JSParameter, v_1011763); EmitterFinished{EmitterValue{v_1011762}}}}
 
 def emitter_body_cps_provider_8_js_parameter_head(v_2: Maybe<&2, cps_provider_8_JSDescriptorHead>, +v_5: Map<&2, String>, v_6: BIR.Descriptor) -> EmitterProgress<cps_provider_8_JSParameter>:
   match v_2:
     case Some{cps_provider_8_JSDescriptorHead{+v_10, v_11}}:
-      EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_native_is{v_5, v_10, "Nat"}}, False{}, v_1011765 => emitter_body_cps_provider_8_js_native_is(v_5, v_10, "Nat"), v_1011764 => +v_1011761 = emitter_unbox(Bool, v_1011764); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_js_parameter_marker{v_1011761, IndexLookup.find(String, v_5, v_10), v_11, v_6}}, v_1011763 => +v_1011762 = emitter_unbox(cps_provider_8_JSParameter, v_1011763); EmitterFinished{EmitterValue{v_1011762}}}}
+      EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_native_is{v_5, v_10, "Nat"}}, False{}, v_1011770 => emitter_body_cps_provider_8_js_native_is(v_5, v_10, "Nat"), v_1011769 => +v_1011766 = emitter_unbox(Bool, v_1011769); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_js_parameter_marker{v_1011766, IndexLookup.find(String, v_5, v_10), v_11, v_6}}, v_1011768 => +v_1011767 = emitter_unbox(cps_provider_8_JSParameter, v_1011768); EmitterFinished{EmitterValue{v_1011767}}}}
     case None{}:
       EmitterFinished{EmitterValue{emitter_pure_cps_provider_8_js_parameter_unresolved(v_6)}}
 
-def emitter_match_2531(v_1: Bool, v_6: List<&2, BIR.Descriptor>, v_4: Maybe<&2, String>, v_7: BIR.Descriptor) -> EmitterProgress<cps_provider_8_JSParameter>:
+def emitter_match_2532(v_1: Bool, v_6: List<&2, BIR.Descriptor>, v_4: Maybe<&2, String>, v_7: BIR.Descriptor) -> EmitterProgress<cps_provider_8_JSParameter>:
   match v_1:
     case True{}:
-      EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_js_parameter_arity{v_6}}, v_1011767 => +v_1011766 = emitter_unbox(cps_provider_8_JSParameter, v_1011767); EmitterFinished{EmitterValue{v_1011766}}}
+      EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_js_parameter_arity{v_6}}, v_1011772 => +v_1011771 = emitter_unbox(cps_provider_8_JSParameter, v_1011772); EmitterFinished{EmitterValue{v_1011771}}}
     case False{}:
-      EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_js_parameter_other{v_4, v_7}}, v_1011769 => +v_1011768 = emitter_unbox(cps_provider_8_JSParameter, v_1011769); EmitterFinished{EmitterValue{v_1011768}}}
+      EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_js_parameter_other{v_4, v_7}}, v_1011774 => +v_1011773 = emitter_unbox(cps_provider_8_JSParameter, v_1011774); EmitterFinished{EmitterValue{v_1011773}}}
 
 def emitter_body_cps_provider_8_js_parameter_marker(v_1: Bool, v_4: Maybe<&2, String>, v_6: List<&2, BIR.Descriptor>, v_7: BIR.Descriptor) -> EmitterProgress<cps_provider_8_JSParameter>:
-  emitter_match_2531(v_1, v_6, v_4, v_7)
+  emitter_match_2532(v_1, v_6, v_4, v_7)
 
 def emitter_body_cps_provider_8_js_parameter_other(v_2: Maybe<&2, String>, v_3: BIR.Descriptor) -> EmitterProgress<cps_provider_8_JSParameter>:
   match v_2:
     case Some{v_6}:
-      EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_js_parameter_known{v_6, v_3}}, v_1011771 => +v_1011770 = emitter_unbox(cps_provider_8_JSParameter, v_1011771); EmitterFinished{EmitterValue{v_1011770}}}
+      EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_js_parameter_known{v_6, v_3}}, v_1011776 => +v_1011775 = emitter_unbox(cps_provider_8_JSParameter, v_1011776); EmitterFinished{EmitterValue{v_1011775}}}
     case None{}:
       EmitterFinished{EmitterValue{cps_provider_8_JSParameterUnresolved{}}}
 
@@ -27217,52 +27237,52 @@ def emitter_body_cps_provider_8_js_parameter_arity_count(v_1: Bool) -> EmitterPr
 def emitter_body_cps_provider_8_js_parameter_unresolved(v_0: BIR.Descriptor) -> EmitterProgress<cps_provider_8_JSParameter>:
   EmitterFinished{EmitterValue{emitter_pure_cps_provider_8_js_parameter_unresolved(v_0)}}
 
-def emitter_match_2533(v_1: List<&2, BIR.Descriptor>, +v_4: Map<&2, String>, +v_6: Nat) -> EmitterProgress<List<&2, String>>:
+def emitter_match_2534(v_1: List<&2, BIR.Descriptor>, +v_4: Map<&2, String>, +v_6: Nat) -> EmitterProgress<List<&2, String>>:
   match v_1:
     case []:
       EmitterFinished{EmitterValue{[]}}
     case +v_11 <> v_12:
-      EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_js_parameter{v_11, v_4}}, False{}, v_1011784 => emitter_body_cps_provider_8_js_parameter(v_11, v_4), v_1011783 => +v_1011772 = emitter_unbox(cps_provider_8_JSParameter, v_1011783); EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_text_descriptor{v_11, v_4}}, False{}, v_1011782 => emitter_body_cps_provider_8_js_text_descriptor(v_11, v_4), v_1011781 => +v_1011773 = emitter_unbox(Bool, v_1011781); EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_f32_descriptor{v_11, v_4}}, False{}, v_1011780 => emitter_body_cps_provider_8_js_f32_descriptor(v_11, v_4), v_1011779 => +v_1011774 = emitter_unbox(Bool, v_1011779); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_argument{v_1011772, v_1011773, v_1011774, v_6}}, v_1011778 => +v_1011775 = emitter_unbox(String, v_1011778); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_arguments{v_12, v_4, Nat.add(v_6, 1n)}}, v_1011777 => +v_1011776 = emitter_unbox(List<&2, String>, v_1011777); EmitterFinished{EmitterValue{v_1011775 <> v_1011776}}}}}}}
+      EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_js_parameter{v_11, v_4}}, False{}, v_1011789 => emitter_body_cps_provider_8_js_parameter(v_11, v_4), v_1011788 => +v_1011777 = emitter_unbox(cps_provider_8_JSParameter, v_1011788); EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_text_descriptor{v_11, v_4}}, False{}, v_1011787 => emitter_body_cps_provider_8_js_text_descriptor(v_11, v_4), v_1011786 => +v_1011778 = emitter_unbox(Bool, v_1011786); EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_f32_descriptor{v_11, v_4}}, False{}, v_1011785 => emitter_body_cps_provider_8_js_f32_descriptor(v_11, v_4), v_1011784 => +v_1011779 = emitter_unbox(Bool, v_1011784); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_argument{v_1011777, v_1011778, v_1011779, v_6}}, v_1011783 => +v_1011780 = emitter_unbox(String, v_1011783); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_arguments{v_12, v_4, Nat.add(v_6, 1n)}}, v_1011782 => +v_1011781 = emitter_unbox(List<&2, String>, v_1011782); EmitterFinished{EmitterValue{v_1011780 <> v_1011781}}}}}}}
 
 def emitter_body_cps_provider_8_export_arguments(v_1: List<&2, BIR.Descriptor>, +v_4: Map<&2, String>, v_6: Nat) -> EmitterProgress<List<&2, String>>:
-  emitter_match_2533(v_1, v_4, v_6)
+  emitter_match_2534(v_1, v_4, v_6)
 
-def emitter_match_2534(v_1: cps_provider_8_JSParameter, v_7: Nat, v_3: Bool, v_5: Bool) -> EmitterProgress<String>:
+def emitter_match_2535(v_1: cps_provider_8_JSParameter, v_7: Nat, v_3: Bool, v_5: Bool) -> EmitterProgress<String>:
   match v_1:
     case cps_provider_8_JSParameterNat{}:
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{["nat_in(arguments[", Nat.show(v_7), "])"]}}, False{}, v_1011787 => emitter_body_cps_provider_8_cat(["nat_in(arguments[", Nat.show(v_7), "])"]), v_1011786 => +v_1011785 = emitter_unbox(String, v_1011786); EmitterFinished{EmitterValue{v_1011785}}}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{["nat_in(arguments[", Nat.show(v_7), "])"]}}, False{}, v_1011792 => emitter_body_cps_provider_8_cat(["nat_in(arguments[", Nat.show(v_7), "])"]), v_1011791 => +v_1011790 = emitter_unbox(String, v_1011791); EmitterFinished{EmitterValue{v_1011790}}}
     case _:
-      EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_argument_scalar{v_3, v_5, v_7}}, v_1011789 => +v_1011788 = emitter_unbox(String, v_1011789); EmitterFinished{EmitterValue{v_1011788}}}
+      EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_argument_scalar{v_3, v_5, v_7}}, v_1011794 => +v_1011793 = emitter_unbox(String, v_1011794); EmitterFinished{EmitterValue{v_1011793}}}
 
 def emitter_body_cps_provider_8_export_argument(v_1: cps_provider_8_JSParameter, v_3: Bool, v_5: Bool, v_7: Nat) -> EmitterProgress<String>:
-  emitter_match_2534(v_1, v_7, v_3, v_5)
+  emitter_match_2535(v_1, v_7, v_3, v_5)
 
-def emitter_match_2535(v_1: Bool, v_5: Nat, v_3: Bool) -> EmitterProgress<String>:
+def emitter_match_2536(v_1: Bool, v_5: Nat, v_3: Bool) -> EmitterProgress<String>:
   match v_1:
     case True{}:
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{["str_in(arguments[", Nat.show(v_5), "])"]}}, False{}, v_1011792 => emitter_body_cps_provider_8_cat(["str_in(arguments[", Nat.show(v_5), "])"]), v_1011791 => +v_1011790 = emitter_unbox(String, v_1011791); EmitterFinished{EmitterValue{v_1011790}}}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{["str_in(arguments[", Nat.show(v_5), "])"]}}, False{}, v_1011797 => emitter_body_cps_provider_8_cat(["str_in(arguments[", Nat.show(v_5), "])"]), v_1011796 => +v_1011795 = emitter_unbox(String, v_1011796); EmitterFinished{EmitterValue{v_1011795}}}
     case False{}:
-      EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_argument_float{v_3, v_5}}, v_1011794 => +v_1011793 = emitter_unbox(String, v_1011794); EmitterFinished{EmitterValue{v_1011793}}}
+      EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_argument_float{v_3, v_5}}, v_1011799 => +v_1011798 = emitter_unbox(String, v_1011799); EmitterFinished{EmitterValue{v_1011798}}}
 
 def emitter_body_cps_provider_8_export_argument_scalar(v_1: Bool, v_3: Bool, v_5: Nat) -> EmitterProgress<String>:
-  emitter_match_2535(v_1, v_5, v_3)
+  emitter_match_2536(v_1, v_5, v_3)
 
 def emitter_body_cps_provider_8_export_argument_float(v_1: Bool, v_3: Nat) -> EmitterProgress<String>:
   match v_1:
     case True{}:
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{["Math.fround(arguments[", Nat.show(v_3), "])"]}}, False{}, v_1011797 => emitter_body_cps_provider_8_cat(["Math.fround(arguments[", Nat.show(v_3), "])"]), v_1011796 => +v_1011795 = emitter_unbox(String, v_1011796); EmitterFinished{EmitterValue{v_1011795}}}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{["Math.fround(arguments[", Nat.show(v_3), "])"]}}, False{}, v_1011802 => emitter_body_cps_provider_8_cat(["Math.fround(arguments[", Nat.show(v_3), "])"]), v_1011801 => +v_1011800 = emitter_unbox(String, v_1011801); EmitterFinished{EmitterValue{v_1011800}}}
     case False{}:
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{["arguments[", Nat.show(v_3), "]"]}}, False{}, v_1011800 => emitter_body_cps_provider_8_cat(["arguments[", Nat.show(v_3), "]"]), v_1011799 => +v_1011798 = emitter_unbox(String, v_1011799); EmitterFinished{EmitterValue{v_1011798}}}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{["arguments[", Nat.show(v_3), "]"]}}, False{}, v_1011805 => emitter_body_cps_provider_8_cat(["arguments[", Nat.show(v_3), "]"]), v_1011804 => +v_1011803 = emitter_unbox(String, v_1011804); EmitterFinished{EmitterValue{v_1011803}}}
 
-def emitter_match_2537(v_3: List<&2, BIR.Descriptor>, +v_6: Map<&2, String>, +v_1: String) -> EmitterProgress<Bool>:
+def emitter_match_2538(v_3: List<&2, BIR.Descriptor>, +v_6: Map<&2, String>, +v_1: String) -> EmitterProgress<Bool>:
   match v_3:
     case []:
       EmitterFinished{EmitterValue{False{}}}
     case +v_10 <> v_11:
-      EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_js_parameter{v_10, v_6}}, False{}, v_1011805 => emitter_body_cps_provider_8_js_parameter(v_10, v_6), v_1011804 => +v_1011801 = emitter_unbox(cps_provider_8_JSParameter, v_1011804); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_unresolved_item{v_1011801, v_1, v_11, v_6}}, v_1011803 => +v_1011802 = emitter_unbox(Bool, v_1011803); EmitterFinished{EmitterValue{v_1011802}}}}
+      EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_js_parameter{v_10, v_6}}, False{}, v_1011810 => emitter_body_cps_provider_8_js_parameter(v_10, v_6), v_1011809 => +v_1011806 = emitter_unbox(cps_provider_8_JSParameter, v_1011809); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_unresolved_item{v_1011806, v_1, v_11, v_6}}, v_1011808 => +v_1011807 = emitter_unbox(Bool, v_1011808); EmitterFinished{EmitterValue{v_1011807}}}}
 
 def emitter_body_cps_provider_8_export_unresolved(+v_1: String, v_3: List<&2, BIR.Descriptor>, +v_6: Map<&2, String>) -> EmitterProgress<Bool>:
-  emitter_match_2537(v_3, v_6, v_1)
+  emitter_match_2538(v_3, v_6, v_1)
 
 def emitter_body_cps_provider_8_export_unresolved_item(v_1: cps_provider_8_JSParameter, +v_3: String, v_5: List<&2, BIR.Descriptor>, +v_8: Map<&2, String>) -> EmitterProgress<Bool>:
   match v_1:
@@ -27274,186 +27294,186 @@ def emitter_body_cps_provider_8_export_unresolved_item(v_1: cps_provider_8_JSPar
 def emitter_body_cps_provider_8_export_field(v_0: BIR.Export, +v_3: Map<&2, String>) -> EmitterProgress<String>:
   match v_0:
     case BIR.Export{+v_8, None{}, +v_9, +v_10}:
-      EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_curried{v_8, v_9, v_10, v_3}}, v_1011808 => +v_1011807 = emitter_unbox(String, v_1011808); EmitterFinished{EmitterValue{v_1011807}}}
+      EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_curried{v_8, v_9, v_10, v_3}}, v_1011813 => +v_1011812 = emitter_unbox(String, v_1011813); EmitterFinished{EmitterValue{v_1011812}}}
     case BIR.Export{+v_17, Some{BIR.Entry{v_18, +v_19}}, +v_20, +v_21}:
-      EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_entry_field{v_17, v_18, v_19, v_20, v_21, v_3}}, v_1011810 => +v_1011809 = emitter_unbox(String, v_1011810); EmitterFinished{EmitterValue{v_1011809}}}
+      EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_entry_field{v_17, v_18, v_19, v_20, v_21, v_3}}, v_1011815 => +v_1011814 = emitter_unbox(String, v_1011815); EmitterFinished{EmitterValue{v_1011814}}}
 
-def emitter_continuation_2540(+v_1: String, v_7: List<&2, BIR.Descriptor>, v_8: BIR.Descriptor, +v_11: Map<&2, String>, v_1011814: String, +v_1011815: String) -> EmitterProgress<String>:
-  v_1011816 = {"](){return " : String}
-  EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_curried_call{v_1, v_7, v_8, v_11}}, v_1011821 => +v_1011817 = emitter_unbox(String, v_1011821); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011814, v_1011815, v_1011816, v_1011817, ";}"]}}, False{}, v_1011820 => emitter_body_cps_provider_8_cat([v_1011814, v_1011815, v_1011816, v_1011817, ";}"]), v_1011819 => +v_1011818 = emitter_unbox(String, v_1011819); EmitterFinished{EmitterValue{v_1011818}}}}
+def emitter_continuation_2541(+v_1: String, v_7: List<&2, BIR.Descriptor>, v_8: BIR.Descriptor, +v_11: Map<&2, String>, v_1011819: String, +v_1011820: String) -> EmitterProgress<String>:
+  v_1011821 = {"](){return " : String}
+  EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_curried_call{v_1, v_7, v_8, v_11}}, v_1011826 => +v_1011822 = emitter_unbox(String, v_1011826); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011819, v_1011820, v_1011821, v_1011822, ";}"]}}, False{}, v_1011825 => emitter_body_cps_provider_8_cat([v_1011819, v_1011820, v_1011821, v_1011822, ";}"]), v_1011824 => +v_1011823 = emitter_unbox(String, v_1011824); EmitterFinished{EmitterValue{v_1011823}}}}
 
-def emitter_match_2541(v_1011811: Bool, +v_1: String, v_3: U32, v_7: List<&2, BIR.Descriptor>, v_8: BIR.Descriptor, +v_11: Map<&2, String>) -> EmitterProgress<String>:
-  match v_1011811:
+def emitter_match_2542(v_1011816: Bool, +v_1: String, v_3: U32, v_7: List<&2, BIR.Descriptor>, v_8: BIR.Descriptor, +v_11: Map<&2, String>) -> EmitterProgress<String>:
+  match v_1011816:
     case True{}:
-      EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_direct_field{v_1, v_3, v_7, v_8, v_11}}, v_1011813 => +v_1011812 = emitter_unbox(String, v_1011813); EmitterFinished{EmitterValue{v_1011812}}}
+      EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_direct_field{v_1, v_3, v_7, v_8, v_11}}, v_1011818 => +v_1011817 = emitter_unbox(String, v_1011818); EmitterFinished{EmitterValue{v_1011817}}}
     case False{}:
-      v_1011814 = {"[" : String}
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_1}}, False{}, v_1011823 => emitter_body_cps_provider_8_js_quote(v_1), v_1011822 => +v_1011815 = emitter_unbox(String, v_1011822); emitter_continuation_2540(v_1, v_7, v_8, v_11, v_1011814, v_1011815)}
+      v_1011819 = {"[" : String}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_1}}, False{}, v_1011828 => emitter_body_cps_provider_8_js_quote(v_1), v_1011827 => +v_1011820 = emitter_unbox(String, v_1011827); emitter_continuation_2541(v_1, v_7, v_8, v_11, v_1011819, v_1011820)}
 
 def emitter_body_cps_provider_8_export_entry_field(+v_1: String, v_3: U32, v_5: Nat, +v_7: List<&2, BIR.Descriptor>, v_8: BIR.Descriptor, +v_11: Map<&2, String>) -> EmitterProgress<String>:
-  v_1011811 = {Nat.is_eq(v_5, List.length(&2, BIR.Descriptor, v_7)) : Bool}
-  emitter_match_2541(v_1011811, v_1, v_3, v_7, v_8, v_11)
+  v_1011816 = {Nat.is_eq(v_5, List.length(&2, BIR.Descriptor, v_7)) : Bool}
+  emitter_match_2542(v_1011816, v_1, v_3, v_7, v_8, v_11)
 
-def emitter_continuation_2542(v_6: BIR.Descriptor, +v_9: Map<&2, String>, v_3: U32, v_5: List<&2, BIR.Descriptor>, v_1011824: String, +v_1011825: String, v_1011826: String, v_1011827: String, v_1011828: String, +v_1011829: String) -> EmitterProgress<String>:
-  v_1011830 = {";const $base0=$ksp,$sp0=$sp;return " : String}
-  v_1011831 = {v_6 : BIR.Descriptor}
-  +v_1011832 = {v_9 : Map<&2, String>}
-  v_1011833 = {"run_base(" : String}
-  v_1011834 = {v_3 : U32}
-  EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_arguments{v_5, v_9, 0n}}, False{}, v_1011848 => emitter_body_cps_provider_8_export_arguments(v_5, v_9, 0n), v_1011847 => +v_1011835 = emitter_unbox(List<&2, String>, v_1011847); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_call{v_1011834, v_1011835}}, False{}, v_1011846 => emitter_body_cps_provider_8_call(v_1011834, v_1011835), v_1011845 => +v_1011836 = emitter_unbox(String, v_1011845); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011833, v_1011836, ",$base0,$sp0)"]}}, False{}, v_1011844 => emitter_body_cps_provider_8_cat([v_1011833, v_1011836, ",$base0,$sp0)"]), v_1011843 => +v_1011837 = emitter_unbox(String, v_1011843); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_result{v_1011831, v_1011832, v_1011837}}, v_1011842 => +v_1011838 = emitter_unbox(String, v_1011842); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011824, v_1011825, v_1011826, v_1011827, v_1011828, v_1011829, v_1011830, v_1011838, ";}"]}}, False{}, v_1011841 => emitter_body_cps_provider_8_cat([v_1011824, v_1011825, v_1011826, v_1011827, v_1011828, v_1011829, v_1011830, v_1011838, ";}"]), v_1011840 => +v_1011839 = emitter_unbox(String, v_1011840); EmitterFinished{EmitterValue{v_1011839}}}}}}}
+def emitter_continuation_2543(v_6: BIR.Descriptor, +v_9: Map<&2, String>, v_3: U32, v_5: List<&2, BIR.Descriptor>, v_1011829: String, +v_1011830: String, v_1011831: String, v_1011832: String, v_1011833: String, +v_1011834: String) -> EmitterProgress<String>:
+  v_1011835 = {";const $base0=$ksp,$sp0=$sp;return " : String}
+  v_1011836 = {v_6 : BIR.Descriptor}
+  +v_1011837 = {v_9 : Map<&2, String>}
+  v_1011838 = {"run_base(" : String}
+  v_1011839 = {v_3 : U32}
+  EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_arguments{v_5, v_9, 0n}}, False{}, v_1011853 => emitter_body_cps_provider_8_export_arguments(v_5, v_9, 0n), v_1011852 => +v_1011840 = emitter_unbox(List<&2, String>, v_1011852); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_call{v_1011839, v_1011840}}, False{}, v_1011851 => emitter_body_cps_provider_8_call(v_1011839, v_1011840), v_1011850 => +v_1011841 = emitter_unbox(String, v_1011850); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011838, v_1011841, ",$base0,$sp0)"]}}, False{}, v_1011849 => emitter_body_cps_provider_8_cat([v_1011838, v_1011841, ",$base0,$sp0)"]), v_1011848 => +v_1011842 = emitter_unbox(String, v_1011848); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_result{v_1011836, v_1011837, v_1011842}}, v_1011847 => +v_1011843 = emitter_unbox(String, v_1011847); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011829, v_1011830, v_1011831, v_1011832, v_1011833, v_1011834, v_1011835, v_1011843, ";}"]}}, False{}, v_1011846 => emitter_body_cps_provider_8_cat([v_1011829, v_1011830, v_1011831, v_1011832, v_1011833, v_1011834, v_1011835, v_1011843, ";}"]), v_1011845 => +v_1011844 = emitter_unbox(String, v_1011845); EmitterFinished{EmitterValue{v_1011844}}}}}}}
 
-def emitter_continuation_2543(+v_5: List<&2, BIR.Descriptor>, +v_1: String, +v_6: BIR.Descriptor, +v_9: Map<&2, String>, v_3: U32, v_1011824: String, +v_1011825: String) -> EmitterProgress<String>:
-  v_1011826 = {"](){if(arguments.length!==" : String}
-  v_1011827 = {Nat.show(List.length(&2, BIR.Descriptor, v_5)) : String}
-  v_1011828 = {")return " : String}
-  EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_curried_call{v_1, v_5, v_6, v_9}}, v_1011849 => +v_1011829 = emitter_unbox(String, v_1011849); emitter_continuation_2542(v_6, v_9, v_3, v_5, v_1011824, v_1011825, v_1011826, v_1011827, v_1011828, v_1011829)}
+def emitter_continuation_2544(+v_5: List<&2, BIR.Descriptor>, +v_1: String, +v_6: BIR.Descriptor, +v_9: Map<&2, String>, v_3: U32, v_1011829: String, +v_1011830: String) -> EmitterProgress<String>:
+  v_1011831 = {"](){if(arguments.length!==" : String}
+  v_1011832 = {Nat.show(List.length(&2, BIR.Descriptor, v_5)) : String}
+  v_1011833 = {")return " : String}
+  EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_curried_call{v_1, v_5, v_6, v_9}}, v_1011854 => +v_1011834 = emitter_unbox(String, v_1011854); emitter_continuation_2543(v_6, v_9, v_3, v_5, v_1011829, v_1011830, v_1011831, v_1011832, v_1011833, v_1011834)}
 
 def emitter_body_cps_provider_8_export_direct_field(+v_1: String, v_3: U32, v_5: List<&2, BIR.Descriptor>, v_6: BIR.Descriptor, +v_9: Map<&2, String>) -> EmitterProgress<String>:
-  v_1011824 = {"[" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_1}}, False{}, v_1011851 => emitter_body_cps_provider_8_js_quote(v_1), v_1011850 => +v_1011825 = emitter_unbox(String, v_1011850); emitter_continuation_2543(v_5, v_1, v_6, v_9, v_3, v_1011824, v_1011825)}
+  v_1011829 = {"[" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_1}}, False{}, v_1011856 => emitter_body_cps_provider_8_js_quote(v_1), v_1011855 => +v_1011830 = emitter_unbox(String, v_1011855); emitter_continuation_2544(v_5, v_1, v_6, v_9, v_3, v_1011829, v_1011830)}
 
-def emitter_match_2544(+v_1011852: Bool, v_5: String) -> EmitterProgress<String>:
-  match v_1011852:
+def emitter_match_2545(+v_1011857: Bool, v_5: String) -> EmitterProgress<String>:
+  match v_1011857:
     case True{}:
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{["str_out(", v_5, ")"]}}, False{}, v_1011855 => emitter_body_cps_provider_8_cat(["str_out(", v_5, ")"]), v_1011854 => +v_1011853 = emitter_unbox(String, v_1011854); EmitterFinished{EmitterValue{v_1011853}}}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{["str_out(", v_5, ")"]}}, False{}, v_1011860 => emitter_body_cps_provider_8_cat(["str_out(", v_5, ")"]), v_1011859 => +v_1011858 = emitter_unbox(String, v_1011859); EmitterFinished{EmitterValue{v_1011858}}}
     case False{}:
       EmitterFinished{EmitterValue{v_5}}
 
 def emitter_body_cps_provider_8_export_result(v_0: BIR.Descriptor, +v_3: Map<&2, String>, v_5: String) -> EmitterProgress<String>:
-  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_text_descriptor{v_0, v_3}}, False{}, v_1011857 => emitter_body_cps_provider_8_js_text_descriptor(v_0, v_3), v_1011856 => +v_1011852 = emitter_unbox(Bool, v_1011856); emitter_match_2544(v_1011852, v_5)}
+  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_text_descriptor{v_0, v_3}}, False{}, v_1011862 => emitter_body_cps_provider_8_js_text_descriptor(v_0, v_3), v_1011861 => +v_1011857 = emitter_unbox(Bool, v_1011861); emitter_match_2545(v_1011857, v_5)}
 
-def emitter_match_2545(+v_1011858: cps_provider_8_JSParameter, +v_6: Nat, v_12: List<&2, BIR.Descriptor>, +v_4: Map<&2, String>) -> EmitterProgress<List<&2, Nat>>:
-  match v_1011858:
+def emitter_match_2546(+v_1011863: cps_provider_8_JSParameter, +v_6: Nat, v_12: List<&2, BIR.Descriptor>, +v_4: Map<&2, String>) -> EmitterProgress<List<&2, Nat>>:
+  match v_1011863:
     case cps_provider_8_JSParameterNat{}:
-      v_1011859 = {v_6 : Nat}
-      EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_nat_indices{v_12, v_4, Nat.add(v_6, 1n)}}, v_1011861 => +v_1011860 = emitter_unbox(List<&2, Nat>, v_1011861); EmitterFinished{EmitterValue{v_1011859 <> v_1011860}}}
+      v_1011864 = {v_6 : Nat}
+      EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_nat_indices{v_12, v_4, Nat.add(v_6, 1n)}}, v_1011866 => +v_1011865 = emitter_unbox(List<&2, Nat>, v_1011866); EmitterFinished{EmitterValue{v_1011864 <> v_1011865}}}
     case _:
-      EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_nat_indices{v_12, v_4, Nat.add(v_6, 1n)}}, v_1011863 => +v_1011862 = emitter_unbox(List<&2, Nat>, v_1011863); EmitterFinished{EmitterValue{v_1011862}}}
+      EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_nat_indices{v_12, v_4, Nat.add(v_6, 1n)}}, v_1011868 => +v_1011867 = emitter_unbox(List<&2, Nat>, v_1011868); EmitterFinished{EmitterValue{v_1011867}}}
 
 def emitter_body_cps_provider_8_export_nat_indices(v_1: List<&2, BIR.Descriptor>, +v_4: Map<&2, String>, v_6: Nat) -> EmitterProgress<List<&2, Nat>>:
   match v_1:
     case []:
       EmitterFinished{EmitterValue{[]}}
     case +v_11 <> v_12:
-      EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_js_parameter{v_11, v_4}}, False{}, v_1011865 => emitter_body_cps_provider_8_js_parameter(v_11, v_4), v_1011864 => +v_1011858 = emitter_unbox(cps_provider_8_JSParameter, v_1011864); emitter_match_2545(v_1011858, v_6, v_12, v_4)}
+      EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_js_parameter{v_11, v_4}}, False{}, v_1011870 => emitter_body_cps_provider_8_js_parameter(v_11, v_4), v_1011869 => +v_1011863 = emitter_unbox(cps_provider_8_JSParameter, v_1011869); emitter_match_2546(v_1011863, v_6, v_12, v_4)}
 
 def emitter_body_cps_provider_8_export_nat_index_texts(v_2: List<&2, Nat>) -> EmitterProgress<List<&2, String>>:
   match v_2:
     case []:
       EmitterFinished{EmitterValue{[]}}
     case v_7 <> v_8:
-      v_1011866 = {Nat.show(v_7) : String}
-      EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_nat_index_texts{v_8}}, v_1011868 => +v_1011867 = emitter_unbox(List<&2, String>, v_1011868); EmitterFinished{EmitterValue{v_1011866 <> v_1011867}}}
+      v_1011871 = {Nat.show(v_7) : String}
+      EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_nat_index_texts{v_8}}, v_1011873 => +v_1011872 = emitter_unbox(List<&2, String>, v_1011873); EmitterFinished{EmitterValue{v_1011871 <> v_1011872}}}
 
 def emitter_body_cps_provider_8_export_nat_indexes(v_1: List<&2, BIR.Descriptor>, +v_4: Map<&2, String>) -> EmitterProgress<String>:
-  EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_nat_indices{v_1, v_4, 0n}}, False{}, v_1011874 => emitter_body_cps_provider_8_export_nat_indices(v_1, v_4, 0n), v_1011873 => +v_1011869 = emitter_unbox(List<&2, Nat>, v_1011873); EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_nat_index_texts{v_1011869}}, False{}, v_1011872 => emitter_body_cps_provider_8_export_nat_index_texts(v_1011869), v_1011871 => +v_1011870 = emitter_unbox(List<&2, String>, v_1011871); EmitterFinished{EmitterValue{String.join(v_1011870, ",")}}}}
+  EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_nat_indices{v_1, v_4, 0n}}, False{}, v_1011879 => emitter_body_cps_provider_8_export_nat_indices(v_1, v_4, 0n), v_1011878 => +v_1011874 = emitter_unbox(List<&2, Nat>, v_1011878); EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_nat_index_texts{v_1011874}}, False{}, v_1011877 => emitter_body_cps_provider_8_export_nat_index_texts(v_1011874), v_1011876 => +v_1011875 = emitter_unbox(List<&2, String>, v_1011876); EmitterFinished{EmitterValue{String.join(v_1011875, ",")}}}}
 
 def emitter_body_cps_provider_8_export_text_indices(v_1: List<&2, BIR.Descriptor>, +v_4: Map<&2, String>, v_6: Nat) -> EmitterProgress<List<&2, Nat>>:
   match v_1:
     case []:
       EmitterFinished{EmitterValue{[]}}
     case +v_11 <> v_12:
-      EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_text_descriptor{v_11, v_4}}, False{}, v_1011879 => emitter_body_cps_provider_8_js_text_descriptor(v_11, v_4), v_1011878 => +v_1011875 = emitter_unbox(Bool, v_1011878); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_text_index{v_1011875, v_12, v_4, v_6}}, v_1011877 => +v_1011876 = emitter_unbox(List<&2, Nat>, v_1011877); EmitterFinished{EmitterValue{v_1011876}}}}
+      EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_text_descriptor{v_11, v_4}}, False{}, v_1011884 => emitter_body_cps_provider_8_js_text_descriptor(v_11, v_4), v_1011883 => +v_1011880 = emitter_unbox(Bool, v_1011883); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_text_index{v_1011880, v_12, v_4, v_6}}, v_1011882 => +v_1011881 = emitter_unbox(List<&2, Nat>, v_1011882); EmitterFinished{EmitterValue{v_1011881}}}}
 
-def emitter_match_2549(v_1: Bool, +v_8: Nat, v_3: List<&2, BIR.Descriptor>, +v_6: Map<&2, String>) -> EmitterProgress<List<&2, Nat>>:
+def emitter_match_2550(v_1: Bool, +v_8: Nat, v_3: List<&2, BIR.Descriptor>, +v_6: Map<&2, String>) -> EmitterProgress<List<&2, Nat>>:
   match v_1:
     case True{}:
-      v_1011880 = {v_8 : Nat}
-      EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_text_indices{v_3, v_6, Nat.add(v_8, 1n)}}, False{}, v_1011883 => emitter_body_cps_provider_8_export_text_indices(v_3, v_6, Nat.add(v_8, 1n)), v_1011882 => +v_1011881 = emitter_unbox(List<&2, Nat>, v_1011882); EmitterFinished{EmitterValue{v_1011880 <> v_1011881}}}
+      v_1011885 = {v_8 : Nat}
+      EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_text_indices{v_3, v_6, Nat.add(v_8, 1n)}}, False{}, v_1011888 => emitter_body_cps_provider_8_export_text_indices(v_3, v_6, Nat.add(v_8, 1n)), v_1011887 => +v_1011886 = emitter_unbox(List<&2, Nat>, v_1011887); EmitterFinished{EmitterValue{v_1011885 <> v_1011886}}}
     case False{}:
-      EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_text_indices{v_3, v_6, Nat.add(v_8, 1n)}}, False{}, v_1011886 => emitter_body_cps_provider_8_export_text_indices(v_3, v_6, Nat.add(v_8, 1n)), v_1011885 => +v_1011884 = emitter_unbox(List<&2, Nat>, v_1011885); EmitterFinished{EmitterValue{v_1011884}}}
+      EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_text_indices{v_3, v_6, Nat.add(v_8, 1n)}}, False{}, v_1011891 => emitter_body_cps_provider_8_export_text_indices(v_3, v_6, Nat.add(v_8, 1n)), v_1011890 => +v_1011889 = emitter_unbox(List<&2, Nat>, v_1011890); EmitterFinished{EmitterValue{v_1011889}}}
 
 def emitter_body_cps_provider_8_export_text_index(v_1: Bool, v_3: List<&2, BIR.Descriptor>, +v_6: Map<&2, String>, v_8: Nat) -> EmitterProgress<List<&2, Nat>>:
-  emitter_match_2549(v_1, v_8, v_3, v_6)
+  emitter_match_2550(v_1, v_8, v_3, v_6)
 
 def emitter_body_cps_provider_8_export_f32_indices(v_1: List<&2, BIR.Descriptor>, +v_4: Map<&2, String>, v_6: Nat) -> EmitterProgress<List<&2, Nat>>:
   match v_1:
     case []:
       EmitterFinished{EmitterValue{[]}}
     case +v_11 <> v_12:
-      EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_f32_descriptor{v_11, v_4}}, False{}, v_1011891 => emitter_body_cps_provider_8_js_f32_descriptor(v_11, v_4), v_1011890 => +v_1011887 = emitter_unbox(Bool, v_1011890); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_f32_index{v_1011887, v_12, v_4, v_6}}, v_1011889 => +v_1011888 = emitter_unbox(List<&2, Nat>, v_1011889); EmitterFinished{EmitterValue{v_1011888}}}}
+      EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_f32_descriptor{v_11, v_4}}, False{}, v_1011896 => emitter_body_cps_provider_8_js_f32_descriptor(v_11, v_4), v_1011895 => +v_1011892 = emitter_unbox(Bool, v_1011895); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_f32_index{v_1011892, v_12, v_4, v_6}}, v_1011894 => +v_1011893 = emitter_unbox(List<&2, Nat>, v_1011894); EmitterFinished{EmitterValue{v_1011893}}}}
 
-def emitter_match_2551(v_1: Bool, +v_8: Nat, v_3: List<&2, BIR.Descriptor>, +v_6: Map<&2, String>) -> EmitterProgress<List<&2, Nat>>:
+def emitter_match_2552(v_1: Bool, +v_8: Nat, v_3: List<&2, BIR.Descriptor>, +v_6: Map<&2, String>) -> EmitterProgress<List<&2, Nat>>:
   match v_1:
     case True{}:
-      v_1011892 = {v_8 : Nat}
-      EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_f32_indices{v_3, v_6, Nat.add(v_8, 1n)}}, False{}, v_1011895 => emitter_body_cps_provider_8_export_f32_indices(v_3, v_6, Nat.add(v_8, 1n)), v_1011894 => +v_1011893 = emitter_unbox(List<&2, Nat>, v_1011894); EmitterFinished{EmitterValue{v_1011892 <> v_1011893}}}
+      v_1011897 = {v_8 : Nat}
+      EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_f32_indices{v_3, v_6, Nat.add(v_8, 1n)}}, False{}, v_1011900 => emitter_body_cps_provider_8_export_f32_indices(v_3, v_6, Nat.add(v_8, 1n)), v_1011899 => +v_1011898 = emitter_unbox(List<&2, Nat>, v_1011899); EmitterFinished{EmitterValue{v_1011897 <> v_1011898}}}
     case False{}:
-      EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_f32_indices{v_3, v_6, Nat.add(v_8, 1n)}}, False{}, v_1011898 => emitter_body_cps_provider_8_export_f32_indices(v_3, v_6, Nat.add(v_8, 1n)), v_1011897 => +v_1011896 = emitter_unbox(List<&2, Nat>, v_1011897); EmitterFinished{EmitterValue{v_1011896}}}
+      EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_f32_indices{v_3, v_6, Nat.add(v_8, 1n)}}, False{}, v_1011903 => emitter_body_cps_provider_8_export_f32_indices(v_3, v_6, Nat.add(v_8, 1n)), v_1011902 => +v_1011901 = emitter_unbox(List<&2, Nat>, v_1011902); EmitterFinished{EmitterValue{v_1011901}}}
 
 def emitter_body_cps_provider_8_export_f32_index(v_1: Bool, v_3: List<&2, BIR.Descriptor>, +v_6: Map<&2, String>, v_8: Nat) -> EmitterProgress<List<&2, Nat>>:
-  emitter_match_2551(v_1, v_8, v_3, v_6)
+  emitter_match_2552(v_1, v_8, v_3, v_6)
 
 def emitter_body_cps_provider_8_export_text_indexes(v_1: List<&2, BIR.Descriptor>, +v_4: Map<&2, String>) -> EmitterProgress<String>:
-  EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_text_indices{v_1, v_4, 0n}}, False{}, v_1011904 => emitter_body_cps_provider_8_export_text_indices(v_1, v_4, 0n), v_1011903 => +v_1011899 = emitter_unbox(List<&2, Nat>, v_1011903); EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_nat_index_texts{v_1011899}}, False{}, v_1011902 => emitter_body_cps_provider_8_export_nat_index_texts(v_1011899), v_1011901 => +v_1011900 = emitter_unbox(List<&2, String>, v_1011901); EmitterFinished{EmitterValue{String.join(v_1011900, ",")}}}}
+  EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_text_indices{v_1, v_4, 0n}}, False{}, v_1011909 => emitter_body_cps_provider_8_export_text_indices(v_1, v_4, 0n), v_1011908 => +v_1011904 = emitter_unbox(List<&2, Nat>, v_1011908); EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_nat_index_texts{v_1011904}}, False{}, v_1011907 => emitter_body_cps_provider_8_export_nat_index_texts(v_1011904), v_1011906 => +v_1011905 = emitter_unbox(List<&2, String>, v_1011906); EmitterFinished{EmitterValue{String.join(v_1011905, ",")}}}}
 
 def emitter_body_cps_provider_8_export_f32_indexes(v_1: List<&2, BIR.Descriptor>, +v_4: Map<&2, String>) -> EmitterProgress<String>:
-  EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_f32_indices{v_1, v_4, 0n}}, False{}, v_1011910 => emitter_body_cps_provider_8_export_f32_indices(v_1, v_4, 0n), v_1011909 => +v_1011905 = emitter_unbox(List<&2, Nat>, v_1011909); EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_nat_index_texts{v_1011905}}, False{}, v_1011908 => emitter_body_cps_provider_8_export_nat_index_texts(v_1011905), v_1011907 => +v_1011906 = emitter_unbox(List<&2, String>, v_1011907); EmitterFinished{EmitterValue{String.join(v_1011906, ",")}}}}
+  EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_f32_indices{v_1, v_4, 0n}}, False{}, v_1011915 => emitter_body_cps_provider_8_export_f32_indices(v_1, v_4, 0n), v_1011914 => +v_1011910 = emitter_unbox(List<&2, Nat>, v_1011914); EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_nat_index_texts{v_1011910}}, False{}, v_1011913 => emitter_body_cps_provider_8_export_nat_index_texts(v_1011910), v_1011912 => +v_1011911 = emitter_unbox(List<&2, String>, v_1011912); EmitterFinished{EmitterValue{String.join(v_1011911, ",")}}}}
 
-def emitter_match_2552(+v_1011911: Bool) -> EmitterProgress<String>:
-  match v_1011911:
+def emitter_match_2553(+v_1011916: Bool) -> EmitterProgress<String>:
+  match v_1011916:
     case True{}:
       EmitterFinished{EmitterValue{"((v)=>str_out(v))"}}
     case False{}:
       EmitterFinished{EmitterValue{"((v)=>v)"}}
 
 def emitter_body_cps_provider_8_export_result_normalizer(v_0: BIR.Descriptor, +v_3: Map<&2, String>) -> EmitterProgress<String>:
-  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_text_descriptor{v_0, v_3}}, False{}, v_1011913 => emitter_body_cps_provider_8_js_text_descriptor(v_0, v_3), v_1011912 => +v_1011911 = emitter_unbox(Bool, v_1011912); emitter_match_2552(v_1011911)}
+  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_js_text_descriptor{v_0, v_3}}, False{}, v_1011918 => emitter_body_cps_provider_8_js_text_descriptor(v_0, v_3), v_1011917 => +v_1011916 = emitter_unbox(Bool, v_1011917); emitter_match_2553(v_1011916)}
 
-def emitter_continuation_2553(v_1: String, v_3: List<&2, BIR.Descriptor>, v_4: BIR.Descriptor, +v_7: Map<&2, String>, v_1011914: String, +v_1011915: String) -> EmitterProgress<String>:
-  v_1011916 = {"]:" : String}
-  EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_curried_value{v_1, v_3, v_4, v_7}}, v_1011921 => +v_1011917 = emitter_unbox(String, v_1011921); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011914, v_1011915, v_1011916, v_1011917]}}, False{}, v_1011920 => emitter_body_cps_provider_8_cat([v_1011914, v_1011915, v_1011916, v_1011917]), v_1011919 => +v_1011918 = emitter_unbox(String, v_1011919); EmitterFinished{EmitterValue{v_1011918}}}}
+def emitter_continuation_2554(v_1: String, v_3: List<&2, BIR.Descriptor>, v_4: BIR.Descriptor, +v_7: Map<&2, String>, v_1011919: String, +v_1011920: String) -> EmitterProgress<String>:
+  v_1011921 = {"]:" : String}
+  EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_curried_value{v_1, v_3, v_4, v_7}}, v_1011926 => +v_1011922 = emitter_unbox(String, v_1011926); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011919, v_1011920, v_1011921, v_1011922]}}, False{}, v_1011925 => emitter_body_cps_provider_8_cat([v_1011919, v_1011920, v_1011921, v_1011922]), v_1011924 => +v_1011923 = emitter_unbox(String, v_1011924); EmitterFinished{EmitterValue{v_1011923}}}}
 
 def emitter_body_cps_provider_8_export_curried(+v_1: String, v_3: List<&2, BIR.Descriptor>, v_4: BIR.Descriptor, +v_7: Map<&2, String>) -> EmitterProgress<String>:
-  v_1011914 = {"[" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_1}}, False{}, v_1011923 => emitter_body_cps_provider_8_js_quote(v_1), v_1011922 => +v_1011915 = emitter_unbox(String, v_1011922); emitter_continuation_2553(v_1, v_3, v_4, v_7, v_1011914, v_1011915)}
+  v_1011919 = {"[" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_1}}, False{}, v_1011928 => emitter_body_cps_provider_8_js_quote(v_1), v_1011927 => +v_1011920 = emitter_unbox(String, v_1011927); emitter_continuation_2554(v_1, v_3, v_4, v_7, v_1011919, v_1011920)}
 
-def emitter_continuation_2554(v_4: BIR.Descriptor, +v_7: Map<&2, String>, v_1011924: String, +v_1011925: String, v_1011926: String, v_1011927: String, v_1011928: String, +v_1011929: String, v_1011930: String, +v_1011931: String, v_1011932: String, +v_1011933: String) -> EmitterProgress<String>:
-  v_1011934 = {"]," : String}
-  EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_result_normalizer{v_4, v_7}}, False{}, v_1011940 => emitter_body_cps_provider_8_export_result_normalizer(v_4, v_7), v_1011939 => +v_1011935 = emitter_unbox(String, v_1011939); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011924, v_1011925, v_1011926, v_1011927, v_1011928, v_1011929, v_1011930, v_1011931, v_1011932, v_1011933, v_1011934, v_1011935, ")"]}}, False{}, v_1011938 => emitter_body_cps_provider_8_cat([v_1011924, v_1011925, v_1011926, v_1011927, v_1011928, v_1011929, v_1011930, v_1011931, v_1011932, v_1011933, v_1011934, v_1011935, ")"]), v_1011937 => +v_1011936 = emitter_unbox(String, v_1011937); EmitterFinished{EmitterValue{v_1011936}}}}
+def emitter_continuation_2555(v_4: BIR.Descriptor, +v_7: Map<&2, String>, v_1011929: String, +v_1011930: String, v_1011931: String, v_1011932: String, v_1011933: String, +v_1011934: String, v_1011935: String, +v_1011936: String, v_1011937: String, +v_1011938: String) -> EmitterProgress<String>:
+  v_1011939 = {"]," : String}
+  EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_result_normalizer{v_4, v_7}}, False{}, v_1011945 => emitter_body_cps_provider_8_export_result_normalizer(v_4, v_7), v_1011944 => +v_1011940 = emitter_unbox(String, v_1011944); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011929, v_1011930, v_1011931, v_1011932, v_1011933, v_1011934, v_1011935, v_1011936, v_1011937, v_1011938, v_1011939, v_1011940, ")"]}}, False{}, v_1011943 => emitter_body_cps_provider_8_cat([v_1011929, v_1011930, v_1011931, v_1011932, v_1011933, v_1011934, v_1011935, v_1011936, v_1011937, v_1011938, v_1011939, v_1011940, ")"]), v_1011942 => +v_1011941 = emitter_unbox(String, v_1011942); EmitterFinished{EmitterValue{v_1011941}}}}
 
-def emitter_continuation_2555(v_3: List<&2, BIR.Descriptor>, +v_7: Map<&2, String>, v_4: BIR.Descriptor, v_1011924: String, +v_1011925: String, v_1011926: String, v_1011927: String, v_1011928: String, +v_1011929: String, v_1011930: String, +v_1011931: String) -> EmitterProgress<String>:
-  v_1011932 = {"],[" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_f32_indexes{v_3, v_7}}, False{}, v_1011942 => emitter_body_cps_provider_8_export_f32_indexes(v_3, v_7), v_1011941 => +v_1011933 = emitter_unbox(String, v_1011941); emitter_continuation_2554(v_4, v_7, v_1011924, v_1011925, v_1011926, v_1011927, v_1011928, v_1011929, v_1011930, v_1011931, v_1011932, v_1011933)}
+def emitter_continuation_2556(v_3: List<&2, BIR.Descriptor>, +v_7: Map<&2, String>, v_4: BIR.Descriptor, v_1011929: String, +v_1011930: String, v_1011931: String, v_1011932: String, v_1011933: String, +v_1011934: String, v_1011935: String, +v_1011936: String) -> EmitterProgress<String>:
+  v_1011937 = {"],[" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_f32_indexes{v_3, v_7}}, False{}, v_1011947 => emitter_body_cps_provider_8_export_f32_indexes(v_3, v_7), v_1011946 => +v_1011938 = emitter_unbox(String, v_1011946); emitter_continuation_2555(v_4, v_7, v_1011929, v_1011930, v_1011931, v_1011932, v_1011933, v_1011934, v_1011935, v_1011936, v_1011937, v_1011938)}
 
-def emitter_continuation_2556(+v_3: List<&2, BIR.Descriptor>, +v_7: Map<&2, String>, v_4: BIR.Descriptor, v_1011924: String, +v_1011925: String, v_1011926: String, v_1011927: String, v_1011928: String, +v_1011929: String) -> EmitterProgress<String>:
-  v_1011930 = {"],[" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_text_indexes{v_3, v_7}}, False{}, v_1011944 => emitter_body_cps_provider_8_export_text_indexes(v_3, v_7), v_1011943 => +v_1011931 = emitter_unbox(String, v_1011943); emitter_continuation_2555(v_3, v_7, v_4, v_1011924, v_1011925, v_1011926, v_1011927, v_1011928, v_1011929, v_1011930, v_1011931)}
+def emitter_continuation_2557(+v_3: List<&2, BIR.Descriptor>, +v_7: Map<&2, String>, v_4: BIR.Descriptor, v_1011929: String, +v_1011930: String, v_1011931: String, v_1011932: String, v_1011933: String, +v_1011934: String) -> EmitterProgress<String>:
+  v_1011935 = {"],[" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_text_indexes{v_3, v_7}}, False{}, v_1011949 => emitter_body_cps_provider_8_export_text_indexes(v_3, v_7), v_1011948 => +v_1011936 = emitter_unbox(String, v_1011948); emitter_continuation_2556(v_3, v_7, v_4, v_1011929, v_1011930, v_1011931, v_1011932, v_1011933, v_1011934, v_1011935, v_1011936)}
 
-def emitter_continuation_2557(+v_3: List<&2, BIR.Descriptor>, +v_7: Map<&2, String>, v_4: BIR.Descriptor, v_1011924: String, +v_1011925: String) -> EmitterProgress<String>:
-  v_1011926 = {"]," : String}
-  v_1011927 = {Nat.show(List.length(&2, BIR.Descriptor, v_3)) : String}
-  v_1011928 = {",[" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_nat_indexes{v_3, v_7}}, False{}, v_1011946 => emitter_body_cps_provider_8_export_nat_indexes(v_3, v_7), v_1011945 => +v_1011929 = emitter_unbox(String, v_1011945); emitter_continuation_2556(v_3, v_7, v_4, v_1011924, v_1011925, v_1011926, v_1011927, v_1011928, v_1011929)}
+def emitter_continuation_2558(+v_3: List<&2, BIR.Descriptor>, +v_7: Map<&2, String>, v_4: BIR.Descriptor, v_1011929: String, +v_1011930: String) -> EmitterProgress<String>:
+  v_1011931 = {"]," : String}
+  v_1011932 = {Nat.show(List.length(&2, BIR.Descriptor, v_3)) : String}
+  v_1011933 = {",[" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_nat_indexes{v_3, v_7}}, False{}, v_1011951 => emitter_body_cps_provider_8_export_nat_indexes(v_3, v_7), v_1011950 => +v_1011934 = emitter_unbox(String, v_1011950); emitter_continuation_2557(v_3, v_7, v_4, v_1011929, v_1011930, v_1011931, v_1011932, v_1011933, v_1011934)}
 
 def emitter_body_cps_provider_8_export_curried_value(v_1: String, v_3: List<&2, BIR.Descriptor>, v_4: BIR.Descriptor, +v_7: Map<&2, String>) -> EmitterProgress<String>:
-  v_1011924 = {"$curried($D[" : String}
-  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_1}}, False{}, v_1011948 => emitter_body_cps_provider_8_js_quote(v_1), v_1011947 => +v_1011925 = emitter_unbox(String, v_1011947); emitter_continuation_2557(v_3, v_7, v_4, v_1011924, v_1011925)}
+  v_1011929 = {"$curried($D[" : String}
+  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_quote{v_1}}, False{}, v_1011953 => emitter_body_cps_provider_8_js_quote(v_1), v_1011952 => +v_1011930 = emitter_unbox(String, v_1011952); emitter_continuation_2558(v_3, v_7, v_4, v_1011929, v_1011930)}
 
 def emitter_body_cps_provider_8_export_curried_call(v_1: String, v_3: List<&2, BIR.Descriptor>, v_4: BIR.Descriptor, +v_7: Map<&2, String>) -> EmitterProgress<String>:
-  EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_curried_value{v_1, v_3, v_4, v_7}}, False{}, v_1011954 => emitter_body_cps_provider_8_export_curried_value(v_1, v_3, v_4, v_7), v_1011953 => +v_1011949 = emitter_unbox(String, v_1011953); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011949, "(...arguments)"]}}, False{}, v_1011952 => emitter_body_cps_provider_8_cat([v_1011949, "(...arguments)"]), v_1011951 => +v_1011950 = emitter_unbox(String, v_1011951); EmitterFinished{EmitterValue{v_1011950}}}}
+  EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_curried_value{v_1, v_3, v_4, v_7}}, False{}, v_1011959 => emitter_body_cps_provider_8_export_curried_value(v_1, v_3, v_4, v_7), v_1011958 => +v_1011954 = emitter_unbox(String, v_1011958); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011954, "(...arguments)"]}}, False{}, v_1011957 => emitter_body_cps_provider_8_cat([v_1011954, "(...arguments)"]), v_1011956 => +v_1011955 = emitter_unbox(String, v_1011956); EmitterFinished{EmitterValue{v_1011955}}}}
 
 def emitter_body_cps_provider_8_export_fields(v_1: List<&2, BIR.Export>, +v_4: Map<&2, String>) -> EmitterProgress<List<&2, String>>:
   match v_1:
     case []:
       EmitterFinished{EmitterValue{[]}}
     case v_9 <> v_10:
-      EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_field{v_9, v_4}}, False{}, v_1011959 => emitter_body_cps_provider_8_export_field(v_9, v_4), v_1011958 => +v_1011955 = emitter_unbox(String, v_1011958); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_fields{v_10, v_4}}, v_1011957 => +v_1011956 = emitter_unbox(List<&2, String>, v_1011957); EmitterFinished{EmitterValue{v_1011955 <> v_1011956}}}}
+      EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_field{v_9, v_4}}, False{}, v_1011964 => emitter_body_cps_provider_8_export_field(v_9, v_4), v_1011963 => +v_1011960 = emitter_unbox(String, v_1011963); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_fields{v_10, v_4}}, v_1011962 => +v_1011961 = emitter_unbox(List<&2, String>, v_1011962); EmitterFinished{EmitterValue{v_1011960 <> v_1011961}}}}
 
 def emitter_body_cps_provider_8_ending(v_0: BIR.Ending, +v_3: Map<&2, String>) -> EmitterProgress<String>:
   match v_0:
     case BIR.Executable{v_6}:
-      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_6}}, False{}, v_1011964 => emitter_body_cps_provider_8_descriptor(v_6), v_1011963 => +v_1011960 = emitter_unbox(String, v_1011963); EmitterPending{EmitterRequestGroup_27{EmitterRequest_cps_provider_8_js_main{v_1011960}}, v_1011962 => +v_1011961 = emitter_unbox(String, v_1011962); EmitterFinished{EmitterValue{v_1011961}}}}
+      EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_descriptor{v_6}}, False{}, v_1011969 => emitter_body_cps_provider_8_descriptor(v_6), v_1011968 => +v_1011965 = emitter_unbox(String, v_1011968); EmitterPending{EmitterRequestGroup_27{EmitterRequest_cps_provider_8_js_main{v_1011965}}, v_1011967 => +v_1011966 = emitter_unbox(String, v_1011967); EmitterFinished{EmitterValue{v_1011966}}}}
     case BIR.Library{v_10}:
-      v_1011965 = {"export default {" : String}
-      EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_fields{v_10, v_3}}, False{}, v_1011971 => emitter_body_cps_provider_8_export_fields(v_10, v_3), v_1011970 => +v_1011966 = emitter_unbox(List<&2, String>, v_1011970); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011965, String.join(v_1011966, ","), "};\n"]}}, False{}, v_1011969 => emitter_body_cps_provider_8_cat([v_1011965, String.join(v_1011966, ","), "};\n"]), v_1011968 => +v_1011967 = emitter_unbox(String, v_1011968); EmitterFinished{EmitterValue{v_1011967}}}}
+      v_1011970 = {"export default {" : String}
+      EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_fields{v_10, v_3}}, False{}, v_1011976 => emitter_body_cps_provider_8_export_fields(v_10, v_3), v_1011975 => +v_1011971 = emitter_unbox(List<&2, String>, v_1011975); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1011970, String.join(v_1011971, ","), "};\n"]}}, False{}, v_1011974 => emitter_body_cps_provider_8_cat([v_1011970, String.join(v_1011971, ","), "};\n"]), v_1011973 => +v_1011972 = emitter_unbox(String, v_1011973); EmitterFinished{EmitterValue{v_1011972}}}}
 
 def emitter_body_cps_provider_8_export_check(v_1: List<&2, BIR.Export>, +v_4: Map<&2, String>) -> EmitterProgress<Maybe<&2, String>>:
   match v_1:
     case []:
       EmitterFinished{EmitterValue{None{}}}
     case BIR.Export{+v_12, _, v_14, _} <> v_16:
-      EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_unresolved{v_12, v_14, v_4}}, False{}, v_1011976 => emitter_body_cps_provider_8_export_unresolved(v_12, v_14, v_4), v_1011975 => +v_1011972 = emitter_unbox(Bool, v_1011975); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_check_one{v_1011972, v_12, v_16, v_4}}, v_1011974 => +v_1011973 = emitter_unbox(Maybe<&2, String>, v_1011974); EmitterFinished{EmitterValue{v_1011973}}}}
+      EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_unresolved{v_12, v_14, v_4}}, False{}, v_1011981 => emitter_body_cps_provider_8_export_unresolved(v_12, v_14, v_4), v_1011980 => +v_1011977 = emitter_unbox(Bool, v_1011980); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_export_check_one{v_1011977, v_12, v_16, v_4}}, v_1011979 => +v_1011978 = emitter_unbox(Maybe<&2, String>, v_1011979); EmitterFinished{EmitterValue{v_1011978}}}}
 
 def emitter_body_cps_provider_8_export_check_one(v_1: Bool, +v_3: String, v_5: List<&2, BIR.Export>, +v_8: Map<&2, String>) -> EmitterProgress<Maybe<&2, String>>:
   match v_1:
@@ -27470,59 +27490,59 @@ def emitter_body_cps_provider_8_ending_check(v_0: BIR.Ending, +v_3: Map<&2, Stri
       EmitterFinished{EmitterValue{None{}}}
 
 def emitter_body_cps_provider_8_emit_linked(+v_0: BIR.Program, v_2: List<&2, BIR.SourceFile>) -> EmitterProgress<cps_provider_8_EmitResult>:
-  EmitterDirect{Bool, EmitterRequestGroup_22{EmitterRequest_cps_provider_8_link{v_0}}, False{}, v_1011983 => emitter_body_cps_provider_8_link(v_0), v_1011982 => +v_1011979 = emitter_unbox(cps_provider_8_LinkResult, v_1011982); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_emit_linked_plan{v_1011979, v_0, v_2}}, v_1011981 => +v_1011980 = emitter_unbox(cps_provider_8_EmitResult, v_1011981); EmitterFinished{EmitterValue{v_1011980}}}}
+  EmitterDirect{Bool, EmitterRequestGroup_22{EmitterRequest_cps_provider_8_link{v_0}}, False{}, v_1011988 => emitter_body_cps_provider_8_link(v_0), v_1011987 => +v_1011984 = emitter_unbox(cps_provider_8_LinkResult, v_1011987); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_emit_linked_plan{v_1011984, v_0, v_2}}, v_1011986 => +v_1011985 = emitter_unbox(cps_provider_8_EmitResult, v_1011986); EmitterFinished{EmitterValue{v_1011985}}}}
 
 def emitter_body_cps_provider_8_emit_linked_plan(v_1: cps_provider_8_LinkResult, v_2: BIR.Program, v_4: List<&2, BIR.SourceFile>) -> EmitterProgress<cps_provider_8_EmitResult>:
   match v_1:
     case cps_provider_8_LinkFailure{v_8, v_9}:
       EmitterFinished{EmitterValue{cps_provider_8_EmitFailure{v_8, v_9}}}
     case cps_provider_8_LinkSuccess{v_11}:
-      EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_emit_checked{v_2, v_11, v_4}}, v_1011985 => +v_1011984 = emitter_unbox(cps_provider_8_EmitResult, v_1011985); EmitterFinished{EmitterValue{v_1011984}}}
+      EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_emit_checked{v_2, v_11, v_4}}, v_1011990 => +v_1011989 = emitter_unbox(cps_provider_8_EmitResult, v_1011990); EmitterFinished{EmitterValue{v_1011989}}}
 
 def emitter_body_cps_provider_8_emit_checked(+v_0: BIR.Program, v_3: List<&2, cps_provider_8_LinkSource>, v_5: List<&2, BIR.SourceFile>) -> EmitterProgress<cps_provider_8_EmitResult>:
   match v_0:
     case BIR.Program{_, _, _, _, _, v_18}:
-      v_1011986 = {v_18 : BIR.Ending}
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_native_markers{v_0}}, False{}, v_1011994 => emitter_body_cps_provider_8_js_native_markers(v_0), v_1011993 => +v_1011987 = emitter_unbox(Map<&2, String>, v_1011993); EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_ending_check{v_1011986, v_1011987}}, False{}, v_1011992 => emitter_body_cps_provider_8_ending_check(v_1011986, v_1011987), v_1011991 => +v_1011988 = emitter_unbox(Maybe<&2, String>, v_1011991); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_emit_checked_exports{v_1011988, v_0, v_3, v_5}}, v_1011990 => +v_1011989 = emitter_unbox(cps_provider_8_EmitResult, v_1011990); EmitterFinished{EmitterValue{v_1011989}}}}}
+      v_1011991 = {v_18 : BIR.Ending}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_native_markers{v_0}}, False{}, v_1011999 => emitter_body_cps_provider_8_js_native_markers(v_0), v_1011998 => +v_1011992 = emitter_unbox(Map<&2, String>, v_1011998); EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_ending_check{v_1011991, v_1011992}}, False{}, v_1011997 => emitter_body_cps_provider_8_ending_check(v_1011991, v_1011992), v_1011996 => +v_1011993 = emitter_unbox(Maybe<&2, String>, v_1011996); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_emit_checked_exports{v_1011993, v_0, v_3, v_5}}, v_1011995 => +v_1011994 = emitter_unbox(cps_provider_8_EmitResult, v_1011995); EmitterFinished{EmitterValue{v_1011994}}}}}
 
-def emitter_match_2565(v_2: Maybe<&2, String>, +v_3: BIR.Program, v_6: List<&2, cps_provider_8_LinkSource>, v_8: List<&2, BIR.SourceFile>) -> EmitterProgress<cps_provider_8_EmitResult>:
+def emitter_match_2566(v_2: Maybe<&2, String>, +v_3: BIR.Program, v_6: List<&2, cps_provider_8_LinkSource>, v_8: List<&2, BIR.SourceFile>) -> EmitterProgress<cps_provider_8_EmitResult>:
   match v_2:
     case Some{v_11}:
       EmitterFinished{EmitterValue{cps_provider_8_EmitFailure{v_11, Ast.SpanOf{"", 0n, 0n}}}}
     case None{}:
-      v_1011995 = {v_3 : BIR.Program}
-      v_1011996 = {v_6 : List<&2, cps_provider_8_LinkSource>}
-      v_1011997 = {v_8 : List<&2, BIR.SourceFile>}
-      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_known_keys{v_3}}, False{}, v_1012005 => emitter_body_cps_provider_8_js_known_keys(v_3), v_1012004 => +v_1011998 = emitter_unbox(Map<&2, Bool>, v_1012004); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_effect_sources{v_1011996, v_1011997, v_1011998, []}}, False{}, v_1012003 => emitter_body_cps_provider_8_js_effect_sources(v_1011996, v_1011997, v_1011998, []), v_1012002 => +v_1011999 = emitter_unbox(cps_provider_8_JSEffects, v_1012002); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_emit_effects{v_1011995, v_1011999}}, v_1012001 => +v_1012000 = emitter_unbox(cps_provider_8_EmitResult, v_1012001); EmitterFinished{EmitterValue{v_1012000}}}}}
+      v_1012000 = {v_3 : BIR.Program}
+      v_1012001 = {v_6 : List<&2, cps_provider_8_LinkSource>}
+      v_1012002 = {v_8 : List<&2, BIR.SourceFile>}
+      EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_known_keys{v_3}}, False{}, v_1012010 => emitter_body_cps_provider_8_js_known_keys(v_3), v_1012009 => +v_1012003 = emitter_unbox(Map<&2, Bool>, v_1012009); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_effect_sources{v_1012001, v_1012002, v_1012003, []}}, False{}, v_1012008 => emitter_body_cps_provider_8_js_effect_sources(v_1012001, v_1012002, v_1012003, []), v_1012007 => +v_1012004 = emitter_unbox(cps_provider_8_JSEffects, v_1012007); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_emit_effects{v_1012000, v_1012004}}, v_1012006 => +v_1012005 = emitter_unbox(cps_provider_8_EmitResult, v_1012006); EmitterFinished{EmitterValue{v_1012005}}}}}
 
 def emitter_body_cps_provider_8_emit_checked_exports(v_2: Maybe<&2, String>, v_3: BIR.Program, v_6: List<&2, cps_provider_8_LinkSource>, v_8: List<&2, BIR.SourceFile>) -> EmitterProgress<cps_provider_8_EmitResult>:
-  emitter_match_2565(v_2, v_3, v_6, v_8)
+  emitter_match_2566(v_2, v_3, v_6, v_8)
 
-def emitter_match_2566(v_2: cps_provider_8_JSEffects, v_0: BIR.Program) -> EmitterProgress<cps_provider_8_EmitResult>:
+def emitter_match_2567(v_2: cps_provider_8_JSEffects, v_0: BIR.Program) -> EmitterProgress<cps_provider_8_EmitResult>:
   match v_2:
     case cps_provider_8_JSEffectsFailure{v_6, v_7}:
       EmitterFinished{EmitterValue{cps_provider_8_EmitFailure{v_6, v_7}}}
     case cps_provider_8_JSEffectsReady{v_9}:
-      EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_program_source{v_0, v_9}}, v_1012007 => +v_1012006 = emitter_unbox(String, v_1012007); EmitterFinished{EmitterValue{cps_provider_8_EmitSuccess{v_1012006}}}}
+      EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_program_source{v_0, v_9}}, v_1012012 => +v_1012011 = emitter_unbox(String, v_1012012); EmitterFinished{EmitterValue{cps_provider_8_EmitSuccess{v_1012011}}}}
 
 def emitter_body_cps_provider_8_emit_effects(v_0: BIR.Program, v_2: cps_provider_8_JSEffects) -> EmitterProgress<cps_provider_8_EmitResult>:
-  emitter_match_2566(v_2, v_0)
+  emitter_match_2567(v_2, v_0)
 
-def emitter_continuation_2567(v_2: String, v_13: List<&2, BIR.Code>, v_14: List<&2, BIR.Declaration>, +v_6: Map<&2, String>, v_18: BIR.Ending, +v_1012009: String, +v_1012010: String, +v_1012011: String, +v_1012012: String, +v_1012013: String, +v_1012014: String, +v_1012015: String, +v_1012016: String, +v_1012017: String, +v_1012018: String, +v_1012019: String, +v_1012020: String) -> EmitterProgress<String>:
-  v_1012021 = {v_2 : String}
-  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_codes{v_13}}, False{}, v_1012033 => emitter_body_cps_provider_8_codes(v_13), v_1012032 => +v_1012022 = emitter_unbox(String, v_1012032); EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_declarations{v_14, v_6, 0n}}, False{}, v_1012031 => emitter_body_cps_provider_8_declarations(v_14, v_6, 0n), v_1012030 => +v_1012023 = emitter_unbox(String, v_1012030); EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_ending{v_18, v_6}}, False{}, v_1012029 => emitter_body_cps_provider_8_ending(v_18, v_6), v_1012028 => +v_1012024 = emitter_unbox(String, v_1012028); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1012009, v_1012010, v_1012011, v_1012012, v_1012013, v_1012014, v_1012015, v_1012016, v_1012017, v_1012018, v_1012019, v_1012020, v_1012021, v_1012022, v_1012023, v_1012024]}}, False{}, v_1012027 => emitter_body_cps_provider_8_cat([v_1012009, v_1012010, v_1012011, v_1012012, v_1012013, v_1012014, v_1012015, v_1012016, v_1012017, v_1012018, v_1012019, v_1012020, v_1012021, v_1012022, v_1012023, v_1012024]), v_1012026 => +v_1012025 = emitter_unbox(String, v_1012026); EmitterFinished{EmitterValue{v_1012025}}}}}}
+def emitter_continuation_2568(v_2: String, v_13: List<&2, BIR.Code>, v_14: List<&2, BIR.Declaration>, +v_6: Map<&2, String>, v_18: BIR.Ending, +v_1012014: String, +v_1012015: String, +v_1012016: String, +v_1012017: String, +v_1012018: String, +v_1012019: String, +v_1012020: String, +v_1012021: String, +v_1012022: String, +v_1012023: String, +v_1012024: String, +v_1012025: String) -> EmitterProgress<String>:
+  v_1012026 = {v_2 : String}
+  EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_codes{v_13}}, False{}, v_1012038 => emitter_body_cps_provider_8_codes(v_13), v_1012037 => +v_1012027 = emitter_unbox(String, v_1012037); EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_declarations{v_14, v_6, 0n}}, False{}, v_1012036 => emitter_body_cps_provider_8_declarations(v_14, v_6, 0n), v_1012035 => +v_1012028 = emitter_unbox(String, v_1012035); EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_ending{v_18, v_6}}, False{}, v_1012034 => emitter_body_cps_provider_8_ending(v_18, v_6), v_1012033 => +v_1012029 = emitter_unbox(String, v_1012033); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1012014, v_1012015, v_1012016, v_1012017, v_1012018, v_1012019, v_1012020, v_1012021, v_1012022, v_1012023, v_1012024, v_1012025, v_1012026, v_1012027, v_1012028, v_1012029]}}, False{}, v_1012032 => emitter_body_cps_provider_8_cat([v_1012014, v_1012015, v_1012016, v_1012017, v_1012018, v_1012019, v_1012020, v_1012021, v_1012022, v_1012023, v_1012024, v_1012025, v_1012026, v_1012027, v_1012028, v_1012029]), v_1012031 => +v_1012030 = emitter_unbox(String, v_1012031); EmitterFinished{EmitterValue{v_1012030}}}}}}
 
-def emitter_match_2568(v_0: BIR.Program, v_2: String, +v_6: Map<&2, String>) -> EmitterProgress<String>:
+def emitter_match_2569(v_0: BIR.Program, v_2: String, +v_6: Map<&2, String>) -> EmitterProgress<String>:
   match v_0:
     case BIR.Program{v_13, v_14, v_15, v_16, v_17, v_18}:
-      EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_js_runtime{}}, v_1012049 => +v_1012009 = emitter_unbox(String, v_1012049); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_js_runtime_extra{}}, v_1012048 => +v_1012010 = emitter_unbox(String, v_1012048); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_js_runtime_show{}}, v_1012047 => +v_1012011 = emitter_unbox(String, v_1012047); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_js_runtime_cli{}}, v_1012046 => +v_1012012 = emitter_unbox(String, v_1012046); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_js_runtime_io{}}, v_1012045 => +v_1012013 = emitter_unbox(String, v_1012045); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_js_runtime_array{}}, v_1012044 => +v_1012014 = emitter_unbox(String, v_1012044); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_js_runtime_foreign{}}, v_1012043 => +v_1012015 = emitter_unbox(String, v_1012043); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_js_runtime_namespace{}}, v_1012042 => +v_1012016 = emitter_unbox(String, v_1012042); EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_primitive_runtime{}}, False{}, v_1012041 => emitter_body_cps_provider_8_primitive_runtime, v_1012040 => +v_1012017 = emitter_unbox(String, v_1012040); EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_constructor_layouts{v_15}}, False{}, v_1012039 => emitter_body_cps_provider_8_constructor_layouts(v_15), v_1012038 => +v_1012018 = emitter_unbox(String, v_1012038); EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_families{v_16}}, False{}, v_1012037 => emitter_body_cps_provider_8_families(v_16), v_1012036 => +v_1012019 = emitter_unbox(String, v_1012036); EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_type_functions{v_17}}, False{}, v_1012035 => emitter_body_cps_provider_8_type_functions(v_17), v_1012034 => +v_1012020 = emitter_unbox(String, v_1012034); emitter_continuation_2567(v_2, v_13, v_14, v_6, v_18, v_1012009, v_1012010, v_1012011, v_1012012, v_1012013, v_1012014, v_1012015, v_1012016, v_1012017, v_1012018, v_1012019, v_1012020)}}}}}}}}}}}}
+      EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_js_runtime{}}, v_1012054 => +v_1012014 = emitter_unbox(String, v_1012054); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_js_runtime_extra{}}, v_1012053 => +v_1012015 = emitter_unbox(String, v_1012053); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_js_runtime_show{}}, v_1012052 => +v_1012016 = emitter_unbox(String, v_1012052); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_js_runtime_cli{}}, v_1012051 => +v_1012017 = emitter_unbox(String, v_1012051); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_js_runtime_io{}}, v_1012050 => +v_1012018 = emitter_unbox(String, v_1012050); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_js_runtime_array{}}, v_1012049 => +v_1012019 = emitter_unbox(String, v_1012049); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_js_runtime_foreign{}}, v_1012048 => +v_1012020 = emitter_unbox(String, v_1012048); EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_js_runtime_namespace{}}, v_1012047 => +v_1012021 = emitter_unbox(String, v_1012047); EmitterDirect{Bool, EmitterRequestGroup_25{EmitterRequest_cps_provider_8_primitive_runtime{}}, False{}, v_1012046 => emitter_body_cps_provider_8_primitive_runtime, v_1012045 => +v_1012022 = emitter_unbox(String, v_1012045); EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_constructor_layouts{v_15}}, False{}, v_1012044 => emitter_body_cps_provider_8_constructor_layouts(v_15), v_1012043 => +v_1012023 = emitter_unbox(String, v_1012043); EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_families{v_16}}, False{}, v_1012042 => emitter_body_cps_provider_8_families(v_16), v_1012041 => +v_1012024 = emitter_unbox(String, v_1012041); EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_type_functions{v_17}}, False{}, v_1012040 => emitter_body_cps_provider_8_type_functions(v_17), v_1012039 => +v_1012025 = emitter_unbox(String, v_1012039); emitter_continuation_2568(v_2, v_13, v_14, v_6, v_18, v_1012014, v_1012015, v_1012016, v_1012017, v_1012018, v_1012019, v_1012020, v_1012021, v_1012022, v_1012023, v_1012024, v_1012025)}}}}}}}}}}}}
 
-def emitter_continuation_2569(+v_1012008: Map<&2, String>, v_0: BIR.Program, v_2: String) -> EmitterProgress<String>:
-  +v_6 = v_1012008
-  emitter_match_2568(v_0, v_2, v_6)
+def emitter_continuation_2570(+v_1012013: Map<&2, String>, v_0: BIR.Program, v_2: String) -> EmitterProgress<String>:
+  +v_6 = v_1012013
+  emitter_match_2569(v_0, v_2, v_6)
 
 def emitter_body_cps_provider_8_program_source(+v_0: BIR.Program, v_2: String) -> EmitterProgress<String>:
-  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_native_markers{v_0}}, False{}, v_1012051 => emitter_body_cps_provider_8_js_native_markers(v_0), v_1012050 => +v_1012008 = emitter_unbox(Map<&2, String>, v_1012050); emitter_continuation_2569(v_1012008, v_0, v_2)}
+  EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_js_native_markers{v_0}}, False{}, v_1012056 => emitter_body_cps_provider_8_js_native_markers(v_0), v_1012055 => +v_1012013 = emitter_unbox(Map<&2, String>, v_1012055); emitter_continuation_2570(v_1012013, v_0, v_2)}
 
 def emitter_body_cps_provider_8_js_runtime() -> EmitterProgress<String>:
   EmitterFinished{EmitterValue{"const $D = Object.create(null);\nconst $BEND_TAIL = Symbol(\"bend.tail\");\nconst $td = 64;\nconst $TAIL_PENDING = Object.create(null), $tailArgs = Array(32);\nconst $CALL_PENDING = Object.create(null), $LEAVE_PENDING = Object.create(null);\nconst $stArgs = [], $kFn = [], $kBase = [], $kN = [], $kKind = [];\nlet $sp = 0, $ksp = 0, $callK, $callBase, $callTop, $leaveThunk;\nfunction $split(f,count,k,base) { $tailFn=f; $tailCount=count; $callK=k; $callBase=base; $callTop=$sp; return $CALL_PENDING; }\nfunction $splitm(f,a,k,base) { $tailFn=f; $tailCount=-2; $tailRest=a; $callK=k; $callBase=base; $callTop=$sp; return $CALL_PENDING; }\nfunction $split1(f,x,k,base) { const j=f[$BEND_TAIL]; $tailFn=j||f; $tailCount=j?-3:-1; $tailUnary=x; $callK=k; $callBase=base; $callTop=$sp; return $CALL_PENDING; }\nfunction $frame(t,base,n) { $kFn[$ksp]=t; $kBase[$ksp]=base; $kN[$ksp]=n; $kKind[$ksp]=1; $ksp+=1; }\nlet $tailFn, $tailCount=0, $tailUnary, $tailRest;\nfunction tail_many(f,a) { $tailFn=f; $tailCount=-2; $tailRest=a; return $TAIL_PENDING; }\nfunction tail_unary(f,x) { $tailFn=f; $tailCount=-1; $tailUnary=x; return $TAIL_PENDING; }\nfunction tail_named(f,n) { $tailFn=f; $tailCount=n; return $TAIL_PENDING; }\nfunction $run(f, xs, n) { let x=run_loop(f); for (let i=0;i<n;i++) x=run_call1(x,xs[i]); return x; }\nfunction $curried(f, n, g, t, x, r) { const step = (args) => function (...more) { const xs = args.concat(more); if (xs.length < n) return step(xs); for (const i of g) xs[i] = nat_in(xs[i]); for (const i of t) xs[i] = str_in(xs[i]); for (const i of x) xs[i] = Math.fround(xs[i]); return r($run(f, xs, n)); }; return step([]); }\nfunction run_loop(x) { return run_base(x,$ksp,$sp); }\nfunction run_call1(f,a) { const b0=$ksp, s0=$sp; return run_base(f(a),b0,s0); }\nfunction run_base(x,k0,s0) { try { for(;;) { while (x===$TAIL_PENDING) { const f=$tailFn, count=$tailCount; $tailFn=undefined; $tailCount=0; if(count===-1) { const a=$tailUnary; $tailUnary=undefined; x=f(a,$BEND_TAIL); } else x=tail_dispatch(f,count); } if (x===$CALL_PENDING) { const f=$tailFn, count=$tailCount; $tailFn=undefined; $tailCount=0; $kFn[$ksp]=$callK; $kBase[$ksp]=$callBase; $kN[$ksp]=$callTop-$callBase; $kKind[$ksp]=0; $ksp+=1; $callK=undefined; if(count===-1) { const a=$tailUnary; $tailUnary=undefined; x=f(a); } else if(count===-3) { const a=$tailUnary; $tailUnary=undefined; x=f(a,$BEND_TAIL); } else x=tail_dispatch(f,count); continue; } if (x===$LEAVE_PENDING) { let i=$ksp; while(i>k0&&($kKind[i-1]===0||$kFn[i-1]!==$leaveThunk))i-=1; if(i===k0)throw \"bend: a region leave reached no private frame\"; i-=1; const t=$kFn[i], b=$kBase[i], n=$kN[i]; $kFn[i]=undefined; $ksp=i; $sp=b+n; x=t(undefined,b); continue; } if ($ksp===k0) { $sp=s0; return x; } $ksp-=1; const k=$kFn[$ksp], b=$kBase[$ksp], n=$kN[$ksp], r=$kKind[$ksp]; $kFn[$ksp]=undefined; $sp=b+n; if(r===1) continue; x=k(x,b); } } catch(e) { $ksp=k0; $sp=s0; $tailFn=undefined; $tailCount=0; throw e; } }\nfunction tail_dispatch(f,count) { switch(count) {\ncase -2: { const a=$tailRest; $tailRest=undefined; return f(...a); }\ncase 1: { const a0=$tailArgs[0]; $tailArgs[0]=undefined; return f(a0); }\ncase 2: { const a0=$tailArgs[0],a1=$tailArgs[1]; $tailArgs[0]=$tailArgs[1]=undefined; return f(a0,a1); }\ncase 3: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=undefined; return f(a0,a1,a2); }\ncase 4: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=undefined; return f(a0,a1,a2,a3); }\ncase 5: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=undefined; return f(a0,a1,a2,a3,a4); }\ncase 6: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=undefined; return f(a0,a1,a2,a3,a4,a5); }\ncase 7: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=undefined; return f(a0,a1,a2,a3,a4,a5,a6); }\ncase 8: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7); }\ncase 9: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8); }\ncase 10: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9); }\ncase 11: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10); }\ncase 12: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11); }\ncase 13: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12); }\ncase 14: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13); }\ncase 15: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14); }\ncase 16: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15); }\ncase 17: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16); }\ncase 18: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17); }\ncase 19: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18); }\ncase 20: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19); }\ncase 21: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20); }\ncase 22: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21); }\ncase 23: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22); }\ncase 24: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23); }\ncase 25: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24); }\ncase 26: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25); }\ncase 27: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26); }\ncase 28: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27); }\ncase 29: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27],a28=$tailArgs[28]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=$tailArgs[28]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28); }\ncase 30: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27],a28=$tailArgs[28],a29=$tailArgs[29]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=$tailArgs[28]=$tailArgs[29]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29); }\ncase 31: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27],a28=$tailArgs[28],a29=$tailArgs[29],a30=$tailArgs[30]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=$tailArgs[28]=$tailArgs[29]=$tailArgs[30]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30); }\ncase 32: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27],a28=$tailArgs[28],a29=$tailArgs[29],a30=$tailArgs[30],a31=$tailArgs[31]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=$tailArgs[28]=$tailArgs[29]=$tailArgs[30]=$tailArgs[31]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,a31); }\ndefault: throw \"bend: invalid private tail frame\";\n} }\nfunction run_force(x,raw,b0,s0) { return raw===$BEND_TAIL?x:run_base(x,b0,s0); }\nfunction run_many(f,a,d=$td) { return d<64?f(...a,d+1):tail_many(f,a); }\nfunction run_tail(f,x) { const j=f[$BEND_TAIL]; return j ? tail_unary(j,x) : f(x); }\nfunction run_clo(j) { j[$BEND_TAIL]=j; return j; }\nfunction nat_chk(x) { if(x>281474976710655) throw \"bend: a Nat past the largest immediate 2^48-1\"; return x; }\nfunction char_new(c) { return c < 0xD800 || c >= 0xE000 && c <= 0x10FFFF ? String.fromCodePoint(c) : String.fromCharCode(0xDC00, c >>> 22, c >>> 11 & 0x7FF, c & 0x7FF); }\nfunction char_len(s, at=0) { return s[at] === \"\\uDC00\" ? 4 : s.codePointAt(at) > 0xFFFF ? 2 : 1; }\nfunction char_code_at(s, at) { return s[at] === \"\\uDC00\" ? (s.charCodeAt(at+1) << 22 | s.charCodeAt(at+2) << 11 | s.charCodeAt(at+3)) >>> 0 : s.codePointAt(at); }\nfunction char_code(s) { return char_code_at(s, 0); }\nfunction str_out(s) { return s.replace(/\\uDC00[^]{3}/gu, \"\\uFFFD\"); }\nfunction str_in(s) { return s.replace(/\\p{Cs}/gu, \"\\uFFFD\"); }\nfunction cmp_new(a,b) { return {$:a<b?\"LT\":a===b?\"EQ\":\"GT\"}; }\nfunction word_to_u32(w) { let x=0; for(let i=0;w.$===\"WCon\";i++,w=w.tail) if(w.head)x|=1<<i; return x>>>0; }\nfunction u32_to_word(x) { let w={$:\"WNil\"}; for(let i=31;i>=0;i--) w={$:\"WCon\",head:!!((x>>>i)&1),tail:w}; return w; }\nfunction run_named1(f,a0,d) { return d<64?f(a0,d+1):($tailArgs[0]=a0,tail_named(f,1)); }\nfunction run_named2(f,a0,a1,d) { return d<64?f(a0,a1,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,tail_named(f,2)); }\nfunction run_named3(f,a0,a1,a2,d) { return d<64?f(a0,a1,a2,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,tail_named(f,3)); }\nfunction run_named4(f,a0,a1,a2,a3,d) { return d<64?f(a0,a1,a2,a3,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,tail_named(f,4)); }\nfunction run_named5(f,a0,a1,a2,a3,a4,d) { return d<64?f(a0,a1,a2,a3,a4,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,tail_named(f,5)); }\nfunction run_named6(f,a0,a1,a2,a3,a4,a5,d) { return d<64?f(a0,a1,a2,a3,a4,a5,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,tail_named(f,6)); }\nfunction run_named7(f,a0,a1,a2,a3,a4,a5,a6,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,tail_named(f,7)); }\nfunction run_named8(f,a0,a1,a2,a3,a4,a5,a6,a7,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,tail_named(f,8)); }\nfunction run_named9(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,tail_named(f,9)); }\nfunction run_named10(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,tail_named(f,10)); }\nfunction run_named11(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,tail_named(f,11)); }\nfunction run_named12(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,tail_named(f,12)); }\nfunction run_named13(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,tail_named(f,13)); }\nfunction run_named14(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,tail_named(f,14)); }\nfunction run_named15(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,tail_named(f,15)); }\nfunction run_named16(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,tail_named(f,16)); }\nfunction run_named17(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,tail_named(f,17)); }\nfunction run_named18(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,tail_named(f,18)); }\nfunction run_named19(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,tail_named(f,19)); }\nfunction run_named20(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,tail_named(f,20)); }\nfunction run_named21(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,tail_named(f,21)); }\nfunction run_named22(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,tail_named(f,22)); }\nfunction run_named23(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,tail_named(f,23)); }\nfunction run_named24(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,tail_named(f,24)); }\nfunction run_named25(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,tail_named(f,25)); }\nfunction run_named26(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,tail_named(f,26)); }\nfunction run_named27(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,tail_named(f,27)); }\nfunction run_named28(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,tail_named(f,28)); }\nfunction run_named29(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,$tailArgs[28]=a28,tail_named(f,29)); }\nfunction run_named30(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,$tailArgs[28]=a28,$tailArgs[29]=a29,tail_named(f,30)); }\nfunction run_named31(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,$tailArgs[28]=a28,$tailArgs[29]=a29,$tailArgs[30]=a30,tail_named(f,31)); }\nfunction run_named32(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,a31,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,a31,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,$tailArgs[28]=a28,$tailArgs[29]=a29,$tailArgs[30]=a30,$tailArgs[31]=a31,tail_named(f,32)); }\n"}}
@@ -27546,10 +27566,10 @@ def emitter_body_cps_provider_8_js_runtime_io() -> EmitterProgress<String>:
   EmitterFinished{EmitterValue{"function io_out(fd,data) { const fs=require(\"fs\"), b=Buffer.from(data); let at=0; while(at<b.length){ try{ at+=fs.writeSync(fd,b,at,b.length-at); } catch(e){ if(e.code===\"EAGAIN\"||e.code===\"EINTR\")continue; if(e.code===\"EPIPE\"){process.on(\"SIGPIPE\",()=>{}).removeAllListeners(\"SIGPIPE\").kill(process.pid,\"SIGPIPE\");} try{fs.writeSync(2,\"bend: a short write on a standard stream\\n\");}catch(o){} process.exit(1);} } }\nfunction io_errs(message) { io_out(2,io_bytes(message+\"\\n\")); }\nfunction io_bytes(text) { return new TextEncoder().encode(str_out(text)); }\nfunction io_text(b,n) { return new TextDecoder(\"utf-8\",{ignoreBOM:true}).decode(b.subarray(0,n)); }\nfunction io_list(b,n) { let xs={$:\"Nil\"}; while(n>0){ xs={$:\"Con\",head:b[--n],tail:xs}; } return xs; }\nfunction io_unlist(xs) { const b=[]; for(;xs.$===\"Con\";xs=xs.tail){ b.push(xs.head); } return b.some(x=>x>255)?null:Uint8Array.from(b); }\nfunction io_addr(host,port) { const part=host.split(\".\"); const deci=p=>/^(0|[1-9]\\d{0,2})$/.test(p)&&Number(p)<256; if(port>65535||part.length!==4||!part.every(deci))return null; const b=new Uint8Array(16); const head=io_sys().mac?[16,2]:[2,0]; b.set([...head,port>>8,port&255,...part.map(Number)]); return b; }\nfunction io_tup(...xs) { return xs.reduceRight((snd,fst)=>({$:\"Tuple\",fst,snd})); }\nfunction io_done(value) { return {$:\"Done\",value}; }\nfunction io_strerror(code) { try{ return String(io_sys().strerror(code)); } catch(o){ return \"errno \"+code; } }\nfunction io_fail(code,...rest) { const err=io_tup(code>>>0,io_strerror(code)); return {$:\"Fail\",error:io_tup(err,...rest)}; }\nfunction io_until(ms) { return performance.now()+Number(ms); }\nfunction io_late(at) { return at!==undefined&&performance.now()>=at; }\nfunction io_ready(at,r) { return at===undefined?r:{$:\"Ready\",value:r}; }\nfunction io_sys() { if(globalThis.BEND_SYS===undefined){ const ffi=require(\"bun:ffi\"), mac=process.platform===\"darwin\", err=mac?\"__error\":\"__errno_location\", sel=mac?\"select$DARWIN_EXTSN\":\"select\", T={i:\"i32\",u:\"u32\",U:\"u64\",I:\"i64\",p:\"ptr\",c:\"cstring\"}, vari=mac&&process.arch===\"arm64\", lib=ffi.dlopen(mac?\"libSystem.dylib\":\"libc.so.6\",Object.fromEntries((\"socket:iii>i bind:ipu>i listen:ii>i connect:ipu>i accept:ipp>i send:ipUi>I recv:ipUi>I read:ipU>I pread:ipUI>I sendto:ipUipu>I recvfrom:ipUipp>I close:i>i setsockopt:iiipu>i \"+sel+\":ipppp>i\"+(vari?\" fcntl:iiiiiiiii>i\":\" fcntl:iii>i\")+\" getsockopt:iiipp>i strerror:i>c \"+err+\":>p\").split(\" \").map(s=>{const [name,args,ret]=s.split(/[:>]/);return [name,{args:[...args].map(a=>T[a]),returns:T[ret]}]}))).symbols; const fcntl=(fd,cmd,arg)=>vari?lib.fcntl(fd,cmd,0,0,0,0,0,0,arg):lib.fcntl(fd,cmd,arg); globalThis.BEND_SYS={...lib,fcntl,select:lib[sel],ptr:ffi.ptr,mac,errno:()=>ffi.read.i32(lib[err](),0)}; } return globalThis.BEND_SYS; }\nfunction io_push(fun,arg,fresh) { const io=globalThis.BEND_IO; io.runs.push({fun,arg}); io.live+=fresh?1:0; }\nfunction io_park_on(fd,out,k,more,at) { const ws=globalThis.BEND_IO.waits; const i=ws.findLastIndex(w=>(w.at??Infinity)<=(at??Infinity)); ws.splice(i+1,0,{fd,out,k,more,at}); }\nfunction io_wait(io,block) { const soon=io.waits[0]?.at??Infinity; const ms=!block?0:soon===Infinity?-1:Math.max(0,Math.ceil(soon-performance.now())); const fds=io.waits.filter(w=>w.fd!==undefined); const top=fds.reduce((m,w)=>Math.max(m,w.fd),0); const len=(top>>6<<3)+8; const set=new Uint8Array(2*len); const at=w=>(w.out?len:0)+(w.fd>>3); for(const w of fds)set[at(w)]|=1<<(w.fd&7); const tv=new BigInt64Array([BigInt(ms/1000|0),BigInt(ms%1000*1000)]); const sys=io_sys(); if(sys.select(top+1,sys.ptr(set),sys.ptr(set,len),null,ms<0?null:sys.ptr(tv))<0){ if(sys.errno()!==4){ throw \"bend: the poller failed\"; } set.fill(0); } const now=performance.now(); const due=w=>w.at<=now||w.fd!==undefined&&set[at(w)]&1<<(w.fd&7); const todo=io.waits; io.waits=todo.filter(w=>!due(w)); for(const w of todo.filter(due)){ const x=w.more(); if(x!==undefined)io_push(w.k,x,false); } }\nfunction io_run(m) { const io={runs:[],live:0,waits:[]}; globalThis.BEND_IO=io; try{ io_push(run_loop(m()),x=>({$:\"Emit\",value:x}),true); let look=0; for(let n=0;;n+=1){ if(io.runs.length===0){ if(io.live===0)return 0; if(io.waits.length===0){ io_errs(\"bend: deadlock: every computation waits on a channel\"); return 1; } io_wait(io,true); continue; } if((n&63)===0&&io.waits.length>0){ const now=performance.now(); if(now>=look||io.waits[0].at<=now){ look=now+10; io_wait(io,false); } } const s=io.runs.shift(); let op=s.fun(s.arg); while(op!==undefined){ if(op.$===\"Emit\"){ io.live-=1; break; } if(op.$===\"Halt\"||op.$===\"Exit\"){ if(op.$===\"Halt\")io_errs(op.message); if(op.code>255){ io_errs(\"bend: exit code must be in 0..255\"); return 1; } return op.code; } const run=$0eff[op.$]; if(run===undefined){ throw \"bend: no effect registers \"+op.$; } const x=run(...op.args,op.kont); if(x===undefined)break; op=op.kont(x); } } }catch(e){ throw e instanceof RangeError?\"bend: memory fault (machine stack overflow?)\":e; } }\nfunction io_exit(main,type) { try{ if(type&&type.name===\"IO\")return io_run(main); io_out(1,io_bytes($show_value(type,run_loop(main()),0)+\"\\n\")); return 0; }catch(e){ io_errs(String(e)); return 1; } }\n"}}
 
 def emitter_body_cps_provider_8_js_runtime_show() -> EmitterProgress<String>:
-  EmitterPending{EmitterRequestGroup_26{EmitterRequest_cps_provider_8_js_runtime_type{}}, v_1012053 => +v_1012052 = emitter_unbox(String, v_1012053); EmitterFinished{EmitterValue{String.append(v_1012052, "function $show_chr(s,q) { const c=char_code(s), k=({10:\"n\",9:\"t\",13:\"r\",0:\"0\",92:\"\\\\\"})[c]??(s===q&&q); return k?\"\\\\\"+k:c<32||c===127||s.length>2||(c>=0xD800&&c<0xE000)?\"\\\\u{\"+c.toString(16)+\"}\":s; }\nfunction $show_list(t,x) { const xs=[]; while(x&&x.$===\"Con\") { const fs=t.arms.Con; if(!fs||!Object.hasOwn(x,\"head\")||!Object.hasOwn(x,\"tail\")) throw \"bend: malformed List.Con\"; xs.push($show_value($type(fs.types[0],t.args),x.head,0)); const next=$type(fs.types[1],t.args.concat([x.head])); x=x.tail; t=next; } if(!x||x.$!==\"Nil\") throw \"bend: malformed List.Nil\"; return \"[\"+xs.join(\", \")+\"]\"; }\nfunction $show_fields(t,x,chain) { const fs=t.arms[x.$]; if(!fs) throw \"bend: constructor absent from result datatype\"; const out=[],env=t.args.slice(); let at=0; for(let j=0;j<fs.types.length;j++) { if(fs.q[j]===0) { env.push(null); continue; } const name=fs.fields[j]; if(!Object.hasOwn(x,name))throw \"bend: constructor field count mismatch\"; const v=x[name]; at++; out.push($show_value($type(fs.types[j],env),v,chain&&at===2?\"(\":0)); env.push(v); } return out.join(\", \"); }\nfunction $show_value(t,x,chain) { if(!t) return String(x); if(t.k===\"U\") return String(x); if(t.k===\"F\") { const s=f32_show(x); return s.replace(/^-?\\d+(?=e|$)/i,\"$&.0\"); } if(t.k===\"N\") return x+\"n\"; if(t.k===\"C\") return \"'\"+$show_chr(x,\"'\")+\"'\"; if(t.k===\"S\") return \"\\\"\"+x.replace(/\\uDC00[^]{3}|[^]/gu,c=>$show_chr(c,\"\\\"\"))+\"\\\"\"; if(t.k===\"E\") return \"{==}\"; if(t.k===\"A\") return \"[\"+x.map(v=>$show_value(t.e,v,0)).join(\", \")+\"]\"; if(typeof x===\"boolean\") return x?\"True{}\":\"False{}\"; if(!x||typeof x!==\"object\"||!x.$) return String(x); if(t.native===\"List\") return $show_list(t,x); if(t.native===\"Sigma\"&&x.$===\"Tuple\") { const c=chain===\"(\"; return (c?\"\":\"(\")+$show_fields(t,x,true)+(c?\"\":\")\"); } if(t.k!==\"D\") throw \"bend: expected a datatype result\"; return x.$+\"{\"+$show_fields(t,x,false)+\"}\"; }\n")}}}
+  EmitterPending{EmitterRequestGroup_27{EmitterRequest_cps_provider_8_js_runtime_type{}}, v_1012058 => +v_1012057 = emitter_unbox(String, v_1012058); EmitterFinished{EmitterValue{String.append(v_1012057, "function $show_chr(s,q) { const c=char_code(s), k=({10:\"n\",9:\"t\",13:\"r\",0:\"0\",92:\"\\\\\"})[c]??(s===q&&q); return k?\"\\\\\"+k:c<32||c===127||s.length>2||(c>=0xD800&&c<0xE000)?\"\\\\u{\"+c.toString(16)+\"}\":s; }\nfunction $show_list(t,x) { const xs=[]; while(x&&x.$===\"Con\") { const fs=t.arms.Con; if(!fs||!Object.hasOwn(x,\"head\")||!Object.hasOwn(x,\"tail\")) throw \"bend: malformed List.Con\"; xs.push($show_value($type(fs.types[0],t.args),x.head,0)); const next=$type(fs.types[1],t.args.concat([x.head])); x=x.tail; t=next; } if(!x||x.$!==\"Nil\") throw \"bend: malformed List.Nil\"; return \"[\"+xs.join(\", \")+\"]\"; }\nfunction $show_fields(t,x,chain) { const fs=t.arms[x.$]; if(!fs) throw \"bend: constructor absent from result datatype\"; const out=[],env=t.args.slice(); let at=0; for(let j=0;j<fs.types.length;j++) { if(fs.q[j]===0) { env.push(null); continue; } const name=fs.fields[j]; if(!Object.hasOwn(x,name))throw \"bend: constructor field count mismatch\"; const v=x[name]; at++; out.push($show_value($type(fs.types[j],env),v,chain&&at===2?\"(\":0)); env.push(v); } return out.join(\", \"); }\nfunction $show_value(t,x,chain) { if(!t) return String(x); if(t.k===\"U\") return String(x); if(t.k===\"F\") { const s=f32_show(x); return s.replace(/^-?\\d+(?=e|$)/i,\"$&.0\"); } if(t.k===\"N\") return x+\"n\"; if(t.k===\"C\") return \"'\"+$show_chr(x,\"'\")+\"'\"; if(t.k===\"S\") return \"\\\"\"+x.replace(/\\uDC00[^]{3}|[^]/gu,c=>$show_chr(c,\"\\\"\"))+\"\\\"\"; if(t.k===\"E\") return \"{==}\"; if(t.k===\"A\") return \"[\"+x.map(v=>$show_value(t.e,v,0)).join(\", \")+\"]\"; if(typeof x===\"boolean\") return x?\"True{}\":\"False{}\"; if(!x||typeof x!==\"object\"||!x.$) return String(x); if(t.native===\"List\") return $show_list(t,x); if(t.native===\"Sigma\"&&x.$===\"Tuple\") { const c=chain===\"(\"; return (c?\"\":\"(\")+$show_fields(t,x,true)+(c?\"\":\")\"); } if(t.k!==\"D\") throw \"bend: expected a datatype result\"; return x.$+\"{\"+$show_fields(t,x,false)+\"}\"; }\n")}}}
 
 def emitter_body_cps_provider_8_js_runtime_type() -> EmitterProgress<String>:
-  EmitterPending{EmitterRequestGroup_27{EmitterRequest_cps_provider_8_js_runtime_native_type{}}, v_1012061 => +v_1012054 = emitter_unbox(String, v_1012061); EmitterPending{EmitterRequestGroup_27{EmitterRequest_cps_provider_8_js_runtime_type_names{}}, v_1012060 => +v_1012055 = emitter_unbox(String, v_1012060); EmitterPending{EmitterRequestGroup_27{EmitterRequest_cps_provider_8_js_runtime_type_patterns{}}, v_1012059 => +v_1012056 = emitter_unbox(String, v_1012059); EmitterPending{EmitterRequestGroup_27{EmitterRequest_cps_provider_8_js_runtime_type_eval{}}, v_1012058 => +v_1012057 = emitter_unbox(String, v_1012058); EmitterFinished{EmitterValue{String.append(v_1012054, String.append(v_1012055, String.append(v_1012056, v_1012057)))}}}}}}
+  EmitterPending{EmitterRequestGroup_27{EmitterRequest_cps_provider_8_js_runtime_native_type{}}, v_1012066 => +v_1012059 = emitter_unbox(String, v_1012066); EmitterPending{EmitterRequestGroup_27{EmitterRequest_cps_provider_8_js_runtime_type_names{}}, v_1012065 => +v_1012060 = emitter_unbox(String, v_1012065); EmitterPending{EmitterRequestGroup_27{EmitterRequest_cps_provider_8_js_runtime_type_patterns{}}, v_1012064 => +v_1012061 = emitter_unbox(String, v_1012064); EmitterPending{EmitterRequestGroup_27{EmitterRequest_cps_provider_8_js_runtime_type_eval{}}, v_1012063 => +v_1012062 = emitter_unbox(String, v_1012063); EmitterFinished{EmitterValue{String.append(v_1012059, String.append(v_1012060, String.append(v_1012061, v_1012062)))}}}}}}
 
 def emitter_body_cps_provider_8_js_runtime_type_names() -> EmitterProgress<String>:
   EmitterFinished{EmitterValue{"function $type_key(k,s,i) { const q=$key(k,s,i||{}); return $TYPE[q]!==undefined||$TYPEF[q]!==undefined?q:k; }\nfunction $type_ctor_key(k,s,i) { const q=$key(k,s,i||{}); return $FIELDS[q]!==undefined?q:k; }\nfunction $type_delay(t,a) { if(t.k)return t; if(t.p!==undefined&&a[a.length-1-t.p]!==undefined)return a[a.length-1-t.p]; return {k:\"Thunk\",term:t,env:a,depth:a.length,done:false}; }\nfunction $type_force(v) { if(v&&v.k===\"Thunk\") { if(!v.done) { v.value=$type(v.term,v.env.length===v.depth?v.env:v.env.slice(0,v.depth)); v.done=true; } return v.value; } return v; }\nfunction $type_apply(f,x) { f=$type_force(f); if(f.k===\"L\") return $type(f.body,f.env.concat([x])); if(f.k===\"TF\"||f.k===\"DF\") return $type_named(f.key,f.args.concat([x])); throw \"bend: type expression applied a non-function\"; }\nfunction $type_named(q,ps) { const f=$TYPEF[q]; if(f) { if(ps.length<f.n)return {k:\"TF\",key:q,args:ps}; let v=f.intrinsic?$type_native_invoke(f,ps):$type(f.body,ps.length===f.n?ps:ps.slice(0,f.n)); for(let i=f.n;i<ps.length;i++)v=$type_apply(v,ps[i]); if(f.native===\"IO\")v.name=\"IO\"; return v; } const d=$TYPE[q]; if(!d) throw \"bend: unresolved type expression \"+q; const p=$PARAMS[q]; if(ps.length<p.n)return {k:\"DF\",key:q,args:ps}; if(ps.length!==p.n)throw \"bend: datatype parameter count mismatch\"; if(d.native===\"Array\") return {k:\"A\",e:$type_force(ps[0])}; const k=({U32:\"U\",F32:\"F\",Nat:\"N\",Char:\"C\",String:\"S\",Eql:\"E\"})[d.native]; return k?{k}:{k:\"D\",key:q,name:d.name,native:d.native,arms:d.arms,args:ps}; }\n"}}
@@ -27574,7 +27594,7 @@ def emitter_body_cps_provider_9_emitted(v_1: cps_provider_8_EmitResult) -> Emitt
       EmitterFinished{EmitterValue{cps_provider_9_EmitSuccess{v_8}}}
 
 def emitter_body_cps_provider_9_render(v_0: BIR.Program, v_2: List<&2, BIR.SourceFile>) -> EmitterProgress<cps_provider_9_EmitResult>:
-  EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_emit_linked{v_0, v_2}}, False{}, v_1012065 => emitter_body_cps_provider_8_emit_linked(v_0, v_2), v_1012064 => +v_1012062 = emitter_unbox(cps_provider_8_EmitResult, v_1012064); emitter_body_cps_provider_9_emitted(v_1012062)}
+  EmitterDirect{Bool, EmitterRequestGroup_26{EmitterRequest_cps_provider_8_emit_linked{v_0, v_2}}, False{}, v_1012070 => emitter_body_cps_provider_8_emit_linked(v_0, v_2), v_1012069 => +v_1012067 = emitter_unbox(cps_provider_8_EmitResult, v_1012069); emitter_body_cps_provider_9_emitted(v_1012067)}
 
 def emitter_body_cps_provider_9_emit_result(v_1: cps_provider_1_ProgramResult, v_3: List<&2, BIR.SourceFile>) -> EmitterProgress<cps_provider_9_EmitResult>:
   match v_1:
@@ -27584,10 +27604,10 @@ def emitter_body_cps_provider_9_emit_result(v_1: cps_provider_1_ProgramResult, v
       emitter_body_cps_provider_9_render(v_10, v_3)
 
 def emitter_body_cps_provider_9_emit(v_0: Checked.CheckedProgram, v_2: List<&2, BIR.SourceFile>) -> EmitterProgress<cps_provider_9_EmitResult>:
-  EmitterDirect{Bool, EmitterRequestGroup_5{EmitterRequest_cps_provider_1_lower{v_0}}, False{}, v_1012070 => emitter_body_cps_provider_1_lower(v_0), v_1012069 => +v_1012067 = emitter_unbox(cps_provider_1_ProgramResult, v_1012069); emitter_body_cps_provider_9_emit_result(v_1012067, v_2)}
+  EmitterDirect{Bool, EmitterRequestGroup_5{EmitterRequest_cps_provider_1_lower{v_0}}, False{}, v_1012075 => emitter_body_cps_provider_1_lower(v_0), v_1012074 => +v_1012072 = emitter_unbox(cps_provider_1_ProgramResult, v_1012074); emitter_body_cps_provider_9_emit_result(v_1012072, v_2)}
 
 def emitter_body_cps_provider_9_emit_library(v_0: Checked.CheckedProgram, v_3: List<&2, String>, v_5: List<&2, BIR.SourceFile>) -> EmitterProgress<cps_provider_9_EmitResult>:
-  EmitterDirect{Bool, EmitterRequestGroup_5{EmitterRequest_cps_provider_1_lower_library{v_0, v_3}}, False{}, v_1012074 => emitter_body_cps_provider_1_lower_library(v_0, v_3), v_1012073 => +v_1012071 = emitter_unbox(cps_provider_1_ProgramResult, v_1012073); emitter_body_cps_provider_9_emit_result(v_1012071, v_5)}
+  EmitterDirect{Bool, EmitterRequestGroup_5{EmitterRequest_cps_provider_1_lower_library{v_0, v_3}}, False{}, v_1012079 => emitter_body_cps_provider_1_lower_library(v_0, v_3), v_1012078 => +v_1012076 = emitter_unbox(cps_provider_1_ProgramResult, v_1012078); emitter_body_cps_provider_9_emit_result(v_1012076, v_5)}
 
 def emitter_body_cps_provider_10_qualify(+v_1: String, v_3: String) -> EmitterProgress<String>:
   EmitterFinished{EmitterValue{Scope.canonical_key(v_1, v_3, String.eq(v_1, ""))}}
@@ -27607,7 +27627,7 @@ def emitter_body_cps_provider_10_optional_quantity(v_1: Maybe<&2, Ast.Quantity>)
     case Some{v_4}:
       EmitterFinished{EmitterValue{Some{emitter_pure_cps_provider_10_quantity(v_4)}}}
 
-def emitter_match_2574(v_2: BIR.Quantity, v_4: List<&2, BIR.Parameter>, v_1: U32) -> EmitterProgress<List<&2, BIR.Parameter>>:
+def emitter_match_2575(v_2: BIR.Quantity, v_4: List<&2, BIR.Parameter>, v_1: U32) -> EmitterProgress<List<&2, BIR.Parameter>>:
   match v_2:
     case BIR.Erased{}:
       EmitterFinished{EmitterValue{v_4}}
@@ -27617,9 +27637,9 @@ def emitter_match_2574(v_2: BIR.Quantity, v_4: List<&2, BIR.Parameter>, v_1: U32
       EmitterFinished{EmitterValue{BIR.Parameter{v_1, BIR.Many{}} <> v_4}}
 
 def emitter_body_cps_provider_10_parameter(v_1: U32, v_2: BIR.Quantity, v_4: List<&2, BIR.Parameter>) -> EmitterProgress<List<&2, BIR.Parameter>>:
-  emitter_match_2574(v_2, v_4, v_1)
+  emitter_match_2575(v_2, v_4, v_1)
 
-def emitter_match_2575(v_2: BIR.Quantity, v_1: String) -> EmitterProgress<Maybe<&2, String>>:
+def emitter_match_2576(v_2: BIR.Quantity, v_1: String) -> EmitterProgress<Maybe<&2, String>>:
   match v_2:
     case BIR.Erased{}:
       EmitterFinished{EmitterValue{None{}}}
@@ -27627,9 +27647,9 @@ def emitter_match_2575(v_2: BIR.Quantity, v_1: String) -> EmitterProgress<Maybe<
       EmitterFinished{EmitterValue{Some{v_1}}}
 
 def emitter_body_cps_provider_10_field_key(v_1: String, v_2: BIR.Quantity) -> EmitterProgress<Maybe<&2, String>>:
-  emitter_match_2575(v_2, v_1)
+  emitter_match_2576(v_2, v_1)
 
-def emitter_match_2576(v_4: Bool, +v_1: String, v_2: Scope.ArenaGlobalScope) -> EmitterProgress<String>:
+def emitter_match_2577(v_4: Bool, +v_1: String, v_2: Scope.ArenaGlobalScope) -> EmitterProgress<String>:
   match v_4:
     case True{}:
       EmitterFinished{EmitterValue{Scope.canonical_name_result(v_1, Scope.lookup_kind(v_1, Scope.GlobalConstructor{}, v_2))}}
@@ -27637,24 +27657,24 @@ def emitter_match_2576(v_4: Bool, +v_1: String, v_2: Scope.ArenaGlobalScope) -> 
       EmitterFinished{EmitterValue{Scope.canonical_name(v_1, v_2)}}
 
 def emitter_body_cps_provider_10_canonical(v_1: String, v_2: Scope.ArenaGlobalScope, v_4: Bool) -> EmitterProgress<String>:
-  emitter_match_2576(v_4, v_1, v_2)
+  emitter_match_2577(v_4, v_1, v_2)
 
 def emitter_body_cps_provider_10_native_match_descriptor_0(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Node>, v_4: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_3:
     case (v_8, v_9):
-      EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_descriptor_node{v_8, v_9, v_4}}, v_1012077 => v_1012076 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012077); EmitterFinished{EmitterValue{v_1012076}}}
+      EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_descriptor_node{v_8, v_9, v_4}}, v_1012082 => v_1012081 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012082); EmitterFinished{EmitterValue{v_1012081}}}
 
 def emitter_body_cps_provider_10_descriptor(v_0: Arena.Arena, v_2: U32, v_3: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
-  EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_native_match_descriptor_0{Arena.get_node(v_0, v_2), v_3}}, False{}, v_1012081 => emitter_body_cps_provider_10_native_match_descriptor_0(Arena.get_node(v_0, v_2), v_3), v_1012080 => v_1012079 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012080); EmitterFinished{EmitterValue{v_1012079}}}
+  EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_native_match_descriptor_0{Arena.get_node(v_0, v_2), v_3}}, False{}, v_1012086 => emitter_body_cps_provider_10_native_match_descriptor_0(Arena.get_node(v_0, v_2), v_3), v_1012085 => v_1012084 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012085); EmitterFinished{EmitterValue{v_1012084}}}
 
 def emitter_body_cps_provider_10_native_match_descriptor_name_0(v_4: Sigma<&1, &1, Arena.Arena, _ => String>, v_5: Scope.ArenaGlobalScope, v_7: Bool) -> EmitterProgress<cps_provider_10_CatalogResult<String>>:
   match v_4:
     case (v_12, v_13):
-      v_1012082 = {v_12 : Arena.Arena}
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_canonical{v_13, v_5, v_7}}, False{}, v_1012085 => emitter_body_cps_provider_10_canonical(v_13, v_5, v_7), v_1012084 => +v_1012083 = emitter_unbox(String, v_1012084); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012082, v_1012083}}}}
+      v_1012087 = {v_12 : Arena.Arena}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_canonical{v_13, v_5, v_7}}, False{}, v_1012090 => emitter_body_cps_provider_10_canonical(v_13, v_5, v_7), v_1012089 => +v_1012088 = emitter_unbox(String, v_1012089); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012087, v_1012088}}}}
 
 def emitter_body_cps_provider_10_descriptor_name(v_0: Arena.Arena, v_2: U32, v_3: Scope.ArenaGlobalScope, v_5: Bool) -> EmitterProgress<cps_provider_10_CatalogResult<String>>:
-  EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_native_match_descriptor_name_0{Arena.name_text(v_0, v_2), v_3, v_5}}, False{}, v_1012089 => emitter_body_cps_provider_10_native_match_descriptor_name_0(Arena.name_text(v_0, v_2), v_3, v_5), v_1012088 => v_1012087 = emitter_unbox(cps_provider_10_CatalogResult<String>, v_1012088); EmitterFinished{EmitterValue{v_1012087}}}
+  EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_native_match_descriptor_name_0{Arena.name_text(v_0, v_2), v_3, v_5}}, False{}, v_1012094 => emitter_body_cps_provider_10_native_match_descriptor_name_0(Arena.name_text(v_0, v_2), v_3, v_5), v_1012093 => v_1012092 = emitter_unbox(cps_provider_10_CatalogResult<String>, v_1012093); EmitterFinished{EmitterValue{v_1012092}}}
 
 def emitter_body_cps_provider_10_native_match_descriptors_0(v_2: cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_3: BIR.Descriptor) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>>:
   match v_2:
@@ -27664,25 +27684,25 @@ def emitter_body_cps_provider_10_native_match_descriptors_0(v_2: cps_provider_10
 def emitter_body_cps_provider_10_native_match_descriptors_1(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_3: U32, v_5: U32, v_6: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>>:
   match v_1:
     case cps_provider_10_CatalogResult{v_11, v_12}:
-      EmitterPending{EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptors{v_11, IR.arena_range_index(v_3, 1), U32.sub(v_5, 1), v_6}}, v_1012092 => v_1012090 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012092); emitter_body_cps_provider_10_native_match_descriptors_0(v_1012090, v_12)}
+      EmitterPending{EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptors{v_11, IR.arena_range_index(v_3, 1), U32.sub(v_5, 1), v_6}}, v_1012097 => v_1012095 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012097); emitter_body_cps_provider_10_native_match_descriptors_0(v_1012095, v_12)}
 
-def emitter_match_2581(v_4: Sigma<&1, &1, Arena.Arena, _ => U32>, +v_9: Scope.ArenaGlobalScope, v_6: U32, v_8: U32) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>>:
+def emitter_match_2582(v_4: Sigma<&1, &1, Arena.Arena, _ => U32>, +v_9: Scope.ArenaGlobalScope, v_6: U32, v_8: U32) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>>:
   match v_4:
     case (v_14, v_15):
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_14, v_15, v_9}}, False{}, v_1012096 => emitter_body_cps_provider_10_descriptor(v_14, v_15, v_9), v_1012095 => v_1012093 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012095); emitter_body_cps_provider_10_native_match_descriptors_1(v_1012093, v_6, v_8, v_9)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_14, v_15, v_9}}, False{}, v_1012101 => emitter_body_cps_provider_10_descriptor(v_14, v_15, v_9), v_1012100 => v_1012098 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012100); emitter_body_cps_provider_10_native_match_descriptors_1(v_1012098, v_6, v_8, v_9)}
 
 def emitter_body_cps_provider_10_native_match_descriptors_2(v_4: Sigma<&1, &1, Arena.Arena, _ => U32>, v_6: U32, v_8: U32, v_9: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>>:
-  emitter_match_2581(v_4, v_9, v_6, v_8)
+  emitter_match_2582(v_4, v_9, v_6, v_8)
 
-def emitter_match_2582(+v_1: U32, v_2: Arena.Arena, +v_4: U32, v_5: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>>:
+def emitter_match_2583(+v_1: U32, v_2: Arena.Arena, +v_4: U32, v_5: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>>:
   match v_1:
     case 0:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_2, []}}}
     case _:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_native_match_descriptors_2{Arena.word(v_2, IR.arena_tape_offset(v_4)), v_4, v_1, v_5}}, False{}, v_1012100 => emitter_body_cps_provider_10_native_match_descriptors_2(Arena.word(v_2, IR.arena_tape_offset(v_4)), v_4, v_1, v_5), v_1012099 => v_1012098 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012099); EmitterFinished{EmitterValue{v_1012098}}}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_native_match_descriptors_2{Arena.word(v_2, IR.arena_tape_offset(v_4)), v_4, v_1, v_5}}, False{}, v_1012105 => emitter_body_cps_provider_10_native_match_descriptors_2(Arena.word(v_2, IR.arena_tape_offset(v_4)), v_4, v_1, v_5), v_1012104 => v_1012103 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012104); EmitterFinished{EmitterValue{v_1012103}}}
 
 def emitter_body_cps_provider_10_native_match_descriptors_3(v_1: U32, v_2: Arena.Arena, v_4: U32, v_5: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>>:
-  emitter_match_2582(v_1, v_2, v_4, v_5)
+  emitter_match_2583(v_1, v_2, v_4, v_5)
 
 def emitter_body_cps_provider_10_descriptors(v_0: Arena.Arena, v_2: U32, v_4: U32, v_5: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>>:
   emitter_body_cps_provider_10_native_match_descriptors_3(v_4, v_0, v_2, v_5)
@@ -27695,30 +27715,30 @@ def emitter_body_cps_provider_10_native_match_descriptor_patterns_0(v_2: cps_pro
 def emitter_body_cps_provider_10_native_match_descriptor_patterns_1(v_1: cps_provider_10_CatalogResult<BIR.DescriptorPattern>, v_3: U32, v_5: U32, v_6: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.DescriptorPattern>>>:
   match v_1:
     case cps_provider_10_CatalogResult{v_11, v_12}:
-      EmitterPending{EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor_patterns{v_11, IR.arena_range_index(v_3, 1), U32.sub(v_5, 1), v_6}}, v_1012104 => v_1012102 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_1012104); emitter_body_cps_provider_10_native_match_descriptor_patterns_0(v_1012102, v_12)}
+      EmitterPending{EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor_patterns{v_11, IR.arena_range_index(v_3, 1), U32.sub(v_5, 1), v_6}}, v_1012109 => v_1012107 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_1012109); emitter_body_cps_provider_10_native_match_descriptor_patterns_0(v_1012107, v_12)}
 
-def emitter_match_2585(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Pattern>, +v_8: Scope.ArenaGlobalScope, v_5: U32, v_7: U32) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.DescriptorPattern>>>:
+def emitter_match_2586(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Pattern>, +v_8: Scope.ArenaGlobalScope, v_5: U32, v_7: U32) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.DescriptorPattern>>>:
   match v_3:
     case (v_13, v_14):
-      EmitterPending{EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor_pattern{v_13, v_14, v_8}}, v_1012107 => v_1012105 = emitter_unbox(cps_provider_10_CatalogResult<BIR.DescriptorPattern>, v_1012107); emitter_body_cps_provider_10_native_match_descriptor_patterns_1(v_1012105, v_5, v_7, v_8)}
+      EmitterPending{EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor_pattern{v_13, v_14, v_8}}, v_1012112 => v_1012110 = emitter_unbox(cps_provider_10_CatalogResult<BIR.DescriptorPattern>, v_1012112); emitter_body_cps_provider_10_native_match_descriptor_patterns_1(v_1012110, v_5, v_7, v_8)}
 
 def emitter_body_cps_provider_10_native_match_descriptor_patterns_2(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Pattern>, v_5: U32, v_7: U32, v_8: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.DescriptorPattern>>>:
-  emitter_match_2585(v_3, v_8, v_5, v_7)
+  emitter_match_2586(v_3, v_8, v_5, v_7)
 
 def emitter_body_cps_provider_10_native_match_descriptor_patterns_3(v_4: Sigma<&1, &1, Arena.Arena, _ => U32>, v_6: U32, v_8: U32, v_9: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.DescriptorPattern>>>:
   match v_4:
     case (v_14, v_15):
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_native_match_descriptor_patterns_2{Arena.get_pattern(v_14, v_15), v_6, v_8, v_9}}, False{}, v_1012111 => emitter_body_cps_provider_10_native_match_descriptor_patterns_2(Arena.get_pattern(v_14, v_15), v_6, v_8, v_9), v_1012110 => v_1012109 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_1012110); EmitterFinished{EmitterValue{v_1012109}}}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_native_match_descriptor_patterns_2{Arena.get_pattern(v_14, v_15), v_6, v_8, v_9}}, False{}, v_1012116 => emitter_body_cps_provider_10_native_match_descriptor_patterns_2(Arena.get_pattern(v_14, v_15), v_6, v_8, v_9), v_1012115 => v_1012114 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_1012115); EmitterFinished{EmitterValue{v_1012114}}}
 
-def emitter_match_2587(+v_1: U32, v_2: Arena.Arena, +v_4: U32, v_5: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.DescriptorPattern>>>:
+def emitter_match_2588(+v_1: U32, v_2: Arena.Arena, +v_4: U32, v_5: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.DescriptorPattern>>>:
   match v_1:
     case 0:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_2, []}}}
     case _:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_native_match_descriptor_patterns_3{Arena.word(v_2, IR.arena_tape_offset(v_4)), v_4, v_1, v_5}}, False{}, v_1012115 => emitter_body_cps_provider_10_native_match_descriptor_patterns_3(Arena.word(v_2, IR.arena_tape_offset(v_4)), v_4, v_1, v_5), v_1012114 => v_1012113 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_1012114); EmitterFinished{EmitterValue{v_1012113}}}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_native_match_descriptor_patterns_3{Arena.word(v_2, IR.arena_tape_offset(v_4)), v_4, v_1, v_5}}, False{}, v_1012120 => emitter_body_cps_provider_10_native_match_descriptor_patterns_3(Arena.word(v_2, IR.arena_tape_offset(v_4)), v_4, v_1, v_5), v_1012119 => v_1012118 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_1012119); EmitterFinished{EmitterValue{v_1012118}}}
 
 def emitter_body_cps_provider_10_native_match_descriptor_patterns_4(v_1: U32, v_2: Arena.Arena, v_4: U32, v_5: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.DescriptorPattern>>>:
-  emitter_match_2587(v_1, v_2, v_4, v_5)
+  emitter_match_2588(v_1, v_2, v_4, v_5)
 
 def emitter_body_cps_provider_10_descriptor_patterns(v_0: Arena.Arena, v_2: U32, v_4: U32, v_5: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.DescriptorPattern>>>:
   emitter_body_cps_provider_10_native_match_descriptor_patterns_4(v_4, v_0, v_2, v_5)
@@ -27728,28 +27748,28 @@ def emitter_body_cps_provider_10_native_match_descriptor_pattern_0(v_2: cps_prov
     case cps_provider_10_CatalogResult{v_8, v_9}:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_8, BIR.DescriptorConstructorPattern{v_4, v_9}}}}
 
-def emitter_match_2589(v_2: cps_provider_10_CatalogResult<String>, v_5: U32, v_7: U32, v_3: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.DescriptorPattern>>:
+def emitter_match_2590(v_2: cps_provider_10_CatalogResult<String>, v_5: U32, v_7: U32, v_3: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.DescriptorPattern>>:
   match v_2:
     case cps_provider_10_CatalogResult{v_11, v_12}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor_patterns{v_11, v_5, v_7, v_3}}, False{}, v_1012120 => emitter_body_cps_provider_10_descriptor_patterns(v_11, v_5, v_7, v_3), v_1012119 => v_1012117 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_1012119); emitter_body_cps_provider_10_native_match_descriptor_pattern_0(v_1012117, v_12)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor_patterns{v_11, v_5, v_7, v_3}}, False{}, v_1012125 => emitter_body_cps_provider_10_descriptor_patterns(v_11, v_5, v_7, v_3), v_1012124 => v_1012122 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_1012124); emitter_body_cps_provider_10_native_match_descriptor_pattern_0(v_1012122, v_12)}
 
 def emitter_body_cps_provider_10_native_match_descriptor_pattern_1(v_2: cps_provider_10_CatalogResult<String>, v_3: Scope.ArenaGlobalScope, v_5: U32, v_7: U32) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.DescriptorPattern>>:
-  emitter_match_2589(v_2, v_5, v_7, v_3)
+  emitter_match_2590(v_2, v_5, v_7, v_3)
 
-def emitter_match_2590(v_0: Arena.Pattern, v_1: Arena.Arena, +v_2: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.DescriptorPattern>>:
+def emitter_match_2591(v_0: Arena.Pattern, v_1: Arena.Arena, +v_2: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.DescriptorPattern>>:
   match v_0:
     case Arena.PatternVar{_, _, v_10, _}:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1, BIR.DescriptorBinder{emitter_pure_cps_provider_10_quantity(v_10)}}}}
     case Arena.PatternCtr{v_17, v_18, v_19, _}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor_name{v_1, v_17, v_2, True{}}}, False{}, v_1012124 => emitter_body_cps_provider_10_descriptor_name(v_1, v_17, v_2, True{}), v_1012123 => v_1012121 = emitter_unbox(cps_provider_10_CatalogResult<String>, v_1012123); emitter_body_cps_provider_10_native_match_descriptor_pattern_1(v_1012121, v_2, v_18, v_19)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor_name{v_1, v_17, v_2, True{}}}, False{}, v_1012129 => emitter_body_cps_provider_10_descriptor_name(v_1, v_17, v_2, True{}), v_1012128 => v_1012126 = emitter_unbox(cps_provider_10_CatalogResult<String>, v_1012128); emitter_body_cps_provider_10_native_match_descriptor_pattern_1(v_1012126, v_2, v_18, v_19)}
 
 def emitter_body_cps_provider_10_native_match_descriptor_pattern_2(v_0: Arena.Pattern, v_1: Arena.Arena, v_2: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.DescriptorPattern>>:
-  emitter_match_2590(v_0, v_1, v_2)
+  emitter_match_2591(v_0, v_1, v_2)
 
 def emitter_body_cps_provider_10_descriptor_pattern(v_0: Arena.Arena, v_1: Arena.Pattern, v_2: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.DescriptorPattern>>:
   emitter_body_cps_provider_10_native_match_descriptor_pattern_2(v_1, v_0, v_2)
 
-def emitter_match_2591(+v_0: BIR.Descriptor, v_1: BIR.Descriptor) -> EmitterProgress<BIR.Descriptor>:
+def emitter_match_2592(+v_0: BIR.Descriptor, v_1: BIR.Descriptor) -> EmitterProgress<BIR.Descriptor>:
   match v_0:
     case BIR.DescriptorRef{v_4, v_5}:
       EmitterFinished{EmitterValue{BIR.DescriptorRef{v_4, List.append(&2, BIR.Descriptor, v_5, [v_1])}}}
@@ -27757,62 +27777,62 @@ def emitter_match_2591(+v_0: BIR.Descriptor, v_1: BIR.Descriptor) -> EmitterProg
       EmitterFinished{EmitterValue{BIR.DescriptorApplication{v_0, v_1}}}
 
 def emitter_body_cps_provider_10_descriptor_apply(v_0: BIR.Descriptor, v_1: BIR.Descriptor) -> EmitterProgress<BIR.Descriptor>:
-  emitter_match_2591(v_0, v_1)
+  emitter_match_2592(v_0, v_1)
 
-def emitter_match_2592(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_8: U32, v_3: List<&2, BIR.Descriptor>, v_5: Bool, v_6: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
+def emitter_match_2593(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_8: U32, v_3: List<&2, BIR.Descriptor>, v_5: Bool, v_6: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_1:
     case cps_provider_10_CatalogResult{v_12, v_13}:
-      EmitterPending{EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor_sugar{v_12, v_8, v_13 <> v_3, v_5, v_6}}, v_1012127 => v_1012126 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012127); EmitterFinished{EmitterValue{v_1012126}}}
+      EmitterPending{EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor_sugar{v_12, v_8, v_13 <> v_3, v_5, v_6}}, v_1012132 => v_1012131 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012132); EmitterFinished{EmitterValue{v_1012131}}}
 
 def emitter_body_cps_provider_10_native_match_descriptor_sugar_0(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_3: List<&2, BIR.Descriptor>, v_5: Bool, v_6: Scope.ArenaGlobalScope, v_8: U32) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
-  emitter_match_2592(v_1, v_8, v_3, v_5, v_6)
+  emitter_match_2593(v_1, v_8, v_3, v_5, v_6)
 
 def emitter_body_cps_provider_10_native_match_descriptor_sugar_1(v_2: cps_provider_10_CatalogResult<String>, v_4: List<&2, BIR.Descriptor>, v_6: Bool) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_2:
     case cps_provider_10_CatalogResult{v_10, +v_11}:
-      v_1012128 = {v_10 : Arena.Arena}
-      EmitterPending{EmitterRequestGroup_27{EmitterRequest_cps_provider_10_named_sugar{v_11, BIR.DescriptorRef{v_11, []}, v_4, v_6}}, v_1012130 => +v_1012129 = emitter_unbox(BIR.Descriptor, v_1012130); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012128, v_1012129}}}}
+      v_1012133 = {v_10 : Arena.Arena}
+      EmitterPending{EmitterRequestGroup_27{EmitterRequest_cps_provider_10_named_sugar{v_11, BIR.DescriptorRef{v_11, []}, v_4, v_6}}, v_1012135 => +v_1012134 = emitter_unbox(BIR.Descriptor, v_1012135); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012133, v_1012134}}}}
 
-def emitter_match_2594(v_2: cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, +v_8: String, v_4: List<&2, BIR.Descriptor>, v_6: Bool) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
+def emitter_match_2595(v_2: cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, +v_8: String, v_4: List<&2, BIR.Descriptor>, v_6: Bool) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_2:
     case cps_provider_10_CatalogResult{v_12, +v_13}:
-      v_1012131 = {v_12 : Arena.Arena}
-      EmitterPending{EmitterRequestGroup_27{EmitterRequest_cps_provider_10_named_sugar{v_8, BIR.DescriptorRef{v_8, v_13}, List.append(&2, BIR.Descriptor, v_13, v_4), v_6}}, v_1012133 => +v_1012132 = emitter_unbox(BIR.Descriptor, v_1012133); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012131, v_1012132}}}}
+      v_1012136 = {v_12 : Arena.Arena}
+      EmitterPending{EmitterRequestGroup_27{EmitterRequest_cps_provider_10_named_sugar{v_8, BIR.DescriptorRef{v_8, v_13}, List.append(&2, BIR.Descriptor, v_13, v_4), v_6}}, v_1012138 => +v_1012137 = emitter_unbox(BIR.Descriptor, v_1012138); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012136, v_1012137}}}}
 
 def emitter_body_cps_provider_10_native_match_descriptor_sugar_2(v_2: cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_4: List<&2, BIR.Descriptor>, v_6: Bool, v_8: String) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
-  emitter_match_2594(v_2, v_8, v_4, v_6)
+  emitter_match_2595(v_2, v_8, v_4, v_6)
 
-def emitter_match_2595(v_2: cps_provider_10_CatalogResult<String>, v_9: U32, v_11: U32, v_7: Scope.ArenaGlobalScope, v_4: List<&2, BIR.Descriptor>, v_6: Bool) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
+def emitter_match_2596(v_2: cps_provider_10_CatalogResult<String>, v_9: U32, v_11: U32, v_7: Scope.ArenaGlobalScope, v_4: List<&2, BIR.Descriptor>, v_6: Bool) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_2:
     case cps_provider_10_CatalogResult{v_15, v_16}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptors{v_15, v_9, v_11, v_7}}, False{}, v_1012137 => emitter_body_cps_provider_10_descriptors(v_15, v_9, v_11, v_7), v_1012136 => v_1012134 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012136); emitter_body_cps_provider_10_native_match_descriptor_sugar_2(v_1012134, v_4, v_6, v_16)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptors{v_15, v_9, v_11, v_7}}, False{}, v_1012142 => emitter_body_cps_provider_10_descriptors(v_15, v_9, v_11, v_7), v_1012141 => v_1012139 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012141); emitter_body_cps_provider_10_native_match_descriptor_sugar_2(v_1012139, v_4, v_6, v_16)}
 
 def emitter_body_cps_provider_10_native_match_descriptor_sugar_3(v_2: cps_provider_10_CatalogResult<String>, v_4: List<&2, BIR.Descriptor>, v_6: Bool, v_7: Scope.ArenaGlobalScope, v_9: U32, v_11: U32) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
-  emitter_match_2595(v_2, v_9, v_11, v_7, v_4, v_6)
+  emitter_match_2596(v_2, v_9, v_11, v_7, v_4, v_6)
 
 def emitter_body_cps_provider_10_native_match_descriptor_sugar_4(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_3: List<&2, BIR.Descriptor>, v_5: Bool) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_1:
     case cps_provider_10_CatalogResult{v_9, v_10}:
-      v_1012138 = {v_9 : Arena.Arena}
-      EmitterPending{EmitterRequestGroup_27{EmitterRequest_cps_provider_10_unnamed_sugar{v_10, v_3, v_5}}, v_1012140 => +v_1012139 = emitter_unbox(BIR.Descriptor, v_1012140); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012138, v_1012139}}}}
+      v_1012143 = {v_9 : Arena.Arena}
+      EmitterPending{EmitterRequestGroup_27{EmitterRequest_cps_provider_10_unnamed_sugar{v_10, v_3, v_5}}, v_1012145 => +v_1012144 = emitter_unbox(BIR.Descriptor, v_1012145); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012143, v_1012144}}}}
 
-def emitter_match_2597(+v_0: Arena.Node, v_6: Arena.Arena, v_2: List<&2, BIR.Descriptor>, v_4: Bool, +v_5: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
+def emitter_match_2598(+v_0: Arena.Node, v_6: Arena.Arena, v_2: List<&2, BIR.Descriptor>, v_4: Bool, +v_5: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_0:
     case Arena.TermAnn{v_11, _, _}:
-      EmitterPending{EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor_sugar{v_6, v_11, v_2, v_4, v_5}}, v_1012142 => v_1012141 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012142); EmitterFinished{EmitterValue{v_1012141}}}
+      EmitterPending{EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor_sugar{v_6, v_11, v_2, v_4, v_5}}, v_1012147 => v_1012146 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012147); EmitterFinished{EmitterValue{v_1012146}}}
     case Arena.TermBang{v_17, _}:
-      EmitterPending{EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor_sugar{v_6, v_17, v_2, v_4, v_5}}, v_1012144 => v_1012143 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012144); EmitterFinished{EmitterValue{v_1012143}}}
+      EmitterPending{EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor_sugar{v_6, v_17, v_2, v_4, v_5}}, v_1012149 => v_1012148 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012149); EmitterFinished{EmitterValue{v_1012148}}}
     case Arena.TermApp{v_23, v_24, _}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_6, v_24, v_5}}, False{}, v_1012148 => emitter_body_cps_provider_10_descriptor(v_6, v_24, v_5), v_1012147 => v_1012145 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012147); emitter_body_cps_provider_10_native_match_descriptor_sugar_0(v_1012145, v_2, v_4, v_5, v_23)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_6, v_24, v_5}}, False{}, v_1012153 => emitter_body_cps_provider_10_descriptor(v_6, v_24, v_5), v_1012152 => v_1012150 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012152); emitter_body_cps_provider_10_native_match_descriptor_sugar_0(v_1012150, v_2, v_4, v_5, v_23)}
     case Arena.TermRef{v_30, _}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor_name{v_6, v_30, v_5, False{}}}, False{}, v_1012152 => emitter_body_cps_provider_10_descriptor_name(v_6, v_30, v_5, False{}), v_1012151 => v_1012149 = emitter_unbox(cps_provider_10_CatalogResult<String>, v_1012151); emitter_body_cps_provider_10_native_match_descriptor_sugar_1(v_1012149, v_2, v_4)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor_name{v_6, v_30, v_5, False{}}}, False{}, v_1012157 => emitter_body_cps_provider_10_descriptor_name(v_6, v_30, v_5, False{}), v_1012156 => v_1012154 = emitter_unbox(cps_provider_10_CatalogResult<String>, v_1012156); emitter_body_cps_provider_10_native_match_descriptor_sugar_1(v_1012154, v_2, v_4)}
     case Arena.TermAdt{v_40, v_41, v_42, _, _, _}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor_name{v_6, v_40, v_5, False{}}}, False{}, v_1012156 => emitter_body_cps_provider_10_descriptor_name(v_6, v_40, v_5, False{}), v_1012155 => v_1012153 = emitter_unbox(cps_provider_10_CatalogResult<String>, v_1012155); emitter_body_cps_provider_10_native_match_descriptor_sugar_3(v_1012153, v_2, v_4, v_5, v_41, v_42)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor_name{v_6, v_40, v_5, False{}}}, False{}, v_1012161 => emitter_body_cps_provider_10_descriptor_name(v_6, v_40, v_5, False{}), v_1012160 => v_1012158 = emitter_unbox(cps_provider_10_CatalogResult<String>, v_1012160); emitter_body_cps_provider_10_native_match_descriptor_sugar_3(v_1012158, v_2, v_4, v_5, v_41, v_42)}
     case _:
-      EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_descriptor_node{v_6, v_0, v_5}}, v_1012159 => v_1012157 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012159); emitter_body_cps_provider_10_native_match_descriptor_sugar_4(v_1012157, v_2, v_4)}
+      EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_descriptor_node{v_6, v_0, v_5}}, v_1012164 => v_1012162 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012164); emitter_body_cps_provider_10_native_match_descriptor_sugar_4(v_1012162, v_2, v_4)}
 
 def emitter_body_cps_provider_10_native_match_descriptor_sugar_5(v_0: Arena.Node, v_2: List<&2, BIR.Descriptor>, v_4: Bool, v_5: Scope.ArenaGlobalScope, v_6: Arena.Arena) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
-  emitter_match_2597(v_0, v_6, v_2, v_4, v_5)
+  emitter_match_2598(v_0, v_6, v_2, v_4, v_5)
 
 def emitter_body_cps_provider_10_native_match_descriptor_sugar_6(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Node>, v_5: List<&2, BIR.Descriptor>, v_7: Bool, v_8: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_3:
@@ -27820,9 +27840,9 @@ def emitter_body_cps_provider_10_native_match_descriptor_sugar_6(v_3: Sigma<&1, 
       emitter_body_cps_provider_10_native_match_descriptor_sugar_5(v_13, v_5, v_7, v_8, v_12)
 
 def emitter_body_cps_provider_10_descriptor_sugar(v_0: Arena.Arena, v_2: U32, v_4: List<&2, BIR.Descriptor>, v_6: Bool, v_7: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
-  EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_native_match_descriptor_sugar_6{Arena.get_node(v_0, v_2), v_4, v_6, v_7}}, False{}, v_1012164 => emitter_body_cps_provider_10_native_match_descriptor_sugar_6(Arena.get_node(v_0, v_2), v_4, v_6, v_7), v_1012163 => v_1012162 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012163); EmitterFinished{EmitterValue{v_1012162}}}
+  EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_native_match_descriptor_sugar_6{Arena.get_node(v_0, v_2), v_4, v_6, v_7}}, False{}, v_1012169 => emitter_body_cps_provider_10_native_match_descriptor_sugar_6(Arena.get_node(v_0, v_2), v_4, v_6, v_7), v_1012168 => v_1012167 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012168); EmitterFinished{EmitterValue{v_1012167}}}
 
-def emitter_match_2599(v_6: Bool, v_1: String, v_2: BIR.Descriptor, v_4: List<&2, BIR.Descriptor>) -> EmitterProgress<BIR.Descriptor>:
+def emitter_match_2600(v_6: Bool, v_1: String, v_2: BIR.Descriptor, v_4: List<&2, BIR.Descriptor>) -> EmitterProgress<BIR.Descriptor>:
   match v_6:
     case False{}:
       EmitterFinished{EmitterValue{BIR.DescriptorNamedFill{v_1, v_2, v_4}}}
@@ -27830,9 +27850,9 @@ def emitter_match_2599(v_6: Bool, v_1: String, v_2: BIR.Descriptor, v_4: List<&2
       EmitterFinished{EmitterValue{BIR.DescriptorNamedPlus{v_1, v_2, v_4}}}
 
 def emitter_body_cps_provider_10_named_sugar(v_1: String, v_2: BIR.Descriptor, v_4: List<&2, BIR.Descriptor>, v_6: Bool) -> EmitterProgress<BIR.Descriptor>:
-  emitter_match_2599(v_6, v_1, v_2, v_4)
+  emitter_match_2600(v_6, v_1, v_2, v_4)
 
-def emitter_match_2600(v_4: Bool, v_0: BIR.Descriptor, v_2: List<&2, BIR.Descriptor>) -> EmitterProgress<BIR.Descriptor>:
+def emitter_match_2601(v_4: Bool, v_0: BIR.Descriptor, v_2: List<&2, BIR.Descriptor>) -> EmitterProgress<BIR.Descriptor>:
   match v_4:
     case False{}:
       EmitterFinished{EmitterValue{BIR.DescriptorFill{v_0, v_2}}}
@@ -27840,15 +27860,15 @@ def emitter_match_2600(v_4: Bool, v_0: BIR.Descriptor, v_2: List<&2, BIR.Descrip
       EmitterFinished{EmitterValue{BIR.DescriptorPlus{v_0, v_2}}}
 
 def emitter_body_cps_provider_10_unnamed_sugar(v_0: BIR.Descriptor, v_2: List<&2, BIR.Descriptor>, v_4: Bool) -> EmitterProgress<BIR.Descriptor>:
-  emitter_match_2600(v_4, v_0, v_2)
+  emitter_match_2601(v_4, v_0, v_2)
 
-def emitter_match_2601(v_0: Ast.StringLiteralNames, +v_1: Scope.ArenaGlobalScope) -> EmitterProgress<Ast.StringLiteralNames>:
+def emitter_match_2602(v_0: Ast.StringLiteralNames, +v_1: Scope.ArenaGlobalScope) -> EmitterProgress<Ast.StringLiteralNames>:
   match v_0:
     case Ast.StringLiteralNames{v_10, v_11, v_12, v_13, v_14, v_15, v_16, v_17}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_canonical{v_10, v_1, True{}}}, False{}, v_1012188 => emitter_body_cps_provider_10_canonical(v_10, v_1, True{}), v_1012187 => +v_1012165 = emitter_unbox(String, v_1012187); EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_canonical{v_11, v_1, True{}}}, False{}, v_1012186 => emitter_body_cps_provider_10_canonical(v_11, v_1, True{}), v_1012185 => +v_1012166 = emitter_unbox(String, v_1012185); EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_canonical{v_12, v_1, True{}}}, False{}, v_1012184 => emitter_body_cps_provider_10_canonical(v_12, v_1, True{}), v_1012183 => +v_1012167 = emitter_unbox(String, v_1012183); EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_canonical{v_13, v_1, True{}}}, False{}, v_1012182 => emitter_body_cps_provider_10_canonical(v_13, v_1, True{}), v_1012181 => +v_1012168 = emitter_unbox(String, v_1012181); EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_canonical{v_14, v_1, True{}}}, False{}, v_1012180 => emitter_body_cps_provider_10_canonical(v_14, v_1, True{}), v_1012179 => +v_1012169 = emitter_unbox(String, v_1012179); EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_canonical{v_15, v_1, True{}}}, False{}, v_1012178 => emitter_body_cps_provider_10_canonical(v_15, v_1, True{}), v_1012177 => +v_1012170 = emitter_unbox(String, v_1012177); EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_canonical{v_16, v_1, True{}}}, False{}, v_1012176 => emitter_body_cps_provider_10_canonical(v_16, v_1, True{}), v_1012175 => +v_1012171 = emitter_unbox(String, v_1012175); EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_canonical{v_17, v_1, True{}}}, False{}, v_1012174 => emitter_body_cps_provider_10_canonical(v_17, v_1, True{}), v_1012173 => +v_1012172 = emitter_unbox(String, v_1012173); EmitterFinished{EmitterValue{Ast.StringLiteralNames{v_1012165, v_1012166, v_1012167, v_1012168, v_1012169, v_1012170, v_1012171, v_1012172}}}}}}}}}}}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_canonical{v_10, v_1, True{}}}, False{}, v_1012193 => emitter_body_cps_provider_10_canonical(v_10, v_1, True{}), v_1012192 => +v_1012170 = emitter_unbox(String, v_1012192); EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_canonical{v_11, v_1, True{}}}, False{}, v_1012191 => emitter_body_cps_provider_10_canonical(v_11, v_1, True{}), v_1012190 => +v_1012171 = emitter_unbox(String, v_1012190); EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_canonical{v_12, v_1, True{}}}, False{}, v_1012189 => emitter_body_cps_provider_10_canonical(v_12, v_1, True{}), v_1012188 => +v_1012172 = emitter_unbox(String, v_1012188); EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_canonical{v_13, v_1, True{}}}, False{}, v_1012187 => emitter_body_cps_provider_10_canonical(v_13, v_1, True{}), v_1012186 => +v_1012173 = emitter_unbox(String, v_1012186); EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_canonical{v_14, v_1, True{}}}, False{}, v_1012185 => emitter_body_cps_provider_10_canonical(v_14, v_1, True{}), v_1012184 => +v_1012174 = emitter_unbox(String, v_1012184); EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_canonical{v_15, v_1, True{}}}, False{}, v_1012183 => emitter_body_cps_provider_10_canonical(v_15, v_1, True{}), v_1012182 => +v_1012175 = emitter_unbox(String, v_1012182); EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_canonical{v_16, v_1, True{}}}, False{}, v_1012181 => emitter_body_cps_provider_10_canonical(v_16, v_1, True{}), v_1012180 => +v_1012176 = emitter_unbox(String, v_1012180); EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_canonical{v_17, v_1, True{}}}, False{}, v_1012179 => emitter_body_cps_provider_10_canonical(v_17, v_1, True{}), v_1012178 => +v_1012177 = emitter_unbox(String, v_1012178); EmitterFinished{EmitterValue{Ast.StringLiteralNames{v_1012170, v_1012171, v_1012172, v_1012173, v_1012174, v_1012175, v_1012176, v_1012177}}}}}}}}}}}
 
 def emitter_body_cps_provider_10_string_names(v_0: Ast.StringLiteralNames, v_1: Scope.ArenaGlobalScope) -> EmitterProgress<Ast.StringLiteralNames>:
-  emitter_match_2601(v_0, v_1)
+  emitter_match_2602(v_0, v_1)
 
 def emitter_body_cps_provider_10_string_bit(v_1: U32, v_2: Ast.StringLiteralNames) -> EmitterProgress<BIR.Descriptor>:
   match v_1, v_2:
@@ -27857,29 +27877,29 @@ def emitter_body_cps_provider_10_string_bit(v_1: U32, v_2: Ast.StringLiteralName
     case _, Ast.StringLiteralNames{_, _, _, _, _, _, _, v_36}:
       EmitterFinished{EmitterValue{BIR.DescriptorConstructor{v_36, []}}}
 
-def emitter_match_2603(v_1: Nat, +v_4: Ast.StringLiteralNames, +v_3: U32) -> EmitterProgress<BIR.Descriptor>:
+def emitter_match_2604(v_1: Nat, +v_4: Ast.StringLiteralNames, +v_3: U32) -> EmitterProgress<BIR.Descriptor>:
   match v_1, v_4:
     case 0n, Ast.StringLiteralNames{_, _, _, _, v_17, _, _, _}:
       EmitterFinished{EmitterValue{BIR.DescriptorConstructor{v_17, []}}}
     case 1n+v_30, Ast.StringLiteralNames{_, _, _, _, _, v_36, _, _}:
-      v_1012189 = {v_36 : String}
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_string_bit{U32.and(v_3, 1), v_4}}, False{}, v_1012194 => emitter_body_cps_provider_10_string_bit(U32.and(v_3, 1), v_4), v_1012193 => +v_1012190 = emitter_unbox(BIR.Descriptor, v_1012193); EmitterPending{EmitterRequestGroup_27{EmitterRequest_cps_provider_10_string_word{v_30, U32.shr(v_3), v_4}}, v_1012192 => +v_1012191 = emitter_unbox(BIR.Descriptor, v_1012192); EmitterFinished{EmitterValue{BIR.DescriptorConstructor{v_1012189, [v_1012190, v_1012191]}}}}}
+      v_1012194 = {v_36 : String}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_string_bit{U32.and(v_3, 1), v_4}}, False{}, v_1012199 => emitter_body_cps_provider_10_string_bit(U32.and(v_3, 1), v_4), v_1012198 => +v_1012195 = emitter_unbox(BIR.Descriptor, v_1012198); EmitterPending{EmitterRequestGroup_27{EmitterRequest_cps_provider_10_string_word{v_30, U32.shr(v_3), v_4}}, v_1012197 => +v_1012196 = emitter_unbox(BIR.Descriptor, v_1012197); EmitterFinished{EmitterValue{BIR.DescriptorConstructor{v_1012194, [v_1012195, v_1012196]}}}}}
 
 def emitter_body_cps_provider_10_string_word(v_1: Nat, v_3: U32, v_4: Ast.StringLiteralNames) -> EmitterProgress<BIR.Descriptor>:
-  emitter_match_2603(v_1, v_4, v_3)
+  emitter_match_2604(v_1, v_4, v_3)
 
-def emitter_match_2604(v_2: List<&2, U32>, +v_3: Ast.StringLiteralNames) -> EmitterProgress<BIR.Descriptor>:
+def emitter_match_2605(v_2: List<&2, U32>, +v_3: Ast.StringLiteralNames) -> EmitterProgress<BIR.Descriptor>:
   match v_2, v_3:
     case [], Ast.StringLiteralNames{v_12, _, _, _, _, _, _, _}:
       EmitterFinished{EmitterValue{BIR.DescriptorConstructor{v_12, []}}}
     case v_30 <> v_31, Ast.StringLiteralNames{_, v_33, v_34, v_35, _, _, _, _}:
-      v_1012195 = {v_33 : String}
-      v_1012196 = {v_34 : String}
-      v_1012197 = {v_35 : String}
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_string_word{32n, v_30, v_3}}, False{}, v_1012202 => emitter_body_cps_provider_10_string_word(32n, v_30, v_3), v_1012201 => +v_1012198 = emitter_unbox(BIR.Descriptor, v_1012201); EmitterPending{EmitterRequestGroup_27{EmitterRequest_cps_provider_10_string_descriptor{v_31, v_3}}, v_1012200 => +v_1012199 = emitter_unbox(BIR.Descriptor, v_1012200); EmitterFinished{EmitterValue{BIR.DescriptorConstructor{v_1012195, [BIR.DescriptorConstructor{v_1012196, [BIR.DescriptorConstructor{v_1012197, [v_1012198]}]}, v_1012199]}}}}}
+      v_1012200 = {v_33 : String}
+      v_1012201 = {v_34 : String}
+      v_1012202 = {v_35 : String}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_string_word{32n, v_30, v_3}}, False{}, v_1012207 => emitter_body_cps_provider_10_string_word(32n, v_30, v_3), v_1012206 => +v_1012203 = emitter_unbox(BIR.Descriptor, v_1012206); EmitterPending{EmitterRequestGroup_27{EmitterRequest_cps_provider_10_string_descriptor{v_31, v_3}}, v_1012205 => +v_1012204 = emitter_unbox(BIR.Descriptor, v_1012205); EmitterFinished{EmitterValue{BIR.DescriptorConstructor{v_1012200, [BIR.DescriptorConstructor{v_1012201, [BIR.DescriptorConstructor{v_1012202, [v_1012203]}]}, v_1012204]}}}}}
 
 def emitter_body_cps_provider_10_string_descriptor(v_2: List<&2, U32>, v_3: Ast.StringLiteralNames) -> EmitterProgress<BIR.Descriptor>:
-  emitter_match_2604(v_2, v_3)
+  emitter_match_2605(v_2, v_3)
 
 def emitter_body_cps_provider_10_native_match_descriptor_node_0(v_2: cps_provider_10_CatalogResult<String>) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_2:
@@ -27891,26 +27911,26 @@ def emitter_body_cps_provider_10_native_match_descriptor_node_1(v_1: cps_provide
     case cps_provider_10_CatalogResult{v_8, v_9}:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_8, BIR.DescriptorSubstitution{v_3, v_4, v_9}}}}
 
-def emitter_match_2607(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_6: U32, v_2: Scope.ArenaGlobalScope, v_4: Nat) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
+def emitter_match_2608(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_6: U32, v_2: Scope.ArenaGlobalScope, v_4: Nat) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_1:
     case cps_provider_10_CatalogResult{v_10, v_11}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_10, v_6, v_2}}, False{}, v_1012206 => emitter_body_cps_provider_10_descriptor(v_10, v_6, v_2), v_1012205 => v_1012203 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012205); emitter_body_cps_provider_10_native_match_descriptor_node_1(v_1012203, v_4, v_11)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_10, v_6, v_2}}, False{}, v_1012211 => emitter_body_cps_provider_10_descriptor(v_10, v_6, v_2), v_1012210 => v_1012208 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012210); emitter_body_cps_provider_10_native_match_descriptor_node_1(v_1012208, v_4, v_11)}
 
 def emitter_body_cps_provider_10_native_match_descriptor_node_2(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_2: Scope.ArenaGlobalScope, v_4: Nat, v_6: U32) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
-  emitter_match_2607(v_1, v_6, v_2, v_4)
+  emitter_match_2608(v_1, v_6, v_2, v_4)
 
 def emitter_body_cps_provider_10_native_match_descriptor_node_3(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_3: List<&2, BIR.Descriptor>) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_1:
     case cps_provider_10_CatalogResult{v_7, v_8}:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_7, BIR.DescriptorLet{v_3, v_8}}}}
 
-def emitter_match_2609(v_2: cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_5: U32, v_3: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
+def emitter_match_2610(v_2: cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_5: U32, v_3: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_2:
     case cps_provider_10_CatalogResult{v_9, v_10}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_9, v_5, v_3}}, False{}, v_1012210 => emitter_body_cps_provider_10_descriptor(v_9, v_5, v_3), v_1012209 => v_1012207 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012209); emitter_body_cps_provider_10_native_match_descriptor_node_3(v_1012207, v_10)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_9, v_5, v_3}}, False{}, v_1012215 => emitter_body_cps_provider_10_descriptor(v_9, v_5, v_3), v_1012214 => v_1012212 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012214); emitter_body_cps_provider_10_native_match_descriptor_node_3(v_1012212, v_10)}
 
 def emitter_body_cps_provider_10_native_match_descriptor_node_4(v_2: cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_3: Scope.ArenaGlobalScope, v_5: U32) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
-  emitter_match_2609(v_2, v_5, v_3)
+  emitter_match_2610(v_2, v_5, v_3)
 
 def emitter_body_cps_provider_10_native_match_descriptor_node_5(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_1:
@@ -27922,122 +27942,122 @@ def emitter_body_cps_provider_10_native_match_descriptor_node_6(v_1: cps_provide
     case cps_provider_10_CatalogResult{v_6, v_7}:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_6, BIR.DescriptorMinimum{v_2, v_7}}}}
 
-def emitter_match_2612(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_4: U32, v_2: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
+def emitter_match_2613(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_4: U32, v_2: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_1:
     case cps_provider_10_CatalogResult{v_8, v_9}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_8, v_4, v_2}}, False{}, v_1012214 => emitter_body_cps_provider_10_descriptor(v_8, v_4, v_2), v_1012213 => v_1012211 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012213); emitter_body_cps_provider_10_native_match_descriptor_node_6(v_1012211, v_9)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_8, v_4, v_2}}, False{}, v_1012219 => emitter_body_cps_provider_10_descriptor(v_8, v_4, v_2), v_1012218 => v_1012216 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012218); emitter_body_cps_provider_10_native_match_descriptor_node_6(v_1012216, v_9)}
 
 def emitter_body_cps_provider_10_native_match_descriptor_node_7(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_2: Scope.ArenaGlobalScope, v_4: U32) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
-  emitter_match_2612(v_1, v_4, v_2)
+  emitter_match_2613(v_1, v_4, v_2)
 
 def emitter_body_cps_provider_10_native_match_descriptor_node_8(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_2: Ast.Quantity, v_3: BIR.Descriptor) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_1:
     case cps_provider_10_CatalogResult{v_7, v_8}:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_7, BIR.DescriptorArrow{emitter_pure_cps_provider_10_quantity(v_2), v_3, v_8}}}}
 
-def emitter_match_2614(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_5: U32, v_2: Scope.ArenaGlobalScope, v_3: Ast.Quantity) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
+def emitter_match_2615(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_5: U32, v_2: Scope.ArenaGlobalScope, v_3: Ast.Quantity) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_1:
     case cps_provider_10_CatalogResult{v_9, v_10}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_9, v_5, v_2}}, False{}, v_1012218 => emitter_body_cps_provider_10_descriptor(v_9, v_5, v_2), v_1012217 => v_1012215 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012217); emitter_body_cps_provider_10_native_match_descriptor_node_8(v_1012215, v_3, v_10)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_9, v_5, v_2}}, False{}, v_1012223 => emitter_body_cps_provider_10_descriptor(v_9, v_5, v_2), v_1012222 => v_1012220 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012222); emitter_body_cps_provider_10_native_match_descriptor_node_8(v_1012220, v_3, v_10)}
 
 def emitter_body_cps_provider_10_native_match_descriptor_node_9(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_2: Scope.ArenaGlobalScope, v_3: Ast.Quantity, v_5: U32) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
-  emitter_match_2614(v_1, v_5, v_2, v_3)
+  emitter_match_2615(v_1, v_5, v_2, v_3)
 
 def emitter_body_cps_provider_10_native_match_descriptor_node_10(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_3: Maybe<&2, Ast.Quantity>) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_1:
     case cps_provider_10_CatalogResult{v_7, v_8}:
-      v_1012219 = {v_7 : Arena.Arena}
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_optional_quantity{v_3}}, False{}, v_1012222 => emitter_body_cps_provider_10_optional_quantity(v_3), v_1012221 => +v_1012220 = emitter_unbox(Maybe<&2, BIR.Quantity>, v_1012221); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012219, BIR.DescriptorLambda{v_1012220, v_8}}}}}
+      v_1012224 = {v_7 : Arena.Arena}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_optional_quantity{v_3}}, False{}, v_1012227 => emitter_body_cps_provider_10_optional_quantity(v_3), v_1012226 => +v_1012225 = emitter_unbox(Maybe<&2, BIR.Quantity>, v_1012226); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012224, BIR.DescriptorLambda{v_1012225, v_8}}}}}
 
 def emitter_body_cps_provider_10_native_match_descriptor_node_11(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_2: BIR.Descriptor) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_1:
     case cps_provider_10_CatalogResult{v_6, v_7}:
-      v_1012223 = {v_6 : Arena.Arena}
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor_apply{v_2, v_7}}, False{}, v_1012226 => emitter_body_cps_provider_10_descriptor_apply(v_2, v_7), v_1012225 => +v_1012224 = emitter_unbox(BIR.Descriptor, v_1012225); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012223, v_1012224}}}}
+      v_1012228 = {v_6 : Arena.Arena}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor_apply{v_2, v_7}}, False{}, v_1012231 => emitter_body_cps_provider_10_descriptor_apply(v_2, v_7), v_1012230 => +v_1012229 = emitter_unbox(BIR.Descriptor, v_1012230); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012228, v_1012229}}}}
 
-def emitter_match_2617(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_4: U32, v_2: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
+def emitter_match_2618(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_4: U32, v_2: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_1:
     case cps_provider_10_CatalogResult{v_8, v_9}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_8, v_4, v_2}}, False{}, v_1012230 => emitter_body_cps_provider_10_descriptor(v_8, v_4, v_2), v_1012229 => v_1012227 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012229); emitter_body_cps_provider_10_native_match_descriptor_node_11(v_1012227, v_9)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_8, v_4, v_2}}, False{}, v_1012235 => emitter_body_cps_provider_10_descriptor(v_8, v_4, v_2), v_1012234 => v_1012232 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012234); emitter_body_cps_provider_10_native_match_descriptor_node_11(v_1012232, v_9)}
 
 def emitter_body_cps_provider_10_native_match_descriptor_node_12(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_2: Scope.ArenaGlobalScope, v_4: U32) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
-  emitter_match_2617(v_1, v_4, v_2)
+  emitter_match_2618(v_1, v_4, v_2)
 
 def emitter_body_cps_provider_10_native_match_descriptor_node_13(v_2: cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_4: String) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_2:
     case cps_provider_10_CatalogResult{v_8, v_9}:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_8, BIR.DescriptorRef{v_4, v_9}}}}
 
-def emitter_match_2619(v_2: cps_provider_10_CatalogResult<String>, v_5: U32, v_7: U32, v_3: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
+def emitter_match_2620(v_2: cps_provider_10_CatalogResult<String>, v_5: U32, v_7: U32, v_3: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_2:
     case cps_provider_10_CatalogResult{v_11, v_12}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptors{v_11, v_5, v_7, v_3}}, False{}, v_1012234 => emitter_body_cps_provider_10_descriptors(v_11, v_5, v_7, v_3), v_1012233 => v_1012231 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012233); emitter_body_cps_provider_10_native_match_descriptor_node_13(v_1012231, v_12)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptors{v_11, v_5, v_7, v_3}}, False{}, v_1012239 => emitter_body_cps_provider_10_descriptors(v_11, v_5, v_7, v_3), v_1012238 => v_1012236 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012238); emitter_body_cps_provider_10_native_match_descriptor_node_13(v_1012236, v_12)}
 
 def emitter_body_cps_provider_10_native_match_descriptor_node_14(v_2: cps_provider_10_CatalogResult<String>, v_3: Scope.ArenaGlobalScope, v_5: U32, v_7: U32) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
-  emitter_match_2619(v_2, v_5, v_7, v_3)
+  emitter_match_2620(v_2, v_5, v_7, v_3)
 
-def emitter_match_2620(v_2: cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_5: U32, v_3: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
+def emitter_match_2621(v_2: cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_5: U32, v_3: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_2:
     case cps_provider_10_CatalogResult{v_9, v_10}:
       emitter_body_cps_provider_10_descriptor_sugar(v_9, v_5, v_10, False{}, v_3)
 
 def emitter_body_cps_provider_10_native_match_descriptor_node_15(v_2: cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_3: Scope.ArenaGlobalScope, v_5: U32) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
-  emitter_match_2620(v_2, v_5, v_3)
+  emitter_match_2621(v_2, v_5, v_3)
 
-def emitter_match_2621(v_2: cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_5: U32, v_3: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
+def emitter_match_2622(v_2: cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_5: U32, v_3: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_2:
     case cps_provider_10_CatalogResult{v_9, v_10}:
       emitter_body_cps_provider_10_descriptor_sugar(v_9, v_5, v_10, True{}, v_3)
 
 def emitter_body_cps_provider_10_native_match_descriptor_node_16(v_2: cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_3: Scope.ArenaGlobalScope, v_5: U32) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
-  emitter_match_2621(v_2, v_5, v_3)
+  emitter_match_2622(v_2, v_5, v_3)
 
 def emitter_body_cps_provider_10_native_match_descriptor_node_17(v_2: cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_4: String) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_2:
     case cps_provider_10_CatalogResult{v_8, v_9}:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_8, BIR.DescriptorConstructor{v_4, v_9}}}}
 
-def emitter_match_2623(v_2: cps_provider_10_CatalogResult<String>, v_5: U32, v_7: U32, v_3: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
+def emitter_match_2624(v_2: cps_provider_10_CatalogResult<String>, v_5: U32, v_7: U32, v_3: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_2:
     case cps_provider_10_CatalogResult{v_11, v_12}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptors{v_11, v_5, v_7, v_3}}, False{}, v_1012240 => emitter_body_cps_provider_10_descriptors(v_11, v_5, v_7, v_3), v_1012239 => v_1012237 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012239); emitter_body_cps_provider_10_native_match_descriptor_node_17(v_1012237, v_12)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptors{v_11, v_5, v_7, v_3}}, False{}, v_1012245 => emitter_body_cps_provider_10_descriptors(v_11, v_5, v_7, v_3), v_1012244 => v_1012242 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012244); emitter_body_cps_provider_10_native_match_descriptor_node_17(v_1012242, v_12)}
 
 def emitter_body_cps_provider_10_native_match_descriptor_node_18(v_2: cps_provider_10_CatalogResult<String>, v_3: Scope.ArenaGlobalScope, v_5: U32, v_7: U32) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
-  emitter_match_2623(v_2, v_5, v_7, v_3)
+  emitter_match_2624(v_2, v_5, v_7, v_3)
 
 def emitter_body_cps_provider_10_native_match_descriptor_node_19(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_2: BIR.Descriptor) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_1:
     case cps_provider_10_CatalogResult{v_6, v_7}:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_6, BIR.DescriptorBind{v_2, v_7}}}}
 
-def emitter_match_2625(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_4: U32, v_2: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
+def emitter_match_2626(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_4: U32, v_2: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_1:
     case cps_provider_10_CatalogResult{v_8, v_9}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_8, v_4, v_2}}, False{}, v_1012244 => emitter_body_cps_provider_10_descriptor(v_8, v_4, v_2), v_1012243 => v_1012241 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012243); emitter_body_cps_provider_10_native_match_descriptor_node_19(v_1012241, v_9)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_8, v_4, v_2}}, False{}, v_1012249 => emitter_body_cps_provider_10_descriptor(v_8, v_4, v_2), v_1012248 => v_1012246 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012248); emitter_body_cps_provider_10_native_match_descriptor_node_19(v_1012246, v_9)}
 
 def emitter_body_cps_provider_10_native_match_descriptor_node_20(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_2: Scope.ArenaGlobalScope, v_4: U32) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
-  emitter_match_2625(v_1, v_4, v_2)
+  emitter_match_2626(v_1, v_4, v_2)
 
 def emitter_body_cps_provider_10_native_match_descriptor_node_21(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_2: BIR.Descriptor, v_3: BIR.Descriptor) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_1:
     case cps_provider_10_CatalogResult{v_7, v_8}:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_7, BIR.DescriptorEquality{v_2, v_3, v_8}}}}
 
-def emitter_match_2627(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_4: U32, v_2: Scope.ArenaGlobalScope, v_5: BIR.Descriptor) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
+def emitter_match_2628(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_4: U32, v_2: Scope.ArenaGlobalScope, v_5: BIR.Descriptor) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_1:
     case cps_provider_10_CatalogResult{v_9, v_10}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_9, v_4, v_2}}, False{}, v_1012248 => emitter_body_cps_provider_10_descriptor(v_9, v_4, v_2), v_1012247 => v_1012245 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012247); emitter_body_cps_provider_10_native_match_descriptor_node_21(v_1012245, v_5, v_10)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_9, v_4, v_2}}, False{}, v_1012253 => emitter_body_cps_provider_10_descriptor(v_9, v_4, v_2), v_1012252 => v_1012250 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012252); emitter_body_cps_provider_10_native_match_descriptor_node_21(v_1012250, v_5, v_10)}
 
 def emitter_body_cps_provider_10_native_match_descriptor_node_22(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_2: Scope.ArenaGlobalScope, v_4: U32, v_5: BIR.Descriptor) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
-  emitter_match_2627(v_1, v_4, v_2, v_5)
+  emitter_match_2628(v_1, v_4, v_2, v_5)
 
-def emitter_match_2628(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_4: U32, +v_2: Scope.ArenaGlobalScope, v_6: U32) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
+def emitter_match_2629(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_4: U32, +v_2: Scope.ArenaGlobalScope, v_6: U32) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_1:
     case cps_provider_10_CatalogResult{v_10, v_11}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_10, v_4, v_2}}, False{}, v_1012252 => emitter_body_cps_provider_10_descriptor(v_10, v_4, v_2), v_1012251 => v_1012249 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012251); emitter_body_cps_provider_10_native_match_descriptor_node_22(v_1012249, v_2, v_6, v_11)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_10, v_4, v_2}}, False{}, v_1012257 => emitter_body_cps_provider_10_descriptor(v_10, v_4, v_2), v_1012256 => v_1012254 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012256); emitter_body_cps_provider_10_native_match_descriptor_node_22(v_1012254, v_2, v_6, v_11)}
 
 def emitter_body_cps_provider_10_native_match_descriptor_node_23(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_2: Scope.ArenaGlobalScope, v_4: U32, v_6: U32) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
-  emitter_match_2628(v_1, v_4, v_2, v_6)
+  emitter_match_2629(v_1, v_4, v_2, v_6)
 
 def emitter_body_cps_provider_10_native_match_descriptor_node_24(v_4: Sigma<&1, &1, Arena.Arena, _ => String>) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_4:
@@ -28049,100 +28069,100 @@ def emitter_body_cps_provider_10_native_match_descriptor_node_25(v_2: cps_provid
     case cps_provider_10_CatalogResult{v_8, v_9}:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_8, BIR.DescriptorMatch{v_4, v_9}}}}
 
-def emitter_match_2631(v_2: cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_5: U32, v_7: U32, v_3: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
+def emitter_match_2632(v_2: cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_5: U32, v_7: U32, v_3: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_2:
     case cps_provider_10_CatalogResult{v_11, v_12}:
-      EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_descriptor_cases{v_11, v_5, v_7, v_3}}, v_1012255 => v_1012253 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012255); emitter_body_cps_provider_10_native_match_descriptor_node_25(v_1012253, v_12)}
+      EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_descriptor_cases{v_11, v_5, v_7, v_3}}, v_1012260 => v_1012258 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012260); emitter_body_cps_provider_10_native_match_descriptor_node_25(v_1012258, v_12)}
 
 def emitter_body_cps_provider_10_native_match_descriptor_node_26(v_2: cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_3: Scope.ArenaGlobalScope, v_5: U32, v_7: U32) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
-  emitter_match_2631(v_2, v_5, v_7, v_3)
+  emitter_match_2632(v_2, v_5, v_7, v_3)
 
 def emitter_body_cps_provider_10_native_match_descriptor_node_27(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_3: List<&2, BIR.DescriptorPattern>, v_5: List<&2, BIR.Descriptor>) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_1:
     case cps_provider_10_CatalogResult{v_9, v_10}:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_9, BIR.DescriptorLocal{v_3, v_5, v_10}}}}
 
-def emitter_match_2633(v_2: cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_5: U32, v_3: Scope.ArenaGlobalScope, v_7: List<&2, BIR.DescriptorPattern>) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
+def emitter_match_2634(v_2: cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_5: U32, v_3: Scope.ArenaGlobalScope, v_7: List<&2, BIR.DescriptorPattern>) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_2:
     case cps_provider_10_CatalogResult{v_11, v_12}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_11, v_5, v_3}}, False{}, v_1012259 => emitter_body_cps_provider_10_descriptor(v_11, v_5, v_3), v_1012258 => v_1012256 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012258); emitter_body_cps_provider_10_native_match_descriptor_node_27(v_1012256, v_7, v_12)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_11, v_5, v_3}}, False{}, v_1012264 => emitter_body_cps_provider_10_descriptor(v_11, v_5, v_3), v_1012263 => v_1012261 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012263); emitter_body_cps_provider_10_native_match_descriptor_node_27(v_1012261, v_7, v_12)}
 
 def emitter_body_cps_provider_10_native_match_descriptor_node_28(v_2: cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_3: Scope.ArenaGlobalScope, v_5: U32, v_7: List<&2, BIR.DescriptorPattern>) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
-  emitter_match_2633(v_2, v_5, v_3, v_7)
+  emitter_match_2634(v_2, v_5, v_3, v_7)
 
-def emitter_match_2634(v_2: cps_provider_10_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_5: U32, v_7: U32, +v_3: Scope.ArenaGlobalScope, v_9: U32) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
+def emitter_match_2635(v_2: cps_provider_10_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_5: U32, v_7: U32, +v_3: Scope.ArenaGlobalScope, v_9: U32) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_2:
     case cps_provider_10_CatalogResult{v_13, v_14}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptors{v_13, v_5, v_7, v_3}}, False{}, v_1012263 => emitter_body_cps_provider_10_descriptors(v_13, v_5, v_7, v_3), v_1012262 => v_1012260 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012262); emitter_body_cps_provider_10_native_match_descriptor_node_28(v_1012260, v_3, v_9, v_14)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptors{v_13, v_5, v_7, v_3}}, False{}, v_1012268 => emitter_body_cps_provider_10_descriptors(v_13, v_5, v_7, v_3), v_1012267 => v_1012265 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012267); emitter_body_cps_provider_10_native_match_descriptor_node_28(v_1012265, v_3, v_9, v_14)}
 
 def emitter_body_cps_provider_10_native_match_descriptor_node_29(v_2: cps_provider_10_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_3: Scope.ArenaGlobalScope, v_5: U32, v_7: U32, v_9: U32) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
-  emitter_match_2634(v_2, v_5, v_7, v_3, v_9)
+  emitter_match_2635(v_2, v_5, v_7, v_3, v_9)
 
-def emitter_match_2635(v_0: Arena.Node, v_1: Arena.Arena, +v_2: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
+def emitter_match_2636(v_0: Arena.Node, v_1: Arena.Arena, +v_2: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_0:
     case Arena.TermVar{_, v_8, _}:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1, BIR.DescriptorParameter{v_8}}}}
     case Arena.TermRef{v_12, _}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor_name{v_1, v_12, v_2, False{}}}, False{}, v_1012267 => emitter_body_cps_provider_10_descriptor_name(v_1, v_12, v_2, False{}), v_1012266 => v_1012264 = emitter_unbox(cps_provider_10_CatalogResult<String>, v_1012266); emitter_body_cps_provider_10_native_match_descriptor_node_0(v_1012264)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor_name{v_1, v_12, v_2, False{}}}, False{}, v_1012272 => emitter_body_cps_provider_10_descriptor_name(v_1, v_12, v_2, False{}), v_1012271 => v_1012269 = emitter_unbox(cps_provider_10_CatalogResult<String>, v_1012271); emitter_body_cps_provider_10_native_match_descriptor_node_0(v_1012269)}
     case Arena.TermBang{v_18, _}:
       emitter_body_cps_provider_10_descriptor(v_1, v_18, v_2)
     case Arena.TermSub{v_25, v_26, v_27, _}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_1, v_26, v_2}}, False{}, v_1012272 => emitter_body_cps_provider_10_descriptor(v_1, v_26, v_2), v_1012271 => v_1012269 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012271); emitter_body_cps_provider_10_native_match_descriptor_node_2(v_1012269, v_2, v_25, v_27)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_1, v_26, v_2}}, False{}, v_1012277 => emitter_body_cps_provider_10_descriptor(v_1, v_26, v_2), v_1012276 => v_1012274 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012276); emitter_body_cps_provider_10_native_match_descriptor_node_2(v_1012274, v_2, v_25, v_27)}
     case Arena.TermLet{_, _, _, _, _, _, v_47, v_48, v_49, _}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptors{v_1, v_47, v_48, v_2}}, False{}, v_1012276 => emitter_body_cps_provider_10_descriptors(v_1, v_47, v_48, v_2), v_1012275 => v_1012273 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012275); emitter_body_cps_provider_10_native_match_descriptor_node_4(v_1012273, v_2, v_49)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptors{v_1, v_47, v_48, v_2}}, False{}, v_1012281 => emitter_body_cps_provider_10_descriptors(v_1, v_47, v_48, v_2), v_1012280 => v_1012278 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012280); emitter_body_cps_provider_10_native_match_descriptor_node_4(v_1012278, v_2, v_49)}
     case Arena.TermAnn{v_56, _, _}:
       emitter_body_cps_provider_10_descriptor(v_1, v_56, v_2)
     case Arena.TermTemplate{_, _}:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1, BIR.DescriptorFailure{"bend: unexpanded template"}}}}
     case Arena.TermType{v_66, _}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_1, v_66, v_2}}, False{}, v_1012281 => emitter_body_cps_provider_10_descriptor(v_1, v_66, v_2), v_1012280 => v_1012278 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012280); emitter_body_cps_provider_10_native_match_descriptor_node_5(v_1012278)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_1, v_66, v_2}}, False{}, v_1012286 => emitter_body_cps_provider_10_descriptor(v_1, v_66, v_2), v_1012285 => v_1012283 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012285); emitter_body_cps_provider_10_native_match_descriptor_node_5(v_1012283)}
     case Arena.TermQuant{}:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1, BIR.DescriptorQuantityKind{}}}}
     case Arena.TermQuantity{v_72, _}:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1, BIR.DescriptorQuantity{emitter_pure_cps_provider_10_quantity(v_72)}}}}
     case Arena.TermMin{v_78, v_79, _}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_1, v_78, v_2}}, False{}, v_1012285 => emitter_body_cps_provider_10_descriptor(v_1, v_78, v_2), v_1012284 => v_1012282 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012284); emitter_body_cps_provider_10_native_match_descriptor_node_7(v_1012282, v_2, v_79)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_1, v_78, v_2}}, False{}, v_1012290 => emitter_body_cps_provider_10_descriptor(v_1, v_78, v_2), v_1012289 => v_1012287 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012289); emitter_body_cps_provider_10_native_match_descriptor_node_7(v_1012287, v_2, v_79)}
     case Arena.TermAll{v_89, _, _, v_92, v_93, _}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_1, v_92, v_2}}, False{}, v_1012289 => emitter_body_cps_provider_10_descriptor(v_1, v_92, v_2), v_1012288 => v_1012286 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012288); emitter_body_cps_provider_10_native_match_descriptor_node_9(v_1012286, v_2, v_89, v_93)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_1, v_92, v_2}}, False{}, v_1012294 => emitter_body_cps_provider_10_descriptor(v_1, v_92, v_2), v_1012293 => v_1012291 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012293); emitter_body_cps_provider_10_native_match_descriptor_node_9(v_1012291, v_2, v_89, v_93)}
     case Arena.TermLam{v_102, _, _, v_105, _}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_1, v_105, v_2}}, False{}, v_1012293 => emitter_body_cps_provider_10_descriptor(v_1, v_105, v_2), v_1012292 => v_1012290 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012292); emitter_body_cps_provider_10_native_match_descriptor_node_10(v_1012290, v_102)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_1, v_105, v_2}}, False{}, v_1012298 => emitter_body_cps_provider_10_descriptor(v_1, v_105, v_2), v_1012297 => v_1012295 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012297); emitter_body_cps_provider_10_native_match_descriptor_node_10(v_1012295, v_102)}
     case Arena.TermApp{v_112, v_113, _}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_1, v_112, v_2}}, False{}, v_1012297 => emitter_body_cps_provider_10_descriptor(v_1, v_112, v_2), v_1012296 => v_1012294 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012296); emitter_body_cps_provider_10_native_match_descriptor_node_12(v_1012294, v_2, v_113)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_1, v_112, v_2}}, False{}, v_1012302 => emitter_body_cps_provider_10_descriptor(v_1, v_112, v_2), v_1012301 => v_1012299 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012301); emitter_body_cps_provider_10_native_match_descriptor_node_12(v_1012299, v_2, v_113)}
     case Arena.TermAdt{v_123, v_124, v_125, _, _, _}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor_name{v_1, v_123, v_2, False{}}}, False{}, v_1012301 => emitter_body_cps_provider_10_descriptor_name(v_1, v_123, v_2, False{}), v_1012300 => v_1012298 = emitter_unbox(cps_provider_10_CatalogResult<String>, v_1012300); emitter_body_cps_provider_10_native_match_descriptor_node_14(v_1012298, v_2, v_124, v_125)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor_name{v_1, v_123, v_2, False{}}}, False{}, v_1012306 => emitter_body_cps_provider_10_descriptor_name(v_1, v_123, v_2, False{}), v_1012305 => v_1012303 = emitter_unbox(cps_provider_10_CatalogResult<String>, v_1012305); emitter_body_cps_provider_10_native_match_descriptor_node_14(v_1012303, v_2, v_124, v_125)}
     case Arena.TermFill{v_135, v_136, v_137, _}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptors{v_1, v_136, v_137, v_2}}, False{}, v_1012305 => emitter_body_cps_provider_10_descriptors(v_1, v_136, v_137, v_2), v_1012304 => v_1012302 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012304); emitter_body_cps_provider_10_native_match_descriptor_node_15(v_1012302, v_2, v_135)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptors{v_1, v_136, v_137, v_2}}, False{}, v_1012310 => emitter_body_cps_provider_10_descriptors(v_1, v_136, v_137, v_2), v_1012309 => v_1012307 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012309); emitter_body_cps_provider_10_native_match_descriptor_node_15(v_1012307, v_2, v_135)}
     case Arena.TermPlus{v_145, v_146, v_147, _}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptors{v_1, v_146, v_147, v_2}}, False{}, v_1012309 => emitter_body_cps_provider_10_descriptors(v_1, v_146, v_147, v_2), v_1012308 => v_1012306 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012308); emitter_body_cps_provider_10_native_match_descriptor_node_16(v_1012306, v_2, v_145)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptors{v_1, v_146, v_147, v_2}}, False{}, v_1012314 => emitter_body_cps_provider_10_descriptors(v_1, v_146, v_147, v_2), v_1012313 => v_1012311 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012313); emitter_body_cps_provider_10_native_match_descriptor_node_16(v_1012311, v_2, v_145)}
     case Arena.TermCtr{v_155, v_156, v_157, _}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor_name{v_1, v_155, v_2, True{}}}, False{}, v_1012313 => emitter_body_cps_provider_10_descriptor_name(v_1, v_155, v_2, True{}), v_1012312 => v_1012310 = emitter_unbox(cps_provider_10_CatalogResult<String>, v_1012312); emitter_body_cps_provider_10_native_match_descriptor_node_18(v_1012310, v_2, v_156, v_157)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor_name{v_1, v_155, v_2, True{}}}, False{}, v_1012318 => emitter_body_cps_provider_10_descriptor_name(v_1, v_155, v_2, True{}), v_1012317 => v_1012315 = emitter_unbox(cps_provider_10_CatalogResult<String>, v_1012317); emitter_body_cps_provider_10_native_match_descriptor_node_18(v_1012315, v_2, v_156, v_157)}
     case Arena.TermString{v_164, v_165, _}:
-      v_1012314 = {v_1 : Arena.Arena}
-      v_1012315 = {v_164 : List<&2, U32>}
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_string_names{v_165, v_2}}, False{}, v_1012321 => emitter_body_cps_provider_10_string_names(v_165, v_2), v_1012320 => +v_1012316 = emitter_unbox(Ast.StringLiteralNames, v_1012320); EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_string_descriptor{v_1012315, v_1012316}}, False{}, v_1012319 => emitter_body_cps_provider_10_string_descriptor(v_1012315, v_1012316), v_1012318 => +v_1012317 = emitter_unbox(BIR.Descriptor, v_1012318); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012314, v_1012317}}}}}
+      v_1012319 = {v_1 : Arena.Arena}
+      v_1012320 = {v_164 : List<&2, U32>}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_string_names{v_165, v_2}}, False{}, v_1012326 => emitter_body_cps_provider_10_string_names(v_165, v_2), v_1012325 => +v_1012321 = emitter_unbox(Ast.StringLiteralNames, v_1012325); EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_string_descriptor{v_1012320, v_1012321}}, False{}, v_1012324 => emitter_body_cps_provider_10_string_descriptor(v_1012320, v_1012321), v_1012323 => +v_1012322 = emitter_unbox(BIR.Descriptor, v_1012323); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012319, v_1012322}}}}}
     case Arena.TermMat{_, v_174, v_175, _}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_1, v_175, v_2}}, False{}, v_1012325 => emitter_body_cps_provider_10_descriptor(v_1, v_175, v_2), v_1012324 => v_1012322 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012324); emitter_body_cps_provider_10_native_match_descriptor_node_20(v_1012322, v_2, v_174)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_1, v_175, v_2}}, False{}, v_1012330 => emitter_body_cps_provider_10_descriptor(v_1, v_175, v_2), v_1012329 => v_1012327 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012329); emitter_body_cps_provider_10_native_match_descriptor_node_20(v_1012327, v_2, v_174)}
     case Arena.TermAbsurd{_}:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1, BIR.DescriptorFailure{"bend: runtime fail-stop"}}}}
     case Arena.TermEqual{v_185, v_186, v_187, _}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_1, v_185, v_2}}, False{}, v_1012329 => emitter_body_cps_provider_10_descriptor(v_1, v_185, v_2), v_1012328 => v_1012326 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012328); emitter_body_cps_provider_10_native_match_descriptor_node_23(v_1012326, v_2, v_186, v_187)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_1, v_185, v_2}}, False{}, v_1012334 => emitter_body_cps_provider_10_descriptor(v_1, v_185, v_2), v_1012333 => v_1012331 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012333); emitter_body_cps_provider_10_native_match_descriptor_node_23(v_1012331, v_2, v_186, v_187)}
     case Arena.TermRefl{_}:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1, BIR.DescriptorReflexivity{}}}}
     case Arena.TermRewrite{_, _, v_199, _}:
       emitter_body_cps_provider_10_descriptor(v_1, v_199, v_2)
     case Arena.TermHole{v_204, _}:
-      EmitterDirect{Bool, EmitterRequestGroup_28{EmitterRequest_cps_provider_10_native_match_descriptor_node_24{Arena.name_text(v_1, v_204)}}, False{}, v_1012334 => emitter_body_cps_provider_10_native_match_descriptor_node_24(Arena.name_text(v_1, v_204)), v_1012333 => v_1012332 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012333); EmitterFinished{EmitterValue{v_1012332}}}
+      EmitterDirect{Bool, EmitterRequestGroup_28{EmitterRequest_cps_provider_10_native_match_descriptor_node_24{Arena.name_text(v_1, v_204)}}, False{}, v_1012339 => emitter_body_cps_provider_10_native_match_descriptor_node_24(Arena.name_text(v_1, v_204)), v_1012338 => v_1012337 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012338); EmitterFinished{EmitterValue{v_1012337}}}
     case Arena.BodyMatch{v_212, v_213, v_214, v_215, _}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptors{v_1, v_212, v_213, v_2}}, False{}, v_1012338 => emitter_body_cps_provider_10_descriptors(v_1, v_212, v_213, v_2), v_1012337 => v_1012335 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012337); emitter_body_cps_provider_10_native_match_descriptor_node_26(v_1012335, v_2, v_214, v_215)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptors{v_1, v_212, v_213, v_2}}, False{}, v_1012343 => emitter_body_cps_provider_10_descriptors(v_1, v_212, v_213, v_2), v_1012342 => v_1012340 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012342); emitter_body_cps_provider_10_native_match_descriptor_node_26(v_1012340, v_2, v_214, v_215)}
     case Arena.BodyCase{_, _, v_225, _}:
       emitter_body_cps_provider_10_descriptor(v_1, v_225, v_2)
     case Arena.BodyLocal{v_235, v_236, _, v_238, v_239, v_240, _}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor_patterns{v_1, v_235, v_236, v_2}}, False{}, v_1012343 => emitter_body_cps_provider_10_descriptor_patterns(v_1, v_235, v_236, v_2), v_1012342 => v_1012340 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_1012342); emitter_body_cps_provider_10_native_match_descriptor_node_29(v_1012340, v_2, v_238, v_239, v_240)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor_patterns{v_1, v_235, v_236, v_2}}, False{}, v_1012348 => emitter_body_cps_provider_10_descriptor_patterns(v_1, v_235, v_236, v_2), v_1012347 => v_1012345 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_1012347); emitter_body_cps_provider_10_native_match_descriptor_node_29(v_1012345, v_2, v_238, v_239, v_240)}
     case Arena.BodyReply{v_246, _}:
       emitter_body_cps_provider_10_descriptor(v_1, v_246, v_2)
 
 def emitter_body_cps_provider_10_native_match_descriptor_node_30(v_0: Arena.Node, v_1: Arena.Arena, v_2: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
-  emitter_match_2635(v_0, v_1, v_2)
+  emitter_match_2636(v_0, v_1, v_2)
 
 def emitter_body_cps_provider_10_descriptor_node(v_0: Arena.Arena, v_1: Arena.Node, v_2: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   emitter_body_cps_provider_10_native_match_descriptor_node_30(v_1, v_0, v_2)
@@ -28155,30 +28175,30 @@ def emitter_body_cps_provider_10_native_match_descriptor_cases_0(v_2: cps_provid
 def emitter_body_cps_provider_10_native_match_descriptor_cases_1(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_3: U32, v_5: U32, v_6: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>>:
   match v_1:
     case cps_provider_10_CatalogResult{v_11, v_12}:
-      EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_descriptor_cases{v_11, IR.arena_range_index(v_3, 1), U32.sub(v_5, 1), v_6}}, v_1012348 => v_1012346 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012348); emitter_body_cps_provider_10_native_match_descriptor_cases_0(v_1012346, v_12)}
+      EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_descriptor_cases{v_11, IR.arena_range_index(v_3, 1), U32.sub(v_5, 1), v_6}}, v_1012353 => v_1012351 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012353); emitter_body_cps_provider_10_native_match_descriptor_cases_0(v_1012351, v_12)}
 
-def emitter_match_2638(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Node>, +v_8: Scope.ArenaGlobalScope, v_5: U32, v_7: U32) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>>:
+def emitter_match_2639(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Node>, +v_8: Scope.ArenaGlobalScope, v_5: U32, v_7: U32) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>>:
   match v_3:
     case (v_13, v_14):
-      EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_descriptor_case{v_13, v_14, v_8}}, v_1012351 => v_1012349 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012351); emitter_body_cps_provider_10_native_match_descriptor_cases_1(v_1012349, v_5, v_7, v_8)}
+      EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_descriptor_case{v_13, v_14, v_8}}, v_1012356 => v_1012354 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012356); emitter_body_cps_provider_10_native_match_descriptor_cases_1(v_1012354, v_5, v_7, v_8)}
 
 def emitter_body_cps_provider_10_native_match_descriptor_cases_2(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Node>, v_5: U32, v_7: U32, v_8: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>>:
-  emitter_match_2638(v_3, v_8, v_5, v_7)
+  emitter_match_2639(v_3, v_8, v_5, v_7)
 
 def emitter_body_cps_provider_10_native_match_descriptor_cases_3(v_4: Sigma<&1, &1, Arena.Arena, _ => U32>, v_6: U32, v_8: U32, v_9: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>>:
   match v_4:
     case (v_14, v_15):
-      EmitterDirect{Bool, EmitterRequestGroup_28{EmitterRequest_cps_provider_10_native_match_descriptor_cases_2{Arena.get_node(v_14, v_15), v_6, v_8, v_9}}, False{}, v_1012355 => emitter_body_cps_provider_10_native_match_descriptor_cases_2(Arena.get_node(v_14, v_15), v_6, v_8, v_9), v_1012354 => v_1012353 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012354); EmitterFinished{EmitterValue{v_1012353}}}
+      EmitterDirect{Bool, EmitterRequestGroup_28{EmitterRequest_cps_provider_10_native_match_descriptor_cases_2{Arena.get_node(v_14, v_15), v_6, v_8, v_9}}, False{}, v_1012360 => emitter_body_cps_provider_10_native_match_descriptor_cases_2(Arena.get_node(v_14, v_15), v_6, v_8, v_9), v_1012359 => v_1012358 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012359); EmitterFinished{EmitterValue{v_1012358}}}
 
-def emitter_match_2640(+v_1: U32, v_2: Arena.Arena, +v_4: U32, v_5: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>>:
+def emitter_match_2641(+v_1: U32, v_2: Arena.Arena, +v_4: U32, v_5: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>>:
   match v_1:
     case 0:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_2, []}}}
     case _:
-      EmitterDirect{Bool, EmitterRequestGroup_28{EmitterRequest_cps_provider_10_native_match_descriptor_cases_3{Arena.word(v_2, IR.arena_tape_offset(v_4)), v_4, v_1, v_5}}, False{}, v_1012359 => emitter_body_cps_provider_10_native_match_descriptor_cases_3(Arena.word(v_2, IR.arena_tape_offset(v_4)), v_4, v_1, v_5), v_1012358 => v_1012357 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012358); EmitterFinished{EmitterValue{v_1012357}}}
+      EmitterDirect{Bool, EmitterRequestGroup_28{EmitterRequest_cps_provider_10_native_match_descriptor_cases_3{Arena.word(v_2, IR.arena_tape_offset(v_4)), v_4, v_1, v_5}}, False{}, v_1012364 => emitter_body_cps_provider_10_native_match_descriptor_cases_3(Arena.word(v_2, IR.arena_tape_offset(v_4)), v_4, v_1, v_5), v_1012363 => v_1012362 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012363); EmitterFinished{EmitterValue{v_1012362}}}
 
 def emitter_body_cps_provider_10_native_match_descriptor_cases_4(v_1: U32, v_2: Arena.Arena, v_4: U32, v_5: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>>:
-  emitter_match_2640(v_1, v_2, v_4, v_5)
+  emitter_match_2641(v_1, v_2, v_4, v_5)
 
 def emitter_body_cps_provider_10_descriptor_cases(v_0: Arena.Arena, v_2: U32, v_4: U32, v_5: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>>:
   emitter_body_cps_provider_10_native_match_descriptor_cases_4(v_4, v_0, v_2, v_5)
@@ -28188,79 +28208,79 @@ def emitter_body_cps_provider_10_native_match_descriptor_case_0(v_1: cps_provide
     case cps_provider_10_CatalogResult{v_7, v_8}:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_7, BIR.DescriptorCase{v_3, v_8}}}}
 
-def emitter_match_2642(v_2: cps_provider_10_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_5: U32, v_3: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
+def emitter_match_2643(v_2: cps_provider_10_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_5: U32, v_3: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_2:
     case cps_provider_10_CatalogResult{v_9, v_10}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_9, v_5, v_3}}, False{}, v_1012364 => emitter_body_cps_provider_10_descriptor(v_9, v_5, v_3), v_1012363 => v_1012361 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012363); emitter_body_cps_provider_10_native_match_descriptor_case_0(v_1012361, v_10)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_9, v_5, v_3}}, False{}, v_1012369 => emitter_body_cps_provider_10_descriptor(v_9, v_5, v_3), v_1012368 => v_1012366 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012368); emitter_body_cps_provider_10_native_match_descriptor_case_0(v_1012366, v_10)}
 
 def emitter_body_cps_provider_10_native_match_descriptor_case_1(v_2: cps_provider_10_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_3: Scope.ArenaGlobalScope, v_5: U32) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
-  emitter_match_2642(v_2, v_5, v_3)
+  emitter_match_2643(v_2, v_5, v_3)
 
-def emitter_match_2643(v_0: Arena.Node, v_1: Arena.Arena, +v_2: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
+def emitter_match_2644(v_0: Arena.Node, v_1: Arena.Arena, +v_2: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_0:
     case Arena.BodyCase{v_8, v_9, v_10, _}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor_patterns{v_1, v_8, v_9, v_2}}, False{}, v_1012368 => emitter_body_cps_provider_10_descriptor_patterns(v_1, v_8, v_9, v_2), v_1012367 => v_1012365 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_1012367); emitter_body_cps_provider_10_native_match_descriptor_case_1(v_1012365, v_2, v_10)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor_patterns{v_1, v_8, v_9, v_2}}, False{}, v_1012373 => emitter_body_cps_provider_10_descriptor_patterns(v_1, v_8, v_9, v_2), v_1012372 => v_1012370 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_1012372); emitter_body_cps_provider_10_native_match_descriptor_case_1(v_1012370, v_2, v_10)}
     case _:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1, BIR.DescriptorFailure{"bend: malformed type match"}}}}
 
 def emitter_body_cps_provider_10_native_match_descriptor_case_2(v_0: Arena.Node, v_1: Arena.Arena, v_2: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
-  emitter_match_2643(v_0, v_1, v_2)
+  emitter_match_2644(v_0, v_1, v_2)
 
 def emitter_body_cps_provider_10_descriptor_case(v_0: Arena.Arena, v_1: Arena.Node, v_2: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   emitter_body_cps_provider_10_native_match_descriptor_case_2(v_1, v_0, v_2)
 
-def emitter_match_2644(v_2: cps_provider_10_CatalogResult<cps_provider_10_Telescope>, v_6: Arena.Binder, v_4: U32, v_5: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Telescope>>:
+def emitter_match_2645(v_2: cps_provider_10_CatalogResult<cps_provider_10_Telescope>, v_6: Arena.Binder, v_4: U32, v_5: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Telescope>>:
   match v_2:
     case cps_provider_10_CatalogResult{v_11, v_12}:
-      EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_telescope_binder{v_11, v_6, v_4, v_5, v_12}}, v_1012371 => v_1012370 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Telescope>, v_1012371); EmitterFinished{EmitterValue{v_1012370}}}
+      EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_telescope_binder{v_11, v_6, v_4, v_5, v_12}}, v_1012376 => v_1012375 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Telescope>, v_1012376); EmitterFinished{EmitterValue{v_1012375}}}
 
 def emitter_body_cps_provider_10_native_match_telescope_0(v_2: cps_provider_10_CatalogResult<cps_provider_10_Telescope>, v_4: U32, v_5: Scope.ArenaGlobalScope, v_6: Arena.Binder) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Telescope>>:
-  emitter_match_2644(v_2, v_6, v_4, v_5)
+  emitter_match_2645(v_2, v_6, v_4, v_5)
 
-def emitter_match_2645(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Binder>, v_8: U32, v_10: U32, +v_5: U32, +v_6: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Telescope>>:
+def emitter_match_2646(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Binder>, v_8: U32, v_10: U32, +v_5: U32, +v_6: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Telescope>>:
   match v_3:
     case (v_15, v_16):
-      EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_telescope{v_15, IR.Words{IR.arena_range_index(v_8, 1), U32.sub(v_10, 1)}, U32.add(v_5, 1), v_6}}, v_1012374 => v_1012372 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Telescope>, v_1012374); emitter_body_cps_provider_10_native_match_telescope_0(v_1012372, v_5, v_6, v_16)}
+      EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_telescope{v_15, IR.Words{IR.arena_range_index(v_8, 1), U32.sub(v_10, 1)}, U32.add(v_5, 1), v_6}}, v_1012379 => v_1012377 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Telescope>, v_1012379); emitter_body_cps_provider_10_native_match_telescope_0(v_1012377, v_5, v_6, v_16)}
 
 def emitter_body_cps_provider_10_native_match_telescope_1(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Binder>, v_5: U32, v_6: Scope.ArenaGlobalScope, v_8: U32, v_10: U32) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Telescope>>:
-  emitter_match_2645(v_3, v_8, v_10, v_5, v_6)
+  emitter_match_2646(v_3, v_8, v_10, v_5, v_6)
 
 def emitter_body_cps_provider_10_native_match_telescope_2(v_4: Sigma<&1, &1, Arena.Arena, _ => U32>, v_6: U32, v_7: Scope.ArenaGlobalScope, v_9: U32, v_11: U32) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Telescope>>:
   match v_4:
     case (v_16, v_17):
-      EmitterDirect{Bool, EmitterRequestGroup_28{EmitterRequest_cps_provider_10_native_match_telescope_1{Arena.get_binder(v_16, v_17), v_6, v_7, v_9, v_11}}, False{}, v_1012378 => emitter_body_cps_provider_10_native_match_telescope_1(Arena.get_binder(v_16, v_17), v_6, v_7, v_9, v_11), v_1012377 => v_1012376 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Telescope>, v_1012377); EmitterFinished{EmitterValue{v_1012376}}}
+      EmitterDirect{Bool, EmitterRequestGroup_28{EmitterRequest_cps_provider_10_native_match_telescope_1{Arena.get_binder(v_16, v_17), v_6, v_7, v_9, v_11}}, False{}, v_1012383 => emitter_body_cps_provider_10_native_match_telescope_1(Arena.get_binder(v_16, v_17), v_6, v_7, v_9, v_11), v_1012382 => v_1012381 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Telescope>, v_1012382); EmitterFinished{EmitterValue{v_1012381}}}
 
 def emitter_body_cps_provider_10_native_match_telescope_3(v_0: IR.Words, v_1: Arena.Arena, v_3: U32, v_4: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Telescope>>:
   match v_0:
     case IR.Words{v_8, 0}:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1, cps_provider_10_Telescope{[], [], [], True{}}}}}
     case IR.Words{+v_11, v_12}:
-      EmitterDirect{Bool, EmitterRequestGroup_28{EmitterRequest_cps_provider_10_native_match_telescope_2{Arena.word(v_1, IR.arena_tape_offset(v_11)), v_3, v_4, v_11, v_12}}, False{}, v_1012382 => emitter_body_cps_provider_10_native_match_telescope_2(Arena.word(v_1, IR.arena_tape_offset(v_11)), v_3, v_4, v_11, v_12), v_1012381 => v_1012380 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Telescope>, v_1012381); EmitterFinished{EmitterValue{v_1012380}}}
+      EmitterDirect{Bool, EmitterRequestGroup_28{EmitterRequest_cps_provider_10_native_match_telescope_2{Arena.word(v_1, IR.arena_tape_offset(v_11)), v_3, v_4, v_11, v_12}}, False{}, v_1012387 => emitter_body_cps_provider_10_native_match_telescope_2(Arena.word(v_1, IR.arena_tape_offset(v_11)), v_3, v_4, v_11, v_12), v_1012386 => v_1012385 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Telescope>, v_1012386); EmitterFinished{EmitterValue{v_1012385}}}
 
 def emitter_body_cps_provider_10_telescope(v_0: Arena.Arena, v_1: IR.Words, v_3: U32, v_4: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Telescope>>:
   emitter_body_cps_provider_10_native_match_telescope_3(v_1, v_0, v_3, v_4)
 
-def emitter_continuation_2648(+v_23: BIR.Quantity, v_8: List<&2, BIR.Quantity>, v_14: String, v_1012384: Arena.Arena, +v_1012385: List<&2, BIR.Parameter>, v_20: BIR.Descriptor, v_10: List<&2, BIR.DescriptorField>, v_12: Bool) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Telescope>>:
-  v_1012386 = {v_23 <> v_8 : List<&2, BIR.Quantity>}
-  EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_field_key{v_14, v_23}}, False{}, v_1012389 => emitter_body_cps_provider_10_field_key(v_14, v_23), v_1012388 => +v_1012387 = emitter_unbox(Maybe<&2, String>, v_1012388); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012384, cps_provider_10_Telescope{v_1012385, v_1012386, BIR.DescriptorField{v_1012387, v_23, v_20} <> v_10, v_12}}}}}
+def emitter_continuation_2649(+v_23: BIR.Quantity, v_8: List<&2, BIR.Quantity>, v_14: String, v_1012389: Arena.Arena, +v_1012390: List<&2, BIR.Parameter>, v_20: BIR.Descriptor, v_10: List<&2, BIR.DescriptorField>, v_12: Bool) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Telescope>>:
+  v_1012391 = {v_23 <> v_8 : List<&2, BIR.Quantity>}
+  EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_field_key{v_14, v_23}}, False{}, v_1012394 => emitter_body_cps_provider_10_field_key(v_14, v_23), v_1012393 => +v_1012392 = emitter_unbox(Maybe<&2, String>, v_1012393); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012389, cps_provider_10_Telescope{v_1012390, v_1012391, BIR.DescriptorField{v_1012392, v_23, v_20} <> v_10, v_12}}}}}
 
-def emitter_match_2649(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_4: Ast.Quantity, v_3: U32, v_6: List<&2, BIR.Parameter>, v_8: List<&2, BIR.Quantity>, v_14: String, v_10: List<&2, BIR.DescriptorField>, v_12: Bool) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Telescope>>:
+def emitter_match_2650(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_4: Ast.Quantity, v_3: U32, v_6: List<&2, BIR.Parameter>, v_8: List<&2, BIR.Quantity>, v_14: String, v_10: List<&2, BIR.DescriptorField>, v_12: Bool) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Telescope>>:
   match v_1:
     case cps_provider_10_CatalogResult{v_19, v_20}:
       +v_23 = emitter_pure_cps_provider_10_quantity(v_4)
-      v_1012384 = {v_19 : Arena.Arena}
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_parameter{v_3, v_23, v_6}}, False{}, v_1012391 => emitter_body_cps_provider_10_parameter(v_3, v_23, v_6), v_1012390 => +v_1012385 = emitter_unbox(List<&2, BIR.Parameter>, v_1012390); emitter_continuation_2648(v_23, v_8, v_14, v_1012384, v_1012385, v_20, v_10, v_12)}
+      v_1012389 = {v_19 : Arena.Arena}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_parameter{v_3, v_23, v_6}}, False{}, v_1012396 => emitter_body_cps_provider_10_parameter(v_3, v_23, v_6), v_1012395 => +v_1012390 = emitter_unbox(List<&2, BIR.Parameter>, v_1012395); emitter_continuation_2649(v_23, v_8, v_14, v_1012389, v_1012390, v_20, v_10, v_12)}
 
 def emitter_body_cps_provider_10_native_match_telescope_binder_0(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_3: U32, v_4: Ast.Quantity, v_6: List<&2, BIR.Parameter>, v_8: List<&2, BIR.Quantity>, v_10: List<&2, BIR.DescriptorField>, v_12: Bool, v_14: String) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Telescope>>:
-  emitter_match_2649(v_1, v_4, v_3, v_6, v_8, v_14, v_10, v_12)
+  emitter_match_2650(v_1, v_4, v_3, v_6, v_8, v_14, v_10, v_12)
 
-def emitter_match_2650(v_4: Sigma<&1, &1, Arena.Arena, _ => String>, v_10: U32, v_7: Scope.ArenaGlobalScope, v_6: U32, v_8: Ast.Quantity, v_12: List<&2, BIR.Parameter>, v_14: List<&2, BIR.Quantity>, v_16: List<&2, BIR.DescriptorField>, v_18: Bool) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Telescope>>:
+def emitter_match_2651(v_4: Sigma<&1, &1, Arena.Arena, _ => String>, v_10: U32, v_7: Scope.ArenaGlobalScope, v_6: U32, v_8: Ast.Quantity, v_12: List<&2, BIR.Parameter>, v_14: List<&2, BIR.Quantity>, v_16: List<&2, BIR.DescriptorField>, v_18: Bool) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Telescope>>:
   match v_4:
     case (v_23, v_24):
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_23, v_10, v_7}}, False{}, v_1012395 => emitter_body_cps_provider_10_descriptor(v_23, v_10, v_7), v_1012394 => v_1012392 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012394); emitter_body_cps_provider_10_native_match_telescope_binder_0(v_1012392, v_6, v_8, v_12, v_14, v_16, v_18, v_24)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_23, v_10, v_7}}, False{}, v_1012400 => emitter_body_cps_provider_10_descriptor(v_23, v_10, v_7), v_1012399 => v_1012397 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012399); emitter_body_cps_provider_10_native_match_telescope_binder_0(v_1012397, v_6, v_8, v_12, v_14, v_16, v_18, v_24)}
 
 def emitter_body_cps_provider_10_native_match_telescope_binder_1(v_4: Sigma<&1, &1, Arena.Arena, _ => String>, v_6: U32, v_7: Scope.ArenaGlobalScope, v_8: Ast.Quantity, v_10: U32, v_12: List<&2, BIR.Parameter>, v_14: List<&2, BIR.Quantity>, v_16: List<&2, BIR.DescriptorField>, v_18: Bool) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Telescope>>:
-  emitter_match_2650(v_4, v_10, v_7, v_6, v_8, v_12, v_14, v_16, v_18)
+  emitter_match_2651(v_4, v_10, v_7, v_6, v_8, v_12, v_14, v_16, v_18)
 
 def emitter_body_cps_provider_10_native_match_telescope_binder_2(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_3: List<&2, BIR.Parameter>, v_5: List<&2, BIR.Quantity>, v_7: List<&2, BIR.DescriptorField>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Telescope>>:
   match v_1:
@@ -28270,9 +28290,9 @@ def emitter_body_cps_provider_10_native_match_telescope_binder_2(v_1: cps_provid
 def emitter_body_cps_provider_10_native_match_telescope_binder_3(v_0: Arena.Binder, v_2: cps_provider_10_Telescope, v_3: Arena.Arena, v_5: U32, v_6: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Telescope>>:
   match v_0, v_2:
     case Arena.Binder{v_18, v_19, _, v_21, _}, cps_provider_10_Telescope{v_23, v_24, v_25, v_26}:
-      EmitterDirect{Bool, EmitterRequestGroup_28{EmitterRequest_cps_provider_10_native_match_telescope_binder_1{Arena.name_text(v_3, v_19), v_5, v_6, v_18, v_21, v_23, v_24, v_25, v_26}}, False{}, v_1012399 => emitter_body_cps_provider_10_native_match_telescope_binder_1(Arena.name_text(v_3, v_19), v_5, v_6, v_18, v_21, v_23, v_24, v_25, v_26), v_1012398 => v_1012397 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Telescope>, v_1012398); EmitterFinished{EmitterValue{v_1012397}}}
+      EmitterDirect{Bool, EmitterRequestGroup_28{EmitterRequest_cps_provider_10_native_match_telescope_binder_1{Arena.name_text(v_3, v_19), v_5, v_6, v_18, v_21, v_23, v_24, v_25, v_26}}, False{}, v_1012404 => emitter_body_cps_provider_10_native_match_telescope_binder_1(Arena.name_text(v_3, v_19), v_5, v_6, v_18, v_21, v_23, v_24, v_25, v_26), v_1012403 => v_1012402 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Telescope>, v_1012403); EmitterFinished{EmitterValue{v_1012402}}}
     case Arena.TemplateBinder{_, _, v_38, _}, cps_provider_10_Telescope{v_40, v_41, v_42, _}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_3, v_38, v_6}}, False{}, v_1012403 => emitter_body_cps_provider_10_descriptor(v_3, v_38, v_6), v_1012402 => v_1012400 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012402); emitter_body_cps_provider_10_native_match_telescope_binder_2(v_1012400, v_40, v_41, v_42)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_3, v_38, v_6}}, False{}, v_1012408 => emitter_body_cps_provider_10_descriptor(v_3, v_38, v_6), v_1012407 => v_1012405 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012407); emitter_body_cps_provider_10_native_match_telescope_binder_2(v_1012405, v_40, v_41, v_42)}
 
 def emitter_body_cps_provider_10_telescope_binder(v_0: Arena.Arena, v_1: Arena.Binder, v_3: U32, v_4: Scope.ArenaGlobalScope, v_6: cps_provider_10_Telescope) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Telescope>>:
   emitter_body_cps_provider_10_native_match_telescope_binder_3(v_1, v_6, v_0, v_3, v_4)
@@ -28282,31 +28302,31 @@ def emitter_body_cps_provider_10_field_names(v_1: List<&2, BIR.DescriptorField>)
     case []:
       EmitterFinished{EmitterValue{[]}}
     case BIR.DescriptorField{v_9, _, _} <> v_12:
-      v_1012405 = {v_9 : Maybe<&2, String>}
-      EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_field_names{v_12}}, v_1012407 => +v_1012406 = emitter_unbox(List<&2, Maybe<&2, String>>, v_1012407); EmitterFinished{EmitterValue{v_1012405 <> v_1012406}}}
+      v_1012410 = {v_9 : Maybe<&2, String>}
+      EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_field_names{v_12}}, v_1012412 => +v_1012411 = emitter_unbox(List<&2, Maybe<&2, String>>, v_1012412); EmitterFinished{EmitterValue{v_1012410 <> v_1012411}}}
 
 def emitter_body_cps_provider_10_fields_quantities(v_1: List<&2, BIR.DescriptorField>) -> EmitterProgress<List<&2, BIR.Quantity>>:
   match v_1:
     case []:
       EmitterFinished{EmitterValue{[]}}
     case BIR.DescriptorField{_, v_8, _} <> v_10:
-      v_1012408 = {v_8 : BIR.Quantity}
-      EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_fields_quantities{v_10}}, v_1012410 => +v_1012409 = emitter_unbox(List<&2, BIR.Quantity>, v_1012410); EmitterFinished{EmitterValue{v_1012408 <> v_1012409}}}
+      v_1012413 = {v_8 : BIR.Quantity}
+      EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_fields_quantities{v_10}}, v_1012415 => +v_1012414 = emitter_unbox(List<&2, BIR.Quantity>, v_1012415); EmitterFinished{EmitterValue{v_1012413 <> v_1012414}}}
 
 def emitter_body_cps_provider_10_base_imports(v_1: List<&2, Ast.ModuleImport>) -> EmitterProgress<Bool>:
   match v_1:
     case []:
       EmitterFinished{EmitterValue{False{}}}
     case Ast.ModuleImport{v_7, _, _} <> v_10:
-      v_1012411 = {String.eq(v_7, "Base") : Bool}
-      EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_base_imports{v_10}}, v_1012413 => +v_1012412 = emitter_unbox(Bool, v_1012413); EmitterFinished{EmitterValue{Bool.or(v_1012411, v_1012412)}}}
+      v_1012416 = {String.eq(v_7, "Base") : Bool}
+      EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_base_imports{v_10}}, v_1012418 => +v_1012417 = emitter_unbox(Bool, v_1012418); EmitterFinished{EmitterValue{Bool.or(v_1012416, v_1012417)}}}
 
 def emitter_body_cps_provider_10_base_imported(v_1: List<&2, IR.LoadedModule>) -> EmitterProgress<Bool>:
   match v_1:
     case []:
       EmitterFinished{EmitterValue{False{}}}
     case IR.LoadedModule{_, IR.Module{_, v_10, _}} <> v_12:
-      EmitterDirect{Bool, EmitterRequestGroup_28{EmitterRequest_cps_provider_10_base_imports{v_10}}, False{}, v_1012418 => emitter_body_cps_provider_10_base_imports(v_10), v_1012417 => +v_1012414 = emitter_unbox(Bool, v_1012417); EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_base_imported{v_12}}, v_1012416 => +v_1012415 = emitter_unbox(Bool, v_1012416); EmitterFinished{EmitterValue{Bool.or(v_1012414, v_1012415)}}}}
+      EmitterDirect{Bool, EmitterRequestGroup_28{EmitterRequest_cps_provider_10_base_imports{v_10}}, False{}, v_1012423 => emitter_body_cps_provider_10_base_imports(v_10), v_1012422 => +v_1012419 = emitter_unbox(Bool, v_1012422); EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_base_imported{v_12}}, v_1012421 => +v_1012420 = emitter_unbox(Bool, v_1012421); EmitterFinished{EmitterValue{Bool.or(v_1012419, v_1012420)}}}}
 
 def emitter_body_cps_provider_10_base_source(+v_1: String, v_3: Bool) -> EmitterProgress<Bool>:
   EmitterFinished{EmitterValue{Bool.and(v_3, Bool.or(String.eq(v_1, "bend2/base.bend"), String.ends_with(v_1, "/bend2/base.bend")))}}
@@ -28319,51 +28339,51 @@ def emitter_body_cps_provider_10_native_marker(v_1: Bool, v_3: String) -> Emitte
       EmitterFinished{EmitterValue{None{}}}
 
 def emitter_body_cps_provider_10_short_key(v_1: String) -> EmitterProgress<String>:
-  EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_short_chars{String.to_list(v_1), []}}, v_1012420 => +v_1012419 = emitter_unbox(String, v_1012420); EmitterFinished{EmitterValue{v_1012419}}}
+  EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_short_chars{String.to_list(v_1), []}}, v_1012425 => +v_1012424 = emitter_unbox(String, v_1012425); EmitterFinished{EmitterValue{v_1012424}}}
 
 def emitter_body_cps_provider_10_short_chars(v_2: List<&2, Char>, v_5: List<&2, Char>) -> EmitterProgress<String>:
   match v_2:
     case []:
       EmitterFinished{EmitterValue{String.from_list(List.reverse(&2, Char, v_5))}}
     case '.' <> v_9:
-      EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_short_chars{v_9, []}}, v_1012422 => +v_1012421 = emitter_unbox(String, v_1012422); EmitterFinished{EmitterValue{v_1012421}}}
+      EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_short_chars{v_9, []}}, v_1012427 => +v_1012426 = emitter_unbox(String, v_1012427); EmitterFinished{EmitterValue{v_1012426}}}
     case '/' <> v_12:
-      EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_short_chars{v_12, []}}, v_1012424 => +v_1012423 = emitter_unbox(String, v_1012424); EmitterFinished{EmitterValue{v_1012423}}}
+      EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_short_chars{v_12, []}}, v_1012429 => +v_1012428 = emitter_unbox(String, v_1012429); EmitterFinished{EmitterValue{v_1012428}}}
     case v_16 <> v_17:
-      EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_short_chars{v_17, v_16 <> v_5}}, v_1012426 => +v_1012425 = emitter_unbox(String, v_1012426); EmitterFinished{EmitterValue{v_1012425}}}
+      EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_short_chars{v_17, v_16 <> v_5}}, v_1012431 => +v_1012430 = emitter_unbox(String, v_1012431); EmitterFinished{EmitterValue{v_1012430}}}
 
 def emitter_body_cps_provider_10_constructor_native(v_1: Bool, v_3: String, v_5: String) -> EmitterProgress<Maybe<&2, String>>:
   match v_1:
     case True{}:
-      v_1012427 = {v_3 : String}
-      v_1012428 = {"." : String}
-      EmitterDirect{Bool, EmitterRequestGroup_28{EmitterRequest_cps_provider_10_short_key{v_5}}, False{}, v_1012431 => emitter_body_cps_provider_10_short_key(v_5), v_1012430 => +v_1012429 = emitter_unbox(String, v_1012430); EmitterFinished{EmitterValue{Some{String.append(v_1012427, String.append(v_1012428, v_1012429))}}}}
+      v_1012432 = {v_3 : String}
+      v_1012433 = {"." : String}
+      EmitterDirect{Bool, EmitterRequestGroup_28{EmitterRequest_cps_provider_10_short_key{v_5}}, False{}, v_1012436 => emitter_body_cps_provider_10_short_key(v_5), v_1012435 => +v_1012434 = emitter_unbox(String, v_1012435); EmitterFinished{EmitterValue{Some{String.append(v_1012432, String.append(v_1012433, v_1012434))}}}}
     case False{}:
       EmitterFinished{EmitterValue{Some{String.append("Data.", v_5)}}}
 
 def emitter_body_cps_provider_10_primitive_name(v_1: String) -> EmitterProgress<String>:
-  EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_primitive_chars{String.to_list(String.to_lower(v_1))}}, v_1012433 => +v_1012432 = emitter_unbox(List<&2, Char>, v_1012433); EmitterFinished{EmitterValue{String.from_list(v_1012432)}}}
+  EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_primitive_chars{String.to_list(String.to_lower(v_1))}}, v_1012438 => +v_1012437 = emitter_unbox(List<&2, Char>, v_1012438); EmitterFinished{EmitterValue{String.from_list(v_1012437)}}}
 
 def emitter_body_cps_provider_10_primitive_chars(v_2: List<&2, Char>) -> EmitterProgress<List<&2, Char>>:
   match v_2:
     case []:
       EmitterFinished{EmitterValue{[]}}
     case '.' <> v_6:
-      v_1012434 = {'_' : Char}
-      EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_primitive_chars{v_6}}, v_1012436 => +v_1012435 = emitter_unbox(List<&2, Char>, v_1012436); EmitterFinished{EmitterValue{v_1012434 <> v_1012435}}}
+      v_1012439 = {'_' : Char}
+      EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_primitive_chars{v_6}}, v_1012441 => +v_1012440 = emitter_unbox(List<&2, Char>, v_1012441); EmitterFinished{EmitterValue{v_1012439 <> v_1012440}}}
     case '/' <> v_9:
-      v_1012437 = {'_' : Char}
-      EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_primitive_chars{v_9}}, v_1012439 => +v_1012438 = emitter_unbox(List<&2, Char>, v_1012439); EmitterFinished{EmitterValue{v_1012437 <> v_1012438}}}
+      v_1012442 = {'_' : Char}
+      EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_primitive_chars{v_9}}, v_1012444 => +v_1012443 = emitter_unbox(List<&2, Char>, v_1012444); EmitterFinished{EmitterValue{v_1012442 <> v_1012443}}}
     case v_13 <> v_14:
-      v_1012440 = {v_13 : Char}
-      EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_primitive_chars{v_14}}, v_1012442 => +v_1012441 = emitter_unbox(List<&2, Char>, v_1012442); EmitterFinished{EmitterValue{v_1012440 <> v_1012441}}}
+      v_1012445 = {v_13 : Char}
+      EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_primitive_chars{v_14}}, v_1012447 => +v_1012446 = emitter_unbox(List<&2, Char>, v_1012447); EmitterFinished{EmitterValue{v_1012445 <> v_1012446}}}
 
 def emitter_body_cps_provider_10_primitive(v_1: Bool, v_3: String) -> EmitterProgress<Maybe<&2, BIR.Primitive>>:
   match v_1:
     case False{}:
       EmitterFinished{EmitterValue{None{}}}
     case True{}:
-      EmitterDirect{Bool, EmitterRequestGroup_28{EmitterRequest_cps_provider_10_primitive_name{v_3}}, False{}, v_1012447 => emitter_body_cps_provider_10_primitive_name(v_3), v_1012446 => +v_1012443 = emitter_unbox(String, v_1012446); EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_primitive_named{v_1012443}}, v_1012445 => +v_1012444 = emitter_unbox(Maybe<&2, BIR.Primitive>, v_1012445); EmitterFinished{EmitterValue{v_1012444}}}}
+      EmitterDirect{Bool, EmitterRequestGroup_28{EmitterRequest_cps_provider_10_primitive_name{v_3}}, False{}, v_1012452 => emitter_body_cps_provider_10_primitive_name(v_3), v_1012451 => +v_1012448 = emitter_unbox(String, v_1012451); EmitterPending{EmitterRequestGroup_28{EmitterRequest_cps_provider_10_primitive_named{v_1012448}}, v_1012450 => +v_1012449 = emitter_unbox(Maybe<&2, BIR.Primitive>, v_1012450); EmitterFinished{EmitterValue{v_1012449}}}}
 
 def emitter_body_cps_provider_10_primitive_named(v_1: String) -> EmitterProgress<Maybe<&2, BIR.Primitive>>:
   match v_1:
@@ -28549,12 +28569,12 @@ def emitter_body_cps_provider_10_constructor_key(v_1: cps_provider_10_Registry, 
       EmitterFinished{EmitterValue{IndexLookup.find(cps_provider_10_Constructor, v_9, v_3)}}
 
 def emitter_body_cps_provider_10_lookup_definition(v_1: cps_provider_10_Registry, v_2: IR.Symbol) -> EmitterProgress<Maybe<&2, cps_provider_10_DefinitionHeader>>:
-  v_1012448 = {v_1 : cps_provider_10_Registry}
-  EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_symbol_key{v_2}}, False{}, v_1012452 => emitter_body_cps_provider_10_symbol_key(v_2), v_1012451 => +v_1012449 = emitter_unbox(String, v_1012451); emitter_body_cps_provider_10_definition_key(v_1012448, v_1012449)}
+  v_1012453 = {v_1 : cps_provider_10_Registry}
+  EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_symbol_key{v_2}}, False{}, v_1012457 => emitter_body_cps_provider_10_symbol_key(v_2), v_1012456 => +v_1012454 = emitter_unbox(String, v_1012456); emitter_body_cps_provider_10_definition_key(v_1012453, v_1012454)}
 
 def emitter_body_cps_provider_10_lookup_constructor(v_1: cps_provider_10_Registry, v_2: IR.Symbol) -> EmitterProgress<Maybe<&2, cps_provider_10_Constructor>>:
-  v_1012453 = {v_1 : cps_provider_10_Registry}
-  EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_symbol_key{v_2}}, False{}, v_1012457 => emitter_body_cps_provider_10_symbol_key(v_2), v_1012456 => +v_1012454 = emitter_unbox(String, v_1012456); emitter_body_cps_provider_10_constructor_key(v_1012453, v_1012454)}
+  v_1012458 = {v_1 : cps_provider_10_Registry}
+  EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_symbol_key{v_2}}, False{}, v_1012462 => emitter_body_cps_provider_10_symbol_key(v_2), v_1012461 => +v_1012459 = emitter_unbox(String, v_1012461); emitter_body_cps_provider_10_constructor_key(v_1012458, v_1012459)}
 
 def emitter_body_cps_provider_10_get_definitions(v_1: cps_provider_10_Catalog) -> EmitterProgress<List<&2, cps_provider_10_Definition>>:
   EmitterFinished{EmitterValue{emitter_pure_cps_provider_10_get_definitions(v_1)}}
@@ -28577,7 +28597,7 @@ def emitter_body_cps_provider_10_get_next_code(v_1: cps_provider_10_Catalog) -> 
 def emitter_body_cps_provider_10_get_ending(v_1: cps_provider_10_Catalog) -> EmitterProgress<BIR.Ending>:
   EmitterFinished{EmitterValue{emitter_pure_cps_provider_10_get_ending(v_1)}}
 
-def emitter_match_2665(v_2: Maybe<&2, cps_provider_10_Definition>, +v_9: Map<&2, cps_provider_10_Definition>, +v_4: String, v_6: cps_provider_10_Definition) -> EmitterProgress<Map<&2, cps_provider_10_Definition>>:
+def emitter_match_2666(v_2: Maybe<&2, cps_provider_10_Definition>, +v_9: Map<&2, cps_provider_10_Definition>, +v_4: String, v_6: cps_provider_10_Definition) -> EmitterProgress<Map<&2, cps_provider_10_Definition>>:
   match v_2:
     case Some{_}:
       EmitterFinished{EmitterValue{v_9}}
@@ -28585,12 +28605,12 @@ def emitter_match_2665(v_2: Maybe<&2, cps_provider_10_Definition>, +v_9: Map<&2,
       EmitterFinished{EmitterValue{Map.set(&2, cps_provider_10_Definition, v_9, v_4, v_6)}}
 
 def emitter_body_cps_provider_10_native_match_insert_definition_0(v_2: Maybe<&2, cps_provider_10_Definition>, +v_4: String, v_6: cps_provider_10_Definition, +v_9: Map<&2, cps_provider_10_Definition>) -> EmitterProgress<Map<&2, cps_provider_10_Definition>>:
-  emitter_match_2665(v_2, v_9, v_4, v_6)
+  emitter_match_2666(v_2, v_9, v_4, v_6)
 
 def emitter_body_cps_provider_10_insert_definition(+v_1: String, v_3: cps_provider_10_Definition, +v_6: Map<&2, cps_provider_10_Definition>) -> EmitterProgress<Map<&2, cps_provider_10_Definition>>:
-  EmitterDirect{Bool, EmitterRequestGroup_28{EmitterRequest_cps_provider_10_native_match_insert_definition_0{IndexLookup.find(cps_provider_10_Definition, v_6, v_1), v_1, v_3, v_6}}, False{}, v_1012460 => emitter_body_cps_provider_10_native_match_insert_definition_0(IndexLookup.find(cps_provider_10_Definition, v_6, v_1), v_1, v_3, v_6), v_1012459 => +v_1012458 = emitter_unbox(Map<&2, cps_provider_10_Definition>, v_1012459); EmitterFinished{EmitterValue{v_1012458}}}
+  EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_native_match_insert_definition_0{IndexLookup.find(cps_provider_10_Definition, v_6, v_1), v_1, v_3, v_6}}, False{}, v_1012465 => emitter_body_cps_provider_10_native_match_insert_definition_0(IndexLookup.find(cps_provider_10_Definition, v_6, v_1), v_1, v_3, v_6), v_1012464 => +v_1012463 = emitter_unbox(Map<&2, cps_provider_10_Definition>, v_1012464); EmitterFinished{EmitterValue{v_1012463}}}
 
-def emitter_match_2666(v_2: Maybe<&2, cps_provider_10_Constructor>, +v_9: Map<&2, cps_provider_10_Constructor>, +v_4: String, v_6: cps_provider_10_Constructor) -> EmitterProgress<Map<&2, cps_provider_10_Constructor>>:
+def emitter_match_2667(v_2: Maybe<&2, cps_provider_10_Constructor>, +v_9: Map<&2, cps_provider_10_Constructor>, +v_4: String, v_6: cps_provider_10_Constructor) -> EmitterProgress<Map<&2, cps_provider_10_Constructor>>:
   match v_2:
     case Some{_}:
       EmitterFinished{EmitterValue{v_9}}
@@ -28598,10 +28618,10 @@ def emitter_match_2666(v_2: Maybe<&2, cps_provider_10_Constructor>, +v_9: Map<&2
       EmitterFinished{EmitterValue{Map.set(&2, cps_provider_10_Constructor, v_9, v_4, v_6)}}
 
 def emitter_body_cps_provider_10_native_match_insert_constructor_0(v_2: Maybe<&2, cps_provider_10_Constructor>, +v_4: String, v_6: cps_provider_10_Constructor, +v_9: Map<&2, cps_provider_10_Constructor>) -> EmitterProgress<Map<&2, cps_provider_10_Constructor>>:
-  emitter_match_2666(v_2, v_9, v_4, v_6)
+  emitter_match_2667(v_2, v_9, v_4, v_6)
 
 def emitter_body_cps_provider_10_insert_constructor(+v_1: String, v_3: cps_provider_10_Constructor, +v_6: Map<&2, cps_provider_10_Constructor>) -> EmitterProgress<Map<&2, cps_provider_10_Constructor>>:
-  EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_native_match_insert_constructor_0{IndexLookup.find(cps_provider_10_Constructor, v_6, v_1), v_1, v_3, v_6}}, False{}, v_1012463 => emitter_body_cps_provider_10_native_match_insert_constructor_0(IndexLookup.find(cps_provider_10_Constructor, v_6, v_1), v_1, v_3, v_6), v_1012462 => +v_1012461 = emitter_unbox(Map<&2, cps_provider_10_Constructor>, v_1012462); EmitterFinished{EmitterValue{v_1012461}}}
+  EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_native_match_insert_constructor_0{IndexLookup.find(cps_provider_10_Constructor, v_6, v_1), v_1, v_3, v_6}}, False{}, v_1012468 => emitter_body_cps_provider_10_native_match_insert_constructor_0(IndexLookup.find(cps_provider_10_Constructor, v_6, v_1), v_1, v_3, v_6), v_1012467 => +v_1012466 = emitter_unbox(Map<&2, cps_provider_10_Constructor>, v_1012467); EmitterFinished{EmitterValue{v_1012466}}}
 
 def emitter_body_cps_provider_10_normalize_descriptor_value(v_0: BIR.Descriptor, +v_2: cps_provider_7_NfContext) -> EmitterProgress<BIR.Descriptor>:
   emitter_body_cps_provider_7_normalize_in(v_2, v_0)
@@ -28611,42 +28631,42 @@ def emitter_body_cps_provider_10_normalize_descriptors(v_1: List<&2, BIR.Descrip
     case []:
       EmitterFinished{EmitterValue{[]}}
     case +v_7 <> v_8:
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_normalize_descriptor_value{v_7, v_3}}, False{}, v_1012469 => emitter_body_cps_provider_10_normalize_descriptor_value(v_7, v_3), v_1012468 => +v_1012465 = emitter_unbox(BIR.Descriptor, v_1012468); EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_normalize_descriptors{v_8, v_3}}, v_1012467 => +v_1012466 = emitter_unbox(List<&2, BIR.Descriptor>, v_1012467); EmitterFinished{EmitterValue{v_1012465 <> v_1012466}}}}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_normalize_descriptor_value{v_7, v_3}}, False{}, v_1012474 => emitter_body_cps_provider_10_normalize_descriptor_value(v_7, v_3), v_1012473 => +v_1012470 = emitter_unbox(BIR.Descriptor, v_1012473); EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_normalize_descriptors{v_8, v_3}}, v_1012472 => +v_1012471 = emitter_unbox(List<&2, BIR.Descriptor>, v_1012472); EmitterFinished{EmitterValue{v_1012470 <> v_1012471}}}}
 
 def emitter_body_cps_provider_10_normalize_foreign(v_2: Maybe<&2, cps_provider_10_Foreign>, +v_4: cps_provider_7_NfContext) -> EmitterProgress<Maybe<&2, cps_provider_10_Foreign>>:
   match v_2:
     case None{}:
       EmitterFinished{EmitterValue{None{}}}
     case Some{cps_provider_10_Foreign{v_13, v_14, v_15, v_16, v_17, v_18}}:
-      v_1012470 = {v_13 : String}
-      v_1012471 = {v_14 : String}
-      v_1012472 = {v_15 : List<&2, String>}
-      v_1012473 = {v_16 : Ast.SourceSpan}
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_normalize_descriptors{v_17, v_4}}, False{}, v_1012479 => emitter_body_cps_provider_10_normalize_descriptors(v_17, v_4), v_1012478 => +v_1012474 = emitter_unbox(List<&2, BIR.Descriptor>, v_1012478); EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_normalize_descriptor_value{v_18, v_4}}, False{}, v_1012477 => emitter_body_cps_provider_10_normalize_descriptor_value(v_18, v_4), v_1012476 => +v_1012475 = emitter_unbox(BIR.Descriptor, v_1012476); EmitterFinished{EmitterValue{Some{cps_provider_10_Foreign{v_1012470, v_1012471, v_1012472, v_1012473, v_1012474, v_1012475}}}}}}
+      v_1012475 = {v_13 : String}
+      v_1012476 = {v_14 : String}
+      v_1012477 = {v_15 : List<&2, String>}
+      v_1012478 = {v_16 : Ast.SourceSpan}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_normalize_descriptors{v_17, v_4}}, False{}, v_1012484 => emitter_body_cps_provider_10_normalize_descriptors(v_17, v_4), v_1012483 => +v_1012479 = emitter_unbox(List<&2, BIR.Descriptor>, v_1012483); EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_normalize_descriptor_value{v_18, v_4}}, False{}, v_1012482 => emitter_body_cps_provider_10_normalize_descriptor_value(v_18, v_4), v_1012481 => +v_1012480 = emitter_unbox(BIR.Descriptor, v_1012481); EmitterFinished{EmitterValue{Some{cps_provider_10_Foreign{v_1012475, v_1012476, v_1012477, v_1012478, v_1012479, v_1012480}}}}}}
 
 def emitter_body_cps_provider_10_normalize_foreign_header(v_1: cps_provider_10_DefinitionHeader, +v_3: cps_provider_7_NfContext) -> EmitterProgress<cps_provider_10_DefinitionHeader>:
   match v_1:
     case cps_provider_10_DefinitionHeader{v_14, v_15, v_16, v_17, v_18, v_19, v_20, v_21, v_22}:
-      v_1012480 = {v_14 : IR.Symbol}
-      v_1012481 = {v_15 : String}
-      v_1012482 = {v_16 : U32}
-      v_1012483 = {v_17 : List<&2, BIR.Parameter>}
-      v_1012484 = {v_18 : List<&2, BIR.Quantity>}
-      v_1012485 = {v_19 : Bool}
-      v_1012486 = {v_20 : Maybe<&2, BIR.Primitive>}
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_normalize_foreign{v_21, v_3}}, False{}, v_1012489 => emitter_body_cps_provider_10_normalize_foreign(v_21, v_3), v_1012488 => +v_1012487 = emitter_unbox(Maybe<&2, cps_provider_10_Foreign>, v_1012488); EmitterFinished{EmitterValue{cps_provider_10_DefinitionHeader{v_1012480, v_1012481, v_1012482, v_1012483, v_1012484, v_1012485, v_1012486, v_1012487, v_22}}}}
+      v_1012485 = {v_14 : IR.Symbol}
+      v_1012486 = {v_15 : String}
+      v_1012487 = {v_16 : U32}
+      v_1012488 = {v_17 : List<&2, BIR.Parameter>}
+      v_1012489 = {v_18 : List<&2, BIR.Quantity>}
+      v_1012490 = {v_19 : Bool}
+      v_1012491 = {v_20 : Maybe<&2, BIR.Primitive>}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_normalize_foreign{v_21, v_3}}, False{}, v_1012494 => emitter_body_cps_provider_10_normalize_foreign(v_21, v_3), v_1012493 => +v_1012492 = emitter_unbox(Maybe<&2, cps_provider_10_Foreign>, v_1012493); EmitterFinished{EmitterValue{cps_provider_10_DefinitionHeader{v_1012485, v_1012486, v_1012487, v_1012488, v_1012489, v_1012490, v_1012491, v_1012492, v_22}}}}
 
 def emitter_body_cps_provider_10_normalize_foreign_definition(v_1: cps_provider_10_Definition, +v_3: cps_provider_7_NfContext) -> EmitterProgress<cps_provider_10_Definition>:
   match v_1:
     case cps_provider_10_Definition{v_13, v_14, v_15, v_16, v_17, v_18, v_19, v_20}:
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_normalize_foreign_header{v_13, v_3}}, False{}, v_1012492 => emitter_body_cps_provider_10_normalize_foreign_header(v_13, v_3), v_1012491 => +v_1012490 = emitter_unbox(cps_provider_10_DefinitionHeader, v_1012491); EmitterFinished{EmitterValue{cps_provider_10_Definition{v_1012490, v_14, v_15, v_16, v_17, v_18, v_19, v_20}}}}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_normalize_foreign_header{v_13, v_3}}, False{}, v_1012497 => emitter_body_cps_provider_10_normalize_foreign_header(v_13, v_3), v_1012496 => +v_1012495 = emitter_unbox(cps_provider_10_DefinitionHeader, v_1012496); EmitterFinished{EmitterValue{cps_provider_10_Definition{v_1012495, v_14, v_15, v_16, v_17, v_18, v_19, v_20}}}}
 
 def emitter_body_cps_provider_10_normalize_foreign_definitions(v_2: List<&2, cps_provider_10_Definition>, +v_4: cps_provider_7_NfContext) -> EmitterProgress<List<&2, cps_provider_10_Definition>>:
   match v_2:
     case []:
       EmitterFinished{EmitterValue{[]}}
     case +v_9 <> v_10:
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_normalize_foreign_definition{v_9, v_4}}, False{}, v_1012497 => emitter_body_cps_provider_10_normalize_foreign_definition(v_9, v_4), v_1012496 => +v_1012493 = emitter_unbox(cps_provider_10_Definition, v_1012496); EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_normalize_foreign_definitions{v_10, v_4}}, v_1012495 => +v_1012494 = emitter_unbox(List<&2, cps_provider_10_Definition>, v_1012495); EmitterFinished{EmitterValue{v_1012493 <> v_1012494}}}}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_normalize_foreign_definition{v_9, v_4}}, False{}, v_1012502 => emitter_body_cps_provider_10_normalize_foreign_definition(v_9, v_4), v_1012501 => +v_1012498 = emitter_unbox(cps_provider_10_Definition, v_1012501); EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_normalize_foreign_definitions{v_10, v_4}}, v_1012500 => +v_1012499 = emitter_unbox(List<&2, cps_provider_10_Definition>, v_1012500); EmitterFinished{EmitterValue{v_1012498 <> v_1012499}}}}
 
 def emitter_body_cps_provider_10_export_entry(v_2: Maybe<&2, cps_provider_10_DefinitionHeader>) -> EmitterProgress<Maybe<&2, BIR.Entry>>:
   match v_2:
@@ -28655,159 +28675,159 @@ def emitter_body_cps_provider_10_export_entry(v_2: Maybe<&2, cps_provider_10_Def
     case _:
       EmitterFinished{EmitterValue{None{}}}
 
-def emitter_match_2673(v_1012498: Bool, +v_9: cps_provider_10_Definition, v_1: String, v_10: List<&2, cps_provider_10_Definition>) -> EmitterProgress<Maybe<&2, cps_provider_10_Definition>>:
-  match v_1012498:
+def emitter_match_2674(v_1012503: Bool, +v_9: cps_provider_10_Definition, v_1: String, v_10: List<&2, cps_provider_10_Definition>) -> EmitterProgress<Maybe<&2, cps_provider_10_Definition>>:
+  match v_1012503:
     case True{}:
       EmitterFinished{EmitterValue{Some{v_9}}}
     case False{}:
-      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_export_definition{v_1, v_10}}, v_1012500 => +v_1012499 = emitter_unbox(Maybe<&2, cps_provider_10_Definition>, v_1012500); EmitterFinished{EmitterValue{v_1012499}}}
+      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_export_definition{v_1, v_10}}, v_1012505 => +v_1012504 = emitter_unbox(Maybe<&2, cps_provider_10_Definition>, v_1012505); EmitterFinished{EmitterValue{v_1012504}}}
 
-def emitter_match_2674(+v_9: cps_provider_10_Definition, +v_1: String, v_10: List<&2, cps_provider_10_Definition>) -> EmitterProgress<Maybe<&2, cps_provider_10_Definition>>:
+def emitter_match_2675(+v_9: cps_provider_10_Definition, +v_1: String, v_10: List<&2, cps_provider_10_Definition>) -> EmitterProgress<Maybe<&2, cps_provider_10_Definition>>:
   match v_9:
     case cps_provider_10_Definition{cps_provider_10_DefinitionHeader{_, v_28, _, _, _, _, _, _, _}, _, _, _, _, _, _, _}:
-      v_1012498 = {String.eq(v_1, v_28) : Bool}
-      emitter_match_2673(v_1012498, v_9, v_1, v_10)
+      v_1012503 = {String.eq(v_1, v_28) : Bool}
+      emitter_match_2674(v_1012503, v_9, v_1, v_10)
 
-def emitter_match_2675(v_4: List<&2, cps_provider_10_Definition>, v_1: String) -> EmitterProgress<Maybe<&2, cps_provider_10_Definition>>:
+def emitter_match_2676(v_4: List<&2, cps_provider_10_Definition>, v_1: String) -> EmitterProgress<Maybe<&2, cps_provider_10_Definition>>:
   match v_4:
     case []:
       EmitterFinished{EmitterValue{None{}}}
     case +v_9 <> v_10:
-      emitter_match_2674(v_9, v_1, v_10)
+      emitter_match_2675(v_9, v_1, v_10)
 
 def emitter_body_cps_provider_10_export_definition(v_1: String, v_4: List<&2, cps_provider_10_Definition>) -> EmitterProgress<Maybe<&2, cps_provider_10_Definition>>:
-  emitter_match_2675(v_4, v_1)
+  emitter_match_2676(v_4, v_1)
 
-def emitter_match_2676(v_1012501: Bool, v_19: U32, v_1: String, v_9: List<&2, Scope.ArenaGlobal>) -> EmitterProgress<Maybe<&2, U32>>:
-  match v_1012501:
+def emitter_match_2677(v_1012506: Bool, v_19: U32, v_1: String, v_9: List<&2, Scope.ArenaGlobal>) -> EmitterProgress<Maybe<&2, U32>>:
+  match v_1012506:
     case True{}:
       EmitterFinished{EmitterValue{Some{v_19}}}
     case False{}:
-      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_export_signature{v_1, v_9}}, v_1012503 => +v_1012502 = emitter_unbox(Maybe<&2, U32>, v_1012503); EmitterFinished{EmitterValue{v_1012502}}}
+      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_export_signature{v_1, v_9}}, v_1012508 => +v_1012507 = emitter_unbox(Maybe<&2, U32>, v_1012508); EmitterFinished{EmitterValue{v_1012507}}}
 
-def emitter_match_2677(+v_8: Scope.ArenaGlobal, +v_1: String, v_9: List<&2, Scope.ArenaGlobal>) -> EmitterProgress<Maybe<&2, U32>>:
+def emitter_match_2678(+v_8: Scope.ArenaGlobal, +v_1: String, v_9: List<&2, Scope.ArenaGlobal>) -> EmitterProgress<Maybe<&2, U32>>:
   match v_8:
     case Scope.ArenaGlobal{v_16, _, _, v_19, _, _}:
-      v_1012501 = {String.eq(v_1, v_16) : Bool}
-      emitter_match_2676(v_1012501, v_19, v_1, v_9)
+      v_1012506 = {String.eq(v_1, v_16) : Bool}
+      emitter_match_2677(v_1012506, v_19, v_1, v_9)
 
-def emitter_match_2678(v_3: List<&2, Scope.ArenaGlobal>, v_1: String) -> EmitterProgress<Maybe<&2, U32>>:
+def emitter_match_2679(v_3: List<&2, Scope.ArenaGlobal>, v_1: String) -> EmitterProgress<Maybe<&2, U32>>:
   match v_3:
     case []:
       EmitterFinished{EmitterValue{None{}}}
     case +v_8 <> v_9:
-      emitter_match_2677(v_8, v_1, v_9)
+      emitter_match_2678(v_8, v_1, v_9)
 
 def emitter_body_cps_provider_10_export_signature(v_1: String, v_3: List<&2, Scope.ArenaGlobal>) -> EmitterProgress<Maybe<&2, U32>>:
-  emitter_match_2678(v_3, v_1)
+  emitter_match_2679(v_3, v_1)
 
-def emitter_match_2679(v_5: BIR.Quantity, v_7: BIR.Descriptor, v_6: BIR.Descriptor) -> EmitterProgress<List<&2, BIR.Descriptor>>:
+def emitter_match_2680(v_5: BIR.Quantity, v_7: BIR.Descriptor, v_6: BIR.Descriptor) -> EmitterProgress<List<&2, BIR.Descriptor>>:
   match v_5:
     case BIR.Erased{}:
-      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_live_arrow_types{v_7}}, v_1012505 => +v_1012504 = emitter_unbox(List<&2, BIR.Descriptor>, v_1012505); EmitterFinished{EmitterValue{v_1012504}}}
+      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_live_arrow_types{v_7}}, v_1012510 => +v_1012509 = emitter_unbox(List<&2, BIR.Descriptor>, v_1012510); EmitterFinished{EmitterValue{v_1012509}}}
     case _:
-      v_1012506 = {v_6 : BIR.Descriptor}
-      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_live_arrow_types{v_7}}, v_1012508 => +v_1012507 = emitter_unbox(List<&2, BIR.Descriptor>, v_1012508); EmitterFinished{EmitterValue{v_1012506 <> v_1012507}}}
+      v_1012511 = {v_6 : BIR.Descriptor}
+      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_live_arrow_types{v_7}}, v_1012513 => +v_1012512 = emitter_unbox(List<&2, BIR.Descriptor>, v_1012513); EmitterFinished{EmitterValue{v_1012511 <> v_1012512}}}
 
 def emitter_body_cps_provider_10_live_arrow_types(v_0: BIR.Descriptor) -> EmitterProgress<List<&2, BIR.Descriptor>>:
   match v_0:
     case BIR.DescriptorArrow{v_5, v_6, v_7}:
-      emitter_match_2679(v_5, v_7, v_6)
+      emitter_match_2680(v_5, v_7, v_6)
     case _:
       EmitterFinished{EmitterValue{[]}}
 
-def emitter_match_2681(+v_0: BIR.Descriptor) -> EmitterProgress<BIR.Descriptor>:
+def emitter_match_2682(+v_0: BIR.Descriptor) -> EmitterProgress<BIR.Descriptor>:
   match v_0:
     case BIR.DescriptorArrow{_, _, v_6}:
-      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_live_arrow_result{v_6}}, v_1012510 => +v_1012509 = emitter_unbox(BIR.Descriptor, v_1012510); EmitterFinished{EmitterValue{v_1012509}}}
+      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_live_arrow_result{v_6}}, v_1012515 => +v_1012514 = emitter_unbox(BIR.Descriptor, v_1012515); EmitterFinished{EmitterValue{v_1012514}}}
     case _:
       EmitterFinished{EmitterValue{v_0}}
 
 def emitter_body_cps_provider_10_live_arrow_result(v_0: BIR.Descriptor) -> EmitterProgress<BIR.Descriptor>:
-  emitter_match_2681(v_0)
+  emitter_match_2682(v_0)
 
 def emitter_body_cps_provider_10_export_facts_of(v_0: Arena.Arena, +v_1: BIR.Descriptor) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_ExportFacts>>:
-  v_1012511 = {v_0 : Arena.Arena}
-  EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_live_arrow_types{v_1}}, False{}, v_1012517 => emitter_body_cps_provider_10_live_arrow_types(v_1), v_1012516 => +v_1012512 = emitter_unbox(List<&2, BIR.Descriptor>, v_1012516); EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_live_arrow_result{v_1}}, False{}, v_1012515 => emitter_body_cps_provider_10_live_arrow_result(v_1), v_1012514 => +v_1012513 = emitter_unbox(BIR.Descriptor, v_1012514); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012511, cps_provider_10_ExportFacts{v_1012512, v_1012513}}}}}}
+  v_1012516 = {v_0 : Arena.Arena}
+  EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_live_arrow_types{v_1}}, False{}, v_1012522 => emitter_body_cps_provider_10_live_arrow_types(v_1), v_1012521 => +v_1012517 = emitter_unbox(List<&2, BIR.Descriptor>, v_1012521); EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_live_arrow_result{v_1}}, False{}, v_1012520 => emitter_body_cps_provider_10_live_arrow_result(v_1), v_1012519 => +v_1012518 = emitter_unbox(BIR.Descriptor, v_1012519); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012516, cps_provider_10_ExportFacts{v_1012517, v_1012518}}}}}}
 
-def emitter_match_2682(v_1012520: cps_provider_10_CatalogResult<BIR.Descriptor>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_ExportFacts>>:
-  match v_1012520:
+def emitter_match_2683(v_1012525: cps_provider_10_CatalogResult<BIR.Descriptor>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_ExportFacts>>:
+  match v_1012525:
     case cps_provider_10_CatalogResult{v_33, v_34}:
       emitter_body_cps_provider_10_export_facts_of(v_33, v_34)
 
-def emitter_match_2683(+v_1012519: Maybe<&2, U32>, v_0: Arena.Arena, +v_2: String, v_24: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_ExportFacts>>:
-  match v_1012519:
+def emitter_match_2684(+v_1012524: Maybe<&2, U32>, v_0: Arena.Arena, +v_2: String, v_24: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_ExportFacts>>:
+  match v_1012524:
     case None{}:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_0, cps_provider_10_ExportFacts{[BIR.DescriptorFailure{String.append("bend: exported definition has no published signature: ", v_2)}], BIR.DescriptorFailure{String.append("bend: exported definition has no published signature: ", v_2)}}}}}
     case Some{v_29}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_0, v_29, v_24}}, False{}, v_1012523 => emitter_body_cps_provider_10_descriptor(v_0, v_29, v_24), v_1012522 => v_1012520 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012522); emitter_match_2682(v_1012520)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_0, v_29, v_24}}, False{}, v_1012528 => emitter_body_cps_provider_10_descriptor(v_0, v_29, v_24), v_1012527 => v_1012525 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012527); emitter_match_2683(v_1012525)}
 
-def emitter_match_2684(+v_1012518: Maybe<&2, cps_provider_10_Definition>, v_0: Arena.Arena, +v_2: String, v_7: List<&2, Scope.ArenaGlobal>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_ExportFacts>>:
-  match v_1012518:
+def emitter_match_2685(+v_1012523: Maybe<&2, cps_provider_10_Definition>, v_0: Arena.Arena, +v_2: String, v_7: List<&2, Scope.ArenaGlobal>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_ExportFacts>>:
+  match v_1012523:
     case None{}:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_0, cps_provider_10_ExportFacts{[BIR.DescriptorFailure{String.append("bend: exported definition is not prepared: ", v_2)}], BIR.DescriptorFailure{String.append("bend: exported definition is not prepared: ", v_2)}}}}}
     case Some{cps_provider_10_Definition{_, _, _, _, _, v_24, _, _}}:
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_export_signature{v_2, v_7}}, False{}, v_1012525 => emitter_body_cps_provider_10_export_signature(v_2, v_7), v_1012524 => +v_1012519 = emitter_unbox(Maybe<&2, U32>, v_1012524); emitter_match_2683(v_1012519, v_0, v_2, v_24)}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_export_signature{v_2, v_7}}, False{}, v_1012530 => emitter_body_cps_provider_10_export_signature(v_2, v_7), v_1012529 => +v_1012524 = emitter_unbox(Maybe<&2, U32>, v_1012529); emitter_match_2684(v_1012524, v_0, v_2, v_24)}
 
 def emitter_body_cps_provider_10_export_facts(v_0: Arena.Arena, +v_2: String, v_5: List<&2, cps_provider_10_Definition>, v_7: List<&2, Scope.ArenaGlobal>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_ExportFacts>>:
-  EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_export_definition{v_2, v_5}}, False{}, v_1012527 => emitter_body_cps_provider_10_export_definition(v_2, v_5), v_1012526 => +v_1012518 = emitter_unbox(Maybe<&2, cps_provider_10_Definition>, v_1012526); emitter_match_2684(v_1012518, v_0, v_2, v_7)}
+  EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_export_definition{v_2, v_5}}, False{}, v_1012532 => emitter_body_cps_provider_10_export_definition(v_2, v_5), v_1012531 => +v_1012523 = emitter_unbox(Maybe<&2, cps_provider_10_Definition>, v_1012531); emitter_match_2685(v_1012523, v_0, v_2, v_7)}
 
-def emitter_match_2685(v_1012529: cps_provider_10_CatalogResult<List<&2, BIR.Export>>, +v_17: String, v_4: cps_provider_10_Registry, v_24: List<&2, BIR.Descriptor>, +v_12: cps_provider_7_NfContext, v_25: BIR.Descriptor) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.Export>>>:
-  match v_1012529:
+def emitter_match_2686(v_1012534: cps_provider_10_CatalogResult<List<&2, BIR.Export>>, +v_17: String, v_4: cps_provider_10_Registry, v_24: List<&2, BIR.Descriptor>, +v_12: cps_provider_7_NfContext, v_25: BIR.Descriptor) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.Export>>>:
+  match v_1012534:
     case cps_provider_10_CatalogResult{v_29, v_30}:
-      v_1012530 = {v_29 : Arena.Arena}
-      v_1012531 = {v_17 : String}
-      EmitterDirect{Bool, EmitterRequestGroup_28{EmitterRequest_cps_provider_10_definition_key{v_4, v_17}}, False{}, v_1012543 => emitter_body_cps_provider_10_definition_key(v_4, v_17), v_1012542 => +v_1012532 = emitter_unbox(Maybe<&2, cps_provider_10_DefinitionHeader>, v_1012542); EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_export_entry{v_1012532}}, False{}, v_1012541 => emitter_body_cps_provider_10_export_entry(v_1012532), v_1012540 => +v_1012533 = emitter_unbox(Maybe<&2, BIR.Entry>, v_1012540); EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_normalize_descriptors{v_24, v_12}}, False{}, v_1012539 => emitter_body_cps_provider_10_normalize_descriptors(v_24, v_12), v_1012538 => +v_1012534 = emitter_unbox(List<&2, BIR.Descriptor>, v_1012538); EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_normalize_descriptor_value{v_25, v_12}}, False{}, v_1012537 => emitter_body_cps_provider_10_normalize_descriptor_value(v_25, v_12), v_1012536 => +v_1012535 = emitter_unbox(BIR.Descriptor, v_1012536); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012530, BIR.Export{v_1012531, v_1012533, v_1012534, v_1012535} <> v_30}}}}}}}
+      v_1012535 = {v_29 : Arena.Arena}
+      v_1012536 = {v_17 : String}
+      EmitterDirect{Bool, EmitterRequestGroup_28{EmitterRequest_cps_provider_10_definition_key{v_4, v_17}}, False{}, v_1012548 => emitter_body_cps_provider_10_definition_key(v_4, v_17), v_1012547 => +v_1012537 = emitter_unbox(Maybe<&2, cps_provider_10_DefinitionHeader>, v_1012547); EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_export_entry{v_1012537}}, False{}, v_1012546 => emitter_body_cps_provider_10_export_entry(v_1012537), v_1012545 => +v_1012538 = emitter_unbox(Maybe<&2, BIR.Entry>, v_1012545); EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_normalize_descriptors{v_24, v_12}}, False{}, v_1012544 => emitter_body_cps_provider_10_normalize_descriptors(v_24, v_12), v_1012543 => +v_1012539 = emitter_unbox(List<&2, BIR.Descriptor>, v_1012543); EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_normalize_descriptor_value{v_25, v_12}}, False{}, v_1012542 => emitter_body_cps_provider_10_normalize_descriptor_value(v_25, v_12), v_1012541 => +v_1012540 = emitter_unbox(BIR.Descriptor, v_1012541); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012535, BIR.Export{v_1012536, v_1012538, v_1012539, v_1012540} <> v_30}}}}}}}
 
-def emitter_match_2686(v_1012528: cps_provider_10_CatalogResult<cps_provider_10_ExportFacts>, v_18: List<&2, String>, +v_4: cps_provider_10_Registry, v_8: List<&2, cps_provider_10_Definition>, v_10: List<&2, Scope.ArenaGlobal>, +v_12: cps_provider_7_NfContext, v_17: String) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.Export>>>:
-  match v_1012528:
+def emitter_match_2687(v_1012533: cps_provider_10_CatalogResult<cps_provider_10_ExportFacts>, v_18: List<&2, String>, +v_4: cps_provider_10_Registry, v_8: List<&2, cps_provider_10_Definition>, v_10: List<&2, Scope.ArenaGlobal>, +v_12: cps_provider_7_NfContext, v_17: String) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.Export>>>:
+  match v_1012533:
     case cps_provider_10_CatalogResult{v_23, cps_provider_10_ExportFacts{v_24, v_25}}:
-      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_exports{v_18, v_4, v_23, v_8, v_10, v_12}}, v_1012544 => v_1012529 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Export>>, v_1012544); emitter_match_2685(v_1012529, v_17, v_4, v_24, v_12, v_25)}
+      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_exports{v_18, v_4, v_23, v_8, v_10, v_12}}, v_1012549 => v_1012534 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Export>>, v_1012549); emitter_match_2686(v_1012534, v_17, v_4, v_24, v_12, v_25)}
 
-def emitter_match_2687(v_2: List<&2, String>, v_5: Arena.Arena, +v_8: List<&2, cps_provider_10_Definition>, +v_10: List<&2, Scope.ArenaGlobal>, v_4: cps_provider_10_Registry, +v_12: cps_provider_7_NfContext) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.Export>>>:
+def emitter_match_2688(v_2: List<&2, String>, v_5: Arena.Arena, +v_8: List<&2, cps_provider_10_Definition>, +v_10: List<&2, Scope.ArenaGlobal>, v_4: cps_provider_10_Registry, +v_12: cps_provider_7_NfContext) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.Export>>>:
   match v_2:
     case []:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_5, []}}}
     case +v_17 <> v_18:
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_export_facts{v_5, v_17, v_8, v_10}}, False{}, v_1012546 => emitter_body_cps_provider_10_export_facts(v_5, v_17, v_8, v_10), v_1012545 => v_1012528 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_ExportFacts>, v_1012545); emitter_match_2686(v_1012528, v_18, v_4, v_8, v_10, v_12, v_17)}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_export_facts{v_5, v_17, v_8, v_10}}, False{}, v_1012551 => emitter_body_cps_provider_10_export_facts(v_5, v_17, v_8, v_10), v_1012550 => v_1012533 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_ExportFacts>, v_1012550); emitter_match_2687(v_1012533, v_18, v_4, v_8, v_10, v_12, v_17)}
 
 def emitter_body_cps_provider_10_exports(v_2: List<&2, String>, v_4: cps_provider_10_Registry, v_5: Arena.Arena, v_8: List<&2, cps_provider_10_Definition>, v_10: List<&2, Scope.ArenaGlobal>, +v_12: cps_provider_7_NfContext) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.Export>>>:
-  emitter_match_2687(v_2, v_5, v_8, v_10, v_4, v_12)
+  emitter_match_2688(v_2, v_5, v_8, v_10, v_4, v_12)
 
-def emitter_match_2688(v_2: Maybe<&2, Bool>, v_3: Arena.Arena, v_10: cps_provider_10_Needed, +v_8: Map<&2, cps_provider_10_Definition>, +v_5: String, v_12: List<&2, BIR.TypeFunction>, v_15: Map<&2, Bool>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
+def emitter_match_2689(v_2: Maybe<&2, Bool>, v_3: Arena.Arena, v_10: cps_provider_10_Needed, +v_8: Map<&2, cps_provider_10_Definition>, +v_5: String, v_12: List<&2, BIR.TypeFunction>, v_15: Map<&2, Bool>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
   match v_2:
     case Some{_}:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_3, v_10}}}
     case None{}:
-      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_definition{v_3, IndexLookup.find(cps_provider_10_Definition, v_8, v_5), v_8, v_12, Map.set(&2, Bool, v_15, v_5, True{})}}, v_1012548 => v_1012547 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012548); EmitterFinished{EmitterValue{v_1012547}}}
+      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_definition{v_3, IndexLookup.find(cps_provider_10_Definition, v_8, v_5), v_8, v_12, Map.set(&2, Bool, v_15, v_5, True{})}}, v_1012553 => v_1012552 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012553); EmitterFinished{EmitterValue{v_1012552}}}
 
 def emitter_body_cps_provider_10_native_match_needed_ref_0(v_2: Maybe<&2, Bool>, v_3: Arena.Arena, v_5: String, v_8: Map<&2, cps_provider_10_Definition>, v_10: cps_provider_10_Needed, v_12: List<&2, BIR.TypeFunction>, v_15: Map<&2, Bool>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
-  emitter_match_2688(v_2, v_3, v_10, v_8, v_5, v_12, v_15)
+  emitter_match_2689(v_2, v_3, v_10, v_8, v_5, v_12, v_15)
 
-def emitter_match_2689(+v_1: cps_provider_10_Needed, +v_4: String, v_2: Arena.Arena, v_7: Map<&2, cps_provider_10_Definition>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
+def emitter_match_2690(+v_1: cps_provider_10_Needed, +v_4: String, v_2: Arena.Arena, v_7: Map<&2, cps_provider_10_Definition>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
   match v_1:
     case cps_provider_10_Needed{v_12, +v_13}:
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_native_match_needed_ref_0{IndexLookup.find(Bool, v_13, v_4), v_2, v_4, v_7, v_1, v_12, v_13}}, False{}, v_1012551 => emitter_body_cps_provider_10_native_match_needed_ref_0(IndexLookup.find(Bool, v_13, v_4), v_2, v_4, v_7, v_1, v_12, v_13), v_1012550 => v_1012549 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012550); EmitterFinished{EmitterValue{v_1012549}}}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_native_match_needed_ref_0{IndexLookup.find(Bool, v_13, v_4), v_2, v_4, v_7, v_1, v_12, v_13}}, False{}, v_1012556 => emitter_body_cps_provider_10_native_match_needed_ref_0(IndexLookup.find(Bool, v_13, v_4), v_2, v_4, v_7, v_1, v_12, v_13), v_1012555 => v_1012554 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012555); EmitterFinished{EmitterValue{v_1012554}}}
 
 def emitter_body_cps_provider_10_native_match_needed_ref_1(v_1: cps_provider_10_Needed, v_2: Arena.Arena, v_4: String, v_7: Map<&2, cps_provider_10_Definition>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
-  emitter_match_2689(v_1, v_4, v_2, v_7)
+  emitter_match_2690(v_1, v_4, v_2, v_7)
 
 def emitter_body_cps_provider_10_needed_ref(v_0: Arena.Arena, v_2: String, v_5: Map<&2, cps_provider_10_Definition>, v_7: cps_provider_10_Needed) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
   emitter_body_cps_provider_10_native_match_needed_ref_1(v_7, v_0, v_2, v_5)
 
-def emitter_match_2690(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_11: String, v_19: Maybe<&2, String>, v_21: Nat, v_13: List<&2, BIR.Quantity>, v_15: U32, v_16: Scope.ArenaGlobalScope, v_4: Map<&2, cps_provider_10_Definition>, v_6: List<&2, BIR.TypeFunction>, v_9: Map<&2, Bool>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
+def emitter_match_2691(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_11: String, v_19: Maybe<&2, String>, v_21: Nat, v_13: List<&2, BIR.Quantity>, v_15: U32, v_16: Scope.ArenaGlobalScope, v_4: Map<&2, cps_provider_10_Definition>, v_6: List<&2, BIR.TypeFunction>, v_9: Map<&2, Bool>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
   match v_1:
     case cps_provider_10_CatalogResult{v_26, v_27}:
       v_29 = {BIR.TypeFunction{v_11, v_19, v_21, List.length(&2, BIR.Quantity, v_13), v_27} : BIR.TypeFunction}
-      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_term{v_26, v_15, v_16, v_4, cps_provider_10_Needed{v_29 <> v_6, v_9}}}, v_1012554 => v_1012553 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012554); EmitterFinished{EmitterValue{v_1012553}}}
+      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_term{v_26, v_15, v_16, v_4, cps_provider_10_Needed{v_29 <> v_6, v_9}}}, v_1012559 => v_1012558 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012559); EmitterFinished{EmitterValue{v_1012558}}}
 
 def emitter_body_cps_provider_10_native_match_needed_definition_0(v_1: cps_provider_10_CatalogResult<BIR.Descriptor>, v_4: Map<&2, cps_provider_10_Definition>, v_6: List<&2, BIR.TypeFunction>, v_9: Map<&2, Bool>, v_11: String, v_13: List<&2, BIR.Quantity>, v_15: U32, v_16: Scope.ArenaGlobalScope, v_19: Maybe<&2, String>, v_21: Nat) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
-  emitter_match_2690(v_1, v_11, v_19, v_21, v_13, v_15, v_16, v_4, v_6, v_9)
+  emitter_match_2691(v_1, v_11, v_19, v_21, v_13, v_15, v_16, v_4, v_6, v_9)
 
 def emitter_body_cps_provider_10_native_match_needed_definition_1(v_2: Maybe<&2, cps_provider_10_Definition>, v_3: Arena.Arena, v_6: Map<&2, cps_provider_10_Definition>, v_8: List<&2, BIR.TypeFunction>, v_11: Map<&2, Bool>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
   match v_2:
     case Some{cps_provider_10_Definition{cps_provider_10_DefinitionHeader{_, v_30, _, _, v_33, _, _, None{}, _}, _, _, IR.DefTerm{+v_39}, _, +v_41, v_42, v_43}}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_3, v_39, v_41}}, False{}, v_1012558 => emitter_body_cps_provider_10_descriptor(v_3, v_39, v_41), v_1012557 => v_1012555 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012557); emitter_body_cps_provider_10_native_match_needed_definition_0(v_1012555, v_6, v_8, v_11, v_30, v_33, v_39, v_41, v_42, v_43)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_3, v_39, v_41}}, False{}, v_1012563 => emitter_body_cps_provider_10_descriptor(v_3, v_39, v_41), v_1012562 => v_1012560 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012562); emitter_body_cps_provider_10_native_match_needed_definition_0(v_1012560, v_6, v_8, v_11, v_30, v_33, v_39, v_41, v_42, v_43)}
     case _:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_3, cps_provider_10_Needed{v_8, v_11}}}}
 
@@ -28817,25 +28837,25 @@ def emitter_body_cps_provider_10_needed_definition(v_0: Arena.Arena, v_3: Maybe<
 def emitter_body_cps_provider_10_native_match_needed_terms_0(v_2: cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_4: U32, v_6: U32, v_7: Scope.ArenaGlobalScope, v_10: Map<&2, cps_provider_10_Definition>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
   match v_2:
     case cps_provider_10_CatalogResult{v_15, v_16}:
-      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_terms{v_15, IR.arena_range_index(v_4, 1), U32.sub(v_6, 1), v_7, v_10, v_16}}, v_1012561 => v_1012560 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012561); EmitterFinished{EmitterValue{v_1012560}}}
+      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_terms{v_15, IR.arena_range_index(v_4, 1), U32.sub(v_6, 1), v_7, v_10, v_16}}, v_1012566 => v_1012565 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012566); EmitterFinished{EmitterValue{v_1012565}}}
 
-def emitter_match_2693(v_4: Sigma<&1, &1, Arena.Arena, _ => U32>, +v_9: Scope.ArenaGlobalScope, +v_12: Map<&2, cps_provider_10_Definition>, v_14: cps_provider_10_Needed, v_6: U32, v_8: U32) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
+def emitter_match_2694(v_4: Sigma<&1, &1, Arena.Arena, _ => U32>, +v_9: Scope.ArenaGlobalScope, +v_12: Map<&2, cps_provider_10_Definition>, v_14: cps_provider_10_Needed, v_6: U32, v_8: U32) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
   match v_4:
     case (v_19, v_20):
-      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_term{v_19, v_20, v_9, v_12, v_14}}, v_1012564 => v_1012562 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012564); emitter_body_cps_provider_10_native_match_needed_terms_0(v_1012562, v_6, v_8, v_9, v_12)}
+      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_term{v_19, v_20, v_9, v_12, v_14}}, v_1012569 => v_1012567 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012569); emitter_body_cps_provider_10_native_match_needed_terms_0(v_1012567, v_6, v_8, v_9, v_12)}
 
 def emitter_body_cps_provider_10_native_match_needed_terms_1(v_4: Sigma<&1, &1, Arena.Arena, _ => U32>, v_6: U32, v_8: U32, v_9: Scope.ArenaGlobalScope, v_12: Map<&2, cps_provider_10_Definition>, v_14: cps_provider_10_Needed) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
-  emitter_match_2693(v_4, v_9, v_12, v_14, v_6, v_8)
+  emitter_match_2694(v_4, v_9, v_12, v_14, v_6, v_8)
 
-def emitter_match_2694(+v_1: U32, v_2: Arena.Arena, v_10: cps_provider_10_Needed, +v_4: U32, v_5: Scope.ArenaGlobalScope, v_8: Map<&2, cps_provider_10_Definition>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
+def emitter_match_2695(+v_1: U32, v_2: Arena.Arena, v_10: cps_provider_10_Needed, +v_4: U32, v_5: Scope.ArenaGlobalScope, v_8: Map<&2, cps_provider_10_Definition>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
   match v_1:
     case 0:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_2, v_10}}}
     case _:
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_native_match_needed_terms_1{Arena.word(v_2, IR.arena_tape_offset(v_4)), v_4, v_1, v_5, v_8, v_10}}, False{}, v_1012568 => emitter_body_cps_provider_10_native_match_needed_terms_1(Arena.word(v_2, IR.arena_tape_offset(v_4)), v_4, v_1, v_5, v_8, v_10), v_1012567 => v_1012566 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012567); EmitterFinished{EmitterValue{v_1012566}}}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_native_match_needed_terms_1{Arena.word(v_2, IR.arena_tape_offset(v_4)), v_4, v_1, v_5, v_8, v_10}}, False{}, v_1012573 => emitter_body_cps_provider_10_native_match_needed_terms_1(Arena.word(v_2, IR.arena_tape_offset(v_4)), v_4, v_1, v_5, v_8, v_10), v_1012572 => v_1012571 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012572); EmitterFinished{EmitterValue{v_1012571}}}
 
 def emitter_body_cps_provider_10_native_match_needed_terms_2(v_1: U32, v_2: Arena.Arena, v_4: U32, v_5: Scope.ArenaGlobalScope, v_8: Map<&2, cps_provider_10_Definition>, v_10: cps_provider_10_Needed) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
-  emitter_match_2694(v_1, v_2, v_10, v_4, v_5, v_8)
+  emitter_match_2695(v_1, v_2, v_10, v_4, v_5, v_8)
 
 def emitter_body_cps_provider_10_needed_terms(v_0: Arena.Arena, v_2: U32, v_4: U32, v_5: Scope.ArenaGlobalScope, v_8: Map<&2, cps_provider_10_Definition>, v_10: cps_provider_10_Needed) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
   emitter_body_cps_provider_10_native_match_needed_terms_2(v_4, v_0, v_2, v_5, v_8, v_10)
@@ -28843,100 +28863,100 @@ def emitter_body_cps_provider_10_needed_terms(v_0: Arena.Arena, v_2: U32, v_4: U
 def emitter_body_cps_provider_10_native_match_needed_pair_0(v_2: cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_4: U32, v_5: Scope.ArenaGlobalScope, v_8: Map<&2, cps_provider_10_Definition>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
   match v_2:
     case cps_provider_10_CatalogResult{v_13, v_14}:
-      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_term{v_13, v_4, v_5, v_8, v_14}}, v_1012571 => v_1012570 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012571); EmitterFinished{EmitterValue{v_1012570}}}
+      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_term{v_13, v_4, v_5, v_8, v_14}}, v_1012576 => v_1012575 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012576); EmitterFinished{EmitterValue{v_1012575}}}
 
 def emitter_body_cps_provider_10_needed_pair(v_0: Arena.Arena, v_2: U32, v_4: U32, +v_5: Scope.ArenaGlobalScope, +v_8: Map<&2, cps_provider_10_Definition>, v_10: cps_provider_10_Needed) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
-  EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_term{v_0, v_2, v_5, v_8, v_10}}, v_1012574 => v_1012572 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012574); emitter_body_cps_provider_10_native_match_needed_pair_0(v_1012572, v_4, v_5, v_8)}
+  EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_term{v_0, v_2, v_5, v_8, v_10}}, v_1012579 => v_1012577 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012579); emitter_body_cps_provider_10_native_match_needed_pair_0(v_1012577, v_4, v_5, v_8)}
 
 def emitter_body_cps_provider_10_native_match_needed_term_0(v_2: cps_provider_10_CatalogResult<String>, v_5: Map<&2, cps_provider_10_Definition>, v_7: cps_provider_10_Needed) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
   match v_2:
     case cps_provider_10_CatalogResult{v_12, v_13}:
       emitter_body_cps_provider_10_needed_ref(v_12, v_13, v_5, v_7)
 
-def emitter_match_2697(v_2: cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_8: U32, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_10_Definition>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
-  match v_2:
-    case cps_provider_10_CatalogResult{v_13, v_14}:
-      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_term{v_13, v_8, v_3, v_6, v_14}}, v_1012577 => v_1012576 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012577); EmitterFinished{EmitterValue{v_1012576}}}
-
-def emitter_body_cps_provider_10_native_match_needed_term_1(v_2: cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_10_Definition>, v_8: U32) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
-  emitter_match_2697(v_2, v_8, v_3, v_6)
-
 def emitter_match_2698(v_2: cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_8: U32, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_10_Definition>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
   match v_2:
     case cps_provider_10_CatalogResult{v_13, v_14}:
-      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_term{v_13, v_8, v_3, v_6, v_14}}, v_1012579 => v_1012578 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012579); EmitterFinished{EmitterValue{v_1012578}}}
+      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_term{v_13, v_8, v_3, v_6, v_14}}, v_1012582 => v_1012581 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012582); EmitterFinished{EmitterValue{v_1012581}}}
 
-def emitter_body_cps_provider_10_native_match_needed_term_2(v_2: cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_10_Definition>, v_8: U32) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
+def emitter_body_cps_provider_10_native_match_needed_term_1(v_2: cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_10_Definition>, v_8: U32) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
   emitter_match_2698(v_2, v_8, v_3, v_6)
 
 def emitter_match_2699(v_2: cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_8: U32, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_10_Definition>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
   match v_2:
     case cps_provider_10_CatalogResult{v_13, v_14}:
-      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_term{v_13, v_8, v_3, v_6, v_14}}, v_1012581 => v_1012580 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012581); EmitterFinished{EmitterValue{v_1012580}}}
+      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_term{v_13, v_8, v_3, v_6, v_14}}, v_1012584 => v_1012583 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012584); EmitterFinished{EmitterValue{v_1012583}}}
 
-def emitter_body_cps_provider_10_native_match_needed_term_3(v_2: cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_10_Definition>, v_8: U32) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
+def emitter_body_cps_provider_10_native_match_needed_term_2(v_2: cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_10_Definition>, v_8: U32) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
   emitter_match_2699(v_2, v_8, v_3, v_6)
 
-def emitter_match_2700(v_2: cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_8: U32, v_10: U32, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_10_Definition>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
+def emitter_match_2700(v_2: cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_8: U32, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_10_Definition>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
+  match v_2:
+    case cps_provider_10_CatalogResult{v_13, v_14}:
+      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_term{v_13, v_8, v_3, v_6, v_14}}, v_1012586 => v_1012585 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012586); EmitterFinished{EmitterValue{v_1012585}}}
+
+def emitter_body_cps_provider_10_native_match_needed_term_3(v_2: cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_10_Definition>, v_8: U32) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
+  emitter_match_2700(v_2, v_8, v_3, v_6)
+
+def emitter_match_2701(v_2: cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_8: U32, v_10: U32, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_10_Definition>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
   match v_2:
     case cps_provider_10_CatalogResult{v_15, v_16}:
       emitter_body_cps_provider_10_needed_terms(v_15, v_8, v_10, v_3, v_6, v_16)
 
 def emitter_body_cps_provider_10_native_match_needed_term_4(v_2: cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_10_Definition>, v_8: U32, v_10: U32) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
-  emitter_match_2700(v_2, v_8, v_10, v_3, v_6)
+  emitter_match_2701(v_2, v_8, v_10, v_3, v_6)
 
-def emitter_match_2701(v_2: cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_8: U32, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_10_Definition>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
+def emitter_match_2702(v_2: cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_8: U32, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_10_Definition>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
   match v_2:
     case cps_provider_10_CatalogResult{v_13, v_14}:
-      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_term{v_13, v_8, v_3, v_6, v_14}}, v_1012584 => v_1012583 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012584); EmitterFinished{EmitterValue{v_1012583}}}
+      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_term{v_13, v_8, v_3, v_6, v_14}}, v_1012589 => v_1012588 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012589); EmitterFinished{EmitterValue{v_1012588}}}
 
 def emitter_body_cps_provider_10_native_match_needed_term_5(v_2: cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_10_Definition>, v_8: U32) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
-  emitter_match_2701(v_2, v_8, v_3, v_6)
+  emitter_match_2702(v_2, v_8, v_3, v_6)
 
-def emitter_match_2702(v_0: Arena.Node, v_7: Arena.Arena, +v_1: Scope.ArenaGlobalScope, +v_4: Map<&2, cps_provider_10_Definition>, v_6: cps_provider_10_Needed) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
+def emitter_match_2703(v_0: Arena.Node, v_7: Arena.Arena, +v_1: Scope.ArenaGlobalScope, +v_4: Map<&2, cps_provider_10_Definition>, v_6: cps_provider_10_Needed) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
   match v_0:
     case Arena.TermRef{v_12, _}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor_name{v_7, v_12, v_1, False{}}}, False{}, v_1012588 => emitter_body_cps_provider_10_descriptor_name(v_7, v_12, v_1, False{}), v_1012587 => v_1012585 = emitter_unbox(cps_provider_10_CatalogResult<String>, v_1012587); emitter_body_cps_provider_10_native_match_needed_term_0(v_1012585, v_4, v_6)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor_name{v_7, v_12, v_1, False{}}}, False{}, v_1012593 => emitter_body_cps_provider_10_descriptor_name(v_7, v_12, v_1, False{}), v_1012592 => v_1012590 = emitter_unbox(cps_provider_10_CatalogResult<String>, v_1012592); emitter_body_cps_provider_10_native_match_needed_term_0(v_1012590, v_4, v_6)}
     case Arena.TermBang{v_18, _}:
-      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_term{v_7, v_18, v_1, v_4, v_6}}, v_1012590 => v_1012589 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012590); EmitterFinished{EmitterValue{v_1012589}}}
+      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_term{v_7, v_18, v_1, v_4, v_6}}, v_1012595 => v_1012594 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012595); EmitterFinished{EmitterValue{v_1012594}}}
     case Arena.TermSub{_, v_26, v_27, _}:
       emitter_body_cps_provider_10_needed_pair(v_7, v_26, v_27, v_1, v_4, v_6)
     case Arena.TermLet{_, _, _, _, _, _, v_46, v_47, v_48, _}:
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_terms{v_7, v_46, v_47, v_1, v_4, v_6}}, False{}, v_1012595 => emitter_body_cps_provider_10_needed_terms(v_7, v_46, v_47, v_1, v_4, v_6), v_1012594 => v_1012592 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012594); emitter_body_cps_provider_10_native_match_needed_term_1(v_1012592, v_1, v_4, v_48)}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_terms{v_7, v_46, v_47, v_1, v_4, v_6}}, False{}, v_1012600 => emitter_body_cps_provider_10_needed_terms(v_7, v_46, v_47, v_1, v_4, v_6), v_1012599 => v_1012597 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012599); emitter_body_cps_provider_10_native_match_needed_term_1(v_1012597, v_1, v_4, v_48)}
     case Arena.TermAnn{v_55, v_56, _}:
       emitter_body_cps_provider_10_needed_pair(v_7, v_55, v_56, v_1, v_4, v_6)
     case Arena.TermType{v_61, _}:
-      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_term{v_7, v_61, v_1, v_4, v_6}}, v_1012598 => v_1012597 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012598); EmitterFinished{EmitterValue{v_1012597}}}
+      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_term{v_7, v_61, v_1, v_4, v_6}}, v_1012603 => v_1012602 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012603); EmitterFinished{EmitterValue{v_1012602}}}
     case Arena.TermMin{v_67, v_68, _}:
       emitter_body_cps_provider_10_needed_pair(v_7, v_67, v_68, v_1, v_4, v_6)
     case Arena.TermAll{_, _, _, v_80, v_81, _}:
       emitter_body_cps_provider_10_needed_pair(v_7, v_80, v_81, v_1, v_4, v_6)
     case Arena.TermLam{_, _, _, v_92, _}:
-      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_term{v_7, v_92, v_1, v_4, v_6}}, v_1012602 => v_1012601 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012602); EmitterFinished{EmitterValue{v_1012601}}}
+      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_term{v_7, v_92, v_1, v_4, v_6}}, v_1012607 => v_1012606 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012607); EmitterFinished{EmitterValue{v_1012606}}}
     case Arena.TermApp{v_98, v_99, _}:
       emitter_body_cps_provider_10_needed_pair(v_7, v_98, v_99, v_1, v_4, v_6)
     case Arena.TermAdt{_, v_109, v_110, _, _, _}:
       emitter_body_cps_provider_10_needed_terms(v_7, v_109, v_110, v_1, v_4, v_6)
     case Arena.TermFill{v_119, v_120, v_121, _}:
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_terms{v_7, v_120, v_121, v_1, v_4, v_6}}, False{}, v_1012608 => emitter_body_cps_provider_10_needed_terms(v_7, v_120, v_121, v_1, v_4, v_6), v_1012607 => v_1012605 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012607); emitter_body_cps_provider_10_native_match_needed_term_2(v_1012605, v_1, v_4, v_119)}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_terms{v_7, v_120, v_121, v_1, v_4, v_6}}, False{}, v_1012613 => emitter_body_cps_provider_10_needed_terms(v_7, v_120, v_121, v_1, v_4, v_6), v_1012612 => v_1012610 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012612); emitter_body_cps_provider_10_native_match_needed_term_2(v_1012610, v_1, v_4, v_119)}
     case Arena.TermPlus{v_129, v_130, v_131, _}:
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_terms{v_7, v_130, v_131, v_1, v_4, v_6}}, False{}, v_1012612 => emitter_body_cps_provider_10_needed_terms(v_7, v_130, v_131, v_1, v_4, v_6), v_1012611 => v_1012609 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012611); emitter_body_cps_provider_10_native_match_needed_term_3(v_1012609, v_1, v_4, v_129)}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_terms{v_7, v_130, v_131, v_1, v_4, v_6}}, False{}, v_1012617 => emitter_body_cps_provider_10_needed_terms(v_7, v_130, v_131, v_1, v_4, v_6), v_1012616 => v_1012614 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012616); emitter_body_cps_provider_10_native_match_needed_term_3(v_1012614, v_1, v_4, v_129)}
     case Arena.TermCtr{_, v_140, v_141, _}:
       emitter_body_cps_provider_10_needed_terms(v_7, v_140, v_141, v_1, v_4, v_6)
     case Arena.TermMat{_, v_149, v_150, _}:
       emitter_body_cps_provider_10_needed_pair(v_7, v_149, v_150, v_1, v_4, v_6)
     case Arena.TermEqual{_, _, v_159, _}:
-      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_term{v_7, v_159, v_1, v_4, v_6}}, v_1012616 => v_1012615 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012616); EmitterFinished{EmitterValue{v_1012615}}}
+      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_term{v_7, v_159, v_1, v_4, v_6}}, v_1012621 => v_1012620 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012621); EmitterFinished{EmitterValue{v_1012620}}}
     case Arena.TermRewrite{_, _, v_168, _}:
-      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_term{v_7, v_168, v_1, v_4, v_6}}, v_1012618 => v_1012617 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012618); EmitterFinished{EmitterValue{v_1012617}}}
+      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_term{v_7, v_168, v_1, v_4, v_6}}, v_1012623 => v_1012622 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012623); EmitterFinished{EmitterValue{v_1012622}}}
     case Arena.BodyMatch{v_176, v_177, v_178, v_179, _}:
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_terms{v_7, v_176, v_177, v_1, v_4, v_6}}, False{}, v_1012622 => emitter_body_cps_provider_10_needed_terms(v_7, v_176, v_177, v_1, v_4, v_6), v_1012621 => v_1012619 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012621); emitter_body_cps_provider_10_native_match_needed_term_4(v_1012619, v_1, v_4, v_178, v_179)}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_terms{v_7, v_176, v_177, v_1, v_4, v_6}}, False{}, v_1012627 => emitter_body_cps_provider_10_needed_terms(v_7, v_176, v_177, v_1, v_4, v_6), v_1012626 => v_1012624 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012626); emitter_body_cps_provider_10_native_match_needed_term_4(v_1012624, v_1, v_4, v_178, v_179)}
     case Arena.BodyCase{_, _, v_189, _}:
-      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_term{v_7, v_189, v_1, v_4, v_6}}, v_1012624 => v_1012623 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012624); EmitterFinished{EmitterValue{v_1012623}}}
+      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_term{v_7, v_189, v_1, v_4, v_6}}, v_1012629 => v_1012628 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012629); EmitterFinished{EmitterValue{v_1012628}}}
     case Arena.BodyLocal{_, _, _, v_202, v_203, v_204, _}:
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_terms{v_7, v_202, v_203, v_1, v_4, v_6}}, False{}, v_1012628 => emitter_body_cps_provider_10_needed_terms(v_7, v_202, v_203, v_1, v_4, v_6), v_1012627 => v_1012625 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012627); emitter_body_cps_provider_10_native_match_needed_term_5(v_1012625, v_1, v_4, v_204)}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_terms{v_7, v_202, v_203, v_1, v_4, v_6}}, False{}, v_1012633 => emitter_body_cps_provider_10_needed_terms(v_7, v_202, v_203, v_1, v_4, v_6), v_1012632 => v_1012630 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012632); emitter_body_cps_provider_10_native_match_needed_term_5(v_1012630, v_1, v_4, v_204)}
     case Arena.BodyReply{v_210, _}:
-      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_term{v_7, v_210, v_1, v_4, v_6}}, v_1012630 => v_1012629 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012630); EmitterFinished{EmitterValue{v_1012629}}}
+      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_term{v_7, v_210, v_1, v_4, v_6}}, v_1012635 => v_1012634 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012635); EmitterFinished{EmitterValue{v_1012634}}}
     case Arena.TermVar{_, _, _}:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_7, v_6}}}
     case Arena.TermTemplate{_, _}:
@@ -28955,7 +28975,7 @@ def emitter_match_2702(v_0: Arena.Node, v_7: Arena.Arena, +v_1: Scope.ArenaGloba
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_7, v_6}}}
 
 def emitter_body_cps_provider_10_native_match_needed_term_6(v_0: Arena.Node, v_1: Scope.ArenaGlobalScope, v_4: Map<&2, cps_provider_10_Definition>, v_6: cps_provider_10_Needed, v_7: Arena.Arena) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
-  emitter_match_2702(v_0, v_7, v_1, v_4, v_6)
+  emitter_match_2703(v_0, v_7, v_1, v_4, v_6)
 
 def emitter_body_cps_provider_10_native_match_needed_term_7(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Node>, v_4: Scope.ArenaGlobalScope, v_7: Map<&2, cps_provider_10_Definition>, v_9: cps_provider_10_Needed) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
   match v_3:
@@ -28963,61 +28983,61 @@ def emitter_body_cps_provider_10_native_match_needed_term_7(v_3: Sigma<&1, &1, A
       emitter_body_cps_provider_10_native_match_needed_term_6(v_15, v_4, v_7, v_9, v_14)
 
 def emitter_body_cps_provider_10_needed_term(v_0: Arena.Arena, v_2: U32, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_10_Definition>, v_8: cps_provider_10_Needed) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
-  EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_native_match_needed_term_7{Arena.get_node(v_0, v_2), v_3, v_6, v_8}}, False{}, v_1012635 => emitter_body_cps_provider_10_native_match_needed_term_7(Arena.get_node(v_0, v_2), v_3, v_6, v_8), v_1012634 => v_1012633 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012634); EmitterFinished{EmitterValue{v_1012633}}}
-
-def emitter_match_2704(v_2: cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_8: List<&2, cps_provider_10_Root>, v_5: Map<&2, cps_provider_10_Definition>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
-  match v_2:
-    case cps_provider_10_CatalogResult{v_13, v_14}:
-      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_roots{v_13, v_8, v_5, v_14}}, v_1012637 => v_1012636 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012637); EmitterFinished{EmitterValue{v_1012636}}}
-
-def emitter_body_cps_provider_10_native_match_needed_roots_0(v_2: cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_5: Map<&2, cps_provider_10_Definition>, v_8: List<&2, cps_provider_10_Root>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
-  emitter_match_2704(v_2, v_8, v_5)
+  EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_native_match_needed_term_7{Arena.get_node(v_0, v_2), v_3, v_6, v_8}}, False{}, v_1012640 => emitter_body_cps_provider_10_native_match_needed_term_7(Arena.get_node(v_0, v_2), v_3, v_6, v_8), v_1012639 => v_1012638 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012639); EmitterFinished{EmitterValue{v_1012638}}}
 
 def emitter_match_2705(v_2: cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_8: List<&2, cps_provider_10_Root>, v_5: Map<&2, cps_provider_10_Definition>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
   match v_2:
     case cps_provider_10_CatalogResult{v_13, v_14}:
-      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_roots{v_13, v_8, v_5, v_14}}, v_1012639 => v_1012638 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012639); EmitterFinished{EmitterValue{v_1012638}}}
+      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_roots{v_13, v_8, v_5, v_14}}, v_1012642 => v_1012641 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012642); EmitterFinished{EmitterValue{v_1012641}}}
 
-def emitter_body_cps_provider_10_native_match_needed_roots_1(v_2: cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_5: Map<&2, cps_provider_10_Definition>, v_8: List<&2, cps_provider_10_Root>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
+def emitter_body_cps_provider_10_native_match_needed_roots_0(v_2: cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_5: Map<&2, cps_provider_10_Definition>, v_8: List<&2, cps_provider_10_Root>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
   emitter_match_2705(v_2, v_8, v_5)
 
-def emitter_match_2706(v_2: List<&2, cps_provider_10_Root>, v_3: Arena.Arena, v_8: cps_provider_10_Needed, +v_6: Map<&2, cps_provider_10_Definition>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
+def emitter_match_2706(v_2: cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_8: List<&2, cps_provider_10_Root>, v_5: Map<&2, cps_provider_10_Definition>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
+  match v_2:
+    case cps_provider_10_CatalogResult{v_13, v_14}:
+      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_roots{v_13, v_8, v_5, v_14}}, v_1012644 => v_1012643 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012644); EmitterFinished{EmitterValue{v_1012643}}}
+
+def emitter_body_cps_provider_10_native_match_needed_roots_1(v_2: cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_5: Map<&2, cps_provider_10_Definition>, v_8: List<&2, cps_provider_10_Root>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
+  emitter_match_2706(v_2, v_8, v_5)
+
+def emitter_match_2707(v_2: List<&2, cps_provider_10_Root>, v_3: Arena.Arena, v_8: cps_provider_10_Needed, +v_6: Map<&2, cps_provider_10_Definition>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
   match v_2:
     case []:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_3, v_8}}}
     case cps_provider_10_TermRoot{v_14, v_15} <> v_16:
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_term{v_3, v_14, v_15, v_6, v_8}}, False{}, v_1012643 => emitter_body_cps_provider_10_needed_term(v_3, v_14, v_15, v_6, v_8), v_1012642 => v_1012640 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012642); emitter_body_cps_provider_10_native_match_needed_roots_0(v_1012640, v_6, v_16)}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_term{v_3, v_14, v_15, v_6, v_8}}, False{}, v_1012648 => emitter_body_cps_provider_10_needed_term(v_3, v_14, v_15, v_6, v_8), v_1012647 => v_1012645 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012647); emitter_body_cps_provider_10_native_match_needed_roots_0(v_1012645, v_6, v_16)}
     case cps_provider_10_DefinitionRoot{v_21} <> v_22:
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_ref{v_3, v_21, v_6, v_8}}, False{}, v_1012647 => emitter_body_cps_provider_10_needed_ref(v_3, v_21, v_6, v_8), v_1012646 => v_1012644 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012646); emitter_body_cps_provider_10_native_match_needed_roots_1(v_1012644, v_6, v_22)}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_ref{v_3, v_21, v_6, v_8}}, False{}, v_1012652 => emitter_body_cps_provider_10_needed_ref(v_3, v_21, v_6, v_8), v_1012651 => v_1012649 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1012651); emitter_body_cps_provider_10_native_match_needed_roots_1(v_1012649, v_6, v_22)}
 
 def emitter_body_cps_provider_10_native_match_needed_roots_2(v_2: List<&2, cps_provider_10_Root>, v_3: Arena.Arena, v_6: Map<&2, cps_provider_10_Definition>, v_8: cps_provider_10_Needed) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
-  emitter_match_2706(v_2, v_3, v_8, v_6)
+  emitter_match_2707(v_2, v_3, v_8, v_6)
 
 def emitter_body_cps_provider_10_needed_roots(v_0: Arena.Arena, v_3: List<&2, cps_provider_10_Root>, v_6: Map<&2, cps_provider_10_Definition>, v_8: cps_provider_10_Needed) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Needed>>:
   emitter_body_cps_provider_10_native_match_needed_roots_2(v_3, v_0, v_6, v_8)
 
-def emitter_match_2707(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Binder>, v_9: U32, v_11: U32, +v_4: Scope.ArenaGlobalScope, v_7: List<&2, cps_provider_10_Root>) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, cps_provider_10_Root>>>:
+def emitter_match_2708(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Binder>, v_9: U32, v_11: U32, +v_4: Scope.ArenaGlobalScope, v_7: List<&2, cps_provider_10_Root>) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, cps_provider_10_Root>>>:
   match v_3:
     case (v_17, v_18):
-      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_binder_roots{v_17, IR.Words{IR.arena_range_index(v_9, 1), U32.sub(v_11, 1)}, v_4, cps_provider_10_TermRoot{emitter_pure_cps_provider_10_binder_type(v_18), v_4} <> v_7}}, v_1012650 => v_1012649 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, cps_provider_10_Root>>, v_1012650); EmitterFinished{EmitterValue{v_1012649}}}
+      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_binder_roots{v_17, IR.Words{IR.arena_range_index(v_9, 1), U32.sub(v_11, 1)}, v_4, cps_provider_10_TermRoot{emitter_pure_cps_provider_10_binder_type(v_18), v_4} <> v_7}}, v_1012655 => v_1012654 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, cps_provider_10_Root>>, v_1012655); EmitterFinished{EmitterValue{v_1012654}}}
 
 def emitter_body_cps_provider_10_native_match_binder_roots_0(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Binder>, v_4: Scope.ArenaGlobalScope, v_7: List<&2, cps_provider_10_Root>, v_9: U32, v_11: U32) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, cps_provider_10_Root>>>:
-  emitter_match_2707(v_3, v_9, v_11, v_4, v_7)
+  emitter_match_2708(v_3, v_9, v_11, v_4, v_7)
 
 def emitter_body_cps_provider_10_native_match_binder_roots_1(v_4: Sigma<&1, &1, Arena.Arena, _ => U32>, v_5: Scope.ArenaGlobalScope, v_8: List<&2, cps_provider_10_Root>, v_10: U32, v_12: U32) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, cps_provider_10_Root>>>:
   match v_4:
     case (v_18, v_19):
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_native_match_binder_roots_0{Arena.get_binder(v_18, v_19), v_5, v_8, v_10, v_12}}, False{}, v_1012654 => emitter_body_cps_provider_10_native_match_binder_roots_0(Arena.get_binder(v_18, v_19), v_5, v_8, v_10, v_12), v_1012653 => v_1012652 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, cps_provider_10_Root>>, v_1012653); EmitterFinished{EmitterValue{v_1012652}}}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_native_match_binder_roots_0{Arena.get_binder(v_18, v_19), v_5, v_8, v_10, v_12}}, False{}, v_1012659 => emitter_body_cps_provider_10_native_match_binder_roots_0(Arena.get_binder(v_18, v_19), v_5, v_8, v_10, v_12), v_1012658 => v_1012657 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, cps_provider_10_Root>>, v_1012658); EmitterFinished{EmitterValue{v_1012657}}}
 
-def emitter_match_2709(v_0: IR.Words, v_1: Arena.Arena, v_5: List<&2, cps_provider_10_Root>, v_2: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, cps_provider_10_Root>>>:
+def emitter_match_2710(v_0: IR.Words, v_1: Arena.Arena, v_5: List<&2, cps_provider_10_Root>, v_2: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, cps_provider_10_Root>>>:
   match v_0:
     case IR.Words{_, 0}:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1, v_5}}}
     case IR.Words{+v_13, v_14}:
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_native_match_binder_roots_1{Arena.word(v_1, IR.arena_tape_offset(v_13)), v_2, v_5, v_13, v_14}}, False{}, v_1012658 => emitter_body_cps_provider_10_native_match_binder_roots_1(Arena.word(v_1, IR.arena_tape_offset(v_13)), v_2, v_5, v_13, v_14), v_1012657 => v_1012656 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, cps_provider_10_Root>>, v_1012657); EmitterFinished{EmitterValue{v_1012656}}}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_native_match_binder_roots_1{Arena.word(v_1, IR.arena_tape_offset(v_13)), v_2, v_5, v_13, v_14}}, False{}, v_1012663 => emitter_body_cps_provider_10_native_match_binder_roots_1(Arena.word(v_1, IR.arena_tape_offset(v_13)), v_2, v_5, v_13, v_14), v_1012662 => v_1012661 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, cps_provider_10_Root>>, v_1012662); EmitterFinished{EmitterValue{v_1012661}}}
 
 def emitter_body_cps_provider_10_native_match_binder_roots_2(v_0: IR.Words, v_1: Arena.Arena, v_2: Scope.ArenaGlobalScope, v_5: List<&2, cps_provider_10_Root>) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, cps_provider_10_Root>>>:
-  emitter_match_2709(v_0, v_1, v_5, v_2)
+  emitter_match_2710(v_0, v_1, v_5, v_2)
 
 def emitter_body_cps_provider_10_binder_roots(v_0: Arena.Arena, v_1: IR.Words, v_2: Scope.ArenaGlobalScope, v_5: List<&2, cps_provider_10_Root>) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, cps_provider_10_Root>>>:
   emitter_body_cps_provider_10_native_match_binder_roots_2(v_1, v_0, v_2, v_5)
@@ -29025,7 +29045,7 @@ def emitter_body_cps_provider_10_binder_roots(v_0: Arena.Arena, v_1: IR.Words, v
 def emitter_body_cps_provider_10_binder_type(v_0: Arena.Binder) -> EmitterProgress<U32>:
   EmitterFinished{EmitterValue{emitter_pure_cps_provider_10_binder_type(v_0)}}
 
-def emitter_match_2710(v_0: IR.OptionalTerm, v_4: List<&2, cps_provider_10_Root>, v_1: Scope.ArenaGlobalScope) -> EmitterProgress<List<&2, cps_provider_10_Root>>:
+def emitter_match_2711(v_0: IR.OptionalTerm, v_4: List<&2, cps_provider_10_Root>, v_1: Scope.ArenaGlobalScope) -> EmitterProgress<List<&2, cps_provider_10_Root>>:
   match v_0:
     case IR.NoTerm{}:
       EmitterFinished{EmitterValue{v_4}}
@@ -29033,7 +29053,7 @@ def emitter_match_2710(v_0: IR.OptionalTerm, v_4: List<&2, cps_provider_10_Root>
       EmitterFinished{EmitterValue{cps_provider_10_TermRoot{v_8, v_1} <> v_4}}
 
 def emitter_body_cps_provider_10_result_roots(v_0: IR.OptionalTerm, v_1: Scope.ArenaGlobalScope, v_4: List<&2, cps_provider_10_Root>) -> EmitterProgress<List<&2, cps_provider_10_Root>>:
-  emitter_match_2710(v_0, v_4, v_1)
+  emitter_match_2711(v_0, v_4, v_1)
 
 def emitter_body_cps_provider_10_type_root(v_1: Bool, v_3: String, v_6: List<&2, cps_provider_10_Root>) -> EmitterProgress<List<&2, cps_provider_10_Root>>:
   match v_1:
@@ -29045,19 +29065,19 @@ def emitter_body_cps_provider_10_type_root(v_1: Bool, v_3: String, v_6: List<&2,
 def emitter_body_cps_provider_10_preparation_failure(v_1: cps_provider_10_Preparation, v_3: String) -> EmitterProgress<cps_provider_10_Preparation>:
   match v_1:
     case cps_provider_10_Preparation{v_17, v_18, v_19, v_20, v_21, v_22, v_23, v_24, v_25, v_26, v_27, v_28}:
-      v_1012660 = {v_17 : List<&2, cps_provider_10_Definition>}
-      v_1012661 = {v_18 : Map<&2, cps_provider_10_Definition>}
-      v_1012662 = {v_19 : Map<&2, cps_provider_10_DefinitionHeader>}
-      v_1012663 = {v_20 : List<&2, BIR.ConstructorLayout>}
-      v_1012664 = {v_21 : Map<&2, cps_provider_10_Constructor>}
-      v_1012665 = {v_22 : List<&2, BIR.Family>}
-      v_1012666 = {v_23 : U32}
-      v_1012667 = {v_24 : U32}
-      v_1012668 = {v_25 : List<&2, cps_provider_10_Root>}
-      v_1012669 = {v_26 : Maybe<&2, BIR.Descriptor>}
-      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_first_failure{v_27, v_3}}, v_1012671 => +v_1012670 = emitter_unbox(Maybe<&2, String>, v_1012671); EmitterFinished{EmitterValue{cps_provider_10_Preparation{v_1012660, v_1012661, v_1012662, v_1012663, v_1012664, v_1012665, v_1012666, v_1012667, v_1012668, v_1012669, v_1012670, v_28}}}}
+      v_1012665 = {v_17 : List<&2, cps_provider_10_Definition>}
+      v_1012666 = {v_18 : Map<&2, cps_provider_10_Definition>}
+      v_1012667 = {v_19 : Map<&2, cps_provider_10_DefinitionHeader>}
+      v_1012668 = {v_20 : List<&2, BIR.ConstructorLayout>}
+      v_1012669 = {v_21 : Map<&2, cps_provider_10_Constructor>}
+      v_1012670 = {v_22 : List<&2, BIR.Family>}
+      v_1012671 = {v_23 : U32}
+      v_1012672 = {v_24 : U32}
+      v_1012673 = {v_25 : List<&2, cps_provider_10_Root>}
+      v_1012674 = {v_26 : Maybe<&2, BIR.Descriptor>}
+      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_first_failure{v_27, v_3}}, v_1012676 => +v_1012675 = emitter_unbox(Maybe<&2, String>, v_1012676); EmitterFinished{EmitterValue{cps_provider_10_Preparation{v_1012665, v_1012666, v_1012667, v_1012668, v_1012669, v_1012670, v_1012671, v_1012672, v_1012673, v_1012674, v_1012675, v_28}}}}
 
-def emitter_match_2713(+v_2: Maybe<&2, String>, v_4: String) -> EmitterProgress<Maybe<&2, String>>:
+def emitter_match_2714(+v_2: Maybe<&2, String>, v_4: String) -> EmitterProgress<Maybe<&2, String>>:
   match v_2:
     case Some{_}:
       EmitterFinished{EmitterValue{v_2}}
@@ -29065,9 +29085,9 @@ def emitter_match_2713(+v_2: Maybe<&2, String>, v_4: String) -> EmitterProgress<
       EmitterFinished{EmitterValue{Some{v_4}}}
 
 def emitter_body_cps_provider_10_first_failure(v_2: Maybe<&2, String>, v_4: String) -> EmitterProgress<Maybe<&2, String>>:
-  emitter_match_2713(v_2, v_4)
+  emitter_match_2714(v_2, v_4)
 
-def emitter_match_2714(v_2: Maybe<&2, cps_provider_10_DefinitionHeader>, +v_9: Map<&2, cps_provider_10_DefinitionHeader>, +v_4: String, v_6: cps_provider_10_DefinitionHeader) -> EmitterProgress<Map<&2, cps_provider_10_DefinitionHeader>>:
+def emitter_match_2715(v_2: Maybe<&2, cps_provider_10_DefinitionHeader>, +v_9: Map<&2, cps_provider_10_DefinitionHeader>, +v_4: String, v_6: cps_provider_10_DefinitionHeader) -> EmitterProgress<Map<&2, cps_provider_10_DefinitionHeader>>:
   match v_2:
     case Some{_}:
       EmitterFinished{EmitterValue{v_9}}
@@ -29075,10 +29095,10 @@ def emitter_match_2714(v_2: Maybe<&2, cps_provider_10_DefinitionHeader>, +v_9: M
       EmitterFinished{EmitterValue{Map.set(&2, cps_provider_10_DefinitionHeader, v_9, v_4, v_6)}}
 
 def emitter_body_cps_provider_10_native_match_header_insert_0(v_2: Maybe<&2, cps_provider_10_DefinitionHeader>, +v_4: String, v_6: cps_provider_10_DefinitionHeader, +v_9: Map<&2, cps_provider_10_DefinitionHeader>) -> EmitterProgress<Map<&2, cps_provider_10_DefinitionHeader>>:
-  emitter_match_2714(v_2, v_9, v_4, v_6)
+  emitter_match_2715(v_2, v_9, v_4, v_6)
 
 def emitter_body_cps_provider_10_header_insert(+v_1: String, v_3: cps_provider_10_DefinitionHeader, +v_6: Map<&2, cps_provider_10_DefinitionHeader>) -> EmitterProgress<Map<&2, cps_provider_10_DefinitionHeader>>:
-  EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_native_match_header_insert_0{IndexLookup.find(cps_provider_10_DefinitionHeader, v_6, v_1), v_1, v_3, v_6}}, False{}, v_1012674 => emitter_body_cps_provider_10_native_match_header_insert_0(IndexLookup.find(cps_provider_10_DefinitionHeader, v_6, v_1), v_1, v_3, v_6), v_1012673 => +v_1012672 = emitter_unbox(Map<&2, cps_provider_10_DefinitionHeader>, v_1012673); EmitterFinished{EmitterValue{v_1012672}}}
+  EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_native_match_header_insert_0{IndexLookup.find(cps_provider_10_DefinitionHeader, v_6, v_1), v_1, v_3, v_6}}, False{}, v_1012679 => emitter_body_cps_provider_10_native_match_header_insert_0(IndexLookup.find(cps_provider_10_DefinitionHeader, v_6, v_1), v_1, v_3, v_6), v_1012678 => +v_1012677 = emitter_unbox(Map<&2, cps_provider_10_DefinitionHeader>, v_1012678); EmitterFinished{EmitterValue{v_1012677}}}
 
 def emitter_body_cps_provider_10_value_insert(v_2: Maybe<&2, Bool>, v_3: IR.DefBody, v_5: String, v_7: cps_provider_10_Definition, v_10: Map<&2, cps_provider_10_Definition>) -> EmitterProgress<Map<&2, cps_provider_10_Definition>>:
   match v_2, v_3:
@@ -29087,41 +29107,41 @@ def emitter_body_cps_provider_10_value_insert(v_2: Maybe<&2, Bool>, v_3: IR.DefB
     case _, _:
       EmitterFinished{EmitterValue{v_10}}
 
-def emitter_match_2716(v_4: Sigma<&1, &1, Arena.Arena, _ => String>, v_8: U32, v_10: U32, +v_6: String, v_13: List<&2, String>) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, String>>>:
+def emitter_match_2717(v_4: Sigma<&1, &1, Arena.Arena, _ => String>, v_8: U32, v_10: U32, +v_6: String, v_13: List<&2, String>) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, String>>>:
   match v_4:
     case (v_19, v_20):
-      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_foreign_sources{v_19, IR.Names{IR.arena_range_index(v_8, 1), U32.sub(v_10, 1)}, v_6, Path.resolve(v_6, v_20) <> v_13}}, v_1012677 => v_1012676 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, String>>, v_1012677); EmitterFinished{EmitterValue{v_1012676}}}
+      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_foreign_sources{v_19, IR.Names{IR.arena_range_index(v_8, 1), U32.sub(v_10, 1)}, v_6, Path.resolve(v_6, v_20) <> v_13}}, v_1012682 => v_1012681 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, String>>, v_1012682); EmitterFinished{EmitterValue{v_1012681}}}
 
 def emitter_body_cps_provider_10_native_match_foreign_sources_1(v_4: Sigma<&1, &1, Arena.Arena, _ => String>, v_6: String, v_8: U32, v_10: U32, v_13: List<&2, String>) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, String>>>:
-  emitter_match_2716(v_4, v_8, v_10, v_6, v_13)
+  emitter_match_2717(v_4, v_8, v_10, v_6, v_13)
 
 def emitter_body_cps_provider_10_native_match_foreign_sources_0(v_4: Sigma<&1, &1, Arena.Arena, _ => U32>, v_6: String, v_8: U32, v_10: U32, v_13: List<&2, String>) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, String>>>:
   match v_4:
     case (v_19, v_20):
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_native_match_foreign_sources_1{Arena.name_text(v_19, v_20), v_6, v_8, v_10, v_13}}, False{}, v_1012681 => emitter_body_cps_provider_10_native_match_foreign_sources_1(Arena.name_text(v_19, v_20), v_6, v_8, v_10, v_13), v_1012680 => v_1012679 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, String>>, v_1012680); EmitterFinished{EmitterValue{v_1012679}}}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_native_match_foreign_sources_1{Arena.name_text(v_19, v_20), v_6, v_8, v_10, v_13}}, False{}, v_1012686 => emitter_body_cps_provider_10_native_match_foreign_sources_1(Arena.name_text(v_19, v_20), v_6, v_8, v_10, v_13), v_1012685 => v_1012684 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, String>>, v_1012685); EmitterFinished{EmitterValue{v_1012684}}}
 
-def emitter_match_2718(v_1: IR.Names, v_0: Arena.Arena, v_6: List<&2, String>, v_3: String) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, String>>>:
+def emitter_match_2719(v_1: IR.Names, v_0: Arena.Arena, v_6: List<&2, String>, v_3: String) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, String>>>:
   match v_1:
     case IR.Names{_, 0}:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_0, List.reverse(&2, String, v_6)}}}
     case IR.Names{+v_15, v_16}:
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_native_match_foreign_sources_0{Arena.word(v_0, IR.arena_tape_offset(v_15)), v_3, v_15, v_16, v_6}}, False{}, v_1012685 => emitter_body_cps_provider_10_native_match_foreign_sources_0(Arena.word(v_0, IR.arena_tape_offset(v_15)), v_3, v_15, v_16, v_6), v_1012684 => v_1012683 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, String>>, v_1012684); EmitterFinished{EmitterValue{v_1012683}}}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_native_match_foreign_sources_0{Arena.word(v_0, IR.arena_tape_offset(v_15)), v_3, v_15, v_16, v_6}}, False{}, v_1012690 => emitter_body_cps_provider_10_native_match_foreign_sources_0(Arena.word(v_0, IR.arena_tape_offset(v_15)), v_3, v_15, v_16, v_6), v_1012689 => v_1012688 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, String>>, v_1012689); EmitterFinished{EmitterValue{v_1012688}}}
 
 def emitter_body_cps_provider_10_foreign_sources(v_0: Arena.Arena, v_1: IR.Names, v_3: String, v_6: List<&2, String>) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, String>>>:
-  emitter_match_2718(v_1, v_0, v_6, v_3)
+  emitter_match_2719(v_1, v_0, v_6, v_3)
 
-def emitter_match_2719(v_1012686: Bool, +v_1: String, v_3: String) -> EmitterProgress<String>:
-  match v_1012686:
+def emitter_match_2720(v_1012691: Bool, +v_1: String, v_3: String) -> EmitterProgress<String>:
+  match v_1012691:
     case True{}:
       EmitterFinished{EmitterValue{""}}
     case False{}:
       EmitterFinished{EmitterValue{String.take(v_1, Nat.sub(String.length(v_1), Nat.add(String.length(v_3), 1n)))}}
 
 def emitter_body_cps_provider_10_foreign_namespace(+v_1: String, +v_3: String) -> EmitterProgress<String>:
-  v_1012686 = {String.eq(v_1, v_3) : Bool}
-  emitter_match_2719(v_1012686, v_1, v_3)
+  v_1012691 = {String.eq(v_1, v_3) : Bool}
+  emitter_match_2720(v_1012691, v_1, v_3)
 
-def emitter_match_2720(v_1: IR.OptionalTerm, v_0: Arena.Arena, v_2: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
+def emitter_match_2721(v_1: IR.OptionalTerm, v_0: Arena.Arena, v_2: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
   match v_1:
     case IR.NoTerm{}:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_0, BIR.DescriptorFailure{"bend: foreign definition has no checked result type"}}}}
@@ -29129,80 +29149,80 @@ def emitter_match_2720(v_1: IR.OptionalTerm, v_0: Arena.Arena, v_2: Scope.ArenaG
       emitter_body_cps_provider_10_descriptor(v_0, v_5, v_2)
 
 def emitter_body_cps_provider_10_foreign_result_type(v_0: Arena.Arena, v_1: IR.OptionalTerm, v_2: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Descriptor>>:
-  emitter_match_2720(v_1, v_0, v_2)
+  emitter_match_2721(v_1, v_0, v_2)
 
-def emitter_match_2721(v_1: IR.Words, v_0: Arena.Arena, v_4: List<&2, BIR.Descriptor>, v_2: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>>:
+def emitter_match_2722(v_1: IR.Words, v_0: Arena.Arena, v_4: List<&2, BIR.Descriptor>, v_2: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>>:
   match v_1:
     case IR.Words{_, 0}:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_0, List.reverse(&2, BIR.Descriptor, v_4)}}}
     case IR.Words{+v_11, v_12}:
-      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_native_match_live_parameter_types_2{Arena.word(v_0, IR.arena_tape_offset(v_11)), v_2, v_4, v_11, v_12}}, v_1012690 => v_1012689 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012690); EmitterFinished{EmitterValue{v_1012689}}}
+      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_native_match_live_parameter_types_2{Arena.word(v_0, IR.arena_tape_offset(v_11)), v_2, v_4, v_11, v_12}}, v_1012695 => v_1012694 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012695); EmitterFinished{EmitterValue{v_1012694}}}
 
 def emitter_body_cps_provider_10_live_parameter_types(v_0: Arena.Arena, v_1: IR.Words, v_2: Scope.ArenaGlobalScope, v_4: List<&2, BIR.Descriptor>) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>>:
-  emitter_match_2721(v_1, v_0, v_4, v_2)
+  emitter_match_2722(v_1, v_0, v_4, v_2)
 
 def emitter_body_cps_provider_10_native_match_live_parameter_types_2(v_4: Sigma<&1, &1, Arena.Arena, _ => U32>, v_5: Scope.ArenaGlobalScope, v_7: List<&2, BIR.Descriptor>, v_9: U32, v_11: U32) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>>:
   match v_4:
     case (v_16, v_17):
-      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_native_match_live_parameter_types_1{Arena.get_binder(v_16, v_17), v_5, v_7, v_9, v_11}}, v_1012693 => v_1012692 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012693); EmitterFinished{EmitterValue{v_1012692}}}
+      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_native_match_live_parameter_types_1{Arena.get_binder(v_16, v_17), v_5, v_7, v_9, v_11}}, v_1012698 => v_1012697 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012698); EmitterFinished{EmitterValue{v_1012697}}}
 
 def emitter_body_cps_provider_10_native_match_live_parameter_types_1(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Binder>, v_4: Scope.ArenaGlobalScope, v_6: List<&2, BIR.Descriptor>, v_8: U32, v_10: U32) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>>:
   match v_3:
     case (v_15, v_16):
-      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_live_parameter_binder{v_15, v_16, v_4, v_6, v_8, v_10}}, v_1012695 => v_1012694 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012695); EmitterFinished{EmitterValue{v_1012694}}}
+      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_live_parameter_binder{v_15, v_16, v_4, v_6, v_8, v_10}}, v_1012700 => v_1012699 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012700); EmitterFinished{EmitterValue{v_1012699}}}
 
-def emitter_match_2724(v_1: Arena.Binder, v_0: Arena.Arena, v_2: Scope.ArenaGlobalScope, v_4: List<&2, BIR.Descriptor>, v_6: U32, v_8: U32) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>>:
+def emitter_match_2725(v_1: Arena.Binder, v_0: Arena.Arena, v_2: Scope.ArenaGlobalScope, v_4: List<&2, BIR.Descriptor>, v_6: U32, v_8: U32) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>>:
   match v_1:
     case Arena.Binder{v_16, _, _, v_19, _}:
-      EmitterPending{EmitterRequestGroup_29{EmitterRequest_cps_provider_10_live_parameter_quantity{emitter_pure_cps_provider_10_quantity(v_16), v_0, v_19, v_2, v_4, v_6, v_8}}, v_1012697 => v_1012696 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012697); EmitterFinished{EmitterValue{v_1012696}}}
+      EmitterPending{EmitterRequestGroup_30{EmitterRequest_cps_provider_10_live_parameter_quantity{emitter_pure_cps_provider_10_quantity(v_16), v_0, v_19, v_2, v_4, v_6, v_8}}, v_1012702 => v_1012701 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012702); EmitterFinished{EmitterValue{v_1012701}}}
     case Arena.TemplateBinder{_, _, _, _}:
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_live_parameter_types{v_0, IR.Words{IR.arena_range_index(v_6, 1), U32.sub(v_8, 1)}, v_2, v_4}}, False{}, v_1012700 => emitter_body_cps_provider_10_live_parameter_types(v_0, IR.Words{IR.arena_range_index(v_6, 1), U32.sub(v_8, 1)}, v_2, v_4), v_1012699 => v_1012698 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012699); EmitterFinished{EmitterValue{v_1012698}}}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_live_parameter_types{v_0, IR.Words{IR.arena_range_index(v_6, 1), U32.sub(v_8, 1)}, v_2, v_4}}, False{}, v_1012705 => emitter_body_cps_provider_10_live_parameter_types(v_0, IR.Words{IR.arena_range_index(v_6, 1), U32.sub(v_8, 1)}, v_2, v_4), v_1012704 => v_1012703 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012704); EmitterFinished{EmitterValue{v_1012703}}}
 
 def emitter_body_cps_provider_10_live_parameter_binder(v_0: Arena.Arena, v_1: Arena.Binder, v_2: Scope.ArenaGlobalScope, v_4: List<&2, BIR.Descriptor>, v_6: U32, v_8: U32) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>>:
-  emitter_match_2724(v_1, v_0, v_2, v_4, v_6, v_8)
+  emitter_match_2725(v_1, v_0, v_2, v_4, v_6, v_8)
 
-def emitter_match_2725(v_1012704: cps_provider_10_CatalogResult<BIR.Descriptor>, v_8: U32, v_10: U32, v_4: Scope.ArenaGlobalScope, v_6: List<&2, BIR.Descriptor>) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>>:
-  match v_1012704:
+def emitter_match_2726(v_1012709: cps_provider_10_CatalogResult<BIR.Descriptor>, v_8: U32, v_10: U32, v_4: Scope.ArenaGlobalScope, v_6: List<&2, BIR.Descriptor>) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>>:
+  match v_1012709:
     case cps_provider_10_CatalogResult{v_19, v_20}:
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_live_parameter_types{v_19, IR.Words{IR.arena_range_index(v_8, 1), U32.sub(v_10, 1)}, v_4, v_20 <> v_6}}, False{}, v_1012707 => emitter_body_cps_provider_10_live_parameter_types(v_19, IR.Words{IR.arena_range_index(v_8, 1), U32.sub(v_10, 1)}, v_4, v_20 <> v_6), v_1012706 => v_1012705 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012706); EmitterFinished{EmitterValue{v_1012705}}}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_live_parameter_types{v_19, IR.Words{IR.arena_range_index(v_8, 1), U32.sub(v_10, 1)}, v_4, v_20 <> v_6}}, False{}, v_1012712 => emitter_body_cps_provider_10_live_parameter_types(v_19, IR.Words{IR.arena_range_index(v_8, 1), U32.sub(v_10, 1)}, v_4, v_20 <> v_6), v_1012711 => v_1012710 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012711); EmitterFinished{EmitterValue{v_1012710}}}
 
-def emitter_match_2726(v_0: BIR.Quantity, v_1: Arena.Arena, v_8: U32, v_10: U32, +v_4: Scope.ArenaGlobalScope, v_6: List<&2, BIR.Descriptor>, v_3: U32) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>>:
+def emitter_match_2727(v_0: BIR.Quantity, v_1: Arena.Arena, v_8: U32, v_10: U32, +v_4: Scope.ArenaGlobalScope, v_6: List<&2, BIR.Descriptor>, v_3: U32) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>>:
   match v_0:
     case BIR.Erased{}:
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_live_parameter_types{v_1, IR.Words{IR.arena_range_index(v_8, 1), U32.sub(v_10, 1)}, v_4, v_6}}, False{}, v_1012703 => emitter_body_cps_provider_10_live_parameter_types(v_1, IR.Words{IR.arena_range_index(v_8, 1), U32.sub(v_10, 1)}, v_4, v_6), v_1012702 => v_1012701 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012702); EmitterFinished{EmitterValue{v_1012701}}}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_live_parameter_types{v_1, IR.Words{IR.arena_range_index(v_8, 1), U32.sub(v_10, 1)}, v_4, v_6}}, False{}, v_1012708 => emitter_body_cps_provider_10_live_parameter_types(v_1, IR.Words{IR.arena_range_index(v_8, 1), U32.sub(v_10, 1)}, v_4, v_6), v_1012707 => v_1012706 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012707); EmitterFinished{EmitterValue{v_1012706}}}
     case _:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_1, v_3, v_4}}, False{}, v_1012709 => emitter_body_cps_provider_10_descriptor(v_1, v_3, v_4), v_1012708 => v_1012704 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012708); emitter_match_2725(v_1012704, v_8, v_10, v_4, v_6)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_1, v_3, v_4}}, False{}, v_1012714 => emitter_body_cps_provider_10_descriptor(v_1, v_3, v_4), v_1012713 => v_1012709 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012713); emitter_match_2726(v_1012709, v_8, v_10, v_4, v_6)}
 
 def emitter_body_cps_provider_10_live_parameter_quantity(v_0: BIR.Quantity, v_1: Arena.Arena, v_3: U32, v_4: Scope.ArenaGlobalScope, v_6: List<&2, BIR.Descriptor>, v_8: U32, v_10: U32) -> EmitterProgress<cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>>:
-  emitter_match_2726(v_0, v_1, v_8, v_10, v_4, v_6, v_3)
+  emitter_match_2727(v_0, v_1, v_8, v_10, v_4, v_6, v_3)
 
-def emitter_match_2727(v_1012712: cps_provider_10_CatalogResult<BIR.Descriptor>, v_5: String, +v_7: String, v_23: List<&2, String>, v_8: Ast.SourceSpan, v_28: List<&2, BIR.Descriptor>) -> EmitterProgress<cps_provider_10_CatalogResult<Maybe<&2, cps_provider_10_Foreign>>>:
-  match v_1012712:
+def emitter_match_2728(v_1012717: cps_provider_10_CatalogResult<BIR.Descriptor>, v_5: String, +v_7: String, v_23: List<&2, String>, v_8: Ast.SourceSpan, v_28: List<&2, BIR.Descriptor>) -> EmitterProgress<cps_provider_10_CatalogResult<Maybe<&2, cps_provider_10_Foreign>>>:
+  match v_1012717:
     case cps_provider_10_CatalogResult{v_32, v_33}:
-      v_1012713 = {v_32 : Arena.Arena}
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_foreign_namespace{v_5, v_7}}, False{}, v_1012716 => emitter_body_cps_provider_10_foreign_namespace(v_5, v_7), v_1012715 => +v_1012714 = emitter_unbox(String, v_1012715); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012713, Some{cps_provider_10_Foreign{v_1012714, v_7, v_23, v_8, v_28, v_33}}}}}}
+      v_1012718 = {v_32 : Arena.Arena}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_foreign_namespace{v_5, v_7}}, False{}, v_1012721 => emitter_body_cps_provider_10_foreign_namespace(v_5, v_7), v_1012720 => +v_1012719 = emitter_unbox(String, v_1012720); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012718, Some{cps_provider_10_Foreign{v_1012719, v_7, v_23, v_8, v_28, v_33}}}}}}
 
-def emitter_match_2728(v_1012711: cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_10: IR.OptionalTerm, v_11: Scope.ArenaGlobalScope, v_5: String, v_7: String, v_23: List<&2, String>, v_8: Ast.SourceSpan) -> EmitterProgress<cps_provider_10_CatalogResult<Maybe<&2, cps_provider_10_Foreign>>>:
-  match v_1012711:
+def emitter_match_2729(v_1012716: cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_10: IR.OptionalTerm, v_11: Scope.ArenaGlobalScope, v_5: String, v_7: String, v_23: List<&2, String>, v_8: Ast.SourceSpan) -> EmitterProgress<cps_provider_10_CatalogResult<Maybe<&2, cps_provider_10_Foreign>>>:
+  match v_1012716:
     case cps_provider_10_CatalogResult{v_27, v_28}:
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_foreign_result_type{v_27, v_10, v_11}}, False{}, v_1012718 => emitter_body_cps_provider_10_foreign_result_type(v_27, v_10, v_11), v_1012717 => v_1012712 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012717); emitter_match_2727(v_1012712, v_5, v_7, v_23, v_8, v_28)}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_foreign_result_type{v_27, v_10, v_11}}, False{}, v_1012723 => emitter_body_cps_provider_10_foreign_result_type(v_27, v_10, v_11), v_1012722 => v_1012717 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012722); emitter_match_2728(v_1012717, v_5, v_7, v_23, v_8, v_28)}
 
-def emitter_match_2729(v_1012710: cps_provider_10_CatalogResult<List<&2, String>>, v_9: IR.Words, +v_11: Scope.ArenaGlobalScope, v_10: IR.OptionalTerm, v_5: String, v_7: String, v_8: Ast.SourceSpan) -> EmitterProgress<cps_provider_10_CatalogResult<Maybe<&2, cps_provider_10_Foreign>>>:
-  match v_1012710:
+def emitter_match_2730(v_1012715: cps_provider_10_CatalogResult<List<&2, String>>, v_9: IR.Words, +v_11: Scope.ArenaGlobalScope, v_10: IR.OptionalTerm, v_5: String, v_7: String, v_8: Ast.SourceSpan) -> EmitterProgress<cps_provider_10_CatalogResult<Maybe<&2, cps_provider_10_Foreign>>>:
+  match v_1012715:
     case cps_provider_10_CatalogResult{v_22, v_23}:
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_live_parameter_types{v_22, v_9, v_11, []}}, False{}, v_1012720 => emitter_body_cps_provider_10_live_parameter_types(v_22, v_9, v_11, []), v_1012719 => v_1012711 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012719); emitter_match_2728(v_1012711, v_10, v_11, v_5, v_7, v_23, v_8)}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_live_parameter_types{v_22, v_9, v_11, []}}, False{}, v_1012725 => emitter_body_cps_provider_10_live_parameter_types(v_22, v_9, v_11, []), v_1012724 => v_1012716 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Descriptor>>, v_1012724); emitter_match_2729(v_1012716, v_10, v_11, v_5, v_7, v_23, v_8)}
 
-def emitter_match_2730(v_1: IR.DefBody, v_0: Arena.Arena, v_3: String, v_9: IR.Words, v_11: Scope.ArenaGlobalScope, v_10: IR.OptionalTerm, v_5: String, v_7: String, v_8: Ast.SourceSpan) -> EmitterProgress<cps_provider_10_CatalogResult<Maybe<&2, cps_provider_10_Foreign>>>:
+def emitter_match_2731(v_1: IR.DefBody, v_0: Arena.Arena, v_3: String, v_9: IR.Words, v_11: Scope.ArenaGlobalScope, v_10: IR.OptionalTerm, v_5: String, v_7: String, v_8: Ast.SourceSpan) -> EmitterProgress<cps_provider_10_CatalogResult<Maybe<&2, cps_provider_10_Foreign>>>:
   match v_1:
     case IR.DefTerm{_}:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_0, None{}}}}
     case IR.DefImports{v_18}:
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_foreign_sources{v_0, v_18, v_3, []}}, False{}, v_1012722 => emitter_body_cps_provider_10_foreign_sources(v_0, v_18, v_3, []), v_1012721 => v_1012710 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, String>>, v_1012721); emitter_match_2729(v_1012710, v_9, v_11, v_10, v_5, v_7, v_8)}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_foreign_sources{v_0, v_18, v_3, []}}, False{}, v_1012727 => emitter_body_cps_provider_10_foreign_sources(v_0, v_18, v_3, []), v_1012726 => v_1012715 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, String>>, v_1012726); emitter_match_2730(v_1012715, v_9, v_11, v_10, v_5, v_7, v_8)}
 
 def emitter_body_cps_provider_10_definition_foreign(v_0: Arena.Arena, v_1: IR.DefBody, v_3: String, v_5: String, v_7: String, v_8: Ast.SourceSpan, v_9: IR.Words, v_10: IR.OptionalTerm, v_11: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<Maybe<&2, cps_provider_10_Foreign>>>:
-  emitter_match_2730(v_1, v_0, v_3, v_9, v_11, v_10, v_5, v_7, v_8)
+  emitter_match_2731(v_1, v_0, v_3, v_9, v_11, v_10, v_5, v_7, v_8)
 
-def emitter_match_2731(v_5: List<&2, BIR.Parameter>, v_7: Maybe<&2, BIR.Primitive>, v_10: Maybe<&2, cps_provider_10_Foreign>, v_1: Bool, v_3: Bool) -> EmitterProgress<Bool>:
+def emitter_match_2732(v_5: List<&2, BIR.Parameter>, v_7: Maybe<&2, BIR.Primitive>, v_10: Maybe<&2, cps_provider_10_Foreign>, v_1: Bool, v_3: Bool) -> EmitterProgress<Bool>:
   match v_5, v_7, v_10:
     case _ <> _, None{}, None{}:
       EmitterFinished{EmitterValue{Bool.and(v_1, Bool.not(v_3))}}
@@ -29210,7 +29230,7 @@ def emitter_match_2731(v_5: List<&2, BIR.Parameter>, v_7: Maybe<&2, BIR.Primitiv
       EmitterFinished{EmitterValue{False{}}}
 
 def emitter_body_cps_provider_10_definition_fast(v_1: Bool, v_3: Bool, v_5: List<&2, BIR.Parameter>, v_7: Maybe<&2, BIR.Primitive>, v_10: Maybe<&2, cps_provider_10_Foreign>) -> EmitterProgress<Bool>:
-  emitter_match_2731(v_5, v_7, v_10, v_1, v_3)
+  emitter_match_2732(v_5, v_7, v_10, v_1, v_3)
 
 def emitter_body_cps_provider_10_definition_primitive(v_1: Bool, v_4: Maybe<&2, cps_provider_10_Foreign>, v_6: Bool, v_8: String) -> EmitterProgress<Maybe<&2, BIR.Primitive>>:
   match v_1, v_4:
@@ -29227,19 +29247,19 @@ def emitter_body_cps_provider_10_native_match_main_descriptor_0(v_1: cps_provide
 def emitter_body_cps_provider_10_native_match_main_descriptor_1(v_1: Bool, v_2: IR.OptionalTerm, v_3: Arena.Arena, v_4: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<Maybe<&2, BIR.Descriptor>>>:
   match v_1, v_2:
     case True{}, IR.SomeTerm{v_8}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_3, v_8, v_4}}, False{}, v_1012727 => emitter_body_cps_provider_10_descriptor(v_3, v_8, v_4), v_1012726 => v_1012724 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012726); emitter_body_cps_provider_10_native_match_main_descriptor_0(v_1012724)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_descriptor{v_3, v_8, v_4}}, False{}, v_1012732 => emitter_body_cps_provider_10_descriptor(v_3, v_8, v_4), v_1012731 => v_1012729 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Descriptor>, v_1012731); emitter_body_cps_provider_10_native_match_main_descriptor_0(v_1012729)}
     case _, _:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_3, None{}}}}
 
-def emitter_match_2735(+v_1: Maybe<&2, BIR.Descriptor>, v_2: Arena.Arena, v_4: String, v_5: IR.OptionalTerm, v_6: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<Maybe<&2, BIR.Descriptor>>>:
+def emitter_match_2736(+v_1: Maybe<&2, BIR.Descriptor>, v_2: Arena.Arena, v_4: String, v_5: IR.OptionalTerm, v_6: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<Maybe<&2, BIR.Descriptor>>>:
   match v_1:
     case Some{_}:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_2, v_1}}}
     case None{}:
-      EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_native_match_main_descriptor_1{String.eq(v_4, "main"), v_5, v_2, v_6}}, False{}, v_1012730 => emitter_body_cps_provider_10_native_match_main_descriptor_1(String.eq(v_4, "main"), v_5, v_2, v_6), v_1012729 => v_1012728 = emitter_unbox(cps_provider_10_CatalogResult<Maybe<&2, BIR.Descriptor>>, v_1012729); EmitterFinished{EmitterValue{v_1012728}}}
+      EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_native_match_main_descriptor_1{String.eq(v_4, "main"), v_5, v_2, v_6}}, False{}, v_1012735 => emitter_body_cps_provider_10_native_match_main_descriptor_1(String.eq(v_4, "main"), v_5, v_2, v_6), v_1012734 => v_1012733 = emitter_unbox(cps_provider_10_CatalogResult<Maybe<&2, BIR.Descriptor>>, v_1012734); EmitterFinished{EmitterValue{v_1012733}}}
 
 def emitter_body_cps_provider_10_native_match_main_descriptor_2(v_1: Maybe<&2, BIR.Descriptor>, v_2: Arena.Arena, v_4: String, v_5: IR.OptionalTerm, v_6: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<Maybe<&2, BIR.Descriptor>>>:
-  emitter_match_2735(v_1, v_2, v_4, v_5, v_6)
+  emitter_match_2736(v_1, v_2, v_4, v_5, v_6)
 
 def emitter_body_cps_provider_10_main_descriptor(v_0: Arena.Arena, v_2: String, v_3: IR.OptionalTerm, v_4: Scope.ArenaGlobalScope, v_6: Maybe<&2, BIR.Descriptor>) -> EmitterProgress<cps_provider_10_CatalogResult<Maybe<&2, BIR.Descriptor>>>:
   emitter_body_cps_provider_10_native_match_main_descriptor_2(v_6, v_0, v_2, v_3, v_4)
@@ -29253,105 +29273,105 @@ def emitter_body_cps_provider_10_signature_symbol(v_0: Scope.ArenaGlobal) -> Emi
     case Scope.ArenaGlobal{_, v_27, v_28, v_29, _, Scope.GlobalConstructor{}}:
       EmitterFinished{EmitterValue{IR.Symbol{v_27, v_28, IR.ConstructorSymbol{}, v_29}}}
 
-def emitter_match_2737(v_1: IR.Definition, v_0: Arena.Arena, +v_3: String, +v_8: Scope.ArenaGlobalScope, v_5: String, v_7: Bool, v_10: cps_provider_10_Preparation) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
+def emitter_match_2738(v_1: IR.Definition, v_0: Arena.Arena, +v_3: String, +v_8: Scope.ArenaGlobalScope, v_5: String, v_7: Bool, v_10: cps_provider_10_Preparation) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
   match v_1:
     case IR.Definition{+v_23, v_24, v_25, +v_26, _, v_28, v_29, Some{IR.DefinitionFacts{v_30, v_31, v_32}}}:
-      v_1012732 = {v_0 : Arena.Arena}
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_qualify{v_3, v_23}}, False{}, v_1012740 => emitter_body_cps_provider_10_qualify(v_3, v_23), v_1012739 => +v_1012733 = emitter_unbox(String, v_1012739); EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_qualify{v_3, v_23}}, False{}, v_1012738 => emitter_body_cps_provider_10_qualify(v_3, v_23), v_1012737 => +v_1012734 = emitter_unbox(String, v_1012737); EmitterPending{EmitterRequestGroup_30{EmitterRequest_cps_provider_10_prepare_definition_symbol{v_1012732, Scope.lookup_kind(v_1012733, Scope.GlobalDefinition{}, v_8), v_1012734, v_23, v_24, v_25, v_26, v_29, Bool.and(v_30, emitter_pure_cps_provider_10_is_term(v_26)), v_31, v_32, v_5, v_7, v_8, v_10, v_28}}, v_1012736 => v_1012735 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_1012736); EmitterFinished{EmitterValue{v_1012735}}}}}
+      v_1012737 = {v_0 : Arena.Arena}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_qualify{v_3, v_23}}, False{}, v_1012745 => emitter_body_cps_provider_10_qualify(v_3, v_23), v_1012744 => +v_1012738 = emitter_unbox(String, v_1012744); EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_qualify{v_3, v_23}}, False{}, v_1012743 => emitter_body_cps_provider_10_qualify(v_3, v_23), v_1012742 => +v_1012739 = emitter_unbox(String, v_1012742); EmitterPending{EmitterRequestGroup_30{EmitterRequest_cps_provider_10_prepare_definition_symbol{v_1012737, Scope.lookup_kind(v_1012738, Scope.GlobalDefinition{}, v_8), v_1012739, v_23, v_24, v_25, v_26, v_29, Bool.and(v_30, emitter_pure_cps_provider_10_is_term(v_26)), v_31, v_32, v_5, v_7, v_8, v_10, v_28}}, v_1012741 => v_1012740 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_1012741); EmitterFinished{EmitterValue{v_1012740}}}}}
     case IR.Definition{v_44, _, _, _, _, _, _, None{}}:
-      v_1012741 = {v_0 : Arena.Arena}
-      v_1012742 = {v_10 : cps_provider_10_Preparation}
-      v_1012743 = {"bend: missing checked declaration facts for " : String}
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_qualify{v_3, v_44}}, False{}, v_1012749 => emitter_body_cps_provider_10_qualify(v_3, v_44), v_1012748 => +v_1012744 = emitter_unbox(String, v_1012748); EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_preparation_failure{v_1012742, String.append(v_1012743, v_1012744)}}, False{}, v_1012747 => emitter_body_cps_provider_10_preparation_failure(v_1012742, String.append(v_1012743, v_1012744)), v_1012746 => +v_1012745 = emitter_unbox(cps_provider_10_Preparation, v_1012746); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012741, v_1012745}}}}}
+      v_1012746 = {v_0 : Arena.Arena}
+      v_1012747 = {v_10 : cps_provider_10_Preparation}
+      v_1012748 = {"bend: missing checked declaration facts for " : String}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_qualify{v_3, v_44}}, False{}, v_1012754 => emitter_body_cps_provider_10_qualify(v_3, v_44), v_1012753 => +v_1012749 = emitter_unbox(String, v_1012753); EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_preparation_failure{v_1012747, String.append(v_1012748, v_1012749)}}, False{}, v_1012752 => emitter_body_cps_provider_10_preparation_failure(v_1012747, String.append(v_1012748, v_1012749)), v_1012751 => +v_1012750 = emitter_unbox(cps_provider_10_Preparation, v_1012751); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012746, v_1012750}}}}}
 
 def emitter_body_cps_provider_10_prepare_definition(v_0: Arena.Arena, v_1: IR.Definition, v_3: String, v_5: String, v_7: Bool, v_8: Scope.ArenaGlobalScope, v_10: cps_provider_10_Preparation) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
-  emitter_match_2737(v_1, v_0, v_3, v_8, v_5, v_7, v_10)
+  emitter_match_2738(v_1, v_0, v_3, v_8, v_5, v_7, v_10)
 
-def emitter_continuation_2738(+v_1012750: Map<&2, cps_provider_10_Definition>, v_43: Arena.Arena, v_35: cps_provider_10_Definition, v_8: List<&2, cps_provider_10_Definition>, +v_4: String, v_33: cps_provider_10_DefinitionHeader, v_14: Map<&2, cps_provider_10_DefinitionHeader>, v_16: List<&2, BIR.ConstructorLayout>, v_19: Map<&2, cps_provider_10_Constructor>, v_21: List<&2, BIR.Family>, v_23: U32, v_25: U32, v_38: List<&2, cps_provider_10_Root>, v_44: Maybe<&2, BIR.Descriptor>, v_28: Maybe<&2, String>, v_31: Map<&2, Bool>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
-  v_48 = v_1012750
-  v_1012751 = {v_43 : Arena.Arena}
-  v_1012752 = {v_35 <> v_8 : List<&2, cps_provider_10_Definition>}
-  v_1012753 = {v_48 : Map<&2, cps_provider_10_Definition>}
-  EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_header_insert{v_4, v_33, v_14}}, False{}, v_1012756 => emitter_body_cps_provider_10_header_insert(v_4, v_33, v_14), v_1012755 => +v_1012754 = emitter_unbox(Map<&2, cps_provider_10_DefinitionHeader>, v_1012755); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012751, cps_provider_10_Preparation{v_1012752, v_1012753, v_1012754, v_16, v_19, v_21, U32.add(v_23, 1), v_25, v_38, v_44, v_28, Map.set(&2, Bool, v_31, v_4, True{})}}}}}
+def emitter_continuation_2739(+v_1012755: Map<&2, cps_provider_10_Definition>, v_43: Arena.Arena, v_35: cps_provider_10_Definition, v_8: List<&2, cps_provider_10_Definition>, +v_4: String, v_33: cps_provider_10_DefinitionHeader, v_14: Map<&2, cps_provider_10_DefinitionHeader>, v_16: List<&2, BIR.ConstructorLayout>, v_19: Map<&2, cps_provider_10_Constructor>, v_21: List<&2, BIR.Family>, v_23: U32, v_25: U32, v_38: List<&2, cps_provider_10_Root>, v_44: Maybe<&2, BIR.Descriptor>, v_28: Maybe<&2, String>, v_31: Map<&2, Bool>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
+  v_48 = v_1012755
+  v_1012756 = {v_43 : Arena.Arena}
+  v_1012757 = {v_35 <> v_8 : List<&2, cps_provider_10_Definition>}
+  v_1012758 = {v_48 : Map<&2, cps_provider_10_Definition>}
+  EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_header_insert{v_4, v_33, v_14}}, False{}, v_1012761 => emitter_body_cps_provider_10_header_insert(v_4, v_33, v_14), v_1012760 => +v_1012759 = emitter_unbox(Map<&2, cps_provider_10_DefinitionHeader>, v_1012760); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012756, cps_provider_10_Preparation{v_1012757, v_1012758, v_1012759, v_16, v_19, v_21, U32.add(v_23, 1), v_25, v_38, v_44, v_28, Map.set(&2, Bool, v_31, v_4, True{})}}}}}
 
-def emitter_match_2739(v_2: cps_provider_10_CatalogResult<Maybe<&2, BIR.Descriptor>>, +v_31: Map<&2, Bool>, +v_4: String, v_5: IR.DefBody, +v_35: cps_provider_10_Definition, v_11: Map<&2, cps_provider_10_Definition>, v_8: List<&2, cps_provider_10_Definition>, v_33: cps_provider_10_DefinitionHeader, v_14: Map<&2, cps_provider_10_DefinitionHeader>, v_16: List<&2, BIR.ConstructorLayout>, v_19: Map<&2, cps_provider_10_Constructor>, v_21: List<&2, BIR.Family>, v_23: U32, v_25: U32, v_38: List<&2, cps_provider_10_Root>, v_28: Maybe<&2, String>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
+def emitter_match_2740(v_2: cps_provider_10_CatalogResult<Maybe<&2, BIR.Descriptor>>, +v_31: Map<&2, Bool>, +v_4: String, v_5: IR.DefBody, +v_35: cps_provider_10_Definition, v_11: Map<&2, cps_provider_10_Definition>, v_8: List<&2, cps_provider_10_Definition>, v_33: cps_provider_10_DefinitionHeader, v_14: Map<&2, cps_provider_10_DefinitionHeader>, v_16: List<&2, BIR.ConstructorLayout>, v_19: Map<&2, cps_provider_10_Constructor>, v_21: List<&2, BIR.Family>, v_23: U32, v_25: U32, v_38: List<&2, cps_provider_10_Root>, v_28: Maybe<&2, String>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
   match v_2:
     case cps_provider_10_CatalogResult{v_43, v_44}:
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_value_insert{IndexLookup.find(Bool, v_31, v_4), v_5, v_4, v_35, v_11}}, False{}, v_1012758 => emitter_body_cps_provider_10_value_insert(IndexLookup.find(Bool, v_31, v_4), v_5, v_4, v_35, v_11), v_1012757 => +v_1012750 = emitter_unbox(Map<&2, cps_provider_10_Definition>, v_1012757); emitter_continuation_2738(v_1012750, v_43, v_35, v_8, v_4, v_33, v_14, v_16, v_19, v_21, v_23, v_25, v_38, v_44, v_28, v_31)}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_value_insert{IndexLookup.find(Bool, v_31, v_4), v_5, v_4, v_35, v_11}}, False{}, v_1012763 => emitter_body_cps_provider_10_value_insert(IndexLookup.find(Bool, v_31, v_4), v_5, v_4, v_35, v_11), v_1012762 => +v_1012755 = emitter_unbox(Map<&2, cps_provider_10_Definition>, v_1012762); emitter_continuation_2739(v_1012755, v_43, v_35, v_8, v_4, v_33, v_14, v_16, v_19, v_21, v_23, v_25, v_38, v_44, v_28, v_31)}
 
 def emitter_body_cps_provider_10_native_match_prepare_definition_symbol_0(v_2: cps_provider_10_CatalogResult<Maybe<&2, BIR.Descriptor>>, v_4: String, v_5: IR.DefBody, v_8: List<&2, cps_provider_10_Definition>, v_11: Map<&2, cps_provider_10_Definition>, v_14: Map<&2, cps_provider_10_DefinitionHeader>, v_16: List<&2, BIR.ConstructorLayout>, v_19: Map<&2, cps_provider_10_Constructor>, v_21: List<&2, BIR.Family>, v_23: U32, v_25: U32, v_28: Maybe<&2, String>, v_31: Map<&2, Bool>, v_33: cps_provider_10_DefinitionHeader, v_35: cps_provider_10_Definition, v_38: List<&2, cps_provider_10_Root>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
-  emitter_match_2739(v_2, v_31, v_4, v_5, v_35, v_11, v_8, v_33, v_14, v_16, v_19, v_21, v_23, v_25, v_38, v_28)
+  emitter_match_2740(v_2, v_31, v_4, v_5, v_35, v_11, v_8, v_33, v_14, v_16, v_19, v_21, v_23, v_25, v_38, v_28)
 
-def emitter_continuation_2740(+v_1012762: List<&2, cps_provider_10_Root>, v_47: Arena.Arena, +v_5: String, v_6: IR.OptionalTerm, v_10: Scope.ArenaGlobalScope, v_32: Maybe<&2, BIR.Descriptor>, v_7: IR.DefBody, v_13: List<&2, cps_provider_10_Definition>, v_16: Map<&2, cps_provider_10_Definition>, v_19: Map<&2, cps_provider_10_DefinitionHeader>, v_21: List<&2, BIR.ConstructorLayout>, v_24: Map<&2, cps_provider_10_Constructor>, v_26: List<&2, BIR.Family>, v_28: U32, v_30: U32, v_35: Maybe<&2, String>, v_38: Map<&2, Bool>, v_40: cps_provider_10_DefinitionHeader, v_42: cps_provider_10_Definition) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
-  v_53 = v_1012762
-  EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_main_descriptor{v_47, v_5, v_6, v_10, v_32}}, False{}, v_1012766 => emitter_body_cps_provider_10_main_descriptor(v_47, v_5, v_6, v_10, v_32), v_1012765 => v_1012763 = emitter_unbox(cps_provider_10_CatalogResult<Maybe<&2, BIR.Descriptor>>, v_1012765); emitter_body_cps_provider_10_native_match_prepare_definition_symbol_0(v_1012763, v_5, v_7, v_13, v_16, v_19, v_21, v_24, v_26, v_28, v_30, v_35, v_38, v_40, v_42, v_53)}
+def emitter_continuation_2741(+v_1012767: List<&2, cps_provider_10_Root>, v_47: Arena.Arena, +v_5: String, v_6: IR.OptionalTerm, v_10: Scope.ArenaGlobalScope, v_32: Maybe<&2, BIR.Descriptor>, v_7: IR.DefBody, v_13: List<&2, cps_provider_10_Definition>, v_16: Map<&2, cps_provider_10_Definition>, v_19: Map<&2, cps_provider_10_DefinitionHeader>, v_21: List<&2, BIR.ConstructorLayout>, v_24: Map<&2, cps_provider_10_Constructor>, v_26: List<&2, BIR.Family>, v_28: U32, v_30: U32, v_35: Maybe<&2, String>, v_38: Map<&2, Bool>, v_40: cps_provider_10_DefinitionHeader, v_42: cps_provider_10_Definition) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
+  v_53 = v_1012767
+  EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_main_descriptor{v_47, v_5, v_6, v_10, v_32}}, False{}, v_1012771 => emitter_body_cps_provider_10_main_descriptor(v_47, v_5, v_6, v_10, v_32), v_1012770 => v_1012768 = emitter_unbox(cps_provider_10_CatalogResult<Maybe<&2, BIR.Descriptor>>, v_1012770); emitter_body_cps_provider_10_native_match_prepare_definition_symbol_0(v_1012768, v_5, v_7, v_13, v_16, v_19, v_21, v_24, v_26, v_28, v_30, v_35, v_38, v_40, v_42, v_53)}
 
-def emitter_match_2741(v_3: cps_provider_10_CatalogResult<List<&2, cps_provider_10_Root>>, v_9: Bool, +v_7: IR.DefBody, +v_5: String, +v_6: IR.OptionalTerm, +v_10: Scope.ArenaGlobalScope, v_32: Maybe<&2, BIR.Descriptor>, v_13: List<&2, cps_provider_10_Definition>, v_16: Map<&2, cps_provider_10_Definition>, v_19: Map<&2, cps_provider_10_DefinitionHeader>, v_21: List<&2, BIR.ConstructorLayout>, v_24: Map<&2, cps_provider_10_Constructor>, v_26: List<&2, BIR.Family>, v_28: U32, v_30: U32, v_35: Maybe<&2, String>, v_38: Map<&2, Bool>, v_40: cps_provider_10_DefinitionHeader, v_42: cps_provider_10_Definition) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
+def emitter_match_2742(v_3: cps_provider_10_CatalogResult<List<&2, cps_provider_10_Root>>, v_9: Bool, +v_7: IR.DefBody, +v_5: String, +v_6: IR.OptionalTerm, +v_10: Scope.ArenaGlobalScope, v_32: Maybe<&2, BIR.Descriptor>, v_13: List<&2, cps_provider_10_Definition>, v_16: Map<&2, cps_provider_10_Definition>, v_19: Map<&2, cps_provider_10_DefinitionHeader>, v_21: List<&2, BIR.ConstructorLayout>, v_24: Map<&2, cps_provider_10_Constructor>, v_26: List<&2, BIR.Family>, v_28: U32, v_30: U32, v_35: Maybe<&2, String>, v_38: Map<&2, Bool>, v_40: cps_provider_10_DefinitionHeader, v_42: cps_provider_10_Definition) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
   match v_3:
     case cps_provider_10_CatalogResult{v_47, v_48}:
-      v_1012759 = {Bool.and(v_9, emitter_pure_cps_provider_10_is_term(v_7)) : Bool}
-      v_1012760 = {v_5 : String}
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_result_roots{v_6, v_10, v_48}}, False{}, v_1012770 => emitter_body_cps_provider_10_result_roots(v_6, v_10, v_48), v_1012769 => +v_1012761 = emitter_unbox(List<&2, cps_provider_10_Root>, v_1012769); EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_type_root{v_1012759, v_1012760, v_1012761}}, False{}, v_1012768 => emitter_body_cps_provider_10_type_root(v_1012759, v_1012760, v_1012761), v_1012767 => +v_1012762 = emitter_unbox(List<&2, cps_provider_10_Root>, v_1012767); emitter_continuation_2740(v_1012762, v_47, v_5, v_6, v_10, v_32, v_7, v_13, v_16, v_19, v_21, v_24, v_26, v_28, v_30, v_35, v_38, v_40, v_42)}}
+      v_1012764 = {Bool.and(v_9, emitter_pure_cps_provider_10_is_term(v_7)) : Bool}
+      v_1012765 = {v_5 : String}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_result_roots{v_6, v_10, v_48}}, False{}, v_1012775 => emitter_body_cps_provider_10_result_roots(v_6, v_10, v_48), v_1012774 => +v_1012766 = emitter_unbox(List<&2, cps_provider_10_Root>, v_1012774); EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_type_root{v_1012764, v_1012765, v_1012766}}, False{}, v_1012773 => emitter_body_cps_provider_10_type_root(v_1012764, v_1012765, v_1012766), v_1012772 => +v_1012767 = emitter_unbox(List<&2, cps_provider_10_Root>, v_1012772); emitter_continuation_2741(v_1012767, v_47, v_5, v_6, v_10, v_32, v_7, v_13, v_16, v_19, v_21, v_24, v_26, v_28, v_30, v_35, v_38, v_40, v_42)}}
 
 def emitter_body_cps_provider_10_native_match_prepare_definition_symbol_1(v_3: cps_provider_10_CatalogResult<List<&2, cps_provider_10_Root>>, v_5: String, v_6: IR.OptionalTerm, v_7: IR.DefBody, v_9: Bool, v_10: Scope.ArenaGlobalScope, v_13: List<&2, cps_provider_10_Definition>, v_16: Map<&2, cps_provider_10_Definition>, v_19: Map<&2, cps_provider_10_DefinitionHeader>, v_21: List<&2, BIR.ConstructorLayout>, v_24: Map<&2, cps_provider_10_Constructor>, v_26: List<&2, BIR.Family>, v_28: U32, v_30: U32, v_32: Maybe<&2, BIR.Descriptor>, v_35: Maybe<&2, String>, v_38: Map<&2, Bool>, v_40: cps_provider_10_DefinitionHeader, v_42: cps_provider_10_Definition) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
-  emitter_match_2741(v_3, v_9, v_7, v_5, v_6, v_10, v_32, v_13, v_16, v_19, v_21, v_24, v_26, v_28, v_30, v_35, v_38, v_40, v_42)
+  emitter_match_2742(v_3, v_9, v_7, v_5, v_6, v_10, v_32, v_13, v_16, v_19, v_21, v_24, v_26, v_28, v_30, v_35, v_38, v_40, v_42)
 
-def emitter_continuation_2742(v_1012772: cps_provider_10_DefinitionHeader, v_1012773: IR.Words, v_1012774: IR.OptionalTerm, v_1012775: IR.DefBody, v_1012776: Maybe<&2, IR.Occurrence>, v_1012777: Scope.ArenaGlobalScope, +v_1012778: Maybe<&2, String>, v_12: Nat, v_21: Arena.Arena, v_4: IR.Words, +v_15: Scope.ArenaGlobalScope, v_51: List<&2, cps_provider_10_Root>, v_3: String, v_5: IR.OptionalTerm, v_6: IR.DefBody, v_10: Bool, v_43: List<&2, cps_provider_10_Definition>, v_44: Map<&2, cps_provider_10_Definition>, v_45: Map<&2, cps_provider_10_DefinitionHeader>, v_46: List<&2, BIR.ConstructorLayout>, v_47: Map<&2, cps_provider_10_Constructor>, v_48: List<&2, BIR.Family>, v_49: U32, v_50: U32, v_52: Maybe<&2, BIR.Descriptor>, v_53: Maybe<&2, String>, v_54: Map<&2, Bool>, v_57: cps_provider_10_DefinitionHeader) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
-  v_60 = {cps_provider_10_Definition{v_1012772, v_1012773, v_1012774, v_1012775, v_1012776, v_1012777, v_1012778, v_12} : cps_provider_10_Definition}
-  EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_binder_roots{v_21, v_4, v_15, v_51}}, False{}, v_1012782 => emitter_body_cps_provider_10_binder_roots(v_21, v_4, v_15, v_51), v_1012781 => v_1012779 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, cps_provider_10_Root>>, v_1012781); emitter_body_cps_provider_10_native_match_prepare_definition_symbol_1(v_1012779, v_3, v_5, v_6, v_10, v_15, v_43, v_44, v_45, v_46, v_47, v_48, v_49, v_50, v_52, v_53, v_54, v_57, v_60)}
+def emitter_continuation_2743(v_1012777: cps_provider_10_DefinitionHeader, v_1012778: IR.Words, v_1012779: IR.OptionalTerm, v_1012780: IR.DefBody, v_1012781: Maybe<&2, IR.Occurrence>, v_1012782: Scope.ArenaGlobalScope, +v_1012783: Maybe<&2, String>, v_12: Nat, v_21: Arena.Arena, v_4: IR.Words, +v_15: Scope.ArenaGlobalScope, v_51: List<&2, cps_provider_10_Root>, v_3: String, v_5: IR.OptionalTerm, v_6: IR.DefBody, v_10: Bool, v_43: List<&2, cps_provider_10_Definition>, v_44: Map<&2, cps_provider_10_Definition>, v_45: Map<&2, cps_provider_10_DefinitionHeader>, v_46: List<&2, BIR.ConstructorLayout>, v_47: Map<&2, cps_provider_10_Constructor>, v_48: List<&2, BIR.Family>, v_49: U32, v_50: U32, v_52: Maybe<&2, BIR.Descriptor>, v_53: Maybe<&2, String>, v_54: Map<&2, Bool>, v_57: cps_provider_10_DefinitionHeader) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
+  v_60 = {cps_provider_10_Definition{v_1012777, v_1012778, v_1012779, v_1012780, v_1012781, v_1012782, v_1012783, v_12} : cps_provider_10_Definition}
+  EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_binder_roots{v_21, v_4, v_15, v_51}}, False{}, v_1012787 => emitter_body_cps_provider_10_binder_roots(v_21, v_4, v_15, v_51), v_1012786 => v_1012784 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, cps_provider_10_Root>>, v_1012786); emitter_body_cps_provider_10_native_match_prepare_definition_symbol_1(v_1012784, v_3, v_5, v_6, v_10, v_15, v_43, v_44, v_45, v_46, v_47, v_48, v_49, v_50, v_52, v_53, v_54, v_57, v_60)}
 
-def emitter_continuation_2743(+v_1012771: IR.Symbol, +v_3: String, +v_49: U32, v_18: List<&2, BIR.Parameter>, v_20: List<&2, BIR.Quantity>, +v_10: Bool, v_26: Maybe<&2, BIR.Primitive>, v_24: Maybe<&2, cps_provider_10_Foreign>, v_28: Bool, +v_4: IR.Words, +v_5: IR.OptionalTerm, +v_6: IR.DefBody, v_8: Maybe<&2, IR.Occurrence>, +v_15: Scope.ArenaGlobalScope, v_14: Bool, v_12: Nat, v_21: Arena.Arena, v_51: List<&2, cps_provider_10_Root>, v_43: List<&2, cps_provider_10_Definition>, v_44: Map<&2, cps_provider_10_Definition>, v_45: Map<&2, cps_provider_10_DefinitionHeader>, v_46: List<&2, BIR.ConstructorLayout>, v_47: Map<&2, cps_provider_10_Constructor>, v_48: List<&2, BIR.Family>, v_50: U32, v_52: Maybe<&2, BIR.Descriptor>, v_53: Maybe<&2, String>, v_54: Map<&2, Bool>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
-  +v_57 = {cps_provider_10_DefinitionHeader{v_1012771, v_3, v_49, v_18, v_20, v_10, v_26, v_24, v_28} : cps_provider_10_DefinitionHeader}
-  v_1012772 = {v_57 : cps_provider_10_DefinitionHeader}
-  v_1012773 = {v_4 : IR.Words}
-  v_1012774 = {v_5 : IR.OptionalTerm}
-  v_1012775 = {v_6 : IR.DefBody}
-  v_1012776 = {v_8 : Maybe<&2, IR.Occurrence>}
-  v_1012777 = {v_15 : Scope.ArenaGlobalScope}
-  EmitterDirect{Bool, EmitterRequestGroup_28{EmitterRequest_cps_provider_10_native_marker{v_14, v_3}}, False{}, v_1012784 => emitter_body_cps_provider_10_native_marker(v_14, v_3), v_1012783 => +v_1012778 = emitter_unbox(Maybe<&2, String>, v_1012783); emitter_continuation_2742(v_1012772, v_1012773, v_1012774, v_1012775, v_1012776, v_1012777, v_1012778, v_12, v_21, v_4, v_15, v_51, v_3, v_5, v_6, v_10, v_43, v_44, v_45, v_46, v_47, v_48, v_49, v_50, v_52, v_53, v_54, v_57)}
+def emitter_continuation_2744(+v_1012776: IR.Symbol, +v_3: String, +v_49: U32, v_18: List<&2, BIR.Parameter>, v_20: List<&2, BIR.Quantity>, +v_10: Bool, v_26: Maybe<&2, BIR.Primitive>, v_24: Maybe<&2, cps_provider_10_Foreign>, v_28: Bool, +v_4: IR.Words, +v_5: IR.OptionalTerm, +v_6: IR.DefBody, v_8: Maybe<&2, IR.Occurrence>, +v_15: Scope.ArenaGlobalScope, v_14: Bool, v_12: Nat, v_21: Arena.Arena, v_51: List<&2, cps_provider_10_Root>, v_43: List<&2, cps_provider_10_Definition>, v_44: Map<&2, cps_provider_10_Definition>, v_45: Map<&2, cps_provider_10_DefinitionHeader>, v_46: List<&2, BIR.ConstructorLayout>, v_47: Map<&2, cps_provider_10_Constructor>, v_48: List<&2, BIR.Family>, v_50: U32, v_52: Maybe<&2, BIR.Descriptor>, v_53: Maybe<&2, String>, v_54: Map<&2, Bool>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
+  +v_57 = {cps_provider_10_DefinitionHeader{v_1012776, v_3, v_49, v_18, v_20, v_10, v_26, v_24, v_28} : cps_provider_10_DefinitionHeader}
+  v_1012777 = {v_57 : cps_provider_10_DefinitionHeader}
+  v_1012778 = {v_4 : IR.Words}
+  v_1012779 = {v_5 : IR.OptionalTerm}
+  v_1012780 = {v_6 : IR.DefBody}
+  v_1012781 = {v_8 : Maybe<&2, IR.Occurrence>}
+  v_1012782 = {v_15 : Scope.ArenaGlobalScope}
+  EmitterDirect{Bool, EmitterRequestGroup_28{EmitterRequest_cps_provider_10_native_marker{v_14, v_3}}, False{}, v_1012789 => emitter_body_cps_provider_10_native_marker(v_14, v_3), v_1012788 => +v_1012783 = emitter_unbox(Maybe<&2, String>, v_1012788); emitter_continuation_2743(v_1012777, v_1012778, v_1012779, v_1012780, v_1012781, v_1012782, v_1012783, v_12, v_21, v_4, v_15, v_51, v_3, v_5, v_6, v_10, v_43, v_44, v_45, v_46, v_47, v_48, v_49, v_50, v_52, v_53, v_54, v_57)}
 
-def emitter_match_2744(v_1: cps_provider_10_Preparation, v_16: Scope.ArenaGlobal, v_3: String, v_18: List<&2, BIR.Parameter>, v_20: List<&2, BIR.Quantity>, v_10: Bool, v_26: Maybe<&2, BIR.Primitive>, v_24: Maybe<&2, cps_provider_10_Foreign>, v_28: Bool, v_4: IR.Words, v_5: IR.OptionalTerm, v_6: IR.DefBody, v_8: Maybe<&2, IR.Occurrence>, v_15: Scope.ArenaGlobalScope, v_14: Bool, v_12: Nat, v_21: Arena.Arena) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
+def emitter_match_2745(v_1: cps_provider_10_Preparation, v_16: Scope.ArenaGlobal, v_3: String, v_18: List<&2, BIR.Parameter>, v_20: List<&2, BIR.Quantity>, v_10: Bool, v_26: Maybe<&2, BIR.Primitive>, v_24: Maybe<&2, cps_provider_10_Foreign>, v_28: Bool, v_4: IR.Words, v_5: IR.OptionalTerm, v_6: IR.DefBody, v_8: Maybe<&2, IR.Occurrence>, v_15: Scope.ArenaGlobalScope, v_14: Bool, v_12: Nat, v_21: Arena.Arena) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
   match v_1:
     case cps_provider_10_Preparation{v_43, v_44, v_45, v_46, v_47, v_48, v_49, v_50, v_51, v_52, v_53, v_54}:
-      EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_signature_symbol{v_16}}, False{}, v_1012786 => emitter_body_cps_provider_10_signature_symbol(v_16), v_1012785 => +v_1012771 = emitter_unbox(IR.Symbol, v_1012785); emitter_continuation_2743(v_1012771, v_3, v_49, v_18, v_20, v_10, v_26, v_24, v_28, v_4, v_5, v_6, v_8, v_15, v_14, v_12, v_21, v_51, v_43, v_44, v_45, v_46, v_47, v_48, v_50, v_52, v_53, v_54)}
+      EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_signature_symbol{v_16}}, False{}, v_1012791 => emitter_body_cps_provider_10_signature_symbol(v_16), v_1012790 => +v_1012776 = emitter_unbox(IR.Symbol, v_1012790); emitter_continuation_2744(v_1012776, v_3, v_49, v_18, v_20, v_10, v_26, v_24, v_28, v_4, v_5, v_6, v_8, v_15, v_14, v_12, v_21, v_51, v_43, v_44, v_45, v_46, v_47, v_48, v_50, v_52, v_53, v_54)}
 
 def emitter_body_cps_provider_10_native_match_prepare_definition_symbol_2(v_1: cps_provider_10_Preparation, v_3: String, v_4: IR.Words, v_5: IR.OptionalTerm, v_6: IR.DefBody, v_8: Maybe<&2, IR.Occurrence>, v_10: Bool, v_12: Nat, v_14: Bool, v_15: Scope.ArenaGlobalScope, v_16: Scope.ArenaGlobal, v_18: List<&2, BIR.Parameter>, v_20: List<&2, BIR.Quantity>, v_21: Arena.Arena, v_24: Maybe<&2, cps_provider_10_Foreign>, v_26: Maybe<&2, BIR.Primitive>, v_28: Bool) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
-  emitter_match_2744(v_1, v_16, v_3, v_18, v_20, v_10, v_26, v_24, v_28, v_4, v_5, v_6, v_8, v_15, v_14, v_12, v_21)
+  emitter_match_2745(v_1, v_16, v_3, v_18, v_20, v_10, v_26, v_24, v_28, v_4, v_5, v_6, v_8, v_15, v_14, v_12, v_21)
 
-def emitter_continuation_2745(+v_1012788: Bool, v_21: cps_provider_10_Preparation, v_5: String, v_6: IR.Words, v_7: IR.OptionalTerm, v_8: IR.DefBody, v_10: Maybe<&2, IR.Occurrence>, v_12: Bool, v_16: Nat, v_18: Bool, v_19: Scope.ArenaGlobalScope, v_22: Scope.ArenaGlobal, v_24: List<&2, BIR.Parameter>, v_26: List<&2, BIR.Quantity>, v_31: Arena.Arena, v_32: Maybe<&2, cps_provider_10_Foreign>, v_35: Maybe<&2, BIR.Primitive>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
-  v_38 = v_1012788
+def emitter_continuation_2746(+v_1012793: Bool, v_21: cps_provider_10_Preparation, v_5: String, v_6: IR.Words, v_7: IR.OptionalTerm, v_8: IR.DefBody, v_10: Maybe<&2, IR.Occurrence>, v_12: Bool, v_16: Nat, v_18: Bool, v_19: Scope.ArenaGlobalScope, v_22: Scope.ArenaGlobal, v_24: List<&2, BIR.Parameter>, v_26: List<&2, BIR.Quantity>, v_31: Arena.Arena, v_32: Maybe<&2, cps_provider_10_Foreign>, v_35: Maybe<&2, BIR.Primitive>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
+  v_38 = v_1012793
   emitter_body_cps_provider_10_native_match_prepare_definition_symbol_2(v_21, v_5, v_6, v_7, v_8, v_10, v_12, v_16, v_18, v_19, v_22, v_24, v_26, v_31, v_32, v_35, v_38)
 
-def emitter_continuation_2746(+v_1012787: Maybe<&2, BIR.Primitive>, v_14: Bool, +v_12: Bool, +v_24: List<&2, BIR.Parameter>, +v_32: Maybe<&2, cps_provider_10_Foreign>, v_21: cps_provider_10_Preparation, v_5: String, v_6: IR.Words, v_7: IR.OptionalTerm, v_8: IR.DefBody, v_10: Maybe<&2, IR.Occurrence>, v_16: Nat, v_18: Bool, v_19: Scope.ArenaGlobalScope, v_22: Scope.ArenaGlobal, v_26: List<&2, BIR.Quantity>, v_31: Arena.Arena) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
-  +v_35 = v_1012787
-  EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_definition_fast{v_14, v_12, v_24, v_35, v_32}}, False{}, v_1012791 => emitter_body_cps_provider_10_definition_fast(v_14, v_12, v_24, v_35, v_32), v_1012790 => +v_1012788 = emitter_unbox(Bool, v_1012790); emitter_continuation_2745(v_1012788, v_21, v_5, v_6, v_7, v_8, v_10, v_12, v_16, v_18, v_19, v_22, v_24, v_26, v_31, v_32, v_35)}
+def emitter_continuation_2747(+v_1012792: Maybe<&2, BIR.Primitive>, v_14: Bool, +v_12: Bool, +v_24: List<&2, BIR.Parameter>, +v_32: Maybe<&2, cps_provider_10_Foreign>, v_21: cps_provider_10_Preparation, v_5: String, v_6: IR.Words, v_7: IR.OptionalTerm, v_8: IR.DefBody, v_10: Maybe<&2, IR.Occurrence>, v_16: Nat, v_18: Bool, v_19: Scope.ArenaGlobalScope, v_22: Scope.ArenaGlobal, v_26: List<&2, BIR.Quantity>, v_31: Arena.Arena) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
+  +v_35 = v_1012792
+  EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_definition_fast{v_14, v_12, v_24, v_35, v_32}}, False{}, v_1012796 => emitter_body_cps_provider_10_definition_fast(v_14, v_12, v_24, v_35, v_32), v_1012795 => +v_1012793 = emitter_unbox(Bool, v_1012795); emitter_continuation_2746(v_1012793, v_21, v_5, v_6, v_7, v_8, v_10, v_12, v_16, v_18, v_19, v_22, v_24, v_26, v_31, v_32, v_35)}
 
-def emitter_match_2747(v_3: cps_provider_10_CatalogResult<Maybe<&2, cps_provider_10_Foreign>>, +v_12: Bool, +v_18: Bool, +v_5: String, v_14: Bool, v_24: List<&2, BIR.Parameter>, v_21: cps_provider_10_Preparation, v_6: IR.Words, v_7: IR.OptionalTerm, v_8: IR.DefBody, v_10: Maybe<&2, IR.Occurrence>, v_16: Nat, v_19: Scope.ArenaGlobalScope, v_22: Scope.ArenaGlobal, v_26: List<&2, BIR.Quantity>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
+def emitter_match_2748(v_3: cps_provider_10_CatalogResult<Maybe<&2, cps_provider_10_Foreign>>, +v_12: Bool, +v_18: Bool, +v_5: String, v_14: Bool, v_24: List<&2, BIR.Parameter>, v_21: cps_provider_10_Preparation, v_6: IR.Words, v_7: IR.OptionalTerm, v_8: IR.DefBody, v_10: Maybe<&2, IR.Occurrence>, v_16: Nat, v_19: Scope.ArenaGlobalScope, v_22: Scope.ArenaGlobal, v_26: List<&2, BIR.Quantity>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
   match v_3:
     case cps_provider_10_CatalogResult{v_31, +v_32}:
-      EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_definition_primitive{v_12, v_32, v_18, v_5}}, False{}, v_1012793 => emitter_body_cps_provider_10_definition_primitive(v_12, v_32, v_18, v_5), v_1012792 => +v_1012787 = emitter_unbox(Maybe<&2, BIR.Primitive>, v_1012792); emitter_continuation_2746(v_1012787, v_14, v_12, v_24, v_32, v_21, v_5, v_6, v_7, v_8, v_10, v_16, v_18, v_19, v_22, v_26, v_31)}
+      EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_definition_primitive{v_12, v_32, v_18, v_5}}, False{}, v_1012798 => emitter_body_cps_provider_10_definition_primitive(v_12, v_32, v_18, v_5), v_1012797 => +v_1012792 = emitter_unbox(Maybe<&2, BIR.Primitive>, v_1012797); emitter_continuation_2747(v_1012792, v_14, v_12, v_24, v_32, v_21, v_5, v_6, v_7, v_8, v_10, v_16, v_18, v_19, v_22, v_26, v_31)}
 
 def emitter_body_cps_provider_10_native_match_prepare_definition_symbol_3(v_3: cps_provider_10_CatalogResult<Maybe<&2, cps_provider_10_Foreign>>, v_5: String, v_6: IR.Words, v_7: IR.OptionalTerm, v_8: IR.DefBody, v_10: Maybe<&2, IR.Occurrence>, v_12: Bool, v_14: Bool, v_16: Nat, v_18: Bool, v_19: Scope.ArenaGlobalScope, v_21: cps_provider_10_Preparation, v_22: Scope.ArenaGlobal, v_24: List<&2, BIR.Parameter>, v_26: List<&2, BIR.Quantity>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
-  emitter_match_2747(v_3, v_12, v_18, v_5, v_14, v_24, v_21, v_6, v_7, v_8, v_10, v_16, v_19, v_22, v_26)
+  emitter_match_2748(v_3, v_12, v_18, v_5, v_14, v_24, v_21, v_6, v_7, v_8, v_10, v_16, v_19, v_22, v_26)
 
-def emitter_match_2748(v_2: cps_provider_10_CatalogResult<cps_provider_10_Telescope>, +v_9: IR.DefBody, v_19: String, +v_4: String, v_6: String, v_26: Ast.SourceSpan, +v_7: IR.Words, +v_8: IR.OptionalTerm, +v_22: Scope.ArenaGlobalScope, v_11: Maybe<&2, IR.Occurrence>, v_13: Bool, v_15: Bool, v_17: Nat, v_21: Bool, v_24: cps_provider_10_Preparation, v_25: Scope.ArenaGlobal) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
+def emitter_match_2749(v_2: cps_provider_10_CatalogResult<cps_provider_10_Telescope>, +v_9: IR.DefBody, v_19: String, +v_4: String, v_6: String, v_26: Ast.SourceSpan, +v_7: IR.Words, +v_8: IR.OptionalTerm, +v_22: Scope.ArenaGlobalScope, v_11: Maybe<&2, IR.Occurrence>, v_13: Bool, v_15: Bool, v_17: Nat, v_21: Bool, v_24: cps_provider_10_Preparation, v_25: Scope.ArenaGlobal) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
   match v_2:
     case cps_provider_10_CatalogResult{v_34, cps_provider_10_Telescope{v_35, v_36, _, _}}:
-      EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_definition_foreign{v_34, v_9, v_19, v_4, v_6, v_26, v_7, v_8, v_22}}, False{}, v_1012797 => emitter_body_cps_provider_10_definition_foreign(v_34, v_9, v_19, v_4, v_6, v_26, v_7, v_8, v_22), v_1012796 => v_1012794 = emitter_unbox(cps_provider_10_CatalogResult<Maybe<&2, cps_provider_10_Foreign>>, v_1012796); emitter_body_cps_provider_10_native_match_prepare_definition_symbol_3(v_1012794, v_4, v_7, v_8, v_9, v_11, v_13, v_15, v_17, v_21, v_22, v_24, v_25, v_35, v_36)}
+      EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_definition_foreign{v_34, v_9, v_19, v_4, v_6, v_26, v_7, v_8, v_22}}, False{}, v_1012802 => emitter_body_cps_provider_10_definition_foreign(v_34, v_9, v_19, v_4, v_6, v_26, v_7, v_8, v_22), v_1012801 => v_1012799 = emitter_unbox(cps_provider_10_CatalogResult<Maybe<&2, cps_provider_10_Foreign>>, v_1012801); emitter_body_cps_provider_10_native_match_prepare_definition_symbol_3(v_1012799, v_4, v_7, v_8, v_9, v_11, v_13, v_15, v_17, v_21, v_22, v_24, v_25, v_35, v_36)}
 
 def emitter_body_cps_provider_10_native_match_prepare_definition_symbol_4(v_2: cps_provider_10_CatalogResult<cps_provider_10_Telescope>, v_4: String, v_6: String, v_7: IR.Words, v_8: IR.OptionalTerm, v_9: IR.DefBody, v_11: Maybe<&2, IR.Occurrence>, v_13: Bool, v_15: Bool, v_17: Nat, v_19: String, v_21: Bool, v_22: Scope.ArenaGlobalScope, v_24: cps_provider_10_Preparation, v_25: Scope.ArenaGlobal, v_26: Ast.SourceSpan) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
-  emitter_match_2748(v_2, v_9, v_19, v_4, v_6, v_26, v_7, v_8, v_22, v_11, v_13, v_15, v_17, v_21, v_24, v_25)
+  emitter_match_2749(v_2, v_9, v_19, v_4, v_6, v_26, v_7, v_8, v_22, v_11, v_13, v_15, v_17, v_21, v_24, v_25)
 
-def emitter_match_2749(v_1: Maybe<&2, Scope.ArenaGlobal>, v_2: Arena.Arena, v_24: cps_provider_10_Preparation, v_4: String, +v_7: IR.Words, v_6: String, v_8: IR.OptionalTerm, v_9: IR.DefBody, v_11: Maybe<&2, IR.Occurrence>, v_13: Bool, v_15: Bool, v_17: Nat, v_19: String, v_21: Bool, v_22: Scope.ArenaGlobalScope, v_25: Ast.SourceSpan) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
+def emitter_match_2750(v_1: Maybe<&2, Scope.ArenaGlobal>, v_2: Arena.Arena, v_24: cps_provider_10_Preparation, v_4: String, +v_7: IR.Words, v_6: String, v_8: IR.OptionalTerm, v_9: IR.DefBody, v_11: Maybe<&2, IR.Occurrence>, v_13: Bool, v_15: Bool, v_17: Nat, v_19: String, v_21: Bool, v_22: Scope.ArenaGlobalScope, v_25: Ast.SourceSpan) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
   match v_1:
     case None{}:
-      v_1012798 = {v_2 : Arena.Arena}
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_preparation_failure{v_24, String.append("bend: missing published definition signature for ", v_4)}}, False{}, v_1012801 => emitter_body_cps_provider_10_preparation_failure(v_24, String.append("bend: missing published definition signature for ", v_4)), v_1012800 => +v_1012799 = emitter_unbox(cps_provider_10_Preparation, v_1012800); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012798, v_1012799}}}}
+      v_1012803 = {v_2 : Arena.Arena}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_preparation_failure{v_24, String.append("bend: missing published definition signature for ", v_4)}}, False{}, v_1012806 => emitter_body_cps_provider_10_preparation_failure(v_24, String.append("bend: missing published definition signature for ", v_4)), v_1012805 => +v_1012804 = emitter_unbox(cps_provider_10_Preparation, v_1012805); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012803, v_1012804}}}}
     case Some{v_30}:
-      EmitterPending{EmitterRequestGroup_30{EmitterRequest_cps_provider_10_live_telescope{v_2, v_7, 0}}, v_1012804 => v_1012802 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Telescope>, v_1012804); emitter_body_cps_provider_10_native_match_prepare_definition_symbol_4(v_1012802, v_4, v_6, v_7, v_8, v_9, v_11, v_13, v_15, v_17, v_19, v_21, v_22, v_24, v_30, v_25)}
+      EmitterPending{EmitterRequestGroup_30{EmitterRequest_cps_provider_10_live_telescope{v_2, v_7, 0}}, v_1012809 => v_1012807 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Telescope>, v_1012809); emitter_body_cps_provider_10_native_match_prepare_definition_symbol_4(v_1012807, v_4, v_6, v_7, v_8, v_9, v_11, v_13, v_15, v_17, v_19, v_21, v_22, v_24, v_30, v_25)}
 
 def emitter_body_cps_provider_10_native_match_prepare_definition_symbol_5(v_1: Maybe<&2, Scope.ArenaGlobal>, v_2: Arena.Arena, v_4: String, v_6: String, v_7: IR.Words, v_8: IR.OptionalTerm, v_9: IR.DefBody, v_11: Maybe<&2, IR.Occurrence>, v_13: Bool, v_15: Bool, v_17: Nat, v_19: String, v_21: Bool, v_22: Scope.ArenaGlobalScope, v_24: cps_provider_10_Preparation, v_25: Ast.SourceSpan) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
-  emitter_match_2749(v_1, v_2, v_24, v_4, v_7, v_6, v_8, v_9, v_11, v_13, v_15, v_17, v_19, v_21, v_22, v_25)
+  emitter_match_2750(v_1, v_2, v_24, v_4, v_7, v_6, v_8, v_9, v_11, v_13, v_15, v_17, v_19, v_21, v_22, v_25)
 
 def emitter_body_cps_provider_10_prepare_definition_symbol(v_0: Arena.Arena, v_2: Maybe<&2, Scope.ArenaGlobal>, v_4: String, v_6: String, v_7: IR.Words, v_8: IR.OptionalTerm, v_9: IR.DefBody, v_11: Maybe<&2, IR.Occurrence>, v_13: Bool, v_15: Bool, v_17: Nat, v_19: String, v_21: Bool, v_22: Scope.ArenaGlobalScope, v_24: cps_provider_10_Preparation, v_25: Ast.SourceSpan) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
   emitter_body_cps_provider_10_native_match_prepare_definition_symbol_5(v_2, v_0, v_4, v_6, v_7, v_8, v_9, v_11, v_13, v_15, v_17, v_19, v_21, v_22, v_24, v_25)
@@ -29359,120 +29379,120 @@ def emitter_body_cps_provider_10_prepare_definition_symbol(v_0: Arena.Arena, v_2
 def emitter_body_cps_provider_10_is_term(v_0: IR.DefBody) -> EmitterProgress<Bool>:
   EmitterFinished{EmitterValue{emitter_pure_cps_provider_10_is_term(v_0)}}
 
-def emitter_match_2750(v_2: cps_provider_10_CatalogResult<cps_provider_10_Arms>, v_6: String, v_4: List<&2, BIR.DescriptorField>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Arms>>:
+def emitter_match_2751(v_2: cps_provider_10_CatalogResult<cps_provider_10_Arms>, v_6: String, v_4: List<&2, BIR.DescriptorField>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Arms>>:
   match v_2:
     case cps_provider_10_CatalogResult{v_12, cps_provider_10_Arms{v_13, v_14}}:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_12, cps_provider_10_Arms{BIR.DescriptorArm{v_6, v_4} <> v_13, v_14}}}}
 
 def emitter_body_cps_provider_10_native_match_prepare_constructors_0(v_2: cps_provider_10_CatalogResult<cps_provider_10_Arms>, v_4: List<&2, BIR.DescriptorField>, v_6: String) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Arms>>:
-  emitter_match_2750(v_2, v_6, v_4)
+  emitter_match_2751(v_2, v_6, v_4)
 
-def emitter_continuation_2751(v_1012806: List<&2, cps_provider_10_Definition>, v_1012807: Map<&2, cps_provider_10_Definition>, v_1012808: Map<&2, cps_provider_10_DefinitionHeader>, v_1012809: List<&2, BIR.ConstructorLayout>, +v_1012810: Map<&2, cps_provider_10_Constructor>, v_34: List<&2, BIR.Family>, v_36: U32, v_38: U32, v_55: List<&2, cps_provider_10_Root>, v_40: Maybe<&2, BIR.Descriptor>, v_43: Maybe<&2, String>, v_46: Map<&2, Bool>, v_54: Arena.Arena, v_14: List<&2, IR.ConstructorDecl>, v_5: String, v_7: String, v_9: Nat, v_11: Bool, v_12: Scope.ArenaGlobalScope, v_16: List<&2, BIR.DescriptorField>, v_18: String) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Arms>>:
-  v_58 = {cps_provider_10_Preparation{v_1012806, v_1012807, v_1012808, v_1012809, v_1012810, v_34, v_36, U32.add(v_38, 1), v_55, v_40, v_43, v_46} : cps_provider_10_Preparation}
-  EmitterPending{EmitterRequestGroup_30{EmitterRequest_cps_provider_10_prepare_constructors{v_54, v_14, v_5, v_7, v_9, v_11, v_12, v_58}}, v_1012813 => v_1012811 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Arms>, v_1012813); emitter_body_cps_provider_10_native_match_prepare_constructors_0(v_1012811, v_16, v_18)}
+def emitter_continuation_2752(v_1012811: List<&2, cps_provider_10_Definition>, v_1012812: Map<&2, cps_provider_10_Definition>, v_1012813: Map<&2, cps_provider_10_DefinitionHeader>, v_1012814: List<&2, BIR.ConstructorLayout>, +v_1012815: Map<&2, cps_provider_10_Constructor>, v_34: List<&2, BIR.Family>, v_36: U32, v_38: U32, v_55: List<&2, cps_provider_10_Root>, v_40: Maybe<&2, BIR.Descriptor>, v_43: Maybe<&2, String>, v_46: Map<&2, Bool>, v_54: Arena.Arena, v_14: List<&2, IR.ConstructorDecl>, v_5: String, v_7: String, v_9: Nat, v_11: Bool, v_12: Scope.ArenaGlobalScope, v_16: List<&2, BIR.DescriptorField>, v_18: String) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Arms>>:
+  v_58 = {cps_provider_10_Preparation{v_1012811, v_1012812, v_1012813, v_1012814, v_1012815, v_34, v_36, U32.add(v_38, 1), v_55, v_40, v_43, v_46} : cps_provider_10_Preparation}
+  EmitterPending{EmitterRequestGroup_30{EmitterRequest_cps_provider_10_prepare_constructors{v_54, v_14, v_5, v_7, v_9, v_11, v_12, v_58}}, v_1012818 => v_1012816 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Arms>, v_1012818); emitter_body_cps_provider_10_native_match_prepare_constructors_0(v_1012816, v_16, v_18)}
 
-def emitter_match_2752(v_3: cps_provider_10_CatalogResult<List<&2, cps_provider_10_Root>>, v_21: List<&2, cps_provider_10_Definition>, v_24: Map<&2, cps_provider_10_Definition>, v_27: Map<&2, cps_provider_10_DefinitionHeader>, v_47: BIR.ConstructorLayout, v_29: List<&2, BIR.ConstructorLayout>, +v_18: String, v_49: cps_provider_10_Constructor, v_32: Map<&2, cps_provider_10_Constructor>, v_34: List<&2, BIR.Family>, v_36: U32, v_38: U32, v_40: Maybe<&2, BIR.Descriptor>, v_43: Maybe<&2, String>, v_46: Map<&2, Bool>, v_14: List<&2, IR.ConstructorDecl>, v_5: String, v_7: String, v_9: Nat, v_11: Bool, v_12: Scope.ArenaGlobalScope, v_16: List<&2, BIR.DescriptorField>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Arms>>:
+def emitter_match_2753(v_3: cps_provider_10_CatalogResult<List<&2, cps_provider_10_Root>>, v_21: List<&2, cps_provider_10_Definition>, v_24: Map<&2, cps_provider_10_Definition>, v_27: Map<&2, cps_provider_10_DefinitionHeader>, v_47: BIR.ConstructorLayout, v_29: List<&2, BIR.ConstructorLayout>, +v_18: String, v_49: cps_provider_10_Constructor, v_32: Map<&2, cps_provider_10_Constructor>, v_34: List<&2, BIR.Family>, v_36: U32, v_38: U32, v_40: Maybe<&2, BIR.Descriptor>, v_43: Maybe<&2, String>, v_46: Map<&2, Bool>, v_14: List<&2, IR.ConstructorDecl>, v_5: String, v_7: String, v_9: Nat, v_11: Bool, v_12: Scope.ArenaGlobalScope, v_16: List<&2, BIR.DescriptorField>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Arms>>:
   match v_3:
     case cps_provider_10_CatalogResult{v_54, v_55}:
-      v_1012806 = {v_21 : List<&2, cps_provider_10_Definition>}
-      v_1012807 = {v_24 : Map<&2, cps_provider_10_Definition>}
-      v_1012808 = {v_27 : Map<&2, cps_provider_10_DefinitionHeader>}
-      v_1012809 = {v_47 <> v_29 : List<&2, BIR.ConstructorLayout>}
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_insert_constructor{v_18, v_49, v_32}}, False{}, v_1012815 => emitter_body_cps_provider_10_insert_constructor(v_18, v_49, v_32), v_1012814 => +v_1012810 = emitter_unbox(Map<&2, cps_provider_10_Constructor>, v_1012814); emitter_continuation_2751(v_1012806, v_1012807, v_1012808, v_1012809, v_1012810, v_34, v_36, v_38, v_55, v_40, v_43, v_46, v_54, v_14, v_5, v_7, v_9, v_11, v_12, v_16, v_18)}
+      v_1012811 = {v_21 : List<&2, cps_provider_10_Definition>}
+      v_1012812 = {v_24 : Map<&2, cps_provider_10_Definition>}
+      v_1012813 = {v_27 : Map<&2, cps_provider_10_DefinitionHeader>}
+      v_1012814 = {v_47 <> v_29 : List<&2, BIR.ConstructorLayout>}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_insert_constructor{v_18, v_49, v_32}}, False{}, v_1012820 => emitter_body_cps_provider_10_insert_constructor(v_18, v_49, v_32), v_1012819 => +v_1012815 = emitter_unbox(Map<&2, cps_provider_10_Constructor>, v_1012819); emitter_continuation_2752(v_1012811, v_1012812, v_1012813, v_1012814, v_1012815, v_34, v_36, v_38, v_55, v_40, v_43, v_46, v_54, v_14, v_5, v_7, v_9, v_11, v_12, v_16, v_18)}
 
 def emitter_body_cps_provider_10_native_match_prepare_constructors_1(v_3: cps_provider_10_CatalogResult<List<&2, cps_provider_10_Root>>, v_5: String, v_7: String, v_9: Nat, v_11: Bool, v_12: Scope.ArenaGlobalScope, v_14: List<&2, IR.ConstructorDecl>, v_16: List<&2, BIR.DescriptorField>, v_18: String, v_21: List<&2, cps_provider_10_Definition>, v_24: Map<&2, cps_provider_10_Definition>, v_27: Map<&2, cps_provider_10_DefinitionHeader>, v_29: List<&2, BIR.ConstructorLayout>, v_32: Map<&2, cps_provider_10_Constructor>, v_34: List<&2, BIR.Family>, v_36: U32, v_38: U32, v_40: Maybe<&2, BIR.Descriptor>, v_43: Maybe<&2, String>, v_46: Map<&2, Bool>, v_47: BIR.ConstructorLayout, v_49: cps_provider_10_Constructor) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Arms>>:
-  emitter_match_2752(v_3, v_21, v_24, v_27, v_47, v_29, v_18, v_49, v_32, v_34, v_36, v_38, v_40, v_43, v_46, v_14, v_5, v_7, v_9, v_11, v_12, v_16)
+  emitter_match_2753(v_3, v_21, v_24, v_27, v_47, v_29, v_18, v_49, v_32, v_34, v_36, v_38, v_40, v_43, v_46, v_14, v_5, v_7, v_9, v_11, v_12, v_16)
 
-def emitter_continuation_2753(v_1012820: BIR.ConstructorLayout, v_1012821: List<&2, BIR.Quantity>, v_1012822: Nat, +v_1012823: String, v_14: Arena.Arena, v_11: IR.Words, +v_10: Scope.ArenaGlobalScope, v_43: List<&2, cps_provider_10_Root>, v_3: String, v_5: String, v_7: Nat, v_9: Bool, v_13: List<&2, IR.ConstructorDecl>, v_18: List<&2, BIR.DescriptorField>, v_20: String, v_35: List<&2, cps_provider_10_Definition>, v_36: Map<&2, cps_provider_10_Definition>, v_37: Map<&2, cps_provider_10_DefinitionHeader>, v_38: List<&2, BIR.ConstructorLayout>, v_39: Map<&2, cps_provider_10_Constructor>, v_40: List<&2, BIR.Family>, v_41: U32, v_42: U32, v_44: Maybe<&2, BIR.Descriptor>, v_45: Maybe<&2, String>, v_46: Map<&2, Bool>, v_50: BIR.ConstructorLayout) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Arms>>:
-  v_53 = {cps_provider_10_Constructor{v_1012820, v_1012821, v_1012822, v_1012823} : cps_provider_10_Constructor}
-  EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_binder_roots{v_14, v_11, v_10, v_43}}, False{}, v_1012827 => emitter_body_cps_provider_10_binder_roots(v_14, v_11, v_10, v_43), v_1012826 => v_1012824 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, cps_provider_10_Root>>, v_1012826); emitter_body_cps_provider_10_native_match_prepare_constructors_1(v_1012824, v_3, v_5, v_7, v_9, v_10, v_13, v_18, v_20, v_35, v_36, v_37, v_38, v_39, v_40, v_41, v_42, v_44, v_45, v_46, v_50, v_53)}
+def emitter_continuation_2754(v_1012825: BIR.ConstructorLayout, v_1012826: List<&2, BIR.Quantity>, v_1012827: Nat, +v_1012828: String, v_14: Arena.Arena, v_11: IR.Words, +v_10: Scope.ArenaGlobalScope, v_43: List<&2, cps_provider_10_Root>, v_3: String, v_5: String, v_7: Nat, v_9: Bool, v_13: List<&2, IR.ConstructorDecl>, v_18: List<&2, BIR.DescriptorField>, v_20: String, v_35: List<&2, cps_provider_10_Definition>, v_36: Map<&2, cps_provider_10_Definition>, v_37: Map<&2, cps_provider_10_DefinitionHeader>, v_38: List<&2, BIR.ConstructorLayout>, v_39: Map<&2, cps_provider_10_Constructor>, v_40: List<&2, BIR.Family>, v_41: U32, v_42: U32, v_44: Maybe<&2, BIR.Descriptor>, v_45: Maybe<&2, String>, v_46: Map<&2, Bool>, v_50: BIR.ConstructorLayout) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Arms>>:
+  v_53 = {cps_provider_10_Constructor{v_1012825, v_1012826, v_1012827, v_1012828} : cps_provider_10_Constructor}
+  EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_binder_roots{v_14, v_11, v_10, v_43}}, False{}, v_1012832 => emitter_body_cps_provider_10_binder_roots(v_14, v_11, v_10, v_43), v_1012831 => v_1012829 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, cps_provider_10_Root>>, v_1012831); emitter_body_cps_provider_10_native_match_prepare_constructors_1(v_1012829, v_3, v_5, v_7, v_9, v_10, v_13, v_18, v_20, v_35, v_36, v_37, v_38, v_39, v_40, v_41, v_42, v_44, v_45, v_46, v_50, v_53)}
 
-def emitter_continuation_2754(v_1012816: U32, v_1012817: String, +v_1012818: Maybe<&2, String>, +v_1012819: List<&2, Maybe<&2, String>>, v_16: List<&2, BIR.Quantity>, +v_7: Nat, +v_3: String, +v_5: String, v_14: Arena.Arena, v_11: IR.Words, v_10: Scope.ArenaGlobalScope, v_43: List<&2, cps_provider_10_Root>, v_9: Bool, v_13: List<&2, IR.ConstructorDecl>, v_18: List<&2, BIR.DescriptorField>, v_20: String, v_35: List<&2, cps_provider_10_Definition>, v_36: Map<&2, cps_provider_10_Definition>, v_37: Map<&2, cps_provider_10_DefinitionHeader>, v_38: List<&2, BIR.ConstructorLayout>, v_39: Map<&2, cps_provider_10_Constructor>, v_40: List<&2, BIR.Family>, v_41: U32, v_42: U32, v_44: Maybe<&2, BIR.Descriptor>, v_45: Maybe<&2, String>, v_46: Map<&2, Bool>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Arms>>:
-  +v_50 = {BIR.ConstructorLayout{v_1012816, v_1012817, v_1012818, v_1012819} : BIR.ConstructorLayout}
-  v_1012820 = {v_50 : BIR.ConstructorLayout}
-  v_1012821 = {v_16 : List<&2, BIR.Quantity>}
-  v_1012822 = {v_7 : Nat}
-  EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_qualify{v_3, v_5}}, False{}, v_1012829 => emitter_body_cps_provider_10_qualify(v_3, v_5), v_1012828 => +v_1012823 = emitter_unbox(String, v_1012828); emitter_continuation_2753(v_1012820, v_1012821, v_1012822, v_1012823, v_14, v_11, v_10, v_43, v_3, v_5, v_7, v_9, v_13, v_18, v_20, v_35, v_36, v_37, v_38, v_39, v_40, v_41, v_42, v_44, v_45, v_46, v_50)}
+def emitter_continuation_2755(v_1012821: U32, v_1012822: String, +v_1012823: Maybe<&2, String>, +v_1012824: List<&2, Maybe<&2, String>>, v_16: List<&2, BIR.Quantity>, +v_7: Nat, +v_3: String, +v_5: String, v_14: Arena.Arena, v_11: IR.Words, v_10: Scope.ArenaGlobalScope, v_43: List<&2, cps_provider_10_Root>, v_9: Bool, v_13: List<&2, IR.ConstructorDecl>, v_18: List<&2, BIR.DescriptorField>, v_20: String, v_35: List<&2, cps_provider_10_Definition>, v_36: Map<&2, cps_provider_10_Definition>, v_37: Map<&2, cps_provider_10_DefinitionHeader>, v_38: List<&2, BIR.ConstructorLayout>, v_39: Map<&2, cps_provider_10_Constructor>, v_40: List<&2, BIR.Family>, v_41: U32, v_42: U32, v_44: Maybe<&2, BIR.Descriptor>, v_45: Maybe<&2, String>, v_46: Map<&2, Bool>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Arms>>:
+  +v_50 = {BIR.ConstructorLayout{v_1012821, v_1012822, v_1012823, v_1012824} : BIR.ConstructorLayout}
+  v_1012825 = {v_50 : BIR.ConstructorLayout}
+  v_1012826 = {v_16 : List<&2, BIR.Quantity>}
+  v_1012827 = {v_7 : Nat}
+  EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_qualify{v_3, v_5}}, False{}, v_1012834 => emitter_body_cps_provider_10_qualify(v_3, v_5), v_1012833 => +v_1012828 = emitter_unbox(String, v_1012833); emitter_continuation_2754(v_1012825, v_1012826, v_1012827, v_1012828, v_14, v_11, v_10, v_43, v_3, v_5, v_7, v_9, v_13, v_18, v_20, v_35, v_36, v_37, v_38, v_39, v_40, v_41, v_42, v_44, v_45, v_46, v_50)}
 
-def emitter_match_2755(v_1: cps_provider_10_Preparation, +v_20: String, +v_9: Bool, +v_5: String, +v_18: List<&2, BIR.DescriptorField>, v_16: List<&2, BIR.Quantity>, v_7: Nat, v_3: String, v_14: Arena.Arena, v_11: IR.Words, v_10: Scope.ArenaGlobalScope, v_13: List<&2, IR.ConstructorDecl>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Arms>>:
+def emitter_match_2756(v_1: cps_provider_10_Preparation, +v_20: String, +v_9: Bool, +v_5: String, +v_18: List<&2, BIR.DescriptorField>, v_16: List<&2, BIR.Quantity>, v_7: Nat, v_3: String, v_14: Arena.Arena, v_11: IR.Words, v_10: Scope.ArenaGlobalScope, v_13: List<&2, IR.ConstructorDecl>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Arms>>:
   match v_1:
     case cps_provider_10_Preparation{v_35, v_36, v_37, v_38, v_39, v_40, v_41, +v_42, v_43, v_44, v_45, v_46}:
-      v_1012816 = {v_42 : U32}
-      v_1012817 = {v_20 : String}
-      EmitterDirect{Bool, EmitterRequestGroup_28{EmitterRequest_cps_provider_10_constructor_native{v_9, v_5, v_20}}, False{}, v_1012833 => emitter_body_cps_provider_10_constructor_native(v_9, v_5, v_20), v_1012832 => +v_1012818 = emitter_unbox(Maybe<&2, String>, v_1012832); EmitterDirect{Bool, EmitterRequestGroup_28{EmitterRequest_cps_provider_10_field_names{v_18}}, False{}, v_1012831 => emitter_body_cps_provider_10_field_names(v_18), v_1012830 => +v_1012819 = emitter_unbox(List<&2, Maybe<&2, String>>, v_1012830); emitter_continuation_2754(v_1012816, v_1012817, v_1012818, v_1012819, v_16, v_7, v_3, v_5, v_14, v_11, v_10, v_43, v_9, v_13, v_18, v_20, v_35, v_36, v_37, v_38, v_39, v_40, v_41, v_42, v_44, v_45, v_46)}}
+      v_1012821 = {v_42 : U32}
+      v_1012822 = {v_20 : String}
+      EmitterDirect{Bool, EmitterRequestGroup_28{EmitterRequest_cps_provider_10_constructor_native{v_9, v_5, v_20}}, False{}, v_1012838 => emitter_body_cps_provider_10_constructor_native(v_9, v_5, v_20), v_1012837 => +v_1012823 = emitter_unbox(Maybe<&2, String>, v_1012837); EmitterDirect{Bool, EmitterRequestGroup_28{EmitterRequest_cps_provider_10_field_names{v_18}}, False{}, v_1012836 => emitter_body_cps_provider_10_field_names(v_18), v_1012835 => +v_1012824 = emitter_unbox(List<&2, Maybe<&2, String>>, v_1012835); emitter_continuation_2755(v_1012821, v_1012822, v_1012823, v_1012824, v_16, v_7, v_3, v_5, v_14, v_11, v_10, v_43, v_9, v_13, v_18, v_20, v_35, v_36, v_37, v_38, v_39, v_40, v_41, v_42, v_44, v_45, v_46)}}
 
 def emitter_body_cps_provider_10_native_match_prepare_constructors_2(v_1: cps_provider_10_Preparation, v_3: String, v_5: String, v_7: Nat, v_9: Bool, v_10: Scope.ArenaGlobalScope, v_11: IR.Words, v_13: List<&2, IR.ConstructorDecl>, v_14: Arena.Arena, v_16: List<&2, BIR.Quantity>, v_18: List<&2, BIR.DescriptorField>, v_20: String) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Arms>>:
-  emitter_match_2755(v_1, v_20, v_9, v_5, v_18, v_16, v_7, v_3, v_14, v_11, v_10, v_13)
+  emitter_match_2756(v_1, v_20, v_9, v_5, v_18, v_16, v_7, v_3, v_14, v_11, v_10, v_13)
 
-def emitter_continuation_2756(+v_1012834: String, v_13: cps_provider_10_Preparation, v_4: String, v_6: String, v_8: Nat, v_10: Bool, v_11: Scope.ArenaGlobalScope, v_16: IR.Words, v_18: List<&2, IR.ConstructorDecl>, v_26: Arena.Arena, v_28: List<&2, BIR.Quantity>, v_29: List<&2, BIR.DescriptorField>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Arms>>:
-  v_33 = v_1012834
+def emitter_continuation_2757(+v_1012839: String, v_13: cps_provider_10_Preparation, v_4: String, v_6: String, v_8: Nat, v_10: Bool, v_11: Scope.ArenaGlobalScope, v_16: IR.Words, v_18: List<&2, IR.ConstructorDecl>, v_26: Arena.Arena, v_28: List<&2, BIR.Quantity>, v_29: List<&2, BIR.DescriptorField>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Arms>>:
+  v_33 = v_1012839
   emitter_body_cps_provider_10_native_match_prepare_constructors_2(v_13, v_4, v_6, v_8, v_10, v_11, v_16, v_18, v_26, v_28, v_29, v_33)
 
-def emitter_match_2757(v_2: cps_provider_10_CatalogResult<cps_provider_10_Telescope>, +v_4: String, v_15: String, v_13: cps_provider_10_Preparation, v_6: String, v_8: Nat, v_10: Bool, v_11: Scope.ArenaGlobalScope, v_16: IR.Words, v_18: List<&2, IR.ConstructorDecl>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Arms>>:
+def emitter_match_2758(v_2: cps_provider_10_CatalogResult<cps_provider_10_Telescope>, +v_4: String, v_15: String, v_13: cps_provider_10_Preparation, v_6: String, v_8: Nat, v_10: Bool, v_11: Scope.ArenaGlobalScope, v_16: IR.Words, v_18: List<&2, IR.ConstructorDecl>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Arms>>:
   match v_2:
     case cps_provider_10_CatalogResult{v_26, cps_provider_10_Telescope{_, v_28, v_29, _}}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_qualify{v_4, v_15}}, False{}, v_1012837 => emitter_body_cps_provider_10_qualify(v_4, v_15), v_1012836 => +v_1012834 = emitter_unbox(String, v_1012836); emitter_continuation_2756(v_1012834, v_13, v_4, v_6, v_8, v_10, v_11, v_16, v_18, v_26, v_28, v_29)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_qualify{v_4, v_15}}, False{}, v_1012842 => emitter_body_cps_provider_10_qualify(v_4, v_15), v_1012841 => +v_1012839 = emitter_unbox(String, v_1012841); emitter_continuation_2757(v_1012839, v_13, v_4, v_6, v_8, v_10, v_11, v_16, v_18, v_26, v_28, v_29)}
 
 def emitter_body_cps_provider_10_native_match_prepare_constructors_3(v_2: cps_provider_10_CatalogResult<cps_provider_10_Telescope>, v_4: String, v_6: String, v_8: Nat, v_10: Bool, v_11: Scope.ArenaGlobalScope, v_13: cps_provider_10_Preparation, v_15: String, v_16: IR.Words, v_18: List<&2, IR.ConstructorDecl>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Arms>>:
-  emitter_match_2757(v_2, v_4, v_15, v_13, v_6, v_8, v_10, v_11, v_16, v_18)
+  emitter_match_2758(v_2, v_4, v_15, v_13, v_6, v_8, v_10, v_11, v_16, v_18)
 
-def emitter_match_2758(v_1: List<&2, IR.ConstructorDecl>, v_2: Arena.Arena, v_13: cps_provider_10_Preparation, +v_11: Scope.ArenaGlobalScope, v_4: String, v_6: String, v_8: Nat, v_10: Bool) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Arms>>:
+def emitter_match_2759(v_1: List<&2, IR.ConstructorDecl>, v_2: Arena.Arena, v_13: cps_provider_10_Preparation, +v_11: Scope.ArenaGlobalScope, v_4: String, v_6: String, v_8: Nat, v_10: Bool) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Arms>>:
   match v_1:
     case []:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_2, cps_provider_10_Arms{[], v_13}}}}
     case IR.Constructor{v_20, +v_21, _} <> v_23:
-      EmitterDirect{Bool, EmitterRequestGroup_28{EmitterRequest_cps_provider_10_telescope{v_2, v_21, 0, v_11}}, False{}, v_1012841 => emitter_body_cps_provider_10_telescope(v_2, v_21, 0, v_11), v_1012840 => v_1012838 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Telescope>, v_1012840); emitter_body_cps_provider_10_native_match_prepare_constructors_3(v_1012838, v_4, v_6, v_8, v_10, v_11, v_13, v_20, v_21, v_23)}
+      EmitterDirect{Bool, EmitterRequestGroup_28{EmitterRequest_cps_provider_10_telescope{v_2, v_21, 0, v_11}}, False{}, v_1012846 => emitter_body_cps_provider_10_telescope(v_2, v_21, 0, v_11), v_1012845 => v_1012843 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Telescope>, v_1012845); emitter_body_cps_provider_10_native_match_prepare_constructors_3(v_1012843, v_4, v_6, v_8, v_10, v_11, v_13, v_20, v_21, v_23)}
 
 def emitter_body_cps_provider_10_native_match_prepare_constructors_4(v_1: List<&2, IR.ConstructorDecl>, v_2: Arena.Arena, v_4: String, v_6: String, v_8: Nat, v_10: Bool, v_11: Scope.ArenaGlobalScope, v_13: cps_provider_10_Preparation) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Arms>>:
-  emitter_match_2758(v_1, v_2, v_13, v_11, v_4, v_6, v_8, v_10)
+  emitter_match_2759(v_1, v_2, v_13, v_11, v_4, v_6, v_8, v_10)
 
 def emitter_body_cps_provider_10_prepare_constructors(v_0: Arena.Arena, v_2: List<&2, IR.ConstructorDecl>, v_4: String, v_6: String, v_8: Nat, v_10: Bool, v_11: Scope.ArenaGlobalScope, v_13: cps_provider_10_Preparation) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Arms>>:
   emitter_body_cps_provider_10_native_match_prepare_constructors_4(v_2, v_0, v_4, v_6, v_8, v_10, v_11, v_13)
 
-def emitter_continuation_2759(v_1012843: String, v_1012844: String, +v_1012845: Maybe<&2, String>, v_8: Nat, v_14: Nat, v_16: List<&2, BIR.DescriptorArm>, v_19: List<&2, cps_provider_10_Definition>, v_22: Map<&2, cps_provider_10_Definition>, v_25: Map<&2, cps_provider_10_DefinitionHeader>, v_27: List<&2, BIR.ConstructorLayout>, v_30: Map<&2, cps_provider_10_Constructor>, v_32: List<&2, BIR.Family>, v_34: U32, v_36: U32, v_12: U32, +v_6: Scope.ArenaGlobalScope, v_52: List<&2, cps_provider_10_Root>, v_38: Maybe<&2, BIR.Descriptor>, v_41: Maybe<&2, String>, v_44: Map<&2, Bool>, v_51: Arena.Arena, +v_46: String) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
-  v_55 = {BIR.Family{v_1012843, v_1012844, v_1012845, v_8, v_14, v_16} : BIR.Family}
+def emitter_continuation_2760(v_1012848: String, v_1012849: String, +v_1012850: Maybe<&2, String>, v_8: Nat, v_14: Nat, v_16: List<&2, BIR.DescriptorArm>, v_19: List<&2, cps_provider_10_Definition>, v_22: Map<&2, cps_provider_10_Definition>, v_25: Map<&2, cps_provider_10_DefinitionHeader>, v_27: List<&2, BIR.ConstructorLayout>, v_30: Map<&2, cps_provider_10_Constructor>, v_32: List<&2, BIR.Family>, v_34: U32, v_36: U32, v_12: U32, +v_6: Scope.ArenaGlobalScope, v_52: List<&2, cps_provider_10_Root>, v_38: Maybe<&2, BIR.Descriptor>, v_41: Maybe<&2, String>, v_44: Map<&2, Bool>, v_51: Arena.Arena, +v_46: String) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
+  v_55 = {BIR.Family{v_1012848, v_1012849, v_1012850, v_8, v_14, v_16} : BIR.Family}
   v_57 = {cps_provider_10_Preparation{v_19, v_22, v_25, v_27, v_30, v_55 <> v_32, v_34, v_36, cps_provider_10_TermRoot{v_12, v_6} <> v_52, v_38, v_41, v_44} : cps_provider_10_Preparation}
-  v_1012846 = {v_51 : Arena.Arena}
-  EmitterPending{EmitterRequestGroup_30{EmitterRequest_cps_provider_10_block_family{Scope.lookup_kind(v_46, Scope.GlobalFamily{}, v_6), v_46, v_57}}, v_1012848 => +v_1012847 = emitter_unbox(cps_provider_10_Preparation, v_1012848); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012846, v_1012847}}}}
+  v_1012851 = {v_51 : Arena.Arena}
+  EmitterPending{EmitterRequestGroup_30{EmitterRequest_cps_provider_10_block_family{Scope.lookup_kind(v_46, Scope.GlobalFamily{}, v_6), v_46, v_57}}, v_1012853 => +v_1012852 = emitter_unbox(cps_provider_10_Preparation, v_1012853); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012851, v_1012852}}}}
 
-def emitter_match_2760(v_3: cps_provider_10_CatalogResult<List<&2, cps_provider_10_Root>>, +v_46: String, +v_10: String, v_5: Bool, v_8: Nat, v_14: Nat, v_16: List<&2, BIR.DescriptorArm>, v_19: List<&2, cps_provider_10_Definition>, v_22: Map<&2, cps_provider_10_Definition>, v_25: Map<&2, cps_provider_10_DefinitionHeader>, v_27: List<&2, BIR.ConstructorLayout>, v_30: Map<&2, cps_provider_10_Constructor>, v_32: List<&2, BIR.Family>, v_34: U32, v_36: U32, v_12: U32, v_6: Scope.ArenaGlobalScope, v_38: Maybe<&2, BIR.Descriptor>, v_41: Maybe<&2, String>, v_44: Map<&2, Bool>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
+def emitter_match_2761(v_3: cps_provider_10_CatalogResult<List<&2, cps_provider_10_Root>>, +v_46: String, +v_10: String, v_5: Bool, v_8: Nat, v_14: Nat, v_16: List<&2, BIR.DescriptorArm>, v_19: List<&2, cps_provider_10_Definition>, v_22: Map<&2, cps_provider_10_Definition>, v_25: Map<&2, cps_provider_10_DefinitionHeader>, v_27: List<&2, BIR.ConstructorLayout>, v_30: Map<&2, cps_provider_10_Constructor>, v_32: List<&2, BIR.Family>, v_34: U32, v_36: U32, v_12: U32, v_6: Scope.ArenaGlobalScope, v_38: Maybe<&2, BIR.Descriptor>, v_41: Maybe<&2, String>, v_44: Map<&2, Bool>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
   match v_3:
     case cps_provider_10_CatalogResult{v_51, v_52}:
-      v_1012843 = {v_46 : String}
-      v_1012844 = {v_10 : String}
-      EmitterDirect{Bool, EmitterRequestGroup_28{EmitterRequest_cps_provider_10_native_marker{v_5, v_10}}, False{}, v_1012850 => emitter_body_cps_provider_10_native_marker(v_5, v_10), v_1012849 => +v_1012845 = emitter_unbox(Maybe<&2, String>, v_1012849); emitter_continuation_2759(v_1012843, v_1012844, v_1012845, v_8, v_14, v_16, v_19, v_22, v_25, v_27, v_30, v_32, v_34, v_36, v_12, v_6, v_52, v_38, v_41, v_44, v_51, v_46)}
+      v_1012848 = {v_46 : String}
+      v_1012849 = {v_10 : String}
+      EmitterDirect{Bool, EmitterRequestGroup_28{EmitterRequest_cps_provider_10_native_marker{v_5, v_10}}, False{}, v_1012855 => emitter_body_cps_provider_10_native_marker(v_5, v_10), v_1012854 => +v_1012850 = emitter_unbox(Maybe<&2, String>, v_1012854); emitter_continuation_2760(v_1012848, v_1012849, v_1012850, v_8, v_14, v_16, v_19, v_22, v_25, v_27, v_30, v_32, v_34, v_36, v_12, v_6, v_52, v_38, v_41, v_44, v_51, v_46)}
 
 def emitter_body_cps_provider_10_native_match_prepare_family_0(v_3: cps_provider_10_CatalogResult<List<&2, cps_provider_10_Root>>, v_5: Bool, v_6: Scope.ArenaGlobalScope, v_8: Nat, v_10: String, v_12: U32, v_14: Nat, v_16: List<&2, BIR.DescriptorArm>, v_19: List<&2, cps_provider_10_Definition>, v_22: Map<&2, cps_provider_10_Definition>, v_25: Map<&2, cps_provider_10_DefinitionHeader>, v_27: List<&2, BIR.ConstructorLayout>, v_30: Map<&2, cps_provider_10_Constructor>, v_32: List<&2, BIR.Family>, v_34: U32, v_36: U32, v_38: Maybe<&2, BIR.Descriptor>, v_41: Maybe<&2, String>, v_44: Map<&2, Bool>, v_46: String) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
-  emitter_match_2760(v_3, v_46, v_10, v_5, v_8, v_14, v_16, v_19, v_22, v_25, v_27, v_30, v_32, v_34, v_36, v_12, v_6, v_38, v_41, v_44)
+  emitter_match_2761(v_3, v_46, v_10, v_5, v_8, v_14, v_16, v_19, v_22, v_25, v_27, v_30, v_32, v_34, v_36, v_12, v_6, v_38, v_41, v_44)
 
-def emitter_continuation_2761(+v_1012851: String, v_16: Arena.Arena, v_11: IR.Words, +v_6: Scope.ArenaGlobalScope, v_41: List<&2, cps_provider_10_Root>, v_5: Bool, v_8: Nat, v_10: String, v_13: U32, v_15: Nat, v_18: List<&2, BIR.DescriptorArm>, v_33: List<&2, cps_provider_10_Definition>, v_34: Map<&2, cps_provider_10_Definition>, v_35: Map<&2, cps_provider_10_DefinitionHeader>, v_36: List<&2, BIR.ConstructorLayout>, v_37: Map<&2, cps_provider_10_Constructor>, v_38: List<&2, BIR.Family>, v_39: U32, v_40: U32, v_42: Maybe<&2, BIR.Descriptor>, v_43: Maybe<&2, String>, v_44: Map<&2, Bool>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
-  v_47 = v_1012851
-  EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_binder_roots{v_16, v_11, v_6, v_41}}, False{}, v_1012855 => emitter_body_cps_provider_10_binder_roots(v_16, v_11, v_6, v_41), v_1012854 => v_1012852 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, cps_provider_10_Root>>, v_1012854); emitter_body_cps_provider_10_native_match_prepare_family_0(v_1012852, v_5, v_6, v_8, v_10, v_13, v_15, v_18, v_33, v_34, v_35, v_36, v_37, v_38, v_39, v_40, v_42, v_43, v_44, v_47)}
+def emitter_continuation_2762(+v_1012856: String, v_16: Arena.Arena, v_11: IR.Words, +v_6: Scope.ArenaGlobalScope, v_41: List<&2, cps_provider_10_Root>, v_5: Bool, v_8: Nat, v_10: String, v_13: U32, v_15: Nat, v_18: List<&2, BIR.DescriptorArm>, v_33: List<&2, cps_provider_10_Definition>, v_34: Map<&2, cps_provider_10_Definition>, v_35: Map<&2, cps_provider_10_DefinitionHeader>, v_36: List<&2, BIR.ConstructorLayout>, v_37: Map<&2, cps_provider_10_Constructor>, v_38: List<&2, BIR.Family>, v_39: U32, v_40: U32, v_42: Maybe<&2, BIR.Descriptor>, v_43: Maybe<&2, String>, v_44: Map<&2, Bool>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
+  v_47 = v_1012856
+  EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_binder_roots{v_16, v_11, v_6, v_41}}, False{}, v_1012860 => emitter_body_cps_provider_10_binder_roots(v_16, v_11, v_6, v_41), v_1012859 => v_1012857 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, cps_provider_10_Root>>, v_1012859); emitter_body_cps_provider_10_native_match_prepare_family_0(v_1012857, v_5, v_6, v_8, v_10, v_13, v_15, v_18, v_33, v_34, v_35, v_36, v_37, v_38, v_39, v_40, v_42, v_43, v_44, v_47)}
 
-def emitter_match_2762(v_1: cps_provider_10_Preparation, v_3: String, +v_10: String, v_16: Arena.Arena, v_11: IR.Words, v_6: Scope.ArenaGlobalScope, v_5: Bool, v_8: Nat, v_13: U32, v_15: Nat, v_18: List<&2, BIR.DescriptorArm>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
+def emitter_match_2763(v_1: cps_provider_10_Preparation, v_3: String, +v_10: String, v_16: Arena.Arena, v_11: IR.Words, v_6: Scope.ArenaGlobalScope, v_5: Bool, v_8: Nat, v_13: U32, v_15: Nat, v_18: List<&2, BIR.DescriptorArm>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
   match v_1:
     case cps_provider_10_Preparation{v_33, v_34, v_35, v_36, v_37, v_38, v_39, v_40, v_41, v_42, v_43, v_44}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_qualify{v_3, v_10}}, False{}, v_1012857 => emitter_body_cps_provider_10_qualify(v_3, v_10), v_1012856 => +v_1012851 = emitter_unbox(String, v_1012856); emitter_continuation_2761(v_1012851, v_16, v_11, v_6, v_41, v_5, v_8, v_10, v_13, v_15, v_18, v_33, v_34, v_35, v_36, v_37, v_38, v_39, v_40, v_42, v_43, v_44)}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_qualify{v_3, v_10}}, False{}, v_1012862 => emitter_body_cps_provider_10_qualify(v_3, v_10), v_1012861 => +v_1012856 = emitter_unbox(String, v_1012861); emitter_continuation_2762(v_1012856, v_16, v_11, v_6, v_41, v_5, v_8, v_10, v_13, v_15, v_18, v_33, v_34, v_35, v_36, v_37, v_38, v_39, v_40, v_42, v_43, v_44)}
 
 def emitter_body_cps_provider_10_native_match_prepare_family_1(v_1: cps_provider_10_Preparation, v_3: String, v_5: Bool, v_6: Scope.ArenaGlobalScope, v_8: Nat, v_10: String, v_11: IR.Words, v_13: U32, v_15: Nat, v_16: Arena.Arena, v_18: List<&2, BIR.DescriptorArm>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
-  emitter_match_2762(v_1, v_3, v_10, v_16, v_11, v_6, v_5, v_8, v_13, v_15, v_18)
+  emitter_match_2763(v_1, v_3, v_10, v_16, v_11, v_6, v_5, v_8, v_13, v_15, v_18)
 
 def emitter_body_cps_provider_10_native_match_prepare_family_2(v_2: cps_provider_10_CatalogResult<cps_provider_10_Arms>, v_4: String, v_6: Bool, v_7: Scope.ArenaGlobalScope, v_9: Nat, v_11: String, v_12: IR.Words, v_14: U32, v_16: Nat) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
   match v_2:
     case cps_provider_10_CatalogResult{v_22, cps_provider_10_Arms{v_23, v_24}}:
       emitter_body_cps_provider_10_native_match_prepare_family_1(v_24, v_4, v_6, v_7, v_9, v_11, v_12, v_14, v_16, v_22, v_23)
 
-def emitter_continuation_2764(+v_1012859: Nat, v_1: Arena.Arena, v_21: List<&2, IR.ConstructorDecl>, +v_3: String, +v_18: String, +v_5: Bool, +v_6: Scope.ArenaGlobalScope, v_10: cps_provider_10_Preparation, v_8: Nat, v_19: IR.Words, v_20: U32) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
-  +v_25 = v_1012859
-  EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_prepare_constructors{v_1, v_21, v_3, v_18, v_25, v_5, v_6, v_10}}, False{}, v_1012863 => emitter_body_cps_provider_10_prepare_constructors(v_1, v_21, v_3, v_18, v_25, v_5, v_6, v_10), v_1012862 => v_1012860 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Arms>, v_1012862); emitter_body_cps_provider_10_native_match_prepare_family_2(v_1012860, v_3, v_5, v_6, v_8, v_18, v_19, v_20, v_25)}
+def emitter_continuation_2765(+v_1012864: Nat, v_1: Arena.Arena, v_21: List<&2, IR.ConstructorDecl>, +v_3: String, +v_18: String, +v_5: Bool, +v_6: Scope.ArenaGlobalScope, v_10: cps_provider_10_Preparation, v_8: Nat, v_19: IR.Words, v_20: U32) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
+  +v_25 = v_1012864
+  EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_prepare_constructors{v_1, v_21, v_3, v_18, v_25, v_5, v_6, v_10}}, False{}, v_1012868 => emitter_body_cps_provider_10_prepare_constructors(v_1, v_21, v_3, v_18, v_25, v_5, v_6, v_10), v_1012867 => v_1012865 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Arms>, v_1012867); emitter_body_cps_provider_10_native_match_prepare_family_2(v_1012865, v_3, v_5, v_6, v_8, v_18, v_19, v_20, v_25)}
 
-def emitter_match_2765(v_0: IR.TypeDecl, v_1: Arena.Arena, v_3: String, v_5: Bool, v_6: Scope.ArenaGlobalScope, v_10: cps_provider_10_Preparation, v_8: Nat) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
+def emitter_match_2766(v_0: IR.TypeDecl, v_1: Arena.Arena, v_3: String, v_5: Bool, v_6: Scope.ArenaGlobalScope, v_10: cps_provider_10_Preparation, v_8: Nat) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
   match v_0:
     case IR.TypeDecl{v_18, +v_19, v_20, v_21, _}:
-      EmitterPending{EmitterRequestGroup_30{EmitterRequest_cps_provider_10_words_count{v_19}}, v_1012864 => +v_1012859 = emitter_unbox(Nat, v_1012864); emitter_continuation_2764(v_1012859, v_1, v_21, v_3, v_18, v_5, v_6, v_10, v_8, v_19, v_20)}
+      EmitterPending{EmitterRequestGroup_30{EmitterRequest_cps_provider_10_words_count{v_19}}, v_1012869 => +v_1012864 = emitter_unbox(Nat, v_1012869); emitter_continuation_2765(v_1012864, v_1, v_21, v_3, v_18, v_5, v_6, v_10, v_8, v_19, v_20)}
 
 def emitter_body_cps_provider_10_native_match_prepare_family_3(v_0: IR.TypeDecl, v_1: Arena.Arena, v_3: String, v_5: Bool, v_6: Scope.ArenaGlobalScope, v_8: Nat, v_10: cps_provider_10_Preparation) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
-  emitter_match_2765(v_0, v_1, v_3, v_5, v_6, v_10, v_8)
+  emitter_match_2766(v_0, v_1, v_3, v_5, v_6, v_10, v_8)
 
 def emitter_body_cps_provider_10_prepare_family(v_0: Arena.Arena, v_1: IR.TypeDecl, v_3: String, v_5: Bool, v_6: Scope.ArenaGlobalScope, v_8: Nat, v_10: cps_provider_10_Preparation) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
   emitter_body_cps_provider_10_native_match_prepare_family_3(v_1, v_0, v_3, v_5, v_6, v_8, v_10)
@@ -29482,88 +29502,88 @@ def emitter_body_cps_provider_10_words_count(v_0: IR.Words) -> EmitterProgress<N
     case IR.Words{_, v_5}:
       EmitterFinished{EmitterValue{U32.to_nat(v_5)}}
 
-def emitter_continuation_2767(+v_1012866: IR.Symbol, +v_3: String, +v_27: U32, v_21: List<&2, cps_provider_10_Definition>, v_22: Map<&2, cps_provider_10_Definition>, v_23: Map<&2, cps_provider_10_DefinitionHeader>, v_24: List<&2, BIR.ConstructorLayout>, v_25: Map<&2, cps_provider_10_Constructor>, v_26: List<&2, BIR.Family>, v_28: U32, v_29: List<&2, cps_provider_10_Root>, v_30: Maybe<&2, BIR.Descriptor>, v_31: Maybe<&2, String>, v_32: Map<&2, Bool>) -> EmitterProgress<cps_provider_10_Preparation>:
-  v_35 = {cps_provider_10_DefinitionHeader{v_1012866, v_3, v_27, [], [], True{}, None{}, None{}, False{}} : cps_provider_10_DefinitionHeader}
-  v_1012867 = {v_21 : List<&2, cps_provider_10_Definition>}
-  v_1012868 = {v_22 : Map<&2, cps_provider_10_Definition>}
-  EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_header_insert{v_3, v_35, v_23}}, False{}, v_1012871 => emitter_body_cps_provider_10_header_insert(v_3, v_35, v_23), v_1012870 => +v_1012869 = emitter_unbox(Map<&2, cps_provider_10_DefinitionHeader>, v_1012870); EmitterFinished{EmitterValue{cps_provider_10_Preparation{v_1012867, v_1012868, v_1012869, v_24, v_25, v_26, v_27, v_28, v_29, v_30, v_31, v_32}}}}
+def emitter_continuation_2768(+v_1012871: IR.Symbol, +v_3: String, +v_27: U32, v_21: List<&2, cps_provider_10_Definition>, v_22: Map<&2, cps_provider_10_Definition>, v_23: Map<&2, cps_provider_10_DefinitionHeader>, v_24: List<&2, BIR.ConstructorLayout>, v_25: Map<&2, cps_provider_10_Constructor>, v_26: List<&2, BIR.Family>, v_28: U32, v_29: List<&2, cps_provider_10_Root>, v_30: Maybe<&2, BIR.Descriptor>, v_31: Maybe<&2, String>, v_32: Map<&2, Bool>) -> EmitterProgress<cps_provider_10_Preparation>:
+  v_35 = {cps_provider_10_DefinitionHeader{v_1012871, v_3, v_27, [], [], True{}, None{}, None{}, False{}} : cps_provider_10_DefinitionHeader}
+  v_1012872 = {v_21 : List<&2, cps_provider_10_Definition>}
+  v_1012873 = {v_22 : Map<&2, cps_provider_10_Definition>}
+  EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_header_insert{v_3, v_35, v_23}}, False{}, v_1012876 => emitter_body_cps_provider_10_header_insert(v_3, v_35, v_23), v_1012875 => +v_1012874 = emitter_unbox(Map<&2, cps_provider_10_DefinitionHeader>, v_1012875); EmitterFinished{EmitterValue{cps_provider_10_Preparation{v_1012872, v_1012873, v_1012874, v_24, v_25, v_26, v_27, v_28, v_29, v_30, v_31, v_32}}}}
 
-def emitter_match_2768(v_1: Maybe<&2, Scope.ArenaGlobal>, +v_5: cps_provider_10_Preparation, v_3: String) -> EmitterProgress<cps_provider_10_Preparation>:
+def emitter_match_2769(v_1: Maybe<&2, Scope.ArenaGlobal>, +v_5: cps_provider_10_Preparation, v_3: String) -> EmitterProgress<cps_provider_10_Preparation>:
   match v_1, v_5:
     case Some{v_20}, cps_provider_10_Preparation{v_21, v_22, v_23, v_24, v_25, v_26, v_27, v_28, v_29, v_30, v_31, v_32}:
-      EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_signature_symbol{v_20}}, False{}, v_1012873 => emitter_body_cps_provider_10_signature_symbol(v_20), v_1012872 => +v_1012866 = emitter_unbox(IR.Symbol, v_1012872); emitter_continuation_2767(v_1012866, v_3, v_27, v_21, v_22, v_23, v_24, v_25, v_26, v_28, v_29, v_30, v_31, v_32)}
+      EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_signature_symbol{v_20}}, False{}, v_1012878 => emitter_body_cps_provider_10_signature_symbol(v_20), v_1012877 => +v_1012871 = emitter_unbox(IR.Symbol, v_1012877); emitter_continuation_2768(v_1012871, v_3, v_27, v_21, v_22, v_23, v_24, v_25, v_26, v_28, v_29, v_30, v_31, v_32)}
     case None{}, _:
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_preparation_failure{v_5, String.append("bend: missing published family signature for ", v_3)}}, False{}, v_1012876 => emitter_body_cps_provider_10_preparation_failure(v_5, String.append("bend: missing published family signature for ", v_3)), v_1012875 => +v_1012874 = emitter_unbox(cps_provider_10_Preparation, v_1012875); EmitterFinished{EmitterValue{v_1012874}}}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_preparation_failure{v_5, String.append("bend: missing published family signature for ", v_3)}}, False{}, v_1012881 => emitter_body_cps_provider_10_preparation_failure(v_5, String.append("bend: missing published family signature for ", v_3)), v_1012880 => +v_1012879 = emitter_unbox(cps_provider_10_Preparation, v_1012880); EmitterFinished{EmitterValue{v_1012879}}}
 
 def emitter_body_cps_provider_10_block_family(v_1: Maybe<&2, Scope.ArenaGlobal>, v_3: String, v_5: cps_provider_10_Preparation) -> EmitterProgress<cps_provider_10_Preparation>:
-  emitter_match_2768(v_1, v_5, v_3)
+  emitter_match_2769(v_1, v_5, v_3)
 
-def emitter_match_2769(v_1: List<&2, IR.Clause>, +v_3: U32) -> EmitterProgress<Maybe<&2, cps_provider_10_Telescope>>:
+def emitter_match_2770(v_1: List<&2, IR.Clause>, +v_3: U32) -> EmitterProgress<Maybe<&2, cps_provider_10_Telescope>>:
   match v_1:
     case []:
       EmitterFinished{EmitterValue{Some{cps_provider_10_Telescope{[], [], [], True{}}}}}
     case IR.ClauseFor{True{}, v_11, _, _, None{}, _} <> v_15:
-      v_1012877 = {emitter_pure_cps_provider_10_quantity(v_11) : BIR.Quantity}
-      v_1012878 = {v_3 : U32}
-      EmitterPending{EmitterRequestGroup_30{EmitterRequest_cps_provider_10_law_telescope{v_15, U32.add(v_3, 1)}}, v_1012882 => +v_1012879 = emitter_unbox(Maybe<&2, cps_provider_10_Telescope>, v_1012882); EmitterPending{EmitterRequestGroup_30{EmitterRequest_cps_provider_10_law_telescope_cons{v_1012877, v_1012878, v_1012879}}, v_1012881 => +v_1012880 = emitter_unbox(Maybe<&2, cps_provider_10_Telescope>, v_1012881); EmitterFinished{EmitterValue{v_1012880}}}}
+      v_1012882 = {emitter_pure_cps_provider_10_quantity(v_11) : BIR.Quantity}
+      v_1012883 = {v_3 : U32}
+      EmitterPending{EmitterRequestGroup_30{EmitterRequest_cps_provider_10_law_telescope{v_15, U32.add(v_3, 1)}}, v_1012887 => +v_1012884 = emitter_unbox(Maybe<&2, cps_provider_10_Telescope>, v_1012887); EmitterPending{EmitterRequestGroup_30{EmitterRequest_cps_provider_10_law_telescope_cons{v_1012882, v_1012883, v_1012884}}, v_1012886 => +v_1012885 = emitter_unbox(Maybe<&2, cps_provider_10_Telescope>, v_1012886); EmitterFinished{EmitterValue{v_1012885}}}}
     case _ <> _:
       EmitterFinished{EmitterValue{None{}}}
 
 def emitter_body_cps_provider_10_law_telescope(v_1: List<&2, IR.Clause>, v_3: U32) -> EmitterProgress<Maybe<&2, cps_provider_10_Telescope>>:
-  emitter_match_2769(v_1, v_3)
+  emitter_match_2770(v_1, v_3)
 
-def emitter_match_2770(v_5: Maybe<&2, cps_provider_10_Telescope>, v_2: U32, +v_0: BIR.Quantity) -> EmitterProgress<Maybe<&2, cps_provider_10_Telescope>>:
+def emitter_match_2771(v_5: Maybe<&2, cps_provider_10_Telescope>, v_2: U32, +v_0: BIR.Quantity) -> EmitterProgress<Maybe<&2, cps_provider_10_Telescope>>:
   match v_5:
     case None{}:
       EmitterFinished{EmitterValue{None{}}}
     case Some{cps_provider_10_Telescope{v_12, v_13, v_14, v_15}}:
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_parameter{v_2, v_0, v_12}}, False{}, v_1012885 => emitter_body_cps_provider_10_parameter(v_2, v_0, v_12), v_1012884 => +v_1012883 = emitter_unbox(List<&2, BIR.Parameter>, v_1012884); EmitterFinished{EmitterValue{Some{cps_provider_10_Telescope{v_1012883, v_0 <> v_13, v_14, v_15}}}}}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_parameter{v_2, v_0, v_12}}, False{}, v_1012890 => emitter_body_cps_provider_10_parameter(v_2, v_0, v_12), v_1012889 => +v_1012888 = emitter_unbox(List<&2, BIR.Parameter>, v_1012889); EmitterFinished{EmitterValue{Some{cps_provider_10_Telescope{v_1012888, v_0 <> v_13, v_14, v_15}}}}}
 
 def emitter_body_cps_provider_10_law_telescope_cons(v_0: BIR.Quantity, v_2: U32, v_5: Maybe<&2, cps_provider_10_Telescope>) -> EmitterProgress<Maybe<&2, cps_provider_10_Telescope>>:
-  emitter_match_2770(v_5, v_2, v_0)
+  emitter_match_2771(v_5, v_2, v_0)
 
-def emitter_match_2771(v_1: IR.LawDecl, v_0: Arena.Arena, v_5: Bool, +v_3: String, +v_6: Scope.ArenaGlobalScope, v_8: cps_provider_10_Preparation) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
+def emitter_match_2772(v_1: IR.LawDecl, v_0: Arena.Arena, v_5: Bool, +v_3: String, +v_6: Scope.ArenaGlobalScope, v_8: cps_provider_10_Preparation) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
   match v_1:
     case IR.LawDecl{+v_15, v_16, v_17, _}:
-      v_1012886 = {v_0 : Arena.Arena}
-      EmitterDirect{Bool, EmitterRequestGroup_28{EmitterRequest_cps_provider_10_primitive{v_5, v_15}}, False{}, v_1012900 => emitter_body_cps_provider_10_primitive(v_5, v_15), v_1012899 => +v_1012887 = emitter_unbox(Maybe<&2, BIR.Primitive>, v_1012899); EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_law_telescope{v_16, 0}}, False{}, v_1012898 => emitter_body_cps_provider_10_law_telescope(v_16, 0), v_1012897 => +v_1012888 = emitter_unbox(Maybe<&2, cps_provider_10_Telescope>, v_1012897); EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_qualify{v_3, v_15}}, False{}, v_1012896 => emitter_body_cps_provider_10_qualify(v_3, v_15), v_1012895 => +v_1012889 = emitter_unbox(String, v_1012895); EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_qualify{v_3, v_15}}, False{}, v_1012894 => emitter_body_cps_provider_10_qualify(v_3, v_15), v_1012893 => +v_1012890 = emitter_unbox(String, v_1012893); EmitterPending{EmitterRequestGroup_30{EmitterRequest_cps_provider_10_prepare_native_law{v_1012886, v_1012887, v_1012888, Scope.lookup_kind(v_1012889, Scope.GlobalDefinition{}, v_6), v_1012890, v_17, v_6, v_8}}, v_1012892 => v_1012891 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_1012892); EmitterFinished{EmitterValue{v_1012891}}}}}}}
+      v_1012891 = {v_0 : Arena.Arena}
+      EmitterDirect{Bool, EmitterRequestGroup_28{EmitterRequest_cps_provider_10_primitive{v_5, v_15}}, False{}, v_1012905 => emitter_body_cps_provider_10_primitive(v_5, v_15), v_1012904 => +v_1012892 = emitter_unbox(Maybe<&2, BIR.Primitive>, v_1012904); EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_law_telescope{v_16, 0}}, False{}, v_1012903 => emitter_body_cps_provider_10_law_telescope(v_16, 0), v_1012902 => +v_1012893 = emitter_unbox(Maybe<&2, cps_provider_10_Telescope>, v_1012902); EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_qualify{v_3, v_15}}, False{}, v_1012901 => emitter_body_cps_provider_10_qualify(v_3, v_15), v_1012900 => +v_1012894 = emitter_unbox(String, v_1012900); EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_qualify{v_3, v_15}}, False{}, v_1012899 => emitter_body_cps_provider_10_qualify(v_3, v_15), v_1012898 => +v_1012895 = emitter_unbox(String, v_1012898); EmitterPending{EmitterRequestGroup_30{EmitterRequest_cps_provider_10_prepare_native_law{v_1012891, v_1012892, v_1012893, Scope.lookup_kind(v_1012894, Scope.GlobalDefinition{}, v_6), v_1012895, v_17, v_6, v_8}}, v_1012897 => v_1012896 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_1012897); EmitterFinished{EmitterValue{v_1012896}}}}}}}
 
 def emitter_body_cps_provider_10_prepare_law(v_0: Arena.Arena, v_1: IR.LawDecl, v_3: String, v_5: Bool, v_6: Scope.ArenaGlobalScope, v_8: cps_provider_10_Preparation) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
-  emitter_match_2771(v_1, v_0, v_5, v_3, v_6, v_8)
+  emitter_match_2772(v_1, v_0, v_5, v_3, v_6, v_8)
 
-def emitter_continuation_2772(+v_1012909: IR.Symbol, +v_9: String, +v_53: U32, v_28: List<&2, BIR.Parameter>, v_29: List<&2, BIR.Quantity>, v_27: BIR.Primitive, +v_11: U32, v_12: Scope.ArenaGlobalScope, v_0: Arena.Arena, v_47: List<&2, cps_provider_10_Definition>, v_48: Map<&2, cps_provider_10_Definition>, v_49: Map<&2, cps_provider_10_DefinitionHeader>, v_50: List<&2, BIR.ConstructorLayout>, v_51: Map<&2, cps_provider_10_Constructor>, v_52: List<&2, BIR.Family>, v_54: U32, v_55: List<&2, cps_provider_10_Root>, v_56: Maybe<&2, BIR.Descriptor>, v_57: Maybe<&2, String>, v_58: Map<&2, Bool>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
-  +v_61 = {cps_provider_10_DefinitionHeader{v_1012909, v_9, v_53, v_28, v_29, False{}, Some{v_27}, None{}, False{}} : cps_provider_10_DefinitionHeader}
+def emitter_continuation_2773(+v_1012914: IR.Symbol, +v_9: String, +v_53: U32, v_28: List<&2, BIR.Parameter>, v_29: List<&2, BIR.Quantity>, v_27: BIR.Primitive, +v_11: U32, v_12: Scope.ArenaGlobalScope, v_0: Arena.Arena, v_47: List<&2, cps_provider_10_Definition>, v_48: Map<&2, cps_provider_10_Definition>, v_49: Map<&2, cps_provider_10_DefinitionHeader>, v_50: List<&2, BIR.ConstructorLayout>, v_51: Map<&2, cps_provider_10_Constructor>, v_52: List<&2, BIR.Family>, v_54: U32, v_55: List<&2, cps_provider_10_Root>, v_56: Maybe<&2, BIR.Descriptor>, v_57: Maybe<&2, String>, v_58: Map<&2, Bool>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
+  +v_61 = {cps_provider_10_DefinitionHeader{v_1012914, v_9, v_53, v_28, v_29, False{}, Some{v_27}, None{}, False{}} : cps_provider_10_DefinitionHeader}
   v_63 = {cps_provider_10_Definition{v_61, IR.Words{0, 0}, IR.SomeTerm{v_11}, IR.DefTerm{v_11}, None{}, v_12, Some{v_9}, 0n} : cps_provider_10_Definition}
-  v_1012910 = {v_0 : Arena.Arena}
-  v_1012911 = {v_63 <> v_47 : List<&2, cps_provider_10_Definition>}
-  v_1012912 = {v_48 : Map<&2, cps_provider_10_Definition>}
-  EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_header_insert{v_9, v_61, v_49}}, False{}, v_1012915 => emitter_body_cps_provider_10_header_insert(v_9, v_61, v_49), v_1012914 => +v_1012913 = emitter_unbox(Map<&2, cps_provider_10_DefinitionHeader>, v_1012914); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012910, cps_provider_10_Preparation{v_1012911, v_1012912, v_1012913, v_50, v_51, v_52, U32.add(v_53, 1), v_54, v_55, v_56, v_57, v_58}}}}}
+  v_1012915 = {v_0 : Arena.Arena}
+  v_1012916 = {v_63 <> v_47 : List<&2, cps_provider_10_Definition>}
+  v_1012917 = {v_48 : Map<&2, cps_provider_10_Definition>}
+  EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_header_insert{v_9, v_61, v_49}}, False{}, v_1012920 => emitter_body_cps_provider_10_header_insert(v_9, v_61, v_49), v_1012919 => +v_1012918 = emitter_unbox(Map<&2, cps_provider_10_DefinitionHeader>, v_1012919); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012915, cps_provider_10_Preparation{v_1012916, v_1012917, v_1012918, v_50, v_51, v_52, U32.add(v_53, 1), v_54, v_55, v_56, v_57, v_58}}}}}
 
-def emitter_match_2773(v_14: cps_provider_10_Preparation, v_34: Scope.ArenaGlobal, v_9: String, v_28: List<&2, BIR.Parameter>, v_29: List<&2, BIR.Quantity>, v_27: BIR.Primitive, v_11: U32, v_12: Scope.ArenaGlobalScope, v_0: Arena.Arena) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
+def emitter_match_2774(v_14: cps_provider_10_Preparation, v_34: Scope.ArenaGlobal, v_9: String, v_28: List<&2, BIR.Parameter>, v_29: List<&2, BIR.Quantity>, v_27: BIR.Primitive, v_11: U32, v_12: Scope.ArenaGlobalScope, v_0: Arena.Arena) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
   match v_14:
     case cps_provider_10_Preparation{v_47, v_48, v_49, v_50, v_51, v_52, v_53, v_54, v_55, v_56, v_57, v_58}:
-      EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_signature_symbol{v_34}}, False{}, v_1012917 => emitter_body_cps_provider_10_signature_symbol(v_34), v_1012916 => +v_1012909 = emitter_unbox(IR.Symbol, v_1012916); emitter_continuation_2772(v_1012909, v_9, v_53, v_28, v_29, v_27, v_11, v_12, v_0, v_47, v_48, v_49, v_50, v_51, v_52, v_54, v_55, v_56, v_57, v_58)}
+      EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_signature_symbol{v_34}}, False{}, v_1012922 => emitter_body_cps_provider_10_signature_symbol(v_34), v_1012921 => +v_1012914 = emitter_unbox(IR.Symbol, v_1012921); emitter_continuation_2773(v_1012914, v_9, v_53, v_28, v_29, v_27, v_11, v_12, v_0, v_47, v_48, v_49, v_50, v_51, v_52, v_54, v_55, v_56, v_57, v_58)}
 
-def emitter_match_2774(v_7: Maybe<&2, Scope.ArenaGlobal>, v_0: Arena.Arena, v_14: cps_provider_10_Preparation, v_9: String, v_28: List<&2, BIR.Parameter>, v_29: List<&2, BIR.Quantity>, v_27: BIR.Primitive, v_11: U32, v_12: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
+def emitter_match_2775(v_7: Maybe<&2, Scope.ArenaGlobal>, v_0: Arena.Arena, v_14: cps_provider_10_Preparation, v_9: String, v_28: List<&2, BIR.Parameter>, v_29: List<&2, BIR.Quantity>, v_27: BIR.Primitive, v_11: U32, v_12: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
   match v_7:
     case None{}:
-      v_1012905 = {v_0 : Arena.Arena}
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_preparation_failure{v_14, String.append("bend: missing published native law signature for ", v_9)}}, False{}, v_1012908 => emitter_body_cps_provider_10_preparation_failure(v_14, String.append("bend: missing published native law signature for ", v_9)), v_1012907 => +v_1012906 = emitter_unbox(cps_provider_10_Preparation, v_1012907); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012905, v_1012906}}}}
+      v_1012910 = {v_0 : Arena.Arena}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_preparation_failure{v_14, String.append("bend: missing published native law signature for ", v_9)}}, False{}, v_1012913 => emitter_body_cps_provider_10_preparation_failure(v_14, String.append("bend: missing published native law signature for ", v_9)), v_1012912 => +v_1012911 = emitter_unbox(cps_provider_10_Preparation, v_1012912); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012910, v_1012911}}}}
     case Some{v_34}:
-      emitter_match_2773(v_14, v_34, v_9, v_28, v_29, v_27, v_11, v_12, v_0)
+      emitter_match_2774(v_14, v_34, v_9, v_28, v_29, v_27, v_11, v_12, v_0)
 
-def emitter_match_2775(v_2: Maybe<&2, BIR.Primitive>, v_5: Maybe<&2, cps_provider_10_Telescope>, v_0: Arena.Arena, v_14: cps_provider_10_Preparation, v_7: Maybe<&2, Scope.ArenaGlobal>, v_9: String, v_11: U32, v_12: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
+def emitter_match_2776(v_2: Maybe<&2, BIR.Primitive>, v_5: Maybe<&2, cps_provider_10_Telescope>, v_0: Arena.Arena, v_14: cps_provider_10_Preparation, v_7: Maybe<&2, Scope.ArenaGlobal>, v_9: String, v_11: U32, v_12: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
   match v_2, v_5:
     case None{}, _:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_0, v_14}}}
     case Some{v_20}, None{}:
-      v_1012901 = {v_0 : Arena.Arena}
-      EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_block_family{v_7, v_9, v_14}}, False{}, v_1012904 => emitter_body_cps_provider_10_block_family(v_7, v_9, v_14), v_1012903 => +v_1012902 = emitter_unbox(cps_provider_10_Preparation, v_1012903); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012901, v_1012902}}}}
+      v_1012906 = {v_0 : Arena.Arena}
+      EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_block_family{v_7, v_9, v_14}}, False{}, v_1012909 => emitter_body_cps_provider_10_block_family(v_7, v_9, v_14), v_1012908 => +v_1012907 = emitter_unbox(cps_provider_10_Preparation, v_1012908); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012906, v_1012907}}}}
     case Some{v_27}, Some{cps_provider_10_Telescope{v_28, v_29, _, _}}:
-      emitter_match_2774(v_7, v_0, v_14, v_9, v_28, v_29, v_27, v_11, v_12)
+      emitter_match_2775(v_7, v_0, v_14, v_9, v_28, v_29, v_27, v_11, v_12)
 
 def emitter_body_cps_provider_10_prepare_native_law(v_0: Arena.Arena, v_2: Maybe<&2, BIR.Primitive>, v_5: Maybe<&2, cps_provider_10_Telescope>, v_7: Maybe<&2, Scope.ArenaGlobal>, v_9: String, v_11: U32, v_12: Scope.ArenaGlobalScope, v_14: cps_provider_10_Preparation) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
-  emitter_match_2775(v_2, v_5, v_0, v_14, v_7, v_9, v_11, v_12)
+  emitter_match_2776(v_2, v_5, v_0, v_14, v_7, v_9, v_11, v_12)
 
 def emitter_body_cps_provider_10_family_key(v_0: IR.TypeDecl, v_2: String) -> EmitterProgress<String>:
   match v_0:
@@ -29575,69 +29595,69 @@ def emitter_body_cps_provider_10_native_match_prepare_declarations_0(v_1: List<&
     case []:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_2, v_4}}}
     case _ <> _:
-      v_1012919 = {v_2 : Arena.Arena}
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_preparation_failure{v_4, "bend: unmatched checked family metadata"}}, False{}, v_1012922 => emitter_body_cps_provider_10_preparation_failure(v_4, "bend: unmatched checked family metadata"), v_1012921 => +v_1012920 = emitter_unbox(cps_provider_10_Preparation, v_1012921); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012919, v_1012920}}}}
+      v_1012924 = {v_2 : Arena.Arena}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_preparation_failure{v_4, "bend: unmatched checked family metadata"}}, False{}, v_1012927 => emitter_body_cps_provider_10_preparation_failure(v_4, "bend: unmatched checked family metadata"), v_1012926 => +v_1012925 = emitter_unbox(cps_provider_10_Preparation, v_1012926); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012924, v_1012925}}}}
 
-def emitter_match_2778(v_2: cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_13: List<&2, IR.TopLevel>, v_4: String, v_6: String, v_8: Bool, v_9: Scope.ArenaGlobalScope, v_11: List<&2, Checked.FamilyMetadata>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
+def emitter_match_2779(v_2: cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_13: List<&2, IR.TopLevel>, v_4: String, v_6: String, v_8: Bool, v_9: Scope.ArenaGlobalScope, v_11: List<&2, Checked.FamilyMetadata>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
   match v_2:
     case cps_provider_10_CatalogResult{v_18, v_19}:
-      EmitterPending{EmitterRequestGroup_30{EmitterRequest_cps_provider_10_prepare_declarations{v_18, v_13, v_4, v_6, v_8, v_9, v_11, v_19}}, v_1012924 => v_1012923 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_1012924); EmitterFinished{EmitterValue{v_1012923}}}
+      EmitterPending{EmitterRequestGroup_30{EmitterRequest_cps_provider_10_prepare_declarations{v_18, v_13, v_4, v_6, v_8, v_9, v_11, v_19}}, v_1012929 => v_1012928 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_1012929); EmitterFinished{EmitterValue{v_1012928}}}
 
 def emitter_body_cps_provider_10_native_match_prepare_declarations_1(v_2: cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_4: String, v_6: String, v_8: Bool, v_9: Scope.ArenaGlobalScope, v_11: List<&2, Checked.FamilyMetadata>, v_13: List<&2, IR.TopLevel>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
-  emitter_match_2778(v_2, v_13, v_4, v_6, v_8, v_9, v_11)
+  emitter_match_2779(v_2, v_13, v_4, v_6, v_8, v_9, v_11)
 
-def emitter_match_2779(v_2: cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_11: List<&2, IR.TopLevel>, v_4: String, v_6: String, v_8: Bool, v_9: Scope.ArenaGlobalScope, v_13: List<&2, Checked.FamilyMetadata>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
+def emitter_match_2780(v_2: cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_11: List<&2, IR.TopLevel>, v_4: String, v_6: String, v_8: Bool, v_9: Scope.ArenaGlobalScope, v_13: List<&2, Checked.FamilyMetadata>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
   match v_2:
     case cps_provider_10_CatalogResult{v_18, v_19}:
-      EmitterPending{EmitterRequestGroup_30{EmitterRequest_cps_provider_10_prepare_declarations{v_18, v_11, v_4, v_6, v_8, v_9, v_13, v_19}}, v_1012926 => v_1012925 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_1012926); EmitterFinished{EmitterValue{v_1012925}}}
+      EmitterPending{EmitterRequestGroup_30{EmitterRequest_cps_provider_10_prepare_declarations{v_18, v_11, v_4, v_6, v_8, v_9, v_13, v_19}}, v_1012931 => v_1012930 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_1012931); EmitterFinished{EmitterValue{v_1012930}}}
 
 def emitter_body_cps_provider_10_native_match_prepare_declarations_2(v_2: cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_4: String, v_6: String, v_8: Bool, v_9: Scope.ArenaGlobalScope, v_11: List<&2, IR.TopLevel>, v_13: List<&2, Checked.FamilyMetadata>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
-  emitter_match_2779(v_2, v_11, v_4, v_6, v_8, v_9, v_13)
+  emitter_match_2780(v_2, v_11, v_4, v_6, v_8, v_9, v_13)
 
-def emitter_match_2780(v_1: Bool, v_2: Arena.Arena, v_11: cps_provider_10_Preparation, v_12: IR.TypeDecl, +v_4: String, +v_8: Bool, +v_9: Scope.ArenaGlobalScope, v_16: Nat, v_6: String, v_14: List<&2, IR.TopLevel>, v_18: List<&2, Checked.FamilyMetadata>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
+def emitter_match_2781(v_1: Bool, v_2: Arena.Arena, v_11: cps_provider_10_Preparation, v_12: IR.TypeDecl, +v_4: String, +v_8: Bool, +v_9: Scope.ArenaGlobalScope, v_16: Nat, v_6: String, v_14: List<&2, IR.TopLevel>, v_18: List<&2, Checked.FamilyMetadata>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
   match v_1:
     case False{}:
-      v_1012927 = {v_2 : Arena.Arena}
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_preparation_failure{v_11, "bend: checked family metadata identity mismatch"}}, False{}, v_1012930 => emitter_body_cps_provider_10_preparation_failure(v_11, "bend: checked family metadata identity mismatch"), v_1012929 => +v_1012928 = emitter_unbox(cps_provider_10_Preparation, v_1012929); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012927, v_1012928}}}}
+      v_1012932 = {v_2 : Arena.Arena}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_preparation_failure{v_11, "bend: checked family metadata identity mismatch"}}, False{}, v_1012935 => emitter_body_cps_provider_10_preparation_failure(v_11, "bend: checked family metadata identity mismatch"), v_1012934 => +v_1012933 = emitter_unbox(cps_provider_10_Preparation, v_1012934); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012932, v_1012933}}}}
     case True{}:
-      EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_prepare_family{v_2, v_12, v_4, v_8, v_9, v_16, v_11}}, False{}, v_1012934 => emitter_body_cps_provider_10_prepare_family(v_2, v_12, v_4, v_8, v_9, v_16, v_11), v_1012933 => v_1012931 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_1012933); emitter_body_cps_provider_10_native_match_prepare_declarations_2(v_1012931, v_4, v_6, v_8, v_9, v_14, v_18)}
+      EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_prepare_family{v_2, v_12, v_4, v_8, v_9, v_16, v_11}}, False{}, v_1012939 => emitter_body_cps_provider_10_prepare_family(v_2, v_12, v_4, v_8, v_9, v_16, v_11), v_1012938 => v_1012936 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_1012938); emitter_body_cps_provider_10_native_match_prepare_declarations_2(v_1012936, v_4, v_6, v_8, v_9, v_14, v_18)}
 
 def emitter_body_cps_provider_10_native_match_prepare_declarations_3(v_1: Bool, v_2: Arena.Arena, v_4: String, v_6: String, v_8: Bool, v_9: Scope.ArenaGlobalScope, v_11: cps_provider_10_Preparation, v_12: IR.TypeDecl, v_14: List<&2, IR.TopLevel>, v_16: Nat, v_18: List<&2, Checked.FamilyMetadata>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
-  emitter_match_2780(v_1, v_2, v_11, v_12, v_4, v_8, v_9, v_16, v_6, v_14, v_18)
+  emitter_match_2781(v_1, v_2, v_11, v_12, v_4, v_8, v_9, v_16, v_6, v_14, v_18)
 
-def emitter_match_2781(v_1: List<&2, Checked.FamilyMetadata>, v_2: Arena.Arena, v_11: cps_provider_10_Preparation, +v_12: IR.TypeDecl, +v_4: String, v_6: String, v_8: Bool, v_9: Scope.ArenaGlobalScope, v_14: List<&2, IR.TopLevel>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
+def emitter_match_2782(v_1: List<&2, Checked.FamilyMetadata>, v_2: Arena.Arena, v_11: cps_provider_10_Preparation, +v_12: IR.TypeDecl, +v_4: String, v_6: String, v_8: Bool, v_9: Scope.ArenaGlobalScope, v_14: List<&2, IR.TopLevel>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
   match v_1:
     case []:
-      v_1012935 = {v_2 : Arena.Arena}
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_preparation_failure{v_11, "bend: missing checked family metadata"}}, False{}, v_1012938 => emitter_body_cps_provider_10_preparation_failure(v_11, "bend: missing checked family metadata"), v_1012937 => +v_1012936 = emitter_unbox(cps_provider_10_Preparation, v_1012937); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012935, v_1012936}}}}
+      v_1012940 = {v_2 : Arena.Arena}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_preparation_failure{v_11, "bend: missing checked family metadata"}}, False{}, v_1012943 => emitter_body_cps_provider_10_preparation_failure(v_11, "bend: missing checked family metadata"), v_1012942 => +v_1012941 = emitter_unbox(cps_provider_10_Preparation, v_1012942); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012940, v_1012941}}}}
     case Checked.FamilyMetadata{v_21, v_22} <> v_23:
-      v_1012939 = {v_21 : String}
-      EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_family_key{v_12, v_4}}, False{}, v_1012945 => emitter_body_cps_provider_10_family_key(v_12, v_4), v_1012944 => +v_1012940 = emitter_unbox(String, v_1012944); EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_native_match_prepare_declarations_3{String.eq(v_1012939, v_1012940), v_2, v_4, v_6, v_8, v_9, v_11, v_12, v_14, v_22, v_23}}, False{}, v_1012943 => emitter_body_cps_provider_10_native_match_prepare_declarations_3(String.eq(v_1012939, v_1012940), v_2, v_4, v_6, v_8, v_9, v_11, v_12, v_14, v_22, v_23), v_1012942 => v_1012941 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_1012942); EmitterFinished{EmitterValue{v_1012941}}}}
+      v_1012944 = {v_21 : String}
+      EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_family_key{v_12, v_4}}, False{}, v_1012950 => emitter_body_cps_provider_10_family_key(v_12, v_4), v_1012949 => +v_1012945 = emitter_unbox(String, v_1012949); EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_native_match_prepare_declarations_3{String.eq(v_1012944, v_1012945), v_2, v_4, v_6, v_8, v_9, v_11, v_12, v_14, v_22, v_23}}, False{}, v_1012948 => emitter_body_cps_provider_10_native_match_prepare_declarations_3(String.eq(v_1012944, v_1012945), v_2, v_4, v_6, v_8, v_9, v_11, v_12, v_14, v_22, v_23), v_1012947 => v_1012946 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_1012947); EmitterFinished{EmitterValue{v_1012946}}}}
 
 def emitter_body_cps_provider_10_native_match_prepare_declarations_4(v_1: List<&2, Checked.FamilyMetadata>, v_2: Arena.Arena, v_4: String, v_6: String, v_8: Bool, v_9: Scope.ArenaGlobalScope, v_11: cps_provider_10_Preparation, v_12: IR.TypeDecl, v_14: List<&2, IR.TopLevel>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
-  emitter_match_2781(v_1, v_2, v_11, v_12, v_4, v_6, v_8, v_9, v_14)
+  emitter_match_2782(v_1, v_2, v_11, v_12, v_4, v_6, v_8, v_9, v_14)
 
-def emitter_match_2782(v_2: cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_13: List<&2, IR.TopLevel>, v_4: String, v_6: String, v_8: Bool, v_9: Scope.ArenaGlobalScope, v_11: List<&2, Checked.FamilyMetadata>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
+def emitter_match_2783(v_2: cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_13: List<&2, IR.TopLevel>, v_4: String, v_6: String, v_8: Bool, v_9: Scope.ArenaGlobalScope, v_11: List<&2, Checked.FamilyMetadata>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
   match v_2:
     case cps_provider_10_CatalogResult{v_18, v_19}:
-      EmitterPending{EmitterRequestGroup_30{EmitterRequest_cps_provider_10_prepare_declarations{v_18, v_13, v_4, v_6, v_8, v_9, v_11, v_19}}, v_1012947 => v_1012946 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_1012947); EmitterFinished{EmitterValue{v_1012946}}}
+      EmitterPending{EmitterRequestGroup_30{EmitterRequest_cps_provider_10_prepare_declarations{v_18, v_13, v_4, v_6, v_8, v_9, v_11, v_19}}, v_1012952 => v_1012951 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_1012952); EmitterFinished{EmitterValue{v_1012951}}}
 
 def emitter_body_cps_provider_10_native_match_prepare_declarations_5(v_2: cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_4: String, v_6: String, v_8: Bool, v_9: Scope.ArenaGlobalScope, v_11: List<&2, Checked.FamilyMetadata>, v_13: List<&2, IR.TopLevel>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
-  emitter_match_2782(v_2, v_13, v_4, v_6, v_8, v_9, v_11)
+  emitter_match_2783(v_2, v_13, v_4, v_6, v_8, v_9, v_11)
 
-def emitter_match_2783(v_1: List<&2, IR.TopLevel>, v_11: List<&2, Checked.FamilyMetadata>, v_2: Arena.Arena, v_13: cps_provider_10_Preparation, +v_4: String, +v_6: String, +v_8: Bool, +v_9: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
+def emitter_match_2784(v_1: List<&2, IR.TopLevel>, v_11: List<&2, Checked.FamilyMetadata>, v_2: Arena.Arena, v_13: cps_provider_10_Preparation, +v_4: String, +v_6: String, +v_8: Bool, +v_9: Scope.ArenaGlobalScope) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
   match v_1:
     case []:
       emitter_body_cps_provider_10_native_match_prepare_declarations_0(v_11, v_2, v_13)
     case IR.DefTop{v_19} <> v_20:
-      EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_prepare_definition{v_2, v_19, v_4, v_6, v_8, v_9, v_13}}, False{}, v_1012952 => emitter_body_cps_provider_10_prepare_definition(v_2, v_19, v_4, v_6, v_8, v_9, v_13), v_1012951 => v_1012949 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_1012951); emitter_body_cps_provider_10_native_match_prepare_declarations_1(v_1012949, v_4, v_6, v_8, v_9, v_11, v_20)}
+      EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_prepare_definition{v_2, v_19, v_4, v_6, v_8, v_9, v_13}}, False{}, v_1012957 => emitter_body_cps_provider_10_prepare_definition(v_2, v_19, v_4, v_6, v_8, v_9, v_13), v_1012956 => v_1012954 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_1012956); emitter_body_cps_provider_10_native_match_prepare_declarations_1(v_1012954, v_4, v_6, v_8, v_9, v_11, v_20)}
     case IR.TypeTop{v_25} <> v_26:
       emitter_body_cps_provider_10_native_match_prepare_declarations_4(v_11, v_2, v_4, v_6, v_8, v_9, v_13, v_25, v_26)
     case IR.LawTop{v_30} <> v_31:
-      EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_prepare_law{v_2, v_30, v_4, v_8, v_9, v_13}}, False{}, v_1012957 => emitter_body_cps_provider_10_prepare_law(v_2, v_30, v_4, v_8, v_9, v_13), v_1012956 => v_1012954 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_1012956); emitter_body_cps_provider_10_native_match_prepare_declarations_5(v_1012954, v_4, v_6, v_8, v_9, v_11, v_31)}
+      EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_prepare_law{v_2, v_30, v_4, v_8, v_9, v_13}}, False{}, v_1012962 => emitter_body_cps_provider_10_prepare_law(v_2, v_30, v_4, v_8, v_9, v_13), v_1012961 => v_1012959 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_1012961); emitter_body_cps_provider_10_native_match_prepare_declarations_5(v_1012959, v_4, v_6, v_8, v_9, v_11, v_31)}
 
 def emitter_body_cps_provider_10_native_match_prepare_declarations_6(v_1: List<&2, IR.TopLevel>, v_2: Arena.Arena, v_4: String, v_6: String, v_8: Bool, v_9: Scope.ArenaGlobalScope, v_11: List<&2, Checked.FamilyMetadata>, v_13: cps_provider_10_Preparation) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
-  emitter_match_2783(v_1, v_11, v_2, v_13, v_4, v_6, v_8, v_9)
+  emitter_match_2784(v_1, v_11, v_2, v_13, v_4, v_6, v_8, v_9)
 
 def emitter_body_cps_provider_10_prepare_declarations(v_0: Arena.Arena, v_2: List<&2, IR.TopLevel>, v_4: String, v_6: String, v_8: Bool, v_9: Scope.ArenaGlobalScope, v_11: List<&2, Checked.FamilyMetadata>, v_13: cps_provider_10_Preparation) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
   emitter_body_cps_provider_10_native_match_prepare_declarations_6(v_2, v_0, v_4, v_6, v_8, v_9, v_11, v_13)
@@ -29647,168 +29667,168 @@ def emitter_body_cps_provider_10_reset_module(v_1: cps_provider_10_Preparation) 
     case cps_provider_10_Preparation{v_15, v_16, v_17, v_18, v_19, v_20, v_21, v_22, v_23, v_24, v_25, _}:
       EmitterFinished{EmitterValue{cps_provider_10_Preparation{v_15, v_16, v_17, v_18, v_19, v_20, v_21, v_22, v_23, v_24, v_25, MTip{}}}}
 
-def emitter_match_2785(v_2: cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_6: List<&2, IR.LoadedModule>, v_8: List<&2, Checked.ModuleMetadata>, v_4: Bool) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
+def emitter_match_2786(v_2: cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_6: List<&2, IR.LoadedModule>, v_8: List<&2, Checked.ModuleMetadata>, v_4: Bool) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
   match v_2:
     case cps_provider_10_CatalogResult{v_13, v_14}:
-      EmitterPending{EmitterRequestGroup_30{EmitterRequest_cps_provider_10_prepare_modules{v_13, v_6, v_8, v_4, v_14}}, v_1012960 => v_1012959 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_1012960); EmitterFinished{EmitterValue{v_1012959}}}
+      EmitterPending{EmitterRequestGroup_30{EmitterRequest_cps_provider_10_prepare_modules{v_13, v_6, v_8, v_4, v_14}}, v_1012965 => v_1012964 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_1012965); EmitterFinished{EmitterValue{v_1012964}}}
 
 def emitter_body_cps_provider_10_native_match_prepare_modules_0(v_2: cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_4: Bool, v_6: List<&2, IR.LoadedModule>, v_8: List<&2, Checked.ModuleMetadata>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
-  emitter_match_2785(v_2, v_6, v_8, v_4)
+  emitter_match_2786(v_2, v_6, v_8, v_4)
 
-def emitter_continuation_2786(v_15: Scope.ArenaGlobalScope, v_17: List<&2, Checked.FamilyMetadata>, v_6: cps_provider_10_Preparation, v_1012965: Arena.Arena, v_1012966: List<&2, IR.TopLevel>, v_1012967: String, v_1012968: String, +v_1012969: Bool, v_4: Bool, v_14: List<&2, IR.LoadedModule>, v_19: List<&2, Checked.ModuleMetadata>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
-  v_1012970 = {v_15 : Scope.ArenaGlobalScope}
-  v_1012971 = {v_17 : List<&2, Checked.FamilyMetadata>}
-  EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_reset_module{v_6}}, False{}, v_1012978 => emitter_body_cps_provider_10_reset_module(v_6), v_1012977 => +v_1012972 = emitter_unbox(cps_provider_10_Preparation, v_1012977); EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_prepare_declarations{v_1012965, v_1012966, v_1012967, v_1012968, v_1012969, v_1012970, v_1012971, v_1012972}}, False{}, v_1012976 => emitter_body_cps_provider_10_prepare_declarations(v_1012965, v_1012966, v_1012967, v_1012968, v_1012969, v_1012970, v_1012971, v_1012972), v_1012975 => v_1012973 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_1012975); emitter_body_cps_provider_10_native_match_prepare_modules_0(v_1012973, v_4, v_14, v_19)}}
+def emitter_continuation_2787(v_15: Scope.ArenaGlobalScope, v_17: List<&2, Checked.FamilyMetadata>, v_6: cps_provider_10_Preparation, v_1012970: Arena.Arena, v_1012971: List<&2, IR.TopLevel>, v_1012972: String, v_1012973: String, +v_1012974: Bool, v_4: Bool, v_14: List<&2, IR.LoadedModule>, v_19: List<&2, Checked.ModuleMetadata>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
+  v_1012975 = {v_15 : Scope.ArenaGlobalScope}
+  v_1012976 = {v_17 : List<&2, Checked.FamilyMetadata>}
+  EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_reset_module{v_6}}, False{}, v_1012983 => emitter_body_cps_provider_10_reset_module(v_6), v_1012982 => +v_1012977 = emitter_unbox(cps_provider_10_Preparation, v_1012982); EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_prepare_declarations{v_1012970, v_1012971, v_1012972, v_1012973, v_1012974, v_1012975, v_1012976, v_1012977}}, False{}, v_1012981 => emitter_body_cps_provider_10_prepare_declarations(v_1012970, v_1012971, v_1012972, v_1012973, v_1012974, v_1012975, v_1012976, v_1012977), v_1012980 => v_1012978 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_1012980); emitter_body_cps_provider_10_native_match_prepare_modules_0(v_1012978, v_4, v_14, v_19)}}
 
-def emitter_match_2787(v_1: Bool, v_2: Arena.Arena, v_6: cps_provider_10_Preparation, v_12: List<&2, IR.TopLevel>, v_8: String, +v_10: String, +v_4: Bool, v_15: Scope.ArenaGlobalScope, v_17: List<&2, Checked.FamilyMetadata>, v_14: List<&2, IR.LoadedModule>, v_19: List<&2, Checked.ModuleMetadata>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
+def emitter_match_2788(v_1: Bool, v_2: Arena.Arena, v_6: cps_provider_10_Preparation, v_12: List<&2, IR.TopLevel>, v_8: String, +v_10: String, +v_4: Bool, v_15: Scope.ArenaGlobalScope, v_17: List<&2, Checked.FamilyMetadata>, v_14: List<&2, IR.LoadedModule>, v_19: List<&2, Checked.ModuleMetadata>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
   match v_1:
     case False{}:
-      v_1012961 = {v_2 : Arena.Arena}
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_preparation_failure{v_6, "bend: checked module metadata identity mismatch"}}, False{}, v_1012964 => emitter_body_cps_provider_10_preparation_failure(v_6, "bend: checked module metadata identity mismatch"), v_1012963 => +v_1012962 = emitter_unbox(cps_provider_10_Preparation, v_1012963); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012961, v_1012962}}}}
+      v_1012966 = {v_2 : Arena.Arena}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_preparation_failure{v_6, "bend: checked module metadata identity mismatch"}}, False{}, v_1012969 => emitter_body_cps_provider_10_preparation_failure(v_6, "bend: checked module metadata identity mismatch"), v_1012968 => +v_1012967 = emitter_unbox(cps_provider_10_Preparation, v_1012968); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012966, v_1012967}}}}
     case True{}:
-      v_1012965 = {v_2 : Arena.Arena}
-      v_1012966 = {v_12 : List<&2, IR.TopLevel>}
-      v_1012967 = {v_8 : String}
-      v_1012968 = {v_10 : String}
-      EmitterDirect{Bool, EmitterRequestGroup_28{EmitterRequest_cps_provider_10_base_source{v_10, v_4}}, False{}, v_1012980 => emitter_body_cps_provider_10_base_source(v_10, v_4), v_1012979 => +v_1012969 = emitter_unbox(Bool, v_1012979); emitter_continuation_2786(v_15, v_17, v_6, v_1012965, v_1012966, v_1012967, v_1012968, v_1012969, v_4, v_14, v_19)}
+      v_1012970 = {v_2 : Arena.Arena}
+      v_1012971 = {v_12 : List<&2, IR.TopLevel>}
+      v_1012972 = {v_8 : String}
+      v_1012973 = {v_10 : String}
+      EmitterDirect{Bool, EmitterRequestGroup_28{EmitterRequest_cps_provider_10_base_source{v_10, v_4}}, False{}, v_1012985 => emitter_body_cps_provider_10_base_source(v_10, v_4), v_1012984 => +v_1012974 = emitter_unbox(Bool, v_1012984); emitter_continuation_2787(v_15, v_17, v_6, v_1012970, v_1012971, v_1012972, v_1012973, v_1012974, v_4, v_14, v_19)}
 
 def emitter_body_cps_provider_10_native_match_prepare_modules_1(v_1: Bool, v_2: Arena.Arena, v_4: Bool, v_6: cps_provider_10_Preparation, v_8: String, v_10: String, v_12: List<&2, IR.TopLevel>, v_14: List<&2, IR.LoadedModule>, v_15: Scope.ArenaGlobalScope, v_17: List<&2, Checked.FamilyMetadata>, v_19: List<&2, Checked.ModuleMetadata>) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
-  emitter_match_2787(v_1, v_2, v_6, v_12, v_8, v_10, v_4, v_15, v_17, v_14, v_19)
+  emitter_match_2788(v_1, v_2, v_6, v_12, v_8, v_10, v_4, v_15, v_17, v_14, v_19)
 
-def emitter_match_2788(v_1: List<&2, IR.LoadedModule>, v_3: List<&2, Checked.ModuleMetadata>, v_4: Arena.Arena, v_8: cps_provider_10_Preparation, v_6: Bool) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
+def emitter_match_2789(v_1: List<&2, IR.LoadedModule>, v_3: List<&2, Checked.ModuleMetadata>, v_4: Arena.Arena, v_8: cps_provider_10_Preparation, v_6: Bool) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
   match v_1, v_3:
     case [], []:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_4, v_8}}}
     case IR.LoadedModule{+v_21, IR.Module{+v_22, _, v_24}} <> v_25, Checked.ModuleMetadata{v_26, v_27, v_28, v_29} <> v_30:
-      EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_native_match_prepare_modules_1{Bool.and(String.eq(v_21, v_26), String.eq(v_22, v_27)), v_4, v_6, v_8, v_21, v_22, v_24, v_25, v_28, v_29, v_30}}, False{}, v_1012983 => emitter_body_cps_provider_10_native_match_prepare_modules_1(Bool.and(String.eq(v_21, v_26), String.eq(v_22, v_27)), v_4, v_6, v_8, v_21, v_22, v_24, v_25, v_28, v_29, v_30), v_1012982 => v_1012981 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_1012982); EmitterFinished{EmitterValue{v_1012981}}}
+      EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_native_match_prepare_modules_1{Bool.and(String.eq(v_21, v_26), String.eq(v_22, v_27)), v_4, v_6, v_8, v_21, v_22, v_24, v_25, v_28, v_29, v_30}}, False{}, v_1012988 => emitter_body_cps_provider_10_native_match_prepare_modules_1(Bool.and(String.eq(v_21, v_26), String.eq(v_22, v_27)), v_4, v_6, v_8, v_21, v_22, v_24, v_25, v_28, v_29, v_30), v_1012987 => v_1012986 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_1012987); EmitterFinished{EmitterValue{v_1012986}}}
     case _, _:
-      v_1012984 = {v_4 : Arena.Arena}
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_preparation_failure{v_8, "bend: missing or unmatched checked module metadata"}}, False{}, v_1012987 => emitter_body_cps_provider_10_preparation_failure(v_8, "bend: missing or unmatched checked module metadata"), v_1012986 => +v_1012985 = emitter_unbox(cps_provider_10_Preparation, v_1012986); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012984, v_1012985}}}}
+      v_1012989 = {v_4 : Arena.Arena}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_preparation_failure{v_8, "bend: missing or unmatched checked module metadata"}}, False{}, v_1012992 => emitter_body_cps_provider_10_preparation_failure(v_8, "bend: missing or unmatched checked module metadata"), v_1012991 => +v_1012990 = emitter_unbox(cps_provider_10_Preparation, v_1012991); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1012989, v_1012990}}}}
 
 def emitter_body_cps_provider_10_native_match_prepare_modules_2(v_1: List<&2, IR.LoadedModule>, v_3: List<&2, Checked.ModuleMetadata>, v_4: Arena.Arena, v_6: Bool, v_8: cps_provider_10_Preparation) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
-  emitter_match_2788(v_1, v_3, v_4, v_8, v_6)
+  emitter_match_2789(v_1, v_3, v_4, v_8, v_6)
 
 def emitter_body_cps_provider_10_prepare_modules(v_0: Arena.Arena, v_2: List<&2, IR.LoadedModule>, v_4: List<&2, Checked.ModuleMetadata>, v_6: Bool, v_8: cps_provider_10_Preparation) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Preparation>>:
   emitter_body_cps_provider_10_native_match_prepare_modules_2(v_2, v_4, v_0, v_6, v_8)
 
-def emitter_match_2789(v_1012989: cps_provider_10_CatalogResult<List<&2, BIR.Export>>) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Ending>>:
-  match v_1012989:
+def emitter_match_2790(v_1012994: cps_provider_10_CatalogResult<List<&2, BIR.Export>>) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Ending>>:
+  match v_1012994:
     case cps_provider_10_CatalogResult{v_22, v_23}:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_22, BIR.Library{v_23}}}}
 
-def emitter_match_2790(v_5: Maybe<&2, BIR.Descriptor>, v_8: Arena.Arena) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Ending>>:
+def emitter_match_2791(v_5: Maybe<&2, BIR.Descriptor>, v_8: Arena.Arena) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Ending>>:
   match v_5:
     case Some{v_25}:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_8, BIR.Executable{v_25}}}}
     case None{}:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_8, BIR.Executable{BIR.DescriptorNull{}}}}}
 
-def emitter_match_2791(v_3: Maybe<&2, List<&2, String>>, v_7: cps_provider_10_Registry, v_8: Arena.Arena, v_11: List<&2, cps_provider_10_Definition>, v_13: List<&2, Scope.ArenaGlobal>, +v_15: cps_provider_7_NfContext, v_5: Maybe<&2, BIR.Descriptor>) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Ending>>:
+def emitter_match_2792(v_3: Maybe<&2, List<&2, String>>, v_7: cps_provider_10_Registry, v_8: Arena.Arena, v_11: List<&2, cps_provider_10_Definition>, v_13: List<&2, Scope.ArenaGlobal>, +v_15: cps_provider_7_NfContext, v_5: Maybe<&2, BIR.Descriptor>) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Ending>>:
   match v_3:
     case Some{v_18}:
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_exports{v_18, v_7, v_8, v_11, v_13, v_15}}, False{}, v_1012991 => emitter_body_cps_provider_10_exports(v_18, v_7, v_8, v_11, v_13, v_15), v_1012990 => v_1012989 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Export>>, v_1012990); emitter_match_2789(v_1012989)}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_exports{v_18, v_7, v_8, v_11, v_13, v_15}}, False{}, v_1012996 => emitter_body_cps_provider_10_exports(v_18, v_7, v_8, v_11, v_13, v_15), v_1012995 => v_1012994 = emitter_unbox(cps_provider_10_CatalogResult<List<&2, BIR.Export>>, v_1012995); emitter_match_2790(v_1012994)}
     case None{}:
-      emitter_match_2790(v_5, v_8)
+      emitter_match_2791(v_5, v_8)
 
 def emitter_body_cps_provider_10_ending(v_3: Maybe<&2, List<&2, String>>, v_5: Maybe<&2, BIR.Descriptor>, v_7: cps_provider_10_Registry, v_8: Arena.Arena, v_11: List<&2, cps_provider_10_Definition>, v_13: List<&2, Scope.ArenaGlobal>, +v_15: cps_provider_7_NfContext) -> EmitterProgress<cps_provider_10_CatalogResult<BIR.Ending>>:
-  emitter_match_2791(v_3, v_7, v_8, v_11, v_13, v_15, v_5)
+  emitter_match_2792(v_3, v_7, v_8, v_11, v_13, v_15, v_5)
 
-def emitter_match_2792(v_1012994: cps_provider_10_CatalogResult<BIR.Ending>, v_46: List<&2, cps_provider_10_Definition>, v_38: cps_provider_10_Registry, v_20: List<&2, BIR.ConstructorLayout>, v_40: List<&2, BIR.Family>, v_35: List<&2, BIR.TypeFunction>, v_27: U32, v_4: List<&2, IR.LoadedModule>, v_6: List<&2, Scope.ArenaGlobal>, v_8: List<&2, Checked.ModuleMetadata>) -> EmitterProgress<cps_provider_10_BuildResult>:
-  match v_1012994:
+def emitter_match_2793(v_1012999: cps_provider_10_CatalogResult<BIR.Ending>, v_46: List<&2, cps_provider_10_Definition>, v_38: cps_provider_10_Registry, v_20: List<&2, BIR.ConstructorLayout>, v_40: List<&2, BIR.Family>, v_35: List<&2, BIR.TypeFunction>, v_27: U32, v_4: List<&2, IR.LoadedModule>, v_6: List<&2, Scope.ArenaGlobal>, v_8: List<&2, Checked.ModuleMetadata>) -> EmitterProgress<cps_provider_10_BuildResult>:
+  match v_1012999:
     case cps_provider_10_CatalogResult{v_50, v_51}:
       v_54 = {cps_provider_10_Catalog{List.reverse(&2, cps_provider_10_Definition, v_46), v_38, List.reverse(&2, BIR.ConstructorLayout, v_20), v_40, v_35, v_27, v_51} : cps_provider_10_Catalog}
       EmitterFinished{EmitterValue{cps_provider_10_Built{Checked.CheckedProgram{v_50, v_4, v_6, v_8}, v_54}}}
 
-def emitter_continuation_2793(+v_1012993: List<&2, cps_provider_10_Definition>, v_12: Maybe<&2, List<&2, String>>, v_29: Maybe<&2, BIR.Descriptor>, +v_38: cps_provider_10_Registry, v_34: Arena.Arena, +v_6: List<&2, Scope.ArenaGlobal>, v_43: cps_provider_7_NfContext, v_20: List<&2, BIR.ConstructorLayout>, v_40: List<&2, BIR.Family>, v_35: List<&2, BIR.TypeFunction>, v_27: U32, v_4: List<&2, IR.LoadedModule>, v_8: List<&2, Checked.ModuleMetadata>) -> EmitterProgress<cps_provider_10_BuildResult>:
-  +v_46 = v_1012993
-  EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_ending{v_12, v_29, v_38, v_34, v_46, v_6, v_43}}, False{}, v_1012996 => emitter_body_cps_provider_10_ending(v_12, v_29, v_38, v_34, v_46, v_6, v_43), v_1012995 => v_1012994 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Ending>, v_1012995); emitter_match_2792(v_1012994, v_46, v_38, v_20, v_40, v_35, v_27, v_4, v_6, v_8)}
+def emitter_continuation_2794(+v_1012998: List<&2, cps_provider_10_Definition>, v_12: Maybe<&2, List<&2, String>>, v_29: Maybe<&2, BIR.Descriptor>, +v_38: cps_provider_10_Registry, v_34: Arena.Arena, +v_6: List<&2, Scope.ArenaGlobal>, v_43: cps_provider_7_NfContext, v_20: List<&2, BIR.ConstructorLayout>, v_40: List<&2, BIR.Family>, v_35: List<&2, BIR.TypeFunction>, v_27: U32, v_4: List<&2, IR.LoadedModule>, v_8: List<&2, Checked.ModuleMetadata>) -> EmitterProgress<cps_provider_10_BuildResult>:
+  +v_46 = v_1012998
+  EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_ending{v_12, v_29, v_38, v_34, v_46, v_6, v_43}}, False{}, v_1013001 => emitter_body_cps_provider_10_ending(v_12, v_29, v_38, v_34, v_46, v_6, v_43), v_1013000 => v_1012999 = emitter_unbox(cps_provider_10_CatalogResult<BIR.Ending>, v_1013000); emitter_match_2793(v_1012999, v_46, v_38, v_20, v_40, v_35, v_27, v_4, v_6, v_8)}
 
-def emitter_continuation_2794(+v_1012992: cps_provider_7_NfContext, v_15: List<&2, cps_provider_10_Definition>, v_12: Maybe<&2, List<&2, String>>, v_29: Maybe<&2, BIR.Descriptor>, v_38: cps_provider_10_Registry, v_34: Arena.Arena, v_6: List<&2, Scope.ArenaGlobal>, v_20: List<&2, BIR.ConstructorLayout>, v_40: List<&2, BIR.Family>, v_35: List<&2, BIR.TypeFunction>, v_27: U32, v_4: List<&2, IR.LoadedModule>, v_8: List<&2, Checked.ModuleMetadata>) -> EmitterProgress<cps_provider_10_BuildResult>:
-  +v_43 = v_1012992
-  EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_normalize_foreign_definitions{v_15, v_43}}, False{}, v_1012998 => emitter_body_cps_provider_10_normalize_foreign_definitions(v_15, v_43), v_1012997 => +v_1012993 = emitter_unbox(List<&2, cps_provider_10_Definition>, v_1012997); emitter_continuation_2793(v_1012993, v_12, v_29, v_38, v_34, v_6, v_43, v_20, v_40, v_35, v_27, v_4, v_8)}
+def emitter_continuation_2795(+v_1012997: cps_provider_7_NfContext, v_15: List<&2, cps_provider_10_Definition>, v_12: Maybe<&2, List<&2, String>>, v_29: Maybe<&2, BIR.Descriptor>, v_38: cps_provider_10_Registry, v_34: Arena.Arena, v_6: List<&2, Scope.ArenaGlobal>, v_20: List<&2, BIR.ConstructorLayout>, v_40: List<&2, BIR.Family>, v_35: List<&2, BIR.TypeFunction>, v_27: U32, v_4: List<&2, IR.LoadedModule>, v_8: List<&2, Checked.ModuleMetadata>) -> EmitterProgress<cps_provider_10_BuildResult>:
+  +v_43 = v_1012997
+  EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_normalize_foreign_definitions{v_15, v_43}}, False{}, v_1013003 => emitter_body_cps_provider_10_normalize_foreign_definitions(v_15, v_43), v_1013002 => +v_1012998 = emitter_unbox(List<&2, cps_provider_10_Definition>, v_1013002); emitter_continuation_2794(v_1012998, v_12, v_29, v_38, v_34, v_6, v_43, v_20, v_40, v_35, v_27, v_4, v_8)}
 
-def emitter_match_2795(v_2: cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_18: Map<&2, cps_provider_10_DefinitionHeader>, v_23: Map<&2, cps_provider_10_Constructor>, v_25: List<&2, BIR.Family>, v_15: List<&2, cps_provider_10_Definition>, v_12: Maybe<&2, List<&2, String>>, v_29: Maybe<&2, BIR.Descriptor>, v_6: List<&2, Scope.ArenaGlobal>, v_20: List<&2, BIR.ConstructorLayout>, v_27: U32, v_4: List<&2, IR.LoadedModule>, v_8: List<&2, Checked.ModuleMetadata>) -> EmitterProgress<cps_provider_10_BuildResult>:
+def emitter_match_2796(v_2: cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_18: Map<&2, cps_provider_10_DefinitionHeader>, v_23: Map<&2, cps_provider_10_Constructor>, v_25: List<&2, BIR.Family>, v_15: List<&2, cps_provider_10_Definition>, v_12: Maybe<&2, List<&2, String>>, v_29: Maybe<&2, BIR.Descriptor>, v_6: List<&2, Scope.ArenaGlobal>, v_20: List<&2, BIR.ConstructorLayout>, v_27: U32, v_4: List<&2, IR.LoadedModule>, v_8: List<&2, Checked.ModuleMetadata>) -> EmitterProgress<cps_provider_10_BuildResult>:
   match v_2:
     case cps_provider_10_CatalogResult{v_34, cps_provider_10_Needed{+v_35, _}}:
       v_38 = {cps_provider_10_Registry{v_18, v_23} : cps_provider_10_Registry}
       +v_40 = List.reverse(&2, BIR.Family, v_25)
-      EmitterDirect{Bool, EmitterRequestGroup_21{EmitterRequest_cps_provider_7_nf_context{v_40, v_35}}, False{}, v_1013000 => emitter_body_cps_provider_7_nf_context(v_40, v_35), v_1012999 => +v_1012992 = emitter_unbox(cps_provider_7_NfContext, v_1012999); emitter_continuation_2794(v_1012992, v_15, v_12, v_29, v_38, v_34, v_6, v_20, v_40, v_35, v_27, v_4, v_8)}
+      EmitterDirect{Bool, EmitterRequestGroup_21{EmitterRequest_cps_provider_7_nf_context{v_40, v_35}}, False{}, v_1013005 => emitter_body_cps_provider_7_nf_context(v_40, v_35), v_1013004 => +v_1012997 = emitter_unbox(cps_provider_7_NfContext, v_1013004); emitter_continuation_2795(v_1012997, v_15, v_12, v_29, v_38, v_34, v_6, v_20, v_40, v_35, v_27, v_4, v_8)}
 
 def emitter_body_cps_provider_10_native_match_build_finish_0(v_2: cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_4: List<&2, IR.LoadedModule>, v_6: List<&2, Scope.ArenaGlobal>, v_8: List<&2, Checked.ModuleMetadata>, v_12: Maybe<&2, List<&2, String>>, v_15: List<&2, cps_provider_10_Definition>, v_18: Map<&2, cps_provider_10_DefinitionHeader>, v_20: List<&2, BIR.ConstructorLayout>, v_23: Map<&2, cps_provider_10_Constructor>, v_25: List<&2, BIR.Family>, v_27: U32, v_29: Maybe<&2, BIR.Descriptor>) -> EmitterProgress<cps_provider_10_BuildResult>:
-  emitter_match_2795(v_2, v_18, v_23, v_25, v_15, v_12, v_29, v_6, v_20, v_27, v_4, v_8)
+  emitter_match_2796(v_2, v_18, v_23, v_25, v_15, v_12, v_29, v_6, v_20, v_27, v_4, v_8)
 
 def emitter_body_cps_provider_10_native_match_build_finish_1(v_1: cps_provider_10_Preparation, v_2: Arena.Arena, v_4: List<&2, IR.LoadedModule>, v_6: List<&2, Scope.ArenaGlobal>, v_8: List<&2, Checked.ModuleMetadata>, v_12: Maybe<&2, List<&2, String>>) -> EmitterProgress<cps_provider_10_BuildResult>:
   match v_1:
     case cps_provider_10_Preparation{v_25, v_26, v_27, v_28, v_29, v_30, v_31, _, v_33, v_34, None{}, _}:
-      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_roots{v_2, List.reverse(&2, cps_provider_10_Root, v_33), v_26, cps_provider_10_Needed{[], MTip{}}}}, False{}, v_1013004 => emitter_body_cps_provider_10_needed_roots(v_2, List.reverse(&2, cps_provider_10_Root, v_33), v_26, cps_provider_10_Needed{[], MTip{}}), v_1013003 => v_1013001 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1013003); emitter_body_cps_provider_10_native_match_build_finish_0(v_1013001, v_4, v_6, v_8, v_12, v_25, v_27, v_28, v_29, v_30, v_31, v_34)}
+      EmitterDirect{Bool, EmitterRequestGroup_29{EmitterRequest_cps_provider_10_needed_roots{v_2, List.reverse(&2, cps_provider_10_Root, v_33), v_26, cps_provider_10_Needed{[], MTip{}}}}, False{}, v_1013009 => emitter_body_cps_provider_10_needed_roots(v_2, List.reverse(&2, cps_provider_10_Root, v_33), v_26, cps_provider_10_Needed{[], MTip{}}), v_1013008 => v_1013006 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_1013008); emitter_body_cps_provider_10_native_match_build_finish_0(v_1013006, v_4, v_6, v_8, v_12, v_25, v_27, v_28, v_29, v_30, v_31, v_34)}
     case cps_provider_10_Preparation{_, _, _, _, _, _, _, _, _, _, Some{v_61}, _}:
       EmitterFinished{EmitterValue{cps_provider_10_BuildFailure{Checked.CheckedProgram{v_2, v_4, v_6, v_8}, v_61}}}
 
 def emitter_body_cps_provider_10_build_finish(v_0: Arena.Arena, v_2: List<&2, IR.LoadedModule>, v_4: List<&2, Scope.ArenaGlobal>, v_6: List<&2, Checked.ModuleMetadata>, v_10: Maybe<&2, List<&2, String>>, v_12: cps_provider_10_Preparation) -> EmitterProgress<cps_provider_10_BuildResult>:
   emitter_body_cps_provider_10_native_match_build_finish_1(v_12, v_0, v_2, v_4, v_6, v_10)
 
-def emitter_match_2797(v_2: cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_8: List<&2, IR.LoadedModule>, v_10: List<&2, Scope.ArenaGlobal>, v_12: List<&2, Checked.ModuleMetadata>, v_6: Maybe<&2, List<&2, String>>) -> EmitterProgress<cps_provider_10_BuildResult>:
+def emitter_match_2798(v_2: cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_8: List<&2, IR.LoadedModule>, v_10: List<&2, Scope.ArenaGlobal>, v_12: List<&2, Checked.ModuleMetadata>, v_6: Maybe<&2, List<&2, String>>) -> EmitterProgress<cps_provider_10_BuildResult>:
   match v_2:
     case cps_provider_10_CatalogResult{v_16, v_17}:
       emitter_body_cps_provider_10_build_finish(v_16, v_8, v_10, v_12, v_6, v_17)
 
 def emitter_body_cps_provider_10_native_match_build_0(v_2: cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_6: Maybe<&2, List<&2, String>>, v_8: List<&2, IR.LoadedModule>, v_10: List<&2, Scope.ArenaGlobal>, v_12: List<&2, Checked.ModuleMetadata>) -> EmitterProgress<cps_provider_10_BuildResult>:
-  emitter_match_2797(v_2, v_8, v_10, v_12, v_6)
+  emitter_match_2798(v_2, v_8, v_10, v_12, v_6)
 
 def emitter_body_cps_provider_10_native_match_build_1(v_0: Checked.CheckedProgram, v_4: Maybe<&2, List<&2, String>>) -> EmitterProgress<cps_provider_10_BuildResult>:
   match v_0:
     case Checked.CheckedProgram{v_10, +v_11, v_12, +v_13}:
       v_15 = {cps_provider_10_Preparation{[], MTip{}, MTip{}, [], MTip{}, [], 0, 0, [], None{}, None{}, MTip{}} : cps_provider_10_Preparation}
-      v_1013007 = {v_10 : Arena.Arena}
-      v_1013008 = {v_11 : List<&2, IR.LoadedModule>}
-      v_1013009 = {v_13 : List<&2, Checked.ModuleMetadata>}
-      EmitterDirect{Bool, EmitterRequestGroup_28{EmitterRequest_cps_provider_10_base_imported{v_11}}, False{}, v_1013016 => emitter_body_cps_provider_10_base_imported(v_11), v_1013015 => +v_1013010 = emitter_unbox(Bool, v_1013015); EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_prepare_modules{v_1013007, v_1013008, v_1013009, v_1013010, v_15}}, False{}, v_1013014 => emitter_body_cps_provider_10_prepare_modules(v_1013007, v_1013008, v_1013009, v_1013010, v_15), v_1013013 => v_1013011 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_1013013); emitter_body_cps_provider_10_native_match_build_0(v_1013011, v_4, v_11, v_12, v_13)}}
+      v_1013012 = {v_10 : Arena.Arena}
+      v_1013013 = {v_11 : List<&2, IR.LoadedModule>}
+      v_1013014 = {v_13 : List<&2, Checked.ModuleMetadata>}
+      EmitterDirect{Bool, EmitterRequestGroup_28{EmitterRequest_cps_provider_10_base_imported{v_11}}, False{}, v_1013021 => emitter_body_cps_provider_10_base_imported(v_11), v_1013020 => +v_1013015 = emitter_unbox(Bool, v_1013020); EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_prepare_modules{v_1013012, v_1013013, v_1013014, v_1013015, v_15}}, False{}, v_1013019 => emitter_body_cps_provider_10_prepare_modules(v_1013012, v_1013013, v_1013014, v_1013015, v_15), v_1013018 => v_1013016 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Preparation>, v_1013018); emitter_body_cps_provider_10_native_match_build_0(v_1013016, v_4, v_11, v_12, v_13)}}
 
 def emitter_body_cps_provider_10_build(v_0: Checked.CheckedProgram, v_4: Maybe<&2, List<&2, String>>) -> EmitterProgress<cps_provider_10_BuildResult>:
   emitter_body_cps_provider_10_native_match_build_1(v_0, v_4)
 
-def emitter_match_2799(v_2: cps_provider_10_CatalogResult<cps_provider_10_Telescope>, v_5: Arena.Binder, v_4: U32) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Telescope>>:
+def emitter_match_2800(v_2: cps_provider_10_CatalogResult<cps_provider_10_Telescope>, v_5: Arena.Binder, v_4: U32) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Telescope>>:
   match v_2:
     case cps_provider_10_CatalogResult{v_10, v_11}:
-      v_1013018 = {v_10 : Arena.Arena}
-      EmitterPending{EmitterRequestGroup_30{EmitterRequest_cps_provider_10_live_binder{v_5, v_4, v_11}}, v_1013020 => +v_1013019 = emitter_unbox(cps_provider_10_Telescope, v_1013020); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1013018, v_1013019}}}}
+      v_1013023 = {v_10 : Arena.Arena}
+      EmitterPending{EmitterRequestGroup_30{EmitterRequest_cps_provider_10_live_binder{v_5, v_4, v_11}}, v_1013025 => +v_1013024 = emitter_unbox(cps_provider_10_Telescope, v_1013025); EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1013023, v_1013024}}}}
 
 def emitter_body_cps_provider_10_native_match_live_telescope_0(v_2: cps_provider_10_CatalogResult<cps_provider_10_Telescope>, v_4: U32, v_5: Arena.Binder) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Telescope>>:
-  emitter_match_2799(v_2, v_5, v_4)
+  emitter_match_2800(v_2, v_5, v_4)
 
-def emitter_match_2800(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Binder>, v_7: U32, v_9: U32, +v_5: U32) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Telescope>>:
+def emitter_match_2801(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Binder>, v_7: U32, v_9: U32, +v_5: U32) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Telescope>>:
   match v_3:
     case (v_14, v_15):
-      EmitterPending{EmitterRequestGroup_30{EmitterRequest_cps_provider_10_live_telescope{v_14, IR.Words{IR.arena_range_index(v_7, 1), U32.sub(v_9, 1)}, U32.add(v_5, 1)}}, v_1013023 => v_1013021 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Telescope>, v_1013023); emitter_body_cps_provider_10_native_match_live_telescope_0(v_1013021, v_5, v_15)}
+      EmitterPending{EmitterRequestGroup_30{EmitterRequest_cps_provider_10_live_telescope{v_14, IR.Words{IR.arena_range_index(v_7, 1), U32.sub(v_9, 1)}, U32.add(v_5, 1)}}, v_1013028 => v_1013026 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Telescope>, v_1013028); emitter_body_cps_provider_10_native_match_live_telescope_0(v_1013026, v_5, v_15)}
 
 def emitter_body_cps_provider_10_native_match_live_telescope_1(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Binder>, v_5: U32, v_7: U32, v_9: U32) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Telescope>>:
-  emitter_match_2800(v_3, v_7, v_9, v_5)
+  emitter_match_2801(v_3, v_7, v_9, v_5)
 
 def emitter_body_cps_provider_10_native_match_live_telescope_2(v_4: Sigma<&1, &1, Arena.Arena, _ => U32>, v_6: U32, v_8: U32, v_10: U32) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Telescope>>:
   match v_4:
     case (v_15, v_16):
-      EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_native_match_live_telescope_1{Arena.get_binder(v_15, v_16), v_6, v_8, v_10}}, False{}, v_1013027 => emitter_body_cps_provider_10_native_match_live_telescope_1(Arena.get_binder(v_15, v_16), v_6, v_8, v_10), v_1013026 => v_1013025 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Telescope>, v_1013026); EmitterFinished{EmitterValue{v_1013025}}}
+      EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_native_match_live_telescope_1{Arena.get_binder(v_15, v_16), v_6, v_8, v_10}}, False{}, v_1013032 => emitter_body_cps_provider_10_native_match_live_telescope_1(Arena.get_binder(v_15, v_16), v_6, v_8, v_10), v_1013031 => v_1013030 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Telescope>, v_1013031); EmitterFinished{EmitterValue{v_1013030}}}
 
 def emitter_body_cps_provider_10_native_match_live_telescope_3(v_0: IR.Words, v_1: Arena.Arena, v_3: U32) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Telescope>>:
   match v_0:
     case IR.Words{_, 0}:
       EmitterFinished{EmitterValue{cps_provider_10_CatalogResult{v_1, cps_provider_10_Telescope{[], [], [], True{}}}}}
     case IR.Words{+v_10, v_11}:
-      EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_native_match_live_telescope_2{Arena.word(v_1, IR.arena_tape_offset(v_10)), v_3, v_10, v_11}}, False{}, v_1013031 => emitter_body_cps_provider_10_native_match_live_telescope_2(Arena.word(v_1, IR.arena_tape_offset(v_10)), v_3, v_10, v_11), v_1013030 => v_1013029 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Telescope>, v_1013030); EmitterFinished{EmitterValue{v_1013029}}}
+      EmitterDirect{Bool, EmitterRequestGroup_30{EmitterRequest_cps_provider_10_native_match_live_telescope_2{Arena.word(v_1, IR.arena_tape_offset(v_10)), v_3, v_10, v_11}}, False{}, v_1013036 => emitter_body_cps_provider_10_native_match_live_telescope_2(Arena.word(v_1, IR.arena_tape_offset(v_10)), v_3, v_10, v_11), v_1013035 => v_1013034 = emitter_unbox(cps_provider_10_CatalogResult<cps_provider_10_Telescope>, v_1013035); EmitterFinished{EmitterValue{v_1013034}}}
 
 def emitter_body_cps_provider_10_live_telescope(v_0: Arena.Arena, v_1: IR.Words, v_3: U32) -> EmitterProgress<cps_provider_10_CatalogResult<cps_provider_10_Telescope>>:
   emitter_body_cps_provider_10_native_match_live_telescope_3(v_1, v_0, v_3)
 
-def emitter_match_2803(v_0: Arena.Binder, v_4: cps_provider_10_Telescope, v_2: U32) -> EmitterProgress<cps_provider_10_Telescope>:
+def emitter_match_2804(v_0: Arena.Binder, v_4: cps_provider_10_Telescope, v_2: U32) -> EmitterProgress<cps_provider_10_Telescope>:
   match v_0, v_4:
     case Arena.Binder{v_15, _, _, _, _}, cps_provider_10_Telescope{v_20, v_21, v_22, v_23}:
       +v_26 = emitter_pure_cps_provider_10_quantity(v_15)
-      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_parameter{v_2, v_26, v_20}}, False{}, v_1013035 => emitter_body_cps_provider_10_parameter(v_2, v_26, v_20), v_1013034 => +v_1013033 = emitter_unbox(List<&2, BIR.Parameter>, v_1013034); EmitterFinished{EmitterValue{cps_provider_10_Telescope{v_1013033, v_26 <> v_21, v_22, v_23}}}}
+      EmitterDirect{Bool, EmitterRequestGroup_27{EmitterRequest_cps_provider_10_parameter{v_2, v_26, v_20}}, False{}, v_1013040 => emitter_body_cps_provider_10_parameter(v_2, v_26, v_20), v_1013039 => +v_1013038 = emitter_unbox(List<&2, BIR.Parameter>, v_1013039); EmitterFinished{EmitterValue{cps_provider_10_Telescope{v_1013038, v_26 <> v_21, v_22, v_23}}}}
     case Arena.TemplateBinder{_, _, _, _}, cps_provider_10_Telescope{v_40, v_41, v_42, _}:
       EmitterFinished{EmitterValue{cps_provider_10_Telescope{v_40, BIR.Erased{} <> v_41, v_42, False{}}}}
 
 def emitter_body_cps_provider_10_live_binder(v_0: Arena.Binder, v_2: U32, v_4: cps_provider_10_Telescope) -> EmitterProgress<cps_provider_10_Telescope>:
-  emitter_match_2803(v_0, v_4, v_2)
+  emitter_match_2804(v_0, v_4, v_2)
 
 def emitter_body_cps_provider_10_primitive_arity(v_0: BIR.Primitive) -> EmitterProgress<Nat>:
   match v_0:
@@ -30035,20 +30055,20 @@ def emitter_body_cps_provider_10_primitive_arity(v_0: BIR.Primitive) -> EmitterP
     case BIR.PrimFloatBitsEqual{}:
       EmitterFinished{EmitterValue{2n}}
 
-def emitter_match_2805(v_1: cps_provider_10_Constructor, +v_3: U32) -> EmitterProgress<Maybe<&2, cps_provider_10_ConstructorField>>:
+def emitter_match_2806(v_1: cps_provider_10_Constructor, +v_3: U32) -> EmitterProgress<Maybe<&2, cps_provider_10_ConstructorField>>:
   match v_1:
     case cps_provider_10_Constructor{BIR.ConstructorLayout{_, _, _, v_16}, v_17, _, _}:
-      EmitterPending{EmitterRequestGroup_30{EmitterRequest_cps_provider_10_constructor_field_at{v_16, v_17, U32.to_nat(v_3), v_3}}, v_1013037 => +v_1013036 = emitter_unbox(Maybe<&2, cps_provider_10_ConstructorField>, v_1013037); EmitterFinished{EmitterValue{v_1013036}}}
+      EmitterPending{EmitterRequestGroup_31{EmitterRequest_cps_provider_10_constructor_field_at{v_16, v_17, U32.to_nat(v_3), v_3}}, v_1013042 => +v_1013041 = emitter_unbox(Maybe<&2, cps_provider_10_ConstructorField>, v_1013042); EmitterFinished{EmitterValue{v_1013041}}}
 
 def emitter_body_cps_provider_10_constructor_field(v_1: cps_provider_10_Constructor, v_3: U32) -> EmitterProgress<Maybe<&2, cps_provider_10_ConstructorField>>:
-  emitter_match_2805(v_1, v_3)
+  emitter_match_2806(v_1, v_3)
 
 def emitter_body_cps_provider_10_constructor_field_at(v_3: List<&2, Maybe<&2, String>>, v_5: List<&2, BIR.Quantity>, v_7: Nat, v_9: U32) -> EmitterProgress<Maybe<&2, cps_provider_10_ConstructorField>>:
   match v_3, v_5, v_7:
     case v_16 <> _, v_18 <> _, 0n:
       EmitterFinished{EmitterValue{Some{cps_provider_10_ConstructorField{v_9, v_16, v_18}}}}
     case _ <> v_26, _ <> v_28, 1n+v_29:
-      EmitterPending{EmitterRequestGroup_30{EmitterRequest_cps_provider_10_constructor_field_at{v_26, v_28, v_29, v_9}}, v_1013039 => +v_1013038 = emitter_unbox(Maybe<&2, cps_provider_10_ConstructorField>, v_1013039); EmitterFinished{EmitterValue{v_1013038}}}
+      EmitterPending{EmitterRequestGroup_31{EmitterRequest_cps_provider_10_constructor_field_at{v_26, v_28, v_29, v_9}}, v_1013044 => +v_1013043 = emitter_unbox(Maybe<&2, cps_provider_10_ConstructorField>, v_1013044); EmitterFinished{EmitterValue{v_1013043}}}
     case _, _, _:
       EmitterFinished{EmitterValue{None{}}}
 
@@ -31672,6 +31692,7 @@ def emitter_step_group_24(request: EmitterRequestGroup24) -> EmitterProgress<emi
     case EmitterRequest_cps_provider_8_foreign_kont{arg_0, arg_1, arg_2}: emitter_body_cps_provider_8_foreign_kont(arg_0, arg_1, arg_2)
     case EmitterRequest_cps_provider_8_foreign_kont_scalar{arg_0, arg_1}: emitter_body_cps_provider_8_foreign_kont_scalar(arg_0, arg_1)
     case EmitterRequest_cps_provider_8_foreign_kont_nat{arg_0}: emitter_body_cps_provider_8_foreign_kont_nat(arg_0)
+    case EmitterRequest_cps_provider_8_foreign_answer_kont{arg_0, arg_1, arg_2}: emitter_body_cps_provider_8_foreign_answer_kont(arg_0, arg_1, arg_2)
     case EmitterRequest_cps_provider_8_foreign_request{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5}: emitter_body_cps_provider_8_foreign_request(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5)
     case EmitterRequest_cps_provider_8_foreign_arguments{arg_0, arg_1, arg_2}: emitter_body_cps_provider_8_foreign_arguments(arg_0, arg_1, arg_2)
     case EmitterRequest_cps_provider_8_foreign_argument{arg_0, arg_1}: emitter_body_cps_provider_8_foreign_argument(arg_0, arg_1)
@@ -31725,10 +31746,10 @@ def emitter_step_group_24(request: EmitterRequestGroup24) -> EmitterProgress<emi
     case EmitterRequest_cps_provider_8_leave_after_split{arg_0, arg_1, arg_2}: emitter_body_cps_provider_8_leave_after_split(arg_0, arg_1, arg_2)
     case EmitterRequest_cps_provider_8_leave_here{arg_0, arg_1}: emitter_body_cps_provider_8_leave_here(arg_0, arg_1)
     case EmitterRequest_cps_provider_8_leave_after_region{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5}: emitter_body_cps_provider_8_leave_after_region(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5)
-    case EmitterRequest_cps_provider_8_split_op{arg_0}: emitter_body_cps_provider_8_split_op(arg_0)
 
 def emitter_step_group_25(request: EmitterRequestGroup25) -> EmitterProgress<emitter_result_group_25(request)>:
   match request:
+    case EmitterRequest_cps_provider_8_split_op{arg_0}: emitter_body_cps_provider_8_split_op(arg_0)
     case EmitterRequest_cps_provider_8_reads_new{}: emitter_body_cps_provider_8_reads_new()
     case EmitterRequest_cps_provider_8_reads_local{arg_0, arg_1}: emitter_body_cps_provider_8_reads_local(arg_0, arg_1)
     case EmitterRequest_cps_provider_8_reads_slot{arg_0, arg_1}: emitter_body_cps_provider_8_reads_slot(arg_0, arg_1)
@@ -31792,10 +31813,10 @@ def emitter_step_group_25(request: EmitterRequestGroup25) -> EmitterProgress<emi
     case EmitterRequest_cps_provider_8_native_declaration{arg_0, arg_1, arg_2}: emitter_body_cps_provider_8_native_declaration(arg_0, arg_1, arg_2)
     case EmitterRequest_cps_provider_8_declarations{arg_0, arg_1, arg_2}: emitter_body_cps_provider_8_declarations(arg_0, arg_1, arg_2)
     case EmitterRequest_cps_provider_8_field_names{arg_0}: emitter_body_cps_provider_8_field_names(arg_0)
-    case EmitterRequest_cps_provider_8_constructor_layout{arg_0}: emitter_body_cps_provider_8_constructor_layout(arg_0)
 
 def emitter_step_group_26(request: EmitterRequestGroup26) -> EmitterProgress<emitter_result_group_26(request)>:
   match request:
+    case EmitterRequest_cps_provider_8_constructor_layout{arg_0}: emitter_body_cps_provider_8_constructor_layout(arg_0)
     case EmitterRequest_cps_provider_8_constructor_layout_source{arg_0, arg_1, arg_2}: emitter_body_cps_provider_8_constructor_layout_source(arg_0, arg_1, arg_2)
     case EmitterRequest_cps_provider_8_constructor_layouts{arg_0}: emitter_body_cps_provider_8_constructor_layouts(arg_0)
     case EmitterRequest_cps_provider_8_descriptor_field_types{arg_0}: emitter_body_cps_provider_8_descriptor_field_types(arg_0)
@@ -31859,10 +31880,10 @@ def emitter_step_group_26(request: EmitterRequestGroup26) -> EmitterProgress<emi
     case EmitterRequest_cps_provider_8_js_runtime_cli{}: emitter_body_cps_provider_8_js_runtime_cli()
     case EmitterRequest_cps_provider_8_js_runtime_io{}: emitter_body_cps_provider_8_js_runtime_io()
     case EmitterRequest_cps_provider_8_js_runtime_show{}: emitter_body_cps_provider_8_js_runtime_show()
-    case EmitterRequest_cps_provider_8_js_runtime_type{}: emitter_body_cps_provider_8_js_runtime_type()
 
 def emitter_step_group_27(request: EmitterRequestGroup27) -> EmitterProgress<emitter_result_group_27(request)>:
   match request:
+    case EmitterRequest_cps_provider_8_js_runtime_type{}: emitter_body_cps_provider_8_js_runtime_type()
     case EmitterRequest_cps_provider_8_js_runtime_type_names{}: emitter_body_cps_provider_8_js_runtime_type_names()
     case EmitterRequest_cps_provider_8_js_runtime_type_patterns{}: emitter_body_cps_provider_8_js_runtime_type_patterns()
     case EmitterRequest_cps_provider_8_js_runtime_type_eval{}: emitter_body_cps_provider_8_js_runtime_type_eval()
@@ -31926,10 +31947,10 @@ def emitter_step_group_27(request: EmitterRequestGroup27) -> EmitterProgress<emi
     case EmitterRequest_cps_provider_10_native_match_descriptor_node_9{arg_0, arg_1, arg_2, arg_3}: emitter_body_cps_provider_10_native_match_descriptor_node_9(arg_0, arg_1, arg_2, arg_3)
     case EmitterRequest_cps_provider_10_native_match_descriptor_node_10{arg_0, arg_1}: emitter_body_cps_provider_10_native_match_descriptor_node_10(arg_0, arg_1)
     case EmitterRequest_cps_provider_10_native_match_descriptor_node_11{arg_0, arg_1}: emitter_body_cps_provider_10_native_match_descriptor_node_11(arg_0, arg_1)
-    case EmitterRequest_cps_provider_10_native_match_descriptor_node_12{arg_0, arg_1, arg_2}: emitter_body_cps_provider_10_native_match_descriptor_node_12(arg_0, arg_1, arg_2)
 
 def emitter_step_group_28(request: EmitterRequestGroup28) -> EmitterProgress<emitter_result_group_28(request)>:
   match request:
+    case EmitterRequest_cps_provider_10_native_match_descriptor_node_12{arg_0, arg_1, arg_2}: emitter_body_cps_provider_10_native_match_descriptor_node_12(arg_0, arg_1, arg_2)
     case EmitterRequest_cps_provider_10_native_match_descriptor_node_13{arg_0, arg_1}: emitter_body_cps_provider_10_native_match_descriptor_node_13(arg_0, arg_1)
     case EmitterRequest_cps_provider_10_native_match_descriptor_node_14{arg_0, arg_1, arg_2, arg_3}: emitter_body_cps_provider_10_native_match_descriptor_node_14(arg_0, arg_1, arg_2, arg_3)
     case EmitterRequest_cps_provider_10_native_match_descriptor_node_15{arg_0, arg_1, arg_2}: emitter_body_cps_provider_10_native_match_descriptor_node_15(arg_0, arg_1, arg_2)
@@ -31993,10 +32014,10 @@ def emitter_step_group_28(request: EmitterRequestGroup28) -> EmitterProgress<emi
     case EmitterRequest_cps_provider_10_get_type_functions{arg_0}: emitter_body_cps_provider_10_get_type_functions(arg_0)
     case EmitterRequest_cps_provider_10_get_next_code{arg_0}: emitter_body_cps_provider_10_get_next_code(arg_0)
     case EmitterRequest_cps_provider_10_get_ending{arg_0}: emitter_body_cps_provider_10_get_ending(arg_0)
-    case EmitterRequest_cps_provider_10_native_match_insert_definition_0{arg_0, arg_1, arg_2, arg_3}: emitter_body_cps_provider_10_native_match_insert_definition_0(arg_0, arg_1, arg_2, arg_3)
 
 def emitter_step_group_29(request: EmitterRequestGroup29) -> EmitterProgress<emitter_result_group_29(request)>:
   match request:
+    case EmitterRequest_cps_provider_10_native_match_insert_definition_0{arg_0, arg_1, arg_2, arg_3}: emitter_body_cps_provider_10_native_match_insert_definition_0(arg_0, arg_1, arg_2, arg_3)
     case EmitterRequest_cps_provider_10_insert_definition{arg_0, arg_1, arg_2}: emitter_body_cps_provider_10_insert_definition(arg_0, arg_1, arg_2)
     case EmitterRequest_cps_provider_10_native_match_insert_constructor_0{arg_0, arg_1, arg_2, arg_3}: emitter_body_cps_provider_10_native_match_insert_constructor_0(arg_0, arg_1, arg_2, arg_3)
     case EmitterRequest_cps_provider_10_insert_constructor{arg_0, arg_1, arg_2}: emitter_body_cps_provider_10_insert_constructor(arg_0, arg_1, arg_2)
@@ -32060,10 +32081,10 @@ def emitter_step_group_29(request: EmitterRequestGroup29) -> EmitterProgress<emi
     case EmitterRequest_cps_provider_10_native_match_live_parameter_types_2{arg_0, arg_1, arg_2, arg_3, arg_4}: emitter_body_cps_provider_10_native_match_live_parameter_types_2(arg_0, arg_1, arg_2, arg_3, arg_4)
     case EmitterRequest_cps_provider_10_native_match_live_parameter_types_1{arg_0, arg_1, arg_2, arg_3, arg_4}: emitter_body_cps_provider_10_native_match_live_parameter_types_1(arg_0, arg_1, arg_2, arg_3, arg_4)
     case EmitterRequest_cps_provider_10_live_parameter_binder{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5}: emitter_body_cps_provider_10_live_parameter_binder(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5)
-    case EmitterRequest_cps_provider_10_live_parameter_quantity{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6}: emitter_body_cps_provider_10_live_parameter_quantity(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6)
 
 def emitter_step_group_30(request: EmitterRequestGroup30) -> EmitterProgress<emitter_result_group_30(request)>:
   match request:
+    case EmitterRequest_cps_provider_10_live_parameter_quantity{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6}: emitter_body_cps_provider_10_live_parameter_quantity(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6)
     case EmitterRequest_cps_provider_10_definition_foreign{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6, arg_7, arg_8}: emitter_body_cps_provider_10_definition_foreign(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6, arg_7, arg_8)
     case EmitterRequest_cps_provider_10_definition_fast{arg_0, arg_1, arg_2, arg_3, arg_4}: emitter_body_cps_provider_10_definition_fast(arg_0, arg_1, arg_2, arg_3, arg_4)
     case EmitterRequest_cps_provider_10_definition_primitive{arg_0, arg_1, arg_2, arg_3}: emitter_body_cps_provider_10_definition_primitive(arg_0, arg_1, arg_2, arg_3)
@@ -32127,6 +32148,9 @@ def emitter_step_group_30(request: EmitterRequestGroup30) -> EmitterProgress<emi
     case EmitterRequest_cps_provider_10_live_binder{arg_0, arg_1, arg_2}: emitter_body_cps_provider_10_live_binder(arg_0, arg_1, arg_2)
     case EmitterRequest_cps_provider_10_primitive_arity{arg_0}: emitter_body_cps_provider_10_primitive_arity(arg_0)
     case EmitterRequest_cps_provider_10_constructor_field{arg_0, arg_1}: emitter_body_cps_provider_10_constructor_field(arg_0, arg_1)
+
+def emitter_step_group_31(request: EmitterRequestGroup31) -> EmitterProgress<emitter_result_group_31(request)>:
+  match request:
     case EmitterRequest_cps_provider_10_constructor_field_at{arg_0, arg_1, arg_2, arg_3}: emitter_body_cps_provider_10_constructor_field_at(arg_0, arg_1, arg_2, arg_3)
 
 def emitter_step_one(request: EmitterRequest) -> EmitterProgress<emitter_result(request)>:
@@ -32162,6 +32186,7 @@ def emitter_step_one(request: EmitterRequest) -> EmitterProgress<emitter_result(
     case EmitterRequestGroup_28{inner}: emitter_step_group_28(inner)
     case EmitterRequestGroup_29{inner}: emitter_step_group_29(inner)
     case EmitterRequestGroup_30{inner}: emitter_step_group_30(inner)
+    case EmitterRequestGroup_31{inner}: emitter_step_group_31(inner)
 
 def emitter_pop(-A: Type, -R: Type, stack: EmitterStack<A, R>, box: EmitterValue<A>) -> EmitterRun<R>:
   match stack:
