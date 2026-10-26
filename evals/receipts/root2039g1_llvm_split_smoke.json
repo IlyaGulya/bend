@@ -1,0 +1,966 @@
+{
+  "schemaVersion": 1,
+  "status": "FULL_C_BACKEND_AND_OPTIMIZED_CONSUMER_SMOKE_PASS",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "scope": "Unchanged full g1 C compiled and actual optimized native compiler executed one foreign consumer. The preceding whole-build rejection is unchanged; backend-only timing excludes canonical validation/codegen.",
+  "report": {
+    "path": "/tmp/bend2039g1-llvm21-split-first-smoke.json",
+    "sha256": "c01492745dbea67053ab74b715c42124f678dcbf402e70eeea8016e5e75ee710"
+  },
+  "c": {
+    "path": "/tmp/bend2039g1-native.c",
+    "sha256": "fb46fada7566cdd1fbd804e3e242f689f05ceba3c22b8e727c4ff898223311c4",
+    "bytes": 55191134
+  },
+  "binary": {
+    "path": "/tmp/bend2039g1-split-first-native-smoke",
+    "sha256": "0f95e4986d77d841a0112f86ff9111cd730c7cf7822ffd5551a3f1af54805101",
+    "bytes": 15989312
+  },
+  "pipeline": {
+    "kind": "llvm-split",
+    "status": "PASS",
+    "optimization": "-O1",
+    "partitions": 4,
+    "maxBackendChildren": 1,
+    "source": "/tmp/bend2039g1-native.c",
+    "sourceSha256": "fb46fada7566cdd1fbd804e3e242f689f05ceba3c22b8e727c4ff898223311c4",
+    "artifact": "/tmp/bend2039g1-split-first-native-smoke",
+    "temporaryFilesRemoved": true,
+    "elapsedMs": 85704.48075,
+    "stages": [
+      {
+        "name": "clang-version",
+        "command": [
+          "/usr/bin/clang",
+          "--version"
+        ],
+        "timingCommand": [
+          "/usr/bin/time",
+          "-lp",
+          "/usr/bin/clang",
+          "--version"
+        ],
+        "status": "PASS",
+        "startedMs": 11.816457999999997,
+        "timedRealSeconds": 0.13,
+        "userSeconds": 0,
+        "systemSeconds": 0.07,
+        "maxRssBytes": 14974976,
+        "exitCode": 0,
+        "signal": null,
+        "wallMs": 133.838416
+      },
+      {
+        "name": "opt-version",
+        "command": [
+          "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/opt",
+          "--version"
+        ],
+        "timingCommand": [
+          "/usr/bin/time",
+          "-lp",
+          "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/opt",
+          "--version"
+        ],
+        "status": "PASS",
+        "startedMs": 145.891666,
+        "timedRealSeconds": 0.1,
+        "userSeconds": 0,
+        "systemSeconds": 0.03,
+        "maxRssBytes": 24002560,
+        "exitCode": 0,
+        "signal": null,
+        "wallMs": 111.05675000000002
+      },
+      {
+        "name": "llvm-split-version",
+        "command": [
+          "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/llvm-split",
+          "--version"
+        ],
+        "timingCommand": [
+          "/usr/bin/time",
+          "-lp",
+          "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/llvm-split",
+          "--version"
+        ],
+        "status": "PASS",
+        "startedMs": 257.212208,
+        "timedRealSeconds": 0.01,
+        "userSeconds": 0,
+        "systemSeconds": 0,
+        "maxRssBytes": 19922944,
+        "exitCode": 0,
+        "signal": null,
+        "wallMs": 16.164500000000032
+      },
+      {
+        "name": "sdk",
+        "command": [
+          "/usr/bin/xcrun",
+          "--show-sdk-path"
+        ],
+        "timingCommand": [
+          "/usr/bin/time",
+          "-lp",
+          "/usr/bin/xcrun",
+          "--show-sdk-path"
+        ],
+        "status": "PASS",
+        "startedMs": 274.656583,
+        "timedRealSeconds": 0.01,
+        "userSeconds": 0,
+        "systemSeconds": 0,
+        "maxRssBytes": 8617984,
+        "exitCode": 0,
+        "signal": null,
+        "wallMs": 16.493334000000004
+      },
+      {
+        "name": "abi-macros",
+        "command": [
+          "/usr/bin/clang",
+          "-std=c11",
+          "-O1",
+          "-E",
+          "-dM",
+          "/tmp/bend2039g1-native.c",
+          "-isysroot",
+          "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
+        ],
+        "timingCommand": [
+          "/usr/bin/time",
+          "-lp",
+          "/usr/bin/clang",
+          "-std=c11",
+          "-O1",
+          "-E",
+          "-dM",
+          "/tmp/bend2039g1-native.c",
+          "-isysroot",
+          "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
+        ],
+        "status": "PASS",
+        "startedMs": 291.757958,
+        "timedRealSeconds": 1.93,
+        "userSeconds": 1.48,
+        "systemSeconds": 0.13,
+        "maxRssBytes": 604848128,
+        "exitCode": 0,
+        "signal": null,
+        "wallMs": 1935.141417
+      },
+      {
+        "name": "abi-driver",
+        "command": [
+          "/usr/bin/clang",
+          "-std=c11",
+          "-O1",
+          "-c",
+          "/tmp/bend2039g1-native.c",
+          "-isysroot",
+          "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+          "-o",
+          "/tmp/bend2039g1-split-first-native-smoke",
+          "-###"
+        ],
+        "timingCommand": [
+          "/usr/bin/time",
+          "-lp",
+          "/usr/bin/clang",
+          "-std=c11",
+          "-O1",
+          "-c",
+          "/tmp/bend2039g1-native.c",
+          "-isysroot",
+          "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+          "-o",
+          "/tmp/bend2039g1-split-first-native-smoke",
+          "-###"
+        ],
+        "status": "PASS",
+        "startedMs": 2232.5617079999997,
+        "timedRealSeconds": 0.02,
+        "userSeconds": 0,
+        "systemSeconds": 0,
+        "maxRssBytes": 15908864,
+        "exitCode": 0,
+        "signal": null,
+        "wallMs": 26.479457999999795
+      },
+      {
+        "name": "frontend",
+        "command": [
+          "/usr/bin/clang",
+          "-std=c11",
+          "-O1",
+          "-Xclang",
+          "-disable-llvm-passes",
+          "-emit-llvm",
+          "-c",
+          "/tmp/bend2039g1-native.c",
+          "-isysroot",
+          "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+          "-o",
+          "/tmp/.native-llvm-m9Yf4O/raw.bc"
+        ],
+        "timingCommand": [
+          "/usr/bin/time",
+          "-lp",
+          "/usr/bin/clang",
+          "-std=c11",
+          "-O1",
+          "-Xclang",
+          "-disable-llvm-passes",
+          "-emit-llvm",
+          "-c",
+          "/tmp/bend2039g1-native.c",
+          "-isysroot",
+          "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+          "-o",
+          "/tmp/.native-llvm-m9Yf4O/raw.bc"
+        ],
+        "status": "PASS",
+        "startedMs": 2278.3721659999997,
+        "timedRealSeconds": 27.54,
+        "userSeconds": 21.79,
+        "systemSeconds": 1.69,
+        "maxRssBytes": 4805378048,
+        "exitCode": 0,
+        "signal": null,
+        "wallMs": 27553.85975
+      },
+      {
+        "name": "mem2reg-always-inline",
+        "command": [
+          "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/opt",
+          "-passes=function(mem2reg),always-inline",
+          "/tmp/.native-llvm-m9Yf4O/raw.bc",
+          "-o",
+          "/tmp/.native-llvm-m9Yf4O/prepared.bc"
+        ],
+        "timingCommand": [
+          "/usr/bin/time",
+          "-lp",
+          "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/opt",
+          "-passes=function(mem2reg),always-inline",
+          "/tmp/.native-llvm-m9Yf4O/raw.bc",
+          "-o",
+          "/tmp/.native-llvm-m9Yf4O/prepared.bc"
+        ],
+        "status": "PASS",
+        "startedMs": 29839.162958,
+        "timedRealSeconds": 14.65,
+        "userSeconds": 12.75,
+        "systemSeconds": 0.69,
+        "maxRssBytes": 2848980992,
+        "exitCode": 0,
+        "signal": null,
+        "wallMs": 14664.540291999998
+      },
+      {
+        "name": "split",
+        "command": [
+          "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/llvm-split",
+          "-j4",
+          "/tmp/.native-llvm-m9Yf4O/prepared.bc",
+          "-o",
+          "/tmp/.native-llvm-m9Yf4O/part.bc"
+        ],
+        "timingCommand": [
+          "/usr/bin/time",
+          "-lp",
+          "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/llvm-split",
+          "-j4",
+          "/tmp/.native-llvm-m9Yf4O/prepared.bc",
+          "-o",
+          "/tmp/.native-llvm-m9Yf4O/part.bc"
+        ],
+        "status": "PASS",
+        "startedMs": 44511.201,
+        "timedRealSeconds": 7.61,
+        "userSeconds": 6.68,
+        "systemSeconds": 0.47,
+        "maxRssBytes": 1765834752,
+        "exitCode": 0,
+        "signal": null,
+        "wallMs": 7613.552500000005
+      },
+      {
+        "name": "opt-codegen-3",
+        "command": [
+          "/usr/bin/clang",
+          "-O1",
+          "-x",
+          "ir",
+          "-c",
+          "/tmp/.native-llvm-m9Yf4O/part.bc3",
+          "-isysroot",
+          "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+          "-o",
+          "/tmp/.native-llvm-m9Yf4O/part3.o"
+        ],
+        "timingCommand": [
+          "/usr/bin/time",
+          "-lp",
+          "/usr/bin/clang",
+          "-O1",
+          "-x",
+          "ir",
+          "-c",
+          "/tmp/.native-llvm-m9Yf4O/part.bc3",
+          "-isysroot",
+          "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+          "-o",
+          "/tmp/.native-llvm-m9Yf4O/part3.o"
+        ],
+        "status": "PASS",
+        "startedMs": 52132.857665999996,
+        "timedRealSeconds": 33.33,
+        "userSeconds": 29.87,
+        "systemSeconds": 0.62,
+        "maxRssBytes": 1505329152,
+        "exitCode": 0,
+        "signal": null,
+        "wallMs": 33333.425375
+      },
+      {
+        "name": "opt-codegen-2",
+        "command": [
+          "/usr/bin/clang",
+          "-O1",
+          "-x",
+          "ir",
+          "-c",
+          "/tmp/.native-llvm-m9Yf4O/part.bc2",
+          "-isysroot",
+          "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+          "-o",
+          "/tmp/.native-llvm-m9Yf4O/part2.o"
+        ],
+        "timingCommand": [
+          "/usr/bin/time",
+          "-lp",
+          "/usr/bin/clang",
+          "-O1",
+          "-x",
+          "ir",
+          "-c",
+          "/tmp/.native-llvm-m9Yf4O/part.bc2",
+          "-isysroot",
+          "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+          "-o",
+          "/tmp/.native-llvm-m9Yf4O/part2.o"
+        ],
+        "status": "PASS",
+        "startedMs": 52137.428457999995,
+        "timedRealSeconds": 27.43,
+        "userSeconds": 24.22,
+        "systemSeconds": 0.59,
+        "maxRssBytes": 1693220864,
+        "exitCode": 0,
+        "signal": null,
+        "wallMs": 27440.771375000004
+      },
+      {
+        "name": "opt-codegen-1",
+        "command": [
+          "/usr/bin/clang",
+          "-O1",
+          "-x",
+          "ir",
+          "-c",
+          "/tmp/.native-llvm-m9Yf4O/part.bc1",
+          "-isysroot",
+          "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+          "-o",
+          "/tmp/.native-llvm-m9Yf4O/part1.o"
+        ],
+        "timingCommand": [
+          "/usr/bin/time",
+          "-lp",
+          "/usr/bin/clang",
+          "-O1",
+          "-x",
+          "ir",
+          "-c",
+          "/tmp/.native-llvm-m9Yf4O/part.bc1",
+          "-isysroot",
+          "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+          "-o",
+          "/tmp/.native-llvm-m9Yf4O/part1.o"
+        ],
+        "status": "PASS",
+        "startedMs": 52140.964041,
+        "timedRealSeconds": 14.99,
+        "userSeconds": 13.03,
+        "systemSeconds": 0.44,
+        "maxRssBytes": 1039548416,
+        "exitCode": 0,
+        "signal": null,
+        "wallMs": 14996.596915999995
+      },
+      {
+        "name": "opt-codegen-0",
+        "command": [
+          "/usr/bin/clang",
+          "-O1",
+          "-x",
+          "ir",
+          "-c",
+          "/tmp/.native-llvm-m9Yf4O/part.bc0",
+          "-isysroot",
+          "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+          "-o",
+          "/tmp/.native-llvm-m9Yf4O/part0.o"
+        ],
+        "timingCommand": [
+          "/usr/bin/time",
+          "-lp",
+          "/usr/bin/clang",
+          "-O1",
+          "-x",
+          "ir",
+          "-c",
+          "/tmp/.native-llvm-m9Yf4O/part.bc0",
+          "-isysroot",
+          "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+          "-o",
+          "/tmp/.native-llvm-m9Yf4O/part0.o"
+        ],
+        "status": "PASS",
+        "startedMs": 67147.95229100001,
+        "timedRealSeconds": 13.41,
+        "userSeconds": 11.96,
+        "systemSeconds": 0.32,
+        "maxRssBytes": 1023508480,
+        "exitCode": 0,
+        "signal": null,
+        "wallMs": 13420.670542000007
+      },
+      {
+        "name": "link",
+        "command": [
+          "/usr/bin/clang",
+          "/tmp/.native-llvm-m9Yf4O/part0.o",
+          "/tmp/.native-llvm-m9Yf4O/part1.o",
+          "/tmp/.native-llvm-m9Yf4O/part2.o",
+          "/tmp/.native-llvm-m9Yf4O/part3.o",
+          "-isysroot",
+          "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+          "-lpthread",
+          "-lm",
+          "-o",
+          "/tmp/bend2039g1-split-first-native-smoke"
+        ],
+        "timingCommand": [
+          "/usr/bin/time",
+          "-lp",
+          "/usr/bin/clang",
+          "/tmp/.native-llvm-m9Yf4O/part0.o",
+          "/tmp/.native-llvm-m9Yf4O/part1.o",
+          "/tmp/.native-llvm-m9Yf4O/part2.o",
+          "/tmp/.native-llvm-m9Yf4O/part3.o",
+          "-isysroot",
+          "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+          "-lpthread",
+          "-lm",
+          "-o",
+          "/tmp/bend2039g1-split-first-native-smoke"
+        ],
+        "status": "PASS",
+        "startedMs": 85474.46916600001,
+        "timedRealSeconds": 0.2,
+        "userSeconds": 0.16,
+        "systemSeconds": 0.1,
+        "maxRssBytes": 126664704,
+        "exitCode": 0,
+        "signal": null,
+        "wallMs": 206.50395900000876
+      }
+    ],
+    "toolPins": {
+      "/usr/bin/clang": "b8763cf250e607a778bb4603cecb5b90338814d0a3dfcba0d57b1de242f610e9",
+      "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/opt": "df9cd5f276b4a14b9f876aff8acc34cce15a869897fdaaf90fd2c12dd619d4f0",
+      "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/llvm-split": "2503aba489923af7ecbdfbbb72c756724ac0ed0179b4dbad2cfac37a716cca73",
+      "/usr/bin/time": "e1e98e68fd988f353cc51842f5a576bc2cb4c341ae24fd2ca4f625f33b38f23a"
+    },
+    "versions": {
+      "clang": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin25.6.0\nThread model: posix\nInstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin",
+      "opt": "Homebrew LLVM version 21.1.8\n  Optimized build.\n  Default target: arm64-apple-darwin25.6.0\n  Host CPU: apple-m1",
+      "llvm-split": "Homebrew LLVM version 21.1.8\n  Optimized build."
+    },
+    "accounting": "Darwin /usr/bin/time -lp wait4 user/system CPU and maxRSS bytes per command; stage wallMs includes launch/reap. The unchanged outer guardian samples the complete build process tree, including concurrent compiler descendants. Interrupted stages may have null resource fields.",
+    "sdk": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+    "abi": {
+      "preprocessorCommand": [
+        "/usr/bin/clang",
+        "-std=c11",
+        "-O1",
+        "-E",
+        "-dM",
+        "/tmp/bend2039g1-native.c",
+        "-isysroot",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
+      ],
+      "macros": [
+        "#define OUTLINE FAR __attribute__((cold)) PRESERVE(preserve_most)",
+        "#define PRESERVE(A) __attribute__((A))",
+        "#define WL_DYN(F) __attribute__((musttail)) return wl_tab[F](WL_ALL)",
+        "#define WL_FN FAR PRESERVE(preserve_none) Term",
+        "#define WL_JMP(F) __attribute__((musttail)) return WL_##F(WL_ALL)",
+        "#define __ARM_ARCH 8",
+        "#define __ARM_ARCH_8_2__ 1",
+        "#define __ARM_ARCH_8_3__ 1",
+        "#define __ARM_ARCH_8_4__ 1",
+        "#define __ARM_ARCH_8_5__ 1",
+        "#define __ARM_ARCH_ISA_A64 1",
+        "#define __ARM_ARCH_PROFILE 'A'",
+        "#define __ARM_FEATURE_AES 1",
+        "#define __ARM_FEATURE_ATOMICS 1",
+        "#define __ARM_FEATURE_BTI 1",
+        "#define __ARM_FEATURE_CLZ 1",
+        "#define __ARM_FEATURE_COMPLEX 1",
+        "#define __ARM_FEATURE_CRC32 1",
+        "#define __ARM_FEATURE_CRYPTO 1",
+        "#define __ARM_FEATURE_DIRECTED_ROUNDING 1",
+        "#define __ARM_FEATURE_DIV 1",
+        "#define __ARM_FEATURE_DOTPROD 1",
+        "#define __ARM_FEATURE_FMA 1",
+        "#define __ARM_FEATURE_FP16_FML 1",
+        "#define __ARM_FEATURE_FP16_SCALAR_ARITHMETIC 1",
+        "#define __ARM_FEATURE_FP16_VECTOR_ARITHMETIC 1",
+        "#define __ARM_FEATURE_FRINT 1",
+        "#define __ARM_FEATURE_IDIV 1",
+        "#define __ARM_FEATURE_JCVT 1",
+        "#define __ARM_FEATURE_LDREX 0xF",
+        "#define __ARM_FEATURE_NUMERIC_MAXMIN 1",
+        "#define __ARM_FEATURE_PAUTH 1",
+        "#define __ARM_FEATURE_QRDMX 1",
+        "#define __ARM_FEATURE_RCPC 1",
+        "#define __ARM_FEATURE_SHA2 1",
+        "#define __ARM_FEATURE_SHA3 1",
+        "#define __ARM_FEATURE_SHA512 1",
+        "#define __ARM_FEATURE_UNALIGNED 1",
+        "#define __OPTIMIZE__ 1",
+        "#define __apple_build_version__ 21000334",
+        "#define __clang_version__ \"21.0.0 (clang-2100.3.34.2)\""
+      ],
+      "driverCommand": [
+        "/usr/bin/clang",
+        "-std=c11",
+        "-O1",
+        "-c",
+        "/tmp/bend2039g1-native.c",
+        "-isysroot",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+        "-o",
+        "/tmp/bend2039g1-split-first-native-smoke",
+        "-###"
+      ],
+      "driverOutput": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin25.6.0\nThread model: posix\nInstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin\n \"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang\" \"-cc1\" \"-triple\" \"arm64-apple-macosx26.0.0\" \"-O1\" \"-Wundef-prefix=TARGET_OS_\" \"-Wdeprecated-objc-isa-usage\" \"-Werror=deprecated-objc-isa-usage\" \"-Werror=implicit-function-declaration\" \"-emit-obj\" \"-disable-free\" \"-clear-ast-before-backend\" \"-disable-llvm-verifier\" \"-discard-value-names\" \"-main-file-name\" \"bend2039g1-native.c\" \"-mrelocation-model\" \"pic\" \"-pic-level\" \"2\" \"-mframe-pointer=non-leaf\" \"-fno-strict-return\" \"-ffp-contract=on\" \"-fno-rounding-math\" \"-funwind-tables=1\" \"-fobjc-msgsend-selector-stubs\" \"-fno-sized-deallocation\" \"-target-sdk-version=27.0\" \"-fdepfile-entry=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/SDKSettings.json\" \"-fvisibility-inlines-hidden-static-local-var\" \"-fno-modulemap-allow-subdirectory-search\" \"-fdefine-target-os-macros\" \"-fno-assume-unique-vtables\" \"-fno-modulemap-allow-subdirectory-search\" \"-enable-tlsdesc\" \"-target-cpu\" \"apple-m1\" \"-target-feature\" \"+v8.5a\" \"-target-feature\" \"+aes\" \"-target-feature\" \"+altnzcv\" \"-target-feature\" \"+ccdp\" \"-target-feature\" \"+ccpp\" \"-target-feature\" \"+complxnum\" \"-target-feature\" \"+crc\" \"-target-feature\" \"+dotprod\" \"-target-feature\" \"+flagm\" \"-target-feature\" \"+fp-armv8\" \"-target-feature\" \"+fp16fml\" \"-target-feature\" \"+fptoint\" \"-target-feature\" \"+fullfp16\" \"-target-feature\" \"+jsconv\" \"-target-feature\" \"+lse\" \"-target-feature\" \"+neon\" \"-target-feature\" \"+pauth\" \"-target-feature\" \"+perfmon\" \"-target-feature\" \"+predres\" \"-target-feature\" \"+ras\" \"-target-feature\" \"+rcpc\" \"-target-feature\" \"+rdm\" \"-target-feature\" \"+sb\" \"-target-feature\" \"+sha2\" \"-target-feature\" \"+sha3\" \"-target-feature\" \"+specrestrict\" \"-target-feature\" \"+ssbs\" \"-target-abi\" \"darwinpcs\" \"-debugger-tuning=lldb\" \"-fdebug-compilation-dir=/private/tmp/bend2039-upgrade\" \"-target-linker-version\" \"1166.2\" \"-fcoverage-compilation-dir=/private/tmp/bend2039-upgrade\" \"-resource-dir\" \"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/21\" \"-isysroot\" \"/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk\" \"-internal-isystem\" \"/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/local/include\" \"-internal-isystem\" \"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/21/include\" \"-internal-externc-isystem\" \"/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include\" \"-internal-externc-isystem\" \"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include\" \"-internal-iframework\" \"/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks\" \"-internal-iframework\" \"/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/SubFrameworks\" \"-internal-iframework\" \"/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/Library/Frameworks\" \"-Wno-elaborated-enum-base\" \"-std=c11\" \"-ferror-limit\" \"19\" \"-stack-protector\" \"1\" \"-fstack-check\" \"-mdarwin-stkchk-strong-link\" \"-fblocks\" \"-fencode-extended-block-signature\" \"-fregister-global-dtors-with-atexit\" \"-fgnuc-version=4.2.1\" \"-fskip-odr-check-in-gmf\" \"-fmax-type-align=16\" \"-fcommon\" \"-clang-vendor-feature=+disableNonDependentMemberExprInCurrentInstantiation\" \"-fno-odr-hash-protocols\" \"-clang-vendor-feature=+enableAggressiveVLAFolding\" \"-clang-vendor-feature=+revert09abecef7bbf\" \"-clang-vendor-feature=+thisNoAlignAttr\" \"-clang-vendor-feature=+thisNoNullAttr\" \"-clang-vendor-feature=+disableAtImportPrivateFrameworkInImplementationError\" \"-Wno-error=allocator-wrappers\" \"-fdwarf2-cfi-asm\" \"-o\" \"/tmp/bend2039g1-split-first-native-smoke\" \"-x\" \"c\" \"/tmp/bend2039g1-native.c\"\nreal 0.02\nuser 0.00\nsys 0.00\n            15908864  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                1691  page reclaims\n                  69  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                3938  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  43  involuntary context switches\n           123908131  instructions retired\n            55313672  cycles elapsed\n             2621752  peak memory footprint\n"
+    },
+    "temporaryDirectory": "/tmp/.native-llvm-m9Yf4O"
+  },
+  "concurrencyCorrection": "The executed loop allowed3 concurrent partition commands; its old report incorrectly stated maxBackendChildren=1 and prose called it serial. Actual stage start/end intervals preserve the evidence. Source now reports3 and uses that field as the loop bound; no old report is rewritten.",
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 4844896256,
+    "peakFootprintBytes": 5109470536,
+    "elapsedMs": 85793,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "/opt/homebrew/Cellar/bun/1.4.3/bin/bun",
+      "/private/tmp/bend2039-upgrade/evals/native_compiler_llvm.ts",
+      "/tmp/bend2039g1-llvm21-split-first-smoke.json",
+      "clang",
+      "/opt/homebrew/opt/llvm@21/bin"
+    ],
+    "label": "Native LLVM split backend",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793035348385-fded83f91916c07a.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "consumer": {
+    "schemaVersion": 1,
+    "status": "OPTIMIZED_NATIVE_COMPILER_CONSUMER_PASS",
+    "scope": "Actual O1 split-backend native compiler parses, expands, checks and emits a foreign consumer, then executes emitted JS. Backend-only proof; not whole-build or bootstrap admission.",
+    "binary": {
+      "path": "/tmp/bend2039g1-split-first-native-smoke",
+      "sha256": "0f95e4986d77d841a0112f86ff9111cd730c7cf7822ffd5551a3f1af54805101"
+    },
+    "c": {
+      "path": "/tmp/bend2039g1-native.c",
+      "sha256": "fb46fada7566cdd1fbd804e3e242f689f05ceba3c22b8e727c4ff898223311c4"
+    },
+    "input": {
+      "root": "/private/tmp/bend2039-upgrade/tests/io/cid_only_family.bend",
+      "base": "/private/tmp/bend2039-upgrade/bend2/base.bend",
+      "manifest": "/tmp/bend2039g1-optimized-consumer-TwzsTq/runtime.tsv",
+      "exports": "/tmp/bend2039g1-optimized-consumer-TwzsTq/exports.txt",
+      "phase": "compile-module",
+      "output": "/tmp/bend2039g1-optimized-consumer-TwzsTq/program.js",
+      "corpus": {
+        "schemaVersion": 1,
+        "directory": "/private/tmp/bend2039-upgrade",
+        "root": "tests/io/cid_only_family.bend",
+        "exports": [
+          "parsed_module",
+          "parse_with_fuel",
+          "expand_modules_start",
+          "template_step",
+          "check_expanded_start",
+          "inspect_checked_start",
+          "checker_step",
+          "emit_modules_start",
+          "emit_library_start",
+          "emitter_step",
+          "emit_c_modules_start",
+          "emit_c_library_start",
+          "c_emitter_step"
+        ],
+        "files": [
+          {
+            "path": "bend2/base.bend",
+            "sha256": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+            "namespace": ""
+          },
+          {
+            "path": "tests/io/cid_only_family.bend",
+            "sha256": "af71d06df294f351327179d31c52b4ef05a52436c114a16f2ee1dbf27e81e9e9",
+            "namespace": ""
+          },
+          {
+            "path": "bend2/effs/args.js",
+            "sha256": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/audio_close.js",
+            "sha256": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/audio_open.js",
+            "sha256": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/audio_write.js",
+            "sha256": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/chan.js",
+            "sha256": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_close.js",
+            "sha256": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_open.js",
+            "sha256": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_read.js",
+            "sha256": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_size.js",
+            "sha256": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_write.js",
+            "sha256": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/get_env.js",
+            "sha256": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/listener_close.js",
+            "sha256": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/now.js",
+            "sha256": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/print_err.js",
+            "sha256": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/print.js",
+            "sha256": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/process_run.js",
+            "sha256": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/random_u32.js",
+            "sha256": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/sleep.js",
+            "sha256": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/socket_close.js",
+            "sha256": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/spawn.js",
+            "sha256": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_accept.js",
+            "sha256": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_connect.js",
+            "sha256": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_listen.js",
+            "sha256": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_recv.js",
+            "sha256": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_send.js",
+            "sha256": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/thread_count.js",
+            "sha256": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/udp_bind.js",
+            "sha256": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/udp_recv_from.js",
+            "sha256": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/udp_send_to.js",
+            "sha256": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/window_close.js",
+            "sha256": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/window_frame.js",
+            "sha256": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/window_grab.js",
+            "sha256": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/window_open.js",
+            "sha256": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/window_set_title.js",
+            "sha256": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/write.js",
+            "sha256": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+            "external": true
+          },
+          {
+            "path": "tests/io/cid_only_family.js",
+            "sha256": "ca50bcc077297800ee01f93d1c2199ee97e92a9d3d1f6f7e1b0c6247897b63f3",
+            "external": true
+          }
+        ]
+      }
+    },
+    "run": {
+      "command": [
+        "/tmp/bend2039g1-split-first-native-smoke",
+        "+RTS",
+        "--threads",
+        "1",
+        "--gpu",
+        "off",
+        "--RTS",
+        "/private/tmp/bend2039-upgrade/tests/io/cid_only_family.bend",
+        "/private/tmp/bend2039-upgrade/bend2/base.bend",
+        "/tmp/bend2039g1-optimized-consumer-TwzsTq/runtime.tsv",
+        "/tmp/bend2039g1-optimized-consumer-TwzsTq/exports.txt",
+        "compile-module",
+        "/tmp/bend2039g1-optimized-consumer-TwzsTq/program.js"
+      ],
+      "status": 0,
+      "signal": null,
+      "elapsedMs": 3026,
+      "stdout": "NATIVE_RESULT {\"result\":\"EmitSuccess\",\"bytes\":357375,\"modules\":2}\n",
+      "stderr": "NATIVE_BEGIN {\"computeThreads\":1,\"parserFuel\":8000000,\"phase\":\"compile-module\",\"phaseTraceVersion\":3}\nNATIVE_PHASE_START {\"phase\":\"parse\"}\nNATIVE_FUEL {\"sourceOrdinal\":1,\"cells\":8000000,\"elapsedMs\":109.458,\"processPeakRssBeforeBytes\":4964352,\"processPeakRssAfterBytes\":68993024}\nNATIVE_FUEL {\"sourceOrdinal\":2,\"cells\":8000000,\"elapsedMs\":24.320,\"processPeakRssBeforeBytes\":71860224,\"processPeakRssAfterBytes\":71860224}\nNATIVE_PHASE {\"phase\":\"parse\",\"elapsedMs\":549.630,\"userCpuMs\":432.725,\"systemCpuMs\":23.821,\"modules\":2,\"sourceBytes\":79970,\"foreignBytes\":78587,\"eagerFuelCells\":16000000,\"fuelBuildMs\":133.778}\nNATIVE_PHASE_START {\"phase\":\"expand\"}\nNATIVE_PHASE {\"phase\":\"expand\",\"elapsedMs\":230.723,\"userCpuMs\":224.669,\"systemCpuMs\":2.356,\"chunkAdvances\":28743,\"chunkQuantum\":64}\nNATIVE_PHASE_START {\"phase\":\"check\"}\nNATIVE_PHASE {\"phase\":\"check\",\"elapsedMs\":2013.607,\"userCpuMs\":1824.079,\"systemCpuMs\":10.776,\"chunkAdvances\":143285,\"chunkQuantum\":64}\nNATIVE_PHASE_START {\"phase\":\"emit\"}\nNATIVE_PHASE {\"phase\":\"emit\",\"elapsedMs\":196.264,\"userCpuMs\":192.025,\"systemCpuMs\":3.657,\"chunkAdvances\":14921,\"chunkQuantum\":64}\n",
+      "phases": [
+        {
+          "phase": "parse",
+          "elapsedMs": 549.63,
+          "userCpuMs": 432.725,
+          "systemCpuMs": 23.821,
+          "modules": 2,
+          "sourceBytes": 79970,
+          "foreignBytes": 78587,
+          "eagerFuelCells": 16000000,
+          "fuelBuildMs": 133.778
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 230.723,
+          "userCpuMs": 224.669,
+          "systemCpuMs": 2.356,
+          "chunkAdvances": 28743,
+          "chunkQuantum": 64
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 2013.607,
+          "userCpuMs": 1824.079,
+          "systemCpuMs": 10.776,
+          "chunkAdvances": 143285,
+          "chunkQuantum": 64
+        },
+        {
+          "phase": "emit",
+          "elapsedMs": 196.264,
+          "userCpuMs": 192.025,
+          "systemCpuMs": 3.657,
+          "chunkAdvances": 14921,
+          "chunkQuantum": 64
+        }
+      ],
+      "phaseStarts": [
+        {
+          "phase": "parse"
+        },
+        {
+          "phase": "expand"
+        },
+        {
+          "phase": "check"
+        },
+        {
+          "phase": "emit"
+        }
+      ],
+      "fuel": [
+        {
+          "sourceOrdinal": 1,
+          "cells": 8000000,
+          "elapsedMs": 109.458,
+          "processPeakRssBeforeBytes": 4964352,
+          "processPeakRssAfterBytes": 68993024
+        },
+        {
+          "sourceOrdinal": 2,
+          "cells": 8000000,
+          "elapsedMs": 24.32,
+          "processPeakRssBeforeBytes": 71860224,
+          "processPeakRssAfterBytes": 71860224
+        }
+      ],
+      "begins": [
+        {
+          "computeThreads": 1,
+          "parserFuel": 8000000,
+          "phase": "compile-module",
+          "phaseTraceVersion": 3
+        }
+      ],
+      "results": [
+        {
+          "result": "EmitSuccess",
+          "bytes": 357375,
+          "modules": 2
+        }
+      ]
+    },
+    "execute": {
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "/tmp/bend2039g1-optimized-consumer-TwzsTq/program.js"
+      ],
+      "status": 0,
+      "stdout": "42\n",
+      "stderr": ""
+    },
+    "outputSha256": "2c9b473d25c1c4467afde44efa353cb31e0161dc2b0c091d8837127149a56e85",
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 203866112,
+      "peakFootprintBytes": 174818600,
+      "elapsedMs": 3256,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "/tmp/bend2039g1-optimized-consumer.mjs"
+      ],
+      "label": "heavy command",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793035731180-40cbececf6615ef6.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "updatedSources": {
+    "evals/native_compiler_llvm.ts": "d8f2c420662e3ff93795ebe866cbfe7a459b131b74c3243ba2f2ba9d625e8af3",
+    "evals/native_compiler_experiment.ts": "9108d727d3a46add61f672be9a96095c2cd7a65dbe6a3e7108e2964a90ef7d46"
+  }
+}

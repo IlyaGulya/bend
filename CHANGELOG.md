@@ -69,6 +69,12 @@ latest one; the GitHub release carries the same notes.
   constructor/function tables now follow their ABI typedefs; the real wide
   record emitter/clang/native regression passes.
 
+- The experimental native LLVM pipeline splits before ordinary O1 optimization,
+  after mandatory helper inlining, and bounds partition compiles to three
+  concurrent children. The full generated C links and the resulting compiler
+  compiles and runs a foreign consumer under the original memory guard.
+  This backend-only smoke is not whole-build or byte-fixedpoint acceptance.
+
 - Datatypes are headers: the selfhost checker publishes each family's name,
   module aliases and kind telescope before any parameter, field or body is
   checked, so a field, index telescope or kind may name a family declared later

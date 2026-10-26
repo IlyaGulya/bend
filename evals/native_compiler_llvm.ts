@@ -90,16 +90,17 @@ async function buildLlvmSplit(source:string,sourceSha256:string,artifact:string,
    macros:macros.stdout.split('\n').filter(line=>/^#define (?:PRESERVE\(|WL_FN |OUTLINE |WL_JMP\(|WL_DYN\(|__OPTIMIZE__ |__apple_build_version__ |__clang_version__ |__ARM_ARCH|__ARM_FEATURE)/.test(line)),
    driverCommand,driverOutput:driver.stderr};publish();
   temporary=mkdtempSync(join(dirname(artifact),'.native-llvm-'));pipeline.temporaryDirectory=temporary;publish();
-  const raw=join(temporary,'raw.bc'),prepared=join(temporary,'prepared.bc'),inlined=join(temporary,'inlined.bc');
+  const raw=join(temporary,'raw.bc'),prepared=join(temporary,'prepared.bc');
   await requireStage('frontend',[clang,'-std=c11','-O1','-Xclang','-disable-llvm-passes','-emit-llvm','-c',source,'-isysroot',sdk,'-o',raw]);
   await requireStage('mem2reg-always-inline',[opt,'-passes=function(mem2reg),always-inline',raw,'-o',prepared]);
-  await requireStage('normal-inliner',[opt,'-passes=cgscc(inline)',prepared,'-o',inlined]);
-  await requireStage('split',[split,'-j4',inlined,'-o',join(temporary,'part.bc')]);
+  // Keep mandatory helper inlining above; ordinary O1 optimization belongs to
+  // each partition, not an expanding whole-module inliner before the split.
+  await requireStage('split',[split,'-j4',prepared,'-o',join(temporary,'part.bc')]);
   const objects=Array.from({length:4},(_,i)=>join(temporary!,'part'+i+'.o'));
   const pending=[3,2,1,0],running=new Map<number,Promise<{id:number;stage:LlvmStage}>>();
   let firstFailure:LlvmStage|undefined;
   while(pending.length||running.size){
-   while(pending.length&&running.size<3&&!firstFailure){
+   while(pending.length&&running.size<pipeline.maxBackendChildren&&!firstFailure){
     const id=pending.shift()!;
     const command=[clang,'-O1','-x','ir','-c',join(temporary,'part.bc'+id),'-isysroot',sdk,'-o',objects[id]!];
     running.set(id,run('opt-codegen-'+id,command).then(stage=>({id,stage})));

@@ -14,8 +14,8 @@
  *
  * llvm-split requires Darwin arm64, Apple clang21 selected by CC, matching
  * LLVM21 opt/llvm-split and the macOS SDK (SDKROOT or xcrun). It emits raw
- * bitcode at O1 without LLVM passes, runs mem2reg/always-inline and the normal
- * CGSCC inliner, splits four ways, then runs at most three O1 backend children
+ * bitcode at O1 without LLVM passes, runs mem2reg/always-inline, splits four
+ * ways, then optimizes/compiles at most three partitions at O1 concurrently
  * and links normally. Source/ABI/target/tool facts and Darwin time -lp
  * CPU/maxRSS receipts are preserved per stage. The same outer8GiB/10ms/600s
  * guardian includes all children; separate codegen exits before the backend.
