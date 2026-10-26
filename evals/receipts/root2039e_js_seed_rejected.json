@@ -1,0 +1,181 @@
+{
+  "schemaVersion": 1,
+  "status": "REJECTED_CANONICAL_JS_SEED_PARSER_STACK",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "report": {
+    "path": "/private/tmp/bend2039-upgrade/checkpoints/root-release2039e-bootstrap-b.json",
+    "sha256": "290070c7a61f0d76187b68c8d2709faac711ca983fd6037c306f286791b185e2"
+  },
+  "parserSource": {
+    "file": "/private/tmp/bend2039-upgrade/checkpoints/.bootstrap_parser_rebuild_release2039e_generated_fuel.bend",
+    "sha256": "1f87959ff0030b21d5d5add2b3c9f30a5868875bf115e9358a0c68bfb56de4cd"
+  },
+  "componentBuilder": {
+    "proof": "evals/receipts/root2039e_callback_smoke.json"
+  },
+  "source": "/private/tmp/bend2039-upgrade/checkpoints/.bootstrap_compiler_root_release2039e.bend",
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "workerStackMiB": 256,
+    "workerOldGenerationMiB": 6144,
+    "workerYoungGenerationMiB": 128,
+    "parserFuel": 8000000,
+    "maxHeavyChildren": 1
+  },
+  "guardian": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "commandExitCode": 2,
+    "commandSignal": 0,
+    "peakRssBytes": 2665807872,
+    "peakFootprintBytes": 1618143336,
+    "elapsedMs": 307199,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "command": [
+      "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+      "--smol",
+      "/private/tmp/bend2039-upgrade/evals/selfhost_bootstrap_gate.ts",
+      "--component=checkpoints/root-release2039e.js",
+      "--component-build=checkpoints/root-release2039e-build.result.json",
+      "--root=checkpoints/.bootstrap_compiler_root_release2039e.bend",
+      "--root-manifest=checkpoints/selfhost-root-release2039e.json",
+      "--parser=checkpoints/bootstrap-parser-rebuild-release2039e.js",
+      "--parser-build=checkpoints/bootstrap-parser-rebuild-release2039e.native-build.result.json",
+      "--report=checkpoints/root-release2039e-bootstrap-b.json",
+      "--worker"
+    ],
+    "label": "Real full selfhost step bootstrap",
+    "exitCode": 1,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793010233802-b85a4a97e3b3c298.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "fixtures": {
+    "total": 95,
+    "passed": 95
+  },
+  "parsing": {
+    "total": 146,
+    "semanticParity": 146,
+    "last": {
+      "phase": "stage-one-parse",
+      "file": "/private/tmp/bend2039-upgrade/checkpoints/checker_core_steps_v1.bend",
+      "sourceSha256": "d6000fd556d550f45ccca6adeaaa6e2b0d6aa2fc7604fae0959d650f6d7d175c",
+      "sourceBytesSha256": "d6000fd556d550f45ccca6adeaaa6e2b0d6aa2fc7604fae0959d650f6d7d175c",
+      "parserSha256": "94f05a4e00e8fa6ac0b57bbdaa3546d4f5110b7bbf03c3160f338b8a75f6d86f",
+      "parserFuel": 8000000,
+      "parserFeedback": "FeedbackComplete",
+      "oracleAccepted": true,
+      "fullSemanticAST": true,
+      "transport": "/private/tmp/bend2039-upgrade/checkpoints/root-release2039e-bootstrap-b.json.cases/parse-146.ast.json",
+      "transportSha256": "a19fa3689f6542fe81f184ca381728b1f5c6fa0ba2cdd3dba94cb26d1cd22263",
+      "stage0ASTHash": "fb92615c9b8906f8b3fb0f30a5298abb85c56b0ec3a461550427cbc3fed05b68",
+      "compiledASTHash": "fb92615c9b8906f8b3fb0f30a5298abb85c56b0ec3a461550427cbc3fed05b68",
+      "semanticParity": true,
+      "normalizationLedger": {
+        "observation": {
+          "stage0Sha256": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+          "edits": [
+            {
+              "label": "load-source",
+              "occurrences": 1
+            },
+            {
+              "label": "load-file",
+              "occurrences": 1
+            },
+            {
+              "label": "header-offsets",
+              "occurrences": 1
+            },
+            {
+              "label": "load-context",
+              "occurrences": 1
+            },
+            {
+              "label": "declaration-start",
+              "occurrences": 1
+            },
+            {
+              "label": "unsafe-boundary",
+              "occurrences": 1
+            },
+            {
+              "label": "definition-boundary",
+              "occurrences": 1
+            },
+            {
+              "label": "definition-signature",
+              "occurrences": 1
+            },
+            {
+              "label": "law-completion-signature",
+              "occurrences": 1
+            },
+            {
+              "label": "definition-body-normalization",
+              "occurrences": 1
+            },
+            {
+              "label": "native-body",
+              "occurrences": 1
+            },
+            {
+              "label": "inner-block-normalization",
+              "occurrences": 1
+            },
+            {
+              "label": "parenthesized-body-normalization",
+              "occurrences": 1
+            },
+            {
+              "label": "constructor-fields",
+              "occurrences": 1
+            },
+            {
+              "label": "datatype-boundary",
+              "occurrences": 1
+            },
+            {
+              "label": "law-ast",
+              "occurrences": 1
+            },
+            {
+              "label": "law-boundary",
+              "occurrences": 1
+            }
+          ]
+        },
+        "exclusions": [
+          "Syntax acceptance includes unchanged stage0 parser name/pattern checks and actual recursive import loading, not book_valid/native-file validation or target evaluation.",
+          "Only root-file source declarations/imports enter boundaries; dependency declarations do not create root boundaries.",
+          "Top-level definition Body flattening, match compilation and HOAS/indexed replay are deferred until an explicit normalizationBook().Def.v read; their errors are not parser failures.",
+          "Nested term, Match and Local blocks use unchanged stage0 body_flatten at the original parser seam; none are replaced by placeholders or omitted from semantic coverage.",
+          "Import-header whitespace is equal-width, so boundaries and AST spans index the supplied source in UTF-16 code units; declaration ends may include trivia up to the next token.",
+          "The real file must exist. source overrides only that file's contents; dependencies are read from their real paths, and unchanged book_load retains its cycle/namespace/Hub behavior.",
+          "Templates retain native declaration x/m metadata and marked application nodes; no template checker or semantic evaluator is installed."
+        ]
+      },
+      "declarations": 5050
+    }
+  },
+  "failure": {
+    "phase": "stage-one-parse",
+    "error": "RangeError: Maximum call stack size exceeded",
+    "stack": "RangeError: Maximum call stack size exceeded\n    at $String_to_list (file:///private/tmp/bend2039-upgrade/checkpoints/bootstrap-parser-rebuild-release2039e.js:7280:25)\n    at $String_to_list (file:///private/tmp/bend2039-upgrade/checkpoints/bootstrap-parser-rebuild-release2039e.js:7286:46)\n    at $String_to_list (file:///private/tmp/bend2039-upgrade/checkpoints/bootstrap-parser-rebuild-release2039e.js:7286:46)\n    at $String_to_list (file:///private/tmp/bend2039-upgrade/checkpoints/bootstrap-parser-rebuild-release2039e.js:7286:46)\n    at $String_to_list (file:///private/tmp/bend2039-upgrade/checkpoints/bootstrap-parser-rebuild-release2039e.js:7286:46)\n    at $String_to_list (file:///private/tmp/bend2039-upgrade/checkpoints/bootstrap-parser-rebuild-release2039e.js:7286:46)\n    at $String_to_list (file:///private/tmp/bend2039-upgrade/checkpoints/bootstrap-parser-rebuild-release2039e.js:7286:46)\n    at $String_to_list (file:///private/tmp/bend2039-upgrade/checkpoints/bootstrap-parser-rebuild-release2039e.js:7286:46)\n    at $String_to_list (file:///private/tmp/bend2039-upgrade/checkpoints/bootstrap-parser-rebuild-release2039e.js:7286:46)\n    at $String_to_list (file:///private/tmp/bend2039-upgrade/checkpoints/bootstrap-parser-rebuild-release2039e.js:7286:46)",
+    "artifacts": {}
+  },
+  "artifacts": {},
+  "attribution": "Canonical compiled parser artifact String.to_list recursion while parsing emitter_steps_v1; not the selfhost renderer private-frame runtime, not an OOM, and not a deadline. Native C seed remains the intended stack-independent bootstrap route. No parser or corpus was changed to bypass failure.",
+  "inputLedger": {
+    "entries": 412,
+    "canonicalEntriesSha256": "ddb31a0d6711f4d7edd0f73c5e292e2e3a51c0a0acef52cb7f75675a09c4b8b6"
+  },
+  "frozenSourceCorpus": "checkpoints/root-release2039e-native.corpus.json"
+}

@@ -113,6 +113,16 @@ The normal native builder now uses Bun; V8-only profiling explicitly selects
 the separately labelled Node worker. Proof:
 `evals/receipts/root2039e_bun_native_rejected.json`.
 
+The full JS-seed bootstrap of this image is also **rejected**, for a different
+reason: all 95 seed fixtures and 146 complete semantic-AST comparisons pass,
+then the canonical compiled parser overflows in `String.to_list` while parsing
+`emitter_steps_v1.bend`. The guard exits complete/stopped after 307,199 ms,
+well before 600 s, with 2,665,807,872 B peak RSS and no stage-one artifact.
+This is the canonical JS seed's recursive Base conversion, not the selfhost
+renderer's explicit-frame runtime. The full native C seed remains the route
+that avoids that JS-seed stack dependency without a String special case.
+Proof: `evals/receipts/root2039e_js_seed_rejected.json`.
+
 Latest compiler root: **`db147cba`**, after an authenticated inline-parser
 cutover in `/private/tmp/bend-parser-cutover667`. Fresh native admission checks
 all 11,889 bodies / 12,450 events with 0 exclusions/patches and unchanged
