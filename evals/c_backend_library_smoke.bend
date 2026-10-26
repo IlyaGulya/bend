@@ -82,7 +82,7 @@ def u32_family() -> BIR.Family:
 # The declared codomain travels with every export. This target has no host text
 # seam and ignores it, so it names the real result type only for coherence.
 def arrow(result: BIR.Descriptor) -> BIR.Descriptor:
-  BIR.DescriptorArrow{BIR.Affine{}, u32_type(), result}
+  BIR.DescriptorArrow{BIR.Once{}, u32_type(), result}
 
 def export(key: String, entry: Maybe<&2, BIR.Entry>, types: List<&2, BIR.Descriptor>, result: BIR.Descriptor) -> BIR.Export:
   BIR.Export{key, entry, types, result}

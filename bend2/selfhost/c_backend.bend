@@ -16,7 +16,7 @@ import ./c_backend_sharing.bend as Sharing
 #
 # Runtime ABI targeted (all of it observable in the runtime source handed in):
 #
-#   // Tables   CID_*/FID_* macros, CID_T{arity,hot}, FID_T{arity,resw,flags},
+#   // Tables   CID_*/FID_* macros, Cid{arity,hot,spine}, Fid{arity,resw,bangs,nofk},
 #              STAT_LEN, WL_RESW, BANGS, WL_BANK/WL_SIG/WL_ALL/WL_LOAD/
 #              WL_LAST/WL_SAVE/WL_TAKE/WL_TABLE, MAIN_FID, MAIN_PURE, BLK_SHR,
 #              SHOW_DESC/SHOW_NAMES under !DEVICE
@@ -2997,7 +2997,7 @@ def fid_name(+target: U32, +entries: List<&2, Entry>) -> String:
 # WL_OPEN: WL_OPEN declares the outgoing register bank, so a read after it
 # would see an uninitialised local. The prologue therefore stays outside.
 def case_text(+index: U32, +prologue: String, +body: String, +spin: Bool) -> String:
-  cat(["  WL_CASE(FID_", U32.show(index), ")\n  {\n", prologue, "    WL_OPEN\n", spin_open(spin), body, spin_close(spin), "  }}\n\n"])
+  cat(["  WL_CASE(FID_", U32.show(index), ")\n", prologue, "    WL_OPEN\n", spin_open(spin), body, spin_close(spin), "  }}\n\n"])
 
 def spin_open(spin: Bool) -> String:
   match spin:
@@ -3755,7 +3755,7 @@ def fid_defines(rows: List<&2, SegText>) -> String:
       match row:
         case SegText{+fid, arity, resw, text, _, _}: cat(["#define FID_", U32.show(fid), " ", U32.show(fid), "\n", fid_defines(rest)])
 
-# CID_T[x] is {arity, hot} for the cid index x (runtime cid_arity/cid_hot).
+# CID_T[x] is Cid{arity, hot, spine}; zero spine uses the generic drop walk.
 # The hot fact is not derivable from BIR today; CIRSharing's seal plan owns it.
 def hot_text(hot: Bool) -> String:
   match hot:
@@ -3777,7 +3777,7 @@ def cid_table(cids: List<&2, CidRow>) -> String:
     case Nil{}: "};\n"
     case +row <> rest:
       match row:
-        case CidRow{cid, key, arity, hot}: cat(["{ ", Nat.show(arity), ", ", hot_text(hot), " }, ", cid_table(rest)])
+        case CidRow{cid, key, arity, hot}: cat(["{ ", Nat.show(arity), ", ", hot_text(hot), ", 0 }, ", cid_table(rest)])
 
 def fid_table(rows: List<&2, SegText>, forky: List<&2, U32>) -> String:
   match rows:
@@ -3786,8 +3786,8 @@ def fid_table(rows: List<&2, SegText>, forky: List<&2, U32>) -> String:
       match row:
         case SegText{fid, arity, resw, text, forked, calls}:
           match forky_has(forky, fid):
-            case True{}: cat(["{ ", Nat.show(arity), ", ", Nat.show(resw), ", 0 }, ", fid_table(rest, forky)])
-            case False{}: cat(["{ ", Nat.show(arity), ", ", Nat.show(resw), ", 2 }, ", fid_table(rest, forky)])
+            case True{}: cat(["{ ", Nat.show(arity), ", ", Nat.show(resw), ", 0, 0 }, ", fid_table(rest, forky)])
+            case False{}: cat(["{ ", Nat.show(arity), ", ", Nat.show(resw), ", 0, 1 }, ", fid_table(rest, forky)])
 
 # The runtime owns the IO_EMIT/CLO_APPLY/EXIT/ENTER cases under their symbolic
 # names; their numeric rows must not also appear in WL_TABLE or the linker sees
@@ -3905,8 +3905,8 @@ def tables_part(plan: Plan, +rows: List<&2, SegText>, regs: Nat) -> Part:
             cid_defines(cids),
             fid_defines(rows),
             runtime_defines(entries), "\n",
-            "CONSTV u8 CID_T[][2] = { ", cid_table(cids), "\n",
-            "CONSTV u8 FID_T[][3] = { ", fid_table(rows, forky), "\n",
+            "CONSTV Cid CID_T[] = { ", cid_table(cids), "\n",
+            "CONSTV Fid FID_T[] = { ", fid_table(rows, forky), "\n",
             "#define STAT_LEN 0\n\n",
             wl_macros(regs, resw), "\n",
             "#define WL_TABLE ", wl_table_text(rows, entries), "\n",

@@ -145,6 +145,15 @@ is 4,675,731,456 B / footprint 7,311,989,048 B; no C output exists. Not hitting
 nor an equal-observer comparison with the previous traced run. Receipt:
 `evals/receipts/root2039e_literal_identity_rejected.json`.
 
+The runtime-2.0.39 `Cid`/`Fid`/`WL_CASE` C port remains **unaccepted**.
+A separate typed-step raw-BIR smoke validates 5,369 definitions / 5,831 events
+and emits its JS component without exclusions or patches, but actual execution
+rejects the fixture with `no family declares constructor Nil`; no C source,
+clang run or native program follows. The old library fixture also required
+`BIR.Once` (a descriptor Quantity), not `BIR.Affine` (an operation Use).
+Neither nominal admission nor these hand-built fixtures prove the full FIR
+compiler path. Receipt: `evals/receipts/cabi2039_raw_fixture_rejected.json`.
+
 Latest compiler root: **`db147cba`**, after an authenticated inline-parser
 cutover in `/private/tmp/bend-parser-cutover667`. Fresh native admission checks
 all 11,889 bodies / 12,450 events with 0 exclusions/patches and unchanged
