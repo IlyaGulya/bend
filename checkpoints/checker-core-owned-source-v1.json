@@ -15178,7 +15178,7 @@
       "canonical": "bend2/selfhost/emitter.bend",
       "owned": "checkpoints/emitter_owned_v1.bend",
       "canonicalSha256": "47d68ba5f0b54c334e2c940b7bb6aabc7f3bba27142b816f27df8225cf3fae4f",
-      "sourceSha256": "f280d2759fc74ecee266875b4cccc4b1e0158c9008b8dde33f08c4b23d99f4ef",
+      "sourceSha256": "f1b100a0f82101956cf7ce03ee06972da9173be3242282c5ca430515cc14e870",
       "definitionNames": [
         "emitted_js",
         "emitted_c",
@@ -15619,6 +15619,7 @@
         "cps_provider_2_ending_exports",
         "native_match_cps_provider_2_plan_make_0",
         "native_match_cps_provider_2_plan_make_1",
+        "native_match_cps_provider_2_plan_make_2",
         "cps_provider_2_plan_make",
         "cps_provider_2_plan_finish",
         "cps_provider_2_plan_top",
@@ -15725,7 +15726,22 @@
         "cps_provider_2_scan_fields",
         "cps_provider_2_scan_op",
         "cps_provider_2_scan_block",
+        "native_match_cps_provider_2_cid_rows_0",
+        "native_match_cps_provider_2_cid_rows_1",
+        "native_match_cps_provider_2_cid_rows_2",
         "cps_provider_2_cid_rows",
+        "native_match_cps_provider_2_cid_arity_field_0",
+        "cps_provider_2_cid_arity_field",
+        "native_match_cps_provider_2_cid_rows_check_0",
+        "native_match_cps_provider_2_cid_rows_check_1",
+        "native_match_cps_provider_2_cid_rows_check_2",
+        "cps_provider_2_cid_rows_check",
+        "native_match_cps_provider_2_cid_node_arity_0",
+        "native_match_cps_provider_2_cid_node_arity_1",
+        "cps_provider_2_cid_node_arity",
+        "native_match_cps_provider_2_cid_ctor_rows_0",
+        "native_match_cps_provider_2_cid_ctor_rows_1",
+        "native_match_cps_provider_2_cid_ctor_rows_2",
         "cps_provider_2_cid_ctor_rows",
         "cps_provider_2_cid_foreign_rows",
         "cps_provider_2_cid_foreign_each",
@@ -16416,13 +16432,21 @@
         "cps_provider_2_wl_load_rows",
         "native_match_cps_provider_2_wl_last_rows_0",
         "cps_provider_2_wl_last_rows",
+        "native_match_cps_provider_2_wl_save_rows_0",
+        "cps_provider_2_wl_save_rows",
+        "native_match_cps_provider_2_wl_take_rows_0",
+        "cps_provider_2_wl_take_rows",
         "cps_provider_2_wl_macros",
         "cps_provider_2_runtime_defines",
         "native_match_cps_provider_2_table_or_zero_0",
         "cps_provider_2_table_or_zero",
         "native_match_cps_provider_2_tables_part_0",
         "native_match_cps_provider_2_tables_part_1",
+        "native_match_cps_provider_2_tables_part_2",
         "cps_provider_2_tables_part",
+        "native_match_cps_provider_2_id_rows_check_0",
+        "native_match_cps_provider_2_id_rows_check_1",
+        "cps_provider_2_id_rows_check",
         "cps_provider_2_main_suppress",
         "cps_provider_2_main_fid_index",
         "cps_provider_2_main_pure_text",
@@ -16678,6 +16702,7 @@
         "cps_provider_3_unfill_words",
         "native_match_cps_provider_3_head_native_0",
         "cps_provider_3_head_native",
+        "cps_provider_3_head_other",
         "native_match_cps_provider_3_head_value_0",
         "native_match_cps_provider_3_head_value_1",
         "native_match_cps_provider_3_head_value_2",
@@ -17211,9 +17236,12 @@
         "cps_provider_5_show_append_name",
         "cps_provider_5_show_append_patch",
         "cps_provider_5_show_apply_patch",
-        "cps_provider_5_last_segment_list",
-        "cps_provider_5_last_segment",
         "cps_provider_5_show_native_kind",
+        "native_match_cps_provider_5_show_kind_family_0",
+        "native_match_cps_provider_5_show_kind_family_1",
+        "native_match_cps_provider_5_show_kind_family_2",
+        "native_match_cps_provider_5_show_kind_family_3",
+        "cps_provider_5_show_kind_family",
         "cps_provider_5_show_kind_head",
         "cps_provider_5_show_kind",
         "cps_provider_5_show_box_flag",
@@ -18452,17 +18480,18 @@
         "cps_provider_2_fid_macros_declarations": "2efe25026253a7d383207c222f3dcef433164ba0b71f0885359bcef449527a95",
         "cps_provider_2_ending_library": "bed2c155fcffd6795e877d13af54a3992dab7c9aab157711ff029fd779efb642",
         "cps_provider_2_ending_exports": "514046f422dc43191dedf3d3757a6b3664e0f889b98f387bd0a57e77e34971c5",
-        "native_match_cps_provider_2_plan_make_0": "dc007b29784b6fb9470dd9d747d68c72c1a6a5c4310e410c2008d4569f75e206",
-        "native_match_cps_provider_2_plan_make_1": "e185c5f941f6fb7650832ca255a23940dfbc2152deeba507826f569936a36c1e",
-        "cps_provider_2_plan_make": "b3f43314f7fd2428b96a6d1ea28d714b302799bb066242d3376519db7defaec6",
-        "cps_provider_2_plan_finish": "df49221ac7b53bda860bd0dfabf03ebb7a76afdfa282675ab101f5aabbb742ea",
-        "cps_provider_2_plan_top": "746bbe451f96764b980f5429532af6fb750263b94282dcd745e1056fac0cd95a",
+        "native_match_cps_provider_2_plan_make_0": "5bc21d78031df8d4ea53b9cc1f4a1fab63d566a52f3766a8e6de87ee7fc66ce9",
+        "native_match_cps_provider_2_plan_make_1": "70172b139921cb08f65f2a507696d29c37c4e60ad0ce2dcbeb72773054e576de",
+        "native_match_cps_provider_2_plan_make_2": "904eb03e4724777f446098143b9e083f37fec97d9f64ce17032cf7b38c274d6c",
+        "cps_provider_2_plan_make": "b2c86ed6c51553c2ea79302b0d315874ca4c7bc069d8050262fef661944b67c4",
+        "cps_provider_2_plan_finish": "bd74b994dfac774f86953fd4890c2dfb8a8a23593a4fa97ecf7500f41cbdcda6",
+        "cps_provider_2_plan_top": "4398b851c535be4b92cdae4aa9865add2c5b6d9733f3b7beecbaf194e4f23759",
         "cps_provider_2_plan_pure": "9e98e31fc7cd02e601fb56dc305687c9d5adaaa763aca46658715f3587e9cc4b",
         "cps_provider_2_plan_set_pure": "0e51d2d92d0cbde560d7bdf67457a16b578e86d9419a37b5bf3b30e664c48b47",
         "cps_provider_2_plan_set_pure_flags": "8d5db4745a394a377e8d3a48f0a234730562e628a040e7cfc2f9d75bc975b5c8",
         "cps_provider_2_fid_macros_runtime": "97acf38fd9071e6d8a92129ffd64b7c621a4cdc047d35ead126239c6de2b1060",
         "cps_provider_2_fid_macros_runtime_one": "0c71c57c3b100f410b2a80c713ef5dd880c4773f5dc902cf711442c984022247",
-        "native_match_cps_provider_2_plan_executable_0": "9e465763ca10ec42edd43eb357c5bed8caa4a1f40263a85eda5e83d39ffd0337",
+        "native_match_cps_provider_2_plan_executable_0": "fbdb654d6d0492199947ccd7111600bc6671f2c1560fa9c2536501745392a5ad",
         "native_match_cps_provider_2_plan_executable_1": "be568e86fdf40800100b0ba9c89179708776bde95c5476c1d2e786f8f23065f9",
         "cps_provider_2_plan_executable": "5b74c5f34a3f2424825e9c2b339fe64dcc7d781b6a81d9a2077c63eb0489a830",
         "cps_provider_2_plan_executable_native": "b60781500a3ecffccd31a51ec4c6674a287692d19f3ea7c8f36616378cff491a",
@@ -18560,8 +18589,23 @@
         "cps_provider_2_scan_fields": "adabc1b2601dcee34c7949d0ae8157cd4a2850973e3730e25bf8c1f7d80a7b3f",
         "cps_provider_2_scan_op": "2ad382fe6e3a00bfe684ba343f30d0c3be73d2d92dbc3bf6a9ee048d72678065",
         "cps_provider_2_scan_block": "a95dded3aa2ac0246ebce39b680075ea92ec505e16b66566b3ba615e5bcd0028",
-        "cps_provider_2_cid_rows": "83967b6a393605320253ccb8255bf20b33515c44b84b3035fd1590c673644486",
-        "cps_provider_2_cid_ctor_rows": "0e59733b79ef72f016496180abc6059fcf809b76f37eee87a54e82404d213641",
+        "native_match_cps_provider_2_cid_rows_0": "b88d30ad21fc9b63f491a580322ab3ec80a90871b9ac245bedf94fd1c4a7af03",
+        "native_match_cps_provider_2_cid_rows_1": "55ef003e64c99a7fb17961ae2e115a1585d6299aedfafb057af5592fc7bf36fc",
+        "native_match_cps_provider_2_cid_rows_2": "0d5dcac2b97d06766b1ebdc7a9bd950b7ac8893d2e82783f7f23eb60e9ab16cf",
+        "cps_provider_2_cid_rows": "150770bca58b74a852498137f7e4a151fe19ab12e75e9a4b8b9666f0b4aa5613",
+        "native_match_cps_provider_2_cid_arity_field_0": "241bf80423458d725fb508d12bf36875a899ee96cc15ae68a09b8606009555d9",
+        "cps_provider_2_cid_arity_field": "c04e1416ce0e74d9074c8e44665855c29a6046f15f8c2b6eea2839b4fdc83ed4",
+        "native_match_cps_provider_2_cid_rows_check_0": "8eee3bfd32684b517d4e84c34cf9fff7011a8bbf777e5707df7383c9f6578650",
+        "native_match_cps_provider_2_cid_rows_check_1": "f519e4a678a6dd3fa0c77c7b244566cbcb87fef78138f88b93cd60c4f2802d6e",
+        "native_match_cps_provider_2_cid_rows_check_2": "5e4de034ee8ec57fb18c952835e3214522a4f4cb5218921564f1a31b2af6eded",
+        "cps_provider_2_cid_rows_check": "df47fe7f9250495e2b077e832791493f8a6d9a747a43db895b595895850b0168",
+        "native_match_cps_provider_2_cid_node_arity_0": "c433cace087b3eabae3cdfbccb8487781eea97f42736f13925ae8f7b3f371a3e",
+        "native_match_cps_provider_2_cid_node_arity_1": "48d661630d614651b7c94624184b0e10745cb2f8698543ea03f35b092bec784b",
+        "cps_provider_2_cid_node_arity": "6949fa582cc5ff713e2c46e557ab03f5b3e79c7d7d90f35398811a9b2e8b8d16",
+        "native_match_cps_provider_2_cid_ctor_rows_0": "05d807ea213d9cb0d259fd72375314af49d39fda061f09eaf202fa8d1707694b",
+        "native_match_cps_provider_2_cid_ctor_rows_1": "7ba8fdb8c9179036248487f638e393fe527e2506ed36fcb1711da898ef5ccb84",
+        "native_match_cps_provider_2_cid_ctor_rows_2": "60daeec48f025a389f20079e6ea3a6298e5d0f89e9fbf2a19bd363ad622a0785",
+        "cps_provider_2_cid_ctor_rows": "62e65c96720e5b5987000b54587619490b7302601fd189e0c0aa689b947ab866",
         "cps_provider_2_cid_foreign_rows": "357c6caad53c356c7408c7c554406eaf7ef666832313870076ba25bf61f5cd7d",
         "cps_provider_2_cid_foreign_each": "d231803513274e84f4ac746b729755b374488ee73718540859511b723328a7e9",
         "cps_provider_2_cid_lookup": "16fdaa04e19bde515036148c3b3f8c0ee74f41ed2ea25276b6474b6b9a4ec443",
@@ -19019,7 +19063,7 @@
         "native_match_cps_provider_2_fid_name_2": "bec1e414947d0bcb34dd94ed0861ed7fba53d53977239b5a75a1dba4ee424a79",
         "native_match_cps_provider_2_fid_name_3": "9870b0ad18f8b36dceacb9120341e5afd7a12e12f413530af7b8db9c90e3235c",
         "cps_provider_2_fid_name": "3f8a671aa03f968cc500cd35fedcb4bb6a0c7e0112dfda86b3ee173fc00b0ef3",
-        "cps_provider_2_case_text": "f7b4896f6e3b8e99eb77498f3e68f74c2c88af5a929ad34b805974417146a400",
+        "cps_provider_2_case_text": "1e88e137825950f365ffdd9c9dcf1f56c4582ce0c543ef414bbb14d990979ce5",
         "cps_provider_2_spin_open": "037dbdd603049275445e5dc17cae1906025365fd4c5d3457499f6164495e9dac",
         "cps_provider_2_spin_close": "cd160887dfaba5296a6075e016c74d1646fe801e6d2707ccd9b5bc22793583d3",
         "cps_provider_2_block_ctl": "e091cde063fc24778e1d398fe9cefcd3d513aa368605dc6deaf7a01721c2403a",
@@ -19195,7 +19239,7 @@
         "native_match_cps_provider_2_row_insert_4": "b73b9627cc6f023a28b624a1e75133f7f146d2423f47e386a40af4060f544ed2",
         "cps_provider_2_row_insert": "a8c0d527ef86520b8b87bab4b87a53972e22633510634b265832687f7ffea86f",
         "native_match_cps_provider_2_rows_check_0": "e016d459fcde933d6f7c94a62ef34a99fd42045de4610a3096c0a3f12daf419d",
-        "native_match_cps_provider_2_rows_check_1": "17dc2c62a2683be78046a8a3113e39984345554e2d515a889433cc243595f583",
+        "native_match_cps_provider_2_rows_check_1": "d67d0204781798761f598f2ea83174f3c19b1e96a3410ed61e9934bd0bc5f5d7",
         "native_match_cps_provider_2_rows_check_2": "4db32b12ced8a300b387bf588156cd1d238a9c41dd9ec9368f74aeaa091a449e",
         "cps_provider_2_rows_check": "630a307ca6808c0a4eceaff0ed4add1a007653a3a2fbfc718e229a2056e5562c",
         "cps_provider_2_cid_defines": "b12ae64eb1b28b13ccf86c6642523643156507e19f8907b621a95bc217bd4cce",
@@ -19225,8 +19269,8 @@
         "cps_provider_2_hot_text": "0c6c17bf4fc415f4e35f46d62f05ee577d98961f7127ecbd65fbe913c41dcaeb",
         "cps_provider_2_blk_shr_text": "f3c3b710adee60b917a05ab77c1b255da4b9f4aeb08f3435e3158d2a172ab9f0",
         "cps_provider_2_array_shared_text": "18f9874920593c242da9f505ecc0714dcc377875ae65775448a4d74eb42f18fc",
-        "cps_provider_2_cid_table": "74ab0fbc84ba4c0eaa52c5f34881ab9ce844a31d9d150695d55d8ef80b82f440",
-        "native_match_cps_provider_2_fid_table_0": "1bf3d5c651b93962fc4633c408d1b1c9e8566a856ff4a3c7f06ae82815fd1765",
+        "cps_provider_2_cid_table": "a717a46b4fccc1d3830a12905b0c67eb57749a93c51b67e34152dda7ce34a210",
+        "native_match_cps_provider_2_fid_table_0": "3f7ed69652c636fe17807866c1d22b2fe9691889e6521cdd1ecda72c3d3a731d",
         "native_match_cps_provider_2_fid_table_1": "b9d7998453b5eb5bbbcc14b3d22d865055f946694f806b7ec9135425b67e374e",
         "native_match_cps_provider_2_fid_table_2": "066451a8c2040139a16f65d9add63097153e3b9eea122baac7b6a4f47598432e",
         "cps_provider_2_fid_table": "ed144867340d625cec19b60ecf0e124c83e0df1bde1adb9e1417bcdd278d5ef2",
@@ -19251,13 +19295,21 @@
         "cps_provider_2_wl_load_rows": "053e4b45596646487830820b187f967c7e282056d1818c3fdbcb8f404ccf8a84",
         "native_match_cps_provider_2_wl_last_rows_0": "90fd4708956689b3bf1c2900de0a16daeb8d4b7bedb2878dd2e0fb2d2fe03d37",
         "cps_provider_2_wl_last_rows": "2d1ae7c399ca72d1c967afb1c214cf04da6faa2690ecbfcfb79f00d868305035",
-        "cps_provider_2_wl_macros": "8ba558c6aa8fb04f639968be646573fafa570320a0475fe201a5cdfdec1678c4",
+        "native_match_cps_provider_2_wl_save_rows_0": "3084184223da9fc14c0c9cc349cc5bb111d31cb6d830d178c0464df6cbcc2863",
+        "cps_provider_2_wl_save_rows": "1df344edc7e8f0d2218f999c00cfc270f6918000a7391b98c77a5eea1b525e8e",
+        "native_match_cps_provider_2_wl_take_rows_0": "82e1974d4c78fe8784b97b8b36bb934c6b4492f3d97a8c35e608374412d8e2ea",
+        "cps_provider_2_wl_take_rows": "d442b9f43b71b74f68c7730e9e5088c447ace00fbfc5486a234dc43d727f00d5",
+        "cps_provider_2_wl_macros": "1904414ac63971b1d441aeb54f72a72e0ff19cc8c7e57ecc01d3f56b9a783368",
         "cps_provider_2_runtime_defines": "6286a0e5e231840c7fc3f8f3ae802fb9192ba0f76e56efd4d9c8a670a480381e",
         "native_match_cps_provider_2_table_or_zero_0": "1e97bf61c649edc887e84f163e6269aca52013709412b3ad3392b5d56f0be2da",
         "cps_provider_2_table_or_zero": "8c5a59abd816dda5d95d51957e12d169ea521f5a0589bcfa0cb5beea7baa01e8",
-        "native_match_cps_provider_2_tables_part_0": "1280228aba2d671d2c170cbffb1e758fa603e037d614fa003051b4e20420f1bd",
-        "native_match_cps_provider_2_tables_part_1": "6fe80c57a1f96e4ed16464b8f7c2152f114922cc0a7252bf2ad09d99820287f2",
-        "cps_provider_2_tables_part": "27e8602ba6d8287e4e19b0a2d4d192d66df1bf74c517d22dbf9044c0b78d6c42",
+        "native_match_cps_provider_2_tables_part_0": "004e0379a4564c538cfe33038447fa7c5ca792666fd1d0c46bbcf3dc33e80283",
+        "native_match_cps_provider_2_tables_part_1": "710e8d1417dd9f6373fd11df0fb80c00180f673c0ff5e129048258aeddc49026",
+        "native_match_cps_provider_2_tables_part_2": "5a783a2737291abed2a3f4434be2b863c522644613d7efeffb52d26520ca22c8",
+        "cps_provider_2_tables_part": "0100e49b63f22536f3ff004446ad4cedd2a57dd66e6ab83815c17560be92ccdf",
+        "native_match_cps_provider_2_id_rows_check_0": "5b12c69adf6d15fdf6ffb5d2bca86585271e05f5b836c6bc4ba5f450844b976f",
+        "native_match_cps_provider_2_id_rows_check_1": "b85f024f178f25e34c784a931042b08ad4e9ab496cddbbec843957f8c9e1b298",
+        "cps_provider_2_id_rows_check": "c278fa64d557fd5363b9f7bcc847450f10cdf0661beb5675f818264223936196",
         "cps_provider_2_main_suppress": "9ccf4a89b502da442a9441692e5e42c209cf1b587cdb5611f0378055e8258b88",
         "cps_provider_2_main_fid_index": "971609a02c682cb78aba93aa9b626e3184b1e8ea1f357fa9d149efeec04b1c28",
         "cps_provider_2_main_pure_text": "ead95c9f49451c604832cddef0bb55f861e871219cacb43cad4b0953cdf45070",
@@ -19513,14 +19565,15 @@
         "cps_provider_3_unfill_words": "4a7e2585442aa194476cf12ece4e062af2cd6abdaadb891e6e6e09fc12d0505e",
         "native_match_cps_provider_3_head_native_0": "084bf7021cec1cf3e4eb3ef4b639e7c02c8ea8b5e27ff1e88a7568903fa72e00",
         "cps_provider_3_head_native": "78cac3955b456a86d367ce6ae1a31927e71b3a28f5e24e1c3f675aeff9f6a9e9",
-        "native_match_cps_provider_3_head_value_0": "474580860ef99317dfc5c2bb137b3b9684060b880a19a2a5ca525cc00ce4708a",
+        "cps_provider_3_head_other": "ff630252b2012dbdb7ca43f000430108ec234db7944ad6e9a3cbca56f3cfa924",
+        "native_match_cps_provider_3_head_value_0": "2f113601c4df7b07fdb7c8401681a832106d84f0332249ad03ff6504e935b3e6",
         "native_match_cps_provider_3_head_value_1": "f740b167a7c6dd198a07dd442236e46be448ffad0c609319f8cae0ce2b979847",
-        "native_match_cps_provider_3_head_value_2": "998401266ca4d7fb74d9762b30e377496fa8055f52b90702e8409c3f498220d3",
+        "native_match_cps_provider_3_head_value_2": "aa4521704acd8d8d8ac21175cf424a31069a2d8369b14de42a129a633253c12a",
         "native_match_cps_provider_3_head_value_3": "2e10691bfdf7af1fe339c0c4ab5f66a847ed39cf022819e27c4c5949ae262222",
         "native_match_cps_provider_3_head_value_4": "f96ebf3f36986aef68c8c49ae3ddd13dcb77e1d1d21a8c347d34595d0a17190a",
-        "native_match_cps_provider_3_head_value_5": "135368cac96161eaedde72a05092e506b0b5e7f5e0fa37e2b5bb3875d7c89bdc",
-        "native_match_cps_provider_3_head_value_6": "72761ae5a8a6c22eed19d1c2995f3b25f1fb615e74a179f8595cbef2858779fc",
-        "native_match_cps_provider_3_head_value_7": "f3bd31ebae37b784e4dc572bbe5237479e61341fa24a37d449dcbc876dc74f57",
+        "native_match_cps_provider_3_head_value_5": "633f7609321fe2f46dc0bf7fc4634ff8390dcd3ee3c715577bc3daac0f8faacc",
+        "native_match_cps_provider_3_head_value_6": "9c4c033835ff06c3c56bc8bd92ed35d8ca2e1b6ab97fb468c41dd9fc4ca81fc1",
+        "native_match_cps_provider_3_head_value_7": "13ab8d4724b9568bc1141156db52141408f6cbb6daac403a7ed935107cbb2ef8",
         "cps_provider_3_head_value": "301b6e80d79597ad9b3db0c4f9dea49770a4aeb302d017c504e9c172ab89fa31",
         "native_match_cps_provider_3_norm_0": "28d1c516f32b620fb9b05fee99eb7cf1f305c49a7ec605df27c9f7414a48d4ad",
         "cps_provider_3_norm": "4b7d3d7915be436d9480d1bd942bfca1ae33a25d1bc7fe101f1e398f167ddc09",
@@ -20046,11 +20099,14 @@
         "cps_provider_5_show_append_name": "e522f643340debbdda34b5b09174b6b11e4fc61980aa73893c073b8b2155e271",
         "cps_provider_5_show_append_patch": "db85371a9de3ecda625b8a57e573e4aefa3717125cd78c1ca0b21c78c3db0c7f",
         "cps_provider_5_show_apply_patch": "53e07934bf13ecf44a604e8064c852cc48bfd89c3e54c8cc9aa8f2c013afef98",
-        "cps_provider_5_last_segment_list": "09ec4ca350c0884b44483bb0b653fae62c0032cd70e0b1172011b828a80e1606",
-        "cps_provider_5_last_segment": "32e54b3307ab4c16d93e9973941fa66f6081b5f9ae3b81b7d4100d9d5732d8a0",
-        "cps_provider_5_show_native_kind": "f0e44b4c348c5c35cd26f9ec36b4280bf1f27231e6454a5168b4926b8179d06c",
-        "cps_provider_5_show_kind_head": "337c12c190ccacfddd0193863de02168f91d234f1fdbe91de218d5010d34e2b1",
-        "cps_provider_5_show_kind": "bb1bda156768674351e06178582d431d2f58ef8209b7c7865dafa46244e04391",
+        "cps_provider_5_show_native_kind": "043adc7c91aca6951de38f306b92109c02f1aec1d586b8d44e37740620b8096c",
+        "native_match_cps_provider_5_show_kind_family_0": "11d44744e60a4321a6ac33fbe582a2b547945786dbbd9eda8f971522e4409a2b",
+        "native_match_cps_provider_5_show_kind_family_1": "32fbe52772dadd53edab9fb1fd76931962e7b0f88bb0769ea1c3a0dbc9ad4ced",
+        "native_match_cps_provider_5_show_kind_family_2": "dc4b750a242bc88db6fa053c068df0ebd94d3c81a4b6807672386fe3e59983b9",
+        "native_match_cps_provider_5_show_kind_family_3": "5c3e6084880e7b5ad927d31529c08bdf9f05b27c5c3a0b084df88213e935a8d0",
+        "cps_provider_5_show_kind_family": "3b29a94ce912db5ad8a62c5756db98f5cee3a7519753f5a6df221c29c73f5bff",
+        "cps_provider_5_show_kind_head": "d754660c88362db8acc1b1b41517d3fa75f35fe4acc5633871ecd01748111e86",
+        "cps_provider_5_show_kind": "b08e6fa93c6989b1deb72a3b6fca217a8b94b55500aa59c40dd30110d9ecc9a0",
         "cps_provider_5_show_box_flag": "b5a11d85f3d4b7fff4a4e266a573458dc79bfecc35ed14f1a09185ef6d004afc",
         "cps_provider_5_show_tag_plain": "cd5d64b07a2cf342b5ede6a472e286bb238096befa42e46cc6c1d89af5e6237b",
         "cps_provider_5_show_tag_start": "f56c8957aead681d633a7cdf64cff18adefdc798c6b8369b68eb373c385899b7",
@@ -20066,7 +20122,7 @@
         "cps_provider_5_show_cid_found": "b196c4bea9e42b1b0f411fbc64253c06d3dde2326c02af3a46512e1e3609d9f2",
         "cps_provider_5_show_cid_of_key": "93cd57e128d8546d58f0b62aae0beef56e9373c4d8e7f249e8aa7c09a87ccf4f",
         "cps_provider_5_show_arm_bracket_name": "b3135b67b4eafc7c8ebc9b0bbaf63412c5aed157b13f4dbb4cb661b34726e1fa",
-        "cps_provider_5_show_arm_bracket": "0a4be8f63341f6504472d185dcf76d4f3edc3656e1fd2520ec0a9383c434d708",
+        "cps_provider_5_show_arm_bracket": "28262c66710e647ac969cd5034670da854626d15b9bfdfe4997f58d17b6d5f76",
         "cps_provider_5_show_erased_present": "3a16b578d75710ae14cb80f24111d8dbdc7edc7ae71f89f91fc3bcdbf8ea8ed0",
         "cps_provider_5_show_field_at_each": "efcc5efcb84c5b64ae8e4c7ebfea46d7248b1ee740a43ddc1332c473507ddae4",
         "cps_provider_5_show_field_at": "9ede997c7509910e41af30e466ec7e06450532628d905e30e19ce668251dee51",
@@ -20117,7 +20173,7 @@
         "cps_provider_5_show_data_count": "d455cc5396e577bd2433a7acd14c6722dc4299800bfb0fbe52b52b463b9ff7ef",
         "cps_provider_5_show_data_arms_maybe": "e793bad6880f640d7dec1a5db8bfe61ddd3a1982bedbca98e02b24884117445a",
         "cps_provider_5_show_data_key": "550df46ce246007fbda1fa3953ab44d7c65a727000b69a588bd93b7046220c0a",
-        "cps_provider_5_show_data_head": "fea1f674e31c5fa6a5be52f5504a3ad67d424d91c9c290ce5977033b0a088301",
+        "cps_provider_5_show_data_head": "55644f17f21421d4f3e64acc2554d5e7a455d3a077d2603ad0c2e78155174966",
         "cps_provider_5_show_advance_data": "d60c50884dea2fa363cfcde1533ba24a10deacbebc854e5e2df4ea5a693bd306",
         "cps_provider_5_show_advance_n": "e9fb5911e54f497db9b4b2ccd34314aed4cddeb8a5481dc6fdb5f2f6237d5230",
         "cps_provider_5_show_advance_kind": "23a7ca02587c0b876b09abd380b5f4067403536a259d1d7fe5fb04f2b21b26ff",
@@ -20907,6 +20963,7 @@
         "native_match_cps_provider_2_fid_macros_declarations_2": "cps_provider_2_fid_macros_declarations",
         "native_match_cps_provider_2_plan_make_0": "cps_provider_2_plan_make",
         "native_match_cps_provider_2_plan_make_1": "cps_provider_2_plan_make",
+        "native_match_cps_provider_2_plan_make_2": "cps_provider_2_plan_make",
         "native_match_cps_provider_2_plan_executable_0": "cps_provider_2_plan_executable",
         "native_match_cps_provider_2_plan_executable_1": "cps_provider_2_plan_executable",
         "native_match_cps_provider_2_plan_executable_show_0": "cps_provider_2_plan_executable_show",
@@ -20934,6 +20991,18 @@
         "native_match_cps_provider_2_scan_foreign_0": "cps_provider_2_scan_foreign",
         "native_match_cps_provider_2_scan_foreign_1": "cps_provider_2_scan_foreign",
         "native_match_cps_provider_2_scan_close_min_0": "cps_provider_2_scan_close_min",
+        "native_match_cps_provider_2_cid_rows_0": "cps_provider_2_cid_rows",
+        "native_match_cps_provider_2_cid_rows_1": "cps_provider_2_cid_rows",
+        "native_match_cps_provider_2_cid_rows_2": "cps_provider_2_cid_rows",
+        "native_match_cps_provider_2_cid_arity_field_0": "cps_provider_2_cid_arity_field",
+        "native_match_cps_provider_2_cid_rows_check_0": "cps_provider_2_cid_rows_check",
+        "native_match_cps_provider_2_cid_rows_check_1": "cps_provider_2_cid_rows_check",
+        "native_match_cps_provider_2_cid_rows_check_2": "cps_provider_2_cid_rows_check",
+        "native_match_cps_provider_2_cid_node_arity_0": "cps_provider_2_cid_node_arity",
+        "native_match_cps_provider_2_cid_node_arity_1": "cps_provider_2_cid_node_arity",
+        "native_match_cps_provider_2_cid_ctor_rows_0": "cps_provider_2_cid_ctor_rows",
+        "native_match_cps_provider_2_cid_ctor_rows_1": "cps_provider_2_cid_ctor_rows",
+        "native_match_cps_provider_2_cid_ctor_rows_2": "cps_provider_2_cid_ctor_rows",
         "native_match_cps_provider_2_cid_c_0": "cps_provider_2_cid_c",
         "native_match_cps_provider_2_runtime_cid_alias_0": "cps_provider_2_runtime_cid_alias",
         "native_match_cps_provider_2_runtime_cid_alias_1": "cps_provider_2_runtime_cid_alias",
@@ -21253,9 +21322,14 @@
         "native_match_cps_provider_2_registers_each_0": "cps_provider_2_registers_each",
         "native_match_cps_provider_2_wl_load_rows_0": "cps_provider_2_wl_load_rows",
         "native_match_cps_provider_2_wl_last_rows_0": "cps_provider_2_wl_last_rows",
+        "native_match_cps_provider_2_wl_save_rows_0": "cps_provider_2_wl_save_rows",
+        "native_match_cps_provider_2_wl_take_rows_0": "cps_provider_2_wl_take_rows",
         "native_match_cps_provider_2_table_or_zero_0": "cps_provider_2_table_or_zero",
         "native_match_cps_provider_2_tables_part_0": "cps_provider_2_tables_part",
         "native_match_cps_provider_2_tables_part_1": "cps_provider_2_tables_part",
+        "native_match_cps_provider_2_tables_part_2": "cps_provider_2_tables_part",
+        "native_match_cps_provider_2_id_rows_check_0": "cps_provider_2_id_rows_check",
+        "native_match_cps_provider_2_id_rows_check_1": "cps_provider_2_id_rows_check",
         "native_match_cps_provider_2_requests_finish_0": "cps_provider_2_requests_finish",
         "native_match_cps_provider_2_requests_finish_1": "cps_provider_2_requests_finish",
         "native_match_cps_provider_2_requests_check_0": "cps_provider_2_requests_check",
@@ -21600,6 +21674,10 @@
         "native_match_cps_provider_5_path_is_node_2": "cps_provider_5_path_is_node",
         "native_match_cps_provider_5_array_cell_0": "cps_provider_5_array_cell",
         "native_match_cps_provider_5_array_cell_1": "cps_provider_5_array_cell",
+        "native_match_cps_provider_5_show_kind_family_0": "cps_provider_5_show_kind_family",
+        "native_match_cps_provider_5_show_kind_family_1": "cps_provider_5_show_kind_family",
+        "native_match_cps_provider_5_show_kind_family_2": "cps_provider_5_show_kind_family",
+        "native_match_cps_provider_5_show_kind_family_3": "cps_provider_5_show_kind_family",
         "native_match_cps_provider_5_fields_box_each_0": "cps_provider_5_fields_box_each",
         "native_match_cps_provider_5_fields_box_each_1": "cps_provider_5_fields_box_each",
         "native_match_cps_provider_5_fields_box_each_2": "cps_provider_5_fields_box_each",
@@ -21732,7 +21810,7 @@
           "bend2/selfhost/js_emit.bend",
           "bend2/selfhost/lower_catalog.bend"
         ],
-        "sourceSha256": "bfaee774d8e298566744cf45fcb62fa179ffe53f09708538d5b5aa19b4412b43",
+        "sourceSha256": "f34432a8864b84a41aea642c140044593d732957cf0937f30da64b8d327a518a",
         "sources": [
           {
             "canonical": "bend2/selfhost/emitter.bend",
@@ -22514,12 +22592,13 @@
           },
           {
             "canonical": "bend2/selfhost/c_backend.bend",
-            "canonicalSha256": "e33350484c86f728cf4ff632f2fb65a2eb87b2f670d3699b61a6b6bc35ac5d4a",
+            "canonicalSha256": "7ffb89e3adcebedee6fadc2b3143db6f7a2fb2b9fb471dd41a62e02c081b19b1",
             "declarationNames": [
               "EmitResult",
               "CImport",
               "Part",
               "CidRow",
+              "CidRows",
               "ExportRow",
               "EntryKind",
               "Entry",
@@ -22664,6 +22743,9 @@
               "scan_op",
               "scan_block",
               "cid_rows",
+              "cid_arity_field",
+              "cid_rows_check",
+              "cid_node_arity",
               "cid_ctor_rows",
               "cid_foreign_rows",
               "cid_foreign_each",
@@ -23035,10 +23117,13 @@
               "register_tail",
               "wl_load_rows",
               "wl_last_rows",
+              "wl_save_rows",
+              "wl_take_rows",
               "wl_macros",
               "runtime_defines",
               "table_or_zero",
               "tables_part",
+              "id_rows_check",
               "main_suppress",
               "main_fid_index",
               "main_pure_text",
@@ -23097,6 +23182,9 @@
               "PartOk": "cps_provider_2_PartOk",
               "PartFail": "cps_provider_2_PartFail",
               "CidRow": "cps_provider_2_CidRow",
+              "CidRows": "cps_provider_2_CidRows",
+              "CidRowsOk": "cps_provider_2_CidRowsOk",
+              "CidRowsFail": "cps_provider_2_CidRowsFail",
               "ExportRow": "cps_provider_2_ExportRow",
               "EntryKind": "cps_provider_2_EntryKind",
               "KindCode": "cps_provider_2_KindCode",
@@ -23275,6 +23363,9 @@
               "scan_op": "cps_provider_2_scan_op",
               "scan_block": "cps_provider_2_scan_block",
               "cid_rows": "cps_provider_2_cid_rows",
+              "cid_arity_field": "cps_provider_2_cid_arity_field",
+              "cid_rows_check": "cps_provider_2_cid_rows_check",
+              "cid_node_arity": "cps_provider_2_cid_node_arity",
               "cid_ctor_rows": "cps_provider_2_cid_ctor_rows",
               "cid_foreign_rows": "cps_provider_2_cid_foreign_rows",
               "cid_foreign_each": "cps_provider_2_cid_foreign_each",
@@ -23646,10 +23737,13 @@
               "register_tail": "cps_provider_2_register_tail",
               "wl_load_rows": "cps_provider_2_wl_load_rows",
               "wl_last_rows": "cps_provider_2_wl_last_rows",
+              "wl_save_rows": "cps_provider_2_wl_save_rows",
+              "wl_take_rows": "cps_provider_2_wl_take_rows",
               "wl_macros": "cps_provider_2_wl_macros",
               "runtime_defines": "cps_provider_2_runtime_defines",
               "table_or_zero": "cps_provider_2_table_or_zero",
               "tables_part": "cps_provider_2_tables_part",
+              "id_rows_check": "cps_provider_2_id_rows_check",
               "main_suppress": "cps_provider_2_main_suppress",
               "main_fid_index": "cps_provider_2_main_fid_index",
               "main_pure_text": "cps_provider_2_main_pure_text",
@@ -23702,7 +23796,7 @@
           },
           {
             "canonical": "bend2/selfhost/c_backend_layout.bend",
-            "canonicalSha256": "a9f2d5d7d101665f390fb88cd6901947773fbf2444fc6b76504f9537213cdc77",
+            "canonicalSha256": "b12b29a8b955714a7f1628b4e47b69455dcaa2fa7bbb98acd434eef69d5acba2",
             "declarationNames": [
               "CWord",
               "BoxReason",
@@ -23800,6 +23894,7 @@
               "fill_words",
               "unfill_words",
               "head_native",
+              "head_other",
               "head_value",
               "norm",
               "head_args",
@@ -23836,6 +23931,7 @@
               "LayoutFailed": "cps_provider_3_LayoutFailed",
               "HeadResult": "cps_provider_3_HeadResult",
               "HeadFound": "cps_provider_3_HeadFound",
+              "HeadEquality": "cps_provider_3_HeadEquality",
               "HeadBoxed": "cps_provider_3_HeadBoxed",
               "HeadFailed": "cps_provider_3_HeadFailed",
               "FieldsResult": "cps_provider_3_FieldsResult",
@@ -23961,6 +24057,7 @@
               "fill_words": "cps_provider_3_fill_words",
               "unfill_words": "cps_provider_3_unfill_words",
               "head_native": "cps_provider_3_head_native",
+              "head_other": "cps_provider_3_head_other",
               "head_value": "cps_provider_3_head_value",
               "norm": "cps_provider_3_norm",
               "head_args": "cps_provider_3_head_args",
@@ -24132,7 +24229,7 @@
           },
           {
             "canonical": "bend2/selfhost/c_backend_physical.bend",
-            "canonicalSha256": "daf8a1373395773020f1842e492271594835d95c2b50709648bd1e1a9cfae7f8",
+            "canonicalSha256": "5827734e1d14e199fd29714bdf78b4d04376d2eca3cbfd8406c575f894493f4c",
             "declarationNames": [
               "Part",
               "CidSym",
@@ -24406,9 +24503,8 @@
               "show_append_name",
               "show_append_patch",
               "show_apply_patch",
-              "last_segment_list",
-              "last_segment",
               "show_native_kind",
+              "show_kind_family",
               "show_kind_head",
               "show_kind",
               "show_box_flag",
@@ -24803,9 +24899,8 @@
               "show_append_name": "cps_provider_5_show_append_name",
               "show_append_patch": "cps_provider_5_show_append_patch",
               "show_apply_patch": "cps_provider_5_show_apply_patch",
-              "last_segment_list": "cps_provider_5_last_segment_list",
-              "last_segment": "cps_provider_5_last_segment",
               "show_native_kind": "cps_provider_5_show_native_kind",
+              "show_kind_family": "cps_provider_5_show_kind_family",
               "show_kind_head": "cps_provider_5_show_kind_head",
               "show_kind": "cps_provider_5_show_kind",
               "show_box_flag": "cps_provider_5_show_box_flag",
@@ -29306,7 +29401,7 @@
             "canonicalName": "Part",
             "name": "cps_provider_2_Part",
             "kind": "type",
-            "canonicalDeclarationSha256": "66552381f87014629d51dd491ce38c81db1f92007cdcd494e34050a618534bc8",
+            "canonicalDeclarationSha256": "7102634851b17b9a8a124bbd926ce9656bb7f823acd01b9a905515385326f712",
             "composedDeclarationSha256": "3e6ca9e491c1e4a9efbaf2bb9d56128de3aa00784faad3cd66958483b31d93f2"
           },
           {
@@ -29314,8 +29409,16 @@
             "canonicalName": "CidRow",
             "name": "cps_provider_2_CidRow",
             "kind": "type",
-            "canonicalDeclarationSha256": "bc061cd1a5435f922c13ea62cb3740ac68e19f77b83c07b8baccc44507a06b9c",
+            "canonicalDeclarationSha256": "960275e5f19e9ae44079756d01f67160a6097ba4b769cb9f534cd7b3ac2cc0ae",
             "composedDeclarationSha256": "a2f6f291da7065c400320872fa60d22049ebefd0ba7f8711df01b395691a558d"
+          },
+          {
+            "source": "bend2/selfhost/c_backend.bend",
+            "canonicalName": "CidRows",
+            "name": "cps_provider_2_CidRows",
+            "kind": "type",
+            "canonicalDeclarationSha256": "4fafb0ae8262ee7c01cd18a9b39f0545a92cda405b2e49735e4362336480ccb5",
+            "composedDeclarationSha256": "c0070c659681501a5c802e8639761f07b29102ba9325bbeae8057e474b9a3987"
           },
           {
             "source": "bend2/selfhost/c_backend.bend",
@@ -29834,24 +29937,24 @@
             "canonicalName": "plan_make",
             "name": "cps_provider_2_plan_make",
             "kind": "def",
-            "canonicalDeclarationSha256": "686ce35fe1f03896c85b563e01183deaf2e3347419f592e734fcdf98b44cb91e",
-            "composedDeclarationSha256": "dfde3562fe9bdc19d16be2ac1b797cd9d5ac3d02204abce3407c38c06fc78fc2"
+            "canonicalDeclarationSha256": "df56831d3c944af3509291b887de6d43dae145654a1aa2c27d2d9ac67da11f5a",
+            "composedDeclarationSha256": "908527b59993820d5230c75ac9afe91cf87b5f1ca8da9f19d6a7ae1879a4d513"
           },
           {
             "source": "bend2/selfhost/c_backend.bend",
             "canonicalName": "plan_finish",
             "name": "cps_provider_2_plan_finish",
             "kind": "def",
-            "canonicalDeclarationSha256": "7b0304f54122056436d9ccb9c1f2631adff2210ff58938ac8dce2cc3056f94ec",
-            "composedDeclarationSha256": "df49221ac7b53bda860bd0dfabf03ebb7a76afdfa282675ab101f5aabbb742ea"
+            "canonicalDeclarationSha256": "4524482411354b4819ac7ac142cc098d25bae3f950cde50b7fabccc8b3e0d102",
+            "composedDeclarationSha256": "bd74b994dfac774f86953fd4890c2dfb8a8a23593a4fa97ecf7500f41cbdcda6"
           },
           {
             "source": "bend2/selfhost/c_backend.bend",
             "canonicalName": "plan_top",
             "name": "cps_provider_2_plan_top",
             "kind": "def",
-            "canonicalDeclarationSha256": "03377c80dae4d4d99a2c7a2765aa7d09af1d7cd9457c934eda77601c45d8bbc8",
-            "composedDeclarationSha256": "746bbe451f96764b980f5429532af6fb750263b94282dcd745e1056fac0cd95a"
+            "canonicalDeclarationSha256": "8294cbf2633a2633105650ab3a99d7aeb7c4c7f05d5b57e2f5952fd6b580cdc1",
+            "composedDeclarationSha256": "4398b851c535be4b92cdae4aa9865add2c5b6d9733f3b7beecbaf194e4f23759"
           },
           {
             "source": "bend2/selfhost/c_backend.bend",
@@ -29898,8 +30001,8 @@
             "canonicalName": "plan_executable",
             "name": "cps_provider_2_plan_executable",
             "kind": "def",
-            "canonicalDeclarationSha256": "4d7ac495adedf78fdfc7dda1ddc85b45544a5886085fcc3d100616fcec409432",
-            "composedDeclarationSha256": "1d2a20959943bb22c4affeedbe5aed72f1f80a34121adafceaed41d26dd8c269"
+            "canonicalDeclarationSha256": "d0d2599eab53b413157192358249bf7ca306a25a530966ccbca7a9546d31968b",
+            "composedDeclarationSha256": "2ada5bf8cb2dab1e566d83b4210b2c33e055022d58a732ff3eab073398d27fe4"
           },
           {
             "source": "bend2/selfhost/c_backend.bend",
@@ -30466,16 +30569,40 @@
             "canonicalName": "cid_rows",
             "name": "cps_provider_2_cid_rows",
             "kind": "def",
-            "canonicalDeclarationSha256": "650d2624944244e26db7e7f3c37707c29a202eff07a9a2d5c772c35df1d5d527",
-            "composedDeclarationSha256": "83967b6a393605320253ccb8255bf20b33515c44b84b3035fd1590c673644486"
+            "canonicalDeclarationSha256": "f7c64a6b1c3a3f11824c4b7ebc7d71c00eb246c5a4f7d23e3b616ace86fb6c3b",
+            "composedDeclarationSha256": "f3e92fca6b2fd88b71463a951c261cb6115281b3a36cccc9149f97199de51112"
+          },
+          {
+            "source": "bend2/selfhost/c_backend.bend",
+            "canonicalName": "cid_arity_field",
+            "name": "cps_provider_2_cid_arity_field",
+            "kind": "def",
+            "canonicalDeclarationSha256": "4943c00c0827d30360b31adba4d7a17f866e8f4371489aef6a7fb3b7a5b5eab2",
+            "composedDeclarationSha256": "6f5b34e8ec5d637f968ea232d93bd7ba98ed879d2ada53142fdd61981d552e7a"
+          },
+          {
+            "source": "bend2/selfhost/c_backend.bend",
+            "canonicalName": "cid_rows_check",
+            "name": "cps_provider_2_cid_rows_check",
+            "kind": "def",
+            "canonicalDeclarationSha256": "e1bc3ab07692d2f25d509c605ac40b495c375b440fe2de84f85580e12479f328",
+            "composedDeclarationSha256": "e3cfc317f2ed773b8585a8de2a5ecf73d2ec10929451c97dc568b935bf9e5d91"
+          },
+          {
+            "source": "bend2/selfhost/c_backend.bend",
+            "canonicalName": "cid_node_arity",
+            "name": "cps_provider_2_cid_node_arity",
+            "kind": "def",
+            "canonicalDeclarationSha256": "abff504ad8cb5446df83c21a4512deaf4c2d166f50f3ed24f761e6a92fca50f5",
+            "composedDeclarationSha256": "42bf5c4f3a5b8bc599f7144d9daad1758bd30e72b710114316add070c4114368"
           },
           {
             "source": "bend2/selfhost/c_backend.bend",
             "canonicalName": "cid_ctor_rows",
             "name": "cps_provider_2_cid_ctor_rows",
             "kind": "def",
-            "canonicalDeclarationSha256": "93a677124796dfed0cf3efea2eb223f75c3b10b6ae472ca0b8d989aafcdc1237",
-            "composedDeclarationSha256": "0e59733b79ef72f016496180abc6059fcf809b76f37eee87a54e82404d213641"
+            "canonicalDeclarationSha256": "c3a7c0c936d53713da4af93ea94bc59f01a0c93b56f4fc392e77489f59c872ac",
+            "composedDeclarationSha256": "0bf10437c2e892b0a45a23d732c02e99b11a8658c269f5ebb828292000708039"
           },
           {
             "source": "bend2/selfhost/c_backend.bend",
@@ -32578,8 +32705,8 @@
             "canonicalName": "case_text",
             "name": "cps_provider_2_case_text",
             "kind": "def",
-            "canonicalDeclarationSha256": "1cd59d60f69f39b3fa8888108c040d3f1958c9381e9c41221742fb33a69f47bb",
-            "composedDeclarationSha256": "f7b4896f6e3b8e99eb77498f3e68f74c2c88af5a929ad34b805974417146a400"
+            "canonicalDeclarationSha256": "54a106fb2a5176cce4ed6ec13a4fdb83de1f93b7ce41bff1523415494da22319",
+            "composedDeclarationSha256": "1e88e137825950f365ffdd9c9dcf1f56c4582ce0c543ef414bbb14d990979ce5"
           },
           {
             "source": "bend2/selfhost/c_backend.bend",
@@ -33210,7 +33337,7 @@
             "canonicalName": "row_insert",
             "name": "cps_provider_2_row_insert",
             "kind": "def",
-            "canonicalDeclarationSha256": "7fbf0863e57857f6c5def23fda204a18a6c8ad867b9f3889640e122c8516076c",
+            "canonicalDeclarationSha256": "34d9967bfcba9bb4278d26441ef044740f21b1626f8b43a70af93cb1e5601704",
             "composedDeclarationSha256": "cebf36e4910e01f4c4ad514735d7af1de5a123d449b82ea611f3e50e9d26cc48"
           },
           {
@@ -33218,8 +33345,8 @@
             "canonicalName": "rows_check",
             "name": "cps_provider_2_rows_check",
             "kind": "def",
-            "canonicalDeclarationSha256": "f78f8d4891b9a42241f845ae905d4760703a56fe336c123a5f0716959bd86071",
-            "composedDeclarationSha256": "d146ba1762185de6fac1879f80cd9dd00e6d77001bff3df21d842dc6c48f4cde"
+            "canonicalDeclarationSha256": "f797f2ab4f312b8094e3117e801c0cd2f1a1703c4f005d709f60f2fc173b104a",
+            "composedDeclarationSha256": "1a9ef72f9b4afe11fe572a10dbcc7789a033e09d199be2aeca27f99adc6673a2"
           },
           {
             "source": "bend2/selfhost/c_backend.bend",
@@ -33306,7 +33433,7 @@
             "canonicalName": "fid_defines",
             "name": "cps_provider_2_fid_defines",
             "kind": "def",
-            "canonicalDeclarationSha256": "c76483de0a2f5999a2555db528679849a84712aa4bc387680aae02cb5e83f58f",
+            "canonicalDeclarationSha256": "598194ba06a82ab0424dd200ae460f97a22dd5bd3378e63c6ada003caa96715f",
             "composedDeclarationSha256": "e230960379d471d2b78810564a859e6600cd616d9690fcb21a6a11b87fd5142c"
           },
           {
@@ -33338,16 +33465,16 @@
             "canonicalName": "cid_table",
             "name": "cps_provider_2_cid_table",
             "kind": "def",
-            "canonicalDeclarationSha256": "27c2106384630c6e4c7cc039b9c513a2bf9af7ad90de19c49e35c27bdc82b700",
-            "composedDeclarationSha256": "74ab0fbc84ba4c0eaa52c5f34881ab9ce844a31d9d150695d55d8ef80b82f440"
+            "canonicalDeclarationSha256": "ee11a916f8fdc3c87b8a4509b5622875d6d69cbc24ddfbb4071d935892e535f1",
+            "composedDeclarationSha256": "a717a46b4fccc1d3830a12905b0c67eb57749a93c51b67e34152dda7ce34a210"
           },
           {
             "source": "bend2/selfhost/c_backend.bend",
             "canonicalName": "fid_table",
             "name": "cps_provider_2_fid_table",
             "kind": "def",
-            "canonicalDeclarationSha256": "be080bcfcdb87f92f475df24f30b19571278b2a9069d91a06c1001dcb527563b",
-            "composedDeclarationSha256": "723cf276c598c744a9fba684de82b4ae6ccf8abf3ef8839770ee0e3feb0834da"
+            "canonicalDeclarationSha256": "5420a6f442d40c9407c324090967a05980593a86127b69002c727704c3408183",
+            "composedDeclarationSha256": "92b5b4d29f297d7fa7bfd0b72089048bb503cb6cba8eca423983318751bcf25c"
           },
           {
             "source": "bend2/selfhost/c_backend.bend",
@@ -33434,16 +33561,32 @@
             "canonicalName": "wl_last_rows",
             "name": "cps_provider_2_wl_last_rows",
             "kind": "def",
-            "canonicalDeclarationSha256": "3249f92ef0c1c4b47f889bcbaeeb41c72705a22b085fe3e8629ff54202f0a75a",
+            "canonicalDeclarationSha256": "c2367a2c068565cef596f6c56f40f2aebc3507028e49fb5f4a92b0513843773d",
             "composedDeclarationSha256": "e23488015567752502a08988db9a6cb935917db70bc056de17f8fbbff4e0fbbe"
+          },
+          {
+            "source": "bend2/selfhost/c_backend.bend",
+            "canonicalName": "wl_save_rows",
+            "name": "cps_provider_2_wl_save_rows",
+            "kind": "def",
+            "canonicalDeclarationSha256": "37293d0b68faa7937c09fae7a14d7a600a1909388b5e7e976c9ea4370aa3abe1",
+            "composedDeclarationSha256": "d952fd7cbc0d9504002dde860a5435a8592eef48151f6b21f369157f117be95c"
+          },
+          {
+            "source": "bend2/selfhost/c_backend.bend",
+            "canonicalName": "wl_take_rows",
+            "name": "cps_provider_2_wl_take_rows",
+            "kind": "def",
+            "canonicalDeclarationSha256": "38cfce79703dca999857a1a4a8c62f2ac1463a91ed183af5c6b35b85c0e572a9",
+            "composedDeclarationSha256": "ec7b9dfa56d922ed7afd9c200d0ea363c461a1e16fff7f6648388587aa0b25fd"
           },
           {
             "source": "bend2/selfhost/c_backend.bend",
             "canonicalName": "wl_macros",
             "name": "cps_provider_2_wl_macros",
             "kind": "def",
-            "canonicalDeclarationSha256": "639428ac911fd23ab2025ce8fe92168723318ed5065138413858176f188d9b49",
-            "composedDeclarationSha256": "8ba558c6aa8fb04f639968be646573fafa570320a0475fe201a5cdfdec1678c4"
+            "canonicalDeclarationSha256": "a368dff6903c8b0d8d61f6aa47f89ec7d55fb0cf06fbed732e3aa48c698d9ed2",
+            "composedDeclarationSha256": "1904414ac63971b1d441aeb54f72a72e0ff19cc8c7e57ecc01d3f56b9a783368"
           },
           {
             "source": "bend2/selfhost/c_backend.bend",
@@ -33466,8 +33609,16 @@
             "canonicalName": "tables_part",
             "name": "cps_provider_2_tables_part",
             "kind": "def",
-            "canonicalDeclarationSha256": "83839f4f2856a1f567e0b06af2cfb571defd20812a9f1a499ebba0b45fb8e430",
-            "composedDeclarationSha256": "597bac0279988becf76a7aede77014e9fca43247cd156e8c7f1643d974d31b3f"
+            "canonicalDeclarationSha256": "b4b0905954aace7c0fbf306ea353fc7ada2fb7663abb5bb4c87f6c4b599cb352",
+            "composedDeclarationSha256": "ef3bcfe21775803b94ab9f452a4b9551760be472e155a51987d9d3c3b9d0eb9e"
+          },
+          {
+            "source": "bend2/selfhost/c_backend.bend",
+            "canonicalName": "id_rows_check",
+            "name": "cps_provider_2_id_rows_check",
+            "kind": "def",
+            "canonicalDeclarationSha256": "f279d2698b56f352323754bdef0db0576fb60d5f54a5325fa4dd334f3015dfa8",
+            "composedDeclarationSha256": "85078284592de2a9ef2b5f52df9d87d64266c9636d2fdf8ef50b62a34f3c32c1"
           },
           {
             "source": "bend2/selfhost/c_backend.bend",
@@ -33890,7 +34041,7 @@
             "canonicalName": "LayoutResult",
             "name": "cps_provider_3_LayoutResult",
             "kind": "type",
-            "canonicalDeclarationSha256": "adc5c72d192223b2d786d61441e6222c18197b6270c7177fd56ea6f18694fbe6",
+            "canonicalDeclarationSha256": "49772ed0b5b5a4a90e460938bb7b6e8be69c69ea3a98b90fa4d721afa05dcee1",
             "composedDeclarationSha256": "c01be71492f7f8a3e0635ec47a52cdbdb36c03da21118b00917caca1318e7596"
           },
           {
@@ -33898,8 +34049,8 @@
             "canonicalName": "HeadResult",
             "name": "cps_provider_3_HeadResult",
             "kind": "type",
-            "canonicalDeclarationSha256": "1994d38bd9b54d92e0a3d82e028b8b9b1e3d9231e59414acb91fb1f963684100",
-            "composedDeclarationSha256": "64c6eb95f2873d1d2d8b5a1794393e221138efad1abb1d0ef8adc7d5baa7fc4b"
+            "canonicalDeclarationSha256": "dd92585e4c30ec6a275bc3e21163b46b8ebd8b8219a785ecf02daebfc08fad4c",
+            "composedDeclarationSha256": "da86c0d5d89f8cf938d06b768f4eaf20b2719c2e463180d156cc6d54b5152414"
           },
           {
             "source": "bend2/selfhost/c_backend_layout.bend",
@@ -34618,16 +34769,24 @@
             "canonicalName": "head_native",
             "name": "cps_provider_3_head_native",
             "kind": "def",
-            "canonicalDeclarationSha256": "1e9ce6fe0ffcea3c5885ee6f164eb11584561a3efe9f765c2977b4590f82a748",
+            "canonicalDeclarationSha256": "87df70dc6c2de48d71ebad6c163d613ef5d2f1cf060a2f1005843f7c1fa9425b",
             "composedDeclarationSha256": "0ef43ee737dee8257288befe2eb3242da5c532e742b3ec924f7de8aede5083ac"
+          },
+          {
+            "source": "bend2/selfhost/c_backend_layout.bend",
+            "canonicalName": "head_other",
+            "name": "cps_provider_3_head_other",
+            "kind": "def",
+            "canonicalDeclarationSha256": "c784bd03f1e95b59762f2a7cd6e38231eee41ff0520aebc04d80e7bb559ced12",
+            "composedDeclarationSha256": "ff630252b2012dbdb7ca43f000430108ec234db7944ad6e9a3cbca56f3cfa924"
           },
           {
             "source": "bend2/selfhost/c_backend_layout.bend",
             "canonicalName": "head_value",
             "name": "cps_provider_3_head_value",
             "kind": "def",
-            "canonicalDeclarationSha256": "48db8b64a6e227fe49ea5e9cc9419491544495b3a98e032f5419dce4c4ecb483",
-            "composedDeclarationSha256": "7299aff92dd169165856d86d230d116018a54926253f105867a20e1b8517c2dc"
+            "canonicalDeclarationSha256": "a69fe87973d582e93a9bedb94047a79f478a3424fb30b7eefa44994826cb8267",
+            "composedDeclarationSha256": "17a422cf07f6550b6ecfb74792fbf2661c2f57a0ef5c9183e6bc184945b19344"
           },
           {
             "source": "bend2/selfhost/c_backend_layout.bend",
@@ -37447,43 +37606,35 @@
           },
           {
             "source": "bend2/selfhost/c_backend_physical.bend",
-            "canonicalName": "last_segment_list",
-            "name": "cps_provider_5_last_segment_list",
-            "kind": "def",
-            "canonicalDeclarationSha256": "92d1a60778723b933f2f30abdc62460d93c0bbaa2c7cacbe2710386996ab2803",
-            "composedDeclarationSha256": "09ec4ca350c0884b44483bb0b653fae62c0032cd70e0b1172011b828a80e1606"
-          },
-          {
-            "source": "bend2/selfhost/c_backend_physical.bend",
-            "canonicalName": "last_segment",
-            "name": "cps_provider_5_last_segment",
-            "kind": "def",
-            "canonicalDeclarationSha256": "0d9779f2bbb10cbba1775d58cca37854a8b652348571baaf04e88839c68d2a84",
-            "composedDeclarationSha256": "32e54b3307ab4c16d93e9973941fa66f6081b5f9ae3b81b7d4100d9d5732d8a0"
-          },
-          {
-            "source": "bend2/selfhost/c_backend_physical.bend",
             "canonicalName": "show_native_kind",
             "name": "cps_provider_5_show_native_kind",
             "kind": "def",
-            "canonicalDeclarationSha256": "ecdb821bb321e00f6c616749379e79c1a49985ceffd3d30f3bc5c3526f3d5658",
-            "composedDeclarationSha256": "f0e44b4c348c5c35cd26f9ec36b4280bf1f27231e6454a5168b4926b8179d06c"
+            "canonicalDeclarationSha256": "e59d49d27d0a9a7a1e76102ed2125eef30db337ef4902e6d383828cb98c7afcf",
+            "composedDeclarationSha256": "043adc7c91aca6951de38f306b92109c02f1aec1d586b8d44e37740620b8096c"
+          },
+          {
+            "source": "bend2/selfhost/c_backend_physical.bend",
+            "canonicalName": "show_kind_family",
+            "name": "cps_provider_5_show_kind_family",
+            "kind": "def",
+            "canonicalDeclarationSha256": "4feee5c2297721574d865d27010db843743936454cc0ebe40ee5f51a56f44209",
+            "composedDeclarationSha256": "51592bf74ced5301768957b7521f57b08a957b937c768b9e932d85a3339e8132"
           },
           {
             "source": "bend2/selfhost/c_backend_physical.bend",
             "canonicalName": "show_kind_head",
             "name": "cps_provider_5_show_kind_head",
             "kind": "def",
-            "canonicalDeclarationSha256": "562e1097d497e53bd50fef8affddcb282db34ac2a15a5328fde8801adf3fe718",
-            "composedDeclarationSha256": "337c12c190ccacfddd0193863de02168f91d234f1fdbe91de218d5010d34e2b1"
+            "canonicalDeclarationSha256": "115ed59d59193856ef32827f9d5a5d847ab55c59bf716f5526e612f93e51b737",
+            "composedDeclarationSha256": "d754660c88362db8acc1b1b41517d3fa75f35fe4acc5633871ecd01748111e86"
           },
           {
             "source": "bend2/selfhost/c_backend_physical.bend",
             "canonicalName": "show_kind",
             "name": "cps_provider_5_show_kind",
             "kind": "def",
-            "canonicalDeclarationSha256": "cde1e88f6c9056a4aedf9f4ab9f24bc9b64ebe120e249292cd9edb7ea9138994",
-            "composedDeclarationSha256": "bb1bda156768674351e06178582d431d2f58ef8209b7c7865dafa46244e04391"
+            "canonicalDeclarationSha256": "2b9ab28c62db59be0b2d08f36c065054b340e4d3e94e984d6e736d8e49ecb0be",
+            "composedDeclarationSha256": "b08e6fa93c6989b1deb72a3b6fca217a8b94b55500aa59c40dd30110d9ecc9a0"
           },
           {
             "source": "bend2/selfhost/c_backend_physical.bend",
@@ -37602,7 +37753,7 @@
             "canonicalName": "show_arm_bracket_name",
             "name": "cps_provider_5_show_arm_bracket_name",
             "kind": "def",
-            "canonicalDeclarationSha256": "70a7fa8aaae058b40707527bfbea555e3fa06cec4fcaa791986f85b16270a345",
+            "canonicalDeclarationSha256": "253c79ce1eea2df1a3aa145f80931f25a1ff9d666246e4201d04e8993006c367",
             "composedDeclarationSha256": "b3135b67b4eafc7c8ebc9b0bbaf63412c5aed157b13f4dbb4cb661b34726e1fa"
           },
           {
@@ -37610,8 +37761,8 @@
             "canonicalName": "show_arm_bracket",
             "name": "cps_provider_5_show_arm_bracket",
             "kind": "def",
-            "canonicalDeclarationSha256": "8b276f721ec3ad8685ab8639dc864e0c9bdfa2fdb15efc930f860fd9781faef4",
-            "composedDeclarationSha256": "0a4be8f63341f6504472d185dcf76d4f3edc3656e1fd2520ec0a9383c434d708"
+            "canonicalDeclarationSha256": "cec4a846219de17a5ac780df2db9fd6840981ebfc592e5c639c068b3af64cd92",
+            "composedDeclarationSha256": "28262c66710e647ac969cd5034670da854626d15b9bfdfe4997f58d17b6d5f76"
           },
           {
             "source": "bend2/selfhost/c_backend_physical.bend",
@@ -37962,8 +38113,8 @@
             "canonicalName": "show_data_head",
             "name": "cps_provider_5_show_data_head",
             "kind": "def",
-            "canonicalDeclarationSha256": "6a1a34a0bdbb77f701a8aa6e90728459eb8c2679506cd193b8531d37258c8e80",
-            "composedDeclarationSha256": "fea1f674e31c5fa6a5be52f5504a3ad67d424d91c9c290ce5977033b0a088301"
+            "canonicalDeclarationSha256": "eec5ed853c63a8ea061233fcdca8af3d1bc46a51adc170da52855d3b6fba40b7",
+            "composedDeclarationSha256": "55644f17f21421d4f3e64acc2554d5e7a455d3a077d2603ad0c2e78155174966"
           },
           {
             "source": "bend2/selfhost/c_backend_physical.bend",
@@ -43289,16 +43440,16 @@
           "/private/tmp/bend2039-upgrade/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
           "/private/tmp/bend2039-upgrade/bend2/selfhost/js_backend.bend": "c1fcfd27e02e6acf69b9bb5d6e50d96779831701c61d04be6c1437aa8bc25266",
           "/private/tmp/bend2039-upgrade/bend2/selfhost/c_emit_core.bend": "f690db5b6054d4f647b5c02e1281923d5cc66b24c8c2fff7859d811efc5ba380",
-          "/private/tmp/bend2039-upgrade/bend2/selfhost/c_backend.bend": "e33350484c86f728cf4ff632f2fb65a2eb87b2f670d3699b61a6b6bc35ac5d4a",
+          "/private/tmp/bend2039-upgrade/bend2/selfhost/c_backend.bend": "7ffb89e3adcebedee6fadc2b3143db6f7a2fb2b9fb471dd41a62e02c081b19b1",
           "/private/tmp/bend2039-upgrade/bend2/selfhost/c_backend_link.bend": "f83c270f2b6f094f2bd220e6e750aa0265c93ae90fa0036dd8d92b86c09e26bd",
-          "/private/tmp/bend2039-upgrade/bend2/selfhost/c_backend_layout.bend": "a9f2d5d7d101665f390fb88cd6901947773fbf2444fc6b76504f9537213cdc77",
-          "/private/tmp/bend2039-upgrade/bend2/selfhost/c_backend_physical.bend": "daf8a1373395773020f1842e492271594835d95c2b50709648bd1e1a9cfae7f8",
+          "/private/tmp/bend2039-upgrade/bend2/selfhost/c_backend_layout.bend": "b12b29a8b955714a7f1628b4e47b69455dcaa2fa7bbb98acd434eef69d5acba2",
+          "/private/tmp/bend2039-upgrade/bend2/selfhost/c_backend_physical.bend": "5827734e1d14e199fd29714bdf78b4d04376d2eca3cbfd8406c575f894493f4c",
           "/private/tmp/bend2039-upgrade/bend2/selfhost/c_backend_sharing.bend": "c8861993d2ad81057a9ba8b187eb75f743a9005fbb021b43083e7e2906597a40",
           "bend2/selfhost/backend_lower.bend": "b6871556736f0c3bdf7a4e0812735c8b98c9f629217f060136d63b2bbd29d8f6",
-          "bend2/selfhost/c_backend.bend": "e33350484c86f728cf4ff632f2fb65a2eb87b2f670d3699b61a6b6bc35ac5d4a",
-          "bend2/selfhost/c_backend_layout.bend": "a9f2d5d7d101665f390fb88cd6901947773fbf2444fc6b76504f9537213cdc77",
+          "bend2/selfhost/c_backend.bend": "7ffb89e3adcebedee6fadc2b3143db6f7a2fb2b9fb471dd41a62e02c081b19b1",
+          "bend2/selfhost/c_backend_layout.bend": "b12b29a8b955714a7f1628b4e47b69455dcaa2fa7bbb98acd434eef69d5acba2",
           "bend2/selfhost/c_backend_link.bend": "f83c270f2b6f094f2bd220e6e750aa0265c93ae90fa0036dd8d92b86c09e26bd",
-          "bend2/selfhost/c_backend_physical.bend": "daf8a1373395773020f1842e492271594835d95c2b50709648bd1e1a9cfae7f8",
+          "bend2/selfhost/c_backend_physical.bend": "5827734e1d14e199fd29714bdf78b4d04376d2eca3cbfd8406c575f894493f4c",
           "bend2/selfhost/c_emit_core.bend": "f690db5b6054d4f647b5c02e1281923d5cc66b24c8c2fff7859d811efc5ba380",
           "bend2/selfhost/descriptor_nf.bend": "747dc747fcb1a6b6c1fcbf31a3e164f998fd5fa502f87a8ad3a1facd13859973",
           "bend2/selfhost/js_backend.bend": "c1fcfd27e02e6acf69b9bb5d6e50d96779831701c61d04be6c1437aa8bc25266",
@@ -43789,6 +43940,9 @@
         "cps_provider_2_scan_op",
         "cps_provider_2_scan_block",
         "cps_provider_2_cid_rows",
+        "cps_provider_2_cid_arity_field",
+        "cps_provider_2_cid_rows_check",
+        "cps_provider_2_cid_node_arity",
         "cps_provider_2_cid_ctor_rows",
         "cps_provider_2_cid_foreign_rows",
         "cps_provider_2_cid_foreign_each",
@@ -44160,10 +44314,13 @@
         "cps_provider_2_register_tail",
         "cps_provider_2_wl_load_rows",
         "cps_provider_2_wl_last_rows",
+        "cps_provider_2_wl_save_rows",
+        "cps_provider_2_wl_take_rows",
         "cps_provider_2_wl_macros",
         "cps_provider_2_runtime_defines",
         "cps_provider_2_table_or_zero",
         "cps_provider_2_tables_part",
+        "cps_provider_2_id_rows_check",
         "cps_provider_2_main_suppress",
         "cps_provider_2_main_fid_index",
         "cps_provider_2_main_pure_text",
@@ -44280,6 +44437,7 @@
         "cps_provider_3_fill_words",
         "cps_provider_3_unfill_words",
         "cps_provider_3_head_native",
+        "cps_provider_3_head_other",
         "cps_provider_3_head_value",
         "cps_provider_3_norm",
         "cps_provider_3_head_args",
@@ -44608,9 +44766,8 @@
         "cps_provider_5_show_append_name",
         "cps_provider_5_show_append_patch",
         "cps_provider_5_show_apply_patch",
-        "cps_provider_5_last_segment_list",
-        "cps_provider_5_last_segment",
         "cps_provider_5_show_native_kind",
+        "cps_provider_5_show_kind_family",
         "cps_provider_5_show_kind_head",
         "cps_provider_5_show_kind",
         "cps_provider_5_show_box_flag",
@@ -45696,15 +45853,15 @@
         "cps_provider_2_fid_macros_declarations": "d8b0ae15ba161290ab456b6339ff84e216aee1585d0f4e1afc28a8357744584e",
         "cps_provider_2_ending_library": "bed2c155fcffd6795e877d13af54a3992dab7c9aab157711ff029fd779efb642",
         "cps_provider_2_ending_exports": "514046f422dc43191dedf3d3757a6b3664e0f889b98f387bd0a57e77e34971c5",
-        "cps_provider_2_plan_make": "dfde3562fe9bdc19d16be2ac1b797cd9d5ac3d02204abce3407c38c06fc78fc2",
-        "cps_provider_2_plan_finish": "df49221ac7b53bda860bd0dfabf03ebb7a76afdfa282675ab101f5aabbb742ea",
-        "cps_provider_2_plan_top": "746bbe451f96764b980f5429532af6fb750263b94282dcd745e1056fac0cd95a",
+        "cps_provider_2_plan_make": "908527b59993820d5230c75ac9afe91cf87b5f1ca8da9f19d6a7ae1879a4d513",
+        "cps_provider_2_plan_finish": "bd74b994dfac774f86953fd4890c2dfb8a8a23593a4fa97ecf7500f41cbdcda6",
+        "cps_provider_2_plan_top": "4398b851c535be4b92cdae4aa9865add2c5b6d9733f3b7beecbaf194e4f23759",
         "cps_provider_2_plan_pure": "9e98e31fc7cd02e601fb56dc305687c9d5adaaa763aca46658715f3587e9cc4b",
         "cps_provider_2_plan_set_pure": "0e51d2d92d0cbde560d7bdf67457a16b578e86d9419a37b5bf3b30e664c48b47",
         "cps_provider_2_plan_set_pure_flags": "8d5db4745a394a377e8d3a48f0a234730562e628a040e7cfc2f9d75bc975b5c8",
         "cps_provider_2_fid_macros_runtime": "97acf38fd9071e6d8a92129ffd64b7c621a4cdc047d35ead126239c6de2b1060",
         "cps_provider_2_fid_macros_runtime_one": "0c71c57c3b100f410b2a80c713ef5dd880c4773f5dc902cf711442c984022247",
-        "cps_provider_2_plan_executable": "1d2a20959943bb22c4affeedbe5aed72f1f80a34121adafceaed41d26dd8c269",
+        "cps_provider_2_plan_executable": "2ada5bf8cb2dab1e566d83b4210b2c33e055022d58a732ff3eab073398d27fe4",
         "cps_provider_2_plan_executable_native": "b60781500a3ecffccd31a51ec4c6674a287692d19f3ea7c8f36616378cff491a",
         "cps_provider_2_plan_executable_io": "7fbc54a025046515a3bc8a8ece27e6d5a17c2fde78c649349a751373d35708ac",
         "cps_provider_2_plan_executable_show": "57c0816b71bdeb7e2eba0298964e20b7c1296779801c4f2cb075ab6cd460e967",
@@ -45775,8 +45932,11 @@
         "cps_provider_2_scan_fields": "adabc1b2601dcee34c7949d0ae8157cd4a2850973e3730e25bf8c1f7d80a7b3f",
         "cps_provider_2_scan_op": "2ad382fe6e3a00bfe684ba343f30d0c3be73d2d92dbc3bf6a9ee048d72678065",
         "cps_provider_2_scan_block": "a95dded3aa2ac0246ebce39b680075ea92ec505e16b66566b3ba615e5bcd0028",
-        "cps_provider_2_cid_rows": "83967b6a393605320253ccb8255bf20b33515c44b84b3035fd1590c673644486",
-        "cps_provider_2_cid_ctor_rows": "0e59733b79ef72f016496180abc6059fcf809b76f37eee87a54e82404d213641",
+        "cps_provider_2_cid_rows": "f3e92fca6b2fd88b71463a951c261cb6115281b3a36cccc9149f97199de51112",
+        "cps_provider_2_cid_arity_field": "6f5b34e8ec5d637f968ea232d93bd7ba98ed879d2ada53142fdd61981d552e7a",
+        "cps_provider_2_cid_rows_check": "e3cfc317f2ed773b8585a8de2a5ecf73d2ec10929451c97dc568b935bf9e5d91",
+        "cps_provider_2_cid_node_arity": "42bf5c4f3a5b8bc599f7144d9daad1758bd30e72b710114316add070c4114368",
+        "cps_provider_2_cid_ctor_rows": "0bf10437c2e892b0a45a23d732c02e99b11a8658c269f5ebb828292000708039",
         "cps_provider_2_cid_foreign_rows": "357c6caad53c356c7408c7c554406eaf7ef666832313870076ba25bf61f5cd7d",
         "cps_provider_2_cid_foreign_each": "d231803513274e84f4ac746b729755b374488ee73718540859511b723328a7e9",
         "cps_provider_2_cid_lookup": "16fdaa04e19bde515036148c3b3f8c0ee74f41ed2ea25276b6474b6b9a4ec443",
@@ -46039,7 +46199,7 @@
         "cps_provider_2_a_rebinds": "3e57e157de9b2e0f8fba8451525636332c6f0a0d9f67b7f417fd042afa2665f9",
         "cps_provider_2_a_rebinds_at": "b7aad635d9d493b267aa5acda0e8c8499746f11bc3dc284e3bb77b02ae2fc958",
         "cps_provider_2_fid_name": "eec6f0c5ce2d963167e5989ec404e3005f7e0fcfc652517aa55ead4b682f4040",
-        "cps_provider_2_case_text": "f7b4896f6e3b8e99eb77498f3e68f74c2c88af5a929ad34b805974417146a400",
+        "cps_provider_2_case_text": "1e88e137825950f365ffdd9c9dcf1f56c4582ce0c543ef414bbb14d990979ce5",
         "cps_provider_2_spin_open": "037dbdd603049275445e5dc17cae1906025365fd4c5d3457499f6164495e9dac",
         "cps_provider_2_spin_close": "cd160887dfaba5296a6075e016c74d1646fe801e6d2707ccd9b5bc22793583d3",
         "cps_provider_2_block_ctl": "e091cde063fc24778e1d398fe9cefcd3d513aa368605dc6deaf7a01721c2403a",
@@ -46119,7 +46279,7 @@
         "cps_provider_2_rows_add_entries": "8ca0f2c18c86f6d95b7e70b1feaa4c386bf6fb38b409985be82fe93b611b8291",
         "cps_provider_2_rows_add_segs": "7a1567885aedf5f564b9b5f1f582ece6592694d7bda54746b72f18ddba8e1128",
         "cps_provider_2_row_insert": "cebf36e4910e01f4c4ad514735d7af1de5a123d449b82ea611f3e50e9d26cc48",
-        "cps_provider_2_rows_check": "d146ba1762185de6fac1879f80cd9dd00e6d77001bff3df21d842dc6c48f4cde",
+        "cps_provider_2_rows_check": "1a9ef72f9b4afe11fe572a10dbcc7789a033e09d199be2aeca27f99adc6673a2",
         "cps_provider_2_cid_defines": "b12ae64eb1b28b13ccf86c6642523643156507e19f8907b621a95bc217bd4cce",
         "cps_provider_2_entry_forks": "d5b512a76af60a0c1926f5a7296dd42460f146e4b48e23f0e739cf9dab138cf9",
         "cps_provider_2_forky_has": "0af1e5fc241888ad7fa932d0c6707460a2e91761c73f66f78de5d847c84e606b",
@@ -46134,8 +46294,8 @@
         "cps_provider_2_hot_text": "0c6c17bf4fc415f4e35f46d62f05ee577d98961f7127ecbd65fbe913c41dcaeb",
         "cps_provider_2_blk_shr_text": "f3c3b710adee60b917a05ab77c1b255da4b9f4aeb08f3435e3158d2a172ab9f0",
         "cps_provider_2_array_shared_text": "18f9874920593c242da9f505ecc0714dcc377875ae65775448a4d74eb42f18fc",
-        "cps_provider_2_cid_table": "74ab0fbc84ba4c0eaa52c5f34881ab9ce844a31d9d150695d55d8ef80b82f440",
-        "cps_provider_2_fid_table": "723cf276c598c744a9fba684de82b4ae6ccf8abf3ef8839770ee0e3feb0834da",
+        "cps_provider_2_cid_table": "a717a46b4fccc1d3830a12905b0c67eb57749a93c51b67e34152dda7ce34a210",
+        "cps_provider_2_fid_table": "92b5b4d29f297d7fa7bfd0b72089048bb503cb6cba8eca423983318751bcf25c",
         "cps_provider_2_wl_table_text": "15b9b9fa9fcc6e1aef5d5d9fcc4ddcef34b4f39c321fb79bcb7bb40489035948",
         "cps_provider_2_wl_table_rows": "f65c1b3c0e6c3cf83924aafc1c14b5a28535cb4d97dcade61cd9e874e81b0d26",
         "cps_provider_2_wl_row_text": "1d919cb639d6874dbb665f176a0b4816692abb25f19457b6de7f531ae4a93988",
@@ -46147,10 +46307,13 @@
         "cps_provider_2_register_tail": "98b0cffc681ad31ca4656ef8717bcb7187f8cd139d099325390c822553670e3f",
         "cps_provider_2_wl_load_rows": "130376d1e13eafcfb3a12b01c6f02471cd669e56ebbabbddcf3e7c5804641b76",
         "cps_provider_2_wl_last_rows": "e23488015567752502a08988db9a6cb935917db70bc056de17f8fbbff4e0fbbe",
-        "cps_provider_2_wl_macros": "8ba558c6aa8fb04f639968be646573fafa570320a0475fe201a5cdfdec1678c4",
+        "cps_provider_2_wl_save_rows": "d952fd7cbc0d9504002dde860a5435a8592eef48151f6b21f369157f117be95c",
+        "cps_provider_2_wl_take_rows": "ec7b9dfa56d922ed7afd9c200d0ea363c461a1e16fff7f6648388587aa0b25fd",
+        "cps_provider_2_wl_macros": "1904414ac63971b1d441aeb54f72a72e0ff19cc8c7e57ecc01d3f56b9a783368",
         "cps_provider_2_runtime_defines": "6286a0e5e231840c7fc3f8f3ae802fb9192ba0f76e56efd4d9c8a670a480381e",
         "cps_provider_2_table_or_zero": "d028575949a5515601244f30a704228f1e4ce809e7a036d88c2ea16997b16208",
-        "cps_provider_2_tables_part": "597bac0279988becf76a7aede77014e9fca43247cd156e8c7f1643d974d31b3f",
+        "cps_provider_2_tables_part": "ef3bcfe21775803b94ab9f452a4b9551760be472e155a51987d9d3c3b9d0eb9e",
+        "cps_provider_2_id_rows_check": "85078284592de2a9ef2b5f52df9d87d64266c9636d2fdf8ef50b62a34f3c32c1",
         "cps_provider_2_main_suppress": "9ccf4a89b502da442a9441692e5e42c209cf1b587cdb5611f0378055e8258b88",
         "cps_provider_2_main_fid_index": "971609a02c682cb78aba93aa9b626e3184b1e8ea1f357fa9d149efeec04b1c28",
         "cps_provider_2_main_pure_text": "ead95c9f49451c604832cddef0bb55f861e871219cacb43cad4b0953cdf45070",
@@ -46267,7 +46430,8 @@
         "cps_provider_3_fill_words": "356b41dbb3e01eb17cc519d83eb0fe52b619d3930592ea648906355772cc448a",
         "cps_provider_3_unfill_words": "4a7e2585442aa194476cf12ece4e062af2cd6abdaadb891e6e6e09fc12d0505e",
         "cps_provider_3_head_native": "0ef43ee737dee8257288befe2eb3242da5c532e742b3ec924f7de8aede5083ac",
-        "cps_provider_3_head_value": "7299aff92dd169165856d86d230d116018a54926253f105867a20e1b8517c2dc",
+        "cps_provider_3_head_other": "ff630252b2012dbdb7ca43f000430108ec234db7944ad6e9a3cbca56f3cfa924",
+        "cps_provider_3_head_value": "17a422cf07f6550b6ecfb74792fbf2661c2f57a0ef5c9183e6bc184945b19344",
         "cps_provider_3_norm": "0f9833f99a0dc7ef98f92299a8b999d6ba35083b11ff910c54add2210e73580e",
         "cps_provider_3_head_args": "fadef3e8b8402d67797ffd532912ceeff642b6665b7b34b63c6c8defa44191bc",
         "cps_provider_3_arm_fields": "196e7819e347e2f7057c77ecf8a223ff05cecc227bf5892d779e21cb25a2ec9c",
@@ -46595,11 +46759,10 @@
         "cps_provider_5_show_append_name": "e522f643340debbdda34b5b09174b6b11e4fc61980aa73893c073b8b2155e271",
         "cps_provider_5_show_append_patch": "db85371a9de3ecda625b8a57e573e4aefa3717125cd78c1ca0b21c78c3db0c7f",
         "cps_provider_5_show_apply_patch": "53e07934bf13ecf44a604e8064c852cc48bfd89c3e54c8cc9aa8f2c013afef98",
-        "cps_provider_5_last_segment_list": "09ec4ca350c0884b44483bb0b653fae62c0032cd70e0b1172011b828a80e1606",
-        "cps_provider_5_last_segment": "32e54b3307ab4c16d93e9973941fa66f6081b5f9ae3b81b7d4100d9d5732d8a0",
-        "cps_provider_5_show_native_kind": "f0e44b4c348c5c35cd26f9ec36b4280bf1f27231e6454a5168b4926b8179d06c",
-        "cps_provider_5_show_kind_head": "337c12c190ccacfddd0193863de02168f91d234f1fdbe91de218d5010d34e2b1",
-        "cps_provider_5_show_kind": "bb1bda156768674351e06178582d431d2f58ef8209b7c7865dafa46244e04391",
+        "cps_provider_5_show_native_kind": "043adc7c91aca6951de38f306b92109c02f1aec1d586b8d44e37740620b8096c",
+        "cps_provider_5_show_kind_family": "51592bf74ced5301768957b7521f57b08a957b937c768b9e932d85a3339e8132",
+        "cps_provider_5_show_kind_head": "d754660c88362db8acc1b1b41517d3fa75f35fe4acc5633871ecd01748111e86",
+        "cps_provider_5_show_kind": "b08e6fa93c6989b1deb72a3b6fca217a8b94b55500aa59c40dd30110d9ecc9a0",
         "cps_provider_5_show_box_flag": "b5a11d85f3d4b7fff4a4e266a573458dc79bfecc35ed14f1a09185ef6d004afc",
         "cps_provider_5_show_tag_plain": "cd5d64b07a2cf342b5ede6a472e286bb238096befa42e46cc6c1d89af5e6237b",
         "cps_provider_5_show_tag_start": "f56c8957aead681d633a7cdf64cff18adefdc798c6b8369b68eb373c385899b7",
@@ -46615,7 +46778,7 @@
         "cps_provider_5_show_cid_found": "b196c4bea9e42b1b0f411fbc64253c06d3dde2326c02af3a46512e1e3609d9f2",
         "cps_provider_5_show_cid_of_key": "93cd57e128d8546d58f0b62aae0beef56e9373c4d8e7f249e8aa7c09a87ccf4f",
         "cps_provider_5_show_arm_bracket_name": "b3135b67b4eafc7c8ebc9b0bbaf63412c5aed157b13f4dbb4cb661b34726e1fa",
-        "cps_provider_5_show_arm_bracket": "0a4be8f63341f6504472d185dcf76d4f3edc3656e1fd2520ec0a9383c434d708",
+        "cps_provider_5_show_arm_bracket": "28262c66710e647ac969cd5034670da854626d15b9bfdfe4997f58d17b6d5f76",
         "cps_provider_5_show_erased_present": "3a16b578d75710ae14cb80f24111d8dbdc7edc7ae71f89f91fc3bcdbf8ea8ed0",
         "cps_provider_5_show_field_at_each": "efcc5efcb84c5b64ae8e4c7ebfea46d7248b1ee740a43ddc1332c473507ddae4",
         "cps_provider_5_show_field_at": "9ede997c7509910e41af30e466ec7e06450532628d905e30e19ce668251dee51",
@@ -46659,7 +46822,7 @@
         "cps_provider_5_show_data_count": "d455cc5396e577bd2433a7acd14c6722dc4299800bfb0fbe52b52b463b9ff7ef",
         "cps_provider_5_show_data_arms_maybe": "e793bad6880f640d7dec1a5db8bfe61ddd3a1982bedbca98e02b24884117445a",
         "cps_provider_5_show_data_key": "550df46ce246007fbda1fa3953ab44d7c65a727000b69a588bd93b7046220c0a",
-        "cps_provider_5_show_data_head": "fea1f674e31c5fa6a5be52f5504a3ad67d424d91c9c290ce5977033b0a088301",
+        "cps_provider_5_show_data_head": "55644f17f21421d4f3e64acc2554d5e7a455d3a077d2603ad0c2e78155174966",
         "cps_provider_5_show_advance_data": "d60c50884dea2fa363cfcde1533ba24a10deacbebc854e5e2df4ea5a693bd306",
         "cps_provider_5_show_advance_n": "e9fb5911e54f497db9b4b2ccd34314aed4cddeb8a5481dc6fdb5f2f6237d5230",
         "cps_provider_5_show_advance_kind": "23a7ca02587c0b876b09abd380b5f4067403536a259d1d7fe5fb04f2b21b26ff",
@@ -98388,7 +98551,7 @@
       "source": "/private/tmp/bend2039-upgrade/bend2/selfhost/emitter.bend",
       "sourceSha256": "47d68ba5f0b54c334e2c940b7bb6aabc7f3bba27142b816f27df8225cf3fae4f",
       "output": "/private/tmp/bend2039-upgrade/checkpoints/emitter_owned_v1.bend",
-      "outputSha256": "f280d2759fc74ecee266875b4cccc4b1e0158c9008b8dde33f08c4b23d99f4ef",
+      "outputSha256": "f1b100a0f82101956cf7ce03ee06972da9173be3242282c5ca430515cc14e870",
       "extractions": [
         {
           "owner": "cps_provider_1_describe",
@@ -98806,8 +98969,9 @@
             0,
             3,
             7,
-            13,
-            16
+            10,
+            16,
+            21
           ],
           "producers": 0
         },
@@ -98816,10 +98980,24 @@
           "helper": "native_match_cps_provider_2_plan_make_1",
           "kind": "match",
           "captures": [
-            9,
             0,
             3,
-            7
+            7,
+            10,
+            16
+          ],
+          "producers": 1
+        },
+        {
+          "owner": "cps_provider_2_plan_make",
+          "helper": "native_match_cps_provider_2_plan_make_2",
+          "kind": "match",
+          "captures": [
+            12,
+            0,
+            3,
+            7,
+            10
           ],
           "producers": 0
         },
@@ -99128,6 +99306,134 @@
             6
           ],
           "producers": 1
+        },
+        {
+          "owner": "cps_provider_2_cid_rows",
+          "helper": "native_match_cps_provider_2_cid_rows_0",
+          "kind": "match",
+          "captures": [
+            26
+          ],
+          "producers": 1
+        },
+        {
+          "owner": "cps_provider_2_cid_rows",
+          "helper": "native_match_cps_provider_2_cid_rows_1",
+          "kind": "match",
+          "captures": [
+            2,
+            3
+          ],
+          "producers": 1
+        },
+        {
+          "owner": "cps_provider_2_cid_rows",
+          "helper": "native_match_cps_provider_2_cid_rows_2",
+          "kind": "match",
+          "captures": [
+            0,
+            2,
+            3,
+            5
+          ],
+          "producers": 0
+        },
+        {
+          "owner": "cps_provider_2_cid_arity_field",
+          "helper": "native_match_cps_provider_2_cid_arity_field_0",
+          "kind": "match",
+          "captures": [
+            1
+          ],
+          "producers": 1
+        },
+        {
+          "owner": "cps_provider_2_cid_rows_check",
+          "helper": "native_match_cps_provider_2_cid_rows_check_0",
+          "kind": "match",
+          "captures": [
+            8,
+            14,
+            15
+          ],
+          "producers": 1
+        },
+        {
+          "owner": "cps_provider_2_cid_rows_check",
+          "helper": "native_match_cps_provider_2_cid_rows_check_1",
+          "kind": "match",
+          "captures": [
+            7,
+            8
+          ],
+          "producers": 0
+        },
+        {
+          "owner": "cps_provider_2_cid_rows_check",
+          "helper": "native_match_cps_provider_2_cid_rows_check_2",
+          "kind": "match",
+          "captures": [
+            2
+          ],
+          "producers": 0
+        },
+        {
+          "owner": "cps_provider_2_cid_node_arity",
+          "helper": "native_match_cps_provider_2_cid_node_arity_0",
+          "kind": "match",
+          "captures": [
+            10
+          ],
+          "producers": 0
+        },
+        {
+          "owner": "cps_provider_2_cid_node_arity",
+          "helper": "native_match_cps_provider_2_cid_node_arity_1",
+          "kind": "match",
+          "captures": [],
+          "producers": 1
+        },
+        {
+          "owner": "cps_provider_2_cid_ctor_rows",
+          "helper": "native_match_cps_provider_2_cid_ctor_rows_0",
+          "kind": "match",
+          "captures": [
+            3,
+            6,
+            7,
+            9,
+            15,
+            21,
+            25
+          ],
+          "producers": 1
+        },
+        {
+          "owner": "cps_provider_2_cid_ctor_rows",
+          "helper": "native_match_cps_provider_2_cid_ctor_rows_1",
+          "kind": "match",
+          "captures": [
+            14,
+            3,
+            6,
+            7,
+            9,
+            15
+          ],
+          "producers": 0
+        },
+        {
+          "owner": "cps_provider_2_cid_ctor_rows",
+          "helper": "native_match_cps_provider_2_cid_ctor_rows_2",
+          "kind": "match",
+          "captures": [
+            1,
+            3,
+            6,
+            7,
+            9
+          ],
+          "producers": 0
         },
         {
           "owner": "cps_provider_2_cid_c",
@@ -102689,6 +102995,26 @@
           "producers": 1
         },
         {
+          "owner": "cps_provider_2_wl_save_rows",
+          "helper": "native_match_cps_provider_2_wl_save_rows_0",
+          "kind": "match",
+          "captures": [
+            1,
+            3
+          ],
+          "producers": 1
+        },
+        {
+          "owner": "cps_provider_2_wl_take_rows",
+          "helper": "native_match_cps_provider_2_wl_take_rows_0",
+          "kind": "match",
+          "captures": [
+            1,
+            3
+          ],
+          "producers": 1
+        },
+        {
           "owner": "cps_provider_2_table_or_zero",
           "helper": "native_match_cps_provider_2_table_or_zero_0",
           "kind": "match",
@@ -102710,7 +103036,8 @@
             41,
             42,
             43,
-            48
+            48,
+            54
           ],
           "producers": 1
         },
@@ -102721,9 +103048,42 @@
           "captures": [
             1,
             4,
+            6,
+            29,
+            32,
+            41,
+            42,
+            43,
+            48
+          ],
+          "producers": 1
+        },
+        {
+          "owner": "cps_provider_2_tables_part",
+          "helper": "native_match_cps_provider_2_tables_part_2",
+          "kind": "match",
+          "captures": [
+            1,
+            4,
             6
           ],
           "producers": 0
+        },
+        {
+          "owner": "cps_provider_2_id_rows_check",
+          "helper": "native_match_cps_provider_2_id_rows_check_0",
+          "kind": "match",
+          "captures": [],
+          "producers": 1
+        },
+        {
+          "owner": "cps_provider_2_id_rows_check",
+          "helper": "native_match_cps_provider_2_id_rows_check_1",
+          "kind": "match",
+          "captures": [
+            5
+          ],
+          "producers": 1
         },
         {
           "owner": "cps_provider_2_requests_finish",
@@ -106965,6 +107325,40 @@
             4
           ],
           "producers": 0
+        },
+        {
+          "owner": "cps_provider_5_show_kind_family",
+          "helper": "native_match_cps_provider_5_show_kind_family_0",
+          "kind": "match",
+          "captures": [
+            17
+          ],
+          "producers": 0
+        },
+        {
+          "owner": "cps_provider_5_show_kind_family",
+          "helper": "native_match_cps_provider_5_show_kind_family_1",
+          "kind": "match",
+          "captures": [
+            17
+          ],
+          "producers": 1
+        },
+        {
+          "owner": "cps_provider_5_show_kind_family",
+          "helper": "native_match_cps_provider_5_show_kind_family_2",
+          "kind": "match",
+          "captures": [
+            8
+          ],
+          "producers": 0
+        },
+        {
+          "owner": "cps_provider_5_show_kind_family",
+          "helper": "native_match_cps_provider_5_show_kind_family_3",
+          "kind": "match",
+          "captures": [],
+          "producers": 1
         },
         {
           "owner": "cps_provider_5_fields_box_each",
