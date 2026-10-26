@@ -27,6 +27,11 @@ latest one; the GitHub release carries the same notes.
   remain distinct. Nine C/JS programs pass and eight prior artifacts preserve
   their bytes; complete compiler-root verification is separate.
 
+- Native ownership/heating analysis no longer retains C text or discarded
+  segments on each fixedpoint iteration. A settled traversal publishes the
+  program; if it discovers new facts, analysis resumes before publication.
+  Nine C/JS executions pass and eight prior artifacts keep identical bytes.
+
 - A body-scoped normalized-type cache experiment preserved eight C/JS outputs,
   but its full native build still exceeded the 8 GiB footprint guard. It was
   rejected and reverted; no memory improvement or compiler acceptance is claimed.
