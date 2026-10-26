@@ -80,6 +80,12 @@ latest one; the GitHub release carries the same notes.
   compiles and runs a foreign consumer under the original memory guard.
   This backend-only smoke is not whole-build or byte-fixedpoint acceptance.
 
+- Selfhost C constructor-field types instantiate under the family arguments and
+  every preceding declared field, including erased fields. A pure `List<U32>`
+  main now emits, compiles and prints `[1, 2]` instead of being refused as open.
+  Full g2 native generation publishes C below the memory guard, but its complete
+  build still exceeds the original 600-second deadline; no fixedpoint is claimed.
+
 - Datatypes are headers: the selfhost checker publishes each family's name,
   module aliases and kind telescope before any parameter, field or body is
   checked, so a field, index telescope or kind may name a family declared later
