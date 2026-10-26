@@ -1,0 +1,333 @@
+{
+  "schemaVersion": 1,
+  "status": "RUNTIME_BOUNDARY_SMOKE_PASS",
+  "compilerAccepted": false,
+  "fullRootOverheadMeasured": false,
+  "source": {
+    "path": "evals/compiler_profile.mjs",
+    "sha256": "b8b3dddf5a95777532fd73bda601d6bc610859d78371b7fbc593e4e93ec734c1"
+  },
+  "probe": {
+    "path": "/tmp/bend2039-profile-boundaries.mjs",
+    "sha256": "4c7a5d589d86f90ecd5489a2136d83d1e022a3445e449fee8fa2dea4b53bea0f",
+    "source": "import {Worker, isMainThread, parentPort, workerData} from 'node:worker_threads';\nimport {mkdtempSync, readFileSync, rmSync} from 'node:fs';\nimport {createCompilerProfile} from '/tmp/bend2039-profile-scopes/evals/compiler_profile.mjs';\nconst burn = () => {let answer=0; for(let i=0;i<2_000_000;i++) answer += Math.sqrt(i); return answer;};\nconst directory=isMainThread?mkdtempSync('/tmp/bend2039-profile-boundary-evidence-'):workerData.directory;\nconst profile=await createCompilerProfile({directory,execution:{stage:'actual-worker-boundary-smoke'},sampling:false});\nconst span=profile.begin(isMainThread?'worker-and-parent':'worker-work');\nif (!isMainThread) {\n  const answer=burn(); profile.end(span); const summary=profile.finish();\n  parentPort.postMessage({answer,summary});\n} else {\n  const worker=new Worker(new URL(import.meta.url),{workerData:{directory}});\n  const result=await new Promise((resolve,reject)=>{worker.once('message',resolve);worker.once('error',reject);});\n  profile.end(span);const summary=profile.finish();await worker.terminate();\n  if(result.summary.identity.pid!==summary.identity.pid || result.summary.identity.threadId===summary.identity.threadId || result.answer!==burn()) throw Error('worker identity/result mismatch');\n  const reports=[summary,result.summary];\n  for(const report of reports){\n    const memory=report.spans[0].boundaryMemory;\n    if(memory.delta.allocationVolume.status!=='unavailable')throw Error('unverified allocation counter was published');\n    if(memory.start.unavailable.liveHeapBytes.status!=='unavailable'||memory.start.unavailable.footprintBytes.status!=='unavailable')throw Error('unknown memory class was published');\n    if(process.versions.bun && memory.start.heapStatistics.status!=='unavailable')throw Error('Bun shim received V8 semantics');\n    if(!process.versions.bun && memory.start.heapStatistics.status!=='available')throw Error('V8 boundary evidence lost');\n    if(report.status!=='completed'||report.measurementStatus!=='complete')throw Error('incomplete collector result');\n  }\n  console.log(JSON.stringify({status:'PASS',runtime:summary.runtime,profiles:reports.map(report=>({identity:report.identity,cpu:report.spans[0].cpu,memory:report.spans[0].boundaryMemory,provenance:report.provenance})),note:'Behavioral smoke only; no full-root overhead or isolated provider attribution.'}));\n  rmSync(directory,{recursive:true});\n}\n"
+  },
+  "runs": [
+    {
+      "schemaVersion": 1,
+      "status": "PASS",
+      "scope": "Behavioral smoke only; no full-root overhead or isolated provider attribution.",
+      "acceptanceEvidence": false,
+      "command": [
+        "/opt/homebrew/Cellar/bun/1.4.3/bin/bun",
+        "/tmp/bend2039-profile-boundaries.mjs"
+      ],
+      "runtime": {
+        "name": "bun",
+        "bun": "1.4.3",
+        "node": "26.3.0",
+        "v8": "14.6.202.34-node.20",
+        "execPath": "/opt/homebrew/Cellar/bun/1.4.3/bin/bun",
+        "execArgv": []
+      },
+      "inputs": {
+        "/tmp/bend2039-profile-scopes/evals/compiler_profile.mjs": "b8b3dddf5a95777532fd73bda601d6bc610859d78371b7fbc593e4e93ec734c1",
+        "/tmp/bend2039-profile-boundaries.mjs": "4c7a5d589d86f90ecd5489a2136d83d1e022a3445e449fee8fa2dea4b53bea0f"
+      },
+      "profiles": [
+        {
+          "identity": {
+            "pid": 44201,
+            "parentPid": 70141,
+            "threadId": 0,
+            "isMainThread": true,
+            "threadKind": "main-thread"
+          },
+          "cpu": {
+            "kind": "process-boundary-delta",
+            "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+            "userMs": 22.713,
+            "systemMs": 6.811,
+            "thread": {
+              "status": "available",
+              "scope": "process.threadCpuUsage: the collector thread only; excludes worker threads and runtime helper threads",
+              "userMs": 3.0649999999999995,
+              "systemMs": 1.7829999999999977
+            },
+            "otherThreads": {
+              "status": "available",
+              "scope": "arithmetic difference of the process-wide delta and this-thread delta; covers worker threads and runtime helper threads; a measurement gap, never an attribution to them",
+              "userMs": 19.648000000000003,
+              "systemMs": 5.028000000000002
+            }
+          },
+          "heapStatistics": {
+            "status": "unavailable",
+            "reason": "V8 heap-statistics field semantics are not verified for this Bun runtime; use the separately labelled process boundary samples"
+          },
+          "allocationVolume": {
+            "status": "unavailable",
+            "reason": "no verified cumulative allocation counter is exposed by this collector; Bun total_allocated_bytes is heap capacity, not allocation volume"
+          },
+          "rssStartBytes": 11403864,
+          "unavailable": {
+            "footprintBytes": {
+              "status": "unavailable",
+              "reason": "no runtime API exposes the OS memory footprint (for example macOS phys_footprint); RSS and peak RSS are different resident-size measurements"
+            },
+            "liveHeapBytes": {
+              "status": "unavailable",
+              "reason": "liveness and retaining ownership are not measured; heap boundary sizes do not identify them, and the collector never forces GC or captures a retaining graph"
+            },
+            "allocationRequests": {
+              "status": "unavailable",
+              "reason": "no allocation-site hook is installed; inspector heap sampling is a statistical sample of allocated and collected objects, not an allocation-request count"
+            }
+          },
+          "workerThreads": {
+            "enumerable": false,
+            "reason": "a producer-created worker thread registers no identity with this collector; a profile created inside that worker carries its own pid/threadId, and process.cpuUsage includes both threads while threadCpuUsage covers only the creating thread"
+          },
+          "childProcesses": {
+            "enumerable": false,
+            "reason": "no portable child-process enumeration is available; child CPU/RSS is recorded only from an explicit producer receipt (wait4/rusage/NATIVE_PHASE) and is never merged into span CPU or this process's CPU"
+          }
+        },
+        {
+          "identity": {
+            "pid": 44201,
+            "parentPid": 70141,
+            "threadId": 1,
+            "isMainThread": false,
+            "threadKind": "worker-thread"
+          },
+          "cpu": {
+            "kind": "process-boundary-delta",
+            "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+            "userMs": 6.719999999999999,
+            "systemMs": 1.097999999999999,
+            "thread": {
+              "status": "available",
+              "scope": "process.threadCpuUsage: the collector thread only; excludes worker threads and runtime helper threads",
+              "userMs": 5.118,
+              "systemMs": 0.28200000000000003
+            },
+            "otherThreads": {
+              "status": "available",
+              "scope": "arithmetic difference of the process-wide delta and this-thread delta; covers worker threads and runtime helper threads; a measurement gap, never an attribution to them",
+              "userMs": 1.6019999999999985,
+              "systemMs": 0.815999999999999
+            }
+          },
+          "heapStatistics": {
+            "status": "unavailable",
+            "reason": "V8 heap-statistics field semantics are not verified for this Bun runtime; use the separately labelled process boundary samples"
+          },
+          "allocationVolume": {
+            "status": "unavailable",
+            "reason": "no verified cumulative allocation counter is exposed by this collector; Bun total_allocated_bytes is heap capacity, not allocation volume"
+          },
+          "rssStartBytes": 16335472,
+          "unavailable": {
+            "footprintBytes": {
+              "status": "unavailable",
+              "reason": "no runtime API exposes the OS memory footprint (for example macOS phys_footprint); RSS and peak RSS are different resident-size measurements"
+            },
+            "liveHeapBytes": {
+              "status": "unavailable",
+              "reason": "liveness and retaining ownership are not measured; heap boundary sizes do not identify them, and the collector never forces GC or captures a retaining graph"
+            },
+            "allocationRequests": {
+              "status": "unavailable",
+              "reason": "no allocation-site hook is installed; inspector heap sampling is a statistical sample of allocated and collected objects, not an allocation-request count"
+            }
+          },
+          "workerThreads": {
+            "enumerable": false,
+            "reason": "a producer-created worker thread registers no identity with this collector; a profile created inside that worker carries its own pid/threadId, and process.cpuUsage includes both threads while threadCpuUsage covers only the creating thread"
+          },
+          "childProcesses": {
+            "enumerable": false,
+            "reason": "no portable child-process enumeration is available; child CPU/RSS is recorded only from an explicit producer receipt (wait4/rusage/NATIVE_PHASE) and is never merged into span CPU or this process's CPU"
+          }
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "status": "PASS",
+      "scope": "Behavioral smoke only; no full-root overhead or isolated provider attribution.",
+      "acceptanceEvidence": false,
+      "command": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "/tmp/bend2039-profile-boundaries.mjs"
+      ],
+      "runtime": {
+        "name": "node",
+        "bun": null,
+        "node": "23.11.0",
+        "v8": "12.9.202.28-node.14",
+        "execPath": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "execArgv": []
+      },
+      "inputs": {
+        "/tmp/bend2039-profile-scopes/evals/compiler_profile.mjs": "b8b3dddf5a95777532fd73bda601d6bc610859d78371b7fbc593e4e93ec734c1",
+        "/tmp/bend2039-profile-boundaries.mjs": "4c7a5d589d86f90ecd5489a2136d83d1e022a3445e449fee8fa2dea4b53bea0f"
+      },
+      "profiles": [
+        {
+          "identity": {
+            "pid": 44234,
+            "parentPid": 70141,
+            "threadId": 0,
+            "isMainThread": true,
+            "threadKind": "main-thread"
+          },
+          "cpu": {
+            "kind": "process-boundary-delta",
+            "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+            "userMs": 39.340999999999994,
+            "systemMs": 9.387999999999998,
+            "thread": {
+              "status": "available",
+              "scope": "process.threadCpuUsage: the collector thread only; excludes worker threads and runtime helper threads",
+              "userMs": 4.879999999999999,
+              "systemMs": 1.0630000000000006
+            },
+            "otherThreads": {
+              "status": "available",
+              "scope": "arithmetic difference of the process-wide delta and this-thread delta; covers worker threads and runtime helper threads; a measurement gap, never an attribution to them",
+              "userMs": 34.461,
+              "systemMs": 8.324999999999998
+            }
+          },
+          "heapStatistics": {
+            "status": "available",
+            "source": "node:v8 getHeapStatistics",
+            "bytes": {
+              "totalHeapSizeBytes": 6340608,
+              "totalHeapSizeExecutableBytes": 524288,
+              "totalPhysicalSizeBytes": 6569984,
+              "totalAvailableSizeBytes": 4341074400,
+              "usedHeapSizeBytes": 5236208,
+              "heapSizeLimitBytes": 4345298944,
+              "mallocedBytes": 163968,
+              "peakMallocedBytes": 253952,
+              "externalMemoryBytes": 1995679,
+              "totalGlobalHandlesBytes": 8192,
+              "usedGlobalHandlesBytes": 3264
+            },
+            "counts": {
+              "nativeContexts": 1,
+              "detachedContexts": 0
+            },
+            "scope": "V8 isolate heap statistics at the boundary; usedHeapSizeBytes is a boundary size and peakMallocedBytes a runtime malloc peak, not cumulative allocation, live/retained bytes, resident size or OS footprint"
+          },
+          "allocationVolume": {
+            "status": "unavailable",
+            "reason": "no verified cumulative allocation counter is exposed by this collector; Bun total_allocated_bytes is heap capacity, not allocation volume"
+          },
+          "rssStartBytes": 47693824,
+          "unavailable": {
+            "footprintBytes": {
+              "status": "unavailable",
+              "reason": "no runtime API exposes the OS memory footprint (for example macOS phys_footprint); RSS and peak RSS are different resident-size measurements"
+            },
+            "liveHeapBytes": {
+              "status": "unavailable",
+              "reason": "liveness and retaining ownership are not measured; heap boundary sizes do not identify them, and the collector never forces GC or captures a retaining graph"
+            },
+            "allocationRequests": {
+              "status": "unavailable",
+              "reason": "no allocation-site hook is installed; inspector heap sampling is a statistical sample of allocated and collected objects, not an allocation-request count"
+            }
+          },
+          "workerThreads": {
+            "enumerable": false,
+            "reason": "a producer-created worker thread registers no identity with this collector; a profile created inside that worker carries its own pid/threadId, and process.cpuUsage includes both threads while threadCpuUsage covers only the creating thread"
+          },
+          "childProcesses": {
+            "enumerable": false,
+            "reason": "no portable child-process enumeration is available; child CPU/RSS is recorded only from an explicit producer receipt (wait4/rusage/NATIVE_PHASE) and is never merged into span CPU or this process's CPU"
+          }
+        },
+        {
+          "identity": {
+            "pid": 44234,
+            "parentPid": 70141,
+            "threadId": 1,
+            "isMainThread": false,
+            "threadKind": "worker-thread"
+          },
+          "cpu": {
+            "kind": "process-boundary-delta",
+            "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+            "userMs": 6.128000000000007,
+            "systemMs": 1.1999999999999993,
+            "thread": {
+              "status": "available",
+              "scope": "process.threadCpuUsage: the collector thread only; excludes worker threads and runtime helper threads",
+              "userMs": 4.686999999999998,
+              "systemMs": 0.6719999999999997
+            },
+            "otherThreads": {
+              "status": "available",
+              "scope": "arithmetic difference of the process-wide delta and this-thread delta; covers worker threads and runtime helper threads; a measurement gap, never an attribution to them",
+              "userMs": 1.4410000000000096,
+              "systemMs": 0.5279999999999996
+            }
+          },
+          "heapStatistics": {
+            "status": "available",
+            "source": "node:v8 getHeapStatistics",
+            "bytes": {
+              "totalHeapSizeBytes": 11321344,
+              "totalHeapSizeExecutableBytes": 524288,
+              "totalPhysicalSizeBytes": 9584640,
+              "totalAvailableSizeBytes": 4338083120,
+              "usedHeapSizeBytes": 7178784,
+              "heapSizeLimitBytes": 4345298944,
+              "mallocedBytes": 426136,
+              "peakMallocedBytes": 299008,
+              "externalMemoryBytes": 3148775,
+              "totalGlobalHandlesBytes": 8192,
+              "usedGlobalHandlesBytes": 3584
+            },
+            "counts": {
+              "nativeContexts": 1,
+              "detachedContexts": 0
+            },
+            "scope": "V8 isolate heap statistics at the boundary; usedHeapSizeBytes is a boundary size and peakMallocedBytes a runtime malloc peak, not cumulative allocation, live/retained bytes, resident size or OS footprint"
+          },
+          "allocationVolume": {
+            "status": "unavailable",
+            "reason": "no verified cumulative allocation counter is exposed by this collector; Bun total_allocated_bytes is heap capacity, not allocation volume"
+          },
+          "rssStartBytes": 62324736,
+          "unavailable": {
+            "footprintBytes": {
+              "status": "unavailable",
+              "reason": "no runtime API exposes the OS memory footprint (for example macOS phys_footprint); RSS and peak RSS are different resident-size measurements"
+            },
+            "liveHeapBytes": {
+              "status": "unavailable",
+              "reason": "liveness and retaining ownership are not measured; heap boundary sizes do not identify them, and the collector never forces GC or captures a retaining graph"
+            },
+            "allocationRequests": {
+              "status": "unavailable",
+              "reason": "no allocation-site hook is installed; inspector heap sampling is a statistical sample of allocated and collected objects, not an allocation-request count"
+            }
+          },
+          "workerThreads": {
+            "enumerable": false,
+            "reason": "a producer-created worker thread registers no identity with this collector; a profile created inside that worker carries its own pid/threadId, and process.cpuUsage includes both threads while threadCpuUsage covers only the creating thread"
+          },
+          "childProcesses": {
+            "enumerable": false,
+            "reason": "no portable child-process enumeration is available; child CPU/RSS is recorded only from an explicit producer receipt (wait4/rusage/NATIVE_PHASE) and is never merged into span CPU or this process's CPU"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -40,6 +40,13 @@ latest one; the GitHub release carries the same notes.
   RSS guard. That runtime control was rejected; the original producer runtime
   configuration is retained.
 
+- Opt-in compiler profiles distinguish process-wide CPU from collector-thread
+  CPU and label typed-step intervals as request envelopes, not isolated
+  provider time. Allocation volume and unverified Bun heap-statistics fields
+  remain unavailable instead of being inferred from heap capacity. Real worker
+  boundary smoke passes on Bun 1.4.3 and Node 23.11.0; full-root profiling
+  overhead remains unmeasured.
+
 - The 2.0.39 selfhost migration uses one bounded-left JS literal serializer
   for scalar and full-u32 Char codes, removing a duplicate growing-prefix
   path. Current-source parser roles no longer fall back to historical checkout
