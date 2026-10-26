@@ -79,6 +79,21 @@ its ten-role/current-worktree and unknown-role smoke passes. Full admission
 must be rerun with fresh proof inputs. Receipt:
 `evals/receipts/parser2039c_mapping_rejection.json`.
 
+`release2039d` completes parser admission: 71/71 source, 75/75 compiled cases,
+15 public tests / 264 assertions; proof is
+`evals/receipts/parser2039d_admission.json`. Fresh Template/Checker/Emitter
+stages compose a complete 13-export root. Canonical native validation checks
+12,077 bodies / 12,645 events; JS generation completes in 56,144 ms with
+3,132,538,880 B sampled peak RSS / 3,235,907,544 B footprint, no exclusions
+or output patches. The resulting image is **not accepted**: its actual emitted
+Char fixture returns `55296` instead of `65533` for a lone host surrogate.
+The foreign callback selects adaptation from `IO(A)` instead of answer `A`.
+Receipt: `evals/receipts/root2039d_foreign_rejected.json`. The canonical seed
+also still needs its established large-stack worker for Base parsing; this
+is not evidence against the selfhost renderer's new non-tail machine.
+The candidate runner now authenticates native seed carrier identity from its
+matched build/root/provenance, not the program being compiled.
+
 Latest compiler root: **`db147cba`**, after an authenticated inline-parser
 cutover in `/private/tmp/bend-parser-cutover667`. Fresh native admission checks
 all 11,889 bodies / 12,450 events with 0 exclusions/patches and unchanged

@@ -12,7 +12,8 @@
 // matching the official CLI where `-o out.mjs` selects a library.
 //
 // usage: bun evals/candidate_host.ts --candidate=PATH [--parser=PATH]
-//   [--base=PATH] [--library] [--exports=a,b] <input.bend> -o <output>
+//   [--candidate-build=CANONICAL_NATIVE_BUILD] [--base=PATH] [--library]
+//   [--exports=a,b] <input.bend> -o <output>
 //   Opt-in diagnostic stage report: [--stage-profile=DIR] [--stage-progress]
 //   [--stage-manifest=PATH ...] [--stage-receipt=PATH ...]. Ordinary output and
 //   diagnostics are unchanged.
@@ -21,7 +22,7 @@ import {readFileSync,realpathSync,writeFileSync} from 'node:fs';
 import {dirname,isAbsolute,posix,resolve} from 'node:path';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {
- sourceFileEntries,sourceFiles,SELFHOST_SOURCE_FILE_TAG,sourceFileTagsForNamespace,
+ sourceFileEntries,sourceFiles,SELFHOST_SOURCE_FILE_TAG,sourceFileTagFromRoot,
  runTemplateSteps,runCheckerSteps,runLibraryEmitterSteps,runEmitterSteps,
  runCEmitterSteps,runCLibraryEmitterSteps,
 } from './checker_core_step_runtime.mjs';
@@ -73,7 +74,7 @@ function args_parse(){
     (name==='--stage-manifest'?manifests:receipts).push(resolve(value));
     continue;
    }
-   if(!['--candidate','--parser','--base','--exports','--runtime-c','--source-tag','--stage-profile','--checked-out','--sources-out'].includes(name)||value===undefined||values.has(name))fail('unknown or duplicate option '+arg);
+   if(!['--candidate','--candidate-build','--parser','--base','--exports','--runtime-c','--source-tag','--stage-profile','--checked-out','--sources-out'].includes(name)||value===undefined||values.has(name))fail('unknown or duplicate option '+arg);
    values.set(name,value);
    continue;
   }
@@ -86,6 +87,7 @@ function args_parse(){
  if(flags.has('--stage-progress')&&!values.has('--stage-profile'))fail('--stage-progress needs --stage-profile=DIR');
  const output=values.get('-o')!;
  return {candidate:resolve(values.get('--candidate')!),parser:values.has('--parser')?resolve(values.get('--parser')!):undefined,
+  candidateBuild:values.has('--candidate-build')?resolve(values.get('--candidate-build')!):undefined,
   base:resolve(values.get('--base')??posix.join(ROOT,'bend2/base.bend')),exports:values.get('--exports')?.split(','),
   library:flags.has('--library')||output.endsWith('.mjs'),input:resolve(positional[0]!),output:resolve(output),
   runtimeC:values.has('--runtime-c')?resolve(values.get('--runtime-c')!):undefined,
@@ -100,6 +102,30 @@ const o=args_parse();
 const target=o.output.endsWith('.c')?'c':'js';
 // Opt-in diagnostic identity. Ordinary runs never touch the collector.
 const fileSha=(path:string)=>createHash('sha256').update(readFileSync(path)).digest('hex');
+// Carrier identity belongs to the compiler image, never the program it compiles.
+// A canonical seed must supply its native build proof; selfhost images retain
+// the canonical qualified carrier used by their compiler root.
+let sourceTag=SELFHOST_SOURCE_FILE_TAG;
+if(o.candidateBuild!==undefined){
+ const build=objectOf(JSON.parse(readFileSync(o.candidateBuild,'utf8')));
+ if(!build||build.status!=='JS_GENERATED_NOT_YET_EXECUTED'||build.checksExcluded!==0||build.outputPatches!==0||
+  build.checkedOutputRetention!=='native e'||typeof build.artifactPath!=='string'||
+  realpathSync(build.artifactPath)!==realpathSync(o.candidate)||build.artifactSha256!==fileSha(o.candidate)||
+  typeof build.sourcePath!=='string'||build.sourceSha256!==fileSha(build.sourcePath)||
+  objectOf(build.guardian)?.status!=='PASS'||typeof build.provenancePath!=='string')
+  fail('candidate-build is not this canonical native image');
+ const {provenanceSha256,...provenance}=JSON.parse(readFileSync(build.provenancePath,'utf8'));
+ if(provenanceSha256!==build.provenanceSha256||
+  createHash('sha256').update(JSON.stringify(provenance)).digest('hex')!==provenanceSha256)
+  fail('candidate-build provenance changed');
+ for(const field of ['protectedPins','loadedInputs']){
+  const pins=objectOf(provenance[field]);
+  if(!pins||Object.keys(pins).length===0)fail('candidate-build lacks '+field);
+  for(const [path,hash]of Object.entries(pins))if(fileSha(path)!==hash)fail('candidate-build input changed: '+path);
+ }
+ sourceTag=sourceFileTagFromRoot(readFileSync(build.sourcePath,'utf8'),'compiled');
+}
+if(o.sourceTag!==undefined&&o.sourceTag!==sourceTag)fail('--source-tag differs from the compiler image carrier ('+sourceTag+')');
 if(o.stageProfile!==undefined){
  const inputPath=realpathSync(o.input),parserPath=realpathSync(o.parser??o.candidate);
  stage=await createStageProfile({
@@ -110,7 +136,7 @@ if(o.stageProfile!==undefined){
    candidatePath:realpathSync(o.candidate),candidateSha256:fileSha(o.candidate),
    parserPath,parserSha256:fileSha(parserPath),
    basePath:realpathSync(o.base),baseSha256:fileSha(o.base),
-   sourceFileTag:o.sourceTag??SELFHOST_SOURCE_FILE_TAG,library:o.library,exports:o.exports??null,outputPath:o.output,
+   sourceFileTag:sourceTag,candidateBuild:o.candidateBuild??null,library:o.library,exports:o.exports??null,outputPath:o.output,
    command:[process.execPath,...process.argv.slice(2)],
    scope:'candidate_host.ts typed-step ABI; source emission only, no external link step'},
  });
@@ -154,13 +180,12 @@ const namespace_of=(parent:string,path:string):string=>
 const files:unknown[]=[];
 const modules:unknown[]=[];
 const seen=new Set<string>();
-const inputFile=realpathSync(o.input),birFile=realpathSync(resolve(ROOT,'bend2/selfhost/backend_ir.bend'));
-let rootModule:Record<string,unknown>|undefined,birNamespace:string|undefined;
+const inputFile=realpathSync(o.input);
+let rootModule:Record<string,unknown>|undefined;
 function visit(file:string,scope:string){
  const at=realpathSync(file);
  if(seen.has(at))return;
  seen.add(at);
- if(at===birFile)birNamespace=scope;
  const fileSpan=o.stageProgress?stage?.span('parse-file',{file:at,summary:false}):undefined;
  const module=parse(at,readFileSync(at,'utf8'));
  if(fileSpan!==undefined)stage!.end(fileSpan,'completed',{file:at});
@@ -191,11 +216,6 @@ stage?.record({kind:'phase-exact-counters',scope:'candidate host',name:'parse-im
  unitsByField:{modules:'modules',parses:'parses',fuelCells:'fuel-cells',sourceBytes:'bytes',foreignFiles:'files',parserFuelCellsPerParse:'fuel-cells'},
  source:'candidate_host.ts',details:{phase:'parse-import-fuel',
   note:'one eager parser feedback chain per parsed module; fuelCells is the exact constructed cell count, not semantic fuel consumed'}});
-// The carrier tag is declared by the input's own BIR namespace, under the rule
-// of the emitter that produces the image; a caller tag must be one of them.
-const declaredTags=birNamespace===undefined?[SELFHOST_SOURCE_FILE_TAG]:sourceFileTagsForNamespace(birNamespace);
-if(o.sourceTag!==undefined&&!declaredTags.includes(o.sourceTag))fail('--source-tag '+o.sourceTag+' is not declared by the input BIR namespace ('+declaredTags.join(' or ')+')');
-const sourceTag=o.sourceTag??declaredTags[0]!;
 const bag=sourceFiles(files,sourceTag);
 
 // One attributed phase: a real span plus exact host-step counters and sampled

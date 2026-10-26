@@ -1,0 +1,196 @@
+{
+  "schemaVersion": 1,
+  "status": "FULL_NATIVE_JS_ROOT_GENERATED_FOREIGN_ANSWER_REGRESSION",
+  "accepted": false,
+  "byteFixedpoint": false,
+  "build": {
+    "path": "/private/tmp/bend2039-upgrade/checkpoints/root-release2039d-build.result.json",
+    "bytes": 3498,
+    "sha256": "08bc17bdd3a5198bdb952284fa8ad60fa3ba9b50af5a068d2702535cbcb36a7d",
+    "artifact": {
+      "path": "/private/tmp/bend2039-upgrade/checkpoints/root-release2039d.js",
+      "bytes": 13822635,
+      "sha256": "8ade418565934fd2e6736528ddf83f2a80252853189ee26318919a0ab8beebb2"
+    },
+    "sourcePath": "/private/tmp/bend2039-upgrade/checkpoints/.bootstrap_compiler_root_release2039d.bend",
+    "sourceSha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+    "checkedDefinitions": 12077,
+    "eventsFullyValidated": 12645,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "runtime": {
+      "name": "node",
+      "node": "23.11.0",
+      "v8": "12.9.202.28-node.14",
+      "executable": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "heapLimitMiB": 3072,
+      "stackSizeMb": 256,
+      "heapSizeLimitBytes": 3271557120,
+      "manualGC": false
+    },
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 3132538880,
+      "peakFootprintBytes": 3235907544,
+      "elapsedMs": 56144,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend2039-upgrade/evals/checker_core_component_build.ts",
+        "--worker",
+        "--file=/private/tmp/bend2039-upgrade/checkpoints/.bootstrap_compiler_root_release2039d.bend",
+        "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step,emit_c_modules_start,emit_c_library_start,c_emitter_step",
+        "--artifact=/private/tmp/bend2039-upgrade/checkpoints/root-release2039d.js",
+        "--report=/private/tmp/bend2039-upgrade/checkpoints/root-release2039d-build",
+        "--inputs-sha256=9e332e5d6aa351720dc546469654bdbebf4483d7d1cdd5c095b413bedffe5778"
+      ],
+      "label": "Full-native CheckerCore component JS build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793007246703-ddc784728c82a1d8.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "parserProof": {
+    "path": "/private/tmp/bend2039-upgrade/evals/receipts/parser2039d_admission.json",
+    "bytes": 8524,
+    "sha256": "ee291df1d84271c6a9f12a84d4325d5bc55d3829f21f43eda2bf9d6014b8c913"
+  },
+  "regression": {
+    "fixture": {
+      "path": "/private/tmp/bend2039-upgrade/tests/reg/js_char_full_u32.bend",
+      "bytes": 1937,
+      "sha256": "9c0b37ad055dc7254540ae62925b4a18c485d988db2addc6706284fa755334fd"
+    },
+    "foreign": {
+      "path": "/private/tmp/bend2039-upgrade/tests/reg/js_char_full_u32.js",
+      "bytes": 703,
+      "sha256": "c7537e9b9583acadd4f7f0a192a2ab843b47929809e4e16c3f8c97b1d4141e39"
+    },
+    "emitted": {
+      "path": "/tmp/selfhost-release2039d-char.js",
+      "bytes": 374229,
+      "sha256": "955786d2fdd88adeb8b7f0f3961bd9f2970722ced1d54b1050888dce2b925b9f"
+    },
+    "observed": [
+      "4",
+      "4294967295",
+      "57343",
+      "55295",
+      "57344",
+      "1114111",
+      "65533",
+      "55296",
+      "55296",
+      "3",
+      "a�b",
+      "����"
+    ],
+    "expected": [
+      "4",
+      "4294967295",
+      "57343",
+      "55295",
+      "57344",
+      "1114111",
+      "65533",
+      "55296",
+      "65533",
+      "3",
+      "a�b",
+      "����"
+    ],
+    "differences": [
+      {
+        "line": 9,
+        "expected": "65533",
+        "observed": "55296"
+      }
+    ],
+    "emitCommand": [
+      "node",
+      "--experimental-strip-types",
+      "/tmp/bend2039-candidate-worker.mjs",
+      "/private/tmp/bend2039-upgrade/evals/candidate_host.ts",
+      "--candidate=checkpoints/root-release2039d.js",
+      "--candidate-build=checkpoints/root-release2039d-build.result.json",
+      "tests/reg/js_char_full_u32.bend",
+      "-o",
+      "/tmp/selfhost-release2039d-char.js"
+    ],
+    "execution": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 26591232,
+      "peakFootprintBytes": 19432000,
+      "elapsedMs": 53,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "bun",
+        "/tmp/selfhost-release2039d-char.js"
+      ],
+      "label": "heavy command",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793007904947-c01280cd6084242e.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "workerPolicy": {
+      "stackMiB": 256,
+      "oldGenerationMiB": 3072
+    },
+    "cause": "foreign_request classifies the complete IO(A) descriptor, not callback answer A; lone host surrogate enters Char without str_in."
+  },
+  "canonicalSeedDefaultStack": {
+    "scope": "comp.ts-produced seed on default Bun; not an emitted-selfhost regression",
+    "guard": {
+      "status": "FAIL",
+      "reason": "command_exit",
+      "commandExitCode": 1,
+      "commandSignal": 0,
+      "peakRssBytes": 656572416,
+      "peakFootprintBytes": 425919472,
+      "elapsedMs": 865,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 1,
+      "command": [
+        "bun",
+        "evals/candidate_host.ts",
+        "--candidate=checkpoints/root-release2039d.js",
+        "--source-tag=SourceFile",
+        "tests/reg/js_char_full_u32.bend",
+        "-o",
+        "/tmp/selfhost-release2039d-char.js"
+      ],
+      "label": "heavy command",
+      "exitCode": 1,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793007410176-2b3c506e41702359.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "error": "RangeError in $String_to_list while loading Base"
+  },
+  "carrierCorrection": {
+    "file": {
+      "path": "/private/tmp/bend2039-upgrade/evals/candidate_host.ts",
+      "bytes": 17599,
+      "sha256": "daa81976f67d3fa4a680d238f66cd2aab75607629fbb1b0dde456d5375c3edff"
+    },
+    "rule": "Native seed carrier derives from its matched native artifact/root/provenance proof, never the compiler input program namespace."
+  }
+}
