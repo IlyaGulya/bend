@@ -123,6 +123,28 @@ renderer's explicit-frame runtime. The full native C seed remains the route
 that avoids that JS-seed stack dependency without a String special case.
 Proof: `evals/receipts/root2039e_js_seed_rejected.json`.
 
+The lazy-body-only native replay is **rejected** at the 8 GiB footprint guard;
+the subsequent pending-sibling-chain and layout-key memo replay is also
+**rejected** (464,322 ms, peak RSS 6,094,340,096 B / footprint 8,616,041,120 B).
+The latter enabled `--trace-c=true`; its final observed boundary is preparation
+of `emitter_body_cps_provider_8_js_runtime`, not a proven retained-allocation
+owner. Neither run publishes a native artifact. Receipts:
+`evals/receipts/root2039e_bodylazy_rejected.json` and
+`evals/receipts/root2039e_memory_combined_rejected.json`.
+
+The next literal-cache candidate removes textual suffix keys from the producer,
+retaining numeric value sharing and using weak term identity for structural
+literals. It is **not accepted yet**: a 131,072-character CLI witness exceeds
+an experimental 768 MiB guard both before and after that change. No successful
+C output or memory-improvement claim follows from that control. Full-root
+verification retains the original 8 GiB RSS/footprint and 600 s limits.
+Its unprofiled full-root replay is also **rejected**: the 600 s deadline stops
+`compile_book` after complete validation of all 12,111 bodies. Peak sampled RSS
+is 4,675,731,456 B / footprint 7,311,989,048 B; no C output exists. Not hitting
+8 GiB before interruption is not proof of a completed build's memory bound,
+nor an equal-observer comparison with the previous traced run. Receipt:
+`evals/receipts/root2039e_literal_identity_rejected.json`.
+
 Latest compiler root: **`db147cba`**, after an authenticated inline-parser
 cutover in `/private/tmp/bend-parser-cutover667`. Fresh native admission checks
 all 11,889 bodies / 12,450 events with 0 exclusions/patches and unchanged

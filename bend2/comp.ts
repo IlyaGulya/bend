@@ -693,8 +693,17 @@ function lit_call(s: Of<"Lit">): HTerm | null {
 
 function term_force(t: HTerm): HTerm {
   const s = Bend.term_force(t);
-  return s.$ !== "Lit" ? s
-    : memo(FL.steps, s.k + s.v, () => lit_call(s) ?? Bend.lit_step(s));
+  if (s.$ !== "Lit") {
+    return s;
+  }
+  if (typeof s.v === "number") {
+    const cache = memo(FL.num_steps, s.k, () => new Map<number, HTerm>());
+    return memo(cache, s.v, () => lit_call(s) ?? Bend.lit_step(s));
+  }
+  // A structural literal's suffix is already a term identity. Prefixing and
+  // hashing its entire text at every step retains quadratic keys. Numeric
+  // atoms above still share by value; static images intern emitted words.
+  return memo(FL.steps, s, () => Bend.lit_step(s));
 }
 
 function term_strip(t: HTerm): HTerm {
@@ -1709,7 +1718,8 @@ function file_new(book: Bend.Book, js: boolean, options: JSOptions = {}) {
     ids: new Map<string, string>(),
     taken: new Set("FID_EXIT FID_ENTER FID_T CID_T $pc".split(" ")),
     teles: new WeakMap<HTerm, { doms: Dom[]; ret: HTerm }>(),
-    steps: new Map<string, HTerm>(),
+    steps: new WeakMap<Of<"Lit">, HTerm>(),
+    num_steps: new Map<Name, Map<number, HTerm>>(),
     opens: new Map<string, boolean>(),
     open_ids: new WeakMap<HTerm, boolean>(),
     lay_keys: new WeakMap<HTerm, [string | undefined, string | undefined]>(),
