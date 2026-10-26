@@ -751,8 +751,14 @@ function term_spine(tm: HTerm): Spine {
     const def = c.$ === "Ref" && !intr_of(c.k)
       && fun_runs(tld) ? c.k : null;
     const f = def === null ? null : fun_of(def);
-    const need = f === null ? 0 : FL.js
-      ? f.live.length + Number(def_foreign(tld)) : f.lays.length;
+    // A live arity is fun_of's live domain count, plus the continuation a
+    // foreign def takes. Its C ABI lays array has exactly that length (one per
+    // live domain, plus the foreign continuation, whatever the wide remap
+    // does to a word count), so the arity needs no layout: reading lays here
+    // would lay out every callee's parameters and return type while
+    // reachability walks the book, before any emission asks for them.
+    const need = f === null ? 0
+      : f.live.length + Number(def_foreign(tld));
     const a = apps[live.lastIndexOf(true)];
     const m = { h, t: c, all, args, tld, k: null, xs: args };
     if (def !== null && args.length === need) {
