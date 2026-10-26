@@ -55,6 +55,14 @@ type Part is Data:
 
 type CidRow is Data:
   CidRow{cid: U32, key: String, arity: Nat, hot: Bool}
+
+# A constructor's Cid row needs its node layout, which an inconsistent or
+# abstract declaration does not have: that is a reported plan failure, never a
+# zero arity row.
+type CidRows is Data:
+  CidRowsOk{rows: List<&2, CidRow>}
+  CidRowsFail{message: String}
+
 type ExportRow is Data:
   ExportRow{name: String, index: U32, mode: Nat, arity: Nat}
 type EntryKind is Data:
@@ -454,23 +462,26 @@ def ending_exports(end: BIR.Ending) -> List<&2, BIR.Export>:
 
 def plan_make(+program: BIR.Program, imports: List<&2, CImport>) -> PlanResult:
   +scan = scan_program(program)
+  +context = CLay.context(program)
   sharing_result = Sharing.sharing_plan(program)
   match sharing_result:
     case Sharing.SharingFail{message}: PlanFail{message}
     case Sharing.SharingOk{plan_hot}:
-      cids = cid_rows(program, scan, plan_hot)
-      match program:
-        case BIR.Program{codes, declarations, constructors, families, type_functions, end}:
-          plan_finish(program, scan, cids, constructors, families, declarations, end, imports, plan_hot)
+      match cid_rows(program, scan, plan_hot, context):
+        case CidRowsFail{message}: PlanFail{message}
+        case CidRowsOk{cids}:
+          match program:
+            case BIR.Program{codes, declarations, constructors, families, type_functions, end}:
+              plan_finish(program, scan, cids, constructors, families, declarations, end, imports, plan_hot, context)
 
-def plan_finish(program: BIR.Program, scan: Scan, cids: List<&2, CidRow>, constructors: List<&2, BIR.ConstructorLayout>, +families: List<&2, BIR.Family>, declarations: List<&2, BIR.Declaration>, +end: BIR.Ending, imports: List<&2, CImport>, sharing: Sharing.SharingPlan) -> PlanResult:
-  plan_pure(end, families, plan_top(program, scan, cids, constructors, families, declarations, end, imports, sharing))
+def plan_finish(program: BIR.Program, scan: Scan, cids: List<&2, CidRow>, constructors: List<&2, BIR.ConstructorLayout>, +families: List<&2, BIR.Family>, declarations: List<&2, BIR.Declaration>, +end: BIR.Ending, imports: List<&2, CImport>, sharing: Sharing.SharingPlan, +context: CLay.Context) -> PlanResult:
+  plan_pure(end, families, plan_top(program, scan, cids, constructors, families, declarations, end, imports, sharing, context))
 
-def plan_top(+program: BIR.Program, +scan: Scan, +cids: List<&2, CidRow>, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>, +declarations: List<&2, BIR.Declaration>, end: BIR.Ending, imports: List<&2, CImport>, sharing: Sharing.SharingPlan) -> PlanResult:
+def plan_top(+program: BIR.Program, +scan: Scan, +cids: List<&2, CidRow>, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>, +declarations: List<&2, BIR.Declaration>, end: BIR.Ending, imports: List<&2, CImport>, sharing: Sharing.SharingPlan, +context: CLay.Context) -> PlanResult:
   +library = ending_library(end)
   +exports = ending_exports(end)
   +build = finish_entries(build_entries(program, scan), library)
-  PlanOk{Plan{cids, cid_macro_map(cids), fid_macro_map(declarations, build), entries_ascending(build_entries_of(build)), by_code_of(build), by_key_of(build), by_foreign_of(build), by_native_of(build), stages_of(build), constructors, families, declarations, True{}, "0", "", imports, fkeys_of(scan), CLay.context(program), sharing, library, exports}}
+  PlanOk{Plan{cids, cid_macro_map(cids), fid_macro_map(declarations, build), entries_ascending(build_entries_of(build)), by_code_of(build), by_key_of(build), by_foreign_of(build), by_native_of(build), stages_of(build), constructors, families, declarations, True{}, "0", "", imports, fkeys_of(scan), context, sharing, library, exports}}
 
 def plan_pure(end: BIR.Ending, families: List<&2, BIR.Family>, inner: PlanResult) -> PlanResult:
   match inner:
@@ -506,6 +517,7 @@ def plan_executable(+main_type: BIR.Descriptor, plan: Plan) -> PlanResult:
     case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing, library, exports}:
       match CLay.head_native(ctx, main_type):
         case CLay.HeadFailed{message}: PlanFail{message}
+        case CLay.HeadEquality{}: plan_executable_show(main_type, plan)
         case CLay.HeadBoxed{reason}: plan_executable_show(main_type, plan)
         case CLay.HeadFound{key, native}: plan_executable_native(native, main_type, plan)
 
@@ -969,19 +981,37 @@ def scan_block(block: BIR.Block, +scan: Scan) -> Scan:
 # Cid rows
 # ---------------------------------------------------------------------------
 
-def cid_rows(program: BIR.Program, scan: Scan, sharing: Sharing.SharingPlan) -> List<&2, CidRow>:
+def cid_rows(program: BIR.Program, scan: Scan, sharing: Sharing.SharingPlan, +ctx: CLay.Context) -> CidRows:
   match program:
     case BIR.Program{codes, declarations, constructors, families, type_functions, end}:
-      cid_foreign_rows(scan, cid_ctor_rows(constructors, 0, Nil{}, sharing), sharing)
+      match cid_ctor_rows(constructors, 0, Nil{}, sharing, ctx):
+        case CidRowsFail{message}: CidRowsFail{message}
+        case CidRowsOk{rows}: CidRowsOk{cid_foreign_rows(scan, rows, sharing)}
 
-def cid_ctor_rows(rows: List<&2, BIR.ConstructorLayout>, +index: U32, +acc: List<&2, CidRow>, sharing: Sharing.SharingPlan) -> List<&2, CidRow>:
+# A constructor's Cid arity is the number of WORDS of its node, exactly as
+# comp.ts takes it from lay_node(c.k).ks.length: the runtime walks that many
+# words when it drops, keeps or seals the node. A live-field count is not the
+# same number — a field whose type is itself a multi-word datatype takes several
+# words, and an erased field takes none — so the node layout is the only fact
+# that may decide it, and a constructor without one is a reported plan failure
+# rather than a guessed count.
+def cid_node_arity(+ctx: CLay.Context, +pkey: String) -> Maybe<&2, Nat>:
+  match CLay.node_layout(ctx, pkey):
+    case CLay.NodeFailed{message}: None{}
+    case CLay.NodeFound{node}:
+      match node:
+        case CLay.Node{words, slots, packed}: Some{List.length(&2, CLay.CWord, words)}
+
+def cid_ctor_rows(rows: List<&2, BIR.ConstructorLayout>, +index: U32, +acc: List<&2, CidRow>, sharing: Sharing.SharingPlan, +ctx: CLay.Context) -> CidRows:
   match rows:
-    case Nil{}: List.reverse(&2, CidRow, acc)
+    case Nil{}: CidRowsOk{List.reverse(&2, CidRow, acc)}
     case +row <> rest:
       match row:
-        case BIR.ConstructorLayout{_, key, _, fields}:
+        case BIR.ConstructorLayout{_, key, _, _}:
           hot = Sharing.ctor_hot(sharing, key)
-          cid_ctor_rows(rest, U32.inc(index), CidRow{index, key, List.length(&2, Maybe<&2, String>, fields), hot} <> acc, sharing)
+          match cid_node_arity(ctx, key):
+            case None{}: CidRowsFail{cat(["the constructor `", key, "` has no node layout, so it has no Cid arity"])}
+            case Some{arity}: cid_ctor_rows(rest, U32.inc(index), CidRow{index, key, arity, hot} <> acc, sharing, ctx)
 
 def cid_foreign_rows(scan: Scan, +acc: List<&2, CidRow>, sharing: Sharing.SharingPlan) -> List<&2, CidRow>:
   match scan:
@@ -3859,6 +3889,19 @@ def wl_last_rows(+count: Nat, +index: Nat) -> String:
     case True{}: cat(["    case ", Nat.show(index), ": ", r_name(index), " = (X); \\\n      break; \\\n", wl_last_rows(count, Nat.add(index, 1n))])
     case False{}: ""
 
+# The runtime's FID_EXIT saves exactly WL_RESW result registers and hands them
+# back to a resuming continuation, so both macros cover the plan's own resw
+# instead of r0 alone (equal to r0 when resw is 1, which is today's widest row).
+def wl_save_rows(+count: Nat, +index: Nat) -> String:
+  match Nat.is_lt(index, count):
+    case True{}: cat(["(V)[", Nat.show(index), "] = ", r_name(index), "; ", wl_save_rows(count, Nat.add(index, 1n))])
+    case False{}: ""
+
+def wl_take_rows(+count: Nat, +index: Nat) -> String:
+  match Nat.is_lt(index, count):
+    case True{}: cat([r_name(index), " = (V)[", Nat.show(index), "]; ", wl_take_rows(count, Nat.add(index, 1n))])
+    case False{}: ""
+
 # BIR carries no device-bang facts, so BANGS is the true zero here; WL_RESW is
 # the widest result vector the plan actually delivers.
 def wl_macros(+regs: Nat, resw: Nat) -> String:
@@ -3867,8 +3910,8 @@ def wl_macros(+regs: Nat, resw: Nat) -> String:
     "#define WL_BANK Term ", register_names(regs), ";\n\n",
     "#define WL_LOAD(A, N) do { \\\n", wl_load_rows(regs, 0n), "  } while (0);\n\n",
     "#define WL_LAST(X) switch (war) { \\\n", wl_last_rows(regs, 0n), "  }\n\n",
-    "#define WL_SAVE(V) (V)[0] = r0;\n",
-    "#define WL_TAKE(V) r0 = (V)[0];\n\n",
+    "#define WL_SAVE(V) ", wl_save_rows(resw, 0n), "\n",
+    "#define WL_TAKE(V) ", wl_take_rows(resw, 0n), "\n\n",
     "#define WL_SIG Env e, DEV Term* sp, u32 seq, u32 rn, ", register_decls(regs), "\n",
     "#define WL_ALL e, sp, seq, rn, ", register_names(regs), "\n"
   ])

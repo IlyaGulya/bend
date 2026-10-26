@@ -117,9 +117,13 @@ type LayoutResult is Data:
 # A normalized type-expression head: the declared family it names, its native
 # marker when the base library gives it a fixed representation, or an honest
 # abstract/failure answer. The show builder asks this oracle instead of
-# re-deriving a head from raw descriptors.
+# re-deriving a head from raw descriptors. HeadEquality is the kernel's own
+# equality former `{a == b : T}`, which is no declared family at all: the
+# reference show decides that spelling before it looks at any datatype, so the
+# answer has to stay distinct from an abstract head.
 type HeadResult is Data:
   HeadFound{key: String, native: Maybe<&2, String>}
+  HeadEquality{}
   HeadBoxed{reason: BoxReason}
   HeadFailed{message: String}
 
@@ -1012,6 +1016,15 @@ def head_native(+ctx: Context, +ty: BIR.Descriptor) -> HeadResult:
     case NF.NfOk{+val}:
       head_value(ctx, val)
 
+# The equality former is the one type form the show builder may print without a
+# declared family: comp.show_main assigns kind 5 to a whnf of that shape and the
+# runtime prints `{==}` for that kind alone. Every other non-family form stays
+# the honest abstract answer.
+def head_other(+source: BIR.Descriptor) -> HeadResult:
+  match source:
+    case BIR.DescriptorEquality{_, _, _}: HeadEquality{}
+    case _: HeadBoxed{BoxOpen{}}
+
 def head_value(+ctx: Context, +val: NF.NfVal) -> HeadResult:
   match val:
     case NF.NfType{+key, +args}:
@@ -1040,6 +1053,8 @@ def head_value(+ctx: Context, +val: NF.NfVal) -> HeadResult:
                       HeadBoxed{BoxOpen{}}
             case None{}:
               HeadBoxed{BoxUnresolved{key}}
+    case NF.NfOther{+source}:
+      head_other(source)
     case _:
       HeadBoxed{BoxOpen{}}
 

@@ -2101,14 +2101,6 @@ def show_apply_patch(+pst: ShowState, +ppatch: Maybe<&2, Nat>, +pto: Nat) -> Sho
     case Some{at}: show_append_patch(pst, at, pto)
     case None{}: pst
 
-def last_segment_list(+pparts: List<&2, String>, +pprevious: String) -> String:
-  match pparts:
-    case Nil{}: pprevious
-    case +part <> +rest: last_segment_list(rest, part)
-
-def last_segment(+pkey: String) -> String:
-  last_segment_list(String.split(pkey, '.'), "")
-
 def show_native_kind(+pmarker: String) -> ShowKind:
   match pmarker:
     case "U32": ShowKindOk{0n}
@@ -2116,22 +2108,42 @@ def show_native_kind(+pmarker: String) -> ShowKind:
     case "Nat": ShowKindOk{2n}
     case "Char": ShowKindOk{3n}
     case "String": ShowKindOk{4n}
-    case "Eql": ShowKindOk{5n}
     case "Array": ShowKindOk{6n}
-    case _: ShowKindFailed{String.append("the native marker `", String.append(pmarker, "` has no SHOW kind"))}
+    case _: ShowKindOk{7n}
 
-def show_kind_head(+phead: CLay.HeadResult) -> ShowKind:
+# comp.show_main takes the SHOW kind from the whnf's own form: only the word and
+# character families, String and Array have a fixed kind, and every other
+# *declared datatype* is kind 7, printed as data. So the native marker decides a
+# kind only for a family this build declares (the base library's marker is the
+# family's own name, and its ordinary datatypes — Bool, Maybe, List, Sigma and
+# the rest — are data like any other). A head that is no datatype at all is
+# refused rather than guessed from its spelling: that covers IO, an under-applied
+# type former such as Word or App, and IO.OP, which the reference show also
+# refuses by name even though it is a declared type, because its values are
+# requests rather than data.
+def show_kind_family(+pkey: String, +pctx: CLay.Context) -> ShowKind:
+  match CLay.family_lookup(pkey, CLay.context_families(pctx)):
+    case None{}: ShowKindFailed{"main's type is a type former and cannot be printed"}
+    case Some{family}:
+      match family:
+        case BIR.Family{key, name, native, quantity_prefix, arity, arms}:
+          match String.eq(key, "IO.OP"):
+            case True{}: ShowKindFailed{"main's type IO.OP cannot be printed as data"}
+            case False{}:
+              match native:
+                case Some{marker}: show_native_kind(marker)
+                case None{}: ShowKindOk{7n}
+
+def show_kind_head(+phead: CLay.HeadResult, +pctx: CLay.Context) -> ShowKind:
   match phead:
     case CLay.HeadFailed{message}: ShowKindFailed{message}
+    case CLay.HeadEquality{}: ShowKindOk{5n}
     case CLay.HeadBoxed{reason}: ShowKindFailed{"main's type is abstract or open and cannot be printed"}
-    case CLay.HeadFound{key, native}:
-      match native:
-        case Some{marker}: show_native_kind(marker)
-        case None{}: ShowKindOk{7n}
+    case CLay.HeadFound{key, native}: show_kind_family(key, pctx)
 
 def show_kind(+pctx: CLay.Context, +pty: BIR.Descriptor) -> ShowKind:
   head = CLay.head_native(pctx, pty)
-  show_kind_head(head)
+  show_kind_head(head, pctx)
 
 def show_box_flag(+playout: CLay.Layout) -> Nat:
   match playout:
@@ -2218,8 +2230,11 @@ def show_arm_bracket_name(+pname: String) -> Nat:
     case "Nil": 1n
     case _: 0n
 
+# The bracket of an arm is decided by the exact constructor key, as
+# comp.show_main decides it: a module's own `Nil` is not Base's List arm, so the
+# key is compared whole and never by its last segment.
 def show_arm_bracket(+pkey: String) -> Nat:
-  show_arm_bracket_name(last_segment(pkey))
+  show_arm_bracket_name(pkey)
 
 def show_erased_present(+pfields: List<&2, BIR.DescriptorField>) -> Bool:
   match pfields:
@@ -2523,6 +2538,7 @@ def show_data_key(+pkey: String, +pctx: CLay.Context, +pconstructors: List<&2, B
 def show_data_head(+phead: CLay.HeadResult, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +pat: Nat, +pst: ShowState) -> ShowAdvance:
   match phead:
     case CLay.HeadFailed{message}: ShowNext{show_state_error(pst, message), Nil{}}
+    case CLay.HeadEquality{}: ShowNext{show_state_error(pst, "the equality type has no data arms to print"), Nil{}}
     case CLay.HeadBoxed{reason}: ShowNext{show_state_error(pst, "main's type is abstract or open and cannot be printed"), Nil{}}
     case CLay.HeadFound{key, native}: show_data_key(key, pctx, pconstructors, pfamilies, pty, playout, pat, pst)
 
