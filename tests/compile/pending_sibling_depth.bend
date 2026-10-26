@@ -68,7 +68,7 @@ law main.out:
   U32
 
 def main.out():
-  q = Pair{Pair{Pair{Pair{Pair{Leaf{1}, 2}, 3}, 4}, 5}, 6}
+  q: Q = Pair{Pair{Pair{Pair{Pair{Leaf{1}, 2}, 3}, 4}, 5}, 6}
   U32.add(sumq(q), U32.add(w3(w2(w1(0))), sumc(Step{1, Step{2, Step{3, Stop{0}}}})))
 
 law main:

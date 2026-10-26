@@ -145,6 +145,21 @@ is 4,675,731,456 B / footprint 7,311,989,048 B; no C output exists. Not hitting
 nor an equal-observer comparison with the previous traced run. Receipt:
 `evals/receipts/root2039e_literal_identity_rejected.json`.
 
+The six subsequent producer hotpath repairs are still **unaccepted** on the
+full frozen root: all 12,111 bodies validate, but unprofiled C codegen reaches
+the unchanged 8 GiB footprint limit after 384,417 ms (RSS 7,690,141,696 B /
+footprint 8,623,463,792 B); no C artifact is published. Six focused C/JS
+programs execute correctly and retain their earlier emitted bytes, but that
+is not a full-root memory result. Receipt:
+`evals/receipts/root2039e_hotpath_rejected.json`.
+Bounded CPU samples show that eager C ABI layouts no longer occur in the
+sampled reachability prefix (`layoutKeys=holdKeys=0`). The new prefix instead
+contains `ty_srcs` in 553/739 traces and checked match-goal continuations in
+259/739. These are statistical trace counts, not CPU time or a retained-owner
+proof; the next investigation is why source discovery opens checked body
+type motives. The original capture and its rejected attempts are recorded in
+`evals/receipts/bun2039_reachability_cpu_prefix.json`.
+
 The runtime-2.0.39 `Cid`/`Fid`/`WL_CASE` C port remains **unaccepted**.
 A separate typed-step raw-BIR smoke validates 5,369 definitions / 5,831 events
 and emits its JS component without exclusions or patches, but actual execution

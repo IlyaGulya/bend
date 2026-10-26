@@ -111,8 +111,8 @@ def runtime_ctors() -> List<&2, BIR.ConstructorLayout>:
 # (metadata_prefix counts the leading kind binders, words_count the declared
 # parameters) and marks the family with its own name. Field descriptors are the
 # declared types in the constructor telescope, whose binder indices continue
-# after the type parameters, so a field naming a parameter reads the applied
-# argument at that index.
+# after the type parameters. Header references resolve applied arguments;
+# constructor-field references start at arity and remain abstract.
 def par(index: Nat) -> BIR.Descriptor:
   BIR.DescriptorParameter{index}
 
@@ -139,7 +139,7 @@ def list_family() -> BIR.Family:
 
 def sigma_family() -> BIR.Family:
   family("Sigma", 2n, 4n, [
-    arm("Tuple", [fld("fst", par(2n)), fld("snd", BIR.DescriptorApplication{par(3n), par(2n)})])
+    arm("Tuple", [fld("fst", par(2n)), fld("snd", BIR.DescriptorApplication{par(3n), par(4n)})])
   ])
 
 def string_family() -> BIR.Family:
