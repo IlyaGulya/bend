@@ -12,7 +12,7 @@ import {dirname,isAbsolute,posix,relative,resolve} from 'node:path';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {Worker,isMainThread,workerData} from 'node:worker_threads';
 import {guardHeavyGate,runHeavyGate} from './heavy_gate.ts';
-import {sourceFiles,sourceFilePath,OFFICIAL_SOURCE_FILE_TAG} from './checker_core_step_runtime.mjs';
+import {sourceFiles,sourceFilePath,COMPILED_SOURCE_FILE_TAG} from './checker_core_step_runtime.mjs';
 
 type Corpus={schemaVersion:number;directory:string;root:string;officialCommit:string;files:{path:string;sha256:string}[]};
 type Options={mode:'official'|'component';corpus:string;report:string;component?:string;driver:string;outputSmokeDriver:'production'|'frozen-v41';exports?:string;stopAfter:'check'|'compile'};
@@ -156,7 +156,8 @@ async function worker(requestPath:string,requestSha256:string){
    if(!api||!ABI.every(key=>typeof api[key]==='function'))throw Error('Compiler component ABI is incomplete');
    const loaded=await phase('load-parse',()=>loadOwn(api,corpus,expected));report.moduleCount=loaded.moduleCount;report.sourceDeclarations=loaded.declarations;
    let modules=loaded.modules;
-   const files=sourceFiles(loaded.files,OFFICIAL_SOURCE_FILE_TAG);
+   // The benchmark component is a checker_core_component_build (comp.ts) image.
+   const files=sourceFiles(loaded.files,COMPILED_SOURCE_FILE_TAG);
    let expanded=await phase('expand',()=>driver.runTemplateSteps({...api,expand_modules_start:(input:any)=>{modules=undefined;return api.expand_modules_start(input);}},modules));
    if(tag(expanded)!=='ExpandSuccess')throw Error('Own expansion failed: '+JSON.stringify(expanded));
    let checked=await phase('check',()=>driver.runCheckerSteps({...api,check_expanded_start:(input:any)=>{expanded=undefined;return api.check_expanded_start(input);}},expanded.modules));

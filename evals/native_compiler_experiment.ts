@@ -48,6 +48,7 @@ import {fileURLToPath} from 'node:url';
 import {spawn} from 'node:child_process';
 import {Worker, isMainThread, workerData} from 'node:worker_threads';
 import {runHeavyGate, guardHeavyGate} from './heavy_gate.ts';
+import {officialKernelSha256} from './release_identity.ts';
 import {requireCorpusCoversWorkload, workloadRows, corpusFor, runtimeManifest} from './native_seed_runtime.mjs';
 import type * as Bend from '../bend2/bend.ts';
 import type * as Comp from '../bend2/comp.ts';
@@ -55,7 +56,9 @@ import type * as Comp from '../bend2/comp.ts';
 const script = fileURLToPath(import.meta.url), root = resolve(dirname(script), '..');
 const kernelPath = join(root, 'bend2/bend.ts'), compilerPath = join(root, 'bend2/comp.ts');
 const bridge = join(root, 'evals/native_compiler_driver.bend');
-const kernelSha256 = '6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e';
+const kernelSha256 = officialKernelSha256(root);
+// Historical accepted emitted image for --expect-js fixedpoint comparisons;
+// it identifies one accepted v40 artifact, never the current compiler source.
 const acceptedCompilerSha256 = '84b19ce89aad6da90b1aedb7b8fff2ed8ef659636754801c91290424c19a7da2';
 const compilerABI=['parsed_module','parse_with_fuel','expand_modules_start','template_step','check_expanded_start','inspect_checked_start','checker_step','emit_modules_start','emit_library_start','emitter_step','emit_c_modules_start','emit_c_library_start','c_emitter_step'];
 const frozenV41CorpusSha256='29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258';

@@ -84,13 +84,14 @@ def chars_forward(source: String) -> List<&2, Char>:
 # ---------------------------------------------------------------------------
 # C string literals
 #
-# A C literal's bytes are what the runtime reads, and the runtime reads exactly
-# the count the renderer passes, so both come from one UTF-8 encoding of the
-# text. Bytes are written as three-digit octal escapes: unlike \x they cannot
-# absorb a following hex digit, and they are unambiguous for NUL. Printable
-# ASCII stays readable; quote, backslash and the three C whitespace escapes use
-# their short forms. Definitions are ordered because the checker requires a
-# definition before its use and does not accept a computed match scrutinee.
+# A C literal's bytes are what a real C text reader reads — an export name, a
+# foreign source's text — and it reads exactly the count the renderer passes, so
+# both come from one UTF-8 encoding of the text. Bytes are written as
+# three-digit octal escapes: unlike \x they cannot absorb a following hex digit,
+# and they are unambiguous for NUL. Printable ASCII stays readable; quote,
+# backslash and the three C whitespace escapes use their short forms.
+# Definitions are ordered because the checker requires a definition before its
+# use and does not accept a computed match scrutinee.
 def utf8_bytes_deep_of(bmp: Bool, +code: U32) -> List<&2, U32>:
   match bmp:
     case True{}: [U32.or(224, U32.shrn(code, 12n)), U32.or(128, U32.and(U32.shrn(code, 6n), 63)), U32.or(128, U32.and(code, 63))]
@@ -192,6 +193,91 @@ def literal_pieces(chars: List<&2, Char>, +acc: List<&2, String>) -> List<&2, St
 
 def c_string_literal(+text: String) -> String:
   text_of_pieces("\"" <> literal_pieces(chars_rev(text, Nil{}), ["\""]))
+
+# ---------------------------------------------------------------------------
+# Bend text literals
+#
+# A BIR text atom is Bend String data, not text at an FFI boundary: inside Bend
+# every logical Char keeps its exact u32 code, including a separated surrogate
+# and a code past U+10FFFF. No UTF-8 byte string carries those codes — its
+# decoder replaces them — so the internal literal has its own carrier, and
+# c_string_literal above keeps the UTF-8 spelling for real C text.
+#
+# The carrier is still one static C string, read by the runtime helper named
+# bend_text. A printable ASCII Char that cannot confuse the literal is written
+# as itself, and every other Char as '%' and eight lowercase hex digits, most
+# significant first. So one Char never splits across bytes, no escape can
+# absorb the next Char, and the payload holds no NUL, quote, backslash or
+# question mark: the C literal needs no escape at all and the linker's
+# character scan cannot mistake the payload for code. text_byte_len is the byte
+# count of that payload, the count the runtime reads.
+def text_hex_digit(+digit: Nat) -> String:
+  match digit:
+    case 10n: "a"
+    case 11n: "b"
+    case 12n: "c"
+    case 13n: "d"
+    case 14n: "e"
+    case 15n: "f"
+    case _: Nat.show(digit)
+
+def text_hex_nibble(shift: Nat, +code: U32) -> String:
+  text_hex_digit(U32.to_nat(U32.and(U32.shrn(code, shift), 15)))
+
+# One u32 Char, most significant nibble first: exactly eight bytes, so the
+# reader never has to stop inside the escape.
+def text_hex_word(+code: U32) -> String:
+  text_of_pieces([
+    text_hex_nibble(28n, code), text_hex_nibble(24n, code),
+    text_hex_nibble(20n, code), text_hex_nibble(16n, code),
+    text_hex_nibble(12n, code), text_hex_nibble(8n, code),
+    text_hex_nibble(4n, code), text_hex_nibble(0n, code)
+  ])
+
+def text_plain_wide(+code: U32) -> Bool:
+  Bool.and(U32.is_ge(code, 32), U32.is_lt(code, 127))
+
+# Quote, backslash and question mark stay escaped so the payload carries no C
+# escape and no trigraph, and '%' because it starts a Char escape.
+def text_plain_char(+char: Char) -> Bool:
+  match char:
+    case '%': False{}
+    case '"': False{}
+    case '\\': False{}
+    case '?': False{}
+    case _: text_plain_wide(Char.to_u32(char))
+
+def text_piece_of(plain: Bool, +char: Char) -> String:
+  match plain:
+    case True{}: String.from_list([char])
+    case False{}: String.append("%", text_hex_word(Char.to_u32(char)))
+
+def text_piece(+char: Char) -> String:
+  text_piece_of(text_plain_char(char), char)
+
+def text_pieces(chars: List<&2, Char>, +acc: List<&2, String>) -> List<&2, String>:
+  match chars:
+    case Nil{}: acc
+    case +char <> rest: text_pieces(rest, text_piece(char) <> acc)
+
+def c_text_literal(+text: String) -> String:
+  text_of_pieces("\"" <> text_pieces(chars_rev(text, Nil{}), ["\""]))
+
+def text_piece_bytes_of(plain: Bool) -> Nat:
+  match plain:
+    case True{}: 1n
+    case False{}: 9n
+
+def text_piece_bytes(+char: Char) -> Nat:
+  text_piece_bytes_of(text_plain_char(char))
+
+def text_len_go(text: String, +acc: Nat) -> Nat:
+  match text:
+    case SNil{}: acc
+    case SCon{head, tail}: text_len_go(tail, Nat.add(acc, text_piece_bytes(head)))
+
+def text_byte_len(+text: String) -> Nat:
+  text_len_go(text, 0n)
 
 # Only CodeMode can start an invocation; Key collects a candidate's key.
 type Mode is Data:

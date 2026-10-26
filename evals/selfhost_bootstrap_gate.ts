@@ -15,7 +15,7 @@
  */
 import {runHeavyGate,guardHeavyGate} from './heavy_gate.ts';
 import {authenticateNativeSeedBuild,requireCorpusCoversWorkload,workloadRows} from './native_seed_runtime.mjs';
-import {OFFICIAL_SOURCE_FILE_TAG} from './checker_core_step_runtime.mjs';
+import {sourceFileTagForSelfhostImage,sourceFileTagFromRoot} from './checker_core_step_runtime.mjs';
 import {parserParity,isolatedParserParity} from './selfhost_parser_parity.ts';
 import {decodeNativeAst} from './bootstrap_ast_transport.ts';
 import {readAcceptedParserBuild} from './selfhost_driver_source.ts';
@@ -98,6 +98,10 @@ if(!o.worker){
  const fail=(error:unknown,details:Record<string,unknown>={})=>{state.failure??={phase,error:String(error),...details};state.status='FAIL';flush();};
  try{
   state.inputs=Object.fromEntries([o.root,...(o.rootManifest?[o.rootManifest]:[]),...(o.component?[o.component]:[]),...(o.componentBuild?[o.componentBuild]:[]),...(o.nativeBuild?[o.nativeBuild,o.nativeCorpus!]:[]),o.parser,o.parserBuild,resolve('evals/selfhost_driver_source.ts'),resolve('evals/checker_core_step_runtime.mjs'),resolve('evals/bootstrap_source_oracle.ts'),resolve('evals/bootstrap_ast_transport.ts'),resolve('evals/parser_full_semantic_normalize.ts'),resolve('evals/selfhost_parser_parity.ts'),resolve('evals/native_seed_runtime.mjs'),import.meta.path,resolve('evals/selfhost_bootstrap_worker.mjs'),resolve('evals/selfhost_cpu_profile.mjs')].map(path=>[path,hash(path)]));flush();
+  // The passive carrier's nominal tag is derived from the authenticated
+  // compiler root's own BIR import by the release's tag rule, not from the
+  // compiled artifact's registration.
+  state.sourceFileTag=sourceFileTagFromRoot(readFileSync(o.root,'utf8'),'compiled');
   const acceptedParser=readAcceptedParserBuild(o.parserBuild);
   const parserBuild=buildReport(acceptedParser.parserBuild);
   let protectedPins:Record<string,any>,loadedInputs:Record<string,any>;
@@ -125,11 +129,11 @@ if(!o.worker){
    const backendIr=realpathSync(resolve('bend2/selfhost/backend_ir.bend'));
    const sourceFileRow=nativeSeed.corpus.files.find((row:any)=>row.external!==true&&typeof row.path==='string'&&realpathSync(resolve(nativeSeed.corpus.directory,row.path))===backendIr);
    if(!sourceFileRow||typeof sourceFileRow.namespace!=='string')throw Error('Native workload does not load the canonical BIR module');
-   state.nativeSourceFileTag=sourceFileRow.namespace+'.SourceFile';
+   state.nativeSourceFileTag=sourceFileTagForSelfhostImage(sourceFileRow.namespace);
+   if(state.nativeSourceFileTag!==sourceFileTagFromRoot(readFileSync(o.root,'utf8'),'selfhost'))throw Error('Native stage0 BIR namespace differs from the authenticated compiler root import');
   }else{
-  // The canonical seed retains the BIR module's declared namespace. Emitted
-  // stages derive their own nominal carrier from their actual source rows.
-  state.sourceFileTag=OFFICIAL_SOURCE_FILE_TAG;
+  // The seed root declares the BIR module namespace itself; the carrier tag is
+  // derived from those authenticated bytes, never guessed from an artifact.
   const componentBuild=buildReport(o.componentBuild!);
   for(const [name,build,artifact]of [['component',componentBuild,o.component!],['parser',parserBuild,o.parser]] as const){
    if(build.checksExcluded!==0||build.guardianStatus!=='PASS'||build.artifactSha256!==hash(artifact)||realpathSync(build.artifactPath)!==realpathSync(artifact))throw Error(name+' lacks exact complete native build provenance');

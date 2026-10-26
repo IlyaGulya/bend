@@ -52,6 +52,18 @@ and `7ee53ff3` (guarded-ready checker-cost probe; no accepted execution).
 Their source integration and the 2.0.39 re-admission are pending. The
 pre-upgrade results below remain image-scoped historical evidence.
 
+The migrated canonical producer `132ce4c7` passes six real CLI programs on the
+2.0.39 base: constructor field order, generic domains, physical storage paths,
+late word folding, word-match coverage and the 8,192-character stack witness.
+Each program emits both targets; clang links the C, and C/JS execution matches
+the source expectations. The shared guardian completes/stops with exit 0 in
+23,057 ms, sampled peak RSS 383,926,272 B / footprint 361,006,496 B.
+Receipt: `evals/receipts/producer_2039_132ce4c7.json`.
+The existing checked-body-release contracts also pass (2 tests / 4 assertions).
+These are producer proofs, not full compiler, selfhost C-renderer or fixedpoint
+acceptance. The full-u32 Char/String and BIR export-boundary cutover is still
+in progress; no old compiler receipt is reclassified.
+
 Latest compiler root: **`db147cba`**, after an authenticated inline-parser
 cutover in `/private/tmp/bend-parser-cutover667`. Fresh native admission checks
 all 11,889 bodies / 12,450 events with 0 exclusions/patches and unchanged

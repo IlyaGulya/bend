@@ -66,13 +66,59 @@ function labels(o: Options) {
   const emitterManifestPath = join(root, 'checkpoints/emitter-steps-v1.json');
   const emitterManifest = JSON.parse(readFileSync(emitterManifestPath, 'utf8'));
   const requestGroups = emitterManifest.requestGroups;
-  if (!Array.isArray(requestGroups) || requestGroups.length !== 27)
-    throw Error('Emitter manifest no longer has 27 request groups; update the diagnostic group view before profiling');
-  const emitGroups = requestGroups.flatMap((group, index) =>
-    group.definitions?.includes('cps_provider_6_render') ? [index] : []);
+  if (!Array.isArray(requestGroups) || requestGroups.length === 0)
+    throw Error('Emitter manifest has no request groups; the diagnostic group view needs a composed engine');
+  // The C render request is located by canonical source identity, never by a
+  // generated helper name or a group count: the manifest records which
+  // canonical declaration each composed definition came from, and
+  // canonicalComposition.inputs pins that source's bytes. Adding canonical
+  // emitter entries therefore changes the group layout without invalidating
+  // this view.
+  const renderDeclarations = (emitterManifest.canonicalComposition?.declarations ?? []).filter(
+    (declaration: any) => declaration?.kind === 'def' &&
+      declaration.source === 'bend2/selfhost/c_emit_core.bend' && declaration.canonicalName === 'render');
+  if (renderDeclarations.length !== 1)
+    throw Error('Emitter manifest must record exactly one canonical c_emit_core render declaration, observed '
+      + JSON.stringify(renderDeclarations.map((declaration: any) => declaration.name)));
+  const renderRequest = renderDeclarations[0].name;
+  if (typeof renderRequest !== 'string') throw Error('Emitter manifest render declaration has no composed definition name');
+  const pinnedRenderSource = emitterManifest.canonicalComposition?.inputs?.['bend2/selfhost/c_emit_core.bend'];
+  if (typeof pinnedRenderSource !== 'string' || !/^[0-9a-f]{64}$/.test(pinnedRenderSource))
+    throw Error('Emitter manifest does not pin the canonical c_emit_core source bytes');
+  const emitGroups = requestGroups.flatMap((group: any, index: number) =>
+    group.definitions?.includes(renderRequest) ? [index] : []);
   if (emitGroups.length !== 1)
-    throw Error('Emitter manifest must place cps_provider_6_render in exactly one request group, observed ' + JSON.stringify(emitGroups));
+    throw Error('Emitter manifest must place the canonical c_emit_core render declaration in exactly one request group, observed ' + JSON.stringify(emitGroups));
   const emitGroup = emitGroups[0];
+  // The typed diagnostic driver names the generated request, envelope and
+  // result once. Those names are the manifest's own coverage identity, so the
+  // driver is authenticated against them instead of being trusted: a stale
+  // driver is reported with the values the engine actually produced.
+  const renderRow = (emitterManifest.coverage ?? []).find((row: any) => row?.name === renderRequest);
+  if (renderRow === undefined || typeof renderRow.request !== 'string'
+      || typeof renderRow.requestEnvelope !== 'string' || typeof renderRow.result !== 'string')
+    throw Error('Emitter manifest coverage has no request/envelope/result row for ' + renderRequest);
+  const driverPath = join(root, 'evals/native_stage_profile_driver.bend');
+  const driverSource = readFileSync(driverPath, 'utf8');
+  const driverNames: [string, string][] = [
+    ['Emit.' + renderRow.request + '{', 'request constructor'],
+    ['Emit.' + renderRow.requestEnvelope + '{', 'fixture envelope'],
+    ['Emit.' + renderRow.result, 'result type'],
+  ];
+  for (const [needle, what] of driverNames)
+    if (!driverSource.includes(needle))
+      throw Error(driverPath + ' does not name the manifest-derived ' + what + ' ' + needle + '; the typed diagnostic driver is stale for this engine');
+  const envelopeIndices = requestGroups.map((_: any, index: number) => index);
+  const coveredIndices = [...new Set([...driverSource.matchAll(/EmitterRequestGroup_(\d+)/g)].map(match => Number(match[1])))].sort((a, b) => a - b);
+  if (JSON.stringify(coveredIndices) !== JSON.stringify(envelopeIndices))
+    throw Error('Typed diagnostic driver covers request groups ' + JSON.stringify(coveredIndices)
+      + ' but the engine has ' + JSON.stringify(envelopeIndices) + '; regenerate the group view, never repin a count');
+  const driverBinding = {
+    path: driverPath, sha256: sha(readFileSync(driverPath)),
+    request: renderRow.request, envelope: renderRow.requestEnvelope, result: renderRow.result,
+    groups: coveredIndices.length,
+    basis: 'manifest coverage row joined to canonicalComposition declaration for c_emit_core.render',
+  };
   const sourceOf = new Map<string, string>();
   for (const declaration of emitterManifest.canonicalComposition?.declarations ?? [])
     if (declaration?.kind === 'def') {
@@ -84,7 +130,7 @@ function labels(o: Options) {
     ['descriptor_nf.bend', 'descriptor-nf'], ['c_backend_layout.bend', 'layouts'],
     ['c_backend_sharing.bend', 'sharing'], ['c_backend_link.bend', 'link-planning'],
     ['c_backend.bend', 'render-c'], ['c_backend_physical.bend', 'render-c'],
-    ['c_emit.bend', 'render-c'], ['c_emit_core.bend', 'render-c'],
+    ['c_emit_core.bend', 'render-c'],
     ['js_backend.bend', 'render-js'], ['js_emit.bend', 'render-js'],
     ['emitter.bend', 'emitter-entry'],
   ]);
@@ -96,7 +142,7 @@ function labels(o: Options) {
   });
   const emitLabel = groupLabels[emitGroup];
   if (!emitLabel.label.split('+').includes('render-c') || !emitLabel.sources.includes('bend2/selfhost/c_emit_core.bend'))
-    throw Error('Emitter cps_provider_6_render group no longer contains the c_backend render-c request: ' + JSON.stringify(emitLabel));
+    throw Error('Emitter canonical c_emit_core render group no longer contains the c_backend render-c request: ' + JSON.stringify(emitLabel));
   const requiredOutput = emitterManifest.generationConfig?.output;
   const expectedOutputSha256 = requiredOutput === undefined ? undefined : emitterManifest.outputs?.[requiredOutput];
   if (requiredOutput === undefined || expectedOutputSha256 === undefined)
@@ -104,7 +150,7 @@ function labels(o: Options) {
   const actualOutputSha256 = sha(readFileSync(join(root, requiredOutput)));
   if (actualOutputSha256 !== expectedOutputSha256)
     throw Error('Emitter generated output pin differs from the file loaded by the builder: ' + requiredOutput);
-  return {emitterManifestPath, emitterManifest, groupLabels, emitGroup,
+  return {emitterManifestPath, emitterManifest, groupLabels, emitGroup, renderRequest, renderSourceSha256: pinnedRenderSource, driverBinding,
     artifactBinding: {status: 'verified-by-builder', requiredOutput,
       expectedOutputSha256, actualOutputSha256}};
 }
@@ -244,7 +290,7 @@ async function build(o: Options) {
   const kernelPath = join(root, 'bend2/bend.ts'), compilerPath = join(root, 'bend2/comp.ts');
   const driverPath = join(root, 'evals/native_stage_profile_driver.bend');
   const hostPath = join(root, 'evals/native_stage_profile_host.c');
-  const {emitterManifestPath, emitterManifest, groupLabels, emitGroup, artifactBinding} = labels(o);
+  const {emitterManifestPath, emitterManifest, groupLabels, emitGroup, renderRequest, renderSourceSha256, driverBinding, artifactBinding} = labels(o);
   const {c, validationMs, codegenMs} = await compilePhases(profile, driverPath);
   const cPath = join(directory, 'native-stage-profile.c');
   const artifact = join(directory, 'native-stage-profile');
@@ -272,6 +318,10 @@ async function build(o: Options) {
     throw Error('native stage profile observed no chunk transitions; the fixture is not exercising the Run machine');
   const emitterPhase = phases.find(row => row.name === 'emitter-chunks');
   const observedEmitterGroups = Object.keys(emitterPhase?.values.requestGroups ?? {}).map(Number);
+  const engineGroups = emitterManifest.requestGroups.length;
+  if (observedEmitterGroups.some(index => index < 0 || index >= engineGroups))
+    throw Error('native emitter fixture observed request groups outside the manifest engine: '
+      + JSON.stringify(observedEmitterGroups) + ' with ' + engineGroups + ' groups');
   if (!observedEmitterGroups.includes(emitGroup))
     throw Error('native emitter fixture did not exercise the manifest emit group ' + emitGroup + '; observed ' + JSON.stringify(observedEmitterGroups));
   const profileSummary = profile?.finish('completed');
@@ -287,7 +337,9 @@ async function build(o: Options) {
       runtime: {path: o.canonicalRuntime, sha256: sha(readFileSync(o.canonicalRuntime))},
       generatedFixture: {path: generatedFixture, sha256: sha(readFileSync(generatedFixture))}},
     artifactBinding,
-    fixtureRequest: {group: emitGroup, canonicalName: 'cps_provider_6_render', label: groupLabels[emitGroup].label},
+    fixtureRequest: {group: emitGroup, canonicalName: renderRequest,
+      canonicalSource: 'bend2/selfhost/c_emit_core.bend', canonicalSourceSha256: renderSourceSha256,
+      label: groupLabels[emitGroup].label, driver: driverBinding},
     cPath, cSha256: sha(c), artifact, artifactSha256: sha(readFileSync(artifact)),
     buildCommand: [cc, ...flags], nativeExecution, validationMs, codegenMs, totalMs: performance.now() - buildStarted,
     runtime: {name: 'node', node: process.versions.node, v8: process.versions.v8, bun: (process.versions as {bun?: string}).bun ?? null,

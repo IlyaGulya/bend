@@ -436,7 +436,7 @@ def atom(value: BIR.Atom) -> String:
     case BIR.Word{value}: U32.show(value)
     case BIR.Natural{value}: Nat.show(value)
     case BIR.FloatBits{bits}: cat(["f32_from_bits(", U32.show(bits), ")"])
-    case BIR.Text{value}: js_quote(value)
+    case BIR.TextValue{value}: js_quote(value)
     case BIR.Boolean{value}: bool_source(value)
     case BIR.Null{}: "null"
     case BIR.Undefined{}: "undefined"

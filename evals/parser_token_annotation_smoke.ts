@@ -22,7 +22,7 @@ try{
    if(row.valid||!row.diagnostic.includes('cannot infer'))throw Error('Expected unannotated Local inference failure');
   }else{
    if(!row.valid)throw Error(row.diagnostic);
-   const js=Comp.js_lib(book,['example'],['example']);
+   const js=Comp.js_lib(book,true,{roots:['example'],exports:['example']});
    const lib=new Function(js.replace('export default {','return {'))();row.output=JSON.stringify(lib.example(10n,20n,30n,40n),(_,value)=>typeof value==='bigint'?String(value):value);
   }
   rows.push(row);

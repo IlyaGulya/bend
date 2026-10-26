@@ -186,8 +186,8 @@ export async function sourceOracle(file: string, source: string, options: { prel
     '      __sourceOracleObserver.datatype(p, k, params, K);\n      book.order.push(k);\n' + declarationHook + '"type");\n      continue;\n    }\n    if (parse_word(p, "law"))');
   replace("law-ast", '      const n = cls.findIndex((c) => !c[0]);',
     '      __sourceOracleObserver.law(p, k, cls, T, tc);\n      const n = cls.findIndex((c) => !c[0]);');
-  replace("law-boundary", '      book.tlds[k] = { $: "Def", n: n < 0 ? cls.length : n, T: term_higher(T), v: null, x: tc, m: p.ns };\n      book.order.push(k);\n      continue;',
-    '      book.tlds[k] = { $: "Def", n: n < 0 ? cls.length : n, T: term_higher(T), v: null, x: tc, m: p.ns };\n      book.order.push(k);\n' + declarationHook + '"law");\n      continue;');
+  replace("law-boundary", '      book.tlds[k] = { $: "Def", n: n < 0 ? cls.length : n, T: term_higher(T), v: null, x: tc, m: p.ns, l: true };\n      book.order.push(k);\n      continue;',
+    '      book.tlds[k] = { $: "Def", n: n < 0 ? cls.length : n, T: term_higher(T), v: null, x: tc, m: p.ns, l: true };\n      book.order.push(k);\n' + declarationHook + '"law");\n      continue;');
   // Mechanical inverse proof: retain neither a patched production module nor a
   // guessed equivalent parser if any observation edit is not reversible.
   let restored = observed;

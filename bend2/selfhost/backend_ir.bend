@@ -17,7 +17,7 @@ type Atom is Data:
   Word{value: U32}
   Natural{value: Nat}
   FloatBits{bits: U32}
-  Text{value: String}
+  TextValue{value: String}
   Boolean{value: Bool}
   Null{}
   Undefined{}

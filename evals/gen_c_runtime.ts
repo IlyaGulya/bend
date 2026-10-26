@@ -15,16 +15,25 @@
 import {createHash} from "node:crypto";
 import {readFileSync, rmSync, writeFileSync} from "node:fs";
 import {dirname, join, resolve} from "node:path";
+import {officialKernelSha256} from "./release_identity.ts";
 
 const ROOT = resolve(import.meta.dir, "..");
 const COMP = join(ROOT, "bend2/comp.ts");
 const KERNEL = join(ROOT, "bend2/bend.ts");
 const TARGET = join(ROOT, "bend2/selfhost/c_runtime.c");
 
-// Pinned authority. A mismatch means the runtime source changed: review the ABI
-// and update these pins deliberately, never silently.
-const COMP_SHA = "a84170d5a84f21386383ccd478a1dac687eb664d89c21b284cd1134513963b70";
-const KERNEL_SHA = "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e";
+// Pinned authority. A mismatch means the runtime source changed: review the
+// ABI and update these pins deliberately, never silently.
+// COMP_SHA is the reviewed v2.0.39 merge of bend2/comp.ts (JSOptions js_lib,
+// v39 JS Char encoding, four runtime slots). The merged runtime_c was audited
+// on that exact file: no raw CID()/FID() call survives symbolicIds, the four
+// Tables/Spins/Segments/Requests markers exist, io_eff/io_node keep their
+// 2-arg/4-arg ABI, SIGSEGV/SIGBUS trapping and --RTS parsing are present, and
+// C Chars stay native u32 words (the packed JS encoding is JS-only).
+// KERNEL_SHA always names the current official release, so a stale working
+// kernel fails closed.
+const COMP_SHA = "132ce4c74e944387ae1860a366c4776455f78fd462766f255063583775d00cd7";
+const KERNEL_SHA = officialKernelSha256(ROOT);
 
 const sha = (bytes: string | Buffer): string =>
   createHash("sha256").update(bytes).digest("hex");

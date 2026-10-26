@@ -36,8 +36,14 @@ static void native_stage_fields(Env e, Term value, u32 cid, u32 n, Term* fields)
   }
 }
 
+// The emitter stage code for a request is 100 + its outer request-group index.
+// This array is the range of that encoding, not the engine's group count: the
+// builder authenticates every observed index against the manifest, so a growing
+// or regrouping engine reports honestly instead of overflowing a fixed count.
+#define NATIVE_STAGE_GROUP_CAPACITY 256
+
 static Term native_stage_drive(Env e, Term start, Term view, u32 finished, u32 more, const char* phase, int group_stage, Term outcome) {
-  u64 chunks = 0, shapes[4] = {0, 0, 0, 0}, groups[27] = {0};
+  u64 chunks = 0, shapes[4] = {0, 0, 0, 0}, groups[NATIVE_STAGE_GROUP_CAPACITY] = {0};
   u64 started = io_tick();
   struct rusage before;
   native_stage_cpu_sample(&before);
@@ -58,7 +64,7 @@ static Term native_stage_drive(Env e, Term start, Term view, u32 finished, u32 m
         shapes[shape] += 1;
       } else if (shape <= 2) {
         shapes[shape] += 1;
-      } else if (shape >= 100 && shape < 127) {
+      } else if (shape >= 100 && shape < 100 + NATIVE_STAGE_GROUP_CAPACITY) {
         groups[shape - 100] += 1;
       } else {
         err_fail("native stage profile: unknown emitter request group code");
@@ -73,7 +79,7 @@ static Term native_stage_drive(Env e, Term start, Term view, u32 finished, u32 m
       struct rusage after;
       native_stage_cpu_sample(&after);
       u64 pending = group_stage ? 0 : shapes[1];
-      if (group_stage) for (u32 i = 0; i < 27; i++) pending += groups[i];
+      if (group_stage) for (u32 i = 0; i < NATIVE_STAGE_GROUP_CAPACITY; i++) pending += groups[i];
       u64 direct = group_stage ? shapes[1] : shapes[2];
       u64 bound = group_stage ? shapes[2] : shapes[3];
       fprintf(stderr, "NATIVE_CHUNK_PROFILE {\"phase\":\"%s\",\"elapsedMs\":%.3f,\"userCpuMs\":%.3f,\"systemCpuMs\":%.3f,\"chunkAdvances\":%llu,\"chunkQuantum\":64,\"shapeFinished\":%llu,\"shapePending\":%llu,\"shapeDirect\":%llu,\"shapeBound\":%llu,\"requestGroups\":{",
@@ -84,7 +90,7 @@ static Term native_stage_drive(Env e, Term start, Term view, u32 finished, u32 m
         (unsigned long long)pending, (unsigned long long)direct,
         (unsigned long long)bound);
       int first_group = 1;
-      for (u32 i = 0; i < 27; i++) {
+      for (u32 i = 0; i < NATIVE_STAGE_GROUP_CAPACITY; i++) {
         if (groups[i] == 0) continue;
         fprintf(stderr, "%s\"%u\":%llu", first_group ? "" : ",", i, (unsigned long long)groups[i]);
         first_group = 0;

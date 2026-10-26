@@ -21,10 +21,16 @@ def emitted(result: Backend.EmitResult) -> EmitResult:
     case Backend.EmitFailure{message, span}: EmitFailure{message, span}
     case Backend.EmitSuccess{source}: EmitSuccess{source}
 
+# The render entry for an already lowered program. The CLI must lower once to
+# learn which declared target files the program needs, so it renders that same
+# BIR.Program here instead of lowering a second time through emit.
+def render(program: BIR.Program, files: List<&2, BIR.SourceFile>) -> EmitResult:
+  emitted(Backend.emit_linked(program, files))
+
 def emit_result(result: BackendLower.ProgramResult, files: List<&2, BIR.SourceFile>) -> EmitResult:
   match result:
     case BackendLower.LowerFailure{message, span}: EmitFailure{message, span}
-    case BackendLower.Lowered{program}: emitted(Backend.emit_linked(program, files))
+    case BackendLower.Lowered{program}: render(program, files)
 
 def emit(program: Checked.CheckedProgram, files: List<&2, BIR.SourceFile>) -> EmitResult:
   emit_result(BackendLower.lower(program), files)

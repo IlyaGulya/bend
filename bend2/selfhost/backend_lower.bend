@@ -484,7 +484,7 @@ def native_match_construct_native_1(v_3: String, v_6: List<&2, BIR.Atom>, v_1: S
     case "Bool.True", []:
       LowerResult{v_1, BIR.Boolean{True{}}}
     case "String.SNil", []:
-      LowerResult{v_1, BIR.Text{""}}
+      LowerResult{v_1, BIR.TextValue{""}}
     case "Nat.Succ", [v_10]:
       primitive(v_1, BIR.PrimNatSuccessor{}, [v_10])
     case "Char.Chr", [v_13]:
@@ -574,19 +574,10 @@ def string_authorized_found(found: Maybe<&2, Catalog.Constructor>, registry: Cat
   match found:
     case None{}: False{}
     case Some{constructor}: Bool.and(String.eq(constructor_native(constructor), identity), string_authorized(registry, symbols, identities))
-def scalar_characters(chars: List<&2, U32>) -> Maybe<&2, List<&2, Char>>:
+def literal_characters(chars: List<&2, U32>) -> List<&2, Char>:
   match chars:
-    case Nil{}: Some{Nil{}}
-    case value <> rest:
-      scalar_character(Bool.and(U32.is_le(value, 1114111), Bool.or(U32.is_lt(value, 55296), U32.is_gt(value, 57343))), value, rest)
-def scalar_character(valid: Bool, value: U32, rest: List<&2, U32>) -> Maybe<&2, List<&2, Char>>:
-  match valid:
-    case False{}: None{}
-    case True{}: scalar_character_rest(value, scalar_characters(rest))
-def scalar_character_rest(value: U32, rest: Maybe<&2, List<&2, Char>>) -> Maybe<&2, List<&2, Char>>:
-  match rest:
-    case None{}: None{}
-    case Some{values}: Some{Char.from_u32(value) <> values}
+    case Nil{}: Nil{}
+    case value <> rest: Char.from_u32(value) <> literal_characters(rest)
 def native_match_literal_word_0(v_24: LowerResult<BIR.Atom>, v_2: Catalog.Registry, v_8: IR.Symbol, v_11: Ast.SourceSpan, v_19: BIR.Atom) -> LowerResult<BIR.Atom>:
   match v_24:
     case LowerResult{v_22, v_23}:
@@ -615,12 +606,8 @@ def literal_string(state: State, registry: Catalog.Registry, chars: List<&2, U32
   literal_string_authorized(state, registry, chars, symbols, span, string_authorized(registry, symbols, ["String.SNil", "String.SCon", "Char.Chr", "U32.U32", "Word.Nil.WNil", "Word.Con.WCon", "Bool.False", "Bool.True"]))
 def literal_string_authorized(state: State, registry: Catalog.Registry, chars: List<&2, U32>, symbols: List<&2, IR.Symbol>, span: Ast.SourceSpan, authorized: Bool) -> LowerResult<BIR.Atom>:
   match authorized:
-    case True{}: literal_string_payload(state, registry, chars, symbols, span, scalar_characters(chars))
+    case True{}: LowerResult{state, BIR.TextValue{String.from_list(literal_characters(chars))}}
     case False{}: literal_string_records(state, registry, chars, symbols, span)
-def literal_string_payload(state: State, registry: Catalog.Registry, chars: List<&2, U32>, symbols: List<&2, IR.Symbol>, span: Ast.SourceSpan, payload: Maybe<&2, List<&2, Char>>) -> LowerResult<BIR.Atom>:
-  match payload:
-    case Some{values}: LowerResult{state, BIR.Text{String.from_list(values)}}
-    case None{}: literal_string_records(state, registry, chars, symbols, span)
 def literal_string_records(state: State, registry: Catalog.Registry, chars: List<&2, U32>, symbols: List<&2, IR.Symbol>, span: Ast.SourceSpan) -> LowerResult<BIR.Atom>:
   match symbols:
     case nil <> cons <> char <> uint <> word_nil <> word_cons <> zero <> one <> Nil{}:

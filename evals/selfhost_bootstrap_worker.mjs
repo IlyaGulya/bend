@@ -1,6 +1,6 @@
 import {Worker,isMainThread,parentPort,workerData} from 'node:worker_threads';
 import {readFileSync,writeFileSync,realpathSync,createReadStream,existsSync} from 'node:fs';
-import {resolve,dirname,join,posix,isAbsolute} from 'node:path';
+import {resolve,dirname,join} from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {createHash} from 'node:crypto';
 import {createInterface} from 'node:readline';
@@ -8,7 +8,7 @@ import {spawnSync} from 'node:child_process';
 import {getHeapStatistics} from 'node:v8';
 import {writeNativeAst,decodeNativeAst} from './bootstrap_ast_transport.ts';
 import {runNativeStage0,requireNativeRun,runtimeManifest,workloadRows,corpusFor,requireCorpusCoversWorkload} from './native_seed_runtime.mjs';
-import {runTemplateSteps,runCheckerSteps,runEmitterSteps,runLibraryEmitterSteps,sourceFiles,sourceFilePath,verifySourceFileCarrier} from './checker_core_step_runtime.mjs';
+import {runTemplateSteps,runCheckerSteps,runEmitterSteps,runLibraryEmitterSteps,sourceFiles,sourceFilePath,verifySourceFileCarrier,declaredModuleNamespace,sourceFileTagForSelfhostImage,sourceFileTagFromRoot} from './checker_core_step_runtime.mjs';
 import {createStageProfile,createStepAttribution} from './compiler_stage_profile.mjs';
 
 const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
@@ -63,7 +63,6 @@ if(isMainThread){
  };
  const list=values=>{let tail={$:'Nil'};for(let i=values.length-1;i>=0;i--)tail={$:'Con',head:values[i],tail};return tail;};
  function items(value){const out=[];while(tag(value)==='Con'){out.push(value.head);value=value.tail;}if(tag(value)!=='Nil')throw Error('Malformed native list');return out;}
- const namespace=(parent,path)=>path==='Base'?'':posix.normalize(isAbsolute(path)?path.replace(/\.bend$/,''):posix.dirname(parent)+'/'+path.replace(/\.bend$/,''));
  const failure=(stage,result)=>{const error=Error(stage+' failed: '+String(result.message??result.diagnostic?.message));error.phase=phase;error.diagnostic=result.diagnostic??result;error.span=result.span??result.diagnostic?.span;throw error;};
  function exportsOf(module,path){const api=module.default;if(!api||!requiredExports.every(name=>typeof api[name]==='function'))throw Error('Actual compiler library ABI missing in '+path+'; required '+requiredExports.join(','));return api;}
  // The exact finite constructor input is materialized on demand. Keeping the
@@ -179,7 +178,7 @@ if(isMainThread){
      externalImport(at,path,imported.span);
      continue;
     }
-    await visit(child,namespace(scope,path),imported.span);
+    await visit(child,declaredModuleNamespace(scope,path),imported.span);
    }
    parked.push({file:at,scope,sourceBytesSha256,transport:transportReceipt.transport,sha256:transportReceipt.sha256,module});active.delete(at);
   }
@@ -212,15 +211,27 @@ if(isMainThread){
    return component[name](run);
   }])]);
  }
- // The nominal carrier tag is supplied by the caller from provenance or the
- // closure's source rows; there is no default because a wrong tag is a fail-stop.
- // The BIR module's namespace in this closure is the authority for the carrier
- // tag of anything the closure emits; the artifact can only confirm it.
+ // A selfhost-emitted image carries the selfhost canonical key verbatim, so the
+ // stage carrier tag is that rule over the closure's authenticated BIR row.
  function stageSourceFileTag(rows){
   const canonical=realpathSync(resolve('bend2/selfhost/backend_ir.bend'));
   const row=rows.find(row=>row.file===canonical);
   if(!row)throw Error('Compiler closure carries no canonical backend_ir source row');
-  return row.namespace?row.namespace+'.SourceFile':'SourceFile';
+  return sourceFileTagForSelfhostImage(row.namespace);
+ }
+ /** A request's carrier tag is accepted only when the authenticated compiler
+  * root declares that namespace under the rule of the image being driven
+  * (comp.ts seed or selfhost-emitted stage); the artifact can never redefine it. */
+ function authenticateRootCarrierTag(expected,emitter){
+  const rootPath=realpathSync(workerData.root),bytes=readFileSync(rootPath),digest=sha(bytes);
+  if(workerData.rootInputs!==undefined&&workerData.rootInputs[rootPath]!==undefined&&workerData.rootInputs[rootPath]!==digest)
+   throw Error('Compiler root bytes differ from the authenticated request closure');
+  if(workerData.expectedRoot!==undefined&&(realpathSync(workerData.expectedRoot.path)!==rootPath||workerData.expectedRoot.sha256!==digest))
+   throw Error('Compiler root is not the expected authenticated image');
+  const declared=sourceFileTagFromRoot(bytes.toString('utf8'),emitter);
+  if(typeof expected!=='string'||!expected)throw Error('Request must carry the nominal BIR.SourceFile tag');
+  if(declared!==expected)throw Error('Carrier tag '+expected+' is not the '+emitter+' namespace the authenticated root declares: '+declared);
+  return declared;
  }
  function compile(component,loaded,library,sourceFileTag){
   if(stageProfile!==undefined)stageProfile.record({kind:'phase-exact-counters',scope:'bootstrap worker',name:'parse-import-fuel',
@@ -297,6 +308,7 @@ if(isMainThread){
   if(sha(readFileSync(binary))!==native.binarySha256)throw Error('Native stage0 binary changed before execution');
   if(sha(readFileSync(native.corpus))!==native.corpusSha256)throw Error('Native stage0 corpus changed before execution');
   if(sha(readFileSync(native.build))!==native.buildSha256)throw Error('Native stage0 build report changed before execution');
+  const nativeSourceFileTag=authenticateRootCarrierTag(native.sourceFileTag,'selfhost');
   const corpus=JSON.parse(readFileSync(native.corpus,'utf8'));
   const workload=workloadRows(workerData.root,'js');
   const effective=requireCorpusCoversWorkload(corpus,workload,'js');
@@ -354,7 +366,7 @@ if(isMainThread){
   mark('stage-one-execute');const stage1=exportsOf(await import(pathToFileURL(stageOnePath).href),stageOnePath);
   mark('stage-two-parse');const second=await load(workerData.root,stage1,stage1,stageOneSha);
   if(sorted(second.sourceHashes)!==sorted(sourceHashes))throw Error('Stage source closure drift');
-  mark('stage-two');let stageTwo=compile(stage1,second,true,native.sourceFileTag);
+  mark('stage-two');let stageTwo=compile(stage1,second,true,nativeSourceFileTag);
   const secondPath=join(sidecar,'stage-two.js');writeFileSync(secondPath,stageTwo,{flag:'wx'});
   artifacts.stageTwo={event:'artifact',phase,stage:'stageTwo',path:secondPath,sha256:sha(stageTwo),bytes:Buffer.byteLength(stageTwo),sourceHashes:second.sourceHashes};send(artifacts.stageTwo);
   mark('fixedpoint-byte-comparison');
@@ -393,12 +405,10 @@ if(isMainThread){
   if(workerData.native){await runNativeSeed();}else{
   if(sha(readFileSync(workerData.parser))!==workerData.parserSha256||sha(readFileSync(workerData.component))!==workerData.componentSha256)throw Error('Authenticated seed artifact changed before execution');
   const seedParser=(await import(pathToFileURL(workerData.parser).href)).default;
-  // The passive carrier tag is the seed artifact's own registration, never a guess.
-  // Provenance, not inspection: the seed artifact is produced by the official
-  // compiler, whose BIR module sits in the root namespace and therefore
-  // registers the bare carrier. The request carries that fact explicitly.
-  if(typeof workerData.sourceFileTag!=='string'||!workerData.sourceFileTag)throw Error('Seed request must carry the nominal BIR.SourceFile tag');
-  const seedTag=workerData.sourceFileTag;
+  // The passive carrier tag is declared by the authenticated compiler root's
+  // own BIR import. The seed artifact can only confirm it; a bare tag is never
+  // a fallback, and the artifact's registration is not authority.
+  const seedTag=authenticateRootCarrierTag(workerData.sourceFileTag,'compiled');
   const seed=exportsOf(await import(pathToFileURL(workerData.component).href),workerData.component);
   const seedParserSha=workerData.parserSha256;
   if(!workerData.parseOnly&&!workerData.profileRoot)await runFixtures(seedParser,seed,seedParserSha,workerData.componentSha256,'seed',seedTag);

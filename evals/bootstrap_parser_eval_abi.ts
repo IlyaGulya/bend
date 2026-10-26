@@ -31,7 +31,9 @@ export function compiledLexerABI() {
       writeFileSync(artifactPath, source, {flag: 'wx'});
     }
     const module = await import('data:text/javascript;base64,' + Buffer.from(source).toString('base64'));
-    return {lexer: {tokens: module.default['lexer.tokens']}, artifactPath,
+    // A library exports each def by its internal book name; an imported
+    // module's name keeps the namespace separator (`lexer:tokens`).
+    return {lexer: {tokens: module.default['lexer:tokens']}, artifactPath,
       artifactSha256, sourcePath, sourceSha256};
   })();
 }

@@ -5,12 +5,12 @@
  * Only import paths and the ten public ABI entries are composed; no parser
  * body, datatype, Request or Kont is rewritten.
  */
-import {readFileSync,writeFileSync,realpathSync} from 'node:fs';
+import {readFileSync,writeFileSync,realpathSync,existsSync} from 'node:fs';
 import {resolve,dirname,relative,posix} from 'node:path';
 import {homedir} from 'node:os';
-import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
-const release='4ff8545f19b09b7d2b8ca2303668100eac8efd66';
+import {OFFICIAL_BEND_RELEASE, OFFICIAL_BEND_VERSION, officialKernelSource} from './release_identity.ts';
+const release=OFFICIAL_BEND_RELEASE;
 const repository=resolve(import.meta.dir,'..');
 const sha=(text:string|Uint8Array)=>createHash('sha256').update(text).digest('hex');
 const object=(value:unknown):Record<string,any>=>{
@@ -44,7 +44,7 @@ export function authenticateNativeParserReceipt(path:string){
    ||protectedPins[current]!==digest)throw Error('Canonical release parser producer drift: '+field);
  }
  const kernel=realpathSync(resolve(repository,'bend2/bend.ts'));
- const officialKernelSha256=sha(execFileSync('git',['show',release+':bend2/bend.ts'],{cwd:repository}));
+ const officialKernelSha256=sha(officialKernelSource(repository));
  if(sha(read(kernel))!==officialKernelSha256)throw Error('Kernel differs from exact official release Git blob '+release);
  for(const path of ['evals/heavy_gate.ts','evals/heavy_gate_native.c']){
   const current=realpathSync(resolve(repository,path));
@@ -227,7 +227,7 @@ export function readAcceptedParserBuild(path:string){
  if(wrapper.schemaVersion!==1||wrapper.status!=='PARSER_ACCEPTED_NATIVE_SEMANTICS'||wrapper.admitted!==true||
   wrapper.preparationAdmitted!==false||wrapper.evaluationMode!=='native-artifact'||
   wrapper.compiledExecution!=='FULL_75_SEMANTIC_GATE'||wrapper.checksExcluded!==0||wrapper.outputPatches!==0||
-  wrapper.release!==release||wrapper.releaseKernelSha256!==officialKernelSha256||
+  wrapper.release!==release||wrapper.releaseVersion!==OFFICIAL_BEND_VERSION||wrapper.releaseKernelSha256!==officialKernelSha256||
   wrapper.canonicalSha256!==canonicalSha256||!/^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$/.test(wrapper.runId)||
   stem!==resolve(repository,'checkpoints/bootstrap-parser-rebuild-'+wrapper.runId)||
   wrapper.parserBuildPath!==parserBuild||wrapper.parserBuildSha256!==sha(read(parserBuild))||
@@ -261,7 +261,7 @@ export function readAcceptedParserBuild(path:string){
  const authorization=object(JSON.parse(read(wrapper.authorizationPath)));
  for(const [field,value]of Object.entries(authorization))
   if(JSON.stringify(wrapper[field])!==JSON.stringify(value))throw Error('Final parser authorization differs from wrapper: '+field);
- const proofFields=['node','release','releaseKernelSha256','acceptedInputs','baselineScorecardSha256','runnerSha256','canonicalSha256','guard'];
+ const proofFields=['node','release','releaseVersion','releaseKernelSha256','acceptedInputs','baselineScorecardSha256','runnerSha256','canonicalSha256','guard'];
  for(const phase of ['prepare-source','prepare','build-native','build']){
   const guardian=object(JSON.parse(read(stem+'.'+phase+'.guardian.json')));
   if(guardian.status!=='PASS'||guardian.memoryLimitBytes!==8192*1024*1024||
@@ -338,9 +338,24 @@ export function readAcceptedParserBuild(path:string){
  return {...native,acceptance:wrapper,acceptancePath:realpathSync(wrapperPath),authenticatedInputs:inputs};
 }
 
-export function assembleSelfhostDriver(parserBuild:string){
-const output='checkpoints/.bootstrap_compiler_root_v1.bend';
-const manifest='checkpoints/selfhost-steps-driver-source-v1.json';
+export function assembleSelfhostDriver(parserBuild:string,outputs:{root?:string;manifest?:string;replace?:boolean}={}){
+const output=resolve(outputs.root??'checkpoints/.bootstrap_compiler_root_v1.bend');
+const manifest=resolve(outputs.manifest??'checkpoints/selfhost-steps-driver-source-v1.json');
+if(dirname(output)!==resolve('checkpoints'))throw Error('Compiler root must live directly in checkpoints/: its fixed import block is relative to that directory');
+if(!output.endsWith('.bend')||output===manifest)throw Error('Compiler root must be a distinct .bend file');
+if(!manifest.endsWith('.json'))throw Error('Compiler root manifest must be a .json file');
+// A generated artifact is never silently replaced: an identical rewrite is a
+// no-op, a different one needs the deliberate --replace canonical refresh.
+function publish(path:string,text:string){
+ if(existsSync(path)){
+  if(readFileSync(path,'utf8')!==text){
+   if(!outputs.replace)throw Error('Refusing to overwrite a different generated artifact '+path+'; pass --replace for a deliberate canonical refresh, or fresh --root/--manifest paths');
+   writeFileSync(path,text);
+  }
+  return;
+ }
+ writeFileSync(path,text,{flag:'wx'});
+}
 const authenticated=readAcceptedParserBuild(parserBuild);
 const {parserSource,source}=authenticated;
 const typedStepInputs:Record<string,string>={};
@@ -450,13 +465,20 @@ const embedding={start:prefix.length,chars:declarations.length,sha256:sha(declar
 if(root.slice(embedding.start,embedding.start+embedding.chars)!==declarations)throw Error('Parser declaration composition drift');
 for(const [path,digest]of Object.entries({...authenticated.authenticatedInputs,...typedStepInputs}))
  if(sha(readFileSync(path))!==digest)throw Error('Root source input changed during assembly: '+path);
-writeFileSync(output,root);
-writeFileSync(manifest,JSON.stringify({schemaVersion:1,algorithm:'Exact accepted parser declarations in root namespace; import-path-only relocation plus typed compiler wrappers',parserBuild:authenticated.parserBuild,parserBuildSha256:sha(readFileSync(authenticated.parserBuild)),parserProvenancePath:authenticated.provenancePath,parserProvenanceSha256:authenticated.accepted.provenanceSha256,officialKernelRelease:release,officialKernelSha256:authenticated.officialKernelSha256,authenticatedParserInputs:authenticated.authenticatedInputs,authenticatedTypedStepInputs:typedStepInputs,parserSource:resolve(parserSource),parserSourceSha256:sha(source),parserDeclarationStart:declaration.index,parserDeclarationSha256:sha(declarations),output:resolve(output),outputSha256:sha(root),embedding,importChanges,wrapperSha256:sha(wrappers),generator:resolve(import.meta.path),generatorSha256:sha(readFileSync(import.meta.path,'utf8')),parserBodiesChanged:0,parserDatatypesChanged:0,parserRequestKontChanged:false},null,2)+'\n');
+publish(output,root);
+publish(manifest,JSON.stringify({schemaVersion:1,algorithm:'Exact accepted parser declarations in root namespace; import-path-only relocation plus typed compiler wrappers',parserBuild:authenticated.parserBuild,parserBuildSha256:sha(readFileSync(authenticated.parserBuild)),parserProvenancePath:authenticated.provenancePath,parserProvenanceSha256:authenticated.accepted.provenanceSha256,officialKernelRelease:release,officialKernelSha256:authenticated.officialKernelSha256,authenticatedParserInputs:authenticated.authenticatedInputs,authenticatedTypedStepInputs:typedStepInputs,parserSource:resolve(parserSource),parserSourceSha256:sha(source),parserDeclarationStart:declaration.index,parserDeclarationSha256:sha(declarations),output:resolve(output),outputSha256:sha(root),embedding,importChanges,wrapperSha256:sha(wrappers),generator:resolve(import.meta.path),generatorSha256:sha(readFileSync(import.meta.path,'utf8')),parserBodiesChanged:0,parserDatatypesChanged:0,parserRequestKontChanged:false},null,2)+'\n');
 console.log(JSON.stringify({output,manifest,chars:root.length,parserDeclarationsUnchanged:true}));
 }
 if(import.meta.main){
- const args=process.argv.slice(2);
- if(args.length!==1||!args[0]!.startsWith('--parser-build=')||!args[0]!.slice('--parser-build='.length))
-  throw Error('Usage: bun evals/selfhost_driver_source.ts --parser-build=<fresh canonical native-build.result.json>');
- assembleSelfhostDriver(args[0]!.slice('--parser-build='.length));
+ const options=new Map<string,string>();let replace=false;
+ for(const argument of process.argv.slice(2)){
+  if(argument==='--replace'&&!replace){replace=true;continue;}
+  const at=argument.indexOf('='),key=argument.slice(0,at),value=argument.slice(at+1);
+  if(at<0||!['--parser-build','--root','--manifest'].includes(key)||!value||options.has(key))
+   throw Error('Usage: bun evals/selfhost_driver_source.ts --parser-build=<fresh canonical native-build.result.json> [--root=PATH --manifest=PATH [--replace]]');
+  options.set(key,value);
+ }
+ if(!options.has('--parser-build'))
+  throw Error('Usage: bun evals/selfhost_driver_source.ts --parser-build=<fresh canonical native-build.result.json> [--root=PATH --manifest=PATH [--replace]]');
+ assembleSelfhostDriver(options.get('--parser-build')!,{root:options.get('--root'),manifest:options.get('--manifest'),replace});
 }

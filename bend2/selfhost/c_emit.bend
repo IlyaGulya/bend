@@ -1,102 +1,68 @@
 import Base
-import ./ast.bend as Ast
-import ./checked_frontend.bend as Checked
+import ./ast.bend as AST
 import ./backend_ir.bend as BIR
-import ./backend_lower.bend as BackendLower
 import ./c_emit_core.bend as CEmitCore
+import ./target_io.bend as TargetIO
 
-# The C target's IO adapter. The pure seam in c_emit_core lowers once and
-# joins BIR-declared targets to passive bytes; this module only reads the
-# runtime and exactly the declared .c alternatives, so a missing file is a
-# compile diagnostic naming its path and never a derived target.
-type EmitResult is Data:
-  EmitSuccess{source: String}
-  EmitFailure{message: String, span: Ast.SourceSpan}
-
-type SourceResult is Data:
-  ReadSuccess{path: String, source: String}
-  ReadFailure{message: String}
-
+# The C target's IO adapter. The pure seam in c_emit_core derives every
+# declared .c alternative from BIR and renders; this module only reads the
+# runtime and exactly those declared paths, so a missing file is a compile
+# diagnostic naming its path and never a derived target. It performs no
+# lowering: the caller's BIR.Program is already the one checked program.
+#
+# Kernel shape rules: a `do` block holds binds and one final term, so each
+# decision after a bind lives in a helper whose body is a match; a match cannot
+# scrutinize a computed value, so the pure plan is bound with IO.pure and
+# matched as a parameter; and each callee is defined before its caller.
 type LoadResult is Data:
-  LoadSuccess{files: List<&2, BIR.SourceFile>}
-  LoadFailure{message: String, span: Ast.SourceSpan}
+  LoadSuccess{runtime: String, files: List<&2, BIR.SourceFile>}
+  LoadFailure{message: String, span: AST.SourceSpan}
 
-def read_source(path: String) -> IO(SourceResult):
-  do IO<SourceResult>:
-    opened : Result<&1, &1, U32 & String, File> <- File.open(path, "r")
-    match opened:
-      case Done{file}:
-        sized : File & Result<&1, &1, U32 & String, U32> <- File.size(file)
-        (file, size_result) = sized
-        match size_result:
-          case Done{size}:
-            loaded : File & Result<&1, &1, U32 & String, String> <- File.read(file, size)
-            (file, read_result) = loaded
-            match read_result:
-              case Done{source}:
-                Unit <- File.close(file)
-                return ReadSuccess{path, source}
-              case Fail{error}:
-                (code, message) = error
-                Unit <- File.close(file)
-                return ReadFailure{String.concat(["cannot read ", path, ": ", U32.show(code), " ", message])}
-          case Fail{error}:
-            (code, message) = error
-            Unit <- File.close(file)
-            return ReadFailure{String.concat(["cannot size ", path, ": ", U32.show(code), " ", message])}
-      case Fail{error}:
-        (code, message) = error
-        return ReadFailure{String.concat(["cannot open ", path, ": ", U32.show(code), " ", message])}
-
-# The plan is the renderer's BIR-derived choice; this adapter reads only those
-# exact paths and hands the bytes back as value.
-def load_imports(plans: List<&2, CEmitCore.CImportPlan>, loaded: List<&2, BIR.SourceFile>) -> IO(LoadResult):
+def planned(plans: List<&2, CEmitCore.CImportPlan>, acc: List<&2, TargetIO.PlannedFile>) -> List<&2, TargetIO.PlannedFile>:
   match plans:
-    case Nil{}: IO.pure(LoadResult, LoadSuccess{List.reverse(&2, BIR.SourceFile, loaded)})
+    case Nil{}: List.reverse(&2, TargetIO.PlannedFile, acc)
     case +plan <> rest:
       match plan:
-        case CEmitCore.CImportPlan{+path, namespace, span}:
-          do IO<LoadResult>:
-            read : SourceResult <- read_source(path)
-            match read:
-              case ReadFailure{message}: return LoadFailure{message, span}
-              case ReadSuccess{_, source}:
-                return load_imports(rest, BIR.SourceFile{path, source} <> loaded)
+        case CEmitCore.CImportPlan{path, _, span}: planned(rest, TargetIO.PlannedFile{path, span} <> acc)
 
-def converted(result: CEmitCore.EmitResult) -> EmitResult:
-  match result:
-    case CEmitCore.EmitSuccess{source}: EmitSuccess{source}
-    case CEmitCore.EmitFailure{message, span}: EmitFailure{message, span}
+def no_span() -> AST.SourceSpan:
+  AST.SpanOf{"", 0n, 0n}
 
-def render(program: BIR.Program, runtime: String, files: List<&2, BIR.SourceFile>) -> EmitResult:
-  converted(CEmitCore.render(program, runtime, files))
+def load_targets_read(runtime_source: String, loaded: TargetIO.LoadResult) -> IO(LoadResult):
+  match loaded:
+    case TargetIO.LoadFailure{message, span}: IO.pure(LoadResult, LoadFailure{message, span})
+    case TargetIO.LoadSuccess{files}: IO.pure(LoadResult, LoadSuccess{runtime_source, files})
 
-def emit_planned(program: BIR.Program, runtime_path: String, plan: CEmitCore.PlanResult) -> IO(EmitResult):
+def load_targets(imports: List<&2, CEmitCore.CImportPlan>, runtime_source: String) -> IO(LoadResult):
+  do IO<LoadResult>:
+    loaded : TargetIO.LoadResult <- TargetIO.read_files(planned(imports, Nil{}), Nil{})
+    load_targets_read(runtime_source, loaded)
+
+# The runtime is not a component of the program, so a missing runtime has no
+# source location; a missing declared target keeps its declaration span.
+def load_runtime_read(imports: List<&2, CEmitCore.CImportPlan>, runtime: TargetIO.SourceResult) -> IO(LoadResult):
+  match runtime:
+    case TargetIO.SourceFailure{message}: IO.pure(LoadResult, LoadFailure{message, no_span()})
+    case TargetIO.SourceSuccess{runtime_source}: load_targets(imports, runtime_source)
+
+def load_runtime(runtime_path: String, imports: List<&2, CEmitCore.CImportPlan>) -> IO(LoadResult):
+  do IO<LoadResult>:
+    runtime : TargetIO.SourceResult <- TargetIO.read_source(runtime_path)
+    load_runtime_read(imports, runtime)
+
+# A missing .c alternative is a plan failure before any read, so the runtime
+# path is not consulted for a program whose C target cannot be selected.
+def load_plan(runtime_path: String, plan: CEmitCore.PlanResult) -> IO(LoadResult):
   match plan:
-    case CEmitCore.PlanFailure{message, span}: IO.pure(EmitResult, EmitFailure{message, span})
-    case CEmitCore.PlanSuccess{imports}:
-      do IO<EmitResult>:
-        runtime : SourceResult <- read_source(runtime_path)
-        match runtime:
-          case ReadFailure{message}: return EmitFailure{message, no_span()}
-          case ReadSuccess{_, source}:
-            loaded : LoadResult <- load_imports(imports, Nil{})
-            match loaded:
-              case LoadFailure{message, span}: return EmitFailure{message, span}
-              case LoadSuccess{files}:
-                return render(program, source, files)
+    case CEmitCore.PlanFailure{message, span}: IO.pure(LoadResult, LoadFailure{message, span})
+    case CEmitCore.PlanSuccess{imports}: load_runtime(runtime_path, imports)
 
-def no_span() -> Ast.SourceSpan:
-  Ast.SpanOf{"", 0n, 0n}
+def load_planned(runtime_path: String, declarations: List<&2, BIR.Declaration>) -> IO(LoadResult):
+  do IO<LoadResult>:
+    plan : CEmitCore.PlanResult <- IO.pure(CEmitCore.PlanResult, CEmitCore.plan_declarations(declarations, Nil{}))
+    load_plan(runtime_path, plan)
 
-def emit_lowered(program: BIR.Program, runtime_path: String) -> IO(EmitResult):
+def load(program: BIR.Program, runtime_path: String) -> IO(LoadResult):
   match program:
     case BIR.Program{_, declarations, _, _, _, _}:
-      emit_planned(program, runtime_path, CEmitCore.plan_declarations(declarations, Nil{}))
-
-def emit(checked: Checked.CheckedProgram, runtime_path: String) -> IO(EmitResult):
-  match BackendLower.lower(checked):
-    case BackendLower.LowerFailure{message, span}:
-      IO.pure(EmitResult, EmitFailure{message, span})
-    case BackendLower.Lowered{program}:
-      emit_lowered(program, runtime_path)
+      load_planned(runtime_path, declarations)

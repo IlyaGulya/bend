@@ -50,7 +50,7 @@ try{
    appendFileSync(output+'.jsonl',JSON.stringify({phase:'codegen',atMs:performance.now(),stage,name,...observed})+'\n');
   });
   let source:string;
-  try{source=Comp.js_lib(book,['parse_with_fuel'],['parse_with_fuel']);}finally{Comp.js_storage_set_probe(undefined);}
+  try{source=Comp.js_lib(book,true,{roots:['parse_with_fuel'],exports:['parse_with_fuel']});}finally{Comp.js_storage_set_probe(undefined);}
   await checkFrozen();
   if(digest(await Bun.file(candidate).text())!=='0bc3d4054c08ffcea2a90cb9177d9c918258b4eef0de1227e89ceecc3266ac93')throw Error('Candidate changed during emission');
   writeFileSync(artifact,source,{flag:'wx'});

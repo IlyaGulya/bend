@@ -19,20 +19,72 @@ export function sourceFilePath(modulePath,declaredPath){
 }
 
 /**
- * The passive `List<&2, BIR.SourceFile>` carrier uses nominal constructor names.
- * Current canonical seed roots in checkpoints/ or evals/ import the BIR module
- * in this namespace, as bound by the unchanged kernel's book_load namespace
- * map. Selfhost-emitted images derive their tag from the closure's source row.
- * Correct fields do not authorize another nominal tag: a single-constructor
- * match may optimize the tag check away, so successful emission is not proof
- * of the carrier's declared namespace.
+ * The passive `List<&2, BIR.SourceFile>` carrier uses nominal constructor names,
+ * and the two current emitters use two different, both source-derived tag
+ * spaces:
+ *  - `bend2/comp.ts` v2.0.39 `js_tag(key)` emits the part after the first `:`,
+ *    so an imported module's constructor is its bare local name.
+ *  - the selfhost JS backend emits the canonical key verbatim: a bare name for
+ *    a root declaration, otherwise `namespace.Name`.
+ * Exactly one rule applies to the image being driven, selected by who emitted
+ * it. A tag is always derived from the authenticated source namespace; a
+ * registration in the artifact can only confirm it, and a wrong tag must fail
+ * closed (a single-constructor match may have optimized the tag check away, so
+ * successful emission is not proof of the carrier's declared name).
  */
-export const OFFICIAL_SOURCE_FILE_TAG='../bend2/selfhost/backend_ir.SourceFile';
+export const OFFICIAL_BIR_IMPORT='../bend2/selfhost/backend_ir.bend';
+
+/** The kernel's namespace rule: a module's namespace is its import path
+ * without `.bend`, taken relative to the importing module's namespace. */
+export function declaredModuleNamespace(parentNamespace,importPath){
+ if(typeof parentNamespace!=='string'||typeof importPath!=='string'||!importPath)throw Error('Invalid declared module import');
+ if(importPath==='Base')return '';
+ return posix.normalize(posix.isAbsolute(importPath)?importPath.replace(/\.bend$/,''):posix.dirname(parentNamespace)+'/'+importPath.replace(/\.bend$/,''));
+}
+
+/** comp.ts `js_tag`: the part after the first `:` of a declared book key. */
+export function declaredJsTag(key){
+ if(typeof key!=='string'||!key)throw Error('Missing declared constructor key');
+ return key.slice(key.indexOf(':')+1);
+}
+
+/** Carrier tag for a `comp.ts`-emitted image (`checker_core_component_build`). */
+export function sourceFileTagForCompiledImage(namespace){
+ if(typeof namespace!=='string')throw Error('BIR module namespace must be a declared source identity');
+ return declaredJsTag((namespace?namespace+':':'')+'SourceFile');
+}
+
+/** Carrier tag for a selfhost-emitted image: the canonical key verbatim. */
+export function sourceFileTagForSelfhostImage(namespace){
+ if(typeof namespace!=='string')throw Error('BIR module namespace must be a declared source identity');
+ return namespace?namespace+'.SourceFile':'SourceFile';
+}
+
+/** The two tag spaces a declared BIR module namespace produces. */
+export function sourceFileTagsForNamespace(namespace){
+ return [...new Set([sourceFileTagForSelfhostImage(namespace),sourceFileTagForCompiledImage(namespace)])];
+}
+
+/** The carrier tag a compiler root's own BIR import produces for one rule. */
+export function sourceFileTagFromRoot(rootSource,emitter){
+ if(typeof rootSource!=='string')throw Error('Missing compiler root source');
+ if(emitter!=='compiled'&&emitter!=='selfhost')throw Error('Missing carrier emitter rule');
+ const imports=[...rootSource.matchAll(/^import\s+(\S+)\s+as\s+([A-Za-z_]\w*)\s*$/gm)];
+ if(!imports.some(([,path])=>path===OFFICIAL_BIR_IMPORT))throw Error('Compiler root does not declare '+OFFICIAL_BIR_IMPORT);
+ const namespace=declaredModuleNamespace('',OFFICIAL_BIR_IMPORT);
+ return emitter==='compiled'?sourceFileTagForCompiledImage(namespace):sourceFileTagForSelfhostImage(namespace);
+}
+
+/** Seed components are built by comp.ts; their carrier tag is that rule. */
+export const COMPILED_SOURCE_FILE_TAG=sourceFileTagForCompiledImage(declaredModuleNamespace('',OFFICIAL_BIR_IMPORT));
+/** Selfhost-emitted images carry the canonical qualified key. */
+export const SELFHOST_SOURCE_FILE_TAG=sourceFileTagForSelfhostImage(declaredModuleNamespace('',OFFICIAL_BIR_IMPORT));
 
 export function sourceFiles(entries,sourceFileTag){
  const seen=new Map();
  let list={$:'Nil'};
- if(typeof sourceFileTag!=='string'||!sourceFileTag)throw Error('Missing nominal BIR.SourceFile constructor tag');
+ if(typeof sourceFileTag!=='string'||!(sourceFileTag===COMPILED_SOURCE_FILE_TAG||/^[^:]+\.SourceFile$/.test(sourceFileTag)))
+  throw Error('Carrier tag must be a source-derived BIR.SourceFile tag (compiled or selfhost rule), not an ad-hoc name');
  for(const entry of entries){
   const path=entry?.path,source=entry?.source;
   if(typeof path!=='string'||!path||typeof source!=='string')throw Error('Invalid BIR source file entry: expected {path, source} strings');
@@ -91,11 +143,12 @@ export function sourceFileEntries(modulePath,declaredPaths){
 }
 
 /**
- * Nominal-only check. The exact tag comes from provenance or the workload's
- * SourceRows; if the artifact registers that exact key, its field schema must
- * be the carrier's. An absent registration is normal (a matching-only component
- * never constructs the carrier), and every other registration is an unrelated
- * record that is ignored rather than judged.
+ * Nominal-only check. The exact tag is derived from the authenticated source
+ * closure by the release's constructor-tag rule; if the emitted image registers
+ * that exact key, its field schema must be the carrier's. An absent
+ * registration is normal (a matching-only component never constructs the
+ * carrier), and every other registration is an unrelated record that is
+ * ignored rather than judged.
  */
 export function verifySourceFileCarrier(componentSource,exactTag){
  if(typeof exactTag!=='string'||!exactTag)throw Error('Missing nominal BIR.SourceFile constructor tag');

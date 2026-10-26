@@ -11,6 +11,7 @@ import {runHeavyGate,guardHeavyGate} from './heavy_gate.ts';
 import {authenticateNativeSeedBuild,requireCorpusCoversWorkload,workloadRows} from './native_seed_runtime.mjs';
 import {parserParity,isolatedParserParity} from './selfhost_parser_parity.ts';
 import {readAcceptedParserBuild} from './selfhost_driver_source.ts';
+import {sourceFileTagForSelfhostImage,sourceFileTagFromRoot} from './checker_core_step_runtime.mjs';
 import {createHash} from 'node:crypto';
 import {readFileSync,writeFileSync,existsSync,mkdirSync,realpathSync} from 'node:fs';
 import {resolve,dirname,join} from 'node:path';
@@ -137,7 +138,8 @@ if(!worker){
    const backendIr=realpathSync(resolve('bend2/selfhost/backend_ir.bend'));
    const sourceFileRow=auth.corpus.files.find((row:any)=>row.external!==true&&typeof row.path==='string'&&realpathSync(resolve(auth.corpus.directory,row.path))===backendIr);
    requireProof(sourceFileRow&&typeof sourceFileRow.namespace==='string','Native workload does not load the canonical BIR module');
-   sourceFileTag=sourceFileRow.namespace+'.SourceFile';
+   sourceFileTag=sourceFileTagForSelfhostImage(sourceFileRow.namespace);
+   requireProof(sourceFileTag===sourceFileTagFromRoot(readFileSync(String(request.root),'utf8'),'selfhost'),'Native corpus BIR namespace differs from the authenticated root import');
   }else{
   requireProof(request.report===fixedpointReport&&request.sidecars===fixedpointReport+'.cases'&&request.worker===true&&!request.fixture&&!request.parseOnly&&!request.profileRoot,'Original request is not a full bootstrap request');
   requireProof(original.status==='FAIL'&&original.passed===false&&original.guardian?.status==='FAIL'&&original.guardian.reason==='deadline_exceeded'&&original.guardian.timeoutMs===600000,'Expected honestly failed original monolithic deadline');
@@ -183,7 +185,7 @@ if(!worker){
   const backendIr=realpathSync(resolve('bend2/selfhost/backend_ir.bend'));
   const sourceRow=closure.find(row=>realpathSync(row.file)===backendIr);
   requireProof(sourceRow&&typeof sourceRow.namespace==='string','Legacy stage closure has no canonical BIR module');
-  sourceFileTag=sourceRow.namespace+'.SourceFile';
+  sourceFileTag=sourceFileTagForSelfhostImage(sourceRow.namespace);
   const events=original.events as Record<string,any>[];
   const index=(name:string)=>events.findIndex(row=>row.event==='phase'&&row.phase===name);
   requireProof(index('stage-one-execute')>=0&&index('stage-two-parse')>index('stage-one-execute')&&index('fixedpoint-byte-comparison')>index('stage-two-parse')&&index('stage-two-execute')>index('fixedpoint-byte-comparison'),'Missing actual Root comparison or stage-two execution chain');

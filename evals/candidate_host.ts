@@ -21,7 +21,7 @@ import {readFileSync,realpathSync,writeFileSync} from 'node:fs';
 import {dirname,isAbsolute,posix,resolve} from 'node:path';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {
- sourceFileEntries,sourceFiles,OFFICIAL_SOURCE_FILE_TAG,
+ sourceFileEntries,sourceFiles,SELFHOST_SOURCE_FILE_TAG,sourceFileTagsForNamespace,
  runTemplateSteps,runCheckerSteps,runLibraryEmitterSteps,runEmitterSteps,
  runCEmitterSteps,runCLibraryEmitterSteps,
 } from './checker_core_step_runtime.mjs';
@@ -89,7 +89,7 @@ function args_parse(){
   base:resolve(values.get('--base')??posix.join(ROOT,'bend2/base.bend')),exports:values.get('--exports')?.split(','),
   library:flags.has('--library')||output.endsWith('.mjs'),input:resolve(positional[0]!),output:resolve(output),
   runtimeC:values.has('--runtime-c')?resolve(values.get('--runtime-c')!):undefined,
-  sourceTag:values.get('--source-tag')??OFFICIAL_SOURCE_FILE_TAG,
+  sourceTag:values.get('--source-tag'),
   stageProfile:values.has('--stage-profile')?resolve(values.get('--stage-profile')!):undefined,
   checkedOut:values.has('--checked-out')?resolve(values.get('--checked-out')!):undefined,
   sourcesOut:values.has('--sources-out')?resolve(values.get('--sources-out')!):undefined,
@@ -110,7 +110,7 @@ if(o.stageProfile!==undefined){
    candidatePath:realpathSync(o.candidate),candidateSha256:fileSha(o.candidate),
    parserPath,parserSha256:fileSha(parserPath),
    basePath:realpathSync(o.base),baseSha256:fileSha(o.base),
-   sourceFileTag:o.sourceTag,library:o.library,exports:o.exports??null,outputPath:o.output,
+   sourceFileTag:o.sourceTag??SELFHOST_SOURCE_FILE_TAG,library:o.library,exports:o.exports??null,outputPath:o.output,
    command:[process.execPath,...process.argv.slice(2)],
    scope:'candidate_host.ts typed-step ABI; source emission only, no external link step'},
  });
@@ -154,12 +154,13 @@ const namespace_of=(parent:string,path:string):string=>
 const files:unknown[]=[];
 const modules:unknown[]=[];
 const seen=new Set<string>();
-const inputFile=realpathSync(o.input);
-let rootModule:Record<string,unknown>|undefined;
+const inputFile=realpathSync(o.input),birFile=realpathSync(resolve(ROOT,'bend2/selfhost/backend_ir.bend'));
+let rootModule:Record<string,unknown>|undefined,birNamespace:string|undefined;
 function visit(file:string,scope:string){
  const at=realpathSync(file);
  if(seen.has(at))return;
  seen.add(at);
+ if(at===birFile)birNamespace=scope;
  const fileSpan=o.stageProgress?stage?.span('parse-file',{file:at,summary:false}):undefined;
  const module=parse(at,readFileSync(at,'utf8'));
  if(fileSpan!==undefined)stage!.end(fileSpan,'completed',{file:at});
@@ -190,7 +191,12 @@ stage?.record({kind:'phase-exact-counters',scope:'candidate host',name:'parse-im
  unitsByField:{modules:'modules',parses:'parses',fuelCells:'fuel-cells',sourceBytes:'bytes',foreignFiles:'files',parserFuelCellsPerParse:'fuel-cells'},
  source:'candidate_host.ts',details:{phase:'parse-import-fuel',
   note:'one eager parser feedback chain per parsed module; fuelCells is the exact constructed cell count, not semantic fuel consumed'}});
-const bag=sourceFiles(files,o.sourceTag);
+// The carrier tag is declared by the input's own BIR namespace, under the rule
+// of the emitter that produces the image; a caller tag must be one of them.
+const declaredTags=birNamespace===undefined?[SELFHOST_SOURCE_FILE_TAG]:sourceFileTagsForNamespace(birNamespace);
+if(o.sourceTag!==undefined&&!declaredTags.includes(o.sourceTag))fail('--source-tag '+o.sourceTag+' is not declared by the input BIR namespace ('+declaredTags.join(' or ')+')');
+const sourceTag=o.sourceTag??declaredTags[0]!;
+const bag=sourceFiles(files,sourceTag);
 
 // One attributed phase: a real span plus exact host-step counters and sampled
 // typed progress. A thrown step error still closes the span failed and records

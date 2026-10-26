@@ -1168,7 +1168,7 @@ def atom_part(atom: BIR.Atom, +plan: Plan) -> Part:
     case BIR.Word{value}: okp(u32_c(value))
     case BIR.Natural{value}: okp(nat_c(value))
     case BIR.FloatBits{bits}: okp(U32.show(bits))
-    case BIR.Text{+value}: okp(cat(["bend_text(e, ", Link.c_string_literal(value), ", ", Nat.show(Link.utf8_byte_len(value)), ")"]))
+    case BIR.TextValue{+value}: text_atom_part(value, plan)
     case BIR.Boolean{value}: bool_lit_part(bool_name(value), plan)
     case BIR.Null{}: okp("0")
     case BIR.Undefined{}: okp("0")
@@ -1183,6 +1183,19 @@ def bool_lit_part(which: String, plan: Plan) -> Part:
   match pcid(which, plan):
     case PartOk{c}: PartOk{cat(["term_pak(", c, ", 0)"])}
     case PartFail{message}: PartFail{message}
+
+# A BIR text atom is Bend String data: every logical Char keeps its exact u32
+# code, including a separated surrogate and a code past U+10FFFF. Link writes
+# the exact-code payload and its byte count, and bend_text rebuilds the SCon
+# chain in the program's own SCon/SNil cids, so a literal is the same cells the
+# constructor and append primitives store. Those cids are checked program maps:
+# a program without them cannot render the atom.
+def text_atom_part(+value: String, plan: Plan) -> Part:
+  match pcid("SNil", plan) pcid("SCon", plan):
+    case PartOk{snil} PartOk{scon}:
+      okp(cat(["bend_text(e, ", Link.c_text_literal(value), ", ", Nat.show(Link.text_byte_len(value)), ", ", snil, ", ", scon, ")"]))
+    case PartFail{message} _: failp(message)
+    case _ PartFail{message}: failp(message)
 
 def symbol_part(+key: String, +plan: Plan) -> Part:
   match plan:
@@ -3920,13 +3933,13 @@ def main_pure_text(pure: Bool) -> String:
 
 # The helper core defines the C words the generated segments call inline; it
 # must sit after the runtime's memory/term definitions (the Spins slot) but
-# before the Segments slot. bend_text alone needs io_str, which the runtime
-# defines after Spins, so it is declared here and defined in Requests.
+# before the Segments slot. Every helper there — bend_text included — is built
+# from those definitions only, so none of them needs a forward declaration or
+# an io_* helper the runtime defines later.
 def spins_part() -> Part:
   okp(cat([
     "typedef u64 Nat;\n",
     helper_core(),
-    "static Term bend_text(Env e, const char* p, u64 n);\n",
     "CONSTV u64 STAT_IMG[] = { 0 };\n"
   ]))
 
@@ -3943,6 +3956,7 @@ def helper_core() -> String:
     "static Term bend_cmp3(Env e, u32 lt, u32 eq, u32 gt, Term a, Term b) {\n  return term_pak(a < b ? lt : a == b ? eq : gt, 0);\n}\n\n",
     "static Term bend_divmod(Env e, u32 cid, Term a, Term b) {\n  if (b == 0) {\n    return bend_tuple(e, cid, 0, a);\n  }\n  return bend_tuple(e, cid, a / b, a % b);\n}\n\n",
     "static Term bend_str_cons(Env e, u32 scon, u64 ch, Term tail) {\n  u64 l = heap_alloc(e, cls_fit(2));\n  e.mem[l] = ch;\n  e.mem[l + 1] = tail;\n  return term_ctr(scon, l);\n}\n\n",
+    "// A BIR text literal is Bend String data, not text at an FFI boundary: every\n// logical Char keeps its exact u32 code inside Bend, including a separated\n// surrogate and a code past U+10FFFF, and no UTF-8 byte string carries those.\n// The renderer therefore hands over its own payload (see Link.c_text_literal):\n// a printable ASCII Char as itself, every other Char as '%' and eight lowercase\n// hex digits. Cells hold the raw u32 that bend_str_append and the constructor\n// path store, so a literal, an appended code and a matched constructor share\n// one representation. The chain is built forwards: a new node starts as the\n// last one, with its tail already the nil, and the previous node's tail takes\n// it as it is allocated, so no pointer has to span the thread and heap address\n// spaces. The chain is fresh here, and term_keep shares it exactly like a chain\n// built any other way, so nothing is sealed early.\nstatic Term bend_text(Env e, const char* p, u64 n, u32 snil, u32 scon) {\n  Term head = term_pak(snil, 0);\n  u64 prev = 0;\n  bool first = true;\n  for (u64 i = 0; i < n;) {\n    u64 code;\n    if (p[i] == '%') {\n      code = 0;\n      for (u32 k = 1; k <= 8; k += 1) {\n        char h = p[i + k];\n        code = (code << 4) | (u64)(h <= '9' ? h - '0' : (h | 0x20) - 'a' + 10);\n      }\n      i += 9;\n    } else {\n      code = (u64)(u8)p[i];\n      i += 1;\n    }\n    u64 l = heap_alloc(e, cls_fit(2));\n    e.mem[l] = code;\n    e.mem[l + 1] = term_pak(snil, 0);\n    if (first) {\n      head = term_ctr(scon, l);\n      first = false;\n    } else {\n      e.mem[prev + 1] = term_ctr(scon, l);\n    }\n    prev = l;\n  }\n  return head;\n}\n\n",
     "static Term bend_str_append_go(Env e, u32 scon, u32 chr, Term a, Term b) {\n  if (term_aux(a) == (u64)chr) {\n    return bend_str_cons(e, scon, (u64)term_loc(a), b);\n  }\n  if (term_aux(a) != (u64)scon) {\n    return b;\n  }\n  u64 l = term_peek(e.mem, a);\n  return bend_str_cons(e, scon, e.mem[l], bend_str_append_go(e, scon, chr, e.mem[l + 1], b));\n}\n\n",
     "static Term bend_str_append(Env e, u32 scon, u32 chr, Term a, Term b, u32 keep) {\n  return bend_str_append_go(e, scon, chr, a, term_keep(e, b, keep));\n}\n\n",
     "static Nat bend_str_length(Env e, u32 scon, Term a) {\n  Nat n = 0;\n  while (term_aux(a) == (u64)scon) {\n    a = e.mem[term_peek(e.mem, a) + 1];\n    n += 1;\n  }\n  return n;\n}\n\n",
@@ -3971,7 +3985,7 @@ def requests_finish(part: Part, library: Bool, exports: List<&2, BIR.Export>, +d
     case PartOk{text}:
       match export_rows(exports, declarations, by_code, by_key, by_foreign, by_native, entries):
         case None{}: PartFail{"a library export names no callable, or its checked parameter count disagrees with its entry"}
-        case Some{rows}: PartOk{cat([text, "static Term bend_text(Env e, const char* p, u64 n) {\n  return io_str(e, p, n);\n}\n", exports_c(library, rows)])}
+        case Some{rows}: PartOk{cat([text, exports_c(library, rows)])}
 
 def requests_check(+imports: List<&2, CImport>, fkeys: List<&2, String>, +declarations: List<&2, BIR.Declaration>, constructors: List<&2, BIR.ConstructorLayout>, cids: List<&2, CidRow>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, by_native: Map<&2, U32>) -> Part:
   match requests_uncovered(fkeys, imports, declarations):

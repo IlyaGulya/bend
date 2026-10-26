@@ -30,7 +30,7 @@ import * as Safe from "./safe.ts";
 // Constants
 // =========
 
-const VERSION = "2.0.37";
+const VERSION = "2.0.39";
 
 // the commands, one row each: [usage, what it does]; bend guide stays last
 const USAGE = [
@@ -154,7 +154,7 @@ async function cli(): Promise<void> {
   } else {
     await cli_file(args);
   }
-  await check();
+  await check().catch(() => {});
 }
 
 // cli_guide prints guide/<NAME>.md: the guide, or a named extra.
@@ -315,10 +315,17 @@ async function cli_file(args: string[]): Promise<void> {
     const ins = new Set([...seen.keys(), ...Object.values(book.tlds).flatMap((t) =>
       t.$ === "Def" && t.i !== undefined ? t.i.map(path_real) : [])]);
     for (const out of outs) {
-      const at = path_real(out);
-      if (ins.has(at) || (fs.existsSync(at) && fs.statSync(at).isDirectory())) {
+      if (output_conflicts(out, ins)) {
         cli_fail("-o " + out + " is a file the program reads, or a directory");
       }
+      // A binary's GPU build also writes <binary>.gpu.
+      if (!/\.(mjs|c?js|c|bendtt)$/.test(out)
+        && output_conflicts(out + ".gpu", ins)) {
+        cli_fail("GPU output " + out + ".gpu is a file the program reads, or a"
+          + " directory");
+      }
+    }
+    for (const out of outs) {
       cli_emit(book, out);
     }
   } catch (e) {
@@ -370,6 +377,22 @@ function path_real(p: string): string {
   return fs.existsSync(p) ? fs.realpathSync(p) : path.resolve(p);
 }
 
+// same_file compares device and inode, so links to one file agree.
+function same_file(a: string, b: string): boolean {
+  if (!fs.existsSync(a) || !fs.existsSync(b)) {
+    return false;
+  }
+  const x = fs.statSync(a, { bigint: true });
+  const y = fs.statSync(b, { bigint: true });
+  return x.dev === y.dev && x.ino === y.ino;
+}
+
+function output_conflicts(out: string, ins: Set<string>): boolean {
+  const at = path_real(out);
+  return ins.has(at) || (fs.existsSync(at) && (fs.statSync(at).isDirectory()
+    || [...ins].some((input) => same_file(at, input))));
+}
+
 function cli_emit(book: Bend.Book, out: string): void {
   if (out.endsWith(".mjs")) {
     fs.writeFileSync(out, Comp.js_lib(book, true));
@@ -398,7 +421,8 @@ function cli_emit(book: Bend.Book, out: string): void {
 // cc_find is the first of $CC, clang and every clang-NN on PATH (newest
 // first) that is new enough: clang 14 for a CPU build, and for a GPU build
 // clang 19 (Apple clang 17, which ships LLVM 19), whose #embed
-// carries the device program.
+// carries the device program. A $CC that is not one of these is skipped with
+// a warning, which names the compiler bend builds with instead.
 function cc_find(gpu: boolean): string {
   function dir_list(dir: string): string[] {
     try {
@@ -411,18 +435,28 @@ function cc_find(gpu: boolean): string {
   const nums = [...new Set(dirs.flatMap(dir_list).filter((f) =>
     /^clang-\d+$/.test(f)))].sort((a, b) => Number(b.slice(6)) - Number(a.slice(6)));
   const olds: string[] = [];
-  const ccs  = [...(process.env.CC ? [process.env.CC] : []), "clang", ...nums];
+  const want = gpu ? "19 (Apple clang 17)" : "14";
+  const env  = process.env.CC;
+  const ccs  = [...new Set([...(env ? [env] : []), "clang", ...nums])];
   for (const cc of ccs) {
     const [got, out] = Safe.run_read(cc, ["--version"]);
     const m   = /^(Apple )?(?:\w+ )?clang version (\d+)/m.exec(out);
     const need = gpu ? (m?.[1] === undefined ? 19 : 17) : 14;
     if (m !== null && Number(m[2]) >= need) {
+      if (env && cc !== env) {
+        process.stderr.write("warning: $CC is not a clang " + want + " or newer (found "
+          + olds[0] + "), so bend builds with " + cc + "\n");
+      }
       return cc;
     }
+    const err = (got.error as NodeJS.ErrnoException | undefined)?.code;
     olds.push(m !== null ? "clang " + m[2] + " as " + cc
-      : got.status === 0 && out ? cc + ", which is not clang" : "no " + cc);
+      : err === "ENOENT" ? "no " + cc + (/\s/.test(cc) ? " ($CC names one program, without flags)" : "")
+      : err ? cc + ", which does not run (" + err + ")"
+      : got.status !== 0 ? cc + ", which fails --version"
+      : out ? cc + ", which is not clang" : cc + ", which prints no version");
   }
-  throw "Error: bend needs clang " + (gpu ? "19 (Apple clang 17)" : "14")
+  throw "Error: bend needs clang " + want
     + " or newer to build " + (gpu ? "a GPU program" : "binaries") + " (found "
     + olds.join(", ") + "); on Debian/Ubuntu: curl -fsSL"
     + " https://apt.llvm.org/llvm.sh | sudo bash -s 19; on macOS: xcode-select"
@@ -436,6 +470,7 @@ function cc_find(gpu: boolean): string {
 // lib; else the ! runs on the cores). On macOS a program with a framework
 // (#import: a window, audio) builds as Objective-C; on Linux it links the X11
 // (plus libdl, for dlopen before glibc 2.34) and ALSA libraries it includes.
+// The GPU program's build runs without the user's $BENDRTS.
 function cli_build(bin: string, file: string): void {
   const c     = fs.readFileSync(file, "utf8");
   const mac   = process.platform === "darwin";
@@ -454,9 +489,10 @@ function cli_build(bin: string, file: string): void {
     : ["-DBEND_CUDA=1", "-I" + cuda + "/include", "-L" + cuda + "/lib64",
       "-L" + cuda + "/lib", ...cpu, "-lcuda", "-lnvrtc"];
   const steps: [string, string[]][] = bangs
-    ? [[cc, gpu], [path.resolve(bin), ["--gpu-build"]]] : [[cc, cpu]];
+    ? [[cc, gpu], [path.resolve(bin), ["+RTS", "--gpu-build"]]] : [[cc, cpu]];
   for (const [cmd, args] of steps) {
-    if (child.spawnSync(cmd, args, { stdio: "inherit" }).status !== 0) {
+    if (child.spawnSync(cmd, args, { stdio: "inherit",
+      env: { ...process.env, BENDRTS: "" } }).status !== 0) {
       throw "Error: " + path.basename(cmd) + " failed to build " + bin;
     }
   }
@@ -471,7 +507,10 @@ function cli_base(what?: string): void {
     return cli_say(1, src);
   }
   const want: string[] = [];
-  for (const text of src.split(/\n(?=type |law |def |@)/)) {
+  let tag = "";
+  for (const part of src.split(/\n(?=type |law |def |@)/)) {
+    const text = tag + part;
+    tag = part.startsWith("@") ? text + "\n" : "";
     const m = /^(type|law|def) ([^\s(<:?]+)/m.exec(text);
     if (m === null) {
       continue;
@@ -492,16 +531,26 @@ function cli_base(what?: string): void {
 }
 
 // An inline module script; an empty svg <script/> can't have content.
+// HTMLRewriter keeps character references in attributes. Only ASCII
+// references and HTML whitespace can turn a type into "module"; NBSP cannot.
 function is_inline_module(el: HTMLRewriterTypes.Element): boolean {
+  const type = el.getAttribute("type")?.replace(
+    /&#(?:[xX]([\da-fA-F]+)|(\d+));?|&(Tab|NewLine);/g, (t, hex, dec, ws) => {
+      if (ws) return ws === "Tab" ? "\t" : "\n";
+      const n = parseInt(hex ?? dec, hex === undefined ? 10 : 16);
+      return n < 128 ? String.fromCharCode(n) : t;
+    });
   return el.canHaveContent && !el.hasAttribute("src")
-    && el.getAttribute("type")?.trim().toLowerCase() === "module";
+    && type?.replace(/^[\t\n\f\r ]+|[\t\n\f\r ]+$/g, "").toLowerCase() === "module";
 }
 
 // cli_bundle builds a page. Bun skips inline module scripts (#1400), so the
 // inline plugin moves each to a virtual file beside its page, padded so an
 // error points at the page's own line and column.
+// Virtual names must not shadow real files; only their diagnostics map to a page.
 async function cli_bundle(page: string, dir: string): Promise<void> {
-  const code = new Map<string, string>();
+  type Inline = { id: string; page: string; text: string };
+  const code = new Map<string, Inline>();
   const inline: BunPlugin = {
     name: "bend inline",
     setup(build) {
@@ -510,7 +559,7 @@ async function cli_bundle(page: string, dir: string): Promise<void> {
         return code.has(id) ? { path: id, namespace: "inline" } : undefined;
       });
       build.onLoad({ filter: /.*/, namespace: "inline" }, (a) =>
-        ({ contents: code.get(a.path)!, loader: "js" }));
+        ({ contents: code.get(a.path)!.text, loader: "js" }));
       build.onLoad({ filter: /\.html$/ }, async (a) => {
         const src = await Bun.file(a.path).text();
         // HTMLRewriter gives no offsets, so a first pass marks where each
@@ -526,15 +575,20 @@ async function cli_bundle(page: string, dir: string): Promise<void> {
             }
           },
         }).transform(src);
-        const mods: { id: string; text: string }[] = [];
-        let mod: { id: string; text: string } | null = null;
+        const mods: Inline[] = [];
+        let mod: Inline | null = null;
+        let serial = 0;
         const html = new HTMLRewriter().on("script", {
           element(el) {
             mod = null;
             if (is_inline_module(el)) {
-              const name = "." + path.basename(a.path) + ".bend-inline-"
-                + mods.length + ".js";
-              mod = { id: path.join(path.dirname(a.path), name), text: "" };
+              let name: string;
+              let id: string;
+              do {
+                name = "." + path.basename(a.path) + ".bend-inline-" + serial++ + ".js";
+                id = path.join(path.dirname(a.path), name);
+              } while (fs.existsSync(id));
+              mod = { id, page: a.path, text: "" };
               mods.push(mod);
               el.setAttribute("src", "./" + name);
             }
@@ -553,7 +607,8 @@ async function cli_bundle(page: string, dir: string): Promise<void> {
           const at = marked.indexOf(mark, end + skip) - skip;
           line += src.slice(end, at).split("\n").length - 1;
           const col = at - src.lastIndexOf("\n", at - 1) - 1;
-          code.set(m.id, "\n".repeat(line) + " ".repeat(col) + m.text);
+          m.text = "\n".repeat(line) + " ".repeat(col) + m.text;
+          code.set(m.id, m);
           end = at;
         }
         return { contents: html, loader: "html" };
@@ -561,8 +616,14 @@ async function cli_bundle(page: string, dir: string): Promise<void> {
     },
   };
   try {
+    // Only the page keeps its name in the bundle (chunks and assets are hashed),
+    // so it is the input an -o can overwrite: refuse that, through links too.
+    const entry = path_real(page);
+    if (same_file(path.join(dir, path.basename(entry)), entry)) {
+      cli_fail("-o " + dir + " would overwrite the page");
+    }
     const out = await Bun.build({
-      entrypoints: [page],
+      entrypoints: [entry],
       outdir: dir,
       target: "browser",
       minify: true,
@@ -572,7 +633,11 @@ async function cli_bundle(page: string, dir: string): Promise<void> {
       cli_say(1, a.path + " (" + (a.size / 1024).toFixed(1) + "kb)\n");
     }
   } catch (e) {
-    throw book_err(e).replace(/\.([^/\\]+)\.bend-inline-\d+\.js/g, "$1");
+    let message = book_err(e);
+    for (const [id, mod] of code) {
+      message = message.replaceAll(id + ":", mod.page + ":");
+    }
+    throw message;
   }
 }
 
@@ -740,46 +805,67 @@ async function cli_login(): Promise<string> {
 // pkg_files is the package the loader read for this file, the entry first:
 // every .bend file at its namespace (the entry at its name), every foreign
 // .c or .js file at its path from the entry's directory; base and the
-// store's packages stay out. A path that climbs above the entry's directory
-// takes the entry's ancestor directories along, as many as the deepest climb.
+// store's packages stay out. The entry's directory is the one the loader
+// roots namespaces at, so an entry linked from another directory, or one
+// at the file system's root, is refused.
 // A LICENSE beside a published file goes along; a license/ directory, in
 // any case, is refused (it clashes with LICENSE on a case-blind disk).
-// A leading byte order mark is dropped: the hub stores the text as sent,
-// and an importer's fetch drops the mark, so a file sent with one would
-// never match its hash.
 function pkg_files(file: string, book: Bend.Book,
   seen: Map<string, string | null>): Record<string, string> {
-  const dir  = fs.realpathSync(path.dirname(file)) + "/";
+  const ent = fs.realpathSync(file);
+  const dir = path.join(path.dirname(ent), "/");
+  if (dir !== path.join(fs.realpathSync(path.dirname(file)), "/")) {
+    throw "Error: " + file + " cannot be published: it links to " + ent
+      + ", in another directory; publish that file";
+  }
+  if (dir === "/") {
+    throw "Error: " + file + " cannot be published: it is at the file"
+      + " system's root; move it into a directory";
+  }
   const raws = [...[...seen].flatMap(([real, ns]): [string, string][] =>
     real === BASE || ns === null || ns.startsWith("0x") ? []
       : [[ns === "" ? path.basename(file) : ns + ".bend", real]]),
   ...Object.entries(book.tlds).flatMap(([k, tld]): [string, string][] =>
     tld.$ !== "Def" || tld.i === undefined || tld.b === true
       || k.startsWith("0x") ? [] : tld.i.map((f) =>
-      [f.startsWith(dir) ? f.slice(dir.length) : f, f]))];
-  const ups = raws.map(([p]) => path.posix.normalize(p).split("/")
-    .filter((s) => s === "..").length);
-  const anc = fs.realpathSync(path.dirname(file)).split("/")
-    .slice(-Math.max(0, ...ups) || Infinity);
+      [path.posix.normalize(f.slice(dir.length)), f]))];
+  // .bend files come first, so a foreign file's .bend, its directory a
+  // prefix of the file's path, is checked inside dir before its path is cut
   const files: Record<string, string> = {};
-  for (const [raw, real] of raws) {
-    const p = path.posix.join(...anc, raw);
-    if (p.startsWith("/") || p.startsWith("..")) {
-      throw "Error: " + real + " cannot be published (an absolute import,"
-        + " or a climb above the file system)";
-    }
+  for (const [p, src] of raws) {
     if (p.split("/").slice(0, -1).some((s) => s.toLowerCase() === "license")) {
-      throw "Error: " + real + " cannot be published: it is in a directory"
+      throw "Error: " + src + " cannot be published: it is in a directory"
         + " named license, which clashes with a LICENSE file; rename it";
     }
-    files[p] = fs.readFileSync(real, "utf8").replace(/^\uFEFF/, "");
-    if (fs.readdirSync(path.dirname(real)).includes("LICENSE")) {
-      files[path.posix.join(path.posix.dirname(p), "LICENSE")] =
-        fs.readFileSync(path.join(path.dirname(real), "LICENSE"), "utf8")
-          .replace(/^\uFEFF/, "");
+    files[p] = pkg_read(p, src, dir, "move it");
+    if (fs.readdirSync(path.dirname(src)).includes("LICENSE")) {
+      const lic = path.posix.join(path.posix.dirname(p), "LICENSE");
+      files[lic] = pkg_read(lic, path.join(path.dirname(src), "LICENSE"), dir,
+        "it is the LICENSE beside " + src + "; copy it");
     }
   }
   return files;
+}
+
+// pkg_read is the text of src, published at p: p and src's real path stay
+// inside dir, the entry's directory. p is the import's own path, normalized
+// as text, since an importer resolves it inside the package that way; one
+// that climbs out and back in names a file the package lacks. A leading
+// byte order mark is dropped: the hub stores the text as sent, and an
+// importer's fetch drops the mark, so a file sent with one would never
+// match its hash.
+function pkg_read(p: string, src: string, dir: string, fix: string): string {
+  const real = fs.realpathSync(src);
+  if (!real.startsWith(dir)) {
+    throw "Error: " + src + " cannot be published: it is outside " + dir
+      + " (the entry's directory); " + fix + " inside";
+  }
+  if (p.startsWith("../") || p.startsWith("/")) {
+    throw "Error: " + src + " cannot be published: its import climbs out of"
+      + " the package (" + p + "); import it by a path that stays inside "
+      + dir;
+  }
+  return fs.readFileSync(real, "utf8").replace(/^\uFEFF/, "");
 }
 
 function sha256(text: string): string {
@@ -804,36 +890,52 @@ async function pow_mine(hash: string, bytes: number): Promise<number> {
 // cli_verdict prints the verdict on a book bend2 checked: PASS when no
 // def outside Base relies on unsafe or foreign code and, with the kernel,
 // when BendTT checks every def too; else FAIL and why. A kernel failure is
-// a mismatch: bend2 accepted what the kernel rejects.
+// a mismatch: bend2 accepted what the kernel rejects; it shows the why.
+// When none of those is a law or a def of the file, no law or proof uses
+// them: they come in through imports, and a hint names them.
 function cli_verdict(book: Bend.Book, kernel: boolean): number {
   const bad = book_promises(book);
-  if (bad.length !== 0) {
-    cli_say(2, FAIL + "\nError: " + String(bad.length) + " def" + (bad.length === 1
-      ? " relies" : "s rely") + " on unsafe or foreign code:\n"
-      + bad.map((k) => "- " + Bend.name_key(k) + "\n").join(""));
+  const n   = new Set(bad.flatMap(([, ks]) => ks)).size;
+  if (n !== 0) {
+    const own = bad.some(([, ks]) => ks.some((k) =>
+      !k.includes(":") || (book.tlds[k] as Bend.Def).l === true));
+    cli_say(2, FAIL + "\nError: " + String(n) + " def" + (n === 1 ? " relies"
+      : "s rely") + " on unsafe or foreign code:\n"
+      + bad.map(([on, ks]) => "defs that depend on " + on + ": "
+        + ks.map(Bend.name_key).join(", ") + "\n").join("")
+      + (own ? "" : "Hint: no law or proof uses these defs. Move them to a"
+        + " file this proof does not import, and the proofs will check: "
+        + [...new Set(bad.flatMap(([, ks]) => ks))].map(Bend.name_key)
+          .join(", ") + "\n"));
     return 1;
   }
-  if (kernel && !Safe.safe_check(book)) {
-    cli_say(2, FAIL + "\n" + MISMATCH + "\n");
+  const why = kernel ? Safe.safe_check(book) : null;
+  if (why !== null) {
+    cli_say(2, FAIL + "\n" + why + "\n" + MISMATCH + "\n");
     return 1;
   }
   cli_say(1, PASS + "\n" + (kernel ? "" : HINT + "\n"));
   return 0;
 }
 
-// book_promises lists the defs outside Base (laws and types too) that are
-// @unsafe or foreign, or whose type, body, datatype kind, parameters or
-// constructor fields name a def that relies on one. A foreign def is a
-// promise like @unsafe is: the checker reads its type, never its code.
-// If the book holds a promise, a walk from the defs outside Base collects
-// who names whom, then the promises flood back along those edges.
-function book_promises(book: Bend.Book): string[] {
+// book_promises lists, per promise (@unsafe, foreign effects), the defs
+// outside Base (laws and types too) that are one, or whose type, body,
+// datatype kind, parameters or constructor fields name a def that relies
+// on one. A foreign def is a promise like @unsafe is: the checker reads
+// its type, never its code. If the book holds a promise, a walk from the
+// defs outside Base collects who names whom, then each promise floods
+// back along those edges.
+function book_promises(book: Bend.Book): Array<[string, string[]]> {
   const own  = [...new Set(book.order)].filter((k) => book.tlds[k].b !== true);
-  const bad  = new Set(Object.keys(book.tlds).filter((k) => {
-    const t = book.tlds[k] as Bend.Def;
-    return t.u === true || (t.i !== undefined && t.b !== true);
-  }));
-  if (bad.size === 0) {
+  const keys = Object.keys(book.tlds);
+  const roots: Array<[string, string[]]> = [
+    ["@unsafe", keys.filter((k) => (book.tlds[k] as Bend.Def).u === true)],
+    ["foreign effects", keys.filter((k) => {
+      const t = book.tlds[k] as Bend.Def;
+      return t.u !== true && t.i !== undefined && t.b !== true;
+    })],
+  ];
+  if (roots.every(([, ks]) => ks.length === 0)) {
     return [];
   }
   const uses: Record<string, string[]> = Object.create(null);
@@ -854,10 +956,14 @@ function book_promises(book: Bend.Book): string[] {
       }
     }
   }
-  for (const k of bad) {
-    uses[k]?.forEach((j) => bad.add(j));
-  }
-  return own.filter((k) => bad.has(k));
+  return roots.flatMap(([on, ks]) => {
+    const bad = new Set(ks);
+    for (const k of bad) {
+      uses[k]?.forEach((j) => bad.add(j));
+    }
+    const out = own.filter((k) => bad.has(k));
+    return out.length === 0 ? [] : [[on, out]];
+  });
 }
 
 // term_refs adds to out the names a term (a span skipped) refers to.
@@ -880,11 +986,22 @@ function term_refs(t: object, out: Set<string>): void {
 
 // cli_say writes text to fd, and drops it if the reader has left (EPIPE).
 function cli_say(fd: number, text: string): void {
-  try {
-    fs.writeSync(fd, text);
-  } catch (e) {
-    if ((e as NodeJS.ErrnoException).code !== "EPIPE") {
-      throw e;
+  const data = Buffer.from(text);
+  for (let at = 0; at < data.length;) {
+    try {
+      const n = fs.writeSync(fd, data, at, data.length - at);
+      if (n === 0) {
+        throw new Error("bend: a write made no progress");
+      }
+      at += n;
+    } catch (e) {
+      const code = (e as NodeJS.ErrnoException).code;
+      if (code === "EPIPE") {
+        return;
+      }
+      if (code !== "EAGAIN" && code !== "EINTR") {
+        throw e;
+      }
     }
   }
 }
@@ -987,9 +1104,10 @@ async function load_js(path: string): Promise<string> {
 
 export async function load(u: string, context: unknown,
   next: (u: string, context: unknown) => unknown): Promise<unknown> {
-  return u.endsWith(".bend")
+  const file = u.startsWith("file:") ? url.fileURLToPath(u) : null;
+  return file !== null && file.endsWith(".bend")
     ? { format: "module", shortCircuit: true,
-      source: await load_js(url.fileURLToPath(u)) }
+      source: await load_js(file) }
     : next(u, context);
 }
 

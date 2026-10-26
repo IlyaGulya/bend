@@ -5,11 +5,11 @@ import {sourceOracle} from './bootstrap_source_oracle.ts';
 import {guardHeavyGate,parseHeavyGateOptions} from './heavy_gate.ts';
 import {compiledLexerABI,lexerConstructorKey} from './bootstrap_parser_eval_abi.ts';
 import {readNativeAstArena} from './bootstrap_ast_transport.ts';
+import {officialKernelSha256 as officialReleaseKernelSha256} from './release_identity.ts';
 import {createHash} from 'node:crypto';
 import {writeFileSync,mkdtempSync,rmSync,readFileSync,realpathSync} from 'node:fs';
 import {resolve,dirname,join,posix} from 'node:path';
 import {tmpdir,homedir} from 'node:os';
-import {execFileSync} from 'node:child_process';
 import {Readable} from 'node:stream';
 import type {ReadableStream as NodeReadableStream} from 'node:stream/web';
 import {createInterface} from 'node:readline';
@@ -77,7 +77,7 @@ function authenticateNativeComponent(artifact:string,receipt:string){
   const current=realpathSync(path),digest=sha(pin(current));
   if(typeof proof[field]!=='string'||realpathSync(proof[field])!==current||proof[field.replace('Path','Sha256')]!==digest||protectedPins[current]!==digest)throw Error('Native producer drift: '+field);
  }
- const officialKernelSha256=sha(execFileSync('git',['show','4ff8545f19b09b7d2b8ca2303668100eac8efd66:bend2/bend.ts']));
+ const officialKernelSha256=officialReleaseKernelSha256(resolve(import.meta.dir,'..'));
  if(kernelSha256!==officialKernelSha256)throw Error('Native parser gate kernel is not the exact official release');
  for(const path of ['evals/heavy_gate.ts','evals/heavy_gate_native.c']){
   const current=realpathSync(path);if(protectedPins[current]!==sha(pin(current)))throw Error('Missing authenticated native helper '+path);

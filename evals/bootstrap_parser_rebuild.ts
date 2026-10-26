@@ -25,8 +25,8 @@
 import {createHash, randomUUID} from 'node:crypto';
 import {appendFileSync, writeFileSync, rmSync} from 'node:fs';
 import {dirname, relative, resolve} from 'node:path';
-import {execFileSync} from 'node:child_process';
 import {runHeavyGate, guardHeavyGate} from './heavy_gate.ts';
+import {OFFICIAL_BEND_RELEASE, OFFICIAL_BEND_VERSION, officialKernelSha256} from './release_identity.ts';
 import * as Bend from '../bend2/bend.ts';
 import {readParserGraph} from './parser_full_graph.ts';
 import {termChildren} from './parser_full_type_env.ts';
@@ -42,9 +42,11 @@ import {authenticateNativeParserReceipt, authenticateParserSemanticGate} from '.
 const root = resolve(import.meta.dir, '..');
 if (resolve(process.cwd()) !== root) throw Error('Run from the repository root');
 const canonicalPath = 'bend2/selfhost/parser.bend';
-const release = '4ff8545f19b09b7d2b8ca2303668100eac8efd66';
+// Bend 2.0.39 is the current official release; historical receipts keep the
+// release they were produced from and are never rewritten.
+const release = OFFICIAL_BEND_RELEASE;
 const sha = (bytes: string | Uint8Array) => createHash('sha256').update(bytes).digest('hex');
-const releaseKernelSha256 = sha(execFileSync('git', ['show', release + ':bend2/bend.ts'], {cwd: root}));
+const releaseKernelSha256 = officialKernelSha256(root);
 async function hash(path: string) { return sha(new Uint8Array(await Bun.file(path).arrayBuffer())); }
 const helperPaths = [
   'evals/pattern_scan_partition_source.ts', 'evals/parse_atom_shape_source.ts',
@@ -129,7 +131,7 @@ async function prerequisites() {
     'evals/bootstrap_parser_native_semantic_worker.mjs', 'evals/bootstrap_ast_transport.ts',
     'bend2/comp.ts', 'bend2/base.bend', canonicalPath, historicalCutPath, baselineCandidatePath, baselineScorecardPath])
     await visit(path);
-  return {node, release, releaseKernelSha256,
+  return {node, release, releaseVersion: OFFICIAL_BEND_VERSION, releaseKernelSha256,
     acceptedInputs: Object.fromEntries(Object.entries(inputs).sort(([a], [b]) => a.localeCompare(b))),
     baselineScorecardSha256: await hash(baselineScorecardPath),
     runnerSha256: await hash(import.meta.path), canonicalSha256, guard: gateSettings};

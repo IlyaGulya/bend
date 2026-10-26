@@ -2035,7 +2035,7 @@ def s_atom_word_flow(atom: BIR.Atom) -> Flow:
     case BIR.Word{value}: s_flow_empty()
     case BIR.Natural{value}: s_flow_empty()
     case BIR.FloatBits{bits}: s_flow_empty()
-    case BIR.Text{value}: s_flow_empty()
+    case BIR.TextValue{value}: s_flow_empty()
     case BIR.Boolean{value}: s_flow_empty()
     case BIR.Null{}: s_flow_empty()
     case BIR.Undefined{}: s_flow_empty()
@@ -2057,7 +2057,7 @@ def s_atom_word_call(atom: BIR.Atom) -> List<&2, Resolved>:
     case BIR.Word{value}: Nil{}
     case BIR.Natural{value}: Nil{}
     case BIR.FloatBits{bits}: Nil{}
-    case BIR.Text{value}: Nil{}
+    case BIR.TextValue{value}: Nil{}
     case BIR.Boolean{value}: Nil{}
     case BIR.Null{}: Nil{}
     case BIR.Undefined{}: Nil{}

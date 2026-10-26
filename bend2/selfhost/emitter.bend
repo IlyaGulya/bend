@@ -11,6 +11,11 @@ import ./c_emit_core.bend as CEmit
 # target backends exactly once, so this module lowers the owning checked
 # program once per call and never reads source syntax or file bytes itself.
 #
+# The CLI has the opposite order: it must lower once to learn which declared
+# foreign files the program needs, so it renders its BIR.Program through
+# emit_bir/emit_c_bir with bytes it already read. Both orders reach the same
+# target glue, and neither lowers twice.
+#
 # Both paths return the same inert result. The caller's foreign bytes stay
 # passive BIR.SourceFile values; this boundary only forwards them.
 type EmitResult is Data:
@@ -38,3 +43,13 @@ def emit_c(program: Checked.CheckedProgram, runtime: String, files: List<&2, BIR
 
 def emit_c_library(program: Checked.CheckedProgram, exports: List<&2, String>, runtime: String, files: List<&2, BIR.SourceFile>) -> EmitResult:
   emitted_c(CEmit.emit_library(program, exports, runtime, files))
+
+# The CLI must lower once to learn which declared target files the program
+# needs, so its dispatch closes over that same BIR.Program. These entries are
+# the same two target paths without a second lowering and without IO: the
+# caller already read every declared source into passive BIR.SourceFile values.
+def emit_bir(program: BIR.Program, files: List<&2, BIR.SourceFile>) -> EmitResult:
+  emitted_js(JS.render(program, files))
+
+def emit_c_bir(program: BIR.Program, runtime: String, files: List<&2, BIR.SourceFile>) -> EmitResult:
+  emitted_c(CEmit.render(program, runtime, files))

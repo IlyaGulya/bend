@@ -19,7 +19,7 @@
  * Usage:
  *   bun evals/repro_inline57ab_run.ts \
  *     --host=<candidate_host.ts> --component=<artifact.js> \
- *     --parser=<parser.js> --tag=../bend2/selfhost/backend_ir.SourceFile \
+ *     --parser=<parser.js> --tag=SourceFile \
  *     --node=/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node \
  *     --logs=<fresh dir> --receipt=<path.json>
  *   Optional: --fixture=<path.bend> (repeatable; overrides the default three)
