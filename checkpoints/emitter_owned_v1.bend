@@ -9442,6 +9442,10 @@ def native_match_cps_provider_3_layout_native_4(v_13: Bool, +v_1: cps_provider_3
 def cps_provider_3_layout_native(+v_1: cps_provider_3_Context, +v_3: String, +v_5: String, +v_7: List<&2, BIR.DescriptorArm>, +v_10: List<&2, cps_provider_7_NfVal>, +v_12: Nat) -> cps_provider_3_LayoutResult:
   native_match_cps_provider_3_layout_native_4(String.eq(v_3, "Nat"), v_1, v_3, v_5, v_7, v_10, v_12)
 
+def cps_provider_3_field_scope(+v_1: List<&2, cps_provider_7_NfVal>) -> List<&2, cps_provider_7_NfVal>:
+  +v_4 = {cps_provider_7_NfMissing{BIR.DescriptorNull{}} : cps_provider_7_NfVal}
+  List.append(&2, cps_provider_7_NfVal, v_1, [v_4])
+
 def native_match_cps_provider_3_arm_layouts_0(v_27: cps_provider_3_Layouts, +v_1: cps_provider_3_Context, +v_6: List<&2, cps_provider_7_NfVal>, +v_8: Nat, +v_11: List<&2, cps_provider_3_LayArm>, v_17: List<&2, BIR.DescriptorArm>, +v_20: String) -> cps_provider_3_Plans:
   match v_27:
     case cps_provider_3_LayoutsFail{+v_24}:
@@ -9464,24 +9468,25 @@ def native_match_cps_provider_3_arm_layouts_2(+v_3: List<&2, BIR.DescriptorArm>,
 def cps_provider_3_arm_layouts(+v_1: cps_provider_3_Context, +v_3: List<&2, BIR.DescriptorArm>, +v_6: List<&2, cps_provider_7_NfVal>, +v_8: Nat, +v_11: List<&2, cps_provider_3_LayArm>) -> cps_provider_3_Plans:
   native_match_cps_provider_3_arm_layouts_2(v_3, v_1, v_6, v_8, v_11)
 
-def native_match_cps_provider_3_field_layouts_0(v_32: cps_provider_3_LayoutResult, +v_1: cps_provider_3_Context, +v_6: List<&2, cps_provider_7_NfVal>, +v_8: Nat, +v_11: List<&2, cps_provider_3_Layout>, v_17: List<&2, BIR.DescriptorField>) -> cps_provider_3_Layouts:
-  match v_32:
-    case cps_provider_3_LayoutFailed{+v_28}:
-      cps_provider_3_LayoutsFail{v_28}
-    case cps_provider_3_LayoutFound{+v_30}:
-      cps_provider_3_field_layouts(v_1, v_17, v_6, v_8, v_30 <> v_11)
+def native_match_cps_provider_3_field_layouts_0(v_35: cps_provider_3_LayoutResult, +v_1: cps_provider_3_Context, +v_8: Nat, +v_11: List<&2, cps_provider_3_Layout>, v_17: List<&2, BIR.DescriptorField>, +v_26: List<&2, cps_provider_7_NfVal>) -> cps_provider_3_Layouts:
+  match v_35:
+    case cps_provider_3_LayoutFailed{+v_31}:
+      cps_provider_3_LayoutsFail{v_31}
+    case cps_provider_3_LayoutFound{+v_33}:
+      cps_provider_3_field_layouts(v_1, v_17, v_26, v_8, v_33 <> v_11)
 
-def native_match_cps_provider_3_field_layouts_1(v_31: Bool, +v_1: cps_provider_3_Context, +v_6: List<&2, cps_provider_7_NfVal>, +v_8: Nat, +v_11: List<&2, cps_provider_3_Layout>, v_17: List<&2, BIR.DescriptorField>, +v_23: BIR.Descriptor) -> cps_provider_3_Layouts:
-  match v_31:
+def native_match_cps_provider_3_field_layouts_1(v_34: Bool, +v_1: cps_provider_3_Context, +v_6: List<&2, cps_provider_7_NfVal>, +v_8: Nat, +v_11: List<&2, cps_provider_3_Layout>, v_17: List<&2, BIR.DescriptorField>, +v_23: BIR.Descriptor, +v_26: List<&2, cps_provider_7_NfVal>) -> cps_provider_3_Layouts:
+  match v_34:
     case False{}:
-      cps_provider_3_field_layouts(v_1, v_17, v_6, v_8, v_11)
+      cps_provider_3_field_layouts(v_1, v_17, v_26, v_8, v_11)
     case True{}:
-      native_match_cps_provider_3_field_layouts_0(cps_provider_3_layout_of_desc(v_1, v_23, v_6, v_8), v_1, v_6, v_8, v_11, v_17)
+      native_match_cps_provider_3_field_layouts_0(cps_provider_3_layout_of_desc(v_1, v_23, v_6, v_8), v_1, v_8, v_11, v_17, v_26)
 
 def native_match_cps_provider_3_field_layouts_2(+v_16: BIR.DescriptorField, +v_1: cps_provider_3_Context, +v_6: List<&2, cps_provider_7_NfVal>, +v_8: Nat, +v_11: List<&2, cps_provider_3_Layout>, v_17: List<&2, BIR.DescriptorField>) -> cps_provider_3_Layouts:
   match v_16:
     case BIR.DescriptorField{+v_21, +v_22, +v_23}:
-      native_match_cps_provider_3_field_layouts_1(cps_provider_3_live_field(v_22), v_1, v_6, v_8, v_11, v_17, v_23)
+      +v_26 = cps_provider_3_field_scope(v_6)
+      native_match_cps_provider_3_field_layouts_1(cps_provider_3_live_field(v_22), v_1, v_6, v_8, v_11, v_17, v_23, v_26)
 
 def native_match_cps_provider_3_field_layouts_3(+v_3: List<&2, BIR.DescriptorField>, +v_1: cps_provider_3_Context, +v_6: List<&2, cps_provider_7_NfVal>, +v_8: Nat, +v_11: List<&2, cps_provider_3_Layout>) -> cps_provider_3_Layouts:
   match v_3:
@@ -9550,24 +9555,25 @@ def native_match_cps_provider_3_reenters_2(+v_5: List<&2, BIR.DescriptorArm>, +v
 def cps_provider_3_reenters(+v_1: cps_provider_3_Context, +v_3: String, +v_5: List<&2, BIR.DescriptorArm>, +v_8: List<&2, cps_provider_7_NfVal>, +v_10: Nat) -> Bool:
   native_match_cps_provider_3_reenters_2(v_5, v_1, v_3, v_8, v_10)
 
-def native_match_cps_provider_3_fields_reach_0(v_26: Bool, +v_1: cps_provider_3_Context, +v_6: List<&2, cps_provider_7_NfVal>, +v_8: String, +v_11: List<&2, String>, +v_13: Nat, v_18: List<&2, BIR.DescriptorField>) -> Bool:
-  match v_26:
+def native_match_cps_provider_3_fields_reach_0(v_29: Bool, +v_1: cps_provider_3_Context, +v_8: String, +v_11: List<&2, String>, +v_13: Nat, v_18: List<&2, BIR.DescriptorField>, +v_27: List<&2, cps_provider_7_NfVal>) -> Bool:
+  match v_29:
     case True{}:
       True{}
     case False{}:
-      cps_provider_3_fields_reach(v_1, v_18, v_6, v_8, v_11, v_13)
+      cps_provider_3_fields_reach(v_1, v_18, v_27, v_8, v_11, v_13)
 
-def native_match_cps_provider_3_fields_reach_1(v_25: Bool, +v_1: cps_provider_3_Context, +v_6: List<&2, cps_provider_7_NfVal>, +v_8: String, +v_11: List<&2, String>, +v_13: Nat, v_18: List<&2, BIR.DescriptorField>, +v_24: BIR.Descriptor) -> Bool:
-  match v_25:
+def native_match_cps_provider_3_fields_reach_1(v_28: Bool, +v_1: cps_provider_3_Context, +v_6: List<&2, cps_provider_7_NfVal>, +v_8: String, +v_11: List<&2, String>, +v_13: Nat, v_18: List<&2, BIR.DescriptorField>, +v_24: BIR.Descriptor, +v_27: List<&2, cps_provider_7_NfVal>) -> Bool:
+  match v_28:
     case False{}:
-      cps_provider_3_fields_reach(v_1, v_18, v_6, v_8, v_11, v_13)
+      cps_provider_3_fields_reach(v_1, v_18, v_27, v_8, v_11, v_13)
     case True{}:
-      native_match_cps_provider_3_fields_reach_0(cps_provider_3_reaches(v_1, v_24, v_6, v_8, v_11, v_13), v_1, v_6, v_8, v_11, v_13, v_18)
+      native_match_cps_provider_3_fields_reach_0(cps_provider_3_reaches(v_1, v_24, v_6, v_8, v_11, v_13), v_1, v_8, v_11, v_13, v_18, v_27)
 
 def native_match_cps_provider_3_fields_reach_2(+v_17: BIR.DescriptorField, +v_1: cps_provider_3_Context, +v_6: List<&2, cps_provider_7_NfVal>, +v_8: String, +v_11: List<&2, String>, +v_13: Nat, v_18: List<&2, BIR.DescriptorField>) -> Bool:
   match v_17:
     case BIR.DescriptorField{+v_22, +v_23, +v_24}:
-      native_match_cps_provider_3_fields_reach_1(cps_provider_3_live_field(v_23), v_1, v_6, v_8, v_11, v_13, v_18, v_24)
+      +v_27 = cps_provider_3_field_scope(v_6)
+      native_match_cps_provider_3_fields_reach_1(cps_provider_3_live_field(v_23), v_1, v_6, v_8, v_11, v_13, v_18, v_24, v_27)
 
 def native_match_cps_provider_3_fields_reach_3(+v_3: List<&2, BIR.DescriptorField>, +v_1: cps_provider_3_Context, +v_6: List<&2, cps_provider_7_NfVal>, +v_8: String, +v_11: List<&2, String>, +v_13: Nat) -> Bool:
   match v_3:
@@ -10361,8 +10367,9 @@ def cps_provider_3_instantiate_fields(+v_1: cps_provider_3_Context, +v_3: List<&
     case +v_11 <> v_12:
       match v_11:
         case BIR.DescriptorField{+v_16, +v_17, +v_18}:
-          +v_21 = {BIR.DescriptorField{v_16, v_17, cps_provider_7_normalize(cps_provider_3_context_nf(v_1), v_18, v_3, 1024n)} : BIR.DescriptorField}
-          cps_provider_3_instantiate_fields(v_1, v_3, v_12, v_21 <> v_7)
+          +v_21 = cps_provider_3_field_scope(v_3)
+          +v_24 = {BIR.DescriptorField{v_16, v_17, cps_provider_7_normalize(cps_provider_3_context_nf(v_1), v_18, v_3, 1024n)} : BIR.DescriptorField}
+          cps_provider_3_instantiate_fields(v_1, v_21, v_12, v_24 <> v_7)
 
 def native_match_cps_provider_3_array_cell_0(v_9: cps_provider_3_LayoutResult) -> cps_provider_3_CellResult:
   match v_9:

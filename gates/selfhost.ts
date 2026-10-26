@@ -185,6 +185,7 @@ function default_files(): string[] {
     "evals/c_target_bool_prims.bend",
     "evals/c_target_clo_field.bend",
     "tests/reg/phys_storage_paths.bend",
+    "tests/reg/generic_ctor_domains.bend",
     "evals/c_target_show_data.bend",
     "evals/c_target_user_ctor_show.bend",
     "evals/c_target_wide_node.bend",

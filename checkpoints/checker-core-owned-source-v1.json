@@ -15178,7 +15178,7 @@
       "canonical": "bend2/selfhost/emitter.bend",
       "owned": "checkpoints/emitter_owned_v1.bend",
       "canonicalSha256": "47d68ba5f0b54c334e2c940b7bb6aabc7f3bba27142b816f27df8225cf3fae4f",
-      "sourceSha256": "63a907767335ea0ca5a0e76f0f1238d20a61b2ff9932a0ec44510cc08db9d03a",
+      "sourceSha256": "046f27c1e175de38206e2a4f671ef3f1d590fa64325debdce48a7882fd40185f",
       "definitionNames": [
         "emitted_js",
         "emitted_c",
@@ -16571,6 +16571,7 @@
         "native_match_cps_provider_3_layout_native_3",
         "native_match_cps_provider_3_layout_native_4",
         "cps_provider_3_layout_native",
+        "cps_provider_3_field_scope",
         "native_match_cps_provider_3_arm_layouts_0",
         "native_match_cps_provider_3_arm_layouts_1",
         "native_match_cps_provider_3_arm_layouts_2",
@@ -19434,13 +19435,14 @@
         "native_match_cps_provider_3_layout_native_3": "edf3d41909a888ec851d199c0fdebafbc6e54ca82117be799c4378f173adc7b6",
         "native_match_cps_provider_3_layout_native_4": "16cf84719e4c81fd965a526a71d4698cdb567d1cd8f4f4f9259e0bd186d650d2",
         "cps_provider_3_layout_native": "e0da95f0a3846432c639915838707680ba53e53ca9cc86c0e813cc7048af0d21",
+        "cps_provider_3_field_scope": "22b65d21996999959604951ddc0755ea44dc21e4594fbe452836ce2d35adebe3",
         "native_match_cps_provider_3_arm_layouts_0": "96d59564ac4562e299a6733e1c465ead26f23084a5502f2ea94d35e60d5e0f94",
         "native_match_cps_provider_3_arm_layouts_1": "ee513f311d449ae449b0b30b2916f68e2a63a1870826dc161c2d3c23aa9e7702",
         "native_match_cps_provider_3_arm_layouts_2": "b86c6fd8a9a52fe0daec1601b4bd49729f314b4c139181dc420a63699deff040",
         "cps_provider_3_arm_layouts": "32e7ba88bb5a35b147080fd27e90b4ad97fb2f40ee6a0b81b5d083032eae5dd3",
-        "native_match_cps_provider_3_field_layouts_0": "b4e1adb1ea03ce4fac78577dee6c581ba664789e3c981ccc5c68d20416c5343c",
-        "native_match_cps_provider_3_field_layouts_1": "e947b2324c0469607997f4ce3a9574808b9fe5cc6e59b0e258b94799e3443bc1",
-        "native_match_cps_provider_3_field_layouts_2": "8b7d5d4d6c1c8990065228e12edcd11413d220564f122e47834ec300b0cd3d8d",
+        "native_match_cps_provider_3_field_layouts_0": "bd0dabeeb2b590141114d771d2166508c9dfa7722c12fa52ed25b90f00a20baf",
+        "native_match_cps_provider_3_field_layouts_1": "616cb89e883f8a079a5880c71173e27412adbc798f747993efa7dc0f168201fe",
+        "native_match_cps_provider_3_field_layouts_2": "04c6068c93995d42bbe8b82a24fc69bd8ef0af766b7dc3d7c6c0c7703e91456a",
         "native_match_cps_provider_3_field_layouts_3": "948b91fe374b02af07e4278b92d009719289e2af03e199b0176c2ce9712e9c41",
         "cps_provider_3_field_layouts": "4a2db09c8ef15303ebdfc72f911cef01e558bb1249844c6eed8745e55d1caff8",
         "native_match_cps_provider_3_layout_data_0": "6a2c67253eb293732b1682b3946e4dceb75269691793ec9023e81825639226ec",
@@ -19452,9 +19454,9 @@
         "native_match_cps_provider_3_reenters_1": "6ac7bed778d3c47446731e29be6de584447498dcfe04c3492b5ebd757430faf8",
         "native_match_cps_provider_3_reenters_2": "751410fa6401b16b29aa7b0fe179a6c8e2ca3a271a2860517fbcc683da2c878c",
         "cps_provider_3_reenters": "d1a6b5c5e588f0c43ea4ab0f3d7eff3b5535d883e48377aac3b2a9218f4b1feb",
-        "native_match_cps_provider_3_fields_reach_0": "db68376a152bf7b907744f2101cf792f4f0cb7ee6e341caf979b6d52c0f33140",
-        "native_match_cps_provider_3_fields_reach_1": "8fdb5190633b0508ed0d27eb3f1cb9664f27d467b4a9e0ec7f9afd8393313c1d",
-        "native_match_cps_provider_3_fields_reach_2": "593e87711a15d9233d227cddc8f27f2fcdc21d352524952180f2d0f9a6144d36",
+        "native_match_cps_provider_3_fields_reach_0": "5e9601a4ee2d4a40c661360cb8cdbd6b0bb4c81abca5976bc6e14708754641e2",
+        "native_match_cps_provider_3_fields_reach_1": "6fb91e53178c9e53bc5f16da8299c254e9770f2b9269c7d40bd8e245b5addb7e",
+        "native_match_cps_provider_3_fields_reach_2": "df235935398e1d13a1814185a3292f033c56b33c470c90002336f63979f13c5b",
         "native_match_cps_provider_3_fields_reach_3": "73409b39bed0ebebd2c188fe5fae51eaaf97cf87a2499bdca709914bcbf06020",
         "cps_provider_3_fields_reach": "b90b0c93e553db69b9916589789b91bc4a89c62729c34019f25751b7e1be7587",
         "native_match_cps_provider_3_reaches_0": "573c90bfb28efd865b45a023519f0b41daae16997af55676f22597d4ccc81b7e",
@@ -19586,7 +19588,7 @@
         "native_match_cps_provider_3_arm_fields_value_1": "faee6c41f6609af86375f9d895a320e50fd68d35bc1d80a469f5867f97a3f18b",
         "native_match_cps_provider_3_arm_fields_value_2": "24cc81609f4e7e4dd9d16f842a067c1d2e8c9381d65a7c01e06ebdc3cad76cb9",
         "cps_provider_3_arm_fields_value": "c85cf0705f4ac65a2d5fbabf2e6fca0350cac711f6e11b8038b3a5e8515c5fef",
-        "cps_provider_3_instantiate_fields": "f2071679613700dcf4266b641ca99857d39190e49293bbb380cee03b903b83b6",
+        "cps_provider_3_instantiate_fields": "f9fca4093a6fe22c97db643aa9fb0dd512161074465dd95d41af20b1463dc44c",
         "native_match_cps_provider_3_array_cell_0": "61ca780c4b608b66975008f32b254f2fe59d60b43945458431ab25777b5db976",
         "cps_provider_3_array_cell": "6621758a42eaed720f56ea395e6493a056085531224846af03544a3be9e7025a",
         "cps_provider_3_cell_of": "358b7a7042c578fc2a2ac4514b9c9591c751f251b40d3f9e1e504dbbd9240f28",
@@ -21810,7 +21812,7 @@
           "bend2/selfhost/js_emit.bend",
           "bend2/selfhost/lower_catalog.bend"
         ],
-        "sourceSha256": "8d4f7beae3fef120e572a0b3327bdb6beb7678388c3b1534ed41d6887e3f8629",
+        "sourceSha256": "ca5e79f342869b665d1c6fc30cff812ffb874d79720f891af15789843e14eff2",
         "sources": [
           {
             "canonical": "bend2/selfhost/emitter.bend",
@@ -23796,7 +23798,7 @@
           },
           {
             "canonical": "bend2/selfhost/c_backend_layout.bend",
-            "canonicalSha256": "b12b29a8b955714a7f1628b4e47b69455dcaa2fa7bbb98acd434eef69d5acba2",
+            "canonicalSha256": "7b1a8188b54c2ac3868adc9b8d12355befeaad0b2569166022f5fdac3b1fe0f2",
             "declarationNames": [
               "CWord",
               "BoxReason",
@@ -23844,6 +23846,7 @@
               "layout_unresolved",
               "layout_family",
               "layout_native",
+              "field_scope",
               "arm_layouts",
               "field_layouts",
               "layout_data",
@@ -24007,6 +24010,7 @@
               "layout_unresolved": "cps_provider_3_layout_unresolved",
               "layout_family": "cps_provider_3_layout_family",
               "layout_native": "cps_provider_3_layout_native",
+              "field_scope": "cps_provider_3_field_scope",
               "arm_layouts": "cps_provider_3_arm_layouts",
               "field_layouts": "cps_provider_3_field_layouts",
               "layout_data": "cps_provider_3_layout_data",
@@ -34369,8 +34373,16 @@
             "canonicalName": "layout_native",
             "name": "cps_provider_3_layout_native",
             "kind": "def",
-            "canonicalDeclarationSha256": "fb5ad718d99d843ce158ebf6f01b4a6251360e0d803445767878f85a1efd5fd0",
+            "canonicalDeclarationSha256": "faf1bcece1ca49c585a17821e1d506a3582e1ac92d7d36cd481a24a4f7ddd132",
             "composedDeclarationSha256": "1bf0eb0af1f238381263b047d34cb4bbd84ea8de14a9f7fb1df4f69f89166853"
+          },
+          {
+            "source": "bend2/selfhost/c_backend_layout.bend",
+            "canonicalName": "field_scope",
+            "name": "cps_provider_3_field_scope",
+            "kind": "def",
+            "canonicalDeclarationSha256": "0d2390ba77de2bc4b174345e36fc9f5b03fbe0307741970e449e187465e9c198",
+            "composedDeclarationSha256": "22b65d21996999959604951ddc0755ea44dc21e4594fbe452836ce2d35adebe3"
           },
           {
             "source": "bend2/selfhost/c_backend_layout.bend",
@@ -34385,8 +34397,8 @@
             "canonicalName": "field_layouts",
             "name": "cps_provider_3_field_layouts",
             "kind": "def",
-            "canonicalDeclarationSha256": "1fc582224c47914a779edd951151b9a8e1566b0a8658b323c7ad40410d7e44c2",
-            "composedDeclarationSha256": "cbe3be8be6bd77e1f11e5e7011ea363ab5ef2173ec5bdfd4b6154789e88f88c7"
+            "canonicalDeclarationSha256": "903e4ff1fc4cacc3303e7b70a325219f9f9257c4343f3608413bfd1f89c20b75",
+            "composedDeclarationSha256": "346c876a47492b5a2d9dd24c5ce36e73dfb1b3713c73bab35b20790b89145cd0"
           },
           {
             "source": "bend2/selfhost/c_backend_layout.bend",
@@ -34417,8 +34429,8 @@
             "canonicalName": "fields_reach",
             "name": "cps_provider_3_fields_reach",
             "kind": "def",
-            "canonicalDeclarationSha256": "3791f160449469ab68bdfe31f561dc978d31a314e3a2438232ae5ece63d3d7e0",
-            "composedDeclarationSha256": "97a691ce8890726886f48dc78ffca6bf420b8b5fb6e4d7e28f13356e4fafbad4"
+            "canonicalDeclarationSha256": "029fbfda2607325ea113e590cbb4379da6816c522bb7450e7b9bcc79455c320a",
+            "composedDeclarationSha256": "a9af4303bdb81bbb9ea2b6e8992d8bd628e7f3b12acc27671109417c63e7e589"
           },
           {
             "source": "bend2/selfhost/c_backend_layout.bend",
@@ -34825,8 +34837,8 @@
             "canonicalName": "instantiate_fields",
             "name": "cps_provider_3_instantiate_fields",
             "kind": "def",
-            "canonicalDeclarationSha256": "6bd13b226a2ca4abf10b2d26d90d800a0c14d357a22c5792c527fde5e2b113f3",
-            "composedDeclarationSha256": "f2071679613700dcf4266b641ca99857d39190e49293bbb380cee03b903b83b6"
+            "canonicalDeclarationSha256": "58e75e4cd52c461d451818a61a3923b7f5f17bd50a68f07b8abc98bb9e51c3a9",
+            "composedDeclarationSha256": "f9fca4093a6fe22c97db643aa9fb0dd512161074465dd95d41af20b1463dc44c"
           },
           {
             "source": "bend2/selfhost/c_backend_layout.bend",
@@ -43442,12 +43454,12 @@
           "/private/tmp/bend2039-upgrade/bend2/selfhost/c_emit_core.bend": "f690db5b6054d4f647b5c02e1281923d5cc66b24c8c2fff7859d811efc5ba380",
           "/private/tmp/bend2039-upgrade/bend2/selfhost/c_backend.bend": "7ffb89e3adcebedee6fadc2b3143db6f7a2fb2b9fb471dd41a62e02c081b19b1",
           "/private/tmp/bend2039-upgrade/bend2/selfhost/c_backend_link.bend": "f83c270f2b6f094f2bd220e6e750aa0265c93ae90fa0036dd8d92b86c09e26bd",
-          "/private/tmp/bend2039-upgrade/bend2/selfhost/c_backend_layout.bend": "b12b29a8b955714a7f1628b4e47b69455dcaa2fa7bbb98acd434eef69d5acba2",
+          "/private/tmp/bend2039-upgrade/bend2/selfhost/c_backend_layout.bend": "7b1a8188b54c2ac3868adc9b8d12355befeaad0b2569166022f5fdac3b1fe0f2",
           "/private/tmp/bend2039-upgrade/bend2/selfhost/c_backend_physical.bend": "5827734e1d14e199fd29714bdf78b4d04376d2eca3cbfd8406c575f894493f4c",
           "/private/tmp/bend2039-upgrade/bend2/selfhost/c_backend_sharing.bend": "c8861993d2ad81057a9ba8b187eb75f743a9005fbb021b43083e7e2906597a40",
           "bend2/selfhost/backend_lower.bend": "b6871556736f0c3bdf7a4e0812735c8b98c9f629217f060136d63b2bbd29d8f6",
           "bend2/selfhost/c_backend.bend": "7ffb89e3adcebedee6fadc2b3143db6f7a2fb2b9fb471dd41a62e02c081b19b1",
-          "bend2/selfhost/c_backend_layout.bend": "b12b29a8b955714a7f1628b4e47b69455dcaa2fa7bbb98acd434eef69d5acba2",
+          "bend2/selfhost/c_backend_layout.bend": "7b1a8188b54c2ac3868adc9b8d12355befeaad0b2569166022f5fdac3b1fe0f2",
           "bend2/selfhost/c_backend_link.bend": "f83c270f2b6f094f2bd220e6e750aa0265c93ae90fa0036dd8d92b86c09e26bd",
           "bend2/selfhost/c_backend_physical.bend": "5827734e1d14e199fd29714bdf78b4d04376d2eca3cbfd8406c575f894493f4c",
           "bend2/selfhost/c_emit_core.bend": "f690db5b6054d4f647b5c02e1281923d5cc66b24c8c2fff7859d811efc5ba380",
@@ -44387,6 +44399,7 @@
         "cps_provider_3_layout_unresolved",
         "cps_provider_3_layout_family",
         "cps_provider_3_layout_native",
+        "cps_provider_3_field_scope",
         "cps_provider_3_arm_layouts",
         "cps_provider_3_field_layouts",
         "cps_provider_3_layout_data",
@@ -46380,12 +46393,13 @@
         "cps_provider_3_layout_unresolved": "0bb068cf648d09ad0d336a7d70ace2ef2ce0d65525ef3e3a27679a341fffc8fe",
         "cps_provider_3_layout_family": "511271cb12f372c166e8e63381758ee846edae2eec0dd1d88a8024fd8a0f17ab",
         "cps_provider_3_layout_native": "1bf0eb0af1f238381263b047d34cb4bbd84ea8de14a9f7fb1df4f69f89166853",
+        "cps_provider_3_field_scope": "22b65d21996999959604951ddc0755ea44dc21e4594fbe452836ce2d35adebe3",
         "cps_provider_3_arm_layouts": "432fd3a433e2f0bace54f0d3dea2316c4339bc3b2ca679e4de0738aa9297bf7c",
-        "cps_provider_3_field_layouts": "cbe3be8be6bd77e1f11e5e7011ea363ab5ef2173ec5bdfd4b6154789e88f88c7",
+        "cps_provider_3_field_layouts": "346c876a47492b5a2d9dd24c5ce36e73dfb1b3713c73bab35b20790b89145cd0",
         "cps_provider_3_layout_data": "ef3788ef4a18c2dee660a8ce57b39abbc3218151a9181fb67101d06a54075ec4",
         "cps_provider_3_arms_tagged": "0c115245e06eadddff5266004366f445502f039374d81b2265ac4330c081373c",
         "cps_provider_3_reenters": "922a91ea157c4fedac8508aa71c5eb2d15d0b6c76288c46854049072a610380a",
-        "cps_provider_3_fields_reach": "97a691ce8890726886f48dc78ffca6bf420b8b5fb6e4d7e28f13356e4fafbad4",
+        "cps_provider_3_fields_reach": "a9af4303bdb81bbb9ea2b6e8992d8bd628e7f3b12acc27671109417c63e7e589",
         "cps_provider_3_reaches": "d70457aff8a7cfb9de84f3a5053780c2d241052479a83b31658dc53e11915049",
         "cps_provider_3_reaches_val": "cd4bbdaff5fb6cdf8b1d1869fcc82daa69a592177ae3161ccae9d08922730e69",
         "cps_provider_3_family_reach": "7307b1899d5e460fae704d02a3c65bee2695c3dadb8e2c808ef80c4937919878",
@@ -46436,7 +46450,7 @@
         "cps_provider_3_head_args": "fadef3e8b8402d67797ffd532912ceeff642b6665b7b34b63c6c8defa44191bc",
         "cps_provider_3_arm_fields": "196e7819e347e2f7057c77ecf8a223ff05cecc227bf5892d779e21cb25a2ec9c",
         "cps_provider_3_arm_fields_value": "812cba9e7b413ddedf1cb5980047066d261120ec793b0378b9b6c37008f58244",
-        "cps_provider_3_instantiate_fields": "f2071679613700dcf4266b641ca99857d39190e49293bbb380cee03b903b83b6",
+        "cps_provider_3_instantiate_fields": "f9fca4093a6fe22c97db643aa9fb0dd512161074465dd95d41af20b1463dc44c",
         "cps_provider_3_array_cell": "21993b176c8120e98be7b626d3556a81a968bfd4e64f907fe9577aab71745913",
         "cps_provider_3_cell_of": "358b7a7042c578fc2a2ac4514b9c9591c751f251b40d3f9e1e504dbbd9240f28",
         "cps_provider_3_cell_boxed": "f76f8b620de5fae0893ea6b2227bca5fc138111ab9e69a275465820a54e2c89b",
@@ -98551,7 +98565,7 @@
       "source": "/private/tmp/bend2039-upgrade/bend2/selfhost/emitter.bend",
       "sourceSha256": "47d68ba5f0b54c334e2c940b7bb6aabc7f3bba27142b816f27df8225cf3fae4f",
       "output": "/private/tmp/bend2039-upgrade/checkpoints/emitter_owned_v1.bend",
-      "outputSha256": "63a907767335ea0ca5a0e76f0f1238d20a61b2ff9932a0ec44510cc08db9d03a",
+      "outputSha256": "046f27c1e175de38206e2a4f671ef3f1d590fa64325debdce48a7882fd40185f",
       "extractions": [
         {
           "owner": "cps_provider_1_describe",
@@ -103803,10 +103817,10 @@
           "kind": "match",
           "captures": [
             1,
-            6,
             8,
             11,
-            17
+            17,
+            26
           ],
           "producers": 1
         },
@@ -103820,7 +103834,8 @@
             8,
             11,
             17,
-            23
+            23,
+            26
           ],
           "producers": 1
         },
@@ -103928,11 +103943,11 @@
           "kind": "match",
           "captures": [
             1,
-            6,
             8,
             11,
             13,
-            18
+            18,
+            27
           ],
           "producers": 1
         },
@@ -103947,7 +103962,8 @@
             11,
             13,
             18,
-            24
+            24,
+            27
           ],
           "producers": 1
         },
