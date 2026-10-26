@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "status": "REJECTED_LAZY_BODY_ONLY_NATIVE_FOOTPRINT_LIMIT",
+  "sourceCommit": "0642347b",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "reportPath": "/private/tmp/bend2039-upgrade/checkpoints/root-release2039e-bodylazy-native-build.json",
+  "reportSha256": "284c7ca4ffbf657e3a6b4334b55e826ef97b2438fd2ee186117a9dfe1b4f3bf4",
+  "protectedPins": {
+    "/private/tmp/bend2039-upgrade/evals/native_compiler_experiment.ts": "34ef8122851cf2fd28703d939a2b80253f422c791c37b2c420dea2106c9ac015",
+    "/private/tmp/bend2039-upgrade/evals/native_compiler_llvm.ts": "e41724ecc3048609ddbae65d27056f81b5af3cdabdae0790fed9e34a2eee744c",
+    "/private/tmp/bend2039-upgrade/bend2/bend.ts": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+    "/private/tmp/bend2039-upgrade/bend2/comp.ts": "4226c03610ae622f84f65d7e1fb7b57aa48ecad65a854eddb040298da86ed156",
+    "/private/tmp/bend2039-upgrade/evals/native_compiler_driver.bend": "768203e900f53cdf8d90b50966631ca3a3964dd50003658b07a28b39395f3ec3",
+    "/private/tmp/bend2039-upgrade/evals/native_compiler_host.c": "c9893207b2e8911b7bdf3608de7e99271d6fab0a9dbc2a0f5e3933157cb97e2e",
+    "/private/tmp/bend2039-upgrade/bend2/base.bend": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+    "/private/tmp/bend2039-upgrade/evals/heavy_gate.ts": "204f3529704435455d20a9d5a126a8e9c62e002b6fed9044c8319da8a3c26ff2",
+    "/private/tmp/bend2039-upgrade/evals/heavy_gate_native.c": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b",
+    "/private/tmp/bend2039-upgrade/checkpoints/root-release2039e-native.corpus.json": "291e4ed35de5585d707e80c6ebae3f4baffb111b4eb2e30d6972be1e1aba639c"
+  },
+  "guardian": {
+    "status": "RESOURCE_LIMIT",
+    "reason": "physical_footprint_limit",
+    "commandExitCode": 2,
+    "commandSignal": 0,
+    "peakRssBytes": 7801438208,
+    "peakFootprintBytes": 9014336496,
+    "elapsedMs": 201634,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 73,
+    "command": [
+      "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+      "--smol",
+      "/private/tmp/bend2039-upgrade/evals/native_compiler_experiment.ts",
+      "--mode=build",
+      "--corpus=checkpoints/root-release2039e-native.corpus.json",
+      "--artifact=/tmp/bend2039e-bodylazy-native",
+      "--report=checkpoints/root-release2039e-bodylazy-native-build.json",
+      "--cc-opt=0",
+      "--internal=build"
+    ],
+    "label": "Native CPU compiler build",
+    "exitCode": 73,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793013377347-420e349732b8962c.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "validation": {
+    "phase": "book_valid",
+    "event": "complete",
+    "unixMs": 1793013427481,
+    "pid": 13069,
+    "worker": false,
+    "rssBytes": 1092976640,
+    "heapUsedBytes": 1141171394,
+    "cpuMs": 11478.257,
+    "events": 12689,
+    "checkedDefinitions": 12111,
+    "elapsedMs": 22592.832625
+  },
+  "compileStart": {
+    "phase": "compile_book",
+    "event": "start",
+    "unixMs": 1793013427482,
+    "pid": 13069,
+    "worker": false,
+    "rssBytes": 1093435392,
+    "heapUsedBytes": 1141171394,
+    "cpuMs": 11478.82,
+    "checkedDefinitions": 12111
+  },
+  "failure": {
+    "phase": "compile_book",
+    "diagnostic": "Error: Worker received SIGTERM",
+    "signal": "SIGTERM"
+  },
+  "note": "Only lazy callee-body preparation changed in canonical comp.ts; same frozen release2039e compiler input. The guarded build publishes no native executable. Wall times are single runs under different observed host conditions, not a speed comparison."
+}
