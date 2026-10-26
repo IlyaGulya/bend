@@ -819,8 +819,20 @@ function term_any(t: HTerm, p: (s: HTerm, tail: boolean) => boolean,
   tail = true): boolean {
   const s = term_force(t);
   const kids = term_kids(s);
-  return p(s, tail) || kids.some((x, i) => term_any(x, p, tail && (s.$
-    === "Let" ? i === kids.length - 1 : "Ann Lam Mat Rwt".includes(s.$))));
+  if (p(s, tail)) {
+    return true;
+  }
+  // A reachability walk visits every node of every body, so the children are
+  // read in a loop rather than through a per-node closure; the tail flag is
+  // the same answer the array's own last index gives.
+  for (let i = 0; i < kids.length; i++) {
+    const kt = tail && (s.$ === "Let"
+      ? i === kids.length - 1 : "Ann Lam Mat Rwt".includes(s.$));
+    if (term_any(kids[i], p, kt)) {
+      return true;
+    }
+  }
+  return false;
 }
 
 function term_const(t: HTerm): boolean {
@@ -1567,8 +1579,13 @@ function fun_at(ck: Spine): Fun {
   const ret = lay_of(t);
   return ps.length === 0 || ret.ks.length === 0
     || lays.flatMap((l) => l.ks).length > WIDE || term_any(b, (s, tail) => {
+      // Only a tail node's call can replay this one, so a node that is not
+      // the body's tail answers without building its spine.
+      if (!tail || s.$ !== "Ref" && s.$ !== "App" && s.$ !== "Ann") {
+        return false;
+      }
       const m = term_spine(s);
-      return tail && m.k === ck.k && m.all.filter((_, i) => !dom_live(doms[i]))
+      return m.k === ck.k && m.all.filter((_, i) => !dom_live(doms[i]))
         .some((a, j) => probe_of(term_strip(a)) !== ps[j]);
     }) ? f : { ...f, lays, ret };
 }
@@ -1893,12 +1910,18 @@ function file_book(roots: Name[]): void {
           FL.sites.set(s.k, (FL.sites.get(s.k) ?? 0) + 1);
         }
       }
-      const ck = term_spine(s);
-      if (ck.k !== null && ck.k !== d) {
+      // A spine is a call: only a reference, an application, or the annotation
+      // over one heads it. Any other node's spine is empty, and this walk
+      // visits every node of every body, so ask only a head that can answer a
+      // call instead of materializing empty argument slices per node.
+      const ck = s.$ === "Ref" || s.$ === "App" || s.$ === "Ann"
+        ? term_spine(s) : null;
+      if (ck !== null && ck.k !== null && ck.k !== d) {
         deps.add(ck.k);
       }
       flat &&= !((s.$ === "Let" && s.k.length >= 2)
-        || (ck.k !== null && (ck.b || (ck.k === d && !tail))));
+        || (ck !== null && ck.k !== null
+          && (ck.b || (ck.k === d && !tail))));
       return false;
     });
     FL.srcs.set(d, flat ? deps : null);
