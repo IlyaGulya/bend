@@ -63,13 +63,28 @@ type Name = Bend.Name;
 
 type File = ReturnType<typeof file_new>;
 
+// Rest is the terms an emission has not reached yet: the pending siblings of
+// every enclosing constructor, argument list and let, innermost first. A
+// descent prepends a slice by reference and index, so it costs one small node,
+// and only the use queries below flatten it. Copying the pending suffix at each
+// descent instead costs the suffix length there: quadratic in a left-nested
+// product, and in the pending siblings of a left-nested chain, while a right
+// (tail-only) list appends no node at all because its slice is empty.
+type Rest = {
+  xs: readonly HTerm[];
+  at: number;
+  skipvar: boolean;
+  n: number;
+  next: Rest;
+} | null;
+
 type Scope = {
   seg: Seg;
   fresh: Map<string, number>;
   brwl: Map<string, string>;
   spares: { words: number; name: string; z: boolean }[];
   uses: Map<Of<"Var">, Bind>;
-  rest: HTerm[];
+  rest: Rest;
   def: Name;
   caps?: { d: number; vs: Map<HTerm, string> };
 };
@@ -112,6 +127,7 @@ export type JSOptions = {
     literalFacts?: number;
     tableFacts?: number;
     imageWords?: number;
+    restMax?: number;
     spinNames?: number;
     closerFacts?: number;
   }) => void;
@@ -818,8 +834,35 @@ function term_uses(tm: HTerm): Bend.PMap<number> {
   });
 }
 
-function rest_use(rest: HTerm[], p: Of<"Var">): number {
-  return rest.reduce((n, r) => n + term_use(term_uses(r), p), 0);
+// rest_new prepends xs[at..] with an optional Var filter. An empty slice is
+// the chain it precedes, so a tail-only descent allocates nothing.
+function rest_new(xs: readonly HTerm[], at: number, skipvar: boolean,
+  next: Rest): Rest {
+  if (at >= xs.length) {
+    return next;
+  }
+  const n = (next === null ? 0 : next.n) + 1;
+  if (n > FL.rest_max) {
+    FL.rest_max = n;
+  }
+  return { xs, at, skipvar, n, next };
+}
+
+function rest_each(rest: Rest, f: (x: HTerm) => void): void {
+  for (let r = rest; r !== null; r = r.next) {
+    for (let i = r.at; i < r.xs.length; i++) {
+      const x = r.xs[i];
+      if (!r.skipvar || x.$ !== "Var") {
+        f(x);
+      }
+    }
+  }
+}
+
+function rest_use(rest: Rest, p: Of<"Var">): number {
+  let n = 0;
+  rest_each(rest, (r) => { n += term_use(term_uses(r), p); });
+  return n;
 }
 
 function fun_live(x: HTerm, ty: HTerm | null): boolean {
@@ -1599,6 +1642,7 @@ function file_new(book: Bend.Book, js: boolean, options: JSOptions = {}) {
     js,
     options,
     higher: new Map<Name, HTerm>(),
+    rest_max: 0,
     packs: pack_new(),
     bangs: new Set<Name>(),
     sites: new Map<Name, number>(),
@@ -1650,17 +1694,21 @@ function scope_new(): Scope {
     brwl: new Map(),
     spares: [],
     uses: new Map(),
-    rest: [],
+    rest: null,
     def: "",
   };
 }
 
 // observe is profiling only: sizes are reads of state the pass already holds,
 // and the text totals are only asked for at a pass boundary, never per
-// definition.
+// definition. restMax is the longest pending-sibling chain built since the
+// previous observation, so a boundary shows how the definition that just
+// finished nested.
 function file_observe(stage: string, k: Name, lines?: string[],
   totals = false): void {
   const tld = FL.book.tlds[k];
+  const restMax = FL.rest_max;
+  FL.rest_max = 0;
   const counted = totals ? [...FL.segs, ...FL.spins] : [];
   FL.options.observe?.(stage, k, {
     eExists: tld?.$ === "Def" && tld.e !== undefined,
@@ -1683,6 +1731,8 @@ function file_observe(stage: string, k: Name, lines?: string[],
     literalFacts: FL.lits.size,
     tableFacts: FL.tabs.size,
     imageWords: FL.img.length,
+    // The longest pending-sibling chain built since the previous observation.
+    restMax,
     spinNames: FL.spun.size,
     closerFacts: FL.clos.size,
   });
@@ -1916,7 +1966,7 @@ function seg_name(sc: Scope, stem: string): string {
 }
 
 function seg_open(sc: Scope, name: string, ret: Lay, frame: Seg["frame"],
-  live: [Of<"Var">, Bind][], res: Val, rest: HTerm[]): Scope {
+  live: [Of<"Var">, Bind][], res: Val, rest: Rest): Scope {
   const vals = live.map(([, b]) => val_new(b.val.ws.map((w) => {
     const nw = name_local(sc, w.replace(/_\d+$/, ""));
     if (sc.brwl.has(w)) {
@@ -2179,7 +2229,7 @@ function bind_pop(sc: Scope, x: HTerm): Val {
   return b.val;
 }
 
-function bind_uses(sc: Scope, p: Of<"Var">, v: Val, rest: HTerm[], A: HTerm,
+function bind_uses(sc: Scope, p: Of<"Var">, v: Val, rest: Rest, A: HTerm,
   fresh = true): void {
   const n = rest_use(rest, p);
   const lay = lay_of(A);
@@ -2199,7 +2249,7 @@ function bind_set(sc: Scope, p: Of<"Var">, b: Bind, n: number): void {
   }
 }
 
-function bind_dead(sc: Scope, rest: HTerm[], ps = [...sc.uses.keys()]): void {
+function bind_dead(sc: Scope, rest: Rest, ps = [...sc.uses.keys()]): void {
   for (const p of ps) {
     const b = sc.uses.get(p);
     if (b) {
@@ -2464,8 +2514,8 @@ function emit_args(sc: Scope, ck: Spine, jump = false, fork = false,
   const xs = ck.xs.map(term_strip);
   const vars = xs.filter((x) => x.$ === "Var");
   const vs = ck.xs.map((a, i) => xs[i].$ === "Var" ? null
-    : emit_expr({ ...sc, rest: [...xs.slice(i + 1).filter((x) =>
-      x.$ !== "Var"), ...vars, ...sc.rest] }, a, null, lays[i]));
+    : emit_expr({ ...sc, rest: rest_new(xs, i + 1, true, rest_new(vars, 0,
+      false, sc.rest)) }, a, null, lays[i]));
   xs.forEach((x, i) => vs[i] ??= brw[i] ? null : bind_pop(sc, x));
   return xs.flatMap((x, i) => {
     const at = k + "~" + i;
@@ -2495,8 +2545,8 @@ function emit_args(sc: Scope, ck: Spine, jump = false, fork = false,
 
 function emit_each(sc: Scope, xs: HTerm[], ats: readonly Lay[] = [],
   tys: HTerm[] = []): Val[] {
-  return xs.map((x, i) => emit_expr({ ...sc, rest: [...xs.slice(i + 1),
-    ...sc.rest] }, x, tys[i] ?? null, ats[i] ?? null));
+  return xs.map((x, i) => emit_expr({ ...sc, rest: rest_new(xs, i + 1, false,
+    sc.rest) }, x, tys[i] ?? null, ats[i] ?? null));
 }
 
 function emit_put(sc: Scope, dst: Val | null, v: Val): void {
@@ -2535,7 +2585,7 @@ function emit_fuse(sc: Scope, ck: Spine, dst: Val | null, tail = false): void {
     : [w = emit_alias(sc, w, "a"), arr_loc(sc, w)]);
   block(sc, `if (${name}(${["e", o, ...xs].join(", ")}) == 0) {`, () =>
     file_push(sc, "return 0;"));
-  bind_dead(sc, tail ? [] : sc.rest, tail ? undefined
+  bind_dead(sc, tail ? null : sc.rest, tail ? undefined
     : ck.xs.map(term_strip).filter((x) => x.$ === "Var").map(probe_of));
   emit_put(sc, dst, out);
 }
@@ -2625,7 +2675,8 @@ function emit_clo(sc: Scope, x: HTerm, ty: HTerm | null): Val {
   const name = seg_name(sc, "c");
   const clo = seg_clo(sc, seg_fid(name), words);
   const arg = val_new([name_local(sc, "x")], BOX);
-  emit_body(seg_open(sc, name, BOX, null, live, arg, [x]), x, ty, [], [arg],
+  emit_body(seg_open(sc, name, BOX, null, live, arg,
+    rest_new([x], 0, false, null)), x, ty, [], [arg],
     null);
   return val_new([clo], BOX);
 }
@@ -2804,7 +2855,7 @@ function emit_expr(sc: Scope, tm: HTerm, ty0: HTerm | null,
     const i = frame.vs.length;
     if (i < frame.flds.length) {
       const child = emit_expr_head({ ...frame.sc,
-        rest: [...frame.flds.slice(i + 1), ...frame.sc.rest] },
+        rest: rest_new(frame.flds, i + 1, false, frame.sc.rest) },
       frame.flds[i], frame.tys[i] ?? null,
       frame.mode === "node" ? frame.lay.arms![frame.x.k]?.[i] ?? null : null);
       if ("ws" in child) {
@@ -2879,7 +2930,7 @@ function emit_expr_head(sc: Scope, tm: HTerm, ty0: HTerm | null,
       case "Let": {
         const o = term_open(x);
         if (let_live(x)[0]) {
-          emit_let({ ...sc, rest: [o.b, ...sc.rest] }, x);
+          emit_let({ ...sc, rest: rest_new([o.b], 0, false, sc.rest) }, x);
         }
         tm = o.b;
         ty0 = null;
@@ -2910,7 +2961,7 @@ function emit_zero(ty: HTerm | null): Val {
 function emit_let(sc: Scope, x: Of<"Let">): void {
   const o = term_open(x);
   bind_uses(sc, o.ps[0], val_hold(sc, emit_expr(sc, x.v[0], null, null),
-    x.k[0]), [o.b], ty_ann(x.v[0])!);
+    x.k[0]), rest_new([o.b], 0, false, null), ty_ann(x.v[0])!);
 }
 
 function emit_body(sc: Scope, tm: HTerm, ty0: HTerm | null,
@@ -2933,7 +2984,8 @@ function emit_body(sc: Scope, tm: HTerm, ty0: HTerm | null,
       }
       const o = term_open(x);
       bind_uses(sc, o.ps[0], val_hold(sc, val_to(sc, args[0],
-        lay_at(all.A, args[0])), x.k), [o.b], all.A);
+        lay_at(all.A, args[0])), x.k), rest_new([o.b], 0, false, null),
+      all.A);
       return emit_body(sc, o.b, all.B(DUMMY), ers, args.slice(1), dst);
     }
     case "Mat":
@@ -2946,19 +2998,20 @@ function emit_body(sc: Scope, tm: HTerm, ty0: HTerm | null,
         return emit_fork(sc, x, ers);
       }
       const o = term_open(x);
-      emit_let({ ...sc, rest: [o.b] }, x);
-      bind_dead(sc, [o.b]);
+      const body = rest_new([o.b], 0, false, null);
+      emit_let({ ...sc, rest: body }, x);
+      bind_dead(sc, body);
       return emit_body(sc, o.b, null, ers, [], dst);
     }
     default: {
       if (args.length > 0) {
         return emit_body(sc, term_eta(x, ty!, 1), ty, ers, args, dst);
       }
-      sc = { ...sc, rest: [] };
+      sc = { ...sc, rest: null };
       const ck = term_spine(x);
       if (ck.k === null) {
         const v = emit_expr(sc, x, ty, dst?.lay ?? sc.seg.ret);
-        bind_dead(sc, []);
+        bind_dead(sc, null);
         return emit_put(sc, dst, v);
       }
       const f = sc.seg.fid.startsWith("spin_") ? fun_at(ck) : fun_of(ck.k);
@@ -2986,15 +3039,18 @@ function emit_fork(sc: Scope, x: Of<"Let">, ers: HTerm[]): void {
   const fork = calls.length > 1;
   const name = seg_name(sc, "j");
   let hold: Of<"Var">[] = [];
+  // A fork and every step of its chain end in the same pending body.
+  const body_rest = rest_new([o.b], 0, false, null);
   if (fork) {
     spare_flush(sc);
     sc.seg.fork = true;
     const pl = { ...sc, uses: new Map(sc.uses) };
     block(pl, "if (!seq) {", () => {
       const margs = calls.map((c, j) => emit_args({ ...pl,
-        rest: [...x.v.filter((_, i) => i !== j), o.b] }, c, false, true));
+        rest: rest_new(x.v.filter((_, i) => i !== j), 0, false,
+          body_rest) }, c, false, true));
       const live = [...pl.uses].filter(([p, b]) =>
-        !val_brw(pl, b.val) || rest_use([o.b], p) > 0);
+        !val_brw(pl, b.val) || rest_use(body_rest, p) > 0);
       hold = live.map(([p]) => p);
       const caps = live.flatMap(([, b]) => b.val.ws);
       const jn = emit_task(pl, seg_fid(name), calls.length, caps);
@@ -3016,7 +3072,8 @@ function emit_fork(sc: Scope, x: Of<"Let">, ers: HTerm[]): void {
   const pos = new Map<Of<"Var">, number>();
   let depth = 0;
   calls.forEach((c, i) => {
-    const cargs = emit_args({ ...sc, rest: [chain[i]] }, c);
+    const cargs = emit_args({ ...sc,
+      rest: rest_new([chain[i]], 0, false, null) }, c);
     const vs = [...sc.uses].filter(([p]) => i === 0 || p === o.ps[i - 1]);
     const kn = seg_name(sc, "k");
     spare_flush(sc);
@@ -3038,7 +3095,8 @@ function emit_fork(sc: Scope, x: Of<"Let">, ers: HTerm[]): void {
     const at = held.flatMap(([p, b]) => b.val.ws.map((_, j) =>
       pos.get(p)! + j - (last ? 0 : depth)));
     const ret = fun_of(c.k!).ret;
-    const rest = [...hold, chain[i]];
+    const rest = rest_new(hold, 0, false,
+      rest_new([chain[i]], 0, false, null));
     const rs = val_new(ret.ks.map(() => name_local(sc, o.ps[i].k)), ret);
     sc = seg_open(sc, kn, sc.seg.ret, { pop: last ? depth : 0, at }, held, rs,
       rest);
@@ -3048,7 +3106,7 @@ function emit_fork(sc: Scope, x: Of<"Let">, ers: HTerm[]): void {
     const live = [...sc.uses];
     emit_jump(sc, live.flatMap(([, b]) => b.val.ws), name);
     sc = seg_open(sc, name, sc.seg.ret, null, live, val_new([], lay_pack([])),
-      [o.b]);
+      body_rest);
   }
   emit_body(sc, o.b, null, ers, [], null);
 }
@@ -3106,7 +3164,7 @@ function emit_match(sc: Scope, x: Of<"Mat"> | Of<"Efq">,
   const sw = u.ws[0];
   const tab = emit_tab(sc, cells, ret, sw);
   if (tab !== null) {
-    bind_dead(sc, []);
+    bind_dead(sc, null);
     return emit_put(sc, dst, val_new([tab], lay_of(ret)));
   }
   const is = (c: Name) => `term_aux(${sw}) == ${cid_mac(c)}`;
@@ -3143,7 +3201,7 @@ function emit_match(sc: Scope, x: Of<"Mat"> | Of<"Efq">,
     });
   emit_chain(sc, lv.map(([c, h, fs]) => [c, () => {
     const al = { ...sc, uses: new Map(sc.uses), spares: sc.spares.slice() };
-    bind_dead(al, [h]);
+    bind_dead(al, rest_new([h], 0, false, null));
     emit_body(al, h, null, ers, [...fs(al), ...args.slice(1)], dst);
     if (dst !== null) {
       spare_flush(al);
