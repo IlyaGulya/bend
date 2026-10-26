@@ -22,6 +22,11 @@ latest one; the GitHub release carries the same notes.
   Supplementary Unicode scalars preserve character order and count in native,
   JS and interpreted execution; full-root memory acceptance remains separate.
 
+- Native spin specialization keys reuse interned layout IDs instead of copying
+  the shared layout graph into JSON. Parameter, result and erased-layout groups
+  remain distinct. Nine C/JS programs pass and eight prior artifacts preserve
+  their bytes; complete compiler-root verification is separate.
+
 - A body-scoped normalized-type cache experiment preserved eight C/JS outputs,
   but its full native build still exceeded the 8 GiB footprint guard. It was
   rejected and reverted; no memory improvement or compiler acceptance is claimed.

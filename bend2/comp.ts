@@ -2792,9 +2792,19 @@ function emit_open(sc: Scope, k: Name, f = fun_of(k)): [Scope, Val[]] {
   return [{ ...sc, seg, spares: [], uses: new Map(), def: k }, vals];
 }
 
+// Layouts are singleton atoms or interned complete graphs. Their file-local
+// identity is an exact cache key without serializing a shared DAG as a tree.
+function lay_id(lay: Lay): number {
+  let id = FL.lay_ids.get(lay);
+  if (id === undefined) {
+    FL.lay_ids.set(lay, id = FL.lay_ids.size);
+  }
+  return id;
+}
+
 function emit_native(sc: Scope, k: Name, ers: HTerm[], f: Fun): string {
-  const key = [k, JSON.stringify([f.lays, f.ret]), ...ers.map((e) =>
-    memo(FL.lay_ids, lay_of(e), () => FL.lay_ids.size))].join("|");
+  const key = [k, f.lays.map(lay_id).join(","), lay_id(f.ret),
+    ers.map((e) => lay_id(lay_of(e))).join(",")].join("|");
   return seg_ref(sc, memo(FL.spun, key, () => {
     const name = `spin_${FL.spun.size}`;
     FL.spun.set(key, name);
