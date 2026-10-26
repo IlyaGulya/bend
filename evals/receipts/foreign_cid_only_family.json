@@ -1,0 +1,143 @@
+{
+  "status": "FOREIGN_CID_ONLY_FAMILY_RED_GREEN_PASS",
+  "scope": "Foreign-only constructor family discovery: before C link failure, after real C construction/drop and JS execution",
+  "inputs": {
+    "/private/tmp/bend2039-upgrade/bend2/comp.ts": "cfc9817a29e3a11b0b9fc0ab279834bc709bb3aaee9da3153827fa24fcd79511",
+    "/private/tmp/bend-producer-hotpath2039/bend2/comp.ts": "3e4edcae9b8e41c027f8a68ff15d7b419c18c1b1009b97e794f432fc31194c0e",
+    "/private/tmp/bend2039-upgrade/tests/io/cid_only_family.bend": "af71d06df294f351327179d31c52b4ef05a52436c114a16f2ee1dbf27e81e9e9",
+    "/private/tmp/bend2039-upgrade/tests/io/cid_only_family.c": "6d8b8e5f96e04bc38902f4695a6f8aa0764a9e07cf930c1db8949cc1147ce6ca",
+    "/private/tmp/bend2039-upgrade/tests/io/cid_only_family.js": "ca50bcc077297800ee01f93d1c2199ee97e92a9d3d1f6f7e1b0c6247897b63f3"
+  },
+  "rows": [
+    {
+      "name": "before-emit",
+      "args": [
+        "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+        "bend2/main.ts",
+        "/private/tmp/bend2039-upgrade/tests/io/cid_only_family.bend",
+        "-o",
+        "/tmp/bend2039-cid-discovery-nwpaHj/before.c"
+      ],
+      "cwd": "/private/tmp/bend-producer-hotpath2039",
+      "exit": 0,
+      "stdout": "",
+      "stderr": "",
+      "elapsedMs": 950.9438339999999
+    },
+    {
+      "name": "before-clang",
+      "args": [
+        "clang",
+        "-std=c11",
+        "-O0",
+        "-pthread",
+        "/tmp/bend2039-cid-discovery-nwpaHj/before.c",
+        "-lm",
+        "-o",
+        "/tmp/bend2039-cid-discovery-nwpaHj/before"
+      ],
+      "cwd": "/private/tmp/bend2039-upgrade",
+      "exit": 1,
+      "stdout": "",
+      "stderr": "/tmp/bend2039-cid-discovery-nwpaHj/before.c:3171:26: error: use of undeclared identifier 'CID_CidOnlyPair'\n 3171 |   Term pair = io_node(e, CID_CidOnlyPair, (Term)20, (Term)22);\n      |                          ^~~~~~~~~~~~~~~\n1 error generated.\n",
+      "elapsedMs": 330.244542
+    },
+    {
+      "name": "after-emit",
+      "args": [
+        "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+        "bend2/main.ts",
+        "/private/tmp/bend2039-upgrade/tests/io/cid_only_family.bend",
+        "-o",
+        "/tmp/bend2039-cid-discovery-nwpaHj/after.c",
+        "-o",
+        "/tmp/bend2039-cid-discovery-nwpaHj/after.js"
+      ],
+      "cwd": "/private/tmp/bend2039-upgrade",
+      "exit": 0,
+      "stdout": "",
+      "stderr": "",
+      "elapsedMs": 502.5425409999998
+    },
+    {
+      "name": "after-clang",
+      "args": [
+        "clang",
+        "-std=c11",
+        "-O0",
+        "-pthread",
+        "/tmp/bend2039-cid-discovery-nwpaHj/after.c",
+        "-lm",
+        "-o",
+        "/tmp/bend2039-cid-discovery-nwpaHj/after"
+      ],
+      "cwd": "/private/tmp/bend2039-upgrade",
+      "exit": 0,
+      "stdout": "",
+      "stderr": "",
+      "elapsedMs": 465.5323330000001
+    },
+    {
+      "name": "native",
+      "args": [
+        "/tmp/bend2039-cid-discovery-nwpaHj/after"
+      ],
+      "cwd": "/private/tmp/bend2039-upgrade",
+      "exit": 0,
+      "stdout": "42\n",
+      "stderr": "",
+      "elapsedMs": 6.270582999999988
+    },
+    {
+      "name": "javascript",
+      "args": [
+        "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+        "/tmp/bend2039-cid-discovery-nwpaHj/after.js"
+      ],
+      "cwd": "/private/tmp/bend2039-upgrade",
+      "exit": 0,
+      "stdout": "42\n",
+      "stderr": "",
+      "elapsedMs": 67.4228750000002
+    },
+    {
+      "name": "interpreter",
+      "args": [
+        "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+        "bend2/main.ts",
+        "/private/tmp/bend2039-upgrade/tests/io/cid_only_family.bend"
+      ],
+      "cwd": "/private/tmp/bend2039-upgrade",
+      "exit": 0,
+      "stdout": "42\n",
+      "stderr": "",
+      "elapsedMs": 778.47975
+    }
+  ],
+  "schemaVersion": 1,
+  "guard": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 105103360,
+    "peakFootprintBytes": 60507336,
+    "elapsedMs": 3182,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "bun",
+      "/tmp/bend2039-cid-discovery-smoke.ts"
+    ],
+    "label": "heavy command",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793021856363-0b90c69568200def.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "note": "Before producer emits C but clang rejects missingCID_CidOnlyPair. Current producer emits and links; native construction/drop, emittedJS and interpreter each print42. This is a consumer compile/runtime regression, not a full-root acceptance."
+}
