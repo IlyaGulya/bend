@@ -2653,9 +2653,12 @@ function emit_args(sc: Scope, ck: Spine, jump = false, fork = false,
   });
   const xs = ck.xs.map(term_strip);
   const vars = xs.filter((x) => x.$ === "Var");
+  // Every argument of this call shares the same pending sibling-variable list,
+  // so build that link once instead of once per argument.
+  const vrest = rest_new(vars, 0, false, sc.rest);
   const vs = ck.xs.map((a, i) => xs[i].$ === "Var" ? null
-    : emit_expr({ ...sc, rest: rest_new(xs, i + 1, true, rest_new(vars, 0,
-      false, sc.rest)) }, a, null, lays[i]));
+    : emit_expr({ ...sc, rest: rest_new(xs, i + 1, true, vrest) },
+      a, null, lays[i]));
   xs.forEach((x, i) => vs[i] ??= brw[i] ? null : bind_pop(sc, x));
   return xs.flatMap((x, i) => {
     const at = k + "~" + i;
