@@ -418,7 +418,8 @@ async function compileBody(o:Options,profile?:CompilerProfile){
     cPath:o.artifact+'.c',cSha256:sha(c),artifact:o.artifact,
     runtime:{name:process.versions.bun?'bun':'node',executable:process.execPath,execArgv:process.execArgv,
       ...(process.versions.bun
-        ?{bun:process.versions.bun,revision:Bun.revision,heapLimitMiB:null,stackMiB:null,stack:'Bun main-thread default'}
+        ?{bun:process.versions.bun,revision:Bun.revision,heapLimitMiB:null,stackMiB:null,stack:'Bun main-thread default',
+          automaticGcRamHint:{source:'BUN_JSC_forceRAMSize',bytes:process.env.BUN_JSC_forceRAMSize??null,hardLimit:false}}
         :{node:process.versions.node,v8:process.versions.v8,heapLimitMiB:3072,stackMiB:256}),
       manualGC:false,
       profiling:o.profileDir
