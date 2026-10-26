@@ -460,3 +460,12 @@ Guardian reports `RESOURCE_LIMIT`, complete/stopped, exit 73. No C artifact
 exists. This is not a V8 heap OOM or a completed native build. Exact workload,
 producer, command and boundaries:
 `evals/receipts/native03d0_bun_ctor_fixed_rss.json`.
+
+A separately instrumented replay records every latest definition entry and
+one aggregate row per second. It completes 9,562 definitions, including the
+transport's `files`, `runtime` and `program`, then hits physical footprint
+8,590,711,456 B while `profile_emitter_runtime` is open (165,492 ms; peak RSS
+8,185,561,088 B). No C artifact. The observer changes timing/GC scheduling:
+this does not identify the original 29 s replay's last definition, prove a
+retention cause, or establish codegen completion. Receipt:
+`evals/receipts/native03d0_bun_last_definition_rss.json`.
