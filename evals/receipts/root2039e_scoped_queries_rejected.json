@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "status": "REJECTED_BODY_SCOPED_QUERY_CACHE_FOOTPRINT_LIMIT",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "sourceCommit": "9f72ce9a",
+  "report": "/private/tmp/bend2039-upgrade/checkpoints/root-release2039e-scoped-queries-build.json",
+  "guardian": {
+    "status": "RESOURCE_LIMIT",
+    "reason": "physical_footprint_limit",
+    "commandExitCode": -1,
+    "commandSignal": 15,
+    "peakRssBytes": 8661925888,
+    "peakFootprintBytes": 8720685944,
+    "elapsedMs": 45431,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 73,
+    "command": [
+      "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+      "--smol",
+      "/private/tmp/bend2039-upgrade/evals/native_compiler_experiment.ts",
+      "--mode=build",
+      "--corpus=checkpoints/root-release2039e-native.corpus.json",
+      "--artifact=/tmp/bend2039-scoped-queries-native",
+      "--report=checkpoints/root-release2039e-scoped-queries-build.json",
+      "--cc-opt=0",
+      "--internal=build"
+    ],
+    "label": "Native CPU compiler build",
+    "exitCode": 73,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793023278648-885ab9efcfe83d06.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "lastProgress": {
+    "phase": "compile_book",
+    "event": "start",
+    "unixMs": 1793023286751,
+    "pid": 41674,
+    "worker": false,
+    "rssBytes": 2614247424,
+    "heapUsedBytes": 1429378140,
+    "cpuMs": 9536.019,
+    "checkedDefinitions": 12111
+  },
+  "failure": {
+    "phase": "compile_book",
+    "diagnostic": "physical_footprint_limit"
+  },
+  "notes": "All 12111 checked bodies validate. Actual native producer exceeded unchanged8192MiB physical footprint during compile_book; no C/binary published. Eight small emitted C/JS behaviors and bytes pass separately. No memory improvement claim; per-body cache replacement will be reverted rather than kept without a completed benefit."
+}
