@@ -945,9 +945,18 @@ function ty_ann(t: HTerm): HTerm | null {
   return v.$ === "Ann" ? v.T : null;
 }
 
+// A type's weak-head answer is a fact about the term alone, and one instance's
+// constructor nodes ask their field types again per node. Answer each term
+// object once: the machine allocates its frames per call even for a head that
+// is already a value.
 function ty_wnf(ty: HTerm | null): HTerm | null {
-  const t = ty && Bend.term_wnf(FL.book, ty);
-  return t?.$ === "Rwt" ? ty_wnf(t.f) : t;
+  if (ty === null) {
+    return null;
+  }
+  return memo(FL.wnfs, ty, () => {
+    const t = Bend.term_wnf(FL.book, ty);
+    return t.$ === "Rwt" ? ty_wnf(t.f) : t;
+  });
 }
 
 function ty_all(ty: HTerm | null): Of<"All"> {
@@ -1221,18 +1230,47 @@ function ctr_adt(x: Of<"Ctr">,
     ? Bend.u32_from_term(x, adt.k) : null];
 }
 
+// The field domains of a constructor instance are its telescope with the
+// datatype's arguments filled in. A fill is a fresh term, so asking twice
+// rebuilds the same types and walks the same telescope, while every
+// constructor node of one instance asks the same question. Terms and their
+// argument arrays are immutable, so each instance answers once: a later node
+// of the same instance reads the answer instead of rebuilding it. A
+// constructor with no arguments is its own telescope, which tele_unbind
+// already answers per term object. A spent telescope and all-live fields
+// share their array rather than copying it; nothing mutates a published one.
+type CtrDoms = { tail: Dom[]; live: Dom[]; doms: HTerm[] };
+
+function ctr_domains(ctr: Bend.Ctr, xs?: HTerm[]): CtrDoms {
+  const at = xs !== undefined && xs.length > 0 ? xs : null;
+  if (at === null) {
+    return memo(FL.ctr_own, ctr, () => ctr_domains_new(ctr));
+  }
+  return memo<HTerm[], CtrDoms>(
+    memo<Bend.Ctr, WeakMap<HTerm[], CtrDoms>>(FL.ctr_fills, ctr,
+      () => new WeakMap<HTerm[], CtrDoms>()),
+    at, () => ctr_domains_new(ctr, at));
+}
+
+function ctr_domains_new(ctr: Bend.Ctr, xs?: HTerm[]): CtrDoms {
+  const doms = (xs === undefined
+    ? tele_unbind(ctr.T)
+    : Bend.tele_unbind(FL.book, tele_fill(ctr.T, xs))).doms;
+  const tail = doms.length === ctr.n ? doms : doms.slice(doms.length - ctr.n);
+  const live = tail.every(dom_live) ? tail : tail.filter(dom_live);
+  return { tail, live, doms: live.map(([, , A]) => A) };
+}
+
 function ctr_tail(ctr: Bend.Ctr, xs?: HTerm[]): Dom[] {
-  const doms = (xs ? Bend.tele_unbind(FL.book, tele_fill(ctr.T, xs))
-    : tele_unbind(ctr.T)).doms;
-  return doms.slice(doms.length - ctr.n);
+  return ctr_domains(ctr, xs).tail;
 }
 
 function ctr_live(ctr: Bend.Ctr, xs?: HTerm[]): Dom[] {
-  return ctr_tail(ctr, xs).filter(dom_live);
+  return ctr_domains(ctr, xs).live;
 }
 
 function ctr_doms(ctr: Bend.Ctr, xs?: HTerm[]): HTerm[] {
-  return ctr_live(ctr, xs).map(([, , A]) => A);
+  return ctr_domains(ctr, xs).doms;
 }
 
 function lay_holds(A: HTerm | null, lay: Lay, fam: Name): Lay {
@@ -1247,7 +1285,10 @@ function lay_holds(A: HTerm | null, lay: Lay, fam: Name): Lay {
 
 function ctr_flds(k: Name, xs: HTerm[]): HTerm[] {
   const ds = FL.book.ctrs[k] ? ctr_tail(FL.book.ctrs[k]) : [];
-  return xs.filter((_, j) => !ds[j] || dom_live(ds[j]));
+  // Every live field is the whole argument list: share it instead of copying
+  // it, which is what an erased (dependent or quantity) field alone changes.
+  return ds.length === 0 || ds.every(dom_live) ? xs
+    : xs.filter((_, j) => !ds[j] || dom_live(ds[j]));
 }
 
 function src_add(k: Name): void {
@@ -1735,6 +1776,9 @@ function file_new(book: Bend.Book, js: boolean, options: JSOptions = {}) {
     ids: new Map<string, string>(),
     taken: new Set("FID_EXIT FID_ENTER FID_T CID_T $pc".split(" ")),
     teles: new WeakMap<HTerm, { doms: Dom[]; ret: HTerm }>(),
+    wnfs: new WeakMap<HTerm, HTerm>(),
+    ctr_own: new WeakMap<Bend.Ctr, CtrDoms>(),
+    ctr_fills: new WeakMap<Bend.Ctr, WeakMap<HTerm[], CtrDoms>>(),
     steps: new WeakMap<Of<"Lit">, HTerm>(),
     num_steps: new Map<Name, Map<number, HTerm>>(),
     opens: new Map<string, boolean>(),
