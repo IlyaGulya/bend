@@ -74,7 +74,7 @@ type Rest = {
   xs: readonly HTerm[];
   at: number;
   skipvar: boolean;
-  n: number;
+  n?: number;
   next: Rest;
 } | null;
 
@@ -844,11 +844,15 @@ function rest_new(xs: readonly HTerm[], at: number, skipvar: boolean,
   if (at >= xs.length) {
     return next;
   }
-  const n = (next === null ? 0 : next.n) + 1;
-  if (n > FL.rest_max) {
-    FL.rest_max = n;
+  const rest: Rest = { xs, at, skipvar, next };
+  if (FL.options.observe) {
+    const n = (next?.n ?? 0) + 1;
+    rest.n = n;
+    if (n > FL.rest_max) {
+      FL.rest_max = n;
+    }
   }
-  return { xs, at, skipvar, n, next };
+  return rest;
 }
 
 function rest_each(rest: Rest, f: (x: HTerm) => void): void {
