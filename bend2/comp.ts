@@ -590,11 +590,25 @@ function name_clean(k: string): string {
   return k.replace(/[^A-Za-z0-9_]/g, "_");
 }
 
+// A local's name is its cleaned stem and a fresh counter. Every node a body
+// decomposes asks the same few stems, so clean a stem once per definition
+// instead of once per local; the counter is still per stem, so the names are
+// the ones the cleaner alone would produce.
+function name_pre(k: Name): string {
+  const seen = FL.names.get(k);
+  if (seen !== undefined) {
+    return seen;
+  }
+  const pre = "_" + name_clean(k).replace(/^_+/, "") + "_";
+  FL.names.set(k, pre);
+  return pre;
+}
+
 function name_local(sc: Scope, k: Name): string {
-  const base = name_clean(k).replace(/^_+/, "");
-  const n = sc.fresh.get(base) ?? 0;
-  sc.fresh.set(base, n + 1);
-  return `_${base}_${n}`;
+  const pre = name_pre(k);
+  const n = sc.fresh.get(pre) ?? 0;
+  sc.fresh.set(pre, n + 1);
+  return pre + n;
 }
 
 function name_id(pre: string, k: string): string {
@@ -1252,7 +1266,8 @@ function lay_c(k: Kind): string {
 }
 
 function lay_packed(lay: Lay): boolean {
-  return ["", "w32"].includes(lay.ks.join());
+  return lay.ks.length === 0
+    || (lay.ks.length === 1 && lay.ks[0] === "w32");
 }
 
 function lay_arr(lay: Lay) {
@@ -1816,6 +1831,7 @@ function file_new(book: Bend.Book, js: boolean, options: JSOptions = {}) {
     lits: new Map<string, number>(),
     consts: new Map<Lay, Map<HTerm, Val>>(),
     ids: new Map<string, string>(),
+    names: new Map<Name, string>(),
     taken: new Set("FID_EXIT FID_ENTER FID_T CID_T $pc".split(" ")),
     teles: new WeakMap<HTerm, { doms: Dom[]; ret: HTerm }>(),
     wnfs: new WeakMap<HTerm, HTerm>(),
@@ -1942,6 +1958,7 @@ function file_higher(k: Name): HTerm | null {
 // Literal images, layouts, signatures and emitted segments remain valid.
 function file_release(k: Name, final = false, lines?: string[]): void {
   FL.higher.clear();
+  FL.names.clear();
   if (!FL.js) {
     FL.consts.clear();
   }
@@ -2227,9 +2244,10 @@ function val_new(ws: string[], lay: Lay, stat = false): Val {
   return { ws, lay, stat };
 }
 
-function val_arm(v: Val, k = lay_arms(v.lay)[0]): Val[] {
-  let at = Number(lay_arms(v.lay).length > 1);
-  return v.lay.arms![k].map((lay) =>
+function val_arm(v: Val, k?: Name): Val[] {
+  const arms = lay_arms(v.lay);
+  let at = Number(arms.length > 1);
+  return v.lay.arms![k ?? arms[0]].map((lay) =>
     val_new(v.ws.slice(at, at += lay.ks.length), lay));
 }
 
