@@ -1,0 +1,240 @@
+{
+  "schemaVersion": 1,
+  "kind": "INSTALLED_BEND_RELEASE_UPDATE",
+  "status": "CLI_UPDATED_SOURCE_BASELINE_UNCHANGED",
+  "previousDefault": "2.0.36",
+  "currentDefault": "2.0.39",
+  "checkoutCliVersion": "2.0.37",
+  "release": {
+    "url": "https://github.com/bendlang/bend/releases/tag/v2.0.39",
+    "tag": "v2.0.39",
+    "commit": "a3efe8a3801f423827424227172eed9802c5e6cb",
+    "archiveSha256": "d4aaef68de545727429ce83b9e88ff3273bf068df599e3542e446755b5f3d83a",
+    "installer": "https://bend-lang.com/install.sh",
+    "command": [
+      "env",
+      "BEND_HOME=/Users/ilyagulya/.bend-2.0.39",
+      "bend",
+      "update"
+    ]
+  },
+  "pins": [
+    {
+      "path": "/Users/ilyagulya/.bend-2.0.39/bin/bend",
+      "bytes": 63901808,
+      "sha256": "fdd7d89be0904c4beb87c8daf7dc141eb95c0e082c4990df9d7f912097490680"
+    },
+    {
+      "path": "/Users/ilyagulya/.bend-2.0.39/bend2/base.bend",
+      "bytes": 79477,
+      "sha256": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce"
+    },
+    {
+      "path": "/Users/ilyagulya/.local/bin/bend",
+      "bytes": 646,
+      "sha256": "ad7080371570eb6168e045a38f66881561fcc35a6d8607525d8a554fbd8fc2a4"
+    },
+    {
+      "path": "/Users/ilyagulya/.local/bin/bend-2.0.39",
+      "bytes": 146,
+      "sha256": "3fe51c098514948a416bfb6e1cbc8c663d565261fc4e5519aa0170d7b91b30e6"
+    }
+  ],
+  "verification": {
+    "versionStdout": "bend 2.0.39",
+    "native1024": {
+      "expected": "1024n",
+      "observed": "1024n",
+      "artifacts": [
+        {
+          "path": "/tmp/bend-2039-update-smoke-1024.c",
+          "bytes": 125867,
+          "sha256": "78cde1bf6869e5f4ec4e8cf53e9415cfcae15069fad2a7f900a66e3d6179bb9b"
+        },
+        {
+          "path": "/tmp/bend-2039-update-smoke-1024",
+          "bytes": 88712,
+          "sha256": "8c3d29c4d66e5a064ac83e6f42f8026a60ea5bcd3be11d24b75efb2154a0b674"
+        }
+      ]
+    },
+    "large8192": {
+      "status": "STACK_FAILURE_PRESERVED_ON_RELEASE_2_0_39",
+      "diagnostic": "Error: the machine stack overflowed (a deep recursion, or a literal too large to expand)",
+      "source": {
+        "path": "/private/tmp/bend-fir-integrated57ab/evals/repro_bun_c_ctor_stack_8192.bend",
+        "bytes": 8291,
+        "sha256": "8b394a24444a30e5e35441eadb82bda122151c589c668a58f2d6590b105784c1"
+      }
+    },
+    "rejectedLaunch": {
+      "status": "LOCK_BUSY",
+      "scope": "Default-launcher interpreter smoke did not start because Main scheduled two exclusive commands concurrently; not a compiler failure and not execution evidence."
+    }
+  },
+  "guardians": [
+    {
+      "pin": {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792998883401-3ba6a80cc682d4b5.json",
+        "bytes": 626,
+        "sha256": "4ed03067f721e68f3d3205f0d742ea8defcacc07369a2afcbb009161b797ad0e"
+      },
+      "report": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 88309760,
+        "peakFootprintBytes": 61407856,
+        "elapsedMs": 385,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "env",
+          "BEND_NO_TELEMETRY=1",
+          "/Users/ilyagulya/.bend-2.0.39/bin/bend",
+          "evals/repro_bun_c_ctor_stack_1024.bend",
+          "-o",
+          "/tmp/bend-2039-update-smoke-1024.c"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792998883401-3ba6a80cc682d4b5.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "pin": {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792998883859-c31a15e5ed26ff62.json",
+        "bytes": 595,
+        "sha256": "d3455853b566ba533696bf0afb5849fff4d270006c8d5845c29f8e63830f6e76"
+      },
+      "report": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 71680000,
+        "peakFootprintBytes": 32637624,
+        "elapsedMs": 33450,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "clang",
+          "-std=c11",
+          "-O0",
+          "-pthread",
+          "/tmp/bend-2039-update-smoke-1024.c",
+          "-lm",
+          "-o",
+          "/tmp/bend-2039-update-smoke-1024"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792998883859-c31a15e5ed26ff62.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "pin": {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792998917443-276c06db224200b7.json",
+        "bytes": 499,
+        "sha256": "4bd13e1bf296231480c3fdfe077047eba150d452ae28fc8d4f56bd335430aa08"
+      },
+      "report": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 0,
+        "peakFootprintBytes": 819392,
+        "elapsedMs": 17,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/tmp/bend-2039-update-smoke-1024"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792998917443-276c06db224200b7.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "pin": {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792998986319-d369f300b5f78078.json",
+        "bytes": 566,
+        "sha256": "054885fde65131e577eab1633686b1c9342ad7f03448e1e205e0f5e1d1e824a2"
+      },
+      "report": {
+        "status": "FAIL",
+        "reason": "command_exit",
+        "commandExitCode": 1,
+        "commandSignal": 0,
+        "peakRssBytes": 147357696,
+        "peakFootprintBytes": 122995432,
+        "elapsedMs": 353,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 1,
+        "command": [
+          "bend",
+          "evals/repro_bun_c_ctor_stack_8192.bend",
+          "-o",
+          "/tmp/bend-2039-update-smoke-8192.c"
+        ],
+        "label": "heavy command",
+        "exitCode": 1,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792998986319-d369f300b5f78078.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "pin": {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792998986498-1714f4378fcb6ae5.json",
+        "bytes": 521,
+        "sha256": "a2a4050c381942ad1419a892cc6e812db0365f9fce5ad1b4946f6b7aed385280"
+      },
+      "report": {
+        "status": "LOCK_BUSY",
+        "reason": "exclusive_lock_busy",
+        "commandExitCode": -1,
+        "commandSignal": 0,
+        "peakRssBytes": 0,
+        "peakFootprintBytes": 0,
+        "elapsedMs": 0,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": null,
+        "supervisorExitCode": 75,
+        "command": [
+          "bend",
+          "evals/repro_bun_c_ctor_stack_1024.bend"
+        ],
+        "label": "heavy command",
+        "exitCode": 75,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792998986498-1714f4378fcb6ae5.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    }
+  ],
+  "sourceUpgrade": {
+    "status": "NOT_MERGED",
+    "comparison": "v2.0.37..v2.0.39",
+    "scope": "121 upstream commits; comp.ts 1821 changed lines; bend.ts 4 changed lines; base/effects changes. Installed release omits comp.ts/bend.ts; the compiled CLI embeds them.",
+    "unchanged": "No repository source, frozen corpus, historical receipt, bootstrap ABI or source SHA pin was rewritten."
+  },
+  "acceptanceEvidence": false
+}

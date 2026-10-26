@@ -36,6 +36,22 @@ Main-scoped facts. A receipt's existence is not acceptance: its recorded status
 is named. Where this note did not verify a record, it says "scope not verified
 by note". A JS-generated report is not a native artifact receipt.
 
+**Release-upgrade boundary (2026-10-26):** the user selected upgrading the
+selfhost source baseline to upstream **Bend 2.0.39**, before another heavy run.
+The installed default CLI was upgraded from 2.0.36 to 2.0.39 beside the older
+releases; its 1,024-character native smoke emitted C, linked and printed
+`1024n`. The 8,192-character witness still fails compilation with a machine
+stack overflow on the official 2.0.39 release. Receipt:
+`evals/receipts/installed_bend_2039.json`. Installation is not a source merge,
+producer-memory fix, parser re-admission or bootstrap acceptance.
+The source handoffs on the old baseline are preserved separately:
+`96b371f3` (producer allocation changes; 8 GiB outcome unverified),
+`06a03a41` (selfhost non-tail JS machine; end-to-end emission unverified),
+`68a9d0fb` (shared emitter consumers; composed CLI execution unverified),
+and `7ee53ff3` (guarded-ready checker-cost probe; no accepted execution).
+Their source integration and the 2.0.39 re-admission are pending. The
+pre-upgrade results below remain image-scoped historical evidence.
+
 Latest compiler root: **`db147cba`**, after an authenticated inline-parser
 cutover in `/private/tmp/bend-parser-cutover667`. Fresh native admission checks
 all 11,889 bodies / 12,450 events with 0 exclusions/patches and unchanged
