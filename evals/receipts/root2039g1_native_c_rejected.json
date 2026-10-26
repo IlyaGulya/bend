@@ -1,0 +1,375 @@
+{
+  "schemaVersion": 1,
+  "status": "REJECTED_G1_NATIVE_TOOL_PATH_AND_C_RUNTIME_SLOT",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "sourceVersion": "bbff918c",
+  "native": {
+    "status": "FAIL",
+    "checkedDefinitions": 12140,
+    "eventsFullyValidated": 12719,
+    "codegenMs": 531587.047459,
+    "validationMs": 2548.169292,
+    "cPath": "/tmp/bend2039g1-native.c",
+    "cSha256": "fb46fada7566cdd1fbd804e3e242f689f05ceba3c22b8e727c4ff898223311c4",
+    "cBytes": 55191134,
+    "runtime": {
+      "name": "bun",
+      "executable": "/opt/homebrew/Cellar/bun/1.4.3/bin/bun",
+      "execArgv": [],
+      "bun": "1.4.3",
+      "revision": "c6da4a4d3010e5553438c60f6bd76d981976867c",
+      "heapLimitMiB": null,
+      "stackMiB": null,
+      "stack": "Bun main-thread default",
+      "automaticGcRamHint": {
+        "source": "BUN_JSC_forceRAMSize",
+        "bytes": "4294967296",
+        "hardLimit": false
+      },
+      "manualGC": false,
+      "profiling": null
+    },
+    "guardian": {
+      "status": "FAIL",
+      "reason": "command_exit",
+      "commandExitCode": 2,
+      "commandSignal": 0,
+      "peakRssBytes": 5096554496,
+      "peakFootprintBytes": 5240607952,
+      "elapsedMs": 537594,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 1,
+      "command": [
+        "/opt/homebrew/Cellar/bun/1.4.3/bin/bun",
+        "--smol",
+        "/private/tmp/bend2039-upgrade/evals/native_compiler_experiment.ts",
+        "--mode=build",
+        "--corpus=checkpoints/root-release2039g1-native.corpus.json",
+        "--artifact=/tmp/bend2039g1-native",
+        "--report=checkpoints/root-release2039g1-native-build.json",
+        "--cc-pipeline=llvm-split",
+        "--llvm-bin=/opt/homebrew/opt/llvm21/bin",
+        "--cc-opt=1",
+        "--internal=build"
+      ],
+      "label": "Native CPU compiler build",
+      "exitCode": 1,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793033085270-bf15a9abea0028f9.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "failure": {
+      "phase": "llvm-pipeline",
+      "diagnostic": "Error: /opt/homebrew/Cellar/bun/1.4.3/bin/bun failed: 2 null"
+    },
+    "backend": {
+      "kind": "llvm-split",
+      "status": "FAIL",
+      "optimization": "-O1",
+      "partitions": 4,
+      "maxBackendChildren": 3,
+      "source": "/tmp/bend2039g1-native.c",
+      "sourceSha256": "fb46fada7566cdd1fbd804e3e242f689f05ceba3c22b8e727c4ff898223311c4",
+      "artifact": "/tmp/bend2039g1-native",
+      "temporaryFilesRemoved": false,
+      "elapsedMs": 2.337874999999997,
+      "stages": [],
+      "toolPins": {},
+      "versions": {},
+      "accounting": "Darwin /usr/bin/time -lp wait4 user/system CPU and maxRSS bytes per command; stage wallMs includes launch/reap. The unchanged outer guardian samples the complete build process tree, including concurrent compiler descendants. Interrupted stages may have null resource fields.",
+      "failure": "Error: Executable not found: /opt/homebrew/opt/llvm21/bin/opt"
+    }
+  },
+  "matrix": {
+    "c": {
+      "status": "FAIL",
+      "mode": "acceptance-matrix",
+      "target": "c",
+      "fixtures": 31,
+      "failures": [
+        {
+          "fixture": "c_target_wide_record",
+          "stage": "clang",
+          "detail": "gate=FAIL effective=1 command=1 phase=complete stopped=true: command_exit; raw in /tmp/bend2039g1-c-matrix"
+        },
+        {
+          "fixture": "c_target_nested_adt",
+          "stage": "clang",
+          "detail": "gate=FAIL effective=1 command=1 phase=complete stopped=true: command_exit; raw in /tmp/bend2039g1-c-matrix"
+        },
+        {
+          "fixture": "c_target_array_u32",
+          "stage": "clang",
+          "detail": "gate=FAIL effective=1 command=1 phase=complete stopped=true: command_exit; raw in /tmp/bend2039g1-c-matrix"
+        },
+        {
+          "fixture": "c_target_array_wide",
+          "stage": "clang",
+          "detail": "gate=FAIL effective=1 command=1 phase=complete stopped=true: command_exit; raw in /tmp/bend2039g1-c-matrix"
+        },
+        {
+          "fixture": "c_target_multiarm",
+          "stage": "clang",
+          "detail": "gate=FAIL effective=1 command=1 phase=complete stopped=true: command_exit; raw in /tmp/bend2039g1-c-matrix"
+        },
+        {
+          "fixture": "c_target_char_head",
+          "stage": "clang",
+          "detail": "gate=FAIL effective=1 command=1 phase=complete stopped=true: command_exit; raw in /tmp/bend2039g1-c-matrix"
+        },
+        {
+          "fixture": "c_target_char_to_list",
+          "stage": "clang",
+          "detail": "gate=FAIL effective=1 command=1 phase=complete stopped=true: command_exit; raw in /tmp/bend2039g1-c-matrix"
+        },
+        {
+          "fixture": "c_target_string_from_list",
+          "stage": "clang",
+          "detail": "gate=FAIL effective=1 command=1 phase=complete stopped=true: command_exit; raw in /tmp/bend2039g1-c-matrix"
+        },
+        {
+          "fixture": "c_target_array_nat",
+          "stage": "clang",
+          "detail": "gate=FAIL effective=1 command=1 phase=complete stopped=true: command_exit; raw in /tmp/bend2039g1-c-matrix"
+        },
+        {
+          "fixture": "c_target_array_nested",
+          "stage": "clang",
+          "detail": "gate=FAIL effective=1 command=1 phase=complete stopped=true: command_exit; raw in /tmp/bend2039g1-c-matrix"
+        },
+        {
+          "fixture": "c_target_drop_fields",
+          "stage": "clang",
+          "detail": "gate=FAIL effective=1 command=1 phase=complete stopped=true: command_exit; raw in /tmp/bend2039g1-c-matrix"
+        },
+        {
+          "fixture": "c_target_utf8_literal",
+          "stage": "clang",
+          "detail": "gate=FAIL effective=1 command=1 phase=complete stopped=true: command_exit; raw in /tmp/bend2039g1-c-matrix"
+        },
+        {
+          "fixture": "c_target_utf8_astral",
+          "stage": "clang",
+          "detail": "gate=FAIL effective=1 command=1 phase=complete stopped=true: command_exit; raw in /tmp/bend2039g1-c-matrix"
+        },
+        {
+          "fixture": "c_target_trigraph_literal",
+          "stage": "clang",
+          "detail": "gate=FAIL effective=1 command=1 phase=complete stopped=true: command_exit; raw in /tmp/bend2039g1-c-matrix"
+        },
+        {
+          "fixture": "phys_storage_paths",
+          "stage": "clang",
+          "detail": "gate=FAIL effective=1 command=1 phase=complete stopped=true: command_exit; raw in /tmp/bend2039g1-c-matrix"
+        },
+        {
+          "fixture": "c_target_bool_prims",
+          "stage": "clang",
+          "detail": "gate=FAIL effective=1 command=1 phase=complete stopped=true: command_exit; raw in /tmp/bend2039g1-c-matrix"
+        },
+        {
+          "fixture": "c_target_clo_field",
+          "stage": "clang",
+          "detail": "gate=FAIL effective=1 command=1 phase=complete stopped=true: command_exit; raw in /tmp/bend2039g1-c-matrix"
+        },
+        {
+          "fixture": "c_target_repeat_data",
+          "stage": "clang",
+          "detail": "gate=FAIL effective=1 command=1 phase=complete stopped=true: command_exit; raw in /tmp/bend2039g1-c-matrix"
+        },
+        {
+          "fixture": "c_target_disjoint_type_cells",
+          "stage": "clang",
+          "detail": "gate=FAIL effective=1 command=1 phase=complete stopped=true: command_exit; raw in /tmp/bend2039g1-c-matrix"
+        },
+        {
+          "fixture": "c_target_repeat_capture",
+          "stage": "clang",
+          "detail": "gate=FAIL effective=1 command=1 phase=complete stopped=true: command_exit; raw in /tmp/bend2039g1-c-matrix"
+        },
+        {
+          "fixture": "c_target_alias_paths",
+          "stage": "clang",
+          "detail": "gate=FAIL effective=1 command=1 phase=complete stopped=true: command_exit; raw in /tmp/bend2039g1-c-matrix"
+        },
+        {
+          "fixture": "c_target_branch_arms",
+          "stage": "clang",
+          "detail": "gate=FAIL effective=1 command=1 phase=complete stopped=true: command_exit; raw in /tmp/bend2039g1-c-matrix"
+        },
+        {
+          "fixture": "c_target_region_leave_repeat",
+          "stage": "clang",
+          "detail": "gate=FAIL effective=1 command=1 phase=complete stopped=true: command_exit; raw in /tmp/bend2039g1-c-matrix"
+        },
+        {
+          "fixture": "c_target_bool_fields",
+          "stage": "clang",
+          "detail": "gate=FAIL effective=1 command=1 phase=complete stopped=true: command_exit; raw in /tmp/bend2039g1-c-matrix"
+        },
+        {
+          "fixture": "c_target_region_tail_capture",
+          "stage": "clang",
+          "detail": "gate=FAIL effective=1 command=1 phase=complete stopped=true: command_exit; raw in /tmp/bend2039g1-c-matrix"
+        },
+        {
+          "fixture": "c_target_bool_xor",
+          "stage": "clang",
+          "detail": "gate=FAIL effective=1 command=1 phase=complete stopped=true: command_exit; raw in /tmp/bend2039g1-c-matrix"
+        },
+        {
+          "fixture": "c_target_show_data",
+          "stage": "emit",
+          "detail": "gate=FAIL effective=1 command=1 phase=complete stopped=true: command_exit; raw in /tmp/bend2039g1-c-matrix"
+        },
+        {
+          "fixture": "c_target_user_ctor_show",
+          "stage": "clang",
+          "detail": "gate=FAIL effective=1 command=1 phase=complete stopped=true: command_exit; raw in /tmp/bend2039g1-c-matrix"
+        },
+        {
+          "fixture": "c_target_wide_node",
+          "stage": "clang",
+          "detail": "gate=FAIL effective=1 command=1 phase=complete stopped=true: command_exit; raw in /tmp/bend2039g1-c-matrix"
+        },
+        {
+          "fixture": "args",
+          "stage": "clang",
+          "detail": "gate=FAIL effective=1 command=1 phase=complete stopped=true: command_exit; raw in /tmp/bend2039g1-c-matrix"
+        },
+        {
+          "fixture": "args_bytes",
+          "stage": "clang",
+          "detail": "gate=FAIL effective=1 command=1 phase=complete stopped=true: command_exit; raw in /tmp/bend2039g1-c-matrix"
+        }
+      ],
+      "logDir": "/tmp/bend2039g1-c-matrix",
+      "nodeVersion": "v23.11.0",
+      "v8": "12.9.202.28-node.14|--max-old-space-size=3072,-e,process.stdout.write(process.versions.v8 + \"|\" + process.execArgv.join(\",\"))"
+    },
+    "js": {
+      "status": "PASS",
+      "mode": "acceptance-matrix",
+      "target": "js",
+      "fixtures": 31,
+      "logDir": "/tmp/bend2039g1-js-matrix",
+      "nodeVersion": "v23.11.0",
+      "v8": "12.9.202.28-node.14|--max-old-space-size=3072,-e,process.stdout.write(process.versions.v8 + \"|\" + process.execArgv.join(\",\"))"
+    },
+    "scope": "All 31 fixtures attempted; no C success claimed. JS matrix passes all 31 actual programs.",
+    "cPins": {
+      "mode": "acceptance-matrix",
+      "target": "c",
+      "node": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "nodeVersion": "v23.11.0",
+      "v8": "12.9.202.28-node.14|--max-old-space-size=3072,-e,process.stdout.write(process.versions.v8 + \"|\" + process.execArgv.join(\",\"))",
+      "driver": "/tmp/bend2039g1-driver",
+      "guardianTs": "/private/tmp/bend2039-upgrade/evals/heavy_gate.ts",
+      "guardianTsSha256": "204f3529704435455d20a9d5a126a8e9c62e002b6fed9044c8319da8a3c26ff2",
+      "guardianNativeC": "/private/tmp/bend2039-upgrade/evals/heavy_gate_native.c",
+      "guardianNativeCSha256": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b",
+      "cwd": "/private/tmp/bend2039-upgrade",
+      "base": "/private/tmp/bend2039-upgrade/bend2/base.bend",
+      "baseSha256": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+      "runtime": "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c",
+      "runtimeSha256": "74b7a8edc71c266d67cb6cff55217b240ac63272ed3f6646aec6aee00f815f2c",
+      "logs": "/tmp/bend2039g1-c-matrix",
+      "gate": {
+        "memoryMiB": 8192,
+        "rssMiB": 8192,
+        "pollMs": 10,
+        "timeoutMs": 600000
+      },
+      "fixtures": 31
+    },
+    "jsPins": {
+      "mode": "acceptance-matrix",
+      "target": "js",
+      "node": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "nodeVersion": "v23.11.0",
+      "v8": "12.9.202.28-node.14|--max-old-space-size=3072,-e,process.stdout.write(process.versions.v8 + \"|\" + process.execArgv.join(\",\"))",
+      "driver": "/tmp/bend2039g1-driver",
+      "guardianTs": "/private/tmp/bend2039-upgrade/evals/heavy_gate.ts",
+      "guardianTsSha256": "204f3529704435455d20a9d5a126a8e9c62e002b6fed9044c8319da8a3c26ff2",
+      "guardianNativeC": "/private/tmp/bend2039-upgrade/evals/heavy_gate_native.c",
+      "guardianNativeCSha256": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b",
+      "cwd": "/private/tmp/bend2039-upgrade",
+      "base": "/private/tmp/bend2039-upgrade/bend2/base.bend",
+      "baseSha256": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+      "runtime": "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c",
+      "runtimeSha256": "74b7a8edc71c266d67cb6cff55217b240ac63272ed3f6646aec6aee00f815f2c",
+      "logs": "/tmp/bend2039g1-js-matrix",
+      "gate": {
+        "memoryMiB": 8192,
+        "rssMiB": 8192,
+        "pollMs": 10,
+        "timeoutMs": 600000
+      },
+      "fixtures": 31
+    }
+  },
+  "diagnostics": {
+    "firstC": [
+      "/tmp/bend2039g1-c-matrix/c_target_wide_record.c:1462:8: error: unknown type name 'Cid'",
+      " 1462 | CONSTV Cid CID_T[] = { { 0, 0, 0 }, { 0, 1, 0 }, { 0, 1, 0 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 }, { 1, 0, 0 }, { 1, 0, 0 }, { 2, 0, 0 }, { 0, 1, 0 }, { 1, 1, 0 }, { 0, 0, 0 }, { 1, 0, 0 }, { 1, 0, 0 }, { 1, 0, 0 }, { 1, 0, 0 }, { 1, 0, 0 }, { 0, 0, 0 }, { 2, 0, 0 }, { 0, 0, 0 }, { 2, 1, 0 }, { 2, 1, 0 }, { 2, 0, 0 }, { 1, 1, 0 }, { 0, 1, 0 }, { 2, 1, 0 }, { 1, 0, 0 }, { 2, 0, 0 }, { 1, 0, 0 }, { 4, 0, 0 }, { 2, 0, 0 }, { 1, 0, 0 }, { 4, 0, 0 }, { 2, 0, 0 }, { 2, 0, 0 }, { 4, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 }, { 2, 0, 0 }, { 3, 0, 0 }, { 1, 0, 0 }, { 2, 0, 0 }, { 1, 0, 0 }, { 2, 0, 0 }, { 14, 0, 0 }, { 2, 0, 0 }, { 2, 0, 0 }, { 2, 0, 0 }, { 2, 0, 0 }, { 1, 0, 0 }, { 1, 0, 0 }, { 6, 0, 0 }, { 1, 0, 0 }, { 2, 0, 0 }, { 2, 0, 0 }, { 1, 0, 0 }, { 1, 0, 0 }, { 2, 0, 0 }, { 3, 0, 0 }, { 2, 0, 0 }, { 4, 0, 0 }, { 3, 0, 0 }, { 2, 0, 0 }, { 3, 0, 0 }, { 3, 0, 0 }, { 3, 0, 0 }, { 3, 0, 0 }, { 4, 0, 0 }, { 2, 0, 0 }, { 3, 0, 0 }, { 3, 0, 0 }, { 2, 0, 0 }, { 3, 0, 0 }, { 2, 0, 0 }, { 3, 0, 0 }, { 3, 0, 0 }, { 3, 0, 0 }, { 4, 0, 0 }, { 3, 0, 0 }, { 4, 0, 0 }, { 3, 0, 0 }, { 4, 0, 0 }, { 3, 0, 0 }, { 4, 0, 0 }, { 3, 0, 0 }, { 5, 0, 0 }, { 6, 0, 0 }, { 5, 0, 0 }, { 6, 0, 0 }, { 3, 0, 0 }, { 4, 0, 0 }, { 3, 0, 0 }, { 4, 0, 0 }, { 2, 0, 0 }, { 2, 0, 0 }, { 4, 0, 0 }, { 3, 0, 0 }, { 3, 0, 0 }, { 3, 0, 0 }, { 2, 0, 0 }, { 2, 0, 0 }, { 3, 0, 0 }, { 2, 0, 0 }, };",
+      "      |        ^",
+      "/tmp/bend2039g1-c-matrix/c_target_wide_record.c:1464:8: error: unknown type name 'Fid'",
+      "/tmp/bend2039g1-c-matrix/c_target_wide_record.c:7797:1: warning: expression result unused [-Wunused-value]"
+    ],
+    "showData": "(node:50396) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\ncandidate: emission failed: main's type is abstract or open and cannot be printed",
+    "sourceCause": "Runtime Tables heading precedes Fid/Cid typedefs, but the actual runtime_c tabs insertion slot follows them; current extraction uses the heading as the insertion point.",
+    "toolCause": "Invocation incorrectly selected llvm21 instead of the installed llvm@21 formula. This is not a compiler semantic failure."
+  },
+  "commands": [
+    {
+      "argv": [
+        "/opt/homebrew/bin/bun",
+        "evals/native_compiler_experiment.ts",
+        "--mode=build",
+        "--corpus=checkpoints/root-release2039g1-native.corpus.json",
+        "--artifact=/tmp/bend2039g1-native",
+        "--report=checkpoints/root-release2039g1-native-build.json",
+        "--cc-pipeline=llvm-split",
+        "--llvm-bin=/opt/homebrew/opt/llvm21/bin",
+        "--cc-opt=1"
+      ],
+      "exitCode": 2,
+      "elapsedMs": 537750
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/bun",
+        "evals/c_target_fixtures_run.ts",
+        "--driver=/tmp/bend2039g1-driver",
+        "--node=/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--target=c",
+        "--keep",
+        "--logs=/tmp/bend2039g1-c-matrix"
+      ],
+      "exitCode": 1,
+      "elapsedMs": 605281
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/bun",
+        "evals/c_target_fixtures_run.ts",
+        "--driver=/tmp/bend2039g1-driver",
+        "--node=/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--target=js",
+        "--keep",
+        "--logs=/tmp/bend2039g1-js-matrix"
+      ],
+      "exitCode": 0,
+      "elapsedMs": 168744
+    }
+  ],
+  "inputs": {
+    "bend2/comp.ts": "e132ab4863ee64fe9fbe9b817adfd429e4e5627c52babfc43c88adf2aad6416d",
+    "bend2/selfhost/c_backend_physical.bend": "5827734e1d14e199fd29714bdf78b4d04376d2eca3cbfd8406c575f894493f4c",
+    "bend2/selfhost/c_backend_layout.bend": "b12b29a8b955714a7f1628b4e47b69455dcaa2fa7bbb98acd434eef69d5acba2",
+    "evals/gen_c_runtime.ts": "ebc8821b19ed3665f9e0da473306b0ac2393c02f88d9c5963d58fdd41ca4ae86"
+  }
+}
