@@ -152,7 +152,6 @@ const heapStatisticsFields = Object.freeze([
   ['totalPhysicalSizeBytes', 'total_physical_size'],
   ['totalAvailableSizeBytes', 'total_available_size'],
   ['usedHeapSizeBytes', 'used_heap_size'],
-  ['totalAllocatedBytes', 'total_allocated_bytes'],
   ['heapSizeLimitBytes', 'heap_size_limit'],
   ['mallocedBytes', 'malloced_memory'],
   ['peakMallocedBytes', 'peak_malloced_memory'],
@@ -164,6 +163,10 @@ const heapStatisticsFields = Object.freeze([
 function heapStatisticsSnapshot(probe, omittedReason) {
   if (probe === null)
     return {status: 'unavailable', reason: omittedReason ?? 'node:v8 getHeapStatistics is not available in this runtime'};
+  // Bun 1.4.2's v8.ts fabricates several compatibility fields: for example
+  // total_allocated_bytes is JSC heapCapacity, not cumulative allocations.
+  if (process.versions.bun)
+    return {status: 'unavailable', reason: 'V8 heap-statistics field semantics are not verified for this Bun runtime; use the separately labelled process boundary samples'};
   try {
     const statistics = probe();
     const bytes = {};
@@ -174,9 +177,9 @@ function heapStatisticsSnapshot(probe, omittedReason) {
       if (Number.isFinite(statistics[key])) counts[name] = statistics[key];
     return {
       status: 'available',
-      source: 'node:v8 getHeapStatistics (runtime-provided; Bun exposes a compatibility shim)',
+      source: 'node:v8 getHeapStatistics',
       bytes, counts,
-      scope: 'isolate heap statistics at the boundary: totalAllocatedBytes is cumulative allocation volume including collected objects, usedHeapSizeBytes is a boundary used size, peakMallocedBytes is a peak runtime malloc; none is live/retained bytes, resident size or OS footprint',
+      scope: 'V8 isolate heap statistics at the boundary; usedHeapSizeBytes is a boundary size and peakMallocedBytes a runtime malloc peak, not cumulative allocation, live/retained bytes, resident size or OS footprint',
     };
   } catch (error) {
     return {status: 'error', reason: errorText(error)};
@@ -199,21 +202,13 @@ function memorySnapshot(heapProbe, heapOmittedReason) {
 }
 
 function memoryDelta(before, after) {
-  const cumulative = before.heapStatistics?.status === 'available' && after.heapStatistics?.status === 'available'
-    && Number.isFinite(before.heapStatistics.bytes.totalAllocatedBytes)
-    && Number.isFinite(after.heapStatistics.bytes.totalAllocatedBytes);
   return {
     kind: 'boundary-snapshot-delta',
     scope: before.scope,
     heapUsedDeltaBytes: after.heapUsedBytes - before.heapUsedBytes,
     rssDeltaBytes: after.rssBytes - before.rssBytes,
-    allocationVolume: cumulative
-      ? {
-        status: 'available',
-        cumulativeAllocatedDeltaBytes: after.heapStatistics.bytes.totalAllocatedBytes - before.heapStatistics.bytes.totalAllocatedBytes,
-        scope: 'difference of the runtime-reported cumulative allocated volume at two boundaries; includes objects later collected and is not an allocation-request count, live bytes or retained bytes',
-      }
-      : {status: 'unavailable', reason: 'runtime heap statistics were not captured at both boundaries (for example a fine raw span), so cumulative allocation volume cannot be differenced'},
+    allocationVolume: {status: 'unavailable',
+      reason: 'no verified cumulative allocation counter is exposed by this collector; Bun total_allocated_bytes is heap capacity, not allocation volume'},
     caveat: 'a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage; allocationVolume never replaces allocation samples or a retained-byte measurement',
   };
 }
@@ -379,7 +374,7 @@ export async function createCompilerProfile(config = {}) {
           footprint: memoryUnavailable.footprintBytes,
           heapBoundary: {observed: 'process.memoryUsage().heapUsed/heapTotal', unit: 'bytes', semantics: 'isolate boundary sizes, not live or retained bytes'},
           heapStatistics: {observed: 'node:v8 getHeapStatistics when available', unit: 'bytes/counts',
-            semantics: 'cumulative allocated volume, boundary used size and peak malloc as reported by the runtime; includes collected objects; not live bytes'},
+            semantics: 'V8 boundary sizes and runtime malloc peaks, not cumulative allocations or live bytes; Bun compatibility-shim fields stay unavailable'},
           liveHeap: memoryUnavailable.liveHeapBytes,
           allocationRequests: memoryUnavailable.allocationRequests,
           allocationSamples: samplingConfig
