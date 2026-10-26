@@ -31,8 +31,11 @@
  *
  * Both commands acquire the existing heavy_gate lease. Build uses the unchanged
  * canonical kernel, validates every body in the compiler root and host bridge,
- * then calls compile_book and clang (official CPU flags by default). Run
- * freshly reads the entire frozen corpus and uses only Bend parsing/expansion/
+ * then calls compile_book and clang (official CPU flags by default).
+ * Ordinary code generation runs on Bun's main thread with its default stack
+ * and automatic GC; the guardian bounds actual tree memory. V8-only sampling
+ * explicitly selects the separate Node worker (3072 MiB heap / 256 MiB stack).
+ * Run freshly reads the entire frozen corpus and uses only Bend parsing/expansion/
  * checking/emission. C owns IO/import loading and opaque native Run chunk
  * orchestration, outside Bend's totality proof. No ASTs are serialized or cached.
  * A byte-identical accepted JS image is an optional semantic smoke, not a native
@@ -413,7 +416,11 @@ async function compileBody(o:Options,profile?:CompilerProfile){
     checkedDefinitions:definitions,expectedSourceDefinitions:definitions,
     checksExcluded:0,outputPatches:0,kernelSha256,compilerSha256:hash(compilerPath),
     cPath:o.artifact+'.c',cSha256:sha(c),artifact:o.artifact,
-    runtime:{name:'node',node:process.versions.node,heapLimitMiB:3072,stackMiB:256,manualGC:false,
+    runtime:{name:process.versions.bun?'bun':'node',executable:process.execPath,execArgv:process.execArgv,
+      ...(process.versions.bun
+        ?{bun:process.versions.bun,revision:Bun.revision,heapLimitMiB:null,stackMiB:null,stack:'Bun main-thread default'}
+        :{node:process.versions.node,v8:process.versions.v8,heapLimitMiB:3072,stackMiB:256}),
+      manualGC:false,
       profiling:o.profileDir
         ?{kind:'compiler profile',directory:join(o.profileDir,'codegen'),rawDetail:o.profileRaw,sampling:o.profileSampling,diagnosticOnlyTiming:true,...(o.v8LogDir?{v8LogDir:o.v8LogDir}:{})}
         :o.v8LogDir?{kind:'V8 statistical tick log',directory:o.v8LogDir,diagnosticOnlyTiming:true}:null},
@@ -425,6 +432,7 @@ async function codegenWorker(o:Options){
   await guardHeavyGate(script,{label:'Native CPU compiler code generation'});
   reportWritable=true;
   progress(o,'compiler-worker','start');
+  if(process.versions.bun){await compile(o);return;}
   const thread=new Worker(new URL(import.meta.url),{workerData:o,resourceLimits:{stackSizeMb:256,maxOldGenerationSizeMb:3072}});
   await new Promise<void>((yes,no)=>{thread.once('error',no);thread.once('exit',code=>code===0?yes():no(Error('Canonical C build worker failed: '+code)));});
 }
@@ -444,7 +452,10 @@ async function buildWorkerBody(o:Options,profile?:CompilerProfile){
   const args_=process.argv.slice(2).filter(arg=>!arg.startsWith('--internal='));
   // Worker exit need not return its allocator pages to the OS. Terminate the
   // entire codegen process before clang, not just the worker's JS heap.
-  const codegen=['node',...profileFlags,'--experimental-strip-types','--max-old-space-size=3072',script,...args_,'--internal=codegen'];
+  const nodeProducer=Boolean(o.v8LogDir||o.profileSampling);
+  const codegen=nodeProducer
+    ?['node',...profileFlags,'--experimental-strip-types','--max-old-space-size=3072',script,...args_,'--internal=codegen']
+    :[process.execPath,script,...args_,'--internal=codegen'];
   progress(o,'codegen-process','start',{command:codegen});
   const codegenSpan=profile?.begin('codegen-process',{command:codegen,childPid:null});
   let codegenChild:{pid:number|undefined};
@@ -452,9 +463,9 @@ async function buildWorkerBody(o:Options,profile?:CompilerProfile){
   catch(error){endSpan(profile,codegenSpan,'failed',{error:diagnosticText(error)});throw error;}
   endSpan(profile,codegenSpan,'completed',{childPid:codegenChild.pid});
   profile?.record({kind:'child-process-boundary',name:'codegen-process',
-    scope:'spawned Node codegen child; parent CPU excludes the child and this host does not read child rusage',
+    scope:'spawned codegen child; parent CPU excludes the child and this host does not read child rusage',
     units:'pid',values:{pid:codegenChild.pid??null},
-    details:{childCpu:null,reason:'Node spawn exposes the pid but not child rusage; the child writes its own profile'}});
+    details:{childCpu:null,reason:'spawn exposes the pid but not child rusage; the child writes its own profile'}});
   progress(o,'codegen-process','complete');
   const report=json(o.report),cc=process.env.CC??'clang';
   if(o.ccPipeline==='llvm-split'){

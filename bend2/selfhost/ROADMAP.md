@@ -104,6 +104,15 @@ The five-program guarded smoke completes in 34,927 ms. This is **not yet**
 native C build or byte-fixedpoint acceptance. Proof:
 `evals/receipts/root2039e_callback_smoke.json`.
 
+The fresh Bun native build of this same root is **rejected**: validation checks
+12,111 bodies including the host bridge, then `compile_book` reaches the actual
+8 GiB RSS guard after 19,847 ms. Peak sampled RSS is 8,609,906,688 B; footprint
+8,705,121,048 B. No C output or executable is published. This is Bun 1.4.2,
+main-thread/default stack and automatic GC, not a Node/V8 heap-limit result.
+The normal native builder now uses Bun; V8-only profiling explicitly selects
+the separately labelled Node worker. Proof:
+`evals/receipts/root2039e_bun_native_rejected.json`.
+
 Latest compiler root: **`db147cba`**, after an authenticated inline-parser
 cutover in `/private/tmp/bend-parser-cutover667`. Fresh native admission checks
 all 11,889 bodies / 12,450 events with 0 exclusions/patches and unchanged
