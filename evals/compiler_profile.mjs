@@ -122,7 +122,7 @@ const memoryUnavailable = Object.freeze({
   },
   liveHeapBytes: {
     status: 'unavailable',
-    reason: 'a live/retained number requires a forced full GC plus a heap readback; the collector never forces GC, and a boundary heapUsed is not live or retained bytes',
+    reason: 'liveness and retaining ownership are not measured; heap boundary sizes do not identify them, and the collector never forces GC or captures a retaining graph',
   },
   allocationRequests: {
     status: 'unavailable',
