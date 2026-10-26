@@ -80,7 +80,19 @@ async function generate(): Promise<string> {
     if (typeof mod.runtime_c !== "function") {
       throw new Error("comp.ts does not export runtime_c");
     }
-    const raw = mod.runtime_c("", "", "", "");
+    const slots = ["Tables", "Spins", "Segments", "Requests"];
+    const tags = slots.map(name => `/*__BEND_RUNTIME_${name}_SLOT__*/`);
+    let raw = mod.runtime_c(tags[0]!, tags[1]!, tags[2]!, tags[3]!);
+    // Authored section headings can precede declarations needed by a slot.
+    // Only runtime_c's actual argument positions are insertion authority.
+    raw = raw.replace(/^\/\/ (Tables|Spins|Segments|Requests)$/gm, "// Runtime $1");
+    for (let i = 0; i < slots.length; i += 1) {
+      const tag = tags[i]!, at = raw.indexOf(tag);
+      if (at < 0 || raw.indexOf(tag, at + tag.length) >= 0) {
+        throw new Error("runtime template must contain exactly one " + slots[i] + " slot");
+      }
+      raw = raw.replace(tag, `// ${slots[i]}\n// ========\n`);
+    }
     const runtime = symbolicIds(raw);
     const leftover = symbolicIds(runtime) !== runtime;
     if (leftover || /\b[CF]ID\(/.test(runtime.replace(

@@ -307,12 +307,14 @@ static const char* CLI_HELP =
 
 #endif
 
-// Tables
+// Runtime Tables
 // ======
 
 typedef struct { u8 ar, resw, bangs, nofk; } Fid;
 typedef struct { u8 ar, hot; u16 spine; } Cid;
 
+// Tables
+// ========
 
 
 #define TAB_AT(T, S, I) T[S < I ? S : I]
@@ -1199,9 +1201,11 @@ static u32 root_take(DEV u64* H, THR Term* v) {
   return n;
 }
 
-// Spins
+// Runtime Spins
 // =====
 
+// Spins
+// ========
 
 
 // Work
@@ -1240,12 +1244,14 @@ static Term work_loop(Env e, DEV Term* sp, Term t, u32 seq) {
 }
 #endif
 
-// Segments
+// Runtime Segments
 // ========
 
 // A task enters through its words: a continuation's results ride r0..
 // and its parameters the stack; any other segment's parameters ride r0..
 
+// Segments
+// ========
 
 
   WL_CASE(FID_ENTER)
@@ -2896,9 +2902,11 @@ OUTLINE void io_loop(u64* H) {
   }
 }
 
-// Requests
+// Runtime Requests
 // ========
 
+// Requests
+// ========
 
 
 // Main

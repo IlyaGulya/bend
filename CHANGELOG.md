@@ -64,6 +64,11 @@ latest one; the GitHub release carries the same notes.
   The regenerated full compiler passes six actual argument-consumer cases;
   native build and byte fixedpoint remain separate acceptance gates.
 
+- The selfhost C runtime template takes its insertion markers from the actual
+  canonical `runtime_c` argument slots, not nearby section titles. Generated
+  constructor/function tables now follow their ABI typedefs; the real wide
+  record emitter/clang/native regression passes.
+
 - Datatypes are headers: the selfhost checker publishes each family's name,
   module aliases and kind telescope before any parameter, field or body is
   checked, so a field, index telescope or kind may name a family declared later
