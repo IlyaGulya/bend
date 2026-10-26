@@ -234,14 +234,13 @@ static void native_foreign(Env e, NativeLoader* loader, const char* module, cons
   u64 length;
   char* bytes = native_read(key, &length);
   loader->foreign_bytes += length;
-  // The canonical C id block names the authoritative BIR.SourceFile constructor
-  // from the book key `../bend2/selfhost/backend_ir:SourceFile` (name_clean ->
-  // upper). This is the existing generated macro, not a numeric or suffix guess;
-  // the guard makes a spelling/namespace change fail at compile time.
-#ifndef CID____BEND2_SELFHOST_BACKEND_IR_SOURCEFILE
+  // Exact canonical book key `../bend2/selfhost/backend_ir:SourceFile`.
+  // comp.ts name_clean preserves case; fail closed if this nominal carrier
+  // changes rather than guessing a suffix, numeric id or alternate constructor.
+#ifndef CID____bend2_selfhost_backend_ir_SourceFile
 #error "canonical BIR.SourceFile constructor id is missing from the generated book"
 #endif
-  Term entry = io_node(e, CID____BEND2_SELFHOST_BACKEND_IR_SOURCEFILE, io_str(e, key, strlen(key)), io_str(e, bytes, length));
+  Term entry = io_node(e, CID____bend2_selfhost_backend_ir_SourceFile, io_str(e, key, strlen(key)), io_str(e, bytes, length));
   loader->files = io_node(e, CID(Con), entry, loader->files);
   free(real);
   free(bytes);
