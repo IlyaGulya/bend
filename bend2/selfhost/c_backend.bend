@@ -53,6 +53,9 @@ type Part is Data:
   PartOk{text: String}
   PartFail{message: String}
 
+# `arity` is the node's laid-out WORD count, which is what the runtime walks.
+# The Cid table stores it compactly (see cid_arity_field); no other consumer
+# may read the field as a word count.
 type CidRow is Data:
   CidRow{cid: U32, key: String, arity: Nat, hot: Bool}
 
@@ -986,7 +989,33 @@ def cid_rows(program: BIR.Program, scan: Scan, sharing: Sharing.SharingPlan, +ct
     case BIR.Program{codes, declarations, constructors, families, type_functions, end}:
       match cid_ctor_rows(constructors, 0, Nil{}, sharing, ctx):
         case CidRowsFail{message}: CidRowsFail{message}
-        case CidRowsOk{rows}: CidRowsOk{cid_foreign_rows(scan, rows, sharing)}
+        case CidRowsOk{rows}:
+          +all = cid_foreign_rows(scan, rows, sharing)
+          match cid_rows_check(all):
+            case Some{message}: CidRowsFail{message}
+            case None{}: CidRowsOk{all}
+
+# Cid.ar is one byte. A node of at most 247 words holds its own count; a wider
+# one holds 240 + log2(words), the size class the runtime's drop walk rebuilds
+# as 1 << (ar - 240). comp.ts encodes lay_node(c.k).ks.length the same way, and
+# CLay already padded a node past 247 words to its power of two, so the log is
+# exact. Only the Cid field is compact: a Fid arity stays the raw count.
+def cid_arity_field(+arity: Nat) -> Nat:
+  match Nat.is_gt(arity, 247n):
+    case False{}: arity
+    case True{}: Nat.add(240n, CLay.ceil_log2(arity))
+
+# A size class past 240 + 15 has no byte in the table. comp.ts refuses it too,
+# so the plan fails by name instead of emitting a truncated row.
+def cid_rows_check(rows: List<&2, CidRow>) -> Maybe<&2, String>:
+  match rows:
+    case Nil{}: None{}
+    case +row <> rest:
+      match row:
+        case CidRow{cid, key, arity, hot}:
+          match Nat.is_le(cid_arity_field(arity), 255n):
+            case True{}: cid_rows_check(rest)
+            case False{}: Some{cat(["the Cid table cannot encode the ", Nat.show(arity), " word node of `", String.append(key, "`"])}
 
 # A constructor's Cid arity is the number of WORDS of its node, exactly as
 # comp.ts takes it from lay_node(c.k).ks.length: the runtime walks that many
@@ -3687,13 +3716,16 @@ def row_insert(+row: SegText, +rows: List<&2, SegText>) -> List<&2, SegText>:
                     case True{}: row <> rest
                     case False{}: head <> row_insert(row, rest)
 
+# Fid.ar and Fid.resw are one byte each. comp.ts refuses an entry past WIDE
+# (247) arguments, and the drop walk reads a Fid arity above 247 as a compact
+# size class, so the boundary is WIDE and not the field's 255.
 def rows_check(rows: List<&2, SegText>) -> Maybe<&2, String>:
   match rows:
     case Nil{}: None{}
     case +row <> rest:
       match row:
         case SegText{fid, arity, resw, text, _, _}:
-          match Bool.and(Nat.is_le(arity, 255n), Nat.is_le(resw, 255n)):
+          match Bool.and(Nat.is_le(arity, 247n), Nat.is_le(resw, 255n)):
             case True{}: rows_check(rest)
             case False{}: Some{cat(["entry ", U32.show(fid), " has an arity or result width the runtime table cannot store"])}
 
@@ -3787,6 +3819,7 @@ def fid_defines(rows: List<&2, SegText>) -> String:
 
 # CID_T[x] is Cid{arity, hot, spine}; zero spine uses the generic drop walk.
 # The hot fact is not derivable from BIR today; CIRSharing's seal plan owns it.
+# The arity field is the compact Cid byte, not the raw node width.
 def hot_text(hot: Bool) -> String:
   match hot:
     case True{}: "1"
@@ -3807,7 +3840,7 @@ def cid_table(cids: List<&2, CidRow>) -> String:
     case Nil{}: "};\n"
     case +row <> rest:
       match row:
-        case CidRow{cid, key, arity, hot}: cat(["{ ", Nat.show(arity), ", ", hot_text(hot), ", 0 }, ", cid_table(rest)])
+        case CidRow{cid, key, arity, hot}: cat(["{ ", Nat.show(cid_arity_field(arity)), ", ", hot_text(hot), ", 0 }, ", cid_table(rest)])
 
 def fid_table(rows: List<&2, SegText>, forky: List<&2, U32>) -> String:
   match rows:
@@ -3940,24 +3973,37 @@ def tables_part(plan: Plan, +rows: List<&2, SegText>, regs: Nat) -> Part:
       match runtime_cid_aliases(cids):
         case PartFail{message}: PartFail{message}
         case PartOk{aliases}:
-          +forky = forky_rows(rows)
-          +resw = Nat.max(1n, rows_max_resw(rows, 0n))
-          PartOk{cat([
-            main_suppress(library),
-            aliases,
-            cid_defines(cids),
-            fid_defines(rows),
-            runtime_defines(entries), "\n",
-            "CONSTV Cid CID_T[] = { ", cid_table(cids), "\n",
-            "CONSTV Fid FID_T[] = { ", fid_table(rows, forky), "\n",
-            "#define STAT_LEN 0\n\n",
-            wl_macros(regs, resw), "\n",
-            "#define WL_TABLE ", wl_table_text(rows, entries), "\n",
-            "#define MAIN_FID FID_", U32.show(main_fid_index(library, entries)), "\n",
-            "#define MAIN_PURE ", main_pure_text(main_pure), "\n",
-            "#define BLK_SHR ", blk_shr_text(plan), "\n\n",
-            "#if !DEVICE\nstatic const u32 SHOW_DESC[] = { ", show_desc, " };\nstatic const char* SHOW_NAMES[] = { ", table_or_zero(show_names), " };\n#endif\n\n"
-          ])}
+          match id_rows_check(cids, rows):
+            case Some{message}: PartFail{message}
+            case None{}:
+              +forky = forky_rows(rows)
+              +resw = Nat.max(1n, rows_max_resw(rows, 0n))
+              PartOk{cat([
+                main_suppress(library),
+                aliases,
+                cid_defines(cids),
+                fid_defines(rows),
+                runtime_defines(entries), "\n",
+                "CONSTV Cid CID_T[] = { ", cid_table(cids), "\n",
+                "CONSTV Fid FID_T[] = { ", fid_table(rows, forky), "\n",
+                "#define STAT_LEN 0\n\n",
+                wl_macros(regs, resw), "\n",
+                "#define WL_TABLE ", wl_table_text(rows, entries), "\n",
+                "#define MAIN_FID FID_", U32.show(main_fid_index(library, entries)), "\n",
+                "#define MAIN_PURE ", main_pure_text(main_pure), "\n",
+                "#define BLK_SHR ", blk_shr_text(plan), "\n\n",
+                "#if !DEVICE\nstatic const u32 SHOW_DESC[] = { ", show_desc, " };\nstatic const char* SHOW_NAMES[] = { ", table_or_zero(show_names), " };\n#endif\n\n"
+              ])}
+
+# A term names its Cid or Fid in a 16-bit auxiliary field (term_aux masks
+# 0xFFFF), so an index past 65535 would be truncated to another row's id.
+def id_rows_check(cids: List<&2, CidRow>, rows: List<&2, SegText>) -> Maybe<&2, String>:
+  match Nat.is_le(List.length(&2, CidRow, cids), 65536n):
+    case False{}: Some{"the program has more Cid rows than a term's 16-bit auxiliary field can name"}
+    case True{}:
+      match Nat.is_le(List.length(&2, SegText, rows), 65536n):
+        case False{}: Some{"the program has more Fid rows than a term's 16-bit auxiliary field can name"}
+        case True{}: None{}
 
 def main_suppress(library: Bool) -> String:
   match library:
