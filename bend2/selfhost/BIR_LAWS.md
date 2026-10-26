@@ -574,6 +574,18 @@ family arm (`CLay.arm_of` returns the first match and does not detect a second).
 - `arms` are the constructors in declaration order; each `DescriptorArm.fields`
   mirrors the constructor's declared fields, including erased ones
   (`DescriptorField{key=None, quantity=Erased, ty}`).
+- A field's `ty` is a descriptor in the scope **`family parameters` followed by
+  every field declared before it** — the constructor's telescope prefix — so a
+  consumer that instantiates an arm must grow its environment by one abstract
+  binder per preceding declared field before the family's arguments can be read
+  from the end. Canonical evidence: `Sigma.Tuple` is
+  `[({p:1}), ({app:({p:1}),arg:({p:0})})]` for `{fst: A, snd: B(fst)}` over the
+  four `Sigma` parameters, `Map.MNode` is
+  `[Nat, Map<{p:2},{p:1}>, Map<{p:3},{p:2}>]`, and `List.Con` is
+  `[({p:0}), List<{p:2},{p:1}>]` for `{head: A, tail: List<a, A>}`.
+  Instantiating against the family's arguments alone shifts every index after
+  the first field (`CLay.field_scope`; consumers `field_layouts`,
+  `fields_reach`, `instantiate_fields`).
 - `native` is the authoritative representation marker; nothing may infer a
   representation from `key` or `name`.
 

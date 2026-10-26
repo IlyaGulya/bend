@@ -433,6 +433,21 @@ def layout_native(+ctx: Context, +marker: String, +key: String, +arms: List<&2, 
                     case False{}:
                       layout_data(ctx, key, arms, args, fuel)
 
+# A constructor's declared field type is written in the scope of the family's
+# parameters followed by every field declared before it: the constructor's own
+# telescope prefix. `Sigma.Tuple`'s `snd: B(fst)` therefore indexes B at 1 and
+# fst at 0, `Map.MNode`'s third field indexes `Map<a, V>` at 2 and 3, and
+# `List.Con`'s `tail: List<a, A>` indexes a at 2 and A at 1. A preceding field's
+# value is a runtime term, not a type, so one abstract binder stands in for each
+# one before the family's own arguments can be read from the end: a field type
+# that mentions a preceding field stays abstract, exactly as the reference's
+# tele_fill leaves those binders unfilled. Instantiating a field against the
+# family's arguments alone would shift every index by the number of preceding
+# fields.
+def field_scope(+env: List<&2, NF.NfVal>) -> List<&2, NF.NfVal>:
+  +absent = {NF.NfMissing{BIR.DescriptorNull{}} : NF.NfVal}
+  List.append(&2, NF.NfVal, env, [absent])
+
 # Every arm of a datatype, each with its live declared fields' layouts taken
 # at this application's arguments.
 def arm_layouts(+ctx: Context, +arms: List<&2, BIR.DescriptorArm>, +args: List<&2, NF.NfVal>, +fuel: Nat, +acc: List<&2, LayArm>) -> Plans:
@@ -455,15 +470,18 @@ def field_layouts(+ctx: Context, +fields: List<&2, BIR.DescriptorField>, +env: L
     case +field <> rest:
       match field:
         case BIR.DescriptorField{+key, +quantity, +ty}:
+          # Every declared field, erased or live, is one binder of the scope the
+          # next field's type indexes.
+          +next = field_scope(env)
           match live_field(quantity):
             case False{}:
-              field_layouts(ctx, rest, env, fuel, acc)
+              field_layouts(ctx, rest, next, fuel, acc)
             case True{}:
               match layout_of_desc(ctx, ty, env, fuel):
                 case LayoutFailed{+message}:
                   LayoutsFail{message}
                 case LayoutFound{+layout}:
-                  field_layouts(ctx, rest, env, fuel, layout <> acc)
+                  field_layouts(ctx, rest, next, fuel, layout <> acc)
 
 def layout_data(+ctx: Context, +key: String, +arms: List<&2, BIR.DescriptorArm>, +args: List<&2, NF.NfVal>, +fuel: Nat) -> LayoutResult:
   match reenters(ctx, key, arms, args, fuel):
@@ -515,15 +533,16 @@ def fields_reach(+ctx: Context, +fields: List<&2, BIR.DescriptorField>, +env: Li
     case +field <> rest:
       match field:
         case BIR.DescriptorField{+key, +quantity, +ty}:
+          +next = field_scope(env)
           match live_field(quantity):
             case False{}:
-              fields_reach(ctx, rest, env, target, seen, fuel)
+              fields_reach(ctx, rest, next, target, seen, fuel)
             case True{}:
               match reaches(ctx, ty, env, target, seen, fuel):
                 case True{}:
                   True{}
                 case False{}:
-                  fields_reach(ctx, rest, env, target, seen, fuel)
+                  fields_reach(ctx, rest, next, target, seen, fuel)
 
 def reaches(+ctx: Context, +ty: BIR.Descriptor, +env: List<&2, NF.NfVal>, +target: String, +seen: List<&2, String>, +fuel: Nat) -> Bool:
   match Nat.is_eq(fuel, 0n):
@@ -1103,8 +1122,9 @@ def instantiate_fields(+ctx: Context, +args: List<&2, NF.NfVal>, +fields: List<&
     case +field <> rest:
       match field:
         case BIR.DescriptorField{+key, +quantity, +ty}:
+          +next = field_scope(args)
           +substituted = {BIR.DescriptorField{key, quantity, NF.normalize(context_nf(ctx), ty, args, 1024n)} : BIR.DescriptorField}
-          instantiate_fields(ctx, args, rest, substituted <> acc)
+          instantiate_fields(ctx, next, rest, substituted <> acc)
 
 # ---------------------------------------------------------------------------
 # Array cells
