@@ -1015,7 +1015,7 @@ def cid_rows_check(rows: List<&2, CidRow>) -> Maybe<&2, String>:
         case CidRow{cid, key, arity, hot}:
           match Nat.is_le(cid_arity_field(arity), 255n):
             case True{}: cid_rows_check(rest)
-            case False{}: Some{cat(["the Cid table cannot encode the ", Nat.show(arity), " word node of `", String.append(key, "`"])}
+            case False{}: Some{cat(["the Cid table cannot encode the ", Nat.show(arity), " word node of `", key, "`"])}
 
 # A constructor's Cid arity is the number of WORDS of its node, exactly as
 # comp.ts takes it from lay_node(c.k).ks.length: the runtime walks that many

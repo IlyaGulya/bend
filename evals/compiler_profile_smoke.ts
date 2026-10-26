@@ -213,7 +213,7 @@ try {
   need(clang.status === 0, 'Tiny C compile failed: ' + clang.stderr.slice(-1500));
   directProfile.end(clangSpan, 'completed', {artifact: executable});
   const executeSpan = directProfile.begin('native-executable', {});
-  const executed = run(executable, ['--threads', '1', '--gpu', 'off']);
+  const executed = run(executable, ['+RTS', '--threads', '1', '--gpu', 'off', '-RTS']);
   need(executed.status === 0 && executed.stdout.trim() === '17n',
     'Tiny C program output changed: ' + JSON.stringify(executed.stdout.trim()));
   directProfile.end(executeSpan, 'completed', {stdout: executed.stdout.trim()});

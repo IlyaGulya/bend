@@ -185,7 +185,7 @@ export function runNativeStage0(binary, work, options) {
   if (existsSync(work.output)) throw Error('Native stage0 output must be fresh: ' + work.output);
   const cPhase = work.phase === 'compile-c' || work.phase === 'compile-c-module';
   if (cPhase !== Boolean(work.runtime)) throw Error('Native C phase requires exactly the runtime source path');
-  const command = [binary, '--threads', '1', '--gpu', 'off', '--',
+  const command = [binary, '+RTS', '--threads', '1', '--gpu', 'off', '--RTS',
     work.root, work.base, work.manifest, work.exports, work.phase, work.output];
   if (work.runtime) command.push(realpathSync(work.runtime));
   const started = Date.now();

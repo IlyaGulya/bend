@@ -553,7 +553,7 @@ async function runWorkerBody(o:Options,profile?:CompilerProfile,phaseSpans=new M
   const phases:Array<{phase:string}> = [],begins:Array<{computeThreads:number}> = [],results:Array<{result:string;modules:number;bytes?:number}> = [];
   const fuel:Array<Record<string,unknown>> = [];
   const phaseStarts:Array<{phase:string}> = [];
-  const command=[build.artifact,'--threads',String(o.threads),'--gpu','off','--',
+  const command=[build.artifact,'+RTS','--threads',String(o.threads),'--gpu','off','--RTS',
     resolve(input.directory,input.root),resolve(input.directory,'bend2/base.bend'),
     o.report+'.runtime.tsv',o.report+'.exports.txt',o.phase,output];
   if(runtimePath)command.push(runtimePath);

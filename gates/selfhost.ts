@@ -185,6 +185,9 @@ function default_files(): string[] {
     "evals/c_target_bool_prims.bend",
     "evals/c_target_clo_field.bend",
     "tests/reg/phys_storage_paths.bend",
+    "evals/c_target_show_data.bend",
+    "evals/c_target_user_ctor_show.bend",
+    "evals/c_target_wide_node.bend",
     // Show and literal transport: a String literal is Bend String data, so a
     // code that is no Unicode scalar keeps its exact value and its escapes.
     "tests/show/string_literal_any_code.bend",

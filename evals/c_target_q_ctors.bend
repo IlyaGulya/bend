@@ -7,6 +7,6 @@
 import Base
 
 type T is Data:
-  Nil{}
-  Con{head: U32, tail: T}
-  Tuple{fst: T, snd: U32}
+  T.Nil{}
+  T.Con{head: U32, tail: T}
+  T.Tuple{fst: T, snd: U32}

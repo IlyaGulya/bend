@@ -58,7 +58,7 @@ try{
     need(K.term_show(K.term_lower(K.term_snf(book,K.term_higher(checked.tm))))===fixture.expected,'Native term_check wrong behavior '+fixture.name);
     const js=join(directory,mode+'.js'),c=join(directory,mode+'.c'),executable=join(directory,mode);
     await writeFile(js,Comp.js_book(book));await writeFile(c,Comp.compile_book(book));
-    const jsRuntime=run(process.execPath,[js]);run(process.env.CC??'cc',['-std=c11','-O1',c,'-lpthread','-lm','-o',executable]);const cRuntime=run(executable,['--threads','1','--gpu','off']);
+    const jsRuntime=run(process.execPath,[js]);run(process.env.CC??'cc',['-std=c11','-O1',c,'-lpthread','-lm','-o',executable]);const cRuntime=run(executable,['+RTS','--threads','1','--gpu','off','-RTS']);
     need(native===fixture.expected,'SEMANTIC DIFFERENCE native oracle '+fixture.name+' '+mode+': '+native);
     for(const [backend,result]of [['JS',jsRuntime],['C',cRuntime]] as const)need(result.stdout.trim()===fixture.expected,'SEMANTIC DIFFERENCE '+backend+' oracle '+fixture.name+' '+mode+': '+result.stdout);
     outcomes.push({mode,bookValid:'PASS',native,wnfKind:wnf.$,termInfer:'PASS',termCheck:'PASS',jsRuntime,cRuntime});

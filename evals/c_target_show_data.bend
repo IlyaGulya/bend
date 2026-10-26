@@ -9,4 +9,4 @@ import Base
 def main() -> List<U32>:
   [1, 2]
 
-#|Con(1, 2, Nil)
+#|[1, 2]

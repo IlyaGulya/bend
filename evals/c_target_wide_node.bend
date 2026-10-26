@@ -9,10 +9,10 @@
 # frees its padded block; one value is opened to read its first, its tail and
 # its shared String fields.
 #
-# Cell holds an inline two-word Pair plus a U32, so its node has three words
-# but two fields. Pair's left String is aliased and read twice while its right
+# Cell holds an inline two-word StringPair plus a U32, so its node has three
+# words but two fields. Its left String is aliased and read twice while its right
 # String is dropped, and the U32 is read after the two-word field. A second
-# Cell is dropped unopened, so its three-word node and both Pair Strings are
+# Cell is dropped unopened, so its three-word node and both Strings are
 # released without any projection.
 #
 # Expected: (4 + 4 + 5) then (1 + 2 + 4 + 4) then 0. This slice is source
@@ -20,11 +20,11 @@
 # emitted C before treating them as accepted receipts.
 import Base
 
-type Pair is Data:
-  Pair{+left: String, +right: String}
+type StringPair is Data:
+  StringPair{+left: String, +right: String}
 
 type Cell is Data:
-  Cell{pair: Pair, n: U32}
+  Cell{pair: StringPair, n: U32}
 
 type Wide is Data:
   Wide{f0: Nat, f1: Nat, f2: Nat, f3: Nat, f4: Nat, f5: Nat,
@@ -70,9 +70,9 @@ type Wide is Data:
        f240: Nat, f241: Nat, f242: Nat, f243: Nat, f244: Nat, tail: Nat,
        +text: String, dead: String}
 
-def pair_len(p: Pair) -> Nat:
+def pair_len(p: StringPair) -> Nat:
   match p:
-    case Pair{left, _}:
+    case StringPair{left, _}:
       x = left
       Nat.add(String.length(x), String.length(left))
 
@@ -182,9 +182,9 @@ def shed_cell(c: Cell, +acc: Nat) -> Nat:
 
 def main() -> IO(Unit):
   do IO<Unit>:
-    Unit <- IO.print(Nat.show(cell_len(Cell{Pair{String.concat(["ab", "cd"]), String.concat(["z", "z"])}, 5})))
-    Unit <- IO.print(Nat.show(wide_total(wnode(1))))
-    IO.print(Nat.show(Nat.add(shed([wnode(2), wnode(2), wnode(2), wnode(2), wnode(2), wnode(2)], 0n), shed_cell(Cell{Pair{String.concat(["e", "f"]), String.concat(["g", "h"])}, 6}, 0n))))
+    Unit <- IO.print(Nat.show(cell_len(Cell{StringPair{String.concat(["ab", "cd"]), String.concat(["z", "z"])}, 5})))
+    Unit <- IO.print(Nat.show(wide_total(wnode(1n))))
+    IO.print(Nat.show(Nat.add(shed([wnode(2n), wnode(2n), wnode(2n), wnode(2n), wnode(2n), wnode(2n)], 0n), shed_cell(Cell{StringPair{String.concat(["e", "f"]), String.concat(["g", "h"])}, 6}, 0n))))
 
 #|13
 #|11

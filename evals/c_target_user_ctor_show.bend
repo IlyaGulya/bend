@@ -8,6 +8,6 @@ import Base
 import ./c_target_q_ctors.bend as Q
 
 def main() -> Q.T:
-  Q.Tuple{Q.Con{1, Q.Nil{}}, 2}
+  Q.T.Tuple{Q.T.Con{1, Q.T.Nil{}}, 2}
 
-#|c_target_q_ctors.Tuple{c_target_q_ctors.Con{1, c_target_q_ctors.Nil{}}, 2}
+#|c_target_q_ctors.T.Tuple{c_target_q_ctors.T.Con{1, c_target_q_ctors.T.Nil{}}, 2}

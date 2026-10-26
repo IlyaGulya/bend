@@ -290,7 +290,7 @@ async function semanticVariant(graph: ParserGraph, fixture: Fixture, alignedSwap
     await writeFile(jsPath, jsSource); await writeFile(cPath, cSource);
     jsRuntime = run(process.execPath, [jsPath], bounds.timeMs);
     run(process.env.CC ?? 'cc', ['-std=c11', '-O1', cPath, '-lpthread', '-lm', '-o', executable], bounds.timeMs);
-    cRuntime = run(executable, ['--threads', '1', '--gpu', 'off'], bounds.timeMs);
+    cRuntime = run(executable, ['+RTS', '--threads', '1', '--gpu', 'off', '-RTS'], bounds.timeMs);
   } finally {await rm(directory, {recursive: true, force: true});}
   const signature = graph.signatures.get('matrix')!;
   const original = graph.bodies.get('matrix')!;
