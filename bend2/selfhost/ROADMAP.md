@@ -72,6 +72,12 @@ the new Base. All ten current consumer roles now resolve inside this worktree;
 fresh parser/root execution is pending. Receipt:
 `evals/receipts/release2039_source_corrections.json`.
 No old compiler receipt is reclassified.
+The subsequent `release2039c` source suite has 71/71 parity, but preparation
+rejects its authenticator's obsolete Base path mapping. Gate and authenticator
+now share one fail-closed role resolver, itself pinned in semantic provenance;
+its ten-role/current-worktree and unknown-role smoke passes. Full admission
+must be rerun with fresh proof inputs. Receipt:
+`evals/receipts/parser2039c_mapping_rejection.json`.
 
 Latest compiler root: **`db147cba`**, after an authenticated inline-parser
 cutover in `/private/tmp/bend-parser-cutover667`. Fresh native admission checks

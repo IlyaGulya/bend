@@ -18,6 +18,26 @@ const object=(value:unknown):Record<string,any>=>{
  return value as Record<string,any>;
 };
 
+const parserConsumerSources:Readonly<Record<string,string>>={
+ 'checker_core_slice.bend':'checkpoints/checker_core_owned_v1.bend',
+ 'checker_core_driver.bend':'checkpoints/checker_core_owned_driver_v1.bend',
+ 'base.bend':'bend2/base.bend',
+ 'loaded_module.bend':'bend2/selfhost/loaded_module.bend',
+ 'ast.bend':'bend2/selfhost/ast.bend',
+ 'js_emit.bend':'bend2/selfhost/js_emit.bend',
+ 'lexer.bend':'bend2/selfhost/lexer.bend',
+ 'core.bend':'bend2/selfhost/core.bend',
+ 'path.bend':'bend2/selfhost/path.bend',
+};
+
+/** Historical names select current source roles, never another checkout. */
+export function currentParserConsumerPath(role:string,parserPath:string):string{
+ if(role==='.parser_definition_body_shape_generated_fuel.bend')return realpathSync(parserPath);
+ const source=parserConsumerSources[role];
+ if(typeof source!=='string')throw Error('Unknown current parser consumer role: '+role);
+ return realpathSync(resolve(repository,source));
+}
+
 /** Authenticate the native receipt only. This is not parser/root admission;
  * callers must also require the fresh producer's final semantic acceptance. */
 export function authenticateNativeParserReceipt(path:string){
@@ -146,9 +166,7 @@ export function authenticateParserSemanticGate(path:string,options:{
   new Set(migrations.map((row:any)=>row.role)).size!==10)throw Error('Missing current compiler role migration inventory');
  for(const module of inventory.modules){
   const role=module.file.split('/').at(-1),migration=migrations.find((row:any)=>row.role===role);
-  const actual=role==='.parser_definition_body_shape_generated_fuel.bend'?parserPath:
-   role==='checker_core_slice.bend'?resolve(repository,'checkpoints/checker_core_owned_v1.bend'):
-   role==='checker_core_driver.bend'?resolve(repository,'checkpoints/checker_core_owned_driver_v1.bend'):realpathSync(module.file);
+  const actual=currentParserConsumerPath(role,parserPath);
   if(!migration||migration.historicalFile!==module.file||realpathSync(migration.file)!==actual||
    migration.sourceSha256!==sha(read(actual))||currentInputs.get(actual)!==migration.sourceSha256)
    throw Error('Current compiler role/path/hash migration drift: '+role);
@@ -171,7 +189,7 @@ export function authenticateParserSemanticGate(path:string,options:{
   throw Error('Missing parser-bound public regression/raw proof');
  const required=[parserPath,resolve(repository,'bend2/selfhost/parser.bend'),resolve(repository,'bend2/bend.ts'),
   inventoryPath,publicPath,realpathSync(publicReport.rawOutputPath),
-  ...['evals/bootstrap_parser_fast.ts','evals/bootstrap_parser_public_gate.ts','evals/heavy_gate.ts','evals/heavy_gate_native.c']
+  ...['evals/bootstrap_parser_fast.ts','evals/bootstrap_parser_public_gate.ts','evals/selfhost_driver_source.ts','evals/heavy_gate.ts','evals/heavy_gate_native.c']
    .map(path=>resolve(repository,path))];
  let component:Record<string,any>|undefined;
  if(!sourcePhase){

@@ -6,6 +6,7 @@ import {guardHeavyGate,parseHeavyGateOptions} from './heavy_gate.ts';
 import {compiledLexerABI,lexerConstructorKey} from './bootstrap_parser_eval_abi.ts';
 import {readNativeAstArena} from './bootstrap_ast_transport.ts';
 import {officialKernelSha256 as officialReleaseKernelSha256} from './release_identity.ts';
+import {currentParserConsumerPath} from './selfhost_driver_source.ts';
 import {createHash} from 'node:crypto';
 import {writeFileSync,mkdtempSync,rmSync,readFileSync,realpathSync} from 'node:fs';
 import {resolve,dirname,join,posix} from 'node:path';
@@ -40,7 +41,7 @@ const canonicalSha256=createHash('sha256').update(new Uint8Array(await Bun.file(
 const kernelPath=resolve('bend2/bend.ts'),kernelSha256=createHash('sha256').update(readFileSync(kernelPath)).digest('hex');
 const sourceInputs=new Map<string,{file:string,sha256:string}>();
 for(const path of [kernelPath,'bend2/comp.ts','bend2/base.bend','bend2/selfhost/ast.bend','bend2/selfhost/lexer.bend',
- 'evals/bootstrap_parser_fast.ts','evals/bootstrap_parser_public_gate.ts','evals/heavy_gate.ts','evals/heavy_gate_native.c',
+ 'evals/bootstrap_parser_fast.ts','evals/bootstrap_parser_public_gate.ts','evals/selfhost_driver_source.ts','evals/heavy_gate.ts','evals/heavy_gate_native.c',
  'evals/bootstrap_ast_transport.ts','evals/parser_full_semantic_normalize.ts','evals/parser_full_graph.ts','evals/bootstrap_source_oracle.ts','evals/bootstrap_parser_eval_abi.ts','evals/parser_full_fuel_smoke.ts',
  ...(nativeMode?['evals/bootstrap_parser_native_semantic_worker.mjs']:['evals/bootstrap_token_worker.mjs'])]){
  const file=realpathSync(path);sourceInputs.set(file,{file,sha256:createHash('sha256').update(readFileSync(file)).digest('hex')});
@@ -261,23 +262,9 @@ const fixtureDir=realpathSync(mkdtempSync(join(tmpdir(),'bend-bootstrap-parser-r
 writeFileSync(fixtureFile,'');writeFileSync(join(fixtureDir,'dependency.bend'),'def value() -> Nat:\n  7n\n');
 // Historical names are stable consumer roles, not stale implementation paths.
 // The generated parser role always parses this run's selected current source.
-const currentRolePaths:Record<string,string>={
- '.parser_definition_body_shape_generated_fuel.bend':parserPath,
- 'checker_core_slice.bend':'checkpoints/checker_core_owned_v1.bend',
- 'checker_core_driver.bend':'checkpoints/checker_core_owned_driver_v1.bend',
- 'base.bend':'bend2/base.bend',
- 'loaded_module.bend':'bend2/selfhost/loaded_module.bend',
- 'ast.bend':'bend2/selfhost/ast.bend',
- 'js_emit.bend':'bend2/selfhost/js_emit.bend',
- 'lexer.bend':'bend2/selfhost/lexer.bend',
- 'core.bend':'bend2/selfhost/core.bend',
- 'path.bend':'bend2/selfhost/path.bend',
-};
 const realCases=await Promise.all(real.modules.map(async(m:unknown)=>{
  if(typeof m!=='object'||m===null||!('file'in m)||typeof m.file!=='string')throw Error('Invalid real-source consumer path');
- const name=m.file.split('/').at(-1)!,selected=currentRolePaths[name];
- if(selected===undefined)throw Error('Unmapped current real-source consumer role: '+name);
- const file=realpathSync(selected);
+ const name=m.file.split('/').at(-1)!,file=currentParserConsumerPath(name,parserPath);
  const source=await Bun.file(file).text(),sha256=createHash('sha256').update(source).digest('hex'),previous=sourceInputs.get(file);
  if(previous&&previous.sha256!==sha256)throw Error('Real consumer changed during preparation: '+file);
  sourceInputs.set(file,{file,sha256});
