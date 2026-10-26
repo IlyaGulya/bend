@@ -17,6 +17,11 @@ latest one; the GitHub release carries the same notes.
   references, register their owning families when needed. Eight focused C/JS
   programs pass; complete-root memory and selfhost fixedpoint remain unaccepted.
 
+- Native C generation releases weakly keyed normalized types, telescopes and
+  instantiated constructor domains between bodies: a key owned by the checked
+  book otherwise keeps its cached answer alive. Eight C/JS execution cases
+  preserve their emitted bytes; full-root memory acceptance is still pending.
+
 - The 2.0.39 selfhost migration uses one bounded-left JS literal serializer
   for scalar and full-u32 Char codes, removing a duplicate growing-prefix
   path. Current-source parser roles no longer fall back to historical checkout

@@ -1926,6 +1926,11 @@ function file_release(k: Name, final = false, lines?: string[]): void {
   FL.higher.clear();
   if (!FL.js) {
     FL.consts.clear();
+    // A weak key can still be book-owned. Drop instantiated answers when this
+    // body ends, rather than retaining its normalized types for the whole book.
+    FL.wnfs = new WeakMap();
+    FL.teles = new WeakMap();
+    FL.ctr_fills = new WeakMap();
   }
   const tld = FL.book.tlds[k];
   if (FL.options.releaseChecked && final) {
