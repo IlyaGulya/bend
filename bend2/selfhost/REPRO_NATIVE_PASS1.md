@@ -452,3 +452,11 @@ The full old-pinned native diagnostic remains a separate run, using the exact
 eight frozen workload hashes and the newly identified producer, Bun's default
 stack/GC, an actual 8192 MiB tree guard and the approved 1800 s deadline.
 The scoped producer repair is not a current-root native or fixedpoint claim.
+
+Full Bun replay of producer checkpoint `9c5a9ffa` completes load and validation
+of all 10,476 book events, then reaches the actual 8192 MiB RSS guard during
+`c-pass-1`: 29,320 ms, peak RSS 8,597,356,544 B, footprint 8,374,835,920 B.
+Guardian reports `RESOURCE_LIMIT`, complete/stopped, exit 73. No C artifact
+exists. This is not a V8 heap OOM or a completed native build. Exact workload,
+producer, command and boundaries:
+`evals/receipts/native03d0_bun_ctor_fixed_rss.json`.
