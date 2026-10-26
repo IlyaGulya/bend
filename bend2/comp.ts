@@ -1062,14 +1062,24 @@ function ty_value(K: HTerm | null): boolean {
     : !ty_holds(k, (t) => !ty_tag(t, "ADT Qnt Eql"));
 }
 
+// Reachability only needs the datatypes a type mentions, and it records them
+// in a set, so a term already walked has nothing left to add. Signatures and
+// annotated nodes across the whole book spell the same type terms, so mark
+// every visited head instead of descending through it again for each spelling;
+// an instantiated telescope tail is a fresh term, and its own shared parts are
+// still each walked once.
 function ty_srcs(T: HTerm): void {
   const t = ty_wnf(T);
-  if (t?.$ === "All") {
+  if (t === null || FL.src_walk.has(t)) {
+    return;
+  }
+  FL.src_walk.add(t);
+  if (t.$ === "All") {
     ty_srcs(t.A);
     ty_srcs(t.B(DUMMY));
-  } else if (t?.$ === "Lam") {
+  } else if (t.$ === "Lam") {
     ty_srcs(t.f(DUMMY));
-  } else if (t?.$ === "ADT") {
+  } else if (t.$ === "ADT") {
     if (!WORDS[t.k] && t.k !== "Array") {
       src_add(t.k);
     }
@@ -1791,6 +1801,7 @@ function file_new(book: Bend.Book, js: boolean, options: JSOptions = {}) {
     taken: new Set("FID_EXIT FID_ENTER FID_T CID_T $pc".split(" ")),
     teles: new WeakMap<HTerm, { doms: Dom[]; ret: HTerm }>(),
     wnfs: new WeakMap<HTerm, HTerm>(),
+    src_walk: new WeakSet<HTerm>(),
     const_ids: new WeakMap<HTerm, boolean>(),
     ctr_own: new WeakMap<Bend.Ctr, CtrDoms>(),
     ctr_fills: new WeakMap<Bend.Ctr, WeakMap<HTerm[], CtrDoms>>(),
