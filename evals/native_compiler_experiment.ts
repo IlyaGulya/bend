@@ -32,9 +32,9 @@
  * Both commands acquire the existing heavy_gate lease. Build uses the unchanged
  * canonical kernel, validates every body in the compiler root and host bridge,
  * then calls compile_book and clang (official CPU flags by default).
- * Ordinary code generation runs on Bun's main thread with its default stack
- * and automatic GC; the guardian bounds actual tree memory. V8-only sampling
- * explicitly selects the separate Node worker (3072 MiB heap / 256 MiB stack).
+ * Code generation uses Bun --smol, default stack and automatic GC; the guardian
+ * bounds actual tree memory. V8-only sampling explicitly selects the separate
+ * Node worker (3072 MiB heap / 256 MiB stack).
  * Run freshly reads the entire frozen corpus and uses only Bend parsing/expansion/
  * checking/emission. C owns IO/import loading and opaque native Run chunk
  * orchestration, outside Bend's totality proof. No ASTs are serialized or cached.
@@ -452,10 +452,12 @@ async function buildWorkerBody(o:Options,profile?:CompilerProfile){
   const args_=process.argv.slice(2).filter(arg=>!arg.startsWith('--internal='));
   // Worker exit need not return its allocator pages to the OS. Terminate the
   // entire codegen process before clang, not just the worker's JS heap.
+  // The supervisor's --smol does not propagate across spawn. Apply it to the
+  // actual Bun producer too; its automatic GC must fit the same tree guard.
   const nodeProducer=Boolean(o.v8LogDir||o.profileSampling);
   const codegen=nodeProducer
     ?['node',...profileFlags,'--experimental-strip-types','--max-old-space-size=3072',script,...args_,'--internal=codegen']
-    :[process.execPath,script,...args_,'--internal=codegen'];
+    :[process.execPath,'--smol',script,...args_,'--internal=codegen'];
   progress(o,'codegen-process','start',{command:codegen});
   const codegenSpan=profile?.begin('codegen-process',{command:codegen,childPid:null});
   let codegenChild:{pid:number|undefined};

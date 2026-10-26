@@ -17,10 +17,13 @@ latest one; the GitHub release carries the same notes.
   references, register their owning families when needed. Eight focused C/JS
   programs pass; complete-root memory and selfhost fixedpoint remain unaccepted.
 
-- Native C generation releases weakly keyed normalized types, telescopes and
-  instantiated constructor domains between bodies: a key owned by the checked
-  book otherwise keeps its cached answer alive. Eight C/JS execution cases
-  preserve their emitted bytes; full-root memory acceptance is still pending.
+- A body-scoped normalized-type cache experiment preserved eight C/JS outputs,
+  but its full native build still exceeded the 8 GiB footprint guard. It was
+  rejected and reverted; no memory improvement or compiler acceptance is claimed.
+
+- The native builder now applies Bun's `--smol` to the C producer process as
+  well as its supervisor. The same RSS/footprint and deadline guards still
+  apply; runtime configuration is recorded separately from compiler changes.
 
 - The 2.0.39 selfhost migration uses one bounded-left JS literal serializer
   for scalar and full-u32 Char codes, removing a duplicate growing-prefix
