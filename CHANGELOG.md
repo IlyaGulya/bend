@@ -5,6 +5,11 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- Native C generation traverses nested constructors with an explicit stack,
+  preserving field order, layouts and ownership without exhausting Bun's
+  JavaScript stack on large literal values. The 8192-character regression now
+  compiles and prints its length natively; small-input C bytes are unchanged.
+
 - Datatypes are headers: the selfhost checker publishes each family's name,
   module aliases and kind telescope before any parameter, field or body is
   checked, so a field, index telescope or kind may name a family declared later

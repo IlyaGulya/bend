@@ -2591,18 +2591,53 @@ function emit_clo(sc: Scope, x: HTerm, ty: HTerm | null): Val {
   return val_new([clo], BOX);
 }
 
+type CtrEmit = {
+  sc: Scope;
+  x: Of<"Ctr">;
+  flds: HTerm[];
+  tys: HTerm[];
+  vs: Val[];
+} & (
+  | { mode: "word"; adt: Of<"ADT">; word: Lay }
+  | { mode: "array"; adt: Of<"ADT"> }
+  | { mode: "node"; pos: Lay; lay: Lay; seen: Map<HTerm, Val> }
+);
+
 function emit_ctr(sc: Scope, x: Of<"Ctr">, ty: HTerm | null,
-  at: Lay | null): Val {
+  at: Lay | null): Val | CtrEmit {
   const [adt, u] = ctr_adt(x, ty);
   if (u !== null) {
     return val_new([`${u}ull`], W32, true);
   }
   const flds = ctr_flds(x.k, x.x);
   const ctr = FL.book.ctrs[x.k];
-  const tys = () => ctr_doms(ctr, adt.x);
   const word = WORDS[adt.k];
   if (word !== undefined) {
-    const vs = emit_each(sc, flds, [], tys());
+    return { sc, x, flds, tys: ctr_doms(ctr, adt.x), vs: [],
+      mode: "word", adt, word };
+  }
+  if (adt.k === "Array") {
+    return { sc, x, flds, tys: ctr_doms(ctr, adt.x), vs: [],
+      mode: "array", adt };
+  }
+  if (FL.hot.has(x.k)) {
+    facts_ctr(sc, ctr, adt.x);
+  }
+  const pos = at ?? lay_of(adt);
+  const seen = memo(FL.consts, pos, () => new Map());
+  const got = seen.get(x);
+  if (got !== undefined) {
+    return got;
+  }
+  const lay = pos === BOX ? lay_node(x.k) : pos;
+  return { sc, x, flds, tys: ctr_doms(ctr, adt.x), vs: [],
+    mode: "node", pos, lay, seen };
+}
+
+function emit_ctr_done(frame: CtrEmit): Val {
+  const { sc, x, vs } = frame;
+  if (frame.mode === "word") {
+    const { adt, word } = frame;
     // Word packing needs structural bits, never a partially boxed bit tail.
     if (word === W32) {
       const lays = lay_node(x.k).arms![x.k];
@@ -2619,25 +2654,14 @@ function emit_ctr(sc: Scope, x: Of<"Ctr">, ty: HTerm | null,
       [vs[0].ws[0]]) : `term_word(e, ${vs[0].ws[0]})`;
     return val_new([w], word, /^\d/.test(w));
   }
-  if (adt.k === "Array") {
-    const vs = emit_each(sc, flds, [], tys());
+  if (frame.mode === "array") {
     return val_new([x.k === "ALeaf"
-      ? arr_new(sc, "0", vs[0], lay_el(adt.x[0]))
+      ? arr_new(sc, "0", vs[0], lay_el(frame.adt.x[0]))
       : `blk_node(e, ${val_own(sc, vs[0])[0]}, ${val_own(sc, vs[1])[0]})`],
     BOX);
   }
-  if (FL.hot.has(x.k)) {
-    facts_ctr(sc, ctr, adt.x);
-  }
-  const pos = at ?? lay_of(adt);
-  const seen = memo(FL.consts, pos, () => new Map());
-  const got = seen.get(x);
-  if (got !== undefined) {
-    return got;
-  }
-  const lay = pos === BOX ? lay_node(x.k) : pos;
+  const { pos, lay, seen } = frame;
   const arms = Object.keys(lay.arms!);
-  const vs = emit_each(sc, flds, lay.arms![x.k], tys());
   const ws = [...arms.length > 1 ? [String(arms.indexOf(x.k))] : [],
     ...vs.flatMap((f, j) => val_to(sc, f, lay.arms![x.k][j]).ws)];
   const v = val_new(lay.ks.map((_, j) => ws[j] ?? "0"), lay,
@@ -2729,65 +2753,112 @@ function emit_unfold(m: Spine): HTerm | null {
 
 function emit_expr(sc: Scope, tm: HTerm, ty0: HTerm | null,
   at: Lay | null): Val {
-  const [x, ty] = ty_peel(tm, ty0);
-  switch (x.$) {
-    case "Var": {
-      return bind_pop(sc, x);
+  const first = emit_expr_head(sc, tm, ty0, at);
+  if ("ws" in first) {
+    return first;
+  }
+  let frame = first;
+  let parents: CtrEmit[] | undefined;
+  // Suspend parents rather than consuming one JS stack frame per constructor.
+  // Prepare and finish each field in the same left-to-right order as emit_each.
+  for (;;) {
+    const i = frame.vs.length;
+    if (i < frame.flds.length) {
+      const child = emit_expr_head({ ...frame.sc,
+        rest: [...frame.flds.slice(i + 1), ...frame.sc.rest] },
+      frame.flds[i], frame.tys[i] ?? null,
+      frame.mode === "node" ? frame.lay.arms![frame.x.k]?.[i] ?? null : null);
+      if ("ws" in child) {
+        frame.vs.push(child);
+      } else {
+        (parents ??= []).push(frame);
+        frame = child;
+      }
+      continue;
     }
-    case "Ref":
-    case "App": {
-      const got = emit_fold(x);
-      if (got !== null && got !== x) {
-        const a = term_uses(x);
-        const b = term_uses(got);
-        sc.uses.forEach((bd, p) => bind_set(sc, p, bd,
-          bd.n - term_use(a, p) + term_use(b, p)));
-        return emit_expr(sc, got, ty, at);
+    const out = emit_ctr_done(frame);
+    const parent = parents?.pop();
+    if (parent === undefined) {
+      return out;
+    }
+    parent.vs.push(out);
+    frame = parent;
+  }
+}
+
+function emit_expr_head(sc: Scope, tm: HTerm, ty0: HTerm | null,
+  at: Lay | null): Val | CtrEmit {
+  for (;;) {
+    const [x, ty] = ty_peel(tm, ty0);
+    switch (x.$) {
+      case "Var": {
+        return bind_pop(sc, x);
       }
-      const m = term_spine(x);
-      if (flat_call(x)) {
-        const dst = emit_dst(sc, fun_of(m.k!).ret);
-        emit_fuse(sc, m, dst);
-        return dst;
+      case "Ref":
+      case "App": {
+        const got = emit_fold(x);
+        if (got !== null && got !== x) {
+          const a = term_uses(x);
+          const b = term_uses(got);
+          sc.uses.forEach((bd, p) => bind_set(sc, p, bd,
+            bd.n - term_use(a, p) + term_use(b, p)));
+          tm = got;
+          ty0 = ty;
+          continue;
+        }
+        const m = term_spine(x);
+        if (flat_call(x)) {
+          const dst = emit_dst(sc, fun_of(m.k!).ret);
+          emit_fuse(sc, m, dst);
+          return dst;
+        }
+        const y = call_eta(x)
+          ?? (m.t.$ !== "Ref" && m.args.length === 0 ? m.h : null);
+        if (y !== null) {
+          tm = y;
+          ty0 = ty;
+          continue;
+        }
+        const g = m.t as Of<"Ref">;
+        const intr = intr_of(g.k);
+        if (intr !== undefined) {
+          return emit_intr(sc, intr, m, ty);
+        }
+        if (m.tld?.$ === "ADT") {
+          return emit_zero(ty);
+        }
+        if (!def_foreign(m.tld)) {
+          die(`a live call into the law ${Bend.name_key(g.k)}`);
+        }
+        return val_new([seg_clo(sc, seg_fid(g.k),
+          emit_each(sc, m.args, m.args.map(() => BOX))
+            .map((v) => val_box(sc, v)))], BOX);
       }
-      const y = call_eta(x)
-        ?? (m.t.$ !== "Ref" && m.args.length === 0 ? m.h : null);
-      if (y !== null) {
-        return emit_expr(sc, y, ty, at);
+      case "Ctr": {
+        return emit_ctr(sc, x, ty, at);
       }
-      const g = m.t as Of<"Ref">;
-      const intr = intr_of(g.k);
-      if (intr !== undefined) {
-        return emit_intr(sc, intr, m, ty);
+      case "Let": {
+        const o = term_open(x);
+        if (let_live(x)[0]) {
+          emit_let({ ...sc, rest: [o.b, ...sc.rest] }, x);
+        }
+        tm = o.b;
+        ty0 = null;
+        continue;
       }
-      if (m.tld?.$ === "ADT") {
+      case "Lam":
+      case "Mat":
+      case "Efq": {
+        if (fun_live(x, ty)) {
+          return emit_clo(sc, x, ty);
+        }
+        tm = (x as Of<"Lam">).f(DUMMY);
+        ty0 = ty_all(ty).B(DUMMY);
+        continue;
+      }
+      default: {
         return emit_zero(ty);
       }
-      if (!def_foreign(m.tld)) {
-        die(`a live call into the law ${Bend.name_key(g.k)}`);
-      }
-      return val_new([seg_clo(sc, seg_fid(g.k),
-        emit_each(sc, m.args, m.args.map(() => BOX))
-          .map((v) => val_box(sc, v)))], BOX);
-    }
-    case "Ctr": {
-      return emit_ctr(sc, x, ty, at);
-    }
-    case "Let": {
-      const o = term_open(x);
-      if (let_live(x)[0]) {
-        emit_let({ ...sc, rest: [o.b, ...sc.rest] }, x);
-      }
-      return emit_expr(sc, o.b, null, at);
-    }
-    case "Lam":
-    case "Mat":
-    case "Efq": {
-      return fun_live(x, ty) ? emit_clo(sc, x, ty)
-        : emit_expr(sc, (x as Of<"Lam">).f(DUMMY), ty_all(ty).B(DUMMY), at);
-    }
-    default: {
-      return emit_zero(ty);
     }
   }
 }

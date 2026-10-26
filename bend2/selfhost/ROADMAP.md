@@ -152,6 +152,14 @@ Base-only literal program, with a real emitted/linked/executed small control.
 See `evals/receipts/bun_c_ctor_stack_mre.json` and the compact-witness section
 of `REPRO_NATIVE_PASS1.md`. The native working image is still not accepted.
 
+The user authorizes a generic stack-safe constructor traversal in `comp.ts`,
+without kernel/language/ABI changes. The repaired producer passes 14 native/JS
+smoke inputs, including the large literal, field-order/IO, dependent arrays,
+words, erasure and the unchanged retained-frontier regression. C bytes match
+the old producer on all 13 emit-capable small inputs:
+`evals/receipts/bun_c_ctor_stack_fix.json`. Full frozen native execution remains
+a separate requirement; no whole-compiler acceptance follows from this smoke.
+
 ### Preceding `667e7f33` C checkpoint (historical)
 
 

@@ -428,3 +428,27 @@ Main and frozen bend.ts/comp.ts/base.bend hashes match. No producer/kernel
 fix is included; a stack-safe C producer change crosses the frozen-source
 boundary and needs an explicit decision rather than a silent baseline change.
 
+
+### Authorized producer repair: constructor traversal
+
+The user explicitly authorizes changing `bend2/comp.ts` for stack-safe generic
+constructor emission. `emit_expr` suspends constructor parents on an explicit
+stack; `emit_expr_head` loops through tail-position expression rewrites and
+`emit_ctr_done` retains the existing word/array/node assembly. Field order,
+the remaining-expression scope, layouts and static-value memoization are
+preserved. No String-only exception, kernel, language or ABI change is made.
+
+`evals/receipts/bun_c_ctor_stack_fix.json` pins the new producer and records
+14 real C/native and JS runs on Bun defaults, including the 8192-character
+regression (`8192n`), dependent fields, generic arrays, words, erasure, nested
+stored IO actions and the unchanged `list_rebox_sum` frontier bound.
+All 13 inputs that the frozen producer can emit have byte-identical C output.
+The first smoke driver stopped on an accidentally selected intentional
+typecheck-rejection fixture; its ten completed rows were preserved, and only
+the four remaining valid inputs were executed afterward. This is a smoke
+selection correction, not a change to any frozen acceptance corpus.
+
+The full old-pinned native diagnostic remains a separate run, using the exact
+eight frozen workload hashes and the newly identified producer, Bun's default
+stack/GC, an actual 8192 MiB tree guard and the approved 1800 s deadline.
+The scoped producer repair is not a current-root native or fixedpoint claim.
