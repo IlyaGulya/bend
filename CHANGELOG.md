@@ -12,6 +12,11 @@ latest one; the GitHub release carries the same notes.
   domains, physical layouts and word-match folding are exercised on the
   Bend 2.0.39 source base.
 
+- Compiler dependency discovery reads declared signatures instead of reopening
+  checked body type motives. C constructor uses, including foreign `CID(...)`
+  references, register their owning families when needed. Eight focused C/JS
+  programs pass; complete-root memory and selfhost fixedpoint remain unaccepted.
+
 - The 2.0.39 selfhost migration uses one bounded-left JS literal serializer
   for scalar and full-u32 Char codes, removing a duplicate growing-prefix
   path. Current-source parser roles no longer fall back to historical checkout

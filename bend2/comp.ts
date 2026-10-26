@@ -610,6 +610,9 @@ function name_id(pre: string, k: string): string {
 }
 
 function cid_mac(k: string): string {
+  if (FL.book.ctrs[k]) {
+    src_add(Bend.book_fam(FL.book, k));
+  }
   return name_id("CID_", k);
 }
 
@@ -1320,9 +1323,6 @@ function src_add(k: Name): void {
 }
 
 function ctr_build(sc: Scope, k: Name, exprs: string[], stat = false): string {
-  if (FL.book.ctrs[k]) {
-    src_add(Bend.book_fam(FL.book, k));
-  }
   const cid = cid_mac(k);
   if (lay_node(k).ks.join() === "w32" || exprs.length === 0) {
     return `term_pak(${cid}, ${exprs[0] ?? 0})`;
@@ -1967,10 +1967,10 @@ function file_book(roots: Name[]): void {
     const deps = new Set<Name>();
     const refs = new Set<Name>();
     let flat = true;
+    // Checked annotation motives may reopen every enclosing match goal. The
+    // declared signatures supply type roots; emitted and foreign CID uses
+    // register their own families through cid_mac and effect_src.
     term_any(fun_of(d).h!, (s, tail) => {
-      if (s.$ === "Ann") {
-        ty_srcs(s.T);
-      }
       if (s.$ === "Ref") {
         if (s.b) {
           FL.bangs.add(s.k);
@@ -3436,6 +3436,9 @@ function effect_src(k: Name, tld: Bend.Def & { i: string[] }): void {
     const src = FL.js ? raw : raw.replace(/\\[ \t]*\r?\n/g, "");
     FL.effs.set(path, [m, src]);
     if (!FL.js) c_ids(src, m, (p, q) => {
+      if (p === "CID" && FL.book.ctrs[q]) {
+        src_add(Bend.book_fam(FL.book, q));
+      }
       if (p === "FID" && fun_runs(FL.book.tlds[q])) {
         src_add(q);
         FL.fids.add(q);
