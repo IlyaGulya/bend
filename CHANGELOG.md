@@ -32,6 +32,11 @@ latest one; the GitHub release carries the same notes.
   program; if it discovers new facts, analysis resumes before publication.
   Nine C/JS executions pass and eight prior artifacts keep identical bytes.
 
+- Native local naming cleans each distinct stem once per definition rather
+  than once per extracted word. Packed-layout checks avoid temporary strings.
+  Nine actual C/JS programs retain identical emitted bytes; complete-root
+  timing and memory remain separate measurements.
+
 - A body-scoped normalized-type cache experiment preserved eight C/JS outputs,
   but its full native build still exceeded the 8 GiB footprint guard. It was
   rejected and reverted; no memory improvement or compiler acceptance is claimed.
