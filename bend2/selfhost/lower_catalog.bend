@@ -41,7 +41,7 @@ type Preparation is Data:
 type Arms is Data:
   Arms{arms: List<&2, BIR.DescriptorArm>, state: Preparation}
 type ExportFacts is Data:
-  ExportFacts{parameter_types: List<&2, BIR.Descriptor>}
+  ExportFacts{parameter_types: List<&2, BIR.Descriptor>, result: BIR.Descriptor}
 # Field identities are source-slot ordinals, including erased positions. The
 # named property exists only for a live field; slot lookup never compacts IDs.
 type ConstructorField is Data:
@@ -809,31 +809,42 @@ def live_arrow_types(value: BIR.Descriptor) -> List<&2, BIR.Descriptor>:
         case _: domain <> live_arrow_types(body)
     case _: Nil{}
 
+# The codomain of the full published signature: what an export returns once
+# every published arrow has been consumed. It is host-facing metadata for the
+# target's text boundary, so it comes from the same signature the domains do.
+def live_arrow_result(value: BIR.Descriptor) -> BIR.Descriptor:
+  match value:
+    case BIR.DescriptorArrow{_, _, body}: live_arrow_result(body)
+    case _: value
+
+def export_facts_of(arena: Arena.Arena, signature: BIR.Descriptor) -> CatalogResult<ExportFacts>:
+  CatalogResult{arena, ExportFacts{live_arrow_types(signature), live_arrow_result(signature)}}
+
 # Export host ABI facts are computed once from the published checked signature
 # of the exported definition. A missing definition or signature is an explicit
 # descriptor failure, never empty guessed types.
 def export_facts(v_0: Arena.Arena, key: String, definitions: List<&2, Definition>, signatures: List<&2, Scope.ArenaGlobal>) -> CatalogResult<ExportFacts>:
   match export_definition(key, definitions):
     case None{}:
-      CatalogResult{v_0, ExportFacts{[BIR.DescriptorFailure{String.append("bend: exported definition is not prepared: ", key)}]}}
+      CatalogResult{v_0, ExportFacts{[BIR.DescriptorFailure{String.append("bend: exported definition is not prepared: ", key)}], BIR.DescriptorFailure{String.append("bend: exported definition is not prepared: ", key)}}}
     case Some{Definition{_, _, _, _, _, scope, _, _}}:
       match export_signature(key, signatures):
         case None{}:
-          CatalogResult{v_0, ExportFacts{[BIR.DescriptorFailure{String.append("bend: exported definition has no published signature: ", key)}]}}
+          CatalogResult{v_0, ExportFacts{[BIR.DescriptorFailure{String.append("bend: exported definition has no published signature: ", key)}], BIR.DescriptorFailure{String.append("bend: exported definition has no published signature: ", key)}}}
         case Some{ty}:
           match descriptor(v_0, ty, scope):
             case CatalogResult{v_20, signature}:
-              CatalogResult{v_20, ExportFacts{live_arrow_types(signature)}}
+              export_facts_of(v_20, signature)
 
 def exports(keys: List<&2, String>, registry: Registry, v_0: Arena.Arena, definitions: List<&2, Definition>, signatures: List<&2, Scope.ArenaGlobal>, +context: DescriptorNf.NfContext) -> CatalogResult<List<&2, BIR.Export>>:
   match keys:
     case Nil{}: CatalogResult{v_0, Nil{}}
     case key <> rest:
       match export_facts(v_0, key, definitions, signatures):
-        case CatalogResult{v_20, ExportFacts{parameter_types}}:
+        case CatalogResult{v_20, ExportFacts{parameter_types, result}}:
           match exports(rest, registry, v_20, definitions, signatures, context):
             case CatalogResult{v_21, tail}:
-              CatalogResult{v_21, BIR.Export{key, export_entry(definition_key(registry, key)), normalize_descriptors(parameter_types, context)} <> tail}
+              CatalogResult{v_21, BIR.Export{key, export_entry(definition_key(registry, key)), normalize_descriptors(parameter_types, context), normalize_descriptor_value(result, context)} <> tail}
 
 # Reachability is a visited-set walk, not reduction and not fuel-bounded.
 # Register before traversing a body so recursive descriptor functions terminate.

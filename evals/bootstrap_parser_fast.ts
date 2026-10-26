@@ -265,10 +265,19 @@ const currentRolePaths:Record<string,string>={
  '.parser_definition_body_shape_generated_fuel.bend':parserPath,
  'checker_core_slice.bend':'checkpoints/checker_core_owned_v1.bend',
  'checker_core_driver.bend':'checkpoints/checker_core_owned_driver_v1.bend',
+ 'base.bend':'bend2/base.bend',
+ 'loaded_module.bend':'bend2/selfhost/loaded_module.bend',
+ 'ast.bend':'bend2/selfhost/ast.bend',
+ 'js_emit.bend':'bend2/selfhost/js_emit.bend',
+ 'lexer.bend':'bend2/selfhost/lexer.bend',
+ 'core.bend':'bend2/selfhost/core.bend',
+ 'path.bend':'bend2/selfhost/path.bend',
 };
 const realCases=await Promise.all(real.modules.map(async(m:unknown)=>{
  if(typeof m!=='object'||m===null||!('file'in m)||typeof m.file!=='string')throw Error('Invalid real-source consumer path');
- const name=m.file.split('/').at(-1)!,file=realpathSync(currentRolePaths[name]??m.file);
+ const name=m.file.split('/').at(-1)!,selected=currentRolePaths[name];
+ if(selected===undefined)throw Error('Unmapped current real-source consumer role: '+name);
+ const file=realpathSync(selected);
  const source=await Bun.file(file).text(),sha256=createHash('sha256').update(source).digest('hex'),previous=sourceInputs.get(file);
  if(previous&&previous.sha256!==sha256)throw Error('Real consumer changed during preparation: '+file);
  sourceInputs.set(file,{file,sha256});

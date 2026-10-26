@@ -12,6 +12,12 @@ latest one; the GitHub release carries the same notes.
   domains, physical layouts and word-match folding are exercised on the
   Bend 2.0.39 source base.
 
+- The 2.0.39 selfhost migration uses one bounded-left JS literal serializer
+  for scalar and full-u32 Char codes, removing a duplicate growing-prefix
+  path. Current-source parser roles no longer fall back to historical checkout
+  paths. Canonical CLI Char/String, affine non-tail and host-export fixtures
+  pass; composed compiler and fixedpoint re-admission remain separate gates.
+
 - Datatypes are headers: the selfhost checker publishes each family's name,
   module aliases and kind telescope before any parameter, field or body is
   checked, so a field, index telescope or kind may name a family declared later

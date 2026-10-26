@@ -16,7 +16,7 @@ if(isMainThread){
  parentPort.on('message',request=>{
   try{
    if(request.kind!==undefined&&request.kind!=='raw-lexer')throw Error('Unknown token producer kind');
-   let xs=producer['lexer.tokens'](request.source);
+   let xs=producer['lexer:tokens'](request.source);
    const tokens=[];
    while(xs.$==='Con'){tokens.push(xs.head);xs=xs.tail;}
    if(xs.$!=='Nil')throw Error('Bad current native token list');

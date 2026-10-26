@@ -8,6 +8,7 @@ let compiled: Promise<{
   lexer: {tokens(source: string): any}; artifactPath: string;
   artifactSha256: string; sourcePath: string; sourceSha256: string;
 }> | undefined;
+const lexerConstructors = new Map<string, string>();
 
 /** Observation seam only: compile and execute the current, natively checked
  * Bend lexer. Compiled parser artifacts execute their own unchanged lexer. */
@@ -19,11 +20,17 @@ export function compiledLexerABI() {
     const native = B.book_nil();
     await B.book_load(native, sourcePath, 'lexer', new Map());
     B.book_valid(native);
+    for (const key of Object.keys(native.ctrs)) {
+      if (key.startsWith('lexer:')) {
+        const local = key.slice('lexer:'.length);
+        lexerConstructors.set(local, local);
+      }
+    }
     const source = js_lib(native, true, {
       roots: ['lexer:tokens'], exports: ['lexer:tokens'], releaseChecked: true,
     });
     const artifactSha256 = createHash('sha256').update(source).digest('hex');
-    const artifactPath = resolve('checkpoints/bootstrap-lexer-token-producer-release237-' + artifactSha256 + '.js');
+    const artifactPath = resolve('checkpoints/bootstrap-lexer-token-producer-release239-' + artifactSha256 + '.js');
     if (await Bun.file(artifactPath).exists()) {
       if (await Bun.file(artifactPath).text() !== source)
         throw Error('Content-addressed lexer artifact differs from actual native emission');
@@ -39,8 +46,9 @@ export function compiledLexerABI() {
 }
 
 export function lexerConstructorKey(hostKey: string, namespace = 'lexer'): string {
-  if (!hostKey.startsWith('lexer.')) throw Error('Invalid current lexer constructor key');
-  return namespace + ':' + hostKey.slice('lexer.'.length);
+  const local = lexerConstructors.get(hostKey);
+  if (local === undefined) throw Error('Invalid current lexer constructor key: ' + hostKey);
+  return namespace + ':' + local;
 }
 
 export async function installCompiledLexerABI(book: B.Book,

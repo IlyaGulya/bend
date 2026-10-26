@@ -79,17 +79,22 @@ def runtime_ctors() -> List<&2, BIR.ConstructorLayout>:
 def u32_family() -> BIR.Family:
   BIR.Family{"U32", "U32", Some{"U32"}, 0n, 0n, Nil{}}
 
-def export(key: String, entry: Maybe<&2, BIR.Entry>, types: List<&2, BIR.Descriptor>) -> BIR.Export:
-  BIR.Export{key, entry, types}
+# The declared codomain travels with every export. This target has no host text
+# seam and ignores it, so it names the real result type only for coherence.
+def arrow(result: BIR.Descriptor) -> BIR.Descriptor:
+  BIR.DescriptorArrow{BIR.Affine{}, u32_type(), result}
+
+def export(key: String, entry: Maybe<&2, BIR.Entry>, types: List<&2, BIR.Descriptor>, result: BIR.Descriptor) -> BIR.Export:
+  BIR.Export{key, entry, types, result}
 
 def exports() -> List<&2, BIR.Export>:
   [
-    export("add", Some{BIR.Entry{1, 2n}}, [u32_type(), u32_type()]),
-    export("symbol_add", None{}, [u32_type(), u32_type()]),
-    export("partial", Some{BIR.Entry{2, 1n}}, [u32_type(), u32_type()]),
-    export("zero", None{}, Nil{}),
-    export("factory", None{}, Nil{}),
-    export("mk", Some{BIR.Entry{3, 0n}}, Nil{})
+    export("add", Some{BIR.Entry{1, 2n}}, [u32_type(), u32_type()], u32_type()),
+    export("symbol_add", None{}, [u32_type(), u32_type()], u32_type()),
+    export("partial", Some{BIR.Entry{2, 1n}}, [u32_type(), u32_type()], arrow(u32_type())),
+    export("zero", None{}, Nil{}, u32_type()),
+    export("factory", None{}, Nil{}, arrow(u32_type())),
+    export("mk", Some{BIR.Entry{3, 0n}}, Nil{}, u32_type())
   ]
 
 def program() -> BIR.Program:

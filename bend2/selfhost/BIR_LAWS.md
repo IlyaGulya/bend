@@ -87,7 +87,7 @@ FIR obligations listed in `FIR_LAWS.md`, in particular:
   are BIR responsibilities (`lower_catalog.descriptor`, `DescriptorNf`).
 
 Lowering re-checks only the facts it needs (for example namespace/path identity
-in `Catalog.prepare_modules`, `lower_catalog.bend:1400-1430`); it is not a
+in `Catalog.prepare_modules`, `lower_catalog.bend:1411-1441`); it is not a
 second checker.
 
 An F that violates a FIR obligation is outside this contract. Nothing in BIR
@@ -320,7 +320,7 @@ one `Code` in `Program.codes`.
 
 - Mechanism: `lower_catalog` allocates code numbers from a monotonically
   increasing `Preparation.next_code` (`prepare_definition`, `prepare_law`, and
-  `prepare_family`), and `lower_catalog.bend:1467` hands that counter to the
+  `prepare_family`), and `lower_catalog.bend:1478` hands that counter to the
   lowering state; `backend_lower.enter` increments it per nested code
   (`backend_lower.bend:210-213`). `definitions` never reuses one.
 - C checks only that a referenced code has an entry (`IndexLookup.find` in
@@ -535,13 +535,13 @@ tag, fields}`, `Project{..., constructor, field, key}`, and
 - Mechanism: `field_values` skips a declared erased field and otherwise emits
   `Field{identity, key, bir_use(q), value}` via
   `Catalog.constructor_field(constructor, identity)`
-  (`backend_lower.bend:449-469`; `lower_catalog.bend:1617-1625`).
+  (`backend_lower.bend:449-469`; `lower_catalog.bend:1628-1636`).
   `constructor_operands` inserts a placeholder `BIR.Null{}` for an erased
   checked binding so positions line up (`backend_lower.bend:514-543`).
   `constructor_native` gives every constructor a marker: `Family.ShortName`
   for a native family, `"Data." + key` otherwise (`lower_catalog.bend:591-593`);
   `ConstructorLayout` is built with `field_names(v_32)`
-  (`lower_catalog.bend:1258-1267`).
+  (`lower_catalog.bend:1269-1278`).
 - Why agreement matters: JS uses the **string** half (`tag`/`key`) and emits a
   record keyed by `Field.key`; it ignores the numeric field ordinal
   (`js_backend.bend:482-490, 572-582`). C uses the **numeric** half: it looks
@@ -560,7 +560,7 @@ distinct. `ConstructorLayout.key` values are distinct. Every arm of every
 family arm (`CLay.arm_of` returns the first match and does not detect a second).
 
 - Mechanism: `Preparation.next_constructor` allocates ids
-  (`lower_catalog.bend:1249-1266`); `insert_constructor` keeps the first
+  (`lower_catalog.bend:1260-1277`); `insert_constructor` keeps the first
   definition (`733-748`). Duplicate keys are rejected by `sharing_plan`:
   "constructor key appears twice" (`c_backend_sharing.bend:944`).
 - Status: **[N]**; **[C]** in C sharing analysis; JS does not check
@@ -582,7 +582,7 @@ For each `TypeFunction`, `arity` and `quantity_prefix` have the same meaning and
 `DescriptorParameter` references bound by its own arity).
 
 - Mechanism: `prepare_family` builds `Family{key, name, native_marker(native,
-  name), prefix, words_count(params), arms}` (`lower_catalog.bend:1249-1290`);
+  name), prefix, words_count(params), arms}` (`lower_catalog.bend:1260-1301`);
   `telescope_binder` emits erased/template fields explicitly
   (`535-558`); `prepare_definition_symbol` builds
   `TypeFunction{key, native_marker, prefix, length(quantities), body}`
@@ -600,7 +600,7 @@ ill-formed and not a failure. `DescriptorFailure{message}` denotes a failure,
 not a type: either normalization could not reduce, or a required checked
 descriptor fact was absent when the catalog was built
 (`Catalog.foreign_result_type`, `Catalog.export_facts`,
-`lower_catalog.bend:1100-1107, 815-826`). A target must not lay it out or print
+`lower_catalog.bend:1111-1118, 815-826`). A target must not lay it out or print
 it as ordinary metadata.
 
 - Mechanism and exact rule: `val_at`/`val_nth` in `descriptor_nf.bend:182-199`
@@ -645,13 +645,13 @@ rejects duplicates in source.
    non-empty, and each entry is the exact declared path string.
 4. `namespace` and `imported` are the canonical module namespace and the
    imported path as written (`Catalog.foreign_namespace`,
-   `lower_catalog.bend:1094-1099`).
+   `lower_catalog.bend:1105-1110`).
 5. `result` is a descriptor (possibly `DescriptorFailure` only when the checked
    source had no result type; the emitter must then fail).
 
 - Mechanism: `definition_foreign` builds the `Foreign` record, with
   `live_parameter_types` dropping erased binders exactly as `BIR.Parameter`
-  drops them (`lower_catalog.bend:1088-1155`); `definition_kind` copies it into
+  drops them (`lower_catalog.bend:1099-1166`); `definition_kind` copies it into
   `ForeignDeclaration` with `arity = length(parameters)`
   (`backend_lower.bend:1746-1750`).
 - Status: **[N]**, **[C]** for some arity facts: C's `entry_foreign` requires
@@ -662,9 +662,12 @@ rejects duplicates in source.
 named `main` exists with no live parameters. `Library{exports}` means every
 export key names a declaration; `Export.entry` is `Some` only for a fast
 ordinary function with live parameters (`Catalog.export_entry`,
-`lower_catalog.bend:775-779`), and `length(parameter_types)` is the number of
-live arrows of the published signature (`live_arrow_types`,
-`lower_catalog.bend:800-813`).
+`lower_catalog.bend:775-779`), `length(parameter_types)` is the number of
+live arrows of the published signature, every live arrow domain including
+domains after a returned arrow (`live_arrow_types`,
+`lower_catalog.bend:804-812`), and `Export.result` is that signature's codomain
+once every published arrow is consumed (`live_arrow_result`,
+`lower_catalog.bend:815-818`).
 
 - C validates export shapes at render time and fails closed on a mismatch
   (`export_rows`, `export_direct`, `export_symbol_item`,
@@ -1813,7 +1816,7 @@ fixed here.
 - **R-8 (executable-mode admission of a source without `main`) — boundary gap,
   not an established bug.** `Catalog.ending` returns
   `Executable{DescriptorNull}` when no `main` descriptor was found
-  (`lower_catalog.bend:1425-1433`). The driver always calls `lower`
+  (`lower_catalog.bend:1436-1444`). The driver always calls `lower`
   (executable mode, `driver.bend:126`), so a module compiled in executable mode
   without `main` reaches this state. JS's `js_main` guards on
   `Object.hasOwn($D,"main")` and, when absent, emits a program that produces no

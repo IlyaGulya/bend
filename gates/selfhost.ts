@@ -164,6 +164,9 @@ function default_files(): string[] {
     "tests/io/nat_alias_export.bend",
     "tests/io/shadowed_nat_export.bend",
     "tests/io/generic_export_identity.bend",
+    // Host text at the same seam: an exported Char or String argument is read
+    // with str_in and a completed result published with str_out.
+    "tests/io/text_host_export.bend",
     // IO read failure and read-back through the real File surface.
     "tests/io/file_roundtrip.bend",
     // C target representation: scalars, wide/nested arrays, multi-arm tags,
@@ -182,6 +185,9 @@ function default_files(): string[] {
     "evals/c_target_bool_prims.bend",
     "evals/c_target_clo_field.bend",
     "tests/reg/phys_storage_paths.bend",
+    // Show and literal transport: a String literal is Bend String data, so a
+    // code that is no Unicode scalar keeps its exact value and its escapes.
+    "tests/show/string_literal_any_code.bend",
     // Target selection: an absent C target must fail only the native lane, an
     // absent JS target only the JS lane, each with a real diagnostic.
     "gates/selfhost_cases/missing_c_target.bend",
@@ -268,6 +274,7 @@ const HOST_EXPORT_FIXTURES = new Set([
   "nat_alias_export.bend",
   "shadowed_nat_export.bend",
   "generic_export_identity.bend",
+  "text_host_export.bend",
 ]);
 
 // The inner build takes the same command shape as the outer compile: the

@@ -1409,7 +1409,7 @@ def s_reach_roots_exports_go(+items: List<&2, BIR.Export>, +reach: Reach) -> Rea
     case Nil{}: reach
     case +item <> rest:
       match item:
-        case BIR.Export{key, entry, parameter_types}:
+        case BIR.Export{key, entry, parameter_types, _}:
           s_reach_roots_exports_go(rest, s_reach_root_entry(entry, s_reach_add_key(reach, key)))
 
 def s_reach_roots(ending: BIR.Ending, reach: Reach) -> Reach:

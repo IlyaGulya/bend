@@ -61,8 +61,17 @@ the source expectations. The shared guardian completes/stops with exit 0 in
 Receipt: `evals/receipts/producer_2039_132ce4c7.json`.
 The existing checked-body-release contracts also pass (2 tests / 4 assertions).
 These are producer proofs, not full compiler, selfhost C-renderer or fixedpoint
-acceptance. The full-u32 Char/String and BIR export-boundary cutover is still
-in progress; no old compiler receipt is reclassified.
+acceptance. Further migration corrections pass the canonical interpreter and
+emitted JS: full-u32 Char/String, affine non-tail returns (`200/200/400/4`), and
+host-export conversions (`0` violations). The shared emitter source is freshly
+regenerated from 1,984 functions. Its duplicate growing-prefix JS literal path
+is removed; descriptor constructors precede their patterns.
+The `release2039b` parser attempt is **rejected**, not accepted: 74/75 cases
+have parity, while the remaining oracle loads an old checkout's BIR against
+the new Base. All ten current consumer roles now resolve inside this worktree;
+fresh parser/root execution is pending. Receipt:
+`evals/receipts/release2039_source_corrections.json`.
+No old compiler receipt is reclassified.
 
 Latest compiler root: **`db147cba`**, after an authenticated inline-parser
 cutover in `/private/tmp/bend-parser-cutover667`. Fresh native admission checks

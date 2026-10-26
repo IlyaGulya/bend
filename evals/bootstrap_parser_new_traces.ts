@@ -15,7 +15,7 @@ function tokens(t:B.HTerm){return list(t).map(x=>{const v=ctor(x);return {kind:c
 const fixtures=[{"name":"nat-prefix","source":"def f(x: Nat) -> Nat:\n  match x:\n    case 1n+rest: rest\n"},{"name":"unsafe-line","source":"@unsafe\ndef f(x: Nat) -> Nat:\n  x\n"},{"name":"unsafe-inline","source":"@unsafe def f(x: Nat) -> Nat:\n  x\n"}];
 const rows=[];
 for(const item of fixtures){
- const raw=call('lexer.tokens',[closed(JSON.stringify(item.source))]);
+ const raw=call('lexer:tokens',[closed(JSON.stringify(item.source))]);
  const combined=call('combine_symbols',[raw,B.Ctr('SymbolCombineScan',[])]);
  const inputTokens=tokens(combined),publicResult=ctor(call('parse',[closed(JSON.stringify(item.name)),closed(JSON.stringify(item.source))]));
  const row:any={...item,lexerTokens:tokens(raw),combinedTokens:inputTokens,result:publicResult.k};

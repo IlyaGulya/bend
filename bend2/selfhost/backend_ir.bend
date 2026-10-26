@@ -226,7 +226,7 @@ type TypeFunction is Data:
 type Entry is Data:
   Entry{code: U32, arity: Nat}
 type Export is Data:
-  Export{key: String, entry: Maybe<&2, Entry>, parameter_types: List<&2, Descriptor>}
+  Export{key: String, entry: Maybe<&2, Entry>, parameter_types: List<&2, Descriptor>, result: Descriptor}
 type Ending is Data:
   Executable{main_type: Descriptor}
   Library{exports: List<&2, Export>}
