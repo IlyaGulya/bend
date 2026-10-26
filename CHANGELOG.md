@@ -17,13 +17,18 @@ latest one; the GitHub release carries the same notes.
   references, register their owning families when needed. Eight focused C/JS
   programs pass; complete-root memory and selfhost fixedpoint remain unaccepted.
 
+- Compiler string-literal lowering builds one constructor chain without keeping
+  a literal for every remaining suffix. Numeric atoms still share by value.
+  Supplementary Unicode scalars preserve character order and count in native,
+  JS and interpreted execution; full-root memory acceptance remains separate.
+
 - A body-scoped normalized-type cache experiment preserved eight C/JS outputs,
   but its full native build still exceeded the 8 GiB footprint guard. It was
   rejected and reverted; no memory improvement or compiler acceptance is claimed.
 
-- The native builder now applies Bun's `--smol` to the C producer process as
-  well as its supervisor. The same RSS/footprint and deadline guards still
-  apply; runtime configuration is recorded separately from compiler changes.
+- Applying Bun's `--smol` to the actual C producer also failed the full native
+  RSS guard. That runtime control was rejected; the original producer runtime
+  configuration is retained.
 
 - The 2.0.39 selfhost migration uses one bounded-left JS literal serializer
   for scalar and full-u32 Char codes, removing a duplicate growing-prefix

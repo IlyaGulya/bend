@@ -703,10 +703,27 @@ function term_force(t: HTerm): HTerm {
     const cache = memo(FL.num_steps, s.k, () => new Map<number, HTerm>());
     return memo(cache, s.v, () => lit_call(s) ?? Bend.lit_step(s));
   }
-  // A structural literal's suffix is already a term identity. Prefixing and
-  // hashing its entire text at every step retains quadratic keys. Numeric
-  // atoms above still share by value; static images intern emitted words.
-  return memo(FL.steps, s, () => Bend.lit_step(s));
+  // Lower a structural literal once, from the end. Repeated lit_step would
+  // retain every remaining string suffix while its constructor parents live.
+  return memo(FL.steps, s, () => {
+    let out = Bend.Ctr("SNil", [], s.s);
+    FL.const_ids.set(out, true);
+    for (let end = s.v.length; end > 0;) {
+      let at = end - 1;
+      const lo = s.v.charCodeAt(at);
+      if (lo >= 0xdc00 && lo <= 0xdfff && at > 0) {
+        const hi = s.v.charCodeAt(at - 1);
+        if (hi >= 0xd800 && hi <= 0xdbff) {
+          at--;
+        }
+      }
+      const c = Bend.Ctr("Chr", [Bend.Lit("U32", s.v.codePointAt(at)!, s.s)], s.s);
+      out = Bend.Ctr("SCon", [c, out], s.s);
+      FL.const_ids.set(out, true);
+      end = at;
+    }
+    return out;
+  });
 }
 
 function term_strip(t: HTerm): HTerm {
