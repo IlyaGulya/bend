@@ -1441,12 +1441,18 @@ function fun_of(k: Name): Fun {
 // returns words at those layouts if its self-calls pass them on.
 function fun_at(ck: Spine): Fun {
   const f = fun_of(ck.k!);
-  let [T, b] = [ck.tld!.T, f.h!];
+  const T = ck.tld!.T;
   const doms = tele_unbind(T).doms;
   const ers = ck.all.filter((_, i) => i < f.n && !dom_live(doms[i]));
+  if (ers.length === 0) {
+    // A call that erases nothing keeps the def's own layouts and result: its
+    // body answers no question here, so this call does not prepare one.
+    return f;
+  }
+  let [t, b] = [T, f.h!];
   const ps: HTerm[] = [];
   const lays: Lay[] = [];
-  for (const d of doms.slice(0, ers.length && f.n)) {
+  for (const d of doms.slice(0, f.n)) {
     const s = term_strip(b);
     if (ps.length < ers.length) {
       if (s.$ !== "Lam") {
@@ -1455,11 +1461,11 @@ function fun_at(ck: Spine): Fun {
       b = term_open(s).b;
       ps.push(...dom_live(d) ? [] : term_open(s).ps);
     }
-    const all = ty_all(T);
-    T = all.B(dom_live(d) ? (lays.push(lay_of(all.A)), DUMMY)
+    const all = ty_all(t);
+    t = all.B(dom_live(d) ? (lays.push(lay_of(all.A)), DUMMY)
       : ers[ps.length - 1]);
   }
-  const ret = lay_of(T);
+  const ret = lay_of(t);
   return ps.length === 0 || ret.ks.length === 0
     || lays.flatMap((l) => l.ks).length > WIDE || term_any(b, (s, tail) => {
       const m = term_spine(s);
@@ -2510,11 +2516,13 @@ function emit_fuse(sc: Scope, ck: Spine, dst: Val | null, tail = false): void {
   const doms = tele_unbind(T).doms;
   const flat = flat_of(k);
   const f = flat ? fun_at(ck) : fun_of(k);
-  const { n, h, lays, ret } = f;
+  const { n, lays, ret } = f;
   const ers = ck.all.filter((_, i) => i < n && !dom_live(doms[i]));
   const ws = emit_args(sc, ck, tail && !flat, false, lays);
   if (!flat) {
-    return emit_body({ ...sc, def: k }, h!, T, ers,
+    // Only an inlined call reads the callee's body; a spin asks for it where it
+    // emits, so a call whose spin a pass already has prepares nothing.
+    return emit_body({ ...sc, def: k }, f.h!, T, ers,
       lays.map((lay) => val_new(ws.splice(0, lay.ks.length), lay)), dst);
   }
   const name = emit_native(sc, k, ers, f);
