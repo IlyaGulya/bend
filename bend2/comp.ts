@@ -128,6 +128,9 @@ export type JSOptions = {
     tableFacts?: number;
     imageWords?: number;
     restMax?: number;
+    layoutKeys?: number;
+    holdKeys?: number;
+    constantKeys?: number;
     spinNames?: number;
     closerFacts?: number;
   }) => void;
@@ -973,7 +976,7 @@ function ty_holds(A: HTerm | null, p: Name | ((t: HTerm | null) => boolean),
   if (t.x.some((x, i) => !vs[i] && ty_holds(x, p, w))) {
     return true;
   }
-  const xs = t.x.map((x, i) => vs[i] ? Bend.term_key(Bend.term_lower(x)) : "");
+  const xs = t.x.map((x, i) => vs[i] ? lay_key(x, false) : "");
   const ys = w.on.get(t.k);
   const re = !!ys && xs.some((x, i) => x.length > ys[i]);
   const key = t.k + (!re && xs);
@@ -1036,22 +1039,52 @@ function ty_srcs(T: HTerm): void {
 // type former, such as a function, is a box. adt_of and js_expr call it
 // only for that check.
 
+// An arm order is the declared constructor order of an interned layout record:
+// reading it by name allocates the same array at every node that consults it.
+function lay_arms(lay: Lay): readonly Name[] {
+  const arms = lay.arms!;
+  let ks = FL.arm_keys.get(arms);
+  if (ks === undefined) {
+    FL.arm_keys.set(arms, ks = Object.keys(arms));
+  }
+  return ks;
+}
+
+// A layout key is the lowered type's text: it lowers the whole type and spells
+// every value argument, while the answer depends only on the term. Ask each term
+// object once, then read the key the layout map already holds.
+function lay_key(t: HTerm, scalar: boolean): string {
+  let keys = FL.lay_keys.get(t);
+  if (keys === undefined) {
+    keys = [undefined, undefined];
+    FL.lay_keys.set(t, keys);
+  }
+  const at = Number(scalar);
+  let key = keys[at];
+  if (key === undefined) {
+    key = (scalar ? "scalar:" : "") + Bend.term_key(Bend.term_lower(t));
+    keys[at] = key;
+  }
+  return key;
+}
+
 function lay_of(A: HTerm | null, scalar = false): Lay {
   // C values inline at most one cache line; WIDE still governs physical ABI.
   const INLINE_VALUE_THRESHOLD = 8;
   const t = ty_adt(A);
-  return t === null ? BOX : WORDS[t.k] ?? memo(FL.lays,
-    (scalar ? "scalar:" : "") + Bend.term_key(Bend.term_lower(t)), (key) => {
-    const tld = FL.book.tlds[t.k];
-    if (t.k === "Array" || t.k === "IO.OP" || tld?.$ !== "ADT"
-      || tld.c.some((c) => ctr_doms(c).some((F) => ty_holds(F, t.k)))) {
-      return BOX;
-    }
-    FL.lays.set(key, BOX);
-    const lay = lay_pack(tld.c.map((c) =>
-      [c.k, ctr_doms(c, t.x).map((A) => lay_of(A, scalar))]));
-    return lay.ks.length > (FL.js || scalar ? WIDE : INLINE_VALUE_THRESHOLD) ? BOX : lay;
-  });
+  return t === null ? BOX : WORDS[t.k] ?? memo(FL.lays, lay_key(t, scalar),
+    (key) => {
+      const tld = FL.book.tlds[t.k];
+      if (t.k === "Array" || t.k === "IO.OP" || tld?.$ !== "ADT"
+        || tld.c.some((c) => ctr_doms(c).some((F) => ty_holds(F, t.k)))) {
+        return BOX;
+      }
+      FL.lays.set(key, BOX);
+      const lay = lay_pack(tld.c.map((c) =>
+        [c.k, ctr_doms(c, t.x).map((A) => lay_of(A, scalar))]));
+      return lay.ks.length > (FL.js || scalar
+        ? WIDE : INLINE_VALUE_THRESHOLD) ? BOX : lay;
+    });
 }
 
 function lay_el(A: HTerm | null): Lay {
@@ -1122,8 +1155,18 @@ function lay_node(k: Name): Lay {
 
 // An open type takes its value's layout.
 function lay_at(A: HTerm | null, v: Val): Lay {
-  return A && memo(FL.opens, Bend.term_key(Bend.term_lower(A)), () =>
-    ty_holds(A, (t) => ty_tag(t, "Var App"))) ? v.lay : lay_of(A);
+  if (A === null) {
+    return BOX;
+  }
+  // Whether a type is open depends only on the type, so a repeated question
+  // about one term object does not lower it again to rebuild the same key.
+  let open = FL.open_ids.get(A);
+  if (open === undefined) {
+    open = memo(FL.opens, lay_key(A, false), () =>
+      ty_holds(A, (t) => ty_tag(t, "Var App")));
+    FL.open_ids.set(A, open);
+  }
+  return open ? v.lay : lay_of(A);
 }
 
 function lay_c(k: Kind): string {
@@ -1171,7 +1214,7 @@ function lay_holds(A: HTerm | null, lay: Lay, fam: Name): Lay {
   if (lay.arms) {
     return lay_pack(Object.entries(lay.arms).map(([k, lays]) =>
       [k, ctr_doms(FL.book.ctrs[k], ty_adt(A)!.x).map((F, i) =>
-        memo(FL.holds, fam + " " + Bend.term_key(Bend.term_lower(F)),
+        memo(FL.holds, fam + " " + lay_key(F, false),
           () => lay_holds(F, lays[i], fam)))]));
   }
   return lay === BOX && !ty_holds(A, fam) ? W32 : lay;
@@ -1664,6 +1707,9 @@ function file_new(book: Bend.Book, js: boolean, options: JSOptions = {}) {
     teles: new WeakMap<HTerm, { doms: Dom[]; ret: HTerm }>(),
     steps: new Map<string, HTerm>(),
     opens: new Map<string, boolean>(),
+    open_ids: new WeakMap<HTerm, boolean>(),
+    lay_keys: new WeakMap<HTerm, [string | undefined, string | undefined]>(),
+    arm_keys: new WeakMap<object, Name[]>(),
     srcs: new Map<Name, Set<Name> | null>(),
     fids: new Set<Name>(),
     effs: new Map<string, [string, string]>(),
@@ -1703,7 +1749,16 @@ function scope_new(): Scope {
 // and the text totals are only asked for at a pass boundary, never per
 // definition. restMax is the longest pending-sibling chain built since the
 // previous observation, so a boundary shows how the definition that just
-// finished nested.
+// finished nested; the static count walks the per-layout constant maps, which
+// only an observer asks for.
+function consts_size(): number {
+  let n = 0;
+  for (const m of FL.consts.values()) {
+    n += m.size;
+  }
+  return n;
+}
+
 function file_observe(stage: string, k: Name, lines?: string[],
   totals = false): void {
   const tld = FL.book.tlds[k];
@@ -1731,8 +1786,12 @@ function file_observe(stage: string, k: Name, lines?: string[],
     literalFacts: FL.lits.size,
     tableFacts: FL.tabs.size,
     imageWords: FL.img.length,
-    // The longest pending-sibling chain built since the previous observation.
+    // The longest pending-sibling chain built since the previous observation,
+    // then how many layout/answer/static caches a pass is holding.
     restMax,
+    layoutKeys: FL.lays.size,
+    holdKeys: FL.hold.size,
+    constantKeys: consts_size(),
     spinNames: FL.spun.size,
     closerFacts: FL.clos.size,
   });
@@ -2039,8 +2098,8 @@ function val_new(ws: string[], lay: Lay, stat = false): Val {
   return { ws, lay, stat };
 }
 
-function val_arm(v: Val, k = Object.keys(v.lay.arms!)[0]): Val[] {
-  let at = Number(Object.keys(v.lay.arms!).length > 1);
+function val_arm(v: Val, k = lay_arms(v.lay)[0]): Val[] {
+  let at = Number(lay_arms(v.lay).length > 1);
   return v.lay.arms![k].map((lay) =>
     val_new(v.ws.slice(at, at += lay.ks.length), lay));
 }
@@ -2084,7 +2143,7 @@ function val_to(sc: Scope, v: Val, lay: Lay): Val {
 
 function val_arms(sc: Scope, lay: Lay, sel: string, read: (k: Name) => Val[],
   box = false): Val {
-  const arms = Object.keys(lay.arms!);
+  const arms = lay_arms(lay);
   const ws = (al: Scope, k: Name) => read(k).flatMap((f, j) =>
     val_to(al, f, lay.arms![k][j]).ws);
   if (arms.length <= 1) {
@@ -2120,7 +2179,7 @@ function val_box(sc: Scope, v: Val): string {
     return v.lay.ks[0] === "box" || !sc.brwl.has(w) ? w
       : emit_hold(sc, [w], "b")[0];
   }
-  const arms = Object.keys(v.lay.arms);
+  const arms = lay_arms(v.lay);
   const build = (bl: Scope, k: Name) => ctr_build(bl, k, val_arm(v, k).flatMap(
     (f, j) => val_own(bl, val_to(bl, f, lay_node(k).arms![k][j]))));
   if (arms.length <= 1) {
@@ -2307,7 +2366,7 @@ function show_main(): (number | Name)[] | null {
     + " erased or dependent field)");
   const node = (T: HTerm, lay: Lay) => {
     const t = ty_wnf(T) as HTerm;
-    const key = Bend.term_key(Bend.term_lower(t));
+    const key = lay_key(t, false);
     const ids = memo(lays, lay, () => new Map());
     if (ids.has(key)) {
       return ids.get(key)!;
@@ -2751,7 +2810,7 @@ function emit_ctr_done(frame: CtrEmit): Val {
     BOX);
   }
   const { pos, lay, seen } = frame;
-  const arms = Object.keys(lay.arms!);
+  const arms = lay_arms(lay);
   const ws = [...arms.length > 1 ? [String(arms.indexOf(x.k))] : [],
     ...vs.flatMap((f, j) => val_to(sc, f, lay.arms![x.k][j]).ws)];
   const v = val_new(lay.ks.map((_, j) => ws[j] ?? "0"), lay,
@@ -3196,7 +3255,7 @@ function emit_match(sc: Scope, x: Of<"Mat"> | Of<"Efq">,
           }];
       }
       return lay === BOX ? [is(k), h, (al) => node_fields(al, sw, k, true)]
-        : [`${sw} == ${Object.keys(lay.arms!).indexOf(k)}`, h,
+        : [`${sw} == ${lay_arms(lay).indexOf(k)}`, h,
           () => val_arm(u, k)];
     });
   emit_chain(sc, lv.map(([c, h, fs]) => [c, () => {
