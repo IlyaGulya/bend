@@ -545,9 +545,13 @@ def foreign_kont_nat(checked: Bool) -> String:
   match checked:
     case True{}: "((x)=>$k(nat_in(x)))"
     case False{}: "$k"
+def foreign_answer_kont(checked: Bool, answer: Maybe<&2, BIR.Descriptor>, +natives: Map<&2, String>) -> String:
+  match answer:
+    case Some{+value}: foreign_kont(checked, js_text_descriptor(value, natives), js_f32_descriptor(value, natives))
+    case None{}: foreign_kont(checked, False{}, False{})
 def foreign_request(+key: String, count: Nat, parameters: List<&2, BIR.Descriptor>, checked: Bool, result: BIR.Descriptor, +natives: Map<&2, String>) -> String:
   names = foreign_parameters(count, 0n)
-  body = cat(["({$:", js_quote(key), ",args:[", String.join(foreign_arguments(names, parameters, natives), ","), "],kont:", foreign_kont(checked, js_text_descriptor(result, natives), js_f32_descriptor(result, natives)), "})"])
+  body = cat(["({$:", js_quote(key), ",args:[", String.join(foreign_arguments(names, parameters, natives), ","), "],kont:", foreign_answer_kont(checked, js_io_answer(result, natives), natives), "})"])
   cat(["$D[", js_quote(key), "]=", foreign_arrow(List.append(&2, String, names, ["$k"]), body), ";\n"])
 # A Char or a String leaves Bend as text: a code that is no Unicode scalar is
 # written U+FFFD at the seam, exactly where the host reads it. The answer is

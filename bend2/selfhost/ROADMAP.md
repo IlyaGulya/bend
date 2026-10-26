@@ -94,6 +94,16 @@ is not evidence against the selfhost renderer's new non-tail machine.
 The candidate runner now authenticates native seed carrier identity from its
 matched build/root/provenance, not the program being compiled.
 
+`release2039e` fixes that callback and regenerates all stages. Parser admission
+again passes 71/71 source and 75/75 compiled cases. Full native validation
+checks 12,081 bodies / 12,650 events; JS generation completes in 64,788 ms,
+3,187,687,424 B sampled peak RSS / 3,250,293,016 B footprint, with no exclusions
+or patches. Its actual emitted programs pass full-u32 Char/String, F32 answers,
+public text exports and non-tail recursion (60,000 / 20,000 / 40,000).
+The five-program guarded smoke completes in 34,927 ms. This is **not yet**
+native C build or byte-fixedpoint acceptance. Proof:
+`evals/receipts/root2039e_callback_smoke.json`.
+
 Latest compiler root: **`db147cba`**, after an authenticated inline-parser
 cutover in `/private/tmp/bend-parser-cutover667`. Fresh native admission checks
 all 11,889 bodies / 12,450 events with 0 exclusions/patches and unchanged

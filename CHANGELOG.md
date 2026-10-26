@@ -18,6 +18,12 @@ latest one; the GitHub release carries the same notes.
   paths. Canonical CLI Char/String, affine non-tail and host-export fixtures
   pass; composed compiler and fixedpoint re-admission remain separate gates.
 
+- Selfhost JavaScript foreign continuations adapt the answer inside `IO(A)`,
+  not the `IO` container: host surrogate Char answers become U+FFFD and F32
+  answers round before Bend uses them. The regenerated full root passes those
+  regressions, public text exports and deep non-tail calls; this smoke is not
+  yet a native-build or stage1/stage2 fixedpoint acceptance.
+
 - Datatypes are headers: the selfhost checker publishes each family's name,
   module aliases and kind telescope before any parameter, field or body is
   checked, so a field, index telescope or kind may name a family declared later
