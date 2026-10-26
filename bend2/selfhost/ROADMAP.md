@@ -169,6 +169,19 @@ clang run or native program follows. The old library fixture also required
 Neither nominal admission nor these hand-built fixtures prove the full FIR
 compiler path. Receipt: `evals/receipts/cabi2039_raw_fixture_rejected.json`.
 
+`release2039g1` is a fresh, **not yet bootstrap-accepted** compiler checkpoint.
+Parser admission passes all 71 source / 75 compiled cases and the public
+15 tests / 264 assertions. Full JS-root validation checks 12,110 bodies /
+12,680 events with no exclusions or patches; generation completes in 34,255 ms
+with 3,208,740,864 B peak RSS / 3,325,346,384 B footprint. Its actual JS emitter
+passes six `IO.args` / `IO.args_bytes` cases, retaining the program name and
+canonical `+RTS ... -RTS` / `--RTS` boundaries. The merged profiler's ten-case
+behavioral smoke also passes; full-root profiling overhead is not measured.
+Native build and actual stage1/stage2 byte fixedpoint are still pending.
+Proof: `evals/receipts/root2039g1_args_smoke.json`. The preceding failed `g`
+invocation double-acquired the guardian lease, and the first `g1` build command
+misspelled `parsed_module`; neither was a parser/checker or compiler acceptance.
+
 Latest compiler root: **`db147cba`**, after an authenticated inline-parser
 cutover in `/private/tmp/bend-parser-cutover667`. Fresh native admission checks
 all 11,889 bodies / 12,450 events with 0 exclusions/patches and unchanged

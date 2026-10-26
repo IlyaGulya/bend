@@ -15178,7 +15178,7 @@
       "canonical": "bend2/selfhost/emitter.bend",
       "owned": "checkpoints/emitter_owned_v1.bend",
       "canonicalSha256": "47d68ba5f0b54c334e2c940b7bb6aabc7f3bba27142b816f27df8225cf3fae4f",
-      "sourceSha256": "f1b100a0f82101956cf7ce03ee06972da9173be3242282c5ca430515cc14e870",
+      "sourceSha256": "63a907767335ea0ca5a0e76f0f1238d20a61b2ff9932a0ec44510cc08db9d03a",
       "definitionNames": [
         "emitted_js",
         "emitted_c",
@@ -20620,7 +20620,7 @@
         "cps_provider_8_js_runtime_array": "3b84ce5840ddbdc302166a950e3c08e5c5323cd73cb113843d0b745839ab8f54",
         "cps_provider_8_js_runtime_foreign": "c5ce8b2a0b2e09cd99bdbcc1d6129f87c1025fd2ce256de4ffb223281247cf0c",
         "cps_provider_8_js_runtime_namespace": "c0cf62319cc805fd5877a8080b450684273725ef18f34bdcd497f275a90f415d",
-        "cps_provider_8_js_runtime_cli": "52660620b117a5867f16422394eeedf8f5db54d7e427b44b1b47e433e2b3d4e3",
+        "cps_provider_8_js_runtime_cli": "eceabcdb8b9ea802860e58bc6220f150d9358bac448d269dafce9ad3c630642b",
         "cps_provider_8_js_runtime_io": "b49e2b11a04a35aba82e3a3f4053b257b764af0df3233e3213fd4ff386b066a5",
         "cps_provider_8_js_runtime_show": "26249f420ab900668eec52d3a734b71c456034e05a55e181a3702f41c53a2eb6",
         "cps_provider_8_js_runtime_type": "83221574781127f2a76b6ddb48441d982cb6da76be642ef44a734cbfd9f94fa6",
@@ -20628,7 +20628,7 @@
         "cps_provider_8_js_runtime_type_patterns": "1b118eef104c5ace77d5b9b53eadebeae297ac471a326d0fe5b2c098e99b2fc4",
         "cps_provider_8_js_runtime_type_eval": "3bbb488678b4a358004a23e01fda38a90f7b42b85f15714b4adf826e14f93238",
         "cps_provider_8_js_runtime_native_type": "57be6b2bf2a42d39c81dda112745aa894e00cc7aa9f6caeeb300196f6ce89f7c",
-        "cps_provider_8_js_main": "24a76059774424eb3f8789dcd440e4b0f386c849066efe4faa6f6ff82e1f8a46",
+        "cps_provider_8_js_main": "f745b8e9b4400050d67956db585a64391ff568426e6a48e3e8e546c3090bcb8b",
         "cps_provider_9_emitted": "d7769ec179ef3620fb54cbca437de4e1ee6c24fffb38f1e50d9f36ecf88d8f9e",
         "cps_provider_9_render": "30e0e6f10f50e3cc12083753c1f1a40baee05333951e794d30db5d223e4bd84c",
         "cps_provider_9_emit_result": "011c3dd02d35126c887eb053c570bb00aeabdd2e8303cc01a0aba061db0b3aec",
@@ -21810,7 +21810,7 @@
           "bend2/selfhost/js_emit.bend",
           "bend2/selfhost/lower_catalog.bend"
         ],
-        "sourceSha256": "f34432a8864b84a41aea642c140044593d732957cf0937f30da64b8d327a518a",
+        "sourceSha256": "8d4f7beae3fef120e572a0b3327bdb6beb7678388c3b1534ed41d6887e3f8629",
         "sources": [
           {
             "canonical": "bend2/selfhost/emitter.bend",
@@ -25173,7 +25173,7 @@
           },
           {
             "canonical": "bend2/selfhost/js_backend.bend",
-            "canonicalSha256": "c1fcfd27e02e6acf69b9bb5d6e50d96779831701c61d04be6c1437aa8bc25266",
+            "canonicalSha256": "d19dcde5d67a674b2d08e3f80f477b8892d9e6d4b3d4d2ac6d2f1c6b4f631fb2",
             "declarationNames": [
               "EmitResult",
               "LinkSource",
@@ -41217,8 +41217,8 @@
             "canonicalName": "js_runtime_cli",
             "name": "cps_provider_8_js_runtime_cli",
             "kind": "def",
-            "canonicalDeclarationSha256": "60eff1d11b083d0df3b62a44af649c42b044e809e79343d6befc6190e1518a4b",
-            "composedDeclarationSha256": "52660620b117a5867f16422394eeedf8f5db54d7e427b44b1b47e433e2b3d4e3"
+            "canonicalDeclarationSha256": "76d4efe89526423eb36004978860ac2d7e4c34eb3b6a8ab506c65c7e5b3b3b5a",
+            "composedDeclarationSha256": "eceabcdb8b9ea802860e58bc6220f150d9358bac448d269dafce9ad3c630642b"
           },
           {
             "source": "bend2/selfhost/js_backend.bend",
@@ -41281,8 +41281,8 @@
             "canonicalName": "js_main",
             "name": "cps_provider_8_js_main",
             "kind": "def",
-            "canonicalDeclarationSha256": "8e5974e7ad6950e8f4d20fa9c945f7227658f078bf7c05160cbc493d364c4ec6",
-            "composedDeclarationSha256": "24a76059774424eb3f8789dcd440e4b0f386c849066efe4faa6f6ff82e1f8a46"
+            "canonicalDeclarationSha256": "c63c32fa981d31b3af4853f2154870a24cb7906fc11171f2bafd4e070704afce",
+            "composedDeclarationSha256": "f745b8e9b4400050d67956db585a64391ff568426e6a48e3e8e546c3090bcb8b"
           },
           {
             "source": "bend2/selfhost/js_emit.bend",
@@ -43438,7 +43438,7 @@
           "/private/tmp/bend2039-upgrade/bend2/selfhost/lower_catalog.bend": "3543cf73484f955436c4060fcbdcf4373ca9544cd80fa52f3e0114996a9fe9f0",
           "/private/tmp/bend2039-upgrade/bend2/selfhost/descriptor_nf.bend": "747dc747fcb1a6b6c1fcbf31a3e164f998fd5fa502f87a8ad3a1facd13859973",
           "/private/tmp/bend2039-upgrade/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
-          "/private/tmp/bend2039-upgrade/bend2/selfhost/js_backend.bend": "c1fcfd27e02e6acf69b9bb5d6e50d96779831701c61d04be6c1437aa8bc25266",
+          "/private/tmp/bend2039-upgrade/bend2/selfhost/js_backend.bend": "d19dcde5d67a674b2d08e3f80f477b8892d9e6d4b3d4d2ac6d2f1c6b4f631fb2",
           "/private/tmp/bend2039-upgrade/bend2/selfhost/c_emit_core.bend": "f690db5b6054d4f647b5c02e1281923d5cc66b24c8c2fff7859d811efc5ba380",
           "/private/tmp/bend2039-upgrade/bend2/selfhost/c_backend.bend": "7ffb89e3adcebedee6fadc2b3143db6f7a2fb2b9fb471dd41a62e02c081b19b1",
           "/private/tmp/bend2039-upgrade/bend2/selfhost/c_backend_link.bend": "f83c270f2b6f094f2bd220e6e750aa0265c93ae90fa0036dd8d92b86c09e26bd",
@@ -43452,7 +43452,7 @@
           "bend2/selfhost/c_backend_physical.bend": "5827734e1d14e199fd29714bdf78b4d04376d2eca3cbfd8406c575f894493f4c",
           "bend2/selfhost/c_emit_core.bend": "f690db5b6054d4f647b5c02e1281923d5cc66b24c8c2fff7859d811efc5ba380",
           "bend2/selfhost/descriptor_nf.bend": "747dc747fcb1a6b6c1fcbf31a3e164f998fd5fa502f87a8ad3a1facd13859973",
-          "bend2/selfhost/js_backend.bend": "c1fcfd27e02e6acf69b9bb5d6e50d96779831701c61d04be6c1437aa8bc25266",
+          "bend2/selfhost/js_backend.bend": "d19dcde5d67a674b2d08e3f80f477b8892d9e6d4b3d4d2ac6d2f1c6b4f631fb2",
           "bend2/selfhost/js_emit.bend": "a71920560786084ab9713c4af89f62d2d0e1eaef7cc24e46ea24940d012fded6",
           "bend2/selfhost/lower_catalog.bend": "3543cf73484f955436c4060fcbdcf4373ca9544cd80fa52f3e0114996a9fe9f0"
         }
@@ -47182,7 +47182,7 @@
         "cps_provider_8_js_runtime_array": "3b84ce5840ddbdc302166a950e3c08e5c5323cd73cb113843d0b745839ab8f54",
         "cps_provider_8_js_runtime_foreign": "c5ce8b2a0b2e09cd99bdbcc1d6129f87c1025fd2ce256de4ffb223281247cf0c",
         "cps_provider_8_js_runtime_namespace": "c0cf62319cc805fd5877a8080b450684273725ef18f34bdcd497f275a90f415d",
-        "cps_provider_8_js_runtime_cli": "52660620b117a5867f16422394eeedf8f5db54d7e427b44b1b47e433e2b3d4e3",
+        "cps_provider_8_js_runtime_cli": "eceabcdb8b9ea802860e58bc6220f150d9358bac448d269dafce9ad3c630642b",
         "cps_provider_8_js_runtime_io": "b49e2b11a04a35aba82e3a3f4053b257b764af0df3233e3213fd4ff386b066a5",
         "cps_provider_8_js_runtime_show": "26249f420ab900668eec52d3a734b71c456034e05a55e181a3702f41c53a2eb6",
         "cps_provider_8_js_runtime_type": "83221574781127f2a76b6ddb48441d982cb6da76be642ef44a734cbfd9f94fa6",
@@ -47190,7 +47190,7 @@
         "cps_provider_8_js_runtime_type_patterns": "1b118eef104c5ace77d5b9b53eadebeae297ac471a326d0fe5b2c098e99b2fc4",
         "cps_provider_8_js_runtime_type_eval": "3bbb488678b4a358004a23e01fda38a90f7b42b85f15714b4adf826e14f93238",
         "cps_provider_8_js_runtime_native_type": "57be6b2bf2a42d39c81dda112745aa894e00cc7aa9f6caeeb300196f6ce89f7c",
-        "cps_provider_8_js_main": "24a76059774424eb3f8789dcd440e4b0f386c849066efe4faa6f6ff82e1f8a46",
+        "cps_provider_8_js_main": "f745b8e9b4400050d67956db585a64391ff568426e6a48e3e8e546c3090bcb8b",
         "cps_provider_9_emitted": "d7769ec179ef3620fb54cbca437de4e1ee6c24fffb38f1e50d9f36ecf88d8f9e",
         "cps_provider_9_render": "30e0e6f10f50e3cc12083753c1f1a40baee05333951e794d30db5d223e4bd84c",
         "cps_provider_9_emit_result": "011c3dd02d35126c887eb053c570bb00aeabdd2e8303cc01a0aba061db0b3aec",
@@ -98551,7 +98551,7 @@
       "source": "/private/tmp/bend2039-upgrade/bend2/selfhost/emitter.bend",
       "sourceSha256": "47d68ba5f0b54c334e2c940b7bb6aabc7f3bba27142b816f27df8225cf3fae4f",
       "output": "/private/tmp/bend2039-upgrade/checkpoints/emitter_owned_v1.bend",
-      "outputSha256": "f1b100a0f82101956cf7ce03ee06972da9173be3242282c5ca430515cc14e870",
+      "outputSha256": "63a907767335ea0ca5a0e76f0f1238d20a61b2ff9932a0ec44510cc08db9d03a",
       "extractions": [
         {
           "owner": "cps_provider_1_describe",

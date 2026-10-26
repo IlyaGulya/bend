@@ -59,6 +59,11 @@ latest one; the GitHub release carries the same notes.
   regressions, public text exports and deep non-tail calls; this smoke is not
   yet a native-build or stage1/stage2 fixedpoint acceptance.
 
+- Selfhost JavaScript executables preserve the program name in `IO.args` and
+  `IO.args_bytes` and use the canonical `+RTS ... -RTS` / `--RTS` boundaries.
+  The regenerated full compiler passes six actual argument-consumer cases;
+  native build and byte fixedpoint remain separate acceptance gates.
+
 - Datatypes are headers: the selfhost checker publishes each family's name,
   module aliases and kind telescope before any parameter, field or body is
   checked, so a field, index telescope or kind may name a family declared later
