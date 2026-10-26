@@ -86,6 +86,11 @@ latest one; the GitHub release carries the same notes.
   Full g2 native generation publishes C below the memory guard, but its complete
   build still exceeds the original 600-second deadline; no fixedpoint is claimed.
 
+- The g2 backend matrices retain all 31 earlier inputs and add the existing
+  generic-constructor regression. All 32 programs pass on C and JavaScript
+  through 160 guarded stages, including wide nodes and ordinary datatype SHOW.
+  Complete native build and compiler byte fixedpoint remain separate gates.
+
 - Datatypes are headers: the selfhost checker publishes each family's name,
   module aliases and kind telescope before any parameter, field or body is
   checked, so a field, index telescope or kind may name a family declared later

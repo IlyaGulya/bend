@@ -1,0 +1,4301 @@
+{
+  "schemaVersion": 1,
+  "status": "G2_FULL_C_AND_JS_MATRICES_PASS",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "scope": "Original31 cases retained plus existing generic_ctor_domains;32 real checked-source programs emitted and executed on both targets. This is full backend matrix acceptance, not native whole-build or compiler byte fixedpoint.",
+  "version": "eac57170",
+  "rootBuild": {
+    "path": "/private/tmp/bend2039-upgrade/checkpoints/root-release2039g2-build.result.json",
+    "sha256": "c806cc3c0e5a48c35da9b278e45ff34dcf8db53ca1fb986bd8af651f1aff4e22"
+  },
+  "driver": {
+    "path": "/tmp/bend2039g2-driver",
+    "sha256": "22979d99093c040bc4c8f00d86045c81cba03bba860762b711bd1d57b1b76516",
+    "source": "#!/bin/sh\nexec /Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node --experimental-strip-types /tmp/bend2039-candidate-worker.mjs /private/tmp/bend2039-upgrade/evals/candidate_host.ts --candidate=/private/tmp/bend2039-upgrade/checkpoints/root-release2039g2.js --candidate-build=/private/tmp/bend2039-upgrade/checkpoints/root-release2039g2-build.result.json --parser=/private/tmp/bend2039-upgrade/checkpoints/bootstrap-parser-rebuild-release2039g2.js \"$@\"\n"
+  },
+  "targets": [
+    {
+      "target": "c",
+      "status": "PASS",
+      "fixtures": 32,
+      "stages": 96,
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/c_target_fixtures_run.ts",
+        "--driver=/tmp/bend2039g2-driver",
+        "--node=/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--target=c",
+        "--keep",
+        "--logs=/tmp/bend2039g2-c-matrix"
+      ],
+      "matrixPins": {
+        "mode": "acceptance-matrix",
+        "target": "c",
+        "node": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "nodeVersion": "v23.11.0",
+        "v8": "12.9.202.28-node.14|--max-old-space-size=3072,-e,process.stdout.write(process.versions.v8 + \"|\" + process.execArgv.join(\",\"))",
+        "driver": "/tmp/bend2039g2-driver",
+        "guardianTs": "/private/tmp/bend2039-upgrade/evals/heavy_gate.ts",
+        "guardianTsSha256": "204f3529704435455d20a9d5a126a8e9c62e002b6fed9044c8319da8a3c26ff2",
+        "guardianNativeC": "/private/tmp/bend2039-upgrade/evals/heavy_gate_native.c",
+        "guardianNativeCSha256": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b",
+        "cwd": "/private/tmp/bend2039-upgrade",
+        "base": "/private/tmp/bend2039-upgrade/bend2/base.bend",
+        "baseSha256": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+        "runtime": "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c",
+        "runtimeSha256": "135c288787a8e84afb294e6698d2cab67d3389d15661586a35e3186538c5540f",
+        "logs": "/tmp/bend2039g2-c-matrix",
+        "gate": {
+          "memoryMiB": 8192,
+          "rssMiB": 8192,
+          "pollMs": 10,
+          "timeoutMs": 600000
+        },
+        "fixtures": 32
+      },
+      "sumGuardElapsedMs": 924263,
+      "peakRssBytes": 1937620992,
+      "peakFootprintBytes": 2007987816,
+      "rows": [
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_wide_record.bend",
+          "sourceSha256": "88cca90b9c2ee71d14d73bf704c02f99866e70203f3f5b026522832f7f478c7c",
+          "expected": "133",
+          "observed": "133",
+          "artifacts": {
+            "/tmp/bend2039g2-c-matrix/c_target_wide_record.c": {
+              "bytes": 1157195,
+              "sha256": "0e0682bf8c226b5a15a3a84753d80da21301c1b578398b4eeda0b17ad28aa208"
+            },
+            "/tmp/bend2039g2-c-matrix/c_target_wide_record": {
+              "bytes": 972424,
+              "sha256": "12e132b328da58ac547969bde236d229b144c6129d165ba72c9550063205f9ee"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_wide_record.emit.gate.json",
+              "sha256": "0e89cea723dcd03d075acf62313eda3030d09f529ebc8c0ae19c09b73f44c142",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_wide_record.bend",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_wide_record.c",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 21079,
+              "peakRssBytes": 1852391424,
+              "peakFootprintBytes": 1996125392,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "clang",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_wide_record.clang.gate.json",
+              "sha256": "6e8e260ed2fc1ec41d167dba4543cc736dfd8bdbd72452e13924ffe276ce3320",
+              "command": [
+                "clang",
+                "-std=c11",
+                "-O0",
+                "-ferror-limit=0",
+                "-pthread",
+                "-lm",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_wide_record",
+                "/tmp/bend2039g2-c-matrix/c_target_wide_record.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 1320,
+              "peakRssBytes": 136691712,
+              "peakFootprintBytes": 91783888,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_wide_record.run.gate.json",
+              "sha256": "e9e4d8472d912f1851666b73e2d75c5c8a8d17c47d4648e3a7116327492b2f42",
+              "command": [
+                "/tmp/bend2039g2-c-matrix/c_target_wide_record"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 14,
+              "peakRssBytes": 229376,
+              "peakFootprintBytes": 311440,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_nested_adt.bend",
+          "sourceSha256": "704014f43ec2fb031640e41fad7a0960ca189a57ddcfaab4c198ef00a20be6cc",
+          "expected": "15",
+          "observed": "15",
+          "artifacts": {
+            "/tmp/bend2039g2-c-matrix/c_target_nested_adt.c": {
+              "bytes": 1163689,
+              "sha256": "5b7714f5625c1b089b3f8c3a1c94a1a06dbee85ffd752e40619b9663b1d1b004"
+            },
+            "/tmp/bend2039g2-c-matrix/c_target_nested_adt": {
+              "bytes": 972656,
+              "sha256": "16261d518f3cc0ed2ab2de23789671d748183e12900a3d651fdfda1b68a3aab5"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_nested_adt.emit.gate.json",
+              "sha256": "aef3d3dc20fc8b41303e098ff7b78f6a4d775715e8f93e217096c639dbab723a",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_nested_adt.bend",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_nested_adt.c",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 26674,
+              "peakRssBytes": 1452015616,
+              "peakFootprintBytes": 1495978680,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "clang",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_nested_adt.clang.gate.json",
+              "sha256": "d26a6d7ba4f700fbc11a519186de0d62f238966105730744f7177dcaaaf0fb72",
+              "command": [
+                "clang",
+                "-std=c11",
+                "-O0",
+                "-ferror-limit=0",
+                "-pthread",
+                "-lm",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_nested_adt",
+                "/tmp/bend2039g2-c-matrix/c_target_nested_adt.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 1201,
+              "peakRssBytes": 139624448,
+              "peakFootprintBytes": 95109840,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_nested_adt.run.gate.json",
+              "sha256": "6dc50f5adce822970403286f339acde22b72636e327da6405d1e7c41ba734c49",
+              "command": [
+                "/tmp/bend2039g2-c-matrix/c_target_nested_adt"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 18,
+              "peakRssBytes": 49152,
+              "peakFootprintBytes": 803008,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_array_u32.bend",
+          "sourceSha256": "9e5752bf27faa913b0473c78d10141e9e8942c8bc56ba22a337265ab29fff2fa",
+          "expected": "15",
+          "observed": "15",
+          "artifacts": {
+            "/tmp/bend2039g2-c-matrix/c_target_array_u32.c": {
+              "bytes": 1163604,
+              "sha256": "1508d24bf203a6b3fb1a13139a150d456561d9b8b19c8474b3ac2aede493a8ba"
+            },
+            "/tmp/bend2039g2-c-matrix/c_target_array_u32": {
+              "bytes": 972800,
+              "sha256": "e9b1b9ea664088660e78d9160895190ce535f4561a3b16822cbf6e0c3ed035d5"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_array_u32.emit.gate.json",
+              "sha256": "d56e390b09b009495f58070bf0debc5aeef890d2d1b697f930cf63eec9d4883e",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_array_u32.bend",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_array_u32.c",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 34762,
+              "peakRssBytes": 1817821184,
+              "peakFootprintBytes": 1882149072,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "clang",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_array_u32.clang.gate.json",
+              "sha256": "95f72fe54e7b3904935b75cf0579936cb987c6ef80714695784c6c3a03b2dbe0",
+              "command": [
+                "clang",
+                "-std=c11",
+                "-O0",
+                "-ferror-limit=0",
+                "-pthread",
+                "-lm",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_array_u32",
+                "/tmp/bend2039g2-c-matrix/c_target_array_u32.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 1714,
+              "peakRssBytes": 136921088,
+              "peakFootprintBytes": 92373712,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_array_u32.run.gate.json",
+              "sha256": "d266860f84949419a4d3ecf777f5e9c655342881eeb7247be729d5dadc5dde16",
+              "command": [
+                "/tmp/bend2039g2-c-matrix/c_target_array_u32"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 27,
+              "peakRssBytes": 2097152,
+              "peakFootprintBytes": 1294624,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_array_wide.bend",
+          "sourceSha256": "fd151ba4438b94e76b9eaaa6e77a5c1bfe469726e90a92787f1a33458021cde1",
+          "expected": "16",
+          "observed": "16",
+          "artifacts": {
+            "/tmp/bend2039g2-c-matrix/c_target_array_wide.c": {
+              "bytes": 1167381,
+              "sha256": "d76b11e90d26af1bb7c828796ff8bf19765dc979593c24e91c79678c13c5ce3c"
+            },
+            "/tmp/bend2039g2-c-matrix/c_target_array_wide": {
+              "bytes": 989376,
+              "sha256": "8a72d7dfffd86ff4d59d201fa1dcf7f8098b383fc69431a4d0ddff0fc54d2b69"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_array_wide.emit.gate.json",
+              "sha256": "2d14605b8453b0e152c4b06f74f08dec36252da147850108b3828ee45b622468",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_array_wide.bend",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_array_wide.c",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 34225,
+              "peakRssBytes": 1702690816,
+              "peakFootprintBytes": 1762207632,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "clang",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_array_wide.clang.gate.json",
+              "sha256": "5a72d4c65a9ccfaffb5fb6c55e6152f3c0566980f782619155b64d5aa2e26f59",
+              "command": [
+                "clang",
+                "-std=c11",
+                "-O0",
+                "-ferror-limit=0",
+                "-pthread",
+                "-lm",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_array_wide",
+                "/tmp/bend2039g2-c-matrix/c_target_array_wide.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 2022,
+              "peakRssBytes": 137494528,
+              "peakFootprintBytes": 93094584,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_array_wide.run.gate.json",
+              "sha256": "045c47e0b65aeba2f3658c0eb731e0f3fd2c1c9d0135c078905362389478dfda",
+              "command": [
+                "/tmp/bend2039g2-c-matrix/c_target_array_wide"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 15,
+              "peakRssBytes": 671744,
+              "peakFootprintBytes": 803008,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_multiarm.bend",
+          "sourceSha256": "19534b50a377c4142b352e2c1072a9c586f70585b65dc10414eb7e442842f2ac",
+          "expected": "13",
+          "observed": "13",
+          "artifacts": {
+            "/tmp/bend2039g2-c-matrix/c_target_multiarm.c": {
+              "bytes": 1156536,
+              "sha256": "9a785ce5bf9d9571daf1eaedd87eb8b61b512b5159a5fa366e021771bd7a7e16"
+            },
+            "/tmp/bend2039g2-c-matrix/c_target_multiarm": {
+              "bytes": 972656,
+              "sha256": "090060023fdc3435eaa8790067a9d3d3358e99828ef7f25092603004792cf46b"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_multiarm.emit.gate.json",
+              "sha256": "e7feeaa07fcfbfce659af4db2c190dc58873801d9464bb601e63d685428aa8fe",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_multiarm.bend",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_multiarm.c",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 32886,
+              "peakRssBytes": 1702690816,
+              "peakFootprintBytes": 1762142000,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "clang",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_multiarm.clang.gate.json",
+              "sha256": "5b133ebfadd4e7553750ff1209cc4e60e5a8bb4e79ff4da582867f7eb6e61a1d",
+              "command": [
+                "clang",
+                "-std=c11",
+                "-O0",
+                "-ferror-limit=0",
+                "-pthread",
+                "-lm",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_multiarm",
+                "/tmp/bend2039g2-c-matrix/c_target_multiarm.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 1885,
+              "peakRssBytes": 138526720,
+              "peakFootprintBytes": 94028496,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_multiarm.run.gate.json",
+              "sha256": "752a91c2028267eec84c2c0fcc0088ab100429b2db05c6a4edabca114b85edff",
+              "command": [
+                "/tmp/bend2039g2-c-matrix/c_target_multiarm"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 13,
+              "peakRssBytes": 131072,
+              "peakFootprintBytes": 311440,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_char_head.bend",
+          "sourceSha256": "cc5811d968465d9756d579a854e68a649d08b521789c38afb7ebf0ec116422eb",
+          "expected": "955\n955",
+          "observed": "955\n955",
+          "artifacts": {
+            "/tmp/bend2039g2-c-matrix/c_target_char_head.c": {
+              "bytes": 1160385,
+              "sha256": "9e4da7ac6a0a8ec2bbb5d8ba143b8bd5c6a69a60239d88236e18f81df788046e"
+            },
+            "/tmp/bend2039g2-c-matrix/c_target_char_head": {
+              "bytes": 972720,
+              "sha256": "35830f62d9e3c04dc78acdc8d269bb1f7cac8467eeda9aa1659dfd8556f0531b"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_char_head.emit.gate.json",
+              "sha256": "b5a21bd4f7938d7af1d2ee0b19f572e040d3c5bd70beb9c414a09437e6248e12",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_char_head.bend",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_char_head.c",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 28774,
+              "peakRssBytes": 1930870784,
+              "peakFootprintBytes": 2000664360,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "clang",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_char_head.clang.gate.json",
+              "sha256": "fa6080467d4d88d6e756418e85bb22ce7631ef895039a6878148ca0b7fd41224",
+              "command": [
+                "clang",
+                "-std=c11",
+                "-O0",
+                "-ferror-limit=0",
+                "-pthread",
+                "-lm",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_char_head",
+                "/tmp/bend2039g2-c-matrix/c_target_char_head.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 1313,
+              "peakRssBytes": 137183232,
+              "peakFootprintBytes": 92750520,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_char_head.run.gate.json",
+              "sha256": "7faf219705241f7f926161ab89c87f299a81cccc674a3909064e9529381cb9af",
+              "command": [
+                "/tmp/bend2039g2-c-matrix/c_target_char_head"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 14,
+              "peakRssBytes": 32768,
+              "peakFootprintBytes": 98376,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_char_to_list.bend",
+          "sourceSha256": "69788352c9b92708c9166d7e78cecd2e1e3ad33adf013eea5d8f2f3cff4262aa",
+          "expected": "955\n120",
+          "observed": "955\n120",
+          "artifacts": {
+            "/tmp/bend2039g2-c-matrix/c_target_char_to_list.c": {
+              "bytes": 1158512,
+              "sha256": "786f01aeda0cb7fee78c116ea4ab64ed0d36171ea7d9034b98df8ba820de5bea"
+            },
+            "/tmp/bend2039g2-c-matrix/c_target_char_to_list": {
+              "bytes": 972648,
+              "sha256": "e998227ae1974ffd7098bab65a31199621904be9d1e024c9369ac5bef51448c9"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_char_to_list.emit.gate.json",
+              "sha256": "42757e390e2ac79df5ca0222fff302f8fceacfd70c48b5c8cf0b11bc58bd7f51",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_char_to_list.bend",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_char_to_list.c",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 34075,
+              "peakRssBytes": 1503543296,
+              "peakFootprintBytes": 1548919512,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "clang",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_char_to_list.clang.gate.json",
+              "sha256": "c08284c32fe22877e6151d44799517c3152ff2b88280ee596cfc7f2b3dc87392",
+              "command": [
+                "clang",
+                "-std=c11",
+                "-O0",
+                "-ferror-limit=0",
+                "-pthread",
+                "-lm",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_char_to_list",
+                "/tmp/bend2039g2-c-matrix/c_target_char_to_list.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 1757,
+              "peakRssBytes": 139034624,
+              "peakFootprintBytes": 94552784,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_char_to_list.run.gate.json",
+              "sha256": "763d68783fd20889b00c4999518233f109f362142d3404396274d039566dd93f",
+              "command": [
+                "/tmp/bend2039g2-c-matrix/c_target_char_to_list"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 27,
+              "peakRssBytes": 180224,
+              "peakFootprintBytes": 311440,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_string_from_list.bend",
+          "sourceSha256": "2fdc63032bff8c9187ad0ab3533f44c0cb9dedfd9f7113e7b4f4f84e94d50d65",
+          "expected": "λx\n955\n955\n120",
+          "observed": "λx\n955\n955\n120",
+          "artifacts": {
+            "/tmp/bend2039g2-c-matrix/c_target_string_from_list.c": {
+              "bytes": 1169697,
+              "sha256": "58df263f96f9c325100dff40a3ffbf284b8e48f760ee9cddd471a351048b65b7"
+            },
+            "/tmp/bend2039g2-c-matrix/c_target_string_from_list": {
+              "bytes": 989560,
+              "sha256": "64e3106d41bfdf128f0000969cef5f436ba1cb30472cf99995eece963dbea1a1"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_string_from_list.emit.gate.json",
+              "sha256": "5e3ed7e3d54fbcc3359264e4c7a62ab852e04508f8a1414cd3ead40881c76573",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_string_from_list.bend",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_string_from_list.c",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 28525,
+              "peakRssBytes": 1468530688,
+              "peakFootprintBytes": 1513280304,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "clang",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_string_from_list.clang.gate.json",
+              "sha256": "d8b7ce62ed3d7b73098211f850859656db011f0ad59c86517fe0c118b5fc195f",
+              "command": [
+                "clang",
+                "-std=c11",
+                "-O0",
+                "-ferror-limit=0",
+                "-pthread",
+                "-lm",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_string_from_list",
+                "/tmp/bend2039g2-c-matrix/c_target_string_from_list.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 2008,
+              "peakRssBytes": 139526144,
+              "peakFootprintBytes": 94945952,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_string_from_list.run.gate.json",
+              "sha256": "31cef73e6bf62ff0f9116f4af0b02b10a391d147765d65406add7420d3139c6c",
+              "command": [
+                "/tmp/bend2039g2-c-matrix/c_target_string_from_list"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 15,
+              "peakRssBytes": 147456,
+              "peakFootprintBytes": 311440,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_array_nat.bend",
+          "sourceSha256": "1f5d1ebc34537453b7733daff35973d09fb919ccf7af18c98fe948858d8f1462",
+          "expected": "7",
+          "observed": "7",
+          "artifacts": {
+            "/tmp/bend2039g2-c-matrix/c_target_array_nat.c": {
+              "bytes": 1154404,
+              "sha256": "14cda2d8e42b124609ea6639b5dec33f6d1eafcedad701b58f2ad4ac2143975e"
+            },
+            "/tmp/bend2039g2-c-matrix/c_target_array_nat": {
+              "bytes": 972384,
+              "sha256": "3fbdf35fadb4c9ecc2667dbefd0b9939cc8f37b407432b2fb9c7cce188de5718"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_array_nat.emit.gate.json",
+              "sha256": "df1e272eff8b7a9eed7a3098875e728ee8ef34c20a42454cea8a22e7b43266e3",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_array_nat.bend",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_array_nat.c",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 24064,
+              "peakRssBytes": 1361690624,
+              "peakFootprintBytes": 1397223696,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "clang",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_array_nat.clang.gate.json",
+              "sha256": "5a32a8a1984825e27257a42b5866366e260abd929e4c3e1e8612ffa5b8c96cdc",
+              "command": [
+                "clang",
+                "-std=c11",
+                "-O0",
+                "-ferror-limit=0",
+                "-pthread",
+                "-lm",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_array_nat",
+                "/tmp/bend2039g2-c-matrix/c_target_array_nat.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 1521,
+              "peakRssBytes": 136691712,
+              "peakFootprintBytes": 92193464,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_array_nat.run.gate.json",
+              "sha256": "af26953ffe7c46a1c9ee50d56117ca37a23186c4c6c73c5c0d175eb26a45667a",
+              "command": [
+                "/tmp/bend2039g2-c-matrix/c_target_array_nat"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 28,
+              "peakRssBytes": 1441792,
+              "peakFootprintBytes": 966944,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_array_nested.bend",
+          "sourceSha256": "3387f428bc07319bb66a07e64e0b7635efc01ea7400ec35ad4bc13eda04ff8dc",
+          "expected": "12",
+          "observed": "12",
+          "artifacts": {
+            "/tmp/bend2039g2-c-matrix/c_target_array_nested.c": {
+              "bytes": 1159714,
+              "sha256": "9a372a4ccd149b0cb054b6e8ae995c1977b874037b9fdee77bd5eb9443daccf4"
+            },
+            "/tmp/bend2039g2-c-matrix/c_target_array_nested": {
+              "bytes": 972504,
+              "sha256": "df185488e005ae68df58d8740bcb2dae4bcd65e5a56f36e7bd6bef98d432f2af"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_array_nested.emit.gate.json",
+              "sha256": "f6b12cbde43d2c110211d4cdbcb87cfc60f9359bf53c6a70e29988305cf2260b",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_array_nested.bend",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_array_nested.c",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 29204,
+              "peakRssBytes": 1730658304,
+              "peakFootprintBytes": 1791717472,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "clang",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_array_nested.clang.gate.json",
+              "sha256": "9ade55efbc8122067e8eb6c6db5b1050adda455c51183b0974b603de71d25e91",
+              "command": [
+                "clang",
+                "-std=c11",
+                "-O0",
+                "-ferror-limit=0",
+                "-pthread",
+                "-lm",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_array_nested",
+                "/tmp/bend2039g2-c-matrix/c_target_array_nested.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 1313,
+              "peakRssBytes": 137969664,
+              "peakFootprintBytes": 93422264,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_array_nested.run.gate.json",
+              "sha256": "2e070d64269f6d4279a69d8bf3a87e603f385684de6bec4f50a0eaea11a533dd",
+              "command": [
+                "/tmp/bend2039g2-c-matrix/c_target_array_nested"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 31,
+              "peakRssBytes": 1736704,
+              "peakFootprintBytes": 1229184,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_drop_fields.bend",
+          "sourceSha256": "cc3f60ad76053e080ff234002c89b488beb5a06c823d4d516466dd90fb9f0bd6",
+          "expected": "5",
+          "observed": "5",
+          "artifacts": {
+            "/tmp/bend2039g2-c-matrix/c_target_drop_fields.c": {
+              "bytes": 1152577,
+              "sha256": "38fab587ea8df463c0fe8b5d585896313d2a84adb3b938aa50b2ae392f4f0647"
+            },
+            "/tmp/bend2039g2-c-matrix/c_target_drop_fields": {
+              "bytes": 972360,
+              "sha256": "7c76047dbc1f949752dd75e5246aba6cf3477a8f958ab14898eec5828b0d530e"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_drop_fields.emit.gate.json",
+              "sha256": "e388976f15d3b541a9770f0e841260345f5b094dd93b4011957c99d7ae55a911",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_drop_fields.bend",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_drop_fields.c",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 27792,
+              "peakRssBytes": 1811677184,
+              "peakFootprintBytes": 1875430576,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "clang",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_drop_fields.clang.gate.json",
+              "sha256": "162527df21adf841ef154cea58b5fa8bcb1ca288ed9c2116dac9a024222c8a0c",
+              "command": [
+                "clang",
+                "-std=c11",
+                "-O0",
+                "-ferror-limit=0",
+                "-pthread",
+                "-lm",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_drop_fields",
+                "/tmp/bend2039g2-c-matrix/c_target_drop_fields.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 1591,
+              "peakRssBytes": 136347648,
+              "peakFootprintBytes": 91947728,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_drop_fields.run.gate.json",
+              "sha256": "7694d87af5e00c2955651d0375d42e91de54e896ba2c7dcf0b8106e3a1ce920e",
+              "command": [
+                "/tmp/bend2039g2-c-matrix/c_target_drop_fields"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 14,
+              "peakRssBytes": 131072,
+              "peakFootprintBytes": 311440,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_utf8_literal.bend",
+          "sourceSha256": "e9873e12d727b50ee32ef7afc1a2971f83fe27e314c2a4653e1f453e776342db",
+          "expected": "λx",
+          "observed": "λx",
+          "artifacts": {
+            "/tmp/bend2039g2-c-matrix/c_target_utf8_literal.c": {
+              "bytes": 1149980,
+              "sha256": "9ae30f1726dc8e1405f79351a100dfa687ad58ed89ea05b0bdc911375ed325c6"
+            },
+            "/tmp/bend2039g2-c-matrix/c_target_utf8_literal": {
+              "bytes": 972248,
+              "sha256": "820003cdc27d0f526fca1f245d0f88cedfe61dd680314bab1c6b835a3c9e6dc7"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_utf8_literal.emit.gate.json",
+              "sha256": "e64ee45d4bcafc3774913502b663c796f78d4b6984203b6e2982621ed56efce6",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_utf8_literal.bend",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_utf8_literal.c",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 27242,
+              "peakRssBytes": 1730691072,
+              "peakFootprintBytes": 1789424072,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "clang",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_utf8_literal.clang.gate.json",
+              "sha256": "bf87432fa9cb4a8d855656cc2058d9cc0b7a69f69bfdc86589a105fe2fae17c2",
+              "command": [
+                "clang",
+                "-std=c11",
+                "-O0",
+                "-ferror-limit=0",
+                "-pthread",
+                "-lm",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_utf8_literal",
+                "/tmp/bend2039g2-c-matrix/c_target_utf8_literal.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 1596,
+              "peakRssBytes": 136364032,
+              "peakFootprintBytes": 91865808,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_utf8_literal.run.gate.json",
+              "sha256": "97cb1f038e195b6d252438498aafc35d10401333e46a058a6da02262ae772120",
+              "command": [
+                "/tmp/bend2039g2-c-matrix/c_target_utf8_literal"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 14,
+              "peakRssBytes": 131072,
+              "peakFootprintBytes": 311440,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_utf8_astral.bend",
+          "sourceSha256": "8b601c81baf7514313012117ea8dfac6ff4d4f0931725cc525f4f9e7f630a88a",
+          "expected": "𝄞",
+          "observed": "𝄞",
+          "artifacts": {
+            "/tmp/bend2039g2-c-matrix/c_target_utf8_astral.c": {
+              "bytes": 1149978,
+              "sha256": "12633da4e9be3bce5e9d4c16284519236cffe053b97ac00710e79cfd772d0565"
+            },
+            "/tmp/bend2039g2-c-matrix/c_target_utf8_astral": {
+              "bytes": 972248,
+              "sha256": "8f58c5fe952e12da8933275b70acf51bc4b30e3da03d9dc0d256335410a33095"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_utf8_astral.emit.gate.json",
+              "sha256": "46dff7f456674123ab82ba35af0ccc540494177130836ff7096d4eff29c228c8",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_utf8_astral.bend",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_utf8_astral.c",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 28517,
+              "peakRssBytes": 1873625088,
+              "peakFootprintBytes": 1940890248,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "clang",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_utf8_astral.clang.gate.json",
+              "sha256": "07dfaeac513005e12d590f6a6ec59c429f92315817b3734affe5876af1b18595",
+              "command": [
+                "clang",
+                "-std=c11",
+                "-O0",
+                "-ferror-limit=0",
+                "-pthread",
+                "-lm",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_utf8_astral",
+                "/tmp/bend2039g2-c-matrix/c_target_utf8_astral.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 1521,
+              "peakRssBytes": 135774208,
+              "peakFootprintBytes": 91259576,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_utf8_astral.run.gate.json",
+              "sha256": "7d88bfb58aa5d5c0650ab83aa90e53ae63939a0c481be37e8d71c43287a49621",
+              "command": [
+                "/tmp/bend2039g2-c-matrix/c_target_utf8_astral"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 15,
+              "peakRssBytes": 671744,
+              "peakFootprintBytes": 245832,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_trigraph_literal.bend",
+          "sourceSha256": "f036aa1315914c907429f883b010ff5e33b3cd75dab84137c8f1ea11574cc901",
+          "expected": "??=??/??'??(??)??!??<??>??-",
+          "observed": "??=??/??'??(??)??!??<??>??-",
+          "artifacts": {
+            "/tmp/bend2039g2-c-matrix/c_target_trigraph_literal.c": {
+              "bytes": 1150142,
+              "sha256": "da8b01c4a890cd35059c99cc009198831f13afd4d4cb95d21a042593a0fecfab"
+            },
+            "/tmp/bend2039g2-c-matrix/c_target_trigraph_literal": {
+              "bytes": 972248,
+              "sha256": "eaedb4795676f26fc7c1908292be29f5232e84311306cd4c08c102b6d4ea11b0"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_trigraph_literal.emit.gate.json",
+              "sha256": "8e7667a36b8d055ac369444843afe6c2663655d73ef50fa68a240c801215a5c4",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_trigraph_literal.bend",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_trigraph_literal.c",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 28486,
+              "peakRssBytes": 1316683776,
+              "peakFootprintBytes": 1349968376,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "clang",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_trigraph_literal.clang.gate.json",
+              "sha256": "8ef00d73dd8eafffcf4c04b4f7ea9e7bfdfa88ffab5e3e1d78906713e4f23ca1",
+              "command": [
+                "clang",
+                "-std=c11",
+                "-O0",
+                "-ferror-limit=0",
+                "-pthread",
+                "-lm",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_trigraph_literal",
+                "/tmp/bend2039g2-c-matrix/c_target_trigraph_literal.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 1527,
+              "peakRssBytes": 135938048,
+              "peakFootprintBytes": 91112120,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_trigraph_literal.run.gate.json",
+              "sha256": "62d39ecaf5141cde0e99264aff09de8968c84a724c9ec027ddb9696c2dbe813d",
+              "command": [
+                "/tmp/bend2039g2-c-matrix/c_target_trigraph_literal"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 14,
+              "peakRssBytes": 131072,
+              "peakFootprintBytes": 311440,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/tests/reg/phys_storage_paths.bend",
+          "sourceSha256": "b3f1aad4a75d028845f301816982a0d98a9606d239ce4d3c674a91ac5bf5fd85",
+          "expected": "2655042671\n3,9",
+          "observed": "2655042671\n3,9",
+          "artifacts": {
+            "/tmp/bend2039g2-c-matrix/phys_storage_paths.c": {
+              "bytes": 1217568,
+              "sha256": "dc276ab7e037f81e2f2ce97e7db5af92a5eb75f1378cd008582c2193f07442fe"
+            },
+            "/tmp/bend2039g2-c-matrix/phys_storage_paths": {
+              "bytes": 1023936,
+              "sha256": "446ca3d4d6124273d03b07d4863d5eb2a9b2dfdb6b2eca192614d51147cb2f40"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-c-matrix/phys_storage_paths.emit.gate.json",
+              "sha256": "09e70a04d537404a4650e5ade1ae0ba00faba1bc01e0eeccbbaec8642200e263",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/tests/reg/phys_storage_paths.bend",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/phys_storage_paths.c",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 30298,
+              "peakRssBytes": 1714651136,
+              "peakFootprintBytes": 1774594560,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "clang",
+              "path": "/tmp/bend2039g2-c-matrix/phys_storage_paths.clang.gate.json",
+              "sha256": "3170704007e240a00a3186fe96e88f0312b56696e34c335c3bfa314087745b2b",
+              "command": [
+                "clang",
+                "-std=c11",
+                "-O0",
+                "-ferror-limit=0",
+                "-pthread",
+                "-lm",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/phys_storage_paths",
+                "/tmp/bend2039g2-c-matrix/phys_storage_paths.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 1811,
+              "peakRssBytes": 140722176,
+              "peakFootprintBytes": 96142056,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-c-matrix/phys_storage_paths.run.gate.json",
+              "sha256": "98882dbdb6bd06c33134618cb32b3e830c9a3c97dab05bd5ff742f6d5cbac51c",
+              "command": [
+                "/tmp/bend2039g2-c-matrix/phys_storage_paths"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 15,
+              "peakRssBytes": 425984,
+              "peakFootprintBytes": 163912,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/tests/reg/generic_ctor_domains.bend",
+          "sourceSha256": "7d4d7f558c000111e9be72a8685dc45bdaf235afe977ea73e4ecd18757f83f5b",
+          "expected": "15\n21",
+          "observed": "15\n21",
+          "artifacts": {
+            "/tmp/bend2039g2-c-matrix/generic_ctor_domains.c": {
+              "bytes": 1173492,
+              "sha256": "d9c59de5efe208599d1aae900ff8c3ce07eacd2ecebaf0c0d630cb2534ce2819"
+            },
+            "/tmp/bend2039g2-c-matrix/generic_ctor_domains": {
+              "bytes": 989512,
+              "sha256": "661ce45ba90281f8c0f695fbcdc97cb56c0e52accfb195c7615779b48e54c30f"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-c-matrix/generic_ctor_domains.emit.gate.json",
+              "sha256": "636c3f6a0e4f8cab8bfbb75c1647957fa4c9851e8050a5515584f28a21dd66d3",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/tests/reg/generic_ctor_domains.bend",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/generic_ctor_domains.c",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 28049,
+              "peakRssBytes": 1621852160,
+              "peakFootprintBytes": 1673170112,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "clang",
+              "path": "/tmp/bend2039g2-c-matrix/generic_ctor_domains.clang.gate.json",
+              "sha256": "a056cc77ba434e3ed843e9da3466c4f1ee477d5d0b8e0cc6a1527e668458ffcc",
+              "command": [
+                "clang",
+                "-std=c11",
+                "-O0",
+                "-ferror-limit=0",
+                "-pthread",
+                "-lm",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/generic_ctor_domains",
+                "/tmp/bend2039g2-c-matrix/generic_ctor_domains.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 1751,
+              "peakRssBytes": 138657792,
+              "peakFootprintBytes": 94126776,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-c-matrix/generic_ctor_domains.run.gate.json",
+              "sha256": "3ca7e1710a3663fbdcac42636eca23b7395ae96e2cde5e87a136a3a168ffee43",
+              "command": [
+                "/tmp/bend2039g2-c-matrix/generic_ctor_domains"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 33,
+              "peakRssBytes": 1032192,
+              "peakFootprintBytes": 803008,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_bool_prims.bend",
+          "sourceSha256": "bc2c9dd125503eaaae6cf233da61400cae28d2ca7da2b09027ae1fe3da408688",
+          "expected": "1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n1\n0\n1\n1\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n0\n1\n0\n0\n1\n1\n0\n1\n1\n0\n1\n0\n1\n0",
+          "observed": "1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n1\n0\n1\n1\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n0\n1\n0\n0\n1\n1\n0\n1\n1\n0\n1\n0\n1\n0",
+          "artifacts": {
+            "/tmp/bend2039g2-c-matrix/c_target_bool_prims.c": {
+              "bytes": 1285573,
+              "sha256": "d4be012bd3e201dd232a77d97ed80885cb115acb137510b8a05bdce673f81aa8"
+            },
+            "/tmp/bend2039g2-c-matrix/c_target_bool_prims": {
+              "bytes": 1061632,
+              "sha256": "803319a121f792dec89df0d9ade0e42da7922a7ef431dd9220aeb30636de5c99"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_bool_prims.emit.gate.json",
+              "sha256": "03daddcaa612adc6fe9845817b65c5f724aca06cfb5863f4ec80a4a4baabfd33",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_bool_prims.bend",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_bool_prims.c",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 34028,
+              "peakRssBytes": 1718747136,
+              "peakFootprintBytes": 1778624760,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "clang",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_bool_prims.clang.gate.json",
+              "sha256": "2e5655cfcb19ad1f58e74b9fb6c563ffa81c82335452ed0b4052295e9af776d4",
+              "command": [
+                "clang",
+                "-std=c11",
+                "-O0",
+                "-ferror-limit=0",
+                "-pthread",
+                "-lm",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_bool_prims",
+                "/tmp/bend2039g2-c-matrix/c_target_bool_prims.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 1858,
+              "peakRssBytes": 149422080,
+              "peakFootprintBytes": 104825552,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_bool_prims.run.gate.json",
+              "sha256": "6e1fd31eef9ec60e200aa28a6077a5ccc1565d6e29ba6bb931b793e6cd7e3b74",
+              "command": [
+                "/tmp/bend2039g2-c-matrix/c_target_bool_prims"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 15,
+              "peakRssBytes": 737280,
+              "peakFootprintBytes": 295056,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_clo_field.bend",
+          "sourceSha256": "7e1e922c18100bf2b4b588859f555012848843525a56785b1f33e13dec197b4f",
+          "expected": "7",
+          "observed": "7",
+          "artifacts": {
+            "/tmp/bend2039g2-c-matrix/c_target_clo_field.c": {
+              "bytes": 1154923,
+              "sha256": "781374e247d002536a1dd97e735161e4081bbf3d86c9e8887aa67dc30da2ff8e"
+            },
+            "/tmp/bend2039g2-c-matrix/c_target_clo_field": {
+              "bytes": 972480,
+              "sha256": "cc4b705a76776ae1296014005e6a04395f628d5142dee58d03b8dc689cd3bf05"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_clo_field.emit.gate.json",
+              "sha256": "1a1620d480aa0a7176e3696fe6b44432af62680e60de8e21825aadc0d3f78f05",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_clo_field.bend",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_clo_field.c",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 31384,
+              "peakRssBytes": 1532542976,
+              "peakFootprintBytes": 1579036160,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "clang",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_clo_field.clang.gate.json",
+              "sha256": "fbe79581c8771eb4a5898792442dd3bb0e6e322f42ba6dc52e67f3d7d9032755",
+              "command": [
+                "clang",
+                "-std=c11",
+                "-O0",
+                "-ferror-limit=0",
+                "-pthread",
+                "-lm",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_clo_field",
+                "/tmp/bend2039g2-c-matrix/c_target_clo_field.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 1910,
+              "peakRssBytes": 136790016,
+              "peakFootprintBytes": 92226208,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_clo_field.run.gate.json",
+              "sha256": "a0883c8604cef349e72732c5686bb897bf9f6b63489dc0a88a698820d8181f33",
+              "command": [
+                "/tmp/bend2039g2-c-matrix/c_target_clo_field"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 14,
+              "peakRssBytes": 212992,
+              "peakFootprintBytes": 311440,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_repeat_data.bend",
+          "sourceSha256": "b871c3b5242184e47ee9e7c034b2d6f62e31a1159ed6c8e259b6e9b2bd240546",
+          "expected": "8",
+          "observed": "8",
+          "artifacts": {
+            "/tmp/bend2039g2-c-matrix/c_target_repeat_data.c": {
+              "bytes": 1153327,
+              "sha256": "3abe10059c34d9aa759662d62bc5403f4afdb5cb378844a1fb40b48199dff612"
+            },
+            "/tmp/bend2039g2-c-matrix/c_target_repeat_data": {
+              "bytes": 972424,
+              "sha256": "6a3879ae7c35652b63a19fb159da4345f3d303f7a145aace7c6e619d9645b66b"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_repeat_data.emit.gate.json",
+              "sha256": "5b107994044fa0c4560cbd4b19ee14d56da2ad73c3469e5cb05becd2562fa37a",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_repeat_data.bend",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_repeat_data.c",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 33326,
+              "peakRssBytes": 1703247872,
+              "peakFootprintBytes": 1762436528,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "clang",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_repeat_data.clang.gate.json",
+              "sha256": "6d54eacdc295a6adea49b344f4b5e96dd567cbc2ebcd790d500a938b3517b591",
+              "command": [
+                "clang",
+                "-std=c11",
+                "-O0",
+                "-ferror-limit=0",
+                "-pthread",
+                "-lm",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_repeat_data",
+                "/tmp/bend2039g2-c-matrix/c_target_repeat_data.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 1946,
+              "peakRssBytes": 136052736,
+              "peakFootprintBytes": 91669176,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_repeat_data.run.gate.json",
+              "sha256": "ccac28694228c2f0b52450e67315f4cc34611df1487b330a19aa4008b8ab0259",
+              "command": [
+                "/tmp/bend2039g2-c-matrix/c_target_repeat_data"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 29,
+              "peakRssBytes": 1146880,
+              "peakFootprintBytes": 819464,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_disjoint_type_cells.bend",
+          "sourceSha256": "5b6ead1a37e317d4fed3b5060a0527f982045dd336d2ec385690b974fb92a6da",
+          "expected": "5",
+          "observed": "5",
+          "artifacts": {
+            "/tmp/bend2039g2-c-matrix/c_target_disjoint_type_cells.c": {
+              "bytes": 1162417,
+              "sha256": "87d8980036ee27cf7094d56bd69620fd3c0de1ea5120d55d3ce9d299ec8ea44c"
+            },
+            "/tmp/bend2039g2-c-matrix/c_target_disjoint_type_cells": {
+              "bytes": 972576,
+              "sha256": "5c1372c81f993536ddcafbc4a675567b2e07c63540d780a99a052a37ff07cac8"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_disjoint_type_cells.emit.gate.json",
+              "sha256": "674195949c90753632c2e1b6326e7953b270c6d7071d7594499d33063a693da2",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_disjoint_type_cells.bend",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_disjoint_type_cells.c",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 32740,
+              "peakRssBytes": 1823621120,
+              "peakFootprintBytes": 1890096056,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "clang",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_disjoint_type_cells.clang.gate.json",
+              "sha256": "8aaadb6482c494555ebb75b2f5411b2cd2f94beac244932f30e6b37e58888f92",
+              "command": [
+                "clang",
+                "-std=c11",
+                "-O0",
+                "-ferror-limit=0",
+                "-pthread",
+                "-lm",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_disjoint_type_cells",
+                "/tmp/bend2039g2-c-matrix/c_target_disjoint_type_cells.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 3660,
+              "peakRssBytes": 137543680,
+              "peakFootprintBytes": 93111016,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_disjoint_type_cells.run.gate.json",
+              "sha256": "ab6c259509f8276af5045932237baedc45a8d3a4eedcf0f94d3fc49d09673c74",
+              "command": [
+                "/tmp/bend2039g2-c-matrix/c_target_disjoint_type_cells"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 35,
+              "peakRssBytes": 1753088,
+              "peakFootprintBytes": 1245568,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_repeat_capture.bend",
+          "sourceSha256": "59dd7417420f4128ce84e65e14276c5c35d6b764d7d25b3d5a1a4f02e2d239fe",
+          "expected": "10",
+          "observed": "10",
+          "artifacts": {
+            "/tmp/bend2039g2-c-matrix/c_target_repeat_capture.c": {
+              "bytes": 1153398,
+              "sha256": "e83050ca32606531cf544994430ade6381366da6887cbe6a7b350d708e22211c"
+            },
+            "/tmp/bend2039g2-c-matrix/c_target_repeat_capture": {
+              "bytes": 972424,
+              "sha256": "d2d998f6f1230ce4ba0ca766949fd555f837ba7548c892643a30eb987e32e1a3"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_repeat_capture.emit.gate.json",
+              "sha256": "dc05d6b86f7b1c5ccc1b9edb59ba154a5ddbc99ca95c71f58d4f7b0734188c18",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_repeat_capture.bend",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_repeat_capture.c",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 51301,
+              "peakRssBytes": 1552171008,
+              "peakFootprintBytes": 1602056328,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "clang",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_repeat_capture.clang.gate.json",
+              "sha256": "490872619821604adf7448087c1159093f3765f2944361021b9d6abb5c5117e8",
+              "command": [
+                "clang",
+                "-std=c11",
+                "-O0",
+                "-ferror-limit=0",
+                "-pthread",
+                "-lm",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_repeat_capture",
+                "/tmp/bend2039g2-c-matrix/c_target_repeat_capture.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 1437,
+              "peakRssBytes": 136052736,
+              "peakFootprintBytes": 91587304,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_repeat_capture.run.gate.json",
+              "sha256": "84de4f60dab321229a301300480b8bf2ba0e3d296b7aada8b1e9db4f4f4f8ed6",
+              "command": [
+                "/tmp/bend2039g2-c-matrix/c_target_repeat_capture"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 55,
+              "peakRssBytes": 458752,
+              "peakFootprintBytes": 311440,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_alias_paths.bend",
+          "sourceSha256": "5e5f5dee9376664013f1d7ce055fa45af40c40b9e2fbee02e8755e84abdf932f",
+          "expected": "8",
+          "observed": "8",
+          "artifacts": {
+            "/tmp/bend2039g2-c-matrix/c_target_alias_paths.c": {
+              "bytes": 1152775,
+              "sha256": "7836847f52736ddf73c7ea552ca679489a02841fa0c8cc38f523af9b585aabe8"
+            },
+            "/tmp/bend2039g2-c-matrix/c_target_alias_paths": {
+              "bytes": 972360,
+              "sha256": "7e9ebfc43c49ebb59793f3d8dbdf8b4e677990fe7baa29814bb168c5a3536c65"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_alias_paths.emit.gate.json",
+              "sha256": "13ab9484321c9eafb9490845a14c0742649acfcc79669b8a71d89161a490cf68",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_alias_paths.bend",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_alias_paths.c",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 23173,
+              "peakRssBytes": 1715601408,
+              "peakFootprintBytes": 1775872992,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "clang",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_alias_paths.clang.gate.json",
+              "sha256": "e155e618c630bbf6875fec37e28ba933446917a745ac470f5d7d768d35c5d846",
+              "command": [
+                "clang",
+                "-std=c11",
+                "-O0",
+                "-ferror-limit=0",
+                "-pthread",
+                "-lm",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_alias_paths",
+                "/tmp/bend2039g2-c-matrix/c_target_alias_paths.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 835,
+              "peakRssBytes": 137035776,
+              "peakFootprintBytes": 92537552,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_alias_paths.run.gate.json",
+              "sha256": "b8ce847eba581895570590dc5f701f7c0736cfdce89651b1dff843d0d4633740",
+              "command": [
+                "/tmp/bend2039g2-c-matrix/c_target_alias_paths"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 15,
+              "peakRssBytes": 180224,
+              "peakFootprintBytes": 311440,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_branch_arms.bend",
+          "sourceSha256": "113f0729f92d7b0275f4d5941d7ae6cc21d1c1968b4e4abcffdb7534587a8719",
+          "expected": "hi",
+          "observed": "hi",
+          "artifacts": {
+            "/tmp/bend2039g2-c-matrix/c_target_branch_arms.c": {
+              "bytes": 1155557,
+              "sha256": "9ccbc66c6d2abbe0f556b52551f3de7a6cfc43ee29191f29dcb4c5ce89239fbc"
+            },
+            "/tmp/bend2039g2-c-matrix/c_target_branch_arms": {
+              "bytes": 972488,
+              "sha256": "f37f6a5ac698cb58f8d6ecb11aa98a356d5ef290c2596fc43a6ff060a8aec717"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_branch_arms.emit.gate.json",
+              "sha256": "69252cd663596d76a63cf535c458a7ae4deb95ee2e902570149dd3c1581569f2",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_branch_arms.bend",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_branch_arms.c",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 19221,
+              "peakRssBytes": 1386938368,
+              "peakFootprintBytes": 1425718040,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "clang",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_branch_arms.clang.gate.json",
+              "sha256": "497b72f18b606d6bfc2b55d8d56da43cea61a1dd5b84facb975f9811234036b5",
+              "command": [
+                "clang",
+                "-std=c11",
+                "-O0",
+                "-ferror-limit=0",
+                "-pthread",
+                "-lm",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_branch_arms",
+                "/tmp/bend2039g2-c-matrix/c_target_branch_arms.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 965,
+              "peakRssBytes": 135921664,
+              "peakFootprintBytes": 91423440,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_branch_arms.run.gate.json",
+              "sha256": "bff7dff8dcd4ced65486753488625638c5d9dd65a5a2a2e477c00cb526a9b028",
+              "command": [
+                "/tmp/bend2039g2-c-matrix/c_target_branch_arms"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 15,
+              "peakRssBytes": 180224,
+              "peakFootprintBytes": 311440,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_region_leave_repeat.bend",
+          "sourceSha256": "e0ff9c485e11bddd85e045bf1a7ccdc6be911d924a7950be2b552d71bd092fc1",
+          "expected": "7\n6",
+          "observed": "7\n6",
+          "artifacts": {
+            "/tmp/bend2039g2-c-matrix/c_target_region_leave_repeat.c": {
+              "bytes": 1157162,
+              "sha256": "3124356ec2b709bc10e578e57d6e346bd9f2be80113466c0f2f7b3b6691317ec"
+            },
+            "/tmp/bend2039g2-c-matrix/c_target_region_leave_repeat": {
+              "bytes": 972576,
+              "sha256": "d4e46ab9c2564a7b75330fb685e7787cbbae889e3a88a83c7aedd885899cb4cf"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_region_leave_repeat.emit.gate.json",
+              "sha256": "ae8ad9093bed971ac91ba0bcdf2b82768b042888d386b823a4a0b3a950283f09",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_region_leave_repeat.bend",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_region_leave_repeat.c",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 20828,
+              "peakRssBytes": 1832861696,
+              "peakFootprintBytes": 1899665128,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "clang",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_region_leave_repeat.clang.gate.json",
+              "sha256": "7555f2278a1590ae2d8342eb868595d980efdc3e53e0cda09a1aec0f4d070ac1",
+              "command": [
+                "clang",
+                "-std=c11",
+                "-O0",
+                "-ferror-limit=0",
+                "-pthread",
+                "-lm",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_region_leave_repeat",
+                "/tmp/bend2039g2-c-matrix/c_target_region_leave_repeat.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 966,
+              "peakRssBytes": 134922240,
+              "peakFootprintBytes": 92259000,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_region_leave_repeat.run.gate.json",
+              "sha256": "6be0c4a0680d1d47e217bdd3f6102fd975ec364fd27e3db4a0b9766f15af2540",
+              "command": [
+                "/tmp/bend2039g2-c-matrix/c_target_region_leave_repeat"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 15,
+              "peakRssBytes": 147456,
+              "peakFootprintBytes": 311440,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_bool_fields.bend",
+          "sourceSha256": "262d7aeaf81288c1d6a5c031b89c607ea509a0e92d19c3789922f78d23471de0",
+          "expected": "True\nFalse\n1",
+          "observed": "True\nFalse\n1",
+          "artifacts": {
+            "/tmp/bend2039g2-c-matrix/c_target_bool_fields.c": {
+              "bytes": 1166386,
+              "sha256": "105475f304530ead61db300190196804c3f21b5f4802637ea69df60c788418e5"
+            },
+            "/tmp/bend2039g2-c-matrix/c_target_bool_fields": {
+              "bytes": 972792,
+              "sha256": "ef2da4969b8e653f889df12c87ad1af76cb1af6d0db70166a65b9dafef1b6583"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_bool_fields.emit.gate.json",
+              "sha256": "66edb71015129223a56e4cc92333c00743de08241d5e7a1462bc2b19d2f1c272",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_bool_fields.bend",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_bool_fields.c",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 19608,
+              "peakRssBytes": 1753251840,
+              "peakFootprintBytes": 1812445368,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "clang",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_bool_fields.clang.gate.json",
+              "sha256": "c689918d551002e696936971e02f84bfb255f1911481d75bfe00bb6c5a741d3f",
+              "command": [
+                "clang",
+                "-std=c11",
+                "-O0",
+                "-ferror-limit=0",
+                "-pthread",
+                "-lm",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_bool_fields",
+                "/tmp/bend2039g2-c-matrix/c_target_bool_fields.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 1402,
+              "peakRssBytes": 138526720,
+              "peakFootprintBytes": 93897424,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_bool_fields.run.gate.json",
+              "sha256": "bc24083f9a93e06e67382235e1caf503ed4757fb9762af2216778030d1307d7c",
+              "command": [
+                "/tmp/bend2039g2-c-matrix/c_target_bool_fields"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 15,
+              "peakRssBytes": 1032192,
+              "peakFootprintBytes": 803008,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_region_tail_capture.bend",
+          "sourceSha256": "5dbbb2fdf2821a6c4cd66bb9061608195f9ac6fbbc7387bad1813fdf81c9a1e4",
+          "expected": "11\n12",
+          "observed": "11\n12",
+          "artifacts": {
+            "/tmp/bend2039g2-c-matrix/c_target_region_tail_capture.c": {
+              "bytes": 1156172,
+              "sha256": "62ffc166b896d27ad91a7bc65e38e97be54a49cbaeb9ddec40b35a4d175c9687"
+            },
+            "/tmp/bend2039g2-c-matrix/c_target_region_tail_capture": {
+              "bytes": 972624,
+              "sha256": "01aebb8a8a328015b76ef3ae92bdbfe37f39b2cbc1adc657e1734ed6eb992127"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_region_tail_capture.emit.gate.json",
+              "sha256": "12ffd51d057118f1c773ec66a409cdbb51abcfc72c0ab7145a9f95b1606444ee",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_region_tail_capture.bend",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_region_tail_capture.c",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 20723,
+              "peakRssBytes": 1937620992,
+              "peakFootprintBytes": 2007987816,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "clang",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_region_tail_capture.clang.gate.json",
+              "sha256": "321c2d35305473bf6bd211a6726dd927d87cc856391d3e29d24068dc78d25050",
+              "command": [
+                "clang",
+                "-std=c11",
+                "-O0",
+                "-ferror-limit=0",
+                "-pthread",
+                "-lm",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_region_tail_capture",
+                "/tmp/bend2039g2-c-matrix/c_target_region_tail_capture.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 1473,
+              "peakRssBytes": 136527872,
+              "peakFootprintBytes": 91882216,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_region_tail_capture.run.gate.json",
+              "sha256": "a0137c20ea5ab9aae8b5ed113e5ac7533125d18c90dbab7b13475a48f929f3a1",
+              "command": [
+                "/tmp/bend2039g2-c-matrix/c_target_region_tail_capture"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 15,
+              "peakRssBytes": 147456,
+              "peakFootprintBytes": 311440,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_bool_xor.bend",
+          "sourceSha256": "aab827abf7a9213392fdf3bda0e61d0170774d93e5a204b37c92115749c00e79",
+          "expected": "False\nTrue\nTrue\nFalse",
+          "observed": "False\nTrue\nTrue\nFalse",
+          "artifacts": {
+            "/tmp/bend2039g2-c-matrix/c_target_bool_xor.c": {
+              "bytes": 1156493,
+              "sha256": "d5e9846b796df33cc832222dabdb6100d9d8016202d4ce2a3580cc297f998461"
+            },
+            "/tmp/bend2039g2-c-matrix/c_target_bool_xor": {
+              "bytes": 972560,
+              "sha256": "1398fc5af730c2049f984e100e123ba61e64a0aedf372a617040e0281c142868"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_bool_xor.emit.gate.json",
+              "sha256": "738cf0c0b0db51faa52c23ed3533a10a9fe5a080a6c76914f20bdd50b2f781ba",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_bool_xor.bend",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_bool_xor.c",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 20017,
+              "peakRssBytes": 1750482944,
+              "peakFootprintBytes": 1810347424,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "clang",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_bool_xor.clang.gate.json",
+              "sha256": "ceb1fa38c5cbca4370155481c415f4a0ae4532deea5cd974408fb7a7c569d033",
+              "command": [
+                "clang",
+                "-std=c11",
+                "-O0",
+                "-ferror-limit=0",
+                "-pthread",
+                "-lm",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_bool_xor",
+                "/tmp/bend2039g2-c-matrix/c_target_bool_xor.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 1258,
+              "peakRssBytes": 138510336,
+              "peakFootprintBytes": 93979344,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_bool_xor.run.gate.json",
+              "sha256": "154fcdfb242e91fcb7d9a83605397256a8f9c020e52b45c9b6ddbfbea787a7b6",
+              "command": [
+                "/tmp/bend2039g2-c-matrix/c_target_bool_xor"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 15,
+              "peakRssBytes": 131072,
+              "peakFootprintBytes": 311440,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_show_data.bend",
+          "sourceSha256": "3e48b7d81a4d18933b65e0a6aa5d94eeb6af708f76c69552700fd5382b0806ae",
+          "expected": "[1, 2]",
+          "observed": "[1, 2]",
+          "artifacts": {
+            "/tmp/bend2039g2-c-matrix/c_target_show_data.c": {
+              "bytes": 1150594,
+              "sha256": "fcf6e0fa94301c2f834859a5bfc271136ba7a1cb87e22cbd8f90ac59deebf876"
+            },
+            "/tmp/bend2039g2-c-matrix/c_target_show_data": {
+              "bytes": 972528,
+              "sha256": "954916dde421d1d30c52269fcfb24e7d4baf0170887acc45a659164352ebfaa6"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_show_data.emit.gate.json",
+              "sha256": "e26b64c20360936a2939710274512b9249b8510ea4f153f28bd55e7aa558ce32",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_show_data.bend",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_show_data.c",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 19600,
+              "peakRssBytes": 1503068160,
+              "peakFootprintBytes": 1548231168,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "clang",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_show_data.clang.gate.json",
+              "sha256": "e6915ead99b2614d6a23c21bc0e4f68425a86417047fff628461b6e0ce761a0a",
+              "command": [
+                "clang",
+                "-std=c11",
+                "-O0",
+                "-ferror-limit=0",
+                "-pthread",
+                "-lm",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_show_data",
+                "/tmp/bend2039g2-c-matrix/c_target_show_data.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 1259,
+              "peakRssBytes": 135905280,
+              "peakFootprintBytes": 91210448,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_show_data.run.gate.json",
+              "sha256": "bd25927de4a31b92c30330b9543f0fbd69828771fd21010b529194e4f0f2bd78",
+              "command": [
+                "/tmp/bend2039g2-c-matrix/c_target_show_data"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 17,
+              "peakRssBytes": 212992,
+              "peakFootprintBytes": 311440,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_user_ctor_show.bend",
+          "sourceSha256": "71e91236661d20acd6086a96310bf9f7e0d74b0daf22c2deb03a329681839786",
+          "expected": "c_target_q_ctors.T.Tuple{c_target_q_ctors.T.Con{1, c_target_q_ctors.T.Nil{}}, 2}",
+          "observed": "c_target_q_ctors.T.Tuple{c_target_q_ctors.T.Con{1, c_target_q_ctors.T.Nil{}}, 2}",
+          "artifacts": {
+            "/tmp/bend2039g2-c-matrix/c_target_user_ctor_show.c": {
+              "bytes": 1150757,
+              "sha256": "8efa22ccb8c23116346c8ad732fd5715356605449a25760326b3950ff7d12600"
+            },
+            "/tmp/bend2039g2-c-matrix/c_target_user_ctor_show": {
+              "bytes": 972536,
+              "sha256": "8a1df43520f93528aa07de34fb962df0d39be299dda17a345229ea8c2104f790"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_user_ctor_show.emit.gate.json",
+              "sha256": "fdd366802195d0367b1d95ad42cdc5e6b779874d11d23a44d8c841eb43694c77",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_user_ctor_show.bend",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_user_ctor_show.c",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 20439,
+              "peakRssBytes": 1932689408,
+              "peakFootprintBytes": 2004547512,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "clang",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_user_ctor_show.clang.gate.json",
+              "sha256": "0af622c35efb24666111f5d4ad5915e2e8fd1596db4379febf283c930750327e",
+              "command": [
+                "clang",
+                "-std=c11",
+                "-O0",
+                "-ferror-limit=0",
+                "-pthread",
+                "-lm",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_user_ctor_show",
+                "/tmp/bend2039g2-c-matrix/c_target_user_ctor_show.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 1642,
+              "peakRssBytes": 136839168,
+              "peakFootprintBytes": 92357328,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_user_ctor_show.run.gate.json",
+              "sha256": "5a81fc76edac9244ef10aba76930b7c935352d9898c2e65e4060f99d4a5cda69",
+              "command": [
+                "/tmp/bend2039g2-c-matrix/c_target_user_ctor_show"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 14,
+              "peakRssBytes": 720896,
+              "peakFootprintBytes": 475400,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_wide_node.bend",
+          "sourceSha256": "02b8bead65c5587c96bb9aa324010979233efd8720a50cba1668c4dbccbd366d",
+          "expected": "13\n11\n0",
+          "observed": "13\n11\n0",
+          "artifacts": {
+            "/tmp/bend2039g2-c-matrix/c_target_wide_node.c": {
+              "bytes": 1214183,
+              "sha256": "0786d9eef8172dbadb28b7244c188d6e22977d572939fdac95816506e96c1310"
+            },
+            "/tmp/bend2039g2-c-matrix/c_target_wide_node": {
+              "bytes": 1039360,
+              "sha256": "5ba4eef78fdd43cf8f43fef661bab91bcb4f9c3a61b06f141d42b25c5fdd160e"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_wide_node.emit.gate.json",
+              "sha256": "da1fe1afba38c28dc4e5a071d26e94e1f0f5325e6dfef03cdcea02b01646d94d",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_wide_node.bend",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_wide_node.c",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 23376,
+              "peakRssBytes": 1408909312,
+              "peakFootprintBytes": 1519130712,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "clang",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_wide_node.clang.gate.json",
+              "sha256": "06e42578d26a2f9136860be5c291a97e2efd075cace2fc6970d3c05c5d1e915b",
+              "command": [
+                "clang",
+                "-std=c11",
+                "-O0",
+                "-ferror-limit=0",
+                "-pthread",
+                "-lm",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/c_target_wide_node",
+                "/tmp/bend2039g2-c-matrix/c_target_wide_node.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 1696,
+              "peakRssBytes": 142213120,
+              "peakFootprintBytes": 97747664,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-c-matrix/c_target_wide_node.run.gate.json",
+              "sha256": "f5c54b5f82dec243621b9d09dfaf7aead817581ae997028807e6dcbb2093191d",
+              "command": [
+                "/tmp/bend2039g2-c-matrix/c_target_wide_node"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 16,
+              "peakRssBytes": 32768,
+              "peakFootprintBytes": 98376,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/tests/io/args.bend",
+          "sourceSha256": "f70ac42f11ae7c71e700bfe9fa47ddfcf24ca193797f84acb554583e2c0890d3",
+          "expected": "True 0",
+          "observed": "True 0",
+          "artifacts": {
+            "/tmp/bend2039g2-c-matrix/args.c": {
+              "bytes": 1156295,
+              "sha256": "23570bc3a295b01cb8d271d9fb123175aa05d5eb87ecd4fa6afaa0b4d5beee1f"
+            },
+            "/tmp/bend2039g2-c-matrix/args": {
+              "bytes": 972504,
+              "sha256": "7daed78a7dec118513bb2734514e822de2f2843f96abfde33e3bf4c130ede8bf"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-c-matrix/args.emit.gate.json",
+              "sha256": "ec60fa156035755a862adad89d6f428e3baa763318daf4cd6ab23b1dadca393d",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/tests/io/args.bend",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/args.c",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 18907,
+              "peakRssBytes": 1820606464,
+              "peakFootprintBytes": 1885950136,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "clang",
+              "path": "/tmp/bend2039g2-c-matrix/args.clang.gate.json",
+              "sha256": "c9d1350af239134813cacb366098ce20e74a785a68690bf337c8c40bcf1206d7",
+              "command": [
+                "clang",
+                "-std=c11",
+                "-O0",
+                "-ferror-limit=0",
+                "-pthread",
+                "-lm",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/args",
+                "/tmp/bend2039g2-c-matrix/args.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 1601,
+              "peakRssBytes": 137314304,
+              "peakFootprintBytes": 91603688,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-c-matrix/args.run.gate.json",
+              "sha256": "6adc9da3f1f7fce8b286b3b394ee87226a4e2425a9eb918f60f2f09fce8e55d5",
+              "command": [
+                "/tmp/bend2039g2-c-matrix/args"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 15,
+              "peakRssBytes": 163840,
+              "peakFootprintBytes": 311440,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/tests/io/args_bytes.bend",
+          "sourceSha256": "389afbbea175abad162076e133ef4d1e152e86c610bb3a1a68e4b970136c52cd",
+          "expected": "True 0",
+          "observed": "True 0",
+          "artifacts": {
+            "/tmp/bend2039g2-c-matrix/args_bytes.c": {
+              "bytes": 1160757,
+              "sha256": "65cc90b3015e2803a6b523842cf313d78c320703552635f11e7d897ec481b4cc"
+            },
+            "/tmp/bend2039g2-c-matrix/args_bytes": {
+              "bytes": 972680,
+              "sha256": "63d8a85a986aa5a03dea8e0d1aaafb22a8b44f8ccf8f0806631ead17c2538de8"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-c-matrix/args_bytes.emit.gate.json",
+              "sha256": "a4af05ea5de24c87ba5c5c11dd423cda0913eda75aae152fb0c49fb3d95e23c1",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/tests/io/args_bytes.bend",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/args_bytes.c",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 19532,
+              "peakRssBytes": 1828126720,
+              "peakFootprintBytes": 1894519808,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "clang",
+              "path": "/tmp/bend2039g2-c-matrix/args_bytes.clang.gate.json",
+              "sha256": "c0ec6e5dcfe5e709758cb71c326e43cb43fd2fa3cb6cd79f0376bece98d25f79",
+              "command": [
+                "clang",
+                "-std=c11",
+                "-O0",
+                "-ferror-limit=0",
+                "-pthread",
+                "-lm",
+                "-o",
+                "/tmp/bend2039g2-c-matrix/args_bytes",
+                "/tmp/bend2039g2-c-matrix/args_bytes.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 1027,
+              "peakRssBytes": 137363456,
+              "peakFootprintBytes": 92963536,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-c-matrix/args_bytes.run.gate.json",
+              "sha256": "60ae63022b30070c6f5ff129758151303d387b68618298c50fc0b2479b309112",
+              "command": [
+                "/tmp/bend2039g2-c-matrix/args_bytes"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 15,
+              "peakRssBytes": 147456,
+              "peakFootprintBytes": 311440,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "target": "js",
+      "status": "PASS",
+      "fixtures": 32,
+      "stages": 64,
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/c_target_fixtures_run.ts",
+        "--driver=/tmp/bend2039g2-driver",
+        "--node=/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--target=js",
+        "--keep",
+        "--logs=/tmp/bend2039g2-js-matrix"
+      ],
+      "matrixPins": {
+        "mode": "acceptance-matrix",
+        "target": "js",
+        "node": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "nodeVersion": "v23.11.0",
+        "v8": "12.9.202.28-node.14|--max-old-space-size=3072,-e,process.stdout.write(process.versions.v8 + \"|\" + process.execArgv.join(\",\"))",
+        "driver": "/tmp/bend2039g2-driver",
+        "guardianTs": "/private/tmp/bend2039-upgrade/evals/heavy_gate.ts",
+        "guardianTsSha256": "204f3529704435455d20a9d5a126a8e9c62e002b6fed9044c8319da8a3c26ff2",
+        "guardianNativeC": "/private/tmp/bend2039-upgrade/evals/heavy_gate_native.c",
+        "guardianNativeCSha256": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b",
+        "cwd": "/private/tmp/bend2039-upgrade",
+        "base": "/private/tmp/bend2039-upgrade/bend2/base.bend",
+        "baseSha256": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+        "runtime": "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c",
+        "runtimeSha256": "135c288787a8e84afb294e6698d2cab67d3389d15661586a35e3186538c5540f",
+        "logs": "/tmp/bend2039g2-js-matrix",
+        "gate": {
+          "memoryMiB": 8192,
+          "rssMiB": 8192,
+          "pollMs": 10,
+          "timeoutMs": 600000
+        },
+        "fixtures": 32
+      },
+      "sumGuardElapsedMs": 197361,
+      "peakRssBytes": 1307361280,
+      "peakFootprintBytes": 1343561944,
+      "rows": [
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_wide_record.bend",
+          "sourceSha256": "88cca90b9c2ee71d14d73bf704c02f99866e70203f3f5b026522832f7f478c7c",
+          "expected": "133",
+          "observed": "133",
+          "artifacts": {
+            "/tmp/bend2039g2-js-matrix/c_target_wide_record.js": {
+              "bytes": 359479,
+              "sha256": "1146e79e46f0dc1d1920d64083e404aac3bf13ffae968e3c3ad3b93e31fcdcda"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_wide_record.emit.gate.json",
+              "sha256": "f9f0f92cbad36f83c7518c4b286df8938dd1820726c84b88b6c8823d9ad3e434",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_wide_record.bend",
+                "-o",
+                "/tmp/bend2039g2-js-matrix/c_target_wide_record.js",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 6550,
+              "peakRssBytes": 1044905984,
+              "peakFootprintBytes": 1065239440,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_wide_record.run.gate.json",
+              "sha256": "265aeb8fdfb227df0d99dd1019ce15c0107c981f8b357da5bfd293d1826c99f7",
+              "command": [
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--max-old-space-size=3072",
+                "/tmp/bend2039g2-js-matrix/c_target_wide_record.js"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 57,
+              "peakRssBytes": 47235072,
+              "peakFootprintBytes": 17565376,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_nested_adt.bend",
+          "sourceSha256": "704014f43ec2fb031640e41fad7a0960ca189a57ddcfaab4c198ef00a20be6cc",
+          "expected": "15",
+          "observed": "15",
+          "artifacts": {
+            "/tmp/bend2039g2-js-matrix/c_target_nested_adt.js": {
+              "bytes": 359999,
+              "sha256": "abf3658cf8a80640a99ae1ce554f8325a92a3f4a9853b1a406d4dddd2432f95a"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_nested_adt.emit.gate.json",
+              "sha256": "e0aef69d72129a5aa27c3283c1ac3f29f563c9038dc90508a881891a0c85bedc",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_nested_adt.bend",
+                "-o",
+                "/tmp/bend2039g2-js-matrix/c_target_nested_adt.js",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 5871,
+              "peakRssBytes": 965263360,
+              "peakFootprintBytes": 979920104,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_nested_adt.run.gate.json",
+              "sha256": "67ff6eaed6f1f7f9c56f8cd45a386d522d7686860fe03f36959bebe3241fb83d",
+              "command": [
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--max-old-space-size=3072",
+                "/tmp/bend2039g2-js-matrix/c_target_nested_adt.js"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 42,
+              "peakRssBytes": 38797312,
+              "peakFootprintBytes": 11093528,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_array_u32.bend",
+          "sourceSha256": "9e5752bf27faa913b0473c78d10141e9e8942c8bc56ba22a337265ab29fff2fa",
+          "expected": "15",
+          "observed": "15",
+          "artifacts": {
+            "/tmp/bend2039g2-js-matrix/c_target_array_u32.js": {
+              "bytes": 359760,
+              "sha256": "0d7c017a766c7c36d9c71cf5a749f8c48465bd612855a4775aa701551c529ae7"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_array_u32.emit.gate.json",
+              "sha256": "e960dc71582a2308a67ea0c8c7e19b0b44a515528ed1583f7c4f63f61f5e4f56",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_array_u32.bend",
+                "-o",
+                "/tmp/bend2039g2-js-matrix/c_target_array_u32.js",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 6575,
+              "peakRssBytes": 1048264704,
+              "peakFootprintBytes": 1068057056,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_array_u32.run.gate.json",
+              "sha256": "56bd3db8e12171eaea336db0e3aaffeffb119b5367d06ecd4baf9a61aa55ff77",
+              "command": [
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--max-old-space-size=3072",
+                "/tmp/bend2039g2-js-matrix/c_target_array_u32.js"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 52,
+              "peakRssBytes": 43171840,
+              "peakFootprintBytes": 17647248,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_array_wide.bend",
+          "sourceSha256": "fd151ba4438b94e76b9eaaa6e77a5c1bfe469726e90a92787f1a33458021cde1",
+          "expected": "16",
+          "observed": "16",
+          "artifacts": {
+            "/tmp/bend2039g2-js-matrix/c_target_array_wide.js": {
+              "bytes": 360512,
+              "sha256": "35ab1478ccd30351a74ae536c0e3ad6d405c0bd0ef72a9b74f8c4fca49fb36a0"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_array_wide.emit.gate.json",
+              "sha256": "7c7cfc362623c8d17b9eead79c1f5acd7221a781d156b0e5b6a980e507b02031",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_array_wide.bend",
+                "-o",
+                "/tmp/bend2039g2-js-matrix/c_target_array_wide.js",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 6294,
+              "peakRssBytes": 1044414464,
+              "peakFootprintBytes": 1064059840,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_array_wide.run.gate.json",
+              "sha256": "10078705cf630dbb503cf6e0fb71da5048589216282c576a41a6a87adbed3778",
+              "command": [
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--max-old-space-size=3072",
+                "/tmp/bend2039g2-js-matrix/c_target_array_wide.js"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 54,
+              "peakRssBytes": 43073536,
+              "peakFootprintBytes": 17450592,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_multiarm.bend",
+          "sourceSha256": "19534b50a377c4142b352e2c1072a9c586f70585b65dc10414eb7e442842f2ac",
+          "expected": "13",
+          "observed": "13",
+          "artifacts": {
+            "/tmp/bend2039g2-js-matrix/c_target_multiarm.js": {
+              "bytes": 358947,
+              "sha256": "61626af340daa2bcc2d8aa56f7277ea448755fa79db4b11cf7c9d3493e64f8e1"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_multiarm.emit.gate.json",
+              "sha256": "8d4b78122f0a5f33eae7e25c9427d30a9670b30a327dfa1fcc9224a5bea38d69",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_multiarm.bend",
+                "-o",
+                "/tmp/bend2039g2-js-matrix/c_target_multiarm.js",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 5104,
+              "peakRssBytes": 1053917184,
+              "peakFootprintBytes": 1074349520,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_multiarm.run.gate.json",
+              "sha256": "e8478d9e584d3917f3a83730004a455f98b568bc57a85958bf0063e669888ae9",
+              "command": [
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--max-old-space-size=3072",
+                "/tmp/bend2039g2-js-matrix/c_target_multiarm.js"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 42,
+              "peakRssBytes": 37306368,
+              "peakFootprintBytes": 10798568,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_char_head.bend",
+          "sourceSha256": "cc5811d968465d9756d579a854e68a649d08b521789c38afb7ebf0ec116422eb",
+          "expected": "955\n955",
+          "observed": "955\n955",
+          "artifacts": {
+            "/tmp/bend2039g2-js-matrix/c_target_char_head.js": {
+              "bytes": 359431,
+              "sha256": "4d907a93123eab52f738fe0b7ecb9294182851a118d58af46d3432eb077c7068"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_char_head.emit.gate.json",
+              "sha256": "2e08d82d2a84784b312643e67615e3265ba623bc41e405696ba5606e660f8f78",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_char_head.bend",
+                "-o",
+                "/tmp/bend2039g2-js-matrix/c_target_char_head.js",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 5678,
+              "peakRssBytes": 1053523968,
+              "peakFootprintBytes": 1074546200,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_char_head.run.gate.json",
+              "sha256": "3be7d5f6e56c8f0bf79aa755517a5f4c4a982b6cc53e6ad74c66c0ac2e5a81a1",
+              "command": [
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--max-old-space-size=3072",
+                "/tmp/bend2039g2-js-matrix/c_target_char_head.js"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 54,
+              "peakRssBytes": 47726592,
+              "peakFootprintBytes": 17958568,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_char_to_list.bend",
+          "sourceSha256": "69788352c9b92708c9166d7e78cecd2e1e3ad33adf013eea5d8f2f3cff4262aa",
+          "expected": "955\n120",
+          "observed": "955\n120",
+          "artifacts": {
+            "/tmp/bend2039g2-js-matrix/c_target_char_to_list.js": {
+              "bytes": 358520,
+              "sha256": "f8f0f069e47793555916ad30779fbdffd1268cb47ee7600a2e4a40b4c865e8e2"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_char_to_list.emit.gate.json",
+              "sha256": "37e54dca4cc68e4e74858540ae971f083346c4303fadd3ee5133bdb055b46a2e",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_char_to_list.bend",
+                "-o",
+                "/tmp/bend2039g2-js-matrix/c_target_char_to_list.js",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 5846,
+              "peakRssBytes": 1052917760,
+              "peakFootprintBytes": 1073775840,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_char_to_list.run.gate.json",
+              "sha256": "f58cbbf930b554037188c9c05c4484f463d2956a0807f58442e6c47bd4e5f744",
+              "command": [
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--max-old-space-size=3072",
+                "/tmp/bend2039g2-js-matrix/c_target_char_to_list.js"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 52,
+              "peakRssBytes": 43253760,
+              "peakFootprintBytes": 17942160,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_string_from_list.bend",
+          "sourceSha256": "2fdc63032bff8c9187ad0ab3533f44c0cb9dedfd9f7113e7b4f4f84e94d50d65",
+          "expected": "λx\n955\n955\n120",
+          "observed": "λx\n955\n955\n120",
+          "artifacts": {
+            "/tmp/bend2039g2-js-matrix/c_target_string_from_list.js": {
+              "bytes": 361569,
+              "sha256": "a7732f02404d5cdfff341b7975461febe1ac838da2228d5c1a60e79f643ca192"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_string_from_list.emit.gate.json",
+              "sha256": "6082f3fd41ac0f80b38aab8b8b4ae7c11936318ec4dc141b8d897daf91f0ac55",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_string_from_list.bend",
+                "-o",
+                "/tmp/bend2039g2-js-matrix/c_target_string_from_list.js",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 6307,
+              "peakRssBytes": 970113024,
+              "peakFootprintBytes": 984655368,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_string_from_list.run.gate.json",
+              "sha256": "1a2c8767b245faf8861b43c06c1c48e5fa8643c3bda4eb0c3df0e2794a788e9b",
+              "command": [
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--max-old-space-size=3072",
+                "/tmp/bend2039g2-js-matrix/c_target_string_from_list.js"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 53,
+              "peakRssBytes": 43139072,
+              "peakFootprintBytes": 13682296,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_array_nat.bend",
+          "sourceSha256": "1f5d1ebc34537453b7733daff35973d09fb919ccf7af18c98fe948858d8f1462",
+          "expected": "7",
+          "observed": "7",
+          "artifacts": {
+            "/tmp/bend2039g2-js-matrix/c_target_array_nat.js": {
+              "bytes": 357540,
+              "sha256": "24fef3a3454564014f7c6073c396d3d5d1bdb9d7c2dabaec36c03294c6dcc16d"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_array_nat.emit.gate.json",
+              "sha256": "f64441a2d0a7852787667bfefada1a2bd46828bd1a0558fa4597b77f9c1f6bd3",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_array_nat.bend",
+                "-o",
+                "/tmp/bend2039g2-js-matrix/c_target_array_nat.js",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 5776,
+              "peakRssBytes": 1043283968,
+              "peakFootprintBytes": 1063223824,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_array_nat.run.gate.json",
+              "sha256": "d0cf8fa811c6a56ee5f6416edaaa8ab7db60291cf8d5954173aef21cb51bfde8",
+              "command": [
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--max-old-space-size=3072",
+                "/tmp/bend2039g2-js-matrix/c_target_array_nat.js"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 53,
+              "peakRssBytes": 42909696,
+              "peakFootprintBytes": 17221264,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_array_nested.bend",
+          "sourceSha256": "3387f428bc07319bb66a07e64e0b7635efc01ea7400ec35ad4bc13eda04ff8dc",
+          "expected": "12",
+          "observed": "12",
+          "artifacts": {
+            "/tmp/bend2039g2-js-matrix/c_target_array_nested.js": {
+              "bytes": 358322,
+              "sha256": "095697bf30df7cda8c9a4dead3c380be6188ec2cbade9e81f98ed807a8976974"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_array_nested.emit.gate.json",
+              "sha256": "83ee184aaed563af7f488d795a8aa98db94cd19ea35edf07f42a7954a996b9a0",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_array_nested.bend",
+                "-o",
+                "/tmp/bend2039g2-js-matrix/c_target_array_nested.js",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 6098,
+              "peakRssBytes": 966492160,
+              "peakFootprintBytes": 981247352,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_array_nested.run.gate.json",
+              "sha256": "66c9d6725b0b870b35b9b9f5987347ae9bcd7405d87721bcfe943e49217f6ad8",
+              "command": [
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--max-old-space-size=3072",
+                "/tmp/bend2039g2-js-matrix/c_target_array_nested.js"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 54,
+              "peakRssBytes": 42876928,
+              "peakFootprintBytes": 17352360,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_drop_fields.bend",
+          "sourceSha256": "cc3f60ad76053e080ff234002c89b488beb5a06c823d4d516466dd90fb9f0bd6",
+          "expected": "5",
+          "observed": "5",
+          "artifacts": {
+            "/tmp/bend2039g2-js-matrix/c_target_drop_fields.js": {
+              "bytes": 357380,
+              "sha256": "85e2a4d88fe4d20cd2338c708641ca81fcd5c151c36d7ef88c62674c471e4c48"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_drop_fields.emit.gate.json",
+              "sha256": "20928b079c3db024ba712017ee8d072a729b9de0896e881332bcbff82e60b01f",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_drop_fields.bend",
+                "-o",
+                "/tmp/bend2039g2-js-matrix/c_target_drop_fields.js",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 5279,
+              "peakRssBytes": 1061502976,
+              "peakFootprintBytes": 1081755424,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_drop_fields.run.gate.json",
+              "sha256": "a1f86e3932841b50edccac7d3da638dbea54a64fa976f8069653cd7d58b9dc04",
+              "command": [
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--max-old-space-size=3072",
+                "/tmp/bend2039g2-js-matrix/c_target_drop_fields.js"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 42,
+              "peakRssBytes": 34635776,
+              "peakFootprintBytes": 10618272,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_utf8_literal.bend",
+          "sourceSha256": "e9873e12d727b50ee32ef7afc1a2971f83fe27e314c2a4653e1f453e776342db",
+          "expected": "λx",
+          "observed": "λx",
+          "artifacts": {
+            "/tmp/bend2039g2-js-matrix/c_target_utf8_literal.js": {
+              "bytes": 356427,
+              "sha256": "fa4ef124d7f209dc3b3e0ba295cf5ec5e40d043bb9d7539f94dfa76a79d885e3"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_utf8_literal.emit.gate.json",
+              "sha256": "574ee9b949c2d4b0e06b74c0fca7eef1c2dc5d4d5db5ad34ab581b19007ff50e",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_utf8_literal.bend",
+                "-o",
+                "/tmp/bend2039g2-js-matrix/c_target_utf8_literal.js",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 5899,
+              "peakRssBytes": 969310208,
+              "peakFootprintBytes": 983787040,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_utf8_literal.run.gate.json",
+              "sha256": "de2c265ca75d2f8d5b4285adab05ea938d44ba48310a4b1b830f6cd65037e3af",
+              "command": [
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--max-old-space-size=3072",
+                "/tmp/bend2039g2-js-matrix/c_target_utf8_literal.js"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 41,
+              "peakRssBytes": 38682624,
+              "peakFootprintBytes": 10913280,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_utf8_astral.bend",
+          "sourceSha256": "8b601c81baf7514313012117ea8dfac6ff4d4f0931725cc525f4f9e7f630a88a",
+          "expected": "𝄞",
+          "observed": "𝄞",
+          "artifacts": {
+            "/tmp/bend2039g2-js-matrix/c_target_utf8_astral.js": {
+              "bytes": 356428,
+              "sha256": "9d78693ee7e3932352e4e5467259569f301a8475d52310467e10240956dd032d"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_utf8_astral.emit.gate.json",
+              "sha256": "9d8263bdd34697ab1b652d5a6feb970f36f41534e691d89c0cc10162906ada9b",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_utf8_astral.bend",
+                "-o",
+                "/tmp/bend2039g2-js-matrix/c_target_utf8_astral.js",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 7320,
+              "peakRssBytes": 1036320768,
+              "peakFootprintBytes": 1056129048,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_utf8_astral.run.gate.json",
+              "sha256": "6703cc634a5a1c63a3f148945d1266a6a34a85e6fc9ac38926a483d611613507",
+              "command": [
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--max-old-space-size=3072",
+                "/tmp/bend2039g2-js-matrix/c_target_utf8_astral.js"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 53,
+              "peakRssBytes": 43024384,
+              "peakFootprintBytes": 17712784,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_trigraph_literal.bend",
+          "sourceSha256": "f036aa1315914c907429f883b010ff5e33b3cd75dab84137c8f1ea11574cc901",
+          "expected": "??=??/??'??(??)??!??<??>??-",
+          "observed": "??=??/??'??(??)??!??<??>??-",
+          "artifacts": {
+            "/tmp/bend2039g2-js-matrix/c_target_trigraph_literal.js": {
+              "bytes": 356451,
+              "sha256": "11e61342b6a704d091b19f9017d3abc1e721a389c90ba477bf1e490a4a375011"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_trigraph_literal.emit.gate.json",
+              "sha256": "250458aeb7695259db8124ac11d106c4e325ab4006d7b3ed934432fd4b2f75d0",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_trigraph_literal.bend",
+                "-o",
+                "/tmp/bend2039g2-js-matrix/c_target_trigraph_literal.js",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 6656,
+              "peakRssBytes": 972734464,
+              "peakFootprintBytes": 987162096,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_trigraph_literal.run.gate.json",
+              "sha256": "a03b410a3227dfee77a5a487e253752062d0849f22728a1d653653e45598820e",
+              "command": [
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--max-old-space-size=3072",
+                "/tmp/bend2039g2-js-matrix/c_target_trigraph_literal.js"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 55,
+              "peakRssBytes": 42139648,
+              "peakFootprintBytes": 17008296,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/tests/reg/phys_storage_paths.bend",
+          "sourceSha256": "b3f1aad4a75d028845f301816982a0d98a9606d239ce4d3c674a91ac5bf5fd85",
+          "expected": "2655042671\n3,9",
+          "observed": "2655042671\n3,9",
+          "artifacts": {
+            "/tmp/bend2039g2-js-matrix/phys_storage_paths.js": {
+              "bytes": 374253,
+              "sha256": "7a5768aa68379f54817ed03da8cd629b5f2ad4f5a0b779e25ff59788b13c28f2"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-js-matrix/phys_storage_paths.emit.gate.json",
+              "sha256": "ce7b09289cb12008c111b22f7b6f748ee942a08a0ddf093bbf29a88d751261c0",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/tests/reg/phys_storage_paths.bend",
+                "-o",
+                "/tmp/bend2039g2-js-matrix/phys_storage_paths.js",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 7524,
+              "peakRssBytes": 949452800,
+              "peakFootprintBytes": 962731128,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-js-matrix/phys_storage_paths.run.gate.json",
+              "sha256": "89b1f67891ee37a048c35e0bc495f3071dd947a238cd491d10de6dd77e036d62",
+              "command": [
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--max-old-space-size=3072",
+                "/tmp/bend2039g2-js-matrix/phys_storage_paths.js"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 74,
+              "peakRssBytes": 46317568,
+              "peakFootprintBytes": 16893584,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/tests/reg/generic_ctor_domains.bend",
+          "sourceSha256": "7d4d7f558c000111e9be72a8685dc45bdaf235afe977ea73e4ecd18757f83f5b",
+          "expected": "15\n21",
+          "observed": "15\n21",
+          "artifacts": {
+            "/tmp/bend2039g2-js-matrix/generic_ctor_domains.js": {
+              "bytes": 362017,
+              "sha256": "87060edca0c9edfa142ccdb537622ef95d8f097c245a0d6e2500da55a4833069"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-js-matrix/generic_ctor_domains.emit.gate.json",
+              "sha256": "22c1fca19ab2e7a50febf874b772cfaf30c201e51e824320dfd2cd773f0a5525",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/tests/reg/generic_ctor_domains.bend",
+                "-o",
+                "/tmp/bend2039g2-js-matrix/generic_ctor_domains.js",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 7632,
+              "peakRssBytes": 934166528,
+              "peakFootprintBytes": 946001696,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-js-matrix/generic_ctor_domains.run.gate.json",
+              "sha256": "6aeb10bb4cdda19800557ac668585c4c52f29790203f3062d0627c4f1d8c02ff",
+              "command": [
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--max-old-space-size=3072",
+                "/tmp/bend2039g2-js-matrix/generic_ctor_domains.js"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 56,
+              "peakRssBytes": 46792704,
+              "peakFootprintBytes": 17188520,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_bool_prims.bend",
+          "sourceSha256": "bc2c9dd125503eaaae6cf233da61400cae28d2ca7da2b09027ae1fe3da408688",
+          "expected": "1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n1\n0\n1\n1\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n0\n1\n0\n0\n1\n1\n0\n1\n1\n0\n1\n0\n1\n0",
+          "observed": "1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n1\n0\n1\n1\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n0\n1\n0\n0\n1\n1\n0\n1\n1\n0\n1\n0\n1\n0",
+          "artifacts": {
+            "/tmp/bend2039g2-js-matrix/c_target_bool_prims.js": {
+              "bytes": 395442,
+              "sha256": "d9202bddc6a331fc99b48bedeffa874dbd37d90acbe612dfdb4ebd9133c9ae8b"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_bool_prims.emit.gate.json",
+              "sha256": "4236a75262810c394ac50613b610a7a3167b37f386f9eda365d3443b90acd459",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_bool_prims.bend",
+                "-o",
+                "/tmp/bend2039g2-js-matrix/c_target_bool_prims.js",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 8595,
+              "peakRssBytes": 1063387136,
+              "peakFootprintBytes": 1084065424,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_bool_prims.run.gate.json",
+              "sha256": "7a10e99a1c990a72f91c322f3aed9b3a49ef451ed0b17d14ef208a01c85bc8b2",
+              "command": [
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--max-old-space-size=3072",
+                "/tmp/bend2039g2-js-matrix/c_target_bool_prims.js"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 53,
+              "peakRssBytes": 47661056,
+              "peakFootprintBytes": 18007696,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_clo_field.bend",
+          "sourceSha256": "7e1e922c18100bf2b4b588859f555012848843525a56785b1f33e13dec197b4f",
+          "expected": "7",
+          "observed": "7",
+          "artifacts": {
+            "/tmp/bend2039g2-js-matrix/c_target_clo_field.js": {
+              "bytes": 358043,
+              "sha256": "3b343b26d9f094b8a0fc042001d8b71efc5f032921ee676f592b4f92ca142d71"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_clo_field.emit.gate.json",
+              "sha256": "87cdb5c912a33ef9daa38cd0c56f09e17369b09e05f5dddbd266d305150631c4",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_clo_field.bend",
+                "-o",
+                "/tmp/bend2039g2-js-matrix/c_target_clo_field.js",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 8740,
+              "peakRssBytes": 978354176,
+              "peakFootprintBytes": 992880256,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_clo_field.run.gate.json",
+              "sha256": "cfd67126e0179ee4327ca9d4d123705878e255cef0dac9dc96fa6d430d9a8eee",
+              "command": [
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--max-old-space-size=3072",
+                "/tmp/bend2039g2-js-matrix/c_target_clo_field.js"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 58,
+              "peakRssBytes": 42795008,
+              "peakFootprintBytes": 17352384,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_repeat_data.bend",
+          "sourceSha256": "b871c3b5242184e47ee9e7c034b2d6f62e31a1159ed6c8e259b6e9b2bd240546",
+          "expected": "8",
+          "observed": "8",
+          "artifacts": {
+            "/tmp/bend2039g2-js-matrix/c_target_repeat_data.js": {
+              "bytes": 357532,
+              "sha256": "7b0921138cccb4bfe449629eabcb0699b61a69d69c1d449882f7875bfa9c08fd"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_repeat_data.emit.gate.json",
+              "sha256": "0d22d1df892afdaa5c959d4f0b9941c68594e7971087a14e510360009fef8ace",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_repeat_data.bend",
+                "-o",
+                "/tmp/bend2039g2-js-matrix/c_target_repeat_data.js",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 6319,
+              "peakRssBytes": 1307361280,
+              "peakFootprintBytes": 1343561944,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_repeat_data.run.gate.json",
+              "sha256": "f3c8e714c53b540c9829bc90a392e9cf894b41d8a76f1ec8a55618e8b404ad88",
+              "command": [
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--max-old-space-size=3072",
+                "/tmp/bend2039g2-js-matrix/c_target_repeat_data.js"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 51,
+              "peakRssBytes": 43106304,
+              "peakFootprintBytes": 17417848,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_disjoint_type_cells.bend",
+          "sourceSha256": "5b6ead1a37e317d4fed3b5060a0527f982045dd336d2ec385690b974fb92a6da",
+          "expected": "5",
+          "observed": "5",
+          "artifacts": {
+            "/tmp/bend2039g2-js-matrix/c_target_disjoint_type_cells.js": {
+              "bytes": 358510,
+              "sha256": "14c44beda0f7b7e97e649bddf48c4cda0eecd5eb1d4684bd62c0fef1c9d8fff7"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_disjoint_type_cells.emit.gate.json",
+              "sha256": "113d9c606c3720338cb5facf1f3888d4b5a528d6fb886ade0e47e608e1afd4c6",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_disjoint_type_cells.bend",
+                "-o",
+                "/tmp/bend2039g2-js-matrix/c_target_disjoint_type_cells.js",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 5745,
+              "peakRssBytes": 954449920,
+              "peakFootprintBytes": 969205040,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_disjoint_type_cells.run.gate.json",
+              "sha256": "b142b853abdb33efb7be0faceae61919928e1feabb5fd650ee589405f273c04d",
+              "command": [
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--max-old-space-size=3072",
+                "/tmp/bend2039g2-js-matrix/c_target_disjoint_type_cells.js"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 43,
+              "peakRssBytes": 37978112,
+              "peakFootprintBytes": 10913280,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_repeat_capture.bend",
+          "sourceSha256": "59dd7417420f4128ce84e65e14276c5c35d6b764d7d25b3d5a1a4f02e2d239fe",
+          "expected": "10",
+          "observed": "10",
+          "artifacts": {
+            "/tmp/bend2039g2-js-matrix/c_target_repeat_capture.js": {
+              "bytes": 357670,
+              "sha256": "40ad0d4a729a2c8f948216a9fb44c9eb55a7c067e02b2483585b5e847d8457f5"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_repeat_capture.emit.gate.json",
+              "sha256": "24087f926d8876af04b45cceb1db84d29bd77ee5253bed67ba73003901665ed6",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_repeat_capture.bend",
+                "-o",
+                "/tmp/bend2039g2-js-matrix/c_target_repeat_capture.js",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 6115,
+              "peakRssBytes": 1048772608,
+              "peakFootprintBytes": 1069040576,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_repeat_capture.run.gate.json",
+              "sha256": "847ca060a53aa309c70723cc009df887d5ebe437e5b42637344a11e613178f78",
+              "command": [
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--max-old-space-size=3072",
+                "/tmp/bend2039g2-js-matrix/c_target_repeat_capture.js"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 40,
+              "peakRssBytes": 34275328,
+              "peakFootprintBytes": 10388920,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_alias_paths.bend",
+          "sourceSha256": "5e5f5dee9376664013f1d7ce055fa45af40c40b9e2fbee02e8755e84abdf932f",
+          "expected": "8",
+          "observed": "8",
+          "artifacts": {
+            "/tmp/bend2039g2-js-matrix/c_target_alias_paths.js": {
+              "bytes": 357504,
+              "sha256": "e1a55983828b7f95c85f91d6560b3d1aa0d503ab645cc7daa01657b0ff4bf030"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_alias_paths.emit.gate.json",
+              "sha256": "04f86f2c428146e2d6df419c98efd72ad3a1b9b15a376588f44a0d4d69510549",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_alias_paths.bend",
+                "-o",
+                "/tmp/bend2039g2-js-matrix/c_target_alias_paths.js",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 4845,
+              "peakRssBytes": 1061519360,
+              "peakFootprintBytes": 1082296120,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_alias_paths.run.gate.json",
+              "sha256": "ba97abc2637080e24fdd3f79f451e3462a830f037bf411d09b5a1ebd82d65cf8",
+              "command": [
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--max-old-space-size=3072",
+                "/tmp/bend2039g2-js-matrix/c_target_alias_paths.js"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 41,
+              "peakRssBytes": 39190528,
+              "peakFootprintBytes": 10896920,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_branch_arms.bend",
+          "sourceSha256": "113f0729f92d7b0275f4d5941d7ae6cc21d1c1968b4e4abcffdb7534587a8719",
+          "expected": "hi",
+          "observed": "hi",
+          "artifacts": {
+            "/tmp/bend2039g2-js-matrix/c_target_branch_arms.js": {
+              "bytes": 357913,
+              "sha256": "17bb30f6ad8145604fb7d13102982a1794062ba340f45aa7ca307726d138e305"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_branch_arms.emit.gate.json",
+              "sha256": "22050ac345bfe08bfa5fc4e7b8b95066a8549ce2ff0052d0fb366652ee9e9391",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_branch_arms.bend",
+                "-o",
+                "/tmp/bend2039g2-js-matrix/c_target_branch_arms.js",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 5648,
+              "peakRssBytes": 1048313856,
+              "peakFootprintBytes": 1068401432,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_branch_arms.run.gate.json",
+              "sha256": "e54467566717287da66b6ad9fa0c3c847d948ee457b2e692600286de71a94dc6",
+              "command": [
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--max-old-space-size=3072",
+                "/tmp/bend2039g2-js-matrix/c_target_branch_arms.js"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 41,
+              "peakRssBytes": 38699008,
+              "peakFootprintBytes": 10978840,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_region_leave_repeat.bend",
+          "sourceSha256": "e0ff9c485e11bddd85e045bf1a7ccdc6be911d924a7950be2b552d71bd092fc1",
+          "expected": "7\n6",
+          "observed": "7\n6",
+          "artifacts": {
+            "/tmp/bend2039g2-js-matrix/c_target_region_leave_repeat.js": {
+              "bytes": 358834,
+              "sha256": "126d1ff93cc87ee899679728203d9562e2796059350855ed27b77a7d7841c4cc"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_region_leave_repeat.emit.gate.json",
+              "sha256": "0213e3ec0dd7e471860c8028940d70569d8678e39101b6ee438ba0fe52c390f1",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_region_leave_repeat.bend",
+                "-o",
+                "/tmp/bend2039g2-js-matrix/c_target_region_leave_repeat.js",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 5530,
+              "peakRssBytes": 1048641536,
+              "peakFootprintBytes": 1068909552,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_region_leave_repeat.run.gate.json",
+              "sha256": "16207f9ac237bf33eff409bd789fe3e12306da5b3e999006f324111dae858b5b",
+              "command": [
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--max-old-space-size=3072",
+                "/tmp/bend2039g2-js-matrix/c_target_region_leave_repeat.js"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 53,
+              "peakRssBytes": 43188224,
+              "peakFootprintBytes": 17516176,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_bool_fields.bend",
+          "sourceSha256": "262d7aeaf81288c1d6a5c031b89c607ea509a0e92d19c3789922f78d23471de0",
+          "expected": "True\nFalse\n1",
+          "observed": "True\nFalse\n1",
+          "artifacts": {
+            "/tmp/bend2039g2-js-matrix/c_target_bool_fields.js": {
+              "bytes": 359885,
+              "sha256": "c601a7ce8f490caa21a9e1ad64709120b6e9095f8d37b83a0cdec5f78ab61fa5"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_bool_fields.emit.gate.json",
+              "sha256": "d9f24e8bb87d168a84a531979ffa960bd536638dd7ca57fd8d2db92048fd4986",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_bool_fields.bend",
+                "-o",
+                "/tmp/bend2039g2-js-matrix/c_target_bool_fields.js",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 5748,
+              "peakRssBytes": 1050066944,
+              "peakFootprintBytes": 1070810696,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_bool_fields.run.gate.json",
+              "sha256": "b30a4ca222fde0f697ecbea3e69317a92d7ea3c440363a3d8f778cc12f3783a5",
+              "command": [
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--max-old-space-size=3072",
+                "/tmp/bend2039g2-js-matrix/c_target_bool_fields.js"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 41,
+              "peakRssBytes": 37175296,
+              "peakFootprintBytes": 10847720,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_region_tail_capture.bend",
+          "sourceSha256": "5dbbb2fdf2821a6c4cd66bb9061608195f9ac6fbbc7387bad1813fdf81c9a1e4",
+          "expected": "11\n12",
+          "observed": "11\n12",
+          "artifacts": {
+            "/tmp/bend2039g2-js-matrix/c_target_region_tail_capture.js": {
+              "bytes": 358796,
+              "sha256": "5bebd7e42051f06074603ab3da325739bbd9627f80ebecb0ae7ee37ef77a908b"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_region_tail_capture.emit.gate.json",
+              "sha256": "a520ef3ae20e7c5ae393f420427b65e006405aae9dc6c03fd905aab9c677faf3",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_region_tail_capture.bend",
+                "-o",
+                "/tmp/bend2039g2-js-matrix/c_target_region_tail_capture.js",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 4976,
+              "peakRssBytes": 1053425664,
+              "peakFootprintBytes": 1073235096,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_region_tail_capture.run.gate.json",
+              "sha256": "260cf39ce9c570f157c073d6acfb5b1bfc97bf32fe4ad54f9183a5d475f1f263",
+              "command": [
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--max-old-space-size=3072",
+                "/tmp/bend2039g2-js-matrix/c_target_region_tail_capture.js"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 53,
+              "peakRssBytes": 43106304,
+              "peakFootprintBytes": 17450664,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_bool_xor.bend",
+          "sourceSha256": "aab827abf7a9213392fdf3bda0e61d0170774d93e5a204b37c92115749c00e79",
+          "expected": "False\nTrue\nTrue\nFalse",
+          "observed": "False\nTrue\nTrue\nFalse",
+          "artifacts": {
+            "/tmp/bend2039g2-js-matrix/c_target_bool_xor.js": {
+              "bytes": 358482,
+              "sha256": "8a434ce93ede9a03dfbb0dd7337f3ff2c6c8f8cff10e9c20b30a390d87a9093d"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_bool_xor.emit.gate.json",
+              "sha256": "8e7290e41d926d8d03f1edb3beb29b74d313e2c46ed467c48bdaa0ea2fbb9655",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_bool_xor.bend",
+                "-o",
+                "/tmp/bend2039g2-js-matrix/c_target_bool_xor.js",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 5408,
+              "peakRssBytes": 970883072,
+              "peakFootprintBytes": 985867928,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_bool_xor.run.gate.json",
+              "sha256": "10f7eb643d3e9755ea2b21946548cead6baafc06af62a46d3476ec88567ed478",
+              "command": [
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--max-old-space-size=3072",
+                "/tmp/bend2039g2-js-matrix/c_target_bool_xor.js"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 41,
+              "peakRssBytes": 38780928,
+              "peakFootprintBytes": 10929688,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_show_data.bend",
+          "sourceSha256": "3e48b7d81a4d18933b65e0a6aa5d94eeb6af708f76c69552700fd5382b0806ae",
+          "expected": "[1, 2]",
+          "observed": "[1, 2]",
+          "artifacts": {
+            "/tmp/bend2039g2-js-matrix/c_target_show_data.js": {
+              "bytes": 356547,
+              "sha256": "9780a2ad4f65f48c719db62bfd438c956b664d22c9c0ba6de4810b42d1293880"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_show_data.emit.gate.json",
+              "sha256": "528cdc145a12802e998b0e0b2e9929a7810f7822b610f6ae7b9b64dbbf088dad",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_show_data.bend",
+                "-o",
+                "/tmp/bend2039g2-js-matrix/c_target_show_data.js",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 5580,
+              "peakRssBytes": 1041006592,
+              "peakFootprintBytes": 1060602024,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_show_data.run.gate.json",
+              "sha256": "3f0fd504d529a6b34f50cc5b24437ebf81be6710426c8a5ff5f185a13af30af9",
+              "command": [
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--max-old-space-size=3072",
+                "/tmp/bend2039g2-js-matrix/c_target_show_data.js"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 51,
+              "peakRssBytes": 42680320,
+              "peakFootprintBytes": 16975504,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_user_ctor_show.bend",
+          "sourceSha256": "71e91236661d20acd6086a96310bf9f7e0d74b0daf22c2deb03a329681839786",
+          "expected": "c_target_q_ctors.T.Tuple{c_target_q_ctors.T.Con{1, c_target_q_ctors.T.Nil{}}, 2}",
+          "observed": "c_target_q_ctors.T.Tuple{c_target_q_ctors.T.Con{1, c_target_q_ctors.T.Nil{}}, 2}",
+          "artifacts": {
+            "/tmp/bend2039g2-js-matrix/c_target_user_ctor_show.js": {
+              "bytes": 357336,
+              "sha256": "53772232795b58ea6baeec0b4c5e3d814c0ee235f507cda4f73aad4ed17e65a3"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_user_ctor_show.emit.gate.json",
+              "sha256": "4f62166acbdcbc7fa72e07edbe50e0f76f7fe848660a540ef55cdbf7b7e13b87",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_user_ctor_show.bend",
+                "-o",
+                "/tmp/bend2039g2-js-matrix/c_target_user_ctor_show.js",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 6056,
+              "peakRssBytes": 979943424,
+              "peakFootprintBytes": 996027688,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_user_ctor_show.run.gate.json",
+              "sha256": "e5f903fc394e62162e85fc054805c49df678346c097f73662df5a7adcff1a59f",
+              "command": [
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--max-old-space-size=3072",
+                "/tmp/bend2039g2-js-matrix/c_target_user_ctor_show.js"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 92,
+              "peakRssBytes": 43515904,
+              "peakFootprintBytes": 14042720,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/evals/c_target_wide_node.bend",
+          "sourceSha256": "02b8bead65c5587c96bb9aa324010979233efd8720a50cba1668c4dbccbd366d",
+          "expected": "13\n11\n0",
+          "observed": "13\n11\n0",
+          "artifacts": {
+            "/tmp/bend2039g2-js-matrix/c_target_wide_node.js": {
+              "bytes": 386324,
+              "sha256": "0a51609c6a7777cf8bfcd020f5c85dd40d8cd122ed03b8e8146792339b02b222"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_wide_node.emit.gate.json",
+              "sha256": "71e48d242212b428a5d5cb05d38efd7bbe0b3f4b3ba0151df796c50db5099b3b",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/evals/c_target_wide_node.bend",
+                "-o",
+                "/tmp/bend2039g2-js-matrix/c_target_wide_node.js",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 5906,
+              "peakRssBytes": 1059028992,
+              "peakFootprintBytes": 1079789488,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-js-matrix/c_target_wide_node.run.gate.json",
+              "sha256": "74cdd020812d36dc81f4b1578fddf0ee728f0cb75365e4ad525f13d2a57e7606",
+              "command": [
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--max-old-space-size=3072",
+                "/tmp/bend2039g2-js-matrix/c_target_wide_node.js"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 53,
+              "peakRssBytes": 51003392,
+              "peakFootprintBytes": 21481872,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/tests/io/args.bend",
+          "sourceSha256": "f70ac42f11ae7c71e700bfe9fa47ddfcf24ca193797f84acb554583e2c0890d3",
+          "expected": "True 0",
+          "observed": "True 0",
+          "artifacts": {
+            "/tmp/bend2039g2-js-matrix/args.js": {
+              "bytes": 358034,
+              "sha256": "8c7f2154712e9cbb4773b1b63a2a9e7e4dcde704ed289fc3f84c7d6f7a26938c"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-js-matrix/args.emit.gate.json",
+              "sha256": "a7f9dd60dd4415df71b1c6e814965c9d90f8488e88bbd79eec38577da508852b",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/tests/io/args.bend",
+                "-o",
+                "/tmp/bend2039g2-js-matrix/args.js",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 4932,
+              "peakRssBytes": 1064009728,
+              "peakFootprintBytes": 1084983120,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-js-matrix/args.run.gate.json",
+              "sha256": "86bae324346477b386ddaf6feb40aac53c0e0464da63945f7c3a4d3ef5867361",
+              "command": [
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--max-old-space-size=3072",
+                "/tmp/bend2039g2-js-matrix/args.js"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 53,
+              "peakRssBytes": 43188224,
+              "peakFootprintBytes": 17548944,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        },
+        {
+          "source": "/private/tmp/bend2039-upgrade/tests/io/args_bytes.bend",
+          "sourceSha256": "389afbbea175abad162076e133ef4d1e152e86c610bb3a1a68e4b970136c52cd",
+          "expected": "True 0",
+          "observed": "True 0",
+          "artifacts": {
+            "/tmp/bend2039g2-js-matrix/args_bytes.js": {
+              "bytes": 359007,
+              "sha256": "9b690c9f80b13b90ffea73c24e3f39733234db8d0ae0d7185d3b805fb5ee689b"
+            }
+          },
+          "stages": [
+            {
+              "stage": "emit",
+              "path": "/tmp/bend2039g2-js-matrix/args_bytes.emit.gate.json",
+              "sha256": "1164a44cec3b26036ae59ea8660d8b81a99936ce53fc4c36827bb104d8ead896",
+              "command": [
+                "/tmp/bend2039g2-driver",
+                "/private/tmp/bend2039-upgrade/tests/io/args_bytes.bend",
+                "-o",
+                "/tmp/bend2039g2-js-matrix/args_bytes.js",
+                "--base",
+                "/private/tmp/bend2039-upgrade/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 5169,
+              "peakRssBytes": 1063714816,
+              "peakFootprintBytes": 1085098288,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            },
+            {
+              "stage": "run",
+              "path": "/tmp/bend2039g2-js-matrix/args_bytes.run.gate.json",
+              "sha256": "3e4af762f9ef0ca5a1a7b97090d62ef8b1dfdf373685ee1dfefcb4829028024f",
+              "command": [
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--max-old-space-size=3072",
+                "/tmp/bend2039g2-js-matrix/args_bytes.js"
+              ],
+              "status": "PASS",
+              "exit": 0,
+              "elapsedMs": 42,
+              "peakRssBytes": 39075840,
+              "peakFootprintBytes": 10929664,
+              "ownedTreeStopped": true,
+              "reportPhase": "complete"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

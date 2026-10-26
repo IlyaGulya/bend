@@ -205,6 +205,16 @@ backend/consumer smokes, not reclassified whole-build or bootstrap passes.
 Proof: `evals/receipts/root2039g1_llvm_split_smoke.json` and
 `evals/receipts/root2039g1_native_foreign_smoke.json`.
 
+The same g2 JS root passes the **full 32-case C and 32-case JS matrices**:
+the original 31 inputs remain, with the existing `generic_ctor_domains`
+regression added. All 160 stages are complete/stopped/exit 0 with exact output.
+The C lane's 96 guarded stages sum to 924,263 ms, max RSS 1,937,620,992 B /
+footprint 2,007,987,816 B; the JS lane's 64 stages sum to 197,361 ms, max RSS
+1,307,361,280 B / footprint 1,343,561,944 B. Each stage retains the original
+8 GiB / 600 s guard; these sums are not one monolithic bootstrap duration.
+This accepts the tested backend/layout behavior, not the rejected whole native
+build or a byte fixedpoint. Proof: `evals/receipts/c_js_matrix2039g2_32.json`.
+
 Latest compiler root: **`db147cba`**, after an authenticated inline-parser
 cutover in `/private/tmp/bend-parser-cutover667`. Fresh native admission checks
 all 11,889 bodies / 12,450 events with 0 exclusions/patches and unchanged
