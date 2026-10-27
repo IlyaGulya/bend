@@ -80,6 +80,29 @@ process.exitCode=await child.exited;
  }finally{await rm(directory,{recursive:true,force:true});}
 },10000);
 
+test('cold helper cache is reusable by guarded descendants with a permissive umask',async()=>{
+ const directory=await mkdtemp(join(tmpdir(),'heavy-gate-umask-'));
+ const script=join(directory,'guarded.ts'),lockPath=join(directory,'gate.lock');
+ try{
+  await writeFile(script,`import {guardHeavyGate} from ${JSON.stringify(gate)};
+process.umask(0o002);
+await guardHeavyGate(import.meta.path,${JSON.stringify({...safe,timeoutMs:15000,lockPath})});
+console.log('guarded fixture completed');
+`);
+  const child=Bun.spawn([process.execPath,script],{
+   env:{...process.env,TMPDIR:directory,HEAVY_GATE_LEASE_TOKEN:undefined,HEAVY_GATE_LEASE_PATH:undefined},
+   stdout:'pipe',stderr:'pipe',
+  });
+  const [stdout,stderr,exit]=await Promise.all([
+   new Response(child.stdout).text(),new Response(child.stderr).text(),child.exited,
+  ]);
+  const record=stderr.trim().split('\n').find(line=>line.startsWith('HEAVY_GATE '));
+  const status=record===undefined?null:JSON.parse(record.slice('HEAVY_GATE '.length)).status;
+  expect({exit,stdout:stdout.trim(),status})
+   .toEqual({exit:0,stdout:'guarded fixture completed',status:'PASS'});
+ }finally{await rm(directory,{recursive:true,force:true});}
+},20000);
+
 test('deadline cancels authenticated detached descendants without resetting the parent allowance and releases the lease',async()=>{
  const directory=await mkdtemp(join(tmpdir(),'heavy-gate-test-')),lockPath=join(directory,'gate.lock');
  const script=join(directory,'deadline.ts');

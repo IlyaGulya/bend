@@ -5,6 +5,11 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- The resource guardian publishes its compiled helper with private permissions
+  before the atomic rename. Guarded descendants now work after a cold build
+  under a group-writable umask; unsafe pre-existing cache entries still fail
+  closed. The complete 14-case guardian suite passes.
+
 - A bounded C-codegen development probe validates the complete frozen root,
   streams phase/pass progress and stops at an explicit pass or codegen-time
   budget. It reuses the compiler observer without full-profile snapshots,

@@ -13,7 +13,7 @@
  */
 import {spawn} from 'node:child_process';
 import {createHash,randomBytes} from 'node:crypto';
-import {mkdir,readFile,rename,rm,lstat,open,writeFile} from 'node:fs/promises';
+import {mkdir,readFile,rename,rm,lstat,open,writeFile,chmod} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {dirname,join,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -122,6 +122,7 @@ async function prepareNativeHelper(timeoutMs:number):Promise<string>{
   const code=await helperExit(process.env.CC??'cc',['-O2','-std=c11','-Wall','-Wextra',source,'-o',temporary],
    Math.min(timeoutMs,helperCompilationTimeoutMs));
   if(code!==0)throw Error(`heavy-gate native helper compilation exited ${code}`);
+  await chmod(temporary,0o700);
   await rename(temporary,executable);
  }finally{await rm(temporary,{force:true});}
  return executable;
