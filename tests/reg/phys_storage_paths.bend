@@ -21,6 +21,13 @@ type Choice is Data:
 type One is Data:
   One{v: U32}
 
+type Note is Data:
+  Solo{v: U32}
+  Duo{a: U32, b: U32}
+
+type Picked is Data:
+  Picked{note: Note, from: Pt, mark: U32}
+
 type Wide is Data:
   Wide{p: U32, q: U32, r: U32, s: U32, t: U32, u: U32, v: U32, w: U32}
 
@@ -119,6 +126,37 @@ def nat_text() -> String:
   a = [3n : Nat*2n]
   cloned_nat(Array.clone(Nat, a))
 
+# An element layout that inlines a nested multi-arm form (Note: a tag word and
+# a two-word arm) and a nested one-arm form (Pt: two words, no tag word). An
+# array set or get converts each nested form in place, so it reads and writes
+# exactly the words c_backend_layout lays out: one tag word for a multi-arm
+# form, none for a one-arm form.
+def read_note(n: Note) -> U32:
+  match n:
+    case Solo{v}: v
+    case Duo{a, b}: U32.add(U32.mul(a, 10), b)
+
+def read_pt(p: Pt) -> U32:
+  match p:
+    case Pt{x, y}: U32.add(x, y)
+
+def picked_note(p: Picked) -> String:
+  match p:
+    case Picked{note, from, mark}:
+      String.append(U32.show(read_note(note)), String.append(",", String.append(U32.show(read_pt(from)), String.append(",", U32.show(mark)))))
+
+def picked_one(r: Array<Picked> & Picked) -> String:
+  (rest, got) = r
+  picked_note(got)
+
+def picked_rest(r: Array<Picked> & Picked) -> String:
+  (rest, got) = r
+  String.append(picked_note(got), String.append(";", picked_one(Array.get(Picked, rest, 0))))
+
+def picked_text() -> String:
+  a = [Picked{Solo{1}, Pt{2, 3}, 4} : Picked*2n]
+  picked_rest(Array.get(Picked, Array.set(Picked, a, 1, Picked{Duo{5, 6}, Pt{7, 8}, 9}), 1))
+
 def main.out() -> U32:
   s = read_seg(seg())
   c = U32.add(read_choice(ChB{7}), U32.add(read_choice(ChC{8}), read_choice(ChA{9})))
@@ -133,7 +171,9 @@ def main.out() -> U32:
 def main() -> IO(Unit):
   do IO<Unit>:
     Unit <- IO.print(U32.show(main.out()))
-    IO.print(nat_text())
+    Unit <- IO.print(nat_text())
+    IO.print(picked_text())
 
 #|2655042671
 #|3,9
+#|56,15,9;1,5,4
