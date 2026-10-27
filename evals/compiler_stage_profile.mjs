@@ -13,7 +13,12 @@
 //   - measured bounded-step intervals: wall and current-thread CPU between two
 //     consecutive host boundaries, attributed to the typed request pending when
 //     the interval began. A chunk may cross request boundaries, so these are
-//     measured envelope intervals, never isolated provider CPU.
+//     measured envelope intervals, never isolated provider CPU;
+//   - provenance pins for the producing script the caller declares, this helper
+//     and the collector it imports (real path + sha256), the collector's own
+//     profileId once its first span token exists, and an explicit link to an
+//     enclosing profile when one was declared. With no declaration the report
+//     states that no parent profile exists instead of inventing one.
 //
 // Semantic substage grouping uses the exact canonical request constructors and
 // canonical source-module composition recorded by the typed-step generator's
@@ -112,6 +117,97 @@ const coarseGroup = protocol =>
       : protocol === 'Emitter' ? 'emit-emitter-entry' : 'unclassified';
 
 const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
+
+const errorText = error => String(error?.message ?? error);
+
+// Provenance pins are read only inside createStageProfile, so an unprofiled run
+// never opens, hashes or even resolves a path. A pin never guesses: an
+// undeclared or unreadable input stays null with its reason attached.
+function pinFile(path, undeclaredReason) {
+  if (typeof path !== 'string' || !path) return {path: null, bytes: null, sha256: null, reason: undeclaredReason};
+  try {
+    const resolved = realpathSync(path);
+    const bytes = readFileSync(resolved);
+    return {path: resolved, bytes: bytes.length, sha256: sha256(bytes)};
+  } catch (error) {
+    return {path, bytes: null, sha256: null, reason: 'unreadable declared path: ' + errorText(error)};
+  }
+}
+
+/**
+ * Parse an explicit enclosing-profile declaration (`SELFHOST_STAGE_PARENT`).
+ * The declaration is caller-supplied data; a malformed one is a diagnostic
+ * failure, never a silently absent link.
+ */
+export function stageParentDeclaration(text) {
+  if (text === undefined || text === null || text === '') return null;
+  let value;
+  try {
+    value = JSON.parse(text);
+  } catch (error) {
+    throw Error('SELFHOST_STAGE_PARENT is not JSON: ' + errorText(error));
+  }
+  if (value === null || typeof value !== 'object' || Array.isArray(value))
+    throw Error('SELFHOST_STAGE_PARENT must be a JSON object');
+  return value;
+}
+
+function describeParentProfile(declared, joinPath) {
+  if (declared === undefined || declared === null) return {
+    status: 'absent',
+    profile: null,
+    reason: isMainThread
+      ? 'no enclosing stage profile was declared: this profile runs on a process main thread, and a parent-process profile cannot be discovered from here'
+      : 'no enclosing stage profile was declared: this profile runs on a worker thread whose creating thread created no stage profile',
+  };
+  if (typeof declared !== 'object' || Array.isArray(declared))
+    throw Error('parentProfile must be an object');
+  const row = {
+    runDirectory: typeof declared.runDirectory === 'string' ? declared.runDirectory : null,
+    reportPath: typeof declared.reportPath === 'string' ? declared.reportPath : null,
+    pid: Number.isSafeInteger(declared.pid) ? declared.pid : null,
+    threadId: Number.isSafeInteger(declared.threadId) ? declared.threadId : null,
+    isMainThread: typeof declared.isMainThread === 'boolean' ? declared.isMainThread : null,
+    role: typeof declared.role === 'string' ? declared.role : null,
+  };
+  const sameProcess = row.pid === null ? null : row.pid === process.pid;
+  if (row.runDirectory === null) return {status: 'unverified', profile: {...row, sameProcess, topologyNote: null, runJsonSha256: null},
+    reason: 'declared parent profile carries no runDirectory'};
+  const profile = {...row, sameProcess, topologyNote: null, runJsonSha256: null};
+  if (!isMainThread && sameProcess === false)
+    profile.topologyNote = 'this profile runs on a worker thread, whose creating thread is always in this process; the declared profile therefore identifies a parent-process profile, not this thread\'s creator';
+  let resolved;
+  try {
+    resolved = realpathSync(row.runDirectory);
+  } catch (error) {
+    return {status: 'unverified', profile, reason: 'declared parent runDirectory is not readable: ' + errorText(error)};
+  }
+  profile.runDirectory = resolved;
+  try {
+    profile.runJsonSha256 = sha256(readFileSync(joinPath(resolved, 'run.json')));
+  } catch (error) {
+    return {status: 'unverified', profile, reason: 'declared parent runDirectory has no readable run.json: ' + errorText(error)};
+  }
+  return {status: 'verified', profile, reason: null,
+    linkKey: 'the parent collector run directory and its run.json digest; the collector profileId lives in that profile\'s own summary.json'};
+}
+
+function describeParentThread(declared) {
+  if (declared !== undefined && declared !== null) {
+    if (typeof declared !== 'object' || Array.isArray(declared)) throw Error('parentThread must be an object');
+    return {
+      threadId: Number.isSafeInteger(declared.threadId) ? declared.threadId : null,
+      isMainThread: typeof declared.isMainThread === 'boolean' ? declared.isMainThread : null,
+      sameProcess: true,
+      source: typeof declared.source === 'string' ? declared.source : 'declared by the stage profile caller',
+    };
+  }
+  return isMainThread
+    ? {threadId: null, isMainThread: null, sameProcess: null,
+      source: 'this profile runs on the process main thread; its parent is another process (process.ppid), not a thread of this process'}
+    : {threadId: null, isMainThread: null, sameProcess: true,
+      source: 'this profile runs on a worker thread; node:worker_threads exposes no creating-thread id, so the creating thread is identified only as that of the same process'};
+}
 
 function constructorTag(value) {
   if (value === null || typeof value !== 'object' || Array.isArray(value) || typeof value.$ !== 'string') return undefined;
@@ -813,23 +909,63 @@ export function nativeTraceObservations(text) {
  * Create the opt-in collector plus a strict span stack. The collector owns the
  * run identity and report; this wrapper only guarantees nested closures and
  * honest failure statuses for spans a caller left open.
+ *
+ * Provenance is pinned here, once, for every producer that profiles through
+ * this helper: the executing script the caller declares, this stage helper and
+ * the collector it imports, all by real path and sha256. The ordinary
+ * (no-profile) path never calls this function, so it hashes and reads nothing.
+ * `parentProfile`/`parentThread` link a profile to an enclosing one; when none
+ * is declared the report says so instead of inventing a parent.
  */
-export async function createStageProfile({directory, execution, rawDetail = false, manifestPaths = [], artifact, receiptPaths = []}) {
+export async function createStageProfile({directory, execution, rawDetail = false, manifestPaths = [], artifact, receiptPaths = [], executingScript, parentProfile, parentThread}) {
   const {createCompilerProfile} = await import('./compiler_profile.mjs');
+  // Imported here, not at module scope: an unprofiled run must not even resolve
+  // these modules, and this helper is only called by an opt-in profiling run.
+  const {fileURLToPath} = await import('node:url');
+  const {join} = await import('node:path');
   const receipts = receiptPaths.map(readReceipt);
   const receipt = receipts.find(candidate => artifact !== undefined && candidate.artifactSha256 === artifact.sha256) ?? receipts[0];
   const table = loadStageManifests(manifestPaths, {artifactSha256: artifact?.sha256 ?? null, receipt});
-  const profile = await createCompilerProfile({directory, execution, rawDetail});
+  const profileSources = {
+    executingScript: pinFile(executingScript,
+      'the caller declared no executing script path; the stage helper cannot infer which program imported it'),
+    stageHelper: pinFile(fileURLToPath(import.meta.url), 'the stage helper path is unavailable'),
+    collector: pinFile(fileURLToPath(new URL('./compiler_profile.mjs', import.meta.url)), 'the collector path is unavailable'),
+  };
+  const parent = describeParentProfile(parentProfile, join);
+  const parentThreadRow = describeParentThread(parentThread);
+  const declaredExecution = execution === null || execution === undefined ? {} : execution;
+  if (typeof declaredExecution !== 'object' || Array.isArray(declaredExecution))
+    throw Error('stage profile execution must be an object');
+  const profile = await createCompilerProfile({directory,
+    execution: {...declaredExecution, profileSources}, rawDetail});
   const open = [];
-  let finished = false, result;
+  let finished = false, result, collectorProfileId;
   const api = {
     profile,
     runDirectory: profile.runDirectory,
     reportPath: profile.reportPath,
     manifestTable: table,
+    profileSources,
+    parentProfile: parent,
+    parentThread: parentThreadRow,
+    get profileId() {return collectorProfileId ?? null;},
     get finished() {return finished;},
     span(name, details = {}, options = {}) {
       const token = profile.begin(name, details, options);
+      // The collector exposes its own run UUID only through span tokens; take
+      // the first real one so the stage report can be joined to its collector
+      // summary. This observes an existing token and creates no span.
+      if (collectorProfileId === undefined && typeof token.profileId === 'string') {
+        collectorProfileId = token.profileId;
+        profile.record({
+          kind: 'stage-provenance', scope: 'stage collector identity', name: 'collector-profile-id',
+          values: {profileId: collectorProfileId},
+          source: 'evals/compiler_stage_profile.mjs',
+          details: {origin: 'profileId of the first stage span token; the same UUID is this profile\'s summary.json profileId',
+            runDirectory: profile.runDirectory, reportPath: profile.reportPath},
+        });
+      }
       open.push({token, name});
       return token;
     },
@@ -882,6 +1018,12 @@ export async function createStageProfile({directory, execution, rawDetail = fals
         platform: process.platform, arch: process.arch},
       thread: {threadId, isMainThread, threadKind: isMainThread ? 'main-thread' : 'worker-thread',
         source: 'node:worker_threads in the stage collector process'},
+      parentThread: parentThreadRow,
+      parentProfile: parent,
+      profileSources,
+      collectorProfile: {runDirectory: profile.runDirectory, reportPath: profile.reportPath,
+        profileId: 'exposed by the first stage span token and recorded as a separate stage-provenance observation; null until a span begins',
+        linkKey: 'collector runDirectory plus reportPath, both real and unique per profile; the run.json digest is the verified parent link when declared'},
       cpuScope: {
         phaseSpan: 'process.cpuUsage (every thread in this process) plus process.threadCpuUsage (this thread only) deltas from the collector; child processes are excluded from both',
         stepInterval: 'process.threadCpuUsage deltas over consecutive typed boundaries on the orchestrating thread; worker and helper threads are excluded',

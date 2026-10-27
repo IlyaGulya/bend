@@ -26,7 +26,7 @@ import {
  runTemplateSteps,runCheckerSteps,runLibraryEmitterSteps,runEmitterSteps,
  runCEmitterSteps,runCLibraryEmitterSteps,
 } from './checker_core_step_runtime.mjs';
-import {createStageProfile,createStepAttribution} from './compiler_stage_profile.mjs';
+import {createStageProfile,createStepAttribution,stageParentDeclaration} from './compiler_stage_profile.mjs';
 
 const ROOT=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 
@@ -128,9 +128,17 @@ if(o.candidateBuild!==undefined){
 if(o.sourceTag!==undefined&&o.sourceTag!==sourceTag)fail('--source-tag differs from the compiler image carrier ('+sourceTag+')');
 if(o.stageProfile!==undefined){
  const inputPath=realpathSync(o.input),parserPath=realpathSync(o.parser??o.candidate);
+ // Executing script and enclosing-profile declaration are opt-in diagnostics:
+ // ordinary runs never read, hash or parse them. A declared parent is recorded
+ // by the stage helper only when the orchestrator actually published one.
+ let parentProfile:unknown=null;
+ try{parentProfile=stageParentDeclaration(process.env.SELFHOST_STAGE_PARENT);}
+ catch(error){fail('invalid SELFHOST_STAGE_PARENT: '+String(error));}
  stage=await createStageProfile({
   directory:o.stageProfile,rawDetail:o.stageProgress,manifestPaths:o.stageManifests,
   artifact:{path:realpathSync(o.candidate),sha256:fileSha(o.candidate)},receiptPaths:o.stageReceipts,
+  executingScript:fileURLToPath(import.meta.url),
+  parentProfile,
   execution:{stage:'selfhost-candidate',mode:'typed-step',target,
    sourcePath:inputPath,sourceSha256:fileSha(inputPath),
    candidatePath:realpathSync(o.candidate),candidateSha256:fileSha(o.candidate),
