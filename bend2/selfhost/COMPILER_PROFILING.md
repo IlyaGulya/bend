@@ -191,6 +191,11 @@ unprofiled image-bound control, and controlled termination of the real
 full-root checker after a durable progress update. That interruption is not
 compiler acceptance or full-input overhead evidence.
 
+Trace event decoding preserves nominal identity: a Begin/End constructor must
+belong to its Run's module and, when a trace manifest is supplied, match that
+manifest's fully qualified constructor. A matching short constructor name in
+another module is rejected. Decoding never advances the native continuation.
+
 ## Verified coverage and explicit gaps
 
 `evals/compiler_profile_smoke.ts` is the focused bounded smoke. It runs:

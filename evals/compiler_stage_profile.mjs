@@ -538,6 +538,10 @@ export function typedTraceEvents(run, traceTable) {
     const kind = eventSimple === beginName ? 'begin' : eventSimple === endName ? 'end' : null;
     if (kind === null)
       return reject('event constructor ' + JSON.stringify(eventTag ?? null) + ' is neither ' + simpleConstructor(constructors.begin) + ' nor ' + simpleConstructor(constructors.end));
+    if (constructorNamespace(eventTag) !== runNamespace)
+      return reject('event constructor belongs to a different nominal module than its traced Run');
+    if (traceTable !== undefined && traceTable !== null && eventTag !== constructors[kind])
+      return reject('event constructor is not the fully qualified constructor declared by the trace manifest');
     if (!Object.hasOwn(event, 'site')) return reject(kind + ' event carries no site field');
     const site = event.site;
     if (!Number.isInteger(site) || site < 0 || site > 0xFFFFFFFF)

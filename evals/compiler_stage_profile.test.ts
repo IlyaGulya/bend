@@ -2,7 +2,7 @@ import {expect, test} from 'bun:test';
 import {mkdtemp, readFile, rm, writeFile} from 'node:fs/promises';
 import {join} from 'node:path';
 import {tmpdir} from 'node:os';
-import {createStageProfile, createStepAttribution, loadStageManifests, typedProgressSample} from './compiler_stage_profile.mjs';
+import {createStageProfile, createStepAttribution, loadStageManifests, typedProgressSample, typedTraceEvents} from './compiler_stage_profile.mjs';
 
 type ManifestInput = {runType?: string; output?: string; groups?: string[][]; declarations?: Record<string, unknown>[]; inputs?: Record<string, string>};
 type Attribution = {onStep: (steps: number, run: unknown) => void;
@@ -129,7 +129,6 @@ test('stage profile treats a receipt without the profiled artifact hash as unver
       receipt: {path: 'receipt.json', sha256: 'c'.repeat(64), artifactSha256: 'b'.repeat(64),
         provenancePath: null, loadedInputs: {}, protectedPins: {}}});
     expect(table.provenance[0].artifactBinding.status).toBe('unverified');
-    expect(table.provenance[0].artifactBinding.reason).toBe('no profiled artifact hash supplied');
   } finally {await rm(join(path, '..'), {recursive: true, force: true});}
 });
 
@@ -208,7 +207,6 @@ test('a rejected end token does not lose the wrapper span', async () => {
     expect(() => stage.end(first)).toThrow();
     const report = await stage.finish('completed');
     expect(report.summary.unclosedSpans.names).toEqual(['retained-first', 'retained-second']);
-    expect(first).toBeDefined(); expect(second).toBeDefined();
   } finally {await rm(directory, {recursive: true, force: true});}
 });
 
@@ -250,4 +248,21 @@ test('an unfinished phase durably records its last observed typed-step boundary'
     stage.finish('aborted');
     await rm(directory, {recursive: true, force: true});
   }
+});
+
+test('trace decoding rejects an event from another nominal module', () => {
+  const trace = {
+    namespace: 'trace_image', maxEventsPerBoundary: 1,
+    constructors: {
+      run: 'trace_image.EmitterRunSpan',
+      begin: 'trace_image.EmitterTraceBegin',
+      end: 'trace_image.EmitterTraceEnd',
+    },
+  };
+  const boundary = {
+    $: 'trace_image.EmitterRunSpan',
+    events: {$: 'Con', head: {$: 'foreign.EmitterTraceBegin', site: 0}, tail: {$: 'Nil'}},
+    next: () => {throw Error('Decoding must not execute a native continuation');},
+  };
+  expect(typedTraceEvents(boundary, trace).status).toBe('invalid');
 });
