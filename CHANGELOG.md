@@ -13,8 +13,14 @@ latest one; the GitHub release carries the same notes.
   aliases and the unchanged 32-page heap-frontier regression.
   Native bootstrap admission no longer mistakes a signal or runtime fault
   for an expected source rejection, and its 600-second quota is explicit.
-  Full-root/bootstrap acceptance remains pending; these are bounded checks.
-  Receipt: `evals/receipts/root2039g15_append_boundaries.json`.
+  The full fresh native build passes (12,125 bodies / 12,705 events; zero
+  exclusions/patches): 406.678 s, peak RSS 4,806,852,608 B. G15 is nevertheless
+  **rejected**: the unchanged 600-second bootstrap deadline stops stage-two
+  checking, which starts at 449.453 s. All 95 native-seed fixtures and 18
+  complete semantic parser approvals pass; stage1 is 28,552,669 bytes, no
+  stage2 or new fixedpoint exists. Receipts:
+  `evals/receipts/root2039g15_append_boundaries.json` and
+  `evals/receipts/root2039g15_bootstrap_rejected.json`.
 
 - The g14 candidate uses the existing immutable `IndexLookup.find` for arena
   name hits rather than rebuilding a `Map.get` path. Existing prefix, Unicode,
