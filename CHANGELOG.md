@@ -25,8 +25,9 @@ latest one; the GitHub release carries the same notes.
 
 - Compiler variable-use singleton tries are reused by numeric probe ID across
   definition scopes and fixedpoint passes. The immutable trie representation
-  and counts are unchanged. Nine real C/JS programs retain identical bytes;
-  complete-root timing and admission are checked separately.
+  and counts are unchanged. Nine real C/JS programs retain identical bytes.
+  The complete native root now passes the original 8 GiB / 600 s guard in
+  565.1 s with identical C bytes; stage1/stage2 acceptance remains separate.
 
 - Native C generation traverses nested constructors with an explicit stack,
   preserving field order, layouts and ownership without exhausting Bun's

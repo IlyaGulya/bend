@@ -241,7 +241,22 @@ Proof: `evals/receipts/root2039g3_settled_native_pass.json` and
 `evals/receipts/producer2039g3_settled_smoke.json`. Parser and root-composition
 provenance must be freshly authenticated against this producer before bootstrap.
 
-Latest compiler root: **`db147cba`**, after an authenticated inline-parser
+The complete **g4 workload** now also passes the original **8 GiB / 600 s**
+native-build guard with producer **`318c55c4`** (singleton use tries):
+all 12,148 bodies / 12,728 events validate, with no exclusions or output
+patches. Codegen takes 389,061 ms; the whole guarded build takes 565,105 ms,
+with peak RSS 5,312,544,768 B / footprint 5,065,824,160 B. Its 55,202,666 B
+of C retain SHA-256
+`d80523697068430ade64ffbd598df6dc7a7dd1e5c0cd737b4a73d2ee4a8f668f`.
+Proof: `evals/receipts/root2039g6_singleton_native_pass.json`.
+The preceding complete profiled diagnostic builds the same C, links a native
+compiler and executes its foreign consumer (`42`); its 636,117 ms and larger
+diagnostic guard are **not** acceptance or a controlled speedup estimate.
+Proof: `evals/receipts/full_profile2039_complete.json`.
+Fresh g6 parser/composition/consumer matrices and real stage1/stage2 byte
+fixedpoint remain in progress.
+
+Historical compiler root: **`db147cba`**, after an authenticated inline-parser
 cutover in `/private/tmp/bend-parser-cutover667`. Fresh native admission checks
 all 11,889 bodies / 12,450 events with 0 exclusions/patches and unchanged
 13-export ABI. All five original public parser cases now parse and produce
