@@ -14,9 +14,13 @@ latest one; the GitHub release carries the same notes.
   operands to consuming helpers and fixes reversed Word bit order. Four
   numeric programs pass on each actual JS/C target, including shared Words.
   The complete target matrices retain all original cases and include these
-  four regressions. Full-root/bootstrap acceptance is **pending**, not inferred
-  from these smokes. Receipts: `evals/receipts/root2039g10_checker_entry.json`
-  and `evals/receipts/root2039g10_numeric_consumers.json`.
+  four regressions. G10a is **rejected** at the unchanged 600-second native
+  C-producer deadline in `compile_book`, before LLVM or bootstrap. All 12,114
+  bodies / 12,694 events validate, with zero exclusions/patches; peak RSS is
+  6,519,111,680 B. No native binary or new byte fixedpoint is claimed.
+  Receipts: `evals/receipts/root2039g10_checker_entry.json`,
+  `evals/receipts/root2039g10_numeric_consumers.json` and
+  `evals/receipts/root2039g10a_native_deadline_rejected.json`.
 
 - The g9a candidate adds the nine `Array.atomic.*` primitives to the common
   catalog and JS/C targets. All three atomic consumer scenarios pass on each
