@@ -18,6 +18,14 @@ latest one; the GitHub release carries the same notes.
   This accepts the native-seed route, not a controlled speedup or every
   historical seed route. Receipt: `evals/receipts/root2039g8b_native_fixedpoint.json`.
 
+- Full-root selfhost profiling off/on now has two alternating pairs on one
+  unchanged accepted g8 stage1 image and source closure. All four legs pass
+  the original guards and emit byte-identical compiler images. Median
+  operational wall/CPU differences are +15.79%/+16.14%, sampled guardian
+  RSS/footprint +2.30%/+2.20%; these include collector/checkpoint overhead
+  and are not exclusive-stage or retained-memory measurements.
+  Receipt: `evals/receipts/profile2039g8_full_root_overhead.json`.
+
 - The resource guardian publishes its compiled helper with private permissions
   before the atomic rename. Guarded descendants now work after a cold build
   under a group-writable umask; unsafe pre-existing cache entries still fail

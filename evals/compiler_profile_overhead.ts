@@ -174,7 +174,7 @@ function drift(expected,actual,where){
 function timeReceipt(bytes){
  const lines=bytes.split('\n');
  const last=pattern=>{let found=null;for(const line of lines){const match=pattern.exec(line);if(match!==null)found=match;}return found;};
- const real=last(/^real\s+([0-9.]+)$/),user=last(/^user\s+([0-9.]+)$/),system=last(/^sys\s+([0-9.]+)$);
+ const real=last(/^real\s+([0-9.]+)$/),user=last(/^user\s+([0-9.]+)$/),system=last(/^sys\s+([0-9.]+)$/);
  const rss=last(/^\s*([0-9]+)\s+maximum resident set size$/),footprint=last(/^\s*([0-9]+)\s+peak memory footprint$/);
  must(real&&user&&system&&rss,'missing /usr/bin/time -lp wait4 receipt');
  return {source:'/usr/bin/time -lp Darwin wait4',realMs:Number(real[1])*1000,userMs:Number(user[1])*1000,

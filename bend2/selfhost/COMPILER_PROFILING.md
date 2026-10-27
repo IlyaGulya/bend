@@ -299,7 +299,32 @@ component, with zero excluded checks or output patches.
 These are scheduler-boundary brackets, not exclusive per-provider CPU or
 allocation measurements. Child/interleaved work and observer overhead remain
 inside elapsed intervals. Link planning is not external linker execution.
-Full-input overhead/control comparison, retained/live bytes, exclusive
-per-definition CPU and full-root trace coverage are not established by this
-probe. Historical producer/LLVM diagnostic evidence remains separate in
-`evals/receipts/full_profile2039_complete.json`.
+Retained/live bytes, exclusive per-definition CPU and full-root trace coverage
+are not established by this probe. Historical producer/LLVM diagnostic evidence
+remains separate in `evals/receipts/full_profile2039_complete.json`.
+
+## Full-root selfhost profiling overhead
+
+`evals/receipts/profile2039g8_full_root_overhead.json` records two alternating
+pairs, ordered off/on then on/off, on the accepted g8 stage1 image and the same
+complete compiler-root closure. Each leg uses the original 8192-MiB
+RSS/footprint and 600000-ms guardian limits, Node 23.11.0, and a 256-MiB worker
+stack. Only `--stage-profile` differs; no output is patched or normalized.
+All four legs pass and emit the same 28,334,920 bytes, SHA-256
+`0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885`.
+Both profiled collectors finish with complete measurements.
+
+| Median, two observations per mode | Off | On | Change |
+| --- | ---: | ---: | ---: |
+| Child wall, seconds | 322.900 | 373.885 | +15.79% |
+| Child user + system CPU, seconds | 345.270 | 400.995 | +16.14% |
+| Guardian sampled peak RSS, bytes | 2,845,417,472 | 2,910,920,704 | +2.30% |
+| Guardian sampled peak footprint, bytes | 2,676,183,580 | 2,734,981,548 | +2.20% |
+
+These are operational on/off differences, including collector observation and
+checkpoint I/O, not isolated instrumentation cost, exclusive stage CPU or
+retained/live bytes. The compiler image and source closure are hash-pinned
+before and after every leg; runtime paths/versions are recorded, but binaries
+are not hashed. This is diagnostic evidence, not a new compiler acceptance or
+a producer `compile_book` overhead measurement. The unprofiled native build
+and stage1/stage2 acceptance remain in their separate g8 receipt.
