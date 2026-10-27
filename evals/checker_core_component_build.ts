@@ -131,7 +131,7 @@ function pins(o: Options): Record<string, string> {
     resolve(root, 'evals/heavy_gate.ts'), resolve(root, 'evals/heavy_gate_native.c')];
   const expected = Object.fromEntries(paths.map(path => [path, hash(path)]));
   verify({
-    [resolve(root, 'evals/heavy_gate.ts')]: '204f3529704435455d20a9d5a126a8e9c62e002b6fed9044c8319da8a3c26ff2',
+    [resolve(root, 'evals/heavy_gate.ts')]: 'e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015',
     [resolve(root, 'evals/heavy_gate_native.c')]: '1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b',
   });
   verify(expected);

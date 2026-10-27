@@ -9,6 +9,11 @@ latest one; the GitHub release carries the same notes.
   before the atomic rename. Guarded descendants now work after a cold build
   under a group-writable umask; unsafe pre-existing cache entries still fail
   closed. The complete 14-case guardian suite passes.
+  Component-build and physical-storage gates pin the reviewed guardian source
+  exactly; the stale pre-fix pin no longer blocks a fresh native parser build.
+  The component-build smoke validates 356 definitions / 511 events and its
+  emitted arithmetic library executes with result `7`; full-root acceptance
+  remains separate.
 
 - A bounded C-codegen development probe validates the complete frozen root,
   streams phase/pass progress and stops at an explicit pass or codegen-time
