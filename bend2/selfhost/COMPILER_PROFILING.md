@@ -223,8 +223,11 @@ Decoding never advances the native continuation.
   `diagnosticOnlyCodegenTiming` and runtime profile metadata; its duration is
   not a normal benchmark or profiled-build acceptance timing.
 
-Evidence: `checkpoints/compiler-profile-smoke-v1.json`. Bulk profiles stay in
-the temporary directory and are removed after a passing smoke.
+Current evidence: `evals/receipts/profiler2039_entrypoints.json` records the
+ten producer smoke scenarios plus real candidate-host and bootstrap-worker
+entrypoints, including verified parent links, collector IDs and source pins.
+`checkpoints/compiler-profile-smoke-v1.json` is the raw bounded producer receipt.
+Bulk producer profiles are removed after a passing smoke.
 
 `evals/receipts/emitter2039_trace_spans.json` records native validation and actual
 checked-FIR execution of both ordinary and diagnostic trace emitters. Ordinary
