@@ -1451,6 +1451,21 @@ def ending(requested: Maybe<&2, List<&2, String>>, main: Maybe<&2, BIR.Descripto
       match main:
         case Some{ty}: CatalogResult{v_0, BIR.Executable{ty}}
         case None{}: CatalogResult{v_0, BIR.Executable{BIR.DescriptorNull{}}}
+# Executable mode needs one root definition named main. Presence comes from the
+# catalog header, never the result descriptor: a legal main may have no declared
+# result descriptor at all. A family or a type-only definition is not a runnable
+# entry, and every other module's main is namespaced, so neither is admitted.
+def root_main_runnable(header: Maybe<&2, DefinitionHeader>) -> Bool:
+  match header:
+    case Some{DefinitionHeader{_, _, _, _, _, type_only, _, _, _}}: Bool.not(type_only)
+    case None{}: False{}
+def root_main_admitted(headers: Map<&2, DefinitionHeader>) -> Bool:
+  root_main_runnable(IndexLookup.find(DefinitionHeader, headers, "main"))
+def executable_admitted(requested: Maybe<&2, List<&2, String>>, headers: Map<&2, DefinitionHeader>) -> Bool:
+  match requested:
+    case Some{_}: True{}
+    case None{}: root_main_admitted(headers)
+
 def native_match_build_finish_0(v_74: CatalogResult<Needed>, v_2: List<&2, IR.LoadedModule>, v_4: List<&2, Scope.ArenaGlobal>, v_6: List<&2, Checked.ModuleMetadata>, v_10: Maybe<&2, List<&2, String>>, v_25: List<&2, Definition>, v_27: Map<&2, DefinitionHeader>, v_28: List<&2, BIR.ConstructorLayout>, v_29: Map<&2, Constructor>, v_30: List<&2, BIR.Family>, v_31: U32, v_34: Maybe<&2, BIR.Descriptor>) -> BuildResult:
   match v_74:
     case CatalogResult{v_40, Needed{v_41, _}}:
@@ -1463,10 +1478,17 @@ def native_match_build_finish_0(v_74: CatalogResult<Needed>, v_2: List<&2, IR.Lo
           v_48 = Catalog{List.reverse(&2, Definition, v_46), v_44, List.reverse(&2, BIR.ConstructorLayout, v_28), v_45, v_41, v_31, v_43}
           Built{Checked.CheckedProgram{v_42, v_2, v_4, v_6}, v_48}
 
+def native_match_build_finish_2(admitted: Bool, v_0: Arena.Arena, v_2: List<&2, IR.LoadedModule>, v_4: List<&2, Scope.ArenaGlobal>, v_6: List<&2, Checked.ModuleMetadata>, v_10: Maybe<&2, List<&2, String>>, v_25: List<&2, Definition>, v_26: Map<&2, Definition>, v_27: Map<&2, DefinitionHeader>, v_28: List<&2, BIR.ConstructorLayout>, v_29: Map<&2, Constructor>, v_30: List<&2, BIR.Family>, v_31: U32, v_33: List<&2, Root>, v_34: Maybe<&2, BIR.Descriptor>) -> BuildResult:
+  match admitted:
+    case True{}:
+      native_match_build_finish_0(needed_roots(v_0, List.reverse(&2, Root, v_33), v_26, Needed{[], MTip{}}), v_2, v_4, v_6, v_10, v_25, v_27, v_28, v_29, v_30, v_31, v_34)
+    case False{}:
+      BuildFailure{Checked.CheckedProgram{v_0, v_2, v_4, v_6}, "bend: executable mode requires a root main definition"}
+
 def native_match_build_finish_1(v_12: Preparation, v_0: Arena.Arena, v_2: List<&2, IR.LoadedModule>, v_4: List<&2, Scope.ArenaGlobal>, v_6: List<&2, Checked.ModuleMetadata>, v_10: Maybe<&2, List<&2, String>>) -> BuildResult:
   match v_12:
     case Preparation{v_25, v_26, v_27, v_28, v_29, v_30, v_31, _, v_33, v_34, None{}, _}:
-      native_match_build_finish_0(needed_roots(v_0, List.reverse(&2, Root, v_33), v_26, Needed{[], MTip{}}), v_2, v_4, v_6, v_10, v_25, v_27, v_28, v_29, v_30, v_31, v_34)
+      native_match_build_finish_2(executable_admitted(v_10, v_27), v_0, v_2, v_4, v_6, v_10, v_25, v_26, v_27, v_28, v_29, v_30, v_31, v_33, v_34)
     case Preparation{_, _, _, _, _, _, _, _, _, _, Some{v_71}, _}:
       BuildFailure{Checked.CheckedProgram{v_0, v_2, v_4, v_6}, v_71}
 
