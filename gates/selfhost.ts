@@ -191,6 +191,7 @@ function default_files(): string[] {
     "evals/c_target_wide_node.bend",
     "tests/io/args.bend",
     "tests/io/args_bytes.bend",
+    "evals/repro_js_non_tail_reclaim.bend",
     // Show and literal transport: a String literal is Bend String data, so a
     // code that is no Unicode scalar keeps its exact value and its escapes.
     "tests/show/string_literal_any_code.bend",
