@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "status": "G4_FULL_C_PUBLISHED_NATIVE_BUILD_DEADLINE_REJECTED",
+  "nativeBuildAccepted": false,
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "sourceCheckpoint": "26ab4f15",
+  "report": {
+    "path": "checkpoints/root-release2039g4-gcram-native-build.json",
+    "sha256": "c5270c92b2c0d24474fef77eb12fefa9605c6e7b5f430a556d02dc3c944512c3"
+  },
+  "runtime": {
+    "name": "bun",
+    "executable": "/opt/homebrew/Cellar/bun/1.4.3/bin/bun",
+    "execArgv": [],
+    "bun": "1.4.3",
+    "revision": "c6da4a4d3010e5553438c60f6bd76d981976867c",
+    "heapLimitMiB": null,
+    "stackMiB": null,
+    "stack": "Bun main-thread default",
+    "automaticGcRamHint": {
+      "source": "BUN_JSC_forceRAMSize",
+      "bytes": "4294967296",
+      "hardLimit": false
+    },
+    "manualGC": false,
+    "profiling": null
+  },
+  "checkedDefinitions": 12148,
+  "eventsFullyValidated": 12728,
+  "checksExcluded": 0,
+  "outputPatches": 0,
+  "cPath": "/tmp/bend2039g4-gcram-native.c",
+  "cSha256": "d80523697068430ade64ffbd598df6dc7a7dd1e5c0cd737b4a73d2ee4a8f668f",
+  "validationMs": 2831.844583,
+  "codegenMs": 533619.7598329999,
+  "failure": {
+    "phase": "llvm-pipeline",
+    "diagnostic": "deadline_exceeded"
+  },
+  "guardian": {
+    "status": "FAIL",
+    "reason": "deadline_exceeded",
+    "commandExitCode": -1,
+    "commandSignal": 15,
+    "peakRssBytes": 5370462208,
+    "peakFootprintBytes": 5098461184,
+    "elapsedMs": 600029,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "command": [
+      "/opt/homebrew/Cellar/bun/1.4.3/bin/bun",
+      "--smol",
+      "/private/tmp/bend2039-upgrade/evals/native_compiler_experiment.ts",
+      "--mode=build",
+      "--corpus=checkpoints/root-release2039g4.native.corpus.json",
+      "--artifact=/tmp/bend2039g4-gcram-native",
+      "--report=checkpoints/root-release2039g4-gcram-native-build.json",
+      "--cc-pipeline=llvm-split",
+      "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+      "--cc-opt=1",
+      "--internal=build"
+    ],
+    "label": "Native CPU compiler build",
+    "exitCode": 1,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793081841926-be6869f82068b387.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "backend": {
+    "status": "RUNNING",
+    "elapsedMs": 54814.175375,
+    "stages": [
+      {
+        "name": "clang-version",
+        "status": "PASS",
+        "wallMs": 39.86616599999999,
+        "maxRssBytes": 14876672
+      },
+      {
+        "name": "opt-version",
+        "status": "PASS",
+        "wallMs": 159.52999999999997,
+        "maxRssBytes": 24002560
+      },
+      {
+        "name": "llvm-split-version",
+        "status": "PASS",
+        "wallMs": 18.71683300000001,
+        "maxRssBytes": 19922944
+      },
+      {
+        "name": "sdk",
+        "status": "PASS",
+        "wallMs": 14.644832999999949,
+        "maxRssBytes": 8617984
+      },
+      {
+        "name": "abi-macros",
+        "status": "PASS",
+        "wallMs": 1774.94275,
+        "maxRssBytes": 601948160
+      },
+      {
+        "name": "abi-driver",
+        "status": "PASS",
+        "wallMs": 26.555166999999983,
+        "maxRssBytes": 15892480
+      },
+      {
+        "name": "frontend",
+        "status": "PASS",
+        "wallMs": 33198.413083,
+        "maxRssBytes": 5198888960
+      },
+      {
+        "name": "mem2reg-always-inline",
+        "status": "PASS",
+        "wallMs": 19534.232375,
+        "maxRssBytes": 2846867456
+      },
+      {
+        "name": "split",
+        "status": "RUNNING",
+        "maxRssBytes": null
+      }
+    ]
+  },
+  "note": "All12148 bodies validate and full C is published below8GiB.533.6s codegen leaves insufficient room for LLVM under original600s total deadline. Not a successful whole native build or byte fixedpoint. Next work must repair measured producer cost, not extend guard or reclassify this result."
+}
