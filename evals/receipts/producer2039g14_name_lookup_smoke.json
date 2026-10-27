@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "status": "G14_READONLY_INTERNING_JS_C_CONSUMERS_PASS_FULL_ACCEPTANCE_PENDING",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "baseCheckpoint": "8b31d772",
+  "change": "Use existing immutable IndexLookup.find for arena name hits; preserve insertion, sentinel, Unicode, prefix and rewind behavior; no change to kernel, language, ABI, guards or corpus.",
+  "source": {
+    "path": "bend2/selfhost/checker_arena.bend",
+    "sha256": "2d094dd95dc1c2319b77349a028addee4689288d7b476078b6f16e179cb9afeb"
+  },
+  "fixture": {
+    "path": "tests/reg/checker_arena_names.bend",
+    "sha256": "63fc170fe9ba8f6c5ebd53b516e2ea74b84802d0c1f1bc899d250f90be99873d",
+    "expected": "0\n"
+  },
+  "worker": {
+    "path": "/tmp/bend-g14-canonical-worker.mjs",
+    "sha256": "8c055fadc801e563a6b3918d9bfe997b8a238a0669cdcc1779a79de0f36d9f11"
+  },
+  "rows": [
+    {
+      "target": "js",
+      "output": "/tmp/bend-g14-arena-names.js",
+      "outputSha256": "8074debc558549c91a2343437e823515f93353d9bad9f92f9fbdbeb996a70727",
+      "guardPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793135023801-b6d14deaa0d79952.json",
+      "consumerCommand": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "/tmp/bend-g14-arena-names.js"
+      ],
+      "stdout": "0\n",
+      "passed": true,
+      "emissionGuardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 217464832,
+        "peakFootprintBytes": 183765040,
+        "elapsedMs": 312,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+          "--experimental-strip-types",
+          "/tmp/bend-g14-canonical-worker.mjs",
+          "tests/reg/checker_arena_names.bend",
+          "/tmp/bend-g14-arena-names.js"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793135023801-b6d14deaa0d79952.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "target": "c",
+      "output": "/tmp/bend-g14-arena-names.c",
+      "outputSha256": "625eb8ef560ac8adcab2e4d9d578b8f3b0ded1ca4390de3426ef9f5dae311974",
+      "guardPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793135024251-1bec3904c939f226.json",
+      "clangCommand": [
+        "clang",
+        "-std=c11",
+        "-O0",
+        "-pthread",
+        "/tmp/bend-g14-arena-names.c",
+        "-lm",
+        "-o",
+        "/tmp/bend-g14-arena-names"
+      ],
+      "consumerCommand": [
+        "/tmp/bend-g14-arena-names"
+      ],
+      "stdout": "0\n",
+      "passed": true,
+      "emissionGuardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 257507328,
+        "peakFootprintBytes": 224956360,
+        "elapsedMs": 471,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+          "--experimental-strip-types",
+          "/tmp/bend-g14-canonical-worker.mjs",
+          "tests/reg/checker_arena_names.bend",
+          "/tmp/bend-g14-arena-names.c"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793135024251-1bec3904c939f226.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    }
+  ]
+}

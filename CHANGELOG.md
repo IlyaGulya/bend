@@ -5,6 +5,14 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- The g14 candidate uses the existing immutable `IndexLookup.find` for arena
+  name hits rather than rebuilding a `Map.get` path. Existing prefix, Unicode,
+  repeat, rewind and sentinel cases pass on actual JS and compiled C.
+  This combines the previously isolated lookup change with g12's producer
+  ownership-generation repair and g13's C-backend fixes. Full-root timing and
+  a new bootstrap are not inferred from these consumer passes.
+  Receipt: `evals/receipts/producer2039g14_name_lookup_smoke.json`.
+
 - The g13 C-backend boundary repair preserves proper-prefix `String.cmp`
   ordering, stages natives read only by library exports, and calls saturated
   native exports with their full arity. Borrowing String helpers now release
