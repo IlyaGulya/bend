@@ -12,6 +12,12 @@ latest one; the GitHub release carries the same notes.
   passes 38 semantic cases, and the canonical C consumer emits, links and
   prints `26`; full-compiler and byte-fixedpoint acceptance remain separate.
 
+- Selfhost JavaScript continuations reclaim a popped frame's capture slots
+  after rebinding them into locals. A bounded nested non-tail loop now runs
+  twelve million iterations on Node's default stack and prints `24000011`
+  instead of failing with the machine memory fault; full bootstrap admission
+  remains separate.
+
 - Native C generation traverses nested constructors with an explicit stack,
   preserving field order, layouts and ownership without exhausting Bun's
   JavaScript stack on large literal values. The 8192-character regression now

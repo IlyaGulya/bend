@@ -410,10 +410,15 @@ type cps_provider_7_NfVal is Data:
   cps_provider_7_NfType{key: String, args: List<&2, cps_provider_7_NfVal>}
   cps_provider_7_NfCtor{key: String, args: List<&2, cps_provider_7_NfVal>}
   cps_provider_7_NfQuantity{quantity: BIR.Quantity}
-  cps_provider_7_NfKind{quantity: BIR.Descriptor}
+  cps_provider_7_NfKind{quantity: cps_provider_7_NfVal}
   cps_provider_7_NfOther{source: BIR.Descriptor}
   cps_provider_7_NfMissing{source: BIR.Descriptor}
-  cps_provider_7_NfClosure{quantity: Maybe<&2, BIR.Quantity>, body: BIR.Descriptor, env: List<&2, cps_provider_7_NfVal>, sources: List<&2, BIR.Descriptor>}
+  cps_provider_7_NfBinder{level: Nat}
+  cps_provider_7_NfArrow{quantity: BIR.Quantity, domain: cps_provider_7_NfVal, body: cps_provider_7_NfVal, level: Nat}
+  cps_provider_7_NfClosure{quantity: Maybe<&2, BIR.Quantity>, body: BIR.Descriptor, env: List<&2, cps_provider_7_NfVal>}
+
+type cps_provider_7_NfRenaming is Data:
+  cps_provider_7_NfRenaming{source: Nat, target: Nat}
 
 type cps_provider_7_NfBind is Data:
   cps_provider_7_NfBound{bindings: List<&2, cps_provider_7_NfVal>}
@@ -9320,7 +9325,7 @@ def cps_provider_3_layout_fuel() -> Nat:
   1024n
 
 def cps_provider_3_nf_of(+v_1: cps_provider_3_Context, +v_2: BIR.Descriptor, +v_4: List<&2, cps_provider_7_NfVal>, +v_6: Nat) -> cps_provider_7_Nf:
-  cps_provider_7_nf(cps_provider_3_context_nf(v_1), v_2, v_4, v_6)
+  cps_provider_7_nf(cps_provider_3_context_nf(v_1), v_2, v_4, 0n, v_6)
 
 def cps_provider_3_value_layout(+v_1: cps_provider_3_Context, +v_2: BIR.Descriptor) -> cps_provider_3_LayoutResult:
   cps_provider_3_layout_of_desc(v_1, v_2, [], cps_provider_3_layout_fuel)
@@ -15034,50 +15039,69 @@ def cps_provider_7_quantity_markers(v_1: Nat) -> List<&2, cps_provider_7_NfVal>:
     case 1n+v_5:
       cps_provider_7_NfQuantity{BIR.Erased{}} <> cps_provider_7_quantity_markers(v_5)
 
-def cps_provider_7_materialize_all(v_2: List<&2, cps_provider_7_NfVal>) -> List<&2, BIR.Descriptor>:
+def native_match_cps_provider_7_renamed_level_0(v_13: Bool, +v_4: Nat, v_10: Nat, v_11: List<&2, cps_provider_7_NfRenaming>) -> Nat:
+  match v_13:
+    case True{}:
+      v_10
+    case False{}:
+      cps_provider_7_renamed_level(v_11, v_4)
+
+def native_match_cps_provider_7_renamed_level_1(v_2: List<&2, cps_provider_7_NfRenaming>, +v_4: Nat) -> Nat:
+  match v_2:
+    case []:
+      v_4
+    case cps_provider_7_NfRenaming{v_9, v_10} <> v_11:
+      native_match_cps_provider_7_renamed_level_0(Nat.is_eq(v_9, v_4), v_4, v_10, v_11)
+
+def cps_provider_7_renamed_level(v_2: List<&2, cps_provider_7_NfRenaming>, +v_4: Nat) -> Nat:
+  native_match_cps_provider_7_renamed_level_1(v_2, v_4)
+
+def cps_provider_7_materialize_all_scoped(v_2: List<&2, cps_provider_7_NfVal>, +v_4: Nat, +v_7: List<&2, cps_provider_7_NfRenaming>) -> List<&2, BIR.Descriptor>:
   match v_2:
     case []:
       []
-    case +v_6 <> v_7:
-      match v_6:
-        case cps_provider_7_NfType{v_10, v_11}:
-          BIR.DescriptorRef{v_10, cps_provider_7_materialize_all(v_11)} <> cps_provider_7_materialize_all(v_7)
-        case cps_provider_7_NfCtor{v_16, v_17}:
-          BIR.DescriptorConstructor{v_16, cps_provider_7_materialize_all(v_17)} <> cps_provider_7_materialize_all(v_7)
-        case cps_provider_7_NfQuantity{v_21}:
-          BIR.DescriptorQuantity{v_21} <> cps_provider_7_materialize_all(v_7)
-        case cps_provider_7_NfKind{v_24}:
-          BIR.DescriptorKind{v_24} <> cps_provider_7_materialize_all(v_7)
-        case cps_provider_7_NfOther{v_27}:
-          v_27 <> cps_provider_7_materialize_all(v_7)
-        case cps_provider_7_NfMissing{v_30}:
-          v_30 <> cps_provider_7_materialize_all(v_7)
-        case cps_provider_7_NfClosure{v_36, v_37, v_38, v_39}:
-          BIR.DescriptorLet{v_39, BIR.DescriptorLambda{v_36, v_37}} <> cps_provider_7_materialize_all(v_7)
+    case +v_11 <> v_12:
+      cps_provider_7_materialize_scoped(v_11, v_4, v_7) <> cps_provider_7_materialize_all_scoped(v_12, v_4, v_7)
+
+def cps_provider_7_materialize_all_at(v_2: List<&2, cps_provider_7_NfVal>, +v_4: Nat) -> List<&2, BIR.Descriptor>:
+  cps_provider_7_materialize_all_scoped(v_2, v_4, [])
+
+def cps_provider_7_materialize_all(v_2: List<&2, cps_provider_7_NfVal>) -> List<&2, BIR.Descriptor>:
+  cps_provider_7_materialize_all_at(v_2, 0n)
+
+def cps_provider_7_materialize_scoped(v_1: cps_provider_7_NfVal, +v_3: Nat, +v_6: List<&2, cps_provider_7_NfRenaming>) -> BIR.Descriptor:
+  match v_1:
+    case cps_provider_7_NfType{v_9, v_10}:
+      BIR.DescriptorRef{v_9, cps_provider_7_materialize_all_scoped(v_10, v_3, v_6)}
+    case cps_provider_7_NfCtor{v_14, v_15}:
+      BIR.DescriptorConstructor{v_14, cps_provider_7_materialize_all_scoped(v_15, v_3, v_6)}
+    case cps_provider_7_NfQuantity{v_18}:
+      BIR.DescriptorQuantity{v_18}
+    case cps_provider_7_NfKind{v_20}:
+      BIR.DescriptorKind{cps_provider_7_materialize_scoped(v_20, v_3, v_6)}
+    case cps_provider_7_NfOther{v_23}:
+      v_23
+    case cps_provider_7_NfMissing{v_25}:
+      v_25
+    case cps_provider_7_NfBinder{v_27}:
+      BIR.DescriptorParameter{Nat.sub(v_3, Nat.add(cps_provider_7_renamed_level(v_6, v_27), 1n))}
+    case cps_provider_7_NfArrow{v_33, v_34, v_35, v_36}:
+      BIR.DescriptorArrow{v_33, cps_provider_7_materialize_scoped(v_34, v_3, v_6), cps_provider_7_materialize_scoped(v_35, Nat.add(v_3, 1n), cps_provider_7_NfRenaming{v_36, v_3} <> v_6)}
+    case cps_provider_7_NfClosure{v_42, v_43, v_44}:
+      BIR.DescriptorLet{cps_provider_7_materialize_all_scoped(v_44, v_3, v_6), BIR.DescriptorLambda{v_42, v_43}}
+
+def cps_provider_7_materialize_at(v_1: cps_provider_7_NfVal, +v_3: Nat) -> BIR.Descriptor:
+  cps_provider_7_materialize_scoped(v_1, v_3, [])
 
 def cps_provider_7_materialize(v_1: cps_provider_7_NfVal) -> BIR.Descriptor:
-  match v_1:
-    case cps_provider_7_NfType{v_4, v_5}:
-      BIR.DescriptorRef{v_4, cps_provider_7_materialize_all(v_5)}
-    case cps_provider_7_NfCtor{v_9, v_10}:
-      BIR.DescriptorConstructor{v_9, cps_provider_7_materialize_all(v_10)}
-    case cps_provider_7_NfQuantity{v_13}:
-      BIR.DescriptorQuantity{v_13}
-    case cps_provider_7_NfKind{v_15}:
-      BIR.DescriptorKind{v_15}
-    case cps_provider_7_NfOther{v_17}:
-      v_17
-    case cps_provider_7_NfMissing{v_19}:
-      v_19
-    case cps_provider_7_NfClosure{v_24, v_25, v_26, v_27}:
-      BIR.DescriptorLet{v_27, BIR.DescriptorLambda{v_24, v_25}}
+  cps_provider_7_materialize_at(v_1, 0n)
 
-def cps_provider_7_reify_env(v_0: BIR.Descriptor, +v_3: List<&2, cps_provider_7_NfVal>) -> BIR.Descriptor:
+def cps_provider_7_reify_env(v_0: BIR.Descriptor, +v_3: List<&2, cps_provider_7_NfVal>, +v_5: Nat) -> BIR.Descriptor:
   match v_3:
     case []:
       v_0
-    case +v_6 <> v_7:
-      BIR.DescriptorLet{cps_provider_7_materialize_all(v_3), v_0}
+    case +v_8 <> v_9:
+      BIR.DescriptorLet{cps_provider_7_materialize_all_at(v_3, v_5), v_0}
 
 def cps_provider_7_status_combine(v_1: cps_provider_7_NfStatus, v_3: cps_provider_7_NfStatus) -> cps_provider_7_NfStatus:
   match v_1:
@@ -15092,8 +15116,8 @@ def cps_provider_7_status_combine(v_1: cps_provider_7_NfStatus, v_3: cps_provide
     case cps_provider_7_NfStatusOk{}:
       v_3
 
-def native_match_cps_provider_7_bind_status_0(v_42: Bool, v_11: List<&2, BIR.DescriptorPattern>, v_13: List<&2, cps_provider_7_NfVal>, v_20: List<&2, BIR.DescriptorPattern>, v_24: List<&2, cps_provider_7_NfVal>) -> cps_provider_7_NfStatus:
-  match v_42:
+def native_match_cps_provider_7_bind_status_0(v_56: Bool, v_11: List<&2, BIR.DescriptorPattern>, v_13: List<&2, cps_provider_7_NfVal>, v_20: List<&2, BIR.DescriptorPattern>, v_24: List<&2, cps_provider_7_NfVal>) -> cps_provider_7_NfStatus:
+  match v_56:
     case False{}:
       cps_provider_7_NfStatusNo{}
     case True{}:
@@ -15106,6 +15130,10 @@ def native_match_cps_provider_7_bind_status_1(+v_12: cps_provider_7_NfVal, v_11:
     case cps_provider_7_NfMissing{v_29}:
       cps_provider_7_status_combine(cps_provider_7_NfStatusMaybe{}, cps_provider_7_bind_status(v_11, v_13))
     case cps_provider_7_NfOther{v_33}:
+      cps_provider_7_status_combine(cps_provider_7_NfStatusMaybe{}, cps_provider_7_bind_status(v_11, v_13))
+    case cps_provider_7_NfBinder{v_37}:
+      cps_provider_7_status_combine(cps_provider_7_NfStatusMaybe{}, cps_provider_7_bind_status(v_11, v_13))
+    case cps_provider_7_NfArrow{v_44, v_45, v_46, v_47}:
       cps_provider_7_status_combine(cps_provider_7_NfStatusMaybe{}, cps_provider_7_bind_status(v_11, v_13))
     case _:
       cps_provider_7_NfStatusNo{}
@@ -15167,54 +15195,54 @@ def native_match_cps_provider_7_bind_patterns_0(v_5: cps_provider_7_NfStatus, v_
 def cps_provider_7_bind_patterns(v_1: List<&2, BIR.DescriptorPattern>, v_4: List<&2, cps_provider_7_NfVal>) -> cps_provider_7_NfBind:
   native_match_cps_provider_7_bind_patterns_0(cps_provider_7_bind_status(v_1, v_4), v_1, v_4)
 
-def native_match_cps_provider_7_nf_0(v_8: Bool, +v_1: cps_provider_7_NfContext, v_2: BIR.Descriptor, +v_5: List<&2, cps_provider_7_NfVal>, +v_7: Nat) -> cps_provider_7_Nf:
-  match v_8:
+def native_match_cps_provider_7_nf_0(v_10: Bool, +v_1: cps_provider_7_NfContext, v_2: BIR.Descriptor, +v_5: List<&2, cps_provider_7_NfVal>, +v_7: Nat, +v_9: Nat) -> cps_provider_7_Nf:
+  match v_10:
     case True{}:
       cps_provider_7_NfFail{"the type expression did not normalize within its reduction budget"}
     case False{}:
-      cps_provider_7_nf_descriptor(v_1, v_2, v_5, Nat.sub(v_7, 1n))
+      cps_provider_7_nf_descriptor(v_1, v_2, v_5, v_7, Nat.sub(v_9, 1n))
 
-def cps_provider_7_nf(+v_1: cps_provider_7_NfContext, v_2: BIR.Descriptor, +v_5: List<&2, cps_provider_7_NfVal>, +v_7: Nat) -> cps_provider_7_Nf:
-  native_match_cps_provider_7_nf_0(Nat.is_eq(v_7, 0n), v_1, v_2, v_5, v_7)
+def cps_provider_7_nf(+v_1: cps_provider_7_NfContext, v_2: BIR.Descriptor, +v_5: List<&2, cps_provider_7_NfVal>, +v_7: Nat, +v_9: Nat) -> cps_provider_7_Nf:
+  native_match_cps_provider_7_nf_0(Nat.is_eq(v_9, 0n), v_1, v_2, v_5, v_7, v_9)
 
-def native_match_cps_provider_7_nf_descriptor_0(v_8: Bool, +v_1: cps_provider_7_NfContext, v_2: BIR.Descriptor, +v_5: List<&2, cps_provider_7_NfVal>, +v_7: Nat) -> cps_provider_7_Nf:
-  match v_8:
+def native_match_cps_provider_7_nf_descriptor_0(v_10: Bool, +v_1: cps_provider_7_NfContext, v_2: BIR.Descriptor, +v_5: List<&2, cps_provider_7_NfVal>, +v_7: Nat, +v_9: Nat) -> cps_provider_7_Nf:
+  match v_10:
     case True{}:
       cps_provider_7_NfFail{"the type expression did not normalize within its reduction budget"}
     case False{}:
-      cps_provider_7_nf_descriptor_step(v_1, v_2, v_5, v_7)
+      cps_provider_7_nf_descriptor_step(v_1, v_2, v_5, v_7, v_9)
 
-def cps_provider_7_nf_descriptor(+v_1: cps_provider_7_NfContext, v_2: BIR.Descriptor, +v_5: List<&2, cps_provider_7_NfVal>, +v_7: Nat) -> cps_provider_7_Nf:
-  native_match_cps_provider_7_nf_descriptor_0(Nat.is_eq(v_7, 0n), v_1, v_2, v_5, v_7)
+def cps_provider_7_nf_descriptor(+v_1: cps_provider_7_NfContext, v_2: BIR.Descriptor, +v_5: List<&2, cps_provider_7_NfVal>, +v_7: Nat, +v_9: Nat) -> cps_provider_7_Nf:
+  native_match_cps_provider_7_nf_descriptor_0(Nat.is_eq(v_9, 0n), v_1, v_2, v_5, v_7, v_9)
 
-def native_match_cps_provider_7_nf_arrow_0(v_22: cps_provider_7_Nf, v_2: BIR.Quantity, v_15: cps_provider_7_NfVal) -> cps_provider_7_Nf:
-  match v_22:
-    case cps_provider_7_NfFail{v_18}:
-      cps_provider_7_NfFail{v_18}
-    case cps_provider_7_NfOk{v_20}:
-      cps_provider_7_NfOk{cps_provider_7_NfOther{BIR.DescriptorArrow{v_2, cps_provider_7_materialize(v_15), cps_provider_7_materialize(v_20)}}}
+def native_match_cps_provider_7_nf_arrow_0(v_25: cps_provider_7_Nf, v_2: BIR.Quantity, +v_9: Nat, v_17: cps_provider_7_NfVal) -> cps_provider_7_Nf:
+  match v_25:
+    case cps_provider_7_NfFail{v_21}:
+      cps_provider_7_NfFail{v_21}
+    case cps_provider_7_NfOk{v_23}:
+      cps_provider_7_NfOk{cps_provider_7_NfArrow{v_2, v_17, v_23, v_9}}
 
-def native_match_cps_provider_7_nf_arrow_1(v_21: cps_provider_7_Nf, +v_1: cps_provider_7_NfContext, v_2: BIR.Quantity, v_4: BIR.Descriptor, +v_7: List<&2, cps_provider_7_NfVal>, +v_9: Nat) -> cps_provider_7_Nf:
-  match v_21:
-    case cps_provider_7_NfFail{v_13}:
-      cps_provider_7_NfFail{v_13}
-    case cps_provider_7_NfOk{v_15}:
-      native_match_cps_provider_7_nf_arrow_0(cps_provider_7_nf(v_1, v_4, v_7, v_9), v_2, v_15)
+def native_match_cps_provider_7_nf_arrow_1(v_24: cps_provider_7_Nf, +v_1: cps_provider_7_NfContext, v_2: BIR.Quantity, v_4: BIR.Descriptor, +v_7: List<&2, cps_provider_7_NfVal>, +v_9: Nat, +v_11: Nat) -> cps_provider_7_Nf:
+  match v_24:
+    case cps_provider_7_NfFail{v_15}:
+      cps_provider_7_NfFail{v_15}
+    case cps_provider_7_NfOk{v_17}:
+      native_match_cps_provider_7_nf_arrow_0(cps_provider_7_nf(v_1, v_4, List.append(&2, cps_provider_7_NfVal, v_7, [cps_provider_7_NfBinder{v_9}]), Nat.add(v_9, 1n), v_11), v_2, v_9, v_17)
 
-def cps_provider_7_nf_arrow(+v_1: cps_provider_7_NfContext, v_2: BIR.Quantity, v_3: BIR.Descriptor, v_4: BIR.Descriptor, +v_7: List<&2, cps_provider_7_NfVal>, +v_9: Nat) -> cps_provider_7_Nf:
-  native_match_cps_provider_7_nf_arrow_1(cps_provider_7_nf(v_1, v_3, v_7, v_9), v_1, v_2, v_4, v_7, v_9)
+def cps_provider_7_nf_arrow(+v_1: cps_provider_7_NfContext, v_2: BIR.Quantity, v_3: BIR.Descriptor, v_4: BIR.Descriptor, +v_7: List<&2, cps_provider_7_NfVal>, +v_9: Nat, +v_11: Nat) -> cps_provider_7_Nf:
+  native_match_cps_provider_7_nf_arrow_1(cps_provider_7_nf(v_1, v_3, v_7, v_9, v_11), v_1, v_2, v_4, v_7, v_9, v_11)
 
 def native_match_cps_provider_7_nf_descriptor_step_0(v_191: cps_provider_7_Nf) -> cps_provider_7_Nf:
   match v_191:
-    case cps_provider_7_NfOk{v_22}:
-      cps_provider_7_NfOk{cps_provider_7_NfKind{cps_provider_7_materialize(v_22)}}
-    case cps_provider_7_NfFail{v_25}:
-      cps_provider_7_NfFail{v_25}
+    case cps_provider_7_NfOk{v_24}:
+      cps_provider_7_NfOk{cps_provider_7_NfKind{v_24}}
+    case cps_provider_7_NfFail{v_26}:
+      cps_provider_7_NfFail{v_26}
 
-def native_match_cps_provider_7_nf_descriptor_step_1(v_192: cps_provider_7_NfList, +v_1: cps_provider_7_NfContext, +v_7: Nat, v_45: String) -> cps_provider_7_Nf:
+def native_match_cps_provider_7_nf_descriptor_step_1(v_192: cps_provider_7_NfList, +v_1: cps_provider_7_NfContext, +v_7: Nat, +v_9: Nat, v_45: String) -> cps_provider_7_Nf:
   match v_192:
     case cps_provider_7_NfListOk{v_49}:
-      cps_provider_7_nf_named(v_1, v_45, v_49, v_7)
+      cps_provider_7_nf_named(v_1, v_45, v_49, v_7, v_9)
     case cps_provider_7_NfListFail{v_52}:
       cps_provider_7_NfFail{v_52}
 
@@ -15225,202 +15253,202 @@ def native_match_cps_provider_7_nf_descriptor_step_2(v_193: cps_provider_7_NfLis
     case cps_provider_7_NfListFail{v_61}:
       cps_provider_7_NfFail{v_61}
 
-def native_match_cps_provider_7_nf_descriptor_step_3(v_195: cps_provider_7_Nf, +v_1: cps_provider_7_NfContext, +v_7: Nat, v_68: cps_provider_7_NfVal) -> cps_provider_7_Nf:
+def native_match_cps_provider_7_nf_descriptor_step_3(v_195: cps_provider_7_Nf, +v_1: cps_provider_7_NfContext, +v_7: Nat, +v_9: Nat, v_68: cps_provider_7_NfVal) -> cps_provider_7_Nf:
   match v_195:
     case cps_provider_7_NfOk{v_71}:
-      cps_provider_7_nf_apply(v_1, v_68, [v_71], v_7)
+      cps_provider_7_nf_apply(v_1, v_68, [v_71], v_7, v_9)
     case cps_provider_7_NfFail{v_74}:
       cps_provider_7_NfFail{v_74}
 
-def native_match_cps_provider_7_nf_descriptor_step_4(v_194: cps_provider_7_Nf, +v_1: cps_provider_7_NfContext, +v_5: List<&2, cps_provider_7_NfVal>, +v_7: Nat, v_65: BIR.Descriptor) -> cps_provider_7_Nf:
+def native_match_cps_provider_7_nf_descriptor_step_4(v_194: cps_provider_7_Nf, +v_1: cps_provider_7_NfContext, +v_5: List<&2, cps_provider_7_NfVal>, +v_7: Nat, +v_9: Nat, v_65: BIR.Descriptor) -> cps_provider_7_Nf:
   match v_194:
     case cps_provider_7_NfOk{v_68}:
-      native_match_cps_provider_7_nf_descriptor_step_3(cps_provider_7_nf(v_1, v_65, v_5, v_7), v_1, v_7, v_68)
+      native_match_cps_provider_7_nf_descriptor_step_3(cps_provider_7_nf(v_1, v_65, v_5, v_7, v_9), v_1, v_7, v_9, v_68)
     case cps_provider_7_NfFail{v_76}:
       cps_provider_7_NfFail{v_76}
 
-def native_match_cps_provider_7_nf_descriptor_step_5(v_196: cps_provider_7_Nf, +v_1: cps_provider_7_NfContext, +v_5: List<&2, cps_provider_7_NfVal>, +v_7: Nat, v_80: Nat, v_82: BIR.Descriptor) -> cps_provider_7_Nf:
+def native_match_cps_provider_7_nf_descriptor_step_5(v_196: cps_provider_7_Nf, +v_1: cps_provider_7_NfContext, +v_5: List<&2, cps_provider_7_NfVal>, +v_7: Nat, +v_9: Nat, v_80: Nat, v_82: BIR.Descriptor) -> cps_provider_7_Nf:
   match v_196:
     case cps_provider_7_NfOk{v_85}:
-      cps_provider_7_nf_descriptor(v_1, v_82, cps_provider_7_insert_before(v_5, Nat.sub(List.length(&2, cps_provider_7_NfVal, v_5), v_80), v_85), Nat.sub(v_7, 1n))
+      cps_provider_7_nf_descriptor(v_1, v_82, cps_provider_7_insert_before(v_5, Nat.sub(List.length(&2, cps_provider_7_NfVal, v_5), v_80), v_85), v_7, Nat.sub(v_9, 1n))
     case cps_provider_7_NfFail{v_90}:
       cps_provider_7_NfFail{v_90}
 
-def native_match_cps_provider_7_nf_descriptor_step_6(v_197: cps_provider_7_NfList, +v_1: cps_provider_7_NfContext, +v_5: List<&2, cps_provider_7_NfVal>, +v_7: Nat, v_94: BIR.Descriptor) -> cps_provider_7_Nf:
+def native_match_cps_provider_7_nf_descriptor_step_6(v_197: cps_provider_7_NfList, +v_1: cps_provider_7_NfContext, +v_5: List<&2, cps_provider_7_NfVal>, +v_7: Nat, +v_9: Nat, v_94: BIR.Descriptor) -> cps_provider_7_Nf:
   match v_197:
     case cps_provider_7_NfListOk{v_97}:
-      cps_provider_7_nf_descriptor(v_1, v_94, List.append(&2, cps_provider_7_NfVal, v_5, v_97), Nat.sub(v_7, 1n))
+      cps_provider_7_nf_descriptor(v_1, v_94, List.append(&2, cps_provider_7_NfVal, v_5, v_97), v_7, Nat.sub(v_9, 1n))
     case cps_provider_7_NfListFail{v_101}:
       cps_provider_7_NfFail{v_101}
 
-def native_match_cps_provider_7_nf_descriptor_step_7(v_199: cps_provider_7_NfBind, +v_1: cps_provider_7_NfContext, +v_5: List<&2, cps_provider_7_NfVal>, +v_7: Nat, +v_10: BIR.Descriptor, v_107: BIR.Descriptor) -> cps_provider_7_Nf:
+def native_match_cps_provider_7_nf_descriptor_step_7(v_199: cps_provider_7_NfBind, +v_1: cps_provider_7_NfContext, +v_5: List<&2, cps_provider_7_NfVal>, +v_7: Nat, +v_9: Nat, +v_12: BIR.Descriptor, v_107: BIR.Descriptor) -> cps_provider_7_Nf:
   match v_199:
     case cps_provider_7_NfBound{v_113}:
-      cps_provider_7_nf_descriptor(v_1, v_107, List.append(&2, cps_provider_7_NfVal, v_5, v_113), Nat.sub(v_7, 1n))
+      cps_provider_7_nf_descriptor(v_1, v_107, List.append(&2, cps_provider_7_NfVal, v_5, v_113), v_7, Nat.sub(v_9, 1n))
     case _:
-      cps_provider_7_NfOk{cps_provider_7_NfOther{cps_provider_7_reify_env(v_10, v_5)}}
+      cps_provider_7_NfOk{cps_provider_7_NfOther{cps_provider_7_reify_env(v_12, v_5, v_7)}}
 
-def native_match_cps_provider_7_nf_descriptor_step_8(v_198: cps_provider_7_NfList, +v_1: cps_provider_7_NfContext, +v_5: List<&2, cps_provider_7_NfVal>, +v_7: Nat, +v_10: BIR.Descriptor, v_105: List<&2, BIR.DescriptorPattern>, v_107: BIR.Descriptor) -> cps_provider_7_Nf:
+def native_match_cps_provider_7_nf_descriptor_step_8(v_198: cps_provider_7_NfList, +v_1: cps_provider_7_NfContext, +v_5: List<&2, cps_provider_7_NfVal>, +v_7: Nat, +v_9: Nat, +v_12: BIR.Descriptor, v_105: List<&2, BIR.DescriptorPattern>, v_107: BIR.Descriptor) -> cps_provider_7_Nf:
   match v_198:
     case cps_provider_7_NfListOk{v_110}:
-      native_match_cps_provider_7_nf_descriptor_step_7(cps_provider_7_bind_patterns(v_105, v_110), v_1, v_5, v_7, v_10, v_107)
+      native_match_cps_provider_7_nf_descriptor_step_7(cps_provider_7_bind_patterns(v_105, v_110), v_1, v_5, v_7, v_9, v_12, v_107)
     case cps_provider_7_NfListFail{v_120}:
       cps_provider_7_NfFail{v_120}
 
-def native_match_cps_provider_7_nf_descriptor_step_9(v_200: cps_provider_7_NfList, +v_1: cps_provider_7_NfContext, +v_5: List<&2, cps_provider_7_NfVal>, +v_7: Nat, +v_10: BIR.Descriptor, v_124: List<&2, BIR.Descriptor>) -> cps_provider_7_Nf:
+def native_match_cps_provider_7_nf_descriptor_step_9(v_200: cps_provider_7_NfList, +v_1: cps_provider_7_NfContext, +v_5: List<&2, cps_provider_7_NfVal>, +v_7: Nat, +v_9: Nat, +v_12: BIR.Descriptor, v_124: List<&2, BIR.Descriptor>) -> cps_provider_7_Nf:
   match v_200:
     case cps_provider_7_NfListOk{v_127}:
-      cps_provider_7_nf_cases(v_1, v_124, v_127, v_5, v_10, v_7)
+      cps_provider_7_nf_cases(v_1, v_124, v_127, v_5, v_12, v_7, v_9)
     case cps_provider_7_NfListFail{v_130}:
       cps_provider_7_NfFail{v_130}
 
-def native_match_cps_provider_7_nf_descriptor_step_10(v_201: cps_provider_7_Nf, +v_1: cps_provider_7_NfContext, +v_5: List<&2, cps_provider_7_NfVal>, +v_7: Nat, v_139: BIR.Descriptor) -> cps_provider_7_Nf:
+def native_match_cps_provider_7_nf_descriptor_step_10(v_201: cps_provider_7_Nf, +v_1: cps_provider_7_NfContext, +v_5: List<&2, cps_provider_7_NfVal>, +v_7: Nat, +v_9: Nat, v_139: BIR.Descriptor) -> cps_provider_7_Nf:
   match v_201:
     case cps_provider_7_NfOk{v_142}:
-      cps_provider_7_nf_descriptor(v_1, v_139, List.append(&2, cps_provider_7_NfVal, v_5, [v_142]), Nat.sub(v_7, 1n))
+      cps_provider_7_nf_descriptor(v_1, v_139, List.append(&2, cps_provider_7_NfVal, v_5, [v_142]), v_7, Nat.sub(v_9, 1n))
     case cps_provider_7_NfFail{v_146}:
       cps_provider_7_NfFail{v_146}
 
-def native_match_cps_provider_7_nf_descriptor_step_11(v_202: cps_provider_7_NfList, +v_1: cps_provider_7_NfContext, +v_7: Nat, v_170: String) -> cps_provider_7_Nf:
+def native_match_cps_provider_7_nf_descriptor_step_11(v_202: cps_provider_7_NfList, +v_1: cps_provider_7_NfContext, +v_7: Nat, +v_9: Nat, v_170: String) -> cps_provider_7_Nf:
   match v_202:
     case cps_provider_7_NfListOk{v_175}:
-      cps_provider_7_nf_named(v_1, v_170, v_175, v_7)
+      cps_provider_7_nf_named(v_1, v_170, v_175, v_7, v_9)
     case cps_provider_7_NfListFail{v_178}:
       cps_provider_7_NfFail{v_178}
 
-def native_match_cps_provider_7_nf_descriptor_step_12(v_203: cps_provider_7_NfList, +v_1: cps_provider_7_NfContext, +v_7: Nat, v_182: String) -> cps_provider_7_Nf:
+def native_match_cps_provider_7_nf_descriptor_step_12(v_203: cps_provider_7_NfList, +v_1: cps_provider_7_NfContext, +v_7: Nat, +v_9: Nat, v_182: String) -> cps_provider_7_Nf:
   match v_203:
     case cps_provider_7_NfListOk{v_187}:
-      cps_provider_7_nf_named(v_1, v_182, v_187, v_7)
+      cps_provider_7_nf_named(v_1, v_182, v_187, v_7, v_9)
     case cps_provider_7_NfListFail{v_190}:
       cps_provider_7_NfFail{v_190}
 
-def native_match_cps_provider_7_nf_descriptor_step_13(+v_10: BIR.Descriptor, +v_1: cps_provider_7_NfContext, +v_5: List<&2, cps_provider_7_NfVal>, +v_7: Nat) -> cps_provider_7_Nf:
-  match v_10:
+def native_match_cps_provider_7_nf_descriptor_step_13(+v_12: BIR.Descriptor, +v_1: cps_provider_7_NfContext, +v_5: List<&2, cps_provider_7_NfVal>, +v_7: Nat, +v_9: Nat) -> cps_provider_7_Nf:
+  match v_12:
     case BIR.DescriptorNull{}:
-      cps_provider_7_NfOk{cps_provider_7_NfOther{cps_provider_7_reify_env(v_10, v_5)}}
-    case BIR.DescriptorParameter{v_13}:
-      cps_provider_7_NfOk{cps_provider_7_val_at(v_5, v_13, v_10)}
+      cps_provider_7_NfOk{cps_provider_7_NfOther{cps_provider_7_reify_env(v_12, v_5, v_7)}}
+    case BIR.DescriptorParameter{v_15}:
+      cps_provider_7_NfOk{cps_provider_7_val_at(v_5, v_15, v_12)}
     case BIR.DescriptorQuantityKind{}:
-      cps_provider_7_NfOk{cps_provider_7_NfOther{cps_provider_7_reify_env(v_10, v_5)}}
-    case BIR.DescriptorQuantity{v_17}:
-      cps_provider_7_NfOk{cps_provider_7_NfQuantity{v_17}}
-    case BIR.DescriptorKind{v_19}:
-      native_match_cps_provider_7_nf_descriptor_step_0(cps_provider_7_nf(v_1, v_19, v_5, v_7))
-    case BIR.DescriptorMinimum{v_28, v_29}:
-      cps_provider_7_NfOk{cps_provider_7_NfOther{cps_provider_7_reify_env(v_10, v_5)}}
-    case BIR.DescriptorArrow{v_34, v_35, v_36}:
-      cps_provider_7_nf_arrow(v_1, v_34, v_35, v_36, v_5, v_7)
-    case BIR.DescriptorLambda{v_40, v_41}:
-      cps_provider_7_NfOk{cps_provider_7_NfClosure{v_40, v_41, v_5, cps_provider_7_materialize_all(v_5)}}
+      cps_provider_7_NfOk{cps_provider_7_NfOther{cps_provider_7_reify_env(v_12, v_5, v_7)}}
+    case BIR.DescriptorQuantity{v_19}:
+      cps_provider_7_NfOk{cps_provider_7_NfQuantity{v_19}}
+    case BIR.DescriptorKind{v_21}:
+      native_match_cps_provider_7_nf_descriptor_step_0(cps_provider_7_nf(v_1, v_21, v_5, v_7, v_9))
+    case BIR.DescriptorMinimum{v_29, v_30}:
+      cps_provider_7_NfOk{cps_provider_7_NfOther{cps_provider_7_reify_env(v_12, v_5, v_7)}}
+    case BIR.DescriptorArrow{v_35, v_36, v_37}:
+      cps_provider_7_nf_arrow(v_1, v_35, v_36, v_37, v_5, v_7, v_9)
+    case BIR.DescriptorLambda{v_41, v_42}:
+      cps_provider_7_NfOk{cps_provider_7_NfClosure{v_41, v_42, v_5}}
     case BIR.DescriptorRef{v_45, v_46}:
-      native_match_cps_provider_7_nf_descriptor_step_1(cps_provider_7_nf_all(v_1, v_46, v_5, v_7), v_1, v_7, v_45)
+      native_match_cps_provider_7_nf_descriptor_step_1(cps_provider_7_nf_all(v_1, v_46, v_5, v_7, v_9), v_1, v_7, v_9, v_45)
     case BIR.DescriptorConstructor{v_55, v_56}:
-      native_match_cps_provider_7_nf_descriptor_step_2(cps_provider_7_nf_all(v_1, v_56, v_5, v_7), v_55)
+      native_match_cps_provider_7_nf_descriptor_step_2(cps_provider_7_nf_all(v_1, v_56, v_5, v_7, v_9), v_55)
     case BIR.DescriptorApplication{v_64, v_65}:
-      native_match_cps_provider_7_nf_descriptor_step_4(cps_provider_7_nf(v_1, v_64, v_5, v_7), v_1, v_5, v_7, v_65)
+      native_match_cps_provider_7_nf_descriptor_step_4(cps_provider_7_nf(v_1, v_64, v_5, v_7, v_9), v_1, v_5, v_7, v_9, v_65)
     case BIR.DescriptorSubstitution{v_80, v_81, v_82}:
-      native_match_cps_provider_7_nf_descriptor_step_5(cps_provider_7_nf(v_1, v_81, v_5, v_7), v_1, v_5, v_7, v_80, v_82)
+      native_match_cps_provider_7_nf_descriptor_step_5(cps_provider_7_nf(v_1, v_81, v_5, v_7, v_9), v_1, v_5, v_7, v_9, v_80, v_82)
     case BIR.DescriptorLet{v_93, v_94}:
-      native_match_cps_provider_7_nf_descriptor_step_6(cps_provider_7_nf_all(v_1, v_93, v_5, v_7), v_1, v_5, v_7, v_94)
+      native_match_cps_provider_7_nf_descriptor_step_6(cps_provider_7_nf_all(v_1, v_93, v_5, v_7, v_9), v_1, v_5, v_7, v_9, v_94)
     case BIR.DescriptorLocal{v_105, v_106, v_107}:
-      native_match_cps_provider_7_nf_descriptor_step_8(cps_provider_7_nf_all(v_1, v_106, v_5, v_7), v_1, v_5, v_7, v_10, v_105, v_107)
+      native_match_cps_provider_7_nf_descriptor_step_8(cps_provider_7_nf_all(v_1, v_106, v_5, v_7, v_9), v_1, v_5, v_7, v_9, v_12, v_105, v_107)
     case BIR.DescriptorMatch{v_123, v_124}:
-      native_match_cps_provider_7_nf_descriptor_step_9(cps_provider_7_nf_all(v_1, v_123, v_5, v_7), v_1, v_5, v_7, v_10, v_124)
+      native_match_cps_provider_7_nf_descriptor_step_9(cps_provider_7_nf_all(v_1, v_123, v_5, v_7, v_9), v_1, v_5, v_7, v_9, v_12, v_124)
     case BIR.DescriptorCase{v_133, v_134}:
-      cps_provider_7_NfOk{cps_provider_7_NfOther{cps_provider_7_reify_env(v_10, v_5)}}
+      cps_provider_7_NfOk{cps_provider_7_NfOther{cps_provider_7_reify_env(v_12, v_5, v_7)}}
     case BIR.DescriptorBind{v_138, v_139}:
-      native_match_cps_provider_7_nf_descriptor_step_10(cps_provider_7_nf(v_1, v_138, v_5, v_7), v_1, v_5, v_7, v_139)
+      native_match_cps_provider_7_nf_descriptor_step_10(cps_provider_7_nf(v_1, v_138, v_5, v_7, v_9), v_1, v_5, v_7, v_9, v_139)
     case BIR.DescriptorEquality{v_150, v_151, v_152}:
-      cps_provider_7_NfOk{cps_provider_7_NfOther{cps_provider_7_reify_env(v_10, v_5)}}
+      cps_provider_7_NfOk{cps_provider_7_NfOther{cps_provider_7_reify_env(v_12, v_5, v_7)}}
     case BIR.DescriptorReflexivity{}:
-      cps_provider_7_NfOk{cps_provider_7_NfOther{cps_provider_7_reify_env(v_10, v_5)}}
+      cps_provider_7_NfOk{cps_provider_7_NfOther{cps_provider_7_reify_env(v_12, v_5, v_7)}}
     case BIR.DescriptorFailure{v_156}:
       cps_provider_7_NfFail{v_156}
     case BIR.DescriptorFill{v_159, v_160}:
-      cps_provider_7_nf_apply_args(v_1, v_159, v_160, v_5, v_10, v_7)
+      cps_provider_7_nf_apply_args(v_1, v_159, v_160, v_5, v_12, v_7, v_9)
     case BIR.DescriptorPlus{v_164, v_165}:
-      cps_provider_7_nf_apply_args(v_1, v_164, v_165, v_5, v_10, v_7)
+      cps_provider_7_nf_apply_args(v_1, v_164, v_165, v_5, v_12, v_7, v_9)
     case BIR.DescriptorNamedFill{v_170, v_171, v_172}:
-      native_match_cps_provider_7_nf_descriptor_step_11(cps_provider_7_nf_all(v_1, v_172, v_5, v_7), v_1, v_7, v_170)
+      native_match_cps_provider_7_nf_descriptor_step_11(cps_provider_7_nf_all(v_1, v_172, v_5, v_7, v_9), v_1, v_7, v_9, v_170)
     case BIR.DescriptorNamedPlus{v_182, v_183, v_184}:
-      native_match_cps_provider_7_nf_descriptor_step_12(cps_provider_7_nf_all(v_1, v_184, v_5, v_7), v_1, v_7, v_182)
+      native_match_cps_provider_7_nf_descriptor_step_12(cps_provider_7_nf_all(v_1, v_184, v_5, v_7, v_9), v_1, v_7, v_9, v_182)
 
-def cps_provider_7_nf_descriptor_step(+v_1: cps_provider_7_NfContext, v_2: BIR.Descriptor, +v_5: List<&2, cps_provider_7_NfVal>, +v_7: Nat) -> cps_provider_7_Nf:
-  +v_10 = v_2
-  native_match_cps_provider_7_nf_descriptor_step_13(v_10, v_1, v_5, v_7)
+def cps_provider_7_nf_descriptor_step(+v_1: cps_provider_7_NfContext, v_2: BIR.Descriptor, +v_5: List<&2, cps_provider_7_NfVal>, +v_7: Nat, +v_9: Nat) -> cps_provider_7_Nf:
+  +v_12 = v_2
+  native_match_cps_provider_7_nf_descriptor_step_13(v_12, v_1, v_5, v_7, v_9)
 
-def native_match_cps_provider_7_nf_all_0(v_25: cps_provider_7_NfList, v_18: cps_provider_7_NfVal) -> cps_provider_7_NfList:
-  match v_25:
-    case cps_provider_7_NfListFail{v_21}:
-      cps_provider_7_NfListFail{v_21}
-    case cps_provider_7_NfListOk{v_23}:
-      cps_provider_7_NfListOk{v_18 <> v_23}
+def native_match_cps_provider_7_nf_all_0(v_27: cps_provider_7_NfList, v_20: cps_provider_7_NfVal) -> cps_provider_7_NfList:
+  match v_27:
+    case cps_provider_7_NfListFail{v_23}:
+      cps_provider_7_NfListFail{v_23}
+    case cps_provider_7_NfListOk{v_25}:
+      cps_provider_7_NfListOk{v_20 <> v_25}
 
-def native_match_cps_provider_7_nf_all_1(v_24: cps_provider_7_Nf, +v_1: cps_provider_7_NfContext, +v_6: List<&2, cps_provider_7_NfVal>, +v_8: Nat, v_13: List<&2, BIR.Descriptor>) -> cps_provider_7_NfList:
-  match v_24:
-    case cps_provider_7_NfFail{v_16}:
-      cps_provider_7_NfListFail{v_16}
-    case cps_provider_7_NfOk{v_18}:
-      native_match_cps_provider_7_nf_all_0(cps_provider_7_nf_all(v_1, v_13, v_6, v_8), v_18)
+def native_match_cps_provider_7_nf_all_1(v_26: cps_provider_7_Nf, +v_1: cps_provider_7_NfContext, +v_6: List<&2, cps_provider_7_NfVal>, +v_8: Nat, +v_10: Nat, v_15: List<&2, BIR.Descriptor>) -> cps_provider_7_NfList:
+  match v_26:
+    case cps_provider_7_NfFail{v_18}:
+      cps_provider_7_NfListFail{v_18}
+    case cps_provider_7_NfOk{v_20}:
+      native_match_cps_provider_7_nf_all_0(cps_provider_7_nf_all(v_1, v_15, v_6, v_8, v_10), v_20)
 
-def native_match_cps_provider_7_nf_all_2(v_3: List<&2, BIR.Descriptor>, +v_1: cps_provider_7_NfContext, +v_6: List<&2, cps_provider_7_NfVal>, +v_8: Nat) -> cps_provider_7_NfList:
+def native_match_cps_provider_7_nf_all_2(v_3: List<&2, BIR.Descriptor>, +v_1: cps_provider_7_NfContext, +v_6: List<&2, cps_provider_7_NfVal>, +v_8: Nat, +v_10: Nat) -> cps_provider_7_NfList:
   match v_3:
     case []:
       cps_provider_7_NfListOk{[]}
-    case +v_12 <> v_13:
-      native_match_cps_provider_7_nf_all_1(cps_provider_7_nf(v_1, v_12, v_6, v_8), v_1, v_6, v_8, v_13)
+    case +v_14 <> v_15:
+      native_match_cps_provider_7_nf_all_1(cps_provider_7_nf(v_1, v_14, v_6, v_8, v_10), v_1, v_6, v_8, v_10, v_15)
 
-def cps_provider_7_nf_all(+v_1: cps_provider_7_NfContext, v_3: List<&2, BIR.Descriptor>, +v_6: List<&2, cps_provider_7_NfVal>, +v_8: Nat) -> cps_provider_7_NfList:
-  native_match_cps_provider_7_nf_all_2(v_3, v_1, v_6, v_8)
+def cps_provider_7_nf_all(+v_1: cps_provider_7_NfContext, v_3: List<&2, BIR.Descriptor>, +v_6: List<&2, cps_provider_7_NfVal>, +v_8: Nat, +v_10: Nat) -> cps_provider_7_NfList:
+  native_match_cps_provider_7_nf_all_2(v_3, v_1, v_6, v_8, v_10)
 
-def native_match_cps_provider_7_nf_apply_args_0(v_23: cps_provider_7_NfList, +v_1: cps_provider_7_NfContext, v_8: BIR.Descriptor, +v_10: Nat, v_16: cps_provider_7_NfVal) -> cps_provider_7_Nf:
-  match v_23:
-    case cps_provider_7_NfListFail{v_19}:
-      cps_provider_7_NfFail{v_19}
-    case cps_provider_7_NfListOk{v_21}:
-      cps_provider_7_nf_apply_source(v_1, v_16, v_21, v_8, v_10)
+def native_match_cps_provider_7_nf_apply_args_0(v_25: cps_provider_7_NfList, +v_1: cps_provider_7_NfContext, v_8: BIR.Descriptor, +v_10: Nat, +v_12: Nat, v_18: cps_provider_7_NfVal) -> cps_provider_7_Nf:
+  match v_25:
+    case cps_provider_7_NfListFail{v_21}:
+      cps_provider_7_NfFail{v_21}
+    case cps_provider_7_NfListOk{v_23}:
+      cps_provider_7_nf_apply_source(v_1, v_18, v_23, v_8, v_10, v_12)
 
-def native_match_cps_provider_7_nf_apply_args_1(v_22: cps_provider_7_Nf, +v_1: cps_provider_7_NfContext, v_4: List<&2, BIR.Descriptor>, +v_7: List<&2, cps_provider_7_NfVal>, v_8: BIR.Descriptor, +v_10: Nat) -> cps_provider_7_Nf:
-  match v_22:
-    case cps_provider_7_NfFail{v_14}:
-      cps_provider_7_NfFail{v_14}
-    case cps_provider_7_NfOk{v_16}:
-      native_match_cps_provider_7_nf_apply_args_0(cps_provider_7_nf_all(v_1, v_4, v_7, v_10), v_1, v_8, v_10, v_16)
+def native_match_cps_provider_7_nf_apply_args_1(v_24: cps_provider_7_Nf, +v_1: cps_provider_7_NfContext, v_4: List<&2, BIR.Descriptor>, +v_7: List<&2, cps_provider_7_NfVal>, v_8: BIR.Descriptor, +v_10: Nat, +v_12: Nat) -> cps_provider_7_Nf:
+  match v_24:
+    case cps_provider_7_NfFail{v_16}:
+      cps_provider_7_NfFail{v_16}
+    case cps_provider_7_NfOk{v_18}:
+      native_match_cps_provider_7_nf_apply_args_0(cps_provider_7_nf_all(v_1, v_4, v_7, v_10, v_12), v_1, v_8, v_10, v_12, v_18)
 
-def cps_provider_7_nf_apply_args(+v_1: cps_provider_7_NfContext, v_2: BIR.Descriptor, v_4: List<&2, BIR.Descriptor>, +v_7: List<&2, cps_provider_7_NfVal>, v_8: BIR.Descriptor, +v_10: Nat) -> cps_provider_7_Nf:
-  native_match_cps_provider_7_nf_apply_args_1(cps_provider_7_nf(v_1, v_2, v_7, v_10), v_1, v_4, v_7, v_8, v_10)
+def cps_provider_7_nf_apply_args(+v_1: cps_provider_7_NfContext, v_2: BIR.Descriptor, v_4: List<&2, BIR.Descriptor>, +v_7: List<&2, cps_provider_7_NfVal>, v_8: BIR.Descriptor, +v_10: Nat, +v_12: Nat) -> cps_provider_7_Nf:
+  native_match_cps_provider_7_nf_apply_args_1(cps_provider_7_nf(v_1, v_2, v_7, v_10, v_12), v_1, v_4, v_7, v_8, v_10, v_12)
 
-def cps_provider_7_nf_apply_source(+v_1: cps_provider_7_NfContext, v_3: cps_provider_7_NfVal, v_6: List<&2, cps_provider_7_NfVal>, v_7: BIR.Descriptor, +v_9: Nat) -> cps_provider_7_Nf:
+def cps_provider_7_nf_apply_source(+v_1: cps_provider_7_NfContext, v_3: cps_provider_7_NfVal, v_6: List<&2, cps_provider_7_NfVal>, v_7: BIR.Descriptor, +v_9: Nat, +v_11: Nat) -> cps_provider_7_Nf:
   match v_6:
     case []:
       cps_provider_7_NfOk{v_3}
     case _:
-      cps_provider_7_nf_apply(v_1, v_3, v_6, v_9)
+      cps_provider_7_nf_apply(v_1, v_3, v_6, v_9, v_11)
 
-def native_match_cps_provider_7_nf_apply_0(v_19: cps_provider_7_Nf, +v_1: cps_provider_7_NfContext, +v_8: Nat, v_13: List<&2, cps_provider_7_NfVal>) -> cps_provider_7_Nf:
-  match v_19:
-    case cps_provider_7_NfFail{v_16}:
-      cps_provider_7_NfFail{v_16}
-    case cps_provider_7_NfOk{v_18}:
-      cps_provider_7_nf_apply(v_1, v_18, v_13, Nat.sub(v_8, 1n))
+def native_match_cps_provider_7_nf_apply_0(v_21: cps_provider_7_Nf, +v_1: cps_provider_7_NfContext, +v_8: Nat, +v_10: Nat, v_15: List<&2, cps_provider_7_NfVal>) -> cps_provider_7_Nf:
+  match v_21:
+    case cps_provider_7_NfFail{v_18}:
+      cps_provider_7_NfFail{v_18}
+    case cps_provider_7_NfOk{v_20}:
+      cps_provider_7_nf_apply(v_1, v_20, v_15, v_8, Nat.sub(v_10, 1n))
 
-def native_match_cps_provider_7_nf_apply_1(v_6: List<&2, cps_provider_7_NfVal>, +v_1: cps_provider_7_NfContext, v_3: cps_provider_7_NfVal, +v_8: Nat) -> cps_provider_7_Nf:
+def native_match_cps_provider_7_nf_apply_1(v_6: List<&2, cps_provider_7_NfVal>, +v_1: cps_provider_7_NfContext, v_3: cps_provider_7_NfVal, +v_8: Nat, +v_10: Nat) -> cps_provider_7_Nf:
   match v_6:
     case []:
       cps_provider_7_NfOk{v_3}
-    case +v_12 <> v_13:
-      native_match_cps_provider_7_nf_apply_0(cps_provider_7_nf_apply_one(v_1, v_3, v_12, Nat.sub(v_8, 1n)), v_1, v_8, v_13)
+    case +v_14 <> v_15:
+      native_match_cps_provider_7_nf_apply_0(cps_provider_7_nf_apply_one(v_1, v_3, v_14, v_8, Nat.sub(v_10, 1n)), v_1, v_8, v_10, v_15)
 
-def cps_provider_7_nf_apply(+v_1: cps_provider_7_NfContext, v_3: cps_provider_7_NfVal, v_6: List<&2, cps_provider_7_NfVal>, +v_8: Nat) -> cps_provider_7_Nf:
-  native_match_cps_provider_7_nf_apply_1(v_6, v_1, v_3, v_8)
+def cps_provider_7_nf_apply(+v_1: cps_provider_7_NfContext, v_3: cps_provider_7_NfVal, v_6: List<&2, cps_provider_7_NfVal>, +v_8: Nat, +v_10: Nat) -> cps_provider_7_Nf:
+  native_match_cps_provider_7_nf_apply_1(v_6, v_1, v_3, v_8, v_10)
 
-def cps_provider_7_nf_apply_one(+v_1: cps_provider_7_NfContext, v_3: cps_provider_7_NfVal, v_5: cps_provider_7_NfVal, +v_7: Nat) -> cps_provider_7_Nf:
+def cps_provider_7_nf_apply_one(+v_1: cps_provider_7_NfContext, v_3: cps_provider_7_NfVal, v_5: cps_provider_7_NfVal, +v_7: Nat, +v_9: Nat) -> cps_provider_7_Nf:
   match v_3:
-    case cps_provider_7_NfType{v_11, v_12}:
-      cps_provider_7_nf_named(v_1, v_11, List.append(&2, cps_provider_7_NfVal, v_12, [v_5]), Nat.sub(v_7, 1n))
-    case cps_provider_7_NfClosure{v_19, v_20, v_21, v_22}:
-      cps_provider_7_nf_descriptor(v_1, v_20, List.append(&2, cps_provider_7_NfVal, v_21, [v_5]), Nat.sub(v_7, 1n))
+    case cps_provider_7_NfType{v_13, v_14}:
+      cps_provider_7_nf_named(v_1, v_13, List.append(&2, cps_provider_7_NfVal, v_14, [v_5]), v_7, Nat.sub(v_9, 1n))
+    case cps_provider_7_NfClosure{v_20, v_21, v_22}:
+      cps_provider_7_nf_descriptor(v_1, v_21, List.append(&2, cps_provider_7_NfVal, v_22, [v_5]), v_7, Nat.sub(v_9, 1n))
     case cps_provider_7_NfCtor{v_27, v_28}:
       cps_provider_7_NfFail{String.append("the constructor `", String.append(v_27, "` is applied to an argument"))}
     case cps_provider_7_NfQuantity{v_30}:
@@ -15428,9 +15456,13 @@ def cps_provider_7_nf_apply_one(+v_1: cps_provider_7_NfContext, v_3: cps_provide
     case cps_provider_7_NfKind{v_32}:
       cps_provider_7_NfFail{"a kind is applied to an argument"}
     case cps_provider_7_NfOther{v_34}:
-      cps_provider_7_NfOk{cps_provider_7_NfOther{BIR.DescriptorApplication{v_34, cps_provider_7_materialize(v_5)}}}
-    case cps_provider_7_NfMissing{v_37}:
-      cps_provider_7_NfOk{cps_provider_7_NfMissing{BIR.DescriptorApplication{v_37, cps_provider_7_materialize(v_5)}}}
+      cps_provider_7_NfOk{cps_provider_7_NfOther{BIR.DescriptorApplication{v_34, cps_provider_7_materialize_at(v_5, v_7)}}}
+    case cps_provider_7_NfArrow{v_40, v_41, v_42, v_43}:
+      cps_provider_7_NfOk{cps_provider_7_NfOther{BIR.DescriptorApplication{cps_provider_7_materialize_at(v_3, v_7), cps_provider_7_materialize_at(v_5, v_7)}}}
+    case cps_provider_7_NfMissing{v_47}:
+      cps_provider_7_NfOk{cps_provider_7_NfMissing{BIR.DescriptorApplication{v_47, cps_provider_7_materialize_at(v_5, v_7)}}}
+    case cps_provider_7_NfBinder{v_50}:
+      cps_provider_7_NfOk{cps_provider_7_NfMissing{BIR.DescriptorApplication{cps_provider_7_materialize_at(v_3, v_7), cps_provider_7_materialize_at(v_5, v_7)}}}
 
 def cps_provider_7_intrinsic_io(+v_0: BIR.TypeFunction) -> Bool:
   match v_0:
@@ -15441,37 +15473,37 @@ def cps_provider_7_intrinsic_io(+v_0: BIR.TypeFunction) -> Bool:
         case _:
           False{}
 
-def cps_provider_7_nf_named_io(v_1: Bool, +v_3: cps_provider_7_NfContext, v_4: BIR.TypeFunction, v_7: List<&2, cps_provider_7_NfVal>, +v_9: Nat) -> cps_provider_7_Nf:
+def cps_provider_7_nf_named_io(v_1: Bool, +v_3: cps_provider_7_NfContext, v_4: BIR.TypeFunction, v_7: List<&2, cps_provider_7_NfVal>, +v_9: Nat, +v_11: Nat) -> cps_provider_7_Nf:
   match v_1:
     case True{}:
       match v_4:
-        case BIR.TypeFunction{v_16, v_17, v_18, v_19, v_20}:
-          cps_provider_7_NfOk{cps_provider_7_NfType{v_16, v_7}}
+        case BIR.TypeFunction{v_18, v_19, v_20, v_21, v_22}:
+          cps_provider_7_NfOk{cps_provider_7_NfType{v_18, v_7}}
     case False{}:
-      cps_provider_7_nf_reduce(v_3, v_4, v_7, Nat.sub(v_9, 1n))
+      cps_provider_7_nf_reduce(v_3, v_4, v_7, v_9, Nat.sub(v_11, 1n))
 
-def native_match_cps_provider_7_nf_named_0(v_25: Maybe<&2, BIR.Family>, +v_3: String, v_6: List<&2, cps_provider_7_NfVal>) -> cps_provider_7_Nf:
-  match v_25:
-    case Some{v_23}:
-      cps_provider_7_nf_family(v_23, v_6)
+def native_match_cps_provider_7_nf_named_0(v_27: Maybe<&2, BIR.Family>, +v_3: String, v_6: List<&2, cps_provider_7_NfVal>) -> cps_provider_7_Nf:
+  match v_27:
+    case Some{v_25}:
+      cps_provider_7_nf_family(v_25, v_6)
     case None{}:
       cps_provider_7_NfOk{cps_provider_7_NfType{v_3, v_6}}
 
-def native_match_cps_provider_7_nf_named_1(v_24: Maybe<&2, BIR.TypeFunction>, +v_1: cps_provider_7_NfContext, +v_3: String, v_6: List<&2, cps_provider_7_NfVal>, +v_8: Nat, v_12: Map<&2, BIR.Family>) -> cps_provider_7_Nf:
-  match v_24:
-    case Some{v_16}:
-      +v_18 = v_16
-      cps_provider_7_nf_named_io(cps_provider_7_intrinsic_io(v_18), v_1, v_18, v_6, v_8)
+def native_match_cps_provider_7_nf_named_1(v_26: Maybe<&2, BIR.TypeFunction>, +v_1: cps_provider_7_NfContext, +v_3: String, v_6: List<&2, cps_provider_7_NfVal>, +v_8: Nat, +v_10: Nat, v_14: Map<&2, BIR.Family>) -> cps_provider_7_Nf:
+  match v_26:
+    case Some{v_18}:
+      +v_20 = v_18
+      cps_provider_7_nf_named_io(cps_provider_7_intrinsic_io(v_20), v_1, v_20, v_6, v_8, v_10)
     case None{}:
-      native_match_cps_provider_7_nf_named_0(cps_provider_7_family_of(v_3, v_12), v_3, v_6)
+      native_match_cps_provider_7_nf_named_0(cps_provider_7_family_of(v_3, v_14), v_3, v_6)
 
-def native_match_cps_provider_7_nf_named_2(+v_1: cps_provider_7_NfContext, +v_3: String, v_6: List<&2, cps_provider_7_NfVal>, +v_8: Nat) -> cps_provider_7_Nf:
+def native_match_cps_provider_7_nf_named_2(+v_1: cps_provider_7_NfContext, +v_3: String, v_6: List<&2, cps_provider_7_NfVal>, +v_8: Nat, +v_10: Nat) -> cps_provider_7_Nf:
   match v_1:
-    case cps_provider_7_NfContext{v_12, v_13}:
-      native_match_cps_provider_7_nf_named_1(cps_provider_7_function_of(v_3, v_13), v_1, v_3, v_6, v_8, v_12)
+    case cps_provider_7_NfContext{v_14, v_15}:
+      native_match_cps_provider_7_nf_named_1(cps_provider_7_function_of(v_3, v_15), v_1, v_3, v_6, v_8, v_10, v_14)
 
-def cps_provider_7_nf_named(+v_1: cps_provider_7_NfContext, +v_3: String, v_6: List<&2, cps_provider_7_NfVal>, +v_8: Nat) -> cps_provider_7_Nf:
-  native_match_cps_provider_7_nf_named_2(v_1, v_3, v_6, v_8)
+def cps_provider_7_nf_named(+v_1: cps_provider_7_NfContext, +v_3: String, v_6: List<&2, cps_provider_7_NfVal>, +v_8: Nat, +v_10: Nat) -> cps_provider_7_Nf:
+  native_match_cps_provider_7_nf_named_2(v_1, v_3, v_6, v_8, v_10)
 
 def cps_provider_7_nf_arity(+v_2: List<&2, cps_provider_7_NfVal>, +v_4: Nat, +v_6: Nat) -> cps_provider_7_NfArity:
   cps_provider_7_NfArity{Nat.is_eq(Nat.add(List.length(&2, cps_provider_7_NfVal, v_2), v_4), v_6), Nat.is_eq(List.length(&2, cps_provider_7_NfVal, v_2), v_6), Nat.is_lt(List.length(&2, cps_provider_7_NfVal, v_2), v_6)}
@@ -15503,81 +15535,81 @@ def cps_provider_7_nf_family_apply(v_1: cps_provider_7_NfArity, v_3: String, v_5
                 case False{}:
                   cps_provider_7_NfFail{String.append("the type `", String.append(v_3, "` is applied past its declared parameter count"))}
 
-def native_match_cps_provider_7_nf_reduce_0(v_2: BIR.TypeFunction, +v_1: cps_provider_7_NfContext, +v_7: Nat, +v_10: List<&2, cps_provider_7_NfVal>) -> cps_provider_7_Nf:
+def native_match_cps_provider_7_nf_reduce_0(v_2: BIR.TypeFunction, +v_1: cps_provider_7_NfContext, +v_7: Nat, +v_9: Nat, +v_12: List<&2, cps_provider_7_NfVal>) -> cps_provider_7_Nf:
   match v_2:
-    case BIR.TypeFunction{v_16, v_17, v_18, v_19, v_20}:
-      +v_22 = v_18
-      +v_24 = v_19
-      cps_provider_7_nf_reduce_apply(cps_provider_7_nf_arity(v_10, v_22, v_24), v_1, v_16, v_22, v_24, v_20, v_10, v_7)
+    case BIR.TypeFunction{v_18, v_19, v_20, v_21, v_22}:
+      +v_24 = v_20
+      +v_26 = v_21
+      cps_provider_7_nf_reduce_apply(cps_provider_7_nf_arity(v_12, v_24, v_26), v_1, v_18, v_24, v_26, v_22, v_12, v_7, v_9)
 
-def cps_provider_7_nf_reduce(+v_1: cps_provider_7_NfContext, v_2: BIR.TypeFunction, v_5: List<&2, cps_provider_7_NfVal>, +v_7: Nat) -> cps_provider_7_Nf:
-  +v_10 = v_5
-  native_match_cps_provider_7_nf_reduce_0(v_2, v_1, v_7, v_10)
+def cps_provider_7_nf_reduce(+v_1: cps_provider_7_NfContext, v_2: BIR.TypeFunction, v_5: List<&2, cps_provider_7_NfVal>, +v_7: Nat, +v_9: Nat) -> cps_provider_7_Nf:
+  +v_12 = v_5
+  native_match_cps_provider_7_nf_reduce_0(v_2, v_1, v_7, v_9, v_12)
 
-def cps_provider_7_nf_reduce_apply(v_1: cps_provider_7_NfArity, +v_3: cps_provider_7_NfContext, v_5: String, v_7: Nat, +v_9: Nat, v_10: BIR.Descriptor, +v_13: List<&2, cps_provider_7_NfVal>, +v_15: Nat) -> cps_provider_7_Nf:
+def cps_provider_7_nf_reduce_apply(v_1: cps_provider_7_NfArity, +v_3: cps_provider_7_NfContext, v_5: String, v_7: Nat, +v_9: Nat, v_10: BIR.Descriptor, +v_13: List<&2, cps_provider_7_NfVal>, +v_15: Nat, +v_17: Nat) -> cps_provider_7_Nf:
   match v_1:
-    case cps_provider_7_NfArity{v_20, v_21, v_22}:
-      match v_20:
+    case cps_provider_7_NfArity{v_22, v_23, v_24}:
+      match v_22:
         case True{}:
-          cps_provider_7_nf_reduce_body(v_3, v_10, List.append(&2, cps_provider_7_NfVal, cps_provider_7_quantity_markers(v_7), v_13), [], Nat.sub(v_15, 1n))
+          cps_provider_7_nf_reduce_body(v_3, v_10, List.append(&2, cps_provider_7_NfVal, cps_provider_7_quantity_markers(v_7), v_13), [], v_15, Nat.sub(v_17, 1n))
         case False{}:
-          match v_21:
+          match v_23:
             case True{}:
-              cps_provider_7_nf_reduce_body(v_3, v_10, cps_provider_7_first_vals(v_13, v_9), cps_provider_7_drop_vals(v_13, v_9), Nat.sub(v_15, 1n))
+              cps_provider_7_nf_reduce_body(v_3, v_10, cps_provider_7_first_vals(v_13, v_9), cps_provider_7_drop_vals(v_13, v_9), v_15, Nat.sub(v_17, 1n))
             case False{}:
-              match v_22:
+              match v_24:
                 case True{}:
                   cps_provider_7_NfOk{cps_provider_7_NfType{v_5, v_13}}
                 case False{}:
                   cps_provider_7_NfFail{String.append("the type function `", String.append(v_5, "` is applied past its declared parameter count"))}
 
-def native_match_cps_provider_7_nf_reduce_body_0(v_17: cps_provider_7_Nf, +v_1: cps_provider_7_NfContext, v_8: List<&2, cps_provider_7_NfVal>, +v_10: Nat) -> cps_provider_7_Nf:
-  match v_17:
-    case cps_provider_7_NfFail{v_14}:
-      cps_provider_7_NfFail{v_14}
-    case cps_provider_7_NfOk{v_16}:
-      cps_provider_7_nf_apply(v_1, v_16, v_8, v_10)
+def native_match_cps_provider_7_nf_reduce_body_0(v_19: cps_provider_7_Nf, +v_1: cps_provider_7_NfContext, v_8: List<&2, cps_provider_7_NfVal>, +v_10: Nat, +v_12: Nat) -> cps_provider_7_Nf:
+  match v_19:
+    case cps_provider_7_NfFail{v_16}:
+      cps_provider_7_NfFail{v_16}
+    case cps_provider_7_NfOk{v_18}:
+      cps_provider_7_nf_apply(v_1, v_18, v_8, v_10, v_12)
 
-def cps_provider_7_nf_reduce_body(+v_1: cps_provider_7_NfContext, v_2: BIR.Descriptor, +v_5: List<&2, cps_provider_7_NfVal>, v_8: List<&2, cps_provider_7_NfVal>, +v_10: Nat) -> cps_provider_7_Nf:
-  native_match_cps_provider_7_nf_reduce_body_0(cps_provider_7_nf_descriptor(v_1, v_2, v_5, Nat.sub(v_10, 1n)), v_1, v_8, v_10)
+def cps_provider_7_nf_reduce_body(+v_1: cps_provider_7_NfContext, v_2: BIR.Descriptor, +v_5: List<&2, cps_provider_7_NfVal>, v_8: List<&2, cps_provider_7_NfVal>, +v_10: Nat, +v_12: Nat) -> cps_provider_7_Nf:
+  native_match_cps_provider_7_nf_reduce_body_0(cps_provider_7_nf_descriptor(v_1, v_2, v_5, v_10, Nat.sub(v_12, 1n)), v_1, v_8, v_10, v_12)
 
-def native_match_cps_provider_7_nf_cases_0(v_34: cps_provider_7_NfBind, +v_1: cps_provider_7_NfContext, +v_6: List<&2, cps_provider_7_NfVal>, +v_9: List<&2, cps_provider_7_NfVal>, v_10: BIR.Descriptor, +v_12: Nat, v_18: List<&2, BIR.Descriptor>, v_22: BIR.Descriptor) -> cps_provider_7_Nf:
-  match v_34:
-    case cps_provider_7_NfBound{v_25}:
-      cps_provider_7_nf_descriptor(v_1, v_22, List.append(&2, cps_provider_7_NfVal, v_9, v_25), Nat.sub(v_12, 1n))
+def native_match_cps_provider_7_nf_cases_0(v_36: cps_provider_7_NfBind, +v_1: cps_provider_7_NfContext, +v_6: List<&2, cps_provider_7_NfVal>, +v_9: List<&2, cps_provider_7_NfVal>, v_10: BIR.Descriptor, +v_12: Nat, +v_14: Nat, v_20: List<&2, BIR.Descriptor>, v_24: BIR.Descriptor) -> cps_provider_7_Nf:
+  match v_36:
+    case cps_provider_7_NfBound{v_27}:
+      cps_provider_7_nf_descriptor(v_1, v_24, List.append(&2, cps_provider_7_NfVal, v_9, v_27), v_12, Nat.sub(v_14, 1n))
     case cps_provider_7_NfMismatch{}:
-      cps_provider_7_nf_cases(v_1, v_18, v_6, v_9, v_10, v_12)
+      cps_provider_7_nf_cases(v_1, v_20, v_6, v_9, v_10, v_12, v_14)
     case cps_provider_7_NfUnknown{}:
-      cps_provider_7_NfOk{cps_provider_7_NfOther{cps_provider_7_reify_env(v_10, v_9)}}
+      cps_provider_7_NfOk{cps_provider_7_NfOther{cps_provider_7_reify_env(v_10, v_9, v_12)}}
 
-def native_match_cps_provider_7_nf_cases_1(+v_17: BIR.Descriptor, +v_1: cps_provider_7_NfContext, +v_6: List<&2, cps_provider_7_NfVal>, +v_9: List<&2, cps_provider_7_NfVal>, v_10: BIR.Descriptor, +v_12: Nat, v_18: List<&2, BIR.Descriptor>) -> cps_provider_7_Nf:
-  match v_17:
-    case BIR.DescriptorCase{v_21, v_22}:
-      native_match_cps_provider_7_nf_cases_0(cps_provider_7_bind_patterns(v_21, v_6), v_1, v_6, v_9, v_10, v_12, v_18, v_22)
-    case BIR.DescriptorFailure{v_31}:
-      cps_provider_7_NfFail{v_31}
+def native_match_cps_provider_7_nf_cases_1(+v_19: BIR.Descriptor, +v_1: cps_provider_7_NfContext, +v_6: List<&2, cps_provider_7_NfVal>, +v_9: List<&2, cps_provider_7_NfVal>, v_10: BIR.Descriptor, +v_12: Nat, +v_14: Nat, v_20: List<&2, BIR.Descriptor>) -> cps_provider_7_Nf:
+  match v_19:
+    case BIR.DescriptorCase{v_23, v_24}:
+      native_match_cps_provider_7_nf_cases_0(cps_provider_7_bind_patterns(v_23, v_6), v_1, v_6, v_9, v_10, v_12, v_14, v_20, v_24)
+    case BIR.DescriptorFailure{v_33}:
+      cps_provider_7_NfFail{v_33}
     case _:
       cps_provider_7_NfFail{"descriptor match case is not a case"}
 
-def native_match_cps_provider_7_nf_cases_2(v_3: List<&2, BIR.Descriptor>, +v_1: cps_provider_7_NfContext, +v_6: List<&2, cps_provider_7_NfVal>, +v_9: List<&2, cps_provider_7_NfVal>, v_10: BIR.Descriptor, +v_12: Nat) -> cps_provider_7_Nf:
+def native_match_cps_provider_7_nf_cases_2(v_3: List<&2, BIR.Descriptor>, +v_1: cps_provider_7_NfContext, +v_6: List<&2, cps_provider_7_NfVal>, +v_9: List<&2, cps_provider_7_NfVal>, v_10: BIR.Descriptor, +v_12: Nat, +v_14: Nat) -> cps_provider_7_Nf:
   match v_3:
     case []:
-      cps_provider_7_NfOk{cps_provider_7_NfOther{cps_provider_7_reify_env(v_10, v_9)}}
-    case +v_17 <> v_18:
-      native_match_cps_provider_7_nf_cases_1(v_17, v_1, v_6, v_9, v_10, v_12, v_18)
+      cps_provider_7_NfOk{cps_provider_7_NfOther{cps_provider_7_reify_env(v_10, v_9, v_12)}}
+    case +v_19 <> v_20:
+      native_match_cps_provider_7_nf_cases_1(v_19, v_1, v_6, v_9, v_10, v_12, v_14, v_20)
 
-def cps_provider_7_nf_cases(+v_1: cps_provider_7_NfContext, v_3: List<&2, BIR.Descriptor>, +v_6: List<&2, cps_provider_7_NfVal>, +v_9: List<&2, cps_provider_7_NfVal>, v_10: BIR.Descriptor, +v_12: Nat) -> cps_provider_7_Nf:
-  native_match_cps_provider_7_nf_cases_2(v_3, v_1, v_6, v_9, v_10, v_12)
+def cps_provider_7_nf_cases(+v_1: cps_provider_7_NfContext, v_3: List<&2, BIR.Descriptor>, +v_6: List<&2, cps_provider_7_NfVal>, +v_9: List<&2, cps_provider_7_NfVal>, v_10: BIR.Descriptor, +v_12: Nat, +v_14: Nat) -> cps_provider_7_Nf:
+  native_match_cps_provider_7_nf_cases_2(v_3, v_1, v_6, v_9, v_10, v_12, v_14)
 
 def native_match_cps_provider_7_normalize_0(v_13: cps_provider_7_Nf) -> BIR.Descriptor:
   match v_13:
     case cps_provider_7_NfFail{v_10}:
       BIR.DescriptorFailure{v_10}
     case cps_provider_7_NfOk{v_12}:
-      cps_provider_7_materialize(v_12)
+      cps_provider_7_materialize_at(v_12, 0n)
 
 def cps_provider_7_normalize(+v_1: cps_provider_7_NfContext, v_2: BIR.Descriptor, +v_5: List<&2, cps_provider_7_NfVal>, +v_7: Nat) -> BIR.Descriptor:
-  native_match_cps_provider_7_normalize_0(cps_provider_7_nf(v_1, v_2, v_5, v_7))
+  native_match_cps_provider_7_normalize_0(cps_provider_7_nf(v_1, v_2, v_5, 0n, v_7))
 
 def cps_provider_7_normalize_closed(v_1: List<&2, BIR.Family>, v_3: List<&2, BIR.TypeFunction>, v_4: BIR.Descriptor) -> BIR.Descriptor:
   cps_provider_7_normalize(cps_provider_7_nf_context(v_1, v_3), v_4, [], 1024n)
@@ -17060,7 +17092,7 @@ def cps_provider_8_thunk_of(v_1: String, v_3: U32, v_4: BIR.Block, v_6: cps_prov
 
 def cps_provider_8_region_frame(v_1: U32, v_2: BIR.Block, v_3: BIR.Block, v_5: cps_provider_8_JsCtx) -> String:
   +v_9 = cps_provider_8_caps_of(v_3, None{})
-  cps_provider_8_cat([cps_provider_8_cap_stores(cps_provider_8_caps_locals(v_9)), cps_provider_8_slot_stores(cps_provider_8_caps_slots(v_9)), "$frame(", cps_provider_8_thunk_name(cps_provider_8_js_ctx_owner(v_5), v_1), ",$sp-", Nat.show(cps_provider_8_cap_total(v_9)), ",", Nat.show(cps_provider_8_cap_total(v_9)), ");", cps_provider_8_block(v_2, cps_provider_8_js_ctx_inside(v_5, v_1))])
+  cps_provider_8_cat([cps_provider_8_cap_stores(cps_provider_8_caps_locals(v_9)), cps_provider_8_slot_stores(cps_provider_8_caps_slots(v_9)), "$frame(", cps_provider_8_thunk_name(cps_provider_8_js_ctx_owner(v_5), v_1), ",$sp-", Nat.show(cps_provider_8_cap_total(v_9)), ");", cps_provider_8_block(v_2, cps_provider_8_js_ctx_inside(v_5, v_1))])
 
 def native_match_cps_provider_8_leave_step_0(v_4: Bool, v_1: U32, v_3: cps_provider_8_JsCtx) -> String:
   match v_4:
@@ -18045,7 +18077,7 @@ def cps_provider_8_program_source(v_0: BIR.Program, v_2: String) -> String:
   native_match_cps_provider_8_program_source_0(v_0, v_2, v_6)
 
 def cps_provider_8_js_runtime() -> String:
-  "const $D = Object.create(null);\nconst $BEND_TAIL = Symbol(\"bend.tail\");\nconst $td = 64;\nconst $TAIL_PENDING = Object.create(null), $tailArgs = Array(32);\nconst $CALL_PENDING = Object.create(null), $LEAVE_PENDING = Object.create(null);\nconst $stArgs = [], $kFn = [], $kBase = [], $kN = [], $kKind = [];\nlet $sp = 0, $ksp = 0, $callK, $callBase, $callTop, $leaveThunk;\nfunction $split(f,count,k,base) { $tailFn=f; $tailCount=count; $callK=k; $callBase=base; $callTop=$sp; return $CALL_PENDING; }\nfunction $splitm(f,a,k,base) { $tailFn=f; $tailCount=-2; $tailRest=a; $callK=k; $callBase=base; $callTop=$sp; return $CALL_PENDING; }\nfunction $split1(f,x,k,base) { const j=f[$BEND_TAIL]; $tailFn=j||f; $tailCount=j?-3:-1; $tailUnary=x; $callK=k; $callBase=base; $callTop=$sp; return $CALL_PENDING; }\nfunction $frame(t,base,n) { $kFn[$ksp]=t; $kBase[$ksp]=base; $kN[$ksp]=n; $kKind[$ksp]=1; $ksp+=1; }\nlet $tailFn, $tailCount=0, $tailUnary, $tailRest;\nfunction tail_many(f,a) { $tailFn=f; $tailCount=-2; $tailRest=a; return $TAIL_PENDING; }\nfunction tail_unary(f,x) { $tailFn=f; $tailCount=-1; $tailUnary=x; return $TAIL_PENDING; }\nfunction tail_named(f,n) { $tailFn=f; $tailCount=n; return $TAIL_PENDING; }\nfunction $run(f, xs, n) { let x=run_loop(f); for (let i=0;i<n;i++) x=run_call1(x,xs[i]); return x; }\nfunction $curried(f, n, g, t, x, r) { const step = (args) => function (...more) { const xs = args.concat(more); if (xs.length < n) return step(xs); for (const i of g) xs[i] = nat_in(xs[i]); for (const i of t) xs[i] = str_in(xs[i]); for (const i of x) xs[i] = Math.fround(xs[i]); return r($run(f, xs, n)); }; return step([]); }\nfunction run_loop(x) { return run_base(x,$ksp,$sp); }\nfunction run_call1(f,a) { const b0=$ksp, s0=$sp; return run_base(f(a),b0,s0); }\nfunction run_base(x,k0,s0) { try { for(;;) { while (x===$TAIL_PENDING) { const f=$tailFn, count=$tailCount; $tailFn=undefined; $tailCount=0; if(count===-1) { const a=$tailUnary; $tailUnary=undefined; x=f(a,$BEND_TAIL); } else x=tail_dispatch(f,count); } if (x===$CALL_PENDING) { const f=$tailFn, count=$tailCount; $tailFn=undefined; $tailCount=0; $kFn[$ksp]=$callK; $kBase[$ksp]=$callBase; $kN[$ksp]=$callTop-$callBase; $kKind[$ksp]=0; $ksp+=1; $callK=undefined; if(count===-1) { const a=$tailUnary; $tailUnary=undefined; x=f(a); } else if(count===-3) { const a=$tailUnary; $tailUnary=undefined; x=f(a,$BEND_TAIL); } else x=tail_dispatch(f,count); continue; } if (x===$LEAVE_PENDING) { let i=$ksp; while(i>k0&&($kKind[i-1]===0||$kFn[i-1]!==$leaveThunk))i-=1; if(i===k0)throw \"bend: a region leave reached no private frame\"; i-=1; const t=$kFn[i], b=$kBase[i], n=$kN[i]; $kFn[i]=undefined; $ksp=i; $sp=b+n; x=t(undefined,b); continue; } if ($ksp===k0) { $sp=s0; return x; } $ksp-=1; const k=$kFn[$ksp], b=$kBase[$ksp], n=$kN[$ksp], r=$kKind[$ksp]; $kFn[$ksp]=undefined; $sp=b+n; if(r===1) continue; x=k(x,b); } } catch(e) { $ksp=k0; $sp=s0; $tailFn=undefined; $tailCount=0; throw e; } }\nfunction tail_dispatch(f,count) { switch(count) {\ncase -2: { const a=$tailRest; $tailRest=undefined; return f(...a); }\ncase 1: { const a0=$tailArgs[0]; $tailArgs[0]=undefined; return f(a0); }\ncase 2: { const a0=$tailArgs[0],a1=$tailArgs[1]; $tailArgs[0]=$tailArgs[1]=undefined; return f(a0,a1); }\ncase 3: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=undefined; return f(a0,a1,a2); }\ncase 4: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=undefined; return f(a0,a1,a2,a3); }\ncase 5: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=undefined; return f(a0,a1,a2,a3,a4); }\ncase 6: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=undefined; return f(a0,a1,a2,a3,a4,a5); }\ncase 7: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=undefined; return f(a0,a1,a2,a3,a4,a5,a6); }\ncase 8: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7); }\ncase 9: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8); }\ncase 10: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9); }\ncase 11: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10); }\ncase 12: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11); }\ncase 13: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12); }\ncase 14: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13); }\ncase 15: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14); }\ncase 16: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15); }\ncase 17: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16); }\ncase 18: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17); }\ncase 19: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18); }\ncase 20: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19); }\ncase 21: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20); }\ncase 22: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21); }\ncase 23: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22); }\ncase 24: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23); }\ncase 25: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24); }\ncase 26: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25); }\ncase 27: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26); }\ncase 28: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27); }\ncase 29: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27],a28=$tailArgs[28]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=$tailArgs[28]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28); }\ncase 30: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27],a28=$tailArgs[28],a29=$tailArgs[29]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=$tailArgs[28]=$tailArgs[29]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29); }\ncase 31: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27],a28=$tailArgs[28],a29=$tailArgs[29],a30=$tailArgs[30]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=$tailArgs[28]=$tailArgs[29]=$tailArgs[30]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30); }\ncase 32: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27],a28=$tailArgs[28],a29=$tailArgs[29],a30=$tailArgs[30],a31=$tailArgs[31]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=$tailArgs[28]=$tailArgs[29]=$tailArgs[30]=$tailArgs[31]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,a31); }\ndefault: throw \"bend: invalid private tail frame\";\n} }\nfunction run_force(x,raw,b0,s0) { return raw===$BEND_TAIL?x:run_base(x,b0,s0); }\nfunction run_many(f,a,d=$td) { return d<64?f(...a,d+1):tail_many(f,a); }\nfunction run_tail(f,x) { const j=f[$BEND_TAIL]; return j ? tail_unary(j,x) : f(x); }\nfunction run_clo(j) { j[$BEND_TAIL]=j; return j; }\nfunction nat_chk(x) { if(x>281474976710655) throw \"bend: a Nat past the largest immediate 2^48-1\"; return x; }\nfunction char_new(c) { return c < 0xD800 || c >= 0xE000 && c <= 0x10FFFF ? String.fromCodePoint(c) : String.fromCharCode(0xDC00, c >>> 22, c >>> 11 & 0x7FF, c & 0x7FF); }\nfunction char_len(s, at=0) { return s[at] === \"\\uDC00\" ? 4 : s.codePointAt(at) > 0xFFFF ? 2 : 1; }\nfunction char_code_at(s, at) { return s[at] === \"\\uDC00\" ? (s.charCodeAt(at+1) << 22 | s.charCodeAt(at+2) << 11 | s.charCodeAt(at+3)) >>> 0 : s.codePointAt(at); }\nfunction char_code(s) { return char_code_at(s, 0); }\nfunction str_out(s) { return s.replace(/\\uDC00[^]{3}/gu, \"\\uFFFD\"); }\nfunction str_in(s) { return s.replace(/\\p{Cs}/gu, \"\\uFFFD\"); }\nfunction cmp_new(a,b) { return {$:a<b?\"LT\":a===b?\"EQ\":\"GT\"}; }\nfunction word_to_u32(w) { let x=0; for(let i=0;w.$===\"WCon\";i++,w=w.tail) if(w.head)x|=1<<i; return x>>>0; }\nfunction u32_to_word(x) { let w={$:\"WNil\"}; for(let i=31;i>=0;i--) w={$:\"WCon\",head:!!((x>>>i)&1),tail:w}; return w; }\nfunction run_named1(f,a0,d) { return d<64?f(a0,d+1):($tailArgs[0]=a0,tail_named(f,1)); }\nfunction run_named2(f,a0,a1,d) { return d<64?f(a0,a1,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,tail_named(f,2)); }\nfunction run_named3(f,a0,a1,a2,d) { return d<64?f(a0,a1,a2,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,tail_named(f,3)); }\nfunction run_named4(f,a0,a1,a2,a3,d) { return d<64?f(a0,a1,a2,a3,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,tail_named(f,4)); }\nfunction run_named5(f,a0,a1,a2,a3,a4,d) { return d<64?f(a0,a1,a2,a3,a4,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,tail_named(f,5)); }\nfunction run_named6(f,a0,a1,a2,a3,a4,a5,d) { return d<64?f(a0,a1,a2,a3,a4,a5,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,tail_named(f,6)); }\nfunction run_named7(f,a0,a1,a2,a3,a4,a5,a6,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,tail_named(f,7)); }\nfunction run_named8(f,a0,a1,a2,a3,a4,a5,a6,a7,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,tail_named(f,8)); }\nfunction run_named9(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,tail_named(f,9)); }\nfunction run_named10(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,tail_named(f,10)); }\nfunction run_named11(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,tail_named(f,11)); }\nfunction run_named12(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,tail_named(f,12)); }\nfunction run_named13(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,tail_named(f,13)); }\nfunction run_named14(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,tail_named(f,14)); }\nfunction run_named15(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,tail_named(f,15)); }\nfunction run_named16(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,tail_named(f,16)); }\nfunction run_named17(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,tail_named(f,17)); }\nfunction run_named18(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,tail_named(f,18)); }\nfunction run_named19(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,tail_named(f,19)); }\nfunction run_named20(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,tail_named(f,20)); }\nfunction run_named21(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,tail_named(f,21)); }\nfunction run_named22(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,tail_named(f,22)); }\nfunction run_named23(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,tail_named(f,23)); }\nfunction run_named24(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,tail_named(f,24)); }\nfunction run_named25(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,tail_named(f,25)); }\nfunction run_named26(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,tail_named(f,26)); }\nfunction run_named27(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,tail_named(f,27)); }\nfunction run_named28(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,tail_named(f,28)); }\nfunction run_named29(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,$tailArgs[28]=a28,tail_named(f,29)); }\nfunction run_named30(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,$tailArgs[28]=a28,$tailArgs[29]=a29,tail_named(f,30)); }\nfunction run_named31(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,$tailArgs[28]=a28,$tailArgs[29]=a29,$tailArgs[30]=a30,tail_named(f,31)); }\nfunction run_named32(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,a31,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,a31,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,$tailArgs[28]=a28,$tailArgs[29]=a29,$tailArgs[30]=a30,$tailArgs[31]=a31,tail_named(f,32)); }\n"
+  "const $D = Object.create(null);\nconst $BEND_TAIL = Symbol(\"bend.tail\");\nconst $td = 64;\nconst $TAIL_PENDING = Object.create(null), $tailArgs = Array(32);\nconst $CALL_PENDING = Object.create(null), $LEAVE_PENDING = Object.create(null);\nconst $stArgs = [], $kFn = [], $kBase = [], $kKind = [];\nlet $sp = 0, $ksp = 0, $callK, $callBase, $leaveThunk;\nfunction $split(f,count,k,base) { $tailFn=f; $tailCount=count; $callK=k; $callBase=base; return $CALL_PENDING; }\nfunction $splitm(f,a,k,base) { $tailFn=f; $tailCount=-2; $tailRest=a; $callK=k; $callBase=base; return $CALL_PENDING; }\nfunction $split1(f,x,k,base) { const j=f[$BEND_TAIL]; $tailFn=j||f; $tailCount=j?-3:-1; $tailUnary=x; $callK=k; $callBase=base; return $CALL_PENDING; }\nfunction $frame(t,base) { $kFn[$ksp]=t; $kBase[$ksp]=base; $kKind[$ksp]=1; $ksp+=1; }\nlet $tailFn, $tailCount=0, $tailUnary, $tailRest;\nfunction tail_many(f,a) { $tailFn=f; $tailCount=-2; $tailRest=a; return $TAIL_PENDING; }\nfunction tail_unary(f,x) { $tailFn=f; $tailCount=-1; $tailUnary=x; return $TAIL_PENDING; }\nfunction tail_named(f,n) { $tailFn=f; $tailCount=n; return $TAIL_PENDING; }\nfunction $run(f, xs, n) { let x=run_loop(f); for (let i=0;i<n;i++) x=run_call1(x,xs[i]); return x; }\nfunction $curried(f, n, g, t, x, r) { const step = (args) => function (...more) { const xs = args.concat(more); if (xs.length < n) return step(xs); for (const i of g) xs[i] = nat_in(xs[i]); for (const i of t) xs[i] = str_in(xs[i]); for (const i of x) xs[i] = Math.fround(xs[i]); return r($run(f, xs, n)); }; return step([]); }\nfunction run_loop(x) { return run_base(x,$ksp,$sp); }\nfunction run_call1(f,a) { const b0=$ksp, s0=$sp; return run_base(f(a),b0,s0); }\nfunction run_base(x,k0,s0) { try { for(;;) { while (x===$TAIL_PENDING) { const f=$tailFn, count=$tailCount; $tailFn=undefined; $tailCount=0; if(count===-1) { const a=$tailUnary; $tailUnary=undefined; x=f(a,$BEND_TAIL); } else x=tail_dispatch(f,count); } if (x===$CALL_PENDING) { const f=$tailFn, count=$tailCount; $tailFn=undefined; $tailCount=0; $kFn[$ksp]=$callK; $kBase[$ksp]=$callBase; $kKind[$ksp]=0; $ksp+=1; $callK=undefined; if(count===-1) { const a=$tailUnary; $tailUnary=undefined; x=f(a); } else if(count===-3) { const a=$tailUnary; $tailUnary=undefined; x=f(a,$BEND_TAIL); } else x=tail_dispatch(f,count); continue; } if (x===$LEAVE_PENDING) { let i=$ksp; while(i>k0&&($kKind[i-1]===0||$kFn[i-1]!==$leaveThunk))i-=1; if(i===k0)throw \"bend: a region leave reached no private frame\"; i-=1; const t=$kFn[i], b=$kBase[i]; $kFn[i]=undefined; $ksp=i; $sp=b; x=t(undefined,b); continue; } if ($ksp===k0) { $sp=s0; return x; } $ksp-=1; const k=$kFn[$ksp], b=$kBase[$ksp], r=$kKind[$ksp]; $kFn[$ksp]=undefined; $sp=b; if(r===1) continue; x=k(x,b); } } catch(e) { $ksp=k0; $sp=s0; $tailFn=undefined; $tailCount=0; throw e; } }\nfunction tail_dispatch(f,count) { switch(count) {\ncase -2: { const a=$tailRest; $tailRest=undefined; return f(...a); }\ncase 1: { const a0=$tailArgs[0]; $tailArgs[0]=undefined; return f(a0); }\ncase 2: { const a0=$tailArgs[0],a1=$tailArgs[1]; $tailArgs[0]=$tailArgs[1]=undefined; return f(a0,a1); }\ncase 3: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=undefined; return f(a0,a1,a2); }\ncase 4: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=undefined; return f(a0,a1,a2,a3); }\ncase 5: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=undefined; return f(a0,a1,a2,a3,a4); }\ncase 6: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=undefined; return f(a0,a1,a2,a3,a4,a5); }\ncase 7: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=undefined; return f(a0,a1,a2,a3,a4,a5,a6); }\ncase 8: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7); }\ncase 9: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8); }\ncase 10: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9); }\ncase 11: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10); }\ncase 12: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11); }\ncase 13: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12); }\ncase 14: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13); }\ncase 15: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14); }\ncase 16: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15); }\ncase 17: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16); }\ncase 18: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17); }\ncase 19: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18); }\ncase 20: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19); }\ncase 21: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20); }\ncase 22: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21); }\ncase 23: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22); }\ncase 24: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23); }\ncase 25: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24); }\ncase 26: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25); }\ncase 27: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26); }\ncase 28: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27); }\ncase 29: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27],a28=$tailArgs[28]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=$tailArgs[28]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28); }\ncase 30: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27],a28=$tailArgs[28],a29=$tailArgs[29]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=$tailArgs[28]=$tailArgs[29]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29); }\ncase 31: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27],a28=$tailArgs[28],a29=$tailArgs[29],a30=$tailArgs[30]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=$tailArgs[28]=$tailArgs[29]=$tailArgs[30]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30); }\ncase 32: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27],a28=$tailArgs[28],a29=$tailArgs[29],a30=$tailArgs[30],a31=$tailArgs[31]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=$tailArgs[28]=$tailArgs[29]=$tailArgs[30]=$tailArgs[31]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,a31); }\ndefault: throw \"bend: invalid private tail frame\";\n} }\nfunction run_force(x,raw,b0,s0) { return raw===$BEND_TAIL?x:run_base(x,b0,s0); }\nfunction run_many(f,a,d=$td) { return d<64?f(...a,d+1):tail_many(f,a); }\nfunction run_tail(f,x) { const j=f[$BEND_TAIL]; return j ? tail_unary(j,x) : f(x); }\nfunction run_clo(j) { j[$BEND_TAIL]=j; return j; }\nfunction nat_chk(x) { if(x>281474976710655) throw \"bend: a Nat past the largest immediate 2^48-1\"; return x; }\nfunction char_new(c) { return c < 0xD800 || c >= 0xE000 && c <= 0x10FFFF ? String.fromCodePoint(c) : String.fromCharCode(0xDC00, c >>> 22, c >>> 11 & 0x7FF, c & 0x7FF); }\nfunction char_len(s, at=0) { return s[at] === \"\\uDC00\" ? 4 : s.codePointAt(at) > 0xFFFF ? 2 : 1; }\nfunction char_code_at(s, at) { return s[at] === \"\\uDC00\" ? (s.charCodeAt(at+1) << 22 | s.charCodeAt(at+2) << 11 | s.charCodeAt(at+3)) >>> 0 : s.codePointAt(at); }\nfunction char_code(s) { return char_code_at(s, 0); }\nfunction str_out(s) { return s.replace(/\\uDC00[^]{3}/gu, \"\\uFFFD\"); }\nfunction str_in(s) { return s.replace(/\\p{Cs}/gu, \"\\uFFFD\"); }\nfunction cmp_new(a,b) { return {$:a<b?\"LT\":a===b?\"EQ\":\"GT\"}; }\nfunction word_to_u32(w) { let x=0; for(let i=0;w.$===\"WCon\";i++,w=w.tail) if(w.head)x|=1<<i; return x>>>0; }\nfunction u32_to_word(x) { let w={$:\"WNil\"}; for(let i=31;i>=0;i--) w={$:\"WCon\",head:!!((x>>>i)&1),tail:w}; return w; }\nfunction run_named1(f,a0,d) { return d<64?f(a0,d+1):($tailArgs[0]=a0,tail_named(f,1)); }\nfunction run_named2(f,a0,a1,d) { return d<64?f(a0,a1,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,tail_named(f,2)); }\nfunction run_named3(f,a0,a1,a2,d) { return d<64?f(a0,a1,a2,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,tail_named(f,3)); }\nfunction run_named4(f,a0,a1,a2,a3,d) { return d<64?f(a0,a1,a2,a3,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,tail_named(f,4)); }\nfunction run_named5(f,a0,a1,a2,a3,a4,d) { return d<64?f(a0,a1,a2,a3,a4,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,tail_named(f,5)); }\nfunction run_named6(f,a0,a1,a2,a3,a4,a5,d) { return d<64?f(a0,a1,a2,a3,a4,a5,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,tail_named(f,6)); }\nfunction run_named7(f,a0,a1,a2,a3,a4,a5,a6,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,tail_named(f,7)); }\nfunction run_named8(f,a0,a1,a2,a3,a4,a5,a6,a7,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,tail_named(f,8)); }\nfunction run_named9(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,tail_named(f,9)); }\nfunction run_named10(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,tail_named(f,10)); }\nfunction run_named11(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,tail_named(f,11)); }\nfunction run_named12(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,tail_named(f,12)); }\nfunction run_named13(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,tail_named(f,13)); }\nfunction run_named14(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,tail_named(f,14)); }\nfunction run_named15(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,tail_named(f,15)); }\nfunction run_named16(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,tail_named(f,16)); }\nfunction run_named17(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,tail_named(f,17)); }\nfunction run_named18(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,tail_named(f,18)); }\nfunction run_named19(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,tail_named(f,19)); }\nfunction run_named20(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,tail_named(f,20)); }\nfunction run_named21(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,tail_named(f,21)); }\nfunction run_named22(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,tail_named(f,22)); }\nfunction run_named23(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,tail_named(f,23)); }\nfunction run_named24(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,tail_named(f,24)); }\nfunction run_named25(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,tail_named(f,25)); }\nfunction run_named26(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,tail_named(f,26)); }\nfunction run_named27(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,tail_named(f,27)); }\nfunction run_named28(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,tail_named(f,28)); }\nfunction run_named29(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,$tailArgs[28]=a28,tail_named(f,29)); }\nfunction run_named30(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,$tailArgs[28]=a28,$tailArgs[29]=a29,tail_named(f,30)); }\nfunction run_named31(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,$tailArgs[28]=a28,$tailArgs[29]=a29,$tailArgs[30]=a30,tail_named(f,31)); }\nfunction run_named32(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,a31,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,a31,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,$tailArgs[28]=a28,$tailArgs[29]=a29,$tailArgs[30]=a30,$tailArgs[31]=a31,tail_named(f,32)); }\n"
 
 def cps_provider_8_js_runtime_extra() -> String:
   "function f32_from_bits(x) { return new Float32Array(new Uint32Array([x]).buffer)[0]; }\nfunction f32_bits(x) { return new Uint32Array(new Float32Array([x]).buffer)[0]; }\nfunction tuple(a,b) { return {$:\"Tuple\",fst:a,snd:b}; }\nfunction f32_show(x) { if(x!==x) return \"nan\"; if(!Number.isFinite(x)||Object.is(x,-0)) return x<0?\"-inf\":x===0?\"-0\":\"inf\"; let s=\"x\"; for(let p=1;p<=9&&Math.fround(Number(s))!==x;p++) s=String(Number(x.toExponential(p-1))); return s; }\nfunction f32_read(s) { const re=/^\\s*[+-]?((\\d+\\.?\\d*|\\.\\d+)(e[+-]?\\d+)?|inf(inity)?|nan)$/i; const v=Number(s.replace(/inf\\w*/i,\"Infinity\")); return re.test(s)?{$:\"Some\",value:Math.fround(v)}:{$:\"None\"}; }\nfunction nat_divmod(a,b) { return b===0?tuple(0,a):tuple(Math.trunc(a/b),a%b); }\nfunction nat_in(n) { return Number.isInteger(n)&&n>=0&&n<=9007199254740992?n:nat_chk(1/0); }\nfunction array_new(n,v) { if(n>31) throw \"bend: an array past the deepest block class 31\"; return Array(2 ** n).fill(v); }\nfunction array_node(a,b) { if(a.length!==b.length) throw \"bend: runtime fail-stop\"; return a.concat(b); }\n"

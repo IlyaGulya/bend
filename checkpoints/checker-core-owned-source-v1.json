@@ -15178,7 +15178,7 @@
       "canonical": "bend2/selfhost/emitter.bend",
       "owned": "checkpoints/emitter_owned_v1.bend",
       "canonicalSha256": "47d68ba5f0b54c334e2c940b7bb6aabc7f3bba27142b816f27df8225cf3fae4f",
-      "sourceSha256": "046f27c1e175de38206e2a4f671ef3f1d590fa64325debdce48a7882fd40185f",
+      "sourceSha256": "2a73b7f6e4c78f1bbee47be1e01b6bad18e858f7269c2d0256a7a7793c98b2b9",
       "definitionNames": [
         "emitted_js",
         "emitted_c",
@@ -17382,7 +17382,14 @@
         "cps_provider_7_insert_before",
         "cps_provider_7_append_vals",
         "cps_provider_7_quantity_markers",
+        "native_match_cps_provider_7_renamed_level_0",
+        "native_match_cps_provider_7_renamed_level_1",
+        "cps_provider_7_renamed_level",
+        "cps_provider_7_materialize_all_scoped",
+        "cps_provider_7_materialize_all_at",
         "cps_provider_7_materialize_all",
+        "cps_provider_7_materialize_scoped",
+        "cps_provider_7_materialize_at",
         "cps_provider_7_materialize",
         "cps_provider_7_reify_env",
         "cps_provider_7_status_combine",
@@ -19414,7 +19421,7 @@
         "cps_provider_3_arm_in": "65b04bff0cbfd23c85821010d814d45c443fc459e1c99d86a9290a8821b62547",
         "cps_provider_3_live_field": "03a1f643135ca85d88d95676567666d4d9b3412c65e388773c19b1c8545a3389",
         "cps_provider_3_layout_fuel": "6116001d59d0c1a05889843936743d37b62beca6c7069dc5843c1a4d3ffb7608",
-        "cps_provider_3_nf_of": "e2646950b7fb64d6811ce4e8c339357b720181f18c8a7c29044e07e1aeb9db7a",
+        "cps_provider_3_nf_of": "f6c2d88fa954f78dd58ff405e05e9f2554e54b42625174f3e263b2a4ca6a53a2",
         "cps_provider_3_value_layout": "1d1e3ccfeff4562864aa1729227b10f2117b706b67eae858b09d8cc4bbb34c09",
         "native_match_cps_provider_3_layout_of_desc_0": "514e1825f596322f586f7ee26492d7b6d9b8beef4f39d9ad5a9f0f2176bb16c5",
         "cps_provider_3_layout_of_desc": "36f61ab9179141e50e12db64b004b6333154da26b595bc00762da4f72397ae9e",
@@ -20246,12 +20253,19 @@
         "cps_provider_7_insert_before": "c74c0c8d634c65f5cd6045267c17d0c194737e4572bb231b2060514e655ad4fd",
         "cps_provider_7_append_vals": "4a1749956540bec639b85aa441f53cfebd8b1b796a4ef5f8f65c43d9b45dc7d6",
         "cps_provider_7_quantity_markers": "1de1ca18f5ca47d17d8bc998d6f95af831dd6c7f30f2a2ecc97ba91f521d8cb1",
-        "cps_provider_7_materialize_all": "ad7bba81958fa83715b5bc32894a2f77419b4043c6cb092cfc8ba94752f97bb3",
-        "cps_provider_7_materialize": "7618f651652fe45ad9e908a03e32c42ef6d8fa7656df26a4b57608b2e9c64675",
-        "cps_provider_7_reify_env": "16d61f39ed979882498e82859b33e5985236f1b979ae29b2d0fdaa4eece4ae14",
+        "native_match_cps_provider_7_renamed_level_0": "89317ebe2a64ff134da4e3cb991da808c5a2ae386c152d75e64a31fffad9965e",
+        "native_match_cps_provider_7_renamed_level_1": "5c9ac1163130a6535db9d4225cb7c9b324dee4ac51c5b9923a711799ff42512d",
+        "cps_provider_7_renamed_level": "c9788a60b7609f15684b3ecb95314b74c7309d4cc2b2414203dfd1ca26c3a1d5",
+        "cps_provider_7_materialize_all_scoped": "64effadb3651738dca202e359b63a718624c8096ed851db55b76fbc8e3f6cfae",
+        "cps_provider_7_materialize_all_at": "eab2890fa5ee9703081df13f42daf24d8dcc7a1291491e86f2537782a3fee86f",
+        "cps_provider_7_materialize_all": "0ce26ce7a7a4281990007b092a915d0163a99e67bb9b92d0a3fb7038921d9534",
+        "cps_provider_7_materialize_scoped": "5c501ebc5d0c57667fa862ca9f530215f73d12f94b40a71b8c034230fbbcc89a",
+        "cps_provider_7_materialize_at": "3a2bb5c35cb542d53f2badd6fdae87fd5a67178e4f5803d32fcc0a2dada036ba",
+        "cps_provider_7_materialize": "ecab29346ff100a0cd3e3113188b1fa7468fe7962e8a8bdc1d27b7aef865665b",
+        "cps_provider_7_reify_env": "eb8afcf55843d1c93ac0cba814414aeb4f579083e89f3b43ff3cafc9be7afed4",
         "cps_provider_7_status_combine": "4243e7aedb35835e28b2d963877c3073da195f7161bd02b0c2f34ebea24f8034",
-        "native_match_cps_provider_7_bind_status_0": "01423a7c225f68ac5dc655521cbeef2d73bcfecf61f03e1830bffbf60a2af697",
-        "native_match_cps_provider_7_bind_status_1": "b552d1d6e3be314b167f893558f32f8ead0a0a8630410a2344e82c86605e8344",
+        "native_match_cps_provider_7_bind_status_0": "6f77368b6d2cf7948348bfc6fb90735f70be31d845ce45c03e2ebb88b9d69d5d",
+        "native_match_cps_provider_7_bind_status_1": "c150708bff3e38d830b57115f24e4b3cb1ac3dcc9434b94ecc23893b5dadf63a",
         "native_match_cps_provider_7_bind_status_2": "442c3fb0ad86eb27328adeb17d0e12935178fa5891d2b37c3b069a34d5cb6a22",
         "native_match_cps_provider_7_bind_status_3": "3ef1b44247493fb8f4acfb1fdf1f267c69075fa6270c1075975d9793e1456dec",
         "cps_provider_7_bind_status": "60cf2a82a9b4bb3dffba82e6b837bd48162d18c1da0bc4906b40684e936ef9b5",
@@ -20261,61 +20275,61 @@
         "cps_provider_7_bind_values": "f5b3992a9eedec0e5d30177a9514edf811b3172d1070d60931a1762604a651e8",
         "native_match_cps_provider_7_bind_patterns_0": "a0d7b8c6f1d7c27ee349f695669e80c9ffb1a4c57ec314b24bd2a72350a23bb5",
         "cps_provider_7_bind_patterns": "2ee81099319241101e16b34c5396bc34c3d71d668e8165766934e28569c902e3",
-        "native_match_cps_provider_7_nf_0": "0f92dffd2b0ea743764e9146088f620c2cbe7036e406449e08b9b5efc8d79f24",
-        "cps_provider_7_nf": "297e5b735584d65c1464baec410027e227b6d40fe5dddaa8d5363798b966ac15",
-        "native_match_cps_provider_7_nf_descriptor_0": "fc859cb4e005288ed42e7f43eb718ad71140181eba24f783d3f3463a05b910c0",
-        "cps_provider_7_nf_descriptor": "81bf001d57b9aa41e826756e8aaeccaac2c9854ca1e768d01e8d546dc3d02db1",
-        "native_match_cps_provider_7_nf_arrow_0": "d34aef69cd7d5fb01e1e9f7318cb5e43228b27181ea33701d1e6067b31e96dc3",
-        "native_match_cps_provider_7_nf_arrow_1": "58e7fe40c6d9ff4cc32f77b77c4abe2f786423532b3e55751899f5a3c3a4c4d3",
-        "cps_provider_7_nf_arrow": "72e90ce2c1f5f1ee164e39f6435da6fd3ef2170925aa25b2fd3cdb75a95f5752",
-        "native_match_cps_provider_7_nf_descriptor_step_0": "f4eaa78bb88e5d078ebd37a89baa17fd9ed9cdd254901a267cc944026501f364",
-        "native_match_cps_provider_7_nf_descriptor_step_1": "63de825b65a48bc84fd41871637e737e9c330ed41b5bb1eb36068cdf1c2c32cb",
+        "native_match_cps_provider_7_nf_0": "8a15c528d4370b1c5f7aff5bfee3666e6d9d44ddf39ff615dffee569a12900a5",
+        "cps_provider_7_nf": "123ac9910492f8818b4398d946ea6e2ae0c43e4ec2775deb9e5c81c536c112b9",
+        "native_match_cps_provider_7_nf_descriptor_0": "0e276ac57a8037ebc7d089891597e121f1372040ef98d43fbfecd4a5cf71db32",
+        "cps_provider_7_nf_descriptor": "c88771a9df145822ee3ff6774f5e620e0d6a45015088a5ad5ed00926e11b27ed",
+        "native_match_cps_provider_7_nf_arrow_0": "4c2cf089376b5c15d9bbd93e04559d7613c40ef83db7334551a49e2006e88c7e",
+        "native_match_cps_provider_7_nf_arrow_1": "4fc40f73b7ed78afe277994f6ed665f49b711b68c167d96cf5310268ebf8c122",
+        "cps_provider_7_nf_arrow": "13988c9a1f32a1fa36339fb23f403ec722973e405bd8f8e6af0b18a5db5a3215",
+        "native_match_cps_provider_7_nf_descriptor_step_0": "d32ddfef48a6db3e070fb5df5679ab78e901676ad9c50d685422d68e0448c638",
+        "native_match_cps_provider_7_nf_descriptor_step_1": "06b5fc30870d46d6372edc08b5ce965368189668bcc9e762156ba9eac2cdcbcc",
         "native_match_cps_provider_7_nf_descriptor_step_2": "a42924791d1d9fdc5d0925f69d128cf1494e4c5ce00a02858180107c14caea15",
-        "native_match_cps_provider_7_nf_descriptor_step_3": "499e04c9678b08501482726154e16c49b24758e959be9ec1921163fc78192934",
-        "native_match_cps_provider_7_nf_descriptor_step_4": "a422120e4fd33b931beb9d52ad29390194405109bdb5589bf5b55b41b60f37f7",
-        "native_match_cps_provider_7_nf_descriptor_step_5": "9091ad113bbaa5d5506ccaa86d9c24c891557d25fae22b82bac1718570c6e01c",
-        "native_match_cps_provider_7_nf_descriptor_step_6": "0f22c6953ba0cc01c1086c8ab5aeae0e31d65293e9edfd1d8b6113fbb7f92a8c",
-        "native_match_cps_provider_7_nf_descriptor_step_7": "7b92aa9f9ae2bead0a3d34a9144c98b58324c8b3a3e012dff456804a2eb314a6",
-        "native_match_cps_provider_7_nf_descriptor_step_8": "854b7ec8717ea02fc1e6ed78ff43cfe14d859f46ef9ae7ed40036d358de406a7",
-        "native_match_cps_provider_7_nf_descriptor_step_9": "ef471a05a9186dd05ea27270cc62ee5e0f6f4e47be0a46127bafbc43768db777",
-        "native_match_cps_provider_7_nf_descriptor_step_10": "ab475c15b1a15732674da02223df36f2530fd3a82d31d985c1461c5297c77303",
-        "native_match_cps_provider_7_nf_descriptor_step_11": "1dc031d30d56fb8c627cc2c055ca13eacf9ad68ef2a0086df198bf242cc82f5a",
-        "native_match_cps_provider_7_nf_descriptor_step_12": "7125d379ef8fc24b9119cd7ea26e703e91267765bf6a5d2e4c09e99127b1f656",
-        "native_match_cps_provider_7_nf_descriptor_step_13": "4a78fa321d24259e91dbfc9a0b2d9f9461765817d3c8be2e636ce076b9b7d51c",
-        "cps_provider_7_nf_descriptor_step": "084c84244adad548e21f9c20a11cf1d5d88f6262c0e2a8b6161c6f971e1eaf32",
-        "native_match_cps_provider_7_nf_all_0": "7974b6cb76af909ad4cbb1034f5a02be594c3bfccfad93ee41f040743c15ce1b",
-        "native_match_cps_provider_7_nf_all_1": "40f4711ac2b86e894b3be3530bd3bcff77c3745af53063b89550b7d888ef9d97",
-        "native_match_cps_provider_7_nf_all_2": "a07d9e438d4dfec37e36ae872f927a09e438efcc1890d8f5f56f0d129ab0384e",
-        "cps_provider_7_nf_all": "27f08ddcd8e80584b109731a240927ce335f506130a97509b580dac0e399eb71",
-        "native_match_cps_provider_7_nf_apply_args_0": "6d2d6a2e31778ea07e33006050aef9795fa198b9ec81e1483cfc65703111aa8b",
-        "native_match_cps_provider_7_nf_apply_args_1": "508c6bd5e46a050f7d31becd49fb506cafbe676922e24e2248b01af5f4ad1ac3",
-        "cps_provider_7_nf_apply_args": "941274ff2a1b193ee9356f1bd8ee0b564d651436fac513074e42af6e0df1a63b",
-        "cps_provider_7_nf_apply_source": "126f75e0c9a4313598870f2ac723bba9cb80823df5b83b9396c1a7e2e4fcd37f",
-        "native_match_cps_provider_7_nf_apply_0": "dad8d98913253e524163b7f4a4124f0ad747bba1284b51b336270ebb6639c9f6",
-        "native_match_cps_provider_7_nf_apply_1": "8ce2c1991abf48d73f986f7844eef76fc5b5ed88d0f6d851629ba4bc3c25e619",
-        "cps_provider_7_nf_apply": "94bad5e957a7b9d461409f9ba49e3298d5cdf57b8919ce9d360cbe1cdf94dc39",
-        "cps_provider_7_nf_apply_one": "6802a94e8cc5a601bc0ecb8c76d5b19f579697dea32ef3de3661e1b65b5a494c",
+        "native_match_cps_provider_7_nf_descriptor_step_3": "fe3d7f799076d3a2f8c9be96eb1bed6b9725ea346e641c12921a6a671af67456",
+        "native_match_cps_provider_7_nf_descriptor_step_4": "15ac7082c0e0ed1ea55996b29d01082f7c6810ad77ac9618cf2f41709406c068",
+        "native_match_cps_provider_7_nf_descriptor_step_5": "132716c0de090319d1ea78cab94d252f24bef0c119272b055c1aaf62ed206111",
+        "native_match_cps_provider_7_nf_descriptor_step_6": "adba3e881d41503dc27e023b88abf86f49cf96654ae0a63f9a32185852c5a214",
+        "native_match_cps_provider_7_nf_descriptor_step_7": "7d200dc08c209866d8197aab64c04ebc9e93c0ad65a9b78da5c2df99ded1e768",
+        "native_match_cps_provider_7_nf_descriptor_step_8": "190c75aac5840ee55e5cd48e9d63b3218715e5406cf29a6089b0142b8aca7661",
+        "native_match_cps_provider_7_nf_descriptor_step_9": "721b078e27bb46d774c3f198a0a93c5d4925e527eb3dbba75c47ae3bebeea81a",
+        "native_match_cps_provider_7_nf_descriptor_step_10": "8d8b0c9c27e49167041111b2b16bf48a41cc3acaec7693beb8bad6b905de1aec",
+        "native_match_cps_provider_7_nf_descriptor_step_11": "f633cf7cc00bb0e2012c6d5189917f480dec184c9394859d1e23f34e94bde3e4",
+        "native_match_cps_provider_7_nf_descriptor_step_12": "89ad93733decec6c369dd55dbd9ef49504c63512b5d3e18ee0b91e72c73ecd10",
+        "native_match_cps_provider_7_nf_descriptor_step_13": "b1a85617dbe5f3b96a62952b82ebbb5ee24b9b2ae43b9c93744b459d4501a7ae",
+        "cps_provider_7_nf_descriptor_step": "60096946d8eff8266cb78b2f58991def5fa223c1c5460b78eea115cd3db0ee30",
+        "native_match_cps_provider_7_nf_all_0": "7328589218ad689292a96208b3d9695e9e00fd8d110040b2f8a36e854b7ca2b9",
+        "native_match_cps_provider_7_nf_all_1": "2c6680fcfea90f5efbeff004e5865a42f46f5cfbc71f02c9d5c4ba4ae708c8d1",
+        "native_match_cps_provider_7_nf_all_2": "6a4316aaa12ef08437ad218cc27f473af681fd94f151c149d13a41d13f3ec333",
+        "cps_provider_7_nf_all": "1cf48970edbfed5e309c30f18602fe6c02761068882197e2e334b32824fc34f7",
+        "native_match_cps_provider_7_nf_apply_args_0": "ec4748706bfdd147c7f8cc76b34265839b30db56bbaac10c1258b8f618e7eeeb",
+        "native_match_cps_provider_7_nf_apply_args_1": "80f2384938e8b89f55bb1f6202125f41df22add1e5b25e27c6f3fb1c013f8061",
+        "cps_provider_7_nf_apply_args": "b131574ad18647d6f958f1d1cb7c2d43e0b16407c15fbd3bbc55d7e4950e637a",
+        "cps_provider_7_nf_apply_source": "aecc83e22ea9ea3a960d3abf71bd08322e6a780b4eec95e2f36888300b174085",
+        "native_match_cps_provider_7_nf_apply_0": "1cc46ba0895df6af42d35878ab04e3c6471ac540b09b9bed59f7ce38babad209",
+        "native_match_cps_provider_7_nf_apply_1": "10191e06ab7f2595a32f0a4c5a411fc0a8b2cfe755af26143bae6d2217d65fcd",
+        "cps_provider_7_nf_apply": "c80ebb735dbea21f3b38de5c3b12f0d5b8ab2644523a359fb15445e0ba6112f4",
+        "cps_provider_7_nf_apply_one": "21306a4c6a5c25581eaace8ee44b20134c1a3dc680d6fe1a31822d5e8e8d483d",
         "cps_provider_7_intrinsic_io": "d50293cd5c05d5561c492374a71ed769ed4e52ff13e6442ff37f3b6d4f748aec",
-        "cps_provider_7_nf_named_io": "2ad5725a1091786c778850cf504ace85cc54c5e3dc5cad2f427fed3be76a987a",
-        "native_match_cps_provider_7_nf_named_0": "a2238e91ef82e6c950e207d6be4dc6247ce1722f2b54b71dbb2c2e0865bbfd86",
-        "native_match_cps_provider_7_nf_named_1": "8c037ce6fcb115a329e4dc6482127614eabe600b24c33568a059f5f5b552390a",
-        "native_match_cps_provider_7_nf_named_2": "74d85ea4d6d43a71a9989856af8e3f35a0b87a59a960e695717be1ab2163ee93",
-        "cps_provider_7_nf_named": "065065d3c02c1a0388f5297ffc531c816706795d4c50b6378a1cb586ec1df132",
+        "cps_provider_7_nf_named_io": "3523df9d4184b1820e97ceb8536eb3a540970ad63d6c25a88e42af81c0ecd70e",
+        "native_match_cps_provider_7_nf_named_0": "c4409b0c25f58ffdc89641d0eb4086e66d41b3142b2a74126a8ba5eed10c4db2",
+        "native_match_cps_provider_7_nf_named_1": "902784ed6b1be0bbb79d0810f91c7c0824b4ba899e86fff5a53ee09f73179fd1",
+        "native_match_cps_provider_7_nf_named_2": "334469f56eed94304df364606f9cd38bfb5e4c6c852c6584b8a48a45b4b2faae",
+        "cps_provider_7_nf_named": "4104791bfe09dee716fde17bea4c0b20ad06330bb36bbc9ee4fad87379cef8ae",
         "cps_provider_7_nf_arity": "0137809c4486ef7aef0bad82e2c13c94499552e930c8b0e32defb34797c2997b",
         "native_match_cps_provider_7_nf_family_0": "607ea58b39830606b8e826204e949f69d639c263e3437366cadbf5c4d68aa289",
         "cps_provider_7_nf_family": "321284bc47cca4365acdd49adccfc85e4bb11ca6272135f32d5c3eeee21e746b",
         "cps_provider_7_nf_family_apply": "fd7ec7030f8cef4e102f9c28c10f8eb817636f982fd258cc86b4db9f991364db",
-        "native_match_cps_provider_7_nf_reduce_0": "8b28c21de1164cd7a3b6962b26de1956bae8a2c41ac73ac0333d59892fd9784d",
-        "cps_provider_7_nf_reduce": "442a260c3d434f931324c8db092713a20e7b6db762a8cadf34f48b4762dfcb79",
-        "cps_provider_7_nf_reduce_apply": "0b01ccd6ff4319958d4c21a9ab27b2849a138a7fc8fde80468f7caf5f14202be",
-        "native_match_cps_provider_7_nf_reduce_body_0": "0ef3dffd327fbba7eb9c4e52982f2294bcb34eededc35d3a6705f610727b23a6",
-        "cps_provider_7_nf_reduce_body": "99c48d8e229c2c69d400e3898949e9c6227dd7542c94074ca23f9a16866817b7",
-        "native_match_cps_provider_7_nf_cases_0": "46656b1ef21e2e49dfdc0bf1bd09e5ed1742aafdec5f1c8c38b7b616c517a8f3",
-        "native_match_cps_provider_7_nf_cases_1": "30f9ac306da237612ab4433ed75b4ff97bc6465aface05813820f28cf06404af",
-        "native_match_cps_provider_7_nf_cases_2": "ec40ff3a88d4f05b8bd206fea088429c436b56be4d6f6213f32eb72a6c546d91",
-        "cps_provider_7_nf_cases": "de7b7f6916efafbf09c72d7ef8b1c2d988f1995651f68bd7a6afdc4bf6d1818b",
-        "native_match_cps_provider_7_normalize_0": "779b301480deba07a1a0113a1a6aec1415ad6e5d4edf07f970cc2e0112ea2a9f",
-        "cps_provider_7_normalize": "c49c558918a25a824b8c51de44d72221014c2282873a380db7c5808151342456",
+        "native_match_cps_provider_7_nf_reduce_0": "825b0677a7c6af2fa13d560672f0c2a9c4911b33dd5c5ddc831694751b58d38b",
+        "cps_provider_7_nf_reduce": "6383f8845f32d59ee4d14eddc3b4972b6d89dc88da4c1e5aecf3fb20069df685",
+        "cps_provider_7_nf_reduce_apply": "df73aaa88289332a9e6c7bd58a10e9f8e1c849589b1d7b9e3e98fe41707d9eee",
+        "native_match_cps_provider_7_nf_reduce_body_0": "fb240ca02dcd6be4516c3f9a45226fab77e46269b82dd555f524c73b6cefecd5",
+        "cps_provider_7_nf_reduce_body": "46001e9de84b3166ffd405634ba9d2b39635052320ca90e09d8dd83c885a832d",
+        "native_match_cps_provider_7_nf_cases_0": "87533b088d91501565a48b62d616d55cb7c70bb6fdb6d19b6b8c3b9f5400b460",
+        "native_match_cps_provider_7_nf_cases_1": "24079941c027460721d390205da2cf674585ba120c28be3ed0798fcd2c714b00",
+        "native_match_cps_provider_7_nf_cases_2": "d1efabee789d16b84da9856d6d353f71a4f82cc255850c588e8ba4f98abb6826",
+        "cps_provider_7_nf_cases": "685a6ef88e087607cd22b99f3a714b617a74d9f07ff765436751cd1576768add",
+        "native_match_cps_provider_7_normalize_0": "6f0ea704ca4fb29c67d420db34e53c40ffa9e5d6dc6629510da6cb02f498a16c",
+        "cps_provider_7_normalize": "f64cff05933bad41c8ca2cf892fdc9a4c0a7f75913b02d5ece41a89652170032",
         "cps_provider_7_normalize_closed": "666a5b194d5e0af86ec768d01c04f3446572639b8a4dc1dbc84aa372e2961416",
         "cps_provider_7_normalize_in": "a822458f1a487d36d446231c9f099692e4c7fbe845c13582135ca026fe08bb90",
         "cps_provider_7_outer_application": "bf76ab18b4ef84cfb4ac41edd13403d3a4eec13b167e2ace2797b3da6d02e20f",
@@ -20530,7 +20544,7 @@
         "cps_provider_8_slot_binds": "790cb5f44a8993516229fc642202409919f39100b122aac9a4d77b4ff8c17246",
         "cps_provider_8_cont_of": "ebbbdeeac41735d1fb31021661a691cdb67be15f3a6a6012a33722893542cc92",
         "cps_provider_8_thunk_of": "14288a54034ded18e06262732e39e16c0f2ca01c72b917d1db5664b6f4b61eb6",
-        "cps_provider_8_region_frame": "bd68256330e02d2eaeebc491a5b941b6d9e791a0558c3a96c13f11fc9726fc49",
+        "cps_provider_8_region_frame": "d55a482c9c8f8ea7addd4d562b2c190f1823b2f4eb5ab7fc6f4e73ceeba030b9",
         "native_match_cps_provider_8_leave_step_0": "8c851d9beb46c933903cde9181cc4087dc5157cf132373d74192c92c267f299f",
         "cps_provider_8_leave_step": "fa901e627964ada3ead50bf4e9538e326770a12e5b3bd2c1ed4f768335c03654",
         "cps_provider_8_conts": "8a45723f04a7de16b96f489c6e3c10d4bd2f853c89dd55c528610099cb57586a",
@@ -20617,7 +20631,7 @@
         "cps_provider_8_emit_effects": "3c218cf6714844b8ae31971b4767df2d4d52d6f76dff293d1eb7aebe19d60e86",
         "native_match_cps_provider_8_program_source_0": "9e4ba78545ac25393cd9ff10a3df6a19ec6fb00b0998e394f62436e293e9f1ed",
         "cps_provider_8_program_source": "63a62f450ab6d5f430c91ede62757e775871307d6f4179dc8ecbdc3c476697a1",
-        "cps_provider_8_js_runtime": "18abd96b620059838f158085573ba5cefae48f2b58398fdacb0ae96e65e2b45e",
+        "cps_provider_8_js_runtime": "de97576510501dd70b01922deed7c59ef733cb5a29e856dccb83f57e6e1937b2",
         "cps_provider_8_js_runtime_extra": "291bd971088d0c6fb15315931043b1f0d19e2f6bb498dd343f367833ef7c57fb",
         "cps_provider_8_js_runtime_array": "3b84ce5840ddbdc302166a950e3c08e5c5323cd73cb113843d0b745839ab8f54",
         "cps_provider_8_js_runtime_foreign": "c5ce8b2a0b2e09cd99bdbcc1d6129f87c1025fd2ce256de4ffb223281247cf0c",
@@ -21712,6 +21726,8 @@
         "native_match_cps_provider_7_native_of_1": "cps_provider_7_native_of",
         "native_match_cps_provider_7_native_of_2": "cps_provider_7_native_of",
         "native_match_cps_provider_7_native_of_3": "cps_provider_7_native_of",
+        "native_match_cps_provider_7_renamed_level_0": "cps_provider_7_renamed_level",
+        "native_match_cps_provider_7_renamed_level_1": "cps_provider_7_renamed_level",
         "native_match_cps_provider_7_bind_status_0": "cps_provider_7_bind_status",
         "native_match_cps_provider_7_bind_status_1": "cps_provider_7_bind_status",
         "native_match_cps_provider_7_bind_status_2": "cps_provider_7_bind_status",
@@ -21812,7 +21828,7 @@
           "bend2/selfhost/js_emit.bend",
           "bend2/selfhost/lower_catalog.bend"
         ],
-        "sourceSha256": "ca5e79f342869b665d1c6fc30cff812ffb874d79720f891af15789843e14eff2",
+        "sourceSha256": "c54694d24641c5a515d87ccc5b92a5e7d926d2a554309bb38363d90c1883138e",
         "sources": [
           {
             "canonical": "bend2/selfhost/emitter.bend",
@@ -23798,7 +23814,7 @@
           },
           {
             "canonical": "bend2/selfhost/c_backend_layout.bend",
-            "canonicalSha256": "7b1a8188b54c2ac3868adc9b8d12355befeaad0b2569166022f5fdac3b1fe0f2",
+            "canonicalSha256": "e61bf74b165935dfa625abba48c6475399e340f10b4d328451e30902be3db878",
             "declarationNames": [
               "CWord",
               "BoxReason",
@@ -25034,9 +25050,10 @@
           },
           {
             "canonical": "bend2/selfhost/descriptor_nf.bend",
-            "canonicalSha256": "747dc747fcb1a6b6c1fcbf31a3e164f998fd5fa502f87a8ad3a1facd13859973",
+            "canonicalSha256": "c727bfe0adf97f86dc44960ca2c46fd890f0d8557157ba883af40d738d3e72dd",
             "declarationNames": [
               "NfVal",
+              "NfRenaming",
               "NfBind",
               "NfStatus",
               "Nf",
@@ -25059,7 +25076,12 @@
               "insert_before",
               "append_vals",
               "quantity_markers",
+              "renamed_level",
+              "materialize_all_scoped",
+              "materialize_all_at",
               "materialize_all",
+              "materialize_scoped",
+              "materialize_at",
               "materialize",
               "reify_env",
               "status_combine",
@@ -25104,7 +25126,10 @@
               "NfKind": "cps_provider_7_NfKind",
               "NfOther": "cps_provider_7_NfOther",
               "NfMissing": "cps_provider_7_NfMissing",
+              "NfBinder": "cps_provider_7_NfBinder",
+              "NfArrow": "cps_provider_7_NfArrow",
               "NfClosure": "cps_provider_7_NfClosure",
+              "NfRenaming": "cps_provider_7_NfRenaming",
               "NfBind": "cps_provider_7_NfBind",
               "NfBound": "cps_provider_7_NfBound",
               "NfMismatch": "cps_provider_7_NfMismatch",
@@ -25137,7 +25162,12 @@
               "insert_before": "cps_provider_7_insert_before",
               "append_vals": "cps_provider_7_append_vals",
               "quantity_markers": "cps_provider_7_quantity_markers",
+              "renamed_level": "cps_provider_7_renamed_level",
+              "materialize_all_scoped": "cps_provider_7_materialize_all_scoped",
+              "materialize_all_at": "cps_provider_7_materialize_all_at",
               "materialize_all": "cps_provider_7_materialize_all",
+              "materialize_scoped": "cps_provider_7_materialize_scoped",
+              "materialize_at": "cps_provider_7_materialize_at",
               "materialize": "cps_provider_7_materialize",
               "reify_env": "cps_provider_7_reify_env",
               "status_combine": "cps_provider_7_status_combine",
@@ -25177,7 +25207,7 @@
           },
           {
             "canonical": "bend2/selfhost/js_backend.bend",
-            "canonicalSha256": "d19dcde5d67a674b2d08e3f80f477b8892d9e6d4b3d4d2ac6d2f1c6b4f631fb2",
+            "canonicalSha256": "065af126503a63c7af6eb696a6802242249180d092a0c4ad7cf59986b0723578",
             "declarationNames": [
               "EmitResult",
               "LinkSource",
@@ -34317,8 +34347,8 @@
             "canonicalName": "nf_of",
             "name": "cps_provider_3_nf_of",
             "kind": "def",
-            "canonicalDeclarationSha256": "dbf9c6b945d003f4e3cfc0fd5a0b7ccde7ebdb514280a24d9a84e0bb5c21ac1b",
-            "composedDeclarationSha256": "e2646950b7fb64d6811ce4e8c339357b720181f18c8a7c29044e07e1aeb9db7a"
+            "canonicalDeclarationSha256": "aaf9c36402c863e3f6a66bb87ec4042bad0a5943da4fd60928a9b1a3204cb610",
+            "composedDeclarationSha256": "f6c2d88fa954f78dd58ff405e05e9f2554e54b42625174f3e263b2a4ca6a53a2"
           },
           {
             "source": "bend2/selfhost/c_backend_layout.bend",
@@ -38405,8 +38435,16 @@
             "canonicalName": "NfVal",
             "name": "cps_provider_7_NfVal",
             "kind": "type",
-            "canonicalDeclarationSha256": "32dc41c36d6b447706c6d074b6565dac11c6e49e704a0d5b5ced49747c40eaa1",
-            "composedDeclarationSha256": "add1d14d9f18435a724c0bd5e64cd11ba3aeb5be4a84fad626cdb6a9a3f3064c"
+            "canonicalDeclarationSha256": "6e7bcb4c2242db0569d37c546126dbba5436abcb03dbcb7f23982768532fbdaa",
+            "composedDeclarationSha256": "ebb8385ab6c1ddbb80e3b5b3fc21a822adce11dc3711817621bb40d0219995fa"
+          },
+          {
+            "source": "bend2/selfhost/descriptor_nf.bend",
+            "canonicalName": "NfRenaming",
+            "name": "cps_provider_7_NfRenaming",
+            "kind": "type",
+            "canonicalDeclarationSha256": "27c1ee11f399dabc00c0f33a288f7f3fae140d0fa022bfd99d73feabf8422b95",
+            "composedDeclarationSha256": "c4acb324e4eb24cbe2cede163be500521beac3a3c73fcad8c56c7ec7d4e7b767"
           },
           {
             "source": "bend2/selfhost/descriptor_nf.bend",
@@ -38517,7 +38555,7 @@
             "canonicalName": "native_of",
             "name": "cps_provider_7_native_of",
             "kind": "def",
-            "canonicalDeclarationSha256": "8d79ecdf62756d9cbb55a258e0d24d0ec3a8e76c1a4b73aa31c55db0673bc116",
+            "canonicalDeclarationSha256": "e2d45a40a849b2cc7686c115f7d6e821862b187c514af4a3811ee826480a520e",
             "composedDeclarationSha256": "738c34d3b43d565bc4c160dbfc48e299ac5043513a34364c1c6f461c1baed55f"
           },
           {
@@ -38581,32 +38619,72 @@
             "canonicalName": "quantity_markers",
             "name": "cps_provider_7_quantity_markers",
             "kind": "def",
-            "canonicalDeclarationSha256": "0b6e0dbbc6ccbfa7f9b2a0f761e0efdbd7103f8ae3cc3d176eb88dc5fc1fa8fc",
+            "canonicalDeclarationSha256": "0fe5e27425e0b731455e06c7ec2627228499baa54b5537e7359ac342d5ecf56f",
             "composedDeclarationSha256": "1de1ca18f5ca47d17d8bc998d6f95af831dd6c7f30f2a2ecc97ba91f521d8cb1"
+          },
+          {
+            "source": "bend2/selfhost/descriptor_nf.bend",
+            "canonicalName": "renamed_level",
+            "name": "cps_provider_7_renamed_level",
+            "kind": "def",
+            "canonicalDeclarationSha256": "18bfb3167298fd2e0860157e1d36fe77890402e3c8acd2d2bd7a2c0270a12e6b",
+            "composedDeclarationSha256": "2c5f1ebb5c6a0cc3d04bcf03abef30f33f5d0ce3664bfe65bacfad6c34c7dd02"
+          },
+          {
+            "source": "bend2/selfhost/descriptor_nf.bend",
+            "canonicalName": "materialize_all_scoped",
+            "name": "cps_provider_7_materialize_all_scoped",
+            "kind": "def",
+            "canonicalDeclarationSha256": "55aa5c2829e19fc6a2a40dfb03298b39c5c389f6b931c1d9fa60635571995963",
+            "composedDeclarationSha256": "64effadb3651738dca202e359b63a718624c8096ed851db55b76fbc8e3f6cfae"
+          },
+          {
+            "source": "bend2/selfhost/descriptor_nf.bend",
+            "canonicalName": "materialize_all_at",
+            "name": "cps_provider_7_materialize_all_at",
+            "kind": "def",
+            "canonicalDeclarationSha256": "f7c6a0dbd7b04aefdadaec2196a25d264ca2c4a7d6a5c36610f57b905c8b4135",
+            "composedDeclarationSha256": "eab2890fa5ee9703081df13f42daf24d8dcc7a1291491e86f2537782a3fee86f"
           },
           {
             "source": "bend2/selfhost/descriptor_nf.bend",
             "canonicalName": "materialize_all",
             "name": "cps_provider_7_materialize_all",
             "kind": "def",
-            "canonicalDeclarationSha256": "1891af65aedd35e878960a3de543d6822704abfde6b9cf27a9fc67cee8c04d46",
-            "composedDeclarationSha256": "ad7bba81958fa83715b5bc32894a2f77419b4043c6cb092cfc8ba94752f97bb3"
+            "canonicalDeclarationSha256": "3975bbfac297cf697cc425b11cf83cd9eeec40c508153b863b0eac1e3334a779",
+            "composedDeclarationSha256": "0ce26ce7a7a4281990007b092a915d0163a99e67bb9b92d0a3fb7038921d9534"
+          },
+          {
+            "source": "bend2/selfhost/descriptor_nf.bend",
+            "canonicalName": "materialize_scoped",
+            "name": "cps_provider_7_materialize_scoped",
+            "kind": "def",
+            "canonicalDeclarationSha256": "c0f37fb2930b5d04f721696ba06a9c44b4b98812f195cd42714d02e5cd686736",
+            "composedDeclarationSha256": "5c501ebc5d0c57667fa862ca9f530215f73d12f94b40a71b8c034230fbbcc89a"
+          },
+          {
+            "source": "bend2/selfhost/descriptor_nf.bend",
+            "canonicalName": "materialize_at",
+            "name": "cps_provider_7_materialize_at",
+            "kind": "def",
+            "canonicalDeclarationSha256": "e1f6d5e90b5222b0aa87b02a733e41ee162e156d4847f9b95bee4ee8c5fa2955",
+            "composedDeclarationSha256": "3a2bb5c35cb542d53f2badd6fdae87fd5a67178e4f5803d32fcc0a2dada036ba"
           },
           {
             "source": "bend2/selfhost/descriptor_nf.bend",
             "canonicalName": "materialize",
             "name": "cps_provider_7_materialize",
             "kind": "def",
-            "canonicalDeclarationSha256": "128075beb2dc7f98826aec3a622904b83c39061359c235d52d73e203b24346f0",
-            "composedDeclarationSha256": "7618f651652fe45ad9e908a03e32c42ef6d8fa7656df26a4b57608b2e9c64675"
+            "canonicalDeclarationSha256": "2da1b4bee8b5a1391e10239106a9709f92bb7297450a32a70308809f1f7cebe5",
+            "composedDeclarationSha256": "ecab29346ff100a0cd3e3113188b1fa7468fe7962e8a8bdc1d27b7aef865665b"
           },
           {
             "source": "bend2/selfhost/descriptor_nf.bend",
             "canonicalName": "reify_env",
             "name": "cps_provider_7_reify_env",
             "kind": "def",
-            "canonicalDeclarationSha256": "1a2ef3167349a3a30d9baf3ebb736647e676ba412418c5661b8a12f6b2efd2b3",
-            "composedDeclarationSha256": "16d61f39ed979882498e82859b33e5985236f1b979ae29b2d0fdaa4eece4ae14"
+            "canonicalDeclarationSha256": "a5d2e35ee4085454e5a9298ffc28865fb29cb57f9df88399f6df6c6cee0366a6",
+            "composedDeclarationSha256": "eb8afcf55843d1c93ac0cba814414aeb4f579083e89f3b43ff3cafc9be7afed4"
           },
           {
             "source": "bend2/selfhost/descriptor_nf.bend",
@@ -38621,8 +38699,8 @@
             "canonicalName": "bind_status",
             "name": "cps_provider_7_bind_status",
             "kind": "def",
-            "canonicalDeclarationSha256": "28fa853f7adc006eb4dcf09a05d7b1d2fbf00124f468c0991b21c961776fd18a",
-            "composedDeclarationSha256": "9dbbc1d91ba1afa7a893cdf6dfacd558af349afe6a86ed65b0f23e62b95e189e"
+            "canonicalDeclarationSha256": "d48274957bbf3e5ee7a5aaf06a2788bbd3e7b44e39adbfa48d1fa1088749db31",
+            "composedDeclarationSha256": "30b2ad92589382427fa78c8b8d99f2b97bdc9d3c632cbed943b64f17e584f64f"
           },
           {
             "source": "bend2/selfhost/descriptor_nf.bend",
@@ -38645,72 +38723,72 @@
             "canonicalName": "nf",
             "name": "cps_provider_7_nf",
             "kind": "def",
-            "canonicalDeclarationSha256": "865634ad184f9ee6c9e948a736cdcdb1351bd34f248937dd462ec4719ec9ed80",
-            "composedDeclarationSha256": "1b5d9ca61f1a896d98de9012fc1eb3bba8f5bef49d52b9429079cb570f3e797b"
+            "canonicalDeclarationSha256": "be0712d63b816f2a49e8f88f371ae02e972580eb8558dcaaff1fd46e286742cc",
+            "composedDeclarationSha256": "2dd24e31b424e7355320aa00e4ed9dcb265858b4d06883847e2f5ae686b06c98"
           },
           {
             "source": "bend2/selfhost/descriptor_nf.bend",
             "canonicalName": "nf_descriptor",
             "name": "cps_provider_7_nf_descriptor",
             "kind": "def",
-            "canonicalDeclarationSha256": "af07535cb9a1af6e620597ca8a040109c4c129bf09413b09d219e21f0b1ef0f4",
-            "composedDeclarationSha256": "2d02a7d91016b519adba84f83d59acf09d45702952da5f1d7b778eb3b4c2ce4e"
+            "canonicalDeclarationSha256": "9472bf1242c7f2ff3dd5098bcf8335941ebbd2a9e56e32e767c9f4fe11cc9e39",
+            "composedDeclarationSha256": "d9b8688ad219fb008ca527617bb2c13bf4909a2bbbba7ffaf3235f0f9f3426d6"
           },
           {
             "source": "bend2/selfhost/descriptor_nf.bend",
             "canonicalName": "nf_arrow",
             "name": "cps_provider_7_nf_arrow",
             "kind": "def",
-            "canonicalDeclarationSha256": "9d116f40137cf435e3837b82c3a61a5aba7a26dcd4c6c3fe8657b184dcc661be",
-            "composedDeclarationSha256": "586aad7f2db526892c13968594b5b0f6f0ea45d38b447503a9a7b9cd82729e51"
+            "canonicalDeclarationSha256": "a70c665e3a741475746ef30bd90522bfe6a9dc4cded8b478be9e542dfef445a4",
+            "composedDeclarationSha256": "c01518a0345f7462e4d61d390d674dd1cc3cbff4d7b6ea98ceb6af59bd27b96e"
           },
           {
             "source": "bend2/selfhost/descriptor_nf.bend",
             "canonicalName": "nf_descriptor_step",
             "name": "cps_provider_7_nf_descriptor_step",
             "kind": "def",
-            "canonicalDeclarationSha256": "687ca126a405290cc91f8a9e8eb51e765801a9f52a3cb5fd3772d0fd76709704",
-            "composedDeclarationSha256": "c0052ce7bc4a539595e0296217d0d37f1bc66a3d50156155f67843570b9f4dea"
+            "canonicalDeclarationSha256": "bdbffb173d585ed7650128f68b22b7e1679e4c0781e660507cf2a817dc3a5a6c",
+            "composedDeclarationSha256": "ffe65de199aaf3c19c2314de04c8cb828b77266dd0b68b6ead2c5c8e7b6502f3"
           },
           {
             "source": "bend2/selfhost/descriptor_nf.bend",
             "canonicalName": "nf_all",
             "name": "cps_provider_7_nf_all",
             "kind": "def",
-            "canonicalDeclarationSha256": "7af98e501c83aa70043621076ccccfdd7b3df5edb7d807288c29dc752af6a841",
-            "composedDeclarationSha256": "fd74e42aeac0cb3151d8f5a7ed28e82d71f92be9112a10da10c14c9627aeacc7"
+            "canonicalDeclarationSha256": "e0929de6ce13eb93d857d99536420a70252cbb5c78fac15543bff5cdbeae489a",
+            "composedDeclarationSha256": "fe2ebb0d099dbd3e9c6d222c20fb7aa2d92cdfed8ec7791960e2f1e2483eef50"
           },
           {
             "source": "bend2/selfhost/descriptor_nf.bend",
             "canonicalName": "nf_apply_args",
             "name": "cps_provider_7_nf_apply_args",
             "kind": "def",
-            "canonicalDeclarationSha256": "264d927d2b2bd893ac9b2b0b688be856d956a7fa647f3d97189d61fa6ef32002",
-            "composedDeclarationSha256": "9be131eb562990b881b85412e004ac6db72a67a03fe02c1d9b143f70c3dc4191"
+            "canonicalDeclarationSha256": "a81a3f8be54e8869d500ef55995a6cb4f0866c365f4eca8284a74c5666fc926f",
+            "composedDeclarationSha256": "be4e9930dc28ac80c8b41376c2498ca249f753555168a8fc3eb12cec590091df"
           },
           {
             "source": "bend2/selfhost/descriptor_nf.bend",
             "canonicalName": "nf_apply_source",
             "name": "cps_provider_7_nf_apply_source",
             "kind": "def",
-            "canonicalDeclarationSha256": "1580c34c68be658e1bbd8c58e2eb08c0bbcf7d7328898be3cde7598f8274056b",
-            "composedDeclarationSha256": "126f75e0c9a4313598870f2ac723bba9cb80823df5b83b9396c1a7e2e4fcd37f"
+            "canonicalDeclarationSha256": "ac44aba48b6cacad524a3f71b4e8a061234eb47635c5acffa664b030f0857be7",
+            "composedDeclarationSha256": "aecc83e22ea9ea3a960d3abf71bd08322e6a780b4eec95e2f36888300b174085"
           },
           {
             "source": "bend2/selfhost/descriptor_nf.bend",
             "canonicalName": "nf_apply",
             "name": "cps_provider_7_nf_apply",
             "kind": "def",
-            "canonicalDeclarationSha256": "4f2e2d798a2174440884940ba9df9a2a79d8887da65b2f160b6578961104bcf7",
-            "composedDeclarationSha256": "b235ad358dc975f5d822ccb647050c0bd9689aaf87a0eb884d19bcd9e427ad3b"
+            "canonicalDeclarationSha256": "e46872da1c4795d34bbcb0f5b7fee1a43fab70a90b5c7986ddf770b7145bef26",
+            "composedDeclarationSha256": "9cf8cfce0208b820ba03de636d3b4a9317e4430628015492d9a61b46e7898722"
           },
           {
             "source": "bend2/selfhost/descriptor_nf.bend",
             "canonicalName": "nf_apply_one",
             "name": "cps_provider_7_nf_apply_one",
             "kind": "def",
-            "canonicalDeclarationSha256": "dbc57aab934723f801793cdfceb6361a5e9a3c358ea08ca4808fc2d963b31fb5",
-            "composedDeclarationSha256": "6802a94e8cc5a601bc0ecb8c76d5b19f579697dea32ef3de3661e1b65b5a494c"
+            "canonicalDeclarationSha256": "1ec0fc4c4ca717724fb05311286fec1ef1393550ad98bc4d856eb0f2341ef278",
+            "composedDeclarationSha256": "21306a4c6a5c25581eaace8ee44b20134c1a3dc680d6fe1a31822d5e8e8d483d"
           },
           {
             "source": "bend2/selfhost/descriptor_nf.bend",
@@ -38725,16 +38803,16 @@
             "canonicalName": "nf_named_io",
             "name": "cps_provider_7_nf_named_io",
             "kind": "def",
-            "canonicalDeclarationSha256": "fde50a9327e4675d5592d23ef4c453e74a0f2268cd5d25a27b66436a361957ab",
-            "composedDeclarationSha256": "2ad5725a1091786c778850cf504ace85cc54c5e3dc5cad2f427fed3be76a987a"
+            "canonicalDeclarationSha256": "09e8b4c5da73c3d3337e6c0984ee7b7ee5f86b7f9d68b6fcc9f24473220621ac",
+            "composedDeclarationSha256": "3523df9d4184b1820e97ceb8536eb3a540970ad63d6c25a88e42af81c0ecd70e"
           },
           {
             "source": "bend2/selfhost/descriptor_nf.bend",
             "canonicalName": "nf_named",
             "name": "cps_provider_7_nf_named",
             "kind": "def",
-            "canonicalDeclarationSha256": "bf9bc645cd38f5e5b11991ec1db16b796b70eaa455efe965bb883786b6b7c05a",
-            "composedDeclarationSha256": "4eeb52621e7dc57e515be226c4b3b617c33fbcd5a0e126d3a3599824a4bc08e1"
+            "canonicalDeclarationSha256": "25051917cde46577d3a486bdf1b4af72466f1a5b1458095ea57bc1b6efefd452",
+            "composedDeclarationSha256": "8d2b1367e327e78b40d140550bc80b0f630a34db185c5cb41be151b44c081dd0"
           },
           {
             "source": "bend2/selfhost/descriptor_nf.bend",
@@ -38765,40 +38843,40 @@
             "canonicalName": "nf_reduce",
             "name": "cps_provider_7_nf_reduce",
             "kind": "def",
-            "canonicalDeclarationSha256": "92c1d557bc5da931198f97b9ec40dbb50826fc3ac19d8eed070d980e3d045774",
-            "composedDeclarationSha256": "cbd95a44597af42831cf8d9c3c5bab6b3f8a2e7dc1e899304b47238afee900f3"
+            "canonicalDeclarationSha256": "a84f379f918355ec029d850031334cfd81349fbea03280b66a47348d8378a109",
+            "composedDeclarationSha256": "fd59f4cff2b9b0d9d5bc043cba05798ce2290aaf3054374a31cbcef38587e237"
           },
           {
             "source": "bend2/selfhost/descriptor_nf.bend",
             "canonicalName": "nf_reduce_apply",
             "name": "cps_provider_7_nf_reduce_apply",
             "kind": "def",
-            "canonicalDeclarationSha256": "42b9e0a06b3ab857db3b18b7634c9aa9af80c5d2782530d29f0d320439ff54ce",
-            "composedDeclarationSha256": "0b01ccd6ff4319958d4c21a9ab27b2849a138a7fc8fde80468f7caf5f14202be"
+            "canonicalDeclarationSha256": "2fbd358598727b8c4ac1dd923c686533b0d416dbe9d4633ee91d9ed3afea1fb7",
+            "composedDeclarationSha256": "df73aaa88289332a9e6c7bd58a10e9f8e1c849589b1d7b9e3e98fe41707d9eee"
           },
           {
             "source": "bend2/selfhost/descriptor_nf.bend",
             "canonicalName": "nf_reduce_body",
             "name": "cps_provider_7_nf_reduce_body",
             "kind": "def",
-            "canonicalDeclarationSha256": "4a3335fd34502ba3b837be9ab5bc8774c2c45a1acb5ddbde116aa371aa8a024a",
-            "composedDeclarationSha256": "695142d5690cc41f8762840ed6d47c1537d17367b6e546233297ce872bb4d58d"
+            "canonicalDeclarationSha256": "1d558285c3b3e97743baa5a6d978373009e8ec0ffe4b5eefe30383fb7fb2e6dd",
+            "composedDeclarationSha256": "36ec8292fdde46574b6651d1bb033371c06b8a6e1ea93628e165788db9106298"
           },
           {
             "source": "bend2/selfhost/descriptor_nf.bend",
             "canonicalName": "nf_cases",
             "name": "cps_provider_7_nf_cases",
             "kind": "def",
-            "canonicalDeclarationSha256": "3f5a954e42beb0fa992f00c1d40b2f29488658a418251cee60565a495e4814e1",
-            "composedDeclarationSha256": "aefd2b842290de4741ea0d04c1427192182cccba6c45c6ad10a67dd8f33cd520"
+            "canonicalDeclarationSha256": "6364c7e8e4c8d572d54c45edee611186423bc23da5329a88e002c9963cf85330",
+            "composedDeclarationSha256": "c0032a155487c7e083a98d6d814d778b015bf5c178c6566ecef7e26023023f28"
           },
           {
             "source": "bend2/selfhost/descriptor_nf.bend",
             "canonicalName": "normalize",
             "name": "cps_provider_7_normalize",
             "kind": "def",
-            "canonicalDeclarationSha256": "c4b765169d6a69918b39638fe8adbeabd983d07141a6a3d5159dfe484fba4924",
-            "composedDeclarationSha256": "253526c585cbf51c0e9879e937778ac075af5d0835faad1d13bb0563e5cd8787"
+            "canonicalDeclarationSha256": "7cb46238dcb81d2897fe291963deec7f59965d3dd5c670f8e802bcc921eb6c26",
+            "composedDeclarationSha256": "f196b7a2fae04abda454eb8e865b5ddcc3eaa4858a9142621966975f86816b5b"
           },
           {
             "source": "bend2/selfhost/descriptor_nf.bend",
@@ -40565,8 +40643,8 @@
             "canonicalName": "region_frame",
             "name": "cps_provider_8_region_frame",
             "kind": "def",
-            "canonicalDeclarationSha256": "e07b860ed668dcf8a6aec17452bc62a972feeb0dda28ebc1fe9e4f9d8c7b8f9c",
-            "composedDeclarationSha256": "bd68256330e02d2eaeebc491a5b941b6d9e791a0558c3a96c13f11fc9726fc49"
+            "canonicalDeclarationSha256": "d613326a55e54dc405edeb6d9de55fc11ed4750ca566b6c5977bea60452aa3d9",
+            "composedDeclarationSha256": "d55a482c9c8f8ea7addd4d562b2c190f1823b2f4eb5ab7fc6f4e73ceeba030b9"
           },
           {
             "source": "bend2/selfhost/js_backend.bend",
@@ -41189,8 +41267,8 @@
             "canonicalName": "js_runtime",
             "name": "cps_provider_8_js_runtime",
             "kind": "def",
-            "canonicalDeclarationSha256": "b594fb3deb56e2eef998aef9bcbd36c7cda906bbf97bbd580d08eccccdea0cb0",
-            "composedDeclarationSha256": "18abd96b620059838f158085573ba5cefae48f2b58398fdacb0ae96e65e2b45e"
+            "canonicalDeclarationSha256": "e2e1bf08237854daffa24bfd589dc4a4cab5a0178f07cd4e058496265ddda1fc",
+            "composedDeclarationSha256": "de97576510501dd70b01922deed7c59ef733cb5a29e856dccb83f57e6e1937b2"
           },
           {
             "source": "bend2/selfhost/js_backend.bend",
@@ -43448,23 +43526,23 @@
           "/private/tmp/bend2039-upgrade/bend2/selfhost/js_emit.bend": "a71920560786084ab9713c4af89f62d2d0e1eaef7cc24e46ea24940d012fded6",
           "/private/tmp/bend2039-upgrade/bend2/selfhost/backend_lower.bend": "b6871556736f0c3bdf7a4e0812735c8b98c9f629217f060136d63b2bbd29d8f6",
           "/private/tmp/bend2039-upgrade/bend2/selfhost/lower_catalog.bend": "3543cf73484f955436c4060fcbdcf4373ca9544cd80fa52f3e0114996a9fe9f0",
-          "/private/tmp/bend2039-upgrade/bend2/selfhost/descriptor_nf.bend": "747dc747fcb1a6b6c1fcbf31a3e164f998fd5fa502f87a8ad3a1facd13859973",
+          "/private/tmp/bend2039-upgrade/bend2/selfhost/descriptor_nf.bend": "c727bfe0adf97f86dc44960ca2c46fd890f0d8557157ba883af40d738d3e72dd",
           "/private/tmp/bend2039-upgrade/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
-          "/private/tmp/bend2039-upgrade/bend2/selfhost/js_backend.bend": "d19dcde5d67a674b2d08e3f80f477b8892d9e6d4b3d4d2ac6d2f1c6b4f631fb2",
+          "/private/tmp/bend2039-upgrade/bend2/selfhost/js_backend.bend": "065af126503a63c7af6eb696a6802242249180d092a0c4ad7cf59986b0723578",
           "/private/tmp/bend2039-upgrade/bend2/selfhost/c_emit_core.bend": "f690db5b6054d4f647b5c02e1281923d5cc66b24c8c2fff7859d811efc5ba380",
           "/private/tmp/bend2039-upgrade/bend2/selfhost/c_backend.bend": "7ffb89e3adcebedee6fadc2b3143db6f7a2fb2b9fb471dd41a62e02c081b19b1",
           "/private/tmp/bend2039-upgrade/bend2/selfhost/c_backend_link.bend": "f83c270f2b6f094f2bd220e6e750aa0265c93ae90fa0036dd8d92b86c09e26bd",
-          "/private/tmp/bend2039-upgrade/bend2/selfhost/c_backend_layout.bend": "7b1a8188b54c2ac3868adc9b8d12355befeaad0b2569166022f5fdac3b1fe0f2",
+          "/private/tmp/bend2039-upgrade/bend2/selfhost/c_backend_layout.bend": "e61bf74b165935dfa625abba48c6475399e340f10b4d328451e30902be3db878",
           "/private/tmp/bend2039-upgrade/bend2/selfhost/c_backend_physical.bend": "5827734e1d14e199fd29714bdf78b4d04376d2eca3cbfd8406c575f894493f4c",
           "/private/tmp/bend2039-upgrade/bend2/selfhost/c_backend_sharing.bend": "c8861993d2ad81057a9ba8b187eb75f743a9005fbb021b43083e7e2906597a40",
           "bend2/selfhost/backend_lower.bend": "b6871556736f0c3bdf7a4e0812735c8b98c9f629217f060136d63b2bbd29d8f6",
           "bend2/selfhost/c_backend.bend": "7ffb89e3adcebedee6fadc2b3143db6f7a2fb2b9fb471dd41a62e02c081b19b1",
-          "bend2/selfhost/c_backend_layout.bend": "7b1a8188b54c2ac3868adc9b8d12355befeaad0b2569166022f5fdac3b1fe0f2",
+          "bend2/selfhost/c_backend_layout.bend": "e61bf74b165935dfa625abba48c6475399e340f10b4d328451e30902be3db878",
           "bend2/selfhost/c_backend_link.bend": "f83c270f2b6f094f2bd220e6e750aa0265c93ae90fa0036dd8d92b86c09e26bd",
           "bend2/selfhost/c_backend_physical.bend": "5827734e1d14e199fd29714bdf78b4d04376d2eca3cbfd8406c575f894493f4c",
           "bend2/selfhost/c_emit_core.bend": "f690db5b6054d4f647b5c02e1281923d5cc66b24c8c2fff7859d811efc5ba380",
-          "bend2/selfhost/descriptor_nf.bend": "747dc747fcb1a6b6c1fcbf31a3e164f998fd5fa502f87a8ad3a1facd13859973",
-          "bend2/selfhost/js_backend.bend": "d19dcde5d67a674b2d08e3f80f477b8892d9e6d4b3d4d2ac6d2f1c6b4f631fb2",
+          "bend2/selfhost/descriptor_nf.bend": "c727bfe0adf97f86dc44960ca2c46fd890f0d8557157ba883af40d738d3e72dd",
+          "bend2/selfhost/js_backend.bend": "065af126503a63c7af6eb696a6802242249180d092a0c4ad7cf59986b0723578",
           "bend2/selfhost/js_emit.bend": "a71920560786084ab9713c4af89f62d2d0e1eaef7cc24e46ea24940d012fded6",
           "bend2/selfhost/lower_catalog.bend": "3543cf73484f955436c4060fcbdcf4373ca9544cd80fa52f3e0114996a9fe9f0"
         }
@@ -44888,7 +44966,12 @@
         "cps_provider_7_insert_before",
         "cps_provider_7_append_vals",
         "cps_provider_7_quantity_markers",
+        "cps_provider_7_renamed_level",
+        "cps_provider_7_materialize_all_scoped",
+        "cps_provider_7_materialize_all_at",
         "cps_provider_7_materialize_all",
+        "cps_provider_7_materialize_scoped",
+        "cps_provider_7_materialize_at",
         "cps_provider_7_materialize",
         "cps_provider_7_reify_env",
         "cps_provider_7_status_combine",
@@ -46385,7 +46468,7 @@
         "cps_provider_3_arm_in": "9fd29a565bfcc59a54af2e333e44923f1b138979f9926461754622634669679f",
         "cps_provider_3_live_field": "03a1f643135ca85d88d95676567666d4d9b3412c65e388773c19b1c8545a3389",
         "cps_provider_3_layout_fuel": "6116001d59d0c1a05889843936743d37b62beca6c7069dc5843c1a4d3ffb7608",
-        "cps_provider_3_nf_of": "e2646950b7fb64d6811ce4e8c339357b720181f18c8a7c29044e07e1aeb9db7a",
+        "cps_provider_3_nf_of": "f6c2d88fa954f78dd58ff405e05e9f2554e54b42625174f3e263b2a4ca6a53a2",
         "cps_provider_3_value_layout": "1d1e3ccfeff4562864aa1729227b10f2117b706b67eae858b09d8cc4bbb34c09",
         "cps_provider_3_layout_of_desc": "4ddbd8f6583240d25f9ebfc4fa656c56cc8112195b87d1b06e69314bbc9de7ed",
         "cps_provider_3_layout_of_val": "724771ef6e56b1b4750df1647d59a403bd810b4d0e79bd7b31daee54570e5e8e",
@@ -46882,33 +46965,38 @@
         "cps_provider_7_insert_before": "c74c0c8d634c65f5cd6045267c17d0c194737e4572bb231b2060514e655ad4fd",
         "cps_provider_7_append_vals": "4a1749956540bec639b85aa441f53cfebd8b1b796a4ef5f8f65c43d9b45dc7d6",
         "cps_provider_7_quantity_markers": "1de1ca18f5ca47d17d8bc998d6f95af831dd6c7f30f2a2ecc97ba91f521d8cb1",
-        "cps_provider_7_materialize_all": "ad7bba81958fa83715b5bc32894a2f77419b4043c6cb092cfc8ba94752f97bb3",
-        "cps_provider_7_materialize": "7618f651652fe45ad9e908a03e32c42ef6d8fa7656df26a4b57608b2e9c64675",
-        "cps_provider_7_reify_env": "16d61f39ed979882498e82859b33e5985236f1b979ae29b2d0fdaa4eece4ae14",
+        "cps_provider_7_renamed_level": "2c5f1ebb5c6a0cc3d04bcf03abef30f33f5d0ce3664bfe65bacfad6c34c7dd02",
+        "cps_provider_7_materialize_all_scoped": "64effadb3651738dca202e359b63a718624c8096ed851db55b76fbc8e3f6cfae",
+        "cps_provider_7_materialize_all_at": "eab2890fa5ee9703081df13f42daf24d8dcc7a1291491e86f2537782a3fee86f",
+        "cps_provider_7_materialize_all": "0ce26ce7a7a4281990007b092a915d0163a99e67bb9b92d0a3fb7038921d9534",
+        "cps_provider_7_materialize_scoped": "5c501ebc5d0c57667fa862ca9f530215f73d12f94b40a71b8c034230fbbcc89a",
+        "cps_provider_7_materialize_at": "3a2bb5c35cb542d53f2badd6fdae87fd5a67178e4f5803d32fcc0a2dada036ba",
+        "cps_provider_7_materialize": "ecab29346ff100a0cd3e3113188b1fa7468fe7962e8a8bdc1d27b7aef865665b",
+        "cps_provider_7_reify_env": "eb8afcf55843d1c93ac0cba814414aeb4f579083e89f3b43ff3cafc9be7afed4",
         "cps_provider_7_status_combine": "4243e7aedb35835e28b2d963877c3073da195f7161bd02b0c2f34ebea24f8034",
-        "cps_provider_7_bind_status": "9dbbc1d91ba1afa7a893cdf6dfacd558af349afe6a86ed65b0f23e62b95e189e",
+        "cps_provider_7_bind_status": "30b2ad92589382427fa78c8b8d99f2b97bdc9d3c632cbed943b64f17e584f64f",
         "cps_provider_7_bind_values": "4b4c674b3a1672fd5b2374f5da0f69a9705e460650226d2aa2069a7bf1e49057",
         "cps_provider_7_bind_patterns": "15333855882db9aef535d1c0eae1742dfc7f485814170dd7aae67d2b30c45ca1",
-        "cps_provider_7_nf": "1b5d9ca61f1a896d98de9012fc1eb3bba8f5bef49d52b9429079cb570f3e797b",
-        "cps_provider_7_nf_descriptor": "2d02a7d91016b519adba84f83d59acf09d45702952da5f1d7b778eb3b4c2ce4e",
-        "cps_provider_7_nf_arrow": "586aad7f2db526892c13968594b5b0f6f0ea45d38b447503a9a7b9cd82729e51",
-        "cps_provider_7_nf_descriptor_step": "c0052ce7bc4a539595e0296217d0d37f1bc66a3d50156155f67843570b9f4dea",
-        "cps_provider_7_nf_all": "fd74e42aeac0cb3151d8f5a7ed28e82d71f92be9112a10da10c14c9627aeacc7",
-        "cps_provider_7_nf_apply_args": "9be131eb562990b881b85412e004ac6db72a67a03fe02c1d9b143f70c3dc4191",
-        "cps_provider_7_nf_apply_source": "126f75e0c9a4313598870f2ac723bba9cb80823df5b83b9396c1a7e2e4fcd37f",
-        "cps_provider_7_nf_apply": "b235ad358dc975f5d822ccb647050c0bd9689aaf87a0eb884d19bcd9e427ad3b",
-        "cps_provider_7_nf_apply_one": "6802a94e8cc5a601bc0ecb8c76d5b19f579697dea32ef3de3661e1b65b5a494c",
+        "cps_provider_7_nf": "2dd24e31b424e7355320aa00e4ed9dcb265858b4d06883847e2f5ae686b06c98",
+        "cps_provider_7_nf_descriptor": "d9b8688ad219fb008ca527617bb2c13bf4909a2bbbba7ffaf3235f0f9f3426d6",
+        "cps_provider_7_nf_arrow": "c01518a0345f7462e4d61d390d674dd1cc3cbff4d7b6ea98ceb6af59bd27b96e",
+        "cps_provider_7_nf_descriptor_step": "ffe65de199aaf3c19c2314de04c8cb828b77266dd0b68b6ead2c5c8e7b6502f3",
+        "cps_provider_7_nf_all": "fe2ebb0d099dbd3e9c6d222c20fb7aa2d92cdfed8ec7791960e2f1e2483eef50",
+        "cps_provider_7_nf_apply_args": "be4e9930dc28ac80c8b41376c2498ca249f753555168a8fc3eb12cec590091df",
+        "cps_provider_7_nf_apply_source": "aecc83e22ea9ea3a960d3abf71bd08322e6a780b4eec95e2f36888300b174085",
+        "cps_provider_7_nf_apply": "9cf8cfce0208b820ba03de636d3b4a9317e4430628015492d9a61b46e7898722",
+        "cps_provider_7_nf_apply_one": "21306a4c6a5c25581eaace8ee44b20134c1a3dc680d6fe1a31822d5e8e8d483d",
         "cps_provider_7_intrinsic_io": "d50293cd5c05d5561c492374a71ed769ed4e52ff13e6442ff37f3b6d4f748aec",
-        "cps_provider_7_nf_named_io": "2ad5725a1091786c778850cf504ace85cc54c5e3dc5cad2f427fed3be76a987a",
-        "cps_provider_7_nf_named": "4eeb52621e7dc57e515be226c4b3b617c33fbcd5a0e126d3a3599824a4bc08e1",
+        "cps_provider_7_nf_named_io": "3523df9d4184b1820e97ceb8536eb3a540970ad63d6c25a88e42af81c0ecd70e",
+        "cps_provider_7_nf_named": "8d2b1367e327e78b40d140550bc80b0f630a34db185c5cb41be151b44c081dd0",
         "cps_provider_7_nf_arity": "0137809c4486ef7aef0bad82e2c13c94499552e930c8b0e32defb34797c2997b",
         "cps_provider_7_nf_family": "761266dc6a2c3de41a7d5beb11a454aa959a7b865e953ea4bafd09142998ff82",
         "cps_provider_7_nf_family_apply": "fd7ec7030f8cef4e102f9c28c10f8eb817636f982fd258cc86b4db9f991364db",
-        "cps_provider_7_nf_reduce": "cbd95a44597af42831cf8d9c3c5bab6b3f8a2e7dc1e899304b47238afee900f3",
-        "cps_provider_7_nf_reduce_apply": "0b01ccd6ff4319958d4c21a9ab27b2849a138a7fc8fde80468f7caf5f14202be",
-        "cps_provider_7_nf_reduce_body": "695142d5690cc41f8762840ed6d47c1537d17367b6e546233297ce872bb4d58d",
-        "cps_provider_7_nf_cases": "aefd2b842290de4741ea0d04c1427192182cccba6c45c6ad10a67dd8f33cd520",
-        "cps_provider_7_normalize": "253526c585cbf51c0e9879e937778ac075af5d0835faad1d13bb0563e5cd8787",
+        "cps_provider_7_nf_reduce": "fd59f4cff2b9b0d9d5bc043cba05798ce2290aaf3054374a31cbcef38587e237",
+        "cps_provider_7_nf_reduce_apply": "df73aaa88289332a9e6c7bd58a10e9f8e1c849589b1d7b9e3e98fe41707d9eee",
+        "cps_provider_7_nf_reduce_body": "36ec8292fdde46574b6651d1bb033371c06b8a6e1ea93628e165788db9106298",
+        "cps_provider_7_nf_cases": "c0032a155487c7e083a98d6d814d778b015bf5c178c6566ecef7e26023023f28",
+        "cps_provider_7_normalize": "f196b7a2fae04abda454eb8e865b5ddcc3eaa4858a9142621966975f86816b5b",
         "cps_provider_7_normalize_closed": "666a5b194d5e0af86ec768d01c04f3446572639b8a4dc1dbc84aa372e2961416",
         "cps_provider_7_normalize_in": "a822458f1a487d36d446231c9f099692e4c7fbe845c13582135ca026fe08bb90",
         "cps_provider_7_outer_application": "bf76ab18b4ef84cfb4ac41edd13403d3a4eec13b167e2ace2797b3da6d02e20f",
@@ -47113,7 +47201,7 @@
         "cps_provider_8_slot_binds": "790cb5f44a8993516229fc642202409919f39100b122aac9a4d77b4ff8c17246",
         "cps_provider_8_cont_of": "ebbbdeeac41735d1fb31021661a691cdb67be15f3a6a6012a33722893542cc92",
         "cps_provider_8_thunk_of": "14288a54034ded18e06262732e39e16c0f2ca01c72b917d1db5664b6f4b61eb6",
-        "cps_provider_8_region_frame": "bd68256330e02d2eaeebc491a5b941b6d9e791a0558c3a96c13f11fc9726fc49",
+        "cps_provider_8_region_frame": "d55a482c9c8f8ea7addd4d562b2c190f1823b2f4eb5ab7fc6f4e73ceeba030b9",
         "cps_provider_8_leave_step": "b548a47747b767fc720d5db516a5eb0b2ffdc2cf015de5aa9bb120c8b21bbe81",
         "cps_provider_8_conts": "8a45723f04a7de16b96f489c6e3c10d4bd2f853c89dd55c528610099cb57586a",
         "cps_provider_8_conts_let": "a7b95b1c17145010d03c9a6c097a0cffcfe72387465bde7577b0e1380a5f3ae7",
@@ -47191,7 +47279,7 @@
         "cps_provider_8_emit_checked_exports": "81cb780d5b59c37c071e3a947c32803c1ddbce9f65995a15c36313e0173e556f",
         "cps_provider_8_emit_effects": "3c218cf6714844b8ae31971b4767df2d4d52d6f76dff293d1eb7aebe19d60e86",
         "cps_provider_8_program_source": "bf2242474cb635bebf1e8abafdd609e5f75de582a8fbfec4c9a879d730b37a40",
-        "cps_provider_8_js_runtime": "18abd96b620059838f158085573ba5cefae48f2b58398fdacb0ae96e65e2b45e",
+        "cps_provider_8_js_runtime": "de97576510501dd70b01922deed7c59ef733cb5a29e856dccb83f57e6e1937b2",
         "cps_provider_8_js_runtime_extra": "291bd971088d0c6fb15315931043b1f0d19e2f6bb498dd343f367833ef7c57fb",
         "cps_provider_8_js_runtime_array": "3b84ce5840ddbdc302166a950e3c08e5c5323cd73cb113843d0b745839ab8f54",
         "cps_provider_8_js_runtime_foreign": "c5ce8b2a0b2e09cd99bdbcc1d6129f87c1025fd2ce256de4ffb223281247cf0c",
@@ -98565,7 +98653,7 @@
       "source": "/private/tmp/bend2039-upgrade/bend2/selfhost/emitter.bend",
       "sourceSha256": "47d68ba5f0b54c334e2c940b7bb6aabc7f3bba27142b816f27df8225cf3fae4f",
       "output": "/private/tmp/bend2039-upgrade/checkpoints/emitter_owned_v1.bend",
-      "outputSha256": "046f27c1e175de38206e2a4f671ef3f1d590fa64325debdce48a7882fd40185f",
+      "outputSha256": "2a73b7f6e4c78f1bbee47be1e01b6bad18e858f7269c2d0256a7a7793c98b2b9",
       "extractions": [
         {
           "owner": "cps_provider_1_describe",
@@ -107727,6 +107815,27 @@
           "producers": 1
         },
         {
+          "owner": "cps_provider_7_renamed_level",
+          "helper": "native_match_cps_provider_7_renamed_level_0",
+          "kind": "match",
+          "captures": [
+            4,
+            10,
+            11
+          ],
+          "producers": 1
+        },
+        {
+          "owner": "cps_provider_7_renamed_level",
+          "helper": "native_match_cps_provider_7_renamed_level_1",
+          "kind": "match",
+          "captures": [
+            2,
+            4
+          ],
+          "producers": 0
+        },
+        {
           "owner": "cps_provider_7_bind_status",
           "helper": "native_match_cps_provider_7_bind_status_0",
           "kind": "match",
@@ -107825,7 +107934,8 @@
             1,
             2,
             5,
-            7
+            7,
+            9
           ],
           "producers": 1
         },
@@ -107837,7 +107947,8 @@
             1,
             2,
             5,
-            7
+            7,
+            9
           ],
           "producers": 1
         },
@@ -107847,7 +107958,8 @@
           "kind": "match",
           "captures": [
             2,
-            15
+            9,
+            17
           ],
           "producers": 1
         },
@@ -107860,7 +107972,8 @@
             2,
             4,
             7,
-            9
+            9,
+            11
           ],
           "producers": 1
         },
@@ -107878,6 +107991,7 @@
           "captures": [
             1,
             7,
+            9,
             45
           ],
           "producers": 1
@@ -107898,6 +108012,7 @@
           "captures": [
             1,
             7,
+            9,
             68
           ],
           "producers": 1
@@ -107910,6 +108025,7 @@
             1,
             5,
             7,
+            9,
             65
           ],
           "producers": 1
@@ -107922,6 +108038,7 @@
             1,
             5,
             7,
+            9,
             80,
             82
           ],
@@ -107935,6 +108052,7 @@
             1,
             5,
             7,
+            9,
             94
           ],
           "producers": 1
@@ -107947,7 +108065,8 @@
             1,
             5,
             7,
-            10,
+            9,
+            12,
             107
           ],
           "producers": 1
@@ -107960,7 +108079,8 @@
             1,
             5,
             7,
-            10,
+            9,
+            12,
             105,
             107
           ],
@@ -107974,7 +108094,8 @@
             1,
             5,
             7,
-            10,
+            9,
+            12,
             124
           ],
           "producers": 1
@@ -107987,6 +108108,7 @@
             1,
             5,
             7,
+            9,
             139
           ],
           "producers": 1
@@ -107998,6 +108120,7 @@
           "captures": [
             1,
             7,
+            9,
             170
           ],
           "producers": 1
@@ -108009,6 +108132,7 @@
           "captures": [
             1,
             7,
+            9,
             182
           ],
           "producers": 1
@@ -108018,10 +108142,11 @@
           "helper": "native_match_cps_provider_7_nf_descriptor_step_13",
           "kind": "match",
           "captures": [
-            10,
+            12,
             1,
             5,
-            7
+            7,
+            9
           ],
           "producers": 0
         },
@@ -108030,7 +108155,7 @@
           "helper": "native_match_cps_provider_7_nf_all_0",
           "kind": "match",
           "captures": [
-            18
+            20
           ],
           "producers": 1
         },
@@ -108042,7 +108167,8 @@
             1,
             6,
             8,
-            13
+            10,
+            15
           ],
           "producers": 1
         },
@@ -108054,7 +108180,8 @@
             3,
             1,
             6,
-            8
+            8,
+            10
           ],
           "producers": 0
         },
@@ -108066,7 +108193,8 @@
             1,
             8,
             10,
-            16
+            12,
+            18
           ],
           "producers": 1
         },
@@ -108079,7 +108207,8 @@
             4,
             7,
             8,
-            10
+            10,
+            12
           ],
           "producers": 1
         },
@@ -108090,7 +108219,8 @@
           "captures": [
             1,
             8,
-            13
+            10,
+            15
           ],
           "producers": 1
         },
@@ -108102,7 +108232,8 @@
             6,
             1,
             3,
-            8
+            8,
+            10
           ],
           "producers": 0
         },
@@ -108125,7 +108256,8 @@
             3,
             6,
             8,
-            12
+            10,
+            14
           ],
           "producers": 1
         },
@@ -108137,7 +108269,8 @@
             1,
             3,
             6,
-            8
+            8,
+            10
           ],
           "producers": 0
         },
@@ -108159,7 +108292,8 @@
             2,
             1,
             7,
-            10
+            9,
+            12
           ],
           "producers": 0
         },
@@ -108170,7 +108304,8 @@
           "captures": [
             1,
             8,
-            10
+            10,
+            12
           ],
           "producers": 1
         },
@@ -108184,8 +108319,9 @@
             9,
             10,
             12,
-            18,
-            22
+            14,
+            20,
+            24
           ],
           "producers": 1
         },
@@ -108194,13 +108330,14 @@
           "helper": "native_match_cps_provider_7_nf_cases_1",
           "kind": "match",
           "captures": [
-            17,
+            19,
             1,
             6,
             9,
             10,
             12,
-            18
+            14,
+            20
           ],
           "producers": 0
         },
@@ -108214,7 +108351,8 @@
             6,
             9,
             10,
-            12
+            12,
+            14
           ],
           "producers": 0
         },
