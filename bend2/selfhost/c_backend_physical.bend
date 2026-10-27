@@ -216,6 +216,38 @@ def dst_mark(+pdst: Dst, +ptag: Nat) -> String:
     case DstSeq{buf, cursor}: join_text([buf, "[", cursor, "]", " = ", value, "; ", cursor, " += 1;"])
     case DstOut{out}: join_text([out, " = ", value, ";"])
 
+# A laid-out form reserves its widest arm's words for every arm
+# (c_backend_layout lay_pack). An arm that uses fewer words leaves padding at
+# the end of the form: no projection reads it, because no arm has a field
+# there, but a cursor that stops at the arm's own words puts every later word
+# of the enclosing value one slot early.
+def form_base(+pwords: Nat, +ptagged: Bool) -> Nat:
+  Nat.sub(pwords, CLay.tag_word(ptagged))
+
+def form_pad(+pbase: Nat, +parm_words: Nat) -> Nat:
+  Nat.sub(pbase, parm_words)
+
+def src_skip_jobs(+psrc: Src, +pcount: Nat) -> List<&2, Job>:
+  match Nat.is_gt(pcount, 0n):
+    case False{}: Nil{}
+    case True{}:
+      match psrc:
+        case SrcOne{text}: Nil{}
+        case SrcNode{base, fb, cursor, packed}:
+          match packed:
+            case True{}: Nil{}
+            case False{}: [JText{join_text([cursor, " += ", Nat.show(pcount), ";"])}]
+        case SrcBlock{loc, at, arr, keep, cursor}: [JText{join_text([cursor, " += ", Nat.show(pcount), ";"])}]
+        case SrcBuf{buf, cursor}: [JText{join_text([cursor, " += ", Nat.show(pcount), ";"])}]
+
+def dst_skip_jobs(+pdst: Dst, +pcount: Nat) -> List<&2, Job>:
+  match Nat.is_gt(pcount, 0n):
+    case False{}: Nil{}
+    case True{}:
+      match pdst:
+        case DstSeq{buf, cursor}: [JText{join_text([cursor, " += ", Nat.show(pcount), ";"])}]
+        case DstOut{out}: Nil{}
+
 def src_read_node(+pbase: String, +pfb: String, +pcursor: String, +ppacked: Bool, +ptag: String) -> List<&2, Job>:
   match ppacked:
     case True{}: [JText{join_text(["u64 ", ptag, "w = ", pbase, ";"])}]
@@ -297,42 +329,43 @@ def arm_release(+ppacked: Bool, +pnode_words: Nat, +ptag: String) -> List<&2, Jo
         case 0n: Nil{}
         case _: [JText{join_text(["if (", ptag, "s != 0) { spare_free(e, cls_fit(", Nat.show(pnode_words), "), ", ptag, "s); }"])}]
 
-def jobs_arm_body(+pw: World, +pcid: U32, +ptag_index: Nat, +ppacked: Bool, +pnode_words: Nat, +pfields: List<&2, CLay.Nest>, +pt: String, +pdst: Dst, +ptag: String, +ptagged: Bool, +pfb: String, +pmode: Nat) -> List<&2, Job>:
-  List.append(&2, Job, Bool.pick(List<&2, Job>, ptagged, one_job(JText{dst_mark(pdst, ptag_index)}), Nil{}), List.append(&2, Job, arm_seed(ppacked, pnode_words, pt, ptag, pfb), List.append(&2, Job, nests_jobs(pw, pfields, arm_src(ppacked, pnode_words, pt, ptag, pfb), pdst, ptag, 0n), arm_release(ppacked, pnode_words, ptag))))
+def jobs_arm_body(+pw: World, +pcid: U32, +ptag_index: Nat, +pbase: Nat, +ppacked: Bool, +pnode_words: Nat, +pfields: List<&2, CLay.Nest>, +pt: String, +pdst: Dst, +ptag: String, +ptagged: Bool, +pfb: String, +pmode: Nat) -> List<&2, Job>:
+  List.append(&2, Job, Bool.pick(List<&2, Job>, ptagged, one_job(JText{dst_mark(pdst, ptag_index)}), Nil{}), List.append(&2, Job, arm_seed(ppacked, pnode_words, pt, ptag, pfb), List.append(&2, Job, nests_jobs(pw, pfields, arm_src(ppacked, pnode_words, pt, ptag, pfb), pdst, ptag, 0n), List.append(&2, Job, dst_skip_jobs(pdst, form_pad(pbase, pnode_words)), arm_release(ppacked, pnode_words, ptag)))))
 
-def jobs_arm(+pw: World, +pcid: U32, +ptag_index: Nat, +ppacked: Bool, +pnode_words: Nat, +pfields: List<&2, CLay.Nest>, +pt: String, +pdst: Dst, +ptag: String, +ptagged: Bool, +pfb: String, +pmode: Nat) -> List<&2, Job>:
-  List.append(&2, Job, [JText{join_text(["case ", U32.show(pcid), "u: {"])}], List.append(&2, Job, jobs_arm_body(pw, pcid, ptag_index, ppacked, pnode_words, pfields, pt, pdst, ptag, ptagged, pfb, pmode), [JText{"} break;"}]))
+def jobs_arm(+pw: World, +pcid: U32, +ptag_index: Nat, +pbase: Nat, +ppacked: Bool, +pnode_words: Nat, +pfields: List<&2, CLay.Nest>, +pt: String, +pdst: Dst, +ptag: String, +ptagged: Bool, +pfb: String, +pmode: Nat) -> List<&2, Job>:
+  List.append(&2, Job, [JText{join_text(["case ", U32.show(pcid), "u: {"])}], List.append(&2, Job, jobs_arm_body(pw, pcid, ptag_index, pbase, ppacked, pnode_words, pfields, pt, pdst, ptag, ptagged, pfb, pmode), [JText{"} break;"}]))
 
-def arm_jobs(+pw: World, +pfound: Maybe<&2, U32>, +parm: CLay.FormArm, +pt: String, +pdst: Dst, +ptag: String, +ptagged: Bool, +pfb: String, +pmode: Nat) -> List<&2, Job>:
+def arm_jobs(+pw: World, +pfound: Maybe<&2, U32>, +parm: CLay.FormArm, +pbase: Nat, +pt: String, +pdst: Dst, +ptag: String, +ptagged: Bool, +pfb: String, +pmode: Nat) -> List<&2, Job>:
   match pfound:
     case None{}: [JText{"default: (void)err_fail(\"the constructor tag is not a declared constructor\"); break;"}]
     case Some{cid}:
       match parm:
         case CLay.FormArm{key, tag, packed, node_words, fields}:
-          jobs_arm(pw, cid, tag, packed, node_words, fields, pt, pdst, ptag, ptagged, pfb, pmode)
+          jobs_arm(pw, cid, tag, pbase, packed, node_words, fields, pt, pdst, ptag, ptagged, pfb, pmode)
 
-def unbox_cases(+pw: World, +parms: List<&2, CLay.FormArm>, +pt: String, +pdst: Dst, +ptag: String, +ptagged: Bool, +pfb: String) -> List<&2, Job>:
+def unbox_cases(+pw: World, +parms: List<&2, CLay.FormArm>, +pbase: Nat, +pt: String, +pdst: Dst, +ptag: String, +ptagged: Bool, +pfb: String) -> List<&2, Job>:
   match parms:
     case Nil{}: Nil{}
     case +arm <> +rest:
       match arm:
         case CLay.FormArm{key, tag, packed, node_words, fields}:
           found = cid_of(key, pw)
-          List.append(&2, Job, arm_jobs(pw, found, arm, pt, pdst, ptag, ptagged, pfb, 0n), unbox_cases(pw, rest, pt, pdst, ptag, ptagged, pfb))
+          List.append(&2, Job, arm_jobs(pw, found, arm, pbase, pt, pdst, ptag, ptagged, pfb, 0n), unbox_cases(pw, rest, pbase, pt, pdst, ptag, ptagged, pfb))
 
-def expand_unbox(+pw: World, +parms: List<&2, CLay.FormArm>, +psrc: Src, +pdst: Dst, +ptag: String) -> List<&2, Job>:
+def expand_unbox(+pw: World, +pwords: Nat, +parms: List<&2, CLay.FormArm>, +psrc: Src, +pdst: Dst, +ptag: String) -> List<&2, Job>:
   t = join_text([ptag, "t"])
   fb = join_text([ptag, "f"])
   count = max_node_words(parms, 0n)
   tagged = form_tagged(parms)
+  base = form_base(pwords, tagged)
   head = List.append(&2, Job, src_read(psrc, ptag), List.append(&2, Job, [JText{join_text(["Term ", t, " = ", ptag, "w;"])}], [JText{max_term_decl(fb, count)}]))
-  cases = unbox_cases(pw, parms, t, pdst, ptag, tagged, fb)
+  cases = unbox_cases(pw, parms, base, t, pdst, ptag, tagged, fb)
   List.append(&2, Job, head, List.append(&2, Job, [JText{join_text(["switch (term_aux(", t, ")) {"])}], List.append(&2, Job, cases, [JText{"}"}])))
 
 def expand_word_take(+pw: World, +pmake: CLay.Fill, +psrc: Src, +pdst: Dst, +ptag: String) -> List<&2, Job>:
   match pmake:
     case CLay.FillWord{}: List.append(&2, Job, src_read(psrc, ptag), dst_write(pdst, join_text([ptag, "w"])))
-    case CLay.FillForm{words, arms}: expand_unbox(pw, arms, psrc, pdst, ptag)
+    case CLay.FillForm{words, arms}: expand_unbox(pw, words, arms, psrc, pdst, ptag)
 
 def nest_take(+pfield: CLay.Nest) -> CLay.Unfill:
   match pfield:
@@ -364,19 +397,21 @@ def form_fields(+parm: CLay.FormArm) -> List<&2, CLay.Nest>:
 
 # One arm of an inline conversion, in destination order: the arm's tag word
 # when the layout stores one (the arm's own ordinal, which is the same on the
-# two sides of one declared type), then every field pair. A form stores a
-# leading tag word only when its type has more than one arm (c_backend_layout
-# form_arms), so an untagged form writes no tag word at all.
-def forms_arm_body(+pw: World, +parm_tag: Nat, +pfields: List<&2, CLay.Nest>, +pfound: Maybe<&2, CLay.FormArm>, +psrc: Src, +pdst: Dst, +ptag: String, +pdst_tagged: Bool) -> List<&2, Job>:
+# two sides of one declared type), then every field pair, then the arm's own
+# padding up to the form's reserved width on each side. A form stores a
+# leading tag word and reserves its widest arm's words only when its type has
+# more than one arm (c_backend_layout form_arms), so an untagged form writes
+# no tag word and a form whose only arm is its widest has no padding.
+def forms_arm_body(+pw: World, +parm_tag: Nat, +parm_words: Nat, +pfields: List<&2, CLay.Nest>, +psrc_base: Nat, +pdst_base: Nat, +pdst_tagged: Bool, +pfound: Maybe<&2, CLay.FormArm>, +psrc: Src, +pdst: Dst, +ptag: String) -> List<&2, Job>:
   match pfound:
     case None{}: [JText{"(void)err_fail(\"the inline conversion target has no arm\");"}]
     case Some{target}:
-      List.append(&2, Job, Bool.pick(List<&2, Job>, pdst_tagged, one_job(JText{dst_mark(pdst, parm_tag)}), Nil{}), field_pair_jobs(pw, pfields, form_fields(target), psrc, pdst, ptag, 0n))
+      List.append(&2, Job, Bool.pick(List<&2, Job>, pdst_tagged, one_job(JText{dst_mark(pdst, parm_tag)}), Nil{}), List.append(&2, Job, field_pair_jobs(pw, pfields, form_fields(target), psrc, pdst, ptag, 0n), List.append(&2, Job, dst_skip_jobs(pdst, form_pad(pdst_base, parm_words)), src_skip_jobs(psrc, form_pad(psrc_base, parm_words)))))
 
-def forms_arm_case(+pw: World, +pfound: Maybe<&2, CLay.FormArm>, +parm: CLay.FormArm, +psrc: Src, +pdst: Dst, +ptag: String, +pindex: Nat, +pdst_tagged: Bool) -> List<&2, Job>:
+def forms_arm_case(+pw: World, +pfound: Maybe<&2, CLay.FormArm>, +parm: CLay.FormArm, +psrc_base: Nat, +pdst_base: Nat, +pdst_tagged: Bool, +psrc: Src, +pdst: Dst, +ptag: String, +pindex: Nat) -> List<&2, Job>:
   match parm:
     case CLay.FormArm{key, tag, packed, node_words, fields}:
-      body = forms_arm_body(pw, tag, fields, pfound, psrc, pdst, ptag, pdst_tagged)
+      body = forms_arm_body(pw, tag, node_words, fields, psrc_base, pdst_base, pdst_tagged, pfound, psrc, pdst, ptag)
       List.append(&2, Job, [JText{join_text(["case ", Nat.show(pindex), ": {"])}], List.append(&2, Job, body, [JText{"} break;"}]))
 
 def form_arm_by_key(+pwant: String, +parms: List<&2, CLay.FormArm>) -> Maybe<&2, CLay.FormArm>:
@@ -388,33 +423,36 @@ def form_arm_by_key(+pwant: String, +parms: List<&2, CLay.FormArm>) -> Maybe<&2,
           same = String.eq(pwant, key)
           Bool.pick(Maybe<&2, CLay.FormArm>, same, Some{arm}, form_arm_by_key(pwant, rest))
 
-def forms_cases(+pw: World, +parms: List<&2, CLay.FormArm>, +pmake_arms: List<&2, CLay.FormArm>, +psrc: Src, +pdst: Dst, +ptag: String, +pdst_tagged: Bool, +pindex: Nat) -> List<&2, Job>:
+def forms_cases(+pw: World, +parms: List<&2, CLay.FormArm>, +pmake_arms: List<&2, CLay.FormArm>, +psrc_base: Nat, +pdst_base: Nat, +pdst_tagged: Bool, +psrc: Src, +pdst: Dst, +ptag: String, +pindex: Nat) -> List<&2, Job>:
   match parms:
     case Nil{}: Nil{}
     case +arm <> +rest:
       match arm:
         case CLay.FormArm{key, tag, packed, node_words, fields}:
           found = form_arm_by_key(key, pmake_arms)
-          block = forms_arm_case(pw, found, arm, psrc, pdst, ptag, pindex, pdst_tagged)
-          List.append(&2, Job, block, forms_cases(pw, rest, pmake_arms, psrc, pdst, ptag, pdst_tagged, Nat.add(pindex, 1n)))
+          block = forms_arm_case(pw, found, arm, psrc_base, pdst_base, pdst_tagged, psrc, pdst, ptag, pindex)
+          List.append(&2, Job, block, forms_cases(pw, rest, pmake_arms, psrc_base, pdst_base, pdst_tagged, psrc, pdst, ptag, Nat.add(pindex, 1n)))
 
 # Two inline forms. A form stores a leading tag word exactly when its type has
 # more than one arm, so the source tag is read and switched on only then; a
 # one-arm form has no tag to read and its single arm converts in place. The
-# destination stores its arm's tag word under the same rule.
-def expand_forms(+pw: World, +ptake_arms: List<&2, CLay.FormArm>, +pmake_arms: List<&2, CLay.FormArm>, +psrc: Src, +pdst: Dst, +ptag: String) -> List<&2, Job>:
+# destination stores its arm's tag word under the same rule. Each arm then
+# leaves both cursors at the form's reserved width, padding included.
+def expand_forms(+pw: World, +ptake_words: Nat, +ptake_arms: List<&2, CLay.FormArm>, +pmake_words: Nat, +pmake_arms: List<&2, CLay.FormArm>, +psrc: Src, +pdst: Dst, +ptag: String) -> List<&2, Job>:
   dst_tagged = form_tagged(pmake_arms)
+  src_base = form_base(ptake_words, form_tagged(ptake_arms))
+  dst_base = form_base(pmake_words, dst_tagged)
   match ptake_arms:
     case Nil{}: Nil{}
-    case +only <> Nil{}: forms_single(pw, only, pmake_arms, psrc, pdst, ptag, dst_tagged)
+    case +only <> Nil{}: forms_single(pw, only, src_base, dst_base, dst_tagged, pmake_arms, psrc, pdst, ptag)
     case _:
-      cases = forms_cases(pw, ptake_arms, pmake_arms, psrc, pdst, ptag, dst_tagged, 0n)
+      cases = forms_cases(pw, ptake_arms, pmake_arms, src_base, dst_base, dst_tagged, psrc, pdst, ptag, 0n)
       List.append(&2, Job, src_read(psrc, ptag), List.append(&2, Job, [JText{join_text(["switch ((u32)(", ptag, "w)) {"])}], List.append(&2, Job, cases, [JText{"}"}])))
 
-def forms_single(+pw: World, +parm: CLay.FormArm, +pmake_arms: List<&2, CLay.FormArm>, +psrc: Src, +pdst: Dst, +ptag: String, +pdst_tagged: Bool) -> List<&2, Job>:
+def forms_single(+pw: World, +parm: CLay.FormArm, +psrc_base: Nat, +pdst_base: Nat, +pdst_tagged: Bool, +pmake_arms: List<&2, CLay.FormArm>, +psrc: Src, +pdst: Dst, +ptag: String) -> List<&2, Job>:
   match parm:
     case CLay.FormArm{key, tag, packed, node_words, fields}:
-      forms_arm_body(pw, tag, fields, form_arm_by_key(key, pmake_arms), psrc, pdst, ptag, pdst_tagged)
+      forms_arm_body(pw, tag, node_words, fields, psrc_base, pdst_base, pdst_tagged, form_arm_by_key(key, pmake_arms), psrc, pdst, ptag)
 
 def pack_jobs(+pcid: U32, +pcount: Nat, +ppacked: Bool, +pnw: String, +pout: String, +ptag: String) -> List<&2, Job>:
   match pcount:
@@ -427,31 +465,32 @@ def pack_jobs(+pcid: U32, +pcount: Nat, +ppacked: Bool, +pnw: String, +pout: Str
           [JText{join_text(["u64 ", at, " = heap_alloc(e, cls_fit(", Nat.show(pcount), ")); for (u32 ", at, "i = 0; ", at, "i < ", Nat.show(pcount), "; ", at, "i += 1) { e.mem[", at, " + ", at, "i] = ", pnw, "[", at, "i]; } ", pout, " = term_ctr(", U32.show(pcid), "u, ", at, ");"])}]
 
 # One arm of a boxed conversion: the node payload words (no tag word: the
-# constructor id is the Term's own), then the packed Term.
+# constructor id is the Term's own), then the packed Term. The source cursor
+# leaves the arm's own padding behind, up to the form's reserved width.
 
-def arm_block_jobs(+pw: World, +pcid: U32, +parm: CLay.FormArm, +psrc: Src, +pout: String, +ptag: String, +pindex: Nat) -> List<&2, Job>:
+def arm_block_jobs(+pw: World, +pcid: U32, +parm: CLay.FormArm, +psrc_base: Nat, +psrc: Src, +pout: String, +ptag: String, +pindex: Nat) -> List<&2, Job>:
   match parm:
     case CLay.FormArm{key, tag, packed, node_words, fields}:
       nw = join_text([ptag, "w"])
       cur = join_text([ptag, "j"])
-      List.append(&2, Job, one_job(JText{dst_decl(nw, cur, node_words)}), List.append(&2, Job, nests_jobs(pw, fields, psrc, DstSeq{nw, cur}, join_text([ptag, "x", Nat.show(pindex)]), 0n), pack_jobs(pcid, node_words, packed, nw, pout, ptag)))
+      List.append(&2, Job, one_job(JText{dst_decl(nw, cur, node_words)}), List.append(&2, Job, nests_jobs(pw, fields, psrc, DstSeq{nw, cur}, join_text([ptag, "x", Nat.show(pindex)]), 0n), List.append(&2, Job, src_skip_jobs(psrc, form_pad(psrc_base, node_words)), pack_jobs(pcid, node_words, packed, nw, pout, ptag))))
 
-def box_arm_jobs(+pw: World, +pfound: Maybe<&2, U32>, +parm: CLay.FormArm, +psrc: Src, +pout: String, +ptag: String, +pindex: Nat) -> List<&2, Job>:
+def box_arm_jobs(+pw: World, +pfound: Maybe<&2, U32>, +parm: CLay.FormArm, +psrc_base: Nat, +psrc: Src, +pout: String, +ptag: String, +pindex: Nat) -> List<&2, Job>:
   match pfound:
     case None{}: [JText{"default: (void)err_fail(\"the constructor tag is not a declared constructor\"); break;"}]
-    case Some{cid}: List.append(&2, Job, [JText{join_text(["case ", Nat.show(pindex), ": {"])}], List.append(&2, Job, arm_block_jobs(pw, cid, parm, psrc, pout, ptag, pindex), [JText{"} break;"}]))
+    case Some{cid}: List.append(&2, Job, [JText{join_text(["case ", Nat.show(pindex), ": {"])}], List.append(&2, Job, arm_block_jobs(pw, cid, parm, psrc_base, psrc, pout, ptag, pindex), [JText{"} break;"}]))
 
-def box_cases(+pw: World, +parms: List<&2, CLay.FormArm>, +psrc: Src, +pout: String, +ptag: String, +ptagged: Bool, +pindex: Nat) -> List<&2, Job>:
+def box_cases(+pw: World, +parms: List<&2, CLay.FormArm>, +psrc_base: Nat, +psrc: Src, +pout: String, +ptag: String, +pindex: Nat) -> List<&2, Job>:
   match parms:
     case Nil{}: Nil{}
     case +arm <> +rest:
       match arm:
         case CLay.FormArm{key, tag, packed, node_words, fields}:
           found = cid_of(key, pw)
-          block = box_arm_jobs(pw, found, arm, psrc, pout, ptag, pindex)
-          List.append(&2, Job, block, box_cases(pw, rest, psrc, pout, ptag, ptagged, Nat.add(pindex, 1n)))
+          block = box_arm_jobs(pw, found, arm, psrc_base, psrc, pout, ptag, pindex)
+          List.append(&2, Job, block, box_cases(pw, rest, psrc_base, psrc, pout, ptag, Nat.add(pindex, 1n)))
 
-def box_untagged(+pw: World, +parms: List<&2, CLay.FormArm>, +psrc: Src, +pout: String, +ptag: String) -> List<&2, Job>:
+def box_untagged(+pw: World, +parms: List<&2, CLay.FormArm>, +psrc_base: Nat, +psrc: Src, +pout: String, +ptag: String) -> List<&2, Job>:
   match parms:
     case Nil{}: Nil{}
     case +arm <> Nil{}:
@@ -459,32 +498,33 @@ def box_untagged(+pw: World, +parms: List<&2, CLay.FormArm>, +psrc: Src, +pout: 
         case CLay.FormArm{key, tag, packed, node_words, fields}:
           match cid_of(key, pw):
             case None{}: [JText{"(void)err_fail(\"the constructor tag is not a declared constructor\");"}]
-            case Some{cid}: arm_block_jobs(pw, cid, arm, psrc, pout, ptag, 0n)
+            case Some{cid}: arm_block_jobs(pw, cid, arm, psrc_base, psrc, pout, ptag, 0n)
     case _: Nil{}
 
-def expand_box(+pw: World, +parms: List<&2, CLay.FormArm>, +psrc: Src, +pdst: Dst, +ptag: String) -> List<&2, Job>:
+def expand_box(+pw: World, +pwords: Nat, +parms: List<&2, CLay.FormArm>, +psrc: Src, +pdst: Dst, +ptag: String) -> List<&2, Job>:
   r = join_text([ptag, "r"])
   bool_ = form_tagged(parms)
-  List.append(&2, Job, [JText{join_text(["Term ", r, " = 0;"])}], expand_box_body(bool_, pw, parms, psrc, pdst, ptag, r))
+  base = form_base(pwords, bool_)
+  List.append(&2, Job, [JText{join_text(["Term ", r, " = 0;"])}], expand_box_body(bool_, base, pw, parms, psrc, pdst, ptag, r))
 
-def expand_box_body(+ptagged: Bool, +pw: World, +parms: List<&2, CLay.FormArm>, +psrc: Src, +pdst: Dst, +ptag: String, +pr: String) -> List<&2, Job>:
+def expand_box_body(+ptagged: Bool, +psrc_base: Nat, +pw: World, +parms: List<&2, CLay.FormArm>, +psrc: Src, +pdst: Dst, +ptag: String, +pr: String) -> List<&2, Job>:
   match ptagged:
     case True{}:
-      List.append(&2, Job, src_read(psrc, ptag), List.append(&2, Job, [JText{join_text(["switch ((u32)(", ptag, "w)) {"])}], List.append(&2, Job, box_cases(pw, parms, psrc, pr, ptag, True{}, 0n), List.append(&2, Job, [JText{"}"}], dst_write(pdst, pr)))))
+      List.append(&2, Job, src_read(psrc, ptag), List.append(&2, Job, [JText{join_text(["switch ((u32)(", ptag, "w)) {"])}], List.append(&2, Job, box_cases(pw, parms, psrc_base, psrc, pr, ptag, 0n), List.append(&2, Job, [JText{"}"}], dst_write(pdst, pr)))))
     case False{}:
-      List.append(&2, Job, box_untagged(pw, parms, psrc, pr, ptag), dst_write(pdst, pr))
+      List.append(&2, Job, box_untagged(pw, parms, psrc_base, psrc, pr, ptag), dst_write(pdst, pr))
 
-def expand_form_take(+pw: World, +parms: List<&2, CLay.FormArm>, +pmake: CLay.Fill, +psrc: Src, +pdst: Dst, +ptag: String) -> List<&2, Job>:
+def expand_form_take(+pw: World, +pwords: Nat, +parms: List<&2, CLay.FormArm>, +pmake: CLay.Fill, +psrc: Src, +pdst: Dst, +ptag: String) -> List<&2, Job>:
   match pmake:
-    case CLay.FillWord{}: expand_box(pw, parms, psrc, pdst, ptag)
-    case CLay.FillForm{words, arms}: expand_forms(pw, parms, arms, psrc, pdst, ptag)
+    case CLay.FillWord{}: expand_box(pw, pwords, parms, psrc, pdst, ptag)
+    case CLay.FillForm{words, arms}: expand_forms(pw, pwords, parms, words, arms, psrc, pdst, ptag)
 
 # Box an inline value into one Term.
 
 def expand_conv(+pw: World, +ptake: CLay.Unfill, +pmake: CLay.Fill, +psrc: Src, +pdst: Dst, +ptag: String) -> List<&2, Job>:
   match ptake:
     case CLay.UnfillWord{}: expand_word_take(pw, pmake, psrc, pdst, ptag)
-    case CLay.UnfillForm{words, arms}: expand_form_take(pw, arms, pmake, psrc, pdst, ptag)
+    case CLay.UnfillForm{words, arms}: expand_form_take(pw, words, arms, pmake, psrc, pdst, ptag)
 
 def run_jobs(+pjobs: List<&2, Job>, +pw: World, +pacc: List<&2, String>) -> Code:
   match pjobs:
