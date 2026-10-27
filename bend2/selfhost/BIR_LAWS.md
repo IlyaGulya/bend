@@ -1226,8 +1226,11 @@ The rules implemented by `nf_descriptor_step` and its helpers are:
   depth; its body adds one abstract binder and increments that depth. Let,
   substitution and beta arguments extend the evaluator environment without
   adding output binders, so environment length cannot determine arrow indices.
-  The typed-step normalizer consumer exercises a nested dependent arrow under
-  an eliminated let; complete compiler admission remains separate.
+  Arrow children remain semantic values until quotation. A scoped renaming
+  relocates the arrow's own binder at its destination depth without changing
+  captured outer binders. The typed-step consumer exercises eliminated lets,
+  delayed match substitution and both own/outer references in a relocated
+  arrow; complete compiler admission remains separate.
 - **Match/local/substitution/let/bind**: the descriptor language's scoping
   forms. A definite mismatch in a pattern list lets the next case run; an
   undecidable scrutinee (not yet a constructor value) makes the whole match

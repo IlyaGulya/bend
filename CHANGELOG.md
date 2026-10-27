@@ -6,9 +6,11 @@ latest one; the GitHub release carries the same notes.
 ## Unreleased
 
 - Descriptor normalization counts surviving arrow binders separately from
-  substituted arguments and eliminated lets. The typed-step consumer passes
-  36 semantic cases, including dependent nested arrows and delayed match
-  substitution; this is not full-compiler or byte-fixedpoint acceptance.
+  substituted arguments and eliminated lets. Arrows, kinds and captured
+  environments are quoted at their final scope, preserving both a moved
+  arrow's own binder and its captured outer type. The typed-step consumer
+  passes 38 semantic cases; full-compiler and byte-fixedpoint acceptance
+  remain separate.
 
 - Native C generation traverses nested constructors with an explicit stack,
   preserving field order, layouts and ownership without exhausting Bun's

@@ -77,12 +77,10 @@ import ./index_lookup.bend as IndexLookup
 
 # A normalized type expression. NfType is a named type applied to the
 # arguments it has so far; NfCtor is a value constructor applied to values,
-# which a type-level match may inspect; NfQuantity and NfKind are the
-# quantity and kind language, which no target reads (a kind carries its
-# quantity already materialized, so building a normal form never needs a
-# second traversal with its own budget); NfOther is any other term (a proof,
-# a hole, an abstract application), kept as its own descriptor; NfMissing is
-# a binder with no value in scope, kept as its own descriptor.
+# which a type-level match may inspect; NfQuantity and NfKind keep the quantity
+# and kind language as semantic values. NfOther is any other term (a proof, a
+# hole, an abstract application), kept as its own descriptor; NfMissing is a
+# binder with no value in scope, kept as its own descriptor.
 #
 # NfBinder names an arrow binder by its level among surviving output binders.
 # Substitution, let and beta reduction extend the evaluator environment but do
@@ -90,20 +88,23 @@ import ./index_lookup.bend as IndexLookup
 # Materializing at output depth `level` yields `level - binder - 1`.
 # It remains abstract: no consumer may read it as a concrete type.
 #
-# NfClosure is a lambda value: the runtime's `{k:"L", body, env}`. Its body
-# indexes its own future argument at 0 and the captured environment at 1..,
-# exactly like the runtime's `$type_apply` appending an argument to `env`.
-# `sources` is that environment already materialized, so materializing an
-# unapplied closure binds it back with one let around the lambda.
+# Arrows keep semantic children until their final scope is known. A saved
+# arrow may move under another binder; quotation relocates its own binder
+# without changing captured outer binders. Lambda closures retain their source
+# body and semantic environment, quoted only when the closure is materialized.
 type NfVal is Data:
   NfType{key: String, args: List<&2, NfVal>}
   NfCtor{key: String, args: List<&2, NfVal>}
   NfQuantity{quantity: BIR.Quantity}
-  NfKind{quantity: BIR.Descriptor}
+  NfKind{quantity: NfVal}
   NfOther{source: BIR.Descriptor}
   NfMissing{source: BIR.Descriptor}
   NfBinder{level: Nat}
-  NfClosure{quantity: Maybe<&2, BIR.Quantity>, body: BIR.Descriptor, env: List<&2, NfVal>, sources: List<&2, BIR.Descriptor>}
+  NfArrow{quantity: BIR.Quantity, domain: NfVal, body: NfVal, level: Nat}
+  NfClosure{quantity: Maybe<&2, BIR.Quantity>, body: BIR.Descriptor, env: List<&2, NfVal>}
+
+type NfRenaming is Data:
+  NfRenaming{source: Nat, target: Nat}
 
 # One pattern case matched against one scrutinee: bound values, a definite
 # mismatch that lets the next case run, or a scrutinee that is not yet a
@@ -260,58 +261,57 @@ def quantity_markers(count: Nat) -> List<&2, NfVal>:
 # Materialization: a normal form as a descriptor
 # ---------------------------------------------------------------------------
 
-# One structural list walk builds every descriptor: a value's arguments and
-# each remaining sibling are direct fields of the value list being matched, so
-# the single self-call is decreasing without a budget. A kind already carries
-# its materialized quantity (see nf_descriptor_step).
+# Quotation walks the semantic value tree and its argument/environment lists.
+# It does not reduce descriptors again or spend another normalization budget.
 #
 # `level` counts surviving output binders, not evaluator environment entries.
 # Eliminated lets, substitutions and beta arguments must not shift an arrow's
 # parameter indices. Every evaluator materialization supplies its output depth.
-def materialize_all_at(vals: List<&2, NfVal>, +level: Nat) -> List<&2, BIR.Descriptor>:
+def renamed_level(renames: List<&2, NfRenaming>, +level: Nat) -> Nat:
+  match renames:
+    case Nil{}:
+      level
+    case NfRenaming{source, target} <> rest:
+      match Nat.is_eq(source, level):
+        case True{}: target
+        case False{}: renamed_level(rest, level)
+
+def materialize_all_scoped(vals: List<&2, NfVal>, +level: Nat, +renames: List<&2, NfRenaming>) -> List<&2, BIR.Descriptor>:
   match vals:
     case Nil{}:
       Nil{}
     case +val <> rest:
-      match val:
-        case NfType{key, args}:
-          BIR.DescriptorRef{key, materialize_all_at(args, level)} <> materialize_all_at(rest, level)
-        case NfCtor{key, args}:
-          BIR.DescriptorConstructor{key, materialize_all_at(args, level)} <> materialize_all_at(rest, level)
-        case NfQuantity{quantity}:
-          BIR.DescriptorQuantity{quantity} <> materialize_all_at(rest, level)
-        case NfKind{quantity}:
-          BIR.DescriptorKind{quantity} <> materialize_all_at(rest, level)
-        case NfOther{source}:
-          source <> materialize_all_at(rest, level)
-        case NfMissing{source}:
-          source <> materialize_all_at(rest, level)
-        case NfBinder{binder}:
-          BIR.DescriptorParameter{Nat.sub(level, Nat.add(binder, 1n))} <> materialize_all_at(rest, level)
-        case NfClosure{quantity, body, env, sources}:
-          BIR.DescriptorLet{sources, BIR.DescriptorLambda{quantity, body}} <> materialize_all_at(rest, level)
+      materialize_scoped(val, level, renames) <> materialize_all_scoped(rest, level, renames)
+
+def materialize_all_at(vals: List<&2, NfVal>, +level: Nat) -> List<&2, BIR.Descriptor>:
+  materialize_all_scoped(vals, level, Nil{})
 
 def materialize_all(vals: List<&2, NfVal>) -> List<&2, BIR.Descriptor>:
   materialize_all_at(vals, 0n)
 
-def materialize_at(val: NfVal, +level: Nat) -> BIR.Descriptor:
+def materialize_scoped(val: NfVal, +level: Nat, +renames: List<&2, NfRenaming>) -> BIR.Descriptor:
   match val:
     case NfType{key, args}:
-      BIR.DescriptorRef{key, materialize_all_at(args, level)}
+      BIR.DescriptorRef{key, materialize_all_scoped(args, level, renames)}
     case NfCtor{key, args}:
-      BIR.DescriptorConstructor{key, materialize_all_at(args, level)}
+      BIR.DescriptorConstructor{key, materialize_all_scoped(args, level, renames)}
     case NfQuantity{quantity}:
       BIR.DescriptorQuantity{quantity}
     case NfKind{quantity}:
-      BIR.DescriptorKind{quantity}
+      BIR.DescriptorKind{materialize_scoped(quantity, level, renames)}
     case NfOther{source}:
       source
     case NfMissing{source}:
       source
     case NfBinder{binder}:
-      BIR.DescriptorParameter{Nat.sub(level, Nat.add(binder, 1n))}
-    case NfClosure{quantity, body, env, sources}:
-      BIR.DescriptorLet{sources, BIR.DescriptorLambda{quantity, body}}
+      BIR.DescriptorParameter{Nat.sub(level, Nat.add(renamed_level(renames, binder), 1n))}
+    case NfArrow{quantity, domain, body, origin}:
+      BIR.DescriptorArrow{quantity, materialize_scoped(domain, level, renames), materialize_scoped(body, Nat.add(level, 1n), NfRenaming{origin, level} <> renames)}
+    case NfClosure{quantity, body, env}:
+      BIR.DescriptorLet{materialize_all_scoped(env, level, renames), BIR.DescriptorLambda{quantity, body}}
+
+def materialize_at(val: NfVal, +level: Nat) -> BIR.Descriptor:
+  materialize_scoped(val, level, Nil{})
 
 def materialize(val: NfVal) -> BIR.Descriptor:
   materialize_at(val, 0n)
@@ -367,6 +367,8 @@ def bind_status(patterns: List<&2, BIR.DescriptorPattern>, values: List<&2, NfVa
               status_combine(NfStatusMaybe{}, bind_status(rest, vrest))
             case NfBinder{binder}:
               status_combine(NfStatusMaybe{}, bind_status(rest, vrest))
+            case NfArrow{quantity, domain, body, origin}:
+              status_combine(NfStatusMaybe{}, bind_status(rest, vrest))
             case _:
               NfStatusNo{}
     case _, _:
@@ -420,12 +422,10 @@ def nf_descriptor(+context: NfContext, descriptor: BIR.Descriptor, +env: List<&2
 # checker binds the arrow in the body's environment (`infer_all_domain`), so
 # the published body names the arrow's own argument at index 0 and every
 # enclosing binder one index further out than the domain names it. The domain
-# is evaluated under the current environment; the body is evaluated under that
-# environment with one more abstract binder for the arrow's argument, and each
-# side is materialized at the level it is written at. The abstract binder comes
-# back as the parameter index that names it, so a body that reaches an
-# enclosing parameter keeps that parameter and a body that reaches the arrow's
-# own argument is never replaced by the outer last argument.
+# is evaluated under the current environment; the body appends one abstract
+# binder. Both semantic children survive until quotation knows the final scope.
+# Relocating an arrow renames its own binder at that point, while its captured
+# enclosing binders keep their identities.
 def nf_arrow(+context: NfContext, use: BIR.Quantity, domain: BIR.Descriptor, body: BIR.Descriptor, +env: List<&2, NfVal>, +level: Nat, +fuel: Nat) -> Nf:
   match nf(context, domain, env, level, fuel):
     case NfFail{message}:
@@ -435,7 +435,7 @@ def nf_arrow(+context: NfContext, use: BIR.Quantity, domain: BIR.Descriptor, bod
         case NfFail{message}:
           NfFail{message}
         case NfOk{body_val}:
-          NfOk{NfOther{BIR.DescriptorArrow{use, materialize_at(domain_val, level), materialize_at(body_val, Nat.add(level, 1n))}}}
+          NfOk{NfArrow{use, domain_val, body_val, level}}
 
 def nf_descriptor_step(+context: NfContext, descriptor: BIR.Descriptor, +env: List<&2, NfVal>, +level: Nat, +fuel: Nat) -> Nf:
   +whole = descriptor
@@ -451,7 +451,7 @@ def nf_descriptor_step(+context: NfContext, descriptor: BIR.Descriptor, +env: Li
     case BIR.DescriptorKind{quantity}:
       match nf(context, quantity, env, level, fuel):
         case NfOk{val}:
-          NfOk{NfKind{materialize_at(val, level)}}
+          NfOk{NfKind{val}}
         case NfFail{message}:
           NfFail{message}
     case BIR.DescriptorMinimum{left, right}:
@@ -459,7 +459,7 @@ def nf_descriptor_step(+context: NfContext, descriptor: BIR.Descriptor, +env: Li
     case BIR.DescriptorArrow{use, domain, body}:
       nf_arrow(context, use, domain, body, env, level, fuel)
     case BIR.DescriptorLambda{use, body}:
-      NfOk{NfClosure{use, body, env, materialize_all_at(env, level)}}
+      NfOk{NfClosure{use, body, env}}
     case BIR.DescriptorRef{key, args}:
       match nf_all(context, args, env, level, fuel):
         case NfListOk{vals}:
@@ -592,7 +592,7 @@ def nf_apply_one(+context: NfContext, val: NfVal, arg: NfVal, +level: Nat, +fuel
   match val:
     case NfType{key, args}:
       nf_named(context, key, List.append(&2, NfVal, args, [arg]), level, Nat.sub(fuel, 1n))
-    case NfClosure{quantity, body, env, sources}:
+    case NfClosure{quantity, body, env}:
       nf_descriptor(context, body, List.append(&2, NfVal, env, [arg]), level, Nat.sub(fuel, 1n))
     case NfCtor{key, args}:
       NfFail{String.append("the constructor `", String.append(key, "` is applied to an argument"))}
@@ -602,6 +602,8 @@ def nf_apply_one(+context: NfContext, val: NfVal, arg: NfVal, +level: Nat, +fuel
       NfFail{"a kind is applied to an argument"}
     case NfOther{source}:
       NfOk{NfOther{BIR.DescriptorApplication{source, materialize_at(arg, level)}}}
+    case NfArrow{quantity, domain, body, origin}:
+      NfOk{NfOther{BIR.DescriptorApplication{materialize_at(val, level), materialize_at(arg, level)}}}
     case NfMissing{source}:
       NfOk{NfMissing{BIR.DescriptorApplication{source, materialize_at(arg, level)}}}
     case NfBinder{binder}:

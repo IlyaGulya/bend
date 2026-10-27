@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "status": "SCOPED_NF_PASS_C_CONSUMER_GENERATION_REJECTED",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "scope": "Actual shared typed-step normalizer passes38 semantic cases; stale standalone C-smoke provider closure rejects before C emission",
+  "inputs": {
+    "bend2/selfhost/descriptor_nf.bend": "c727bfe0adf97f86dc44960ca2c46fd890f0d8557157ba883af40d738d3e72dd",
+    "bend2/selfhost/c_backend_layout.bend": "e61bf74b165935dfa625abba48c6475399e340f10b4d328451e30902be3db878",
+    "evals/descriptor_nf_smoke.bend": "0cc2299c516d28d582509445c2fdd8376266d5f07ec25d8e5575dabd37f829d6",
+    "evals/descriptor_nf_step_smoke.ts": "1c7db43cb6381834421cfa02b4d931bdd87c95bce2e94cc38f56f49375500791",
+    "evals/c_backend_step_smoke.ts": "d6a4be2bb889f56a774f41d0c7034a15dafd55e8e50c4e0aa624615ba31fa999"
+  },
+  "artifact": {
+    "path": "/tmp/bend2039g3-nf-quoted-component.js",
+    "sha256": "c6d7760da20b05ce5b48593a4f70e61676d21d569ece4026a1ff1df668c56395"
+  },
+  "observed": {
+    "bits": "11111111111111111111111111111111111111",
+    "chunks": 189
+  },
+  "build": {
+    "checkedDefinitions": 624,
+    "eventsFullyValidated": 837,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "runtime": {
+      "name": "node",
+      "node": "23.11.0",
+      "v8": "12.9.202.28-node.14",
+      "executable": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "heapLimitMiB": 3072,
+      "stackSizeMb": 256,
+      "heapSizeLimitBytes": 3271557120,
+      "manualGC": false
+    },
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 297451520,
+      "peakFootprintBytes": 262396728,
+      "elapsedMs": 1080,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend2039g3-nf-arrow/evals/checker_core_component_build.ts",
+        "--worker",
+        "--file=/private/tmp/bend2039g3-nf-arrow/checkpoints/descriptor_nf_steps_component_v1.bend",
+        "--exports=expand_modules_start,template_step",
+        "--artifact=/tmp/bend2039g3-nf-quoted-component.js",
+        "--report=/private/tmp/bend2039g3-nf-arrow/checkpoints/descriptor-nf-g3-quoted-component",
+        "--inputs-sha256=5a2245a685fdd38ab34c960f7fde392f66c431e4c962b4f5b069048e8f619de8"
+      ],
+      "label": "Full-native CheckerCore component JS build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793079711965-52705d9e29206087.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "run": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 51101696,
+    "peakFootprintBytes": 32998000,
+    "elapsedMs": 75,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "/opt/homebrew/bin/bun",
+      "evals/descriptor_nf_step_smoke.ts",
+      "--run=/tmp/bend2039g3-nf-quoted-component.js"
+    ],
+    "label": "heavy command",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793079713132-d9ea685585039ba6.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "cConsumer": {
+    "status": "REJECTED_BEFORE_EMISSION",
+    "error": "Complete canonical provider declaration coverage drift",
+    "guard": {
+      "status": "FAIL",
+      "reason": "command_exit",
+      "commandExitCode": 1,
+      "commandSignal": 0,
+      "peakRssBytes": 631537664,
+      "peakFootprintBytes": 423035888,
+      "elapsedMs": 2648,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 1,
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/c_backend_step_smoke.ts"
+      ],
+      "label": "heavy command",
+      "exitCode": 1,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793079766558-e54721c63538d963.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "finding": "Standalone C-smoke unnecessarily composes index_lookup.bend with9 dotted helper names; its identifier-only extractor drops those and correctly fails complete coverage. Production emitter and passing NF fixture leave IndexLookup as an ordinary authenticated native import; no coverage guard will be weakened."
+  }
+}
