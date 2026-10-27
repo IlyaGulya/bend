@@ -64,11 +64,13 @@ type NamePool is Type:
 
 # A slot owns only an exact signature and its live result handle, never an Arena.
 # Nat index/depth remain arbitrary precision; hashes only choose a candidate.
+# Transient-lane slots carry the rewind epoch they were written under, so a
+# rewind invalidates them by generation instead of rewriting all 4096 slots.
 type SubstMemoEntry is Data:
   SubstMemoEmpty{}
-  SubstMemoSaved{node_id: U32, index: Nat, value_id: U32, depth: Nat, output_id: U32}
+  SubstMemoSaved{node_id: U32, index: Nat, value_id: U32, depth: Nat, output_id: U32, epoch: Nat}
   CtrLeafSaved{key_id: U32, span: Ast.SourceSpan, output_id: U32}
-  PublishedTerm{node_id: U32, output_id: U32}
+  PublishedTerm{node_id: U32, output_id: U32, epoch: Nat}
   ScalarSchemaOpen{scope: Scope.ArenaGlobalScope}
   ScalarSchemaSaved{scope: Scope.ArenaGlobalScope, selected: Scope.ArenaGlobal, valid: Bool}
   StringSchemaSaved{scope: Scope.ArenaGlobalScope, selected: Scope.ArenaGlobal, valid: Bool}
@@ -88,8 +90,10 @@ type CasePrefixEntry is Data:
 # append, and clear the identical discarded suffix on rewind. Published nodes,
 # patterns, binders and their tape ranges are immutable; fill every reserved
 # word/natural before publishing a descriptor. The substitution memo belongs to
-# the transient declaration-local lifetime and is discarded on every rewind,
-# even when all pool counts stay unchanged.
+# the transient declaration-local lifetime: each slot records depths[6] at put
+# time and a rewind increments that generation, so every earlier slot is
+# invisible without clearing the table. Snapshot lanes (scalar/string schema,
+# source constructor leaves) live in the source arena, whose generation is fixed.
 type Arena is Type:
   Arena{nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>, node_closed: Array<U32>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>}
 
@@ -1285,47 +1289,59 @@ def rewind.case_prefix.loop(remaining: Nat, items: Array<CasePrefixEntry>, +offs
 def rewind.case_prefix(items: Array<CasePrefixEntry>) -> Array<CasePrefixEntry>:
   rewind.case_prefix.loop(64n, items, 0, CasePrefixEmpty{})
 
-def rewind.subst_memo.loop(remaining: Nat, items: Array<SubstMemoEntry>, +offset: U32, +empty: SubstMemoEntry) -> Array<SubstMemoEntry>:
-  match remaining:
-    case 0n: items
-    case 1n+rest:
-      rewind.subst_memo.loop(rest, Array.set(SubstMemoEntry, items, offset, empty), U32.add(offset, 1), empty)
-
-def rewind.subst_memo(items: Array<SubstMemoEntry>) -> Array<SubstMemoEntry>:
-  rewind.subst_memo.loop(4096n, items, 0, SubstMemoEmpty{})
-
 def rewind(arena: Arena, saved: Mark) -> Arena:
   match arena:
     case Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}:
       match saved:
         case Mark{node_target, pattern_target, binder_target, word_target, natural_target, name_target}:
-          rewind.names.metadata(rewind.case_prefix(case_prefix), rewind.subst_memo(subst_memo), node_bounds, pattern_depths, node_closed, nodes, patterns, binders, words, naturals, names, name_ids, node_target, pattern_target, binder_target, word_target, natural_target, name_target, metadata_read(counts, rewind.depths(depths), 5))
+          rewind.names.metadata(rewind.case_prefix(case_prefix), subst_memo, node_bounds, pattern_depths, node_closed, nodes, patterns, binders, words, naturals, names, name_ids, node_target, pattern_target, binder_target, word_target, natural_target, name_target, metadata_read(counts, rewind.depths(depths), 5))
 
 # A bounded direct-mapped table: collisions replace one entry, never relax keys.
 def subst_memo_slot(node_id: U32, value_id: U32) -> U32:
   U32.and(U32.xor(U32.mul(node_id, 2654435761), U32.mul(value_id, 2246822519)), 4095)
+
+# Transient slots record the rewind epoch of their put. The generation below
+# only moves forward, so an entry written before the current rewind can never
+# be read again: its handles may already be reused by the live frame.
+def subst_memo_entry_epoch(entry: SubstMemoEntry, current: Bool) -> SubstMemoEntry:
+  match current:
+    case True{}: entry
+    case False{}: SubstMemoEmpty{}
+
+def subst_memo_entry_current(entry: SubstMemoEntry, +epoch: Nat) -> SubstMemoEntry:
+  match entry:
+    case SubstMemoSaved{_, _, _, _, _, +saved_epoch}:
+      subst_memo_entry_epoch(entry, Nat.is_eq(saved_epoch, epoch))
+    case PublishedTerm{_, _, +saved_epoch}:
+      subst_memo_entry_epoch(entry, Nat.is_eq(saved_epoch, epoch))
+    case _: entry
 
 def subst_memo_get.result(case_prefix: Array<CasePrefixEntry>, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>, node_closed: Array<U32>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, result: Array<SubstMemoEntry> & SubstMemoEntry) -> Arena & SubstMemoEntry:
   match result:
     case Tuple{subst_memo, entry}:
       (Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}, entry)
 
+def subst_memo_current_result(+epoch: Nat, result: Arena & SubstMemoEntry) -> Arena & SubstMemoEntry:
+  match result:
+    case Tuple{arena, entry}: (arena, subst_memo_entry_current(entry, epoch))
+
 def subst_memo_get(arena: Arena, node_id: U32, value_id: U32) -> Arena & SubstMemoEntry:
   match arena:
     case Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}:
-      subst_memo_get.result(case_prefix, nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, Array.get(SubstMemoEntry, subst_memo, subst_memo_slot(node_id, value_id)))
+      +epoch = Array.get(Nat, depths, 6)
+      subst_memo_current_result(epoch, subst_memo_get.result(case_prefix, nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, Array.get(SubstMemoEntry, subst_memo, subst_memo_slot(node_id, value_id))))
 
 def subst_memo_put(arena: Arena, +node_id: U32, index: Nat, +value_id: U32, depth: Nat, output_id: U32) -> Arena:
   match arena:
     case Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}:
-      Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, Array.set(SubstMemoEntry, subst_memo, subst_memo_slot(node_id, value_id), SubstMemoSaved{node_id, index, value_id, depth, output_id})}
+      Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, Array.set(SubstMemoEntry, subst_memo, subst_memo_slot(node_id, value_id), SubstMemoSaved{node_id, index, value_id, depth, output_id, Array.get(Nat, depths, 6)})}
 
 # Publication shares semantic handles only. Occurrence facts remain distinct.
-# The transient owner and rewind delimit every memo entry's validity.
+# The transient owner and its rewind epoch delimit every memo entry's validity.
 def publication_memo_put(arena: Arena, +node_id: U32, output_id: U32) -> Arena:
   match arena:
     case Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}:
-      Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, Array.set(SubstMemoEntry, subst_memo, subst_memo_slot(node_id, 0), PublishedTerm{node_id, output_id})}
+      Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, Array.set(SubstMemoEntry, subst_memo, subst_memo_slot(node_id, 0), PublishedTerm{node_id, output_id, Array.get(Nat, depths, 6)})}
 
 # A declaration inference frame owns this existing source-memo slot. The scope
 # snapshot retains exact alias records, not merely canonical namespace text.
@@ -1341,7 +1357,7 @@ def scalar_frame_get(arena: Arena) -> Arena & SubstMemoEntry:
 
 # Source packing shares exactly equal childless descriptors, never typing facts.
 # The source memo lane is otherwise unused by substitution (which owns transient).
-# Rewind clears this lane together with all other handle-bearing memo entries.
+# Rewind only advances the transient epoch, so this source lane is never cleared.
 def ctr_leaf_span_equal(left: Ast.SourceSpan, right: Ast.SourceSpan) -> Bool:
   match left:
     case Ast.SpanOf{file, beg, end}:

@@ -12999,8 +12999,9 @@ def arena_case_prefix_suffix(start: U32, count: U32, offset: U32, empty: Bool) -
 
 # The table lives only in transient Arena. Full tagged IDs distinguish regions;
 # neither arbitrary Nat key is narrowed, and hash collisions are exact misses.
-# Published descriptors/tapes are immutable. Rewind clears the entire memo,
-# including no-op marks, before any input/value/output handle can be reused.
+# Published descriptors/tapes are immutable. Rewind advances the transient epoch
+# and never rewrites slots, so a slot is readable only under its put epoch; the
+# entry matcher below therefore sees no handle from an earlier frame.
 def arena_subst_memo_exact(output_id: U32, same: Bool) -> Maybe<&2, U32>:
   match same:
     case False{}: None{}
@@ -13009,7 +13010,7 @@ def arena_subst_memo_exact(output_id: U32, same: Bool) -> Maybe<&2, U32>:
 def arena_subst_memo_entry(node_id: U32, index: Nat, value_id: U32, depth: Nat, entry: Arena.SubstMemoEntry) -> Maybe<&2, U32>:
   match entry:
     case Arena.SubstMemoEmpty{}: None{}
-    case Arena.SubstMemoSaved{saved_node, saved_index, saved_value, saved_depth, output_id}:
+    case Arena.SubstMemoSaved{saved_node, saved_index, saved_value, saved_depth, output_id, _}:
       arena_subst_memo_exact(output_id, Bool.and(Bool.and(U32.is_eq(node_id, saved_node), U32.is_eq(value_id, saved_value)), Bool.and(Nat.is_eq(index, saved_index), Nat.is_eq(depth, saved_depth))))
     case _: None{}
 
@@ -14563,7 +14564,7 @@ def arena_publication_lookup(source: Arena.Arena, +id: U32, result: Arena.Arena 
   match result:
     case Tuple{transient, entry}:
       match entry:
-        case Arena.PublishedTerm{saved, output}:
+        case Arena.PublishedTerm{saved, output, _}:
           match U32.is_eq(saved, id):
             case True{}: {ArenaResult{ArenaStore{source, transient}, output} : ArenaResult<U32>}
             case False{}: arena_publication_uncached(ArenaStore{source, transient}, id)
