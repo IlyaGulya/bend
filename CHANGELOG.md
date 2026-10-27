@@ -5,6 +5,13 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- The selfhost JavaScript Nat host-input guard reports the host range failure
+  directly, rather than routing invalid inputs through arithmetic overflow.
+  Boundary fixtures check rejection and values instead of exception wording;
+  the shadow-Nat consumer uses library-produced ADT values rather than private
+  constructor tags. The runtime declaration and canonical CLI consumers pass;
+  regenerated selfhost-emitter and full-bootstrap admission remain separate.
+
 - Descriptor normalization counts surviving arrow binders separately from
   substituted arguments and eliminated lets. Arrows, kinds and captured
   environments are quoted at their final scope, preserving both a moved

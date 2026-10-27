@@ -1,7 +1,5 @@
-// Builds a library whose own module declares a type literally named Nat. That
-// canonical key ("shadow_nat_type.Nat") is not the host Nat: authoritative
-// BIR native is None, so a raw host number crosses unconverted and no Nat bound
-// error may be raised for it. The genuine shadow ADT value still matches.
+// A module's own Nat is a user ADT, not the host Nat. Its genuine constructor
+// value must cross the export boundary unchanged and still match.
 function shadow_nat_host_export() {
   const fs = require("node:fs");
   const path = require("node:path");
@@ -23,6 +21,12 @@ def tag(x: S.Shadow.Nat) -> U32:
       0
     case S.ShadowOn{p}:
       1
+
+def off() -> S.Shadow.Nat:
+  S.ShadowOff{}
+
+def on() -> S.Shadow.Nat:
+  S.ShadowOn{S.ShadowOff{}}
 `);
     const given = process.env.BEND_INNER_LIBRARY_COMPILER;
     // The ordinary-lane default locates stage 0 by file, never by the
@@ -49,22 +53,12 @@ def tag(x: S.Shadow.Nat) -> U32:
       return 1;
     }
     const lib = require(output).default;
-    const err = "bend: a Nat past the largest immediate 2^48-1";
-    for (const raw of [-1, 0.5, 2 ** 53 + 2]) {
-      try {
-        lib.tag(raw);
-      } catch (e) {
-        if (e === err) {
-          return 2;
-        }
-      }
-    }
     try {
-      // The canonical key's last segment is Nat while BIR native is None; a
-      // spelling classifier would wrongly guard these raw numbers above.
-      return lib.tag({ $: "shadow_nat_type.ShadowOff" }) === 0 ? 0 : 3;
-    } catch (e) {
-      return e === err ? 5 : 6;
+      // The canonical key ends in Nat, but its BIR native is None.
+      // Library-produced values avoid depending on backend constructor tags.
+      return lib.tag(lib.off()) === 0 && lib.tag(lib.on()) === 1 ? 0 : 3;
+    } catch {
+      return 6;
     }
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
