@@ -27,10 +27,10 @@ latest one; the GitHub release carries the same notes.
   remain distinct. Nine C/JS programs pass and eight prior artifacts preserve
   their bytes; complete compiler-root verification is separate.
 
-- Native ownership/heating analysis no longer retains C text or discarded
-  segments on each fixedpoint iteration. A settled traversal publishes the
-  program; if it discovers new facts, analysis resumes before publication.
-  Nine C/JS executions pass and eight prior artifacts keep identical bytes.
+- Native ownership/heating emission publishes the pass that first adds no
+  facts, instead of repeating it solely to collect C text. Earlier passes'
+  text is discarded. Nine actual C/JS programs keep identical emitted bytes;
+  complete-root timing, memory and fixedpoint remain separate measurements.
 
 - Native local naming cleans each distinct stem once per definition rather
   than once per extracted word. Packed-layout checks avoid temporary strings.
