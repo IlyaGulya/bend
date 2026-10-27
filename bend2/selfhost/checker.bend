@@ -80,6 +80,10 @@ type ReadbackResult<-T: Type> is Type:
 # Private algorithms use handles and flat tape cursors. These are mechanically
 # state-threaded versions of the original checker, Core, and Scope algorithms;
 # no computed type, substitution, match, or normalization result is memoized.
+# A descriptor's name field is the source name id itself, so rebuilding a node,
+# binder, or pattern keeps that id: reading its text and interning it again
+# would repeat the same exact name-map lookup and return the same id. Only
+# canonicalization rewrites a name, and only it re-interns one.
 
 
 def inference_keep(result: Inference, occurrence: IR.Occurrence) -> Inference:
@@ -3832,14 +3836,11 @@ def canonicalize_pattern(v_1: ArenaStore, v_3: U32, v_4: Scope.ArenaGlobalScope)
   ArenaResult{v_11, +v_12} = arena_get_pattern(v_1, v_3)
   match v_12:
     case Arena.PatternVar{+v_17, +v_18, +v_19, +v_20}:
-      ArenaResult{v_24, +v_25} = arena_name_text(v_11, v_17)
-      +v_27 = v_25
-      v_29 = v_27
+      v_29 = v_17
       v_31 = v_18
       v_33 = v_19
       v_35 = v_20
-      ArenaResult{v_39, +v_40} = arena_name(v_24, v_29)
-      ArenaResult{v_44, +v_45} = arena_put_pattern(v_39, Arena.PatternVar{v_40, v_31, v_33, v_35})
+      ArenaResult{v_44, +v_45} = arena_put_pattern(v_11, Arena.PatternVar{v_29, v_31, v_33, v_35})
       {ArenaResult{v_44, v_45} : ArenaResult<U32>}
     case Arena.PatternCtr{+v_50, +v_51, +v_52, +v_53}:
       ArenaResult{v_57, +v_58} = arena_name_text(v_11, v_50)
@@ -3872,13 +3873,10 @@ def canonicalize_term(v_1: ArenaStore, v_3: U32, v_4: Scope.ArenaGlobalScope) ->
   ArenaResult{v_11, +v_12} = arena_get_node(v_1, v_3)
   match v_12:
     case Arena.TermVar{+v_16, +v_17, +v_18}:
-      ArenaResult{v_22, +v_23} = arena_name_text(v_11, v_16)
-      +v_25 = v_23
-      v_27 = v_25
+      v_27 = v_16
       v_29 = v_17
       v_31 = v_18
-      ArenaResult{v_35, +v_36} = arena_name(v_22, v_27)
-      ArenaResult{v_40, +v_41} = arena_put_node(v_35, Arena.TermVar{v_36, v_29, v_31})
+      ArenaResult{v_40, +v_41} = arena_put_node(v_11, Arena.TermVar{v_27, v_29, v_31})
       {ArenaResult{v_40, v_41} : ArenaResult<U32>}
     case Arena.TermRef{+v_44, +v_45}:
       ArenaResult{v_49, +v_50} = arena_name_text(v_11, v_44)
@@ -3962,30 +3960,24 @@ def canonicalize_term(v_1: ArenaStore, v_3: U32, v_4: Scope.ArenaGlobalScope) ->
       ArenaResult{v_281, +v_282} = arena_put_node(v_276, Arena.TermMin{v_272, v_277, v_267})
       {ArenaResult{v_281, v_282} : ArenaResult<U32>}
     case Arena.TermAll{+v_289, +v_290, +v_291, +v_292, +v_293, +v_294}:
-      ArenaResult{v_298, +v_299} = arena_name_text(v_11, v_290)
-      +v_301 = v_299
       v_303 = v_289
-      v_305 = v_301
+      v_305 = v_290
       v_307 = v_291
       v_309 = v_292
       v_311 = v_293
       v_313 = v_294
-      ArenaResult{v_317, +v_318} = canonicalize_term(v_298, v_309, v_4)
+      ArenaResult{v_317, +v_318} = canonicalize_term(v_11, v_309, v_4)
       ArenaResult{v_322, +v_323} = canonicalize_term(v_317, v_311, v_4)
-      ArenaResult{v_327, +v_328} = arena_name(v_322, v_305)
-      ArenaResult{v_332, +v_333} = arena_put_node(v_327, Arena.TermAll{v_303, v_328, v_307, v_318, v_323, v_313})
+      ArenaResult{v_332, +v_333} = arena_put_node(v_322, Arena.TermAll{v_303, v_305, v_307, v_318, v_323, v_313})
       {ArenaResult{v_332, v_333} : ArenaResult<U32>}
     case Arena.TermLam{+v_339, +v_340, +v_341, +v_342, +v_343}:
-      ArenaResult{v_347, +v_348} = arena_name_text(v_11, v_340)
-      +v_350 = v_348
       v_352 = v_339
-      v_354 = v_350
+      v_354 = v_340
       v_356 = v_341
       v_358 = v_342
       v_360 = v_343
-      ArenaResult{v_364, +v_365} = canonicalize_term(v_347, v_358, v_4)
-      ArenaResult{v_369, +v_370} = arena_name(v_364, v_354)
-      ArenaResult{v_374, +v_375} = arena_put_node(v_369, Arena.TermLam{v_352, v_370, v_356, v_365, v_360})
+      ArenaResult{v_364, +v_365} = canonicalize_term(v_11, v_358, v_4)
+      ArenaResult{v_374, +v_375} = arena_put_node(v_364, Arena.TermLam{v_352, v_354, v_356, v_365, v_360})
       {ArenaResult{v_374, v_375} : ArenaResult<U32>}
     case Arena.TermApp{+v_379, +v_380, +v_381}:
       v_383 = v_379
@@ -4141,16 +4133,13 @@ def mat_branch_goal_view(v_1: ArenaStore, v_3: U32, v_5: U32, v_7: String, v_8: 
   ArenaResult{v_19, +v_20} = arena_get_node(v_1, v_3)
   match v_20:
     case Arena.TermAll{+v_27, +v_28, +v_29, +v_30, +v_31, +v_32}:
-      ArenaResult{v_36, +v_37} = arena_name_text(v_19, v_28)
-      +v_39 = v_37
       v_41 = v_27
-      v_43 = v_39
+      v_43 = v_28
       v_45 = v_29
       v_47 = v_30
       v_49 = v_31
       v_51 = v_32
-      ArenaResult{v_55, +v_56} = arena_name(v_36, v_43)
-      ArenaResult{v_60, +v_61} = arena_put_node(v_55, Arena.TermVar{v_56, 0n, v_11})
+      ArenaResult{v_60, +v_61} = arena_put_node(v_19, Arena.TermVar{v_43, 0n, v_11})
       ArenaResult{v_65, +v_66} = shift_terms(v_60, v_8, 1n)
       ArenaResult{v_70, +v_71} = arena_words_cons(v_65, v_61, v_66)
       v_73 = v_71
@@ -4158,8 +4147,7 @@ def mat_branch_goal_view(v_1: ArenaStore, v_3: U32, v_5: U32, v_7: String, v_8: 
       ArenaResult{v_82, +v_83} = core_shift(v_77, 0n, 1n, v_5)
       ArenaResult{v_87, +v_88} = mat_branch_goal_view(v_82, v_78, v_83, v_7, v_73, Nat.add(v_10, 1n), v_11, v_12)
       v_90 = v_88
-      ArenaResult{v_94, +v_95} = arena_name(v_87, v_43)
-      ArenaResult{v_99, +v_100} = arena_put_node(v_94, Arena.TermAll{v_41, v_95, v_45, v_47, v_90, v_51})
+      ArenaResult{v_99, +v_100} = arena_put_node(v_87, Arena.TermAll{v_41, v_43, v_45, v_47, v_90, v_51})
       {ArenaResult{v_99, v_100} : ArenaResult<U32>}
     case _:
       ArenaResult{v_106, +v_107} = arena_name(v_19, v_7)
@@ -4489,30 +4477,24 @@ def replace_free_open(v_1: ArenaStore, v_3: U32, v_5: Nat, v_7: U32, v_9: Nat) -
       ArenaResult{v_233, +v_234} = arena_put_node(v_228, Arena.TermMin{v_224, v_229, v_219})
       {ArenaResult{v_233, v_234} : ArenaResult<U32>}
     case Arena.TermAll{+v_241, +v_242, +v_243, +v_244, +v_245, +v_246}:
-      ArenaResult{v_250, +v_251} = arena_name_text(v_16, v_242)
-      +v_253 = v_251
       v_255 = v_241
-      v_257 = v_253
+      v_257 = v_242
       v_259 = v_243
       v_261 = v_244
       v_263 = v_245
       v_265 = v_246
-      ArenaResult{v_269, +v_270} = replace_free_term(v_250, v_261, v_5, v_7, v_9)
+      ArenaResult{v_269, +v_270} = replace_free_term(v_16, v_261, v_5, v_7, v_9)
       ArenaResult{v_274, +v_275} = replace_free_term(v_269, v_263, v_5, v_7, Nat.add(v_9, 1n))
-      ArenaResult{v_279, +v_280} = arena_name(v_274, v_257)
-      ArenaResult{v_284, +v_285} = arena_put_node(v_279, Arena.TermAll{v_255, v_280, v_259, v_270, v_275, v_265})
+      ArenaResult{v_284, +v_285} = arena_put_node(v_274, Arena.TermAll{v_255, v_257, v_259, v_270, v_275, v_265})
       {ArenaResult{v_284, v_285} : ArenaResult<U32>}
     case Arena.TermLam{+v_291, +v_292, +v_293, +v_294, +v_295}:
-      ArenaResult{v_299, +v_300} = arena_name_text(v_16, v_292)
-      +v_302 = v_300
       v_304 = v_291
-      v_306 = v_302
+      v_306 = v_292
       v_308 = v_293
       v_310 = v_294
       v_312 = v_295
-      ArenaResult{v_316, +v_317} = replace_free_term(v_299, v_310, v_5, v_7, Nat.add(v_9, 1n))
-      ArenaResult{v_321, +v_322} = arena_name(v_316, v_306)
-      ArenaResult{v_326, +v_327} = arena_put_node(v_321, Arena.TermLam{v_304, v_322, v_308, v_317, v_312})
+      ArenaResult{v_316, +v_317} = replace_free_term(v_16, v_310, v_5, v_7, Nat.add(v_9, 1n))
+      ArenaResult{v_326, +v_327} = arena_put_node(v_316, Arena.TermLam{v_304, v_306, v_308, v_317, v_312})
       {ArenaResult{v_326, v_327} : ArenaResult<U32>}
     case Arena.TermApp{+v_331, +v_332, +v_333}:
       v_335 = v_331
@@ -4523,21 +4505,18 @@ def replace_free_open(v_1: ArenaStore, v_3: U32, v_5: Nat, v_7: U32, v_9: Nat) -
       ArenaResult{v_353, +v_354} = arena_put_node(v_348, Arena.TermApp{v_344, v_349, v_339})
       {ArenaResult{v_353, v_354} : ArenaResult<U32>}
     case Arena.TermAdt{+v_361, +v_362, +v_363, +v_364, +v_365, +v_366}:
-      ArenaResult{v_370, +v_371} = arena_name_text(v_16, v_361)
-      +v_373 = v_371
       +v_375 = IR.Words{v_362, v_363}
       +v_377 = IR.Names{v_364, v_365}
-      v_379 = v_373
+      v_379 = v_361
       v_381 = v_375
       v_383 = v_377
       v_385 = v_366
-      ArenaResult{v_389, +v_390} = replace_free_terms(v_370, v_381, v_5, v_7, v_9)
-      ArenaResult{v_394, +v_395} = arena_name(v_389, v_379)
+      ArenaResult{v_389, +v_390} = replace_free_terms(v_16, v_381, v_5, v_7, v_9)
       v_50000138 = arena_words_start(v_390)
       v_50000139 = arena_words_count(v_390)
       v_50000140 = arena_names_start(v_383)
       v_50000141 = arena_names_count(v_383)
-      ArenaResult{v_403, +v_404} = arena_put_node(v_394, Arena.TermAdt{v_395, v_50000138, v_50000139, v_50000140, v_50000141, v_385})
+      ArenaResult{v_403, +v_404} = arena_put_node(v_389, Arena.TermAdt{v_379, v_50000138, v_50000139, v_50000140, v_50000141, v_385})
       {ArenaResult{v_403, v_404} : ArenaResult<U32>}
     case Arena.TermFill{+v_409, +v_410, +v_411, +v_412}:
       +v_414 = IR.Words{v_410, v_411}
@@ -4564,29 +4543,23 @@ def replace_free_open(v_1: ArenaStore, v_3: U32, v_5: Nat, v_7: U32, v_9: Nat) -
     case Arena.TermString{_, _, _}:
       {ArenaResult{v_16, v_3} : ArenaResult<U32>}
     case Arena.TermCtr{+v_475, +v_476, +v_477, +v_478}:
-      ArenaResult{v_482, +v_483} = arena_name_text(v_16, v_475)
-      +v_485 = v_483
       +v_487 = IR.Words{v_476, v_477}
-      v_489 = v_485
+      v_489 = v_475
       v_491 = v_487
       v_493 = v_478
-      ArenaResult{v_497, +v_498} = replace_free_terms(v_482, v_491, v_5, v_7, v_9)
-      ArenaResult{v_502, +v_503} = arena_name(v_497, v_489)
+      ArenaResult{v_497, +v_498} = replace_free_terms(v_16, v_491, v_5, v_7, v_9)
       v_50000146 = arena_words_start(v_498)
       v_50000147 = arena_words_count(v_498)
-      ArenaResult{v_509, +v_510} = arena_put_node(v_502, Arena.TermCtr{v_503, v_50000146, v_50000147, v_493})
+      ArenaResult{v_509, +v_510} = arena_put_node(v_497, Arena.TermCtr{v_489, v_50000146, v_50000147, v_493})
       {ArenaResult{v_509, v_510} : ArenaResult<U32>}
     case Arena.TermMat{+v_515, +v_516, +v_517, +v_518}:
-      ArenaResult{v_522, +v_523} = arena_name_text(v_16, v_515)
-      +v_525 = v_523
-      v_527 = v_525
+      v_527 = v_515
       v_529 = v_516
       v_531 = v_517
       v_533 = v_518
-      ArenaResult{v_537, +v_538} = replace_free_term(v_522, v_529, v_5, v_7, v_9)
+      ArenaResult{v_537, +v_538} = replace_free_term(v_16, v_529, v_5, v_7, v_9)
       ArenaResult{v_542, +v_543} = replace_free_term(v_537, v_531, v_5, v_7, v_9)
-      ArenaResult{v_547, +v_548} = arena_name(v_542, v_527)
-      ArenaResult{v_552, +v_553} = arena_put_node(v_547, Arena.TermMat{v_548, v_538, v_543, v_533})
+      ArenaResult{v_552, +v_553} = arena_put_node(v_542, Arena.TermMat{v_527, v_538, v_543, v_533})
       {ArenaResult{v_552, v_553} : ArenaResult<U32>}
     case Arena.TermEqual{+v_558, +v_559, +v_560, +v_561}:
       v_563 = v_558
@@ -5313,13 +5286,10 @@ def collect_constructor_field_types_view(v_20036752: ArenaStore, v_0: U32, v_1: 
   ArenaResult{v_20036753, +v_20036754} = arena_get_node(v_20036752, v_0)
   match v_20036754:
     case Arena.TermAll{+v_20036761, +v_20036762, +v_20036764, +v_20036765, +v_20036766, +v_20036767}:
-      ArenaResult{v_20036768, +v_20036769} = arena_name_text(v_20036753, v_20036762)
-      +v_20036763 = v_20036769
-      v_13 = v_20036763
+      v_13 = v_20036762
       v_15 = v_20036765
       v_16 = v_20036766
-      ArenaResult{v_20036770, +v_20036771} = arena_name(v_20036768, v_13)
-      ArenaResult{v_20036772, +v_20036773} = arena_put_node(v_20036770, Arena.TermVar{v_20036771, v_4, v_1})
+      ArenaResult{v_20036772, +v_20036773} = arena_put_node(v_20036753, Arena.TermVar{v_13, v_4, v_1})
       v_19 = v_20036773
       ArenaResult{v_20036774, +v_20036775} = core_subst(v_20036772, 0n, v_19, v_16)
       v_21 = v_20036775
@@ -7823,15 +7793,12 @@ def collect_telescope_quantities_view(v_20038232: ArenaStore, v_0: U32, v_1: U32
   ArenaResult{v_20038233, +v_20038234} = arena_get_node(v_20038232, v_0)
   match v_20038234:
     case Arena.TermAll{+v_20038241, +v_20038242, +v_20038244, +v_20038245, +v_20038246, +v_20038247}:
-      ArenaResult{v_20038248, +v_20038249} = arena_name_text(v_20038233, v_20038242)
-      +v_20038243 = v_20038249
       v_12 = v_20038241
-      v_13 = v_20038243
+      v_13 = v_20038242
       v_15 = v_20038245
       v_16 = v_20038246
-      ArenaResult{v_20038250, +v_20038251} = term_span(v_20038248, v_15)
-      ArenaResult{v_20038252, +v_20038253} = arena_name(v_20038250, v_13)
-      ArenaResult{v_20038254, +v_20038255} = arena_put_node(v_20038252, Arena.TermVar{v_20038253, v_3, v_20038251})
+      ArenaResult{v_20038250, +v_20038251} = term_span(v_20038233, v_15)
+      ArenaResult{v_20038254, +v_20038255} = arena_put_node(v_20038250, Arena.TermVar{v_13, v_3, v_20038251})
       v_20 = v_20038255
       ArenaResult{v_20038256, +v_20038257} = core_subst(v_20038254, 0n, v_20, v_16)
       ArenaResult{v_20038258, +v_20038259} = whnf(v_20038256, 64n, v_20038257, v_4)
@@ -8907,27 +8874,21 @@ def binders_type(v_20039357: ArenaStore, v_1: IR.Words, v_2: U32) -> ArenaResult
       ArenaResult{v_20039362, +v_20039363} = arena_get_binder(v_20039358, v_5)
       match v_20039363:
         case Arena.Binder{+v_20039364, +v_20039365, +v_20039367, +v_20039368, +v_20039369}:
-          ArenaResult{v_20039370, +v_20039371} = arena_name_text(v_20039362, v_20039365)
-          +v_20039366 = v_20039371
           v_12 = v_20039364
-          v_13 = v_20039366
+          v_13 = v_20039365
           v_14 = v_20039367
           v_15 = v_20039368
           v_16 = v_20039369
-          ArenaResult{v_20039372, +v_20039373} = binders_type(v_20039370, v_6, v_2)
-          ArenaResult{v_20039374, +v_20039375} = arena_name(v_20039372, v_13)
-          ArenaResult{v_20039376, +v_20039377} = arena_put_node(v_20039374, Arena.TermAll{v_12, v_20039375, v_14, v_15, v_20039373, v_16})
+          ArenaResult{v_20039372, +v_20039373} = binders_type(v_20039362, v_6, v_2)
+          ArenaResult{v_20039376, +v_20039377} = arena_put_node(v_20039372, Arena.TermAll{v_12, v_13, v_14, v_15, v_20039373, v_16})
           {ArenaResult{v_20039376, v_20039377} : ArenaResult<U32>}
         case Arena.TemplateBinder{+v_20039378, +v_20039380, +v_20039381, +v_20039382}:
-          ArenaResult{v_20039383, +v_20039384} = arena_name_text(v_20039362, v_20039378)
-          +v_20039379 = v_20039384
-          v_22 = v_20039379
+          v_22 = v_20039378
           v_23 = v_20039380
           v_24 = v_20039381
           v_25 = v_20039382
-          ArenaResult{v_20039385, +v_20039386} = binders_type(v_20039383, v_6, v_2)
-          ArenaResult{v_20039387, +v_20039388} = arena_name(v_20039385, v_22)
-          ArenaResult{v_20039389, +v_20039390} = arena_put_node(v_20039387, Arena.TermAll{Ast.QZero{}, v_20039388, v_23, v_24, v_20039386, v_25})
+          ArenaResult{v_20039385, +v_20039386} = binders_type(v_20039362, v_6, v_2)
+          ArenaResult{v_20039389, +v_20039390} = arena_put_node(v_20039385, Arena.TermAll{Ast.QZero{}, v_22, v_23, v_24, v_20039386, v_25})
           {ArenaResult{v_20039389, v_20039390} : ArenaResult<U32>}
 
 def binders_lambda(v_20039391: ArenaStore, v_1: IR.Words, v_2: U32) -> ArenaResult<U32>:
@@ -8941,25 +8902,19 @@ def binders_lambda(v_20039391: ArenaStore, v_1: IR.Words, v_2: U32) -> ArenaResu
       ArenaResult{v_20039396, +v_20039397} = arena_get_binder(v_20039392, v_5)
       match v_20039397:
         case Arena.Binder{+v_20039398, +v_20039399, +v_20039401, +v_20039402, +v_20039403}:
-          ArenaResult{v_20039404, +v_20039405} = arena_name_text(v_20039396, v_20039399)
-          +v_20039400 = v_20039405
           v_12 = v_20039398
-          v_13 = v_20039400
+          v_13 = v_20039399
           v_14 = v_20039401
           v_16 = v_20039403
-          ArenaResult{v_20039406, +v_20039407} = binders_lambda(v_20039404, v_6, v_2)
-          ArenaResult{v_20039408, +v_20039409} = arena_name(v_20039406, v_13)
-          ArenaResult{v_20039410, +v_20039411} = arena_put_node(v_20039408, Arena.TermLam{Some{v_12}, v_20039409, v_14, v_20039407, v_16})
+          ArenaResult{v_20039406, +v_20039407} = binders_lambda(v_20039396, v_6, v_2)
+          ArenaResult{v_20039410, +v_20039411} = arena_put_node(v_20039406, Arena.TermLam{Some{v_12}, v_13, v_14, v_20039407, v_16})
           {ArenaResult{v_20039410, v_20039411} : ArenaResult<U32>}
         case Arena.TemplateBinder{+v_20039412, +v_20039414, +v_20039415, +v_20039416}:
-          ArenaResult{v_20039417, +v_20039418} = arena_name_text(v_20039396, v_20039412)
-          +v_20039413 = v_20039418
-          v_22 = v_20039413
+          v_22 = v_20039412
           v_23 = v_20039414
           v_25 = v_20039416
-          ArenaResult{v_20039419, +v_20039420} = binders_lambda(v_20039417, v_6, v_2)
-          ArenaResult{v_20039421, +v_20039422} = arena_name(v_20039419, v_22)
-          ArenaResult{v_20039423, +v_20039424} = arena_put_node(v_20039421, Arena.TermLam{Some{Ast.QZero{}}, v_20039422, v_23, v_20039420, v_25})
+          ArenaResult{v_20039419, +v_20039420} = binders_lambda(v_20039396, v_6, v_2)
+          ArenaResult{v_20039423, +v_20039424} = arena_put_node(v_20039419, Arena.TermLam{Some{Ast.QZero{}}, v_22, v_23, v_20039420, v_25})
           {ArenaResult{v_20039423, v_20039424} : ArenaResult<U32>}
 
 def parameter_vars(v_20039425: ArenaStore, v_1: IR.Words, v_3: Nat, v_4: Ast.SourceSpan) -> ArenaResult<IR.Words>:
@@ -8973,22 +8928,16 @@ def parameter_vars(v_20039425: ArenaStore, v_1: IR.Words, v_3: Nat, v_4: Ast.Sou
       ArenaResult{v_20039430, +v_20039431} = arena_get_binder(v_20039426, v_8)
       match v_20039431:
         case Arena.Binder{+v_20039432, +v_20039433, +v_20039435, +v_20039436, +v_20039437}:
-          ArenaResult{v_20039438, +v_20039439} = arena_name_text(v_20039430, v_20039433)
-          +v_20039434 = v_20039439
-          v_16 = v_20039434
+          v_16 = v_20039433
           v_21 = Nat.sub(v_3, 1n)
-          ArenaResult{v_20039440, +v_20039441} = arena_name(v_20039438, v_16)
-          ArenaResult{v_20039442, +v_20039443} = arena_put_node(v_20039440, Arena.TermVar{v_20039441, v_21, v_4})
+          ArenaResult{v_20039442, +v_20039443} = arena_put_node(v_20039430, Arena.TermVar{v_16, v_21, v_4})
           ArenaResult{v_20039444, +v_20039445} = parameter_vars(v_20039442, v_9, v_21, v_4)
           ArenaResult{v_20039446, +v_20039447} = arena_words_cons(v_20039444, v_20039443, v_20039445)
           {ArenaResult{v_20039446, v_20039447} : ArenaResult<IR.Words>}
         case Arena.TemplateBinder{+v_20039448, +v_20039450, +v_20039451, +v_20039452}:
-          ArenaResult{v_20039453, +v_20039454} = arena_name_text(v_20039430, v_20039448)
-          +v_20039449 = v_20039454
-          v_27 = v_20039449
+          v_27 = v_20039448
           v_32 = Nat.sub(v_3, 1n)
-          ArenaResult{v_20039455, +v_20039456} = arena_name(v_20039453, v_27)
-          ArenaResult{v_20039457, +v_20039458} = arena_put_node(v_20039455, Arena.TermVar{v_20039456, v_32, v_4})
+          ArenaResult{v_20039457, +v_20039458} = arena_put_node(v_20039430, Arena.TermVar{v_27, v_32, v_4})
           ArenaResult{v_20039459, +v_20039460} = parameter_vars(v_20039457, v_9, v_32, v_4)
           ArenaResult{v_20039461, +v_20039462} = arena_words_cons(v_20039459, v_20039458, v_20039460)
           {ArenaResult{v_20039461, v_20039462} : ArenaResult<IR.Words>}
@@ -9318,14 +9267,11 @@ def foreign_head(v_20039722: ArenaStore, v_0: U32) -> ArenaResult<Maybe<&2, Stri
       ArenaResult{v_20039746, +v_20039747} = foreign_head(v_20039723, v_18)
       {ArenaResult{v_20039746, v_20039747} : ArenaResult<Maybe<&2, String>>}
     case Arena.TermAll{+v_20039754, +v_20039755, +v_20039757, +v_20039758, +v_20039759, +v_20039760}:
-      ArenaResult{v_20039761, +v_20039762} = arena_name_text(v_20039723, v_20039755)
-      +v_20039756 = v_20039762
-      v_29 = v_20039756
+      v_29 = v_20039755
       v_30 = v_20039757
       v_32 = v_20039759
       v_33 = v_20039760
-      ArenaResult{v_20039763, +v_20039764} = arena_name(v_20039761, v_29)
-      ArenaResult{v_20039765, +v_20039766} = arena_put_node(v_20039763, Arena.TermVar{v_20039764, 0n, v_33})
+      ArenaResult{v_20039765, +v_20039766} = arena_put_node(v_20039723, Arena.TermVar{v_29, 0n, v_33})
       ArenaResult{v_20039767, +v_20039768} = core_subst(v_20039765, 0n, v_20039766, v_32)
       ArenaResult{v_20039769, +v_20039770} = foreign_head(v_20039767, v_20039768)
       {ArenaResult{v_20039769, v_20039770} : ArenaResult<Maybe<&2, String>>}
@@ -9857,26 +9803,20 @@ def pattern_value(v_1: ArenaStore, v_3: U32, v_5: Nat) -> ArenaResult<U32>:
   ArenaResult{v_12, +v_13} = arena_get_pattern(v_1, v_3)
   match v_13:
     case Arena.PatternVar{+v_18, +v_19, +v_20, +v_21}:
-      ArenaResult{v_25, +v_26} = arena_name_text(v_12, v_18)
-      +v_28 = v_26
-      v_30 = v_28
+      v_30 = v_18
       v_32 = v_19
       v_34 = v_21
-      ArenaResult{v_38, +v_39} = arena_name(v_25, v_30)
-      ArenaResult{v_43, +v_44} = arena_put_node(v_38, Arena.TermVar{v_39, Nat.sub(Nat.sub(v_5, v_32), 1n), v_34})
+      ArenaResult{v_43, +v_44} = arena_put_node(v_12, Arena.TermVar{v_30, Nat.sub(Nat.sub(v_5, v_32), 1n), v_34})
       {ArenaResult{v_43, v_44} : ArenaResult<U32>}
     case Arena.PatternCtr{+v_49, +v_50, +v_51, +v_52}:
-      ArenaResult{v_56, +v_57} = arena_name_text(v_12, v_49)
-      +v_59 = v_57
       +v_61 = IR.Words{v_50, v_51}
-      v_63 = v_59
+      v_63 = v_49
       v_65 = v_61
       v_67 = v_52
-      ArenaResult{v_71, +v_72} = pattern_values(v_56, v_65, v_5)
-      ArenaResult{v_76, +v_77} = arena_name(v_71, v_63)
+      ArenaResult{v_71, +v_72} = pattern_values(v_12, v_65, v_5)
       v_50000302 = arena_words_start(v_72)
       v_50000303 = arena_words_count(v_72)
-      ArenaResult{v_83, +v_84} = arena_put_node(v_76, Arena.TermCtr{v_77, v_50000302, v_50000303, v_67})
+      ArenaResult{v_83, +v_84} = arena_put_node(v_71, Arena.TermCtr{v_63, v_50000302, v_50000303, v_67})
       {ArenaResult{v_83, v_84} : ArenaResult<U32>}
 
 def pattern_values(v_20040508: ArenaStore, v_1: IR.Words, v_3: Nat) -> ArenaResult<IR.Words>:
@@ -9896,35 +9836,29 @@ def replace_order_var(v_1: ArenaStore, v_3: U32, v_5: Nat, v_7: U32) -> ArenaRes
   ArenaResult{v_14, +v_15} = arena_get_node(v_1, v_3)
   match v_15:
     case Arena.TermVar{+v_19, +v_20, +v_21}:
-      ArenaResult{v_25, +v_26} = arena_name_text(v_14, v_19)
-      +v_28 = v_26
-      v_30 = v_28
+      v_30 = v_19
       v_32 = v_20
       v_34 = v_21
       +v_36 = Nat.is_eq(v_32, v_5)
       match v_36:
         case False{}:
-          ArenaResult{v_40, +v_41} = arena_name(v_25, v_30)
-          ArenaResult{v_45, +v_46} = arena_put_node(v_40, Arena.TermVar{v_41, v_32, v_34})
+          ArenaResult{v_45, +v_46} = arena_put_node(v_14, Arena.TermVar{v_30, v_32, v_34})
           +v_48 = v_46
           v_50 = v_45
           {ArenaResult{v_50, v_48} : ArenaResult<U32>}
         case True{}:
           +v_53 = v_7
-          v_55 = v_25
+          v_55 = v_14
           {ArenaResult{v_55, v_53} : ArenaResult<U32>}
     case Arena.TermCtr{+v_61, +v_62, +v_63, +v_64}:
-      ArenaResult{v_68, +v_69} = arena_name_text(v_14, v_61)
-      +v_71 = v_69
       +v_73 = IR.Words{v_62, v_63}
-      v_75 = v_71
+      v_75 = v_61
       v_77 = v_73
       v_79 = v_64
-      ArenaResult{v_83, +v_84} = replace_order_vars(v_68, v_77, v_5, v_7)
-      ArenaResult{v_88, +v_89} = arena_name(v_83, v_75)
+      ArenaResult{v_83, +v_84} = replace_order_vars(v_14, v_77, v_5, v_7)
       v_50000304 = arena_words_start(v_84)
       v_50000305 = arena_words_count(v_84)
-      ArenaResult{v_95, +v_96} = arena_put_node(v_88, Arena.TermCtr{v_89, v_50000304, v_50000305, v_79})
+      ArenaResult{v_95, +v_96} = arena_put_node(v_83, Arena.TermCtr{v_75, v_50000304, v_50000305, v_79})
       {ArenaResult{v_95, v_96} : ArenaResult<U32>}
     case _:
       {ArenaResult{v_14, v_3} : ArenaResult<U32>}
@@ -10678,12 +10612,15 @@ def definition_visible_self(v_1: ArenaStore, v_2: IR.OptionalTerm, v_4: String, 
       v_14 = v_12
       ArenaResult{v_18, +v_19} = binders_type(v_1, v_7, v_14)
       v_21 = v_19
-      ArenaResult{v_25, +v_26} = arena_publish_global(v_18, Scope.ArenaGlobal{v_4, v_6, v_4, v_21, IR.NoTerm{}, Scope.GlobalDefinition{}})
+      # The bare local name and the canonical name differ only in their key
+      # field, so both self entries carry this one retained telescope: the
+      # local alias derives from the published record instead of repeating
+      # the publication step. Prepend order stays canonical-then-local.
       v_50000332 = canonical_key(v_6, v_4)
-      ArenaResult{v_31, +v_32} = arena_publish_global(v_25, Scope.ArenaGlobal{v_50000332, v_6, v_4, v_21, IR.NoTerm{}, Scope.GlobalDefinition{}})
-      ArenaResult{v_36, +v_37} = global_scope_prepend(v_31, v_32, v_8)
-      ArenaResult{v_41, +v_42} = global_scope_prepend(v_36, v_26, v_37)
-      {ArenaResult{v_41, v_42} : ArenaResult<Scope.ArenaGlobalScope>}
+      ArenaResult{v_25, +v_26} = arena_publish_global(v_18, Scope.ArenaGlobal{v_50000332, v_6, v_4, v_21, IR.NoTerm{}, Scope.GlobalDefinition{}})
+      ArenaResult{v_31, +v_32} = global_scope_prepend(v_25, v_26, v_8)
+      ArenaResult{v_36, +v_37} = global_scope_prepend(v_31, global_local_alias(v_26), v_32)
+      {ArenaResult{v_36, v_37} : ArenaResult<Scope.ArenaGlobalScope>}
     case IR.NoTerm{}:
       {ArenaResult{v_1, v_8} : ArenaResult<Scope.ArenaGlobalScope>}
 
@@ -10883,20 +10820,16 @@ def inherit_law_binder_view(v_1: ArenaStore, v_3: U32, v_5: U32, v_6: IR.Words, 
       ArenaResult{v_41, +v_42} = arena_get_binder(v_24, v_5)
       match v_42:
         case Arena.Binder{+v_48, +v_49, +v_50, +v_51, +v_52}:
-          ArenaResult{v_56, +v_57} = arena_name_text(v_41, v_49)
-          +v_59 = v_57
           v_61 = v_48
-          v_63 = v_59
+          v_63 = v_49
           v_65 = v_51
           v_67 = v_52
           v_69 = v_32
           v_71 = v_35
           v_73 = v_36
-          ArenaResult{v_77, +v_78} = arena_name(v_56, v_63)
-          ArenaResult{v_82, +v_83} = arena_put_binder(v_77, Arena.Binder{v_69, v_78, v_9, v_71, v_67})
+          ArenaResult{v_82, +v_83} = arena_put_binder(v_41, Arena.Binder{v_69, v_63, v_9, v_71, v_67})
           v_85 = v_83
-          ArenaResult{v_89, +v_90} = arena_name(v_82, v_63)
-          ArenaResult{v_94, +v_95} = arena_put_node(v_89, Arena.TermVar{v_90, 0n, v_67})
+          ArenaResult{v_94, +v_95} = arena_put_node(v_82, Arena.TermVar{v_63, 0n, v_67})
           ArenaResult{v_99, +v_100} = replace_free_term(v_94, v_73, 0n, v_95, 0n)
           v_102 = v_100
           ArenaResult{v_106, +v_107} = completion_binder_fits(v_99, v_61, v_65, v_69, v_71, v_17)
@@ -11176,10 +11109,12 @@ def predeclare_definition_signatures(store: ArenaStore, declarations: List<&2, I
 # the declaration in source order.
 def predeclare_datatype_header(store: ArenaStore, +key: String, params: IR.Words, kind: U32, +namespace: String, visible: Scope.ArenaGlobalScope) -> ArenaResult<Scope.ArenaGlobalScope>:
   ArenaResult{store, +ty} = binders_type(store, params, kind)
+  # Both family headers carry this one retained kind telescope: they differ only
+  # in their key field, so the local alias derives from the published record
+  # instead of repeating the publication step.
   ArenaResult{store, canonical} = arena_publish_global(store, Scope.ArenaGlobal{canonical_key(namespace, key), namespace, key, ty, IR.NoTerm{}, Scope.GlobalFamily{}})
-  ArenaResult{store, local} = arena_publish_global(store, Scope.ArenaGlobal{key, namespace, key, ty, IR.NoTerm{}, Scope.GlobalFamily{}})
   ArenaResult{store, scope} = global_scope_prepend(store, canonical, visible)
-  ArenaResult{store, scope} = global_scope_prepend(store, local, scope)
+  ArenaResult{store, scope} = global_scope_prepend(store, global_local_alias(canonical), scope)
   {ArenaResult{store, scope} : ArenaResult<Scope.ArenaGlobalScope>}
 
 def predeclare_datatype_headers(store: ArenaStore, declarations: List<&2, IR.TopLevel>, +namespace: String, visible: Scope.ArenaGlobalScope) -> ArenaResult<Scope.ArenaGlobalScope>:
@@ -12066,15 +12001,13 @@ def core_pattern_depth_open(store: ArenaStore, id: U32) -> ArenaResult<Nat>:
     case Arena.PatternVar{_, _, _, _}: {ArenaResult{store, 1n} : ArenaResult<Nat>}
     case Arena.PatternCtr{_, start, count, _}: core_pattern_list_depth(store, IR.Words{start, count})
 
-def core_shift_var(v_20042271: ArenaStore, v_1: Bool, v_3: String, v_5: Nat, v_7: Nat, v_8: Ast.SourceSpan) -> ArenaResult<U32>:
+def core_shift_var(v_20042271: ArenaStore, v_1: Bool, v_3: U32, v_5: Nat, v_7: Nat, v_8: Ast.SourceSpan) -> ArenaResult<U32>:
   match v_1:
     case True{}:
-      ArenaResult{v_20042272, +v_20042273} = arena_name(v_20042271, v_3)
-      ArenaResult{v_20042274, +v_20042275} = arena_put_node(v_20042272, Arena.TermVar{v_20042273, Nat.add(v_5, v_7), v_8})
+      ArenaResult{v_20042274, +v_20042275} = arena_put_node(v_20042271, Arena.TermVar{v_3, Nat.add(v_5, v_7), v_8})
       {ArenaResult{v_20042274, v_20042275} : ArenaResult<U32>}
     case False{}:
-      ArenaResult{v_20042276, +v_20042277} = arena_name(v_20042271, v_3)
-      ArenaResult{v_20042278, +v_20042279} = arena_put_node(v_20042276, Arena.TermVar{v_20042277, v_5, v_8})
+      ArenaResult{v_20042278, +v_20042279} = arena_put_node(v_20042271, Arena.TermVar{v_3, v_5, v_8})
       {ArenaResult{v_20042278, v_20042279} : ArenaResult<U32>}
 
 # Immutable subtrees below the operation's cutoff retain their original handle.
@@ -12099,12 +12032,9 @@ def core_shift_open(v_1: ArenaStore, v_3: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat) 
   ArenaResult{v_16, +v_17} = arena_get_node(v_1, v_3)
   match v_17:
     case Arena.TermVar{+v_21, +v_22, +v_23}:
-      ArenaResult{v_27, +v_28} = arena_name_text(v_16, v_21)
-      +v_30 = v_28
-      v_32 = v_30
       +v_34 = v_22
       v_36 = v_23
-      ArenaResult{v_40, +v_41} = core_shift_var(v_27, Nat.is_ge(v_34, Nat.add(v_5, v_9)), v_32, v_34, v_7, v_36)
+      ArenaResult{v_40, +v_41} = core_shift_var(v_16, Nat.is_ge(v_34, Nat.add(v_5, v_9)), v_21, v_34, v_7, v_36)
       {ArenaResult{v_40, v_41} : ArenaResult<U32>}
     case Arena.TermRef{+v_44, +v_45}:
       {ArenaResult{v_16, v_3} : ArenaResult<U32>}
@@ -12183,30 +12113,24 @@ def core_shift_open(v_1: ArenaStore, v_3: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat) 
       ArenaResult{v_286, +v_287} = arena_put_node(v_281, Arena.TermMin{v_277, v_282, v_272})
       {ArenaResult{v_286, v_287} : ArenaResult<U32>}
     case Arena.TermAll{+v_294, +v_295, +v_296, +v_297, +v_298, +v_299}:
-      ArenaResult{v_303, +v_304} = arena_name_text(v_16, v_295)
-      +v_306 = v_304
       v_308 = v_294
-      v_310 = v_306
+      v_310 = v_295
       v_312 = v_296
       v_314 = v_297
       v_316 = v_298
       v_318 = v_299
-      ArenaResult{v_322, +v_323} = core_shift_at(v_303, v_314, v_5, v_7, v_9)
+      ArenaResult{v_322, +v_323} = core_shift_at(v_16, v_314, v_5, v_7, v_9)
       ArenaResult{v_327, +v_328} = core_shift_at(v_322, v_316, v_5, v_7, Nat.add(v_9, 1n))
-      ArenaResult{v_332, +v_333} = arena_name(v_327, v_310)
-      ArenaResult{v_337, +v_338} = arena_put_node(v_332, Arena.TermAll{v_308, v_333, v_312, v_323, v_328, v_318})
+      ArenaResult{v_337, +v_338} = arena_put_node(v_327, Arena.TermAll{v_308, v_310, v_312, v_323, v_328, v_318})
       {ArenaResult{v_337, v_338} : ArenaResult<U32>}
     case Arena.TermLam{+v_344, +v_345, +v_346, +v_347, +v_348}:
-      ArenaResult{v_352, +v_353} = arena_name_text(v_16, v_345)
-      +v_355 = v_353
       v_357 = v_344
-      v_359 = v_355
+      v_359 = v_345
       v_361 = v_346
       v_363 = v_347
       v_365 = v_348
-      ArenaResult{v_369, +v_370} = core_shift_at(v_352, v_363, v_5, v_7, Nat.add(v_9, 1n))
-      ArenaResult{v_374, +v_375} = arena_name(v_369, v_359)
-      ArenaResult{v_379, +v_380} = arena_put_node(v_374, Arena.TermLam{v_357, v_375, v_361, v_370, v_365})
+      ArenaResult{v_369, +v_370} = core_shift_at(v_16, v_363, v_5, v_7, Nat.add(v_9, 1n))
+      ArenaResult{v_379, +v_380} = arena_put_node(v_369, Arena.TermLam{v_357, v_359, v_361, v_370, v_365})
       {ArenaResult{v_379, v_380} : ArenaResult<U32>}
     case Arena.TermApp{+v_384, +v_385, +v_386}:
       v_388 = v_384
@@ -12217,21 +12141,18 @@ def core_shift_open(v_1: ArenaStore, v_3: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat) 
       ArenaResult{v_406, +v_407} = arena_put_node(v_401, Arena.TermApp{v_397, v_402, v_392})
       {ArenaResult{v_406, v_407} : ArenaResult<U32>}
     case Arena.TermAdt{+v_414, +v_415, +v_416, +v_417, +v_418, +v_419}:
-      ArenaResult{v_423, +v_424} = arena_name_text(v_16, v_414)
-      +v_426 = v_424
       +v_428 = IR.Words{v_415, v_416}
       +v_430 = IR.Names{v_417, v_418}
-      v_432 = v_426
+      v_432 = v_414
       v_434 = v_428
       v_436 = v_430
       v_438 = v_419
-      ArenaResult{v_442, +v_443} = core_shift_terms(v_423, v_5, v_7, v_9, v_434)
-      ArenaResult{v_447, +v_448} = arena_name(v_442, v_432)
+      ArenaResult{v_442, +v_443} = core_shift_terms(v_16, v_5, v_7, v_9, v_434)
       v_50000382 = arena_words_start(v_443)
       v_50000383 = arena_words_count(v_443)
       v_50000384 = arena_names_start(v_436)
       v_50000385 = arena_names_count(v_436)
-      ArenaResult{v_456, +v_457} = arena_put_node(v_447, Arena.TermAdt{v_448, v_50000382, v_50000383, v_50000384, v_50000385, v_438})
+      ArenaResult{v_456, +v_457} = arena_put_node(v_442, Arena.TermAdt{v_432, v_50000382, v_50000383, v_50000384, v_50000385, v_438})
       {ArenaResult{v_456, v_457} : ArenaResult<U32>}
     case Arena.TermFill{+v_462, +v_463, +v_464, +v_465}:
       +v_467 = IR.Words{v_463, v_464}
@@ -12258,29 +12179,23 @@ def core_shift_open(v_1: ArenaStore, v_3: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat) 
     case Arena.TermString{_, _, _}:
       {ArenaResult{v_16, v_3} : ArenaResult<U32>}
     case Arena.TermCtr{+v_528, +v_529, +v_530, +v_531}:
-      ArenaResult{v_535, +v_536} = arena_name_text(v_16, v_528)
-      +v_538 = v_536
       +v_540 = IR.Words{v_529, v_530}
-      v_542 = v_538
+      v_542 = v_528
       v_544 = v_540
       v_546 = v_531
-      ArenaResult{v_550, +v_551} = core_shift_terms(v_535, v_5, v_7, v_9, v_544)
-      ArenaResult{v_555, +v_556} = arena_name(v_550, v_542)
+      ArenaResult{v_550, +v_551} = core_shift_terms(v_16, v_5, v_7, v_9, v_544)
       v_50000390 = arena_words_start(v_551)
       v_50000391 = arena_words_count(v_551)
-      ArenaResult{v_562, +v_563} = arena_put_node(v_555, Arena.TermCtr{v_556, v_50000390, v_50000391, v_546})
+      ArenaResult{v_562, +v_563} = arena_put_node(v_550, Arena.TermCtr{v_542, v_50000390, v_50000391, v_546})
       {ArenaResult{v_562, v_563} : ArenaResult<U32>}
     case Arena.TermMat{+v_568, +v_569, +v_570, +v_571}:
-      ArenaResult{v_575, +v_576} = arena_name_text(v_16, v_568)
-      +v_578 = v_576
-      v_580 = v_578
+      v_580 = v_568
       v_582 = v_569
       v_584 = v_570
       v_586 = v_571
-      ArenaResult{v_590, +v_591} = core_shift_at(v_575, v_582, v_5, v_7, v_9)
+      ArenaResult{v_590, +v_591} = core_shift_at(v_16, v_582, v_5, v_7, v_9)
       ArenaResult{v_595, +v_596} = core_shift_at(v_590, v_584, v_5, v_7, v_9)
-      ArenaResult{v_600, +v_601} = arena_name(v_595, v_580)
-      ArenaResult{v_605, +v_606} = arena_put_node(v_600, Arena.TermMat{v_601, v_591, v_596, v_586})
+      ArenaResult{v_605, +v_606} = arena_put_node(v_595, Arena.TermMat{v_580, v_591, v_596, v_586})
       {ArenaResult{v_605, v_606} : ArenaResult<U32>}
     case Arena.TermAbsurd{+v_608}:
       v_610 = v_608
@@ -12311,12 +12226,9 @@ def core_shift_open(v_1: ArenaStore, v_3: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat) 
       ArenaResult{v_695, +v_696} = arena_put_node(v_690, Arena.TermRewrite{v_681, v_686, v_691, v_676})
       {ArenaResult{v_695, v_696} : ArenaResult<U32>}
     case Arena.TermHole{+v_699, +v_700}:
-      ArenaResult{v_704, +v_705} = arena_name_text(v_16, v_699)
-      +v_707 = v_705
-      v_709 = v_707
+      v_709 = v_699
       v_711 = v_700
-      ArenaResult{v_715, +v_716} = arena_name(v_704, v_709)
-      ArenaResult{v_720, +v_721} = arena_put_node(v_715, Arena.TermHole{v_716, v_711})
+      ArenaResult{v_720, +v_721} = arena_put_node(v_16, Arena.TermHole{v_709, v_711})
       {ArenaResult{v_720, v_721} : ArenaResult<U32>}
     case Arena.BodyMatch{+v_727, +v_728, +v_729, +v_730, +v_731}:
       +v_733 = IR.Words{v_727, v_728}
@@ -12375,7 +12287,7 @@ def core_shift(v_20042566: ArenaStore, v_1: Nat, v_3: Nat, v_4: U32) -> ArenaRes
       ArenaResult{v_20042568, +v_20042569} = core_shift_at(v_20042566, v_4, v_1, v_3, 0n)
       {ArenaResult{v_20042568, v_20042569} : ArenaResult<U32>}
 
-def core_subst_var(v_20042570: ArenaStore, v_1: Bool, v_3: Bool, v_5: Nat, v_6: U32, v_8: String, v_10: Nat, v_11: Ast.SourceSpan) -> ArenaResult<U32>:
+def core_subst_var(v_20042570: ArenaStore, v_1: Bool, v_3: Bool, v_5: Nat, v_6: U32, v_8: U32, v_10: Nat, v_11: Ast.SourceSpan) -> ArenaResult<U32>:
   match v_1:
     case True{}:
       ArenaResult{v_20042571, +v_20042572} = core_shift(v_20042570, 0n, v_5, v_6)
@@ -12383,12 +12295,10 @@ def core_subst_var(v_20042570: ArenaStore, v_1: Bool, v_3: Bool, v_5: Nat, v_6: 
     case False{}:
       match v_3:
         case True{}:
-          ArenaResult{v_20042573, +v_20042574} = arena_name(v_20042570, v_8)
-          ArenaResult{v_20042575, +v_20042576} = arena_put_node(v_20042573, Arena.TermVar{v_20042574, Nat.sub(v_10, 1n), v_11})
+          ArenaResult{v_20042575, +v_20042576} = arena_put_node(v_20042570, Arena.TermVar{v_8, Nat.sub(v_10, 1n), v_11})
           {ArenaResult{v_20042575, v_20042576} : ArenaResult<U32>}
         case False{}:
-          ArenaResult{v_20042577, +v_20042578} = arena_name(v_20042570, v_8)
-          ArenaResult{v_20042579, +v_20042580} = arena_put_node(v_20042577, Arena.TermVar{v_20042578, v_10, v_11})
+          ArenaResult{v_20042579, +v_20042580} = arena_put_node(v_20042570, Arena.TermVar{v_8, v_10, v_11})
           {ArenaResult{v_20042579, v_20042580} : ArenaResult<U32>}
 
 # Memoize immutable published source/transient signatures until rewind. The guard
@@ -12419,13 +12329,10 @@ def core_subst_open(v_1: ArenaStore, +v_3: Nat, +v_5: U32, +v_7: Nat, v_9: U32) 
   ArenaResult{v_16, +v_17} = arena_get_node(v_1, v_9)
   match v_17:
     case Arena.TermVar{+v_21, +v_22, +v_23}:
-      ArenaResult{v_27, +v_28} = arena_name_text(v_16, v_21)
-      +v_30 = v_28
-      v_32 = v_30
       +v_34 = v_22
       v_36 = v_23
       +v_38 = Nat.add(v_3, v_7)
-      ArenaResult{v_42, +v_43} = core_subst_var(v_27, Nat.is_eq(v_34, v_38), Nat.is_gt(v_34, v_38), v_7, v_5, v_32, v_34, v_36)
+      ArenaResult{v_42, +v_43} = core_subst_var(v_16, Nat.is_eq(v_34, v_38), Nat.is_gt(v_34, v_38), v_7, v_5, v_21, v_34, v_36)
       {ArenaResult{v_42, v_43} : ArenaResult<U32>}
     case Arena.TermRef{+v_46, +v_47}:
       {ArenaResult{v_16, v_9} : ArenaResult<U32>}
@@ -12504,30 +12411,24 @@ def core_subst_open(v_1: ArenaStore, +v_3: Nat, +v_5: U32, +v_7: Nat, v_9: U32) 
       ArenaResult{v_288, +v_289} = arena_put_node(v_283, Arena.TermMin{v_279, v_284, v_274})
       {ArenaResult{v_288, v_289} : ArenaResult<U32>}
     case Arena.TermAll{+v_296, +v_297, +v_298, +v_299, +v_300, +v_301}:
-      ArenaResult{v_305, +v_306} = arena_name_text(v_16, v_297)
-      +v_308 = v_306
       v_310 = v_296
-      v_312 = v_308
+      v_312 = v_297
       v_314 = v_298
       v_316 = v_299
       v_318 = v_300
       v_320 = v_301
-      ArenaResult{v_324, +v_325} = core_subst_at(v_305, v_3, v_5, v_7, v_316)
+      ArenaResult{v_324, +v_325} = core_subst_at(v_16, v_3, v_5, v_7, v_316)
       ArenaResult{v_329, +v_330} = core_subst_at(v_324, v_3, v_5, Nat.add(v_7, 1n), v_318)
-      ArenaResult{v_334, +v_335} = arena_name(v_329, v_312)
-      ArenaResult{v_339, +v_340} = arena_put_node(v_334, Arena.TermAll{v_310, v_335, v_314, v_325, v_330, v_320})
+      ArenaResult{v_339, +v_340} = arena_put_node(v_329, Arena.TermAll{v_310, v_312, v_314, v_325, v_330, v_320})
       {ArenaResult{v_339, v_340} : ArenaResult<U32>}
     case Arena.TermLam{+v_346, +v_347, +v_348, +v_349, +v_350}:
-      ArenaResult{v_354, +v_355} = arena_name_text(v_16, v_347)
-      +v_357 = v_355
       v_359 = v_346
-      v_361 = v_357
+      v_361 = v_347
       v_363 = v_348
       v_365 = v_349
       v_367 = v_350
-      ArenaResult{v_371, +v_372} = core_subst_at(v_354, v_3, v_5, Nat.add(v_7, 1n), v_365)
-      ArenaResult{v_376, +v_377} = arena_name(v_371, v_361)
-      ArenaResult{v_381, +v_382} = arena_put_node(v_376, Arena.TermLam{v_359, v_377, v_363, v_372, v_367})
+      ArenaResult{v_371, +v_372} = core_subst_at(v_16, v_3, v_5, Nat.add(v_7, 1n), v_365)
+      ArenaResult{v_381, +v_382} = arena_put_node(v_371, Arena.TermLam{v_359, v_361, v_363, v_372, v_367})
       {ArenaResult{v_381, v_382} : ArenaResult<U32>}
     case Arena.TermApp{+v_386, +v_387, +v_388}:
       v_390 = v_386
@@ -12538,21 +12439,18 @@ def core_subst_open(v_1: ArenaStore, +v_3: Nat, +v_5: U32, +v_7: Nat, v_9: U32) 
       ArenaResult{v_408, +v_409} = arena_put_node(v_403, Arena.TermApp{v_399, v_404, v_394})
       {ArenaResult{v_408, v_409} : ArenaResult<U32>}
     case Arena.TermAdt{+v_416, +v_417, +v_418, +v_419, +v_420, +v_421}:
-      ArenaResult{v_425, +v_426} = arena_name_text(v_16, v_416)
-      +v_428 = v_426
       +v_430 = IR.Words{v_417, v_418}
       +v_432 = IR.Names{v_419, v_420}
-      v_434 = v_428
+      v_434 = v_416
       v_436 = v_430
       v_438 = v_432
       v_440 = v_421
-      ArenaResult{v_444, +v_445} = core_subst_terms(v_425, v_3, v_5, v_7, v_436)
-      ArenaResult{v_449, +v_450} = arena_name(v_444, v_434)
+      ArenaResult{v_444, +v_445} = core_subst_terms(v_16, v_3, v_5, v_7, v_436)
       v_50000410 = arena_words_start(v_445)
       v_50000411 = arena_words_count(v_445)
       v_50000412 = arena_names_start(v_438)
       v_50000413 = arena_names_count(v_438)
-      ArenaResult{v_458, +v_459} = arena_put_node(v_449, Arena.TermAdt{v_450, v_50000410, v_50000411, v_50000412, v_50000413, v_440})
+      ArenaResult{v_458, +v_459} = arena_put_node(v_444, Arena.TermAdt{v_434, v_50000410, v_50000411, v_50000412, v_50000413, v_440})
       {ArenaResult{v_458, v_459} : ArenaResult<U32>}
     case Arena.TermFill{+v_464, +v_465, +v_466, +v_467}:
       +v_469 = IR.Words{v_465, v_466}
@@ -12579,29 +12477,23 @@ def core_subst_open(v_1: ArenaStore, +v_3: Nat, +v_5: U32, +v_7: Nat, v_9: U32) 
     case Arena.TermString{_, _, _}:
       {ArenaResult{v_16, v_9} : ArenaResult<U32>}
     case Arena.TermCtr{+v_530, +v_531, +v_532, +v_533}:
-      ArenaResult{v_537, +v_538} = arena_name_text(v_16, v_530)
-      +v_540 = v_538
       +v_542 = IR.Words{v_531, v_532}
-      v_544 = v_540
+      v_544 = v_530
       v_546 = v_542
       v_548 = v_533
-      ArenaResult{v_552, +v_553} = core_subst_terms(v_537, v_3, v_5, v_7, v_546)
-      ArenaResult{v_557, +v_558} = arena_name(v_552, v_544)
+      ArenaResult{v_552, +v_553} = core_subst_terms(v_16, v_3, v_5, v_7, v_546)
       v_50000418 = arena_words_start(v_553)
       v_50000419 = arena_words_count(v_553)
-      ArenaResult{v_564, +v_565} = arena_put_node(v_557, Arena.TermCtr{v_558, v_50000418, v_50000419, v_548})
+      ArenaResult{v_564, +v_565} = arena_put_node(v_552, Arena.TermCtr{v_544, v_50000418, v_50000419, v_548})
       {ArenaResult{v_564, v_565} : ArenaResult<U32>}
     case Arena.TermMat{+v_570, +v_571, +v_572, +v_573}:
-      ArenaResult{v_577, +v_578} = arena_name_text(v_16, v_570)
-      +v_580 = v_578
-      v_582 = v_580
+      v_582 = v_570
       v_584 = v_571
       v_586 = v_572
       v_588 = v_573
-      ArenaResult{v_592, +v_593} = core_subst_at(v_577, v_3, v_5, v_7, v_584)
+      ArenaResult{v_592, +v_593} = core_subst_at(v_16, v_3, v_5, v_7, v_584)
       ArenaResult{v_597, +v_598} = core_subst_at(v_592, v_3, v_5, v_7, v_586)
-      ArenaResult{v_602, +v_603} = arena_name(v_597, v_582)
-      ArenaResult{v_607, +v_608} = arena_put_node(v_602, Arena.TermMat{v_603, v_593, v_598, v_588})
+      ArenaResult{v_607, +v_608} = arena_put_node(v_597, Arena.TermMat{v_582, v_593, v_598, v_588})
       {ArenaResult{v_607, v_608} : ArenaResult<U32>}
     case Arena.TermAbsurd{+v_610}:
       v_612 = v_610
@@ -12632,12 +12524,9 @@ def core_subst_open(v_1: ArenaStore, +v_3: Nat, +v_5: U32, +v_7: Nat, v_9: U32) 
       ArenaResult{v_697, +v_698} = arena_put_node(v_692, Arena.TermRewrite{v_683, v_688, v_693, v_678})
       {ArenaResult{v_697, v_698} : ArenaResult<U32>}
     case Arena.TermHole{+v_701, +v_702}:
-      ArenaResult{v_706, +v_707} = arena_name_text(v_16, v_701)
-      +v_709 = v_707
-      v_711 = v_709
+      v_711 = v_701
       v_713 = v_702
-      ArenaResult{v_717, +v_718} = arena_name(v_706, v_711)
-      ArenaResult{v_722, +v_723} = arena_put_node(v_717, Arena.TermHole{v_718, v_713})
+      ArenaResult{v_722, +v_723} = arena_put_node(v_16, Arena.TermHole{v_711, v_713})
       {ArenaResult{v_722, v_723} : ArenaResult<U32>}
     case Arena.BodyMatch{+v_729, +v_730, +v_731, +v_732, +v_733}:
       +v_735 = IR.Words{v_729, v_730}
