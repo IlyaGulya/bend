@@ -261,10 +261,21 @@ The independent full native-seed bootstrap is also **rejected by the original
 600 s deadline**, at `stage-two-check`, not by memory. It emits stage1
 `096f6c92` (26,619,233 B), passes all 95 seed fixtures and completes semantic
 parser approval for all 18 root sources using stage1's own parser. The prior
-capture-stack RangeError does not recur. No stage2 or byte fixedpoint exists.
+capture-stack RangeError does not recur. That run produces no stage2.
 Native stage0 takes 291,394 ms, including 208,041 ms checking; stage-two checking
 starts at 546,456 ms. Peak RSS is 3,064,643,584 B / footprint 1,747,441,144 B.
 Proof: `evals/receipts/root2039g6_acceptance_rejected.json`.
+
+A separate completed diagnostic then runs the **unchanged stage1** on the same
+full root through its own parser, checker and emitter. Stage2 is byte-identical:
+26,619,233 B, SHA-256
+`096f6c92872c4335d42d5d50f1e72983ab2b384e53a6eadbcb0adfe50eeb90ad`.
+The guarded continuation takes 1,483,959 ms under a diagnostic 1,800,000-ms
+deadline, peak RSS 3,467,100,160 B / footprint 3,835,889,656 B. It is **not**
+the monolithic 600-second bootstrap admission; the failed original run remains
+rejected. CPU profiling covers this whole continuation (617,806 samples);
+time-delta-weighted sampled elapsed time is not exclusive CPU attribution.
+Proof: `evals/receipts/root2039g6_diagnostic_byte_fixedpoint.json`.
 
 Historical compiler root: **`db147cba`**, after an authenticated inline-parser
 cutover in `/private/tmp/bend-parser-cutover667`. Fresh native admission checks

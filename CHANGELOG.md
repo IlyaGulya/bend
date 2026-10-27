@@ -36,6 +36,12 @@ latest one; the GitHub release carries the same notes.
   A separate nested Nat host-export consumer also fails. Neither is accepted
   as a completed compiler bootstrap or byte fixedpoint.
 
+- A separate completed g6 diagnostic runs the unchanged stage1's own parser,
+  checker and emitter on the full root and emits a byte-identical stage2:
+  26,619,233 bytes, SHA-256 `096f6c92`. It takes 1483.4 seconds under a
+  diagnostic 1800-second deadline; the original 600-second bootstrap remains
+  rejected. This establishes exact bytes, not monolithic bootstrap admission.
+
 - Native C generation traverses nested constructors with an explicit stack,
   preserving field order, layouts and ownership without exhausting Bun's
   JavaScript stack on large literal values. The 8192-character regression now
