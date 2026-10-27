@@ -1,0 +1,2457 @@
+{
+  "schemaVersion": 1,
+  "status": "G12_COMPLETE_FROZEN_NATIVE_BUILD_AND_CONSUMERS_PASS_FRESH_BOOTSTRAP_PENDING",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "sourceCheckpoint": "59a3a454",
+  "scope": "Complete unchanged g10a frozen compiler root, compiled by the g12 canonical C producer; not a fresh-parser full bootstrap certificate.",
+  "limits": {
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592,
+    "timeoutMs": 600000
+  },
+  "build": {
+    "status": "NATIVE_EXECUTABLE_BUILT_NOT_YET_RUN",
+    "source": "/private/tmp/bend2039g12-borrow-generation/checkpoints/.bootstrap_compiler_root_remote2039g10a.bend",
+    "sourceSha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+    "kernelSha256": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+    "compilerSha256": "f95eed20344ca291bf74a1e4ffe574f788ea22a86adc66d5bfe0f681523245ef",
+    "bridge": "/private/tmp/bend2039g12-borrow-generation/evals/native_compiler_driver.bend",
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "checkedDefinitions": 12114,
+    "eventsFullyValidated": 12694,
+    "validationMs": 1899.8587499999994,
+    "codegenMs": 119590.490625,
+    "cPath": "/tmp/bend-g12-frozen-native.c",
+    "cSha256": "a85c9aa52365d0a955376dcb7f177e06b0bdc7829b35c972ef058d1b0c55401c",
+    "artifact": "/tmp/bend-g12-frozen-native",
+    "artifactSha256": "00222b4eda8cd3bb42e98058e377c04200b9d81ffcff2ca197d4f31a5904ceee",
+    "buildCommands": [
+      [
+        "/usr/bin/clang",
+        "--version"
+      ],
+      [
+        "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/opt",
+        "--version"
+      ],
+      [
+        "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/llvm-split",
+        "--version"
+      ],
+      [
+        "/usr/bin/xcrun",
+        "--show-sdk-path"
+      ],
+      [
+        "/usr/bin/clang",
+        "-std=c11",
+        "-O1",
+        "-E",
+        "-dM",
+        "/tmp/bend-g12-frozen-native.c",
+        "-isysroot",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
+      ],
+      [
+        "/usr/bin/clang",
+        "-std=c11",
+        "-O1",
+        "-c",
+        "/tmp/bend-g12-frozen-native.c",
+        "-isysroot",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+        "-o",
+        "/tmp/bend-g12-frozen-native",
+        "-###"
+      ],
+      [
+        "/usr/bin/clang",
+        "-std=c11",
+        "-O1",
+        "-Xclang",
+        "-disable-llvm-passes",
+        "-emit-llvm",
+        "-c",
+        "/tmp/bend-g12-frozen-native.c",
+        "-isysroot",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+        "-o",
+        "/tmp/.native-llvm-CKFfvA/raw.bc"
+      ],
+      [
+        "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/opt",
+        "-passes=function(mem2reg),always-inline",
+        "/tmp/.native-llvm-CKFfvA/raw.bc",
+        "-o",
+        "/tmp/.native-llvm-CKFfvA/prepared.bc"
+      ],
+      [
+        "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/llvm-split",
+        "-j4",
+        "/tmp/.native-llvm-CKFfvA/prepared.bc",
+        "-o",
+        "/tmp/.native-llvm-CKFfvA/part.bc"
+      ],
+      [
+        "/usr/bin/clang",
+        "-O1",
+        "-x",
+        "ir",
+        "-c",
+        "/tmp/.native-llvm-CKFfvA/part.bc3",
+        "-isysroot",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+        "-o",
+        "/tmp/.native-llvm-CKFfvA/part3.o"
+      ],
+      [
+        "/usr/bin/clang",
+        "-O1",
+        "-x",
+        "ir",
+        "-c",
+        "/tmp/.native-llvm-CKFfvA/part.bc2",
+        "-isysroot",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+        "-o",
+        "/tmp/.native-llvm-CKFfvA/part2.o"
+      ],
+      [
+        "/usr/bin/clang",
+        "-O1",
+        "-x",
+        "ir",
+        "-c",
+        "/tmp/.native-llvm-CKFfvA/part.bc1",
+        "-isysroot",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+        "-o",
+        "/tmp/.native-llvm-CKFfvA/part1.o"
+      ],
+      [
+        "/usr/bin/clang",
+        "-O1",
+        "-x",
+        "ir",
+        "-c",
+        "/tmp/.native-llvm-CKFfvA/part.bc0",
+        "-isysroot",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+        "-o",
+        "/tmp/.native-llvm-CKFfvA/part0.o"
+      ],
+      [
+        "/usr/bin/clang",
+        "/tmp/.native-llvm-CKFfvA/part0.o",
+        "/tmp/.native-llvm-CKFfvA/part1.o",
+        "/tmp/.native-llvm-CKFfvA/part2.o",
+        "/tmp/.native-llvm-CKFfvA/part3.o",
+        "-isysroot",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+        "-lpthread",
+        "-lm",
+        "-o",
+        "/tmp/bend-g12-frozen-native"
+      ]
+    ],
+    "runtime": {
+      "name": "bun",
+      "executable": "/private/tmp/bend2039g8-accepted-mac-evidence/bun-1.4.3",
+      "execArgv": [],
+      "bun": "1.4.3",
+      "revision": "c6da4a4d3010e5553438c60f6bd76d981976867c",
+      "heapLimitMiB": null,
+      "stackMiB": null,
+      "stack": "Bun main-thread default",
+      "automaticGcRamHint": {
+        "source": "BUN_JSC_forceRAMSize",
+        "bytes": "4294967296",
+        "hardLimit": false
+      },
+      "manualGC": false,
+      "profiling": null
+    },
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 5392596992,
+      "peakFootprintBytes": 5131802384,
+      "elapsedMs": 197008,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/private/tmp/bend2039g8-accepted-mac-evidence/bun-1.4.3",
+        "--smol",
+        "/private/tmp/bend2039g12-borrow-generation/evals/native_compiler_experiment.ts",
+        "--mode=build",
+        "--corpus=/tmp/bend-g12-frozen-native.corpus.json",
+        "--artifact=/tmp/bend-g12-frozen-native",
+        "--report=/tmp/bend-g12-frozen-native-build.json",
+        "--cc-pipeline=llvm-split",
+        "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+        "--cc-opt=1",
+        "--internal=build"
+      ],
+      "label": "Native CPU compiler build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793129382706-773d5eebd556f6f7.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "fullReportPath": "/tmp/bend-g12-frozen-native-build.json",
+    "fullReportSha256": "02cd12230e9995e629752155970664636ba1739f1cb0dbbe26cb22c764656af8",
+    "ccPipeline": {
+      "status": "PASS",
+      "kind": "llvm-split",
+      "optimization": "-O1",
+      "partitions": 4,
+      "maxBackendChildren": 3,
+      "elapsedMs": 72244.9235,
+      "stages": [
+        {
+          "name": "clang-version",
+          "command": [
+            "/usr/bin/clang",
+            "--version"
+          ],
+          "status": "PASS",
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 21.282416000000012,
+          "userSeconds": 0,
+          "systemSeconds": 0,
+          "maxRssBytes": 14893056
+        },
+        {
+          "name": "opt-version",
+          "command": [
+            "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/opt",
+            "--version"
+          ],
+          "status": "PASS",
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 101.833042,
+          "userSeconds": 0,
+          "systemSeconds": 0.02,
+          "maxRssBytes": 23920640
+        },
+        {
+          "name": "llvm-split-version",
+          "command": [
+            "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/llvm-split",
+            "--version"
+          ],
+          "status": "PASS",
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 13.277625,
+          "userSeconds": 0,
+          "systemSeconds": 0,
+          "maxRssBytes": 19939328
+        },
+        {
+          "name": "sdk",
+          "command": [
+            "/usr/bin/xcrun",
+            "--show-sdk-path"
+          ],
+          "status": "PASS",
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 11.682625000000002,
+          "userSeconds": 0,
+          "systemSeconds": 0,
+          "maxRssBytes": 8617984
+        },
+        {
+          "name": "abi-macros",
+          "command": [
+            "/usr/bin/clang",
+            "-std=c11",
+            "-O1",
+            "-E",
+            "-dM",
+            "/tmp/bend-g12-frozen-native.c",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
+          ],
+          "status": "PASS",
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 1470.6861660000002,
+          "userSeconds": 1.37,
+          "systemSeconds": 0.06,
+          "maxRssBytes": 614760448
+        },
+        {
+          "name": "abi-driver",
+          "command": [
+            "/usr/bin/clang",
+            "-std=c11",
+            "-O1",
+            "-c",
+            "/tmp/bend-g12-frozen-native.c",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-o",
+            "/tmp/bend-g12-frozen-native",
+            "-###"
+          ],
+          "status": "PASS",
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 19.01295899999991,
+          "userSeconds": 0,
+          "systemSeconds": 0,
+          "maxRssBytes": 15892480
+        },
+        {
+          "name": "frontend",
+          "command": [
+            "/usr/bin/clang",
+            "-std=c11",
+            "-O1",
+            "-Xclang",
+            "-disable-llvm-passes",
+            "-emit-llvm",
+            "-c",
+            "/tmp/bend-g12-frozen-native.c",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-o",
+            "/tmp/.native-llvm-CKFfvA/raw.bc"
+          ],
+          "status": "PASS",
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 20909.723417,
+          "userSeconds": 19.87,
+          "systemSeconds": 0.86,
+          "maxRssBytes": 5233967104
+        },
+        {
+          "name": "mem2reg-always-inline",
+          "command": [
+            "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/opt",
+            "-passes=function(mem2reg),always-inline",
+            "/tmp/.native-llvm-CKFfvA/raw.bc",
+            "-o",
+            "/tmp/.native-llvm-CKFfvA/prepared.bc"
+          ],
+          "status": "PASS",
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 12076.983917000001,
+          "userSeconds": 11.54,
+          "systemSeconds": 0.46,
+          "maxRssBytes": 2859728896
+        },
+        {
+          "name": "split",
+          "command": [
+            "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/llvm-split",
+            "-j4",
+            "/tmp/.native-llvm-CKFfvA/prepared.bc",
+            "-o",
+            "/tmp/.native-llvm-CKFfvA/part.bc"
+          ],
+          "status": "PASS",
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 6777.850624999999,
+          "userSeconds": 6.36,
+          "systemSeconds": 0.34,
+          "maxRssBytes": 1870233600
+        },
+        {
+          "name": "opt-codegen-3",
+          "command": [
+            "/usr/bin/clang",
+            "-O1",
+            "-x",
+            "ir",
+            "-c",
+            "/tmp/.native-llvm-CKFfvA/part.bc3",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-o",
+            "/tmp/.native-llvm-CKFfvA/part3.o"
+          ],
+          "status": "PASS",
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 30663.662041999996,
+          "userSeconds": 29.99,
+          "systemSeconds": 0.38,
+          "maxRssBytes": 1607008256
+        },
+        {
+          "name": "opt-codegen-2",
+          "command": [
+            "/usr/bin/clang",
+            "-O1",
+            "-x",
+            "ir",
+            "-c",
+            "/tmp/.native-llvm-CKFfvA/part.bc2",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-o",
+            "/tmp/.native-llvm-CKFfvA/part2.o"
+          ],
+          "status": "PASS",
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 23065.210874999997,
+          "userSeconds": 22.45,
+          "systemSeconds": 0.37,
+          "maxRssBytes": 1844494336
+        },
+        {
+          "name": "opt-codegen-1",
+          "command": [
+            "/usr/bin/clang",
+            "-O1",
+            "-x",
+            "ir",
+            "-c",
+            "/tmp/.native-llvm-CKFfvA/part.bc1",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-o",
+            "/tmp/.native-llvm-CKFfvA/part1.o"
+          ],
+          "status": "PASS",
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 13191.414375,
+          "userSeconds": 12.72,
+          "systemSeconds": 0.25,
+          "maxRssBytes": 1011957760
+        },
+        {
+          "name": "opt-codegen-0",
+          "command": [
+            "/usr/bin/clang",
+            "-O1",
+            "-x",
+            "ir",
+            "-c",
+            "/tmp/.native-llvm-CKFfvA/part.bc0",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-o",
+            "/tmp/.native-llvm-CKFfvA/part0.o"
+          ],
+          "status": "PASS",
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 11352.418250000002,
+          "userSeconds": 11.08,
+          "systemSeconds": 0.21,
+          "maxRssBytes": 1028603904
+        },
+        {
+          "name": "link",
+          "command": [
+            "/usr/bin/clang",
+            "/tmp/.native-llvm-CKFfvA/part0.o",
+            "/tmp/.native-llvm-CKFfvA/part1.o",
+            "/tmp/.native-llvm-CKFfvA/part2.o",
+            "/tmp/.native-llvm-CKFfvA/part3.o",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-lpthread",
+            "-lm",
+            "-o",
+            "/tmp/bend-g12-frozen-native"
+          ],
+          "status": "PASS",
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 108.10191700000723,
+          "userSeconds": 0.16,
+          "systemSeconds": 0.04,
+          "maxRssBytes": 129171456
+        }
+      ]
+    }
+  },
+  "consumers": {
+    "status": "NATIVE_FOREIGN_AND_LIBRARY_SMOKE_PASS",
+    "scope": "Actual optimized native compiler executes the unchanged foreign/lifetime fixtures, all atomic/numeric regressions on C and JS, and the real six-export C library. Separate backend consumer smoke, not full-build/bootstrap admission.",
+    "binary": {
+      "path": "/tmp/bend-g12-frozen-native",
+      "sha256": "00222b4eda8cd3bb42e98058e377c04200b9d81ffcff2ca197d4f31a5904ceee"
+    },
+    "ownershipBound": "Original list_rebox_sum frontier bound unchanged; frontier pages are not retained/live bytes",
+    "rows": [
+      {
+        "source": "tests/run/c_backend_link.bend",
+        "sourceSha256": "6765dbc7f143592c162b2c9a7dcd8243491ce8adf7b168f0564a6c2ed79b68c9",
+        "target": "c",
+        "artifact": {
+          "path": "/tmp/bend-g12-frozen-native-foreign-TFsuE6/c_backend_link-c.c",
+          "sha256": "eee4eda17d9a74a7c6ae9757efbf548dadc5c8ed643168ace56090dc1bb8d6d2"
+        },
+        "expected": "linked-comment-kept\nliteral-kept\nfid-linked\nsplice-kept\nsplice-kept\nmissing",
+        "passed": true,
+        "native": {
+          "command": [
+            "/tmp/bend-g12-frozen-native",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--RTS",
+            "/private/tmp/bend2039g12-borrow-generation/tests/run/c_backend_link.bend",
+            "/private/tmp/bend2039g12-borrow-generation/bend2/base.bend",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/c_backend_link-c.tsv",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/c_backend_link-c.exports",
+            "compile-c-module",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/c_backend_link-c.c",
+            "/private/tmp/bend2039g12-borrow-generation/bend2/selfhost/c_runtime.c"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 23786,
+          "phaseStarts": [
+            {
+              "phase": "parse"
+            },
+            {
+              "phase": "expand"
+            },
+            {
+              "phase": "check"
+            },
+            {
+              "phase": "emit-c"
+            }
+          ],
+          "begins": [
+            {
+              "computeThreads": 1,
+              "parserFuel": 8000000,
+              "phase": "compile-c-module",
+              "phaseTraceVersion": 3
+            }
+          ],
+          "results": [
+            {
+              "result": "EmitSuccess",
+              "bytes": 1741255,
+              "modules": 5
+            }
+          ],
+          "fuel": [
+            {
+              "sourceOrdinal": 1,
+              "cells": 8000000
+            },
+            {
+              "sourceOrdinal": 2,
+              "cells": 8000000
+            },
+            {
+              "sourceOrdinal": 3,
+              "cells": 8000000
+            },
+            {
+              "sourceOrdinal": 4,
+              "cells": 8000000
+            },
+            {
+              "sourceOrdinal": 5,
+              "cells": 8000000
+            }
+          ]
+        },
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/c_backend_link-c.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/c_backend_link-c"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 1227.4614580000016,
+          "stdout": "",
+          "stderrSha256": "6fa9b56db8ee4d3eea1b91ef0a0c74fb9bb486b2fd6b038c97a8981bcde09405"
+        },
+        "execute": {
+          "command": [
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/c_backend_link-c"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 3.840334000000439,
+          "stdout": "linked-comment-kept\nliteral-kept\nfid-linked\nsplice-kept\nsplice-kept\nmissing\n",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "source": "tests/run/c_backend_link.bend",
+        "sourceSha256": "6765dbc7f143592c162b2c9a7dcd8243491ce8adf7b168f0564a6c2ed79b68c9",
+        "target": "js",
+        "artifact": {
+          "path": "/tmp/bend-g12-frozen-native-foreign-TFsuE6/c_backend_link-js.js",
+          "sha256": "7844a35039f739856bd900b7e46cf9aba7326995e393385297a998c49598154f"
+        },
+        "expected": "linked-comment-kept\nliteral-kept\nfid-linked\nsplice-kept\nsplice-kept\nmissing",
+        "passed": true,
+        "native": {
+          "command": [
+            "/tmp/bend-g12-frozen-native",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--RTS",
+            "/private/tmp/bend2039g12-borrow-generation/tests/run/c_backend_link.bend",
+            "/private/tmp/bend2039g12-borrow-generation/bend2/base.bend",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/c_backend_link-js.tsv",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/c_backend_link-js.exports",
+            "compile-module",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/c_backend_link-js.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 5015,
+          "phaseStarts": [
+            {
+              "phase": "parse"
+            },
+            {
+              "phase": "expand"
+            },
+            {
+              "phase": "check"
+            },
+            {
+              "phase": "emit"
+            }
+          ],
+          "begins": [
+            {
+              "computeThreads": 1,
+              "parserFuel": 8000000,
+              "phase": "compile-module",
+              "phaseTraceVersion": 3
+            }
+          ],
+          "results": [
+            {
+              "result": "EmitSuccess",
+              "bytes": 564361,
+              "modules": 5
+            }
+          ],
+          "fuel": [
+            {
+              "sourceOrdinal": 1,
+              "cells": 8000000
+            },
+            {
+              "sourceOrdinal": 2,
+              "cells": 8000000
+            },
+            {
+              "sourceOrdinal": 3,
+              "cells": 8000000
+            },
+            {
+              "sourceOrdinal": 4,
+              "cells": 8000000
+            },
+            {
+              "sourceOrdinal": 5,
+              "cells": 8000000
+            }
+          ]
+        },
+        "execute": {
+          "command": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--max-old-space-size=3072",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/c_backend_link-js.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 41.06049999999959,
+          "stdout": "linked-comment-kept\nliteral-kept\nfid-linked\nsplice-kept\nsplice-kept\nmissing\n",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "source": "tests/run/family_field_hot.bend",
+        "sourceSha256": "8ca2a24bc66c7ce223c07178d92e33e265a695cfa54633db2f74431671168bb8",
+        "target": "c",
+        "artifact": {
+          "path": "/tmp/bend-g12-frozen-native-foreign-TFsuE6/family_field_hot-c.c",
+          "sha256": "a984c071cb5b25c0872247e57db7a4b541283eef4ae9d4ccdaefa156d2a02591"
+        },
+        "expected": "5",
+        "passed": true,
+        "native": {
+          "command": [
+            "/tmp/bend-g12-frozen-native",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--RTS",
+            "/private/tmp/bend2039g12-borrow-generation/tests/run/family_field_hot.bend",
+            "/private/tmp/bend2039g12-borrow-generation/bend2/base.bend",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/family_field_hot-c.tsv",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/family_field_hot-c.exports",
+            "compile-c-module",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/family_field_hot-c.c",
+            "/private/tmp/bend2039g12-borrow-generation/bend2/selfhost/c_runtime.c"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 8558,
+          "phaseStarts": [
+            {
+              "phase": "parse"
+            },
+            {
+              "phase": "expand"
+            },
+            {
+              "phase": "check"
+            },
+            {
+              "phase": "emit-c"
+            }
+          ],
+          "begins": [
+            {
+              "computeThreads": 1,
+              "parserFuel": 8000000,
+              "phase": "compile-c-module",
+              "phaseTraceVersion": 3
+            }
+          ],
+          "results": [
+            {
+              "result": "EmitSuccess",
+              "bytes": 1163238,
+              "modules": 2
+            }
+          ],
+          "fuel": [
+            {
+              "sourceOrdinal": 1,
+              "cells": 8000000
+            },
+            {
+              "sourceOrdinal": 2,
+              "cells": 8000000
+            }
+          ]
+        },
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/family_field_hot-c.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/family_field_hot-c"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 761.2334580000024,
+          "stdout": "",
+          "stderrSha256": "42c079dcd0ffaff75b6c06070d635f1ff08522f39f9e7eee957c5fe5106ce0ad"
+        },
+        "execute": {
+          "command": [
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/family_field_hot-c"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 2.840209000001778,
+          "stdout": "5\n",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "source": "tests/run/family_field_hot.bend",
+        "sourceSha256": "8ca2a24bc66c7ce223c07178d92e33e265a695cfa54633db2f74431671168bb8",
+        "target": "js",
+        "artifact": {
+          "path": "/tmp/bend-g12-frozen-native-foreign-TFsuE6/family_field_hot-js.js",
+          "sha256": "fad24d8229db9cee7f70d43221d102a7510c6d0772c36b3c638546394625d5d5"
+        },
+        "expected": "5",
+        "passed": true,
+        "native": {
+          "command": [
+            "/tmp/bend-g12-frozen-native",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--RTS",
+            "/private/tmp/bend2039g12-borrow-generation/tests/run/family_field_hot.bend",
+            "/private/tmp/bend2039g12-borrow-generation/bend2/base.bend",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/family_field_hot-js.tsv",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/family_field_hot-js.exports",
+            "compile-module",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/family_field_hot-js.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 2506,
+          "phaseStarts": [
+            {
+              "phase": "parse"
+            },
+            {
+              "phase": "expand"
+            },
+            {
+              "phase": "check"
+            },
+            {
+              "phase": "emit"
+            }
+          ],
+          "begins": [
+            {
+              "computeThreads": 1,
+              "parserFuel": 8000000,
+              "phase": "compile-module",
+              "phaseTraceVersion": 3
+            }
+          ],
+          "results": [
+            {
+              "result": "EmitSuccess",
+              "bytes": 380217,
+              "modules": 2
+            }
+          ],
+          "fuel": [
+            {
+              "sourceOrdinal": 1,
+              "cells": 8000000
+            },
+            {
+              "sourceOrdinal": 2,
+              "cells": 8000000
+            }
+          ]
+        },
+        "execute": {
+          "command": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--max-old-space-size=3072",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/family_field_hot-js.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 33.14870799999335,
+          "stdout": "5\n",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "source": "tests/run/list_rebox_sum.bend",
+        "sourceSha256": "c046078c5a6c852d539c7456e4ce5fcf55d1556b8c37a08c1a8b711a1e9b379c",
+        "target": "c",
+        "artifact": {
+          "path": "/tmp/bend-g12-frozen-native-foreign-TFsuE6/list_rebox_sum-c.c",
+          "sha256": "f2df3423bf87ee41a4fb2a7d2d3f1f182effe7ea2cb816686e475ccec3596f0c"
+        },
+        "expected": "7\n3\nbounded",
+        "passed": true,
+        "native": {
+          "command": [
+            "/tmp/bend-g12-frozen-native",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--RTS",
+            "/private/tmp/bend2039g12-borrow-generation/tests/run/list_rebox_sum.bend",
+            "/private/tmp/bend2039g12-borrow-generation/bend2/base.bend",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/list_rebox_sum-c.tsv",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/list_rebox_sum-c.exports",
+            "compile-c-module",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/list_rebox_sum-c.c",
+            "/private/tmp/bend2039g12-borrow-generation/bend2/selfhost/c_runtime.c"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 8798,
+          "phaseStarts": [
+            {
+              "phase": "parse"
+            },
+            {
+              "phase": "expand"
+            },
+            {
+              "phase": "check"
+            },
+            {
+              "phase": "emit-c"
+            }
+          ],
+          "begins": [
+            {
+              "computeThreads": 1,
+              "parserFuel": 8000000,
+              "phase": "compile-c-module",
+              "phaseTraceVersion": 3
+            }
+          ],
+          "results": [
+            {
+              "result": "EmitSuccess",
+              "bytes": 1190765,
+              "modules": 2
+            }
+          ],
+          "fuel": [
+            {
+              "sourceOrdinal": 1,
+              "cells": 8000000
+            },
+            {
+              "sourceOrdinal": 2,
+              "cells": 8000000
+            }
+          ]
+        },
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/list_rebox_sum-c.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/list_rebox_sum-c"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 806.4990000000034,
+          "stdout": "",
+          "stderrSha256": "6f50146225679747bfaedd4315471772ff661f3446ec675a48478ecde26ae29d"
+        },
+        "execute": {
+          "command": [
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/list_rebox_sum-c"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 260.3700830000016,
+          "stdout": "7\n3\nbounded\n",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "source": "tests/run/list_rebox_sum.bend",
+        "sourceSha256": "c046078c5a6c852d539c7456e4ce5fcf55d1556b8c37a08c1a8b711a1e9b379c",
+        "target": "js",
+        "artifact": {
+          "path": "/tmp/bend-g12-frozen-native-foreign-TFsuE6/list_rebox_sum-js.js",
+          "sha256": "db645ffe55d312f5126d4382cca26c1d4cd5b9327b93bccbc26194fb9aae253e"
+        },
+        "expected": "7\n3\nbounded",
+        "passed": true,
+        "native": {
+          "command": [
+            "/tmp/bend-g12-frozen-native",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--RTS",
+            "/private/tmp/bend2039g12-borrow-generation/tests/run/list_rebox_sum.bend",
+            "/private/tmp/bend2039g12-borrow-generation/bend2/base.bend",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/list_rebox_sum-js.tsv",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/list_rebox_sum-js.exports",
+            "compile-module",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/list_rebox_sum-js.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 2495,
+          "phaseStarts": [
+            {
+              "phase": "parse"
+            },
+            {
+              "phase": "expand"
+            },
+            {
+              "phase": "check"
+            },
+            {
+              "phase": "emit"
+            }
+          ],
+          "begins": [
+            {
+              "computeThreads": 1,
+              "parserFuel": 8000000,
+              "phase": "compile-module",
+              "phaseTraceVersion": 3
+            }
+          ],
+          "results": [
+            {
+              "result": "EmitSuccess",
+              "bytes": 388127,
+              "modules": 2
+            }
+          ],
+          "fuel": [
+            {
+              "sourceOrdinal": 1,
+              "cells": 8000000
+            },
+            {
+              "sourceOrdinal": 2,
+              "cells": 8000000
+            }
+          ]
+        },
+        "execute": {
+          "command": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--max-old-space-size=3072",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/list_rebox_sum-js.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 93.7224170000045,
+          "stdout": "7\n3\nbounded\n",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "source": "tests/run/array_fork.bend",
+        "sourceSha256": "8bed7ef93fcd6eeb964ca7ee3c87b9fbe3e2e576716ad647e4e6de265962352f",
+        "target": "c",
+        "artifact": {
+          "path": "/tmp/bend-g12-frozen-native-foreign-TFsuE6/array_fork-c.c",
+          "sha256": "dc4e1a50326bab00bc451dcb543a3b9fab2903548cc540580b527d4deef49718"
+        },
+        "expected": "136\n100\n100\n96\n99\n156\n42\n42\n7\n8\n12\n845495236",
+        "passed": true,
+        "native": {
+          "command": [
+            "/tmp/bend-g12-frozen-native",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--RTS",
+            "/private/tmp/bend2039g12-borrow-generation/tests/run/array_fork.bend",
+            "/private/tmp/bend2039g12-borrow-generation/bend2/base.bend",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/array_fork-c.tsv",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/array_fork-c.exports",
+            "compile-c-module",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/array_fork-c.c",
+            "/private/tmp/bend2039g12-borrow-generation/bend2/selfhost/c_runtime.c"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 9335,
+          "phaseStarts": [
+            {
+              "phase": "parse"
+            },
+            {
+              "phase": "expand"
+            },
+            {
+              "phase": "check"
+            },
+            {
+              "phase": "emit-c"
+            }
+          ],
+          "begins": [
+            {
+              "computeThreads": 1,
+              "parserFuel": 8000000,
+              "phase": "compile-c-module",
+              "phaseTraceVersion": 3
+            }
+          ],
+          "results": [
+            {
+              "result": "EmitSuccess",
+              "bytes": 1237651,
+              "modules": 2
+            }
+          ],
+          "fuel": [
+            {
+              "sourceOrdinal": 1,
+              "cells": 8000000
+            },
+            {
+              "sourceOrdinal": 2,
+              "cells": 8000000
+            }
+          ]
+        },
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/array_fork-c.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/array_fork-c"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 826.8478749999995,
+          "stdout": "",
+          "stderrSha256": "5a47e00413270ad5296aa564daf73808afee0154e2c47831ce959682319ddcda"
+        },
+        "execute": {
+          "command": [
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/array_fork-c"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 2.8962919999976293,
+          "stdout": "136\n100\n100\n96\n99\n156\n42\n42\n7\n8\n12\n845495236\n",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "source": "tests/run/array_fork.bend",
+        "sourceSha256": "8bed7ef93fcd6eeb964ca7ee3c87b9fbe3e2e576716ad647e4e6de265962352f",
+        "target": "js",
+        "artifact": {
+          "path": "/tmp/bend-g12-frozen-native-foreign-TFsuE6/array_fork-js.js",
+          "sha256": "961333f3dac2d727ebacba775c4090080d0589d1bd204d205aea2a23fb565dce"
+        },
+        "expected": "136\n100\n100\n96\n99\n156\n42\n42\n7\n8\n12\n845495236",
+        "passed": true,
+        "native": {
+          "command": [
+            "/tmp/bend-g12-frozen-native",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--RTS",
+            "/private/tmp/bend2039g12-borrow-generation/tests/run/array_fork.bend",
+            "/private/tmp/bend2039g12-borrow-generation/bend2/base.bend",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/array_fork-js.tsv",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/array_fork-js.exports",
+            "compile-module",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/array_fork-js.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 2614,
+          "phaseStarts": [
+            {
+              "phase": "parse"
+            },
+            {
+              "phase": "expand"
+            },
+            {
+              "phase": "check"
+            },
+            {
+              "phase": "emit"
+            }
+          ],
+          "begins": [
+            {
+              "computeThreads": 1,
+              "parserFuel": 8000000,
+              "phase": "compile-module",
+              "phaseTraceVersion": 3
+            }
+          ],
+          "results": [
+            {
+              "result": "EmitSuccess",
+              "bytes": 404888,
+              "modules": 2
+            }
+          ],
+          "fuel": [
+            {
+              "sourceOrdinal": 1,
+              "cells": 8000000
+            },
+            {
+              "sourceOrdinal": 2,
+              "cells": 8000000
+            }
+          ]
+        },
+        "execute": {
+          "command": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--max-old-space-size=3072",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/array_fork-js.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 35.773875000013504,
+          "stdout": "136\n100\n100\n96\n99\n156\n42\n42\n7\n8\n12\n845495236\n",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "source": "tests/run/array_atomic_fadd.bend",
+        "sourceSha256": "077641b1cb37f81803ee48192f13c0c89b2592bef42eb502fe0bb62614957d82",
+        "target": "c",
+        "artifact": {
+          "path": "/tmp/bend-g12-frozen-native-foreign-TFsuE6/array_atomic_fadd-c.c",
+          "sha256": "68191f606558a5715cdb3b163980b11a1d68c5b8b9753ffe9131405463bc3af9"
+        },
+        "expected": "68\n2448.25",
+        "passed": true,
+        "native": {
+          "command": [
+            "/tmp/bend-g12-frozen-native",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--RTS",
+            "/private/tmp/bend2039g12-borrow-generation/tests/run/array_atomic_fadd.bend",
+            "/private/tmp/bend2039g12-borrow-generation/bend2/base.bend",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/array_atomic_fadd-c.tsv",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/array_atomic_fadd-c.exports",
+            "compile-c-module",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/array_atomic_fadd-c.c",
+            "/private/tmp/bend2039g12-borrow-generation/bend2/selfhost/c_runtime.c"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 8790,
+          "phaseStarts": [
+            {
+              "phase": "parse"
+            },
+            {
+              "phase": "expand"
+            },
+            {
+              "phase": "check"
+            },
+            {
+              "phase": "emit-c"
+            }
+          ],
+          "begins": [
+            {
+              "computeThreads": 1,
+              "parserFuel": 8000000,
+              "phase": "compile-c-module",
+              "phaseTraceVersion": 3
+            }
+          ],
+          "results": [
+            {
+              "result": "EmitSuccess",
+              "bytes": 1194222,
+              "modules": 2
+            }
+          ],
+          "fuel": [
+            {
+              "sourceOrdinal": 1,
+              "cells": 8000000
+            },
+            {
+              "sourceOrdinal": 2,
+              "cells": 8000000
+            }
+          ]
+        },
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/array_atomic_fadd-c.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/array_atomic_fadd-c"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 784.981541000001,
+          "stdout": "",
+          "stderrSha256": "c3fcc35d8c6f713872aec19628d965b69ab49b8d8f77490ea6f09e1430331864"
+        },
+        "execute": {
+          "command": [
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/array_atomic_fadd-c"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 2.829541999992216,
+          "stdout": "68\n2448.25\n",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "source": "tests/run/array_atomic_fadd.bend",
+        "sourceSha256": "077641b1cb37f81803ee48192f13c0c89b2592bef42eb502fe0bb62614957d82",
+        "target": "js",
+        "artifact": {
+          "path": "/tmp/bend-g12-frozen-native-foreign-TFsuE6/array_atomic_fadd-js.js",
+          "sha256": "63f70d0afdaaf4c04e418033dec681d9e0c8a5f09a5a440076facca786c1b93a"
+        },
+        "expected": "68\n2448.25",
+        "passed": true,
+        "native": {
+          "command": [
+            "/tmp/bend-g12-frozen-native",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--RTS",
+            "/private/tmp/bend2039g12-borrow-generation/tests/run/array_atomic_fadd.bend",
+            "/private/tmp/bend2039g12-borrow-generation/bend2/base.bend",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/array_atomic_fadd-js.tsv",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/array_atomic_fadd-js.exports",
+            "compile-module",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/array_atomic_fadd-js.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 2560,
+          "phaseStarts": [
+            {
+              "phase": "parse"
+            },
+            {
+              "phase": "expand"
+            },
+            {
+              "phase": "check"
+            },
+            {
+              "phase": "emit"
+            }
+          ],
+          "begins": [
+            {
+              "computeThreads": 1,
+              "parserFuel": 8000000,
+              "phase": "compile-module",
+              "phaseTraceVersion": 3
+            }
+          ],
+          "results": [
+            {
+              "result": "EmitSuccess",
+              "bytes": 393168,
+              "modules": 2
+            }
+          ],
+          "fuel": [
+            {
+              "sourceOrdinal": 1,
+              "cells": 8000000
+            },
+            {
+              "sourceOrdinal": 2,
+              "cells": 8000000
+            }
+          ]
+        },
+        "execute": {
+          "command": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--max-old-space-size=3072",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/array_atomic_fadd-js.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 34.92454199999338,
+          "stdout": "68\n2448.25\n",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "source": "tests/run/array_atomic_edges.bend",
+        "sourceSha256": "27b64d5fef1ae1c18b89cb4159f95d6dadd40de8cd5a95aab46ee9975ab76b01",
+        "target": "c",
+        "artifact": {
+          "path": "/tmp/bend-g12-frozen-native-foreign-TFsuE6/array_atomic_edges-c.c",
+          "sha256": "a9bad0ad6f5550e13fbe0ef39f002e353951f68450327e0b4390e14e0bb754ec"
+        },
+        "expected": "4294967295\n2\n42\n42\n42\n7\n2147483648\n0\n1266679808\n1266679808",
+        "passed": true,
+        "native": {
+          "command": [
+            "/tmp/bend-g12-frozen-native",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--RTS",
+            "/private/tmp/bend2039g12-borrow-generation/tests/run/array_atomic_edges.bend",
+            "/private/tmp/bend2039g12-borrow-generation/bend2/base.bend",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/array_atomic_edges-c.tsv",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/array_atomic_edges-c.exports",
+            "compile-c-module",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/array_atomic_edges-c.c",
+            "/private/tmp/bend2039g12-borrow-generation/bend2/selfhost/c_runtime.c"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 8993,
+          "phaseStarts": [
+            {
+              "phase": "parse"
+            },
+            {
+              "phase": "expand"
+            },
+            {
+              "phase": "check"
+            },
+            {
+              "phase": "emit-c"
+            }
+          ],
+          "begins": [
+            {
+              "computeThreads": 1,
+              "parserFuel": 8000000,
+              "phase": "compile-c-module",
+              "phaseTraceVersion": 3
+            }
+          ],
+          "results": [
+            {
+              "result": "EmitSuccess",
+              "bytes": 1195662,
+              "modules": 2
+            }
+          ],
+          "fuel": [
+            {
+              "sourceOrdinal": 1,
+              "cells": 8000000
+            },
+            {
+              "sourceOrdinal": 2,
+              "cells": 8000000
+            }
+          ]
+        },
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/array_atomic_edges-c.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/array_atomic_edges-c"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 772.8750829999917,
+          "stdout": "",
+          "stderrSha256": "57d4dd6e0200671be7f345c90cfbe5664270da82b9982c1ac84237c78b602287"
+        },
+        "execute": {
+          "command": [
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/array_atomic_edges-c"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 2.8347910000011325,
+          "stdout": "4294967295\n2\n42\n42\n42\n7\n2147483648\n0\n1266679808\n1266679808\n",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "source": "tests/run/array_atomic_edges.bend",
+        "sourceSha256": "27b64d5fef1ae1c18b89cb4159f95d6dadd40de8cd5a95aab46ee9975ab76b01",
+        "target": "js",
+        "artifact": {
+          "path": "/tmp/bend-g12-frozen-native-foreign-TFsuE6/array_atomic_edges-js.js",
+          "sha256": "4aa2dda01e5ae8ac8a9ff45a5ab071a5e7d2cff308578e80b05ebaaaeb44ce32"
+        },
+        "expected": "4294967295\n2\n42\n42\n42\n7\n2147483648\n0\n1266679808\n1266679808",
+        "passed": true,
+        "native": {
+          "command": [
+            "/tmp/bend-g12-frozen-native",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--RTS",
+            "/private/tmp/bend2039g12-borrow-generation/tests/run/array_atomic_edges.bend",
+            "/private/tmp/bend2039g12-borrow-generation/bend2/base.bend",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/array_atomic_edges-js.tsv",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/array_atomic_edges-js.exports",
+            "compile-module",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/array_atomic_edges-js.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 2578,
+          "phaseStarts": [
+            {
+              "phase": "parse"
+            },
+            {
+              "phase": "expand"
+            },
+            {
+              "phase": "check"
+            },
+            {
+              "phase": "emit"
+            }
+          ],
+          "begins": [
+            {
+              "computeThreads": 1,
+              "parserFuel": 8000000,
+              "phase": "compile-module",
+              "phaseTraceVersion": 3
+            }
+          ],
+          "results": [
+            {
+              "result": "EmitSuccess",
+              "bytes": 388232,
+              "modules": 2
+            }
+          ],
+          "fuel": [
+            {
+              "sourceOrdinal": 1,
+              "cells": 8000000
+            },
+            {
+              "sourceOrdinal": 2,
+              "cells": 8000000
+            }
+          ]
+        },
+        "execute": {
+          "command": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--max-old-space-size=3072",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/array_atomic_edges-js.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 33.91183299999102,
+          "stdout": "4294967295\n2\n42\n42\n42\n7\n2147483648\n0\n1266679808\n1266679808\n",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "source": "tests/run/f32_read_round_once.bend",
+        "sourceSha256": "a30385f044fe1ff66a6cb3c45537c1d773eff1aced492480b2f62305ce08fb82",
+        "target": "c",
+        "artifact": {
+          "path": "/tmp/bend-g12-frozen-native-foreign-TFsuE6/f32_read_round_once-c.c",
+          "sha256": "559e7c884662aab56cda49a7abb1ee2ec1a88be6714b76958b6563e0c664091a"
+        },
+        "expected": "1065353215 1065353217 1266679808 2139095039 2139095040 1 3212836863\n1065353215 1065353217 1266679808 2139095039 1",
+        "passed": true,
+        "native": {
+          "command": [
+            "/tmp/bend-g12-frozen-native",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--RTS",
+            "/private/tmp/bend2039g12-borrow-generation/tests/run/f32_read_round_once.bend",
+            "/private/tmp/bend2039g12-borrow-generation/bend2/base.bend",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/f32_read_round_once-c.tsv",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/f32_read_round_once-c.exports",
+            "compile-c-module",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/f32_read_round_once-c.c",
+            "/private/tmp/bend2039g12-borrow-generation/bend2/selfhost/c_runtime.c"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 8675,
+          "phaseStarts": [
+            {
+              "phase": "parse"
+            },
+            {
+              "phase": "expand"
+            },
+            {
+              "phase": "check"
+            },
+            {
+              "phase": "emit-c"
+            }
+          ],
+          "begins": [
+            {
+              "computeThreads": 1,
+              "parserFuel": 8000000,
+              "phase": "compile-c-module",
+              "phaseTraceVersion": 3
+            }
+          ],
+          "results": [
+            {
+              "result": "EmitSuccess",
+              "bytes": 1175440,
+              "modules": 2
+            }
+          ],
+          "fuel": [
+            {
+              "sourceOrdinal": 1,
+              "cells": 8000000
+            },
+            {
+              "sourceOrdinal": 2,
+              "cells": 8000000
+            }
+          ]
+        },
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/f32_read_round_once-c.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/f32_read_round_once-c"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 817.0302919999958,
+          "stdout": "",
+          "stderrSha256": "d53e8696bd7277789e99ae3857026f38325e9516c0f1f627202160a714b801a1"
+        },
+        "execute": {
+          "command": [
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/f32_read_round_once-c"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 3.048624999995809,
+          "stdout": "1065353215 1065353217 1266679808 2139095039 2139095040 1 3212836863\n1065353215 1065353217 1266679808 2139095039 1\n",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "source": "tests/run/f32_read_round_once.bend",
+        "sourceSha256": "a30385f044fe1ff66a6cb3c45537c1d773eff1aced492480b2f62305ce08fb82",
+        "target": "js",
+        "artifact": {
+          "path": "/tmp/bend-g12-frozen-native-foreign-TFsuE6/f32_read_round_once-js.js",
+          "sha256": "45b486b2a4ce98e84f5118bbb985389913308c24274606c5efb16b0281f3e0cb"
+        },
+        "expected": "1065353215 1065353217 1266679808 2139095039 2139095040 1 3212836863\n1065353215 1065353217 1266679808 2139095039 1",
+        "passed": true,
+        "native": {
+          "command": [
+            "/tmp/bend-g12-frozen-native",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--RTS",
+            "/private/tmp/bend2039g12-borrow-generation/tests/run/f32_read_round_once.bend",
+            "/private/tmp/bend2039g12-borrow-generation/bend2/base.bend",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/f32_read_round_once-js.tsv",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/f32_read_round_once-js.exports",
+            "compile-module",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/f32_read_round_once-js.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 2481,
+          "phaseStarts": [
+            {
+              "phase": "parse"
+            },
+            {
+              "phase": "expand"
+            },
+            {
+              "phase": "check"
+            },
+            {
+              "phase": "emit"
+            }
+          ],
+          "begins": [
+            {
+              "computeThreads": 1,
+              "parserFuel": 8000000,
+              "phase": "compile-module",
+              "phaseTraceVersion": 3
+            }
+          ],
+          "results": [
+            {
+              "result": "EmitSuccess",
+              "bytes": 383352,
+              "modules": 2
+            }
+          ],
+          "fuel": [
+            {
+              "sourceOrdinal": 1,
+              "cells": 8000000
+            },
+            {
+              "sourceOrdinal": 2,
+              "cells": 8000000
+            }
+          ]
+        },
+        "execute": {
+          "command": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--max-old-space-size=3072",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/f32_read_round_once-js.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 34.36995799999568,
+          "stdout": "1065353215 1065353217 1266679808 2139095039 2139095040 1 3212836863\n1065353215 1065353217 1266679808 2139095039 1\n",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "source": "tests/run/f32_read_whitespace.bend",
+        "sourceSha256": "b434e0652e2c59ec4decd88f33af2aa0bff9a9da247b7c92a24e7ea77f557c1d",
+        "target": "c",
+        "artifact": {
+          "path": "/tmp/bend-g12-frozen-native-foreign-TFsuE6/f32_read_whitespace-c.c",
+          "sha256": "749fa244f5903731431593f5429e151c7f6663f3b3386c27c1950cd0afc00a4e"
+        },
+        "expected": "1 1 1 1 1 1 1\nnone none none none none none none none none none none none none\nnone none none none none none\n-125 0.5 inf nan\nnone none none none\nnone none none none none",
+        "passed": true,
+        "native": {
+          "command": [
+            "/tmp/bend-g12-frozen-native",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--RTS",
+            "/private/tmp/bend2039g12-borrow-generation/tests/run/f32_read_whitespace.bend",
+            "/private/tmp/bend2039g12-borrow-generation/bend2/base.bend",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/f32_read_whitespace-c.tsv",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/f32_read_whitespace-c.exports",
+            "compile-c-module",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/f32_read_whitespace-c.c",
+            "/private/tmp/bend2039g12-borrow-generation/bend2/selfhost/c_runtime.c"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 8897,
+          "phaseStarts": [
+            {
+              "phase": "parse"
+            },
+            {
+              "phase": "expand"
+            },
+            {
+              "phase": "check"
+            },
+            {
+              "phase": "emit-c"
+            }
+          ],
+          "begins": [
+            {
+              "computeThreads": 1,
+              "parserFuel": 8000000,
+              "phase": "compile-c-module",
+              "phaseTraceVersion": 3
+            }
+          ],
+          "results": [
+            {
+              "result": "EmitSuccess",
+              "bytes": 1208677,
+              "modules": 2
+            }
+          ],
+          "fuel": [
+            {
+              "sourceOrdinal": 1,
+              "cells": 8000000
+            },
+            {
+              "sourceOrdinal": 2,
+              "cells": 8000000
+            }
+          ]
+        },
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/f32_read_whitespace-c.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/f32_read_whitespace-c"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 904.5674169999984,
+          "stdout": "",
+          "stderrSha256": "397a1cc331615efb2d1eae4426eaf87af659c995df44cc44df82323125eff05c"
+        },
+        "execute": {
+          "command": [
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/f32_read_whitespace-c"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 3.294167000000016,
+          "stdout": "1 1 1 1 1 1 1\nnone none none none none none none none none none none none none\nnone none none none none none\n-125 0.5 inf nan\nnone none none none\nnone none none none none\n",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "source": "tests/run/f32_read_whitespace.bend",
+        "sourceSha256": "b434e0652e2c59ec4decd88f33af2aa0bff9a9da247b7c92a24e7ea77f557c1d",
+        "target": "js",
+        "artifact": {
+          "path": "/tmp/bend-g12-frozen-native-foreign-TFsuE6/f32_read_whitespace-js.js",
+          "sha256": "65d0db3fc1297eaf3f56f60f0e6225fb72d29118393012c3ace3ffddaef45eac"
+        },
+        "expected": "1 1 1 1 1 1 1\nnone none none none none none none none none none none none none\nnone none none none none none\n-125 0.5 inf nan\nnone none none none\nnone none none none none",
+        "passed": true,
+        "native": {
+          "command": [
+            "/tmp/bend-g12-frozen-native",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--RTS",
+            "/private/tmp/bend2039g12-borrow-generation/tests/run/f32_read_whitespace.bend",
+            "/private/tmp/bend2039g12-borrow-generation/bend2/base.bend",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/f32_read_whitespace-js.tsv",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/f32_read_whitespace-js.exports",
+            "compile-module",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/f32_read_whitespace-js.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 2522,
+          "phaseStarts": [
+            {
+              "phase": "parse"
+            },
+            {
+              "phase": "expand"
+            },
+            {
+              "phase": "check"
+            },
+            {
+              "phase": "emit"
+            }
+          ],
+          "begins": [
+            {
+              "computeThreads": 1,
+              "parserFuel": 8000000,
+              "phase": "compile-module",
+              "phaseTraceVersion": 3
+            }
+          ],
+          "results": [
+            {
+              "result": "EmitSuccess",
+              "bytes": 395241,
+              "modules": 2
+            }
+          ],
+          "fuel": [
+            {
+              "sourceOrdinal": 1,
+              "cells": 8000000
+            },
+            {
+              "sourceOrdinal": 2,
+              "cells": 8000000
+            }
+          ]
+        },
+        "execute": {
+          "command": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--max-old-space-size=3072",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/f32_read_whitespace-js.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 34.55366700000013,
+          "stdout": "1 1 1 1 1 1 1\nnone none none none none none none none none none none none none\nnone none none none none none\n-125 0.5 inf nan\nnone none none none\nnone none none none none\n",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "source": "tests/run/f32_pow_unit_base.bend",
+        "sourceSha256": "c8d3e74dd46fc54ec041d26940c77388e3090a8e03e40940710a463bd10e4c83",
+        "target": "c",
+        "artifact": {
+          "path": "/tmp/bend-g12-frozen-native-foreign-TFsuE6/f32_pow_unit_base-c.c",
+          "sha256": "47011ba4634c9bec1bf905caf78d00c6e7dceafa0aead1455ecbcbc78cc36517"
+        },
+        "expected": "1 1 1 1 8",
+        "passed": true,
+        "native": {
+          "command": [
+            "/tmp/bend-g12-frozen-native",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--RTS",
+            "/private/tmp/bend2039g12-borrow-generation/tests/run/f32_pow_unit_base.bend",
+            "/private/tmp/bend2039g12-borrow-generation/bend2/base.bend",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/f32_pow_unit_base-c.tsv",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/f32_pow_unit_base-c.exports",
+            "compile-c-module",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/f32_pow_unit_base-c.c",
+            "/private/tmp/bend2039g12-borrow-generation/bend2/selfhost/c_runtime.c"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 8534,
+          "phaseStarts": [
+            {
+              "phase": "parse"
+            },
+            {
+              "phase": "expand"
+            },
+            {
+              "phase": "check"
+            },
+            {
+              "phase": "emit-c"
+            }
+          ],
+          "begins": [
+            {
+              "computeThreads": 1,
+              "parserFuel": 8000000,
+              "phase": "compile-c-module",
+              "phaseTraceVersion": 3
+            }
+          ],
+          "results": [
+            {
+              "result": "EmitSuccess",
+              "bytes": 1155359,
+              "modules": 2
+            }
+          ],
+          "fuel": [
+            {
+              "sourceOrdinal": 1,
+              "cells": 8000000
+            },
+            {
+              "sourceOrdinal": 2,
+              "cells": 8000000
+            }
+          ]
+        },
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/f32_pow_unit_base-c.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/f32_pow_unit_base-c"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 773.9194580000039,
+          "stdout": "",
+          "stderrSha256": "0f2a4445a969dd76a9210c2548f00f66b78575dacde9a2ae3a48baf18e725061"
+        },
+        "execute": {
+          "command": [
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/f32_pow_unit_base-c"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 2.8785420000058366,
+          "stdout": "1 1 1 1 8\n",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "source": "tests/run/f32_pow_unit_base.bend",
+        "sourceSha256": "c8d3e74dd46fc54ec041d26940c77388e3090a8e03e40940710a463bd10e4c83",
+        "target": "js",
+        "artifact": {
+          "path": "/tmp/bend-g12-frozen-native-foreign-TFsuE6/f32_pow_unit_base-js.js",
+          "sha256": "020bea88710f3c58438567413d2860d936678b52b85136a721f598dc82c5caa9"
+        },
+        "expected": "1 1 1 1 8",
+        "passed": true,
+        "native": {
+          "command": [
+            "/tmp/bend-g12-frozen-native",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--RTS",
+            "/private/tmp/bend2039g12-borrow-generation/tests/run/f32_pow_unit_base.bend",
+            "/private/tmp/bend2039g12-borrow-generation/bend2/base.bend",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/f32_pow_unit_base-js.tsv",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/f32_pow_unit_base-js.exports",
+            "compile-module",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/f32_pow_unit_base-js.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 2476,
+          "phaseStarts": [
+            {
+              "phase": "parse"
+            },
+            {
+              "phase": "expand"
+            },
+            {
+              "phase": "check"
+            },
+            {
+              "phase": "emit"
+            }
+          ],
+          "begins": [
+            {
+              "computeThreads": 1,
+              "parserFuel": 8000000,
+              "phase": "compile-module",
+              "phaseTraceVersion": 3
+            }
+          ],
+          "results": [
+            {
+              "result": "EmitSuccess",
+              "bytes": 377515,
+              "modules": 2
+            }
+          ],
+          "fuel": [
+            {
+              "sourceOrdinal": 1,
+              "cells": 8000000
+            },
+            {
+              "sourceOrdinal": 2,
+              "cells": 8000000
+            }
+          ]
+        },
+        "execute": {
+          "command": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--max-old-space-size=3072",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/f32_pow_unit_base-js.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 33.18812500000058,
+          "stdout": "1 1 1 1 8\n",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "source": "tests/run/word_float_roundtrip.bend",
+        "sourceSha256": "7b49a58cd39c44a4999722d20ad15f079d538400eb33219c8e0ba8ce173498cd",
+        "target": "c",
+        "artifact": {
+          "path": "/tmp/bend-g12-frozen-native-foreign-TFsuE6/word_float_roundtrip-c.c",
+          "sha256": "4adde4e68f22fccca3607e996deead5cacbeae911e035362b2f0bb8a119e906b"
+        },
+        "expected": "1065353216\n2147483648\n1\n2139095040\n1065353217\n2130706432",
+        "passed": true,
+        "native": {
+          "command": [
+            "/tmp/bend-g12-frozen-native",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--RTS",
+            "/private/tmp/bend2039g12-borrow-generation/tests/run/word_float_roundtrip.bend",
+            "/private/tmp/bend2039g12-borrow-generation/bend2/base.bend",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/word_float_roundtrip-c.tsv",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/word_float_roundtrip-c.exports",
+            "compile-c-module",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/word_float_roundtrip-c.c",
+            "/private/tmp/bend2039g12-borrow-generation/bend2/selfhost/c_runtime.c"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 8692,
+          "phaseStarts": [
+            {
+              "phase": "parse"
+            },
+            {
+              "phase": "expand"
+            },
+            {
+              "phase": "check"
+            },
+            {
+              "phase": "emit-c"
+            }
+          ],
+          "begins": [
+            {
+              "computeThreads": 1,
+              "parserFuel": 8000000,
+              "phase": "compile-c-module",
+              "phaseTraceVersion": 3
+            }
+          ],
+          "results": [
+            {
+              "result": "EmitSuccess",
+              "bytes": 1167740,
+              "modules": 2
+            }
+          ],
+          "fuel": [
+            {
+              "sourceOrdinal": 1,
+              "cells": 8000000
+            },
+            {
+              "sourceOrdinal": 2,
+              "cells": 8000000
+            }
+          ]
+        },
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/word_float_roundtrip-c.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/word_float_roundtrip-c"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 750.2808340000047,
+          "stdout": "",
+          "stderrSha256": "044e45d38d46b23adba1e154257c7ac1e948def636bb138d10532f2bd6169d24"
+        },
+        "execute": {
+          "command": [
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/word_float_roundtrip-c"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 3.0230000000155997,
+          "stdout": "1065353216\n2147483648\n1\n2139095040\n1065353217\n2130706432\n",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "source": "tests/run/word_float_roundtrip.bend",
+        "sourceSha256": "7b49a58cd39c44a4999722d20ad15f079d538400eb33219c8e0ba8ce173498cd",
+        "target": "js",
+        "artifact": {
+          "path": "/tmp/bend-g12-frozen-native-foreign-TFsuE6/word_float_roundtrip-js.js",
+          "sha256": "38f1fd3bc9bc0571cea58c5a8f2c43df7229215e64b840287f0ee245df317ddf"
+        },
+        "expected": "1065353216\n2147483648\n1\n2139095040\n1065353217\n2130706432",
+        "passed": true,
+        "native": {
+          "command": [
+            "/tmp/bend-g12-frozen-native",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--RTS",
+            "/private/tmp/bend2039g12-borrow-generation/tests/run/word_float_roundtrip.bend",
+            "/private/tmp/bend2039g12-borrow-generation/bend2/base.bend",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/word_float_roundtrip-js.tsv",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/word_float_roundtrip-js.exports",
+            "compile-module",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/word_float_roundtrip-js.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 2475,
+          "phaseStarts": [
+            {
+              "phase": "parse"
+            },
+            {
+              "phase": "expand"
+            },
+            {
+              "phase": "check"
+            },
+            {
+              "phase": "emit"
+            }
+          ],
+          "begins": [
+            {
+              "computeThreads": 1,
+              "parserFuel": 8000000,
+              "phase": "compile-module",
+              "phaseTraceVersion": 3
+            }
+          ],
+          "results": [
+            {
+              "result": "EmitSuccess",
+              "bytes": 381259,
+              "modules": 2
+            }
+          ],
+          "fuel": [
+            {
+              "sourceOrdinal": 1,
+              "cells": 8000000
+            },
+            {
+              "sourceOrdinal": 2,
+              "cells": 8000000
+            }
+          ]
+        },
+        "execute": {
+          "command": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--max-old-space-size=3072",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/word_float_roundtrip-js.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 34.18991700001061,
+          "stdout": "1065353216\n2147483648\n1\n2139095040\n1065353217\n2130706432\n",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "source": "evals/c_step_library_fixture.bend",
+        "sourceSha256": "5e53a4815f2fc7f12c3fdea7bfc12764daf65096b125a22a5f884c0cf0e710df",
+        "target": "c",
+        "artifact": {
+          "path": "/tmp/bend-g12-frozen-native-foreign-TFsuE6/c_step_library_fixture-c-library.c",
+          "sha256": "bb39a7351b14af3b147d979aee9df1d2da2f79708df4b45fb63b5751c00a9eae"
+        },
+        "caller": {
+          "path": "/private/tmp/bend2039g12-borrow-generation/evals/c_backend_library_caller.c",
+          "sha256": "e874c1d3b617c8d4a82adaf50ceb9e2c15715fc18f2cd6d6d5b1b6b9d4d16004"
+        },
+        "expected": "export ok",
+        "passed": true,
+        "native": {
+          "command": [
+            "/tmp/bend-g12-frozen-native",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--RTS",
+            "/private/tmp/bend2039g12-borrow-generation/evals/c_step_library_fixture.bend",
+            "/private/tmp/bend2039g12-borrow-generation/bend2/base.bend",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/c_step_library_fixture-c-library.tsv",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/c_step_library_fixture-c-library.exports",
+            "compile-c",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/c_step_library_fixture-c-library.c",
+            "/private/tmp/bend2039g12-borrow-generation/bend2/selfhost/c_runtime.c"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 8444,
+          "phaseStarts": [
+            {
+              "phase": "parse"
+            },
+            {
+              "phase": "expand"
+            },
+            {
+              "phase": "check"
+            },
+            {
+              "phase": "emit-c"
+            }
+          ],
+          "begins": [
+            {
+              "computeThreads": 1,
+              "parserFuel": 8000000,
+              "phase": "compile-c",
+              "phaseTraceVersion": 3
+            }
+          ],
+          "results": [
+            {
+              "result": "EmitSuccess",
+              "bytes": 1156134,
+              "modules": 2
+            }
+          ],
+          "fuel": [
+            {
+              "sourceOrdinal": 1,
+              "cells": 8000000
+            },
+            {
+              "sourceOrdinal": 2,
+              "cells": 8000000
+            }
+          ]
+        },
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/c_step_library_fixture-c-library.c",
+            "/private/tmp/bend2039g12-borrow-generation/evals/c_backend_library_caller.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/library"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 773.1179999999877,
+          "stdout": "",
+          "stderrSha256": "bc75d7701f10ea163853e20a81da0deece72469862b3bd5b96c2572d69d11e82"
+        },
+        "execute": {
+          "command": [
+            "/tmp/bend-g12-frozen-native-foreign-TFsuE6/library"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 2.7272499999962747,
+          "stdout": "export ok\n",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    ],
+    "fullReportPath": "/tmp/bend-g12-frozen-native-foreign-TFsuE6/receipt.json",
+    "fullReportSha256": "ce517dd43ebcc71d8c7a5c7aa9ece2eeb69da2756ef970a48af1411577b9ff5c"
+  },
+  "consumerGuardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 233357312,
+    "peakFootprintBytes": 164840696,
+    "elapsedMs": 149250,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "/tmp/bend2039g8-accepted-mac-evidence/bun-1.4.3",
+      "/tmp/bend-g12-native-consumers.mjs"
+    ],
+    "label": "heavy command",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793129666192-247fd8d547c35d6b.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "runtimeProvenance": {
+    "compilerSha256": "f95eed20344ca291bf74a1e4ffe574f788ea22a86adc66d5bfe0f681523245ef",
+    "bodyByteIdenticalIgnoringSingleCompShaComment": true,
+    "generatorCommand": [
+      "/tmp/bend2039g8-accepted-mac-evidence/bun-1.4.3",
+      "evals/gen_c_runtime.ts"
+    ]
+  }
+}

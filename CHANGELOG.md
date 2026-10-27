@@ -7,11 +7,16 @@ latest one; the GitHub release carries the same notes.
 
 - The g12 producer candidate refreshes borrowed-argument answers when monotone
   ownership facts grow, retaining immutable snapshots at individual call sites.
-  Nine actual C/JS programs preserve identical emitted bytes. The full-root
-  probe reaches 33,928 ownership facts after three passes, but is deliberately
-  stopped before convergence. Full native build and selfhost acceptance are
-  pending; this is not an accepted compiler or fixedpoint.
-  Receipt: `evals/receipts/producer2039g12_borrow_generation_smoke.json`.
+  Nine actual C/JS programs preserve identical emitted bytes. The complete
+  frozen g10a root now builds in 197.008 s, including 119.590 s of C generation,
+  under the unchanged 8-GiB/600-s gate (peak RSS 5,392,596,992 B). All 12,114
+  bodies / 12,694 events validate without exclusions or output patches, and
+  the real binary passes 21 C/JS/library consumers. The runtime is unchanged
+  apart from its reviewed compiler-source provenance comment. Fresh parser
+  admission, full matrices and bootstrap remain pending: no g12 fixedpoint
+  is claimed.
+  Receipts: `evals/receipts/producer2039g12_borrow_generation_smoke.json` and
+  `evals/receipts/producer2039g12_frozen_native_pass.json`.
 
 - The g10 boundary candidate rejects retained datatype template parameters at
   their own checker spans and admits executables only with a runnable root
