@@ -898,7 +898,8 @@ const ADD = (a: number, b: number) => a + b;
 function term_uses(tm: HTerm): Bend.PMap<number> {
   return memo(FL.memo.uses, tm, () => {
     const t = term_force(tm);
-    let u = t.$ !== "Var" || t.i === DUMMY.i ? USE0 : Bend.pmap_set(USE0, t.i, 1);
+    let u = t.$ !== "Var" || t.i === DUMMY.i ? USE0
+      : memo(FL.uses_one, t.i, (i) => Bend.pmap_set(USE0, i, 1));
     for (const x of term_kids(t)) {
       u = Bend.pmap_union(u, term_uses(x), t.$ === "Mat" ? Math.max : ADD);
     }
@@ -1840,6 +1841,9 @@ function file_new(book: Bend.Book, js: boolean, options: JSOptions = {}) {
     ctr_fills: new WeakMap<Bend.Ctr, WeakMap<HTerm[], CtrDoms>>(),
     steps: new WeakMap<Of<"Lit">, HTerm>(),
     num_steps: new Map<Name, Map<number, HTerm>>(),
+    // Counts depend only on the numeric probe ID, which recycles per def.
+    // Reuse singleton tries across bodies and passes; unions never mutate them.
+    uses_one: new Map<number, Bend.PMap<number>>(),
     opens: new Map<string, boolean>(),
     open_ids: new WeakMap<HTerm, boolean>(),
     lay_keys: new WeakMap<HTerm, [string | undefined, string | undefined]>(),

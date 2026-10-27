@@ -23,6 +23,11 @@ latest one; the GitHub release carries the same notes.
   does not publish C before the unchanged 600-second deadline. No compiler
   acceptance or timing/memory improvement is claimed.
 
+- Compiler variable-use singleton tries are reused by numeric probe ID across
+  definition scopes and fixedpoint passes. The immutable trie representation
+  and counts are unchanged. Nine real C/JS programs retain identical bytes;
+  complete-root timing and admission are checked separately.
+
 - Native C generation traverses nested constructors with an explicit stack,
   preserving field order, layouts and ownership without exhausting Bun's
   JavaScript stack on large literal values. The 8192-character regression now
