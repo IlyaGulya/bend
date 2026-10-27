@@ -16,8 +16,15 @@ latest one; the GitHub release carries the same notes.
   including deep recursion, the 12-million-iteration capture witness and
   the borrowed-String heap bound; 20,000 overflow/recovery pairs also pass.
   The deep non-tail witness joins both full target matrices (44 cases each).
-  No speedup, native-seed acceptance or new fixedpoint is claimed yet.
-  Receipt: `evals/receipts/root2039g16_boundary_consumers.json`.
+  The full native build passes (12,156 bodies / 12,736 events, zero
+  exclusions/patches): 453.278 s, peak RSS 4,443,586,560 B. This version is
+  nevertheless **rejected**: the unchanged 600-second bootstrap deadline
+  stops at stage-two-check after all 95 seed fixtures and 18 complete
+  semantic parser approvals. Stage1 is 30,823,620 bytes; no stage2 exists.
+  The emitted compiler runs in a Node/V8 worker; a Bun/JSC prefix profile
+  is not an attribution of that worker's deadline.
+  Receipts: `evals/receipts/root2039g16_boundary_consumers.json` and
+  `evals/receipts/root2039g16_bootstrap_rejected.json`.
 
 - The g15 C append repair uses one rendering path for direct and first-class
   `String.append`: borrow the head, transfer the tail, and release freshly

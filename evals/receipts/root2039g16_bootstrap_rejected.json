@@ -1,0 +1,2706 @@
+{
+  "schemaVersion": 1,
+  "status": "G16_NATIVE_BUILD_PASS_BOOTSTRAP_STAGE_TWO_CHECK_DEADLINE_REJECTED",
+  "sourceCheckpoint": "fef16e9d",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "runtime": {
+    "release": "Bend 2.0.39",
+    "producer": {
+      "name": "bun",
+      "executable": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "execArgv": [],
+      "bun": "1.4.3",
+      "revision": "c6da4a4d3010e5553438c60f6bd76d981976867c",
+      "heapLimitMiB": null,
+      "stackMiB": null,
+      "stack": "Bun main-thread default",
+      "automaticGcRamHint": {
+        "source": "BUN_JSC_forceRAMSize",
+        "bytes": "4294967296",
+        "hardLimit": false
+      },
+      "manualGC": false,
+      "profiling": null
+    },
+    "bootstrapLauncher": "Bun 1.4.3",
+    "emittedCompiler": "Node v23.11.0/V8 worker, not Bun/JSC; selfhost_bootstrap_worker.mjs:24-27"
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000,
+    "workerStackMiB": 256,
+    "workerOldGenerationMiB": 6144,
+    "workerYoungGenerationMiB": 128,
+    "parserFuel": 8000000,
+    "maxHeavyChildren": 1
+  },
+  "native": {
+    "status": "NATIVE_EXECUTABLE_BUILT_NOT_YET_RUN",
+    "source": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/.bootstrap_compiler_root_remote2039g16.bend",
+    "sourceSha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+    "compilerSha256": "f95eed20344ca291bf74a1e4ffe574f788ea22a86adc66d5bfe0f681523245ef",
+    "kernelSha256": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+    "artifact": "/tmp/bend-remote2039g16-native",
+    "artifactSha256": "371e386de37af0bffbf02fad59d3ffe5b00e0a6b6663420a6750c2b3f1eb73fe",
+    "cPath": "/tmp/bend-remote2039g16-native.c",
+    "cSha256": "759ee5715d7e10fd17ed04b87b6954493ce028cde1d86e701ea488451cc0279d",
+    "checkedDefinitions": 12156,
+    "eventsFullyValidated": 12736,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "elapsedMs": 336521.927042,
+    "validationMs": 3807.9706659999993,
+    "codegenMs": 327737.389792,
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 4443586560,
+      "peakFootprintBytes": 4778563176,
+      "elapsedMs": 453278,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/evals/native_compiler_experiment.ts",
+        "--mode=build",
+        "--corpus=checkpoints/root-remote2039g16.native.corpus.json",
+        "--artifact=/tmp/bend-remote2039g16-native",
+        "--report=checkpoints/root-remote2039g16-native-build.json",
+        "--cc-pipeline=llvm-split",
+        "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+        "--cc-opt=1",
+        "--internal=build"
+      ],
+      "label": "Native CPU compiler build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1793141683422-150e58455ba3f673.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "bootstrap": {
+    "report": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/selfhost-remote2039g16-bootstrap.json",
+    "reportSha256": "6d31986f1bce4a1b1a034010fa1f00455e1b0eff410ca08f8fc651fdc9eb5a87",
+    "status": "FAIL",
+    "passed": false,
+    "compilerBootstrapGreen": false,
+    "guardian": {
+      "status": "FAIL",
+      "reason": "deadline_exceeded",
+      "commandExitCode": -1,
+      "commandSignal": 15,
+      "peakRssBytes": 1732411392,
+      "peakFootprintBytes": 2180748136,
+      "elapsedMs": 600017,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 1,
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/evals/selfhost_bootstrap_gate.ts",
+        "--native-build=checkpoints/root-remote2039g16-native-build.json",
+        "--native-corpus=checkpoints/root-remote2039g16.native.corpus.json",
+        "--root=checkpoints/.bootstrap_compiler_root_remote2039g16.bend",
+        "--root-manifest=checkpoints/selfhost-root-remote2039g16.json",
+        "--parser=checkpoints/bootstrap-parser-rebuild-remote2039g16.js",
+        "--parser-build=checkpoints/bootstrap-parser-rebuild-remote2039g16.native-build.result.json",
+        "--report=checkpoints/selfhost-remote2039g16-bootstrap.json",
+        "--worker"
+      ],
+      "label": "Real full selfhost step bootstrap",
+      "exitCode": 1,
+      "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1793142136999-135af4b4e67dc8c7.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "requiredExports": [
+      "parsed_module",
+      "parse_with_fuel",
+      "expand_modules_start",
+      "template_step",
+      "check_expanded_start",
+      "inspect_checked_start",
+      "checker_step",
+      "emit_modules_start",
+      "emit_library_start",
+      "emitter_step",
+      "emit_c_modules_start",
+      "emit_c_library_start",
+      "c_emitter_step"
+    ],
+    "nativePhases": [
+      {
+        "phase": "parse",
+        "elapsedMs": 16802.308,
+        "userCpuMs": 15882.511,
+        "systemCpuMs": 190.608,
+        "modules": 18,
+        "sourceBytes": 7457881,
+        "foreignBytes": 78415,
+        "eagerFuelCells": 144000000,
+        "fuelBuildMs": 451.734
+      },
+      {
+        "phase": "expand",
+        "elapsedMs": 16989.255,
+        "userCpuMs": 15509.423,
+        "systemCpuMs": 348.525,
+        "chunkAdvances": 1609831,
+        "chunkQuantum": 64
+      },
+      {
+        "phase": "check",
+        "elapsedMs": 161126.35,
+        "userCpuMs": 152092.914,
+        "systemCpuMs": 1901.424,
+        "chunkAdvances": 9792584,
+        "chunkQuantum": 64
+      },
+      {
+        "phase": "emit",
+        "elapsedMs": 23680.517,
+        "userCpuMs": 21827.523,
+        "systemCpuMs": 555.546,
+        "chunkAdvances": 1405241,
+        "chunkQuantum": 64
+      }
+    ],
+    "phaseBoundaries": [
+      {
+        "phase": "native-stage-zero-parse",
+        "elapsedMs": 227.286875,
+        "rssBytes": 179486720,
+        "heapUsedBytes": 22609704,
+        "heapLimitBytes": 6643777536
+      },
+      {
+        "phase": "stage-one-execute",
+        "elapsedMs": 311065.519792,
+        "rssBytes": 69271552,
+        "heapUsedBytes": 12959328,
+        "heapLimitBytes": 6643777536
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 312286.695375,
+        "rssBytes": 457261056,
+        "heapUsedBytes": 84360064,
+        "heapLimitBytes": 6643777536
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 312290.771125,
+        "rssBytes": 458063872,
+        "heapUsedBytes": 85037496,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/.bootstrap_compiler_root_remote2039g16.bend"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 312290.813125,
+        "rssBytes": 458063872,
+        "heapUsedBytes": 85039864,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/.bootstrap_compiler_root_remote2039g16.bend",
+        "parserBoundary": "native-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 316192.738292,
+        "rssBytes": 493617152,
+        "heapUsedBytes": 234106432,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/.bootstrap_compiler_root_remote2039g16.bend",
+        "parserBoundary": "native-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 316192.821417,
+        "rssBytes": 493617152,
+        "heapUsedBytes": 234110736,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/.bootstrap_compiler_root_remote2039g16.bend",
+        "parserBoundary": "transport-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 316540.526375,
+        "rssBytes": 531824640,
+        "heapUsedBytes": 276040656,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/.bootstrap_compiler_root_remote2039g16.bend",
+        "parserBoundary": "transport-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 316541.860209,
+        "rssBytes": 532250624,
+        "heapUsedBytes": 276306136,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/.bootstrap_compiler_root_remote2039g16.bend",
+        "parserBoundary": "admission-queued"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 316542.564167,
+        "rssBytes": 532250624,
+        "heapUsedBytes": 276394672,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/base.bend"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 316542.589167,
+        "rssBytes": 532250624,
+        "heapUsedBytes": 276396584,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/base.bend",
+        "parserBoundary": "native-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 317134.570917,
+        "rssBytes": 538689536,
+        "heapUsedBytes": 277309288,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/base.bend",
+        "parserBoundary": "native-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 317134.661375,
+        "rssBytes": 538689536,
+        "heapUsedBytes": 277311752,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/base.bend",
+        "parserBoundary": "transport-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 317208.961459,
+        "rssBytes": 548651008,
+        "heapUsedBytes": 312809360,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/base.bend",
+        "parserBoundary": "transport-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 317215.897792,
+        "rssBytes": 549060608,
+        "heapUsedBytes": 313321976,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/base.bend",
+        "parserBoundary": "admission-queued"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 327381.811167,
+        "rssBytes": 497057792,
+        "heapUsedBytes": 313350960,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/.bootstrap_compiler_root_remote2039g16.bend",
+        "parserBoundary": "admission-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 327382.439709,
+        "rssBytes": 498139136,
+        "heapUsedBytes": 313360528,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/ast.bend"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 327382.469167,
+        "rssBytes": 498188288,
+        "heapUsedBytes": 313361848,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/ast.bend",
+        "parserBoundary": "native-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 327409.435209,
+        "rssBytes": 504348672,
+        "heapUsedBytes": 326608784,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/ast.bend",
+        "parserBoundary": "native-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 327409.529875,
+        "rssBytes": 504430592,
+        "heapUsedBytes": 326611248,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/ast.bend",
+        "parserBoundary": "transport-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 327412.299209,
+        "rssBytes": 504512512,
+        "heapUsedBytes": 330942392,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/ast.bend",
+        "parserBoundary": "transport-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 327412.371042,
+        "rssBytes": 504512512,
+        "heapUsedBytes": 330948304,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/ast.bend",
+        "parserBoundary": "admission-queued"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 328179.37275,
+        "rssBytes": 504201216,
+        "heapUsedBytes": 265895216,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/base.bend",
+        "parserBoundary": "admission-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 328180.176042,
+        "rssBytes": 504233984,
+        "heapUsedBytes": 265909160,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/lexer.bend"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 328180.197459,
+        "rssBytes": 504233984,
+        "heapUsedBytes": 265910392,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/lexer.bend",
+        "parserBoundary": "native-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 328241.812417,
+        "rssBytes": 505790464,
+        "heapUsedBytes": 292330040,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/lexer.bend",
+        "parserBoundary": "native-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 328241.867209,
+        "rssBytes": 505790464,
+        "heapUsedBytes": 292332504,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/lexer.bend",
+        "parserBoundary": "transport-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 328250.377125,
+        "rssBytes": 506544128,
+        "heapUsedBytes": 309591024,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/lexer.bend",
+        "parserBoundary": "transport-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 328250.486584,
+        "rssBytes": 506544128,
+        "heapUsedBytes": 309596984,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/lexer.bend",
+        "parserBoundary": "admission-queued"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 328316.967709,
+        "rssBytes": 506609664,
+        "heapUsedBytes": 309623280,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/ast.bend",
+        "parserBoundary": "admission-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 328317.321542,
+        "rssBytes": 506609664,
+        "heapUsedBytes": 309637000,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/core.bend"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 328317.330417,
+        "rssBytes": 506609664,
+        "heapUsedBytes": 309638232,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/core.bend",
+        "parserBoundary": "native-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 328373.023334,
+        "rssBytes": 507576320,
+        "heapUsedBytes": 333641488,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/core.bend",
+        "parserBoundary": "native-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 328373.0755,
+        "rssBytes": 507576320,
+        "heapUsedBytes": 333643952,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/core.bend",
+        "parserBoundary": "transport-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 328389.524459,
+        "rssBytes": 508035072,
+        "heapUsedBytes": 274043128,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/core.bend",
+        "parserBoundary": "transport-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 328389.609459,
+        "rssBytes": 508035072,
+        "heapUsedBytes": 274047744,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/core.bend",
+        "parserBoundary": "admission-queued"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 328553.711209,
+        "rssBytes": 508067840,
+        "heapUsedBytes": 274103064,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/lexer.bend",
+        "parserBoundary": "admission-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 328554.046084,
+        "rssBytes": 508084224,
+        "heapUsedBytes": 274106640,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/loaded_module.bend"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 328554.055292,
+        "rssBytes": 508084224,
+        "heapUsedBytes": 274107872,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/loaded_module.bend",
+        "parserBoundary": "native-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 328554.86775,
+        "rssBytes": 508100608,
+        "heapUsedBytes": 274349152,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/loaded_module.bend",
+        "parserBoundary": "native-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 328554.891875,
+        "rssBytes": 508100608,
+        "heapUsedBytes": 274351616,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/loaded_module.bend",
+        "parserBoundary": "transport-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 328555.144875,
+        "rssBytes": 508116992,
+        "heapUsedBytes": 274408040,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/loaded_module.bend",
+        "parserBoundary": "transport-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 328555.170709,
+        "rssBytes": 508116992,
+        "heapUsedBytes": 274411248,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/loaded_module.bend",
+        "parserBoundary": "admission-queued"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 328788.307542,
+        "rssBytes": 507969536,
+        "heapUsedBytes": 274429864,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/core.bend",
+        "parserBoundary": "admission-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 328789.496709,
+        "rssBytes": 507985920,
+        "heapUsedBytes": 274441688,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/backend_ir.bend"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 328789.522,
+        "rssBytes": 507985920,
+        "heapUsedBytes": 274442920,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/backend_ir.bend",
+        "parserBoundary": "native-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 328809.839917,
+        "rssBytes": 508772352,
+        "heapUsedBytes": 289321256,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/backend_ir.bend",
+        "parserBoundary": "native-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 328809.896792,
+        "rssBytes": 508772352,
+        "heapUsedBytes": 289323720,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/backend_ir.bend",
+        "parserBoundary": "transport-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 328812.117959,
+        "rssBytes": 508805120,
+        "heapUsedBytes": 292990312,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/backend_ir.bend",
+        "parserBoundary": "transport-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 328812.184042,
+        "rssBytes": 508805120,
+        "heapUsedBytes": 292996168,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/backend_ir.bend",
+        "parserBoundary": "admission-queued"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 328944.511709,
+        "rssBytes": 522682368,
+        "heapUsedBytes": 293188240,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/loaded_module.bend",
+        "parserBoundary": "admission-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 328945.096125,
+        "rssBytes": 522698752,
+        "heapUsedBytes": 293193528,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/checked_frontend.bend"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 328945.107417,
+        "rssBytes": 522698752,
+        "heapUsedBytes": 293194760,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/checked_frontend.bend",
+        "parserBoundary": "native-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 328957.961375,
+        "rssBytes": 522862592,
+        "heapUsedBytes": 296596096,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/checked_frontend.bend",
+        "parserBoundary": "native-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 328958.011834,
+        "rssBytes": 522862592,
+        "heapUsedBytes": 296598560,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/checked_frontend.bend",
+        "parserBoundary": "transport-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 328958.896584,
+        "rssBytes": 522878976,
+        "heapUsedBytes": 297406040,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/checked_frontend.bend",
+        "parserBoundary": "transport-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 328958.956084,
+        "rssBytes": 522878976,
+        "heapUsedBytes": 297410320,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/checked_frontend.bend",
+        "parserBoundary": "admission-queued"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 329103.090584,
+        "rssBytes": 522600448,
+        "heapUsedBytes": 297428240,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/backend_ir.bend",
+        "parserBoundary": "admission-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 329103.773417,
+        "rssBytes": 522600448,
+        "heapUsedBytes": 297535128,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/checker_arena.bend"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 329103.79975,
+        "rssBytes": 522600448,
+        "heapUsedBytes": 297536368,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/checker_arena.bend",
+        "parserBoundary": "native-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 329525.906959,
+        "rssBytes": 539131904,
+        "heapUsedBytes": 338448960,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/checker_arena.bend",
+        "parserBoundary": "native-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 329525.958875,
+        "rssBytes": 539131904,
+        "heapUsedBytes": 338451424,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/checker_arena.bend",
+        "parserBoundary": "transport-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 329615.586584,
+        "rssBytes": 551469056,
+        "heapUsedBytes": 343940600,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/checker_arena.bend",
+        "parserBoundary": "transport-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 329615.964417,
+        "rssBytes": 551485440,
+        "heapUsedBytes": 343997512,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/checker_arena.bend",
+        "parserBoundary": "admission-queued"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 329616.110792,
+        "rssBytes": 551485440,
+        "heapUsedBytes": 344015376,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/checked_frontend.bend",
+        "parserBoundary": "admission-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 329616.252042,
+        "rssBytes": 551518208,
+        "heapUsedBytes": 344023544,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/scope_lookup.bend"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 329616.258209,
+        "rssBytes": 551518208,
+        "heapUsedBytes": 344024776,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/scope_lookup.bend",
+        "parserBoundary": "native-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 329632.751417,
+        "rssBytes": 551944192,
+        "heapUsedBytes": 353580496,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/scope_lookup.bend",
+        "parserBoundary": "native-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 329632.803042,
+        "rssBytes": 551944192,
+        "heapUsedBytes": 353582984,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/scope_lookup.bend",
+        "parserBoundary": "transport-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 329634.188709,
+        "rssBytes": 551944192,
+        "heapUsedBytes": 356111216,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/scope_lookup.bend",
+        "parserBoundary": "transport-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 329634.512459,
+        "rssBytes": 551960576,
+        "heapUsedBytes": 356117272,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/scope_lookup.bend",
+        "parserBoundary": "admission-queued"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 330324.755167,
+        "rssBytes": 551976960,
+        "heapUsedBytes": 297728216,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/checker_arena.bend",
+        "parserBoundary": "admission-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 330325.209417,
+        "rssBytes": 551976960,
+        "heapUsedBytes": 297743144,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/checker_ir.bend"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 330325.230584,
+        "rssBytes": 551976960,
+        "heapUsedBytes": 297744376,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/checker_ir.bend",
+        "parserBoundary": "native-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 330337.268959,
+        "rssBytes": 552468480,
+        "heapUsedBytes": 307022264,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/checker_ir.bend",
+        "parserBoundary": "native-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 330337.312584,
+        "rssBytes": 552468480,
+        "heapUsedBytes": 307024856,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/checker_ir.bend",
+        "parserBoundary": "transport-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 330339.906417,
+        "rssBytes": 552615936,
+        "heapUsedBytes": 312643104,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/checker_ir.bend",
+        "parserBoundary": "transport-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 330339.967542,
+        "rssBytes": 552615936,
+        "heapUsedBytes": 312650648,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/checker_ir.bend",
+        "parserBoundary": "admission-queued"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 330457.269834,
+        "rssBytes": 552632320,
+        "heapUsedBytes": 312668840,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/scope_lookup.bend",
+        "parserBoundary": "admission-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 330457.532084,
+        "rssBytes": 552665088,
+        "heapUsedBytes": 312675056,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/index_lookup.bend"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 330457.561917,
+        "rssBytes": 552665088,
+        "heapUsedBytes": 312676288,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/index_lookup.bend",
+        "parserBoundary": "native-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 330471.862209,
+        "rssBytes": 552960000,
+        "heapUsedBytes": 318180016,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/index_lookup.bend",
+        "parserBoundary": "native-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 330471.912209,
+        "rssBytes": 552960000,
+        "heapUsedBytes": 318182520,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/index_lookup.bend",
+        "parserBoundary": "transport-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 330473.177292,
+        "rssBytes": 552976384,
+        "heapUsedBytes": 320461040,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/index_lookup.bend",
+        "parserBoundary": "transport-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 330473.215,
+        "rssBytes": 552976384,
+        "heapUsedBytes": 320465760,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/index_lookup.bend",
+        "parserBoundary": "admission-queued"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 330633.361084,
+        "rssBytes": 552992768,
+        "heapUsedBytes": 320506408,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/checker_ir.bend",
+        "parserBoundary": "admission-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 330634.590959,
+        "rssBytes": 553353216,
+        "heapUsedBytes": 320857504,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/template_steps_v1.bend"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 330634.624,
+        "rssBytes": 553353216,
+        "heapUsedBytes": 320858736,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/template_steps_v1.bend",
+        "parserBoundary": "native-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 332329.64075,
+        "rssBytes": 407568384,
+        "heapUsedBytes": 397030328,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/template_steps_v1.bend",
+        "parserBoundary": "native-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 332329.87475,
+        "rssBytes": 407617536,
+        "heapUsedBytes": 397032832,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/template_steps_v1.bend",
+        "parserBoundary": "transport-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 332479.97625,
+        "rssBytes": 419397632,
+        "heapUsedBytes": 382791824,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/template_steps_v1.bend",
+        "parserBoundary": "transport-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 332480.825542,
+        "rssBytes": 419414016,
+        "heapUsedBytes": 382867816,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/template_steps_v1.bend",
+        "parserBoundary": "admission-queued"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 332481.311917,
+        "rssBytes": 419430400,
+        "heapUsedBytes": 382903448,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/index_lookup.bend",
+        "parserBoundary": "admission-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 332481.934125,
+        "rssBytes": 419430400,
+        "heapUsedBytes": 382914976,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/sha256.bend"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 332481.969709,
+        "rssBytes": 419430400,
+        "heapUsedBytes": 382916208,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/sha256.bend",
+        "parserBoundary": "native-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 332558.113792,
+        "rssBytes": 423755776,
+        "heapUsedBytes": 422061344,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/sha256.bend",
+        "parserBoundary": "native-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 332558.164125,
+        "rssBytes": 423755776,
+        "heapUsedBytes": 422063848,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/sha256.bend",
+        "parserBoundary": "transport-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 332593.964125,
+        "rssBytes": 428244992,
+        "heapUsedBytes": 415652528,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/sha256.bend",
+        "parserBoundary": "transport-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 332594.069584,
+        "rssBytes": 428244992,
+        "heapUsedBytes": 415660344,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/sha256.bend",
+        "parserBoundary": "admission-queued"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 333488.564917,
+        "rssBytes": 458670080,
+        "heapUsedBytes": 125935848,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/template_steps_v1.bend",
+        "parserBoundary": "admission-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 333489.264834,
+        "rssBytes": 458686464,
+        "heapUsedBytes": 125956984,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/path.bend"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 333489.317875,
+        "rssBytes": 458686464,
+        "heapUsedBytes": 125958912,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/path.bend",
+        "parserBoundary": "native-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 333528.608,
+        "rssBytes": 458997760,
+        "heapUsedBytes": 141200848,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/path.bend",
+        "parserBoundary": "native-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 333528.700125,
+        "rssBytes": 458997760,
+        "heapUsedBytes": 141203352,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/path.bend",
+        "parserBoundary": "transport-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 333541.255042,
+        "rssBytes": 459440128,
+        "heapUsedBytes": 150596448,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/path.bend",
+        "parserBoundary": "transport-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 333541.359709,
+        "rssBytes": 459440128,
+        "heapUsedBytes": 150603960,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/path.bend",
+        "parserBoundary": "admission-queued"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 333846.265917,
+        "rssBytes": 459456512,
+        "heapUsedBytes": 150615952,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/sha256.bend",
+        "parserBoundary": "admission-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 333851.627125,
+        "rssBytes": 467550208,
+        "heapUsedBytes": 153303824,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/checker_core_steps_v1.bend"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 333851.666167,
+        "rssBytes": 467550208,
+        "heapUsedBytes": 153305056,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/checker_core_steps_v1.bend",
+        "parserBoundary": "native-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 344532.864417,
+        "rssBytes": 789168128,
+        "heapUsedBytes": 554937944,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/checker_core_steps_v1.bend",
+        "parserBoundary": "native-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 344533.008042,
+        "rssBytes": 789381120,
+        "heapUsedBytes": 554940448,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/checker_core_steps_v1.bend",
+        "parserBoundary": "transport-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 345883.931625,
+        "rssBytes": 872644608,
+        "heapUsedBytes": 368317800,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/checker_core_steps_v1.bend",
+        "parserBoundary": "transport-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 345887.485834,
+        "rssBytes": 876806144,
+        "heapUsedBytes": 369155560,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/checker_core_steps_v1.bend",
+        "parserBoundary": "admission-queued"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 345887.774167,
+        "rssBytes": 876806144,
+        "heapUsedBytes": 369214376,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/path.bend",
+        "parserBoundary": "admission-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 345893.925917,
+        "rssBytes": 887193600,
+        "heapUsedBytes": 372679360,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/emitter_steps_v1.bend"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 345893.966584,
+        "rssBytes": 887193600,
+        "heapUsedBytes": 372681288,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/emitter_steps_v1.bend",
+        "parserBoundary": "native-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 360039.424459,
+        "rssBytes": 1012629504,
+        "heapUsedBytes": 884981504,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/emitter_steps_v1.bend",
+        "parserBoundary": "native-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 360039.611709,
+        "rssBytes": 1012989952,
+        "heapUsedBytes": 884984008,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/emitter_steps_v1.bend",
+        "parserBoundary": "transport-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 361952.679459,
+        "rssBytes": 1024884736,
+        "heapUsedBytes": 432742392,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/emitter_steps_v1.bend",
+        "parserBoundary": "transport-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 361957.083,
+        "rssBytes": 1031258112,
+        "heapUsedBytes": 433508008,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/emitter_steps_v1.bend",
+        "parserBoundary": "admission-queued"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 361957.413042,
+        "rssBytes": 1031258112,
+        "heapUsedBytes": 433561696,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/checker_core_steps_v1.bend",
+        "parserBoundary": "admission-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 361957.930834,
+        "rssBytes": 1031258112,
+        "heapUsedBytes": 433691328,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/c_backend_sharing.bend"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 361957.959042,
+        "rssBytes": 1031258112,
+        "heapUsedBytes": 433693240,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/c_backend_sharing.bend",
+        "parserBoundary": "native-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 362470.813084,
+        "rssBytes": 1023279104,
+        "heapUsedBytes": 462019048,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/c_backend_sharing.bend",
+        "parserBoundary": "native-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 362470.865167,
+        "rssBytes": 1023279104,
+        "heapUsedBytes": 462021552,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/c_backend_sharing.bend",
+        "parserBoundary": "transport-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 362523.581584,
+        "rssBytes": 1027375104,
+        "heapUsedBytes": 488434712,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/c_backend_sharing.bend",
+        "parserBoundary": "transport-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 362523.891917,
+        "rssBytes": 1027424256,
+        "heapUsedBytes": 488512880,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/c_backend_sharing.bend",
+        "parserBoundary": "admission-queued"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 378588.684584,
+        "rssBytes": 59129856,
+        "heapUsedBytes": 430823432,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/emitter_steps_v1.bend",
+        "parserBoundary": "admission-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 379543.33875,
+        "rssBytes": 60260352,
+        "heapUsedBytes": 430826272,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/c_backend_sharing.bend",
+        "parserBoundary": "admission-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 379544.599875,
+        "rssBytes": 63799296,
+        "heapUsedBytes": 430839424,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/base.bend",
+        "parserBoundary": "retained-input-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 379568.830792,
+        "rssBytes": 81395712,
+        "heapUsedBytes": 431547312,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/base.bend",
+        "parserBoundary": "retained-input-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 379568.971584,
+        "rssBytes": 81477632,
+        "heapUsedBytes": 431549816,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/ast.bend",
+        "parserBoundary": "retained-input-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 379571.213959,
+        "rssBytes": 82149376,
+        "heapUsedBytes": 431592504,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/ast.bend",
+        "parserBoundary": "retained-input-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 379571.487,
+        "rssBytes": 82165760,
+        "heapUsedBytes": 431595008,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/lexer.bend",
+        "parserBoundary": "retained-input-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 379576.214084,
+        "rssBytes": 84148224,
+        "heapUsedBytes": 431695000,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/lexer.bend",
+        "parserBoundary": "retained-input-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 379576.582167,
+        "rssBytes": 84180992,
+        "heapUsedBytes": 431697504,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/core.bend",
+        "parserBoundary": "retained-input-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 379578.738417,
+        "rssBytes": 85360640,
+        "heapUsedBytes": 431752528,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/core.bend",
+        "parserBoundary": "retained-input-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 379578.967042,
+        "rssBytes": 85377024,
+        "heapUsedBytes": 431754936,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/loaded_module.bend",
+        "parserBoundary": "retained-input-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 379580.253,
+        "rssBytes": 85442560,
+        "heapUsedBytes": 431771840,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/loaded_module.bend",
+        "parserBoundary": "retained-input-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 379580.334792,
+        "rssBytes": 85442560,
+        "heapUsedBytes": 431774344,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/backend_ir.bend",
+        "parserBoundary": "retained-input-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 379582.354709,
+        "rssBytes": 85819392,
+        "heapUsedBytes": 431807768,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/backend_ir.bend",
+        "parserBoundary": "retained-input-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 379582.619042,
+        "rssBytes": 85852160,
+        "heapUsedBytes": 431810272,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/checker_ir.bend",
+        "parserBoundary": "retained-input-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 379586.800084,
+        "rssBytes": 86491136,
+        "heapUsedBytes": 431853608,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/checker_ir.bend",
+        "parserBoundary": "retained-input-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 379586.926209,
+        "rssBytes": 86523904,
+        "heapUsedBytes": 431856256,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/index_lookup.bend",
+        "parserBoundary": "retained-input-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 379588.267209,
+        "rssBytes": 86851584,
+        "heapUsedBytes": 431884032,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/index_lookup.bend",
+        "parserBoundary": "retained-input-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 379588.539084,
+        "rssBytes": 86851584,
+        "heapUsedBytes": 431886536,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/scope_lookup.bend",
+        "parserBoundary": "retained-input-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 379591.428209,
+        "rssBytes": 87474176,
+        "heapUsedBytes": 431996976,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/scope_lookup.bend",
+        "parserBoundary": "retained-input-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 379591.804167,
+        "rssBytes": 87605248,
+        "heapUsedBytes": 431999480,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/checker_arena.bend",
+        "parserBoundary": "retained-input-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 379638.522334,
+        "rssBytes": 102006784,
+        "heapUsedBytes": 432675352,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/checker_arena.bend",
+        "parserBoundary": "retained-input-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 379639.155917,
+        "rssBytes": 102006784,
+        "heapUsedBytes": 432677760,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/checked_frontend.bend",
+        "parserBoundary": "retained-input-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 379641.260959,
+        "rssBytes": 102137856,
+        "heapUsedBytes": 432697064,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/checked_frontend.bend",
+        "parserBoundary": "retained-input-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 379641.884792,
+        "rssBytes": 102154240,
+        "heapUsedBytes": 432699568,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/sha256.bend",
+        "parserBoundary": "retained-input-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 379663.583917,
+        "rssBytes": 107855872,
+        "heapUsedBytes": 432971216,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/sha256.bend",
+        "parserBoundary": "retained-input-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 379664.017042,
+        "rssBytes": 107855872,
+        "heapUsedBytes": 432973720,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/path.bend",
+        "parserBoundary": "retained-input-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 379670.172709,
+        "rssBytes": 108871680,
+        "heapUsedBytes": 433031544,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/path.bend",
+        "parserBoundary": "retained-input-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 379670.948667,
+        "rssBytes": 109232128,
+        "heapUsedBytes": 433034048,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/template_steps_v1.bend",
+        "parserBoundary": "retained-input-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 379760.32925,
+        "rssBytes": 139067392,
+        "heapUsedBytes": 431191368,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/template_steps_v1.bend",
+        "parserBoundary": "retained-input-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 379762.69525,
+        "rssBytes": 141836288,
+        "heapUsedBytes": 431193944,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/checker_core_steps_v1.bend",
+        "parserBoundary": "retained-input-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 380077.879167,
+        "rssBytes": 143343616,
+        "heapUsedBytes": 431785104,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/checker_core_steps_v1.bend",
+        "parserBoundary": "retained-input-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 380078.204667,
+        "rssBytes": 143343616,
+        "heapUsedBytes": 431787680,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/c_backend_sharing.bend",
+        "parserBoundary": "retained-input-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 380093.348084,
+        "rssBytes": 143867904,
+        "heapUsedBytes": 431364048,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/c_backend_sharing.bend",
+        "parserBoundary": "retained-input-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 380096.150209,
+        "rssBytes": 147308544,
+        "heapUsedBytes": 431366624,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/emitter_steps_v1.bend",
+        "parserBoundary": "retained-input-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 380632.93525,
+        "rssBytes": 152092672,
+        "heapUsedBytes": 431955632,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/emitter_steps_v1.bend",
+        "parserBoundary": "retained-input-complete"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 380633.883584,
+        "rssBytes": 152092672,
+        "heapUsedBytes": 431958136,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/.bootstrap_compiler_root_remote2039g16.bend",
+        "parserBoundary": "retained-input-before"
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 380728.835,
+        "rssBytes": 152387584,
+        "heapUsedBytes": 432048160,
+        "heapLimitBytes": 6643777536,
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/.bootstrap_compiler_root_remote2039g16.bend",
+        "parserBoundary": "retained-input-complete"
+      },
+      {
+        "phase": "stage-two",
+        "elapsedMs": 380729.688625,
+        "rssBytes": 152567808,
+        "heapUsedBytes": 432108528,
+        "heapLimitBytes": 6643777536
+      },
+      {
+        "phase": "stage-two-expand",
+        "elapsedMs": 380730.45025,
+        "rssBytes": 152977408,
+        "heapUsedBytes": 432133952,
+        "heapLimitBytes": 6643777536
+      },
+      {
+        "phase": "stage-two-check",
+        "elapsedMs": 396230.08775,
+        "rssBytes": 878182400,
+        "heapUsedBytes": 449464120,
+        "heapLimitBytes": 6643777536
+      }
+    ],
+    "stageOne": {
+      "event": "artifact",
+      "phase": "native-stage-zero-emit",
+      "stage": "stageOne",
+      "path": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/selfhost-remote2039g16-bootstrap.json.cases/stage-one.js",
+      "sha256": "8a356904fea2d5f32f5491ad8a9e35b8a692f65587bf0cdaac07a6b6db8f2b35",
+      "bytes": 30823620
+    },
+    "stageTwoExists": false,
+    "fixtures": [
+      {
+        "name": "type-specialization",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "2c23d4dd3809789d8c2d850bb30a6f71ec3b59a8f009de87a7fff594d3bef937",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "constructor-eliminator-hit",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "14999660fd5f3d8d57bd69e2dfb816e80a224aa959fe300a28c1c45e6dc6982a",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "constructor-eliminator-default",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "d4e0e45297075195eed5b457debe85e5941754392a301ac61f44809e27968a29",
+        "output": "BitZero{}"
+      },
+      {
+        "name": "tag-dispatch-nested-fallthrough",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "a1568e3b35ab5f29d11cfd35331515b0af6fa5eacb2e99a19f41b5330f436391",
+        "output": "Results{BitZero{}, BitOne{}, BitOne{}, BitZero{}, BitOne{}}"
+      },
+      {
+        "name": "root-match-local-order",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "175cba4f8e661b2775244d242f33d0faf43049bab7a18a7b57e79aa4e4cdd676",
+        "output": "Result{BitZero{}, BitOne{}, BitOne{}}"
+      },
+      {
+        "name": "native-nat-extrema-boundaries",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "4edfd2827a7cad3afc1527f5c3c812455b526e40ef83b2734bd79cd7def4ef94",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "source-tail-large-recursion",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "50fba9401abf73a3925dc50f089bed4eebfb69a9b2f182547f5e3e3937b63d0f",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "nullary-array-freshness",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "719016f8be4f6b974a70518c01f585dcde8859be52bccea58ff46a0800555896",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "aliased-specialization",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "ef02d443458970bf0bae0d2a6a0049b7f3bc88da9678b1b659943d16330bc557",
+        "output": "specialization-lib.BitOne{}"
+      },
+      {
+        "name": "callback-specialization",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "7f51a179d1d28b86a4fc6a9df6932d1aaf620dfa85197d00cbc9fa1fedb27a27",
+        "output": "BitZero{}"
+      },
+      {
+        "name": "specialized-type-error",
+        "passed": true,
+        "accepted": false,
+        "observedFailure": "check",
+        "sourceSha256": "0213d5a9cbfc9604ea73e33c50257c09c5d5e00f63e721d89a3394494ee46062"
+      },
+      {
+        "name": "runtime-template-capture",
+        "passed": true,
+        "accepted": false,
+        "observedFailure": "expand",
+        "sourceSha256": "7ef06d611221e1cd9313f7308e038bcccb0c934294fd512bd45ce91126d915d3"
+      },
+      {
+        "name": "template-generation-rounds",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "cac73a00f3deff0f9867a71abd65fea6aeffdcdc0ffa2d73b53b5919c818bdaf",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "readonly-index-boundaries",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "81b86f9266650e6e57bd73c2c6c741dcafb31b221d4af7b7de5ccef94616f3bc",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "readonly-index-nonmonotone",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "8876daf8f6feb7c7b4656317164830f06fc6a1f467c7210d8e2a23e11227daff",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "dependent-kind-binding",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "d09b89c2a1050453bc6d1639ac84a908a66fcf8413c23b42c7a9e30e36cce3b5",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "law-completion-binding",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "2aa03a5d2ff7e3d154ab12187b39dd31c7c2a6963698f27948a2a190a8ecf37f",
+        "output": "WNil{}"
+      },
+      {
+        "name": "forward-family-definition",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "b33f392b9139c0128990c881413166eb6cf3179444cd95433c565ac082b8fd0a",
+        "output": "WNil{}"
+      },
+      {
+        "name": "forward-definition-call",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "97f4da569188c189a8d1457a258eead66de64578baec811b559d3446754333a9",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "named-entry-separator-collision",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "ce8bf711b87837cbc67a14ed6f3234d9c45715eebf3b4d63e986b214299f867a",
+        "output": "CSucc{CSucc{CSucc{CZero{}}}}"
+      },
+      {
+        "name": "forward-definition-invalid-body",
+        "passed": true,
+        "accepted": false,
+        "observedFailure": "check",
+        "sourceSha256": "3796fe01848e130dbffc7ac8dfd6aeae972f1ddc65c193b3ad78ada374bf5006"
+      },
+      {
+        "name": "recursive-neutral-application-equality",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "d4ebfd86789f77581482c6e5c8f47a17912e5edbbdf6e5a5010fb0cdba4f5e7e",
+        "output": "True{}"
+      },
+      {
+        "name": "application-order",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "d515754b349ba4dd3985d977113503d83698838c57282cd142e314471e80aee8",
+        "output": "Duo{BitOne{}, BitZero{}}"
+      },
+      {
+        "name": "annotated-banged-partial-application",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "265366bfa96b9563845094fb3abf3cec75e042ba6039a440d019d1bbf8bf7f69",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "annotated-banged-partial-result-mismatch",
+        "passed": true,
+        "accepted": false,
+        "observedFailure": "check",
+        "sourceSha256": "9687ae6f2da883e006915717442cd4df59929576148853c523df3f85ad373454"
+      },
+      {
+        "name": "renamed-dependent-law-completion",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "67efffba57405e11d52be3311441b8c1631557ab61b3b35d1de69b978a0eb71c",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "law-completion-result-mismatch",
+        "passed": true,
+        "accepted": false,
+        "observedFailure": "check",
+        "sourceSha256": "98d12ef11062ed42b3847e076dbb2fedad576e6ec01f88c89461fcfd2e4e20e8"
+      },
+      {
+        "name": "partial-family-application",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "e4e6414bdb3d9524161585fb007e1557b0815782005884c1e3cb3a4dc87af3fa",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "affine-duplicate",
+        "passed": true,
+        "accepted": false,
+        "observedFailure": "check",
+        "sourceSha256": "1eab87729494aa38d657d584a655a13923e77f6f463104e08770f00f54facf31"
+      },
+      {
+        "name": "dependent-field-pattern",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "25577204491965929c8a67943fa11e913757bee64dbd7285e5eb9f124700d72d",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "indexed-family-parameter-mismatch",
+        "passed": true,
+        "accepted": false,
+        "observedFailure": "check",
+        "sourceSha256": "eea3fa552b43e60fcbb733c3a0363dd60529723bdf09256d5d78ee244220dcd7"
+      },
+      {
+        "name": "equality-congruence-rewrite",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "8393197b610d5b39c04ce5884ab0fffeb32936e05ee3a68a4d42bc0bb205510b",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "rewrite-result-mismatch",
+        "passed": true,
+        "accepted": false,
+        "observedFailure": "check",
+        "sourceSha256": "05749623daac71fc3caa1b955d4796ccf86586856880e6efe10c6d2af96c9497"
+      },
+      {
+        "name": "empty-datatype-match",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "678639d3854a305d0df75c8f933a5e239d24da869ab60f7ea4db2ef69c84d942",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "nonempty-datatype-empty-match",
+        "passed": true,
+        "accepted": false,
+        "observedFailure": "check",
+        "sourceSha256": "89201d6cade157fa701a59e0537333472c9414671a7365c9386cc6f711fd8b24"
+      },
+      {
+        "name": "abstract-type-empty-match",
+        "passed": true,
+        "accepted": false,
+        "observedFailure": "check",
+        "sourceSha256": "39dacd9a8b695faf64cfee62f2473d2e8ecc66ececb030d6796dd6a45a742024"
+      },
+      {
+        "name": "aliased-constructor-conversion",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "d40bd184d4da826e610f46e5b376470c241bf400c154321e4759906c6de5d397",
+        "output": "alias-name-lib.BitOne{}"
+      },
+      {
+        "name": "distinct-imported-family-mismatch",
+        "passed": true,
+        "accepted": false,
+        "observedFailure": "check",
+        "sourceSha256": "52882eabd86c89dc126331b004c59c18e37cd9e1db445b1660407c957b1cb51d"
+      },
+      {
+        "name": "same-module-alias-family-equality",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "1459bb0a523b1a543c7662831722c0d31915fc347cc3d23a88329e69de59a675",
+        "output": "scope-left-lib.BitOne{}"
+      },
+      {
+        "name": "same-module-alias-constructor-rows",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "6463a43c6c90eb3f0a047690004df8207430760b2c3710db942248be96464edb",
+        "output": "scope-left-lib.BitOne{}"
+      },
+      {
+        "name": "alias-dependent-conversion",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "0918c7e24572c7843e5dc7734d023e42ac961ce74ff34a1b44070d1237df3ca5",
+        "output": "scope-left-lib.BitOne{}"
+      },
+      {
+        "name": "stuck-first-row-dependent-conversion",
+        "passed": true,
+        "accepted": false,
+        "observedFailure": "check",
+        "sourceSha256": "2de665221faf52e991a1c11b5676502efd0fbf02716b045958459d10cf6996b9"
+      },
+      {
+        "name": "local-imported-family-mismatch",
+        "passed": true,
+        "accepted": false,
+        "observedFailure": "check",
+        "sourceSha256": "200b4a797c383856a7e369c99486c0ef939ed3bd5a4d14f1758f10a1bc77cd04"
+      },
+      {
+        "name": "datatype-constructor-shared-name",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "cf1ff3a9fdaee568fc064d36da3dc8b72093da197515bce5d9ffd11ec62474bd",
+        "output": "Wrapper{BitOne{}}"
+      },
+      {
+        "name": "constructor-args-field",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "ed8d8898dc20d7789a6927d22d39e0613f0ad2975859e0afbd64c4b5ef6b415b",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "structural-predecessor-recursion",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "2964309f829f1d8139af4aa0bd4ff52e98e8a4f65c8284b92bb6517758d720ea",
+        "output": "CSucc{CSucc{CSucc{CSucc{CZero{}}}}}"
+      },
+      {
+        "name": "structural-original-input-recursion",
+        "passed": true,
+        "accepted": false,
+        "observedFailure": "check",
+        "sourceSha256": "3de513ed0101ec41fc3a66d213ee97a4ec46bd6ad4903cf792c1a24671873d97"
+      },
+      {
+        "name": "structural-equal-input-recursion",
+        "passed": true,
+        "accepted": false,
+        "observedFailure": "check",
+        "sourceSha256": "a0ed387e14bff247794e4dc18d811f0bcc62fd8857d920479a2f865b9a8ad0dc"
+      },
+      {
+        "name": "structural-growing-input-recursion",
+        "passed": true,
+        "accepted": false,
+        "observedFailure": "check",
+        "sourceSha256": "c03c61fb6ccafb0c966a22a78bd0694aa0232d37c59ea743bbf77f9b25a76ce0"
+      },
+      {
+        "name": "recursive-matrix-variable-column",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "5d3613ea59c3d9d6e9c2eec23dc4ff345ff69eed791f67ab713c38dd2b2228ef",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "recursive-matrix-incomplete-variable-column",
+        "passed": true,
+        "accepted": false,
+        "observedFailure": "check",
+        "sourceSha256": "cff0f694f6b404cc19e9aecb446762877b1dfc3d7f3fbd70299a1a4e2bb59e0a"
+      },
+      {
+        "name": "copied-constructor-field-quantity",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "075d740f094cc8913a1184848d7dfe2386ca3b640fbecd54aaec6f39710f099a",
+        "output": "CZero{}"
+      },
+      {
+        "name": "affine-constructor-field-quantity",
+        "passed": true,
+        "accepted": false,
+        "observedFailure": "check",
+        "sourceSha256": "8b58221d0ac6a903a8ac44b5b673a1b1c070af5fcd3fe689cc58673f4a11385a"
+      },
+      {
+        "name": "erased-constructor-field-quantity",
+        "passed": true,
+        "accepted": false,
+        "observedFailure": "check",
+        "sourceSha256": "cc25414153fe5ece095d184424a07208d4bb76d31966ea175cab691c0ee604b7"
+      },
+      {
+        "name": "erased-constructor-default-binding",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "c8a3f957effaf0ac6964e1be74624402bdd66eede92d384b6725deed44cf9dd3",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "long-unicode-string-pattern-tail",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "fc0b4e09b6e16012d6cef0fb8d796817d5b7b658f48b9837d5fccfce8526c202",
+        "output": "Results{BitOne{}, BitZero{}, BitOne{}}"
+      },
+      {
+        "name": "compact-string-native-scalars-and-explicit-equivalence",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "4ef313bc46f9dfda39142fd79bfb6910517532c7172e682a4a255a04a1e14b6f",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "compact-string-imported-template-alias-capture",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "3786bad35796874efd0c4c7dc78f2a97d08b9238f336f6ab2854807e8fd6beaf",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "compact-string-primitive-like-shadow-fallback",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "fc9ed48a88fecaf6b85f90af46378eb42dc9fc1a2391c4b9ea50403e92fa7530",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "compact-string-dependent-explicit-constructor-equality",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "6d97d02c58455eba53395d5a626f6b60d19ef5a48deba95618ac0393c92c0f9e",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "compact-string-template-empty-unused-constructors",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "477e33c81dc909e9449dd36a9aafc8085136d48c350eb31da5eb63d5f48d9b0e",
+        "output": "SNil{}"
+      },
+      {
+        "name": "compact-string-template-zero-unused-true",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "b9ec0f2924bfd00ba010a95a0223c711b331d5b665f3e8690566ca4b5e92929d",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "compact-string-invalid-scalar-custom-constructor-fallback",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "99f41df074e9e17c6c84f960899b1a91ab739f174a1ba89dbd2375bd2b1e7c7b",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "compact-string-tail120001-callback",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "d1be55f37408a9d5e75670f6ed078bc17b7d690294c6f07e294f38b508ca518e",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "patricia-selected-branch-unicode",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "3bc71773178f0b00409007341b300efaf11d0b90e5a725a47e44ffcf7ea590b4",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "mixed-named-closure-tail120001",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "8bf7f4602897dc2b8f70b45fea329ff84780faa40214ade087b339303f03db1e",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "private-tail-register-boundaries",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "95df4b84cf824eee111364977a3d0a5fe3162baa7123e8f5162202cc6a27d6a5",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "compact-string-invalid-native-scalar-deferred-branch",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "1998de6cbbbcd71224bbb8077b37522dc7d059e2115ca56237c4e884d7f526ea",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "dependent-match-goal-refinement",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "78a54dfd45b2e19b0b8e3616af237b899d34185d125e5fa4625809df43fc964c",
+        "output": "BCons{BNil{}}"
+      },
+      {
+        "name": "dependent-vector-goal-refinement",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "030547086f21efffb39fe0e1b6c043d3cd288ecc1de4b4de235c5236f3c5a2e2",
+        "output": "BCons{BNil{}}"
+      },
+      {
+        "name": "dependent-nested-binding-refinement",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "6420d0a0bf70b80e396c28cd4b93f17f7d53d9f8f36b6ad7df07b41e01d79267",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "dependent-tuple-local-binding",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "8421df1a1f10074e8a03648f33476d7cc399da49589d61301ee627f55ca67759",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "neutral-tuple-distinct-index",
+        "passed": true,
+        "accepted": false,
+        "observedFailure": "check",
+        "sourceSha256": "5efbb356567f9e598bc28dffac3f5ce045a53058f76b380510b3971a20ffa127"
+      },
+      {
+        "name": "neutral-family-distinct-branches",
+        "passed": true,
+        "accepted": false,
+        "observedFailure": "check",
+        "sourceSha256": "9d91f606818564d9645dce24419b131c6f4adea34c5db29fe80575f4a5e98c9d"
+      },
+      {
+        "name": "nested-constructor-cases-disjoint",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "b63f207d8c0a4f3ac6957211b6b544bd0f9a1d035ec3424f61994ceaad9fe5d9",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "nested-constructor-case-duplicate",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "6f60f0b20f7fab9f253fdd4d11c951bc051b7433a910290b89f14099a809df00",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "nested-constructor-ordered-fallback",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "42b753d8c46061341fd80ddf89c4d88a7e53fe6ae99e7d51ee2947ddf151a01f",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "nested-constructor-unreachable-union",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "6c889cf3ba86533907cc5fe6bf7c6ed5bf98d8d99010f49dafebc8fa25ed2ae4",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "annotated-constructor-equality",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "50e08b264b7028924b68bdcf40ed4d80fefd74ad4e90916ec08f78d9e57d86f4",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "annotated-equality-wrong-constructor",
+        "passed": true,
+        "accepted": false,
+        "observedFailure": "check",
+        "sourceSha256": "ad1adf13c133f9a05b3bea7812a9d893bc3c11b23536c1a74afe5037462d40c7"
+      },
+      {
+        "name": "annotated-equality-wrong-type",
+        "passed": true,
+        "accepted": false,
+        "observedFailure": "check",
+        "sourceSha256": "9d5e981d6bf2096e98e6b90155118e6826646d41e865798578c71b63cbb5ce4e"
+      },
+      {
+        "name": "promoted-data-constructor-field",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "438d6597d4292c2037f2feb53824165e3873e6a64d72a9766b03552b58ba24ce",
+        "output": "CSucc{CZero{}}"
+      },
+      {
+        "name": "promoted-affine-constructor-field",
+        "passed": true,
+        "accepted": false,
+        "observedFailure": "check",
+        "sourceSha256": "be2ac4f801424bc7b0c0f0b7b0efcffb4bd5f90e36ed127cd32acc9c92701306"
+      },
+      {
+        "name": "promoted-data-tuple-field",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "112ad5dd4a675fff0fb495bc6b27ebf833abdf3e82073c36cca2329022bd61ee",
+        "output": "CSucc{CZero{}}"
+      },
+      {
+        "name": "promoted-affine-tuple-field",
+        "passed": true,
+        "accepted": false,
+        "observedFailure": "check",
+        "sourceSha256": "d522f28669c45241563e5053c882c86a38bff97def828ac5692867072dcaf6ec"
+      },
+      {
+        "name": "nested-structural-recursive-calls",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "2b6bfb1b3df52c545b45ea48567b16ebc9b576add2b6bf89763249084c8992f8",
+        "output": "CSucc{CZero{}}"
+      },
+      {
+        "name": "nested-structural-invalid-inner-call",
+        "passed": true,
+        "accepted": false,
+        "observedFailure": "check",
+        "sourceSha256": "8ffb4d6934fb1379e57d411735748def930de217baa7b90a0682f71fdfc31ac9"
+      },
+      {
+        "name": "closed-local-annotation-usage",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "73df624518bd65175db9f1137adfbabc27913a6754d00e8364c38ea9490217c7",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "closed-local-annotation-type-error",
+        "passed": true,
+        "accepted": false,
+        "observedFailure": "check",
+        "sourceSha256": "4841d3e3088fb2a938dcd39f0cde96494de3d1dcb9fc8262b6df3b6c19e7a4ba"
+      },
+      {
+        "name": "parallel-local-outer-scope",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "ebfe60fc09d8faa3b043555d565b00f9703ed4ec71d3fb6dbcc1c79e4f58512e",
+        "output": "CSucc{CZero{}}"
+      },
+      {
+        "name": "parallel-local-rhs-independence",
+        "passed": true,
+        "accepted": false,
+        "observedFailure": "check",
+        "sourceSha256": "66141e6efc499c3a50e98d36c7781faab3105a6d6c685d325adaa411c4668ef6"
+      },
+      {
+        "name": "projected-local-erased-domain",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "50fbcb0968610fe942c0a6c8d3cb1cef7192f30fb0b9d225133538f2014d330f",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "projected-local-affine-domain",
+        "passed": true,
+        "accepted": false,
+        "observedFailure": "check",
+        "sourceSha256": "90c0502e47e94041001d70f1676ea2954e4b479976c01ce85fa5e9b95fd7ad09"
+      },
+      {
+        "name": "projected-local-invalid-annotation",
+        "passed": true,
+        "accepted": false,
+        "observedFailure": "check",
+        "sourceSha256": "80ecec201d2046d02a6c971aaa6366765160b7d38e5f8c4a0cdd221303649707"
+      },
+      {
+        "name": "dependent-match-wrong-index",
+        "passed": true,
+        "accepted": false,
+        "observedFailure": "check",
+        "sourceSha256": "2b738c11d14a879d997dfc072bd32c8e979530cf85c91c75f385086e4c6662bc"
+      }
+    ],
+    "fixturesAllPassed": true,
+    "negativeFixtureCount": 31,
+    "parserRows": [
+      {
+        "phase": "stage-two-parse",
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/.bootstrap_compiler_root_remote2039g16.bend",
+        "sourceSha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+        "sourceBytesSha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+        "parserSha256": "8a356904fea2d5f32f5491ad8a9e35b8a692f65587bf0cdaac07a6b6db8f2b35",
+        "parserFuel": 8000000,
+        "oracleAccepted": true,
+        "fullSemanticAST": true,
+        "semanticParity": true,
+        "stage0ASTHash": "73be63d71a08efb04d938e0942566c29d3692a9a493cc59e36841be28db11104",
+        "compiledASTHash": "73be63d71a08efb04d938e0942566c29d3692a9a493cc59e36841be28db11104",
+        "transportSha256": "fc139be8cb84c2eea1cdc4d19d2de23086d6a5df15add8453e78c1c1f7977da2"
+      },
+      {
+        "phase": "stage-two-parse",
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/base.bend",
+        "sourceSha256": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+        "sourceBytesSha256": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+        "parserSha256": "8a356904fea2d5f32f5491ad8a9e35b8a692f65587bf0cdaac07a6b6db8f2b35",
+        "parserFuel": 8000000,
+        "oracleAccepted": true,
+        "fullSemanticAST": true,
+        "semanticParity": true,
+        "stage0ASTHash": "6b025aedc27095961a6cf7510749a4c414fa87b4706c21191073dda62e482625",
+        "compiledASTHash": "6b025aedc27095961a6cf7510749a4c414fa87b4706c21191073dda62e482625",
+        "transportSha256": "4bca119dd06dc030291039ecf4c7382daa9d1495b797de653915e976c9ae345f"
+      },
+      {
+        "phase": "stage-two-parse",
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/ast.bend",
+        "sourceSha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+        "sourceBytesSha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+        "parserSha256": "8a356904fea2d5f32f5491ad8a9e35b8a692f65587bf0cdaac07a6b6db8f2b35",
+        "parserFuel": 8000000,
+        "oracleAccepted": true,
+        "fullSemanticAST": true,
+        "semanticParity": true,
+        "stage0ASTHash": "942a166f1a345c20d31b2364edae766a27e5bae09e4b0cc8ddbc947ad1bd9f4b",
+        "compiledASTHash": "942a166f1a345c20d31b2364edae766a27e5bae09e4b0cc8ddbc947ad1bd9f4b",
+        "transportSha256": "65a8470221450d9846d0d81a0330986168636096b4c75e44750ba7df1beb0465"
+      },
+      {
+        "phase": "stage-two-parse",
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/lexer.bend",
+        "sourceSha256": "a81265d4ab248c5ea74bf52987e1163773866a01b264ff1a98895d91139d6f53",
+        "sourceBytesSha256": "a81265d4ab248c5ea74bf52987e1163773866a01b264ff1a98895d91139d6f53",
+        "parserSha256": "8a356904fea2d5f32f5491ad8a9e35b8a692f65587bf0cdaac07a6b6db8f2b35",
+        "parserFuel": 8000000,
+        "oracleAccepted": true,
+        "fullSemanticAST": true,
+        "semanticParity": true,
+        "stage0ASTHash": "c7404c5a027f9643d56f3c328b7b95cd84ade038c58ecd36a6b3fa47d4a2898a",
+        "compiledASTHash": "c7404c5a027f9643d56f3c328b7b95cd84ade038c58ecd36a6b3fa47d4a2898a",
+        "transportSha256": "a223260cf78e4afc0c760d0d678c8971a46ba764bd9d457bd1c72ee385effb7a"
+      },
+      {
+        "phase": "stage-two-parse",
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/core.bend",
+        "sourceSha256": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+        "sourceBytesSha256": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+        "parserSha256": "8a356904fea2d5f32f5491ad8a9e35b8a692f65587bf0cdaac07a6b6db8f2b35",
+        "parserFuel": 8000000,
+        "oracleAccepted": true,
+        "fullSemanticAST": true,
+        "semanticParity": true,
+        "stage0ASTHash": "ec9210c60edd62f8a08d39ec606862be71f8e5cb42ef65cbb7fb463d423f6342",
+        "compiledASTHash": "ec9210c60edd62f8a08d39ec606862be71f8e5cb42ef65cbb7fb463d423f6342",
+        "transportSha256": "53779e2ca9893bd0c22b44bbd562bab7a5a7cf8603ca377c89bebad841f489d4"
+      },
+      {
+        "phase": "stage-two-parse",
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/loaded_module.bend",
+        "sourceSha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+        "sourceBytesSha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+        "parserSha256": "8a356904fea2d5f32f5491ad8a9e35b8a692f65587bf0cdaac07a6b6db8f2b35",
+        "parserFuel": 8000000,
+        "oracleAccepted": true,
+        "fullSemanticAST": true,
+        "semanticParity": true,
+        "stage0ASTHash": "37423ce3702b0adc524b24d961e96331ae9463f34950de12261448c82af7b49b",
+        "compiledASTHash": "37423ce3702b0adc524b24d961e96331ae9463f34950de12261448c82af7b49b",
+        "transportSha256": "4117c76b62ac518ec981b2169e417bd1ba6ffdb232d21db40b2df81cfdc8e8da"
+      },
+      {
+        "phase": "stage-two-parse",
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/backend_ir.bend",
+        "sourceSha256": "162a554cec1c9e1b5edab69b5cfae730c70886548f4f51603a7537845ab5ec48",
+        "sourceBytesSha256": "162a554cec1c9e1b5edab69b5cfae730c70886548f4f51603a7537845ab5ec48",
+        "parserSha256": "8a356904fea2d5f32f5491ad8a9e35b8a692f65587bf0cdaac07a6b6db8f2b35",
+        "parserFuel": 8000000,
+        "oracleAccepted": true,
+        "fullSemanticAST": true,
+        "semanticParity": true,
+        "stage0ASTHash": "c2f29da3bece111fb735c99abf2a8ff5ff205467e2394eedde13f300d476ccfe",
+        "compiledASTHash": "c2f29da3bece111fb735c99abf2a8ff5ff205467e2394eedde13f300d476ccfe",
+        "transportSha256": "8de56988a4776c405271a0571ee7e821c77863a48dd63d1372343e108fdebf65"
+      },
+      {
+        "phase": "stage-two-parse",
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/checked_frontend.bend",
+        "sourceSha256": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+        "sourceBytesSha256": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+        "parserSha256": "8a356904fea2d5f32f5491ad8a9e35b8a692f65587bf0cdaac07a6b6db8f2b35",
+        "parserFuel": 8000000,
+        "oracleAccepted": true,
+        "fullSemanticAST": true,
+        "semanticParity": true,
+        "stage0ASTHash": "5cfb674f39d7cf6c4d9a857c0eab257fdc4d8508d2509293a7f95036f39a0b52",
+        "compiledASTHash": "5cfb674f39d7cf6c4d9a857c0eab257fdc4d8508d2509293a7f95036f39a0b52",
+        "transportSha256": "c763bb416d82f36ddee42dc708d2ec37fef18710acdd02ec5eda6d80a415d601"
+      },
+      {
+        "phase": "stage-two-parse",
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/checker_arena.bend",
+        "sourceSha256": "2d094dd95dc1c2319b77349a028addee4689288d7b476078b6f16e179cb9afeb",
+        "sourceBytesSha256": "2d094dd95dc1c2319b77349a028addee4689288d7b476078b6f16e179cb9afeb",
+        "parserSha256": "8a356904fea2d5f32f5491ad8a9e35b8a692f65587bf0cdaac07a6b6db8f2b35",
+        "parserFuel": 8000000,
+        "oracleAccepted": true,
+        "fullSemanticAST": true,
+        "semanticParity": true,
+        "stage0ASTHash": "62d74fdf9ae4bcee89ad29ab321cdc7b4b7ca8fb23811f08c64cf334b2f40222",
+        "compiledASTHash": "62d74fdf9ae4bcee89ad29ab321cdc7b4b7ca8fb23811f08c64cf334b2f40222",
+        "transportSha256": "14bd35a5f77477953338a566308285099f625161fca2329e06930380754f40ba"
+      },
+      {
+        "phase": "stage-two-parse",
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/scope_lookup.bend",
+        "sourceSha256": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
+        "sourceBytesSha256": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
+        "parserSha256": "8a356904fea2d5f32f5491ad8a9e35b8a692f65587bf0cdaac07a6b6db8f2b35",
+        "parserFuel": 8000000,
+        "oracleAccepted": true,
+        "fullSemanticAST": true,
+        "semanticParity": true,
+        "stage0ASTHash": "e284ff6061c4a95c665f0d4085c77360d4d0d851efcf35e47bf5be0ba1839708",
+        "compiledASTHash": "e284ff6061c4a95c665f0d4085c77360d4d0d851efcf35e47bf5be0ba1839708",
+        "transportSha256": "7014a4aa809911e4d9b9460aa518844466dfd509dfe16231909d6029c3ab4094"
+      },
+      {
+        "phase": "stage-two-parse",
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/checker_ir.bend",
+        "sourceSha256": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+        "sourceBytesSha256": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+        "parserSha256": "8a356904fea2d5f32f5491ad8a9e35b8a692f65587bf0cdaac07a6b6db8f2b35",
+        "parserFuel": 8000000,
+        "oracleAccepted": true,
+        "fullSemanticAST": true,
+        "semanticParity": true,
+        "stage0ASTHash": "8227109bce13aa92b9849b565732cf2360f83a43ed44a376437b9ac05338e7b5",
+        "compiledASTHash": "8227109bce13aa92b9849b565732cf2360f83a43ed44a376437b9ac05338e7b5",
+        "transportSha256": "7df9b136a3f845658e8263bd5fef59aaddaaa183043574761439c24ca751c494"
+      },
+      {
+        "phase": "stage-two-parse",
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/index_lookup.bend",
+        "sourceSha256": "563c9b152699b490cf68b264e6c4dea4a4e6770dfcf527cf6c81911cb5ea1b78",
+        "sourceBytesSha256": "563c9b152699b490cf68b264e6c4dea4a4e6770dfcf527cf6c81911cb5ea1b78",
+        "parserSha256": "8a356904fea2d5f32f5491ad8a9e35b8a692f65587bf0cdaac07a6b6db8f2b35",
+        "parserFuel": 8000000,
+        "oracleAccepted": true,
+        "fullSemanticAST": true,
+        "semanticParity": true,
+        "stage0ASTHash": "c04d9be1136b2fbb554723b4b3d9d24958349caab286aafc16b03813303aab6a",
+        "compiledASTHash": "c04d9be1136b2fbb554723b4b3d9d24958349caab286aafc16b03813303aab6a",
+        "transportSha256": "cda3a8fd2f4d1957af04258ec6b43d64ef0de2dd252623b76ff7f2c221b079c6"
+      },
+      {
+        "phase": "stage-two-parse",
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/template_steps_v1.bend",
+        "sourceSha256": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4",
+        "sourceBytesSha256": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4",
+        "parserSha256": "8a356904fea2d5f32f5491ad8a9e35b8a692f65587bf0cdaac07a6b6db8f2b35",
+        "parserFuel": 8000000,
+        "oracleAccepted": true,
+        "fullSemanticAST": true,
+        "semanticParity": true,
+        "stage0ASTHash": "b44d453f50676bc38364acb7a7c6a6dd2936244d7d515a352128f2617bb73d5c",
+        "compiledASTHash": "b44d453f50676bc38364acb7a7c6a6dd2936244d7d515a352128f2617bb73d5c",
+        "transportSha256": "b58a62f230f6770b1112e715278c3721ec31f23cfea5317275617234434e2f73"
+      },
+      {
+        "phase": "stage-two-parse",
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/sha256.bend",
+        "sourceSha256": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+        "sourceBytesSha256": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+        "parserSha256": "8a356904fea2d5f32f5491ad8a9e35b8a692f65587bf0cdaac07a6b6db8f2b35",
+        "parserFuel": 8000000,
+        "oracleAccepted": true,
+        "fullSemanticAST": true,
+        "semanticParity": true,
+        "stage0ASTHash": "c60ad854dd85782ad3b15a134a3e0c84583c2d01af13ccc40047953005b60879",
+        "compiledASTHash": "c60ad854dd85782ad3b15a134a3e0c84583c2d01af13ccc40047953005b60879",
+        "transportSha256": "c479639224a8c2e49362481ae5f01252eaae8f0e17aea9ff2850b92fb23b4a96"
+      },
+      {
+        "phase": "stage-two-parse",
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/path.bend",
+        "sourceSha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+        "sourceBytesSha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+        "parserSha256": "8a356904fea2d5f32f5491ad8a9e35b8a692f65587bf0cdaac07a6b6db8f2b35",
+        "parserFuel": 8000000,
+        "oracleAccepted": true,
+        "fullSemanticAST": true,
+        "semanticParity": true,
+        "stage0ASTHash": "10132e55e982154a31879ffb40a7c7a4d0afeb95dc215c4d0be140d391b92cac",
+        "compiledASTHash": "10132e55e982154a31879ffb40a7c7a4d0afeb95dc215c4d0be140d391b92cac",
+        "transportSha256": "09d48652bbdbf48c1fe7aef680d511f5db9815d98399e631e1b42ef2355c6bb4"
+      },
+      {
+        "phase": "stage-two-parse",
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/checker_core_steps_v1.bend",
+        "sourceSha256": "93e8fd5ce7aafe40084d1b0023eff79de18cb6f00b625cab43b002535cfe288f",
+        "sourceBytesSha256": "93e8fd5ce7aafe40084d1b0023eff79de18cb6f00b625cab43b002535cfe288f",
+        "parserSha256": "8a356904fea2d5f32f5491ad8a9e35b8a692f65587bf0cdaac07a6b6db8f2b35",
+        "parserFuel": 8000000,
+        "oracleAccepted": true,
+        "fullSemanticAST": true,
+        "semanticParity": true,
+        "stage0ASTHash": "9daa3d233ca586435fa0704dc6d5dfa318092a5630be469fdb7df7af477a2408",
+        "compiledASTHash": "9daa3d233ca586435fa0704dc6d5dfa318092a5630be469fdb7df7af477a2408",
+        "transportSha256": "b859ef565526e633b8595cea6dfe580e117b155c3731c2653ed8f7aa613dbad6"
+      },
+      {
+        "phase": "stage-two-parse",
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/emitter_steps_v1.bend",
+        "sourceSha256": "ea0eda4e3061dd6d222465e9df31094e0396789827275fb76b0681a399d805eb",
+        "sourceBytesSha256": "ea0eda4e3061dd6d222465e9df31094e0396789827275fb76b0681a399d805eb",
+        "parserSha256": "8a356904fea2d5f32f5491ad8a9e35b8a692f65587bf0cdaac07a6b6db8f2b35",
+        "parserFuel": 8000000,
+        "oracleAccepted": true,
+        "fullSemanticAST": true,
+        "semanticParity": true,
+        "stage0ASTHash": "6b900a6bc4eee8de3342e8ccc8803f0f298c03010edf241d6e2141967b8f1f32",
+        "compiledASTHash": "6b900a6bc4eee8de3342e8ccc8803f0f298c03010edf241d6e2141967b8f1f32",
+        "transportSha256": "207b2c8a008b3a1eefee3f1723d88908fbb9b4ffa0d59004ad1bbd93f58d358d"
+      },
+      {
+        "phase": "stage-two-parse",
+        "file": "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/c_backend_sharing.bend",
+        "sourceSha256": "78992d00aad3a458dd6b9ea424edf0de61c95b54487f92cd53283e705488c35f",
+        "sourceBytesSha256": "78992d00aad3a458dd6b9ea424edf0de61c95b54487f92cd53283e705488c35f",
+        "parserSha256": "8a356904fea2d5f32f5491ad8a9e35b8a692f65587bf0cdaac07a6b6db8f2b35",
+        "parserFuel": 8000000,
+        "oracleAccepted": true,
+        "fullSemanticAST": true,
+        "semanticParity": true,
+        "stage0ASTHash": "7b2b88ba394339aad27b4dbb7d87f27c633f862669b0b5010d7fad06c300dbb1",
+        "compiledASTHash": "7b2b88ba394339aad27b4dbb7d87f27c633f862669b0b5010d7fad06c300dbb1",
+        "transportSha256": "7e3a693c4605324d526f43058fa48852c700600412d09eddcc8444e84826919e"
+      }
+    ],
+    "inputs": {
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/.bootstrap_compiler_root_remote2039g16.bend": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/selfhost-root-remote2039g16.json": "bf2958f7d658818935773092bdf673281f1bd5bc7f11dc037a81a115ff7b0355",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/root-remote2039g16-native-build.json": "b954771539480c3d83205a7e872d0b437801e66277e4464484ab0af42e6ee684",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/root-remote2039g16.native.corpus.json": "54299384e741a55c11232281aba2d552829519e9af73a48b5640423544da5f20",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/bootstrap-parser-rebuild-remote2039g16.js": "94f05a4e00e8fa6ac0b57bbdaa3546d4f5110b7bbf03c3160f338b8a75f6d86f",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/bootstrap-parser-rebuild-remote2039g16.native-build.result.json": "4c3b93f715977b336d758f4d0793c7f66f8eaab5deca91fc40854447da448d4f",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/evals/selfhost_driver_source.ts": "be4c39ba888193b85b331955a29f00cabe836420b8d1d5800086fba2c159ac2d",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/evals/checker_core_step_runtime.mjs": "00cd400ac0452a3681bf6491db08be51f9ae3a33ff2baf88654a9763eb5073ed",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/evals/bootstrap_source_oracle.ts": "5fb9785388bf42bb5a39596ed4064351a756857f6b7edbda4ab38f482d046789",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/evals/bootstrap_ast_transport.ts": "67a5ca2cf64b50053f0f05fcd4f189b3fbdf9589257ae4f4540127cfc12d23e5",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/evals/parser_full_semantic_normalize.ts": "22e314d9d989f24342819ba31541976b9bab6fde225875e193a42ad4508a269d",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/evals/selfhost_parser_parity.ts": "f5dd9524d821366a5f291b646c863de77a973c48dfbe6f9731a716913b29a404",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/evals/native_seed_runtime.mjs": "7f81a9b9013853355910b93bf59586b2acbcda4de7bcaa08d7942ebf45c0147a",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/evals/selfhost_bootstrap_gate.ts": "10447646e23b39c35a7ad51bfcb4bb6b10a251f51f881f42607cd38a6c408bf5",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/evals/selfhost_bootstrap_worker.mjs": "907803a7e936ce6532c25eb986867ed076e578d659e8d57630b2cafe64d483e6",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/evals/selfhost_cpu_profile.mjs": "5d5fc8d329a3b600522c58eeac59c49c515109bc7f48845d8177cb520129a1c0",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/evals/native_compiler_experiment.ts": "9108d727d3a46add61f672be9a96095c2cd7a65dbe6a3e7108e2964a90ef7d46",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/evals/native_compiler_llvm.ts": "d8f2c420662e3ff93795ebe866cbfe7a459b131b74c3243ba2f2ba9d625e8af3",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/bend.ts": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/comp.ts": "f95eed20344ca291bf74a1e4ffe574f788ea22a86adc66d5bfe0f681523245ef",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/evals/native_compiler_driver.bend": "768203e900f53cdf8d90b50966631ca3a3964dd50003658b07a28b39395f3ec3",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/evals/native_compiler_host.c": "7d75edf7c7b8ac045df772b242e885801b9ab3fae5fc346957489a35847d66fe",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/base.bend": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/evals/heavy_gate.ts": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/evals/heavy_gate_native.c": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/lexer.bend": "a81265d4ab248c5ea74bf52987e1163773866a01b264ff1a98895d91139d6f53",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/core.bend": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/loaded_module.bend": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/backend_ir.bend": "162a554cec1c9e1b5edab69b5cfae730c70886548f4f51603a7537845ab5ec48",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/checked_frontend.bend": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/checker_arena.bend": "2d094dd95dc1c2319b77349a028addee4689288d7b476078b6f16e179cb9afeb",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/scope_lookup.bend": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/checker_ir.bend": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/index_lookup.bend": "563c9b152699b490cf68b264e6c4dea4a4e6770dfcf527cf6c81911cb5ea1b78",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/template_steps_v1.bend": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/sha256.bend": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/checker_core_steps_v1.bend": "93e8fd5ce7aafe40084d1b0023eff79de18cb6f00b625cab43b002535cfe288f",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/emitter_steps_v1.bend": "ea0eda4e3061dd6d222465e9df31094e0396789827275fb76b0681a399d805eb",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/selfhost/c_backend_sharing.bend": "78992d00aad3a458dd6b9ea424edf0de61c95b54487f92cd53283e705488c35f",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/print.c": "58657b7351daee89121e1df2856f102743c9db7640257e50c6009a0f1080b00e",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/print.js": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/write.c": "8807a5f655db452c1d846354560c26fe1e94289e5dc0be231d0b71ecc876d02f",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/write.js": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/print_err.c": "f84aa11c8d0d6af6fa2fee28411f95714d6744ad97156990e43e55c292c9c6fb",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/print_err.js": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/get_env.c": "b4903e94681340f9e02187457fabe9461c1b4e43646b7e1573f5d21e954e3a34",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/get_env.js": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/args.c": "7717332d0b8c8ba28d6dbe60b62a23dce99ea6828ada7d1f9b664f4dc388e84e",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/args.js": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/process_run.c": "554cfbdf9a6de163f00fc1b23dc8f3df10821cfce336caa1cb5db439b8a55e1f",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/process_run.js": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/random_u32.c": "75429b2b42e00562177fe33a5e18d2730478847f58c4038b048e78131e1b8c0a",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/random_u32.js": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/spawn.c": "05e11ae3f1461d9c72440af3b1786c076b418d2faff45639ac25ba464ee73cd5",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/spawn.js": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/sleep.c": "1dde3701026517d5272d2ff5344d3a8643bec264dbad9f266fdae1c4aaf7601c",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/sleep.js": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/now.c": "fc4c1d87a4fb2ace7d5b6c57b434cc3d953a15bdf213020912df6c17aa2352d6",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/now.js": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/thread_count.c": "d4889ed7757dccce03729c9568b88188128f2c1576166a3dc184a8707ed44568",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/thread_count.js": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/chan.c": "af09b2749741bcc54f56c8f81803073818a165d4cad4c817708e359d677b2a52",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/chan.js": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/file_open.c": "b987bcb0f9a89d769714ddf8cbecca211c4392e4098da19b411d09f5c088d360",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/file_open.js": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/file_read.c": "ab577225fa98a034c09d7eb6326b74808756dc6203b0e2599a459876382f090d",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/file_read.js": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/file_size.c": "ed0d74fd6b9f14ea471bfe5dd80ecbb2c5abb6a8406519fb2c7e1a1acf3dd5af",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/file_size.js": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/file_write.c": "da810ad9aa76ad1431622292529fa3edebabc4b6a7ee20ae833097b71bb595e5",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/file_write.js": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/file_close.c": "033da9beb0b484fbc8784044193bf69004f858f6ad86e0c31b4beb89df1349ca",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/file_close.js": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/tcp_listen.c": "efc7528de96abd9f62f299833c1ac7b0e86528292c746b114d2684b5bac52899",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/tcp_listen.js": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/tcp_accept.c": "bf7ca1685ed388ce97827ea8379881fbdf5359c7c663ad03eeb8da34bd8584ef",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/tcp_accept.js": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/tcp_connect.c": "8d17c097138709d71e9d9e1fbc4255007c5e80c93ee384c4a3510b6ac8d10da3",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/tcp_connect.js": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/tcp_send.c": "993cc8ee5b39fd54a4aeace102602ecf2841ce1f402fe6b2407ebaca837383f9",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/tcp_send.js": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/tcp_recv.c": "249c8789cd2f541ad00068882de16a00870c2f81a8168b0ac7a59db1e3cb0c6f",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/tcp_recv.js": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/udp_bind.c": "a1be1bc5c03d430fc6eb43982651073e144872956fadaee98c3700be59352ee3",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/udp_bind.js": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/udp_send_to.c": "b3a87e56958d8071a368da2edb4748e9496b3eed58b93d6cb4f8af398dd1011a",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/udp_send_to.js": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/udp_recv_from.c": "1ce914be6cd6153732258f06343e5bcf9765a7fac7e3c3f0462facba7060e067",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/udp_recv_from.js": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/socket_close.c": "abea115d2928d4942a9d89898d2022c0f1b19c52db48d0b060c2356d261bfa77",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/socket_close.js": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/listener_close.c": "11f6bac6342a37e97b9656e96bdca7d052ed0a7a0cab3b05ea87657020cfb7a2",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/listener_close.js": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/window.c": "bf8d5779775ba9566d4bbeb8706a9ec993efb724dae7af8a76c38501ab4092c2",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/window_open.js": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/window_frame.js": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/window_set_title.js": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/window_grab.js": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/window_close.js": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/audio.c": "f0fac2bee02918b4958ad1e7508945824fcd98ce9a2e7ede657304c4f8905b85",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/audio_open.js": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/audio_write.js": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/bend2/effs/audio_close.js": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/.bootstrap_parser_rebuild_remote2039g16_generated_fuel.bend": "1f87959ff0030b21d5d5add2b3c9f30a5868875bf115e9358a0c68bfb56de4cd",
+      "/Users/ilyagulya/bend-g16-boundaries-1e46745e-857a-4a7b-a9b1-eb0fa312322e/checkpoints/selfhost-remote2039g16-bootstrap.json.cases/stage-one.js": "8a356904fea2d5f32f5491ad8a9e35b8a692f65587bf0cdaac07a6b6db8f2b35"
+    }
+  },
+  "companions": "The full g16 target matrices and actual native consumers are still running separately; no companion success is inferred.",
+  "note": "Bounded synchronous JS calls and nested C padding repairs have passed source-to-consumer regressions, but this full compiler version is rejected at the unchanged 600000-ms bootstrap quota."
+}
