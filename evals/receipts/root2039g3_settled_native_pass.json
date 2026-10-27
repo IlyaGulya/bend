@@ -1,0 +1,1332 @@
+{
+  "schemaVersion": 1,
+  "status": "COMPLETE_G2_NATIVE_BUILD_AND_ACTUAL_CONSUMER_PASS",
+  "nativeBuildAccepted": true,
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "sourceCheckpoint": "faa2a046",
+  "scope": "Complete canonical g2 root and bridge validated, identical full C emitted, LLVM compiled and linked, resulting native compiler executed a real foreign consumer",
+  "build": {
+    "status": "NATIVE_EXECUTABLE_BUILT_NOT_YET_RUN",
+    "boundary": {
+      "host": "trusted C file/import loader and serial opaque native Run chunk driver",
+      "sourceAlgorithms": "unchanged canonical Bend parser/expansion/checker/JS library emitter",
+      "hostChecking": false,
+      "hostParsing": false,
+      "embeddedSource": false,
+      "cachedAst": false,
+      "parserFuelRepresentation": "eager native 8M-cell chain per source; JS harness uses lazy cells for the same finite fuel; allocation time remains included in parse",
+      "fuelMemoryEvidence": "per-source native process RSS high-water before/after allocation (not isolated live-byte attribution); guardian samples whole-tree RSS and physical footprint including fuel",
+      "outputPatches": 0,
+      "checksExcluded": 0,
+      "nativeBinaryBootstrap": false
+    },
+    "protectedPins": {
+      "/private/tmp/bend2039-upgrade/evals/native_compiler_experiment.ts": "9108d727d3a46add61f672be9a96095c2cd7a65dbe6a3e7108e2964a90ef7d46",
+      "/private/tmp/bend2039-upgrade/evals/native_compiler_llvm.ts": "d8f2c420662e3ff93795ebe866cbfe7a459b131b74c3243ba2f2ba9d625e8af3",
+      "/private/tmp/bend2039-upgrade/bend2/bend.ts": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+      "/private/tmp/bend2039-upgrade/bend2/comp.ts": "881137cef06d237068daf4740368baab826abab1be07181cc4ec2bc635cff2f1",
+      "/private/tmp/bend2039-upgrade/evals/native_compiler_driver.bend": "768203e900f53cdf8d90b50966631ca3a3964dd50003658b07a28b39395f3ec3",
+      "/private/tmp/bend2039-upgrade/evals/native_compiler_host.c": "7d75edf7c7b8ac045df772b242e885801b9ab3fae5fc346957489a35847d66fe",
+      "/private/tmp/bend2039-upgrade/bend2/base.bend": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+      "/private/tmp/bend2039-upgrade/evals/heavy_gate.ts": "204f3529704435455d20a9d5a126a8e9c62e002b6fed9044c8319da8a3c26ff2",
+      "/private/tmp/bend2039-upgrade/evals/heavy_gate_native.c": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b",
+      "/private/tmp/bend2039-upgrade/checkpoints/root-release2039g2.native.corpus.json": "2db4985eac2d08c92808ee675a5edd853356e0360fe804e06e8309dd74d41b7b"
+    },
+    "loadedInputs": {
+      "/private/tmp/bend2039-upgrade/checkpoints/.bootstrap_compiler_root_release2039g2.bend": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+      "/private/tmp/bend2039-upgrade/bend2/base.bend": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+      "/private/tmp/bend2039-upgrade/bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+      "/private/tmp/bend2039-upgrade/bend2/selfhost/lexer.bend": "a81265d4ab248c5ea74bf52987e1163773866a01b264ff1a98895d91139d6f53",
+      "/private/tmp/bend2039-upgrade/bend2/selfhost/core.bend": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+      "/private/tmp/bend2039-upgrade/bend2/selfhost/loaded_module.bend": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+      "/private/tmp/bend2039-upgrade/bend2/selfhost/backend_ir.bend": "f19e76411b589cc396cda80bb8ad387cdb5e9aef17ae287641f0d29696a88e9e",
+      "/private/tmp/bend2039-upgrade/bend2/selfhost/checked_frontend.bend": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+      "/private/tmp/bend2039-upgrade/bend2/selfhost/checker_arena.bend": "fb8651ab2e6304faded5eb312ffe95175a177254f7dd704eca7a9b0896a40e31",
+      "/private/tmp/bend2039-upgrade/bend2/selfhost/scope_lookup.bend": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
+      "/private/tmp/bend2039-upgrade/bend2/selfhost/checker_ir.bend": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+      "/private/tmp/bend2039-upgrade/bend2/selfhost/index_lookup.bend": "563c9b152699b490cf68b264e6c4dea4a4e6770dfcf527cf6c81911cb5ea1b78",
+      "/private/tmp/bend2039-upgrade/checkpoints/template_steps_v1.bend": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4",
+      "/private/tmp/bend2039-upgrade/bend2/selfhost/sha256.bend": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+      "/private/tmp/bend2039-upgrade/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+      "/private/tmp/bend2039-upgrade/checkpoints/checker_core_steps_v1.bend": "d6000fd556d550f45ccca6adeaaa6e2b0d6aa2fc7604fae0959d650f6d7d175c",
+      "/private/tmp/bend2039-upgrade/checkpoints/emitter_steps_v1.bend": "024bd0e0401052a5001c269d24100ba4a65bc572d82723e8e73b2ea6bce21455",
+      "/private/tmp/bend2039-upgrade/bend2/selfhost/c_backend_sharing.bend": "c8861993d2ad81057a9ba8b187eb75f743a9005fbb021b43083e7e2906597a40",
+      "/private/tmp/bend2039-upgrade/evals/native_compiler_driver.bend": "768203e900f53cdf8d90b50966631ca3a3964dd50003658b07a28b39395f3ec3",
+      "/private/tmp/bend2039-upgrade/bend2/effs/print.c": "58657b7351daee89121e1df2856f102743c9db7640257e50c6009a0f1080b00e",
+      "/private/tmp/bend2039-upgrade/bend2/effs/print.js": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+      "/private/tmp/bend2039-upgrade/bend2/effs/write.c": "8807a5f655db452c1d846354560c26fe1e94289e5dc0be231d0b71ecc876d02f",
+      "/private/tmp/bend2039-upgrade/bend2/effs/write.js": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+      "/private/tmp/bend2039-upgrade/bend2/effs/print_err.c": "f84aa11c8d0d6af6fa2fee28411f95714d6744ad97156990e43e55c292c9c6fb",
+      "/private/tmp/bend2039-upgrade/bend2/effs/print_err.js": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+      "/private/tmp/bend2039-upgrade/bend2/effs/get_env.c": "b4903e94681340f9e02187457fabe9461c1b4e43646b7e1573f5d21e954e3a34",
+      "/private/tmp/bend2039-upgrade/bend2/effs/get_env.js": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4",
+      "/private/tmp/bend2039-upgrade/bend2/effs/args.c": "7717332d0b8c8ba28d6dbe60b62a23dce99ea6828ada7d1f9b664f4dc388e84e",
+      "/private/tmp/bend2039-upgrade/bend2/effs/args.js": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82",
+      "/private/tmp/bend2039-upgrade/bend2/effs/process_run.c": "554cfbdf9a6de163f00fc1b23dc8f3df10821cfce336caa1cb5db439b8a55e1f",
+      "/private/tmp/bend2039-upgrade/bend2/effs/process_run.js": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729",
+      "/private/tmp/bend2039-upgrade/bend2/effs/random_u32.c": "75429b2b42e00562177fe33a5e18d2730478847f58c4038b048e78131e1b8c0a",
+      "/private/tmp/bend2039-upgrade/bend2/effs/random_u32.js": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+      "/private/tmp/bend2039-upgrade/bend2/effs/spawn.c": "05e11ae3f1461d9c72440af3b1786c076b418d2faff45639ac25ba464ee73cd5",
+      "/private/tmp/bend2039-upgrade/bend2/effs/spawn.js": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+      "/private/tmp/bend2039-upgrade/bend2/effs/sleep.c": "1dde3701026517d5272d2ff5344d3a8643bec264dbad9f266fdae1c4aaf7601c",
+      "/private/tmp/bend2039-upgrade/bend2/effs/sleep.js": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+      "/private/tmp/bend2039-upgrade/bend2/effs/now.c": "fc4c1d87a4fb2ace7d5b6c57b434cc3d953a15bdf213020912df6c17aa2352d6",
+      "/private/tmp/bend2039-upgrade/bend2/effs/now.js": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+      "/private/tmp/bend2039-upgrade/bend2/effs/thread_count.c": "d4889ed7757dccce03729c9568b88188128f2c1576166a3dc184a8707ed44568",
+      "/private/tmp/bend2039-upgrade/bend2/effs/thread_count.js": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+      "/private/tmp/bend2039-upgrade/bend2/effs/chan.c": "af09b2749741bcc54f56c8f81803073818a165d4cad4c817708e359d677b2a52",
+      "/private/tmp/bend2039-upgrade/bend2/effs/chan.js": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f",
+      "/private/tmp/bend2039-upgrade/bend2/effs/file_open.c": "b987bcb0f9a89d769714ddf8cbecca211c4392e4098da19b411d09f5c088d360",
+      "/private/tmp/bend2039-upgrade/bend2/effs/file_open.js": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694",
+      "/private/tmp/bend2039-upgrade/bend2/effs/file_read.c": "ab577225fa98a034c09d7eb6326b74808756dc6203b0e2599a459876382f090d",
+      "/private/tmp/bend2039-upgrade/bend2/effs/file_read.js": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+      "/private/tmp/bend2039-upgrade/bend2/effs/file_size.c": "ed0d74fd6b9f14ea471bfe5dd80ecbb2c5abb6a8406519fb2c7e1a1acf3dd5af",
+      "/private/tmp/bend2039-upgrade/bend2/effs/file_size.js": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+      "/private/tmp/bend2039-upgrade/bend2/effs/file_write.c": "da810ad9aa76ad1431622292529fa3edebabc4b6a7ee20ae833097b71bb595e5",
+      "/private/tmp/bend2039-upgrade/bend2/effs/file_write.js": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0",
+      "/private/tmp/bend2039-upgrade/bend2/effs/file_close.c": "033da9beb0b484fbc8784044193bf69004f858f6ad86e0c31b4beb89df1349ca",
+      "/private/tmp/bend2039-upgrade/bend2/effs/file_close.js": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+      "/private/tmp/bend2039-upgrade/bend2/effs/tcp_listen.c": "efc7528de96abd9f62f299833c1ac7b0e86528292c746b114d2684b5bac52899",
+      "/private/tmp/bend2039-upgrade/bend2/effs/tcp_listen.js": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+      "/private/tmp/bend2039-upgrade/bend2/effs/tcp_accept.c": "bf7ca1685ed388ce97827ea8379881fbdf5359c7c663ad03eeb8da34bd8584ef",
+      "/private/tmp/bend2039-upgrade/bend2/effs/tcp_accept.js": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+      "/private/tmp/bend2039-upgrade/bend2/effs/tcp_connect.c": "8d17c097138709d71e9d9e1fbc4255007c5e80c93ee384c4a3510b6ac8d10da3",
+      "/private/tmp/bend2039-upgrade/bend2/effs/tcp_connect.js": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb",
+      "/private/tmp/bend2039-upgrade/bend2/effs/tcp_send.c": "993cc8ee5b39fd54a4aeace102602ecf2841ce1f402fe6b2407ebaca837383f9",
+      "/private/tmp/bend2039-upgrade/bend2/effs/tcp_send.js": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6",
+      "/private/tmp/bend2039-upgrade/bend2/effs/tcp_recv.c": "249c8789cd2f541ad00068882de16a00870c2f81a8168b0ac7a59db1e3cb0c6f",
+      "/private/tmp/bend2039-upgrade/bend2/effs/tcp_recv.js": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+      "/private/tmp/bend2039-upgrade/bend2/effs/udp_bind.c": "a1be1bc5c03d430fc6eb43982651073e144872956fadaee98c3700be59352ee3",
+      "/private/tmp/bend2039-upgrade/bend2/effs/udp_bind.js": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+      "/private/tmp/bend2039-upgrade/bend2/effs/udp_send_to.c": "b3a87e56958d8071a368da2edb4748e9496b3eed58b93d6cb4f8af398dd1011a",
+      "/private/tmp/bend2039-upgrade/bend2/effs/udp_send_to.js": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+      "/private/tmp/bend2039-upgrade/bend2/effs/udp_recv_from.c": "1ce914be6cd6153732258f06343e5bcf9765a7fac7e3c3f0462facba7060e067",
+      "/private/tmp/bend2039-upgrade/bend2/effs/udp_recv_from.js": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad",
+      "/private/tmp/bend2039-upgrade/bend2/effs/socket_close.c": "abea115d2928d4942a9d89898d2022c0f1b19c52db48d0b060c2356d261bfa77",
+      "/private/tmp/bend2039-upgrade/bend2/effs/socket_close.js": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+      "/private/tmp/bend2039-upgrade/bend2/effs/listener_close.c": "11f6bac6342a37e97b9656e96bdca7d052ed0a7a0cab3b05ea87657020cfb7a2",
+      "/private/tmp/bend2039-upgrade/bend2/effs/listener_close.js": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+      "/private/tmp/bend2039-upgrade/bend2/effs/window.c": "bf8d5779775ba9566d4bbeb8706a9ec993efb724dae7af8a76c38501ab4092c2",
+      "/private/tmp/bend2039-upgrade/bend2/effs/window_open.js": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+      "/private/tmp/bend2039-upgrade/bend2/effs/window_frame.js": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+      "/private/tmp/bend2039-upgrade/bend2/effs/window_set_title.js": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+      "/private/tmp/bend2039-upgrade/bend2/effs/window_grab.js": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+      "/private/tmp/bend2039-upgrade/bend2/effs/window_close.js": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+      "/private/tmp/bend2039-upgrade/bend2/effs/audio.c": "f0fac2bee02918b4958ad1e7508945824fcd98ce9a2e7ede657304c4f8905b85",
+      "/private/tmp/bend2039-upgrade/bend2/effs/audio_open.js": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9",
+      "/private/tmp/bend2039-upgrade/bend2/effs/audio_write.js": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6",
+      "/private/tmp/bend2039-upgrade/bend2/effs/audio_close.js": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+      "/private/tmp/bend2039-upgrade/evals/native_compiler_host.c": "7d75edf7c7b8ac045df772b242e885801b9ab3fae5fc346957489a35847d66fe"
+    },
+    "source": "/private/tmp/bend2039-upgrade/checkpoints/.bootstrap_compiler_root_release2039g2.bend",
+    "sourceSha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+    "bridge": "/private/tmp/bend2039-upgrade/evals/native_compiler_driver.bend",
+    "eventsFullyValidated": 12723,
+    "codegenTrace": false,
+    "diagnosticOnlyCodegenTiming": false,
+    "ccOptimization": {
+      "level": 1,
+      "flag": "-O1",
+      "officialDefault": false,
+      "diagnosticTradeoff": true
+    },
+    "checkedDefinitions": 12144,
+    "expectedSourceDefinitions": 12144,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "kernelSha256": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+    "compilerSha256": "881137cef06d237068daf4740368baab826abab1be07181cc4ec2bc635cff2f1",
+    "cPath": "/tmp/bend2039g3-settled-native.c",
+    "cSha256": "ea656da6c8c41c9045908273320e0c4838a85174979f4a01a93e255a45dfb82c",
+    "artifact": "/tmp/bend2039g3-settled-native",
+    "runtime": {
+      "name": "bun",
+      "executable": "/opt/homebrew/Cellar/bun/1.4.3/bin/bun",
+      "execArgv": [],
+      "bun": "1.4.3",
+      "revision": "c6da4a4d3010e5553438c60f6bd76d981976867c",
+      "heapLimitMiB": null,
+      "stackMiB": null,
+      "stack": "Bun main-thread default",
+      "automaticGcRamHint": {
+        "source": "BUN_JSC_forceRAMSize",
+        "bytes": "4294967296",
+        "hardLimit": false
+      },
+      "manualGC": false,
+      "profiling": null
+    },
+    "compilerProfile": null,
+    "validationMs": 2224.807292,
+    "codegenMs": 359829.84120900003,
+    "elapsedMs": 365818.5845,
+    "artifactSha256": "6e4844ea0c4f125c5631c57dc88351af86c5d8ed9a144dae44cc9536e2f77b81",
+    "buildCommands": [
+      [
+        "/usr/bin/clang",
+        "--version"
+      ],
+      [
+        "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/opt",
+        "--version"
+      ],
+      [
+        "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/llvm-split",
+        "--version"
+      ],
+      [
+        "/usr/bin/xcrun",
+        "--show-sdk-path"
+      ],
+      [
+        "/usr/bin/clang",
+        "-std=c11",
+        "-O1",
+        "-E",
+        "-dM",
+        "/tmp/bend2039g3-settled-native.c",
+        "-isysroot",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
+      ],
+      [
+        "/usr/bin/clang",
+        "-std=c11",
+        "-O1",
+        "-c",
+        "/tmp/bend2039g3-settled-native.c",
+        "-isysroot",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+        "-o",
+        "/tmp/bend2039g3-settled-native",
+        "-###"
+      ],
+      [
+        "/usr/bin/clang",
+        "-std=c11",
+        "-O1",
+        "-Xclang",
+        "-disable-llvm-passes",
+        "-emit-llvm",
+        "-c",
+        "/tmp/bend2039g3-settled-native.c",
+        "-isysroot",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+        "-o",
+        "/tmp/.native-llvm-aGGZcT/raw.bc"
+      ],
+      [
+        "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/opt",
+        "-passes=function(mem2reg),always-inline",
+        "/tmp/.native-llvm-aGGZcT/raw.bc",
+        "-o",
+        "/tmp/.native-llvm-aGGZcT/prepared.bc"
+      ],
+      [
+        "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/llvm-split",
+        "-j4",
+        "/tmp/.native-llvm-aGGZcT/prepared.bc",
+        "-o",
+        "/tmp/.native-llvm-aGGZcT/part.bc"
+      ],
+      [
+        "/usr/bin/clang",
+        "-O1",
+        "-x",
+        "ir",
+        "-c",
+        "/tmp/.native-llvm-aGGZcT/part.bc3",
+        "-isysroot",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+        "-o",
+        "/tmp/.native-llvm-aGGZcT/part3.o"
+      ],
+      [
+        "/usr/bin/clang",
+        "-O1",
+        "-x",
+        "ir",
+        "-c",
+        "/tmp/.native-llvm-aGGZcT/part.bc2",
+        "-isysroot",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+        "-o",
+        "/tmp/.native-llvm-aGGZcT/part2.o"
+      ],
+      [
+        "/usr/bin/clang",
+        "-O1",
+        "-x",
+        "ir",
+        "-c",
+        "/tmp/.native-llvm-aGGZcT/part.bc1",
+        "-isysroot",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+        "-o",
+        "/tmp/.native-llvm-aGGZcT/part1.o"
+      ],
+      [
+        "/usr/bin/clang",
+        "-O1",
+        "-x",
+        "ir",
+        "-c",
+        "/tmp/.native-llvm-aGGZcT/part.bc0",
+        "-isysroot",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+        "-o",
+        "/tmp/.native-llvm-aGGZcT/part0.o"
+      ],
+      [
+        "/usr/bin/clang",
+        "/tmp/.native-llvm-aGGZcT/part0.o",
+        "/tmp/.native-llvm-aGGZcT/part1.o",
+        "/tmp/.native-llvm-aGGZcT/part2.o",
+        "/tmp/.native-llvm-aGGZcT/part3.o",
+        "-isysroot",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+        "-lpthread",
+        "-lm",
+        "-o",
+        "/tmp/bend2039g3-settled-native"
+      ]
+    ],
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 5351522304,
+      "peakFootprintBytes": 5093742448,
+      "elapsedMs": 439616,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/opt/homebrew/Cellar/bun/1.4.3/bin/bun",
+        "--smol",
+        "/private/tmp/bend2039-upgrade/evals/native_compiler_experiment.ts",
+        "--mode=build",
+        "--corpus=checkpoints/root-release2039g2.native.corpus.json",
+        "--artifact=/tmp/bend2039g3-settled-native",
+        "--report=checkpoints/root-release2039g3-settled-native-build.json",
+        "--cc-pipeline=llvm-split",
+        "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+        "--cc-opt=1",
+        "--internal=build"
+      ],
+      "label": "Native CPU compiler build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793074858345-49975f9b5bcd568f.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "lastProgress": {
+      "phase": "llvm-pipeline",
+      "event": "complete",
+      "unixMs": 1793075297926,
+      "pid": 8475,
+      "worker": false,
+      "rssBytes": 21152344,
+      "heapUsedBytes": 7402410,
+      "cpuMs": 96.252,
+      "elapsedMs": 73456.249583
+    },
+    "ccPipeline": {
+      "kind": "llvm-split",
+      "status": "PASS",
+      "optimization": "-O1",
+      "partitions": 4,
+      "maxBackendChildren": 3,
+      "source": "/tmp/bend2039g3-settled-native.c",
+      "sourceSha256": "ea656da6c8c41c9045908273320e0c4838a85174979f4a01a93e255a45dfb82c",
+      "artifact": "/tmp/bend2039g3-settled-native",
+      "temporaryFilesRemoved": true,
+      "elapsedMs": 73456.249583,
+      "stages": [
+        {
+          "name": "clang-version",
+          "command": [
+            "/usr/bin/clang",
+            "--version"
+          ],
+          "timingCommand": [
+            "/usr/bin/time",
+            "-lp",
+            "/usr/bin/clang",
+            "--version"
+          ],
+          "status": "PASS",
+          "startedMs": 4.787582999999998,
+          "timedRealSeconds": 0.01,
+          "userSeconds": 0,
+          "systemSeconds": 0,
+          "maxRssBytes": 14876672,
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 19.845333000000004,
+          "stdoutSha256": "d23e1e266991777af51323c8a611147c28082ac12f936caa38bc345779f78483",
+          "stdoutBytes": 201,
+          "stderrSha256": "1cc3494e7a7d73ca224d5f22b8906069f43a5b34d2c25eb6d90d336eaf0390e7",
+          "stderrBytes": 753
+        },
+        {
+          "name": "opt-version",
+          "command": [
+            "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/opt",
+            "--version"
+          ],
+          "timingCommand": [
+            "/usr/bin/time",
+            "-lp",
+            "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/opt",
+            "--version"
+          ],
+          "status": "PASS",
+          "startedMs": 24.998583000000004,
+          "timedRealSeconds": 0.09,
+          "userSeconds": 0,
+          "systemSeconds": 0.02,
+          "maxRssBytes": 23953408,
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 101.57995799999999,
+          "stdoutSha256": "5f4572af61a0d690761e1efd8ca7d532242e23d21cce276cb569354a28fb5a6b",
+          "stdoutBytes": 112,
+          "stderrSha256": "234dfe7f1dc4cf61da61a36ad3a99999414d2e7e6e62cb5bb10a975cd40bb114",
+          "stderrBytes": 753
+        },
+        {
+          "name": "llvm-split-version",
+          "command": [
+            "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/llvm-split",
+            "--version"
+          ],
+          "timingCommand": [
+            "/usr/bin/time",
+            "-lp",
+            "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/llvm-split",
+            "--version"
+          ],
+          "status": "PASS",
+          "startedMs": 126.82850000000002,
+          "timedRealSeconds": 0.01,
+          "userSeconds": 0,
+          "systemSeconds": 0,
+          "maxRssBytes": 19939328,
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 14.004041999999998,
+          "stdoutSha256": "08c7a33c77dce21039b72d2b65643f1151d74b9447881c9c37e1f49ff027dbc8",
+          "stdoutBytes": 48,
+          "stderrSha256": "67fcbd69529f9a5730177d169fb08f0fad0ef4ace000e37a2eb62e8032c74ab7",
+          "stderrBytes": 753
+        },
+        {
+          "name": "sdk",
+          "command": [
+            "/usr/bin/xcrun",
+            "--show-sdk-path"
+          ],
+          "timingCommand": [
+            "/usr/bin/time",
+            "-lp",
+            "/usr/bin/xcrun",
+            "--show-sdk-path"
+          ],
+          "status": "PASS",
+          "startedMs": 141.204375,
+          "timedRealSeconds": 0.01,
+          "userSeconds": 0,
+          "systemSeconds": 0,
+          "maxRssBytes": 8585216,
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 12.659707999999995,
+          "stdoutSha256": "5cb2cff3541ae65432805aa9d9bbfa3454381ef60694cc7b47eed0e2bf973aaf",
+          "stdoutBytes": 95,
+          "stderrSha256": "7a0cc7f94429a1b35fe97d3d577751fa967dc0f743acad9a678772b0744698cb",
+          "stderrBytes": 753
+        },
+        {
+          "name": "abi-macros",
+          "command": [
+            "/usr/bin/clang",
+            "-std=c11",
+            "-O1",
+            "-E",
+            "-dM",
+            "/tmp/bend2039g3-settled-native.c",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
+          ],
+          "timingCommand": [
+            "/usr/bin/time",
+            "-lp",
+            "/usr/bin/clang",
+            "-std=c11",
+            "-O1",
+            "-E",
+            "-dM",
+            "/tmp/bend2039g3-settled-native.c",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
+          ],
+          "status": "PASS",
+          "startedMs": 154.1405,
+          "timedRealSeconds": 1.52,
+          "userSeconds": 1.39,
+          "systemSeconds": 0.09,
+          "maxRssBytes": 605847552,
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 1525.9755,
+          "stdoutSha256": "a0fa30a02850ae43645894deb0c7177ef657811aab60119b3e57a528329b824e",
+          "stdoutBytes": 2793047,
+          "stderrSha256": "5bfacad8d7bda4c685908db025d5435643d8010ee816d454ef12e7cfa7baf054",
+          "stderrBytes": 753
+        },
+        {
+          "name": "abi-driver",
+          "command": [
+            "/usr/bin/clang",
+            "-std=c11",
+            "-O1",
+            "-c",
+            "/tmp/bend2039g3-settled-native.c",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-o",
+            "/tmp/bend2039g3-settled-native",
+            "-###"
+          ],
+          "timingCommand": [
+            "/usr/bin/time",
+            "-lp",
+            "/usr/bin/clang",
+            "-std=c11",
+            "-O1",
+            "-c",
+            "/tmp/bend2039g3-settled-native.c",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-o",
+            "/tmp/bend2039g3-settled-native",
+            "-###"
+          ],
+          "status": "PASS",
+          "startedMs": 1684.896708,
+          "timedRealSeconds": 0.02,
+          "userSeconds": 0,
+          "systemSeconds": 0,
+          "maxRssBytes": 15925248,
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 22.832125000000133,
+          "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdoutBytes": 0,
+          "stderrSha256": "bbadabb15f0d6b25650eea2c9c444e5879f973f776840b3e3f9c4a9df20c64ea",
+          "stderrBytes": 4887
+        },
+        {
+          "name": "frontend",
+          "command": [
+            "/usr/bin/clang",
+            "-std=c11",
+            "-O1",
+            "-Xclang",
+            "-disable-llvm-passes",
+            "-emit-llvm",
+            "-c",
+            "/tmp/bend2039g3-settled-native.c",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-o",
+            "/tmp/.native-llvm-aGGZcT/raw.bc"
+          ],
+          "timingCommand": [
+            "/usr/bin/time",
+            "-lp",
+            "/usr/bin/clang",
+            "-std=c11",
+            "-O1",
+            "-Xclang",
+            "-disable-llvm-passes",
+            "-emit-llvm",
+            "-c",
+            "/tmp/bend2039g3-settled-native.c",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-o",
+            "/tmp/.native-llvm-aGGZcT/raw.bc"
+          ],
+          "status": "PASS",
+          "startedMs": 1722.7725,
+          "timedRealSeconds": 21.07,
+          "userSeconds": 19.91,
+          "systemSeconds": 0.95,
+          "maxRssBytes": 5198282752,
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 21081.591542000002,
+          "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdoutBytes": 0,
+          "stderrSha256": "62a9ca8a2377c81d3483b5af2bd72cf646d3d357bed68149a0a654db7601f24d",
+          "stderrBytes": 755
+        },
+        {
+          "name": "mem2reg-always-inline",
+          "command": [
+            "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/opt",
+            "-passes=function(mem2reg),always-inline",
+            "/tmp/.native-llvm-aGGZcT/raw.bc",
+            "-o",
+            "/tmp/.native-llvm-aGGZcT/prepared.bc"
+          ],
+          "timingCommand": [
+            "/usr/bin/time",
+            "-lp",
+            "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/opt",
+            "-passes=function(mem2reg),always-inline",
+            "/tmp/.native-llvm-aGGZcT/raw.bc",
+            "-o",
+            "/tmp/.native-llvm-aGGZcT/prepared.bc"
+          ],
+          "status": "PASS",
+          "startedMs": 22811.549292,
+          "timedRealSeconds": 12.62,
+          "userSeconds": 11.96,
+          "systemSeconds": 0.55,
+          "maxRssBytes": 2847604736,
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 12629.408541999997,
+          "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdoutBytes": 0,
+          "stderrSha256": "1e369f66078d5bfcd83132ca38f7aa6fca31bd2afcb5e3ebdca65a2df3cf4de5",
+          "stderrBytes": 755
+        },
+        {
+          "name": "split",
+          "command": [
+            "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/llvm-split",
+            "-j4",
+            "/tmp/.native-llvm-aGGZcT/prepared.bc",
+            "-o",
+            "/tmp/.native-llvm-aGGZcT/part.bc"
+          ],
+          "timingCommand": [
+            "/usr/bin/time",
+            "-lp",
+            "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/llvm-split",
+            "-j4",
+            "/tmp/.native-llvm-aGGZcT/prepared.bc",
+            "-o",
+            "/tmp/.native-llvm-aGGZcT/part.bc"
+          ],
+          "status": "PASS",
+          "startedMs": 35447.832375,
+          "timedRealSeconds": 6.89,
+          "userSeconds": 6.47,
+          "systemSeconds": 0.37,
+          "maxRssBytes": 1784414208,
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 6893.145333,
+          "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdoutBytes": 0,
+          "stderrSha256": "3cdaa035aceaccf462614cc8ad50b9580db8b08fff48ad9c51d5c2117eec72a2",
+          "stderrBytes": 753
+        },
+        {
+          "name": "opt-codegen-3",
+          "command": [
+            "/usr/bin/clang",
+            "-O1",
+            "-x",
+            "ir",
+            "-c",
+            "/tmp/.native-llvm-aGGZcT/part.bc3",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-o",
+            "/tmp/.native-llvm-aGGZcT/part3.o"
+          ],
+          "timingCommand": [
+            "/usr/bin/time",
+            "-lp",
+            "/usr/bin/clang",
+            "-O1",
+            "-x",
+            "ir",
+            "-c",
+            "/tmp/.native-llvm-aGGZcT/part.bc3",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-o",
+            "/tmp/.native-llvm-aGGZcT/part3.o"
+          ],
+          "status": "PASS",
+          "startedMs": 42347.852042,
+          "timedRealSeconds": 30.99,
+          "userSeconds": 29.85,
+          "systemSeconds": 0.41,
+          "maxRssBytes": 1558331392,
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 30996.918791999997,
+          "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdoutBytes": 0,
+          "stderrSha256": "baa8a3be275b9c396bbda1948639ca9b4853da77df87590778cfce80d1df9597",
+          "stderrBytes": 755
+        },
+        {
+          "name": "opt-codegen-2",
+          "command": [
+            "/usr/bin/clang",
+            "-O1",
+            "-x",
+            "ir",
+            "-c",
+            "/tmp/.native-llvm-aGGZcT/part.bc2",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-o",
+            "/tmp/.native-llvm-aGGZcT/part2.o"
+          ],
+          "timingCommand": [
+            "/usr/bin/time",
+            "-lp",
+            "/usr/bin/clang",
+            "-O1",
+            "-x",
+            "ir",
+            "-c",
+            "/tmp/.native-llvm-aGGZcT/part.bc2",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-o",
+            "/tmp/.native-llvm-aGGZcT/part2.o"
+          ],
+          "status": "PASS",
+          "startedMs": 42351.7655,
+          "timedRealSeconds": 23.19,
+          "userSeconds": 22.03,
+          "systemSeconds": 0.4,
+          "maxRssBytes": 1685929984,
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 23197.322375000003,
+          "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdoutBytes": 0,
+          "stderrSha256": "bbf572d3b2d2040e3e446cdf48bd63c7feb9afcd99c293a58fdf91f417af9a99",
+          "stderrBytes": 755
+        },
+        {
+          "name": "opt-codegen-1",
+          "command": [
+            "/usr/bin/clang",
+            "-O1",
+            "-x",
+            "ir",
+            "-c",
+            "/tmp/.native-llvm-aGGZcT/part.bc1",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-o",
+            "/tmp/.native-llvm-aGGZcT/part1.o"
+          ],
+          "timingCommand": [
+            "/usr/bin/time",
+            "-lp",
+            "/usr/bin/clang",
+            "-O1",
+            "-x",
+            "ir",
+            "-c",
+            "/tmp/.native-llvm-aGGZcT/part.bc1",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-o",
+            "/tmp/.native-llvm-aGGZcT/part1.o"
+          ],
+          "status": "PASS",
+          "startedMs": 42354.8185,
+          "timedRealSeconds": 12.51,
+          "userSeconds": 11.71,
+          "systemSeconds": 0.3,
+          "maxRssBytes": 989986816,
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 12520.918875000003,
+          "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdoutBytes": 0,
+          "stderrSha256": "e585caca5ced9f4d189a802b9a5aa97df60c7718c3c371e5a7fdfd9c288c7739",
+          "stderrBytes": 755
+        },
+        {
+          "name": "opt-codegen-0",
+          "command": [
+            "/usr/bin/clang",
+            "-O1",
+            "-x",
+            "ir",
+            "-c",
+            "/tmp/.native-llvm-aGGZcT/part.bc0",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-o",
+            "/tmp/.native-llvm-aGGZcT/part0.o"
+          ],
+          "timingCommand": [
+            "/usr/bin/time",
+            "-lp",
+            "/usr/bin/clang",
+            "-O1",
+            "-x",
+            "ir",
+            "-c",
+            "/tmp/.native-llvm-aGGZcT/part.bc0",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-o",
+            "/tmp/.native-llvm-aGGZcT/part0.o"
+          ],
+          "status": "PASS",
+          "startedMs": 54882.86225,
+          "timedRealSeconds": 12.67,
+          "userSeconds": 12.24,
+          "systemSeconds": 0.23,
+          "maxRssBytes": 1081147392,
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 12680.038832999999,
+          "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdoutBytes": 0,
+          "stderrSha256": "cb06b8e765067280372cee2d9713eb3840bac659c5cd8a4573e322a2eab35af1",
+          "stderrBytes": 755
+        },
+        {
+          "name": "link",
+          "command": [
+            "/usr/bin/clang",
+            "/tmp/.native-llvm-aGGZcT/part0.o",
+            "/tmp/.native-llvm-aGGZcT/part1.o",
+            "/tmp/.native-llvm-aGGZcT/part2.o",
+            "/tmp/.native-llvm-aGGZcT/part3.o",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-lpthread",
+            "-lm",
+            "-o",
+            "/tmp/bend2039g3-settled-native"
+          ],
+          "timingCommand": [
+            "/usr/bin/time",
+            "-lp",
+            "/usr/bin/clang",
+            "/tmp/.native-llvm-aGGZcT/part0.o",
+            "/tmp/.native-llvm-aGGZcT/part1.o",
+            "/tmp/.native-llvm-aGGZcT/part2.o",
+            "/tmp/.native-llvm-aGGZcT/part3.o",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-lpthread",
+            "-lm",
+            "-o",
+            "/tmp/bend2039g3-settled-native"
+          ],
+          "status": "PASS",
+          "startedMs": 73351.735583,
+          "timedRealSeconds": 0.08,
+          "userSeconds": 0.15,
+          "systemSeconds": 0.03,
+          "maxRssBytes": 126779392,
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 83.042082999993,
+          "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdoutBytes": 0,
+          "stderrSha256": "1d44e299800d91bfb2e1c1ca3ebcdf48119ed58e89226d799a45212f53969049",
+          "stderrBytes": 753
+        }
+      ],
+      "toolPins": {
+        "/usr/bin/clang": "b8763cf250e607a778bb4603cecb5b90338814d0a3dfcba0d57b1de242f610e9",
+        "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/opt": "df9cd5f276b4a14b9f876aff8acc34cce15a869897fdaaf90fd2c12dd619d4f0",
+        "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/llvm-split": "2503aba489923af7ecbdfbbb72c756724ac0ed0179b4dbad2cfac37a716cca73",
+        "/usr/bin/time": "e1e98e68fd988f353cc51842f5a576bc2cb4c341ae24fd2ca4f625f33b38f23a"
+      },
+      "versions": {
+        "clang": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin25.6.0\nThread model: posix\nInstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin",
+        "opt": "Homebrew LLVM version 21.1.8\n  Optimized build.\n  Default target: arm64-apple-darwin25.6.0\n  Host CPU: apple-m1",
+        "llvm-split": "Homebrew LLVM version 21.1.8\n  Optimized build."
+      },
+      "accounting": "Darwin /usr/bin/time -lp wait4 user/system CPU and maxRSS bytes per command; stage wallMs includes launch/reap. The unchanged outer guardian samples the complete build process tree, including concurrent compiler descendants. Interrupted stages may have null resource fields.",
+      "sdk": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+      "abi": {
+        "preprocessorCommand": [
+          "/usr/bin/clang",
+          "-std=c11",
+          "-O1",
+          "-E",
+          "-dM",
+          "/tmp/bend2039g3-settled-native.c",
+          "-isysroot",
+          "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
+        ],
+        "macros": [
+          "#define OUTLINE FAR __attribute__((cold)) PRESERVE(preserve_most)",
+          "#define PRESERVE(A) __attribute__((A))",
+          "#define WL_DYN(F) __attribute__((musttail)) return wl_tab[F](WL_ALL)",
+          "#define WL_FN FAR PRESERVE(preserve_none) Term",
+          "#define WL_JMP(F) __attribute__((musttail)) return WL_##F(WL_ALL)",
+          "#define __ARM_ARCH 8",
+          "#define __ARM_ARCH_8_2__ 1",
+          "#define __ARM_ARCH_8_3__ 1",
+          "#define __ARM_ARCH_8_4__ 1",
+          "#define __ARM_ARCH_8_5__ 1",
+          "#define __ARM_ARCH_ISA_A64 1",
+          "#define __ARM_ARCH_PROFILE 'A'",
+          "#define __ARM_FEATURE_AES 1",
+          "#define __ARM_FEATURE_ATOMICS 1",
+          "#define __ARM_FEATURE_BTI 1",
+          "#define __ARM_FEATURE_CLZ 1",
+          "#define __ARM_FEATURE_COMPLEX 1",
+          "#define __ARM_FEATURE_CRC32 1",
+          "#define __ARM_FEATURE_CRYPTO 1",
+          "#define __ARM_FEATURE_DIRECTED_ROUNDING 1",
+          "#define __ARM_FEATURE_DIV 1",
+          "#define __ARM_FEATURE_DOTPROD 1",
+          "#define __ARM_FEATURE_FMA 1",
+          "#define __ARM_FEATURE_FP16_FML 1",
+          "#define __ARM_FEATURE_FP16_SCALAR_ARITHMETIC 1",
+          "#define __ARM_FEATURE_FP16_VECTOR_ARITHMETIC 1",
+          "#define __ARM_FEATURE_FRINT 1",
+          "#define __ARM_FEATURE_IDIV 1",
+          "#define __ARM_FEATURE_JCVT 1",
+          "#define __ARM_FEATURE_LDREX 0xF",
+          "#define __ARM_FEATURE_NUMERIC_MAXMIN 1",
+          "#define __ARM_FEATURE_PAUTH 1",
+          "#define __ARM_FEATURE_QRDMX 1",
+          "#define __ARM_FEATURE_RCPC 1",
+          "#define __ARM_FEATURE_SHA2 1",
+          "#define __ARM_FEATURE_SHA3 1",
+          "#define __ARM_FEATURE_SHA512 1",
+          "#define __ARM_FEATURE_UNALIGNED 1",
+          "#define __OPTIMIZE__ 1",
+          "#define __apple_build_version__ 21000334",
+          "#define __clang_version__ \"21.0.0 (clang-2100.3.34.2)\""
+        ],
+        "driverCommand": [
+          "/usr/bin/clang",
+          "-std=c11",
+          "-O1",
+          "-c",
+          "/tmp/bend2039g3-settled-native.c",
+          "-isysroot",
+          "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+          "-o",
+          "/tmp/bend2039g3-settled-native",
+          "-###"
+        ],
+        "driverOutput": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin25.6.0\nThread model: posix\nInstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin\n \"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang\" \"-cc1\" \"-triple\" \"arm64-apple-macosx26.0.0\" \"-O1\" \"-Wundef-prefix=TARGET_OS_\" \"-Wdeprecated-objc-isa-usage\" \"-Werror=deprecated-objc-isa-usage\" \"-Werror=implicit-function-declaration\" \"-emit-obj\" \"-disable-free\" \"-clear-ast-before-backend\" \"-disable-llvm-verifier\" \"-discard-value-names\" \"-main-file-name\" \"bend2039g3-settled-native.c\" \"-mrelocation-model\" \"pic\" \"-pic-level\" \"2\" \"-mframe-pointer=non-leaf\" \"-fno-strict-return\" \"-ffp-contract=on\" \"-fno-rounding-math\" \"-funwind-tables=1\" \"-fobjc-msgsend-selector-stubs\" \"-fno-sized-deallocation\" \"-target-sdk-version=27.0\" \"-fdepfile-entry=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/SDKSettings.json\" \"-fvisibility-inlines-hidden-static-local-var\" \"-fno-modulemap-allow-subdirectory-search\" \"-fdefine-target-os-macros\" \"-fno-assume-unique-vtables\" \"-fno-modulemap-allow-subdirectory-search\" \"-enable-tlsdesc\" \"-target-cpu\" \"apple-m1\" \"-target-feature\" \"+v8.5a\" \"-target-feature\" \"+aes\" \"-target-feature\" \"+altnzcv\" \"-target-feature\" \"+ccdp\" \"-target-feature\" \"+ccpp\" \"-target-feature\" \"+complxnum\" \"-target-feature\" \"+crc\" \"-target-feature\" \"+dotprod\" \"-target-feature\" \"+flagm\" \"-target-feature\" \"+fp-armv8\" \"-target-feature\" \"+fp16fml\" \"-target-feature\" \"+fptoint\" \"-target-feature\" \"+fullfp16\" \"-target-feature\" \"+jsconv\" \"-target-feature\" \"+lse\" \"-target-feature\" \"+neon\" \"-target-feature\" \"+pauth\" \"-target-feature\" \"+perfmon\" \"-target-feature\" \"+predres\" \"-target-feature\" \"+ras\" \"-target-feature\" \"+rcpc\" \"-target-feature\" \"+rdm\" \"-target-feature\" \"+sb\" \"-target-feature\" \"+sha2\" \"-target-feature\" \"+sha3\" \"-target-feature\" \"+specrestrict\" \"-target-feature\" \"+ssbs\" \"-target-abi\" \"darwinpcs\" \"-debugger-tuning=lldb\" \"-fdebug-compilation-dir=/private/tmp/bend2039-upgrade\" \"-target-linker-version\" \"1166.2\" \"-fcoverage-compilation-dir=/private/tmp/bend2039-upgrade\" \"-resource-dir\" \"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/21\" \"-isysroot\" \"/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk\" \"-internal-isystem\" \"/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/local/include\" \"-internal-isystem\" \"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/21/include\" \"-internal-externc-isystem\" \"/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include\" \"-internal-externc-isystem\" \"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include\" \"-internal-iframework\" \"/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks\" \"-internal-iframework\" \"/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/SubFrameworks\" \"-internal-iframework\" \"/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/Library/Frameworks\" \"-Wno-elaborated-enum-base\" \"-std=c11\" \"-ferror-limit\" \"19\" \"-stack-protector\" \"1\" \"-fstack-check\" \"-mdarwin-stkchk-strong-link\" \"-fblocks\" \"-fencode-extended-block-signature\" \"-fregister-global-dtors-with-atexit\" \"-fgnuc-version=4.2.1\" \"-fskip-odr-check-in-gmf\" \"-fmax-type-align=16\" \"-fcommon\" \"-clang-vendor-feature=+disableNonDependentMemberExprInCurrentInstantiation\" \"-fno-odr-hash-protocols\" \"-clang-vendor-feature=+enableAggressiveVLAFolding\" \"-clang-vendor-feature=+revert09abecef7bbf\" \"-clang-vendor-feature=+thisNoAlignAttr\" \"-clang-vendor-feature=+thisNoNullAttr\" \"-clang-vendor-feature=+disableAtImportPrivateFrameworkInImplementationError\" \"-Wno-error=allocator-wrappers\" \"-fdwarf2-cfi-asm\" \"-o\" \"/tmp/bend2039g3-settled-native\" \"-x\" \"c\" \"/tmp/bend2039g3-settled-native.c\"\nreal 0.02\nuser 0.00\nsys 0.00\n            15925248  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                1693  page reclaims\n                  67  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                3944  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  16  involuntary context switches\n           122532929  instructions retired\n            52917010  cycles elapsed\n             2638136  peak memory footprint\n"
+      },
+      "temporaryDirectory": "/tmp/.native-llvm-aGGZcT"
+    },
+    "cBytes": 55201172,
+    "artifactBytes": 15987640
+  },
+  "consumer": {
+    "schemaVersion": 1,
+    "status": "SETTLED_PASS_NATIVE_COMPILER_CONSUMER_PASS",
+    "scope": "Actual O1 split-backend native compiler parses, expands, checks and emits a foreign consumer, then executes emitted JS. Consumer proof for the newly completed whole native build; not bootstrap admission.",
+    "binary": {
+      "path": "/tmp/bend2039g3-settled-native",
+      "sha256": "6e4844ea0c4f125c5631c57dc88351af86c5d8ed9a144dae44cc9536e2f77b81"
+    },
+    "c": {
+      "path": "/tmp/bend2039g3-settled-native.c",
+      "sha256": "ea656da6c8c41c9045908273320e0c4838a85174979f4a01a93e255a45dfb82c"
+    },
+    "input": {
+      "root": "/private/tmp/bend2039-upgrade/tests/io/cid_only_family.bend",
+      "base": "/private/tmp/bend2039-upgrade/bend2/base.bend",
+      "manifest": "/tmp/bend2039g3-settled-consumer-EYaijz/runtime.tsv",
+      "exports": "/tmp/bend2039g3-settled-consumer-EYaijz/exports.txt",
+      "phase": "compile-module",
+      "output": "/tmp/bend2039g3-settled-consumer-EYaijz/program.js",
+      "corpus": {
+        "schemaVersion": 1,
+        "directory": "/private/tmp/bend2039-upgrade",
+        "root": "tests/io/cid_only_family.bend",
+        "exports": [
+          "parsed_module",
+          "parse_with_fuel",
+          "expand_modules_start",
+          "template_step",
+          "check_expanded_start",
+          "inspect_checked_start",
+          "checker_step",
+          "emit_modules_start",
+          "emit_library_start",
+          "emitter_step",
+          "emit_c_modules_start",
+          "emit_c_library_start",
+          "c_emitter_step"
+        ],
+        "files": [
+          {
+            "path": "bend2/base.bend",
+            "sha256": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+            "namespace": ""
+          },
+          {
+            "path": "tests/io/cid_only_family.bend",
+            "sha256": "af71d06df294f351327179d31c52b4ef05a52436c114a16f2ee1dbf27e81e9e9",
+            "namespace": ""
+          },
+          {
+            "path": "bend2/effs/args.js",
+            "sha256": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/audio_close.js",
+            "sha256": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/audio_open.js",
+            "sha256": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/audio_write.js",
+            "sha256": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/chan.js",
+            "sha256": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_close.js",
+            "sha256": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_open.js",
+            "sha256": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_read.js",
+            "sha256": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_size.js",
+            "sha256": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_write.js",
+            "sha256": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/get_env.js",
+            "sha256": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/listener_close.js",
+            "sha256": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/now.js",
+            "sha256": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/print_err.js",
+            "sha256": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/print.js",
+            "sha256": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/process_run.js",
+            "sha256": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/random_u32.js",
+            "sha256": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/sleep.js",
+            "sha256": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/socket_close.js",
+            "sha256": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/spawn.js",
+            "sha256": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_accept.js",
+            "sha256": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_connect.js",
+            "sha256": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_listen.js",
+            "sha256": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_recv.js",
+            "sha256": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_send.js",
+            "sha256": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/thread_count.js",
+            "sha256": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/udp_bind.js",
+            "sha256": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/udp_recv_from.js",
+            "sha256": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/udp_send_to.js",
+            "sha256": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/window_close.js",
+            "sha256": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/window_frame.js",
+            "sha256": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/window_grab.js",
+            "sha256": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/window_open.js",
+            "sha256": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/window_set_title.js",
+            "sha256": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/write.js",
+            "sha256": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+            "external": true
+          },
+          {
+            "path": "tests/io/cid_only_family.js",
+            "sha256": "ca50bcc077297800ee01f93d1c2199ee97e92a9d3d1f6f7e1b0c6247897b63f3",
+            "external": true
+          }
+        ]
+      }
+    },
+    "run": {
+      "command": [
+        "/tmp/bend2039g3-settled-native",
+        "+RTS",
+        "--threads",
+        "1",
+        "--gpu",
+        "off",
+        "--RTS",
+        "/private/tmp/bend2039-upgrade/tests/io/cid_only_family.bend",
+        "/private/tmp/bend2039-upgrade/bend2/base.bend",
+        "/tmp/bend2039g3-settled-consumer-EYaijz/runtime.tsv",
+        "/tmp/bend2039g3-settled-consumer-EYaijz/exports.txt",
+        "compile-module",
+        "/tmp/bend2039g3-settled-consumer-EYaijz/program.js"
+      ],
+      "status": 0,
+      "signal": null,
+      "elapsedMs": 2617,
+      "stdout": "NATIVE_RESULT {\"result\":\"EmitSuccess\",\"bytes\":357375,\"modules\":2}\n",
+      "stderr": "NATIVE_BEGIN {\"computeThreads\":1,\"parserFuel\":8000000,\"phase\":\"compile-module\",\"phaseTraceVersion\":3}\nNATIVE_PHASE_START {\"phase\":\"parse\"}\nNATIVE_FUEL {\"sourceOrdinal\":1,\"cells\":8000000,\"elapsedMs\":32.193,\"processPeakRssBeforeBytes\":4980736,\"processPeakRssAfterBytes\":69009408}\nNATIVE_FUEL {\"sourceOrdinal\":2,\"cells\":8000000,\"elapsedMs\":23.399,\"processPeakRssBeforeBytes\":71811072,\"processPeakRssAfterBytes\":71811072}\nNATIVE_PHASE {\"phase\":\"parse\",\"elapsedMs\":419.454,\"userCpuMs\":407.080,\"systemCpuMs\":10.964,\"modules\":2,\"sourceBytes\":79970,\"foreignBytes\":78587,\"eagerFuelCells\":16000000,\"fuelBuildMs\":55.592}\nNATIVE_PHASE_START {\"phase\":\"expand\"}\nNATIVE_PHASE {\"phase\":\"expand\",\"elapsedMs\":208.363,\"userCpuMs\":207.004,\"systemCpuMs\":0.932,\"chunkAdvances\":28743,\"chunkQuantum\":64}\nNATIVE_PHASE_START {\"phase\":\"check\"}\nNATIVE_PHASE {\"phase\":\"check\",\"elapsedMs\":1772.815,\"userCpuMs\":1759.988,\"systemCpuMs\":7.806,\"chunkAdvances\":143285,\"chunkQuantum\":64}\nNATIVE_PHASE_START {\"phase\":\"emit\"}\nNATIVE_PHASE {\"phase\":\"emit\",\"elapsedMs\":204.314,\"userCpuMs\":199.873,\"systemCpuMs\":3.994,\"chunkAdvances\":14921,\"chunkQuantum\":64}\n",
+      "phases": [
+        {
+          "phase": "parse",
+          "elapsedMs": 419.454,
+          "userCpuMs": 407.08,
+          "systemCpuMs": 10.964,
+          "modules": 2,
+          "sourceBytes": 79970,
+          "foreignBytes": 78587,
+          "eagerFuelCells": 16000000,
+          "fuelBuildMs": 55.592
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 208.363,
+          "userCpuMs": 207.004,
+          "systemCpuMs": 0.932,
+          "chunkAdvances": 28743,
+          "chunkQuantum": 64
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 1772.815,
+          "userCpuMs": 1759.988,
+          "systemCpuMs": 7.806,
+          "chunkAdvances": 143285,
+          "chunkQuantum": 64
+        },
+        {
+          "phase": "emit",
+          "elapsedMs": 204.314,
+          "userCpuMs": 199.873,
+          "systemCpuMs": 3.994,
+          "chunkAdvances": 14921,
+          "chunkQuantum": 64
+        }
+      ],
+      "phaseStarts": [
+        {
+          "phase": "parse"
+        },
+        {
+          "phase": "expand"
+        },
+        {
+          "phase": "check"
+        },
+        {
+          "phase": "emit"
+        }
+      ],
+      "fuel": [
+        {
+          "sourceOrdinal": 1,
+          "cells": 8000000,
+          "elapsedMs": 32.193,
+          "processPeakRssBeforeBytes": 4980736,
+          "processPeakRssAfterBytes": 69009408
+        },
+        {
+          "sourceOrdinal": 2,
+          "cells": 8000000,
+          "elapsedMs": 23.399,
+          "processPeakRssBeforeBytes": 71811072,
+          "processPeakRssAfterBytes": 71811072
+        }
+      ],
+      "begins": [
+        {
+          "computeThreads": 1,
+          "parserFuel": 8000000,
+          "phase": "compile-module",
+          "phaseTraceVersion": 3
+        }
+      ],
+      "results": [
+        {
+          "result": "EmitSuccess",
+          "bytes": 357375,
+          "modules": 2
+        }
+      ]
+    },
+    "execute": {
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "/tmp/bend2039g3-settled-consumer-EYaijz/program.js"
+      ],
+      "status": 0,
+      "stdout": "42\n",
+      "stderr": ""
+    },
+    "outputSha256": "2c9b473d25c1c4467afde44efa353cb31e0161dc2b0c091d8837127149a56e85",
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 202260480,
+      "peakFootprintBytes": 173294888,
+      "elapsedMs": 2718,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "/tmp/bend2039g3-settled-consumer.mjs"
+      ],
+      "label": "heavy command",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793075791895-42120945a30d4b48.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "baseline": {
+    "receipt": "evals/receipts/root2039g2_native_deadline_rejected.json",
+    "cSha256": "ea656da6c8c41c9045908273320e0c4838a85174979f4a01a93e255a45dfb82c",
+    "fullCByteEqual": true
+  },
+  "raw": {
+    "build": {
+      "path": "/private/tmp/bend2039-upgrade/checkpoints/root-release2039g3-settled-native-build.json",
+      "sha256": "cbfb685c35d1ca1a9e5371a50ece8fc07cd2fb03291ba9f6b6565b2c1405354d"
+    },
+    "consumer": {
+      "path": "/tmp/bend2039g3-settled-consumer-EYaijz/receipt.json",
+      "sha256": "f2db5b531b997e800c658140a051af5b6fe96af258f388eec017b3632b8e4137"
+    }
+  },
+  "notes": [
+    "The whole native build passes the original8GiB RSS/footprint and600s guard with default Bun stack, automatic GC,4GiB RAM heuristic and no profiling/manualGC.",
+    "The whole C bytes are identical to the prior rejected g2 codegen. The prior native deadline rejection remains rejected.",
+    "The nine C/JS producer programs separately pass with byte-equal artifacts; see producer2039g3_settled_smoke.json.",
+    "Single-run wall times under uncontrolled host contention are not a causal speedup or memory-improvement measurement.",
+    "Fresh current-producer parser proof, full image-bound consumers and actual stage1/stage2 byte fixedpoint remain open."
+  ]
+}

@@ -227,6 +227,20 @@ or compile its C string and establishes no native-build or byte-fixedpoint
 acceptance. The original 8 GiB / 600 s acceptance and rejected receipts remain
 unchanged. Proof: `evals/receipts/root2039g2_late_sampling_16g.json`.
 
+The settled-pass producer (`881137ce`) subsequently completes the **whole
+unchanged g2 native build** under the original 8 GiB / 600 s guard: all
+12,144 bodies / 12,723 events validate; 55,201,172 B of C retain SHA-256
+`ea656da6c8c41c9045908273320e0c4838a85174979f4a01a93e255a45dfb82c`.
+Codegen takes 359,830 ms; the complete guarded build takes 439,616 ms, with
+peak RSS 5,351,522,304 B / footprint 5,093,742,448 B. The LLVM backend passes
+and the resulting executable actually parses, expands, checks and emits a
+foreign program which prints `42`. Nine separate producer C/JS programs also
+retain byte-identical artifacts. This accepts the whole native build, not
+stage1/stage2 fixedpoint or a controlled timing/memory improvement claim.
+Proof: `evals/receipts/root2039g3_settled_native_pass.json` and
+`evals/receipts/producer2039g3_settled_smoke.json`. Parser and root-composition
+provenance must be freshly authenticated against this producer before bootstrap.
+
 Latest compiler root: **`db147cba`**, after an authenticated inline-parser
 cutover in `/private/tmp/bend-parser-cutover667`. Fresh native admission checks
 all 11,889 bodies / 12,450 events with 0 exclusions/patches and unchanged
