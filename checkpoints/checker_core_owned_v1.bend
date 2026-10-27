@@ -21515,53 +21515,58 @@ def native_match_inherit_law_result_4(v_2: IR.OptionalTerm, v_1: ArenaStore, v_4
 def inherit_law_result(v_1: ArenaStore, v_2: IR.OptionalTerm, v_4: U32, v_6: String, v_7: IR.Words, v_8: IR.DefBody, v_10: Bool, v_11: Ast.SourceSpan, v_12: Scope.ArenaGlobalScope) -> ArenaResult<DefinitionElaboration>:
   native_match_inherit_law_result_4(v_2, v_1, v_4, v_6, v_7, v_8, v_10, v_11, v_12)
 
-def native_match_inherit_law_binder_view_0(v_194: ArenaResult<DefinitionElaboration>) -> ArenaResult<DefinitionElaboration>:
-  match v_194:
+def native_match_inherit_law_binder_view_0(v_199: ArenaResult<String>, v_59: Ast.SourceSpan) -> ArenaResult<DefinitionElaboration>:
+  match v_199:
+    case ArenaResult{v_95, v_96}:
+      v_99 = span_file(v_59)
+      v_101 = Checked.Diagnostic{v_99, v_59, String.append("completion binder differs from its law: ", v_96), "the declared law quantity and domain", "an incompatible binder annotation"}
+      +v_103 = DefinitionElaborationFailure{v_101}
+      v_105 = v_95
+      {ArenaResult{v_105, v_103} : ArenaResult<DefinitionElaboration>}
+
+def native_match_inherit_law_binder_view_1(v_200: ArenaResult<DefinitionElaboration>) -> ArenaResult<DefinitionElaboration>:
+  match v_200:
+    case ArenaResult{v_116, +v_117}:
+      +v_119 = v_117
+      v_121 = v_116
+      {ArenaResult{v_121, v_119} : ArenaResult<DefinitionElaboration>}
+
+def native_match_inherit_law_binder_view_2(v_201: ArenaResult<IR.Words>, v_6: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, v_84: U32) -> ArenaResult<DefinitionElaboration>:
+  match v_201:
     case ArenaResult{v_111, +v_112}:
-      +v_114 = v_112
-      v_116 = v_111
-      {ArenaResult{v_116, v_114} : ArenaResult<DefinitionElaboration>}
+      native_match_inherit_law_binder_view_1(inherit_law_binders(v_111, v_6, v_84, v_112, Nat.add(v_9, 1n), v_10, v_12, v_13, v_15, v_16, v_17))
 
-def native_match_inherit_law_binder_view_1(v_195: ArenaResult<IR.Words>, v_6: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, v_84: U32) -> ArenaResult<DefinitionElaboration>:
-  match v_195:
-    case ArenaResult{v_106, +v_107}:
-      native_match_inherit_law_binder_view_0(inherit_law_binders(v_106, v_6, v_84, v_107, Nat.add(v_9, 1n), v_10, v_12, v_13, v_15, v_16, v_17))
-
-def native_match_inherit_law_binder_view_2(+v_91: Bool, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, v_55: U32, v_59: Ast.SourceSpan, v_72: U32, v_84: U32, v_88: ArenaStore) -> ArenaResult<DefinitionElaboration>:
+def native_match_inherit_law_binder_view_3(+v_91: Bool, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, v_55: U32, v_59: Ast.SourceSpan, v_72: U32, v_84: U32, v_88: ArenaStore) -> ArenaResult<DefinitionElaboration>:
   match v_91:
     case False{}:
-      v_94 = span_file(v_59)
-      v_96 = Checked.Diagnostic{v_94, v_59, String.append("completion binder differs from its law: ", v_55), "the declared law quantity and domain", "an incompatible binder annotation"}
-      +v_98 = DefinitionElaborationFailure{v_96}
-      v_100 = v_88
-      {ArenaResult{v_100, v_98} : ArenaResult<DefinitionElaboration>}
+      native_match_inherit_law_binder_view_0(arena_name_text(v_88, v_55), v_59)
     case True{}:
-      native_match_inherit_law_binder_view_1(arena_words_cons(v_88, v_72, v_7), v_6, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_84)
+      native_match_inherit_law_binder_view_2(arena_words_cons(v_88, v_72, v_7), v_6, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_84)
 
-def native_match_inherit_law_binder_view_3(v_196: ArenaResult<Bool>, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, v_55: U32, v_59: Ast.SourceSpan, v_72: U32, v_84: U32) -> ArenaResult<DefinitionElaboration>:
-  match v_196:
+def native_match_inherit_law_binder_view_4(v_202: ArenaResult<Bool>, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, v_55: U32, v_59: Ast.SourceSpan, v_72: U32, v_84: U32) -> ArenaResult<DefinitionElaboration>:
+  match v_202:
     case ArenaResult{v_88, +v_89}:
       +v_91 = v_89
-      native_match_inherit_law_binder_view_2(v_91, v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_55, v_59, v_72, v_84, v_88)
+      native_match_inherit_law_binder_view_3(v_91, v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_55, v_59, v_72, v_84, v_88)
 
-def native_match_inherit_law_binder_view_4(v_197: ArenaResult<U32>, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, v_53: Ast.Quantity, v_55: U32, v_57: U32, v_59: Ast.SourceSpan, v_61: Ast.Quantity, v_63: U32, v_72: U32) -> ArenaResult<DefinitionElaboration>:
-  match v_197:
+def native_match_inherit_law_binder_view_5(v_203: ArenaResult<U32>, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, v_53: Ast.Quantity, v_55: U32, v_57: U32, v_59: Ast.SourceSpan, v_61: Ast.Quantity, v_63: U32, v_72: U32) -> ArenaResult<DefinitionElaboration>:
+  match v_203:
     case ArenaResult{v_81, +v_82}:
       v_84 = v_82
-      native_match_inherit_law_binder_view_3(completion_binder_fits(v_81, v_53, v_57, v_61, v_63, v_17), v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_55, v_59, v_72, v_84)
+      native_match_inherit_law_binder_view_4(completion_binder_fits(v_81, v_53, v_57, v_61, v_63, v_17), v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_55, v_59, v_72, v_84)
 
-def native_match_inherit_law_binder_view_5(v_198: ArenaResult<U32>, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, v_53: Ast.Quantity, v_55: U32, v_57: U32, v_59: Ast.SourceSpan, v_61: Ast.Quantity, v_63: U32, v_65: U32, v_72: U32) -> ArenaResult<DefinitionElaboration>:
-  match v_198:
+def native_match_inherit_law_binder_view_6(v_204: ArenaResult<U32>, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, v_53: Ast.Quantity, v_55: U32, v_57: U32, v_59: Ast.SourceSpan, v_61: Ast.Quantity, v_63: U32, v_65: U32, v_72: U32) -> ArenaResult<DefinitionElaboration>:
+  match v_204:
     case ArenaResult{v_76, +v_77}:
-      native_match_inherit_law_binder_view_4(replace_free_term(v_76, v_65, 0n, v_77, 0n), v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_53, v_55, v_57, v_59, v_61, v_63, v_72)
+      native_match_inherit_law_binder_view_5(replace_free_term(v_76, v_65, 0n, v_77, 0n), v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_53, v_55, v_57, v_59, v_61, v_63, v_72)
 
-def native_match_inherit_law_binder_view_6(v_199: ArenaResult<U32>, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, v_53: Ast.Quantity, v_55: U32, v_57: U32, v_59: Ast.SourceSpan, v_61: Ast.Quantity, v_63: U32, v_65: U32) -> ArenaResult<DefinitionElaboration>:
-  match v_199:
+def native_match_inherit_law_binder_view_7(v_205: ArenaResult<U32>, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, v_53: Ast.Quantity, v_55: U32, v_57: U32, v_59: Ast.SourceSpan, v_61: Ast.Quantity, v_63: U32, v_65: U32) -> ArenaResult<DefinitionElaboration>:
+  match v_205:
     case ArenaResult{v_69, +v_70}:
       v_72 = v_70
-      native_match_inherit_law_binder_view_5(arena_put_node(v_69, Arena.TermVar{v_55, 0n, v_59}), v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_53, v_55, v_57, v_59, v_61, v_63, v_65, v_72)
+      native_match_inherit_law_binder_view_6(arena_put_node(v_69, Arena.TermVar{v_55, 0n, v_59}), v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_53, v_55, v_57, v_59, v_61, v_63, v_65, v_72)
 
-def native_match_inherit_law_binder_view_7(+v_41: Arena.Binder, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, +v_31: Ast.Quantity, +v_34: U32, +v_35: U32, v_40: ArenaStore) -> ArenaResult<DefinitionElaboration>:
+def native_match_inherit_law_binder_view_8(+v_41: Arena.Binder, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, +v_31: Ast.Quantity, +v_34: U32, +v_35: U32, v_40: ArenaStore) -> ArenaResult<DefinitionElaboration>:
   match v_41:
     case Arena.Binder{+v_47, +v_48, +v_49, +v_50, +v_51}:
       v_53 = v_47
@@ -21571,60 +21576,60 @@ def native_match_inherit_law_binder_view_7(+v_41: Arena.Binder, v_6: IR.Words, v
       v_61 = v_31
       v_63 = v_34
       v_65 = v_35
-      native_match_inherit_law_binder_view_6(arena_put_binder(v_40, Arena.Binder{v_61, v_55, v_9, v_63, v_59}), v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_53, v_55, v_57, v_59, v_61, v_63, v_65)
-    case Arena.TemplateBinder{+v_123, +v_124, +v_125, +v_126}:
-      v_128 = v_126
-      v_131 = span_file(v_128)
-      v_133 = Checked.Diagnostic{v_131, v_128, "law completion cannot introduce a template binder", "a law parameter name", "a compile-time template binder"}
-      v_135 = DefinitionElaborationFailure{v_133}
-      {ArenaResult{v_40, v_135} : ArenaResult<DefinitionElaboration>}
+      native_match_inherit_law_binder_view_7(arena_put_binder(v_40, Arena.Binder{v_61, v_55, v_9, v_63, v_59}), v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_53, v_55, v_57, v_59, v_61, v_63, v_65)
+    case Arena.TemplateBinder{+v_128, +v_129, +v_130, +v_131}:
+      v_133 = v_131
+      v_136 = span_file(v_133)
+      v_138 = Checked.Diagnostic{v_136, v_133, "law completion cannot introduce a template binder", "a law parameter name", "a compile-time template binder"}
+      v_140 = DefinitionElaborationFailure{v_138}
+      {ArenaResult{v_40, v_140} : ArenaResult<DefinitionElaboration>}
 
-def native_match_inherit_law_binder_view_8(v_200: ArenaResult<Arena.Binder>, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, +v_31: Ast.Quantity, +v_34: U32, +v_35: U32) -> ArenaResult<DefinitionElaboration>:
-  match v_200:
+def native_match_inherit_law_binder_view_9(v_206: ArenaResult<Arena.Binder>, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, +v_31: Ast.Quantity, +v_34: U32, +v_35: U32) -> ArenaResult<DefinitionElaboration>:
+  match v_206:
     case ArenaResult{v_40, +v_41}:
-      native_match_inherit_law_binder_view_7(v_41, v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_31, v_34, v_35, v_40)
+      native_match_inherit_law_binder_view_8(v_41, v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_31, v_34, v_35, v_40)
 
-def native_match_inherit_law_binder_view_9(v_201: ArenaResult<String>, v_12: String, +v_173: Ast.SourceSpan) -> ArenaResult<DefinitionElaboration>:
-  match v_201:
-    case ArenaResult{v_177, +v_178}:
-      +v_180 = v_178
-      v_182 = v_180
-      v_184 = v_173
-      v_187 = span_file(v_184)
-      v_189 = Checked.Diagnostic{v_187, v_184, String.append("law completion has too many parameters: ", v_12), "a remaining law parameter", v_182}
-      v_191 = DefinitionElaborationFailure{v_189}
-      {ArenaResult{v_177, v_191} : ArenaResult<DefinitionElaboration>}
+def native_match_inherit_law_binder_view_10(v_207: ArenaResult<String>, v_12: String, +v_178: Ast.SourceSpan) -> ArenaResult<DefinitionElaboration>:
+  match v_207:
+    case ArenaResult{v_182, +v_183}:
+      +v_185 = v_183
+      v_187 = v_185
+      v_189 = v_178
+      v_192 = span_file(v_189)
+      v_194 = Checked.Diagnostic{v_192, v_189, String.append("law completion has too many parameters: ", v_12), "a remaining law parameter", v_187}
+      v_196 = DefinitionElaborationFailure{v_194}
+      {ArenaResult{v_182, v_196} : ArenaResult<DefinitionElaboration>}
 
-def native_match_inherit_law_binder_view_10(+v_144: Arena.Binder, v_12: String, v_143: ArenaStore) -> ArenaResult<DefinitionElaboration>:
-  match v_144:
-    case Arena.TemplateBinder{+v_149, +v_150, +v_151, +v_152}:
-      v_154 = v_152
-      v_157 = span_file(v_154)
-      v_159 = Checked.Diagnostic{v_157, v_154, "law completion cannot introduce a template binder", "a law parameter name", "a compile-time template binder"}
-      v_161 = DefinitionElaborationFailure{v_159}
-      {ArenaResult{v_143, v_161} : ArenaResult<DefinitionElaboration>}
-    case Arena.Binder{+v_169, +v_170, +v_171, +v_172, +v_173}:
-      native_match_inherit_law_binder_view_9(arena_name_text(v_143, v_170), v_12, v_173)
+def native_match_inherit_law_binder_view_11(+v_149: Arena.Binder, v_12: String, v_148: ArenaStore) -> ArenaResult<DefinitionElaboration>:
+  match v_149:
+    case Arena.TemplateBinder{+v_154, +v_155, +v_156, +v_157}:
+      v_159 = v_157
+      v_162 = span_file(v_159)
+      v_164 = Checked.Diagnostic{v_162, v_159, "law completion cannot introduce a template binder", "a law parameter name", "a compile-time template binder"}
+      v_166 = DefinitionElaborationFailure{v_164}
+      {ArenaResult{v_148, v_166} : ArenaResult<DefinitionElaboration>}
+    case Arena.Binder{+v_174, +v_175, +v_176, +v_177, +v_178}:
+      native_match_inherit_law_binder_view_10(arena_name_text(v_148, v_175), v_12, v_178)
 
-def native_match_inherit_law_binder_view_11(v_202: ArenaResult<Arena.Binder>, v_12: String) -> ArenaResult<DefinitionElaboration>:
-  match v_202:
-    case ArenaResult{v_143, +v_144}:
-      native_match_inherit_law_binder_view_10(v_144, v_12, v_143)
+def native_match_inherit_law_binder_view_12(v_208: ArenaResult<Arena.Binder>, v_12: String) -> ArenaResult<DefinitionElaboration>:
+  match v_208:
+    case ArenaResult{v_148, +v_149}:
+      native_match_inherit_law_binder_view_11(v_149, v_12, v_148)
 
-def native_match_inherit_law_binder_view_12(+v_24: Arena.Node, v_5: U32, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, v_23: ArenaStore) -> ArenaResult<DefinitionElaboration>:
+def native_match_inherit_law_binder_view_13(+v_24: Arena.Node, v_5: U32, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, v_23: ArenaStore) -> ArenaResult<DefinitionElaboration>:
   match v_24:
     case Arena.TermAll{+v_31, +v_32, +v_33, +v_34, +v_35, +v_36}:
-      native_match_inherit_law_binder_view_8(arena_get_binder(v_23, v_5), v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_31, v_34, v_35)
+      native_match_inherit_law_binder_view_9(arena_get_binder(v_23, v_5), v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_31, v_34, v_35)
     case _:
-      native_match_inherit_law_binder_view_11(arena_get_binder(v_23, v_5), v_12)
+      native_match_inherit_law_binder_view_12(arena_get_binder(v_23, v_5), v_12)
 
-def native_match_inherit_law_binder_view_13(v_203: ArenaResult<Arena.Node>, v_5: U32, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope) -> ArenaResult<DefinitionElaboration>:
-  match v_203:
+def native_match_inherit_law_binder_view_14(v_209: ArenaResult<Arena.Node>, v_5: U32, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope) -> ArenaResult<DefinitionElaboration>:
+  match v_209:
     case ArenaResult{v_23, +v_24}:
-      native_match_inherit_law_binder_view_12(v_24, v_5, v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_23)
+      native_match_inherit_law_binder_view_13(v_24, v_5, v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_23)
 
 def inherit_law_binder_view(v_1: ArenaStore, v_3: U32, v_5: U32, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope) -> ArenaResult<DefinitionElaboration>:
-  native_match_inherit_law_binder_view_13(arena_get_node(v_1, v_3), v_5, v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17)
+  native_match_inherit_law_binder_view_14(arena_get_node(v_1, v_3), v_5, v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17)
 
 def native_match_inherit_law_binders_0(v_50: ArenaResult<DefinitionElaboration>) -> ArenaResult<DefinitionElaboration>:
   match v_50:

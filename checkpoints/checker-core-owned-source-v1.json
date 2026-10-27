@@ -1,9 +1,9 @@
 {
   "schemaVersion": 2,
   "source": "bend2/selfhost/checker.bend",
-  "sourceSha256": "9d963263fadeb15c06085e43eb1fc69aae98f0caec7cafafe0af697cc27becd1",
+  "sourceSha256": "9ec3d7c4eeeb88d9782225a12b79ddc5e08561641dd130e7789345b3197ab95f",
   "slice": "checkpoints/checker_core_owned_v1.bend",
-  "sliceSha256": "105ac9f0c404cf27fbbd3d975aa52c77a676046f2da8badc58deef5422335633",
+  "sliceSha256": "c8f62fec88cc591a709d927fc0892f373a1ff5e4122b9ea12b3356045769fe2d",
   "root": "check_modules",
   "publicRoots": [
     "check_modules",
@@ -4693,6 +4693,7 @@
     "native_match_inherit_law_binder_view_11",
     "native_match_inherit_law_binder_view_12",
     "native_match_inherit_law_binder_view_13",
+    "native_match_inherit_law_binder_view_14",
     "inherit_law_binder_view",
     "native_match_inherit_law_binders_0",
     "native_match_inherit_law_binders_1",
@@ -9650,21 +9651,22 @@
     "native_match_inherit_law_result_3": "31705678ec2f19d90f187ea36ea50661f59813b2e91c7f7e577f2c272b202d4c",
     "native_match_inherit_law_result_4": "127f1e82872e7ba2c623413abc5d43075a2e852d981f61512cd83d0593c9ccda",
     "inherit_law_result": "cbb4967c770df9c47b67cb32f2cb2590bee33b48b1811f4ee344045b62a36dc1",
-    "native_match_inherit_law_binder_view_0": "8889159a4d814839538dd76f57a36fe53b74bff11d80cf56cd2b3edc156e1645",
-    "native_match_inherit_law_binder_view_1": "fd8bfe0fd4d61167b1fa2884c14cda71064012aff520fea92e31daa440238c46",
-    "native_match_inherit_law_binder_view_2": "9a98d6292c48729bef3378a619c41372524d2443e57dc45b0bad9d96a85e4aa8",
-    "native_match_inherit_law_binder_view_3": "0a0b662b34e1599bcb0a08e8695c0c89c9dfcb5125fa28268fbc44ce26f7ae86",
-    "native_match_inherit_law_binder_view_4": "74107be0f398e9bdeb54f57edcdb365347a01548add72c0cd61768942caa1255",
-    "native_match_inherit_law_binder_view_5": "f456f27da58f617870023c8d0ee9788cc769af0cd1e40088c104785dff9c636e",
-    "native_match_inherit_law_binder_view_6": "26c1322744b62ec175f280e2c98ed57445f594ce501c5b3eb6660ba24dc3ef1b",
-    "native_match_inherit_law_binder_view_7": "076f511969dc62e34a91997161edca3ff47ac2802efe4f9cf2ac754f3b6731ec",
-    "native_match_inherit_law_binder_view_8": "c8f9a6382f5157df3f2e22b70dc61d58cb3ef8bcfa7bccd3d10ab30d7cf3f076",
-    "native_match_inherit_law_binder_view_9": "dafea2ab73fa52d990ce300de950846ccc91ab35c90e494e8096eb9c2e025b55",
-    "native_match_inherit_law_binder_view_10": "29e65ea8ec97018ee3a4d23f15668e162971d5b43da9a110667924e25f3f29fa",
-    "native_match_inherit_law_binder_view_11": "b3f690ae01bc2d593046500704dee403c1c6290b4166bb33f224496cc7413fa9",
-    "native_match_inherit_law_binder_view_12": "8ce9bf103cbe6954157ab594096b3269eb0d7331feaf96b77a71283f9115713c",
-    "native_match_inherit_law_binder_view_13": "7f0c5fd909cab38a1102354ebdd1316a7b55ed3b27fbd3f32d31f476080abb53",
-    "inherit_law_binder_view": "eecdf8d087613c9de9b0e369b25435f1ccd568cf58c0f8e64514b3054a12eac8",
+    "native_match_inherit_law_binder_view_0": "cdd25a51214554d6a2435524c6a6d345b1f1a512fec44f64b01b352ade310fa4",
+    "native_match_inherit_law_binder_view_1": "97cfa186925bd0b0ef8809e93e59803aa9d6362e405cd29d38de3ce994644131",
+    "native_match_inherit_law_binder_view_2": "d7eac3d73627d81c5f8e8550bc8e1f56495341c98ced835fe103db4110ba1329",
+    "native_match_inherit_law_binder_view_3": "5f12d7ce656a7724d39a8283d7c82c80e3e572b5c4deeed9616e58dcafb4dfeb",
+    "native_match_inherit_law_binder_view_4": "7f05b8d849803d08fc0100549ce5f645a170576ee341cf2bc037438d6fec3c33",
+    "native_match_inherit_law_binder_view_5": "88867328a3d2bf61202cdfe0cd0b15918771e3de8ba1b0d034796aaad398b484",
+    "native_match_inherit_law_binder_view_6": "eec327fef9f1df4a5b46295911227d6c727c39839f30257d584c4b90c26815b8",
+    "native_match_inherit_law_binder_view_7": "8693e492560cf5d6c0176d7c0987891ade67d5183db2dcfc91242fe37d00ce3f",
+    "native_match_inherit_law_binder_view_8": "e5f50c126012cb0bf32fa67edaa6f5bcab62173737bed2b86a146313fc3fb5cd",
+    "native_match_inherit_law_binder_view_9": "50b31e6feb846d7714240d6da16e75112936bcf621890c3834adb7f051c214d1",
+    "native_match_inherit_law_binder_view_10": "39d6beac512b07fc75862cc18f583f2ac5155860c94a02e37fe124f25a21d094",
+    "native_match_inherit_law_binder_view_11": "a2698c3debd653a608242280c536f742fb121ca2498e6817fe4453b548c94e46",
+    "native_match_inherit_law_binder_view_12": "5136d6b51a0543f2732a844788f7057843c9e5915c1bbfe26f41e65adf792256",
+    "native_match_inherit_law_binder_view_13": "f111b566e58e5e9cb4b3f24cdce4a91c7e3a1b9db0d90a56b155e65323afd44c",
+    "native_match_inherit_law_binder_view_14": "187283080f56c7b82ee5f79086bca0073b7c23c6cffe51a5240254e991f00588",
+    "inherit_law_binder_view": "0afaab9c640102534f8a566f91312e33fe09d7da9e29a9cdf9a2e93acff04726",
     "native_match_inherit_law_binders_0": "ae5219cd227dfe93dc551d236806d73c27b6e179add81f22d708dbdfdc8e8114",
     "native_match_inherit_law_binders_1": "065a7f5945a66fee5146466ff1cc1094b1b2604e214e1ac5cdf29adbba907302",
     "native_match_inherit_law_binders_2": "bda2093e76549054cb7b5b97fb40383e60e9c715ecf73c77dc8ed0b55da013f4",
@@ -13983,6 +13985,7 @@
     "native_match_inherit_law_binder_view_11": "inherit_law_binder_view",
     "native_match_inherit_law_binder_view_12": "inherit_law_binder_view",
     "native_match_inherit_law_binder_view_13": "inherit_law_binder_view",
+    "native_match_inherit_law_binder_view_14": "inherit_law_binder_view",
     "native_match_inherit_law_binders_0": "inherit_law_binders",
     "native_match_inherit_law_binders_1": "inherit_law_binders",
     "native_match_inherit_law_binders_2": "inherit_law_binders",
@@ -50819,7 +50822,7 @@
     },
     {
       "name": "inherit_law_binder_view",
-      "exactCanonicalBlockSha256": "bd8747ecb68dfb3e1cdb791325e9288d2f85d1956d4b6c45443cec070c8cd358"
+      "exactCanonicalBlockSha256": "619759b346fd8cf122872ca63fa0ddc690d74c8766f7565d223fa5de3a786dd6"
     },
     {
       "name": "inherit_law_binders",
@@ -86687,12 +86690,21 @@
       "owner": "inherit_law_binder_view",
       "helper": "native_match_inherit_law_binder_view_0",
       "kind": "local",
-      "captures": [],
+      "captures": [
+        59
+      ],
       "producers": 1
     },
     {
       "owner": "inherit_law_binder_view",
       "helper": "native_match_inherit_law_binder_view_1",
+      "kind": "local",
+      "captures": [],
+      "producers": 1
+    },
+    {
+      "owner": "inherit_law_binder_view",
+      "helper": "native_match_inherit_law_binder_view_2",
       "kind": "local",
       "captures": [
         6,
@@ -86709,7 +86721,7 @@
     },
     {
       "owner": "inherit_law_binder_view",
-      "helper": "native_match_inherit_law_binder_view_2",
+      "helper": "native_match_inherit_law_binder_view_3",
       "kind": "match",
       "captures": [
         91,
@@ -86732,7 +86744,7 @@
     },
     {
       "owner": "inherit_law_binder_view",
-      "helper": "native_match_inherit_law_binder_view_3",
+      "helper": "native_match_inherit_law_binder_view_4",
       "kind": "local",
       "captures": [
         6,
@@ -86748,30 +86760,6 @@
         59,
         72,
         84
-      ],
-      "producers": 1
-    },
-    {
-      "owner": "inherit_law_binder_view",
-      "helper": "native_match_inherit_law_binder_view_4",
-      "kind": "local",
-      "captures": [
-        6,
-        7,
-        9,
-        10,
-        12,
-        13,
-        15,
-        16,
-        17,
-        53,
-        55,
-        57,
-        59,
-        61,
-        63,
-        72
       ],
       "producers": 1
     },
@@ -86795,7 +86783,6 @@
         59,
         61,
         63,
-        65,
         72
       ],
       "producers": 1
@@ -86820,13 +86807,38 @@
         59,
         61,
         63,
-        65
+        65,
+        72
       ],
       "producers": 1
     },
     {
       "owner": "inherit_law_binder_view",
       "helper": "native_match_inherit_law_binder_view_7",
+      "kind": "local",
+      "captures": [
+        6,
+        7,
+        9,
+        10,
+        12,
+        13,
+        15,
+        16,
+        17,
+        53,
+        55,
+        57,
+        59,
+        61,
+        63,
+        65
+      ],
+      "producers": 1
+    },
+    {
+      "owner": "inherit_law_binder_view",
+      "helper": "native_match_inherit_law_binder_view_8",
       "kind": "match",
       "captures": [
         41,
@@ -86848,7 +86860,7 @@
     },
     {
       "owner": "inherit_law_binder_view",
-      "helper": "native_match_inherit_law_binder_view_8",
+      "helper": "native_match_inherit_law_binder_view_9",
       "kind": "local",
       "captures": [
         6,
@@ -86868,28 +86880,28 @@
     },
     {
       "owner": "inherit_law_binder_view",
-      "helper": "native_match_inherit_law_binder_view_9",
+      "helper": "native_match_inherit_law_binder_view_10",
       "kind": "local",
       "captures": [
         12,
-        173
+        178
       ],
       "producers": 1
     },
     {
       "owner": "inherit_law_binder_view",
-      "helper": "native_match_inherit_law_binder_view_10",
+      "helper": "native_match_inherit_law_binder_view_11",
       "kind": "match",
       "captures": [
-        144,
+        149,
         12,
-        143
+        148
       ],
       "producers": 0
     },
     {
       "owner": "inherit_law_binder_view",
-      "helper": "native_match_inherit_law_binder_view_11",
+      "helper": "native_match_inherit_law_binder_view_12",
       "kind": "local",
       "captures": [
         12
@@ -86898,7 +86910,7 @@
     },
     {
       "owner": "inherit_law_binder_view",
-      "helper": "native_match_inherit_law_binder_view_12",
+      "helper": "native_match_inherit_law_binder_view_13",
       "kind": "match",
       "captures": [
         24,
@@ -86918,7 +86930,7 @@
     },
     {
       "owner": "inherit_law_binder_view",
-      "helper": "native_match_inherit_law_binder_view_13",
+      "helper": "native_match_inherit_law_binder_view_14",
       "kind": "local",
       "captures": [
         5,

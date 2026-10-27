@@ -18430,7 +18430,7 @@
     "bend2/base.bend": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
     "evals/heavy_gate.ts": "204f3529704435455d20a9d5a126a8e9c62e002b6fed9044c8319da8a3c26ff2",
     "evals/validation_profile.ts": "d0bfd8124b334cb1db4792e49675290a971ae82730e57029173b07ff23d6938d",
-    "checkpoints/checker-core-owned-source-v1.json": "51c50ec1c8880f852d0a15260f085e14ebf0047ea69f311b7c3f77f4120760e3",
+    "checkpoints/checker-core-owned-source-v1.json": "f9815655839134dc8dfe5de22d67064584fb9d06ac39ac848d94ede7e2231667",
     "evals/checker_core_step_lower.ts": "05492ac6aaa7855b4d4770bf1f77d7abacf3cc3b956dfca9e6f411fffb202158",
     "evals/checker_core_owned_source.ts": "550ce39e12d8491fcc1913d3a84d49f37cf3f464b6f4df7944374c16504672e2",
     "evals/emitter_step_lower.ts": "4376c983d376a91f8464037444ddeccd1233f6a00f9c2362ce4fd88ab9f84371",
@@ -18472,5 +18472,5 @@
     "nativeBuildRun": false,
     "testsRun": false
   },
-  "generationManifestSha256": "d0ba9917caa0a5c9001dad35a946b0fa169432bbd63b310da7c2dba94097e508"
+  "generationManifestSha256": "054bf1ea21f64438d7e1ae6a54a5a27514361e6e4bde9ff22e754049cf350192"
 }
