@@ -85,7 +85,8 @@ const unboxFunction = prefix + '_unbox';
 // authenticated manifest identities; the module namespace supplies the prefix.
 const traceEventType = 'EmitterTraceEvent', traceBeginConstructor = 'EmitterTraceBegin', traceEndConstructor = 'EmitterTraceEnd';
 const traceSiteType = 'EmitterTraceSite', traceUntracedConstructor = 'EmitterTraceUntraced', traceAtConstructor = 'EmitterTraceAt';
-const traceRunConstructor = 'EmitterRunSpan', traceStackConstructor = 'EmitterStackTraced', traceSiteFunction = 'emitter_trace_site';
+const traceRunConstructor = 'EmitterRunSpan', traceStackConstructor = 'EmitterStackTraced';
+const traceAdvanceFunction = 'emitter_trace_advance';
 const traced = paths.trace !== undefined;
 const entries: readonly StepEntry[] | undefined = paths.entries ?? (paths.mode === 'emitter'
   ? [{mode: 'emitter', root: paths.root, libraryRoot: 'emit_library'}] : undefined);
@@ -631,7 +632,7 @@ for (const name of startNames) if (name !== startFunction) {
 // Trace-only ABI names are reserved before every derived request name, so a
 // diagnostic collision fails closed rather than renaming the scheduler.
 if (traced) for (const name of [traceEventType, traceBeginConstructor, traceEndConstructor, traceSiteType,
-  traceUntracedConstructor, traceAtConstructor, traceRunConstructor, traceStackConstructor, traceSiteFunction]) reserve(name);
+  traceUntracedConstructor, traceAtConstructor, traceRunConstructor, traceStackConstructor, traceAdvanceFunction]) reserve(name);
 if (traced) for (const name of tracedSites.keys()) if (pureNames.has(name))
   throw Error('Traced scheduler boundary was erased as a pure projection: ' + name);
 const requestName = new Map(definitions.map(def => [def.name, reserve(requestType + '_' + def.name)]));
@@ -649,19 +650,11 @@ const requestGroup = new Map(requestGroups.flatMap(group => group.definitions.ma
 function request(name: string, arguments_: B.LTerm[]): B.LTerm {
   return ctr(requestGroup.get(name)!.constructor, [ctr(requestName.get(name)!, arguments_)]);
 }
-// Trace-only request -> site table. A site is a static property of the composed
-// callee request constructor, so the engine resolves a boundary from the value
-// it was handed and never guesses one from a tag change. Untraced requests and
-// untraced groups fall through to the ordinary state transition.
-const traceSiteGroups: {name: string; group: typeof requestGroups[number]; rows: {name: string; site: number}[]}[] = [];
+// The call site knows the authenticated callee. Carry its scalar trace site
+// beside the owning request instead of consuming that request to inspect it.
 if (traced) {
   const missing = traceRoots.filter(root => !requestName.has(root.name) || !requestGroup.has(root.name));
   if (missing.length) throw Error('Trace root lacks a typed request handler: ' + missing.map(root => root.name).join(', '));
-  for (const group of requestGroups) {
-    const rows = traceRoots.filter(root => requestGroup.get(root.name) === group)
-      .map(root => ({name: root.name, site: root.site}));
-    if (rows.length) traceSiteGroups.push({name: reserve(prefix + '_trace_site_group_' + traceSiteGroups.length), group, rows});
-  }
 }
 const stepName = new Map(definitions.map(def => [def.name, reserve(prefix + '_body_' + def.name)]));
 const pureName = new Map(pureDefinitions.map(def => [def.name, reserve(prefix + '_pure_' + def.name)]));
@@ -694,6 +687,10 @@ type SourceVar = Extract<B.LTerm, {$: 'Var'}>;
 const fusedTailSites: {caller: string; callee: string}[] = [];
 const directCallSites: {caller: string; callee: string}[] = [];
 const tracedPendingSites = new Map<string, number>();
+function traceSiteValue(name: string): B.LTerm {
+  const site = tracedSites.get(name);
+  return site === undefined ? ctr(traceUntracedConstructor, []) : ctr(traceAtConstructor, [B.Lit('U32', site)]);
+}
 function delayedProgress(owner: Definition, target: Definition, values: B.LTerm[], resume: B.LTerm): B.LTerm {
   const witness = request(target.name, values);
   // Callable references obey the same native declaration DAG as ordinary
@@ -710,7 +707,7 @@ function delayedProgress(owner: Definition, target: Definition, values: B.LTerm[
   }
   pendingCount++;
   if (tracedSites.has(target.name)) tracedPendingSites.set(target.name, (tracedPendingSites.get(target.name) ?? 0) + 1);
-  return ctr(pendingType, [witness, resume]);
+  return ctr(pendingType, traced ? [witness, traceSiteValue(target.name), resume] : [witness, resume]);
 }
 const singleConstructors = new Set(Object.values(book.tlds)
   .flatMap(tld => tld.$ === 'ADT' && tld.c.length === 1 ? [tld.c[0]!.k] : []));
@@ -1219,15 +1216,12 @@ chunks.push('\ndef ' + resultFunction + '(request: ' + requestType + ') -> ' + r
 for (const group of requestGroups) chunks.push('    case ' + group.constructor + '{inner}: ' + group.result + '(inner)\n');
 const resumeType = '(@box: ' + valueType + '<' + resultFunction + '(request)> -> ' + progressType + '<A>)';
 chunks.push('\ntype ' + valueType + '<-A: Type> is Type:\n  ' + valueType + '{value: A}\n');
-chunks.push('\ntype ' + progressType + '<-A: Type> is Type:\n  ' + finishedType + '{box: ' + valueType + '<A>}\n  ' + pendingType + '{request: ' + requestType + ', resume: ' + resumeType + '}\n  ' + directType + '{-R: Type, -request: ' + requestType + ', arguments: R, invoke: (@arguments: R -> ' + progressType + '<' + resultFunction + '(request)>), resume: ' + resumeType + '}\n  ' + boundType + '{-B: Type, inner: ' + progressType + '<B>, resume: (@box: ' + valueType + '<B> -> ' + progressType + '<A>)}\n\n');
+if (traced) chunks.push('\ntype ' + traceSiteType + ' is Data:\n  ' + traceUntracedConstructor + '{}\n  ' + traceAtConstructor + '{site: U32}\n');
+chunks.push('\ntype ' + progressType + '<-A: Type> is Type:\n  ' + finishedType + '{box: ' + valueType + '<A>}\n  ' + pendingType + '{request: ' + requestType + (traced ? ', site: ' + traceSiteType : '') + ', resume: ' + resumeType + '}\n  ' + directType + '{-R: Type, -request: ' + requestType + ', arguments: R, invoke: (@arguments: R -> ' + progressType + '<' + resultFunction + '(request)>), resume: ' + resumeType + '}\n  ' + boundType + '{-B: Type, inner: ' + progressType + '<B>, resume: (@box: ' + valueType + '<B> -> ' + progressType + '<A>)}\n\n');
 chunks.push(`
 ${traced ? `type ${traceEventType} is Data:
   ${traceBeginConstructor}{site: U32}
   ${traceEndConstructor}{site: U32}
-
-type ${traceSiteType} is Data:
-  ${traceUntracedConstructor}{}
-  ${traceAtConstructor}{site: U32}
 
 ` : ''}type ${stackType}<-A: Type, -R: Type> is Type:
   ${stackDoneType}{equation: {A == R : Type}}
@@ -1275,29 +1269,15 @@ for (const group of requestGroups) {
 }
 chunks.push('def ' + rawStepFunction + '(request: ' + requestType + ') -> ' + progressType + '<' + resultFunction + '(request)>:\n  match request:\n');
 for (const group of requestGroups) chunks.push('    case ' + group.constructor + '{inner}: ' + group.step + '(inner)\n');
-// Diagnostic-only boundary resolution: the request constructor decides the
-// site, so Begin is emitted before any transition of the marked callee runs.
-if (traced) {
-  for (const entry of traceSiteGroups) {
-    chunks.push('def ' + entry.name + '(request: ' + entry.group.type + ') -> ' + traceSiteType + ':\n  match request:\n');
-    for (const row of entry.rows) {
-      const fields = byName.get(row.name)!.parameters.map(() => '_').join(', ');
-      chunks.push('    case ' + requestName.get(row.name)! + '{' + fields + '}: ' + traceAtConstructor + '{' + row.site + '}\n');
-    }
-    chunks.push('    case _: ' + traceUntracedConstructor + '{}\n\n');
-  }
-  chunks.push('def ' + traceSiteFunction + '(request: ' + requestType + ') -> ' + traceSiteType + ':\n  match request:\n');
-  for (const group of requestGroups) {
-    const entry = traceSiteGroups.find(row => row.group === group);
-    chunks.push('    case ' + group.constructor + '{' + (entry ? 'inner' : '_') + '}: '
-      + (entry ? entry.name + '(inner)' : traceUntracedConstructor + '{}') + '\n');
-  }
-  chunks.push('\n');
-}
 // Each transition consumes the current progress and heterogeneous native stack
 // once. Source resume/invoke closures are retained without Bound association.
 chunks.push(`
-def ${popFunction}(-A: Type, -R: Type, stack: ${stackType}<A, R>, box: ${valueType}<A>) -> ${runType}<R>:
+${traced ? `def ${traceAdvanceFunction}(-A: Type, -R: Type, request: ${requestType}, resume: ${resumeType}, stack: ${stackType}<A, R>, site: ${traceSiteType}) -> ${runType}<R>:
+  match site:
+    case ${traceAtConstructor}{+site}: ${traceRunConstructor}{[${traceBeginConstructor}{site}], scheduled => ${runStateType}{${resultFunction}(request), ${rawStepFunction}(request), ${traceStackConstructor}{A, site, resume, stack}}}
+    case ${traceUntracedConstructor}{}: ${runStateType}{${resultFunction}(request), ${rawStepFunction}(request), ${stackMoreType}{A, resume, stack}}
+
+` : ''}def ${popFunction}(-A: Type, -R: Type, stack: ${stackType}<A, R>, box: ${valueType}<A>) -> ${runType}<R>:
   match stack:
     case ${stackDoneType}{equation}: ${runFinishedType}{${castBoxFunction}(A, R, equation, box)}
     case ${stackMoreType}{B, resume, rest}: ${runStateType}{B, resume(box), rest}${traced ? `
@@ -1306,10 +1286,8 @@ def ${popFunction}(-A: Type, -R: Type, stack: ${stackType}<A, R>, box: ${valueTy
 def ${advanceFunction}(-A: Type, -R: Type, progress: ${progressType}<A>, stack: ${stackType}<A, R>) -> ${runType}<R>:
   match progress:
     case ${finishedType}{box}: ${popFunction}(A, R, stack, box)
-    case ${pendingType}{request, resume}:${traced ? `
-      match ${traceSiteFunction}(request):
-        case ${traceAtConstructor}{site}: ${traceRunConstructor}{[${traceBeginConstructor}{site}], scheduled => ${runStateType}{${resultFunction}(request), ${rawStepFunction}(request), ${traceStackConstructor}{A, site, resume, stack}}}
-        case ${traceUntracedConstructor}{}: ${runStateType}{${resultFunction}(request), ${rawStepFunction}(request), ${stackMoreType}{A, resume, stack}}` : `
+    case ${pendingType}{request, ${traced ? 'site, ' : ''}resume}:${traced ? `
+      ${traceAdvanceFunction}(A, R, request, resume, stack, site)` : `
       ${runStateType}{${resultFunction}(request), ${rawStepFunction}(request), ${stackMoreType}{A, resume, stack}}`}
     case ${directType}{T, request, arguments, invoke, resume}:
       ${runStateType}{${resultFunction}(request), invoke(arguments), ${stackMoreType}{A, resume, stack}}
@@ -1326,7 +1304,7 @@ def ${chunkFunction}(-R: Type, fuel: Nat, run: ${runType}<R>) -> ${runType}<R>:
 
 def ${stepFunction}(-R: Type, run: ${runType}<R>) -> ${runType}<R>:${traced ? `
   match run:
-    case ${traceRunConstructor}{_, next}: ${chunkFunction}(R, ${nativeChunkQuantum}n, next(False{}))
+    case ${traceRunConstructor}{_, next}: ${chunkFunction}(R, ${nativeChunkQuantum - 1}n, next(False{}))
     case state: ${chunkFunction}(R, ${nativeChunkQuantum}n, state)` : `
   ${chunkFunction}(R, ${nativeChunkQuantum}n, run)`}
 `);
@@ -1339,7 +1317,7 @@ function typedStart(name:string, root:string, parameters:string, arguments_:stri
  // No trace special case: the entry request is an ordinary pending request, so
  // the first chunk advance yields its Begin (and pushes the traced frame whose
  // pop yields its End) under the same engine rules as every nested boundary.
- return '\ndef '+name+'('+parameters+') -> '+runType+'<'+result+'>:\n  '+chunkFunction+'('+result+', '+nativeChunkQuantum+'n, '+runStateType+'{'+result+', '+pendingType+'{'+group.constructor+'{'+request+'{'+arguments_+'}}, box => '+finishedType+'{box}}, '+stackDoneType+'{{==}}})\n';
+ return '\ndef '+name+'('+parameters+') -> '+runType+'<'+result+'>:\n  '+chunkFunction+'('+result+', '+nativeChunkQuantum+'n, '+runStateType+'{'+result+', '+pendingType+'{'+group.constructor+'{'+request+'{'+arguments_+'}}'+(traced?', '+(tracedSites.has(root)?traceAtConstructor+'{'+tracedSites.get(root)+'}':traceUntracedConstructor+'{}'):'')+', box => '+finishedType+'{box}}, '+stackDoneType+'{{==}}})\n';
 }
 if (entries && paths.mode !== 'checker') {
   for (const entry of entries) {

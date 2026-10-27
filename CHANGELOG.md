@@ -5,6 +5,14 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- Opt-in selfhost emitter traces bracket catalog, lowering, descriptor
+  normalization, layouts/sharing, JS/C rendering and link planning at native
+  scheduler boundaries. Both real backend consumers pass with identical
+  emitted bytes with tracing off/on. Reports authenticate image-specific
+  constructor encoding and expose missing coverage and retained-span limits;
+  timings are diagnostic intervals, not exclusive source CPU or full-root
+  overhead measurements.
+
 - Transient checker substitution/publication memo entries are invalidated by
   the arena's rewind generation instead of rewriting all 4096 slots after
   every declaration. Lookups reject older epochs before exposing reused

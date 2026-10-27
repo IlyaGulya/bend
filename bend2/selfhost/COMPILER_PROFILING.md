@@ -192,9 +192,11 @@ full-root checker after a durable progress update. That interruption is not
 compiler acceptance or full-input overhead evidence.
 
 Trace event decoding preserves nominal identity: a Begin/End constructor must
-belong to its Run's module and, when a trace manifest is supplied, match that
-manifest's fully qualified constructor. A matching short constructor name in
-another module is rejected. Decoding never advances the native continuation.
+belong to its Run's module and match the manifest's fully qualified constructor.
+Canonical `comp.ts` strips source namespaces from emitted JS constructor tags;
+that encoding is accepted only through a native build receipt bound to the exact
+image. Without that binding, equal short names never establish provenance.
+Decoding never advances the native continuation.
 
 ## Verified coverage and explicit gaps
 
@@ -224,7 +226,25 @@ another module is rejected. Decoding never advances the native continuation.
 Evidence: `checkpoints/compiler-profile-smoke-v1.json`. Bulk profiles stay in
 the temporary directory and are removed after a passing smoke.
 
-Not verified here: fullroot producer profiling, overhead/control measurements,
-native `llvm-split` link execution, per-definition/per-module CPU, retained or
-live bytes, and fine native substage spans (the typed views hide progress and
-the generator is frozen). Those need a guarded, separately authorized run.
+`evals/receipts/emitter2039_trace_spans.json` records native validation and actual
+checked-FIR execution of both ordinary and diagnostic trace emitters. Ordinary
+generation remains byte-identical to g7. For each JS/C target, ordinary,
+trace-without-collector and trace-with-collector emit identical bytes; Node and
+clang/native consumers both print `7`. The JS run closes 1199 brackets, the C
+run 71069, with no rejected, unmatched, unknown or terminal-open frames.
+
+The combined run observes all nine declared stage groups: emitter entry,
+catalog, lowering, descriptor NF, layouts, sharing, JS/C rendering and
+link planning. Coverage remains per-root: executable entrypoints are exercised,
+library trace entrypoints are not. C retains 2048 individual brackets and
+explicitly counts the other 69021 as omitted. Aggregate bracket counts remain
+complete. Native validation checks 5680 definitions and 6152 events in the trace
+component, with zero excluded checks or output patches.
+
+These are scheduler-boundary brackets, not exclusive per-provider CPU or
+allocation measurements. Child/interleaved work and observer overhead remain
+inside elapsed intervals. Link planning is not external linker execution.
+Full-input overhead/control comparison, retained/live bytes, exclusive
+per-definition CPU and full-root trace coverage are not established by this
+probe. Historical producer/LLVM diagnostic evidence remains separate in
+`evals/receipts/full_profile2039_complete.json`.

@@ -339,7 +339,7 @@ const TRACE_STAGE_NAMES = new Set(stageGroupMetadata
   .map(group => group.name));
 
 function emptyTraceTable(namespace, status, reasons) {
-  return {namespace, protocol: TRACE_PROTOCOL, status, reasons,
+  return {namespace, sourceNamespace: namespace, tagEncoding: null, protocol: TRACE_PROTOCOL, status, reasons,
     protocolVersion: null, quantum: null, maxEventsPerBoundary: null,
     constructors: null, generationManifestSha256: null, selfAuthentication: null,
     artifactBinding: null, roots: [], bySite: new Map(), stageRoots: new Map()};
@@ -417,8 +417,14 @@ function describeTraceBlock(document, context) {
   const constructorsOk = Object.entries(DEFAULT_TRACE_CONSTRUCTORS).every(([key, name]) =>
     constructors[key] === name);
   check(constructorsOk, 'trace constructors must be exactly ' + JSON.stringify(DEFAULT_TRACE_CONSTRUCTORS));
+  // Canonical comp.ts strips the source module at ':' from JS constructor
+  // tags. A native build receipt must bind that encoding to this exact image;
+  // otherwise only the selfhost's fully qualified keys can be attributed.
+  const compiled = artifactBinding.status === 'verified' && artifactBinding.tagEncoding === 'canonical-compiled-js';
+  table.namespace = compiled ? null : namespace;
+  table.tagEncoding = compiled ? 'canonical-compiled-js' : 'selfhost-canonical-key';
   table.constructors = constructorsOk
-    ? Object.fromEntries(Object.entries(DEFAULT_TRACE_CONSTRUCTORS).map(([key, name]) => [key, namespace + '.' + name]))
+    ? Object.fromEntries(Object.entries(DEFAULT_TRACE_CONSTRUCTORS).map(([key, name]) => [key, compiled ? name : namespace + '.' + name]))
     : null;
   const declaredRoots = Array.isArray(block.roots) ? block.roots : null;
   check(declaredRoots !== null && declaredRoots.length > 0, 'trace.roots must be a nonempty declared root list');
@@ -569,6 +575,8 @@ function readReceipt(path) {
   const artifactSha256 = typeof document.artifactSha256 === 'string' ? document.artifactSha256 : null;
   return {
     path: realpathSync(path), sha256: sha256(readFileSync(path)), artifactSha256,
+    tagEncoding: document.status === 'JS_GENERATED_NOT_YET_EXECUTED' && document.checkedOutputRetention === 'native e'
+      ? 'canonical-compiled-js' : null,
     provenancePath: provenance === document ? null : realpathSync(document.provenancePath),
     loadedInputs: provenance.loadedInputs ?? document.loadedInputs ?? {},
     protectedPins: provenance.protectedPins ?? document.protectedPins ?? {},
@@ -594,7 +602,7 @@ function bindManifestToReceipt(manifest, receipt, artifactSha256) {
   const required = checks.find(check => check.output === requiredOutput);
   if (required === undefined || required.status !== 'verified')
     return {status: 'unverified', reason: 'receipt does not load the required generated engine output', checks};
-  return {status: 'verified', reason: null, checks,
+  return {status: 'verified', reason: null, checks, tagEncoding: receipt.tagEncoding ?? null,
     note: 'all outputs shared between manifest and receipt must match; unloaded sibling outputs are recorded but not required'};
 }
 
@@ -1379,6 +1387,8 @@ export function createStepAttribution(phase, protocol, table, profile, options =
         },
         manifest: trace.table === null ? null : {
           namespace: trace.table.namespace,
+          sourceNamespace: trace.table.sourceNamespace,
+          tagEncoding: trace.table.tagEncoding,
           protocolVersion: trace.table.protocolVersion,
           constructors: trace.table.constructors,
           generationManifestSha256: trace.table.generationManifestSha256,
@@ -1388,9 +1398,10 @@ export function createStepAttribution(phase, protocol, table, profile, options =
           reasons: trace.table.reasons,
         },
         namespaceBinding: trace.table === null ? 'unresolved: no traced Run value was observed'
-          : trace.table.namespace === null ? 'unresolved'
-            : trace.blocked === null ? 'verified: observed Run namespace, trace manifest namespace and artifact receipt agree'
-              : 'refused: ' + trace.blocked,
+          : trace.blocked !== null ? 'refused: ' + trace.blocked
+            : trace.table.tagEncoding === 'canonical-compiled-js'
+              ? 'verified: image-bound canonical compiled tags; runtime tags omit the source module recorded in sourceNamespace'
+              : 'verified: observed Run namespace, trace manifest namespace and artifact receipt agree',
         roots: traceRoots,
         coverage: {
           declaredStages,
