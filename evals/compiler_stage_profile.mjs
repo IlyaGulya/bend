@@ -901,13 +901,18 @@ function serializedBuckets(store) {
  * caller passes `options.intervals === false` the interval evidence is skipped
  * and the report says so; sampling/counters are unchanged.
  *
- * `options.trace === true` additionally folds an opt-in Emitter trace build's
- * engine brackets into collector spans: the trace table is resolved from the
- * supplied manifest set and the observed Run namespace, every endpoint is the
- * host step that delivered the traced Run value, and nothing is attributed when
- * the manifest, its artifact binding or the bracket pairing fails to
- * authenticate. Without the option no trace table is read and every existing
- * counter, sample and interval keeps exactly its previous meaning.
+ * Trace folding is on by default and activates lazily on the first traced Run
+ * value, so an existing caller that passes no options at all keeps its call
+ * shape and still turns a trace image into exact scheduler spans: the trace
+ * table is then resolved from the supplied manifest set and the observed Run
+ * namespace, every endpoint is the host step that delivered the traced Run
+ * value, and nothing is attributed when the manifest, its artifact binding or
+ * the bracket pairing fails to authenticate. An ordinary image observes no
+ * traced Run value, so an auto-mode phase reads no trace table, opens no span
+ * and reports no trace field; every existing counter, sample and interval keeps
+ * exactly its previous meaning. `options.trace === false` disables the folding
+ * explicitly and `options.trace === true` (or a table) asks for the evidence
+ * even when no traced Run value is observed.
  */
 export function createStepAttribution(phase, protocol, table, profile, options = {}) {
   if (options === null || typeof options !== 'object' || Array.isArray(options))
@@ -1038,10 +1043,18 @@ export function createStepAttribution(phase, protocol, table, profile, options =
   const traceOption = options.trace;
   if (traceOption !== undefined && traceOption !== null && traceOption !== false && traceOption !== true
     && (typeof traceOption !== 'object' || Array.isArray(traceOption)))
-    throw Error('Step attribution options.trace must be true or a trace table produced by loadStageManifests');
-  const trace = traceOption === undefined || traceOption === null || traceOption === false ? null : {
-    requested: true,
-    provided: traceOption === true ? null : traceOption,
+    throw Error('Step attribution options.trace must be omitted, false, true or a trace table produced by loadStageManifests');
+  // Trace folding is enabled by default and activates lazily on the first traced
+  // Run value, so every existing caller keeps its four-argument call shape and
+  // still collects exact scheduler spans from a trace image. An ordinary image
+  // observes no traced Run value, activates nothing and reports nothing new;
+  // `trace: false` is the explicit opt-out, and `trace: true` (or an explicit
+  // table) asks for the evidence even when no traced value is observed.
+  const trace = traceOption === false ? null : {
+    mode: traceOption === undefined || traceOption === null ? 'auto'
+      : traceOption === true ? 'required' : 'explicit',
+    observed: false,
+    provided: traceOption === undefined || traceOption === null || traceOption === true ? null : traceOption,
     table: null, blocked: null, status: 'pending', flushed: false,
     boundaries: 0, events: 0, begins: 0, ends: 0, emptyBoundaries: 0,
     rejectedSpans: 0, ignoredEvents: 0,
@@ -1088,6 +1101,9 @@ export function createStepAttribution(phase, protocol, table, profile, options =
     const usable = trace.table !== null && trace.table.status === 'verified' && trace.blocked === null;
     let parsed = typedTraceEvents(run, usable ? trace.table : undefined);
     if (parsed.status === 'not-run-span') return false;
+    // Activation is evidence-driven: a traced Run value is the only thing that
+    // turns this phase into a trace report, so an untraced image stays silent.
+    trace.observed = true;
     if (trace.table === null) {
       resolveTraceTable(parsed.runNamespace);
       if (trace.table.status === 'verified' && trace.blocked === null) parsed = typedTraceEvents(run, trace.table);
@@ -1216,6 +1232,10 @@ export function createStepAttribution(phase, protocol, table, profile, options =
   // the evidence says which brackets never reached their engine End.
   function flushTrace(hook, status) {
     if (trace === null || trace.flushed) return;
+    if (trace.mode === 'auto' && !trace.observed) {
+      trace.flushed = true;
+      return;
+    }
     trace.flushed = true;
     if (trace.frames.length > 0) {
       trace.openFramesAtTerminal = trace.frames.length;
@@ -1253,7 +1273,10 @@ export function createStepAttribution(phase, protocol, table, profile, options =
   }
 
   function reportTrace() {
-    if (trace === null) return;
+    // Default (auto) mode reports only what it observed: no traced Run value
+    // means no trace evidence at all, which keeps every ordinary phase report
+    // exactly as it was while a trace image is profiled without any new flag.
+    if (trace === null || (trace.mode === 'auto' && !trace.observed)) return;
     // A phase that never saw a traced Run boundary reports that fact instead of
     // claiming a verified (empty) span set.
     if (trace.boundaries === 0 && trace.status === 'pending') trace.status = 'no-span-boundary';
@@ -1417,13 +1440,17 @@ export function createStepAttribution(phase, protocol, table, profile, options =
     onFinish(_value, _steps) {closeTerminal('finish'); flushTrace('finish', 'aborted');},
     onError(_error, _steps) {closeTerminal('error'); flushTrace('error', 'failed');},
     record(profile) {
+      // Only a phase that observed traced Run values (or was asked for trace
+      // evidence explicitly) carries trace fields; an auto-mode phase that never
+      // saw one reports exactly what it reported before this evidence existed.
+      const traceReported = trace !== null && (trace.mode !== 'auto' || trace.observed);
       profile.record({
         kind: 'typed-step-exact-counters', scope: 'host orchestration', name: phase + '-steps',
         units: 'host-step-calls', value: hostSteps, source: 'checker_core_step_runtime.mjs',
         details: {phase, hostStepCall: 'one bounded public step export call; initial start call excluded',
           nativeChunkQuantum: 64, note: 'exact host calls, not semantic operations or CPU',
-          ...(trace === null ? {} : {traceSpanBoundaries: trace.boundaries,
-            traceSpanNote: 'traced Run boundaries are host-step calls too; they carry engine trace events instead of typed progress and are excluded from the sample counts below'})},
+          ...(traceReported ? {traceSpanBoundaries: trace.boundaries,
+            traceSpanNote: 'traced Run boundaries are host-step calls too; they carry engine trace events instead of typed progress and are excluded from the sample counts below'} : {})},
       });
       if (shapes.size > 0) profile.record({
         kind: 'typed-progress-samples', scope: 'host-visible typed chunk boundary',
@@ -1449,8 +1476,8 @@ export function createStepAttribution(phase, protocol, table, profile, options =
             ? 'no generator manifest supplied; fully qualified request tags are retained but ungrouped'
             : 'request namespace bound to the observed Run; groups require an exact registered manifest request tag and declared canonical source path (basename fallback only when unambiguous)',
           intervalMeasurement: 'see the same phase \'-intervals\' observation: measured bounded-step intervals are a separate evidence type and are never added to these sample counts',
-          ...(trace === null ? {} : {traceSpanBoundaries: trace.boundaries,
-            traceBoundaryNote: 'a traced Run boundary carries engine Begin/End events, not typed progress; it is not counted as a request sample and its spans are reported by the separate scheduler-boundary-spans observation'}),
+          ...(traceReported ? {traceSpanBoundaries: trace.boundaries,
+            traceBoundaryNote: 'a traced Run boundary carries engine Begin/End events, not typed progress; it is not counted as a request sample and its spans are reported by the separate scheduler-boundary-spans observation'} : {}),
         },
       });
       if (!measureIntervals) {
@@ -1522,13 +1549,13 @@ export function createStepAttribution(phase, protocol, table, profile, options =
             'link execution: unreachable in this host, which emits source text only',
             'worker and child process CPU: excluded from both deltas; a worker or native child reports its own identity/receipt and is never merged here',
           ],
-          ...(trace === null ? {} : {
+          ...(traceReported ? {
             traceBoundaries: {
               observed: trace.boundaries,
               attribution: 'a traced Run boundary exposes engine Begin/End events and no typed progress, so the interval that starts there is attributed to the unclassified trace-span key instead of an invented request',
               separateEvidence: 'its spans are reported by the scheduler-boundary-spans observation of this phase and are never added to these intervals',
             },
-          }),
+          } : {}),
         },
       });
       reportTrace();

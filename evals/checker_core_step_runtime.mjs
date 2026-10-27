@@ -163,11 +163,12 @@ export function sourceFilesFor(modulePath,declaredPaths,carrier){
 
 
 /**
- * The trace-only Run value carries a bounded native event list. This is a
- * structural bound only: the authenticated diagnostic manifest declares the
- * exact per-boundary maximum, and this ABI gate never interprets an event.
+ * The trace-only Run value carries exactly one event per boundary. This is a
+ * structural limit, not a scheduling rule: the ABI never batches events onto one
+ * Run value and this gate never interprets an event. Zero events stays legal
+ * because the diagnostic layer, not the ABI gate, judges a boundary's events.
  */
-const TRACE_EVENT_LIST_LIMIT=64;
+const TRACE_EVENT_LIST_LIMIT=1;
 
 /**
  * Trusted Node orchestration, outside the native Bend termination proof.
@@ -240,7 +241,7 @@ function validateSpanRun(kind,run,spanTag){
   if(tag==='Nil')return;
   if(tag!=='Con')invalid(kind,spanTag+' events requires a native List');
   count+=1;
-  if(count>TRACE_EVENT_LIST_LIMIT)invalid(kind,spanTag+' carries more than '+TRACE_EVENT_LIST_LIMIT+' events in one boundary');
+  if(count>TRACE_EVENT_LIST_LIMIT)invalid(kind,spanTag+' carries more than '+TRACE_EVENT_LIST_LIMIT+' event per boundary');
   if(!hasConstructorTag(rest.head))invalid(kind,spanTag+' events requires nominal trace constructors');
   rest=rest.tail;
  }
