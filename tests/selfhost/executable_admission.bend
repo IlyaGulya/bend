@@ -1,96 +1,61 @@
 import Base
+import ../../bend2/selfhost/ast.bend as Ast
 import ../../bend2/selfhost/loaded_module.bend as Loader
-import ../../bend2/selfhost/parser.bend as Parser
-import ../../bend2/selfhost/checker.bend as Checker
+import ../../checkpoints/checker_core_steps_v1.bend as Checker
 import ../../bend2/selfhost/checked_frontend.bend as Checked
-import ../../bend2/selfhost/backend_lower.bend as BackendLower
+import ../../checkpoints/emitter_steps_v1.bend as Emit
 
-# Executable-mode entry admission is decided once in the catalog, before either
-# target renders. These fixtures use the public parser -> checker -> lowering
-# seam, never a hand-built BIR value.
+@unsafe
+def finish(run: Checker.CheckerRun<Checked.CheckResult>) -> Checked.CheckResult:
+  match run:
+    case Checker.CheckerRunFinished{Checker.CheckerValue{value}}: value
+    case Checker.CheckerRunState{A, progress, stack}: finish(Checker.checker_step(Checked.CheckResult, Checker.CheckerRunState{A, progress, stack}))
 
-def mainless_source() -> String:
-  "type Unit is Data:\n  Unit{}\n\ndef twice(x: Unit) -> Unit:\n  x\n"
+def check(module: Ast.Module) -> Checked.CheckResult:
+  finish(Checker.checker_start([Loader.LoadedModule{"", module}]))
 
-def executable_source() -> String:
-  "type Unit is Data:\n  Unit{}\n\ndef main() -> Unit:\n  Unit{}\n"
+@unsafe
+def finish_emit(run: Emit.EmitterRun<Emit.EmitResult>) -> Emit.EmitResult:
+  match run:
+    case Emit.EmitterRunFinished{Emit.EmitterValue{value}}: value
+    case Emit.EmitterRunState{A, progress, stack}: finish_emit(Emit.emitter_step(Emit.EmitResult, Emit.EmitterRunState{A, progress, stack}))
 
-def inferred_source() -> String:
-  "type Unit is Data:\n  Unit{}\n\ndef main():\n  Unit{}\n"
+def unit_decl(+sp: Ast.SourceSpan) -> Ast.TopLevel:
+  Ast.TypeTop{Ast.TypeDecl{"Unit", [], Ast.TermType{Ast.TermQuantity{Ast.QMany{}, sp}, sp}, [Ast.Constructor{"Unit", [], sp}], sp}}
 
-def missing_main_result(result: Checked.CheckResult):
+def mainless_module() -> Ast.Module:
+  +sp = {Ast.SpanOf{"entry.bend", 0n, 1n} : Ast.SourceSpan}
+  +ty = {Ast.TermRef{"Unit", sp} : Ast.SyntaxTerm}
+  definition = {Ast.Definition{"twice", [Ast.Binder{Ast.QOne{}, "x", 0n, ty, sp}], Ast.SomeTerm{ty}, Ast.DefTerm{Ast.TermVar{"x", 0n, sp}}, False{}, sp} : Ast.Definition}
+  Ast.Module{"entry.bend", [], [unit_decl(sp), Ast.DefTop{definition}]}
+
+def main_module(result: Ast.OptionalTerm) -> Ast.Module:
+  +sp = {Ast.SpanOf{"entry.bend", 0n, 1n} : Ast.SourceSpan}
+  definition = {Ast.Definition{"main", [], result, Ast.DefTerm{Ast.TermAnn{Ast.TermCtr{"Unit", [], sp}, Ast.TermRef{"Unit", sp}, sp}}, False{}, sp} : Ast.Definition}
+  Ast.Module{"entry.bend", [], [unit_decl(sp), Ast.DefTop{definition}]}
+
+def executable_result(result: Emit.EmitResult, accepted: String, rejected: String) -> IO(Unit):
   match result:
-    case Checked.CheckSuccess{program}:
-      match BackendLower.lower(program):
-        case BackendLower.LowerFailure{_, _}: IO.print("missing-main-rejected")
-        case BackendLower.Lowered{_}: IO.print("missing-main-accepted")
-    case Checked.CheckFailure{Checked.Diagnostic{_, _, message, _, _}}:
-      IO.print("missing-main-check-failed: " ++ message)
+    case Emit.EmitSuccess{_}: IO.print(accepted)
+    case Emit.EmitFailure{_, _}: IO.print(rejected)
 
-def missing_main(parsed: Parser.ParseResult):
-  match parsed:
-    case Parser.ParseSuccess{module}:
-      missing_main_result(Checker.check([Loader.LoadedModule{"", module}]))
-    case Parser.ParseFailure{message, _, _, _}:
-      IO.print("missing-main-parse-failed: " ++ message)
-
-def executable_main_result(result: Checked.CheckResult):
+def executable(result: Checked.CheckResult, accepted: String, rejected: String) -> IO(Unit):
   match result:
-    case Checked.CheckSuccess{program}:
-      match BackendLower.lower(program):
-        case BackendLower.Lowered{_}: IO.print("executable-main-accepted")
-        case BackendLower.LowerFailure{_, _}: IO.print("executable-main-rejected")
-    case Checked.CheckFailure{Checked.Diagnostic{_, _, message, _, _}}:
-      IO.print("executable-main-check-failed: " ++ message)
+    case Checked.CheckSuccess{program}: executable_result(finish_emit(Emit.emitter_start(program, [])), accepted, rejected)
+    case Checked.CheckFailure{_}: IO.print("entry-check-failed")
 
-def executable_main(parsed: Parser.ParseResult):
-  match parsed:
-    case Parser.ParseSuccess{module}:
-      executable_main_result(Checker.check([Loader.LoadedModule{"", module}]))
-    case Parser.ParseFailure{message, _, _, _}:
-      IO.print("executable-main-parse-failed: " ++ message)
-
-def inferred_main_result(result: Checked.CheckResult):
+def library_result(result: Checked.CheckResult) -> IO(Unit):
   match result:
-    case Checked.CheckSuccess{program}:
-      match BackendLower.lower(program):
-        case BackendLower.Lowered{_}: IO.print("inferred-main-accepted")
-        case BackendLower.LowerFailure{_, _}: IO.print("inferred-main-rejected")
-    case Checked.CheckFailure{Checked.Diagnostic{_, _, message, _, _}}:
-      IO.print("inferred-main-check-failed: " ++ message)
+    case Checked.CheckSuccess{program}: executable_result(finish_emit(Emit.emitter_library_start(program, [], [])), "library-mainless-accepted", "library-mainless-rejected")
+    case Checked.CheckFailure{_}: IO.print("library-check-failed")
 
-def inferred_main(parsed: Parser.ParseResult):
-  match parsed:
-    case Parser.ParseSuccess{module}:
-      inferred_main_result(Checker.check([Loader.LoadedModule{"", module}]))
-    case Parser.ParseFailure{message, _, _, _}:
-      IO.print("inferred-main-parse-failed: " ++ message)
-
-def library_mainless_result(result: Checked.CheckResult):
-  match result:
-    case Checked.CheckSuccess{program}:
-      match BackendLower.lower_library(program, []):
-        case BackendLower.Lowered{_}: IO.print("library-mainless-accepted")
-        case BackendLower.LowerFailure{_, _}: IO.print("library-mainless-rejected")
-    case Checked.CheckFailure{Checked.Diagnostic{_, _, message, _, _}}:
-      IO.print("library-mainless-check-failed: " ++ message)
-
-def library_mainless(parsed: Parser.ParseResult):
-  match parsed:
-    case Parser.ParseSuccess{module}:
-      library_mainless_result(Checker.check([Loader.LoadedModule{"", module}]))
-    case Parser.ParseFailure{message, _, _, _}:
-      IO.print("library-mainless-parse-failed: " ++ message)
-
-law main:
-  IO(Unit)
-
-def main():
+def main() -> IO(Unit):
+  sp = {Ast.SpanOf{"entry.bend", 0n, 1n} : Ast.SourceSpan}
   do IO<Unit>:
-    missing_main(Parser.parse("missing-main.bend", mainless_source()))
-    executable_main(Parser.parse("executable.bend", executable_source()))
-    inferred_main(Parser.parse("inferred.bend", inferred_source()))
-    library_mainless(Parser.parse("library.bend", mainless_source()))
+    Unit <- executable(check(mainless_module()), "missing-main-accepted", "missing-main-rejected")
+    Unit <- executable(check(main_module(Ast.SomeTerm{Ast.TermRef{"Unit", sp}})), "executable-main-accepted", "executable-main-rejected")
+    Unit <- executable(check(main_module(Ast.NoTerm{})), "inferred-main-accepted", "inferred-main-rejected")
+    library_result(check(mainless_module()))
 
 #| missing-main-rejected
 #| executable-main-accepted

@@ -1161,6 +1161,15 @@ aliases (`backend_ir.bend:32-144`).
   bounded primitive evidence, not a completed emitted-stage suite or g9
   fixedpoint: g9a's full bootstrap remains rejected at the unchanged
   stage-two-check deadline.
+- Numeric boundary coverage: `f32_read_round_once`, `f32_read_whitespace`,
+  `f32_pow_unit_base` and `word_float_roundtrip` in `tests/run/` execute on
+  real emitted JS and compiled C. The JS helpers now use the canonical exact
+  decimal-rounding, ASCII-whitespace and IEEE unit-base rules. C transfers an
+  owned argument to consuming `f32_read`/`term_word` helpers and constructs
+  `Word` least-significant bit first. The regression covers repeated and
+  shared Word conversions as well as decimal midpoints and Unicode rejection.
+  Receipt: `evals/receipts/root2039g10_numeric_consumers.json`. These eight
+  consumer passes do not establish full-root or byte-fixedpoint acceptance.
 
 ### 4.11 Rendered entries and foreign callbacks (checkpoint law B2)
 
@@ -1891,22 +1900,19 @@ fixed here.
   by `prim_part`. No gate read here compares them primitive by primitive, and
   the C executable smoke fixture's only primitive value scenario is `U32.add`.
   This is an open coverage gap under TL-3/BL-17, not an observed mismatch.
-- **R-8 (executable-mode admission of a source without `main`) — boundary gap,
-  not an established bug.** `Catalog.ending` returns
-  `Executable{DescriptorNull}` when no `main` descriptor was found
-  (`lower_catalog.bend:1436-1444`). The driver always calls `lower`
-  (executable mode, `driver.bend:126`), so a module compiled in executable mode
-  without `main` reaches this state. JS's `js_main` guards on
-  `Object.hasOwn($D,"main")` and, when absent, emits a program that produces no
-  output and exits 0 (`js_backend.bend:1193`). C's `entry_main` fails with
-  "the C target has no root main definition" (`c_backend.bend:2626-2637`).
-  This is **not** a demonstrated counterexample on an accepted executable
-  input: whether a module without `main` is a valid executable is a
-  source-language/CLI contract question, and no check exists at the FIR/BIR
-  boundary. If executable mode requires `main`, the missing check belongs to
-  the CLI/FIR boundary; if a mainless module is a valid executable, the two
-  targets disagree under TL-3. Reported for admission review, not as a
-  confirmed consumer bug.
+- **R-8 (executable-mode admission without root `main`) — repaired boundary.**
+  Executable catalog construction requires a root `"main"` definition header
+  that is not type-only (`root_main_admitted` / `executable_admitted` in
+  `lower_catalog.bend`). A namespaced imported main does not satisfy this
+  lookup. The decision does not depend on the result descriptor: inferred
+  mains and `main() -> Unit` remain legal, while explicit library mode remains
+  independent of main. Failure occurs in shared catalog construction, before
+  either target renders output. `tests/selfhost/executable_admission.bend`
+  exercises the public typed checker/emitter path. Actual native pre-fix
+  target divergence and the repaired seam are recorded in
+  `evals/receipts/root2039g10_boundary_before.json` and
+  `evals/receipts/root2039g10_checker_entry.json`. This is bounded regression
+  evidence, not a general executable-type or lowering-preservation proof.
 - **R-9 (`Failure.message` dropped in C) — possible mismatch only under
   exact-text observation.** JS renders `BIR.Failure{message}` as
   `throw "<message>"`, so the text can reach stderr

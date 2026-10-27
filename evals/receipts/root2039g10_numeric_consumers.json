@@ -1,0 +1,1252 @@
+{
+  "schemaVersion": 1,
+  "status": "G10_F32_AND_WORD_JS_C_CONSUMERS_PASS",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "scope": "Current fully native-validated emitter with retained authenticated g9a frontend; actual source parsing/checking and JS/C program execution, not full compiler acceptance",
+  "sourceHashes": {
+    "bend2/selfhost/js_backend.bend": "fd3230251490c03bbacea2a02bd19cb6f161624de96c46c97355809cf7e4a926",
+    "bend2/selfhost/c_backend.bend": "c89d398805a6ed02ac408c385f7fd043d8f128a8e0b557a141f4603489c160f2",
+    "tests/run/word_float_roundtrip.bend": "7b49a58cd39c44a4999722d20ad15f079d538400eb33219c8e0ba8ce173498cd",
+    "evals/c_target_fixtures_run.ts": "db98699f6161b22ace2fb007d735b0d91180c01598b0180c59b7fd32c70b5d01"
+  },
+  "originalNumericBefore": {
+    "schemaVersion": 1,
+    "status": "NATIVE_F32_BOUNDARIES_OBSERVED_BEFORE_FIX",
+    "compilerAccepted": false,
+    "byteFixedpoint": false,
+    "binary": "/tmp/bend-g9-native",
+    "binarySha256": "76c246aa114d3768db523d7d02fb1a0b55ebad5edcc5d7c4fcc6692ef4e1be71",
+    "directory": "/tmp/bend-g10-f32-before-WkQ1lD",
+    "rows": [
+      {
+        "source": "tests/run/f32_read_round_once.bend",
+        "target": "js",
+        "sourceSha256": "a30385f044fe1ff66a6cb3c45537c1d773eff1aced492480b2f62305ce08fb82",
+        "expected": "1065353215 1065353217 1266679808 2139095039 2139095040 1 3212836863\n1065353215 1065353217 1266679808 2139095039 1",
+        "run": {
+          "command": [
+            "/tmp/bend-g9-native",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--RTS",
+            "/private/tmp/bend2039g8-js-call-cost/tests/run/f32_read_round_once.bend",
+            "/private/tmp/bend2039g8-js-call-cost/bend2/base.bend",
+            "/tmp/bend-g10-f32-before-WkQ1lD/f32_read_round_once.bend-js.tsv",
+            "/tmp/bend-g10-f32-before-WkQ1lD/f32_read_round_once.bend-js.tsv.exports",
+            "compile-module",
+            "/tmp/bend-g10-f32-before-WkQ1lD/f32_read_round_once.bend-js.tsv.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 3646,
+          "stdout": "NATIVE_RESULT {\"result\":\"EmitSuccess\",\"bytes\":382782,\"modules\":2}\n",
+          "stderr": "NATIVE_BEGIN {\"computeThreads\":1,\"parserFuel\":8000000,\"phase\":\"compile-module\",\"phaseTraceVersion\":3}\nNATIVE_PHASE_START {\"phase\":\"parse\"}\nNATIVE_FUEL {\"sourceOrdinal\":1,\"cells\":8000000,\"elapsedMs\":39.796,\"processPeakRssBeforeBytes\":5029888,\"processPeakRssAfterBytes\":69058560}\nNATIVE_FUEL {\"sourceOrdinal\":2,\"cells\":8000000,\"elapsedMs\":25.314,\"processPeakRssBeforeBytes\":72302592,\"processPeakRssAfterBytes\":72302592}\nNATIVE_PHASE {\"phase\":\"parse\",\"elapsedMs\":527.090,\"userCpuMs\":467.838,\"systemCpuMs\":13.927,\"modules\":2,\"sourceBytes\":80930,\"foreignBytes\":78415,\"eagerFuelCells\":16000000,\"fuelBuildMs\":65.110}\nNATIVE_PHASE_START {\"phase\":\"expand\"}\nNATIVE_PHASE {\"phase\":\"expand\",\"elapsedMs\":375.672,\"userCpuMs\":269.771,\"systemCpuMs\":2.793,\"chunkAdvances\":29615,\"chunkQuantum\":64}\nNATIVE_PHASE_START {\"phase\":\"check\"}\nNATIVE_PHASE {\"phase\":\"check\",\"elapsedMs\":2505.951,\"userCpuMs\":2001.120,\"systemCpuMs\":15.692,\"chunkAdvances\":144426,\"chunkQuantum\":64}\nNATIVE_PHASE_START {\"phase\":\"emit\"}\nNATIVE_PHASE {\"phase\":\"emit\",\"elapsedMs\":220.345,\"userCpuMs\":214.672,\"systemCpuMs\":4.666,\"chunkAdvances\":15362,\"chunkQuantum\":64}\n",
+          "phases": [
+            {
+              "phase": "parse",
+              "elapsedMs": 527.09,
+              "userCpuMs": 467.838,
+              "systemCpuMs": 13.927,
+              "modules": 2,
+              "sourceBytes": 80930,
+              "foreignBytes": 78415,
+              "eagerFuelCells": 16000000,
+              "fuelBuildMs": 65.11
+            },
+            {
+              "phase": "expand",
+              "elapsedMs": 375.672,
+              "userCpuMs": 269.771,
+              "systemCpuMs": 2.793,
+              "chunkAdvances": 29615,
+              "chunkQuantum": 64
+            },
+            {
+              "phase": "check",
+              "elapsedMs": 2505.951,
+              "userCpuMs": 2001.12,
+              "systemCpuMs": 15.692,
+              "chunkAdvances": 144426,
+              "chunkQuantum": 64
+            },
+            {
+              "phase": "emit",
+              "elapsedMs": 220.345,
+              "userCpuMs": 214.672,
+              "systemCpuMs": 4.666,
+              "chunkAdvances": 15362,
+              "chunkQuantum": 64
+            }
+          ],
+          "phaseStarts": [
+            {
+              "phase": "parse"
+            },
+            {
+              "phase": "expand"
+            },
+            {
+              "phase": "check"
+            },
+            {
+              "phase": "emit"
+            }
+          ],
+          "fuel": [
+            {
+              "sourceOrdinal": 1,
+              "cells": 8000000,
+              "elapsedMs": 39.796,
+              "processPeakRssBeforeBytes": 5029888,
+              "processPeakRssAfterBytes": 69058560
+            },
+            {
+              "sourceOrdinal": 2,
+              "cells": 8000000,
+              "elapsedMs": 25.314,
+              "processPeakRssBeforeBytes": 72302592,
+              "processPeakRssAfterBytes": 72302592
+            }
+          ],
+          "begins": [
+            {
+              "computeThreads": 1,
+              "parserFuel": 8000000,
+              "phase": "compile-module",
+              "phaseTraceVersion": 3
+            }
+          ],
+          "results": [
+            {
+              "result": "EmitSuccess",
+              "bytes": 382782,
+              "modules": 2
+            }
+          ]
+        },
+        "outputSha256": "d26b11132487e1a36dcbf1e6a7937a6148cc11d6a025a22312f79ae568ddc30f",
+        "consumer": {
+          "command": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "/tmp/bend-g10-f32-before-WkQ1lD/f32_read_round_once.bend-js.tsv.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "stdout": "1065353216 1065353216 1266679808 2139095040 2139095040 0 3212836864\n1065353215 1065353217 1266679808 2139095039 1\n",
+          "stderr": ""
+        },
+        "passed": false
+      },
+      {
+        "source": "tests/run/f32_read_round_once.bend",
+        "target": "c",
+        "sourceSha256": "a30385f044fe1ff66a6cb3c45537c1d773eff1aced492480b2f62305ce08fb82",
+        "expected": "1065353215 1065353217 1266679808 2139095039 2139095040 1 3212836863\n1065353215 1065353217 1266679808 2139095039 1",
+        "run": {
+          "command": [
+            "/tmp/bend-g9-native",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--RTS",
+            "/private/tmp/bend2039g8-js-call-cost/tests/run/f32_read_round_once.bend",
+            "/private/tmp/bend2039g8-js-call-cost/bend2/base.bend",
+            "/tmp/bend-g10-f32-before-WkQ1lD/f32_read_round_once.bend-c.tsv",
+            "/tmp/bend-g10-f32-before-WkQ1lD/f32_read_round_once.bend-c.tsv.exports",
+            "compile-c-module",
+            "/tmp/bend-g10-f32-before-WkQ1lD/f32_read_round_once.bend-c.tsv.c",
+            "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/c_runtime.c"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 12014,
+          "stdout": "NATIVE_RESULT {\"result\":\"EmitSuccess\",\"bytes\":1173291,\"modules\":2}\n",
+          "stderr": "NATIVE_BEGIN {\"computeThreads\":1,\"parserFuel\":8000000,\"phase\":\"compile-c-module\",\"phaseTraceVersion\":3}\nNATIVE_PHASE_START {\"phase\":\"parse\"}\nNATIVE_FUEL {\"sourceOrdinal\":1,\"cells\":8000000,\"elapsedMs\":34.437,\"processPeakRssBeforeBytes\":5095424,\"processPeakRssAfterBytes\":69124096}\nNATIVE_FUEL {\"sourceOrdinal\":2,\"cells\":8000000,\"elapsedMs\":24.961,\"processPeakRssBeforeBytes\":72368128,\"processPeakRssAfterBytes\":72368128}\nNATIVE_PHASE {\"phase\":\"parse\",\"elapsedMs\":463.960,\"userCpuMs\":437.870,\"systemCpuMs\":12.510,\"modules\":2,\"sourceBytes\":80930,\"foreignBytes\":305668,\"eagerFuelCells\":16000000,\"fuelBuildMs\":59.398}\nNATIVE_PHASE_START {\"phase\":\"expand\"}\nNATIVE_PHASE {\"phase\":\"expand\",\"elapsedMs\":256.811,\"userCpuMs\":253.835,\"systemCpuMs\":0.983,\"chunkAdvances\":29615,\"chunkQuantum\":64}\nNATIVE_PHASE_START {\"phase\":\"check\"}\nNATIVE_PHASE {\"phase\":\"check\",\"elapsedMs\":2492.869,\"userCpuMs\":2065.683,\"systemCpuMs\":14.653,\"chunkAdvances\":144426,\"chunkQuantum\":64}\nNATIVE_PHASE_START {\"phase\":\"emit-c\"}\nNATIVE_PHASE {\"phase\":\"emit-c\",\"elapsedMs\":8768.817,\"userCpuMs\":7681.920,\"systemCpuMs\":47.878,\"chunkAdvances\":1270249,\"chunkQuantum\":64}\n",
+          "phases": [
+            {
+              "phase": "parse",
+              "elapsedMs": 463.96,
+              "userCpuMs": 437.87,
+              "systemCpuMs": 12.51,
+              "modules": 2,
+              "sourceBytes": 80930,
+              "foreignBytes": 305668,
+              "eagerFuelCells": 16000000,
+              "fuelBuildMs": 59.398
+            },
+            {
+              "phase": "expand",
+              "elapsedMs": 256.811,
+              "userCpuMs": 253.835,
+              "systemCpuMs": 0.983,
+              "chunkAdvances": 29615,
+              "chunkQuantum": 64
+            },
+            {
+              "phase": "check",
+              "elapsedMs": 2492.869,
+              "userCpuMs": 2065.683,
+              "systemCpuMs": 14.653,
+              "chunkAdvances": 144426,
+              "chunkQuantum": 64
+            },
+            {
+              "phase": "emit-c",
+              "elapsedMs": 8768.817,
+              "userCpuMs": 7681.92,
+              "systemCpuMs": 47.878,
+              "chunkAdvances": 1270249,
+              "chunkQuantum": 64
+            }
+          ],
+          "phaseStarts": [
+            {
+              "phase": "parse"
+            },
+            {
+              "phase": "expand"
+            },
+            {
+              "phase": "check"
+            },
+            {
+              "phase": "emit-c"
+            }
+          ],
+          "fuel": [
+            {
+              "sourceOrdinal": 1,
+              "cells": 8000000,
+              "elapsedMs": 34.437,
+              "processPeakRssBeforeBytes": 5095424,
+              "processPeakRssAfterBytes": 69124096
+            },
+            {
+              "sourceOrdinal": 2,
+              "cells": 8000000,
+              "elapsedMs": 24.961,
+              "processPeakRssBeforeBytes": 72368128,
+              "processPeakRssAfterBytes": 72368128
+            }
+          ],
+          "begins": [
+            {
+              "computeThreads": 1,
+              "parserFuel": 8000000,
+              "phase": "compile-c-module",
+              "phaseTraceVersion": 3
+            }
+          ],
+          "results": [
+            {
+              "result": "EmitSuccess",
+              "bytes": 1173291,
+              "modules": 2
+            }
+          ]
+        },
+        "outputSha256": "b8ceddd35299efb13278f0648e040c1fdf4992335778462849ebf9db5c9bc178",
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/tmp/bend-g10-f32-before-WkQ1lD/f32_read_round_once.bend-c.tsv.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-g10-f32-before-WkQ1lD/f32_read_round_once.bend-c.tsv.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "stdout": "",
+          "stderrSha256": "0f3974589726365ca58728c483597f5489e6be0dc011186f85b8a8828da1a3a1",
+          "stderrBytes": 8165,
+          "stderrRetainedExternally": true
+        },
+        "consumer": {
+          "command": [
+            "/tmp/bend-g10-f32-before-WkQ1lD/f32_read_round_once.bend-c.tsv.exe"
+          ],
+          "status": null,
+          "signal": "SIGTERM",
+          "stdout": "",
+          "stderr": ""
+        },
+        "passed": false
+      },
+      {
+        "source": "tests/run/f32_read_whitespace.bend",
+        "target": "js",
+        "sourceSha256": "b434e0652e2c59ec4decd88f33af2aa0bff9a9da247b7c92a24e7ea77f557c1d",
+        "expected": "1 1 1 1 1 1 1\nnone none none none none none none none none none none none none\nnone none none none none none\n-125 0.5 inf nan\nnone none none none\nnone none none none none",
+        "run": {
+          "command": [
+            "/tmp/bend-g9-native",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--RTS",
+            "/private/tmp/bend2039g8-js-call-cost/tests/run/f32_read_whitespace.bend",
+            "/private/tmp/bend2039g8-js-call-cost/bend2/base.bend",
+            "/tmp/bend-g10-f32-before-WkQ1lD/f32_read_whitespace.bend-js.tsv",
+            "/tmp/bend-g10-f32-before-WkQ1lD/f32_read_whitespace.bend-js.tsv.exports",
+            "compile-module",
+            "/tmp/bend-g10-f32-before-WkQ1lD/f32_read_whitespace.bend-js.tsv.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 4117,
+          "stdout": "NATIVE_RESULT {\"result\":\"EmitSuccess\",\"bytes\":394671,\"modules\":2}\n",
+          "stderr": "NATIVE_BEGIN {\"computeThreads\":1,\"parserFuel\":8000000,\"phase\":\"compile-module\",\"phaseTraceVersion\":3}\nNATIVE_PHASE_START {\"phase\":\"parse\"}\nNATIVE_FUEL {\"sourceOrdinal\":1,\"cells\":8000000,\"elapsedMs\":38.920,\"processPeakRssBeforeBytes\":5013504,\"processPeakRssAfterBytes\":69042176}\nNATIVE_FUEL {\"sourceOrdinal\":2,\"cells\":8000000,\"elapsedMs\":38.608,\"processPeakRssBeforeBytes\":71925760,\"processPeakRssAfterBytes\":71925760}\nNATIVE_PHASE {\"phase\":\"parse\",\"elapsedMs\":714.918,\"userCpuMs\":499.115,\"systemCpuMs\":21.534,\"modules\":2,\"sourceBytes\":81289,\"foreignBytes\":78415,\"eagerFuelCells\":16000000,\"fuelBuildMs\":77.528}\nNATIVE_PHASE_START {\"phase\":\"expand\"}\nNATIVE_PHASE {\"phase\":\"expand\",\"elapsedMs\":344.582,\"userCpuMs\":283.340,\"systemCpuMs\":4.078,\"chunkAdvances\":30944,\"chunkQuantum\":64}\nNATIVE_PHASE_START {\"phase\":\"check\"}\nNATIVE_PHASE {\"phase\":\"check\",\"elapsedMs\":2695.844,\"userCpuMs\":2091.966,\"systemCpuMs\":25.223,\"chunkAdvances\":144576,\"chunkQuantum\":64}\nNATIVE_PHASE_START {\"phase\":\"emit\"}\nNATIVE_PHASE {\"phase\":\"emit\",\"elapsedMs\":335.096,\"userCpuMs\":274.316,\"systemCpuMs\":11.327,\"chunkAdvances\":15904,\"chunkQuantum\":64}\n",
+          "phases": [
+            {
+              "phase": "parse",
+              "elapsedMs": 714.918,
+              "userCpuMs": 499.115,
+              "systemCpuMs": 21.534,
+              "modules": 2,
+              "sourceBytes": 81289,
+              "foreignBytes": 78415,
+              "eagerFuelCells": 16000000,
+              "fuelBuildMs": 77.528
+            },
+            {
+              "phase": "expand",
+              "elapsedMs": 344.582,
+              "userCpuMs": 283.34,
+              "systemCpuMs": 4.078,
+              "chunkAdvances": 30944,
+              "chunkQuantum": 64
+            },
+            {
+              "phase": "check",
+              "elapsedMs": 2695.844,
+              "userCpuMs": 2091.966,
+              "systemCpuMs": 25.223,
+              "chunkAdvances": 144576,
+              "chunkQuantum": 64
+            },
+            {
+              "phase": "emit",
+              "elapsedMs": 335.096,
+              "userCpuMs": 274.316,
+              "systemCpuMs": 11.327,
+              "chunkAdvances": 15904,
+              "chunkQuantum": 64
+            }
+          ],
+          "phaseStarts": [
+            {
+              "phase": "parse"
+            },
+            {
+              "phase": "expand"
+            },
+            {
+              "phase": "check"
+            },
+            {
+              "phase": "emit"
+            }
+          ],
+          "fuel": [
+            {
+              "sourceOrdinal": 1,
+              "cells": 8000000,
+              "elapsedMs": 38.92,
+              "processPeakRssBeforeBytes": 5013504,
+              "processPeakRssAfterBytes": 69042176
+            },
+            {
+              "sourceOrdinal": 2,
+              "cells": 8000000,
+              "elapsedMs": 38.608,
+              "processPeakRssBeforeBytes": 71925760,
+              "processPeakRssAfterBytes": 71925760
+            }
+          ],
+          "begins": [
+            {
+              "computeThreads": 1,
+              "parserFuel": 8000000,
+              "phase": "compile-module",
+              "phaseTraceVersion": 3
+            }
+          ],
+          "results": [
+            {
+              "result": "EmitSuccess",
+              "bytes": 394671,
+              "modules": 2
+            }
+          ]
+        },
+        "outputSha256": "942de8ed3be15fe15d9dad7a6cf8dac9f4cb520177ec3676efa83b573a07a28e",
+        "consumer": {
+          "command": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "/tmp/bend-g10-f32-before-WkQ1lD/f32_read_whitespace.bend-js.tsv.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "stdout": "1 1 1 1 1 1 1\n1 1 1 1 1 1 1 1 1 1 1 1 1\n1 1 1 1 1 1\n-125 0.5 inf nan\n1 1 -125 inf\nnone none none none none\n",
+          "stderr": ""
+        },
+        "passed": false
+      },
+      {
+        "source": "tests/run/f32_read_whitespace.bend",
+        "target": "c",
+        "sourceSha256": "b434e0652e2c59ec4decd88f33af2aa0bff9a9da247b7c92a24e7ea77f557c1d",
+        "expected": "1 1 1 1 1 1 1\nnone none none none none none none none none none none none none\nnone none none none none none\n-125 0.5 inf nan\nnone none none none\nnone none none none none",
+        "run": {
+          "command": [
+            "/tmp/bend-g9-native",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--RTS",
+            "/private/tmp/bend2039g8-js-call-cost/tests/run/f32_read_whitespace.bend",
+            "/private/tmp/bend2039g8-js-call-cost/bend2/base.bend",
+            "/tmp/bend-g10-f32-before-WkQ1lD/f32_read_whitespace.bend-c.tsv",
+            "/tmp/bend-g10-f32-before-WkQ1lD/f32_read_whitespace.bend-c.tsv.exports",
+            "compile-c-module",
+            "/tmp/bend-g10-f32-before-WkQ1lD/f32_read_whitespace.bend-c.tsv.c",
+            "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/c_runtime.c"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 11854,
+          "stdout": "NATIVE_RESULT {\"result\":\"EmitSuccess\",\"bytes\":1206509,\"modules\":2}\n",
+          "stderr": "NATIVE_BEGIN {\"computeThreads\":1,\"parserFuel\":8000000,\"phase\":\"compile-c-module\",\"phaseTraceVersion\":3}\nNATIVE_PHASE_START {\"phase\":\"parse\"}\nNATIVE_FUEL {\"sourceOrdinal\":1,\"cells\":8000000,\"elapsedMs\":46.097,\"processPeakRssBeforeBytes\":5079040,\"processPeakRssAfterBytes\":69107712}\nNATIVE_FUEL {\"sourceOrdinal\":2,\"cells\":8000000,\"elapsedMs\":26.854,\"processPeakRssBeforeBytes\":71991296,\"processPeakRssAfterBytes\":71991296}\nNATIVE_PHASE {\"phase\":\"parse\",\"elapsedMs\":521.053,\"userCpuMs\":489.103,\"systemCpuMs\":13.580,\"modules\":2,\"sourceBytes\":81289,\"foreignBytes\":305668,\"eagerFuelCells\":16000000,\"fuelBuildMs\":72.951}\nNATIVE_PHASE_START {\"phase\":\"expand\"}\nNATIVE_PHASE {\"phase\":\"expand\",\"elapsedMs\":322.803,\"userCpuMs\":291.265,\"systemCpuMs\":2.568,\"chunkAdvances\":30944,\"chunkQuantum\":64}\nNATIVE_PHASE_START {\"phase\":\"check\"}\nNATIVE_PHASE {\"phase\":\"check\",\"elapsedMs\":2297.083,\"userCpuMs\":2044.982,\"systemCpuMs\":17.145,\"chunkAdvances\":144576,\"chunkQuantum\":64}\nNATIVE_PHASE_START {\"phase\":\"emit-c\"}\nNATIVE_PHASE {\"phase\":\"emit-c\",\"elapsedMs\":8676.682,\"userCpuMs\":7872.295,\"systemCpuMs\":74.866,\"chunkAdvances\":1314937,\"chunkQuantum\":64}\n",
+          "phases": [
+            {
+              "phase": "parse",
+              "elapsedMs": 521.053,
+              "userCpuMs": 489.103,
+              "systemCpuMs": 13.58,
+              "modules": 2,
+              "sourceBytes": 81289,
+              "foreignBytes": 305668,
+              "eagerFuelCells": 16000000,
+              "fuelBuildMs": 72.951
+            },
+            {
+              "phase": "expand",
+              "elapsedMs": 322.803,
+              "userCpuMs": 291.265,
+              "systemCpuMs": 2.568,
+              "chunkAdvances": 30944,
+              "chunkQuantum": 64
+            },
+            {
+              "phase": "check",
+              "elapsedMs": 2297.083,
+              "userCpuMs": 2044.982,
+              "systemCpuMs": 17.145,
+              "chunkAdvances": 144576,
+              "chunkQuantum": 64
+            },
+            {
+              "phase": "emit-c",
+              "elapsedMs": 8676.682,
+              "userCpuMs": 7872.295,
+              "systemCpuMs": 74.866,
+              "chunkAdvances": 1314937,
+              "chunkQuantum": 64
+            }
+          ],
+          "phaseStarts": [
+            {
+              "phase": "parse"
+            },
+            {
+              "phase": "expand"
+            },
+            {
+              "phase": "check"
+            },
+            {
+              "phase": "emit-c"
+            }
+          ],
+          "fuel": [
+            {
+              "sourceOrdinal": 1,
+              "cells": 8000000,
+              "elapsedMs": 46.097,
+              "processPeakRssBeforeBytes": 5079040,
+              "processPeakRssAfterBytes": 69107712
+            },
+            {
+              "sourceOrdinal": 2,
+              "cells": 8000000,
+              "elapsedMs": 26.854,
+              "processPeakRssBeforeBytes": 71991296,
+              "processPeakRssAfterBytes": 71991296
+            }
+          ],
+          "begins": [
+            {
+              "computeThreads": 1,
+              "parserFuel": 8000000,
+              "phase": "compile-c-module",
+              "phaseTraceVersion": 3
+            }
+          ],
+          "results": [
+            {
+              "result": "EmitSuccess",
+              "bytes": 1206509,
+              "modules": 2
+            }
+          ]
+        },
+        "outputSha256": "ab64e73939da52f0bcb51cdb8f35c22b7ca1effd8d33d1ee56be7e63f8e88d7c",
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/tmp/bend-g10-f32-before-WkQ1lD/f32_read_whitespace.bend-c.tsv.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-g10-f32-before-WkQ1lD/f32_read_whitespace.bend-c.tsv.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "stdout": "",
+          "stderrSha256": "b8088223c034a61f6b72264f833ca711c15877c3248c91a97f7719289348b6fa",
+          "stderrBytes": 8165,
+          "stderrRetainedExternally": true
+        },
+        "consumer": {
+          "command": [
+            "/tmp/bend-g10-f32-before-WkQ1lD/f32_read_whitespace.bend-c.tsv.exe"
+          ],
+          "status": null,
+          "signal": "SIGTERM",
+          "stdout": "",
+          "stderr": ""
+        },
+        "passed": false
+      },
+      {
+        "source": "tests/run/f32_pow_unit_base.bend",
+        "target": "js",
+        "sourceSha256": "c8d3e74dd46fc54ec041d26940c77388e3090a8e03e40940710a463bd10e4c83",
+        "expected": "1 1 1 1 8",
+        "run": {
+          "command": [
+            "/tmp/bend-g9-native",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--RTS",
+            "/private/tmp/bend2039g8-js-call-cost/tests/run/f32_pow_unit_base.bend",
+            "/private/tmp/bend2039g8-js-call-cost/bend2/base.bend",
+            "/tmp/bend-g10-f32-before-WkQ1lD/f32_pow_unit_base.bend-js.tsv",
+            "/tmp/bend-g10-f32-before-WkQ1lD/f32_pow_unit_base.bend-js.tsv.exports",
+            "compile-module",
+            "/tmp/bend-g10-f32-before-WkQ1lD/f32_pow_unit_base.bend-js.tsv.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 3581,
+          "stdout": "NATIVE_RESULT {\"result\":\"EmitSuccess\",\"bytes\":376945,\"modules\":2}\n",
+          "stderr": "NATIVE_BEGIN {\"computeThreads\":1,\"parserFuel\":8000000,\"phase\":\"compile-module\",\"phaseTraceVersion\":3}\nNATIVE_PHASE_START {\"phase\":\"parse\"}\nNATIVE_FUEL {\"sourceOrdinal\":1,\"cells\":8000000,\"elapsedMs\":38.097,\"processPeakRssBeforeBytes\":5029888,\"processPeakRssAfterBytes\":69058560}\nNATIVE_FUEL {\"sourceOrdinal\":2,\"cells\":8000000,\"elapsedMs\":28.972,\"processPeakRssBeforeBytes\":72040448,\"processPeakRssAfterBytes\":72040448}\nNATIVE_PHASE {\"phase\":\"parse\",\"elapsedMs\":517.239,\"userCpuMs\":458.924,\"systemCpuMs\":24.940,\"modules\":2,\"sourceBytes\":80049,\"foreignBytes\":78415,\"eagerFuelCells\":16000000,\"fuelBuildMs\":67.069}\nNATIVE_PHASE_START {\"phase\":\"expand\"}\nNATIVE_PHASE {\"phase\":\"expand\",\"elapsedMs\":281.685,\"userCpuMs\":256.522,\"systemCpuMs\":6.620,\"chunkAdvances\":29329,\"chunkQuantum\":64}\nNATIVE_PHASE_START {\"phase\":\"check\"}\nNATIVE_PHASE {\"phase\":\"check\",\"elapsedMs\":2274.629,\"userCpuMs\":2065.258,\"systemCpuMs\":28.009,\"chunkAdvances\":145534,\"chunkQuantum\":64}\nNATIVE_PHASE_START {\"phase\":\"emit\"}\nNATIVE_PHASE {\"phase\":\"emit\",\"elapsedMs\":471.490,\"userCpuMs\":260.853,\"systemCpuMs\":9.722,\"chunkAdvances\":15050,\"chunkQuantum\":64}\n",
+          "phases": [
+            {
+              "phase": "parse",
+              "elapsedMs": 517.239,
+              "userCpuMs": 458.924,
+              "systemCpuMs": 24.94,
+              "modules": 2,
+              "sourceBytes": 80049,
+              "foreignBytes": 78415,
+              "eagerFuelCells": 16000000,
+              "fuelBuildMs": 67.069
+            },
+            {
+              "phase": "expand",
+              "elapsedMs": 281.685,
+              "userCpuMs": 256.522,
+              "systemCpuMs": 6.62,
+              "chunkAdvances": 29329,
+              "chunkQuantum": 64
+            },
+            {
+              "phase": "check",
+              "elapsedMs": 2274.629,
+              "userCpuMs": 2065.258,
+              "systemCpuMs": 28.009,
+              "chunkAdvances": 145534,
+              "chunkQuantum": 64
+            },
+            {
+              "phase": "emit",
+              "elapsedMs": 471.49,
+              "userCpuMs": 260.853,
+              "systemCpuMs": 9.722,
+              "chunkAdvances": 15050,
+              "chunkQuantum": 64
+            }
+          ],
+          "phaseStarts": [
+            {
+              "phase": "parse"
+            },
+            {
+              "phase": "expand"
+            },
+            {
+              "phase": "check"
+            },
+            {
+              "phase": "emit"
+            }
+          ],
+          "fuel": [
+            {
+              "sourceOrdinal": 1,
+              "cells": 8000000,
+              "elapsedMs": 38.097,
+              "processPeakRssBeforeBytes": 5029888,
+              "processPeakRssAfterBytes": 69058560
+            },
+            {
+              "sourceOrdinal": 2,
+              "cells": 8000000,
+              "elapsedMs": 28.972,
+              "processPeakRssBeforeBytes": 72040448,
+              "processPeakRssAfterBytes": 72040448
+            }
+          ],
+          "begins": [
+            {
+              "computeThreads": 1,
+              "parserFuel": 8000000,
+              "phase": "compile-module",
+              "phaseTraceVersion": 3
+            }
+          ],
+          "results": [
+            {
+              "result": "EmitSuccess",
+              "bytes": 376945,
+              "modules": 2
+            }
+          ]
+        },
+        "outputSha256": "5f321902015f7f0a695c1b1cdbd6f81f92e52165edca44f8fc10ccc47435946c",
+        "consumer": {
+          "command": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "/tmp/bend-g10-f32-before-WkQ1lD/f32_pow_unit_base.bend-js.tsv.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "stdout": "nan nan nan nan 8\n",
+          "stderr": ""
+        },
+        "passed": false
+      },
+      {
+        "source": "tests/run/f32_pow_unit_base.bend",
+        "target": "c",
+        "sourceSha256": "c8d3e74dd46fc54ec041d26940c77388e3090a8e03e40940710a463bd10e4c83",
+        "expected": "1 1 1 1 8",
+        "run": {
+          "command": [
+            "/tmp/bend-g9-native",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--RTS",
+            "/private/tmp/bend2039g8-js-call-cost/tests/run/f32_pow_unit_base.bend",
+            "/private/tmp/bend2039g8-js-call-cost/bend2/base.bend",
+            "/tmp/bend-g10-f32-before-WkQ1lD/f32_pow_unit_base.bend-c.tsv",
+            "/tmp/bend-g10-f32-before-WkQ1lD/f32_pow_unit_base.bend-c.tsv.exports",
+            "compile-c-module",
+            "/tmp/bend-g10-f32-before-WkQ1lD/f32_pow_unit_base.bend-c.tsv.c",
+            "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/c_runtime.c"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 16654,
+          "stdout": "NATIVE_RESULT {\"result\":\"EmitSuccess\",\"bytes\":1153198,\"modules\":2}\n",
+          "stderr": "NATIVE_BEGIN {\"computeThreads\":1,\"parserFuel\":8000000,\"phase\":\"compile-c-module\",\"phaseTraceVersion\":3}\nNATIVE_PHASE_START {\"phase\":\"parse\"}\nNATIVE_FUEL {\"sourceOrdinal\":1,\"cells\":8000000,\"elapsedMs\":56.375,\"processPeakRssBeforeBytes\":5111808,\"processPeakRssAfterBytes\":69140480}\nNATIVE_FUEL {\"sourceOrdinal\":2,\"cells\":8000000,\"elapsedMs\":37.648,\"processPeakRssBeforeBytes\":72122368,\"processPeakRssAfterBytes\":72122368}\nNATIVE_PHASE {\"phase\":\"parse\",\"elapsedMs\":777.162,\"userCpuMs\":492.138,\"systemCpuMs\":16.956,\"modules\":2,\"sourceBytes\":80049,\"foreignBytes\":305668,\"eagerFuelCells\":16000000,\"fuelBuildMs\":94.023}\nNATIVE_PHASE_START {\"phase\":\"expand\"}\nNATIVE_PHASE {\"phase\":\"expand\",\"elapsedMs\":530.376,\"userCpuMs\":268.122,\"systemCpuMs\":1.387,\"chunkAdvances\":29329,\"chunkQuantum\":64}\nNATIVE_PHASE_START {\"phase\":\"check\"}\nNATIVE_PHASE {\"phase\":\"check\",\"elapsedMs\":4164.071,\"userCpuMs\":2198.385,\"systemCpuMs\":22.991,\"chunkAdvances\":145534,\"chunkQuantum\":64}\nNATIVE_PHASE_START {\"phase\":\"emit-c\"}\nNATIVE_PHASE {\"phase\":\"emit-c\",\"elapsedMs\":11139.977,\"userCpuMs\":7829.253,\"systemCpuMs\":72.984,\"chunkAdvances\":1234919,\"chunkQuantum\":64}\n",
+          "phases": [
+            {
+              "phase": "parse",
+              "elapsedMs": 777.162,
+              "userCpuMs": 492.138,
+              "systemCpuMs": 16.956,
+              "modules": 2,
+              "sourceBytes": 80049,
+              "foreignBytes": 305668,
+              "eagerFuelCells": 16000000,
+              "fuelBuildMs": 94.023
+            },
+            {
+              "phase": "expand",
+              "elapsedMs": 530.376,
+              "userCpuMs": 268.122,
+              "systemCpuMs": 1.387,
+              "chunkAdvances": 29329,
+              "chunkQuantum": 64
+            },
+            {
+              "phase": "check",
+              "elapsedMs": 4164.071,
+              "userCpuMs": 2198.385,
+              "systemCpuMs": 22.991,
+              "chunkAdvances": 145534,
+              "chunkQuantum": 64
+            },
+            {
+              "phase": "emit-c",
+              "elapsedMs": 11139.977,
+              "userCpuMs": 7829.253,
+              "systemCpuMs": 72.984,
+              "chunkAdvances": 1234919,
+              "chunkQuantum": 64
+            }
+          ],
+          "phaseStarts": [
+            {
+              "phase": "parse"
+            },
+            {
+              "phase": "expand"
+            },
+            {
+              "phase": "check"
+            },
+            {
+              "phase": "emit-c"
+            }
+          ],
+          "fuel": [
+            {
+              "sourceOrdinal": 1,
+              "cells": 8000000,
+              "elapsedMs": 56.375,
+              "processPeakRssBeforeBytes": 5111808,
+              "processPeakRssAfterBytes": 69140480
+            },
+            {
+              "sourceOrdinal": 2,
+              "cells": 8000000,
+              "elapsedMs": 37.648,
+              "processPeakRssBeforeBytes": 72122368,
+              "processPeakRssAfterBytes": 72122368
+            }
+          ],
+          "begins": [
+            {
+              "computeThreads": 1,
+              "parserFuel": 8000000,
+              "phase": "compile-c-module",
+              "phaseTraceVersion": 3
+            }
+          ],
+          "results": [
+            {
+              "result": "EmitSuccess",
+              "bytes": 1153198,
+              "modules": 2
+            }
+          ]
+        },
+        "outputSha256": "ca3c816a30e55ae143ab6a67f31b367b844b48c8f2c6e5bf0cd6644f2003ddc3",
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/tmp/bend-g10-f32-before-WkQ1lD/f32_pow_unit_base.bend-c.tsv.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-g10-f32-before-WkQ1lD/f32_pow_unit_base.bend-c.tsv.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "stdout": "",
+          "stderrSha256": "bf828e0f725c6ee1e69de46bc47338aab851b013efc20a92d2f095213ebc4d30",
+          "stderrBytes": 8057,
+          "stderrRetainedExternally": true
+        },
+        "consumer": {
+          "command": [
+            "/tmp/bend-g10-f32-before-WkQ1lD/f32_pow_unit_base.bend-c.tsv.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "stdout": "1 1 1 1 8\n",
+          "stderr": ""
+        },
+        "passed": true
+      }
+    ]
+  },
+  "intermediateDiagnoses": [
+    {
+      "receipt": "/tmp/bend-g10-numeric-after-bS5ha3/receipt.json",
+      "status": "FAIL",
+      "error": "Error: Numeric consumer differs: tests/run/f32_read_round_once.bend c bend: memory fault (machine stack overflow?)\n",
+      "emitter": {
+        "path": "/tmp/bend-g10-numeric-emitter.js",
+        "sha256": "c97312dd1bad10862e87bdced21532c320887091568979a5fcc6e8f3ed5c0a56",
+        "build": "/tmp/bend-g10-numeric-emitter-build.result.json",
+        "buildSha256": "7db85407da49a21fb8b34526f34a0cc9acd2ddb3b20e401da12e549ceca75e24"
+      },
+      "rows": [
+        {
+          "source": "tests/run/f32_read_round_once.bend",
+          "target": "js",
+          "sourceSha256": "a30385f044fe1ff66a6cb3c45537c1d773eff1aced492480b2f62305ce08fb82",
+          "outputSha256": "45b486b2a4ce98e84f5118bbb985389913308c24274606c5efb16b0281f3e0cb",
+          "expected": "1065353215 1065353217 1266679808 2139095039 2139095040 1 3212836863\n1065353215 1065353217 1266679808 2139095039 1\n",
+          "passed": true,
+          "consumer": {
+            "command": [
+              "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+              "/tmp/bend-g10-numeric-after-bS5ha3/f32_read_round_once.bend.js"
+            ],
+            "status": 0,
+            "signal": null,
+            "elapsedMs": 112.83374999999978,
+            "stdout": "1065353215 1065353217 1266679808 2139095039 2139095040 1 3212836863\n1065353215 1065353217 1266679808 2139095039 1\n",
+            "stderr": ""
+          }
+        },
+        {
+          "source": "tests/run/f32_read_round_once.bend",
+          "target": "c",
+          "sourceSha256": "a30385f044fe1ff66a6cb3c45537c1d773eff1aced492480b2f62305ce08fb82",
+          "outputSha256": "5955db49d04c1b6e1d77995f7896c6cb8a7af564a2b21d7561d310f51cfb35e2",
+          "expected": "1065353215 1065353217 1266679808 2139095039 2139095040 1 3212836863\n1065353215 1065353217 1266679808 2139095039 1\n",
+          "passed": false,
+          "consumer": {
+            "command": [
+              "/tmp/bend-g10-numeric-after-bS5ha3/f32_read_round_once.bend.c.exe"
+            ],
+            "status": null,
+            "signal": "SIGSEGV",
+            "elapsedMs": 3.786374999996042,
+            "stdout": "",
+            "stderr": "bend: memory fault (machine stack overflow?)\n"
+          }
+        }
+      ]
+    },
+    {
+      "receipt": "/tmp/bend-g10-numeric-after-EiYlHW/receipt.json",
+      "status": "FAIL",
+      "error": "Error: Numeric consumer differs: tests/run/f32_read_round_once.bend c ",
+      "emitter": {
+        "path": "/tmp/bend-g10-owned-numeric-emitter.js",
+        "sha256": "8124d4c57656bd87ab13ddaec97605d50fafe85fcf4f69a6fc1addd4b16fa7a6",
+        "build": "/tmp/bend-g10-owned-numeric-emitter-build.result.json",
+        "buildSha256": "cf82c746963d3fa53a46ca70f3a10572b6574652d1165eb206b2ca556f0805d2"
+      },
+      "rows": [
+        {
+          "source": "tests/run/f32_read_round_once.bend",
+          "target": "js",
+          "sourceSha256": "a30385f044fe1ff66a6cb3c45537c1d773eff1aced492480b2f62305ce08fb82",
+          "outputSha256": "45b486b2a4ce98e84f5118bbb985389913308c24274606c5efb16b0281f3e0cb",
+          "expected": "1065353215 1065353217 1266679808 2139095039 2139095040 1 3212836863\n1065353215 1065353217 1266679808 2139095039 1\n",
+          "passed": true,
+          "consumer": {
+            "command": [
+              "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+              "/tmp/bend-g10-numeric-after-EiYlHW/f32_read_round_once.bend.js"
+            ],
+            "status": 0,
+            "signal": null,
+            "elapsedMs": 43.027625000000626,
+            "stdout": "1065353215 1065353217 1266679808 2139095039 2139095040 1 3212836863\n1065353215 1065353217 1266679808 2139095039 1\n",
+            "stderr": ""
+          }
+        },
+        {
+          "source": "tests/run/f32_read_round_once.bend",
+          "target": "c",
+          "sourceSha256": "a30385f044fe1ff66a6cb3c45537c1d773eff1aced492480b2f62305ce08fb82",
+          "outputSha256": "05ff8828389a1947c5c3d5e57b8364a0553af809232034da1ac95b27ff13546d",
+          "expected": "1065353215 1065353217 1266679808 2139095039 2139095040 1 3212836863\n1065353215 1065353217 1266679808 2139095039 1\n",
+          "passed": false,
+          "consumer": {
+            "command": [
+              "/tmp/bend-g10-numeric-after-EiYlHW/f32_read_round_once.bend.c.exe"
+            ],
+            "status": 0,
+            "signal": null,
+            "elapsedMs": 3.215541999998095,
+            "stdout": "4294967036 2147484156 466 4294967038 510 2147483648 4294967037\n4294967036 2147484156 466 4294967038 2147483648\n",
+            "stderr": ""
+          }
+        }
+      ]
+    },
+    {
+      "receipt": "/tmp/bend-g10-numeric-after-MKEaeq/receipt.json",
+      "status": "FAIL",
+      "error": "Error: Numeric consumer differs: tests/run/word_float_roundtrip.bend c ",
+      "emitter": {
+        "path": "/tmp/bend-g10-owned-numeric-emitter.js",
+        "sha256": "8124d4c57656bd87ab13ddaec97605d50fafe85fcf4f69a6fc1addd4b16fa7a6",
+        "build": "/tmp/bend-g10-owned-numeric-emitter-build.result.json",
+        "buildSha256": "cf82c746963d3fa53a46ca70f3a10572b6574652d1165eb206b2ca556f0805d2"
+      },
+      "rows": [
+        {
+          "source": "tests/run/word_float_roundtrip.bend",
+          "target": "js",
+          "sourceSha256": "7b49a58cd39c44a4999722d20ad15f079d538400eb33219c8e0ba8ce173498cd",
+          "outputSha256": "38f1fd3bc9bc0571cea58c5a8f2c43df7229215e64b840287f0ee245df317ddf",
+          "expected": "1065353216\n2147483648\n1\n2139095040\n1065353217\n2130706432\n",
+          "passed": true,
+          "consumer": {
+            "command": [
+              "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+              "/tmp/bend-g10-numeric-after-MKEaeq/word_float_roundtrip.bend.js"
+            ],
+            "status": 0,
+            "signal": null,
+            "elapsedMs": 35.94020899999941,
+            "stdout": "1065353216\n2147483648\n1\n2139095040\n1065353217\n2130706432\n",
+            "stderr": ""
+          }
+        },
+        {
+          "source": "tests/run/word_float_roundtrip.bend",
+          "target": "c",
+          "sourceSha256": "7b49a58cd39c44a4999722d20ad15f079d538400eb33219c8e0ba8ce173498cd",
+          "outputSha256": "218c82046599ec66b017a6a3288754e2d7f6b4b3781ca943f39b59f41c47a430",
+          "expected": "1065353216\n2147483648\n1\n2139095040\n1065353217\n2130706432\n",
+          "passed": false,
+          "consumer": {
+            "command": [
+              "/tmp/bend-g10-numeric-after-MKEaeq/word_float_roundtrip.bend.c.exe"
+            ],
+            "status": 0,
+            "signal": null,
+            "elapsedMs": 3.274708000000828,
+            "stdout": "508\n1\n2147483648\n510\n2147484156\n1016\n",
+            "stderr": ""
+          }
+        }
+      ]
+    }
+  ],
+  "after": {
+    "schemaVersion": 1,
+    "status": "ACTUAL_F32_JS_C_CONSUMERS_PASS",
+    "compilerAccepted": false,
+    "byteFixedpoint": false,
+    "scope": "Current fully native-validated emitter with retained authenticated g9a frontend; actual source parsing/checking and JS/C program execution, not full compiler acceptance",
+    "directory": "/tmp/bend-g10-numeric-after-pxHomw",
+    "frontend": {
+      "path": "/tmp/bend-g10-retained-frontend.js",
+      "sha256": "63fdd105001ccde3e9df352ac3723973366cca004e7469fa7d875896c6450ee5"
+    },
+    "emitter": {
+      "path": "/tmp/bend-g10-final-numeric-emitter.js",
+      "sha256": "68aee1e2c97621fe7a009fbe2cdb13c260c771c2faba9fc04068048ba238422d",
+      "build": "/tmp/bend-g10-final-numeric-emitter-build.result.json",
+      "buildSha256": "3793d4b7025e72c36f165319ebdce7ef2da55ae50135877e9b34ff513526a87b"
+    },
+    "rows": [
+      {
+        "source": "tests/run/f32_read_round_once.bend",
+        "target": "js",
+        "sourceSha256": "a30385f044fe1ff66a6cb3c45537c1d773eff1aced492480b2f62305ce08fb82",
+        "output": "/tmp/bend-g10-numeric-after-pxHomw/f32_read_round_once.bend.js",
+        "outputSha256": "45b486b2a4ce98e84f5118bbb985389913308c24274606c5efb16b0281f3e0cb",
+        "emitMs": 740.340083,
+        "expected": "1065353215 1065353217 1266679808 2139095039 2139095040 1 3212836863\n1065353215 1065353217 1266679808 2139095039 1\n",
+        "consumer": {
+          "command": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "/tmp/bend-g10-numeric-after-pxHomw/f32_read_round_once.bend.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 45.737959000000046,
+          "stdout": "1065353215 1065353217 1266679808 2139095039 2139095040 1 3212836863\n1065353215 1065353217 1266679808 2139095039 1\n",
+          "stderr": ""
+        },
+        "passed": true
+      },
+      {
+        "source": "tests/run/f32_read_round_once.bend",
+        "target": "c",
+        "sourceSha256": "a30385f044fe1ff66a6cb3c45537c1d773eff1aced492480b2f62305ce08fb82",
+        "output": "/tmp/bend-g10-numeric-after-pxHomw/f32_read_round_once.bend.c",
+        "outputSha256": "f705c1d3960c85a7fc3bbb6ed79acbf41dfff23a23f7c83ff1c7fbb70f0818c2",
+        "emitMs": 13094.991500000002,
+        "expected": "1065353215 1065353217 1266679808 2139095039 2139095040 1 3212836863\n1065353215 1065353217 1266679808 2139095039 1\n",
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/tmp/bend-g10-numeric-after-pxHomw/f32_read_round_once.bend.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-g10-numeric-after-pxHomw/f32_read_round_once.bend.c.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 980.2437090000021,
+          "stdout": "",
+          "stderrSha256": "8c05d18d7a2594976c15f118b676d2daaf4780a8e4422470e69c43a4f90d9066",
+          "stderrBytes": 8003,
+          "stderrRetainedExternally": true
+        },
+        "consumer": {
+          "command": [
+            "/tmp/bend-g10-numeric-after-pxHomw/f32_read_round_once.bend.c.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 3.089417000002868,
+          "stdout": "1065353215 1065353217 1266679808 2139095039 2139095040 1 3212836863\n1065353215 1065353217 1266679808 2139095039 1\n",
+          "stderr": ""
+        },
+        "passed": true
+      },
+      {
+        "source": "tests/run/f32_read_whitespace.bend",
+        "target": "js",
+        "sourceSha256": "b434e0652e2c59ec4decd88f33af2aa0bff9a9da247b7c92a24e7ea77f557c1d",
+        "output": "/tmp/bend-g10-numeric-after-pxHomw/f32_read_whitespace.bend.js",
+        "outputSha256": "65d0db3fc1297eaf3f56f60f0e6225fb72d29118393012c3ace3ffddaef45eac",
+        "emitMs": 254.64095799999996,
+        "expected": "1 1 1 1 1 1 1\nnone none none none none none none none none none none none none\nnone none none none none none\n-125 0.5 inf nan\nnone none none none\nnone none none none none\n",
+        "consumer": {
+          "command": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "/tmp/bend-g10-numeric-after-pxHomw/f32_read_whitespace.bend.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 38.52195800000118,
+          "stdout": "1 1 1 1 1 1 1\nnone none none none none none none none none none none none none\nnone none none none none none\n-125 0.5 inf nan\nnone none none none\nnone none none none none\n",
+          "stderr": ""
+        },
+        "passed": true
+      },
+      {
+        "source": "tests/run/f32_read_whitespace.bend",
+        "target": "c",
+        "sourceSha256": "b434e0652e2c59ec4decd88f33af2aa0bff9a9da247b7c92a24e7ea77f557c1d",
+        "output": "/tmp/bend-g10-numeric-after-pxHomw/f32_read_whitespace.bend.c",
+        "outputSha256": "568676b855fd3b85db10556966dac3725c4da2771e587d8224ff8c17880ddbfa",
+        "emitMs": 13530.979666000003,
+        "expected": "1 1 1 1 1 1 1\nnone none none none none none none none none none none none none\nnone none none none none none\n-125 0.5 inf nan\nnone none none none\nnone none none none none\n",
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/tmp/bend-g10-numeric-after-pxHomw/f32_read_whitespace.bend.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-g10-numeric-after-pxHomw/f32_read_whitespace.bend.c.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 995.1372909999991,
+          "stdout": "",
+          "stderrSha256": "0509f8874160b4d18accddf4f956556d0c93f68b403be32d5c20e2f20259208d",
+          "stderrBytes": 8003,
+          "stderrRetainedExternally": true
+        },
+        "consumer": {
+          "command": [
+            "/tmp/bend-g10-numeric-after-pxHomw/f32_read_whitespace.bend.c.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 3.4659170000013546,
+          "stdout": "1 1 1 1 1 1 1\nnone none none none none none none none none none none none none\nnone none none none none none\n-125 0.5 inf nan\nnone none none none\nnone none none none none\n",
+          "stderr": ""
+        },
+        "passed": true
+      },
+      {
+        "source": "tests/run/f32_pow_unit_base.bend",
+        "target": "js",
+        "sourceSha256": "c8d3e74dd46fc54ec041d26940c77388e3090a8e03e40940710a463bd10e4c83",
+        "output": "/tmp/bend-g10-numeric-after-pxHomw/f32_pow_unit_base.bend.js",
+        "outputSha256": "020bea88710f3c58438567413d2860d936678b52b85136a721f598dc82c5caa9",
+        "emitMs": 202.46166700000322,
+        "expected": "1 1 1 1 8\n",
+        "consumer": {
+          "command": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "/tmp/bend-g10-numeric-after-pxHomw/f32_pow_unit_base.bend.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 34.08812500000204,
+          "stdout": "1 1 1 1 8\n",
+          "stderr": ""
+        },
+        "passed": true
+      },
+      {
+        "source": "tests/run/f32_pow_unit_base.bend",
+        "target": "c",
+        "sourceSha256": "c8d3e74dd46fc54ec041d26940c77388e3090a8e03e40940710a463bd10e4c83",
+        "output": "/tmp/bend-g10-numeric-after-pxHomw/f32_pow_unit_base.bend.c",
+        "outputSha256": "0894bd2364966647d38a31343e963d1def330d054dfb86b23140b5d4133337b5",
+        "emitMs": 13177.633041000001,
+        "expected": "1 1 1 1 8\n",
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/tmp/bend-g10-numeric-after-pxHomw/f32_pow_unit_base.bend.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-g10-numeric-after-pxHomw/f32_pow_unit_base.bend.c.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 1042.7519169999941,
+          "stdout": "",
+          "stderrSha256": "d36467428e0e297a599a11e4edbfdbd5c60148de39e5f67d708e91b057041e0f",
+          "stderrBytes": 7895,
+          "stderrRetainedExternally": true
+        },
+        "consumer": {
+          "command": [
+            "/tmp/bend-g10-numeric-after-pxHomw/f32_pow_unit_base.bend.c.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 2.9992920000004233,
+          "stdout": "1 1 1 1 8\n",
+          "stderr": ""
+        },
+        "passed": true
+      },
+      {
+        "source": "tests/run/word_float_roundtrip.bend",
+        "target": "js",
+        "sourceSha256": "7b49a58cd39c44a4999722d20ad15f079d538400eb33219c8e0ba8ce173498cd",
+        "output": "/tmp/bend-g10-numeric-after-pxHomw/word_float_roundtrip.bend.js",
+        "outputSha256": "38f1fd3bc9bc0571cea58c5a8f2c43df7229215e64b840287f0ee245df317ddf",
+        "emitMs": 202.38658299999952,
+        "expected": "1065353216\n2147483648\n1\n2139095040\n1065353217\n2130706432\n",
+        "consumer": {
+          "command": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "/tmp/bend-g10-numeric-after-pxHomw/word_float_roundtrip.bend.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 33.38616700000421,
+          "stdout": "1065353216\n2147483648\n1\n2139095040\n1065353217\n2130706432\n",
+          "stderr": ""
+        },
+        "passed": true
+      },
+      {
+        "source": "tests/run/word_float_roundtrip.bend",
+        "target": "c",
+        "sourceSha256": "7b49a58cd39c44a4999722d20ad15f079d538400eb33219c8e0ba8ce173498cd",
+        "output": "/tmp/bend-g10-numeric-after-pxHomw/word_float_roundtrip.bend.c",
+        "outputSha256": "352d804dc4d94e28135ea6ce9b1153b6a8581acc7c75c5364034cbc8b4886e48",
+        "emitMs": 13744.18591700001,
+        "expected": "1065353216\n2147483648\n1\n2139095040\n1065353217\n2130706432\n",
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/tmp/bend-g10-numeric-after-pxHomw/word_float_roundtrip.bend.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-g10-numeric-after-pxHomw/word_float_roundtrip.bend.c.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 862.6460420000076,
+          "stdout": "",
+          "stderrSha256": "564d4bb42a0847b0861d9d840a93e5eb6bb400f265c92820e790d8d2f6b2896e",
+          "stderrBytes": 8057,
+          "stderrRetainedExternally": true
+        },
+        "consumer": {
+          "command": [
+            "/tmp/bend-g10-numeric-after-pxHomw/word_float_roundtrip.bend.c.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 3.0401659999915864,
+          "stdout": "1065353216\n2147483648\n1\n2139095040\n1065353217\n2130706432\n",
+          "stderr": ""
+        },
+        "passed": true
+      }
+    ]
+  },
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 2240856064,
+    "peakFootprintBytes": 2195549672,
+    "elapsedMs": 87153,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "/tmp/bend2039-candidate-worker.mjs",
+      "/tmp/bend-g10-final-numeric-after.mjs"
+    ],
+    "label": "heavy command",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793126163025-868fb5731c90e5fd.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "corrections": [
+    "JS exact decimal-to-binary32 rounding and ASCII-only whitespace grammar match canonical helper",
+    "JS F32.pow preserves canonical IEEE unit-base special cases",
+    "C F32.read and term_word receive owned operands; no caller double release",
+    "C Word constructor list is LSB-first, including shared live Word use"
+  ],
+  "fullRootAndBootstrap": "PENDING fresh acceptance; not inferred from component smokes"
+}

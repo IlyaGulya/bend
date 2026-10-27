@@ -1,0 +1,189 @@
+{
+  "schemaVersion": 1,
+  "status": "G10_CHECKER_AND_EXECUTABLE_SEAMS_PASS",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "scope": "Expanded public typed checker and emitter boundaries; complete canonical book validation and actual emitted JS execution; not full-root/bootstrap acceptance",
+  "beforeSteps": {
+    "checkpoints/checker_core_steps_v1.bend": "33d7b74d27e82f5c2c8608420c244f4a46f78f3d31e2b6c1a783261db3c9e30f",
+    "checkpoints/emitter_steps_v1.bend": "8ca4cfae12c7817709e410b660744cc0fbc60bd9dbe82a0df6e24280f4a2049c",
+    "bend2/comp.ts": "318c55c449115cb820bf77c3ac500a1c07ed8473adbbe6eed9c61088f4a0009e",
+    "bend2/bend.ts": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e"
+  },
+  "sourceHashes": {
+    "bend2/selfhost/checker.bend": "3b0b8da008fed8d670d1c91b64ab03d720bbcc0491b27f6e19699a609cdc085b",
+    "bend2/selfhost/lower_catalog.bend": "e3864a71ac15ce5f1c74ddc7f615d844e92d9ce6e9c55a2b883482b349058adb",
+    "bend2/selfhost/js_backend.bend": "fd3230251490c03bbacea2a02bd19cb6f161624de96c46c97355809cf7e4a926",
+    "bend2/selfhost/c_backend.bend": "e8caf87d8e9b0cc4d7dbca2f5bdd0b1d997c2ed52957826cd6fada0d9ef06e17",
+    "tests/selfhost/datatype_parameters.bend": "ac81ed0711ea67bb665172857a078dace405beada20cc4a2e47fc65eec629ec1",
+    "tests/selfhost/executable_admission.bend": "f1386522390b041673fc542a0862e88fd3f8bb0225a75c0721b20b8336087fbd"
+  },
+  "before": {
+    "datatype": {
+      "source": "/private/tmp/bend2039g8-js-call-cost/tests/selfhost/.g10_datatype_guard.bend",
+      "sourceSha256": "5b76d32dca1d28cd662086831f0ee01aac6f33ae67e2fa633b6dc345758053a1",
+      "expected": "checker-datatype-template-parameter-rejected\nchecker-datatype-erased-parameter-ok\n",
+      "compile": {
+        "command": [
+          "/tmp/bend2039g8-accepted-mac-evidence/bun-1.4.3",
+          "bend2/main.ts",
+          "tests/selfhost/.g10_datatype_guard.bend",
+          "-o",
+          "/tmp/bend-g10-seam-before-uf8TGq/.g10_datatype_guard.bend.js"
+        ],
+        "status": 0,
+        "signal": null,
+        "stdout": "",
+        "stderr": "",
+        "elapsedMs": 4660.57925
+      },
+      "artifactSha256": "a33e12179fc9b1cba8c68a49e24811e39c0e29b34bf44d0976937b7f5f5d3a4b",
+      "run": {
+        "command": [
+          "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+          "/tmp/bend-g10-seam-before-uf8TGq/.g10_datatype_guard.bend.js"
+        ],
+        "status": 0,
+        "signal": null,
+        "stdout": "checker-datatype-template-parameter-accepted\nchecker-datatype-erased-parameter-ok\n",
+        "stderr": "",
+        "elapsedMs": 184.7735419999999
+      },
+      "passed": false
+    },
+    "entry": {
+      "source": "/private/tmp/bend2039g8-js-call-cost/tests/selfhost/.g10_entry_step.bend",
+      "sourceSha256": "dd07725c2e63f8256d8bc246bf03b26ce232db217a23d241d8b78adfbd0b588e",
+      "expected": "missing-main-rejected\nexecutable-main-accepted\ninferred-main-accepted\nlibrary-mainless-accepted\n",
+      "compile": {
+        "command": [
+          "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+          "--experimental-strip-types",
+          "/tmp/bend-g10-cli-worker.mjs",
+          "tests/selfhost/.g10_entry_step.bend",
+          "/tmp/bend-g10-seam-before-B6WBtz/.g10_entry_step.bend.js"
+        ],
+        "status": 0,
+        "signal": null,
+        "stdout": "{\"status\":\"CANONICAL_PROGRAM_EMITTED\",\"events\":10837,\"bytes\":12484855,\"runtime\":{\"node\":\"23.11.0\",\"acorn\":\"8.14.1\",\"ada\":\"3.2.1\",\"amaro\":\"0.4.1\",\"ares\":\"1.34.4\",\"brotli\":\"1.1.0\",\"cjs_module_lexer\":\"2.1.0\",\"cldr\":\"46.0\",\"icu\":\"76.1\",\"llhttp\":\"9.2.1\",\"modules\":\"131\",\"napi\":\"10\",\"nbytes\":\"0.1.1\",\"ncrypto\":\"0.0.1\",\"nghttp2\":\"1.64.0\",\"openssl\":\"3.0.16\",\"simdjson\":\"3.12.2\",\"simdutf\":\"6.0.3\",\"sqlite\":\"3.49.1\",\"tz\":\"2025a\",\"undici\":\"6.21.2\",\"unicode\":\"16.0\",\"uv\":\"1.50.0\",\"uvwasi\":\"0.0.21\",\"v8\":\"12.9.202.28-node.14\",\"zlib\":\"1.3.0.1-motley-788cb3c\",\"zstd\":\"1.5.6\"},\"stackSizeMb\":256}\n",
+        "stderr": "(node:9469) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n",
+        "elapsedMs": 28842.826542
+      },
+      "artifactSha256": "de0088fef40d1303f8d34e5303ca89ad64e4e4745b9ebaf4293c443e6991ca8d",
+      "run": {
+        "command": [
+          "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+          "/tmp/bend-g10-seam-before-B6WBtz/.g10_entry_step.bend.js"
+        ],
+        "status": 0,
+        "signal": null,
+        "stdout": "missing-main-accepted\nexecutable-main-accepted\nentry-check-failed\nlibrary-mainless-accepted\n",
+        "stderr": "",
+        "elapsedMs": 435.34991699999955
+      },
+      "passed": false
+    },
+    "realNativeCliReceipt": "evals/receipts/root2039g10_boundary_before.json"
+  },
+  "after": {
+    "schemaVersion": 1,
+    "status": "CHANGED_CHECKER_AND_LOWERING_SEAMS_PASS",
+    "mode": "after",
+    "directory": "/tmp/bend-g10-seam-after-WCPseC",
+    "rows": [
+      {
+        "source": "/private/tmp/bend2039g8-js-call-cost/tests/selfhost/datatype_parameters.bend",
+        "sourceSha256": "ac81ed0711ea67bb665172857a078dace405beada20cc4a2e47fc65eec629ec1",
+        "expected": "checker-datatype-template-parameter-rejected\nchecker-datatype-erased-parameter-ok\n",
+        "compile": {
+          "command": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--experimental-strip-types",
+            "/tmp/bend-g10-cli-worker.mjs",
+            "tests/selfhost/datatype_parameters.bend",
+            "/tmp/bend-g10-seam-after-WCPseC/datatype_parameters.bend.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "stdout": "{\"status\":\"CANONICAL_PROGRAM_EMITTED\",\"events\":5905,\"bytes\":5160349,\"runtime\":{\"node\":\"23.11.0\",\"acorn\":\"8.14.1\",\"ada\":\"3.2.1\",\"amaro\":\"0.4.1\",\"ares\":\"1.34.4\",\"brotli\":\"1.1.0\",\"cjs_module_lexer\":\"2.1.0\",\"cldr\":\"46.0\",\"icu\":\"76.1\",\"llhttp\":\"9.2.1\",\"modules\":\"131\",\"napi\":\"10\",\"nbytes\":\"0.1.1\",\"ncrypto\":\"0.0.1\",\"nghttp2\":\"1.64.0\",\"openssl\":\"3.0.16\",\"simdjson\":\"3.12.2\",\"simdutf\":\"6.0.3\",\"sqlite\":\"3.49.1\",\"tz\":\"2025a\",\"undici\":\"6.21.2\",\"unicode\":\"16.0\",\"uv\":\"1.50.0\",\"uvwasi\":\"0.0.21\",\"v8\":\"12.9.202.28-node.14\",\"zlib\":\"1.3.0.1-motley-788cb3c\",\"zstd\":\"1.5.6\"},\"stackSizeMb\":256}\n",
+          "stderr": "(node:61959) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n",
+          "elapsedMs": 2848.739625
+        },
+        "artifactSha256": "f5fc2db33652072b71a941e98973dcccb2cb31c08a03c5ea784669410dadd989",
+        "run": {
+          "command": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "/tmp/bend-g10-seam-after-WCPseC/datatype_parameters.bend.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "stdout": "checker-datatype-template-parameter-rejected\nchecker-datatype-erased-parameter-ok\n",
+          "stderr": "",
+          "elapsedMs": 244.8382499999998
+        },
+        "passed": true
+      },
+      {
+        "source": "/private/tmp/bend2039g8-js-call-cost/tests/selfhost/executable_admission.bend",
+        "sourceSha256": "f1386522390b041673fc542a0862e88fd3f8bb0225a75c0721b20b8336087fbd",
+        "expected": "missing-main-rejected\nexecutable-main-accepted\ninferred-main-accepted\nlibrary-mainless-accepted\n",
+        "compile": {
+          "command": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--experimental-strip-types",
+            "/tmp/bend-g10-cli-worker.mjs",
+            "tests/selfhost/executable_admission.bend",
+            "/tmp/bend-g10-seam-after-WCPseC/executable_admission.bend.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "stdout": "{\"status\":\"CANONICAL_PROGRAM_EMITTED\",\"events\":10852,\"bytes\":12505825,\"runtime\":{\"node\":\"23.11.0\",\"acorn\":\"8.14.1\",\"ada\":\"3.2.1\",\"amaro\":\"0.4.1\",\"ares\":\"1.34.4\",\"brotli\":\"1.1.0\",\"cjs_module_lexer\":\"2.1.0\",\"cldr\":\"46.0\",\"icu\":\"76.1\",\"llhttp\":\"9.2.1\",\"modules\":\"131\",\"napi\":\"10\",\"nbytes\":\"0.1.1\",\"ncrypto\":\"0.0.1\",\"nghttp2\":\"1.64.0\",\"openssl\":\"3.0.16\",\"simdjson\":\"3.12.2\",\"simdutf\":\"6.0.3\",\"sqlite\":\"3.49.1\",\"tz\":\"2025a\",\"undici\":\"6.21.2\",\"unicode\":\"16.0\",\"uv\":\"1.50.0\",\"uvwasi\":\"0.0.21\",\"v8\":\"12.9.202.28-node.14\",\"zlib\":\"1.3.0.1-motley-788cb3c\",\"zstd\":\"1.5.6\"},\"stackSizeMb\":256}\n",
+          "stderr": "(node:62496) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n",
+          "elapsedMs": 22480.997542
+        },
+        "artifactSha256": "d63c407214315e8803d944cbc3e32ddc818c54ebb6b1565896f84bf2a50d54c6",
+        "run": {
+          "command": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "/tmp/bend-g10-seam-after-WCPseC/executable_admission.bend.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "stdout": "missing-main-rejected\nexecutable-main-accepted\ninferred-main-accepted\nlibrary-mainless-accepted\n",
+          "stderr": "",
+          "elapsedMs": 247.88666600000215
+        },
+        "passed": true
+      }
+    ]
+  },
+  "guard": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 2747678720,
+    "peakFootprintBytes": 2862659136,
+    "elapsedMs": 41046,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "/tmp/bend2039g8-accepted-mac-evidence/bun-1.4.3",
+      "/tmp/bend-g10-local-after.mjs"
+    ],
+    "label": "heavy command",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793124855736-f12d8bca0ff4b5fe.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "note": "Inferred-result control annotates the Unit body so the checker can infer it without a declared result. A bare unannotated constructor is not an accepted inferable source control. Final fixtures use a 256-MiB-stack, 3072-MiB-old-generation Node worker, matching the canonical builder; default-stack Bun compilation of the large combined typed-step fixture overflowed and is not reported as passing."
+}

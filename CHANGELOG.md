@@ -5,6 +5,19 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- The g10 boundary candidate rejects retained datatype template parameters at
+  their own checker spans and admits executables only with a runnable root
+  `main`, while preserving inferred/Unit mains and mainless libraries.
+  The public typed-step checker/emitter before/after regressions pass.
+  JS `F32.read` now matches canonical decimal rounding and ASCII whitespace;
+  `F32.pow` preserves the IEEE unit-base cases. C transfers owned String/Word
+  operands to consuming helpers and fixes reversed Word bit order. Four
+  numeric programs pass on each actual JS/C target, including shared Words.
+  The complete target matrices retain all original cases and include these
+  four regressions. Full-root/bootstrap acceptance is **pending**, not inferred
+  from these smokes. Receipts: `evals/receipts/root2039g10_checker_entry.json`
+  and `evals/receipts/root2039g10_numeric_consumers.json`.
+
 - The g9a candidate adds the nine `Array.atomic.*` primitives to the common
   catalog and JS/C targets. All three atomic consumer scenarios pass on each
   target, including wrapped indices, shared aliases, partial CAS and F32 bits.

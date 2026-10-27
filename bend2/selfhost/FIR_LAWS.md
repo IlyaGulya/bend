@@ -94,6 +94,13 @@ On success, `F` carries, at most, the following facts:
    for a safe one.
 7. **Template expansion**: FIR modules contain no `TermTemplate` that survived
    `Template.expand` (`checker.bend:15584`).
+8. **No retained datatype template parameter**: `check_datatype_parameters`
+   rejects `Arena.TemplateBinder` at its original parameter span before
+   `check_type_decl_ir` publishes the declaration's value. Ordinary erased
+   datatype parameters and function templates remain accepted. The typed-step
+   public checker regression is `tests/selfhost/datatype_parameters.bend`;
+   observed before/after evidence is
+   `evals/receipts/root2039g10_checker_entry.json`.
 
 It grants **none** of the following: semantic soundness of the checker, preservation
 of source behavior, strong normalization for `unsafe` definitions, uniqueness of
