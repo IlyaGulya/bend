@@ -615,14 +615,36 @@ descriptor fact was absent when the catalog was built
 `lower_catalog.bend:1111-1118, 815-826`). A target must not lay it out or print
 it as ordinary metadata.
 
-- Mechanism and exact rule: `val_at`/`val_nth` in `descriptor_nf.bend:182-199`
-  index `env` from its end; out-of-range yields `NfMissing{source}`.
+An **arrow binds its body**, so an arrow body is one binder deeper than its
+domain: the parser parses the codomain at `depth + 1` with the arrow's binder in
+scope (`parser.bend:3402`, `all_named` for a named `(x: A) -> B`), and the
+checker infers the body in an environment with the arrow bound
+(`infer_all_domain`, `checker.bend:3544-3572`). A published arrow body
+therefore names the arrow's own argument at index 0 and every enclosing binder
+one index higher than the same binder appears in the domain. Canonical
+evidence: `App`'s `tick` field is `List<Event> -> S -> IO(Maybe<S>)`, i.e.
+`{all: List<Event>, body: {all: {p:1}, body: IO(Maybe<{p:2}>)}}` with `S` the
+family's parameter — the domain of the inner arrow and the `Maybe` argument
+reach `S` through one and two arrow binders. A consumer that normalizes an
+arrow body MUST extend its environment with one abstract binder for the arrow
+and MUST NOT resolve the body's index 0 against the outer environment's last
+argument: that both loses the enclosing argument a body reference names (its
+index is too large for the unextended environment) and captures the outer last
+argument for the arrow's own binder.
+
+- Mechanism and exact rule: `val_at`/`val_nth` in `descriptor_nf.bend:207-222`
+  index `env` from its end; out-of-range yields `NfMissing{source}`; `nf_arrow`
+  appends one `NfBinder{level}` and materializes the body at that level
+  (`descriptor_nf.bend:440-450`, `materialize_at`).
 - Consumers: `CLay.layout_of_desc` maps `NfFail` to `LayoutFailed` and every
   abstract form to `LayoutBox` (`c_backend_layout.bend:336-390`); JS passes
   descriptors to the runtime `$type` evaluator, which throws for `fail`
-  (`js_backend.bend:923-948, 1189-1190`).
+  (`js_backend.bend:923-948, 1189-1190`) and keeps an arrow's codomain
+  unevaluated with the environment it was written in (`$type`, `all`).
 - Status: **[N]**; **[O]** for agreement between the two normalization
-  implementations (§5.4).
+  implementations (§5.4); **[P]** `ArrowBound`/`ArrowNest`/`AppTick` in
+  `evals/descriptor_nf_smoke.bend` fix the arrow rule as a behavioral
+  regression (unrun here).
 
 **WF-14 (canonical keys).** Every key in `DescriptorRef`,
 `DescriptorConstructor`, `DescriptorNamedFill`, `DescriptorNamedPlus`,
@@ -1200,8 +1222,11 @@ The rules implemented by `nf_descriptor_step` and its helpers are:
   appends the argument; an unapplied closure materializes as a let of its
   captured environment around the lambda (`nf_apply`, `537-567`;
   `materialize`, `288-290`).
-- **Arrow**: domain and body normalize under the current environment and the
-  arrow keeps its shape (`nf_arrow`, `389-398`).
+- **Arrow**: a binder (WF-13). The domain normalizes under the current
+  environment and the body under that environment with one abstract binder for
+  the arrow's own argument; the arrow keeps its shape and that abstract binder
+  materializes back as the parameter index that names it in the body
+  (`nf_arrow`, `440-450`; `NfBinder`, `materialize_at`).
 - **Match/local/substitution/let/bind**: the descriptor language's scoping
   forms. A definite mismatch in a pattern list lets the next case run; an
   undecidable scrutinee (not yet a constructor value) makes the whole match
@@ -1215,7 +1240,7 @@ The rules implemented by `nf_descriptor_step` and its helpers are:
 
 This distinction is normative:
 
-- **Abstract** has two distinct kinds, and they must not be conflated:
+- **Abstract** has three distinct kinds, and they must not be conflated:
   - `NfOther`: the evaluator cannot or should not reduce further, and the
     expression is a legitimate type expression (an opaque name/law, an
     under-applied family/type function, a lambda/arrow, a stuck match, an
@@ -1223,7 +1248,7 @@ This distinction is normative:
     Consumers preserve it: C boxes it (`CLay.layout_val`, `376-390`), JS
     leaves it to the runtime evaluator.
   - `NfMissing`: a `DescriptorParameter{index}` had no value in the
-    environment (`val_at`/`val_nth`, `descriptor_nf.bend:182-199`). The
+    environment (`val_at`/`val_nth`, `descriptor_nf.bend:207-222`). The
     evaluator keeps the source descriptor; it does not invent a type. This is
     an **unresolved binder**, not a known opaque type. It is not `NfFail`, but
     consumers must not treat it as a concrete type either: C boxes it
@@ -1231,6 +1256,12 @@ This distinction is normative:
     type-expression binder" when it must force the binder
     (`js_backend.bend:1189`). Whether a free index is admissible is WF-13
     (scoping), not a reduction result.
+  - `NfBinder{level}`: the arrow binder itself while its codomain normalizes
+    (WF-13). It has no argument, so it is abstract, and it materializes as the
+    parameter index that names it in the body it appears in
+    (`level - binder - 1`). A consumer outside the evaluator sees it only if
+    it holds an Nf value directly; C's default box covers it
+    (`CLay.layout_val`, `390`).
 - **Failure** (`NfFail` → `BIR.DescriptorFailure{message}`): a reduction was
   attempted and is invalid (over-application of a family/type function,
   application of a non-function constructor/quantity/kind value, a malformed
@@ -1254,8 +1285,16 @@ outcomes: `MyNat` alias → `Nat`; `MyIO` → IO answer `Nat`; `Id(Nat)` → `Na
 `K(Nat,Bool)` → `DescriptorFailure`; `QM` → quantity head with inserted
 `Erased`; opaque `Chan` → unchanged; malformed case → failure message; known
 mismatch falls through; an unbound parameter stays `DescriptorParameter 0`;
-budget-independent items via `normalize_closed`.
-`evals/descriptor_nf_step_smoke.ts` defines the run.
+budget-independent items via `normalize_closed`. The arrow rule (WF-13) is
+pinned by four arrow cases: `SelfArrow(Nat)` = `A -> A` with the body naming
+`A` through the arrow binder → `Arrow(Nat, Nat)`; `ArrowBound(Nat)` = `A -> <arrow argument>`
+→ `Arrow(Nat, Parameter 0)`, so the arrow's own binder is not replaced by the
+enclosing type function's argument; `ArrowNest(Nat)` = `A -> (A -> <outer arrow
+argument>)` → `Arrow(Nat, Arrow(Nat, Parameter 1))`; and `AppTick(Nat)` =
+`List<Event> -> A -> IO(Maybe<A>)`, the canonical `App.tick` field shape with
+`A` one and two arrow binders in, → `Arrow(List<Event>, Arrow(Nat,
+IO(Maybe(Nat))))`. `evals/descriptor_nf_step_smoke.ts` defines the run and
+asserts all 36 bits.
 
 The one receipt read, `evals/descriptor-nf-step-smoke-receipt.json`, pins
 `descriptor_nf.bend` sha256 `79591089ede2107d84c803a76c2e415ad35a0c358563d76aec7af46ee7b4ba98`,
@@ -1282,7 +1321,8 @@ receipt for 943de390 was found; this document's preparation ran nothing.
   `CLay` values. This is an intra-compiler API, not a program representation.
   Do not describe Nf as a stricter encapsulation than the source provides: the
   layout module really does pattern-match `NfType`, `NfCtor`, `NfOther`,
-  `NfMissing`, `NfQuantity`, `NfKind`, and it is the actual C layout API.
+  `NfMissing`, `NfQuantity`, `NfKind`, and it is the actual C layout API. Its
+  final `case _` box also covers `NfBinder` (§5.3).
 
 ## 6. Target laws
 

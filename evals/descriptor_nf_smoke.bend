@@ -10,6 +10,16 @@ def smoke_families() -> List<&2, BIR.Family>:
    BIR.Family{"Bool", "Bool", Some{"Bool"}, 0n, 0n, Nil{}},
    BIR.Family{"QM", "QM", Some{"QM"}, 1n, 1n, Nil{}}]
 
+# The arrow fixtures are the published de Bruijn convention, not a guess: the
+# parser parses an arrow's codomain at `depth + 1` and the checker binds the
+# arrow (`infer_all_domain`), so a body names the arrow's own argument at 0 and
+# an enclosing binder one index further out than the domain names it.
+#
+#   SelfArrow<A>   = A -> A              domain names A at 0, body at 1
+#   ArrowBound<A>  = A -> <arrow arg>    body names the arrow's own argument
+#   ArrowNest<A>   = A -> (A -> <outer arrow arg>)
+#   AppTick<A>     = List<Event> -> A -> IO(Maybe<A>)
+#                  the canonical App field `tick`, whose A is two arrows in
 def smoke_functions() -> List<&2, BIR.TypeFunction>:
   [BIR.TypeFunction{"IO", Some{"IO"}, 0n, 1n, BIR.DescriptorArrow{BIR.Unrestricted{}, BIR.DescriptorRef{"IO.OP", Nil{}}, BIR.DescriptorRef{"IO.OP", [BIR.DescriptorRef{"Nat", Nil{}}]}}},
    BIR.TypeFunction{"MyNat", None{}, 0n, 0n, BIR.DescriptorRef{"Nat", Nil{}}},
@@ -18,7 +28,10 @@ def smoke_functions() -> List<&2, BIR.TypeFunction>:
    BIR.TypeFunction{"Id", None{}, 0n, 1n, BIR.DescriptorParameter{0n}},
    BIR.TypeFunction{"K2", None{}, 0n, 1n, BIR.DescriptorLambda{None{}, BIR.DescriptorParameter{1n}}},
    BIR.TypeFunction{"K3", None{}, 0n, 2n, BIR.DescriptorLambda{None{}, BIR.DescriptorParameter{2n}}},
-   BIR.TypeFunction{"SelfArrow", None{}, 0n, 1n, BIR.DescriptorArrow{BIR.Erased{}, BIR.DescriptorParameter{0n}, BIR.DescriptorParameter{0n}}},
+   BIR.TypeFunction{"SelfArrow", None{}, 0n, 1n, BIR.DescriptorArrow{BIR.Erased{}, BIR.DescriptorParameter{0n}, BIR.DescriptorParameter{1n}}},
+   BIR.TypeFunction{"ArrowBound", None{}, 0n, 1n, BIR.DescriptorArrow{BIR.Erased{}, BIR.DescriptorParameter{0n}, BIR.DescriptorParameter{0n}}},
+   BIR.TypeFunction{"ArrowNest", None{}, 0n, 1n, BIR.DescriptorArrow{BIR.Erased{}, BIR.DescriptorParameter{0n}, BIR.DescriptorArrow{BIR.Erased{}, BIR.DescriptorParameter{1n}, BIR.DescriptorParameter{1n}}}},
+   BIR.TypeFunction{"AppTick", None{}, 0n, 1n, BIR.DescriptorArrow{BIR.Erased{}, BIR.DescriptorRef{"List", [BIR.DescriptorRef{"Event", Nil{}}]}, BIR.DescriptorArrow{BIR.Erased{}, BIR.DescriptorParameter{1n}, BIR.DescriptorRef{"IO", [BIR.DescriptorRef{"Maybe", [BIR.DescriptorParameter{2n}]}]}}}},
    BIR.TypeFunction{"AbsMatch", None{}, 0n, 1n, BIR.DescriptorMatch{[BIR.DescriptorParameter{0n}], [BIR.DescriptorCase{[BIR.DescriptorConstructorPattern{"True", Nil{}}], BIR.DescriptorRef{"Nat", Nil{}}}]}},
    BIR.TypeFunction{"K", None{}, 0n, 1n, BIR.DescriptorRef{"Bool", Nil{}}},
    BIR.TypeFunction{"CycA", None{}, 0n, 0n, BIR.DescriptorRef{"CycB", Nil{}}},
@@ -64,6 +77,78 @@ def is_let_nat_lambda(value: BIR.Descriptor) -> Bool:
 def is_arrow_nat(value: BIR.Descriptor) -> Bool:
   match value:
     case BIR.DescriptorArrow{BIR.Erased{}, BIR.DescriptorRef{"Nat", Nil{}}, BIR.DescriptorRef{"Nat", Nil{}}}: True{}
+    case _: False{}
+
+# The arrow fixtures' expected normal forms, written out structurally and
+# derived from the convention above, not from the module's output: a body's
+# reference to the arrow's own argument stays a parameter at 0, a reference to
+# an enclosing arrow's argument is one further out, and a reference to the
+# enclosing type function's argument becomes that argument.
+def is_arrow_bound(value: BIR.Descriptor) -> Bool:
+  match value:
+    case BIR.DescriptorArrow{BIR.Erased{}, BIR.DescriptorRef{"Nat", Nil{}}, BIR.DescriptorParameter{0n}}: True{}
+    case _: False{}
+
+def is_arrow_nest(value: BIR.Descriptor) -> Bool:
+  match value:
+    case BIR.DescriptorArrow{BIR.Erased{}, BIR.DescriptorRef{"Nat", Nil{}}, BIR.DescriptorArrow{BIR.Erased{}, BIR.DescriptorRef{"Nat", Nil{}}, BIR.DescriptorParameter{1n}}}: True{}
+    case _: False{}
+
+def is_scoped_let_arrow(value: BIR.Descriptor) -> Bool:
+  match value:
+    case BIR.DescriptorArrow{BIR.Erased{}, _, BIR.DescriptorArrow{BIR.Unrestricted{}, BIR.DescriptorParameter{0n}, BIR.DescriptorParameter{1n}}}: True{}
+    case _: False{}
+
+def is_nat_ref(value: BIR.Descriptor) -> Bool:
+  match value:
+    case BIR.DescriptorRef{"Nat", args}:
+      match args:
+        case Nil{}: True{}
+        case _: False{}
+    case _: False{}
+
+def is_maybe_nat(value: BIR.Descriptor) -> Bool:
+  match value:
+    case BIR.DescriptorRef{"Maybe", args}:
+      match args:
+        case +only <> rest:
+          match rest:
+            case Nil{}: is_nat_ref(only)
+            case _: False{}
+        case _: False{}
+    case _: False{}
+
+def is_io_maybe_nat(value: BIR.Descriptor) -> Bool:
+  match value:
+    case BIR.DescriptorRef{"IO", args}:
+      match args:
+        case +only <> rest:
+          match rest:
+            case Nil{}: is_maybe_nat(only)
+            case _: False{}
+        case _: False{}
+    case _: False{}
+
+def is_event_list(value: BIR.Descriptor) -> Bool:
+  match value:
+    case BIR.DescriptorRef{"List", args}:
+      match args:
+        case BIR.DescriptorRef{"Event", Nil{}} <> rest:
+          match rest:
+            case Nil{}: True{}
+            case _: False{}
+        case _: False{}
+    case _: False{}
+
+def is_app_tick(value: BIR.Descriptor) -> Bool:
+  match value:
+    case BIR.DescriptorArrow{BIR.Erased{}, domain, body}:
+      match body:
+        case BIR.DescriptorArrow{BIR.Erased{}, inner_domain, inner_body}:
+          match is_event_list(domain), is_nat_ref(inner_domain):
+            case True{}, True{}: is_io_maybe_nat(inner_body)
+            case _, _: False{}
+        case _: False{}
     case _: False{}
 
 def is_match_with_nat(value: BIR.Descriptor) -> Bool:
@@ -192,5 +277,10 @@ def main(modules: List<&2, Loader.LoadedModule>) -> NfSmoke:
   arrow_alias = NF.normalize_closed(f, t, BIR.DescriptorRef{"SelfArrow", [BIR.DescriptorRef{"Nat", Nil{}}]})
   match_alias = NF.normalize_closed(f, t, BIR.DescriptorRef{"AbsMatch", [BIR.DescriptorRef{"Nat", Nil{}}]})
   boundary_bits = String.append(String.append(String.append(bit(is_bool(free_reapplied)), bit(is_arrow_nat(arrow_alias))), bit(is_match_with_nat(match_alias))), bit(is_nat(k3_applied)))
+  arrow_bound = NF.normalize_closed(f, t, BIR.DescriptorRef{"ArrowBound", [BIR.DescriptorRef{"Nat", Nil{}}]})
+  arrow_nest = NF.normalize_closed(f, t, BIR.DescriptorRef{"ArrowNest", [BIR.DescriptorRef{"Nat", Nil{}}]})
+  app_tick = NF.normalize_closed(f, t, BIR.DescriptorRef{"AppTick", [BIR.DescriptorRef{"Nat", Nil{}}]})
+  arrow_bits = String.append(bit(is_arrow_bound(arrow_bound)), String.append(bit(is_arrow_nest(arrow_nest)), bit(is_app_tick(app_tick))))
   new_bits = String.append(bit(is_nat(lambda_beta)), String.append(bit(is_nat(higher_order)), String.append(bit(is_nat(captured)), String.append(bit(is_let_nat_lambda(partial)), String.append(bit(is_nat(reapplied)), String.append(bit(is_match_source(abstract_match)), String.append(bit(is_bool(known_mismatch)), String.append(bit(is_failure_with(ctor_app, "the constructor `C` is applied to an argument")), String.append(bit(is_failure_with(quantity_app, "a quantity is applied to an argument")), bit(is_failure_with(kind_app, "a kind is applied to an argument")))))))))))
-  NfSmoke{String.append(String.append(String.append(String.append(String.append(five, rest), both), extra), cases_bits), String.append(new_bits, boundary_bits))}
+  let_arrow = NF.normalize_closed(f, t, BIR.DescriptorArrow{BIR.Erased{}, BIR.DescriptorKind{BIR.DescriptorQuantity{BIR.Unrestricted{}}}, BIR.DescriptorLet{[BIR.DescriptorRef{"Nat", Nil{}}], BIR.DescriptorArrow{BIR.Unrestricted{}, BIR.DescriptorParameter{1n}, BIR.DescriptorParameter{2n}}}})
+  NfSmoke{String.append(String.append(String.append(String.append(String.append(five, rest), both), extra), cases_bits), String.append(String.append(new_bits, boundary_bits), String.append(arrow_bits, bit(is_scoped_let_arrow(let_arrow)))))}

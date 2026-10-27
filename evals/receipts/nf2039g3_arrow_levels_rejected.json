@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "status": "REJECTED_ARROW_ENVIRONMENT_LENGTH_CANDIDATE",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "scope": "Interrupted source candidate completed enough for actual typed-step normalizer regression; not integrated into main",
+  "sourceInputs": {
+    "bend2/selfhost/descriptor_nf.bend": "a9e659065bb07f4a4305369f2caaf1b65b790512ea90dd214dd384b48eea77fe",
+    "evals/descriptor_nf_smoke.bend": "9117ea77c4fc4f619298c6f2045e43a7278c4cc3f4c2c2e14957577b8618a4fa",
+    "evals/descriptor_nf_step_smoke.ts": "0f750b766382d6a6a5fa0dbc2c28b361c92a512265f410ad9ec50f5eb836c307",
+    "bend2/selfhost/BIR_LAWS.md": "00f042d00596c4a71fd61dd139866186098c22bd45900c1b5248741d6a8d8db1"
+  },
+  "artifact": {
+    "path": "/tmp/bend2039g3-nf-red-component.js",
+    "sha256": "8c2c70725c6ba0c8f65c910d979b9b3273016ef921d01a3e69e6f65bfe8b8fdb"
+  },
+  "build": {
+    "status": "JS_GENERATED_NOT_YET_EXECUTED",
+    "sourceSha256": "547ef7d23d35e7d0201db59b6224679e5695b930c94e437e8a07fab1ff2c7304",
+    "checkedDefinitions": 626,
+    "eventsFullyValidated": 838,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 292503552,
+      "peakFootprintBytes": 257710568,
+      "elapsedMs": 1001,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend2039g3-nf-arrow/evals/checker_core_component_build.ts",
+        "--worker",
+        "--file=/private/tmp/bend2039g3-nf-arrow/checkpoints/descriptor_nf_steps_component_v1.bend",
+        "--exports=expand_modules_start,template_step",
+        "--artifact=/tmp/bend2039g3-nf-red-component.js",
+        "--report=/private/tmp/bend2039g3-nf-arrow/checkpoints/descriptor-nf-g3-red-component",
+        "--inputs-sha256=5a2245a685fdd38ab34c960f7fde392f66c431e4c962b4f5b069048e8f619de8"
+      ],
+      "label": "Full-native CheckerCore component JS build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793077025787-d685c7779f0607a9.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "runtime": {
+      "name": "node",
+      "node": "23.11.0",
+      "v8": "12.9.202.28-node.14",
+      "executable": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "heapLimitMiB": 3072,
+      "stackSizeMb": 256,
+      "heapSizeLimitBytes": 3271557120,
+      "manualGC": false
+    }
+  },
+  "run": {
+    "command": [
+      "/opt/homebrew/bin/bun",
+      "evals/descriptor_nf_step_smoke.ts",
+      "--run=/tmp/bend2039g3-nf-red-component.js"
+    ],
+    "observed": "1111111111111111111111111111111011110",
+    "expected": "1111111111111111111111111111111111111",
+    "guardian": {
+      "status": "FAIL",
+      "reason": "command_exit",
+      "commandExitCode": 1,
+      "commandSignal": 0,
+      "peakRssBytes": 49397760,
+      "peakFootprintBytes": 31654536,
+      "elapsedMs": 128,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 1,
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/descriptor_nf_step_smoke.ts",
+        "--run=/tmp/bend2039g3-nf-red-component.js"
+      ],
+      "label": "heavy command",
+      "exitCode": 1,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793077143129-611fba5687432625.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "findings": [
+    "A valid dependent arrow under an eliminated let retains stale binder indices; environment length is not surviving arrow depth.",
+    "An existing abstract-match assertion additionally pins a materialization wrapper shape; this incidental implementation test is not a semantic failure and must be removed, not re-pinned.",
+    "Earlier failed invocations selected the step file instead of its generated component and used an outdated dotted constructor-tag assumption; neither was a normalizer result.",
+    "The former agent source/law notes are candidate mechanism descriptions, not verified acceptance. No build/source/runtime policy is weakened."
+  ]
+}

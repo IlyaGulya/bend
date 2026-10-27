@@ -31,7 +31,7 @@ const output = 'checkpoints/descriptor_nf_steps_v1.bend';
 const component = 'checkpoints/descriptor_nf_steps_component_v1.bend';
 const manifest = 'checkpoints/descriptor-nf-steps-v1.json';
 const providers = ['bend2/selfhost/descriptor_nf.bend'];
-const expected = '111111111111111111111111111111111';
+const expected = '1111111111111111111111111111111111111';
 const sha = (text: string) => createHash('sha256').update(text).digest('hex');
 
 /** Same masking rule as the step generator: coordinates stay intact, including
@@ -129,13 +129,13 @@ async function run(artifact: string): Promise<void> {
   for (;;) {
     const chunk = chunkOf(current);
     if (!chunk) throw Error('Unexpected Run value ' + String(current));
-    if (chunk.tag.endsWith('.TemplateRunState')) {
+    if (chunk.tag.split('.').at(-1) === 'TemplateRunState') {
       current = undefined;
       current = step(chunk.fields);
       steps += 1;
       continue;
     }
-    if (!chunk.tag.endsWith('.TemplateRunFinished')) throw Error('Unexpected Run tag ' + chunk.tag);
+    if (chunk.tag.split('.').at(-1) !== 'TemplateRunFinished') throw Error('Unexpected Run tag ' + chunk.tag);
     const box = chunkOf(chunk.fields['box']);
     const value = box ? chunkOf(box.fields['value']) : null;
     const bits = value?.fields['bits'];
