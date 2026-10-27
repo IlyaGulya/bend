@@ -5,6 +5,12 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- A bounded C-codegen development probe validates the complete frozen root,
+  streams phase/pass progress and stops at an explicit pass or codegen-time
+  budget. It reuses the compiler observer without full-profile snapshots,
+  records input hashes, process CPU and host contention context, publishes no
+  compiler image and never substitutes its cutoff for full acceptance.
+
 - The g8r3 candidate keeps arena name IDs while rebuilding descriptors and
   emits bounded direct JavaScript tail calls. Fresh parser acceptance and
   native validation of all 12,041 JS-root definitions pass, and the unpatched

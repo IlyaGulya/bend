@@ -5,6 +5,58 @@ It is not an acceptance signal, a benchmark, a fixedpoint proof, or a claim
 that every stage is covered. Ordinary runs do not import it and do not write
 profile files.
 
+## Fast development checks
+
+Do not run parser admission, LLVM and the complete fixture matrices for every
+producer hypothesis. Use three levels, without narrowing final acceptance:
+
+1. Run the changed-path consumer first: emitted JS must load and execute;
+   changed C paths must compile with clang and execute. Keep dependent fields,
+   ownership/capture and foreign/export cases relevant to the change.
+2. Probe the same frozen full root, with complete canonical loading and
+   validation, but stop after a small number of C passes. Compare pass time and
+   ownership/hot/static fact progression before paying for convergence or LLVM.
+3. Only promising candidates run fresh complete parser/root admission, native
+   build, both full backend matrices and stage1/stage2 byte comparison.
+
+```bash
+BUN_JSC_forceRAMSize=4294967296 bun evals/compiler_codegen_probe.ts \
+  --memory-mib 8192 --rss-mib 8192 --poll-ms 10 --timeout-ms 180000 \
+  --root=checkpoints/.bootstrap_compiler_root_release2039g8r3.bend \
+  --bridge=evals/native_compiler_driver.bend \
+  --report=/tmp/codegen-probe.json --passes=2 --max-codegen-ms=120000
+```
+
+The report must be fresh. `CODEGEN_PROBE` events and atomic checkpoints update
+at phase/pass boundaries and at most once per second between boundaries.
+Stopping uses the existing compiler observer, at the next observable boundary,
+not repeated external status polling. It uses the shared observer adapter
+without creating a full collector: no inspector, per-definition serialization
+or heap-statistics snapshots. The report records cumulative process CPU
+(all threads, excluding child processes), host CPU count/load and input hashes.
+The external guardian remains the hard memory/deadline boundary. `--bridge`
+explicitly adds a second validated root; omit it for a standalone program.
+
+`PROBE_STOPPED` is a deliberate diagnostic cutoff, never a semantic failure,
+completed compilation or PASS. `CODEGEN_SETTLED` means codegen returned within
+the probe budget, not compiler acceptance. Neither status publishes an image,
+runs LLVM or establishes a byte fixedpoint. An unchanged or slower progression
+can reject a performance hypothesis early; a better progression only earns the
+full gates. Do not reuse old proofs after their authenticated inputs change.
+
+Compare performance only on an uncontended host; the report flags load
+above the logical CPU count rather than silently attributing host contention
+to the candidate. Load is context, not a CPU-utilization or slowdown estimate.
+The codegen budget is cooperative: long work between observer callbacks can
+overrun it; the guardian's total deadline still terminates the owned tree.
+
+`evals/receipts/compiler_codegen_probe_verified.json` records the exercised
+failure, first-pass cutoff and settled-codegen CLI paths, plus a real full-root
+time cutoff after validating all 12,071 bodies / 12,651 events. That full-root
+run stopped cooperatively after 65.5 s of codegen (73.8 s guarded total), with
+no compiler image. These are diagnostic observations, not acceptance or a
+controlled performance comparison.
+
 ## Collector
 
 `evals/compiler_profile.mjs` exports:

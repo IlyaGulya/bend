@@ -1,0 +1,221 @@
+{
+  "schemaVersion": 1,
+  "status": "INCOMPLETE_DIAGNOSTIC_CANCELLED_AFTER_BOTTLENECK_IDENTIFICATION",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "reason": "User requested shorter feedback and earlier rejection; the unchanged acceptance run had already exceeded 600 seconds, and eight complete repeated-emission passes established the propagation cost.",
+  "cancellation": {
+    "job": "bg_119",
+    "toolResult": "Cancelled background job bg_119",
+    "guardianTerminalReceiptAvailable": false,
+    "laterExclusiveProbeGuardSucceeded": true
+  },
+  "command": [
+    "env",
+    "BUN_JSC_forceRAMSize=4294967296",
+    "/opt/homebrew/bin/bun",
+    "evals/heavy_gate.ts",
+    "--memory-mib",
+    "8192",
+    "--rss-mib",
+    "8192",
+    "--poll-ms",
+    "10",
+    "--timeout-ms",
+    "1800000",
+    "--",
+    "/opt/homebrew/bin/bun",
+    "/tmp/bend2039g8r3-profile-codegen.ts",
+    "/tmp/bend2039g8r3-codegen-profile.json",
+    "/tmp/bend2039g8r3-profiled-native"
+  ],
+  "source": "/private/tmp/bend2039g8-js-call-cost/checkpoints/.bootstrap_compiler_root_release2039g8r3.bend",
+  "checkedDefinitions": 12071,
+  "eventsFullyValidated": 12651,
+  "checksExcluded": 0,
+  "outputPatches": 0,
+  "lastDurableSnapshot": {
+    "status": "RUNNING_DIAGNOSTIC",
+    "elapsedMs": 805591.875458,
+    "last": {
+      "stage": "c-definition-after",
+      "name": "feedback_resume_Kont_236486",
+      "unixMs": 1793104772125,
+      "codegenElapsedMs": 799286.979708,
+      "state": {
+        "eExists": true,
+        "hExists": true,
+        "memos": {
+          "opens": 36,
+          "uses": 211,
+          "folds": 20,
+          "spines": 68
+        },
+        "retainedHigher": 7,
+        "segments": 45597,
+        "spins": 5901,
+        "ownFacts": 33791,
+        "hotFacts": 950,
+        "staticFacts": 67,
+        "lendFacts": 121,
+        "literalFacts": 95713,
+        "tableFacts": 1,
+        "imageWords": 190714,
+        "restMax": 2,
+        "layoutKeys": 3901,
+        "holdKeys": 12853,
+        "constantKeys": 6,
+        "spinNames": 5901,
+        "closerFacts": 30067
+      }
+    }
+  },
+  "passes": [
+    {
+      "stage": "c-pass-1-after",
+      "codegenElapsedMs": 50948.722708,
+      "ownFacts": 33250,
+      "hotFacts": 915,
+      "staticFacts": 67,
+      "processCpu": {
+        "user": 77647491,
+        "system": 1899001
+      },
+      "memory": {
+        "rss": 4051472200,
+        "heapTotal": 3669703680,
+        "heapUsed": 2536905822,
+        "external": 195410766,
+        "arrayBuffers": 100
+      }
+    },
+    {
+      "stage": "c-pass-2-after",
+      "codegenElapsedMs": 102258.279208,
+      "ownFacts": 33560,
+      "hotFacts": 950,
+      "staticFacts": 67,
+      "processCpu": {
+        "user": 137987369,
+        "system": 2585257
+      },
+      "memory": {
+        "rss": 4068642704,
+        "heapTotal": 3669703680,
+        "heapUsed": 2515143670,
+        "external": 192615526,
+        "arrayBuffers": 100
+      }
+    },
+    {
+      "stage": "c-pass-3-after",
+      "codegenElapsedMs": 155847.68349999998,
+      "ownFacts": 33699,
+      "hotFacts": 950,
+      "staticFacts": 67,
+      "processCpu": {
+        "user": 198687883,
+        "system": 3254030
+      },
+      "memory": {
+        "rss": 4206448552,
+        "heapTotal": 3669703680,
+        "heapUsed": 2758905235,
+        "external": 198043315,
+        "arrayBuffers": 100
+      }
+    },
+    {
+      "stage": "c-pass-4-after",
+      "codegenElapsedMs": 208443.11004099998,
+      "ownFacts": 33754,
+      "hotFacts": 950,
+      "staticFacts": 67,
+      "processCpu": {
+        "user": 261286402,
+        "system": 3905655
+      },
+      "memory": {
+        "rss": 4243902448,
+        "heapTotal": 3726212096,
+        "heapUsed": 2659879233,
+        "external": 202692321,
+        "arrayBuffers": 100
+      }
+    },
+    {
+      "stage": "c-pass-5-after",
+      "codegenElapsedMs": 262708.819916,
+      "ownFacts": 33776,
+      "hotFacts": 950,
+      "staticFacts": 67,
+      "processCpu": {
+        "user": 325323816,
+        "system": 4659864
+      },
+      "memory": {
+        "rss": 4285517880,
+        "heapTotal": 3853220864,
+        "heapUsed": 2810853482,
+        "external": 208490378,
+        "arrayBuffers": 100
+      }
+    },
+    {
+      "stage": "c-pass-6-after",
+      "codegenElapsedMs": 345997.80758300005,
+      "ownFacts": 33787,
+      "hotFacts": 950,
+      "staticFacts": 67,
+      "processCpu": {
+        "user": 388295054,
+        "system": 6073749
+      },
+      "memory": {
+        "rss": 4538896536,
+        "heapTotal": 3931683840,
+        "heapUsed": 2975619917,
+        "external": 214854877,
+        "arrayBuffers": 100
+      }
+    },
+    {
+      "stage": "c-pass-7-after",
+      "codegenElapsedMs": 427496.751958,
+      "ownFacts": 33790,
+      "hotFacts": 950,
+      "staticFacts": 67,
+      "processCpu": {
+        "user": 453126160,
+        "system": 7483661
+      },
+      "memory": {
+        "rss": 4730016016,
+        "heapTotal": 3974659072,
+        "heapUsed": 3062322057,
+        "external": 203851385,
+        "arrayBuffers": 100
+      }
+    },
+    {
+      "stage": "c-pass-8-after",
+      "codegenElapsedMs": 656641.523416,
+      "ownFacts": 33791,
+      "hotFacts": 950,
+      "staticFacts": 67,
+      "processCpu": {
+        "user": 523487845,
+        "system": 12355222
+      },
+      "memory": {
+        "rss": 4998451640,
+        "heapTotal": 4095425536,
+        "heapUsed": 3139394378,
+        "external": 226189706,
+        "arrayBuffers": 100
+      }
+    }
+  ],
+  "completeCpuProfileAvailable": false,
+  "artifactPublished": false
+}
