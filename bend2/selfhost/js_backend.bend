@@ -508,7 +508,7 @@ def tail_call_selected(code: U32, values: List<&2, String>, count: Nat, selected
     case True{}: tail_call_named(code, String.join(values, ","), count)
     case False{}: cat(["run_many(", code_name(code), ",[", String.join(values, ","), "],$td)"])
 def tail_call_named(+code: U32, +joined: String, count: Nat) -> String:
-  cat(["$td<64?", code_name(code), "(", String.append(joined, ",$td+1"), "):run_named", Nat.show(count), "(", code_name(code), ",", String.append(joined, ",$td)"), ")"])
+  cat(["($td<64?", code_name(code), "(", String.append(joined, ",$td+1"), "):run_named", Nat.show(count), "(", code_name(code), ",", String.append(joined, ",$td)"), ")"])
 def public_closure(names: List<&2, String>, body: String) -> String:
   match names:
     case Nil{}: body
