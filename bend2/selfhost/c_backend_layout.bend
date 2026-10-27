@@ -338,7 +338,7 @@ def layout_fuel() -> Nat:
 
 # The shared normalizer, handed this context's type tables.
 def nf_of(+ctx: Context, +descriptor: BIR.Descriptor, +env: List<&2, NF.NfVal>, +fuel: Nat) -> NF.Nf:
-  NF.nf(context_nf(ctx), descriptor, env, fuel)
+  NF.nf(context_nf(ctx), descriptor, env, 0n, fuel)
 
 # ---------------------------------------------------------------------------
 # Value layouts

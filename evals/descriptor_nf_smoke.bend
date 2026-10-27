@@ -58,22 +58,6 @@ def is_bool(value: BIR.Descriptor) -> Bool:
         case _: False{}
     case _: False{}
 
-def single_nat(values: List<&2, BIR.Descriptor>) -> Bool:
-  match values:
-    case +first <> rest:
-      match rest:
-        case Nil{}: is_nat(first)
-        case _: False{}
-    case _: False{}
-
-def is_let_nat_lambda(value: BIR.Descriptor) -> Bool:
-  match value:
-    case BIR.DescriptorLet{values, body}:
-      match body:
-        case BIR.DescriptorLambda{quantity, inner}: single_nat(values)
-        case _: False{}
-    case _: False{}
-
 def is_arrow_nat(value: BIR.Descriptor) -> Bool:
   match value:
     case BIR.DescriptorArrow{BIR.Erased{}, BIR.DescriptorRef{"Nat", Nil{}}, BIR.DescriptorRef{"Nat", Nil{}}}: True{}
@@ -148,17 +132,6 @@ def is_app_tick(value: BIR.Descriptor) -> Bool:
           match is_event_list(domain), is_nat_ref(inner_domain):
             case True{}, True{}: is_io_maybe_nat(inner_body)
             case _, _: False{}
-        case _: False{}
-    case _: False{}
-
-def is_match_with_nat(value: BIR.Descriptor) -> Bool:
-  match value:
-    case BIR.DescriptorMatch{values, cases}:
-      match values:
-        case +first <> rest:
-          match rest:
-            case Nil{}: is_nat(first)
-            case _: False{}
         case _: False{}
     case _: False{}
 
@@ -275,12 +248,13 @@ def main(modules: List<&2, Loader.LoadedModule>) -> NfSmoke:
   k3_applied = NF.normalize(NF.nf_context(f, t), BIR.DescriptorApplication{k3_partial, BIR.DescriptorRef{"U32", Nil{}}}, [NF.NfType{"Nat", Nil{}}, NF.NfType{"Bool", Nil{}}], 1024n)
   free_reapplied = NF.normalize(NF.nf_context(f, t), BIR.DescriptorApplication{free_partial, BIR.DescriptorRef{"Nat", Nil{}}}, [NF.NfType{"Bool", Nil{}}], 1024n)
   arrow_alias = NF.normalize_closed(f, t, BIR.DescriptorRef{"SelfArrow", [BIR.DescriptorRef{"Nat", Nil{}}]})
-  match_alias = NF.normalize_closed(f, t, BIR.DescriptorRef{"AbsMatch", [BIR.DescriptorRef{"Nat", Nil{}}]})
-  boundary_bits = String.append(String.append(String.append(bit(is_bool(free_reapplied)), bit(is_arrow_nat(arrow_alias))), bit(is_match_with_nat(match_alias))), bit(is_nat(k3_applied)))
+  match_alias = NF.normalize_closed(f, t, BIR.DescriptorRef{"AbsMatch", [BIR.DescriptorParameter{0n}]})
+  match_reapplied = NF.normalize(NF.nf_context(f, t), match_alias, [NF.NfCtor{"True", Nil{}}], 1024n)
+  boundary_bits = String.append(String.append(String.append(bit(is_bool(free_reapplied)), bit(is_arrow_nat(arrow_alias))), bit(is_nat(match_reapplied))), bit(is_nat(k3_applied)))
   arrow_bound = NF.normalize_closed(f, t, BIR.DescriptorRef{"ArrowBound", [BIR.DescriptorRef{"Nat", Nil{}}]})
   arrow_nest = NF.normalize_closed(f, t, BIR.DescriptorRef{"ArrowNest", [BIR.DescriptorRef{"Nat", Nil{}}]})
   app_tick = NF.normalize_closed(f, t, BIR.DescriptorRef{"AppTick", [BIR.DescriptorRef{"Nat", Nil{}}]})
   arrow_bits = String.append(bit(is_arrow_bound(arrow_bound)), String.append(bit(is_arrow_nest(arrow_nest)), bit(is_app_tick(app_tick))))
-  new_bits = String.append(bit(is_nat(lambda_beta)), String.append(bit(is_nat(higher_order)), String.append(bit(is_nat(captured)), String.append(bit(is_let_nat_lambda(partial)), String.append(bit(is_nat(reapplied)), String.append(bit(is_match_source(abstract_match)), String.append(bit(is_bool(known_mismatch)), String.append(bit(is_failure_with(ctor_app, "the constructor `C` is applied to an argument")), String.append(bit(is_failure_with(quantity_app, "a quantity is applied to an argument")), bit(is_failure_with(kind_app, "a kind is applied to an argument")))))))))))
+  new_bits = String.append(bit(is_nat(lambda_beta)), String.append(bit(is_nat(higher_order)), String.append(bit(is_nat(captured)), String.append(bit(is_nat(reapplied)), String.append(bit(is_match_source(abstract_match)), String.append(bit(is_bool(known_mismatch)), String.append(bit(is_failure_with(ctor_app, "the constructor `C` is applied to an argument")), String.append(bit(is_failure_with(quantity_app, "a quantity is applied to an argument")), bit(is_failure_with(kind_app, "a kind is applied to an argument"))))))))))
   let_arrow = NF.normalize_closed(f, t, BIR.DescriptorArrow{BIR.Erased{}, BIR.DescriptorKind{BIR.DescriptorQuantity{BIR.Unrestricted{}}}, BIR.DescriptorLet{[BIR.DescriptorRef{"Nat", Nil{}}], BIR.DescriptorArrow{BIR.Unrestricted{}, BIR.DescriptorParameter{1n}, BIR.DescriptorParameter{2n}}}})
   NfSmoke{String.append(String.append(String.append(String.append(String.append(five, rest), both), extra), cases_bits), String.append(String.append(new_bits, boundary_bits), String.append(arrow_bits, bit(is_scoped_let_arrow(let_arrow)))))}

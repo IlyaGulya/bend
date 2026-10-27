@@ -84,13 +84,11 @@ import ./index_lookup.bend as IndexLookup
 # a hole, an abstract application), kept as its own descriptor; NfMissing is
 # a binder with no value in scope, kept as its own descriptor.
 #
-# NfBinder is an arrow's own binder as a value: it has no argument (an
-# unapplied arrow keeps its codomain abstract), and `level` is its position in
-# the environment, oldest first. Materializing it under the environment of the
-# body it appears in yields the parameter index that names it there, so a body
-# that reaches its own arrow's argument at 0 and an enclosing arrow's argument
-# one further out keeps both indices exact. It is an abstract form, exactly
-# like NfMissing: no consumer may read it as a concrete type.
+# NfBinder names an arrow binder by its level among surviving output binders.
+# Substitution, let and beta reduction extend the evaluator environment but do
+# not introduce output binders. Only an arrow body increments this level.
+# Materializing at output depth `level` yields `level - binder - 1`.
+# It remains abstract: no consumer may read it as a concrete type.
 #
 # NfClosure is a lambda value: the runtime's `{k:"L", body, env}`. Its body
 # indexes its own future argument at 0 and the captured environment at 1..,
@@ -197,12 +195,6 @@ def native_of(+key: String, +families: Map<&2, BIR.Family>, +functions: Map<&2, 
 # Environment and list helpers
 # ---------------------------------------------------------------------------
 
-# The environment is oldest binder first, so its length is the number of
-# binders in scope and the position an arrow binder appended next would take.
-# `val_at` already reads index 0 as the last entry; materializing an arrow
-# binder needs the same count to turn that position back into an index.
-def env_level(+env: List<&2, NfVal>) -> Nat:
-  List.length(&2, NfVal, env)
 
 def val_nth(+env: List<&2, NfVal>, at: Nat) -> NfVal:
   match env, at:
@@ -273,12 +265,9 @@ def quantity_markers(count: Nat) -> List<&2, NfVal>:
 # the single self-call is decreasing without a budget. A kind already carries
 # its materialized quantity (see nf_descriptor_step).
 #
-# `level` is the number of binders of the environment the result is written in,
-# which is the length of the environment at the term. It only decides the
-# parameter index of an arrow binder: index 0 is the innermost binder and the
-# environment's last entry, so a binder at `binder` is `level - binder - 1`
-# steps out. Every materialization inside the evaluator supplies its level; the
-# level-less entry points are for values whose binders are already parameters.
+# `level` counts surviving output binders, not evaluator environment entries.
+# Eliminated lets, substitutions and beta arguments must not shift an arrow's
+# parameter indices. Every evaluator materialization supplies its output depth.
 def materialize_all_at(vals: List<&2, NfVal>, +level: Nat) -> List<&2, BIR.Descriptor>:
   match vals:
     case Nil{}:
@@ -331,12 +320,12 @@ def materialize(val: NfVal) -> BIR.Descriptor:
 # environment back around the raw form: its values evaluate where the term was
 # written, before any new binder, and the let repeats the environment's shape
 # above it, so no parameter index is ever rewritten.
-def reify_env(source: BIR.Descriptor, +env: List<&2, NfVal>) -> BIR.Descriptor:
+def reify_env(source: BIR.Descriptor, +env: List<&2, NfVal>, +level: Nat) -> BIR.Descriptor:
   match env:
     case Nil{}:
       source
     case +value <> rest:
-      BIR.DescriptorLet{materialize_all_at(env, env_level(env)), source}
+      BIR.DescriptorLet{materialize_all_at(env, level), source}
 # ---------------------------------------------------------------------------
 # Descriptor patterns
 # ---------------------------------------------------------------------------
@@ -413,19 +402,19 @@ def bind_patterns(patterns: List<&2, BIR.DescriptorPattern>, values: List<&2, Nf
 # Normalization
 # ---------------------------------------------------------------------------
 
-def nf(+context: NfContext, descriptor: BIR.Descriptor, +env: List<&2, NfVal>, +fuel: Nat) -> Nf:
+def nf(+context: NfContext, descriptor: BIR.Descriptor, +env: List<&2, NfVal>, +level: Nat, +fuel: Nat) -> Nf:
   match Nat.is_eq(fuel, 0n):
     case True{}:
       NfFail{"the type expression did not normalize within its reduction budget"}
     case False{}:
-      nf_descriptor(context, descriptor, env, Nat.sub(fuel, 1n))
+      nf_descriptor(context, descriptor, env, level, Nat.sub(fuel, 1n))
 
-def nf_descriptor(+context: NfContext, descriptor: BIR.Descriptor, +env: List<&2, NfVal>, +fuel: Nat) -> Nf:
+def nf_descriptor(+context: NfContext, descriptor: BIR.Descriptor, +env: List<&2, NfVal>, +level: Nat, +fuel: Nat) -> Nf:
   match Nat.is_eq(fuel, 0n):
     case True{}:
       NfFail{"the type expression did not normalize within its reduction budget"}
     case False{}:
-      nf_descriptor_step(context, descriptor, env, fuel)
+      nf_descriptor_step(context, descriptor, env, level, fuel)
 
 # An arrow is a binder. The parser parses the codomain at `depth + 1` and the
 # checker binds the arrow in the body's environment (`infer_all_domain`), so
@@ -437,58 +426,56 @@ def nf_descriptor(+context: NfContext, descriptor: BIR.Descriptor, +env: List<&2
 # back as the parameter index that names it, so a body that reaches an
 # enclosing parameter keeps that parameter and a body that reaches the arrow's
 # own argument is never replaced by the outer last argument.
-def nf_arrow(+context: NfContext, use: BIR.Quantity, domain: BIR.Descriptor, body: BIR.Descriptor, +env: List<&2, NfVal>, +fuel: Nat) -> Nf:
-  +level = env_level(env)
-  match nf(context, domain, env, fuel):
+def nf_arrow(+context: NfContext, use: BIR.Quantity, domain: BIR.Descriptor, body: BIR.Descriptor, +env: List<&2, NfVal>, +level: Nat, +fuel: Nat) -> Nf:
+  match nf(context, domain, env, level, fuel):
     case NfFail{message}:
       NfFail{message}
     case NfOk{domain_val}:
-      match nf(context, body, List.append(&2, NfVal, env, [NfBinder{level}]), fuel):
+      match nf(context, body, List.append(&2, NfVal, env, [NfBinder{level}]), Nat.add(level, 1n), fuel):
         case NfFail{message}:
           NfFail{message}
         case NfOk{body_val}:
           NfOk{NfOther{BIR.DescriptorArrow{use, materialize_at(domain_val, level), materialize_at(body_val, Nat.add(level, 1n))}}}
 
-def nf_descriptor_step(+context: NfContext, descriptor: BIR.Descriptor, +env: List<&2, NfVal>, +fuel: Nat) -> Nf:
+def nf_descriptor_step(+context: NfContext, descriptor: BIR.Descriptor, +env: List<&2, NfVal>, +level: Nat, +fuel: Nat) -> Nf:
   +whole = descriptor
-  +level = env_level(env)
   match whole:
     case BIR.DescriptorNull{}:
-      NfOk{NfOther{reify_env(whole, env)}}
+      NfOk{NfOther{reify_env(whole, env, level)}}
     case BIR.DescriptorParameter{index}:
       NfOk{val_at(env, index, whole)}
     case BIR.DescriptorQuantityKind{}:
-      NfOk{NfOther{reify_env(whole, env)}}
+      NfOk{NfOther{reify_env(whole, env, level)}}
     case BIR.DescriptorQuantity{quantity}:
       NfOk{NfQuantity{quantity}}
     case BIR.DescriptorKind{quantity}:
-      match nf(context, quantity, env, fuel):
+      match nf(context, quantity, env, level, fuel):
         case NfOk{val}:
           NfOk{NfKind{materialize_at(val, level)}}
         case NfFail{message}:
           NfFail{message}
     case BIR.DescriptorMinimum{left, right}:
-      NfOk{NfOther{reify_env(whole, env)}}
+      NfOk{NfOther{reify_env(whole, env, level)}}
     case BIR.DescriptorArrow{use, domain, body}:
-      nf_arrow(context, use, domain, body, env, fuel)
+      nf_arrow(context, use, domain, body, env, level, fuel)
     case BIR.DescriptorLambda{use, body}:
       NfOk{NfClosure{use, body, env, materialize_all_at(env, level)}}
     case BIR.DescriptorRef{key, args}:
-      match nf_all(context, args, env, fuel):
+      match nf_all(context, args, env, level, fuel):
         case NfListOk{vals}:
           nf_named(context, key, vals, level, fuel)
         case NfListFail{message}:
           NfFail{message}
     case BIR.DescriptorConstructor{key, args}:
-      match nf_all(context, args, env, fuel):
+      match nf_all(context, args, env, level, fuel):
         case NfListOk{vals}:
           NfOk{NfCtor{key, vals}}
         case NfListFail{message}:
           NfFail{message}
     case BIR.DescriptorApplication{fn, arg}:
-      match nf(context, fn, env, fuel):
+      match nf(context, fn, env, level, fuel):
         case NfOk{val}:
-          match nf(context, arg, env, fuel):
+          match nf(context, arg, env, level, fuel):
             case NfOk{argument}:
               nf_apply(context, val, [argument], level, fuel)
             case NfFail{message}:
@@ -496,89 +483,89 @@ def nf_descriptor_step(+context: NfContext, descriptor: BIR.Descriptor, +env: Li
         case NfFail{message}:
           NfFail{message}
     case BIR.DescriptorSubstitution{index, value, body}:
-      match nf(context, value, env, fuel):
+      match nf(context, value, env, level, fuel):
         case NfOk{val}:
-          nf_descriptor(context, body, insert_before(env, Nat.sub(List.length(&2, NfVal, env), index), val), Nat.sub(fuel, 1n))
+          nf_descriptor(context, body, insert_before(env, Nat.sub(List.length(&2, NfVal, env), index), val), level, Nat.sub(fuel, 1n))
         case NfFail{message}:
           NfFail{message}
     case BIR.DescriptorLet{values, body}:
-      match nf_all(context, values, env, fuel):
+      match nf_all(context, values, env, level, fuel):
         case NfListOk{vals}:
-          nf_descriptor(context, body, List.append(&2, NfVal, env, vals), Nat.sub(fuel, 1n))
+          nf_descriptor(context, body, List.append(&2, NfVal, env, vals), level, Nat.sub(fuel, 1n))
         case NfListFail{message}:
           NfFail{message}
     case BIR.DescriptorLocal{patterns, values, body}:
-      match nf_all(context, values, env, fuel):
+      match nf_all(context, values, env, level, fuel):
         case NfListOk{vals}:
           match bind_patterns(patterns, vals):
             case NfBound{bindings}:
-              nf_descriptor(context, body, List.append(&2, NfVal, env, bindings), Nat.sub(fuel, 1n))
+              nf_descriptor(context, body, List.append(&2, NfVal, env, bindings), level, Nat.sub(fuel, 1n))
             case _:
-              NfOk{NfOther{reify_env(whole, env)}}
+              NfOk{NfOther{reify_env(whole, env, level)}}
         case NfListFail{message}:
           NfFail{message}
     case BIR.DescriptorMatch{values, cases}:
-      match nf_all(context, values, env, fuel):
+      match nf_all(context, values, env, level, fuel):
         case NfListOk{vals}:
-          nf_cases(context, cases, vals, env, whole, fuel)
+          nf_cases(context, cases, vals, env, whole, level, fuel)
         case NfListFail{message}:
           NfFail{message}
     case BIR.DescriptorCase{patterns, body}:
-      NfOk{NfOther{reify_env(whole, env)}}
+      NfOk{NfOther{reify_env(whole, env, level)}}
     case BIR.DescriptorBind{value, body}:
-      match nf(context, value, env, fuel):
+      match nf(context, value, env, level, fuel):
         case NfOk{val}:
-          nf_descriptor(context, body, List.append(&2, NfVal, env, [val]), Nat.sub(fuel, 1n))
+          nf_descriptor(context, body, List.append(&2, NfVal, env, [val]), level, Nat.sub(fuel, 1n))
         case NfFail{message}:
           NfFail{message}
     case BIR.DescriptorEquality{left, right, ty}:
-      NfOk{NfOther{reify_env(whole, env)}}
+      NfOk{NfOther{reify_env(whole, env, level)}}
     case BIR.DescriptorReflexivity{}:
-      NfOk{NfOther{reify_env(whole, env)}}
+      NfOk{NfOther{reify_env(whole, env, level)}}
     case BIR.DescriptorFailure{message}:
       NfFail{message}
     case BIR.DescriptorFill{head, args}:
-      nf_apply_args(context, head, args, env, whole, fuel)
+      nf_apply_args(context, head, args, env, whole, level, fuel)
     case BIR.DescriptorPlus{head, args}:
-      nf_apply_args(context, head, args, env, whole, fuel)
+      nf_apply_args(context, head, args, env, whole, level, fuel)
     case BIR.DescriptorNamedFill{key, head, args}:
-      match nf_all(context, args, env, fuel):
+      match nf_all(context, args, env, level, fuel):
         case NfListOk{vals}:
           nf_named(context, key, vals, level, fuel)
         case NfListFail{message}:
           NfFail{message}
     case BIR.DescriptorNamedPlus{key, head, args}:
-      match nf_all(context, args, env, fuel):
+      match nf_all(context, args, env, level, fuel):
         case NfListOk{vals}:
           nf_named(context, key, vals, level, fuel)
         case NfListFail{message}:
           NfFail{message}
 
-def nf_all(+context: NfContext, descriptors: List<&2, BIR.Descriptor>, +env: List<&2, NfVal>, +fuel: Nat) -> NfList:
+def nf_all(+context: NfContext, descriptors: List<&2, BIR.Descriptor>, +env: List<&2, NfVal>, +level: Nat, +fuel: Nat) -> NfList:
   match descriptors:
     case Nil{}:
       NfListOk{Nil{}}
     case +descriptor <> rest:
-      match nf(context, descriptor, env, fuel):
+      match nf(context, descriptor, env, level, fuel):
         case NfFail{message}:
           NfListFail{message}
         case NfOk{val}:
-          match nf_all(context, rest, env, fuel):
+          match nf_all(context, rest, env, level, fuel):
             case NfListFail{message}:
               NfListFail{message}
             case NfListOk{vals}:
               NfListOk{val <> vals}
 
-def nf_apply_args(+context: NfContext, head: BIR.Descriptor, args: List<&2, BIR.Descriptor>, +env: List<&2, NfVal>, source: BIR.Descriptor, +fuel: Nat) -> Nf:
-  match nf(context, head, env, fuel):
+def nf_apply_args(+context: NfContext, head: BIR.Descriptor, args: List<&2, BIR.Descriptor>, +env: List<&2, NfVal>, source: BIR.Descriptor, +level: Nat, +fuel: Nat) -> Nf:
+  match nf(context, head, env, level, fuel):
     case NfFail{message}:
       NfFail{message}
     case NfOk{val}:
-      match nf_all(context, args, env, fuel):
+      match nf_all(context, args, env, level, fuel):
         case NfListFail{message}:
           NfFail{message}
         case NfListOk{vals}:
-          nf_apply_source(context, val, vals, source, env_level(env), fuel)
+          nf_apply_source(context, val, vals, source, level, fuel)
 
 def nf_apply_source(+context: NfContext, val: NfVal, args: List<&2, NfVal>, source: BIR.Descriptor, +level: Nat, +fuel: Nat) -> Nf:
   match args:
@@ -606,7 +593,7 @@ def nf_apply_one(+context: NfContext, val: NfVal, arg: NfVal, +level: Nat, +fuel
     case NfType{key, args}:
       nf_named(context, key, List.append(&2, NfVal, args, [arg]), level, Nat.sub(fuel, 1n))
     case NfClosure{quantity, body, env, sources}:
-      nf_descriptor(context, body, List.append(&2, NfVal, env, [arg]), Nat.sub(fuel, 1n))
+      nf_descriptor(context, body, List.append(&2, NfVal, env, [arg]), level, Nat.sub(fuel, 1n))
     case NfCtor{key, args}:
       NfFail{String.append("the constructor `", String.append(key, "` is applied to an argument"))}
     case NfQuantity{quantity}:
@@ -705,30 +692,28 @@ def nf_reduce_apply(decision: NfArity, +context: NfContext, key: String, quantit
                 case False{}:
                   NfFail{String.append("the type function `", String.append(key, "` is applied past its declared parameter count"))}
 
-# The body's own environment is the reduction's argument list, so the level it
-# is written at is that list's length; `level` is kept for the arguments that
-# are applied past the body, which were built in the caller's environment.
+# Beta reduction substitutes arguments without introducing output binders.
 def nf_reduce_body(+context: NfContext, body: BIR.Descriptor, +env: List<&2, NfVal>, extra: List<&2, NfVal>, +level: Nat, +fuel: Nat) -> Nf:
-  match nf_descriptor(context, body, env, Nat.sub(fuel, 1n)):
+  match nf_descriptor(context, body, env, level, Nat.sub(fuel, 1n)):
     case NfFail{message}:
       NfFail{message}
     case NfOk{val}:
       nf_apply(context, val, extra, level, fuel)
 
-def nf_cases(+context: NfContext, cases: List<&2, BIR.Descriptor>, +values: List<&2, NfVal>, +env: List<&2, NfVal>, source: BIR.Descriptor, +fuel: Nat) -> Nf:
+def nf_cases(+context: NfContext, cases: List<&2, BIR.Descriptor>, +values: List<&2, NfVal>, +env: List<&2, NfVal>, source: BIR.Descriptor, +level: Nat, +fuel: Nat) -> Nf:
   match cases:
     case Nil{}:
-      NfOk{NfOther{reify_env(source, env)}}
+      NfOk{NfOther{reify_env(source, env, level)}}
     case +case_body <> rest:
       match case_body:
         case BIR.DescriptorCase{patterns, body}:
           match bind_patterns(patterns, values):
             case NfBound{bindings}:
-              nf_descriptor(context, body, List.append(&2, NfVal, env, bindings), Nat.sub(fuel, 1n))
+              nf_descriptor(context, body, List.append(&2, NfVal, env, bindings), level, Nat.sub(fuel, 1n))
             case NfMismatch{}:
-              nf_cases(context, rest, values, env, source, fuel)
+              nf_cases(context, rest, values, env, source, level, fuel)
             case NfUnknown{}:
-              NfOk{NfOther{reify_env(source, env)}}
+              NfOk{NfOther{reify_env(source, env, level)}}
         case BIR.DescriptorFailure{message}:
           NfFail{message}
         case _:
@@ -737,15 +722,14 @@ def nf_cases(+context: NfContext, cases: List<&2, BIR.Descriptor>, +values: List
 # The normalized descriptor for a checked type expression. A reduction that
 # cannot be performed becomes DescriptorFailure, so a consumer that replaces a
 # stored field with this result can never silently lose the failure. The result
-# replaces the source expression where it stood, so it is materialized at that
-# environment's level: an arrow binder the normal form still holds keeps the
-# parameter index that names it there.
+# replaces the expression after substituting its supplied environment; only
+# binders retained inside that result contribute to its initial output depth.
 def normalize(+context: NfContext, descriptor: BIR.Descriptor, +env: List<&2, NfVal>, +fuel: Nat) -> BIR.Descriptor:
-  match nf(context, descriptor, env, fuel):
+  match nf(context, descriptor, env, 0n, fuel):
     case NfFail{message}:
       BIR.DescriptorFailure{message}
     case NfOk{val}:
-      materialize_at(val, env_level(env))
+      materialize_at(val, 0n)
 
 def normalize_closed(families: List<&2, BIR.Family>, type_functions: List<&2, BIR.TypeFunction>, descriptor: BIR.Descriptor) -> BIR.Descriptor:
   normalize(nf_context(families, type_functions), descriptor, Nil{}, 1024n)

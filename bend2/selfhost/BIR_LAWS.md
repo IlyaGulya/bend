@@ -1222,11 +1222,12 @@ The rules implemented by `nf_descriptor_step` and its helpers are:
   appends the argument; an unapplied closure materializes as a let of its
   captured environment around the lambda (`nf_apply`, `537-567`;
   `materialize`, `288-290`).
-- **Arrow**: a binder (WF-13). The domain normalizes under the current
-  environment and the body under that environment with one abstract binder for
-  the arrow's own argument; the arrow keeps its shape and that abstract binder
-  materializes back as the parameter index that names it in the body
-  (`nf_arrow`, `440-450`; `NfBinder`, `materialize_at`).
+- **Arrow**: a binder (WF-13). Its domain normalizes at the current output
+  depth; its body adds one abstract binder and increments that depth. Let,
+  substitution and beta arguments extend the evaluator environment without
+  adding output binders, so environment length cannot determine arrow indices.
+  The typed-step normalizer consumer exercises a nested dependent arrow under
+  an eliminated let; complete compiler admission remains separate.
 - **Match/local/substitution/let/bind**: the descriptor language's scoping
   forms. A definite mismatch in a pattern list lets the next case run; an
   undecidable scrutinee (not yet a constructor value) makes the whole match

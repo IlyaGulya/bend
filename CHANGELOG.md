@@ -5,6 +5,11 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- Descriptor normalization counts surviving arrow binders separately from
+  substituted arguments and eliminated lets. The typed-step consumer passes
+  36 semantic cases, including dependent nested arrows and delayed match
+  substitution; this is not full-compiler or byte-fixedpoint acceptance.
+
 - Native C generation traverses nested constructors with an explicit stack,
   preserving field order, layouts and ownership without exhausting Bun's
   JavaScript stack on large literal values. The 8192-character regression now
