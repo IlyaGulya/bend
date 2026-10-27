@@ -116,6 +116,15 @@ type Primitive is Data:
   PrimArraySwap{}
   PrimArraySize{}
   PrimArrayClone{}
+  PrimArrayAtomicAdd{}
+  PrimArrayAtomicMin{}
+  PrimArrayAtomicMax{}
+  PrimArrayAtomicAnd{}
+  PrimArrayAtomicOr{}
+  PrimArrayAtomicXor{}
+  PrimArrayAtomicExch{}
+  PrimArrayAtomicCas{}
+  PrimArrayAtomicFadd{}
   PrimNatPredecessor{}
   PrimNatSuccessor{}
   PrimCharNew{}

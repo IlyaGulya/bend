@@ -690,6 +690,15 @@ def primitive_named(name: String) -> Maybe<&2, BIR.Primitive>:
     case "array_swap": Some{BIR.PrimArraySwap{}}
     case "array_size": Some{BIR.PrimArraySize{}}
     case "array_clone": Some{BIR.PrimArrayClone{}}
+    case "array_atomic_add": Some{BIR.PrimArrayAtomicAdd{}}
+    case "array_atomic_min": Some{BIR.PrimArrayAtomicMin{}}
+    case "array_atomic_max": Some{BIR.PrimArrayAtomicMax{}}
+    case "array_atomic_and": Some{BIR.PrimArrayAtomicAnd{}}
+    case "array_atomic_or": Some{BIR.PrimArrayAtomicOr{}}
+    case "array_atomic_xor": Some{BIR.PrimArrayAtomicXor{}}
+    case "array_atomic_exch": Some{BIR.PrimArrayAtomicExch{}}
+    case "array_atomic_cas": Some{BIR.PrimArrayAtomicCas{}}
+    case "array_atomic_fadd": Some{BIR.PrimArrayAtomicFadd{}}
     case _: None{}
 
 def definition_key(registry: Registry, key: String) -> Maybe<&2, DefinitionHeader>:
@@ -1598,6 +1607,15 @@ def primitive_arity(value: BIR.Primitive) -> Nat:
     case BIR.PrimArraySwap{}: 3n
     case BIR.PrimArraySize{}: 1n
     case BIR.PrimArrayClone{}: 1n
+    case BIR.PrimArrayAtomicAdd{}: 3n
+    case BIR.PrimArrayAtomicMin{}: 3n
+    case BIR.PrimArrayAtomicMax{}: 3n
+    case BIR.PrimArrayAtomicAnd{}: 3n
+    case BIR.PrimArrayAtomicOr{}: 3n
+    case BIR.PrimArrayAtomicXor{}: 3n
+    case BIR.PrimArrayAtomicExch{}: 3n
+    case BIR.PrimArrayAtomicCas{}: 4n
+    case BIR.PrimArrayAtomicFadd{}: 3n
     case BIR.PrimNatPredecessor{}: 1n
     case BIR.PrimNatSuccessor{}: 1n
     case BIR.PrimCharNew{}: 1n

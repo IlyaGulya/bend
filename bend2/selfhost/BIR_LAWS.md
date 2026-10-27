@@ -1123,11 +1123,20 @@ aliases (`backend_ir.bend:32-144`).
   application of a native declaration whose key `Catalog.primitive` resolves
   through the native marker (`lower_catalog.bend:603-694`). A user definition
   cannot become a primitive by name.
-- `types` is non-empty only for array primitives and holds exactly one element
-  descriptor (`primitive_element`/`primitive_types`/`element_fact`,
-  `backend_lower.bend:327-448`). WF-3/BL-11 require it to be the actual
-  element type; C's cell plan consumes it (`CLay.array_cell`), JS ignores it
-  (R-3).
+- Generic array primitives carry exactly one instantiated element descriptor
+  (`primitive_element`/`primitive_types`/`element_fact` in
+  `backend_lower.bend`). WF-3/BL-11 require it to be the actual element type;
+  C's cell plan consumes it (`CLay.array_cell`), JS ignores it (R-3).
+  The nine fixed-scalar `PrimArrayAtomic{Add,Min,Max,And,Or,Xor,Exch,Cas,Fadd}`
+  operations need no element descriptor: the operation fixes U32, or F32 for
+  Fadd. They take array/index/value in order; Cas takes
+  array/index/expected/replacement. Their arities are 3 and 4 respectively.
+  They update shared storage in place, use the runtime's wrapped index, and
+  return the same owning array handle paired with the old scalar. Cas stores
+  only on equality. Fadd rounds the updated value to binary32 and preserves
+  the old scalar's bits. Direct and first-class/partial calls have the same
+  semantics. C uses the existing a32 helpers; JS is single-threaded and uses
+  the same sequential read-modify-write expressions as the canonical compiler.
 - The two targets implement each catalog entry separately: JS maps the
   constructor to a runtime helper (`primitive_name`/`primitive_public`,
   `js_backend.bend:665-892`), C maps it to a runtime expression
@@ -1139,6 +1148,13 @@ aliases (`backend_ir.bend:32-144`).
   (overflow, shift counts, float bits/NaN/signed zero, Unicode and empty
   strings, array ownership and index bounds). The C executable smoke covers
   exactly `U32.add`; the C library smoke covers `U32.add` only.
+- Atomic coverage under verification: `tests/run/array_fork.bend` covers the
+  eight U32 operations and fork aliases; `array_atomic_fadd.bend` covers F32
+  accumulation; `array_atomic_edges.bend` covers U32 wraparound, wrapped
+  indices, alias visibility, partial Cas hit/miss and binary32 signed-zero/
+  rounding boundaries. All three are included in both target matrices without
+  removing their original 33 cases. Canonical JS/C edge execution passes;
+  selfhost execution and the new full-root fixedpoint are not yet claimed.
 
 ### 4.11 Rendered entries and foreign callbacks (checkpoint law B2)
 

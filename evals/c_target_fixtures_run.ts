@@ -69,7 +69,8 @@ const fixtures = ['evals/c_target_wide_record', 'evals/c_target_nested_adt',
   'evals/c_target_bool_fields', 'evals/c_target_region_tail_capture',
   'evals/c_target_bool_xor', 'evals/c_target_show_data',
   'evals/c_target_user_ctor_show', 'evals/c_target_wide_node',
-  'tests/io/args', 'tests/io/args_bytes', 'evals/repro_js_non_tail_reclaim'];
+  'tests/io/args', 'tests/io/args_bytes', 'evals/repro_js_non_tail_reclaim',
+  'tests/run/array_fork', 'tests/run/array_atomic_fadd', 'tests/run/array_atomic_edges'];
 const selected = smokeCase === undefined ? fixtures : fixtures.filter(name => name.endsWith('/' + smokeCase) || name === smokeCase);
 if (selected.length === 0) throw Error('--smoke-case matches no fixture: ' + smokeCase);
 const base = resolve('bend2/base.bend');

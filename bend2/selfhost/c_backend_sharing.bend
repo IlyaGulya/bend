@@ -712,6 +712,15 @@ def s_primitive_heads(+families: Map<&2, FamilyRow>, +labels: Map<&2, String>, p
     case BIR.PrimArraySize{}: s_word_head("Nat")
     case BIR.PrimArrayGet{}: s_array_pair_at(types, families, labels)
     case BIR.PrimArraySwap{}: s_array_pair_at(types, families, labels)
+    case BIR.PrimArrayAtomicAdd{}: s_word_head("Sigma")
+    case BIR.PrimArrayAtomicMin{}: s_word_head("Sigma")
+    case BIR.PrimArrayAtomicMax{}: s_word_head("Sigma")
+    case BIR.PrimArrayAtomicAnd{}: s_word_head("Sigma")
+    case BIR.PrimArrayAtomicOr{}: s_word_head("Sigma")
+    case BIR.PrimArrayAtomicXor{}: s_word_head("Sigma")
+    case BIR.PrimArrayAtomicExch{}: s_word_head("Sigma")
+    case BIR.PrimArrayAtomicCas{}: s_word_head("Sigma")
+    case BIR.PrimArrayAtomicFadd{}: s_word_head("Sigma")
     case BIR.PrimArrayLeafValue{}: s_descriptor_heads(families, labels, s_at_desc(types, 0n))
     case BIR.PrimIsArrayLeaf{}: s_word_head("Bool")
     case BIR.PrimIsArrayNode{}: s_word_head("Bool")
@@ -823,6 +832,15 @@ def s_is_array_prim(primitive: BIR.Primitive) -> Bool:
     case BIR.PrimArraySwap{}: True{}
     case BIR.PrimArraySize{}: True{}
     case BIR.PrimArrayClone{}: True{}
+    case BIR.PrimArrayAtomicAdd{}: True{}
+    case BIR.PrimArrayAtomicMin{}: True{}
+    case BIR.PrimArrayAtomicMax{}: True{}
+    case BIR.PrimArrayAtomicAnd{}: True{}
+    case BIR.PrimArrayAtomicOr{}: True{}
+    case BIR.PrimArrayAtomicXor{}: True{}
+    case BIR.PrimArrayAtomicExch{}: True{}
+    case BIR.PrimArrayAtomicCas{}: True{}
+    case BIR.PrimArrayAtomicFadd{}: True{}
     case BIR.PrimArrayLeaf{}: True{}
     case BIR.PrimArrayNode{}: True{}
     case BIR.PrimArrayLeafValue{}: True{}
