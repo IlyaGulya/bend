@@ -114,6 +114,28 @@ def check_affine_result(result: Checked.CheckResult):
     case Checked.CheckFailure{Checked.Diagnostic{_, _, _, _, _}}: IO.print("checker-affine-duplicate-rejected")
     case Checked.CheckSuccess{_}: IO.print("checker-affine-duplicate-accepted")
 
+def rejects_at_span(diagnostic: Checked.Diagnostic, expected: Ast.SourceSpan) -> Bool:
+  match diagnostic:
+    case Checked.Diagnostic{_, Ast.SpanOf{found_file, found_beg, found_end}, _, _, _}:
+      match expected:
+        case Ast.SpanOf{file, beg, end}: Bool.and(String.eq(found_file, file), Bool.and(found_beg == beg, found_end == end))
+
+def report_datatype_template_parameter(result: Checked.CheckResult, expected: Ast.SourceSpan):
+  match result:
+    case Checked.CheckFailure{diagnostic}:
+      match rejects_at_span(diagnostic, expected):
+        case True{}: IO.print("checker-datatype-template-parameter-rejected")
+        case False{}: IO.print("checker-datatype-template-parameter-misplaced")
+    case Checked.CheckSuccess{_}: IO.print("checker-datatype-template-parameter-accepted")
+
+def report_datatype_parameter_control(result: Checked.CheckResult):
+  match result:
+    case Checked.CheckSuccess{Checked.CheckedProgram{_, modules, _, _}}:
+      match modules:
+        case [_]: IO.print("checker-datatype-erased-parameter-ok")
+        case _: IO.print("checker-datatype-erased-parameter-failed")
+    case Checked.CheckFailure{_}: IO.print("checker-datatype-erased-parameter-failed")
+
 law main:
   IO(Unit)
 
@@ -505,6 +527,44 @@ def main():
   order_loaded = Loader.LoadedModule{ "",  order_module}
   check_result_output(Checker.check([order_loaded]), "checker-declaration-order-accepted", "checker-declaration-order-rejected")
 
+  # `type G10TemplateBox<~a: Type> is Data:` parses, and Template.expand keeps the
+  # template binder in place, so the declaration checker must reject it at the
+  # parameter's own span: no instantiation ever expands it and lowering refuses
+  # the unexpanded binder after CheckSuccess.
+  template_parameter_span = Ast.SpanOf{ "datatype-parameter.bend",  21n,  27n}
+  template_parameter_type = Ast.TypeDecl{
+     "TemplateParameterBox",
+     [Ast.TemplateBinder{ "a",  0n,  type_term,  template_parameter_span}],
+     data_kind,
+     Nil{},
+     sp
+  }
+  template_parameter_module = Ast.Module{ "datatype-parameter.bend",  Nil{},  [Ast.TypeTop{ template_parameter_type}]}
+  template_parameter_loaded = Loader.LoadedModule{ "",  template_parameter_module}
+  report_datatype_template_parameter(Checker.check([template_parameter_loaded]), template_parameter_span)
+
+  # The same declaration with an ordinary erased parameter, plus a definition
+  # template that expansion strips, stays accepted.
+  erased_parameter_span = Ast.SpanOf{ "datatype-parameter.bend",  40n,  44n}
+  erased_parameter_type = Ast.TypeDecl{
+     "ErasedParameterBox",
+     [Ast.Binder{ Ast.QZero{},  "A",  0n,  data_kind,  erased_parameter_span}],
+     data_kind,
+     [Ast.Constructor{ "ErasedParameterBoxCtr",  [Ast.Binder{ Ast.QOne{},  "value",  1n,  Ast.TermVar{ "A",  0n,  sp},  sp}],  sp}],
+     sp
+  }
+  kept_template = Ast.Definition{
+     "kept_template",
+     [Ast.TemplateBinder{ "T",  0n,  Ast.TermQuant{},  sp}],
+     Ast.NoTerm{},
+     Ast.DefTerm{ Ast.TermAbsurd{ sp}},
+     False{},
+     sp
+  }
+  erased_parameter_module = Ast.Module{ "datatype-parameter-control.bend",  Nil{},  [Ast.DefTop{ kept_template}, Ast.TypeTop{ erased_parameter_type}]}
+  erased_parameter_loaded = Loader.LoadedModule{ "",  erased_parameter_module}
+  report_datatype_parameter_control(Checker.check([erased_parameter_loaded]))
+
 #| checker-dependent-application-ok
 #| checker-bang-head-ok
 #| checker-bang-preserved
@@ -541,3 +601,5 @@ def main():
 #| checker-termination-rejected
 #| checker-unsafe-recursion-ok
 #| checker-declaration-order-rejected
+#| checker-datatype-template-parameter-rejected
+#| checker-datatype-erased-parameter-ok

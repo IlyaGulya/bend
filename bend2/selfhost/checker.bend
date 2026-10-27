@@ -9219,6 +9219,25 @@ def check_import_type_result(v_1: ArenaStore, v_3: Inference, v_5: String, v_7: 
       v_47 = v_45
       {ArenaResult{v_1, ScopedStateFailure{v_47}} : ArenaResult<ScopedState>}
 
+# A datatype parameter is a runtime binder: quantity-kinded families apply it and
+# constructors may name it. A TemplateBinder belongs only to a definition
+# telescope, where Template.expand substitutes it before checking; retained in a
+# datatype it would be published as an erased parameter that no instantiation
+# ever expands, and the backend refuses it after CheckSuccess. Reject it at the
+# parameter's own span, before this declaration's own value is published.
+def check_datatype_parameters(store: ArenaStore, params: IR.Words) -> ArenaResult<Maybe<&2, Checked.Diagnostic>>:
+  ArenaResult{store, view} = arena_words_view(store, params)
+  match view:
+    case IR.WordNil{}: {ArenaResult{store, None{}} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
+    case IR.WordCons{binder, rest}:
+      ArenaResult{store, item} = arena_get_binder(store, binder)
+      match item:
+        case Arena.Binder{_, _, _, _, _}: check_datatype_parameters(store, rest)
+        case Arena.TemplateBinder{key, _, _, span}:
+          ArenaResult{store, name} = arena_name_text(store, key)
+          rejection = Checked.Diagnostic{span_file(span), span, String.append("datatype parameter cannot be a compile-time template binder: ", name), "a runtime datatype parameter", "a template binder"}
+          {ArenaResult{store, Some{rejection}} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
+
 def check_type_decl(v_1: ArenaStore, v_2: IR.TypeDecl, v_4: String, v_5: Scope.ArenaGlobalScope, v_6: Scope.ArenaGlobalScope) -> ArenaResult<ScopedState>:
   match v_2:
     case IR.TypeDecl{+v_15, +v_16, +v_17, +v_18, +v_19}:
@@ -9227,28 +9246,34 @@ def check_type_decl(v_1: ArenaStore, v_2: IR.TypeDecl, v_4: String, v_5: Scope.A
       v_25 = v_17
       v_27 = v_18
       v_29 = v_19
-      ArenaResult{v_33, +v_34} = binders_type(v_1, v_23, v_25)
-      v_36 = v_34
-      ArenaResult{v_40, +v_41} = binder_count(v_33, v_23)
-      ArenaResult{v_45, +v_46} = parameter_vars(v_40, v_23, v_41, v_29)
-      ArenaResult{v_51, +v_52} = arena_name(v_45, canonical_key(v_4, v_21))
-      v_50000294 = arena_words_start(v_46)
-      v_50000295 = arena_words_count(v_46)
-      v_50000296 = arena_names_start(IR.Names{0, 0})
-      v_50000297 = arena_names_count(IR.Names{0, 0})
-      ArenaResult{v_60, +v_61} = arena_put_node(v_51, Arena.TermAdt{v_52, v_50000294, v_50000295, v_50000296, v_50000297, v_29})
-      ArenaResult{v_65, +v_66} = binders_lambda(v_60, v_23, v_61)
-      v_68 = v_66
-      ArenaResult{v_72, +v_73} = canonicalize_term(v_65, v_36, v_6)
-      ArenaResult{v_77, +v_78} = canonicalize_term(v_72, v_68, v_6)
-      v_50000298 = canonical_key(v_4, v_21)
-      ArenaResult{v_83, +v_84} = arena_publish_global(v_77, Scope.ArenaGlobal{v_50000298, v_4, v_21, v_73, IR.SomeTerm{v_78}, Scope.GlobalFamily{}})
-      v_86 = v_84
-      ArenaResult{v_90, +v_91} = arena_publish_global(v_83, Scope.ArenaGlobal{v_21, v_4, v_21, v_36, IR.SomeTerm{v_68}, Scope.GlobalFamily{}})
-      v_93 = v_91
-      ArenaResult{v_97, +v_98} = infer(v_90, v_36, [], v_6)
-      ArenaResult{v_102, +v_103} = check_type_decl_result(v_97, v_98, v_21, v_23, v_25, v_27, v_86, v_93, v_36, v_4, v_5, v_6, v_29)
-      {ArenaResult{v_102, v_103} : ArenaResult<ScopedState>}
+      ArenaResult{store, rejection} = check_datatype_parameters(v_1, v_23)
+      match rejection:
+        case Some{diagnostic}: {ArenaResult{store, ScopedStateFailure{diagnostic}} : ArenaResult<ScopedState>}
+        case None{}: check_type_decl_ir(store, v_21, v_23, v_25, v_27, v_29, v_4, v_5, v_6)
+
+def check_type_decl_ir(v_1: ArenaStore, v_21: String, v_23: IR.Words, v_25: U32, v_27: List<&2, IR.ConstructorDecl>, v_29: Ast.SourceSpan, v_4: String, v_5: Scope.ArenaGlobalScope, v_6: Scope.ArenaGlobalScope) -> ArenaResult<ScopedState>:
+  ArenaResult{v_33, +v_34} = binders_type(v_1, v_23, v_25)
+  v_36 = v_34
+  ArenaResult{v_40, +v_41} = binder_count(v_33, v_23)
+  ArenaResult{v_45, +v_46} = parameter_vars(v_40, v_23, v_41, v_29)
+  ArenaResult{v_51, +v_52} = arena_name(v_45, canonical_key(v_4, v_21))
+  v_50000294 = arena_words_start(v_46)
+  v_50000295 = arena_words_count(v_46)
+  v_50000296 = arena_names_start(IR.Names{0, 0})
+  v_50000297 = arena_names_count(IR.Names{0, 0})
+  ArenaResult{v_60, +v_61} = arena_put_node(v_51, Arena.TermAdt{v_52, v_50000294, v_50000295, v_50000296, v_50000297, v_29})
+  ArenaResult{v_65, +v_66} = binders_lambda(v_60, v_23, v_61)
+  v_68 = v_66
+  ArenaResult{v_72, +v_73} = canonicalize_term(v_65, v_36, v_6)
+  ArenaResult{v_77, +v_78} = canonicalize_term(v_72, v_68, v_6)
+  v_50000298 = canonical_key(v_4, v_21)
+  ArenaResult{v_83, +v_84} = arena_publish_global(v_77, Scope.ArenaGlobal{v_50000298, v_4, v_21, v_73, IR.SomeTerm{v_78}, Scope.GlobalFamily{}})
+  v_86 = v_84
+  ArenaResult{v_90, +v_91} = arena_publish_global(v_83, Scope.ArenaGlobal{v_21, v_4, v_21, v_36, IR.SomeTerm{v_68}, Scope.GlobalFamily{}})
+  v_93 = v_91
+  ArenaResult{v_97, +v_98} = infer(v_90, v_36, [], v_6)
+  ArenaResult{v_102, +v_103} = check_type_decl_result(v_97, v_98, v_21, v_23, v_25, v_27, v_86, v_93, v_36, v_4, v_5, v_6, v_29)
+  {ArenaResult{v_102, v_103} : ArenaResult<ScopedState>}
 
 def foreign_head(v_20039722: ArenaStore, v_0: U32) -> ArenaResult<Maybe<&2, String>>:
   ArenaResult{v_20039723, +v_20039724} = arena_get_node(v_20039722, v_0)
