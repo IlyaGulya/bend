@@ -83,6 +83,13 @@ def is_scoped_let_arrow(value: BIR.Descriptor) -> Bool:
     case BIR.DescriptorArrow{BIR.Erased{}, _, BIR.DescriptorArrow{BIR.Unrestricted{}, BIR.DescriptorParameter{0n}, BIR.DescriptorParameter{1n}}}: True{}
     case _: False{}
 
+# Moving a saved dependent arrow under another arrow must keep the captured
+# outer type, not accidentally bind the new intervening argument.
+def is_relocated_arrow(value: BIR.Descriptor) -> Bool:
+  match value:
+    case BIR.DescriptorArrow{BIR.Erased{}, _, BIR.DescriptorArrow{BIR.Unrestricted{}, BIR.DescriptorRef{"Nat", Nil{}}, BIR.DescriptorArrow{BIR.Erased{}, BIR.DescriptorRef{"Nat", Nil{}}, BIR.DescriptorParameter{2n}}}}: True{}
+    case _: False{}
+
 def is_nat_ref(value: BIR.Descriptor) -> Bool:
   match value:
     case BIR.DescriptorRef{"Nat", args}:
@@ -257,4 +264,6 @@ def main(modules: List<&2, Loader.LoadedModule>) -> NfSmoke:
   arrow_bits = String.append(bit(is_arrow_bound(arrow_bound)), String.append(bit(is_arrow_nest(arrow_nest)), bit(is_app_tick(app_tick))))
   new_bits = String.append(bit(is_nat(lambda_beta)), String.append(bit(is_nat(higher_order)), String.append(bit(is_nat(captured)), String.append(bit(is_nat(reapplied)), String.append(bit(is_match_source(abstract_match)), String.append(bit(is_bool(known_mismatch)), String.append(bit(is_failure_with(ctor_app, "the constructor `C` is applied to an argument")), String.append(bit(is_failure_with(quantity_app, "a quantity is applied to an argument")), bit(is_failure_with(kind_app, "a kind is applied to an argument"))))))))))
   let_arrow = NF.normalize_closed(f, t, BIR.DescriptorArrow{BIR.Erased{}, BIR.DescriptorKind{BIR.DescriptorQuantity{BIR.Unrestricted{}}}, BIR.DescriptorLet{[BIR.DescriptorRef{"Nat", Nil{}}], BIR.DescriptorArrow{BIR.Unrestricted{}, BIR.DescriptorParameter{1n}, BIR.DescriptorParameter{2n}}}})
-  NfSmoke{String.append(String.append(String.append(String.append(String.append(five, rest), both), extra), cases_bits), String.append(String.append(new_bits, boundary_bits), String.append(arrow_bits, bit(is_scoped_let_arrow(let_arrow)))))}
+  relocated_arrow = NF.normalize_closed(f, t, BIR.DescriptorArrow{BIR.Erased{}, BIR.DescriptorKind{BIR.DescriptorQuantity{BIR.Unrestricted{}}}, BIR.DescriptorLet{[BIR.DescriptorArrow{BIR.Erased{}, BIR.DescriptorRef{"Nat", Nil{}}, BIR.DescriptorParameter{1n}}], BIR.DescriptorArrow{BIR.Unrestricted{}, BIR.DescriptorRef{"Nat", Nil{}}, BIR.DescriptorParameter{1n}}}})
+  scope_bits = String.append(arrow_bits, String.append(bit(is_scoped_let_arrow(let_arrow)), bit(is_relocated_arrow(relocated_arrow))))
+  NfSmoke{String.append(String.append(String.append(String.append(String.append(five, rest), both), extra), cases_bits), String.append(String.append(new_bits, boundary_bits), scope_bits))}
