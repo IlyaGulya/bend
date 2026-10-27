@@ -14,6 +14,12 @@ latest one; the GitHub release carries the same notes.
   600-second deadline in stage-two-check. Native seed fixtures and 18 complete
   parser approvals pass, but there is no stage2 or new byte fixedpoint.
   Receipt: `evals/receipts/root2039g9a_atomic_bootstrap_rejected.json`.
+  Both complete 36-case target matrices, seven native foreign/library and five
+  nested host-export consumers also pass. The built native compiler passes
+  all six atomic JS/C consumers. A separate bounded Bun/JSC profile identifies
+  map lookup and trampoline work; it does not establish a whole-check cause.
+  Receipts: `evals/receipts/root2039g9a_full_consumers.json`,
+  `evals/receipts/root2039g9a_jsc_and_native_atomics.json`.
 
 - The complete g8 native-seed selfhost checkpoint passes on the pinned
   Bend 2.0.39/Bun 1.4.3 sources under the original 8 GiB / 600 s gates.

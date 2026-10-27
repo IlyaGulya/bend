@@ -1,0 +1,502 @@
+{
+  "schemaVersion": 1,
+  "status": "G9A_FULL_CONSUMERS_PASS_BOOTSTRAP_REMAINS_REJECTED",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "sourceCheckpoint": "99f2400f",
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "runtime": {
+    "bun": "1.4.3",
+    "revision": "c6da4a4d3010e5553438c60f6bd76d981976867c"
+  },
+  "commands": [
+    {
+      "label": "matrix-c",
+      "command": [
+        "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/.tools/bun",
+        "evals/c_target_fixtures_run.ts",
+        "--driver=/tmp/bend-remote2039g9a-driver",
+        "--node=/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/.tools/node",
+        "--target=c",
+        "--logs=/tmp/bend-remote2039g9a-admission-ZhpKMi/matrix-c",
+        "--keep"
+      ],
+      "stdout": "/tmp/bend-remote2039g9a-admission-ZhpKMi/matrix-c.stdout",
+      "stderr": "/tmp/bend-remote2039g9a-admission-ZhpKMi/matrix-c.stderr",
+      "started": 1793118170301,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 510132
+    },
+    {
+      "label": "matrix-js",
+      "command": [
+        "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/.tools/bun",
+        "evals/c_target_fixtures_run.ts",
+        "--driver=/tmp/bend-remote2039g9a-driver",
+        "--node=/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/.tools/node",
+        "--target=js",
+        "--logs=/tmp/bend-remote2039g9a-admission-ZhpKMi/matrix-js",
+        "--keep"
+      ],
+      "stdout": "/tmp/bend-remote2039g9a-admission-ZhpKMi/matrix-js.stdout",
+      "stderr": "/tmp/bend-remote2039g9a-admission-ZhpKMi/matrix-js.stderr",
+      "started": 1793118680434,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 163658
+    },
+    {
+      "label": "native-consumers",
+      "command": [
+        "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/.tools/bun",
+        "/tmp/bend-remote2039g9a-native-foreign-suite.mjs"
+      ],
+      "stdout": "/tmp/bend-remote2039g9a-admission-ZhpKMi/native-consumers.stdout",
+      "stderr": "/tmp/bend-remote2039g9a-admission-ZhpKMi/native-consumers.stderr",
+      "started": 1793118844093,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 55778
+    },
+    {
+      "label": "nested-host-consumers",
+      "command": [
+        "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/.tools/bun",
+        "/tmp/bend-remote2039g9a-nested-host.mjs"
+      ],
+      "stdout": "/tmp/bend-remote2039g9a-admission-ZhpKMi/nested-host-consumers.stdout",
+      "stderr": "/tmp/bend-remote2039g9a-admission-ZhpKMi/nested-host-consumers.stderr",
+      "started": 1793118899872,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 35713
+    }
+  ],
+  "matrices": [
+    {
+      "target": "c",
+      "summary": {
+        "status": "PASS",
+        "mode": "acceptance-matrix",
+        "target": "c",
+        "fixtures": 36,
+        "logDir": "/tmp/bend-remote2039g9a-admission-ZhpKMi/matrix-c",
+        "nodeVersion": "v23.11.0",
+        "v8": "12.9.202.28-node.14|--max-old-space-size=3072,-e,process.stdout.write(process.versions.v8 + \"|\" + process.execArgv.join(\",\"))"
+      },
+      "rows": [
+        {
+          "fixture": "c_target_wide_record.bend",
+          "target": "c",
+          "observed": "133"
+        },
+        {
+          "fixture": "c_target_nested_adt.bend",
+          "target": "c",
+          "observed": "15"
+        },
+        {
+          "fixture": "c_target_array_u32.bend",
+          "target": "c",
+          "observed": "15"
+        },
+        {
+          "fixture": "c_target_array_wide.bend",
+          "target": "c",
+          "observed": "16"
+        },
+        {
+          "fixture": "c_target_multiarm.bend",
+          "target": "c",
+          "observed": "13"
+        },
+        {
+          "fixture": "c_target_char_head.bend",
+          "target": "c",
+          "observed": "955\n955"
+        },
+        {
+          "fixture": "c_target_char_to_list.bend",
+          "target": "c",
+          "observed": "955\n120"
+        },
+        {
+          "fixture": "c_target_string_from_list.bend",
+          "target": "c",
+          "observed": "λx\n955\n955\n120"
+        },
+        {
+          "fixture": "c_target_array_nat.bend",
+          "target": "c",
+          "observed": "7"
+        },
+        {
+          "fixture": "c_target_array_nested.bend",
+          "target": "c",
+          "observed": "12"
+        },
+        {
+          "fixture": "c_target_drop_fields.bend",
+          "target": "c",
+          "observed": "5"
+        },
+        {
+          "fixture": "c_target_utf8_literal.bend",
+          "target": "c",
+          "observed": "λx"
+        },
+        {
+          "fixture": "c_target_utf8_astral.bend",
+          "target": "c",
+          "observed": "𝄞"
+        },
+        {
+          "fixture": "c_target_trigraph_literal.bend",
+          "target": "c",
+          "observed": "??=??/??'??(??)??!??<??>??-"
+        },
+        {
+          "fixture": "phys_storage_paths.bend",
+          "target": "c",
+          "observed": "2655042671\n3,9"
+        },
+        {
+          "fixture": "generic_ctor_domains.bend",
+          "target": "c",
+          "observed": "15\n21"
+        },
+        {
+          "fixture": "c_target_bool_prims.bend",
+          "target": "c",
+          "observed": "1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n1\n0\n1\n1\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n0\n1\n0\n0\n1\n1\n0\n1\n1\n0\n1\n0\n1\n0"
+        },
+        {
+          "fixture": "c_target_clo_field.bend",
+          "target": "c",
+          "observed": "7"
+        },
+        {
+          "fixture": "c_target_repeat_data.bend",
+          "target": "c",
+          "observed": "8"
+        },
+        {
+          "fixture": "c_target_disjoint_type_cells.bend",
+          "target": "c",
+          "observed": "5"
+        },
+        {
+          "fixture": "c_target_repeat_capture.bend",
+          "target": "c",
+          "observed": "10"
+        },
+        {
+          "fixture": "c_target_alias_paths.bend",
+          "target": "c",
+          "observed": "8"
+        },
+        {
+          "fixture": "c_target_branch_arms.bend",
+          "target": "c",
+          "observed": "hi"
+        },
+        {
+          "fixture": "c_target_region_leave_repeat.bend",
+          "target": "c",
+          "observed": "7\n6"
+        },
+        {
+          "fixture": "c_target_bool_fields.bend",
+          "target": "c",
+          "observed": "True\nFalse\n1"
+        },
+        {
+          "fixture": "c_target_region_tail_capture.bend",
+          "target": "c",
+          "observed": "11\n12"
+        },
+        {
+          "fixture": "c_target_bool_xor.bend",
+          "target": "c",
+          "observed": "False\nTrue\nTrue\nFalse"
+        },
+        {
+          "fixture": "c_target_show_data.bend",
+          "target": "c",
+          "observed": "[1, 2]"
+        },
+        {
+          "fixture": "c_target_user_ctor_show.bend",
+          "target": "c",
+          "observed": "c_target_q_ctors.T.Tuple{c_target_q_ctors.T.Con{1, c_target_q_ctors.T.Nil{}}, 2}"
+        },
+        {
+          "fixture": "c_target_wide_node.bend",
+          "target": "c",
+          "observed": "13\n11\n0"
+        },
+        {
+          "fixture": "args.bend",
+          "target": "c",
+          "observed": "True 0"
+        },
+        {
+          "fixture": "args_bytes.bend",
+          "target": "c",
+          "observed": "True 0"
+        },
+        {
+          "fixture": "repro_js_non_tail_reclaim.bend",
+          "target": "c",
+          "observed": "24000011"
+        },
+        {
+          "fixture": "array_fork.bend",
+          "target": "c",
+          "observed": "136\n100\n100\n96\n99\n156\n42\n42\n7\n8\n12\n845495236"
+        },
+        {
+          "fixture": "array_atomic_fadd.bend",
+          "target": "c",
+          "observed": "68\n2448.25"
+        },
+        {
+          "fixture": "array_atomic_edges.bend",
+          "target": "c",
+          "observed": "4294967295\n2\n42\n42\n42\n7\n2147483648\n0\n1266679808\n1266679808"
+        }
+      ],
+      "stdoutSha256": "a3fcc698d93f5bef3b08e747b64bbfc02bc6c366612fa10efdad7290eac00b06"
+    },
+    {
+      "target": "js",
+      "summary": {
+        "status": "PASS",
+        "mode": "acceptance-matrix",
+        "target": "js",
+        "fixtures": 36,
+        "logDir": "/tmp/bend-remote2039g9a-admission-ZhpKMi/matrix-js",
+        "nodeVersion": "v23.11.0",
+        "v8": "12.9.202.28-node.14|--max-old-space-size=3072,-e,process.stdout.write(process.versions.v8 + \"|\" + process.execArgv.join(\",\"))"
+      },
+      "rows": [
+        {
+          "fixture": "c_target_wide_record.bend",
+          "target": "js",
+          "observed": "133"
+        },
+        {
+          "fixture": "c_target_nested_adt.bend",
+          "target": "js",
+          "observed": "15"
+        },
+        {
+          "fixture": "c_target_array_u32.bend",
+          "target": "js",
+          "observed": "15"
+        },
+        {
+          "fixture": "c_target_array_wide.bend",
+          "target": "js",
+          "observed": "16"
+        },
+        {
+          "fixture": "c_target_multiarm.bend",
+          "target": "js",
+          "observed": "13"
+        },
+        {
+          "fixture": "c_target_char_head.bend",
+          "target": "js",
+          "observed": "955\n955"
+        },
+        {
+          "fixture": "c_target_char_to_list.bend",
+          "target": "js",
+          "observed": "955\n120"
+        },
+        {
+          "fixture": "c_target_string_from_list.bend",
+          "target": "js",
+          "observed": "λx\n955\n955\n120"
+        },
+        {
+          "fixture": "c_target_array_nat.bend",
+          "target": "js",
+          "observed": "7"
+        },
+        {
+          "fixture": "c_target_array_nested.bend",
+          "target": "js",
+          "observed": "12"
+        },
+        {
+          "fixture": "c_target_drop_fields.bend",
+          "target": "js",
+          "observed": "5"
+        },
+        {
+          "fixture": "c_target_utf8_literal.bend",
+          "target": "js",
+          "observed": "λx"
+        },
+        {
+          "fixture": "c_target_utf8_astral.bend",
+          "target": "js",
+          "observed": "𝄞"
+        },
+        {
+          "fixture": "c_target_trigraph_literal.bend",
+          "target": "js",
+          "observed": "??=??/??'??(??)??!??<??>??-"
+        },
+        {
+          "fixture": "phys_storage_paths.bend",
+          "target": "js",
+          "observed": "2655042671\n3,9"
+        },
+        {
+          "fixture": "generic_ctor_domains.bend",
+          "target": "js",
+          "observed": "15\n21"
+        },
+        {
+          "fixture": "c_target_bool_prims.bend",
+          "target": "js",
+          "observed": "1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n1\n0\n1\n1\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n0\n1\n0\n0\n1\n1\n0\n1\n1\n0\n1\n0\n1\n0"
+        },
+        {
+          "fixture": "c_target_clo_field.bend",
+          "target": "js",
+          "observed": "7"
+        },
+        {
+          "fixture": "c_target_repeat_data.bend",
+          "target": "js",
+          "observed": "8"
+        },
+        {
+          "fixture": "c_target_disjoint_type_cells.bend",
+          "target": "js",
+          "observed": "5"
+        },
+        {
+          "fixture": "c_target_repeat_capture.bend",
+          "target": "js",
+          "observed": "10"
+        },
+        {
+          "fixture": "c_target_alias_paths.bend",
+          "target": "js",
+          "observed": "8"
+        },
+        {
+          "fixture": "c_target_branch_arms.bend",
+          "target": "js",
+          "observed": "hi"
+        },
+        {
+          "fixture": "c_target_region_leave_repeat.bend",
+          "target": "js",
+          "observed": "7\n6"
+        },
+        {
+          "fixture": "c_target_bool_fields.bend",
+          "target": "js",
+          "observed": "True\nFalse\n1"
+        },
+        {
+          "fixture": "c_target_region_tail_capture.bend",
+          "target": "js",
+          "observed": "11\n12"
+        },
+        {
+          "fixture": "c_target_bool_xor.bend",
+          "target": "js",
+          "observed": "False\nTrue\nTrue\nFalse"
+        },
+        {
+          "fixture": "c_target_show_data.bend",
+          "target": "js",
+          "observed": "[1, 2]"
+        },
+        {
+          "fixture": "c_target_user_ctor_show.bend",
+          "target": "js",
+          "observed": "c_target_q_ctors.T.Tuple{c_target_q_ctors.T.Con{1, c_target_q_ctors.T.Nil{}}, 2}"
+        },
+        {
+          "fixture": "c_target_wide_node.bend",
+          "target": "js",
+          "observed": "13\n11\n0"
+        },
+        {
+          "fixture": "args.bend",
+          "target": "js",
+          "observed": "True 0"
+        },
+        {
+          "fixture": "args_bytes.bend",
+          "target": "js",
+          "observed": "True 0"
+        },
+        {
+          "fixture": "repro_js_non_tail_reclaim.bend",
+          "target": "js",
+          "observed": "24000011"
+        },
+        {
+          "fixture": "array_fork.bend",
+          "target": "js",
+          "observed": "136\n100\n100\n96\n99\n156\n42\n42\n7\n8\n12\n845495236"
+        },
+        {
+          "fixture": "array_atomic_fadd.bend",
+          "target": "js",
+          "observed": "68\n2448.25"
+        },
+        {
+          "fixture": "array_atomic_edges.bend",
+          "target": "js",
+          "observed": "4294967295\n2\n42\n42\n42\n7\n2147483648\n0\n1266679808\n1266679808"
+        }
+      ],
+      "stdoutSha256": "c3c6539990fd5a2f4eae569c1847b38cbd9a8eba0efb0419b700f847780473c8"
+    }
+  ],
+  "nativeConsumerResult": "{\"source\":\"tests/run/c_backend_link.bend\",\"target\":\"c\",\"passed\":true,\"observed\":\"linked-comment-kept\\nliteral-kept\\nfid-linked\\nsplice-kept\\nsplice-kept\\nmissing\"}\n{\"source\":\"tests/run/c_backend_link.bend\",\"target\":\"js\",\"passed\":true,\"observed\":\"linked-comment-kept\\nliteral-kept\\nfid-linked\\nsplice-kept\\nsplice-kept\\nmissing\"}\n{\"source\":\"tests/run/family_field_hot.bend\",\"target\":\"c\",\"passed\":true,\"observed\":\"5\"}\n{\"source\":\"tests/run/family_field_hot.bend\",\"target\":\"js\",\"passed\":true,\"observed\":\"5\"}\n{\"source\":\"tests/run/list_rebox_sum.bend\",\"target\":\"c\",\"passed\":true,\"observed\":\"7\\n3\\nbounded\"}\n{\"source\":\"tests/run/list_rebox_sum.bend\",\"target\":\"js\",\"passed\":true,\"observed\":\"7\\n3\\nbounded\"}\n{\"status\":\"NATIVE_FOREIGN_AND_LIBRARY_SMOKE_PASS\",\"path\":\"/tmp/bend-remote2039g9a-native-foreign-MZS6Gr/receipt.json\",\"rows\":7}",
+  "nestedHostResult": "{\"source\":\"tests/io/nat_host_export.bend\",\"passed\":true,\"observed\":\"0\"}\n{\"source\":\"tests/io/nat_alias_export.bend\",\"passed\":true,\"observed\":\"0\"}\n{\"source\":\"tests/io/shadowed_nat_export.bend\",\"passed\":true,\"observed\":\"0\"}\n{\"source\":\"tests/io/generic_export_identity.bend\",\"passed\":true,\"observed\":\"0\"}\n{\"source\":\"tests/io/text_host_export.bend\",\"passed\":true,\"observed\":\"0\"}\n{\"status\":\"ACTUAL_ALIAS_AND_HOST_EXPORT_CONSUMERS_PASS\",\"receipt\":\"/tmp/bend-remote2039g9a-host-alias-H3OKeY/receipt.json\"}",
+  "bootstrapDisposition": "g9a remains rejected at stage-two-check deadline; no later acceptance is implied"
+}

@@ -1,0 +1,684 @@
+{
+  "schemaVersion": 1,
+  "status": "G9A_BOUNDED_JSC_PROFILE_AND_NATIVE_ATOMIC_CONSUMERS_COMPLETE",
+  "diagnosticOnly": true,
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "profile": {
+    "schemaVersion": 1,
+    "status": "PROBE_STOPPED",
+    "diagnosticOnly": true,
+    "acceptanceEvidence": false,
+    "directory": "/tmp/bend-g9-bun-check-cpu-Nhkd2y",
+    "source": "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/checkpoints/.bootstrap_compiler_root_remote2039g9a.bend",
+    "image": "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/checkpoints/selfhost-remote2039g9a-bootstrap.json.cases/stage-one.js",
+    "imageSha256": "893a6be7ee9cd7eebd40deb1e92fe5b9bfffe9dc38b70a97d8636ca07b7d4739",
+    "inputs": {
+      "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/checkpoints/.bootstrap_compiler_root_remote2039g9a.bend": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+      "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/bend2/base.bend": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+      "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+      "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/bend2/selfhost/lexer.bend": "a81265d4ab248c5ea74bf52987e1163773866a01b264ff1a98895d91139d6f53",
+      "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/bend2/selfhost/core.bend": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+      "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/bend2/selfhost/loaded_module.bend": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+      "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/bend2/selfhost/backend_ir.bend": "162a554cec1c9e1b5edab69b5cfae730c70886548f4f51603a7537845ab5ec48",
+      "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/bend2/selfhost/checked_frontend.bend": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+      "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/bend2/selfhost/checker_arena.bend": "2a26c3d8ce66412591030fa2fd6df9f9e53c0fececd9d9ae702def2f475f1752",
+      "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/bend2/selfhost/scope_lookup.bend": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
+      "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/bend2/selfhost/checker_ir.bend": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+      "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/bend2/selfhost/index_lookup.bend": "563c9b152699b490cf68b264e6c4dea4a4e6770dfcf527cf6c81911cb5ea1b78",
+      "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/checkpoints/template_steps_v1.bend": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4",
+      "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/bend2/selfhost/sha256.bend": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+      "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+      "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/checkpoints/checker_core_steps_v1.bend": "33d7b74d27e82f5c2c8608420c244f4a46f78f3d31e2b6c1a783261db3c9e30f",
+      "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/checkpoints/emitter_steps_v1.bend": "8ca4cfae12c7817709e410b660744cc0fbc60bd9dbe82a0df6e24280f4a2049c",
+      "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/bend2/selfhost/c_backend_sharing.bend": "78992d00aad3a458dd6b9ea424edf0de61c95b54487f92cd53283e705488c35f"
+    },
+    "runtime": {
+      "execPath": "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/.tools/bun",
+      "versions": {
+        "node": "26.3.0",
+        "bun": "1.4.3",
+        "boringssl": "41bf9b59c2ebf277a7aa427e1ecad5cc80dd4d4f",
+        "openssl": "1.1.0",
+        "llhttp": "9.4.2",
+        "libarchive": "27cbc7827172698143e440801fc0ba39ccb4f1f5",
+        "mimalloc": "92ef6587c57b262f6e6abf513f7776a2f8d12aeb",
+        "picohttpparser": "f4d94b48b31e0abae029ebeafcfd9ca0680ede58",
+        "uwebsockets": "c6da4a4d3010e5553438c60f6bd76d981976867c",
+        "webkit": "0c06faadf65bf8e8c8ad3a5a8aca83e1e9ed653f",
+        "zig": "04e7f6ac1e009525bc00934f20199c68f04e0a24",
+        "zlib": "12731092979c6d07f42da27da673a9f6c7b13586",
+        "tinycc": "05f0fafaa3be31e31d7b4b5c17dc60f62c991171",
+        "lolhtml": "725ce499aa9b71e38b7a2d0a9fbb6d7294a4079e",
+        "ares": "c7a3138dcfe3bb0eaaf10c0c24c36dc66dc790ab",
+        "libdeflate": "92e6a0db9fa848d742f9eb286c92afc60f2c3dda",
+        "usockets": "c6da4a4d3010e5553438c60f6bd76d981976867c",
+        "lshpack": "cf0f70dd10b352194c97448eb5d00b4aa484f531",
+        "zstd": "f8745da6ff1ad1e7bab384bd1f9d742439278e99",
+        "v8": "14.6.202.34-node.20",
+        "uv": "1.48.0",
+        "napi": "10",
+        "icu": "78.1",
+        "unicode": "17.0",
+        "sqlite": "3.51.0",
+        "typescript": "7.0.2",
+        "modules": "147"
+      }
+    },
+    "cutoffWallMs": 30000,
+    "stackPolicy": "256-MiB worker; same as bootstrap",
+    "phases": [
+      {
+        "phase": "parse",
+        "wallMs": 39948.6155,
+        "modules": 18
+      },
+      {
+        "phase": "expand",
+        "wallMs": 24147.62625
+      },
+      {
+        "phase": "check",
+        "wallMs": 30545.078833000007,
+        "cpuUs": {
+          "user": 31966068,
+          "system": 2160024
+        },
+        "steps": 245760
+      }
+    ],
+    "current": {
+      "phase": "check"
+    },
+    "engine": "Bun/JSC",
+    "flags": {
+      "smol": true,
+      "forceRAMSize": "4294967296"
+    },
+    "samples": [
+      {
+        "ms": 13.51708299999882,
+        "steps": 0,
+        "heapSize": 634221109,
+        "memory": {
+          "rss": 1389430440,
+          "heapTotal": 1138871296,
+          "heapUsed": 633119413,
+          "external": 43665925,
+          "arrayBuffers": 0
+        },
+        "cpuUs": {
+          "user": 17376,
+          "system": 28014
+        }
+      },
+      {
+        "ms": 1741.0236660000082,
+        "steps": 16384,
+        "heapSize": 659246251,
+        "memory": {
+          "rss": 1413826240,
+          "heapTotal": 1138887680,
+          "heapUsed": 658144555,
+          "external": 49616107,
+          "arrayBuffers": 0
+        },
+        "cpuUs": {
+          "user": 2427648,
+          "system": 159699
+        }
+      },
+      {
+        "ms": 3848.473165999996,
+        "steps": 32768,
+        "heapSize": 680685095,
+        "memory": {
+          "rss": 1418118848,
+          "heapTotal": 1138887680,
+          "heapUsed": 679583399,
+          "external": 50021127,
+          "arrayBuffers": 0
+        },
+        "cpuUs": {
+          "user": 4392838,
+          "system": 256890
+        }
+      },
+      {
+        "ms": 6196.126833000002,
+        "steps": 49152,
+        "heapSize": 709974251,
+        "memory": {
+          "rss": 1461798616,
+          "heapTotal": 1150716928,
+          "heapUsed": 708872555,
+          "external": 50151627,
+          "arrayBuffers": 0
+        },
+        "cpuUs": {
+          "user": 6469271,
+          "system": 400139
+        }
+      },
+      {
+        "ms": 7987.3141659999965,
+        "steps": 65536,
+        "heapSize": 729140707,
+        "memory": {
+          "rss": 1471629040,
+          "heapTotal": 1150716928,
+          "heapUsed": 728039011,
+          "external": 50232867,
+          "arrayBuffers": 0
+        },
+        "cpuUs": {
+          "user": 8128835,
+          "system": 487314
+        }
+      },
+      {
+        "ms": 9981.585541000008,
+        "steps": 81920,
+        "heapSize": 740795175,
+        "memory": {
+          "rss": 1478231792,
+          "heapTotal": 1153059840,
+          "heapUsed": 739693479,
+          "external": 50329479,
+          "arrayBuffers": 0
+        },
+        "cpuUs": {
+          "user": 9924794,
+          "system": 592105
+        }
+      },
+      {
+        "ms": 12166.755124999996,
+        "steps": 98304,
+        "heapSize": 499983719,
+        "memory": {
+          "rss": 1573340984,
+          "heapTotal": 1222020096,
+          "heapUsed": 499983719,
+          "external": 46951335,
+          "arrayBuffers": 0
+        },
+        "cpuUs": {
+          "user": 12577534,
+          "system": 770322
+        }
+      },
+      {
+        "ms": 13165.175916000007,
+        "steps": 114688,
+        "heapSize": 507803471,
+        "memory": {
+          "rss": 1581041464,
+          "heapTotal": 1222020096,
+          "heapUsed": 507803471,
+          "external": 46969887,
+          "arrayBuffers": 0
+        },
+        "cpuUs": {
+          "user": 13419009,
+          "system": 835995
+        }
+      },
+      {
+        "ms": 15002.052790999995,
+        "steps": 131072,
+        "heapSize": 531011471,
+        "memory": {
+          "rss": 1594738512,
+          "heapTotal": 1222020096,
+          "heapUsed": 531011471,
+          "external": 46981599,
+          "arrayBuffers": 0
+        },
+        "cpuUs": {
+          "user": 15059080,
+          "system": 940845
+        }
+      },
+      {
+        "ms": 18106.273708000008,
+        "steps": 147456,
+        "heapSize": 592605522,
+        "memory": {
+          "rss": 1684932504,
+          "heapTotal": 1222052864,
+          "heapUsed": 592605522,
+          "external": 88701314,
+          "arrayBuffers": 0
+        },
+        "cpuUs": {
+          "user": 19302898,
+          "system": 1172086
+        }
+      },
+      {
+        "ms": 20091.148499999996,
+        "steps": 163840,
+        "heapSize": 598570118,
+        "memory": {
+          "rss": 1700399024,
+          "heapTotal": 1222052864,
+          "heapUsed": 598570118,
+          "external": 92686246,
+          "arrayBuffers": 0
+        },
+        "cpuUs": {
+          "user": 21930590,
+          "system": 1273560
+        }
+      },
+      {
+        "ms": 21879.979625000007,
+        "steps": 180224,
+        "heapSize": 608835640,
+        "memory": {
+          "rss": 1724745648,
+          "heapTotal": 1222052864,
+          "heapUsed": 608835640,
+          "external": 96531160,
+          "arrayBuffers": 0
+        },
+        "cpuUs": {
+          "user": 24050623,
+          "system": 1383529
+        }
+      },
+      {
+        "ms": 23582.899290999994,
+        "steps": 196608,
+        "heapSize": 613055204,
+        "memory": {
+          "rss": 1742227376,
+          "heapTotal": 1222052864,
+          "heapUsed": 613055204,
+          "external": 98242548,
+          "arrayBuffers": 0
+        },
+        "cpuUs": {
+          "user": 25970169,
+          "system": 1476288
+        }
+      },
+      {
+        "ms": 26085.724208,
+        "steps": 212992,
+        "heapSize": 620705074,
+        "memory": {
+          "rss": 1754728392,
+          "heapTotal": 1222052864,
+          "heapUsed": 620705074,
+          "external": 99845906,
+          "arrayBuffers": 0
+        },
+        "cpuUs": {
+          "user": 28264188,
+          "system": 1677769
+        }
+      },
+      {
+        "ms": 28114.391124999995,
+        "steps": 229376,
+        "heapSize": 624257224,
+        "memory": {
+          "rss": 1759119304,
+          "heapTotal": 1222052864,
+          "heapUsed": 624257224,
+          "external": 100851384,
+          "arrayBuffers": 0
+        },
+        "cpuUs": {
+          "user": 29989471,
+          "system": 1845912
+        }
+      },
+      {
+        "ms": 30156.319000000003,
+        "steps": 245760,
+        "heapSize": 630713294,
+        "memory": {
+          "rss": 1772341192,
+          "heapTotal": 1226411008,
+          "heapUsed": 630713294,
+          "external": 102265182,
+          "arrayBuffers": 0
+        },
+        "cpuUs": {
+          "user": 31740001,
+          "system": 2099764
+        }
+      }
+    ],
+    "last": {
+      "steps": 245760,
+      "runTag": "CheckerRunState",
+      "progressTag": "CheckerFinished"
+    },
+    "profilePath": "/tmp/bend-g9-bun-check-cpu-Nhkd2y/check.jsc-profile.json",
+    "functions": "\n\nSampling rate: 1000.000000 microseconds. Total samples: 16338\nTop functions as <numSamples  'functionName#hash:sourceID'>\n  3398    'run_base#ESRpDa:2'\n  1241    '$b395#Bjj7fj:2'\n   329    '$b6176#AbKcnO:2'\n   258    '$b384#D1m4zw:2'\n   242    '$k118965#BvjJfO:2'\n   200    'heapSize#<nil>:4294967295'\n   199    '$b383#DdmmsJ:2'\n   174    '$k118952#AgoQMH:2'\n   162    '$k118976#DozPCU:2'\n   159    '$b385#DJcbUf:2'\n   153    'char_len#CGpjiT:2'\n   145    '$b5602#DtHhk7:2'\n",
+    "bytecodes": "\n\nSampling rate: 1000.000000 microseconds. Total samples: 16339\n\nTier breakdown:\n-----------------------------------\nLLInt:                    74  (0.452904%)\nBaseline:               1369  (8.378726%)\nDFG:                    2077  (12.711916%)\nFTL:                   12372  (75.720668%)\njs builtin:                0  (0.000000%)\nIPInt:                     0  (0.000000%)\nBBQ:                       0  (0.000000%)\nOMG:                       0  (0.000000%)\nWasm:                      0  (0.000000%)\nHost:                      0  (0.000000%)\nRegExp:                    0  (0.000000%)\nC/C++:                     0  (0.000000%)\nUnknown Frame:             1  (0.006120%)\nUnknown Executable:      446  (2.729665%)\n\n\nHottest bytecodes as <numSamples   'functionName#hash:JITType:bytecodeIndex'>\n  1801    'run_base#ESRpDa:FTL:bc#1553'\n  1001    '$b395#Bjj7fj:FTL:bc#0'\n   493    'run_base#ESRpDa:FTL:bc#793'\n   392    'run_base#ESRpDa:FTL:bc#629'\n   385    'run_base#ESRpDa:FTL:bc#486'\n   321    '$b6176#AbKcnO:FTL:<nil>'\n   311    'run_base#ESRpDa:FTL:bc#824'\n   200    'heapSize#<nil>:None:<nil>'\n   133    '$k3432#AAzNT9:FTL:<nil>'\n   132    '$b6177#Bkbdmy:FTL:bc#0'\n   123    'tuple#ArYM18:FTL:bc#1'\n   115    '$b6174#ELi5Dv:FTL:<nil>'\n   113    '$b385#DJcbUf:FTL:<nil>'\n   102    '$k3373#Am6zHF:FTL:<nil>'\n   100    '$b5602#DtHhk7:FTL:bc#0'\n    98    '$p_string_tail#CgMOks:FTL:bc#36'\n    89    'char_len#CGpjiT:FTL:bc#54'\n    84    '$b395#Bjj7fj:FTL:bc#2428'\n    81    '$b381#ETL5n2:FTL:bc#0'\n    79    'tail_dispatch#B5rWRw:FTL:<nil>'\n    70    '$b384#D1m4zw:FTL:bc#131'\n    70    '$k118952#AgoQMH:FTL:<nil>'\n    69    '$b384#D1m4zw:FTL:bc#110'\n    68    '$b384#D1m4zw:FTL:bc#88'\n    64    '$k118965#BvjJfO:FTL:bc#129'\n    63    'char_len#CGpjiT:FTL:bc#27'\n    62    '$k118965#BvjJfO:FTL:<nil>'\n    62    '$b6175#ETMdlO:FTL:bc#0'\n    62    '$b6170#Cm7GIC:FTL:bc#41'\n    59    '$b383#DdmmsJ:FTL:bc#88'\n    56    '$b634#AQ7HCS:FTL:<nil>'\n    56    '$k118976#DozPCU:FTL:<nil>'\n    56    '$b396#EXUiRR:FTL:bc#0'\n    55    '$k118952#AgoQMH:FTL:bc#92'\n    54    '$b383#DdmmsJ:FTL:bc#113'\n    52    '$k118965#BvjJfO:FTL:bc#107'\n    52    '$b479#A641JO:FTL:bc#0'\n    51    '$b384#D1m4zw:FTL:bc#156'\n    50    '$b395#Bjj7fj:FTL:bc#1027'\n    49    '$k118976#DozPCU:FTL:bc#129'\n",
+    "sampling": {
+      "interval": 0.001,
+      "samples": 16340,
+      "sources": [
+        {
+          "sourceID": 3,
+          "url": "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/evals/checker_core_step_runtime.mjs"
+        },
+        {
+          "sourceID": 2,
+          "url": "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/checkpoints/selfhost-remote2039g9a-bootstrap.json.cases/stage-one.js"
+        },
+        {
+          "sourceID": 4,
+          "url": "/private/tmp/bend-g9-bun-check-cpu.mjs"
+        }
+      ],
+      "rawSha256": "1537afc2362752d8d3c6e1b656719474e16815e91d82848be8949fa8032e3c7d"
+    },
+    "limits": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 240000
+    },
+    "interpretation": "First 30 s of real Bun/JSC checker only, not a benchmark or complete-check cost. 75.72% sampled FTL; no evidence of a globally disabled JIT. Map.get.go is a hot read path (1241 self samples / 16338; 1380 inclusive traces) alongside run_base (3398 self samples). Map lookup callers are hidden behind the trampoline; no exclusive source CPU, allocation total, retained/live memory, or cause for the whole g8/g9 difference is claimed."
+  },
+  "nativeAtomic": {
+    "status": "ACTUAL_NATIVE_ATOMIC_CONSUMERS_PASS",
+    "binary": "/tmp/bend-remote2039g9a-native",
+    "binarySha256": "76c246aa114d3768db523d7d02fb1a0b55ebad5edcc5d7c4fcc6692ef4e1be71",
+    "rows": [
+      {
+        "source": "tests/run/array_fork.bend",
+        "target": "js",
+        "sourceSha256": "8bed7ef93fcd6eeb964ca7ee3c87b9fbe3e2e576716ad647e4e6de265962352f",
+        "outputSha256": "07b4b02bdd408a8a1ee69369a13363ca13fd95b36a4fa95e05f36ec54d236aee",
+        "expected": "136\n100\n100\n96\n99\n156\n42\n42\n7\n8\n12\n845495236",
+        "passed": true,
+        "command": [
+          "/tmp/bend-remote2039g9a-native",
+          "+RTS",
+          "--threads",
+          "1",
+          "--gpu",
+          "off",
+          "--RTS",
+          "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/tests/run/array_fork.bend",
+          "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/bend2/base.bend",
+          "/tmp/bend-remote2039g9a-native-atomic-72ARPG/array_fork.bend-js.tsv",
+          "/tmp/bend-remote2039g9a-native-atomic-72ARPG/array_fork.bend-js.tsv.exports",
+          "compile-module",
+          "/tmp/bend-remote2039g9a-native-atomic-72ARPG/array_fork.bend-js.tsv.js"
+        ],
+        "consumer": {
+          "command": [
+            "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/.tools/node",
+            "/tmp/bend-remote2039g9a-native-atomic-72ARPG/array_fork.bend-js.tsv.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "stdout": "136\n100\n100\n96\n99\n156\n42\n42\n7\n8\n12\n845495236\n",
+          "stderr": {
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "logExcluded": true
+          }
+        }
+      },
+      {
+        "source": "tests/run/array_fork.bend",
+        "target": "c",
+        "sourceSha256": "8bed7ef93fcd6eeb964ca7ee3c87b9fbe3e2e576716ad647e4e6de265962352f",
+        "outputSha256": "0d8b1412a9fb761ed443c4b5aaeed734aeb47c82583093d500c4f32fede2f3ac",
+        "expected": "136\n100\n100\n96\n99\n156\n42\n42\n7\n8\n12\n845495236",
+        "passed": true,
+        "command": [
+          "/tmp/bend-remote2039g9a-native",
+          "+RTS",
+          "--threads",
+          "1",
+          "--gpu",
+          "off",
+          "--RTS",
+          "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/tests/run/array_fork.bend",
+          "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/bend2/base.bend",
+          "/tmp/bend-remote2039g9a-native-atomic-72ARPG/array_fork.bend-c.tsv",
+          "/tmp/bend-remote2039g9a-native-atomic-72ARPG/array_fork.bend-c.tsv.exports",
+          "compile-c-module",
+          "/tmp/bend-remote2039g9a-native-atomic-72ARPG/array_fork.bend-c.tsv.c",
+          "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/bend2/selfhost/c_runtime.c"
+        ],
+        "consumer": {
+          "command": [
+            "/tmp/bend-remote2039g9a-native-atomic-72ARPG/array_fork.bend-c.tsv.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "stdout": "136\n100\n100\n96\n99\n156\n42\n42\n7\n8\n12\n845495236\n",
+          "stderr": {
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "logExcluded": true
+          }
+        },
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/tmp/bend-remote2039g9a-native-atomic-72ARPG/array_fork.bend-c.tsv.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-remote2039g9a-native-atomic-72ARPG/array_fork.bend-c.tsv.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "stdout": "",
+          "stderr": {
+            "sha256": "8a7580c414ca77faadfe13b33f6c792ab268129e55717e3f6e2abfe5a8a9cd49",
+            "bytes": 8381,
+            "logExcluded": true
+          }
+        }
+      },
+      {
+        "source": "tests/run/array_atomic_fadd.bend",
+        "target": "js",
+        "sourceSha256": "077641b1cb37f81803ee48192f13c0c89b2592bef42eb502fe0bb62614957d82",
+        "outputSha256": "302e70684d192462b3feb93b2f458e16583141faa4aa4d234cb36194db4a3fb9",
+        "expected": "68\n2448.25",
+        "passed": true,
+        "command": [
+          "/tmp/bend-remote2039g9a-native",
+          "+RTS",
+          "--threads",
+          "1",
+          "--gpu",
+          "off",
+          "--RTS",
+          "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/tests/run/array_atomic_fadd.bend",
+          "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/bend2/base.bend",
+          "/tmp/bend-remote2039g9a-native-atomic-72ARPG/array_atomic_fadd.bend-js.tsv",
+          "/tmp/bend-remote2039g9a-native-atomic-72ARPG/array_atomic_fadd.bend-js.tsv.exports",
+          "compile-module",
+          "/tmp/bend-remote2039g9a-native-atomic-72ARPG/array_atomic_fadd.bend-js.tsv.js"
+        ],
+        "consumer": {
+          "command": [
+            "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/.tools/node",
+            "/tmp/bend-remote2039g9a-native-atomic-72ARPG/array_atomic_fadd.bend-js.tsv.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "stdout": "68\n2448.25\n",
+          "stderr": {
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "logExcluded": true
+          }
+        }
+      },
+      {
+        "source": "tests/run/array_atomic_fadd.bend",
+        "target": "c",
+        "sourceSha256": "077641b1cb37f81803ee48192f13c0c89b2592bef42eb502fe0bb62614957d82",
+        "outputSha256": "b142e084dbe32aaa2d39bcdd2ea6bc2866210d0c3e2b19c68b89f6621287c30b",
+        "expected": "68\n2448.25",
+        "passed": true,
+        "command": [
+          "/tmp/bend-remote2039g9a-native",
+          "+RTS",
+          "--threads",
+          "1",
+          "--gpu",
+          "off",
+          "--RTS",
+          "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/tests/run/array_atomic_fadd.bend",
+          "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/bend2/base.bend",
+          "/tmp/bend-remote2039g9a-native-atomic-72ARPG/array_atomic_fadd.bend-c.tsv",
+          "/tmp/bend-remote2039g9a-native-atomic-72ARPG/array_atomic_fadd.bend-c.tsv.exports",
+          "compile-c-module",
+          "/tmp/bend-remote2039g9a-native-atomic-72ARPG/array_atomic_fadd.bend-c.tsv.c",
+          "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/bend2/selfhost/c_runtime.c"
+        ],
+        "consumer": {
+          "command": [
+            "/tmp/bend-remote2039g9a-native-atomic-72ARPG/array_atomic_fadd.bend-c.tsv.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "stdout": "68\n2448.25\n",
+          "stderr": {
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "logExcluded": true
+          }
+        },
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/tmp/bend-remote2039g9a-native-atomic-72ARPG/array_atomic_fadd.bend-c.tsv.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-remote2039g9a-native-atomic-72ARPG/array_atomic_fadd.bend-c.tsv.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "stdout": "",
+          "stderr": {
+            "sha256": "2026a9ca9d27252efa41bab77d057df20f61b1128681a650653c6980bc1f798c",
+            "bytes": 8759,
+            "logExcluded": true
+          }
+        }
+      },
+      {
+        "source": "tests/run/array_atomic_edges.bend",
+        "target": "js",
+        "sourceSha256": "27b64d5fef1ae1c18b89cb4159f95d6dadd40de8cd5a95aab46ee9975ab76b01",
+        "outputSha256": "848157ffdf8f0e48d4045a603815590a413967d76d5748feb94692ad52c24453",
+        "expected": "4294967295\n2\n42\n42\n42\n7\n2147483648\n0\n1266679808\n1266679808",
+        "passed": true,
+        "command": [
+          "/tmp/bend-remote2039g9a-native",
+          "+RTS",
+          "--threads",
+          "1",
+          "--gpu",
+          "off",
+          "--RTS",
+          "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/tests/run/array_atomic_edges.bend",
+          "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/bend2/base.bend",
+          "/tmp/bend-remote2039g9a-native-atomic-72ARPG/array_atomic_edges.bend-js.tsv",
+          "/tmp/bend-remote2039g9a-native-atomic-72ARPG/array_atomic_edges.bend-js.tsv.exports",
+          "compile-module",
+          "/tmp/bend-remote2039g9a-native-atomic-72ARPG/array_atomic_edges.bend-js.tsv.js"
+        ],
+        "consumer": {
+          "command": [
+            "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/.tools/node",
+            "/tmp/bend-remote2039g9a-native-atomic-72ARPG/array_atomic_edges.bend-js.tsv.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "stdout": "4294967295\n2\n42\n42\n42\n7\n2147483648\n0\n1266679808\n1266679808\n",
+          "stderr": {
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "logExcluded": true
+          }
+        }
+      },
+      {
+        "source": "tests/run/array_atomic_edges.bend",
+        "target": "c",
+        "sourceSha256": "27b64d5fef1ae1c18b89cb4159f95d6dadd40de8cd5a95aab46ee9975ab76b01",
+        "outputSha256": "3ee86b55049d44f6f21be674bd5104b74f9828884a92c0733ac06314392d588d",
+        "expected": "4294967295\n2\n42\n42\n42\n7\n2147483648\n0\n1266679808\n1266679808",
+        "passed": true,
+        "command": [
+          "/tmp/bend-remote2039g9a-native",
+          "+RTS",
+          "--threads",
+          "1",
+          "--gpu",
+          "off",
+          "--RTS",
+          "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/tests/run/array_atomic_edges.bend",
+          "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/bend2/base.bend",
+          "/tmp/bend-remote2039g9a-native-atomic-72ARPG/array_atomic_edges.bend-c.tsv",
+          "/tmp/bend-remote2039g9a-native-atomic-72ARPG/array_atomic_edges.bend-c.tsv.exports",
+          "compile-c-module",
+          "/tmp/bend-remote2039g9a-native-atomic-72ARPG/array_atomic_edges.bend-c.tsv.c",
+          "/Users/ilyagulya/bend-g9-atomic-17128416-ebbf-4d99-9137-56ac04b40b27/bend2/selfhost/c_runtime.c"
+        ],
+        "consumer": {
+          "command": [
+            "/tmp/bend-remote2039g9a-native-atomic-72ARPG/array_atomic_edges.bend-c.tsv.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "stdout": "4294967295\n2\n42\n42\n42\n7\n2147483648\n0\n1266679808\n1266679808\n",
+          "stderr": {
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "logExcluded": true
+          }
+        },
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/tmp/bend-remote2039g9a-native-atomic-72ARPG/array_atomic_edges.bend-c.tsv.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-remote2039g9a-native-atomic-72ARPG/array_atomic_edges.bend-c.tsv.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "stdout": "",
+          "stderr": {
+            "sha256": "c483455bc46065ee412a03a345192cf7a7af0030323b0316400caa82f61174ef",
+            "bytes": 8813,
+            "logExcluded": true
+          }
+        }
+      }
+    ]
+  },
+  "fullConsumerReceipt": {
+    "path": "evals/receipts/root2039g9a_full_consumers.json",
+    "sha256": "37d97200ce33d5b57a5a1b64e719134ba9546233bdeefb972f1f0bad098d1e32"
+  }
+}

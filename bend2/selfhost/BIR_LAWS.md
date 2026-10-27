@@ -1152,12 +1152,14 @@ aliases (`backend_ir.bend:32-144`).
   operations and fork aliases; `array_atomic_fadd.bend` covers F32 accumulation;
   `array_atomic_edges.bend` covers U32 wraparound, wrapped indices, alias
   visibility, partial Cas hit/miss and binary32 signed-zero/rounding boundaries.
-  All three execute through the canonical-produced compiler-source image on
-  both targets in `evals/receipts/root2039g9a_atomic_bootstrap_rejected.json`;
-  the same programs previously failed lowering with `missing resolved
-  definition`. Both target matrices retain their original 33 cases and add
-  these three. This is bounded primitive evidence, not a completed emitted-stage
-  suite or g9 fixedpoint: g9a's full bootstrap is rejected at the unchanged
+  All three execute through the canonical-produced compiler-source image and
+  through the built native compiler on both targets. Both complete target
+  matrices pass all 36 cases, retaining their original 33 cases.
+  Receipts: `evals/receipts/root2039g9a_full_consumers.json` and
+  `evals/receipts/root2039g9a_jsc_and_native_atomics.json`. The same programs
+  previously failed lowering with `missing resolved definition`. This is
+  bounded primitive evidence, not a completed emitted-stage suite or g9
+  fixedpoint: g9a's full bootstrap remains rejected at the unchanged
   stage-two-check deadline.
 
 ### 4.11 Rendered entries and foreign callbacks (checkpoint law B2)
