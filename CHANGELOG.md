@@ -18,10 +18,10 @@ latest one; the GitHub release carries the same notes.
   instead of failing with the machine memory fault; full bootstrap admission
   remains separate.
 
-- Compiler use summaries share immutable flat maps for single-child terms
-  and copy only when merging children. Branch counts still take the maximum;
-  other child counts add. Nine actual C/JS programs retain identical bytes;
-  full-root timing and admission remain separate measurements.
+- A flat immutable compiler-use-map experiment preserves nine actual C/JS
+  programs and their emitted bytes, but is rejected: the full compiler root
+  does not publish C before the unchanged 600-second deadline. No compiler
+  acceptance or timing/memory improvement is claimed.
 
 - Native C generation traverses nested constructors with an explicit stack,
   preserving field order, layouts and ownership without exhausting Bun's
