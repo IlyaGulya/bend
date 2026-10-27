@@ -1316,32 +1316,39 @@ def subst_memo_entry_current(entry: SubstMemoEntry, +epoch: Nat) -> SubstMemoEnt
       subst_memo_entry_epoch(entry, Nat.is_eq(saved_epoch, epoch))
     case _: entry
 
-def subst_memo_get.result(case_prefix: Array<CasePrefixEntry>, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>, node_closed: Array<U32>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, result: Array<SubstMemoEntry> & SubstMemoEntry) -> Arena & SubstMemoEntry:
-  match result:
-    case Tuple{subst_memo, entry}:
-      (Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}, entry)
-
-def subst_memo_current_result(+epoch: Nat, result: Arena & SubstMemoEntry) -> Arena & SubstMemoEntry:
-  match result:
-    case Tuple{arena, entry}: (arena, subst_memo_entry_current(entry, epoch))
+def subst_memo_get.result(case_prefix: Array<CasePrefixEntry>, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, name_ids: Map<&2, U32>, node_closed: Array<U32>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, epoch: Array<Nat> & Nat, result: Array<SubstMemoEntry> & SubstMemoEntry) -> Arena & SubstMemoEntry:
+  match epoch:
+    case Tuple{depths, +generation}:
+      match result:
+        case Tuple{subst_memo, entry}:
+          (Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}, subst_memo_entry_current(entry, generation))
 
 def subst_memo_get(arena: Arena, node_id: U32, value_id: U32) -> Arena & SubstMemoEntry:
   match arena:
     case Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}:
-      +epoch = Array.get(Nat, depths, 6)
-      subst_memo_current_result(epoch, subst_memo_get.result(case_prefix, nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, Array.get(SubstMemoEntry, subst_memo, subst_memo_slot(node_id, value_id))))
+      subst_memo_get.result(case_prefix, nodes, patterns, binders, words, naturals, names, counts, name_ids, node_closed, node_bounds, pattern_depths, Array.get(Nat, depths, 6), Array.get(SubstMemoEntry, subst_memo, subst_memo_slot(node_id, value_id)))
+
+def subst_memo_put.result(nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, name_ids: Map<&2, U32>, node_closed: Array<U32>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, +node_id: U32, index: Nat, +value_id: U32, depth: Nat, output_id: U32, epoch: Array<Nat> & Nat) -> Arena:
+  match epoch:
+    case Tuple{depths, +generation}:
+      Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, Array.set(SubstMemoEntry, subst_memo, subst_memo_slot(node_id, value_id), SubstMemoSaved{node_id, index, value_id, depth, output_id, generation})}
 
 def subst_memo_put(arena: Arena, +node_id: U32, index: Nat, +value_id: U32, depth: Nat, output_id: U32) -> Arena:
   match arena:
     case Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}:
-      Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, Array.set(SubstMemoEntry, subst_memo, subst_memo_slot(node_id, value_id), SubstMemoSaved{node_id, index, value_id, depth, output_id, Array.get(Nat, depths, 6)})}
+      subst_memo_put.result(nodes, patterns, binders, words, naturals, names, counts, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo, node_id, index, value_id, depth, output_id, Array.get(Nat, depths, 6))
 
 # Publication shares semantic handles only. Occurrence facts remain distinct.
 # The transient owner and its rewind epoch delimit every memo entry's validity.
+def publication_memo_put.result(nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, name_ids: Map<&2, U32>, node_closed: Array<U32>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, +node_id: U32, output_id: U32, epoch: Array<Nat> & Nat) -> Arena:
+  match epoch:
+    case Tuple{depths, +generation}:
+      Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, Array.set(SubstMemoEntry, subst_memo, subst_memo_slot(node_id, 0), PublishedTerm{node_id, output_id, generation})}
+
 def publication_memo_put(arena: Arena, +node_id: U32, output_id: U32) -> Arena:
   match arena:
     case Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}:
-      Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, Array.set(SubstMemoEntry, subst_memo, subst_memo_slot(node_id, 0), PublishedTerm{node_id, output_id, Array.get(Nat, depths, 6)})}
+      publication_memo_put.result(nodes, patterns, binders, words, naturals, names, counts, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo, node_id, output_id, Array.get(Nat, depths, 6))
 
 # A declaration inference frame owns this existing source-memo slot. The scope
 # snapshot retains exact alias records, not merely canonical namespace text.
