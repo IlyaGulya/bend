@@ -1,0 +1,474 @@
+{
+  "schemaVersion": 1,
+  "status": "G8_NATIVE_VALIDATION_REJECTED_NAME_ID_IN_STRING_DIAGNOSTIC",
+  "compilerAccepted": false,
+  "nativeBuildAccepted": false,
+  "byteFixedpoint": false,
+  "sourceCommits": [
+    "42e17442",
+    "8857fa9c"
+  ],
+  "scope": "First combined source-ID/call-cost candidate; rejected before JS emission. No speed or memory improvement claim.",
+  "runtime": {
+    "bun": "1.4.3",
+    "revision": "c6da4a4d3010e5553438c60f6bd76d981976867c"
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "inputs": {
+    "bend2/selfhost/checker.bend": "9d963263fadeb15c06085e43eb1fc69aae98f0caec7cafafe0af697cc27becd1",
+    "bend2/selfhost/js_backend.bend": "9b9b781939893704772a2ef738c042ad70b5a2565758b9b0acd2cab652040736",
+    "bend2/comp.ts": "318c55c449115cb820bf77c3ac500a1c07ed8473adbbe6eed9c61088f4a0009e",
+    "checkpoints/.bootstrap_compiler_root_release2039g8.bend": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+    "checkpoints/selfhost-root-release2039g8.json": "7452b7038fb077ee49132ce72361006bf649f126727f1cf3c03f2cc9778971b9",
+    "checkpoints/checker_core_steps_v1.bend": "00e9e7fdd6a01e45ebfca15f1cd3834b3990d88960dfa27054b152303a7c4036",
+    "checkpoints/emitter_steps_v1.bend": "4903b6895688df6183551d6561b16a922ae0ae218b8cff0c2732b5e677a95e0a",
+    "checkpoints/template_steps_v1.bend": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4"
+  },
+  "commands": [
+    {
+      "label": "arena-interpreter",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/opt/homebrew/bin/bun",
+        "bend2/main.ts",
+        "tests/reg/checker_arena_memo.bend"
+      ],
+      "status": "PASS",
+      "elapsedMs": 427
+    },
+    {
+      "label": "arena-js-emit",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/opt/homebrew/bin/bun",
+        "bend2/main.ts",
+        "tests/reg/checker_arena_memo.bend",
+        "-o",
+        "/tmp/bend2039g8-admission-e4eEiL/arena.js"
+      ],
+      "status": "PASS",
+      "elapsedMs": 168
+    },
+    {
+      "label": "arena-js-run",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/opt/homebrew/bin/bun",
+        "/tmp/bend2039g8-admission-e4eEiL/arena.js"
+      ],
+      "status": "PASS",
+      "elapsedMs": 49
+    },
+    {
+      "label": "arena-c-emit",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/opt/homebrew/bin/bun",
+        "bend2/main.ts",
+        "tests/reg/checker_arena_memo.bend",
+        "-o",
+        "/tmp/bend2039g8-admission-e4eEiL/arena.c"
+      ],
+      "status": "PASS",
+      "elapsedMs": 253
+    },
+    {
+      "label": "arena-clang",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "clang",
+        "-std=c11",
+        "-O0",
+        "-pthread",
+        "/tmp/bend2039g8-admission-e4eEiL/arena.c",
+        "-lm",
+        "-o",
+        "/tmp/bend2039g8-admission-e4eEiL/arena"
+      ],
+      "status": "PASS",
+      "elapsedMs": 388
+    },
+    {
+      "label": "arena-c-run",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/tmp/bend2039g8-admission-e4eEiL/arena"
+      ],
+      "status": "PASS",
+      "elapsedMs": 38
+    },
+    {
+      "label": "runtime",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/opt/homebrew/bin/bun",
+        "evals/gen_c_runtime.ts"
+      ],
+      "status": "PASS",
+      "elapsedMs": 65
+    },
+    {
+      "label": "runtime-check",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/opt/homebrew/bin/bun",
+        "evals/gen_c_runtime.ts",
+        "--check"
+      ],
+      "status": "PASS",
+      "elapsedMs": 73
+    },
+    {
+      "label": "owned",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/opt/homebrew/bin/bun",
+        "evals/checker_core_owned_source.ts"
+      ],
+      "status": "PASS",
+      "elapsedMs": 4079
+    },
+    {
+      "label": "template",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/opt/homebrew/bin/bun",
+        "evals/template_step_lower.ts"
+      ],
+      "status": "PASS",
+      "elapsedMs": 282
+    },
+    {
+      "label": "checker",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/opt/homebrew/bin/bun",
+        "evals/checker_core_step_lower.ts"
+      ],
+      "status": "PASS",
+      "elapsedMs": 2342
+    },
+    {
+      "label": "emitter",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/opt/homebrew/bin/bun",
+        "evals/emitter_step_lower.ts"
+      ],
+      "status": "PASS",
+      "elapsedMs": 4457
+    },
+    {
+      "label": "parser-source",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "--smol",
+        "evals/bootstrap_parser_rebuild.ts",
+        "--prepare-source",
+        "--run-id",
+        "release2039g8"
+      ],
+      "status": "PASS",
+      "elapsedMs": 19572
+    },
+    {
+      "label": "parser-public-source",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "--smol",
+        "evals/bootstrap_parser_public_gate.ts",
+        "--parser=checkpoints/.bootstrap_parser_rebuild_release2039g8_source.bend",
+        "--entry=parse_module_tokens",
+        "--report=checkpoints/bootstrap-parser-public-release2039g8-source.json"
+      ],
+      "status": "PASS",
+      "elapsedMs": 3458
+    },
+    {
+      "label": "parser-source-gate",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "--smol",
+        "evals/bootstrap_parser_fast.ts",
+        "--parser=checkpoints/.bootstrap_parser_rebuild_release2039g8_source.bend",
+        "--entry=parse_module_tokens",
+        "--public-report=checkpoints/bootstrap-parser-public-release2039g8-source.json",
+        "--report=checkpoints/bootstrap-parser-source-gate-release2039g8.json"
+      ],
+      "status": "PASS",
+      "elapsedMs": 11008
+    },
+    {
+      "label": "parser-prepare",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "--smol",
+        "evals/bootstrap_parser_rebuild.ts",
+        "--prepare",
+        "--run-id",
+        "release2039g8",
+        "--source-gate",
+        "checkpoints/bootstrap-parser-source-gate-release2039g8.json"
+      ],
+      "status": "PASS",
+      "elapsedMs": 17611
+    },
+    {
+      "label": "parser-build",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "--smol",
+        "evals/bootstrap_parser_rebuild.ts",
+        "--build-native",
+        "--run-id",
+        "release2039g8"
+      ],
+      "status": "PASS",
+      "elapsedMs": 7177
+    },
+    {
+      "label": "parser-public-native",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "--smol",
+        "evals/bootstrap_parser_public_gate.ts",
+        "--parser=checkpoints/.bootstrap_parser_rebuild_release2039g8_generated_fuel.bend",
+        "--entry=parse_with_fuel",
+        "--report=checkpoints/bootstrap-parser-public-release2039g8-native.json"
+      ],
+      "status": "PASS",
+      "elapsedMs": 1685
+    },
+    {
+      "label": "parser-native-gate",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "--smol",
+        "evals/bootstrap_parser_fast.ts",
+        "--parser=checkpoints/.bootstrap_parser_rebuild_release2039g8_generated_fuel.bend",
+        "--entry=parse_with_fuel",
+        "--component=checkpoints/bootstrap-parser-rebuild-release2039g8.js",
+        "--component-build=checkpoints/bootstrap-parser-rebuild-release2039g8.native-build.result.json",
+        "--public-report=checkpoints/bootstrap-parser-public-release2039g8-native.json",
+        "--report=checkpoints/bootstrap-parser-candidate-gate-release2039g8.json"
+      ],
+      "status": "PASS",
+      "elapsedMs": 73568
+    },
+    {
+      "label": "parser-accept",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "--smol",
+        "evals/bootstrap_parser_rebuild.ts",
+        "--build",
+        "--run-id",
+        "release2039g8",
+        "--candidate-gate",
+        "checkpoints/bootstrap-parser-candidate-gate-release2039g8.json"
+      ],
+      "status": "PASS",
+      "elapsedMs": 2522
+    },
+    {
+      "label": "compose",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/opt/homebrew/bin/bun",
+        "evals/selfhost_driver_source.ts",
+        "--parser-build=checkpoints/bootstrap-parser-rebuild-release2039g8.native-build.result.json",
+        "--root=checkpoints/.bootstrap_compiler_root_release2039g8.bend",
+        "--manifest=checkpoints/selfhost-root-release2039g8.json"
+      ],
+      "status": "PASS",
+      "elapsedMs": 708
+    },
+    {
+      "label": "js-build",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "--smol",
+        "evals/checker_core_component_build.ts",
+        "--file=checkpoints/.bootstrap_compiler_root_release2039g8.bend",
+        "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step,emit_c_modules_start,emit_c_library_start,c_emitter_step",
+        "--artifact=checkpoints/root-release2039g8.js",
+        "--report=checkpoints/root-release2039g8-build"
+      ],
+      "status": "FAIL",
+      "elapsedMs": 5487
+    }
+  ],
+  "guardian": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "commandExitCode": 2,
+    "commandSignal": 0,
+    "peakRssBytes": 775766016,
+    "peakFootprintBytes": 781626224,
+    "elapsedMs": 5421,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "command": [
+      "node",
+      "--experimental-strip-types",
+      "--max-old-space-size=3072",
+      "/private/tmp/bend2039g8-js-call-cost/evals/checker_core_component_build.ts",
+      "--worker",
+      "--file=/private/tmp/bend2039g8-js-call-cost/checkpoints/.bootstrap_compiler_root_release2039g8.bend",
+      "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step,emit_c_modules_start,emit_c_library_start,c_emitter_step",
+      "--artifact=/private/tmp/bend2039g8-js-call-cost/checkpoints/root-release2039g8.js",
+      "--report=/private/tmp/bend2039g8-js-call-cost/checkpoints/root-release2039g8-build",
+      "--inputs-sha256=4b155edf4006a6b3ab9c402fc347750acfcfedbbbf5fe4e20828091d7890e467"
+    ],
+    "label": "Full-native CheckerCore component JS build",
+    "exitCode": 1,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793099944962-06e5df167c2a181c.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "failure": {
+    "location": "inherit_law_binder_view",
+    "expected": "String",
+    "observed": "U32",
+    "expression": "String.append(\"completion binder differs from its law: \", v_63)",
+    "meaning": "The retained source name ID was still consumed as diagnostic text on the incompatible-binder error path."
+  },
+  "note": "Parser acceptance and arena interpreter/JS/C lifecycle checks passed; full compiler native validation failed. Generated JS/native images and bulk logs excluded."
+}

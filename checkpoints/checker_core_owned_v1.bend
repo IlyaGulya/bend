@@ -79,6 +79,10 @@ type ReadbackResult<-T: Type> is Type:
 # Private algorithms use handles and flat tape cursors. These are mechanically
 # state-threaded versions of the original checker, Core, and Scope algorithms;
 # no computed type, substitution, match, or normalization result is memoized.
+# A descriptor's name field is the source name id itself, so rebuilding a node,
+# binder, or pattern keeps that id: reading its text and interning it again
+# would repeat the same exact name-map lookup and return the same id. Only
+# canonicalization rewrites a name, and only it re-interns one.
 
 
 def inference_keep(result: Inference, occurrence: IR.Occurrence) -> Inference:
@@ -6741,67 +6745,56 @@ def native_match_canonicalize_patterns_4(v_37: ArenaResult<IR.WordView>, v_3: Sc
 def canonicalize_patterns(v_1: ArenaStore, v_2: IR.Words, v_3: Scope.ArenaGlobalScope) -> ArenaResult<IR.Words>:
   native_match_canonicalize_patterns_4(arena_words_view(v_1, v_2), v_3)
 
-def native_match_canonicalize_pattern_0(v_93: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_93:
-    case ArenaResult{v_43, +v_44}:
-      {ArenaResult{v_43, v_44} : ArenaResult<U32>}
+def native_match_canonicalize_pattern_0(v_81: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_81:
+    case ArenaResult{v_31, +v_32}:
+      {ArenaResult{v_31, v_32} : ArenaResult<U32>}
 
-def native_match_canonicalize_pattern_1(v_94: ArenaResult<U32>, v_30: Nat, v_32: Ast.Quantity, v_34: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_94:
-    case ArenaResult{v_38, +v_39}:
-      native_match_canonicalize_pattern_0(arena_put_pattern(v_38, Arena.PatternVar{v_39, v_30, v_32, v_34}))
+def native_match_canonicalize_pattern_1(v_82: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_82:
+    case ArenaResult{v_77, +v_78}:
+      {ArenaResult{v_77, v_78} : ArenaResult<U32>}
 
-def native_match_canonicalize_pattern_2(v_95: ArenaResult<String>, +v_17: Nat, +v_18: Ast.Quantity, +v_19: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_95:
-    case ArenaResult{v_23, +v_24}:
-      +v_26 = v_24
-      v_28 = v_26
-      v_30 = v_17
-      v_32 = v_18
-      v_34 = v_19
-      native_match_canonicalize_pattern_1(arena_name(v_23, v_28), v_30, v_32, v_34)
+def native_match_canonicalize_pattern_2(v_83: ArenaResult<U32>, v_57: Ast.SourceSpan, +v_62: IR.Words) -> ArenaResult<U32>:
+  match v_83:
+    case ArenaResult{v_66, +v_67}:
+      v_70 = arena_words_start(v_62)
+      v_73 = arena_words_count(v_62)
+      native_match_canonicalize_pattern_1(arena_put_pattern(v_66, Arena.PatternCtr{v_67, v_70, v_73, v_57}))
 
-def native_match_canonicalize_pattern_3(v_96: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_96:
-    case ArenaResult{v_89, +v_90}:
-      {ArenaResult{v_89, v_90} : ArenaResult<U32>}
+def native_match_canonicalize_pattern_3(v_84: ArenaResult<IR.Words>, v_4: Scope.ArenaGlobalScope, v_53: String, v_57: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_84:
+    case ArenaResult{v_61, +v_62}:
+      native_match_canonicalize_pattern_2(arena_name(v_61, Scope.canonical_name(v_53, v_4)), v_57, v_62)
 
-def native_match_canonicalize_pattern_4(v_97: ArenaResult<U32>, v_69: Ast.SourceSpan, +v_74: IR.Words) -> ArenaResult<U32>:
-  match v_97:
-    case ArenaResult{v_78, +v_79}:
-      v_82 = arena_words_start(v_74)
-      v_85 = arena_words_count(v_74)
-      native_match_canonicalize_pattern_3(arena_put_pattern(v_78, Arena.PatternCtr{v_79, v_82, v_85, v_69}))
+def native_match_canonicalize_pattern_4(v_85: ArenaResult<String>, v_4: Scope.ArenaGlobalScope, +v_40: U32, +v_41: U32, +v_42: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_85:
+    case ArenaResult{v_46, +v_47}:
+      +v_49 = v_47
+      +v_51 = IR.Words{v_40, v_41}
+      v_53 = v_49
+      v_55 = v_51
+      v_57 = v_42
+      native_match_canonicalize_pattern_3(canonicalize_patterns(v_46, v_55, v_4), v_4, v_53, v_57)
 
-def native_match_canonicalize_pattern_5(v_98: ArenaResult<IR.Words>, v_4: Scope.ArenaGlobalScope, v_65: String, v_69: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_98:
-    case ArenaResult{v_73, +v_74}:
-      native_match_canonicalize_pattern_4(arena_name(v_73, Scope.canonical_name(v_65, v_4)), v_69, v_74)
-
-def native_match_canonicalize_pattern_6(v_99: ArenaResult<String>, v_4: Scope.ArenaGlobalScope, +v_52: U32, +v_53: U32, +v_54: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_99:
-    case ArenaResult{v_58, +v_59}:
-      +v_61 = v_59
-      +v_63 = IR.Words{v_52, v_53}
-      v_65 = v_61
-      v_67 = v_63
-      v_69 = v_54
-      native_match_canonicalize_pattern_5(canonicalize_patterns(v_58, v_67, v_4), v_4, v_65, v_69)
-
-def native_match_canonicalize_pattern_7(+v_11: Arena.Pattern, v_4: Scope.ArenaGlobalScope, v_10: ArenaStore) -> ArenaResult<U32>:
+def native_match_canonicalize_pattern_5(+v_11: Arena.Pattern, v_4: Scope.ArenaGlobalScope, v_10: ArenaStore) -> ArenaResult<U32>:
   match v_11:
     case Arena.PatternVar{+v_16, +v_17, +v_18, +v_19}:
-      native_match_canonicalize_pattern_2(arena_name_text(v_10, v_16), v_17, v_18, v_19)
-    case Arena.PatternCtr{+v_51, +v_52, +v_53, +v_54}:
-      native_match_canonicalize_pattern_6(arena_name_text(v_10, v_51), v_4, v_52, v_53, v_54)
+      v_21 = v_16
+      v_23 = v_17
+      v_25 = v_18
+      v_27 = v_19
+      native_match_canonicalize_pattern_0(arena_put_pattern(v_10, Arena.PatternVar{v_21, v_23, v_25, v_27}))
+    case Arena.PatternCtr{+v_39, +v_40, +v_41, +v_42}:
+      native_match_canonicalize_pattern_4(arena_name_text(v_10, v_39), v_4, v_40, v_41, v_42)
 
-def native_match_canonicalize_pattern_8(v_100: ArenaResult<Arena.Pattern>, v_4: Scope.ArenaGlobalScope) -> ArenaResult<U32>:
-  match v_100:
+def native_match_canonicalize_pattern_6(v_86: ArenaResult<Arena.Pattern>, v_4: Scope.ArenaGlobalScope) -> ArenaResult<U32>:
+  match v_86:
     case ArenaResult{v_10, +v_11}:
-      native_match_canonicalize_pattern_7(v_11, v_4, v_10)
+      native_match_canonicalize_pattern_5(v_11, v_4, v_10)
 
 def canonicalize_pattern(v_1: ArenaStore, v_3: U32, v_4: Scope.ArenaGlobalScope) -> ArenaResult<U32>:
-  native_match_canonicalize_pattern_8(arena_get_pattern(v_1, v_3), v_4)
+  native_match_canonicalize_pattern_6(arena_get_pattern(v_1, v_3), v_4)
 
 def native_match_canonicalize_terms_0(v_34: ArenaResult<IR.Words>) -> ArenaResult<IR.Words>:
   match v_34:
@@ -6835,681 +6828,632 @@ def native_match_canonicalize_terms_4(v_37: ArenaResult<IR.WordView>, v_3: Scope
 def canonicalize_terms(v_1: ArenaStore, v_2: IR.Words, v_3: Scope.ArenaGlobalScope) -> ArenaResult<IR.Words>:
   native_match_canonicalize_terms_4(arena_words_view(v_1, v_2), v_3)
 
-def native_match_canonicalize_term_0(v_947: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_947:
-    case ArenaResult{v_39, +v_40}:
-      {ArenaResult{v_39, v_40} : ArenaResult<U32>}
+def native_match_canonicalize_term_0(v_911: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_911:
+    case ArenaResult{v_27, +v_28}:
+      {ArenaResult{v_27, v_28} : ArenaResult<U32>}
 
-def native_match_canonicalize_term_1(v_948: ArenaResult<U32>, v_28: Nat, v_30: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_948:
-    case ArenaResult{v_34, +v_35}:
-      native_match_canonicalize_term_0(arena_put_node(v_34, Arena.TermVar{v_35, v_28, v_30}))
+def native_match_canonicalize_term_1(v_912: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_912:
+    case ArenaResult{v_54, +v_55}:
+      {ArenaResult{v_54, v_55} : ArenaResult<U32>}
 
-def native_match_canonicalize_term_2(v_949: ArenaResult<String>, +v_16: Nat, +v_17: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_949:
-    case ArenaResult{v_21, +v_22}:
-      +v_24 = v_22
-      v_26 = v_24
-      v_28 = v_16
-      v_30 = v_17
-      native_match_canonicalize_term_1(arena_name(v_21, v_26), v_28, v_30)
+def native_match_canonicalize_term_2(v_913: ArenaResult<U32>, v_45: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_913:
+    case ArenaResult{v_49, +v_50}:
+      native_match_canonicalize_term_1(arena_put_node(v_49, Arena.TermRef{v_50, v_45}))
 
-def native_match_canonicalize_term_3(v_950: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_950:
-    case ArenaResult{v_66, +v_67}:
-      {ArenaResult{v_66, v_67} : ArenaResult<U32>}
+def native_match_canonicalize_term_3(v_914: ArenaResult<String>, v_4: Scope.ArenaGlobalScope, +v_34: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_914:
+    case ArenaResult{v_38, +v_39}:
+      +v_41 = v_39
+      v_43 = v_41
+      v_45 = v_34
+      native_match_canonicalize_term_2(arena_name(v_38, Scope.canonical_name(v_43, v_4)), v_45)
 
-def native_match_canonicalize_term_4(v_951: ArenaResult<U32>, v_57: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_951:
-    case ArenaResult{v_61, +v_62}:
-      native_match_canonicalize_term_3(arena_put_node(v_61, Arena.TermRef{v_62, v_57}))
+def native_match_canonicalize_term_4(v_915: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_915:
+    case ArenaResult{v_74, +v_75}:
+      {ArenaResult{v_74, v_75} : ArenaResult<U32>}
 
-def native_match_canonicalize_term_5(v_952: ArenaResult<String>, v_4: Scope.ArenaGlobalScope, +v_46: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_952:
-    case ArenaResult{v_50, +v_51}:
-      +v_53 = v_51
-      v_55 = v_53
-      v_57 = v_46
-      native_match_canonicalize_term_4(arena_name(v_50, Scope.canonical_name(v_55, v_4)), v_57)
+def native_match_canonicalize_term_5(v_916: ArenaResult<U32>, v_65: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_916:
+    case ArenaResult{v_69, +v_70}:
+      native_match_canonicalize_term_4(arena_put_node(v_69, Arena.TermBang{v_70, v_65}))
 
-def native_match_canonicalize_term_6(v_953: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_953:
-    case ArenaResult{v_86, +v_87}:
-      {ArenaResult{v_86, v_87} : ArenaResult<U32>}
+def native_match_canonicalize_term_6(v_917: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_917:
+    case ArenaResult{v_107, +v_108}:
+      {ArenaResult{v_107, v_108} : ArenaResult<U32>}
 
-def native_match_canonicalize_term_7(v_954: ArenaResult<U32>, v_77: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_954:
-    case ArenaResult{v_81, +v_82}:
-      native_match_canonicalize_term_6(arena_put_node(v_81, Arena.TermBang{v_82, v_77}))
+def native_match_canonicalize_term_7(v_918: ArenaResult<U32>, v_87: Nat, v_93: Ast.SourceSpan, +v_98: U32) -> ArenaResult<U32>:
+  match v_918:
+    case ArenaResult{v_102, +v_103}:
+      native_match_canonicalize_term_6(arena_put_node(v_102, Arena.TermSub{v_87, v_98, v_103, v_93}))
 
-def native_match_canonicalize_term_8(v_955: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_955:
-    case ArenaResult{v_119, +v_120}:
-      {ArenaResult{v_119, v_120} : ArenaResult<U32>}
+def native_match_canonicalize_term_8(v_919: ArenaResult<U32>, v_4: Scope.ArenaGlobalScope, v_87: Nat, v_91: U32, v_93: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_919:
+    case ArenaResult{v_97, +v_98}:
+      native_match_canonicalize_term_7(canonicalize_term(v_97, v_91, v_4), v_87, v_93, v_98)
 
-def native_match_canonicalize_term_9(v_956: ArenaResult<U32>, v_99: Nat, v_105: Ast.SourceSpan, +v_110: U32) -> ArenaResult<U32>:
-  match v_956:
-    case ArenaResult{v_114, +v_115}:
-      native_match_canonicalize_term_8(arena_put_node(v_114, Arena.TermSub{v_99, v_110, v_115, v_105}))
+def native_match_canonicalize_term_9(v_920: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_920:
+    case ArenaResult{v_136, +v_137}:
+      {ArenaResult{v_136, v_137} : ArenaResult<U32>}
 
-def native_match_canonicalize_term_10(v_957: ArenaResult<U32>, v_4: Scope.ArenaGlobalScope, v_99: Nat, v_103: U32, v_105: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_957:
-    case ArenaResult{v_109, +v_110}:
-      native_match_canonicalize_term_9(canonicalize_term(v_109, v_103, v_4), v_99, v_105, v_110)
+def native_match_canonicalize_term_10(v_921: ArenaResult<U32>, v_122: Ast.SourceSpan, +v_127: U32) -> ArenaResult<U32>:
+  match v_921:
+    case ArenaResult{v_131, +v_132}:
+      native_match_canonicalize_term_9(arena_put_node(v_131, Arena.TermAnn{v_127, v_132, v_122}))
 
-def native_match_canonicalize_term_11(v_958: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_958:
-    case ArenaResult{v_148, +v_149}:
-      {ArenaResult{v_148, v_149} : ArenaResult<U32>}
+def native_match_canonicalize_term_11(v_922: ArenaResult<U32>, v_4: Scope.ArenaGlobalScope, v_120: U32, v_122: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_922:
+    case ArenaResult{v_126, +v_127}:
+      native_match_canonicalize_term_10(canonicalize_term(v_126, v_120, v_4), v_122, v_127)
 
-def native_match_canonicalize_term_12(v_959: ArenaResult<U32>, v_134: Ast.SourceSpan, +v_139: U32) -> ArenaResult<U32>:
-  match v_959:
-    case ArenaResult{v_143, +v_144}:
-      native_match_canonicalize_term_11(arena_put_node(v_143, Arena.TermAnn{v_139, v_144, v_134}))
+def native_match_canonicalize_term_12(v_923: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_923:
+    case ArenaResult{v_156, +v_157}:
+      {ArenaResult{v_156, v_157} : ArenaResult<U32>}
 
-def native_match_canonicalize_term_13(v_960: ArenaResult<U32>, v_4: Scope.ArenaGlobalScope, v_132: U32, v_134: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_960:
-    case ArenaResult{v_138, +v_139}:
-      native_match_canonicalize_term_12(canonicalize_term(v_138, v_132, v_4), v_134, v_139)
+def native_match_canonicalize_term_13(v_924: ArenaResult<U32>, v_147: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_924:
+    case ArenaResult{v_151, +v_152}:
+      native_match_canonicalize_term_12(arena_put_node(v_151, Arena.TermTemplate{v_152, v_147}))
 
-def native_match_canonicalize_term_14(v_961: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_961:
-    case ArenaResult{v_168, +v_169}:
-      {ArenaResult{v_168, v_169} : ArenaResult<U32>}
+def native_match_canonicalize_term_14(v_925: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_925:
+    case ArenaResult{v_237, +v_238}:
+      {ArenaResult{v_237, v_238} : ArenaResult<U32>}
 
-def native_match_canonicalize_term_15(v_962: ArenaResult<U32>, v_159: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_962:
-    case ArenaResult{v_163, +v_164}:
-      native_match_canonicalize_term_14(arena_put_node(v_163, Arena.TermTemplate{v_164, v_159}))
+def native_match_canonicalize_term_15(v_926: ArenaResult<U32>, v_189: IR.Names, v_191: IR.Naturals, v_193: IR.Quantities, v_199: Ast.SourceSpan, +v_204: IR.Words) -> ArenaResult<U32>:
+  match v_926:
+    case ArenaResult{v_208, +v_209}:
+      v_212 = arena_names_start(v_189)
+      v_215 = arena_names_count(v_189)
+      v_218 = arena_naturals_start(v_191)
+      v_221 = arena_naturals_count(v_191)
+      v_224 = arena_quantities_start(v_193)
+      v_227 = arena_quantities_count(v_193)
+      v_230 = arena_words_start(v_204)
+      v_233 = arena_words_count(v_204)
+      native_match_canonicalize_term_14(arena_put_node(v_208, Arena.TermLet{v_212, v_215, v_218, v_221, v_224, v_227, v_230, v_233, v_209, v_199}))
 
-def native_match_canonicalize_term_16(v_963: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_963:
-    case ArenaResult{v_249, +v_250}:
-      {ArenaResult{v_249, v_250} : ArenaResult<U32>}
+def native_match_canonicalize_term_16(v_927: ArenaResult<IR.Words>, v_4: Scope.ArenaGlobalScope, v_189: IR.Names, v_191: IR.Naturals, v_193: IR.Quantities, v_197: U32, v_199: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_927:
+    case ArenaResult{v_203, +v_204}:
+      native_match_canonicalize_term_15(canonicalize_term(v_203, v_197, v_4), v_189, v_191, v_193, v_199, v_204)
 
-def native_match_canonicalize_term_17(v_964: ArenaResult<U32>, v_201: IR.Names, v_203: IR.Naturals, v_205: IR.Quantities, v_211: Ast.SourceSpan, +v_216: IR.Words) -> ArenaResult<U32>:
-  match v_964:
-    case ArenaResult{v_220, +v_221}:
-      v_224 = arena_names_start(v_201)
-      v_227 = arena_names_count(v_201)
-      v_230 = arena_naturals_start(v_203)
-      v_233 = arena_naturals_count(v_203)
-      v_236 = arena_quantities_start(v_205)
-      v_239 = arena_quantities_count(v_205)
-      v_242 = arena_words_start(v_216)
-      v_245 = arena_words_count(v_216)
-      native_match_canonicalize_term_16(arena_put_node(v_220, Arena.TermLet{v_224, v_227, v_230, v_233, v_236, v_239, v_242, v_245, v_221, v_211}))
+def native_match_canonicalize_term_17(v_928: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_928:
+    case ArenaResult{v_257, +v_258}:
+      {ArenaResult{v_257, v_258} : ArenaResult<U32>}
 
-def native_match_canonicalize_term_18(v_965: ArenaResult<IR.Words>, v_4: Scope.ArenaGlobalScope, v_201: IR.Names, v_203: IR.Naturals, v_205: IR.Quantities, v_209: U32, v_211: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_965:
-    case ArenaResult{v_215, +v_216}:
-      native_match_canonicalize_term_17(canonicalize_term(v_215, v_209, v_4), v_201, v_203, v_205, v_211, v_216)
+def native_match_canonicalize_term_18(v_929: ArenaResult<U32>, v_248: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_929:
+    case ArenaResult{v_252, +v_253}:
+      native_match_canonicalize_term_17(arena_put_node(v_252, Arena.TermType{v_253, v_248}))
 
-def native_match_canonicalize_term_19(v_966: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_966:
-    case ArenaResult{v_269, +v_270}:
-      {ArenaResult{v_269, v_270} : ArenaResult<U32>}
+def native_match_canonicalize_term_19(v_930: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_930:
+    case ArenaResult{v_274, +v_275}:
+      {ArenaResult{v_274, v_275} : ArenaResult<U32>}
 
-def native_match_canonicalize_term_20(v_967: ArenaResult<U32>, v_260: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_967:
-    case ArenaResult{v_264, +v_265}:
-      native_match_canonicalize_term_19(arena_put_node(v_264, Arena.TermType{v_265, v_260}))
+def native_match_canonicalize_term_20(v_931: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_931:
+    case ArenaResult{v_303, +v_304}:
+      {ArenaResult{v_303, v_304} : ArenaResult<U32>}
 
-def native_match_canonicalize_term_21(v_968: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_968:
-    case ArenaResult{v_286, +v_287}:
-      {ArenaResult{v_286, v_287} : ArenaResult<U32>}
+def native_match_canonicalize_term_21(v_932: ArenaResult<U32>, v_289: Ast.SourceSpan, +v_294: U32) -> ArenaResult<U32>:
+  match v_932:
+    case ArenaResult{v_298, +v_299}:
+      native_match_canonicalize_term_20(arena_put_node(v_298, Arena.TermMin{v_294, v_299, v_289}))
 
-def native_match_canonicalize_term_22(v_969: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_969:
-    case ArenaResult{v_315, +v_316}:
-      {ArenaResult{v_315, v_316} : ArenaResult<U32>}
+def native_match_canonicalize_term_22(v_933: ArenaResult<U32>, v_4: Scope.ArenaGlobalScope, v_287: U32, v_289: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_933:
+    case ArenaResult{v_293, +v_294}:
+      native_match_canonicalize_term_21(canonicalize_term(v_293, v_287, v_4), v_289, v_294)
 
-def native_match_canonicalize_term_23(v_970: ArenaResult<U32>, v_301: Ast.SourceSpan, +v_306: U32) -> ArenaResult<U32>:
-  match v_970:
-    case ArenaResult{v_310, +v_311}:
-      native_match_canonicalize_term_22(arena_put_node(v_310, Arena.TermMin{v_306, v_311, v_301}))
+def native_match_canonicalize_term_23(v_934: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_934:
+    case ArenaResult{v_344, +v_345}:
+      {ArenaResult{v_344, v_345} : ArenaResult<U32>}
 
-def native_match_canonicalize_term_24(v_971: ArenaResult<U32>, v_4: Scope.ArenaGlobalScope, v_299: U32, v_301: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_971:
-    case ArenaResult{v_305, +v_306}:
-      native_match_canonicalize_term_23(canonicalize_term(v_305, v_299, v_4), v_301, v_306)
+def native_match_canonicalize_term_24(v_935: ArenaResult<U32>, v_320: Ast.Quantity, v_322: U32, v_324: Nat, v_330: Ast.SourceSpan, +v_335: U32) -> ArenaResult<U32>:
+  match v_935:
+    case ArenaResult{v_339, +v_340}:
+      native_match_canonicalize_term_23(arena_put_node(v_339, Arena.TermAll{v_320, v_322, v_324, v_335, v_340, v_330}))
 
-def native_match_canonicalize_term_25(v_972: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_972:
-    case ArenaResult{v_368, +v_369}:
-      {ArenaResult{v_368, v_369} : ArenaResult<U32>}
-
-def native_match_canonicalize_term_26(v_973: ArenaResult<U32>, v_339: Ast.Quantity, v_343: Nat, v_349: Ast.SourceSpan, +v_354: U32, +v_359: U32) -> ArenaResult<U32>:
-  match v_973:
-    case ArenaResult{v_363, +v_364}:
-      native_match_canonicalize_term_25(arena_put_node(v_363, Arena.TermAll{v_339, v_364, v_343, v_354, v_359, v_349}))
-
-def native_match_canonicalize_term_27(v_974: ArenaResult<U32>, v_339: Ast.Quantity, v_341: String, v_343: Nat, v_349: Ast.SourceSpan, +v_354: U32) -> ArenaResult<U32>:
-  match v_974:
-    case ArenaResult{v_358, +v_359}:
-      native_match_canonicalize_term_26(arena_name(v_358, v_341), v_339, v_343, v_349, v_354, v_359)
-
-def native_match_canonicalize_term_28(v_975: ArenaResult<U32>, v_4: Scope.ArenaGlobalScope, v_339: Ast.Quantity, v_341: String, v_343: Nat, v_347: U32, v_349: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_975:
-    case ArenaResult{v_353, +v_354}:
-      native_match_canonicalize_term_27(canonicalize_term(v_353, v_347, v_4), v_339, v_341, v_343, v_349, v_354)
-
-def native_match_canonicalize_term_29(v_976: ArenaResult<String>, v_4: Scope.ArenaGlobalScope, +v_325: Ast.Quantity, +v_327: Nat, +v_328: U32, +v_329: U32, +v_330: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_976:
+def native_match_canonicalize_term_25(v_936: ArenaResult<U32>, v_4: Scope.ArenaGlobalScope, v_320: Ast.Quantity, v_322: U32, v_324: Nat, v_328: U32, v_330: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_936:
     case ArenaResult{v_334, +v_335}:
-      +v_337 = v_335
-      v_339 = v_325
-      v_341 = v_337
-      v_343 = v_327
-      v_345 = v_328
-      v_347 = v_329
-      v_349 = v_330
-      native_match_canonicalize_term_28(canonicalize_term(v_334, v_345, v_4), v_4, v_339, v_341, v_343, v_347, v_349)
+      native_match_canonicalize_term_24(canonicalize_term(v_334, v_328, v_4), v_320, v_322, v_324, v_330, v_335)
 
-def native_match_canonicalize_term_30(v_977: ArenaResult<U32>) -> ArenaResult<U32>:
+def native_match_canonicalize_term_26(v_937: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_937:
+    case ArenaResult{v_376, +v_377}:
+      {ArenaResult{v_376, v_377} : ArenaResult<U32>}
+
+def native_match_canonicalize_term_27(v_938: ArenaResult<U32>, v_359: Maybe<&2, Ast.Quantity>, v_361: U32, v_363: Nat, v_367: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_938:
+    case ArenaResult{v_371, +v_372}:
+      native_match_canonicalize_term_26(arena_put_node(v_371, Arena.TermLam{v_359, v_361, v_363, v_372, v_367}))
+
+def native_match_canonicalize_term_28(v_939: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_939:
+    case ArenaResult{v_405, +v_406}:
+      {ArenaResult{v_405, v_406} : ArenaResult<U32>}
+
+def native_match_canonicalize_term_29(v_940: ArenaResult<U32>, v_391: Ast.SourceSpan, +v_396: U32) -> ArenaResult<U32>:
+  match v_940:
+    case ArenaResult{v_400, +v_401}:
+      native_match_canonicalize_term_28(arena_put_node(v_400, Arena.TermApp{v_396, v_401, v_391}))
+
+def native_match_canonicalize_term_30(v_941: ArenaResult<U32>, v_4: Scope.ArenaGlobalScope, v_389: U32, v_391: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_941:
+    case ArenaResult{v_395, +v_396}:
+      native_match_canonicalize_term_29(canonicalize_term(v_395, v_389, v_4), v_391, v_396)
+
+def native_match_canonicalize_term_31(v_942: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_942:
+    case ArenaResult{v_444, +v_445}:
+      {ArenaResult{v_444, v_445} : ArenaResult<U32>}
+
+def native_match_canonicalize_term_32(v_943: ArenaResult<IR.Words>, v_424: Ast.SourceSpan, +v_429: U32) -> ArenaResult<U32>:
+  match v_943:
+    case ArenaResult{v_433, +v_434}:
+      v_437 = arena_words_start(v_434)
+      v_440 = arena_words_count(v_434)
+      native_match_canonicalize_term_31(arena_put_node(v_433, Arena.TermFill{v_429, v_437, v_440, v_424}))
+
+def native_match_canonicalize_term_33(v_944: ArenaResult<U32>, v_4: Scope.ArenaGlobalScope, v_422: IR.Words, v_424: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_944:
+    case ArenaResult{v_428, +v_429}:
+      native_match_canonicalize_term_32(canonicalize_terms(v_428, v_422, v_4), v_424, v_429)
+
+def native_match_canonicalize_term_34(v_945: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_945:
+    case ArenaResult{v_483, +v_484}:
+      {ArenaResult{v_483, v_484} : ArenaResult<U32>}
+
+def native_match_canonicalize_term_35(v_946: ArenaResult<IR.Words>, v_463: Ast.SourceSpan, +v_468: U32) -> ArenaResult<U32>:
+  match v_946:
+    case ArenaResult{v_472, +v_473}:
+      v_476 = arena_words_start(v_473)
+      v_479 = arena_words_count(v_473)
+      native_match_canonicalize_term_34(arena_put_node(v_472, Arena.TermPlus{v_468, v_476, v_479, v_463}))
+
+def native_match_canonicalize_term_36(v_947: ArenaResult<U32>, v_4: Scope.ArenaGlobalScope, v_461: IR.Words, v_463: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_947:
+    case ArenaResult{v_467, +v_468}:
+      native_match_canonicalize_term_35(canonicalize_terms(v_467, v_461, v_4), v_463, v_468)
+
+def native_match_canonicalize_term_37(v_948: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_948:
+    case ArenaResult{v_548, +v_549}:
+      {ArenaResult{v_548, v_549} : ArenaResult<U32>}
+
+def native_match_canonicalize_term_38(v_949: ArenaResult<U32>, v_517: Ast.SourceSpan, +v_522: IR.Words, +v_527: IR.Names) -> ArenaResult<U32>:
+  match v_949:
+    case ArenaResult{v_531, +v_532}:
+      v_535 = arena_words_start(v_522)
+      v_538 = arena_words_count(v_522)
+      v_541 = arena_names_start(v_527)
+      v_544 = arena_names_count(v_527)
+      native_match_canonicalize_term_37(arena_put_node(v_531, Arena.TermAdt{v_532, v_535, v_538, v_541, v_544, v_517}))
+
+def native_match_canonicalize_term_39(v_950: ArenaResult<IR.Names>, v_4: Scope.ArenaGlobalScope, v_511: String, v_517: Ast.SourceSpan, +v_522: IR.Words) -> ArenaResult<U32>:
+  match v_950:
+    case ArenaResult{v_526, +v_527}:
+      native_match_canonicalize_term_38(arena_name(v_526, Scope.canonical_name(v_511, v_4)), v_517, v_522, v_527)
+
+def native_match_canonicalize_term_40(v_951: ArenaResult<IR.Words>, v_4: Scope.ArenaGlobalScope, v_511: String, v_515: IR.Names, v_517: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_951:
+    case ArenaResult{v_521, +v_522}:
+      native_match_canonicalize_term_39(canonicalize_strings(v_521, v_515, v_4), v_4, v_511, v_517, v_522)
+
+def native_match_canonicalize_term_41(v_952: ArenaResult<String>, v_4: Scope.ArenaGlobalScope, +v_494: U32, +v_495: U32, +v_496: U32, +v_497: U32, +v_498: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_952:
+    case ArenaResult{v_502, +v_503}:
+      +v_505 = v_503
+      +v_507 = IR.Words{v_494, v_495}
+      +v_509 = IR.Names{v_496, v_497}
+      v_511 = v_505
+      v_513 = v_507
+      v_515 = v_509
+      v_517 = v_498
+      native_match_canonicalize_term_40(canonicalize_terms(v_502, v_513, v_4), v_4, v_511, v_515, v_517)
+
+def native_match_canonicalize_term_42(v_953: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_953:
+    case ArenaResult{v_602, +v_603}:
+      {ArenaResult{v_602, v_603} : ArenaResult<U32>}
+
+def native_match_canonicalize_term_43(v_954: ArenaResult<U32>, v_582: Ast.SourceSpan, +v_587: IR.Words) -> ArenaResult<U32>:
+  match v_954:
+    case ArenaResult{v_591, +v_592}:
+      v_595 = arena_words_start(v_587)
+      v_598 = arena_words_count(v_587)
+      native_match_canonicalize_term_42(arena_put_node(v_591, Arena.TermCtr{v_592, v_595, v_598, v_582}))
+
+def native_match_canonicalize_term_44(v_955: ArenaResult<IR.Words>, v_4: Scope.ArenaGlobalScope, v_578: String, v_582: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_955:
+    case ArenaResult{v_586, +v_587}:
+      native_match_canonicalize_term_43(arena_name(v_586, Scope.canonical_name(v_578, v_4)), v_582, v_587)
+
+def native_match_canonicalize_term_45(v_956: ArenaResult<String>, v_4: Scope.ArenaGlobalScope, +v_565: U32, +v_566: U32, +v_567: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_956:
+    case ArenaResult{v_571, +v_572}:
+      +v_574 = v_572
+      +v_576 = IR.Words{v_565, v_566}
+      v_578 = v_574
+      v_580 = v_576
+      v_582 = v_567
+      native_match_canonicalize_term_44(canonicalize_terms(v_571, v_580, v_4), v_4, v_578, v_582)
+
+def native_match_canonicalize_term_46(v_957: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_957:
+    case ArenaResult{v_647, +v_648}:
+      {ArenaResult{v_647, v_648} : ArenaResult<U32>}
+
+def native_match_canonicalize_term_47(v_958: ArenaResult<U32>, v_628: Ast.SourceSpan, +v_633: U32, +v_638: U32) -> ArenaResult<U32>:
+  match v_958:
+    case ArenaResult{v_642, +v_643}:
+      native_match_canonicalize_term_46(arena_put_node(v_642, Arena.TermMat{v_643, v_633, v_638, v_628}))
+
+def native_match_canonicalize_term_48(v_959: ArenaResult<U32>, v_4: Scope.ArenaGlobalScope, v_622: String, v_628: Ast.SourceSpan, +v_633: U32) -> ArenaResult<U32>:
+  match v_959:
+    case ArenaResult{v_637, +v_638}:
+      native_match_canonicalize_term_47(arena_name(v_637, Scope.canonical_name(v_622, v_4)), v_628, v_633, v_638)
+
+def native_match_canonicalize_term_49(v_960: ArenaResult<U32>, v_4: Scope.ArenaGlobalScope, v_622: String, v_626: U32, v_628: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_960:
+    case ArenaResult{v_632, +v_633}:
+      native_match_canonicalize_term_48(canonicalize_term(v_632, v_626, v_4), v_4, v_622, v_628, v_633)
+
+def native_match_canonicalize_term_50(v_961: ArenaResult<String>, v_4: Scope.ArenaGlobalScope, +v_611: U32, +v_612: U32, +v_613: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_961:
+    case ArenaResult{v_617, +v_618}:
+      +v_620 = v_618
+      v_622 = v_620
+      v_624 = v_611
+      v_626 = v_612
+      v_628 = v_613
+      native_match_canonicalize_term_49(canonicalize_term(v_617, v_624, v_4), v_4, v_622, v_626, v_628)
+
+def native_match_canonicalize_term_51(v_962: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_962:
+    case ArenaResult{v_689, +v_690}:
+      {ArenaResult{v_689, v_690} : ArenaResult<U32>}
+
+def native_match_canonicalize_term_52(v_963: ArenaResult<U32>, v_670: Ast.SourceSpan, +v_675: U32, +v_680: U32) -> ArenaResult<U32>:
+  match v_963:
+    case ArenaResult{v_684, +v_685}:
+      native_match_canonicalize_term_51(arena_put_node(v_684, Arena.TermEqual{v_675, v_680, v_685, v_670}))
+
+def native_match_canonicalize_term_53(v_964: ArenaResult<U32>, v_4: Scope.ArenaGlobalScope, v_668: U32, v_670: Ast.SourceSpan, +v_675: U32) -> ArenaResult<U32>:
+  match v_964:
+    case ArenaResult{v_679, +v_680}:
+      native_match_canonicalize_term_52(canonicalize_term(v_679, v_668, v_4), v_670, v_675, v_680)
+
+def native_match_canonicalize_term_54(v_965: ArenaResult<U32>, v_4: Scope.ArenaGlobalScope, v_666: U32, v_668: U32, v_670: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_965:
+    case ArenaResult{v_674, +v_675}:
+      native_match_canonicalize_term_53(canonicalize_term(v_674, v_666, v_4), v_4, v_668, v_670, v_675)
+
+def native_match_canonicalize_term_55(v_966: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_966:
+    case ArenaResult{v_731, +v_732}:
+      {ArenaResult{v_731, v_732} : ArenaResult<U32>}
+
+def native_match_canonicalize_term_56(v_967: ArenaResult<U32>, v_712: Ast.SourceSpan, +v_717: U32, +v_722: U32) -> ArenaResult<U32>:
+  match v_967:
+    case ArenaResult{v_726, +v_727}:
+      native_match_canonicalize_term_55(arena_put_node(v_726, Arena.TermRewrite{v_717, v_722, v_727, v_712}))
+
+def native_match_canonicalize_term_57(v_968: ArenaResult<U32>, v_4: Scope.ArenaGlobalScope, v_710: U32, v_712: Ast.SourceSpan, +v_717: U32) -> ArenaResult<U32>:
+  match v_968:
+    case ArenaResult{v_721, +v_722}:
+      native_match_canonicalize_term_56(canonicalize_term(v_721, v_710, v_4), v_712, v_717, v_722)
+
+def native_match_canonicalize_term_58(v_969: ArenaResult<U32>, v_4: Scope.ArenaGlobalScope, v_708: U32, v_710: U32, v_712: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_969:
+    case ArenaResult{v_716, +v_717}:
+      native_match_canonicalize_term_57(canonicalize_term(v_716, v_708, v_4), v_4, v_710, v_712, v_717)
+
+def native_match_canonicalize_term_59(v_970: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_970:
+    case ArenaResult{v_786, +v_787}:
+      {ArenaResult{v_786, v_787} : ArenaResult<U32>}
+
+def native_match_canonicalize_term_60(v_971: ArenaResult<IR.Words>, v_760: Ast.SourceSpan, +v_765: IR.Words) -> ArenaResult<U32>:
+  match v_971:
+    case ArenaResult{v_769, +v_770}:
+      v_773 = arena_words_start(v_765)
+      v_776 = arena_words_count(v_765)
+      v_779 = arena_words_start(v_770)
+      v_782 = arena_words_count(v_770)
+      native_match_canonicalize_term_59(arena_put_node(v_769, Arena.BodyMatch{v_773, v_776, v_779, v_782, v_760}))
+
+def native_match_canonicalize_term_61(v_972: ArenaResult<IR.Words>, v_4: Scope.ArenaGlobalScope, v_758: IR.Words, v_760: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_972:
+    case ArenaResult{v_764, +v_765}:
+      native_match_canonicalize_term_60(canonicalize_terms(v_764, v_758, v_4), v_760, v_765)
+
+def native_match_canonicalize_term_62(v_973: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_973:
+    case ArenaResult{v_825, +v_826}:
+      {ArenaResult{v_825, v_826} : ArenaResult<U32>}
+
+def native_match_canonicalize_term_63(v_974: ArenaResult<U32>, v_805: Ast.SourceSpan, +v_810: IR.Words) -> ArenaResult<U32>:
+  match v_974:
+    case ArenaResult{v_814, +v_815}:
+      v_818 = arena_words_start(v_810)
+      v_821 = arena_words_count(v_810)
+      native_match_canonicalize_term_62(arena_put_node(v_814, Arena.BodyCase{v_818, v_821, v_815, v_805}))
+
+def native_match_canonicalize_term_64(v_975: ArenaResult<IR.Words>, v_4: Scope.ArenaGlobalScope, v_803: U32, v_805: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_975:
+    case ArenaResult{v_809, +v_810}:
+      native_match_canonicalize_term_63(canonicalize_term(v_809, v_803, v_4), v_805, v_810)
+
+def native_match_canonicalize_term_65(v_976: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_976:
+    case ArenaResult{v_887, +v_888}:
+      {ArenaResult{v_887, v_888} : ArenaResult<U32>}
+
+def native_match_canonicalize_term_66(v_977: ArenaResult<U32>, v_850: Ast.Quantity, v_856: Ast.SourceSpan, +v_861: IR.Words, +v_866: IR.Words) -> ArenaResult<U32>:
   match v_977:
-    case ArenaResult{v_412, +v_413}:
-      {ArenaResult{v_412, v_413} : ArenaResult<U32>}
+    case ArenaResult{v_870, +v_871}:
+      v_874 = arena_words_start(v_861)
+      v_877 = arena_words_count(v_861)
+      v_880 = arena_words_start(v_866)
+      v_883 = arena_words_count(v_866)
+      native_match_canonicalize_term_65(arena_put_node(v_870, Arena.BodyLocal{v_874, v_877, v_850, v_880, v_883, v_871, v_856}))
 
-def native_match_canonicalize_term_31(v_978: ArenaResult<U32>, v_390: Maybe<&2, Ast.Quantity>, v_394: Nat, v_398: Ast.SourceSpan, +v_403: U32) -> ArenaResult<U32>:
+def native_match_canonicalize_term_67(v_978: ArenaResult<IR.Words>, v_4: Scope.ArenaGlobalScope, v_850: Ast.Quantity, v_854: U32, v_856: Ast.SourceSpan, +v_861: IR.Words) -> ArenaResult<U32>:
   match v_978:
-    case ArenaResult{v_407, +v_408}:
-      native_match_canonicalize_term_30(arena_put_node(v_407, Arena.TermLam{v_390, v_408, v_394, v_403, v_398}))
+    case ArenaResult{v_865, +v_866}:
+      native_match_canonicalize_term_66(canonicalize_term(v_865, v_854, v_4), v_850, v_856, v_861, v_866)
 
-def native_match_canonicalize_term_32(v_979: ArenaResult<U32>, v_390: Maybe<&2, Ast.Quantity>, v_392: String, v_394: Nat, v_398: Ast.SourceSpan) -> ArenaResult<U32>:
+def native_match_canonicalize_term_68(v_979: ArenaResult<IR.Words>, v_4: Scope.ArenaGlobalScope, v_850: Ast.Quantity, v_852: IR.Words, v_854: U32, v_856: Ast.SourceSpan) -> ArenaResult<U32>:
   match v_979:
-    case ArenaResult{v_402, +v_403}:
-      native_match_canonicalize_term_31(arena_name(v_402, v_392), v_390, v_394, v_398, v_403)
+    case ArenaResult{v_860, +v_861}:
+      native_match_canonicalize_term_67(canonicalize_terms(v_860, v_852, v_4), v_4, v_850, v_854, v_856, v_861)
 
-def native_match_canonicalize_term_33(v_980: ArenaResult<String>, v_4: Scope.ArenaGlobalScope, +v_377: Maybe<&2, Ast.Quantity>, +v_379: Nat, +v_380: U32, +v_381: Ast.SourceSpan) -> ArenaResult<U32>:
+def native_match_canonicalize_term_69(v_980: ArenaResult<U32>) -> ArenaResult<U32>:
   match v_980:
-    case ArenaResult{v_385, +v_386}:
-      +v_388 = v_386
-      v_390 = v_377
-      v_392 = v_388
-      v_394 = v_379
-      v_396 = v_380
-      v_398 = v_381
-      native_match_canonicalize_term_32(canonicalize_term(v_385, v_396, v_4), v_390, v_392, v_394, v_398)
+    case ArenaResult{v_907, +v_908}:
+      {ArenaResult{v_907, v_908} : ArenaResult<U32>}
 
-def native_match_canonicalize_term_34(v_981: ArenaResult<U32>) -> ArenaResult<U32>:
+def native_match_canonicalize_term_70(v_981: ArenaResult<U32>, v_898: Ast.SourceSpan) -> ArenaResult<U32>:
   match v_981:
-    case ArenaResult{v_441, +v_442}:
-      {ArenaResult{v_441, v_442} : ArenaResult<U32>}
+    case ArenaResult{v_902, +v_903}:
+      native_match_canonicalize_term_69(arena_put_node(v_902, Arena.BodyReply{v_903, v_898}))
 
-def native_match_canonicalize_term_35(v_982: ArenaResult<U32>, v_427: Ast.SourceSpan, +v_432: U32) -> ArenaResult<U32>:
-  match v_982:
-    case ArenaResult{v_436, +v_437}:
-      native_match_canonicalize_term_34(arena_put_node(v_436, Arena.TermApp{v_432, v_437, v_427}))
-
-def native_match_canonicalize_term_36(v_983: ArenaResult<U32>, v_4: Scope.ArenaGlobalScope, v_425: U32, v_427: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_983:
-    case ArenaResult{v_431, +v_432}:
-      native_match_canonicalize_term_35(canonicalize_term(v_431, v_425, v_4), v_427, v_432)
-
-def native_match_canonicalize_term_37(v_984: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_984:
-    case ArenaResult{v_480, +v_481}:
-      {ArenaResult{v_480, v_481} : ArenaResult<U32>}
-
-def native_match_canonicalize_term_38(v_985: ArenaResult<IR.Words>, v_460: Ast.SourceSpan, +v_465: U32) -> ArenaResult<U32>:
-  match v_985:
-    case ArenaResult{v_469, +v_470}:
-      v_473 = arena_words_start(v_470)
-      v_476 = arena_words_count(v_470)
-      native_match_canonicalize_term_37(arena_put_node(v_469, Arena.TermFill{v_465, v_473, v_476, v_460}))
-
-def native_match_canonicalize_term_39(v_986: ArenaResult<U32>, v_4: Scope.ArenaGlobalScope, v_458: IR.Words, v_460: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_986:
-    case ArenaResult{v_464, +v_465}:
-      native_match_canonicalize_term_38(canonicalize_terms(v_464, v_458, v_4), v_460, v_465)
-
-def native_match_canonicalize_term_40(v_987: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_987:
-    case ArenaResult{v_519, +v_520}:
-      {ArenaResult{v_519, v_520} : ArenaResult<U32>}
-
-def native_match_canonicalize_term_41(v_988: ArenaResult<IR.Words>, v_499: Ast.SourceSpan, +v_504: U32) -> ArenaResult<U32>:
-  match v_988:
-    case ArenaResult{v_508, +v_509}:
-      v_512 = arena_words_start(v_509)
-      v_515 = arena_words_count(v_509)
-      native_match_canonicalize_term_40(arena_put_node(v_508, Arena.TermPlus{v_504, v_512, v_515, v_499}))
-
-def native_match_canonicalize_term_42(v_989: ArenaResult<U32>, v_4: Scope.ArenaGlobalScope, v_497: IR.Words, v_499: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_989:
-    case ArenaResult{v_503, +v_504}:
-      native_match_canonicalize_term_41(canonicalize_terms(v_503, v_497, v_4), v_499, v_504)
-
-def native_match_canonicalize_term_43(v_990: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_990:
-    case ArenaResult{v_584, +v_585}:
-      {ArenaResult{v_584, v_585} : ArenaResult<U32>}
-
-def native_match_canonicalize_term_44(v_991: ArenaResult<U32>, v_553: Ast.SourceSpan, +v_558: IR.Words, +v_563: IR.Names) -> ArenaResult<U32>:
-  match v_991:
-    case ArenaResult{v_567, +v_568}:
-      v_571 = arena_words_start(v_558)
-      v_574 = arena_words_count(v_558)
-      v_577 = arena_names_start(v_563)
-      v_580 = arena_names_count(v_563)
-      native_match_canonicalize_term_43(arena_put_node(v_567, Arena.TermAdt{v_568, v_571, v_574, v_577, v_580, v_553}))
-
-def native_match_canonicalize_term_45(v_992: ArenaResult<IR.Names>, v_4: Scope.ArenaGlobalScope, v_547: String, v_553: Ast.SourceSpan, +v_558: IR.Words) -> ArenaResult<U32>:
-  match v_992:
-    case ArenaResult{v_562, +v_563}:
-      native_match_canonicalize_term_44(arena_name(v_562, Scope.canonical_name(v_547, v_4)), v_553, v_558, v_563)
-
-def native_match_canonicalize_term_46(v_993: ArenaResult<IR.Words>, v_4: Scope.ArenaGlobalScope, v_547: String, v_551: IR.Names, v_553: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_993:
-    case ArenaResult{v_557, +v_558}:
-      native_match_canonicalize_term_45(canonicalize_strings(v_557, v_551, v_4), v_4, v_547, v_553, v_558)
-
-def native_match_canonicalize_term_47(v_994: ArenaResult<String>, v_4: Scope.ArenaGlobalScope, +v_530: U32, +v_531: U32, +v_532: U32, +v_533: U32, +v_534: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_994:
-    case ArenaResult{v_538, +v_539}:
-      +v_541 = v_539
-      +v_543 = IR.Words{v_530, v_531}
-      +v_545 = IR.Names{v_532, v_533}
-      v_547 = v_541
-      v_549 = v_543
-      v_551 = v_545
-      v_553 = v_534
-      native_match_canonicalize_term_46(canonicalize_terms(v_538, v_549, v_4), v_4, v_547, v_551, v_553)
-
-def native_match_canonicalize_term_48(v_995: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_995:
-    case ArenaResult{v_638, +v_639}:
-      {ArenaResult{v_638, v_639} : ArenaResult<U32>}
-
-def native_match_canonicalize_term_49(v_996: ArenaResult<U32>, v_618: Ast.SourceSpan, +v_623: IR.Words) -> ArenaResult<U32>:
-  match v_996:
-    case ArenaResult{v_627, +v_628}:
-      v_631 = arena_words_start(v_623)
-      v_634 = arena_words_count(v_623)
-      native_match_canonicalize_term_48(arena_put_node(v_627, Arena.TermCtr{v_628, v_631, v_634, v_618}))
-
-def native_match_canonicalize_term_50(v_997: ArenaResult<IR.Words>, v_4: Scope.ArenaGlobalScope, v_614: String, v_618: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_997:
-    case ArenaResult{v_622, +v_623}:
-      native_match_canonicalize_term_49(arena_name(v_622, Scope.canonical_name(v_614, v_4)), v_618, v_623)
-
-def native_match_canonicalize_term_51(v_998: ArenaResult<String>, v_4: Scope.ArenaGlobalScope, +v_601: U32, +v_602: U32, +v_603: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_998:
-    case ArenaResult{v_607, +v_608}:
-      +v_610 = v_608
-      +v_612 = IR.Words{v_601, v_602}
-      v_614 = v_610
-      v_616 = v_612
-      v_618 = v_603
-      native_match_canonicalize_term_50(canonicalize_terms(v_607, v_616, v_4), v_4, v_614, v_618)
-
-def native_match_canonicalize_term_52(v_999: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_999:
-    case ArenaResult{v_683, +v_684}:
-      {ArenaResult{v_683, v_684} : ArenaResult<U32>}
-
-def native_match_canonicalize_term_53(v_1000: ArenaResult<U32>, v_664: Ast.SourceSpan, +v_669: U32, +v_674: U32) -> ArenaResult<U32>:
-  match v_1000:
-    case ArenaResult{v_678, +v_679}:
-      native_match_canonicalize_term_52(arena_put_node(v_678, Arena.TermMat{v_679, v_669, v_674, v_664}))
-
-def native_match_canonicalize_term_54(v_1001: ArenaResult<U32>, v_4: Scope.ArenaGlobalScope, v_658: String, v_664: Ast.SourceSpan, +v_669: U32) -> ArenaResult<U32>:
-  match v_1001:
-    case ArenaResult{v_673, +v_674}:
-      native_match_canonicalize_term_53(arena_name(v_673, Scope.canonical_name(v_658, v_4)), v_664, v_669, v_674)
-
-def native_match_canonicalize_term_55(v_1002: ArenaResult<U32>, v_4: Scope.ArenaGlobalScope, v_658: String, v_662: U32, v_664: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1002:
-    case ArenaResult{v_668, +v_669}:
-      native_match_canonicalize_term_54(canonicalize_term(v_668, v_662, v_4), v_4, v_658, v_664, v_669)
-
-def native_match_canonicalize_term_56(v_1003: ArenaResult<String>, v_4: Scope.ArenaGlobalScope, +v_647: U32, +v_648: U32, +v_649: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1003:
-    case ArenaResult{v_653, +v_654}:
-      +v_656 = v_654
-      v_658 = v_656
-      v_660 = v_647
-      v_662 = v_648
-      v_664 = v_649
-      native_match_canonicalize_term_55(canonicalize_term(v_653, v_660, v_4), v_4, v_658, v_662, v_664)
-
-def native_match_canonicalize_term_57(v_1004: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_1004:
-    case ArenaResult{v_725, +v_726}:
-      {ArenaResult{v_725, v_726} : ArenaResult<U32>}
-
-def native_match_canonicalize_term_58(v_1005: ArenaResult<U32>, v_706: Ast.SourceSpan, +v_711: U32, +v_716: U32) -> ArenaResult<U32>:
-  match v_1005:
-    case ArenaResult{v_720, +v_721}:
-      native_match_canonicalize_term_57(arena_put_node(v_720, Arena.TermEqual{v_711, v_716, v_721, v_706}))
-
-def native_match_canonicalize_term_59(v_1006: ArenaResult<U32>, v_4: Scope.ArenaGlobalScope, v_704: U32, v_706: Ast.SourceSpan, +v_711: U32) -> ArenaResult<U32>:
-  match v_1006:
-    case ArenaResult{v_715, +v_716}:
-      native_match_canonicalize_term_58(canonicalize_term(v_715, v_704, v_4), v_706, v_711, v_716)
-
-def native_match_canonicalize_term_60(v_1007: ArenaResult<U32>, v_4: Scope.ArenaGlobalScope, v_702: U32, v_704: U32, v_706: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1007:
-    case ArenaResult{v_710, +v_711}:
-      native_match_canonicalize_term_59(canonicalize_term(v_710, v_702, v_4), v_4, v_704, v_706, v_711)
-
-def native_match_canonicalize_term_61(v_1008: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_1008:
-    case ArenaResult{v_767, +v_768}:
-      {ArenaResult{v_767, v_768} : ArenaResult<U32>}
-
-def native_match_canonicalize_term_62(v_1009: ArenaResult<U32>, v_748: Ast.SourceSpan, +v_753: U32, +v_758: U32) -> ArenaResult<U32>:
-  match v_1009:
-    case ArenaResult{v_762, +v_763}:
-      native_match_canonicalize_term_61(arena_put_node(v_762, Arena.TermRewrite{v_753, v_758, v_763, v_748}))
-
-def native_match_canonicalize_term_63(v_1010: ArenaResult<U32>, v_4: Scope.ArenaGlobalScope, v_746: U32, v_748: Ast.SourceSpan, +v_753: U32) -> ArenaResult<U32>:
-  match v_1010:
-    case ArenaResult{v_757, +v_758}:
-      native_match_canonicalize_term_62(canonicalize_term(v_757, v_746, v_4), v_748, v_753, v_758)
-
-def native_match_canonicalize_term_64(v_1011: ArenaResult<U32>, v_4: Scope.ArenaGlobalScope, v_744: U32, v_746: U32, v_748: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1011:
-    case ArenaResult{v_752, +v_753}:
-      native_match_canonicalize_term_63(canonicalize_term(v_752, v_744, v_4), v_4, v_746, v_748, v_753)
-
-def native_match_canonicalize_term_65(v_1012: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_1012:
-    case ArenaResult{v_822, +v_823}:
-      {ArenaResult{v_822, v_823} : ArenaResult<U32>}
-
-def native_match_canonicalize_term_66(v_1013: ArenaResult<IR.Words>, v_796: Ast.SourceSpan, +v_801: IR.Words) -> ArenaResult<U32>:
-  match v_1013:
-    case ArenaResult{v_805, +v_806}:
-      v_809 = arena_words_start(v_801)
-      v_812 = arena_words_count(v_801)
-      v_815 = arena_words_start(v_806)
-      v_818 = arena_words_count(v_806)
-      native_match_canonicalize_term_65(arena_put_node(v_805, Arena.BodyMatch{v_809, v_812, v_815, v_818, v_796}))
-
-def native_match_canonicalize_term_67(v_1014: ArenaResult<IR.Words>, v_4: Scope.ArenaGlobalScope, v_794: IR.Words, v_796: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1014:
-    case ArenaResult{v_800, +v_801}:
-      native_match_canonicalize_term_66(canonicalize_terms(v_800, v_794, v_4), v_796, v_801)
-
-def native_match_canonicalize_term_68(v_1015: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_1015:
-    case ArenaResult{v_861, +v_862}:
-      {ArenaResult{v_861, v_862} : ArenaResult<U32>}
-
-def native_match_canonicalize_term_69(v_1016: ArenaResult<U32>, v_841: Ast.SourceSpan, +v_846: IR.Words) -> ArenaResult<U32>:
-  match v_1016:
-    case ArenaResult{v_850, +v_851}:
-      v_854 = arena_words_start(v_846)
-      v_857 = arena_words_count(v_846)
-      native_match_canonicalize_term_68(arena_put_node(v_850, Arena.BodyCase{v_854, v_857, v_851, v_841}))
-
-def native_match_canonicalize_term_70(v_1017: ArenaResult<IR.Words>, v_4: Scope.ArenaGlobalScope, v_839: U32, v_841: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1017:
-    case ArenaResult{v_845, +v_846}:
-      native_match_canonicalize_term_69(canonicalize_term(v_845, v_839, v_4), v_841, v_846)
-
-def native_match_canonicalize_term_71(v_1018: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_1018:
-    case ArenaResult{v_923, +v_924}:
-      {ArenaResult{v_923, v_924} : ArenaResult<U32>}
-
-def native_match_canonicalize_term_72(v_1019: ArenaResult<U32>, v_886: Ast.Quantity, v_892: Ast.SourceSpan, +v_897: IR.Words, +v_902: IR.Words) -> ArenaResult<U32>:
-  match v_1019:
-    case ArenaResult{v_906, +v_907}:
-      v_910 = arena_words_start(v_897)
-      v_913 = arena_words_count(v_897)
-      v_916 = arena_words_start(v_902)
-      v_919 = arena_words_count(v_902)
-      native_match_canonicalize_term_71(arena_put_node(v_906, Arena.BodyLocal{v_910, v_913, v_886, v_916, v_919, v_907, v_892}))
-
-def native_match_canonicalize_term_73(v_1020: ArenaResult<IR.Words>, v_4: Scope.ArenaGlobalScope, v_886: Ast.Quantity, v_890: U32, v_892: Ast.SourceSpan, +v_897: IR.Words) -> ArenaResult<U32>:
-  match v_1020:
-    case ArenaResult{v_901, +v_902}:
-      native_match_canonicalize_term_72(canonicalize_term(v_901, v_890, v_4), v_886, v_892, v_897, v_902)
-
-def native_match_canonicalize_term_74(v_1021: ArenaResult<IR.Words>, v_4: Scope.ArenaGlobalScope, v_886: Ast.Quantity, v_888: IR.Words, v_890: U32, v_892: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1021:
-    case ArenaResult{v_896, +v_897}:
-      native_match_canonicalize_term_73(canonicalize_terms(v_896, v_888, v_4), v_4, v_886, v_890, v_892, v_897)
-
-def native_match_canonicalize_term_75(v_1022: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_1022:
-    case ArenaResult{v_943, +v_944}:
-      {ArenaResult{v_943, v_944} : ArenaResult<U32>}
-
-def native_match_canonicalize_term_76(v_1023: ArenaResult<U32>, v_934: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1023:
-    case ArenaResult{v_938, +v_939}:
-      native_match_canonicalize_term_75(arena_put_node(v_938, Arena.BodyReply{v_939, v_934}))
-
-def native_match_canonicalize_term_77(+v_11: Arena.Node, v_3: U32, v_4: Scope.ArenaGlobalScope, v_10: ArenaStore) -> ArenaResult<U32>:
+def native_match_canonicalize_term_71(+v_11: Arena.Node, v_3: U32, v_4: Scope.ArenaGlobalScope, v_10: ArenaStore) -> ArenaResult<U32>:
   match v_11:
     case Arena.TermVar{+v_15, +v_16, +v_17}:
-      native_match_canonicalize_term_2(arena_name_text(v_10, v_15), v_16, v_17)
-    case Arena.TermRef{+v_45, +v_46}:
-      native_match_canonicalize_term_5(arena_name_text(v_10, v_45), v_4, v_46)
-    case Arena.TermBang{+v_72, +v_73}:
-      v_75 = v_72
-      v_77 = v_73
-      native_match_canonicalize_term_7(canonicalize_term(v_10, v_75, v_4), v_77)
-    case Arena.TermSub{+v_94, +v_95, +v_96, +v_97}:
-      v_99 = v_94
-      v_101 = v_95
-      v_103 = v_96
-      v_105 = v_97
-      native_match_canonicalize_term_10(canonicalize_term(v_10, v_101, v_4), v_4, v_99, v_103, v_105)
-    case Arena.TermAnn{+v_126, +v_127, +v_128}:
-      v_130 = v_126
-      v_132 = v_127
-      v_134 = v_128
-      native_match_canonicalize_term_13(canonicalize_term(v_10, v_130, v_4), v_4, v_132, v_134)
-    case Arena.TermTemplate{+v_154, +v_155}:
-      v_157 = v_154
-      v_159 = v_155
-      native_match_canonicalize_term_15(canonicalize_term(v_10, v_157, v_4), v_159)
-    case Arena.TermLet{+v_182, +v_183, +v_184, +v_185, +v_186, +v_187, +v_188, +v_189, +v_190, +v_191}:
-      +v_193 = IR.Names{v_182, v_183}
-      +v_195 = IR.Naturals{v_184, v_185}
-      +v_197 = IR.Quantities{v_186, v_187}
-      +v_199 = IR.Words{v_188, v_189}
-      v_201 = v_193
-      v_203 = v_195
-      v_205 = v_197
-      v_207 = v_199
-      v_209 = v_190
-      v_211 = v_191
-      native_match_canonicalize_term_18(canonicalize_terms(v_10, v_207, v_4), v_4, v_201, v_203, v_205, v_209, v_211)
-    case Arena.TermType{+v_255, +v_256}:
-      v_258 = v_255
-      v_260 = v_256
-      native_match_canonicalize_term_20(canonicalize_term(v_10, v_258, v_4), v_260)
+      v_19 = v_15
+      v_21 = v_16
+      v_23 = v_17
+      native_match_canonicalize_term_0(arena_put_node(v_10, Arena.TermVar{v_19, v_21, v_23}))
+    case Arena.TermRef{+v_33, +v_34}:
+      native_match_canonicalize_term_3(arena_name_text(v_10, v_33), v_4, v_34)
+    case Arena.TermBang{+v_60, +v_61}:
+      v_63 = v_60
+      v_65 = v_61
+      native_match_canonicalize_term_5(canonicalize_term(v_10, v_63, v_4), v_65)
+    case Arena.TermSub{+v_82, +v_83, +v_84, +v_85}:
+      v_87 = v_82
+      v_89 = v_83
+      v_91 = v_84
+      v_93 = v_85
+      native_match_canonicalize_term_8(canonicalize_term(v_10, v_89, v_4), v_4, v_87, v_91, v_93)
+    case Arena.TermAnn{+v_114, +v_115, +v_116}:
+      v_118 = v_114
+      v_120 = v_115
+      v_122 = v_116
+      native_match_canonicalize_term_11(canonicalize_term(v_10, v_118, v_4), v_4, v_120, v_122)
+    case Arena.TermTemplate{+v_142, +v_143}:
+      v_145 = v_142
+      v_147 = v_143
+      native_match_canonicalize_term_13(canonicalize_term(v_10, v_145, v_4), v_147)
+    case Arena.TermLet{+v_170, +v_171, +v_172, +v_173, +v_174, +v_175, +v_176, +v_177, +v_178, +v_179}:
+      +v_181 = IR.Names{v_170, v_171}
+      +v_183 = IR.Naturals{v_172, v_173}
+      +v_185 = IR.Quantities{v_174, v_175}
+      +v_187 = IR.Words{v_176, v_177}
+      v_189 = v_181
+      v_191 = v_183
+      v_193 = v_185
+      v_195 = v_187
+      v_197 = v_178
+      v_199 = v_179
+      native_match_canonicalize_term_16(canonicalize_terms(v_10, v_195, v_4), v_4, v_189, v_191, v_193, v_197, v_199)
+    case Arena.TermType{+v_243, +v_244}:
+      v_246 = v_243
+      v_248 = v_244
+      native_match_canonicalize_term_18(canonicalize_term(v_10, v_246, v_4), v_248)
     case Arena.TermQuant{}:
       {ArenaResult{v_10, v_3} : ArenaResult<U32>}
-    case Arena.TermQuantity{+v_277, +v_278}:
-      v_280 = v_277
-      v_282 = v_278
-      native_match_canonicalize_term_21(arena_put_node(v_10, Arena.TermQuantity{v_280, v_282}))
-    case Arena.TermMin{+v_293, +v_294, +v_295}:
-      v_297 = v_293
-      v_299 = v_294
-      v_301 = v_295
-      native_match_canonicalize_term_24(canonicalize_term(v_10, v_297, v_4), v_4, v_299, v_301)
-    case Arena.TermAll{+v_325, +v_326, +v_327, +v_328, +v_329, +v_330}:
-      native_match_canonicalize_term_29(arena_name_text(v_10, v_326), v_4, v_325, v_327, v_328, v_329, v_330)
-    case Arena.TermLam{+v_377, +v_378, +v_379, +v_380, +v_381}:
-      native_match_canonicalize_term_33(arena_name_text(v_10, v_378), v_4, v_377, v_379, v_380, v_381)
-    case Arena.TermApp{+v_419, +v_420, +v_421}:
-      v_423 = v_419
-      v_425 = v_420
-      v_427 = v_421
-      native_match_canonicalize_term_36(canonicalize_term(v_10, v_423, v_4), v_4, v_425, v_427)
-    case Arena.TermFill{+v_449, +v_450, +v_451, +v_452}:
-      +v_454 = IR.Words{v_450, v_451}
-      v_456 = v_449
-      v_458 = v_454
-      v_460 = v_452
-      native_match_canonicalize_term_39(canonicalize_term(v_10, v_456, v_4), v_4, v_458, v_460)
-    case Arena.TermPlus{+v_488, +v_489, +v_490, +v_491}:
-      +v_493 = IR.Words{v_489, v_490}
-      v_495 = v_488
-      v_497 = v_493
-      v_499 = v_491
-      native_match_canonicalize_term_42(canonicalize_term(v_10, v_495, v_4), v_4, v_497, v_499)
-    case Arena.TermAdt{+v_529, +v_530, +v_531, +v_532, +v_533, +v_534}:
-      native_match_canonicalize_term_47(arena_name_text(v_10, v_529), v_4, v_530, v_531, v_532, v_533, v_534)
-    case Arena.TermString{v_591, v_592, v_593}:
-      arena_put_node(v_10, Arena.TermString{v_591, string_canonical_names(v_592, v_4), v_593})
-    case Arena.TermCtr{+v_600, +v_601, +v_602, +v_603}:
-      native_match_canonicalize_term_51(arena_name_text(v_10, v_600), v_4, v_601, v_602, v_603)
-    case Arena.TermMat{+v_646, +v_647, +v_648, +v_649}:
-      native_match_canonicalize_term_56(arena_name_text(v_10, v_646), v_4, v_647, v_648, v_649)
-    case Arena.TermAbsurd{+v_688}:
+    case Arena.TermQuantity{+v_265, +v_266}:
+      v_268 = v_265
+      v_270 = v_266
+      native_match_canonicalize_term_19(arena_put_node(v_10, Arena.TermQuantity{v_268, v_270}))
+    case Arena.TermMin{+v_281, +v_282, +v_283}:
+      v_285 = v_281
+      v_287 = v_282
+      v_289 = v_283
+      native_match_canonicalize_term_22(canonicalize_term(v_10, v_285, v_4), v_4, v_287, v_289)
+    case Arena.TermAll{+v_313, +v_314, +v_315, +v_316, +v_317, +v_318}:
+      v_320 = v_313
+      v_322 = v_314
+      v_324 = v_315
+      v_326 = v_316
+      v_328 = v_317
+      v_330 = v_318
+      native_match_canonicalize_term_25(canonicalize_term(v_10, v_326, v_4), v_4, v_320, v_322, v_324, v_328, v_330)
+    case Arena.TermLam{+v_353, +v_354, +v_355, +v_356, +v_357}:
+      v_359 = v_353
+      v_361 = v_354
+      v_363 = v_355
+      v_365 = v_356
+      v_367 = v_357
+      native_match_canonicalize_term_27(canonicalize_term(v_10, v_365, v_4), v_359, v_361, v_363, v_367)
+    case Arena.TermApp{+v_383, +v_384, +v_385}:
+      v_387 = v_383
+      v_389 = v_384
+      v_391 = v_385
+      native_match_canonicalize_term_30(canonicalize_term(v_10, v_387, v_4), v_4, v_389, v_391)
+    case Arena.TermFill{+v_413, +v_414, +v_415, +v_416}:
+      +v_418 = IR.Words{v_414, v_415}
+      v_420 = v_413
+      v_422 = v_418
+      v_424 = v_416
+      native_match_canonicalize_term_33(canonicalize_term(v_10, v_420, v_4), v_4, v_422, v_424)
+    case Arena.TermPlus{+v_452, +v_453, +v_454, +v_455}:
+      +v_457 = IR.Words{v_453, v_454}
+      v_459 = v_452
+      v_461 = v_457
+      v_463 = v_455
+      native_match_canonicalize_term_36(canonicalize_term(v_10, v_459, v_4), v_4, v_461, v_463)
+    case Arena.TermAdt{+v_493, +v_494, +v_495, +v_496, +v_497, +v_498}:
+      native_match_canonicalize_term_41(arena_name_text(v_10, v_493), v_4, v_494, v_495, v_496, v_497, v_498)
+    case Arena.TermString{v_555, v_556, v_557}:
+      arena_put_node(v_10, Arena.TermString{v_555, string_canonical_names(v_556, v_4), v_557})
+    case Arena.TermCtr{+v_564, +v_565, +v_566, +v_567}:
+      native_match_canonicalize_term_45(arena_name_text(v_10, v_564), v_4, v_565, v_566, v_567)
+    case Arena.TermMat{+v_610, +v_611, +v_612, +v_613}:
+      native_match_canonicalize_term_50(arena_name_text(v_10, v_610), v_4, v_611, v_612, v_613)
+    case Arena.TermAbsurd{+v_652}:
       {ArenaResult{v_10, v_3} : ArenaResult<U32>}
-    case Arena.TermEqual{+v_695, +v_696, +v_697, +v_698}:
-      v_700 = v_695
-      v_702 = v_696
-      v_704 = v_697
-      v_706 = v_698
-      native_match_canonicalize_term_60(canonicalize_term(v_10, v_700, v_4), v_4, v_702, v_704, v_706)
-    case Arena.TermRefl{+v_730}:
+    case Arena.TermEqual{+v_659, +v_660, +v_661, +v_662}:
+      v_664 = v_659
+      v_666 = v_660
+      v_668 = v_661
+      v_670 = v_662
+      native_match_canonicalize_term_54(canonicalize_term(v_10, v_664, v_4), v_4, v_666, v_668, v_670)
+    case Arena.TermRefl{+v_694}:
       {ArenaResult{v_10, v_3} : ArenaResult<U32>}
-    case Arena.TermRewrite{+v_737, +v_738, +v_739, +v_740}:
-      v_742 = v_737
-      v_744 = v_738
-      v_746 = v_739
-      v_748 = v_740
-      native_match_canonicalize_term_64(canonicalize_term(v_10, v_742, v_4), v_4, v_744, v_746, v_748)
-    case Arena.TermHole{+v_773, +v_774}:
+    case Arena.TermRewrite{+v_701, +v_702, +v_703, +v_704}:
+      v_706 = v_701
+      v_708 = v_702
+      v_710 = v_703
+      v_712 = v_704
+      native_match_canonicalize_term_58(canonicalize_term(v_10, v_706, v_4), v_4, v_708, v_710, v_712)
+    case Arena.TermHole{+v_737, +v_738}:
       {ArenaResult{v_10, v_3} : ArenaResult<U32>}
-    case Arena.BodyMatch{+v_782, +v_783, +v_784, +v_785, +v_786}:
-      +v_788 = IR.Words{v_782, v_783}
-      +v_790 = IR.Words{v_784, v_785}
-      v_792 = v_788
-      v_794 = v_790
-      v_796 = v_786
-      native_match_canonicalize_term_67(canonicalize_terms(v_10, v_792, v_4), v_4, v_794, v_796)
-    case Arena.BodyCase{+v_830, +v_831, +v_832, +v_833}:
-      +v_835 = IR.Words{v_830, v_831}
-      v_837 = v_835
-      v_839 = v_832
-      v_841 = v_833
-      native_match_canonicalize_term_70(canonicalize_patterns(v_10, v_837, v_4), v_4, v_839, v_841)
-    case Arena.BodyLocal{+v_872, +v_873, +v_874, +v_875, +v_876, +v_877, +v_878}:
-      +v_880 = IR.Words{v_872, v_873}
-      +v_882 = IR.Words{v_875, v_876}
-      v_884 = v_880
-      v_886 = v_874
-      v_888 = v_882
-      v_890 = v_877
-      v_892 = v_878
-      native_match_canonicalize_term_74(canonicalize_patterns(v_10, v_884, v_4), v_4, v_886, v_888, v_890, v_892)
-    case Arena.BodyReply{+v_929, +v_930}:
-      v_932 = v_929
-      v_934 = v_930
-      native_match_canonicalize_term_76(canonicalize_term(v_10, v_932, v_4), v_934)
+    case Arena.BodyMatch{+v_746, +v_747, +v_748, +v_749, +v_750}:
+      +v_752 = IR.Words{v_746, v_747}
+      +v_754 = IR.Words{v_748, v_749}
+      v_756 = v_752
+      v_758 = v_754
+      v_760 = v_750
+      native_match_canonicalize_term_61(canonicalize_terms(v_10, v_756, v_4), v_4, v_758, v_760)
+    case Arena.BodyCase{+v_794, +v_795, +v_796, +v_797}:
+      +v_799 = IR.Words{v_794, v_795}
+      v_801 = v_799
+      v_803 = v_796
+      v_805 = v_797
+      native_match_canonicalize_term_64(canonicalize_patterns(v_10, v_801, v_4), v_4, v_803, v_805)
+    case Arena.BodyLocal{+v_836, +v_837, +v_838, +v_839, +v_840, +v_841, +v_842}:
+      +v_844 = IR.Words{v_836, v_837}
+      +v_846 = IR.Words{v_839, v_840}
+      v_848 = v_844
+      v_850 = v_838
+      v_852 = v_846
+      v_854 = v_841
+      v_856 = v_842
+      native_match_canonicalize_term_68(canonicalize_patterns(v_10, v_848, v_4), v_4, v_850, v_852, v_854, v_856)
+    case Arena.BodyReply{+v_893, +v_894}:
+      v_896 = v_893
+      v_898 = v_894
+      native_match_canonicalize_term_70(canonicalize_term(v_10, v_896, v_4), v_898)
 
-def native_match_canonicalize_term_78(v_1024: ArenaResult<Arena.Node>, v_3: U32, v_4: Scope.ArenaGlobalScope) -> ArenaResult<U32>:
-  match v_1024:
+def native_match_canonicalize_term_72(v_982: ArenaResult<Arena.Node>, v_3: U32, v_4: Scope.ArenaGlobalScope) -> ArenaResult<U32>:
+  match v_982:
     case ArenaResult{v_10, +v_11}:
-      native_match_canonicalize_term_77(v_11, v_3, v_4, v_10)
+      native_match_canonicalize_term_71(v_11, v_3, v_4, v_10)
 
 def canonicalize_term(v_1: ArenaStore, v_3: U32, v_4: Scope.ArenaGlobalScope) -> ArenaResult<U32>:
-  native_match_canonicalize_term_78(arena_get_node(v_1, v_3), v_3, v_4)
+  native_match_canonicalize_term_72(arena_get_node(v_1, v_3), v_3, v_4)
 
-def native_match_mat_branch_goal_view_0(v_129: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_129:
-    case ArenaResult{v_98, +v_99}:
-      {ArenaResult{v_98, v_99} : ArenaResult<U32>}
-
-def native_match_mat_branch_goal_view_1(v_130: ArenaResult<U32>, v_40: Ast.Quantity, v_44: Nat, v_46: U32, v_50: Ast.SourceSpan, v_89: U32) -> ArenaResult<U32>:
-  match v_130:
-    case ArenaResult{v_93, +v_94}:
-      native_match_mat_branch_goal_view_0(arena_put_node(v_93, Arena.TermAll{v_40, v_94, v_44, v_46, v_89, v_50}))
-
-def native_match_mat_branch_goal_view_2(v_131: ArenaResult<U32>, v_40: Ast.Quantity, v_42: String, v_44: Nat, v_46: U32, v_50: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_131:
-    case ArenaResult{v_86, +v_87}:
-      v_89 = v_87
-      native_match_mat_branch_goal_view_1(arena_name(v_86, v_42), v_40, v_44, v_46, v_50, v_89)
-
-def native_match_mat_branch_goal_view_3(v_132: ArenaResult<U32>, v_7: String, v_10: Nat, v_11: Ast.SourceSpan, v_12: Scope.ArenaGlobalScope, v_40: Ast.Quantity, v_42: String, v_44: Nat, v_46: U32, v_50: Ast.SourceSpan, v_72: IR.Words, +v_77: U32) -> ArenaResult<U32>:
-  match v_132:
+def native_match_mat_branch_goal_view_0(v_112: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_112:
     case ArenaResult{v_81, +v_82}:
-      native_match_mat_branch_goal_view_2(mat_branch_goal_view(v_81, v_77, v_82, v_7, v_72, Nat.add(v_10, 1n), v_11, v_12), v_40, v_42, v_44, v_46, v_50)
+      {ArenaResult{v_81, v_82} : ArenaResult<U32>}
 
-def native_match_mat_branch_goal_view_4(v_133: ArenaResult<U32>, v_5: U32, v_7: String, v_10: Nat, v_11: Ast.SourceSpan, v_12: Scope.ArenaGlobalScope, v_40: Ast.Quantity, v_42: String, v_44: Nat, v_46: U32, v_50: Ast.SourceSpan, v_72: IR.Words) -> ArenaResult<U32>:
-  match v_133:
-    case ArenaResult{v_76, +v_77}:
-      native_match_mat_branch_goal_view_3(core_shift(v_76, 0n, 1n, v_5), v_7, v_10, v_11, v_12, v_40, v_42, v_44, v_46, v_50, v_72, v_77)
+def native_match_mat_branch_goal_view_1(v_113: ArenaResult<U32>, v_33: Ast.Quantity, v_35: U32, v_37: Nat, v_39: U32, v_43: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_113:
+    case ArenaResult{v_74, +v_75}:
+      v_77 = v_75
+      native_match_mat_branch_goal_view_0(arena_put_node(v_74, Arena.TermAll{v_33, v_35, v_37, v_39, v_77, v_43}))
 
-def native_match_mat_branch_goal_view_5(v_134: ArenaResult<IR.Words>, v_5: U32, v_7: String, v_10: Nat, v_11: Ast.SourceSpan, v_12: Scope.ArenaGlobalScope, v_40: Ast.Quantity, v_42: String, v_44: Nat, v_46: U32, v_48: U32, v_50: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_134:
+def native_match_mat_branch_goal_view_2(v_114: ArenaResult<U32>, v_7: String, v_10: Nat, v_11: Ast.SourceSpan, v_12: Scope.ArenaGlobalScope, v_33: Ast.Quantity, v_35: U32, v_37: Nat, v_39: U32, v_43: Ast.SourceSpan, v_60: IR.Words, +v_65: U32) -> ArenaResult<U32>:
+  match v_114:
     case ArenaResult{v_69, +v_70}:
-      v_72 = v_70
-      native_match_mat_branch_goal_view_4(whnf(v_69, 64n, v_48, v_12), v_5, v_7, v_10, v_11, v_12, v_40, v_42, v_44, v_46, v_50, v_72)
+      native_match_mat_branch_goal_view_1(mat_branch_goal_view(v_69, v_65, v_70, v_7, v_60, Nat.add(v_10, 1n), v_11, v_12), v_33, v_35, v_37, v_39, v_43)
 
-def native_match_mat_branch_goal_view_6(v_135: ArenaResult<IR.Words>, v_5: U32, v_7: String, v_10: Nat, v_11: Ast.SourceSpan, v_12: Scope.ArenaGlobalScope, v_40: Ast.Quantity, v_42: String, v_44: Nat, v_46: U32, v_48: U32, v_50: Ast.SourceSpan, +v_60: U32) -> ArenaResult<U32>:
-  match v_135:
+def native_match_mat_branch_goal_view_3(v_115: ArenaResult<U32>, v_5: U32, v_7: String, v_10: Nat, v_11: Ast.SourceSpan, v_12: Scope.ArenaGlobalScope, v_33: Ast.Quantity, v_35: U32, v_37: Nat, v_39: U32, v_43: Ast.SourceSpan, v_60: IR.Words) -> ArenaResult<U32>:
+  match v_115:
     case ArenaResult{v_64, +v_65}:
-      native_match_mat_branch_goal_view_5(arena_words_cons(v_64, v_60, v_65), v_5, v_7, v_10, v_11, v_12, v_40, v_42, v_44, v_46, v_48, v_50)
+      native_match_mat_branch_goal_view_2(core_shift(v_64, 0n, 1n, v_5), v_7, v_10, v_11, v_12, v_33, v_35, v_37, v_39, v_43, v_60, v_65)
 
-def native_match_mat_branch_goal_view_7(v_136: ArenaResult<U32>, v_5: U32, v_7: String, v_8: IR.Words, v_10: Nat, v_11: Ast.SourceSpan, v_12: Scope.ArenaGlobalScope, v_40: Ast.Quantity, v_42: String, v_44: Nat, v_46: U32, v_48: U32, v_50: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_136:
-    case ArenaResult{v_59, +v_60}:
-      native_match_mat_branch_goal_view_6(shift_terms(v_59, v_8, 1n), v_5, v_7, v_10, v_11, v_12, v_40, v_42, v_44, v_46, v_48, v_50, v_60)
+def native_match_mat_branch_goal_view_4(v_116: ArenaResult<IR.Words>, v_5: U32, v_7: String, v_10: Nat, v_11: Ast.SourceSpan, v_12: Scope.ArenaGlobalScope, v_33: Ast.Quantity, v_35: U32, v_37: Nat, v_39: U32, v_41: U32, v_43: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_116:
+    case ArenaResult{v_57, +v_58}:
+      v_60 = v_58
+      native_match_mat_branch_goal_view_3(whnf(v_57, 64n, v_41, v_12), v_5, v_7, v_10, v_11, v_12, v_33, v_35, v_37, v_39, v_43, v_60)
 
-def native_match_mat_branch_goal_view_8(v_137: ArenaResult<U32>, v_5: U32, v_7: String, v_8: IR.Words, v_10: Nat, v_11: Ast.SourceSpan, v_12: Scope.ArenaGlobalScope, v_40: Ast.Quantity, v_42: String, v_44: Nat, v_46: U32, v_48: U32, v_50: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_137:
-    case ArenaResult{v_54, +v_55}:
-      native_match_mat_branch_goal_view_7(arena_put_node(v_54, Arena.TermVar{v_55, 0n, v_11}), v_5, v_7, v_8, v_10, v_11, v_12, v_40, v_42, v_44, v_46, v_48, v_50)
+def native_match_mat_branch_goal_view_5(v_117: ArenaResult<IR.Words>, v_5: U32, v_7: String, v_10: Nat, v_11: Ast.SourceSpan, v_12: Scope.ArenaGlobalScope, v_33: Ast.Quantity, v_35: U32, v_37: Nat, v_39: U32, v_41: U32, v_43: Ast.SourceSpan, +v_48: U32) -> ArenaResult<U32>:
+  match v_117:
+    case ArenaResult{v_52, +v_53}:
+      native_match_mat_branch_goal_view_4(arena_words_cons(v_52, v_48, v_53), v_5, v_7, v_10, v_11, v_12, v_33, v_35, v_37, v_39, v_41, v_43)
 
-def native_match_mat_branch_goal_view_9(v_138: ArenaResult<String>, v_5: U32, v_7: String, v_8: IR.Words, v_10: Nat, v_11: Ast.SourceSpan, v_12: Scope.ArenaGlobalScope, +v_26: Ast.Quantity, +v_28: Nat, +v_29: U32, +v_30: U32, +v_31: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_138:
-    case ArenaResult{v_35, +v_36}:
-      +v_38 = v_36
-      v_40 = v_26
-      v_42 = v_38
-      v_44 = v_28
-      v_46 = v_29
-      v_48 = v_30
-      v_50 = v_31
-      native_match_mat_branch_goal_view_8(arena_name(v_35, v_42), v_5, v_7, v_8, v_10, v_11, v_12, v_40, v_42, v_44, v_46, v_48, v_50)
+def native_match_mat_branch_goal_view_6(v_118: ArenaResult<U32>, v_5: U32, v_7: String, v_8: IR.Words, v_10: Nat, v_11: Ast.SourceSpan, v_12: Scope.ArenaGlobalScope, v_33: Ast.Quantity, v_35: U32, v_37: Nat, v_39: U32, v_41: U32, v_43: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_118:
+    case ArenaResult{v_47, +v_48}:
+      native_match_mat_branch_goal_view_5(shift_terms(v_47, v_8, 1n), v_5, v_7, v_10, v_11, v_12, v_33, v_35, v_37, v_39, v_41, v_43, v_48)
 
-def native_match_mat_branch_goal_view_10(v_139: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_139:
-    case ArenaResult{v_125, +v_126}:
-      {ArenaResult{v_125, v_126} : ArenaResult<U32>}
+def native_match_mat_branch_goal_view_7(v_119: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_119:
+    case ArenaResult{v_108, +v_109}:
+      {ArenaResult{v_108, v_109} : ArenaResult<U32>}
 
-def native_match_mat_branch_goal_view_11(v_140: ArenaResult<U32>, v_5: U32, v_10: Nat) -> ArenaResult<U32>:
-  match v_140:
-    case ArenaResult{v_118, +v_119}:
-      v_121 = v_119
-      native_match_mat_branch_goal_view_10(core_subst(v_118, v_10, v_121, v_5))
+def native_match_mat_branch_goal_view_8(v_120: ArenaResult<U32>, v_5: U32, v_10: Nat) -> ArenaResult<U32>:
+  match v_120:
+    case ArenaResult{v_101, +v_102}:
+      v_104 = v_102
+      native_match_mat_branch_goal_view_7(core_subst(v_101, v_10, v_104, v_5))
 
-def native_match_mat_branch_goal_view_12(v_141: ArenaResult<U32>, v_5: U32, v_8: IR.Words, v_10: Nat, v_11: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_141:
-    case ArenaResult{v_107, +v_108}:
-      v_111 = arena_words_start(v_8)
-      v_114 = arena_words_count(v_8)
-      native_match_mat_branch_goal_view_11(arena_put_node(v_107, Arena.TermCtr{v_108, v_111, v_114, v_11}), v_5, v_10)
+def native_match_mat_branch_goal_view_9(v_121: ArenaResult<U32>, v_5: U32, v_8: IR.Words, v_10: Nat, v_11: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_121:
+    case ArenaResult{v_90, +v_91}:
+      v_94 = arena_words_start(v_8)
+      v_97 = arena_words_count(v_8)
+      native_match_mat_branch_goal_view_8(arena_put_node(v_90, Arena.TermCtr{v_91, v_94, v_97, v_11}), v_5, v_10)
 
-def native_match_mat_branch_goal_view_13(+v_19: Arena.Node, v_5: U32, v_7: String, v_8: IR.Words, v_10: Nat, v_11: Ast.SourceSpan, v_12: Scope.ArenaGlobalScope, v_18: ArenaStore) -> ArenaResult<U32>:
+def native_match_mat_branch_goal_view_10(+v_19: Arena.Node, v_5: U32, v_7: String, v_8: IR.Words, v_10: Nat, v_11: Ast.SourceSpan, v_12: Scope.ArenaGlobalScope, v_18: ArenaStore) -> ArenaResult<U32>:
   match v_19:
     case Arena.TermAll{+v_26, +v_27, +v_28, +v_29, +v_30, +v_31}:
-      native_match_mat_branch_goal_view_9(arena_name_text(v_18, v_27), v_5, v_7, v_8, v_10, v_11, v_12, v_26, v_28, v_29, v_30, v_31)
+      v_33 = v_26
+      v_35 = v_27
+      v_37 = v_28
+      v_39 = v_29
+      v_41 = v_30
+      v_43 = v_31
+      native_match_mat_branch_goal_view_6(arena_put_node(v_18, Arena.TermVar{v_35, 0n, v_11}), v_5, v_7, v_8, v_10, v_11, v_12, v_33, v_35, v_37, v_39, v_41, v_43)
     case _:
-      native_match_mat_branch_goal_view_12(arena_name(v_18, v_7), v_5, v_8, v_10, v_11)
+      native_match_mat_branch_goal_view_9(arena_name(v_18, v_7), v_5, v_8, v_10, v_11)
 
-def native_match_mat_branch_goal_view_14(v_142: ArenaResult<Arena.Node>, v_5: U32, v_7: String, v_8: IR.Words, v_10: Nat, v_11: Ast.SourceSpan, v_12: Scope.ArenaGlobalScope) -> ArenaResult<U32>:
-  match v_142:
+def native_match_mat_branch_goal_view_11(v_122: ArenaResult<Arena.Node>, v_5: U32, v_7: String, v_8: IR.Words, v_10: Nat, v_11: Ast.SourceSpan, v_12: Scope.ArenaGlobalScope) -> ArenaResult<U32>:
+  match v_122:
     case ArenaResult{v_18, +v_19}:
-      native_match_mat_branch_goal_view_13(v_19, v_5, v_7, v_8, v_10, v_11, v_12, v_18)
+      native_match_mat_branch_goal_view_10(v_19, v_5, v_7, v_8, v_10, v_11, v_12, v_18)
 
 def mat_branch_goal_view(v_1: ArenaStore, v_3: U32, v_5: U32, v_7: String, v_8: IR.Words, v_10: Nat, v_11: Ast.SourceSpan, v_12: Scope.ArenaGlobalScope) -> ArenaResult<U32>:
-  native_match_mat_branch_goal_view_14(arena_get_node(v_1, v_3), v_5, v_7, v_8, v_10, v_11, v_12)
+  native_match_mat_branch_goal_view_11(arena_get_node(v_1, v_3), v_5, v_7, v_8, v_10, v_11, v_12)
 
 def native_match_mat_branch_goal_0(v_27: ArenaResult<U32>) -> ArenaResult<U32>:
   match v_27:
@@ -7984,8 +7928,8 @@ def replace_free_bound(result: ArenaResult<Nat>, id: U32, index: Nat, value: U32
 def replace_free_term(store: ArenaStore, +id: U32, +index: Nat, value: U32, +depth: Nat) -> ArenaResult<U32>:
   replace_free_bound(arena_node_bound(store, id), id, index, value, depth)
 
-def native_match_replace_free_open_0(v_885: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_885:
+def native_match_replace_free_open_0(v_825: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_825:
     case ArenaResult{v_34, +v_35}:
       {ArenaResult{v_34, v_35} : ArenaResult<U32>}
 
@@ -8003,33 +7947,33 @@ def native_match_replace_free_open_2(+v_26: Bool, v_3: U32, v_7: U32, v_9: Nat, 
     case False{}:
       {ArenaResult{v_15, v_3} : ArenaResult<U32>}
 
-def native_match_replace_free_open_3(v_886: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_886:
+def native_match_replace_free_open_3(v_826: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_826:
     case ArenaResult{v_56, +v_57}:
       {ArenaResult{v_56, v_57} : ArenaResult<U32>}
 
-def native_match_replace_free_open_4(v_887: ArenaResult<U32>, v_47: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_887:
+def native_match_replace_free_open_4(v_827: ArenaResult<U32>, v_47: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_827:
     case ArenaResult{v_51, +v_52}:
       native_match_replace_free_open_3(arena_put_node(v_51, Arena.TermBang{v_52, v_47}))
 
-def native_match_replace_free_open_5(v_888: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_888:
+def native_match_replace_free_open_5(v_828: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_828:
     case ArenaResult{v_88, +v_89}:
       {ArenaResult{v_88, v_89} : ArenaResult<U32>}
 
-def native_match_replace_free_open_6(v_889: ArenaResult<U32>, v_5: Nat, v_7: U32, v_9: Nat) -> ArenaResult<U32>:
-  match v_889:
+def native_match_replace_free_open_6(v_829: ArenaResult<U32>, v_5: Nat, v_7: U32, v_9: Nat) -> ArenaResult<U32>:
+  match v_829:
     case ArenaResult{v_83, +v_84}:
       native_match_replace_free_open_5(replace_free_term(v_83, v_84, v_5, v_7, v_9))
 
-def native_match_replace_free_open_7(v_890: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_890:
+def native_match_replace_free_open_7(v_830: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_830:
     case ArenaResult{v_170, +v_171}:
       {ArenaResult{v_170, v_171} : ArenaResult<U32>}
 
-def native_match_replace_free_open_8(v_891: ArenaResult<U32>, v_121: IR.Names, v_123: IR.Naturals, v_125: IR.Quantities, v_131: Ast.SourceSpan, +v_136: IR.Words) -> ArenaResult<U32>:
-  match v_891:
+def native_match_replace_free_open_8(v_831: ArenaResult<U32>, v_121: IR.Names, v_123: IR.Naturals, v_125: IR.Quantities, v_131: Ast.SourceSpan, +v_136: IR.Words) -> ArenaResult<U32>:
+  match v_831:
     case ArenaResult{v_141, +v_142}:
       v_145 = arena_names_start(v_121)
       v_148 = arena_names_count(v_121)
@@ -8041,367 +7985,287 @@ def native_match_replace_free_open_8(v_891: ArenaResult<U32>, v_121: IR.Names, v
       v_166 = arena_words_count(v_136)
       native_match_replace_free_open_7(arena_put_node(v_141, Arena.TermLet{v_145, v_148, v_151, v_154, v_157, v_160, v_163, v_166, v_142, v_131}))
 
-def native_match_replace_free_open_9(v_892: ArenaResult<IR.Words>, v_5: Nat, v_7: U32, v_9: Nat, v_121: IR.Names, v_123: IR.Naturals, v_125: IR.Quantities, v_129: U32, v_131: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_892:
+def native_match_replace_free_open_9(v_832: ArenaResult<IR.Words>, v_5: Nat, v_7: U32, v_9: Nat, v_121: IR.Names, v_123: IR.Naturals, v_125: IR.Quantities, v_129: U32, v_131: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_832:
     case ArenaResult{v_135, +v_136}:
       native_match_replace_free_open_8(replace_free_term(v_135, v_129, v_5, v_7, Nat.add(v_9, arena_names_length(v_121))), v_121, v_123, v_125, v_131, v_136)
 
-def native_match_replace_free_open_10(v_893: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_893:
+def native_match_replace_free_open_10(v_833: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_833:
     case ArenaResult{v_199, +v_200}:
       {ArenaResult{v_199, v_200} : ArenaResult<U32>}
 
-def native_match_replace_free_open_11(v_894: ArenaResult<U32>, v_185: Ast.SourceSpan, +v_190: U32) -> ArenaResult<U32>:
-  match v_894:
+def native_match_replace_free_open_11(v_834: ArenaResult<U32>, v_185: Ast.SourceSpan, +v_190: U32) -> ArenaResult<U32>:
+  match v_834:
     case ArenaResult{v_194, +v_195}:
       native_match_replace_free_open_10(arena_put_node(v_194, Arena.TermAnn{v_190, v_195, v_185}))
 
-def native_match_replace_free_open_12(v_895: ArenaResult<U32>, v_5: Nat, v_7: U32, v_9: Nat, v_183: U32, v_185: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_895:
+def native_match_replace_free_open_12(v_835: ArenaResult<U32>, v_5: Nat, v_7: U32, v_9: Nat, v_183: U32, v_185: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_835:
     case ArenaResult{v_189, +v_190}:
       native_match_replace_free_open_11(replace_free_term(v_189, v_183, v_5, v_7, v_9), v_185, v_190)
 
-def native_match_replace_free_open_13(v_896: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_896:
+def native_match_replace_free_open_13(v_836: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_836:
     case ArenaResult{v_219, +v_220}:
       {ArenaResult{v_219, v_220} : ArenaResult<U32>}
 
-def native_match_replace_free_open_14(v_897: ArenaResult<U32>, v_210: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_897:
+def native_match_replace_free_open_14(v_837: ArenaResult<U32>, v_210: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_837:
     case ArenaResult{v_214, +v_215}:
       native_match_replace_free_open_13(arena_put_node(v_214, Arena.TermTemplate{v_215, v_210}))
 
-def native_match_replace_free_open_15(v_898: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_898:
+def native_match_replace_free_open_15(v_838: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_838:
     case ArenaResult{v_239, +v_240}:
       {ArenaResult{v_239, v_240} : ArenaResult<U32>}
 
-def native_match_replace_free_open_16(v_899: ArenaResult<U32>, v_230: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_899:
+def native_match_replace_free_open_16(v_839: ArenaResult<U32>, v_230: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_839:
     case ArenaResult{v_234, +v_235}:
       native_match_replace_free_open_15(arena_put_node(v_234, Arena.TermType{v_235, v_230}))
 
-def native_match_replace_free_open_17(v_900: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_900:
+def native_match_replace_free_open_17(v_840: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_840:
     case ArenaResult{v_268, +v_269}:
       {ArenaResult{v_268, v_269} : ArenaResult<U32>}
 
-def native_match_replace_free_open_18(v_901: ArenaResult<U32>, v_254: Ast.SourceSpan, +v_259: U32) -> ArenaResult<U32>:
-  match v_901:
+def native_match_replace_free_open_18(v_841: ArenaResult<U32>, v_254: Ast.SourceSpan, +v_259: U32) -> ArenaResult<U32>:
+  match v_841:
     case ArenaResult{v_263, +v_264}:
       native_match_replace_free_open_17(arena_put_node(v_263, Arena.TermMin{v_259, v_264, v_254}))
 
-def native_match_replace_free_open_19(v_902: ArenaResult<U32>, v_5: Nat, v_7: U32, v_9: Nat, v_252: U32, v_254: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_902:
+def native_match_replace_free_open_19(v_842: ArenaResult<U32>, v_5: Nat, v_7: U32, v_9: Nat, v_252: U32, v_254: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_842:
     case ArenaResult{v_258, +v_259}:
       native_match_replace_free_open_18(replace_free_term(v_258, v_252, v_5, v_7, v_9), v_254, v_259)
 
-def native_match_replace_free_open_20(v_903: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_903:
-    case ArenaResult{v_321, +v_322}:
-      {ArenaResult{v_321, v_322} : ArenaResult<U32>}
+def native_match_replace_free_open_20(v_843: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_843:
+    case ArenaResult{v_309, +v_310}:
+      {ArenaResult{v_309, v_310} : ArenaResult<U32>}
 
-def native_match_replace_free_open_21(v_904: ArenaResult<U32>, v_292: Ast.Quantity, v_296: Nat, v_302: Ast.SourceSpan, +v_307: U32, +v_312: U32) -> ArenaResult<U32>:
-  match v_904:
-    case ArenaResult{v_316, +v_317}:
-      native_match_replace_free_open_20(arena_put_node(v_316, Arena.TermAll{v_292, v_317, v_296, v_307, v_312, v_302}))
+def native_match_replace_free_open_21(v_844: ArenaResult<U32>, v_285: Ast.Quantity, v_287: U32, v_289: Nat, v_295: Ast.SourceSpan, +v_300: U32) -> ArenaResult<U32>:
+  match v_844:
+    case ArenaResult{v_304, +v_305}:
+      native_match_replace_free_open_20(arena_put_node(v_304, Arena.TermAll{v_285, v_287, v_289, v_300, v_305, v_295}))
 
-def native_match_replace_free_open_22(v_905: ArenaResult<U32>, v_292: Ast.Quantity, v_294: String, v_296: Nat, v_302: Ast.SourceSpan, +v_307: U32) -> ArenaResult<U32>:
-  match v_905:
-    case ArenaResult{v_311, +v_312}:
-      native_match_replace_free_open_21(arena_name(v_311, v_294), v_292, v_296, v_302, v_307, v_312)
+def native_match_replace_free_open_22(v_845: ArenaResult<U32>, v_5: Nat, v_7: U32, v_9: Nat, v_285: Ast.Quantity, v_287: U32, v_289: Nat, v_293: U32, v_295: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_845:
+    case ArenaResult{v_299, +v_300}:
+      native_match_replace_free_open_21(replace_free_term(v_299, v_293, v_5, v_7, Nat.add(v_9, 1n)), v_285, v_287, v_289, v_295, v_300)
 
-def native_match_replace_free_open_23(v_906: ArenaResult<U32>, v_5: Nat, v_7: U32, v_9: Nat, v_292: Ast.Quantity, v_294: String, v_296: Nat, v_300: U32, v_302: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_906:
-    case ArenaResult{v_306, +v_307}:
-      native_match_replace_free_open_22(replace_free_term(v_306, v_300, v_5, v_7, Nat.add(v_9, 1n)), v_292, v_294, v_296, v_302, v_307)
+def native_match_replace_free_open_23(v_846: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_846:
+    case ArenaResult{v_341, +v_342}:
+      {ArenaResult{v_341, v_342} : ArenaResult<U32>}
 
-def native_match_replace_free_open_24(v_907: ArenaResult<String>, v_5: Nat, v_7: U32, v_9: Nat, +v_278: Ast.Quantity, +v_280: Nat, +v_281: U32, +v_282: U32, +v_283: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_907:
-    case ArenaResult{v_287, +v_288}:
-      +v_290 = v_288
-      v_292 = v_278
-      v_294 = v_290
-      v_296 = v_280
-      v_298 = v_281
-      v_300 = v_282
-      v_302 = v_283
-      native_match_replace_free_open_23(replace_free_term(v_287, v_298, v_5, v_7, v_9), v_5, v_7, v_9, v_292, v_294, v_296, v_300, v_302)
+def native_match_replace_free_open_24(v_847: ArenaResult<U32>, v_324: Maybe<&2, Ast.Quantity>, v_326: U32, v_328: Nat, v_332: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_847:
+    case ArenaResult{v_336, +v_337}:
+      native_match_replace_free_open_23(arena_put_node(v_336, Arena.TermLam{v_324, v_326, v_328, v_337, v_332}))
 
-def native_match_replace_free_open_25(v_908: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_908:
+def native_match_replace_free_open_25(v_848: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_848:
+    case ArenaResult{v_370, +v_371}:
+      {ArenaResult{v_370, v_371} : ArenaResult<U32>}
+
+def native_match_replace_free_open_26(v_849: ArenaResult<U32>, v_356: Ast.SourceSpan, +v_361: U32) -> ArenaResult<U32>:
+  match v_849:
     case ArenaResult{v_365, +v_366}:
-      {ArenaResult{v_365, v_366} : ArenaResult<U32>}
+      native_match_replace_free_open_25(arena_put_node(v_365, Arena.TermApp{v_361, v_366, v_356}))
 
-def native_match_replace_free_open_26(v_909: ArenaResult<U32>, v_343: Maybe<&2, Ast.Quantity>, v_347: Nat, v_351: Ast.SourceSpan, +v_356: U32) -> ArenaResult<U32>:
-  match v_909:
+def native_match_replace_free_open_27(v_850: ArenaResult<U32>, v_5: Nat, v_7: U32, v_9: Nat, v_354: U32, v_356: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_850:
     case ArenaResult{v_360, +v_361}:
-      native_match_replace_free_open_25(arena_put_node(v_360, Arena.TermLam{v_343, v_361, v_347, v_356, v_351}))
+      native_match_replace_free_open_26(replace_free_term(v_360, v_354, v_5, v_7, v_9), v_356, v_361)
 
-def native_match_replace_free_open_27(v_910: ArenaResult<U32>, v_343: Maybe<&2, Ast.Quantity>, v_345: String, v_347: Nat, v_351: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_910:
-    case ArenaResult{v_355, +v_356}:
-      native_match_replace_free_open_26(arena_name(v_355, v_345), v_343, v_347, v_351, v_356)
+def native_match_replace_free_open_28(v_851: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_851:
+    case ArenaResult{v_418, +v_419}:
+      {ArenaResult{v_418, v_419} : ArenaResult<U32>}
 
-def native_match_replace_free_open_28(v_911: ArenaResult<String>, v_5: Nat, v_7: U32, v_9: Nat, +v_330: Maybe<&2, Ast.Quantity>, +v_332: Nat, +v_333: U32, +v_334: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_911:
-    case ArenaResult{v_338, +v_339}:
-      +v_341 = v_339
-      v_343 = v_330
-      v_345 = v_341
-      v_347 = v_332
-      v_349 = v_333
-      v_351 = v_334
-      native_match_replace_free_open_27(replace_free_term(v_338, v_349, v_5, v_7, Nat.add(v_9, 1n)), v_343, v_345, v_347, v_351)
+def native_match_replace_free_open_29(v_852: ArenaResult<IR.Words>, v_391: U32, v_395: IR.Names, v_397: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_852:
+    case ArenaResult{v_401, +v_402}:
+      v_405 = arena_words_start(v_402)
+      v_408 = arena_words_count(v_402)
+      v_411 = arena_names_start(v_395)
+      v_414 = arena_names_count(v_395)
+      native_match_replace_free_open_28(arena_put_node(v_401, Arena.TermAdt{v_391, v_405, v_408, v_411, v_414, v_397}))
 
-def native_match_replace_free_open_29(v_912: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_912:
-    case ArenaResult{v_394, +v_395}:
-      {ArenaResult{v_394, v_395} : ArenaResult<U32>}
+def native_match_replace_free_open_30(v_853: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_853:
+    case ArenaResult{v_457, +v_458}:
+      {ArenaResult{v_457, v_458} : ArenaResult<U32>}
 
-def native_match_replace_free_open_30(v_913: ArenaResult<U32>, v_380: Ast.SourceSpan, +v_385: U32) -> ArenaResult<U32>:
-  match v_913:
-    case ArenaResult{v_389, +v_390}:
-      native_match_replace_free_open_29(arena_put_node(v_389, Arena.TermApp{v_385, v_390, v_380}))
+def native_match_replace_free_open_31(v_854: ArenaResult<IR.Words>, v_437: Ast.SourceSpan, +v_442: U32) -> ArenaResult<U32>:
+  match v_854:
+    case ArenaResult{v_446, +v_447}:
+      v_450 = arena_words_start(v_447)
+      v_453 = arena_words_count(v_447)
+      native_match_replace_free_open_30(arena_put_node(v_446, Arena.TermFill{v_442, v_450, v_453, v_437}))
 
-def native_match_replace_free_open_31(v_914: ArenaResult<U32>, v_5: Nat, v_7: U32, v_9: Nat, v_378: U32, v_380: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_914:
-    case ArenaResult{v_384, +v_385}:
-      native_match_replace_free_open_30(replace_free_term(v_384, v_378, v_5, v_7, v_9), v_380, v_385)
+def native_match_replace_free_open_32(v_855: ArenaResult<U32>, v_5: Nat, v_7: U32, v_9: Nat, v_435: IR.Words, v_437: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_855:
+    case ArenaResult{v_441, +v_442}:
+      native_match_replace_free_open_31(replace_free_terms(v_441, v_435, v_5, v_7, v_9), v_437, v_442)
 
-def native_match_replace_free_open_32(v_915: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_915:
-    case ArenaResult{v_454, +v_455}:
-      {ArenaResult{v_454, v_455} : ArenaResult<U32>}
+def native_match_replace_free_open_33(v_856: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_856:
+    case ArenaResult{v_496, +v_497}:
+      {ArenaResult{v_496, v_497} : ArenaResult<U32>}
 
-def native_match_replace_free_open_33(v_916: ArenaResult<U32>, v_426: IR.Names, v_428: Ast.SourceSpan, +v_433: IR.Words) -> ArenaResult<U32>:
-  match v_916:
-    case ArenaResult{v_437, +v_438}:
-      v_441 = arena_words_start(v_433)
-      v_444 = arena_words_count(v_433)
-      v_447 = arena_names_start(v_426)
-      v_450 = arena_names_count(v_426)
-      native_match_replace_free_open_32(arena_put_node(v_437, Arena.TermAdt{v_438, v_441, v_444, v_447, v_450, v_428}))
+def native_match_replace_free_open_34(v_857: ArenaResult<IR.Words>, v_476: Ast.SourceSpan, +v_481: U32) -> ArenaResult<U32>:
+  match v_857:
+    case ArenaResult{v_485, +v_486}:
+      v_489 = arena_words_start(v_486)
+      v_492 = arena_words_count(v_486)
+      native_match_replace_free_open_33(arena_put_node(v_485, Arena.TermPlus{v_481, v_489, v_492, v_476}))
 
-def native_match_replace_free_open_34(v_917: ArenaResult<IR.Words>, v_422: String, v_426: IR.Names, v_428: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_917:
-    case ArenaResult{v_432, +v_433}:
-      native_match_replace_free_open_33(arena_name(v_432, v_422), v_426, v_428, v_433)
+def native_match_replace_free_open_35(v_858: ArenaResult<U32>, v_5: Nat, v_7: U32, v_9: Nat, v_474: IR.Words, v_476: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_858:
+    case ArenaResult{v_480, +v_481}:
+      native_match_replace_free_open_34(replace_free_terms(v_480, v_474, v_5, v_7, v_9), v_476, v_481)
 
-def native_match_replace_free_open_35(v_918: ArenaResult<String>, v_5: Nat, v_7: U32, v_9: Nat, +v_405: U32, +v_406: U32, +v_407: U32, +v_408: U32, +v_409: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_918:
-    case ArenaResult{v_413, +v_414}:
-      +v_416 = v_414
-      +v_418 = IR.Words{v_405, v_406}
-      +v_420 = IR.Names{v_407, v_408}
-      v_422 = v_416
-      v_424 = v_418
-      v_426 = v_420
-      v_428 = v_409
-      native_match_replace_free_open_34(replace_free_terms(v_413, v_424, v_5, v_7, v_9), v_422, v_426, v_428)
+def native_match_replace_free_open_36(v_859: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_859:
+    case ArenaResult{v_538, +v_539}:
+      {ArenaResult{v_538, v_539} : ArenaResult<U32>}
 
-def native_match_replace_free_open_36(v_919: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_919:
-    case ArenaResult{v_493, +v_494}:
-      {ArenaResult{v_493, v_494} : ArenaResult<U32>}
+def native_match_replace_free_open_37(v_860: ArenaResult<IR.Words>, v_519: U32, v_523: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_860:
+    case ArenaResult{v_527, +v_528}:
+      v_531 = arena_words_start(v_528)
+      v_534 = arena_words_count(v_528)
+      native_match_replace_free_open_36(arena_put_node(v_527, Arena.TermCtr{v_519, v_531, v_534, v_523}))
 
-def native_match_replace_free_open_37(v_920: ArenaResult<IR.Words>, v_473: Ast.SourceSpan, +v_478: U32) -> ArenaResult<U32>:
-  match v_920:
-    case ArenaResult{v_482, +v_483}:
-      v_486 = arena_words_start(v_483)
-      v_489 = arena_words_count(v_483)
-      native_match_replace_free_open_36(arena_put_node(v_482, Arena.TermFill{v_478, v_486, v_489, v_473}))
+def native_match_replace_free_open_38(v_861: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_861:
+    case ArenaResult{v_571, +v_572}:
+      {ArenaResult{v_571, v_572} : ArenaResult<U32>}
 
-def native_match_replace_free_open_38(v_921: ArenaResult<U32>, v_5: Nat, v_7: U32, v_9: Nat, v_471: IR.Words, v_473: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_921:
-    case ArenaResult{v_477, +v_478}:
-      native_match_replace_free_open_37(replace_free_terms(v_477, v_471, v_5, v_7, v_9), v_473, v_478)
+def native_match_replace_free_open_39(v_862: ArenaResult<U32>, v_551: U32, v_557: Ast.SourceSpan, +v_562: U32) -> ArenaResult<U32>:
+  match v_862:
+    case ArenaResult{v_566, +v_567}:
+      native_match_replace_free_open_38(arena_put_node(v_566, Arena.TermMat{v_551, v_562, v_567, v_557}))
 
-def native_match_replace_free_open_39(v_922: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_922:
-    case ArenaResult{v_532, +v_533}:
-      {ArenaResult{v_532, v_533} : ArenaResult<U32>}
+def native_match_replace_free_open_40(v_863: ArenaResult<U32>, v_5: Nat, v_7: U32, v_9: Nat, v_551: U32, v_555: U32, v_557: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_863:
+    case ArenaResult{v_561, +v_562}:
+      native_match_replace_free_open_39(replace_free_term(v_561, v_555, v_5, v_7, v_9), v_551, v_557, v_562)
 
-def native_match_replace_free_open_40(v_923: ArenaResult<IR.Words>, v_512: Ast.SourceSpan, +v_517: U32) -> ArenaResult<U32>:
-  match v_923:
-    case ArenaResult{v_521, +v_522}:
-      v_525 = arena_words_start(v_522)
-      v_528 = arena_words_count(v_522)
-      native_match_replace_free_open_39(arena_put_node(v_521, Arena.TermPlus{v_517, v_525, v_528, v_512}))
+def native_match_replace_free_open_41(v_864: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_864:
+    case ArenaResult{v_609, +v_610}:
+      {ArenaResult{v_609, v_610} : ArenaResult<U32>}
 
-def native_match_replace_free_open_41(v_924: ArenaResult<U32>, v_5: Nat, v_7: U32, v_9: Nat, v_510: IR.Words, v_512: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_924:
-    case ArenaResult{v_516, +v_517}:
-      native_match_replace_free_open_40(replace_free_terms(v_516, v_510, v_5, v_7, v_9), v_512, v_517)
+def native_match_replace_free_open_42(v_865: ArenaResult<U32>, v_590: Ast.SourceSpan, +v_595: U32, +v_600: U32) -> ArenaResult<U32>:
+  match v_865:
+    case ArenaResult{v_604, +v_605}:
+      native_match_replace_free_open_41(arena_put_node(v_604, Arena.TermEqual{v_595, v_600, v_605, v_590}))
 
-def native_match_replace_free_open_42(v_925: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_925:
-    case ArenaResult{v_586, +v_587}:
-      {ArenaResult{v_586, v_587} : ArenaResult<U32>}
+def native_match_replace_free_open_43(v_866: ArenaResult<U32>, v_5: Nat, v_7: U32, v_9: Nat, v_588: U32, v_590: Ast.SourceSpan, +v_595: U32) -> ArenaResult<U32>:
+  match v_866:
+    case ArenaResult{v_599, +v_600}:
+      native_match_replace_free_open_42(replace_free_term(v_599, v_588, v_5, v_7, v_9), v_590, v_595, v_600)
 
-def native_match_replace_free_open_43(v_926: ArenaResult<U32>, v_566: Ast.SourceSpan, +v_571: IR.Words) -> ArenaResult<U32>:
-  match v_926:
-    case ArenaResult{v_575, +v_576}:
-      v_579 = arena_words_start(v_571)
-      v_582 = arena_words_count(v_571)
-      native_match_replace_free_open_42(arena_put_node(v_575, Arena.TermCtr{v_576, v_579, v_582, v_566}))
+def native_match_replace_free_open_44(v_867: ArenaResult<U32>, v_5: Nat, v_7: U32, v_9: Nat, v_586: U32, v_588: U32, v_590: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_867:
+    case ArenaResult{v_594, +v_595}:
+      native_match_replace_free_open_43(replace_free_term(v_594, v_586, v_5, v_7, v_9), v_5, v_7, v_9, v_588, v_590, v_595)
 
-def native_match_replace_free_open_44(v_927: ArenaResult<IR.Words>, v_562: String, v_566: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_927:
-    case ArenaResult{v_570, +v_571}:
-      native_match_replace_free_open_43(arena_name(v_570, v_562), v_566, v_571)
+def native_match_replace_free_open_45(v_868: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_868:
+    case ArenaResult{v_647, +v_648}:
+      {ArenaResult{v_647, v_648} : ArenaResult<U32>}
 
-def native_match_replace_free_open_45(v_928: ArenaResult<String>, v_5: Nat, v_7: U32, v_9: Nat, +v_549: U32, +v_550: U32, +v_551: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_928:
-    case ArenaResult{v_555, +v_556}:
-      +v_558 = v_556
-      +v_560 = IR.Words{v_549, v_550}
-      v_562 = v_558
-      v_564 = v_560
-      v_566 = v_551
-      native_match_replace_free_open_44(replace_free_terms(v_555, v_564, v_5, v_7, v_9), v_562, v_566)
+def native_match_replace_free_open_46(v_869: ArenaResult<U32>, v_628: Ast.SourceSpan, +v_633: U32, +v_638: U32) -> ArenaResult<U32>:
+  match v_869:
+    case ArenaResult{v_642, +v_643}:
+      native_match_replace_free_open_45(arena_put_node(v_642, Arena.TermRewrite{v_633, v_638, v_643, v_628}))
 
-def native_match_replace_free_open_46(v_929: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_929:
-    case ArenaResult{v_631, +v_632}:
-      {ArenaResult{v_631, v_632} : ArenaResult<U32>}
+def native_match_replace_free_open_47(v_870: ArenaResult<U32>, v_5: Nat, v_7: U32, v_9: Nat, v_626: U32, v_628: Ast.SourceSpan, +v_633: U32) -> ArenaResult<U32>:
+  match v_870:
+    case ArenaResult{v_637, +v_638}:
+      native_match_replace_free_open_46(replace_free_term(v_637, v_626, v_5, v_7, v_9), v_628, v_633, v_638)
 
-def native_match_replace_free_open_47(v_930: ArenaResult<U32>, v_612: Ast.SourceSpan, +v_617: U32, +v_622: U32) -> ArenaResult<U32>:
-  match v_930:
-    case ArenaResult{v_626, +v_627}:
-      native_match_replace_free_open_46(arena_put_node(v_626, Arena.TermMat{v_627, v_617, v_622, v_612}))
+def native_match_replace_free_open_48(v_871: ArenaResult<U32>, v_5: Nat, v_7: U32, v_9: Nat, v_624: U32, v_626: U32, v_628: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_871:
+    case ArenaResult{v_632, +v_633}:
+      native_match_replace_free_open_47(replace_free_term(v_632, v_624, v_5, v_7, v_9), v_5, v_7, v_9, v_626, v_628, v_633)
 
-def native_match_replace_free_open_48(v_931: ArenaResult<U32>, v_606: String, v_612: Ast.SourceSpan, +v_617: U32) -> ArenaResult<U32>:
-  match v_931:
-    case ArenaResult{v_621, +v_622}:
-      native_match_replace_free_open_47(arena_name(v_621, v_606), v_612, v_617, v_622)
+def native_match_replace_free_open_49(v_872: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_872:
+    case ArenaResult{v_696, +v_697}:
+      {ArenaResult{v_696, v_697} : ArenaResult<U32>}
 
-def native_match_replace_free_open_49(v_932: ArenaResult<U32>, v_5: Nat, v_7: U32, v_9: Nat, v_606: String, v_610: U32, v_612: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_932:
-    case ArenaResult{v_616, +v_617}:
-      native_match_replace_free_open_48(replace_free_term(v_616, v_610, v_5, v_7, v_9), v_606, v_612, v_617)
+def native_match_replace_free_open_50(v_873: ArenaResult<IR.Words>, v_670: Ast.SourceSpan, +v_675: IR.Words) -> ArenaResult<U32>:
+  match v_873:
+    case ArenaResult{v_679, +v_680}:
+      v_683 = arena_words_start(v_675)
+      v_686 = arena_words_count(v_675)
+      v_689 = arena_words_start(v_680)
+      v_692 = arena_words_count(v_680)
+      native_match_replace_free_open_49(arena_put_node(v_679, Arena.BodyMatch{v_683, v_686, v_689, v_692, v_670}))
 
-def native_match_replace_free_open_50(v_933: ArenaResult<String>, v_5: Nat, v_7: U32, v_9: Nat, +v_595: U32, +v_596: U32, +v_597: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_933:
-    case ArenaResult{v_601, +v_602}:
-      +v_604 = v_602
-      v_606 = v_604
-      v_608 = v_595
-      v_610 = v_596
-      v_612 = v_597
-      native_match_replace_free_open_49(replace_free_term(v_601, v_608, v_5, v_7, v_9), v_5, v_7, v_9, v_606, v_610, v_612)
+def native_match_replace_free_open_51(v_874: ArenaResult<IR.Words>, v_5: Nat, v_7: U32, v_9: Nat, v_668: IR.Words, v_670: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_874:
+    case ArenaResult{v_674, +v_675}:
+      native_match_replace_free_open_50(replace_free_cases(v_674, v_668, v_5, v_7, v_9), v_670, v_675)
 
-def native_match_replace_free_open_51(v_934: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_934:
-    case ArenaResult{v_669, +v_670}:
-      {ArenaResult{v_669, v_670} : ArenaResult<U32>}
+def native_match_replace_free_open_52(v_875: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_875:
+    case ArenaResult{v_735, +v_736}:
+      {ArenaResult{v_735, v_736} : ArenaResult<U32>}
 
-def native_match_replace_free_open_52(v_935: ArenaResult<U32>, v_650: Ast.SourceSpan, +v_655: U32, +v_660: U32) -> ArenaResult<U32>:
-  match v_935:
-    case ArenaResult{v_664, +v_665}:
-      native_match_replace_free_open_51(arena_put_node(v_664, Arena.TermEqual{v_655, v_660, v_665, v_650}))
+def native_match_replace_free_open_53(v_876: ArenaResult<U32>, v_711: IR.Words, v_715: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_876:
+    case ArenaResult{v_724, +v_725}:
+      v_728 = arena_words_start(v_711)
+      v_731 = arena_words_count(v_711)
+      native_match_replace_free_open_52(arena_put_node(v_724, Arena.BodyCase{v_728, v_731, v_725, v_715}))
 
-def native_match_replace_free_open_53(v_936: ArenaResult<U32>, v_5: Nat, v_7: U32, v_9: Nat, v_648: U32, v_650: Ast.SourceSpan, +v_655: U32) -> ArenaResult<U32>:
-  match v_936:
-    case ArenaResult{v_659, +v_660}:
-      native_match_replace_free_open_52(replace_free_term(v_659, v_648, v_5, v_7, v_9), v_650, v_655, v_660)
+def native_match_replace_free_open_54(v_877: ArenaResult<Nat>, v_5: Nat, v_7: U32, v_9: Nat, v_711: IR.Words, v_713: U32, v_715: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_877:
+    case ArenaResult{v_719, +v_720}:
+      native_match_replace_free_open_53(replace_free_term(v_719, v_713, v_5, v_7, Nat.add(v_9, v_720)), v_711, v_715)
 
-def native_match_replace_free_open_54(v_937: ArenaResult<U32>, v_5: Nat, v_7: U32, v_9: Nat, v_646: U32, v_648: U32, v_650: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_937:
-    case ArenaResult{v_654, +v_655}:
-      native_match_replace_free_open_53(replace_free_term(v_654, v_646, v_5, v_7, v_9), v_5, v_7, v_9, v_648, v_650, v_655)
+def native_match_replace_free_open_55(v_878: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_878:
+    case ArenaResult{v_797, +v_798}:
+      {ArenaResult{v_797, v_798} : ArenaResult<U32>}
 
-def native_match_replace_free_open_55(v_938: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_938:
-    case ArenaResult{v_707, +v_708}:
-      {ArenaResult{v_707, v_708} : ArenaResult<U32>}
+def native_match_replace_free_open_56(v_879: ArenaResult<U32>, v_758: IR.Words, v_760: Ast.Quantity, v_766: Ast.SourceSpan, +v_771: IR.Words) -> ArenaResult<U32>:
+  match v_879:
+    case ArenaResult{v_780, +v_781}:
+      v_784 = arena_words_start(v_758)
+      v_787 = arena_words_count(v_758)
+      v_790 = arena_words_start(v_771)
+      v_793 = arena_words_count(v_771)
+      native_match_replace_free_open_55(arena_put_node(v_780, Arena.BodyLocal{v_784, v_787, v_760, v_790, v_793, v_781, v_766}))
 
-def native_match_replace_free_open_56(v_939: ArenaResult<U32>, v_688: Ast.SourceSpan, +v_693: U32, +v_698: U32) -> ArenaResult<U32>:
-  match v_939:
-    case ArenaResult{v_702, +v_703}:
-      native_match_replace_free_open_55(arena_put_node(v_702, Arena.TermRewrite{v_693, v_698, v_703, v_688}))
+def native_match_replace_free_open_57(v_880: ArenaResult<Nat>, v_5: Nat, v_7: U32, v_9: Nat, v_758: IR.Words, v_760: Ast.Quantity, v_764: U32, v_766: Ast.SourceSpan, +v_771: IR.Words) -> ArenaResult<U32>:
+  match v_880:
+    case ArenaResult{v_775, +v_776}:
+      native_match_replace_free_open_56(replace_free_term(v_775, v_764, v_5, v_7, Nat.add(v_9, v_776)), v_758, v_760, v_766, v_771)
 
-def native_match_replace_free_open_57(v_940: ArenaResult<U32>, v_5: Nat, v_7: U32, v_9: Nat, v_686: U32, v_688: Ast.SourceSpan, +v_693: U32) -> ArenaResult<U32>:
-  match v_940:
-    case ArenaResult{v_697, +v_698}:
-      native_match_replace_free_open_56(replace_free_term(v_697, v_686, v_5, v_7, v_9), v_688, v_693, v_698)
+def native_match_replace_free_open_58(v_881: ArenaResult<IR.Words>, v_5: Nat, v_7: U32, v_9: Nat, v_758: IR.Words, v_760: Ast.Quantity, v_764: U32, v_766: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_881:
+    case ArenaResult{v_770, +v_771}:
+      native_match_replace_free_open_57(core_pattern_list_depth(v_770, v_758), v_5, v_7, v_9, v_758, v_760, v_764, v_766, v_771)
 
-def native_match_replace_free_open_58(v_941: ArenaResult<U32>, v_5: Nat, v_7: U32, v_9: Nat, v_684: U32, v_686: U32, v_688: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_941:
-    case ArenaResult{v_692, +v_693}:
-      native_match_replace_free_open_57(replace_free_term(v_692, v_684, v_5, v_7, v_9), v_5, v_7, v_9, v_686, v_688, v_693)
+def native_match_replace_free_open_59(v_882: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_882:
+    case ArenaResult{v_817, +v_818}:
+      {ArenaResult{v_817, v_818} : ArenaResult<U32>}
 
-def native_match_replace_free_open_59(v_942: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_942:
-    case ArenaResult{v_756, +v_757}:
-      {ArenaResult{v_756, v_757} : ArenaResult<U32>}
+def native_match_replace_free_open_60(v_883: ArenaResult<U32>, v_808: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_883:
+    case ArenaResult{v_812, +v_813}:
+      native_match_replace_free_open_59(arena_put_node(v_812, Arena.BodyReply{v_813, v_808}))
 
-def native_match_replace_free_open_60(v_943: ArenaResult<IR.Words>, v_730: Ast.SourceSpan, +v_735: IR.Words) -> ArenaResult<U32>:
-  match v_943:
-    case ArenaResult{v_739, +v_740}:
-      v_743 = arena_words_start(v_735)
-      v_746 = arena_words_count(v_735)
-      v_749 = arena_words_start(v_740)
-      v_752 = arena_words_count(v_740)
-      native_match_replace_free_open_59(arena_put_node(v_739, Arena.BodyMatch{v_743, v_746, v_749, v_752, v_730}))
-
-def native_match_replace_free_open_61(v_944: ArenaResult<IR.Words>, v_5: Nat, v_7: U32, v_9: Nat, v_728: IR.Words, v_730: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_944:
-    case ArenaResult{v_734, +v_735}:
-      native_match_replace_free_open_60(replace_free_cases(v_734, v_728, v_5, v_7, v_9), v_730, v_735)
-
-def native_match_replace_free_open_62(v_945: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_945:
-    case ArenaResult{v_795, +v_796}:
-      {ArenaResult{v_795, v_796} : ArenaResult<U32>}
-
-def native_match_replace_free_open_63(v_946: ArenaResult<U32>, v_771: IR.Words, v_775: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_946:
-    case ArenaResult{v_784, +v_785}:
-      v_788 = arena_words_start(v_771)
-      v_791 = arena_words_count(v_771)
-      native_match_replace_free_open_62(arena_put_node(v_784, Arena.BodyCase{v_788, v_791, v_785, v_775}))
-
-def native_match_replace_free_open_64(v_947: ArenaResult<Nat>, v_5: Nat, v_7: U32, v_9: Nat, v_771: IR.Words, v_773: U32, v_775: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_947:
-    case ArenaResult{v_779, +v_780}:
-      native_match_replace_free_open_63(replace_free_term(v_779, v_773, v_5, v_7, Nat.add(v_9, v_780)), v_771, v_775)
-
-def native_match_replace_free_open_65(v_948: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_948:
-    case ArenaResult{v_857, +v_858}:
-      {ArenaResult{v_857, v_858} : ArenaResult<U32>}
-
-def native_match_replace_free_open_66(v_949: ArenaResult<U32>, v_818: IR.Words, v_820: Ast.Quantity, v_826: Ast.SourceSpan, +v_831: IR.Words) -> ArenaResult<U32>:
-  match v_949:
-    case ArenaResult{v_840, +v_841}:
-      v_844 = arena_words_start(v_818)
-      v_847 = arena_words_count(v_818)
-      v_850 = arena_words_start(v_831)
-      v_853 = arena_words_count(v_831)
-      native_match_replace_free_open_65(arena_put_node(v_840, Arena.BodyLocal{v_844, v_847, v_820, v_850, v_853, v_841, v_826}))
-
-def native_match_replace_free_open_67(v_950: ArenaResult<Nat>, v_5: Nat, v_7: U32, v_9: Nat, v_818: IR.Words, v_820: Ast.Quantity, v_824: U32, v_826: Ast.SourceSpan, +v_831: IR.Words) -> ArenaResult<U32>:
-  match v_950:
-    case ArenaResult{v_835, +v_836}:
-      native_match_replace_free_open_66(replace_free_term(v_835, v_824, v_5, v_7, Nat.add(v_9, v_836)), v_818, v_820, v_826, v_831)
-
-def native_match_replace_free_open_68(v_951: ArenaResult<IR.Words>, v_5: Nat, v_7: U32, v_9: Nat, v_818: IR.Words, v_820: Ast.Quantity, v_824: U32, v_826: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_951:
-    case ArenaResult{v_830, +v_831}:
-      native_match_replace_free_open_67(core_pattern_list_depth(v_830, v_818), v_5, v_7, v_9, v_818, v_820, v_824, v_826, v_831)
-
-def native_match_replace_free_open_69(v_952: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_952:
-    case ArenaResult{v_877, +v_878}:
-      {ArenaResult{v_877, v_878} : ArenaResult<U32>}
-
-def native_match_replace_free_open_70(v_953: ArenaResult<U32>, v_868: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_953:
-    case ArenaResult{v_872, +v_873}:
-      native_match_replace_free_open_69(arena_put_node(v_872, Arena.BodyReply{v_873, v_868}))
-
-def native_match_replace_free_open_71(+v_16: Arena.Node, v_3: U32, v_5: Nat, v_7: U32, v_9: Nat, v_15: ArenaStore) -> ArenaResult<U32>:
+def native_match_replace_free_open_61(+v_16: Arena.Node, v_3: U32, v_5: Nat, v_7: U32, v_9: Nat, v_15: ArenaStore) -> ArenaResult<U32>:
   match v_16:
     case Arena.TermVar{+v_20, +v_21, +v_22}:
       v_24 = v_21
@@ -8449,82 +8313,107 @@ def native_match_replace_free_open_71(+v_16: Arena.Node, v_3: U32, v_5: Nat, v_7
       v_254 = v_248
       native_match_replace_free_open_19(replace_free_term(v_15, v_250, v_5, v_7, v_9), v_5, v_7, v_9, v_252, v_254)
     case Arena.TermAll{+v_278, +v_279, +v_280, +v_281, +v_282, +v_283}:
-      native_match_replace_free_open_24(arena_name_text(v_15, v_279), v_5, v_7, v_9, v_278, v_280, v_281, v_282, v_283)
-    case Arena.TermLam{+v_330, +v_331, +v_332, +v_333, +v_334}:
-      native_match_replace_free_open_28(arena_name_text(v_15, v_331), v_5, v_7, v_9, v_330, v_332, v_333, v_334)
-    case Arena.TermApp{+v_372, +v_373, +v_374}:
-      v_376 = v_372
-      v_378 = v_373
-      v_380 = v_374
-      native_match_replace_free_open_31(replace_free_term(v_15, v_376, v_5, v_7, v_9), v_5, v_7, v_9, v_378, v_380)
-    case Arena.TermAdt{+v_404, +v_405, +v_406, +v_407, +v_408, +v_409}:
-      native_match_replace_free_open_35(arena_name_text(v_15, v_404), v_5, v_7, v_9, v_405, v_406, v_407, v_408, v_409)
-    case Arena.TermFill{+v_462, +v_463, +v_464, +v_465}:
-      +v_467 = IR.Words{v_463, v_464}
-      v_469 = v_462
-      v_471 = v_467
-      v_473 = v_465
-      native_match_replace_free_open_38(replace_free_term(v_15, v_469, v_5, v_7, v_9), v_5, v_7, v_9, v_471, v_473)
-    case Arena.TermPlus{+v_501, +v_502, +v_503, +v_504}:
-      +v_506 = IR.Words{v_502, v_503}
-      v_508 = v_501
-      v_510 = v_506
-      v_512 = v_504
-      native_match_replace_free_open_41(replace_free_term(v_15, v_508, v_5, v_7, v_9), v_5, v_7, v_9, v_510, v_512)
+      v_285 = v_278
+      v_287 = v_279
+      v_289 = v_280
+      v_291 = v_281
+      v_293 = v_282
+      v_295 = v_283
+      native_match_replace_free_open_22(replace_free_term(v_15, v_291, v_5, v_7, v_9), v_5, v_7, v_9, v_285, v_287, v_289, v_293, v_295)
+    case Arena.TermLam{+v_318, +v_319, +v_320, +v_321, +v_322}:
+      v_324 = v_318
+      v_326 = v_319
+      v_328 = v_320
+      v_330 = v_321
+      v_332 = v_322
+      native_match_replace_free_open_24(replace_free_term(v_15, v_330, v_5, v_7, Nat.add(v_9, 1n)), v_324, v_326, v_328, v_332)
+    case Arena.TermApp{+v_348, +v_349, +v_350}:
+      v_352 = v_348
+      v_354 = v_349
+      v_356 = v_350
+      native_match_replace_free_open_27(replace_free_term(v_15, v_352, v_5, v_7, v_9), v_5, v_7, v_9, v_354, v_356)
+    case Arena.TermAdt{+v_380, +v_381, +v_382, +v_383, +v_384, +v_385}:
+      +v_387 = IR.Words{v_381, v_382}
+      +v_389 = IR.Names{v_383, v_384}
+      v_391 = v_380
+      v_393 = v_387
+      v_395 = v_389
+      v_397 = v_385
+      native_match_replace_free_open_29(replace_free_terms(v_15, v_393, v_5, v_7, v_9), v_391, v_395, v_397)
+    case Arena.TermFill{+v_426, +v_427, +v_428, +v_429}:
+      +v_431 = IR.Words{v_427, v_428}
+      v_433 = v_426
+      v_435 = v_431
+      v_437 = v_429
+      native_match_replace_free_open_32(replace_free_term(v_15, v_433, v_5, v_7, v_9), v_5, v_7, v_9, v_435, v_437)
+    case Arena.TermPlus{+v_465, +v_466, +v_467, +v_468}:
+      +v_470 = IR.Words{v_466, v_467}
+      v_472 = v_465
+      v_474 = v_470
+      v_476 = v_468
+      native_match_replace_free_open_35(replace_free_term(v_15, v_472, v_5, v_7, v_9), v_5, v_7, v_9, v_474, v_476)
     case Arena.TermString{_, _, _}:
       {ArenaResult{v_15, v_3} : ArenaResult<U32>}
-    case Arena.TermCtr{+v_548, +v_549, +v_550, +v_551}:
-      native_match_replace_free_open_45(arena_name_text(v_15, v_548), v_5, v_7, v_9, v_549, v_550, v_551)
-    case Arena.TermMat{+v_594, +v_595, +v_596, +v_597}:
-      native_match_replace_free_open_50(arena_name_text(v_15, v_594), v_5, v_7, v_9, v_595, v_596, v_597)
-    case Arena.TermEqual{+v_639, +v_640, +v_641, +v_642}:
-      v_644 = v_639
-      v_646 = v_640
-      v_648 = v_641
-      v_650 = v_642
-      native_match_replace_free_open_54(replace_free_term(v_15, v_644, v_5, v_7, v_9), v_5, v_7, v_9, v_646, v_648, v_650)
-    case Arena.TermRewrite{+v_677, +v_678, +v_679, +v_680}:
-      v_682 = v_677
-      v_684 = v_678
-      v_686 = v_679
-      v_688 = v_680
-      native_match_replace_free_open_58(replace_free_term(v_15, v_682, v_5, v_7, v_9), v_5, v_7, v_9, v_684, v_686, v_688)
-    case Arena.BodyMatch{+v_716, +v_717, +v_718, +v_719, +v_720}:
-      +v_722 = IR.Words{v_716, v_717}
-      +v_724 = IR.Words{v_718, v_719}
-      v_726 = v_722
-      v_728 = v_724
-      v_730 = v_720
-      native_match_replace_free_open_61(replace_free_terms(v_15, v_726, v_5, v_7, v_9), v_5, v_7, v_9, v_728, v_730)
-    case Arena.BodyCase{+v_764, +v_765, +v_766, +v_767}:
-      +v_769 = IR.Words{v_764, v_765}
-      v_771 = v_769
-      v_773 = v_766
-      v_775 = v_767
-      native_match_replace_free_open_64(core_pattern_list_depth(v_15, v_771), v_5, v_7, v_9, v_771, v_773, v_775)
-    case Arena.BodyLocal{+v_806, +v_807, +v_808, +v_809, +v_810, +v_811, +v_812}:
-      +v_814 = IR.Words{v_806, v_807}
-      +v_816 = IR.Words{v_809, v_810}
-      v_818 = v_814
-      v_820 = v_808
-      v_822 = v_816
-      v_824 = v_811
-      v_826 = v_812
-      native_match_replace_free_open_68(replace_free_terms(v_15, v_822, v_5, v_7, v_9), v_5, v_7, v_9, v_818, v_820, v_824, v_826)
-    case Arena.BodyReply{+v_863, +v_864}:
-      v_866 = v_863
-      v_868 = v_864
-      native_match_replace_free_open_70(replace_free_term(v_15, v_866, v_5, v_7, v_9), v_868)
+    case Arena.TermCtr{+v_512, +v_513, +v_514, +v_515}:
+      +v_517 = IR.Words{v_513, v_514}
+      v_519 = v_512
+      v_521 = v_517
+      v_523 = v_515
+      native_match_replace_free_open_37(replace_free_terms(v_15, v_521, v_5, v_7, v_9), v_519, v_523)
+    case Arena.TermMat{+v_546, +v_547, +v_548, +v_549}:
+      v_551 = v_546
+      v_553 = v_547
+      v_555 = v_548
+      v_557 = v_549
+      native_match_replace_free_open_40(replace_free_term(v_15, v_553, v_5, v_7, v_9), v_5, v_7, v_9, v_551, v_555, v_557)
+    case Arena.TermEqual{+v_579, +v_580, +v_581, +v_582}:
+      v_584 = v_579
+      v_586 = v_580
+      v_588 = v_581
+      v_590 = v_582
+      native_match_replace_free_open_44(replace_free_term(v_15, v_584, v_5, v_7, v_9), v_5, v_7, v_9, v_586, v_588, v_590)
+    case Arena.TermRewrite{+v_617, +v_618, +v_619, +v_620}:
+      v_622 = v_617
+      v_624 = v_618
+      v_626 = v_619
+      v_628 = v_620
+      native_match_replace_free_open_48(replace_free_term(v_15, v_622, v_5, v_7, v_9), v_5, v_7, v_9, v_624, v_626, v_628)
+    case Arena.BodyMatch{+v_656, +v_657, +v_658, +v_659, +v_660}:
+      +v_662 = IR.Words{v_656, v_657}
+      +v_664 = IR.Words{v_658, v_659}
+      v_666 = v_662
+      v_668 = v_664
+      v_670 = v_660
+      native_match_replace_free_open_51(replace_free_terms(v_15, v_666, v_5, v_7, v_9), v_5, v_7, v_9, v_668, v_670)
+    case Arena.BodyCase{+v_704, +v_705, +v_706, +v_707}:
+      +v_709 = IR.Words{v_704, v_705}
+      v_711 = v_709
+      v_713 = v_706
+      v_715 = v_707
+      native_match_replace_free_open_54(core_pattern_list_depth(v_15, v_711), v_5, v_7, v_9, v_711, v_713, v_715)
+    case Arena.BodyLocal{+v_746, +v_747, +v_748, +v_749, +v_750, +v_751, +v_752}:
+      +v_754 = IR.Words{v_746, v_747}
+      +v_756 = IR.Words{v_749, v_750}
+      v_758 = v_754
+      v_760 = v_748
+      v_762 = v_756
+      v_764 = v_751
+      v_766 = v_752
+      native_match_replace_free_open_58(replace_free_terms(v_15, v_762, v_5, v_7, v_9), v_5, v_7, v_9, v_758, v_760, v_764, v_766)
+    case Arena.BodyReply{+v_803, +v_804}:
+      v_806 = v_803
+      v_808 = v_804
+      native_match_replace_free_open_60(replace_free_term(v_15, v_806, v_5, v_7, v_9), v_808)
     case _:
       {ArenaResult{v_15, v_3} : ArenaResult<U32>}
 
-def native_match_replace_free_open_72(v_954: ArenaResult<Arena.Node>, v_3: U32, v_5: Nat, v_7: U32, v_9: Nat) -> ArenaResult<U32>:
-  match v_954:
+def native_match_replace_free_open_62(v_884: ArenaResult<Arena.Node>, v_3: U32, v_5: Nat, v_7: U32, v_9: Nat) -> ArenaResult<U32>:
+  match v_884:
     case ArenaResult{v_15, +v_16}:
-      native_match_replace_free_open_71(v_16, v_3, v_5, v_7, v_9, v_15)
+      native_match_replace_free_open_61(v_16, v_3, v_5, v_7, v_9, v_15)
 
 def replace_free_open(v_1: ArenaStore, v_3: U32, v_5: Nat, v_7: U32, v_9: Nat) -> ArenaResult<U32>:
-  native_match_replace_free_open_72(arena_get_node(v_1, v_3), v_3, v_5, v_7, v_9)
+  native_match_replace_free_open_62(arena_get_node(v_1, v_3), v_3, v_5, v_7, v_9)
 
 def optional_source_quantity(v_2: Maybe<&2, Nat>, v_5: List<&2, Binding>) -> Ast.Quantity:
   match v_2:
@@ -9776,61 +9665,50 @@ def native_match_constructors_for_type_1(v_17: ArenaResult<U32>, v_3: U32, v_4: 
 def constructors_for_type(v_1: ArenaStore, v_3: U32, v_4: Scope.ArenaGlobalScope) -> ArenaResult<IR.Names>:
   native_match_constructors_for_type_1(whnf(v_1, 64n, v_3, v_4), v_3, v_4)
 
-def native_match_collect_constructor_field_types_view_0(v_76: ArenaResult<IR.Words>) -> ArenaResult<IR.Words>:
-  match v_76:
-    case ArenaResult{v_71, +v_72}:
-      {ArenaResult{v_71, v_72} : ArenaResult<IR.Words>}
+def native_match_collect_constructor_field_types_view_0(v_64: ArenaResult<IR.Words>) -> ArenaResult<IR.Words>:
+  match v_64:
+    case ArenaResult{v_59, +v_60}:
+      {ArenaResult{v_59, v_60} : ArenaResult<IR.Words>}
 
-def native_match_collect_constructor_field_types_view_1(v_77: ArenaResult<IR.Words>, v_36: U32) -> ArenaResult<IR.Words>:
-  match v_77:
-    case ArenaResult{v_66, +v_67}:
-      native_match_collect_constructor_field_types_view_0(arena_words_cons(v_66, v_36, v_67))
-
-def native_match_collect_constructor_field_types_view_2(v_78: ArenaResult<U32>, v_4: Ast.SourceSpan, v_5: Scope.ArenaGlobalScope, v_7: Nat, v_36: U32) -> ArenaResult<IR.Words>:
-  match v_78:
-    case ArenaResult{v_61, +v_62}:
-      native_match_collect_constructor_field_types_view_1(collect_constructor_field_types_view(v_61, v_62, v_4, v_5, Nat.add(v_7, 1n)), v_36)
-
-def native_match_collect_constructor_field_types_view_3(v_79: ArenaResult<U32>, v_4: Ast.SourceSpan, v_5: Scope.ArenaGlobalScope, v_7: Nat, v_36: U32) -> ArenaResult<IR.Words>:
-  match v_79:
+def native_match_collect_constructor_field_types_view_1(v_65: ArenaResult<IR.Words>, v_29: U32) -> ArenaResult<IR.Words>:
+  match v_65:
     case ArenaResult{v_54, +v_55}:
-      v_57 = v_55
-      native_match_collect_constructor_field_types_view_2(whnf(v_54, 64n, v_57, v_5), v_4, v_5, v_7, v_36)
+      native_match_collect_constructor_field_types_view_0(arena_words_cons(v_54, v_29, v_55))
 
-def native_match_collect_constructor_field_types_view_4(v_80: ArenaResult<U32>, v_4: Ast.SourceSpan, v_5: Scope.ArenaGlobalScope, v_7: Nat, v_36: U32, v_38: U32) -> ArenaResult<IR.Words>:
-  match v_80:
-    case ArenaResult{v_47, +v_48}:
-      v_50 = v_48
-      native_match_collect_constructor_field_types_view_3(core_subst(v_47, 0n, v_50, v_38), v_4, v_5, v_7, v_36)
+def native_match_collect_constructor_field_types_view_2(v_66: ArenaResult<U32>, v_4: Ast.SourceSpan, v_5: Scope.ArenaGlobalScope, v_7: Nat, v_29: U32) -> ArenaResult<IR.Words>:
+  match v_66:
+    case ArenaResult{v_49, +v_50}:
+      native_match_collect_constructor_field_types_view_1(collect_constructor_field_types_view(v_49, v_50, v_4, v_5, Nat.add(v_7, 1n)), v_29)
 
-def native_match_collect_constructor_field_types_view_5(v_81: ArenaResult<U32>, v_4: Ast.SourceSpan, v_5: Scope.ArenaGlobalScope, v_7: Nat, v_36: U32, v_38: U32) -> ArenaResult<IR.Words>:
-  match v_81:
+def native_match_collect_constructor_field_types_view_3(v_67: ArenaResult<U32>, v_4: Ast.SourceSpan, v_5: Scope.ArenaGlobalScope, v_7: Nat, v_29: U32) -> ArenaResult<IR.Words>:
+  match v_67:
     case ArenaResult{v_42, +v_43}:
-      native_match_collect_constructor_field_types_view_4(arena_put_node(v_42, Arena.TermVar{v_43, v_7, v_4}), v_4, v_5, v_7, v_36, v_38)
+      v_45 = v_43
+      native_match_collect_constructor_field_types_view_2(whnf(v_42, 64n, v_45, v_5), v_4, v_5, v_7, v_29)
 
-def native_match_collect_constructor_field_types_view_6(v_82: ArenaResult<String>, v_4: Ast.SourceSpan, v_5: Scope.ArenaGlobalScope, v_7: Nat, +v_23: U32, +v_24: U32) -> ArenaResult<IR.Words>:
-  match v_82:
-    case ArenaResult{v_29, +v_30}:
-      +v_32 = v_30
-      v_34 = v_32
-      v_36 = v_23
-      v_38 = v_24
-      native_match_collect_constructor_field_types_view_5(arena_name(v_29, v_34), v_4, v_5, v_7, v_36, v_38)
+def native_match_collect_constructor_field_types_view_4(v_68: ArenaResult<U32>, v_4: Ast.SourceSpan, v_5: Scope.ArenaGlobalScope, v_7: Nat, v_29: U32, v_31: U32) -> ArenaResult<IR.Words>:
+  match v_68:
+    case ArenaResult{v_35, +v_36}:
+      v_38 = v_36
+      native_match_collect_constructor_field_types_view_3(core_subst(v_35, 0n, v_38, v_31), v_4, v_5, v_7, v_29)
 
-def native_match_collect_constructor_field_types_view_7(+v_13: Arena.Node, v_4: Ast.SourceSpan, v_5: Scope.ArenaGlobalScope, v_7: Nat, v_12: ArenaStore) -> ArenaResult<IR.Words>:
+def native_match_collect_constructor_field_types_view_5(+v_13: Arena.Node, v_4: Ast.SourceSpan, v_5: Scope.ArenaGlobalScope, v_7: Nat, v_12: ArenaStore) -> ArenaResult<IR.Words>:
   match v_13:
     case Arena.TermAll{+v_20, +v_21, +v_22, +v_23, +v_24, +v_25}:
-      native_match_collect_constructor_field_types_view_6(arena_name_text(v_12, v_21), v_4, v_5, v_7, v_23, v_24)
+      v_27 = v_21
+      v_29 = v_23
+      v_31 = v_24
+      native_match_collect_constructor_field_types_view_4(arena_put_node(v_12, Arena.TermVar{v_27, v_7, v_4}), v_4, v_5, v_7, v_29, v_31)
     case _:
       {ArenaResult{v_12, IR.Words{0, 0}} : ArenaResult<IR.Words>}
 
-def native_match_collect_constructor_field_types_view_8(v_83: ArenaResult<Arena.Node>, v_4: Ast.SourceSpan, v_5: Scope.ArenaGlobalScope, v_7: Nat) -> ArenaResult<IR.Words>:
-  match v_83:
+def native_match_collect_constructor_field_types_view_6(v_69: ArenaResult<Arena.Node>, v_4: Ast.SourceSpan, v_5: Scope.ArenaGlobalScope, v_7: Nat) -> ArenaResult<IR.Words>:
+  match v_69:
     case ArenaResult{v_12, +v_13}:
-      native_match_collect_constructor_field_types_view_7(v_13, v_4, v_5, v_7, v_12)
+      native_match_collect_constructor_field_types_view_5(v_13, v_4, v_5, v_7, v_12)
 
 def collect_constructor_field_types_view(v_1: ArenaStore, v_3: U32, v_4: Ast.SourceSpan, v_5: Scope.ArenaGlobalScope, v_7: Nat) -> ArenaResult<IR.Words>:
-  native_match_collect_constructor_field_types_view_8(arena_get_node(v_1, v_3), v_4, v_5, v_7)
+  native_match_collect_constructor_field_types_view_6(arena_get_node(v_1, v_3), v_4, v_5, v_7)
 
 def native_match_collect_constructor_field_types_0(v_19: ArenaResult<IR.Words>) -> ArenaResult<IR.Words>:
   match v_19:
@@ -15098,71 +14976,60 @@ def native_match_function_argument_quantity_1(v_21: ArenaResult<Maybe<&2, U32>>,
 def function_argument_quantity(v_1: ArenaStore, v_3: U32, v_6: List<&2, Binding>, v_7: Scope.ArenaGlobalScope) -> ArenaResult<Maybe<&2, Ast.Quantity>>:
   native_match_function_argument_quantity_1(function_type_of(v_1, v_3, v_6, v_7), v_7)
 
-def native_match_collect_telescope_quantities_view_0(v_87: ArenaResult<IR.Quantities>) -> ArenaResult<IR.Quantities>:
-  match v_87:
-    case ArenaResult{v_82, +v_83}:
-      {ArenaResult{v_82, v_83} : ArenaResult<IR.Quantities>}
+def native_match_collect_telescope_quantities_view_0(v_75: ArenaResult<IR.Quantities>) -> ArenaResult<IR.Quantities>:
+  match v_75:
+    case ArenaResult{v_70, +v_71}:
+      {ArenaResult{v_70, v_71} : ArenaResult<IR.Quantities>}
 
-def native_match_collect_telescope_quantities_view_1(v_88: ArenaResult<IR.Quantities>, v_35: Ast.Quantity) -> ArenaResult<IR.Quantities>:
-  match v_88:
-    case ArenaResult{v_77, +v_78}:
-      native_match_collect_telescope_quantities_view_0(arena_quantities_cons(v_77, v_35, v_78))
+def native_match_collect_telescope_quantities_view_1(v_76: ArenaResult<IR.Quantities>, v_28: Ast.Quantity) -> ArenaResult<IR.Quantities>:
+  match v_76:
+    case ArenaResult{v_65, +v_66}:
+      native_match_collect_telescope_quantities_view_0(arena_quantities_cons(v_65, v_28, v_66))
 
-def native_match_collect_telescope_quantities_view_2(v_89: ArenaResult<U32>, v_7: Nat, v_8: Scope.ArenaGlobalScope, v_35: Ast.Quantity, +v_68: U32) -> ArenaResult<IR.Quantities>:
-  match v_89:
-    case ArenaResult{v_72, +v_73}:
-      native_match_collect_telescope_quantities_view_1(collect_telescope_quantities_view(v_72, v_68, v_73, Nat.add(v_7, 1n), v_8), v_35)
+def native_match_collect_telescope_quantities_view_2(v_77: ArenaResult<U32>, v_7: Nat, v_8: Scope.ArenaGlobalScope, v_28: Ast.Quantity, +v_56: U32) -> ArenaResult<IR.Quantities>:
+  match v_77:
+    case ArenaResult{v_60, +v_61}:
+      native_match_collect_telescope_quantities_view_1(collect_telescope_quantities_view(v_60, v_56, v_61, Nat.add(v_7, 1n), v_8), v_28)
 
-def native_match_collect_telescope_quantities_view_3(v_90: ArenaResult<U32>, v_7: Nat, v_8: Scope.ArenaGlobalScope, v_35: Ast.Quantity, v_41: U32, v_58: U32) -> ArenaResult<IR.Quantities>:
-  match v_90:
-    case ArenaResult{v_67, +v_68}:
-      native_match_collect_telescope_quantities_view_2(core_subst(v_67, 0n, v_58, v_41), v_7, v_8, v_35, v_68)
-
-def native_match_collect_telescope_quantities_view_4(v_91: ArenaResult<U32>, v_7: Nat, v_8: Scope.ArenaGlobalScope, v_35: Ast.Quantity, v_41: U32, v_58: U32) -> ArenaResult<IR.Quantities>:
-  match v_91:
-    case ArenaResult{v_62, +v_63}:
-      native_match_collect_telescope_quantities_view_3(whnf(v_62, 64n, v_63, v_8), v_7, v_8, v_35, v_41, v_58)
-
-def native_match_collect_telescope_quantities_view_5(v_92: ArenaResult<U32>, v_7: Nat, v_8: Scope.ArenaGlobalScope, v_35: Ast.Quantity, v_41: U32) -> ArenaResult<IR.Quantities>:
-  match v_92:
+def native_match_collect_telescope_quantities_view_3(v_78: ArenaResult<U32>, v_7: Nat, v_8: Scope.ArenaGlobalScope, v_28: Ast.Quantity, v_34: U32, v_46: U32) -> ArenaResult<IR.Quantities>:
+  match v_78:
     case ArenaResult{v_55, +v_56}:
-      v_58 = v_56
-      native_match_collect_telescope_quantities_view_4(core_subst(v_55, 0n, v_58, v_41), v_7, v_8, v_35, v_41, v_58)
+      native_match_collect_telescope_quantities_view_2(core_subst(v_55, 0n, v_46, v_34), v_7, v_8, v_28, v_56)
 
-def native_match_collect_telescope_quantities_view_6(v_93: ArenaResult<U32>, v_7: Nat, v_8: Scope.ArenaGlobalScope, v_35: Ast.Quantity, v_41: U32, +v_46: Ast.SourceSpan) -> ArenaResult<IR.Quantities>:
-  match v_93:
+def native_match_collect_telescope_quantities_view_4(v_79: ArenaResult<U32>, v_7: Nat, v_8: Scope.ArenaGlobalScope, v_28: Ast.Quantity, v_34: U32, v_46: U32) -> ArenaResult<IR.Quantities>:
+  match v_79:
     case ArenaResult{v_50, +v_51}:
-      native_match_collect_telescope_quantities_view_5(arena_put_node(v_50, Arena.TermVar{v_51, v_7, v_46}), v_7, v_8, v_35, v_41)
+      native_match_collect_telescope_quantities_view_3(whnf(v_50, 64n, v_51, v_8), v_7, v_8, v_28, v_34, v_46)
 
-def native_match_collect_telescope_quantities_view_7(v_94: ArenaResult<Ast.SourceSpan>, v_7: Nat, v_8: Scope.ArenaGlobalScope, v_35: Ast.Quantity, v_37: String, v_41: U32) -> ArenaResult<IR.Quantities>:
-  match v_94:
-    case ArenaResult{v_45, +v_46}:
-      native_match_collect_telescope_quantities_view_6(arena_name(v_45, v_37), v_7, v_8, v_35, v_41, v_46)
+def native_match_collect_telescope_quantities_view_5(v_80: ArenaResult<U32>, v_7: Nat, v_8: Scope.ArenaGlobalScope, v_28: Ast.Quantity, v_34: U32) -> ArenaResult<IR.Quantities>:
+  match v_80:
+    case ArenaResult{v_43, +v_44}:
+      v_46 = v_44
+      native_match_collect_telescope_quantities_view_4(core_subst(v_43, 0n, v_46, v_34), v_7, v_8, v_28, v_34, v_46)
 
-def native_match_collect_telescope_quantities_view_8(v_95: ArenaResult<String>, v_7: Nat, v_8: Scope.ArenaGlobalScope, +v_21: Ast.Quantity, +v_24: U32, +v_25: U32) -> ArenaResult<IR.Quantities>:
-  match v_95:
-    case ArenaResult{v_30, +v_31}:
-      +v_33 = v_31
-      v_35 = v_21
-      v_37 = v_33
-      v_39 = v_24
-      v_41 = v_25
-      native_match_collect_telescope_quantities_view_7(term_span(v_30, v_39), v_7, v_8, v_35, v_37, v_41)
+def native_match_collect_telescope_quantities_view_6(v_81: ArenaResult<Ast.SourceSpan>, v_7: Nat, v_8: Scope.ArenaGlobalScope, v_28: Ast.Quantity, v_30: U32, v_34: U32) -> ArenaResult<IR.Quantities>:
+  match v_81:
+    case ArenaResult{v_38, +v_39}:
+      native_match_collect_telescope_quantities_view_5(arena_put_node(v_38, Arena.TermVar{v_30, v_7, v_39}), v_7, v_8, v_28, v_34)
 
-def native_match_collect_telescope_quantities_view_9(+v_14: Arena.Node, v_7: Nat, v_8: Scope.ArenaGlobalScope, v_13: ArenaStore) -> ArenaResult<IR.Quantities>:
+def native_match_collect_telescope_quantities_view_7(+v_14: Arena.Node, v_7: Nat, v_8: Scope.ArenaGlobalScope, v_13: ArenaStore) -> ArenaResult<IR.Quantities>:
   match v_14:
     case Arena.TermAll{+v_21, +v_22, +v_23, +v_24, +v_25, +v_26}:
-      native_match_collect_telescope_quantities_view_8(arena_name_text(v_13, v_22), v_7, v_8, v_21, v_24, v_25)
+      v_28 = v_21
+      v_30 = v_22
+      v_32 = v_24
+      v_34 = v_25
+      native_match_collect_telescope_quantities_view_6(term_span(v_13, v_32), v_7, v_8, v_28, v_30, v_34)
     case _:
       {ArenaResult{v_13, IR.Quantities{0, 0}} : ArenaResult<IR.Quantities>}
 
-def native_match_collect_telescope_quantities_view_10(v_96: ArenaResult<Arena.Node>, v_7: Nat, v_8: Scope.ArenaGlobalScope) -> ArenaResult<IR.Quantities>:
-  match v_96:
+def native_match_collect_telescope_quantities_view_8(v_82: ArenaResult<Arena.Node>, v_7: Nat, v_8: Scope.ArenaGlobalScope) -> ArenaResult<IR.Quantities>:
+  match v_82:
     case ArenaResult{v_13, +v_14}:
-      native_match_collect_telescope_quantities_view_9(v_14, v_7, v_8, v_13)
+      native_match_collect_telescope_quantities_view_7(v_14, v_7, v_8, v_13)
 
 def collect_telescope_quantities_view(v_1: ArenaStore, v_3: U32, v_5: U32, v_7: Nat, v_8: Scope.ArenaGlobalScope) -> ArenaResult<IR.Quantities>:
-  native_match_collect_telescope_quantities_view_10(arena_get_node(v_1, v_3), v_7, v_8)
+  native_match_collect_telescope_quantities_view_8(arena_get_node(v_1, v_3), v_7, v_8)
 
 def native_match_collect_telescope_quantities_0(v_18: ArenaResult<IR.Quantities>) -> ArenaResult<IR.Quantities>:
   match v_18:
@@ -17472,248 +17339,182 @@ def native_match_binders_env_7(v_95: ArenaResult<IR.WordView>, v_5: List<&2, Bin
 def binders_env(v_1: ArenaStore, v_2: IR.Words, v_5: List<&2, Binding>) -> ArenaResult<List<&2, Binding>>:
   native_match_binders_env_7(arena_words_view(v_1, v_2), v_5)
 
-def native_match_binders_type_0(v_111: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_111:
-    case ArenaResult{v_67, +v_68}:
-      {ArenaResult{v_67, v_68} : ArenaResult<U32>}
+def native_match_binders_type_0(v_87: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_87:
+    case ArenaResult{v_55, +v_56}:
+      {ArenaResult{v_55, v_56} : ArenaResult<U32>}
 
-def native_match_binders_type_1(v_112: ArenaResult<U32>, v_45: Ast.Quantity, v_49: Nat, v_51: U32, v_53: Ast.SourceSpan, +v_58: U32) -> ArenaResult<U32>:
-  match v_112:
-    case ArenaResult{v_62, +v_63}:
-      native_match_binders_type_0(arena_put_node(v_62, Arena.TermAll{v_45, v_63, v_49, v_51, v_58, v_53}))
+def native_match_binders_type_1(v_88: ArenaResult<U32>, v_38: Ast.Quantity, v_40: U32, v_42: Nat, v_44: U32, v_46: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_88:
+    case ArenaResult{v_50, +v_51}:
+      native_match_binders_type_0(arena_put_node(v_50, Arena.TermAll{v_38, v_40, v_42, v_44, v_51, v_46}))
 
-def native_match_binders_type_2(v_113: ArenaResult<U32>, v_45: Ast.Quantity, v_47: String, v_49: Nat, v_51: U32, v_53: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_113:
-    case ArenaResult{v_57, +v_58}:
-      native_match_binders_type_1(arena_name(v_57, v_47), v_45, v_49, v_51, v_53, v_58)
+def native_match_binders_type_2(v_89: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_89:
+    case ArenaResult{v_83, +v_84}:
+      {ArenaResult{v_83, v_84} : ArenaResult<U32>}
 
-def native_match_binders_type_3(v_114: ArenaResult<String>, v_4: U32, v_21: IR.Words, +v_32: Ast.Quantity, +v_34: Nat, +v_35: U32, +v_36: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_114:
-    case ArenaResult{v_40, +v_41}:
-      +v_43 = v_41
-      v_45 = v_32
-      v_47 = v_43
-      v_49 = v_34
-      v_51 = v_35
-      v_53 = v_36
-      native_match_binders_type_2(binders_type(v_40, v_21, v_4), v_45, v_47, v_49, v_51, v_53)
+def native_match_binders_type_3(v_90: ArenaResult<U32>, v_68: U32, v_70: Nat, v_72: U32, v_74: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_90:
+    case ArenaResult{v_78, +v_79}:
+      native_match_binders_type_2(arena_put_node(v_78, Arena.TermAll{Ast.QZero{}, v_68, v_70, v_72, v_79, v_74}))
 
-def native_match_binders_type_4(v_115: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_115:
-    case ArenaResult{v_107, +v_108}:
-      {ArenaResult{v_107, v_108} : ArenaResult<U32>}
-
-def native_match_binders_type_5(v_116: ArenaResult<U32>, v_89: Nat, v_91: U32, v_93: Ast.SourceSpan, +v_98: U32) -> ArenaResult<U32>:
-  match v_116:
-    case ArenaResult{v_102, +v_103}:
-      native_match_binders_type_4(arena_put_node(v_102, Arena.TermAll{Ast.QZero{}, v_103, v_89, v_91, v_98, v_93}))
-
-def native_match_binders_type_6(v_117: ArenaResult<U32>, v_87: String, v_89: Nat, v_91: U32, v_93: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_117:
-    case ArenaResult{v_97, +v_98}:
-      native_match_binders_type_5(arena_name(v_97, v_87), v_89, v_91, v_93, v_98)
-
-def native_match_binders_type_7(v_118: ArenaResult<String>, v_4: U32, v_21: IR.Words, +v_76: Nat, +v_77: U32, +v_78: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_118:
-    case ArenaResult{v_82, +v_83}:
-      +v_85 = v_83
-      v_87 = v_85
-      v_89 = v_76
-      v_91 = v_77
-      v_93 = v_78
-      native_match_binders_type_6(binders_type(v_82, v_21, v_4), v_87, v_89, v_91, v_93)
-
-def native_match_binders_type_8(+v_26: Arena.Binder, v_4: U32, v_21: IR.Words, v_25: ArenaStore) -> ArenaResult<U32>:
+def native_match_binders_type_4(+v_26: Arena.Binder, v_4: U32, v_21: IR.Words, v_25: ArenaStore) -> ArenaResult<U32>:
   match v_26:
     case Arena.Binder{+v_32, +v_33, +v_34, +v_35, +v_36}:
-      native_match_binders_type_3(arena_name_text(v_25, v_33), v_4, v_21, v_32, v_34, v_35, v_36)
-    case Arena.TemplateBinder{+v_75, +v_76, +v_77, +v_78}:
-      native_match_binders_type_7(arena_name_text(v_25, v_75), v_4, v_21, v_76, v_77, v_78)
+      v_38 = v_32
+      v_40 = v_33
+      v_42 = v_34
+      v_44 = v_35
+      v_46 = v_36
+      native_match_binders_type_1(binders_type(v_25, v_21, v_4), v_38, v_40, v_42, v_44, v_46)
+    case Arena.TemplateBinder{+v_63, +v_64, +v_65, +v_66}:
+      v_68 = v_63
+      v_70 = v_64
+      v_72 = v_65
+      v_74 = v_66
+      native_match_binders_type_3(binders_type(v_25, v_21, v_4), v_68, v_70, v_72, v_74)
 
-def native_match_binders_type_9(v_119: ArenaResult<Arena.Binder>, v_4: U32, v_21: IR.Words) -> ArenaResult<U32>:
-  match v_119:
+def native_match_binders_type_5(v_91: ArenaResult<Arena.Binder>, v_4: U32, v_21: IR.Words) -> ArenaResult<U32>:
+  match v_91:
     case ArenaResult{v_25, +v_26}:
-      native_match_binders_type_8(v_26, v_4, v_21, v_25)
+      native_match_binders_type_4(v_26, v_4, v_21, v_25)
 
-def native_match_binders_type_10(+v_11: IR.WordView, v_4: U32, v_10: ArenaStore) -> ArenaResult<U32>:
+def native_match_binders_type_6(+v_11: IR.WordView, v_4: U32, v_10: ArenaStore) -> ArenaResult<U32>:
   match v_11:
     case IR.WordNil{}:
       {ArenaResult{v_10, v_4} : ArenaResult<U32>}
     case IR.WordCons{+v_16, +v_17}:
       +v_19 = v_16
       v_21 = v_17
-      native_match_binders_type_9(arena_get_binder(v_10, v_19), v_4, v_21)
+      native_match_binders_type_5(arena_get_binder(v_10, v_19), v_4, v_21)
 
-def native_match_binders_type_11(v_120: ArenaResult<IR.WordView>, v_4: U32) -> ArenaResult<U32>:
-  match v_120:
+def native_match_binders_type_7(v_92: ArenaResult<IR.WordView>, v_4: U32) -> ArenaResult<U32>:
+  match v_92:
     case ArenaResult{v_10, +v_11}:
-      native_match_binders_type_10(v_11, v_4, v_10)
+      native_match_binders_type_6(v_11, v_4, v_10)
 
 def binders_type(v_1: ArenaStore, v_2: IR.Words, v_4: U32) -> ArenaResult<U32>:
-  native_match_binders_type_11(arena_words_view(v_1, v_2), v_4)
+  native_match_binders_type_7(arena_words_view(v_1, v_2), v_4)
 
-def native_match_binders_lambda_0(v_107: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_107:
-    case ArenaResult{v_65, +v_66}:
-      {ArenaResult{v_65, v_66} : ArenaResult<U32>}
+def native_match_binders_lambda_0(v_83: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_83:
+    case ArenaResult{v_53, +v_54}:
+      {ArenaResult{v_53, v_54} : ArenaResult<U32>}
 
-def native_match_binders_lambda_1(v_108: ArenaResult<U32>, v_45: Ast.Quantity, v_49: Nat, v_51: Ast.SourceSpan, +v_56: U32) -> ArenaResult<U32>:
-  match v_108:
-    case ArenaResult{v_60, +v_61}:
-      native_match_binders_lambda_0(arena_put_node(v_60, Arena.TermLam{Some{v_45}, v_61, v_49, v_56, v_51}))
+def native_match_binders_lambda_1(v_84: ArenaResult<U32>, v_38: Ast.Quantity, v_40: U32, v_42: Nat, v_44: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_84:
+    case ArenaResult{v_48, +v_49}:
+      native_match_binders_lambda_0(arena_put_node(v_48, Arena.TermLam{Some{v_38}, v_40, v_42, v_49, v_44}))
 
-def native_match_binders_lambda_2(v_109: ArenaResult<U32>, v_45: Ast.Quantity, v_47: String, v_49: Nat, v_51: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_109:
-    case ArenaResult{v_55, +v_56}:
-      native_match_binders_lambda_1(arena_name(v_55, v_47), v_45, v_49, v_51, v_56)
+def native_match_binders_lambda_2(v_85: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_85:
+    case ArenaResult{v_79, +v_80}:
+      {ArenaResult{v_79, v_80} : ArenaResult<U32>}
 
-def native_match_binders_lambda_3(v_110: ArenaResult<String>, v_4: U32, v_21: IR.Words, +v_32: Ast.Quantity, +v_34: Nat, +v_36: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_110:
-    case ArenaResult{v_40, +v_41}:
-      +v_43 = v_41
-      v_45 = v_32
-      v_47 = v_43
-      v_49 = v_34
-      v_51 = v_36
-      native_match_binders_lambda_2(binders_lambda(v_40, v_21, v_4), v_45, v_47, v_49, v_51)
+def native_match_binders_lambda_3(v_86: ArenaResult<U32>, v_66: U32, v_68: Nat, v_70: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_86:
+    case ArenaResult{v_74, +v_75}:
+      native_match_binders_lambda_2(arena_put_node(v_74, Arena.TermLam{Some{Ast.QZero{}}, v_66, v_68, v_75, v_70}))
 
-def native_match_binders_lambda_4(v_111: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_111:
-    case ArenaResult{v_103, +v_104}:
-      {ArenaResult{v_103, v_104} : ArenaResult<U32>}
-
-def native_match_binders_lambda_5(v_112: ArenaResult<U32>, v_87: Nat, v_89: Ast.SourceSpan, +v_94: U32) -> ArenaResult<U32>:
-  match v_112:
-    case ArenaResult{v_98, +v_99}:
-      native_match_binders_lambda_4(arena_put_node(v_98, Arena.TermLam{Some{Ast.QZero{}}, v_99, v_87, v_94, v_89}))
-
-def native_match_binders_lambda_6(v_113: ArenaResult<U32>, v_85: String, v_87: Nat, v_89: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_113:
-    case ArenaResult{v_93, +v_94}:
-      native_match_binders_lambda_5(arena_name(v_93, v_85), v_87, v_89, v_94)
-
-def native_match_binders_lambda_7(v_114: ArenaResult<String>, v_4: U32, v_21: IR.Words, +v_74: Nat, +v_76: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_114:
-    case ArenaResult{v_80, +v_81}:
-      +v_83 = v_81
-      v_85 = v_83
-      v_87 = v_74
-      v_89 = v_76
-      native_match_binders_lambda_6(binders_lambda(v_80, v_21, v_4), v_85, v_87, v_89)
-
-def native_match_binders_lambda_8(+v_26: Arena.Binder, v_4: U32, v_21: IR.Words, v_25: ArenaStore) -> ArenaResult<U32>:
+def native_match_binders_lambda_4(+v_26: Arena.Binder, v_4: U32, v_21: IR.Words, v_25: ArenaStore) -> ArenaResult<U32>:
   match v_26:
     case Arena.Binder{+v_32, +v_33, +v_34, +v_35, +v_36}:
-      native_match_binders_lambda_3(arena_name_text(v_25, v_33), v_4, v_21, v_32, v_34, v_36)
-    case Arena.TemplateBinder{+v_73, +v_74, +v_75, +v_76}:
-      native_match_binders_lambda_7(arena_name_text(v_25, v_73), v_4, v_21, v_74, v_76)
+      v_38 = v_32
+      v_40 = v_33
+      v_42 = v_34
+      v_44 = v_36
+      native_match_binders_lambda_1(binders_lambda(v_25, v_21, v_4), v_38, v_40, v_42, v_44)
+    case Arena.TemplateBinder{+v_61, +v_62, +v_63, +v_64}:
+      v_66 = v_61
+      v_68 = v_62
+      v_70 = v_64
+      native_match_binders_lambda_3(binders_lambda(v_25, v_21, v_4), v_66, v_68, v_70)
 
-def native_match_binders_lambda_9(v_115: ArenaResult<Arena.Binder>, v_4: U32, v_21: IR.Words) -> ArenaResult<U32>:
-  match v_115:
+def native_match_binders_lambda_5(v_87: ArenaResult<Arena.Binder>, v_4: U32, v_21: IR.Words) -> ArenaResult<U32>:
+  match v_87:
     case ArenaResult{v_25, +v_26}:
-      native_match_binders_lambda_8(v_26, v_4, v_21, v_25)
+      native_match_binders_lambda_4(v_26, v_4, v_21, v_25)
 
-def native_match_binders_lambda_10(+v_11: IR.WordView, v_4: U32, v_10: ArenaStore) -> ArenaResult<U32>:
+def native_match_binders_lambda_6(+v_11: IR.WordView, v_4: U32, v_10: ArenaStore) -> ArenaResult<U32>:
   match v_11:
     case IR.WordNil{}:
       {ArenaResult{v_10, v_4} : ArenaResult<U32>}
     case IR.WordCons{+v_16, +v_17}:
       +v_19 = v_16
       v_21 = v_17
-      native_match_binders_lambda_9(arena_get_binder(v_10, v_19), v_4, v_21)
+      native_match_binders_lambda_5(arena_get_binder(v_10, v_19), v_4, v_21)
 
-def native_match_binders_lambda_11(v_116: ArenaResult<IR.WordView>, v_4: U32) -> ArenaResult<U32>:
-  match v_116:
+def native_match_binders_lambda_7(v_88: ArenaResult<IR.WordView>, v_4: U32) -> ArenaResult<U32>:
+  match v_88:
     case ArenaResult{v_10, +v_11}:
-      native_match_binders_lambda_10(v_11, v_4, v_10)
+      native_match_binders_lambda_6(v_11, v_4, v_10)
 
 def binders_lambda(v_1: ArenaStore, v_2: IR.Words, v_4: U32) -> ArenaResult<U32>:
-  native_match_binders_lambda_11(arena_words_view(v_1, v_2), v_4)
+  native_match_binders_lambda_7(arena_words_view(v_1, v_2), v_4)
 
-def native_match_parameter_vars_0(v_107: ArenaResult<IR.Words>) -> ArenaResult<IR.Words>:
-  match v_107:
-    case ArenaResult{v_65, +v_66}:
-      {ArenaResult{v_65, v_66} : ArenaResult<IR.Words>}
+def native_match_parameter_vars_0(v_83: ArenaResult<IR.Words>) -> ArenaResult<IR.Words>:
+  match v_83:
+    case ArenaResult{v_53, +v_54}:
+      {ArenaResult{v_53, v_54} : ArenaResult<IR.Words>}
 
-def native_match_parameter_vars_1(v_108: ArenaResult<IR.Words>, +v_56: U32) -> ArenaResult<IR.Words>:
-  match v_108:
-    case ArenaResult{v_60, +v_61}:
-      native_match_parameter_vars_0(arena_words_cons(v_60, v_56, v_61))
+def native_match_parameter_vars_1(v_84: ArenaResult<IR.Words>, +v_44: U32) -> ArenaResult<IR.Words>:
+  match v_84:
+    case ArenaResult{v_48, +v_49}:
+      native_match_parameter_vars_0(arena_words_cons(v_48, v_44, v_49))
 
-def native_match_parameter_vars_2(v_109: ArenaResult<U32>, v_5: Ast.SourceSpan, v_20: IR.Words, v_46: Nat) -> ArenaResult<IR.Words>:
-  match v_109:
-    case ArenaResult{v_55, +v_56}:
-      native_match_parameter_vars_1(parameter_vars(v_55, v_20, v_46, v_5), v_56)
+def native_match_parameter_vars_2(v_85: ArenaResult<U32>, v_5: Ast.SourceSpan, v_20: IR.Words, v_39: Nat) -> ArenaResult<IR.Words>:
+  match v_85:
+    case ArenaResult{v_43, +v_44}:
+      native_match_parameter_vars_1(parameter_vars(v_43, v_20, v_39, v_5), v_44)
 
-def native_match_parameter_vars_3(v_110: ArenaResult<U32>, v_5: Ast.SourceSpan, v_20: IR.Words, v_46: Nat) -> ArenaResult<IR.Words>:
-  match v_110:
-    case ArenaResult{v_50, +v_51}:
-      native_match_parameter_vars_2(arena_put_node(v_50, Arena.TermVar{v_51, v_46, v_5}), v_5, v_20, v_46)
+def native_match_parameter_vars_3(v_86: ArenaResult<IR.Words>) -> ArenaResult<IR.Words>:
+  match v_86:
+    case ArenaResult{v_81, +v_82}:
+      {ArenaResult{v_81, v_82} : ArenaResult<IR.Words>}
 
-def native_match_parameter_vars_4(v_111: ArenaResult<String>, v_4: Nat, v_5: Ast.SourceSpan, v_20: IR.Words) -> ArenaResult<IR.Words>:
-  match v_111:
-    case ArenaResult{v_39, +v_40}:
-      +v_42 = v_40
-      v_44 = v_42
-      v_46 = Nat.sub(v_4, 1n)
-      native_match_parameter_vars_3(arena_name(v_39, v_44), v_5, v_20, v_46)
+def native_match_parameter_vars_4(v_87: ArenaResult<IR.Words>, +v_72: U32) -> ArenaResult<IR.Words>:
+  match v_87:
+    case ArenaResult{v_76, +v_77}:
+      native_match_parameter_vars_3(arena_words_cons(v_76, v_72, v_77))
 
-def native_match_parameter_vars_5(v_112: ArenaResult<IR.Words>) -> ArenaResult<IR.Words>:
-  match v_112:
-    case ArenaResult{v_105, +v_106}:
-      {ArenaResult{v_105, v_106} : ArenaResult<IR.Words>}
+def native_match_parameter_vars_5(v_88: ArenaResult<U32>, v_5: Ast.SourceSpan, v_20: IR.Words, v_67: Nat) -> ArenaResult<IR.Words>:
+  match v_88:
+    case ArenaResult{v_71, +v_72}:
+      native_match_parameter_vars_4(parameter_vars(v_71, v_20, v_67, v_5), v_72)
 
-def native_match_parameter_vars_6(v_113: ArenaResult<IR.Words>, +v_96: U32) -> ArenaResult<IR.Words>:
-  match v_113:
-    case ArenaResult{v_100, +v_101}:
-      native_match_parameter_vars_5(arena_words_cons(v_100, v_96, v_101))
-
-def native_match_parameter_vars_7(v_114: ArenaResult<U32>, v_5: Ast.SourceSpan, v_20: IR.Words, v_86: Nat) -> ArenaResult<IR.Words>:
-  match v_114:
-    case ArenaResult{v_95, +v_96}:
-      native_match_parameter_vars_6(parameter_vars(v_95, v_20, v_86, v_5), v_96)
-
-def native_match_parameter_vars_8(v_115: ArenaResult<U32>, v_5: Ast.SourceSpan, v_20: IR.Words, v_86: Nat) -> ArenaResult<IR.Words>:
-  match v_115:
-    case ArenaResult{v_90, +v_91}:
-      native_match_parameter_vars_7(arena_put_node(v_90, Arena.TermVar{v_91, v_86, v_5}), v_5, v_20, v_86)
-
-def native_match_parameter_vars_9(v_116: ArenaResult<String>, v_4: Nat, v_5: Ast.SourceSpan, v_20: IR.Words) -> ArenaResult<IR.Words>:
-  match v_116:
-    case ArenaResult{v_79, +v_80}:
-      +v_82 = v_80
-      v_84 = v_82
-      v_86 = Nat.sub(v_4, 1n)
-      native_match_parameter_vars_8(arena_name(v_79, v_84), v_5, v_20, v_86)
-
-def native_match_parameter_vars_10(+v_25: Arena.Binder, v_4: Nat, v_5: Ast.SourceSpan, v_20: IR.Words, v_24: ArenaStore) -> ArenaResult<IR.Words>:
+def native_match_parameter_vars_6(+v_25: Arena.Binder, v_4: Nat, v_5: Ast.SourceSpan, v_20: IR.Words, v_24: ArenaStore) -> ArenaResult<IR.Words>:
   match v_25:
     case Arena.Binder{+v_31, +v_32, +v_33, +v_34, +v_35}:
-      native_match_parameter_vars_4(arena_name_text(v_24, v_32), v_4, v_5, v_20)
-    case Arena.TemplateBinder{+v_72, +v_73, +v_74, +v_75}:
-      native_match_parameter_vars_9(arena_name_text(v_24, v_72), v_4, v_5, v_20)
+      v_37 = v_32
+      v_39 = Nat.sub(v_4, 1n)
+      native_match_parameter_vars_2(arena_put_node(v_24, Arena.TermVar{v_37, v_39, v_5}), v_5, v_20, v_39)
+    case Arena.TemplateBinder{+v_60, +v_61, +v_62, +v_63}:
+      v_65 = v_60
+      v_67 = Nat.sub(v_4, 1n)
+      native_match_parameter_vars_5(arena_put_node(v_24, Arena.TermVar{v_65, v_67, v_5}), v_5, v_20, v_67)
 
-def native_match_parameter_vars_11(v_117: ArenaResult<Arena.Binder>, v_4: Nat, v_5: Ast.SourceSpan, v_20: IR.Words) -> ArenaResult<IR.Words>:
-  match v_117:
+def native_match_parameter_vars_7(v_89: ArenaResult<Arena.Binder>, v_4: Nat, v_5: Ast.SourceSpan, v_20: IR.Words) -> ArenaResult<IR.Words>:
+  match v_89:
     case ArenaResult{v_24, +v_25}:
-      native_match_parameter_vars_10(v_25, v_4, v_5, v_20, v_24)
+      native_match_parameter_vars_6(v_25, v_4, v_5, v_20, v_24)
 
-def native_match_parameter_vars_12(+v_11: IR.WordView, v_4: Nat, v_5: Ast.SourceSpan, v_10: ArenaStore) -> ArenaResult<IR.Words>:
+def native_match_parameter_vars_8(+v_11: IR.WordView, v_4: Nat, v_5: Ast.SourceSpan, v_10: ArenaStore) -> ArenaResult<IR.Words>:
   match v_11:
     case IR.WordNil{}:
       {ArenaResult{v_10, IR.Words{0, 0}} : ArenaResult<IR.Words>}
     case IR.WordCons{+v_15, +v_16}:
       +v_18 = v_15
       v_20 = v_16
-      native_match_parameter_vars_11(arena_get_binder(v_10, v_18), v_4, v_5, v_20)
+      native_match_parameter_vars_7(arena_get_binder(v_10, v_18), v_4, v_5, v_20)
 
-def native_match_parameter_vars_13(v_118: ArenaResult<IR.WordView>, v_4: Nat, v_5: Ast.SourceSpan) -> ArenaResult<IR.Words>:
-  match v_118:
+def native_match_parameter_vars_9(v_90: ArenaResult<IR.WordView>, v_4: Nat, v_5: Ast.SourceSpan) -> ArenaResult<IR.Words>:
+  match v_90:
     case ArenaResult{v_10, +v_11}:
-      native_match_parameter_vars_12(v_11, v_4, v_5, v_10)
+      native_match_parameter_vars_8(v_11, v_4, v_5, v_10)
 
 def parameter_vars(v_1: ArenaStore, v_2: IR.Words, v_4: Nat, v_5: Ast.SourceSpan) -> ArenaResult<IR.Words>:
-  native_match_parameter_vars_13(arena_words_view(v_1, v_2), v_4, v_5)
+  native_match_parameter_vars_9(arena_words_view(v_1, v_2), v_4, v_5)
 
 def native_match_shift_terms_0(v_35: ArenaResult<IR.Words>) -> ArenaResult<IR.Words>:
   match v_35:
@@ -18383,54 +18184,39 @@ def native_match_check_type_decl_12(v_2: IR.TypeDecl, v_1: ArenaStore, v_4: Stri
 def check_type_decl(v_1: ArenaStore, v_2: IR.TypeDecl, v_4: String, v_5: Scope.ArenaGlobalScope, v_6: Scope.ArenaGlobalScope) -> ArenaResult<ScopedState>:
   native_match_check_type_decl_12(v_2, v_1, v_4, v_5, v_6)
 
-def native_match_foreign_head_0(v_115: ArenaResult<String>) -> ArenaResult<Maybe<&2, String>>:
-  match v_115:
+def native_match_foreign_head_0(v_103: ArenaResult<String>) -> ArenaResult<Maybe<&2, String>>:
+  match v_103:
     case ArenaResult{v_19, +v_20}:
       +v_22 = v_20
       v_24 = v_22
       {ArenaResult{v_19, Some{v_24}} : ArenaResult<Maybe<&2, String>>}
 
-def native_match_foreign_head_1(v_116: ArenaResult<Maybe<&2, String>>) -> ArenaResult<Maybe<&2, String>>:
-  match v_116:
+def native_match_foreign_head_1(v_104: ArenaResult<Maybe<&2, String>>) -> ArenaResult<Maybe<&2, String>>:
+  match v_104:
     case ArenaResult{v_39, +v_40}:
       {ArenaResult{v_39, v_40} : ArenaResult<Maybe<&2, String>>}
 
-def native_match_foreign_head_2(v_117: ArenaResult<Maybe<&2, String>>) -> ArenaResult<Maybe<&2, String>>:
-  match v_117:
+def native_match_foreign_head_2(v_105: ArenaResult<Maybe<&2, String>>) -> ArenaResult<Maybe<&2, String>>:
+  match v_105:
     case ArenaResult{v_55, +v_56}:
       {ArenaResult{v_55, v_56} : ArenaResult<Maybe<&2, String>>}
 
-def native_match_foreign_head_3(v_118: ArenaResult<Maybe<&2, String>>) -> ArenaResult<Maybe<&2, String>>:
-  match v_118:
-    case ArenaResult{v_105, +v_106}:
-      {ArenaResult{v_105, v_106} : ArenaResult<Maybe<&2, String>>}
+def native_match_foreign_head_3(v_106: ArenaResult<Maybe<&2, String>>) -> ArenaResult<Maybe<&2, String>>:
+  match v_106:
+    case ArenaResult{v_93, +v_94}:
+      {ArenaResult{v_93, v_94} : ArenaResult<Maybe<&2, String>>}
 
-def native_match_foreign_head_4(v_119: ArenaResult<U32>) -> ArenaResult<Maybe<&2, String>>:
-  match v_119:
-    case ArenaResult{v_100, +v_101}:
-      native_match_foreign_head_3(foreign_head(v_100, v_101))
+def native_match_foreign_head_4(v_107: ArenaResult<U32>) -> ArenaResult<Maybe<&2, String>>:
+  match v_107:
+    case ArenaResult{v_88, +v_89}:
+      native_match_foreign_head_3(foreign_head(v_88, v_89))
 
-def native_match_foreign_head_5(v_120: ArenaResult<U32>, v_84: U32) -> ArenaResult<Maybe<&2, String>>:
-  match v_120:
-    case ArenaResult{v_95, +v_96}:
-      native_match_foreign_head_4(core_subst(v_95, 0n, v_96, v_84))
+def native_match_foreign_head_5(v_108: ArenaResult<U32>, v_77: U32) -> ArenaResult<Maybe<&2, String>>:
+  match v_108:
+    case ArenaResult{v_83, +v_84}:
+      native_match_foreign_head_4(core_subst(v_83, 0n, v_84, v_77))
 
-def native_match_foreign_head_6(v_121: ArenaResult<U32>, v_84: U32, v_86: Ast.SourceSpan) -> ArenaResult<Maybe<&2, String>>:
-  match v_121:
-    case ArenaResult{v_90, +v_91}:
-      native_match_foreign_head_5(arena_put_node(v_90, Arena.TermVar{v_91, 0n, v_86}), v_84)
-
-def native_match_foreign_head_7(v_122: ArenaResult<String>, +v_68: Nat, +v_70: U32, +v_71: Ast.SourceSpan) -> ArenaResult<Maybe<&2, String>>:
-  match v_122:
-    case ArenaResult{v_75, +v_76}:
-      +v_78 = v_76
-      v_80 = v_78
-      v_82 = v_68
-      v_84 = v_70
-      v_86 = v_71
-      native_match_foreign_head_6(arena_name(v_75, v_80), v_84, v_86)
-
-def native_match_foreign_head_8(+v_11: Arena.Node, v_10: ArenaStore) -> ArenaResult<Maybe<&2, String>>:
+def native_match_foreign_head_6(+v_11: Arena.Node, v_10: ArenaStore) -> ArenaResult<Maybe<&2, String>>:
   match v_11:
     case Arena.TermRef{+v_14, +v_15}:
       native_match_foreign_head_0(arena_name_text(v_10, v_14))
@@ -18441,17 +18227,21 @@ def native_match_foreign_head_8(+v_11: Arena.Node, v_10: ArenaStore) -> ArenaRes
       v_51 = v_47
       native_match_foreign_head_2(foreign_head(v_10, v_51))
     case Arena.TermAll{+v_66, +v_67, +v_68, +v_69, +v_70, +v_71}:
-      native_match_foreign_head_7(arena_name_text(v_10, v_67), v_68, v_70, v_71)
+      v_73 = v_67
+      v_75 = v_68
+      v_77 = v_70
+      v_79 = v_71
+      native_match_foreign_head_5(arena_put_node(v_10, Arena.TermVar{v_73, 0n, v_79}), v_77)
     case _:
       {ArenaResult{v_10, None{}} : ArenaResult<Maybe<&2, String>>}
 
-def native_match_foreign_head_9(v_123: ArenaResult<Arena.Node>) -> ArenaResult<Maybe<&2, String>>:
-  match v_123:
+def native_match_foreign_head_7(v_109: ArenaResult<Arena.Node>) -> ArenaResult<Maybe<&2, String>>:
+  match v_109:
     case ArenaResult{v_10, +v_11}:
-      native_match_foreign_head_8(v_11, v_10)
+      native_match_foreign_head_6(v_11, v_10)
 
 def foreign_head(v_1: ArenaStore, v_3: U32) -> ArenaResult<Maybe<&2, String>>:
-  native_match_foreign_head_9(arena_get_node(v_1, v_3))
+  native_match_foreign_head_7(arena_get_node(v_1, v_3))
 
 def native_match_check_import_definition_0(v_46: ArenaResult<ScopedState>) -> ArenaResult<ScopedState>:
   match v_46:
@@ -19486,66 +19276,44 @@ def native_match_binders_quantities_7(v_69: ArenaResult<IR.WordView>) -> ArenaRe
 def binders_quantities(v_1: ArenaStore, v_2: IR.Words) -> ArenaResult<IR.Quantities>:
   native_match_binders_quantities_7(arena_words_view(v_1, v_2))
 
-def native_match_pattern_value_0(v_92: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_92:
-    case ArenaResult{v_42, +v_43}:
-      {ArenaResult{v_42, v_43} : ArenaResult<U32>}
+def native_match_pattern_value_0(v_68: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_68:
+    case ArenaResult{v_30, +v_31}:
+      {ArenaResult{v_30, v_31} : ArenaResult<U32>}
 
-def native_match_pattern_value_1(v_93: ArenaResult<U32>, v_5: Nat, v_31: Nat, v_33: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_93:
-    case ArenaResult{v_37, +v_38}:
-      native_match_pattern_value_0(arena_put_node(v_37, Arena.TermVar{v_38, Nat.sub(Nat.sub(v_5, v_31), 1n), v_33}))
+def native_match_pattern_value_1(v_69: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_69:
+    case ArenaResult{v_64, +v_65}:
+      {ArenaResult{v_64, v_65} : ArenaResult<U32>}
 
-def native_match_pattern_value_2(v_94: ArenaResult<String>, v_5: Nat, +v_18: Nat, +v_20: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_94:
-    case ArenaResult{v_24, +v_25}:
-      +v_27 = v_25
-      v_29 = v_27
-      v_31 = v_18
-      v_33 = v_20
-      native_match_pattern_value_1(arena_name(v_24, v_29), v_5, v_31, v_33)
+def native_match_pattern_value_2(v_70: ArenaResult<IR.Words>, v_45: U32, v_49: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_70:
+    case ArenaResult{v_53, +v_54}:
+      v_57 = arena_words_start(v_54)
+      v_60 = arena_words_count(v_54)
+      native_match_pattern_value_1(arena_put_node(v_53, Arena.TermCtr{v_45, v_57, v_60, v_49}))
 
-def native_match_pattern_value_3(v_95: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_95:
-    case ArenaResult{v_88, +v_89}:
-      {ArenaResult{v_88, v_89} : ArenaResult<U32>}
-
-def native_match_pattern_value_4(v_96: ArenaResult<U32>, v_68: Ast.SourceSpan, +v_73: IR.Words) -> ArenaResult<U32>:
-  match v_96:
-    case ArenaResult{v_77, +v_78}:
-      v_81 = arena_words_start(v_73)
-      v_84 = arena_words_count(v_73)
-      native_match_pattern_value_3(arena_put_node(v_77, Arena.TermCtr{v_78, v_81, v_84, v_68}))
-
-def native_match_pattern_value_5(v_97: ArenaResult<IR.Words>, v_64: String, v_68: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_97:
-    case ArenaResult{v_72, +v_73}:
-      native_match_pattern_value_4(arena_name(v_72, v_64), v_68, v_73)
-
-def native_match_pattern_value_6(v_98: ArenaResult<String>, v_5: Nat, +v_51: U32, +v_52: U32, +v_53: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_98:
-    case ArenaResult{v_57, +v_58}:
-      +v_60 = v_58
-      +v_62 = IR.Words{v_51, v_52}
-      v_64 = v_60
-      v_66 = v_62
-      v_68 = v_53
-      native_match_pattern_value_5(pattern_values(v_57, v_66, v_5), v_64, v_68)
-
-def native_match_pattern_value_7(+v_12: Arena.Pattern, v_5: Nat, v_11: ArenaStore) -> ArenaResult<U32>:
+def native_match_pattern_value_3(+v_12: Arena.Pattern, v_5: Nat, v_11: ArenaStore) -> ArenaResult<U32>:
   match v_12:
     case Arena.PatternVar{+v_17, +v_18, +v_19, +v_20}:
-      native_match_pattern_value_2(arena_name_text(v_11, v_17), v_5, v_18, v_20)
-    case Arena.PatternCtr{+v_50, +v_51, +v_52, +v_53}:
-      native_match_pattern_value_6(arena_name_text(v_11, v_50), v_5, v_51, v_52, v_53)
+      v_22 = v_17
+      v_24 = v_18
+      v_26 = v_20
+      native_match_pattern_value_0(arena_put_node(v_11, Arena.TermVar{v_22, Nat.sub(Nat.sub(v_5, v_24), 1n), v_26}))
+    case Arena.PatternCtr{+v_38, +v_39, +v_40, +v_41}:
+      +v_43 = IR.Words{v_39, v_40}
+      v_45 = v_38
+      v_47 = v_43
+      v_49 = v_41
+      native_match_pattern_value_2(pattern_values(v_11, v_47, v_5), v_45, v_49)
 
-def native_match_pattern_value_8(v_99: ArenaResult<Arena.Pattern>, v_5: Nat) -> ArenaResult<U32>:
-  match v_99:
+def native_match_pattern_value_4(v_71: ArenaResult<Arena.Pattern>, v_5: Nat) -> ArenaResult<U32>:
+  match v_71:
     case ArenaResult{v_11, +v_12}:
-      native_match_pattern_value_7(v_12, v_5, v_11)
+      native_match_pattern_value_3(v_12, v_5, v_11)
 
 def pattern_value(v_1: ArenaStore, v_3: U32, v_5: Nat) -> ArenaResult<U32>:
-  native_match_pattern_value_8(arena_get_pattern(v_1, v_3), v_5)
+  native_match_pattern_value_4(arena_get_pattern(v_1, v_3), v_5)
 
 def native_match_pattern_values_0(v_35: ArenaResult<IR.Words>) -> ArenaResult<IR.Words>:
   match v_35:
@@ -19579,80 +19347,58 @@ def native_match_pattern_values_4(v_38: ArenaResult<IR.WordView>, v_4: Nat) -> A
 def pattern_values(v_1: ArenaStore, v_2: IR.Words, v_4: Nat) -> ArenaResult<IR.Words>:
   native_match_pattern_values_4(arena_words_view(v_1, v_2), v_4)
 
-def native_match_replace_order_var_0(v_108: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_108:
-    case ArenaResult{v_44, +v_45}:
-      +v_47 = v_45
-      v_49 = v_44
-      {ArenaResult{v_49, v_47} : ArenaResult<U32>}
+def native_match_replace_order_var_0(v_84: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_84:
+    case ArenaResult{v_32, +v_33}:
+      +v_35 = v_33
+      v_37 = v_32
+      {ArenaResult{v_37, v_35} : ArenaResult<U32>}
 
-def native_match_replace_order_var_1(v_109: ArenaResult<U32>, v_31: Nat, v_33: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_109:
-    case ArenaResult{v_39, +v_40}:
-      native_match_replace_order_var_0(arena_put_node(v_39, Arena.TermVar{v_40, v_31, v_33}))
-
-def native_match_replace_order_var_2(+v_35: Bool, v_7: U32, v_24: ArenaStore, v_29: String, v_31: Nat, v_33: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_35:
+def native_match_replace_order_var_1(+v_28: Bool, v_7: U32, v_13: ArenaStore, v_22: U32, v_24: Nat, v_26: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_28:
     case False{}:
-      native_match_replace_order_var_1(arena_name(v_24, v_29), v_31, v_33)
+      native_match_replace_order_var_0(arena_put_node(v_13, Arena.TermVar{v_22, v_24, v_26}))
     case True{}:
-      +v_53 = v_7
-      v_55 = v_24
-      {ArenaResult{v_55, v_53} : ArenaResult<U32>}
+      +v_41 = v_7
+      v_43 = v_13
+      {ArenaResult{v_43, v_41} : ArenaResult<U32>}
 
-def native_match_replace_order_var_3(v_110: ArenaResult<String>, v_5: Nat, v_7: U32, +v_19: Nat, +v_20: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_110:
-    case ArenaResult{v_24, +v_25}:
-      +v_27 = v_25
-      v_29 = v_27
-      v_31 = v_19
-      v_33 = v_20
-      +v_35 = Nat.is_eq(v_31, v_5)
-      native_match_replace_order_var_2(v_35, v_7, v_24, v_29, v_31, v_33)
+def native_match_replace_order_var_2(v_85: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_85:
+    case ArenaResult{v_76, +v_77}:
+      {ArenaResult{v_76, v_77} : ArenaResult<U32>}
 
-def native_match_replace_order_var_4(v_111: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_111:
-    case ArenaResult{v_100, +v_101}:
-      {ArenaResult{v_100, v_101} : ArenaResult<U32>}
+def native_match_replace_order_var_3(v_86: ArenaResult<IR.Words>, v_57: U32, v_61: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_86:
+    case ArenaResult{v_65, +v_66}:
+      v_69 = arena_words_start(v_66)
+      v_72 = arena_words_count(v_66)
+      native_match_replace_order_var_2(arena_put_node(v_65, Arena.TermCtr{v_57, v_69, v_72, v_61}))
 
-def native_match_replace_order_var_5(v_112: ArenaResult<U32>, v_80: Ast.SourceSpan, +v_85: IR.Words) -> ArenaResult<U32>:
-  match v_112:
-    case ArenaResult{v_89, +v_90}:
-      v_93 = arena_words_start(v_85)
-      v_96 = arena_words_count(v_85)
-      native_match_replace_order_var_4(arena_put_node(v_89, Arena.TermCtr{v_90, v_93, v_96, v_80}))
-
-def native_match_replace_order_var_6(v_113: ArenaResult<IR.Words>, v_76: String, v_80: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_113:
-    case ArenaResult{v_84, +v_85}:
-      native_match_replace_order_var_5(arena_name(v_84, v_76), v_80, v_85)
-
-def native_match_replace_order_var_7(v_114: ArenaResult<String>, v_5: Nat, v_7: U32, +v_63: U32, +v_64: U32, +v_65: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_114:
-    case ArenaResult{v_69, +v_70}:
-      +v_72 = v_70
-      +v_74 = IR.Words{v_63, v_64}
-      v_76 = v_72
-      v_78 = v_74
-      v_80 = v_65
-      native_match_replace_order_var_6(replace_order_vars(v_69, v_78, v_5, v_7), v_76, v_80)
-
-def native_match_replace_order_var_8(+v_14: Arena.Node, v_3: U32, v_5: Nat, v_7: U32, v_13: ArenaStore) -> ArenaResult<U32>:
+def native_match_replace_order_var_4(+v_14: Arena.Node, v_3: U32, v_5: Nat, v_7: U32, v_13: ArenaStore) -> ArenaResult<U32>:
   match v_14:
     case Arena.TermVar{+v_18, +v_19, +v_20}:
-      native_match_replace_order_var_3(arena_name_text(v_13, v_18), v_5, v_7, v_19, v_20)
-    case Arena.TermCtr{+v_62, +v_63, +v_64, +v_65}:
-      native_match_replace_order_var_7(arena_name_text(v_13, v_62), v_5, v_7, v_63, v_64, v_65)
+      v_22 = v_18
+      v_24 = v_19
+      v_26 = v_20
+      +v_28 = Nat.is_eq(v_24, v_5)
+      native_match_replace_order_var_1(v_28, v_7, v_13, v_22, v_24, v_26)
+    case Arena.TermCtr{+v_50, +v_51, +v_52, +v_53}:
+      +v_55 = IR.Words{v_51, v_52}
+      v_57 = v_50
+      v_59 = v_55
+      v_61 = v_53
+      native_match_replace_order_var_3(replace_order_vars(v_13, v_59, v_5, v_7), v_57, v_61)
     case _:
       {ArenaResult{v_13, v_3} : ArenaResult<U32>}
 
-def native_match_replace_order_var_9(v_115: ArenaResult<Arena.Node>, v_3: U32, v_5: Nat, v_7: U32) -> ArenaResult<U32>:
-  match v_115:
+def native_match_replace_order_var_5(v_87: ArenaResult<Arena.Node>, v_3: U32, v_5: Nat, v_7: U32) -> ArenaResult<U32>:
+  match v_87:
     case ArenaResult{v_13, +v_14}:
-      native_match_replace_order_var_8(v_14, v_3, v_5, v_7, v_13)
+      native_match_replace_order_var_4(v_14, v_3, v_5, v_7, v_13)
 
 def replace_order_var(v_1: ArenaStore, v_3: U32, v_5: Nat, v_7: U32) -> ArenaResult<U32>:
-  native_match_replace_order_var_9(arena_get_node(v_1, v_3), v_3, v_5, v_7)
+  native_match_replace_order_var_5(arena_get_node(v_1, v_3), v_3, v_5, v_7)
 
 def native_match_replace_order_vars_0(v_37: ArenaResult<IR.Words>) -> ArenaResult<IR.Words>:
   match v_37:
@@ -21339,43 +21085,38 @@ def native_match_check_definition_body_4(v_2: IR.DefBody, v_1: ArenaStore, v_4: 
 def check_definition_body(v_1: ArenaStore, v_2: IR.DefBody, v_4: String, v_5: IR.Words, v_6: IR.OptionalTerm, v_8: Bool, v_10: String, v_11: Scope.ArenaGlobalScope, v_12: Scope.ArenaGlobalScope, v_13: Ast.SourceSpan) -> ArenaResult<ScopedState>:
   native_match_check_definition_body_4(v_2, v_1, v_4, v_5, v_6, v_8, v_10, v_11, v_12, v_13)
 
-def native_match_definition_visible_self_0(v_44: ArenaResult<Scope.ArenaGlobalScope>) -> ArenaResult<Scope.ArenaGlobalScope>:
-  match v_44:
-    case ArenaResult{v_42, +v_43}:
-      {ArenaResult{v_42, v_43} : ArenaResult<Scope.ArenaGlobalScope>}
+def native_match_definition_visible_self_0(v_40: ArenaResult<Scope.ArenaGlobalScope>) -> ArenaResult<Scope.ArenaGlobalScope>:
+  match v_40:
+    case ArenaResult{v_38, +v_39}:
+      {ArenaResult{v_38, v_39} : ArenaResult<Scope.ArenaGlobalScope>}
 
-def native_match_definition_visible_self_1(v_45: ArenaResult<Scope.ArenaGlobalScope>, +v_25: Scope.ArenaGlobal) -> ArenaResult<Scope.ArenaGlobalScope>:
-  match v_45:
-    case ArenaResult{v_37, +v_38}:
-      native_match_definition_visible_self_0(global_scope_prepend(v_37, v_25, v_38))
-
-def native_match_definition_visible_self_2(v_46: ArenaResult<Scope.ArenaGlobal>, v_8: Scope.ArenaGlobalScope, +v_25: Scope.ArenaGlobal) -> ArenaResult<Scope.ArenaGlobalScope>:
-  match v_46:
+def native_match_definition_visible_self_1(v_41: ArenaResult<Scope.ArenaGlobalScope>, +v_28: Scope.ArenaGlobal) -> ArenaResult<Scope.ArenaGlobalScope>:
+  match v_41:
     case ArenaResult{v_32, +v_33}:
-      native_match_definition_visible_self_1(global_scope_prepend(v_32, v_33, v_8), v_25)
+      native_match_definition_visible_self_0(global_scope_prepend(v_32, global_local_alias(v_28), v_33))
 
-def native_match_definition_visible_self_3(v_47: ArenaResult<Scope.ArenaGlobal>, v_4: String, v_6: String, v_8: Scope.ArenaGlobalScope, v_20: U32) -> ArenaResult<Scope.ArenaGlobalScope>:
-  match v_47:
-    case ArenaResult{v_24, +v_25}:
-      v_28 = canonical_key(v_6, v_4)
-      native_match_definition_visible_self_2(arena_publish_global(v_24, Scope.ArenaGlobal{v_28, v_6, v_4, v_20, IR.NoTerm{}, Scope.GlobalDefinition{}}), v_8, v_25)
+def native_match_definition_visible_self_2(v_42: ArenaResult<Scope.ArenaGlobal>, v_8: Scope.ArenaGlobalScope) -> ArenaResult<Scope.ArenaGlobalScope>:
+  match v_42:
+    case ArenaResult{v_27, +v_28}:
+      native_match_definition_visible_self_1(global_scope_prepend(v_27, v_28, v_8), v_28)
 
-def native_match_definition_visible_self_4(v_48: ArenaResult<U32>, v_4: String, v_6: String, v_8: Scope.ArenaGlobalScope) -> ArenaResult<Scope.ArenaGlobalScope>:
-  match v_48:
+def native_match_definition_visible_self_3(v_43: ArenaResult<U32>, v_4: String, v_6: String, v_8: Scope.ArenaGlobalScope) -> ArenaResult<Scope.ArenaGlobalScope>:
+  match v_43:
     case ArenaResult{v_17, +v_18}:
       v_20 = v_18
-      native_match_definition_visible_self_3(arena_publish_global(v_17, Scope.ArenaGlobal{v_4, v_6, v_4, v_20, IR.NoTerm{}, Scope.GlobalDefinition{}}), v_4, v_6, v_8, v_20)
+      v_23 = canonical_key(v_6, v_4)
+      native_match_definition_visible_self_2(arena_publish_global(v_17, Scope.ArenaGlobal{v_23, v_6, v_4, v_20, IR.NoTerm{}, Scope.GlobalDefinition{}}), v_8)
 
-def native_match_definition_visible_self_5(v_2: IR.OptionalTerm, v_1: ArenaStore, v_4: String, v_6: String, v_7: IR.Words, v_8: Scope.ArenaGlobalScope) -> ArenaResult<Scope.ArenaGlobalScope>:
+def native_match_definition_visible_self_4(v_2: IR.OptionalTerm, v_1: ArenaStore, v_4: String, v_6: String, v_7: IR.Words, v_8: Scope.ArenaGlobalScope) -> ArenaResult<Scope.ArenaGlobalScope>:
   match v_2:
     case IR.SomeTerm{+v_11}:
       v_13 = v_11
-      native_match_definition_visible_self_4(binders_type(v_1, v_7, v_13), v_4, v_6, v_8)
+      native_match_definition_visible_self_3(binders_type(v_1, v_7, v_13), v_4, v_6, v_8)
     case IR.NoTerm{}:
       {ArenaResult{v_1, v_8} : ArenaResult<Scope.ArenaGlobalScope>}
 
 def definition_visible_self(v_1: ArenaStore, v_2: IR.OptionalTerm, v_4: String, v_6: String, v_7: IR.Words, v_8: Scope.ArenaGlobalScope) -> ArenaResult<Scope.ArenaGlobalScope>:
-  native_match_definition_visible_self_5(v_2, v_1, v_4, v_6, v_7, v_8)
+  native_match_definition_visible_self_4(v_2, v_1, v_4, v_6, v_7, v_8)
 
 def native_match_definition_term_inference_uncached_0(v_37: ArenaResult<Inference>) -> ArenaResult<Inference>:
   match v_37:
@@ -21774,132 +21515,116 @@ def native_match_inherit_law_result_4(v_2: IR.OptionalTerm, v_1: ArenaStore, v_4
 def inherit_law_result(v_1: ArenaStore, v_2: IR.OptionalTerm, v_4: U32, v_6: String, v_7: IR.Words, v_8: IR.DefBody, v_10: Bool, v_11: Ast.SourceSpan, v_12: Scope.ArenaGlobalScope) -> ArenaResult<DefinitionElaboration>:
   native_match_inherit_law_result_4(v_2, v_1, v_4, v_6, v_7, v_8, v_10, v_11, v_12)
 
-def native_match_inherit_law_binder_view_0(v_211: ArenaResult<DefinitionElaboration>) -> ArenaResult<DefinitionElaboration>:
-  match v_211:
-    case ArenaResult{v_128, +v_129}:
-      +v_131 = v_129
-      v_133 = v_128
-      {ArenaResult{v_133, v_131} : ArenaResult<DefinitionElaboration>}
+def native_match_inherit_law_binder_view_0(v_194: ArenaResult<DefinitionElaboration>) -> ArenaResult<DefinitionElaboration>:
+  match v_194:
+    case ArenaResult{v_111, +v_112}:
+      +v_114 = v_112
+      v_116 = v_111
+      {ArenaResult{v_116, v_114} : ArenaResult<DefinitionElaboration>}
 
-def native_match_inherit_law_binder_view_1(v_212: ArenaResult<IR.Words>, v_6: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, v_101: U32) -> ArenaResult<DefinitionElaboration>:
-  match v_212:
-    case ArenaResult{v_123, +v_124}:
-      native_match_inherit_law_binder_view_0(inherit_law_binders(v_123, v_6, v_101, v_124, Nat.add(v_9, 1n), v_10, v_12, v_13, v_15, v_16, v_17))
+def native_match_inherit_law_binder_view_1(v_195: ArenaResult<IR.Words>, v_6: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, v_84: U32) -> ArenaResult<DefinitionElaboration>:
+  match v_195:
+    case ArenaResult{v_106, +v_107}:
+      native_match_inherit_law_binder_view_0(inherit_law_binders(v_106, v_6, v_84, v_107, Nat.add(v_9, 1n), v_10, v_12, v_13, v_15, v_16, v_17))
 
-def native_match_inherit_law_binder_view_2(+v_108: Bool, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, v_62: String, v_66: Ast.SourceSpan, v_84: U32, v_101: U32, v_105: ArenaStore) -> ArenaResult<DefinitionElaboration>:
-  match v_108:
+def native_match_inherit_law_binder_view_2(+v_91: Bool, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, v_55: U32, v_59: Ast.SourceSpan, v_72: U32, v_84: U32, v_88: ArenaStore) -> ArenaResult<DefinitionElaboration>:
+  match v_91:
     case False{}:
-      v_111 = span_file(v_66)
-      v_113 = Checked.Diagnostic{v_111, v_66, String.append("completion binder differs from its law: ", v_62), "the declared law quantity and domain", "an incompatible binder annotation"}
-      +v_115 = DefinitionElaborationFailure{v_113}
-      v_117 = v_105
-      {ArenaResult{v_117, v_115} : ArenaResult<DefinitionElaboration>}
+      v_94 = span_file(v_59)
+      v_96 = Checked.Diagnostic{v_94, v_59, String.append("completion binder differs from its law: ", v_55), "the declared law quantity and domain", "an incompatible binder annotation"}
+      +v_98 = DefinitionElaborationFailure{v_96}
+      v_100 = v_88
+      {ArenaResult{v_100, v_98} : ArenaResult<DefinitionElaboration>}
     case True{}:
-      native_match_inherit_law_binder_view_1(arena_words_cons(v_105, v_84, v_7), v_6, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_101)
+      native_match_inherit_law_binder_view_1(arena_words_cons(v_88, v_72, v_7), v_6, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_84)
 
-def native_match_inherit_law_binder_view_3(v_213: ArenaResult<Bool>, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, v_62: String, v_66: Ast.SourceSpan, v_84: U32, v_101: U32) -> ArenaResult<DefinitionElaboration>:
-  match v_213:
-    case ArenaResult{v_105, +v_106}:
-      +v_108 = v_106
-      native_match_inherit_law_binder_view_2(v_108, v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_62, v_66, v_84, v_101, v_105)
-
-def native_match_inherit_law_binder_view_4(v_214: ArenaResult<U32>, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, v_60: Ast.Quantity, v_62: String, v_64: U32, v_66: Ast.SourceSpan, v_68: Ast.Quantity, v_70: U32, v_84: U32) -> ArenaResult<DefinitionElaboration>:
-  match v_214:
-    case ArenaResult{v_98, +v_99}:
-      v_101 = v_99
-      native_match_inherit_law_binder_view_3(completion_binder_fits(v_98, v_60, v_64, v_68, v_70, v_17), v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_62, v_66, v_84, v_101)
-
-def native_match_inherit_law_binder_view_5(v_215: ArenaResult<U32>, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, v_60: Ast.Quantity, v_62: String, v_64: U32, v_66: Ast.SourceSpan, v_68: Ast.Quantity, v_70: U32, v_72: U32, v_84: U32) -> ArenaResult<DefinitionElaboration>:
-  match v_215:
-    case ArenaResult{v_93, +v_94}:
-      native_match_inherit_law_binder_view_4(replace_free_term(v_93, v_72, 0n, v_94, 0n), v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_60, v_62, v_64, v_66, v_68, v_70, v_84)
-
-def native_match_inherit_law_binder_view_6(v_216: ArenaResult<U32>, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, v_60: Ast.Quantity, v_62: String, v_64: U32, v_66: Ast.SourceSpan, v_68: Ast.Quantity, v_70: U32, v_72: U32, v_84: U32) -> ArenaResult<DefinitionElaboration>:
-  match v_216:
+def native_match_inherit_law_binder_view_3(v_196: ArenaResult<Bool>, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, v_55: U32, v_59: Ast.SourceSpan, v_72: U32, v_84: U32) -> ArenaResult<DefinitionElaboration>:
+  match v_196:
     case ArenaResult{v_88, +v_89}:
-      native_match_inherit_law_binder_view_5(arena_put_node(v_88, Arena.TermVar{v_89, 0n, v_66}), v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_60, v_62, v_64, v_66, v_68, v_70, v_72, v_84)
+      +v_91 = v_89
+      native_match_inherit_law_binder_view_2(v_91, v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_55, v_59, v_72, v_84, v_88)
 
-def native_match_inherit_law_binder_view_7(v_217: ArenaResult<U32>, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, v_60: Ast.Quantity, v_62: String, v_64: U32, v_66: Ast.SourceSpan, v_68: Ast.Quantity, v_70: U32, v_72: U32) -> ArenaResult<DefinitionElaboration>:
-  match v_217:
+def native_match_inherit_law_binder_view_4(v_197: ArenaResult<U32>, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, v_53: Ast.Quantity, v_55: U32, v_57: U32, v_59: Ast.SourceSpan, v_61: Ast.Quantity, v_63: U32, v_72: U32) -> ArenaResult<DefinitionElaboration>:
+  match v_197:
     case ArenaResult{v_81, +v_82}:
       v_84 = v_82
-      native_match_inherit_law_binder_view_6(arena_name(v_81, v_62), v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_60, v_62, v_64, v_66, v_68, v_70, v_72, v_84)
+      native_match_inherit_law_binder_view_3(completion_binder_fits(v_81, v_53, v_57, v_61, v_63, v_17), v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_55, v_59, v_72, v_84)
 
-def native_match_inherit_law_binder_view_8(v_218: ArenaResult<U32>, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, v_60: Ast.Quantity, v_62: String, v_64: U32, v_66: Ast.SourceSpan, v_68: Ast.Quantity, v_70: U32, v_72: U32) -> ArenaResult<DefinitionElaboration>:
-  match v_218:
+def native_match_inherit_law_binder_view_5(v_198: ArenaResult<U32>, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, v_53: Ast.Quantity, v_55: U32, v_57: U32, v_59: Ast.SourceSpan, v_61: Ast.Quantity, v_63: U32, v_65: U32, v_72: U32) -> ArenaResult<DefinitionElaboration>:
+  match v_198:
     case ArenaResult{v_76, +v_77}:
-      native_match_inherit_law_binder_view_7(arena_put_binder(v_76, Arena.Binder{v_68, v_77, v_9, v_70, v_66}), v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_60, v_62, v_64, v_66, v_68, v_70, v_72)
+      native_match_inherit_law_binder_view_4(replace_free_term(v_76, v_65, 0n, v_77, 0n), v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_53, v_55, v_57, v_59, v_61, v_63, v_72)
 
-def native_match_inherit_law_binder_view_9(v_219: ArenaResult<String>, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, +v_31: Ast.Quantity, +v_34: U32, +v_35: U32, +v_47: Ast.Quantity, +v_50: U32, +v_51: Ast.SourceSpan) -> ArenaResult<DefinitionElaboration>:
-  match v_219:
-    case ArenaResult{v_55, +v_56}:
-      +v_58 = v_56
-      v_60 = v_47
-      v_62 = v_58
-      v_64 = v_50
-      v_66 = v_51
-      v_68 = v_31
-      v_70 = v_34
-      v_72 = v_35
-      native_match_inherit_law_binder_view_8(arena_name(v_55, v_62), v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_60, v_62, v_64, v_66, v_68, v_70, v_72)
+def native_match_inherit_law_binder_view_6(v_199: ArenaResult<U32>, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, v_53: Ast.Quantity, v_55: U32, v_57: U32, v_59: Ast.SourceSpan, v_61: Ast.Quantity, v_63: U32, v_65: U32) -> ArenaResult<DefinitionElaboration>:
+  match v_199:
+    case ArenaResult{v_69, +v_70}:
+      v_72 = v_70
+      native_match_inherit_law_binder_view_5(arena_put_node(v_69, Arena.TermVar{v_55, 0n, v_59}), v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_53, v_55, v_57, v_59, v_61, v_63, v_65, v_72)
 
-def native_match_inherit_law_binder_view_10(+v_41: Arena.Binder, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, +v_31: Ast.Quantity, +v_34: U32, +v_35: U32, v_40: ArenaStore) -> ArenaResult<DefinitionElaboration>:
+def native_match_inherit_law_binder_view_7(+v_41: Arena.Binder, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, +v_31: Ast.Quantity, +v_34: U32, +v_35: U32, v_40: ArenaStore) -> ArenaResult<DefinitionElaboration>:
   match v_41:
     case Arena.Binder{+v_47, +v_48, +v_49, +v_50, +v_51}:
-      native_match_inherit_law_binder_view_9(arena_name_text(v_40, v_48), v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_31, v_34, v_35, v_47, v_50, v_51)
-    case Arena.TemplateBinder{+v_140, +v_141, +v_142, +v_143}:
-      v_145 = v_143
-      v_148 = span_file(v_145)
-      v_150 = Checked.Diagnostic{v_148, v_145, "law completion cannot introduce a template binder", "a law parameter name", "a compile-time template binder"}
-      v_152 = DefinitionElaborationFailure{v_150}
-      {ArenaResult{v_40, v_152} : ArenaResult<DefinitionElaboration>}
+      v_53 = v_47
+      v_55 = v_48
+      v_57 = v_50
+      v_59 = v_51
+      v_61 = v_31
+      v_63 = v_34
+      v_65 = v_35
+      native_match_inherit_law_binder_view_6(arena_put_binder(v_40, Arena.Binder{v_61, v_55, v_9, v_63, v_59}), v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_53, v_55, v_57, v_59, v_61, v_63, v_65)
+    case Arena.TemplateBinder{+v_123, +v_124, +v_125, +v_126}:
+      v_128 = v_126
+      v_131 = span_file(v_128)
+      v_133 = Checked.Diagnostic{v_131, v_128, "law completion cannot introduce a template binder", "a law parameter name", "a compile-time template binder"}
+      v_135 = DefinitionElaborationFailure{v_133}
+      {ArenaResult{v_40, v_135} : ArenaResult<DefinitionElaboration>}
 
-def native_match_inherit_law_binder_view_11(v_220: ArenaResult<Arena.Binder>, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, +v_31: Ast.Quantity, +v_34: U32, +v_35: U32) -> ArenaResult<DefinitionElaboration>:
-  match v_220:
+def native_match_inherit_law_binder_view_8(v_200: ArenaResult<Arena.Binder>, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, +v_31: Ast.Quantity, +v_34: U32, +v_35: U32) -> ArenaResult<DefinitionElaboration>:
+  match v_200:
     case ArenaResult{v_40, +v_41}:
-      native_match_inherit_law_binder_view_10(v_41, v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_31, v_34, v_35, v_40)
+      native_match_inherit_law_binder_view_7(v_41, v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_31, v_34, v_35, v_40)
 
-def native_match_inherit_law_binder_view_12(v_221: ArenaResult<String>, v_12: String, +v_190: Ast.SourceSpan) -> ArenaResult<DefinitionElaboration>:
-  match v_221:
-    case ArenaResult{v_194, +v_195}:
-      +v_197 = v_195
-      v_199 = v_197
-      v_201 = v_190
-      v_204 = span_file(v_201)
-      v_206 = Checked.Diagnostic{v_204, v_201, String.append("law completion has too many parameters: ", v_12), "a remaining law parameter", v_199}
-      v_208 = DefinitionElaborationFailure{v_206}
-      {ArenaResult{v_194, v_208} : ArenaResult<DefinitionElaboration>}
+def native_match_inherit_law_binder_view_9(v_201: ArenaResult<String>, v_12: String, +v_173: Ast.SourceSpan) -> ArenaResult<DefinitionElaboration>:
+  match v_201:
+    case ArenaResult{v_177, +v_178}:
+      +v_180 = v_178
+      v_182 = v_180
+      v_184 = v_173
+      v_187 = span_file(v_184)
+      v_189 = Checked.Diagnostic{v_187, v_184, String.append("law completion has too many parameters: ", v_12), "a remaining law parameter", v_182}
+      v_191 = DefinitionElaborationFailure{v_189}
+      {ArenaResult{v_177, v_191} : ArenaResult<DefinitionElaboration>}
 
-def native_match_inherit_law_binder_view_13(+v_161: Arena.Binder, v_12: String, v_160: ArenaStore) -> ArenaResult<DefinitionElaboration>:
-  match v_161:
-    case Arena.TemplateBinder{+v_166, +v_167, +v_168, +v_169}:
-      v_171 = v_169
-      v_174 = span_file(v_171)
-      v_176 = Checked.Diagnostic{v_174, v_171, "law completion cannot introduce a template binder", "a law parameter name", "a compile-time template binder"}
-      v_178 = DefinitionElaborationFailure{v_176}
-      {ArenaResult{v_160, v_178} : ArenaResult<DefinitionElaboration>}
-    case Arena.Binder{+v_186, +v_187, +v_188, +v_189, +v_190}:
-      native_match_inherit_law_binder_view_12(arena_name_text(v_160, v_187), v_12, v_190)
+def native_match_inherit_law_binder_view_10(+v_144: Arena.Binder, v_12: String, v_143: ArenaStore) -> ArenaResult<DefinitionElaboration>:
+  match v_144:
+    case Arena.TemplateBinder{+v_149, +v_150, +v_151, +v_152}:
+      v_154 = v_152
+      v_157 = span_file(v_154)
+      v_159 = Checked.Diagnostic{v_157, v_154, "law completion cannot introduce a template binder", "a law parameter name", "a compile-time template binder"}
+      v_161 = DefinitionElaborationFailure{v_159}
+      {ArenaResult{v_143, v_161} : ArenaResult<DefinitionElaboration>}
+    case Arena.Binder{+v_169, +v_170, +v_171, +v_172, +v_173}:
+      native_match_inherit_law_binder_view_9(arena_name_text(v_143, v_170), v_12, v_173)
 
-def native_match_inherit_law_binder_view_14(v_222: ArenaResult<Arena.Binder>, v_12: String) -> ArenaResult<DefinitionElaboration>:
-  match v_222:
-    case ArenaResult{v_160, +v_161}:
-      native_match_inherit_law_binder_view_13(v_161, v_12, v_160)
+def native_match_inherit_law_binder_view_11(v_202: ArenaResult<Arena.Binder>, v_12: String) -> ArenaResult<DefinitionElaboration>:
+  match v_202:
+    case ArenaResult{v_143, +v_144}:
+      native_match_inherit_law_binder_view_10(v_144, v_12, v_143)
 
-def native_match_inherit_law_binder_view_15(+v_24: Arena.Node, v_5: U32, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, v_23: ArenaStore) -> ArenaResult<DefinitionElaboration>:
+def native_match_inherit_law_binder_view_12(+v_24: Arena.Node, v_5: U32, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, v_23: ArenaStore) -> ArenaResult<DefinitionElaboration>:
   match v_24:
     case Arena.TermAll{+v_31, +v_32, +v_33, +v_34, +v_35, +v_36}:
-      native_match_inherit_law_binder_view_11(arena_get_binder(v_23, v_5), v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_31, v_34, v_35)
+      native_match_inherit_law_binder_view_8(arena_get_binder(v_23, v_5), v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_31, v_34, v_35)
     case _:
-      native_match_inherit_law_binder_view_14(arena_get_binder(v_23, v_5), v_12)
+      native_match_inherit_law_binder_view_11(arena_get_binder(v_23, v_5), v_12)
 
-def native_match_inherit_law_binder_view_16(v_223: ArenaResult<Arena.Node>, v_5: U32, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope) -> ArenaResult<DefinitionElaboration>:
-  match v_223:
+def native_match_inherit_law_binder_view_13(v_203: ArenaResult<Arena.Node>, v_5: U32, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope) -> ArenaResult<DefinitionElaboration>:
+  match v_203:
     case ArenaResult{v_23, +v_24}:
-      native_match_inherit_law_binder_view_15(v_24, v_5, v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_23)
+      native_match_inherit_law_binder_view_12(v_24, v_5, v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17, v_23)
 
 def inherit_law_binder_view(v_1: ArenaStore, v_3: U32, v_5: U32, v_6: IR.Words, v_7: IR.Words, v_9: Nat, v_10: IR.OptionalTerm, v_12: String, v_13: IR.DefBody, v_15: Bool, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope) -> ArenaResult<DefinitionElaboration>:
-  native_match_inherit_law_binder_view_16(arena_get_node(v_1, v_3), v_5, v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17)
+  native_match_inherit_law_binder_view_13(arena_get_node(v_1, v_3), v_5, v_6, v_7, v_9, v_10, v_12, v_13, v_15, v_16, v_17)
 
 def native_match_inherit_law_binders_0(v_50: ArenaResult<DefinitionElaboration>) -> ArenaResult<DefinitionElaboration>:
   match v_50:
@@ -22329,33 +22054,28 @@ def native_match_predeclare_definition_signatures_1(v_3: List<&2, IR.TopLevel>, 
 def predeclare_definition_signatures(v_1: ArenaStore, v_3: List<&2, IR.TopLevel>, +v_5: String, v_6: Scope.ArenaGlobalScope) -> ArenaResult<Scope.ArenaGlobalScope>:
   native_match_predeclare_definition_signatures_1(v_3, v_1, v_5, v_6)
 
-def native_match_predeclare_datatype_header_0(v_31: ArenaResult<Scope.ArenaGlobalScope>) -> ArenaResult<Scope.ArenaGlobalScope>:
-  match v_31:
-    case ArenaResult{v_29, v_30}:
-      {ArenaResult{v_29, v_30} : ArenaResult<Scope.ArenaGlobalScope>}
-
-def native_match_predeclare_datatype_header_1(v_32: ArenaResult<Scope.ArenaGlobalScope>, v_23: Scope.ArenaGlobal) -> ArenaResult<Scope.ArenaGlobalScope>:
-  match v_32:
+def native_match_predeclare_datatype_header_0(v_28: ArenaResult<Scope.ArenaGlobalScope>) -> ArenaResult<Scope.ArenaGlobalScope>:
+  match v_28:
     case ArenaResult{v_26, v_27}:
-      native_match_predeclare_datatype_header_0(global_scope_prepend(v_26, v_23, v_27))
+      {ArenaResult{v_26, v_27} : ArenaResult<Scope.ArenaGlobalScope>}
 
-def native_match_predeclare_datatype_header_2(v_33: ArenaResult<Scope.ArenaGlobal>, v_9: Scope.ArenaGlobalScope, v_19: Scope.ArenaGlobal) -> ArenaResult<Scope.ArenaGlobalScope>:
-  match v_33:
+def native_match_predeclare_datatype_header_1(v_29: ArenaResult<Scope.ArenaGlobalScope>, v_19: Scope.ArenaGlobal) -> ArenaResult<Scope.ArenaGlobalScope>:
+  match v_29:
     case ArenaResult{v_22, v_23}:
-      native_match_predeclare_datatype_header_1(global_scope_prepend(v_22, v_19, v_9), v_23)
+      native_match_predeclare_datatype_header_0(global_scope_prepend(v_22, global_local_alias(v_19), v_23))
 
-def native_match_predeclare_datatype_header_3(v_34: ArenaResult<Scope.ArenaGlobal>, +v_3: String, +v_8: String, v_9: Scope.ArenaGlobalScope, +v_14: U32) -> ArenaResult<Scope.ArenaGlobalScope>:
-  match v_34:
+def native_match_predeclare_datatype_header_2(v_30: ArenaResult<Scope.ArenaGlobal>, v_9: Scope.ArenaGlobalScope) -> ArenaResult<Scope.ArenaGlobalScope>:
+  match v_30:
     case ArenaResult{v_18, v_19}:
-      native_match_predeclare_datatype_header_2(arena_publish_global(v_18, Scope.ArenaGlobal{v_3, v_8, v_3, v_14, IR.NoTerm{}, Scope.GlobalFamily{}}), v_9, v_19)
+      native_match_predeclare_datatype_header_1(global_scope_prepend(v_18, v_19, v_9), v_19)
 
-def native_match_predeclare_datatype_header_4(v_35: ArenaResult<U32>, +v_3: String, +v_8: String, v_9: Scope.ArenaGlobalScope) -> ArenaResult<Scope.ArenaGlobalScope>:
-  match v_35:
+def native_match_predeclare_datatype_header_3(v_31: ArenaResult<U32>, +v_3: String, +v_8: String, v_9: Scope.ArenaGlobalScope) -> ArenaResult<Scope.ArenaGlobalScope>:
+  match v_31:
     case ArenaResult{v_13, +v_14}:
-      native_match_predeclare_datatype_header_3(arena_publish_global(v_13, Scope.ArenaGlobal{canonical_key(v_8, v_3), v_8, v_3, v_14, IR.NoTerm{}, Scope.GlobalFamily{}}), v_3, v_8, v_9, v_14)
+      native_match_predeclare_datatype_header_2(arena_publish_global(v_13, Scope.ArenaGlobal{canonical_key(v_8, v_3), v_8, v_3, v_14, IR.NoTerm{}, Scope.GlobalFamily{}}), v_9)
 
 def predeclare_datatype_header(v_1: ArenaStore, +v_3: String, v_4: IR.Words, v_6: U32, +v_8: String, v_9: Scope.ArenaGlobalScope) -> ArenaResult<Scope.ArenaGlobalScope>:
-  native_match_predeclare_datatype_header_4(binders_type(v_1, v_4, v_6), v_3, v_8, v_9)
+  native_match_predeclare_datatype_header_3(binders_type(v_1, v_4, v_6), v_3, v_8, v_9)
 
 def native_match_predeclare_datatype_headers_0(v_33: ArenaResult<Scope.ArenaGlobalScope>, +v_5: String, v_20: List<&2, IR.TopLevel>) -> ArenaResult<Scope.ArenaGlobalScope>:
   match v_33:
@@ -23862,35 +23582,25 @@ def native_match_core_pattern_depth_open_1(v_28: ArenaResult<Arena.Pattern>) -> 
 def core_pattern_depth_open(v_1: ArenaStore, v_3: U32) -> ArenaResult<Nat>:
   native_match_core_pattern_depth_open_1(arena_get_pattern(v_1, v_3))
 
-def native_match_core_shift_var_0(v_37: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_37:
-    case ArenaResult{v_21, +v_22}:
-      {ArenaResult{v_21, v_22} : ArenaResult<U32>}
-
-def native_match_core_shift_var_1(v_38: ArenaResult<U32>, v_7: Nat, v_9: Nat, v_10: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_38:
+def native_match_core_shift_var_0(v_27: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_27:
     case ArenaResult{v_16, +v_17}:
-      native_match_core_shift_var_0(arena_put_node(v_16, Arena.TermVar{v_17, Nat.add(v_7, v_9), v_10}))
+      {ArenaResult{v_16, v_17} : ArenaResult<U32>}
 
-def native_match_core_shift_var_2(v_39: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_39:
-    case ArenaResult{v_33, +v_34}:
-      {ArenaResult{v_33, v_34} : ArenaResult<U32>}
+def native_match_core_shift_var_1(v_28: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_28:
+    case ArenaResult{v_23, +v_24}:
+      {ArenaResult{v_23, v_24} : ArenaResult<U32>}
 
-def native_match_core_shift_var_3(v_40: ArenaResult<U32>, v_7: Nat, v_10: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_40:
-    case ArenaResult{v_28, +v_29}:
-      native_match_core_shift_var_2(arena_put_node(v_28, Arena.TermVar{v_29, v_7, v_10}))
-
-def native_match_core_shift_var_4(v_3: Bool, v_1: ArenaStore, v_5: String, v_7: Nat, v_9: Nat, v_10: Ast.SourceSpan) -> ArenaResult<U32>:
+def native_match_core_shift_var_2(v_3: Bool, v_1: ArenaStore, v_5: U32, v_7: Nat, v_9: Nat, v_10: Ast.SourceSpan) -> ArenaResult<U32>:
   match v_3:
     case True{}:
-      native_match_core_shift_var_1(arena_name(v_1, v_5), v_7, v_9, v_10)
+      native_match_core_shift_var_0(arena_put_node(v_1, Arena.TermVar{v_5, Nat.add(v_7, v_9), v_10}))
     case False{}:
-      native_match_core_shift_var_3(arena_name(v_1, v_5), v_7, v_10)
+      native_match_core_shift_var_1(arena_put_node(v_1, Arena.TermVar{v_5, v_7, v_10}))
 
-def core_shift_var(v_1: ArenaStore, v_3: Bool, v_5: String, v_7: Nat, v_9: Nat, v_10: Ast.SourceSpan) -> ArenaResult<U32>:
-  native_match_core_shift_var_4(v_3, v_1, v_5, v_7, v_9, v_10)
+def core_shift_var(v_1: ArenaStore, v_3: Bool, v_5: U32, v_7: Nat, v_9: Nat, v_10: Ast.SourceSpan) -> ArenaResult<U32>:
+  native_match_core_shift_var_2(v_3, v_1, v_5, v_7, v_9, v_10)
 
 def core_bound_unaffected(encoded: Nat, target: Nat) -> Bool:
   match encoded:
@@ -23910,596 +23620,523 @@ def native_match_core_shift_at_0(v_17: ArenaResult<Nat>, +v_3: U32, +v_5: Nat, v
 def core_shift_at(v_1: ArenaStore, +v_3: U32, +v_5: Nat, v_7: Nat, +v_9: Nat) -> ArenaResult<U32>:
   native_match_core_shift_at_0(arena_node_bound(v_1, v_3), v_3, v_5, v_7, v_9)
 
-def native_match_core_shift_open_0(v_962: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_962:
-    case ArenaResult{v_39, +v_40}:
-      {ArenaResult{v_39, v_40} : ArenaResult<U32>}
+def native_match_core_shift_open_0(v_881: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_881:
+    case ArenaResult{v_30, +v_31}:
+      {ArenaResult{v_30, v_31} : ArenaResult<U32>}
 
-def native_match_core_shift_open_1(v_963: ArenaResult<String>, +v_5: Nat, +v_7: Nat, +v_9: Nat, +v_21: Nat, +v_22: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_963:
-    case ArenaResult{v_26, +v_27}:
-      +v_29 = v_27
-      v_31 = v_29
-      +v_33 = v_21
-      v_35 = v_22
-      native_match_core_shift_open_0(core_shift_var(v_26, Nat.is_ge(v_33, Nat.add(v_5, v_9)), v_31, v_33, v_7, v_35))
+def native_match_core_shift_open_1(v_882: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_882:
+    case ArenaResult{v_56, +v_57}:
+      {ArenaResult{v_56, v_57} : ArenaResult<U32>}
 
-def native_match_core_shift_open_2(v_964: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_964:
-    case ArenaResult{v_65, +v_66}:
-      {ArenaResult{v_65, v_66} : ArenaResult<U32>}
+def native_match_core_shift_open_2(v_883: ArenaResult<U32>, v_47: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_883:
+    case ArenaResult{v_51, +v_52}:
+      native_match_core_shift_open_1(arena_put_node(v_51, Arena.TermBang{v_52, v_47}))
 
-def native_match_core_shift_open_3(v_965: ArenaResult<U32>, v_56: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_965:
-    case ArenaResult{v_60, +v_61}:
-      native_match_core_shift_open_2(arena_put_node(v_60, Arena.TermBang{v_61, v_56}))
+def native_match_core_shift_open_3(v_884: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_884:
+    case ArenaResult{v_89, +v_90}:
+      {ArenaResult{v_89, v_90} : ArenaResult<U32>}
 
-def native_match_core_shift_open_4(v_966: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_966:
-    case ArenaResult{v_98, +v_99}:
-      {ArenaResult{v_98, v_99} : ArenaResult<U32>}
+def native_match_core_shift_open_4(v_885: ArenaResult<U32>, v_69: Nat, v_75: Ast.SourceSpan, +v_80: U32) -> ArenaResult<U32>:
+  match v_885:
+    case ArenaResult{v_84, +v_85}:
+      native_match_core_shift_open_3(arena_put_node(v_84, Arena.TermSub{v_69, v_80, v_85, v_75}))
 
-def native_match_core_shift_open_5(v_967: ArenaResult<U32>, v_78: Nat, v_84: Ast.SourceSpan, +v_89: U32) -> ArenaResult<U32>:
-  match v_967:
-    case ArenaResult{v_93, +v_94}:
-      native_match_core_shift_open_4(arena_put_node(v_93, Arena.TermSub{v_78, v_89, v_94, v_84}))
+def native_match_core_shift_open_5(v_886: ArenaResult<U32>, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_69: Nat, v_73: U32, v_75: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_886:
+    case ArenaResult{v_79, +v_80}:
+      native_match_core_shift_open_4(core_shift_at(v_79, v_73, v_5, v_7, Nat.add(v_9, 1n)), v_69, v_75, v_80)
 
-def native_match_core_shift_open_6(v_968: ArenaResult<U32>, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_78: Nat, v_82: U32, v_84: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_968:
-    case ArenaResult{v_88, +v_89}:
-      native_match_core_shift_open_5(core_shift_at(v_88, v_82, v_5, v_7, Nat.add(v_9, 1n)), v_78, v_84, v_89)
+def native_match_core_shift_open_6(v_887: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_887:
+    case ArenaResult{v_171, +v_172}:
+      {ArenaResult{v_171, v_172} : ArenaResult<U32>}
 
-def native_match_core_shift_open_7(v_969: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_969:
-    case ArenaResult{v_180, +v_181}:
-      {ArenaResult{v_180, v_181} : ArenaResult<U32>}
+def native_match_core_shift_open_7(v_888: ArenaResult<U32>, +v_122: IR.Names, v_124: IR.Naturals, v_126: IR.Quantities, v_132: Ast.SourceSpan, +v_137: IR.Words) -> ArenaResult<U32>:
+  match v_888:
+    case ArenaResult{v_142, +v_143}:
+      v_146 = arena_names_start(v_122)
+      v_149 = arena_names_count(v_122)
+      v_152 = arena_naturals_start(v_124)
+      v_155 = arena_naturals_count(v_124)
+      v_158 = arena_quantities_start(v_126)
+      v_161 = arena_quantities_count(v_126)
+      v_164 = arena_words_start(v_137)
+      v_167 = arena_words_count(v_137)
+      native_match_core_shift_open_6(arena_put_node(v_142, Arena.TermLet{v_146, v_149, v_152, v_155, v_158, v_161, v_164, v_167, v_143, v_132}))
 
-def native_match_core_shift_open_8(v_970: ArenaResult<U32>, +v_131: IR.Names, v_133: IR.Naturals, v_135: IR.Quantities, v_141: Ast.SourceSpan, +v_146: IR.Words) -> ArenaResult<U32>:
-  match v_970:
-    case ArenaResult{v_151, +v_152}:
-      v_155 = arena_names_start(v_131)
-      v_158 = arena_names_count(v_131)
-      v_161 = arena_naturals_start(v_133)
-      v_164 = arena_naturals_count(v_133)
-      v_167 = arena_quantities_start(v_135)
-      v_170 = arena_quantities_count(v_135)
-      v_173 = arena_words_start(v_146)
-      v_176 = arena_words_count(v_146)
-      native_match_core_shift_open_7(arena_put_node(v_151, Arena.TermLet{v_155, v_158, v_161, v_164, v_167, v_170, v_173, v_176, v_152, v_141}))
+def native_match_core_shift_open_8(v_889: ArenaResult<IR.Words>, +v_5: Nat, +v_7: Nat, +v_9: Nat, +v_122: IR.Names, v_124: IR.Naturals, v_126: IR.Quantities, v_130: U32, v_132: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_889:
+    case ArenaResult{v_136, +v_137}:
+      native_match_core_shift_open_7(core_shift_at(v_136, v_130, v_5, v_7, Nat.add(v_9, arena_names_length(v_122))), v_122, v_124, v_126, v_132, v_137)
 
-def native_match_core_shift_open_9(v_971: ArenaResult<IR.Words>, +v_5: Nat, +v_7: Nat, +v_9: Nat, +v_131: IR.Names, v_133: IR.Naturals, v_135: IR.Quantities, v_139: U32, v_141: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_971:
-    case ArenaResult{v_145, +v_146}:
-      native_match_core_shift_open_8(core_shift_at(v_145, v_139, v_5, v_7, Nat.add(v_9, arena_names_length(v_131))), v_131, v_133, v_135, v_141, v_146)
+def native_match_core_shift_open_9(v_890: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_890:
+    case ArenaResult{v_200, +v_201}:
+      {ArenaResult{v_200, v_201} : ArenaResult<U32>}
 
-def native_match_core_shift_open_10(v_972: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_972:
-    case ArenaResult{v_209, +v_210}:
-      {ArenaResult{v_209, v_210} : ArenaResult<U32>}
+def native_match_core_shift_open_10(v_891: ArenaResult<U32>, v_186: Ast.SourceSpan, +v_191: U32) -> ArenaResult<U32>:
+  match v_891:
+    case ArenaResult{v_195, +v_196}:
+      native_match_core_shift_open_9(arena_put_node(v_195, Arena.TermAnn{v_191, v_196, v_186}))
 
-def native_match_core_shift_open_11(v_973: ArenaResult<U32>, v_195: Ast.SourceSpan, +v_200: U32) -> ArenaResult<U32>:
-  match v_973:
-    case ArenaResult{v_204, +v_205}:
-      native_match_core_shift_open_10(arena_put_node(v_204, Arena.TermAnn{v_200, v_205, v_195}))
+def native_match_core_shift_open_11(v_892: ArenaResult<U32>, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_184: U32, v_186: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_892:
+    case ArenaResult{v_190, +v_191}:
+      native_match_core_shift_open_10(core_shift_at(v_190, v_184, v_5, v_7, v_9), v_186, v_191)
 
-def native_match_core_shift_open_12(v_974: ArenaResult<U32>, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_193: U32, v_195: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_974:
-    case ArenaResult{v_199, +v_200}:
-      native_match_core_shift_open_11(core_shift_at(v_199, v_193, v_5, v_7, v_9), v_195, v_200)
+def native_match_core_shift_open_12(v_893: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_893:
+    case ArenaResult{v_220, +v_221}:
+      {ArenaResult{v_220, v_221} : ArenaResult<U32>}
 
-def native_match_core_shift_open_13(v_975: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_975:
-    case ArenaResult{v_229, +v_230}:
-      {ArenaResult{v_229, v_230} : ArenaResult<U32>}
+def native_match_core_shift_open_13(v_894: ArenaResult<U32>, v_211: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_894:
+    case ArenaResult{v_215, +v_216}:
+      native_match_core_shift_open_12(arena_put_node(v_215, Arena.TermTemplate{v_216, v_211}))
 
-def native_match_core_shift_open_14(v_976: ArenaResult<U32>, v_220: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_976:
-    case ArenaResult{v_224, +v_225}:
-      native_match_core_shift_open_13(arena_put_node(v_224, Arena.TermTemplate{v_225, v_220}))
+def native_match_core_shift_open_14(v_895: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_895:
+    case ArenaResult{v_240, +v_241}:
+      {ArenaResult{v_240, v_241} : ArenaResult<U32>}
 
-def native_match_core_shift_open_15(v_977: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_977:
-    case ArenaResult{v_249, +v_250}:
-      {ArenaResult{v_249, v_250} : ArenaResult<U32>}
+def native_match_core_shift_open_15(v_896: ArenaResult<U32>, v_231: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_896:
+    case ArenaResult{v_235, +v_236}:
+      native_match_core_shift_open_14(arena_put_node(v_235, Arena.TermType{v_236, v_231}))
 
-def native_match_core_shift_open_16(v_978: ArenaResult<U32>, v_240: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_978:
-    case ArenaResult{v_244, +v_245}:
-      native_match_core_shift_open_15(arena_put_node(v_244, Arena.TermType{v_245, v_240}))
+def native_match_core_shift_open_16(v_897: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_897:
+    case ArenaResult{v_247, +v_248}:
+      {ArenaResult{v_247, v_248} : ArenaResult<U32>}
 
-def native_match_core_shift_open_17(v_979: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_979:
-    case ArenaResult{v_256, +v_257}:
-      {ArenaResult{v_256, v_257} : ArenaResult<U32>}
+def native_match_core_shift_open_17(v_898: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_898:
+    case ArenaResult{v_262, +v_263}:
+      {ArenaResult{v_262, v_263} : ArenaResult<U32>}
 
-def native_match_core_shift_open_18(v_980: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_980:
-    case ArenaResult{v_271, +v_272}:
-      {ArenaResult{v_271, v_272} : ArenaResult<U32>}
+def native_match_core_shift_open_18(v_899: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_899:
+    case ArenaResult{v_291, +v_292}:
+      {ArenaResult{v_291, v_292} : ArenaResult<U32>}
 
-def native_match_core_shift_open_19(v_981: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_981:
-    case ArenaResult{v_300, +v_301}:
-      {ArenaResult{v_300, v_301} : ArenaResult<U32>}
+def native_match_core_shift_open_19(v_900: ArenaResult<U32>, v_277: Ast.SourceSpan, +v_282: U32) -> ArenaResult<U32>:
+  match v_900:
+    case ArenaResult{v_286, +v_287}:
+      native_match_core_shift_open_18(arena_put_node(v_286, Arena.TermMin{v_282, v_287, v_277}))
 
-def native_match_core_shift_open_20(v_982: ArenaResult<U32>, v_286: Ast.SourceSpan, +v_291: U32) -> ArenaResult<U32>:
-  match v_982:
-    case ArenaResult{v_295, +v_296}:
-      native_match_core_shift_open_19(arena_put_node(v_295, Arena.TermMin{v_291, v_296, v_286}))
+def native_match_core_shift_open_20(v_901: ArenaResult<U32>, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_275: U32, v_277: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_901:
+    case ArenaResult{v_281, +v_282}:
+      native_match_core_shift_open_19(core_shift_at(v_281, v_275, v_5, v_7, v_9), v_277, v_282)
 
-def native_match_core_shift_open_21(v_983: ArenaResult<U32>, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_284: U32, v_286: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_983:
-    case ArenaResult{v_290, +v_291}:
-      native_match_core_shift_open_20(core_shift_at(v_290, v_284, v_5, v_7, v_9), v_286, v_291)
+def native_match_core_shift_open_21(v_902: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_902:
+    case ArenaResult{v_332, +v_333}:
+      {ArenaResult{v_332, v_333} : ArenaResult<U32>}
 
-def native_match_core_shift_open_22(v_984: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_984:
-    case ArenaResult{v_353, +v_354}:
-      {ArenaResult{v_353, v_354} : ArenaResult<U32>}
+def native_match_core_shift_open_22(v_903: ArenaResult<U32>, v_308: Ast.Quantity, v_310: U32, v_312: Nat, v_318: Ast.SourceSpan, +v_323: U32) -> ArenaResult<U32>:
+  match v_903:
+    case ArenaResult{v_327, +v_328}:
+      native_match_core_shift_open_21(arena_put_node(v_327, Arena.TermAll{v_308, v_310, v_312, v_323, v_328, v_318}))
 
-def native_match_core_shift_open_23(v_985: ArenaResult<U32>, v_324: Ast.Quantity, v_328: Nat, v_334: Ast.SourceSpan, +v_339: U32, +v_344: U32) -> ArenaResult<U32>:
-  match v_985:
-    case ArenaResult{v_348, +v_349}:
-      native_match_core_shift_open_22(arena_put_node(v_348, Arena.TermAll{v_324, v_349, v_328, v_339, v_344, v_334}))
+def native_match_core_shift_open_23(v_904: ArenaResult<U32>, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_308: Ast.Quantity, v_310: U32, v_312: Nat, v_316: U32, v_318: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_904:
+    case ArenaResult{v_322, +v_323}:
+      native_match_core_shift_open_22(core_shift_at(v_322, v_316, v_5, v_7, Nat.add(v_9, 1n)), v_308, v_310, v_312, v_318, v_323)
 
-def native_match_core_shift_open_24(v_986: ArenaResult<U32>, v_324: Ast.Quantity, v_326: String, v_328: Nat, v_334: Ast.SourceSpan, +v_339: U32) -> ArenaResult<U32>:
-  match v_986:
-    case ArenaResult{v_343, +v_344}:
-      native_match_core_shift_open_23(arena_name(v_343, v_326), v_324, v_328, v_334, v_339, v_344)
+def native_match_core_shift_open_24(v_905: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_905:
+    case ArenaResult{v_364, +v_365}:
+      {ArenaResult{v_364, v_365} : ArenaResult<U32>}
 
-def native_match_core_shift_open_25(v_987: ArenaResult<U32>, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_324: Ast.Quantity, v_326: String, v_328: Nat, v_332: U32, v_334: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_987:
-    case ArenaResult{v_338, +v_339}:
-      native_match_core_shift_open_24(core_shift_at(v_338, v_332, v_5, v_7, Nat.add(v_9, 1n)), v_324, v_326, v_328, v_334, v_339)
+def native_match_core_shift_open_25(v_906: ArenaResult<U32>, v_347: Maybe<&2, Ast.Quantity>, v_349: U32, v_351: Nat, v_355: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_906:
+    case ArenaResult{v_359, +v_360}:
+      native_match_core_shift_open_24(arena_put_node(v_359, Arena.TermLam{v_347, v_349, v_351, v_360, v_355}))
 
-def native_match_core_shift_open_26(v_988: ArenaResult<String>, +v_5: Nat, +v_7: Nat, +v_9: Nat, +v_310: Ast.Quantity, +v_312: Nat, +v_313: U32, +v_314: U32, +v_315: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_988:
-    case ArenaResult{v_319, +v_320}:
-      +v_322 = v_320
-      v_324 = v_310
-      v_326 = v_322
-      v_328 = v_312
-      v_330 = v_313
-      v_332 = v_314
-      v_334 = v_315
-      native_match_core_shift_open_25(core_shift_at(v_319, v_330, v_5, v_7, v_9), v_5, v_7, v_9, v_324, v_326, v_328, v_332, v_334)
+def native_match_core_shift_open_26(v_907: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_907:
+    case ArenaResult{v_393, +v_394}:
+      {ArenaResult{v_393, v_394} : ArenaResult<U32>}
 
-def native_match_core_shift_open_27(v_989: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_989:
-    case ArenaResult{v_397, +v_398}:
-      {ArenaResult{v_397, v_398} : ArenaResult<U32>}
+def native_match_core_shift_open_27(v_908: ArenaResult<U32>, v_379: Ast.SourceSpan, +v_384: U32) -> ArenaResult<U32>:
+  match v_908:
+    case ArenaResult{v_388, +v_389}:
+      native_match_core_shift_open_26(arena_put_node(v_388, Arena.TermApp{v_384, v_389, v_379}))
 
-def native_match_core_shift_open_28(v_990: ArenaResult<U32>, v_375: Maybe<&2, Ast.Quantity>, v_379: Nat, v_383: Ast.SourceSpan, +v_388: U32) -> ArenaResult<U32>:
-  match v_990:
-    case ArenaResult{v_392, +v_393}:
-      native_match_core_shift_open_27(arena_put_node(v_392, Arena.TermLam{v_375, v_393, v_379, v_388, v_383}))
+def native_match_core_shift_open_28(v_909: ArenaResult<U32>, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_377: U32, v_379: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_909:
+    case ArenaResult{v_383, +v_384}:
+      native_match_core_shift_open_27(core_shift_at(v_383, v_377, v_5, v_7, v_9), v_379, v_384)
 
-def native_match_core_shift_open_29(v_991: ArenaResult<U32>, v_375: Maybe<&2, Ast.Quantity>, v_377: String, v_379: Nat, v_383: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_991:
-    case ArenaResult{v_387, +v_388}:
-      native_match_core_shift_open_28(arena_name(v_387, v_377), v_375, v_379, v_383, v_388)
+def native_match_core_shift_open_29(v_910: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_910:
+    case ArenaResult{v_441, +v_442}:
+      {ArenaResult{v_441, v_442} : ArenaResult<U32>}
 
-def native_match_core_shift_open_30(v_992: ArenaResult<String>, +v_5: Nat, +v_7: Nat, +v_9: Nat, +v_362: Maybe<&2, Ast.Quantity>, +v_364: Nat, +v_365: U32, +v_366: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_992:
-    case ArenaResult{v_370, +v_371}:
-      +v_373 = v_371
-      v_375 = v_362
-      v_377 = v_373
-      v_379 = v_364
-      v_381 = v_365
-      v_383 = v_366
-      native_match_core_shift_open_29(core_shift_at(v_370, v_381, v_5, v_7, Nat.add(v_9, 1n)), v_375, v_377, v_379, v_383)
+def native_match_core_shift_open_30(v_911: ArenaResult<IR.Words>, v_414: U32, v_418: IR.Names, v_420: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_911:
+    case ArenaResult{v_424, +v_425}:
+      v_428 = arena_words_start(v_425)
+      v_431 = arena_words_count(v_425)
+      v_434 = arena_names_start(v_418)
+      v_437 = arena_names_count(v_418)
+      native_match_core_shift_open_29(arena_put_node(v_424, Arena.TermAdt{v_414, v_428, v_431, v_434, v_437, v_420}))
 
-def native_match_core_shift_open_31(v_993: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_993:
-    case ArenaResult{v_426, +v_427}:
-      {ArenaResult{v_426, v_427} : ArenaResult<U32>}
+def native_match_core_shift_open_31(v_912: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_912:
+    case ArenaResult{v_480, +v_481}:
+      {ArenaResult{v_480, v_481} : ArenaResult<U32>}
 
-def native_match_core_shift_open_32(v_994: ArenaResult<U32>, v_412: Ast.SourceSpan, +v_417: U32) -> ArenaResult<U32>:
-  match v_994:
-    case ArenaResult{v_421, +v_422}:
-      native_match_core_shift_open_31(arena_put_node(v_421, Arena.TermApp{v_417, v_422, v_412}))
-
-def native_match_core_shift_open_33(v_995: ArenaResult<U32>, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_410: U32, v_412: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_995:
-    case ArenaResult{v_416, +v_417}:
-      native_match_core_shift_open_32(core_shift_at(v_416, v_410, v_5, v_7, v_9), v_412, v_417)
-
-def native_match_core_shift_open_34(v_996: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_996:
-    case ArenaResult{v_486, +v_487}:
-      {ArenaResult{v_486, v_487} : ArenaResult<U32>}
-
-def native_match_core_shift_open_35(v_997: ArenaResult<U32>, v_458: IR.Names, v_460: Ast.SourceSpan, +v_465: IR.Words) -> ArenaResult<U32>:
-  match v_997:
+def native_match_core_shift_open_32(v_913: ArenaResult<IR.Words>, v_460: Ast.SourceSpan, +v_465: U32) -> ArenaResult<U32>:
+  match v_913:
     case ArenaResult{v_469, +v_470}:
-      v_473 = arena_words_start(v_465)
-      v_476 = arena_words_count(v_465)
-      v_479 = arena_names_start(v_458)
-      v_482 = arena_names_count(v_458)
-      native_match_core_shift_open_34(arena_put_node(v_469, Arena.TermAdt{v_470, v_473, v_476, v_479, v_482, v_460}))
+      v_473 = arena_words_start(v_470)
+      v_476 = arena_words_count(v_470)
+      native_match_core_shift_open_31(arena_put_node(v_469, Arena.TermFill{v_465, v_473, v_476, v_460}))
 
-def native_match_core_shift_open_36(v_998: ArenaResult<IR.Words>, v_454: String, v_458: IR.Names, v_460: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_998:
+def native_match_core_shift_open_33(v_914: ArenaResult<U32>, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_458: IR.Words, v_460: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_914:
     case ArenaResult{v_464, +v_465}:
-      native_match_core_shift_open_35(arena_name(v_464, v_454), v_458, v_460, v_465)
+      native_match_core_shift_open_32(core_shift_terms(v_464, v_5, v_7, v_9, v_458), v_460, v_465)
 
-def native_match_core_shift_open_37(v_999: ArenaResult<String>, +v_5: Nat, +v_7: Nat, +v_9: Nat, +v_437: U32, +v_438: U32, +v_439: U32, +v_440: U32, +v_441: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_999:
-    case ArenaResult{v_445, +v_446}:
-      +v_448 = v_446
-      +v_450 = IR.Words{v_437, v_438}
-      +v_452 = IR.Names{v_439, v_440}
-      v_454 = v_448
-      v_456 = v_450
-      v_458 = v_452
-      v_460 = v_441
-      native_match_core_shift_open_36(core_shift_terms(v_445, v_5, v_7, v_9, v_456), v_454, v_458, v_460)
+def native_match_core_shift_open_34(v_915: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_915:
+    case ArenaResult{v_519, +v_520}:
+      {ArenaResult{v_519, v_520} : ArenaResult<U32>}
 
-def native_match_core_shift_open_38(v_1000: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_1000:
-    case ArenaResult{v_525, +v_526}:
-      {ArenaResult{v_525, v_526} : ArenaResult<U32>}
+def native_match_core_shift_open_35(v_916: ArenaResult<IR.Words>, v_499: Ast.SourceSpan, +v_504: U32) -> ArenaResult<U32>:
+  match v_916:
+    case ArenaResult{v_508, +v_509}:
+      v_512 = arena_words_start(v_509)
+      v_515 = arena_words_count(v_509)
+      native_match_core_shift_open_34(arena_put_node(v_508, Arena.TermPlus{v_504, v_512, v_515, v_499}))
 
-def native_match_core_shift_open_39(v_1001: ArenaResult<IR.Words>, v_505: Ast.SourceSpan, +v_510: U32) -> ArenaResult<U32>:
-  match v_1001:
-    case ArenaResult{v_514, +v_515}:
-      v_518 = arena_words_start(v_515)
-      v_521 = arena_words_count(v_515)
-      native_match_core_shift_open_38(arena_put_node(v_514, Arena.TermFill{v_510, v_518, v_521, v_505}))
+def native_match_core_shift_open_36(v_917: ArenaResult<U32>, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_497: IR.Words, v_499: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_917:
+    case ArenaResult{v_503, +v_504}:
+      native_match_core_shift_open_35(core_shift_terms(v_503, v_5, v_7, v_9, v_497), v_499, v_504)
 
-def native_match_core_shift_open_40(v_1002: ArenaResult<U32>, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_503: IR.Words, v_505: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1002:
-    case ArenaResult{v_509, +v_510}:
-      native_match_core_shift_open_39(core_shift_terms(v_509, v_5, v_7, v_9, v_503), v_505, v_510)
+def native_match_core_shift_open_37(v_918: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_918:
+    case ArenaResult{v_561, +v_562}:
+      {ArenaResult{v_561, v_562} : ArenaResult<U32>}
 
-def native_match_core_shift_open_41(v_1003: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_1003:
-    case ArenaResult{v_564, +v_565}:
-      {ArenaResult{v_564, v_565} : ArenaResult<U32>}
+def native_match_core_shift_open_38(v_919: ArenaResult<IR.Words>, v_542: U32, v_546: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_919:
+    case ArenaResult{v_550, +v_551}:
+      v_554 = arena_words_start(v_551)
+      v_557 = arena_words_count(v_551)
+      native_match_core_shift_open_37(arena_put_node(v_550, Arena.TermCtr{v_542, v_554, v_557, v_546}))
 
-def native_match_core_shift_open_42(v_1004: ArenaResult<IR.Words>, v_544: Ast.SourceSpan, +v_549: U32) -> ArenaResult<U32>:
-  match v_1004:
-    case ArenaResult{v_553, +v_554}:
-      v_557 = arena_words_start(v_554)
-      v_560 = arena_words_count(v_554)
-      native_match_core_shift_open_41(arena_put_node(v_553, Arena.TermPlus{v_549, v_557, v_560, v_544}))
+def native_match_core_shift_open_39(v_920: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_920:
+    case ArenaResult{v_594, +v_595}:
+      {ArenaResult{v_594, v_595} : ArenaResult<U32>}
 
-def native_match_core_shift_open_43(v_1005: ArenaResult<U32>, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_542: IR.Words, v_544: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1005:
-    case ArenaResult{v_548, +v_549}:
-      native_match_core_shift_open_42(core_shift_terms(v_548, v_5, v_7, v_9, v_542), v_544, v_549)
+def native_match_core_shift_open_40(v_921: ArenaResult<U32>, v_574: U32, v_580: Ast.SourceSpan, +v_585: U32) -> ArenaResult<U32>:
+  match v_921:
+    case ArenaResult{v_589, +v_590}:
+      native_match_core_shift_open_39(arena_put_node(v_589, Arena.TermMat{v_574, v_585, v_590, v_580}))
 
-def native_match_core_shift_open_44(v_1006: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_1006:
-    case ArenaResult{v_618, +v_619}:
-      {ArenaResult{v_618, v_619} : ArenaResult<U32>}
+def native_match_core_shift_open_41(v_922: ArenaResult<U32>, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_574: U32, v_578: U32, v_580: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_922:
+    case ArenaResult{v_584, +v_585}:
+      native_match_core_shift_open_40(core_shift_at(v_584, v_578, v_5, v_7, v_9), v_574, v_580, v_585)
 
-def native_match_core_shift_open_45(v_1007: ArenaResult<U32>, v_598: Ast.SourceSpan, +v_603: IR.Words) -> ArenaResult<U32>:
-  match v_1007:
-    case ArenaResult{v_607, +v_608}:
-      v_611 = arena_words_start(v_603)
-      v_614 = arena_words_count(v_603)
-      native_match_core_shift_open_44(arena_put_node(v_607, Arena.TermCtr{v_608, v_611, v_614, v_598}))
+def native_match_core_shift_open_42(v_923: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_923:
+    case ArenaResult{v_605, +v_606}:
+      {ArenaResult{v_605, v_606} : ArenaResult<U32>}
 
-def native_match_core_shift_open_46(v_1008: ArenaResult<IR.Words>, v_594: String, v_598: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1008:
-    case ArenaResult{v_602, +v_603}:
-      native_match_core_shift_open_45(arena_name(v_602, v_594), v_598, v_603)
+def native_match_core_shift_open_43(v_924: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_924:
+    case ArenaResult{v_643, +v_644}:
+      {ArenaResult{v_643, v_644} : ArenaResult<U32>}
 
-def native_match_core_shift_open_47(v_1009: ArenaResult<String>, +v_5: Nat, +v_7: Nat, +v_9: Nat, +v_581: U32, +v_582: U32, +v_583: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1009:
-    case ArenaResult{v_587, +v_588}:
-      +v_590 = v_588
-      +v_592 = IR.Words{v_581, v_582}
-      v_594 = v_590
-      v_596 = v_592
-      v_598 = v_583
-      native_match_core_shift_open_46(core_shift_terms(v_587, v_5, v_7, v_9, v_596), v_594, v_598)
+def native_match_core_shift_open_44(v_925: ArenaResult<U32>, v_624: Ast.SourceSpan, +v_629: U32, +v_634: U32) -> ArenaResult<U32>:
+  match v_925:
+    case ArenaResult{v_638, +v_639}:
+      native_match_core_shift_open_43(arena_put_node(v_638, Arena.TermEqual{v_629, v_634, v_639, v_624}))
 
-def native_match_core_shift_open_48(v_1010: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_1010:
-    case ArenaResult{v_663, +v_664}:
-      {ArenaResult{v_663, v_664} : ArenaResult<U32>}
-
-def native_match_core_shift_open_49(v_1011: ArenaResult<U32>, v_644: Ast.SourceSpan, +v_649: U32, +v_654: U32) -> ArenaResult<U32>:
-  match v_1011:
-    case ArenaResult{v_658, +v_659}:
-      native_match_core_shift_open_48(arena_put_node(v_658, Arena.TermMat{v_659, v_649, v_654, v_644}))
-
-def native_match_core_shift_open_50(v_1012: ArenaResult<U32>, v_638: String, v_644: Ast.SourceSpan, +v_649: U32) -> ArenaResult<U32>:
-  match v_1012:
-    case ArenaResult{v_653, +v_654}:
-      native_match_core_shift_open_49(arena_name(v_653, v_638), v_644, v_649, v_654)
-
-def native_match_core_shift_open_51(v_1013: ArenaResult<U32>, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_638: String, v_642: U32, v_644: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1013:
-    case ArenaResult{v_648, +v_649}:
-      native_match_core_shift_open_50(core_shift_at(v_648, v_642, v_5, v_7, v_9), v_638, v_644, v_649)
-
-def native_match_core_shift_open_52(v_1014: ArenaResult<String>, +v_5: Nat, +v_7: Nat, +v_9: Nat, +v_627: U32, +v_628: U32, +v_629: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1014:
+def native_match_core_shift_open_45(v_926: ArenaResult<U32>, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_622: U32, v_624: Ast.SourceSpan, +v_629: U32) -> ArenaResult<U32>:
+  match v_926:
     case ArenaResult{v_633, +v_634}:
-      +v_636 = v_634
-      v_638 = v_636
-      v_640 = v_627
-      v_642 = v_628
-      v_644 = v_629
-      native_match_core_shift_open_51(core_shift_at(v_633, v_640, v_5, v_7, v_9), v_5, v_7, v_9, v_638, v_642, v_644)
+      native_match_core_shift_open_44(core_shift_at(v_633, v_622, v_5, v_7, v_9), v_624, v_629, v_634)
 
-def native_match_core_shift_open_53(v_1015: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_1015:
-    case ArenaResult{v_674, +v_675}:
-      {ArenaResult{v_674, v_675} : ArenaResult<U32>}
+def native_match_core_shift_open_46(v_927: ArenaResult<U32>, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_620: U32, v_622: U32, v_624: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_927:
+    case ArenaResult{v_628, +v_629}:
+      native_match_core_shift_open_45(core_shift_at(v_628, v_620, v_5, v_7, v_9), v_5, v_7, v_9, v_622, v_624, v_629)
 
-def native_match_core_shift_open_54(v_1016: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_1016:
-    case ArenaResult{v_712, +v_713}:
-      {ArenaResult{v_712, v_713} : ArenaResult<U32>}
+def native_match_core_shift_open_47(v_928: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_928:
+    case ArenaResult{v_654, +v_655}:
+      {ArenaResult{v_654, v_655} : ArenaResult<U32>}
 
-def native_match_core_shift_open_55(v_1017: ArenaResult<U32>, v_693: Ast.SourceSpan, +v_698: U32, +v_703: U32) -> ArenaResult<U32>:
-  match v_1017:
+def native_match_core_shift_open_48(v_929: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_929:
+    case ArenaResult{v_692, +v_693}:
+      {ArenaResult{v_692, v_693} : ArenaResult<U32>}
+
+def native_match_core_shift_open_49(v_930: ArenaResult<U32>, v_673: Ast.SourceSpan, +v_678: U32, +v_683: U32) -> ArenaResult<U32>:
+  match v_930:
+    case ArenaResult{v_687, +v_688}:
+      native_match_core_shift_open_48(arena_put_node(v_687, Arena.TermRewrite{v_678, v_683, v_688, v_673}))
+
+def native_match_core_shift_open_50(v_931: ArenaResult<U32>, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_671: U32, v_673: Ast.SourceSpan, +v_678: U32) -> ArenaResult<U32>:
+  match v_931:
+    case ArenaResult{v_682, +v_683}:
+      native_match_core_shift_open_49(core_shift_at(v_682, v_671, v_5, v_7, v_9), v_673, v_678, v_683)
+
+def native_match_core_shift_open_51(v_932: ArenaResult<U32>, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_669: U32, v_671: U32, v_673: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_932:
+    case ArenaResult{v_677, +v_678}:
+      native_match_core_shift_open_50(core_shift_at(v_677, v_669, v_5, v_7, v_9), v_5, v_7, v_9, v_671, v_673, v_678)
+
+def native_match_core_shift_open_52(v_933: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_933:
     case ArenaResult{v_707, +v_708}:
-      native_match_core_shift_open_54(arena_put_node(v_707, Arena.TermEqual{v_698, v_703, v_708, v_693}))
+      {ArenaResult{v_707, v_708} : ArenaResult<U32>}
 
-def native_match_core_shift_open_56(v_1018: ArenaResult<U32>, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_691: U32, v_693: Ast.SourceSpan, +v_698: U32) -> ArenaResult<U32>:
-  match v_1018:
-    case ArenaResult{v_702, +v_703}:
-      native_match_core_shift_open_55(core_shift_at(v_702, v_691, v_5, v_7, v_9), v_693, v_698, v_703)
-
-def native_match_core_shift_open_57(v_1019: ArenaResult<U32>, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_689: U32, v_691: U32, v_693: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1019:
-    case ArenaResult{v_697, +v_698}:
-      native_match_core_shift_open_56(core_shift_at(v_697, v_689, v_5, v_7, v_9), v_5, v_7, v_9, v_691, v_693, v_698)
-
-def native_match_core_shift_open_58(v_1020: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_1020:
-    case ArenaResult{v_723, +v_724}:
-      {ArenaResult{v_723, v_724} : ArenaResult<U32>}
-
-def native_match_core_shift_open_59(v_1021: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_1021:
-    case ArenaResult{v_761, +v_762}:
-      {ArenaResult{v_761, v_762} : ArenaResult<U32>}
-
-def native_match_core_shift_open_60(v_1022: ArenaResult<U32>, v_742: Ast.SourceSpan, +v_747: U32, +v_752: U32) -> ArenaResult<U32>:
-  match v_1022:
+def native_match_core_shift_open_53(v_934: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_934:
     case ArenaResult{v_756, +v_757}:
-      native_match_core_shift_open_59(arena_put_node(v_756, Arena.TermRewrite{v_747, v_752, v_757, v_742}))
+      {ArenaResult{v_756, v_757} : ArenaResult<U32>}
 
-def native_match_core_shift_open_61(v_1023: ArenaResult<U32>, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_740: U32, v_742: Ast.SourceSpan, +v_747: U32) -> ArenaResult<U32>:
-  match v_1023:
-    case ArenaResult{v_751, +v_752}:
-      native_match_core_shift_open_60(core_shift_at(v_751, v_740, v_5, v_7, v_9), v_742, v_747, v_752)
+def native_match_core_shift_open_54(v_935: ArenaResult<IR.Words>, v_730: Ast.SourceSpan, +v_735: IR.Words) -> ArenaResult<U32>:
+  match v_935:
+    case ArenaResult{v_739, +v_740}:
+      v_743 = arena_words_start(v_735)
+      v_746 = arena_words_count(v_735)
+      v_749 = arena_words_start(v_740)
+      v_752 = arena_words_count(v_740)
+      native_match_core_shift_open_53(arena_put_node(v_739, Arena.BodyMatch{v_743, v_746, v_749, v_752, v_730}))
 
-def native_match_core_shift_open_62(v_1024: ArenaResult<U32>, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_738: U32, v_740: U32, v_742: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1024:
-    case ArenaResult{v_746, +v_747}:
-      native_match_core_shift_open_61(core_shift_at(v_746, v_738, v_5, v_7, v_9), v_5, v_7, v_9, v_740, v_742, v_747)
+def native_match_core_shift_open_55(v_936: ArenaResult<IR.Words>, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_728: IR.Words, v_730: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_936:
+    case ArenaResult{v_734, +v_735}:
+      native_match_core_shift_open_54(core_shift_terms(v_734, v_5, v_7, v_9, v_728), v_730, v_735)
 
-def native_match_core_shift_open_63(v_1025: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_1025:
-    case ArenaResult{v_788, +v_789}:
-      {ArenaResult{v_788, v_789} : ArenaResult<U32>}
+def native_match_core_shift_open_56(v_937: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_937:
+    case ArenaResult{v_795, +v_796}:
+      {ArenaResult{v_795, v_796} : ArenaResult<U32>}
 
-def native_match_core_shift_open_64(v_1026: ArenaResult<U32>, v_779: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1026:
-    case ArenaResult{v_783, +v_784}:
-      native_match_core_shift_open_63(arena_put_node(v_783, Arena.TermHole{v_784, v_779}))
+def native_match_core_shift_open_57(v_938: ArenaResult<U32>, +v_771: IR.Words, v_775: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_938:
+    case ArenaResult{v_784, +v_785}:
+      v_788 = arena_words_start(v_771)
+      v_791 = arena_words_count(v_771)
+      native_match_core_shift_open_56(arena_put_node(v_784, Arena.BodyCase{v_788, v_791, v_785, v_775}))
 
-def native_match_core_shift_open_65(v_1027: ArenaResult<String>, +v_768: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1027:
-    case ArenaResult{v_772, +v_773}:
-      +v_775 = v_773
-      v_777 = v_775
-      v_779 = v_768
-      native_match_core_shift_open_64(arena_name(v_772, v_777), v_779)
+def native_match_core_shift_open_58(v_939: ArenaResult<Nat>, +v_5: Nat, +v_7: Nat, +v_9: Nat, +v_771: IR.Words, v_773: U32, v_775: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_939:
+    case ArenaResult{v_779, +v_780}:
+      native_match_core_shift_open_57(core_shift_at(v_779, v_773, v_5, v_7, Nat.add(v_9, v_780)), v_771, v_775)
 
-def native_match_core_shift_open_66(v_1028: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_1028:
-    case ArenaResult{v_837, +v_838}:
-      {ArenaResult{v_837, v_838} : ArenaResult<U32>}
+def native_match_core_shift_open_59(v_940: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_940:
+    case ArenaResult{v_857, +v_858}:
+      {ArenaResult{v_857, v_858} : ArenaResult<U32>}
 
-def native_match_core_shift_open_67(v_1029: ArenaResult<IR.Words>, v_811: Ast.SourceSpan, +v_816: IR.Words) -> ArenaResult<U32>:
-  match v_1029:
-    case ArenaResult{v_820, +v_821}:
-      v_824 = arena_words_start(v_816)
-      v_827 = arena_words_count(v_816)
-      v_830 = arena_words_start(v_821)
-      v_833 = arena_words_count(v_821)
-      native_match_core_shift_open_66(arena_put_node(v_820, Arena.BodyMatch{v_824, v_827, v_830, v_833, v_811}))
+def native_match_core_shift_open_60(v_941: ArenaResult<U32>, +v_818: IR.Words, v_820: Ast.Quantity, v_826: Ast.SourceSpan, +v_831: IR.Words) -> ArenaResult<U32>:
+  match v_941:
+    case ArenaResult{v_840, +v_841}:
+      v_844 = arena_words_start(v_818)
+      v_847 = arena_words_count(v_818)
+      v_850 = arena_words_start(v_831)
+      v_853 = arena_words_count(v_831)
+      native_match_core_shift_open_59(arena_put_node(v_840, Arena.BodyLocal{v_844, v_847, v_820, v_850, v_853, v_841, v_826}))
 
-def native_match_core_shift_open_68(v_1030: ArenaResult<IR.Words>, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_809: IR.Words, v_811: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1030:
-    case ArenaResult{v_815, +v_816}:
-      native_match_core_shift_open_67(core_shift_terms(v_815, v_5, v_7, v_9, v_809), v_811, v_816)
+def native_match_core_shift_open_61(v_942: ArenaResult<Nat>, +v_5: Nat, +v_7: Nat, +v_9: Nat, +v_818: IR.Words, v_820: Ast.Quantity, v_824: U32, v_826: Ast.SourceSpan, +v_831: IR.Words) -> ArenaResult<U32>:
+  match v_942:
+    case ArenaResult{v_835, +v_836}:
+      native_match_core_shift_open_60(core_shift_at(v_835, v_824, v_5, v_7, Nat.add(v_9, v_836)), v_818, v_820, v_826, v_831)
 
-def native_match_core_shift_open_69(v_1031: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_1031:
-    case ArenaResult{v_876, +v_877}:
-      {ArenaResult{v_876, v_877} : ArenaResult<U32>}
+def native_match_core_shift_open_62(v_943: ArenaResult<IR.Words>, +v_5: Nat, +v_7: Nat, +v_9: Nat, +v_818: IR.Words, v_820: Ast.Quantity, v_824: U32, v_826: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_943:
+    case ArenaResult{v_830, +v_831}:
+      native_match_core_shift_open_61(core_pattern_list_depth(v_830, v_818), v_5, v_7, v_9, v_818, v_820, v_824, v_826, v_831)
 
-def native_match_core_shift_open_70(v_1032: ArenaResult<U32>, +v_852: IR.Words, v_856: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1032:
-    case ArenaResult{v_865, +v_866}:
-      v_869 = arena_words_start(v_852)
-      v_872 = arena_words_count(v_852)
-      native_match_core_shift_open_69(arena_put_node(v_865, Arena.BodyCase{v_869, v_872, v_866, v_856}))
+def native_match_core_shift_open_63(v_944: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_944:
+    case ArenaResult{v_877, +v_878}:
+      {ArenaResult{v_877, v_878} : ArenaResult<U32>}
 
-def native_match_core_shift_open_71(v_1033: ArenaResult<Nat>, +v_5: Nat, +v_7: Nat, +v_9: Nat, +v_852: IR.Words, v_854: U32, v_856: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1033:
-    case ArenaResult{v_860, +v_861}:
-      native_match_core_shift_open_70(core_shift_at(v_860, v_854, v_5, v_7, Nat.add(v_9, v_861)), v_852, v_856)
+def native_match_core_shift_open_64(v_945: ArenaResult<U32>, v_868: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_945:
+    case ArenaResult{v_872, +v_873}:
+      native_match_core_shift_open_63(arena_put_node(v_872, Arena.BodyReply{v_873, v_868}))
 
-def native_match_core_shift_open_72(v_1034: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_1034:
-    case ArenaResult{v_938, +v_939}:
-      {ArenaResult{v_938, v_939} : ArenaResult<U32>}
-
-def native_match_core_shift_open_73(v_1035: ArenaResult<U32>, +v_899: IR.Words, v_901: Ast.Quantity, v_907: Ast.SourceSpan, +v_912: IR.Words) -> ArenaResult<U32>:
-  match v_1035:
-    case ArenaResult{v_921, +v_922}:
-      v_925 = arena_words_start(v_899)
-      v_928 = arena_words_count(v_899)
-      v_931 = arena_words_start(v_912)
-      v_934 = arena_words_count(v_912)
-      native_match_core_shift_open_72(arena_put_node(v_921, Arena.BodyLocal{v_925, v_928, v_901, v_931, v_934, v_922, v_907}))
-
-def native_match_core_shift_open_74(v_1036: ArenaResult<Nat>, +v_5: Nat, +v_7: Nat, +v_9: Nat, +v_899: IR.Words, v_901: Ast.Quantity, v_905: U32, v_907: Ast.SourceSpan, +v_912: IR.Words) -> ArenaResult<U32>:
-  match v_1036:
-    case ArenaResult{v_916, +v_917}:
-      native_match_core_shift_open_73(core_shift_at(v_916, v_905, v_5, v_7, Nat.add(v_9, v_917)), v_899, v_901, v_907, v_912)
-
-def native_match_core_shift_open_75(v_1037: ArenaResult<IR.Words>, +v_5: Nat, +v_7: Nat, +v_9: Nat, +v_899: IR.Words, v_901: Ast.Quantity, v_905: U32, v_907: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1037:
-    case ArenaResult{v_911, +v_912}:
-      native_match_core_shift_open_74(core_pattern_list_depth(v_911, v_899), v_5, v_7, v_9, v_899, v_901, v_905, v_907, v_912)
-
-def native_match_core_shift_open_76(v_1038: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_1038:
-    case ArenaResult{v_958, +v_959}:
-      {ArenaResult{v_958, v_959} : ArenaResult<U32>}
-
-def native_match_core_shift_open_77(v_1039: ArenaResult<U32>, v_949: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1039:
-    case ArenaResult{v_953, +v_954}:
-      native_match_core_shift_open_76(arena_put_node(v_953, Arena.BodyReply{v_954, v_949}))
-
-def native_match_core_shift_open_78(+v_16: Arena.Node, v_3: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_15: ArenaStore) -> ArenaResult<U32>:
+def native_match_core_shift_open_65(+v_16: Arena.Node, v_3: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_15: ArenaStore) -> ArenaResult<U32>:
   match v_16:
     case Arena.TermVar{+v_20, +v_21, +v_22}:
-      native_match_core_shift_open_1(arena_name_text(v_15, v_20), v_5, v_7, v_9, v_21, v_22)
-    case Arena.TermRef{+v_45, +v_46}:
+      +v_24 = v_21
+      v_26 = v_22
+      native_match_core_shift_open_0(core_shift_var(v_15, Nat.is_ge(v_24, Nat.add(v_5, v_9)), v_20, v_24, v_7, v_26))
+    case Arena.TermRef{+v_36, +v_37}:
       {ArenaResult{v_15, v_3} : ArenaResult<U32>}
-    case Arena.TermBang{+v_51, +v_52}:
-      v_54 = v_51
-      v_56 = v_52
-      native_match_core_shift_open_3(core_shift_at(v_15, v_54, v_5, v_7, v_9), v_56)
-    case Arena.TermSub{+v_73, +v_74, +v_75, +v_76}:
-      v_78 = v_73
-      v_80 = v_74
-      v_82 = v_75
-      v_84 = v_76
-      native_match_core_shift_open_6(core_shift_at(v_15, v_80, v_5, v_7, v_9), v_5, v_7, v_9, v_78, v_82, v_84)
-    case Arena.TermLet{+v_112, +v_113, +v_114, +v_115, +v_116, +v_117, +v_118, +v_119, +v_120, +v_121}:
-      +v_123 = IR.Names{v_112, v_113}
-      +v_125 = IR.Naturals{v_114, v_115}
-      +v_127 = IR.Quantities{v_116, v_117}
-      +v_129 = IR.Words{v_118, v_119}
-      +v_131 = v_123
-      v_133 = v_125
-      v_135 = v_127
-      v_137 = v_129
-      v_139 = v_120
-      v_141 = v_121
-      native_match_core_shift_open_9(core_shift_terms(v_15, v_5, v_7, v_9, v_137), v_5, v_7, v_9, v_131, v_133, v_135, v_139, v_141)
-    case Arena.TermAnn{+v_187, +v_188, +v_189}:
-      v_191 = v_187
-      v_193 = v_188
-      v_195 = v_189
-      native_match_core_shift_open_12(core_shift_at(v_15, v_191, v_5, v_7, v_9), v_5, v_7, v_9, v_193, v_195)
-    case Arena.TermTemplate{+v_215, +v_216}:
-      v_218 = v_215
-      v_220 = v_216
-      native_match_core_shift_open_14(core_shift_at(v_15, v_218, v_5, v_7, v_9), v_220)
-    case Arena.TermType{+v_235, +v_236}:
-      v_238 = v_235
-      v_240 = v_236
-      native_match_core_shift_open_16(core_shift_at(v_15, v_238, v_5, v_7, v_9), v_240)
+    case Arena.TermBang{+v_42, +v_43}:
+      v_45 = v_42
+      v_47 = v_43
+      native_match_core_shift_open_2(core_shift_at(v_15, v_45, v_5, v_7, v_9), v_47)
+    case Arena.TermSub{+v_64, +v_65, +v_66, +v_67}:
+      v_69 = v_64
+      v_71 = v_65
+      v_73 = v_66
+      v_75 = v_67
+      native_match_core_shift_open_5(core_shift_at(v_15, v_71, v_5, v_7, v_9), v_5, v_7, v_9, v_69, v_73, v_75)
+    case Arena.TermLet{+v_103, +v_104, +v_105, +v_106, +v_107, +v_108, +v_109, +v_110, +v_111, +v_112}:
+      +v_114 = IR.Names{v_103, v_104}
+      +v_116 = IR.Naturals{v_105, v_106}
+      +v_118 = IR.Quantities{v_107, v_108}
+      +v_120 = IR.Words{v_109, v_110}
+      +v_122 = v_114
+      v_124 = v_116
+      v_126 = v_118
+      v_128 = v_120
+      v_130 = v_111
+      v_132 = v_112
+      native_match_core_shift_open_8(core_shift_terms(v_15, v_5, v_7, v_9, v_128), v_5, v_7, v_9, v_122, v_124, v_126, v_130, v_132)
+    case Arena.TermAnn{+v_178, +v_179, +v_180}:
+      v_182 = v_178
+      v_184 = v_179
+      v_186 = v_180
+      native_match_core_shift_open_11(core_shift_at(v_15, v_182, v_5, v_7, v_9), v_5, v_7, v_9, v_184, v_186)
+    case Arena.TermTemplate{+v_206, +v_207}:
+      v_209 = v_206
+      v_211 = v_207
+      native_match_core_shift_open_13(core_shift_at(v_15, v_209, v_5, v_7, v_9), v_211)
+    case Arena.TermType{+v_226, +v_227}:
+      v_229 = v_226
+      v_231 = v_227
+      native_match_core_shift_open_15(core_shift_at(v_15, v_229, v_5, v_7, v_9), v_231)
     case Arena.TermQuant{}:
-      native_match_core_shift_open_17(arena_put_node(v_15, Arena.TermQuant{}))
-    case Arena.TermQuantity{+v_262, +v_263}:
-      v_265 = v_262
-      v_267 = v_263
-      native_match_core_shift_open_18(arena_put_node(v_15, Arena.TermQuantity{v_265, v_267}))
-    case Arena.TermMin{+v_278, +v_279, +v_280}:
-      v_282 = v_278
-      v_284 = v_279
-      v_286 = v_280
-      native_match_core_shift_open_21(core_shift_at(v_15, v_282, v_5, v_7, v_9), v_5, v_7, v_9, v_284, v_286)
-    case Arena.TermAll{+v_310, +v_311, +v_312, +v_313, +v_314, +v_315}:
-      native_match_core_shift_open_26(arena_name_text(v_15, v_311), v_5, v_7, v_9, v_310, v_312, v_313, v_314, v_315)
-    case Arena.TermLam{+v_362, +v_363, +v_364, +v_365, +v_366}:
-      native_match_core_shift_open_30(arena_name_text(v_15, v_363), v_5, v_7, v_9, v_362, v_364, v_365, v_366)
-    case Arena.TermApp{+v_404, +v_405, +v_406}:
-      v_408 = v_404
-      v_410 = v_405
-      v_412 = v_406
-      native_match_core_shift_open_33(core_shift_at(v_15, v_408, v_5, v_7, v_9), v_5, v_7, v_9, v_410, v_412)
-    case Arena.TermAdt{+v_436, +v_437, +v_438, +v_439, +v_440, +v_441}:
-      native_match_core_shift_open_37(arena_name_text(v_15, v_436), v_5, v_7, v_9, v_437, v_438, v_439, v_440, v_441)
-    case Arena.TermFill{+v_494, +v_495, +v_496, +v_497}:
-      +v_499 = IR.Words{v_495, v_496}
-      v_501 = v_494
-      v_503 = v_499
-      v_505 = v_497
-      native_match_core_shift_open_40(core_shift_at(v_15, v_501, v_5, v_7, v_9), v_5, v_7, v_9, v_503, v_505)
-    case Arena.TermPlus{+v_533, +v_534, +v_535, +v_536}:
-      +v_538 = IR.Words{v_534, v_535}
-      v_540 = v_533
-      v_542 = v_538
-      v_544 = v_536
-      native_match_core_shift_open_43(core_shift_at(v_15, v_540, v_5, v_7, v_9), v_5, v_7, v_9, v_542, v_544)
+      native_match_core_shift_open_16(arena_put_node(v_15, Arena.TermQuant{}))
+    case Arena.TermQuantity{+v_253, +v_254}:
+      v_256 = v_253
+      v_258 = v_254
+      native_match_core_shift_open_17(arena_put_node(v_15, Arena.TermQuantity{v_256, v_258}))
+    case Arena.TermMin{+v_269, +v_270, +v_271}:
+      v_273 = v_269
+      v_275 = v_270
+      v_277 = v_271
+      native_match_core_shift_open_20(core_shift_at(v_15, v_273, v_5, v_7, v_9), v_5, v_7, v_9, v_275, v_277)
+    case Arena.TermAll{+v_301, +v_302, +v_303, +v_304, +v_305, +v_306}:
+      v_308 = v_301
+      v_310 = v_302
+      v_312 = v_303
+      v_314 = v_304
+      v_316 = v_305
+      v_318 = v_306
+      native_match_core_shift_open_23(core_shift_at(v_15, v_314, v_5, v_7, v_9), v_5, v_7, v_9, v_308, v_310, v_312, v_316, v_318)
+    case Arena.TermLam{+v_341, +v_342, +v_343, +v_344, +v_345}:
+      v_347 = v_341
+      v_349 = v_342
+      v_351 = v_343
+      v_353 = v_344
+      v_355 = v_345
+      native_match_core_shift_open_25(core_shift_at(v_15, v_353, v_5, v_7, Nat.add(v_9, 1n)), v_347, v_349, v_351, v_355)
+    case Arena.TermApp{+v_371, +v_372, +v_373}:
+      v_375 = v_371
+      v_377 = v_372
+      v_379 = v_373
+      native_match_core_shift_open_28(core_shift_at(v_15, v_375, v_5, v_7, v_9), v_5, v_7, v_9, v_377, v_379)
+    case Arena.TermAdt{+v_403, +v_404, +v_405, +v_406, +v_407, +v_408}:
+      +v_410 = IR.Words{v_404, v_405}
+      +v_412 = IR.Names{v_406, v_407}
+      v_414 = v_403
+      v_416 = v_410
+      v_418 = v_412
+      v_420 = v_408
+      native_match_core_shift_open_30(core_shift_terms(v_15, v_5, v_7, v_9, v_416), v_414, v_418, v_420)
+    case Arena.TermFill{+v_449, +v_450, +v_451, +v_452}:
+      +v_454 = IR.Words{v_450, v_451}
+      v_456 = v_449
+      v_458 = v_454
+      v_460 = v_452
+      native_match_core_shift_open_33(core_shift_at(v_15, v_456, v_5, v_7, v_9), v_5, v_7, v_9, v_458, v_460)
+    case Arena.TermPlus{+v_488, +v_489, +v_490, +v_491}:
+      +v_493 = IR.Words{v_489, v_490}
+      v_495 = v_488
+      v_497 = v_493
+      v_499 = v_491
+      native_match_core_shift_open_36(core_shift_at(v_15, v_495, v_5, v_7, v_9), v_5, v_7, v_9, v_497, v_499)
     case Arena.TermString{_, _, _}:
       {ArenaResult{v_15, v_3} : ArenaResult<U32>}
-    case Arena.TermCtr{+v_580, +v_581, +v_582, +v_583}:
-      native_match_core_shift_open_47(arena_name_text(v_15, v_580), v_5, v_7, v_9, v_581, v_582, v_583)
-    case Arena.TermMat{+v_626, +v_627, +v_628, +v_629}:
-      native_match_core_shift_open_52(arena_name_text(v_15, v_626), v_5, v_7, v_9, v_627, v_628, v_629)
-    case Arena.TermAbsurd{+v_668}:
-      v_670 = v_668
-      native_match_core_shift_open_53(arena_put_node(v_15, Arena.TermAbsurd{v_670}))
-    case Arena.TermEqual{+v_682, +v_683, +v_684, +v_685}:
-      v_687 = v_682
-      v_689 = v_683
-      v_691 = v_684
-      v_693 = v_685
-      native_match_core_shift_open_57(core_shift_at(v_15, v_687, v_5, v_7, v_9), v_5, v_7, v_9, v_689, v_691, v_693)
-    case Arena.TermRefl{+v_717}:
-      v_719 = v_717
-      native_match_core_shift_open_58(arena_put_node(v_15, Arena.TermRefl{v_719}))
-    case Arena.TermRewrite{+v_731, +v_732, +v_733, +v_734}:
-      v_736 = v_731
-      v_738 = v_732
-      v_740 = v_733
-      v_742 = v_734
-      native_match_core_shift_open_62(core_shift_at(v_15, v_736, v_5, v_7, v_9), v_5, v_7, v_9, v_738, v_740, v_742)
-    case Arena.TermHole{+v_767, +v_768}:
-      native_match_core_shift_open_65(arena_name_text(v_15, v_767), v_768)
-    case Arena.BodyMatch{+v_797, +v_798, +v_799, +v_800, +v_801}:
-      +v_803 = IR.Words{v_797, v_798}
-      +v_805 = IR.Words{v_799, v_800}
-      v_807 = v_803
-      v_809 = v_805
-      v_811 = v_801
-      native_match_core_shift_open_68(core_shift_terms(v_15, v_5, v_7, v_9, v_807), v_5, v_7, v_9, v_809, v_811)
-    case Arena.BodyCase{+v_845, +v_846, +v_847, +v_848}:
-      +v_850 = IR.Words{v_845, v_846}
-      +v_852 = v_850
-      v_854 = v_847
-      v_856 = v_848
-      native_match_core_shift_open_71(core_pattern_list_depth(v_15, v_852), v_5, v_7, v_9, v_852, v_854, v_856)
-    case Arena.BodyLocal{+v_887, +v_888, +v_889, +v_890, +v_891, +v_892, +v_893}:
-      +v_895 = IR.Words{v_887, v_888}
-      +v_897 = IR.Words{v_890, v_891}
-      +v_899 = v_895
-      v_901 = v_889
-      v_903 = v_897
-      v_905 = v_892
-      v_907 = v_893
-      native_match_core_shift_open_75(core_shift_terms(v_15, v_5, v_7, v_9, v_903), v_5, v_7, v_9, v_899, v_901, v_905, v_907)
-    case Arena.BodyReply{+v_944, +v_945}:
-      v_947 = v_944
-      v_949 = v_945
-      native_match_core_shift_open_77(core_shift_at(v_15, v_947, v_5, v_7, v_9), v_949)
+    case Arena.TermCtr{+v_535, +v_536, +v_537, +v_538}:
+      +v_540 = IR.Words{v_536, v_537}
+      v_542 = v_535
+      v_544 = v_540
+      v_546 = v_538
+      native_match_core_shift_open_38(core_shift_terms(v_15, v_5, v_7, v_9, v_544), v_542, v_546)
+    case Arena.TermMat{+v_569, +v_570, +v_571, +v_572}:
+      v_574 = v_569
+      v_576 = v_570
+      v_578 = v_571
+      v_580 = v_572
+      native_match_core_shift_open_41(core_shift_at(v_15, v_576, v_5, v_7, v_9), v_5, v_7, v_9, v_574, v_578, v_580)
+    case Arena.TermAbsurd{+v_599}:
+      v_601 = v_599
+      native_match_core_shift_open_42(arena_put_node(v_15, Arena.TermAbsurd{v_601}))
+    case Arena.TermEqual{+v_613, +v_614, +v_615, +v_616}:
+      v_618 = v_613
+      v_620 = v_614
+      v_622 = v_615
+      v_624 = v_616
+      native_match_core_shift_open_46(core_shift_at(v_15, v_618, v_5, v_7, v_9), v_5, v_7, v_9, v_620, v_622, v_624)
+    case Arena.TermRefl{+v_648}:
+      v_650 = v_648
+      native_match_core_shift_open_47(arena_put_node(v_15, Arena.TermRefl{v_650}))
+    case Arena.TermRewrite{+v_662, +v_663, +v_664, +v_665}:
+      v_667 = v_662
+      v_669 = v_663
+      v_671 = v_664
+      v_673 = v_665
+      native_match_core_shift_open_51(core_shift_at(v_15, v_667, v_5, v_7, v_9), v_5, v_7, v_9, v_669, v_671, v_673)
+    case Arena.TermHole{+v_698, +v_699}:
+      v_701 = v_698
+      v_703 = v_699
+      native_match_core_shift_open_52(arena_put_node(v_15, Arena.TermHole{v_701, v_703}))
+    case Arena.BodyMatch{+v_716, +v_717, +v_718, +v_719, +v_720}:
+      +v_722 = IR.Words{v_716, v_717}
+      +v_724 = IR.Words{v_718, v_719}
+      v_726 = v_722
+      v_728 = v_724
+      v_730 = v_720
+      native_match_core_shift_open_55(core_shift_terms(v_15, v_5, v_7, v_9, v_726), v_5, v_7, v_9, v_728, v_730)
+    case Arena.BodyCase{+v_764, +v_765, +v_766, +v_767}:
+      +v_769 = IR.Words{v_764, v_765}
+      +v_771 = v_769
+      v_773 = v_766
+      v_775 = v_767
+      native_match_core_shift_open_58(core_pattern_list_depth(v_15, v_771), v_5, v_7, v_9, v_771, v_773, v_775)
+    case Arena.BodyLocal{+v_806, +v_807, +v_808, +v_809, +v_810, +v_811, +v_812}:
+      +v_814 = IR.Words{v_806, v_807}
+      +v_816 = IR.Words{v_809, v_810}
+      +v_818 = v_814
+      v_820 = v_808
+      v_822 = v_816
+      v_824 = v_811
+      v_826 = v_812
+      native_match_core_shift_open_62(core_shift_terms(v_15, v_5, v_7, v_9, v_822), v_5, v_7, v_9, v_818, v_820, v_824, v_826)
+    case Arena.BodyReply{+v_863, +v_864}:
+      v_866 = v_863
+      v_868 = v_864
+      native_match_core_shift_open_64(core_shift_at(v_15, v_866, v_5, v_7, v_9), v_868)
 
-def native_match_core_shift_open_79(v_1040: ArenaResult<Arena.Node>, v_3: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat) -> ArenaResult<U32>:
-  match v_1040:
+def native_match_core_shift_open_66(v_946: ArenaResult<Arena.Node>, v_3: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat) -> ArenaResult<U32>:
+  match v_946:
     case ArenaResult{v_15, +v_16}:
-      native_match_core_shift_open_78(v_16, v_3, v_5, v_7, v_9, v_15)
+      native_match_core_shift_open_65(v_16, v_3, v_5, v_7, v_9, v_15)
 
 def core_shift_open(v_1: ArenaStore, v_3: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat) -> ArenaResult<U32>:
-  native_match_core_shift_open_79(arena_get_node(v_1, v_3), v_3, v_5, v_7, v_9)
+  native_match_core_shift_open_66(arena_get_node(v_1, v_3), v_3, v_5, v_7, v_9)
 
 def native_match_core_shift_0(v_21: ArenaResult<U32>) -> ArenaResult<U32>:
   match v_21:
@@ -24516,47 +24153,37 @@ def native_match_core_shift_1(v_5: Nat, v_1: ArenaStore, v_3: Nat, v_7: U32) -> 
 def core_shift(v_1: ArenaStore, v_3: Nat, v_5: Nat, v_7: U32) -> ArenaResult<U32>:
   native_match_core_shift_1(v_5, v_1, v_3, v_7)
 
-def native_match_core_subst_var_0(v_48: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_48:
+def native_match_core_subst_var_0(v_38: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_38:
     case ArenaResult{v_20, +v_21}:
       {ArenaResult{v_20, v_21} : ArenaResult<U32>}
 
-def native_match_core_subst_var_1(v_49: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_49:
-    case ArenaResult{v_32, +v_33}:
-      {ArenaResult{v_32, v_33} : ArenaResult<U32>}
-
-def native_match_core_subst_var_2(v_50: ArenaResult<U32>, v_13: Nat, v_14: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_50:
+def native_match_core_subst_var_1(v_39: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_39:
     case ArenaResult{v_27, +v_28}:
-      native_match_core_subst_var_1(arena_put_node(v_27, Arena.TermVar{v_28, Nat.sub(v_13, 1n), v_14}))
+      {ArenaResult{v_27, v_28} : ArenaResult<U32>}
 
-def native_match_core_subst_var_3(v_51: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_51:
-    case ArenaResult{v_44, +v_45}:
-      {ArenaResult{v_44, v_45} : ArenaResult<U32>}
+def native_match_core_subst_var_2(v_40: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_40:
+    case ArenaResult{v_34, +v_35}:
+      {ArenaResult{v_34, v_35} : ArenaResult<U32>}
 
-def native_match_core_subst_var_4(v_52: ArenaResult<U32>, v_13: Nat, v_14: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_52:
-    case ArenaResult{v_39, +v_40}:
-      native_match_core_subst_var_3(arena_put_node(v_39, Arena.TermVar{v_40, v_13, v_14}))
-
-def native_match_core_subst_var_5(v_5: Bool, v_1: ArenaStore, v_11: String, v_13: Nat, v_14: Ast.SourceSpan) -> ArenaResult<U32>:
+def native_match_core_subst_var_3(v_5: Bool, v_1: ArenaStore, v_11: U32, v_13: Nat, v_14: Ast.SourceSpan) -> ArenaResult<U32>:
   match v_5:
     case True{}:
-      native_match_core_subst_var_2(arena_name(v_1, v_11), v_13, v_14)
+      native_match_core_subst_var_1(arena_put_node(v_1, Arena.TermVar{v_11, Nat.sub(v_13, 1n), v_14}))
     case False{}:
-      native_match_core_subst_var_4(arena_name(v_1, v_11), v_13, v_14)
+      native_match_core_subst_var_2(arena_put_node(v_1, Arena.TermVar{v_11, v_13, v_14}))
 
-def native_match_core_subst_var_6(v_3: Bool, v_1: ArenaStore, v_5: Bool, v_7: Nat, v_9: U32, v_11: String, v_13: Nat, v_14: Ast.SourceSpan) -> ArenaResult<U32>:
+def native_match_core_subst_var_4(v_3: Bool, v_1: ArenaStore, v_5: Bool, v_7: Nat, v_9: U32, v_11: U32, v_13: Nat, v_14: Ast.SourceSpan) -> ArenaResult<U32>:
   match v_3:
     case True{}:
       native_match_core_subst_var_0(core_shift(v_1, 0n, v_7, v_9))
     case False{}:
-      native_match_core_subst_var_5(v_5, v_1, v_11, v_13, v_14)
+      native_match_core_subst_var_3(v_5, v_1, v_11, v_13, v_14)
 
-def core_subst_var(v_1: ArenaStore, v_3: Bool, v_5: Bool, v_7: Nat, v_9: U32, v_11: String, v_13: Nat, v_14: Ast.SourceSpan) -> ArenaResult<U32>:
-  native_match_core_subst_var_6(v_3, v_1, v_5, v_7, v_9, v_11, v_13, v_14)
+def core_subst_var(v_1: ArenaStore, v_3: Bool, v_5: Bool, v_7: Nat, v_9: U32, v_11: U32, v_13: Nat, v_14: Ast.SourceSpan) -> ArenaResult<U32>:
+  native_match_core_subst_var_4(v_3, v_1, v_5, v_7, v_9, v_11, v_13, v_14)
 
 def core_subst_memo_saved(index: Nat, value: U32, depth: Nat, id: U32, result: ArenaResult<U32>) -> ArenaResult<U32>:
   match result:
@@ -24583,597 +24210,524 @@ def native_match_core_subst_at_0(v_17: ArenaResult<Nat>, +v_3: Nat, v_5: U32, +v
 def core_subst_at(v_1: ArenaStore, +v_3: Nat, v_5: U32, +v_7: Nat, +v_9: U32) -> ArenaResult<U32>:
   native_match_core_subst_at_0(arena_node_bound(v_1, v_9), v_3, v_5, v_7, v_9)
 
-def native_match_core_subst_open_0(v_964: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_964:
-    case ArenaResult{v_41, +v_42}:
-      {ArenaResult{v_41, v_42} : ArenaResult<U32>}
+def native_match_core_subst_open_0(v_883: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_883:
+    case ArenaResult{v_32, +v_33}:
+      {ArenaResult{v_32, v_33} : ArenaResult<U32>}
 
-def native_match_core_subst_open_1(v_965: ArenaResult<String>, +v_3: Nat, +v_5: U32, +v_7: Nat, +v_21: Nat, +v_22: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_965:
-    case ArenaResult{v_26, +v_27}:
-      +v_29 = v_27
-      v_31 = v_29
-      +v_33 = v_21
-      v_35 = v_22
-      +v_37 = Nat.add(v_3, v_7)
-      native_match_core_subst_open_0(core_subst_var(v_26, Nat.is_eq(v_33, v_37), Nat.is_gt(v_33, v_37), v_7, v_5, v_31, v_33, v_35))
+def native_match_core_subst_open_1(v_884: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_884:
+    case ArenaResult{v_58, +v_59}:
+      {ArenaResult{v_58, v_59} : ArenaResult<U32>}
 
-def native_match_core_subst_open_2(v_966: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_966:
-    case ArenaResult{v_67, +v_68}:
-      {ArenaResult{v_67, v_68} : ArenaResult<U32>}
+def native_match_core_subst_open_2(v_885: ArenaResult<U32>, v_49: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_885:
+    case ArenaResult{v_53, +v_54}:
+      native_match_core_subst_open_1(arena_put_node(v_53, Arena.TermBang{v_54, v_49}))
 
-def native_match_core_subst_open_3(v_967: ArenaResult<U32>, v_58: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_967:
-    case ArenaResult{v_62, +v_63}:
-      native_match_core_subst_open_2(arena_put_node(v_62, Arena.TermBang{v_63, v_58}))
+def native_match_core_subst_open_3(v_886: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_886:
+    case ArenaResult{v_91, +v_92}:
+      {ArenaResult{v_91, v_92} : ArenaResult<U32>}
 
-def native_match_core_subst_open_4(v_968: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_968:
-    case ArenaResult{v_100, +v_101}:
-      {ArenaResult{v_100, v_101} : ArenaResult<U32>}
+def native_match_core_subst_open_4(v_887: ArenaResult<U32>, v_71: Nat, v_77: Ast.SourceSpan, +v_82: U32) -> ArenaResult<U32>:
+  match v_887:
+    case ArenaResult{v_86, +v_87}:
+      native_match_core_subst_open_3(arena_put_node(v_86, Arena.TermSub{v_71, v_82, v_87, v_77}))
 
-def native_match_core_subst_open_5(v_969: ArenaResult<U32>, v_80: Nat, v_86: Ast.SourceSpan, +v_91: U32) -> ArenaResult<U32>:
-  match v_969:
-    case ArenaResult{v_95, +v_96}:
-      native_match_core_subst_open_4(arena_put_node(v_95, Arena.TermSub{v_80, v_91, v_96, v_86}))
+def native_match_core_subst_open_5(v_888: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_71: Nat, v_75: U32, v_77: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_888:
+    case ArenaResult{v_81, +v_82}:
+      native_match_core_subst_open_4(core_subst_at(v_81, v_3, v_5, Nat.add(v_7, 1n), v_75), v_71, v_77, v_82)
 
-def native_match_core_subst_open_6(v_970: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_80: Nat, v_84: U32, v_86: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_970:
-    case ArenaResult{v_90, +v_91}:
-      native_match_core_subst_open_5(core_subst_at(v_90, v_3, v_5, Nat.add(v_7, 1n), v_84), v_80, v_86, v_91)
+def native_match_core_subst_open_6(v_889: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_889:
+    case ArenaResult{v_173, +v_174}:
+      {ArenaResult{v_173, v_174} : ArenaResult<U32>}
 
-def native_match_core_subst_open_7(v_971: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_971:
-    case ArenaResult{v_182, +v_183}:
-      {ArenaResult{v_182, v_183} : ArenaResult<U32>}
+def native_match_core_subst_open_7(v_890: ArenaResult<U32>, +v_124: IR.Names, v_126: IR.Naturals, v_128: IR.Quantities, v_134: Ast.SourceSpan, +v_139: IR.Words) -> ArenaResult<U32>:
+  match v_890:
+    case ArenaResult{v_144, +v_145}:
+      v_148 = arena_names_start(v_124)
+      v_151 = arena_names_count(v_124)
+      v_154 = arena_naturals_start(v_126)
+      v_157 = arena_naturals_count(v_126)
+      v_160 = arena_quantities_start(v_128)
+      v_163 = arena_quantities_count(v_128)
+      v_166 = arena_words_start(v_139)
+      v_169 = arena_words_count(v_139)
+      native_match_core_subst_open_6(arena_put_node(v_144, Arena.TermLet{v_148, v_151, v_154, v_157, v_160, v_163, v_166, v_169, v_145, v_134}))
 
-def native_match_core_subst_open_8(v_972: ArenaResult<U32>, +v_133: IR.Names, v_135: IR.Naturals, v_137: IR.Quantities, v_143: Ast.SourceSpan, +v_148: IR.Words) -> ArenaResult<U32>:
-  match v_972:
-    case ArenaResult{v_153, +v_154}:
-      v_157 = arena_names_start(v_133)
-      v_160 = arena_names_count(v_133)
-      v_163 = arena_naturals_start(v_135)
-      v_166 = arena_naturals_count(v_135)
-      v_169 = arena_quantities_start(v_137)
-      v_172 = arena_quantities_count(v_137)
-      v_175 = arena_words_start(v_148)
-      v_178 = arena_words_count(v_148)
-      native_match_core_subst_open_7(arena_put_node(v_153, Arena.TermLet{v_157, v_160, v_163, v_166, v_169, v_172, v_175, v_178, v_154, v_143}))
+def native_match_core_subst_open_8(v_891: ArenaResult<IR.Words>, +v_3: Nat, +v_5: U32, +v_7: Nat, +v_124: IR.Names, v_126: IR.Naturals, v_128: IR.Quantities, v_132: U32, v_134: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_891:
+    case ArenaResult{v_138, +v_139}:
+      native_match_core_subst_open_7(core_subst_at(v_138, v_3, v_5, Nat.add(v_7, arena_names_length(v_124)), v_132), v_124, v_126, v_128, v_134, v_139)
 
-def native_match_core_subst_open_9(v_973: ArenaResult<IR.Words>, +v_3: Nat, +v_5: U32, +v_7: Nat, +v_133: IR.Names, v_135: IR.Naturals, v_137: IR.Quantities, v_141: U32, v_143: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_973:
-    case ArenaResult{v_147, +v_148}:
-      native_match_core_subst_open_8(core_subst_at(v_147, v_3, v_5, Nat.add(v_7, arena_names_length(v_133)), v_141), v_133, v_135, v_137, v_143, v_148)
+def native_match_core_subst_open_9(v_892: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_892:
+    case ArenaResult{v_202, +v_203}:
+      {ArenaResult{v_202, v_203} : ArenaResult<U32>}
 
-def native_match_core_subst_open_10(v_974: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_974:
-    case ArenaResult{v_211, +v_212}:
-      {ArenaResult{v_211, v_212} : ArenaResult<U32>}
+def native_match_core_subst_open_10(v_893: ArenaResult<U32>, v_188: Ast.SourceSpan, +v_193: U32) -> ArenaResult<U32>:
+  match v_893:
+    case ArenaResult{v_197, +v_198}:
+      native_match_core_subst_open_9(arena_put_node(v_197, Arena.TermAnn{v_193, v_198, v_188}))
 
-def native_match_core_subst_open_11(v_975: ArenaResult<U32>, v_197: Ast.SourceSpan, +v_202: U32) -> ArenaResult<U32>:
-  match v_975:
-    case ArenaResult{v_206, +v_207}:
-      native_match_core_subst_open_10(arena_put_node(v_206, Arena.TermAnn{v_202, v_207, v_197}))
+def native_match_core_subst_open_11(v_894: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_186: U32, v_188: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_894:
+    case ArenaResult{v_192, +v_193}:
+      native_match_core_subst_open_10(core_subst_at(v_192, v_3, v_5, v_7, v_186), v_188, v_193)
 
-def native_match_core_subst_open_12(v_976: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_195: U32, v_197: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_976:
-    case ArenaResult{v_201, +v_202}:
-      native_match_core_subst_open_11(core_subst_at(v_201, v_3, v_5, v_7, v_195), v_197, v_202)
+def native_match_core_subst_open_12(v_895: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_895:
+    case ArenaResult{v_222, +v_223}:
+      {ArenaResult{v_222, v_223} : ArenaResult<U32>}
 
-def native_match_core_subst_open_13(v_977: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_977:
-    case ArenaResult{v_231, +v_232}:
-      {ArenaResult{v_231, v_232} : ArenaResult<U32>}
+def native_match_core_subst_open_13(v_896: ArenaResult<U32>, v_213: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_896:
+    case ArenaResult{v_217, +v_218}:
+      native_match_core_subst_open_12(arena_put_node(v_217, Arena.TermTemplate{v_218, v_213}))
 
-def native_match_core_subst_open_14(v_978: ArenaResult<U32>, v_222: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_978:
-    case ArenaResult{v_226, +v_227}:
-      native_match_core_subst_open_13(arena_put_node(v_226, Arena.TermTemplate{v_227, v_222}))
+def native_match_core_subst_open_14(v_897: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_897:
+    case ArenaResult{v_242, +v_243}:
+      {ArenaResult{v_242, v_243} : ArenaResult<U32>}
 
-def native_match_core_subst_open_15(v_979: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_979:
-    case ArenaResult{v_251, +v_252}:
-      {ArenaResult{v_251, v_252} : ArenaResult<U32>}
+def native_match_core_subst_open_15(v_898: ArenaResult<U32>, v_233: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_898:
+    case ArenaResult{v_237, +v_238}:
+      native_match_core_subst_open_14(arena_put_node(v_237, Arena.TermType{v_238, v_233}))
 
-def native_match_core_subst_open_16(v_980: ArenaResult<U32>, v_242: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_980:
-    case ArenaResult{v_246, +v_247}:
-      native_match_core_subst_open_15(arena_put_node(v_246, Arena.TermType{v_247, v_242}))
+def native_match_core_subst_open_16(v_899: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_899:
+    case ArenaResult{v_249, +v_250}:
+      {ArenaResult{v_249, v_250} : ArenaResult<U32>}
 
-def native_match_core_subst_open_17(v_981: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_981:
-    case ArenaResult{v_258, +v_259}:
-      {ArenaResult{v_258, v_259} : ArenaResult<U32>}
+def native_match_core_subst_open_17(v_900: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_900:
+    case ArenaResult{v_264, +v_265}:
+      {ArenaResult{v_264, v_265} : ArenaResult<U32>}
 
-def native_match_core_subst_open_18(v_982: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_982:
-    case ArenaResult{v_273, +v_274}:
-      {ArenaResult{v_273, v_274} : ArenaResult<U32>}
+def native_match_core_subst_open_18(v_901: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_901:
+    case ArenaResult{v_293, +v_294}:
+      {ArenaResult{v_293, v_294} : ArenaResult<U32>}
 
-def native_match_core_subst_open_19(v_983: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_983:
-    case ArenaResult{v_302, +v_303}:
-      {ArenaResult{v_302, v_303} : ArenaResult<U32>}
+def native_match_core_subst_open_19(v_902: ArenaResult<U32>, v_279: Ast.SourceSpan, +v_284: U32) -> ArenaResult<U32>:
+  match v_902:
+    case ArenaResult{v_288, +v_289}:
+      native_match_core_subst_open_18(arena_put_node(v_288, Arena.TermMin{v_284, v_289, v_279}))
 
-def native_match_core_subst_open_20(v_984: ArenaResult<U32>, v_288: Ast.SourceSpan, +v_293: U32) -> ArenaResult<U32>:
-  match v_984:
-    case ArenaResult{v_297, +v_298}:
-      native_match_core_subst_open_19(arena_put_node(v_297, Arena.TermMin{v_293, v_298, v_288}))
+def native_match_core_subst_open_20(v_903: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_277: U32, v_279: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_903:
+    case ArenaResult{v_283, +v_284}:
+      native_match_core_subst_open_19(core_subst_at(v_283, v_3, v_5, v_7, v_277), v_279, v_284)
 
-def native_match_core_subst_open_21(v_985: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_286: U32, v_288: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_985:
-    case ArenaResult{v_292, +v_293}:
-      native_match_core_subst_open_20(core_subst_at(v_292, v_3, v_5, v_7, v_286), v_288, v_293)
+def native_match_core_subst_open_21(v_904: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_904:
+    case ArenaResult{v_334, +v_335}:
+      {ArenaResult{v_334, v_335} : ArenaResult<U32>}
 
-def native_match_core_subst_open_22(v_986: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_986:
-    case ArenaResult{v_355, +v_356}:
-      {ArenaResult{v_355, v_356} : ArenaResult<U32>}
+def native_match_core_subst_open_22(v_905: ArenaResult<U32>, v_310: Ast.Quantity, v_312: U32, v_314: Nat, v_320: Ast.SourceSpan, +v_325: U32) -> ArenaResult<U32>:
+  match v_905:
+    case ArenaResult{v_329, +v_330}:
+      native_match_core_subst_open_21(arena_put_node(v_329, Arena.TermAll{v_310, v_312, v_314, v_325, v_330, v_320}))
 
-def native_match_core_subst_open_23(v_987: ArenaResult<U32>, v_326: Ast.Quantity, v_330: Nat, v_336: Ast.SourceSpan, +v_341: U32, +v_346: U32) -> ArenaResult<U32>:
-  match v_987:
-    case ArenaResult{v_350, +v_351}:
-      native_match_core_subst_open_22(arena_put_node(v_350, Arena.TermAll{v_326, v_351, v_330, v_341, v_346, v_336}))
+def native_match_core_subst_open_23(v_906: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_310: Ast.Quantity, v_312: U32, v_314: Nat, v_318: U32, v_320: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_906:
+    case ArenaResult{v_324, +v_325}:
+      native_match_core_subst_open_22(core_subst_at(v_324, v_3, v_5, Nat.add(v_7, 1n), v_318), v_310, v_312, v_314, v_320, v_325)
 
-def native_match_core_subst_open_24(v_988: ArenaResult<U32>, v_326: Ast.Quantity, v_328: String, v_330: Nat, v_336: Ast.SourceSpan, +v_341: U32) -> ArenaResult<U32>:
-  match v_988:
-    case ArenaResult{v_345, +v_346}:
-      native_match_core_subst_open_23(arena_name(v_345, v_328), v_326, v_330, v_336, v_341, v_346)
+def native_match_core_subst_open_24(v_907: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_907:
+    case ArenaResult{v_366, +v_367}:
+      {ArenaResult{v_366, v_367} : ArenaResult<U32>}
 
-def native_match_core_subst_open_25(v_989: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_326: Ast.Quantity, v_328: String, v_330: Nat, v_334: U32, v_336: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_989:
-    case ArenaResult{v_340, +v_341}:
-      native_match_core_subst_open_24(core_subst_at(v_340, v_3, v_5, Nat.add(v_7, 1n), v_334), v_326, v_328, v_330, v_336, v_341)
+def native_match_core_subst_open_25(v_908: ArenaResult<U32>, v_349: Maybe<&2, Ast.Quantity>, v_351: U32, v_353: Nat, v_357: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_908:
+    case ArenaResult{v_361, +v_362}:
+      native_match_core_subst_open_24(arena_put_node(v_361, Arena.TermLam{v_349, v_351, v_353, v_362, v_357}))
 
-def native_match_core_subst_open_26(v_990: ArenaResult<String>, +v_3: Nat, +v_5: U32, +v_7: Nat, +v_312: Ast.Quantity, +v_314: Nat, +v_315: U32, +v_316: U32, +v_317: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_990:
-    case ArenaResult{v_321, +v_322}:
-      +v_324 = v_322
-      v_326 = v_312
-      v_328 = v_324
-      v_330 = v_314
-      v_332 = v_315
-      v_334 = v_316
-      v_336 = v_317
-      native_match_core_subst_open_25(core_subst_at(v_321, v_3, v_5, v_7, v_332), v_3, v_5, v_7, v_326, v_328, v_330, v_334, v_336)
+def native_match_core_subst_open_26(v_909: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_909:
+    case ArenaResult{v_395, +v_396}:
+      {ArenaResult{v_395, v_396} : ArenaResult<U32>}
 
-def native_match_core_subst_open_27(v_991: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_991:
-    case ArenaResult{v_399, +v_400}:
-      {ArenaResult{v_399, v_400} : ArenaResult<U32>}
+def native_match_core_subst_open_27(v_910: ArenaResult<U32>, v_381: Ast.SourceSpan, +v_386: U32) -> ArenaResult<U32>:
+  match v_910:
+    case ArenaResult{v_390, +v_391}:
+      native_match_core_subst_open_26(arena_put_node(v_390, Arena.TermApp{v_386, v_391, v_381}))
 
-def native_match_core_subst_open_28(v_992: ArenaResult<U32>, v_377: Maybe<&2, Ast.Quantity>, v_381: Nat, v_385: Ast.SourceSpan, +v_390: U32) -> ArenaResult<U32>:
-  match v_992:
-    case ArenaResult{v_394, +v_395}:
-      native_match_core_subst_open_27(arena_put_node(v_394, Arena.TermLam{v_377, v_395, v_381, v_390, v_385}))
+def native_match_core_subst_open_28(v_911: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_379: U32, v_381: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_911:
+    case ArenaResult{v_385, +v_386}:
+      native_match_core_subst_open_27(core_subst_at(v_385, v_3, v_5, v_7, v_379), v_381, v_386)
 
-def native_match_core_subst_open_29(v_993: ArenaResult<U32>, v_377: Maybe<&2, Ast.Quantity>, v_379: String, v_381: Nat, v_385: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_993:
-    case ArenaResult{v_389, +v_390}:
-      native_match_core_subst_open_28(arena_name(v_389, v_379), v_377, v_381, v_385, v_390)
+def native_match_core_subst_open_29(v_912: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_912:
+    case ArenaResult{v_443, +v_444}:
+      {ArenaResult{v_443, v_444} : ArenaResult<U32>}
 
-def native_match_core_subst_open_30(v_994: ArenaResult<String>, +v_3: Nat, +v_5: U32, +v_7: Nat, +v_364: Maybe<&2, Ast.Quantity>, +v_366: Nat, +v_367: U32, +v_368: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_994:
-    case ArenaResult{v_372, +v_373}:
-      +v_375 = v_373
-      v_377 = v_364
-      v_379 = v_375
-      v_381 = v_366
-      v_383 = v_367
-      v_385 = v_368
-      native_match_core_subst_open_29(core_subst_at(v_372, v_3, v_5, Nat.add(v_7, 1n), v_383), v_377, v_379, v_381, v_385)
+def native_match_core_subst_open_30(v_913: ArenaResult<IR.Words>, v_416: U32, v_420: IR.Names, v_422: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_913:
+    case ArenaResult{v_426, +v_427}:
+      v_430 = arena_words_start(v_427)
+      v_433 = arena_words_count(v_427)
+      v_436 = arena_names_start(v_420)
+      v_439 = arena_names_count(v_420)
+      native_match_core_subst_open_29(arena_put_node(v_426, Arena.TermAdt{v_416, v_430, v_433, v_436, v_439, v_422}))
 
-def native_match_core_subst_open_31(v_995: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_995:
-    case ArenaResult{v_428, +v_429}:
-      {ArenaResult{v_428, v_429} : ArenaResult<U32>}
+def native_match_core_subst_open_31(v_914: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_914:
+    case ArenaResult{v_482, +v_483}:
+      {ArenaResult{v_482, v_483} : ArenaResult<U32>}
 
-def native_match_core_subst_open_32(v_996: ArenaResult<U32>, v_414: Ast.SourceSpan, +v_419: U32) -> ArenaResult<U32>:
-  match v_996:
-    case ArenaResult{v_423, +v_424}:
-      native_match_core_subst_open_31(arena_put_node(v_423, Arena.TermApp{v_419, v_424, v_414}))
-
-def native_match_core_subst_open_33(v_997: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_412: U32, v_414: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_997:
-    case ArenaResult{v_418, +v_419}:
-      native_match_core_subst_open_32(core_subst_at(v_418, v_3, v_5, v_7, v_412), v_414, v_419)
-
-def native_match_core_subst_open_34(v_998: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_998:
-    case ArenaResult{v_488, +v_489}:
-      {ArenaResult{v_488, v_489} : ArenaResult<U32>}
-
-def native_match_core_subst_open_35(v_999: ArenaResult<U32>, v_460: IR.Names, v_462: Ast.SourceSpan, +v_467: IR.Words) -> ArenaResult<U32>:
-  match v_999:
+def native_match_core_subst_open_32(v_915: ArenaResult<IR.Words>, v_462: Ast.SourceSpan, +v_467: U32) -> ArenaResult<U32>:
+  match v_915:
     case ArenaResult{v_471, +v_472}:
-      v_475 = arena_words_start(v_467)
-      v_478 = arena_words_count(v_467)
-      v_481 = arena_names_start(v_460)
-      v_484 = arena_names_count(v_460)
-      native_match_core_subst_open_34(arena_put_node(v_471, Arena.TermAdt{v_472, v_475, v_478, v_481, v_484, v_462}))
+      v_475 = arena_words_start(v_472)
+      v_478 = arena_words_count(v_472)
+      native_match_core_subst_open_31(arena_put_node(v_471, Arena.TermFill{v_467, v_475, v_478, v_462}))
 
-def native_match_core_subst_open_36(v_1000: ArenaResult<IR.Words>, v_456: String, v_460: IR.Names, v_462: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1000:
+def native_match_core_subst_open_33(v_916: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_460: IR.Words, v_462: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_916:
     case ArenaResult{v_466, +v_467}:
-      native_match_core_subst_open_35(arena_name(v_466, v_456), v_460, v_462, v_467)
+      native_match_core_subst_open_32(core_subst_terms(v_466, v_3, v_5, v_7, v_460), v_462, v_467)
 
-def native_match_core_subst_open_37(v_1001: ArenaResult<String>, +v_3: Nat, +v_5: U32, +v_7: Nat, +v_439: U32, +v_440: U32, +v_441: U32, +v_442: U32, +v_443: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1001:
-    case ArenaResult{v_447, +v_448}:
-      +v_450 = v_448
-      +v_452 = IR.Words{v_439, v_440}
-      +v_454 = IR.Names{v_441, v_442}
-      v_456 = v_450
-      v_458 = v_452
-      v_460 = v_454
-      v_462 = v_443
-      native_match_core_subst_open_36(core_subst_terms(v_447, v_3, v_5, v_7, v_458), v_456, v_460, v_462)
+def native_match_core_subst_open_34(v_917: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_917:
+    case ArenaResult{v_521, +v_522}:
+      {ArenaResult{v_521, v_522} : ArenaResult<U32>}
 
-def native_match_core_subst_open_38(v_1002: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_1002:
-    case ArenaResult{v_527, +v_528}:
-      {ArenaResult{v_527, v_528} : ArenaResult<U32>}
+def native_match_core_subst_open_35(v_918: ArenaResult<IR.Words>, v_501: Ast.SourceSpan, +v_506: U32) -> ArenaResult<U32>:
+  match v_918:
+    case ArenaResult{v_510, +v_511}:
+      v_514 = arena_words_start(v_511)
+      v_517 = arena_words_count(v_511)
+      native_match_core_subst_open_34(arena_put_node(v_510, Arena.TermPlus{v_506, v_514, v_517, v_501}))
 
-def native_match_core_subst_open_39(v_1003: ArenaResult<IR.Words>, v_507: Ast.SourceSpan, +v_512: U32) -> ArenaResult<U32>:
-  match v_1003:
-    case ArenaResult{v_516, +v_517}:
-      v_520 = arena_words_start(v_517)
-      v_523 = arena_words_count(v_517)
-      native_match_core_subst_open_38(arena_put_node(v_516, Arena.TermFill{v_512, v_520, v_523, v_507}))
+def native_match_core_subst_open_36(v_919: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_499: IR.Words, v_501: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_919:
+    case ArenaResult{v_505, +v_506}:
+      native_match_core_subst_open_35(core_subst_terms(v_505, v_3, v_5, v_7, v_499), v_501, v_506)
 
-def native_match_core_subst_open_40(v_1004: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_505: IR.Words, v_507: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1004:
-    case ArenaResult{v_511, +v_512}:
-      native_match_core_subst_open_39(core_subst_terms(v_511, v_3, v_5, v_7, v_505), v_507, v_512)
+def native_match_core_subst_open_37(v_920: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_920:
+    case ArenaResult{v_563, +v_564}:
+      {ArenaResult{v_563, v_564} : ArenaResult<U32>}
 
-def native_match_core_subst_open_41(v_1005: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_1005:
-    case ArenaResult{v_566, +v_567}:
-      {ArenaResult{v_566, v_567} : ArenaResult<U32>}
+def native_match_core_subst_open_38(v_921: ArenaResult<IR.Words>, v_544: U32, v_548: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_921:
+    case ArenaResult{v_552, +v_553}:
+      v_556 = arena_words_start(v_553)
+      v_559 = arena_words_count(v_553)
+      native_match_core_subst_open_37(arena_put_node(v_552, Arena.TermCtr{v_544, v_556, v_559, v_548}))
 
-def native_match_core_subst_open_42(v_1006: ArenaResult<IR.Words>, v_546: Ast.SourceSpan, +v_551: U32) -> ArenaResult<U32>:
-  match v_1006:
-    case ArenaResult{v_555, +v_556}:
-      v_559 = arena_words_start(v_556)
-      v_562 = arena_words_count(v_556)
-      native_match_core_subst_open_41(arena_put_node(v_555, Arena.TermPlus{v_551, v_559, v_562, v_546}))
+def native_match_core_subst_open_39(v_922: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_922:
+    case ArenaResult{v_596, +v_597}:
+      {ArenaResult{v_596, v_597} : ArenaResult<U32>}
 
-def native_match_core_subst_open_43(v_1007: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_544: IR.Words, v_546: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1007:
-    case ArenaResult{v_550, +v_551}:
-      native_match_core_subst_open_42(core_subst_terms(v_550, v_3, v_5, v_7, v_544), v_546, v_551)
+def native_match_core_subst_open_40(v_923: ArenaResult<U32>, v_576: U32, v_582: Ast.SourceSpan, +v_587: U32) -> ArenaResult<U32>:
+  match v_923:
+    case ArenaResult{v_591, +v_592}:
+      native_match_core_subst_open_39(arena_put_node(v_591, Arena.TermMat{v_576, v_587, v_592, v_582}))
 
-def native_match_core_subst_open_44(v_1008: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_1008:
-    case ArenaResult{v_620, +v_621}:
-      {ArenaResult{v_620, v_621} : ArenaResult<U32>}
+def native_match_core_subst_open_41(v_924: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_576: U32, v_580: U32, v_582: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_924:
+    case ArenaResult{v_586, +v_587}:
+      native_match_core_subst_open_40(core_subst_at(v_586, v_3, v_5, v_7, v_580), v_576, v_582, v_587)
 
-def native_match_core_subst_open_45(v_1009: ArenaResult<U32>, v_600: Ast.SourceSpan, +v_605: IR.Words) -> ArenaResult<U32>:
-  match v_1009:
-    case ArenaResult{v_609, +v_610}:
-      v_613 = arena_words_start(v_605)
-      v_616 = arena_words_count(v_605)
-      native_match_core_subst_open_44(arena_put_node(v_609, Arena.TermCtr{v_610, v_613, v_616, v_600}))
+def native_match_core_subst_open_42(v_925: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_925:
+    case ArenaResult{v_607, +v_608}:
+      {ArenaResult{v_607, v_608} : ArenaResult<U32>}
 
-def native_match_core_subst_open_46(v_1010: ArenaResult<IR.Words>, v_596: String, v_600: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1010:
-    case ArenaResult{v_604, +v_605}:
-      native_match_core_subst_open_45(arena_name(v_604, v_596), v_600, v_605)
+def native_match_core_subst_open_43(v_926: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_926:
+    case ArenaResult{v_645, +v_646}:
+      {ArenaResult{v_645, v_646} : ArenaResult<U32>}
 
-def native_match_core_subst_open_47(v_1011: ArenaResult<String>, +v_3: Nat, +v_5: U32, +v_7: Nat, +v_583: U32, +v_584: U32, +v_585: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1011:
-    case ArenaResult{v_589, +v_590}:
-      +v_592 = v_590
-      +v_594 = IR.Words{v_583, v_584}
-      v_596 = v_592
-      v_598 = v_594
-      v_600 = v_585
-      native_match_core_subst_open_46(core_subst_terms(v_589, v_3, v_5, v_7, v_598), v_596, v_600)
+def native_match_core_subst_open_44(v_927: ArenaResult<U32>, v_626: Ast.SourceSpan, +v_631: U32, +v_636: U32) -> ArenaResult<U32>:
+  match v_927:
+    case ArenaResult{v_640, +v_641}:
+      native_match_core_subst_open_43(arena_put_node(v_640, Arena.TermEqual{v_631, v_636, v_641, v_626}))
 
-def native_match_core_subst_open_48(v_1012: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_1012:
-    case ArenaResult{v_665, +v_666}:
-      {ArenaResult{v_665, v_666} : ArenaResult<U32>}
-
-def native_match_core_subst_open_49(v_1013: ArenaResult<U32>, v_646: Ast.SourceSpan, +v_651: U32, +v_656: U32) -> ArenaResult<U32>:
-  match v_1013:
-    case ArenaResult{v_660, +v_661}:
-      native_match_core_subst_open_48(arena_put_node(v_660, Arena.TermMat{v_661, v_651, v_656, v_646}))
-
-def native_match_core_subst_open_50(v_1014: ArenaResult<U32>, v_640: String, v_646: Ast.SourceSpan, +v_651: U32) -> ArenaResult<U32>:
-  match v_1014:
-    case ArenaResult{v_655, +v_656}:
-      native_match_core_subst_open_49(arena_name(v_655, v_640), v_646, v_651, v_656)
-
-def native_match_core_subst_open_51(v_1015: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_640: String, v_644: U32, v_646: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1015:
-    case ArenaResult{v_650, +v_651}:
-      native_match_core_subst_open_50(core_subst_at(v_650, v_3, v_5, v_7, v_644), v_640, v_646, v_651)
-
-def native_match_core_subst_open_52(v_1016: ArenaResult<String>, +v_3: Nat, +v_5: U32, +v_7: Nat, +v_629: U32, +v_630: U32, +v_631: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1016:
+def native_match_core_subst_open_45(v_928: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_624: U32, v_626: Ast.SourceSpan, +v_631: U32) -> ArenaResult<U32>:
+  match v_928:
     case ArenaResult{v_635, +v_636}:
-      +v_638 = v_636
-      v_640 = v_638
-      v_642 = v_629
-      v_644 = v_630
-      v_646 = v_631
-      native_match_core_subst_open_51(core_subst_at(v_635, v_3, v_5, v_7, v_642), v_3, v_5, v_7, v_640, v_644, v_646)
+      native_match_core_subst_open_44(core_subst_at(v_635, v_3, v_5, v_7, v_624), v_626, v_631, v_636)
 
-def native_match_core_subst_open_53(v_1017: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_1017:
-    case ArenaResult{v_676, +v_677}:
-      {ArenaResult{v_676, v_677} : ArenaResult<U32>}
+def native_match_core_subst_open_46(v_929: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_622: U32, v_624: U32, v_626: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_929:
+    case ArenaResult{v_630, +v_631}:
+      native_match_core_subst_open_45(core_subst_at(v_630, v_3, v_5, v_7, v_622), v_3, v_5, v_7, v_624, v_626, v_631)
 
-def native_match_core_subst_open_54(v_1018: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_1018:
-    case ArenaResult{v_714, +v_715}:
-      {ArenaResult{v_714, v_715} : ArenaResult<U32>}
+def native_match_core_subst_open_47(v_930: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_930:
+    case ArenaResult{v_656, +v_657}:
+      {ArenaResult{v_656, v_657} : ArenaResult<U32>}
 
-def native_match_core_subst_open_55(v_1019: ArenaResult<U32>, v_695: Ast.SourceSpan, +v_700: U32, +v_705: U32) -> ArenaResult<U32>:
-  match v_1019:
+def native_match_core_subst_open_48(v_931: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_931:
+    case ArenaResult{v_694, +v_695}:
+      {ArenaResult{v_694, v_695} : ArenaResult<U32>}
+
+def native_match_core_subst_open_49(v_932: ArenaResult<U32>, v_675: Ast.SourceSpan, +v_680: U32, +v_685: U32) -> ArenaResult<U32>:
+  match v_932:
+    case ArenaResult{v_689, +v_690}:
+      native_match_core_subst_open_48(arena_put_node(v_689, Arena.TermRewrite{v_680, v_685, v_690, v_675}))
+
+def native_match_core_subst_open_50(v_933: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_673: U32, v_675: Ast.SourceSpan, +v_680: U32) -> ArenaResult<U32>:
+  match v_933:
+    case ArenaResult{v_684, +v_685}:
+      native_match_core_subst_open_49(core_subst_at(v_684, v_3, v_5, v_7, v_673), v_675, v_680, v_685)
+
+def native_match_core_subst_open_51(v_934: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_671: U32, v_673: U32, v_675: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_934:
+    case ArenaResult{v_679, +v_680}:
+      native_match_core_subst_open_50(core_subst_at(v_679, v_3, v_5, v_7, v_671), v_3, v_5, v_7, v_673, v_675, v_680)
+
+def native_match_core_subst_open_52(v_935: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_935:
     case ArenaResult{v_709, +v_710}:
-      native_match_core_subst_open_54(arena_put_node(v_709, Arena.TermEqual{v_700, v_705, v_710, v_695}))
+      {ArenaResult{v_709, v_710} : ArenaResult<U32>}
 
-def native_match_core_subst_open_56(v_1020: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_693: U32, v_695: Ast.SourceSpan, +v_700: U32) -> ArenaResult<U32>:
-  match v_1020:
-    case ArenaResult{v_704, +v_705}:
-      native_match_core_subst_open_55(core_subst_at(v_704, v_3, v_5, v_7, v_693), v_695, v_700, v_705)
-
-def native_match_core_subst_open_57(v_1021: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_691: U32, v_693: U32, v_695: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1021:
-    case ArenaResult{v_699, +v_700}:
-      native_match_core_subst_open_56(core_subst_at(v_699, v_3, v_5, v_7, v_691), v_3, v_5, v_7, v_693, v_695, v_700)
-
-def native_match_core_subst_open_58(v_1022: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_1022:
-    case ArenaResult{v_725, +v_726}:
-      {ArenaResult{v_725, v_726} : ArenaResult<U32>}
-
-def native_match_core_subst_open_59(v_1023: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_1023:
-    case ArenaResult{v_763, +v_764}:
-      {ArenaResult{v_763, v_764} : ArenaResult<U32>}
-
-def native_match_core_subst_open_60(v_1024: ArenaResult<U32>, v_744: Ast.SourceSpan, +v_749: U32, +v_754: U32) -> ArenaResult<U32>:
-  match v_1024:
+def native_match_core_subst_open_53(v_936: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_936:
     case ArenaResult{v_758, +v_759}:
-      native_match_core_subst_open_59(arena_put_node(v_758, Arena.TermRewrite{v_749, v_754, v_759, v_744}))
+      {ArenaResult{v_758, v_759} : ArenaResult<U32>}
 
-def native_match_core_subst_open_61(v_1025: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_742: U32, v_744: Ast.SourceSpan, +v_749: U32) -> ArenaResult<U32>:
-  match v_1025:
-    case ArenaResult{v_753, +v_754}:
-      native_match_core_subst_open_60(core_subst_at(v_753, v_3, v_5, v_7, v_742), v_744, v_749, v_754)
+def native_match_core_subst_open_54(v_937: ArenaResult<IR.Words>, v_732: Ast.SourceSpan, +v_737: IR.Words) -> ArenaResult<U32>:
+  match v_937:
+    case ArenaResult{v_741, +v_742}:
+      v_745 = arena_words_start(v_737)
+      v_748 = arena_words_count(v_737)
+      v_751 = arena_words_start(v_742)
+      v_754 = arena_words_count(v_742)
+      native_match_core_subst_open_53(arena_put_node(v_741, Arena.BodyMatch{v_745, v_748, v_751, v_754, v_732}))
 
-def native_match_core_subst_open_62(v_1026: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_740: U32, v_742: U32, v_744: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1026:
-    case ArenaResult{v_748, +v_749}:
-      native_match_core_subst_open_61(core_subst_at(v_748, v_3, v_5, v_7, v_740), v_3, v_5, v_7, v_742, v_744, v_749)
+def native_match_core_subst_open_55(v_938: ArenaResult<IR.Words>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_730: IR.Words, v_732: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_938:
+    case ArenaResult{v_736, +v_737}:
+      native_match_core_subst_open_54(core_subst_terms(v_736, v_3, v_5, v_7, v_730), v_732, v_737)
 
-def native_match_core_subst_open_63(v_1027: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_1027:
-    case ArenaResult{v_790, +v_791}:
-      {ArenaResult{v_790, v_791} : ArenaResult<U32>}
+def native_match_core_subst_open_56(v_939: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_939:
+    case ArenaResult{v_797, +v_798}:
+      {ArenaResult{v_797, v_798} : ArenaResult<U32>}
 
-def native_match_core_subst_open_64(v_1028: ArenaResult<U32>, v_781: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1028:
-    case ArenaResult{v_785, +v_786}:
-      native_match_core_subst_open_63(arena_put_node(v_785, Arena.TermHole{v_786, v_781}))
+def native_match_core_subst_open_57(v_940: ArenaResult<U32>, +v_773: IR.Words, v_777: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_940:
+    case ArenaResult{v_786, +v_787}:
+      v_790 = arena_words_start(v_773)
+      v_793 = arena_words_count(v_773)
+      native_match_core_subst_open_56(arena_put_node(v_786, Arena.BodyCase{v_790, v_793, v_787, v_777}))
 
-def native_match_core_subst_open_65(v_1029: ArenaResult<String>, +v_770: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1029:
-    case ArenaResult{v_774, +v_775}:
-      +v_777 = v_775
-      v_779 = v_777
-      v_781 = v_770
-      native_match_core_subst_open_64(arena_name(v_774, v_779), v_781)
+def native_match_core_subst_open_58(v_941: ArenaResult<Nat>, +v_3: Nat, +v_5: U32, +v_7: Nat, +v_773: IR.Words, v_775: U32, v_777: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_941:
+    case ArenaResult{v_781, +v_782}:
+      native_match_core_subst_open_57(core_subst_at(v_781, v_3, v_5, Nat.add(v_7, v_782), v_775), v_773, v_777)
 
-def native_match_core_subst_open_66(v_1030: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_1030:
-    case ArenaResult{v_839, +v_840}:
-      {ArenaResult{v_839, v_840} : ArenaResult<U32>}
+def native_match_core_subst_open_59(v_942: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_942:
+    case ArenaResult{v_859, +v_860}:
+      {ArenaResult{v_859, v_860} : ArenaResult<U32>}
 
-def native_match_core_subst_open_67(v_1031: ArenaResult<IR.Words>, v_813: Ast.SourceSpan, +v_818: IR.Words) -> ArenaResult<U32>:
-  match v_1031:
-    case ArenaResult{v_822, +v_823}:
-      v_826 = arena_words_start(v_818)
-      v_829 = arena_words_count(v_818)
-      v_832 = arena_words_start(v_823)
-      v_835 = arena_words_count(v_823)
-      native_match_core_subst_open_66(arena_put_node(v_822, Arena.BodyMatch{v_826, v_829, v_832, v_835, v_813}))
+def native_match_core_subst_open_60(v_943: ArenaResult<U32>, +v_820: IR.Words, v_822: Ast.Quantity, v_828: Ast.SourceSpan, +v_833: IR.Words) -> ArenaResult<U32>:
+  match v_943:
+    case ArenaResult{v_842, +v_843}:
+      v_846 = arena_words_start(v_820)
+      v_849 = arena_words_count(v_820)
+      v_852 = arena_words_start(v_833)
+      v_855 = arena_words_count(v_833)
+      native_match_core_subst_open_59(arena_put_node(v_842, Arena.BodyLocal{v_846, v_849, v_822, v_852, v_855, v_843, v_828}))
 
-def native_match_core_subst_open_68(v_1032: ArenaResult<IR.Words>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_811: IR.Words, v_813: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1032:
-    case ArenaResult{v_817, +v_818}:
-      native_match_core_subst_open_67(core_subst_terms(v_817, v_3, v_5, v_7, v_811), v_813, v_818)
+def native_match_core_subst_open_61(v_944: ArenaResult<Nat>, +v_3: Nat, +v_5: U32, +v_7: Nat, +v_820: IR.Words, v_822: Ast.Quantity, v_826: U32, v_828: Ast.SourceSpan, +v_833: IR.Words) -> ArenaResult<U32>:
+  match v_944:
+    case ArenaResult{v_837, +v_838}:
+      native_match_core_subst_open_60(core_subst_at(v_837, v_3, v_5, Nat.add(v_7, v_838), v_826), v_820, v_822, v_828, v_833)
 
-def native_match_core_subst_open_69(v_1033: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_1033:
-    case ArenaResult{v_878, +v_879}:
-      {ArenaResult{v_878, v_879} : ArenaResult<U32>}
+def native_match_core_subst_open_62(v_945: ArenaResult<IR.Words>, +v_3: Nat, +v_5: U32, +v_7: Nat, +v_820: IR.Words, v_822: Ast.Quantity, v_826: U32, v_828: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_945:
+    case ArenaResult{v_832, +v_833}:
+      native_match_core_subst_open_61(core_pattern_list_depth(v_832, v_820), v_3, v_5, v_7, v_820, v_822, v_826, v_828, v_833)
 
-def native_match_core_subst_open_70(v_1034: ArenaResult<U32>, +v_854: IR.Words, v_858: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1034:
-    case ArenaResult{v_867, +v_868}:
-      v_871 = arena_words_start(v_854)
-      v_874 = arena_words_count(v_854)
-      native_match_core_subst_open_69(arena_put_node(v_867, Arena.BodyCase{v_871, v_874, v_868, v_858}))
+def native_match_core_subst_open_63(v_946: ArenaResult<U32>) -> ArenaResult<U32>:
+  match v_946:
+    case ArenaResult{v_879, +v_880}:
+      {ArenaResult{v_879, v_880} : ArenaResult<U32>}
 
-def native_match_core_subst_open_71(v_1035: ArenaResult<Nat>, +v_3: Nat, +v_5: U32, +v_7: Nat, +v_854: IR.Words, v_856: U32, v_858: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1035:
-    case ArenaResult{v_862, +v_863}:
-      native_match_core_subst_open_70(core_subst_at(v_862, v_3, v_5, Nat.add(v_7, v_863), v_856), v_854, v_858)
+def native_match_core_subst_open_64(v_947: ArenaResult<U32>, v_870: Ast.SourceSpan) -> ArenaResult<U32>:
+  match v_947:
+    case ArenaResult{v_874, +v_875}:
+      native_match_core_subst_open_63(arena_put_node(v_874, Arena.BodyReply{v_875, v_870}))
 
-def native_match_core_subst_open_72(v_1036: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_1036:
-    case ArenaResult{v_940, +v_941}:
-      {ArenaResult{v_940, v_941} : ArenaResult<U32>}
-
-def native_match_core_subst_open_73(v_1037: ArenaResult<U32>, +v_901: IR.Words, v_903: Ast.Quantity, v_909: Ast.SourceSpan, +v_914: IR.Words) -> ArenaResult<U32>:
-  match v_1037:
-    case ArenaResult{v_923, +v_924}:
-      v_927 = arena_words_start(v_901)
-      v_930 = arena_words_count(v_901)
-      v_933 = arena_words_start(v_914)
-      v_936 = arena_words_count(v_914)
-      native_match_core_subst_open_72(arena_put_node(v_923, Arena.BodyLocal{v_927, v_930, v_903, v_933, v_936, v_924, v_909}))
-
-def native_match_core_subst_open_74(v_1038: ArenaResult<Nat>, +v_3: Nat, +v_5: U32, +v_7: Nat, +v_901: IR.Words, v_903: Ast.Quantity, v_907: U32, v_909: Ast.SourceSpan, +v_914: IR.Words) -> ArenaResult<U32>:
-  match v_1038:
-    case ArenaResult{v_918, +v_919}:
-      native_match_core_subst_open_73(core_subst_at(v_918, v_3, v_5, Nat.add(v_7, v_919), v_907), v_901, v_903, v_909, v_914)
-
-def native_match_core_subst_open_75(v_1039: ArenaResult<IR.Words>, +v_3: Nat, +v_5: U32, +v_7: Nat, +v_901: IR.Words, v_903: Ast.Quantity, v_907: U32, v_909: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1039:
-    case ArenaResult{v_913, +v_914}:
-      native_match_core_subst_open_74(core_pattern_list_depth(v_913, v_901), v_3, v_5, v_7, v_901, v_903, v_907, v_909, v_914)
-
-def native_match_core_subst_open_76(v_1040: ArenaResult<U32>) -> ArenaResult<U32>:
-  match v_1040:
-    case ArenaResult{v_960, +v_961}:
-      {ArenaResult{v_960, v_961} : ArenaResult<U32>}
-
-def native_match_core_subst_open_77(v_1041: ArenaResult<U32>, v_951: Ast.SourceSpan) -> ArenaResult<U32>:
-  match v_1041:
-    case ArenaResult{v_955, +v_956}:
-      native_match_core_subst_open_76(arena_put_node(v_955, Arena.BodyReply{v_956, v_951}))
-
-def native_match_core_subst_open_78(+v_16: Arena.Node, +v_3: Nat, +v_5: U32, +v_7: Nat, v_9: U32, v_15: ArenaStore) -> ArenaResult<U32>:
+def native_match_core_subst_open_65(+v_16: Arena.Node, +v_3: Nat, +v_5: U32, +v_7: Nat, v_9: U32, v_15: ArenaStore) -> ArenaResult<U32>:
   match v_16:
     case Arena.TermVar{+v_20, +v_21, +v_22}:
-      native_match_core_subst_open_1(arena_name_text(v_15, v_20), v_3, v_5, v_7, v_21, v_22)
-    case Arena.TermRef{+v_47, +v_48}:
+      +v_24 = v_21
+      v_26 = v_22
+      +v_28 = Nat.add(v_3, v_7)
+      native_match_core_subst_open_0(core_subst_var(v_15, Nat.is_eq(v_24, v_28), Nat.is_gt(v_24, v_28), v_7, v_5, v_20, v_24, v_26))
+    case Arena.TermRef{+v_38, +v_39}:
       {ArenaResult{v_15, v_9} : ArenaResult<U32>}
-    case Arena.TermBang{+v_53, +v_54}:
-      v_56 = v_53
-      v_58 = v_54
-      native_match_core_subst_open_3(core_subst_at(v_15, v_3, v_5, v_7, v_56), v_58)
-    case Arena.TermSub{+v_75, +v_76, +v_77, +v_78}:
-      v_80 = v_75
-      v_82 = v_76
-      v_84 = v_77
-      v_86 = v_78
-      native_match_core_subst_open_6(core_subst_at(v_15, v_3, v_5, v_7, v_82), v_3, v_5, v_7, v_80, v_84, v_86)
-    case Arena.TermLet{+v_114, +v_115, +v_116, +v_117, +v_118, +v_119, +v_120, +v_121, +v_122, +v_123}:
-      +v_125 = IR.Names{v_114, v_115}
-      +v_127 = IR.Naturals{v_116, v_117}
-      +v_129 = IR.Quantities{v_118, v_119}
-      +v_131 = IR.Words{v_120, v_121}
-      +v_133 = v_125
-      v_135 = v_127
-      v_137 = v_129
-      v_139 = v_131
-      v_141 = v_122
-      v_143 = v_123
-      native_match_core_subst_open_9(core_subst_terms(v_15, v_3, v_5, v_7, v_139), v_3, v_5, v_7, v_133, v_135, v_137, v_141, v_143)
-    case Arena.TermAnn{+v_189, +v_190, +v_191}:
-      v_193 = v_189
-      v_195 = v_190
-      v_197 = v_191
-      native_match_core_subst_open_12(core_subst_at(v_15, v_3, v_5, v_7, v_193), v_3, v_5, v_7, v_195, v_197)
-    case Arena.TermTemplate{+v_217, +v_218}:
-      v_220 = v_217
-      v_222 = v_218
-      native_match_core_subst_open_14(core_subst_at(v_15, v_3, v_5, v_7, v_220), v_222)
-    case Arena.TermType{+v_237, +v_238}:
-      v_240 = v_237
-      v_242 = v_238
-      native_match_core_subst_open_16(core_subst_at(v_15, v_3, v_5, v_7, v_240), v_242)
+    case Arena.TermBang{+v_44, +v_45}:
+      v_47 = v_44
+      v_49 = v_45
+      native_match_core_subst_open_2(core_subst_at(v_15, v_3, v_5, v_7, v_47), v_49)
+    case Arena.TermSub{+v_66, +v_67, +v_68, +v_69}:
+      v_71 = v_66
+      v_73 = v_67
+      v_75 = v_68
+      v_77 = v_69
+      native_match_core_subst_open_5(core_subst_at(v_15, v_3, v_5, v_7, v_73), v_3, v_5, v_7, v_71, v_75, v_77)
+    case Arena.TermLet{+v_105, +v_106, +v_107, +v_108, +v_109, +v_110, +v_111, +v_112, +v_113, +v_114}:
+      +v_116 = IR.Names{v_105, v_106}
+      +v_118 = IR.Naturals{v_107, v_108}
+      +v_120 = IR.Quantities{v_109, v_110}
+      +v_122 = IR.Words{v_111, v_112}
+      +v_124 = v_116
+      v_126 = v_118
+      v_128 = v_120
+      v_130 = v_122
+      v_132 = v_113
+      v_134 = v_114
+      native_match_core_subst_open_8(core_subst_terms(v_15, v_3, v_5, v_7, v_130), v_3, v_5, v_7, v_124, v_126, v_128, v_132, v_134)
+    case Arena.TermAnn{+v_180, +v_181, +v_182}:
+      v_184 = v_180
+      v_186 = v_181
+      v_188 = v_182
+      native_match_core_subst_open_11(core_subst_at(v_15, v_3, v_5, v_7, v_184), v_3, v_5, v_7, v_186, v_188)
+    case Arena.TermTemplate{+v_208, +v_209}:
+      v_211 = v_208
+      v_213 = v_209
+      native_match_core_subst_open_13(core_subst_at(v_15, v_3, v_5, v_7, v_211), v_213)
+    case Arena.TermType{+v_228, +v_229}:
+      v_231 = v_228
+      v_233 = v_229
+      native_match_core_subst_open_15(core_subst_at(v_15, v_3, v_5, v_7, v_231), v_233)
     case Arena.TermQuant{}:
-      native_match_core_subst_open_17(arena_put_node(v_15, Arena.TermQuant{}))
-    case Arena.TermQuantity{+v_264, +v_265}:
-      v_267 = v_264
-      v_269 = v_265
-      native_match_core_subst_open_18(arena_put_node(v_15, Arena.TermQuantity{v_267, v_269}))
-    case Arena.TermMin{+v_280, +v_281, +v_282}:
-      v_284 = v_280
-      v_286 = v_281
-      v_288 = v_282
-      native_match_core_subst_open_21(core_subst_at(v_15, v_3, v_5, v_7, v_284), v_3, v_5, v_7, v_286, v_288)
-    case Arena.TermAll{+v_312, +v_313, +v_314, +v_315, +v_316, +v_317}:
-      native_match_core_subst_open_26(arena_name_text(v_15, v_313), v_3, v_5, v_7, v_312, v_314, v_315, v_316, v_317)
-    case Arena.TermLam{+v_364, +v_365, +v_366, +v_367, +v_368}:
-      native_match_core_subst_open_30(arena_name_text(v_15, v_365), v_3, v_5, v_7, v_364, v_366, v_367, v_368)
-    case Arena.TermApp{+v_406, +v_407, +v_408}:
-      v_410 = v_406
-      v_412 = v_407
-      v_414 = v_408
-      native_match_core_subst_open_33(core_subst_at(v_15, v_3, v_5, v_7, v_410), v_3, v_5, v_7, v_412, v_414)
-    case Arena.TermAdt{+v_438, +v_439, +v_440, +v_441, +v_442, +v_443}:
-      native_match_core_subst_open_37(arena_name_text(v_15, v_438), v_3, v_5, v_7, v_439, v_440, v_441, v_442, v_443)
-    case Arena.TermFill{+v_496, +v_497, +v_498, +v_499}:
-      +v_501 = IR.Words{v_497, v_498}
-      v_503 = v_496
-      v_505 = v_501
-      v_507 = v_499
-      native_match_core_subst_open_40(core_subst_at(v_15, v_3, v_5, v_7, v_503), v_3, v_5, v_7, v_505, v_507)
-    case Arena.TermPlus{+v_535, +v_536, +v_537, +v_538}:
-      +v_540 = IR.Words{v_536, v_537}
-      v_542 = v_535
-      v_544 = v_540
-      v_546 = v_538
-      native_match_core_subst_open_43(core_subst_at(v_15, v_3, v_5, v_7, v_542), v_3, v_5, v_7, v_544, v_546)
+      native_match_core_subst_open_16(arena_put_node(v_15, Arena.TermQuant{}))
+    case Arena.TermQuantity{+v_255, +v_256}:
+      v_258 = v_255
+      v_260 = v_256
+      native_match_core_subst_open_17(arena_put_node(v_15, Arena.TermQuantity{v_258, v_260}))
+    case Arena.TermMin{+v_271, +v_272, +v_273}:
+      v_275 = v_271
+      v_277 = v_272
+      v_279 = v_273
+      native_match_core_subst_open_20(core_subst_at(v_15, v_3, v_5, v_7, v_275), v_3, v_5, v_7, v_277, v_279)
+    case Arena.TermAll{+v_303, +v_304, +v_305, +v_306, +v_307, +v_308}:
+      v_310 = v_303
+      v_312 = v_304
+      v_314 = v_305
+      v_316 = v_306
+      v_318 = v_307
+      v_320 = v_308
+      native_match_core_subst_open_23(core_subst_at(v_15, v_3, v_5, v_7, v_316), v_3, v_5, v_7, v_310, v_312, v_314, v_318, v_320)
+    case Arena.TermLam{+v_343, +v_344, +v_345, +v_346, +v_347}:
+      v_349 = v_343
+      v_351 = v_344
+      v_353 = v_345
+      v_355 = v_346
+      v_357 = v_347
+      native_match_core_subst_open_25(core_subst_at(v_15, v_3, v_5, Nat.add(v_7, 1n), v_355), v_349, v_351, v_353, v_357)
+    case Arena.TermApp{+v_373, +v_374, +v_375}:
+      v_377 = v_373
+      v_379 = v_374
+      v_381 = v_375
+      native_match_core_subst_open_28(core_subst_at(v_15, v_3, v_5, v_7, v_377), v_3, v_5, v_7, v_379, v_381)
+    case Arena.TermAdt{+v_405, +v_406, +v_407, +v_408, +v_409, +v_410}:
+      +v_412 = IR.Words{v_406, v_407}
+      +v_414 = IR.Names{v_408, v_409}
+      v_416 = v_405
+      v_418 = v_412
+      v_420 = v_414
+      v_422 = v_410
+      native_match_core_subst_open_30(core_subst_terms(v_15, v_3, v_5, v_7, v_418), v_416, v_420, v_422)
+    case Arena.TermFill{+v_451, +v_452, +v_453, +v_454}:
+      +v_456 = IR.Words{v_452, v_453}
+      v_458 = v_451
+      v_460 = v_456
+      v_462 = v_454
+      native_match_core_subst_open_33(core_subst_at(v_15, v_3, v_5, v_7, v_458), v_3, v_5, v_7, v_460, v_462)
+    case Arena.TermPlus{+v_490, +v_491, +v_492, +v_493}:
+      +v_495 = IR.Words{v_491, v_492}
+      v_497 = v_490
+      v_499 = v_495
+      v_501 = v_493
+      native_match_core_subst_open_36(core_subst_at(v_15, v_3, v_5, v_7, v_497), v_3, v_5, v_7, v_499, v_501)
     case Arena.TermString{_, _, _}:
       {ArenaResult{v_15, v_9} : ArenaResult<U32>}
-    case Arena.TermCtr{+v_582, +v_583, +v_584, +v_585}:
-      native_match_core_subst_open_47(arena_name_text(v_15, v_582), v_3, v_5, v_7, v_583, v_584, v_585)
-    case Arena.TermMat{+v_628, +v_629, +v_630, +v_631}:
-      native_match_core_subst_open_52(arena_name_text(v_15, v_628), v_3, v_5, v_7, v_629, v_630, v_631)
-    case Arena.TermAbsurd{+v_670}:
-      v_672 = v_670
-      native_match_core_subst_open_53(arena_put_node(v_15, Arena.TermAbsurd{v_672}))
-    case Arena.TermEqual{+v_684, +v_685, +v_686, +v_687}:
-      v_689 = v_684
-      v_691 = v_685
-      v_693 = v_686
-      v_695 = v_687
-      native_match_core_subst_open_57(core_subst_at(v_15, v_3, v_5, v_7, v_689), v_3, v_5, v_7, v_691, v_693, v_695)
-    case Arena.TermRefl{+v_719}:
-      v_721 = v_719
-      native_match_core_subst_open_58(arena_put_node(v_15, Arena.TermRefl{v_721}))
-    case Arena.TermRewrite{+v_733, +v_734, +v_735, +v_736}:
-      v_738 = v_733
-      v_740 = v_734
-      v_742 = v_735
-      v_744 = v_736
-      native_match_core_subst_open_62(core_subst_at(v_15, v_3, v_5, v_7, v_738), v_3, v_5, v_7, v_740, v_742, v_744)
-    case Arena.TermHole{+v_769, +v_770}:
-      native_match_core_subst_open_65(arena_name_text(v_15, v_769), v_770)
-    case Arena.BodyMatch{+v_799, +v_800, +v_801, +v_802, +v_803}:
-      +v_805 = IR.Words{v_799, v_800}
-      +v_807 = IR.Words{v_801, v_802}
-      v_809 = v_805
-      v_811 = v_807
-      v_813 = v_803
-      native_match_core_subst_open_68(core_subst_terms(v_15, v_3, v_5, v_7, v_809), v_3, v_5, v_7, v_811, v_813)
-    case Arena.BodyCase{+v_847, +v_848, +v_849, +v_850}:
-      +v_852 = IR.Words{v_847, v_848}
-      +v_854 = v_852
-      v_856 = v_849
-      v_858 = v_850
-      native_match_core_subst_open_71(core_pattern_list_depth(v_15, v_854), v_3, v_5, v_7, v_854, v_856, v_858)
-    case Arena.BodyLocal{+v_889, +v_890, +v_891, +v_892, +v_893, +v_894, +v_895}:
-      +v_897 = IR.Words{v_889, v_890}
-      +v_899 = IR.Words{v_892, v_893}
-      +v_901 = v_897
-      v_903 = v_891
-      v_905 = v_899
-      v_907 = v_894
-      v_909 = v_895
-      native_match_core_subst_open_75(core_subst_terms(v_15, v_3, v_5, v_7, v_905), v_3, v_5, v_7, v_901, v_903, v_907, v_909)
-    case Arena.BodyReply{+v_946, +v_947}:
-      v_949 = v_946
-      v_951 = v_947
-      native_match_core_subst_open_77(core_subst_at(v_15, v_3, v_5, v_7, v_949), v_951)
+    case Arena.TermCtr{+v_537, +v_538, +v_539, +v_540}:
+      +v_542 = IR.Words{v_538, v_539}
+      v_544 = v_537
+      v_546 = v_542
+      v_548 = v_540
+      native_match_core_subst_open_38(core_subst_terms(v_15, v_3, v_5, v_7, v_546), v_544, v_548)
+    case Arena.TermMat{+v_571, +v_572, +v_573, +v_574}:
+      v_576 = v_571
+      v_578 = v_572
+      v_580 = v_573
+      v_582 = v_574
+      native_match_core_subst_open_41(core_subst_at(v_15, v_3, v_5, v_7, v_578), v_3, v_5, v_7, v_576, v_580, v_582)
+    case Arena.TermAbsurd{+v_601}:
+      v_603 = v_601
+      native_match_core_subst_open_42(arena_put_node(v_15, Arena.TermAbsurd{v_603}))
+    case Arena.TermEqual{+v_615, +v_616, +v_617, +v_618}:
+      v_620 = v_615
+      v_622 = v_616
+      v_624 = v_617
+      v_626 = v_618
+      native_match_core_subst_open_46(core_subst_at(v_15, v_3, v_5, v_7, v_620), v_3, v_5, v_7, v_622, v_624, v_626)
+    case Arena.TermRefl{+v_650}:
+      v_652 = v_650
+      native_match_core_subst_open_47(arena_put_node(v_15, Arena.TermRefl{v_652}))
+    case Arena.TermRewrite{+v_664, +v_665, +v_666, +v_667}:
+      v_669 = v_664
+      v_671 = v_665
+      v_673 = v_666
+      v_675 = v_667
+      native_match_core_subst_open_51(core_subst_at(v_15, v_3, v_5, v_7, v_669), v_3, v_5, v_7, v_671, v_673, v_675)
+    case Arena.TermHole{+v_700, +v_701}:
+      v_703 = v_700
+      v_705 = v_701
+      native_match_core_subst_open_52(arena_put_node(v_15, Arena.TermHole{v_703, v_705}))
+    case Arena.BodyMatch{+v_718, +v_719, +v_720, +v_721, +v_722}:
+      +v_724 = IR.Words{v_718, v_719}
+      +v_726 = IR.Words{v_720, v_721}
+      v_728 = v_724
+      v_730 = v_726
+      v_732 = v_722
+      native_match_core_subst_open_55(core_subst_terms(v_15, v_3, v_5, v_7, v_728), v_3, v_5, v_7, v_730, v_732)
+    case Arena.BodyCase{+v_766, +v_767, +v_768, +v_769}:
+      +v_771 = IR.Words{v_766, v_767}
+      +v_773 = v_771
+      v_775 = v_768
+      v_777 = v_769
+      native_match_core_subst_open_58(core_pattern_list_depth(v_15, v_773), v_3, v_5, v_7, v_773, v_775, v_777)
+    case Arena.BodyLocal{+v_808, +v_809, +v_810, +v_811, +v_812, +v_813, +v_814}:
+      +v_816 = IR.Words{v_808, v_809}
+      +v_818 = IR.Words{v_811, v_812}
+      +v_820 = v_816
+      v_822 = v_810
+      v_824 = v_818
+      v_826 = v_813
+      v_828 = v_814
+      native_match_core_subst_open_62(core_subst_terms(v_15, v_3, v_5, v_7, v_824), v_3, v_5, v_7, v_820, v_822, v_826, v_828)
+    case Arena.BodyReply{+v_865, +v_866}:
+      v_868 = v_865
+      v_870 = v_866
+      native_match_core_subst_open_64(core_subst_at(v_15, v_3, v_5, v_7, v_868), v_870)
 
-def native_match_core_subst_open_79(v_1042: ArenaResult<Arena.Node>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_9: U32) -> ArenaResult<U32>:
-  match v_1042:
+def native_match_core_subst_open_66(v_948: ArenaResult<Arena.Node>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_9: U32) -> ArenaResult<U32>:
+  match v_948:
     case ArenaResult{v_15, +v_16}:
-      native_match_core_subst_open_78(v_16, v_3, v_5, v_7, v_9, v_15)
+      native_match_core_subst_open_65(v_16, v_3, v_5, v_7, v_9, v_15)
 
 def core_subst_open(v_1: ArenaStore, +v_3: Nat, +v_5: U32, +v_7: Nat, v_9: U32) -> ArenaResult<U32>:
-  native_match_core_subst_open_79(arena_get_node(v_1, v_9), v_3, v_5, v_7, v_9)
+  native_match_core_subst_open_66(arena_get_node(v_1, v_9), v_3, v_5, v_7, v_9)
 
 def native_match_core_subst_0(v_17: ArenaResult<U32>) -> ArenaResult<U32>:
   match v_17:
