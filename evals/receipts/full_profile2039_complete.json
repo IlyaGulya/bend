@@ -1,0 +1,907 @@
+{
+  "schemaVersion": 1,
+  "status": "COMPLETE_PROFILED_NATIVE_BUILD_AND_CONSUMER_PASS",
+  "diagnosticOnly": true,
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "sourceCheckpoint": "68bf0db5",
+  "command": [
+    "env",
+    "BUN_JSC_forceRAMSize=4294967296",
+    "HEAVY_GATE_MEMORY_MIB=32768",
+    "HEAVY_GATE_RSS_MIB=32768",
+    "HEAVY_GATE_POLL_MS=10",
+    "HEAVY_GATE_TIMEOUT_MS=3600000",
+    "/opt/homebrew/bin/bun",
+    "/tmp/bend2039-full-profile-build.mjs"
+  ],
+  "runtime": {
+    "name": "bun",
+    "bun": "1.4.3",
+    "revision": "c6da4a4d3010e5553438c60f6bd76d981976867c",
+    "automaticGcRamHint": "4294967296",
+    "manualGC": false
+  },
+  "limits": {
+    "rssMiB": 32768,
+    "footprintMiB": 32768,
+    "timeoutMs": 3600000,
+    "acceptanceUnchanged": {
+      "rssMiB": 8192,
+      "footprintMiB": 8192,
+      "timeoutMs": 600000
+    }
+  },
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 6263898112,
+    "peakFootprintBytes": 5096331384,
+    "elapsedMs": 636117,
+    "timeoutMs": 3600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "/opt/homebrew/Cellar/bun/1.4.3/bin/bun",
+      "/private/tmp/bend2039-full-profile-build.mjs"
+    ],
+    "label": "Complete profiled compiler build; diagnostic only",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793085406059-f21d35086939b26f.json",
+    "memoryLimitBytes": 34359738368,
+    "rssLimitBytes": 34359738368
+  },
+  "inputs": {
+    "/private/tmp/bend2039-upgrade/checkpoints/.bootstrap_compiler_root_release2039g4.bend": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+    "/private/tmp/bend2039-upgrade/evals/native_compiler_driver.bend": "768203e900f53cdf8d90b50966631ca3a3964dd50003658b07a28b39395f3ec3",
+    "/private/tmp/bend2039-upgrade/bend2/bend.ts": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+    "/private/tmp/bend2039-upgrade/bend2/comp.ts": "881137cef06d237068daf4740368baab826abab1be07181cc4ec2bc635cff2f1",
+    "/private/tmp/bend2039-upgrade/bend2/base.bend": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+    "/private/tmp/bend2039-upgrade/evals/native_compiler_llvm.ts": "d8f2c420662e3ff93795ebe866cbfe7a459b131b74c3243ba2f2ba9d625e8af3",
+    "/private/tmp/bend2039-upgrade/evals/native_compiler_host.c": "7d75edf7c7b8ac045df772b242e885801b9ab3fae5fc346957489a35847d66fe",
+    "/private/tmp/bend2039-full-profile-codegen.ts": "5b18658111f5905505d568665559f8bbaa124ecded9fdfd46ae95aced6968dbb",
+    "/private/tmp/bend2039-upgrade/bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+    "/private/tmp/bend2039-upgrade/bend2/selfhost/lexer.bend": "a81265d4ab248c5ea74bf52987e1163773866a01b264ff1a98895d91139d6f53",
+    "/private/tmp/bend2039-upgrade/bend2/selfhost/core.bend": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+    "/private/tmp/bend2039-upgrade/bend2/selfhost/loaded_module.bend": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+    "/private/tmp/bend2039-upgrade/bend2/selfhost/backend_ir.bend": "f19e76411b589cc396cda80bb8ad387cdb5e9aef17ae287641f0d29696a88e9e",
+    "/private/tmp/bend2039-upgrade/bend2/selfhost/checked_frontend.bend": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+    "/private/tmp/bend2039-upgrade/bend2/selfhost/checker_arena.bend": "fb8651ab2e6304faded5eb312ffe95175a177254f7dd704eca7a9b0896a40e31",
+    "/private/tmp/bend2039-upgrade/bend2/selfhost/scope_lookup.bend": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
+    "/private/tmp/bend2039-upgrade/bend2/selfhost/checker_ir.bend": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+    "/private/tmp/bend2039-upgrade/bend2/selfhost/index_lookup.bend": "563c9b152699b490cf68b264e6c4dea4a4e6770dfcf527cf6c81911cb5ea1b78",
+    "/private/tmp/bend2039-upgrade/checkpoints/template_steps_v1.bend": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4",
+    "/private/tmp/bend2039-upgrade/bend2/selfhost/sha256.bend": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+    "/private/tmp/bend2039-upgrade/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+    "/private/tmp/bend2039-upgrade/checkpoints/checker_core_steps_v1.bend": "d6000fd556d550f45ccca6adeaaa6e2b0d6aa2fc7604fae0959d650f6d7d175c",
+    "/private/tmp/bend2039-upgrade/checkpoints/emitter_steps_v1.bend": "e92beb086b9971dd43c7ae93402a21f017c53239fa489d0b2eb886b1d8f57de3",
+    "/private/tmp/bend2039-upgrade/bend2/selfhost/c_backend_sharing.bend": "c8861993d2ad81057a9ba8b187eb75f743a9005fbb021b43083e7e2906597a40",
+    "/private/tmp/bend2039-upgrade/bend2/effs/print.c": "58657b7351daee89121e1df2856f102743c9db7640257e50c6009a0f1080b00e",
+    "/private/tmp/bend2039-upgrade/bend2/effs/print.js": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+    "/private/tmp/bend2039-upgrade/bend2/effs/write.c": "8807a5f655db452c1d846354560c26fe1e94289e5dc0be231d0b71ecc876d02f",
+    "/private/tmp/bend2039-upgrade/bend2/effs/write.js": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+    "/private/tmp/bend2039-upgrade/bend2/effs/print_err.c": "f84aa11c8d0d6af6fa2fee28411f95714d6744ad97156990e43e55c292c9c6fb",
+    "/private/tmp/bend2039-upgrade/bend2/effs/print_err.js": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+    "/private/tmp/bend2039-upgrade/bend2/effs/get_env.c": "b4903e94681340f9e02187457fabe9461c1b4e43646b7e1573f5d21e954e3a34",
+    "/private/tmp/bend2039-upgrade/bend2/effs/get_env.js": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4",
+    "/private/tmp/bend2039-upgrade/bend2/effs/args.c": "7717332d0b8c8ba28d6dbe60b62a23dce99ea6828ada7d1f9b664f4dc388e84e",
+    "/private/tmp/bend2039-upgrade/bend2/effs/args.js": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82",
+    "/private/tmp/bend2039-upgrade/bend2/effs/process_run.c": "554cfbdf9a6de163f00fc1b23dc8f3df10821cfce336caa1cb5db439b8a55e1f",
+    "/private/tmp/bend2039-upgrade/bend2/effs/process_run.js": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729",
+    "/private/tmp/bend2039-upgrade/bend2/effs/random_u32.c": "75429b2b42e00562177fe33a5e18d2730478847f58c4038b048e78131e1b8c0a",
+    "/private/tmp/bend2039-upgrade/bend2/effs/random_u32.js": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+    "/private/tmp/bend2039-upgrade/bend2/effs/spawn.c": "05e11ae3f1461d9c72440af3b1786c076b418d2faff45639ac25ba464ee73cd5",
+    "/private/tmp/bend2039-upgrade/bend2/effs/spawn.js": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+    "/private/tmp/bend2039-upgrade/bend2/effs/sleep.c": "1dde3701026517d5272d2ff5344d3a8643bec264dbad9f266fdae1c4aaf7601c",
+    "/private/tmp/bend2039-upgrade/bend2/effs/sleep.js": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+    "/private/tmp/bend2039-upgrade/bend2/effs/now.c": "fc4c1d87a4fb2ace7d5b6c57b434cc3d953a15bdf213020912df6c17aa2352d6",
+    "/private/tmp/bend2039-upgrade/bend2/effs/now.js": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+    "/private/tmp/bend2039-upgrade/bend2/effs/thread_count.c": "d4889ed7757dccce03729c9568b88188128f2c1576166a3dc184a8707ed44568",
+    "/private/tmp/bend2039-upgrade/bend2/effs/thread_count.js": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+    "/private/tmp/bend2039-upgrade/bend2/effs/chan.c": "af09b2749741bcc54f56c8f81803073818a165d4cad4c817708e359d677b2a52",
+    "/private/tmp/bend2039-upgrade/bend2/effs/chan.js": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f",
+    "/private/tmp/bend2039-upgrade/bend2/effs/file_open.c": "b987bcb0f9a89d769714ddf8cbecca211c4392e4098da19b411d09f5c088d360",
+    "/private/tmp/bend2039-upgrade/bend2/effs/file_open.js": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694",
+    "/private/tmp/bend2039-upgrade/bend2/effs/file_read.c": "ab577225fa98a034c09d7eb6326b74808756dc6203b0e2599a459876382f090d",
+    "/private/tmp/bend2039-upgrade/bend2/effs/file_read.js": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+    "/private/tmp/bend2039-upgrade/bend2/effs/file_size.c": "ed0d74fd6b9f14ea471bfe5dd80ecbb2c5abb6a8406519fb2c7e1a1acf3dd5af",
+    "/private/tmp/bend2039-upgrade/bend2/effs/file_size.js": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+    "/private/tmp/bend2039-upgrade/bend2/effs/file_write.c": "da810ad9aa76ad1431622292529fa3edebabc4b6a7ee20ae833097b71bb595e5",
+    "/private/tmp/bend2039-upgrade/bend2/effs/file_write.js": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0",
+    "/private/tmp/bend2039-upgrade/bend2/effs/file_close.c": "033da9beb0b484fbc8784044193bf69004f858f6ad86e0c31b4beb89df1349ca",
+    "/private/tmp/bend2039-upgrade/bend2/effs/file_close.js": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+    "/private/tmp/bend2039-upgrade/bend2/effs/tcp_listen.c": "efc7528de96abd9f62f299833c1ac7b0e86528292c746b114d2684b5bac52899",
+    "/private/tmp/bend2039-upgrade/bend2/effs/tcp_listen.js": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+    "/private/tmp/bend2039-upgrade/bend2/effs/tcp_accept.c": "bf7ca1685ed388ce97827ea8379881fbdf5359c7c663ad03eeb8da34bd8584ef",
+    "/private/tmp/bend2039-upgrade/bend2/effs/tcp_accept.js": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+    "/private/tmp/bend2039-upgrade/bend2/effs/tcp_connect.c": "8d17c097138709d71e9d9e1fbc4255007c5e80c93ee384c4a3510b6ac8d10da3",
+    "/private/tmp/bend2039-upgrade/bend2/effs/tcp_connect.js": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb",
+    "/private/tmp/bend2039-upgrade/bend2/effs/tcp_send.c": "993cc8ee5b39fd54a4aeace102602ecf2841ce1f402fe6b2407ebaca837383f9",
+    "/private/tmp/bend2039-upgrade/bend2/effs/tcp_send.js": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6",
+    "/private/tmp/bend2039-upgrade/bend2/effs/tcp_recv.c": "249c8789cd2f541ad00068882de16a00870c2f81a8168b0ac7a59db1e3cb0c6f",
+    "/private/tmp/bend2039-upgrade/bend2/effs/tcp_recv.js": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+    "/private/tmp/bend2039-upgrade/bend2/effs/udp_bind.c": "a1be1bc5c03d430fc6eb43982651073e144872956fadaee98c3700be59352ee3",
+    "/private/tmp/bend2039-upgrade/bend2/effs/udp_bind.js": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+    "/private/tmp/bend2039-upgrade/bend2/effs/udp_send_to.c": "b3a87e56958d8071a368da2edb4748e9496b3eed58b93d6cb4f8af398dd1011a",
+    "/private/tmp/bend2039-upgrade/bend2/effs/udp_send_to.js": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+    "/private/tmp/bend2039-upgrade/bend2/effs/udp_recv_from.c": "1ce914be6cd6153732258f06343e5bcf9765a7fac7e3c3f0462facba7060e067",
+    "/private/tmp/bend2039-upgrade/bend2/effs/udp_recv_from.js": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad",
+    "/private/tmp/bend2039-upgrade/bend2/effs/socket_close.c": "abea115d2928d4942a9d89898d2022c0f1b19c52db48d0b060c2356d261bfa77",
+    "/private/tmp/bend2039-upgrade/bend2/effs/socket_close.js": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+    "/private/tmp/bend2039-upgrade/bend2/effs/listener_close.c": "11f6bac6342a37e97b9656e96bdca7d052ed0a7a0cab3b05ea87657020cfb7a2",
+    "/private/tmp/bend2039-upgrade/bend2/effs/listener_close.js": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+    "/private/tmp/bend2039-upgrade/bend2/effs/window.c": "bf8d5779775ba9566d4bbeb8706a9ec993efb724dae7af8a76c38501ab4092c2",
+    "/private/tmp/bend2039-upgrade/bend2/effs/window_open.js": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+    "/private/tmp/bend2039-upgrade/bend2/effs/window_frame.js": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+    "/private/tmp/bend2039-upgrade/bend2/effs/window_set_title.js": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+    "/private/tmp/bend2039-upgrade/bend2/effs/window_grab.js": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+    "/private/tmp/bend2039-upgrade/bend2/effs/window_close.js": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+    "/private/tmp/bend2039-upgrade/bend2/effs/audio.c": "f0fac2bee02918b4958ad1e7508945824fcd98ce9a2e7ede657304c4f8905b85",
+    "/private/tmp/bend2039-upgrade/bend2/effs/audio_open.js": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9",
+    "/private/tmp/bend2039-upgrade/bend2/effs/audio_write.js": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6",
+    "/private/tmp/bend2039-upgrade/bend2/effs/audio_close.js": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62"
+  },
+  "scripts": {
+    "/private/tmp/bend2039-full-profile-build.mjs": "8de3dba5d15760d22acc6bd199f14f88d3bd5ba595df85b03ca5a70229ebfd05",
+    "/private/tmp/bend2039-full-profile-codegen.ts": "5b18658111f5905505d568665559f8bbaa124ecded9fdfd46ae95aced6968dbb",
+    "/private/tmp/bend2039-upgrade/evals/native_compiler_llvm.ts": "d8f2c420662e3ff93795ebe866cbfe7a459b131b74c3243ba2f2ba9d625e8af3"
+  },
+  "build": {
+    "checkedDefinitions": 12148,
+    "expectedSourceDefinitions": 12148,
+    "eventsFullyValidated": 12728,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "cSha256": "d80523697068430ade64ffbd598df6dc7a7dd1e5c0cd737b4a73d2ee4a8f668f",
+    "cBytes": 55202666,
+    "artifactSha256": "e0a8b5b809b20001eaef5ef94f953a69693d305bc431689a0ff7fce303ed6231",
+    "sameCAsPriorFullG4": true,
+    "samplingPath": "/tmp/bend2039-complete-profile-YStxpX/codegen.json.sampling.json",
+    "definitionTimesPath": "/tmp/bend2039-complete-profile-YStxpX/codegen.json.definitions.json",
+    "codegenMs": 526327.710125
+  },
+  "stages": [
+    {
+      "label": "codegen",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "/tmp/bend2039-full-profile-codegen.ts",
+        "/tmp/bend2039-complete-profile-YStxpX/codegen.json",
+        "/tmp/bend2039-complete-profile-YStxpX/compiler"
+      ],
+      "timingCommand": [
+        "/usr/bin/time",
+        "-lp",
+        "/opt/homebrew/bin/bun",
+        "/tmp/bend2039-full-profile-codegen.ts",
+        "/tmp/bend2039-complete-profile-YStxpX/codegen.json",
+        "/tmp/bend2039-complete-profile-YStxpX/compiler"
+      ],
+      "stdout": "/tmp/bend2039-complete-profile-YStxpX/codegen.stdout",
+      "stderr": "/tmp/bend2039-complete-profile-YStxpX/codegen.stderr",
+      "status": "PASS",
+      "startedUnixMs": 1793085406110,
+      "elapsedMs": 536696,
+      "exitCode": 0,
+      "signal": null,
+      "wait4": {
+        "realSeconds": 536.68,
+        "userSeconds": 664.56,
+        "sysSeconds": 9.21,
+        "maxRssBytes": 6240141312
+      }
+    },
+    {
+      "label": "llvm-backend",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/native_compiler_llvm.ts",
+        "/tmp/bend2039-complete-profile-YStxpX/codegen.json",
+        "clang",
+        "/opt/homebrew/opt/llvm@21/bin"
+      ],
+      "timingCommand": [
+        "/usr/bin/time",
+        "-lp",
+        "/opt/homebrew/bin/bun",
+        "evals/native_compiler_llvm.ts",
+        "/tmp/bend2039-complete-profile-YStxpX/codegen.json",
+        "clang",
+        "/opt/homebrew/opt/llvm@21/bin"
+      ],
+      "stdout": "/tmp/bend2039-complete-profile-YStxpX/llvm-backend.stdout",
+      "stderr": "/tmp/bend2039-complete-profile-YStxpX/llvm-backend.stderr",
+      "status": "PASS",
+      "startedUnixMs": 1793085942807,
+      "elapsedMs": 95921,
+      "exitCode": 0,
+      "signal": null,
+      "wait4": {
+        "realSeconds": 95.91,
+        "userSeconds": 138.5,
+        "sysSeconds": 3.59,
+        "maxRssBytes": 5193154560
+      }
+    },
+    {
+      "label": "actual-native-consumer",
+      "command": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "/tmp/bend2039-complete-profile-YStxpX/consumer.js"
+      ],
+      "timingCommand": [
+        "/usr/bin/time",
+        "-lp",
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "/tmp/bend2039-complete-profile-YStxpX/consumer.js"
+      ],
+      "stdout": "/tmp/bend2039-complete-profile-YStxpX/actual-native-consumer.stdout",
+      "stderr": "/tmp/bend2039-complete-profile-YStxpX/actual-native-consumer.stderr",
+      "status": "PASS",
+      "startedUnixMs": 1793086042109,
+      "elapsedMs": 66,
+      "exitCode": 0,
+      "signal": null,
+      "wait4": {
+        "realSeconds": 0.05,
+        "userSeconds": 0.03,
+        "sysSeconds": 0,
+        "maxRssBytes": 47611904
+      }
+    }
+  ],
+  "consumer": {
+    "input": {
+      "root": "/private/tmp/bend2039-upgrade/tests/io/cid_only_family.bend",
+      "base": "/private/tmp/bend2039-upgrade/bend2/base.bend",
+      "manifest": "/tmp/bend2039-complete-profile-YStxpX/consumer.tsv",
+      "exports": "/tmp/bend2039-complete-profile-YStxpX/exports.txt",
+      "phase": "compile-module",
+      "output": "/tmp/bend2039-complete-profile-YStxpX/consumer.js"
+    },
+    "native": {
+      "command": [
+        "/tmp/bend2039-complete-profile-YStxpX/compiler",
+        "+RTS",
+        "--threads",
+        "1",
+        "--gpu",
+        "off",
+        "--RTS",
+        "/private/tmp/bend2039-upgrade/tests/io/cid_only_family.bend",
+        "/private/tmp/bend2039-upgrade/bend2/base.bend",
+        "/tmp/bend2039-complete-profile-YStxpX/consumer.tsv",
+        "/tmp/bend2039-complete-profile-YStxpX/exports.txt",
+        "compile-module",
+        "/tmp/bend2039-complete-profile-YStxpX/consumer.js"
+      ],
+      "status": 0,
+      "signal": null,
+      "elapsedMs": 3313,
+      "stdout": "NATIVE_RESULT {\"result\":\"EmitSuccess\",\"bytes\":357241,\"modules\":2}\n",
+      "stderr": "NATIVE_BEGIN {\"computeThreads\":1,\"parserFuel\":8000000,\"phase\":\"compile-module\",\"phaseTraceVersion\":3}\nNATIVE_PHASE_START {\"phase\":\"parse\"}\nNATIVE_FUEL {\"sourceOrdinal\":1,\"cells\":8000000,\"elapsedMs\":37.333,\"processPeakRssBeforeBytes\":4964352,\"processPeakRssAfterBytes\":68993024}\nNATIVE_FUEL {\"sourceOrdinal\":2,\"cells\":8000000,\"elapsedMs\":41.061,\"processPeakRssBeforeBytes\":71712768,\"processPeakRssAfterBytes\":71712768}\nNATIVE_PHASE {\"phase\":\"parse\",\"elapsedMs\":500.935,\"userCpuMs\":453.550,\"systemCpuMs\":10.578,\"modules\":2,\"sourceBytes\":79970,\"foreignBytes\":78587,\"eagerFuelCells\":16000000,\"fuelBuildMs\":78.394}\nNATIVE_PHASE_START {\"phase\":\"expand\"}\nNATIVE_PHASE {\"phase\":\"expand\",\"elapsedMs\":235.825,\"userCpuMs\":233.604,\"systemCpuMs\":1.117,\"chunkAdvances\":28743,\"chunkQuantum\":64}\nNATIVE_PHASE_START {\"phase\":\"check\"}\nNATIVE_PHASE {\"phase\":\"check\",\"elapsedMs\":2250.107,\"userCpuMs\":2064.488,\"systemCpuMs\":8.651,\"chunkAdvances\":143285,\"chunkQuantum\":64}\nNATIVE_PHASE_START {\"phase\":\"emit\"}\nNATIVE_PHASE {\"phase\":\"emit\",\"elapsedMs\":306.625,\"userCpuMs\":265.651,\"systemCpuMs\":5.238,\"chunkAdvances\":14949,\"chunkQuantum\":64}\n",
+      "phases": [
+        {
+          "phase": "parse",
+          "elapsedMs": 500.935,
+          "userCpuMs": 453.55,
+          "systemCpuMs": 10.578,
+          "modules": 2,
+          "sourceBytes": 79970,
+          "foreignBytes": 78587,
+          "eagerFuelCells": 16000000,
+          "fuelBuildMs": 78.394
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 235.825,
+          "userCpuMs": 233.604,
+          "systemCpuMs": 1.117,
+          "chunkAdvances": 28743,
+          "chunkQuantum": 64
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 2250.107,
+          "userCpuMs": 2064.488,
+          "systemCpuMs": 8.651,
+          "chunkAdvances": 143285,
+          "chunkQuantum": 64
+        },
+        {
+          "phase": "emit",
+          "elapsedMs": 306.625,
+          "userCpuMs": 265.651,
+          "systemCpuMs": 5.238,
+          "chunkAdvances": 14949,
+          "chunkQuantum": 64
+        }
+      ],
+      "phaseStarts": [
+        {
+          "phase": "parse"
+        },
+        {
+          "phase": "expand"
+        },
+        {
+          "phase": "check"
+        },
+        {
+          "phase": "emit"
+        }
+      ],
+      "fuel": [
+        {
+          "sourceOrdinal": 1,
+          "cells": 8000000,
+          "elapsedMs": 37.333,
+          "processPeakRssBeforeBytes": 4964352,
+          "processPeakRssAfterBytes": 68993024
+        },
+        {
+          "sourceOrdinal": 2,
+          "cells": 8000000,
+          "elapsedMs": 41.061,
+          "processPeakRssBeforeBytes": 71712768,
+          "processPeakRssAfterBytes": 71712768
+        }
+      ],
+      "begins": [
+        {
+          "computeThreads": 1,
+          "parserFuel": 8000000,
+          "phase": "compile-module",
+          "phaseTraceVersion": 3
+        }
+      ],
+      "results": [
+        {
+          "result": "EmitSuccess",
+          "bytes": 357241,
+          "modules": 2
+        }
+      ]
+    },
+    "artifactSha256": "9031b236afcde8cde23914898100834f8e50bdc8cab430d40ceba8ad10290c31",
+    "observed": "42"
+  },
+  "phases": [
+    {
+      "phase": "module-import",
+      "wallMs": 10.124042,
+      "processUserMs": 6.462,
+      "processSystemMs": 1.848
+    },
+    {
+      "phase": "book-load-root",
+      "wallMs": 5970.683833,
+      "processUserMs": 5654.066,
+      "processSystemMs": 271.638
+    },
+    {
+      "phase": "book-load-bridge",
+      "wallMs": 26.857250000000022,
+      "processUserMs": 1.977,
+      "processSystemMs": 0.907
+    },
+    {
+      "phase": "book-valid",
+      "wallMs": 3990.916958,
+      "processUserMs": 6085.263,
+      "processSystemMs": 258.375
+    },
+    {
+      "phase": "compile-book",
+      "wallMs": 526327.878417,
+      "processUserMs": 651759.258,
+      "processSystemMs": 8536.973
+    },
+    {
+      "phase": "c-publication",
+      "wallMs": 187.57991700002458,
+      "processUserMs": 944.664,
+      "processSystemMs": 36.113
+    }
+  ],
+  "passes": [
+    {
+      "pass": 1,
+      "wallMs": 58852.178541,
+      "processUserMs": 66251.985,
+      "processSystemMs": 1172.668,
+      "ownBefore": 0,
+      "ownAfter": 33480,
+      "hotBefore": 0,
+      "hotAfter": 915,
+      "staticBefore": 0,
+      "staticAfter": 67,
+      "segments": 52402,
+      "segmentLines": 2554425
+    },
+    {
+      "pass": 2,
+      "wallMs": 75628.265916,
+      "processUserMs": 79066.639,
+      "processSystemMs": 1248.149,
+      "ownBefore": 33480,
+      "ownAfter": 33790,
+      "hotBefore": 915,
+      "hotAfter": 950,
+      "staticBefore": 67,
+      "staticAfter": 67,
+      "segments": 52402,
+      "segmentLines": 2573544
+    },
+    {
+      "pass": 3,
+      "wallMs": 62027.24775000001,
+      "processUserMs": 70758.713,
+      "processSystemMs": 759.992,
+      "ownBefore": 33790,
+      "ownAfter": 33929,
+      "hotBefore": 950,
+      "hotAfter": 950,
+      "staticBefore": 67,
+      "staticAfter": 67,
+      "segments": 52402,
+      "segmentLines": 2575036
+    },
+    {
+      "pass": 4,
+      "wallMs": 59203.045124999975,
+      "processUserMs": 71105.364,
+      "processSystemMs": 705.914,
+      "ownBefore": 33929,
+      "ownAfter": 33984,
+      "hotBefore": 950,
+      "hotAfter": 950,
+      "staticBefore": 67,
+      "staticAfter": 67,
+      "segments": 52402,
+      "segmentLines": 2575260
+    },
+    {
+      "pass": 5,
+      "wallMs": 52175.179292000015,
+      "processUserMs": 71622.03,
+      "processSystemMs": 777.296,
+      "ownBefore": 33984,
+      "ownAfter": 34006,
+      "hotBefore": 950,
+      "hotAfter": 950,
+      "staticBefore": 67,
+      "staticAfter": 67,
+      "segments": 52402,
+      "segmentLines": 2575419
+    },
+    {
+      "pass": 6,
+      "wallMs": 51996.09720900003,
+      "processUserMs": 69627.31,
+      "processSystemMs": 934.478,
+      "ownBefore": 34006,
+      "ownAfter": 34017,
+      "hotBefore": 950,
+      "hotAfter": 950,
+      "staticBefore": 67,
+      "staticAfter": 67,
+      "segments": 52402,
+      "segmentLines": 2575499
+    },
+    {
+      "pass": 7,
+      "wallMs": 60459.42716699996,
+      "processUserMs": 72481.688,
+      "processSystemMs": 829.058,
+      "ownBefore": 34017,
+      "ownAfter": 34020,
+      "hotBefore": 950,
+      "hotAfter": 950,
+      "staticBefore": 67,
+      "staticAfter": 67,
+      "segments": 52402,
+      "segmentLines": 2575577
+    },
+    {
+      "pass": 8,
+      "wallMs": 48201.360083999985,
+      "processUserMs": 65947.594,
+      "processSystemMs": 831.519,
+      "ownBefore": 34020,
+      "ownAfter": 34021,
+      "hotBefore": 950,
+      "hotAfter": 950,
+      "staticBefore": 67,
+      "staticAfter": 67,
+      "segments": 52402,
+      "segmentLines": 2575596
+    },
+    {
+      "pass": 9,
+      "wallMs": 46876.98466700001,
+      "processUserMs": 72009.915,
+      "processSystemMs": 711.444,
+      "ownBefore": 34021,
+      "ownAfter": 34021,
+      "hotBefore": 950,
+      "hotAfter": 950,
+      "staticBefore": 67,
+      "staticAfter": 67,
+      "segments": 52402,
+      "segmentLines": 2575603
+    }
+  ],
+  "definitionTotals": {
+    "names": 11775,
+    "invocations": 105975,
+    "summedWallMs": 510565.78807899763
+  },
+  "topDefinitionsByAggregatedWallMs": [
+    {
+      "name": "feedback_dispatch",
+      "calls": 9,
+      "wallMs": 21486.46800100006,
+      "maxWallMs": 6819.804791000031
+    },
+    {
+      "name": "emitter_steps_v1:emitter_step_one",
+      "calls": 9,
+      "wallMs": 18587.314874999916,
+      "maxWallMs": 5608.7575
+    },
+    {
+      "name": "emitter_steps_v1:emitter_step_group_27",
+      "calls": 9,
+      "wallMs": 13164.548002999909,
+      "maxWallMs": 4772.168749999953
+    },
+    {
+      "name": "step_parse_term_tail_at",
+      "calls": 9,
+      "wallMs": 10914.233749999847,
+      "maxWallMs": 4657.754124999978
+    },
+    {
+      "name": "encode_float_normal_bits",
+      "calls": 9,
+      "wallMs": 10448.605583000015,
+      "maxWallMs": 5336.808042000004
+    },
+    {
+      "name": "emitter_steps_v1:emitter_body_cps_provider_4_scan",
+      "calls": 9,
+      "wallMs": 7973.81912299995,
+      "maxWallMs": 4542.7512080000015
+    },
+    {
+      "name": "checker_core_steps_v1:checker_step_one",
+      "calls": 9,
+      "wallMs": 6789.690457000019,
+      "maxWallMs": 4787.303333000047
+    },
+    {
+      "name": "emitter_steps_v1:emitter_match_264",
+      "calls": 9,
+      "wallMs": 6287.123333000069,
+      "maxWallMs": 4056.5969170000026
+    },
+    {
+      "name": "step_parse_name_term",
+      "calls": 9,
+      "wallMs": 6257.36295799994,
+      "maxWallMs": 5997.343959000005
+    },
+    {
+      "name": "emitter_steps_v1:emitter_step_group_6",
+      "calls": 9,
+      "wallMs": 5926.646499000148,
+      "maxWallMs": 5795.757500000007
+    }
+  ],
+  "llvm": [
+    {
+      "name": "clang-version",
+      "status": "PASS",
+      "wallMs": 33.35912499999999,
+      "userMs": 0,
+      "systemMs": 10,
+      "maxRssBytes": 14958592
+    },
+    {
+      "name": "opt-version",
+      "status": "PASS",
+      "wallMs": 108.193,
+      "userMs": 10,
+      "systemMs": 30,
+      "maxRssBytes": 24018944
+    },
+    {
+      "name": "llvm-split-version",
+      "status": "PASS",
+      "wallMs": 16.57487500000002,
+      "userMs": 0,
+      "systemMs": 0,
+      "maxRssBytes": 19988480
+    },
+    {
+      "name": "sdk",
+      "status": "PASS",
+      "wallMs": 13.739125000000001,
+      "userMs": 0,
+      "systemMs": 0,
+      "maxRssBytes": 8634368
+    },
+    {
+      "name": "abi-macros",
+      "status": "PASS",
+      "wallMs": 1721.3525,
+      "userMs": 1550,
+      "systemMs": 100,
+      "maxRssBytes": 603881472
+    },
+    {
+      "name": "abi-driver",
+      "status": "PASS",
+      "wallMs": 22.926499999999805,
+      "userMs": 0,
+      "systemMs": 0,
+      "maxRssBytes": 15941632
+    },
+    {
+      "name": "frontend",
+      "status": "PASS",
+      "wallMs": 25162.626084,
+      "userMs": 23230,
+      "systemMs": 960,
+      "maxRssBytes": 5193154560
+    },
+    {
+      "name": "mem2reg-always-inline",
+      "status": "PASS",
+      "wallMs": 14329.716332999997,
+      "userMs": 13320,
+      "systemMs": 420,
+      "maxRssBytes": 2847588352
+    },
+    {
+      "name": "split",
+      "status": "PASS",
+      "wallMs": 8223.377207999998,
+      "userMs": 7260,
+      "systemMs": 310,
+      "maxRssBytes": 1799176192
+    },
+    {
+      "name": "opt-codegen-3",
+      "status": "PASS",
+      "wallMs": 46000.080375,
+      "userMs": 39370,
+      "systemMs": 510,
+      "maxRssBytes": 1669087232
+    },
+    {
+      "name": "opt-codegen-2",
+      "status": "PASS",
+      "wallMs": 28521.506708,
+      "userMs": 22930,
+      "systemMs": 430,
+      "maxRssBytes": 1559543808
+    },
+    {
+      "name": "opt-codegen-1",
+      "status": "PASS",
+      "wallMs": 22013.090666999997,
+      "userMs": 17290,
+      "systemMs": 380,
+      "maxRssBytes": 1083768832
+    },
+    {
+      "name": "opt-codegen-0",
+      "status": "PASS",
+      "wallMs": 14909.80812500001,
+      "userMs": 13100,
+      "systemMs": 220,
+      "maxRssBytes": 920158208
+    },
+    {
+      "name": "link",
+      "status": "PASS",
+      "wallMs": 110.3695000000007,
+      "userMs": 160,
+      "systemMs": 30,
+      "maxRssBytes": 127467520
+    }
+  ],
+  "sampling": {
+    "api": "bun:jsc.profile",
+    "intervalSeconds": 0.1,
+    "samples": 5004,
+    "scope": "Statistical current-thread stack samples across complete compile_book including observer, not measured exclusive CPU time, allocation counts or retained bytes",
+    "self": [
+      {
+        "frame": "/private/tmp/bend2039-upgrade/bend2/comp.ts :: <anonymous>",
+        "samples": 591,
+        "percentOfSamples": 11.810551558752998
+      },
+      {
+        "frame": "/private/tmp/bend2039-upgrade/bend2/bend.ts :: Bin",
+        "samples": 358,
+        "percentOfSamples": 7.154276578737011
+      },
+      {
+        "frame": "unattributed :: filter",
+        "samples": 304,
+        "percentOfSamples": 6.075139888089528
+      },
+      {
+        "frame": "/private/tmp/bend2039-upgrade/bend2/bend.ts :: term_higher",
+        "samples": 279,
+        "percentOfSamples": 5.575539568345324
+      },
+      {
+        "frame": "unattributed :: map",
+        "samples": 248,
+        "percentOfSamples": 4.95603517186251
+      },
+      {
+        "frame": "/private/tmp/bend2039-upgrade/bend2/comp.ts :: emit_ctr_done",
+        "samples": 208,
+        "percentOfSamples": 4.156674660271783
+      },
+      {
+        "frame": "/private/tmp/bend2039-upgrade/bend2/comp.ts :: memo",
+        "samples": 195,
+        "percentOfSamples": 3.8968824940047964
+      },
+      {
+        "frame": "/private/tmp/bend2039-upgrade/bend2/bend.ts :: term_wnf",
+        "samples": 174,
+        "percentOfSamples": 3.4772182254196644
+      },
+      {
+        "frame": "/private/tmp/bend2039-upgrade/bend2/comp.ts :: ctr_domains",
+        "samples": 158,
+        "percentOfSamples": 3.1574740207833734
+      },
+      {
+        "frame": "/private/tmp/bend2039-upgrade/bend2/comp.ts :: term_uses",
+        "samples": 101,
+        "percentOfSamples": 2.0183852917665868
+      },
+      {
+        "frame": "/private/tmp/bend2039-upgrade/bend2/comp.ts :: ty_wnf",
+        "samples": 98,
+        "percentOfSamples": 1.9584332533972821
+      },
+      {
+        "frame": "/private/tmp/bend2039-upgrade/bend2/comp.ts :: facts_ctr",
+        "samples": 89,
+        "percentOfSamples": 1.7785771382893685
+      },
+      {
+        "frame": "unattributed :: cloneObject",
+        "samples": 79,
+        "percentOfSamples": 1.5787370103916867
+      },
+      {
+        "frame": "/private/tmp/bend2039-upgrade/bend2/comp.ts :: val_hold",
+        "samples": 79,
+        "percentOfSamples": 1.5787370103916867
+      },
+      {
+        "frame": "/private/tmp/bend2039-upgrade/bend2/comp.ts :: val_new",
+        "samples": 77,
+        "percentOfSamples": 1.5387689848121502
+      }
+    ],
+    "inclusive": [
+      {
+        "frame": "/private/tmp/bend2039-full-profile-codegen.ts :: (module)",
+        "samples": 4995,
+        "percentOfSamples": 99.82014388489209
+      },
+      {
+        "frame": "/private/tmp/bend2039-upgrade/bend2/comp.ts :: emit_match",
+        "samples": 4235,
+        "percentOfSamples": 84.63229416466827
+      },
+      {
+        "frame": "/private/tmp/bend2039-upgrade/bend2/comp.ts :: emit_chain",
+        "samples": 3922,
+        "percentOfSamples": 78.37729816147082
+      },
+      {
+        "frame": "/private/tmp/bend2039-upgrade/bend2/comp.ts :: emit_body",
+        "samples": 3708,
+        "percentOfSamples": 74.10071942446044
+      },
+      {
+        "frame": "/private/tmp/bend2039-upgrade/bend2/comp.ts :: emit_expr",
+        "samples": 2669,
+        "percentOfSamples": 53.337330135891285
+      },
+      {
+        "frame": "/private/tmp/bend2039-upgrade/bend2/comp.ts :: memo",
+        "samples": 2042,
+        "percentOfSamples": 40.807354116706634
+      },
+      {
+        "frame": "/private/tmp/bend2039-upgrade/bend2/comp.ts :: emit_clo",
+        "samples": 1717,
+        "percentOfSamples": 34.31254996003197
+      },
+      {
+        "frame": "/private/tmp/bend2039-upgrade/bend2/comp.ts :: emit_fuse",
+        "samples": 1587,
+        "percentOfSamples": 31.71462829736211
+      },
+      {
+        "frame": "/private/tmp/bend2039-upgrade/bend2/comp.ts :: emit_native",
+        "samples": 1018,
+        "percentOfSamples": 20.343725019984014
+      },
+      {
+        "frame": "/private/tmp/bend2039-upgrade/bend2/comp.ts :: bind_uses",
+        "samples": 1000,
+        "percentOfSamples": 19.984012789768187
+      },
+      {
+        "frame": "/private/tmp/bend2039-upgrade/bend2/comp.ts :: rest_use",
+        "samples": 901,
+        "percentOfSamples": 18.005595523581135
+      },
+      {
+        "frame": "/private/tmp/bend2039-upgrade/bend2/comp.ts :: term_uses",
+        "samples": 899,
+        "percentOfSamples": 17.9656274980016
+      }
+    ],
+    "binSelfSamplesByOwner": {
+      "term_uses": 358
+    },
+    "pmapSetVsUnionSelfSamples": {
+      "pmap_set": 308,
+      "pmap_union": 50
+    },
+    "filterSelfSamplesByOwner": {
+      "memo": 14,
+      "fun_at": 55,
+      "facts_ctr": 166,
+      "anf": 3,
+      "emit_clo": 2,
+      "val_arms": 2,
+      "emit_fuse": 61,
+      "val_owned": 1
+    }
+  },
+  "raw": {
+    "receipt": {
+      "path": "/tmp/bend2039-complete-profile-YStxpX/receipt.json",
+      "sha256": "08f57e5500c777744beb97161ef6ba85e23b5600c38821b50c77cf7e068c17a8"
+    },
+    "codegen": {
+      "path": "/tmp/bend2039-complete-profile-YStxpX/codegen.json",
+      "sha256": "f8af35aa43ed85d7fc9572601ebfd7a8c77b120e136aebd8fd1eeaf008f56ed9"
+    },
+    "sampling": {
+      "path": "/tmp/bend2039-complete-profile-YStxpX/codegen.json.sampling.json",
+      "sha256": "ba59720f0a144b85fa22c51e8c47c8cbf0a50bfcad9e8655586752756f769676"
+    },
+    "analysis": {
+      "path": "/tmp/bend2039-complete-profile-YStxpX/codegen.json.analysis.json",
+      "sha256": "4948527ea2f906f48065d7cf9af1a78b603f62a4ac6554032fa12742266c40cd"
+    }
+  },
+  "notes": [
+    "Entire compilation, C publication, LLVM optimization/codegen/link and actual native-compiler consumer completed. Consumer emitted unchanged JS which printed42.",
+    "C bytes exactly match prior full G4 C. No native build or fixedpoint acceptance is inferred: diagnostic elapsed636117ms exceeds600000ms and used an explicitly larger diagnostic guard.",
+    "Observer and sampling overhead not measured; do not compare these times as an optimization result.",
+    "LLVM partition wall intervals overlap; do not sum them as elapsed wall time.",
+    "Nine passes regenerate all11775 definitions; last three add3,1,0 ownership facts.",
+    "All358 Bin self samples have term_uses in their stack:308 via pmap_set,50 via pmap_union. This resolves leaf singleton construction as a concrete allocation hot path without changing the trie representation."
+  ]
+}
