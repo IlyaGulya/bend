@@ -18,6 +18,11 @@ latest one; the GitHub release carries the same notes.
   instead of failing with the machine memory fault; full bootstrap admission
   remains separate.
 
+- Compiler use summaries share immutable flat maps for single-child terms
+  and copy only when merging children. Branch counts still take the maximum;
+  other child counts add. Nine actual C/JS programs retain identical bytes;
+  full-root timing and admission remain separate measurements.
+
 - Native C generation traverses nested constructors with an explicit stack,
   preserving field order, layouts and ownership without exhausting Bun's
   JavaScript stack on large literal values. The 8192-character regression now
