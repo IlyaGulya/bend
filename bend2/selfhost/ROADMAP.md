@@ -215,6 +215,18 @@ footprint 2,007,987,816 B; the JS lane's 64 stages sum to 197,361 ms, max RSS
 This accepts the tested backend/layout behavior, not the rejected whole native
 build or a byte fixedpoint. Proof: `evals/receipts/c_js_matrix2039g2_32.json`.
 
+A separate, user-authorized **16 GiB diagnostic** on the unchanged g2 root
+completes canonical validation of all 12,144 bodies / 12,723 events and returns
+55,201,172 B of C after ten passes. The last pass ends at 277,443 ms; the
+288,199 ms guarded run includes profiler finalization and raw serialization.
+Peak sampled RSS is 9,598,287,872 B / footprint 7,172,857,224 B: it exceeds the
+original 8 GiB RSS acceptance bound despite the lower physical footprint.
+The 20,206 captured stacks include 7,074 after 180 seconds and are statistical
+samples, not CPU-time or allocation attribution. The diagnostic does not publish
+or compile its C string and establishes no native-build or byte-fixedpoint
+acceptance. The original 8 GiB / 600 s acceptance and rejected receipts remain
+unchanged. Proof: `evals/receipts/root2039g2_late_sampling_16g.json`.
+
 Latest compiler root: **`db147cba`**, after an authenticated inline-parser
 cutover in `/private/tmp/bend-parser-cutover667`. Fresh native admission checks
 all 11,889 bodies / 12,450 events with 0 exclusions/patches and unchanged
