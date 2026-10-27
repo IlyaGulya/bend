@@ -18430,7 +18430,7 @@
     "bend2/base.bend": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
     "evals/heavy_gate.ts": "204f3529704435455d20a9d5a126a8e9c62e002b6fed9044c8319da8a3c26ff2",
     "evals/validation_profile.ts": "d0bfd8124b334cb1db4792e49675290a971ae82730e57029173b07ff23d6938d",
-    "checkpoints/checker-core-owned-source-v1.json": "f9815655839134dc8dfe5de22d67064584fb9d06ac39ac848d94ede7e2231667",
+    "checkpoints/checker-core-owned-source-v1.json": "226c730512c42729c571493ba1c09e0f32be94471f9b41a845786c67e314475f",
     "evals/checker_core_step_lower.ts": "05492ac6aaa7855b4d4770bf1f77d7abacf3cc3b956dfca9e6f411fffb202158",
     "evals/checker_core_owned_source.ts": "550ce39e12d8491fcc1913d3a84d49f37cf3f464b6f4df7944374c16504672e2",
     "evals/emitter_step_lower.ts": "4376c983d376a91f8464037444ddeccd1233f6a00f9c2362ce4fd88ab9f84371",
@@ -18453,7 +18453,7 @@
     "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/backend_ir.bend": "f19e76411b589cc396cda80bb8ad387cdb5e9aef17ae287641f0d29696a88e9e",
     "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/c_backend_sharing.bend": "c8861993d2ad81057a9ba8b187eb75f743a9005fbb021b43083e7e2906597a40",
     "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/emitter.bend": "47d68ba5f0b54c334e2c940b7bb6aabc7f3bba27142b816f27df8225cf3fae4f",
-    "/private/tmp/bend2039g8-js-call-cost/checkpoints/emitter_owned_v1.bend": "1b6152b4c8fb9c62f342a317f4af32d76b7491ade26b93d6589a31abb28702ea",
+    "/private/tmp/bend2039g8-js-call-cost/checkpoints/emitter_owned_v1.bend": "8e8cd9c40341b4110f5690064e1492f91d2a89dbf285011201d4dc3fe5839814",
     "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/core.bend": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
     "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/sha256.bend": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
     "bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
@@ -18472,5 +18472,5 @@
     "nativeBuildRun": false,
     "testsRun": false
   },
-  "generationManifestSha256": "054bf1ea21f64438d7e1ae6a54a5a27514361e6e4bde9ff22e754049cf350192"
+  "generationManifestSha256": "4f4471f0a643f2365931b36a9a6b87f479c7dbcd8d25b69e45df0ab4712b8033"
 }

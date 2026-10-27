@@ -25422,7 +25422,7 @@ def emitter_continuation_2357(+v_3: String, v_5: Nat, +v_1: U32, v_1010464: Stri
   EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_code_name{v_1}}, False{}, v_1010476 => emitter_body_cps_provider_8_code_name(v_1), v_1010475 => +v_1010471 = emitter_unbox(String, v_1010475); EmitterDirect{Bool, EmitterRequestGroup_23{EmitterRequest_cps_provider_8_cat{[v_1010464, v_1010465, v_1010466, v_1010467, v_1010468, v_1010469, v_1010470, v_1010471, ",", String.append(v_3, ",$td)"), ")"]}}, False{}, v_1010474 => emitter_body_cps_provider_8_cat([v_1010464, v_1010465, v_1010466, v_1010467, v_1010468, v_1010469, v_1010470, v_1010471, ",", String.append(v_3, ",$td)"), ")"]), v_1010473 => +v_1010472 = emitter_unbox(String, v_1010473); EmitterFinished{EmitterValue{v_1010472}}}}
 
 def emitter_body_cps_provider_8_tail_call_named(+v_1: U32, +v_3: String, v_5: Nat) -> EmitterProgress<String>:
-  v_1010464 = {"$td<64?" : String}
+  v_1010464 = {"($td<64?" : String}
   EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_code_name{v_1}}, False{}, v_1010478 => emitter_body_cps_provider_8_code_name(v_1), v_1010477 => +v_1010465 = emitter_unbox(String, v_1010477); emitter_continuation_2357(v_3, v_5, v_1, v_1010464, v_1010465)}
 
 def emitter_body_cps_provider_8_public_closure(v_2: List<&2, String>, v_4: String) -> EmitterProgress<String>:
