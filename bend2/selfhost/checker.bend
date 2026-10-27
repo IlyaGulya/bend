@@ -10836,10 +10836,11 @@ def inherit_law_binder_view(v_1: ArenaStore, v_3: U32, v_5: U32, v_6: IR.Words, 
           +v_109 = v_107
           match v_109:
             case False{}:
+              ArenaResult{diagnostic_store, binder_name} = arena_name_text(v_106, v_63)
               v_50000341 = span_file(v_67)
-              v_50000342 = Checked.Diagnostic{v_50000341, v_67, String.append("completion binder differs from its law: ", v_63), "the declared law quantity and domain", "an incompatible binder annotation"}
+              v_50000342 = Checked.Diagnostic{v_50000341, v_67, String.append("completion binder differs from its law: ", binder_name), "the declared law quantity and domain", "an incompatible binder annotation"}
               +v_112 = DefinitionElaborationFailure{v_50000342}
-              v_114 = v_106
+              v_114 = diagnostic_store
               {ArenaResult{v_114, v_112} : ArenaResult<DefinitionElaboration>}
             case True{}:
               ArenaResult{v_119, +v_120} = arena_words_cons(v_106, v_85, v_7)
