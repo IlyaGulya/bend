@@ -1336,6 +1336,15 @@ def array_arg_owned(primitive: BIR.Primitive, +index: Nat) -> Bool:
     case BIR.PrimArrayClone{}: Nat.is_eq(index, 0n)
     case BIR.PrimArraySet{}: Bool.or(Nat.is_eq(index, 0n), Nat.is_eq(index, 2n))
     case BIR.PrimArraySwap{}: Bool.or(Nat.is_eq(index, 0n), Nat.is_eq(index, 2n))
+    case BIR.PrimArrayAtomicAdd{}: Nat.is_eq(index, 0n)
+    case BIR.PrimArrayAtomicMin{}: Nat.is_eq(index, 0n)
+    case BIR.PrimArrayAtomicMax{}: Nat.is_eq(index, 0n)
+    case BIR.PrimArrayAtomicAnd{}: Nat.is_eq(index, 0n)
+    case BIR.PrimArrayAtomicOr{}: Nat.is_eq(index, 0n)
+    case BIR.PrimArrayAtomicXor{}: Nat.is_eq(index, 0n)
+    case BIR.PrimArrayAtomicExch{}: Nat.is_eq(index, 0n)
+    case BIR.PrimArrayAtomicCas{}: Nat.is_eq(index, 0n)
+    case BIR.PrimArrayAtomicFadd{}: Nat.is_eq(index, 0n)
     case BIR.PrimArrayLeaf{}: Nat.is_eq(index, 0n)
     case BIR.PrimArrayNode{}: Nat.is_lt(index, 2n)
     case _: False{}
@@ -1406,6 +1415,11 @@ def prim_step(primitive: BIR.Primitive, args: List<&2, BIR.Arg>, types: List<&2,
     case _: array_op_step(primitive, args, types, ctx, continuation, owner_tag)
 
 def array_op_step(primitive: BIR.Primitive, args: List<&2, BIR.Arg>, types: List<&2, BIR.Descriptor>, +ctx: Ctx, continuation: BIR.Block, +owner_tag: U32) -> OpStep:
+  match is_atomic_primitive(primitive):
+    case True{}: array_step(primitive, args, types, ctx, 0n, Nil{}, "", continuation, owner_tag)
+    case False{}: array_op_step_element(primitive, args, types, ctx, continuation, owner_tag)
+
+def array_op_step_element(primitive: BIR.Primitive, args: List<&2, BIR.Arg>, types: List<&2, BIR.Descriptor>, +ctx: Ctx, continuation: BIR.Block, +owner_tag: U32) -> OpStep:
   match is_array_primitive(primitive):
     case True{}:
       match types:
@@ -1595,6 +1609,22 @@ def is_array_primitive(primitive: BIR.Primitive) -> Bool:
     case BIR.PrimIsArrayNode{}: True{}
     case _: False{}
 
+# The nine atomics are array-shaped but fixed scalar: Array<U32> words, and
+# Array<F32> binary32 words for fadd, so they carry no erased element Descriptor
+# and must not be refused when PrimitiveCall.types is empty.
+def is_atomic_primitive(primitive: BIR.Primitive) -> Bool:
+  match primitive:
+    case BIR.PrimArrayAtomicAdd{}: True{}
+    case BIR.PrimArrayAtomicMin{}: True{}
+    case BIR.PrimArrayAtomicMax{}: True{}
+    case BIR.PrimArrayAtomicAnd{}: True{}
+    case BIR.PrimArrayAtomicOr{}: True{}
+    case BIR.PrimArrayAtomicXor{}: True{}
+    case BIR.PrimArrayAtomicExch{}: True{}
+    case BIR.PrimArrayAtomicCas{}: True{}
+    case BIR.PrimArrayAtomicFadd{}: True{}
+    case _: False{}
+
 def pcid(short: String, plan: Plan) -> Part:
   match plan:
     case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing, _, _}:
@@ -1626,7 +1656,15 @@ def bool_part(cond: String, plan: Plan) -> Part:
     case PartFail{message} _: PartFail{message}
     case _ PartFail{message}: PartFail{message}
 
+# A first-class atomic native value enters with its live arguments in registers
+# and needs no element Descriptor, so it renders the same fixed-scalar
+# expression the direct call site does.
 def prim_part(primitive: BIR.Primitive, +a: List<&2, String>, +plan: Plan) -> Part:
+  match is_atomic_primitive(primitive):
+    case True{}: phys_part(Phys.atomic_prim_part(primitive, a, phys_world(plan)))
+    case False{}: prim_scalar_part(primitive, a, plan)
+
+def prim_scalar_part(primitive: BIR.Primitive, +a: List<&2, String>, +plan: Plan) -> Part:
   +a0 = list_at(a, 0n)
   +a1 = list_at(a, 1n)
   +a2 = list_at(a, 2n)

@@ -1739,6 +1739,15 @@ def array_label(+pprimitive: BIR.Primitive) -> String:
     case BIR.PrimArrayGet{}: "array_get"
     case BIR.PrimArraySet{}: "array_set"
     case BIR.PrimArraySwap{}: "array_swap"
+    case BIR.PrimArrayAtomicAdd{}: "array_atomic_add"
+    case BIR.PrimArrayAtomicMin{}: "array_atomic_min"
+    case BIR.PrimArrayAtomicMax{}: "array_atomic_max"
+    case BIR.PrimArrayAtomicAnd{}: "array_atomic_and"
+    case BIR.PrimArrayAtomicOr{}: "array_atomic_or"
+    case BIR.PrimArrayAtomicXor{}: "array_atomic_xor"
+    case BIR.PrimArrayAtomicExch{}: "array_atomic_exch"
+    case BIR.PrimArrayAtomicCas{}: "array_atomic_cas"
+    case BIR.PrimArrayAtomicFadd{}: "array_atomic_fadd"
     case BIR.PrimArraySize{}: "array_size"
     case BIR.PrimArrayClone{}: "array_clone"
     case BIR.PrimArrayLeaf{}: "array_leaf"
@@ -1927,6 +1936,83 @@ def array_clone_ops(+parray: Maybe<&2, Operand>, +pw: World) -> Part:
       tuple_and_code(tuple_part(pw, "a0", "blk_copy(e, a0)"), code)
     case None{}: PartFail{"array_clone needs the array"}
 
+# An atomic takes a fixed scalar array: Array<U32> keeps one u32 per element and
+# Array<F32> one raw binary32 word, so the lane needs no erased element
+# Descriptor and no PrimitiveCall.types. blk_at(a, i, 0) is the runtime's own
+# index modulo of the block's word count, and the helper works on the block's
+# buffer itself, never a copy, so a second fork handle sees the same cell. The
+# pair is the forwarded handle and the OLD word; cas compares the expected word
+# before storing the replacement and leaves the cell untouched otherwise. The
+# array operand is always a bound Term name and each scalar operand appears
+# exactly once, so the whole operation is one C expression.
+def atomic_cell_text(+parray: String, +pindex: String) -> String:
+  join_text(["blk_ptr(e.mem, blk_loc(e.mem, ", parray, "), blk_at(", parray, ", (u64)(u32)(", pindex, "), 0))"])
+
+def atomic_call_text(+parray: String, +pindex: String, +pvalue: String, +pname: String) -> String:
+  join_text(["(u64)", pname, "(", atomic_cell_text(parray, pindex), ", (u32)(", pvalue, "))"])
+
+def atomic_cas_text(+parray: String, +pindex: String, +pexpected: String, +preplacement: String) -> String:
+  join_text(["(u64)a32_cmpx(", atomic_cell_text(parray, pindex), ", (u32)(", pexpected, "), (u32)(", preplacement, "))"])
+
+def atomic_helper(+pprimitive: BIR.Primitive) -> Part:
+  match pprimitive:
+    case BIR.PrimArrayAtomicAdd{}: PartOk{"a32_add"}
+    case BIR.PrimArrayAtomicMin{}: PartOk{"a32_min"}
+    case BIR.PrimArrayAtomicMax{}: PartOk{"a32_max"}
+    case BIR.PrimArrayAtomicAnd{}: PartOk{"a32_and"}
+    case BIR.PrimArrayAtomicOr{}: PartOk{"a32_or"}
+    case BIR.PrimArrayAtomicXor{}: PartOk{"a32_xor"}
+    case BIR.PrimArrayAtomicExch{}: PartOk{"a32_exch"}
+    case BIR.PrimArrayAtomicFadd{}: PartOk{"a32_fadd"}
+    case _: PartFail{join_text(["the primitive `", array_label(pprimitive), "` has no a32 read-modify-write helper"])}
+
+def atomic_pair(+pexpr: String, +parray: String, +pw: World) -> Part:
+  tuple_cid(cid_text("Tuple", pw), parray, pexpr)
+
+def atomic_three_operands(+pprimitive: BIR.Primitive, +parray: Operand, +pindex: Operand, +pvalue: Operand, +pw: World) -> Part:
+  match atomic_helper(pprimitive):
+    case PartFail{message}: PartFail{message}
+    case PartOk{name}:
+      code = run_jobs(one_job(JText{join_text(["Term a0 = ", keep_text(parray), ";"])}), pw, Nil{})
+      tuple_and_code(atomic_pair(atomic_call_text("a0", operand_text(pindex), operand_text(pvalue), name), "a0", pw), code)
+
+def atomic_three_pargs(+pprimitive: BIR.Primitive, +pargs: List<&2, Operand>, +pw: World) -> Part:
+  match pargs:
+    case [array, index, value]: atomic_three_operands(pprimitive, array, index, value, pw)
+    case _: PartFail{join_text([array_label(pprimitive), " takes the array, the index and the value"])}
+
+def atomic_cas_pargs(+pargs: List<&2, Operand>, +pw: World) -> Part:
+  match pargs:
+    case [array, index, expected, replacement]:
+      code = run_jobs(one_job(JText{join_text(["Term a0 = ", keep_text(array), ";"])}), pw, Nil{})
+      tuple_and_code(atomic_pair(atomic_cas_text("a0", operand_text(index), operand_text(expected), operand_text(replacement)), "a0", pw), code)
+    case _: PartFail{"array_atomic_cas takes the array, the index, the expected word and the replacement"}
+
+def atomic_pargs(+pprimitive: BIR.Primitive, +pargs: List<&2, Operand>, +pw: World) -> Part:
+  match pprimitive:
+    case BIR.PrimArrayAtomicCas{}: atomic_cas_pargs(pargs, pw)
+    case _: atomic_three_pargs(pprimitive, pargs, pw)
+
+# A first-class atomic native value is entered with its live arguments in
+# registers a0.., so the same expression is built over those names.
+def atomic_three_regs(+pprimitive: BIR.Primitive, +pargs: List<&2, String>, +pw: World) -> Part:
+  match pargs:
+    case [array, index, value]:
+      match atomic_helper(pprimitive):
+        case PartFail{message}: PartFail{message}
+        case PartOk{name}: atomic_pair(atomic_call_text(array, index, value, name), array, pw)
+    case _: PartFail{join_text([array_label(pprimitive), " takes the array, the index and the value"])}
+
+def atomic_cas_regs(+pargs: List<&2, String>, +pw: World) -> Part:
+  match pargs:
+    case [array, index, expected, replacement]: atomic_pair(atomic_cas_text(array, index, expected, replacement), array, pw)
+    case _: PartFail{"array_atomic_cas takes the array, the index, the expected word and the replacement"}
+
+def atomic_prim_part(+pprimitive: BIR.Primitive, +pargs: List<&2, String>, +pw: World) -> Part:
+  match pprimitive:
+    case BIR.PrimArrayAtomicCas{}: atomic_cas_regs(pargs, pw)
+    case _: atomic_three_regs(pprimitive, pargs, pw)
+
 def array_leaf_ops(+pvalue: Maybe<&2, Operand>, +pw: World, +playout: CLay.Layout, +parr: Bool, +pwords: Nat, +plgs: Nat) -> Part:
   match pvalue:
     case Some{value}:
@@ -1996,6 +2082,11 @@ def array_leaf_cell(+pcell: CellOut, +pargs: List<&2, Operand>, +pw: World) -> P
     case CellOk{layout, arr, words, lgs}: array_leaf_ops(operand_at(pargs, 0n), pw, layout, arr, words, lgs)
 
 def array_part(+pprimitive: BIR.Primitive, +pargs: List<&2, Operand>, +ptypes: List<&2, BIR.Descriptor>, +pw: World) -> Part:
+  match is_atomic_primitive(pprimitive):
+    case True{}: atomic_pargs(pprimitive, pargs, pw)
+    case False{}: array_cell_part(pprimitive, pargs, ptypes, pw)
+
+def array_cell_part(+pprimitive: BIR.Primitive, +pargs: List<&2, Operand>, +ptypes: List<&2, BIR.Descriptor>, +pw: World) -> Part:
   match pprimitive:
     case BIR.PrimArrayNew{}: array_new_cell(array_cell(pw, ptypes, pprimitive), pargs, pw)
     case BIR.PrimArrayGet{}: array_get_cell(array_cell(pw, ptypes, pprimitive), pargs, pw)
@@ -2008,6 +2099,21 @@ def array_part(+pprimitive: BIR.Primitive, +pargs: List<&2, Operand>, +ptypes: L
     case BIR.PrimIsArrayLeaf{}: array_is_ops(operand_at(pargs, 0n), 0n, pw)
     case BIR.PrimIsArrayNode{}: array_is_ops(operand_at(pargs, 0n), 1n, pw)
     case _: PartFail{"this primitive is not an array operation"}
+
+# The nine atomics are array-shaped but fixed scalar, so they never consult the
+# element Descriptor cell plan that every other array operation requires.
+def is_atomic_primitive(+pprimitive: BIR.Primitive) -> Bool:
+  match pprimitive:
+    case BIR.PrimArrayAtomicAdd{}: True{}
+    case BIR.PrimArrayAtomicMin{}: True{}
+    case BIR.PrimArrayAtomicMax{}: True{}
+    case BIR.PrimArrayAtomicAnd{}: True{}
+    case BIR.PrimArrayAtomicOr{}: True{}
+    case BIR.PrimArrayAtomicXor{}: True{}
+    case BIR.PrimArrayAtomicExch{}: True{}
+    case BIR.PrimArrayAtomicCas{}: True{}
+    case BIR.PrimArrayAtomicFadd{}: True{}
+    case _: False{}
 
 def is_array_primitive(+pprimitive: BIR.Primitive) -> Bool:
   match pprimitive:
