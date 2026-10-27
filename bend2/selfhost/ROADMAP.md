@@ -32,13 +32,23 @@ Proof: `evals/receipts/root2039g8b_emitted_suites.json`.
 Proof: `evals/receipts/root2039g8b_native_fixedpoint.json`. Generated compiler
 images, transports and bulk logs remain outside Git. Earlier failed versions
 below remain rejected. The separate canonical JS-seed/default-stack parser
-failure is not reclassified. Full-input profiling-overhead controls and
-uncovered law-boundary checks remain separate deliverables; runtime acceptance
-does not prove the FIR/BIR laws. The reduced current-producer memory diagnostic
+failure is not reclassified. Full-input profiling overhead is measured
+separately in `evals/receipts/profile2039g8_full_root_overhead.json`; all four
+unchanged-image legs pass. Runtime acceptance does not prove the FIR/BIR laws.
+The reduced current-producer memory diagnostic
 is exercised in `evals/receipts/producer2039g8_reduced_memory.json`: one literal
 main isolates reachability/pass-1 growth, while chain/linear call placement
 separates speculative segment/preparation amplification. Samples are not
 allocation totals, retained bytes or a reproduction of the whole-root peak.
+
+The subsequent **g9a is rejected**, not a replacement acceptance. Its nine
+atomic primitives pass three consumer scenarios on both JS/C targets; fresh
+parser admission, 12,099-body / 12,679-event native validation and native
+build pass under the original guard. The bootstrap reaches stage-two-check
+at 265,051 ms and hits the 600,000-ms deadline there, with no stage2.
+The observed native stage0 check is 97,131 ms / 9,757,369 bounded advances;
+that alone does not establish why the emitted checker misses the deadline.
+Proof: `evals/receipts/root2039g9a_atomic_bootstrap_rejected.json`.
 
 
 **Status legend**

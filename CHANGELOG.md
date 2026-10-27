@@ -5,6 +5,16 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- The g9a candidate adds the nine `Array.atomic.*` primitives to the common
+  catalog and JS/C targets. All three atomic consumer scenarios pass on each
+  target, including wrapped indices, shared aliases, partial CAS and F32 bits.
+  Fresh parser admission and full native validation/build pass (12,099 bodies,
+  12,679 events; zero exclusions/patches; 273.066 s, peak RSS 5,381,029,888 B).
+  This version is nevertheless **rejected**: bootstrap hits the unchanged
+  600-second deadline in stage-two-check. Native seed fixtures and 18 complete
+  parser approvals pass, but there is no stage2 or new byte fixedpoint.
+  Receipt: `evals/receipts/root2039g9a_atomic_bootstrap_rejected.json`.
+
 - The complete g8 native-seed selfhost checkpoint passes on the pinned
   Bend 2.0.39/Bun 1.4.3 sources under the original 8 GiB / 600 s gates.
   All 12,071 bodies / 12,651 events validate without exclusions or output

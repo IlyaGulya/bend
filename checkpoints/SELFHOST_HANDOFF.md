@@ -21,8 +21,21 @@ Stage1 использует собственные parser/checker/emitter для
 
 Ниже сохранена **история** предыдущих версий, а не текущий статус.
 Отдельный JS-seed default-stack отказ не объявляется исправленным.
-Остались отдельные задачи profiling overhead на полном одинаковом входе,
-минимального memory-growth diagnostic и непокрытых законов FIR/BIR.
+Полный profiling off/on контроль завершён: две чередующиеся пары одного
+неизменного g8 stage1 на полном root дали одинаковые выходные байты; квитанция
+`evals/receipts/profile2039g8_full_root_overhead.json`. Отдельный сокращённый
+репродуктор памяти выполнен и сохранён в
+`evals/receipts/producer2039g8_reduced_memory.json`.
+
+Следующий g9a добавляет девять Array.atomic.* и проходит три atomic-сценария
+на каждом JS/C target. Свежие parser admission и полная native-сборка
+12 099 тел / 12 679 событий PASS: 273 066 мс, peak RSS 5 381 029 888 B.
+Но g9a **отклонён**: bootstrap остановлен прежним дедлайном 600 с в
+stage-two-check; stage2 и нового fixedpoint нет. Есть настоящий stage1,
+95 native-seed fixtures и 18 полных parser approvals. Доказательства и точная
+граница: `evals/receipts/root2039g9a_atomic_bootstrap_rejected.json`.
+Текущая работа — короткая CPU-диагностика checker и завершение полной приёмки
+atomic-версии без увеличения лимитов; принятым остаётся g8, не g9a.
 
 СЕЙЧАС принят host57aa: compa84170d5… с общим C-only inline cutoff8 words.
 Physical WIDE247 и JS layouts прежние; scalar structural layouts сохраняются,
