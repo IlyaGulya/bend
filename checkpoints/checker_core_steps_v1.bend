@@ -26559,8 +26559,8 @@ def checker_match_3249(v_8: Arena.SubstMemoEntry, v_1: U32, v_5: U32, v_3: Nat, 
   match v_8:
     case Arena.SubstMemoEmpty{}:
       CheckerFinished{CheckerValue{None{}}}
-    case Arena.SubstMemoSaved{v_16, v_17, v_18, v_19, v_20}:
-      CheckerFinished{CheckerValue{checker_pure_arena_subst_memo_exact(v_20, Bool.and(Bool.and(U32.is_eq(v_1, v_16), U32.is_eq(v_5, v_18)), Bool.and(Nat.is_eq(v_3, v_17), Nat.is_eq(v_7, v_19))))}}
+    case Arena.SubstMemoSaved{v_17, v_18, v_19, v_20, v_21, _}:
+      CheckerFinished{CheckerValue{checker_pure_arena_subst_memo_exact(v_21, Bool.and(Bool.and(U32.is_eq(v_1, v_17), U32.is_eq(v_5, v_19)), Bool.and(Nat.is_eq(v_3, v_18), Nat.is_eq(v_7, v_20))))}}
     case _:
       CheckerFinished{CheckerValue{None{}}}
 
@@ -28892,18 +28892,18 @@ def checker_body_arena_publish_optional_occurrence(v_1: ArenaStore, v_3: Maybe<&
 def checker_body_arena_publication_save(v_2: ArenaResult<U32>, +v_4: U32) -> CheckerProgress<ArenaResult<U32>>:
   CheckerFinished{CheckerValue{checker_pure_arena_publication_save(v_2, v_4)}}
 
-def checker_match_3560(v_1007295: Bool, v_0: Arena.Arena, v_8: Arena.Arena, v_13: U32, +v_2: U32) -> CheckerProgress<ArenaResult<U32>>:
+def checker_match_3560(v_1007295: Bool, v_0: Arena.Arena, v_8: Arena.Arena, v_14: U32, +v_2: U32) -> CheckerProgress<ArenaResult<U32>>:
   match v_1007295:
     case True{}:
-      CheckerFinished{CheckerValue{{ArenaResult{ArenaStore{v_0, v_8}, v_13} : ArenaResult<U32>}}}
+      CheckerFinished{CheckerValue{{ArenaResult{ArenaStore{v_0, v_8}, v_14} : ArenaResult<U32>}}}
     case False{}:
       CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_publication_uncached{ArenaStore{v_0, v_8}, v_2}}, v_1007297 => v_1007296 = checker_unbox(ArenaResult<U32>, v_1007297); CheckerFinished{CheckerValue{v_1007296}}}
 
 def checker_match_3561(v_9: Arena.SubstMemoEntry, +v_2: U32, v_0: Arena.Arena, v_8: Arena.Arena) -> CheckerProgress<ArenaResult<U32>>:
   match v_9:
-    case Arena.PublishedTerm{v_12, v_13}:
-      v_1007295 = {U32.is_eq(v_12, v_2) : Bool}
-      checker_match_3560(v_1007295, v_0, v_8, v_13, v_2)
+    case Arena.PublishedTerm{v_13, v_14, _}:
+      v_1007295 = {U32.is_eq(v_13, v_2) : Bool}
+      checker_match_3560(v_1007295, v_0, v_8, v_14, v_2)
     case _:
       CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_publication_uncached{ArenaStore{v_0, v_8}, v_2}}, v_1007299 => v_1007298 = checker_unbox(ArenaResult<U32>, v_1007299); CheckerFinished{CheckerValue{v_1007298}}}
 

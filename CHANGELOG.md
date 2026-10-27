@@ -5,12 +5,20 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- Transient checker substitution/publication memo entries are invalidated by
+  the arena's rewind generation instead of rewriting all 4096 slots after
+  every declaration. Lookups reject older epochs before exposing reused
+  handles; source-only cache lanes and the case-prefix reclamation stay
+  unchanged. The fresh g7 native build, both 33-case backend matrices and the
+  interpreter/JS/C lifecycle regression pass; its monolithic bootstrap remains
+  rejected at the unchanged 600-second stage-two-check deadline.
+
 - The selfhost JavaScript Nat host-input guard reports the host range failure
   directly, rather than routing invalid inputs through arithmetic overflow.
   Boundary fixtures check rejection and values instead of exception wording;
   the shadow-Nat consumer uses library-produced ADT values rather than private
-  constructor tags. The runtime declaration and canonical CLI consumers pass;
-  regenerated selfhost-emitter and full-bootstrap admission remain separate.
+  constructor tags. All five real nested host-export consumers now pass through
+  the regenerated g7 compiler. Full-bootstrap admission remains separate.
 
 - Descriptor normalization counts surviving arrow binders separately from
   substituted arguments and eliminated lets. Arrows, kinds and captured

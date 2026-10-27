@@ -25563,8 +25563,9 @@ def arena_case_prefix_suffix(start: U32, count: U32, offset: U32, empty: Bool) -
 
 # The table lives only in transient Arena. Full tagged IDs distinguish regions;
 # neither arbitrary Nat key is narrowed, and hash collisions are exact misses.
-# Published descriptors/tapes are immutable. Rewind clears the entire memo,
-# including no-op marks, before any input/value/output handle can be reused.
+# Published descriptors/tapes are immutable. Rewind advances the transient epoch
+# and never rewrites slots, so a slot is readable only under its put epoch; the
+# entry matcher below therefore sees no handle from an earlier frame.
 def arena_subst_memo_exact(output_id: U32, same: Bool) -> Maybe<&2, U32>:
   match same:
     case False{}: None{}
@@ -25573,7 +25574,7 @@ def arena_subst_memo_exact(output_id: U32, same: Bool) -> Maybe<&2, U32>:
 def arena_subst_memo_entry(node_id: U32, index: Nat, value_id: U32, depth: Nat, entry: Arena.SubstMemoEntry) -> Maybe<&2, U32>:
   match entry:
     case Arena.SubstMemoEmpty{}: None{}
-    case Arena.SubstMemoSaved{saved_node, saved_index, saved_value, saved_depth, output_id}:
+    case Arena.SubstMemoSaved{saved_node, saved_index, saved_value, saved_depth, output_id, _}:
       arena_subst_memo_exact(output_id, Bool.and(Bool.and(U32.is_eq(node_id, saved_node), U32.is_eq(value_id, saved_value)), Bool.and(Nat.is_eq(index, saved_index), Nat.is_eq(depth, saved_depth))))
     case _: None{}
 
@@ -27984,17 +27985,17 @@ def arena_publication_save(result: ArenaResult<U32>, +id: U32) -> ArenaResult<U3
     case ArenaResult{ArenaStore{source, transient}, +published}:
       {ArenaResult{ArenaStore{source, Arena.publication_memo_put(transient, id, published)}, published} : ArenaResult<U32>}
 
-def native_match_arena_publication_lookup_0(v_19: Bool, v_0: Arena.Arena, +v_2: U32, v_8: Arena.Arena, v_13: U32) -> ArenaResult<U32>:
-  match v_19:
+def native_match_arena_publication_lookup_0(v_21: Bool, v_0: Arena.Arena, +v_2: U32, v_8: Arena.Arena, v_14: U32) -> ArenaResult<U32>:
+  match v_21:
     case True{}:
-      {ArenaResult{ArenaStore{v_0, v_8}, v_13} : ArenaResult<U32>}
+      {ArenaResult{ArenaStore{v_0, v_8}, v_14} : ArenaResult<U32>}
     case False{}:
       arena_publication_uncached(ArenaStore{v_0, v_8}, v_2)
 
 def native_match_arena_publication_lookup_1(v_9: Arena.SubstMemoEntry, v_0: Arena.Arena, +v_2: U32, v_8: Arena.Arena) -> ArenaResult<U32>:
   match v_9:
-    case Arena.PublishedTerm{v_12, v_13}:
-      native_match_arena_publication_lookup_0(U32.is_eq(v_12, v_2), v_0, v_2, v_8, v_13)
+    case Arena.PublishedTerm{v_13, v_14, _}:
+      native_match_arena_publication_lookup_0(U32.is_eq(v_13, v_2), v_0, v_2, v_8, v_14)
     case _:
       arena_publication_uncached(ArenaStore{v_0, v_8}, v_2)
 

@@ -277,6 +277,24 @@ rejected. CPU profiling covers this whole continuation (617,806 samples);
 time-delta-weighted sampled elapsed time is not exclusive CPU attribution.
 Proof: `evals/receipts/root2039g6_diagnostic_byte_fixedpoint.json`.
 
+The fresh **g7** root includes generation-invalidated transient memos and the
+direct Nat host-input error path. Its complete native build passes under the
+original **8 GiB / 600 s** guard: 12,150 checked bodies / 12,730 events, no
+exclusions or output patches, 527,587 ms, peak RSS 5,970,247,680 B / footprint
+5,104,228,256 B. Parser admission, both complete **33-case C/JS matrices**,
+all seven native foreign/library scenarios, all five nested host-export
+consumers and the interpreter/JS/C memo-lifecycle checksum (`255`) pass.
+The unpatched emitted capture-loop regression still prints `24000011`.
+This accepts those behaviors, **not the g7 bootstrap**: its original
+600-second run is rejected during `stage-two-check`, entered at 471,973 ms.
+All 95 seed fixtures and 18 complete semantic parser comparisons pass;
+stage1 is 26,624,736 B, SHA-256
+`5268329d5f22196e01b316733a06053511a991c8a97aad8bac685fd8b406a5de`.
+No g7 stage2 is produced. Peak bootstrap RSS is 2,819,489,792 B / footprint
+1,957,059,352 B; memory is not the observed failure. No controlled speedup or
+g7 fixedpoint is claimed.
+Proof: `evals/receipts/root2039g7_acceptance_rejected.json`.
+
 Historical compiler root: **`db147cba`**, after an authenticated inline-parser
 cutover in `/private/tmp/bend-parser-cutover667`. Fresh native admission checks
 all 11,889 bodies / 12,450 events with 0 exclusions/patches and unchanged

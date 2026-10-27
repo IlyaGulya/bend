@@ -18430,7 +18430,7 @@
     "bend2/base.bend": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
     "evals/heavy_gate.ts": "204f3529704435455d20a9d5a126a8e9c62e002b6fed9044c8319da8a3c26ff2",
     "evals/validation_profile.ts": "d0bfd8124b334cb1db4792e49675290a971ae82730e57029173b07ff23d6938d",
-    "checkpoints/checker-core-owned-source-v1.json": "0e224b76e8e640b5b6ad4bc3d5841056cbf12e3dd2cb419aca3c2a4fc15dfbb6",
+    "checkpoints/checker-core-owned-source-v1.json": "8cdd882473993cc100c524236c53e10d37f9002d91ea0b8c1b6609124a69f860",
     "evals/checker_core_step_lower.ts": "05492ac6aaa7855b4d4770bf1f77d7abacf3cc3b956dfca9e6f411fffb202158",
     "evals/checker_core_owned_source.ts": "550ce39e12d8491fcc1913d3a84d49f37cf3f464b6f4df7944374c16504672e2",
     "evals/emitter_step_lower.ts": "4376c983d376a91f8464037444ddeccd1233f6a00f9c2362ce4fd88ab9f84371",
@@ -18443,7 +18443,7 @@
     "evals/bootstrap_source_oracle.ts": "5fb9785388bf42bb5a39596ed4064351a756857f6b7edbda4ab38f482d046789",
     "evals/canonical_cps_source.ts": "58b32128eb80ed0ca99c59914e46ad24694135562919052dca5cf80722adae97",
     "/private/tmp/bend2039-upgrade/bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
-    "/private/tmp/bend2039-upgrade/bend2/selfhost/checker_arena.bend": "fb8651ab2e6304faded5eb312ffe95175a177254f7dd704eca7a9b0896a40e31",
+    "/private/tmp/bend2039-upgrade/bend2/selfhost/checker_arena.bend": "2a26c3d8ce66412591030fa2fd6df9f9e53c0fececd9d9ae702def2f475f1752",
     "/private/tmp/bend2039-upgrade/bend2/selfhost/scope_lookup.bend": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
     "/private/tmp/bend2039-upgrade/bend2/selfhost/checker_ir.bend": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
     "/private/tmp/bend2039-upgrade/bend2/selfhost/index_lookup.bend": "563c9b152699b490cf68b264e6c4dea4a4e6770dfcf527cf6c81911cb5ea1b78",
@@ -18453,7 +18453,7 @@
     "/private/tmp/bend2039-upgrade/bend2/selfhost/backend_ir.bend": "f19e76411b589cc396cda80bb8ad387cdb5e9aef17ae287641f0d29696a88e9e",
     "/private/tmp/bend2039-upgrade/bend2/selfhost/c_backend_sharing.bend": "c8861993d2ad81057a9ba8b187eb75f743a9005fbb021b43083e7e2906597a40",
     "/private/tmp/bend2039-upgrade/bend2/selfhost/emitter.bend": "47d68ba5f0b54c334e2c940b7bb6aabc7f3bba27142b816f27df8225cf3fae4f",
-    "/private/tmp/bend2039-upgrade/checkpoints/emitter_owned_v1.bend": "2a73b7f6e4c78f1bbee47be1e01b6bad18e858f7269c2d0256a7a7793c98b2b9",
+    "/private/tmp/bend2039-upgrade/checkpoints/emitter_owned_v1.bend": "8e993d37513e8cebe2c2da98b6e9dbd9040b75e6ee89c5dfbb829f018a5f9fb0",
     "/private/tmp/bend2039-upgrade/bend2/selfhost/core.bend": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
     "/private/tmp/bend2039-upgrade/bend2/selfhost/sha256.bend": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
     "bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
@@ -18472,5 +18472,5 @@
     "nativeBuildRun": false,
     "testsRun": false
   },
-  "generationManifestSha256": "65d6ade8a635a97199df9ad4fafcdc5113742d8bc7558e462462185ff93c94e3"
+  "generationManifestSha256": "ea93564c1af3fb86c52c80a3cd081ef833bac9f6494e64c889763ebe6260ad84"
 }
