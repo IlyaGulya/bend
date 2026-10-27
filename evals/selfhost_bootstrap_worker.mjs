@@ -408,7 +408,17 @@ if(isMainThread){
   // The passive carrier tag is declared by the authenticated compiler root's
   // own BIR import. The seed artifact can only confirm it; a bare tag is never
   // a fallback, and the artifact's registration is not authority.
-  const seedTag=authenticateRootCarrierTag(workerData.sourceFileTag,'compiled');
+  let seedEmitter='compiled';
+  if(workerData.selfhostImage!==undefined){
+   const image=workerData.selfhostImage;
+   if(!image||!['stage-one','stage-two'].includes(image.stage)||!workerData.expectedRoot
+    ||realpathSync(image.path)!==realpathSync(workerData.component)||realpathSync(workerData.parser)!==realpathSync(image.path)
+    ||image.sha256!==workerData.componentSha256||image.sha256!==workerData.parserSha256
+    ||!Number.isSafeInteger(image.bytes)||image.bytes<=0||readFileSync(image.path).length!==image.bytes)
+    throw Error('Selfhost fixture image does not match the authenticated parser/component');
+   seedEmitter='selfhost';
+  }
+  const seedTag=authenticateRootCarrierTag(workerData.sourceFileTag,seedEmitter);
   const seed=exportsOf(await import(pathToFileURL(workerData.component).href),workerData.component);
   const seedParserSha=workerData.parserSha256;
   if(!workerData.parseOnly&&!workerData.profileRoot)await runFixtures(seedParser,seed,seedParserSha,workerData.componentSha256,'seed',seedTag);
