@@ -5,6 +5,17 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- The g15 C append repair uses one rendering path for direct and first-class
+  `String.append`: borrow the head, transfer the tail, and release freshly
+  allocated heads or owned staged heads only after evaluation. Borrowed
+  projected heads are snapshotted before a consuming tail can clear their
+  source field. Eight real JS/C consumers pass, including repeated field
+  aliases and the unchanged 32-page heap-frontier regression.
+  Native bootstrap admission no longer mistakes a signal or runtime fault
+  for an expected source rejection, and its 600-second quota is explicit.
+  Full-root/bootstrap acceptance remains pending; these are bounded checks.
+  Receipt: `evals/receipts/root2039g15_append_boundaries.json`.
+
 - The g14 candidate uses the existing immutable `IndexLookup.find` for arena
   name hits rather than rebuilding a `Map.get` path. Existing prefix, Unicode,
   repeat, rewind and sentinel cases pass on actual JS and compiled C.

@@ -1182,6 +1182,15 @@ aliases (`backend_ir.bend:32-144`).
   parser/checker image is the retained authenticated g9a frontend, so this
   is bounded backend evidence, not a fresh full compiler or fixedpoint.
   Receipt: `evals/receipts/root2039g13_string_native_boundaries.json`.
+- Append boundary evidence (g15): the same primitive renderer serves direct
+  and staged calls; its head is borrowed and its tail is transferred.
+  Fresh head temporaries and staged owned heads are released after the
+  result exists. A projected borrowed head is read before a consuming tail
+  can clear that field. `native_string_borrow` now checks first-class append,
+  empty heads, repeated projected fields and live aliases, plus the unchanged
+  32-page frontier. Eight JS/C consumers pass through the native-validated
+  emitter; this is not yet full-root or new fixedpoint acceptance.
+  Receipt: `evals/receipts/root2039g15_append_boundaries.json`.
 
 ### 4.11 Rendered entries and foreign callbacks (checkpoint law B2)
 

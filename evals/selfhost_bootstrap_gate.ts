@@ -27,7 +27,7 @@ import type {ChildProcess} from 'node:child_process';
 import {createInterface} from 'node:readline';
 
 const ABI=['parsed_module','parse_with_fuel','expand_modules_start','template_step','check_expanded_start','inspect_checked_start','checker_step','emit_modules_start','emit_library_start','emitter_step','emit_c_modules_start','emit_c_library_start','c_emitter_step'];
-const limits={memoryMiB:8192,rssMiB:8192,pollMs:10,workerStackMiB:256,workerOldGenerationMiB:6144,workerYoungGenerationMiB:128,parserFuel:8000000,maxHeavyChildren:1};
+const limits={memoryMiB:8192,rssMiB:8192,pollMs:10,timeoutMs:600000,workerStackMiB:256,workerOldGenerationMiB:6144,workerYoungGenerationMiB:128,parserFuel:8000000,maxHeavyChildren:1};
 const sha=(bytes:string|Uint8Array)=>createHash('sha256').update(bytes).digest('hex');
 const hash=(path:string)=>sha(readFileSync(path));
 function object(value:unknown):Record<string,unknown>{

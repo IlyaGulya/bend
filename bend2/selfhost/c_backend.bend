@@ -1331,6 +1331,7 @@ def args_parts(args: List<&2, BIR.Arg>, +plan: Plan) -> List<&2, Part>:
 
 def prim_default_owned(primitive: BIR.Primitive, +index: Nat) -> Bool:
   match primitive:
+    case BIR.PrimStringAppend{}: Nat.is_eq(index, 1n)
     case BIR.PrimF32Read{}: Nat.is_eq(index, 0n)
     case BIR.PrimWordToU32{}: Nat.is_eq(index, 0n)
     case BIR.PrimF32FromWord{}: Nat.is_eq(index, 0n)
@@ -1388,6 +1389,7 @@ def array_step(primitive: BIR.Primitive, args: List<&2, BIR.Arg>, types: List<&2
 # Scalar Nat/F32/U32 words are not tagged Terms and must never be sunk.
 def prim_borrowed_box(primitive: BIR.Primitive, +index: Nat) -> Bool:
   match primitive:
+    case BIR.PrimStringAppend{}: Nat.is_eq(index, 0n)
     case BIR.PrimStringEq{}: Nat.is_lt(index, 2n)
     case BIR.PrimStringLength{}: Nat.is_eq(index, 0n)
     case BIR.PrimStringToList{}: Nat.is_eq(index, 0n)
@@ -1429,17 +1431,20 @@ def prim_texts(primitive: BIR.Primitive, args: List<&2, BIR.Arg>, +ctx: Ctx, +in
               match field_borrow(value, ctx):
                 case PartFail{message}: OpFail{message}
                 case PartOk{+text}:
-                  match Bool.and(prim_borrowed_box(primitive, index), atom_allocates(value)):
+                  # Snapshot a borrowed field before the next operand can consume it.
+                  match Bool.and(prim_borrowed_box(primitive, index), Bool.or(atom_allocates(value), prim_default_owned(primitive, Nat.add(index, 1n)))):
                     case False{}: prim_texts(primitive, rest, ctx, Nat.add(index, 1n), text <> acc, setup, cleanup, continuation, owner_tag)
                     case True{}:
                       +name = cat(["pt", U32.show(owner_tag), "_", Nat.show(index)])
-                      decl = cat(["    Term ", name, " = ", text, ";\n"])
-                      drop = cat(["    term_sink(e, ", name, ");\n"])
-                      prim_texts(primitive, rest, ctx, Nat.add(index, 1n), name <> acc, String.append(setup, decl), String.append(cleanup, drop), continuation, owner_tag)
+                      +decl = cat(["    Term ", name, " = ", text, ";\n"])
+                      match atom_allocates(value):
+                        case False{}: prim_texts(primitive, rest, ctx, Nat.add(index, 1n), name <> acc, String.append(setup, decl), cleanup, continuation, owner_tag)
+                        case True{}:
+                          drop = cat(["    term_sink(e, ", name, ");\n"])
+                          prim_texts(primitive, rest, ctx, Nat.add(index, 1n), name <> acc, String.append(setup, decl), String.append(cleanup, drop), continuation, owner_tag)
 
 def prim_step(primitive: BIR.Primitive, args: List<&2, BIR.Arg>, types: List<&2, BIR.Descriptor>, +ctx: Ctx, continuation: BIR.Block, +owner_tag: U32) -> OpStep:
   match primitive:
-    case BIR.PrimStringAppend{}: append_step(args, ctx, continuation, owner_tag)
     case BIR.PrimIsArrayLeaf{}:
       match pred_path(primitive, args, ctx):
         case Some{part}:
@@ -1486,29 +1491,11 @@ def pred_path(primitive: BIR.Primitive, args: List<&2, BIR.Arg>, +ctx: Ctx) -> M
                 case _: Some{phys_part(Phys.path_is_node(root, ref_steps(ref), phys_world(ctx_plan(ctx))))}
     case _: None{}
 
-def append_step(args: List<&2, BIR.Arg>, +ctx: Ctx, continuation: BIR.Block, +owner_tag: U32) -> OpStep:
-  match args:
-    case +a0 <> (+a1 <> _):
-      match a0 a1:
-        case BIR.Arg{use0, value0} BIR.Arg{use1, value1}:
-          match field_borrow(value0, ctx):
-            case PartFail{message}: OpFail{message}
-            case PartOk{head_text}:
-              match field_owned(value1, use1, ctx, continuation):
-                case WriteFail{message}: OpFail{message}
-                case WriteOk{tail_text, actx}:
-                  +head = cat(["sh", U32.show(owner_tag)])
-                  +tail = cat(["st", U32.show(owner_tag)])
-                  +setup = cat(["    Term ", head, " = ", head_text, ";\n    Term ", tail, " = ", tail_text, ";\n"])
-                  append_step_parts(head, tail, setup, actx)
-    case _: OpFail{"a string append needs two operands"}
-
-def append_step_parts(head: String, tail: String, +setup: String, +ctx: Ctx) -> OpStep:
-  +plan = ctx_plan(ctx)
+def str_append(head: String, tail: String, plan: Plan) -> Part:
   match pcid("SCon", plan) pcid("Chr", plan):
-    case PartOk{scon} PartOk{chr}: OpOk{setup, cat(["bend_str_append(e, ", scon, ", ", chr, ", ", head, ", ", tail, ", 0)"]), ctx}
-    case PartFail{message} _: OpFail{message}
-    case _ PartFail{message}: OpFail{message}
+    case PartOk{scon} PartOk{chr}: okp(cat(["bend_str_append(e, ", scon, ", ", chr, ", ", head, ", ", tail, ", 0)"]))
+    case PartFail{message} _: PartFail{message}
+    case _ PartFail{message}: PartFail{message}
 
 def construct_step(+constructor: U32, fields: List<&2, BIR.Field>, +ctx: Ctx, +index: Nat, +acc: List<&2, Phys.Operand>, +setup: String, continuation: BIR.Block, +owner_tag: U32) -> OpStep:
   match fields:
@@ -1787,7 +1774,7 @@ def prim_scalar_part(primitive: BIR.Primitive, +a: List<&2, String>, +plan: Plan
     case BIR.PrimF32Show{}: okp(cat(["f32_show(e, ", a0, ")"]))
     case BIR.PrimF32Read{}: okp(cat(["f32_read(e, ", a0, ")"]))
     case BIR.PrimF32ToNat{}: okp(cat(["bend_f32_to_nat(e, ", a0, ")"]))
-    case BIR.PrimStringAppend{}: failp("a string append is emitted by append_part, which needs its operand quantities")
+    case BIR.PrimStringAppend{}: str_append(a0, a1, plan)
     case BIR.PrimStringEq{}: str_bool2("bend_str_eq", "SCon", a0, a1, plan)
     case BIR.PrimStringLength{}: str1("bend_str_length", "SCon", a0, plan)
     case BIR.PrimStringToList{}: str_to_list(a0, plan)

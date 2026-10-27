@@ -203,7 +203,12 @@ export function runNativeStage0(binary, work, options) {
 export function requireNativeRun(run, expected) {
   const failPhase = run.phaseStarts.length ? run.phaseStarts[run.phaseStarts.length - 1].phase : 'parse';
   if (run.error) throw Error('Native stage0 execution failed: ' + run.error);
-  if (run.signal || run.status !== 0) {
+  if (run.signal) throw Error('Native stage0 terminated by ' + run.signal + ' during ' + failPhase);
+  if (run.status !== 0) {
+    // Only the host's typed NativeRejected/parser-failure exits are source errors.
+    // A runtime fault must never satisfy an expected-negative checker fixture.
+    if (run.status !== 1 || !/^bend: native experiment: (Bend rejected the input|actual Bend parser failed)$/m.test(run.stderr))
+      throw Error('Native stage0 execution failed during ' + failPhase + ': ' + run.stderr);
     const error = Error('Native stage0 rejected the input during ' + failPhase);
     error.failurePhase = failPhase;
     error.diagnostic = run.stderr;

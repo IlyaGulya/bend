@@ -3421,21 +3421,21 @@ def cps_provider_2_export_symbol_item(v_1: String, v_3: Nat, v_4: BIR.Declaratio
     case BIR.LazyDeclaration{_, v_29}:
       Some{cps_provider_2_ExportRow{v_1, cps_provider_2_map_u32(v_10, v_1), 1n, v_3}}
     case BIR.ForeignDeclaration{_, _, _, v_43, _, _, _, _, _}:
-      cps_provider_2_export_declared(v_1, v_3, v_43, cps_provider_2_map_u32(v_13, v_1))
+      cps_provider_2_export_declared(v_1, v_3, v_43, cps_provider_2_map_u32(v_13, v_1), 1n)
     case BIR.NativeDeclaration{_, _, v_56}:
-      cps_provider_2_export_declared(v_1, v_3, List.length(&2, BIR.Quantity, v_56), cps_provider_2_map_u32(v_16, v_1))
+      cps_provider_2_export_declared(v_1, v_3, List.length(&2, BIR.Quantity, v_56), cps_provider_2_map_u32(v_16, v_1), 0n)
     case _:
       None{}
 
-def native_match_cps_provider_2_export_declared_0(v_8: Bool, v_1: String, v_3: Nat, v_7: U32) -> Maybe<&2, cps_provider_2_ExportRow>:
-  match v_8:
+def native_match_cps_provider_2_export_declared_0(v_10: Bool, v_1: String, v_3: Nat, v_7: U32, v_9: Nat) -> Maybe<&2, cps_provider_2_ExportRow>:
+  match v_10:
     case True{}:
-      Some{cps_provider_2_ExportRow{v_1, v_7, 1n, v_3}}
+      Some{cps_provider_2_ExportRow{v_1, v_7, v_9, v_3}}
     case False{}:
       None{}
 
-def cps_provider_2_export_declared(v_1: String, v_3: Nat, v_5: Nat, v_7: U32) -> Maybe<&2, cps_provider_2_ExportRow>:
-  native_match_cps_provider_2_export_declared_0(Nat.is_eq(v_3, v_5), v_1, v_3, v_7)
+def cps_provider_2_export_declared(v_1: String, v_3: Nat, v_5: Nat, v_7: U32, v_9: Nat) -> Maybe<&2, cps_provider_2_ExportRow>:
+  native_match_cps_provider_2_export_declared_0(Nat.is_eq(v_3, v_5), v_1, v_3, v_7, v_9)
 
 def cps_provider_2_export_names(v_2: List<&2, cps_provider_2_ExportRow>, +v_4: String) -> String:
   match v_2:
@@ -3788,7 +3788,16 @@ def cps_provider_2_scan_new() -> cps_provider_2_Scan:
 def cps_provider_2_scan_program(v_0: BIR.Program) -> cps_provider_2_Scan:
   match v_0:
     case BIR.Program{v_8, v_9, v_10, v_11, v_12, v_13}:
-      cps_provider_2_scan_declarations(v_9, cps_provider_2_scan_codes(v_8, cps_provider_2_scan_new))
+      cps_provider_2_scan_exports(cps_provider_2_ending_exports(v_13), cps_provider_2_scan_declarations(v_9, cps_provider_2_scan_codes(v_8, cps_provider_2_scan_new)))
+
+def cps_provider_2_scan_exports(v_1: List<&2, BIR.Export>, +v_3: cps_provider_2_Scan) -> cps_provider_2_Scan:
+  match v_1:
+    case []:
+      v_3
+    case +v_7 <> v_8:
+      match v_7:
+        case BIR.Export{v_13, _, _, _}:
+          cps_provider_2_scan_exports(v_8, cps_provider_2_scan_read(v_3, v_13))
 
 def cps_provider_2_scan_codes(v_1: List<&2, BIR.Code>, +v_3: cps_provider_2_Scan) -> cps_provider_2_Scan:
   match v_1:
@@ -4395,6 +4404,14 @@ def cps_provider_2_args_parts(v_1: List<&2, BIR.Arg>, +v_3: cps_provider_2_Plan)
 
 def cps_provider_2_prim_default_owned(v_0: BIR.Primitive, +v_2: Nat) -> Bool:
   match v_0:
+    case BIR.PrimStringAppend{}:
+      Nat.is_eq(v_2, 1n)
+    case BIR.PrimF32Read{}:
+      Nat.is_eq(v_2, 0n)
+    case BIR.PrimWordToU32{}:
+      Nat.is_eq(v_2, 0n)
+    case BIR.PrimF32FromWord{}:
+      Nat.is_eq(v_2, 0n)
     case BIR.PrimStringCmp{}:
       Nat.is_lt(v_2, 2n)
     case BIR.PrimMapBit{}:
@@ -4418,6 +4435,24 @@ def cps_provider_2_array_arg_owned(v_0: BIR.Primitive, +v_2: Nat) -> Bool:
       Bool.or(Nat.is_eq(v_2, 0n), Nat.is_eq(v_2, 2n))
     case BIR.PrimArraySwap{}:
       Bool.or(Nat.is_eq(v_2, 0n), Nat.is_eq(v_2, 2n))
+    case BIR.PrimArrayAtomicAdd{}:
+      Nat.is_eq(v_2, 0n)
+    case BIR.PrimArrayAtomicMin{}:
+      Nat.is_eq(v_2, 0n)
+    case BIR.PrimArrayAtomicMax{}:
+      Nat.is_eq(v_2, 0n)
+    case BIR.PrimArrayAtomicAnd{}:
+      Nat.is_eq(v_2, 0n)
+    case BIR.PrimArrayAtomicOr{}:
+      Nat.is_eq(v_2, 0n)
+    case BIR.PrimArrayAtomicXor{}:
+      Nat.is_eq(v_2, 0n)
+    case BIR.PrimArrayAtomicExch{}:
+      Nat.is_eq(v_2, 0n)
+    case BIR.PrimArrayAtomicCas{}:
+      Nat.is_eq(v_2, 0n)
+    case BIR.PrimArrayAtomicFadd{}:
+      Nat.is_eq(v_2, 0n)
     case BIR.PrimArrayLeaf{}:
       Nat.is_eq(v_2, 0n)
     case BIR.PrimArrayNode{}:
@@ -4471,83 +4506,136 @@ def native_match_cps_provider_2_array_step_5(v_2: List<&2, BIR.Arg>, v_0: BIR.Pr
 def cps_provider_2_array_step(v_0: BIR.Primitive, v_2: List<&2, BIR.Arg>, v_4: List<&2, BIR.Descriptor>, +v_6: cps_provider_2_Ctx, +v_8: Nat, +v_11: List<&2, cps_provider_5_Operand>, +v_13: String, v_14: BIR.Block, +v_16: U32) -> cps_provider_2_OpStep:
   native_match_cps_provider_2_array_step_5(v_2, v_0, v_4, v_6, v_8, v_11, v_13, v_14, v_16)
 
-def native_match_cps_provider_2_prim_texts_0(v_52: cps_provider_2_Part, +v_4: cps_provider_2_Ctx, +v_11: String) -> cps_provider_2_OpStep:
-  match v_52:
-    case cps_provider_2_PartFail{v_20}:
-      cps_provider_2_OpFail{v_20}
-    case cps_provider_2_PartOk{v_22}:
-      cps_provider_2_OpOk{v_11, v_22, v_4}
+def cps_provider_2_prim_borrowed_box(v_0: BIR.Primitive, +v_2: Nat) -> Bool:
+  match v_0:
+    case BIR.PrimStringAppend{}:
+      Nat.is_eq(v_2, 0n)
+    case BIR.PrimStringEq{}:
+      Nat.is_lt(v_2, 2n)
+    case BIR.PrimStringLength{}:
+      Nat.is_eq(v_2, 0n)
+    case BIR.PrimStringToList{}:
+      Nat.is_eq(v_2, 0n)
+    case BIR.PrimStringHead{}:
+      Nat.is_eq(v_2, 0n)
+    case BIR.PrimStringTail{}:
+      Nat.is_eq(v_2, 0n)
+    case BIR.PrimIsStringEmpty{}:
+      Nat.is_eq(v_2, 0n)
+    case BIR.PrimIsStringNonempty{}:
+      Nat.is_eq(v_2, 0n)
+    case _:
+      False{}
 
-def native_match_cps_provider_2_prim_texts_1(v_54: cps_provider_2_WriteStep, v_0: BIR.Primitive, +v_6: Nat, +v_9: List<&2, String>, +v_11: String, v_12: BIR.Block, +v_14: U32, v_26: List<&2, BIR.Arg>) -> cps_provider_2_OpStep:
-  match v_54:
-    case cps_provider_2_WriteFail{v_35}:
-      cps_provider_2_OpFail{v_35}
-    case cps_provider_2_WriteOk{v_38, v_39}:
-      +v_42 = cps_provider_2_cat(["pt", U32.show(v_14), "_", Nat.show(v_6)])
-      +v_45 = cps_provider_2_cat(["    Term ", v_42, " = ", v_38, ";\n"])
-      cps_provider_2_prim_texts(v_0, v_26, v_39, Nat.add(v_6, 1n), v_42 <> v_9, String.append(v_11, v_45), v_12, v_14)
+def cps_provider_2_atom_allocates(v_0: BIR.Atom) -> Bool:
+  match v_0:
+    case BIR.TextValue{_}:
+      True{}
+    case BIR.Symbol{_, _}:
+      True{}
+    case _:
+      False{}
 
-def native_match_cps_provider_2_prim_texts_2(v_55: cps_provider_2_Part, v_0: BIR.Primitive, +v_4: cps_provider_2_Ctx, +v_6: Nat, +v_9: List<&2, String>, +v_11: String, v_12: BIR.Block, +v_14: U32, v_26: List<&2, BIR.Arg>) -> cps_provider_2_OpStep:
-  match v_55:
-    case cps_provider_2_PartFail{v_49}:
-      cps_provider_2_OpFail{v_49}
-    case cps_provider_2_PartOk{v_51}:
-      cps_provider_2_prim_texts(v_0, v_26, v_4, Nat.add(v_6, 1n), v_51 <> v_9, v_11, v_12, v_14)
-
-def native_match_cps_provider_2_prim_texts_3(v_53: Bool, v_0: BIR.Primitive, +v_4: cps_provider_2_Ctx, +v_6: Nat, +v_9: List<&2, String>, +v_11: String, v_12: BIR.Block, +v_14: U32, v_26: List<&2, BIR.Arg>, v_29: BIR.Use, v_30: BIR.Atom) -> cps_provider_2_OpStep:
-  match v_53:
+def native_match_cps_provider_2_prim_texts_0(v_74: Bool, +v_4: cps_provider_2_Ctx, +v_11: String, +v_13: String, +v_16: U32, +v_24: String) -> cps_provider_2_OpStep:
+  match v_74:
     case True{}:
-      native_match_cps_provider_2_prim_texts_1(cps_provider_2_field_owned(v_30, v_29, v_4, cps_provider_2_atoms_after_args(v_26, v_12)), v_0, v_6, v_9, v_11, v_12, v_14, v_26)
+      cps_provider_2_OpOk{v_11, v_24, v_4}
     case False{}:
-      native_match_cps_provider_2_prim_texts_2(cps_provider_2_field_borrow(v_30, v_4), v_0, v_4, v_6, v_9, v_11, v_12, v_14, v_26)
+      +v_27 = cps_provider_2_cat(["pr", U32.show(v_16)])
+      cps_provider_2_OpOk{cps_provider_2_cat([v_11, "    Term ", v_27, " = ", v_24, ";\n", v_13]), v_27, v_4}
 
-def native_match_cps_provider_2_prim_texts_4(+v_25: BIR.Arg, v_0: BIR.Primitive, +v_4: cps_provider_2_Ctx, +v_6: Nat, +v_9: List<&2, String>, +v_11: String, v_12: BIR.Block, +v_14: U32, v_26: List<&2, BIR.Arg>) -> cps_provider_2_OpStep:
-  match v_25:
-    case BIR.Arg{v_29, v_30}:
-      native_match_cps_provider_2_prim_texts_3(cps_provider_2_prim_default_owned(v_0, v_6), v_0, v_4, v_6, v_9, v_11, v_12, v_14, v_26, v_29, v_30)
+def native_match_cps_provider_2_prim_texts_1(v_73: cps_provider_2_Part, +v_4: cps_provider_2_Ctx, +v_11: String, +v_13: String, +v_16: U32) -> cps_provider_2_OpStep:
+  match v_73:
+    case cps_provider_2_PartFail{v_22}:
+      cps_provider_2_OpFail{v_22}
+    case cps_provider_2_PartOk{+v_24}:
+      native_match_cps_provider_2_prim_texts_0(String.eq(v_13, ""), v_4, v_11, v_13, v_16, v_24)
 
-def native_match_cps_provider_2_prim_texts_5(v_2: List<&2, BIR.Arg>, v_0: BIR.Primitive, +v_4: cps_provider_2_Ctx, +v_6: Nat, +v_9: List<&2, String>, +v_11: String, v_12: BIR.Block, +v_14: U32) -> cps_provider_2_OpStep:
+def native_match_cps_provider_2_prim_texts_2(v_76: cps_provider_2_WriteStep, v_0: BIR.Primitive, +v_6: Nat, +v_9: List<&2, String>, +v_11: String, +v_13: String, v_14: BIR.Block, +v_16: U32, v_32: List<&2, BIR.Arg>) -> cps_provider_2_OpStep:
+  match v_76:
+    case cps_provider_2_WriteFail{v_41}:
+      cps_provider_2_OpFail{v_41}
+    case cps_provider_2_WriteOk{v_44, v_45}:
+      +v_48 = cps_provider_2_cat(["pt", U32.show(v_16), "_", Nat.show(v_6)])
+      +v_51 = cps_provider_2_cat(["    Term ", v_48, " = ", v_44, ";\n"])
+      cps_provider_2_prim_texts(v_0, v_32, v_45, Nat.add(v_6, 1n), v_48 <> v_9, String.append(v_11, v_51), v_13, v_14, v_16)
+
+def native_match_cps_provider_2_prim_texts_3(v_79: Bool, v_0: BIR.Primitive, +v_4: cps_provider_2_Ctx, +v_6: Nat, +v_9: List<&2, String>, +v_11: String, +v_13: String, v_14: BIR.Block, +v_16: U32, v_32: List<&2, BIR.Arg>, +v_64: String, +v_67: String) -> cps_provider_2_OpStep:
+  match v_79:
+    case False{}:
+      cps_provider_2_prim_texts(v_0, v_32, v_4, Nat.add(v_6, 1n), v_64 <> v_9, String.append(v_11, v_67), v_13, v_14, v_16)
+    case True{}:
+      v_72 = cps_provider_2_cat(["    term_sink(e, ", v_64, ");\n"])
+      cps_provider_2_prim_texts(v_0, v_32, v_4, Nat.add(v_6, 1n), v_64 <> v_9, String.append(v_11, v_67), String.append(v_13, v_72), v_14, v_16)
+
+def native_match_cps_provider_2_prim_texts_4(v_78: Bool, v_0: BIR.Primitive, +v_4: cps_provider_2_Ctx, +v_6: Nat, +v_9: List<&2, String>, +v_11: String, +v_13: String, v_14: BIR.Block, +v_16: U32, v_32: List<&2, BIR.Arg>, +v_36: BIR.Atom, +v_57: String) -> cps_provider_2_OpStep:
+  match v_78:
+    case False{}:
+      cps_provider_2_prim_texts(v_0, v_32, v_4, Nat.add(v_6, 1n), v_57 <> v_9, v_11, v_13, v_14, v_16)
+    case True{}:
+      +v_64 = cps_provider_2_cat(["pt", U32.show(v_16), "_", Nat.show(v_6)])
+      +v_67 = cps_provider_2_cat(["    Term ", v_64, " = ", v_57, ";\n"])
+      native_match_cps_provider_2_prim_texts_3(cps_provider_2_atom_allocates(v_36), v_0, v_4, v_6, v_9, v_11, v_13, v_14, v_16, v_32, v_64, v_67)
+
+def native_match_cps_provider_2_prim_texts_5(v_77: cps_provider_2_Part, v_0: BIR.Primitive, +v_4: cps_provider_2_Ctx, +v_6: Nat, +v_9: List<&2, String>, +v_11: String, +v_13: String, v_14: BIR.Block, +v_16: U32, v_32: List<&2, BIR.Arg>, +v_36: BIR.Atom) -> cps_provider_2_OpStep:
+  match v_77:
+    case cps_provider_2_PartFail{v_55}:
+      cps_provider_2_OpFail{v_55}
+    case cps_provider_2_PartOk{+v_57}:
+      native_match_cps_provider_2_prim_texts_4(Bool.and(cps_provider_2_prim_borrowed_box(v_0, v_6), Bool.or(cps_provider_2_atom_allocates(v_36), cps_provider_2_prim_default_owned(v_0, Nat.add(v_6, 1n)))), v_0, v_4, v_6, v_9, v_11, v_13, v_14, v_16, v_32, v_36, v_57)
+
+def native_match_cps_provider_2_prim_texts_6(v_75: Bool, v_0: BIR.Primitive, +v_4: cps_provider_2_Ctx, +v_6: Nat, +v_9: List<&2, String>, +v_11: String, +v_13: String, v_14: BIR.Block, +v_16: U32, v_32: List<&2, BIR.Arg>, v_35: BIR.Use, +v_36: BIR.Atom) -> cps_provider_2_OpStep:
+  match v_75:
+    case True{}:
+      native_match_cps_provider_2_prim_texts_2(cps_provider_2_field_owned(v_36, v_35, v_4, cps_provider_2_atoms_after_args(v_32, v_14)), v_0, v_6, v_9, v_11, v_13, v_14, v_16, v_32)
+    case False{}:
+      native_match_cps_provider_2_prim_texts_5(cps_provider_2_field_borrow(v_36, v_4), v_0, v_4, v_6, v_9, v_11, v_13, v_14, v_16, v_32, v_36)
+
+def native_match_cps_provider_2_prim_texts_7(+v_31: BIR.Arg, v_0: BIR.Primitive, +v_4: cps_provider_2_Ctx, +v_6: Nat, +v_9: List<&2, String>, +v_11: String, +v_13: String, v_14: BIR.Block, +v_16: U32, v_32: List<&2, BIR.Arg>) -> cps_provider_2_OpStep:
+  match v_31:
+    case BIR.Arg{v_35, +v_36}:
+      native_match_cps_provider_2_prim_texts_6(cps_provider_2_prim_default_owned(v_0, v_6), v_0, v_4, v_6, v_9, v_11, v_13, v_14, v_16, v_32, v_35, v_36)
+
+def native_match_cps_provider_2_prim_texts_8(v_2: List<&2, BIR.Arg>, v_0: BIR.Primitive, +v_4: cps_provider_2_Ctx, +v_6: Nat, +v_9: List<&2, String>, +v_11: String, +v_13: String, v_14: BIR.Block, +v_16: U32) -> cps_provider_2_OpStep:
   match v_2:
     case []:
-      native_match_cps_provider_2_prim_texts_0(cps_provider_2_prim_part(v_0, List.reverse(&2, String, v_9), cps_provider_2_ctx_plan(v_4)), v_4, v_11)
-    case +v_25 <> v_26:
-      native_match_cps_provider_2_prim_texts_4(v_25, v_0, v_4, v_6, v_9, v_11, v_12, v_14, v_26)
+      native_match_cps_provider_2_prim_texts_1(cps_provider_2_prim_part(v_0, List.reverse(&2, String, v_9), cps_provider_2_ctx_plan(v_4)), v_4, v_11, v_13, v_16)
+    case +v_31 <> v_32:
+      native_match_cps_provider_2_prim_texts_7(v_31, v_0, v_4, v_6, v_9, v_11, v_13, v_14, v_16, v_32)
 
-def cps_provider_2_prim_texts(v_0: BIR.Primitive, v_2: List<&2, BIR.Arg>, +v_4: cps_provider_2_Ctx, +v_6: Nat, +v_9: List<&2, String>, +v_11: String, v_12: BIR.Block, +v_14: U32) -> cps_provider_2_OpStep:
-  native_match_cps_provider_2_prim_texts_5(v_2, v_0, v_4, v_6, v_9, v_11, v_12, v_14)
+def cps_provider_2_prim_texts(v_0: BIR.Primitive, v_2: List<&2, BIR.Arg>, +v_4: cps_provider_2_Ctx, +v_6: Nat, +v_9: List<&2, String>, +v_11: String, +v_13: String, v_14: BIR.Block, +v_16: U32) -> cps_provider_2_OpStep:
+  native_match_cps_provider_2_prim_texts_8(v_2, v_0, v_4, v_6, v_9, v_11, v_13, v_14, v_16)
 
-def native_match_cps_provider_2_prim_step_0(v_14: cps_provider_2_Part, +v_6: cps_provider_2_Ctx) -> cps_provider_2_OpStep:
-  match v_14:
-    case cps_provider_2_PartOk{v_16}:
-      cps_provider_2_OpOk{"", v_16, v_6}
-    case cps_provider_2_PartFail{v_18}:
-      cps_provider_2_OpFail{v_18}
+def native_match_cps_provider_2_prim_step_0(v_13: cps_provider_2_Part, +v_6: cps_provider_2_Ctx) -> cps_provider_2_OpStep:
+  match v_13:
+    case cps_provider_2_PartOk{v_15}:
+      cps_provider_2_OpOk{"", v_15, v_6}
+    case cps_provider_2_PartFail{v_17}:
+      cps_provider_2_OpFail{v_17}
 
-def native_match_cps_provider_2_prim_step_1(v_30: Maybe<&2, cps_provider_2_Part>, v_0: BIR.Primitive, v_2: List<&2, BIR.Arg>, v_4: List<&2, BIR.Descriptor>, +v_6: cps_provider_2_Ctx, v_7: BIR.Block, +v_9: U32) -> cps_provider_2_OpStep:
-  match v_30:
-    case Some{v_14}:
-      native_match_cps_provider_2_prim_step_0(v_14, v_6)
+def native_match_cps_provider_2_prim_step_1(v_29: Maybe<&2, cps_provider_2_Part>, v_0: BIR.Primitive, v_2: List<&2, BIR.Arg>, v_4: List<&2, BIR.Descriptor>, +v_6: cps_provider_2_Ctx, v_7: BIR.Block, +v_9: U32) -> cps_provider_2_OpStep:
+  match v_29:
+    case Some{v_13}:
+      native_match_cps_provider_2_prim_step_0(v_13, v_6)
     case None{}:
       cps_provider_2_array_op_step(v_0, v_2, v_4, v_6, v_7, v_9)
 
-def native_match_cps_provider_2_prim_step_2(v_22: cps_provider_2_Part, +v_6: cps_provider_2_Ctx) -> cps_provider_2_OpStep:
-  match v_22:
-    case cps_provider_2_PartOk{v_24}:
-      cps_provider_2_OpOk{"", v_24, v_6}
-    case cps_provider_2_PartFail{v_26}:
-      cps_provider_2_OpFail{v_26}
+def native_match_cps_provider_2_prim_step_2(v_21: cps_provider_2_Part, +v_6: cps_provider_2_Ctx) -> cps_provider_2_OpStep:
+  match v_21:
+    case cps_provider_2_PartOk{v_23}:
+      cps_provider_2_OpOk{"", v_23, v_6}
+    case cps_provider_2_PartFail{v_25}:
+      cps_provider_2_OpFail{v_25}
 
-def native_match_cps_provider_2_prim_step_3(v_31: Maybe<&2, cps_provider_2_Part>, v_0: BIR.Primitive, v_2: List<&2, BIR.Arg>, v_4: List<&2, BIR.Descriptor>, +v_6: cps_provider_2_Ctx, v_7: BIR.Block, +v_9: U32) -> cps_provider_2_OpStep:
-  match v_31:
-    case Some{v_22}:
-      native_match_cps_provider_2_prim_step_2(v_22, v_6)
+def native_match_cps_provider_2_prim_step_3(v_30: Maybe<&2, cps_provider_2_Part>, v_0: BIR.Primitive, v_2: List<&2, BIR.Arg>, v_4: List<&2, BIR.Descriptor>, +v_6: cps_provider_2_Ctx, v_7: BIR.Block, +v_9: U32) -> cps_provider_2_OpStep:
+  match v_30:
+    case Some{v_21}:
+      native_match_cps_provider_2_prim_step_2(v_21, v_6)
     case None{}:
       cps_provider_2_array_op_step(v_0, v_2, v_4, v_6, v_7, v_9)
 
 def native_match_cps_provider_2_prim_step_4(v_0: BIR.Primitive, v_2: List<&2, BIR.Arg>, v_4: List<&2, BIR.Descriptor>, +v_6: cps_provider_2_Ctx, v_7: BIR.Block, +v_9: U32) -> cps_provider_2_OpStep:
   match v_0:
-    case BIR.PrimStringAppend{}:
-      cps_provider_2_append_step(v_2, v_6, v_7, v_9)
     case BIR.PrimIsArrayLeaf{}:
       native_match_cps_provider_2_prim_step_1(cps_provider_2_pred_path(v_0, v_2, v_6), v_0, v_2, v_4, v_6, v_7, v_9)
     case BIR.PrimIsArrayNode{}:
@@ -4558,22 +4646,32 @@ def native_match_cps_provider_2_prim_step_4(v_0: BIR.Primitive, v_2: List<&2, BI
 def cps_provider_2_prim_step(v_0: BIR.Primitive, v_2: List<&2, BIR.Arg>, v_4: List<&2, BIR.Descriptor>, +v_6: cps_provider_2_Ctx, v_7: BIR.Block, +v_9: U32) -> cps_provider_2_OpStep:
   native_match_cps_provider_2_prim_step_4(v_0, v_2, v_4, v_6, v_7, v_9)
 
-def native_match_cps_provider_2_array_op_step_0(v_4: List<&2, BIR.Descriptor>, v_0: BIR.Primitive, v_2: List<&2, BIR.Arg>, +v_6: cps_provider_2_Ctx, v_7: BIR.Block, +v_9: U32) -> cps_provider_2_OpStep:
+def native_match_cps_provider_2_array_op_step_0(v_10: Bool, v_0: BIR.Primitive, v_2: List<&2, BIR.Arg>, v_4: List<&2, BIR.Descriptor>, +v_6: cps_provider_2_Ctx, v_7: BIR.Block, +v_9: U32) -> cps_provider_2_OpStep:
+  match v_10:
+    case True{}:
+      cps_provider_2_array_step(v_0, v_2, v_4, v_6, 0n, [], "", v_7, v_9)
+    case False{}:
+      cps_provider_2_array_op_step_element(v_0, v_2, v_4, v_6, v_7, v_9)
+
+def cps_provider_2_array_op_step(v_0: BIR.Primitive, v_2: List<&2, BIR.Arg>, v_4: List<&2, BIR.Descriptor>, +v_6: cps_provider_2_Ctx, v_7: BIR.Block, +v_9: U32) -> cps_provider_2_OpStep:
+  native_match_cps_provider_2_array_op_step_0(cps_provider_2_is_atomic_primitive(v_0), v_0, v_2, v_4, v_6, v_7, v_9)
+
+def native_match_cps_provider_2_array_op_step_element_0(v_4: List<&2, BIR.Descriptor>, v_0: BIR.Primitive, v_2: List<&2, BIR.Arg>, +v_6: cps_provider_2_Ctx, v_7: BIR.Block, +v_9: U32) -> cps_provider_2_OpStep:
   match v_4:
     case []:
       cps_provider_2_OpFail{cps_provider_5_join_text(["the array primitive `", cps_provider_5_array_label(v_0), "` carries no instantiated element Descriptor; lowering must supply PrimitiveCall.types"])}
     case _:
       cps_provider_2_array_step(v_0, v_2, v_4, v_6, 0n, [], "", v_7, v_9)
 
-def native_match_cps_provider_2_array_op_step_1(v_16: Bool, v_0: BIR.Primitive, v_2: List<&2, BIR.Arg>, v_4: List<&2, BIR.Descriptor>, +v_6: cps_provider_2_Ctx, v_7: BIR.Block, +v_9: U32) -> cps_provider_2_OpStep:
+def native_match_cps_provider_2_array_op_step_element_1(v_16: Bool, v_0: BIR.Primitive, v_2: List<&2, BIR.Arg>, v_4: List<&2, BIR.Descriptor>, +v_6: cps_provider_2_Ctx, v_7: BIR.Block, +v_9: U32) -> cps_provider_2_OpStep:
   match v_16:
     case True{}:
-      native_match_cps_provider_2_array_op_step_0(v_4, v_0, v_2, v_6, v_7, v_9)
+      native_match_cps_provider_2_array_op_step_element_0(v_4, v_0, v_2, v_6, v_7, v_9)
     case False{}:
-      cps_provider_2_prim_texts(v_0, v_2, v_6, 0n, [], "", v_7, v_9)
+      cps_provider_2_prim_texts(v_0, v_2, v_6, 0n, [], "", "", v_7, v_9)
 
-def cps_provider_2_array_op_step(v_0: BIR.Primitive, v_2: List<&2, BIR.Arg>, v_4: List<&2, BIR.Descriptor>, +v_6: cps_provider_2_Ctx, v_7: BIR.Block, +v_9: U32) -> cps_provider_2_OpStep:
-  native_match_cps_provider_2_array_op_step_1(cps_provider_2_is_array_primitive(v_0), v_0, v_2, v_4, v_6, v_7, v_9)
+def cps_provider_2_array_op_step_element(v_0: BIR.Primitive, v_2: List<&2, BIR.Arg>, v_4: List<&2, BIR.Descriptor>, +v_6: cps_provider_2_Ctx, v_7: BIR.Block, +v_9: U32) -> cps_provider_2_OpStep:
+  native_match_cps_provider_2_array_op_step_element_1(cps_provider_2_is_array_primitive(v_0), v_0, v_2, v_4, v_6, v_7, v_9)
 
 def native_match_cps_provider_2_pred_path_0(v_0: BIR.Primitive, +v_4: cps_provider_2_Ctx, v_13: cps_provider_2_FieldRef, v_16: String) -> Maybe<&2, cps_provider_2_Part>:
   match v_0:
@@ -4606,50 +4704,17 @@ def native_match_cps_provider_2_pred_path_3(v_2: List<&2, BIR.Arg>, v_0: BIR.Pri
 def cps_provider_2_pred_path(v_0: BIR.Primitive, v_2: List<&2, BIR.Arg>, +v_4: cps_provider_2_Ctx) -> Maybe<&2, cps_provider_2_Part>:
   native_match_cps_provider_2_pred_path_3(v_2, v_0, v_4)
 
-def native_match_cps_provider_2_append_step_0(v_48: cps_provider_2_WriteStep, +v_6: U32, v_26: String) -> cps_provider_2_OpStep:
-  match v_48:
-    case cps_provider_2_WriteFail{v_29}:
-      cps_provider_2_OpFail{v_29}
-    case cps_provider_2_WriteOk{v_32, v_33}:
-      +v_36 = cps_provider_2_cat(["sh", U32.show(v_6)])
-      +v_39 = cps_provider_2_cat(["st", U32.show(v_6)])
-      +v_42 = cps_provider_2_cat(["    Term ", v_36, " = ", v_26, ";\n    Term ", v_39, " = ", v_32, ";\n"])
-      cps_provider_2_append_step_parts(v_36, v_39, v_42, v_33)
+def native_match_cps_provider_2_str_append_0(v_23: cps_provider_2_Part, v_24: cps_provider_2_Part, v_1: String, v_3: String) -> cps_provider_2_Part:
+  match v_23, v_24:
+    case cps_provider_2_PartOk{v_11}, cps_provider_2_PartOk{v_12}:
+      cps_provider_2_okp(cps_provider_2_cat(["bend_str_append(e, ", v_11, ", ", v_12, ", ", v_1, ", ", v_3, ", 0)"]))
+    case cps_provider_2_PartFail{v_17}, _:
+      cps_provider_2_PartFail{v_17}
+    case _, cps_provider_2_PartFail{v_22}:
+      cps_provider_2_PartFail{v_22}
 
-def native_match_cps_provider_2_append_step_1(v_47: cps_provider_2_Part, +v_3: cps_provider_2_Ctx, v_4: BIR.Block, +v_6: U32, v_20: BIR.Use, v_21: BIR.Atom) -> cps_provider_2_OpStep:
-  match v_47:
-    case cps_provider_2_PartFail{v_24}:
-      cps_provider_2_OpFail{v_24}
-    case cps_provider_2_PartOk{v_26}:
-      native_match_cps_provider_2_append_step_0(cps_provider_2_field_owned(v_21, v_20, v_3, v_4), v_6, v_26)
-
-def native_match_cps_provider_2_append_step_2(+v_11: BIR.Arg, +v_12: BIR.Arg, +v_3: cps_provider_2_Ctx, v_4: BIR.Block, +v_6: U32) -> cps_provider_2_OpStep:
-  match v_11, v_12:
-    case BIR.Arg{v_18, v_19}, BIR.Arg{v_20, v_21}:
-      native_match_cps_provider_2_append_step_1(cps_provider_2_field_borrow(v_19, v_3), v_3, v_4, v_6, v_20, v_21)
-
-def native_match_cps_provider_2_append_step_3(v_1: List<&2, BIR.Arg>, +v_3: cps_provider_2_Ctx, v_4: BIR.Block, +v_6: U32) -> cps_provider_2_OpStep:
-  match v_1:
-    case +v_11 <> +v_12 <> _:
-      native_match_cps_provider_2_append_step_2(v_11, v_12, v_3, v_4, v_6)
-    case _:
-      cps_provider_2_OpFail{"a string append needs two operands"}
-
-def cps_provider_2_append_step(v_1: List<&2, BIR.Arg>, +v_3: cps_provider_2_Ctx, v_4: BIR.Block, +v_6: U32) -> cps_provider_2_OpStep:
-  native_match_cps_provider_2_append_step_3(v_1, v_3, v_4, v_6)
-
-def native_match_cps_provider_2_append_step_parts_0(v_27: cps_provider_2_Part, v_28: cps_provider_2_Part, v_1: String, v_3: String, +v_5: String, +v_7: cps_provider_2_Ctx) -> cps_provider_2_OpStep:
-  match v_27, v_28:
-    case cps_provider_2_PartOk{v_16}, cps_provider_2_PartOk{v_17}:
-      cps_provider_2_OpOk{v_5, cps_provider_2_cat(["bend_str_append(e, ", v_16, ", ", v_17, ", ", v_1, ", ", v_3, ", 0)"]), v_7}
-    case cps_provider_2_PartFail{v_21}, _:
-      cps_provider_2_OpFail{v_21}
-    case _, cps_provider_2_PartFail{v_26}:
-      cps_provider_2_OpFail{v_26}
-
-def cps_provider_2_append_step_parts(v_1: String, v_3: String, +v_5: String, +v_7: cps_provider_2_Ctx) -> cps_provider_2_OpStep:
-  +v_11 = cps_provider_2_ctx_plan(v_7)
-  native_match_cps_provider_2_append_step_parts_0(cps_provider_2_pcid("SCon", v_11), cps_provider_2_pcid("Chr", v_11), v_1, v_3, v_5, v_7)
+def cps_provider_2_str_append(v_1: String, v_3: String, v_5: cps_provider_2_Plan) -> cps_provider_2_Part:
+  native_match_cps_provider_2_str_append_0(cps_provider_2_pcid("SCon", v_5), cps_provider_2_pcid("Chr", v_5), v_1, v_3)
 
 def native_match_cps_provider_2_construct_step_0(v_52: cps_provider_2_Part, +v_5: cps_provider_2_Ctx, +v_12: String) -> cps_provider_2_OpStep:
   match v_52:
@@ -4875,6 +4940,29 @@ def cps_provider_2_is_array_primitive(v_0: BIR.Primitive) -> Bool:
     case _:
       False{}
 
+def cps_provider_2_is_atomic_primitive(v_0: BIR.Primitive) -> Bool:
+  match v_0:
+    case BIR.PrimArrayAtomicAdd{}:
+      True{}
+    case BIR.PrimArrayAtomicMin{}:
+      True{}
+    case BIR.PrimArrayAtomicMax{}:
+      True{}
+    case BIR.PrimArrayAtomicAnd{}:
+      True{}
+    case BIR.PrimArrayAtomicOr{}:
+      True{}
+    case BIR.PrimArrayAtomicXor{}:
+      True{}
+    case BIR.PrimArrayAtomicExch{}:
+      True{}
+    case BIR.PrimArrayAtomicCas{}:
+      True{}
+    case BIR.PrimArrayAtomicFadd{}:
+      True{}
+    case _:
+      False{}
+
 def cps_provider_2_pcid(v_1: String, v_3: cps_provider_2_Plan) -> cps_provider_2_Part:
   match v_3:
     case cps_provider_2_Plan{v_26, v_27, v_28, v_29, v_30, v_31, v_32, v_33, v_34, v_35, v_36, v_37, v_38, v_39, v_40, v_41, v_42, v_43, v_44, _, _}:
@@ -4919,7 +5007,17 @@ def native_match_cps_provider_2_bool_part_0(v_21: cps_provider_2_Part, v_22: cps
 def cps_provider_2_bool_part(v_1: String, v_3: cps_provider_2_Plan) -> cps_provider_2_Part:
   native_match_cps_provider_2_bool_part_0(cps_provider_2_pcid("True", v_3), cps_provider_2_pcid("False", v_3), v_1)
 
-def native_match_cps_provider_2_prim_part_0(v_0: BIR.Primitive, +v_5: cps_provider_2_Plan, +v_9: String, +v_12: String) -> cps_provider_2_Part:
+def native_match_cps_provider_2_prim_part_0(v_6: Bool, v_0: BIR.Primitive, +v_3: List<&2, String>, +v_5: cps_provider_2_Plan) -> cps_provider_2_Part:
+  match v_6:
+    case True{}:
+      cps_provider_2_phys_part(cps_provider_5_atomic_prim_part(v_0, v_3, cps_provider_2_phys_world(v_5)))
+    case False{}:
+      cps_provider_2_prim_scalar_part(v_0, v_3, v_5)
+
+def cps_provider_2_prim_part(v_0: BIR.Primitive, +v_3: List<&2, String>, +v_5: cps_provider_2_Plan) -> cps_provider_2_Part:
+  native_match_cps_provider_2_prim_part_0(cps_provider_2_is_atomic_primitive(v_0), v_0, v_3, v_5)
+
+def native_match_cps_provider_2_prim_scalar_part_0(v_0: BIR.Primitive, +v_5: cps_provider_2_Plan, +v_9: String, +v_12: String) -> cps_provider_2_Part:
   match v_0:
     case BIR.PrimU32Add{}:
       cps_provider_2_okp(cps_provider_2_cat(["U32_BIN(", v_9, ", +, ", v_12, ")"]))
@@ -5074,7 +5172,7 @@ def native_match_cps_provider_2_prim_part_0(v_0: BIR.Primitive, +v_5: cps_provid
     case BIR.PrimF32ToNat{}:
       cps_provider_2_okp(cps_provider_2_cat(["bend_f32_to_nat(e, ", v_9, ")"]))
     case BIR.PrimStringAppend{}:
-      cps_provider_2_failp("a string append is emitted by append_part, which needs its operand quantities")
+      cps_provider_2_str_append(v_9, v_12, v_5)
     case BIR.PrimStringEq{}:
       cps_provider_2_str_bool2("bend_str_eq", "SCon", v_9, v_12, v_5)
     case BIR.PrimStringLength{}:
@@ -5120,11 +5218,11 @@ def native_match_cps_provider_2_prim_part_0(v_0: BIR.Primitive, +v_5: cps_provid
     case _:
       cps_provider_2_failp("BIR primitive has no C rendering")
 
-def cps_provider_2_prim_part(v_0: BIR.Primitive, +v_3: List<&2, String>, +v_5: cps_provider_2_Plan) -> cps_provider_2_Part:
+def cps_provider_2_prim_scalar_part(v_0: BIR.Primitive, +v_3: List<&2, String>, +v_5: cps_provider_2_Plan) -> cps_provider_2_Part:
   +v_9 = cps_provider_2_list_at(v_3, 0n)
   +v_12 = cps_provider_2_list_at(v_3, 1n)
   +v_15 = cps_provider_2_list_at(v_3, 2n)
-  native_match_cps_provider_2_prim_part_0(v_0, v_5, v_9, v_12)
+  native_match_cps_provider_2_prim_scalar_part_0(v_0, v_5, v_9, v_12)
 
 def cps_provider_2_f32_bin(v_1: String, v_3: String, v_5: String) -> cps_provider_2_Part:
   cps_provider_2_okp(cps_provider_2_cat(["f32_rewrap(f32_unbox(", v_3, ") ", v_1, " f32_unbox(", v_5, "))"]))
@@ -8121,22 +8219,40 @@ def native_match_cps_provider_2_entry_lazy_0(v_20: cps_provider_2_Step, v_1: U32
 def cps_provider_2_entry_lazy(v_1: U32, v_3: Nat, v_4: BIR.Block, +v_6: cps_provider_2_Ctx) -> cps_provider_2_Step:
   native_match_cps_provider_2_entry_lazy_0(cps_provider_2_block_ctl(v_4, cps_provider_2_Ctx{cps_provider_2_ctx_sig(v_6), cps_provider_2_ctx_plan(v_6), [], [], 0n, [], None{}, cps_provider_2_ctx_next(v_6), cps_provider_2_ctx_segs(v_6), False{}, [], False{}, cps_provider_2_ctx_max(v_6), [], []}), v_1, v_3)
 
-def native_match_cps_provider_2_entry_native_0(v_18: cps_provider_2_Part, v_1: U32, +v_3: Nat, +v_8: cps_provider_2_Ctx) -> cps_provider_2_Step:
+def native_match_cps_provider_2_entry_native_0(v_18: cps_provider_2_Part, v_1: U32, +v_3: Nat, +v_4: BIR.Primitive, +v_6: Nat, +v_8: cps_provider_2_Ctx) -> cps_provider_2_Step:
   match v_18:
     case cps_provider_2_PartFail{v_14}:
       cps_provider_2_StepFail{v_14}
     case cps_provider_2_PartOk{v_16}:
-      cps_provider_2_entry_add(v_1, v_3, cps_provider_2_a_decls(v_3), cps_provider_2_cat(["    r0 = ", v_16, ";\n    WL_RETN(1);\n"]), False{}, v_8)
+      cps_provider_2_entry_add(v_1, v_3, cps_provider_2_a_decls(v_3), cps_provider_2_cat(["    r0 = ", v_16, ";\n", cps_provider_2_native_borrow_drops(v_4, v_6, 0n), "    WL_RETN(1);\n"]), False{}, v_8)
 
-def native_match_cps_provider_2_entry_native_1(v_17: Bool, v_1: U32, +v_3: Nat, v_4: BIR.Primitive, +v_6: Nat, +v_8: cps_provider_2_Ctx) -> cps_provider_2_Step:
+def native_match_cps_provider_2_entry_native_1(v_17: Bool, v_1: U32, +v_3: Nat, +v_4: BIR.Primitive, +v_6: Nat, +v_8: cps_provider_2_Ctx) -> cps_provider_2_Step:
   match v_17:
     case False{}:
       cps_provider_2_StepFail{"BIR native entry arity disagrees with its live quantities"}
     case True{}:
-      native_match_cps_provider_2_entry_native_0(cps_provider_2_prim_part(v_4, cps_provider_2_a_names(v_6), cps_provider_2_ctx_plan(v_8)), v_1, v_3, v_8)
+      native_match_cps_provider_2_entry_native_0(cps_provider_2_prim_part(v_4, cps_provider_2_a_names(v_6), cps_provider_2_ctx_plan(v_8)), v_1, v_3, v_4, v_6, v_8)
 
-def cps_provider_2_entry_native(v_1: U32, +v_3: Nat, v_4: BIR.Primitive, +v_6: Nat, +v_8: cps_provider_2_Ctx) -> cps_provider_2_Step:
+def cps_provider_2_entry_native(v_1: U32, +v_3: Nat, +v_4: BIR.Primitive, +v_6: Nat, +v_8: cps_provider_2_Ctx) -> cps_provider_2_Step:
   native_match_cps_provider_2_entry_native_1(Nat.is_eq(v_3, v_6), v_1, v_3, v_4, v_6, v_8)
+
+def native_match_cps_provider_2_native_borrow_drops_0(v_10: Bool, +v_4: Nat, v_8: String) -> String:
+  match v_10:
+    case True{}:
+      cps_provider_2_cat(["    term_sink(e, a", Nat.show(v_4), ");\n", v_8])
+    case False{}:
+      v_8
+
+def native_match_cps_provider_2_native_borrow_drops_1(v_9: Bool, +v_0: BIR.Primitive, +v_2: Nat, +v_4: Nat) -> String:
+  match v_9:
+    case False{}:
+      ""
+    case True{}:
+      v_8 = cps_provider_2_native_borrow_drops(v_0, v_2, Nat.add(v_4, 1n))
+      native_match_cps_provider_2_native_borrow_drops_0(cps_provider_2_prim_borrowed_box(v_0, v_4), v_4, v_8)
+
+def cps_provider_2_native_borrow_drops(+v_0: BIR.Primitive, +v_2: Nat, +v_4: Nat) -> String:
+  native_match_cps_provider_2_native_borrow_drops_1(Nat.is_lt(v_4, v_2), v_0, v_2, v_4)
 
 def cps_provider_2_a_names(v_1: Nat) -> List<&2, String>:
   cps_provider_2_a_caps(v_1)
@@ -8762,7 +8878,7 @@ def cps_provider_2_spins_part() -> cps_provider_2_Part:
   cps_provider_2_okp(cps_provider_2_cat(["typedef u64 Nat;\n", cps_provider_2_helper_core, "CONSTV u64 STAT_IMG[] = { 0 };\n"]))
 
 def cps_provider_2_helper_core() -> String:
-  cps_provider_2_cat(["static u64 bend_hastag(Term v, u32 cid) {\n  u64 tag = term_tag(v);\n  return (tag == TAG_CTR || tag == TAG_PAK) && term_aux(v) == (u64)cid;\n}\n\n", "static Nat bend_nat_pred(Nat v) {\n  return v == 0 ? 0 : v - 1;\n}\n\n", "static Nat bend_f32_to_nat(Env e, Term v) {\n  f32 x = f32_unbox(v);\n  return nat_chk(e, x < 0.0f ? 0 : (u64)x);\n}\n\n", "static Term bend_tuple(Env e, u32 cid, Term a, Term b) {\n  u64 l = heap_alloc(e, cls_fit(2));\n  e.mem[l] = a;\n  e.mem[l + 1] = b;\n  return term_ctr(cid, l);\n}\n\n", "static Term bend_box_enum(Env e, const u32* cids, u32 n, u64 tag) {\n  (void)e;\n  return term_pak(tag < (u64)n ? cids[tag] : (n == 0 ? 0 : cids[0]), 0);\n}\n\n", "static Term bend_bool(Env e, u32 t, u32 f, u64 c) {\n  (void)e;\n  return term_pak(c != 0 ? t : f, 0);\n}\n\n", "static Term bend_bool_or(Env e, u32 t, u32 f, Term a, Term b) {\n  (void)e;\n  return term_pak(term_aux(a) == (u64)t || term_aux(b) == (u64)t ? t : f, 0);\n}\n\n", "static Term bend_bool_xor(Env e, u32 t, u32 f, Term a, Term b) {\n  (void)e;\n  return term_pak((term_aux(a) == (u64)t) != (term_aux(b) == (u64)t) ? t : f, 0);\n}\n\n", "static Term bend_cmp3(Env e, u32 lt, u32 eq, u32 gt, Term a, Term b) {\n  return term_pak(a < b ? lt : a == b ? eq : gt, 0);\n}\n\n", "static Term bend_divmod(Env e, u32 cid, Term a, Term b) {\n  if (b == 0) {\n    return bend_tuple(e, cid, 0, a);\n  }\n  return bend_tuple(e, cid, a / b, a % b);\n}\n\n", "static Term bend_str_cons(Env e, u32 scon, u64 ch, Term tail) {\n  u64 l = heap_alloc(e, cls_fit(2));\n  e.mem[l] = ch;\n  e.mem[l + 1] = tail;\n  return term_ctr(scon, l);\n}\n\n", "// A BIR text literal is Bend String data, not text at an FFI boundary: every\n// logical Char keeps its exact u32 code inside Bend, including a separated\n// surrogate and a code past U+10FFFF, and no UTF-8 byte string carries those.\n// The renderer therefore hands over its own payload (see Link.c_text_literal):\n// a printable ASCII Char as itself, every other Char as '%' and eight lowercase\n// hex digits. Cells hold the raw u32 that bend_str_append and the constructor\n// path store, so a literal, an appended code and a matched constructor share\n// one representation. The chain is built forwards: a new node starts as the\n// last one, with its tail already the nil, and the previous node's tail takes\n// it as it is allocated, so no pointer has to span the thread and heap address\n// spaces. The chain is fresh here, and term_keep shares it exactly like a chain\n// built any other way, so nothing is sealed early.\nstatic Term bend_text(Env e, const char* p, u64 n, u32 snil, u32 scon) {\n  Term head = term_pak(snil, 0);\n  u64 prev = 0;\n  bool first = true;\n  for (u64 i = 0; i < n;) {\n    u64 code;\n    if (p[i] == '%') {\n      code = 0;\n      for (u32 k = 1; k <= 8; k += 1) {\n        char h = p[i + k];\n        code = (code << 4) | (u64)(h <= '9' ? h - '0' : (h | 0x20) - 'a' + 10);\n      }\n      i += 9;\n    } else {\n      code = (u64)(u8)p[i];\n      i += 1;\n    }\n    u64 l = heap_alloc(e, cls_fit(2));\n    e.mem[l] = code;\n    e.mem[l + 1] = term_pak(snil, 0);\n    if (first) {\n      head = term_ctr(scon, l);\n      first = false;\n    } else {\n      e.mem[prev + 1] = term_ctr(scon, l);\n    }\n    prev = l;\n  }\n  return head;\n}\n\n", "static Term bend_str_append_go(Env e, u32 scon, u32 chr, Term a, Term b) {\n  if (term_aux(a) == (u64)chr) {\n    return bend_str_cons(e, scon, (u64)term_loc(a), b);\n  }\n  if (term_aux(a) != (u64)scon) {\n    return b;\n  }\n  u64 l = term_peek(e.mem, a);\n  return bend_str_cons(e, scon, e.mem[l], bend_str_append_go(e, scon, chr, e.mem[l + 1], b));\n}\n\n", "static Term bend_str_append(Env e, u32 scon, u32 chr, Term a, Term b, u32 keep) {\n  return bend_str_append_go(e, scon, chr, a, term_keep(e, b, keep));\n}\n\n", "static Nat bend_str_length(Env e, u32 scon, Term a) {\n  Nat n = 0;\n  while (term_aux(a) == (u64)scon) {\n    a = e.mem[term_peek(e.mem, a) + 1];\n    n += 1;\n  }\n  return n;\n}\n\n", "static u32 bend_str_empty(Term a, u32 snil) {\n  return term_aux(a) == (u64)snil;\n}\n\n", "static Term bend_str_head(Env e, u32 scon, Term a) {\n  if (term_aux(a) != (u64)scon) {\n    return 0;\n  }\n  return e.mem[term_peek(e.mem, a)];\n}\n\n", "static Term bend_str_tail(Env e, u32 scon, u32 snil, Term a) {\n  if (term_aux(a) != (u64)scon) {\n    return term_pak(snil, 0);\n  }\n  u64 at = term_peek(e.mem, a) + 1;\n  Term w = e.mem[at];\n  Term v = term_keep(e, w, 1);\n  if (v != w) {\n    e.mem[at] = v;\n  }\n  return v;\n}\n\n", "static Term bend_str_to_list(Env e, u32 scon, u32 snil, u32 con, u32 nil, u32 chr, Term a) {\n  if (term_aux(a) != (u64)scon) {\n    return term_pak(nil, 0);\n  }\n  u64 l = term_peek(e.mem, a);\n  Term tail = bend_str_to_list(e, scon, snil, con, nil, chr, e.mem[l + 1]);\n  u64 n = heap_alloc(e, cls_fit(2));\n  e.mem[n] = (u64)term_pak(chr, e.mem[l]);\n  e.mem[n + 1] = tail;\n  return term_ctr(con, n);\n}\n\n", "static u32 bend_str_eq(Env e, u32 scon, Term a, Term b) {\n  while (term_aux(a) == (u64)scon && term_aux(b) == (u64)scon) {\n    u64 la = term_peek(e.mem, a);\n    u64 lb = term_peek(e.mem, b);\n    if (e.mem[la] != e.mem[lb]) {\n      return 0;\n    }\n    a = e.mem[la + 1];\n    b = e.mem[lb + 1];\n  }\n  return term_aux(a) != (u64)scon && term_aux(b) != (u64)scon;\n}\n\n", "static Term bend_str_cmp(Env e, u32 scon, u32 tuple, u32 lt, u32 eq, u32 gt, Term a, Term b) {\n  Term x = a;\n  Term y = b;\n  u64 order = 1000000000ull;\n  while (term_aux(x) == (u64)scon && term_aux(y) == (u64)scon) {\n    u64 lx = term_peek(e.mem, x);\n    u64 ly = term_peek(e.mem, y);\n    if (e.mem[lx] != e.mem[ly]) {\n      order = e.mem[lx] < e.mem[ly] ? 0 : 2;\n      break;\n    }\n    x = e.mem[lx + 1];\n    y = e.mem[ly + 1];\n  }\n  if (order == 1000000000ull) {\n    u64 ex = term_aux(x) != (u64)scon;\n    u64 ey = term_aux(y) != (u64)scon;\n    order = ex && ey ? 1 : ex ? 2 : ey ? 0 : 1;\n  }\n  return bend_tuple(e, tuple, bend_tuple(e, tuple, a, b), term_pak(order == 0 ? lt : order == 1 ? eq : gt, 0));\n}\n\n", "static Term bend_map_bit(Env e, u32 scon, u32 tuple, u32 t, u32 f, Term key, Term pos) {\n  u64 at = 0;\n  u64 want = (u64)pos / 33ull;\n  u64 bit = (u64)pos % 33ull;\n  Term s = key;\n  while (term_aux(s) == (u64)scon && at < want) {\n    s = e.mem[term_peek(e.mem, s) + 1];\n    at += 1;\n  }\n  if (term_aux(s) != (u64)scon) {\n    return bend_tuple(e, tuple, key, term_pak(f, 0));\n  }\n  if (bit == 0) {\n    return bend_tuple(e, tuple, key, term_pak(t, 0));\n  }\n  u64 ch = e.mem[term_peek(e.mem, s)];\n  u64 set = (ch >> (32ull - bit)) & 1ull;\n  return bend_tuple(e, tuple, key, term_pak(set != 0 ? t : f, 0));\n}\n\n", "static Term bend_u32_to_word(Env e, u32 wcon, u32 wnil, Term x) {\n  Term w = term_pak(wnil, 0);\n  for (u32 i = 0; i < 32; i += 1) {\n    u64 l = heap_alloc(e, cls_fit(2));\n    e.mem[l] = ((u64)x >> i) & 1ull;\n    e.mem[l + 1] = w;\n    w = term_ctr(wcon, l);\n  }\n  return w;\n}\n\n"])
+  cps_provider_2_cat(["static u64 bend_hastag(Term v, u32 cid) {\n  u64 tag = term_tag(v);\n  return (tag == TAG_CTR || tag == TAG_PAK) && term_aux(v) == (u64)cid;\n}\n\n", "static Nat bend_nat_pred(Nat v) {\n  return v == 0 ? 0 : v - 1;\n}\n\n", "static Nat bend_f32_to_nat(Env e, Term v) {\n  f32 x = f32_unbox(v);\n  return nat_chk(e, x < 0.0f ? 0 : (u64)x);\n}\n\n", "static Term bend_tuple(Env e, u32 cid, Term a, Term b) {\n  u64 l = heap_alloc(e, cls_fit(2));\n  e.mem[l] = a;\n  e.mem[l + 1] = b;\n  return term_ctr(cid, l);\n}\n\n", "static Term bend_box_enum(Env e, const u32* cids, u32 n, u64 tag) {\n  (void)e;\n  return term_pak(tag < (u64)n ? cids[tag] : (n == 0 ? 0 : cids[0]), 0);\n}\n\n", "static Term bend_bool(Env e, u32 t, u32 f, u64 c) {\n  (void)e;\n  return term_pak(c != 0 ? t : f, 0);\n}\n\n", "static Term bend_bool_or(Env e, u32 t, u32 f, Term a, Term b) {\n  (void)e;\n  return term_pak(term_aux(a) == (u64)t || term_aux(b) == (u64)t ? t : f, 0);\n}\n\n", "static Term bend_bool_xor(Env e, u32 t, u32 f, Term a, Term b) {\n  (void)e;\n  return term_pak((term_aux(a) == (u64)t) != (term_aux(b) == (u64)t) ? t : f, 0);\n}\n\n", "static Term bend_cmp3(Env e, u32 lt, u32 eq, u32 gt, Term a, Term b) {\n  return term_pak(a < b ? lt : a == b ? eq : gt, 0);\n}\n\n", "static Term bend_divmod(Env e, u32 cid, Term a, Term b) {\n  if (b == 0) {\n    return bend_tuple(e, cid, 0, a);\n  }\n  return bend_tuple(e, cid, a / b, a % b);\n}\n\n", "static Term bend_str_cons(Env e, u32 scon, u64 ch, Term tail) {\n  u64 l = heap_alloc(e, cls_fit(2));\n  e.mem[l] = ch;\n  e.mem[l + 1] = tail;\n  return term_ctr(scon, l);\n}\n\n", "// A BIR text literal is Bend String data, not text at an FFI boundary: every\n// logical Char keeps its exact u32 code inside Bend, including a separated\n// surrogate and a code past U+10FFFF, and no UTF-8 byte string carries those.\n// The renderer therefore hands over its own payload (see Link.c_text_literal):\n// a printable ASCII Char as itself, every other Char as '%' and eight lowercase\n// hex digits. Cells hold the raw u32 that bend_str_append and the constructor\n// path store, so a literal, an appended code and a matched constructor share\n// one representation. The chain is built forwards: a new node starts as the\n// last one, with its tail already the nil, and the previous node's tail takes\n// it as it is allocated, so no pointer has to span the thread and heap address\n// spaces. The chain is fresh here, and term_keep shares it exactly like a chain\n// built any other way, so nothing is sealed early.\nstatic Term bend_text(Env e, const char* p, u64 n, u32 snil, u32 scon) {\n  Term head = term_pak(snil, 0);\n  u64 prev = 0;\n  bool first = true;\n  for (u64 i = 0; i < n;) {\n    u64 code;\n    if (p[i] == '%') {\n      code = 0;\n      for (u32 k = 1; k <= 8; k += 1) {\n        char h = p[i + k];\n        code = (code << 4) | (u64)(h <= '9' ? h - '0' : (h | 0x20) - 'a' + 10);\n      }\n      i += 9;\n    } else {\n      code = (u64)(u8)p[i];\n      i += 1;\n    }\n    u64 l = heap_alloc(e, cls_fit(2));\n    e.mem[l] = code;\n    e.mem[l + 1] = term_pak(snil, 0);\n    if (first) {\n      head = term_ctr(scon, l);\n      first = false;\n    } else {\n      e.mem[prev + 1] = term_ctr(scon, l);\n    }\n    prev = l;\n  }\n  return head;\n}\n\n", "static Term bend_str_append_go(Env e, u32 scon, u32 chr, Term a, Term b) {\n  if (term_aux(a) == (u64)chr) {\n    return bend_str_cons(e, scon, (u64)term_loc(a), b);\n  }\n  if (term_aux(a) != (u64)scon) {\n    return b;\n  }\n  u64 l = term_peek(e.mem, a);\n  return bend_str_cons(e, scon, e.mem[l], bend_str_append_go(e, scon, chr, e.mem[l + 1], b));\n}\n\n", "static Term bend_str_append(Env e, u32 scon, u32 chr, Term a, Term b, u32 keep) {\n  return bend_str_append_go(e, scon, chr, a, term_keep(e, b, keep));\n}\n\n", "static Nat bend_str_length(Env e, u32 scon, Term a) {\n  Nat n = 0;\n  while (term_aux(a) == (u64)scon) {\n    a = e.mem[term_peek(e.mem, a) + 1];\n    n += 1;\n  }\n  return n;\n}\n\n", "static u32 bend_str_empty(Term a, u32 snil) {\n  return term_aux(a) == (u64)snil;\n}\n\n", "static Term bend_str_head(Env e, u32 scon, Term a) {\n  if (term_aux(a) != (u64)scon) {\n    return 0;\n  }\n  return e.mem[term_peek(e.mem, a)];\n}\n\n", "static Term bend_str_tail(Env e, u32 scon, u32 snil, Term a) {\n  if (term_aux(a) != (u64)scon) {\n    return term_pak(snil, 0);\n  }\n  u64 at = term_peek(e.mem, a) + 1;\n  Term w = e.mem[at];\n  Term v = term_keep(e, w, 1);\n  if (v != w) {\n    e.mem[at] = v;\n  }\n  return v;\n}\n\n", "static Term bend_str_to_list(Env e, u32 scon, u32 snil, u32 con, u32 nil, u32 chr, Term a) {\n  if (term_aux(a) != (u64)scon) {\n    return term_pak(nil, 0);\n  }\n  u64 l = term_peek(e.mem, a);\n  Term tail = bend_str_to_list(e, scon, snil, con, nil, chr, e.mem[l + 1]);\n  u64 n = heap_alloc(e, cls_fit(2));\n  e.mem[n] = (u64)term_pak(chr, e.mem[l]);\n  e.mem[n + 1] = tail;\n  return term_ctr(con, n);\n}\n\n", "static u32 bend_str_eq(Env e, u32 scon, Term a, Term b) {\n  while (term_aux(a) == (u64)scon && term_aux(b) == (u64)scon) {\n    u64 la = term_peek(e.mem, a);\n    u64 lb = term_peek(e.mem, b);\n    if (e.mem[la] != e.mem[lb]) {\n      return 0;\n    }\n    a = e.mem[la + 1];\n    b = e.mem[lb + 1];\n  }\n  return term_aux(a) != (u64)scon && term_aux(b) != (u64)scon;\n}\n\n", "static Term bend_str_cmp(Env e, u32 scon, u32 tuple, u32 lt, u32 eq, u32 gt, Term a, Term b) {\n  Term x = a;\n  Term y = b;\n  u64 order = 1000000000ull;\n  while (term_aux(x) == (u64)scon && term_aux(y) == (u64)scon) {\n    u64 lx = term_peek(e.mem, x);\n    u64 ly = term_peek(e.mem, y);\n    if (e.mem[lx] != e.mem[ly]) {\n      order = e.mem[lx] < e.mem[ly] ? 0 : 2;\n      break;\n    }\n    x = e.mem[lx + 1];\n    y = e.mem[ly + 1];\n  }\n  if (order == 1000000000ull) {\n    u64 ex = term_aux(x) != (u64)scon;\n    u64 ey = term_aux(y) != (u64)scon;\n    order = ex && ey ? 1 : ex ? 0 : ey ? 2 : 1;\n  }\n  return bend_tuple(e, tuple, bend_tuple(e, tuple, a, b), term_pak(order == 0 ? lt : order == 1 ? eq : gt, 0));\n}\n\n", "static Term bend_map_bit(Env e, u32 scon, u32 tuple, u32 t, u32 f, Term key, Term pos) {\n  u64 at = 0;\n  u64 want = (u64)pos / 33ull;\n  u64 bit = (u64)pos % 33ull;\n  Term s = key;\n  while (term_aux(s) == (u64)scon && at < want) {\n    s = e.mem[term_peek(e.mem, s) + 1];\n    at += 1;\n  }\n  if (term_aux(s) != (u64)scon) {\n    return bend_tuple(e, tuple, key, term_pak(f, 0));\n  }\n  if (bit == 0) {\n    return bend_tuple(e, tuple, key, term_pak(t, 0));\n  }\n  u64 ch = e.mem[term_peek(e.mem, s)];\n  u64 set = (ch >> (32ull - bit)) & 1ull;\n  return bend_tuple(e, tuple, key, term_pak(set != 0 ? t : f, 0));\n}\n\n", "static Term bend_u32_to_word(Env e, u32 wcon, u32 wnil, Term x) {\n  Term w = term_pak(wnil, 0);\n  for (u32 i = 32; i > 0; i -= 1) {\n    u64 l = heap_alloc(e, cls_fit(2));\n    e.mem[l] = ((u64)x >> (i - 1)) & 1ull;\n    e.mem[l + 1] = w;\n    w = term_ctr(wcon, l);\n  }\n  return w;\n}\n\n"])
 
 def cps_provider_2_requests_part(v_1: cps_provider_2_Plan) -> cps_provider_2_Part:
   match v_1:
@@ -13559,6 +13675,24 @@ def cps_provider_5_array_label(+v_0: BIR.Primitive) -> String:
       "array_set"
     case BIR.PrimArraySwap{}:
       "array_swap"
+    case BIR.PrimArrayAtomicAdd{}:
+      "array_atomic_add"
+    case BIR.PrimArrayAtomicMin{}:
+      "array_atomic_min"
+    case BIR.PrimArrayAtomicMax{}:
+      "array_atomic_max"
+    case BIR.PrimArrayAtomicAnd{}:
+      "array_atomic_and"
+    case BIR.PrimArrayAtomicOr{}:
+      "array_atomic_or"
+    case BIR.PrimArrayAtomicXor{}:
+      "array_atomic_xor"
+    case BIR.PrimArrayAtomicExch{}:
+      "array_atomic_exch"
+    case BIR.PrimArrayAtomicCas{}:
+      "array_atomic_cas"
+    case BIR.PrimArrayAtomicFadd{}:
+      "array_atomic_fadd"
     case BIR.PrimArraySize{}:
       "array_size"
     case BIR.PrimArrayClone{}:
@@ -13803,6 +13937,103 @@ def cps_provider_5_array_clone_ops(+v_2: Maybe<&2, cps_provider_5_Operand>, +v_4
     case None{}:
       cps_provider_5_PartFail{"array_clone needs the array"}
 
+def cps_provider_5_atomic_cell_text(+v_1: String, +v_3: String) -> String:
+  cps_provider_5_join_text(["blk_ptr(e.mem, blk_loc(e.mem, ", v_1, "), blk_at(", v_1, ", (u64)(u32)(", v_3, "), 0))"])
+
+def cps_provider_5_atomic_call_text(+v_1: String, +v_3: String, +v_5: String, +v_7: String) -> String:
+  cps_provider_5_join_text(["(u64)", v_7, "(", cps_provider_5_atomic_cell_text(v_1, v_3), ", (u32)(", v_5, "))"])
+
+def cps_provider_5_atomic_cas_text(+v_1: String, +v_3: String, +v_5: String, +v_7: String) -> String:
+  cps_provider_5_join_text(["(u64)a32_cmpx(", cps_provider_5_atomic_cell_text(v_1, v_3), ", (u32)(", v_5, "), (u32)(", v_7, "))"])
+
+def cps_provider_5_atomic_helper(+v_0: BIR.Primitive) -> cps_provider_5_Part:
+  match v_0:
+    case BIR.PrimArrayAtomicAdd{}:
+      cps_provider_5_PartOk{"a32_add"}
+    case BIR.PrimArrayAtomicMin{}:
+      cps_provider_5_PartOk{"a32_min"}
+    case BIR.PrimArrayAtomicMax{}:
+      cps_provider_5_PartOk{"a32_max"}
+    case BIR.PrimArrayAtomicAnd{}:
+      cps_provider_5_PartOk{"a32_and"}
+    case BIR.PrimArrayAtomicOr{}:
+      cps_provider_5_PartOk{"a32_or"}
+    case BIR.PrimArrayAtomicXor{}:
+      cps_provider_5_PartOk{"a32_xor"}
+    case BIR.PrimArrayAtomicExch{}:
+      cps_provider_5_PartOk{"a32_exch"}
+    case BIR.PrimArrayAtomicFadd{}:
+      cps_provider_5_PartOk{"a32_fadd"}
+    case _:
+      cps_provider_5_PartFail{cps_provider_5_join_text(["the primitive `", cps_provider_5_array_label(v_0), "` has no a32 read-modify-write helper"])}
+
+def cps_provider_5_atomic_pair(+v_1: String, +v_3: String, +v_5: cps_provider_5_World) -> cps_provider_5_Part:
+  cps_provider_5_tuple_cid(cps_provider_5_cid_text("Tuple", v_5), v_3, v_1)
+
+def native_match_cps_provider_5_atomic_three_operands_0(v_21: cps_provider_5_Part, +v_2: cps_provider_5_Operand, +v_4: cps_provider_5_Operand, +v_6: cps_provider_5_Operand, +v_8: cps_provider_5_World) -> cps_provider_5_Part:
+  match v_21:
+    case cps_provider_5_PartFail{v_12}:
+      cps_provider_5_PartFail{v_12}
+    case cps_provider_5_PartOk{v_14}:
+      v_20 = cps_provider_5_run_jobs(cps_provider_5_one_job(cps_provider_5_JText{cps_provider_5_join_text(["Term a0 = ", cps_provider_5_keep_text(v_2), ";"])}), v_8, [])
+      cps_provider_5_tuple_and_code(cps_provider_5_atomic_pair(cps_provider_5_atomic_call_text("a0", cps_provider_5_operand_text(v_4), cps_provider_5_operand_text(v_6), v_14), "a0", v_8), v_20)
+
+def cps_provider_5_atomic_three_operands(+v_0: BIR.Primitive, +v_2: cps_provider_5_Operand, +v_4: cps_provider_5_Operand, +v_6: cps_provider_5_Operand, +v_8: cps_provider_5_World) -> cps_provider_5_Part:
+  native_match_cps_provider_5_atomic_three_operands_0(cps_provider_5_atomic_helper(v_0), v_2, v_4, v_6, v_8)
+
+def cps_provider_5_atomic_three_pargs(+v_0: BIR.Primitive, +v_3: List<&2, cps_provider_5_Operand>, +v_5: cps_provider_5_World) -> cps_provider_5_Part:
+  match v_3:
+    case [v_10, v_11, v_12]:
+      cps_provider_5_atomic_three_operands(v_0, v_10, v_11, v_12, v_5)
+    case _:
+      cps_provider_5_PartFail{cps_provider_5_join_text([cps_provider_5_array_label(v_0), " takes the array, the index and the value"])}
+
+def cps_provider_5_atomic_cas_pargs(+v_2: List<&2, cps_provider_5_Operand>, +v_4: cps_provider_5_World) -> cps_provider_5_Part:
+  match v_2:
+    case [v_10, v_11, v_12, v_13]:
+      v_19 = cps_provider_5_run_jobs(cps_provider_5_one_job(cps_provider_5_JText{cps_provider_5_join_text(["Term a0 = ", cps_provider_5_keep_text(v_10), ";"])}), v_4, [])
+      cps_provider_5_tuple_and_code(cps_provider_5_atomic_pair(cps_provider_5_atomic_cas_text("a0", cps_provider_5_operand_text(v_11), cps_provider_5_operand_text(v_12), cps_provider_5_operand_text(v_13)), "a0", v_4), v_19)
+    case _:
+      cps_provider_5_PartFail{"array_atomic_cas takes the array, the index, the expected word and the replacement"}
+
+def cps_provider_5_atomic_pargs(+v_0: BIR.Primitive, +v_3: List<&2, cps_provider_5_Operand>, +v_5: cps_provider_5_World) -> cps_provider_5_Part:
+  match v_0:
+    case BIR.PrimArrayAtomicCas{}:
+      cps_provider_5_atomic_cas_pargs(v_3, v_5)
+    case _:
+      cps_provider_5_atomic_three_pargs(v_0, v_3, v_5)
+
+def native_match_cps_provider_5_atomic_three_regs_0(v_25: cps_provider_5_Part, +v_5: cps_provider_5_World, v_10: String, v_11: String, v_12: String) -> cps_provider_5_Part:
+  match v_25:
+    case cps_provider_5_PartFail{v_15}:
+      cps_provider_5_PartFail{v_15}
+    case cps_provider_5_PartOk{v_17}:
+      cps_provider_5_atomic_pair(cps_provider_5_atomic_call_text(v_10, v_11, v_12, v_17), v_10, v_5)
+
+def native_match_cps_provider_5_atomic_three_regs_1(+v_3: List<&2, String>, +v_0: BIR.Primitive, +v_5: cps_provider_5_World) -> cps_provider_5_Part:
+  match v_3:
+    case [v_10, v_11, v_12]:
+      native_match_cps_provider_5_atomic_three_regs_0(cps_provider_5_atomic_helper(v_0), v_5, v_10, v_11, v_12)
+    case _:
+      cps_provider_5_PartFail{cps_provider_5_join_text([cps_provider_5_array_label(v_0), " takes the array, the index and the value"])}
+
+def cps_provider_5_atomic_three_regs(+v_0: BIR.Primitive, +v_3: List<&2, String>, +v_5: cps_provider_5_World) -> cps_provider_5_Part:
+  native_match_cps_provider_5_atomic_three_regs_1(v_3, v_0, v_5)
+
+def cps_provider_5_atomic_cas_regs(+v_2: List<&2, String>, +v_4: cps_provider_5_World) -> cps_provider_5_Part:
+  match v_2:
+    case [v_10, v_11, v_12, v_13]:
+      cps_provider_5_atomic_pair(cps_provider_5_atomic_cas_text(v_10, v_11, v_12, v_13), v_10, v_4)
+    case _:
+      cps_provider_5_PartFail{"array_atomic_cas takes the array, the index, the expected word and the replacement"}
+
+def cps_provider_5_atomic_prim_part(+v_0: BIR.Primitive, +v_3: List<&2, String>, +v_5: cps_provider_5_World) -> cps_provider_5_Part:
+  match v_0:
+    case BIR.PrimArrayAtomicCas{}:
+      cps_provider_5_atomic_cas_regs(v_3, v_5)
+    case _:
+      cps_provider_5_atomic_three_regs(v_0, v_3, v_5)
+
 def cps_provider_5_array_leaf_ops(+v_2: Maybe<&2, cps_provider_5_Operand>, +v_4: cps_provider_5_World, +v_5: cps_provider_3_Layout, +v_7: Bool, +v_9: Nat, +v_11: Nat) -> cps_provider_5_Part:
   match v_2:
     case Some{v_14}:
@@ -13896,7 +14127,17 @@ def cps_provider_5_array_leaf_cell(+v_1: cps_provider_5_CellOut, +v_4: List<&2, 
     case cps_provider_5_CellOk{v_14, v_15, v_16, v_17}:
       cps_provider_5_array_leaf_ops(cps_provider_5_operand_at(v_4, 0n), v_6, v_14, v_15, v_16, v_17)
 
+def native_match_cps_provider_5_array_part_0(v_8: Bool, +v_0: BIR.Primitive, +v_3: List<&2, cps_provider_5_Operand>, +v_5: List<&2, BIR.Descriptor>, +v_7: cps_provider_5_World) -> cps_provider_5_Part:
+  match v_8:
+    case True{}:
+      cps_provider_5_atomic_pargs(v_0, v_3, v_7)
+    case False{}:
+      cps_provider_5_array_cell_part(v_0, v_3, v_5, v_7)
+
 def cps_provider_5_array_part(+v_0: BIR.Primitive, +v_3: List<&2, cps_provider_5_Operand>, +v_5: List<&2, BIR.Descriptor>, +v_7: cps_provider_5_World) -> cps_provider_5_Part:
+  native_match_cps_provider_5_array_part_0(cps_provider_5_is_atomic_primitive(v_0), v_0, v_3, v_5, v_7)
+
+def cps_provider_5_array_cell_part(+v_0: BIR.Primitive, +v_3: List<&2, cps_provider_5_Operand>, +v_5: List<&2, BIR.Descriptor>, +v_7: cps_provider_5_World) -> cps_provider_5_Part:
   match v_0:
     case BIR.PrimArrayNew{}:
       cps_provider_5_array_new_cell(cps_provider_5_array_cell(v_7, v_5, v_0), v_3, v_7)
@@ -13920,6 +14161,29 @@ def cps_provider_5_array_part(+v_0: BIR.Primitive, +v_3: List<&2, cps_provider_5
       cps_provider_5_array_is_ops(cps_provider_5_operand_at(v_3, 0n), 1n, v_7)
     case _:
       cps_provider_5_PartFail{"this primitive is not an array operation"}
+
+def cps_provider_5_is_atomic_primitive(+v_0: BIR.Primitive) -> Bool:
+  match v_0:
+    case BIR.PrimArrayAtomicAdd{}:
+      True{}
+    case BIR.PrimArrayAtomicMin{}:
+      True{}
+    case BIR.PrimArrayAtomicMax{}:
+      True{}
+    case BIR.PrimArrayAtomicAnd{}:
+      True{}
+    case BIR.PrimArrayAtomicOr{}:
+      True{}
+    case BIR.PrimArrayAtomicXor{}:
+      True{}
+    case BIR.PrimArrayAtomicExch{}:
+      True{}
+    case BIR.PrimArrayAtomicCas{}:
+      True{}
+    case BIR.PrimArrayAtomicFadd{}:
+      True{}
+    case _:
+      False{}
 
 def cps_provider_5_is_array_primitive(+v_0: BIR.Primitive) -> Bool:
   match v_0:
@@ -16362,9 +16626,12 @@ def cps_provider_8_tail_call(v_1: U32, +v_4: List<&2, String>) -> String:
 def cps_provider_8_tail_call_selected(v_1: U32, v_4: List<&2, String>, v_6: Nat, v_8: Bool) -> String:
   match v_8:
     case True{}:
-      cps_provider_8_cat(["run_named", Nat.show(v_6), "(", cps_provider_8_code_name(v_1), ",", String.join(v_4, ","), ",$td)"])
+      cps_provider_8_tail_call_named(v_1, String.join(v_4, ","), v_6)
     case False{}:
       cps_provider_8_cat(["run_many(", cps_provider_8_code_name(v_1), ",[", String.join(v_4, ","), "],$td)"])
+
+def cps_provider_8_tail_call_named(+v_1: U32, +v_3: String, v_5: Nat) -> String:
+  cps_provider_8_cat(["($td<64?", cps_provider_8_code_name(v_1), "(", String.append(v_3, ",$td+1"), "):run_named", Nat.show(v_5), "(", cps_provider_8_code_name(v_1), ",", String.append(v_3, ",$td)"), ")"])
 
 def cps_provider_8_public_closure(v_2: List<&2, String>, v_4: String) -> String:
   match v_2:
@@ -17303,6 +17570,24 @@ def cps_provider_8_primitive_name(v_0: BIR.Primitive) -> String:
       "$p_array_get"
     case BIR.PrimArraySwap{}:
       "$p_array_swap"
+    case BIR.PrimArrayAtomicAdd{}:
+      "$p_array_atomic_add"
+    case BIR.PrimArrayAtomicMin{}:
+      "$p_array_atomic_min"
+    case BIR.PrimArrayAtomicMax{}:
+      "$p_array_atomic_max"
+    case BIR.PrimArrayAtomicAnd{}:
+      "$p_array_atomic_and"
+    case BIR.PrimArrayAtomicOr{}:
+      "$p_array_atomic_or"
+    case BIR.PrimArrayAtomicXor{}:
+      "$p_array_atomic_xor"
+    case BIR.PrimArrayAtomicExch{}:
+      "$p_array_atomic_exch"
+    case BIR.PrimArrayAtomicCas{}:
+      "$p_array_atomic_cas"
+    case BIR.PrimArrayAtomicFadd{}:
+      "$p_array_atomic_fadd"
     case BIR.PrimArraySize{}:
       "$p_array_size"
     case BIR.PrimArrayClone{}:
@@ -17477,7 +17762,7 @@ def cps_provider_8_primitive_public(v_0: BIR.Primitive) -> String:
     case BIR.PrimF32IsGe{}:
       "(a)=>(b)=>a>=b"
     case BIR.PrimF32Pow{}:
-      "(a)=>(b)=>Math.fround(Math.pow(a,b))"
+      "(a)=>(b)=>f32_pow(a,b)"
     case BIR.PrimF32Atan2{}:
       "(a)=>(b)=>Math.fround(Math.atan2(a,b))"
     case BIR.PrimF32Exp{}:
@@ -17528,6 +17813,24 @@ def cps_provider_8_primitive_public(v_0: BIR.Primitive) -> String:
       "(a)=>(i)=>tuple(a,a[i%a.length])"
     case BIR.PrimArraySwap{}:
       "(a)=>(i)=>(v)=>array_swap(a,i,v)"
+    case BIR.PrimArrayAtomicAdd{}:
+      "(a)=>(i)=>(v)=>array_rmw(a,i,(o)=>((o+v)>>>0))"
+    case BIR.PrimArrayAtomicMin{}:
+      "(a)=>(i)=>(v)=>array_rmw(a,i,(o)=>Math.min(o,v))"
+    case BIR.PrimArrayAtomicMax{}:
+      "(a)=>(i)=>(v)=>array_rmw(a,i,(o)=>Math.max(o,v))"
+    case BIR.PrimArrayAtomicAnd{}:
+      "(a)=>(i)=>(v)=>array_rmw(a,i,(o)=>((o&v)>>>0))"
+    case BIR.PrimArrayAtomicOr{}:
+      "(a)=>(i)=>(v)=>array_rmw(a,i,(o)=>((o|v)>>>0))"
+    case BIR.PrimArrayAtomicXor{}:
+      "(a)=>(i)=>(v)=>array_rmw(a,i,(o)=>((o^v)>>>0))"
+    case BIR.PrimArrayAtomicExch{}:
+      "(a)=>(i)=>(v)=>array_rmw(a,i,(o)=>v)"
+    case BIR.PrimArrayAtomicCas{}:
+      "(a)=>(i)=>(x)=>(v)=>array_rmw(a,i,(o)=>(o===x?v:o))"
+    case BIR.PrimArrayAtomicFadd{}:
+      "(a)=>(i)=>(v)=>array_rmw(a,i,(o)=>Math.fround(o+v))"
     case BIR.PrimArraySize{}:
       "(a)=>tuple(a,a.length)"
     case BIR.PrimArrayClone{}:
@@ -17586,7 +17889,7 @@ def cps_provider_8_primitive_public(v_0: BIR.Primitive) -> String:
       "(a)=>(b)=>f32_bits(a)===b"
 
 def cps_provider_8_primitive_runtime() -> String:
-  "const $p_u32_add=(a,b)=>((a+b)>>>0);\nconst $p_u32_sub=(a,b)=>((a-b)>>>0);\nconst $p_u32_mul=(a,b)=>(Math.imul(a,b)>>>0);\nconst $p_u32_div=(a,b)=>(b===0?0:(a/b)>>>0);\nconst $p_nat_add=(a,b)=>nat_chk(a+b);\nconst $p_nat_sub=(a,b)=>(a<b?0:a-b);\nconst $p_nat_mul=(a,b)=>nat_chk(a*b);\nconst $p_nat_cmp=(a,b)=>cmp_new(a,b);\nconst $p_nat_min=(a,b)=>(a<b?a:b);\nconst $p_nat_max=(a,b)=>(a>b?a:b);\nconst $p_string_append=(a,b)=>a+b;\nconst $p_bool_or=(a,b)=>a||b;\nconst $p_bool_xor=(a,b)=>a!==b;\nconst $p_u32_is_zero=(a)=>a===0;\nconst $p_f32_asin=(a)=>Math.fround(Math.asin(a));\nconst $p_f32_acos=(a)=>Math.fround(Math.acos(a));\nconst $p_f32_atan=(a)=>Math.fround(Math.atan(a));\nconst $p_f32_sinh=(a)=>Math.fround(Math.sinh(a));\nconst $p_f32_cosh=(a)=>Math.fround(Math.cosh(a));\nconst $p_f32_tanh=(a)=>Math.fround(Math.tanh(a));\nconst $p_u32_mod=(a,b)=>(b===0?a:a%b);\nconst $p_u32_and=(a,b)=>((a&b)>>>0);\nconst $p_u32_or=(a,b)=>((a|b)>>>0);\nconst $p_u32_xor=(a,b)=>((a^b)>>>0);\nconst $p_u32_is_eq=(a,b)=>a===b;\nconst $p_u32_is_ne=(a,b)=>a!==b;\nconst $p_u32_is_lt=(a,b)=>a<b;\nconst $p_u32_is_le=(a,b)=>a<=b;\nconst $p_u32_is_gt=(a,b)=>a>b;\nconst $p_u32_is_ge=(a,b)=>a>=b;\nconst $p_u32_inc=(a)=>(a+1)>>>0;\nconst $p_u32_not=(a)=>(~a)>>>0;\nconst $p_u32_shl=(a)=>(a<<1)>>>0;\nconst $p_u32_shr=(a)=>a>>>1;\nconst $p_u32_shln=(a,b)=>b>=32?0:(a<<b)>>>0;\nconst $p_u32_shrn=(a,b)=>b>=32?0:a>>>b;\nconst $p_u32_cmp=(a,b)=>cmp_new(a,b);\nconst $p_u32_to_nat=(a)=>a;\nconst $p_u32_from_nat=(a)=>a>>>0;\nconst $p_f32_add=(a,b)=>Math.fround(a+b);\nconst $p_f32_sub=(a,b)=>Math.fround(a-b);\nconst $p_f32_mul=(a,b)=>Math.fround(a*b);\nconst $p_f32_div=(a,b)=>Math.fround(a/b);\nconst $p_f32_mod=(a,b)=>Math.fround(a%b);\nconst $p_f32_neg=(a)=>-a;\nconst $p_f32_sqrt=(a)=>Math.fround(Math.sqrt(a));\nconst $p_f32_abs=(a)=>Math.fround(Math.abs(a));\nconst $p_f32_to_u32=(a)=>(a>=1&&a<4294967296?Math.floor(a):0);\nconst $p_f32_bits=(a)=>f32_bits(a);\nconst $p_f32_show=(a)=>f32_show(a);\nconst $p_f32_read=(a)=>f32_read(a);\nconst $p_f32_is_eq=(a,b)=>a===b;\nconst $p_f32_is_ne=(a,b)=>a!==b;\nconst $p_f32_is_lt=(a,b)=>a<b;\nconst $p_f32_is_le=(a,b)=>a<=b;\nconst $p_f32_is_gt=(a,b)=>a>b;\nconst $p_f32_is_ge=(a,b)=>a>=b;\nconst $p_f32_pow=(a,b)=>Math.fround(Math.pow(a,b));\nconst $p_f32_atan2=(a,b)=>Math.fround(Math.atan2(a,b));\nconst $p_f32_exp=(a)=>Math.fround(Math.exp(a));\nconst $p_f32_log=(a)=>Math.fround(Math.log(a));\nconst $p_f32_log2=(a)=>Math.fround(Math.log2(a));\nconst $p_f32_log10=(a)=>Math.fround(Math.log10(a));\nconst $p_f32_sin=(a)=>Math.fround(Math.sin(a));\nconst $p_f32_cos=(a)=>Math.fround(Math.cos(a));\nconst $p_f32_tan=(a)=>Math.fround(Math.tan(a));\nconst $p_f32_floor=(a)=>Math.fround(Math.floor(a));\nconst $p_f32_ceil=(a)=>Math.fround(Math.ceil(a));\nconst $p_f32_trunc=(a)=>Math.fround(Math.trunc(a));\nconst $p_f32_to_nat=(a)=>Math.floor(a);\nconst $p_u32_to_f32=(a)=>Math.fround(a);\nconst $p_nat_double=(a)=>nat_chk(a+a);\nconst $p_nat_is_lt=(a,b)=>a<b;\nconst $p_nat_divmod=(a,b)=>nat_divmod(a,b);\nconst $p_string_eq=(a,b)=>a===b;\nconst $p_map_bit=(key,position)=>{const character=Math.floor(position/33);if(character>=key.length)return tuple(key,false);const offset=position%33;let at=0;for(let i=0;i<character&&at<key.length;i++)at+=char_len(key,at);return tuple(key,at<key.length&&(offset===0||((char_code_at(key,at)>>>(32-offset))&1)!==0));};\nconst $p_string_cmp=(a,b)=>{let i=0,j=0,order=0;if(a!==b){while(i<a.length&&j<b.length){const x=char_code_at(a,i),y=char_code_at(b,j);if(x!==y){order=x<y?-1:1;break;}i+=char_len(a,i);j+=char_len(b,j);}if(order===0)order=i<a.length?1:j<b.length?-1:0;}return tuple(tuple(a,b),cmp_new(order,0));};\nconst $p_string_to_list=(text)=>{let tail={$:\"Nil\"};for(let i=text.length;i>0;){let n=1;if(i>=4&&text.charCodeAt(i-4)===0xDC00)n=4;else if(i>=2&&text.charCodeAt(i-1)>=0xDC00&&text.charCodeAt(i-1)<=0xDFFF&&text.charCodeAt(i-2)>=0xD800&&text.charCodeAt(i-2)<=0xDBFF)n=2;tail={$:\"Con\",head:text.slice(i-n,i),tail};i-=n;}return tail;};\nconst $p_string_length=(a)=>[...str_out(a)].length;\nconst $p_array_new=(a,b)=>array_new(a,b);\nconst $p_array_set=(a,i,v)=>(a[i%a.length]=v,a);\nconst $p_array_get=(a,i)=>tuple(a,a[i%a.length]);\nconst $p_array_swap=(a,i,v)=>array_swap(a,i,v);\nconst $p_array_size=(a)=>tuple(a,a.length);\nconst $p_array_clone=(a)=>tuple(a,a.slice());\nconst $p_nat_predecessor=(a)=>a-1;\nconst $p_nat_successor=(a)=>nat_chk(a+1);\nconst $p_char_new=(a)=>char_new(a);\nconst $p_char_code=(a)=>char_code(a);\nconst $p_string_head=(a)=>a.slice(0,char_len(a));\nconst $p_string_tail=(a)=>a.slice(char_len(a));\nconst $p_word_to_u32=(a)=>word_to_u32(a);\nconst $p_u32_to_word=(a)=>u32_to_word(a);\nconst $p_f32_from_bits=(a)=>f32_from_bits(a);\nconst $p_f32_from_word=(a)=>f32_from_bits(word_to_u32(a));\nconst $p_f32_to_word=(a)=>u32_to_word(f32_bits(a));\nconst $p_array_leaf=(a)=>[a];\nconst $p_array_node=(a,b)=>array_node(a,b);\nconst $p_array_leaf_value=(a)=>a[0];\nconst $p_array_left=(a)=>a.slice(0,a.length>>1);\nconst $p_array_right=(a)=>a.slice(a.length>>1);\nconst $p_is_array_leaf=(a)=>a.length===1;\nconst $p_is_array_node=(a)=>a.length!==1;\nconst $p_is_nat_zero=(a)=>a===0;\nconst $p_is_nat_successor=(a)=>a>0;\nconst $p_is_string_empty=(a)=>a===\"\";\nconst $p_is_string_nonempty=(a)=>a!==\"\";\nconst $p_is_true=(a)=>a===true;\nconst $p_is_false=(a)=>a===false;\nconst $p_same_value=(a,b)=>a===b;\nconst $p_float_bits_equal=(a,b)=>f32_bits(a)===b;\n"
+  "const $p_u32_add=(a,b)=>((a+b)>>>0);\nconst $p_u32_sub=(a,b)=>((a-b)>>>0);\nconst $p_u32_mul=(a,b)=>(Math.imul(a,b)>>>0);\nconst $p_u32_div=(a,b)=>(b===0?0:(a/b)>>>0);\nconst $p_nat_add=(a,b)=>nat_chk(a+b);\nconst $p_nat_sub=(a,b)=>(a<b?0:a-b);\nconst $p_nat_mul=(a,b)=>nat_chk(a*b);\nconst $p_nat_cmp=(a,b)=>cmp_new(a,b);\nconst $p_nat_min=(a,b)=>(a<b?a:b);\nconst $p_nat_max=(a,b)=>(a>b?a:b);\nconst $p_string_append=(a,b)=>a+b;\nconst $p_bool_or=(a,b)=>a||b;\nconst $p_bool_xor=(a,b)=>a!==b;\nconst $p_u32_is_zero=(a)=>a===0;\nconst $p_f32_asin=(a)=>Math.fround(Math.asin(a));\nconst $p_f32_acos=(a)=>Math.fround(Math.acos(a));\nconst $p_f32_atan=(a)=>Math.fround(Math.atan(a));\nconst $p_f32_sinh=(a)=>Math.fround(Math.sinh(a));\nconst $p_f32_cosh=(a)=>Math.fround(Math.cosh(a));\nconst $p_f32_tanh=(a)=>Math.fround(Math.tanh(a));\nconst $p_u32_mod=(a,b)=>(b===0?a:a%b);\nconst $p_u32_and=(a,b)=>((a&b)>>>0);\nconst $p_u32_or=(a,b)=>((a|b)>>>0);\nconst $p_u32_xor=(a,b)=>((a^b)>>>0);\nconst $p_u32_is_eq=(a,b)=>a===b;\nconst $p_u32_is_ne=(a,b)=>a!==b;\nconst $p_u32_is_lt=(a,b)=>a<b;\nconst $p_u32_is_le=(a,b)=>a<=b;\nconst $p_u32_is_gt=(a,b)=>a>b;\nconst $p_u32_is_ge=(a,b)=>a>=b;\nconst $p_u32_inc=(a)=>(a+1)>>>0;\nconst $p_u32_not=(a)=>(~a)>>>0;\nconst $p_u32_shl=(a)=>(a<<1)>>>0;\nconst $p_u32_shr=(a)=>a>>>1;\nconst $p_u32_shln=(a,b)=>b>=32?0:(a<<b)>>>0;\nconst $p_u32_shrn=(a,b)=>b>=32?0:a>>>b;\nconst $p_u32_cmp=(a,b)=>cmp_new(a,b);\nconst $p_u32_to_nat=(a)=>a;\nconst $p_u32_from_nat=(a)=>a>>>0;\nconst $p_f32_add=(a,b)=>Math.fround(a+b);\nconst $p_f32_sub=(a,b)=>Math.fround(a-b);\nconst $p_f32_mul=(a,b)=>Math.fround(a*b);\nconst $p_f32_div=(a,b)=>Math.fround(a/b);\nconst $p_f32_mod=(a,b)=>Math.fround(a%b);\nconst $p_f32_neg=(a)=>-a;\nconst $p_f32_sqrt=(a)=>Math.fround(Math.sqrt(a));\nconst $p_f32_abs=(a)=>Math.fround(Math.abs(a));\nconst $p_f32_to_u32=(a)=>(a>=1&&a<4294967296?Math.floor(a):0);\nconst $p_f32_bits=(a)=>f32_bits(a);\nconst $p_f32_show=(a)=>f32_show(a);\nconst $p_f32_read=(a)=>f32_read(a);\nconst $p_f32_is_eq=(a,b)=>a===b;\nconst $p_f32_is_ne=(a,b)=>a!==b;\nconst $p_f32_is_lt=(a,b)=>a<b;\nconst $p_f32_is_le=(a,b)=>a<=b;\nconst $p_f32_is_gt=(a,b)=>a>b;\nconst $p_f32_is_ge=(a,b)=>a>=b;\nconst $p_f32_pow=(a,b)=>f32_pow(a,b);\nconst $p_f32_atan2=(a,b)=>Math.fround(Math.atan2(a,b));\nconst $p_f32_exp=(a)=>Math.fround(Math.exp(a));\nconst $p_f32_log=(a)=>Math.fround(Math.log(a));\nconst $p_f32_log2=(a)=>Math.fround(Math.log2(a));\nconst $p_f32_log10=(a)=>Math.fround(Math.log10(a));\nconst $p_f32_sin=(a)=>Math.fround(Math.sin(a));\nconst $p_f32_cos=(a)=>Math.fround(Math.cos(a));\nconst $p_f32_tan=(a)=>Math.fround(Math.tan(a));\nconst $p_f32_floor=(a)=>Math.fround(Math.floor(a));\nconst $p_f32_ceil=(a)=>Math.fround(Math.ceil(a));\nconst $p_f32_trunc=(a)=>Math.fround(Math.trunc(a));\nconst $p_f32_to_nat=(a)=>Math.floor(a);\nconst $p_u32_to_f32=(a)=>Math.fround(a);\nconst $p_nat_double=(a)=>nat_chk(a+a);\nconst $p_nat_is_lt=(a,b)=>a<b;\nconst $p_nat_divmod=(a,b)=>nat_divmod(a,b);\nconst $p_string_eq=(a,b)=>a===b;\nconst $p_map_bit=(key,position)=>{const character=Math.floor(position/33);if(character>=key.length)return tuple(key,false);const offset=position%33;let at=0;for(let i=0;i<character&&at<key.length;i++)at+=char_len(key,at);return tuple(key,at<key.length&&(offset===0||((char_code_at(key,at)>>>(32-offset))&1)!==0));};\nconst $p_string_cmp=(a,b)=>{let i=0,j=0,order=0;if(a!==b){while(i<a.length&&j<b.length){const x=char_code_at(a,i),y=char_code_at(b,j);if(x!==y){order=x<y?-1:1;break;}i+=char_len(a,i);j+=char_len(b,j);}if(order===0)order=i<a.length?1:j<b.length?-1:0;}return tuple(tuple(a,b),cmp_new(order,0));};\nconst $p_string_to_list=(text)=>{let tail={$:\"Nil\"};for(let i=text.length;i>0;){let n=1;if(i>=4&&text.charCodeAt(i-4)===0xDC00)n=4;else if(i>=2&&text.charCodeAt(i-1)>=0xDC00&&text.charCodeAt(i-1)<=0xDFFF&&text.charCodeAt(i-2)>=0xD800&&text.charCodeAt(i-2)<=0xDBFF)n=2;tail={$:\"Con\",head:text.slice(i-n,i),tail};i-=n;}return tail;};\nconst $p_string_length=(a)=>[...str_out(a)].length;\nconst $p_array_new=(a,b)=>array_new(a,b);\nconst $p_array_set=(a,i,v)=>(a[i%a.length]=v,a);\nconst $p_array_get=(a,i)=>tuple(a,a[i%a.length]);\nconst $p_array_swap=(a,i,v)=>array_swap(a,i,v);\nconst $p_array_atomic_add=(a,i,v)=>array_rmw(a,i,(o)=>((o+v)>>>0));\nconst $p_array_atomic_min=(a,i,v)=>array_rmw(a,i,(o)=>Math.min(o,v));\nconst $p_array_atomic_max=(a,i,v)=>array_rmw(a,i,(o)=>Math.max(o,v));\nconst $p_array_atomic_and=(a,i,v)=>array_rmw(a,i,(o)=>((o&v)>>>0));\nconst $p_array_atomic_or=(a,i,v)=>array_rmw(a,i,(o)=>((o|v)>>>0));\nconst $p_array_atomic_xor=(a,i,v)=>array_rmw(a,i,(o)=>((o^v)>>>0));\nconst $p_array_atomic_exch=(a,i,v)=>array_rmw(a,i,(o)=>v);\nconst $p_array_atomic_cas=(a,i,x,v)=>array_rmw(a,i,(o)=>(o===x?v:o));\nconst $p_array_atomic_fadd=(a,i,v)=>array_rmw(a,i,(o)=>Math.fround(o+v));\nconst $p_array_size=(a)=>tuple(a,a.length);\nconst $p_array_clone=(a)=>tuple(a,a.slice());\nconst $p_nat_predecessor=(a)=>a-1;\nconst $p_nat_successor=(a)=>nat_chk(a+1);\nconst $p_char_new=(a)=>char_new(a);\nconst $p_char_code=(a)=>char_code(a);\nconst $p_string_head=(a)=>a.slice(0,char_len(a));\nconst $p_string_tail=(a)=>a.slice(char_len(a));\nconst $p_word_to_u32=(a)=>word_to_u32(a);\nconst $p_u32_to_word=(a)=>u32_to_word(a);\nconst $p_f32_from_bits=(a)=>f32_from_bits(a);\nconst $p_f32_from_word=(a)=>f32_from_bits(word_to_u32(a));\nconst $p_f32_to_word=(a)=>u32_to_word(f32_bits(a));\nconst $p_array_leaf=(a)=>[a];\nconst $p_array_node=(a,b)=>array_node(a,b);\nconst $p_array_leaf_value=(a)=>a[0];\nconst $p_array_left=(a)=>a.slice(0,a.length>>1);\nconst $p_array_right=(a)=>a.slice(a.length>>1);\nconst $p_is_array_leaf=(a)=>a.length===1;\nconst $p_is_array_node=(a)=>a.length!==1;\nconst $p_is_nat_zero=(a)=>a===0;\nconst $p_is_nat_successor=(a)=>a>0;\nconst $p_is_string_empty=(a)=>a===\"\";\nconst $p_is_string_nonempty=(a)=>a!==\"\";\nconst $p_is_true=(a)=>a===true;\nconst $p_is_false=(a)=>a===false;\nconst $p_same_value=(a,b)=>a===b;\nconst $p_float_bits_equal=(a,b)=>f32_bits(a)===b;\n"
 
 def cps_provider_8_quantity(v_0: BIR.Quantity) -> String:
   match v_0:
@@ -18077,13 +18380,13 @@ def cps_provider_8_program_source(v_0: BIR.Program, v_2: String) -> String:
   native_match_cps_provider_8_program_source_0(v_0, v_2, v_6)
 
 def cps_provider_8_js_runtime() -> String:
-  "const $D = Object.create(null);\nconst $BEND_TAIL = Symbol(\"bend.tail\");\nconst $td = 64;\nconst $TAIL_PENDING = Object.create(null), $tailArgs = Array(32);\nconst $CALL_PENDING = Object.create(null), $LEAVE_PENDING = Object.create(null);\nconst $stArgs = [], $kFn = [], $kBase = [], $kKind = [];\nlet $sp = 0, $ksp = 0, $callK, $callBase, $leaveThunk;\nfunction $split(f,count,k,base) { $tailFn=f; $tailCount=count; $callK=k; $callBase=base; return $CALL_PENDING; }\nfunction $splitm(f,a,k,base) { $tailFn=f; $tailCount=-2; $tailRest=a; $callK=k; $callBase=base; return $CALL_PENDING; }\nfunction $split1(f,x,k,base) { const j=f[$BEND_TAIL]; $tailFn=j||f; $tailCount=j?-3:-1; $tailUnary=x; $callK=k; $callBase=base; return $CALL_PENDING; }\nfunction $frame(t,base) { $kFn[$ksp]=t; $kBase[$ksp]=base; $kKind[$ksp]=1; $ksp+=1; }\nlet $tailFn, $tailCount=0, $tailUnary, $tailRest;\nfunction tail_many(f,a) { $tailFn=f; $tailCount=-2; $tailRest=a; return $TAIL_PENDING; }\nfunction tail_unary(f,x) { $tailFn=f; $tailCount=-1; $tailUnary=x; return $TAIL_PENDING; }\nfunction tail_named(f,n) { $tailFn=f; $tailCount=n; return $TAIL_PENDING; }\nfunction $run(f, xs, n) { let x=run_loop(f); for (let i=0;i<n;i++) x=run_call1(x,xs[i]); return x; }\nfunction $curried(f, n, g, t, x, r) { const step = (args) => function (...more) { const xs = args.concat(more); if (xs.length < n) return step(xs); for (const i of g) xs[i] = nat_in(xs[i]); for (const i of t) xs[i] = str_in(xs[i]); for (const i of x) xs[i] = Math.fround(xs[i]); return r($run(f, xs, n)); }; return step([]); }\nfunction run_loop(x) { return run_base(x,$ksp,$sp); }\nfunction run_call1(f,a) { const b0=$ksp, s0=$sp; return run_base(f(a),b0,s0); }\nfunction run_base(x,k0,s0) { try { for(;;) { while (x===$TAIL_PENDING) { const f=$tailFn, count=$tailCount; $tailFn=undefined; $tailCount=0; if(count===-1) { const a=$tailUnary; $tailUnary=undefined; x=f(a,$BEND_TAIL); } else x=tail_dispatch(f,count); } if (x===$CALL_PENDING) { const f=$tailFn, count=$tailCount; $tailFn=undefined; $tailCount=0; $kFn[$ksp]=$callK; $kBase[$ksp]=$callBase; $kKind[$ksp]=0; $ksp+=1; $callK=undefined; if(count===-1) { const a=$tailUnary; $tailUnary=undefined; x=f(a); } else if(count===-3) { const a=$tailUnary; $tailUnary=undefined; x=f(a,$BEND_TAIL); } else x=tail_dispatch(f,count); continue; } if (x===$LEAVE_PENDING) { let i=$ksp; while(i>k0&&($kKind[i-1]===0||$kFn[i-1]!==$leaveThunk))i-=1; if(i===k0)throw \"bend: a region leave reached no private frame\"; i-=1; const t=$kFn[i], b=$kBase[i]; $kFn[i]=undefined; $ksp=i; $sp=b; x=t(undefined,b); continue; } if ($ksp===k0) { $sp=s0; return x; } $ksp-=1; const k=$kFn[$ksp], b=$kBase[$ksp], r=$kKind[$ksp]; $kFn[$ksp]=undefined; $sp=b; if(r===1) continue; x=k(x,b); } } catch(e) { $ksp=k0; $sp=s0; $tailFn=undefined; $tailCount=0; throw e; } }\nfunction tail_dispatch(f,count) { switch(count) {\ncase -2: { const a=$tailRest; $tailRest=undefined; return f(...a); }\ncase 1: { const a0=$tailArgs[0]; $tailArgs[0]=undefined; return f(a0); }\ncase 2: { const a0=$tailArgs[0],a1=$tailArgs[1]; $tailArgs[0]=$tailArgs[1]=undefined; return f(a0,a1); }\ncase 3: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=undefined; return f(a0,a1,a2); }\ncase 4: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=undefined; return f(a0,a1,a2,a3); }\ncase 5: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=undefined; return f(a0,a1,a2,a3,a4); }\ncase 6: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=undefined; return f(a0,a1,a2,a3,a4,a5); }\ncase 7: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=undefined; return f(a0,a1,a2,a3,a4,a5,a6); }\ncase 8: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7); }\ncase 9: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8); }\ncase 10: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9); }\ncase 11: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10); }\ncase 12: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11); }\ncase 13: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12); }\ncase 14: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13); }\ncase 15: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14); }\ncase 16: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15); }\ncase 17: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16); }\ncase 18: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17); }\ncase 19: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18); }\ncase 20: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19); }\ncase 21: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20); }\ncase 22: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21); }\ncase 23: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22); }\ncase 24: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23); }\ncase 25: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24); }\ncase 26: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25); }\ncase 27: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26); }\ncase 28: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27); }\ncase 29: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27],a28=$tailArgs[28]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=$tailArgs[28]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28); }\ncase 30: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27],a28=$tailArgs[28],a29=$tailArgs[29]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=$tailArgs[28]=$tailArgs[29]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29); }\ncase 31: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27],a28=$tailArgs[28],a29=$tailArgs[29],a30=$tailArgs[30]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=$tailArgs[28]=$tailArgs[29]=$tailArgs[30]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30); }\ncase 32: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27],a28=$tailArgs[28],a29=$tailArgs[29],a30=$tailArgs[30],a31=$tailArgs[31]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=$tailArgs[28]=$tailArgs[29]=$tailArgs[30]=$tailArgs[31]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,a31); }\ndefault: throw \"bend: invalid private tail frame\";\n} }\nfunction run_force(x,raw,b0,s0) { return raw===$BEND_TAIL?x:run_base(x,b0,s0); }\nfunction run_many(f,a,d=$td) { return d<64?f(...a,d+1):tail_many(f,a); }\nfunction run_tail(f,x) { const j=f[$BEND_TAIL]; return j ? tail_unary(j,x) : f(x); }\nfunction run_clo(j) { j[$BEND_TAIL]=j; return j; }\nfunction nat_chk(x) { if(x>281474976710655) throw \"bend: a Nat past the largest immediate 2^48-1\"; return x; }\nfunction char_new(c) { return c < 0xD800 || c >= 0xE000 && c <= 0x10FFFF ? String.fromCodePoint(c) : String.fromCharCode(0xDC00, c >>> 22, c >>> 11 & 0x7FF, c & 0x7FF); }\nfunction char_len(s, at=0) { return s[at] === \"\\uDC00\" ? 4 : s.codePointAt(at) > 0xFFFF ? 2 : 1; }\nfunction char_code_at(s, at) { return s[at] === \"\\uDC00\" ? (s.charCodeAt(at+1) << 22 | s.charCodeAt(at+2) << 11 | s.charCodeAt(at+3)) >>> 0 : s.codePointAt(at); }\nfunction char_code(s) { return char_code_at(s, 0); }\nfunction str_out(s) { return s.replace(/\\uDC00[^]{3}/gu, \"\\uFFFD\"); }\nfunction str_in(s) { return s.replace(/\\p{Cs}/gu, \"\\uFFFD\"); }\nfunction cmp_new(a,b) { return {$:a<b?\"LT\":a===b?\"EQ\":\"GT\"}; }\nfunction word_to_u32(w) { let x=0; for(let i=0;w.$===\"WCon\";i++,w=w.tail) if(w.head)x|=1<<i; return x>>>0; }\nfunction u32_to_word(x) { let w={$:\"WNil\"}; for(let i=31;i>=0;i--) w={$:\"WCon\",head:!!((x>>>i)&1),tail:w}; return w; }\nfunction run_named1(f,a0,d) { return d<64?f(a0,d+1):($tailArgs[0]=a0,tail_named(f,1)); }\nfunction run_named2(f,a0,a1,d) { return d<64?f(a0,a1,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,tail_named(f,2)); }\nfunction run_named3(f,a0,a1,a2,d) { return d<64?f(a0,a1,a2,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,tail_named(f,3)); }\nfunction run_named4(f,a0,a1,a2,a3,d) { return d<64?f(a0,a1,a2,a3,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,tail_named(f,4)); }\nfunction run_named5(f,a0,a1,a2,a3,a4,d) { return d<64?f(a0,a1,a2,a3,a4,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,tail_named(f,5)); }\nfunction run_named6(f,a0,a1,a2,a3,a4,a5,d) { return d<64?f(a0,a1,a2,a3,a4,a5,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,tail_named(f,6)); }\nfunction run_named7(f,a0,a1,a2,a3,a4,a5,a6,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,tail_named(f,7)); }\nfunction run_named8(f,a0,a1,a2,a3,a4,a5,a6,a7,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,tail_named(f,8)); }\nfunction run_named9(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,tail_named(f,9)); }\nfunction run_named10(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,tail_named(f,10)); }\nfunction run_named11(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,tail_named(f,11)); }\nfunction run_named12(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,tail_named(f,12)); }\nfunction run_named13(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,tail_named(f,13)); }\nfunction run_named14(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,tail_named(f,14)); }\nfunction run_named15(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,tail_named(f,15)); }\nfunction run_named16(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,tail_named(f,16)); }\nfunction run_named17(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,tail_named(f,17)); }\nfunction run_named18(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,tail_named(f,18)); }\nfunction run_named19(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,tail_named(f,19)); }\nfunction run_named20(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,tail_named(f,20)); }\nfunction run_named21(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,tail_named(f,21)); }\nfunction run_named22(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,tail_named(f,22)); }\nfunction run_named23(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,tail_named(f,23)); }\nfunction run_named24(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,tail_named(f,24)); }\nfunction run_named25(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,tail_named(f,25)); }\nfunction run_named26(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,tail_named(f,26)); }\nfunction run_named27(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,tail_named(f,27)); }\nfunction run_named28(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,tail_named(f,28)); }\nfunction run_named29(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,$tailArgs[28]=a28,tail_named(f,29)); }\nfunction run_named30(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,$tailArgs[28]=a28,$tailArgs[29]=a29,tail_named(f,30)); }\nfunction run_named31(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,$tailArgs[28]=a28,$tailArgs[29]=a29,$tailArgs[30]=a30,tail_named(f,31)); }\nfunction run_named32(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,a31,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,a31,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,$tailArgs[28]=a28,$tailArgs[29]=a29,$tailArgs[30]=a30,$tailArgs[31]=a31,tail_named(f,32)); }\n"
+  "const $D = Object.create(null);\nconst $BEND_TAIL = Symbol(\"bend.tail\");\nconst $td = 64;\nconst $TAIL_PENDING = Object.create(null), $tailArgs = Array(32);\nconst $CALL_PENDING = Object.create(null), $LEAVE_PENDING = Object.create(null);\nconst $stArgs = [], $kFn = [], $kBase = [], $kKind = [];\nlet $sp = 0, $ksp = 0, $leaveThunk;\nfunction $split(f,count,k,base) { $tailFn=f; $tailCount=count; $kFn[$ksp]=k; $kBase[$ksp]=base; $kKind[$ksp]=0; $ksp+=1; return $CALL_PENDING; }\nfunction $splitm(f,a,k,base) { $tailFn=f; $tailCount=-2; $tailRest=a; $kFn[$ksp]=k; $kBase[$ksp]=base; $kKind[$ksp]=0; $ksp+=1; return $CALL_PENDING; }\nfunction $split1(f,x,k,base) { const j=f[$BEND_TAIL]; $tailFn=j||f; $tailCount=j?-3:-1; $tailUnary=x; $kFn[$ksp]=k; $kBase[$ksp]=base; $kKind[$ksp]=0; $ksp+=1; return $CALL_PENDING; }\nfunction $frame(t,base) { $kFn[$ksp]=t; $kBase[$ksp]=base; $kKind[$ksp]=1; $ksp+=1; }\nlet $tailFn, $tailCount=0, $tailUnary, $tailRest;\nfunction tail_many(f,a) { $tailFn=f; $tailCount=-2; $tailRest=a; return $TAIL_PENDING; }\nfunction tail_unary(f,x) { $tailFn=f; $tailCount=-1; $tailUnary=x; return $TAIL_PENDING; }\nfunction tail_named(f,n) { $tailFn=f; $tailCount=n; return $TAIL_PENDING; }\nfunction $run(f, xs, n) { let x=run_loop(f); for (let i=0;i<n;i++) x=run_call1(x,xs[i]); return x; }\nfunction $curried(f, n, g, t, x, r) { const step = (args) => function (...more) { const xs = args.concat(more); if (xs.length < n) return step(xs); for (const i of g) xs[i] = nat_in(xs[i]); for (const i of t) xs[i] = str_in(xs[i]); for (const i of x) xs[i] = Math.fround(xs[i]); return r($run(f, xs, n)); }; return step([]); }\nfunction run_loop(x) { return run_base(x,$ksp,$sp); }\nfunction run_call1(f,a) { const b0=$ksp, s0=$sp; return run_base(f(a),b0,s0); }\nfunction run_base(x,k0,s0) { try { for(;;) { while (x===$TAIL_PENDING) { const f=$tailFn, count=$tailCount; $tailFn=undefined; $tailCount=0; if(count===-1) { const a=$tailUnary; $tailUnary=undefined; x=f(a,$BEND_TAIL); } else x=tail_dispatch(f,count); } if (x===$CALL_PENDING) { const f=$tailFn, count=$tailCount; $tailFn=undefined; $tailCount=0; if(count===1) { const a0=$tailArgs[0]; $tailArgs[0]=undefined; x=f(a0); } else if(count===2) { const a0=$tailArgs[0],a1=$tailArgs[1]; $tailArgs[0]=$tailArgs[1]=undefined; x=f(a0,a1); } else if(count===-1) { const a=$tailUnary; $tailUnary=undefined; x=f(a); } else if(count===-3) { const a=$tailUnary; $tailUnary=undefined; x=f(a,$BEND_TAIL); } else x=tail_dispatch(f,count); continue; } if (x===$LEAVE_PENDING) { let i=$ksp; while(i>k0&&($kKind[i-1]===0||$kFn[i-1]!==$leaveThunk))i-=1; if(i===k0)throw \"bend: a region leave reached no private frame\"; i-=1; const t=$kFn[i], b=$kBase[i]; $kFn[i]=undefined; $ksp=i; $sp=b; x=t(undefined,b); continue; } if ($ksp===k0) { $sp=s0; return x; } $ksp-=1; const k=$kFn[$ksp], b=$kBase[$ksp], r=$kKind[$ksp]; $kFn[$ksp]=undefined; $sp=b; if(r===1) continue; x=k(x,b); } } catch(e) { $ksp=k0; $sp=s0; $tailFn=undefined; $tailCount=0; throw e; } }\nfunction tail_dispatch(f,count) { switch(count) {\ncase -2: { const a=$tailRest; $tailRest=undefined; return f(...a); }\ncase 1: { const a0=$tailArgs[0]; $tailArgs[0]=undefined; return f(a0); }\ncase 2: { const a0=$tailArgs[0],a1=$tailArgs[1]; $tailArgs[0]=$tailArgs[1]=undefined; return f(a0,a1); }\ncase 3: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=undefined; return f(a0,a1,a2); }\ncase 4: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=undefined; return f(a0,a1,a2,a3); }\ncase 5: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=undefined; return f(a0,a1,a2,a3,a4); }\ncase 6: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=undefined; return f(a0,a1,a2,a3,a4,a5); }\ncase 7: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=undefined; return f(a0,a1,a2,a3,a4,a5,a6); }\ncase 8: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7); }\ncase 9: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8); }\ncase 10: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9); }\ncase 11: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10); }\ncase 12: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11); }\ncase 13: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12); }\ncase 14: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13); }\ncase 15: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14); }\ncase 16: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15); }\ncase 17: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16); }\ncase 18: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17); }\ncase 19: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18); }\ncase 20: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19); }\ncase 21: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20); }\ncase 22: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21); }\ncase 23: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22); }\ncase 24: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23); }\ncase 25: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24); }\ncase 26: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25); }\ncase 27: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26); }\ncase 28: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27); }\ncase 29: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27],a28=$tailArgs[28]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=$tailArgs[28]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28); }\ncase 30: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27],a28=$tailArgs[28],a29=$tailArgs[29]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=$tailArgs[28]=$tailArgs[29]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29); }\ncase 31: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27],a28=$tailArgs[28],a29=$tailArgs[29],a30=$tailArgs[30]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=$tailArgs[28]=$tailArgs[29]=$tailArgs[30]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30); }\ncase 32: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27],a28=$tailArgs[28],a29=$tailArgs[29],a30=$tailArgs[30],a31=$tailArgs[31]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=$tailArgs[28]=$tailArgs[29]=$tailArgs[30]=$tailArgs[31]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,a31); }\ndefault: throw \"bend: invalid private tail frame\";\n} }\nfunction run_force(x,raw,b0,s0) { return raw===$BEND_TAIL?x:run_base(x,b0,s0); }\nfunction run_many(f,a,d=$td) { return d<64?f(...a,d+1):tail_many(f,a); }\nfunction run_tail(f,x) { const j=f[$BEND_TAIL]; return j ? tail_unary(j,x) : f(x); }\nfunction run_clo(j) { j[$BEND_TAIL]=j; return j; }\nfunction nat_chk(x) { if(x>281474976710655) throw \"bend: a Nat past the largest immediate 2^48-1\"; return x; }\nfunction char_new(c) { return c < 0xD800 || c >= 0xE000 && c <= 0x10FFFF ? String.fromCodePoint(c) : String.fromCharCode(0xDC00, c >>> 22, c >>> 11 & 0x7FF, c & 0x7FF); }\nfunction char_len(s, at=0) { return s[at] === \"\\uDC00\" ? 4 : s.codePointAt(at) > 0xFFFF ? 2 : 1; }\nfunction char_code_at(s, at) { return s[at] === \"\\uDC00\" ? (s.charCodeAt(at+1) << 22 | s.charCodeAt(at+2) << 11 | s.charCodeAt(at+3)) >>> 0 : s.codePointAt(at); }\nfunction char_code(s) { return char_code_at(s, 0); }\nfunction str_out(s) { return s.replace(/\\uDC00[^]{3}/gu, \"\\uFFFD\"); }\nfunction str_in(s) { return s.replace(/\\p{Cs}/gu, \"\\uFFFD\"); }\nfunction cmp_new(a,b) { return {$:a<b?\"LT\":a===b?\"EQ\":\"GT\"}; }\nfunction word_to_u32(w) { let x=0; for(let i=0;w.$===\"WCon\";i++,w=w.tail) if(w.head)x|=1<<i; return x>>>0; }\nfunction u32_to_word(x) { let w={$:\"WNil\"}; for(let i=31;i>=0;i--) w={$:\"WCon\",head:!!((x>>>i)&1),tail:w}; return w; }\nfunction run_named1(f,a0,d) { return d<64?f(a0,d+1):($tailArgs[0]=a0,tail_named(f,1)); }\nfunction run_named2(f,a0,a1,d) { return d<64?f(a0,a1,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,tail_named(f,2)); }\nfunction run_named3(f,a0,a1,a2,d) { return d<64?f(a0,a1,a2,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,tail_named(f,3)); }\nfunction run_named4(f,a0,a1,a2,a3,d) { return d<64?f(a0,a1,a2,a3,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,tail_named(f,4)); }\nfunction run_named5(f,a0,a1,a2,a3,a4,d) { return d<64?f(a0,a1,a2,a3,a4,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,tail_named(f,5)); }\nfunction run_named6(f,a0,a1,a2,a3,a4,a5,d) { return d<64?f(a0,a1,a2,a3,a4,a5,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,tail_named(f,6)); }\nfunction run_named7(f,a0,a1,a2,a3,a4,a5,a6,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,tail_named(f,7)); }\nfunction run_named8(f,a0,a1,a2,a3,a4,a5,a6,a7,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,tail_named(f,8)); }\nfunction run_named9(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,tail_named(f,9)); }\nfunction run_named10(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,tail_named(f,10)); }\nfunction run_named11(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,tail_named(f,11)); }\nfunction run_named12(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,tail_named(f,12)); }\nfunction run_named13(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,tail_named(f,13)); }\nfunction run_named14(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,tail_named(f,14)); }\nfunction run_named15(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,tail_named(f,15)); }\nfunction run_named16(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,tail_named(f,16)); }\nfunction run_named17(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,tail_named(f,17)); }\nfunction run_named18(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,tail_named(f,18)); }\nfunction run_named19(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,tail_named(f,19)); }\nfunction run_named20(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,tail_named(f,20)); }\nfunction run_named21(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,tail_named(f,21)); }\nfunction run_named22(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,tail_named(f,22)); }\nfunction run_named23(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,tail_named(f,23)); }\nfunction run_named24(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,tail_named(f,24)); }\nfunction run_named25(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,tail_named(f,25)); }\nfunction run_named26(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,tail_named(f,26)); }\nfunction run_named27(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,tail_named(f,27)); }\nfunction run_named28(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,tail_named(f,28)); }\nfunction run_named29(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,$tailArgs[28]=a28,tail_named(f,29)); }\nfunction run_named30(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,$tailArgs[28]=a28,$tailArgs[29]=a29,tail_named(f,30)); }\nfunction run_named31(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,$tailArgs[28]=a28,$tailArgs[29]=a29,$tailArgs[30]=a30,tail_named(f,31)); }\nfunction run_named32(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,a31,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,a31,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,$tailArgs[28]=a28,$tailArgs[29]=a29,$tailArgs[30]=a30,$tailArgs[31]=a31,tail_named(f,32)); }\n"
 
 def cps_provider_8_js_runtime_extra() -> String:
-  "function f32_from_bits(x) { return new Float32Array(new Uint32Array([x]).buffer)[0]; }\nfunction f32_bits(x) { return new Uint32Array(new Float32Array([x]).buffer)[0]; }\nfunction tuple(a,b) { return {$:\"Tuple\",fst:a,snd:b}; }\nfunction f32_show(x) { if(x!==x) return \"nan\"; if(!Number.isFinite(x)||Object.is(x,-0)) return x<0?\"-inf\":x===0?\"-0\":\"inf\"; let s=\"x\"; for(let p=1;p<=9&&Math.fround(Number(s))!==x;p++) s=String(Number(x.toExponential(p-1))); return s; }\nfunction f32_read(s) { const re=/^\\s*[+-]?((\\d+\\.?\\d*|\\.\\d+)(e[+-]?\\d+)?|inf(inity)?|nan)$/i; const v=Number(s.replace(/inf\\w*/i,\"Infinity\")); return re.test(s)?{$:\"Some\",value:Math.fround(v)}:{$:\"None\"}; }\nfunction nat_divmod(a,b) { return b===0?tuple(0,a):tuple(Math.trunc(a/b),a%b); }\nfunction nat_in(n) { return Number.isInteger(n)&&n>=0&&n<=9007199254740992?n:nat_chk(1/0); }\nfunction array_new(n,v) { if(n>31) throw \"bend: an array past the deepest block class 31\"; return Array(2 ** n).fill(v); }\nfunction array_node(a,b) { if(a.length!==b.length) throw \"bend: runtime fail-stop\"; return a.concat(b); }\n"
+  "function f32_from_bits(x) { return new Float32Array(new Uint32Array([x]).buffer)[0]; }\nfunction f32_bits(x) { return new Uint32Array(new Float32Array([x]).buffer)[0]; }\nfunction tuple(a,b) { return {$:\"Tuple\",fst:a,snd:b}; }\nfunction f32_show(x) { if(x!==x) return \"nan\"; if(!Number.isFinite(x)||Object.is(x,-0)) return x<0?\"-inf\":x===0?\"-0\":\"inf\"; let s=\"x\"; for(let p=1;p<=9&&Math.fround(Number(s))!==x;p++) s=String(Number(x.toExponential(p-1))); return s; }\nfunction f32_round(s) { const d=Number(s); const a=Math.abs(d); const f=Math.fround(a); const g=2*a-Math.min(f,2**128); if(g===f||Math.fround(g)!==g||g===Infinity) return Math.sign(d)*f; let k=0; while(a*2**k%1!==0) k+=1; const m=/(\\d*)\\.?(\\d*)(?:e([+-]?\\d+))?$/i.exec(s); const n=Number(m[3]??0)-m[2].length; const x=BigInt(m[1]+m[2])*2n**BigInt(k)*10n**BigInt(Math.max(n,0)); const y=BigInt(a*2**k)*10n**BigInt(Math.max(-n,0)); return Math.sign(d)*(x===y||x>y!==g>f?f:g); }\nfunction f32_pow(a,b) { return (a === 1 || a === -1 && Math.abs(b) === Infinity ? 1 : Math.fround(Math.pow(a,b))); }\nfunction f32_read(s) { const re=/^[\\t\\n\\v\\f\\r ]*[+-]?((\\d+(?:\\.\\d*)?|\\.\\d+)(e[+-]?\\d+)?|inf(inity)?|nan)$/i; const v=f32_round(s.replace(/inf\\w*/i,\"Infinity\")); return re.test(s)?{$:\"Some\",value:v}:{$:\"None\"}; }\nfunction nat_divmod(a,b) { return b===0?tuple(0,a):tuple(Math.trunc(a/b),a%b); }\nfunction nat_in(n) { if(!Number.isInteger(n)||n<0||n>9007199254740992)throw \"bend: expected a Nat host number: an integer from 0 to 2^53\"; return n; }\nfunction array_new(n,v) { if(n>31) throw \"bend: an array past the deepest block class 31\"; return Array(2 ** n).fill(v); }\nfunction array_node(a,b) { if(a.length!==b.length) throw \"bend: runtime fail-stop\"; return a.concat(b); }\n"
 
 def cps_provider_8_js_runtime_array() -> String:
-  "function array_swap(a,i,v) { const at=i%a.length, old=a[at]; a[at]=v; return tuple(a,old); }\n"
+  "function array_swap(a,i,v) { const at=i%a.length, old=a[at]; a[at]=v; return tuple(a,old); }\nfunction array_rmw(a,i,f) { const at=i%a.length, old=a[at]; a[at]=f(old); return tuple(a,old); }\n"
 
 def cps_provider_8_js_runtime_foreign() -> String:
   "const $0eff=Object.create(null);\nfunction io_emit(value) { return {$:\"Emit\",value}; }\nfunction io_eff(k,run) { if(arguments.length>2)throw new Error(\"bend: \"+k+\" takes no need: an effect that waits parks itself\"); if(k in $0eff)throw new Error(\"bend: two effects register \"+k); $0eff[k]=run; }\n"
@@ -18939,6 +19242,24 @@ def cps_provider_10_primitive_named(v_1: String) -> Maybe<&2, BIR.Primitive>:
       Some{BIR.PrimArraySize{}}
     case "array_clone":
       Some{BIR.PrimArrayClone{}}
+    case "array_atomic_add":
+      Some{BIR.PrimArrayAtomicAdd{}}
+    case "array_atomic_min":
+      Some{BIR.PrimArrayAtomicMin{}}
+    case "array_atomic_max":
+      Some{BIR.PrimArrayAtomicMax{}}
+    case "array_atomic_and":
+      Some{BIR.PrimArrayAtomicAnd{}}
+    case "array_atomic_or":
+      Some{BIR.PrimArrayAtomicOr{}}
+    case "array_atomic_xor":
+      Some{BIR.PrimArrayAtomicXor{}}
+    case "array_atomic_exch":
+      Some{BIR.PrimArrayAtomicExch{}}
+    case "array_atomic_cas":
+      Some{BIR.PrimArrayAtomicCas{}}
+    case "array_atomic_fadd":
+      Some{BIR.PrimArrayAtomicFadd{}}
     case _:
       None{}
 
@@ -19827,6 +20148,23 @@ def native_match_cps_provider_10_ending_2(v_3: Maybe<&2, List<&2, String>>, v_5:
 def cps_provider_10_ending(v_3: Maybe<&2, List<&2, String>>, v_5: Maybe<&2, BIR.Descriptor>, v_7: cps_provider_10_Registry, v_8: Arena.Arena, v_11: List<&2, cps_provider_10_Definition>, v_13: List<&2, Scope.ArenaGlobal>, +v_15: cps_provider_7_NfContext) -> cps_provider_10_CatalogResult<BIR.Ending>:
   native_match_cps_provider_10_ending_2(v_3, v_5, v_7, v_8, v_11, v_13, v_15)
 
+def cps_provider_10_root_main_runnable(v_2: Maybe<&2, cps_provider_10_DefinitionHeader>) -> Bool:
+  match v_2:
+    case Some{cps_provider_10_DefinitionHeader{_, _, _, _, _, v_18, _, _, _}}:
+      Bool.not(v_18)
+    case None{}:
+      False{}
+
+def cps_provider_10_root_main_admitted(v_2: Map<&2, cps_provider_10_DefinitionHeader>) -> Bool:
+  cps_provider_10_root_main_runnable(IndexLookup.find(cps_provider_10_DefinitionHeader, v_2, "main"))
+
+def cps_provider_10_executable_admitted(v_3: Maybe<&2, List<&2, String>>, v_6: Map<&2, cps_provider_10_DefinitionHeader>) -> Bool:
+  match v_3:
+    case Some{_}:
+      True{}
+    case None{}:
+      cps_provider_10_root_main_admitted(v_6)
+
 def native_match_cps_provider_10_native_match_build_finish_0_0(v_56: cps_provider_10_CatalogResult<BIR.Ending>, v_4: List<&2, IR.LoadedModule>, v_6: List<&2, Scope.ArenaGlobal>, v_8: List<&2, Checked.ModuleMetadata>, v_20: List<&2, BIR.ConstructorLayout>, v_27: U32, v_35: List<&2, BIR.TypeFunction>, v_38: cps_provider_10_Registry, v_40: List<&2, BIR.Family>, v_46: List<&2, cps_provider_10_Definition>) -> cps_provider_10_BuildResult:
   match v_56:
     case cps_provider_10_CatalogResult{v_50, v_51}:
@@ -19845,12 +20183,19 @@ def native_match_cps_provider_10_native_match_build_finish_0_1(v_2: cps_provider
 def cps_provider_10_native_match_build_finish_0(v_2: cps_provider_10_CatalogResult<cps_provider_10_Needed>, v_4: List<&2, IR.LoadedModule>, v_6: List<&2, Scope.ArenaGlobal>, v_8: List<&2, Checked.ModuleMetadata>, v_12: Maybe<&2, List<&2, String>>, v_15: List<&2, cps_provider_10_Definition>, v_18: Map<&2, cps_provider_10_DefinitionHeader>, v_20: List<&2, BIR.ConstructorLayout>, v_23: Map<&2, cps_provider_10_Constructor>, v_25: List<&2, BIR.Family>, v_27: U32, v_29: Maybe<&2, BIR.Descriptor>) -> cps_provider_10_BuildResult:
   native_match_cps_provider_10_native_match_build_finish_0_1(v_2, v_4, v_6, v_8, v_12, v_15, v_18, v_20, v_23, v_25, v_27, v_29)
 
+def cps_provider_10_native_match_build_finish_2(v_1: Bool, v_2: Arena.Arena, v_4: List<&2, IR.LoadedModule>, v_6: List<&2, Scope.ArenaGlobal>, v_8: List<&2, Checked.ModuleMetadata>, v_12: Maybe<&2, List<&2, String>>, v_15: List<&2, cps_provider_10_Definition>, v_18: Map<&2, cps_provider_10_Definition>, v_21: Map<&2, cps_provider_10_DefinitionHeader>, v_23: List<&2, BIR.ConstructorLayout>, v_26: Map<&2, cps_provider_10_Constructor>, v_28: List<&2, BIR.Family>, v_30: U32, v_33: List<&2, cps_provider_10_Root>, v_35: Maybe<&2, BIR.Descriptor>) -> cps_provider_10_BuildResult:
+  match v_1:
+    case True{}:
+      cps_provider_10_native_match_build_finish_0(cps_provider_10_needed_roots(v_2, List.reverse(&2, cps_provider_10_Root, v_33), v_18, cps_provider_10_Needed{[], MTip{}}), v_4, v_6, v_8, v_12, v_15, v_21, v_23, v_26, v_28, v_30, v_35)
+    case False{}:
+      cps_provider_10_BuildFailure{Checked.CheckedProgram{v_2, v_4, v_6, v_8}, "bend: executable mode requires a root main definition"}
+
 def cps_provider_10_native_match_build_finish_1(v_1: cps_provider_10_Preparation, v_2: Arena.Arena, v_4: List<&2, IR.LoadedModule>, v_6: List<&2, Scope.ArenaGlobal>, v_8: List<&2, Checked.ModuleMetadata>, v_12: Maybe<&2, List<&2, String>>) -> cps_provider_10_BuildResult:
   match v_1:
     case cps_provider_10_Preparation{v_25, v_26, v_27, v_28, v_29, v_30, v_31, _, v_33, v_34, None{}, _}:
-      cps_provider_10_native_match_build_finish_0(cps_provider_10_needed_roots(v_2, List.reverse(&2, cps_provider_10_Root, v_33), v_26, cps_provider_10_Needed{[], MTip{}}), v_4, v_6, v_8, v_12, v_25, v_27, v_28, v_29, v_30, v_31, v_34)
-    case cps_provider_10_Preparation{_, _, _, _, _, _, _, _, _, _, Some{v_61}, _}:
-      cps_provider_10_BuildFailure{Checked.CheckedProgram{v_2, v_4, v_6, v_8}, v_61}
+      cps_provider_10_native_match_build_finish_2(cps_provider_10_executable_admitted(v_12, v_27), v_2, v_4, v_6, v_8, v_12, v_25, v_26, v_27, v_28, v_29, v_30, v_31, v_33, v_34)
+    case cps_provider_10_Preparation{_, _, _, _, _, _, _, _, _, _, Some{v_60}, _}:
+      cps_provider_10_BuildFailure{Checked.CheckedProgram{v_2, v_4, v_6, v_8}, v_60}
 
 def cps_provider_10_build_finish(v_0: Arena.Arena, v_2: List<&2, IR.LoadedModule>, v_4: List<&2, Scope.ArenaGlobal>, v_6: List<&2, Checked.ModuleMetadata>, v_10: Maybe<&2, List<&2, String>>, v_12: cps_provider_10_Preparation) -> cps_provider_10_BuildResult:
   cps_provider_10_native_match_build_finish_1(v_12, v_0, v_2, v_4, v_6, v_10)
@@ -20074,6 +20419,24 @@ def cps_provider_10_primitive_arity(v_0: BIR.Primitive) -> Nat:
       1n
     case BIR.PrimArrayClone{}:
       1n
+    case BIR.PrimArrayAtomicAdd{}:
+      3n
+    case BIR.PrimArrayAtomicMin{}:
+      3n
+    case BIR.PrimArrayAtomicMax{}:
+      3n
+    case BIR.PrimArrayAtomicAnd{}:
+      3n
+    case BIR.PrimArrayAtomicOr{}:
+      3n
+    case BIR.PrimArrayAtomicXor{}:
+      3n
+    case BIR.PrimArrayAtomicExch{}:
+      3n
+    case BIR.PrimArrayAtomicCas{}:
+      4n
+    case BIR.PrimArrayAtomicFadd{}:
+      3n
     case BIR.PrimNatPredecessor{}:
       1n
     case BIR.PrimNatSuccessor{}:

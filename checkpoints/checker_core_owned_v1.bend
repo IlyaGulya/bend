@@ -18102,76 +18102,52 @@ def native_match_check_import_type_result_4(v_3: Inference, v_1: ArenaStore, v_5
 def check_import_type_result(v_1: ArenaStore, v_3: Inference, v_5: String, v_7: U32, v_9: U32, v_11: String, v_12: Scope.ArenaGlobalScope, v_13: Scope.ArenaGlobalScope, v_14: Ast.SourceSpan) -> ArenaResult<ScopedState>:
   native_match_check_import_type_result_4(v_3, v_1, v_5, v_9, v_11, v_12, v_13, v_14)
 
-def native_match_check_type_decl_0(v_115: ArenaResult<ScopedState>) -> ArenaResult<ScopedState>:
-  match v_115:
-    case ArenaResult{v_111, +v_112}:
-      {ArenaResult{v_111, v_112} : ArenaResult<ScopedState>}
+def native_match_check_datatype_parameters_0(v_45: ArenaResult<String>, v_37: Ast.SourceSpan) -> ArenaResult<Maybe<&2, Checked.Diagnostic>>:
+  match v_45:
+    case ArenaResult{v_40, v_41}:
+      v_44 = Checked.Diagnostic{span_file(v_37), v_37, String.append("datatype parameter cannot be a compile-time template binder: ", v_41), "a runtime datatype parameter", "a template binder"}
+      {ArenaResult{v_40, Some{v_44}} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
 
-def native_match_check_type_decl_1(v_116: ArenaResult<Inference>, v_4: String, v_5: Scope.ArenaGlobalScope, v_6: Scope.ArenaGlobalScope, v_20: String, v_22: IR.Words, v_24: U32, v_26: List<&2, IR.ConstructorDecl>, v_28: Ast.SourceSpan, v_35: U32, v_95: Scope.ArenaGlobal, v_102: Scope.ArenaGlobal) -> ArenaResult<ScopedState>:
-  match v_116:
-    case ArenaResult{v_106, +v_107}:
-      native_match_check_type_decl_0(check_type_decl_result(v_106, v_107, v_20, v_22, v_24, v_26, v_95, v_102, v_35, v_4, v_5, v_6, v_28))
+def native_match_check_datatype_parameters_1(v_18: Arena.Binder, v_14: IR.Words, v_17: ArenaStore) -> ArenaResult<Maybe<&2, Checked.Diagnostic>>:
+  match v_18:
+    case Arena.Binder{_, _, _, _, _}:
+      check_datatype_parameters(v_17, v_14)
+    case Arena.TemplateBinder{v_34, _, _, v_37}:
+      native_match_check_datatype_parameters_0(arena_name_text(v_17, v_34), v_37)
 
-def native_match_check_type_decl_2(v_117: ArenaResult<Scope.ArenaGlobal>, v_4: String, v_5: Scope.ArenaGlobalScope, v_6: Scope.ArenaGlobalScope, v_20: String, v_22: IR.Words, v_24: U32, v_26: List<&2, IR.ConstructorDecl>, v_28: Ast.SourceSpan, v_35: U32, v_95: Scope.ArenaGlobal) -> ArenaResult<ScopedState>:
-  match v_117:
-    case ArenaResult{v_99, +v_100}:
-      v_102 = v_100
-      native_match_check_type_decl_1(infer(v_99, v_35, [], v_6), v_4, v_5, v_6, v_20, v_22, v_24, v_26, v_28, v_35, v_95, v_102)
+def native_match_check_datatype_parameters_2(v_46: ArenaResult<Arena.Binder>, v_14: IR.Words) -> ArenaResult<Maybe<&2, Checked.Diagnostic>>:
+  match v_46:
+    case ArenaResult{v_17, v_18}:
+      native_match_check_datatype_parameters_1(v_18, v_14, v_17)
 
-def native_match_check_type_decl_3(v_118: ArenaResult<Scope.ArenaGlobal>, v_4: String, v_5: Scope.ArenaGlobalScope, v_6: Scope.ArenaGlobalScope, v_20: String, v_22: IR.Words, v_24: U32, v_26: List<&2, IR.ConstructorDecl>, v_28: Ast.SourceSpan, v_35: U32, v_75: U32) -> ArenaResult<ScopedState>:
-  match v_118:
-    case ArenaResult{v_92, +v_93}:
-      v_95 = v_93
-      native_match_check_type_decl_2(arena_publish_global(v_92, Scope.ArenaGlobal{v_20, v_4, v_20, v_35, IR.SomeTerm{v_75}, Scope.GlobalFamily{}}), v_4, v_5, v_6, v_20, v_22, v_24, v_26, v_28, v_35, v_95)
+def native_match_check_datatype_parameters_3(v_8: IR.WordView, v_7: ArenaStore) -> ArenaResult<Maybe<&2, Checked.Diagnostic>>:
+  match v_8:
+    case IR.WordNil{}:
+      {ArenaResult{v_7, None{}} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
+    case IR.WordCons{v_13, v_14}:
+      native_match_check_datatype_parameters_2(arena_get_binder(v_7, v_13), v_14)
 
-def native_match_check_type_decl_4(v_119: ArenaResult<U32>, v_4: String, v_5: Scope.ArenaGlobalScope, v_6: Scope.ArenaGlobalScope, v_20: String, v_22: IR.Words, v_24: U32, v_26: List<&2, IR.ConstructorDecl>, v_28: Ast.SourceSpan, v_35: U32, v_75: U32, +v_80: U32) -> ArenaResult<ScopedState>:
-  match v_119:
-    case ArenaResult{v_84, +v_85}:
-      v_88 = canonical_key(v_4, v_20)
-      native_match_check_type_decl_3(arena_publish_global(v_84, Scope.ArenaGlobal{v_88, v_4, v_20, v_80, IR.SomeTerm{v_85}, Scope.GlobalFamily{}}), v_4, v_5, v_6, v_20, v_22, v_24, v_26, v_28, v_35, v_75)
+def native_match_check_datatype_parameters_4(v_47: ArenaResult<IR.WordView>) -> ArenaResult<Maybe<&2, Checked.Diagnostic>>:
+  match v_47:
+    case ArenaResult{v_7, v_8}:
+      native_match_check_datatype_parameters_3(v_8, v_7)
 
-def native_match_check_type_decl_5(v_120: ArenaResult<U32>, v_4: String, v_5: Scope.ArenaGlobalScope, v_6: Scope.ArenaGlobalScope, v_20: String, v_22: IR.Words, v_24: U32, v_26: List<&2, IR.ConstructorDecl>, v_28: Ast.SourceSpan, v_35: U32, v_75: U32) -> ArenaResult<ScopedState>:
-  match v_120:
-    case ArenaResult{v_79, +v_80}:
-      native_match_check_type_decl_4(canonicalize_term(v_79, v_75, v_6), v_4, v_5, v_6, v_20, v_22, v_24, v_26, v_28, v_35, v_75, v_80)
+def check_datatype_parameters(v_1: ArenaStore, v_2: IR.Words) -> ArenaResult<Maybe<&2, Checked.Diagnostic>>:
+  native_match_check_datatype_parameters_4(arena_words_view(v_1, v_2))
 
-def native_match_check_type_decl_6(v_121: ArenaResult<U32>, v_4: String, v_5: Scope.ArenaGlobalScope, v_6: Scope.ArenaGlobalScope, v_20: String, v_22: IR.Words, v_24: U32, v_26: List<&2, IR.ConstructorDecl>, v_28: Ast.SourceSpan, v_35: U32) -> ArenaResult<ScopedState>:
-  match v_121:
-    case ArenaResult{v_72, +v_73}:
-      v_75 = v_73
-      native_match_check_type_decl_5(canonicalize_term(v_72, v_35, v_6), v_4, v_5, v_6, v_20, v_22, v_24, v_26, v_28, v_35, v_75)
+def native_match_check_type_decl_0(v_33: Maybe<&2, Checked.Diagnostic>, v_4: String, v_5: Scope.ArenaGlobalScope, v_6: Scope.ArenaGlobalScope, v_20: String, v_22: IR.Words, v_24: U32, v_26: List<&2, IR.ConstructorDecl>, v_28: Ast.SourceSpan, v_32: ArenaStore) -> ArenaResult<ScopedState>:
+  match v_33:
+    case Some{v_35}:
+      {ArenaResult{v_32, ScopedStateFailure{v_35}} : ArenaResult<ScopedState>}
+    case None{}:
+      check_type_decl_ir(v_32, v_20, v_22, v_24, v_26, v_28, v_4, v_5, v_6)
 
-def native_match_check_type_decl_7(v_122: ArenaResult<U32>, v_4: String, v_5: Scope.ArenaGlobalScope, v_6: Scope.ArenaGlobalScope, v_20: String, v_22: IR.Words, v_24: U32, v_26: List<&2, IR.ConstructorDecl>, v_28: Ast.SourceSpan, v_35: U32) -> ArenaResult<ScopedState>:
-  match v_122:
-    case ArenaResult{v_67, +v_68}:
-      native_match_check_type_decl_6(binders_lambda(v_67, v_22, v_68), v_4, v_5, v_6, v_20, v_22, v_24, v_26, v_28, v_35)
+def native_match_check_type_decl_1(v_38: ArenaResult<Maybe<&2, Checked.Diagnostic>>, v_4: String, v_5: Scope.ArenaGlobalScope, v_6: Scope.ArenaGlobalScope, v_20: String, v_22: IR.Words, v_24: U32, v_26: List<&2, IR.ConstructorDecl>, v_28: Ast.SourceSpan) -> ArenaResult<ScopedState>:
+  match v_38:
+    case ArenaResult{v_32, v_33}:
+      native_match_check_type_decl_0(v_33, v_4, v_5, v_6, v_20, v_22, v_24, v_26, v_28, v_32)
 
-def native_match_check_type_decl_8(v_123: ArenaResult<U32>, v_4: String, v_5: Scope.ArenaGlobalScope, v_6: Scope.ArenaGlobalScope, v_20: String, v_22: IR.Words, v_24: U32, v_26: List<&2, IR.ConstructorDecl>, v_28: Ast.SourceSpan, v_35: U32, +v_45: IR.Words) -> ArenaResult<ScopedState>:
-  match v_123:
-    case ArenaResult{v_50, +v_51}:
-      v_54 = arena_words_start(v_45)
-      v_57 = arena_words_count(v_45)
-      v_60 = arena_names_start(IR.Names{0, 0})
-      v_63 = arena_names_count(IR.Names{0, 0})
-      native_match_check_type_decl_7(arena_put_node(v_50, Arena.TermAdt{v_51, v_54, v_57, v_60, v_63, v_28}), v_4, v_5, v_6, v_20, v_22, v_24, v_26, v_28, v_35)
-
-def native_match_check_type_decl_9(v_124: ArenaResult<IR.Words>, v_4: String, v_5: Scope.ArenaGlobalScope, v_6: Scope.ArenaGlobalScope, v_20: String, v_22: IR.Words, v_24: U32, v_26: List<&2, IR.ConstructorDecl>, v_28: Ast.SourceSpan, v_35: U32) -> ArenaResult<ScopedState>:
-  match v_124:
-    case ArenaResult{v_44, +v_45}:
-      native_match_check_type_decl_8(arena_name(v_44, canonical_key(v_4, v_20)), v_4, v_5, v_6, v_20, v_22, v_24, v_26, v_28, v_35, v_45)
-
-def native_match_check_type_decl_10(v_125: ArenaResult<Nat>, v_4: String, v_5: Scope.ArenaGlobalScope, v_6: Scope.ArenaGlobalScope, v_20: String, v_22: IR.Words, v_24: U32, v_26: List<&2, IR.ConstructorDecl>, v_28: Ast.SourceSpan, v_35: U32) -> ArenaResult<ScopedState>:
-  match v_125:
-    case ArenaResult{v_39, +v_40}:
-      native_match_check_type_decl_9(parameter_vars(v_39, v_22, v_40, v_28), v_4, v_5, v_6, v_20, v_22, v_24, v_26, v_28, v_35)
-
-def native_match_check_type_decl_11(v_126: ArenaResult<U32>, v_4: String, v_5: Scope.ArenaGlobalScope, v_6: Scope.ArenaGlobalScope, v_20: String, v_22: IR.Words, v_24: U32, v_26: List<&2, IR.ConstructorDecl>, v_28: Ast.SourceSpan) -> ArenaResult<ScopedState>:
-  match v_126:
-    case ArenaResult{v_32, +v_33}:
-      v_35 = v_33
-      native_match_check_type_decl_10(binder_count(v_32, v_22), v_4, v_5, v_6, v_20, v_22, v_24, v_26, v_28, v_35)
-
-def native_match_check_type_decl_12(v_2: IR.TypeDecl, v_1: ArenaStore, v_4: String, v_5: Scope.ArenaGlobalScope, v_6: Scope.ArenaGlobalScope) -> ArenaResult<ScopedState>:
+def native_match_check_type_decl_2(v_2: IR.TypeDecl, v_1: ArenaStore, v_4: String, v_5: Scope.ArenaGlobalScope, v_6: Scope.ArenaGlobalScope) -> ArenaResult<ScopedState>:
   match v_2:
     case IR.TypeDecl{+v_14, +v_15, +v_16, +v_17, +v_18}:
       v_20 = v_14
@@ -18179,10 +18155,82 @@ def native_match_check_type_decl_12(v_2: IR.TypeDecl, v_1: ArenaStore, v_4: Stri
       v_24 = v_16
       v_26 = v_17
       v_28 = v_18
-      native_match_check_type_decl_11(binders_type(v_1, v_22, v_24), v_4, v_5, v_6, v_20, v_22, v_24, v_26, v_28)
+      native_match_check_type_decl_1(check_datatype_parameters(v_1, v_22), v_4, v_5, v_6, v_20, v_22, v_24, v_26, v_28)
 
 def check_type_decl(v_1: ArenaStore, v_2: IR.TypeDecl, v_4: String, v_5: Scope.ArenaGlobalScope, v_6: Scope.ArenaGlobalScope) -> ArenaResult<ScopedState>:
-  native_match_check_type_decl_12(v_2, v_1, v_4, v_5, v_6)
+  native_match_check_type_decl_2(v_2, v_1, v_4, v_5, v_6)
+
+def native_match_check_type_decl_ir_0(v_102: ArenaResult<ScopedState>) -> ArenaResult<ScopedState>:
+  match v_102:
+    case ArenaResult{v_98, +v_99}:
+      {ArenaResult{v_98, v_99} : ArenaResult<ScopedState>}
+
+def native_match_check_type_decl_ir_1(v_103: ArenaResult<Inference>, v_3: String, v_4: IR.Words, v_6: U32, v_8: List<&2, IR.ConstructorDecl>, v_9: Ast.SourceSpan, v_11: String, v_12: Scope.ArenaGlobalScope, v_13: Scope.ArenaGlobalScope, v_22: U32, v_82: Scope.ArenaGlobal, v_89: Scope.ArenaGlobal) -> ArenaResult<ScopedState>:
+  match v_103:
+    case ArenaResult{v_93, +v_94}:
+      native_match_check_type_decl_ir_0(check_type_decl_result(v_93, v_94, v_3, v_4, v_6, v_8, v_82, v_89, v_22, v_11, v_12, v_13, v_9))
+
+def native_match_check_type_decl_ir_2(v_104: ArenaResult<Scope.ArenaGlobal>, v_3: String, v_4: IR.Words, v_6: U32, v_8: List<&2, IR.ConstructorDecl>, v_9: Ast.SourceSpan, v_11: String, v_12: Scope.ArenaGlobalScope, v_13: Scope.ArenaGlobalScope, v_22: U32, v_82: Scope.ArenaGlobal) -> ArenaResult<ScopedState>:
+  match v_104:
+    case ArenaResult{v_86, +v_87}:
+      v_89 = v_87
+      native_match_check_type_decl_ir_1(infer(v_86, v_22, [], v_13), v_3, v_4, v_6, v_8, v_9, v_11, v_12, v_13, v_22, v_82, v_89)
+
+def native_match_check_type_decl_ir_3(v_105: ArenaResult<Scope.ArenaGlobal>, v_3: String, v_4: IR.Words, v_6: U32, v_8: List<&2, IR.ConstructorDecl>, v_9: Ast.SourceSpan, v_11: String, v_12: Scope.ArenaGlobalScope, v_13: Scope.ArenaGlobalScope, v_22: U32, v_62: U32) -> ArenaResult<ScopedState>:
+  match v_105:
+    case ArenaResult{v_79, +v_80}:
+      v_82 = v_80
+      native_match_check_type_decl_ir_2(arena_publish_global(v_79, Scope.ArenaGlobal{v_3, v_11, v_3, v_22, IR.SomeTerm{v_62}, Scope.GlobalFamily{}}), v_3, v_4, v_6, v_8, v_9, v_11, v_12, v_13, v_22, v_82)
+
+def native_match_check_type_decl_ir_4(v_106: ArenaResult<U32>, v_3: String, v_4: IR.Words, v_6: U32, v_8: List<&2, IR.ConstructorDecl>, v_9: Ast.SourceSpan, v_11: String, v_12: Scope.ArenaGlobalScope, v_13: Scope.ArenaGlobalScope, v_22: U32, v_62: U32, +v_67: U32) -> ArenaResult<ScopedState>:
+  match v_106:
+    case ArenaResult{v_71, +v_72}:
+      v_75 = canonical_key(v_11, v_3)
+      native_match_check_type_decl_ir_3(arena_publish_global(v_71, Scope.ArenaGlobal{v_75, v_11, v_3, v_67, IR.SomeTerm{v_72}, Scope.GlobalFamily{}}), v_3, v_4, v_6, v_8, v_9, v_11, v_12, v_13, v_22, v_62)
+
+def native_match_check_type_decl_ir_5(v_107: ArenaResult<U32>, v_3: String, v_4: IR.Words, v_6: U32, v_8: List<&2, IR.ConstructorDecl>, v_9: Ast.SourceSpan, v_11: String, v_12: Scope.ArenaGlobalScope, v_13: Scope.ArenaGlobalScope, v_22: U32, v_62: U32) -> ArenaResult<ScopedState>:
+  match v_107:
+    case ArenaResult{v_66, +v_67}:
+      native_match_check_type_decl_ir_4(canonicalize_term(v_66, v_62, v_13), v_3, v_4, v_6, v_8, v_9, v_11, v_12, v_13, v_22, v_62, v_67)
+
+def native_match_check_type_decl_ir_6(v_108: ArenaResult<U32>, v_3: String, v_4: IR.Words, v_6: U32, v_8: List<&2, IR.ConstructorDecl>, v_9: Ast.SourceSpan, v_11: String, v_12: Scope.ArenaGlobalScope, v_13: Scope.ArenaGlobalScope, v_22: U32) -> ArenaResult<ScopedState>:
+  match v_108:
+    case ArenaResult{v_59, +v_60}:
+      v_62 = v_60
+      native_match_check_type_decl_ir_5(canonicalize_term(v_59, v_22, v_13), v_3, v_4, v_6, v_8, v_9, v_11, v_12, v_13, v_22, v_62)
+
+def native_match_check_type_decl_ir_7(v_109: ArenaResult<U32>, v_3: String, v_4: IR.Words, v_6: U32, v_8: List<&2, IR.ConstructorDecl>, v_9: Ast.SourceSpan, v_11: String, v_12: Scope.ArenaGlobalScope, v_13: Scope.ArenaGlobalScope, v_22: U32) -> ArenaResult<ScopedState>:
+  match v_109:
+    case ArenaResult{v_54, +v_55}:
+      native_match_check_type_decl_ir_6(binders_lambda(v_54, v_4, v_55), v_3, v_4, v_6, v_8, v_9, v_11, v_12, v_13, v_22)
+
+def native_match_check_type_decl_ir_8(v_110: ArenaResult<U32>, v_3: String, v_4: IR.Words, v_6: U32, v_8: List<&2, IR.ConstructorDecl>, v_9: Ast.SourceSpan, v_11: String, v_12: Scope.ArenaGlobalScope, v_13: Scope.ArenaGlobalScope, v_22: U32, +v_32: IR.Words) -> ArenaResult<ScopedState>:
+  match v_110:
+    case ArenaResult{v_37, +v_38}:
+      v_41 = arena_words_start(v_32)
+      v_44 = arena_words_count(v_32)
+      v_47 = arena_names_start(IR.Names{0, 0})
+      v_50 = arena_names_count(IR.Names{0, 0})
+      native_match_check_type_decl_ir_7(arena_put_node(v_37, Arena.TermAdt{v_38, v_41, v_44, v_47, v_50, v_9}), v_3, v_4, v_6, v_8, v_9, v_11, v_12, v_13, v_22)
+
+def native_match_check_type_decl_ir_9(v_111: ArenaResult<IR.Words>, v_3: String, v_4: IR.Words, v_6: U32, v_8: List<&2, IR.ConstructorDecl>, v_9: Ast.SourceSpan, v_11: String, v_12: Scope.ArenaGlobalScope, v_13: Scope.ArenaGlobalScope, v_22: U32) -> ArenaResult<ScopedState>:
+  match v_111:
+    case ArenaResult{v_31, +v_32}:
+      native_match_check_type_decl_ir_8(arena_name(v_31, canonical_key(v_11, v_3)), v_3, v_4, v_6, v_8, v_9, v_11, v_12, v_13, v_22, v_32)
+
+def native_match_check_type_decl_ir_10(v_112: ArenaResult<Nat>, v_3: String, v_4: IR.Words, v_6: U32, v_8: List<&2, IR.ConstructorDecl>, v_9: Ast.SourceSpan, v_11: String, v_12: Scope.ArenaGlobalScope, v_13: Scope.ArenaGlobalScope, v_22: U32) -> ArenaResult<ScopedState>:
+  match v_112:
+    case ArenaResult{v_26, +v_27}:
+      native_match_check_type_decl_ir_9(parameter_vars(v_26, v_4, v_27, v_9), v_3, v_4, v_6, v_8, v_9, v_11, v_12, v_13, v_22)
+
+def native_match_check_type_decl_ir_11(v_113: ArenaResult<U32>, v_3: String, v_4: IR.Words, v_6: U32, v_8: List<&2, IR.ConstructorDecl>, v_9: Ast.SourceSpan, v_11: String, v_12: Scope.ArenaGlobalScope, v_13: Scope.ArenaGlobalScope) -> ArenaResult<ScopedState>:
+  match v_113:
+    case ArenaResult{v_19, +v_20}:
+      v_22 = v_20
+      native_match_check_type_decl_ir_10(binder_count(v_19, v_4), v_3, v_4, v_6, v_8, v_9, v_11, v_12, v_13, v_22)
+
+def check_type_decl_ir(v_1: ArenaStore, v_3: String, v_4: IR.Words, v_6: U32, v_8: List<&2, IR.ConstructorDecl>, v_9: Ast.SourceSpan, v_11: String, v_12: Scope.ArenaGlobalScope, v_13: Scope.ArenaGlobalScope) -> ArenaResult<ScopedState>:
+  native_match_check_type_decl_ir_11(binders_type(v_1, v_4, v_6), v_3, v_4, v_6, v_8, v_9, v_11, v_12, v_13)
 
 def native_match_foreign_head_0(v_103: ArenaResult<String>) -> ArenaResult<Maybe<&2, String>>:
   match v_103:
