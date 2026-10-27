@@ -5,6 +5,18 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- The g13 C-backend boundary repair preserves proper-prefix `String.cmp`
+  ordering, stages natives read only by library exports, and calls saturated
+  native exports with their full arity. Borrowing String helpers now release
+  owned staged arguments and fresh literal temporaries after computing their
+  result; scalar Nat/F32/U32 words are never treated as owned boxed Terms.
+  Eight real JS/C consumers pass, including the unread `U32.mul` export,
+  `map_prefix_keys`, `text_ops`, and the alias/value/fresh-literal regression
+  `native_string_borrow` with the unchanged 32-page heap-frontier bound.
+  Both target matrices now retain those three added cases. This is bounded
+  backend evidence; no g13 full compiler or fixedpoint is accepted yet.
+  Receipt: `evals/receipts/root2039g13_string_native_boundaries.json`.
+
 - The g12 producer candidate refreshes borrowed-argument answers when monotone
   ownership facts grow, retaining immutable snapshots at individual call sites.
   Nine actual C/JS programs preserve identical emitted bytes. The complete
@@ -12,12 +24,16 @@ latest one; the GitHub release carries the same notes.
   under the unchanged 8-GiB/600-s gate (peak RSS 5,392,596,992 B). All 12,114
   bodies / 12,694 events validate without exclusions or output patches, and
   the real binary passes 21 C/JS/library consumers. The runtime is unchanged
-  apart from its reviewed compiler-source provenance comment. Fresh parser
-  admission, full matrices and bootstrap remain pending. The broader g12
-  compiler checkpoint is **not accepted**: actual native-generated C reverses
-  `String.cmp` proper-prefix order and fail-stops on an unread `U32.mul` library
-  export; JS controls pass. These pre-existing target bugs are carried into
-  the next isolated repair, not hidden by the native-producer qualification.
+  apart from its reviewed compiler-source provenance comment. A subsequent
+  fresh parser/root chain passes native validation/build in 418.413 s and both
+  complete 40-case target matrices, but g12 remains **rejected**: bootstrap
+  reaches stage-two-check at 466.687 s and hits the unchanged 600-s deadline.
+  Its real native seed passes all 95 fixtures and emits stage1 (28,518,892 B);
+  no stage2 or byte fixedpoint is produced. Native-generated C also exposes
+  pre-existing prefix-comparison, unread-native-export and borrowed-String
+  lifetime failures; those are repaired separately in g13, not retroactively
+  accepted as g12 behavior. Full-chain receipt:
+  `evals/receipts/root2039g12_bootstrap_deadline_rejected.json`.
   The datatype typed-step JS regression also executes correctly. Its combined
   four-target metacompilation wrapper reaches an aggregate 600-s quota during
   the first C leg; no per-C-leg timeout or semantic failure is inferred.

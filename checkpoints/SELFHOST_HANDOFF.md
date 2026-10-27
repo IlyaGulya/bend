@@ -34,8 +34,18 @@ Stage1 использует собственные parser/checker/emitter для
 stage-two-check; stage2 и нового fixedpoint нет. Есть настоящий stage1,
 95 native-seed fixtures и 18 полных parser approvals. Доказательства и точная
 граница: `evals/receipts/root2039g9a_atomic_bootstrap_rejected.json`.
-Текущая работа — короткая CPU-диагностика checker и завершение полной приёмки
-atomic-версии без увеличения лимитов; принятым остаётся g8, не g9a.
+Последующий g12 завершил свежие parser gates, native build (418.413 с) и обе
+40-case матрицы, но тоже **отклонён**: stage-two-check начался на 466.687 с,
+затем сработал прежний deadline 600 с. Все 95 native-seed fixtures прошли;
+stage1 — 28 518 892 B, stage2 нет. Квитанция:
+`evals/receipts/root2039g12_bootstrap_deadline_rejected.json`.
+G13 исправляет C proper-prefix comparison, unread native library exports и
+утечки owned String у native-value/fresh-literal вызовов. Восемь JS/C
+consumers проходят, включая неизменную 32-page heap-границу; свежая полная
+приёмка ещё не заявляется. Квитанция:
+`evals/receipts/root2039g13_string_native_boundaries.json`.
+Дальше — завершение новой полной приёмки без увеличения лимитов. Принятым
+остаётся g8; g9a/g12 не считаются новым fixedpoint.
 
 СЕЙЧАС принят host57aa: compa84170d5… с общим C-only inline cutoff8 words.
 Physical WIDE247 и JS layouts прежние; scalar structural layouts сохраняются,

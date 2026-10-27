@@ -602,13 +602,13 @@ def export_symbol_item(key: String, checked: Nat, item: BIR.Declaration, +by_cod
     case BIR.FunctionDeclaration{_, code, parameters}:
       export_direct(key, BIR.Entry{code, List.length(&2, BIR.Parameter, parameters)}, checked, by_code)
     case BIR.LazyDeclaration{_, body}: Some{ExportRow{key, map_u32(by_key, key), 1n, checked}}
-    case BIR.ForeignDeclaration{_, _, _, arity, _, _, _, _, _}: export_declared(key, checked, arity, map_u32(by_foreign, key))
-    case BIR.NativeDeclaration{_, _, quantities}: export_declared(key, checked, List.length(&2, BIR.Quantity, quantities), map_u32(by_native, key))
+    case BIR.ForeignDeclaration{_, _, _, arity, _, _, _, _, _}: export_declared(key, checked, arity, map_u32(by_foreign, key), 1n)
+    case BIR.NativeDeclaration{_, _, quantities}: export_declared(key, checked, List.length(&2, BIR.Quantity, quantities), map_u32(by_native, key), 0n)
     case _: None{}
 
-def export_declared(key: String, checked: Nat, declared: Nat, index: U32) -> Maybe<&2, ExportRow>:
+def export_declared(key: String, checked: Nat, declared: Nat, index: U32, mode: Nat) -> Maybe<&2, ExportRow>:
   match Nat.is_eq(checked, declared):
-    case True{}: Some{ExportRow{key, index, 1n, checked}}
+    case True{}: Some{ExportRow{key, index, mode, checked}}
     case False{}: None{}
 
 def export_names(rows: List<&2, ExportRow>, +acc: String) -> String:
@@ -892,7 +892,15 @@ def scan_new() -> Scan:
 def scan_program(program: BIR.Program) -> Scan:
   match program:
     case BIR.Program{codes, declarations, constructors, families, type_functions, end}:
-      scan_declarations(declarations, scan_codes(codes, scan_new()))
+      scan_exports(ending_exports(end), scan_declarations(declarations, scan_codes(codes, scan_new())))
+
+# Library exports read callable values even when no source expression does.
+def scan_exports(exports: List<&2, BIR.Export>, +scan: Scan) -> Scan:
+  match exports:
+    case Nil{}: scan
+    case +item <> rest:
+      match item:
+        case BIR.Export{key, _, _, _}: scan_exports(rest, scan_read(scan, key))
 
 def scan_codes(codes: List<&2, BIR.Code>, +scan: Scan) -> Scan:
   match codes:
@@ -1376,15 +1384,39 @@ def array_step(primitive: BIR.Primitive, args: List<&2, BIR.Arg>, types: List<&2
                   +decl = cat(["    Term ", name, " = ", text, ";\n"])
                   array_step(primitive, rest, types, ctx, Nat.add(index, 1n), Phys.Operand{BIR.Many{}, name} <> acc, String.append(setup, decl), continuation, owner_tag)
 
-def prim_texts(primitive: BIR.Primitive, args: List<&2, BIR.Arg>, +ctx: Ctx, +index: Nat, +acc: List<&2, String>, +setup: String, continuation: BIR.Block, +owner_tag: U32) -> OpStep:
+# Only boxed arguments need caller-side release after a borrowing helper.
+# Scalar Nat/F32/U32 words are not tagged Terms and must never be sunk.
+def prim_borrowed_box(primitive: BIR.Primitive, +index: Nat) -> Bool:
+  match primitive:
+    case BIR.PrimStringEq{}: Nat.is_lt(index, 2n)
+    case BIR.PrimStringLength{}: Nat.is_eq(index, 0n)
+    case BIR.PrimStringToList{}: Nat.is_eq(index, 0n)
+    case BIR.PrimStringHead{}: Nat.is_eq(index, 0n)
+    case BIR.PrimStringTail{}: Nat.is_eq(index, 0n)
+    case BIR.PrimIsStringEmpty{}: Nat.is_eq(index, 0n)
+    case BIR.PrimIsStringNonempty{}: Nat.is_eq(index, 0n)
+    case _: False{}
+
+def atom_allocates(atom: BIR.Atom) -> Bool:
+  match atom:
+    case BIR.TextValue{_}: True{}
+    case BIR.Symbol{_, _}: True{}
+    case _: False{}
+
+def prim_texts(primitive: BIR.Primitive, args: List<&2, BIR.Arg>, +ctx: Ctx, +index: Nat, +acc: List<&2, String>, +setup: String, +cleanup: String, continuation: BIR.Block, +owner_tag: U32) -> OpStep:
   match args:
     case Nil{}:
       match prim_part(primitive, List.reverse(&2, String, acc), ctx_plan(ctx)):
         case PartFail{message}: OpFail{message}
-        case PartOk{text}: OpOk{setup, text, ctx}
+        case PartOk{+text}:
+          match String.eq(cleanup, ""):
+            case True{}: OpOk{setup, text, ctx}
+            case False{}:
+              +result = cat(["pr", U32.show(owner_tag)])
+              OpOk{cat([setup, "    Term ", result, " = ", text, ";\n", cleanup]), result, ctx}
     case +arg <> rest:
       match arg:
-        case BIR.Arg{use, value}:
+        case BIR.Arg{use, +value}:
           match prim_default_owned(primitive, index):
             case True{}:
               match field_owned(value, use, ctx, atoms_after_args(rest, continuation)):
@@ -1392,11 +1424,18 @@ def prim_texts(primitive: BIR.Primitive, args: List<&2, BIR.Arg>, +ctx: Ctx, +in
                 case WriteOk{text, actx}:
                   +name = cat(["pt", U32.show(owner_tag), "_", Nat.show(index)])
                   +decl = cat(["    Term ", name, " = ", text, ";\n"])
-                  prim_texts(primitive, rest, actx, Nat.add(index, 1n), name <> acc, String.append(setup, decl), continuation, owner_tag)
+                  prim_texts(primitive, rest, actx, Nat.add(index, 1n), name <> acc, String.append(setup, decl), cleanup, continuation, owner_tag)
             case False{}:
               match field_borrow(value, ctx):
                 case PartFail{message}: OpFail{message}
-                case PartOk{text}: prim_texts(primitive, rest, ctx, Nat.add(index, 1n), text <> acc, setup, continuation, owner_tag)
+                case PartOk{+text}:
+                  match Bool.and(prim_borrowed_box(primitive, index), atom_allocates(value)):
+                    case False{}: prim_texts(primitive, rest, ctx, Nat.add(index, 1n), text <> acc, setup, cleanup, continuation, owner_tag)
+                    case True{}:
+                      +name = cat(["pt", U32.show(owner_tag), "_", Nat.show(index)])
+                      decl = cat(["    Term ", name, " = ", text, ";\n"])
+                      drop = cat(["    term_sink(e, ", name, ");\n"])
+                      prim_texts(primitive, rest, ctx, Nat.add(index, 1n), name <> acc, String.append(setup, decl), String.append(cleanup, drop), continuation, owner_tag)
 
 def prim_step(primitive: BIR.Primitive, args: List<&2, BIR.Arg>, types: List<&2, BIR.Descriptor>, +ctx: Ctx, continuation: BIR.Block, +owner_tag: U32) -> OpStep:
   match primitive:
@@ -1428,7 +1467,7 @@ def array_op_step_element(primitive: BIR.Primitive, args: List<&2, BIR.Arg>, typ
       match types:
         case Nil{}: OpFail{Phys.join_text(["the array primitive `", Phys.array_label(primitive), "` carries no instantiated element Descriptor; lowering must supply PrimitiveCall.types"])}
         case _: array_step(primitive, args, types, ctx, 0n, Nil{}, "", continuation, owner_tag)
-    case False{}: prim_texts(primitive, args, ctx, 0n, Nil{}, "", continuation, owner_tag)
+    case False{}: prim_texts(primitive, args, ctx, 0n, Nil{}, "", "", continuation, owner_tag)
 
 # An array leaf/node test on a lazy path is a predicate over the path state,
 # never a re-materialised borrowed Term. Values outside the path algebra keep
@@ -3638,13 +3677,24 @@ def entry_lazy(index: U32, arity: Nat, body: BIR.Block, +ctx: Ctx) -> Step:
     case StepFail{message}: StepFail{message}
     case StepOk{text, +after}: entry_add(index, arity, "", text, ctx_spin(after), after)
 
-def entry_native(index: U32, +arity: Nat, primitive: BIR.Primitive, +count: Nat, +ctx: Ctx) -> Step:
+def entry_native(index: U32, +arity: Nat, +primitive: BIR.Primitive, +count: Nat, +ctx: Ctx) -> Step:
   match Nat.is_eq(arity, count):
     case False{}: StepFail{"BIR native entry arity disagrees with its live quantities"}
     case True{}:
       match prim_part(primitive, a_names(count), ctx_plan(ctx)):
         case PartFail{message}: StepFail{message}
-        case PartOk{text}: entry_add(index, arity, a_decls(arity), cat(["    r0 = ", text, ";\n    WL_RETN(1);\n"]), False{}, ctx)
+        case PartOk{text}: entry_add(index, arity, a_decls(arity), cat(["    r0 = ", text, ";\n", native_borrow_drops(primitive, count, 0n), "    WL_RETN(1);\n"]), False{}, ctx)
+
+# A staged native owns every supplied argument. Borrowing helpers leave that
+# ownership here; helpers marked consuming already transfer or release it.
+def native_borrow_drops(+primitive: BIR.Primitive, +count: Nat, +index: Nat) -> String:
+  match Nat.is_lt(index, count):
+    case False{}: ""
+    case True{}:
+      rest = native_borrow_drops(primitive, count, Nat.add(index, 1n))
+      match prim_borrowed_box(primitive, index):
+        case True{}: cat(["    term_sink(e, a", Nat.show(index), ");\n", rest])
+        case False{}: rest
 
 def a_names(count: Nat) -> List<&2, String>:
   a_caps(count)
@@ -4095,7 +4145,7 @@ def helper_core() -> String:
     "static Term bend_str_tail(Env e, u32 scon, u32 snil, Term a) {\n  if (term_aux(a) != (u64)scon) {\n    return term_pak(snil, 0);\n  }\n  u64 at = term_peek(e.mem, a) + 1;\n  Term w = e.mem[at];\n  Term v = term_keep(e, w, 1);\n  if (v != w) {\n    e.mem[at] = v;\n  }\n  return v;\n}\n\n",
     "static Term bend_str_to_list(Env e, u32 scon, u32 snil, u32 con, u32 nil, u32 chr, Term a) {\n  if (term_aux(a) != (u64)scon) {\n    return term_pak(nil, 0);\n  }\n  u64 l = term_peek(e.mem, a);\n  Term tail = bend_str_to_list(e, scon, snil, con, nil, chr, e.mem[l + 1]);\n  u64 n = heap_alloc(e, cls_fit(2));\n  e.mem[n] = (u64)term_pak(chr, e.mem[l]);\n  e.mem[n + 1] = tail;\n  return term_ctr(con, n);\n}\n\n",
     "static u32 bend_str_eq(Env e, u32 scon, Term a, Term b) {\n  while (term_aux(a) == (u64)scon && term_aux(b) == (u64)scon) {\n    u64 la = term_peek(e.mem, a);\n    u64 lb = term_peek(e.mem, b);\n    if (e.mem[la] != e.mem[lb]) {\n      return 0;\n    }\n    a = e.mem[la + 1];\n    b = e.mem[lb + 1];\n  }\n  return term_aux(a) != (u64)scon && term_aux(b) != (u64)scon;\n}\n\n",
-    "static Term bend_str_cmp(Env e, u32 scon, u32 tuple, u32 lt, u32 eq, u32 gt, Term a, Term b) {\n  Term x = a;\n  Term y = b;\n  u64 order = 1000000000ull;\n  while (term_aux(x) == (u64)scon && term_aux(y) == (u64)scon) {\n    u64 lx = term_peek(e.mem, x);\n    u64 ly = term_peek(e.mem, y);\n    if (e.mem[lx] != e.mem[ly]) {\n      order = e.mem[lx] < e.mem[ly] ? 0 : 2;\n      break;\n    }\n    x = e.mem[lx + 1];\n    y = e.mem[ly + 1];\n  }\n  if (order == 1000000000ull) {\n    u64 ex = term_aux(x) != (u64)scon;\n    u64 ey = term_aux(y) != (u64)scon;\n    order = ex && ey ? 1 : ex ? 2 : ey ? 0 : 1;\n  }\n  return bend_tuple(e, tuple, bend_tuple(e, tuple, a, b), term_pak(order == 0 ? lt : order == 1 ? eq : gt, 0));\n}\n\n",
+    "static Term bend_str_cmp(Env e, u32 scon, u32 tuple, u32 lt, u32 eq, u32 gt, Term a, Term b) {\n  Term x = a;\n  Term y = b;\n  u64 order = 1000000000ull;\n  while (term_aux(x) == (u64)scon && term_aux(y) == (u64)scon) {\n    u64 lx = term_peek(e.mem, x);\n    u64 ly = term_peek(e.mem, y);\n    if (e.mem[lx] != e.mem[ly]) {\n      order = e.mem[lx] < e.mem[ly] ? 0 : 2;\n      break;\n    }\n    x = e.mem[lx + 1];\n    y = e.mem[ly + 1];\n  }\n  if (order == 1000000000ull) {\n    u64 ex = term_aux(x) != (u64)scon;\n    u64 ey = term_aux(y) != (u64)scon;\n    order = ex && ey ? 1 : ex ? 0 : ey ? 2 : 1;\n  }\n  return bend_tuple(e, tuple, bend_tuple(e, tuple, a, b), term_pak(order == 0 ? lt : order == 1 ? eq : gt, 0));\n}\n\n",
     "static Term bend_map_bit(Env e, u32 scon, u32 tuple, u32 t, u32 f, Term key, Term pos) {\n  u64 at = 0;\n  u64 want = (u64)pos / 33ull;\n  u64 bit = (u64)pos % 33ull;\n  Term s = key;\n  while (term_aux(s) == (u64)scon && at < want) {\n    s = e.mem[term_peek(e.mem, s) + 1];\n    at += 1;\n  }\n  if (term_aux(s) != (u64)scon) {\n    return bend_tuple(e, tuple, key, term_pak(f, 0));\n  }\n  if (bit == 0) {\n    return bend_tuple(e, tuple, key, term_pak(t, 0));\n  }\n  u64 ch = e.mem[term_peek(e.mem, s)];\n  u64 set = (ch >> (32ull - bit)) & 1ull;\n  return bend_tuple(e, tuple, key, term_pak(set != 0 ? t : f, 0));\n}\n\n",
     "static Term bend_u32_to_word(Env e, u32 wcon, u32 wnil, Term x) {\n  Term w = term_pak(wnil, 0);\n  for (u32 i = 32; i > 0; i -= 1) {\n    u64 l = heap_alloc(e, cls_fit(2));\n    e.mem[l] = ((u64)x >> (i - 1)) & 1ull;\n    e.mem[l + 1] = w;\n    w = term_ctr(wcon, l);\n  }\n  return w;\n}\n\n"
   ])

@@ -1170,6 +1170,18 @@ aliases (`backend_ir.bend:32-144`).
   shared Word conversions as well as decimal midpoints and Unicode rejection.
   Receipt: `evals/receipts/root2039g10_numeric_consumers.json`. These eight
   consumer passes do not establish full-root or byte-fixedpoint acceptance.
+- String/native boundary evidence (g13): `map_prefix_keys` and `text_ops`
+  preserve proper-prefix and exact-code ordering on actual JS and C.
+  `native_string_borrow` exercises first-class String length/equality,
+  aliases and freshly materialized borrowed literals under the existing
+  32-page retained-frontier bound. C releases their owned boxed references
+  after helper evaluation; this never sinks scalar Nat/F32/U32 words.
+  A separate source-level library run exports only the otherwise unread
+  `U32.mul` and checks `2 * 3 == 6` through actual JS and C consumers.
+  All eight cases pass with the current native-validated emitter; the
+  parser/checker image is the retained authenticated g9a frontend, so this
+  is bounded backend evidence, not a fresh full compiler or fixedpoint.
+  Receipt: `evals/receipts/root2039g13_string_native_boundaries.json`.
 
 ### 4.11 Rendered entries and foreign callbacks (checkpoint law B2)
 
