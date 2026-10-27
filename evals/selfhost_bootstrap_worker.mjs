@@ -1,7 +1,7 @@
 import {Worker,isMainThread,parentPort,workerData} from 'node:worker_threads';
 import {readFileSync,writeFileSync,realpathSync,createReadStream,existsSync} from 'node:fs';
 import {resolve,dirname,join} from 'node:path';
-import {pathToFileURL} from 'node:url';
+import {pathToFileURL,fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
 import {createInterface} from 'node:readline';
 import {spawnSync} from 'node:child_process';
@@ -9,7 +9,7 @@ import {getHeapStatistics} from 'node:v8';
 import {writeNativeAst,decodeNativeAst} from './bootstrap_ast_transport.ts';
 import {runNativeStage0,requireNativeRun,runtimeManifest,workloadRows,corpusFor,requireCorpusCoversWorkload} from './native_seed_runtime.mjs';
 import {runTemplateSteps,runCheckerSteps,runEmitterSteps,runLibraryEmitterSteps,sourceFiles,sourceFilePath,verifySourceFileCarrier,declaredModuleNamespace,sourceFileTagForSelfhostImage,sourceFileTagFromRoot} from './checker_core_step_runtime.mjs';
-import {createStageProfile,createStepAttribution} from './compiler_stage_profile.mjs';
+import {createStageProfile,createStepAttribution,stageParentDeclaration} from './compiler_stage_profile.mjs';
 
 const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
 async function transportHash(path){
@@ -393,8 +393,16 @@ if(isMainThread){
   }
   if(process.env.SELFHOST_STAGE_PROFILE_DIR){
    const manifestPaths=(process.env.SELFHOST_STAGE_MANIFEST??'').split(process.platform==='win32'?';':':').filter(Boolean);
+   // This profile runs on the Worker thread; its creating thread is this file's
+   // main-thread branch, which is the process main thread. An enclosing profile
+   // is linked and validated only when the orchestrator declared one (workerData
+   // or SELFHOST_STAGE_PARENT); otherwise the report says none was declared or
+   // is discoverable, and nothing is claimed about the creating thread's state.
    stageProfile=await createStageProfile({directory:process.env.SELFHOST_STAGE_PROFILE_DIR,
     rawDetail:process.env.SELFHOST_STAGE_PROGRESS==='1',manifestPaths,
+    executingScript:fileURLToPath(import.meta.url),
+    parentProfile:workerData.stageParent??stageParentDeclaration(process.env.SELFHOST_STAGE_PARENT),
+    parentThread:{threadId:0,isMainThread:true,source:'selfhost_bootstrap_worker.mjs main-thread branch creates this Worker for the request'},
     execution:{stage:'selfhost-bootstrap-worker',mode:'typed-step',root:workerData.root,rootSha256:workerData.rootComposition?.rootSha256,
      parser:workerData.parser,parserSha256:workerData.parserSha256,component:workerData.component,componentSha256:workerData.componentSha256,
      seedFileTag:workerData.sourceFileTag,fixture:workerData.fixture??null,parseOnly:workerData.parseOnly===true,profileRoot:workerData.profileRoot===true,

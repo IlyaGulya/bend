@@ -29,6 +29,14 @@ latest one; the GitHub release carries the same notes.
   These are reduced mechanism reproducers, not a full-root OOM or speedup claim.
   Receipt: `evals/receipts/producer2039g8_reduced_memory.json`.
 
+- Full-root selfhost profiling off/on now has two alternating pairs on one
+  unchanged accepted g8 stage1 image and source closure. All four legs pass
+  the original guards and emit byte-identical compiler images. Median
+  operational wall/CPU differences are +15.79%/+16.14%, sampled guardian
+  RSS/footprint +2.30%/+2.20%; these include collector/checkpoint overhead
+  and are not exclusive-stage or retained-memory measurements.
+  Receipt: `evals/receipts/profile2039g8_full_root_overhead.json`.
+
 - The resource guardian publishes its compiled helper with private permissions
   before the atomic rename. Guarded descendants now work after a cold build
   under a group-writable umask; unsafe pre-existing cache entries still fail
@@ -52,6 +60,14 @@ latest one; the GitHub release carries the same notes.
   remains rejected: native C production exceeds the unchanged 600-second
   deadline in `compile_book`, with peak RSS 4,415,438,848 bytes. No full
   g8r3 bootstrap or byte fixedpoint is claimed.
+
+- Opt-in selfhost emitter traces bracket catalog, lowering, descriptor
+  normalization, layouts/sharing, JS/C rendering and link planning at native
+  scheduler boundaries. Both real backend consumers pass with identical
+  emitted bytes with tracing off/on. Reports authenticate image-specific
+  constructor encoding and expose missing coverage and retained-span limits;
+  timings are diagnostic intervals, not exclusive source CPU or full-root
+  overhead measurements.
 
 - Transient checker substitution/publication memo entries are invalidated by
   the arena's rewind generation instead of rewriting all 4096 slots after

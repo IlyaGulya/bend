@@ -243,6 +243,13 @@ unprofiled image-bound control, and controlled termination of the real
 full-root checker after a durable progress update. That interruption is not
 compiler acceptance or full-input overhead evidence.
 
+Trace event decoding preserves nominal identity: a Begin/End constructor must
+belong to its Run's module and match the manifest's fully qualified constructor.
+Canonical `comp.ts` strips source namespaces from emitted JS constructor tags;
+that encoding is accepted only through a native build receipt bound to the exact
+image. Without that binding, equal short names never establish provenance.
+Decoding never advances the native continuation.
+
 ## Verified coverage and explicit gaps
 
 `evals/compiler_profile_smoke.ts` is the focused bounded smoke. It runs:
@@ -268,10 +275,56 @@ compiler acceptance or full-input overhead evidence.
   `diagnosticOnlyCodegenTiming` and runtime profile metadata; its duration is
   not a normal benchmark or profiled-build acceptance timing.
 
-Evidence: `checkpoints/compiler-profile-smoke-v1.json`. Bulk profiles stay in
-the temporary directory and are removed after a passing smoke.
+Current evidence: `evals/receipts/profiler2039_entrypoints.json` records the
+ten producer smoke scenarios plus real candidate-host and bootstrap-worker
+entrypoints, including verified parent links, collector IDs and source pins.
+`checkpoints/compiler-profile-smoke-v1.json` is the raw bounded producer receipt.
+Bulk producer profiles are removed after a passing smoke.
 
-Not verified here: fullroot producer profiling, overhead/control measurements,
-native `llvm-split` link execution, per-definition/per-module CPU, retained or
-live bytes, and fine native substage spans (the typed views hide progress and
-the generator is frozen). Those need a guarded, separately authorized run.
+`evals/receipts/emitter2039_trace_spans.json` records native validation and actual
+checked-FIR execution of both ordinary and diagnostic trace emitters. Ordinary
+generation remains byte-identical to g7. For each JS/C target, ordinary,
+trace-without-collector and trace-with-collector emit identical bytes; Node and
+clang/native consumers both print `7`. The JS run closes 1199 brackets, the C
+run 71069, with no rejected, unmatched, unknown or terminal-open frames.
+
+The combined run observes all nine declared stage groups: emitter entry,
+catalog, lowering, descriptor NF, layouts, sharing, JS/C rendering and
+link planning. Coverage remains per-root: executable entrypoints are exercised,
+library trace entrypoints are not. C retains 2048 individual brackets and
+explicitly counts the other 69021 as omitted. Aggregate bracket counts remain
+complete. Native validation checks 5680 definitions and 6152 events in the trace
+component, with zero excluded checks or output patches.
+
+These are scheduler-boundary brackets, not exclusive per-provider CPU or
+allocation measurements. Child/interleaved work and observer overhead remain
+inside elapsed intervals. Link planning is not external linker execution.
+Retained/live bytes, exclusive per-definition CPU and full-root trace coverage
+are not established by this probe. Historical producer/LLVM diagnostic evidence
+remains separate in `evals/receipts/full_profile2039_complete.json`.
+
+## Full-root selfhost profiling overhead
+
+`evals/receipts/profile2039g8_full_root_overhead.json` records two alternating
+pairs, ordered off/on then on/off, on the accepted g8 stage1 image and the same
+complete compiler-root closure. Each leg uses the original 8192-MiB
+RSS/footprint and 600000-ms guardian limits, Node 23.11.0, and a 256-MiB worker
+stack. Only `--stage-profile` differs; no output is patched or normalized.
+All four legs pass and emit the same 28,334,920 bytes, SHA-256
+`0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885`.
+Both profiled collectors finish with complete measurements.
+
+| Median, two observations per mode | Off | On | Change |
+| --- | ---: | ---: | ---: |
+| Child wall, seconds | 322.900 | 373.885 | +15.79% |
+| Child user + system CPU, seconds | 345.270 | 400.995 | +16.14% |
+| Guardian sampled peak RSS, bytes | 2,845,417,472 | 2,910,920,704 | +2.30% |
+| Guardian sampled peak footprint, bytes | 2,676,183,580 | 2,734,981,548 | +2.20% |
+
+These are operational on/off differences, including collector observation and
+checkpoint I/O, not isolated instrumentation cost, exclusive stage CPU or
+retained/live bytes. The compiler image and source closure are hash-pinned
+before and after every leg; runtime paths/versions are recorded, but binaries
+are not hashed. This is diagnostic evidence, not a new compiler acceptance or
+a producer `compile_book` overhead measurement. The unprofiled native build
+and stage1/stage2 acceptance remain in their separate g8 receipt.
