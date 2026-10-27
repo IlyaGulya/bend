@@ -1689,12 +1689,18 @@ function fun_at(ck: Spine): Fun {
 }
 
 function brw_of(k: Name): boolean[] {
-  return memo(FL.brws, k, () => {
-    const { live, lays } = fun_of(k);
-    return lays.map((l, i) => done_live(FL.book.tlds[k])
-      && l.ks.includes("box") && ty_adt(live[i][2])?.k !== "Array"
-      && !FL.own.has(k + "~" + i));
-  });
+  // Ownership only grows. Do not defer a newly owned callee argument until
+  // the next whole-book pass; each call still keeps one immutable snapshot.
+  const old = FL.brws.get(k);
+  if (old !== undefined && old.at === FL.own.size) {
+    return old.bs;
+  }
+  const { live, lays } = fun_of(k);
+  const bs = lays.map((l, i) => done_live(FL.book.tlds[k])
+    && l.ks.includes("box") && ty_adt(live[i][2])?.k !== "Array"
+    && !FL.own.has(k + "~" + i));
+  FL.brws.set(k, { at: FL.own.size, bs });
+  return bs;
 }
 
 function def_raise(t: HTerm, left: number, cap = 99): number {
@@ -1854,7 +1860,7 @@ function file_new(book: Bend.Book, js: boolean, options: JSOptions = {}) {
     loops: new Map<Name, Name[]>(),
     flats: new Map<Name, boolean>(),
     funs: new Map<Name, Fun>(),
-    brws: new Map<Name, boolean[]>(),
+    brws: new Map<Name, { at: number; bs: boolean[] }>(),
     nodes: new Map<Name, Lay>(),
     lays: new Map<string, Lay>(),
     holds: new Map<string, Lay>(),
@@ -3564,7 +3570,7 @@ export function compile_book(book: Bend.Book,
     if (options.observe) {
       file_observe(`c-pass-${pass}-close-after`, "main", undefined, true);
     }
-    FL.brws.forEach((bs, k) => bs.forEach((b, i) => {
+    FL.brws.forEach(({ bs }, k) => bs.forEach((b, i) => {
       if (b && !FL.lend.has(k + "~" + i)) {
         FL.own.add(k + "~" + i);
       }

@@ -5,6 +5,14 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- The g12 producer candidate refreshes borrowed-argument answers when monotone
+  ownership facts grow, retaining immutable snapshots at individual call sites.
+  Nine actual C/JS programs preserve identical emitted bytes. The full-root
+  probe reaches 33,928 ownership facts after three passes, but is deliberately
+  stopped before convergence. Full native build and selfhost acceptance are
+  pending; this is not an accepted compiler or fixedpoint.
+  Receipt: `evals/receipts/producer2039g12_borrow_generation_smoke.json`.
+
 - The g10 boundary candidate rejects retained datatype template parameters at
   their own checker spans and admits executables only with a runnable root
   `main`, while preserving inferred/Unit mains and mainless libraries.

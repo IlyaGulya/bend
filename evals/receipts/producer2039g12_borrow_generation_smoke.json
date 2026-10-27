@@ -1,0 +1,1185 @@
+{
+  "schemaVersion": 1,
+  "status": "G12_OWNERSHIP_GENERATION_CONSUMERS_PASS_FULL_ACCEPTANCE_PENDING",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "baseSourceCheckpoint": "56833b66",
+  "compilerSha256": "f95eed20344ca291bf74a1e4ffe574f788ea22a86adc66d5bfe0f681523245ef",
+  "scope": "Ownership-sensitive borrowed argument cache is recomputed when the monotone own-fact generation changes; each caller retains its own immutable snapshot. No source/runtime/checker or emission-order change.",
+  "consumers": {
+    "status": "PASS",
+    "scope": "Actual 2.0.39 producer smoke, not full compiler acceptance",
+    "runtime": {
+      "bun": "1.4.3",
+      "revision": "c6da4a4d3010e5553438c60f6bd76d981976867c"
+    },
+    "command": [
+      "/private/tmp/bend2039g8-accepted-mac-evidence/bun-1.4.3",
+      "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/run.ts"
+    ],
+    "inputs": {
+      "bend2/bend.ts": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+      "bend2/comp.ts": "f95eed20344ca291bf74a1e4ffe574f788ea22a86adc66d5bfe0f681523245ef",
+      "bend2/base.bend": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+      "tests/reg/ctor_field_order.bend": "d6a0ebdf0fd862af55407a60f8ed321540357487bc7cedc0395a308aa05dec14",
+      "tests/reg/generic_ctor_domains.bend": "7d4d7f558c000111e9be72a8685dc45bdaf235afe977ea73e4ecd18757f83f5b",
+      "tests/reg/phys_storage_paths.bend": "b3f1aad4a75d028845f301816982a0d98a9606d239ce4d3c674a91ac5bf5fd85",
+      "tests/run/js_late_fold.bend": "a6a22487d40cf9d7aa886270019e7eb8d13d8ff2380a892aaf1ac188bec667c2",
+      "tests/run/word_match_coverage.bend": "d9ffd19522099cd487cee350c984373453136d2bdd5b35e7c7eac15f56474060",
+      "evals/repro_bun_c_ctor_stack_8192.bend": "8b394a24444a30e5e35441eadb82bda122151c589c668a58f2d6590b105784c1",
+      "tests/compile/pending_sibling_depth.bend": "584542fa13d88b5637cf08f13085bf506accaee637420a8a398ec4b5b17015d4",
+      "tests/io/sleep_order.bend": "40b1d61dc28b6875e23cb356ad019cf8b4942ca88f3822386c01d1de3a873d7c",
+      "tests/show/string_literal_any_code.bend": "aaa08e6b575d7679e5e0014a93107289ba1599d7bc5de353f77ac346d3729cbd"
+    },
+    "rows": [
+      {
+        "source": "tests/reg/ctor_field_order.bend",
+        "status": "PASS",
+        "expected": "shared\nmiddle\nshared",
+        "observed": {
+          "c": "shared\nmiddle\nshared",
+          "js": "shared\nmiddle\nshared"
+        },
+        "artifacts": {
+          "c": {
+            "path": "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/ctor_field_order.c",
+            "sha256": "847fd12cc5eb8d12d7a2f7e5bd05c55da069de717d92007b073e7fc612ab519c",
+            "bytes": 85343
+          },
+          "js": {
+            "path": "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/ctor_field_order.js",
+            "sha256": "2f36599bf8276ffe9f5c0e543ff8ca22c9f1a0564278b1f4f2067cab6f446aed",
+            "bytes": 15608
+          }
+        },
+        "stages": {
+          "emit": {
+            "command": [
+              "/private/tmp/bend2039g8-accepted-mac-evidence/bun-1.4.3",
+              "bend2/main.ts",
+              "tests/reg/ctor_field_order.bend",
+              "-o",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/ctor_field_order.c",
+              "-o",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/ctor_field_order.js"
+            ],
+            "exit": 0,
+            "signal": null,
+            "elapsedMs": 104.554416,
+            "stdout": "",
+            "stderr": ""
+          },
+          "clang": {
+            "command": [
+              "clang",
+              "-std=c11",
+              "-O0",
+              "-pthread",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/ctor_field_order.c",
+              "-lm",
+              "-o",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/ctor_field_order"
+            ],
+            "exit": 0,
+            "signal": null,
+            "elapsedMs": 200.063042,
+            "stdout": "",
+            "stderr": ""
+          },
+          "native": {
+            "command": [
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/ctor_field_order"
+            ],
+            "exit": 0,
+            "signal": null,
+            "elapsedMs": 2.897666999999956,
+            "stdout": "shared\nmiddle\nshared\n",
+            "stderr": ""
+          },
+          "javascript": {
+            "command": [
+              "/private/tmp/bend2039g8-accepted-mac-evidence/bun-1.4.3",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/ctor_field_order.js"
+            ],
+            "exit": 0,
+            "signal": null,
+            "elapsedMs": 13.509292000000016,
+            "stdout": "shared\nmiddle\nshared\n",
+            "stderr": ""
+          }
+        },
+        "baselineProducer": "318c55c",
+        "byteEquality": {
+          "c": true,
+          "js": true
+        }
+      },
+      {
+        "source": "tests/reg/generic_ctor_domains.bend",
+        "status": "PASS",
+        "expected": "15\n21",
+        "observed": {
+          "c": "15\n21",
+          "js": "15\n21"
+        },
+        "artifacts": {
+          "c": {
+            "path": "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/generic_ctor_domains.c",
+            "sha256": "763eced07638eb49d1504fb1bb02a560b7da15a03461a78301e0eb53d80ed558",
+            "bytes": 94496
+          },
+          "js": {
+            "path": "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/generic_ctor_domains.js",
+            "sha256": "712c298d5152fbd5a5a179dd74dc8a078a1d2faf18edd9d6ab2d4fb0319ae209",
+            "bytes": 18314
+          }
+        },
+        "stages": {
+          "emit": {
+            "command": [
+              "/private/tmp/bend2039g8-accepted-mac-evidence/bun-1.4.3",
+              "bend2/main.ts",
+              "tests/reg/generic_ctor_domains.bend",
+              "-o",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/generic_ctor_domains.c",
+              "-o",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/generic_ctor_domains.js"
+            ],
+            "exit": 0,
+            "signal": null,
+            "elapsedMs": 201.36354200000005,
+            "stdout": "",
+            "stderr": ""
+          },
+          "clang": {
+            "command": [
+              "clang",
+              "-std=c11",
+              "-O0",
+              "-pthread",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/generic_ctor_domains.c",
+              "-lm",
+              "-o",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/generic_ctor_domains"
+            ],
+            "exit": 0,
+            "signal": null,
+            "elapsedMs": 132.33754199999998,
+            "stdout": "",
+            "stderr": ""
+          },
+          "native": {
+            "command": [
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/generic_ctor_domains"
+            ],
+            "exit": 0,
+            "signal": null,
+            "elapsedMs": 2.892708999999968,
+            "stdout": "15\n21\n",
+            "stderr": ""
+          },
+          "javascript": {
+            "command": [
+              "/private/tmp/bend2039g8-accepted-mac-evidence/bun-1.4.3",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/generic_ctor_domains.js"
+            ],
+            "exit": 0,
+            "signal": null,
+            "elapsedMs": 14.095625000000041,
+            "stdout": "15\n21\n",
+            "stderr": ""
+          }
+        },
+        "baselineProducer": "318c55c",
+        "byteEquality": {
+          "c": true,
+          "js": true
+        }
+      },
+      {
+        "source": "tests/reg/phys_storage_paths.bend",
+        "status": "PASS",
+        "expected": "2655042671\n3,9",
+        "observed": {
+          "c": "2655042671\n3,9",
+          "js": "2655042671\n3,9"
+        },
+        "artifacts": {
+          "c": {
+            "path": "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/phys_storage_paths.c",
+            "sha256": "4517a551fb27ef56c91f5fe0b33b5774efde5f4280d66931821a7ffe18a5a24b",
+            "bytes": 102281
+          },
+          "js": {
+            "path": "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/phys_storage_paths.js",
+            "sha256": "fa1cd3af6d2b917479ee1c1cb22e149f01584c539f6f86adf91e275a98e142b2",
+            "bytes": 26536
+          }
+        },
+        "stages": {
+          "emit": {
+            "command": [
+              "/private/tmp/bend2039g8-accepted-mac-evidence/bun-1.4.3",
+              "bend2/main.ts",
+              "tests/reg/phys_storage_paths.bend",
+              "-o",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/phys_storage_paths.c",
+              "-o",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/phys_storage_paths.js"
+            ],
+            "exit": 0,
+            "signal": null,
+            "elapsedMs": 130.83875,
+            "stdout": "",
+            "stderr": ""
+          },
+          "clang": {
+            "command": [
+              "clang",
+              "-std=c11",
+              "-O0",
+              "-pthread",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/phys_storage_paths.c",
+              "-lm",
+              "-o",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/phys_storage_paths"
+            ],
+            "exit": 0,
+            "signal": null,
+            "elapsedMs": 118.26925000000006,
+            "stdout": "",
+            "stderr": ""
+          },
+          "native": {
+            "command": [
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/phys_storage_paths"
+            ],
+            "exit": 0,
+            "signal": null,
+            "elapsedMs": 2.8659170000000813,
+            "stdout": "2655042671\n3,9\n",
+            "stderr": ""
+          },
+          "javascript": {
+            "command": [
+              "/private/tmp/bend2039g8-accepted-mac-evidence/bun-1.4.3",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/phys_storage_paths.js"
+            ],
+            "exit": 0,
+            "signal": null,
+            "elapsedMs": 13.310167000000092,
+            "stdout": "2655042671\n3,9\n",
+            "stderr": ""
+          }
+        },
+        "baselineProducer": "318c55c",
+        "byteEquality": {
+          "c": true,
+          "js": true
+        }
+      },
+      {
+        "source": "tests/run/js_late_fold.bend",
+        "status": "PASS",
+        "expected": "1",
+        "observed": {
+          "c": "1",
+          "js": "1"
+        },
+        "artifacts": {
+          "c": {
+            "path": "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/js_late_fold.c",
+            "sha256": "fe22a3de65d1a18a96706b6d5d43e52c07b13268de000e38b844779aca85c6c5",
+            "bytes": 84157
+          },
+          "js": {
+            "path": "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/js_late_fold.js",
+            "sha256": "48d5e8b6b86bb6cbcab2b5eb8bd942d69224497a270738edb1b0bea8a0ae960f",
+            "bytes": 14298
+          }
+        },
+        "stages": {
+          "emit": {
+            "command": [
+              "/private/tmp/bend2039g8-accepted-mac-evidence/bun-1.4.3",
+              "bend2/main.ts",
+              "tests/run/js_late_fold.bend",
+              "-o",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/js_late_fold.c",
+              "-o",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/js_late_fold.js"
+            ],
+            "exit": 0,
+            "signal": null,
+            "elapsedMs": 92.13679200000001,
+            "stdout": "",
+            "stderr": ""
+          },
+          "clang": {
+            "command": [
+              "clang",
+              "-std=c11",
+              "-O0",
+              "-pthread",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/js_late_fold.c",
+              "-lm",
+              "-o",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/js_late_fold"
+            ],
+            "exit": 0,
+            "signal": null,
+            "elapsedMs": 104.96154200000001,
+            "stdout": "",
+            "stderr": ""
+          },
+          "native": {
+            "command": [
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/js_late_fold"
+            ],
+            "exit": 0,
+            "signal": null,
+            "elapsedMs": 2.525916000000052,
+            "stdout": "1\n",
+            "stderr": ""
+          },
+          "javascript": {
+            "command": [
+              "/private/tmp/bend2039g8-accepted-mac-evidence/bun-1.4.3",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/js_late_fold.js"
+            ],
+            "exit": 0,
+            "signal": null,
+            "elapsedMs": 13.179000000000087,
+            "stdout": "1\n",
+            "stderr": ""
+          }
+        },
+        "baselineProducer": "318c55c",
+        "byteEquality": {
+          "c": true,
+          "js": true
+        }
+      },
+      {
+        "source": "tests/run/word_match_coverage.bend",
+        "status": "PASS",
+        "expected": "17,27,37,27,27,37,12,16,12,16,16,12",
+        "observed": {
+          "c": "17,27,37,27,27,37,12,16,12,16,16,12",
+          "js": "17,27,37,27,27,37,12,16,12,16,16,12"
+        },
+        "artifacts": {
+          "c": {
+            "path": "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/word_match_coverage.c",
+            "sha256": "034068740f40438984eff11d8acdc09865c229cc72eedf76eff1826baaa14a3a",
+            "bytes": 102415
+          },
+          "js": {
+            "path": "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/word_match_coverage.js",
+            "sha256": "daf87f326a08c6ae45df65610c7ae0f42a5b155bc507200e5bccac19b6d86a70",
+            "bytes": 17922
+          }
+        },
+        "stages": {
+          "emit": {
+            "command": [
+              "/private/tmp/bend2039g8-accepted-mac-evidence/bun-1.4.3",
+              "bend2/main.ts",
+              "tests/run/word_match_coverage.bend",
+              "-o",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/word_match_coverage.c",
+              "-o",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/word_match_coverage.js"
+            ],
+            "exit": 0,
+            "signal": null,
+            "elapsedMs": 128.89862500000004,
+            "stdout": "",
+            "stderr": ""
+          },
+          "clang": {
+            "command": [
+              "clang",
+              "-std=c11",
+              "-O0",
+              "-pthread",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/word_match_coverage.c",
+              "-lm",
+              "-o",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/word_match_coverage"
+            ],
+            "exit": 0,
+            "signal": null,
+            "elapsedMs": 111.21104100000002,
+            "stdout": "",
+            "stderr": ""
+          },
+          "native": {
+            "command": [
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/word_match_coverage"
+            ],
+            "exit": 0,
+            "signal": null,
+            "elapsedMs": 2.8521250000001146,
+            "stdout": "17,27,37,27,27,37,12,16,12,16,16,12\n",
+            "stderr": ""
+          },
+          "javascript": {
+            "command": [
+              "/private/tmp/bend2039g8-accepted-mac-evidence/bun-1.4.3",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/word_match_coverage.js"
+            ],
+            "exit": 0,
+            "signal": null,
+            "elapsedMs": 12.455083000000059,
+            "stdout": "17,27,37,27,27,37,12,16,12,16,16,12\n",
+            "stderr": ""
+          }
+        },
+        "baselineProducer": "318c55c",
+        "byteEquality": {
+          "c": true,
+          "js": true
+        }
+      },
+      {
+        "source": "evals/repro_bun_c_ctor_stack_8192.bend",
+        "status": "PASS",
+        "expected": "8192n",
+        "observed": {
+          "c": "8192n",
+          "js": "8192n"
+        },
+        "artifacts": {
+          "c": {
+            "path": "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/repro_bun_c_ctor_stack_8192.c",
+            "sha256": "5669bc589ecf87ab20b8f124d85301da742d284bf68d32bb5a0bf95b79dd2ddc",
+            "bytes": 451794
+          },
+          "js": {
+            "path": "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/repro_bun_c_ctor_stack_8192.js",
+            "sha256": "451f44e0ba98fb1745fbb1ed6aeafbbbc6dfbf6854680f61e2b86c94e12315c4",
+            "bytes": 22262
+          }
+        },
+        "stages": {
+          "emit": {
+            "command": [
+              "/private/tmp/bend2039g8-accepted-mac-evidence/bun-1.4.3",
+              "bend2/main.ts",
+              "evals/repro_bun_c_ctor_stack_8192.bend",
+              "-o",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/repro_bun_c_ctor_stack_8192.c",
+              "-o",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/repro_bun_c_ctor_stack_8192.js"
+            ],
+            "exit": 0,
+            "signal": null,
+            "elapsedMs": 296.79125,
+            "stdout": "",
+            "stderr": ""
+          },
+          "clang": {
+            "command": [
+              "clang",
+              "-std=c11",
+              "-O0",
+              "-pthread",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/repro_bun_c_ctor_stack_8192.c",
+              "-lm",
+              "-o",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/repro_bun_c_ctor_stack_8192"
+            ],
+            "exit": 0,
+            "signal": null,
+            "elapsedMs": 327.0124579999999,
+            "stdout": "",
+            "stderr": ""
+          },
+          "native": {
+            "command": [
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/repro_bun_c_ctor_stack_8192"
+            ],
+            "exit": 0,
+            "signal": null,
+            "elapsedMs": 3.0508330000000115,
+            "stdout": "8192n\n",
+            "stderr": ""
+          },
+          "javascript": {
+            "command": [
+              "/private/tmp/bend2039g8-accepted-mac-evidence/bun-1.4.3",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/repro_bun_c_ctor_stack_8192.js"
+            ],
+            "exit": 0,
+            "signal": null,
+            "elapsedMs": 12.108874999999898,
+            "stdout": "8192n\n",
+            "stderr": ""
+          }
+        },
+        "baselineProducer": "318c55c",
+        "byteEquality": {
+          "c": true,
+          "js": true
+        }
+      },
+      {
+        "source": "tests/compile/pending_sibling_depth.bend",
+        "status": "PASS",
+        "expected": "30",
+        "observed": {
+          "c": "30",
+          "js": "30"
+        },
+        "artifacts": {
+          "c": {
+            "path": "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/pending_sibling_depth.c",
+            "sha256": "ac0312fc5655f3f24a174c18d596f2ef2efb10acbc792d7540b5ea46c9cd3041",
+            "bytes": 88099
+          },
+          "js": {
+            "path": "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/pending_sibling_depth.js",
+            "sha256": "51accfa9d3b84d9e83617eefc3658b0faff1e58b943f04f54c627024f2ede0b3",
+            "bytes": 17333
+          }
+        },
+        "stages": {
+          "emit": {
+            "command": [
+              "/private/tmp/bend2039g8-accepted-mac-evidence/bun-1.4.3",
+              "bend2/main.ts",
+              "tests/compile/pending_sibling_depth.bend",
+              "-o",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/pending_sibling_depth.c",
+              "-o",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/pending_sibling_depth.js"
+            ],
+            "exit": 0,
+            "signal": null,
+            "elapsedMs": 83.98216700000012,
+            "stdout": "",
+            "stderr": ""
+          },
+          "clang": {
+            "command": [
+              "clang",
+              "-std=c11",
+              "-O0",
+              "-pthread",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/pending_sibling_depth.c",
+              "-lm",
+              "-o",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/pending_sibling_depth"
+            ],
+            "exit": 0,
+            "signal": null,
+            "elapsedMs": 101.96587500000032,
+            "stdout": "",
+            "stderr": ""
+          },
+          "native": {
+            "command": [
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/pending_sibling_depth"
+            ],
+            "exit": 0,
+            "signal": null,
+            "elapsedMs": 2.795959000000039,
+            "stdout": "30\n",
+            "stderr": ""
+          },
+          "javascript": {
+            "command": [
+              "/private/tmp/bend2039g8-accepted-mac-evidence/bun-1.4.3",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/pending_sibling_depth.js"
+            ],
+            "exit": 0,
+            "signal": null,
+            "elapsedMs": 12.001749999999902,
+            "stdout": "30\n",
+            "stderr": ""
+          }
+        },
+        "baselineProducer": "318c55c",
+        "byteEquality": {
+          "c": true,
+          "js": true
+        }
+      },
+      {
+        "source": "tests/io/sleep_order.bend",
+        "status": "PASS",
+        "expected": "a\nb\nc\nd",
+        "observed": {
+          "c": "a\nb\nc\nd",
+          "js": "a\nb\nc\nd"
+        },
+        "artifacts": {
+          "c": {
+            "path": "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/sleep_order.c",
+            "sha256": "9af862d6b51b0a222bbcb46746c631609626dc4884d16ee8d548d1779dc97d3f",
+            "bytes": 89345
+          },
+          "js": {
+            "path": "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/sleep_order.js",
+            "sha256": "9129f4824a56f83870bba5d2ac031010ae52b2834cf354835e30acffbcbf4117",
+            "bytes": 16431
+          }
+        },
+        "stages": {
+          "emit": {
+            "command": [
+              "/private/tmp/bend2039g8-accepted-mac-evidence/bun-1.4.3",
+              "bend2/main.ts",
+              "tests/io/sleep_order.bend",
+              "-o",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/sleep_order.c",
+              "-o",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/sleep_order.js"
+            ],
+            "exit": 0,
+            "signal": null,
+            "elapsedMs": 84.8107500000001,
+            "stdout": "",
+            "stderr": ""
+          },
+          "clang": {
+            "command": [
+              "clang",
+              "-std=c11",
+              "-O0",
+              "-pthread",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/sleep_order.c",
+              "-lm",
+              "-o",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/sleep_order"
+            ],
+            "exit": 0,
+            "signal": null,
+            "elapsedMs": 105.25833300000022,
+            "stdout": "",
+            "stderr": ""
+          },
+          "native": {
+            "command": [
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/sleep_order"
+            ],
+            "exit": 0,
+            "signal": null,
+            "elapsedMs": 4.418458000000101,
+            "stdout": "a\nb\nc\nd\n",
+            "stderr": ""
+          },
+          "javascript": {
+            "command": [
+              "/private/tmp/bend2039g8-accepted-mac-evidence/bun-1.4.3",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/sleep_order.js"
+            ],
+            "exit": 0,
+            "signal": null,
+            "elapsedMs": 20.226042000000234,
+            "stdout": "a\nb\nc\nd\n",
+            "stderr": ""
+          }
+        },
+        "baselineProducer": "318c55c",
+        "byteEquality": {
+          "c": true,
+          "js": true
+        }
+      },
+      {
+        "source": "tests/show/string_literal_any_code.bend",
+        "status": "PASS",
+        "expected": "(9n, [65, 0, 233, 127, 1114111, 55296, 56320, 1114112, 4294967295], True{}, True{}, \"A\\0é\\u{7f}\\u{d800}\\u{dc00}\\u{110000}\\u{ffffffff}\")",
+        "observed": {
+          "c": "(9n, [65, 0, 233, 127, 1114111, 55296, 56320, 1114112, 4294967295], True{}, True{}, \"A\\0é\\u{7f}\\u{d800}\\u{dc00}\\u{110000}\\u{ffffffff}\")",
+          "js": "(9n, [65, 0, 233, 127, 1114111, 55296, 56320, 1114112, 4294967295], True{}, True{}, \"A\\0é\\u{7f}\\u{d800}\\u{dc00}\\u{110000}\\u{ffffffff}\")"
+        },
+        "artifacts": {
+          "c": {
+            "path": "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/string_literal_any_code.c",
+            "sha256": "25bb0a448e8313e76e9fec0afb4989e7d9ce21abfd2aa8bc8e2b9740b1e9b165",
+            "bytes": 93473
+          },
+          "js": {
+            "path": "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/string_literal_any_code.js",
+            "sha256": "82cb148fb9d58c96b515ff3233eeb991d81f5cf9f561f5b7ca332deba151364d",
+            "bytes": 17931
+          }
+        },
+        "stages": {
+          "emit": {
+            "command": [
+              "/private/tmp/bend2039g8-accepted-mac-evidence/bun-1.4.3",
+              "bend2/main.ts",
+              "tests/show/string_literal_any_code.bend",
+              "-o",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/string_literal_any_code.c",
+              "-o",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/string_literal_any_code.js"
+            ],
+            "exit": 0,
+            "signal": null,
+            "elapsedMs": 91.05933400000004,
+            "stdout": "",
+            "stderr": ""
+          },
+          "clang": {
+            "command": [
+              "clang",
+              "-std=c11",
+              "-O0",
+              "-pthread",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/string_literal_any_code.c",
+              "-lm",
+              "-o",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/string_literal_any_code"
+            ],
+            "exit": 0,
+            "signal": null,
+            "elapsedMs": 108.7097920000001,
+            "stdout": "",
+            "stderr": ""
+          },
+          "native": {
+            "command": [
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/string_literal_any_code"
+            ],
+            "exit": 0,
+            "signal": null,
+            "elapsedMs": 2.6011249999996835,
+            "stdout": "(9n, [65, 0, 233, 127, 1114111, 55296, 56320, 1114112, 4294967295], True{}, True{}, \"A\\0é\\u{7f}\\u{d800}\\u{dc00}\\u{110000}\\u{ffffffff}\")\n",
+            "stderr": ""
+          },
+          "javascript": {
+            "command": [
+              "/private/tmp/bend2039g8-accepted-mac-evidence/bun-1.4.3",
+              "/private/tmp/bend2039g12-borrow-smoke-2e219abe-4394-49ac-9bc7-fa0503d2a7a2/string_literal_any_code.js"
+            ],
+            "exit": 0,
+            "signal": null,
+            "elapsedMs": 13.633209000000079,
+            "stdout": "(9n, [65, 0, 233, 127, 1114111, 55296, 56320, 1114112, 4294967295], True{}, True{}, \"A\\0é\\u{7f}\\u{d800}\\u{dc00}\\u{110000}\\u{ffffffff}\")\n",
+            "stderr": ""
+          }
+        },
+        "baselineProducer": "318c55c",
+        "byteEquality": {
+          "c": true,
+          "js": true
+        }
+      }
+    ]
+  },
+  "fullRootProbe": {
+    "schemaVersion": 1,
+    "status": "PROBE_STOPPED",
+    "terminal": true,
+    "diagnosticOnly": true,
+    "acceptanceEvidence": false,
+    "compilerAccepted": false,
+    "codegenSettled": false,
+    "outputPublished": false,
+    "source": "/private/tmp/bend2039g12-borrow-generation/checkpoints/.bootstrap_compiler_root_remote2039g10a.bend",
+    "bridge": "/private/tmp/bend2039g12-borrow-generation/evals/native_compiler_driver.bend",
+    "inputs": {
+      "/private/tmp/bend2039g12-borrow-generation/checkpoints/.bootstrap_compiler_root_remote2039g10a.bend": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+      "/private/tmp/bend2039g12-borrow-generation/evals/native_compiler_driver.bend": "768203e900f53cdf8d90b50966631ca3a3964dd50003658b07a28b39395f3ec3",
+      "/private/tmp/bend2039g12-borrow-generation/evals/compiler_codegen_probe.ts": "01f217f7dd6cc93128611dc6c5c8650f2d76c64e94599cfe62c79a3c79e7129e",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/bend.ts": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/comp.ts": "f95eed20344ca291bf74a1e4ffe574f788ea22a86adc66d5bfe0f681523245ef",
+      "/private/tmp/bend2039g12-borrow-generation/evals/compiler_profile.mjs": "b8b3dddf5a95777532fd73bda601d6bc610859d78371b7fbc593e4e93ec734c1",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/base.bend": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/selfhost/lexer.bend": "a81265d4ab248c5ea74bf52987e1163773866a01b264ff1a98895d91139d6f53",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/selfhost/core.bend": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/selfhost/loaded_module.bend": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/selfhost/backend_ir.bend": "162a554cec1c9e1b5edab69b5cfae730c70886548f4f51603a7537845ab5ec48",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/selfhost/checked_frontend.bend": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/selfhost/checker_arena.bend": "2a26c3d8ce66412591030fa2fd6df9f9e53c0fececd9d9ae702def2f475f1752",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/selfhost/scope_lookup.bend": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/selfhost/checker_ir.bend": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/selfhost/index_lookup.bend": "563c9b152699b490cf68b264e6c4dea4a4e6770dfcf527cf6c81911cb5ea1b78",
+      "/private/tmp/bend2039g12-borrow-generation/checkpoints/template_steps_v1.bend": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/selfhost/sha256.bend": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+      "/private/tmp/bend2039g12-borrow-generation/checkpoints/checker_core_steps_v1.bend": "93e8fd5ce7aafe40084d1b0023eff79de18cb6f00b625cab43b002535cfe288f",
+      "/private/tmp/bend2039g12-borrow-generation/checkpoints/emitter_steps_v1.bend": "fb7926f46e5af8bbd45977e0befe5a0bff55a1d4b4c311bb6a1219d6db0476bf",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/selfhost/c_backend_sharing.bend": "78992d00aad3a458dd6b9ea424edf0de61c95b54487f92cd53283e705488c35f",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/print.c": "58657b7351daee89121e1df2856f102743c9db7640257e50c6009a0f1080b00e",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/print.js": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/write.c": "8807a5f655db452c1d846354560c26fe1e94289e5dc0be231d0b71ecc876d02f",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/write.js": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/print_err.c": "f84aa11c8d0d6af6fa2fee28411f95714d6744ad97156990e43e55c292c9c6fb",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/print_err.js": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/get_env.c": "b4903e94681340f9e02187457fabe9461c1b4e43646b7e1573f5d21e954e3a34",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/get_env.js": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/args.c": "7717332d0b8c8ba28d6dbe60b62a23dce99ea6828ada7d1f9b664f4dc388e84e",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/args.js": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/process_run.c": "554cfbdf9a6de163f00fc1b23dc8f3df10821cfce336caa1cb5db439b8a55e1f",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/process_run.js": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/random_u32.c": "75429b2b42e00562177fe33a5e18d2730478847f58c4038b048e78131e1b8c0a",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/random_u32.js": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/spawn.c": "05e11ae3f1461d9c72440af3b1786c076b418d2faff45639ac25ba464ee73cd5",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/spawn.js": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/sleep.c": "1dde3701026517d5272d2ff5344d3a8643bec264dbad9f266fdae1c4aaf7601c",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/sleep.js": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/now.c": "fc4c1d87a4fb2ace7d5b6c57b434cc3d953a15bdf213020912df6c17aa2352d6",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/now.js": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/thread_count.c": "d4889ed7757dccce03729c9568b88188128f2c1576166a3dc184a8707ed44568",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/thread_count.js": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/chan.c": "af09b2749741bcc54f56c8f81803073818a165d4cad4c817708e359d677b2a52",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/chan.js": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/file_open.c": "b987bcb0f9a89d769714ddf8cbecca211c4392e4098da19b411d09f5c088d360",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/file_open.js": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/file_read.c": "ab577225fa98a034c09d7eb6326b74808756dc6203b0e2599a459876382f090d",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/file_read.js": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/file_size.c": "ed0d74fd6b9f14ea471bfe5dd80ecbb2c5abb6a8406519fb2c7e1a1acf3dd5af",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/file_size.js": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/file_write.c": "da810ad9aa76ad1431622292529fa3edebabc4b6a7ee20ae833097b71bb595e5",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/file_write.js": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/file_close.c": "033da9beb0b484fbc8784044193bf69004f858f6ad86e0c31b4beb89df1349ca",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/file_close.js": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/tcp_listen.c": "efc7528de96abd9f62f299833c1ac7b0e86528292c746b114d2684b5bac52899",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/tcp_listen.js": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/tcp_accept.c": "bf7ca1685ed388ce97827ea8379881fbdf5359c7c663ad03eeb8da34bd8584ef",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/tcp_accept.js": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/tcp_connect.c": "8d17c097138709d71e9d9e1fbc4255007c5e80c93ee384c4a3510b6ac8d10da3",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/tcp_connect.js": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/tcp_send.c": "993cc8ee5b39fd54a4aeace102602ecf2841ce1f402fe6b2407ebaca837383f9",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/tcp_send.js": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/tcp_recv.c": "249c8789cd2f541ad00068882de16a00870c2f81a8168b0ac7a59db1e3cb0c6f",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/tcp_recv.js": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/udp_bind.c": "a1be1bc5c03d430fc6eb43982651073e144872956fadaee98c3700be59352ee3",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/udp_bind.js": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/udp_send_to.c": "b3a87e56958d8071a368da2edb4748e9496b3eed58b93d6cb4f8af398dd1011a",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/udp_send_to.js": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/udp_recv_from.c": "1ce914be6cd6153732258f06343e5bcf9765a7fac7e3c3f0462facba7060e067",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/udp_recv_from.js": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/socket_close.c": "abea115d2928d4942a9d89898d2022c0f1b19c52db48d0b060c2356d261bfa77",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/socket_close.js": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/listener_close.c": "11f6bac6342a37e97b9656e96bdca7d052ed0a7a0cab3b05ea87657020cfb7a2",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/listener_close.js": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/window.c": "bf8d5779775ba9566d4bbeb8706a9ec993efb724dae7af8a76c38501ab4092c2",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/window_open.js": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/window_frame.js": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/window_set_title.js": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/window_grab.js": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/window_close.js": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/audio.c": "f0fac2bee02918b4958ad1e7508945824fcd98ce9a2e7ede657304c4f8905b85",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/audio_open.js": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/audio_write.js": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6",
+      "/private/tmp/bend2039g12-borrow-generation/bend2/effs/audio_close.js": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+      "/private/tmp/bend2039g12-borrow-generation/evals/native_compiler_host.c": "7d75edf7c7b8ac045df772b242e885801b9ab3fae5fc346957489a35847d66fe"
+    },
+    "limits": {
+      "passes": 3,
+      "maxCodegenMs": 120000
+    },
+    "hostBefore": {
+      "logicalCpus": 10,
+      "loadAverage": [
+        4.626953125,
+        6.2744140625,
+        13.4716796875
+      ]
+    },
+    "runtime": {
+      "execPath": "/private/tmp/bend2039g8-accepted-mac-evidence/bun-1.4.3",
+      "execArgv": [],
+      "versions": {
+        "node": "26.3.0",
+        "bun": "1.4.3",
+        "boringssl": "41bf9b59c2ebf277a7aa427e1ecad5cc80dd4d4f",
+        "openssl": "1.1.0",
+        "llhttp": "9.4.2",
+        "libarchive": "27cbc7827172698143e440801fc0ba39ccb4f1f5",
+        "mimalloc": "92ef6587c57b262f6e6abf513f7776a2f8d12aeb",
+        "picohttpparser": "f4d94b48b31e0abae029ebeafcfd9ca0680ede58",
+        "uwebsockets": "c6da4a4d3010e5553438c60f6bd76d981976867c",
+        "webkit": "0c06faadf65bf8e8c8ad3a5a8aca83e1e9ed653f",
+        "zig": "04e7f6ac1e009525bc00934f20199c68f04e0a24",
+        "zlib": "12731092979c6d07f42da27da673a9f6c7b13586",
+        "tinycc": "05f0fafaa3be31e31d7b4b5c17dc60f62c991171",
+        "lolhtml": "725ce499aa9b71e38b7a2d0a9fbb6d7294a4079e",
+        "ares": "c7a3138dcfe3bb0eaaf10c0c24c36dc66dc790ab",
+        "libdeflate": "92e6a0db9fa848d742f9eb286c92afc60f2c3dda",
+        "usockets": "c6da4a4d3010e5553438c60f6bd76d981976867c",
+        "lshpack": "cf0f70dd10b352194c97448eb5d00b4aa484f531",
+        "zstd": "f8745da6ff1ad1e7bab384bd1f9d742439278e99",
+        "v8": "14.6.202.34-node.20",
+        "uv": "1.48.0",
+        "napi": "10",
+        "icu": "78.1",
+        "unicode": "17.0",
+        "sqlite": "3.51.0",
+        "typescript": "7.0.2",
+        "modules": "147"
+      },
+      "automaticGcRamHint": "4294967296",
+      "manualGC": false
+    },
+    "passRows": [
+      {
+        "stage": "c-pass-1-after",
+        "name": "main",
+        "pass": 1,
+        "codegenElapsedMs": 27587.968374999997,
+        "ownFacts": 33809,
+        "hotFacts": 957,
+        "staticFacts": 67
+      },
+      {
+        "stage": "c-pass-2-after",
+        "name": "main",
+        "pass": 2,
+        "codegenElapsedMs": 63474.819375,
+        "ownFacts": 33916,
+        "hotFacts": 959,
+        "staticFacts": 67
+      },
+      {
+        "stage": "c-pass-3-after",
+        "name": "main",
+        "pass": 3,
+        "codegenElapsedMs": 94264.017708,
+        "ownFacts": 33928,
+        "hotFacts": 959,
+        "staticFacts": 67
+      }
+    ],
+    "event": "pass-complete",
+    "processCpuUs": {
+      "user": 152094576,
+      "system": 2054157
+    },
+    "elapsedMs": 98787.32633299999,
+    "checkedDefinitions": 12114,
+    "eventsFullyValidated": 12694,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "last": {
+      "stage": "c-pass-3-after",
+      "name": "main",
+      "pass": 3,
+      "codegenElapsedMs": 94264.017708,
+      "ownFacts": 33928,
+      "hotFacts": 959,
+      "staticFacts": 67
+    },
+    "phase": "codegen",
+    "reason": "pass-budget",
+    "codegenMs": 94264.587,
+    "hostAfter": {
+      "logicalCpus": 10,
+      "loadAverage": [
+        6.2421875,
+        6.41650390625,
+        12.765625
+      ]
+    },
+    "performanceComparisonWarning": null
+  },
+  "control": {
+    "schemaVersion": 1,
+    "status": "PROBE_STOPPED",
+    "terminal": true,
+    "diagnosticOnly": true,
+    "acceptanceEvidence": false,
+    "compilerAccepted": false,
+    "codegenSettled": false,
+    "outputPublished": false,
+    "source": "/private/tmp/bend2039g8-js-call-cost/checkpoints/.bootstrap_compiler_root_remote2039g10a.bend",
+    "bridge": "/private/tmp/bend2039g8-js-call-cost/evals/native_compiler_driver.bend",
+    "inputs": {
+      "/private/tmp/bend2039g8-js-call-cost/checkpoints/.bootstrap_compiler_root_remote2039g10a.bend": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+      "/private/tmp/bend2039g8-js-call-cost/evals/native_compiler_driver.bend": "768203e900f53cdf8d90b50966631ca3a3964dd50003658b07a28b39395f3ec3",
+      "/private/tmp/bend2039g8-js-call-cost/evals/compiler_codegen_probe.ts": "01f217f7dd6cc93128611dc6c5c8650f2d76c64e94599cfe62c79a3c79e7129e",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/bend.ts": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/comp.ts": "318c55c449115cb820bf77c3ac500a1c07ed8473adbbe6eed9c61088f4a0009e",
+      "/private/tmp/bend2039g8-js-call-cost/evals/compiler_profile.mjs": "b8b3dddf5a95777532fd73bda601d6bc610859d78371b7fbc593e4e93ec734c1",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/base.bend": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/lexer.bend": "a81265d4ab248c5ea74bf52987e1163773866a01b264ff1a98895d91139d6f53",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/core.bend": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/loaded_module.bend": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/backend_ir.bend": "162a554cec1c9e1b5edab69b5cfae730c70886548f4f51603a7537845ab5ec48",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/checked_frontend.bend": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/checker_arena.bend": "2a26c3d8ce66412591030fa2fd6df9f9e53c0fececd9d9ae702def2f475f1752",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/scope_lookup.bend": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/checker_ir.bend": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/index_lookup.bend": "563c9b152699b490cf68b264e6c4dea4a4e6770dfcf527cf6c81911cb5ea1b78",
+      "/private/tmp/bend2039g8-js-call-cost/checkpoints/template_steps_v1.bend": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/sha256.bend": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+      "/private/tmp/bend2039g8-js-call-cost/checkpoints/checker_core_steps_v1.bend": "93e8fd5ce7aafe40084d1b0023eff79de18cb6f00b625cab43b002535cfe288f",
+      "/private/tmp/bend2039g8-js-call-cost/checkpoints/emitter_steps_v1.bend": "fb7926f46e5af8bbd45977e0befe5a0bff55a1d4b4c311bb6a1219d6db0476bf",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/c_backend_sharing.bend": "78992d00aad3a458dd6b9ea424edf0de61c95b54487f92cd53283e705488c35f",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/print.c": "58657b7351daee89121e1df2856f102743c9db7640257e50c6009a0f1080b00e",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/print.js": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/write.c": "8807a5f655db452c1d846354560c26fe1e94289e5dc0be231d0b71ecc876d02f",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/write.js": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/print_err.c": "f84aa11c8d0d6af6fa2fee28411f95714d6744ad97156990e43e55c292c9c6fb",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/print_err.js": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/get_env.c": "b4903e94681340f9e02187457fabe9461c1b4e43646b7e1573f5d21e954e3a34",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/get_env.js": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/args.c": "7717332d0b8c8ba28d6dbe60b62a23dce99ea6828ada7d1f9b664f4dc388e84e",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/args.js": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/process_run.c": "554cfbdf9a6de163f00fc1b23dc8f3df10821cfce336caa1cb5db439b8a55e1f",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/process_run.js": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/random_u32.c": "75429b2b42e00562177fe33a5e18d2730478847f58c4038b048e78131e1b8c0a",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/random_u32.js": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/spawn.c": "05e11ae3f1461d9c72440af3b1786c076b418d2faff45639ac25ba464ee73cd5",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/spawn.js": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/sleep.c": "1dde3701026517d5272d2ff5344d3a8643bec264dbad9f266fdae1c4aaf7601c",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/sleep.js": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/now.c": "fc4c1d87a4fb2ace7d5b6c57b434cc3d953a15bdf213020912df6c17aa2352d6",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/now.js": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/thread_count.c": "d4889ed7757dccce03729c9568b88188128f2c1576166a3dc184a8707ed44568",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/thread_count.js": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/chan.c": "af09b2749741bcc54f56c8f81803073818a165d4cad4c817708e359d677b2a52",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/chan.js": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/file_open.c": "b987bcb0f9a89d769714ddf8cbecca211c4392e4098da19b411d09f5c088d360",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/file_open.js": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/file_read.c": "ab577225fa98a034c09d7eb6326b74808756dc6203b0e2599a459876382f090d",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/file_read.js": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/file_size.c": "ed0d74fd6b9f14ea471bfe5dd80ecbb2c5abb6a8406519fb2c7e1a1acf3dd5af",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/file_size.js": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/file_write.c": "da810ad9aa76ad1431622292529fa3edebabc4b6a7ee20ae833097b71bb595e5",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/file_write.js": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/file_close.c": "033da9beb0b484fbc8784044193bf69004f858f6ad86e0c31b4beb89df1349ca",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/file_close.js": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/tcp_listen.c": "efc7528de96abd9f62f299833c1ac7b0e86528292c746b114d2684b5bac52899",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/tcp_listen.js": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/tcp_accept.c": "bf7ca1685ed388ce97827ea8379881fbdf5359c7c663ad03eeb8da34bd8584ef",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/tcp_accept.js": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/tcp_connect.c": "8d17c097138709d71e9d9e1fbc4255007c5e80c93ee384c4a3510b6ac8d10da3",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/tcp_connect.js": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/tcp_send.c": "993cc8ee5b39fd54a4aeace102602ecf2841ce1f402fe6b2407ebaca837383f9",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/tcp_send.js": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/tcp_recv.c": "249c8789cd2f541ad00068882de16a00870c2f81a8168b0ac7a59db1e3cb0c6f",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/tcp_recv.js": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/udp_bind.c": "a1be1bc5c03d430fc6eb43982651073e144872956fadaee98c3700be59352ee3",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/udp_bind.js": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/udp_send_to.c": "b3a87e56958d8071a368da2edb4748e9496b3eed58b93d6cb4f8af398dd1011a",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/udp_send_to.js": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/udp_recv_from.c": "1ce914be6cd6153732258f06343e5bcf9765a7fac7e3c3f0462facba7060e067",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/udp_recv_from.js": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/socket_close.c": "abea115d2928d4942a9d89898d2022c0f1b19c52db48d0b060c2356d261bfa77",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/socket_close.js": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/listener_close.c": "11f6bac6342a37e97b9656e96bdca7d052ed0a7a0cab3b05ea87657020cfb7a2",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/listener_close.js": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/window.c": "bf8d5779775ba9566d4bbeb8706a9ec993efb724dae7af8a76c38501ab4092c2",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/window_open.js": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/window_frame.js": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/window_set_title.js": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/window_grab.js": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/window_close.js": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/audio.c": "f0fac2bee02918b4958ad1e7508945824fcd98ce9a2e7ede657304c4f8905b85",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/audio_open.js": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/audio_write.js": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6",
+      "/private/tmp/bend2039g8-js-call-cost/bend2/effs/audio_close.js": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+      "/private/tmp/bend2039g8-js-call-cost/evals/native_compiler_host.c": "7d75edf7c7b8ac045df772b242e885801b9ab3fae5fc346957489a35847d66fe"
+    },
+    "limits": {
+      "passes": 2,
+      "maxCodegenMs": 120000
+    },
+    "hostBefore": {
+      "logicalCpus": 10,
+      "loadAverage": [
+        5.34619140625,
+        7.111328125,
+        18.8515625
+      ]
+    },
+    "runtime": {
+      "execPath": "/private/tmp/bend2039g8-accepted-mac-evidence/bun-1.4.3",
+      "execArgv": [],
+      "versions": {
+        "node": "26.3.0",
+        "bun": "1.4.3",
+        "boringssl": "41bf9b59c2ebf277a7aa427e1ecad5cc80dd4d4f",
+        "openssl": "1.1.0",
+        "llhttp": "9.4.2",
+        "libarchive": "27cbc7827172698143e440801fc0ba39ccb4f1f5",
+        "mimalloc": "92ef6587c57b262f6e6abf513f7776a2f8d12aeb",
+        "picohttpparser": "f4d94b48b31e0abae029ebeafcfd9ca0680ede58",
+        "uwebsockets": "c6da4a4d3010e5553438c60f6bd76d981976867c",
+        "webkit": "0c06faadf65bf8e8c8ad3a5a8aca83e1e9ed653f",
+        "zig": "04e7f6ac1e009525bc00934f20199c68f04e0a24",
+        "zlib": "12731092979c6d07f42da27da673a9f6c7b13586",
+        "tinycc": "05f0fafaa3be31e31d7b4b5c17dc60f62c991171",
+        "lolhtml": "725ce499aa9b71e38b7a2d0a9fbb6d7294a4079e",
+        "ares": "c7a3138dcfe3bb0eaaf10c0c24c36dc66dc790ab",
+        "libdeflate": "92e6a0db9fa848d742f9eb286c92afc60f2c3dda",
+        "usockets": "c6da4a4d3010e5553438c60f6bd76d981976867c",
+        "lshpack": "cf0f70dd10b352194c97448eb5d00b4aa484f531",
+        "zstd": "f8745da6ff1ad1e7bab384bd1f9d742439278e99",
+        "v8": "14.6.202.34-node.20",
+        "uv": "1.48.0",
+        "napi": "10",
+        "icu": "78.1",
+        "unicode": "17.0",
+        "sqlite": "3.51.0",
+        "typescript": "7.0.2",
+        "modules": "147"
+      },
+      "automaticGcRamHint": "4294967296",
+      "manualGC": false
+    },
+    "passRows": [
+      {
+        "stage": "c-pass-1-after",
+        "name": "main",
+        "pass": 1,
+        "codegenElapsedMs": 30453.769833,
+        "ownFacts": 33388,
+        "hotFacts": 924,
+        "staticFacts": 67
+      },
+      {
+        "stage": "c-pass-2-after",
+        "name": "main",
+        "pass": 2,
+        "codegenElapsedMs": 61489.621042,
+        "ownFacts": 33711,
+        "hotFacts": 959,
+        "staticFacts": 67
+      }
+    ],
+    "event": "pass-complete",
+    "processCpuUs": {
+      "user": 122839915,
+      "system": 2051887
+    },
+    "elapsedMs": 66055.636667,
+    "checkedDefinitions": 12114,
+    "eventsFullyValidated": 12694,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "last": {
+      "stage": "c-pass-2-after",
+      "name": "main",
+      "pass": 2,
+      "codegenElapsedMs": 61489.621042,
+      "ownFacts": 33711,
+      "hotFacts": 959,
+      "staticFacts": 67
+    },
+    "phase": "codegen",
+    "reason": "pass-budget",
+    "codegenMs": 61490.246083000005,
+    "hostAfter": {
+      "logicalCpus": 10,
+      "loadAverage": [
+        6.5419921875,
+        7.16455078125,
+        18.0087890625
+      ]
+    },
+    "performanceComparisonWarning": null
+  },
+  "interpretation": "Nine actual C/JS consumers have identical emitted bytes. The candidate advances ownership facts sooner (33,916 after pass two versus 33,711 in control); three candidate passes finish with 33,928 own facts. This probe does not establish convergence, a completed native build, or byte fixedpoint."
+}
