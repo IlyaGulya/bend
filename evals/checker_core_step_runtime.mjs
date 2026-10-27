@@ -163,17 +163,32 @@ export function sourceFilesFor(modulePath,declaredPaths,carrier){
 
 
 /**
+ * The trace-only Run value carries a bounded native event list. This is a
+ * structural bound only: the authenticated diagnostic manifest declares the
+ * exact per-boundary maximum, and this ABI gate never interprets an event.
+ */
+const TRACE_EVENT_LIST_LIMIT=64;
+
+/**
  * Trusted Node orchestration, outside the native Bend termination proof.
  * Template, checker and emitter logic live in native-validated Bend steps.
  * Each host call advances an opaque native-owned Run by one bounded chunk.
  * Stack transitions, requests and source continuations remain entirely native.
  * There are no recursive host calls or host-imposed step/fuel limits.
+ *
+ * An opt-in diagnostic trace build adds one more Run value, `<Protocol>RunSpan`:
+ * one engine-emitted stage-boundary event list plus a deferred next Run. It is an
+ * opaque native-owned Run exactly like `RunState` and is advanced by the same
+ * single bounded public step call. Its events are never read here, so a trace
+ * image advances identically with and without an observer; an ordinary image
+ * cannot produce the tag and never enters this branch.
  */
 function runSteps(component,startArguments,kind,startExport,stepExport,validateResult,observe){
  if(typeof component?.[startExport]!=='function')invalid(kind,'missing '+startExport+' export');
  if(typeof component?.[stepExport]!=='function')invalid(kind,'missing '+stepExport+' export');
- const stateTag=kind+'RunState',finishedTag=kind+'RunFinished',valueTag=kind+'Value',stateSuffix='.'+stateTag,finishedSuffix='.'+finishedTag,valueSuffix='.'+valueTag;
- let knownStateTag,knownFinishedTag,knownValueTag,steps=0,run=component[startExport](...startArguments);
+ const stateTag=kind+'RunState',finishedTag=kind+'RunFinished',valueTag=kind+'Value',spanTag=kind+'RunSpan',
+  stateSuffix='.'+stateTag,finishedSuffix='.'+finishedTag,valueSuffix='.'+valueTag,spanSuffix='.'+spanTag;
+ let knownStateTag,knownFinishedTag,knownValueTag,knownSpanTag,steps=0,run=component[startExport](...startArguments);
  startArguments=undefined;
  try{
   for(;;){
@@ -184,6 +199,16 @@ function runSteps(component,startArguments,kind,startExport,stepExport,validateR
     const next=run;
     run=undefined;
     // Read-only diagnostic observation; absent on every ordinary run.
+    if(observe!==undefined)observe.onStep?.(steps,next);
+    steps+=1;
+    run=component[stepExport](next);
+   }else if(validRun&&(tag===knownSpanTag||tag===spanTag||tag.endsWith(spanSuffix))){
+    // Diagnostics-only scheduler boundary: the events ride on the Run value and
+    // the step export advances it unchanged, observer or not.
+    knownSpanTag=tag;
+    validateSpanRun(kind,run,spanTag);
+    const next=run;
+    run=undefined;
     if(observe!==undefined)observe.onStep?.(steps,next);
     steps+=1;
     run=component[stepExport](next);
@@ -203,6 +228,21 @@ function runSteps(component,startArguments,kind,startExport,stepExport,validateR
  }catch(error){
   if(observe!==undefined)observe.onError?.(error,steps);
   throw error;
+ }
+}
+
+function validateSpanRun(kind,run,spanTag){
+ if(!Object.hasOwn(run,'events')||!Object.hasOwn(run,'next'))invalid(kind,spanTag+' requires events and next');
+ if(typeof run.next!=='function')invalid(kind,spanTag+' next requires a deferred Run function');
+ let rest=run.events,count=0;
+ for(;;){
+  const tag=constructorTag(rest);
+  if(tag==='Nil')return;
+  if(tag!=='Con')invalid(kind,spanTag+' events requires a native List');
+  count+=1;
+  if(count>TRACE_EVENT_LIST_LIMIT)invalid(kind,spanTag+' carries more than '+TRACE_EVENT_LIST_LIMIT+' events in one boundary');
+  if(!hasConstructorTag(rest.head))invalid(kind,spanTag+' events requires nominal trace constructors');
+  rest=rest.tail;
  }
 }
 

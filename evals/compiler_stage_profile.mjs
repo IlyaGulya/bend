@@ -25,6 +25,17 @@
 // canonical source-module composition recorded by the typed-step generator's
 // manifest. A request absent from that manifest stays unclassified; this module
 // does not guess a phase from a name suffix or re-infer one from source text.
+//
+// With an opt-in Emitter trace build the same manifest may also carry an
+// authenticated `trace` block. That build yields `EmitterRunSpan` Run values at
+// real scheduler boundaries: a Begin before a marked callee runs and the
+// matching End before the calling continuation resumes. This module folds those
+// engine-decided brackets into ordinary collector begin/end spans at the
+// observed host boundary and reports exact call identity, parent edges and
+// per-stage span sets. It never derives nesting from tag order, never invents an
+// endpoint, never turns a source-boundary span into a typed-progress sample, and
+// attributes nothing when the manifest, its artifact binding or the engine's
+// bracket pairing cannot be authenticated.
 import {createHash} from 'node:crypto';
 import {readFileSync, realpathSync} from 'node:fs';
 import {isMainThread, threadId} from 'node:worker_threads';
@@ -34,7 +45,9 @@ export const STAGE_PROFILE_SCHEMA_VERSION = 1;
 // The named groups the stage report can speak about, and the honest reason for
 // each granularity. `measured` groups have a real host boundary; `sampled`
 // groups are only attributed at typed chunk boundaries; `unreachable` groups
-// are not executed by this host at all.
+// are not executed by this host at all. A group with `traceMeasurement` gets
+// exact scheduling-boundary spans from an opt-in trace build, and keeps its
+// sampled attribution for ordinary runs.
 export const stageGroupMetadata = Object.freeze([
   {name: 'startup-import', measurement: 'explicit-span', provider: 'candidate host module import'},
   {name: 'parse-import-fuel', measurement: 'explicit-span+exact-counter', provider: 'compiled parser, host IO, eager fuel construction'},
@@ -43,15 +56,26 @@ export const stageGroupMetadata = Object.freeze([
     granularity: 'one native check_modules Run; the checker does not expose a host-visible signature/body split'},
   {name: 'check-publication', measurement: 'included-in-check-signature-body',
     granularity: 'FIR publication runs inside the ordinary Checker.check Run before its transient rewind; there is no separate host boundary, and its canonical helpers appear only in sampled request attribution when reached'},
-  {name: 'emit-catalog', measurement: 'typed-progress-sample', provider: 'canonical module lower_catalog'},
-  {name: 'emit-backend-lowering', measurement: 'typed-progress-sample', provider: 'canonical module backend_lower'},
-  {name: 'emit-descriptor-nf', measurement: 'typed-progress-sample', provider: 'canonical module descriptor_nf'},
-  {name: 'emit-layouts', measurement: 'typed-progress-sample', provider: 'canonical module c_backend_layout'},
-  {name: 'emit-sharing', measurement: 'typed-progress-sample', provider: 'canonical module c_backend_sharing'},
-  {name: 'emit-render-js', measurement: 'typed-progress-sample', provider: 'canonical modules js_emit/js_backend'},
-  {name: 'emit-render-c', measurement: 'typed-progress-sample', provider: 'canonical modules c_emit_core/c_backend/c_backend_physical'},
-  {name: 'emit-link-planning', measurement: 'typed-progress-sample', provider: 'canonical module c_backend_link; source-level link planning, not the external linker'},
-  {name: 'emit-emitter-entry', measurement: 'typed-progress-sample', provider: 'canonical module emitter'},
+  {name: 'emit-catalog', measurement: 'typed-progress-sample', provider: 'canonical module lower_catalog',
+    traceMeasurement: 'exact-scheduler-span'},
+  {name: 'emit-backend-lowering', measurement: 'typed-progress-sample', provider: 'canonical module backend_lower',
+    traceMeasurement: 'exact-scheduler-span'},
+  {name: 'emit-descriptor-nf', measurement: 'typed-progress-sample', provider: 'canonical module descriptor_nf',
+    traceMeasurement: 'exact-scheduler-span',
+    granularity: 'a span set, not one phase: the same canonical definitions are called per descriptor from lowering and from physical rendering'},
+  {name: 'emit-layouts', measurement: 'typed-progress-sample', provider: 'canonical module c_backend_layout',
+    traceMeasurement: 'exact-scheduler-span',
+    granularity: 'a span set, not one phase: layout helpers are called per node and per descriptor from rendering'},
+  {name: 'emit-sharing', measurement: 'typed-progress-sample', provider: 'canonical module c_backend_sharing',
+    traceMeasurement: 'exact-scheduler-span'},
+  {name: 'emit-render-js', measurement: 'typed-progress-sample', provider: 'canonical modules js_emit/js_backend',
+    traceMeasurement: 'exact-scheduler-span'},
+  {name: 'emit-render-c', measurement: 'typed-progress-sample', provider: 'canonical modules c_emit_core/c_backend/c_backend_physical',
+    traceMeasurement: 'exact-scheduler-span'},
+  {name: 'emit-link-planning', measurement: 'typed-progress-sample', provider: 'canonical module c_backend_link; source-level link planning, not the external linker',
+    traceMeasurement: 'exact-scheduler-span'},
+  {name: 'emit-emitter-entry', measurement: 'typed-progress-sample', provider: 'canonical module emitter',
+    traceMeasurement: 'exact-scheduler-span'},
   {name: 'link', measurement: 'unreachable-in-candidate-host',
     prerequisite: 'the typed-step candidate emits source only; native_compiler_experiment performs the external clang/link step'},
 ]);
@@ -75,6 +99,10 @@ export const stageEvidenceClasses = Object.freeze({
   stepInterval: {
     observed: 'wall clock and process.threadCpuUsage across consecutive host-visible typed boundaries',
     scope: 'measured but attributed: the interval is one bounded host step call, attributed to the typed request pending when it began; a chunk may advance up to the native quantum and cross request boundaries, so a group total is envelope time under that request and not isolated provider CPU',
+  },
+  schedulerBoundarySpan: {
+    observed: 'engine-emitted EmitterTraceBegin/EmitterTraceEnd events delivered as EmitterRunSpan Run values, folded into collector begin/end at the observed host boundary',
+    scope: 'one span per engine-bracketed canonical call with a begin and end host-step ordinal; wall is inclusive of the call\'s own children, any process work interleaved while it is open and the trace instrumentation itself; the engine decides which frame an End closes, so nesting is observed rather than inferred; no exclusive CPU and no per-stage memory figure is derived',
   },
   nativeChildRow: {
     observed: 'NATIVE_BEGIN/NATIVE_FUEL/NATIVE_PHASE/NATIVE_CHUNK_PROFILE/NATIVE_RESULT rows already emitted by the native compiler host',
@@ -290,6 +318,240 @@ function protocolOf(manifest) {
 }
 
 /**
+ * Opt-in Emitter trace protocol. A trace build adds one Run value and two event
+ * constructors; nothing else in the generated ABI moves. The block below is the
+ * only description of that protocol the host trusts, and it is authenticated by
+ * the manifest that declares it plus the artifact receipt that manifest is bound
+ * to, never by the profiled image itself.
+ */
+export const TRACE_PROTOCOL_VERSION = 1;
+export const TRACE_PROTOCOL = 'Emitter';
+export const TRACE_MAX_EVENTS_PER_BOUNDARY = 1;
+export const TRACE_QUANTUM = 64;
+export const DEFAULT_TRACE_CONSTRUCTORS = Object.freeze({run: 'EmitterRunSpan', begin: 'EmitterTraceBegin', end: 'EmitterTraceEnd'});
+// Structural guards only. Authenticated maxima come from the manifest block.
+const TRACE_EVENT_LIST_LIMIT = 64;
+const MAX_TRACE_SPANS = 2048;
+const MAX_TRACE_REASONS = 32;
+const SHA256_PATTERN = /^[0-9a-f]{64}$/;
+const TRACE_STAGE_NAMES = new Set(stageGroupMetadata
+  .filter(group => group.traceMeasurement === 'exact-scheduler-span')
+  .map(group => group.name));
+
+function emptyTraceTable(namespace, status, reasons) {
+  return {namespace, protocol: TRACE_PROTOCOL, status, reasons,
+    protocolVersion: null, quantum: null, maxEventsPerBoundary: null,
+    constructors: null, generationManifestSha256: null, selfAuthentication: null,
+    artifactBinding: null, roots: [], bySite: new Map(), stageRoots: new Map()};
+}
+
+/**
+ * Authenticate a manifest's `trace` block and resolve every declared root
+ * against that same manifest's canonical composition rows. Nothing here may
+ * throw for an ordinary run: a manifest without a trace block yields an
+ * `absent` table, and any malformed or contradictory block yields an
+ * `unverified` table carrying its reasons. An unverified table attributes no
+ * span at all, so a broken trace block can never degrade an ordinary profile
+ * and can never be repaired into a plausible span set.
+ */
+function describeTraceBlock(document, context) {
+  const {namespace, protocol, sources, sourceStatus, canonicalSourcePins, declarations, artifactBinding} = context;
+  const block = document.trace;
+  const table = emptyTraceTable(namespace, 'absent', []);
+  // An ordinary manifest is not hashed, not re-serialized and not inspected
+  // beyond this point: the absent-table return is the whole cost of an untraced
+  // run, so an ordinary profile keeps paying exactly what it paid before.
+  if (block === undefined || block === null) {
+    table.reasons.push('manifest declares no trace block; this image carries no scheduler-boundary trace protocol');
+    return table;
+  }
+  if (typeof block !== 'object' || Array.isArray(block)) {
+    table.status = 'unverified';
+    table.reasons.push('trace block is not an object');
+    return table;
+  }
+  const {generationManifestSha256 = null, ...proof} = document;
+  const recomputedSha256 = sha256(JSON.stringify(proof));
+  const selfAuthentication = typeof generationManifestSha256 !== 'string'
+    ? {status: 'missing', declaredSha256: null, recomputedSha256,
+      reason: 'manifest carries no generationManifestSha256, so its trace block has no manifest-level authentication'}
+    : generationManifestSha256 === recomputedSha256
+      ? {status: 'verified', declaredSha256: generationManifestSha256, recomputedSha256, reason: null}
+      : {status: 'mismatch', declaredSha256: generationManifestSha256, recomputedSha256,
+        reason: 'generationManifestSha256 does not authenticate this manifest document, so its trace block is untrusted'};
+  table.generationManifestSha256 = typeof generationManifestSha256 === 'string' ? generationManifestSha256 : null;
+  table.selfAuthentication = selfAuthentication;
+  table.artifactBinding = artifactBinding;
+  const reasons = table.reasons;
+  // A root's declared source is normally one of the composition's own
+  // declaration sources, which the caller already verified. A source that only
+  // appears in `canonicalComposition.sources[]` is verified here, on demand and
+  // only for a trace manifest, against that row's own canonical pin; an
+  // unreadable or unpinned source stays a failure rather than an assumption.
+  const sourceVerdict = source => {
+    const known = sourceStatus.get(source);
+    if (known !== undefined) return known;
+    const expected = canonicalSourcePins.get(source);
+    if (expected === undefined) return 'undeclared-source';
+    try {
+      return sha256(readFileSync(source)) === expected ? 'verified' : 'mismatch';
+    } catch {
+      return 'missing';
+    }
+  };
+  const check = (ok, reason) => {
+    if (!ok) reasons.push(reason);
+    return ok;
+  };
+  table.protocolVersion = Number.isSafeInteger(block.protocolVersion) ? block.protocolVersion : null;
+  table.quantum = Number.isSafeInteger(block.quantum) ? block.quantum : null;
+  table.maxEventsPerBoundary = Number.isSafeInteger(block.maxEventsPerBoundary) ? block.maxEventsPerBoundary : null;
+  check(protocol === TRACE_PROTOCOL, 'trace block requires the Emitter typed Run protocol, observed ' + JSON.stringify(protocol ?? null));
+  check(table.protocolVersion === TRACE_PROTOCOL_VERSION, 'trace.protocolVersion differs from ' + TRACE_PROTOCOL_VERSION);
+  check(block.protocol === TRACE_PROTOCOL, 'trace.protocol is not the Emitter trace protocol');
+  check(table.quantum === TRACE_QUANTUM, 'trace.quantum differs from the declared native quantum ' + TRACE_QUANTUM);
+  check(document.nativeChunk?.quantum === table.quantum, 'trace.quantum differs from nativeChunk.quantum, so the traced build is not the described build');
+  check(table.maxEventsPerBoundary === TRACE_MAX_EVENTS_PER_BOUNDARY,
+    'trace.maxEventsPerBoundary differs from the one-event-per-boundary host contract');
+  const constructors = {run: block.runConstructor, begin: block.beginConstructor, end: block.endConstructor};
+  const constructorsOk = Object.entries(DEFAULT_TRACE_CONSTRUCTORS).every(([key, name]) =>
+    constructors[key] === name);
+  check(constructorsOk, 'trace constructors must be exactly ' + JSON.stringify(DEFAULT_TRACE_CONSTRUCTORS));
+  table.constructors = constructorsOk
+    ? Object.fromEntries(Object.entries(DEFAULT_TRACE_CONSTRUCTORS).map(([key, name]) => [key, namespace + '.' + name]))
+    : null;
+  const declaredRoots = Array.isArray(block.roots) ? block.roots : null;
+  check(declaredRoots !== null && declaredRoots.length > 0, 'trace.roots must be a nonempty declared root list');
+  const declarationRows = new Map();
+  for (const declaration of declarations) {
+    if (declaration?.kind !== 'def' || typeof declaration.name !== 'string') continue;
+    const rows = declarationRows.get(declaration.name) ?? [];
+    rows.push(declaration);
+    declarationRows.set(declaration.name, rows);
+  }
+  const seenSites = new Map();
+  for (const [index, declared] of (declaredRoots ?? []).entries()) {
+    const problems = [];
+    const row = {index, site: null, stage: null, source: null, canonicalName: null, name: null, request: null,
+      canonicalDeclarationSha256: null, composedDeclarationSha256: null,
+      status: 'invalid', problems, checks: {}};
+    table.roots.push(row);
+    if (declared === null || typeof declared !== 'object' || Array.isArray(declared)) {
+      problems.push('declared root is not an object');
+      continue;
+    }
+    for (const field of ['stage', 'source', 'canonicalName', 'name', 'request', 'canonicalDeclarationSha256', 'composedDeclarationSha256'])
+      row[field] = typeof declared[field] === 'string' ? declared[field] : null;
+    row.site = Number.isSafeInteger(declared.site) && declared.site >= 0 && declared.site <= 0xFFFFFFFF ? declared.site : null;
+    if (row.site === null) problems.push('site is not a native U32 scalar');
+    else if (seenSites.has(row.site)) problems.push('site ' + row.site + ' is declared by roots ' + seenSites.get(row.site) + ' and ' + index);
+    else seenSites.set(row.site, index);
+    if (row.stage === null || !TRACE_STAGE_NAMES.has(row.stage))
+      problems.push('stage ' + JSON.stringify(row.stage) + ' is not a declared emit stage of this report');
+    row.checks.source = row.source === null ? 'missing'
+      : !sources.has(row.source) && !canonicalSourcePins.has(row.source) ? 'undeclared-source'
+        : sourceVerdict(row.source);
+    if (row.checks.source !== 'verified')
+      problems.push('declared source ' + JSON.stringify(row.source) + ' is not a verified canonical source of this manifest (' + row.checks.source + ')');
+    const candidates = row.name === null ? [] : declarationRows.get(row.name) ?? [];
+    const exact = candidates.filter(declaration => declaration.source === row.source
+      && declaration.canonicalName === row.canonicalName
+      && declaration.canonicalDeclarationSha256 === row.canonicalDeclarationSha256
+      && declaration.composedDeclarationSha256 === row.composedDeclarationSha256);
+    row.checks.declaration = candidates.length === 0 ? 'missing'
+      : exact.length === 1 ? 'verified'
+        : exact.length === 0 ? 'mismatch' : 'ambiguous';
+    if (row.checks.declaration !== 'verified')
+      problems.push('composed declaration ' + JSON.stringify(row.name) + ' does not resolve to exactly one matching composition row of this manifest (' + row.checks.declaration + ')');
+    row.checks.request = row.request === namespace + '.' + protocol + 'Request_' + (row.name ?? '') ? 'verified' : 'mismatch';
+    if (row.checks.request !== 'verified')
+      problems.push('request ' + JSON.stringify(row.request) + ' is not the composed request constructor of this declaration');
+    row.checks.hashes = SHA256_PATTERN.test(String(row.canonicalDeclarationSha256))
+      && SHA256_PATTERN.test(String(row.composedDeclarationSha256)) ? 'verified' : 'invalid';
+    if (row.checks.hashes !== 'verified') problems.push('declared declaration hashes are not sha256 digests');
+    if (problems.length > 0) continue;
+    row.status = 'verified';
+    table.bySite.set(row.site, row);
+    const stage = table.stageRoots.get(row.stage) ?? [];
+    stage.push(row);
+    table.stageRoots.set(row.stage, stage);
+  }
+  const invalidRoots = table.roots.filter(row => row.status !== 'verified').length;
+  check(invalidRoots === 0, invalidRoots + ' of ' + table.roots.length + ' declared trace root(s) failed authentication');
+  check(selfAuthentication.status === 'verified',
+    'manifest self-authentication is ' + selfAuthentication.status + ': ' + selfAuthentication.reason);
+  check(artifactBinding.status === 'verified',
+    'artifact binding is ' + artifactBinding.status + ': ' + artifactBinding.reason);
+  table.status = reasons.length === 0 && table.roots.length > 0 ? 'verified' : 'unverified';
+  return table;
+}
+
+/**
+ * Resolve the authenticated trace table a caller wants to attribute. A supplied
+ * manifest set is a list, never a merge: exactly one table may declare the
+ * observed Run namespace, and a missing or duplicated declaration is reported
+ * instead of being resolved by preference.
+ */
+export function traceTableFor(table, runNamespace) {
+  const tables = (table?.traceTables ?? []).filter(candidate => candidate.namespace === runNamespace);
+  if (tables.length === 1) return tables[0];
+  return emptyTraceTable(runNamespace, 'unverified', tables.length === 0
+    ? ['no supplied generator manifest declares a trace block for the observed Run namespace ' + JSON.stringify(runNamespace ?? null)]
+    : ['more than one supplied generator manifest declares trace roots for the observed Run namespace ' + JSON.stringify(runNamespace ?? null)]);
+}
+
+/**
+ * Read-only trace event observation for the opt-in trace build. One
+ * `EmitterRunSpan` value carries a native `List<&2, EmitterTraceEvent>` of at
+ * most `maxEventsPerBoundary` events and a deferred next Run; each event is one
+ * nominal trace constructor plus one native scalar `site: U32`. No payload is
+ * interpreted, no event is inferred from a constructor tag change, and a value
+ * that fails any check is reported whole rather than partially applied.
+ */
+export function typedTraceEvents(run, traceTable) {
+  const tag = constructorTag(run);
+  const runNamespace = tag === undefined || tag === null ? null : constructorNamespace(tag);
+  const simple = tag === undefined ? undefined : simpleConstructor(tag);
+  const constructors = traceTable?.constructors ?? DEFAULT_TRACE_CONSTRUCTORS;
+  const reading = {runTag: tag ?? null, runNamespace};
+  if (simple !== simpleConstructor(constructors.run))
+    return {status: 'not-run-span', reason: 'Run constructor is not the trace Run value', events: [], ...reading};
+  const reject = reason => ({status: 'invalid', reason, events: [], ...reading});
+  if (traceTable !== undefined && traceTable !== null && runNamespace !== traceTable.namespace)
+    return reject('Run namespace ' + JSON.stringify(runNamespace) + ' is not the trace manifest namespace ' + JSON.stringify(traceTable.namespace));
+  if (typeof run.next !== 'function') return reject('next is not a function, so the traced Run could not be advanced');
+  if (!Object.hasOwn(run, 'events')) return reject('events field is missing');
+  const maxEvents = Number.isSafeInteger(traceTable?.maxEventsPerBoundary) ? traceTable.maxEventsPerBoundary : TRACE_MAX_EVENTS_PER_BOUNDARY;
+  const beginName = simpleConstructor(constructors.begin), endName = simpleConstructor(constructors.end);
+  const events = [];
+  let rest = run.events;
+  for (let depth = 0; ; depth += 1) {
+    if (depth > TRACE_EVENT_LIST_LIMIT) return reject('events list is longer than the ' + TRACE_EVENT_LIST_LIMIT + '-entry structural bound');
+    const listTag = constructorTag(rest);
+    if (listTag === undefined) return reject('events is not a native List');
+    const listSimple = simpleConstructor(listTag);
+    if (listSimple === 'Nil') break;
+    if (listSimple !== 'Con') return reject('events is not a native List');
+    const event = rest.head;
+    const eventTag = constructorTag(event);
+    const eventSimple = eventTag === undefined ? undefined : simpleConstructor(eventTag);
+    const kind = eventSimple === beginName ? 'begin' : eventSimple === endName ? 'end' : null;
+    if (kind === null)
+      return reject('event constructor ' + JSON.stringify(eventTag ?? null) + ' is neither ' + simpleConstructor(constructors.begin) + ' nor ' + simpleConstructor(constructors.end));
+    if (!Object.hasOwn(event, 'site')) return reject(kind + ' event carries no site field');
+    const site = event.site;
+    if (!Number.isInteger(site) || site < 0 || site > 0xFFFFFFFF)
+      return reject(kind + ' event site ' + JSON.stringify(site ?? null) + ' is not a native U32 scalar');
+    events.push({kind, site, eventTag});
+    if (events.length > maxEvents)
+      return reject('boundary carries more than the authenticated ' + maxEvents + ' event(s) per boundary');
+    rest = rest.tail;
+  }
+  return {status: 'ok', reason: null, events, ...reading,
+    namespaceBinding: traceTable === undefined || traceTable === null ? 'unverified' : 'verified'};
+}
+
+/**
  * Read the typed-step generator manifests supplied by the caller. A manifest
  * contributes exact request constructors (`<Protocol>Request_<definition>`) and,
  * when it carries `canonicalComposition`, the canonical source module for each
@@ -337,6 +599,7 @@ export function loadStageManifests(paths, binding = {}) {
   const provenance = [];
   const conflicts = [];
   const namespaces = new Set();
+  const traceTables = [];
   for (const path of paths ?? []) {
     const bytes = readFileSync(path);
     const document = JSON.parse(bytes.toString('utf8'));
@@ -432,6 +695,10 @@ export function loadStageManifests(paths, binding = {}) {
               ? 'manifest canonicalComposition.sources[].canonicalSha256'
               : 'no canonical pin for this declared source'});
     }
+    const traceTable = describeTraceBlock(document, {namespace, protocol, sources, sourceStatus, canonicalSourcePins,
+      declarations: Array.isArray(document.canonicalComposition?.declarations) ? document.canonicalComposition.declarations : [],
+      artifactBinding});
+    traceTables.push(traceTable);
     const groupOfSource = source => {
       if (source === null) return {group: coarseGroup(protocol), basis: 'protocol-coarse'};
       const state = sourceStatus.get(source);
@@ -508,9 +775,19 @@ export function loadStageManifests(paths, binding = {}) {
       canonicalSourceSha256: document.canonicalComposition?.inputs,
       generator: document.generationConfig?.generator,
       loweringSourceSha256: document.loweringSourceSha256,
+      // Compact summary only: the authenticated table itself stays out of the
+      // provenance rows so a report never carries one twice.
+      trace: traceTable.status === 'absent' ? null : {
+        status: traceTable.status,
+        generationManifestSha256: traceTable.generationManifestSha256,
+        selfAuthentication: traceTable.selfAuthentication?.status ?? null,
+        roots: traceTable.roots.length,
+        verifiedRoots: traceTable.roots.filter(row => row.status === 'verified').length,
+        reasons: traceTable.reasons,
+      },
     });
   }
-  return {requestToGroup, provenance, conflicts, namespaces: [...namespaces].sort()};
+  return {requestToGroup, provenance, conflicts, namespaces: [...namespaces].sort(), traceTables};
 }
 
 /**
@@ -623,6 +900,14 @@ function serializedBuckets(store) {
  * so per-group totals are envelope time, not isolated provider CPU. When a
  * caller passes `options.intervals === false` the interval evidence is skipped
  * and the report says so; sampling/counters are unchanged.
+ *
+ * `options.trace === true` additionally folds an opt-in Emitter trace build's
+ * engine brackets into collector spans: the trace table is resolved from the
+ * supplied manifest set and the observed Run namespace, every endpoint is the
+ * host step that delivered the traced Run value, and nothing is attributed when
+ * the manifest, its artifact binding or the bracket pairing fails to
+ * authenticate. Without the option no trace table is read and every existing
+ * counter, sample and interval keeps exactly its previous meaning.
  */
 export function createStepAttribution(phase, protocol, table, profile, options = {}) {
   if (options === null || typeof options !== 'object' || Array.isArray(options))
@@ -742,29 +1027,403 @@ export function createStepAttribution(phase, protocol, table, profile, options =
       includes: 'the final bounded step call and any result validation between the last boundary and this hook'};
     previousBoundary = null;
   }
+  // --- opt-in scheduler-boundary trace -------------------------------------
+  //
+  // A trace image yields an `EmitterRunSpan` at every engine stage bracket.
+  // This state folds those brackets into ordinary collector begin/end spans
+  // (existing strict nesting, one open span per open engine frame) and records
+  // the exact host-step ordinals of both endpoints. Nothing is derived from a
+  // progress tag, a chunk crossing or a span's neighbours; the engine decides
+  // which frame an End closes, and this stack only checks that it agrees.
+  const traceOption = options.trace;
+  if (traceOption !== undefined && traceOption !== null && traceOption !== false && traceOption !== true
+    && (typeof traceOption !== 'object' || Array.isArray(traceOption)))
+    throw Error('Step attribution options.trace must be true or a trace table produced by loadStageManifests');
+  const trace = traceOption === undefined || traceOption === null || traceOption === false ? null : {
+    requested: true,
+    provided: traceOption === true ? null : traceOption,
+    table: null, blocked: null, status: 'pending', flushed: false,
+    boundaries: 0, events: 0, begins: 0, ends: 0, emptyBoundaries: 0,
+    rejectedSpans: 0, ignoredEvents: 0,
+    frames: [], closedSpans: 0, spans: [], spansOmitted: 0, spanSequence: 0,
+    stages: new Map(), edges: new Map(), rootSpans: new Map(),
+    unmatchedEnds: 0, mismatchedEnds: 0, unknownSites: 0, unattributedFrames: 0,
+    desynced: false, abortedFrames: 0, failedFrames: 0, openFramesAtTerminal: 0,
+    reasons: new Map(), reasonsOmitted: 0,
+    collectorSpans: profile !== undefined && profile.rawDetail === true ? 'created' : 'skipped',
+    collectorSpanReason: profile === undefined ? 'no collector was supplied to this phase attribution'
+      : profile.rawDetail !== true
+        ? 'the collector was created without rawDetail, so one retained span per engine bracket would rewrite a checkpoint per event; the brackets are reported from host boundary clocks instead'
+        : null,
+  };
+
+  function traceReason(reason) {
+    if (trace.reasons.size < MAX_TRACE_REASONS || trace.reasons.has(reason))
+      trace.reasons.set(reason, (trace.reasons.get(reason) ?? 0) + 1);
+    else trace.reasonsOmitted += 1;
+  }
+
+  function resolveTraceTable(runNamespace) {
+    if (trace.table !== null) return trace.table;
+    if (trace.provided !== null) {
+      if (!(trace.provided.bySite instanceof Map) || typeof trace.provided.status !== 'string')
+        throw Error('options.trace must be a trace table produced by loadStageManifests');
+      trace.table = trace.provided;
+    } else trace.table = traceTableFor(table, runNamespace);
+    for (const root of trace.table.roots ?? [])
+      if (root.status === 'verified') trace.rootSpans.set(root.site, 0);
+    if (trace.table.status !== 'verified') {
+      trace.blocked = 'trace evidence is unverified (manifest trace table status ' + trace.table.status + '): '
+        + (trace.table.reasons?.[0] ?? 'no authenticated trace block');
+      trace.status = 'unverified';
+    } else if (runNamespace !== null && trace.table.namespace !== runNamespace) {
+      trace.blocked = 'observed Run namespace ' + JSON.stringify(runNamespace) + ' is not the authenticated trace manifest namespace '
+        + JSON.stringify(trace.table.namespace ?? null);
+      trace.status = 'unverified';
+    } else trace.status = 'verified';
+    return trace.table;
+  }
+
+  function observeTraceBoundary(steps, run) {
+    const usable = trace.table !== null && trace.table.status === 'verified' && trace.blocked === null;
+    let parsed = typedTraceEvents(run, usable ? trace.table : undefined);
+    if (parsed.status === 'not-run-span') return false;
+    if (trace.table === null) {
+      resolveTraceTable(parsed.runNamespace);
+      if (trace.table.status === 'verified' && trace.blocked === null) parsed = typedTraceEvents(run, trace.table);
+    }
+    trace.boundaries += 1;
+    if (parsed.status !== 'ok') {
+      trace.rejectedSpans += 1;
+      trace.status = 'incomplete';
+      traceReason('rejected traced Run value: ' + parsed.reason);
+      return true;
+    }
+    trace.events += parsed.events.length;
+    if (parsed.events.length === 0) {
+      // The trace ABI delivers exactly one event per boundary. An empty traced
+      // Run value is reported rather than treated as a silent boundary.
+      trace.emptyBoundaries += 1;
+      trace.status = 'incomplete';
+      traceReason('a traced Run value carried no event; the one-event-per-boundary ABI is violated and no span is inferred for it');
+    }
+    if (trace.blocked !== null || trace.desynced) {
+      trace.ignoredEvents += parsed.events.length;
+      return true;
+    }
+    for (const event of parsed.events) foldTraceEvent(event, steps);
+    return true;
+  }
+
+  function foldTraceEvent(event, steps) {
+    if (event.kind === 'begin') {
+      trace.begins += 1;
+      const root = trace.table.bySite.get(event.site);
+      const parent = trace.frames.at(-1);
+      if (root === undefined) {
+        trace.unknownSites += 1;
+        trace.status = 'incomplete';
+        traceReason('begin site ' + event.site + ' is not a declared root of the authenticated trace manifest; its subtree is left unattributed');
+        trace.frames.push({attributed: false, site: event.site, stage: null, root: null, token: null,
+          spanId: null, parentStage: null, parentSpanId: null, beginStep: steps});
+        return;
+      }
+      const parentAttributed = parent !== undefined && parent.attributed;
+      const frame = {attributed: true, site: event.site, stage: root.stage, root,
+        spanId: ++trace.spanSequence, token: null, collectorSpanId: null,
+        beginStep: steps, beginAt: performance.now(), childSpans: 0, childWallMsSum: 0,
+        parentStage: parentAttributed ? parent.stage : null,
+        parentSpanId: parentAttributed ? parent.spanId : null,
+        parentUnattributed: parent !== undefined && !parentAttributed};
+      if (frame.parentUnattributed) {
+        trace.unattributedFrames += 1;
+        traceReason('a traced span is nested under an unattributed frame; its parent edge is reported as unknown');
+      }
+      if (trace.collectorSpans === 'created') {
+        const token = profile.begin('trace/' + frame.stage, {summary: false, stage: frame.stage,
+          site: frame.site, definition: root.name, request: root.request, beginStep: steps, phase});
+        frame.token = token;
+        frame.collectorSpanId = token.id;
+      }
+      trace.frames.push(frame);
+      return;
+    }
+    trace.ends += 1;
+    const frame = trace.frames.pop();
+    if (frame === undefined) {
+      trace.unmatchedEnds += 1;
+      trace.status = 'incomplete';
+      trace.desynced = true;
+      traceReason('end site ' + event.site + ' was observed with no open traced frame; attribution stops instead of guessing a pairing');
+      return;
+    }
+    if (frame.site !== event.site) {
+      trace.mismatchedEnds += 1;
+      trace.status = 'incomplete';
+      trace.desynced = true;
+      if (frame.attributed && frame.token !== null)
+        profile.end(frame.token, 'aborted', {closeReason: 'engine End site did not match the innermost open Begin site',
+          endSite: event.site, beginSite: frame.site, endStep: steps, phase});
+      traceReason('end site ' + event.site + ' does not match the innermost open begin site ' + frame.site
+        + '; attribution stops instead of repairing the bracket');
+      return;
+    }
+    if (!frame.attributed) return;
+    const endStep = steps;
+    let wallMs = frame.token === null ? milliseconds(Math.max(0, performance.now() - frame.beginAt)) : null;
+    if (frame.token !== null) wallMs = profile.end(frame.token, 'completed', {endStep, phase}).wallMs;
+    const parent = trace.frames.at(-1);
+    if (parent !== undefined && parent.attributed && wallMs !== null) {
+      parent.childSpans += 1;
+      parent.childWallMsSum += wallMs;
+    }
+    const span = {
+      spanId: frame.spanId, collectorSpanId: frame.collectorSpanId,
+      stage: frame.stage, site: frame.site, definition: frame.root.name,
+      canonicalName: frame.root.canonicalName, request: frame.root.request,
+      parentStage: frame.parentStage, parentSpanId: frame.parentSpanId,
+      parentEdge: frame.parentUnattributed ? 'unknown-unattributed-parent'
+        : frame.parentStage === null ? 'root' : 'traced',
+      beginStep: frame.beginStep, endStep, stepSpan: endStep - frame.beginStep,
+      wallMs, wallSource: frame.token === null ? 'host-boundary-clock' : 'collector-span',
+      status: 'completed', closeReason: null,
+      childSpans: frame.childSpans,
+      childWallMsSum: milliseconds(frame.childWallMsSum),
+      selfWallMsNotExclusive: wallMs === null ? null : milliseconds(Math.max(0, wallMs - frame.childWallMsSum)),
+    };
+    const aggregate = trace.stages.get(frame.stage) ?? {stage: frame.stage, spans: 0, openWallMs: 0,
+      maxWallMs: 0, definitions: new Set(), parents: new Map(), firstBeginStep: null, lastEndStep: null};
+    aggregate.spans += 1;
+    aggregate.openWallMs += wallMs ?? 0;
+    if ((wallMs ?? 0) > aggregate.maxWallMs) aggregate.maxWallMs = wallMs ?? 0;
+    aggregate.definitions.add(frame.root.name);
+    const parentKey = frame.parentStage ?? '(root)';
+    aggregate.parents.set(parentKey, (aggregate.parents.get(parentKey) ?? 0) + 1);
+    if (aggregate.firstBeginStep === null || frame.beginStep < aggregate.firstBeginStep) aggregate.firstBeginStep = frame.beginStep;
+    if (aggregate.lastEndStep === null || endStep > aggregate.lastEndStep) aggregate.lastEndStep = endStep;
+    trace.stages.set(frame.stage, aggregate);
+    const edge = (frame.parentStage ?? '(root)') + ' -> ' + frame.stage;
+    trace.edges.set(edge, (trace.edges.get(edge) ?? 0) + 1);
+    trace.rootSpans.set(frame.site, (trace.rootSpans.get(frame.site) ?? 0) + 1);
+    if (trace.spans.length < MAX_TRACE_SPANS) trace.spans.push(span);
+    else trace.spansOmitted += 1;
+    trace.closedSpans += 1;
+  }
+
+  // A host terminal hook must leave the collector's span stack exactly as the
+  // collector expects: every traced frame still open is closed innermost first
+  // with an explicit status, so the parent coarse span can close afterwards and
+  // the evidence says which brackets never reached their engine End.
+  function flushTrace(hook, status) {
+    if (trace === null || trace.flushed) return;
+    trace.flushed = true;
+    if (trace.frames.length > 0) {
+      trace.openFramesAtTerminal = trace.frames.length;
+      trace.status = 'incomplete';
+      traceReason(trace.frames.length + ' traced frame(s) were still open at the ' + hook
+        + ' hook; each is closed explicitly instead of being timed to an unknown endpoint');
+      while (trace.frames.length > 0) {
+        const frame = trace.frames.pop();
+        if (!frame.attributed) continue;
+        if (status === 'failed') trace.failedFrames += 1;
+        else trace.abortedFrames += 1;
+        const closeReason = 'host ' + hook + ' hook reached with the traced frame still open';
+        if (frame.token !== null)
+          profile.end(frame.token, status, {closeReason, beginStep: frame.beginStep, phase});
+        // An unterminated bracket is retained as negative evidence with no end
+        // endpoint: it is never timed to the terminal hook.
+        const span = {spanId: frame.spanId, collectorSpanId: frame.collectorSpanId,
+          stage: frame.stage, site: frame.site, definition: frame.root.name,
+          canonicalName: frame.root.canonicalName, request: frame.root.request,
+          parentStage: frame.parentStage, parentSpanId: frame.parentSpanId,
+          parentEdge: frame.parentUnattributed ? 'unknown-unattributed-parent'
+            : frame.parentStage === null ? 'root' : 'traced',
+          beginStep: frame.beginStep, endStep: null, stepSpan: null,
+          wallMs: null, wallSource: frame.token === null ? 'host-boundary-clock' : 'collector-span',
+          childSpans: frame.childSpans, childWallMsSum: milliseconds(frame.childWallMsSum),
+          selfWallMsNotExclusive: null, status, closeReason};
+        if (trace.spans.length < MAX_TRACE_SPANS) trace.spans.push(span);
+        else trace.spansOmitted += 1;
+      }
+    }
+    if (trace.boundaries === 0) {
+      trace.blocked ??= 'no traced Run boundary was observed in this phase, so the image is not a trace build or its traced root never ran';
+      if (trace.status === 'pending' || trace.status === 'verified') trace.status = 'no-span-boundary';
+    }
+  }
+
+  function reportTrace() {
+    if (trace === null) return;
+    // A phase that never saw a traced Run boundary reports that fact instead of
+    // claiming a verified (empty) span set.
+    if (trace.boundaries === 0 && trace.status === 'pending') trace.status = 'no-span-boundary';
+    const stageSets = {};
+    for (const [stage, aggregate] of [...trace.stages.entries()].sort(([a], [b]) => a.localeCompare(b)))
+      stageSets[stage] = {
+        spans: aggregate.spans,
+        summedOpenIntervalsMs: milliseconds(aggregate.openWallMs),
+        maxSpanMs: milliseconds(aggregate.maxWallMs),
+        definitions: [...aggregate.definitions].sort(),
+        parents: Object.fromEntries([...aggregate.parents.entries()].sort(([a], [b]) => a.localeCompare(b))),
+        firstBeginStep: aggregate.firstBeginStep,
+        lastEndStep: aggregate.lastEndStep,
+      };
+    const declaredStages = [...(trace.table?.stageRoots.keys() ?? [])].sort();
+    const observedStages = Object.keys(stageSets).sort();
+    const traceRoots = (trace.table?.roots ?? []).map(root => ({
+      index: root.index, site: root.site, stage: root.stage, source: root.source,
+      canonicalName: root.canonicalName, name: root.name, request: root.request,
+      canonicalDeclarationSha256: root.canonicalDeclarationSha256,
+      composedDeclarationSha256: root.composedDeclarationSha256,
+      status: root.status, checks: root.checks, problems: root.problems,
+      observedSpans: root.site === null ? null : trace.rootSpans.get(root.site) ?? 0,
+    }));
+    profile.record({
+      kind: 'scheduler-boundary-spans',
+      scope: 'opt-in Emitter trace build; each span is one engine-bracketed canonical call timed between two host scheduler boundaries',
+      name: phase + '-trace-spans',
+      values: {
+        traceSpanBoundaries: trace.boundaries,
+        traceEvents: trace.events,
+        emptySpanBoundaries: trace.emptyBoundaries,
+        begins: trace.begins,
+        ends: trace.ends,
+        closedSpans: trace.closedSpans,
+        retainedSpans: trace.spans.length,
+        omittedSpans: trace.spansOmitted,
+        stagesWithSpans: observedStages.length,
+        declaredRoots: traceRoots.length,
+        rootsWithSpans: traceRoots.filter(root => (root.observedSpans ?? 0) > 0).length,
+        unmatchedEnds: trace.unmatchedEnds,
+        mismatchedEnds: trace.mismatchedEnds,
+        unknownSites: trace.unknownSites,
+        rejectedSpans: trace.rejectedSpans,
+        ignoredEvents: trace.ignoredEvents,
+        unattributedFrames: trace.unattributedFrames,
+        abortedFrames: trace.abortedFrames,
+        failedFrames: trace.failedFrames,
+        openFramesAtTerminal: trace.openFramesAtTerminal,
+      },
+      unitsByField: {
+        traceSpanBoundaries: 'host-step-calls carrying a traced Run', traceEvents: 'engine trace events',
+        emptySpanBoundaries: 'traced Run values',
+        begins: 'engine Begin events', ends: 'engine End events', closedSpans: 'engine-bracketed spans',
+        retainedSpans: 'retained span rows', omittedSpans: 'span rows beyond the retention bound',
+        stagesWithSpans: 'declared emit stages', declaredRoots: 'declared trace roots',
+        rootsWithSpans: 'declared trace roots', unmatchedEnds: 'engine End events',
+        mismatchedEnds: 'engine End events', unknownSites: 'engine Begin events',
+        rejectedSpans: 'traced Run values', ignoredEvents: 'engine trace events',
+        unattributedFrames: 'traced frames', abortedFrames: 'traced frames',
+        failedFrames: 'traced frames', openFramesAtTerminal: 'traced frames',
+      },
+      source: 'checker_core_step_runtime.mjs cold traced-Run branch -> engine EmitterTraceBegin/EmitterTraceEnd -> evals/compiler_profile.mjs begin/end',
+      details: {
+        phase, protocol,
+        evidenceType: 'measured scheduler-boundary spans; never samples, never exclusive CPU and never per-stage memory',
+        verdict: 'a complete bracket set proves the traced canonical calls were entered and left, never that the workload succeeded: a typed EmitFailure can carry complete brackets, and the coarse emitting span owns the success/failure verdict',
+        status: trace.status,
+        statusReasons: Object.fromEntries([...trace.reasons.entries()].sort(([a], [b]) => a.localeCompare(b))),
+        statusReasonsOmitted: trace.reasonsOmitted,
+        blocked: trace.blocked,
+        spanBoundaries: {
+          resolution: 'one endpoint per emitted event: the single host step call that delivered the traced Run value',
+          clock: 'collector begin/end snapshots when rawDetail is enabled, otherwise the host boundary clock',
+          quantum: trace.table?.quantum ?? null,
+          maxEventsPerBoundary: trace.table?.maxEventsPerBoundary ?? null,
+          noBatching: 'no trace event is extrapolated across a 64-step chunk and no event is timed from a chunk boundary sample',
+        },
+        durationSemantics: {
+          inclusive: 'a span\'s wall interval includes its traced children, any process work interleaved while it is open, and this collector\'s own instrumentation',
+          selfWallMsNotExclusive: 'parent wall minus the summed direct-child wall at these boundaries; wall arithmetic on overlapping intervals, never CPU',
+          exclusiveSourceCpu: 'unavailable: overlapping nested spans and interleaved runtime work leave no exclusive per-stage CPU',
+          perStageMemory: 'unavailable: only phase-boundary process snapshots exist; no per-stage allocation, live or retained byte figure is derived',
+          instrumentationOverhead: 'each traced call adds one host step and one chunk call per emitted event plus a RunSpan-shaped chunk return; that overhead lands inside the measured span and is reported, never subtracted',
+        },
+        collectorSpans: {
+          status: trace.collectorSpans,
+          reason: trace.collectorSpanReason,
+          nesting: 'one collector span per open engine frame, closed strictly innermost first; a mismatch closes the frame explicitly and stops attribution',
+        },
+        identity: {
+          spanId: 'per-phase call ordinal assigned at the Begin boundary; distinct for repeated calls of the same stage, site and definition, and unique inside this attribution',
+          collectorSpanId: 'id of the corresponding evals/compiler_profile.mjs span, or null when no collector span was created',
+          parentSpanId: 'spanId of the enclosing traced frame, or null when the frame is a root or its parent was unattributed',
+          site: 'the engine-emitted U32 site, resolved to one authenticated manifest root',
+        },
+        manifest: trace.table === null ? null : {
+          namespace: trace.table.namespace,
+          protocolVersion: trace.table.protocolVersion,
+          constructors: trace.table.constructors,
+          generationManifestSha256: trace.table.generationManifestSha256,
+          selfAuthentication: trace.table.selfAuthentication,
+          artifactBinding: trace.table.artifactBinding,
+          status: trace.table.status,
+          reasons: trace.table.reasons,
+        },
+        namespaceBinding: trace.table === null ? 'unresolved: no traced Run value was observed'
+          : trace.table.namespace === null ? 'unresolved'
+            : trace.blocked === null ? 'verified: observed Run namespace, trace manifest namespace and artifact receipt agree'
+              : 'refused: ' + trace.blocked,
+        roots: traceRoots,
+        coverage: {
+          declaredStages,
+          observedStages,
+          stagesDeclaredWithoutObservedSpans: declaredStages.filter(stage => !observedStages.includes(stage)),
+          note: 'a declared root that produced no span is reported, never dropped; a stage absent from the manifest stays unclassified rather than sampled',
+        },
+        spanSets: stageSets,
+        observedParentEdges: Object.fromEntries([...trace.edges.entries()].sort(([a], [b]) => a.localeCompare(b))),
+        parentEdges: {
+          source: 'the engine stack: a Begin pushes a frame and its matching End pops it, so a parent edge is the enclosing open frame at the Begin boundary',
+          declared: 'the authenticated trace block declares roots, not parent edges; no declared parent is invented here and the observed edges stand alone',
+          spanSetStages: 'descriptor-nf and layouts are call sets under several parents, which the per-stage parent map reports as more than one parent',
+        },
+        spans: trace.spans,
+        spanRetention: {limit: MAX_TRACE_SPANS, retained: trace.spans.length, omitted: trace.spansOmitted,
+          note: 'individual rows are bounded; per-stage span sets, counts and summed intervals above are complete, and a row whose status is not completed carries no end endpoint and no duration'},
+        unknown: [
+          'exclusive CPU per stage or span: not observable; spans nest and interleave, and the only CPU deltas are process-wide and this-thread',
+          'per-stage allocation, live memory and retained bytes: not observable at an engine bracket',
+          'exact time of work inside a traced call: only the two scheduler boundaries are timed',
+          'work between two brackets of the same stage: never attributed to that stage',
+          'external linker execution: unreachable in this host, which emits source text only',
+        ],
+      },
+    });
+  }
+
   return {
     onStep(_steps, run) {
       hostSteps += 1;
       // Clocks bracket the read-only progress observation so the collector's
       // own classification/checkpoint work never lands inside an interval.
+      // Trace folding also runs here, after the end clock and before the next
+      // interval anchor, so its cost lands outside every measured interval.
       const endAt = measureIntervals ? performance.now() : 0;
       const endThread = measureThreadCpu ? threadCpuBoundary() : null;
-      const sample = typedProgressSample(run);
-      checkpoint(sample);
-      const endpoint = classify(sample);
+      let endpoint;
+      if (trace !== null && observeTraceBoundary(_steps, run))
+        endpoint = {visibility: 'trace-span', group: 'unclassified', basis: null, source: null, request: null};
+      else {
+        const sample = typedProgressSample(run);
+        checkpoint(sample);
+        endpoint = classify(sample);
+      }
       if (!measureIntervals) return;
       if (previousBoundary !== null) accumulateInterval(previousBoundary, {...endpoint, at: endAt, thread: endThread}, null);
       previousBoundary = {...endpoint, at: performance.now(),
         thread: measureThreadCpu ? threadCpuBoundary() : null};
     },
-    onFinish(_value, _steps) {closeTerminal('finish');},
-    onError(_error, _steps) {closeTerminal('error');},
+    onFinish(_value, _steps) {closeTerminal('finish'); flushTrace('finish', 'aborted');},
+    onError(_error, _steps) {closeTerminal('error'); flushTrace('error', 'failed');},
     record(profile) {
       profile.record({
         kind: 'typed-step-exact-counters', scope: 'host orchestration', name: phase + '-steps',
         units: 'host-step-calls', value: hostSteps, source: 'checker_core_step_runtime.mjs',
         details: {phase, hostStepCall: 'one bounded public step export call; initial start call excluded',
-          nativeChunkQuantum: 64, note: 'exact host calls, not semantic operations or CPU'},
+          nativeChunkQuantum: 64, note: 'exact host calls, not semantic operations or CPU',
+          ...(trace === null ? {} : {traceSpanBoundaries: trace.boundaries,
+            traceSpanNote: 'traced Run boundaries are host-step calls too; they carry engine trace events instead of typed progress and are excluded from the sample counts below'})},
       });
       if (shapes.size > 0) profile.record({
         kind: 'typed-progress-samples', scope: 'host-visible typed chunk boundary',
@@ -790,9 +1449,14 @@ export function createStepAttribution(phase, protocol, table, profile, options =
             ? 'no generator manifest supplied; fully qualified request tags are retained but ungrouped'
             : 'request namespace bound to the observed Run; groups require an exact registered manifest request tag and declared canonical source path (basename fallback only when unambiguous)',
           intervalMeasurement: 'see the same phase \'-intervals\' observation: measured bounded-step intervals are a separate evidence type and are never added to these sample counts',
+          ...(trace === null ? {} : {traceSpanBoundaries: trace.boundaries,
+            traceBoundaryNote: 'a traced Run boundary carries engine Begin/End events, not typed progress; it is not counted as a request sample and its spans are reported by the separate scheduler-boundary-spans observation'}),
         },
       });
-      if (!measureIntervals) return;
+      if (!measureIntervals) {
+        reportTrace();
+        return;
+      }
       profile.record({
         kind: 'step-interval-measurements', scope: 'host-visible bounded-step intervals in one typed phase',
         name: phase + '-intervals',
@@ -858,8 +1522,16 @@ export function createStepAttribution(phase, protocol, table, profile, options =
             'link execution: unreachable in this host, which emits source text only',
             'worker and child process CPU: excluded from both deltas; a worker or native child reports its own identity/receipt and is never merged here',
           ],
+          ...(trace === null ? {} : {
+            traceBoundaries: {
+              observed: trace.boundaries,
+              attribution: 'a traced Run boundary exposes engine Begin/End events and no typed progress, so the interval that starts there is attributed to the unclassified trace-span key instead of an invented request',
+              separateEvidence: 'its spans are reported by the scheduler-boundary-spans observation of this phase and are never added to these intervals',
+            },
+          }),
         },
       });
+      reportTrace();
     },
   };
 }
