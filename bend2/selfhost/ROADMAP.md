@@ -23,13 +23,22 @@ semantic parser approvals. All 95 native-seed fixtures, both complete
 33-case C/JS matrices, seven native foreign/library scenarios and five nested
 host-export consumers pass. All 53 root source/foreign files were checked
 byte-for-byte against the local source closure before checkpointing.
+The separate unchanged-image companion also passes **95 fixtures on stage1
+and 95 on stage2**: 285 total including the native seed, with 130 fresh full
+semantic parser approvals per emitted image. Its guard completes in
+228,356 ms; this companion time is not folded into the monolithic bootstrap.
+Proof: `evals/receipts/root2039g8b_emitted_suites.json`.
 
 Proof: `evals/receipts/root2039g8b_native_fixedpoint.json`. Generated compiler
 images, transports and bulk logs remain outside Git. Earlier failed versions
 below remain rejected. The separate canonical JS-seed/default-stack parser
-failure is not reclassified. Full-input profiling-overhead controls, a reduced
-producer memory-growth diagnostic and uncovered law-boundary checks remain
-separate deliverables; runtime acceptance does not prove the FIR/BIR laws.
+failure is not reclassified. Full-input profiling-overhead controls and
+uncovered law-boundary checks remain separate deliverables; runtime acceptance
+does not prove the FIR/BIR laws. The reduced current-producer memory diagnostic
+is exercised in `evals/receipts/producer2039g8_reduced_memory.json`: one literal
+main isolates reachability/pass-1 growth, while chain/linear call placement
+separates speculative segment/preparation amplification. Samples are not
+allocation totals, retained bytes or a reproduction of the whole-root peak.
 
 
 **Status legend**

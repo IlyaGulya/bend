@@ -144,10 +144,10 @@ function familySource(family: string, defs: number): string {
   if (family !== 'chain' && family !== 'linear')
     throw Error('unknown family ' + family);
   const out = ['import Base', ''];
-  for (let i = 0; i < defs; i += 1) {
+  for (let i = defs - 1; i >= 0; i -= 1) {
     out.push(`def c_${i}(x: U32) -> IO(Unit):`, '  do IO<Unit>:',
-      '    y <- IO.pure(U32, U32.add(x, 1))',
-      '    z <- IO.pure(U32, y)');
+      '    y : U32 <- IO.pure(U32, U32.add(x, 1))',
+      '    z : U32 <- IO.pure(U32, y)');
     if (i + 1 < defs) {
       if (family === 'chain') out.push(`    c_${i + 1}(z)`);
       else out.push('    Unit <- c_' + String(i + 1) + '(z)',
@@ -191,6 +191,7 @@ async function runCase(spec: CaseSpec): Promise<CaseResult> {
   };
   const samples: Sample[] = [];
   let compileStarted = 0;
+  let kernel: typeof Bend | undefined;
   const post = (message: unknown) => parentPort?.postMessage(message);
   const progress = (event: Progress) => {
     result.lastProgress = event;
@@ -202,7 +203,7 @@ async function runCase(spec: CaseSpec): Promise<CaseResult> {
   try {
     // Dynamic on purpose: module evaluation and its heap must belong to this
     // supervised worker (the launcher also parses this file before the gate).
-    const kernel = await import('../bend2/bend.ts') as typeof Bend;
+    kernel = await import('../bend2/bend.ts') as typeof Bend;
     const compiler = await import('../bend2/comp.ts') as typeof Compiler;
     result.baselineHeapUsed = process.memoryUsage().heapUsed;
     const book = kernel.book_nil();
@@ -277,7 +278,9 @@ async function runCase(spec: CaseSpec): Promise<CaseResult> {
       ? 'REPORT_LIMIT_EXCEEDED' : 'COMPLETED';
   } catch (error) {
     result.status = 'FAILED';
-    result.error = error instanceof Error ? error.message : String(error);
+    result.error = kernel && error && typeof error === 'object' && '$' in error && error.$ === 'Err'
+      ? kernel.err_show(error as Bend.Err)
+      : error instanceof Error ? error.message : String(error);
     result.compileWallMs = compileStarted === 0 ? 0 : performance.now() - compileStarted;
     result.samples = samples;
   }

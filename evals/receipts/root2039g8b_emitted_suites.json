@@ -1,0 +1,2179 @@
+{
+  "schemaVersion": 1,
+  "status": "EMITTED_SUITES_BEHAVIOR_PASS",
+  "passed": true,
+  "scope": "Authenticated root byte fixedpoint and original 95 seed results plus 95 freshly executed fixtures on EACH unchanged emitted image. Separate behavior proof, not aggregate bootstrap/speed acceptance.",
+  "rootAcceptance": "evals/receipts/root2039g8b_native_fixedpoint.json",
+  "originalCertificate": {
+    "report": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/checkpoints/selfhost-remote2039g8b-bootstrap.json",
+    "reportSha256": "bc1385ac5733a5d5064616fb6cbfdabcbac817e4971a4cac67fabd3282b171c9",
+    "request": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/checkpoints/selfhost-remote2039g8b-bootstrap.json.cases/request.json",
+    "requestSha256": "9c0b9567c4ab2a36e3f8674960066ac30401ad60ccc809e9a738d1cc54e16b15",
+    "equal": true,
+    "comparison": "Buffer.equals on actual unchanged files",
+    "stageOne": {
+      "path": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/checkpoints/selfhost-remote2039g8b-bootstrap.json.cases/stage-one.js",
+      "sha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+      "bytes": 28334920
+    },
+    "stageTwo": {
+      "path": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/checkpoints/selfhost-remote2039g8b-bootstrap.json.cases/stage-two.js",
+      "sha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+      "bytes": 28334920
+    },
+    "sourceHashes": [
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/base.bend",
+        "sha256": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+        "sourceBytesSha256": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+        "namespace": ""
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/effs/args.js",
+        "sha256": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82",
+        "sourceBytesSha256": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82",
+        "external": true
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/effs/audio_close.js",
+        "sha256": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+        "sourceBytesSha256": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+        "external": true
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/effs/audio_open.js",
+        "sha256": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9",
+        "sourceBytesSha256": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9",
+        "external": true
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/effs/audio_write.js",
+        "sha256": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6",
+        "sourceBytesSha256": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6",
+        "external": true
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/effs/chan.js",
+        "sha256": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f",
+        "sourceBytesSha256": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f",
+        "external": true
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/effs/file_close.js",
+        "sha256": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+        "sourceBytesSha256": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+        "external": true
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/effs/file_open.js",
+        "sha256": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694",
+        "sourceBytesSha256": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694",
+        "external": true
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/effs/file_read.js",
+        "sha256": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+        "sourceBytesSha256": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+        "external": true
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/effs/file_size.js",
+        "sha256": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+        "sourceBytesSha256": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+        "external": true
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/effs/file_write.js",
+        "sha256": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0",
+        "sourceBytesSha256": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0",
+        "external": true
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/effs/get_env.js",
+        "sha256": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4",
+        "sourceBytesSha256": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4",
+        "external": true
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/effs/listener_close.js",
+        "sha256": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+        "sourceBytesSha256": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+        "external": true
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/effs/now.js",
+        "sha256": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+        "sourceBytesSha256": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+        "external": true
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/effs/print_err.js",
+        "sha256": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+        "sourceBytesSha256": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+        "external": true
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/effs/print.js",
+        "sha256": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+        "sourceBytesSha256": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+        "external": true
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/effs/process_run.js",
+        "sha256": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729",
+        "sourceBytesSha256": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729",
+        "external": true
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/effs/random_u32.js",
+        "sha256": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+        "sourceBytesSha256": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+        "external": true
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/effs/sleep.js",
+        "sha256": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+        "sourceBytesSha256": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+        "external": true
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/effs/socket_close.js",
+        "sha256": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+        "sourceBytesSha256": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+        "external": true
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/effs/spawn.js",
+        "sha256": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+        "sourceBytesSha256": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+        "external": true
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/effs/tcp_accept.js",
+        "sha256": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+        "sourceBytesSha256": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+        "external": true
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/effs/tcp_connect.js",
+        "sha256": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb",
+        "sourceBytesSha256": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb",
+        "external": true
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/effs/tcp_listen.js",
+        "sha256": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+        "sourceBytesSha256": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+        "external": true
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/effs/tcp_recv.js",
+        "sha256": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+        "sourceBytesSha256": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+        "external": true
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/effs/tcp_send.js",
+        "sha256": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6",
+        "sourceBytesSha256": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6",
+        "external": true
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/effs/thread_count.js",
+        "sha256": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+        "sourceBytesSha256": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+        "external": true
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/effs/udp_bind.js",
+        "sha256": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+        "sourceBytesSha256": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+        "external": true
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/effs/udp_recv_from.js",
+        "sha256": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad",
+        "sourceBytesSha256": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad",
+        "external": true
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/effs/udp_send_to.js",
+        "sha256": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+        "sourceBytesSha256": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+        "external": true
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/effs/window_close.js",
+        "sha256": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+        "sourceBytesSha256": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+        "external": true
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/effs/window_frame.js",
+        "sha256": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+        "sourceBytesSha256": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+        "external": true
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/effs/window_grab.js",
+        "sha256": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+        "sourceBytesSha256": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+        "external": true
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/effs/window_open.js",
+        "sha256": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+        "sourceBytesSha256": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+        "external": true
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/effs/window_set_title.js",
+        "sha256": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+        "sourceBytesSha256": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+        "external": true
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/effs/write.js",
+        "sha256": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+        "sourceBytesSha256": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+        "external": true
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/selfhost/ast.bend",
+        "sha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+        "sourceBytesSha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+        "namespace": "../bend2/selfhost/ast"
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/selfhost/backend_ir.bend",
+        "sha256": "f19e76411b589cc396cda80bb8ad387cdb5e9aef17ae287641f0d29696a88e9e",
+        "sourceBytesSha256": "f19e76411b589cc396cda80bb8ad387cdb5e9aef17ae287641f0d29696a88e9e",
+        "namespace": "../bend2/selfhost/backend_ir"
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/selfhost/c_backend_sharing.bend",
+        "sha256": "c8861993d2ad81057a9ba8b187eb75f743a9005fbb021b43083e7e2906597a40",
+        "sourceBytesSha256": "c8861993d2ad81057a9ba8b187eb75f743a9005fbb021b43083e7e2906597a40",
+        "namespace": "../bend2/selfhost/c_backend_sharing"
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/selfhost/checked_frontend.bend",
+        "sha256": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+        "sourceBytesSha256": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+        "namespace": "../bend2/selfhost/checked_frontend"
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/selfhost/checker_arena.bend",
+        "sha256": "2a26c3d8ce66412591030fa2fd6df9f9e53c0fececd9d9ae702def2f475f1752",
+        "sourceBytesSha256": "2a26c3d8ce66412591030fa2fd6df9f9e53c0fececd9d9ae702def2f475f1752",
+        "namespace": "../bend2/selfhost/checker_arena"
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/selfhost/checker_ir.bend",
+        "sha256": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+        "sourceBytesSha256": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+        "namespace": "../bend2/selfhost/checker_ir"
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/selfhost/core.bend",
+        "sha256": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+        "sourceBytesSha256": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+        "namespace": "../bend2/selfhost/core"
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/selfhost/index_lookup.bend",
+        "sha256": "563c9b152699b490cf68b264e6c4dea4a4e6770dfcf527cf6c81911cb5ea1b78",
+        "sourceBytesSha256": "563c9b152699b490cf68b264e6c4dea4a4e6770dfcf527cf6c81911cb5ea1b78",
+        "namespace": "../bend2/selfhost/index_lookup"
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/selfhost/lexer.bend",
+        "sha256": "a81265d4ab248c5ea74bf52987e1163773866a01b264ff1a98895d91139d6f53",
+        "sourceBytesSha256": "a81265d4ab248c5ea74bf52987e1163773866a01b264ff1a98895d91139d6f53",
+        "namespace": "../bend2/selfhost/lexer"
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/selfhost/loaded_module.bend",
+        "sha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+        "sourceBytesSha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+        "namespace": "../bend2/selfhost/loaded_module"
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/selfhost/path.bend",
+        "sha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+        "sourceBytesSha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+        "namespace": "../bend2/selfhost/path"
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/selfhost/scope_lookup.bend",
+        "sha256": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
+        "sourceBytesSha256": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
+        "namespace": "../bend2/selfhost/scope_lookup"
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/bend2/selfhost/sha256.bend",
+        "sha256": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+        "sourceBytesSha256": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+        "namespace": "../bend2/selfhost/sha256"
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/checkpoints/.bootstrap_compiler_root_remote2039g8b.bend",
+        "sha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+        "sourceBytesSha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+        "namespace": ""
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/checkpoints/checker_core_steps_v1.bend",
+        "sha256": "33d7b74d27e82f5c2c8608420c244f4a46f78f3d31e2b6c1a783261db3c9e30f",
+        "sourceBytesSha256": "33d7b74d27e82f5c2c8608420c244f4a46f78f3d31e2b6c1a783261db3c9e30f",
+        "namespace": "checker_core_steps_v1"
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/checkpoints/emitter_steps_v1.bend",
+        "sha256": "81362675a58df5551f101d578afa976098c742fd4b4fa97e3182b6d31fe675dd",
+        "sourceBytesSha256": "81362675a58df5551f101d578afa976098c742fd4b4fa97e3182b6d31fe675dd",
+        "namespace": "emitter_steps_v1"
+      },
+      {
+        "file": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/checkpoints/template_steps_v1.bend",
+        "sha256": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4",
+        "sourceBytesSha256": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4",
+        "namespace": "template_steps_v1"
+      }
+    ]
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000,
+    "workerStackMiB": 256,
+    "workerOldGenerationMiB": 6144,
+    "workerYoungGenerationMiB": 128,
+    "parserFuel": 8000000,
+    "maxHeavyChildren": 1
+  },
+  "requiredExports": [
+    "parsed_module",
+    "parse_with_fuel",
+    "expand_modules_start",
+    "template_step",
+    "check_expanded_start",
+    "inspect_checked_start",
+    "checker_step",
+    "emit_modules_start",
+    "emit_library_start",
+    "emitter_step",
+    "emit_c_modules_start",
+    "emit_c_library_start",
+    "c_emitter_step"
+  ],
+  "evidenceCounts": {
+    "existingSeed": 95,
+    "freshStageOne": 95,
+    "freshStageTwo": 95,
+    "freshEmitted": 190,
+    "total": 285
+  },
+  "runnerSnapshot": {
+    "path": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/checkpoints/selfhost-remote2039g8b-emitted-suites-e.json.cases/selfhost_emitted_suites.ts",
+    "sha256": "b59e361ef08237af39ab95c297a82734a5912af4014f9e7ed4aefc72da60cfd5"
+  },
+  "rawReceipt": {
+    "path": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/checkpoints/selfhost-remote2039g8b-emitted-suites-e.json",
+    "sha256": "bdd059b18917796fa307af849549d312eed5c42ba4de4296e4492f1f0522ebec"
+  },
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 2647408640,
+    "peakFootprintBytes": 1104286600,
+    "elapsedMs": 228356,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/.tools/bun",
+      "--smol",
+      "/private/tmp/bend-emitted-suites-runner-32f4b3ab-f30c-42ab-8fc0-86c74ac0546e/evals/selfhost_emitted_suites.ts",
+      "--fixedpoint-report=checkpoints/selfhost-remote2039g8b-bootstrap.json",
+      "--stage-sha256=0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+      "--stage-bytes=28334920",
+      "--report=checkpoints/selfhost-remote2039g8b-emitted-suites-e.json",
+      "--worker"
+    ],
+    "label": "Both unchanged emitted compiler semantic suites",
+    "exitCode": 0,
+    "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1793114534651-66f980ac86cfe408.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "stages": [
+    {
+      "stage": "stage-one",
+      "image": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/checkpoints/selfhost-remote2039g8b-bootstrap.json.cases/stage-one.js",
+      "imageSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+      "command": [
+        "node",
+        "/private/tmp/bend-emitted-suites-runner-32f4b3ab-f30c-42ab-8fc0-86c74ac0546e/evals/selfhost_bootstrap_worker.mjs",
+        "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/checkpoints/selfhost-remote2039g8b-emitted-suites-e.json.cases/stage-one/request.json"
+      ],
+      "passed": true,
+      "exitCode": 0,
+      "workerResult": {
+        "passed": true,
+        "compilerBootstrapGreen": false,
+        "selfhostGreen": false,
+        "diagnosticFixture": "authenticated-complete-emitted-suite",
+        "fixtureExecutions": 95
+      },
+      "fixtureRows": [
+        {
+          "name": "type-specialization",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "2c23d4dd3809789d8c2d850bb30a6f71ec3b59a8f009de87a7fff594d3bef937",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "constructor-eliminator-hit",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "14999660fd5f3d8d57bd69e2dfb816e80a224aa959fe300a28c1c45e6dc6982a",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "constructor-eliminator-default",
+          "accepted": true,
+          "passed": true,
+          "output": "BitZero{}",
+          "sourceSha256": "d4e0e45297075195eed5b457debe85e5941754392a301ac61f44809e27968a29",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "tag-dispatch-nested-fallthrough",
+          "accepted": true,
+          "passed": true,
+          "output": "Results{BitZero{}, BitOne{}, BitOne{}, BitZero{}, BitOne{}}",
+          "sourceSha256": "a1568e3b35ab5f29d11cfd35331515b0af6fa5eacb2e99a19f41b5330f436391",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "root-match-local-order",
+          "accepted": true,
+          "passed": true,
+          "output": "Result{BitZero{}, BitOne{}, BitOne{}}",
+          "sourceSha256": "175cba4f8e661b2775244d242f33d0faf43049bab7a18a7b57e79aa4e4cdd676",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "native-nat-extrema-boundaries",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "4edfd2827a7cad3afc1527f5c3c812455b526e40ef83b2734bd79cd7def4ef94",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "source-tail-large-recursion",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "50fba9401abf73a3925dc50f089bed4eebfb69a9b2f182547f5e3e3937b63d0f",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "nullary-array-freshness",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "719016f8be4f6b974a70518c01f585dcde8859be52bccea58ff46a0800555896",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "aliased-specialization",
+          "accepted": true,
+          "passed": true,
+          "output": "specialization-lib.BitOne{}",
+          "sourceSha256": "ef02d443458970bf0bae0d2a6a0049b7f3bc88da9678b1b659943d16330bc557",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "callback-specialization",
+          "accepted": true,
+          "passed": true,
+          "output": "BitZero{}",
+          "sourceSha256": "7f51a179d1d28b86a4fc6a9df6932d1aaf620dfa85197d00cbc9fa1fedb27a27",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "specialized-type-error",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "0213d5a9cbfc9604ea73e33c50257c09c5d5e00f63e721d89a3394494ee46062",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "runtime-template-capture",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "expand",
+          "sourceSha256": "7ef06d611221e1cd9313f7308e038bcccb0c934294fd512bd45ce91126d915d3",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "template-generation-rounds",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "cac73a00f3deff0f9867a71abd65fea6aeffdcdc0ffa2d73b53b5919c818bdaf",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "readonly-index-boundaries",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "81b86f9266650e6e57bd73c2c6c741dcafb31b221d4af7b7de5ccef94616f3bc",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "readonly-index-nonmonotone",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "8876daf8f6feb7c7b4656317164830f06fc6a1f467c7210d8e2a23e11227daff",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "dependent-kind-binding",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "d09b89c2a1050453bc6d1639ac84a908a66fcf8413c23b42c7a9e30e36cce3b5",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "law-completion-binding",
+          "accepted": true,
+          "passed": true,
+          "output": "WNil{}",
+          "sourceSha256": "2aa03a5d2ff7e3d154ab12187b39dd31c7c2a6963698f27948a2a190a8ecf37f",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "forward-family-definition",
+          "accepted": true,
+          "passed": true,
+          "output": "WNil{}",
+          "sourceSha256": "b33f392b9139c0128990c881413166eb6cf3179444cd95433c565ac082b8fd0a",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "forward-definition-call",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "97f4da569188c189a8d1457a258eead66de64578baec811b559d3446754333a9",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "named-entry-separator-collision",
+          "accepted": true,
+          "passed": true,
+          "output": "CSucc{CSucc{CSucc{CZero{}}}}",
+          "sourceSha256": "ce8bf711b87837cbc67a14ed6f3234d9c45715eebf3b4d63e986b214299f867a",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "forward-definition-invalid-body",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "3796fe01848e130dbffc7ac8dfd6aeae972f1ddc65c193b3ad78ada374bf5006",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "recursive-neutral-application-equality",
+          "accepted": true,
+          "passed": true,
+          "output": "True{}",
+          "sourceSha256": "d4ebfd86789f77581482c6e5c8f47a17912e5edbbdf6e5a5010fb0cdba4f5e7e",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "application-order",
+          "accepted": true,
+          "passed": true,
+          "output": "Duo{BitOne{}, BitZero{}}",
+          "sourceSha256": "d515754b349ba4dd3985d977113503d83698838c57282cd142e314471e80aee8",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "annotated-banged-partial-application",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "265366bfa96b9563845094fb3abf3cec75e042ba6039a440d019d1bbf8bf7f69",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "annotated-banged-partial-result-mismatch",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "9687ae6f2da883e006915717442cd4df59929576148853c523df3f85ad373454",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "renamed-dependent-law-completion",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "67efffba57405e11d52be3311441b8c1631557ab61b3b35d1de69b978a0eb71c",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "law-completion-result-mismatch",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "98d12ef11062ed42b3847e076dbb2fedad576e6ec01f88c89461fcfd2e4e20e8",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "partial-family-application",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "e4e6414bdb3d9524161585fb007e1557b0815782005884c1e3cb3a4dc87af3fa",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "affine-duplicate",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "1eab87729494aa38d657d584a655a13923e77f6f463104e08770f00f54facf31",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "dependent-field-pattern",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "25577204491965929c8a67943fa11e913757bee64dbd7285e5eb9f124700d72d",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "indexed-family-parameter-mismatch",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "eea3fa552b43e60fcbb733c3a0363dd60529723bdf09256d5d78ee244220dcd7",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "equality-congruence-rewrite",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "8393197b610d5b39c04ce5884ab0fffeb32936e05ee3a68a4d42bc0bb205510b",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "rewrite-result-mismatch",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "05749623daac71fc3caa1b955d4796ccf86586856880e6efe10c6d2af96c9497",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "empty-datatype-match",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "678639d3854a305d0df75c8f933a5e239d24da869ab60f7ea4db2ef69c84d942",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "nonempty-datatype-empty-match",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "89201d6cade157fa701a59e0537333472c9414671a7365c9386cc6f711fd8b24",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "abstract-type-empty-match",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "39dacd9a8b695faf64cfee62f2473d2e8ecc66ececb030d6796dd6a45a742024",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "aliased-constructor-conversion",
+          "accepted": true,
+          "passed": true,
+          "output": "alias-name-lib.BitOne{}",
+          "sourceSha256": "d40bd184d4da826e610f46e5b376470c241bf400c154321e4759906c6de5d397",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "distinct-imported-family-mismatch",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "52882eabd86c89dc126331b004c59c18e37cd9e1db445b1660407c957b1cb51d",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "same-module-alias-family-equality",
+          "accepted": true,
+          "passed": true,
+          "output": "scope-left-lib.BitOne{}",
+          "sourceSha256": "1459bb0a523b1a543c7662831722c0d31915fc347cc3d23a88329e69de59a675",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "same-module-alias-constructor-rows",
+          "accepted": true,
+          "passed": true,
+          "output": "scope-left-lib.BitOne{}",
+          "sourceSha256": "6463a43c6c90eb3f0a047690004df8207430760b2c3710db942248be96464edb",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "alias-dependent-conversion",
+          "accepted": true,
+          "passed": true,
+          "output": "scope-left-lib.BitOne{}",
+          "sourceSha256": "0918c7e24572c7843e5dc7734d023e42ac961ce74ff34a1b44070d1237df3ca5",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "stuck-first-row-dependent-conversion",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "2de665221faf52e991a1c11b5676502efd0fbf02716b045958459d10cf6996b9",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "local-imported-family-mismatch",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "200b4a797c383856a7e369c99486c0ef939ed3bd5a4d14f1758f10a1bc77cd04",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "datatype-constructor-shared-name",
+          "accepted": true,
+          "passed": true,
+          "output": "Wrapper{BitOne{}}",
+          "sourceSha256": "cf1ff3a9fdaee568fc064d36da3dc8b72093da197515bce5d9ffd11ec62474bd",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "constructor-args-field",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "ed8d8898dc20d7789a6927d22d39e0613f0ad2975859e0afbd64c4b5ef6b415b",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "structural-predecessor-recursion",
+          "accepted": true,
+          "passed": true,
+          "output": "CSucc{CSucc{CSucc{CSucc{CZero{}}}}}",
+          "sourceSha256": "2964309f829f1d8139af4aa0bd4ff52e98e8a4f65c8284b92bb6517758d720ea",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "structural-original-input-recursion",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "3de513ed0101ec41fc3a66d213ee97a4ec46bd6ad4903cf792c1a24671873d97",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "structural-equal-input-recursion",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "a0ed387e14bff247794e4dc18d811f0bcc62fd8857d920479a2f865b9a8ad0dc",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "structural-growing-input-recursion",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "c03c61fb6ccafb0c966a22a78bd0694aa0232d37c59ea743bbf77f9b25a76ce0",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "recursive-matrix-variable-column",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "5d3613ea59c3d9d6e9c2eec23dc4ff345ff69eed791f67ab713c38dd2b2228ef",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "recursive-matrix-incomplete-variable-column",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "cff0f694f6b404cc19e9aecb446762877b1dfc3d7f3fbd70299a1a4e2bb59e0a",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "copied-constructor-field-quantity",
+          "accepted": true,
+          "passed": true,
+          "output": "CZero{}",
+          "sourceSha256": "075d740f094cc8913a1184848d7dfe2386ca3b640fbecd54aaec6f39710f099a",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "affine-constructor-field-quantity",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "8b58221d0ac6a903a8ac44b5b673a1b1c070af5fcd3fe689cc58673f4a11385a",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "erased-constructor-field-quantity",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "cc25414153fe5ece095d184424a07208d4bb76d31966ea175cab691c0ee604b7",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "erased-constructor-default-binding",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "c8a3f957effaf0ac6964e1be74624402bdd66eede92d384b6725deed44cf9dd3",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "long-unicode-string-pattern-tail",
+          "accepted": true,
+          "passed": true,
+          "output": "Results{BitOne{}, BitZero{}, BitOne{}}",
+          "sourceSha256": "fc0b4e09b6e16012d6cef0fb8d796817d5b7b658f48b9837d5fccfce8526c202",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "compact-string-native-scalars-and-explicit-equivalence",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "4ef313bc46f9dfda39142fd79bfb6910517532c7172e682a4a255a04a1e14b6f",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "compact-string-imported-template-alias-capture",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "3786bad35796874efd0c4c7dc78f2a97d08b9238f336f6ab2854807e8fd6beaf",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "compact-string-primitive-like-shadow-fallback",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "fc9ed48a88fecaf6b85f90af46378eb42dc9fc1a2391c4b9ea50403e92fa7530",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "compact-string-dependent-explicit-constructor-equality",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "6d97d02c58455eba53395d5a626f6b60d19ef5a48deba95618ac0393c92c0f9e",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "compact-string-template-empty-unused-constructors",
+          "accepted": true,
+          "passed": true,
+          "output": "SNil{}",
+          "sourceSha256": "477e33c81dc909e9449dd36a9aafc8085136d48c350eb31da5eb63d5f48d9b0e",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "compact-string-template-zero-unused-true",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "b9ec0f2924bfd00ba010a95a0223c711b331d5b665f3e8690566ca4b5e92929d",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "compact-string-invalid-scalar-custom-constructor-fallback",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "99f41df074e9e17c6c84f960899b1a91ab739f174a1ba89dbd2375bd2b1e7c7b",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "compact-string-tail120001-callback",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "d1be55f37408a9d5e75670f6ed078bc17b7d690294c6f07e294f38b508ca518e",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "patricia-selected-branch-unicode",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "3bc71773178f0b00409007341b300efaf11d0b90e5a725a47e44ffcf7ea590b4",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "mixed-named-closure-tail120001",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "8bf7f4602897dc2b8f70b45fea329ff84780faa40214ade087b339303f03db1e",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "private-tail-register-boundaries",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "95df4b84cf824eee111364977a3d0a5fe3162baa7123e8f5162202cc6a27d6a5",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "compact-string-invalid-native-scalar-deferred-branch",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "1998de6cbbbcd71224bbb8077b37522dc7d059e2115ca56237c4e884d7f526ea",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "dependent-match-goal-refinement",
+          "accepted": true,
+          "passed": true,
+          "output": "BCons{BNil{}}",
+          "sourceSha256": "78a54dfd45b2e19b0b8e3616af237b899d34185d125e5fa4625809df43fc964c",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "dependent-vector-goal-refinement",
+          "accepted": true,
+          "passed": true,
+          "output": "BCons{BNil{}}",
+          "sourceSha256": "030547086f21efffb39fe0e1b6c043d3cd288ecc1de4b4de235c5236f3c5a2e2",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "dependent-nested-binding-refinement",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "6420d0a0bf70b80e396c28cd4b93f17f7d53d9f8f36b6ad7df07b41e01d79267",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "dependent-tuple-local-binding",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "8421df1a1f10074e8a03648f33476d7cc399da49589d61301ee627f55ca67759",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "neutral-tuple-distinct-index",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "5efbb356567f9e598bc28dffac3f5ce045a53058f76b380510b3971a20ffa127",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "neutral-family-distinct-branches",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "9d91f606818564d9645dce24419b131c6f4adea34c5db29fe80575f4a5e98c9d",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "nested-constructor-cases-disjoint",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "b63f207d8c0a4f3ac6957211b6b544bd0f9a1d035ec3424f61994ceaad9fe5d9",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "nested-constructor-case-duplicate",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "6f60f0b20f7fab9f253fdd4d11c951bc051b7433a910290b89f14099a809df00",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "nested-constructor-ordered-fallback",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "42b753d8c46061341fd80ddf89c4d88a7e53fe6ae99e7d51ee2947ddf151a01f",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "nested-constructor-unreachable-union",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "6c889cf3ba86533907cc5fe6bf7c6ed5bf98d8d99010f49dafebc8fa25ed2ae4",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "annotated-constructor-equality",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "50e08b264b7028924b68bdcf40ed4d80fefd74ad4e90916ec08f78d9e57d86f4",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "annotated-equality-wrong-constructor",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "ad1adf13c133f9a05b3bea7812a9d893bc3c11b23536c1a74afe5037462d40c7",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "annotated-equality-wrong-type",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "9d5e981d6bf2096e98e6b90155118e6826646d41e865798578c71b63cbb5ce4e",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "promoted-data-constructor-field",
+          "accepted": true,
+          "passed": true,
+          "output": "CSucc{CZero{}}",
+          "sourceSha256": "438d6597d4292c2037f2feb53824165e3873e6a64d72a9766b03552b58ba24ce",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "promoted-affine-constructor-field",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "be2ac4f801424bc7b0c0f0b7b0efcffb4bd5f90e36ed127cd32acc9c92701306",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "promoted-data-tuple-field",
+          "accepted": true,
+          "passed": true,
+          "output": "CSucc{CZero{}}",
+          "sourceSha256": "112ad5dd4a675fff0fb495bc6b27ebf833abdf3e82073c36cca2329022bd61ee",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "promoted-affine-tuple-field",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "d522f28669c45241563e5053c882c86a38bff97def828ac5692867072dcaf6ec",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "nested-structural-recursive-calls",
+          "accepted": true,
+          "passed": true,
+          "output": "CSucc{CZero{}}",
+          "sourceSha256": "2b6bfb1b3df52c545b45ea48567b16ebc9b576add2b6bf89763249084c8992f8",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "nested-structural-invalid-inner-call",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "8ffb4d6934fb1379e57d411735748def930de217baa7b90a0682f71fdfc31ac9",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "closed-local-annotation-usage",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "73df624518bd65175db9f1137adfbabc27913a6754d00e8364c38ea9490217c7",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "closed-local-annotation-type-error",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "4841d3e3088fb2a938dcd39f0cde96494de3d1dcb9fc8262b6df3b6c19e7a4ba",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "parallel-local-outer-scope",
+          "accepted": true,
+          "passed": true,
+          "output": "CSucc{CZero{}}",
+          "sourceSha256": "ebfe60fc09d8faa3b043555d565b00f9703ed4ec71d3fb6dbcc1c79e4f58512e",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "parallel-local-rhs-independence",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "66141e6efc499c3a50e98d36c7781faab3105a6d6c685d325adaa411c4668ef6",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "projected-local-erased-domain",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "50fbcb0968610fe942c0a6c8d3cb1cef7192f30fb0b9d225133538f2014d330f",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "projected-local-affine-domain",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "90c0502e47e94041001d70f1676ea2954e4b479976c01ce85fa5e9b95fd7ad09",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "projected-local-invalid-annotation",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "80ecec201d2046d02a6c971aaa6366765160b7d38e5f8c4a0cdd221303649707",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "dependent-match-wrong-index",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "2b738c11d14a879d997dfc072bd32c8e979530cf85c91c75f385086e4c6662bc",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        }
+      ],
+      "semanticParserApprovals": 130,
+      "completeSemanticParity": true
+    },
+    {
+      "stage": "stage-two",
+      "image": "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/checkpoints/selfhost-remote2039g8b-bootstrap.json.cases/stage-two.js",
+      "imageSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+      "command": [
+        "node",
+        "/private/tmp/bend-emitted-suites-runner-32f4b3ab-f30c-42ab-8fc0-86c74ac0546e/evals/selfhost_bootstrap_worker.mjs",
+        "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/checkpoints/selfhost-remote2039g8b-emitted-suites-e.json.cases/stage-two/request.json"
+      ],
+      "passed": true,
+      "exitCode": 0,
+      "workerResult": {
+        "passed": true,
+        "compilerBootstrapGreen": false,
+        "selfhostGreen": false,
+        "diagnosticFixture": "authenticated-complete-emitted-suite",
+        "fixtureExecutions": 95
+      },
+      "fixtureRows": [
+        {
+          "name": "type-specialization",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "2c23d4dd3809789d8c2d850bb30a6f71ec3b59a8f009de87a7fff594d3bef937",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "constructor-eliminator-hit",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "14999660fd5f3d8d57bd69e2dfb816e80a224aa959fe300a28c1c45e6dc6982a",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "constructor-eliminator-default",
+          "accepted": true,
+          "passed": true,
+          "output": "BitZero{}",
+          "sourceSha256": "d4e0e45297075195eed5b457debe85e5941754392a301ac61f44809e27968a29",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "tag-dispatch-nested-fallthrough",
+          "accepted": true,
+          "passed": true,
+          "output": "Results{BitZero{}, BitOne{}, BitOne{}, BitZero{}, BitOne{}}",
+          "sourceSha256": "a1568e3b35ab5f29d11cfd35331515b0af6fa5eacb2e99a19f41b5330f436391",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "root-match-local-order",
+          "accepted": true,
+          "passed": true,
+          "output": "Result{BitZero{}, BitOne{}, BitOne{}}",
+          "sourceSha256": "175cba4f8e661b2775244d242f33d0faf43049bab7a18a7b57e79aa4e4cdd676",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "native-nat-extrema-boundaries",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "4edfd2827a7cad3afc1527f5c3c812455b526e40ef83b2734bd79cd7def4ef94",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "source-tail-large-recursion",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "50fba9401abf73a3925dc50f089bed4eebfb69a9b2f182547f5e3e3937b63d0f",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "nullary-array-freshness",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "719016f8be4f6b974a70518c01f585dcde8859be52bccea58ff46a0800555896",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "aliased-specialization",
+          "accepted": true,
+          "passed": true,
+          "output": "specialization-lib.BitOne{}",
+          "sourceSha256": "ef02d443458970bf0bae0d2a6a0049b7f3bc88da9678b1b659943d16330bc557",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "callback-specialization",
+          "accepted": true,
+          "passed": true,
+          "output": "BitZero{}",
+          "sourceSha256": "7f51a179d1d28b86a4fc6a9df6932d1aaf620dfa85197d00cbc9fa1fedb27a27",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "specialized-type-error",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "0213d5a9cbfc9604ea73e33c50257c09c5d5e00f63e721d89a3394494ee46062",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "runtime-template-capture",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "expand",
+          "sourceSha256": "7ef06d611221e1cd9313f7308e038bcccb0c934294fd512bd45ce91126d915d3",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "template-generation-rounds",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "cac73a00f3deff0f9867a71abd65fea6aeffdcdc0ffa2d73b53b5919c818bdaf",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "readonly-index-boundaries",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "81b86f9266650e6e57bd73c2c6c741dcafb31b221d4af7b7de5ccef94616f3bc",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "readonly-index-nonmonotone",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "8876daf8f6feb7c7b4656317164830f06fc6a1f467c7210d8e2a23e11227daff",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "dependent-kind-binding",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "d09b89c2a1050453bc6d1639ac84a908a66fcf8413c23b42c7a9e30e36cce3b5",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "law-completion-binding",
+          "accepted": true,
+          "passed": true,
+          "output": "WNil{}",
+          "sourceSha256": "2aa03a5d2ff7e3d154ab12187b39dd31c7c2a6963698f27948a2a190a8ecf37f",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "forward-family-definition",
+          "accepted": true,
+          "passed": true,
+          "output": "WNil{}",
+          "sourceSha256": "b33f392b9139c0128990c881413166eb6cf3179444cd95433c565ac082b8fd0a",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "forward-definition-call",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "97f4da569188c189a8d1457a258eead66de64578baec811b559d3446754333a9",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "named-entry-separator-collision",
+          "accepted": true,
+          "passed": true,
+          "output": "CSucc{CSucc{CSucc{CZero{}}}}",
+          "sourceSha256": "ce8bf711b87837cbc67a14ed6f3234d9c45715eebf3b4d63e986b214299f867a",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "forward-definition-invalid-body",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "3796fe01848e130dbffc7ac8dfd6aeae972f1ddc65c193b3ad78ada374bf5006",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "recursive-neutral-application-equality",
+          "accepted": true,
+          "passed": true,
+          "output": "True{}",
+          "sourceSha256": "d4ebfd86789f77581482c6e5c8f47a17912e5edbbdf6e5a5010fb0cdba4f5e7e",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "application-order",
+          "accepted": true,
+          "passed": true,
+          "output": "Duo{BitOne{}, BitZero{}}",
+          "sourceSha256": "d515754b349ba4dd3985d977113503d83698838c57282cd142e314471e80aee8",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "annotated-banged-partial-application",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "265366bfa96b9563845094fb3abf3cec75e042ba6039a440d019d1bbf8bf7f69",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "annotated-banged-partial-result-mismatch",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "9687ae6f2da883e006915717442cd4df59929576148853c523df3f85ad373454",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "renamed-dependent-law-completion",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "67efffba57405e11d52be3311441b8c1631557ab61b3b35d1de69b978a0eb71c",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "law-completion-result-mismatch",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "98d12ef11062ed42b3847e076dbb2fedad576e6ec01f88c89461fcfd2e4e20e8",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "partial-family-application",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "e4e6414bdb3d9524161585fb007e1557b0815782005884c1e3cb3a4dc87af3fa",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "affine-duplicate",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "1eab87729494aa38d657d584a655a13923e77f6f463104e08770f00f54facf31",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "dependent-field-pattern",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "25577204491965929c8a67943fa11e913757bee64dbd7285e5eb9f124700d72d",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "indexed-family-parameter-mismatch",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "eea3fa552b43e60fcbb733c3a0363dd60529723bdf09256d5d78ee244220dcd7",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "equality-congruence-rewrite",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "8393197b610d5b39c04ce5884ab0fffeb32936e05ee3a68a4d42bc0bb205510b",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "rewrite-result-mismatch",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "05749623daac71fc3caa1b955d4796ccf86586856880e6efe10c6d2af96c9497",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "empty-datatype-match",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "678639d3854a305d0df75c8f933a5e239d24da869ab60f7ea4db2ef69c84d942",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "nonempty-datatype-empty-match",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "89201d6cade157fa701a59e0537333472c9414671a7365c9386cc6f711fd8b24",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "abstract-type-empty-match",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "39dacd9a8b695faf64cfee62f2473d2e8ecc66ececb030d6796dd6a45a742024",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "aliased-constructor-conversion",
+          "accepted": true,
+          "passed": true,
+          "output": "alias-name-lib.BitOne{}",
+          "sourceSha256": "d40bd184d4da826e610f46e5b376470c241bf400c154321e4759906c6de5d397",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "distinct-imported-family-mismatch",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "52882eabd86c89dc126331b004c59c18e37cd9e1db445b1660407c957b1cb51d",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "same-module-alias-family-equality",
+          "accepted": true,
+          "passed": true,
+          "output": "scope-left-lib.BitOne{}",
+          "sourceSha256": "1459bb0a523b1a543c7662831722c0d31915fc347cc3d23a88329e69de59a675",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "same-module-alias-constructor-rows",
+          "accepted": true,
+          "passed": true,
+          "output": "scope-left-lib.BitOne{}",
+          "sourceSha256": "6463a43c6c90eb3f0a047690004df8207430760b2c3710db942248be96464edb",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "alias-dependent-conversion",
+          "accepted": true,
+          "passed": true,
+          "output": "scope-left-lib.BitOne{}",
+          "sourceSha256": "0918c7e24572c7843e5dc7734d023e42ac961ce74ff34a1b44070d1237df3ca5",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "stuck-first-row-dependent-conversion",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "2de665221faf52e991a1c11b5676502efd0fbf02716b045958459d10cf6996b9",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "local-imported-family-mismatch",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "200b4a797c383856a7e369c99486c0ef939ed3bd5a4d14f1758f10a1bc77cd04",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "datatype-constructor-shared-name",
+          "accepted": true,
+          "passed": true,
+          "output": "Wrapper{BitOne{}}",
+          "sourceSha256": "cf1ff3a9fdaee568fc064d36da3dc8b72093da197515bce5d9ffd11ec62474bd",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "constructor-args-field",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "ed8d8898dc20d7789a6927d22d39e0613f0ad2975859e0afbd64c4b5ef6b415b",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "structural-predecessor-recursion",
+          "accepted": true,
+          "passed": true,
+          "output": "CSucc{CSucc{CSucc{CSucc{CZero{}}}}}",
+          "sourceSha256": "2964309f829f1d8139af4aa0bd4ff52e98e8a4f65c8284b92bb6517758d720ea",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "structural-original-input-recursion",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "3de513ed0101ec41fc3a66d213ee97a4ec46bd6ad4903cf792c1a24671873d97",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "structural-equal-input-recursion",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "a0ed387e14bff247794e4dc18d811f0bcc62fd8857d920479a2f865b9a8ad0dc",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "structural-growing-input-recursion",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "c03c61fb6ccafb0c966a22a78bd0694aa0232d37c59ea743bbf77f9b25a76ce0",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "recursive-matrix-variable-column",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "5d3613ea59c3d9d6e9c2eec23dc4ff345ff69eed791f67ab713c38dd2b2228ef",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "recursive-matrix-incomplete-variable-column",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "cff0f694f6b404cc19e9aecb446762877b1dfc3d7f3fbd70299a1a4e2bb59e0a",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "copied-constructor-field-quantity",
+          "accepted": true,
+          "passed": true,
+          "output": "CZero{}",
+          "sourceSha256": "075d740f094cc8913a1184848d7dfe2386ca3b640fbecd54aaec6f39710f099a",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "affine-constructor-field-quantity",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "8b58221d0ac6a903a8ac44b5b673a1b1c070af5fcd3fe689cc58673f4a11385a",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "erased-constructor-field-quantity",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "cc25414153fe5ece095d184424a07208d4bb76d31966ea175cab691c0ee604b7",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "erased-constructor-default-binding",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "c8a3f957effaf0ac6964e1be74624402bdd66eede92d384b6725deed44cf9dd3",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "long-unicode-string-pattern-tail",
+          "accepted": true,
+          "passed": true,
+          "output": "Results{BitOne{}, BitZero{}, BitOne{}}",
+          "sourceSha256": "fc0b4e09b6e16012d6cef0fb8d796817d5b7b658f48b9837d5fccfce8526c202",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "compact-string-native-scalars-and-explicit-equivalence",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "4ef313bc46f9dfda39142fd79bfb6910517532c7172e682a4a255a04a1e14b6f",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "compact-string-imported-template-alias-capture",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "3786bad35796874efd0c4c7dc78f2a97d08b9238f336f6ab2854807e8fd6beaf",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "compact-string-primitive-like-shadow-fallback",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "fc9ed48a88fecaf6b85f90af46378eb42dc9fc1a2391c4b9ea50403e92fa7530",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "compact-string-dependent-explicit-constructor-equality",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "6d97d02c58455eba53395d5a626f6b60d19ef5a48deba95618ac0393c92c0f9e",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "compact-string-template-empty-unused-constructors",
+          "accepted": true,
+          "passed": true,
+          "output": "SNil{}",
+          "sourceSha256": "477e33c81dc909e9449dd36a9aafc8085136d48c350eb31da5eb63d5f48d9b0e",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "compact-string-template-zero-unused-true",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "b9ec0f2924bfd00ba010a95a0223c711b331d5b665f3e8690566ca4b5e92929d",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "compact-string-invalid-scalar-custom-constructor-fallback",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "99f41df074e9e17c6c84f960899b1a91ab739f174a1ba89dbd2375bd2b1e7c7b",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "compact-string-tail120001-callback",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "d1be55f37408a9d5e75670f6ed078bc17b7d690294c6f07e294f38b508ca518e",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "patricia-selected-branch-unicode",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "3bc71773178f0b00409007341b300efaf11d0b90e5a725a47e44ffcf7ea590b4",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "mixed-named-closure-tail120001",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "8bf7f4602897dc2b8f70b45fea329ff84780faa40214ade087b339303f03db1e",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "private-tail-register-boundaries",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "95df4b84cf824eee111364977a3d0a5fe3162baa7123e8f5162202cc6a27d6a5",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "compact-string-invalid-native-scalar-deferred-branch",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "1998de6cbbbcd71224bbb8077b37522dc7d059e2115ca56237c4e884d7f526ea",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "dependent-match-goal-refinement",
+          "accepted": true,
+          "passed": true,
+          "output": "BCons{BNil{}}",
+          "sourceSha256": "78a54dfd45b2e19b0b8e3616af237b899d34185d125e5fa4625809df43fc964c",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "dependent-vector-goal-refinement",
+          "accepted": true,
+          "passed": true,
+          "output": "BCons{BNil{}}",
+          "sourceSha256": "030547086f21efffb39fe0e1b6c043d3cd288ecc1de4b4de235c5236f3c5a2e2",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "dependent-nested-binding-refinement",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "6420d0a0bf70b80e396c28cd4b93f17f7d53d9f8f36b6ad7df07b41e01d79267",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "dependent-tuple-local-binding",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "8421df1a1f10074e8a03648f33476d7cc399da49589d61301ee627f55ca67759",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "neutral-tuple-distinct-index",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "5efbb356567f9e598bc28dffac3f5ce045a53058f76b380510b3971a20ffa127",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "neutral-family-distinct-branches",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "9d91f606818564d9645dce24419b131c6f4adea34c5db29fe80575f4a5e98c9d",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "nested-constructor-cases-disjoint",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "b63f207d8c0a4f3ac6957211b6b544bd0f9a1d035ec3424f61994ceaad9fe5d9",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "nested-constructor-case-duplicate",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "6f60f0b20f7fab9f253fdd4d11c951bc051b7433a910290b89f14099a809df00",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "nested-constructor-ordered-fallback",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "42b753d8c46061341fd80ddf89c4d88a7e53fe6ae99e7d51ee2947ddf151a01f",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "nested-constructor-unreachable-union",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "6c889cf3ba86533907cc5fe6bf7c6ed5bf98d8d99010f49dafebc8fa25ed2ae4",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "annotated-constructor-equality",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "50e08b264b7028924b68bdcf40ed4d80fefd74ad4e90916ec08f78d9e57d86f4",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "annotated-equality-wrong-constructor",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "ad1adf13c133f9a05b3bea7812a9d893bc3c11b23536c1a74afe5037462d40c7",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "annotated-equality-wrong-type",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "9d5e981d6bf2096e98e6b90155118e6826646d41e865798578c71b63cbb5ce4e",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "promoted-data-constructor-field",
+          "accepted": true,
+          "passed": true,
+          "output": "CSucc{CZero{}}",
+          "sourceSha256": "438d6597d4292c2037f2feb53824165e3873e6a64d72a9766b03552b58ba24ce",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "promoted-affine-constructor-field",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "be2ac4f801424bc7b0c0f0b7b0efcffb4bd5f90e36ed127cd32acc9c92701306",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "promoted-data-tuple-field",
+          "accepted": true,
+          "passed": true,
+          "output": "CSucc{CZero{}}",
+          "sourceSha256": "112ad5dd4a675fff0fb495bc6b27ebf833abdf3e82073c36cca2329022bd61ee",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "promoted-affine-tuple-field",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "d522f28669c45241563e5053c882c86a38bff97def828ac5692867072dcaf6ec",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "nested-structural-recursive-calls",
+          "accepted": true,
+          "passed": true,
+          "output": "CSucc{CZero{}}",
+          "sourceSha256": "2b6bfb1b3df52c545b45ea48567b16ebc9b576add2b6bf89763249084c8992f8",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "nested-structural-invalid-inner-call",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "8ffb4d6934fb1379e57d411735748def930de217baa7b90a0682f71fdfc31ac9",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "closed-local-annotation-usage",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "73df624518bd65175db9f1137adfbabc27913a6754d00e8364c38ea9490217c7",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "closed-local-annotation-type-error",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "4841d3e3088fb2a938dcd39f0cde96494de3d1dcb9fc8262b6df3b6c19e7a4ba",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "parallel-local-outer-scope",
+          "accepted": true,
+          "passed": true,
+          "output": "CSucc{CZero{}}",
+          "sourceSha256": "ebfe60fc09d8faa3b043555d565b00f9703ed4ec71d3fb6dbcc1c79e4f58512e",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "parallel-local-rhs-independence",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "66141e6efc499c3a50e98d36c7781faab3105a6d6c685d325adaa411c4668ef6",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "projected-local-erased-domain",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "50fbcb0968610fe942c0a6c8d3cb1cef7192f30fb0b9d225133538f2014d330f",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "projected-local-affine-domain",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "90c0502e47e94041001d70f1676ea2954e4b479976c01ce85fa5e9b95fd7ad09",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "projected-local-invalid-annotation",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "80ecec201d2046d02a6c971aaa6366765160b7d38e5f8c4a0cdd221303649707",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        },
+        {
+          "name": "dependent-match-wrong-index",
+          "accepted": false,
+          "passed": true,
+          "observedFailure": "check",
+          "sourceSha256": "2b738c11d14a879d997dfc072bd32c8e979530cf85c91c75f385086e4c6662bc",
+          "parserSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885",
+          "compilerSha256": "0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885"
+        }
+      ],
+      "semanticParserApprovals": 130,
+      "completeSemanticParity": true
+    }
+  ],
+  "repairs": [
+    "Pin fixture bytes through sourceSha256 in the authenticated original request; native seed need not duplicate each fixture in its root-input map",
+    "Compare each exact native manifest with the existing workloadRows/corpusFor/runtimeManifest contract, including fixtures which do not import Base",
+    "An explicitly identified, hash/size-matched selfhost image uses its root-authenticated selfhost constructor namespace, not comp.ts seed encoding",
+    "Companion worker is resolved beside its runner and separately pinned; original accepted proof inputs remain unchanged in their frozen checkout"
+  ],
+  "monolithicBootstrapAcceptance": false
+}

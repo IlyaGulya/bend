@@ -17,6 +17,17 @@ latest one; the GitHub release carries the same notes.
   seven native foreign/library scenarios and five nested host exports pass.
   This accepts the native-seed route, not a controlled speedup or every
   historical seed route. Receipt: `evals/receipts/root2039g8b_native_fixedpoint.json`.
+  A separate unchanged-image suite also passes all 95 fixtures on stage1 and
+  all 95 on stage2 (285 native-seed/stage1/stage2 results total), with fresh
+  source parsing and complete AST parity; receipt:
+  `evals/receipts/root2039g8b_emitted_suites.json`.
+
+- The reduced C-producer memory diagnostic now emits current typed do-bindings
+  and dependency-ordered definitions, and preserves canonical error diagnostics.
+  Fresh literal and chain/linear runs expose reachability/pass-1 heap samples
+  and speculative segment growth under the original resource guards.
+  These are reduced mechanism reproducers, not a full-root OOM or speedup claim.
+  Receipt: `evals/receipts/producer2039g8_reduced_memory.json`.
 
 - The resource guardian publishes its compiled helper with private permissions
   before the atomic rename. Guarded descendants now work after a cold build
