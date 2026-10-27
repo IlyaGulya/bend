@@ -16,9 +16,10 @@
 //     measured envelope intervals, never isolated provider CPU;
 //   - provenance pins for the producing script the caller declares, this helper
 //     and the collector it imports (real path + sha256), the collector's own
-//     profileId once its first span token exists, and an explicit link to an
-//     enclosing profile when one was declared. With no declaration the report
-//     states that no parent profile exists instead of inventing one.
+//     profileId once its first span token exists, and a link to an enclosing
+//     profile when one was declared, checked against that run's own run.json.
+//     With no declaration the report records that none was declared or is
+//     discoverable instead of inventing one.
 //
 // Semantic substage grouping uses the exact canonical request constructors and
 // canonical source-module composition recorded by the typed-step generator's
@@ -152,17 +153,19 @@ export function stageParentDeclaration(text) {
   return value;
 }
 
-function describeParentProfile(declared, joinPath) {
-  if (declared === undefined || declared === null) return {
-    status: 'absent',
-    profile: null,
-    reason: isMainThread
-      ? 'no enclosing stage profile was declared: this profile runs on a process main thread, and a parent-process profile cannot be discovered from here'
-      : 'no enclosing stage profile was declared: this profile runs on a worker thread whose creating thread created no stage profile',
-  };
+// A parent link is a claim about an existing collector run, so it is checked
+// against that run's own run.json: kind, schema, run directory, identity and,
+// when declared, the report path. Declared and observed facts stay separate and
+// the record never asserts that this profile is the parent's child.
+function describeParentProfile(declared, paths) {
+  const absent = reason => ({status: 'absent', declared: null, observed: null, relation: null,
+    sameProcess: null, reason, linkKey: null});
+  if (declared === undefined || declared === null) return absent(isMainThread
+    ? 'no enclosing stage profile was declared, and a parent-process profile cannot be discovered from this process'
+    : 'no enclosing stage profile was declared, and a worker thread cannot enumerate stage profiles created by another thread');
   if (typeof declared !== 'object' || Array.isArray(declared))
     throw Error('parentProfile must be an object');
-  const row = {
+  const declaredRow = {
     runDirectory: typeof declared.runDirectory === 'string' ? declared.runDirectory : null,
     reportPath: typeof declared.reportPath === 'string' ? declared.reportPath : null,
     pid: Number.isSafeInteger(declared.pid) ? declared.pid : null,
@@ -170,26 +173,85 @@ function describeParentProfile(declared, joinPath) {
     isMainThread: typeof declared.isMainThread === 'boolean' ? declared.isMainThread : null,
     role: typeof declared.role === 'string' ? declared.role : null,
   };
-  const sameProcess = row.pid === null ? null : row.pid === process.pid;
-  if (row.runDirectory === null) return {status: 'unverified', profile: {...row, sameProcess, topologyNote: null, runJsonSha256: null},
-    reason: 'declared parent profile carries no runDirectory'};
-  const profile = {...row, sameProcess, topologyNote: null, runJsonSha256: null};
-  if (!isMainThread && sameProcess === false)
-    profile.topologyNote = 'this profile runs on a worker thread, whose creating thread is always in this process; the declared profile therefore identifies a parent-process profile, not this thread\'s creator';
-  let resolved;
+  const unverified = (reason, observed = null, relation = null) =>
+    ({status: 'unverified', declared: declaredRow, observed, relation, sameProcess: null, reason, linkKey: null});
+  if (declaredRow.runDirectory === null) return unverified('declared parent profile carries no runDirectory');
+  let runDirectory;
   try {
-    resolved = realpathSync(row.runDirectory);
+    runDirectory = realpathSync(declaredRow.runDirectory);
   } catch (error) {
-    return {status: 'unverified', profile, reason: 'declared parent runDirectory is not readable: ' + errorText(error)};
+    return unverified('declared parent runDirectory is not readable: ' + errorText(error));
   }
-  profile.runDirectory = resolved;
+  const runJsonPath = paths.join(runDirectory, 'run.json');
+  let runBytes, run;
   try {
-    profile.runJsonSha256 = sha256(readFileSync(joinPath(resolved, 'run.json')));
+    runBytes = readFileSync(runJsonPath);
+    run = JSON.parse(runBytes.toString('utf8'));
   } catch (error) {
-    return {status: 'unverified', profile, reason: 'declared parent runDirectory has no readable run.json: ' + errorText(error)};
+    return unverified('declared parent runDirectory has no readable captured run.json: ' + errorText(error));
   }
-  return {status: 'verified', profile, reason: null,
-    linkKey: 'the parent collector run directory and its run.json digest; the collector profileId lives in that profile\'s own summary.json'};
+  if (run === null || typeof run !== 'object' || Array.isArray(run))
+    return unverified('parent run.json is not an object');
+  if (run.kind !== 'compiler-profile')
+    return unverified('parent run.json kind ' + JSON.stringify(run.kind) + ' is not a compiler-profile');
+  if (run.schemaVersion !== paths.schemaVersion)
+    return unverified('parent run.json schemaVersion ' + JSON.stringify(run.schemaVersion) +
+      ' is not the collector schema ' + paths.schemaVersion);
+  const identity = run.identity;
+  if (identity === null || typeof identity !== 'object' || Array.isArray(identity) ||
+      !Number.isSafeInteger(identity.pid) || !Number.isSafeInteger(identity.threadId) ||
+      typeof identity.isMainThread !== 'boolean')
+    return unverified('parent run.json has no valid identity {pid, threadId, isMainThread}');
+  let recordedDirectory;
+  try {
+    recordedDirectory = realpathSync(String(run.runDirectory));
+  } catch (error) {
+    return unverified('parent run.json runDirectory is not readable: ' + errorText(error));
+  }
+  if (recordedDirectory !== runDirectory)
+    return unverified('parent run.json runDirectory differs from the declared runDirectory');
+  const observed = {
+    kind: run.kind,
+    schemaVersion: run.schemaVersion,
+    runDirectory,
+    identity: {pid: identity.pid,
+      parentPid: Number.isSafeInteger(identity.parentPid) ? identity.parentPid : null,
+      threadId: identity.threadId, isMainThread: identity.isMainThread},
+    reportPath: paths.join(runDirectory, 'summary.json'),
+    runJsonPath,
+    runJsonSha256: sha256(runBytes),
+  };
+  // Comparison only: an undeclared field is never filled in from the file.
+  const compare = (declaredValue, observedValue) =>
+    declaredValue === null ? 'undeclared' : declaredValue === observedValue ? 'match' : 'mismatch';
+  const relation = {
+    runDirectory: 'match',
+    pid: compare(declaredRow.pid, observed.identity.pid),
+    threadId: compare(declaredRow.threadId, observed.identity.threadId),
+    isMainThread: compare(declaredRow.isMainThread, observed.identity.isMainThread),
+    reportPath: 'undeclared',
+  };
+  if (declaredRow.reportPath !== null) {
+    let declaredReport = null;
+    try {
+      declaredReport = paths.join(realpathSync(paths.dirname(declaredRow.reportPath)), paths.basename(declaredRow.reportPath));
+    } catch {}
+    relation.reportPath = declaredReport === observed.reportPath ? 'match' : 'mismatch';
+  }
+  const mismatched = Object.entries(relation).filter(([, value]) => value === 'mismatch').map(([field]) => field);
+  const sameProcess = observed.identity.pid === process.pid;
+  if (mismatched.length > 0) return {
+    status: 'unverified', declared: declaredRow, observed, relation, sameProcess,
+    reason: 'declared parent identity contradicts that run\'s own run.json: ' + mismatched.join(', '), linkKey: null,
+  };
+  return {
+    status: 'verified', declared: declaredRow, observed, relation, sameProcess,
+    reason: null,
+    linkKey: 'parent collector runDirectory and run.json sha256; the parent profileId is in that profile\'s own summary.json',
+    causality: 'not asserted: a matching run.json proves that collector run exists with that identity, not that this profile is its child',
+    ...(!isMainThread && !sameProcess ? {topologyNote:
+      'this profile runs on a worker thread, whose creating thread is in this process; the matched profile therefore belongs to a parent process, not to this thread\'s creator'} : {}),
+  };
 }
 
 function describeParentThread(declared) {
@@ -914,15 +976,17 @@ export function nativeTraceObservations(text) {
  * this helper: the executing script the caller declares, this stage helper and
  * the collector it imports, all by real path and sha256. The ordinary
  * (no-profile) path never calls this function, so it hashes and reads nothing.
- * `parentProfile`/`parentThread` link a profile to an enclosing one; when none
- * is declared the report says so instead of inventing a parent.
+ * `parentProfile`/`parentThread` describe an enclosing profile and the creating
+ * thread; a declared parent is checked against that run's own run.json, and a
+ * missing declaration is recorded as undeclared rather than as an absence of
+ * any parent profile in the system.
  */
 export async function createStageProfile({directory, execution, rawDetail = false, manifestPaths = [], artifact, receiptPaths = [], executingScript, parentProfile, parentThread}) {
-  const {createCompilerProfile} = await import('./compiler_profile.mjs');
+  const {createCompilerProfile, COMPILER_PROFILE_SCHEMA_VERSION} = await import('./compiler_profile.mjs');
   // Imported here, not at module scope: an unprofiled run must not even resolve
   // these modules, and this helper is only called by an opt-in profiling run.
   const {fileURLToPath} = await import('node:url');
-  const {join} = await import('node:path');
+  const {join, dirname, basename} = await import('node:path');
   const receipts = receiptPaths.map(readReceipt);
   const receipt = receipts.find(candidate => artifact !== undefined && candidate.artifactSha256 === artifact.sha256) ?? receipts[0];
   const table = loadStageManifests(manifestPaths, {artifactSha256: artifact?.sha256 ?? null, receipt});
@@ -932,7 +996,7 @@ export async function createStageProfile({directory, execution, rawDetail = fals
     stageHelper: pinFile(fileURLToPath(import.meta.url), 'the stage helper path is unavailable'),
     collector: pinFile(fileURLToPath(new URL('./compiler_profile.mjs', import.meta.url)), 'the collector path is unavailable'),
   };
-  const parent = describeParentProfile(parentProfile, join);
+  const parent = describeParentProfile(parentProfile, {join, dirname, basename, schemaVersion: COMPILER_PROFILE_SCHEMA_VERSION});
   const parentThreadRow = describeParentThread(parentThread);
   const declaredExecution = execution === null || execution === undefined ? {} : execution;
   if (typeof declaredExecution !== 'object' || Array.isArray(declaredExecution))
@@ -1022,8 +1086,9 @@ export async function createStageProfile({directory, execution, rawDetail = fals
       parentProfile: parent,
       profileSources,
       collectorProfile: {runDirectory: profile.runDirectory, reportPath: profile.reportPath,
-        profileId: 'exposed by the first stage span token and recorded as a separate stage-provenance observation; null until a span begins',
-        linkKey: 'collector runDirectory plus reportPath, both real and unique per profile; the run.json digest is the verified parent link when declared'},
+        profileId: null,
+        profileIdReason: 'the collector exposes profileId only through span tokens; it is recorded by the separate stage-provenance observation collector-profile-id after the first span begins, and this creation-time record is not rewritten',
+        linkKey: 'collector runDirectory plus reportPath, both real and unique per profile'},
       cpuScope: {
         phaseSpan: 'process.cpuUsage (every thread in this process) plus process.threadCpuUsage (this thread only) deltas from the collector; child processes are excluded from both',
         stepInterval: 'process.threadCpuUsage deltas over consecutive typed boundaries on the orchestrating thread; worker and helper threads are excluded',

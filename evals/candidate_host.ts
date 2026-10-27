@@ -129,8 +129,8 @@ if(o.sourceTag!==undefined&&o.sourceTag!==sourceTag)fail('--source-tag differs f
 if(o.stageProfile!==undefined){
  const inputPath=realpathSync(o.input),parserPath=realpathSync(o.parser??o.candidate);
  // Executing script and enclosing-profile declaration are opt-in diagnostics:
- // ordinary runs never read, hash or parse them. A declared parent is recorded
- // by the stage helper only when the orchestrator actually published one.
+ // ordinary runs never read, hash or parse them. A declared parent is validated
+ // against that collector run's own run.json by the stage helper.
  let parentProfile:unknown=null;
  try{parentProfile=stageParentDeclaration(process.env.SELFHOST_STAGE_PARENT);}
  catch(error){fail('invalid SELFHOST_STAGE_PARENT: '+String(error));}

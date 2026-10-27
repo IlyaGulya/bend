@@ -395,8 +395,9 @@ if(isMainThread){
    const manifestPaths=(process.env.SELFHOST_STAGE_MANIFEST??'').split(process.platform==='win32'?';':':').filter(Boolean);
    // This profile runs on the Worker thread; its creating thread is this file's
    // main-thread branch, which is the process main thread. An enclosing profile
-   // is linked only when the orchestrator declared one (workerData or
-   // SELFHOST_STAGE_PARENT); otherwise the report states that none exists.
+   // is linked and validated only when the orchestrator declared one (workerData
+   // or SELFHOST_STAGE_PARENT); otherwise the report says none was declared or
+   // is discoverable, and nothing is claimed about the creating thread's state.
    stageProfile=await createStageProfile({directory:process.env.SELFHOST_STAGE_PROFILE_DIR,
     rawDetail:process.env.SELFHOST_STAGE_PROGRESS==='1',manifestPaths,
     executingScript:fileURLToPath(import.meta.url),
