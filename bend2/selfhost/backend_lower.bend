@@ -468,6 +468,27 @@ def native_match_field_value_1(v_3: Maybe<&2, Catalog.ConstructorField>, v_1: St
 def field_value(v_1: State, v_3: Maybe<&2, Catalog.ConstructorField>, v_4: Catalog.Constructor, v_5: BIR.Atom, v_7: List<&2, BIR.Atom>, v_9: U32, v_10: Ast.SourceSpan) -> LowerResult<List<&2, BIR.Field>>:
   native_match_field_value_1(v_3, v_1, v_4, v_5, v_7, v_9, v_10)
 
+# A checked `Nat.Succ` chain rooted at `Nat.Zero` denotes one statically known
+# canonical Nat. Lowering keeps it as the existing scalar `BIR.Natural` atom
+# instead of one runtime successor per link: `Nat.Zero` already lowers to that
+# atom, and no name, alias, evaluator or type is re-guessed here.
+# Only the already-canonical atom is folded. The cut stays strictly inside the
+# targets' 2^48-1 immediate Nat bound (`nat_chk`), so a successor that could
+# reach a boundary keeps its runtime `PrimNatSuccessor` check. The parser emits
+# a successor chain only for literals up to 256; a longer explicit chain would
+# need more than 2^32 checked constructors to reach this conservative cut.
+def nat_successor_value(state: State, value: Nat) -> LowerResult<BIR.Atom>:
+  match Nat.is_lt(value, 4294967295n):
+    case True{}:
+      LowerResult{state, BIR.Natural{Nat.add(value, 1n)}}
+    case False{}:
+      primitive(state, BIR.PrimNatSuccessor{}, [BIR.Natural{value}])
+
+def nat_successor_atom(state: State, atom: BIR.Atom) -> LowerResult<BIR.Atom>:
+  match atom:
+    case BIR.Natural{value}: nat_successor_value(state, value)
+    case _: primitive(state, BIR.PrimNatSuccessor{}, [atom])
+
 def construct(state: State, constructor: Catalog.Constructor, values: List<&2, BIR.Atom>, span: Ast.SourceSpan, element: Maybe<&2, U32>) -> LowerResult<BIR.Atom>:
   construct_native(state, constructor_native(constructor), constructor, values, span, element)
 def native_match_construct_native_0(v_586: LowerResult<List<&2, BIR.Field>>, v_4: Catalog.Constructor) -> LowerResult<BIR.Atom>:
@@ -486,7 +507,7 @@ def native_match_construct_native_1(v_3: String, v_6: List<&2, BIR.Atom>, v_1: S
     case "String.SNil", []:
       LowerResult{v_1, BIR.TextValue{""}}
     case "Nat.Succ", [v_10]:
-      primitive(v_1, BIR.PrimNatSuccessor{}, [v_10])
+      nat_successor_atom(v_1, v_10)
     case "Char.Chr", [v_13]:
       primitive(v_1, BIR.PrimCharNew{}, [v_13])
     case "String.SCon", [v_17, v_18]:
