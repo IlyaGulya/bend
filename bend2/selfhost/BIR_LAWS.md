@@ -1438,11 +1438,17 @@ has exactly one renderer; there is no fallback path that reparses the program.
 
 **JS-3 (calls and closures).**
 
-- `Direct` is a strict call `run_loop($bN(args))`; `TailDirect` is a tail call
-  through `run_named`/`run_many` with a depth budget `$td`
-  (`call`/`tail_call`, `459-467`).
-- `Apply` is `run_loop(run_tail(fn,arg))`; `TailApply` returns
-  `run_tail(fn,arg)` (`operation`, `576-579`; `block`, `645-654`).
+- `Direct` evaluates arguments into temporaries before writing private call
+  slots. For 1–32 arguments and `$td < 64`, it publishes the same continuation
+  frame and calls the code directly with `$td + 1`. `$split_done` resumes only
+  an ordinary result whose own frame is on top; pending sentinels or surviving
+  region frames remain for `run_base`. The continuation inherits the increased
+  depth; it cannot reset the bound. `$split_abort` restores the call's frame
+  and capture base when a synchronous callee or continuation throws.
+- Other `Direct` calls use `$split`/`$splitm`; `Apply` uses `$split1`.
+  `TailDirect` retains the depth-64 `run_named`/`run_many` fallback;
+  `TailApply` retains `run_tail`. These are private scheduling decisions, not
+  changes to strict application or the public callable ABI.
 - `Closure{code, captures, parameters}` is an immediately applied arrow over
   the captured arguments, yielding a JS function over the remaining parameters
   that tail-calls the code with `captures ++ parameters`
@@ -1454,8 +1460,12 @@ has exactly one renderer; there is no fallback path that reparses the program.
   as an immediately evaluated expression rather than a function, which is why
   such a `Closure` is excluded by WF-7. A fully nullary definition is a lazy
   getter (§BL-7), not a zero-argument call site.
-- Status: **[N]**; **[P]** the C smoke and the JS selfhost gate define these
-  shapes per lane; no receipt was read and neither compares the targets.
+- Status: **[N]**; bounded **[P]** g16 evidence executes the deep non-tail
+  witness (60,000/20,000/40,000), the 12-million-iteration capture witness,
+  both region witnesses and actual library calls. Public exception recovery
+  executes 20,000 Nat overflows interleaved with valid calls. This is not a
+  general preservation proof or a full-root timing result.
+  Receipt: `evals/receipts/root2039g16_boundary_consumers.json`.
 
 **JS-4 (branch/region).** `Branch` is JS `if`; `Region` is
 `$case<label>:{<body>}<next>`; `LeaveRegion` is `break $case<label>`. The
@@ -1587,6 +1597,19 @@ executable consumers are `Phys.fill_plan_jobs`, `Phys.unfill_result_jobs`,
 A strict reading: the builder guarantees the *plans* are mutually inverse in
 structure; it does not guarantee that the emitted C implements them correctly
 for every runtime value.
+
+Bounded **[P]** g16 evidence repairs three emitted-code violations of this
+obligation: a one-arm form must not read/switch on a nonexistent tag, a
+multi-arm destination must write its tag, and each field conversion must own
+distinct temporary names. Every arm then advances both cursors to its form's
+reserved width, including unused words of a shorter arm. Source padding comes
+from the take arm; destination tag/padding come from the make arm.
+`phys_storage_paths` exercises `Array.set/get` over nested one-arm and unequal
+multi-arm data, including preservation of the untouched element
+(`56,15,9;1,5,4`). Actual C and JS agree; `checker_arena_names` also compiles and
+prints `0` on both targets. The first draft, which omitted padding and printed
+`1,7,0`, is explicitly rejected. These executions do not prove the universal
+identity. Receipt: `evals/receipts/root2039g16_boundary_consumers.json`.
 
 **C-4 (construct/project).** `Construct` with a layout whose live field count
 equals the operand count: packed nodes (zero or one `w32` word) become

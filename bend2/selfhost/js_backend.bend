@@ -949,7 +949,7 @@ def split_direct_selected(selected: Bool, id: U32, code: U32, args: List<&2, BIR
     case False{}: split_direct_many(id, code, args, next)
 def split_direct_args(id: U32, code: U32, args: List<&2, BIR.Arg>, next: BIR.Block, count: Nat) -> String:
   +caps = caps_of(next, Some{id})
-  cat(["{const ", arg_temps(args, 0n), ";", cap_stores(caps_locals(caps)), slot_stores(caps_slots(caps)), arg_moves(count, 0n), "return $split(", code_name(code), ",", Nat.show(count), ",", cont_name(id), ",$sp-", Nat.show(cap_total(caps)), ");}"])
+  cat(["{const ", arg_temps(args, 0n), ";", cap_stores(caps_locals(caps)), slot_stores(caps_slots(caps)), "if($td<64){const $kb=$sp-", Nat.show(cap_total(caps)), ",$ki=$split_enter(", cont_name(id), ",$kb);try{return $split_done(", code_name(code), "(", String.join(arg_temp_names(args, 0n), ","), "),$ki,$td+1);}catch($e){$split_abort($ki,$kb);throw $e;}}", arg_moves(count, 0n), "return $split(", code_name(code), ",", Nat.show(count), ",", cont_name(id), ",$sp-", Nat.show(cap_total(caps)), ");}"])
 def split_direct_many(id: U32, code: U32, args: List<&2, BIR.Arg>, next: BIR.Block) -> String:
   +caps = caps_of(next, Some{id})
   cat([cap_stores(caps_locals(caps)), slot_stores(caps_slots(caps)), "return $splitm(", code_name(code), ",[", String.join(arguments(args), ","), "],", cont_name(id), ",$sp-", Nat.show(cap_total(caps)), ");"])
@@ -967,6 +967,10 @@ def arg_temps_tail(rest: List<&2, BIR.Arg>, index: Nat) -> String:
   match rest:
     case Nil{}: ""
     case _: cat([",", arg_temps(rest, index)])
+def arg_temp_names(args: List<&2, BIR.Arg>, index: Nat) -> List<&2, String>:
+  match args:
+    case Nil{}: ["$td+1"]
+    case _ <> rest: cat(["$a", Nat.show(index)]) <> arg_temp_names(rest, (index + 1n : Nat))
 def arg_moves(count: Nat, index: Nat) -> String:
   arg_moves_at(Nat.is_lt(index, count), count, index)
 def arg_moves_at(more: Bool, count: Nat, index: Nat) -> String:
@@ -1591,7 +1595,14 @@ def program_source(program: BIR.Program, effects: String) -> String:
   +natives = js_native_markers(program)
   match program:
     case BIR.Program{bodies, values, layouts, types, functions, end}:
-      cat([js_runtime(), js_runtime_extra(), js_runtime_show(), js_runtime_cli(), js_runtime_io(), js_runtime_array(), js_runtime_foreign(), js_runtime_namespace(), primitive_runtime(), constructor_layouts(layouts), families(types), type_functions(functions), effects, codes(bodies), declarations(values, natives, 0n), ending(end, natives)])
+      cat([js_runtime(), js_runtime_direct(), js_runtime_extra(), js_runtime_show(), js_runtime_cli(), js_runtime_io(), js_runtime_array(), js_runtime_foreign(), js_runtime_namespace(), primitive_runtime(), constructor_layouts(layouts), families(types), type_functions(functions), effects, codes(bodies), declarations(values, natives, 0n), ending(end, natives)])
+
+# Publish the same continuation frame before a bounded direct call. A pending
+# result or an unpopped region frame belongs to run_base; only an ordinary
+# synchronous result with our frame on top can resume here. Thread depth into
+# the continuation too, so a chain of completed calls cannot reset the bound.
+def js_runtime_direct() -> String:
+  "function $split_enter(k,b) { const i=$ksp++; $kFn[i]=k; $kBase[i]=b; $kKind[i]=0; return i; }\nfunction $split_done(x,i,d) { if(x===$TAIL_PENDING||x===$CALL_PENDING||x===$LEAVE_PENDING||$ksp!==i+1)return x; const k=$kFn[i],b=$kBase[i]; $kFn[i]=undefined; $ksp=i; $sp=b; return k(x,b,d); }\nfunction $split_abort(i,b) { while($ksp>i)$kFn[--$ksp]=undefined; $sp=b; $tailFn=undefined; $tailCount=0; }\n"
 
 # Trusted target runtime; public/native callback and reflection ABI is retained.
 def js_runtime() -> String:

@@ -1,16 +1,16 @@
 {
   "schemaVersion": 2,
   "source": "bend2/selfhost/checker.bend",
-  "sourceSha256": "9ec3d7c4eeeb88d9782225a12b79ddc5e08561641dd130e7789345b3197ab95f",
+  "sourceSha256": "3b0b8da008fed8d670d1c91b64ab03d720bbcc0491b27f6e19699a609cdc085b",
   "slice": "checkpoints/checker_core_owned_v1.bend",
-  "sliceSha256": "c8f62fec88cc591a709d927fc0892f373a1ff5e4122b9ea12b3356045769fe2d",
+  "sliceSha256": "07ffd57260f39bced8b0590356dbd324e03c4fd97645a4c0cc0b42a46ecaf533",
   "root": "check_modules",
   "publicRoots": [
     "check_modules",
     "inspect_checked"
   ],
   "closureDiscovery": "Union of fixedpoints of binding-aware authentic sourceOracle Body references from checking and explicit owner-preserving inspection; fresh complete closure, not historical membership.",
-  "definitions": 1141,
+  "definitions": 1143,
   "definitionNames": [
     "inference_keep",
     "inference_child",
@@ -591,7 +591,9 @@
     "check_type_decl_result",
     "check_import_foreign_head",
     "check_import_type_result",
+    "check_datatype_parameters",
     "check_type_decl",
+    "check_type_decl_ir",
     "foreign_head",
     "check_import_definition",
     "application_argument_bangs_valid_terms",
@@ -4116,20 +4118,29 @@
     "native_match_check_import_type_result_3",
     "native_match_check_import_type_result_4",
     "check_import_type_result",
+    "native_match_check_datatype_parameters_0",
+    "native_match_check_datatype_parameters_1",
+    "native_match_check_datatype_parameters_2",
+    "native_match_check_datatype_parameters_3",
+    "native_match_check_datatype_parameters_4",
+    "check_datatype_parameters",
     "native_match_check_type_decl_0",
     "native_match_check_type_decl_1",
     "native_match_check_type_decl_2",
-    "native_match_check_type_decl_3",
-    "native_match_check_type_decl_4",
-    "native_match_check_type_decl_5",
-    "native_match_check_type_decl_6",
-    "native_match_check_type_decl_7",
-    "native_match_check_type_decl_8",
-    "native_match_check_type_decl_9",
-    "native_match_check_type_decl_10",
-    "native_match_check_type_decl_11",
-    "native_match_check_type_decl_12",
     "check_type_decl",
+    "native_match_check_type_decl_ir_0",
+    "native_match_check_type_decl_ir_1",
+    "native_match_check_type_decl_ir_2",
+    "native_match_check_type_decl_ir_3",
+    "native_match_check_type_decl_ir_4",
+    "native_match_check_type_decl_ir_5",
+    "native_match_check_type_decl_ir_6",
+    "native_match_check_type_decl_ir_7",
+    "native_match_check_type_decl_ir_8",
+    "native_match_check_type_decl_ir_9",
+    "native_match_check_type_decl_ir_10",
+    "native_match_check_type_decl_ir_11",
+    "check_type_decl_ir",
     "native_match_foreign_head_0",
     "native_match_foreign_head_1",
     "native_match_foreign_head_2",
@@ -9088,20 +9099,29 @@
     "native_match_check_import_type_result_3": "54aa73fa2df2286497e277508bb91b8bc5f64e66784eedeb2b424501a0a56590",
     "native_match_check_import_type_result_4": "f4ec89268b5da6d0ea6abfeccd4502fcc49a525a778f5e197a68a0cee9b4ccad",
     "check_import_type_result": "61c687b5dd4b1b059c655494b5a860a0261d1cd82e4c9182d98d0f3f53fdef86",
-    "native_match_check_type_decl_0": "6516f27a7977466d41fdfbccd6af7a079b12c8ce2698a06615aeec22902b8bf2",
-    "native_match_check_type_decl_1": "4070e1728171edb09ce1280655fdb970953c9701a11fecee0f1e7bf6f92eb5d7",
-    "native_match_check_type_decl_2": "205fff1cb91783b7b3288d643f06085d9b80b7ef80cd3216e9de47b629923be5",
-    "native_match_check_type_decl_3": "15b041e03157d91cb1bafebfb6fdbc9110ae0324ba9b9d7d1731b010c669f564",
-    "native_match_check_type_decl_4": "061d9d465c412eb443608d58d3b7aaecf4855cd50330dc408e2dd94d439c14b6",
-    "native_match_check_type_decl_5": "bc8776f6a9201c4acfa45e022305c9234c2a368d720d368c80fa86454f0a97b0",
-    "native_match_check_type_decl_6": "955ba0f0a54adffa88bd9f69310af0158aa32f18799236ade193fe74e11f0971",
-    "native_match_check_type_decl_7": "e4b0dcc1f0c9bd1491e77a3ea073bb2b4cd432a43236deae94a55a54e19d7a6d",
-    "native_match_check_type_decl_8": "f2fc1406b0098dcd8c225ac58b9308764549aa3ca2e36bea2a1c8362dc59b95e",
-    "native_match_check_type_decl_9": "3d3d317b25460fed3a6d7e8b1ebbbc686d91b947904908712887aae63b494325",
-    "native_match_check_type_decl_10": "4ef23c88d5a540b6a1b2698b558ff79ece12c5546fd2670644d884d66aff3467",
-    "native_match_check_type_decl_11": "788fb668ad418c1352fe1589e1fca59fd0ecd88788830599215e003a9e44c90a",
-    "native_match_check_type_decl_12": "619e3ffc320a926145ff45dfcc6922847ffda074de2799403d75ea0cedabd5a1",
-    "check_type_decl": "eb55344f79c3b4dafb2fa64db785debac6c6fceee330b87e2b886b52b48497fb",
+    "native_match_check_datatype_parameters_0": "5faac933740119e25a59b0bc475cd45ced64902790050d7e05b50257a6a9d99b",
+    "native_match_check_datatype_parameters_1": "e4ecb711cf880a48bcce2681c5c4986016520f19731ed757e65f5da3c34cb204",
+    "native_match_check_datatype_parameters_2": "28a014f8145943560dc8838bc58289fd4fd63f02e8f9e98edea2f2708461de98",
+    "native_match_check_datatype_parameters_3": "64d51ee69fd5783333282198b18c498ec0e0f62940eed0ea30aeb09f0f6f08bf",
+    "native_match_check_datatype_parameters_4": "bfc37aa1dadaf3d3b9814036212317f9534b120ba7024123dddf04ca59f60739",
+    "check_datatype_parameters": "684da5a352eaaec796a35d162f068069ed7cc911a2d17181d7c0a1ec522a49d3",
+    "native_match_check_type_decl_0": "2227c76326ae8672f32fc56f53794398ea5295551729408b307a1c4931a077c2",
+    "native_match_check_type_decl_1": "e655ac2df149a4d5ce995dc45d95fa9e6363a59238aed196e58eb97b4df0f42e",
+    "native_match_check_type_decl_2": "675207ccf0c304ccfdd77e5927da9b04ab809be429177e09795737f747719ac1",
+    "check_type_decl": "aa78fcceb412dc1bf50d31bc80bdeb6f20aff5e6ed417fd4660eb076529ac981",
+    "native_match_check_type_decl_ir_0": "1fe2ca5fe6550064e14cf16154d6e142593a64ea59b9865330a331d49f3e439f",
+    "native_match_check_type_decl_ir_1": "b2add385520a97e6a66cb41a08fd80ec385d9c6659a221a31573553bf6d4214c",
+    "native_match_check_type_decl_ir_2": "80b3ea5d270685ba2cf726d4c3eebf72d19ab1e0fe7182ec90867f887bdedbbd",
+    "native_match_check_type_decl_ir_3": "66720014d17c6d54a5cb6b76b27401c9eab8edcf3cd4e594df8f81c96772a4e3",
+    "native_match_check_type_decl_ir_4": "3bf6187aa0ac380e9b0f07fb964bec43054780d8316bd1d8c491883e4e3576b6",
+    "native_match_check_type_decl_ir_5": "b3c44cfde04019479a64fc8b5df3e43fb584bf053cecd9f77805d399ecbcfbc0",
+    "native_match_check_type_decl_ir_6": "59a6e74c4e8b9f7f53c97f73501d07c33bc2a9e4deff160259e1b2557a8f48a5",
+    "native_match_check_type_decl_ir_7": "13b22df14210101444c9fe7ed4dc24d24b18e2b6a08ea8e6ed411bfcc2b46b63",
+    "native_match_check_type_decl_ir_8": "88e2e40c3f03952beb1af687f451ec328b2a38439be21ae454d78b03834c639b",
+    "native_match_check_type_decl_ir_9": "0837a538b69374123d18dbae2bbe0420408a8999633dfd92054b806c2a2c806b",
+    "native_match_check_type_decl_ir_10": "ea0741ba6b7d12dedc1837e2600bc8daf05129833a72f8873a4a8df0801fed65",
+    "native_match_check_type_decl_ir_11": "586756e6d962e0c3b96b7327398181cac25ff14386a97b014ad1e89d852f696a",
+    "check_type_decl_ir": "94777fe6a861382119429af5e018db835dca73b450299f5d5f897d17ac0610d7",
     "native_match_foreign_head_0": "c570308d1a090f55e0374b76ca3ef5e058dc292ac8bc1c8a14d7f012b3b87459",
     "native_match_foreign_head_1": "f048cb3299be5cdb787094b0f4c73dc7053151ec4292568d4ca72e24f108ad41",
     "native_match_foreign_head_2": "082b67ae0837fb5828c229da071725264773fa0442c8ee35e9b886e4a166b51b",
@@ -13481,19 +13501,26 @@
     "native_match_check_import_type_result_2": "check_import_type_result",
     "native_match_check_import_type_result_3": "check_import_type_result",
     "native_match_check_import_type_result_4": "check_import_type_result",
+    "native_match_check_datatype_parameters_0": "check_datatype_parameters",
+    "native_match_check_datatype_parameters_1": "check_datatype_parameters",
+    "native_match_check_datatype_parameters_2": "check_datatype_parameters",
+    "native_match_check_datatype_parameters_3": "check_datatype_parameters",
+    "native_match_check_datatype_parameters_4": "check_datatype_parameters",
     "native_match_check_type_decl_0": "check_type_decl",
     "native_match_check_type_decl_1": "check_type_decl",
     "native_match_check_type_decl_2": "check_type_decl",
-    "native_match_check_type_decl_3": "check_type_decl",
-    "native_match_check_type_decl_4": "check_type_decl",
-    "native_match_check_type_decl_5": "check_type_decl",
-    "native_match_check_type_decl_6": "check_type_decl",
-    "native_match_check_type_decl_7": "check_type_decl",
-    "native_match_check_type_decl_8": "check_type_decl",
-    "native_match_check_type_decl_9": "check_type_decl",
-    "native_match_check_type_decl_10": "check_type_decl",
-    "native_match_check_type_decl_11": "check_type_decl",
-    "native_match_check_type_decl_12": "check_type_decl",
+    "native_match_check_type_decl_ir_0": "check_type_decl_ir",
+    "native_match_check_type_decl_ir_1": "check_type_decl_ir",
+    "native_match_check_type_decl_ir_2": "check_type_decl_ir",
+    "native_match_check_type_decl_ir_3": "check_type_decl_ir",
+    "native_match_check_type_decl_ir_4": "check_type_decl_ir",
+    "native_match_check_type_decl_ir_5": "check_type_decl_ir",
+    "native_match_check_type_decl_ir_6": "check_type_decl_ir",
+    "native_match_check_type_decl_ir_7": "check_type_decl_ir",
+    "native_match_check_type_decl_ir_8": "check_type_decl_ir",
+    "native_match_check_type_decl_ir_9": "check_type_decl_ir",
+    "native_match_check_type_decl_ir_10": "check_type_decl_ir",
+    "native_match_check_type_decl_ir_11": "check_type_decl_ir",
     "native_match_foreign_head_0": "foreign_head",
     "native_match_foreign_head_1": "foreign_head",
     "native_match_foreign_head_2": "foreign_head",
@@ -14935,7 +14962,7 @@
       "canonical": "bend2/selfhost/emitter.bend",
       "owned": "checkpoints/emitter_owned_v1.bend",
       "canonicalSha256": "47d68ba5f0b54c334e2c940b7bb6aabc7f3bba27142b816f27df8225cf3fae4f",
-      "sourceSha256": "8e8cd9c40341b4110f5690064e1492f91d2a89dbf285011201d4dc3fe5839814",
+      "sourceSha256": "55c824e2aa0c14f99079d6c8cb94dfd23817da310c3f2ef99d9fe279daa3fe15",
       "definitionNames": [
         "emitted_js",
         "emitted_c",
@@ -15467,6 +15494,7 @@
         "cps_provider_2_max_arity_each",
         "cps_provider_2_scan_new",
         "cps_provider_2_scan_program",
+        "cps_provider_2_scan_exports",
         "cps_provider_2_scan_codes",
         "cps_provider_2_scan_declarations",
         "cps_provider_2_scan_declaration",
@@ -15565,12 +15593,17 @@
         "native_match_cps_provider_2_array_step_4",
         "native_match_cps_provider_2_array_step_5",
         "cps_provider_2_array_step",
+        "cps_provider_2_prim_borrowed_box",
+        "cps_provider_2_atom_allocates",
         "native_match_cps_provider_2_prim_texts_0",
         "native_match_cps_provider_2_prim_texts_1",
         "native_match_cps_provider_2_prim_texts_2",
         "native_match_cps_provider_2_prim_texts_3",
         "native_match_cps_provider_2_prim_texts_4",
         "native_match_cps_provider_2_prim_texts_5",
+        "native_match_cps_provider_2_prim_texts_6",
+        "native_match_cps_provider_2_prim_texts_7",
+        "native_match_cps_provider_2_prim_texts_8",
         "cps_provider_2_prim_texts",
         "native_match_cps_provider_2_prim_step_0",
         "native_match_cps_provider_2_prim_step_1",
@@ -15579,20 +15612,17 @@
         "native_match_cps_provider_2_prim_step_4",
         "cps_provider_2_prim_step",
         "native_match_cps_provider_2_array_op_step_0",
-        "native_match_cps_provider_2_array_op_step_1",
         "cps_provider_2_array_op_step",
+        "native_match_cps_provider_2_array_op_step_element_0",
+        "native_match_cps_provider_2_array_op_step_element_1",
+        "cps_provider_2_array_op_step_element",
         "native_match_cps_provider_2_pred_path_0",
         "native_match_cps_provider_2_pred_path_1",
         "native_match_cps_provider_2_pred_path_2",
         "native_match_cps_provider_2_pred_path_3",
         "cps_provider_2_pred_path",
-        "native_match_cps_provider_2_append_step_0",
-        "native_match_cps_provider_2_append_step_1",
-        "native_match_cps_provider_2_append_step_2",
-        "native_match_cps_provider_2_append_step_3",
-        "cps_provider_2_append_step",
-        "native_match_cps_provider_2_append_step_parts_0",
-        "cps_provider_2_append_step_parts",
+        "native_match_cps_provider_2_str_append_0",
+        "cps_provider_2_str_append",
         "native_match_cps_provider_2_construct_step_0",
         "native_match_cps_provider_2_construct_step_1",
         "native_match_cps_provider_2_construct_step_2",
@@ -15623,6 +15653,7 @@
         "native_match_cps_provider_2_hastag_part_0",
         "cps_provider_2_hastag_part",
         "cps_provider_2_is_array_primitive",
+        "cps_provider_2_is_atomic_primitive",
         "cps_provider_2_pcid",
         "native_match_cps_provider_2_str_bool2_0",
         "cps_provider_2_str_bool2",
@@ -15633,6 +15664,8 @@
         "cps_provider_2_bool_part",
         "native_match_cps_provider_2_prim_part_0",
         "cps_provider_2_prim_part",
+        "native_match_cps_provider_2_prim_scalar_part_0",
+        "cps_provider_2_prim_scalar_part",
         "cps_provider_2_f32_bin",
         "cps_provider_2_f32_un",
         "cps_provider_2_f32_cmp",
@@ -16102,6 +16135,9 @@
         "native_match_cps_provider_2_entry_native_0",
         "native_match_cps_provider_2_entry_native_1",
         "cps_provider_2_entry_native",
+        "native_match_cps_provider_2_native_borrow_drops_0",
+        "native_match_cps_provider_2_native_borrow_drops_1",
+        "cps_provider_2_native_borrow_drops",
         "cps_provider_2_a_names",
         "native_match_cps_provider_2_entry_foreign_0",
         "cps_provider_2_entry_foreign",
@@ -16577,6 +16613,15 @@
         "cps_provider_5_dst_decl",
         "native_match_cps_provider_5_dst_mark_0",
         "cps_provider_5_dst_mark",
+        "cps_provider_5_form_base",
+        "cps_provider_5_form_pad",
+        "native_match_cps_provider_5_src_skip_jobs_0",
+        "native_match_cps_provider_5_src_skip_jobs_1",
+        "native_match_cps_provider_5_src_skip_jobs_2",
+        "cps_provider_5_src_skip_jobs",
+        "native_match_cps_provider_5_dst_skip_jobs_0",
+        "native_match_cps_provider_5_dst_skip_jobs_1",
+        "cps_provider_5_dst_skip_jobs",
         "cps_provider_5_src_read_node",
         "cps_provider_5_src_read_arr",
         "cps_provider_5_src_read_block",
@@ -16598,11 +16643,13 @@
         "cps_provider_5_nest_take",
         "cps_provider_5_nest_make",
         "cps_provider_5_field_pair_jobs",
-        "cps_provider_5_form_fields",
+        "cps_provider_5_forms_arm_body",
         "cps_provider_5_forms_arm_case",
         "cps_provider_5_form_arm_by_key",
         "cps_provider_5_forms_cases",
+        "native_match_cps_provider_5_expand_forms_0",
         "cps_provider_5_expand_forms",
+        "cps_provider_5_forms_single",
         "cps_provider_5_pack_jobs",
         "cps_provider_5_arm_block_jobs",
         "cps_provider_5_box_arm_jobs",
@@ -16964,6 +17011,21 @@
         "cps_provider_5_array_swap_ops",
         "cps_provider_5_array_size_ops",
         "cps_provider_5_array_clone_ops",
+        "cps_provider_5_atomic_cell_text",
+        "cps_provider_5_atomic_call_text",
+        "cps_provider_5_atomic_cas_text",
+        "cps_provider_5_atomic_helper",
+        "cps_provider_5_atomic_pair",
+        "native_match_cps_provider_5_atomic_three_operands_0",
+        "cps_provider_5_atomic_three_operands",
+        "cps_provider_5_atomic_three_pargs",
+        "cps_provider_5_atomic_cas_pargs",
+        "cps_provider_5_atomic_pargs",
+        "native_match_cps_provider_5_atomic_three_regs_0",
+        "native_match_cps_provider_5_atomic_three_regs_1",
+        "cps_provider_5_atomic_three_regs",
+        "cps_provider_5_atomic_cas_regs",
+        "cps_provider_5_atomic_prim_part",
         "cps_provider_5_array_leaf_ops",
         "cps_provider_5_array_node_ops",
         "cps_provider_5_array_is_cond",
@@ -16976,7 +17038,10 @@
         "cps_provider_5_array_size_cell",
         "cps_provider_5_array_clone_cell",
         "cps_provider_5_array_leaf_cell",
+        "native_match_cps_provider_5_array_part_0",
         "cps_provider_5_array_part",
+        "cps_provider_5_array_cell_part",
+        "cps_provider_5_is_atomic_primitive",
         "cps_provider_5_is_array_primitive",
         "cps_provider_5_show_state0",
         "cps_provider_5_show_words",
@@ -17423,6 +17488,7 @@
         "cps_provider_8_arg_atom",
         "cps_provider_8_arg_temps",
         "cps_provider_8_arg_temps_tail",
+        "cps_provider_8_arg_temp_names",
         "cps_provider_8_arg_moves",
         "cps_provider_8_arg_moves_at",
         "cps_provider_8_cap_stores",
@@ -17518,6 +17584,7 @@
         "cps_provider_8_emit_effects",
         "native_match_cps_provider_8_program_source_0",
         "cps_provider_8_program_source",
+        "cps_provider_8_js_runtime_direct",
         "cps_provider_8_js_runtime",
         "cps_provider_8_js_runtime_extra",
         "cps_provider_8_js_runtime_array",
@@ -17790,9 +17857,13 @@
         "native_match_cps_provider_10_ending_1",
         "native_match_cps_provider_10_ending_2",
         "cps_provider_10_ending",
+        "cps_provider_10_root_main_runnable",
+        "cps_provider_10_root_main_admitted",
+        "cps_provider_10_executable_admitted",
         "native_match_cps_provider_10_native_match_build_finish_0_0",
         "native_match_cps_provider_10_native_match_build_finish_0_1",
         "cps_provider_10_native_match_build_finish_0",
+        "cps_provider_10_native_match_build_finish_2",
         "cps_provider_10_native_match_build_finish_1",
         "cps_provider_10_build_finish",
         "cps_provider_10_native_match_build_0",
@@ -18277,9 +18348,9 @@
         "cps_provider_2_export_direct_curried": "ef109c0c54081b5b0d720ecb4c7469b1ee5b4d42c419d1a0a508c3aecb751ea2",
         "native_match_cps_provider_2_export_symbol_0": "f9ed3920e0a7eb0e30e4b3cb4ba7e225d4e4ca6bbf419b76a42eb057f26d63f0",
         "cps_provider_2_export_symbol": "c55fd22b668be3e007bad5e51c6ab817a5ea7bb2fd166242e4d937e0bcd48bc2",
-        "cps_provider_2_export_symbol_item": "564082eb59dc1e7a454412923540155e125c1466938f98dc610cfbff6cc428b7",
-        "native_match_cps_provider_2_export_declared_0": "85b42103687fe7a9d0863585e49e3e2d4f7b186988400dce79ac77c96ced3ce0",
-        "cps_provider_2_export_declared": "5b1922c0aa445dd4f5229ca2b7322793f03b7cb34f4a9de9463e426f9d82cc63",
+        "cps_provider_2_export_symbol_item": "7b01071d15c0ec327e685f081758c35d3df600df89c075a44892db018ec16e39",
+        "native_match_cps_provider_2_export_declared_0": "b54cbc20d3ccbd9766c2ef68cb229671ffe48124b3d1b6b4f6dce6f2224ea7ef",
+        "cps_provider_2_export_declared": "8fc83c4a5372584b6b9a7d792d04b5960278e321f24c54cfe0fb6716e45947e6",
         "cps_provider_2_export_names": "f755c35a2377da0b74e430b3ca360e47bc0e21c6ed49a7700a9f2d0a0a99e2f5",
         "native_match_cps_provider_2_if_first_0": "a38e1e215a4124b7aa8d59e23449b8b817843df1c3f9b732893bf9160b851ccd",
         "cps_provider_2_if_first": "7895516825bf420d20c9ce03332f02965060f110fbdb25850ed1799f8b6e712b",
@@ -18338,7 +18409,8 @@
         "cps_provider_2_max_arity": "67ce872196b2ee8ae6b469eaf93c0877086977bcff5c7c9726db58c7f6e037c2",
         "cps_provider_2_max_arity_each": "65d5cab6dc36d317aa84e591df58fe9e975cda9050d2909d1013f300373f1349",
         "cps_provider_2_scan_new": "dea36fc133016d5b9f9aad68341bb456d06be54778ac7e907cc1cf25c2ffae35",
-        "cps_provider_2_scan_program": "d4da4242aebfe2bd4d9afb9747e956b1f3e6a99f6e69ecf66566987a6b6855d9",
+        "cps_provider_2_scan_program": "8309cc35d61814873018980c3e90c783363045cd7d14ca58bdbb20b9f582c6fe",
+        "cps_provider_2_scan_exports": "d1f48c743bbb943d1a98d300be6b5067e52597940da68f0274ac3c483b162e17",
         "cps_provider_2_scan_codes": "114fccc5a2108317030f368306ac99974ace962932a11c360452992e28c32852",
         "cps_provider_2_scan_declarations": "9f9a5a624727de5823696030244430305dcffc740896498905b2ff2239b04be3",
         "cps_provider_2_scan_declaration": "f1b45803ef8de917648a75967fc99caab0181c207020f375a871712779c04625",
@@ -18428,8 +18500,8 @@
         "native_match_cps_provider_2_symbol_value_3": "a53dfd898799f7edf84253f6d6891903b58f0f9d2450f56b6ca32066a536f9d0",
         "cps_provider_2_symbol_value": "d4d187225276bac4feefe5f5d6fd1078b8dcba10eba18623e98df8a2445c8729",
         "cps_provider_2_args_parts": "5d2a82fcd578088cd10235f80acdd0e5f662c9c61a6c36cf8b031dc5ab8c1d27",
-        "cps_provider_2_prim_default_owned": "ebce4806119cecc711ef02ecadcb95e9c98c7211f5762f885d7788e3385feb9a",
-        "cps_provider_2_array_arg_owned": "69c6deed80d22dda71bf7576d16a193ee36e758dcfe0ff360218c0a6966594b2",
+        "cps_provider_2_prim_default_owned": "c1ca26cac4ed6ba51c601e3932500f50e0a95ef3a37d6193407aa5a07d4d9f49",
+        "cps_provider_2_array_arg_owned": "ab6a3b7f5efc7ca6128911f43feb60ed727a41557827a8202cec3532b1280431",
         "native_match_cps_provider_2_array_step_0": "d2365108c016d3232ebefbb88e5adaac6cf9ba46654e8b78bf80eaabae051311",
         "native_match_cps_provider_2_array_step_1": "041d3de62acbe9afd87680b34d919da97d4f3768f270361073cffbb91c9e18e7",
         "native_match_cps_provider_2_array_step_2": "3377aba77a393cc9936e87eb29854f2acedeec3a551d9e5af6aa59887be0a570",
@@ -18437,34 +18509,36 @@
         "native_match_cps_provider_2_array_step_4": "84acdf7b876b1bc5ec7da4a03402f96b436708b7499382946a3faaf4e5691869",
         "native_match_cps_provider_2_array_step_5": "ab2bbb0ce35f53e786ade1a883226b976a64c021572a5e649353f027a01da57a",
         "cps_provider_2_array_step": "2620a0c729ec75237fd222e8e41e6be1138cbf1d4f4ca9b2fbfd51320b72cba4",
-        "native_match_cps_provider_2_prim_texts_0": "3204151c5c045c5c68ee62bacaf88abde4a130bcf00030ceaaa150891f441822",
-        "native_match_cps_provider_2_prim_texts_1": "d2ff9bdb99b9a076272c182c72616bc548a0e2034cd494a910d668cc6abc3d39",
-        "native_match_cps_provider_2_prim_texts_2": "f69c6c6a41989ab1d9fcc2cbb3b74bed54ef091c6f38917d63727554e3e2c37c",
-        "native_match_cps_provider_2_prim_texts_3": "42dd28d278c14562f75b37b783c88977f3f5b547dab823b9929ad5b24cb05d0a",
-        "native_match_cps_provider_2_prim_texts_4": "2c3bbd3c29ef9c87ba4069c2ed600482cd6f16891b68b7f36909d3052d7a68c6",
-        "native_match_cps_provider_2_prim_texts_5": "eb419bcf96cbc8565f9086ec4fcb88cca506961f899337b9a5e7fa7953ad9bd0",
-        "cps_provider_2_prim_texts": "cd09d80adbd5885f11526a4bd98dec9a2234d266ce5548115687ea7b3c3a3018",
-        "native_match_cps_provider_2_prim_step_0": "afa959229a19d00c6024103bd3b96f1b4cc6e8f2873622565ddeb6753b9e6627",
-        "native_match_cps_provider_2_prim_step_1": "269841aeaf45fda591bbbd9b590c9d3d222edcf58dbd84178e830ed5346dc220",
-        "native_match_cps_provider_2_prim_step_2": "b583ced5098cd226f958a6e935a053bcdd47dfa40e1762fbc49a5bf1682f2657",
-        "native_match_cps_provider_2_prim_step_3": "92ce8c3cb89ff469a6f12c96afb11e95fe6b37726894f01153854614516f0696",
-        "native_match_cps_provider_2_prim_step_4": "5772e1014eb4b3963fc702733ca5bd9d68df97b27159253d8df895705ac0e20a",
+        "cps_provider_2_prim_borrowed_box": "cc4154fb6e6b9f560ed15a873419a2fab393ada1cf2c4c3e8b375d3879353d55",
+        "cps_provider_2_atom_allocates": "f65d5c7260b7f042a2b027b2b72ba7938fc5a9ab8c5ff51153379b06a38ef746",
+        "native_match_cps_provider_2_prim_texts_0": "baeab6de8466d696ee85f64344b1641aac30fe71c513d98f85b9bd95921d8299",
+        "native_match_cps_provider_2_prim_texts_1": "1e954522cc2ffb2eed8428b9afa5ef9f5eae92e8e257c1dac66a57d3556c811f",
+        "native_match_cps_provider_2_prim_texts_2": "c85118049bd41278cd9db386a95ca366b97dd8f638042f18f90d26dfb597e6a1",
+        "native_match_cps_provider_2_prim_texts_3": "eb28f22fc6b2608135d68d48bfbf759920b1908cd23098573fb167127f3799bc",
+        "native_match_cps_provider_2_prim_texts_4": "6af9e069e65984c3faea63c4bc13ba58bb81cf6d3aed35a6c230e65fcb3ad49e",
+        "native_match_cps_provider_2_prim_texts_5": "626178670d57886e0d490ecfaf7bdd7d426e9be79a12587700cbf90bfbaa065d",
+        "native_match_cps_provider_2_prim_texts_6": "94e5533754bb3db473b5de0b56cd931b29fdbcbdcc0beefb7856ba3c6eddee1a",
+        "native_match_cps_provider_2_prim_texts_7": "8f1637d335a0ccc8de64f793fbe9c503c2d391235279992d1a42d429d84e2611",
+        "native_match_cps_provider_2_prim_texts_8": "7e0a52f8391b574e6d28715655bf86a6aadef29f49cbe9a6f56bb42e861ffdf2",
+        "cps_provider_2_prim_texts": "a20323c165439fcc2ed851f482fd6c9d5aefac37a50d1e6f78714292cc509947",
+        "native_match_cps_provider_2_prim_step_0": "198bff3e8eb020464e775b1cc3947cb347267ce891c6ee5e18f9fd4b5c9ffab6",
+        "native_match_cps_provider_2_prim_step_1": "0995721e42780d6abc5c540506f911fecd80137b036b38302e907225d767ff04",
+        "native_match_cps_provider_2_prim_step_2": "66171011b573936e985373d7a29572c6cd24bc601052d1af72d33c61a0617200",
+        "native_match_cps_provider_2_prim_step_3": "abe6c21684e098553728b391e45672cea69fd651297d53da010e110832aa59cc",
+        "native_match_cps_provider_2_prim_step_4": "973714d7c299f50a71d6ce5ca09476708c9851e4e9645765fea7b51a61096f98",
         "cps_provider_2_prim_step": "60d01426161c276da3d171d76b1110844c17ab38844e4da0fd91ffea62bd6b4a",
-        "native_match_cps_provider_2_array_op_step_0": "fa83e98a9834bcbffbbabe08e7b8fa118a15e7e83dc66072ef83a6f3e449f75b",
-        "native_match_cps_provider_2_array_op_step_1": "6f63b5d19beaf0854e6625ea8cbdc21b59350c7634d7c9bd6ab95c78a9513cae",
-        "cps_provider_2_array_op_step": "380ac845bef3d9e252d118ef8f1ea1e8768de70585a0417e1c57547992e8ccb1",
+        "native_match_cps_provider_2_array_op_step_0": "58cb180262dcd663bc38cefb1ebc2656c96f84e99403eec6f068e520cd243a3d",
+        "cps_provider_2_array_op_step": "bce14cdd737de7bc6e3de27e16ce10286e160b03bd0666940df7c6faeab596ad",
+        "native_match_cps_provider_2_array_op_step_element_0": "95ce3f16173c9ec09972a24912201d76bdb577380e433d9abc2def4026e13506",
+        "native_match_cps_provider_2_array_op_step_element_1": "3803d5b0e5b6ff5559ee3c53e5d12b0a45d8d914c34ca3deb68b64f3e9f74567",
+        "cps_provider_2_array_op_step_element": "508d48e48033cbce98a4a05d63d3913e461b0e4aded79b497460831fd954acca",
         "native_match_cps_provider_2_pred_path_0": "ba4e1f2e803ab49f34682b657cc33e4dee6d4879eca2871015635c85fb64d1ea",
         "native_match_cps_provider_2_pred_path_1": "a00f39ee5de3a27f059bdf3c63913e45aca22c80ba1b5ab363862d879d5236ad",
         "native_match_cps_provider_2_pred_path_2": "3464752f6b15c3349f63a08e903dabcf637b10960771d7f7c42356e295360b21",
         "native_match_cps_provider_2_pred_path_3": "96b7ed7e605ff9f6385f194163c81ee4a404b199ab5677f3d20260a5cbf51da9",
         "cps_provider_2_pred_path": "9d33c52da8f1a3b771587a6fb49a830068ce677b22c30d9bb6f176861fba249f",
-        "native_match_cps_provider_2_append_step_0": "c42e56a218295c853f1006fb90c936fb1bd9f72eab3ee6febbd610412bd29f0e",
-        "native_match_cps_provider_2_append_step_1": "86742d79b145c22c77fb689c292eda074de79ed85a36dfd37d8c366c0caaa218",
-        "native_match_cps_provider_2_append_step_2": "d0bb22dd57322437465d3bbe655d3067bfb1dcda2a1415c143b55d123414dff8",
-        "native_match_cps_provider_2_append_step_3": "ebb78d6b221ec0fb83bd966cb9a727a655d5fe8fc1d68863008a9ce125605857",
-        "cps_provider_2_append_step": "4bf1c4f82b55b7c51f37cecf56ddfa71ea2d3faad7b24c0207252b12bbec28d5",
-        "native_match_cps_provider_2_append_step_parts_0": "2dc66fa54fb1526e2fd319bc36b3b656f9a1f1705f95606cae6d294a2d932d21",
-        "cps_provider_2_append_step_parts": "f09b04e959d9edb5b93ffc85ebc9c257c831551d172cd405a26088618572cf40",
+        "native_match_cps_provider_2_str_append_0": "7815b5bbad3608e82ba1507f24a0c9cdd8b632b7cc416d62537238f44714f690",
+        "cps_provider_2_str_append": "93f6af53170674aa2fd17960793e8adfb0d663e978a245e4914cba5c3ad123c7",
         "native_match_cps_provider_2_construct_step_0": "b5b3c9806e4e77ce7c93a071474ccf6deee4695df1aa68e6fa9890a8f30468ad",
         "native_match_cps_provider_2_construct_step_1": "d5e36eb3dc6648f74546b07f282567e976a31738cf9e270a111546255acca9fc",
         "native_match_cps_provider_2_construct_step_2": "0451683f3a744759dcc499d2e0f04f724a09a115e99e72e000a648e360251e0e",
@@ -18495,6 +18569,7 @@
         "native_match_cps_provider_2_hastag_part_0": "0744d6255511bc822f69fe3e52017c7abb0afd907c79e4ba54b95cbf82fc96fb",
         "cps_provider_2_hastag_part": "82f0a0e7e731436d16b7de5184b94e8ceeee613ea07172c99467a8d2c6090ab9",
         "cps_provider_2_is_array_primitive": "51e09c5548053e83da806a74211891c9a4d29bb7ac859f837a2f9db005c44da2",
+        "cps_provider_2_is_atomic_primitive": "5da543cb8330594e9862c77f48ce336caacf8a7f27ff917430b0e10db0023f70",
         "cps_provider_2_pcid": "6bb51ece960affac8e1084ee9399ec04bfc249663b802e119412387c8f321210",
         "native_match_cps_provider_2_str_bool2_0": "e85f75f6a1e2e28d5091cae6daf44437262f5ad9d46ae78e7581c57d926387ec",
         "cps_provider_2_str_bool2": "ece515eedc076b6409756c600ea54174f54ad398f64540fb9a7b7e653f74ce6a",
@@ -18503,8 +18578,10 @@
         "cps_provider_2_bool_str_empty": "e293a430976b47afc3471df6bbd4eb4c777805b5f9fbf0fc103c91dfbd797303",
         "native_match_cps_provider_2_bool_part_0": "8902a40a3909d2e4ca11243ff42d69124abaab582eff267959603a20e17ac30d",
         "cps_provider_2_bool_part": "2e943c79f024b5487f0a5ee504216ebf06330c97f30d8885cf530e56e5c2f073",
-        "native_match_cps_provider_2_prim_part_0": "a7bf4c8879a90a4252ba646c640ff313cf79765ce7cfbadddd413da0f4571597",
-        "cps_provider_2_prim_part": "103ad77fe298ef04375cda9bf56e8419fd34ce6f311dfd66761f05446bb0e5ec",
+        "native_match_cps_provider_2_prim_part_0": "98a9c46f8b97f6779052d762c07abc054a2f77c0370cbb4975ce49e928798d61",
+        "cps_provider_2_prim_part": "89a7771fd1bd5d1c5fbed61ae43a7c7df72f6e84d861c251ddab8abd31830c07",
+        "native_match_cps_provider_2_prim_scalar_part_0": "eb7c3884968519cd0e56b01ae47d73b71403ceba5df497898f14bc8296d73b82",
+        "cps_provider_2_prim_scalar_part": "9a942388816bf94d2da3e058b84f22ac05e578bcb3c8ed8a6c4f0bbd36f191ff",
         "cps_provider_2_f32_bin": "5db14ae6ffb442042f35a5fdf196f3500f65d85d3e5755fabfed5589affad728",
         "cps_provider_2_f32_un": "ab4851d3d4a28aa874dc66faf678881a641b5e1d50833164dbadebdd45822336",
         "cps_provider_2_f32_cmp": "5b12380235c6291880a584da7f3b46661089493f13e6f4288ff52aba3024790a",
@@ -18971,9 +19048,12 @@
         "cps_provider_2_stage_stores": "a61abb99bb72f83b318376b8be7d34d6d8366411aae995a34366b235524ab688",
         "native_match_cps_provider_2_entry_lazy_0": "a93612ce2668a0ee3baad3784a6d29f6e70d1c83bc62e540105093be8884b489",
         "cps_provider_2_entry_lazy": "ea440f3219d6dd31882a944ea0d991cb4cf5a0e05ddfdba6c49cb89d93be4858",
-        "native_match_cps_provider_2_entry_native_0": "b7888f88f3b4344805627ce4fa9d22f96c3d6cf5d7e909bbf359bb4fb64a9f1d",
-        "native_match_cps_provider_2_entry_native_1": "e566ee3a3fb22e1ae435d90896075bd3c6ab7f4d9094db80c20379c8c9e622be",
-        "cps_provider_2_entry_native": "70ca51f23a4549f019bb9eb9d1efc83d3b94e14d94ee166b47f18ffdace9666a",
+        "native_match_cps_provider_2_entry_native_0": "18bbd5bd625f03df62e627995ec6fcfda86e93950af1189f8f0497d749c66c71",
+        "native_match_cps_provider_2_entry_native_1": "05ac6242483fce359ce9e38af064ea72df8dfd7af0cd1fd62495743eb86af3ec",
+        "cps_provider_2_entry_native": "9713b89f9161fc6b9c5a1a57996fb8d6fd740fc9ca9b47d765de82acfd9a5c9b",
+        "native_match_cps_provider_2_native_borrow_drops_0": "3f3cdeca31dd838fe469c0e7bce659003d0c366658ae2657de11f6e3be409549",
+        "native_match_cps_provider_2_native_borrow_drops_1": "ec05af998cb55689ec864e73e7e88ec9dec95c1bfa1c033dc074665f3d459d01",
+        "cps_provider_2_native_borrow_drops": "7e72b003698d75e6a783888952dee97f4d1567e91420dd356063ba18bf4f2b44",
         "cps_provider_2_a_names": "9d9789d38772052d5912ea175ac54725d8b8556e9d977114868558e89f61e748",
         "native_match_cps_provider_2_entry_foreign_0": "f181b104b40857f71efefa2a996d298310d2090323b4289b0ff8ff878e47f3a7",
         "cps_provider_2_entry_foreign": "f5a78abc9d6a1a7e1352510a2a233bd986931992186697a7d962138547b9595f",
@@ -19080,7 +19160,7 @@
         "cps_provider_2_main_fid_index": "971609a02c682cb78aba93aa9b626e3184b1e8ea1f357fa9d149efeec04b1c28",
         "cps_provider_2_main_pure_text": "ead95c9f49451c604832cddef0bb55f861e871219cacb43cad4b0953cdf45070",
         "cps_provider_2_spins_part": "e4c1d53d19e4682be1f2fcd8bd0e5726912129aab7003311c2086d3bfd97a6f8",
-        "cps_provider_2_helper_core": "c55c7b338c69b6e41e7326628052bac9d503cc914cfd06fa18b8b7cf3e05e902",
+        "cps_provider_2_helper_core": "2f3a7bca169cacfdd72788082a12c6bcce2a69f3b582da7ea2e4b4760ae12742",
         "cps_provider_2_requests_part": "6ef46a6326f1a2ff2f89b63d0ffb08bc178f6ee2a949318b28cf23d7b5e778c6",
         "native_match_cps_provider_2_requests_finish_0": "7343cebd6d7775f310c37e1307d2bf6d710488837e775eef4927c04d75c6f87f",
         "native_match_cps_provider_2_requests_finish_1": "51de2a26e9ef98967c93dc9076c5535edda3f9faf0b8378047385774d8d166d3",
@@ -19449,6 +19529,15 @@
         "cps_provider_5_dst_decl": "108e111c49fc2ef1266d4fd9d22b8bdeaba9ae618dcb8da8a851476e07f7e3e2",
         "native_match_cps_provider_5_dst_mark_0": "0fd76f901bfdcd355bc700aa2609616c9af035b273e5046149c3e59abd9c672a",
         "cps_provider_5_dst_mark": "9bcb2aa9166b3d35249525674545b8c3f1ee7fed0fb2ef968c3f077c85325da6",
+        "cps_provider_5_form_base": "e9b75a7aae66436619163ae03369a64f63b3025ca318c6e4599d843b78a5ec65",
+        "cps_provider_5_form_pad": "1b9958ee775c103447ca049ed8adb2c55657f340ef4f5c0f0433ca4dc80f9e73",
+        "native_match_cps_provider_5_src_skip_jobs_0": "af4a9b73df5e1942760728d8c08d1dd172aa214bc7a81a286de202c993052901",
+        "native_match_cps_provider_5_src_skip_jobs_1": "faaecc1539f01ee810325e851b2953e72409a80c4b328045a3c7fd592c6586bd",
+        "native_match_cps_provider_5_src_skip_jobs_2": "d00324314817572317da03f464e68ac43efc11bd33af3126f3fd68a0c10fe69f",
+        "cps_provider_5_src_skip_jobs": "96c125a83df8809a8e119ea773414f44916d1e0b8a0c173be8553d6fc1c433d0",
+        "native_match_cps_provider_5_dst_skip_jobs_0": "01f531ec3bce9d0a4c6a17fa51e8f145c3f0b825124ba1b4e7623392a93838e7",
+        "native_match_cps_provider_5_dst_skip_jobs_1": "fd2ad2eb28f87e5347c3dc75da4e8b3ca64c99a625dab077e63a36d9e22699fb",
+        "cps_provider_5_dst_skip_jobs": "1777658606d98fb55e2fea9f018ba4cfbba2fe73cb53e9dbde908e10da57366d",
         "cps_provider_5_src_read_node": "0d83733fae1b8adf1371d735ac3bab268068eac0fcc0e7f612b5ce68e76026f4",
         "cps_provider_5_src_read_arr": "4317452e85d07ff57763cb34bc809eea8097289b302a84d70e986bc87c7d3056",
         "cps_provider_5_src_read_block": "fc431f6a64714582a26973cd12d534449cb396b33d36fd3c948d81e4fad90215",
@@ -19461,32 +19550,34 @@
         "cps_provider_5_arm_src": "000c53c94be3dfaec402266aca65fc27bc0b72ed7571f754cb089d574daaf4fd",
         "cps_provider_5_nests_jobs": "c6cfeaf739ff70da08bb733e2a9ef6da38d75167a0efab572e8dce7b4f6e5862",
         "cps_provider_5_arm_release": "a5a58d8c758f90bc606e3c95f30fef2f1ac2de45e699853a7601917e24000dd3",
-        "cps_provider_5_jobs_arm_body": "79e29b91c104cb45687806caa7ad08c8cae9671175bbe0b733d2f6c7f74675e6",
-        "cps_provider_5_jobs_arm": "2a4f8e7e2a7b998f29bd3a011037dc4a410dc3dbc31f46ee0f7813c0dd41fdcb",
-        "cps_provider_5_arm_jobs": "e778fbf0047f08ff9327a305caa583bd18ecf3fb268791b8f1f57c2c08417753",
-        "cps_provider_5_unbox_cases": "33727b9495ac7ea958afe14be2d385624cda0eed082e72135bd0837652c7ba2b",
-        "cps_provider_5_expand_unbox": "2d4b70bc439c8b01777e55898180ab33654b2213275088c2faf725d998b32d7d",
-        "cps_provider_5_expand_word_take": "4e870d118cd9fa8363add75e6c2ac8b95fa4931a7c647c081cc5c78a9b8916f3",
+        "cps_provider_5_jobs_arm_body": "656cf91e7ecc1606e793a093b2964f3e4d516807ba35630052a63f82029a2cec",
+        "cps_provider_5_jobs_arm": "7323083c930715871303e342aeffd600f41465481daa9a6840b1528999fba1a6",
+        "cps_provider_5_arm_jobs": "ddf1e665a3727af87eb847590bf718b1d934def0e19f6160a785d3380c8ec9ce",
+        "cps_provider_5_unbox_cases": "f4e520a31bd986010521076ab77d2e36ef5efee8ac2ea9d56b837f3be9219388",
+        "cps_provider_5_expand_unbox": "1c185b7fa5fd130e8f6449da6b83faed703a2d2e6a38061004b691735a1b2b90",
+        "cps_provider_5_expand_word_take": "48be981397c3288c9d6ab13dd878b3162013f7105f1fb08b4889a0476803f7cd",
         "cps_provider_5_nest_take": "b8958e3aa495444cc6ec97dc47acadfab5f245abd8891aa3ce4daa462cdb4ad3",
         "cps_provider_5_nest_make": "81dfcdf6a4bb726787786f5500560be35bcdb68835afaf1a608904e9a17ac5d6",
-        "cps_provider_5_field_pair_jobs": "418fda1bcfb07cfc68516b8aff07b7d1e4bac2beefc8f054cab113571f024601",
-        "cps_provider_5_form_fields": "177b64dd03a433ee2a964fbb7b9c959613d0829179ae43b4a45a1124132a1ade",
-        "cps_provider_5_forms_arm_case": "1b993f2136e494c66185f7a01e03b46cf0238050ac29c38284db2397678124aa",
+        "cps_provider_5_field_pair_jobs": "d98af5d78f0fcc9eb5b6cb8f11a940a8f2b9870eb22f5ebac1984875514ac57e",
+        "cps_provider_5_forms_arm_body": "cfb705d85380e65b9b25e7feef7784e09b934fca91fe2eabe44bea1575d05fc9",
+        "cps_provider_5_forms_arm_case": "34524a70d02cf70190346a3502f88eb531c6ad066dbecc704960dc5de4e25c0c",
         "cps_provider_5_form_arm_by_key": "370afcf593f4abaf06a63517b8d86981b010ceef93418023d2eb2b9796a182e7",
-        "cps_provider_5_forms_cases": "4a2975188c1b015405db31a0e7f011bc8b05124f6a75552e6645fbfb0b2f5033",
-        "cps_provider_5_expand_forms": "90b996abf96ca8183e0454c7725db4cf9e7c9549634bd3d12ab8b2b677ac1428",
+        "cps_provider_5_forms_cases": "e1aab290cf895a334f1bb971710f504e98d269c886cf826777fe272bd04b5873",
+        "native_match_cps_provider_5_expand_forms_0": "a7ea657a3b7dabc7d8596a308fcd56cc8ea69e09c332235a5fa8febc5abe5ee7",
+        "cps_provider_5_expand_forms": "bfcdfe4bfc3ae6495bdbe1ffa601739df3f56965192396f972b52eecd344e410",
+        "cps_provider_5_forms_single": "a327491d29a6405eba0af7d4299775720322b4cbc0d455b8a7f4aa943c9457ef",
         "cps_provider_5_pack_jobs": "1e4bb3e265f788655750a4895ce509d9a6c0ba10f5ef6583a0daf505f67b4328",
-        "cps_provider_5_arm_block_jobs": "96579ff04bd64aec5ec75a860fbf1b2b2ffc074ac4b51309934a9d3e6bf076b7",
-        "cps_provider_5_box_arm_jobs": "36c327fc826e2352db1fa4e50e2b51e54416e8c1fe6f9cba53a9eafc4ee4d2e7",
-        "cps_provider_5_box_cases": "e07b2f83c1e0c20693369917833dfee4df141d65bcbb7e01e4f7488f53127f54",
-        "native_match_cps_provider_5_box_untagged_0": "153b2e152f52accff4ea07516c232f34fe820380148fba1d75be8227ce077d4b",
-        "native_match_cps_provider_5_box_untagged_1": "f76e2c690aa2e95920bd5eea29f8d2a40367e0c9565627bfcb48bd46d5c4b0fb",
-        "native_match_cps_provider_5_box_untagged_2": "b892edc27127ffed4ca211df11c79e9f56f66a6909cef878b0b60d8ecca45165",
-        "cps_provider_5_box_untagged": "02b80fa8aef8580c98aeed133b7f3396f3f9170177ac7dc279c8f449e2839544",
-        "cps_provider_5_expand_box": "627a2b61d83207ad669316c83c755ae35cc7ceb3f50d77003ef7396b59c19252",
-        "cps_provider_5_expand_box_body": "3731c75dc11f15cdff297a8ddd90a0e196e9c1ef3109294ac027412a055f0ae3",
-        "cps_provider_5_expand_form_take": "eb475a2fe1285f35800a7071b16787757b2ed1a10efb774ad9a50f03fc0200f0",
-        "cps_provider_5_expand_conv": "3ae315d8902cf948c630dafcdbbe06e6302aa6db9ae79a141fd898e003aacc5c",
+        "cps_provider_5_arm_block_jobs": "73df6b485cf3272e21c5f843b68601fbc2df6a453fa380418863e64e777d5a22",
+        "cps_provider_5_box_arm_jobs": "95f545e81f21e1914123e8fa90c670f89fc49df32a755461adccfa500b02f85b",
+        "cps_provider_5_box_cases": "7679fd2a38efabba221a11ec5d480abcfc36afb6b45a01395090f0ec005ec378",
+        "native_match_cps_provider_5_box_untagged_0": "c411b01474d8bf535ad43fb4cba189df6145e555c7f658f3736c3ecb1d428ee6",
+        "native_match_cps_provider_5_box_untagged_1": "1c76a1ab2ce3fb2c51ee874565d0cd842907caccd69e9556c652a5924b06ba4b",
+        "native_match_cps_provider_5_box_untagged_2": "763a458459abc4d48f54dab400dca9bbceaee8ab82daf611ee1ca57ed28d08fe",
+        "cps_provider_5_box_untagged": "86eb4f89b859dc6157144daab482af5c81fe8c1280258f435567a7f68a7de5a7",
+        "cps_provider_5_expand_box": "ee620d760de09f1c52d7d154ba5f6efbe893fc76ecae00f01caab1c700e2c344",
+        "cps_provider_5_expand_box_body": "ad519ae57c16e418bcafd176edfe6eec380f1648b69fd166810955a80f77f62d",
+        "cps_provider_5_expand_form_take": "2aa634ad44003ab66d7ef80e18cacf7b2406abdf53ddbc8816d57b272b18c361",
+        "cps_provider_5_expand_conv": "7f46708d419120bb4294536b833bdd73b0a346512476edc89ae715adcf3f71f7",
         "cps_provider_5_run_jobs": "ed9fd271cdd9f8378fb705fb0658989ac26f660dab05690e4b8d23a9c6b533e0",
         "cps_provider_5_fill_plan_jobs": "9b513b5d523b625e08189f219477f8da864b7599ad5543f9b85c30683672b029",
         "cps_provider_5_fill_result_jobs": "f90d63cb5709d941023527e4ff0546f91f449bbefcabdcd9519c1998b05abc68",
@@ -19804,7 +19895,7 @@
         "cps_provider_5_hastag_row": "a7e7b476fad4160c7aa91d99a83fbe3050931b440e79f02d4cdbec438604edbd",
         "cps_provider_5_hastag_part": "90a7ed2896a36f8088ec65b2a80256efe6cf112e56adee0b9647f3ab0657d18e",
         "cps_provider_5_arr_flag": "57f1dfde732d0c99c34a78d358af5660d59072af29bd816450c4ed4cd8a96aa7",
-        "cps_provider_5_array_label": "559ec0ce954401c82ec7d2019aa11dca9feddd5e1c980a336eea7e830f1dee1b",
+        "cps_provider_5_array_label": "b2abfd165548543685bdf03c9436cfa121771e2db2611c93818c34412fd80f41",
         "cps_provider_5_array_cell_result": "fac392e4445e902f26a7965708d0e84223530ee65bd5eb4c78b0c5f731086dd5",
         "native_match_cps_provider_5_array_cell_0": "cd921e981fdb5164c54910fde95a614ee6895a4f0e4c262a649e0374c5be3e3a",
         "native_match_cps_provider_5_array_cell_1": "5bd3da35a9ec720f0886faecd63a5c5fc88406a82ba093a404e45a97896618be",
@@ -19836,6 +19927,21 @@
         "cps_provider_5_array_swap_ops": "65aa0f4fadbb148ac0a609a39c143079fe86c2d53ef1aac9439ce65a2dd8d161",
         "cps_provider_5_array_size_ops": "eb9c7600bfbb54f34e573ba6508102bd854aa463cda935c2443794bd19572b6a",
         "cps_provider_5_array_clone_ops": "8e26c60caf502702dc2d5b1c3d5d91c50d839df6abf5ddc106858cd2dd54d6b1",
+        "cps_provider_5_atomic_cell_text": "33d64358cef45d8626ffdc14aaeb36291d402b871d35cd54df3eb38a4d42a1b8",
+        "cps_provider_5_atomic_call_text": "38abbc9cd12967cb819c4998a9e87e47e0566910a42059da49f6c539d391df57",
+        "cps_provider_5_atomic_cas_text": "53a2326e2bb5836960e18b0ae98c774bd53b3222974cb5636ee8db84ca584734",
+        "cps_provider_5_atomic_helper": "70ff758175952d3e70cf197be4935a6a06e071393ff33646c313085e81d14f8f",
+        "cps_provider_5_atomic_pair": "f12ce253585c8d4bb03edef9a347003c68bf78d05fed117123397dcfc7dc19f0",
+        "native_match_cps_provider_5_atomic_three_operands_0": "fdc360f0d2dd3132176d67a4f20465b7047d4e1f536b2ae402b97cddf53ad00c",
+        "cps_provider_5_atomic_three_operands": "fa243f7180d294af91d07450682b1d96d398139c147c1f26ff11ce82573f721d",
+        "cps_provider_5_atomic_three_pargs": "1ce279b74da2fc8d868fa197f53b4f2a10e78366d41fc5781ebd94f0b2307830",
+        "cps_provider_5_atomic_cas_pargs": "9d69370201c7eba46d9c87bbc2d52867f2eb7f765779e3bcf084e83cc1e18022",
+        "cps_provider_5_atomic_pargs": "5f9595de6a96d010f557f265bb604a9550fecfad58b3f3e5bdbad2988d7a9204",
+        "native_match_cps_provider_5_atomic_three_regs_0": "c6276cfb48fb916fd84d72db9e1342202cc81af3bd1278137614e2b8352c23ec",
+        "native_match_cps_provider_5_atomic_three_regs_1": "9270689579b65fd40d50b5c52f4b07eca1d934c43d11731d997d7c5c084a920d",
+        "cps_provider_5_atomic_three_regs": "7d6f87dcc5fad7f5fda851f12cd86df170ee3ce57778f54d623b8797198a570d",
+        "cps_provider_5_atomic_cas_regs": "6aa65fc6dacedc52ad78f94819bff5eb54ec0f0da94fe1b2f29e2a9b2ad2f576",
+        "cps_provider_5_atomic_prim_part": "a15fc202583a53c60b0221a7b870b9fa45a95db5f2a4d7255eebc96ce6ac6d9f",
         "cps_provider_5_array_leaf_ops": "c0aa35362a4f1873c388b8a004822d439eafb4559225c27c70fc35076cfd5fc0",
         "cps_provider_5_array_node_ops": "43d8f9a60657d85cbc4243684598361ae9b56396962e50b79f7dcb1735f02393",
         "cps_provider_5_array_is_cond": "6529ec1e5151ad4a048c5ae98fd56bfc3ee40ccdae931b1072ac3baddf95e7aa",
@@ -19848,7 +19954,10 @@
         "cps_provider_5_array_size_cell": "5d6063c8a5e7226686aeac5a23c1e435fce8dfd8a67151fb6c08f49875c83109",
         "cps_provider_5_array_clone_cell": "bf94c07eb995ee92c5f9931512217cbf13abeb0054bdd807febeeeba18b4beb7",
         "cps_provider_5_array_leaf_cell": "85e01a8322bba1575997e1ec4cbdc759bbd6a43963b7fe09cb614e7982d04da8",
-        "cps_provider_5_array_part": "53d3f45062f9dc8bd0cb517953614b89a2baeaf0991519b7af7d9ff43430b535",
+        "native_match_cps_provider_5_array_part_0": "6b8404647b1d4db72fef3e2156bb5962cdc4334c70bc6692b384a362421de179",
+        "cps_provider_5_array_part": "1316cdbb90df090c158121c79df004f33dfc7446051b9a10e9d585f19af8c2c6",
+        "cps_provider_5_array_cell_part": "24ea122f925ab22fb9a7752cd53b643df44c140fb7613c7068581531392dd184",
+        "cps_provider_5_is_atomic_primitive": "bcb3f58260b1fb4fb21df328ca59bc0513ef25dfba7103a232f09a94680a0dc4",
         "cps_provider_5_is_array_primitive": "01f35364591e85bc3d5efa4b55b1fcf50103bb59e1e9359d1a49abedadb1f53b",
         "cps_provider_5_show_state0": "acb49afafbd852ce9c8cb325231c26eaeb70a94bfb6313b882b7ef34f5d78df9",
         "cps_provider_5_show_words": "d4d9e8920f5916608aed32f635a88f5a89c7d98b150b5e46205c2e8ecb56855f",
@@ -20289,12 +20398,13 @@
         "cps_provider_8_let_step": "ccb0f087a6c54c6da26c81e21da6efe74ba13fc8f291da0bcafa6b4c2f89cec0",
         "cps_provider_8_split_direct": "31a6822c3ba61644a278aec45297f23a75c0ace430a777ed2183a10b59eeb02c",
         "cps_provider_8_split_direct_selected": "2468fdb7135792fb144caba839b759d78ab4cc10e0beac7ee3a2ef603169fd55",
-        "cps_provider_8_split_direct_args": "046c480568f1b688793aa6bb65c347de664630bc186805dfda01dedf43f66bc4",
+        "cps_provider_8_split_direct_args": "51fafb1f67cf6d1cf74900c547f5041a255d563584f19a3ba7f0c4adeb1f73ed",
         "cps_provider_8_split_direct_many": "005968981a62046aff9b1ef9f95341c51161ea20779d1f417b3e8d41d3482cb1",
         "cps_provider_8_split_apply": "5597e4454c7a8d76ce55ee195f82d81fa4d92425f02677eee8a66f9ffeebeeec",
         "cps_provider_8_arg_atom": "ac4891e68512dab39536fc723daead0c6943999ffae2adb6ff210958b2d78089",
         "cps_provider_8_arg_temps": "5eb49ecfd983b125d07be1ec51a4ca47f7d32b8bd00d04c82441b944bc764f35",
         "cps_provider_8_arg_temps_tail": "022243afb8f9ebff7d57ee8a3cdd75323150dfc0375382bbe8d849ed181f1a15",
+        "cps_provider_8_arg_temp_names": "85cbfca1ff39deffb7add8235a34b666163eac7be24ae530993c17a438296e7f",
         "cps_provider_8_arg_moves": "401fb0b182c1574a4eeffc55d62a5e5aff1bf7405d3aab2cf9f365ece089d1fa",
         "cps_provider_8_arg_moves_at": "2a6887dd7f00a0c15d1739ef45670b5b47329f44ce7ab42e9c436cd09a5d091b",
         "cps_provider_8_cap_stores": "3f6e056b70d66e0b19da484f7bb1bb9fd05bc67cf7ce6bc50ab25feab6eaf97d",
@@ -20311,9 +20421,9 @@
         "cps_provider_8_conts_let": "ae58a3ad8e337bcac1b868316194475334437cc8321b8537b65e6e0f5f22fadc",
         "native_match_cps_provider_8_conts_region_0": "871ca026b528b147ae99529a6661e8d22d94d4d5d2086b51cfb40669e793e38e",
         "cps_provider_8_conts_region": "e8bd7ab9f18a39a637839d2bc2e63b0337e75929502a1727bcb9e21c1952793a",
-        "cps_provider_8_primitive_name": "1df8544a0ccbba7881419244ff4aaf16784ba9c5081b2134a4139a2f829a4448",
-        "cps_provider_8_primitive_public": "63b062ae2d9289f85d9ada2f7fad31f5cc404b7c1b97b56b70c9489d9310c8b4",
-        "cps_provider_8_primitive_runtime": "3774c3dd0a640392588b224148be2727478ca3f7f7998c0a7e927531631ed6bf",
+        "cps_provider_8_primitive_name": "5f6f86e418a8a458a23a7316f9e3b5eae249045c63b35c0705d282c626a7a414",
+        "cps_provider_8_primitive_public": "cda01ccb5913c7a64530e6bf4d0f752322f25c731fe3b53ad00c8c9d9c349cc7",
+        "cps_provider_8_primitive_runtime": "9fe758c2d429af7676d3b9134c12a18aba2f71d72cf60327d3e6f63af73856d2",
         "cps_provider_8_quantity": "3d243aedb9b8baf46586a5b9121c7ea288f221e8a12a29f57ad03423940e4788",
         "cps_provider_8_optional_quantity": "ea37aa87c00556042da0fe4efcbe44fa9060cbf9e182d9e9b22a62e3e67bcb0c",
         "cps_provider_8_quantities": "de55a6b43dd8d99140206e1fffa3854bd45661722698f22f9663c9873bb315da",
@@ -20388,11 +20498,12 @@
         "cps_provider_8_emit_checked": "bd4a7c74aafd47dd41845b75be1be2e4a93255a6e5a171c11bd37f83e8e4fe09",
         "cps_provider_8_emit_checked_exports": "81cb780d5b59c37c071e3a947c32803c1ddbce9f65995a15c36313e0173e556f",
         "cps_provider_8_emit_effects": "3c218cf6714844b8ae31971b4767df2d4d52d6f76dff293d1eb7aebe19d60e86",
-        "native_match_cps_provider_8_program_source_0": "9e4ba78545ac25393cd9ff10a3df6a19ec6fb00b0998e394f62436e293e9f1ed",
+        "native_match_cps_provider_8_program_source_0": "091092d15da3bcef42b977a8a320c5e4e759a9cfa0acc5d514c2f2d4bfc32f25",
         "cps_provider_8_program_source": "63a62f450ab6d5f430c91ede62757e775871307d6f4179dc8ecbdc3c476697a1",
+        "cps_provider_8_js_runtime_direct": "13eff4bca43449d90995315384f7e6977c4eed6877ac1560a21d10e23ca39d1d",
         "cps_provider_8_js_runtime": "f40602d1a7acbbd6451a99f6cf6c081938c8bf3a8f476f5ef7123d6a68ad2538",
-        "cps_provider_8_js_runtime_extra": "184805d1ba8e40f064ef8efe27b4e1715a46f39e6d3dbc9c0c1c95ccb857d64f",
-        "cps_provider_8_js_runtime_array": "3b84ce5840ddbdc302166a950e3c08e5c5323cd73cb113843d0b745839ab8f54",
+        "cps_provider_8_js_runtime_extra": "9fb78c4fe2be2b57ed636120793612f839934cba28c5c0eb942abd04dd9dd000",
+        "cps_provider_8_js_runtime_array": "78f2ccdf0f5263a54898c6ce09bbe0ef30f952f65b9221f41e5d468a683831bf",
         "cps_provider_8_js_runtime_foreign": "c5ce8b2a0b2e09cd99bdbcc1d6129f87c1025fd2ce256de4ffb223281247cf0c",
         "cps_provider_8_js_runtime_namespace": "c0cf62319cc805fd5877a8080b450684273725ef18f34bdcd497f275a90f415d",
         "cps_provider_8_js_runtime_cli": "eceabcdb8b9ea802860e58bc6220f150d9358bac448d269dafce9ad3c630642b",
@@ -20514,7 +20625,7 @@
         "cps_provider_10_primitive_name": "5c80a99c96bc1edc4250f447cc275760b68daa92fd249ba78259f60a3d81e846",
         "cps_provider_10_primitive_chars": "010318d4e37c43e165c29795543f6fc069b2c9655d65d16edd9275fbd783a767",
         "cps_provider_10_primitive": "9913eb05fd8b282a8fd73be60f2dcb0988b8c186b88424b19d863151a98bd9cc",
-        "cps_provider_10_primitive_named": "9534c6875943025e96fb8f15fbca12556bb2b3eb7a4db09bfaef2e8d9c020280",
+        "cps_provider_10_primitive_named": "81a8b846948467d9751fe1529754f2c68102bccee69f8dab713b094812109051",
         "cps_provider_10_definition_key": "6bcd533573d0f69095e27f2bb23915c2714abd36baf86790fe0b7068b1aef277",
         "cps_provider_10_constructor_key": "64375e36c4290037b67893e13bbc87fffc86fae26e925ee79e3a9f8930414b68",
         "cps_provider_10_lookup_definition": "e02d7b1c36e477d16eae51bf1847e363c5334a184cfa268085d43a2a715f56ee",
@@ -20662,10 +20773,14 @@
         "native_match_cps_provider_10_ending_1": "215148baa7be8da9830e64a4a9e7f69a3eb4563ac20a808ffbbe8917edc93608",
         "native_match_cps_provider_10_ending_2": "47a354501497e0107346a8414e103d2e53a7de34e7faacfa14e7dd1dab9d71a6",
         "cps_provider_10_ending": "d3f23c9bc7a6fb7fccb687074b63b70890144334b6ad7ed6ec3abe109e41216c",
+        "cps_provider_10_root_main_runnable": "e6f60c620ed72a4ab71d3990ad38350839742188def144f8d729017531ea636d",
+        "cps_provider_10_root_main_admitted": "5950bf8af12479064932e4bab2e97472971d6b25709b6088ee610fbe738ff306",
+        "cps_provider_10_executable_admitted": "52906cd6bbbc79f7735500ceef2fcbf5f39cbfa932cea189d0c7260834f3f270",
         "native_match_cps_provider_10_native_match_build_finish_0_0": "56f394dd86451e7a167d0ecf08ce1069c5e691602c1c232f2b5dde6ca89a3f00",
         "native_match_cps_provider_10_native_match_build_finish_0_1": "821877243cc01bf5b9a822c547710af866575f9f15f074bc1f902393eb33c2f4",
         "cps_provider_10_native_match_build_finish_0": "1329c1f90cd4949b82d15e5390d973b9a90d619657ea938ed1ef7c1143eb58be",
-        "cps_provider_10_native_match_build_finish_1": "f4577414b74d84b1b37ccf81ade329586f0a1fe320c022957c739ac810780754",
+        "cps_provider_10_native_match_build_finish_2": "2c8420904a1d914c85b50144ce23432d1409a1cd49c382b0fdea6cba22dd4375",
+        "cps_provider_10_native_match_build_finish_1": "ae446e2056f5bd7bbdd366caf7fe5f0538c661ed9202630d0d02d2dbbfda9ca9",
         "cps_provider_10_build_finish": "1bbd6bebdf8e16259e9c392f9689dae4eb8fe7235ce34ec803449241a9880892",
         "cps_provider_10_native_match_build_0": "8eaf83accddc6cdc9dc613dd93a0ba73446d27bf4f602e28e231b9a17276093d",
         "cps_provider_10_native_match_build_1": "bbaf749a6081bbd53652c5a14d2377c417a1c565184ecda3d8801ec4bd1ee0c5",
@@ -20676,7 +20791,7 @@
         "cps_provider_10_native_match_live_telescope_3": "cac85f4e2793d8fb75b0eac53590cc537b9a406ad8968691f2083d5dfbd25c3e",
         "cps_provider_10_live_telescope": "56e69b14ea11b83ddcd6b2c4f8ec48981c6a5b9664275e593b178fc7bdc35be4",
         "cps_provider_10_live_binder": "ac0d1067b8df02b2ecb3c0947e9bc389e2a16995dedb7f58f9812791fe4c1a8a",
-        "cps_provider_10_primitive_arity": "787742392de735a9cc4a05e11785faa7f19e09b105beb4737fec1517e9bdf274",
+        "cps_provider_10_primitive_arity": "16c1e7f80ae28084fba316ae05e1faa2cc5a8e9ead6551fd0d2a77c5680ae9b9",
         "cps_provider_10_constructor_field": "78e27ed3f73f2fea65894c585e7ed56f9e3459b328a1493ff22eed6611cec2e3",
         "cps_provider_10_constructor_field_at": "c82ec8d46b82a9c651d6ad9daf279978cb5650be7841084e37a8eee1b10808f6"
       },
@@ -20810,22 +20925,22 @@
         "native_match_cps_provider_2_prim_texts_3": "cps_provider_2_prim_texts",
         "native_match_cps_provider_2_prim_texts_4": "cps_provider_2_prim_texts",
         "native_match_cps_provider_2_prim_texts_5": "cps_provider_2_prim_texts",
+        "native_match_cps_provider_2_prim_texts_6": "cps_provider_2_prim_texts",
+        "native_match_cps_provider_2_prim_texts_7": "cps_provider_2_prim_texts",
+        "native_match_cps_provider_2_prim_texts_8": "cps_provider_2_prim_texts",
         "native_match_cps_provider_2_prim_step_0": "cps_provider_2_prim_step",
         "native_match_cps_provider_2_prim_step_1": "cps_provider_2_prim_step",
         "native_match_cps_provider_2_prim_step_2": "cps_provider_2_prim_step",
         "native_match_cps_provider_2_prim_step_3": "cps_provider_2_prim_step",
         "native_match_cps_provider_2_prim_step_4": "cps_provider_2_prim_step",
         "native_match_cps_provider_2_array_op_step_0": "cps_provider_2_array_op_step",
-        "native_match_cps_provider_2_array_op_step_1": "cps_provider_2_array_op_step",
+        "native_match_cps_provider_2_array_op_step_element_0": "cps_provider_2_array_op_step_element",
+        "native_match_cps_provider_2_array_op_step_element_1": "cps_provider_2_array_op_step_element",
         "native_match_cps_provider_2_pred_path_0": "cps_provider_2_pred_path",
         "native_match_cps_provider_2_pred_path_1": "cps_provider_2_pred_path",
         "native_match_cps_provider_2_pred_path_2": "cps_provider_2_pred_path",
         "native_match_cps_provider_2_pred_path_3": "cps_provider_2_pred_path",
-        "native_match_cps_provider_2_append_step_0": "cps_provider_2_append_step",
-        "native_match_cps_provider_2_append_step_1": "cps_provider_2_append_step",
-        "native_match_cps_provider_2_append_step_2": "cps_provider_2_append_step",
-        "native_match_cps_provider_2_append_step_3": "cps_provider_2_append_step",
-        "native_match_cps_provider_2_append_step_parts_0": "cps_provider_2_append_step_parts",
+        "native_match_cps_provider_2_str_append_0": "cps_provider_2_str_append",
         "native_match_cps_provider_2_construct_step_0": "cps_provider_2_construct_step",
         "native_match_cps_provider_2_construct_step_1": "cps_provider_2_construct_step",
         "native_match_cps_provider_2_construct_step_2": "cps_provider_2_construct_step",
@@ -20844,6 +20959,7 @@
         "native_match_cps_provider_2_bool_str_empty_0": "cps_provider_2_bool_str_empty",
         "native_match_cps_provider_2_bool_part_0": "cps_provider_2_bool_part",
         "native_match_cps_provider_2_prim_part_0": "cps_provider_2_prim_part",
+        "native_match_cps_provider_2_prim_scalar_part_0": "cps_provider_2_prim_scalar_part",
         "native_match_cps_provider_2_is_bool_part_0": "cps_provider_2_is_bool_part",
         "native_match_cps_provider_2_cmp3_part_0": "cps_provider_2_cmp3_part",
         "native_match_cps_provider_2_divmod_part_0": "cps_provider_2_divmod_part",
@@ -21050,6 +21166,8 @@
         "native_match_cps_provider_2_entry_lazy_0": "cps_provider_2_entry_lazy",
         "native_match_cps_provider_2_entry_native_0": "cps_provider_2_entry_native",
         "native_match_cps_provider_2_entry_native_1": "cps_provider_2_entry_native",
+        "native_match_cps_provider_2_native_borrow_drops_0": "cps_provider_2_native_borrow_drops",
+        "native_match_cps_provider_2_native_borrow_drops_1": "cps_provider_2_native_borrow_drops",
         "native_match_cps_provider_2_entry_foreign_0": "cps_provider_2_entry_foreign",
         "native_match_cps_provider_2_entry_main_0": "cps_provider_2_entry_main",
         "native_match_cps_provider_2_entry_main_1": "cps_provider_2_entry_main",
@@ -21264,6 +21382,12 @@
         "native_match_cps_provider_3_any_word_has_term_0": "cps_provider_3_any_word_has_term",
         "native_match_cps_provider_3_any_word_has_term_1": "cps_provider_3_any_word_has_term",
         "native_match_cps_provider_5_dst_mark_0": "cps_provider_5_dst_mark",
+        "native_match_cps_provider_5_src_skip_jobs_0": "cps_provider_5_src_skip_jobs",
+        "native_match_cps_provider_5_src_skip_jobs_1": "cps_provider_5_src_skip_jobs",
+        "native_match_cps_provider_5_src_skip_jobs_2": "cps_provider_5_src_skip_jobs",
+        "native_match_cps_provider_5_dst_skip_jobs_0": "cps_provider_5_dst_skip_jobs",
+        "native_match_cps_provider_5_dst_skip_jobs_1": "cps_provider_5_dst_skip_jobs",
+        "native_match_cps_provider_5_expand_forms_0": "cps_provider_5_expand_forms",
         "native_match_cps_provider_5_box_untagged_0": "cps_provider_5_box_untagged",
         "native_match_cps_provider_5_box_untagged_1": "cps_provider_5_box_untagged",
         "native_match_cps_provider_5_box_untagged_2": "cps_provider_5_box_untagged",
@@ -21449,6 +21573,10 @@
         "native_match_cps_provider_5_path_is_node_2": "cps_provider_5_path_is_node",
         "native_match_cps_provider_5_array_cell_0": "cps_provider_5_array_cell",
         "native_match_cps_provider_5_array_cell_1": "cps_provider_5_array_cell",
+        "native_match_cps_provider_5_atomic_three_operands_0": "cps_provider_5_atomic_three_operands",
+        "native_match_cps_provider_5_atomic_three_regs_0": "cps_provider_5_atomic_three_regs",
+        "native_match_cps_provider_5_atomic_three_regs_1": "cps_provider_5_atomic_three_regs",
+        "native_match_cps_provider_5_array_part_0": "cps_provider_5_array_part",
         "native_match_cps_provider_5_show_kind_family_0": "cps_provider_5_show_kind_family",
         "native_match_cps_provider_5_show_kind_family_1": "cps_provider_5_show_kind_family",
         "native_match_cps_provider_5_show_kind_family_2": "cps_provider_5_show_kind_family",
@@ -21587,7 +21715,7 @@
           "bend2/selfhost/js_emit.bend",
           "bend2/selfhost/lower_catalog.bend"
         ],
-        "sourceSha256": "fa03897dfa80c3d88c317196eb7fc3cadbc01ca6c7b8ad3b23ebcbd75cb2b756",
+        "sourceSha256": "04fc1a4686d10331f7ba8e06cc7f188b26fabd6c780c2c909474432863d13000",
         "sources": [
           {
             "canonical": "bend2/selfhost/emitter.bend",
@@ -22369,7 +22497,7 @@
           },
           {
             "canonical": "bend2/selfhost/c_backend.bend",
-            "canonicalSha256": "7ffb89e3adcebedee6fadc2b3143db6f7a2fb2b9fb471dd41a62e02c081b19b1",
+            "canonicalSha256": "5b6de0beba6a921df755d88a2fc982077c2b3621d7e1817a14873855af396599",
             "declarationNames": [
               "EmitResult",
               "CImport",
@@ -22506,6 +22634,7 @@
               "max_arity_each",
               "scan_new",
               "scan_program",
+              "scan_exports",
               "scan_codes",
               "scan_declarations",
               "scan_declaration",
@@ -22563,12 +22692,14 @@
               "prim_default_owned",
               "array_arg_owned",
               "array_step",
+              "prim_borrowed_box",
+              "atom_allocates",
               "prim_texts",
               "prim_step",
               "array_op_step",
+              "array_op_step_element",
               "pred_path",
-              "append_step",
-              "append_step_parts",
+              "str_append",
               "construct_step",
               "hastag_step",
               "op_step",
@@ -22585,12 +22716,14 @@
               "project_part",
               "hastag_part",
               "is_array_primitive",
+              "is_atomic_primitive",
               "pcid",
               "str_bool2",
               "bool_str_empty_of",
               "bool_str_empty",
               "bool_part",
               "prim_part",
+              "prim_scalar_part",
               "f32_bin",
               "f32_un",
               "f32_cmp",
@@ -22854,6 +22987,7 @@
               "stage_stores",
               "entry_lazy",
               "entry_native",
+              "native_borrow_drops",
               "a_names",
               "entry_foreign",
               "entry_main",
@@ -23126,6 +23260,7 @@
               "max_arity_each": "cps_provider_2_max_arity_each",
               "scan_new": "cps_provider_2_scan_new",
               "scan_program": "cps_provider_2_scan_program",
+              "scan_exports": "cps_provider_2_scan_exports",
               "scan_codes": "cps_provider_2_scan_codes",
               "scan_declarations": "cps_provider_2_scan_declarations",
               "scan_declaration": "cps_provider_2_scan_declaration",
@@ -23183,12 +23318,14 @@
               "prim_default_owned": "cps_provider_2_prim_default_owned",
               "array_arg_owned": "cps_provider_2_array_arg_owned",
               "array_step": "cps_provider_2_array_step",
+              "prim_borrowed_box": "cps_provider_2_prim_borrowed_box",
+              "atom_allocates": "cps_provider_2_atom_allocates",
               "prim_texts": "cps_provider_2_prim_texts",
               "prim_step": "cps_provider_2_prim_step",
               "array_op_step": "cps_provider_2_array_op_step",
+              "array_op_step_element": "cps_provider_2_array_op_step_element",
               "pred_path": "cps_provider_2_pred_path",
-              "append_step": "cps_provider_2_append_step",
-              "append_step_parts": "cps_provider_2_append_step_parts",
+              "str_append": "cps_provider_2_str_append",
               "construct_step": "cps_provider_2_construct_step",
               "hastag_step": "cps_provider_2_hastag_step",
               "op_step": "cps_provider_2_op_step",
@@ -23205,12 +23342,14 @@
               "project_part": "cps_provider_2_project_part",
               "hastag_part": "cps_provider_2_hastag_part",
               "is_array_primitive": "cps_provider_2_is_array_primitive",
+              "is_atomic_primitive": "cps_provider_2_is_atomic_primitive",
               "pcid": "cps_provider_2_pcid",
               "str_bool2": "cps_provider_2_str_bool2",
               "bool_str_empty_of": "cps_provider_2_bool_str_empty_of",
               "bool_str_empty": "cps_provider_2_bool_str_empty",
               "bool_part": "cps_provider_2_bool_part",
               "prim_part": "cps_provider_2_prim_part",
+              "prim_scalar_part": "cps_provider_2_prim_scalar_part",
               "f32_bin": "cps_provider_2_f32_bin",
               "f32_un": "cps_provider_2_f32_un",
               "f32_cmp": "cps_provider_2_f32_cmp",
@@ -23474,6 +23613,7 @@
               "stage_stores": "cps_provider_2_stage_stores",
               "entry_lazy": "cps_provider_2_entry_lazy",
               "entry_native": "cps_provider_2_entry_native",
+              "native_borrow_drops": "cps_provider_2_native_borrow_drops",
               "a_names": "cps_provider_2_a_names",
               "entry_foreign": "cps_provider_2_entry_foreign",
               "entry_main": "cps_provider_2_entry_main",
@@ -24008,7 +24148,7 @@
           },
           {
             "canonical": "bend2/selfhost/c_backend_physical.bend",
-            "canonicalSha256": "5827734e1d14e199fd29714bdf78b4d04376d2eca3cbfd8406c575f894493f4c",
+            "canonicalSha256": "d71b3dcb1132e843a1bdf8ade4e55a85dc369a8e072381c2aa4385179a4eaf9c",
             "declarationNames": [
               "Part",
               "CidSym",
@@ -24047,6 +24187,10 @@
               "dst_word",
               "dst_decl",
               "dst_mark",
+              "form_base",
+              "form_pad",
+              "src_skip_jobs",
+              "dst_skip_jobs",
               "src_read_node",
               "src_read_arr",
               "src_read_block",
@@ -24068,11 +24212,12 @@
               "nest_take",
               "nest_make",
               "field_pair_jobs",
-              "form_fields",
+              "forms_arm_body",
               "forms_arm_case",
               "form_arm_by_key",
               "forms_cases",
               "expand_forms",
+              "forms_single",
               "pack_jobs",
               "arm_block_jobs",
               "box_arm_jobs",
@@ -24252,6 +24397,18 @@
               "array_swap_ops",
               "array_size_ops",
               "array_clone_ops",
+              "atomic_cell_text",
+              "atomic_call_text",
+              "atomic_cas_text",
+              "atomic_helper",
+              "atomic_pair",
+              "atomic_three_operands",
+              "atomic_three_pargs",
+              "atomic_cas_pargs",
+              "atomic_pargs",
+              "atomic_three_regs",
+              "atomic_cas_regs",
+              "atomic_prim_part",
               "array_leaf_ops",
               "array_node_ops",
               "array_is_cond",
@@ -24265,6 +24422,8 @@
               "array_clone_cell",
               "array_leaf_cell",
               "array_part",
+              "array_cell_part",
+              "is_atomic_primitive",
               "is_array_primitive",
               "show_state0",
               "show_words",
@@ -24434,6 +24593,10 @@
               "dst_word": "cps_provider_5_dst_word",
               "dst_decl": "cps_provider_5_dst_decl",
               "dst_mark": "cps_provider_5_dst_mark",
+              "form_base": "cps_provider_5_form_base",
+              "form_pad": "cps_provider_5_form_pad",
+              "src_skip_jobs": "cps_provider_5_src_skip_jobs",
+              "dst_skip_jobs": "cps_provider_5_dst_skip_jobs",
               "src_read_node": "cps_provider_5_src_read_node",
               "src_read_arr": "cps_provider_5_src_read_arr",
               "src_read_block": "cps_provider_5_src_read_block",
@@ -24455,11 +24618,12 @@
               "nest_take": "cps_provider_5_nest_take",
               "nest_make": "cps_provider_5_nest_make",
               "field_pair_jobs": "cps_provider_5_field_pair_jobs",
-              "form_fields": "cps_provider_5_form_fields",
+              "forms_arm_body": "cps_provider_5_forms_arm_body",
               "forms_arm_case": "cps_provider_5_forms_arm_case",
               "form_arm_by_key": "cps_provider_5_form_arm_by_key",
               "forms_cases": "cps_provider_5_forms_cases",
               "expand_forms": "cps_provider_5_expand_forms",
+              "forms_single": "cps_provider_5_forms_single",
               "pack_jobs": "cps_provider_5_pack_jobs",
               "arm_block_jobs": "cps_provider_5_arm_block_jobs",
               "box_arm_jobs": "cps_provider_5_box_arm_jobs",
@@ -24648,6 +24812,18 @@
               "array_swap_ops": "cps_provider_5_array_swap_ops",
               "array_size_ops": "cps_provider_5_array_size_ops",
               "array_clone_ops": "cps_provider_5_array_clone_ops",
+              "atomic_cell_text": "cps_provider_5_atomic_cell_text",
+              "atomic_call_text": "cps_provider_5_atomic_call_text",
+              "atomic_cas_text": "cps_provider_5_atomic_cas_text",
+              "atomic_helper": "cps_provider_5_atomic_helper",
+              "atomic_pair": "cps_provider_5_atomic_pair",
+              "atomic_three_operands": "cps_provider_5_atomic_three_operands",
+              "atomic_three_pargs": "cps_provider_5_atomic_three_pargs",
+              "atomic_cas_pargs": "cps_provider_5_atomic_cas_pargs",
+              "atomic_pargs": "cps_provider_5_atomic_pargs",
+              "atomic_three_regs": "cps_provider_5_atomic_three_regs",
+              "atomic_cas_regs": "cps_provider_5_atomic_cas_regs",
+              "atomic_prim_part": "cps_provider_5_atomic_prim_part",
               "array_leaf_ops": "cps_provider_5_array_leaf_ops",
               "array_node_ops": "cps_provider_5_array_node_ops",
               "array_is_cond": "cps_provider_5_array_is_cond",
@@ -24661,6 +24837,8 @@
               "array_clone_cell": "cps_provider_5_array_clone_cell",
               "array_leaf_cell": "cps_provider_5_array_leaf_cell",
               "array_part": "cps_provider_5_array_part",
+              "array_cell_part": "cps_provider_5_array_cell_part",
+              "is_atomic_primitive": "cps_provider_5_is_atomic_primitive",
               "is_array_primitive": "cps_provider_5_is_array_primitive",
               "show_state0": "cps_provider_5_show_state0",
               "show_words": "cps_provider_5_show_words",
@@ -24966,7 +25144,7 @@
           },
           {
             "canonical": "bend2/selfhost/js_backend.bend",
-            "canonicalSha256": "27a41911687aad58a8f413b4691dce68eccdacc706b3613aca177b118965f771",
+            "canonicalSha256": "b7657f4acfae68aa47641fe42c3ccfb5292cd4c036b636e1be20c0382cfa1a3f",
             "declarationNames": [
               "EmitResult",
               "LinkSource",
@@ -25172,6 +25350,7 @@
               "arg_atom",
               "arg_temps",
               "arg_temps_tail",
+              "arg_temp_names",
               "arg_moves",
               "arg_moves_at",
               "cap_stores",
@@ -25258,6 +25437,7 @@
               "emit_checked_exports",
               "emit_effects",
               "program_source",
+              "js_runtime_direct",
               "js_runtime",
               "js_runtime_extra",
               "js_runtime_array",
@@ -25499,6 +25679,7 @@
               "arg_atom": "cps_provider_8_arg_atom",
               "arg_temps": "cps_provider_8_arg_temps",
               "arg_temps_tail": "cps_provider_8_arg_temps_tail",
+              "arg_temp_names": "cps_provider_8_arg_temp_names",
               "arg_moves": "cps_provider_8_arg_moves",
               "arg_moves_at": "cps_provider_8_arg_moves_at",
               "cap_stores": "cps_provider_8_cap_stores",
@@ -25585,6 +25766,7 @@
               "emit_checked_exports": "cps_provider_8_emit_checked_exports",
               "emit_effects": "cps_provider_8_emit_effects",
               "program_source": "cps_provider_8_program_source",
+              "js_runtime_direct": "cps_provider_8_js_runtime_direct",
               "js_runtime": "cps_provider_8_js_runtime",
               "js_runtime_extra": "cps_provider_8_js_runtime_extra",
               "js_runtime_array": "cps_provider_8_js_runtime_array",
@@ -25625,7 +25807,7 @@
           },
           {
             "canonical": "bend2/selfhost/lower_catalog.bend",
-            "canonicalSha256": "3543cf73484f955436c4060fcbdcf4373ca9544cd80fa52f3e0114996a9fe9f0",
+            "canonicalSha256": "e3864a71ac15ce5f1c74ddc7f615d844e92d9ce6e9c55a2b883482b349058adb",
             "declarationNames": [
               "BuildResult",
               "Foreign",
@@ -25873,7 +26055,11 @@
               "native_match_prepare_modules_2",
               "prepare_modules",
               "ending",
+              "root_main_runnable",
+              "root_main_admitted",
+              "executable_admitted",
               "native_match_build_finish_0",
+              "native_match_build_finish_2",
               "native_match_build_finish_1",
               "build_finish",
               "native_match_build_0",
@@ -26140,7 +26326,11 @@
               "native_match_prepare_modules_2": "cps_provider_10_native_match_prepare_modules_2",
               "prepare_modules": "cps_provider_10_prepare_modules",
               "ending": "cps_provider_10_ending",
+              "root_main_runnable": "cps_provider_10_root_main_runnable",
+              "root_main_admitted": "cps_provider_10_root_main_admitted",
+              "executable_admitted": "cps_provider_10_executable_admitted",
               "native_match_build_finish_0": "cps_provider_10_native_match_build_finish_0",
+              "native_match_build_finish_2": "cps_provider_10_native_match_build_finish_2",
               "native_match_build_finish_1": "cps_provider_10_native_match_build_finish_1",
               "build_finish": "cps_provider_10_build_finish",
               "native_match_build_0": "cps_provider_10_native_match_build_0",
@@ -29884,16 +30074,16 @@
             "canonicalName": "export_symbol_item",
             "name": "cps_provider_2_export_symbol_item",
             "kind": "def",
-            "canonicalDeclarationSha256": "2f3a903f8bdc386d8280b14a5d48872aa306a2ebe9757472738eaa613ba20ab2",
-            "composedDeclarationSha256": "564082eb59dc1e7a454412923540155e125c1466938f98dc610cfbff6cc428b7"
+            "canonicalDeclarationSha256": "353b38558a6e20dd1e00bd708bfeb78356b375065b055d29e2710b916efd6bf7",
+            "composedDeclarationSha256": "7b01071d15c0ec327e685f081758c35d3df600df89c075a44892db018ec16e39"
           },
           {
             "source": "bend2/selfhost/c_backend.bend",
             "canonicalName": "export_declared",
             "name": "cps_provider_2_export_declared",
             "kind": "def",
-            "canonicalDeclarationSha256": "bce61c6b27c2ce006c2d73af92daceb5c170f93959514a60dcb66016d967557b",
-            "composedDeclarationSha256": "ed1077944a791f2074467f3bab6fae11b4045bb3d140fe9f74d1de65daece4b5"
+            "canonicalDeclarationSha256": "be55099ede1757d5531a30c610694d9636a0c869ba71ed9d98e76b98cd4c36aa",
+            "composedDeclarationSha256": "fc9123d2a86d7f75cc35ba7c8719011d07ed83e5c2660505b1b280cb9811f246"
           },
           {
             "source": "bend2/selfhost/c_backend.bend",
@@ -30252,8 +30442,16 @@
             "canonicalName": "scan_program",
             "name": "cps_provider_2_scan_program",
             "kind": "def",
-            "canonicalDeclarationSha256": "ac2a6d565209b7b0f3d28195b28f723702c0b511a88077fdca6697def11ad548",
-            "composedDeclarationSha256": "d4da4242aebfe2bd4d9afb9747e956b1f3e6a99f6e69ecf66566987a6b6855d9"
+            "canonicalDeclarationSha256": "e725a39b676045ae3142c8b3623430c04f4f6148d186c5e7698d128aa863aeff",
+            "composedDeclarationSha256": "8309cc35d61814873018980c3e90c783363045cd7d14ca58bdbb20b9f582c6fe"
+          },
+          {
+            "source": "bend2/selfhost/c_backend.bend",
+            "canonicalName": "scan_exports",
+            "name": "cps_provider_2_scan_exports",
+            "kind": "def",
+            "canonicalDeclarationSha256": "811db0c73bf432adcc06804043ab2ae2ae322fa2376a7fc40a5bc6bb4cb449c8",
+            "composedDeclarationSha256": "d1f48c743bbb943d1a98d300be6b5067e52597940da68f0274ac3c483b162e17"
           },
           {
             "source": "bend2/selfhost/c_backend.bend",
@@ -30692,48 +30890,72 @@
             "canonicalName": "prim_default_owned",
             "name": "cps_provider_2_prim_default_owned",
             "kind": "def",
-            "canonicalDeclarationSha256": "558a9957c1b4b879905805d48b20c31acc953013afb73f45164e3aeabdf7c332",
-            "composedDeclarationSha256": "ebce4806119cecc711ef02ecadcb95e9c98c7211f5762f885d7788e3385feb9a"
+            "canonicalDeclarationSha256": "952f01c62a13d83a444388cdb00bb90b543ac0bac4db1bfdd0df5bbe3efc224d",
+            "composedDeclarationSha256": "c1ca26cac4ed6ba51c601e3932500f50e0a95ef3a37d6193407aa5a07d4d9f49"
           },
           {
             "source": "bend2/selfhost/c_backend.bend",
             "canonicalName": "array_arg_owned",
             "name": "cps_provider_2_array_arg_owned",
             "kind": "def",
-            "canonicalDeclarationSha256": "18b82dce196fe5826670089ed45fb3f214d102f87e2488a8079398e92ee0520c",
-            "composedDeclarationSha256": "69c6deed80d22dda71bf7576d16a193ee36e758dcfe0ff360218c0a6966594b2"
+            "canonicalDeclarationSha256": "d320d0b24caa016d68ccb5a43a386e0397f3f4d7001c5c18708c618cb8f6f77c",
+            "composedDeclarationSha256": "ab6a3b7f5efc7ca6128911f43feb60ed727a41557827a8202cec3532b1280431"
           },
           {
             "source": "bend2/selfhost/c_backend.bend",
             "canonicalName": "array_step",
             "name": "cps_provider_2_array_step",
             "kind": "def",
-            "canonicalDeclarationSha256": "8b70041a7f0badbddfe5573a555e3bb5b3b51c6a01df77b7192a2d29b9f273c1",
+            "canonicalDeclarationSha256": "54be5aad5d6d9f1759552643f56fceb5d9e91c6da58e86d6c604d0799050518f",
             "composedDeclarationSha256": "425b89412c2df7eb9a22aec98883ac2abfcab1a904dd0fe83c618b6d405e5264"
+          },
+          {
+            "source": "bend2/selfhost/c_backend.bend",
+            "canonicalName": "prim_borrowed_box",
+            "name": "cps_provider_2_prim_borrowed_box",
+            "kind": "def",
+            "canonicalDeclarationSha256": "c7785beba9150b79516314ea728df442ce754a06b407f9065b82242e1f72f053",
+            "composedDeclarationSha256": "cc4154fb6e6b9f560ed15a873419a2fab393ada1cf2c4c3e8b375d3879353d55"
+          },
+          {
+            "source": "bend2/selfhost/c_backend.bend",
+            "canonicalName": "atom_allocates",
+            "name": "cps_provider_2_atom_allocates",
+            "kind": "def",
+            "canonicalDeclarationSha256": "9b0acf0aa7f798c7f6d3fc59b8cfc0e4d1a7c760ada9be91f39cde542690ab7a",
+            "composedDeclarationSha256": "f65d5c7260b7f042a2b027b2b72ba7938fc5a9ab8c5ff51153379b06a38ef746"
           },
           {
             "source": "bend2/selfhost/c_backend.bend",
             "canonicalName": "prim_texts",
             "name": "cps_provider_2_prim_texts",
             "kind": "def",
-            "canonicalDeclarationSha256": "13e04436684269fda1271f1bbfc30653655c036f3a47d0d09c8a3ac2f1e5ba2c",
-            "composedDeclarationSha256": "e49a40a4a868e1236456870c3b1909b38bd576cfb68a96772226fe8cabf76446"
+            "canonicalDeclarationSha256": "c38905c0445ab5ad0fc1e8eece37d528ecd7b74db00f98977bb6c5d4b38d88bd",
+            "composedDeclarationSha256": "07f05adce44edbb96210404023ef45ed1b7639598fef3b40f6a8cdeee7c784cc"
           },
           {
             "source": "bend2/selfhost/c_backend.bend",
             "canonicalName": "prim_step",
             "name": "cps_provider_2_prim_step",
             "kind": "def",
-            "canonicalDeclarationSha256": "50815041d7e0413f580abffce44d6a5f3a4c5a31a8295c803ccb8b1945e9dbc9",
-            "composedDeclarationSha256": "59a9985e3a4813498da3fe2987a059d17f56a4f6b6784ee3d7e16d2c10fa0e9b"
+            "canonicalDeclarationSha256": "2f16d45f0d91ca252a7f621f5199712bedb95404cc4efe9d677304efe7f64969",
+            "composedDeclarationSha256": "47ccaeef16c32593c5329d68187b75d14ed16f19a250054ab0a718eecfe4a554"
           },
           {
             "source": "bend2/selfhost/c_backend.bend",
             "canonicalName": "array_op_step",
             "name": "cps_provider_2_array_op_step",
             "kind": "def",
-            "canonicalDeclarationSha256": "e786ab6346c328960301b29fbf96ad19c1725648f6448124c120a8e1f41da0c0",
-            "composedDeclarationSha256": "aafbc1338329f44d3c5b08012f64fe85ab45effd8d35ef24aff912043cdb551f"
+            "canonicalDeclarationSha256": "a435ec0eb986db1cf1f42e3f04b5dc481178b78954a800d800790779a66fb441",
+            "composedDeclarationSha256": "2257fa40ee1fc8346c16f59203ff11568555ee732b2c4716f4bec14c66607425"
+          },
+          {
+            "source": "bend2/selfhost/c_backend.bend",
+            "canonicalName": "array_op_step_element",
+            "name": "cps_provider_2_array_op_step_element",
+            "kind": "def",
+            "canonicalDeclarationSha256": "6689c89694782036cd7fb4d371a032b3bedbb4344716fc498324848bc0078650",
+            "composedDeclarationSha256": "a0479ee047c877e911c46fb1ba9e7e1b2bfb520c5a49d375d4c63acfe09d1d63"
           },
           {
             "source": "bend2/selfhost/c_backend.bend",
@@ -30745,19 +30967,11 @@
           },
           {
             "source": "bend2/selfhost/c_backend.bend",
-            "canonicalName": "append_step",
-            "name": "cps_provider_2_append_step",
+            "canonicalName": "str_append",
+            "name": "cps_provider_2_str_append",
             "kind": "def",
-            "canonicalDeclarationSha256": "5e66cfa9610d3afb69e26e43ef953cd31978d7a39c2185550280c4f2917fd170",
-            "composedDeclarationSha256": "fc68552c6c9c03c0465465016894c93e3930e3eea62bf97e1bf02431031b5296"
-          },
-          {
-            "source": "bend2/selfhost/c_backend.bend",
-            "canonicalName": "append_step_parts",
-            "name": "cps_provider_2_append_step_parts",
-            "kind": "def",
-            "canonicalDeclarationSha256": "cdbd9db82fe563f6e98602e988744265a432e358a65b7f654b73601c22602f4b",
-            "composedDeclarationSha256": "aeb9a2630ed4576d8ef7daff346dc14b3e9153f7dc80dded7734926be9c6432f"
+            "canonicalDeclarationSha256": "f6b8a85f7958744520d6ee8122a9258b076cfe40c0bf9bbf9ca1b9b8128c61c0",
+            "composedDeclarationSha256": "ca6275ad565b0208a24349b7627382203c465176982c7c2685599c0f846e7b15"
           },
           {
             "source": "bend2/selfhost/c_backend.bend",
@@ -30884,8 +31098,16 @@
             "canonicalName": "is_array_primitive",
             "name": "cps_provider_2_is_array_primitive",
             "kind": "def",
-            "canonicalDeclarationSha256": "f459692f3206989c3adfa0e04e5992d6634bc0378aab4921fbcc0c8750de90c4",
+            "canonicalDeclarationSha256": "481b2103b6709556896cb7a9f4e024790d361eb44a0f23b7946db9def368917c",
             "composedDeclarationSha256": "51e09c5548053e83da806a74211891c9a4d29bb7ac859f837a2f9db005c44da2"
+          },
+          {
+            "source": "bend2/selfhost/c_backend.bend",
+            "canonicalName": "is_atomic_primitive",
+            "name": "cps_provider_2_is_atomic_primitive",
+            "kind": "def",
+            "canonicalDeclarationSha256": "0b63da4858101e990629549c24e0c741bbb311f5a0dec491e3ff9a76a1e9b9ac",
+            "composedDeclarationSha256": "5da543cb8330594e9862c77f48ce336caacf8a7f27ff917430b0e10db0023f70"
           },
           {
             "source": "bend2/selfhost/c_backend.bend",
@@ -30924,7 +31146,7 @@
             "canonicalName": "bool_part",
             "name": "cps_provider_2_bool_part",
             "kind": "def",
-            "canonicalDeclarationSha256": "36fad422c831ac0d1988fcaef82d292f9eb90a653659e56b176532a317c420b1",
+            "canonicalDeclarationSha256": "3744829c0f4a08ec4ccb9f3241153c777fdc7a5b720a3b01ca692041841686fe",
             "composedDeclarationSha256": "3ac2afe4b641b6f1d423a865e8ee4db21a9b011e881d5510e6944b0cdaf95d78"
           },
           {
@@ -30932,8 +31154,16 @@
             "canonicalName": "prim_part",
             "name": "cps_provider_2_prim_part",
             "kind": "def",
-            "canonicalDeclarationSha256": "cb78eebeeaef8e1403bb7c61e6c1f35908750e1076edcc2ac4815fa08ec8ad75",
-            "composedDeclarationSha256": "2d7223cb626bcd708ff6f59c909fd0d04508f10669777f96d0c25489d4a82c3f"
+            "canonicalDeclarationSha256": "a305e2767599ea3403142d0835af000b0c9c3b42bd84f71df0cb2eb25f54830f",
+            "composedDeclarationSha256": "79cee19f1a1f0634e0824e9f354a1bf0a00438bb8309b3a5a6f6fa386464a2ec"
+          },
+          {
+            "source": "bend2/selfhost/c_backend.bend",
+            "canonicalName": "prim_scalar_part",
+            "name": "cps_provider_2_prim_scalar_part",
+            "kind": "def",
+            "canonicalDeclarationSha256": "657e30e350181ad832a2e350a0b6bedf93c1d0ca0afc13098590f3b20f11126f",
+            "composedDeclarationSha256": "87495e120156030a710a80cbb7f8106bde104e4baa6bf279daf70217a59d062b"
           },
           {
             "source": "bend2/selfhost/c_backend.bend",
@@ -33036,8 +33266,16 @@
             "canonicalName": "entry_native",
             "name": "cps_provider_2_entry_native",
             "kind": "def",
-            "canonicalDeclarationSha256": "c7d07558748a2f7adb3704f60465dffb927e17eca5cf65b05a7886a858e58e07",
-            "composedDeclarationSha256": "52b8cbe0810ec6c095b64da67359d551bf200605a216d2da16961ef0876773cc"
+            "canonicalDeclarationSha256": "74870aa4b6111b9dc92833edd8b2f2e99e6e6320aeb8486159ab456cc406daac",
+            "composedDeclarationSha256": "8eac44bf9134cd1583a49be93433d2fd1ba256e39aa15dba0aa0a53d374755a4"
+          },
+          {
+            "source": "bend2/selfhost/c_backend.bend",
+            "canonicalName": "native_borrow_drops",
+            "name": "cps_provider_2_native_borrow_drops",
+            "kind": "def",
+            "canonicalDeclarationSha256": "79cafa76bc58a82696470c9f230efe79d3893a3d76a47be2ed651bbe9b38f5cb",
+            "composedDeclarationSha256": "39dde05bdd4c3302cc2e838fc8a0342dad26a1848951a12f82fa8a5f5f55d46b"
           },
           {
             "source": "bend2/selfhost/c_backend.bend",
@@ -33452,8 +33690,8 @@
             "canonicalName": "helper_core",
             "name": "cps_provider_2_helper_core",
             "kind": "def",
-            "canonicalDeclarationSha256": "31a539003d026351569c18fceb4502ffc13c075b637ccefc67bd8b9baa7fbc41",
-            "composedDeclarationSha256": "c55c7b338c69b6e41e7326628052bac9d503cc914cfd06fa18b8b7cf3e05e902"
+            "canonicalDeclarationSha256": "27969bd87a495db46ab28d33c999ab61c0e5fb57cb6196bf28d9f111ddecf997",
+            "composedDeclarationSha256": "2f3a7bca169cacfdd72788082a12c6bcce2a69f3b582da7ea2e4b4760ae12742"
           },
           {
             "source": "bend2/selfhost/c_backend.bend",
@@ -35524,8 +35762,40 @@
             "canonicalName": "dst_mark",
             "name": "cps_provider_5_dst_mark",
             "kind": "def",
-            "canonicalDeclarationSha256": "d854fa48cfd6f7b8c0224d2e3ba0f09d34f8c1b13ebc38bffda3662b17995dfa",
+            "canonicalDeclarationSha256": "d31ae8b9b2a910d5ddb709e058ac6df9672bb73cdd7f44f9200300c46c92fc59",
             "composedDeclarationSha256": "451102957c5ac85af28a755a2f1a7664d76a4a2c43f264d5dd3bef798e7772cf"
+          },
+          {
+            "source": "bend2/selfhost/c_backend_physical.bend",
+            "canonicalName": "form_base",
+            "name": "cps_provider_5_form_base",
+            "kind": "def",
+            "canonicalDeclarationSha256": "2ae5548da62175988476dd71b01f9a0d10c483d65d983375bf5f8e0c33e06703",
+            "composedDeclarationSha256": "e9b75a7aae66436619163ae03369a64f63b3025ca318c6e4599d843b78a5ec65"
+          },
+          {
+            "source": "bend2/selfhost/c_backend_physical.bend",
+            "canonicalName": "form_pad",
+            "name": "cps_provider_5_form_pad",
+            "kind": "def",
+            "canonicalDeclarationSha256": "c0105f6ee39df35dea3f97e2c6c455eeea3b3062ec9b6c9a1227c1dbe35eb078",
+            "composedDeclarationSha256": "1b9958ee775c103447ca049ed8adb2c55657f340ef4f5c0f0433ca4dc80f9e73"
+          },
+          {
+            "source": "bend2/selfhost/c_backend_physical.bend",
+            "canonicalName": "src_skip_jobs",
+            "name": "cps_provider_5_src_skip_jobs",
+            "kind": "def",
+            "canonicalDeclarationSha256": "ce726cebc36cf49ce9cb745b62ac4cd0c9808c0ba4bfb8ae307642a12b85252b",
+            "composedDeclarationSha256": "10b4102df90cdaded3515235e3b5e355f017255c4efdd2a277496cc9ba377bc8"
+          },
+          {
+            "source": "bend2/selfhost/c_backend_physical.bend",
+            "canonicalName": "dst_skip_jobs",
+            "name": "cps_provider_5_dst_skip_jobs",
+            "kind": "def",
+            "canonicalDeclarationSha256": "abeb54dc54bbc3c1c24fcf919959708440df2a4ce273eb625695649bdafe05f1",
+            "composedDeclarationSha256": "a8a59fb121b2c9b757d696f2ba541237da9a63f3186397d35cc4e1316f6c1abd"
           },
           {
             "source": "bend2/selfhost/c_backend_physical.bend",
@@ -35628,48 +35898,48 @@
             "canonicalName": "jobs_arm_body",
             "name": "cps_provider_5_jobs_arm_body",
             "kind": "def",
-            "canonicalDeclarationSha256": "3989d1462195c3f28618fae96ff059158ffe364c5db784bdeb46171fdc6cfe3d",
-            "composedDeclarationSha256": "79e29b91c104cb45687806caa7ad08c8cae9671175bbe0b733d2f6c7f74675e6"
+            "canonicalDeclarationSha256": "f0f540e4c017954cffa0dfd711eb79ecea722bd4c527cd14d585a8200f681000",
+            "composedDeclarationSha256": "656cf91e7ecc1606e793a093b2964f3e4d516807ba35630052a63f82029a2cec"
           },
           {
             "source": "bend2/selfhost/c_backend_physical.bend",
             "canonicalName": "jobs_arm",
             "name": "cps_provider_5_jobs_arm",
             "kind": "def",
-            "canonicalDeclarationSha256": "f0e8df1f79bb8ce587a96199987b18846c4a994ad47b155b6de3f109efff01bb",
-            "composedDeclarationSha256": "2a4f8e7e2a7b998f29bd3a011037dc4a410dc3dbc31f46ee0f7813c0dd41fdcb"
+            "canonicalDeclarationSha256": "c692e695262b583b8fa5bc1ccfa24ee3d627510b3a7dacb5db1f0f42762ce262",
+            "composedDeclarationSha256": "7323083c930715871303e342aeffd600f41465481daa9a6840b1528999fba1a6"
           },
           {
             "source": "bend2/selfhost/c_backend_physical.bend",
             "canonicalName": "arm_jobs",
             "name": "cps_provider_5_arm_jobs",
             "kind": "def",
-            "canonicalDeclarationSha256": "c78389052a69f49dbbaaa366ea876c97812d4f9a999aa1dc5b524229f4b78ccc",
-            "composedDeclarationSha256": "e778fbf0047f08ff9327a305caa583bd18ecf3fb268791b8f1f57c2c08417753"
+            "canonicalDeclarationSha256": "580efae7945c0fa505805901c9c6e6851bf7500f148e1f5a38435add3d0cd5bc",
+            "composedDeclarationSha256": "ddf1e665a3727af87eb847590bf718b1d934def0e19f6160a785d3380c8ec9ce"
           },
           {
             "source": "bend2/selfhost/c_backend_physical.bend",
             "canonicalName": "unbox_cases",
             "name": "cps_provider_5_unbox_cases",
             "kind": "def",
-            "canonicalDeclarationSha256": "8e3fb27305a495c27bb3991ff1aebb61cb078207f39cf0389bdfaf54f8a6a59d",
-            "composedDeclarationSha256": "33727b9495ac7ea958afe14be2d385624cda0eed082e72135bd0837652c7ba2b"
+            "canonicalDeclarationSha256": "0566103e7a5673bd91a8948a29e969fe181163bba71901399a644eeada72788b",
+            "composedDeclarationSha256": "f4e520a31bd986010521076ab77d2e36ef5efee8ac2ea9d56b837f3be9219388"
           },
           {
             "source": "bend2/selfhost/c_backend_physical.bend",
             "canonicalName": "expand_unbox",
             "name": "cps_provider_5_expand_unbox",
             "kind": "def",
-            "canonicalDeclarationSha256": "bcbe58d2d5e56b37739cbbb7cc3e507f56f863c8ade96d457f947437fca53cc0",
-            "composedDeclarationSha256": "2d4b70bc439c8b01777e55898180ab33654b2213275088c2faf725d998b32d7d"
+            "canonicalDeclarationSha256": "292a40837e26df5ec3b081d555d2abd39fce538bbd9959cecf9c315912f70b4e",
+            "composedDeclarationSha256": "1c185b7fa5fd130e8f6449da6b83faed703a2d2e6a38061004b691735a1b2b90"
           },
           {
             "source": "bend2/selfhost/c_backend_physical.bend",
             "canonicalName": "expand_word_take",
             "name": "cps_provider_5_expand_word_take",
             "kind": "def",
-            "canonicalDeclarationSha256": "b73725d1eca44273e20f9ed23c6eaaed2ae4d79fef814e629da1906e8e78fa9f",
-            "composedDeclarationSha256": "4e870d118cd9fa8363add75e6c2ac8b95fa4931a7c647c081cc5c78a9b8916f3"
+            "canonicalDeclarationSha256": "d6af13ec55d84c27074266adb98cf24b43ed79609af750b6262a03cd798893b5",
+            "composedDeclarationSha256": "48be981397c3288c9d6ab13dd878b3162013f7105f1fb08b4889a0476803f7cd"
           },
           {
             "source": "bend2/selfhost/c_backend_physical.bend",
@@ -35684,7 +35954,7 @@
             "canonicalName": "nest_make",
             "name": "cps_provider_5_nest_make",
             "kind": "def",
-            "canonicalDeclarationSha256": "4dad2c99a19ed69ef18a8527edc659127a3131d4d69418e8530a1b49ae88378c",
+            "canonicalDeclarationSha256": "d70da172238612926d6ffd435f57d70d66d70c2c619b55b1964e26b0d12bde69",
             "composedDeclarationSha256": "81dfcdf6a4bb726787786f5500560be35bcdb68835afaf1a608904e9a17ac5d6"
           },
           {
@@ -35692,24 +35962,24 @@
             "canonicalName": "field_pair_jobs",
             "name": "cps_provider_5_field_pair_jobs",
             "kind": "def",
-            "canonicalDeclarationSha256": "13776b7c2a4320c4012afea52605d8248460e4518841aaf77724c0ca3ecb5abf",
-            "composedDeclarationSha256": "418fda1bcfb07cfc68516b8aff07b7d1e4bac2beefc8f054cab113571f024601"
+            "canonicalDeclarationSha256": "a08e4dd532485361869ab17b1de9f8a08f4b889bcc4770bc3d7dab55432ecbe3",
+            "composedDeclarationSha256": "d98af5d78f0fcc9eb5b6cb8f11a940a8f2b9870eb22f5ebac1984875514ac57e"
           },
           {
             "source": "bend2/selfhost/c_backend_physical.bend",
-            "canonicalName": "form_fields",
-            "name": "cps_provider_5_form_fields",
+            "canonicalName": "forms_arm_body",
+            "name": "cps_provider_5_forms_arm_body",
             "kind": "def",
-            "canonicalDeclarationSha256": "f16a8eedbfbebc57d50fa19450554b72600eee2c1b2aec630c0e1947a488c911",
-            "composedDeclarationSha256": "177b64dd03a433ee2a964fbb7b9c959613d0829179ae43b4a45a1124132a1ade"
+            "canonicalDeclarationSha256": "74c30956e7a7b9b6b343440817c1f68c7bcd709860d54db4cee550b20d99a522",
+            "composedDeclarationSha256": "cfb705d85380e65b9b25e7feef7784e09b934fca91fe2eabe44bea1575d05fc9"
           },
           {
             "source": "bend2/selfhost/c_backend_physical.bend",
             "canonicalName": "forms_arm_case",
             "name": "cps_provider_5_forms_arm_case",
             "kind": "def",
-            "canonicalDeclarationSha256": "596077f901222c9206340de517630a916a12fcabf948e809499db6251e6d7f9b",
-            "composedDeclarationSha256": "1b993f2136e494c66185f7a01e03b46cf0238050ac29c38284db2397678124aa"
+            "canonicalDeclarationSha256": "c3d88914ee1d9adf9b2c9926fdcb53ca318f66a6eb479d57267bffb348327bc9",
+            "composedDeclarationSha256": "34524a70d02cf70190346a3502f88eb531c6ad066dbecc704960dc5de4e25c0c"
           },
           {
             "source": "bend2/selfhost/c_backend_physical.bend",
@@ -35724,23 +35994,31 @@
             "canonicalName": "forms_cases",
             "name": "cps_provider_5_forms_cases",
             "kind": "def",
-            "canonicalDeclarationSha256": "77ff9c0e46e80d50b1a5b6163551b3e09728970cd013fc64b273889255f4c87d",
-            "composedDeclarationSha256": "4a2975188c1b015405db31a0e7f011bc8b05124f6a75552e6645fbfb0b2f5033"
+            "canonicalDeclarationSha256": "3a1d7c1e64dc0152d2bf012a6605dd689fa86151a8898d0badfa2efce3f8cd70",
+            "composedDeclarationSha256": "e1aab290cf895a334f1bb971710f504e98d269c886cf826777fe272bd04b5873"
           },
           {
             "source": "bend2/selfhost/c_backend_physical.bend",
             "canonicalName": "expand_forms",
             "name": "cps_provider_5_expand_forms",
             "kind": "def",
-            "canonicalDeclarationSha256": "02cf4435f25f0a109644aed81fc9ba2408e09b20379f5bb48da28b9631a699f1",
-            "composedDeclarationSha256": "90b996abf96ca8183e0454c7725db4cf9e7c9549634bd3d12ab8b2b677ac1428"
+            "canonicalDeclarationSha256": "abab0cc3998307583c618aa8126ba42131b572a928120fed96bf62a36b78306b",
+            "composedDeclarationSha256": "52d0b06364395be9418bc2820f627abe7906df79d9c7fe51baaad5a03a526d4f"
+          },
+          {
+            "source": "bend2/selfhost/c_backend_physical.bend",
+            "canonicalName": "forms_single",
+            "name": "cps_provider_5_forms_single",
+            "kind": "def",
+            "canonicalDeclarationSha256": "e9417e40c3e758a2bbd4708f8edd9d076e5732076715f827233515b879ccd6af",
+            "composedDeclarationSha256": "a327491d29a6405eba0af7d4299775720322b4cbc0d455b8a7f4aa943c9457ef"
           },
           {
             "source": "bend2/selfhost/c_backend_physical.bend",
             "canonicalName": "pack_jobs",
             "name": "cps_provider_5_pack_jobs",
             "kind": "def",
-            "canonicalDeclarationSha256": "eac861a07c122f78f6a7fd1b1bb9a72273cf8c11e86f778336ceec1330869059",
+            "canonicalDeclarationSha256": "53081e9b40874c0b2f301ccbf9bd4b312fd50e0d101f8677154f4e85f512928b",
             "composedDeclarationSha256": "1e4bb3e265f788655750a4895ce509d9a6c0ba10f5ef6583a0daf505f67b4328"
           },
           {
@@ -35748,64 +36026,64 @@
             "canonicalName": "arm_block_jobs",
             "name": "cps_provider_5_arm_block_jobs",
             "kind": "def",
-            "canonicalDeclarationSha256": "7236b65f166795427e196a9a380e54282d650d664ad58ab22f6e3b2bce44fe90",
-            "composedDeclarationSha256": "96579ff04bd64aec5ec75a860fbf1b2b2ffc074ac4b51309934a9d3e6bf076b7"
+            "canonicalDeclarationSha256": "8c4cad9c273adc5d546ab90f9cd42efb6a9797cd8796b7073383278d66c689c4",
+            "composedDeclarationSha256": "73df6b485cf3272e21c5f843b68601fbc2df6a453fa380418863e64e777d5a22"
           },
           {
             "source": "bend2/selfhost/c_backend_physical.bend",
             "canonicalName": "box_arm_jobs",
             "name": "cps_provider_5_box_arm_jobs",
             "kind": "def",
-            "canonicalDeclarationSha256": "f49a544e99755c10d124368f695545c1433a259d03075344cff36d5c7b03bd97",
-            "composedDeclarationSha256": "36c327fc826e2352db1fa4e50e2b51e54416e8c1fe6f9cba53a9eafc4ee4d2e7"
+            "canonicalDeclarationSha256": "42c42fd478958f3449a7c38e249ec5a14a8ff6c771f8cf2b1b2babf9d36d09e4",
+            "composedDeclarationSha256": "95f545e81f21e1914123e8fa90c670f89fc49df32a755461adccfa500b02f85b"
           },
           {
             "source": "bend2/selfhost/c_backend_physical.bend",
             "canonicalName": "box_cases",
             "name": "cps_provider_5_box_cases",
             "kind": "def",
-            "canonicalDeclarationSha256": "d5cbc00504760c9247c824c86029cf89c7a1fe0c6cbdd37e3c04419ee96d0574",
-            "composedDeclarationSha256": "e07b2f83c1e0c20693369917833dfee4df141d65bcbb7e01e4f7488f53127f54"
+            "canonicalDeclarationSha256": "eec7975c82dfa3b0af4ea6c40bb09848863a6a9f85f72d260b039c8cfb048f15",
+            "composedDeclarationSha256": "7679fd2a38efabba221a11ec5d480abcfc36afb6b45a01395090f0ec005ec378"
           },
           {
             "source": "bend2/selfhost/c_backend_physical.bend",
             "canonicalName": "box_untagged",
             "name": "cps_provider_5_box_untagged",
             "kind": "def",
-            "canonicalDeclarationSha256": "c1947e900ea47a9a16057d254f6935ae70c17bb763324bbabc0e45e0ae8a83c9",
-            "composedDeclarationSha256": "ac3ed40ba977711908c2101104feca5a1c6fb039f2ecb8c350101f5d19ff1b4d"
+            "canonicalDeclarationSha256": "555b9a456d6ae7cdac03736f1d43ee1ddda2c06402c4c17b0a5720805e478e47",
+            "composedDeclarationSha256": "3079ebd3686214c681728e1b13b4c16cb078c388d72e7b7db59405f9e48791ef"
           },
           {
             "source": "bend2/selfhost/c_backend_physical.bend",
             "canonicalName": "expand_box",
             "name": "cps_provider_5_expand_box",
             "kind": "def",
-            "canonicalDeclarationSha256": "3c9ef127c80e903bf0dd341356c742401a158c8d37f96df8c8ba6fb3cdc722d3",
-            "composedDeclarationSha256": "627a2b61d83207ad669316c83c755ae35cc7ceb3f50d77003ef7396b59c19252"
+            "canonicalDeclarationSha256": "9093e2278f594597a9754bb7614546da63fdd6400bc0a2b854f8f5c2a85e499f",
+            "composedDeclarationSha256": "ee620d760de09f1c52d7d154ba5f6efbe893fc76ecae00f01caab1c700e2c344"
           },
           {
             "source": "bend2/selfhost/c_backend_physical.bend",
             "canonicalName": "expand_box_body",
             "name": "cps_provider_5_expand_box_body",
             "kind": "def",
-            "canonicalDeclarationSha256": "ed34ea07111325fa5823da80ad557535caebb20a90843d40114f2fe799504188",
-            "composedDeclarationSha256": "3731c75dc11f15cdff297a8ddd90a0e196e9c1ef3109294ac027412a055f0ae3"
+            "canonicalDeclarationSha256": "04d0a1380a29e7c80a71be4964fec69f07ccd6aad96bf881e740dac8dfaf020a",
+            "composedDeclarationSha256": "ad519ae57c16e418bcafd176edfe6eec380f1648b69fd166810955a80f77f62d"
           },
           {
             "source": "bend2/selfhost/c_backend_physical.bend",
             "canonicalName": "expand_form_take",
             "name": "cps_provider_5_expand_form_take",
             "kind": "def",
-            "canonicalDeclarationSha256": "5b5220e33cac9634919acb33ff45317e4c261277f1633d502cac147524712001",
-            "composedDeclarationSha256": "eb475a2fe1285f35800a7071b16787757b2ed1a10efb774ad9a50f03fc0200f0"
+            "canonicalDeclarationSha256": "33f7f7dc5ff6bc27416e564fca09fd0cb25529a63bdc75604cf8cac22e6dad67",
+            "composedDeclarationSha256": "2aa634ad44003ab66d7ef80e18cacf7b2406abdf53ddbc8816d57b272b18c361"
           },
           {
             "source": "bend2/selfhost/c_backend_physical.bend",
             "canonicalName": "expand_conv",
             "name": "cps_provider_5_expand_conv",
             "kind": "def",
-            "canonicalDeclarationSha256": "b49285bbeeac43c1c0a8daf1b17cb255edf2af05d3742c91b28fc5df85b03220",
-            "composedDeclarationSha256": "3ae315d8902cf948c630dafcdbbe06e6302aa6db9ae79a141fd898e003aacc5c"
+            "canonicalDeclarationSha256": "f81749b8a46041bf055691a7236843997a1c1be1988240ca34d7e9196d12fd32",
+            "composedDeclarationSha256": "7f46708d419120bb4294536b833bdd73b0a346512476edc89ae715adcf3f71f7"
           },
           {
             "source": "bend2/selfhost/c_backend_physical.bend",
@@ -36932,8 +37210,8 @@
             "canonicalName": "array_label",
             "name": "cps_provider_5_array_label",
             "kind": "def",
-            "canonicalDeclarationSha256": "43f32f93067636ff7c7b111386f2fda68bebaf8e7bfaf40258c1d7278d0d496d",
-            "composedDeclarationSha256": "559ec0ce954401c82ec7d2019aa11dca9feddd5e1c980a336eea7e830f1dee1b"
+            "canonicalDeclarationSha256": "94506f663609f81d07516cbde516aa30fd0557c0b0d658b88ef4043ca1a63904",
+            "composedDeclarationSha256": "b2abfd165548543685bdf03c9436cfa121771e2db2611c93818c34412fd80f41"
           },
           {
             "source": "bend2/selfhost/c_backend_physical.bend",
@@ -37164,8 +37442,104 @@
             "canonicalName": "array_clone_ops",
             "name": "cps_provider_5_array_clone_ops",
             "kind": "def",
-            "canonicalDeclarationSha256": "e12e593b73d63d806936f8225b3c576e79c4371d6550cdd6a459c3583934e5ae",
+            "canonicalDeclarationSha256": "08c2658a503bc466a48238b32daa4f980d720d3bcae3d1346c16990e29a30c0b",
             "composedDeclarationSha256": "8e26c60caf502702dc2d5b1c3d5d91c50d839df6abf5ddc106858cd2dd54d6b1"
+          },
+          {
+            "source": "bend2/selfhost/c_backend_physical.bend",
+            "canonicalName": "atomic_cell_text",
+            "name": "cps_provider_5_atomic_cell_text",
+            "kind": "def",
+            "canonicalDeclarationSha256": "150fb9ec04888b58538d25b35167b6f023e0cf4d24e9ee8b658e5d52de563c5e",
+            "composedDeclarationSha256": "33d64358cef45d8626ffdc14aaeb36291d402b871d35cd54df3eb38a4d42a1b8"
+          },
+          {
+            "source": "bend2/selfhost/c_backend_physical.bend",
+            "canonicalName": "atomic_call_text",
+            "name": "cps_provider_5_atomic_call_text",
+            "kind": "def",
+            "canonicalDeclarationSha256": "d927b0702944238262ceb0bc628216990296dc4fed1411ad584aba6000bb03e6",
+            "composedDeclarationSha256": "38abbc9cd12967cb819c4998a9e87e47e0566910a42059da49f6c539d391df57"
+          },
+          {
+            "source": "bend2/selfhost/c_backend_physical.bend",
+            "canonicalName": "atomic_cas_text",
+            "name": "cps_provider_5_atomic_cas_text",
+            "kind": "def",
+            "canonicalDeclarationSha256": "7b88647367ccb9cb93eb3aa7202e790c67be4db36449096d2a8c4942187ac16e",
+            "composedDeclarationSha256": "53a2326e2bb5836960e18b0ae98c774bd53b3222974cb5636ee8db84ca584734"
+          },
+          {
+            "source": "bend2/selfhost/c_backend_physical.bend",
+            "canonicalName": "atomic_helper",
+            "name": "cps_provider_5_atomic_helper",
+            "kind": "def",
+            "canonicalDeclarationSha256": "bb982121a4e06748236e74c3a9a99f74690fb1739b4b216620bc9e2b9ea00035",
+            "composedDeclarationSha256": "70ff758175952d3e70cf197be4935a6a06e071393ff33646c313085e81d14f8f"
+          },
+          {
+            "source": "bend2/selfhost/c_backend_physical.bend",
+            "canonicalName": "atomic_pair",
+            "name": "cps_provider_5_atomic_pair",
+            "kind": "def",
+            "canonicalDeclarationSha256": "cb63692b24d22f8ba29bd00b6c8c060b85504901585689c41f054719def97746",
+            "composedDeclarationSha256": "f12ce253585c8d4bb03edef9a347003c68bf78d05fed117123397dcfc7dc19f0"
+          },
+          {
+            "source": "bend2/selfhost/c_backend_physical.bend",
+            "canonicalName": "atomic_three_operands",
+            "name": "cps_provider_5_atomic_three_operands",
+            "kind": "def",
+            "canonicalDeclarationSha256": "a0454a41bf744686b060ea48b6460b93388b2c52cd25e083d68672f70b4c0959",
+            "composedDeclarationSha256": "72547e9f4fa8ebb38099b3769a149e41e6599f95e637cab1ce621ee3ec9f500b"
+          },
+          {
+            "source": "bend2/selfhost/c_backend_physical.bend",
+            "canonicalName": "atomic_three_pargs",
+            "name": "cps_provider_5_atomic_three_pargs",
+            "kind": "def",
+            "canonicalDeclarationSha256": "54b3a9dafe6979f5a2e4b13dd7e659cca53033a80d90cdbaafa0a36ba95fe9c3",
+            "composedDeclarationSha256": "1ce279b74da2fc8d868fa197f53b4f2a10e78366d41fc5781ebd94f0b2307830"
+          },
+          {
+            "source": "bend2/selfhost/c_backend_physical.bend",
+            "canonicalName": "atomic_cas_pargs",
+            "name": "cps_provider_5_atomic_cas_pargs",
+            "kind": "def",
+            "canonicalDeclarationSha256": "766f3c11d4851b59967d769307c07c7f4b6c9e84dce4518d09421323eb8920bf",
+            "composedDeclarationSha256": "9d69370201c7eba46d9c87bbc2d52867f2eb7f765779e3bcf084e83cc1e18022"
+          },
+          {
+            "source": "bend2/selfhost/c_backend_physical.bend",
+            "canonicalName": "atomic_pargs",
+            "name": "cps_provider_5_atomic_pargs",
+            "kind": "def",
+            "canonicalDeclarationSha256": "d7d6480ee76ca21ab059cc79de146905e6e89e1edbdc0e7f899fffd2e36cb4b4",
+            "composedDeclarationSha256": "5f9595de6a96d010f557f265bb604a9550fecfad58b3f3e5bdbad2988d7a9204"
+          },
+          {
+            "source": "bend2/selfhost/c_backend_physical.bend",
+            "canonicalName": "atomic_three_regs",
+            "name": "cps_provider_5_atomic_three_regs",
+            "kind": "def",
+            "canonicalDeclarationSha256": "0ac869551c018053e483b817869ef2d18ed30a423edd519a90c9805a4f5da0e5",
+            "composedDeclarationSha256": "ce3069aa218a9a381e5c2bf1d7512737e546e3c9f6c9af66c868467d4705710c"
+          },
+          {
+            "source": "bend2/selfhost/c_backend_physical.bend",
+            "canonicalName": "atomic_cas_regs",
+            "name": "cps_provider_5_atomic_cas_regs",
+            "kind": "def",
+            "canonicalDeclarationSha256": "6949b123df53e7260d64924bb6441f4a311a7823cd56c56e673dc15d2098eeef",
+            "composedDeclarationSha256": "6aa65fc6dacedc52ad78f94819bff5eb54ec0f0da94fe1b2f29e2a9b2ad2f576"
+          },
+          {
+            "source": "bend2/selfhost/c_backend_physical.bend",
+            "canonicalName": "atomic_prim_part",
+            "name": "cps_provider_5_atomic_prim_part",
+            "kind": "def",
+            "canonicalDeclarationSha256": "a84d172cb1201d96213c0cbe7743d035907f377774de2442b489f16996eb8ec6",
+            "composedDeclarationSha256": "a15fc202583a53c60b0221a7b870b9fa45a95db5f2a4d7255eebc96ce6ac6d9f"
           },
           {
             "source": "bend2/selfhost/c_backend_physical.bend",
@@ -37268,8 +37642,24 @@
             "canonicalName": "array_part",
             "name": "cps_provider_5_array_part",
             "kind": "def",
-            "canonicalDeclarationSha256": "e89e1877f8e15e35fe7bb704b79f12821e6ec323adc26ef44d0431adfc999d9e",
-            "composedDeclarationSha256": "53d3f45062f9dc8bd0cb517953614b89a2baeaf0991519b7af7d9ff43430b535"
+            "canonicalDeclarationSha256": "1ed4246b353dfcffb9555736b6e9aa9ce15a1055b8f93e7f4480ef9eb0756961",
+            "composedDeclarationSha256": "83ecd78c02946abaf32a0160912d594e593cc433698d5c466c1a90fc35c0eb49"
+          },
+          {
+            "source": "bend2/selfhost/c_backend_physical.bend",
+            "canonicalName": "array_cell_part",
+            "name": "cps_provider_5_array_cell_part",
+            "kind": "def",
+            "canonicalDeclarationSha256": "f808f6d66f738f1e2265424049e0aa554741485298a10c5abd85f572041eeedf",
+            "composedDeclarationSha256": "24ea122f925ab22fb9a7752cd53b643df44c140fb7613c7068581531392dd184"
+          },
+          {
+            "source": "bend2/selfhost/c_backend_physical.bend",
+            "canonicalName": "is_atomic_primitive",
+            "name": "cps_provider_5_is_atomic_primitive",
+            "kind": "def",
+            "canonicalDeclarationSha256": "1d277a7e5a1710c44ecabe4de4447ed32f929f40638628a30f8c58a19977a4cf",
+            "composedDeclarationSha256": "bcb3f58260b1fb4fb21df328ca59bc0513ef25dfba7103a232f09a94680a0dc4"
           },
           {
             "source": "bend2/selfhost/c_backend_physical.bend",
@@ -40300,8 +40690,8 @@
             "canonicalName": "split_direct_args",
             "name": "cps_provider_8_split_direct_args",
             "kind": "def",
-            "canonicalDeclarationSha256": "a0866d0ad9432b7f33f1bc5fc082f08a3891270245fa5469097d8d5a7819bf2c",
-            "composedDeclarationSha256": "046c480568f1b688793aa6bb65c347de664630bc186805dfda01dedf43f66bc4"
+            "canonicalDeclarationSha256": "69f9a69d2e4c158440cd881b2ea3d1dc38fcfa14e2efcfadb0ae900aebcdd12c",
+            "composedDeclarationSha256": "51fafb1f67cf6d1cf74900c547f5041a255d563584f19a3ba7f0c4adeb1f73ed"
           },
           {
             "source": "bend2/selfhost/js_backend.bend",
@@ -40342,6 +40732,14 @@
             "kind": "def",
             "canonicalDeclarationSha256": "df5dc736f2660c30ee40a2343f606cb397381565bc60831f8506e6d2f5df77d6",
             "composedDeclarationSha256": "022243afb8f9ebff7d57ee8a3cdd75323150dfc0375382bbe8d849ed181f1a15"
+          },
+          {
+            "source": "bend2/selfhost/js_backend.bend",
+            "canonicalName": "arg_temp_names",
+            "name": "cps_provider_8_arg_temp_names",
+            "kind": "def",
+            "canonicalDeclarationSha256": "45f23c2f88f7819c6c75c292bff8371ae989853f05d972f6a6fa4a7a4c832c9a",
+            "composedDeclarationSha256": "85cbfca1ff39deffb7add8235a34b666163eac7be24ae530993c17a438296e7f"
           },
           {
             "source": "bend2/selfhost/js_backend.bend",
@@ -40452,24 +40850,24 @@
             "canonicalName": "primitive_name",
             "name": "cps_provider_8_primitive_name",
             "kind": "def",
-            "canonicalDeclarationSha256": "0bec35e3517ad2bf99fc308684e1c1da0e14a432d1845a3f9d91a0446a276324",
-            "composedDeclarationSha256": "1df8544a0ccbba7881419244ff4aaf16784ba9c5081b2134a4139a2f829a4448"
+            "canonicalDeclarationSha256": "a289b248b3a9c0e92fa5a5a7d177a263fc668abf617fe15e1d3ff7083cebe9ce",
+            "composedDeclarationSha256": "5f6f86e418a8a458a23a7316f9e3b5eae249045c63b35c0705d282c626a7a414"
           },
           {
             "source": "bend2/selfhost/js_backend.bend",
             "canonicalName": "primitive_public",
             "name": "cps_provider_8_primitive_public",
             "kind": "def",
-            "canonicalDeclarationSha256": "1d6187656a38f8aa3391896b4edba1d9e80e6c39ca6686b4295c5ae8e4b9ffc3",
-            "composedDeclarationSha256": "63b062ae2d9289f85d9ada2f7fad31f5cc404b7c1b97b56b70c9489d9310c8b4"
+            "canonicalDeclarationSha256": "0efa268abe22117bdd9bc13c32e2b69a7950dbeb260a338ebb01891e0eb67fcc",
+            "composedDeclarationSha256": "cda01ccb5913c7a64530e6bf4d0f752322f25c731fe3b53ad00c8c9d9c349cc7"
           },
           {
             "source": "bend2/selfhost/js_backend.bend",
             "canonicalName": "primitive_runtime",
             "name": "cps_provider_8_primitive_runtime",
             "kind": "def",
-            "canonicalDeclarationSha256": "78b6cea2eec7fe0ece08f4d551b84b5bf11abe7e7f20d6747e0e89c3429f88d7",
-            "composedDeclarationSha256": "3774c3dd0a640392588b224148be2727478ca3f7f7998c0a7e927531631ed6bf"
+            "canonicalDeclarationSha256": "8f39288c930486d3271bcd77d06509e0cfabe6087ebbbe18c347630af4f35e82",
+            "composedDeclarationSha256": "9fe758c2d429af7676d3b9134c12a18aba2f71d72cf60327d3e6f63af73856d2"
           },
           {
             "source": "bend2/selfhost/js_backend.bend",
@@ -41028,8 +41426,16 @@
             "canonicalName": "program_source",
             "name": "cps_provider_8_program_source",
             "kind": "def",
-            "canonicalDeclarationSha256": "97dd3886a39ace8811fb42e501754cba57901262e46e6721af98fa06367b12bd",
-            "composedDeclarationSha256": "bf2242474cb635bebf1e8abafdd609e5f75de582a8fbfec4c9a879d730b37a40"
+            "canonicalDeclarationSha256": "a33cf880c313a3fffa759730d52c502a7b7998b7c0f143efc11ac07d7ed07d48",
+            "composedDeclarationSha256": "c8800ed5d4ede452e2eea162b3dd813abbe85084cdfddfa049390d2f341810a2"
+          },
+          {
+            "source": "bend2/selfhost/js_backend.bend",
+            "canonicalName": "js_runtime_direct",
+            "name": "cps_provider_8_js_runtime_direct",
+            "kind": "def",
+            "canonicalDeclarationSha256": "a3b17e6a59d6ec096d9224795730d1bf247661a271b8893ee213203722a876d8",
+            "composedDeclarationSha256": "13eff4bca43449d90995315384f7e6977c4eed6877ac1560a21d10e23ca39d1d"
           },
           {
             "source": "bend2/selfhost/js_backend.bend",
@@ -41044,16 +41450,16 @@
             "canonicalName": "js_runtime_extra",
             "name": "cps_provider_8_js_runtime_extra",
             "kind": "def",
-            "canonicalDeclarationSha256": "f647af9a2013d344f2dd64464e36b9654df656bac71c9a5d1ffb5a4f858f2187",
-            "composedDeclarationSha256": "184805d1ba8e40f064ef8efe27b4e1715a46f39e6d3dbc9c0c1c95ccb857d64f"
+            "canonicalDeclarationSha256": "b2369c45aa9916dde877f2844180372f6f05753ab489b6b9759a0514ded4b1ac",
+            "composedDeclarationSha256": "9fb78c4fe2be2b57ed636120793612f839934cba28c5c0eb942abd04dd9dd000"
           },
           {
             "source": "bend2/selfhost/js_backend.bend",
             "canonicalName": "js_runtime_array",
             "name": "cps_provider_8_js_runtime_array",
             "kind": "def",
-            "canonicalDeclarationSha256": "ef99291a45286dff800698d8a0a555fa315341c8348b1a2f0ec56b8689a31554",
-            "composedDeclarationSha256": "3b84ce5840ddbdc302166a950e3c08e5c5323cd73cb113843d0b745839ab8f54"
+            "canonicalDeclarationSha256": "1cb8d8e681ca48df382590f363898cc35bfcf7d607ec558925f1137f6f935c03",
+            "composedDeclarationSha256": "78f2ccdf0f5263a54898c6ce09bbe0ef30f952f65b9221f41e5d468a683831bf"
           },
           {
             "source": "bend2/selfhost/js_backend.bend",
@@ -42156,8 +42562,8 @@
             "canonicalName": "primitive_named",
             "name": "cps_provider_10_primitive_named",
             "kind": "def",
-            "canonicalDeclarationSha256": "b1aa8193caae0d9bfc1c597d07dd9f920b1108b45590e17eba6b18d6242a501a",
-            "composedDeclarationSha256": "9534c6875943025e96fb8f15fbca12556bb2b3eb7a4db09bfaef2e8d9c020280"
+            "canonicalDeclarationSha256": "488bd2ddc4c5cf1832cbc00c3f92c27063b7ea9e34e0fdc307c85c360bde8810",
+            "composedDeclarationSha256": "81a8b846948467d9751fe1529754f2c68102bccee69f8dab713b094812109051"
           },
           {
             "source": "bend2/selfhost/lower_catalog.bend",
@@ -43156,8 +43562,32 @@
             "canonicalName": "ending",
             "name": "cps_provider_10_ending",
             "kind": "def",
-            "canonicalDeclarationSha256": "41724f36690e84ab3a608285ed22147254bf491ea6786c43d460b86f83eefe36",
+            "canonicalDeclarationSha256": "bf379e9afec581932a8ff2c8588ff8371b75379048ddf3fc23c2e645acf30848",
             "composedDeclarationSha256": "d2e45d8d33631b3c1103d078fd46c044a416cdfb1cb672b10f954dd7ad176204"
+          },
+          {
+            "source": "bend2/selfhost/lower_catalog.bend",
+            "canonicalName": "root_main_runnable",
+            "name": "cps_provider_10_root_main_runnable",
+            "kind": "def",
+            "canonicalDeclarationSha256": "970336efacf2672cb0207eda83cb323e2abedccbb429eacdb62be10420af863c",
+            "composedDeclarationSha256": "e6f60c620ed72a4ab71d3990ad38350839742188def144f8d729017531ea636d"
+          },
+          {
+            "source": "bend2/selfhost/lower_catalog.bend",
+            "canonicalName": "root_main_admitted",
+            "name": "cps_provider_10_root_main_admitted",
+            "kind": "def",
+            "canonicalDeclarationSha256": "f3e3c5f5ecbab91d41e92a5302aed26d62ba5a9ed7c8f2a837e3a32ea17847b0",
+            "composedDeclarationSha256": "5950bf8af12479064932e4bab2e97472971d6b25709b6088ee610fbe738ff306"
+          },
+          {
+            "source": "bend2/selfhost/lower_catalog.bend",
+            "canonicalName": "executable_admitted",
+            "name": "cps_provider_10_executable_admitted",
+            "kind": "def",
+            "canonicalDeclarationSha256": "310ac9c9ccc82ecc34549dc8d2ade2f62a4d3269cf0f0b347f2c968c564964ff",
+            "composedDeclarationSha256": "52906cd6bbbc79f7735500ceef2fcbf5f39cbfa932cea189d0c7260834f3f270"
           },
           {
             "source": "bend2/selfhost/lower_catalog.bend",
@@ -43169,11 +43599,19 @@
           },
           {
             "source": "bend2/selfhost/lower_catalog.bend",
+            "canonicalName": "native_match_build_finish_2",
+            "name": "cps_provider_10_native_match_build_finish_2",
+            "kind": "def",
+            "canonicalDeclarationSha256": "ce43a9630de2bedacbb1641c418d1b3cfbc0689b3268efbac0cb0b67741992b9",
+            "composedDeclarationSha256": "2c8420904a1d914c85b50144ce23432d1409a1cd49c382b0fdea6cba22dd4375"
+          },
+          {
+            "source": "bend2/selfhost/lower_catalog.bend",
             "canonicalName": "native_match_build_finish_1",
             "name": "cps_provider_10_native_match_build_finish_1",
             "kind": "def",
-            "canonicalDeclarationSha256": "d670775f65a8d8559cfc9ddafcaaead3ddf21c516807b5e875af2dd333d5538f",
-            "composedDeclarationSha256": "f4577414b74d84b1b37ccf81ade329586f0a1fe320c022957c739ac810780754"
+            "canonicalDeclarationSha256": "ff12ca2c8cc946673ce3e820f0e44a650f96139d00582f0222f492e804bc6c3a",
+            "composedDeclarationSha256": "ae446e2056f5bd7bbdd366caf7fe5f0538c661ed9202630d0d02d2dbbfda9ca9"
           },
           {
             "source": "bend2/selfhost/lower_catalog.bend",
@@ -43260,8 +43698,8 @@
             "canonicalName": "primitive_arity",
             "name": "cps_provider_10_primitive_arity",
             "kind": "def",
-            "canonicalDeclarationSha256": "728c8aefbc843eaf7171e677352e0d9740cd741209bd8256d0e7c059f8ebbe0c",
-            "composedDeclarationSha256": "787742392de735a9cc4a05e11785faa7f19e09b105beb4737fec1517e9bdf274"
+            "canonicalDeclarationSha256": "be3e15b1fb82f199276422086f531c8af630a0f9e16c5980189a1308bfa52e87",
+            "composedDeclarationSha256": "16c1e7f80ae28084fba316ae05e1faa2cc5a8e9ead6551fd0d2a77c5680ae9b9"
           },
           {
             "source": "bend2/selfhost/lower_catalog.bend",
@@ -43282,38 +43720,38 @@
         ],
         "inputs": {
           "bend2/selfhost/emitter.bend": "47d68ba5f0b54c334e2c940b7bb6aabc7f3bba27142b816f27df8225cf3fae4f",
-          "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/emitter.bend": "47d68ba5f0b54c334e2c940b7bb6aabc7f3bba27142b816f27df8225cf3fae4f",
-          "/private/tmp/bend2039g8-js-call-cost/bend2/base.bend": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
-          "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
-          "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/checked_frontend.bend": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
-          "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/checker_arena.bend": "2a26c3d8ce66412591030fa2fd6df9f9e53c0fececd9d9ae702def2f475f1752",
-          "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/scope_lookup.bend": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
-          "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/checker_ir.bend": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
-          "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/index_lookup.bend": "563c9b152699b490cf68b264e6c4dea4a4e6770dfcf527cf6c81911cb5ea1b78",
-          "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/loaded_module.bend": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
-          "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/backend_ir.bend": "f19e76411b589cc396cda80bb8ad387cdb5e9aef17ae287641f0d29696a88e9e",
-          "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/js_emit.bend": "a71920560786084ab9713c4af89f62d2d0e1eaef7cc24e46ea24940d012fded6",
-          "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/backend_lower.bend": "b6871556736f0c3bdf7a4e0812735c8b98c9f629217f060136d63b2bbd29d8f6",
-          "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/lower_catalog.bend": "3543cf73484f955436c4060fcbdcf4373ca9544cd80fa52f3e0114996a9fe9f0",
-          "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/descriptor_nf.bend": "c727bfe0adf97f86dc44960ca2c46fd890f0d8557157ba883af40d738d3e72dd",
-          "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
-          "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/js_backend.bend": "27a41911687aad58a8f413b4691dce68eccdacc706b3613aca177b118965f771",
-          "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/c_emit_core.bend": "f690db5b6054d4f647b5c02e1281923d5cc66b24c8c2fff7859d811efc5ba380",
-          "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/c_backend.bend": "7ffb89e3adcebedee6fadc2b3143db6f7a2fb2b9fb471dd41a62e02c081b19b1",
-          "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/c_backend_link.bend": "f83c270f2b6f094f2bd220e6e750aa0265c93ae90fa0036dd8d92b86c09e26bd",
-          "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/c_backend_layout.bend": "e61bf74b165935dfa625abba48c6475399e340f10b4d328451e30902be3db878",
-          "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/c_backend_physical.bend": "5827734e1d14e199fd29714bdf78b4d04376d2eca3cbfd8406c575f894493f4c",
-          "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/c_backend_sharing.bend": "c8861993d2ad81057a9ba8b187eb75f743a9005fbb021b43083e7e2906597a40",
+          "/private/tmp/bend2039g16-boundaries/bend2/selfhost/emitter.bend": "47d68ba5f0b54c334e2c940b7bb6aabc7f3bba27142b816f27df8225cf3fae4f",
+          "/private/tmp/bend2039g16-boundaries/bend2/base.bend": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+          "/private/tmp/bend2039g16-boundaries/bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+          "/private/tmp/bend2039g16-boundaries/bend2/selfhost/checked_frontend.bend": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+          "/private/tmp/bend2039g16-boundaries/bend2/selfhost/checker_arena.bend": "2d094dd95dc1c2319b77349a028addee4689288d7b476078b6f16e179cb9afeb",
+          "/private/tmp/bend2039g16-boundaries/bend2/selfhost/scope_lookup.bend": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
+          "/private/tmp/bend2039g16-boundaries/bend2/selfhost/checker_ir.bend": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+          "/private/tmp/bend2039g16-boundaries/bend2/selfhost/index_lookup.bend": "563c9b152699b490cf68b264e6c4dea4a4e6770dfcf527cf6c81911cb5ea1b78",
+          "/private/tmp/bend2039g16-boundaries/bend2/selfhost/loaded_module.bend": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+          "/private/tmp/bend2039g16-boundaries/bend2/selfhost/backend_ir.bend": "162a554cec1c9e1b5edab69b5cfae730c70886548f4f51603a7537845ab5ec48",
+          "/private/tmp/bend2039g16-boundaries/bend2/selfhost/js_emit.bend": "a71920560786084ab9713c4af89f62d2d0e1eaef7cc24e46ea24940d012fded6",
+          "/private/tmp/bend2039g16-boundaries/bend2/selfhost/backend_lower.bend": "b6871556736f0c3bdf7a4e0812735c8b98c9f629217f060136d63b2bbd29d8f6",
+          "/private/tmp/bend2039g16-boundaries/bend2/selfhost/lower_catalog.bend": "e3864a71ac15ce5f1c74ddc7f615d844e92d9ce6e9c55a2b883482b349058adb",
+          "/private/tmp/bend2039g16-boundaries/bend2/selfhost/descriptor_nf.bend": "c727bfe0adf97f86dc44960ca2c46fd890f0d8557157ba883af40d738d3e72dd",
+          "/private/tmp/bend2039g16-boundaries/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+          "/private/tmp/bend2039g16-boundaries/bend2/selfhost/js_backend.bend": "b7657f4acfae68aa47641fe42c3ccfb5292cd4c036b636e1be20c0382cfa1a3f",
+          "/private/tmp/bend2039g16-boundaries/bend2/selfhost/c_emit_core.bend": "f690db5b6054d4f647b5c02e1281923d5cc66b24c8c2fff7859d811efc5ba380",
+          "/private/tmp/bend2039g16-boundaries/bend2/selfhost/c_backend.bend": "5b6de0beba6a921df755d88a2fc982077c2b3621d7e1817a14873855af396599",
+          "/private/tmp/bend2039g16-boundaries/bend2/selfhost/c_backend_link.bend": "f83c270f2b6f094f2bd220e6e750aa0265c93ae90fa0036dd8d92b86c09e26bd",
+          "/private/tmp/bend2039g16-boundaries/bend2/selfhost/c_backend_layout.bend": "e61bf74b165935dfa625abba48c6475399e340f10b4d328451e30902be3db878",
+          "/private/tmp/bend2039g16-boundaries/bend2/selfhost/c_backend_physical.bend": "d71b3dcb1132e843a1bdf8ade4e55a85dc369a8e072381c2aa4385179a4eaf9c",
+          "/private/tmp/bend2039g16-boundaries/bend2/selfhost/c_backend_sharing.bend": "78992d00aad3a458dd6b9ea424edf0de61c95b54487f92cd53283e705488c35f",
           "bend2/selfhost/backend_lower.bend": "b6871556736f0c3bdf7a4e0812735c8b98c9f629217f060136d63b2bbd29d8f6",
-          "bend2/selfhost/c_backend.bend": "7ffb89e3adcebedee6fadc2b3143db6f7a2fb2b9fb471dd41a62e02c081b19b1",
+          "bend2/selfhost/c_backend.bend": "5b6de0beba6a921df755d88a2fc982077c2b3621d7e1817a14873855af396599",
           "bend2/selfhost/c_backend_layout.bend": "e61bf74b165935dfa625abba48c6475399e340f10b4d328451e30902be3db878",
           "bend2/selfhost/c_backend_link.bend": "f83c270f2b6f094f2bd220e6e750aa0265c93ae90fa0036dd8d92b86c09e26bd",
-          "bend2/selfhost/c_backend_physical.bend": "5827734e1d14e199fd29714bdf78b4d04376d2eca3cbfd8406c575f894493f4c",
+          "bend2/selfhost/c_backend_physical.bend": "d71b3dcb1132e843a1bdf8ade4e55a85dc369a8e072381c2aa4385179a4eaf9c",
           "bend2/selfhost/c_emit_core.bend": "f690db5b6054d4f647b5c02e1281923d5cc66b24c8c2fff7859d811efc5ba380",
           "bend2/selfhost/descriptor_nf.bend": "c727bfe0adf97f86dc44960ca2c46fd890f0d8557157ba883af40d738d3e72dd",
-          "bend2/selfhost/js_backend.bend": "27a41911687aad58a8f413b4691dce68eccdacc706b3613aca177b118965f771",
+          "bend2/selfhost/js_backend.bend": "b7657f4acfae68aa47641fe42c3ccfb5292cd4c036b636e1be20c0382cfa1a3f",
           "bend2/selfhost/js_emit.bend": "a71920560786084ab9713c4af89f62d2d0e1eaef7cc24e46ea24940d012fded6",
-          "bend2/selfhost/lower_catalog.bend": "3543cf73484f955436c4060fcbdcf4373ca9544cd80fa52f3e0114996a9fe9f0"
+          "bend2/selfhost/lower_catalog.bend": "e3864a71ac15ce5f1c74ddc7f615d844e92d9ce6e9c55a2b883482b349058adb"
         }
       },
       "loweringDefinitionNames": [
@@ -43785,6 +44223,7 @@
         "cps_provider_2_max_arity_each",
         "cps_provider_2_scan_new",
         "cps_provider_2_scan_program",
+        "cps_provider_2_scan_exports",
         "cps_provider_2_scan_codes",
         "cps_provider_2_scan_declarations",
         "cps_provider_2_scan_declaration",
@@ -43842,12 +44281,14 @@
         "cps_provider_2_prim_default_owned",
         "cps_provider_2_array_arg_owned",
         "cps_provider_2_array_step",
+        "cps_provider_2_prim_borrowed_box",
+        "cps_provider_2_atom_allocates",
         "cps_provider_2_prim_texts",
         "cps_provider_2_prim_step",
         "cps_provider_2_array_op_step",
+        "cps_provider_2_array_op_step_element",
         "cps_provider_2_pred_path",
-        "cps_provider_2_append_step",
-        "cps_provider_2_append_step_parts",
+        "cps_provider_2_str_append",
         "cps_provider_2_construct_step",
         "cps_provider_2_hastag_step",
         "cps_provider_2_op_step",
@@ -43864,12 +44305,14 @@
         "cps_provider_2_project_part",
         "cps_provider_2_hastag_part",
         "cps_provider_2_is_array_primitive",
+        "cps_provider_2_is_atomic_primitive",
         "cps_provider_2_pcid",
         "cps_provider_2_str_bool2",
         "cps_provider_2_bool_str_empty_of",
         "cps_provider_2_bool_str_empty",
         "cps_provider_2_bool_part",
         "cps_provider_2_prim_part",
+        "cps_provider_2_prim_scalar_part",
         "cps_provider_2_f32_bin",
         "cps_provider_2_f32_un",
         "cps_provider_2_f32_cmp",
@@ -44133,6 +44576,7 @@
         "cps_provider_2_stage_stores",
         "cps_provider_2_entry_lazy",
         "cps_provider_2_entry_native",
+        "cps_provider_2_native_borrow_drops",
         "cps_provider_2_a_names",
         "cps_provider_2_entry_foreign",
         "cps_provider_2_entry_main",
@@ -44394,6 +44838,10 @@
         "cps_provider_5_dst_word",
         "cps_provider_5_dst_decl",
         "cps_provider_5_dst_mark",
+        "cps_provider_5_form_base",
+        "cps_provider_5_form_pad",
+        "cps_provider_5_src_skip_jobs",
+        "cps_provider_5_dst_skip_jobs",
         "cps_provider_5_src_read_node",
         "cps_provider_5_src_read_arr",
         "cps_provider_5_src_read_block",
@@ -44415,11 +44863,12 @@
         "cps_provider_5_nest_take",
         "cps_provider_5_nest_make",
         "cps_provider_5_field_pair_jobs",
-        "cps_provider_5_form_fields",
+        "cps_provider_5_forms_arm_body",
         "cps_provider_5_forms_arm_case",
         "cps_provider_5_form_arm_by_key",
         "cps_provider_5_forms_cases",
         "cps_provider_5_expand_forms",
+        "cps_provider_5_forms_single",
         "cps_provider_5_pack_jobs",
         "cps_provider_5_arm_block_jobs",
         "cps_provider_5_box_arm_jobs",
@@ -44596,6 +45045,18 @@
         "cps_provider_5_array_swap_ops",
         "cps_provider_5_array_size_ops",
         "cps_provider_5_array_clone_ops",
+        "cps_provider_5_atomic_cell_text",
+        "cps_provider_5_atomic_call_text",
+        "cps_provider_5_atomic_cas_text",
+        "cps_provider_5_atomic_helper",
+        "cps_provider_5_atomic_pair",
+        "cps_provider_5_atomic_three_operands",
+        "cps_provider_5_atomic_three_pargs",
+        "cps_provider_5_atomic_cas_pargs",
+        "cps_provider_5_atomic_pargs",
+        "cps_provider_5_atomic_three_regs",
+        "cps_provider_5_atomic_cas_regs",
+        "cps_provider_5_atomic_prim_part",
         "cps_provider_5_array_leaf_ops",
         "cps_provider_5_array_node_ops",
         "cps_provider_5_array_is_cond",
@@ -44609,6 +45070,8 @@
         "cps_provider_5_array_clone_cell",
         "cps_provider_5_array_leaf_cell",
         "cps_provider_5_array_part",
+        "cps_provider_5_array_cell_part",
+        "cps_provider_5_is_atomic_primitive",
         "cps_provider_5_is_array_primitive",
         "cps_provider_5_show_state0",
         "cps_provider_5_show_words",
@@ -44964,6 +45427,7 @@
         "cps_provider_8_arg_atom",
         "cps_provider_8_arg_temps",
         "cps_provider_8_arg_temps_tail",
+        "cps_provider_8_arg_temp_names",
         "cps_provider_8_arg_moves",
         "cps_provider_8_arg_moves_at",
         "cps_provider_8_cap_stores",
@@ -45050,6 +45514,7 @@
         "cps_provider_8_emit_checked_exports",
         "cps_provider_8_emit_effects",
         "cps_provider_8_program_source",
+        "cps_provider_8_js_runtime_direct",
         "cps_provider_8_js_runtime",
         "cps_provider_8_js_runtime_extra",
         "cps_provider_8_js_runtime_array",
@@ -45300,7 +45765,11 @@
         "cps_provider_10_native_match_prepare_modules_2",
         "cps_provider_10_prepare_modules",
         "cps_provider_10_ending",
+        "cps_provider_10_root_main_runnable",
+        "cps_provider_10_root_main_admitted",
+        "cps_provider_10_executable_admitted",
         "cps_provider_10_native_match_build_finish_0",
+        "cps_provider_10_native_match_build_finish_2",
         "cps_provider_10_native_match_build_finish_1",
         "cps_provider_10_build_finish",
         "cps_provider_10_native_match_build_0",
@@ -45738,8 +46207,8 @@
         "cps_provider_2_export_direct": "41faff29efe357a35cdc2e84baf3578e5097062fe3f068392adb13eae3dae49d",
         "cps_provider_2_export_direct_curried": "ef109c0c54081b5b0d720ecb4c7469b1ee5b4d42c419d1a0a508c3aecb751ea2",
         "cps_provider_2_export_symbol": "bb2c9abc592be9e23b28071b3dd674fbb7563f1a828c27fdded7ca04d01889cf",
-        "cps_provider_2_export_symbol_item": "564082eb59dc1e7a454412923540155e125c1466938f98dc610cfbff6cc428b7",
-        "cps_provider_2_export_declared": "ed1077944a791f2074467f3bab6fae11b4045bb3d140fe9f74d1de65daece4b5",
+        "cps_provider_2_export_symbol_item": "7b01071d15c0ec327e685f081758c35d3df600df89c075a44892db018ec16e39",
+        "cps_provider_2_export_declared": "fc9123d2a86d7f75cc35ba7c8719011d07ed83e5c2660505b1b280cb9811f246",
         "cps_provider_2_export_names": "f755c35a2377da0b74e430b3ca360e47bc0e21c6ed49a7700a9f2d0a0a99e2f5",
         "cps_provider_2_if_first": "046561ff6853f6d49a46a6fdbc987759cd8efa508236089d35f71e365ca601f9",
         "cps_provider_2_export_values": "c3ea7778d6bee9e4b46eb7ac031e5ba45ced43d34c0cb4b9ab16897adbc57126",
@@ -45784,7 +46253,8 @@
         "cps_provider_2_max_arity": "67ce872196b2ee8ae6b469eaf93c0877086977bcff5c7c9726db58c7f6e037c2",
         "cps_provider_2_max_arity_each": "65d5cab6dc36d317aa84e591df58fe9e975cda9050d2909d1013f300373f1349",
         "cps_provider_2_scan_new": "dea36fc133016d5b9f9aad68341bb456d06be54778ac7e907cc1cf25c2ffae35",
-        "cps_provider_2_scan_program": "d4da4242aebfe2bd4d9afb9747e956b1f3e6a99f6e69ecf66566987a6b6855d9",
+        "cps_provider_2_scan_program": "8309cc35d61814873018980c3e90c783363045cd7d14ca58bdbb20b9f582c6fe",
+        "cps_provider_2_scan_exports": "d1f48c743bbb943d1a98d300be6b5067e52597940da68f0274ac3c483b162e17",
         "cps_provider_2_scan_codes": "114fccc5a2108317030f368306ac99974ace962932a11c360452992e28c32852",
         "cps_provider_2_scan_declarations": "9f9a5a624727de5823696030244430305dcffc740896498905b2ff2239b04be3",
         "cps_provider_2_scan_declaration": "f1b45803ef8de917648a75967fc99caab0181c207020f375a871712779c04625",
@@ -45839,15 +46309,17 @@
         "cps_provider_2_symbol_part_item": "9224ff95c77d628e9ed8db7e27cf5bc3677eeb21d7023a17f3c4ad40c5968d48",
         "cps_provider_2_symbol_value": "4430695ae146060074fe4a71d0f6c179f98ec610e0685ff83de7a935891d4326",
         "cps_provider_2_args_parts": "5d2a82fcd578088cd10235f80acdd0e5f662c9c61a6c36cf8b031dc5ab8c1d27",
-        "cps_provider_2_prim_default_owned": "ebce4806119cecc711ef02ecadcb95e9c98c7211f5762f885d7788e3385feb9a",
-        "cps_provider_2_array_arg_owned": "69c6deed80d22dda71bf7576d16a193ee36e758dcfe0ff360218c0a6966594b2",
+        "cps_provider_2_prim_default_owned": "c1ca26cac4ed6ba51c601e3932500f50e0a95ef3a37d6193407aa5a07d4d9f49",
+        "cps_provider_2_array_arg_owned": "ab6a3b7f5efc7ca6128911f43feb60ed727a41557827a8202cec3532b1280431",
         "cps_provider_2_array_step": "425b89412c2df7eb9a22aec98883ac2abfcab1a904dd0fe83c618b6d405e5264",
-        "cps_provider_2_prim_texts": "e49a40a4a868e1236456870c3b1909b38bd576cfb68a96772226fe8cabf76446",
-        "cps_provider_2_prim_step": "59a9985e3a4813498da3fe2987a059d17f56a4f6b6784ee3d7e16d2c10fa0e9b",
-        "cps_provider_2_array_op_step": "aafbc1338329f44d3c5b08012f64fe85ab45effd8d35ef24aff912043cdb551f",
+        "cps_provider_2_prim_borrowed_box": "cc4154fb6e6b9f560ed15a873419a2fab393ada1cf2c4c3e8b375d3879353d55",
+        "cps_provider_2_atom_allocates": "f65d5c7260b7f042a2b027b2b72ba7938fc5a9ab8c5ff51153379b06a38ef746",
+        "cps_provider_2_prim_texts": "07f05adce44edbb96210404023ef45ed1b7639598fef3b40f6a8cdeee7c784cc",
+        "cps_provider_2_prim_step": "47ccaeef16c32593c5329d68187b75d14ed16f19a250054ab0a718eecfe4a554",
+        "cps_provider_2_array_op_step": "2257fa40ee1fc8346c16f59203ff11568555ee732b2c4716f4bec14c66607425",
+        "cps_provider_2_array_op_step_element": "a0479ee047c877e911c46fb1ba9e7e1b2bfb520c5a49d375d4c63acfe09d1d63",
         "cps_provider_2_pred_path": "729f775260424cb631c39ed74357dbd0f17323a1024d3d2dd98ba87a8514ec3c",
-        "cps_provider_2_append_step": "fc68552c6c9c03c0465465016894c93e3930e3eea62bf97e1bf02431031b5296",
-        "cps_provider_2_append_step_parts": "aeb9a2630ed4576d8ef7daff346dc14b3e9153f7dc80dded7734926be9c6432f",
+        "cps_provider_2_str_append": "ca6275ad565b0208a24349b7627382203c465176982c7c2685599c0f846e7b15",
         "cps_provider_2_construct_step": "83c731bdcc4b8df537ec4c724c3483174e42524e7c5dbf88a32cf93a9d58e74c",
         "cps_provider_2_hastag_step": "2f3ab066efc136427f8fa92b73121b7db395691e58ceae64bb43e341edda3c59",
         "cps_provider_2_op_step": "09e3a4a6e9cc9d9ec8fc698cb3848863eb234b0455e80e067cd6c7709ff87238",
@@ -45864,12 +46336,14 @@
         "cps_provider_2_project_part": "fb1d73c73d085697f5e8677946da3d832edd03dacabace3ec1e9fcd36e8a1ac1",
         "cps_provider_2_hastag_part": "b9b51c638f9616835ddf8da4eaca6611df8b52354656be196f5e8729e11f1ec4",
         "cps_provider_2_is_array_primitive": "51e09c5548053e83da806a74211891c9a4d29bb7ac859f837a2f9db005c44da2",
+        "cps_provider_2_is_atomic_primitive": "5da543cb8330594e9862c77f48ce336caacf8a7f27ff917430b0e10db0023f70",
         "cps_provider_2_pcid": "6bb51ece960affac8e1084ee9399ec04bfc249663b802e119412387c8f321210",
         "cps_provider_2_str_bool2": "29650b06b338f601d2041e9b90507cc58c04c27f4ece922ea99587a5684db0b1",
         "cps_provider_2_bool_str_empty_of": "35133a10bb7b1789e69458efe01e356855543e2283eb253ff1dc02d30a212c9c",
         "cps_provider_2_bool_str_empty": "7f54d6511ad553b3b0c3c6e83c838cbbbc1702b4b1a454a643e8815a3e7a35a1",
         "cps_provider_2_bool_part": "3ac2afe4b641b6f1d423a865e8ee4db21a9b011e881d5510e6944b0cdaf95d78",
-        "cps_provider_2_prim_part": "2d7223cb626bcd708ff6f59c909fd0d04508f10669777f96d0c25489d4a82c3f",
+        "cps_provider_2_prim_part": "79cee19f1a1f0634e0824e9f354a1bf0a00438bb8309b3a5a6f6fa386464a2ec",
+        "cps_provider_2_prim_scalar_part": "87495e120156030a710a80cbb7f8106bde104e4baa6bf279daf70217a59d062b",
         "cps_provider_2_f32_bin": "5db14ae6ffb442042f35a5fdf196f3500f65d85d3e5755fabfed5589affad728",
         "cps_provider_2_f32_un": "ab4851d3d4a28aa874dc66faf678881a641b5e1d50833164dbadebdd45822336",
         "cps_provider_2_f32_cmp": "5b12380235c6291880a584da7f3b46661089493f13e6f4288ff52aba3024790a",
@@ -46132,7 +46606,8 @@
         "cps_provider_2_entry_stage": "539f08b7ae5819af6151ef750760a7278b227ab7e4d9106c26915bd301cf9c69",
         "cps_provider_2_stage_stores": "0023a3e302bf603e221fbfa00b811384b97fff23b3c72dfa010ccad912761621",
         "cps_provider_2_entry_lazy": "c53b7121dc61045d347b767f8618c3edd31c65ec07fd4e35267c7919aca8a4f0",
-        "cps_provider_2_entry_native": "52b8cbe0810ec6c095b64da67359d551bf200605a216d2da16961ef0876773cc",
+        "cps_provider_2_entry_native": "8eac44bf9134cd1583a49be93433d2fd1ba256e39aa15dba0aa0a53d374755a4",
+        "cps_provider_2_native_borrow_drops": "39dde05bdd4c3302cc2e838fc8a0342dad26a1848951a12f82fa8a5f5f55d46b",
         "cps_provider_2_a_names": "9d9789d38772052d5912ea175ac54725d8b8556e9d977114868558e89f61e748",
         "cps_provider_2_entry_foreign": "e558545ae8b9cc1328aca604a35f77a5a972d1a5456aafdc77df1f39cf851290",
         "cps_provider_2_entry_main": "2f3dcc5c4b2948438136531c656d1a029dc737ed9e3645f213e026ba89617829",
@@ -46184,7 +46659,7 @@
         "cps_provider_2_main_fid_index": "971609a02c682cb78aba93aa9b626e3184b1e8ea1f357fa9d149efeec04b1c28",
         "cps_provider_2_main_pure_text": "ead95c9f49451c604832cddef0bb55f861e871219cacb43cad4b0953cdf45070",
         "cps_provider_2_spins_part": "e4c1d53d19e4682be1f2fcd8bd0e5726912129aab7003311c2086d3bfd97a6f8",
-        "cps_provider_2_helper_core": "c55c7b338c69b6e41e7326628052bac9d503cc914cfd06fa18b8b7cf3e05e902",
+        "cps_provider_2_helper_core": "2f3a7bca169cacfdd72788082a12c6bcce2a69f3b582da7ea2e4b4760ae12742",
         "cps_provider_2_requests_part": "6ef46a6326f1a2ff2f89b63d0ffb08bc178f6ee2a949318b28cf23d7b5e778c6",
         "cps_provider_2_requests_finish": "bf6327c9f1305e7a2907fdd0d45155599cacaad47dfe88532daaa00bae24fcad",
         "cps_provider_2_requests_check": "cb3a2fd3ad949c8f5410a9356ba0b26399136b5d834022d63105599a442ae661",
@@ -46394,6 +46869,10 @@
         "cps_provider_5_dst_word": "9717d9f137a5bd7aeed8993dd625d12fc4a841e9be4ab9abbc13b512a98f1f7a",
         "cps_provider_5_dst_decl": "108e111c49fc2ef1266d4fd9d22b8bdeaba9ae618dcb8da8a851476e07f7e3e2",
         "cps_provider_5_dst_mark": "451102957c5ac85af28a755a2f1a7664d76a4a2c43f264d5dd3bef798e7772cf",
+        "cps_provider_5_form_base": "e9b75a7aae66436619163ae03369a64f63b3025ca318c6e4599d843b78a5ec65",
+        "cps_provider_5_form_pad": "1b9958ee775c103447ca049ed8adb2c55657f340ef4f5c0f0433ca4dc80f9e73",
+        "cps_provider_5_src_skip_jobs": "10b4102df90cdaded3515235e3b5e355f017255c4efdd2a277496cc9ba377bc8",
+        "cps_provider_5_dst_skip_jobs": "a8a59fb121b2c9b757d696f2ba541237da9a63f3186397d35cc4e1316f6c1abd",
         "cps_provider_5_src_read_node": "0d83733fae1b8adf1371d735ac3bab268068eac0fcc0e7f612b5ce68e76026f4",
         "cps_provider_5_src_read_arr": "4317452e85d07ff57763cb34bc809eea8097289b302a84d70e986bc87c7d3056",
         "cps_provider_5_src_read_block": "fc431f6a64714582a26973cd12d534449cb396b33d36fd3c948d81e4fad90215",
@@ -46406,29 +46885,30 @@
         "cps_provider_5_arm_src": "000c53c94be3dfaec402266aca65fc27bc0b72ed7571f754cb089d574daaf4fd",
         "cps_provider_5_nests_jobs": "c6cfeaf739ff70da08bb733e2a9ef6da38d75167a0efab572e8dce7b4f6e5862",
         "cps_provider_5_arm_release": "a5a58d8c758f90bc606e3c95f30fef2f1ac2de45e699853a7601917e24000dd3",
-        "cps_provider_5_jobs_arm_body": "79e29b91c104cb45687806caa7ad08c8cae9671175bbe0b733d2f6c7f74675e6",
-        "cps_provider_5_jobs_arm": "2a4f8e7e2a7b998f29bd3a011037dc4a410dc3dbc31f46ee0f7813c0dd41fdcb",
-        "cps_provider_5_arm_jobs": "e778fbf0047f08ff9327a305caa583bd18ecf3fb268791b8f1f57c2c08417753",
-        "cps_provider_5_unbox_cases": "33727b9495ac7ea958afe14be2d385624cda0eed082e72135bd0837652c7ba2b",
-        "cps_provider_5_expand_unbox": "2d4b70bc439c8b01777e55898180ab33654b2213275088c2faf725d998b32d7d",
-        "cps_provider_5_expand_word_take": "4e870d118cd9fa8363add75e6c2ac8b95fa4931a7c647c081cc5c78a9b8916f3",
+        "cps_provider_5_jobs_arm_body": "656cf91e7ecc1606e793a093b2964f3e4d516807ba35630052a63f82029a2cec",
+        "cps_provider_5_jobs_arm": "7323083c930715871303e342aeffd600f41465481daa9a6840b1528999fba1a6",
+        "cps_provider_5_arm_jobs": "ddf1e665a3727af87eb847590bf718b1d934def0e19f6160a785d3380c8ec9ce",
+        "cps_provider_5_unbox_cases": "f4e520a31bd986010521076ab77d2e36ef5efee8ac2ea9d56b837f3be9219388",
+        "cps_provider_5_expand_unbox": "1c185b7fa5fd130e8f6449da6b83faed703a2d2e6a38061004b691735a1b2b90",
+        "cps_provider_5_expand_word_take": "48be981397c3288c9d6ab13dd878b3162013f7105f1fb08b4889a0476803f7cd",
         "cps_provider_5_nest_take": "b8958e3aa495444cc6ec97dc47acadfab5f245abd8891aa3ce4daa462cdb4ad3",
         "cps_provider_5_nest_make": "81dfcdf6a4bb726787786f5500560be35bcdb68835afaf1a608904e9a17ac5d6",
-        "cps_provider_5_field_pair_jobs": "418fda1bcfb07cfc68516b8aff07b7d1e4bac2beefc8f054cab113571f024601",
-        "cps_provider_5_form_fields": "177b64dd03a433ee2a964fbb7b9c959613d0829179ae43b4a45a1124132a1ade",
-        "cps_provider_5_forms_arm_case": "1b993f2136e494c66185f7a01e03b46cf0238050ac29c38284db2397678124aa",
+        "cps_provider_5_field_pair_jobs": "d98af5d78f0fcc9eb5b6cb8f11a940a8f2b9870eb22f5ebac1984875514ac57e",
+        "cps_provider_5_forms_arm_body": "cfb705d85380e65b9b25e7feef7784e09b934fca91fe2eabe44bea1575d05fc9",
+        "cps_provider_5_forms_arm_case": "34524a70d02cf70190346a3502f88eb531c6ad066dbecc704960dc5de4e25c0c",
         "cps_provider_5_form_arm_by_key": "370afcf593f4abaf06a63517b8d86981b010ceef93418023d2eb2b9796a182e7",
-        "cps_provider_5_forms_cases": "4a2975188c1b015405db31a0e7f011bc8b05124f6a75552e6645fbfb0b2f5033",
-        "cps_provider_5_expand_forms": "90b996abf96ca8183e0454c7725db4cf9e7c9549634bd3d12ab8b2b677ac1428",
+        "cps_provider_5_forms_cases": "e1aab290cf895a334f1bb971710f504e98d269c886cf826777fe272bd04b5873",
+        "cps_provider_5_expand_forms": "52d0b06364395be9418bc2820f627abe7906df79d9c7fe51baaad5a03a526d4f",
+        "cps_provider_5_forms_single": "a327491d29a6405eba0af7d4299775720322b4cbc0d455b8a7f4aa943c9457ef",
         "cps_provider_5_pack_jobs": "1e4bb3e265f788655750a4895ce509d9a6c0ba10f5ef6583a0daf505f67b4328",
-        "cps_provider_5_arm_block_jobs": "96579ff04bd64aec5ec75a860fbf1b2b2ffc074ac4b51309934a9d3e6bf076b7",
-        "cps_provider_5_box_arm_jobs": "36c327fc826e2352db1fa4e50e2b51e54416e8c1fe6f9cba53a9eafc4ee4d2e7",
-        "cps_provider_5_box_cases": "e07b2f83c1e0c20693369917833dfee4df141d65bcbb7e01e4f7488f53127f54",
-        "cps_provider_5_box_untagged": "ac3ed40ba977711908c2101104feca5a1c6fb039f2ecb8c350101f5d19ff1b4d",
-        "cps_provider_5_expand_box": "627a2b61d83207ad669316c83c755ae35cc7ceb3f50d77003ef7396b59c19252",
-        "cps_provider_5_expand_box_body": "3731c75dc11f15cdff297a8ddd90a0e196e9c1ef3109294ac027412a055f0ae3",
-        "cps_provider_5_expand_form_take": "eb475a2fe1285f35800a7071b16787757b2ed1a10efb774ad9a50f03fc0200f0",
-        "cps_provider_5_expand_conv": "3ae315d8902cf948c630dafcdbbe06e6302aa6db9ae79a141fd898e003aacc5c",
+        "cps_provider_5_arm_block_jobs": "73df6b485cf3272e21c5f843b68601fbc2df6a453fa380418863e64e777d5a22",
+        "cps_provider_5_box_arm_jobs": "95f545e81f21e1914123e8fa90c670f89fc49df32a755461adccfa500b02f85b",
+        "cps_provider_5_box_cases": "7679fd2a38efabba221a11ec5d480abcfc36afb6b45a01395090f0ec005ec378",
+        "cps_provider_5_box_untagged": "3079ebd3686214c681728e1b13b4c16cb078c388d72e7b7db59405f9e48791ef",
+        "cps_provider_5_expand_box": "ee620d760de09f1c52d7d154ba5f6efbe893fc76ecae00f01caab1c700e2c344",
+        "cps_provider_5_expand_box_body": "ad519ae57c16e418bcafd176edfe6eec380f1648b69fd166810955a80f77f62d",
+        "cps_provider_5_expand_form_take": "2aa634ad44003ab66d7ef80e18cacf7b2406abdf53ddbc8816d57b272b18c361",
+        "cps_provider_5_expand_conv": "7f46708d419120bb4294536b833bdd73b0a346512476edc89ae715adcf3f71f7",
         "cps_provider_5_run_jobs": "ed9fd271cdd9f8378fb705fb0658989ac26f660dab05690e4b8d23a9c6b533e0",
         "cps_provider_5_fill_plan_jobs": "9b513b5d523b625e08189f219477f8da864b7599ad5543f9b85c30683672b029",
         "cps_provider_5_fill_result_jobs": "f90d63cb5709d941023527e4ff0546f91f449bbefcabdcd9519c1998b05abc68",
@@ -46566,7 +47046,7 @@
         "cps_provider_5_hastag_row": "a7e7b476fad4160c7aa91d99a83fbe3050931b440e79f02d4cdbec438604edbd",
         "cps_provider_5_hastag_part": "90a7ed2896a36f8088ec65b2a80256efe6cf112e56adee0b9647f3ab0657d18e",
         "cps_provider_5_arr_flag": "57f1dfde732d0c99c34a78d358af5660d59072af29bd816450c4ed4cd8a96aa7",
-        "cps_provider_5_array_label": "559ec0ce954401c82ec7d2019aa11dca9feddd5e1c980a336eea7e830f1dee1b",
+        "cps_provider_5_array_label": "b2abfd165548543685bdf03c9436cfa121771e2db2611c93818c34412fd80f41",
         "cps_provider_5_array_cell_result": "fac392e4445e902f26a7965708d0e84223530ee65bd5eb4c78b0c5f731086dd5",
         "cps_provider_5_array_cell": "6000663b99b32a577432a4e4b9d09187ffad557872533d15a98a19e96ebba075",
         "cps_provider_5_operand_at": "f44a891c1aabbc2c9b716be05b4c9cb48a34ac01580b05f2ba2f945bceaf17da",
@@ -46596,6 +47076,18 @@
         "cps_provider_5_array_swap_ops": "65aa0f4fadbb148ac0a609a39c143079fe86c2d53ef1aac9439ce65a2dd8d161",
         "cps_provider_5_array_size_ops": "eb9c7600bfbb54f34e573ba6508102bd854aa463cda935c2443794bd19572b6a",
         "cps_provider_5_array_clone_ops": "8e26c60caf502702dc2d5b1c3d5d91c50d839df6abf5ddc106858cd2dd54d6b1",
+        "cps_provider_5_atomic_cell_text": "33d64358cef45d8626ffdc14aaeb36291d402b871d35cd54df3eb38a4d42a1b8",
+        "cps_provider_5_atomic_call_text": "38abbc9cd12967cb819c4998a9e87e47e0566910a42059da49f6c539d391df57",
+        "cps_provider_5_atomic_cas_text": "53a2326e2bb5836960e18b0ae98c774bd53b3222974cb5636ee8db84ca584734",
+        "cps_provider_5_atomic_helper": "70ff758175952d3e70cf197be4935a6a06e071393ff33646c313085e81d14f8f",
+        "cps_provider_5_atomic_pair": "f12ce253585c8d4bb03edef9a347003c68bf78d05fed117123397dcfc7dc19f0",
+        "cps_provider_5_atomic_three_operands": "72547e9f4fa8ebb38099b3769a149e41e6599f95e637cab1ce621ee3ec9f500b",
+        "cps_provider_5_atomic_three_pargs": "1ce279b74da2fc8d868fa197f53b4f2a10e78366d41fc5781ebd94f0b2307830",
+        "cps_provider_5_atomic_cas_pargs": "9d69370201c7eba46d9c87bbc2d52867f2eb7f765779e3bcf084e83cc1e18022",
+        "cps_provider_5_atomic_pargs": "5f9595de6a96d010f557f265bb604a9550fecfad58b3f3e5bdbad2988d7a9204",
+        "cps_provider_5_atomic_three_regs": "ce3069aa218a9a381e5c2bf1d7512737e546e3c9f6c9af66c868467d4705710c",
+        "cps_provider_5_atomic_cas_regs": "6aa65fc6dacedc52ad78f94819bff5eb54ec0f0da94fe1b2f29e2a9b2ad2f576",
+        "cps_provider_5_atomic_prim_part": "a15fc202583a53c60b0221a7b870b9fa45a95db5f2a4d7255eebc96ce6ac6d9f",
         "cps_provider_5_array_leaf_ops": "c0aa35362a4f1873c388b8a004822d439eafb4559225c27c70fc35076cfd5fc0",
         "cps_provider_5_array_node_ops": "43d8f9a60657d85cbc4243684598361ae9b56396962e50b79f7dcb1735f02393",
         "cps_provider_5_array_is_cond": "6529ec1e5151ad4a048c5ae98fd56bfc3ee40ccdae931b1072ac3baddf95e7aa",
@@ -46608,7 +47100,9 @@
         "cps_provider_5_array_size_cell": "5d6063c8a5e7226686aeac5a23c1e435fce8dfd8a67151fb6c08f49875c83109",
         "cps_provider_5_array_clone_cell": "bf94c07eb995ee92c5f9931512217cbf13abeb0054bdd807febeeeba18b4beb7",
         "cps_provider_5_array_leaf_cell": "85e01a8322bba1575997e1ec4cbdc759bbd6a43963b7fe09cb614e7982d04da8",
-        "cps_provider_5_array_part": "53d3f45062f9dc8bd0cb517953614b89a2baeaf0991519b7af7d9ff43430b535",
+        "cps_provider_5_array_part": "83ecd78c02946abaf32a0160912d594e593cc433698d5c466c1a90fc35c0eb49",
+        "cps_provider_5_array_cell_part": "24ea122f925ab22fb9a7752cd53b643df44c140fb7613c7068581531392dd184",
+        "cps_provider_5_is_atomic_primitive": "bcb3f58260b1fb4fb21df328ca59bc0513ef25dfba7103a232f09a94680a0dc4",
         "cps_provider_5_is_array_primitive": "01f35364591e85bc3d5efa4b55b1fcf50103bb59e1e9359d1a49abedadb1f53b",
         "cps_provider_5_show_state0": "acb49afafbd852ce9c8cb325231c26eaeb70a94bfb6313b882b7ef34f5d78df9",
         "cps_provider_5_show_words": "d4d9e8920f5916608aed32f635a88f5a89c7d98b150b5e46205c2e8ecb56855f",
@@ -46958,12 +47452,13 @@
         "cps_provider_8_let_step": "ccb0f087a6c54c6da26c81e21da6efe74ba13fc8f291da0bcafa6b4c2f89cec0",
         "cps_provider_8_split_direct": "31a6822c3ba61644a278aec45297f23a75c0ace430a777ed2183a10b59eeb02c",
         "cps_provider_8_split_direct_selected": "2468fdb7135792fb144caba839b759d78ab4cc10e0beac7ee3a2ef603169fd55",
-        "cps_provider_8_split_direct_args": "046c480568f1b688793aa6bb65c347de664630bc186805dfda01dedf43f66bc4",
+        "cps_provider_8_split_direct_args": "51fafb1f67cf6d1cf74900c547f5041a255d563584f19a3ba7f0c4adeb1f73ed",
         "cps_provider_8_split_direct_many": "005968981a62046aff9b1ef9f95341c51161ea20779d1f417b3e8d41d3482cb1",
         "cps_provider_8_split_apply": "5597e4454c7a8d76ce55ee195f82d81fa4d92425f02677eee8a66f9ffeebeeec",
         "cps_provider_8_arg_atom": "ac4891e68512dab39536fc723daead0c6943999ffae2adb6ff210958b2d78089",
         "cps_provider_8_arg_temps": "5eb49ecfd983b125d07be1ec51a4ca47f7d32b8bd00d04c82441b944bc764f35",
         "cps_provider_8_arg_temps_tail": "022243afb8f9ebff7d57ee8a3cdd75323150dfc0375382bbe8d849ed181f1a15",
+        "cps_provider_8_arg_temp_names": "85cbfca1ff39deffb7add8235a34b666163eac7be24ae530993c17a438296e7f",
         "cps_provider_8_arg_moves": "401fb0b182c1574a4eeffc55d62a5e5aff1bf7405d3aab2cf9f365ece089d1fa",
         "cps_provider_8_arg_moves_at": "2a6887dd7f00a0c15d1739ef45670b5b47329f44ce7ab42e9c436cd09a5d091b",
         "cps_provider_8_cap_stores": "3f6e056b70d66e0b19da484f7bb1bb9fd05bc67cf7ce6bc50ab25feab6eaf97d",
@@ -46977,9 +47472,9 @@
         "cps_provider_8_conts": "8a45723f04a7de16b96f489c6e3c10d4bd2f853c89dd55c528610099cb57586a",
         "cps_provider_8_conts_let": "a7b95b1c17145010d03c9a6c097a0cffcfe72387465bde7577b0e1380a5f3ae7",
         "cps_provider_8_conts_region": "aa2c89d52d14c2b8ee501de0065e77eedc06435569e199ffa59657bb4f3bbf9b",
-        "cps_provider_8_primitive_name": "1df8544a0ccbba7881419244ff4aaf16784ba9c5081b2134a4139a2f829a4448",
-        "cps_provider_8_primitive_public": "63b062ae2d9289f85d9ada2f7fad31f5cc404b7c1b97b56b70c9489d9310c8b4",
-        "cps_provider_8_primitive_runtime": "3774c3dd0a640392588b224148be2727478ca3f7f7998c0a7e927531631ed6bf",
+        "cps_provider_8_primitive_name": "5f6f86e418a8a458a23a7316f9e3b5eae249045c63b35c0705d282c626a7a414",
+        "cps_provider_8_primitive_public": "cda01ccb5913c7a64530e6bf4d0f752322f25c731fe3b53ad00c8c9d9c349cc7",
+        "cps_provider_8_primitive_runtime": "9fe758c2d429af7676d3b9134c12a18aba2f71d72cf60327d3e6f63af73856d2",
         "cps_provider_8_quantity": "3d243aedb9b8baf46586a5b9121c7ea288f221e8a12a29f57ad03423940e4788",
         "cps_provider_8_optional_quantity": "ea37aa87c00556042da0fe4efcbe44fa9060cbf9e182d9e9b22a62e3e67bcb0c",
         "cps_provider_8_quantities": "de55a6b43dd8d99140206e1fffa3854bd45661722698f22f9663c9873bb315da",
@@ -47049,10 +47544,11 @@
         "cps_provider_8_emit_checked": "bd4a7c74aafd47dd41845b75be1be2e4a93255a6e5a171c11bd37f83e8e4fe09",
         "cps_provider_8_emit_checked_exports": "81cb780d5b59c37c071e3a947c32803c1ddbce9f65995a15c36313e0173e556f",
         "cps_provider_8_emit_effects": "3c218cf6714844b8ae31971b4767df2d4d52d6f76dff293d1eb7aebe19d60e86",
-        "cps_provider_8_program_source": "bf2242474cb635bebf1e8abafdd609e5f75de582a8fbfec4c9a879d730b37a40",
+        "cps_provider_8_program_source": "c8800ed5d4ede452e2eea162b3dd813abbe85084cdfddfa049390d2f341810a2",
+        "cps_provider_8_js_runtime_direct": "13eff4bca43449d90995315384f7e6977c4eed6877ac1560a21d10e23ca39d1d",
         "cps_provider_8_js_runtime": "f40602d1a7acbbd6451a99f6cf6c081938c8bf3a8f476f5ef7123d6a68ad2538",
-        "cps_provider_8_js_runtime_extra": "184805d1ba8e40f064ef8efe27b4e1715a46f39e6d3dbc9c0c1c95ccb857d64f",
-        "cps_provider_8_js_runtime_array": "3b84ce5840ddbdc302166a950e3c08e5c5323cd73cb113843d0b745839ab8f54",
+        "cps_provider_8_js_runtime_extra": "9fb78c4fe2be2b57ed636120793612f839934cba28c5c0eb942abd04dd9dd000",
+        "cps_provider_8_js_runtime_array": "78f2ccdf0f5263a54898c6ce09bbe0ef30f952f65b9221f41e5d468a683831bf",
         "cps_provider_8_js_runtime_foreign": "c5ce8b2a0b2e09cd99bdbcc1d6129f87c1025fd2ce256de4ffb223281247cf0c",
         "cps_provider_8_js_runtime_namespace": "c0cf62319cc805fd5877a8080b450684273725ef18f34bdcd497f275a90f415d",
         "cps_provider_8_js_runtime_cli": "eceabcdb8b9ea802860e58bc6220f150d9358bac448d269dafce9ad3c630642b",
@@ -47174,7 +47670,7 @@
         "cps_provider_10_primitive_name": "5c80a99c96bc1edc4250f447cc275760b68daa92fd249ba78259f60a3d81e846",
         "cps_provider_10_primitive_chars": "010318d4e37c43e165c29795543f6fc069b2c9655d65d16edd9275fbd783a767",
         "cps_provider_10_primitive": "9913eb05fd8b282a8fd73be60f2dcb0988b8c186b88424b19d863151a98bd9cc",
-        "cps_provider_10_primitive_named": "9534c6875943025e96fb8f15fbca12556bb2b3eb7a4db09bfaef2e8d9c020280",
+        "cps_provider_10_primitive_named": "81a8b846948467d9751fe1529754f2c68102bccee69f8dab713b094812109051",
         "cps_provider_10_definition_key": "6bcd533573d0f69095e27f2bb23915c2714abd36baf86790fe0b7068b1aef277",
         "cps_provider_10_constructor_key": "64375e36c4290037b67893e13bbc87fffc86fae26e925ee79e3a9f8930414b68",
         "cps_provider_10_lookup_definition": "e02d7b1c36e477d16eae51bf1847e363c5334a184cfa268085d43a2a715f56ee",
@@ -47300,8 +47796,12 @@
         "cps_provider_10_native_match_prepare_modules_2": "8dcb2464181c7aae56efb2a472b9f9d8377bba51e6a1b05bd1846bc1a4d5454f",
         "cps_provider_10_prepare_modules": "40edb5d3d99e5c8ec9d42cd38b17aea847a4843149c73370ffe0ccff4017c520",
         "cps_provider_10_ending": "d2e45d8d33631b3c1103d078fd46c044a416cdfb1cb672b10f954dd7ad176204",
+        "cps_provider_10_root_main_runnable": "e6f60c620ed72a4ab71d3990ad38350839742188def144f8d729017531ea636d",
+        "cps_provider_10_root_main_admitted": "5950bf8af12479064932e4bab2e97472971d6b25709b6088ee610fbe738ff306",
+        "cps_provider_10_executable_admitted": "52906cd6bbbc79f7735500ceef2fcbf5f39cbfa932cea189d0c7260834f3f270",
         "cps_provider_10_native_match_build_finish_0": "f8a6142bf711cca4ec3eb4f92252df6473214954aba756fd4b8b667bc92bdbbb",
-        "cps_provider_10_native_match_build_finish_1": "f4577414b74d84b1b37ccf81ade329586f0a1fe320c022957c739ac810780754",
+        "cps_provider_10_native_match_build_finish_2": "2c8420904a1d914c85b50144ce23432d1409a1cd49c382b0fdea6cba22dd4375",
+        "cps_provider_10_native_match_build_finish_1": "ae446e2056f5bd7bbdd366caf7fe5f0538c661ed9202630d0d02d2dbbfda9ca9",
         "cps_provider_10_build_finish": "1bbd6bebdf8e16259e9c392f9689dae4eb8fe7235ce34ec803449241a9880892",
         "cps_provider_10_native_match_build_0": "8eaf83accddc6cdc9dc613dd93a0ba73446d27bf4f602e28e231b9a17276093d",
         "cps_provider_10_native_match_build_1": "bbaf749a6081bbd53652c5a14d2377c417a1c565184ecda3d8801ec4bd1ee0c5",
@@ -47312,7 +47812,7 @@
         "cps_provider_10_native_match_live_telescope_3": "cac85f4e2793d8fb75b0eac53590cc537b9a406ad8968691f2083d5dfbd25c3e",
         "cps_provider_10_live_telescope": "56e69b14ea11b83ddcd6b2c4f8ec48981c6a5b9664275e593b178fc7bdc35be4",
         "cps_provider_10_live_binder": "ac0d1067b8df02b2ecb3c0947e9bc389e2a16995dedb7f58f9812791fe4c1a8a",
-        "cps_provider_10_primitive_arity": "787742392de735a9cc4a05e11785faa7f19e09b105beb4737fec1517e9bdf274",
+        "cps_provider_10_primitive_arity": "16c1e7f80ae28084fba316ae05e1faa2cc5a8e9ead6551fd0d2a77c5680ae9b9",
         "cps_provider_10_constructor_field": "78e27ed3f73f2fea65894c585e7ed56f9e3459b328a1493ff22eed6611cec2e3",
         "cps_provider_10_constructor_field_at": "c82ec8d46b82a9c651d6ad9daf279978cb5650be7841084e37a8eee1b10808f6"
       }
@@ -50526,11 +51026,19 @@
     },
     {
       "name": "check_import_type_result",
-      "exactCanonicalBlockSha256": "8373abb1579e8ff004efee5d09cdc72bca258515063861ac7440ee516573745b"
+      "exactCanonicalBlockSha256": "1bc5ee094fa4dc98e2118e5bd25f604ea93574cd08f17966630f7bb97ee8a4c6"
+    },
+    {
+      "name": "check_datatype_parameters",
+      "exactCanonicalBlockSha256": "fcbd8b37e266676ec22e1910ba17f0879f8994acd4b37c6278a6d933fa7077a4"
     },
     {
       "name": "check_type_decl",
-      "exactCanonicalBlockSha256": "23f1e9b6ec6df29eae7becdaf60da382ca084350d552b2cdbe8d3045e835967f"
+      "exactCanonicalBlockSha256": "389163dbfd0310891b35f59ff75146290a90e04f907e402dd5f8a555e922bc43"
+    },
+    {
+      "name": "check_type_decl_ir",
+      "exactCanonicalBlockSha256": "4d5c5616eb96c87e83ccbc02bd155e44d739cec656102a6e3ac7460acf323c3a"
     },
     {
       "name": "foreign_head",
@@ -80979,193 +81487,72 @@
       "producers": 0
     },
     {
-      "owner": "check_type_decl",
-      "helper": "native_match_check_type_decl_0",
+      "owner": "check_datatype_parameters",
+      "helper": "native_match_check_datatype_parameters_0",
+      "kind": "local",
+      "captures": [
+        37
+      ],
+      "producers": 1
+    },
+    {
+      "owner": "check_datatype_parameters",
+      "helper": "native_match_check_datatype_parameters_1",
+      "kind": "match",
+      "captures": [
+        18,
+        14,
+        17
+      ],
+      "producers": 0
+    },
+    {
+      "owner": "check_datatype_parameters",
+      "helper": "native_match_check_datatype_parameters_2",
+      "kind": "local",
+      "captures": [
+        14
+      ],
+      "producers": 1
+    },
+    {
+      "owner": "check_datatype_parameters",
+      "helper": "native_match_check_datatype_parameters_3",
+      "kind": "match",
+      "captures": [
+        8,
+        7
+      ],
+      "producers": 0
+    },
+    {
+      "owner": "check_datatype_parameters",
+      "helper": "native_match_check_datatype_parameters_4",
       "kind": "local",
       "captures": [],
       "producers": 1
     },
     {
       "owner": "check_type_decl",
+      "helper": "native_match_check_type_decl_0",
+      "kind": "match",
+      "captures": [
+        33,
+        4,
+        5,
+        6,
+        20,
+        22,
+        24,
+        26,
+        28,
+        32
+      ],
+      "producers": 0
+    },
+    {
+      "owner": "check_type_decl",
       "helper": "native_match_check_type_decl_1",
-      "kind": "local",
-      "captures": [
-        4,
-        5,
-        6,
-        20,
-        22,
-        24,
-        26,
-        28,
-        35,
-        95,
-        102
-      ],
-      "producers": 1
-    },
-    {
-      "owner": "check_type_decl",
-      "helper": "native_match_check_type_decl_2",
-      "kind": "local",
-      "captures": [
-        4,
-        5,
-        6,
-        20,
-        22,
-        24,
-        26,
-        28,
-        35,
-        95
-      ],
-      "producers": 1
-    },
-    {
-      "owner": "check_type_decl",
-      "helper": "native_match_check_type_decl_3",
-      "kind": "local",
-      "captures": [
-        4,
-        5,
-        6,
-        20,
-        22,
-        24,
-        26,
-        28,
-        35,
-        75
-      ],
-      "producers": 1
-    },
-    {
-      "owner": "check_type_decl",
-      "helper": "native_match_check_type_decl_4",
-      "kind": "local",
-      "captures": [
-        4,
-        5,
-        6,
-        20,
-        22,
-        24,
-        26,
-        28,
-        35,
-        75,
-        80
-      ],
-      "producers": 1
-    },
-    {
-      "owner": "check_type_decl",
-      "helper": "native_match_check_type_decl_5",
-      "kind": "local",
-      "captures": [
-        4,
-        5,
-        6,
-        20,
-        22,
-        24,
-        26,
-        28,
-        35,
-        75
-      ],
-      "producers": 1
-    },
-    {
-      "owner": "check_type_decl",
-      "helper": "native_match_check_type_decl_6",
-      "kind": "local",
-      "captures": [
-        4,
-        5,
-        6,
-        20,
-        22,
-        24,
-        26,
-        28,
-        35
-      ],
-      "producers": 1
-    },
-    {
-      "owner": "check_type_decl",
-      "helper": "native_match_check_type_decl_7",
-      "kind": "local",
-      "captures": [
-        4,
-        5,
-        6,
-        20,
-        22,
-        24,
-        26,
-        28,
-        35
-      ],
-      "producers": 1
-    },
-    {
-      "owner": "check_type_decl",
-      "helper": "native_match_check_type_decl_8",
-      "kind": "local",
-      "captures": [
-        4,
-        5,
-        6,
-        20,
-        22,
-        24,
-        26,
-        28,
-        35,
-        45
-      ],
-      "producers": 1
-    },
-    {
-      "owner": "check_type_decl",
-      "helper": "native_match_check_type_decl_9",
-      "kind": "local",
-      "captures": [
-        4,
-        5,
-        6,
-        20,
-        22,
-        24,
-        26,
-        28,
-        35
-      ],
-      "producers": 1
-    },
-    {
-      "owner": "check_type_decl",
-      "helper": "native_match_check_type_decl_10",
-      "kind": "local",
-      "captures": [
-        4,
-        5,
-        6,
-        20,
-        22,
-        24,
-        26,
-        28,
-        35
-      ],
-      "producers": 1
-    },
-    {
-      "owner": "check_type_decl",
-      "helper": "native_match_check_type_decl_11",
       "kind": "local",
       "captures": [
         4,
@@ -81181,7 +81568,7 @@
     },
     {
       "owner": "check_type_decl",
-      "helper": "native_match_check_type_decl_12",
+      "helper": "native_match_check_type_decl_2",
       "kind": "match",
       "captures": [
         2,
@@ -81191,6 +81578,207 @@
         6
       ],
       "producers": 0
+    },
+    {
+      "owner": "check_type_decl_ir",
+      "helper": "native_match_check_type_decl_ir_0",
+      "kind": "local",
+      "captures": [],
+      "producers": 1
+    },
+    {
+      "owner": "check_type_decl_ir",
+      "helper": "native_match_check_type_decl_ir_1",
+      "kind": "local",
+      "captures": [
+        3,
+        4,
+        6,
+        8,
+        9,
+        11,
+        12,
+        13,
+        22,
+        82,
+        89
+      ],
+      "producers": 1
+    },
+    {
+      "owner": "check_type_decl_ir",
+      "helper": "native_match_check_type_decl_ir_2",
+      "kind": "local",
+      "captures": [
+        3,
+        4,
+        6,
+        8,
+        9,
+        11,
+        12,
+        13,
+        22,
+        82
+      ],
+      "producers": 1
+    },
+    {
+      "owner": "check_type_decl_ir",
+      "helper": "native_match_check_type_decl_ir_3",
+      "kind": "local",
+      "captures": [
+        3,
+        4,
+        6,
+        8,
+        9,
+        11,
+        12,
+        13,
+        22,
+        62
+      ],
+      "producers": 1
+    },
+    {
+      "owner": "check_type_decl_ir",
+      "helper": "native_match_check_type_decl_ir_4",
+      "kind": "local",
+      "captures": [
+        3,
+        4,
+        6,
+        8,
+        9,
+        11,
+        12,
+        13,
+        22,
+        62,
+        67
+      ],
+      "producers": 1
+    },
+    {
+      "owner": "check_type_decl_ir",
+      "helper": "native_match_check_type_decl_ir_5",
+      "kind": "local",
+      "captures": [
+        3,
+        4,
+        6,
+        8,
+        9,
+        11,
+        12,
+        13,
+        22,
+        62
+      ],
+      "producers": 1
+    },
+    {
+      "owner": "check_type_decl_ir",
+      "helper": "native_match_check_type_decl_ir_6",
+      "kind": "local",
+      "captures": [
+        3,
+        4,
+        6,
+        8,
+        9,
+        11,
+        12,
+        13,
+        22
+      ],
+      "producers": 1
+    },
+    {
+      "owner": "check_type_decl_ir",
+      "helper": "native_match_check_type_decl_ir_7",
+      "kind": "local",
+      "captures": [
+        3,
+        4,
+        6,
+        8,
+        9,
+        11,
+        12,
+        13,
+        22
+      ],
+      "producers": 1
+    },
+    {
+      "owner": "check_type_decl_ir",
+      "helper": "native_match_check_type_decl_ir_8",
+      "kind": "local",
+      "captures": [
+        3,
+        4,
+        6,
+        8,
+        9,
+        11,
+        12,
+        13,
+        22,
+        32
+      ],
+      "producers": 1
+    },
+    {
+      "owner": "check_type_decl_ir",
+      "helper": "native_match_check_type_decl_ir_9",
+      "kind": "local",
+      "captures": [
+        3,
+        4,
+        6,
+        8,
+        9,
+        11,
+        12,
+        13,
+        22
+      ],
+      "producers": 1
+    },
+    {
+      "owner": "check_type_decl_ir",
+      "helper": "native_match_check_type_decl_ir_10",
+      "kind": "local",
+      "captures": [
+        3,
+        4,
+        6,
+        8,
+        9,
+        11,
+        12,
+        13,
+        22
+      ],
+      "producers": 1
+    },
+    {
+      "owner": "check_type_decl_ir",
+      "helper": "native_match_check_type_decl_ir_11",
+      "kind": "local",
+      "captures": [
+        3,
+        4,
+        6,
+        8,
+        9,
+        11,
+        12,
+        13
+      ],
+      "producers": 1
     },
     {
       "owner": "foreign_head",
@@ -97311,80 +97899,80 @@
   ],
   "ownedModules": [
     {
-      "source": "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/ast.bend",
+      "source": "/private/tmp/bend2039g16-boundaries/bend2/selfhost/ast.bend",
       "sourceSha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
-      "output": "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/ast.bend",
+      "output": "/private/tmp/bend2039g16-boundaries/bend2/selfhost/ast.bend",
       "outputSha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
       "extractions": []
     },
     {
-      "source": "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/checker_arena.bend",
-      "sourceSha256": "2a26c3d8ce66412591030fa2fd6df9f9e53c0fececd9d9ae702def2f475f1752",
-      "output": "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/checker_arena.bend",
-      "outputSha256": "2a26c3d8ce66412591030fa2fd6df9f9e53c0fececd9d9ae702def2f475f1752",
+      "source": "/private/tmp/bend2039g16-boundaries/bend2/selfhost/checker_arena.bend",
+      "sourceSha256": "2d094dd95dc1c2319b77349a028addee4689288d7b476078b6f16e179cb9afeb",
+      "output": "/private/tmp/bend2039g16-boundaries/bend2/selfhost/checker_arena.bend",
+      "outputSha256": "2d094dd95dc1c2319b77349a028addee4689288d7b476078b6f16e179cb9afeb",
       "extractions": []
     },
     {
-      "source": "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/scope_lookup.bend",
+      "source": "/private/tmp/bend2039g16-boundaries/bend2/selfhost/scope_lookup.bend",
       "sourceSha256": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
-      "output": "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/scope_lookup.bend",
+      "output": "/private/tmp/bend2039g16-boundaries/bend2/selfhost/scope_lookup.bend",
       "outputSha256": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
       "extractions": []
     },
     {
-      "source": "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/checker_ir.bend",
+      "source": "/private/tmp/bend2039g16-boundaries/bend2/selfhost/checker_ir.bend",
       "sourceSha256": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
-      "output": "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/checker_ir.bend",
+      "output": "/private/tmp/bend2039g16-boundaries/bend2/selfhost/checker_ir.bend",
       "outputSha256": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
       "extractions": []
     },
     {
-      "source": "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/index_lookup.bend",
+      "source": "/private/tmp/bend2039g16-boundaries/bend2/selfhost/index_lookup.bend",
       "sourceSha256": "563c9b152699b490cf68b264e6c4dea4a4e6770dfcf527cf6c81911cb5ea1b78",
-      "output": "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/index_lookup.bend",
+      "output": "/private/tmp/bend2039g16-boundaries/bend2/selfhost/index_lookup.bend",
       "outputSha256": "563c9b152699b490cf68b264e6c4dea4a4e6770dfcf527cf6c81911cb5ea1b78",
       "extractions": []
     },
     {
-      "source": "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/path.bend",
+      "source": "/private/tmp/bend2039g16-boundaries/bend2/selfhost/path.bend",
       "sourceSha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
-      "output": "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/path.bend",
+      "output": "/private/tmp/bend2039g16-boundaries/bend2/selfhost/path.bend",
       "outputSha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
       "extractions": []
     },
     {
-      "source": "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/loaded_module.bend",
+      "source": "/private/tmp/bend2039g16-boundaries/bend2/selfhost/loaded_module.bend",
       "sourceSha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
-      "output": "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/loaded_module.bend",
+      "output": "/private/tmp/bend2039g16-boundaries/bend2/selfhost/loaded_module.bend",
       "outputSha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
       "extractions": []
     },
     {
-      "source": "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/checked_frontend.bend",
+      "source": "/private/tmp/bend2039g16-boundaries/bend2/selfhost/checked_frontend.bend",
       "sourceSha256": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
-      "output": "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/checked_frontend.bend",
+      "output": "/private/tmp/bend2039g16-boundaries/bend2/selfhost/checked_frontend.bend",
       "outputSha256": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
       "extractions": []
     },
     {
-      "source": "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/backend_ir.bend",
-      "sourceSha256": "f19e76411b589cc396cda80bb8ad387cdb5e9aef17ae287641f0d29696a88e9e",
-      "output": "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/backend_ir.bend",
-      "outputSha256": "f19e76411b589cc396cda80bb8ad387cdb5e9aef17ae287641f0d29696a88e9e",
+      "source": "/private/tmp/bend2039g16-boundaries/bend2/selfhost/backend_ir.bend",
+      "sourceSha256": "162a554cec1c9e1b5edab69b5cfae730c70886548f4f51603a7537845ab5ec48",
+      "output": "/private/tmp/bend2039g16-boundaries/bend2/selfhost/backend_ir.bend",
+      "outputSha256": "162a554cec1c9e1b5edab69b5cfae730c70886548f4f51603a7537845ab5ec48",
       "extractions": []
     },
     {
-      "source": "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/c_backend_sharing.bend",
-      "sourceSha256": "c8861993d2ad81057a9ba8b187eb75f743a9005fbb021b43083e7e2906597a40",
-      "output": "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/c_backend_sharing.bend",
-      "outputSha256": "c8861993d2ad81057a9ba8b187eb75f743a9005fbb021b43083e7e2906597a40",
+      "source": "/private/tmp/bend2039g16-boundaries/bend2/selfhost/c_backend_sharing.bend",
+      "sourceSha256": "78992d00aad3a458dd6b9ea424edf0de61c95b54487f92cd53283e705488c35f",
+      "output": "/private/tmp/bend2039g16-boundaries/bend2/selfhost/c_backend_sharing.bend",
+      "outputSha256": "78992d00aad3a458dd6b9ea424edf0de61c95b54487f92cd53283e705488c35f",
       "extractions": []
     },
     {
-      "source": "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/emitter.bend",
+      "source": "/private/tmp/bend2039g16-boundaries/bend2/selfhost/emitter.bend",
       "sourceSha256": "47d68ba5f0b54c334e2c940b7bb6aabc7f3bba27142b816f27df8225cf3fae4f",
-      "output": "/private/tmp/bend2039g8-js-call-cost/checkpoints/emitter_owned_v1.bend",
-      "outputSha256": "8e8cd9c40341b4110f5690064e1492f91d2a89dbf285011201d4dc3fe5839814",
+      "output": "/private/tmp/bend2039g16-boundaries/checkpoints/emitter_owned_v1.bend",
+      "outputSha256": "55c824e2aa0c14f99079d6c8cb94dfd23817da310c3f2ef99d9fe279daa3fe15",
       "extractions": [
         {
           "owner": "cps_provider_1_describe",
@@ -97970,7 +98558,8 @@
           "captures": [
             1,
             3,
-            7
+            7,
+            9
           ],
           "producers": 1
         },
@@ -98594,7 +99183,10 @@
           "kind": "match",
           "captures": [
             4,
-            11
+            11,
+            13,
+            16,
+            24
           ],
           "producers": 1
         },
@@ -98603,13 +99195,10 @@
           "helper": "native_match_cps_provider_2_prim_texts_1",
           "kind": "match",
           "captures": [
-            0,
-            6,
-            9,
+            4,
             11,
-            12,
-            14,
-            26
+            13,
+            16
           ],
           "producers": 1
         },
@@ -98619,13 +99208,13 @@
           "kind": "match",
           "captures": [
             0,
-            4,
             6,
             9,
             11,
-            12,
+            13,
             14,
-            26
+            16,
+            32
           ],
           "producers": 1
         },
@@ -98639,11 +99228,12 @@
             6,
             9,
             11,
-            12,
+            13,
             14,
-            26,
-            29,
-            30
+            16,
+            32,
+            64,
+            67
           ],
           "producers": 1
         },
@@ -98652,21 +99242,78 @@
           "helper": "native_match_cps_provider_2_prim_texts_4",
           "kind": "match",
           "captures": [
-            25,
             0,
             4,
             6,
             9,
             11,
-            12,
+            13,
             14,
-            26
+            16,
+            32,
+            36,
+            57
+          ],
+          "producers": 1
+        },
+        {
+          "owner": "cps_provider_2_prim_texts",
+          "helper": "native_match_cps_provider_2_prim_texts_5",
+          "kind": "match",
+          "captures": [
+            0,
+            4,
+            6,
+            9,
+            11,
+            13,
+            14,
+            16,
+            32,
+            36
+          ],
+          "producers": 1
+        },
+        {
+          "owner": "cps_provider_2_prim_texts",
+          "helper": "native_match_cps_provider_2_prim_texts_6",
+          "kind": "match",
+          "captures": [
+            0,
+            4,
+            6,
+            9,
+            11,
+            13,
+            14,
+            16,
+            32,
+            35,
+            36
+          ],
+          "producers": 1
+        },
+        {
+          "owner": "cps_provider_2_prim_texts",
+          "helper": "native_match_cps_provider_2_prim_texts_7",
+          "kind": "match",
+          "captures": [
+            31,
+            0,
+            4,
+            6,
+            9,
+            11,
+            13,
+            14,
+            16,
+            32
           ],
           "producers": 0
         },
         {
           "owner": "cps_provider_2_prim_texts",
-          "helper": "native_match_cps_provider_2_prim_texts_5",
+          "helper": "native_match_cps_provider_2_prim_texts_8",
           "kind": "match",
           "captures": [
             2,
@@ -98675,8 +99322,9 @@
             6,
             9,
             11,
-            12,
-            14
+            13,
+            14,
+            16
           ],
           "producers": 0
         },
@@ -98685,7 +99333,7 @@
           "helper": "native_match_cps_provider_2_prim_step_0",
           "kind": "match",
           "captures": [
-            14,
+            13,
             6
           ],
           "producers": 0
@@ -98709,7 +99357,7 @@
           "helper": "native_match_cps_provider_2_prim_step_2",
           "kind": "match",
           "captures": [
-            22,
+            21,
             6
           ],
           "producers": 0
@@ -98747,6 +99395,20 @@
           "helper": "native_match_cps_provider_2_array_op_step_0",
           "kind": "match",
           "captures": [
+            0,
+            2,
+            4,
+            6,
+            7,
+            9
+          ],
+          "producers": 1
+        },
+        {
+          "owner": "cps_provider_2_array_op_step_element",
+          "helper": "native_match_cps_provider_2_array_op_step_element_0",
+          "kind": "match",
+          "captures": [
             4,
             0,
             2,
@@ -98757,8 +99419,8 @@
           "producers": 0
         },
         {
-          "owner": "cps_provider_2_array_op_step",
-          "helper": "native_match_cps_provider_2_array_op_step_1",
+          "owner": "cps_provider_2_array_op_step_element",
+          "helper": "native_match_cps_provider_2_array_op_step_element_1",
           "kind": "match",
           "captures": [
             0,
@@ -98815,62 +99477,12 @@
           "producers": 0
         },
         {
-          "owner": "cps_provider_2_append_step",
-          "helper": "native_match_cps_provider_2_append_step_0",
-          "kind": "match",
-          "captures": [
-            6,
-            26
-          ],
-          "producers": 1
-        },
-        {
-          "owner": "cps_provider_2_append_step",
-          "helper": "native_match_cps_provider_2_append_step_1",
-          "kind": "match",
-          "captures": [
-            3,
-            4,
-            6,
-            20,
-            21
-          ],
-          "producers": 1
-        },
-        {
-          "owner": "cps_provider_2_append_step",
-          "helper": "native_match_cps_provider_2_append_step_2",
-          "kind": "match",
-          "captures": [
-            11,
-            12,
-            3,
-            4,
-            6
-          ],
-          "producers": 0
-        },
-        {
-          "owner": "cps_provider_2_append_step",
-          "helper": "native_match_cps_provider_2_append_step_3",
+          "owner": "cps_provider_2_str_append",
+          "helper": "native_match_cps_provider_2_str_append_0",
           "kind": "match",
           "captures": [
             1,
-            3,
-            4,
-            6
-          ],
-          "producers": 0
-        },
-        {
-          "owner": "cps_provider_2_append_step_parts",
-          "helper": "native_match_cps_provider_2_append_step_parts_0",
-          "kind": "match",
-          "captures": [
-            1,
-            3,
-            5,
-            7
+            3
           ],
           "producers": 2
         },
@@ -99067,6 +99679,17 @@
         {
           "owner": "cps_provider_2_prim_part",
           "helper": "native_match_cps_provider_2_prim_part_0",
+          "kind": "match",
+          "captures": [
+            0,
+            3,
+            5
+          ],
+          "producers": 1
+        },
+        {
+          "owner": "cps_provider_2_prim_scalar_part",
+          "helper": "native_match_cps_provider_2_prim_scalar_part_0",
           "kind": "match",
           "captures": [
             0,
@@ -101309,6 +101932,8 @@
           "captures": [
             1,
             3,
+            4,
+            6,
             8
           ],
           "producers": 1
@@ -101323,6 +101948,27 @@
             4,
             6,
             8
+          ],
+          "producers": 1
+        },
+        {
+          "owner": "cps_provider_2_native_borrow_drops",
+          "helper": "native_match_cps_provider_2_native_borrow_drops_0",
+          "kind": "match",
+          "captures": [
+            4,
+            8
+          ],
+          "producers": 1
+        },
+        {
+          "owner": "cps_provider_2_native_borrow_drops",
+          "helper": "native_match_cps_provider_2_native_borrow_drops_1",
+          "kind": "match",
+          "captures": [
+            0,
+            2,
+            4
           ],
           "producers": 1
         },
@@ -103841,6 +104487,74 @@
           "producers": 0
         },
         {
+          "owner": "cps_provider_5_src_skip_jobs",
+          "helper": "native_match_cps_provider_5_src_skip_jobs_0",
+          "kind": "match",
+          "captures": [
+            15,
+            3,
+            14
+          ],
+          "producers": 0
+        },
+        {
+          "owner": "cps_provider_5_src_skip_jobs",
+          "helper": "native_match_cps_provider_5_src_skip_jobs_1",
+          "kind": "match",
+          "captures": [
+            1,
+            3
+          ],
+          "producers": 0
+        },
+        {
+          "owner": "cps_provider_5_src_skip_jobs",
+          "helper": "native_match_cps_provider_5_src_skip_jobs_2",
+          "kind": "match",
+          "captures": [
+            1,
+            3
+          ],
+          "producers": 1
+        },
+        {
+          "owner": "cps_provider_5_dst_skip_jobs",
+          "helper": "native_match_cps_provider_5_dst_skip_jobs_0",
+          "kind": "match",
+          "captures": [
+            1,
+            3
+          ],
+          "producers": 0
+        },
+        {
+          "owner": "cps_provider_5_dst_skip_jobs",
+          "helper": "native_match_cps_provider_5_dst_skip_jobs_1",
+          "kind": "match",
+          "captures": [
+            1,
+            3
+          ],
+          "producers": 1
+        },
+        {
+          "owner": "cps_provider_5_expand_forms",
+          "helper": "native_match_cps_provider_5_expand_forms_0",
+          "kind": "match",
+          "captures": [
+            6,
+            1,
+            11,
+            13,
+            15,
+            17,
+            22,
+            26,
+            29
+          ],
+          "producers": 0
+        },
+        {
           "owner": "cps_provider_5_box_untagged",
           "helper": "native_match_cps_provider_5_box_untagged_0",
           "kind": "match",
@@ -103849,7 +104563,8 @@
             6,
             8,
             10,
-            14
+            12,
+            16
           ],
           "producers": 1
         },
@@ -103858,11 +104573,12 @@
           "helper": "native_match_cps_provider_5_box_untagged_1",
           "kind": "match",
           "captures": [
-            14,
+            16,
             1,
             6,
             8,
-            10
+            10,
+            12
           ],
           "producers": 0
         },
@@ -103875,7 +104591,8 @@
             1,
             6,
             8,
-            10
+            10,
+            12
           ],
           "producers": 0
         },
@@ -106162,6 +106879,53 @@
           "producers": 0
         },
         {
+          "owner": "cps_provider_5_atomic_three_operands",
+          "helper": "native_match_cps_provider_5_atomic_three_operands_0",
+          "kind": "match",
+          "captures": [
+            2,
+            4,
+            6,
+            8
+          ],
+          "producers": 1
+        },
+        {
+          "owner": "cps_provider_5_atomic_three_regs",
+          "helper": "native_match_cps_provider_5_atomic_three_regs_0",
+          "kind": "match",
+          "captures": [
+            5,
+            10,
+            11,
+            12
+          ],
+          "producers": 1
+        },
+        {
+          "owner": "cps_provider_5_atomic_three_regs",
+          "helper": "native_match_cps_provider_5_atomic_three_regs_1",
+          "kind": "match",
+          "captures": [
+            3,
+            0,
+            5
+          ],
+          "producers": 0
+        },
+        {
+          "owner": "cps_provider_5_array_part",
+          "helper": "native_match_cps_provider_5_array_part_0",
+          "kind": "match",
+          "captures": [
+            0,
+            3,
+            5,
+            7
+          ],
+          "producers": 1
+        },
+        {
           "owner": "cps_provider_5_show_kind_family",
           "helper": "native_match_cps_provider_5_show_kind_family_0",
           "kind": "match",
@@ -107591,16 +108355,16 @@
       ]
     },
     {
-      "source": "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/core.bend",
+      "source": "/private/tmp/bend2039g16-boundaries/bend2/selfhost/core.bend",
       "sourceSha256": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
-      "output": "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/core.bend",
+      "output": "/private/tmp/bend2039g16-boundaries/bend2/selfhost/core.bend",
       "outputSha256": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
       "extractions": []
     },
     {
-      "source": "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/sha256.bend",
+      "source": "/private/tmp/bend2039g16-boundaries/bend2/selfhost/sha256.bend",
       "sourceSha256": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
-      "output": "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/sha256.bend",
+      "output": "/private/tmp/bend2039g16-boundaries/bend2/selfhost/sha256.bend",
       "outputSha256": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
       "extractions": []
     }

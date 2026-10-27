@@ -5,6 +5,20 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- The g16 candidate fixes nested inline-data C conversions: one-arm values
+  have no tag switch, multi-arm values retain their destination tag, each
+  field has distinct temporaries, and both cursors cross short-arm padding.
+  `phys_storage_paths` now checks unequal nested arm widths; it and
+  `checker_arena_names` compile and print the expected results on actual C/JS.
+  JS direct non-tail calls can complete synchronously within the existing
+  depth-64 budget, preserving pending/region frames, capture-slot release,
+  argument order and exception recovery. Sixteen backend consumers pass,
+  including deep recursion, the 12-million-iteration capture witness and
+  the borrowed-String heap bound; 20,000 overflow/recovery pairs also pass.
+  The deep non-tail witness joins both full target matrices (44 cases each).
+  No speedup, native-seed acceptance or new fixedpoint is claimed yet.
+  Receipt: `evals/receipts/root2039g16_boundary_consumers.json`.
+
 - The g15 C append repair uses one rendering path for direct and first-class
   `String.append`: borrow the head, transfer the tail, and release freshly
   allocated heads or owned staged heads only after evaluation. Borrowed
