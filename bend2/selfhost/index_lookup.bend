@@ -50,6 +50,13 @@ def find.go(-V: Data, +map: Map<&2, V>, +key: String, cursor: FindCursor) -> May
   match map cursor:
     case MTip{} _: None{}
     case MLeaf{k, v} _: find.leaf(V, v, String.eq(key, k))
+    # Terminal children need neither a new cursor nor a prospective bit.
+    case MNode{_, MTip{}, _} FindCursor{_, _, False{}}: None{}
+    case MNode{_, MLeaf{k, v}, _} FindCursor{_, _, False{}}:
+      find.leaf(V, v, String.eq(key, k))
+    case MNode{_, _, MTip{}} FindCursor{_, _, True{}}: None{}
+    case MNode{_, _, MLeaf{k, v}} FindCursor{_, _, True{}}:
+      find.leaf(V, v, String.eq(key, k))
     case MNode{_, +lo, _} FindCursor{index, suffix, False{}}:
       find.go(V, lo, key, find.next(key, index, suffix, find.position(V, lo)))
     case MNode{_, _, +hi} FindCursor{index, suffix, True{}}:

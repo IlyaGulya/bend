@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "status": "G17_TERMINAL_INDEX_MICRO_PASS_NOT_ADVANCED",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "scope": "Only an isolated read-only index terminal-child specialization. No full root or speedup is claimed; warmed timings are too similar to justify another full acceptance.",
+  "source": {
+    "path": "bend2/selfhost/index_lookup.bend",
+    "sha256": "ba62d6dc8654f8a6032eff1d115855c62cc0bcb6ca398aed0a2f5df8bf11c508",
+    "text": "import Base\nimport ./ast.bend as Ast\n\n\n# A cursor owns the selected suffix, its absolute character position and bit.\n# Keep the full key separately for leaf equality and arbitrary backward nodes.\ntype FindCursor is Data:\n  FindCursor{index: Nat, suffix: String, bit: Bool}\n\ndef find.leaf(-V: Data, +value: V, same: Bool) -> Maybe<&2, V>:\n  match same:\n    case False{}: None{}\n    case True{}: Some{value}\n\n# A leaf ignores its prospective bit.\ndef find.position(-V: Data, map: Map<&2, V>) -> Nat:\n  match map:\n    case MNode{pos, _, _}: pos\n    case _: 0n\n\n# Seeking discards a prefix; it never rebuilds it on return.\ndef find.seek(cursor: String, skip: Nat) -> String:\n  match cursor skip:\n    case SCon{_, tail} 1n+rest: find.seek(tail, rest)\n    case cursor _: cursor\n\n# Exactly Map.bit's presence bit followed by 32 MSB-first character bits.\ndef find.bit(cursor: String, off: Nat) -> Bool:\n  match cursor off:\n    case SNil{} _: False{}\n    case SCon{_, _} 0n: True{}\n    case SCon{Chr{word}, _} 1n+bit: Map.bit.u(word, Nat.sub(31n, bit))\n\ndef find.cursor(index: Nat, +suffix: String, off: Nat) -> FindCursor:\n  FindCursor{index, suffix, find.bit(suffix, off)}\n\ndef find.next.reset(reset: Bool, +key: String, +index: Nat, suffix: String, +ci: Nat, off: Nat) -> FindCursor:\n  match reset:\n    case False{}: find.cursor(ci, find.seek(suffix, Nat.sub(ci, index)), off)\n    case True{}: find.cursor(ci, find.seek(key, ci), off)\n\ndef find.next.at(co: Nat & Nat, +key: String, +index: Nat, suffix: String) -> FindCursor:\n  match co:\n    case Tuple{+ci, off}: find.next.reset(Nat.is_lt(ci, index), key, index, suffix, ci, off)\n\ndef find.next(+key: String, index: Nat, suffix: String, position: Nat) -> FindCursor:\n  find.next.at(Nat.divmod(position, 33n), key, index, suffix)\n\ndef find.go(-V: Data, +map: Map<&2, V>, +key: String, cursor: FindCursor) -> Maybe<&2, V>:\n  match map cursor:\n    case MTip{} _: None{}\n    case MLeaf{k, v} _: find.leaf(V, v, String.eq(key, k))\n    # Terminal children need neither a new cursor nor a prospective bit.\n    case MNode{_, MTip{}, _} FindCursor{_, _, False{}}: None{}\n    case MNode{_, MLeaf{k, v}, _} FindCursor{_, _, False{}}:\n      find.leaf(V, v, String.eq(key, k))\n    case MNode{_, _, MTip{}} FindCursor{_, _, True{}}: None{}\n    case MNode{_, _, MLeaf{k, v}} FindCursor{_, _, True{}}:\n      find.leaf(V, v, String.eq(key, k))\n    case MNode{_, +lo, _} FindCursor{index, suffix, False{}}:\n      find.go(V, lo, key, find.next(key, index, suffix, find.position(V, lo)))\n    case MNode{_, _, +hi} FindCursor{index, suffix, True{}}:\n      find.go(V, hi, key, find.next(key, index, suffix, find.position(V, hi)))\n\ndef find(-V: Data, +map: Map<&2, V>, +key: String) -> Maybe<&2, V>:\n  find.go(V, map, key, find.next(key, 0n, key, find.position(V, map)))\n\n# Checked constructors end in a literal canonical family, under telescopes.\n# Non-declaration-shaped types retain the checker's general reduction path.\ndef constructor_owner(+ty: Ast.SyntaxTerm) -> Maybe<&2, String>:\n  match ty:\n    case Ast.TermAll{_, _, _, _, body, _}: constructor_owner(body)\n    case Ast.TermAdt{key, _, _, _}: Some{key}\n    case _: None{}\n"
+  },
+  "workload": {
+    "path": "checkpoints/.g17_index_bench.bend",
+    "sha256": "a74375cf90af9a2d979eee9a570aebbd380dd27abab2da916e36fd497ab2ec68",
+    "text": "import Base\nimport ../bend2/selfhost/index_lookup.bend as IndexLookup\n\ndef build(+n: Nat, map: Map<&2, U32>) -> Map<&2, U32>:\n  match n:\n    case 0n: map\n    case 1n+rest: build(rest, Map.set(&2, U32, map, String.append(\"compiler_scope_identifier.\", Nat.show(n)), U32.from_nat(n)))\n\ndef sum(+map: Map<&2, U32>, n: Nat, acc: U32) -> U32:\n  match n:\n    case 0n: acc\n    case 1n+rest: sum(map, rest, U32.add(acc, Maybe.default(&2, U32, IndexLookup.find(U32, map, \"compiler_scope_identifier.32\"), 999)))\n\ndef probe(n: Nat) -> U32:\n  sum(build(64n, MTip{}), n, 0)\n",
+    "lookups": 100000,
+    "expected": 3200000
+  },
+  "frontend": {
+    "path": "/tmp/bend-g10-retained-frontend.js",
+    "sha256": "63fdd105001ccde3e9df352ac3723973366cca004e7469fa7d875896c6450ee5"
+  },
+  "emitter": {
+    "path": "/tmp/bend-g16-final-emitter.js",
+    "sha256": "579c6a67f5cd4daaa04355f66f38697a4c8f4cd63793c16f41b07838c0ae122e",
+    "build": "/tmp/bend-g16-final-emitter-build.result.json",
+    "buildSha256": "f98555fcbac4519e57bbac337344842c9f8b718306c3fd684b178ad9c2773774"
+  },
+  "control": {
+    "label": "control",
+    "sourceRoot": "/private/tmp/bend2039g16-boundaries",
+    "sourceSha256": "a74375cf90af9a2d979eee9a570aebbd380dd27abab2da916e36fd497ab2ec68",
+    "indexSha256": "563c9b152699b490cf68b264e6c4dea4a4e6770dfcf527cf6c81911cb5ea1b78",
+    "output": "/tmp/bend-g17-index-micro-vP55BT/control.mjs",
+    "outputSha256": "390974b9cad5e7d5591fa15849a7191ffc1db4ca8ee43ff50b5688cbfcd85614",
+    "consumer": {
+      "command": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--input-type=module",
+        "-e",
+        "const lib=(await import(\"file:///tmp/bend-g17-index-micro-vP55BT/control.mjs\")).default;const rows=[];for(let i=0;i<4;i++){const t=performance.now(),value=lib.probe(100000);if(value!==3200000)throw Error(\"Lookup sum differs: \"+value);rows.push({ms:performance.now()-t,value});}console.log(JSON.stringify(rows));"
+      ],
+      "status": 0,
+      "signal": null,
+      "elapsedMs": 864.673084,
+      "stdout": "[{\"ms\":252.83575000000002,\"value\":3200000},{\"ms\":187.223542,\"value\":3200000},{\"ms\":186.03695900000002,\"value\":3200000},{\"ms\":196.538,\"value\":3200000}]\n",
+      "stderr": ""
+    },
+    "timings": [
+      {
+        "ms": 252.83575000000002,
+        "value": 3200000
+      },
+      {
+        "ms": 187.223542,
+        "value": 3200000
+      },
+      {
+        "ms": 186.03695900000002,
+        "value": 3200000
+      },
+      {
+        "ms": 196.538,
+        "value": 3200000
+      }
+    ]
+  },
+  "candidate": {
+    "label": "candidate",
+    "sourceRoot": "/private/tmp/bend2039g17-index",
+    "sourceSha256": "a74375cf90af9a2d979eee9a570aebbd380dd27abab2da916e36fd497ab2ec68",
+    "indexSha256": "ba62d6dc8654f8a6032eff1d115855c62cc0bcb6ca398aed0a2f5df8bf11c508",
+    "output": "/tmp/bend-g17-index-micro-gHUyT6/candidate.mjs",
+    "outputSha256": "170d746ba6ae3dacb0e5117212e78ba99bc2876433a8ee9d2156453620ef600f",
+    "consumer": {
+      "command": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--input-type=module",
+        "-e",
+        "const lib=(await import(\"file:///tmp/bend-g17-index-micro-gHUyT6/candidate.mjs\")).default;const rows=[];for(let i=0;i<4;i++){const t=performance.now(),value=lib.probe(100000);if(value!==3200000)throw Error(\"Lookup sum differs: \"+value);rows.push({ms:performance.now()-t,value});}console.log(JSON.stringify(rows));"
+      ],
+      "status": 0,
+      "signal": null,
+      "elapsedMs": 779.5880000000006,
+      "stdout": "[{\"ms\":197.971708,\"value\":3200000},{\"ms\":180.68058299999998,\"value\":3200000},{\"ms\":180.525708,\"value\":3200000},{\"ms\":181.06174999999996,\"value\":3200000}]\n",
+      "stderr": ""
+    },
+    "timings": [
+      {
+        "ms": 197.971708,
+        "value": 3200000
+      },
+      {
+        "ms": 180.68058299999998,
+        "value": 3200000
+      },
+      {
+        "ms": 180.525708,
+        "value": 3200000
+      },
+      {
+        "ms": 181.06174999999996,
+        "value": 3200000
+      }
+    ]
+  },
+  "canonicalSmoke": {
+    "source": "tests/run/index_lookup_cursor.bend",
+    "targets": [
+      "js",
+      "c"
+    ],
+    "expected": "999,999,1,8,9,5,10,12,21,22,999",
+    "observed": "999,999,1,8,9,5,10,12,21,22,999",
+    "guardian": {
+      "status": "PASS",
+      "elapsedMs": 1143,
+      "peakRssBytes": 201932800,
+      "peakFootprintBytes": 161394760,
+      "timeoutMs": 120000
+    }
+  },
+  "notes": [
+    "An earlier flat tail-state attempt was rejected by the existing termination/forward-reference rules and was removed; no unsafe annotations were added.",
+    "This receipt does not qualify the independent pending Nat literal fold."
+  ]
+}
