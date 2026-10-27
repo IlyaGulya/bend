@@ -3506,13 +3506,9 @@ function effect_src(k: Name, tld: Bend.Def & { i: string[] }): void {
 export function compile_book(book: Bend.Book,
   options: Pick<JSOptions, "observe"> = {}): string {
   FL = file_new(book, false, options);
-  // Ownership/heating reaches its fixedpoint by repeating the traversal, and a
-  // pass whose facts moved is discarded. Keeping the text of every pass rather
-  // than only of the one before the settled pass therefore costs that pass's
-  // text and saves a whole repeat of it: the pass that changes no fact starts
-  // from the settled facts, so its own text is the published text. Facts are
-  // monotone (a pass only adds), so a pass that adds none sees the set its
-  // successor would see.
+  // Facts grow monotonically. A pass adding none already used the final facts;
+  // publish its text instead of traversing every definition again. Earlier
+  // passes' segments are discarded at the start of the next iteration.
   // The datatypes of the constructors a pure main prints are roots too.
   const show = show_main();
   const names = (show ?? []).filter((c) => typeof c === "string");
