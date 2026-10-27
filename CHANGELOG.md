@@ -5,6 +5,19 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- The complete g8 native-seed selfhost checkpoint passes on the pinned
+  Bend 2.0.39/Bun 1.4.3 sources under the original 8 GiB / 600 s gates.
+  All 12,071 bodies / 12,651 events validate without exclusions or output
+  patches; the native build completes in 263.744 s (peak RSS 5,388,206,080 B).
+  Its real native stage0 produces stage1; unchanged stage1 parses, checks and
+  emits the full root to byte-identical stage2: 28,334,920 bytes,
+  SHA-256 `0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885`.
+  Bootstrap completes in 557.437 s, peak RSS 4,738,695,168 B. All 95 seed
+  fixtures, 18 complete root parser comparisons, both 33-case C/JS matrices,
+  seven native foreign/library scenarios and five nested host exports pass.
+  This accepts the native-seed route, not a controlled speedup or every
+  historical seed route. Receipt: `evals/receipts/root2039g8b_native_fixedpoint.json`.
+
 - The resource guardian publishes its compiled helper with private permissions
   before the atomic rename. Guarded descendants now work after a cold build
   under a group-writable umask; unsafe pre-existing cache entries still fail

@@ -4,6 +4,26 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
+## Актуальный принятый checkpoint: remote2039g8b
+
+На source `ee48ca2f` завершены полная native-сборка и настоящий native-seed
+stage1/stage2 fixedpoint под исходными **8 ГиБ / 600 с** на каждый gate.
+Проверены 12 071 тело / 12 651 событие без исключённых проверок и output patches.
+Native build: 263 744 мс, peak RSS 5 388 206 080 B.
+Bootstrap: 557 437 мс, peak RSS 4 738 695 168 B.
+Оба реальных файла: **28 334 920 байт**, SHA-256
+`0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885`.
+Stage1 использует собственные parser/checker/emitter для полного root.
+Все 95 native-seed fixtures, 18 полных semantic parser approvals,
+33 C + 33 JS случая, 7 native foreign/library и 5 nested host exports PASS.
+Точная квитанция: `evals/receipts/root2039g8b_native_fixedpoint.json`.
+Все 53 source/foreign входа root сверены с локальными байтами.
+
+Ниже сохранена **история** предыдущих версий, а не текущий статус.
+Отдельный JS-seed default-stack отказ не объявляется исправленным.
+Остались отдельные задачи profiling overhead на полном одинаковом входе,
+минимального memory-growth diagnostic и непокрытых законов FIR/BIR.
+
 СЕЙЧАС принят host57aa: compa84170d5… с общим C-only inline cutoff8 words.
 Physical WIDE247 и JS layouts прежние; scalar structural layouts сохраняются,
 поля перед bit packing нормализуются к scalar layout. Kernel6c1df3… не менялся.

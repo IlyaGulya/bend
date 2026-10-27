@@ -5,6 +5,32 @@ The latest image-bound checkpoints are in §1. Earlier failures remain recorded
 under their original image IDs; a later pass never reclassifies an older run.
 Detailed evidence and reasoning live in the linked receipts and notes.
 This index does not replace a receipt.
+## Current full native-seed checkpoint
+
+The `remote2039g8b` checkpoint on source `ee48ca2f` passes the complete
+native build and real native-stage0 → stage1 → stage2 bootstrap.
+All **12,071 bodies / 12,651 events** validate; exclusions and output
+patches are both zero. Native build: **263,744 ms**, peak RSS
+**5,388,206,080 B**, footprint **5,133,703,048 B**.
+Bootstrap: **557,437 ms**, peak RSS **4,738,695,168 B**, footprint
+**3,221,641,928 B**. Each retains the original **8 GiB / 600 s** guard;
+these are separate gates, not a 600-second aggregate of the whole suite.
+
+Stage1 and stage2 are actual byte-identical **28,334,920-byte** files,
+SHA-256 `0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885`.
+Stage1 uses its own parser/checker/emitter for the full root, with 18 complete
+semantic parser approvals. All 95 native-seed fixtures, both complete
+33-case C/JS matrices, seven native foreign/library scenarios and five nested
+host-export consumers pass. All 53 root source/foreign files were checked
+byte-for-byte against the local source closure before checkpointing.
+
+Proof: `evals/receipts/root2039g8b_native_fixedpoint.json`. Generated compiler
+images, transports and bulk logs remain outside Git. Earlier failed versions
+below remain rejected. The separate canonical JS-seed/default-stack parser
+failure is not reclassified. Full-input profiling-overhead controls, a reduced
+producer memory-growth diagnostic and uncovered law-boundary checks remain
+separate deliverables; runtime acceptance does not prove the FIR/BIR laws.
+
 
 **Status legend**
 
