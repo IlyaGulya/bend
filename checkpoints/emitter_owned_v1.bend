@@ -1181,6 +1181,23 @@ def cps_provider_1_native_match_field_value_1(v_1: Maybe<&2, cps_provider_10_Con
 def cps_provider_1_field_value(v_1: cps_provider_1_State, v_3: Maybe<&2, cps_provider_10_ConstructorField>, v_4: cps_provider_10_Constructor, v_5: BIR.Atom, v_7: List<&2, BIR.Atom>, v_9: U32, v_10: Ast.SourceSpan) -> cps_provider_1_LowerResult<List<&2, BIR.Field>>:
   cps_provider_1_native_match_field_value_1(v_3, v_1, v_4, v_5, v_7, v_9, v_10)
 
+def cps_provider_1_nat_successor_result(v_1: cps_provider_1_State, v_3: Nat, v_5: Bool) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_5:
+    case True{}:
+      cps_provider_1_LowerResult{v_1, BIR.Natural{Nat.add(v_3, 1n)}}
+    case False{}:
+      cps_provider_1_primitive(v_1, BIR.PrimNatSuccessor{}, [BIR.Natural{v_3}])
+
+def cps_provider_1_nat_successor_value(v_1: cps_provider_1_State, +v_3: Nat) -> cps_provider_1_LowerResult<BIR.Atom>:
+  cps_provider_1_nat_successor_result(v_1, v_3, Nat.is_lt(v_3, 4294967295n))
+
+def cps_provider_1_nat_successor_atom(v_1: cps_provider_1_State, v_2: BIR.Atom) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_2:
+    case BIR.Natural{v_5}:
+      cps_provider_1_nat_successor_value(v_1, v_5)
+    case _:
+      cps_provider_1_primitive(v_1, BIR.PrimNatSuccessor{}, [v_2])
+
 def cps_provider_1_construct(v_1: cps_provider_1_State, v_2: cps_provider_10_Constructor, v_4: List<&2, BIR.Atom>, v_5: Ast.SourceSpan, v_8: Maybe<&2, U32>) -> cps_provider_1_LowerResult<BIR.Atom>:
   cps_provider_1_construct_native(v_1, cps_provider_1_constructor_native(v_2), v_2, v_4, v_5, v_8)
 
@@ -1200,7 +1217,7 @@ def cps_provider_1_native_match_construct_native_1(v_1: String, v_3: List<&2, BI
     case "String.SNil", []:
       cps_provider_1_LowerResult{v_5, BIR.TextValue{""}}
     case "Nat.Succ", [v_13]:
-      cps_provider_1_primitive(v_5, BIR.PrimNatSuccessor{}, [v_13])
+      cps_provider_1_nat_successor_atom(v_5, v_13)
     case "Char.Chr", [v_16]:
       cps_provider_1_primitive(v_5, BIR.PrimCharNew{}, [v_16])
     case "String.SCon", [v_20, v_21]:

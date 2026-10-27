@@ -5,6 +5,19 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- The g18 candidate reuses canonical `Map.bit` for immutable read-only lookup
+  instead of rebuilding a cursor in Bend. Existing backward-position, NUL,
+  Unicode and arbitrary-U32 character checks pass on actual JS and C.
+  Shared lowering folds only canonical constant Nat successor atoms below
+  the conservative U32 cut; dynamic successors retain the runtime overflow
+  check. Static/dynamic successor values across 255, 256 and 2^32 agree on
+  both targets. Twenty-four existing target/library consumers and the two
+  new successor consumers pass; the full matrices retain their original
+  cases and add the three index/Nat boundary fixtures (47 cases each).
+  Full-root/native/bootstrap acceptance remains pending; the separate
+  lookup micro runs do not establish a full compiler speedup.
+  Receipt: `evals/receipts/producer2039g18_native_bit_consumers.json`.
+
 - The g16 candidate fixes nested inline-data C conversions: one-arm values
   have no tag switch, multi-arm values retain their destination tag, each
   field has distinct temporaries, and both cursors cross short-arm padding.
