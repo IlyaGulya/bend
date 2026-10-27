@@ -99,8 +99,6 @@ type Row = [HTerm, number, number, number];
 
 type Open = { ps: Of<"Var">[]; b: HTerm };
 
-type Uses = ReadonlyMap<number, number>;
-
 type Intr = { C?: string | string[] | null; JS?: string };
 
 type Dom = [Bend.Quant, Name, HTerm];
@@ -166,7 +164,7 @@ const SPIN_FAR = 8192;
 
 const TPL_DEEP = 32;
 
-const USE0: Uses = new Map();
+const USE0 = Bend.Emp<number>();
 
 const W32: Lay = { ks: ["w32"], arms: null };
 
@@ -891,35 +889,18 @@ function term_const(t: HTerm): boolean {
   });
 }
 
-function term_use(u: Uses, p: Of<"Var">): number {
-  return u.get(p.i) ?? 0;
+function term_use(u: Bend.PMap<number>, p: Of<"Var">): number {
+  return Bend.pmap_get(u, p.i) ?? 0;
 }
 
-function term_uses(tm: HTerm): Uses {
+const ADD = (a: number, b: number) => a + b;
+
+function term_uses(tm: HTerm): Bend.PMap<number> {
   return memo(FL.memo.uses, tm, () => {
     const t = term_force(tm);
-    let u: Uses = t.$ !== "Var" || t.i === DUMMY.i
-      ? USE0 : new Map([[t.i, 1]]);
-    let owned: Map<number, number> | undefined;
-    // Cached child counts are immutable. Share a sole nonempty child and copy
-    // only when a second child must merge; siblings never mutate each other.
+    let u = t.$ !== "Var" || t.i === DUMMY.i ? USE0 : Bend.pmap_set(USE0, t.i, 1);
     for (const x of term_kids(t)) {
-      const v = term_uses(x);
-      if (v.size === 0) {
-        continue;
-      }
-      if (u.size === 0) {
-        u = v;
-        continue;
-      }
-      if (owned === undefined) {
-        owned = new Map(u);
-        u = owned;
-      }
-      for (const [i, n] of v) {
-        const old = owned.get(i) ?? 0;
-        owned.set(i, t.$ === "Mat" ? Math.max(old, n) : old + n);
-      }
+      u = Bend.pmap_union(u, term_uses(x), t.$ === "Mat" ? Math.max : ADD);
     }
     return u;
   });
@@ -1877,7 +1858,7 @@ function file_new(book: Bend.Book, js: boolean, options: JSOptions = {}) {
     lay_ids: new Map<Lay, number>(),
     memo: {
       opens: new Map<Of<"Lam"> | Of<"Let">, Open>(),
-      uses: new Map<HTerm, Uses>(),
+      uses: new Map<HTerm, Bend.PMap<number>>(),
       folds: new Map<HTerm, HTerm | null>(),
       spines: new Map<HTerm, Spine>(),
     },

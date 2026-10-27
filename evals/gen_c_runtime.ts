@@ -31,12 +31,12 @@ const FIXTURE = join(ROOT, "evals/c_backend_runtime.bend");
 // Tables/Spins/Segments/Requests markers exist, io_eff/io_node keep their
 // 2-arg/4-arg ABI, SIGSEGV/SIGBUS trapping and --RTS parsing are present, and
 // C Chars stay native u32 words (the packed JS encoding is JS-only).
-// The producer's layout/lifetime/literal/naming/publication/usage changes leave RuntimeC
+// The producer's layout/lifetime/literal/naming/publication changes leave RuntimeC
 // byte-identical to checkpoint 02e011d7 (previous source pin132ce4c7);
 // re-pinning the complete source does not substitute a different runtime ABI.
 // KERNEL_SHA always names the current official release, so a stale working
 // kernel fails closed.
-const COMP_SHA = "1034505b49c7cd80ff415be14e581f4cd5bfcd4e622006329d358bd3995594cb";
+const COMP_SHA = "881137cef06d237068daf4740368baab826abab1be07181cc4ec2bc635cff2f1";
 const KERNEL_SHA = officialKernelSha256(ROOT);
 
 const sha = (bytes: string | Buffer): string =>
