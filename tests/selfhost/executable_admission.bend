@@ -57,7 +57,7 @@ def main() -> IO(Unit):
     Unit <- executable(check(main_module(Ast.NoTerm{})), "inferred-main-accepted", "inferred-main-rejected")
     library_result(check(mainless_module()))
 
-#| missing-main-rejected
-#| executable-main-accepted
-#| inferred-main-accepted
-#| library-mainless-accepted
+#|missing-main-rejected
+#|executable-main-accepted
+#|inferred-main-accepted
+#|library-mainless-accepted

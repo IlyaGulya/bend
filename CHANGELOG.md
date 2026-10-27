@@ -13,10 +13,19 @@ latest one; the GitHub release carries the same notes.
   bodies / 12,694 events validate without exclusions or output patches, and
   the real binary passes 21 C/JS/library consumers. The runtime is unchanged
   apart from its reviewed compiler-source provenance comment. Fresh parser
-  admission, full matrices and bootstrap remain pending: no g12 fixedpoint
-  is claimed.
-  Receipts: `evals/receipts/producer2039g12_borrow_generation_smoke.json` and
-  `evals/receipts/producer2039g12_frozen_native_pass.json`.
+  admission, full matrices and bootstrap remain pending. The broader g12
+  compiler checkpoint is **not accepted**: actual native-generated C reverses
+  `String.cmp` proper-prefix order and fail-stops on an unread `U32.mul` library
+  export; JS controls pass. These pre-existing target bugs are carried into
+  the next isolated repair, not hidden by the native-producer qualification.
+  The datatype typed-step JS regression also executes correctly. Its combined
+  four-target metacompilation wrapper reaches an aggregate 600-s quota during
+  the first C leg; no per-C-leg timeout or semantic failure is inferred.
+  The two new regression files now use the canonical `#|` marker format.
+  Receipts: `evals/receipts/producer2039g12_borrow_generation_smoke.json`,
+  `evals/receipts/producer2039g12_frozen_native_pass.json`,
+  `evals/receipts/producer2039g12_typed_meta_probe.json` and
+  `evals/receipts/root2039g12_boundary_before.json`.
 
 - The g10 boundary candidate rejects retained datatype template parameters at
   their own checker spans and admits executables only with a runnable root
@@ -26,14 +35,16 @@ latest one; the GitHub release carries the same notes.
   `F32.pow` preserves the IEEE unit-base cases. C transfers owned String/Word
   operands to consuming helpers and fixes reversed Word bit order. Four
   numeric programs pass on each actual JS/C target, including shared Words.
-  The complete target matrices retain all original cases and include these
-  four regressions. G10a is **rejected** at the unchanged 600-second native
+  Both complete 40-case C/JS target matrices also pass, retaining all original
+  cases and the four numeric regressions. G10a remains **rejected** at the
+  unchanged 600-second native
   C-producer deadline in `compile_book`, before LLVM or bootstrap. All 12,114
   bodies / 12,694 events validate, with zero exclusions/patches; peak RSS is
   6,519,111,680 B. No native binary or new byte fixedpoint is claimed.
   Receipts: `evals/receipts/root2039g10_checker_entry.json`,
-  `evals/receipts/root2039g10_numeric_consumers.json` and
-  `evals/receipts/root2039g10a_native_deadline_rejected.json`.
+  `evals/receipts/root2039g10_numeric_consumers.json`,
+  `evals/receipts/root2039g10a_native_deadline_rejected.json` and
+  `evals/receipts/root2039g10a_full_matrices.json`.
 
 - The g9a candidate adds the nine `Array.atomic.*` primitives to the common
   catalog and JS/C targets. All three atomic consumer scenarios pass on each

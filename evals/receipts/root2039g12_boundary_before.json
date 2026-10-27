@@ -1,0 +1,600 @@
+{
+  "schemaVersion": 1,
+  "status": "G12_NATIVE_PRODUCER_QUALIFIED_TARGET_BOUNDARY_COUNTEREXAMPLES_CONFIRMED",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "sourceCheckpoint": "b2005397",
+  "binary": {
+    "path": "/tmp/bend-g12-frozen-native",
+    "sha256": "00222b4eda8cd3bb42e98058e377c04200b9d81ffcff2ca197d4f31a5904ceee"
+  },
+  "scope": "Before-fix actual native compiler output. String.cmp proper-prefix order is wrong in C; an otherwise supported unread U32.mul native library export emits C but its real C caller fail-stops, whereas JS returns 6. These defects predate the C-producer cache change. The fresh G12 root/bootstrap chain is separate and still running.",
+  "rows": [
+    {
+      "source": "tests/base/map_prefix_keys.bend",
+      "sourceSha256": "904e89c542bfbf7386baef8bc7a291a734137b859b7f2d5e4557383df613aa0a",
+      "target": "js",
+      "output": "/tmp/bend-g12-new-boundaries-rEGqdJ/map_prefix_keys-js.js",
+      "outputExists": true,
+      "outputSha256": "9553f1555427d61a748ca54047db7df5e83edd79fd0d47d583fe38b4d9ccdfda",
+      "expected": "a=2,ab=1,b=3,.\na=20,ab=1,b=3,c=30,.\na=2,ab=1,b=3,c=30,.\nLTGTLT\n=4,𝄞=5,𝄞a=6,.\nLTGTLT\nTFTTF",
+      "passed": true,
+      "native": {
+        "command": [
+          "/tmp/bend-g12-frozen-native",
+          "+RTS",
+          "--threads",
+          "1",
+          "--gpu",
+          "off",
+          "--RTS",
+          "/private/tmp/bend2039g12-borrow-generation/tests/base/map_prefix_keys.bend",
+          "/private/tmp/bend2039g12-borrow-generation/bend2/base.bend",
+          "/tmp/bend-g12-new-boundaries-rEGqdJ/map_prefix_keys-js.tsv",
+          "/tmp/bend-g12-new-boundaries-rEGqdJ/map_prefix_keys-js.exports",
+          "compile-module",
+          "/tmp/bend-g12-new-boundaries-rEGqdJ/map_prefix_keys-js.js"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 2543,
+        "results": [
+          {
+            "result": "EmitSuccess",
+            "bytes": 389260,
+            "modules": 2
+          }
+        ],
+        "phaseStarts": [
+          {
+            "phase": "parse"
+          },
+          {
+            "phase": "expand"
+          },
+          {
+            "phase": "check"
+          },
+          {
+            "phase": "emit"
+          }
+        ]
+      },
+      "execute": {
+        "command": [
+          "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+          "--max-old-space-size=3072",
+          "/tmp/bend-g12-new-boundaries-rEGqdJ/map_prefix_keys-js.js"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 36.04679099999976,
+        "stdout": "a=2,ab=1,b=3,.\na=20,ab=1,b=3,c=30,.\na=2,ab=1,b=3,c=30,.\nLTGTLT\n=4,𝄞=5,𝄞a=6,.\nLTGTLT\nTFTTF\n",
+        "stderr": ""
+      }
+    },
+    {
+      "source": "tests/base/map_prefix_keys.bend",
+      "sourceSha256": "904e89c542bfbf7386baef8bc7a291a734137b859b7f2d5e4557383df613aa0a",
+      "target": "c",
+      "output": "/tmp/bend-g12-new-boundaries-rEGqdJ/map_prefix_keys-c.c",
+      "outputExists": true,
+      "outputSha256": "cd5c884e965426296e2603c6f77ede9617278759c5a77d8942f5f39c89042690",
+      "expected": "a=2,ab=1,b=3,.\na=20,ab=1,b=3,c=30,.\na=2,ab=1,b=3,c=30,.\nLTGTLT\n=4,𝄞=5,𝄞a=6,.\nLTGTLT\nTFTTF",
+      "passed": false,
+      "native": {
+        "command": [
+          "/tmp/bend-g12-frozen-native",
+          "+RTS",
+          "--threads",
+          "1",
+          "--gpu",
+          "off",
+          "--RTS",
+          "/private/tmp/bend2039g12-borrow-generation/tests/base/map_prefix_keys.bend",
+          "/private/tmp/bend2039g12-borrow-generation/bend2/base.bend",
+          "/tmp/bend-g12-new-boundaries-rEGqdJ/map_prefix_keys-c.tsv",
+          "/tmp/bend-g12-new-boundaries-rEGqdJ/map_prefix_keys-c.exports",
+          "compile-c-module",
+          "/tmp/bend-g12-new-boundaries-rEGqdJ/map_prefix_keys-c.c",
+          "/private/tmp/bend2039g12-borrow-generation/bend2/selfhost/c_runtime.c"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 9003,
+        "results": [
+          {
+            "result": "EmitSuccess",
+            "bytes": 1198288,
+            "modules": 2
+          }
+        ],
+        "phaseStarts": [
+          {
+            "phase": "parse"
+          },
+          {
+            "phase": "expand"
+          },
+          {
+            "phase": "check"
+          },
+          {
+            "phase": "emit-c"
+          }
+        ]
+      },
+      "clang": {
+        "command": [
+          "clang",
+          "-std=c11",
+          "-O0",
+          "-pthread",
+          "/tmp/bend-g12-new-boundaries-rEGqdJ/map_prefix_keys-c.c",
+          "-lm",
+          "-o",
+          "/tmp/bend-g12-new-boundaries-rEGqdJ/map_prefix_keys-c"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 1111.9944999999989,
+        "stderrSha256": "6162c21fd843ab35f2b192472c20b0a42ce15e8d0a16b958f7a8b97b3ce5bee4"
+      },
+      "execute": {
+        "command": [
+          "/tmp/bend-g12-new-boundaries-rEGqdJ/map_prefix_keys-c"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 2.975917000001573,
+        "stdout": "a=2,ab=1,b=3,.\na=20,ab=1,b=3,c=30,.\na=2,ab=1,b=3,c=30,.\nGTGTGT\n=4,𝄞=5,𝄞a=6,.\nLTGTGT\nTFTTF\n",
+        "stderr": ""
+      }
+    },
+    {
+      "source": "tests/base/text_ops.bend",
+      "sourceSha256": "509b5789efdc0de6d64408cfb72e3749a6e3016fe1483e501c89ff146a859bb4",
+      "target": "js",
+      "output": "/tmp/bend-g12-new-boundaries-rEGqdJ/text_ops-js.js",
+      "outputExists": true,
+      "outputSha256": "0319f684f22aaa5007eb1de17009e41d6fb0bd8b834d82f0bcde80ab16101a6f",
+      "expected": "14",
+      "passed": true,
+      "native": {
+        "command": [
+          "/tmp/bend-g12-frozen-native",
+          "+RTS",
+          "--threads",
+          "1",
+          "--gpu",
+          "off",
+          "--RTS",
+          "/private/tmp/bend2039g12-borrow-generation/tests/base/text_ops.bend",
+          "/private/tmp/bend2039g12-borrow-generation/bend2/base.bend",
+          "/tmp/bend-g12-new-boundaries-rEGqdJ/text_ops-js.tsv",
+          "/tmp/bend-g12-new-boundaries-rEGqdJ/text_ops-js.exports",
+          "compile-module",
+          "/tmp/bend-g12-new-boundaries-rEGqdJ/text_ops-js.js"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 3186,
+        "results": [
+          {
+            "result": "EmitSuccess",
+            "bytes": 404501,
+            "modules": 2
+          }
+        ],
+        "phaseStarts": [
+          {
+            "phase": "parse"
+          },
+          {
+            "phase": "expand"
+          },
+          {
+            "phase": "check"
+          },
+          {
+            "phase": "emit"
+          }
+        ]
+      },
+      "execute": {
+        "command": [
+          "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+          "--max-old-space-size=3072",
+          "/tmp/bend-g12-new-boundaries-rEGqdJ/text_ops-js.js"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 35.85395900000003,
+        "stdout": "14\n",
+        "stderr": ""
+      }
+    },
+    {
+      "source": "tests/base/text_ops.bend",
+      "sourceSha256": "509b5789efdc0de6d64408cfb72e3749a6e3016fe1483e501c89ff146a859bb4",
+      "target": "c",
+      "output": "/tmp/bend-g12-new-boundaries-rEGqdJ/text_ops-c.c",
+      "outputExists": true,
+      "outputSha256": "e798b5635387d122b896a7194e657853858d9ccc5c90ffd59a7cfab9929790b3",
+      "expected": "14",
+      "passed": false,
+      "native": {
+        "command": [
+          "/tmp/bend-g12-frozen-native",
+          "+RTS",
+          "--threads",
+          "1",
+          "--gpu",
+          "off",
+          "--RTS",
+          "/private/tmp/bend2039g12-borrow-generation/tests/base/text_ops.bend",
+          "/private/tmp/bend2039g12-borrow-generation/bend2/base.bend",
+          "/tmp/bend-g12-new-boundaries-rEGqdJ/text_ops-c.tsv",
+          "/tmp/bend-g12-new-boundaries-rEGqdJ/text_ops-c.exports",
+          "compile-c-module",
+          "/tmp/bend-g12-new-boundaries-rEGqdJ/text_ops-c.c",
+          "/private/tmp/bend2039g12-borrow-generation/bend2/selfhost/c_runtime.c"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 9680,
+        "results": [
+          {
+            "result": "EmitSuccess",
+            "bytes": 1224997,
+            "modules": 2
+          }
+        ],
+        "phaseStarts": [
+          {
+            "phase": "parse"
+          },
+          {
+            "phase": "expand"
+          },
+          {
+            "phase": "check"
+          },
+          {
+            "phase": "emit-c"
+          }
+        ]
+      },
+      "clang": {
+        "command": [
+          "clang",
+          "-std=c11",
+          "-O0",
+          "-pthread",
+          "/tmp/bend-g12-new-boundaries-rEGqdJ/text_ops-c.c",
+          "-lm",
+          "-o",
+          "/tmp/bend-g12-new-boundaries-rEGqdJ/text_ops-c"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 909.856667,
+        "stderrSha256": "79e373f9949e7d2b5a7e0ccb149d2ffea4be14fff613835904e18f534540481a"
+      },
+      "execute": {
+        "command": [
+          "/tmp/bend-g12-new-boundaries-rEGqdJ/text_ops-c"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 2.9086669999996957,
+        "stdout": "13\n",
+        "stderr": ""
+      }
+    }
+  ],
+  "nativeExport": [
+    {
+      "source": "evals/c_step_library_fixture.bend",
+      "sourceSha256": "5e53a4815f2fc7f12c3fdea7bfc12764daf65096b125a22a5f884c0cf0e710df",
+      "target": "js",
+      "names": [
+        "U32.mul"
+      ],
+      "output": "/tmp/bend-g12-new-boundaries-7fZjbY/c_step_library_fixture-jslibrary.js",
+      "outputExists": true,
+      "outputSha256": "77255bf746f5da49aff9290444378e83815acdd1fa3672901119414209307ed7",
+      "expected": "6",
+      "passed": true,
+      "native": {
+        "command": [
+          "/tmp/bend-g12-frozen-native",
+          "+RTS",
+          "--threads",
+          "1",
+          "--gpu",
+          "off",
+          "--RTS",
+          "/private/tmp/bend2039g12-borrow-generation/evals/c_step_library_fixture.bend",
+          "/private/tmp/bend2039g12-borrow-generation/bend2/base.bend",
+          "/tmp/bend-g12-new-boundaries-7fZjbY/c_step_library_fixture-jslibrary.tsv",
+          "/tmp/bend-g12-new-boundaries-7fZjbY/c_step_library_fixture-jslibrary.exports",
+          "compile",
+          "/tmp/bend-g12-new-boundaries-7fZjbY/c_step_library_fixture-jslibrary.js"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 2518,
+        "results": [
+          {
+            "result": "EmitSuccess",
+            "bytes": 377784,
+            "modules": 2
+          }
+        ],
+        "phaseStarts": [
+          {
+            "phase": "parse"
+          },
+          {
+            "phase": "expand"
+          },
+          {
+            "phase": "check"
+          },
+          {
+            "phase": "emit"
+          }
+        ]
+      },
+      "execute": {
+        "command": [
+          "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+          "--input-type=module",
+          "-e",
+          "const lib=(await import(\"file:///tmp/bend-g12-new-boundaries-7fZjbY/c_step_library_fixture-jslibrary.js\")).default; console.log(String(lib[\"U32.mul\"](2,3)));"
+        ],
+        "status": 0,
+        "stdout": "6\n",
+        "stderr": ""
+      },
+      "initialJsHarnessSyntaxError": true
+    },
+    {
+      "source": "evals/c_step_library_fixture.bend",
+      "sourceSha256": "5e53a4815f2fc7f12c3fdea7bfc12764daf65096b125a22a5f884c0cf0e710df",
+      "target": "c",
+      "names": [
+        "U32.mul"
+      ],
+      "output": "/tmp/bend-g12-new-boundaries-7fZjbY/c_step_library_fixture-clibrary.c",
+      "outputExists": true,
+      "outputSha256": "f026e7239dac1a6e9a220b4101ea818e86d35b06edcbbd6582527174e49f7fef",
+      "expected": "6",
+      "passed": false,
+      "native": {
+        "command": [
+          "/tmp/bend-g12-frozen-native",
+          "+RTS",
+          "--threads",
+          "1",
+          "--gpu",
+          "off",
+          "--RTS",
+          "/private/tmp/bend2039g12-borrow-generation/evals/c_step_library_fixture.bend",
+          "/private/tmp/bend2039g12-borrow-generation/bend2/base.bend",
+          "/tmp/bend-g12-new-boundaries-7fZjbY/c_step_library_fixture-clibrary.tsv",
+          "/tmp/bend-g12-new-boundaries-7fZjbY/c_step_library_fixture-clibrary.exports",
+          "compile-c",
+          "/tmp/bend-g12-new-boundaries-7fZjbY/c_step_library_fixture-clibrary.c",
+          "/private/tmp/bend2039g12-borrow-generation/bend2/selfhost/c_runtime.c"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 8407,
+        "results": [
+          {
+            "result": "EmitSuccess",
+            "bytes": 1156026,
+            "modules": 2
+          }
+        ],
+        "phaseStarts": [
+          {
+            "phase": "parse"
+          },
+          {
+            "phase": "expand"
+          },
+          {
+            "phase": "check"
+          },
+          {
+            "phase": "emit-c"
+          }
+        ]
+      },
+      "clang": {
+        "command": [
+          "clang",
+          "-std=c11",
+          "-O0",
+          "-pthread",
+          "/tmp/bend-g12-new-boundaries-7fZjbY/c_step_library_fixture-clibrary.c",
+          "/tmp/bend-g12-native-export-caller.c",
+          "-lm",
+          "-o",
+          "/tmp/bend-g12-new-boundaries-7fZjbY/c_step_library_fixture-clibrary"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 789.9575829999994,
+        "stderrSha256": "1d7a2da17501cbd4d3a3ee0f251aa3eb89a925893e397b5fa3d586a32e3335ed"
+      },
+      "execute": {
+        "command": [
+          "/tmp/bend-g12-new-boundaries-7fZjbY/c_step_library_fixture-clibrary"
+        ],
+        "status": 1,
+        "signal": null,
+        "elapsedMs": 2.6557920000013837,
+        "stdout": "",
+        "stderr": "bend: runtime fail-stop\n"
+      }
+    }
+  ],
+  "unsupportedGenericExport": {
+    "interpretation": "Array.get with erased polymorphic element type is a documented unsupported C first-class native surface; its C refusal is not classified as an arity bug and no descriptor fallback is proposed.",
+    "rows": [
+      {
+        "source": "evals/c_step_library_fixture.bend",
+        "sourceSha256": "5e53a4815f2fc7f12c3fdea7bfc12764daf65096b125a22a5f884c0cf0e710df",
+        "target": "js",
+        "names": [
+          "Array.get"
+        ],
+        "output": "/tmp/bend-g12-new-boundaries-rEGqdJ/c_step_library_fixture-jslibrary.js",
+        "outputExists": true,
+        "outputSha256": "cada417a2c3c9c99e084ade32f783ea56907bc9651a3076d8e71f6bbf839c379",
+        "native": {
+          "command": [
+            "/tmp/bend-g12-frozen-native",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--RTS",
+            "/private/tmp/bend2039g12-borrow-generation/evals/c_step_library_fixture.bend",
+            "/private/tmp/bend2039g12-borrow-generation/bend2/base.bend",
+            "/tmp/bend-g12-new-boundaries-rEGqdJ/c_step_library_fixture-jslibrary.tsv",
+            "/tmp/bend-g12-new-boundaries-rEGqdJ/c_step_library_fixture-jslibrary.exports",
+            "compile",
+            "/tmp/bend-g12-new-boundaries-rEGqdJ/c_step_library_fixture-jslibrary.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 2509,
+          "results": [
+            {
+              "result": "EmitSuccess",
+              "bytes": 377788,
+              "modules": 2
+            }
+          ],
+          "phaseStarts": [
+            {
+              "phase": "parse"
+            },
+            {
+              "phase": "expand"
+            },
+            {
+              "phase": "check"
+            },
+            {
+              "phase": "emit"
+            }
+          ]
+        }
+      },
+      {
+        "source": "evals/c_step_library_fixture.bend",
+        "sourceSha256": "5e53a4815f2fc7f12c3fdea7bfc12764daf65096b125a22a5f884c0cf0e710df",
+        "target": "c",
+        "names": [
+          "Array.get"
+        ],
+        "output": "/tmp/bend-g12-new-boundaries-rEGqdJ/c_step_library_fixture-clibrary.c",
+        "outputExists": false,
+        "native": {
+          "command": [
+            "/tmp/bend-g12-frozen-native",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--RTS",
+            "/private/tmp/bend2039g12-borrow-generation/evals/c_step_library_fixture.bend",
+            "/private/tmp/bend2039g12-borrow-generation/bend2/base.bend",
+            "/tmp/bend-g12-new-boundaries-rEGqdJ/c_step_library_fixture-clibrary.tsv",
+            "/tmp/bend-g12-new-boundaries-rEGqdJ/c_step_library_fixture-clibrary.exports",
+            "compile-c",
+            "/tmp/bend-g12-new-boundaries-rEGqdJ/c_step_library_fixture-clibrary.c",
+            "/private/tmp/bend2039g12-borrow-generation/bend2/selfhost/c_runtime.c"
+          ],
+          "status": 1,
+          "signal": null,
+          "elapsedMs": 2336,
+          "results": [],
+          "phaseStarts": [
+            {
+              "phase": "parse"
+            },
+            {
+              "phase": "expand"
+            },
+            {
+              "phase": "check"
+            },
+            {
+              "phase": "emit-c"
+            }
+          ],
+          "diagnostic": "NATIVE_BEGIN {\"computeThreads\":1,\"parserFuel\":8000000,\"phase\":\"compile-c\",\"phaseTraceVersion\":3}\nNATIVE_PHASE_START {\"phase\":\"parse\"}\nNATIVE_FUEL {\"sourceOrdinal\":1,\"cells\":8000000,\"elapsedMs\":32.609,\"processPeakRssBeforeBytes\":5095424,\"processPeakRssAfterBytes\":69124096}\nNATIVE_FUEL {\"sourceOrdinal\":2,\"cells\":8000000,\"elapsedMs\":23.514,\"processPeakRssBeforeBytes\":71876608,\"processPeakRssAfterBytes\":71876608}\nNATIVE_PHASE {\"phase\":\"parse\",\"elapsedMs\":419.198,\"userCpuMs\":411.211,\"systemCpuMs\":7.878,\"modules\":2,\"sourceBytes\":80191,\"foreignBytes\":305668,\"eagerFuelCells\":16000000,\"fuelBuildMs\":56.123}\nNATIVE_PHASE_START {\"phase\":\"expand\"}\nNATIVE_PHASE {\"phase\":\"expand\",\"elapsedMs\":212.853,\"userCpuMs\":212.526,\"systemCpuMs\":0.280,\"chunkAdvances\":28840,\"chunkQuantum\":64}\nNATIVE_PHASE_START {\"phase\":\"check\"}\nNATIVE_PHASE {\"phase\":\"check\",\"elapsedMs\":1599.062,\"userCpuMs\":1595.340,\"systemCpuMs\":3.110,\"chunkAdvances\":143597,\"chunkQuantum\":64}\nNATIVE_PHASE_START {\"phase\":\"emit-c\"}\nNATIVE_PHASE {\"phase\":\"emit-c\",\"elapsedMs\":99.631,\"userCpuMs\":98.823,\"systemCpuMs\":0.688,\"chunkAdvances\":8823,\"chunkQuantum\":64}\na library export names no callable, or its checked parameter count disagrees with its entry\nbend: native experiment: Bend rejected the input\n"
+        }
+      }
+    ]
+  },
+  "guards": [
+    {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 203685888,
+      "peakFootprintBytes": 139920680,
+      "elapsedMs": 31432,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/tmp/bend2039g8-accepted-mac-evidence/bun-1.4.3",
+        "/tmp/bend-g12-new-boundaries.mjs"
+      ],
+      "label": "heavy command",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793131238443-e5492f0f2052e2a0.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 182878208,
+      "peakFootprintBytes": 132154640,
+      "elapsedMs": 11783,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/tmp/bend2039g8-accepted-mac-evidence/bun-1.4.3",
+        "/tmp/bend-g12-supported-native-export.mjs"
+      ],
+      "label": "heavy command",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793131475577-d00ca520448772e7.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  ],
+  "rawReports": [
+    "/tmp/bend-g12-new-boundaries-rEGqdJ/receipt.json",
+    "/tmp/bend-g12-new-boundaries-7fZjbY/receipt.json"
+  ]
+}

@@ -1,0 +1,516 @@
+{
+  "schemaVersion": 1,
+  "status": "G10A_FULL_40_CASE_C_AND_JS_MATRICES_PASS_NATIVE_BUILD_REMAINS_REJECTED",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "sourceCheckpoint": "50bf6b0d",
+  "buildRejectionReceipt": "evals/receipts/root2039g10a_native_deadline_rejected.json",
+  "scope": "Delayed complete target-matrix results for the rejected g10a fresh canonical compiler image. These are independent backend consumer results, not native-build/bootstrap acceptance.",
+  "rows": [
+    {
+      "target": "c",
+      "command": [
+        "/Users/ilyagulya/bend-g10-boundaries-64ba5e93-ca6a-479a-a4d2-59dfb725ee3f/.tools/bun",
+        "evals/c_target_fixtures_run.ts",
+        "--driver=/tmp/bend-remote2039g10a-driver",
+        "--node=/Users/ilyagulya/bend-g10-boundaries-64ba5e93-ca6a-479a-a4d2-59dfb725ee3f/.tools/node",
+        "--target=c",
+        "--logs=/tmp/bend-remote2039g10a-admission-MlNRtL/matrix-c",
+        "--keep"
+      ],
+      "status": 0,
+      "signal": null,
+      "elapsedMs": 1261082.202917,
+      "summary": {
+        "status": "PASS",
+        "mode": "acceptance-matrix",
+        "target": "c",
+        "fixtures": 40,
+        "logDir": "/tmp/bend-remote2039g10a-admission-MlNRtL/matrix-c",
+        "nodeVersion": "v23.11.0",
+        "v8": "12.9.202.28-node.14|--max-old-space-size=3072,-e,process.stdout.write(process.versions.v8 + \"|\" + process.execArgv.join(\",\"))"
+      },
+      "observations": [
+        {
+          "fixture": "c_target_wide_record.bend",
+          "target": "c",
+          "observed": "133"
+        },
+        {
+          "fixture": "c_target_nested_adt.bend",
+          "target": "c",
+          "observed": "15"
+        },
+        {
+          "fixture": "c_target_array_u32.bend",
+          "target": "c",
+          "observed": "15"
+        },
+        {
+          "fixture": "c_target_array_wide.bend",
+          "target": "c",
+          "observed": "16"
+        },
+        {
+          "fixture": "c_target_multiarm.bend",
+          "target": "c",
+          "observed": "13"
+        },
+        {
+          "fixture": "c_target_char_head.bend",
+          "target": "c",
+          "observed": "955\n955"
+        },
+        {
+          "fixture": "c_target_char_to_list.bend",
+          "target": "c",
+          "observed": "955\n120"
+        },
+        {
+          "fixture": "c_target_string_from_list.bend",
+          "target": "c",
+          "observed": "λx\n955\n955\n120"
+        },
+        {
+          "fixture": "c_target_array_nat.bend",
+          "target": "c",
+          "observed": "7"
+        },
+        {
+          "fixture": "c_target_array_nested.bend",
+          "target": "c",
+          "observed": "12"
+        },
+        {
+          "fixture": "c_target_drop_fields.bend",
+          "target": "c",
+          "observed": "5"
+        },
+        {
+          "fixture": "c_target_utf8_literal.bend",
+          "target": "c",
+          "observed": "λx"
+        },
+        {
+          "fixture": "c_target_utf8_astral.bend",
+          "target": "c",
+          "observed": "𝄞"
+        },
+        {
+          "fixture": "c_target_trigraph_literal.bend",
+          "target": "c",
+          "observed": "??=??/??'??(??)??!??<??>??-"
+        },
+        {
+          "fixture": "phys_storage_paths.bend",
+          "target": "c",
+          "observed": "2655042671\n3,9"
+        },
+        {
+          "fixture": "generic_ctor_domains.bend",
+          "target": "c",
+          "observed": "15\n21"
+        },
+        {
+          "fixture": "c_target_bool_prims.bend",
+          "target": "c",
+          "observed": "1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n1\n0\n1\n1\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n0\n1\n0\n0\n1\n1\n0\n1\n1\n0\n1\n0\n1\n0"
+        },
+        {
+          "fixture": "c_target_clo_field.bend",
+          "target": "c",
+          "observed": "7"
+        },
+        {
+          "fixture": "c_target_repeat_data.bend",
+          "target": "c",
+          "observed": "8"
+        },
+        {
+          "fixture": "c_target_disjoint_type_cells.bend",
+          "target": "c",
+          "observed": "5"
+        },
+        {
+          "fixture": "c_target_repeat_capture.bend",
+          "target": "c",
+          "observed": "10"
+        },
+        {
+          "fixture": "c_target_alias_paths.bend",
+          "target": "c",
+          "observed": "8"
+        },
+        {
+          "fixture": "c_target_branch_arms.bend",
+          "target": "c",
+          "observed": "hi"
+        },
+        {
+          "fixture": "c_target_region_leave_repeat.bend",
+          "target": "c",
+          "observed": "7\n6"
+        },
+        {
+          "fixture": "c_target_bool_fields.bend",
+          "target": "c",
+          "observed": "True\nFalse\n1"
+        },
+        {
+          "fixture": "c_target_region_tail_capture.bend",
+          "target": "c",
+          "observed": "11\n12"
+        },
+        {
+          "fixture": "c_target_bool_xor.bend",
+          "target": "c",
+          "observed": "False\nTrue\nTrue\nFalse"
+        },
+        {
+          "fixture": "c_target_show_data.bend",
+          "target": "c",
+          "observed": "[1, 2]"
+        },
+        {
+          "fixture": "c_target_user_ctor_show.bend",
+          "target": "c",
+          "observed": "c_target_q_ctors.T.Tuple{c_target_q_ctors.T.Con{1, c_target_q_ctors.T.Nil{}}, 2}"
+        },
+        {
+          "fixture": "c_target_wide_node.bend",
+          "target": "c",
+          "observed": "13\n11\n0"
+        },
+        {
+          "fixture": "args.bend",
+          "target": "c",
+          "observed": "True 0"
+        },
+        {
+          "fixture": "args_bytes.bend",
+          "target": "c",
+          "observed": "True 0"
+        },
+        {
+          "fixture": "repro_js_non_tail_reclaim.bend",
+          "target": "c",
+          "observed": "24000011"
+        },
+        {
+          "fixture": "array_fork.bend",
+          "target": "c",
+          "observed": "136\n100\n100\n96\n99\n156\n42\n42\n7\n8\n12\n845495236"
+        },
+        {
+          "fixture": "array_atomic_fadd.bend",
+          "target": "c",
+          "observed": "68\n2448.25"
+        },
+        {
+          "fixture": "array_atomic_edges.bend",
+          "target": "c",
+          "observed": "4294967295\n2\n42\n42\n42\n7\n2147483648\n0\n1266679808\n1266679808"
+        },
+        {
+          "fixture": "f32_read_round_once.bend",
+          "target": "c",
+          "observed": "1065353215 1065353217 1266679808 2139095039 2139095040 1 3212836863\n1065353215 1065353217 1266679808 2139095039 1"
+        },
+        {
+          "fixture": "f32_read_whitespace.bend",
+          "target": "c",
+          "observed": "1 1 1 1 1 1 1\nnone none none none none none none none none none none none none\nnone none none none none none\n-125 0.5 inf nan\nnone none none none\nnone none none none none"
+        },
+        {
+          "fixture": "f32_pow_unit_base.bend",
+          "target": "c",
+          "observed": "1 1 1 1 8"
+        },
+        {
+          "fixture": "word_float_roundtrip.bend",
+          "target": "c",
+          "observed": "1065353216\n2147483648\n1\n2139095040\n1065353217\n2130706432"
+        }
+      ],
+      "pins": {
+        "mode": "acceptance-matrix",
+        "target": "c",
+        "node": "/Users/ilyagulya/bend-g10-boundaries-64ba5e93-ca6a-479a-a4d2-59dfb725ee3f/.tools/node",
+        "nodeVersion": "v23.11.0",
+        "v8": "12.9.202.28-node.14|--max-old-space-size=3072,-e,process.stdout.write(process.versions.v8 + \"|\" + process.execArgv.join(\",\"))",
+        "driver": "/tmp/bend-remote2039g10a-driver",
+        "guardianTs": "/Users/ilyagulya/bend-g10-boundaries-64ba5e93-ca6a-479a-a4d2-59dfb725ee3f/evals/heavy_gate.ts",
+        "guardianTsSha256": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015",
+        "guardianNativeC": "/Users/ilyagulya/bend-g10-boundaries-64ba5e93-ca6a-479a-a4d2-59dfb725ee3f/evals/heavy_gate_native.c",
+        "guardianNativeCSha256": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b",
+        "cwd": "/Users/ilyagulya/bend-g10-boundaries-64ba5e93-ca6a-479a-a4d2-59dfb725ee3f",
+        "base": "/Users/ilyagulya/bend-g10-boundaries-64ba5e93-ca6a-479a-a4d2-59dfb725ee3f/bend2/base.bend",
+        "baseSha256": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+        "runtime": "/Users/ilyagulya/bend-g10-boundaries-64ba5e93-ca6a-479a-a4d2-59dfb725ee3f/bend2/selfhost/c_runtime.c",
+        "runtimeSha256": "db86d9ad9060529f3ee1ad62b7e3b11ce440eb3bba0a57217a59be8a59c60e04",
+        "logs": "/tmp/bend-remote2039g10a-admission-MlNRtL/matrix-c",
+        "gate": {
+          "memoryMiB": 8192,
+          "rssMiB": 8192,
+          "pollMs": 10,
+          "timeoutMs": 600000
+        },
+        "fixtures": 40
+      },
+      "stderrSha256": "5db6b85dacea1bab4123ebbcf517c31cd40ceb382045e9be9dd0e55562a5b1ca"
+    },
+    {
+      "target": "js",
+      "command": [
+        "/Users/ilyagulya/bend-g10-boundaries-64ba5e93-ca6a-479a-a4d2-59dfb725ee3f/.tools/bun",
+        "evals/c_target_fixtures_run.ts",
+        "--driver=/tmp/bend-remote2039g10a-driver",
+        "--node=/Users/ilyagulya/bend-g10-boundaries-64ba5e93-ca6a-479a-a4d2-59dfb725ee3f/.tools/node",
+        "--target=js",
+        "--logs=/tmp/bend-remote2039g10a-admission-MlNRtL/matrix-js",
+        "--keep"
+      ],
+      "status": 0,
+      "signal": null,
+      "elapsedMs": 394814.30570799997,
+      "summary": {
+        "status": "PASS",
+        "mode": "acceptance-matrix",
+        "target": "js",
+        "fixtures": 40,
+        "logDir": "/tmp/bend-remote2039g10a-admission-MlNRtL/matrix-js",
+        "nodeVersion": "v23.11.0",
+        "v8": "12.9.202.28-node.14|--max-old-space-size=3072,-e,process.stdout.write(process.versions.v8 + \"|\" + process.execArgv.join(\",\"))"
+      },
+      "observations": [
+        {
+          "fixture": "c_target_wide_record.bend",
+          "target": "js",
+          "observed": "133"
+        },
+        {
+          "fixture": "c_target_nested_adt.bend",
+          "target": "js",
+          "observed": "15"
+        },
+        {
+          "fixture": "c_target_array_u32.bend",
+          "target": "js",
+          "observed": "15"
+        },
+        {
+          "fixture": "c_target_array_wide.bend",
+          "target": "js",
+          "observed": "16"
+        },
+        {
+          "fixture": "c_target_multiarm.bend",
+          "target": "js",
+          "observed": "13"
+        },
+        {
+          "fixture": "c_target_char_head.bend",
+          "target": "js",
+          "observed": "955\n955"
+        },
+        {
+          "fixture": "c_target_char_to_list.bend",
+          "target": "js",
+          "observed": "955\n120"
+        },
+        {
+          "fixture": "c_target_string_from_list.bend",
+          "target": "js",
+          "observed": "λx\n955\n955\n120"
+        },
+        {
+          "fixture": "c_target_array_nat.bend",
+          "target": "js",
+          "observed": "7"
+        },
+        {
+          "fixture": "c_target_array_nested.bend",
+          "target": "js",
+          "observed": "12"
+        },
+        {
+          "fixture": "c_target_drop_fields.bend",
+          "target": "js",
+          "observed": "5"
+        },
+        {
+          "fixture": "c_target_utf8_literal.bend",
+          "target": "js",
+          "observed": "λx"
+        },
+        {
+          "fixture": "c_target_utf8_astral.bend",
+          "target": "js",
+          "observed": "𝄞"
+        },
+        {
+          "fixture": "c_target_trigraph_literal.bend",
+          "target": "js",
+          "observed": "??=??/??'??(??)??!??<??>??-"
+        },
+        {
+          "fixture": "phys_storage_paths.bend",
+          "target": "js",
+          "observed": "2655042671\n3,9"
+        },
+        {
+          "fixture": "generic_ctor_domains.bend",
+          "target": "js",
+          "observed": "15\n21"
+        },
+        {
+          "fixture": "c_target_bool_prims.bend",
+          "target": "js",
+          "observed": "1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n1\n0\n1\n1\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n0\n1\n0\n0\n1\n1\n0\n1\n1\n0\n1\n0\n1\n0"
+        },
+        {
+          "fixture": "c_target_clo_field.bend",
+          "target": "js",
+          "observed": "7"
+        },
+        {
+          "fixture": "c_target_repeat_data.bend",
+          "target": "js",
+          "observed": "8"
+        },
+        {
+          "fixture": "c_target_disjoint_type_cells.bend",
+          "target": "js",
+          "observed": "5"
+        },
+        {
+          "fixture": "c_target_repeat_capture.bend",
+          "target": "js",
+          "observed": "10"
+        },
+        {
+          "fixture": "c_target_alias_paths.bend",
+          "target": "js",
+          "observed": "8"
+        },
+        {
+          "fixture": "c_target_branch_arms.bend",
+          "target": "js",
+          "observed": "hi"
+        },
+        {
+          "fixture": "c_target_region_leave_repeat.bend",
+          "target": "js",
+          "observed": "7\n6"
+        },
+        {
+          "fixture": "c_target_bool_fields.bend",
+          "target": "js",
+          "observed": "True\nFalse\n1"
+        },
+        {
+          "fixture": "c_target_region_tail_capture.bend",
+          "target": "js",
+          "observed": "11\n12"
+        },
+        {
+          "fixture": "c_target_bool_xor.bend",
+          "target": "js",
+          "observed": "False\nTrue\nTrue\nFalse"
+        },
+        {
+          "fixture": "c_target_show_data.bend",
+          "target": "js",
+          "observed": "[1, 2]"
+        },
+        {
+          "fixture": "c_target_user_ctor_show.bend",
+          "target": "js",
+          "observed": "c_target_q_ctors.T.Tuple{c_target_q_ctors.T.Con{1, c_target_q_ctors.T.Nil{}}, 2}"
+        },
+        {
+          "fixture": "c_target_wide_node.bend",
+          "target": "js",
+          "observed": "13\n11\n0"
+        },
+        {
+          "fixture": "args.bend",
+          "target": "js",
+          "observed": "True 0"
+        },
+        {
+          "fixture": "args_bytes.bend",
+          "target": "js",
+          "observed": "True 0"
+        },
+        {
+          "fixture": "repro_js_non_tail_reclaim.bend",
+          "target": "js",
+          "observed": "24000011"
+        },
+        {
+          "fixture": "array_fork.bend",
+          "target": "js",
+          "observed": "136\n100\n100\n96\n99\n156\n42\n42\n7\n8\n12\n845495236"
+        },
+        {
+          "fixture": "array_atomic_fadd.bend",
+          "target": "js",
+          "observed": "68\n2448.25"
+        },
+        {
+          "fixture": "array_atomic_edges.bend",
+          "target": "js",
+          "observed": "4294967295\n2\n42\n42\n42\n7\n2147483648\n0\n1266679808\n1266679808"
+        },
+        {
+          "fixture": "f32_read_round_once.bend",
+          "target": "js",
+          "observed": "1065353215 1065353217 1266679808 2139095039 2139095040 1 3212836863\n1065353215 1065353217 1266679808 2139095039 1"
+        },
+        {
+          "fixture": "f32_read_whitespace.bend",
+          "target": "js",
+          "observed": "1 1 1 1 1 1 1\nnone none none none none none none none none none none none none\nnone none none none none none\n-125 0.5 inf nan\nnone none none none\nnone none none none none"
+        },
+        {
+          "fixture": "f32_pow_unit_base.bend",
+          "target": "js",
+          "observed": "1 1 1 1 8"
+        },
+        {
+          "fixture": "word_float_roundtrip.bend",
+          "target": "js",
+          "observed": "1065353216\n2147483648\n1\n2139095040\n1065353217\n2130706432"
+        }
+      ],
+      "pins": {
+        "mode": "acceptance-matrix",
+        "target": "js",
+        "node": "/Users/ilyagulya/bend-g10-boundaries-64ba5e93-ca6a-479a-a4d2-59dfb725ee3f/.tools/node",
+        "nodeVersion": "v23.11.0",
+        "v8": "12.9.202.28-node.14|--max-old-space-size=3072,-e,process.stdout.write(process.versions.v8 + \"|\" + process.execArgv.join(\",\"))",
+        "driver": "/tmp/bend-remote2039g10a-driver",
+        "guardianTs": "/Users/ilyagulya/bend-g10-boundaries-64ba5e93-ca6a-479a-a4d2-59dfb725ee3f/evals/heavy_gate.ts",
+        "guardianTsSha256": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015",
+        "guardianNativeC": "/Users/ilyagulya/bend-g10-boundaries-64ba5e93-ca6a-479a-a4d2-59dfb725ee3f/evals/heavy_gate_native.c",
+        "guardianNativeCSha256": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b",
+        "cwd": "/Users/ilyagulya/bend-g10-boundaries-64ba5e93-ca6a-479a-a4d2-59dfb725ee3f",
+        "base": "/Users/ilyagulya/bend-g10-boundaries-64ba5e93-ca6a-479a-a4d2-59dfb725ee3f/bend2/base.bend",
+        "baseSha256": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+        "runtime": "/Users/ilyagulya/bend-g10-boundaries-64ba5e93-ca6a-479a-a4d2-59dfb725ee3f/bend2/selfhost/c_runtime.c",
+        "runtimeSha256": "db86d9ad9060529f3ee1ad62b7e3b11ce440eb3bba0a57217a59be8a59c60e04",
+        "logs": "/tmp/bend-remote2039g10a-admission-MlNRtL/matrix-js",
+        "gate": {
+          "memoryMiB": 8192,
+          "rssMiB": 8192,
+          "pollMs": 10,
+          "timeoutMs": 600000
+        },
+        "fixtures": 40
+      },
+      "stderrSha256": "4e5b402927eeb5c38ed4c46ba82d0a23d5425a1d34ef2a0699426a5d73fb78a9"
+    }
+  ],
+  "rawReportSha256": "b283e1d10851f82bd1c9206954be8f7ac140818f9f1b58c5d520452d0be4c935"
+}

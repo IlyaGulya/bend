@@ -70,5 +70,5 @@ def main():
     Unit <- report_datatype_template_parameter(check([template_parameter_loaded]), template_parameter_span)
     report_datatype_parameter_control(check([erased_parameter_loaded]))
 
-#| checker-datatype-template-parameter-rejected
-#| checker-datatype-erased-parameter-ok
+#|checker-datatype-template-parameter-rejected
+#|checker-datatype-erased-parameter-ok
