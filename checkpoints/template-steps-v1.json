@@ -18425,12 +18425,12 @@
     "checkpoints/checker_core_driver.bend": "25593371e3c4077865f5265e967f3a672ab123b19d672aea85330500f8c46b18",
     "checkpoints/bootstrap-real-source-corpus.json": "0c86976251badbf22ce010fdd203515ba89120750d626e36e3d96511748831c0",
     "bend2/bend.ts": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
-    "bend2/comp.ts": "e132ab4863ee64fe9fbe9b817adfd429e4e5627c52babfc43c88adf2aad6416d",
+    "bend2/comp.ts": "881137cef06d237068daf4740368baab826abab1be07181cc4ec2bc635cff2f1",
     "bend2/selfhost/parser.bend": "7389188a68a205bfccdd6a3457ba0f11e689967751e31fa6d35eaec3b09e3e37",
     "bend2/base.bend": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
     "evals/heavy_gate.ts": "204f3529704435455d20a9d5a126a8e9c62e002b6fed9044c8319da8a3c26ff2",
     "evals/validation_profile.ts": "d0bfd8124b334cb1db4792e49675290a971ae82730e57029173b07ff23d6938d",
-    "checkpoints/checker-core-owned-source-v1.json": "36c9c8fb1505c89155d4b99a5aa0ddf6e0592a8e29376781fbdb2631e3ee25bb",
+    "checkpoints/checker-core-owned-source-v1.json": "646de81f3665af9259b9cf41c4b2f293e7ebc41db4c7b7234859a3dc4b6bceca",
     "evals/checker_core_step_lower.ts": "05492ac6aaa7855b4d4770bf1f77d7abacf3cc3b956dfca9e6f411fffb202158",
     "evals/checker_core_owned_source.ts": "550ce39e12d8491fcc1913d3a84d49f37cf3f464b6f4df7944374c16504672e2",
     "evals/emitter_step_lower.ts": "4376c983d376a91f8464037444ddeccd1233f6a00f9c2362ce4fd88ab9f84371",
@@ -18453,7 +18453,7 @@
     "/private/tmp/bend2039-upgrade/bend2/selfhost/backend_ir.bend": "f19e76411b589cc396cda80bb8ad387cdb5e9aef17ae287641f0d29696a88e9e",
     "/private/tmp/bend2039-upgrade/bend2/selfhost/c_backend_sharing.bend": "c8861993d2ad81057a9ba8b187eb75f743a9005fbb021b43083e7e2906597a40",
     "/private/tmp/bend2039-upgrade/bend2/selfhost/emitter.bend": "47d68ba5f0b54c334e2c940b7bb6aabc7f3bba27142b816f27df8225cf3fae4f",
-    "/private/tmp/bend2039-upgrade/checkpoints/emitter_owned_v1.bend": "63a907767335ea0ca5a0e76f0f1238d20a61b2ff9932a0ec44510cc08db9d03a",
+    "/private/tmp/bend2039-upgrade/checkpoints/emitter_owned_v1.bend": "046f27c1e175de38206e2a4f671ef3f1d590fa64325debdce48a7882fd40185f",
     "/private/tmp/bend2039-upgrade/bend2/selfhost/core.bend": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
     "/private/tmp/bend2039-upgrade/bend2/selfhost/sha256.bend": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
     "bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
@@ -18472,5 +18472,5 @@
     "nativeBuildRun": false,
     "testsRun": false
   },
-  "generationManifestSha256": "d2acb68febfedc618866f6e0985408975fc9837d57e28b2adffd7975e6124076"
+  "generationManifestSha256": "7c71424ba7a73ef7d376b6acdb74798890d567f339a72994d84934f3df5273b1"
 }
