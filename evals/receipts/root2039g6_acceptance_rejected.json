@@ -1,0 +1,1194 @@
+{
+  "schemaVersion": 1,
+  "status": "G6_NATIVE_AND_BACKEND_MATRICES_PASS_BOOTSTRAP_DEADLINE_AND_NESTED_HOST_REJECTED",
+  "compilerAccepted": false,
+  "compilerBootstrapGreen": false,
+  "byteFixedpoint": false,
+  "scope": "Current canonical g6 producer and full root; whole native build, full C/JS matrices and native consumers pass; nested host consumer and monolithic600s bootstrap do not pass",
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "sourceCheckpoint": "d2d4f480",
+  "runtime": {
+    "bun": "1.4.3",
+    "revision": "c6da4a4d3010e5553438c60f6bd76d981976867c"
+  },
+  "producerSha256": "318c55c449115cb820bf77c3ac500a1c07ed8473adbbe6eed9c61088f4a0009e",
+  "root": {
+    "path": "checkpoints/.bootstrap_compiler_root_release2039g4.bend",
+    "sha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed"
+  },
+  "inputs": {
+    "checkpoints/root-release2039g6-native-build.json": "87d2e59ae580e7d61dcc5a2b4671e42bcbf55837b5def02a9ef4bb5f2287bd6d",
+    "checkpoints/root-release2039g4.native.corpus.json": "acfb20bad4804cff7d9c2e2de4edf47caacccb79949dc0ad37c20c5bbcaf4102",
+    "checkpoints/selfhost-root-release2039g6.json": "6ee7cbd848d0e128aeb7cc6be528fe644b3f53650f84594433064bb459ab7331",
+    "checkpoints/bootstrap-parser-rebuild-release2039g6.native-build.result.json": "2ba00c36a57cd473a8623172dd937e2b83e4d4ff00f9f20838db718b7cbf41be",
+    "checkpoints/root-release2039g6-build.result.json": "f4ecfa682f8d60298fbfda122c052747c0c4c8c28153623cc62a94c6e02e886e",
+    "checkpoints/selfhost-release2039g6-bootstrap.json": "3640540aa4a0bf6a16d9bf461afc1e9ef352f0175f80165456f4b07cb7964c38"
+  },
+  "commands": [
+    {
+      "label": "runtime",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/opt/homebrew/bin/bun",
+        "evals/gen_c_runtime.ts"
+      ],
+      "status": "PASS",
+      "elapsedMs": 185
+    },
+    {
+      "label": "runtime-check",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/opt/homebrew/bin/bun",
+        "evals/gen_c_runtime.ts",
+        "--check"
+      ],
+      "status": "PASS",
+      "elapsedMs": 130
+    },
+    {
+      "label": "owned",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/opt/homebrew/bin/bun",
+        "evals/checker_core_owned_source.ts"
+      ],
+      "status": "PASS",
+      "elapsedMs": 16832
+    },
+    {
+      "label": "template",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/opt/homebrew/bin/bun",
+        "evals/template_step_lower.ts"
+      ],
+      "status": "PASS",
+      "elapsedMs": 898
+    },
+    {
+      "label": "checker",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/opt/homebrew/bin/bun",
+        "evals/checker_core_step_lower.ts"
+      ],
+      "status": "PASS",
+      "elapsedMs": 7874
+    },
+    {
+      "label": "emitter",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/opt/homebrew/bin/bun",
+        "evals/emitter_step_lower.ts"
+      ],
+      "status": "PASS",
+      "elapsedMs": 11569
+    },
+    {
+      "label": "parser-source",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "--smol",
+        "evals/bootstrap_parser_rebuild.ts",
+        "--prepare-source",
+        "--run-id",
+        "release2039g6"
+      ],
+      "status": "PASS",
+      "elapsedMs": 57201
+    },
+    {
+      "label": "parser-public-source",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "--smol",
+        "evals/bootstrap_parser_public_gate.ts",
+        "--parser=checkpoints/.bootstrap_parser_rebuild_release2039g6_source.bend",
+        "--entry=parse_module_tokens",
+        "--report=checkpoints/bootstrap-parser-public-release2039g6-source.json"
+      ],
+      "status": "PASS",
+      "elapsedMs": 10279
+    },
+    {
+      "label": "parser-source-gate",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "--smol",
+        "evals/bootstrap_parser_fast.ts",
+        "--parser=checkpoints/.bootstrap_parser_rebuild_release2039g6_source.bend",
+        "--entry=parse_module_tokens",
+        "--public-report=checkpoints/bootstrap-parser-public-release2039g6-source.json",
+        "--report=checkpoints/bootstrap-parser-source-gate-release2039g6.json"
+      ],
+      "status": "PASS",
+      "elapsedMs": 22429
+    },
+    {
+      "label": "parser-prepare",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "--smol",
+        "evals/bootstrap_parser_rebuild.ts",
+        "--prepare",
+        "--run-id",
+        "release2039g6",
+        "--source-gate",
+        "checkpoints/bootstrap-parser-source-gate-release2039g6.json"
+      ],
+      "status": "PASS",
+      "elapsedMs": 29468
+    },
+    {
+      "label": "parser-build",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "--smol",
+        "evals/bootstrap_parser_rebuild.ts",
+        "--build-native",
+        "--run-id",
+        "release2039g6"
+      ],
+      "status": "PASS",
+      "elapsedMs": 16923
+    },
+    {
+      "label": "parser-public-native",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "--smol",
+        "evals/bootstrap_parser_public_gate.ts",
+        "--parser=checkpoints/.bootstrap_parser_rebuild_release2039g6_generated_fuel.bend",
+        "--entry=parse_with_fuel",
+        "--report=checkpoints/bootstrap-parser-public-release2039g6-native.json"
+      ],
+      "status": "PASS",
+      "elapsedMs": 2653
+    },
+    {
+      "label": "parser-native-gate",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "--smol",
+        "evals/bootstrap_parser_fast.ts",
+        "--parser=checkpoints/.bootstrap_parser_rebuild_release2039g6_generated_fuel.bend",
+        "--entry=parse_with_fuel",
+        "--component=checkpoints/bootstrap-parser-rebuild-release2039g6.js",
+        "--component-build=checkpoints/bootstrap-parser-rebuild-release2039g6.native-build.result.json",
+        "--public-report=checkpoints/bootstrap-parser-public-release2039g6-native.json",
+        "--report=checkpoints/bootstrap-parser-candidate-gate-release2039g6.json"
+      ],
+      "status": "PASS",
+      "elapsedMs": 117397
+    },
+    {
+      "label": "parser-accept",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "--smol",
+        "evals/bootstrap_parser_rebuild.ts",
+        "--build",
+        "--run-id",
+        "release2039g6",
+        "--candidate-gate",
+        "checkpoints/bootstrap-parser-candidate-gate-release2039g6.json"
+      ],
+      "status": "PASS",
+      "elapsedMs": 2467
+    },
+    {
+      "label": "compose",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/opt/homebrew/bin/bun",
+        "evals/selfhost_driver_source.ts",
+        "--parser-build=checkpoints/bootstrap-parser-rebuild-release2039g6.native-build.result.json",
+        "--root=checkpoints/.bootstrap_compiler_root_release2039g4.bend",
+        "--manifest=checkpoints/selfhost-root-release2039g6.json"
+      ],
+      "status": "PASS",
+      "elapsedMs": 502
+    },
+    {
+      "label": "js-build",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "--smol",
+        "evals/checker_core_component_build.ts",
+        "--file=checkpoints/.bootstrap_compiler_root_release2039g4.bend",
+        "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step,emit_c_modules_start,emit_c_library_start,c_emitter_step",
+        "--artifact=checkpoints/root-release2039g6.js",
+        "--report=checkpoints/root-release2039g6-build"
+      ],
+      "status": "PASS",
+      "elapsedMs": 75703
+    },
+    {
+      "label": "capture-compile",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--experimental-strip-types",
+        "/tmp/bend2039-candidate-worker.mjs",
+        "/private/tmp/bend2039-upgrade/evals/candidate_host.ts",
+        "--candidate=checkpoints/root-release2039g6.js",
+        "--candidate-build=checkpoints/root-release2039g6-build.result.json",
+        "--parser=checkpoints/bootstrap-parser-rebuild-release2039g6.js",
+        "evals/repro_js_non_tail_reclaim.bend",
+        "-o",
+        "/tmp/bend2039g6-admission-EtztfK/capture.js"
+      ],
+      "status": "PASS",
+      "elapsedMs": 14947
+    },
+    {
+      "label": "capture-run",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "/tmp/bend2039g6-admission-EtztfK/capture.js"
+      ],
+      "status": "PASS",
+      "elapsedMs": 1772
+    },
+    {
+      "label": "matrix-c",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/c_target_fixtures_run.ts",
+        "--driver=/tmp/bend2039g6-driver",
+        "--node=/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--target=c",
+        "--logs=/tmp/bend2039g6-admission-EtztfK/matrix-c",
+        "--keep"
+      ],
+      "status": "PASS",
+      "elapsedMs": 1973208
+    },
+    {
+      "label": "matrix-js",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/c_target_fixtures_run.ts",
+        "--driver=/tmp/bend2039g6-driver",
+        "--node=/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--target=js",
+        "--logs=/tmp/bend2039g6-admission-EtztfK/matrix-js",
+        "--keep"
+      ],
+      "status": "PASS",
+      "elapsedMs": 593505
+    },
+    {
+      "label": "native-consumers",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/opt/homebrew/bin/bun",
+        "/tmp/bend2039g6-native-foreign-suite.mjs"
+      ],
+      "status": "PASS",
+      "elapsedMs": 143874
+    },
+    {
+      "label": "nested-host-consumers",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/opt/homebrew/bin/bun",
+        "/tmp/bend2039g6-nested-host.mjs"
+      ],
+      "status": "FAIL",
+      "elapsedMs": 18970
+    }
+  ],
+  "backendMatrices": [
+    {
+      "target": "c",
+      "status": "PASS",
+      "mode": "acceptance-matrix",
+      "fixtures": 33,
+      "logDir": "/tmp/bend2039g6-admission-EtztfK/matrix-c",
+      "nodeVersion": "v23.11.0",
+      "v8": "12.9.202.28-node.14|--max-old-space-size=3072,-e,process.stdout.write(process.versions.v8 + \"|\" + process.execArgv.join(\",\"))"
+    },
+    {
+      "target": "js",
+      "status": "PASS",
+      "mode": "acceptance-matrix",
+      "fixtures": 33,
+      "logDir": "/tmp/bend2039g6-admission-EtztfK/matrix-js",
+      "nodeVersion": "v23.11.0",
+      "v8": "12.9.202.28-node.14|--max-old-space-size=3072,-e,process.stdout.write(process.versions.v8 + \"|\" + process.execArgv.join(\",\"))"
+    }
+  ],
+  "nativeConsumers": {
+    "status": "NATIVE_FOREIGN_AND_LIBRARY_SMOKE_PASS",
+    "rows": [
+      {
+        "source": "tests/run/c_backend_link.bend",
+        "target": "c",
+        "passed": true,
+        "sourceSha256": "6765dbc7f143592c162b2c9a7dcd8243491ce8adf7b168f0564a6c2ed79b68c9",
+        "expected": "linked-comment-kept\nliteral-kept\nfid-linked\nsplice-kept\nsplice-kept\nmissing",
+        "native": {
+          "command": [
+            "/tmp/bend2039g6-native",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--RTS",
+            "/private/tmp/bend2039-upgrade/tests/run/c_backend_link.bend",
+            "/private/tmp/bend2039-upgrade/bend2/base.bend",
+            "/tmp/bend2039g6-native-foreign-orzlWB/c_backend_link-c.tsv",
+            "/tmp/bend2039g6-native-foreign-orzlWB/c_backend_link-c.exports",
+            "compile-c-module",
+            "/tmp/bend2039g6-native-foreign-orzlWB/c_backend_link-c.c",
+            "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+          ],
+          "status": 0,
+          "elapsedMs": 75771,
+          "phases": [
+            {
+              "phase": "parse",
+              "elapsedMs": 2209.449,
+              "userCpuMs": 1276.631,
+              "systemCpuMs": 27.204,
+              "modules": 5,
+              "sourceBytes": 115847,
+              "foreignBytes": 305668,
+              "eagerFuelCells": 40000000,
+              "fuelBuildMs": 353.587
+            },
+            {
+              "phase": "expand",
+              "elapsedMs": 675.261,
+              "userCpuMs": 459.584,
+              "systemCpuMs": 4.244,
+              "chunkAdvances": 42716,
+              "chunkQuantum": 64
+            },
+            {
+              "phase": "check",
+              "elapsedMs": 8611.586,
+              "userCpuMs": 5275.359,
+              "systemCpuMs": 36.889,
+              "chunkAdvances": 349039,
+              "chunkQuantum": 64
+            },
+            {
+              "phase": "emit-c",
+              "elapsedMs": 64081.107,
+              "userCpuMs": 39462.407,
+              "systemCpuMs": 355.378,
+              "chunkAdvances": 5927445,
+              "chunkQuantum": 64
+            }
+          ]
+        },
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/tmp/bend2039g6-native-foreign-orzlWB/c_backend_link-c.c",
+            "-lm",
+            "-o",
+            "/tmp/bend2039g6-native-foreign-orzlWB/c_backend_link-c"
+          ],
+          "status": 0,
+          "stderrSha256": "86fc630feded48b766b01c8e1b40b6b4b9a736e292da69185f281b68c6300241"
+        },
+        "execute": {
+          "command": [
+            "/tmp/bend2039g6-native-foreign-orzlWB/c_backend_link-c"
+          ],
+          "status": 0,
+          "stdout": "linked-comment-kept\nliteral-kept\nfid-linked\nsplice-kept\nsplice-kept\nmissing\n",
+          "stderr": ""
+        }
+      },
+      {
+        "source": "tests/run/c_backend_link.bend",
+        "target": "js",
+        "passed": true,
+        "sourceSha256": "6765dbc7f143592c162b2c9a7dcd8243491ce8adf7b168f0564a6c2ed79b68c9",
+        "expected": "linked-comment-kept\nliteral-kept\nfid-linked\nsplice-kept\nsplice-kept\nmissing",
+        "native": {
+          "command": [
+            "/tmp/bend2039g6-native",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--RTS",
+            "/private/tmp/bend2039-upgrade/tests/run/c_backend_link.bend",
+            "/private/tmp/bend2039-upgrade/bend2/base.bend",
+            "/tmp/bend2039g6-native-foreign-orzlWB/c_backend_link-js.tsv",
+            "/tmp/bend2039g6-native-foreign-orzlWB/c_backend_link-js.exports",
+            "compile-module",
+            "/tmp/bend2039g6-native-foreign-orzlWB/c_backend_link-js.js"
+          ],
+          "status": 0,
+          "elapsedMs": 8981,
+          "phases": [
+            {
+              "phase": "parse",
+              "elapsedMs": 1283.934,
+              "userCpuMs": 1181.385,
+              "systemCpuMs": 18.42,
+              "modules": 5,
+              "sourceBytes": 115847,
+              "foreignBytes": 78415,
+              "eagerFuelCells": 40000000,
+              "fuelBuildMs": 182.168
+            },
+            {
+              "phase": "expand",
+              "elapsedMs": 431.677,
+              "userCpuMs": 412.709,
+              "systemCpuMs": 1.803,
+              "chunkAdvances": 42716,
+              "chunkQuantum": 64
+            },
+            {
+              "phase": "check",
+              "elapsedMs": 6787.353,
+              "userCpuMs": 4948.659,
+              "systemCpuMs": 34.87,
+              "chunkAdvances": 349039,
+              "chunkQuantum": 64
+            },
+            {
+              "phase": "emit",
+              "elapsedMs": 456.519,
+              "userCpuMs": 429.278,
+              "systemCpuMs": 3.96,
+              "chunkAdvances": 25202,
+              "chunkQuantum": 64
+            }
+          ]
+        },
+        "execute": {
+          "command": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--max-old-space-size=3072",
+            "/tmp/bend2039g6-native-foreign-orzlWB/c_backend_link-js.js"
+          ],
+          "status": 0,
+          "stdout": "linked-comment-kept\nliteral-kept\nfid-linked\nsplice-kept\nsplice-kept\nmissing\n",
+          "stderr": ""
+        }
+      },
+      {
+        "source": "tests/run/family_field_hot.bend",
+        "target": "c",
+        "passed": true,
+        "sourceSha256": "8ca2a24bc66c7ce223c07178d92e33e265a695cfa54633db2f74431671168bb8",
+        "expected": "5",
+        "native": {
+          "command": [
+            "/tmp/bend2039g6-native",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--RTS",
+            "/private/tmp/bend2039-upgrade/tests/run/family_field_hot.bend",
+            "/private/tmp/bend2039-upgrade/bend2/base.bend",
+            "/tmp/bend2039g6-native-foreign-orzlWB/family_field_hot-c.tsv",
+            "/tmp/bend2039g6-native-foreign-orzlWB/family_field_hot-c.exports",
+            "compile-c-module",
+            "/tmp/bend2039g6-native-foreign-orzlWB/family_field_hot-c.c",
+            "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+          ],
+          "status": 0,
+          "elapsedMs": 14190,
+          "phases": [
+            {
+              "phase": "parse",
+              "elapsedMs": 518.293,
+              "userCpuMs": 500.703,
+              "systemCpuMs": 9.246,
+              "modules": 2,
+              "sourceBytes": 80519,
+              "foreignBytes": 305668,
+              "eagerFuelCells": 16000000,
+              "fuelBuildMs": 69.334
+            },
+            {
+              "phase": "expand",
+              "elapsedMs": 276.766,
+              "userCpuMs": 267.057,
+              "systemCpuMs": 0.925,
+              "chunkAdvances": 29061,
+              "chunkQuantum": 64
+            },
+            {
+              "phase": "check",
+              "elapsedMs": 2321.144,
+              "userCpuMs": 2224.424,
+              "systemCpuMs": 10.668,
+              "chunkAdvances": 144576,
+              "chunkQuantum": 64
+            },
+            {
+              "phase": "emit-c",
+              "elapsedMs": 11044.686,
+              "userCpuMs": 8839.221,
+              "systemCpuMs": 55.299,
+              "chunkAdvances": 1250015,
+              "chunkQuantum": 64
+            }
+          ]
+        },
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/tmp/bend2039g6-native-foreign-orzlWB/family_field_hot-c.c",
+            "-lm",
+            "-o",
+            "/tmp/bend2039g6-native-foreign-orzlWB/family_field_hot-c"
+          ],
+          "status": 0,
+          "stderrSha256": "65ea592b2afd7513d08231a82cbec832fc926c9ad4ea0eb5bf538fff6c44bda7"
+        },
+        "execute": {
+          "command": [
+            "/tmp/bend2039g6-native-foreign-orzlWB/family_field_hot-c"
+          ],
+          "status": 0,
+          "stdout": "5\n",
+          "stderr": ""
+        }
+      },
+      {
+        "source": "tests/run/family_field_hot.bend",
+        "target": "js",
+        "passed": true,
+        "sourceSha256": "8ca2a24bc66c7ce223c07178d92e33e265a695cfa54633db2f74431671168bb8",
+        "expected": "5",
+        "native": {
+          "command": [
+            "/tmp/bend2039g6-native",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--RTS",
+            "/private/tmp/bend2039-upgrade/tests/run/family_field_hot.bend",
+            "/private/tmp/bend2039-upgrade/bend2/base.bend",
+            "/tmp/bend2039g6-native-foreign-orzlWB/family_field_hot-js.tsv",
+            "/tmp/bend2039g6-native-foreign-orzlWB/family_field_hot-js.exports",
+            "compile-module",
+            "/tmp/bend2039g6-native-foreign-orzlWB/family_field_hot-js.js"
+          ],
+          "status": 0,
+          "elapsedMs": 4706,
+          "phases": [
+            {
+              "phase": "parse",
+              "elapsedMs": 716.971,
+              "userCpuMs": 524.867,
+              "systemCpuMs": 10.505,
+              "modules": 2,
+              "sourceBytes": 80519,
+              "foreignBytes": 78415,
+              "eagerFuelCells": 16000000,
+              "fuelBuildMs": 71.824
+            },
+            {
+              "phase": "expand",
+              "elapsedMs": 479.175,
+              "userCpuMs": 294.105,
+              "systemCpuMs": 1.775,
+              "chunkAdvances": 29061,
+              "chunkQuantum": 64
+            },
+            {
+              "phase": "check",
+              "elapsedMs": 3195.596,
+              "userCpuMs": 2361.111,
+              "systemCpuMs": 12.421,
+              "chunkAdvances": 144576,
+              "chunkQuantum": 64
+            },
+            {
+              "phase": "emit",
+              "elapsedMs": 282.583,
+              "userCpuMs": 259.316,
+              "systemCpuMs": 3.025,
+              "chunkAdvances": 15008,
+              "chunkQuantum": 64
+            }
+          ]
+        },
+        "execute": {
+          "command": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--max-old-space-size=3072",
+            "/tmp/bend2039g6-native-foreign-orzlWB/family_field_hot-js.js"
+          ],
+          "status": 0,
+          "stdout": "5\n",
+          "stderr": ""
+        }
+      },
+      {
+        "source": "tests/run/list_rebox_sum.bend",
+        "target": "c",
+        "passed": true,
+        "sourceSha256": "c046078c5a6c852d539c7456e4ce5fcf55d1556b8c37a08c1a8b711a1e9b379c",
+        "expected": "7\n3\nbounded",
+        "native": {
+          "command": [
+            "/tmp/bend2039g6-native",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--RTS",
+            "/private/tmp/bend2039-upgrade/tests/run/list_rebox_sum.bend",
+            "/private/tmp/bend2039-upgrade/bend2/base.bend",
+            "/tmp/bend2039g6-native-foreign-orzlWB/list_rebox_sum-c.tsv",
+            "/tmp/bend2039g6-native-foreign-orzlWB/list_rebox_sum-c.exports",
+            "compile-c-module",
+            "/tmp/bend2039g6-native-foreign-orzlWB/list_rebox_sum-c.c",
+            "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+          ],
+          "status": 0,
+          "elapsedMs": 13989,
+          "phases": [
+            {
+              "phase": "parse",
+              "elapsedMs": 568.42,
+              "userCpuMs": 513.111,
+              "systemCpuMs": 12.242,
+              "modules": 2,
+              "sourceBytes": 81305,
+              "foreignBytes": 306084,
+              "eagerFuelCells": 16000000,
+              "fuelBuildMs": 81.754
+            },
+            {
+              "phase": "expand",
+              "elapsedMs": 299.348,
+              "userCpuMs": 278.862,
+              "systemCpuMs": 1.624,
+              "chunkAdvances": 29892,
+              "chunkQuantum": 64
+            },
+            {
+              "phase": "check",
+              "elapsedMs": 2347.183,
+              "userCpuMs": 2238.238,
+              "systemCpuMs": 12.964,
+              "chunkAdvances": 145992,
+              "chunkQuantum": 64
+            },
+            {
+              "phase": "emit-c",
+              "elapsedMs": 10733.747,
+              "userCpuMs": 9073.268,
+              "systemCpuMs": 47.431,
+              "chunkAdvances": 1279775,
+              "chunkQuantum": 64
+            }
+          ]
+        },
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/tmp/bend2039g6-native-foreign-orzlWB/list_rebox_sum-c.c",
+            "-lm",
+            "-o",
+            "/tmp/bend2039g6-native-foreign-orzlWB/list_rebox_sum-c"
+          ],
+          "status": 0,
+          "stderrSha256": "a060b827767cfb5f9075d08ced37b12b8b8df8c59e34d2a1c81c8256d66f6808"
+        },
+        "execute": {
+          "command": [
+            "/tmp/bend2039g6-native-foreign-orzlWB/list_rebox_sum-c"
+          ],
+          "status": 0,
+          "stdout": "7\n3\nbounded\n",
+          "stderr": ""
+        }
+      },
+      {
+        "source": "tests/run/list_rebox_sum.bend",
+        "target": "js",
+        "passed": true,
+        "sourceSha256": "c046078c5a6c852d539c7456e4ce5fcf55d1556b8c37a08c1a8b711a1e9b379c",
+        "expected": "7\n3\nbounded",
+        "native": {
+          "command": [
+            "/tmp/bend2039g6-native",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--RTS",
+            "/private/tmp/bend2039-upgrade/tests/run/list_rebox_sum.bend",
+            "/private/tmp/bend2039-upgrade/bend2/base.bend",
+            "/tmp/bend2039g6-native-foreign-orzlWB/list_rebox_sum-js.tsv",
+            "/tmp/bend2039g6-native-foreign-orzlWB/list_rebox_sum-js.exports",
+            "compile-module",
+            "/tmp/bend2039g6-native-foreign-orzlWB/list_rebox_sum-js.js"
+          ],
+          "status": 0,
+          "elapsedMs": 4484,
+          "phases": [
+            {
+              "phase": "parse",
+              "elapsedMs": 1242.702,
+              "userCpuMs": 553.976,
+              "systemCpuMs": 14.159,
+              "modules": 2,
+              "sourceBytes": 81305,
+              "foreignBytes": 78561,
+              "eagerFuelCells": 16000000,
+              "fuelBuildMs": 111.449
+            },
+            {
+              "phase": "expand",
+              "elapsedMs": 438.917,
+              "userCpuMs": 299.15,
+              "systemCpuMs": 1.852,
+              "chunkAdvances": 29892,
+              "chunkQuantum": 64
+            },
+            {
+              "phase": "check",
+              "elapsedMs": 2481.383,
+              "userCpuMs": 2328.355,
+              "systemCpuMs": 12.341,
+              "chunkAdvances": 145992,
+              "chunkQuantum": 64
+            },
+            {
+              "phase": "emit",
+              "elapsedMs": 302.756,
+              "userCpuMs": 271.592,
+              "systemCpuMs": 2.347,
+              "chunkAdvances": 15307,
+              "chunkQuantum": 64
+            }
+          ]
+        },
+        "execute": {
+          "command": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--max-old-space-size=3072",
+            "/tmp/bend2039g6-native-foreign-orzlWB/list_rebox_sum-js.js"
+          ],
+          "status": 0,
+          "stdout": "7\n3\nbounded\n",
+          "stderr": ""
+        }
+      },
+      {
+        "source": "evals/c_step_library_fixture.bend",
+        "target": "c",
+        "passed": true,
+        "sourceSha256": "5e53a4815f2fc7f12c3fdea7bfc12764daf65096b125a22a5f884c0cf0e710df",
+        "expected": "export ok",
+        "native": {
+          "command": [
+            "/tmp/bend2039g6-native",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--RTS",
+            "/private/tmp/bend2039-upgrade/evals/c_step_library_fixture.bend",
+            "/private/tmp/bend2039-upgrade/bend2/base.bend",
+            "/tmp/bend2039g6-native-foreign-orzlWB/c_step_library_fixture-c-library.tsv",
+            "/tmp/bend2039g6-native-foreign-orzlWB/c_step_library_fixture-c-library.exports",
+            "compile-c",
+            "/tmp/bend2039g6-native-foreign-orzlWB/c_step_library_fixture-c-library.c",
+            "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+          ],
+          "status": 0,
+          "elapsedMs": 13436,
+          "phases": [
+            {
+              "phase": "parse",
+              "elapsedMs": 549.7,
+              "userCpuMs": 511.479,
+              "systemCpuMs": 12.181,
+              "modules": 2,
+              "sourceBytes": 80191,
+              "foreignBytes": 305668,
+              "eagerFuelCells": 16000000,
+              "fuelBuildMs": 81.52
+            },
+            {
+              "phase": "expand",
+              "elapsedMs": 298.849,
+              "userCpuMs": 276.309,
+              "systemCpuMs": 2.339,
+              "chunkAdvances": 28840,
+              "chunkQuantum": 64
+            },
+            {
+              "phase": "check",
+              "elapsedMs": 2563.973,
+              "userCpuMs": 2315.448,
+              "systemCpuMs": 14.208,
+              "chunkAdvances": 143685,
+              "chunkQuantum": 64
+            },
+            {
+              "phase": "emit-c",
+              "elapsedMs": 9988.157,
+              "userCpuMs": 8443.351,
+              "systemCpuMs": 37.805,
+              "chunkAdvances": 1212238,
+              "chunkQuantum": 64
+            }
+          ]
+        },
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/tmp/bend2039g6-native-foreign-orzlWB/c_step_library_fixture-c-library.c",
+            "/private/tmp/bend2039-upgrade/evals/c_backend_library_caller.c",
+            "-lm",
+            "-o",
+            "/tmp/bend2039g6-native-foreign-orzlWB/library"
+          ],
+          "status": 0,
+          "stderrSha256": "0550376c08527f1782cb35c8b1baad8e6038987ee21888522c0f9f1541089568"
+        },
+        "execute": {
+          "command": [
+            "/tmp/bend2039g6-native-foreign-orzlWB/library"
+          ],
+          "status": 0,
+          "stdout": "export ok\n",
+          "stderr": ""
+        }
+      }
+    ],
+    "receiptSha256": "9eaee138e51709f2e6cbad6f97ea897e4a56f3a5ace84e3169bc385b5e1af232"
+  },
+  "nestedHost": {
+    "status": "FAIL",
+    "error": "Error: nat_host_export actual nested-library consumer differs",
+    "rows": [
+      {
+        "source": "tests/io/nat_host_export.bend",
+        "sourceSha256": "82209268d75a422b9d6358834e0c12a7af8d7c403307be299f1734282b55399d",
+        "expected": "0",
+        "compile": {
+          "command": [
+            "/tmp/bend2039g6-driver",
+            "tests/io/nat_host_export.bend",
+            "-o",
+            "/tmp/bend2039g6-host-alias-p9kSnO/nat_host_export.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 9422,
+          "stdout": "{\"output\":\"/tmp/bend2039g6-host-alias-p9kSnO/nat_host_export.js\",\"bytes\":359002,\"sha256\":\"215c470e545e40e8de2b839e683e04fbda25dbf5b3cd7d36f102f8a5dd7356fb\",\"target\":\"js\",\"library\":false,\"modules\":2,\"foreignFiles\":59}\n",
+          "stderr": "(node:91168) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+        },
+        "outputSha256": "215c470e545e40e8de2b839e683e04fbda25dbf5b3cd7d36f102f8a5dd7356fb",
+        "execute": {
+          "command": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "/tmp/bend2039g6-host-alias-p9kSnO/nat_host_export.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 9439,
+          "stdout": "2\n",
+          "stderr": ""
+        },
+        "passed": false
+      }
+    ]
+  },
+  "bootstrap": {
+    "command": [
+      "env",
+      "BUN_JSC_forceRAMSize=4294967296",
+      "/opt/homebrew/bin/bun",
+      "--smol",
+      "evals/selfhost_bootstrap_gate.ts",
+      "--native-build=checkpoints/root-release2039g6-native-build.json",
+      "--native-corpus=checkpoints/root-release2039g4.native.corpus.json",
+      "--root=checkpoints/.bootstrap_compiler_root_release2039g4.bend",
+      "--root-manifest=checkpoints/selfhost-root-release2039g6.json",
+      "--parser=checkpoints/bootstrap-parser-rebuild-release2039g6.js",
+      "--parser-build=checkpoints/bootstrap-parser-rebuild-release2039g6.native-build.result.json",
+      "--report=checkpoints/selfhost-release2039g6-bootstrap.json"
+    ],
+    "status": "FAIL",
+    "guardian": {
+      "status": "FAIL",
+      "reason": "deadline_exceeded",
+      "commandExitCode": -1,
+      "commandSignal": 15,
+      "peakRssBytes": 3064643584,
+      "peakFootprintBytes": 1747441144,
+      "elapsedMs": 600081,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 1,
+      "command": [
+        "/opt/homebrew/Cellar/bun/1.4.3/bin/bun",
+        "--smol",
+        "/private/tmp/bend2039-upgrade/evals/selfhost_bootstrap_gate.ts",
+        "--native-build=checkpoints/root-release2039g6-native-build.json",
+        "--native-corpus=checkpoints/root-release2039g4.native.corpus.json",
+        "--root=checkpoints/.bootstrap_compiler_root_release2039g4.bend",
+        "--root-manifest=checkpoints/selfhost-root-release2039g6.json",
+        "--parser=checkpoints/bootstrap-parser-rebuild-release2039g6.js",
+        "--parser-build=checkpoints/bootstrap-parser-rebuild-release2039g6.native-build.result.json",
+        "--report=checkpoints/selfhost-release2039g6-bootstrap.json",
+        "--worker"
+      ],
+      "label": "Real full selfhost step bootstrap",
+      "exitCode": 1,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793090397896-7bd81ea3de0ec066.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "seedFixtures": {
+      "total": 95,
+      "passed": 95
+    },
+    "stageOne": {
+      "path": "/private/tmp/bend2039-upgrade/checkpoints/selfhost-release2039g6-bootstrap.json.cases/stage-one.js",
+      "sha256": "096f6c92872c4335d42d5d50f1e72983ab2b384e53a6eadbcb0adfe50eeb90ad",
+      "bytes": 26619233
+    },
+    "stageTwo": null,
+    "nativePhases": [
+      {
+        "phase": "parse",
+        "elapsedMs": 25675.756,
+        "userCpuMs": 20104.227,
+        "systemCpuMs": 175.462,
+        "modules": 18,
+        "sourceBytes": 7408974,
+        "foreignBytes": 78415,
+        "eagerFuelCells": 144000000,
+        "fuelBuildMs": 851.351
+      },
+      {
+        "phase": "expand",
+        "elapsedMs": 22699.776,
+        "userCpuMs": 17816.77,
+        "systemCpuMs": 129.212,
+        "chunkAdvances": 1603262,
+        "chunkQuantum": 64
+      },
+      {
+        "phase": "check",
+        "elapsedMs": 208041.227,
+        "userCpuMs": 172325.195,
+        "systemCpuMs": 1176.837,
+        "chunkAdvances": 9499240,
+        "chunkQuantum": 64
+      },
+      {
+        "phase": "emit",
+        "elapsedMs": 33304.734,
+        "userCpuMs": 27432.497,
+        "systemCpuMs": 251.305,
+        "chunkAdvances": 1384359,
+        "chunkQuantum": 64
+      }
+    ],
+    "parseApprovals": {
+      "count": 18,
+      "allSemanticParity": true
+    },
+    "lastBoundaries": [
+      {
+        "event": "phase",
+        "phase": "stage-two-parse",
+        "elapsedMs": 520604.8435,
+        "rssBytes": 1692729344,
+        "heapUsedBytes": 652653272,
+        "heapLimitBytes": 6643777536,
+        "file": "/private/tmp/bend2039-upgrade/checkpoints/.bootstrap_compiler_root_release2039g4.bend",
+        "parserBoundary": "retained-input-before"
+      },
+      {
+        "event": "phase",
+        "phase": "stage-two-parse",
+        "elapsedMs": 520647.82625,
+        "rssBytes": 1692745728,
+        "heapUsedBytes": 652027280,
+        "heapLimitBytes": 6643777536,
+        "file": "/private/tmp/bend2039-upgrade/checkpoints/.bootstrap_compiler_root_release2039g4.bend",
+        "parserBoundary": "retained-input-complete"
+      },
+      {
+        "event": "phase",
+        "phase": "stage-two",
+        "elapsedMs": 520648.305709,
+        "rssBytes": 1692745728,
+        "heapUsedBytes": 652091264,
+        "heapLimitBytes": 6643777536
+      },
+      {
+        "event": "phase",
+        "phase": "stage-two-expand",
+        "elapsedMs": 520648.768417,
+        "rssBytes": 1692745728,
+        "heapUsedBytes": 652116712,
+        "heapLimitBytes": 6643777536
+      },
+      {
+        "event": "phase",
+        "phase": "stage-two-check",
+        "elapsedMs": 546455.507834,
+        "rssBytes": 1531281408,
+        "heapUsedBytes": 452707232,
+        "heapLimitBytes": 6643777536
+      }
+    ],
+    "nativeRunElapsedMs": 291394
+  },
+  "note": "No errors or input limits hidden: the nested host consumer mismatch remains rejected; bootstrap completed all18 source parses and95seed fixtures but timed out at stage-two-check. Neither is a byte fixedpoint."
+}

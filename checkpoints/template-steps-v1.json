@@ -18425,7 +18425,7 @@
     "checkpoints/checker_core_driver.bend": "25593371e3c4077865f5265e967f3a672ab123b19d672aea85330500f8c46b18",
     "checkpoints/bootstrap-real-source-corpus.json": "0c86976251badbf22ce010fdd203515ba89120750d626e36e3d96511748831c0",
     "bend2/bend.ts": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
-    "bend2/comp.ts": "881137cef06d237068daf4740368baab826abab1be07181cc4ec2bc635cff2f1",
+    "bend2/comp.ts": "318c55c449115cb820bf77c3ac500a1c07ed8473adbbe6eed9c61088f4a0009e",
     "bend2/selfhost/parser.bend": "7389188a68a205bfccdd6a3457ba0f11e689967751e31fa6d35eaec3b09e3e37",
     "bend2/base.bend": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
     "evals/heavy_gate.ts": "204f3529704435455d20a9d5a126a8e9c62e002b6fed9044c8319da8a3c26ff2",
@@ -18472,5 +18472,5 @@
     "nativeBuildRun": false,
     "testsRun": false
   },
-  "generationManifestSha256": "20958eba38e94a537b24d5b573bc9965487516da27f01bceac87bc5a72e04d70"
+  "generationManifestSha256": "65d6ade8a635a97199df9ad4fafcdc5113742d8bc7558e462462185ff93c94e3"
 }

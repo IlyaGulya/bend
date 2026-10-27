@@ -253,8 +253,18 @@ The preceding complete profiled diagnostic builds the same C, links a native
 compiler and executes its foreign consumer (`42`); its 636,117 ms and larger
 diagnostic guard are **not** acceptance or a controlled speedup estimate.
 Proof: `evals/receipts/full_profile2039_complete.json`.
-Fresh g6 parser/composition/consumer matrices and real stage1/stage2 byte
-fixedpoint remain in progress.
+Fresh g6 parser admission, both complete **33-case C/JS matrices**, and all
+seven native foreign/lifetime/library scenarios pass. The additional nested
+host-export suite is **rejected**: `nat_host_export` prints `2`, expected `0`;
+the selfhost Nat input guard still uses the arithmetic-overflow error path.
+The independent full native-seed bootstrap is also **rejected by the original
+600 s deadline**, at `stage-two-check`, not by memory. It emits stage1
+`096f6c92` (26,619,233 B), passes all 95 seed fixtures and completes semantic
+parser approval for all 18 root sources using stage1's own parser. The prior
+capture-stack RangeError does not recur. No stage2 or byte fixedpoint exists.
+Native stage0 takes 291,394 ms, including 208,041 ms checking; stage-two checking
+starts at 546,456 ms. Peak RSS is 3,064,643,584 B / footprint 1,747,441,144 B.
+Proof: `evals/receipts/root2039g6_acceptance_rejected.json`.
 
 Historical compiler root: **`db147cba`**, after an authenticated inline-parser
 cutover in `/private/tmp/bend-parser-cutover667`. Fresh native admission checks

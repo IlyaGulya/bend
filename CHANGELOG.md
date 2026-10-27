@@ -29,6 +29,13 @@ latest one; the GitHub release carries the same notes.
   The complete native root now passes the original 8 GiB / 600 s guard in
   565.1 s with identical C bytes; stage1/stage2 acceptance remains separate.
 
+- The fresh g6 root passes all 33 C and 33 JavaScript backend cases and the
+  native foreign/library scenarios. Its real native-seed bootstrap emits
+  stage1, passes all 95 seed fixtures and parses the entire root without the
+  previous capture-stack fault, but exceeds 600 seconds at stage-two checking.
+  A separate nested Nat host-export consumer also fails. Neither is accepted
+  as a completed compiler bootstrap or byte fixedpoint.
+
 - Native C generation traverses nested constructors with an explicit stack,
   preserving field order, layouts and ownership without exhausting Bun's
   JavaScript stack on large literal values. The 8192-character regression now
