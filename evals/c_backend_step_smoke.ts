@@ -32,8 +32,8 @@ const component = 'checkpoints/c_backend_steps_component_v1.bend';
 const manifest = 'checkpoints/c-backend-steps-v1.json';
 const providers = ['bend2/selfhost/c_backend.bend', 'bend2/selfhost/c_backend_layout.bend',
   'bend2/selfhost/c_backend_physical.bend', 'bend2/selfhost/descriptor_nf.bend',
-  'bend2/selfhost/c_backend_link.bend', 'bend2/selfhost/backend_ir.bend',
-  'bend2/selfhost/index_lookup.bend', 'evals/c_backend_runtime.bend'];
+  'bend2/selfhost/c_backend_link.bend',
+  'evals/c_backend_runtime.bend'];
 const expected = '26';
 const sha = (text: string) => createHash('sha256').update(text).digest('hex');
 
@@ -132,14 +132,14 @@ async function run(artifact: string): Promise<void> {
   for (;;) {
     const chunk = chunkOf(current);
     if (!chunk) throw Error('Unexpected Run value ' + String(current));
-    if (chunk.tag.endsWith('.TemplateRunState')) {
+    if (chunk.tag.split('.').at(-1) === 'TemplateRunState') {
       current = undefined;
       current = step(chunk.fields);
       steps += 1;
       if (steps > 100000000) throw Error('Template Run did not finish');
       continue;
     }
-    if (!chunk.tag.endsWith('.TemplateRunFinished')) throw Error('Unexpected Run tag ' + chunk.tag);
+    if (chunk.tag.split('.').at(-1) !== 'TemplateRunFinished') throw Error('Unexpected Run tag ' + chunk.tag);
     const box = chunkOf(chunk.fields['box']);
     const value = box ? chunkOf(box.fields['value']) : null;
     const source = value?.fields['source'];
