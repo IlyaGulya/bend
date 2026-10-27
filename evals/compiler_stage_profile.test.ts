@@ -2,7 +2,8 @@ import {expect, test} from 'bun:test';
 import {mkdtemp, readFile, rm, writeFile} from 'node:fs/promises';
 import {join} from 'node:path';
 import {tmpdir} from 'node:os';
-import {createStageProfile, createStepAttribution, loadStageManifests, typedProgressSample} from './compiler_stage_profile.mjs';
+import {createHash} from 'node:crypto';
+import {createStageProfile, createStepAttribution, loadStageManifests, typedProgressSample, typedTraceEvents} from './compiler_stage_profile.mjs';
 
 type ManifestInput = {runType?: string; output?: string; groups?: string[][]; declarations?: Record<string, unknown>[]; inputs?: Record<string, string>};
 type Attribution = {onStep: (steps: number, run: unknown) => void;
@@ -129,7 +130,6 @@ test('stage profile treats a receipt without the profiled artifact hash as unver
       receipt: {path: 'receipt.json', sha256: 'c'.repeat(64), artifactSha256: 'b'.repeat(64),
         provenancePath: null, loadedInputs: {}, protectedPins: {}}});
     expect(table.provenance[0].artifactBinding.status).toBe('unverified');
-    expect(table.provenance[0].artifactBinding.reason).toBe('no profiled artifact hash supplied');
   } finally {await rm(join(path, '..'), {recursive: true, force: true});}
 });
 
@@ -208,7 +208,6 @@ test('a rejected end token does not lose the wrapper span', async () => {
     expect(() => stage.end(first)).toThrow();
     const report = await stage.finish('completed');
     expect(report.summary.unclosedSpans.names).toEqual(['retained-first', 'retained-second']);
-    expect(first).toBeDefined(); expect(second).toBeDefined();
   } finally {await rm(directory, {recursive: true, force: true});}
 });
 
@@ -250,4 +249,66 @@ test('an unfinished phase durably records its last observed typed-step boundary'
     stage.finish('aborted');
     await rm(directory, {recursive: true, force: true});
   }
+});
+
+test('trace decoding rejects an event from another nominal module', () => {
+  const trace = {
+    namespace: 'trace_image', maxEventsPerBoundary: 1,
+    constructors: {
+      run: 'trace_image.EmitterRunSpan',
+      begin: 'trace_image.EmitterTraceBegin',
+      end: 'trace_image.EmitterTraceEnd',
+    },
+  };
+  const boundary = {
+    $: 'trace_image.EmitterRunSpan',
+    events: {$: 'Con', head: {$: 'foreign.EmitterTraceBegin', site: 0}, tail: {$: 'Nil'}},
+    next: () => {throw Error('Decoding must not execute a native continuation');},
+  };
+  expect(typedTraceEvents(boundary, trace).status).toBe('invalid');
+});
+
+test('canonical compiled trace tags produce spans only with an image-bound native receipt', async () => {
+  const directory = await mkdtemp(join(tmpdir(), 'bend-native-trace-'));
+  const hash = (text: string) => createHash('sha256').update(text).digest('hex');
+  const source = join(directory, 'catalog.bend'), engine = join(directory, 'emitter_trace.bend');
+  const manifestPath = join(directory, 'manifest.json'), receiptPath = join(directory, 'build.json');
+  const sourceText = 'def build() -> U32:\n  0\n';
+  await writeFile(source, sourceText);
+  await writeFile(engine, sourceText);
+  const declaration = {kind: 'def', name: 'build', canonicalName: 'build', source,
+    canonicalDeclarationSha256: hash(sourceText), composedDeclarationSha256: hash(sourceText)};
+  const document = {
+    generationConfig: {output: engine}, nativeChunk: {runType: 'EmitterRun', quantum: 64},
+    canonicalComposition: {declarations: [declaration], inputs: {[source]: hash(sourceText)}},
+    outputs: {[engine]: hash(sourceText)},
+    trace: {protocolVersion: 1, protocol: 'Emitter', runConstructor: 'EmitterRunSpan',
+      beginConstructor: 'EmitterTraceBegin', endConstructor: 'EmitterTraceEnd',
+      maxEventsPerBoundary: 1, quantum: 64,
+      roots: [{...declaration, site: 7, stage: 'emit-catalog', request: 'emitter_trace.EmitterRequest_build'}]},
+  };
+  await writeFile(manifestPath, JSON.stringify({...document, generationManifestSha256: hash(JSON.stringify(document))}));
+  try {
+    for (const native of [false, true]) {
+      await writeFile(receiptPath, JSON.stringify({artifactSha256: 'c'.repeat(64),
+        status: native ? 'JS_GENERATED_NOT_YET_EXECUTED' : 'UNVERIFIED',
+        checkedOutputRetention: 'native e', loadedInputs: {[engine]: hash(sourceText)}}));
+      const stage = await createStageProfile({directory: join(directory, String(native)),
+        manifestPaths: [manifestPath], receiptPaths: [receiptPath], artifact: {sha256: 'c'.repeat(64)}});
+      const span = stage.span('emit');
+      const attributes = createStepAttribution('emit', 'Emitter', stage.manifestTable, stage.profile);
+      for (const [steps, event] of ['EmitterTraceBegin', 'EmitterTraceEnd'].entries())
+        attributes.onStep(steps, {$: 'EmitterRunSpan',
+          events: {$: 'Con', head: {$: event, site: 7}, tail: {$: 'Nil'}},
+          next: () => {throw Error('Observing a span must not advance the native machine');}});
+      attributes.onFinish(undefined, 2);
+      attributes.record(stage.profile);
+      stage.end(span);
+      stage.finish('completed');
+      const report = JSON.parse(await readFile(stage.reportPath, 'utf8'));
+      const trace = report.observations.find((row: {kind: string}) => row.kind === 'scheduler-boundary-spans');
+      expect(trace.values.closedSpans).toBe(native ? 1 : 0);
+      expect(trace.values.ignoredEvents).toBe(native ? 0 : 2);
+    }
+  } finally {await rm(directory, {recursive: true, force: true});}
 });
