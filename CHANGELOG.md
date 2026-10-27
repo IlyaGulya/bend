@@ -32,6 +32,10 @@ latest one; the GitHub release carries the same notes.
   text is discarded. Nine actual C/JS programs keep identical emitted bytes;
   complete-root timing, memory and fixedpoint remain separate measurements.
 
+- Native bootstrap authenticates generated C through resolved paths, like its
+  executable. macOS `/tmp` aliases no longer reject unchanged C; wrong digests
+  still fail authentication.
+
 - Native local naming cleans each distinct stem once per definition rather
   than once per extracted word. Packed-layout checks avoid temporary strings.
   Nine actual C/JS programs retain identical emitted bytes; complete-root

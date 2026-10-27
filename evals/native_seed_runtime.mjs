@@ -122,7 +122,9 @@ export function authenticateNativeSeedBuild(reportPath, options) {
     if (typeof report[key] !== 'string' || !report[key]) throw Error('Missing native stage0 build field: ' + key);
   const binary = realpathSync(report.artifact);
   if (hashPath(binary) !== report.artifactSha256) throw Error('Native stage0 artifact identity drift');
-  if (realpathSync(report.cPath) !== resolve(report.cPath) || hashPath(report.cPath) !== report.cSha256)
+  // Like the executable, authenticate C bytes through their resolved path:
+  // /tmp is an ordinary symlink on macOS, not evidence of changed output.
+  if (hashPath(realpathSync(report.cPath)) !== report.cSha256)
     throw Error('Native stage0 generated C drift');
   if (report.kernelSha256 !== hashPath(resolve('bend2/bend.ts')) || report.compilerSha256 !== hashPath(resolve('bend2/comp.ts')))
     throw Error('Native stage0 kernel/compiler identity drift');

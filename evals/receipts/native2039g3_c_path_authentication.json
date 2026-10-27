@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "status": "NATIVE_C_PATH_ALIAS_AUTHENTICATION_PASS",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "before": {
+    "schemaVersion": 1,
+    "status": "FAIL",
+    "compilerAccepted": false,
+    "byteFixedpoint": false,
+    "dir": "/tmp/bend2039g3settled-admission-AZaPvL",
+    "id": "release2039g3settled",
+    "limits": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 600000
+    },
+    "runtime": {
+      "bun": "1.4.3",
+      "revision": "c6da4a4d3010e5553438c60f6bd76d981976867c"
+    },
+    "nativeBuild": "checkpoints/root-release2039g3-settled-native-build.json",
+    "nativeCorpus": "checkpoints/root-release2039g2.native.corpus.json",
+    "compilerRoot": "checkpoints/.bootstrap_compiler_root_release2039g2.bend",
+    "rootManifest": "checkpoints/selfhost-root-release2039g3settled.json",
+    "parser": "checkpoints/bootstrap-parser-rebuild-release2039g3settled.js",
+    "parserBuild": "checkpoints/bootstrap-parser-rebuild-release2039g3settled.native-build.result.json",
+    "bootstrapReport": "checkpoints/selfhost-release2039g3settled-bootstrap.json",
+    "rows": [],
+    "error": "Error: Native stage0 generated C drift",
+    "sha256": "1c8d99ff1f89143b47fca9a6626583d60456457383d4ed4581316ea53ec0aac3"
+  },
+  "after": {
+    "status": "PASS",
+    "scope": "Actual completed native-build receipt authenticates through alias and canonical C paths; a wrong C digest is still rejected",
+    "build": {
+      "path": "/private/tmp/bend2039-upgrade/checkpoints/root-release2039g3-settled-native-build.json",
+      "sha256": "cbfb685c35d1ca1a9e5371a50ece8fc07cd2fb03291ba9f6b6565b2c1405354d"
+    },
+    "helperSha256": "acd123196a0fe43bb908f72cc31d703dd491933569ad94f5e9a6b7de9965e773",
+    "cPath": "/tmp/bend2039g3-settled-native.c",
+    "resolvedCPath": "/private/tmp/bend2039g3-settled-native.c",
+    "cSha256": "ea656da6c8c41c9045908273320e0c4838a85174979f4a01a93e255a45dfb82c",
+    "binarySha256": "6e4844ea0c4f125c5631c57dc88351af86c5d8ed9a144dae44cc9536e2f77b81",
+    "checkedDefinitions": 12144,
+    "canonicalPathAccepted": true,
+    "aliasPathAccepted": true,
+    "wrongCHashRejected": true,
+    "error": "Error: Native stage0 generated C drift"
+  },
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 206602240,
+    "peakFootprintBytes": 145588968,
+    "elapsedMs": 314,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "/opt/homebrew/bin/bun",
+      "/tmp/bend2039g3-auth-path-smoke.mjs"
+    ],
+    "label": "heavy command",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793076657455-07906431f6da7b69.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "command": [
+    "/opt/homebrew/bin/bun",
+    "/tmp/bend2039g3-auth-path-smoke.mjs"
+  ],
+  "runtime": {
+    "bun": "1.4.3",
+    "revision": "c6da4a4d3010e5553438c60f6bd76d981976867c"
+  },
+  "runtimeAuthority": {
+    "priorSourceCheckpoint": "eac57170",
+    "priorCompilerSha256": "605cc9211f74b0cf6ad056c5736bc1cc282bc8ea29117c3b0c2c28f5d7aef17e",
+    "compilerSha256": "881137cef06d237068daf4740368baab826abab1be07181cc4ec2bc635cff2f1",
+    "runtimeRegionSha256": "1688e8b06195e20af9664c335ab49cb01dcbadccd1de1b10c9b2269a338d86be",
+    "runtimeRegionUnchanged": true
+  },
+  "raw": {
+    "path": "/tmp/bend2039g3-auth-path-aED8wc/receipt.json",
+    "sha256": "a6877f9d3b4557d550f2958325f99a1c82ced555e01edb90015d6d2563d91bfe"
+  },
+  "notes": [
+    "The initial bootstrap preflight rejected /tmp versus /private/tmp despite identical full C SHA-256. No parser/codegen work had started.",
+    "Only C-path normalization changed, matching binary path handling; exact generated-C, executable, kernel/compiler, source, corpus, complete coverage and original guard checks remain.",
+    "Original build receipts are unchanged; temporary positive/negative report copies are only regression inputs, not replacement provenance."
+  ]
+}
