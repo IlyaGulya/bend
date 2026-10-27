@@ -4,18 +4,22 @@
  * and source closure, fresh dirs, alternating pairs, one heavy_gate per leg.
  *
  * usage: bun evals/compiler_profile_overhead.ts --source=PATH --candidate=PATH
- *   --report=PATH [--parser=PATH] [--base=PATH] [--target=js|c]
- *   [--exports=NAME,...] [--pairs=N] [--node=PATH] [--timeout-ms=600000]
- *   [--stage-manifest=PATH ...] [--stage-receipt=PATH ...]
+ *   --report=PATH [--parser=PATH] [--base=PATH] [--candidate-build=PATH]
+ *   [--target=js|c] [--exports=NAME,...] [--pairs=N] [--node=PATH]
+ *   [--timeout-ms=600000] [--stage-manifest=PATH ...] [--stage-receipt=PATH ...]
  *
  * Library output defaults to the 13-entry ABI; target js; fresh mkdtemp work
  * dir; 8192 MiB footprint/RSS, 10 ms poll, 1 s term grace; 600000 ms default
  * deadline (larger is diagnostic-only). Darwin /usr/bin/time -lp wait4 receipts
  * only; no fallback. Candidate/parser/base/source/C runtime/manifests/receipts/
- * closure/helpers/worker are pinned before and after every leg; drift,
+ * candidate-build receipt + provenance closure/helpers/worker are pinned before
+ * and after every leg; base must be the canonical repo base so workloadRows is
+ * a complete closure. Node/Bun executables are recorded, not hashed. Drift,
  * non-terminal guardian, lock-busy/resource limit, incomplete profile or
  * unequal output bytes fail. No retries, output patches, emitted-program runs
  * or acceptance claims: every record is diagnosticOnly, acceptanceEvidence false.
+ * Canonical root-release seed images need --candidate-build so candidate_host
+ * derives the root carrier; stage1 selfhost images may omit it.
  */
 import {createHash} from 'node:crypto';
 import {closeSync,existsSync,mkdirSync,mkdtempSync,openSync,readFileSync,readdirSync,realpathSync,statSync,writeFileSync} from 'node:fs';
@@ -55,7 +59,7 @@ function options(argv){
  const values=new Map(),manifests=[],receipts=[];
  const valued={
   '--source':true,'--candidate':true,'--parser':true,'--base':true,'--target':true,
-  '--exports':true,'--pairs':true,'--report':true,'--node':true,'--timeout-ms':true,
+  '--candidate-build':true,'--exports':true,'--pairs':true,'--report':true,'--node':true,'--timeout-ms':true,
  };
  for(let i=0;i<argv.length;i+=1){
   const argument=argv[i];
@@ -70,7 +74,7 @@ function options(argv){
  }
  const result={
   source:values.get('--source'),candidate:values.get('--candidate'),report:values.get('--report'),
-  parser:values.get('--parser'),base:values.get('--base'),target:values.get('--target')??'js',
+  parser:values.get('--parser'),base:values.get('--base'),candidateBuild:values.get('--candidate-build'),target:values.get('--target')??'js',
   exports:values.get('--exports')??ABI.join(','),pairs:number(values.get('--pairs')??2,'--pairs',2,64),
   node:values.get('--node')??'node',timeoutMs:number(values.get('--timeout-ms')??ACCEPTANCE_TIMEOUT_MS,'--timeout-ms',1,2147483647),
   manifests,receipts,
@@ -104,10 +108,27 @@ function configure(input,cwd){
  };
  const source=file(input.source,'--source'),candidate=file(input.candidate,'--candidate');
  const parser=input.parser===undefined?candidate:file(input.parser,'--parser');
- const base=file(input.base??join(REPO,'bend2/base.bend'),'--base');
+ const canonicalBase=realpathSync(join(REPO,'bend2/base.bend'));
+ const base=file(input.base??canonicalBase,'--base');
+ must(base===canonicalBase,'--base must be the canonical repo base: workloadRows hardcodes Base to '+canonicalBase);
  const runtimeC=input.target==='c'?file(join(REPO,'bend2/selfhost/c_runtime.c'),'--runtime-c'):null;
+ const candidateBuild=input.candidateBuild===undefined?null:file(input.candidateBuild,'--candidate-build');
+ const candidateBuildPins=[];
+ if(candidateBuild!==null){
+  const build=JSON.parse(readFileSync(candidateBuild,'utf8'));
+  must(build&&typeof build.provenancePath==='string','candidate build receipt has no provenancePath');
+  const provenance=realpathSync(build.provenancePath);
+  candidateBuildPins.push(provenance);
+  const document=JSON.parse(readFileSync(provenance,'utf8'));
+  for(const field of ['protectedPins','loadedInputs']){
+   const pins=document[field];
+   must(pins&&typeof pins==='object','candidate build provenance lacks '+field);
+   for(const path of Object.keys(pins))candidateBuildPins.push(realpathSync(path));
+  }
+ }
  const config={
   source,candidate,parser,parserSeparate:input.parser!==undefined&&parser!==candidate,base,runtimeC,target:input.target,
+  candidateBuild,candidateBuildPins,
   exportsList:input.exportsList,exportsArg:input.exportsList.join(','),pairs:input.pairs,timeoutMs:input.timeoutMs,
   manifests:input.manifests.map(path=>file(path,'--stage-manifest')),
   receipts:input.receipts.map(path=>file(path,'--stage-receipt')),
@@ -117,9 +138,10 @@ function configure(input,cwd){
   stageHelper:realpathSync(join(REPO,'evals/compiler_stage_profile.mjs')),
   collector:realpathSync(join(REPO,'evals/compiler_profile.mjs')),
   nativeRuntime:realpathSync(join(REPO,'evals/native_seed_runtime.mjs')),
+  stepRuntime:realpathSync(join(REPO,'evals/checker_core_step_runtime.mjs')),
   harness:realpathSync(fileURLToPath(import.meta.url)),
  };
- config.harnessFiles=[config.nativeRuntime,config.candidateHost,config.heavyGate,config.stageHelper,config.collector,config.harness];
+ config.harnessFiles=[config.nativeRuntime,config.stepRuntime,config.candidateHost,config.heavyGate,config.stageHelper,config.collector,config.harness];
  config.receiptProvenance=config.receipts.map(path=>{
   const document=JSON.parse(readFileSync(path,'utf8'));
   return typeof document.provenancePath==='string'?realpathSync(document.provenancePath):null;
@@ -137,7 +159,8 @@ function pinMap(config,rows){
  for(const row of rows.sources)map.set(row.file,row.sha256);
  for(const row of rows.externals)map.set(row.file,row.sha256);
  const add=path=>{const real=realpathSync(path);map.set(real,hashFile(real));};
- for(const path of [config.source,config.candidate,config.parser,config.base,config.worker,...config.manifests,...config.receipts,...config.receiptProvenance,...config.harnessFiles])add(path);
+ for(const path of [config.source,config.candidate,config.parser,config.base,config.worker,...config.manifests,...config.receipts,...config.receiptProvenance,...config.candidateBuildPins,...config.harnessFiles])add(path);
+ if(config.candidateBuild!==null)add(config.candidateBuild);
  if(config.runtimeC!==null)add(config.runtimeC);
  return map;
 }
@@ -190,6 +213,7 @@ function profile(config,profileDirectory,output,reported){
   execution.basePath===config.base&&execution.baseSha256===hashFile(config.base),'profile inputs differ from pins');
  must(execution.outputPath===output&&execution.library===true&&
   JSON.stringify(execution.exports??null)===JSON.stringify(config.exportsList),'profile output identity differs');
+ must((execution.candidateBuild??null)===(config.candidateBuild??null),'profile candidate-build differs from the flag');
  const sources=execution.profileSources;
  must(sources&&typeof sources==='object','profile has no source provenance');
  for(const [key,path] of [['executingScript',config.candidateHost],['stageHelper',config.stageHelper],['collector',config.collector]])
@@ -204,13 +228,11 @@ function profile(config,profileDirectory,output,reported){
   sourceSha256:execution.sourceSha256,candidateSha256:execution.candidateSha256,parserSha256:execution.parserSha256,baseSha256:execution.baseSha256},
   profileSources:sources};
 }
-function leg(config,initial,pair,kind,sequence){
- const directory=join(config.workRoot,'p'+pair+'-'+kind);
- mkdirSync(directory);
+function leg(config,initial,row){
+ const pair=row.pair,kind=row.kind,directory=join(config.workRoot,'p'+pair+'-'+kind);
  const output=join(directory,config.target==='c'?'out.c':'out.js'),profileDirectory=kind==='on'?join(directory,'profile'):null;
- const rowsBefore=closure(config),closureBefore=closureDigest(rowsBefore),before=pinMap(config,rowsBefore);
- drift(initial,before,'before pair-'+pair+'-'+kind);
  const host=[`--candidate=${config.candidate}`];
+ if(config.candidateBuild!==null)host.push(`--candidate-build=${config.candidateBuild}`);
  if(config.parserSeparate)host.push(`--parser=${config.parser}`);
  host.push(`--base=${config.base}`,'--library',`--exports=${config.exportsArg}`);
  if(config.target==='c')host.push(`--runtime-c=${config.runtimeC}`);
@@ -223,6 +245,11 @@ function leg(config,initial,pair,kind,sequence){
  const gate=[process.execPath,config.heavyGate,'--memory-mib',String(LIMITS.memoryMiB),'--rss-mib',String(LIMITS.rssMiB),
   '--poll-ms',String(LIMITS.pollMs),'--term-grace-ms',String(LIMITS.termGraceMs),'--timeout-ms',String(config.timeoutMs),'--',...command];
  const stdoutPath=join(directory,'stdout.log'),stderrPath=join(directory,'stderr.log');
+ Object.assign(row,{directory,argv:{gate,command,node,host},logs:{stdout:{path:stdoutPath},stderr:{path:stderrPath}}});
+ mkdirSync(directory);
+ const rowsBefore=closure(config),closureBefore=closureDigest(rowsBefore),before=pinMap(config,rowsBefore);
+ row.pins={before:pinDigest(before),closureBefore,entries:before.size};
+ drift(initial,before,'before pair-'+pair+'-'+kind);
  const outFd=openSync(stdoutPath,'wx',0o644);
  let errFd;
  try{errFd=openSync(stderrPath,'wx',0o644);}catch(error){closeSync(outFd);throw error;}
@@ -231,9 +258,13 @@ function leg(config,initial,pair,kind,sequence){
   timeout:Math.min(2147483647,config.timeoutMs+300000),killSignal:'SIGKILL'});}finally{closeSync(outFd);closeSync(errFd);}
  must(!run.error,'heavy-gate launcher failed: '+text(run.error));
  const stdout=readFileSync(stdoutPath,'utf8'),stderr=readFileSync(stderrPath,'utf8');
+ row.logs={stdout:{path:stdoutPath,bytes:Buffer.byteLength(stdout),sha256:sha(stdout)},
+  stderr:{path:stderrPath,bytes:Buffer.byteLength(stderr),sha256:sha(stderr)}};
+ row.diagnostics={candidateLines:stderr.split('\n').filter(line=>line.startsWith('candidate: '))};
  const guardianRecord=guardian(stderr,command,config);
  must(run.status===guardianRecord.exitCode&&guardianRecord.supervisorExitCode===run.status,'guardian exit differs from launcher exit');
- const child=timeReceipt(stderr);
+ row.guardian=guardianRecord;
+ row.child=timeReceipt(stderr);
  const lines=stdout.split('\n').map(line=>line.trim()).filter(Boolean);
  must(lines.length>0,'candidate printed no result');
  const result=JSON.parse(lines[lines.length-1]);
@@ -244,28 +275,21 @@ function leg(config,initial,pair,kind,sequence){
  must(result.target===config.target&&result.library===true&&
   JSON.stringify(result.exports)===JSON.stringify(config.exportsList),'candidate result identity differs');
  must(Number.isSafeInteger(result.modules)&&result.modules>0,'candidate module count is missing');
- const diagnostics=stderr.split('\n').filter(line=>line.startsWith('candidate: '));
- must(diagnostics.length===0,'successful leg produced candidate diagnostics');
- let profileRow=null;
+ must(row.diagnostics.candidateLines.length===0,'successful leg produced candidate diagnostics');
+ row.output={path:output,bytes:outputPin.bytes,sha256:outputPin.sha256};
+ row.candidate={sha256:result.sha256,bytes:result.bytes,target:result.target,library:result.library,
+  exports:result.exports,modules:result.modules,foreignFiles:result.foreignFiles};
  if(profileDirectory===null){
   must(result.stageProfile===undefined&&!existsSync(join(directory,'profile')),'off leg produced profile evidence');
  }else{
   must(typeof result.stageProfile==='string','on leg result carries no stageProfile');
-  profileRow=profile(config,profileDirectory,output,result.stageProfile);
+  row.profile=profile(config,profileDirectory,output,result.stageProfile);
  }
  const rowsAfter=closure(config),closureAfter=closureDigest(rowsAfter),after=pinMap(config,rowsAfter);
  drift(before,after,'after pair-'+pair+'-'+kind);
  drift(initial,after,'between legs at pair-'+pair+'-'+kind);
  must(closureAfter===closureBefore,'source closure digest changed during the leg');
- return {pair,kind,sequence,status:'PASS',diagnosticOnly:true,acceptanceEvidence:false,directory,
-  argv:{gate,command,node,host},child,guardian:guardianRecord,
-  profile:profileRow,output:{path:output,bytes:outputPin.bytes,sha256:outputPin.sha256},
-  candidate:{sha256:result.sha256,bytes:result.bytes,target:result.target,library:result.library,
-   exports:result.exports,modules:result.modules,foreignFiles:result.foreignFiles},
-  diagnostics:{candidateLines:diagnostics},
-  logs:{stdout:{path:stdoutPath,bytes:Buffer.byteLength(stdout),sha256:sha(stdout)},
-   stderr:{path:stderrPath,bytes:Buffer.byteLength(stderr),sha256:sha(stderr)}},
-  pins:{before:pinDigest(before),after:pinDigest(after),closureBefore,closureAfter,entries:after.size}};
+ row.pins={before:pinDigest(before),after:pinDigest(after),closureBefore,closureAfter,entries:after.size};
 }
 function statistics(summaryLegs,metric){
  const values=summaryLegs.map(metric),sorted=[...values].sort((left,right)=>left-right);
@@ -318,8 +342,11 @@ function main(){
   config.worker=join(config.workRoot,'candidate-worker.mjs');
   writeFileSync(config.worker,ADAPTER,{flag:'wx',mode:0o644});
   report.runtime.node=config.node;
+  report.runtime.semantics={node:'recorded by path and version, not hashed; runtime immutability is not claimed',
+   bun:'recorded by process.execPath and process.versions.bun, not hashed; runtime immutability is not claimed'};
   report.paths={repoRoot:REPO,report:reportPath,workRoot:config.workRoot,source:config.source,candidate:config.candidate,
    parser:config.parser,parserSeparate:config.parserSeparate,base:config.base,runtimeC:config.runtimeC,
+   candidateBuild:config.candidateBuild,stepRuntime:config.stepRuntime,
    manifests:config.manifests,receipts:config.receipts,worker:config.worker,node:config.node.path,
    heavyGate:config.heavyGate,candidateHost:config.candidateHost,stageHelper:config.stageHelper,collector:config.collector};
   phase='initial-pins';
@@ -327,12 +354,18 @@ function main(){
   report.pins={closure:{root:config.source,target:config.target,digest:closureDigest(rows),
    sources:rows.sources.map(row=>({path:row.path,sha256:row.sha256,namespace:row.namespace})),
    externals:rows.externals.map(row=>({path:row.path,sha256:row.sha256}))},
+   candidateBuild:config.candidateBuild,candidateBuildClosure:config.candidateBuildPins,
    files:[...initial.entries()].map(([path,digest])=>({path,sha256:digest})).sort((left,right)=>left.path.localeCompare(right.path)),
    digest:pinDigest(initial),entries:initial.size};
   for(let pair=1;pair<=config.pairs;pair+=1){
    for(const kind of pair%2===1?['off','on']:['on','off']){
     phase='pair-'+pair+'-'+kind;
-    report.legs.push(leg(config,initial,pair,kind,report.legs.length+1));
+    const row={pair,kind,sequence:report.legs.length+1,status:'RUNNING',diagnosticOnly:true,acceptanceEvidence:false,
+     directory:null,argv:null,logs:null,pins:null,guardian:null,child:null,profile:null,output:null,
+     candidate:null,diagnostics:{candidateLines:[]},error:null};
+    report.legs.push(row);
+    try{leg(config,initial,row);row.status='PASS';}
+    catch(error){row.status='FAIL';row.error=text(error);throw error;}
    }
   }
   phase='cross-leg-checks';
