@@ -22,13 +22,13 @@ def bump_one(x: Nat) -> Nat:
 def bump_two(x: Nat) -> Nat:
   Nat.add(x, 2n)
 
-def spin(n: Nat, a: Nat, b: Nat, c: Nat, d: Nat, e: Nat, f: Nat, g: Nat, h: Nat, i: Nat, j: Nat, k: Nat, l: Nat) -> Nat:
+def spin(+n: Nat, a: Nat, b: Nat, c: Nat, d: Nat, e: Nat, f: Nat, g: Nat, h: Nat, i: Nat, j: Nat, k: Nat, l: Nat) -> Nat:
   match n:
     case 0n:
       Nat.add(a, l)
     case 1n+rest:
-      let x = bump_one(n)
-      let y = bump_two(x)
+      +x = bump_one(n)
+      y = bump_two(x)
       spin(rest, Nat.add(a, Nat.min(1n, x)), b, c, d, e, f, g, h, i, j, k, Nat.add(l, Nat.min(1n, y)))
 
 def main() -> IO(Unit):
