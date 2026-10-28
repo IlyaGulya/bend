@@ -77,7 +77,7 @@ type MultiSubst is Data:
 type MultiRew is Data:
   MultiRew{body: BIR.Block, windows: Map<&2, MultiWindow>, sites: Map<&2, Bool>, mr: Map<&2, Bool>, dropped: Map<&2, Bool>, failed: Bool, own_mr: Bool, next: Nat}
 type MultiRender is Data:
-  MultiRender{body: BIR.Block, plan: Plan, params: List<&2, MultiParam>, windows: Map<&2, MultiWindow>, sites: Map<&2, Bool>, mr: Map<&2, Bool>, private: Bool, public: Bool, width: Nat, failed: Bool}
+  MultiRender{body: BIR.Block, plan: Plan, params: List<&2, MultiParam>, windows: Map<&2, MultiWindow>, sites: Map<&2, Bool>, mr: Map<&2, Bool>, private: Bool, public: Bool, width: Nat, failed: Bool, adapter: Bool}
 type MultiPlan is Data:
   MultiPlan{multi: Map<&2, Bool>, layouts: Map<&2, MultiLayout>, renders: Map<&2, MultiRender>, width: Nat, ok: Bool, refused: List<&2, String>}
 type MultiRef is Data:
@@ -989,7 +989,7 @@ def multi_local_names(items: List<&2, U32>) -> List<&2, String>:
 def multi_render_plain(body: BIR.Block, parameters: List<&2, BIR.Parameter>) -> MultiRender:
   multi_render_plain_made(body, parameters)
 def multi_render_plain_made(scoped: BIR.Block, parameters: List<&2, BIR.Parameter>) -> MultiRender:
-  MultiRender{scoped, plan_of(scoped), multi_params_boxed(parameters, Nil{}), Map.new(&2, MultiWindow), Map.new(&2, Bool), Map.new(&2, Bool), False{}, False{}, 0n, False{}}
+  MultiRender{scoped, plan_of(scoped), multi_params_boxed(parameters, Nil{}), Map.new(&2, MultiWindow), Map.new(&2, Bool), Map.new(&2, Bool), False{}, False{}, 0n, False{}, False{}}
 # A public duplicate whose rewrite was refused keeps the boxed identity of the code
 # it duplicates: the plain body is the source body, it takes boxed arguments and
 # returns the source object, and its continuation names use the public `$kp` space,
@@ -998,7 +998,7 @@ def multi_render_plain_made(scoped: BIR.Block, parameters: List<&2, BIR.Paramete
 def multi_render_plain_public(body: BIR.Block, parameters: List<&2, BIR.Parameter>) -> MultiRender:
   multi_render_plain_public_made(body, parameters)
 def multi_render_plain_public_made(scoped: BIR.Block, parameters: List<&2, BIR.Parameter>) -> MultiRender:
-  MultiRender{scoped, plan_of(scoped), multi_params_boxed(parameters, Nil{}), Map.new(&2, MultiWindow), Map.new(&2, Bool), Map.new(&2, Bool), False{}, True{}, 0n, False{}}
+  MultiRender{scoped, plan_of(scoped), multi_params_boxed(parameters, Nil{}), Map.new(&2, MultiWindow), Map.new(&2, Bool), Map.new(&2, Bool), False{}, True{}, 0n, False{}, False{}}
 def multi_render_code(code: BIR.Code, layouts: Map<&2, MultiLayout>, width: Nat, state: MultiUp, facts: Map<&2, MultiCodeFact>, acc: Map<&2, MultiRender>) -> Map<&2, MultiRender>:
   match code:
     case BIR.Code{id, _, parameters, body}: multi_render_pair(multi_multi_get(multi_prev_multi(state), id), id, parameters, body, layouts, width, state, facts, acc)
@@ -1008,7 +1008,7 @@ def multi_render_pair(multi: Bool, id: U32, parameters: List<&2, BIR.Parameter>,
     case True{}: multi_render_two(id, parameters, body, layouts, width, state, facts, acc)
 def multi_render_two(id: U32, parameters: List<&2, BIR.Parameter>, body: BIR.Block, layouts: Map<&2, MultiLayout>, width: Nat, state: MultiUp, facts: Map<&2, MultiCodeFact>, acc: Map<&2, MultiRender>) -> Map<&2, MultiRender>:
   +uses = multi_render_uses(facts, body, id)
-  Map.set(&2, MultiRender, Map.set(&2, MultiRender, acc, multi_render_key(id, False{}), multi_render_primary_uses(id, parameters, body, layouts, width, state, True{}, uses)), multi_render_key(id, True{}), multi_render_public_uses(id, parameters, body, layouts, width, state, uses))
+  Map.set(&2, MultiRender, Map.set(&2, MultiRender, acc, multi_render_key(id, False{}), multi_render_primary_uses(id, parameters, body, layouts, width, state, True{}, uses)), multi_render_key(id, True{}), multi_render_public_pair(multi_adapter_ok(id, parameters, body, layouts, multi_prev_multi(state), multi_prev_up(state)), id, parameters, body, layouts, width, state, uses))
 # The occurrence counts a render rewrites against are the ones the code's fact
 # already counted over this same source body. Only a body with no fact falls
 # back to counting itself, so a plan round never walks a body it planned.
@@ -1018,6 +1018,68 @@ def multi_render_uses_found(found: Maybe<&2, MultiCodeFact>, body: BIR.Block) ->
   match found:
     case Some{+fact}: multi_fact_uses(fact)
     case None{}: multi_uses(body)
+# A public entry whose private body already takes and returns boxed values needs no
+# body of its own: the adapter render is a marker that carries the result width and
+# no planned or rewritten body, so an eligible code never builds the duplicate at
+# all. Every other code takes the rewritten public body exactly as before.
+def multi_render_public_pair(adapter: Bool, id: U32, parameters: List<&2, BIR.Parameter>, body: BIR.Block, layouts: Map<&2, MultiLayout>, width: Nat, state: MultiUp, uses: Map<&2, Nat>) -> MultiRender:
+  match adapter:
+    case True{}: multi_render_adapter_entry(id, parameters, width)
+    case False{}: multi_render_public_uses(id, parameters, body, layouts, width, state, uses)
+def multi_adapter_ok(id: U32, parameters: List<&2, BIR.Parameter>, body: BIR.Block, layouts: Map<&2, MultiLayout>, multi: Map<&2, Bool>, up: Map<&2, Bool>) -> Bool:
+  Bool.and(multi_multi_get(multi, id), Bool.and(multi_adapter_boxed(parameters, 0n, up, id), multi_adapter_result(body, layouts)))
+# Every parameter of the private body stays boxed, so the private signature is
+# argument-for-argument the public one plus $mr and $td: the adapter passes the
+# caller's own values straight through and never unboxes, projects or reads a field
+# before the private body does.
+def multi_adapter_boxed(items: List<&2, BIR.Parameter>, index: Nat, up: Map<&2, Bool>, id: U32) -> Bool:
+  match items:
+    case Nil{}: True{}
+    case _ <> rest: Bool.and(Bool.not(multi_up_get(up, id, index)), multi_adapter_boxed(rest, (index + 1n : Nat), up, id))
+# The private protocol answers a call by writing the result tag and words into the
+# caller's window, and its boxed form already reads that window with $multi_box. The
+# adapter may forward that answer only when the private body can never make its
+# answer a pre-existing object: the result shape check the selection reads refuses
+# any return of a parameter, a capture or a host value, so under an all-boxed
+# parameter set each reachable return is the fresh construct the private render
+# turns into a window write. This walk re-proves that on the source block instead of
+# trusting the selection. A bare return, a tail call (whose target's own producers
+# are not visible here) or a construct whose fields are not inert, or whose tag and
+# field keys do not match the registered layout, keeps the duplicate.
+def multi_adapter_result(body: BIR.Block, layouts: Map<&2, MultiLayout>) -> Bool:
+  match body:
+    case BIR.Return{_}: False{}
+    case BIR.Let{binding, op, next}: multi_adapter_let(binding, op, next, layouts)
+    case BIR.Branch{_, yes, no}: Bool.and(multi_adapter_result(yes, layouts), multi_adapter_result(no, layouts))
+    case BIR.Region{_, inner, next}: Bool.and(multi_adapter_result(inner, layouts), multi_adapter_result(next, layouts))
+    case BIR.LeaveRegion{_}: True{}
+    case BIR.TailDirect{_, _}: False{}
+    case BIR.TailApply{_, _}: False{}
+    case BIR.Failure{_}: True{}
+def multi_adapter_let(binding: U32, op: BIR.Op, next: BIR.Block, layouts: Map<&2, MultiLayout>) -> Bool:
+  match op:
+    case BIR.Construct{constructor, tag, fields}: multi_adapter_construct(binding, constructor, tag, fields, next, layouts)
+    case _: multi_adapter_result(next, layouts)
+def multi_adapter_construct(binding: U32, constructor: U32, +tag: String, fields: List<&2, BIR.Field>, next: BIR.Block, layouts: Map<&2, MultiLayout>) -> Bool:
+  match next:
+    case BIR.Return{BIR.Local{known}}: multi_adapter_construct_done(U32.is_eq(known, binding), constructor, tag, fields, layouts)
+    case _: multi_adapter_result(next, layouts)
+def multi_adapter_construct_done(same: Bool, constructor: U32, +tag: String, fields: List<&2, BIR.Field>, layouts: Map<&2, MultiLayout>) -> Bool:
+  match same:
+    case False{}: False{}
+    case True{}: multi_adapter_layout(constructor, tag, fields, layouts)
+def multi_adapter_layout(constructor: U32, +tag: String, fields: List<&2, BIR.Field>, layouts: Map<&2, MultiLayout>) -> Bool:
+  Bool.and(String.eq(tag, multi_layout_tag_text(layouts, constructor)), Bool.and(multi_fields_inert(fields), multi_keys_eq(multi_field_keys(fields, Nil{}), multi_layout_keys(layouts, constructor))))
+def multi_render_adapter_entry(id: U32, parameters: List<&2, BIR.Parameter>, width: Nat) -> MultiRender:
+  multi_render_adapter_made(multi_adapter_body(id), parameters, width)
+# The marker body is never emitted: the public emitter branches on the adapter flag
+# before it reads a body, so a marker that ever reached emission reports itself.
+def multi_adapter_body(id: U32) -> BIR.Block:
+  BIR.Failure{String.append(multi_adapter_message(), U32.show(id))}
+def multi_adapter_message() -> String:
+  "bend: internal: adapter public entry has no rendered body: "
+def multi_render_adapter_made(body: BIR.Block, parameters: List<&2, BIR.Parameter>, width: Nat) -> MultiRender:
+  MultiRender{body, plan_of(body), multi_params_boxed(parameters, Nil{}), Map.new(&2, MultiWindow), Map.new(&2, Bool), Map.new(&2, Bool), False{}, True{}, width, False{}, True{}}
 def multi_render_primary(id: U32, parameters: List<&2, BIR.Parameter>, body: BIR.Block, layouts: Map<&2, MultiLayout>, width: Nat, state: MultiUp, facts: Map<&2, MultiCodeFact>, private: Bool) -> MultiRender:
   multi_render_make(id, body, layouts, width, state, private, False{}, multi_params_for_render(private, parameters, multi_prev_up(state), id, width), multi_render_uses(facts, body, id))
 def multi_render_primary_uses(id: U32, parameters: List<&2, BIR.Parameter>, body: BIR.Block, layouts: Map<&2, MultiLayout>, width: Nat, state: MultiUp, private: Bool, uses: Map<&2, Nat>) -> MultiRender:
@@ -1055,7 +1117,7 @@ def multi_render_frames(private: Bool, body: BIR.Block, plan: Plan) -> Bool:
     case False{}: False{}
 def multi_render_final(body: BIR.Block, windows: Map<&2, MultiWindow>, sites: Map<&2, Bool>, mr: Map<&2, Bool>, failed: Bool, private: Bool, public: Bool, params: List<&2, MultiParam>, width: Nat, over: Bool) -> MultiRender:
   +plan = plan_of_windows(body, windows)
-  MultiRender{body, plan, params, windows, sites, mr, private, public, width, Bool.or(failed, Bool.or(multi_render_frames(private, body, plan), over))}
+  MultiRender{body, plan, params, windows, sites, mr, private, public, width, Bool.or(failed, Bool.or(multi_render_frames(private, body, plan), over)), False{}}
 def multi_render_key(id: U32, public: Bool) -> String:
   multi_render_key_pick(public, id)
 def multi_render_key_pick(public: Bool, id: U32) -> String:
@@ -1068,7 +1130,7 @@ def multi_renders(items: List<&2, BIR.Code>, layouts: Map<&2, MultiLayout>, widt
     case code <> rest: multi_renders(rest, layouts, width, state, facts, multi_render_code(code, layouts, width, state, facts, acc))
 def multi_render_failed(found: Maybe<&2, MultiRender>) -> Bool:
   match found:
-    case Some{MultiRender{_, _, _, _, _, _, _, _, _, failed}}: failed
+    case Some{MultiRender{_, _, _, _, _, _, _, _, _, failed, _}}: failed
     case None{}: True{}
 def multi_render_of_key(renders: Map<&2, MultiRender>, +key: String) -> Maybe<&2, MultiRender>:
   IndexLookup.find(MultiRender, renders, key)
@@ -1133,7 +1195,7 @@ def multi_fault_renders(items: List<&2, BIR.Code>, acc: Map<&2, MultiRender>) ->
 def multi_fault_boxed(parameters: List<&2, BIR.Parameter>) -> MultiRender:
   multi_fault_boxed_made(multi_fault_block("relaxation did not settle"), parameters)
 def multi_fault_boxed_made(error: BIR.Block, parameters: List<&2, BIR.Parameter>) -> MultiRender:
-  MultiRender{error, plan_of(error), multi_params_boxed(parameters, Nil{}), Map.new(&2, MultiWindow), Map.new(&2, Bool), Map.new(&2, Bool), False{}, False{}, 0n, False{}}
+  MultiRender{error, plan_of(error), multi_params_boxed(parameters, Nil{}), Map.new(&2, MultiWindow), Map.new(&2, Bool), Map.new(&2, Bool), False{}, False{}, 0n, False{}, False{}}
 # A refused primary owner is banned, so at the join no failed owner can still be
 # multi: the round makes every banned code boxed. A banned owner whose rewritten
 # body was refused keeps exactly its source body, which has the same function
@@ -1177,8 +1239,8 @@ def multi_renders_final_failed(multi: Bool, id: U32, parameters: List<&2, BIR.Pa
     case True{}: Map.set(&2, MultiRender, renders, multi_render_key(id, False{}), multi_fault_selected(id, parameters, renders))
 def multi_fault_selected(id: U32, parameters: List<&2, BIR.Parameter>, renders: Map<&2, MultiRender>) -> MultiRender:
   match multi_render_of_key(renders, multi_render_key(id, False{})):
-    case Some{MultiRender{_, plan, params, windows, sites, mr, private, public, width, _}}:
-      MultiRender{multi_fault_block("a selected owner was refused"), plan, params, windows, sites, mr, private, public, width, False{}}
+    case Some{MultiRender{_, plan, params, windows, sites, mr, private, public, width, _, adapter}}:
+      MultiRender{multi_fault_block("a selected owner was refused"), plan, params, windows, sites, mr, private, public, width, False{}, adapter}
     case None{}: multi_fault_boxed(parameters)
 def multi_renders_final_public(multi: Bool, id: U32, parameters: List<&2, BIR.Parameter>, body: BIR.Block, renders: Map<&2, MultiRender>) -> Map<&2, MultiRender>:
   match multi:
@@ -1250,16 +1312,22 @@ def multi_owner(id: U32, public: Bool) -> String:
     case False{}: U32.show(id)
 def multi_render_plan(render: MultiRender) -> Plan:
   match render:
-    case MultiRender{_, plan, _, _, _, _, _, _, _, _}: plan
+    case MultiRender{_, plan, _, _, _, _, _, _, _, _, _}: plan
 def multi_render_body(render: MultiRender) -> BIR.Block:
   match render:
-    case MultiRender{body, _, _, _, _, _, _, _, _, _}: body
+    case MultiRender{body, _, _, _, _, _, _, _, _, _, _}: body
 def multi_render_params(render: MultiRender) -> List<&2, MultiParam>:
   match render:
-    case MultiRender{_, _, params, _, _, _, _, _, _, _}: params
+    case MultiRender{_, _, params, _, _, _, _, _, _, _, _}: params
 def multi_render_private(render: MultiRender) -> Bool:
   match render:
-    case MultiRender{_, _, _, _, _, _, private, _, _, _}: private
+    case MultiRender{_, _, _, _, _, _, private, _, _, _, _}: private
+def multi_render_width(render: MultiRender) -> Nat:
+  match render:
+    case MultiRender{_, _, _, _, _, _, _, _, width, _, _}: width
+def multi_render_adapter(render: MultiRender) -> Bool:
+  match render:
+    case MultiRender{_, _, _, _, _, _, _, _, _, _, adapter}: adapter
 def multi_signature(captures: List<&2, BIR.Use>, render: MultiRender) -> List<&2, String>:
   multi_sig_names(multi_render_private(render), List.append(&2, String, capture_names(captures, 0), multi_param_names(multi_render_params(render))))
 def multi_sig_names(private: Bool, names: List<&2, String>) -> List<&2, String>:
@@ -1287,7 +1355,39 @@ def multi_public_pick(multi: Bool, ok: Bool, id: U32, captures: List<&2, BIR.Use
 def multi_public_ok(ok: Bool, id: U32, captures: List<&2, BIR.Use>, item: BIR.Code, plan: MultiPlan) -> String:
   match ok:
     case False{}: ""
-    case True{}: multi_code_emit(id, captures, multi_render_public_of(plan, item), plan, True{})
+    case True{}: multi_public_emit(multi_render_public_of(plan, item), id, captures, item, plan)
+def multi_public_emit(render: MultiRender, id: U32, captures: List<&2, BIR.Use>, item: BIR.Code, plan: MultiPlan) -> String:
+  match multi_render_adapter(render):
+    case True{}: multi_adapter_code(id, captures, item, render)
+    case False{}: multi_code_emit(id, captures, render, plan, True{})
+# The boxed public entry of an adapter code: one owned window base, one boxing
+# continuation installed before the private call, and the private convention's own
+# depth rule. Below 64 the private body is called directly and its tag is handed to
+# $split_done, which restores $sp and boxes synchronously; at the boundary the call
+# is scheduled through $splitm exactly as a wide private call site schedules it, so
+# the tag reaches the same continuation from the machine with a fresh depth. Pending
+# and leave markers pass through $split_done untouched, and a throw aborts the
+# continuation and the stack before it leaves the adapter.
+def multi_adapter_code(id: U32, captures: List<&2, BIR.Use>, item: BIR.Code, render: MultiRender) -> String:
+  match item:
+    case BIR.Code{_, _, parameters, _}: multi_adapter_text(id, captures, parameters, multi_render_width(render))
+def multi_adapter_text(id: U32, captures: List<&2, BIR.Use>, parameters: List<&2, BIR.Parameter>, width: Nat) -> String:
+  +args = multi_adapter_args(captures, parameters)
+  +public = List.append(&2, String, args, ["$td=0"])
+  +window = List.append(&2, String, args, ["$mb"])
+  cat(["function ", code_name_pub(id), "(", String.join(public, ","), "){const $mb=$sp;if($td<64){const $ki=$split_enter(", multi_adapter_cont(id), ",$mb);try{return $split_done(", code_name(id), "(", String.join(List.append(&2, String, window, ["$td+1"]), ","), "),$ki,$td+1);}catch($e){$split_abort($ki,$mb);throw $e;}}return $splitm(", code_name(id), ",[", String.join(window, ","), "],", multi_adapter_cont(id), ",$mb);}\n", multi_adapter_cont_decl(id, width)])
+def multi_adapter_args(captures: List<&2, BIR.Use>, parameters: List<&2, BIR.Parameter>) -> List<&2, String>:
+  List.append(&2, String, capture_names(captures, 0), parameter_names(parameters))
+# The adapter's continuation lives in its own $kpa space, disjoint from the
+# private $k names, the public $kp names, the $r owner thunks and the synthetic
+# conversion names. It materializes the fresh result before it clears the words it
+# read, so the box is built exactly once and the window is left empty. It builds
+# own data properties, so the boxed entry keeps the object the source constructor
+# literal would have built even under an inherited setter.
+def multi_adapter_cont(id: U32) -> String:
+  cat(["$kpa", U32.show(id)])
+def multi_adapter_cont_decl(id: U32, width: Nat) -> String:
+  cat(["function ", multi_adapter_cont(id), "($x,$base,$td=0){const $r=$multi_box_own($x,$base,0);", multi_slot_clear(width, 0n, 0n), "return $r;}\n"])
 
 # A rendered block belongs to one owner, a code body or a lazy declaration
 # body, and sees the frame-form regions around it. `frames` names exactly the
@@ -1302,7 +1402,7 @@ def js_ctx(owner: String, plan: Plan) -> JsCtx:
 def js_ctx_multi(owner: String, plan: Plan, multi: Map<&2, Bool>, render: MultiRender) -> JsCtx:
   JsCtx{owner, plan, Nil{}, multi, render}
 def multi_render_plain_state(plan: Plan) -> MultiRender:
-  MultiRender{BIR.Failure{""}, plan, Nil{}, Map.new(&2, MultiWindow), Map.new(&2, Bool), Map.new(&2, Bool), False{}, False{}, 0n, False{}}
+  MultiRender{BIR.Failure{""}, plan, Nil{}, Map.new(&2, MultiWindow), Map.new(&2, Bool), Map.new(&2, Bool), False{}, False{}, 0n, False{}, False{}}
 def js_ctx_inside(ctx: JsCtx, label: U32) -> JsCtx:
   match ctx:
     case JsCtx{owner, plan, frames, multi, render}: JsCtx{owner, plan, label <> frames, multi, render}
@@ -1329,27 +1429,27 @@ def js_ctx_render(ctx: JsCtx) -> MultiRender:
     case JsCtx{_, _, _, _, render}: render
 def js_ctx_private(ctx: JsCtx) -> Bool:
   match js_ctx_render(ctx):
-    case MultiRender{_, _, _, _, _, _, private, _, _, _}: private
+    case MultiRender{_, _, _, _, _, _, private, _, _, _, _}: private
 def js_ctx_public(ctx: JsCtx) -> Bool:
   match js_ctx_render(ctx):
-    case MultiRender{_, _, _, _, _, _, _, public, _, _}: public
+    case MultiRender{_, _, _, _, _, _, _, public, _, _, _}: public
 def js_ctx_width(ctx: JsCtx) -> Nat:
   match js_ctx_render(ctx):
-    case MultiRender{_, _, _, _, _, _, _, _, width, _}: width
+    case MultiRender{_, _, _, _, _, _, _, _, width, _, _}: width
 def js_ctx_params(ctx: JsCtx) -> List<&2, MultiParam>:
   match js_ctx_render(ctx):
-    case MultiRender{_, _, params, _, _, _, _, _, _, _}: params
+    case MultiRender{_, _, params, _, _, _, _, _, _, _, _}: params
 def js_ctx_site(ctx: JsCtx, id: U32) -> Bool:
   match js_ctx_render(ctx):
-    case MultiRender{_, _, _, _, sites, _, _, _, _, _}: multi_site_get(sites, id)
+    case MultiRender{_, _, _, _, sites, _, _, _, _, _, _}: multi_site_get(sites, id)
 def multi_site_get(sites: Map<&2, Bool>, id: U32) -> Bool:
   multi_up_found(IndexLookup.find(Bool, sites, cat(["k", U32.show(id)])))
 def js_ctx_window(ctx: JsCtx, id: U32) -> Maybe<&2, MultiWindow>:
   match js_ctx_render(ctx):
-    case MultiRender{_, _, _, windows, _, _, _, _, _, _}: IndexLookup.find(MultiWindow, windows, cat(["k", U32.show(id)]))
+    case MultiRender{_, _, _, windows, _, _, _, _, _, _, _}: IndexLookup.find(MultiWindow, windows, cat(["k", U32.show(id)]))
 def js_ctx_mr(ctx: JsCtx, id: U32) -> Bool:
   match js_ctx_render(ctx):
-    case MultiRender{_, _, _, _, _, mr, _, _, _, _}: multi_up_found(IndexLookup.find(Bool, mr, cat(["k", U32.show(id)])))
+    case MultiRender{_, _, _, _, _, mr, _, _, _, _, _}: multi_up_found(IndexLookup.find(Bool, mr, cat(["k", U32.show(id)])))
 def cont_name_ctx(ctx: JsCtx, id: U32) -> String:
   match js_ctx_public(ctx):
     case True{}: cat(["$kp", U32.show(id)])
@@ -3953,8 +4053,12 @@ def program_source_scoped(+program: BIR.Program, natives: Map<&2, String>, effec
 # result or an unpopped region frame belongs to run_base; only an ordinary
 # synchronous result with our frame on top can resume here. Thread depth into
 # the continuation too, so a chain of completed calls cannot reset the bound.
+# $multi_box_own builds exactly what a constructor's object literal builds: every
+# field becomes an own data property, so an inherited setter on a constructor key
+# neither runs nor lets the key go missing. The boxed public entry needs that
+# literal behavior; the private lane keeps the faster $multi_box.
 def js_runtime_direct() -> String:
-  "function $multi_box(t,b,c) { const ks=$FIELDS[t]; if(ks===undefined) throw \"bend: unresolved multi-result tag\"; const o={$:t}; let j=0; for(let i=0;i<ks.length;i++) { const k=ks[i]; if(k===null) continue; const v=$stArgs[b+c+1+j]; j++; if(k===\"__proto__\") Object.defineProperty(o,k,{value:v,enumerable:true,configurable:true,writable:true}); else o[k]=v; } return o; }\nfunction $split_enter(k,b) { const i=$ksp++; $kFn[i]=k; $kBase[i]=b; $kKind[i]=0; return i; }\nfunction $split_done(x,i,d) { if(x===$TAIL_PENDING||x===$CALL_PENDING||x===$LEAVE_PENDING||$ksp!==i+1)return x; const k=$kFn[i],b=$kBase[i]; $kFn[i]=undefined; $ksp=i; $sp=b; return k(x,b,d); }\nfunction $split_abort(i,b) { while($ksp>i)$kFn[--$ksp]=undefined; $sp=b; $tailFn=undefined; $tailCount=0; }\nfunction $split_apply(f,x,k,b,d) { if(d>=64)return $split1(f,x,k,b); const j=f[$BEND_TAIL],i=$split_enter(k,b); if(!j) { $tailFn=f; $tailCount=-1; $tailUnary=x; return $CALL_PENDING; } try { return $split_done(j(x,$BEND_TAIL,d+1),i,d+1); } catch(e) { $split_abort(i,b); throw e; } }\n"
+  "function $multi_box(t,b,c) { const ks=$FIELDS[t]; if(ks===undefined) throw \"bend: unresolved multi-result tag\"; const o={$:t}; let j=0; for(let i=0;i<ks.length;i++) { const k=ks[i]; if(k===null) continue; const v=$stArgs[b+c+1+j]; j++; if(k===\"__proto__\") Object.defineProperty(o,k,{value:v,enumerable:true,configurable:true,writable:true}); else o[k]=v; } return o; }\nfunction $multi_box_own(t,b,c) { const ks=$FIELDS[t]; if(ks===undefined) throw \"bend: unresolved multi-result tag\"; const o={$:t}; let j=0; for(let i=0;i<ks.length;i++) { const k=ks[i]; if(k===null) continue; Object.defineProperty(o,k,{value:$stArgs[b+c+1+j],enumerable:true,configurable:true,writable:true}); j++; } return o; }\nfunction $split_enter(k,b) { const i=$ksp++; $kFn[i]=k; $kBase[i]=b; $kKind[i]=0; return i; }\nfunction $split_done(x,i,d) { if(x===$TAIL_PENDING||x===$CALL_PENDING||x===$LEAVE_PENDING||$ksp!==i+1)return x; const k=$kFn[i],b=$kBase[i]; $kFn[i]=undefined; $ksp=i; $sp=b; return k(x,b,d); }\nfunction $split_abort(i,b) { while($ksp>i)$kFn[--$ksp]=undefined; $sp=b; $tailFn=undefined; $tailCount=0; }\nfunction $split_apply(f,x,k,b,d) { if(d>=64)return $split1(f,x,k,b); const j=f[$BEND_TAIL],i=$split_enter(k,b); if(!j) { $tailFn=f; $tailCount=-1; $tailUnary=x; return $CALL_PENDING; } try { return $split_done(j(x,$BEND_TAIL,d+1),i,d+1); } catch(e) { $split_abort(i,b); throw e; } }\n"
 
 # Trusted target runtime; public/native callback and reflection ABI is retained.
 def js_runtime() -> String:
