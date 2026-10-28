@@ -2233,7 +2233,40 @@ def multi_round_n(items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds
 # would never seed at all. Removal is monotone, so the iteration settles at the
 # greatest fixed point the rules allow.
 def multi_round_start(items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, layouts: Map<&2, MultiLayout>, width: Nat) -> MultiUp:
-  multi_round_settle(items, facts, fwds, banned, layouts, width, multi_round_n(items, facts, fwds, banned, layouts, width, 16n, multi_round_seed(items, Map.new(&2, Bool), Map.new(&2, Bool))))
+  multi_round_until(items, facts, fwds, banned, layouts, width, multi_round_budget(items, multi_round_seed(items, Map.new(&2, Bool), Map.new(&2, Bool))), multi_round_seed(items, Map.new(&2, Bool), Map.new(&2, Bool)))
+# Each round that is not the last strictly removes a true flag, so a state with
+# the same number of true flags is a fixed point and the loop may stop; the
+# budget is the number of initial flags plus one, which is a proof that the loop
+# terminates even on a long tail chain. The empty answer on exhaustion is only
+# reachable if the relaxation itself removes flags without narrowing, i.e. if the
+# operator is wrong, and it declines the transform rather than emitting it.
+def multi_round_budget(items: List<&2, BIR.Code>, state: MultiUp) -> Nat:
+  Nat.add(multi_true_count(items, state), 1n)
+def multi_true_count(items: List<&2, BIR.Code>, state: MultiUp) -> Nat:
+  multi_true_codes(items, state, 0n)
+def multi_true_codes(items: List<&2, BIR.Code>, state: MultiUp, acc: Nat) -> Nat:
+  match items:
+    case Nil{}: acc
+    case BIR.Code{id, _, parameters, _} <> rest:
+      multi_true_codes(rest, state, multi_true_flags(parameters, id, 0n, state, multi_true_multi(multi_multi_get(multi_prev_multi(state), id), acc)))
+def multi_true_multi(true_: Bool, acc: Nat) -> Nat:
+  match true_:
+    case True{}: Nat.add(acc, 1n)
+    case False{}: acc
+def multi_true_flags(items: List<&2, BIR.Parameter>, id: U32, index: Nat, state: MultiUp, acc: Nat) -> Nat:
+  match items:
+    case Nil{}: acc
+    case _ <> rest: multi_true_flags(rest, id, (index + 1n : Nat), state, multi_true_multi(multi_up_get(multi_prev_up(state), id, index), acc))
+def multi_round_until(items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, layouts: Map<&2, MultiLayout>, width: Nat, left: Nat, state: MultiUp) -> MultiUp:
+  multi_round_until_step(items, facts, fwds, banned, layouts, width, left, state, multi_round(items, facts, fwds, banned, layouts, width, state, MultiUp{Map.new(&2, Bool), Map.new(&2, Bool)}))
+def multi_round_until_step(items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, layouts: Map<&2, MultiLayout>, width: Nat, left: Nat, state: MultiUp, next: MultiUp) -> MultiUp:
+  match Nat.is_eq(multi_true_count(items, next), multi_true_count(items, state)):
+    case True{}: next
+    case False{}: multi_round_more(Nat.is_eq(left, 0n), items, facts, fwds, banned, layouts, width, left, next)
+def multi_round_more(empty: Bool, items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, layouts: Map<&2, MultiLayout>, width: Nat, left: Nat, next: MultiUp) -> MultiUp:
+  match empty:
+    case True{}: MultiUp{Map.new(&2, Bool), Map.new(&2, Bool)}
+    case False{}: multi_round_until(items, facts, fwds, banned, layouts, width, Nat.sub(left, 1n), next)
 # A state that one more relaxation pass would still narrow is not a fixed point:
 # some remaining `multi` code could then name a private tail entry whose callee
 # was already removed, and the caller would read a window that the boxed callee
@@ -2680,7 +2713,7 @@ def multi_rewrite_site_applied(id: U32, code: U32, args: List<&2, BIR.Arg>, body
 def multi_rewrite_site_route(priv: Bool, id: U32, code: U32, args: List<&2, BIR.Arg>, body: BIR.Block, windows: Map<&2, MultiWindow>, sites: Map<&2, Bool>, mr: Map<&2, Bool>, dropped: Map<&2, Bool>, failed: Bool, own: Bool, seed: Nat, ctx: MRewCtx, +key: String) -> MultiRew:
   match priv:
     case False{}:
-      MultiRew{BIR.Let{id, BIR.Direct{code, multi_subst_args(args, ctx)}, body}, windows, Map.set(&2, Bool, sites, key, False{}), mr, dropped, Bool.or(failed, Bool.and(own, Bool.not(multi_ctx_private(ctx)))), False{}, seed}
+      MultiRew{BIR.Let{id, BIR.Direct{code, multi_subst_args(args, ctx)}, body}, windows, Map.set(&2, Bool, sites, key, False{}), Map.set(&2, Bool, mr, key, own), dropped, Bool.or(failed, Bool.and(own, Bool.not(multi_ctx_private(ctx)))), own, seed}
     case True{}:
       MultiRew{BIR.Let{id, BIR.Direct{code, multi_expand_args(args, code, ctx)}, body}, Map.set(&2, MultiWindow, windows, key, MultiWindow{multi_ctx_width(ctx), multi_fresh_ids(id, multi_ctx_width(ctx)), None{}}), Map.set(&2, Bool, sites, key, True{}), Map.set(&2, Bool, mr, key, own), dropped, Bool.or(failed, Bool.and(own, Bool.not(multi_ctx_private(ctx)))), own, seed}
 def multi_rewrite_apply(id: U32, fn: BIR.Atom, arg: BIR.Arg, next: BIR.Block, ctx: MRewCtx, seed: Nat) -> MultiRew:
@@ -2689,7 +2722,7 @@ def multi_rewrite_apply(id: U32, fn: BIR.Atom, arg: BIR.Arg, next: BIR.Block, ct
 def multi_rewrite_apply_made(id: U32, fn: BIR.Atom, arg: BIR.Arg, r: MultiRew, ctx: MRewCtx) -> MultiRew:
   match r:
     case MultiRew{body, windows, sites, mr, dropped, failed, own, next}:
-      MultiRew{BIR.Let{id, BIR.Apply{multi_atom(fn, ctx), multi_subst_arg(arg, ctx)}, body}, windows, sites, mr, dropped, failed, own, next}
+      MultiRew{BIR.Let{id, BIR.Apply{multi_atom(fn, ctx), multi_subst_arg(arg, ctx)}, body}, windows, sites, Map.set(&2, Bool, mr, cat(["k", U32.show(id)]), own), dropped, Bool.or(failed, Bool.and(own, Bool.not(multi_ctx_private(ctx)))), own, next}
 def multi_rewrite_op(id: U32, op: BIR.Op, next: BIR.Block, ctx: MRewCtx, seed: Nat) -> MultiRew:
   +r = multi_rewrite(next, ctx, seed)
   multi_rewrite_op_made(id, op, r, ctx)
@@ -3544,7 +3577,7 @@ def program_source(program: BIR.Program, effects: String) -> String:
 # synchronous result with our frame on top can resume here. Thread depth into
 # the continuation too, so a chain of completed calls cannot reset the bound.
 def js_runtime_direct() -> String:
-  "function $multi_box(t,b,c) { const ks=$FIELDS[t]; if(ks===undefined) throw \"bend: unresolved multi-result tag\"; const o={$:t}; for(let i=0;i<ks.length;i++) o[ks[i]]=$stArgs[b+c+1+i]; return o; }\nfunction $split_enter(k,b) { const i=$ksp++; $kFn[i]=k; $kBase[i]=b; $kKind[i]=0; return i; }\nfunction $split_done(x,i,d) { if(x===$TAIL_PENDING||x===$CALL_PENDING||x===$LEAVE_PENDING||$ksp!==i+1)return x; const k=$kFn[i],b=$kBase[i]; $kFn[i]=undefined; $ksp=i; $sp=b; return k(x,b,d); }\nfunction $split_abort(i,b) { while($ksp>i)$kFn[--$ksp]=undefined; $sp=b; $tailFn=undefined; $tailCount=0; }\n"
+  "function $multi_box(t,b,c) { const ks=$FIELDS[t]; if(ks===undefined) throw \"bend: unresolved multi-result tag\"; const o={$:t}; let j=0; for(let i=0;i<ks.length;i++) { const k=ks[i]; if(k===null) continue; const v=$stArgs[b+c+1+j]; j++; if(k===\"__proto__\") Object.defineProperty(o,k,{value:v,enumerable:true,configurable:true,writable:true}); else o[k]=v; } return o; }\nfunction $split_enter(k,b) { const i=$ksp++; $kFn[i]=k; $kBase[i]=b; $kKind[i]=0; return i; }\nfunction $split_done(x,i,d) { if(x===$TAIL_PENDING||x===$CALL_PENDING||x===$LEAVE_PENDING||$ksp!==i+1)return x; const k=$kFn[i],b=$kBase[i]; $kFn[i]=undefined; $ksp=i; $sp=b; return k(x,b,d); }\nfunction $split_abort(i,b) { while($ksp>i)$kFn[--$ksp]=undefined; $sp=b; $tailFn=undefined; $tailCount=0; }\n"
 
 # Trusted target runtime; public/native callback and reflection ABI is retained.
 def js_runtime() -> String:
