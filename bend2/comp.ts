@@ -2892,6 +2892,106 @@ function emit_intr(sc: Scope, it: Intr, m: Spine, ty: HTerm | null): Val {
   return val_new([tpl(C, as)], lay.ks.length === 1 ? lay : BOX);
 }
 
+// Map reads
+// =========
+
+// Base answers Map.get, Map.has and Map.seek by matching the trie outward:
+// each path node is rebuilt and each node reads the query from its head. A
+// fully applied call whose live arguments the caller owns walks the trie in
+// place instead and answers the same map word back. The compiler's layouts
+// still own the answer: the function's generic ABI words are the map and a
+// boxed value (or the fixed key/Maybe words), and the instantiated result
+// type's value field says how that boxed value is laid out here.
+
+const MAP_READS: Record<string, "get" | "has" | "seek"> =
+  Object.setPrototypeOf({
+    "Map.get": "get", "Map.has": "has", "Map.seek": "seek",
+  }, null);
+
+// A Map node holds its fields one word each; their offsets are Base's
+// declared constructor order, read from the same interned layout the emitter
+// builds nodes with.
+function map_offsets(k: Name): string[] | null {
+  const fs = lay_node(k).arms?.[k];
+  return fs === undefined || fs.some((l) => l.ks.length !== 1) ? null
+    : fs.map((_, i) => String(i));
+}
+
+// A read consumes each live argument, so every box it is given must be the
+// caller's own: a borrowed word would have to be kept to be consumed, which
+// the source call never does. Literals and words need no count.
+function map_owned(sc: Scope, x: HTerm): boolean {
+  const s = term_strip(x);
+  if (s.$ !== "Var") {
+    return true;
+  }
+  const bd = sc.uses.get(probe_of(s));
+  return bd !== undefined && !bd.val.lay.ks.some((k, j) =>
+    k === "box" && sc.brwl.has(bd.val.ws[j]));
+}
+
+function emit_map_read(sc: Scope, m: Spine, ty: HTerm | null): Val | null {
+  const k = m.t.$ === "Ref" ? m.k : null;
+  const op = k === null ? undefined : MAP_READS[k];
+  const tld = m.tld;
+  if (op === undefined || m.b || ty === null || tld?.$ !== "Def") {
+    return null;
+  }
+  const f = fun_of(k);
+  const ctr = FL.book.ctrs["Tuple"];
+  const adt = ty_adt(ty);
+  const lay = lay_of(ty);
+  const noc = map_offsets("MNode");
+  const leaf = map_offsets("MLeaf");
+  if (m.all.length !== f.n || m.args.length !== f.live.length
+    || !m.args.every((x) => map_owned(sc, x)) || ctr === undefined
+    || adt?.k !== "Sigma" || lay.arms === null || lay.ks[0] !== "box"
+    || noc?.length !== 3 || leaf?.length !== 2) {
+    return null;
+  }
+  const ret = f.ret;
+  let vlay: Lay | null = null;
+  if (lay_id(lay) !== lay_id(ret)) {
+    const arms = lay_arms(lay);
+    const fs = lay.arms[arms[0]];
+    if (op !== "get" || arms.length !== 1 || fs?.length !== 2
+      || lay_id(fs[0]) !== lay_id(BOX)) {
+      return null;
+    }
+    vlay = fs[1];
+  }
+  // A hit shares the value (get) or the candidate key (seek) exactly as the
+  // source does, so the shared type's constructors must seal their fields.
+  const doms = tele_unbind(tld.T).doms;
+  const hot = op === "get" ? ctr_doms(ctr, adt.x)[1] ?? null
+    : op === "seek" ? doms[doms.length - 1]?.[2] ?? null : null;
+  if (hot !== null) {
+    facts_hot(sc, hot, true);
+  }
+  const args = emit_each(sc, m.args).map((v) => val_to(sc, v, BOX));
+  const ws = args.map((v, i) => val_own(sc, v, k + "~" + i)[0]);
+  const cids = [cid_mac("MNode"), cid_mac("MLeaf")].join(", ");
+  const offs = [...noc!, ...leaf!].join(", ");
+  const mo = emit_hold(sc, ["0"], "bm")[0];
+  if (op === "has") {
+    const bw = emit_alias(sc, `map_has_read(e, ${cids}, ${noc!.join(", ")}, ${
+      leaf![0]}, ${ws[0]}, ${ws[1]}, &${mo})`, "bh", "w32");
+    return val_new([mo, bw], lay);
+  }
+  if (op === "get") {
+    const vw = emit_hold(sc, [`map_get_read(e, ${cids}, ${offs}, ${
+      ws[0]}, ${ws[1]}, ${ws[2]}, &${mo})`], "bv")[0];
+    const v = vlay === null ? val_new([vw], BOX)
+      : val_to(sc, val_new([vw], BOX), vlay);
+    return val_new([mo, ...v.ws], lay);
+  }
+  const ko = emit_hold(sc, ["0"], "bk")[0];
+  const co = emit_hold(sc, ["0"], "bc")[0];
+  const tw = emit_alias(sc, `map_seek_read(e, ${cids}, ${noc!.join(", ")}, ${
+    leaf![0]}, ${ws[0]}, ${ws[1]}, &${mo}, &${ko}, &${co})`, "bs", "w32");
+  return val_new([mo, ko, tw, co], lay);
+}
+
 function emit_clo(sc: Scope, x: HTerm, ty: HTerm | null): Val {
   const u = term_uses(x);
   const live = [...sc.uses].filter(([p]) => term_use(u, p) > 0);
@@ -3125,6 +3225,10 @@ function emit_expr_head(sc: Scope, tm: HTerm, ty0: HTerm | null,
           continue;
         }
         const m = term_spine(x);
+        const read = emit_map_read(sc, m, ty);
+        if (read !== null) {
+          return read;
+        }
         if (flat_call(x)) {
           const dst = emit_dst(sc, fun_at(m).ret);
           emit_fuse(sc, m, dst);
@@ -3242,6 +3346,11 @@ function emit_body(sc: Scope, tm: HTerm, ty0: HTerm | null,
         bind_dead(sc, null);
         return emit_put(sc, dst, v);
       }
+      const read = emit_map_read(sc, ck, ty);
+      if (read !== null) {
+        bind_dead(sc, null);
+        return emit_put(sc, dst, read);
+      }
       const f = sc.seg.fid.startsWith("spin_") ? fun_at(ck) : fun_of(ck.k);
       const ret = f.ret;
       const once = FL.sites.get(ck.k) === 1 && !ck.b && !def_foreign(ck.tld)
@@ -3265,6 +3374,18 @@ function emit_fork(sc: Scope, x: Of<"Let">, ers: HTerm[]): void {
   const o = term_open(x);
   const calls = x.v.map(term_spine);
   const fork = calls.length > 1;
+  // A Let that binds one map read needs no continuation: the read answers its
+  // words in place, so the body follows here, as a Let of a flat call does.
+  if (!fork && o.ps.length === 1 && x.k.length === 1) {
+    const ty = ty_ann(x.v[0]);
+    const read = ty === null ? null : emit_map_read(sc, calls[0], ty);
+    if (read !== null) {
+      const rest = rest_new([o.b], 0, false, null);
+      bind_uses(sc, o.ps[0], read, rest, ty!);
+      bind_dead(sc, rest);
+      return emit_body(sc, o.b, null, ers, [], null);
+    }
+  }
   const name = seg_name(sc, "j");
   let hold: Of<"Var">[] = [];
   // A fork and every step of its chain end in the same pending body.
@@ -4928,6 +5049,133 @@ FAR void term_drop(Env e, Term t) {
 INLINE void term_sink(Env e, Term t) {
   if (!term_triv(t)) {
     term_drop(e, t);
+  }
+}
+
+// A read walks the trie in place. A public MNode may name any position, so
+// the walk keeps one cursor over the query key and restarts it at the head
+// when a node asks for an earlier position; nothing is rebuilt and no node
+// is consumed.
+typedef struct {
+  Term at;
+  u64  ci;
+} MapCur;
+
+INLINE u64 map_cur_bit(Env e, THR MapCur* c, Term key, u64 pos) {
+  u64 ci = pos / 33;
+  if (c->ci > ci) {
+    c->at = key;
+    c->ci = 0;
+  }
+  while (c->ci < ci && term_aux(c->at) == CID(SCon)) {
+    c->at = e.mem[term_peek(e.mem, c->at) + 1];
+    c->ci += 1;
+  }
+  if (term_aux(c->at) != CID(SCon)) {
+    return 0;
+  }
+  u64 off = pos % 33;
+  return off == 0 || (((u32)e.mem[term_peek(e.mem, c->at)] >> (32 - off)) & 1);
+}
+
+// A read answers one field of a node it keeps: a shared node's fields are
+// shared already, so only the count moves; a node this read alone holds keeps
+// the redirect in its own slot, as ctr_take would on the way out.
+INLINE Term map_field_share(Env e, Term t, u64 src, u32 off) {
+  DEV u64* H = e.mem;
+  Term v = H[src + off];
+  bool one = !term_rfc(t);
+  if (!one) {
+    DEV u32* c = a32_at(H, term_loc(t));
+    one = (a32_load(c) & RFC_CNT) == 1;
+    if (one) {
+      a32_acq(c);
+    } else if (!term_rfc(v) && !term_triv(v)) {
+      err_post(H, ERR_RFCS);
+      return v;
+    }
+  }
+  Term k = term_keep(e, v, 1);
+  if (one) {
+    H[src + off] = k;
+  }
+  return k;
+}
+
+// Base's Map.get, reading the trie in place: the map, the query and the
+// default are consumed own references, a hit shares the value it answers
+// through the leaf that stays in the map, a miss answers the default, and the
+// map the walk kept is written back through mo. cn, cl, pn, nl, nh, lk and lv
+// are the constructor ids and field offsets the compiler owns.
+INLINE Term map_get_read(Env e, u32 cn, u32 cl,
+                         u32 pn, u32 nl, u32 nh, u32 lk, u32 lv,
+                         Term d, Term m, Term key, THR Term* mo) {
+  MapCur c = { key, 0 };
+  Term t = m;
+  for (;;) {
+    u64 src = term_peek(e.mem, t);
+    u32 aux = (u32)term_aux(t);
+    if (aux == cn) {
+      u64 at = e.mem[src + pn];
+      t = e.mem[src + (map_cur_bit(e, &c, key, at) ? nh : nl)];
+      continue;
+    }
+    Term v = d;
+    if (aux == cl && string_cmp_read(e, key, e.mem[src + lk]) == 0) {
+      v = map_field_share(e, t, src, lv);
+      term_sink(e, d);
+    }
+    term_sink(e, key);
+    *mo = m;
+    return v;
+  }
+}
+
+// Base's Map.has, in place: the map stays and the query is consumed.
+INLINE u64 map_has_read(Env e, u32 cn, u32 cl,
+                        u32 pn, u32 nl, u32 nh, u32 lk,
+                        Term m, Term key, THR Term* mo) {
+  MapCur c = { key, 0 };
+  Term t = m;
+  for (;;) {
+    u64 src = term_peek(e.mem, t);
+    u32 aux = (u32)term_aux(t);
+    if (aux == cn) {
+      u64 at = e.mem[src + pn];
+      t = e.mem[src + (map_cur_bit(e, &c, key, at) ? nh : nl)];
+      continue;
+    }
+    u64 hit = aux == cl && string_cmp_read(e, key, e.mem[src + lk]) == 0;
+    term_sink(e, key);
+    *mo = m;
+    return hit;
+  }
+}
+
+// Base's Map.seek, in place: the map stays, the query comes back, and the
+// candidate key is shared through the leaf that stays in the map.
+INLINE u64 map_seek_read(Env e, u32 cn, u32 cl,
+                         u32 pn, u32 nl, u32 nh, u32 lk,
+                         Term m, Term key,
+                         THR Term* mo, THR Term* ko, THR Term* co) {
+  MapCur c = { key, 0 };
+  Term t = m;
+  for (;;) {
+    u64 src = term_peek(e.mem, t);
+    u32 aux = (u32)term_aux(t);
+    if (aux == cn) {
+      u64 at = e.mem[src + pn];
+      t = e.mem[src + (map_cur_bit(e, &c, key, at) ? nh : nl)];
+      continue;
+    }
+    *mo = m;
+    *ko = key;
+    if (aux == cl) {
+      *co = map_field_share(e, t, src, lk);
+      return 1;
+    }
+    *co = 0;
+    return 0;
   }
 }
 
