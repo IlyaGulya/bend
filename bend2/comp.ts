@@ -2895,17 +2895,18 @@ function emit_intr(sc: Scope, it: Intr, m: Spine, ty: HTerm | null): Val {
 // Map reads
 // =========
 
-// Base answers Map.get, Map.has and Map.seek by matching the trie outward:
-// each path node is rebuilt and each node reads the query from its head. A
-// fully applied call whose live arguments the caller owns walks the trie in
-// place instead and answers the same map word back. The compiler's layouts
-// still own the answer: the function's generic ABI words are the map and a
-// boxed value (or the fixed key/Maybe words), and the instantiated result
-// type's value field says how that boxed value is laid out here.
+// Base answers Map.get, Map.has, Map.seek and Map.find by matching the trie
+// outward: each path node is rebuilt and each node reads the query from its
+// head. A fully applied call whose live arguments the caller owns walks the
+// trie in place instead and answers the same words back. The compiler's
+// layouts still own the answer: the function's generic ABI words are the map
+// and a boxed value (or the fixed key/Maybe words), and the instantiated
+// result type's value field says how that boxed value is laid out here.
 
-const MAP_READS: Record<string, "get" | "has" | "seek"> =
+const MAP_READS: Record<string, "find" | "get" | "has" | "seek"> =
   Object.setPrototypeOf({
-    "Map.get": "get", "Map.has": "has", "Map.seek": "seek",
+    "Map.find": "find", "Map.get": "get",
+    "Map.has": "has", "Map.seek": "seek",
   }, null);
 
 // A Map node holds its fields one word each; their offsets are Base's
@@ -2915,6 +2916,35 @@ function map_offsets(k: Name): string[] | null {
   const fs = lay_node(k).arms?.[k];
   return fs === undefined || fs.some((l) => l.ks.length !== 1) ? null
     : fs.map((_, i) => String(i));
+}
+
+// A lookup consumes each live argument, so every box it is given must be the
+// caller's own. A borrowed word cannot be consumed: this call keeps the
+// portable source instead, and records the word's holder as owned, so the
+// next pass hands the read the counted reference its source signature takes.
+// Marking the holder is what an owned position already does for a borrowed
+// word; nothing keeps a temporary that no holder would ever release.
+function map_owned_find(sc: Scope, x: HTerm): boolean {
+  const s = term_strip(x);
+  if (s.$ !== "Var") {
+    return true;
+  }
+  const bd = sc.uses.get(probe_of(s));
+  if (bd === undefined) {
+    return false;
+  }
+  let ok = true;
+  bd.val.lay.ks.forEach((k, j) => {
+    if (k !== "box") {
+      return;
+    }
+    const r = sc.brwl.get(bd.val.ws[j]);
+    if (r !== undefined) {
+      FL.own.add(r);
+      ok = false;
+    }
+  });
+  return ok;
 }
 
 // A read consumes each live argument, so every box it is given must be the
@@ -2944,9 +2974,15 @@ function emit_map_read(sc: Scope, m: Spine, ty: HTerm | null): Val | null {
   const noc = map_offsets("MNode");
   const leaf = map_offsets("MLeaf");
   if (m.all.length !== f.n || m.args.length !== f.live.length
-    || !m.args.every((x) => map_owned(sc, x)) || ctr === undefined
-    || adt?.k !== "Sigma" || lay.arms === null || lay.ks[0] !== "box"
-    || noc?.length !== 3 || leaf?.length !== 2) {
+    || lay.arms === null || noc?.length !== 3 || leaf?.length !== 2) {
+    return null;
+  }
+  if (op === "find") {
+    return m.args.every((x) => map_owned_find(sc, x))
+      ? emit_map_find(sc, m, k!, adt, lay, noc!, leaf!) : null;
+  }
+  if (ctr === undefined || adt?.k !== "Sigma" || lay.ks[0] !== "box"
+    || !m.args.every((x) => map_owned(sc, x))) {
     return null;
   }
   const ret = f.ret;
@@ -2990,6 +3026,58 @@ function emit_map_read(sc: Scope, m: Spine, ty: HTerm | null): Val | null {
   const tw = emit_alias(sc, `map_seek_read(e, ${cids}, ${noc!.join(", ")}, ${
     leaf![0]}, ${ws[0]}, ${ws[1]}, &${mo}, &${ko}, &${co})`, "bs", "w32");
   return val_new([mo, ko, tw, co], lay);
+}
+
+// Map.find answers Base's declared Maybe: a tag word, then the Some payload
+// laid out as the instantiated value type. The read consumes the map and the
+// query, so a hit shares the value out of the leaf the walk kept and a miss
+// answers None with an inert payload. The value type's constructors must seal
+// their fields, because the answer keeps one reference through a leaf a
+// shared map may still hold. A lookup whose answer is boxed past the inline
+// value size keeps the portable source definition instead.
+function emit_map_find(sc: Scope, m: Spine, k: Name, adt: Of<"ADT"> | null,
+  lay: Lay, noc: string[], leaf: string[]): Val | null {
+  const some = FL.book.ctrs["Some"];
+  const none = FL.book.ctrs["None"];
+  const fs = lay.arms?.["Some"];
+  const ns = lay.arms?.["None"];
+  if (adt?.k !== "Maybe" || some === undefined || none === undefined
+    || fs === undefined || fs.length !== 1 || ns?.length !== 0
+    || lay.ks[0] !== "w32" || lay.ks.length !== 1 + fs[0].ks.length) {
+    return null;
+  }
+  const arms = lay_arms(lay);
+  if (arms.length !== 2) {
+    return null;
+  }
+  const vlay = fs[0];
+  const hot = ctr_doms(some, adt.x)[0] ?? null;
+  if (hot !== null) {
+    facts_hot(sc, hot, true);
+  }
+  const args = emit_each(sc, m.args).map((v) => val_to(sc, v, BOX));
+  const cids = [cid_mac("MNode"), cid_mac("MLeaf")].join(", ");
+  const offs = [...noc, ...leaf].join(", ");
+  // The read consumes both arguments, so each is the caller's own reference
+  // and the helper releases it. A borrowed root never reaches here: its call
+  // keeps the portable source until the holder owns the word.
+  const ws = args.map((v, i) => val_own(sc, v, k + "~" + i)[0]);
+  const vo = emit_hold(sc, ["0"], "bv")[0];
+  const hit = emit_hold(sc, [`map_find_read(e, ${cids}, ${offs}, ${
+    ws[0]}, ${ws[1]}, &${vo})`], "bm")[0];
+  // The miss path keeps the zeroed tag and payload the destination holds;
+  // the hit path shares the value and writes the Some tag.
+  const out = emit_dst(sc, lay, "o");
+  file_push(sc, `${out.ws[0]} = ${arms.indexOf("None")};`);
+  emit_chain(sc, [
+    [hit, () => {
+      file_push(sc, `${out.ws[0]} = ${arms.indexOf("Some")};`);
+      val_to(sc, val_new([vo], BOX), vlay).ws.forEach((w, j) =>
+        file_push(sc, `${out.ws[1 + j]} = ${w};`));
+    }],
+    ["1", () => {}],
+  ]);
+  return out;
 }
 
 function emit_clo(sc: Scope, x: HTerm, ty: HTerm | null): Val {
@@ -5177,6 +5265,38 @@ INLINE u64 map_seek_read(Env e, u32 cn, u32 cl,
     *co = 0;
     return 0;
   }
+}
+
+// Base's Map.find, reading the trie in place: the map and the query are
+// consumed own references, a hit shares the value out of the leaf before the
+// map is released, and a miss answers no value. One cursor walks the query,
+// and it restarts at the head when a public node names an earlier position,
+// so nothing is rebuilt and no node has to move.
+INLINE u64 map_find_read(Env e, u32 cn, u32 cl,
+                         u32 pn, u32 nl, u32 nh, u32 lk, u32 lv,
+                         Term m, Term key, THR Term* vo) {
+  MapCur c = { key, 0 };
+  Term t = m;
+  u64 hit = 0;
+  for (;;) {
+    u64 src = term_peek(e.mem, t);
+    u32 aux = (u32)term_aux(t);
+    if (aux == cn) {
+      u64 at = e.mem[src + pn];
+      t = e.mem[src + (map_cur_bit(e, &c, key, at) ? nh : nl)];
+      continue;
+    }
+    if (aux == cl && string_cmp_read(e, key, e.mem[src + lk]) == 0) {
+      *vo = map_field_share(e, t, src, lv);
+      hit = 1;
+    } else {
+      *vo = 0;
+    }
+    break;
+  }
+  term_sink(e, key);
+  term_sink(e, m);
+  return hit;
 }
 
 OUTLINE void span_fade(Env e, Term t, u64 src, u32 n) {
