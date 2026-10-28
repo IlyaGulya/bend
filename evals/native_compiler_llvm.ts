@@ -8,7 +8,7 @@ import {guardHeavyGate} from './heavy_gate.ts';
 type LlvmStage={name:string;command:string[];timingCommand:string[];status:'RUNNING'|'PASS'|'FAIL';
  startedMs:number;wallMs?:number;exitCode?:number|null;signal?:string|null;stdout:string;stderr:string;
  timedRealSeconds:number|null;userSeconds:number|null;systemSeconds:number|null;maxRssBytes:number|null;error?:string};
-type LlvmPipeline={kind:'llvm-split';status:'RUNNING'|'PASS'|'FAIL';optimization:'-O1';partitions:4;maxBackendChildren:3;
+type LlvmPipeline={kind:'llvm-split';status:'RUNNING'|'PASS'|'FAIL';optimization:'-O1'|'-O2';frontendOptimization:'-O1';partitions:4;maxBackendChildren:3;
  source:string;sourceSha256:string;artifact:string;temporaryDirectory?:string;temporaryFilesRemoved:boolean;
  elapsedMs:number;stages:LlvmStage[];toolPins:Record<string,string>;versions:Record<string,string>;sdk?:string;
  abi?:{preprocessorCommand:string[];macros:string[];driverCommand:string[];driverOutput:string};
@@ -29,9 +29,9 @@ function executable(command:string):string{
  * Darwin time -lp supplies real wait4 CPU/maxRSS, not Node's parent-only usage.
  */
 async function buildLlvmSplit(source:string,sourceSha256:string,artifact:string,cc:string,llvmBin:string|undefined,
- update:(pipeline:LlvmPipeline)=>void):Promise<LlvmPipeline>{
+ optimization:LlvmPipeline['optimization'],update:(pipeline:LlvmPipeline)=>void):Promise<LlvmPipeline>{
  const started=performance.now();
- const pipeline:LlvmPipeline={kind:'llvm-split',status:'RUNNING',optimization:'-O1',partitions:4,maxBackendChildren:3,
+ const pipeline:LlvmPipeline={kind:'llvm-split',status:'RUNNING',optimization,frontendOptimization:'-O1',partitions:4,maxBackendChildren:3,
   source,sourceSha256,artifact,temporaryFilesRemoved:false,elapsedMs:0,stages:[],toolPins:{},versions:{},
   accounting:'Darwin /usr/bin/time -lp wait4 user/system CPU and maxRSS bytes per command; stage wallMs includes launch/reap. The unchanged outer guardian samples the complete build process tree, including concurrent compiler descendants. Interrupted stages may have null resource fields.'};
  const publish=()=>{pipeline.elapsedMs=performance.now()-started;update(pipeline);};
@@ -93,7 +93,7 @@ async function buildLlvmSplit(source:string,sourceSha256:string,artifact:string,
   const raw=join(temporary,'raw.bc'),prepared=join(temporary,'prepared.bc');
   await requireStage('frontend',[clang,'-std=c11','-O1','-Xclang','-disable-llvm-passes','-emit-llvm','-c',source,'-isysroot',sdk,'-o',raw]);
   await requireStage('mem2reg-always-inline',[opt,'-passes=function(mem2reg),always-inline',raw,'-o',prepared]);
-  // Keep mandatory helper inlining above; ordinary O1 optimization belongs to
+  // Keep mandatory helper inlining above; ordinary selected optimization belongs to
   // each partition, not an expanding whole-module inliner before the split.
   await requireStage('split',[split,'-j4',prepared,'-o',join(temporary,'part.bc')]);
   const objects=Array.from({length:4},(_,i)=>join(temporary!,'part'+i+'.o'));
@@ -102,7 +102,7 @@ async function buildLlvmSplit(source:string,sourceSha256:string,artifact:string,
   while(pending.length||running.size){
    while(pending.length&&running.size<pipeline.maxBackendChildren&&!firstFailure){
     const id=pending.shift()!;
-    const command=[clang,'-O1','-x','ir','-c',join(temporary,'part.bc'+id),'-isysroot',sdk,'-o',objects[id]!];
+    const command=[clang,optimization,'-x','ir','-c',join(temporary,'part.bc'+id),'-isysroot',sdk,'-o',objects[id]!];
     running.set(id,run('opt-codegen-'+id,command).then(stage=>({id,stage})));
    }
    if(!running.size)break;
@@ -131,9 +131,10 @@ try{
  await guardHeavyGate(fileURLToPath(import.meta.url),{label:'Native LLVM split backend'});
  if(process.argv.length!==5)throw Error('Expected internal build-report, CC and LLVM-bin arguments');
  const reportPath=resolve(process.argv[2]!),report=JSON.parse(readFileSync(reportPath,'utf8'));
- if(report.status!=='C_GENERATED_NOT_YET_BUILT'||report.ccOptimization?.flag!=='-O1')throw Error('LLVM worker requires a freshly generated O1 public build report');
+ const optimization:LlvmPipeline['optimization']=report.ccOptimization?.flag;
+ if(report.status!=='C_GENERATED_NOT_YET_BUILT'||!['-O1','-O2'].includes(optimization))throw Error('LLVM worker requires a freshly generated O1/O2 public build report');
  if(createHash('sha256').update(readFileSync(report.cPath)).digest('hex')!==report.cSha256)throw Error('Generated C changed before LLVM backend');
- await buildLlvmSplit(report.cPath,report.cSha256,report.artifact,process.argv[3]!,process.argv[4]||undefined,pipeline=>{
+ await buildLlvmSplit(report.cPath,report.cSha256,report.artifact,process.argv[3]!,process.argv[4]||undefined,optimization,pipeline=>{
   writeFileSync(reportPath,JSON.stringify({...report,ccPipeline:pipeline},null,2)+'\n');
  });
 }catch(error){console.error(String(error));process.exitCode=2;}

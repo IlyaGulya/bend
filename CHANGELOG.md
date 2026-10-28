@@ -5,6 +5,14 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- The g20 native-seed candidate allows explicit `--cc-pipeline=llvm-split
+  --cc-opt=2` for partition optimization. The default stays O1; the C frontend,
+  ABI probes and mandatory pre-split inlining stay O1, with the selected
+  partition level recorded separately. No kernel, Bend compiler, scheduler,
+  parser fuel, corpus, export ABI or resource limit changes. Qualification
+  of the full native root, bootstrap and target consumers is pending;
+  this source candidate is not an accepted compiler or new byte fixedpoint.
+
 - The g18 candidate reuses canonical `Map.bit` for immutable read-only lookup
   instead of rebuilding a cursor in Bend. Existing backward-position, NUL,
   Unicode and arbitrary-U32 character checks pass on actual JS and C.
