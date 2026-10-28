@@ -945,7 +945,13 @@ def multi_plan_final(codes: List<&2, BIR.Code>, layouts: Map<&2, MultiLayout>, w
 def multi_plan_made(codes: List<&2, BIR.Code>, layouts: Map<&2, MultiLayout>, width: Nat, state: MultiUp) -> MultiPlan:
   multi_plan_join(codes, layouts, width, state, multi_renders(codes, layouts, width, state, Map.new(&2, MultiRender)))
 def multi_plan_join(codes: List<&2, BIR.Code>, layouts: Map<&2, MultiLayout>, width: Nat, state: MultiUp, renders: Map<&2, MultiRender>) -> MultiPlan:
-  MultiPlan{multi_prev_multi(state), layouts, renders, width, Bool.not(multi_renders_failed(codes, renders, False{}))}
+  multi_plan_ok_join(Bool.not(multi_renders_failed(codes, renders, False{})), layouts, width, multi_prev_multi(state), renders)
+def multi_plan_ok_join(ok: Bool, layouts: Map<&2, MultiLayout>, width: Nat, multi: Map<&2, Bool>, renders: Map<&2, MultiRender>) -> MultiPlan:
+  MultiPlan{multi_plan_targets(ok, multi), layouts, renders, width, ok}
+def multi_plan_targets(ok: Bool, multi: Map<&2, Bool>) -> Map<&2, Bool>:
+  match ok:
+    case True{}: multi
+    case False{}: Map.new(&2, Bool)
 def multi_render_choose(plan: MultiPlan, code: BIR.Code, public: Bool) -> MultiRender:
   match plan:
     case MultiPlan{_, _, renders, _, ok}: multi_render_lookup(ok, renders, code, public)
@@ -1665,7 +1671,7 @@ def multi_names(value: BIR.Atom, id: U32) -> Bool:
   match value:
     case BIR.Local{known}: U32.is_eq(known, id)
     case _: False{}
-def multi_arg_names(arg: BIR.Arg, id: U32) -> Bool:
+def multi_arg_only_names(arg: BIR.Arg, id: U32) -> Bool:
   match arg:
     case BIR.Arg{_, value}: multi_names(value, id)
 def multi_args_name(args: List<&2, BIR.Arg>, id: U32) -> Bool:
@@ -2703,7 +2709,7 @@ def let_step(id: U32, op: BIR.Op, next: BIR.Block, ctx: JsCtx) -> String:
 def let_step_plain(id: U32, op: BIR.Op, next: BIR.Block, ctx: JsCtx) -> String:
   match op:
     case BIR.Direct{code, args}: split_direct(id, code, args, ctx)
-    case BIR.Apply{fn, arg}: split_apply(id, fn, arg, js_ctx_cont(ctx, id))
+    case BIR.Apply{fn, arg}: split_apply(id, fn, arg, js_ctx_cont(ctx, id), ctx)
     case _: cat(["const ", local(id), "=", operation(op, ctx), ";", block(next, ctx)])
 def return_step(value: BIR.Atom, ctx: JsCtx) -> String:
   match multi_return_forward(value, ctx):
@@ -2775,25 +2781,31 @@ def split_direct_selected(selected: Bool, name: String, id: U32, args: List<&2, 
     case False{}: split_direct_many(name, id, args, caps, ctx, private, mr)
 def split_direct_args(name: String, id: U32, args: List<&2, BIR.Arg>, caps: Caps, count: Nat, ctx: JsCtx, private: Bool, mr: Bool) -> String:
   +total = Nat.add(cap_total(caps), multi_split_mr(mr))
-  cat(["{const ", arg_temps(args, 0n), ";", cap_stores(caps_locals(caps)), slot_stores(caps_slots(caps)), multi_mr_store(mr), "if($td<64){const $kb=$sp-", Nat.show(total), ",$ki=$split_enter(", cont_name_ctx(ctx, id), ",$kb);try{return $split_done(", name, "(", String.join(multi_arg_names(args, 0n, private), ","), "),$ki,$td+1);}catch($e){$split_abort($ki,$kb);throw $e;}}", arg_moves(count, 0n), multi_mr_move(mr, count), "return $split(", name, ",", Nat.show(multi_split_count(count, private, mr)), ",", cont_name_ctx(ctx, id), ",$sp-", Nat.show(total), ");}"])
+  cat(["{const ", arg_temps(args, 0n), ";", cap_stores(caps_locals(caps)), slot_stores(caps_slots(caps)), multi_mr_store(mr), "if($td<64){const $kb=$sp-", Nat.show(total), ",$ki=$split_enter(", cont_name_ctx(ctx, id), ",$kb);try{return $split_done(", name, "(", String.join(multi_call_arg_names(args, 0n, private), ","), "),$ki,$td+1);}catch($e){$split_abort($ki,$kb);throw $e;}}", arg_moves(count, 0n), multi_window_move(private, count), "return $split(", name, ",", Nat.show(multi_split_count(count, private, mr)), ",", cont_name_ctx(ctx, id), ",$sp-", Nat.show(total), ");}"])
 def multi_mr_store(mr: Bool) -> String:
   match mr:
     case True{}: "$stArgs[$sp++]=$mr;"
     case False{}: ""
-def multi_mr_move(mr: Bool, count: Nat) -> String:
-  match mr:
+def multi_window_move(private: Bool, count: Nat) -> String:
+  match private:
     case True{}: cat(["$tailArgs[", Nat.show(count), "]=$sp;"])
     case False{}: ""
-def multi_arg_names(args: List<&2, BIR.Arg>, index: Nat, private: Bool) -> List<&2, String>:
+def multi_call_arg_names(args: List<&2, BIR.Arg>, index: Nat, private: Bool) -> List<&2, String>:
+  List.append(&2, String, multi_call_arg_tail(arg_temp_only(args, index), private), ["$td+1"])
+def multi_call_arg_tail(names: List<&2, String>, private: Bool) -> List<&2, String>:
   match private:
-    case True{}: List.append(&2, String, arg_temp_names(args, index), ["$sp", "$td+1"])
-    case False{}: arg_temp_names(args, index)
+    case True{}: List.append(&2, String, names, ["$sp"])
+    case False{}: names
+def arg_temp_only(args: List<&2, BIR.Arg>, index: Nat) -> List<&2, String>:
+  match args:
+    case Nil{}: Nil{}
+    case _ <> rest: cat(["$a", Nat.show(index)]) <> arg_temp_only(rest, (index + 1n : Nat))
 def split_direct_many(name: String, id: U32, args: List<&2, BIR.Arg>, caps: Caps, ctx: JsCtx, private: Bool, mr: Bool) -> String:
-  cat([cap_stores(caps_locals(caps)), slot_stores(caps_slots(caps)), multi_mr_store(mr), "return $splitm(", name, ",[", String.join(arguments(args), private_arg_tail(private, mr)), "],", cont_name_ctx(ctx, id), ",$sp-", Nat.show(Nat.add(cap_total(caps), multi_split_mr(mr))), ");"])
+  cat([cap_stores(caps_locals(caps)), slot_stores(caps_slots(caps)), multi_mr_store(mr), "return $splitm(", name, ",[", String.join(arguments(args), private_arg_tail(private)), "],", cont_name_ctx(ctx, id), ",$sp-", Nat.show(Nat.add(cap_total(caps), multi_split_mr(mr))), ");"])
 def private_arg_tail(private: Bool, mr: Bool) -> String:
   private_arg_tail_one(private)
-def split_apply(id: U32, fn: BIR.Atom, arg: BIR.Arg, caps: Caps) -> String:
-  cat([cap_stores(caps_locals(caps)), slot_stores(caps_slots(caps)), "return $split1(", atom(fn), ",", arg_atom(arg), ",", cont_name(id), ",$sp-", Nat.show(cap_total(caps)), ");"])
+def split_apply(id: U32, fn: BIR.Atom, arg: BIR.Arg, caps: Caps, ctx: JsCtx) -> String:
+  cat([cap_stores(caps_locals(caps)), slot_stores(caps_slots(caps)), multi_mr_store(js_ctx_mr(ctx, id)), "return $split1(", atom(fn), ",", arg_atom(arg), ",", cont_name_ctx(ctx, id), ",$sp-", Nat.show(multi_window_offset(caps, js_ctx_mr(ctx, id))), ");"])
 def arg_atom(arg: BIR.Arg) -> String:
   match arg:
     case BIR.Arg{_, value}: atom(value)
