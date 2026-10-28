@@ -19,6 +19,17 @@
  * acyclic pure producers, variable captures) and bounded; effectful CPS bodies,
  * source request handlers, traced boundaries, ownership, semantic fuel and the
  * quantum-64 protocol are untouched.
+ *
+ * Beyond that single fusion, a generated private helper referenced exactly once
+ * is a non-escaping continuation. Over a bounded region it is spliced into its
+ * only caller: a match-free body at a body tail, a single-expression body at
+ * any value position, and a root match only at a definition body or match row
+ * where no local precedes it and every scrutinee is still a named variable.
+ * Independently, private `name = value` aliases over variables/literals are
+ * removed by quantity- and use-checked copy propagation. Both rewrites
+ * alpha-freshen every retained binder through one scope-aware environment
+ * (Body patterns and Lam/All/Let binders), never duplicate an affine value and
+ * leave request dispatch, evaluation order and the native Run/Stack ABI alone.
  */
 import {createHash, randomUUID} from 'node:crypto';
 import {existsSync, readFileSync, realpathSync, writeFileSync, rmSync} from 'node:fs';
@@ -249,6 +260,8 @@ function reuseGeneration() {
       sourceCalls: cached.sourceCallCount, pendingSites: cached.pendingSiteCount, lazyChoices: cached.lazyBoolPickCount,
       helpers: cached.definitionCount + cached.privateHelpers.length, manifest: paths.manifest, reused: true,
       deforestedSites: (cached.resultDeforestation?.sites ?? []).length,
+      regionInlinedHelpers: (cached.privateRegionScalarization?.sites ?? []).length,
+      eliminatedAliasBindings: cached.privateRegionScalarization?.eliminatedAliasBindings ?? 0,
       generationManifestSha256, authenticatedInputs: snapshots.size, authenticatedOutputs: outputSnapshots.size}));
     return cached;
   } catch {
@@ -1669,6 +1682,662 @@ function rewriteDeforestationBody(body: B.Body, caller: (typeof generated)[numbe
     def.body = rewriteDeforestationBody(def.body, def);
   }
 }
+// Bounded private-region scalarization.
+//
+// Result deforestation removes one producer/consumer record. Two remaining
+// costs are general and independent of the record shape:
+//
+// 1. A private helper used exactly once in the whole generated program is a
+//    non-escaping continuation: its call is the only observation of its body.
+//    When the body is match-free it can be spliced at a body tail (locals after
+//    locals are legal) or, when the body is one expression, at any value
+//    position. A root match is spliced only at a definition body, where the
+//    remaining scope is exactly the parameter list, and only when its
+//    scrutinees are live caller parameters in strictly increasing telescope
+//    order: the canonical flattener closes earlier pending binders when a later
+//    one takes a constructor column, so a row or local-tail splice (or a
+//    reversed scrutinee order) could match a binder already closed by an
+//    enclosing match. A callee with a nested match is refused outright. The splice substitutes
+//    parameters by variables or literals, alpha-freshens every retained binder
+//    (Body patterns plus Lam/All/Let binders inside terms), and never evaluates
+//    an argument twice or after the callee body.
+//
+// 2. A private body frequently re-binds an intermediate store/result product to
+//    another name (`v2 = v`) only to forward it, or forwards a pattern field.
+//    Those copies are scalarized away when the quantity rules below prove the
+//    value is not duplicated: a Lone alias may be forwarded only when it has
+//    exactly one use and the forwarded value still has at most one use, a Many
+//    alias only when the forwarded value is itself Many (or a literal). //    literal or alias is never forwarded into a match scrutinee, which must keep
+//    its named binder and relative pending order.
+//
+// Both rewrites are bounded, acyclic and fail closed: private source handlers,
+// pure source bodies, traced scheduler boundaries, request dispatch, semantic
+// fuel, the quantum-64 Run/Stack protocol, public results and evaluation order
+// are untouched. A refused shape is left exactly as generated.
+type RegionSlot = 'def' | 'row' | 'tail' | 'term';
+type RegionRootKind = 'match' | 'copy' | 'term' | 'mixed';
+type RegionUse = {count: number; site: {caller: string; slot: RegionSlot; call: B.LTerm} | undefined};
+type RegionInlineRecord = {helper: string; caller: string; kind: string; position: RegionSlot; nodes: number; promoted: number};
+const REGION_INLINE_KINDS: Record<string, true> = {'ordered-match': true, 'pure-ordered-match': true,
+  'continuation': true, 'deforested-continuation': true, 'deforested-match': true, 'deforested-producer': true};
+const REGION_INLINE_SITES = 16384, REGION_INLINE_NODES = 4000000, REGION_INLINE_SITE_NODES = 32768;
+const REGION_INLINE_DEPTH = 64, REGION_SCALAR_PASSES = 6, REGION_SCALAR_NODES = 262144,
+  REGION_SCALAR_TOTAL_NODES = 12000000;
+const regionInlines: RegionInlineRecord[] = [];
+const regionInlinedInto = new Map<string, string>();
+const regionDepth = new Map<string, number>();
+const regionRejections = new Map<string, number>();
+const regionScalarRejections = new Map<string, number>();
+const regionScalar = {bindings: 0, nodes: 0, budgetDefs: 0, visited: 0};
+let regionInlineNodes = 0, regionPromotions = 0;
+function rejectRegion(reason: string): undefined {
+  regionRejections.set(reason, (regionRejections.get(reason) ?? 0) + 1);
+  return undefined;
+}
+function rejectRegionScalar(reason: string): undefined {
+  regionScalarRejections.set(reason, (regionScalarRejections.get(reason) ?? 0) + 1);
+  return undefined;
+}
+function regionRootKind(body: B.Body): RegionRootKind {
+  if (body.$ === 'Match') return 'match';
+  if (body.$ !== 'Local') return 'term';
+  const nested = (node: B.Body): boolean => node.$ === 'Match' ? true : node.$ === 'Local' ? nested(node.f) : false;
+  return nested(body.f) ? 'mixed' : 'copy';
+}
+function regionMatchCount(body: B.Body): number {
+  if (body.$ === 'Local') return regionMatchCount(body.f);
+  if (body.$ !== 'Match') return 0;
+  return 1 + body.r.reduce((sum, row) => sum + regionMatchCount(row.f), 0);
+}
+function regionBodyNodes(body: B.Body): number {
+  if (body.$ !== 'Local' && body.$ !== 'Match') return regionTermNodes(body);
+  let nodes = 1;
+  if (body.$ === 'Local') {
+    nodes += body.v.reduce((sum, value) => sum + 1 + regionTermNodes(value), 0);
+    nodes += body.k.reduce((sum, pattern) => sum + regionPatternNodes(pattern), 0);
+    return nodes + regionBodyNodes(body.f);
+  }
+  nodes += body.e.reduce((sum, value) => sum + regionTermNodes(value), 0);
+  return nodes + body.r.reduce((sum, row) =>
+    sum + row.p.reduce((inner, pattern) => inner + regionPatternNodes(pattern), 0) + regionBodyNodes(row.f), 0);
+}
+function regionTermNodes(term: B.LTerm): number {
+  let nodes = 1;
+  for (const child of termChildren(term)) nodes += regionTermNodes(child);
+  return nodes;
+}
+function regionPatternNodes(pattern: B.Patt): number {
+  return pattern.$ === 'PVar' ? 1 : 1 + pattern.x.reduce((sum, child) => sum + regionPatternNodes(child), 0);
+}
+// One textual pass over the final private helper graph: exact Ref identity,
+// including refs that appear only in a signature type, so a single-use call is
+// distinguishable from a helper value that also escapes through a type.
+const regionUses = new Map<string, RegionUse>();
+function regionUse(name: string, site?: {caller: string; slot: RegionSlot; call: B.LTerm}) {
+  const entry: RegionUse = regionUses.get(name) ?? {count: 0, site: undefined};
+  entry.count++;
+  if (site) {
+    if (entry.site === undefined && entry.count === 1) entry.site = site;
+    else entry.site = undefined;
+  }
+  regionUses.set(name, entry);
+}
+function regionScanTerm(term: B.LTerm, caller: string, slot: RegionSlot) {
+  if (term.$ === 'Ref') {regionUse(term.k); return;}
+  if (term.$ === 'App') {
+    const [head, args] = B.term_unapply(term);
+    if (head.$ === 'Ref') regionUse(head.k, {caller, slot, call: term});
+    else regionScanTerm(head, caller, 'term');
+    for (const argument of args) regionScanTerm(argument, caller, 'term');
+    return;
+  }
+  if (term.$ === 'Lam') {regionScanTerm(term.f, caller, 'term'); return;}
+  if (term.$ === 'All') {regionScanTerm(term.A, caller, 'term'); regionScanTerm(term.B, caller, 'term'); return;}
+  if (term.$ === 'Let') {term.v.forEach(value => regionScanTerm(value, caller, 'term')); regionScanTerm(term.f, caller, 'term'); return;}
+  if (term.$ === 'Sub') {regionScanTerm(term.f, caller, 'term'); return;}
+  for (const child of termChildren(term)) regionScanTerm(child, caller, 'term');
+}
+function regionScanBody(body: B.Body, caller: string, slot: RegionSlot) {
+  if (body.$ === 'Local') {
+    body.v.forEach(value => regionScanTerm(value, caller, 'term'));
+    regionScanBody(body.f, caller, 'tail');
+  } else if (body.$ === 'Match') {
+    body.e.forEach(value => regionScanTerm(value, caller, 'term'));
+    for (const row of body.r) regionScanBody(row.f, caller, 'row');
+  } else regionScanTerm(body, caller, slot);
+}
+regionUses.clear();
+for (const def of generated) {
+  for (const parameter of def.parameters) regionScanTerm(parameter[3], def.name, 'term');
+  regionScanTerm(def.result, def.name, 'term');
+  regionScanBody(def.body, def.name, 'def');
+}
+// The root kind, node count and body are read from the definition when it is
+// actually inlined: earlier inlining can turn one helper's root call into a
+// root match, and a cached shape would then allow a match after locals.
+const regionCandidates = new Map<string, (typeof generated)[number]>();
+const regionPosition = new Map(generated.map((def, index) => [def.name, index] as const));
+for (const def of generated) {
+  const use = regionUses.get(def.name);
+  if (!use || use.count !== 1 || use.site === undefined) continue;
+  if (REGION_INLINE_KINDS[def.kind] !== true) continue;
+  const parameterIds = new Set(def.parameters.map(parameter => parameter[2]));
+  if (bodyFree(def.body).some(id => !parameterIds.has(id))) {rejectRegion('free-binder'); continue;}
+  regionCandidates.set(def.name, def);
+}
+// Binder ids are only unique inside one definition and inside one parser
+// result. Splicing a callee into a caller therefore renames every binder the
+// callee retains and substitutes every bound occurrence through the same
+// environment, including binders reached through Lam/All/Let in terms.
+function regionFreshBinder(): {id: number; name: string} {
+  const id = syntheticId++;
+  return {id, name: reserve(prefix + '_region_value_' + id)};
+}
+type RegionFreshState = {quantities: Map<number, B.Quant>; nodes: number};
+function regionFreshenPatterns(patterns: readonly B.Patt[], env: Map<number, B.LTerm>, state: RegionFreshState): B.Patt[] | undefined {
+  const out: B.Patt[] = [];
+  for (const pattern of patterns) {
+    if (pattern.$ === 'PVar') {
+      const binder = regionFreshBinder();
+      env.set(pattern.i, {$: 'Var', k: binder.name, i: binder.id});
+      state.quantities.set(binder.id, pattern.q);
+      out.push({...pattern, k: binder.name, i: binder.id});
+    } else {
+      const x = regionFreshenPatterns(pattern.x, env, state);
+      if (!x) return undefined;
+      out.push({...pattern, x});
+    }
+  }
+  return out;
+}
+function regionFreshenTerm(term: B.LTerm, env: Map<number, B.LTerm>, state: RegionFreshState): B.LTerm | undefined {
+  if (++state.nodes > REGION_INLINE_SITE_NODES) return undefined;
+  if (term.$ === 'Var') {
+    const bound = env.get(term.i);
+    if (bound) return bound;
+    // Negative ids are the kernel's anonymous binders, not source captures.
+    return term.i < 0 ? {...term} : undefined;
+  }
+  const fresh = (node: B.LTerm): B.LTerm | undefined => regionFreshenTerm(node, env, state);
+  switch (term.$) {
+    case 'Lam': {
+      const binder = regionFreshBinder(), inner = new Map(env);
+      inner.set(term.i, {$: 'Var', k: binder.name, i: binder.id});
+      state.quantities.set(binder.id, term.q ?? B.Lone());
+      const f = regionFreshenTerm(term.f, inner, state);
+      return f ? {...term, k: binder.name, i: binder.id, f} : undefined;
+    }
+    case 'All': {
+      const A = fresh(term.A);
+      if (!A) return undefined;
+      const binder = regionFreshBinder(), inner = new Map(env);
+      inner.set(term.i, {$: 'Var', k: binder.name, i: binder.id});
+      state.quantities.set(binder.id, term.q);
+      const B2 = regionFreshenTerm(term.B, inner, state);
+      return B2 ? {...term, k: binder.name, i: binder.id, A, B: B2} : undefined;
+    }
+    case 'Let': {
+      const v: B.LTerm[] = [];
+      for (const value of term.v) {const mapped = fresh(value); if (!mapped) return undefined; v.push(mapped);}
+      const inner = new Map(env), k: string[] = [], i: number[] = [], q: B.Quant[] = [];
+      term.i.forEach((oldId, index) => {
+        const binder = regionFreshBinder();
+        k.push(binder.name); i.push(binder.id); q.push(term.q[index] ?? B.Lone());
+        inner.set(oldId, {$: 'Var', k: binder.name, i: binder.id});
+        state.quantities.set(binder.id, term.q[index] ?? B.Lone());
+      });
+      const f = regionFreshenTerm(term.f, inner, state);
+      return f ? {...term, k, i, q, v, f} : undefined;
+    }
+    case 'Ann': {
+      const x = fresh(term.x), T = fresh(term.T);
+      return x && T ? {...term, x, T} : undefined;
+    }
+    case 'App': {
+      const f = fresh(term.f), x = fresh(term.x);
+      return f && x ? {...term, f, x} : undefined;
+    }
+    case 'Ctr': case 'ADT': {
+      const x: B.LTerm[] = [];
+      for (const value of term.x) {const mapped = fresh(value); if (!mapped) return undefined; x.push(mapped);}
+      return {...term, x};
+    }
+    case 'Typ': {const g = fresh(term.g); return g ? {...term, g} : undefined;}
+    case 'Min': {const a = fresh(term.a), b = fresh(term.b); return a && b ? {...term, a, b} : undefined;}
+    case 'Mat': {const h = fresh(term.h), m = fresh(term.m); return h && m ? {...term, h, m} : undefined;}
+    case 'Eql': {const a = fresh(term.a), b = fresh(term.b), T = fresh(term.T); return a && b && T ? {...term, a, b, T} : undefined;}
+    case 'Rwt': {const e = fresh(term.e), p = fresh(term.p), f = fresh(term.f); return e && p && f ? {...term, e, p, f} : undefined;}
+    case 'Sub': return undefined;
+    case 'Ref': case 'Lit': case 'Qnt': case 'Qua': case 'Efq': case 'Rfl': case 'Hol': return {...term};
+    default: {const exhaustive: never = term; throw Error('Unsupported region term ' + String(exhaustive));}
+  }
+}
+function regionFreshenBody(body: B.Body, env: Map<number, B.LTerm>, state: RegionFreshState): B.Body | undefined {
+  if (++state.nodes > REGION_INLINE_SITE_NODES) return undefined;
+  if (body.$ === 'Local') {
+    const v: B.LTerm[] = [];
+    for (const value of body.v) {const mapped = regionFreshenTerm(value, env, state); if (!mapped) return undefined; v.push(mapped);}
+    const inner = new Map(env), k = regionFreshenPatterns(body.k, inner, state);
+    if (!k) return undefined;
+    const f = regionFreshenBody(body.f, inner, state);
+    return f ? {...body, k, v, f} : undefined;
+  }
+  if (body.$ === 'Match') {
+    const e: B.LTerm[] = [];
+    for (const value of body.e) {const mapped = regionFreshenTerm(value, env, state); if (!mapped) return undefined; e.push(mapped);}
+    const r: B.Match['r'] = [];
+    for (const row of body.r) {
+      const inner = new Map(env), p = regionFreshenPatterns(row.p, inner, state);
+      if (!p) return undefined;
+      const f = regionFreshenBody(row.f, inner, state);
+      if (!f) return undefined;
+      r.push({...row, p, f});
+    }
+    return {...body, e, r};
+  }
+  return regionFreshenTerm(body, env, state);
+}
+// Live-use accounting identical to the administrative grading pass: sequential
+// terms add up, mutually exclusive match rows take the per-binder maximum.
+// Summing rows would reject an affine capture that is used once per branch.
+type RegionUsage = Map<number, number>;
+function regionSumUsage(parts: readonly RegionUsage[]): RegionUsage {
+  const result: RegionUsage = new Map();
+  for (const part of parts) for (const [id, count] of part) result.set(id, (result.get(id) ?? 0) + count);
+  return result;
+}
+function regionBranchUsage(parts: readonly RegionUsage[]): RegionUsage {
+  const result: RegionUsage = new Map();
+  for (const part of parts) for (const [id, count] of part)
+    result.set(id, Math.max(result.get(id) ?? 0, count));
+  return result;
+}
+function regionLinearUses(body: B.Body): RegionUsage {
+  const term = (node: B.LTerm): RegionUsage => {
+    if (node.$ === 'Var') return new Map([[node.i, 1]]);
+    return regionSumUsage(termChildren(node).map(term));
+  };
+  const walk = (node: B.Body): RegionUsage => {
+    if (node.$ === 'Local') return regionSumUsage([...node.v.map(term), walk(node.f)]);
+    if (node.$ === 'Match')
+      return regionSumUsage([...node.e.map(term), regionBranchUsage(node.r.map(row => walk(row.f)))]);
+    return term(node);
+  };
+  return walk(body);
+}
+const regionDataCache = new Map<string, boolean>();
+function regionManyKind(type: B.LTerm, owner: string): boolean {
+  const key = canonicalType(type);
+  const cached = regionDataCache.get(key);
+  if (cached !== undefined) return cached;
+  let many = false;
+  try {
+    if (!freeBinderIds(type).length) {
+      const higher = B.term_higher(type);
+      const inferred = B.term_infer(book, {t: higher, n: 0, def: owner, qs: []},
+        higher, B.None(), B.ctx_nil(), 0);
+      const kind = B.term_wnf(book, inferred.ty);
+      if (kind.$ === 'Typ') {
+        const quantity = B.term_wnf(book, kind.g);
+        many = quantity.$ === 'Qua' && quantity.q.$ === 'Many';
+      }
+    }
+  } catch {many = false;}
+  regionDataCache.set(key, many);
+  return many;
+}
+type RegionInlineContext = {caller: (typeof generated)[number]; quantities: Map<number, B.Quant>;
+  deleted: Set<string>; nodes: number; depth: number};
+function regionTryInline(term: B.LTerm, ctx: RegionInlineContext, slot: RegionSlot): B.Body | undefined {
+  if (term.$ !== 'App') return undefined;
+  const [head, args] = B.term_unapply(term);
+  if (head.$ !== 'Ref' || ctx.deleted.has(head.k)) return undefined;
+  const callee = regionCandidates.get(head.k);
+  if (!callee || callee.name === ctx.caller.name) return undefined;
+  if ((regionPosition.get(callee.name) ?? Infinity) >= (regionPosition.get(ctx.caller.name) ?? -1))
+    return rejectRegion('order');
+  if (args.length !== callee.parameters.length) return rejectRegion('arity');
+  if (!args.every(argument => argument.$ === 'Var' || argument.$ === 'Lit')) return rejectRegion('argument');
+  const root = regionRootKind(callee.body);
+  if (root === 'mixed') return rejectRegion('mixed');
+  if (root === 'match' && regionMatchCount(callee.body) !== 1) return rejectRegion('nested-match');
+  if (root === 'copy' && slot === 'term') return rejectRegion('position');
+  // A body-level match closes every caller binder that precedes its scrutinee
+  // in the caller's telescope. It is therefore only spliced at a definition
+  // body, where the remaining scope is exactly the parameter list, and never
+  // into a match row or a local tail where an enclosing match may already have
+  // closed a binder it names.
+  if (root === 'match' && slot !== 'def') return rejectRegion('position');
+  if (slot !== 'term' && !sameType(callee.result, ctx.caller.result)) return rejectRegion('result');
+  if (root === 'match') {
+    if (callee.body.$ !== 'Match') return rejectRegion('mixed');
+    const parameters = new Map(callee.parameters.map((parameter, index) => [parameter[2], index]));
+    const callerParameters = new Map(ctx.caller.parameters.map((parameter, index) => [parameter[2], index] as const));
+    let previous = -1;
+    for (const scrutinee of callee.body.e) {
+      if (scrutinee.$ !== 'Var' || !parameters.has(scrutinee.i)) return rejectRegion('computed-scrutinee');
+      const index = parameters.get(scrutinee.i)!, argument = args[index]!;
+      if (argument.$ !== 'Var') return rejectRegion('computed-scrutinee');
+      const at = callerParameters.get(argument.i);
+      if (at === undefined) return rejectRegion('scrutinee-order');
+      if (ctx.caller.parameters[at]![0].$ === 'None') return rejectRegion('erased-scrutinee');
+      // Scrutinees must stay matchable in the caller telescope: the canonical
+      // flattener closes earlier pending binders when a later one has a
+      // constructor column, so a non-increasing scrutinee order could match a
+      // binder that an earlier column already closed.
+      if (at <= previous) return rejectRegion('scrutinee-order');
+      previous = at;
+    }
+  }
+  if (ctx.depth + 1 > REGION_INLINE_DEPTH) return rejectRegion('depth');
+  const nodes = regionBodyNodes(callee.body);
+  if (ctx.nodes + nodes > REGION_INLINE_SITE_NODES) return rejectRegion('site-nodes');
+  if (regionInlineNodes + nodes > REGION_INLINE_NODES) return rejectRegion('total-nodes');
+  if (regionInlines.length >= REGION_INLINE_SITES) return rejectRegion('total-sites');
+  const uses = regionLinearUses(callee.body);
+  const promotions: number[] = [];
+  for (let index = 0; index < callee.parameters.length; index++) {
+    const parameter = callee.parameters[index]!, argument = args[index]!;
+    const used = uses.get(parameter[2]) ?? 0;
+    if (argument.$ === 'Var') {
+      const quantity = ctx.quantities.get(argument.i);
+      if (used > 0 && quantity === undefined) return rejectRegion('unknown-quantity');
+      if (used > 0 && quantity?.$ === 'None') return rejectRegion('erased-argument');
+    }
+    if (parameter[0].$ === 'None' || used === 0) {
+      // Dropping an erased argument is observable only through affine
+      // ownership: a live variable would lose its single use.
+      if (argument.$ === 'Var' && ctx.quantities.get(argument.i)?.$ !== 'Many') return rejectRegion('erased-argument');
+      continue;
+    }
+    if (used > 1 && argument.$ === 'Var' && ctx.quantities.get(argument.i)?.$ !== 'Many') {
+      // The callee's graded parameter is Many, so the value may be duplicated
+      // inside the callee. The caller's variable is a call-site parameter that
+      // this pass may relax to Many only under the same authenticated-Data
+      // rule administrative grading applies. Locals keep their generated
+      // quantity and are refused rather than silently relabelled.
+      const quantity = ctx.quantities.get(argument.i);
+      const at = quantity?.$ === 'Lone'
+        ? ctx.caller.parameters.findIndex(parameter => parameter[2] === argument.i) : -1;
+      if (at < 0 || !regionManyKind(ctx.caller.parameters[at]![3], ctx.caller.owner))
+        return rejectRegion(quantity?.$ === 'Lone' ? 'affine-duplication' : 'unknown-quantity');
+      if (!promotions.includes(at)) promotions.push(at);
+    }
+  }
+  const env = new Map<number, B.LTerm>();
+  callee.parameters.forEach((parameter, index) => env.set(parameter[2], args[index]!));
+  const state: RegionFreshState = {quantities: ctx.quantities, nodes: 0};
+  const body = regionFreshenBody(callee.body, env, state);
+  if (!body || state.nodes > REGION_INLINE_SITE_NODES) return rejectRegion('fresh-body');
+  if (regionInlineNodes + state.nodes > REGION_INLINE_NODES) return rejectRegion('total-nodes');
+  const depth = Math.max(ctx.depth, (regionDepth.get(callee.name) ?? 0) + 1);
+  if (depth > REGION_INLINE_DEPTH) return rejectRegion('depth');
+  for (const index of promotions) {
+    const parameter = ctx.caller.parameters[index]!;
+    ctx.caller.parameters[index] = [B.Many(), parameter[1], parameter[2], parameter[3], parameter[4]];
+    ctx.quantities.set(parameter[2], B.Many());
+    regionPromotions++;
+  }
+  ctx.deleted.add(callee.name);
+  ctx.depth = depth;
+  regionDepth.set(ctx.caller.name, Math.max(regionDepth.get(ctx.caller.name) ?? 0, depth));
+  ctx.nodes += state.nodes;
+  regionInlineNodes += state.nodes;
+  regionInlinedInto.set(callee.name, ctx.caller.name);
+  regionInlines.push({helper: callee.name, caller: ctx.caller.name, kind: callee.kind, position: slot,
+    nodes: state.nodes, promoted: promotions.length});
+  return body;
+}
+function regionRewriteTerm(term: B.LTerm, ctx: RegionInlineContext, slot: RegionSlot): B.Body {
+  const inlined = regionTryInline(term, ctx, slot);
+  if (inlined !== undefined) return inlined;
+  const value = (node: B.LTerm): B.LTerm => {
+    const result = regionRewriteTerm(node, ctx, 'term');
+    if (result.$ === 'Local' || result.$ === 'Match')
+      throw Error('Region scalarization produced a body in a value position');
+    return result;
+  };
+  switch (term.$) {
+    case 'Var': case 'Ref': case 'Lit': case 'Qnt': case 'Qua': case 'Efq': case 'Rfl': case 'Hol':
+    case 'Typ': case 'Min': case 'All': case 'ADT': case 'Sub': return term;
+    case 'App': return {...term, f: value(term.f), x: value(term.x)};
+    case 'Ctr': return {...term, x: term.x.map(value)};
+    case 'Lam': return {...term, f: value(term.f)};
+    case 'Let': return {...term, v: term.v.map(value), f: value(term.f)};
+    case 'Mat': return {...term, h: value(term.h), m: value(term.m)};
+    case 'Eql': return {...term, a: value(term.a), b: value(term.b)};
+    case 'Rwt': return {...term, e: value(term.e), p: value(term.p), f: value(term.f)};
+    case 'Ann': return {...term, x: value(term.x)};
+    default: {const exhaustive: never = term; throw Error('Unsupported region rewrite term ' + String(exhaustive));}
+  }
+}
+function regionRewriteBody(body: B.Body, ctx: RegionInlineContext, slot: RegionSlot): B.Body {
+  if (body.$ === 'Local') {
+    let changed = false;
+    const v = body.v.map(value => {const mapped = regionRewriteTerm(value, ctx, 'term');
+      if (mapped.$ === 'Local' || mapped.$ === 'Match') throw Error('Region scalarization produced a body in a value position');
+      if (mapped !== value) changed = true; return mapped;});
+    const f = regionRewriteBody(body.f, ctx, 'tail');
+    return changed || f !== body.f ? {...body, v, f} : body;
+  }
+  if (body.$ === 'Match') {
+    // A match scrutinee must remain a named binder, so this position is never
+    // an inlining site even if its current expression happens to be a call.
+    let changed = false;
+    const r = body.r.map(row => {const f = regionRewriteBody(row.f, ctx, 'row');
+      if (f !== row.f) changed = true; return f === row.f ? row : {...row, f};});
+    return changed ? {...body, r} : body;
+  }
+  return regionRewriteTerm(body, ctx, slot);
+}
+// --- bounded alias/copy scalarization -------------------------------------
+function regionStripAnn(term: B.LTerm): B.LTerm {
+  while (term.$ === 'Ann') term = term.x;
+  return term;
+}
+function regionCollectQuantities(body: B.Body, quantities: Map<number, B.Quant>) {
+  const patterns = (values: readonly B.Patt[]) => {
+    for (const pattern of values) {
+      if (pattern.$ === 'PVar') quantities.set(pattern.i, pattern.q);
+      else patterns(pattern.x);
+    }
+  };
+  const term = (node: B.LTerm) => {
+    if (node.$ === 'Lam') quantities.set(node.i, node.q ?? B.Lone());
+    if (node.$ === 'Let') node.i.forEach((id, index) => quantities.set(id, node.q[index] ?? B.Lone()));
+    for (const child of termChildren(node)) term(child);
+  };
+  const walk = (node: B.Body) => {
+    if (node.$ === 'Local') {node.v.forEach(term); patterns(node.k); walk(node.f);}
+    else if (node.$ === 'Match') {node.e.forEach(term); node.r.forEach(row => {patterns(row.p); walk(row.f);});}
+    else term(node);
+  };
+  walk(body);
+}
+function regionCountVars(body: B.Body, counts: Map<number, number>) {
+  const term = (node: B.LTerm) => {
+    if (node.$ === 'Var') counts.set(node.i, (counts.get(node.i) ?? 0) + 1);
+    for (const child of termChildren(node)) term(child);
+  };
+  const walk = (node: B.Body) => {
+    if (node.$ === 'Local') {node.v.forEach(term); walk(node.f);}
+    else if (node.$ === 'Match') {node.e.forEach(term); node.r.forEach(row => walk(row.f));}
+    else term(node);
+  };
+  walk(body);
+}
+function regionScrutineeIds(body: B.Body, ids: Set<number>) {
+  const scan = (node: B.Body) => {
+    if (node.$ === 'Local') scan(node.f);
+    else if (node.$ === 'Match') {
+      node.e.forEach(value => {if (value.$ === 'Var') ids.add(value.i);});
+      node.r.forEach(row => scan(row.f));
+    }
+  };
+  scan(body);
+}
+function regionSubstituteVarBody(body: B.Body, id: number, value: B.LTerm): B.Body {
+  const substituteTerm = (term: B.LTerm): B.LTerm => {
+    if (term.$ === 'Var') return term.i === id ? value : term;
+    if (term.$ === 'Lam' && term.i === id) return term;
+    if (term.$ === 'All' && term.i === id) return {...term, A: substituteTerm(term.A)};
+    if (term.$ === 'Let' && term.i.includes(id))
+      return {...term, v: term.v.map(substituteTerm), f: term.f};
+    if (term.$ === 'Sub') return term.i === id ? term : {...term, f: substituteTerm(term.f)};
+    const children: Record<string, unknown> = {};
+    let changed = false;
+    for (const [key, child] of Object.entries(term)) {
+      if (key === 's') {children[key] = child; continue;}
+      if (Array.isArray(child)) {
+        const mapped = child.map(entry => entry && typeof entry === 'object' && '$' in entry
+          ? substituteTerm(entry as B.LTerm) : entry);
+        changed ||= mapped.some((entry, index) => entry !== child[index]);
+        children[key] = mapped;
+      } else if (child && typeof child === 'object' && '$' in child) {
+        const mapped = substituteTerm(child as B.LTerm);
+        changed ||= mapped !== child;
+        children[key] = mapped;
+      } else children[key] = child;
+    }
+    return changed ? children as unknown as B.LTerm : term;
+  };
+  const walk = (node: B.Body): B.Body => {
+    if (node.$ === 'Local') {
+      const v = node.v.map(substituteTerm), f = walk(node.f);
+      return v.some((entry, index) => entry !== node.v[index]) || f !== node.f ? {...node, v, f} : node;
+    }
+    if (node.$ === 'Match') {
+      const e = node.e.map(substituteTerm);
+      let changed = e.some((entry, index) => entry !== node.e[index]);
+      const r = node.r.map(row => {const f = walk(row.f); if (f !== row.f) changed = true;
+        return f === row.f ? row : {...row, f};});
+      return changed ? {...node, e, r} : node;
+    }
+    return substituteTerm(node);
+  };
+  return walk(body);
+}
+function regionTryEliminateLocal(local: B.Local, tail: B.Body, ctx: {counts: Map<number, number>;
+  quantities: Map<number, B.Quant>; scrutinees: Set<number>}): B.Body | undefined {
+  if (local.k.length !== local.v.length) return undefined;
+  for (const pattern of local.k) if (pattern.$ !== 'PVar') return undefined;
+  const binders = local.k as Extract<B.Patt, {$: 'PVar'}>[];
+  const plans: {binder: number; value: B.LTerm; inner: B.LTerm; uses: number}[] = [];
+  for (let index = 0; index < binders.length; index++) {
+    const binder = binders[index]!, raw = local.v[index]!, value = regionStripAnn(raw);
+    if (value.$ !== 'Var' && value.$ !== 'Lit') return undefined;
+    // An ascription can be load-bearing (numeric literal kind, closed type
+    // witness), so a forwarded value keeps it and may be used only once.
+    if (raw.$ === 'Ann' && (ctx.counts.get(binder.i) ?? 0) > 1) return undefined;
+    // A match scrutinee must keep its relative pending-binder order; forwarding
+    // any alias into Match.e can turn an increasing scrutinee list into one that
+    // match_flatten cannot close in order, so that use is never rewritten.
+    if (ctx.scrutinees.has(binder.i)) return undefined;
+    const uses = ctx.counts.get(binder.i) ?? 0;
+    if (uses > 0 && binder.q.$ !== 'Many' && uses > 1) return undefined;
+    if (value.$ === 'Var') {
+      if (value.i < 0 || value.i === binder.i) return undefined;
+      const quantity = ctx.quantities.get(value.i);
+      if (!quantity) return undefined;
+      const remaining = (ctx.counts.get(value.i) ?? 0) - 1;
+      if (quantity.$ === 'None' || (binder.q.$ === 'None' && uses > 0)) return undefined;
+      if (uses === 0) {
+        if (binder.q.$ === 'Lone' || quantity.$ !== 'Many') return undefined;
+      } else if (quantity.$ === 'Lone') {
+        if (uses !== 1 || remaining + uses > 1) return undefined;
+      }
+    } else if (uses === 0) {
+      if (binder.q.$ === 'Lone') return undefined;
+    }
+    plans.push({binder: binder.i, value: raw.$ === 'Ann' ? raw : value, inner: value, uses});
+  }
+  let out = tail;
+  for (const plan of plans) {
+    if (plan.uses > 0) out = regionSubstituteVarBody(out, plan.binder, plan.value);
+    ctx.counts.set(plan.binder, 0);
+    if (plan.inner.$ === 'Var')
+      ctx.counts.set(plan.inner.i, Math.max(0, (ctx.counts.get(plan.inner.i) ?? 0) - 1) + plan.uses);
+    regionScalar.bindings++;
+    regionScalar.nodes += 2;
+  }
+  return out;
+}
+function regionScalarizeBody(body: B.Body, ctx: {counts: Map<number, number>; quantities: Map<number, B.Quant>;
+  scrutinees: Set<number>; visited: {nodes: number; exhausted: boolean}}): {body: B.Body; changed: boolean} {
+  if (ctx.visited.exhausted) return {body, changed: false};
+  if (++ctx.visited.nodes > REGION_SCALAR_NODES) {ctx.visited.exhausted = true; return {body, changed: false};}
+  if (body.$ === 'Local') {
+    const inner = regionScalarizeBody(body.f, ctx);
+    if (!ctx.visited.exhausted) {
+      if (ctx.visited.nodes + regionBodyNodes(inner.body) > REGION_SCALAR_NODES) ctx.visited.exhausted = true;
+      else {
+        const eliminated = regionTryEliminateLocal(body, inner.body, ctx);
+        if (eliminated !== undefined) return {body: eliminated, changed: true};
+      }
+    }
+    return {body: inner.body === body.f ? body : {...body, f: inner.body}, changed: inner.changed};
+  }
+  if (body.$ === 'Match') {
+    let changed = false;
+    const r: B.Match['r'] = [];
+    for (const row of body.r) {
+      const inner = regionScalarizeBody(row.f, ctx);
+      if (inner.changed) changed = true;
+      r.push(inner.body === row.f ? row : {...row, f: inner.body});
+    }
+    return changed ? {body: {...body, r}, changed: true} : {body, changed: false};
+  }
+  return {body, changed: false};
+}
+function regionScalarizeDef(def: (typeof generated)[number]) {
+  if (regionScalar.visited > REGION_SCALAR_TOTAL_NODES) {
+    regionScalar.budgetDefs++;
+    rejectRegionScalar('total-node-budget');
+    return;
+  }
+  const quantities = new Map<number, B.Quant>();
+  def.parameters.forEach(parameter => quantities.set(parameter[2], parameter[0]));
+  regionCollectQuantities(def.body, quantities);
+  const counts = new Map<number, number>();
+  regionCountVars(def.body, counts);
+  const scrutinees = new Set<number>();
+  regionScrutineeIds(def.body, scrutinees);
+  const visited = {nodes: 0, exhausted: false};
+  let body = def.body;
+  for (let pass = 0; pass < REGION_SCALAR_PASSES; pass++) {
+    const result = regionScalarizeBody(body, {counts, quantities, scrutinees, visited});
+    body = result.body;
+    if (!result.changed || visited.exhausted) break;
+  }
+  regionScalar.visited += visited.nodes;
+  if (visited.exhausted) {
+    regionScalar.budgetDefs++;
+    rejectRegionScalar('node-budget');
+  }
+  def.body = body;
+}
+// Splice in dependency order: generated helpers are emitted before their users,
+// so one increasing pass already collapses a whole single-use chain.
+const regionHelpersBefore = generated.length;
+{
+  const deleted = new Set<string>();
+  for (const def of [...generated]) {
+    if (deleted.has(def.name)) continue;
+    const quantities = new Map<number, B.Quant>();
+    def.parameters.forEach(parameter => quantities.set(parameter[2], parameter[0]));
+    regionCollectQuantities(def.body, quantities);
+    const ctx: RegionInlineContext = {caller: def, quantities, deleted, nodes: 0,
+      depth: regionDepth.get(def.name) ?? 0};
+    def.body = regionRewriteBody(def.body, ctx, 'def');
+    regionDepth.set(def.name, ctx.depth);
+  }
+  if (deleted.size) {
+    const kept = generated.filter(def => !deleted.has(def.name));
+    generated.splice(0, generated.length, ...kept);
+  }
+}
+for (const def of generated) regionScalarizeDef(def);
+const regionHelpersAfter = generated.length;
 const outputHeader = header.replace(/^import (\S+) as ([A-Za-z_]\w*)$/gm, (_, imported: string, alias: string) => {
   const target = posix.normalize(posix.join(dirname(paths.owned), imported));
   let relative = posix.relative(dirname(paths.output), target);
@@ -1878,9 +2547,9 @@ if (traced) {
 writeChanged(paths.output, output); writeChanged(paths.component, component);
 if (paths.driver && driver !== undefined) writeChanged(paths.driver, driver);
 const manifest = {
-  version: 1, algorithm: 'raw-AST typed boxed-continuation CPS with bounded dependent request groups, dependency-first ordered match, projection values, bounded nonrecursive storage islands, bounded private-helper result deforestation and structurally recursive native heterogeneous-stack chunks',
+  version: 1, algorithm: 'raw-AST typed boxed-continuation CPS with bounded dependent request groups, dependency-first ordered match, projection values, bounded nonrecursive storage islands, bounded private-helper result deforestation, bounded private-region helper/continuation inlining and quantity-checked alias scalarization, and structurally recursive native heterogeneous-stack chunks',
   generationConfig, generationEnvironment, generationInputRealpaths,
-  nativeTerminationClaim: 'Generated source handlers and continuation helpers form an acyclic declaration graph. Result-deforested producer and continuation helpers are private, acyclic and emitted before their users; each forwards the same affine fields and captures once. Only the native chunk scheduler is self-recursive, structurally decreasing an operational Nat on every RunState transition. Zero returns the remaining Run unchanged; RunFinished returns directly.' + (traced ? ' A diagnostic trace build adds one scheduler-boundary span value that a chunk returns unchanged without consuming semantic fuel and without recursion; the site table and traced stack constructor are non-recursive.' : '') + ' Native push/pop transfers affine progress, resume and stack once, never reassociates Bound and never allocates composition closures. This does not alter canonical semantic fuel or claim termination of the complete host-driven computation.',
+  nativeTerminationClaim: 'Generated source handlers and continuation helpers form an acyclic declaration graph. Result-deforested producer and continuation helpers are private, acyclic and emitted before their users; each forwards the same affine fields and captures once. Single-use private helpers are additionally spliced into their sole call site only after alpha-freshening every retained binder and checking every parameter quantity, which removes a call but introduces no new declaration, recursion or effect. Only the native chunk scheduler is self-recursive, structurally decreasing an operational Nat on every RunState transition. Zero returns the remaining Run unchanged; RunFinished returns directly.' + (traced ? ' A diagnostic trace build adds one scheduler-boundary span value that a chunk returns unchanged without consuming semantic fuel and without recursion; the site table and traced stack constructor are non-recursive.' : '') + ' Native push/pop transfers affine progress, resume and stack once, never reassociates Bound and never allocates composition closures. This does not alter canonical semantic fuel or claim termination of the complete host-driven computation.',
   progressABI: 'typed-native-stack-v57t',
   boxedTransport: {
     type: valueType, constructor: valueType, kind: 'Type', parameter: {name: 'A', kind: 'Type', quantity: 'None'},
@@ -1966,8 +2635,26 @@ const manifest = {
   resultDeforestation: {
     policy: 'Compiler-private pure producer helpers returning one single-constructor record (Pair/ArenaResult/ArenaStore/...), immediately destructured by their single-use generated match consumer, are composed along the acyclic pure helper DAG: every tail record construction becomes one call to a shared continuation helper with the same fields and captures. Source request handlers, effectful step bodies, traced boundaries, semantic fuel and quantum 64 are untouched; captures are variables or erased terms, retained binders are alpha-freshened, fields are consumed once, and unfusable shapes (dependent fields, recursive or effectful producers, multiple consumers) are left as ordinary CPS.',
     bounds: {depth: DEFOREST_DEPTH, nodesPerFusion: DEFOREST_NODES, fusions: DEFOREST_FUSIONS, totalNodes: DEFOREST_TOTAL_NODES},
-    sites: resultDeforestation,
+    sites: resultDeforestation.map(site => ({...site,
+      ...(regionInlinedInto.has(site.continuation) ? {continuationInlinedInto: regionInlinedInto.get(site.continuation)} : {}),
+      ...(regionInlinedInto.has(site.fused) ? {fusedInlinedInto: regionInlinedInto.get(site.fused)} : {})})),
     rejectedSites: [...deforestationRejections].sort(([a], [b]) => a.localeCompare(b)).map(([reason, count]) => ({reason, count})),
+  },
+  privateRegionScalarization: {
+    policy: 'A generated private helper referenced exactly once is a non-escaping continuation. Its sole call is replaced by its body when splicing is grammar-safe: a match-free body at a body tail (locals follow locals), a single-expression body at any value position, and a root match only at a definition body (never a row or local tail) with exactly one Match node, live non-erased caller-parameter scrutinees in strictly increasing telescope order, and no computed scrutinee. Parameters are substituted only by variables or literals, every retained Body/term binder is alpha-freshened through one scope-aware environment, and a variable parameter used more than once along one sequential path (mutually exclusive match rows use the per-binder maximum, exactly like administrative grading) is accepted only when the caller binder is Many or is one call-site parameter this pass relaxes to Many under the same authenticated-Data kind test; locals are never relabelled and an erased argument may not consume a Lone binder. Sites record how many caller parameters they promoted. Independently, private `name = value` aliases are scalarized away when the value is a variable or literal and the quantity/use-count rules prove no duplication (a Lone alias forwards at most one use to a value that still has at most one use; a literal or alias is never forwarded into a match scrutinee, which must keep its relative pending-binder order). Private source handlers, pure source bodies, traced boundaries, request dispatch, evaluation order, semantic fuel and quantum 64 are untouched; refused shapes stay exactly as generated.',
+    bounds: {inlineSites: REGION_INLINE_SITES, inlinedNodes: REGION_INLINE_NODES, siteNodes: REGION_INLINE_SITE_NODES,
+      depth: REGION_INLINE_DEPTH, scalarPasses: REGION_SCALAR_PASSES, scalarNodes: REGION_SCALAR_NODES,
+      scalarTotalNodes: REGION_SCALAR_TOTAL_NODES},
+    kinds: Object.keys(REGION_INLINE_KINDS),
+    helpersBefore: regionHelpersBefore, helpersAfter: regionHelpersAfter,
+    sites: regionInlines,
+    rejectedSites: [...regionRejections].sort(([a], [b]) => a.localeCompare(b)).map(([reason, count]) => ({reason, count})),
+    promotedCallerQuantities: regionPromotions,
+    eliminatedAliasBindings: regionScalar.bindings,
+    eliminatedAliasNodes: regionScalar.nodes,
+    scalarBudgetExhaustedDefs: regionScalar.budgetDefs,
+    scalarNodesVisited: regionScalar.visited,
+    scalarRejections: [...regionScalarRejections].sort(([a], [b]) => a.localeCompare(b)).map(([reason, count]) => ({reason, count})),
   },
   pureCallClassification: {
     policy: 'Live source argument required. Projections do not construct values or call functions. Checker arena wrappers and core_bound_unaffected may compose admitted helpers with native Arena/U32/Nat and IR.arena_* scalar range/bit calls and bounded constructors, in dependency order; this admits the nonrecursive arena view/accessor closure but no recursion, indirect calls or function binders. All other definitions retain CPS',
@@ -1988,6 +2675,7 @@ const manifest = {
 const authenticatedManifest = {...manifest, generationManifestSha256: sha(JSON.stringify(manifest))};
 writeChanged(paths.manifest, JSON.stringify(authenticatedManifest, null, 2) + '\n');
 console.log(JSON.stringify({source: paths.output, definitions: definitions.length, sourceCalls: effects.length, pendingSites: pendingCount, lazyChoices, helpers: generated.length, manifest: paths.manifest, reused: false, deforestedSites: resultDeforestation.length,
+  regionInlinedHelpers: regionInlines.length, eliminatedAliasBindings: regionScalar.bindings,
   ...(traced ? {tracedRoots: traceRoots.length, tracedPendingSites: Object.fromEntries([...tracedPendingSites].sort(([a], [b]) => a.localeCompare(b)))} : {})}));
 return authenticatedManifest;
 }
