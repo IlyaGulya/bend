@@ -25433,7 +25433,7 @@ def emitter_body_cps_provider_8_public_closure(v_2: List<&2, String>, v_4: Strin
     case v_8 <> v_9:
       v_1010803 = {"run_clo((" : String}
       v_1010804 = {v_8 : String}
-      v_1010805 = {",$raw=undefined,$depth=0)=>{const $td=$raw===$BEND_TAIL?$depth:0;const $base0=$ksp,$sp0=$sp;return run_force(" : String}
+      v_1010805 = {",$raw=undefined,$depth=0)=>{const $td=$raw===$BEND_TAIL?$depth:64;const $base0=$ksp,$sp0=$sp;return run_force(" : String}
       EmitterPending{EmitterRequestGroup_24{EmitterRequest_cps_provider_8_public_closure{v_9, v_4}}, v_1010810 => +v_1010806 = emitter_unbox(String, v_1010810); EmitterDirect{Bool, EmitterRequestGroup_24{EmitterRequest_cps_provider_8_cat{[v_1010803, v_1010804, v_1010805, v_1010806, ",$raw,$base0,$sp0);})"]}}, False{}, v_1010809 => emitter_body_cps_provider_8_cat([v_1010803, v_1010804, v_1010805, v_1010806, ",$raw,$base0,$sp0);})"]), v_1010808 => +v_1010807 = emitter_unbox(String, v_1010808); EmitterFinished{EmitterValue{v_1010807}}}}
 
 def emitter_body_cps_provider_8_closure(v_1: U32, +v_3: List<&2, BIR.Arg>, +v_5: List<&2, BIR.Parameter>) -> EmitterProgress<String>:

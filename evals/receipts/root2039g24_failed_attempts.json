@@ -1486,6 +1486,24 @@
       "receipt": "evals/receipts/root2039g24r4_rejected.json",
       "receiptSha256": "d77a012a50a4ecc64a3285c1d3d8510e4f52bba2c93529244da9902c278a2c3e",
       "reason": "Full native build validated 12974 definitions / 13596 events and all95seedfixtures passed; stageOne53261354bytes; original600000ms bootstrap guard expired during stage-two-check, no stageTwo."
+    },
+    {
+      "runId": "local2039g24r5",
+      "status": "CANCELLED_KNOWN_PUBLIC_UNWIND_DEFECT",
+      "accepted": false,
+      "byteFixedpoint": false,
+      "receipt": "evals/receipts/root2039g24r5_rejected.json",
+      "receiptSha256": "c708568f6118cc14711f11d74452c2663cd63138e2cd09436656e210fc3e5cda",
+      "reason": "Adversarial review found public depth0 could call a body before run_base establishes its unwind boundary. Canceled during parser qualification, before full compiler-root composition; frozen at 186db6f4."
+    },
+    {
+      "runId": "local2039g24r6",
+      "status": "FAIL",
+      "accepted": false,
+      "byteFixedpoint": false,
+      "receipt": "evals/receipts/root2039g24r6_rejected.json",
+      "receiptSha256": "d7e2a9dc0b3d7726fee621ca76eaaa1343d9fd5633352d41dc1ae8da89853494",
+      "reason": "Full native root validated 12974 definitions/13596 events and all95seedfixtures passed; stageOne57228966bytes. Original600000ms bootstrap deadline expired during stage-two-check; no stageTwo."
     }
   ],
   "interpretation": [

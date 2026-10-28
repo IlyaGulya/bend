@@ -15016,7 +15016,7 @@
       "canonical": "bend2/selfhost/emitter.bend",
       "owned": "checkpoints/emitter_owned_v1.bend",
       "canonicalSha256": "47d68ba5f0b54c334e2c940b7bb6aabc7f3bba27142b816f27df8225cf3fae4f",
-      "sourceSha256": "999cc1d96fbef961e2eee41ffcc9f9588182028e21cf3a43b08d08269dc90233",
+      "sourceSha256": "4077fb6394642c6c889a90dd9f65027fe72a0c5dd84a690bda846abf66cd0900",
       "definitionNames": [
         "emitted_js",
         "emitted_c",
@@ -20951,7 +20951,7 @@
         "cps_provider_8_multi_tail_selected": "30dcf5061ba8587b100572eec2df659b5de0eb4cfb7f623592b7e98c479876ab",
         "cps_provider_8_multi_tail_named": "f7870f87500d6a8fed3f527073fa24be63836ae5012d3fe2c381e91cf806bda1",
         "cps_provider_8_tail_call_selected": "412157199cc2b8a3762f933ab88f30597330e247a126049de59177a767730324",
-        "cps_provider_8_public_closure": "527f490859b7e5bdc2494e71cea4fd2cbff56b52fb9c6f514fbfbc4fee6d81ad",
+        "cps_provider_8_public_closure": "3bbd44ae3370df99ecabd223d024f0d913c2757888e78493d6c6752ec45e6366",
         "cps_provider_8_closure": "1ce142699b63b010838d1bbd80deabd44f061b41582c6cef28057b28d9963b54",
         "cps_provider_8_closure_named": "79eee88738f7fbf9aa060ee883cee5205de015542804e5b90ff8adcf7d1821ad",
         "cps_provider_8_multi_closure": "4f061c124d86417a3576f7245cf918c96d94772aaf7a1cb237bd69b4a7e8de24",
@@ -22953,7 +22953,7 @@
           "bend2/selfhost/js_emit.bend",
           "bend2/selfhost/lower_catalog.bend"
         ],
-        "sourceSha256": "328606f18d03a544d94741b485698f9d6cb44f469f206871606b2005d9b82aab",
+        "sourceSha256": "7c9ec3e5f490524513930e98b5cc4b24419babd01b7594dc57957fbc5f9a6c24",
         "sources": [
           {
             "canonical": "bend2/selfhost/emitter.bend",
@@ -26416,7 +26416,7 @@
           },
           {
             "canonical": "bend2/selfhost/js_backend.bend",
-            "canonicalSha256": "dd839bb826617805019a3feb5450b6f19e1b40ac043a7f4dc83437dafccdac60",
+            "canonicalSha256": "7c53d2269ff14b4c87dc634c94a7fa46a6a5f98d082baf2d433a17658c35a006",
             "declarationNames": [
               "EmitResult",
               "LinkSource",
@@ -42740,8 +42740,8 @@
             "canonicalName": "public_closure",
             "name": "cps_provider_8_public_closure",
             "kind": "def",
-            "canonicalDeclarationSha256": "a3bc4595950172d9bd1f1566902f3d95bb9edf4dbcd22fcd907c0c4bafb45a35",
-            "composedDeclarationSha256": "527f490859b7e5bdc2494e71cea4fd2cbff56b52fb9c6f514fbfbc4fee6d81ad"
+            "canonicalDeclarationSha256": "7fe4dfb508abaedb1f4ec589b0a84e803bb24df2cb8928f412b48e6d6902a3b2",
+            "composedDeclarationSha256": "3bbd44ae3370df99ecabd223d024f0d913c2757888e78493d6c6752ec45e6366"
           },
           {
             "source": "bend2/selfhost/js_backend.bend",
@@ -50729,7 +50729,7 @@
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/lower_catalog.bend": "e3864a71ac15ce5f1c74ddc7f615d844e92d9ce6e9c55a2b883482b349058adb",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/descriptor_nf.bend": "c727bfe0adf97f86dc44960ca2c46fd890f0d8557157ba883af40d738d3e72dd",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
-          "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/js_backend.bend": "dd839bb826617805019a3feb5450b6f19e1b40ac043a7f4dc83437dafccdac60",
+          "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/js_backend.bend": "7c53d2269ff14b4c87dc634c94a7fa46a6a5f98d082baf2d433a17658c35a006",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_emit_core.bend": "f690db5b6054d4f647b5c02e1281923d5cc66b24c8c2fff7859d811efc5ba380",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_backend.bend": "700042e9ddbc2640fc7690526fefae4e5a5194a80d8b483c7ef5c20e977c1b4e",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_backend_link.bend": "f83c270f2b6f094f2bd220e6e750aa0265c93ae90fa0036dd8d92b86c09e26bd",
@@ -50743,7 +50743,7 @@
           "bend2/selfhost/c_backend_physical.bend": "fdaf576ae0e8f6c5960c9de8297adf62ddf9bd5615e5cbd6dc591943b7d8c8ec",
           "bend2/selfhost/c_emit_core.bend": "f690db5b6054d4f647b5c02e1281923d5cc66b24c8c2fff7859d811efc5ba380",
           "bend2/selfhost/descriptor_nf.bend": "c727bfe0adf97f86dc44960ca2c46fd890f0d8557157ba883af40d738d3e72dd",
-          "bend2/selfhost/js_backend.bend": "dd839bb826617805019a3feb5450b6f19e1b40ac043a7f4dc83437dafccdac60",
+          "bend2/selfhost/js_backend.bend": "7c53d2269ff14b4c87dc634c94a7fa46a6a5f98d082baf2d433a17658c35a006",
           "bend2/selfhost/js_emit.bend": "a71920560786084ab9713c4af89f62d2d0e1eaef7cc24e46ea24940d012fded6",
           "bend2/selfhost/lower_catalog.bend": "e3864a71ac15ce5f1c74ddc7f615d844e92d9ce6e9c55a2b883482b349058adb"
         }
@@ -54923,7 +54923,7 @@
         "cps_provider_8_multi_tail_selected": "30dcf5061ba8587b100572eec2df659b5de0eb4cfb7f623592b7e98c479876ab",
         "cps_provider_8_multi_tail_named": "f7870f87500d6a8fed3f527073fa24be63836ae5012d3fe2c381e91cf806bda1",
         "cps_provider_8_tail_call_selected": "412157199cc2b8a3762f933ab88f30597330e247a126049de59177a767730324",
-        "cps_provider_8_public_closure": "527f490859b7e5bdc2494e71cea4fd2cbff56b52fb9c6f514fbfbc4fee6d81ad",
+        "cps_provider_8_public_closure": "3bbd44ae3370df99ecabd223d024f0d913c2757888e78493d6c6752ec45e6366",
         "cps_provider_8_closure": "1ce142699b63b010838d1bbd80deabd44f061b41582c6cef28057b28d9963b54",
         "cps_provider_8_closure_named": "79eee88738f7fbf9aa060ee883cee5205de015542804e5b90ff8adcf7d1821ad",
         "cps_provider_8_multi_closure": "4f061c124d86417a3576f7245cf918c96d94772aaf7a1cb237bd69b4a7e8de24",
@@ -106208,7 +106208,7 @@
       "source": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/emitter.bend",
       "sourceSha256": "47d68ba5f0b54c334e2c940b7bb6aabc7f3bba27142b816f27df8225cf3fae4f",
       "output": "/Users/ilyagulya/Projects/My/bend/checkpoints/emitter_owned_v1.bend",
-      "outputSha256": "999cc1d96fbef961e2eee41ffcc9f9588182028e21cf3a43b08d08269dc90233",
+      "outputSha256": "4077fb6394642c6c889a90dd9f65027fe72a0c5dd84a690bda846abf66cd0900",
       "extractions": [
         {
           "owner": "cps_provider_1_describe",

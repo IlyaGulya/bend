@@ -606,7 +606,7 @@ def public_closure(names: List<&2, String>, body: String) -> String:
   match names:
     case Nil{}: body
     case name <> rest:
-      cat(["run_clo((", name, ",$raw=undefined,$depth=0)=>{const $td=$raw===$BEND_TAIL?$depth:0;const $base0=$ksp,$sp0=$sp;return run_force(", public_closure(rest, body), ",$raw,$base0,$sp0);})"])
+      cat(["run_clo((", name, ",$raw=undefined,$depth=0)=>{const $td=$raw===$BEND_TAIL?$depth:64;const $base0=$ksp,$sp0=$sp;return run_force(", public_closure(rest, body), ",$raw,$base0,$sp0);})"])
 def closure(code: U32, +captures: List<&2, BIR.Arg>, +parameters: List<&2, BIR.Parameter>) -> String:
   closure_named(code_name(code), captures, parameters)
 def closure_named(name: String, +captures: List<&2, BIR.Arg>, +parameters: List<&2, BIR.Parameter>) -> String:

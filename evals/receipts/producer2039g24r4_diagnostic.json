@@ -1,0 +1,259 @@
+{
+  "schemaVersion": 1,
+  "status": "BOUNDED_R4_PROFILE_RETAINED",
+  "acceptanceEvidence": false,
+  "newFixedpointClaim": false,
+  "newSpeedupClaim": false,
+  "sourceCheckpoint": "7033684a",
+  "scope": "Unchanged rejected R4 stage-one on frozen G22 root; checker advances 1000000..1250000 only",
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "--experimental-strip-types",
+    "/private/tmp/bend-g24-r4-check-profile-9LUBoE/profiled-throughput.mjs",
+    "js",
+    "/private/tmp/bend-g24-r4-check-profile-9LUBoE/request.json",
+    "/private/tmp/bend-g24-r4-check-profile-9LUBoE/result.json"
+  ],
+  "request": {
+    "path": "/private/tmp/bend-g24-r4-check-profile-9LUBoE/request.json",
+    "sha256": "7d82404761142ed5df5c8cc391f961cf8de0126a400bd3d563a8552137c886b0"
+  },
+  "image": {
+    "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r4/bootstrap.json.cases/stage-one.js",
+    "sha256": "f289b2944b512c250f5224c010b8fb2eaa52d6fb7c0dbd4b6f0381c72b7f5e39",
+    "bytes": 53261354
+  },
+  "driverResult": {
+    "status": "FAIL",
+    "stoppedAfterPublicCheckSteps": 1250000,
+    "phases": [
+      {
+        "phase": "startup",
+        "elapsedMs": 1509.2041250000002,
+        "userCpuMs": 1439.221,
+        "systemCpuMs": 93.555,
+        "memoryEnd": {
+          "rss": 634601472,
+          "heapTotal": 148291584,
+          "heapUsed": 120493312,
+          "external": 63754445,
+          "arrayBuffers": 53286393
+        }
+      },
+      {
+        "phase": "load-parse",
+        "elapsedMs": 10858.024208,
+        "userCpuMs": 13092.38,
+        "systemCpuMs": 383.369,
+        "memoryEnd": {
+          "rss": 1493729280,
+          "heapTotal": 957136896,
+          "heapUsed": 738933736,
+          "external": 10487433,
+          "arrayBuffers": 25039
+        }
+      },
+      {
+        "phase": "expand",
+        "elapsedMs": 8073.899125,
+        "userCpuMs": 8429.487,
+        "systemCpuMs": 93.576,
+        "memoryEnd": {
+          "rss": 1397620736,
+          "heapTotal": 1139064832,
+          "heapUsed": 875063016,
+          "external": 10487433,
+          "arrayBuffers": 25039
+        }
+      }
+    ]
+  },
+  "window": {
+    "start": 1000000,
+    "end": 1250000,
+    "boundaryWallMs": 12396.110207999998,
+    "processCpuMs": 12368.638,
+    "memoryStart": {
+      "rss": 1853997056,
+      "heapTotal": 1573617664,
+      "heapUsed": 1301651016,
+      "external": 10495625,
+      "arrayBuffers": 33231
+    },
+    "memoryEnd": {
+      "rss": 1958543360,
+      "heapTotal": 1663057920,
+      "heapUsed": 1440645640,
+      "external": 10495625,
+      "arrayBuffers": 33231
+    }
+  },
+  "cpu": {
+    "path": "/private/tmp/bend-g24-r4-check-profile-9LUBoE/profiles/selfhost-76214-thread-1-L4KooN/000001-check-window-0.cpuprofile",
+    "sha256": "c2eda78bac742c2d8ef7fc52ba8b6af2345a7909b43d56a38eae02700b312b2b",
+    "samples": 7855,
+    "sumTimeDeltasMs": 13629.708,
+    "top": [
+      {
+        "fn": "run_base",
+        "owner": null,
+        "line": 20,
+        "sampledMs": 1471.5879999999966,
+        "shareOfTimeDeltas": 0.10796915091651241
+      },
+      {
+        "fn": "",
+        "owner": null,
+        "line": 101069,
+        "sampledMs": 1456.704999999998,
+        "shareOfTimeDeltas": 0.10687719795611161
+      },
+      {
+        "fn": "post",
+        "owner": null,
+        "line": 112,
+        "sampledMs": 1233.416,
+        "shareOfTimeDeltas": 0.09049467530779089
+      },
+      {
+        "fn": "$b6850",
+        "owner": "checker_core_steps_v1.checker_advance",
+        "line": 44649,
+        "sampledMs": 235.99699999999999,
+        "shareOfTimeDeltas": 0.017314897721946793
+      },
+      {
+        "fn": "$b6851",
+        "owner": "checker_core_steps_v1.checker_chunk",
+        "line": 44655,
+        "sampledMs": 221.54,
+        "shareOfTimeDeltas": 0.01625420001661077
+      },
+      {
+        "fn": "(garbage collector)",
+        "owner": null,
+        "line": 0,
+        "sampledMs": 145.959,
+        "shareOfTimeDeltas": 0.010708886793466155
+      },
+      {
+        "fn": "$k118878",
+        "owner": "checker_core_steps_v1.checker_pop",
+        "line": 44645,
+        "sampledMs": 97.83700000000002,
+        "shareOfTimeDeltas": 0.007178216877426868
+      },
+      {
+        "fn": "$k118902",
+        "owner": "checker_core_steps_v1.checker_advance",
+        "line": 44651,
+        "sampledMs": 87.544,
+        "shareOfTimeDeltas": 0.0064230282849786656
+      },
+      {
+        "fn": "$k118933",
+        "owner": "checker_core_steps_v1.checker_chunk",
+        "line": 44656,
+        "sampledMs": 83.208,
+        "shareOfTimeDeltas": 0.006104899679435539
+      },
+      {
+        "fn": "$b6848",
+        "owner": "checker_core_steps_v1.checker_step_one",
+        "line": 44642,
+        "sampledMs": 71.96100000000001,
+        "shareOfTimeDeltas": 0.005279716924236382
+      },
+      {
+        "fn": "$b6849",
+        "owner": "checker_core_steps_v1.checker_pop",
+        "line": 44643,
+        "sampledMs": 58.086000000000006,
+        "shareOfTimeDeltas": 0.004261720060327045
+      },
+      {
+        "fn": "$k72054",
+        "owner": null,
+        "line": 33683,
+        "sampledMs": 56.792,
+        "shareOfTimeDeltas": 0.004166780388838851
+      },
+      {
+        "fn": "$k118891",
+        "owner": "checker_core_steps_v1.checker_advance",
+        "line": 44650,
+        "sampledMs": 45.623999999999995,
+        "shareOfTimeDeltas": 0.003347393795963934
+      },
+      {
+        "fn": "$kp67627",
+        "owner": null,
+        "line": 32434,
+        "sampledMs": 44.791000000000004,
+        "shareOfTimeDeltas": 0.0032862772995577018
+      }
+    ]
+  },
+  "allocation": {
+    "path": "/private/tmp/bend-g24-r4-check-profile-9LUBoE/profiles/selfhost-76214-thread-1-L4KooN/000001-check-window-0.heapprofile",
+    "sha256": "4bb05d3b55b9ac3317fea95612893abf7bffe2089f021138ef2895b3fb9c1ca4",
+    "statisticalAllocatedBytes": 7102702624,
+    "topOwners": [
+      {
+        "owner": "",
+        "estimatedBytes": 583031128
+      },
+      {
+        "owner": "checker_core_steps_v1.checker_advance",
+        "estimatedBytes": 348129312
+      },
+      {
+        "owner": "Map.get.go",
+        "estimatedBytes": 314575552
+      },
+      {
+        "owner": "checker_core_steps_v1.checker_pure_arena_get_word_region",
+        "estimatedBytes": 197138064
+      },
+      {
+        "owner": "checker_core_steps_v1.checker_pure_arena_get_node_region",
+        "estimatedBytes": 163582656
+      },
+      {
+        "owner": "Map.find",
+        "estimatedBytes": 125830080
+      },
+      {
+        "owner": "../bend2/selfhost/checker_arena.bound_read.order",
+        "estimatedBytes": 79694208
+      },
+      {
+        "owner": "checker_core_steps_v1.checker_body_core_subst_at",
+        "estimatedBytes": 79693568
+      },
+      {
+        "owner": "checker_core_steps_v1.checker_body_arena_bound_range_loop",
+        "estimatedBytes": 75501368
+      },
+      {
+        "owner": "checker_core_steps_v1.checker_deforest_match_3936",
+        "estimatedBytes": 75500256
+      },
+      {
+        "owner": "$p_map_bit",
+        "estimatedBytes": 71303712
+      },
+      {
+        "owner": "Map.find.node",
+        "estimatedBytes": 67109376
+      }
+    ]
+  },
+  "decision": "PrimStringEq is already native ===; reject character-walk hypothesis. Implement bounded registered unary Apply using existing direct-call continuation protocol, with unchanged public depth64 exception boundary.",
+  "limits": [
+    "Partial sampling; includes collected objects, not retained heap or whole-checker volume.",
+    "CPU sample timeDeltas are not host wall time or complete semantic cost; inspector post overhead is visible.",
+    "Ownership mapping uses declaration root and lexical continuation names; unmapped frames stay named or anonymous.",
+    "No proof that unary Apply overhead explains full bootstrap deadline; requires fresh unobserved qualification and same-host comparisons."
+  ]
+}

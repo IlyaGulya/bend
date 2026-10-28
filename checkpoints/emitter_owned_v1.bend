@@ -16870,7 +16870,7 @@ def cps_provider_8_public_closure(v_2: List<&2, String>, v_4: String) -> String:
     case []:
       v_4
     case v_8 <> v_9:
-      cps_provider_8_cat(["run_clo((", v_8, ",$raw=undefined,$depth=0)=>{const $td=$raw===$BEND_TAIL?$depth:0;const $base0=$ksp,$sp0=$sp;return run_force(", cps_provider_8_public_closure(v_9, v_4), ",$raw,$base0,$sp0);})"])
+      cps_provider_8_cat(["run_clo((", v_8, ",$raw=undefined,$depth=0)=>{const $td=$raw===$BEND_TAIL?$depth:64;const $base0=$ksp,$sp0=$sp;return run_force(", cps_provider_8_public_closure(v_9, v_4), ",$raw,$base0,$sp0);})"])
 
 def cps_provider_8_closure(v_1: U32, +v_3: List<&2, BIR.Arg>, +v_5: List<&2, BIR.Parameter>) -> String:
   cps_provider_8_closure_named(cps_provider_8_code_name(v_1), v_3, v_5)

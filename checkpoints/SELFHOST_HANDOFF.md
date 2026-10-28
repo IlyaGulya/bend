@@ -17,11 +17,25 @@ Stage2 начал check на 331 720 ms, но до исходного guard 600 
 Семь emitted-JS regression cases проходят; новый parameterized case
 воспроизводит прежний ReferenceError для private incoming parameter и
 проходит после исправления. Это не fixedpoint и не performance acceptance.
+R5 отменён до compiler-root composition: review обнаружил public depth0 до
+`run_base`; исходник и отказ сохранены в `186db6f4`. Public depth64 восстановлен.
+R6: полный native root снова проверил 12 974 определения / 13 596 событий;
+build 286 254 ms, RSS 5 945 180 160 B, footprint 5 663 267 080 B. Все 95 seed
+fixtures прошли. Stage1 — 57 228 966 B,
+`ceb8d4524f047b46f16b41a8694d240a7f04a13ad5ce74ea696ce0c5e4a86ddb`;
+stage-two-check начался на 279 816 ms, но guard 600 028 ms снова остановил run.
+Bounded unary Apply прошёл 8 emitted-JS cases; отдельный runtime smoke на V8/JSC
+проверил 50 000 вызовов, depth64, reentrancy, exception recovery и region leave.
+Это не acceptance. Измеренный native emit всё ещё 92 109 ms / 7 693 983 advances;
+следующий шаг — уменьшить повторную работу renderer, не менять guards.
 Принятым остаётся G23 ниже.
 Точные команды и границы:
 `evals/receipts/root2039g24_failed_attempts.json`,
 `evals/receipts/root2039g24r3_rejected.json`,
 `evals/receipts/root2039g24r4_rejected.json`,
+`evals/receipts/root2039g24r5_rejected.json`,
+`evals/receipts/root2039g24r6_rejected.json`,
+`evals/receipts/producer2039g24r4_diagnostic.json`,
 `evals/receipts/producer2039g24_source_smoke.json`.
 
 

@@ -27,8 +27,11 @@ latest one; the GitHub release carries the same notes.
   Compiler-owned unary applications now use the existing bounded direct-call
   continuation protocol; host callbacks retain their public calling convention.
   Eight emitted-JS cases pass; exception recovery and region leaves also pass
-  a separate runtime smoke. Full qualification of this revision is pending.
-  Full qualification remains failed: r1/r2/r4 stopped at the original
+  a separate runtime smoke. R5 was canceled after review found a public
+  unwind-boundary defect; public entry depth64 is restored. R6 passed the full
+  native build and 95 seed fixtures, but its 57,228,966-byte stage1 did not
+  finish stage2 checking before the original bootstrap deadline.
+  Full qualification remains failed: r1/r2/r4/r6 stopped at the original
   bootstrap deadline. R4 validated all 12,974 definitions / 13,596 events,
   passed all95 native seed fixtures and produced a53,261,354-byte stage1,
   but stage2 checking did not finish. R3 exceeded the original8-GiB RSS guard
