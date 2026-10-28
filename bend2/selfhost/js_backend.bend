@@ -906,7 +906,13 @@ def multi_render_params(private: Bool, parameters: List<&2, BIR.Parameter>, up: 
 def multi_render_public(id: U32, parameters: List<&2, BIR.Parameter>, body: BIR.Block, layouts: Map<&2, MultiLayout>, width: Nat, state: MultiUp) -> MultiRender:
   multi_render_make(id, body, layouts, width, state, False{}, True{}, multi_params_boxed(parameters, Nil{}))
 def multi_render_make(id: U32, body: BIR.Block, layouts: Map<&2, MultiLayout>, width: Nat, state: MultiUp, private: Bool, public: Bool, params: List<&2, MultiParam>) -> MultiRender:
-  multi_render_done(multi_rewrite(body, MRewCtx{id, layouts, multi_prev_multi(state), multi_prev_up(state), width, multi_params_map(params, Map.new(&2, MultiParam)), private, None{}, None{}, Map.new(&2, MultiCtor), multi_uses(body)}, 0n), private, public, params, width)
+  multi_render_done(multi_rewrite(body, MRewCtx{id, layouts, multi_prev_multi(state), multi_prev_up(state), width, multi_params_map(params, Map.new(&2, MultiParam)), private, None{}, None{}, Map.new(&2, MultiCtor), multi_uses(body)}, multi_seed_of(id)), private, public, params, width)
+# A synthetic conversion names a hoisted continuation, so its id must be unique
+# over the whole program, not over one rendering: the owner contributes a block
+# of 64 names and the traversal consumes two per conversion. Site and parameter
+# names come from the disjoint 0x60000000 range, so the three spaces cannot meet.
+def multi_seed_of(id: U32) -> Nat:
+  Nat.mul(U32.to_nat(id), 64n)
 def multi_render_done(rw: MultiRew, private: Bool, public: Bool, params: List<&2, MultiParam>, width: Nat) -> MultiRender:
   match rw:
     case MultiRew{body, windows, sites, mr, _, failed, _, _}:
