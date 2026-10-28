@@ -159,7 +159,7 @@ function expectationsOf(text,source){
 }
 
 /** Run one command alone under the repository's exclusive sampled heavy gate. */
-async function runGuarded(bunPath,label,command){
+async function runGuarded(bunPath,label,command,expectedOutput){
  const limits=['--memory-mib',String(LIMITS.memoryMiB),'--rss-mib',String(LIMITS.rssMiB),'--poll-ms',String(LIMITS.pollMs),'--timeout-ms',String(LIMITS.timeoutMs)];
  const gateCommand=[bunPath,GATE,...limits,'--',...command];
  const record={label,command,gateCommand,limits:{...LIMITS},status:'FAIL'};
@@ -178,15 +178,18 @@ async function runGuarded(bunPath,label,command){
   record.elapsedMs=performance.now()-started;
   return record;
  }
- let stdout='',stderr='',capturedOut=0,capturedErr=0,overflow=false,timedOut=false;
+ const outChunks=[],errChunks=[];
+ let capturedOut=0,capturedErr=0,overflow=false,timedOut=false;
  const append=(chunk,side)=>{
-  const text=chunk.toString('utf8');
-  if(side==='out'){stdout+=text;capturedOut+=chunk.length;}
-  else{stderr+=text;capturedErr+=chunk.length;}
-  if(!overflow&&(capturedOut>CAPTURE_BYTES||capturedErr>CAPTURE_BYTES)){
+  if(overflow)return;
+  const captured=side==='out'?capturedOut:capturedErr;
+  if(captured+chunk.length>CAPTURE_BYTES){
    overflow=true;
    child.kill('SIGTERM');
+   return;
   }
+  if(side==='out'){outChunks.push(chunk);capturedOut+=chunk.length;}
+  else{errChunks.push(chunk);capturedErr+=chunk.length;}
  };
  child.stdout?.on('data',chunk=>append(chunk,'out'));
  child.stderr?.on('data',chunk=>append(chunk,'err'));
@@ -196,6 +199,9 @@ async function runGuarded(bunPath,label,command){
   child.once('error',error=>finish({error}));
   child.once('close',(code,signal)=>finish({code,signal}));
  });
+ const output=Buffer.concat(outChunks,capturedOut);
+ const stdout=output.toString('utf8'),stderr=Buffer.concat(errChunks,capturedErr).toString('utf8');
+ if(expectedOutput!==undefined)record.outputMatches=output.equals(Buffer.from(expectedOutput,'utf8'));
  record.elapsedMs=performance.now()-started;
  record.stdout=stdout;
  record.stderr=stderr;
@@ -254,6 +260,7 @@ async function main(){
   }
   report.fixtures=sources.map(source=>relative(REPO_ROOT,source));
   save();
+  const inputPins=new Map();
   for(const [index,source] of sources.entries()){
    const sourceText=readFileSync(source,'utf8');
    const expected=expectationsOf(sourceText,source);
@@ -271,6 +278,21 @@ async function main(){
     if(!existsSync(output))throw Error(`emission produced no ${target} output for ${row.source}`);
     row.outputSha256=await shaFile(output);
     row.outputBytes=statSync(output).size;
+    const manifest=JSON.parse(readFileSync(output+'.inputs.json','utf8'));
+    if(manifest.schemaVersion!==1||manifest.source!==source||manifest.target!==target||!Array.isArray(manifest.inputs))
+     throw Error(`invalid emission input manifest for ${row.source} (${target})`);
+    row.inputs=manifest.inputs;
+    if(!row.inputs.some(input=>input.path===source&&input.sha256===sourceSha256))
+     throw Error(`emission manifest does not authenticate ${row.source}`);
+    for(const input of row.inputs){
+     if(typeof input.path!=='string'||!isAbsolute(input.path)||!/^[0-9a-f]{64}$/.test(input.sha256))
+      throw Error(`invalid emission input pin for ${row.source}`);
+     if(inputPins.has(input.path)&&inputPins.get(input.path)!==input.sha256)
+      throw Error(`input differs between smoke emissions: ${input.path}`);
+     if(await shaFile(input.path)!==input.sha256)
+      throw Error(`emission input changed: ${input.path}`);
+     inputPins.set(input.path,input.sha256);
+    }
     save();
     let consumerCommand;
     if(target==='c'){
@@ -285,12 +307,12 @@ async function main(){
      save();
      consumerCommand=[executable];
     }else consumerCommand=[report.runtime.node.path,'--max-old-space-size=3072',output];
-    const consumer=await runGuarded(report.runtime.bun.path,`run ${target} ${row.source}`,consumerCommand);
+    const consumer=await runGuarded(report.runtime.bun.path,`run ${target} ${row.source}`,consumerCommand,expected);
     row.stages.consumer=consumer;
     row.observed=consumer.stdout;
     save();
     if(consumer.status!=='PASS')throw Error(`consumer failed for ${row.source} (${target}): ${consumer.error}`);
-    row.passed=consumer.stdout===expected;
+    row.passed=consumer.outputMatches===true;
     save();
     if(!row.passed)throw Error(`consumer output differs from #| expectations for ${row.source} (${target})`);
    }
@@ -303,6 +325,8 @@ async function main(){
    if(await shaFile(resolve(REPO_ROOT,path))!==hash)throw Error(`generated step input changed during the smoke (regenerate before invoking): ${path}`);
   for(const row of report.rows)
    if(await shaFile(row.absoluteSource)!==row.sourceSha256)throw Error(`fixture changed during the smoke: ${row.source}`);
+  for(const [path,hash] of inputPins)
+   if(await shaFile(path)!==hash)throw Error(`transitive emission input changed during the smoke: ${path}`);
   report.status='SOURCE_CHANGED_PATH_SMOKE_PASS';
   report.finishedAt=new Date().toISOString();
   save();

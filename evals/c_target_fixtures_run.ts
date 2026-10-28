@@ -79,6 +79,8 @@ const fixtures = ['evals/c_target_wide_record', 'evals/c_target_nested_adt',
   'tests/run/runtime_string_cmp', 'tests/run/native_map_read_positions',
   'tests/run/native_map_read_shapes', 'tests/run/native_map_read_unique',
   'tests/compile/js_split_capture_chain',
+  'tests/compile/js_scalar_local_record', 'tests/compile/js_scalar_region_tail',
+  'tests/compile/js_record_field_projection',
   ...(target === 'js' ? ['evals/checker_affinity_step_smoke'] : [])];
 const selected = smokeCase === undefined ? fixtures : fixtures.filter(name => name.endsWith('/' + smokeCase) || name === smokeCase);
 if (selected.length === 0) throw Error('--smoke-case matches no fixture: ' + smokeCase);
