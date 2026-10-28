@@ -5,13 +5,18 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
-- The g20 native-seed candidate allows explicit `--cc-pipeline=llvm-split
-  --cc-opt=2` for partition optimization. The default stays O1; the C frontend,
-  ABI probes and mandatory pre-split inlining stay O1, with the selected
-  partition level recorded separately. No kernel, Bend compiler, scheduler,
-  parser fuel, corpus, export ABI or resource limit changes. Qualification
-  of the full native root, bootstrap and target consumers is pending;
-  this source candidate is not an accepted compiler or new byte fixedpoint.
+- The g20 split-O2 native-seed trial is **rejected**, not selected for the
+  next candidate. Its full native root builds in 278.558 s with peak RSS
+  5,448,794,112 bytes under the original 8-GiB/600-s guard, checking all
+  12,156 definitions / 12,735 events without exclusions or output patches.
+  Frontend/ABI/pre-split stages remain O1; partition stages use explicit O2.
+  The generated C and 30,220,181-byte stage1 have the same observed SHA256
+  as g18. All 95 seed fixtures and 18 complete semantic parser approvals
+  pass, but bootstrap again reaches 600 s during stage-two check; no stage2
+  or new byte fixedpoint is produced. No runtime improvement is established
+  by these unpaired measurements. Separate companion gates are still
+  running and are not inferred successful here.
+  Receipt: `evals/receipts/root2039g20_o2_bootstrap_rejected.json`.
 
 - The g18 candidate reuses canonical `Map.bit` for immutable read-only lookup
   instead of rebuilding a cursor in Bend. Existing backward-position, NUL,
