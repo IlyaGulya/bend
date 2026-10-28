@@ -30,7 +30,8 @@ latest one; the GitHub release carries the same notes.
   R5 was canceled after review found a public unwind-boundary defect.
   R10 restores queued unary dispatch and removes the extra closure-depth
   plumbing; all twelve emitted-JS consumers pass on V8 and JavaScriptCore.
-  Its full qualification and performance comparison are pending. R6 passed the full
+  Its full qualification again reached the original stage2-check deadline.
+  R6 passed the full
   native build and 95 seed fixtures, but its 57,228,966-byte stage1 did not
   finish stage2 checking before the original bootstrap deadline.
   R7 retains immutable per-body occurrence maps across render rounds and avoids
@@ -62,12 +63,12 @@ latest one; the GitHub release carries the same notes.
   `e9946ab94c33f236dfa1ab51d3145d4ba564fcb61ac399b51800a6d964046e23`).
   Its CPU-profiled 496.083-s run does not pass the original combined bootstrap
   guard or establish full consumer/performance acceptance.
-  Full qualification remains failed: r1/r2/r4/r6/r7/r8/r9 stopped at the original
+  Full qualification remains failed: r1/r2/r4/r6/r7/r8/r9/r10 stopped at the original
   bootstrap deadline. R4 validated all 12,974 definitions / 13,596 events,
   passed all95 native seed fixtures and produced a53,261,354-byte stage1,
   but stage2 checking did not finish. R3 exceeded the original8-GiB RSS guard
-  during canonical C generation. No G24 fixedpoint, speedup or memory
-  reduction is claimed.
+  during canonical C generation. No full G24 qualification, speedup or memory
+  reduction is claimed; the isolated R9 fixedpoint is recorded separately.
 
 - G23 completes the full native compiler root and a real native-stage0 →
   stage1 → stage2 byte fixedpoint: 14,096 definitions / 14,686 validation

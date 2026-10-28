@@ -62,8 +62,10 @@ Check 372 398 ms, emit 100 381 ms; внутри был CPU-only window, это �
 performance evidence. Исходный общий bootstrap guard остаётся FAIL; consumer
 suites на обоих image ещё не пройдены. R10 отдельно проверяет возврат косвенных
 closure calls к очереди trampoline, не меняя private-result lowering и guards.
-Все 12 emitted-JS consumers проходят на V8 и JavaScriptCore; полная
-unobserved квалификация и performance comparison ещё требуются.
+Все 12 emitted-JS consumers проходят на V8 и JavaScriptCore. Но полный R10
+тоже FAIL: native 13 048 definitions / 13 672 events и 95 fixtures PASS;
+stage1 44 155 247 bytes. Stage2 начал check на 246 084 ms; исходный guard
+600 053 ms снова истёк. Сам возврат queued dispatch timeout не решил.
 Принятым остаётся G23 ниже.
 Точные команды и границы:
 `evals/receipts/root2039g24_failed_attempts.json`,
@@ -74,6 +76,7 @@ unobserved квалификация и performance comparison ещё требу�
 `evals/receipts/root2039g24r7_rejected.json`,
 `evals/receipts/root2039g24r8_rejected.json`,
 `evals/receipts/root2039g24r9_rejected.json`,
+`evals/receipts/root2039g24r10_rejected.json`,
 `evals/receipts/producer2039g24r8_complete_check.json`,
 `evals/receipts/producer2039g24r9_source_smoke.json`,
 `evals/receipts/producer2039g24r9_isolated_fixedpoint.json`,
