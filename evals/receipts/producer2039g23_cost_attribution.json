@@ -1,0 +1,1288 @@
+{
+  "schemaVersion": 1,
+  "status": "G23_NATIVE_STACK_AND_BOUNDED_JS_ALLOCATION_ATTRIBUTION_COMPLETE",
+  "diagnosticOnly": true,
+  "acceptanceEvidence": false,
+  "compilerChanged": false,
+  "newSpeedupClaim": false,
+  "newFixedpointClaim": false,
+  "sourceCheckpoint": "04e0b600",
+  "acceptedCheckpoint": "854d1a83",
+  "scope": "Unchanged accepted G23 compiler executing the frozen G22 full-root workload; native check stack sample and three bounded emitted-JS CPU/statistical-allocation windows. Not a new performance acceptance run.",
+  "identities": {
+    "compiler": {
+      "path": "bend2/comp.ts",
+      "sha256": "db466aa58339e8866c68c7aece0c8586e4ce5f591f311b71b86b3b25769b50fd"
+    },
+    "native": {
+      "path": "/tmp/bend-remote2039g23-native",
+      "sha256": "73334ff873115489875c3b9232500153ba5ff6996e03c892c69cbe445d16ee8b",
+      "bytes": 18521672
+    },
+    "generatedC": {
+      "path": "/tmp/bend-remote2039g23-native.c",
+      "sha256": "a2ad188ee7957276ba0bbc932ed87634cb3c6732d5e8271e47299ee90a465d43",
+      "bytes": 60977857
+    },
+    "emittedImage": {
+      "path": "/private/tmp/bend-g23-qualified-uWzQmR/stage-one.js",
+      "sha256": "6b206ac5b6d84a6d7296837ae8249e49657551ff16eaddc87f44baecef7e42d5",
+      "bytes": 32959574
+    },
+    "checkerManifest": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/checker-core-steps-v1.json",
+      "sha256": "7ddd61f5657ce2d56b03ba88b6e9b8b3f946d9afc94bf617a4a22efd0506bb65",
+      "bytes": 5665041
+    },
+    "request": {
+      "path": "/private/tmp/bend-g23-wave-evidence-cOFisz/paired-native-aHBKgz/candidate-js-request.json",
+      "sha256": "696f5f74c8ee76ba21467423c92db91af71c4f3203ed52aa05da28994a9dfac3",
+      "bytes": 22975
+    },
+    "verifiedPinsAndInputs": 99,
+    "inputDrift": [],
+    "output": {
+      "path": "/private/tmp/bend-g23-allocation-windows-o3OpKb/result.json.output.mjs",
+      "bytes": 30222543,
+      "sha256": "6f3dff55cee825d064b1d2f9d0c3268fd0d629dd93043d90d6fc00f43eba5978",
+      "byteIdenticalToFrozenCorpusExpected": true
+    }
+  },
+  "native": {
+    "status": "complete",
+    "profileUsable": true,
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "/Users/ilyagulya/Projects/My/bend/evals/native_check_profile.mjs",
+      "--out-dir=/private/tmp/bend-g23-cost-attribution-mpINqY/native",
+      "--timeout-ms=600000",
+      "--sample-interval-ms=1",
+      "--top-frames=1000",
+      "--source-map=/tmp/bend-remote2039g23-native.c",
+      "--",
+      "/private/tmp/bend-g23-qualified-uWzQmR/bend-remote2039g23-native",
+      "+RTS",
+      "--threads",
+      "1",
+      "--gpu",
+      "off",
+      "--RTS",
+      "/private/tmp/bend2039g22-tiny-inline/checkpoints/.bootstrap_compiler_root_remote2039g21.bend",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/base.bend",
+      "/private/tmp/bend-g23-wave-evidence-cOFisz/paired-native-aHBKgz/candidate-1.json.runtime.tsv",
+      "/private/tmp/bend-g23-wave-evidence-cOFisz/paired-native-aHBKgz/candidate-1.json.exports.txt",
+      "compile",
+      "/private/tmp/bend-g23-cost-attribution-mpINqY/native-output.mjs"
+    ],
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 1529462784,
+      "peakFootprintBytes": 1708281624,
+      "elapsedMs": 277311,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/Users/ilyagulya/Projects/My/bend/evals/native_check_profile.mjs",
+        "--out-dir=/private/tmp/bend-g23-cost-attribution-mpINqY/native",
+        "--timeout-ms=600000",
+        "--sample-interval-ms=1",
+        "--top-frames=1000",
+        "--source-map=/tmp/bend-remote2039g23-native.c",
+        "--",
+        "/private/tmp/bend-g23-qualified-uWzQmR/bend-remote2039g23-native",
+        "+RTS",
+        "--threads",
+        "1",
+        "--gpu",
+        "off",
+        "--RTS",
+        "/private/tmp/bend2039g22-tiny-inline/checkpoints/.bootstrap_compiler_root_remote2039g21.bend",
+        "/private/tmp/bend2039g22-tiny-inline/bend2/base.bend",
+        "/private/tmp/bend-g23-wave-evidence-cOFisz/paired-native-aHBKgz/candidate-1.json.runtime.tsv",
+        "/private/tmp/bend-g23-wave-evidence-cOFisz/paired-native-aHBKgz/candidate-1.json.exports.txt",
+        "compile",
+        "/private/tmp/bend-g23-cost-attribution-mpINqY/native-output.mjs"
+      ],
+      "label": "current-G23-native-check-sample",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793188903802-f5efea745ad45355.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "rawSummary": {
+      "path": "/private/tmp/bend-g23-cost-attribution-mpINqY/native/summary.json",
+      "sha256": "1a9d09ad122876de3d42afc8eecbd7fd8158683394eba28f1d5e8a4ba1fff992",
+      "bytes": 1673317
+    },
+    "rawSample": {
+      "path": "/private/tmp/bend-g23-cost-attribution-mpINqY/native/check.sample.txt",
+      "sha256": "1a8464a7bf30fa2cd8e9d0b81639021f064293004f5963ddc2c0bbc77c66f284",
+      "bytes": 4379660
+    },
+    "symbolMap": {
+      "path": "/private/tmp/bend-g23-cost-attribution-mpINqY/native-symbol-map.json",
+      "sha256": "7c425f03a8ec2daa29f00bd9a5d690df7befc2acdb609194066535d24e0b2d90",
+      "bytes": 8945472
+    },
+    "thread": {
+      "name": "Thread_758351081   DispatchQueue_1: com.apple.main-thread  (serial)",
+      "totalSamples": 188962,
+      "selfCountSum": 188962,
+      "waitingSamples": 0,
+      "parsedTreeNodes": 38516,
+      "completeSymbolCount": 4205
+    },
+    "checkPhase": {
+      "name": "check",
+      "identification": "native_compiler_host.c stderr protocol: NATIVE_PHASE_START {\"phase\":\"check\"} ... NATIVE_PHASE {\"phase\":\"check\",...}",
+      "startHelperMs": 20757.949,
+      "endHelperMs": 250474.58,
+      "helperObservedWallMs": 229716.631,
+      "hostElapsedMs": 229717.808,
+      "hostUserCpuMs": 101986.57,
+      "hostSystemCpuMs": 3526.509,
+      "hostChunkAdvances": 9658732,
+      "hostChunkQuantum": 64,
+      "attribution": "hostElapsedMs/userCpuMs/systemCpuMs are the native host getrusage(RUSAGE_SELF)+monotonic receipt for the check span; the external sampler perturbs that span by an unmeasured amount"
+    },
+    "selfGroups": [
+      {
+        "group": "ownership",
+        "selfSamples": 58025,
+        "share": 0.30707232141912133,
+        "symbols": [
+          {
+            "symbol": "term_drop",
+            "selfSamples": 16854
+          },
+          {
+            "symbol": "ctr_take",
+            "selfSamples": 11093
+          },
+          {
+            "symbol": "span_fade",
+            "selfSamples": 10869
+          },
+          {
+            "symbol": "rfc_seal",
+            "selfSamples": 6358
+          },
+          {
+            "symbol": "rfc_bump",
+            "selfSamples": 5751
+          },
+          {
+            "symbol": "rfc_wrap",
+            "selfSamples": 5019
+          },
+          {
+            "symbol": "term_sink",
+            "selfSamples": 1118
+          },
+          {
+            "symbol": "term_keep",
+            "selfSamples": 963
+          }
+        ]
+      },
+      {
+        "group": "allocator",
+        "selfSamples": 11530,
+        "share": 0.06101755908595379,
+        "symbols": [
+          {
+            "symbol": "heap_alloc",
+            "selfSamples": 4840
+          },
+          {
+            "symbol": "heap_free",
+            "selfSamples": 5723
+          },
+          {
+            "symbol": "spare_free",
+            "selfSamples": 967
+          }
+        ]
+      },
+      {
+        "group": "mapRead",
+        "selfSamples": 19864,
+        "share": 0.10512166467332056,
+        "symbols": [
+          {
+            "symbol": "map_bit",
+            "selfSamples": 14046
+          },
+          {
+            "symbol": "map_cur_bit",
+            "selfSamples": 4848
+          },
+          {
+            "symbol": "map_get_read",
+            "selfSamples": 970
+          }
+        ]
+      },
+      {
+        "group": "stringCompare",
+        "selfSamples": 2876,
+        "share": 0.01521999132100634,
+        "symbols": [
+          {
+            "symbol": "string_cmp_read",
+            "selfSamples": 2876
+          }
+        ]
+      },
+      {
+        "group": "closureApply",
+        "selfSamples": 11788,
+        "share": 0.062382912966628214,
+        "symbols": [
+          {
+            "symbol": "WL_FID_Clo_apply",
+            "selfSamples": 11788
+          }
+        ]
+      }
+    ],
+    "indexLookupSubtree": {
+      "symbols": [
+        "spin_262",
+        "spin_263",
+        "spin_264",
+        "spin_265",
+        "spin_266",
+        "spin_267"
+      ],
+      "unionSamples": 34340,
+      "share": 0.18172965993162646,
+      "ownershipAllocatorSelfSamples": 14351,
+      "ownershipAllocatorShareWithinSubtree": 0.41790914385556205,
+      "identification": "Generated C spin_262 entry -> spin_266 trie loop, spin_263 position, spin_264 bit and spin_265/spin_267 result helpers; manually matched against index_lookup.bend:5-31. Counts credit each leaf once even if multiple selected ancestors occur."
+    },
+    "nearestCanonicalFIDOwners": [
+      {
+        "owner": "[no canonical FID ancestor]",
+        "selfSamples": 26313,
+        "memorySelfSamples": 7804
+      },
+      {
+        "owner": "checker_core_steps_v1:checker_step_one",
+        "selfSamples": 26175,
+        "memorySelfSamples": 9792
+      },
+      {
+        "owner": "../bend2/selfhost/scope_lookup:canonical_name",
+        "selfSamples": 16874,
+        "memorySelfSamples": 7414
+      },
+      {
+        "owner": "checker_core_steps_v1:checker_advance",
+        "selfSamples": 10447,
+        "memorySelfSamples": 3577
+      },
+      {
+        "owner": "../bend2/selfhost/checker_arena:name",
+        "selfSamples": 8964,
+        "memorySelfSamples": 1027
+      },
+      {
+        "owner": "checker_core_steps_v1:whnf",
+        "selfSamples": 6168,
+        "memorySelfSamples": 2701
+      },
+      {
+        "owner": "checker_core_steps_v1:scope_index_name_aliases",
+        "selfSamples": 4638,
+        "memorySelfSamples": 2187
+      },
+      {
+        "owner": "checker_core_steps_v1:arena_put_node",
+        "selfSamples": 2582,
+        "memorySelfSamples": 262
+      },
+      {
+        "owner": "checker_core_steps_v1:global_index_insert",
+        "selfSamples": 2385,
+        "memorySelfSamples": 899
+      },
+      {
+        "owner": "../bend2/selfhost/scope_lookup:equal_names",
+        "selfSamples": 2097,
+        "memorySelfSamples": 1721
+      },
+      {
+        "owner": "checker_core_steps_v1:arena_bound_range_loop",
+        "selfSamples": 2013,
+        "memorySelfSamples": 676
+      },
+      {
+        "owner": "checker_core_steps_v1:function_type_of",
+        "selfSamples": 1999,
+        "memorySelfSamples": 898
+      },
+      {
+        "owner": "checker_core_steps_v1:checker_chunk",
+        "selfSamples": 1912,
+        "memorySelfSamples": 0
+      },
+      {
+        "owner": "checker_core_steps_v1:arena_words_prepend_count",
+        "selfSamples": 1731,
+        "memorySelfSamples": 339
+      },
+      {
+        "owner": "checker_core_steps_v1:global_index_alias_declaration",
+        "selfSamples": 1515,
+        "memorySelfSamples": 615
+      }
+    ],
+    "nearestCanonicalFIDPolicy": "Nearest mapped canonical FID ancestor only; inlined code/spin bodies and runtime work inside that region remain blended. Not isolated semantic CPU.",
+    "limitations": [
+      "Attribution is symbol-level only: the accepted image has no __DWARF segments (see child.machO.dwarfSegments), so sample cannot report source lines, inlined frames or variables.",
+      "Sample counts are sampled thread stacks (including blocked/sleeping threads) at a nominal 1-ms run-time interval; they are not CPU time and must not be rescaled to hostElapsedMs or treated as CPU shares.",
+      "Per-thread totals are separate sample populations. Only the main-thread subtree is the compiler compute thread for --threads 1; other threads are runtime threads and may be blocked. waitingSamples counts only conservative wait primitives; nonWaitingSamples is not CPU.",
+      "No allocation attribution: this helper observes stacks only. Per-object allocation or byte attribution would require a separately instrumented diagnostic rebuild and is explicitly not claimed here.",
+      "External sampling suspends the target per sample; the resulting slowdown of the check span is not measured by an A/B run, so hostElapsedMs and host CPU are perturbed by an unknown amount.",
+      "Only the check window is sampled. Parse, expand, emit and fixedpoint comparison are outside the sample window.",
+      "sample reports physical footprint at its own attach/report time; that is not an allocation measure and not a phase peak.",
+      "The sampler attaches by pid to the child this helper spawned; if attach failed, status is profile_incomplete rather than a silent fallback."
+    ]
+  },
+  "js": {
+    "status": "PASS",
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+      "--memory-mib",
+      "8192",
+      "--rss-mib",
+      "8192",
+      "--poll-ms",
+      "10",
+      "--timeout-ms",
+      "600000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128",
+      "/private/tmp/bend-g23-allocation-windows-o3OpKb/profiled-throughput.mjs",
+      "--worker",
+      "js",
+      "/private/tmp/bend-g23-wave-evidence-cOFisz/paired-native-aHBKgz/candidate-js-request.json",
+      "696f5f74c8ee76ba21467423c92db91af71c4f3203ed52aa05da28994a9dfac3",
+      "/private/tmp/bend-g23-allocation-windows-o3OpKb/result.json"
+    ],
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 2961326080,
+      "peakFootprintBytes": 2940948856,
+      "elapsedMs": 456421,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/private/tmp/bend-g23-allocation-windows-o3OpKb/profiled-throughput.mjs",
+        "--worker",
+        "js",
+        "/private/tmp/bend-g23-wave-evidence-cOFisz/paired-native-aHBKgz/candidate-js-request.json",
+        "696f5f74c8ee76ba21467423c92db91af71c4f3203ed52aa05da28994a9dfac3",
+        "/private/tmp/bend-g23-allocation-windows-o3OpKb/result.json"
+      ],
+      "label": "heavy command",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793192944630-067fafe114cbd299.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "runtime": {
+      "execPath": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "versions": {
+        "node": "23.11.0",
+        "acorn": "8.14.1",
+        "ada": "3.2.1",
+        "amaro": "0.4.1",
+        "ares": "1.34.4",
+        "brotli": "1.1.0",
+        "cjs_module_lexer": "2.1.0",
+        "cldr": "46.0",
+        "icu": "76.1",
+        "llhttp": "9.2.1",
+        "modules": "131",
+        "napi": "10",
+        "nbytes": "0.1.1",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.64.0",
+        "openssl": "3.0.16",
+        "simdjson": "3.12.2",
+        "simdutf": "6.0.3",
+        "sqlite": "3.49.1",
+        "tz": "2025a",
+        "undici": "6.21.2",
+        "unicode": "16.0",
+        "uv": "1.50.0",
+        "uvwasi": "0.0.21",
+        "v8": "12.9.202.28-node.14",
+        "zlib": "1.3.0.1-motley-788cb3c",
+        "zstd": "1.5.6"
+      },
+      "execArgv": [
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128"
+      ],
+      "heapLimitBytes": 6845104128
+    },
+    "workerPolicy": {
+      "stackMiB": 256,
+      "oldGenerationMiB": 6144,
+      "youngGenerationMiB": 128
+    },
+    "stepCounts": {
+      "expand": 1004927,
+      "check": 9658732,
+      "emit": 1486667
+    },
+    "profileWindows": {
+      "expected": [
+        {
+          "start": 1000000,
+          "end": 1250000
+        },
+        {
+          "start": 4000000,
+          "end": 4250000
+        },
+        {
+          "start": 8000000,
+          "end": 8250000
+        }
+      ],
+      "completed": 3,
+      "partialPhase": true
+    },
+    "sampledCheckAdvances": 750000,
+    "sampledAdvanceShare": 0.0776499441127469,
+    "allocationSamplingIntervalBytes": 4194304,
+    "includeCollectedObjects": {
+      "minor": true,
+      "major": true
+    },
+    "estimatedAllocatedBytesAcrossOnlyTheseWindows": 23638122904,
+    "allocationAttributionUnit": "V8 allocation-node selfSize estimates summed once; statistical allocation volume, not exact bytes or retained heap. Raw sample size sums also retained and differ slightly from node selfSize sums.",
+    "windows": [
+      {
+        "index": 0,
+        "startStep": 1000000,
+        "endStep": 1250000,
+        "status": "completed",
+        "wallMs": 10863.585915999996,
+        "memoryStart": {
+          "rss": 2046394368,
+          "heapTotal": 1012580352,
+          "heapUsed": 792417432,
+          "external": 43454134,
+          "arrayBuffers": 32992805
+        },
+        "memoryEnd": {
+          "rss": 2118582272,
+          "heapTotal": 1097826304,
+          "heapUsed": 944366608,
+          "external": 10494560,
+          "arrayBuffers": 33231
+        },
+        "estimatedAllocatedBytes": 8221144024,
+        "rawSampleSizeSum": 8221162880,
+        "allocationSamples": 1950,
+        "files": {
+          "run": {
+            "path": "/private/tmp/bend-g23-allocation-windows-o3OpKb/profiles/selfhost-28886-thread-1-CltmXc/run.json",
+            "sha256": "f6657b8930426e14ee65cabc5f5c0a9f8b93b3e39388dbd12b3e3af3ecddf7ca",
+            "bytes": 2475
+          },
+          "boundary": {
+            "path": "/private/tmp/bend-g23-allocation-windows-o3OpKb/profiles/selfhost-28886-thread-1-CltmXc/000001-check-window-0.json",
+            "sha256": "2702decf5da25d8a2220fe9700deb728526f52317f785cd1c5ba68146c4b2e0d",
+            "bytes": 1280
+          },
+          "cpu": {
+            "path": "/private/tmp/bend-g23-allocation-windows-o3OpKb/profiles/selfhost-28886-thread-1-CltmXc/000001-check-window-0.cpuprofile",
+            "sha256": "f10ac8c63e45eedfdb10f2eaf9005e081cea2e8d9ee940076a081b9fdd6ddd2c",
+            "bytes": 4234310
+          },
+          "allocation": {
+            "path": "/private/tmp/bend-g23-allocation-windows-o3OpKb/profiles/selfhost-28886-thread-1-CltmXc/000001-check-window-0.heapprofile",
+            "sha256": "2b1b0b4ec0de5c4f145f84343643948c653970a29cb9b884e458e373c8c33865",
+            "bytes": 949915
+          }
+        }
+      },
+      {
+        "index": 1,
+        "startStep": 4000000,
+        "endStep": 4250000,
+        "status": "completed",
+        "wallMs": 12621.393083000003,
+        "memoryStart": {
+          "rss": 2148630528,
+          "heapTotal": 1276624896,
+          "heapUsed": 995218848,
+          "external": 43445942,
+          "arrayBuffers": 32984613
+        },
+        "memoryEnd": {
+          "rss": 2149761024,
+          "heapTotal": 1305460736,
+          "heapUsed": 1002618624,
+          "external": 10486368,
+          "arrayBuffers": 25039
+        },
+        "estimatedAllocatedBytes": 7755938952,
+        "rawSampleSizeSum": 7755957120,
+        "allocationSamples": 1848,
+        "files": {
+          "run": {
+            "path": "/private/tmp/bend-g23-allocation-windows-o3OpKb/profiles/selfhost-28886-thread-1-JBHWbv/run.json",
+            "sha256": "ad4ac2d0fa589f2d0cd83559a816dc058c183fbe355d8c0ceab923e2ead2fd1c",
+            "bytes": 2475
+          },
+          "boundary": {
+            "path": "/private/tmp/bend-g23-allocation-windows-o3OpKb/profiles/selfhost-28886-thread-1-JBHWbv/000001-check-window-1.json",
+            "sha256": "d36909cae1001c697d53925c567d860cd9efcb2e1fc326f2c902c3c17fdc48af",
+            "bytes": 1282
+          },
+          "cpu": {
+            "path": "/private/tmp/bend-g23-allocation-windows-o3OpKb/profiles/selfhost-28886-thread-1-JBHWbv/000001-check-window-1.cpuprofile",
+            "sha256": "b60b056e1ead10ba08a503213e3b58a3d670e15834145e7884ab3ce5f216773d",
+            "bytes": 4426126
+          },
+          "allocation": {
+            "path": "/private/tmp/bend-g23-allocation-windows-o3OpKb/profiles/selfhost-28886-thread-1-JBHWbv/000001-check-window-1.heapprofile",
+            "sha256": "82d758ae5b57be6c4b88c67e0281da08ea4f38c1593debc28f82928a0a380c41",
+            "bytes": 909401
+          }
+        }
+      },
+      {
+        "index": 2,
+        "startStep": 8000000,
+        "endStep": 8250000,
+        "status": "completed",
+        "wallMs": 9863.126542000042,
+        "memoryStart": {
+          "rss": 2014593024,
+          "heapTotal": 1714929664,
+          "heapUsed": 1543645576,
+          "external": 43454134,
+          "arrayBuffers": 32992805
+        },
+        "memoryEnd": {
+          "rss": 2031452160,
+          "heapTotal": 1731182592,
+          "heapUsed": 1509620872,
+          "external": 10494560,
+          "arrayBuffers": 33231
+        },
+        "estimatedAllocatedBytes": 7661039928,
+        "rawSampleSizeSum": 7661057176,
+        "allocationSamples": 1826,
+        "files": {
+          "run": {
+            "path": "/private/tmp/bend-g23-allocation-windows-o3OpKb/profiles/selfhost-28886-thread-1-tgML9K/run.json",
+            "sha256": "74eb84b9ddb1fb4a8522c83d5c599c7d77e96909518702d52b9ce095aa52d659",
+            "bytes": 2475
+          },
+          "boundary": {
+            "path": "/private/tmp/bend-g23-allocation-windows-o3OpKb/profiles/selfhost-28886-thread-1-tgML9K/000001-check-window-2.json",
+            "sha256": "da4eb5f9e7a1da39acb132ba59a9c057f306045befed1cd4e48e80439b992ec8",
+            "bytes": 1278
+          },
+          "cpu": {
+            "path": "/private/tmp/bend-g23-allocation-windows-o3OpKb/profiles/selfhost-28886-thread-1-tgML9K/000001-check-window-2.cpuprofile",
+            "sha256": "466c4954630193cdfb49c8cfe304e7279c8937b9937ea183be6e6db78fcb082e",
+            "bytes": 2084763
+          },
+          "allocation": {
+            "path": "/private/tmp/bend-g23-allocation-windows-o3OpKb/profiles/selfhost-28886-thread-1-tgML9K/000001-check-window-2.heapprofile",
+            "sha256": "318e7aa27067a747bf2d13014137dc257907ebae46bf5e488ba5c28530dee452",
+            "bytes": 618376
+          }
+        }
+      }
+    ],
+    "allocationOwners": [
+      {
+        "owner": "checker_core_steps_v1.checker_advance",
+        "estimatedBytes": 2139119712,
+        "windows": [
+          {
+            "index": 0,
+            "share": 0.07805919737284486
+          },
+          {
+            "index": 1,
+            "share": 0.09842420533791742
+          },
+          {
+            "index": 2,
+            "share": 0.0958109717346979
+          }
+        ],
+        "share": 0.09049448303012343
+      },
+      {
+        "owner": "arena_get_node",
+        "estimatedBytes": 1400945120,
+        "windows": [
+          {
+            "index": 0,
+            "share": 0.06734677879181745
+          },
+          {
+            "index": 1,
+            "share": 0.06597824907686303
+          },
+          {
+            "index": 2,
+            "share": 0.04380009543790489
+          }
+        ],
+        "share": 0.05926634385012588
+      },
+      {
+        "owner": "checker_core_steps_v1.checker_pop",
+        "estimatedBytes": 1040193360,
+        "windows": [
+          {
+            "index": 0,
+            "share": 0.0469372864498548
+          },
+          {
+            "index": 1,
+            "share": 0.04109997693029804
+          },
+          {
+            "index": 2,
+            "share": 0.043799048060515475
+          }
+        ],
+        "share": 0.04400490530591075
+      },
+      {
+        "owner": "arena_get_word_region",
+        "estimatedBytes": 956329872,
+        "windows": [
+          {
+            "index": 0,
+            "share": 0.028061081441528583
+          },
+          {
+            "index": 1,
+            "share": 0.037315355083522066
+          },
+          {
+            "index": 2,
+            "share": 0.05694005880398539
+          }
+        ],
+        "share": 0.04045709872496566
+      },
+      {
+        "owner": "Map.get.go",
+        "estimatedBytes": 956308928,
+        "windows": [
+          {
+            "index": 0,
+            "share": 0.05101887119062105
+          },
+          {
+            "index": 1,
+            "share": 0.03352898283617125
+          },
+          {
+            "index": 2,
+            "share": 0.03613434972297145
+          }
+        ],
+        "share": 0.0404562126986054
+      },
+      {
+        "owner": "arena_name_text",
+        "estimatedBytes": 742420728,
+        "windows": [
+          {
+            "index": 0,
+            "share": 0.019898190266761345
+          },
+          {
+            "index": 1,
+            "share": 0.018928392411101072
+          },
+          {
+            "index": 2,
+            "share": 0.05639278584373408
+          }
+        ],
+        "share": 0.03140777002535886
+      },
+      {
+        "owner": "../bend2/selfhost/index_lookup.find.go",
+        "estimatedBytes": 742397264,
+        "windows": [
+          {
+            "index": 0,
+            "share": 0.017856605792507887
+          },
+          {
+            "index": 1,
+            "share": 0.03082503478683905
+          },
+          {
+            "index": 2,
+            "share": 0.04653656048664834
+          }
+        ],
+        "share": 0.03140677739154884
+      },
+      {
+        "owner": "arena_get_node_region",
+        "estimatedBytes": 444610176,
+        "windows": [
+          {
+            "index": 0,
+            "share": 0.02806101137828698
+          },
+          {
+            "index": 1,
+            "share": 0.022172950182344345
+          },
+          {
+            "index": 2,
+            "share": 0.0054750415601802094
+          }
+        ],
+        "share": 0.018809030556515293
+      },
+      {
+        "owner": "scope_segment_name_aliases",
+        "estimatedBytes": 402665672,
+        "windows": [
+          {
+            "index": 0,
+            "share": 0.011224566280630822
+          },
+          {
+            "index": 1,
+            "share": 0.006489642622447501
+          },
+          {
+            "index": 2,
+            "share": 0.03394495087403753
+          }
+        ],
+        "share": 0.01703458746006696
+      },
+      {
+        "owner": "arena_publish_occurrence",
+        "estimatedBytes": 360725840,
+        "windows": [
+          {
+            "index": 0,
+            "share": 0.02551033863264673
+          },
+          {
+            "index": 1,
+            "share": 0.019469167167833583
+          }
+        ],
+        "share": 0.015260342010446126
+      },
+      {
+        "owner": "../bend2/selfhost/checker_arena.bound_read.node",
+        "estimatedBytes": 297806640,
+        "windows": [
+          {
+            "index": 0,
+            "share": 0.015306103339468755
+          },
+          {
+            "index": 1,
+            "share": 0.017305788613174736
+          },
+          {
+            "index": 2,
+            "share": 0.004927571237689025
+          }
+        ],
+        "share": 0.012598573973469175
+      },
+      {
+        "owner": "core_subst_at",
+        "estimatedBytes": 289417872,
+        "windows": [
+          {
+            "index": 0,
+            "share": 0.011224546818619266
+          },
+          {
+            "index": 1,
+            "share": 0.018387379385345116
+          },
+          {
+            "index": 2,
+            "share": 0.007117553819385341
+          }
+        ],
+        "share": 0.012243690972222894
+      },
+      {
+        "owner": "arena_words_view",
+        "estimatedBytes": 276834376,
+        "windows": [
+          {
+            "index": 0,
+            "share": 0.009693891722045812
+          },
+          {
+            "index": 1,
+            "share": 0.014601735354143875
+          },
+          {
+            "index": 2,
+            "share": 0.010950122801657327
+          }
+        ],
+        "share": 0.011711351917590486
+      },
+      {
+        "owner": "arena_names_view",
+        "estimatedBytes": 251667304,
+        "windows": [
+          {
+            "index": 0,
+            "share": 0.0015306765047861666
+          },
+          {
+            "index": 1,
+            "share": 0.004867288439688585
+          },
+          {
+            "index": 2,
+            "share": 0.026280113651954328
+          }
+        ],
+        "share": 0.010646670423962189
+      },
+      {
+        "owner": "arena_names_append",
+        "estimatedBytes": 247472624,
+        "windows": [
+          {
+            "index": 0,
+            "share": 0.004081619772387046
+          },
+          {
+            "index": 1,
+            "share": 0.0070305102112670674
+          },
+          {
+            "index": 2,
+            "share": 0.0208051169942943
+          }
+        ],
+        "share": 0.010469216401194154
+      },
+      {
+        "owner": "arena_bound_range_loop",
+        "estimatedBytes": 230697024,
+        "windows": [
+          {
+            "index": 0,
+            "share": 0.014796025424794334
+          },
+          {
+            "index": 1,
+            "share": 0.011897829594984671
+          },
+          {
+            "index": 2,
+            "share": 0.0021900327054397775
+          }
+        ],
+        "share": 0.009759532300297916
+      },
+      {
+        "owner": "arena_copy_word_range",
+        "estimatedBytes": 226497848,
+        "windows": [
+          {
+            "index": 0,
+            "share": 0.004081647019203224
+          },
+          {
+            "index": 1,
+            "share": 0.003244797071734352
+          },
+          {
+            "index": 2,
+            "share": 0.021899845657611616
+          }
+        ],
+        "share": 0.00958188807630205
+      },
+      {
+        "owner": "checker_core_steps_v1.checker_step_group_12",
+        "estimatedBytes": 222305952,
+        "windows": [
+          {
+            "index": 0,
+            "share": 0.010714337535366842
+          },
+          {
+            "index": 1,
+            "share": 0.011897638773472389
+          },
+          {
+            "index": 2,
+            "share": 0.005475037383201588
+          }
+        ],
+        "share": 0.00940455182938328
+      },
+      {
+        "owner": "global_segments_has_constructor_owner",
+        "estimatedBytes": 213915264,
+        "windows": [
+          {
+            "index": 0,
+            "share": 0.0030611817438706388
+          },
+          {
+            "index": 1,
+            "share": 0.002163183607276026
+          },
+          {
+            "index": 2,
+            "share": 0.0224475175193213
+          }
+        ],
+        "share": 0.009049587603413367
+      },
+      {
+        "owner": "whnf",
+        "estimatedBytes": 213913824,
+        "windows": [
+          {
+            "index": 0,
+            "share": 0.008673357356572202
+          },
+          {
+            "index": 1,
+            "share": 0.0070303761204746525
+          },
+          {
+            "index": 2,
+            "share": 0.011497360257590345
+          }
+        ],
+        "share": 0.009049526684870645
+      },
+      {
+        "owner": "arena_word_cursor",
+        "estimatedBytes": 209725872,
+        "windows": [
+          {
+            "index": 0,
+            "share": 0.006122523076236038
+          },
+          {
+            "index": 1,
+            "share": 0.009734632578629405
+          },
+          {
+            "index": 2,
+            "share": 0.010950277349866333
+          }
+        ],
+        "share": 0.008872357287071664
+      },
+      {
+        "owner": "usage_merge",
+        "estimatedBytes": 159389264,
+        "windows": [
+          {
+            "index": 0,
+            "share": 0.011224533195211177
+          },
+          {
+            "index": 1,
+            "share": 0.008112015371623827
+          },
+          {
+            "index": 2,
+            "share": 0.0005475058268094696
+          }
+        ],
+        "share": 0.006742890061419743
+      },
+      {
+        "owner": "materialize_node",
+        "estimatedBytes": 159388368,
+        "windows": [
+          {
+            "index": 0,
+            "share": 0.013265185439111095
+          },
+          {
+            "index": 1,
+            "share": 0.0064896550000591085
+          }
+        ],
+        "share": 0.006742852156548716
+      },
+      {
+        "owner": "usage_set",
+        "estimatedBytes": 159386576,
+        "windows": [
+          {
+            "index": 0,
+            "share": 0.006632562066887347
+          },
+          {
+            "index": 1,
+            "share": 0.013519875368921032
+          }
+        ],
+        "share": 0.006742776346806662
+      }
+    ],
+    "schedulerAllocation": {
+      "owners": [
+        "checker_core_steps_v1.checker_advance",
+        "checker_core_steps_v1.checker_pop",
+        "checker_core_steps_v1.checker_chunk"
+      ],
+      "estimatedBytes": 3179313072,
+      "share": 0.13449938833603417,
+      "example": "stage-one.js:31502-31505 allocate CheckerRunState/CheckerStackMore records; not all scheduler or semantic computation is represented by this set."
+    },
+    "cpu": {
+      "summary": {
+        "path": "/private/tmp/bend-g23-allocation-windows-o3OpKb/cpu-summary.json",
+        "sha256": "8b925fab5f0674da317a5ce78ac3848510ba04399b5d33a8a4807b6cb5303eaa",
+        "bytes": 2970275
+      },
+      "samples": 25579,
+      "sampledMs": 36396.167,
+      "gcSampledMs": 345.79,
+      "gcShare": 0.00950072572202452,
+      "profilerInspectorPostSampledMs": 3047.959,
+      "profilerInspectorPostSamples": 3,
+      "topOwners": [
+        {
+          "owner": "post",
+          "selfSampledMs": 3047.959,
+          "selfSamples": 3
+        },
+        {
+          "owner": "../bend2/selfhost/index_lookup.find.go",
+          "selfSampledMs": 2018.2420000000002,
+          "selfSamples": 1561
+        },
+        {
+          "owner": "arena_get_node",
+          "selfSampledMs": 1279.1549999999984,
+          "selfSamples": 986
+        },
+        {
+          "owner": "checker_core_steps_v1.checker_advance",
+          "selfSampledMs": 1247.759,
+          "selfSamples": 955
+        },
+        {
+          "owner": "checker_core_steps_v1.checker_chunk",
+          "selfSampledMs": 1055.298,
+          "selfSamples": 801
+        },
+        {
+          "owner": "run_base",
+          "selfSampledMs": 804.957,
+          "selfSamples": 632
+        },
+        {
+          "owner": "Map.get.go",
+          "selfSampledMs": 678.083,
+          "selfSamples": 527
+        },
+        {
+          "owner": "arena_words_view",
+          "selfSampledMs": 620.7910000000006,
+          "selfSamples": 475
+        },
+        {
+          "owner": "public-ABI:checker_step",
+          "selfSampledMs": 497.247,
+          "selfSamples": 387
+        },
+        {
+          "owner": "checker_core_steps_v1.checker_pop",
+          "selfSampledMs": 459.33,
+          "selfSamples": 333
+        },
+        {
+          "owner": "$split_done",
+          "selfSampledMs": 435.345,
+          "selfSamples": 325
+        },
+        {
+          "owner": "arena_copy_word_range",
+          "selfSampledMs": 396.299,
+          "selfSamples": 303
+        },
+        {
+          "owner": "checker_core_steps_v1.checker_step_one",
+          "selfSampledMs": 374.708,
+          "selfSamples": 283
+        },
+        {
+          "owner": "(garbage collector)",
+          "selfSampledMs": 345.79,
+          "selfSamples": 268
+        },
+        {
+          "owner": "whnf",
+          "selfSampledMs": 322.8359999999999,
+          "selfSamples": 250
+        },
+        {
+          "owner": "arena_name_text",
+          "selfSampledMs": 306.0289999999999,
+          "selfSamples": 240
+        },
+        {
+          "owner": "arena_publish_term_view",
+          "selfSampledMs": 273.62800000000004,
+          "selfSamples": 210
+        },
+        {
+          "owner": "scope_segment_name_aliases",
+          "selfSampledMs": 265.83099999999996,
+          "selfSamples": 200
+        },
+        {
+          "owner": "../bend2/selfhost/checker_arena.put_node.metadata",
+          "selfSampledMs": 265.575,
+          "selfSamples": 188
+        },
+        {
+          "owner": "../bend2/selfhost/checker_arena.metadata_read.depth",
+          "selfSampledMs": 260.664,
+          "selfSamples": 201
+        }
+      ],
+      "method": "Profiler samples weighted by timeDeltas; no wall rescaling. Three inspector post samples account for 3047.959 sampled ms of collector startup overhead; shown explicitly, not attributed to compiler work."
+    },
+    "sourceAttribution": {
+      "namedWrapperBindings": 13882,
+      "mappedGeneratedFunctions": 40854,
+      "ambiguousFunctions": 0,
+      "unmappedAllocatedBytes": 0,
+      "method": "Exact generated $D[name] bindings seed $b identities; explicit references propagate to unexported closure/lifted $b/$k functions, never through another named binding. All propagated identities are unique. Checker privateHelpers.owner and coverage.name join the image owners to the authenticated current checker manifest. This groups allocation sites by source operation, not by eliminable overhead or object type."
+    },
+    "rawResult": {
+      "path": "/private/tmp/bend-g23-allocation-windows-o3OpKb/result.json",
+      "sha256": "acc2e5192ee41da1062a15c067c2d110013b17d26d5bed106038a9ea7ae697d1",
+      "bytes": 4492
+    },
+    "diagnosticDriver": {
+      "path": "/private/tmp/bend-g23-allocation-windows-o3OpKb/profiled-throughput.mjs",
+      "sha256": "c7aded64d1857d825a3ff496ed44ba0dd1a380324bcf7ac586b8068ebd1f8d32",
+      "bytes": 13733
+    }
+  },
+  "failedEarlierWholeJsProfile": {
+    "status": "FAIL",
+    "reason": "deadline_exceeded",
+    "rawReceipt": {
+      "path": "/private/tmp/bend-g23-cost-attribution-mpINqY/receipt.json",
+      "sha256": "b29db60c05201ab272cba7f0e5b1046151a4815c4b72e4c17c4987c7f6e9e235",
+      "bytes": 5672
+    },
+    "rawPartialResult": {
+      "path": "/private/tmp/bend-g23-cost-attribution-mpINqY/js-result.json",
+      "sha256": "8d8b2e4e11544545b8cd6901176e3697c51115574c3569ad53776affb6e7ba25",
+      "bytes": 3110
+    },
+    "wholeCheckAllocationTotalAvailable": false,
+    "qualification": "No whole-check allocation figure can be inferred from this failed attempt. Original tool/guardian time accounting was inconsistent and was reported; no clean benchmark conclusion is taken from its durations."
+  },
+  "findings": [
+    {
+      "kind": "observed",
+      "claim": "Native memory/ownership functions occupy 30.707% self stacks and allocator/free functions 6.102%; these disjoint symbol sets do not measure allocated bytes or removable time.",
+      "source": "native.selfGroups"
+    },
+    {
+      "kind": "observed",
+      "claim": "IndexLookup.find is outside the Base.Map.get/has/seek owned-call intrinsic route. Its generated trie loop calls Map.bit repeatedly and destructures shared nodes via ctr_take/span_fade.",
+      "anchors": [
+        "bend2/selfhost/index_lookup.bend:18-31",
+        "bend2/comp.ts:2906-2909",
+        "bend2/comp.ts:2933-2949",
+        "/tmp/bend-remote2039g23-native.c:48774-48892"
+      ]
+    },
+    {
+      "kind": "observed",
+      "claim": "String.eq calls String.order, not String.cmp. The String.order loop builds no replacement strings, but its consuming shared-string traversal still executes constructor/refcount work in spin_170.",
+      "anchors": [
+        "bend2/base.bend:2026-2027",
+        "bend2/base.bend:2053-2067",
+        "/tmp/bend-remote2039g23-native.c:45298-45357"
+      ]
+    },
+    {
+      "kind": "observed",
+      "claim": "Arena handles are flat but ordinary arena reads thread and reconstruct the owning Arena/ArenaStore/ArenaResult chain; existing bounded storage islands and 440 private result fusions do not eliminate all such products or scheduler frames.",
+      "anchors": [
+        "bend2/selfhost/checker_arena.bend:425-432",
+        "bend2/selfhost/checker_arena.bend:500-507",
+        "bend2/selfhost/checker.bend:12965-12974",
+        "evals/checker_core_step_lower.ts:571-582"
+      ]
+    },
+    {
+      "kind": "inference",
+      "priority": 1,
+      "claim": "Next bounded native experiment: borrowed/read-only IndexLookup traversal with one local query cursor and non-consuming comparison, preserving arbitrary node positions, sharing and all public Map semantics; not another blanket inlining pass."
+    },
+    {
+      "kind": "inference",
+      "priority": 2,
+      "claim": "For a radical cross-backend change, reduce how many source operations/materialized records execute: compilation-local resolved symbol identity rather than repeated String name lookup, then scalarize affine store/result products and defunctionalize non-escaping continuations in bounded regions. Preserve contextual scope and affine/source-only obligations; do not cache term->type globally or relabel the rejected RunState-only rewrite as new work."
+    }
+  ],
+  "limitations": [
+    "Native stack sample is not native allocation attribution; there are no measured native allocation-byte totals.",
+    "Three JS windows are fixed intervals covering only 7.765% of public check advances. Do not extrapolate 23.638GB to the whole check, compare these bytes to native, or transfer old G21 332GB estimate to G23.",
+    "Low sampled GC share does not make object creation, initialization, closure capture, dispatch or native refcounting cheap.",
+    "No profiler-on run is a clean timing baseline. Previously accepted unprofiled performance receipts remain the timing authority.",
+    "Raw profiles, generated images and temporary diagnostic scripts remain outside Git. No production source or checked-program semantics changed."
+  ]
+}
