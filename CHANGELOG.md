@@ -31,6 +31,13 @@ latest one; the GitHub release carries the same notes.
   unwind-boundary defect; public entry depth64 is restored. R6 passed the full
   native build and 95 seed fixtures, but its 57,228,966-byte stage1 did not
   finish stage2 checking before the original bootstrap deadline.
+  R7 retains immutable per-body occurrence maps across render rounds and avoids
+  rebuilding character lists for unescaped JS literals. Each isolated change
+  preserves emitted bytes for eight exercised consumer programs. Proven fresh
+  results with entirely boxed parameters now use a public adapter instead of
+  a second rewritten body. Twelve emitted-JS cases pass; the factory regression
+  exercises the adapter with inherited setters, opaque host payloads, reentry,
+  exception cleanup and independently retained results.
   Full qualification remains failed: r1/r2/r4/r6 stopped at the original
   bootstrap deadline. R4 validated all 12,974 definitions / 13,596 events,
   passed all95 native seed fixtures and produced a53,261,354-byte stage1,

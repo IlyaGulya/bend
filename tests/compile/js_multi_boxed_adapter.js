@@ -1,4 +1,21 @@
 function host_adapter_probe(factory, identity) {
+  const previous = Object.getOwnPropertyDescriptor(Object.prototype, "payload");
+  let setters = 0;
+  Object.defineProperty(Object.prototype, "payload", {
+    configurable: true,
+    set() { setters++; throw new Error("inherited payload setter"); },
+  });
+  try {
+    const result = host_adapter_values(factory, identity);
+    if (setters !== 0) throw new Error("factory invoked an inherited setter");
+    return result;
+  } finally {
+    if (previous) Object.defineProperty(Object.prototype, "payload", previous);
+    else delete Object.prototype.payload;
+  }
+}
+
+function host_adapter_values(factory, identity) {
   let reads = 0;
   const proto = {host_mark: 7};
   const payload = Object.create(proto);
@@ -26,6 +43,10 @@ function host_adapter_probe(factory, identity) {
     throw new Error("fresh results alias another call's result");
   for (const result of [first, nested, second]) {
     if (result.payload !== payload) throw new Error("factory replaced the host payload");
+    const field = Object.getOwnPropertyDescriptor(result, "payload");
+    if (!field || !Object.hasOwn(field, "value") || !field.enumerable ||
+        !field.configurable || !field.writable)
+      throw new Error("factory did not create an ordinary own data property");
     if (Object.keys(result).join(",") !== "$,payload,value")
       throw new Error("factory changed result own keys");
     if (Object.getPrototypeOf(result) !== Object.prototype)

@@ -26,8 +26,15 @@ fixtures прошли. Stage1 — 57 228 966 B,
 stage-two-check начался на 279 816 ms, но guard 600 028 ms снова остановил run.
 Bounded unary Apply прошёл 8 emitted-JS cases; отдельный runtime smoke на V8/JSC
 проверил 50 000 вызовов, depth64, reentrancy, exception recovery и region leave.
-Это не acceptance. Измеренный native emit всё ещё 92 109 ms / 7 693 983 advances;
-следующий шаг — уменьшить повторную работу renderer, не менять guards.
+Это не acceptance. R7 сохраняет occurrence maps между render rounds, не строит
+списки символов для неэкранируемых JS-строк и заменяет дублированное public body
+адаптером для доказанно свежего результата при полностью boxed параметрах.
+Обе первые оптимизации сохранили emitted bytes на восьми consumer programs.
+Объединённый emitter прошёл 12 JS-сценариев; новый factory case реально выбрал
+адаптер и сохранил host identity, own properties, reentry и unwind при исключении.
+Source review адаптера: `cfed944ac403a4ee56c22a793c94307cd00b8ce2`, PASS,
+но не runtime/performance acceptance. Полная R7-квалификация ещё не завершена;
+guard limits и public ABI не менялись.
 Принятым остаётся G23 ниже.
 Точные команды и границы:
 `evals/receipts/root2039g24_failed_attempts.json`,
