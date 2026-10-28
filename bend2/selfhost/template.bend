@@ -175,10 +175,15 @@ def reapply_args(head: Ast.SyntaxTerm, args: List<&2, Ast.SyntaxTerm>, span: Ast
 
 def generated_local_key(template: TemplateDef, values: List<&2, Ast.SyntaxTerm>) -> String:
   match template:
-    case TemplateDef{key,  _,  _, existing_keys,  _,  _, _}:
-      identity = encode_string(key) ++ serialize_terms(values)
-      base = "T~" ++ SHA256.hash(identity)
-      fresh_generated_key(base, existing_keys, 0n)
+    case TemplateDef{key,  _,  _,  _,  _,  _, _}:
+      generated_local_key_for_identity(template, encode_string(key) ++ serialize_terms(values))
+
+# The identity string is `encode_string(template key) ++ serialize_terms(values)`.
+# Callers that already built it must not serialize and hash the same values again.
+def generated_local_key_for_identity(template: TemplateDef, identity: String) -> String:
+  match template:
+    case TemplateDef{ _,  _,  _, existing_keys,  _,  _, _}:
+      fresh_generated_key("T~" ++ SHA256.hash(identity), existing_keys, 0n)
 
 def fresh_generated_key(base: String, existing: List<&2, String>, attempt: Nat) -> String:
   candidate = generated_candidate(base, attempt)
@@ -194,10 +199,13 @@ def generated_candidate(base: String, attempt: Nat) -> String:
     case 0n: base
     case _: base ++ "~" ++ Nat.show(attempt)
 
-def generated_key(template: TemplateDef, values: List<&2, Ast.SyntaxTerm>) -> String:
+def generated_canonical_key(template: TemplateDef, local_key: String) -> String:
   match template:
     case TemplateDef{ _, namespace,  _,  _,  _,  _, _}:
-      qualify(namespace, generated_local_key(template, values))
+      qualify(namespace, local_key)
+
+def generated_key(template: TemplateDef, values: List<&2, Ast.SyntaxTerm>) -> String:
+  generated_canonical_key(template, generated_local_key(template, values))
 
 def encode_string(value: String) -> String:
   Nat.show(String.length(value)) ++ ":" ++ value
@@ -556,11 +564,11 @@ def drop_args(args: List<&2, Ast.SyntaxTerm>, count: Nat) -> List<&2, Ast.Syntax
     case Nil{} _: Nil{}
 
 
-def specialize_definition(template: TemplateDef, values: List<&2, Ast.SyntaxTerm>) -> Ast.Definition:
+def specialize_definition(template: TemplateDef, local_key: String, values: List<&2, Ast.SyntaxTerm>) -> Ast.Definition:
   match template:
-    case TemplateDef{ _,  _,  _,  _,  _,  Ast.Definition{key, binders, result, body, unsafe, span}, _}:
+    case TemplateDef{ _,  _,  _,  _,  _,  Ast.Definition{_, binders, result, body, unsafe, span}, _}:
       specialized = specialize_prefix(binders, values, result, body)
-      specialize_definition_result(generated_local_key(template, values), unsafe, span, specialized)
+      specialize_definition_result(local_key, unsafe, span, specialized)
 
 def specialize_definition_result(key: String, unsafe: Bool, span: Ast.SourceSpan, specialized: List<&2, Ast.TelescopeItem> & Ast.OptionalTerm & Ast.DefBody) -> Ast.Definition:
   match specialized:
@@ -842,19 +850,23 @@ def collect_actual_module(namespace: String, imports: List<&2, Ast.ModuleImport>
     case +_ <> _:
       ActualModule{namespace, imports, sites, scope_capture_names(namespace, imports, catalog)} <> tail
 
+# Expansion still uses the requesting template suffix (`templates` is the list
+# starting at the template currently being generated), so the scoped context is
+# rebuilt from that suffix. Only the template-independent lookup is hoisted:
+# find_template depends on the key and the same suffix for every module.
 def actual_in_catalog(catalog: List<&2, ActualModule>, template_key: String, templates: List<&2, TemplateDef>) -> List<&2, List<&2, Ast.SyntaxTerm>>:
+  actual_in_catalog_found(catalog, template_key, templates, find_template(template_key, templates))
+
+def actual_in_catalog_found(catalog: List<&2, ActualModule>, template_key: String, templates: List<&2, TemplateDef>, found: Maybe<&2, TemplateDef>) -> List<&2, List<&2, Ast.SyntaxTerm>>:
   match catalog:
     case Nil{}: Nil{}
     case ActualModule{namespace, imports, sites, captures} <> rest:
-      actuals = actual_in_aliases(sites, template_aliases(namespace, imports, template_key, templates))
+      actuals = actual_in_aliases(sites, template_aliases_found(namespace, imports, template_key, found))
       match actuals:
-        case Nil{}: actual_in_catalog(rest, template_key, templates)
+        case Nil{}: actual_in_catalog_found(rest, template_key, templates, found)
         case +_ <> _:
           context = templates_with_captures(visible_templates(namespace, imports, templates), captures)
-          first_actual(expand_actual_values(actuals, context, captures), actual_in_catalog(rest, template_key, templates))
-
-def template_aliases(namespace: String, imports: List<&2, Ast.ModuleImport>, template_key: String, templates: List<&2, TemplateDef>) -> List<&2, String>:
-  template_aliases_found(namespace, imports, template_key, find_template(template_key, templates))
+          first_actual(expand_actual_values(actuals, context, captures), actual_in_catalog_found(rest, template_key, templates, found))
 
 def template_aliases_found(namespace: String, imports: List<&2, Ast.ModuleImport>, template_key: String, found: Maybe<&2, TemplateDef>) -> List<&2, String>:
   match found:
@@ -970,40 +982,45 @@ def template_span(template: TemplateDef) -> Ast.SourceSpan:
   match template:
     case TemplateDef{ _,  _,  _,  _,  _,  Ast.Definition{_, _, _, _, _, span}, _}: span
 
-def generated_actuals(template: TemplateDef, actuals: List<&2, List<&2, Ast.SyntaxTerm>>, templates: List<&2, TemplateDef>, existing: List<&2, Ast.TopLevel>, identities: List<&2, GeneratedIdentity>) -> GeneratedBuild:
+def generated_actuals(template: TemplateDef, actuals: List<&2, List<&2, Ast.SyntaxTerm>>, existing: List<&2, Ast.TopLevel>, identities: List<&2, GeneratedIdentity>) -> GeneratedBuild:
   match actuals:
     case Nil{}: GeneratedBuild{ Nil{}, identities,  None{}}
     case +values <> rest:
-      expanded_values = expand_terms(values, templates)
-      serialized_args = serialize_terms(expanded_values)
+      # actual_in_catalog already expanded each value under the requesting
+      # module's scoped, captured context built from this same template suffix.
+      # Re-expanding it with that suffix's raw list cannot specialize anything
+      # new: the scoped context already carried every canonical suffix entry
+      # plus the local/imported alias forms, capture only renames references
+      # (never arity or TermTemplate wrappers), and applications of templates
+      # outside this suffix stay unspecialized in both passes. Reuse the value.
       template_key = template_name(template)
-      identity = encode_string(template_key) ++ serialized_args
-      local_key = generated_local_key(template, expanded_values)
-      canonical_key = generated_key(template, expanded_values)
-      generated_actual_case(template, rest, templates, existing, identities, template_key, identity, local_key, canonical_key, expanded_values, find_generated_identity(canonical_key, identities))
+      identity = encode_string(template_key) ++ serialize_terms(values)
+      local_key = generated_local_key_for_identity(template, identity)
+      canonical_key = generated_canonical_key(template, local_key)
+      generated_actual_case(template, rest, existing, identities, template_key, identity, local_key, canonical_key, values, find_generated_identity(canonical_key, identities))
 
 def template_name(template: TemplateDef) -> String:
   match template:
     case TemplateDef{key, _, _, _, _, _, _}: key
 
-def generated_actual_case(template: TemplateDef, rest: List<&2, List<&2, Ast.SyntaxTerm>>, templates: List<&2, TemplateDef>, existing: List<&2, Ast.TopLevel>, identities: List<&2, GeneratedIdentity>, template_key: String, identity: String, local_key: String, canonical_key: String, expanded_values: List<&2, Ast.SyntaxTerm>, previous: Maybe<&2, GeneratedIdentity>) -> GeneratedBuild:
+def generated_actual_case(template: TemplateDef, rest: List<&2, List<&2, Ast.SyntaxTerm>>, existing: List<&2, Ast.TopLevel>, identities: List<&2, GeneratedIdentity>, template_key: String, identity: String, local_key: String, canonical_key: String, values: List<&2, Ast.SyntaxTerm>, previous: Maybe<&2, GeneratedIdentity>) -> GeneratedBuild:
   match previous:
     case Some{ GeneratedIdentity{ _,  _,  _,  found_identity}}:
-      generated_identity_collision(template, rest, templates, existing, identities, identity, found_identity, String.eq(identity, found_identity))
-    case None{}: generated_actual_new(template, rest, templates, existing, identities, template_key, identity, local_key, canonical_key, expanded_values, has_top_key(local_key, existing))
+      generated_identity_collision(template, rest, existing, identities, identity, found_identity, String.eq(identity, found_identity))
+    case None{}: generated_actual_new(template, rest, existing, identities, template_key, identity, local_key, canonical_key, values, has_top_key(local_key, existing))
 
-def generated_identity_collision(template: TemplateDef, rest: List<&2, List<&2, Ast.SyntaxTerm>>, templates: List<&2, TemplateDef>, existing: List<&2, Ast.TopLevel>, identities: List<&2, GeneratedIdentity>, identity: String, found_identity: String, matches: Bool) -> GeneratedBuild:
+def generated_identity_collision(template: TemplateDef, rest: List<&2, List<&2, Ast.SyntaxTerm>>, existing: List<&2, Ast.TopLevel>, identities: List<&2, GeneratedIdentity>, identity: String, found_identity: String, matches: Bool) -> GeneratedBuild:
   match matches:
     case False{}: GeneratedBuild{ Nil{}, identities, Some{template_span(template)}}
-    case True{}: generated_actuals(template, rest, templates, existing, identities)
+    case True{}: generated_actuals(template, rest, existing, identities)
 
-def generated_actual_new(template: TemplateDef, rest: List<&2, List<&2, Ast.SyntaxTerm>>, templates: List<&2, TemplateDef>, existing: List<&2, Ast.TopLevel>, identities: List<&2, GeneratedIdentity>, template_key: String, identity: String, local_key: String, canonical_key: String, expanded_values: List<&2, Ast.SyntaxTerm>, collision: Bool) -> GeneratedBuild:
+def generated_actual_new(template: TemplateDef, rest: List<&2, List<&2, Ast.SyntaxTerm>>, existing: List<&2, Ast.TopLevel>, identities: List<&2, GeneratedIdentity>, template_key: String, identity: String, local_key: String, canonical_key: String, values: List<&2, Ast.SyntaxTerm>, collision: Bool) -> GeneratedBuild:
   match collision:
     case True{}: GeneratedBuild{ Nil{}, identities, Some{template_span(template)}}
     case False{}:
-      definition = specialize_definition(template, expanded_values)
+      definition = specialize_definition(template, local_key, values)
       entry = GeneratedIdentity{ canonical_key, template_key, local_key, identity}
-      generated_actual_complete(definition, generated_actuals(template, rest, templates, existing, entry <> identities))
+      generated_actual_complete(definition, generated_actuals(template, rest, existing, entry <> identities))
 
 def generated_actual_complete(definition: Ast.Definition, result: GeneratedBuild) -> GeneratedBuild:
   match result:
@@ -1052,7 +1069,7 @@ def generated_for_module_match(namespace: String, path: String, declarations: Li
   match is_owner:
     case False{}: generated_for_module(namespace, path, declarations, rest, catalog, identities)
     case True{}:
-      generated_for_module_here(namespace, path, declarations, templates, catalog, identities, rest, generated_actuals(template, actual_in_catalog(catalog, template_key, templates), templates, declarations, identities))
+      generated_for_module_here(namespace, path, declarations, templates, catalog, identities, rest, generated_actuals(template, actual_in_catalog(catalog, template_key, templates), declarations, identities))
 
 def generated_for_module_here(namespace: String, path: String, declarations: List<&2, Ast.TopLevel>, templates: List<&2, TemplateDef>, catalog: List<&2, ActualModule>, identities: List<&2, GeneratedIdentity>, rest: List<&2, TemplateDef>, here: GeneratedBuild) -> GeneratedBuild:
   match here:
@@ -1455,11 +1472,37 @@ def template_expand_modules(modules: List<&2, Loader.LoadedModule>, templates: L
     case None{}:
       template_expand_round(templates, generate_until_stable(modules, templates, Nil{}))
 
+# Generated definitions are appended after the source declarations of their
+# template owner (generate_round_merge). Source declarations already passed the
+# pre-generation invalid_modules pass with the same templates; appending defs
+# whose local keys begin "T~" cannot change a source declaration's result,
+# because the lexer admits only alpha/digit/'_'/'.' in names, so no source key
+# or reference can equal a generated canonical or visible name, and capture
+# resolution for existing keys is order-stable. The full modules stay the
+# capture catalog; only the unchanged-and-already-valid source declarations are
+# skipped, preserving the first generated failure and its span.
+def generated_declarations(declarations: List<&2, Ast.TopLevel>) -> List<&2, Ast.TopLevel>:
+  match declarations:
+    case Nil{}: Nil{}
+    case +declaration <> rest:
+      match declaration:
+        case Ast.DefTop{ Ast.Definition{key,  _,  _,  _,  _,  _}}:
+          match String.starts_with(key, "T~"):
+            case True{}: declaration <> generated_declarations(rest)
+            case False{}: generated_declarations(rest)
+        case _: generated_declarations(rest)
+
+def generated_modules(modules: List<&2, Loader.LoadedModule>) -> List<&2, Loader.LoadedModule>:
+  match modules:
+    case Nil{}: Nil{}
+    case Loader.LoadedModule{namespace, Ast.Module{path, imports, declarations}} <> rest:
+      Loader.LoadedModule{namespace, Ast.Module{path, imports, generated_declarations(declarations)}} <> generated_modules(rest)
+
 def template_expand_round(templates: List<&2, TemplateDef>, generated: GeneratedRound) -> ExpandResult:
   match generated:
     case GeneratedRound{modules, _, _, Some{span}}: ExpandFailure{"template specialization hash collision", span}
     case GeneratedRound{modules, _, identities, None{}}:
-      template_expand_generated(modules, identities, templates, invalid_modules(modules, templates))
+      template_expand_generated(modules, identities, templates, invalid_scoped_modules(generated_modules(modules), modules, templates))
 
 def template_expand_generated(modules: List<&2, Loader.LoadedModule>, identities: List<&2, GeneratedIdentity>, templates: List<&2, TemplateDef>, module_error: Maybe<&2, Ast.SourceSpan>) -> ExpandResult:
   match module_error:

@@ -48,11 +48,12 @@ def utf16_width(c: Char) -> Nat:
 def advance_newline(mark: Mark, +c: Char, newline: Bool) -> Mark:
   match mark:
     case Pos{offset, line, col}:
+      +width = utf16_width(c)
       match newline:
         case True{}:
-          Pos{(offset + utf16_width(c) : Nat), (line + 1n : Nat), 1n}
+          Pos{(offset + width : Nat), (line + 1n : Nat), 1n}
         case False{}:
-          Pos{(offset + utf16_width(c) : Nat), line, (col + utf16_width(c) : Nat)}
+          Pos{(offset + width : Nat), line, (col + width : Nat)}
 
 def advance(mark: Mark, +c: Char) -> Mark:
   advance_newline(mark, c, char_is(c, 10))
@@ -84,110 +85,168 @@ def end_tokens(mark: Mark, acc: List<&2, Token>) -> List<&2, Token>:
     case Pos{+offset, line, col}:
       List.reverse(&2, Token, TokenInfo{EndToken{}, SNil{}, offset, offset, line, col} <> acc)
 
-def normal_acc(+c: Char, +mark: Mark, +acc: List<&2, Token>) -> List<&2, Token>:
-  Bool.pick(List<&2, Token>, char_is(c, 10),
-    token(NewlineToken{}, SCon{c, SNil{}}, mark, advance(mark, c)) <> acc,
-    Bool.pick(List<&2, Token>, Bool.or(char_is(c, 35), Bool.or(Char.is_space(c), Bool.or(name_head(c), Bool.or(Char.is_digit(c), Bool.or(char_is(c, 34), char_is(c, 39)))))),
-      acc,
-      token(SymbolToken{}, SCon{c, SNil{}}, mark, advance(mark, c)) <> acc))
+def normal_significant(+c: Char) -> Bool:
+  Bool.or(char_is(c, 35), Bool.or(Char.is_space(c), Bool.or(name_head(c), Bool.or(Char.is_digit(c), Bool.or(char_is(c, 34), char_is(c, 39))))))
+
+# The machine is strict, so a Bool.pick argument is built even when the other
+# branch is taken. Select first and build exactly one token for this character.
+def normal_acc(+c: Char, +mark: Mark, +after: Mark, +acc: List<&2, Token>) -> List<&2, Token>:
+  match char_is(c, 10):
+    case True{}:
+      token(NewlineToken{}, SCon{c, SNil{}}, mark, after) <> acc
+    case False{}:
+      normal_acc_plain(c, mark, after, acc, normal_significant(c))
+
+def normal_acc_plain(+c: Char, +mark: Mark, +after: Mark, +acc: List<&2, Token>, +significant: Bool) -> List<&2, Token>:
+  match significant:
+    case True{}: acc
+    case False{}: token(SymbolToken{}, SCon{c, SNil{}}, mark, after) <> acc
 
 def normal_mode(+c: Char, +mark: Mark, rest: List<&2, Char>) -> ScanMode:
-  Bool.pick(ScanMode, char_is(c, 10),
-    ScanNormal{},
-    Bool.pick(ScanMode, char_is(c, 35),
-      ScanComment{},
-      Bool.pick(ScanMode, Char.is_space(c),
-        ScanNormal{},
-        Bool.pick(ScanMode, name_head(c),
-          ScanName{mark, [c]},
-          Bool.pick(ScanMode, Char.is_digit(c),
-            ScanNumber{mark, [c], False{}, False{}},
-            Bool.pick(ScanMode, Bool.or(char_is(c, 34), char_is(c, 39)),
-              ScanQuoted{c, mark, [c], False{}, quote_class(rest, c)},
-              ScanNormal{}))))))
+  match char_is(c, 10):
+    case True{}: ScanNormal{}
+    case False{}:
+      match char_is(c, 35):
+        case True{}: ScanComment{}
+        case False{}:
+          match Char.is_space(c):
+            case True{}: ScanNormal{}
+            case False{}:
+              match name_head(c):
+                case True{}: ScanName{mark, [c]}
+                case False{}:
+                  match Char.is_digit(c):
+                    case True{}: ScanNumber{mark, [c], False{}, False{}}
+                    case False{}:
+                      match Bool.or(char_is(c, 34), char_is(c, 39)):
+                        case True{}: ScanQuoted{c, mark, [c], False{}, quote_class(rest, c)}
+                        case False{}: ScanNormal{}
+
+# A stop branch decides the next accumulator and mode without recursing, so the
+# single `scan` self-call remains the only recursion (no new mutual cycle).
+type ScanNext is Data:
+  ScanNext{acc: List<&2, Token>, mode: ScanMode}
+
+def scan_number_plain(+c: Char, +rest: List<&2, Char>, +beg: Mark, +rev: List<&2, Char>, +mark: Mark, +after: Mark, +acc: List<&2, Token>) -> ScanNext:
+  +number_token = token(NumberToken{}, String.from_list(List.reverse(&2, Char, rev)), beg, mark)
+  ScanNext{normal_acc(c, mark, after, number_token <> acc), normal_mode(c, mark, rest)}
+
+def scan_number_stop(+c: Char, +rest: List<&2, Char>, +beg: Mark, +rev: List<&2, Char>, +fraction: Bool, +exponent: Bool, +mark: Mark, +after: Mark, +acc: List<&2, Token>) -> ScanNext:
+  +suffix = Bool.and(Bool.not(fraction), Bool.and(Bool.not(exponent), char_is(c, 110)))
+  +decimal = Bool.and(Bool.not(fraction), Bool.and(Bool.not(exponent), char_is(c, 46)))
+  +exponent_mark = Bool.and(fraction, Bool.and(Bool.not(exponent), Bool.or(char_is(c, 101), char_is(c, 69))))
+  match suffix:
+    case True{}:
+      ScanNext{token(NumberToken{}, String.from_list(List.reverse(&2, Char, c <> rev)), beg, after) <> acc, ScanNormal{}}
+    case False{}:
+      match decimal:
+        case True{}:
+          ScanNext{acc, ScanAfterDot{beg, rev, c, mark}}
+        case False{}:
+          match exponent_mark:
+            case True{}:
+              ScanNext{acc, ScanAfterExponent{beg, rev, c}}
+            case False{}:
+              scan_number_plain(c, rest, beg, rev, mark, after, acc)
+
+def scan_after_dot_plain(+d: Char, +rest: List<&2, Char>, +beg: Mark, +rev: List<&2, Char>, +dot: Char, +dot_beg: Mark, +mark: Mark, +after: Mark, +acc: List<&2, Token>) -> ScanNext:
+  +dot_token = token(SymbolToken{}, SCon{dot, SNil{}}, dot_beg, mark)
+  +number_token = token(NumberToken{}, String.from_list(List.reverse(&2, Char, rev)), beg, dot_beg)
+  ScanNext{normal_acc(d, mark, after, dot_token <> number_token <> acc), normal_mode(d, mark, rest)}
+
+def scan_exponent_plain(+d: Char, +rest: List<&2, Char>, +beg: Mark, +rev: List<&2, Char>, +marker: Char, +mark: Mark, +after: Mark, +acc: List<&2, Token>) -> ScanNext:
+  +exponent_token = token(NumberToken{}, String.from_list(List.reverse(&2, Char, marker <> rev)), beg, mark)
+  ScanNext{normal_acc(d, mark, after, exponent_token <> acc), normal_mode(d, mark, rest)}
+
+def scan_exponent_sign_plain(+d: Char, +rest: List<&2, Char>, +beg: Mark, +rev: List<&2, Char>, +marker: Char, +sign: Char, +mark: Mark, +after: Mark, +acc: List<&2, Token>) -> ScanNext:
+  +exponent_token = token(NumberToken{}, String.from_list(List.reverse(&2, Char, sign <> (marker <> rev))), beg, mark)
+  ScanNext{normal_acc(d, mark, after, exponent_token <> acc), normal_mode(d, mark, rest)}
 
 def scan(cs: List<&2, Char>, +mark: Mark, +acc: List<&2, Token>, mode: ScanMode) -> List<&2, Token>:
   match cs mode:
     case Nil{} ScanNormal{}:
       end_tokens(mark, acc)
     case +c <> +rest ScanNormal{}:
-      scan(rest, advance(mark, c), normal_acc(c, mark, acc), normal_mode(c, mark, rest))
+      +after_char = advance(mark, c)
+      scan(rest, after_char, normal_acc(c, mark, after_char, acc), normal_mode(c, mark, rest))
     case Nil{} ScanComment{}:
       end_tokens(mark, acc)
     case +c <> +rest ScanComment{}:
       +after_char = advance(mark, c)
-      +next_mode = Bool.pick(ScanMode, char_is(c, 10), ScanNormal{}, ScanComment{})
-      +next_acc = Bool.pick(List<&2, Token>, char_is(c, 10), token(NewlineToken{}, SCon{c, SNil{}}, mark, after_char) <> acc, acc)
-      scan(rest, after_char, next_acc, next_mode)
+      match char_is(c, 10):
+        case True{}:
+          scan(rest, after_char, token(NewlineToken{}, SCon{c, SNil{}}, mark, after_char) <> acc, ScanNormal{})
+        case False{}:
+          scan(rest, after_char, acc, ScanComment{})
     case Nil{} ScanName{+beg, +rev}:
       end_tokens(mark, token(NameToken{}, String.from_list(List.reverse(&2, Char, rev)), beg, mark) <> acc)
     case +c <> +rest ScanName{+beg, +rev}:
-      +name_token = token(NameToken{}, String.from_list(List.reverse(&2, Char, rev)), beg, mark)
       +after_char = advance(mark, c)
-      +continuing = name_part(c)
-      +next_mode = Bool.pick(ScanMode, continuing, ScanName{beg, c <> rev}, normal_mode(c, mark, rest))
-      +next_acc = Bool.pick(List<&2, Token>, continuing, acc, normal_acc(c, mark, name_token <> acc))
-      scan(rest, after_char, next_acc, next_mode)
+      match name_part(c):
+        case True{}:
+          scan(rest, after_char, acc, ScanName{beg, c <> rev})
+        case False{}:
+          +name_token = token(NameToken{}, String.from_list(List.reverse(&2, Char, rev)), beg, mark)
+          scan(rest, after_char, normal_acc(c, mark, after_char, name_token <> acc), normal_mode(c, mark, rest))
     case Nil{} ScanNumber{beg, rev, _, _}:
       end_tokens(mark, token(NumberToken{}, String.from_list(List.reverse(&2, Char, rev)), beg, mark) <> acc)
     case +c <> +rest ScanNumber{+beg, +rev, +fraction, +exponent}:
-      +number_token = token(NumberToken{}, String.from_list(List.reverse(&2, Char, rev)), beg, mark)
       +after_char = advance(mark, c)
-      +digit = Char.is_digit(c)
-      +suffix = Bool.and(Bool.not(fraction), Bool.and(Bool.not(exponent), char_is(c, 110)))
-      +decimal = Bool.and(Bool.not(fraction), Bool.and(Bool.not(exponent), char_is(c, 46)))
-      +exponent_mark = Bool.and(fraction, Bool.and(Bool.not(exponent), Bool.or(char_is(c, 101), char_is(c, 69))))
-      +next_mode = Bool.pick(ScanMode, digit,
-        ScanNumber{beg, c <> rev, fraction, exponent},
-        Bool.pick(ScanMode, suffix, ScanNormal{},
-          Bool.pick(ScanMode, decimal, ScanAfterDot{beg, rev, c, mark},
-            Bool.pick(ScanMode, exponent_mark, ScanAfterExponent{beg, rev, c}, normal_mode(c, mark, rest)))))
-      +next_acc = Bool.pick(List<&2, Token>, digit, acc,
-        Bool.pick(List<&2, Token>, suffix,
-          token(NumberToken{}, String.from_list(List.reverse(&2, Char, c <> rev)), beg, after_char) <> acc,
-          Bool.pick(List<&2, Token>, decimal, acc,
-            Bool.pick(List<&2, Token>, exponent_mark, acc, normal_acc(c, mark, number_token <> acc)))))
-      scan(rest, after_char, next_acc, next_mode)
+      match Char.is_digit(c):
+        case True{}:
+          scan(rest, after_char, acc, ScanNumber{beg, c <> rev, fraction, exponent})
+        case False{}:
+          match scan_number_stop(c, rest, beg, rev, fraction, exponent, mark, after_char, acc):
+            case ScanNext{next_acc, next_mode}:
+              scan(rest, after_char, next_acc, next_mode)
     case Nil{} ScanAfterDot{+beg, +rev, +dot, +dot_beg}:
       dot_token = token(SymbolToken{}, SCon{dot, SNil{}}, dot_beg, mark)
       number_token = token(NumberToken{}, String.from_list(List.reverse(&2, Char, rev)), beg, dot_beg)
       end_tokens(mark, dot_token <> number_token <> acc)
     case +d <> +rest ScanAfterDot{+beg, +rev, +dot, +dot_beg}:
       +after_digit = advance(mark, d)
-      +number_token = token(NumberToken{}, String.from_list(List.reverse(&2, Char, rev)), beg, dot_beg)
-      +dot_token = token(SymbolToken{}, SCon{dot, SNil{}}, dot_beg, mark)
-      +digit = Char.is_digit(d)
-      +next_mode = Bool.pick(ScanMode, digit, ScanNumber{beg, d <> (dot <> rev), True{}, False{}}, normal_mode(d, mark, rest))
-      +next_acc = Bool.pick(List<&2, Token>, digit, acc, normal_acc(d, mark, dot_token <> number_token <> acc))
-      scan(rest, after_digit, next_acc, next_mode)
+      match Char.is_digit(d):
+        case True{}:
+          scan(rest, after_digit, acc, ScanNumber{beg, d <> (dot <> rev), True{}, False{}})
+        case False{}:
+          match scan_after_dot_plain(d, rest, beg, rev, dot, dot_beg, mark, after_digit, acc):
+            case ScanNext{next_acc, next_mode}:
+              scan(rest, after_digit, next_acc, next_mode)
     case Nil{} ScanAfterExponent{beg, rev, _}:
       end_tokens(mark, token(NumberToken{}, String.from_list(List.reverse(&2, Char, rev)), beg, mark) <> acc)
     case +d <> +rest ScanAfterExponent{+beg, +rev, +marker}:
       +after_digit = advance(mark, d)
-      +exponent_token = token(NumberToken{}, String.from_list(List.reverse(&2, Char, marker <> rev)), beg, mark)
       +sign = Bool.or(char_is(d, 43), char_is(d, 45))
-      +digit = Char.is_digit(d)
-      +next_mode = Bool.pick(ScanMode, sign, ScanAfterExponentSign{beg, rev, marker, d},
-        Bool.pick(ScanMode, digit, ScanNumber{beg, d <> (marker <> rev), True{}, True{}}, normal_mode(d, mark, rest)))
-      +next_acc = Bool.pick(List<&2, Token>, sign, acc,
-        Bool.pick(List<&2, Token>, digit, acc, normal_acc(d, mark, exponent_token <> acc)))
-      scan(rest, after_digit, next_acc, next_mode)
+      match sign:
+        case True{}:
+          scan(rest, after_digit, acc, ScanAfterExponentSign{beg, rev, marker, d})
+        case False{}:
+          match Char.is_digit(d):
+            case True{}:
+              scan(rest, after_digit, acc, ScanNumber{beg, d <> (marker <> rev), True{}, True{}})
+            case False{}:
+              match scan_exponent_plain(d, rest, beg, rev, marker, mark, after_digit, acc):
+                case ScanNext{next_acc, next_mode}:
+                  scan(rest, after_digit, next_acc, next_mode)
     case Nil{} ScanAfterExponentSign{beg, rev, marker, sign}:
       end_tokens(mark, token(NumberToken{}, String.from_list(List.reverse(&2, Char, sign <> (marker <> rev))), beg, mark) <> acc)
     case +d <> +rest ScanAfterExponentSign{+beg, +rev, +marker, +sign}:
       +after_digit = advance(mark, d)
-      +exponent_token = token(NumberToken{}, String.from_list(List.reverse(&2, Char, sign <> (marker <> rev))), beg, mark)
-      +digit = Char.is_digit(d)
-      +next_mode = Bool.pick(ScanMode, digit, ScanNumber{beg, d <> (sign <> (marker <> rev)), True{}, True{}}, normal_mode(d, mark, rest))
-      +next_acc = Bool.pick(List<&2, Token>, digit, acc, normal_acc(d, mark, exponent_token <> acc))
-      scan(rest, after_digit, next_acc, next_mode)
+      match Char.is_digit(d):
+        case True{}:
+          scan(rest, after_digit, acc, ScanNumber{beg, d <> (sign <> (marker <> rev)), True{}, True{}})
+        case False{}:
+          match scan_exponent_sign_plain(d, rest, beg, rev, marker, sign, mark, after_digit, acc):
+            case ScanNext{next_acc, next_mode}:
+              scan(rest, after_digit, next_acc, next_mode)
     case Nil{} ScanQuoted{_, beg, rev, _, _}:
       end_tokens(mark, token(ErrorToken{}, String.from_list(List.reverse(&2, Char, rev)), beg, mark) <> acc)
     case +c <> +rest ScanQuoted{+quote, +beg, +rev, True{}, _}:
       scan(rest, advance(mark, c), acc, ScanQuoted{quote, beg, c <> rev, False{}, quote_class(rest, quote)})
     case +c <> +rest ScanQuoted{+quote, +beg, +rev, False{}, QuoteClose{}}:
+      +fin = advance(mark, c)
       kind = Bool.pick(TokenKind, char_is(quote, 34), StringToken{}, CharToken{})
-      scan(rest, advance(mark, c), token(kind, String.from_list(List.reverse(&2, Char, c <> rev)), beg, advance(mark, c)) <> acc, ScanNormal{})
+      scan(rest, fin, token(kind, String.from_list(List.reverse(&2, Char, c <> rev)), beg, fin) <> acc, ScanNormal{})
     case +c <> +rest ScanQuoted{+quote, +beg, +rev, False{}, QuoteEscape{}}:
       scan(rest, advance(mark, c), acc, ScanQuoted{quote, beg, c <> rev, True{}, quote_class(rest, quote)})
     case +c <> +rest ScanQuoted{+quote, +beg, +rev, False{}, QuoteNewline{}}:
