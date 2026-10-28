@@ -5,6 +5,13 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- THR-01 records three sequential full-root runs per implementation on an
+  Apple M1 Max: median TS 17.870 s, native G21 172.797 s, emitted JS
+  347.525 s. A separate native checker sample identifies out-of-line tiny
+  runtime accessors; sample shares are not CPU time or predicted savings.
+  Compiler bytes and the accepted G21 fixedpoint are unchanged.
+  Receipt: `evals/receipts/producer2039g21_thr01_baseline.json`.
+
 - G21 completes the full native compiler build and a real native-stage0 →
   stage1 → stage2 byte fixedpoint under the original 8-GiB / 600-s limits
   per gate. All 12,157 definitions / 12,736 events validate with zero
