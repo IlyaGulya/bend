@@ -5,6 +5,19 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- G23 is a pending, not accepted, optimization candidate: native String/Map
+  reads avoid rebuilding their inputs; checker application walks share one
+  resolved argument view and retain their declared telescope; bounded private
+  result fusion preserves scoped binder identities. JS capture plans and C
+  constructor plans are compilation-local; frontend token/template caches retain
+  their original context. Changed-path String/Map/capture consumers, lexer
+  boundaries, typed-step template scope and CLay checks pass. A runnable checker
+  affinity regression caught a fusion source-admission failure; typed,
+  dependency-first match factoring repairs it and retains all 440 fusion sites.
+  Both single-use acceptance and duplicate-use rejection now execute correctly.
+  Full-root performance and fresh native/bootstrap qualification remain required.
+  Receipt: `evals/receipts/producer2039g23_source_smoke.json`.
+
 - G22 forces host inlining only for seven tiny term/size accessors before
   LLVM partitioning; ordinary `INLINE`, device code and loop/segment policies
   are unchanged. Three interleaved same-host G21/G22 pairs reduce median

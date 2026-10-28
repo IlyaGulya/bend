@@ -75,8 +75,8 @@ const pins = {
   componentBuild: sha(resolve(root, 'evals/checker_core_component_build.ts')),
   stepLower: sha(resolve(root, 'evals/checker_core_step_lower.ts')),
 };
-if (pins.clay !== 'a9f2d5d7d101665f390fb88cd6901947773fbf2444fc6b76504f9537213cdc77') throw Error('CLay is not the current Main pin');
-if (pins.descriptorNf !== '747dc747fcb1a6b6c1fcbf31a3e164f998fd5fa502f87a8ad3a1facd13859973') throw Error('NF is not the current Main pin');
+if (pins.clay !== '763dcc07096ff4273dc2354a049316aa622fd7953fd1781973ab88d47f64a43d') throw Error('CLay is not the current Main pin');
+if (pins.descriptorNf !== 'c727bfe0adf97f86dc44960ca2c46fd890f0d8557157ba883af40d738d3e72dd') throw Error('NF is not the current Main pin');
 if (pins.heavyGate !== 'e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015') throw Error('heavy_gate is not the current Main pin');
 if (pins.heavyGateNative !== '1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b') throw Error('heavy_gate_native is not the current Main pin');
 write('pins.json', JSON.stringify(pins, null, 2) + '\n');

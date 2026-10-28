@@ -17,29 +17,29 @@ type Shape is Data:
 def scaled(k: U32, x: U32) -> U32:
   U32.add(U32.mul(k, 3), x)
 
-def chain(a: U32, b: U32, c: U32) -> U32:
-  p = scaled(1, a)
-  q = scaled(2, U32.add(p, b))
-  r = scaled(3, U32.add(q, c))
-  s = scaled(4, U32.add(r, a))
-  t = scaled(5, U32.add(s, b))
+def chain(+a: U32, +b: U32, +c: U32) -> U32:
+  +p = scaled(1, a)
+  +q = scaled(2, U32.add(p, b))
+  +r = scaled(3, U32.add(q, c))
+  +s = scaled(4, U32.add(r, a))
+  +t = scaled(5, U32.add(s, b))
   u = scaled(6, U32.add(t, c))
   U32.add(U32.add(p, q), U32.add(U32.add(r, s), U32.add(t, u)))
 
-def duplicate(x: U32) -> U32:
+def duplicate(+x: U32) -> U32:
   U32.add(scaled(U32.add(x, 1), x), scaled(x, U32.add(x, 2)))
 
-def apply2(f: U32 -> U32, x: U32) -> U32:
-  f(f(x))
+def apply2(f: U32 -> U32, g: U32 -> U32, x: U32) -> U32:
+  g(f(x))
 
-def nested(a: U32, b: U32) -> U32:
-  apply2(x => U32.add(x, scaled(3, a)), b)
+def nested(+a: U32, b: U32) -> U32:
+  apply2(x => U32.add(x, scaled(3, a)), x => U32.add(x, scaled(3, a)), b)
 
 def area(s: Shape) -> U32:
   match s:
     case Dot{}:
       0
-    case Line{n}:
+    case Line{+n}:
       U32.add(scaled(2, n), n)
     case Box{n, m}:
       U32.mul(n, m)

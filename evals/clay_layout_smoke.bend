@@ -59,7 +59,8 @@ def fam_box() -> BIR.Family:
   fam("Box", None{}, 1n, [arm("Box", [fld(par(0n))])])
 
 def fam_pair() -> BIR.Family:
-  fam("Pair", None{}, 2n, [arm("Pair", [fld(par(1n)), fld(par(0n))])])
+  # A is index 1; after binding the first field, B is also index 1.
+  fam("Pair", None{}, 2n, [arm("Pair", [fld(par(1n)), fld(par(1n))])])
 
 def fam_opt() -> BIR.Family:
   fam("Opt", None{}, 0n, [arm("None", Nil{}), arm("Some", [fld(ref("U32", Nil{}))])])

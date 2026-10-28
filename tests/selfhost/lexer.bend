@@ -107,8 +107,8 @@ def main():
   source = {"alpha.beta 123n + == # comment\n\"a\\\"é😀\" '\\\\'" : String}
   tokens = Lexer.tokens(source)
   malformed = Lexer.tokens({"\"open" : String})
-  tight = {"a.b_9-+<>&~t~0n~1.5e+6~'q'" : String}
-  tight_tokens = Lexer.tokens(tight)
+  +tight = {"a.b_9-+<>&~t~0n~1.5e+6~'q'" : String}
+  +tight_tokens = Lexer.tokens(tight)
   do IO<Unit>:
     IO.print(String.join(show_tokens(tokens), " | "))
     IO.print(String.join(show_tokens(malformed), " | "))
@@ -123,7 +123,7 @@ def main():
     report(only_end_token(Lexer.tokens({"#comment" : String})), "lexer-comment-eof")
     report(line_two_column_one(Lexer.tokens({"a\nb" : String}), False{}), "lexer-newline-position")
 
-#| name:alpha.beta@0-10:1:1 | number:123n@11-15:1:12 | symbol:+@16-17:1:17 | symbol:=@18-19:1:19 | symbol:=@19-20:1:20 | newline:<NL>@29-30:1:30 | string:"a\"é😀"@30-38:2:1 | char:'\\'@39-43:2:10 | end:@43-43:2:14
+#| name:alpha.beta@0-10:1:1 | number:123n@11-15:1:12 | symbol:+@16-17:1:17 | symbol:=@18-19:1:19 | symbol:=@19-20:1:20 | newline:<NL>@30-31:1:31 | string:"a\"é😀"@31-39:2:1 | char:'\\'@40-44:2:10 | end:@44-44:2:14
 #| error:"open@0-5:1:1 | end:@5-5:1:6
 
 #| lexer-token-boundaries-ok

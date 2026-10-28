@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-/** CLay layout plan exercised through the shared native step pipeline.
+/** Layout and template-scope fixtures through the shared native step pipeline.
  *
  * This is the production admission pattern, not a second evaluator: the
  * canonical fixture imports the descriptor normalizer as a composed CPS
@@ -9,8 +9,8 @@
  * normalization fuel inside the source is untouched; this host drives the
  * chunks until the Run finishes and reads the fixture's result.
  *
- *   bun evals/descriptor_nf_step_smoke.ts            # generate step source
- *   bun evals/descriptor_nf_step_smoke.ts --run=ART  # drive a built artifact
+ *   bun evals/clay_layout_step_smoke.ts [--template-scope]
+ *   bun evals/clay_layout_step_smoke.ts [--template-scope] --run=ART
  *
  * Generated files live under the gitignored checkpoints/ directory.
  */
@@ -23,14 +23,18 @@ import {composeCanonicalCPSSource} from './canonical_cps_source.ts';
 import {checkerStepConfig, generateNativeSteps} from './checker_core_step_lower.ts';
 import type {StepConfig} from './checker_core_step_lower.ts';
 
-const canonical = 'evals/clay_layout_smoke.bend';
-const owned = 'checkpoints/clay_layout_smoke_owned.bend';
-const ownedManifest = 'checkpoints/clay-layout-smoke-owned.json';
-const dependency = 'checkpoints/clay-layout-smoke-dependency.json';
-const output = 'checkpoints/clay_layout_steps_v1.bend';
-const component = 'checkpoints/clay_layout_steps_component_v1.bend';
-const manifest = 'checkpoints/clay-layout-steps-v1.json';
-const providers = ['bend2/selfhost/c_backend_layout.bend', 'bend2/selfhost/descriptor_nf.bend'];
+const templateScope = process.argv.includes('--template-scope');
+const stem = templateScope ? 'template_scope' : 'clay_layout';
+const pinStem = stem.replaceAll('_', '-');
+const canonical = `evals/${stem}_smoke.bend`;
+const owned = `checkpoints/${stem}_smoke_owned.bend`;
+const ownedManifest = `checkpoints/${pinStem}-smoke-owned.json`;
+const dependency = `checkpoints/${pinStem}-smoke-dependency.json`;
+const output = `checkpoints/${stem}_steps_v1.bend`;
+const component = `checkpoints/${stem}_steps_component_v1.bend`;
+const manifest = `checkpoints/${pinStem}-steps-v1.json`;
+const providers = templateScope ? ['bend2/selfhost/template.bend']
+  : ['bend2/selfhost/c_backend_layout.bend', 'bend2/selfhost/descriptor_nf.bend'];
 const expected = 0;
 const sha = (text: string) => createHash('sha256').update(text).digest('hex');
 
@@ -98,7 +102,7 @@ async function generate(): Promise<StepConfig> {
   }, null, 2) + '\n');
   const config: StepConfig = {
     ...checkerStepConfig,
-    mode: 'template', root: 'main', result: 'ClaySmoke',
+    mode: 'template', root: 'main', result: templateScope ? 'TemplateScopeSmoke' : 'ClaySmoke',
     canonical, owned, ownedManifest, dependency,
     generator: 'evals/clay_layout_step_smoke.ts',
     output, component, manifest,
@@ -129,17 +133,17 @@ async function run(artifact: string): Promise<void> {
   for (;;) {
     const chunk = chunkOf(current);
     if (!chunk) throw Error('Unexpected Run value ' + String(current));
-    if (chunk.tag.endsWith('.TemplateRunState')) {
+    if (chunk.tag.split('.').at(-1) === 'TemplateRunState') {
       current = undefined;
       current = step(chunk.fields);
       steps += 1;
       continue;
     }
-    if (!chunk.tag.endsWith('.TemplateRunFinished')) throw Error('Unexpected Run tag ' + chunk.tag);
+    if (chunk.tag.split('.').at(-1) !== 'TemplateRunFinished') throw Error('Unexpected Run tag ' + chunk.tag);
     const box = chunkOf(chunk.fields['box']);
     const value = box ? chunkOf(box.fields['value']) : null;
     const failures = value?.fields['failures'];
-    if (typeof failures !== 'number') throw Error('ClaySmoke result has no numeric failures field');
+    if (typeof failures !== 'number') throw Error(stem + ' result has no numeric failures field');
     if (failures !== expected) throw Error('Observed failures ' + failures + '; expected ' + expected);
     console.log(JSON.stringify({status: 'PASS', failures, chunks: steps, artifact: sha(readFileSync(artifact))}));
     return;

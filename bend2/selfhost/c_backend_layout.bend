@@ -52,9 +52,9 @@
 # arms are the exception, and `Context.plan` is their one table: it is built
 # once per program, holds the canonical node (words, slot ordinals, slot
 # offsets) of every declared constructor row and the declared arm of every
-# constructor key, and every consumer reads it instead of recomputing. That is
-# what makes a whole program's layout linear in its type graph. The plan is a
-# value of the compilation context, never a global: no layout fact outlives the
+# constructor key, and every consumer reads it instead of recomputing. Nested
+# value layouts are still computed separately; this plan only shares canonical
+# node results. It belongs to the compilation context, never a global: no fact outlives the
 # program it was computed for. value_layout is still the only source of an
 # instantiated value layout, and it is only needed where a declared type, an
 # array element, or a show descriptor is laid out.

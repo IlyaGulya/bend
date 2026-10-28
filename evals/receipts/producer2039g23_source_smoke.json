@@ -1,0 +1,534 @@
+{
+  "schemaVersion": 1,
+  "status": "G23_CHANGED_PATH_SMOKE_PASS_FULL_QUALIFICATION_PENDING",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "scope": "Composite exercised source consumers; failed sibling rows are not represented as passing aggregate runs. No performance or full-bootstrap acceptance.",
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "productionPins": {
+    "bend2/comp.ts": "db466aa58339e8866c68c7aece0c8586e4ce5f591f311b71b86b3b25769b50fd",
+    "bend2/selfhost/checker.bend": "8d0ea433a67f19ede2d01e0d3dcc374464d49337f81123d351d921bcc1858732",
+    "bend2/selfhost/c_backend_layout.bend": "763dcc07096ff4273dc2354a049316aa622fd7953fd1781973ab88d47f64a43d",
+    "bend2/selfhost/lexer.bend": "342901897b30afc8ec7587718b1eb0b30150d46b01c1ea498ce369af26d1394d",
+    "bend2/selfhost/template.bend": "7255a5600c0643cab91656e985ef16ed7b9ba8a79abad8977d50adb67e9f97e0",
+    "evals/checker_core_step_lower.ts": "f56aa32214e616fd4549852318a39bb677950fafa018c4aee7af3c3ba04b3000",
+    "evals/clay_layout_step_smoke.ts": "fed895a53949efba97a0db95ded097617547c6771a78a36a94c29ee63cf59efd",
+    "evals/checker_affinity_step_smoke.bend": "66277247a69110327fe12abc4e641c1a87baef5cab70a85fa1285761c9f64c71"
+  },
+  "sourceConsumers": [
+    {
+      "path": "/tmp/bend-g23-smoke-FVGlXv/receipt.json",
+      "status": "FAIL",
+      "compilerSha256": "db466aa58339e8866c68c7aece0c8586e4ce5f591f311b71b86b3b25769b50fd",
+      "rows": [
+        {
+          "source": "tests/run/runtime_string_cmp.bend",
+          "target": "c",
+          "sourceSha256": "61bba929fce1988e5475fc26aacecb518f9941bf05dfb67cc3c3c0079542d69a",
+          "outputSha256": "2b447d6ffad59e8c65a0659fb82e454fde5176c37463b305536d6617813af840",
+          "expected": "String.cmp returns both inputs and the order\n",
+          "observed": "String.cmp returns both inputs and the order\n",
+          "emitCommand": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--experimental-strip-types",
+            "/tmp/bend-g14-canonical-worker.mjs",
+            "tests/run/runtime_string_cmp.bend",
+            "/tmp/bend-g23-smoke-FVGlXv/runtime_string_cmp.c"
+          ],
+          "emitStatus": 0,
+          "clangCommand": [
+            "/usr/bin/clang",
+            "-std=c11",
+            "-O1",
+            "-pthread",
+            "/tmp/bend-g23-smoke-FVGlXv/runtime_string_cmp.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-g23-smoke-FVGlXv/runtime_string_cmp.c.exe"
+          ],
+          "clangStatus": 0,
+          "consumerCommand": [
+            "/tmp/bend-g23-smoke-FVGlXv/runtime_string_cmp.c.exe"
+          ],
+          "consumerStatus": 0
+        },
+        {
+          "source": "tests/run/runtime_string_cmp.bend",
+          "target": "js",
+          "sourceSha256": "61bba929fce1988e5475fc26aacecb518f9941bf05dfb67cc3c3c0079542d69a",
+          "outputSha256": "1fde5199f266d4c702bd87b6cf76ae8787a4f936f8cb11f555850504b8cd02a6",
+          "expected": "String.cmp returns both inputs and the order\n",
+          "observed": "String.cmp returns both inputs and the order\n",
+          "emitCommand": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--experimental-strip-types",
+            "/tmp/bend-g14-canonical-worker.mjs",
+            "tests/run/runtime_string_cmp.bend",
+            "/tmp/bend-g23-smoke-FVGlXv/runtime_string_cmp.js"
+          ],
+          "emitStatus": 0,
+          "clangCommand": null,
+          "clangStatus": null,
+          "consumerCommand": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--max-old-space-size=3072",
+            "/tmp/bend-g23-smoke-FVGlXv/runtime_string_cmp.js"
+          ],
+          "consumerStatus": 0
+        },
+        {
+          "source": "tests/run/native_map_read_positions.bend",
+          "target": "c",
+          "sourceSha256": "8133c5203cd17275d7ec72d78354bf43418c52df4d8f7cac08fc00305819374e",
+          "outputSha256": "65266461b7c03875a5e04561a2831a8a1b2718a22e18c729c1078d0721427ea8",
+          "expected": "410117\n11\n61101\n13620011\n12900\n",
+          "observed": "410117\n11\n61101\n13620011\n12900\n",
+          "emitCommand": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--experimental-strip-types",
+            "/tmp/bend-g14-canonical-worker.mjs",
+            "tests/run/native_map_read_positions.bend",
+            "/tmp/bend-g23-smoke-FVGlXv/native_map_read_positions.c"
+          ],
+          "emitStatus": 0,
+          "clangCommand": [
+            "/usr/bin/clang",
+            "-std=c11",
+            "-O1",
+            "-pthread",
+            "/tmp/bend-g23-smoke-FVGlXv/native_map_read_positions.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-g23-smoke-FVGlXv/native_map_read_positions.c.exe"
+          ],
+          "clangStatus": 0,
+          "consumerCommand": [
+            "/tmp/bend-g23-smoke-FVGlXv/native_map_read_positions.c.exe"
+          ],
+          "consumerStatus": 0
+        },
+        {
+          "source": "tests/run/native_map_read_positions.bend",
+          "target": "js",
+          "sourceSha256": "8133c5203cd17275d7ec72d78354bf43418c52df4d8f7cac08fc00305819374e",
+          "outputSha256": "4a621e2e19bf41f6bfe6d93d02615f2f816380b8eb224f53593a64790b65b12d",
+          "expected": "410117\n11\n61101\n13620011\n12900\n",
+          "observed": "410117\n11\n61101\n13620011\n12900\n",
+          "emitCommand": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--experimental-strip-types",
+            "/tmp/bend-g14-canonical-worker.mjs",
+            "tests/run/native_map_read_positions.bend",
+            "/tmp/bend-g23-smoke-FVGlXv/native_map_read_positions.js"
+          ],
+          "emitStatus": 0,
+          "clangCommand": null,
+          "clangStatus": null,
+          "consumerCommand": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--max-old-space-size=3072",
+            "/tmp/bend-g23-smoke-FVGlXv/native_map_read_positions.js"
+          ],
+          "consumerStatus": 0
+        },
+        {
+          "source": "tests/run/native_map_read_shapes.bend",
+          "target": "c",
+          "sourceSha256": "74fa88448f525a017236a6e02042304591f0c913c6852783ffdf30c3ff500b78",
+          "outputSha256": "2ef33558d28e3b2900508fc760e1dcc56242b79a72148b3ab2abc56930d8ddf3",
+          "expected": "1771016\n702\n58101\n202\n11111\n111\n1111\n1110111\n12321\n1044\n111111\n101106\n",
+          "observed": "1771016\n702\n58101\n202\n11111\n111\n1111\n1110111\n12321\n1044\n111111\n101106\n",
+          "emitCommand": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--experimental-strip-types",
+            "/tmp/bend-g14-canonical-worker.mjs",
+            "tests/run/native_map_read_shapes.bend",
+            "/tmp/bend-g23-smoke-FVGlXv/native_map_read_shapes.c"
+          ],
+          "emitStatus": 0,
+          "clangCommand": [
+            "/usr/bin/clang",
+            "-std=c11",
+            "-O1",
+            "-pthread",
+            "/tmp/bend-g23-smoke-FVGlXv/native_map_read_shapes.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-g23-smoke-FVGlXv/native_map_read_shapes.c.exe"
+          ],
+          "clangStatus": 0,
+          "consumerCommand": [
+            "/tmp/bend-g23-smoke-FVGlXv/native_map_read_shapes.c.exe"
+          ],
+          "consumerStatus": 0
+        },
+        {
+          "source": "tests/run/native_map_read_shapes.bend",
+          "target": "js",
+          "sourceSha256": "74fa88448f525a017236a6e02042304591f0c913c6852783ffdf30c3ff500b78",
+          "outputSha256": "862f444f86dd131d7d27f68fcd67a425693c4e837966e8e728500d125850528b",
+          "expected": "1771016\n702\n58101\n202\n11111\n111\n1111\n1110111\n12321\n1044\n111111\n101106\n",
+          "observed": "1771016\n702\n58101\n202\n11111\n111\n1111\n1110111\n12321\n1044\n111111\n101106\n",
+          "emitCommand": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--experimental-strip-types",
+            "/tmp/bend-g14-canonical-worker.mjs",
+            "tests/run/native_map_read_shapes.bend",
+            "/tmp/bend-g23-smoke-FVGlXv/native_map_read_shapes.js"
+          ],
+          "emitStatus": 0,
+          "clangCommand": null,
+          "clangStatus": null,
+          "consumerCommand": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--max-old-space-size=3072",
+            "/tmp/bend-g23-smoke-FVGlXv/native_map_read_shapes.js"
+          ],
+          "consumerStatus": 0
+        },
+        {
+          "source": "tests/run/native_map_read_unique.bend",
+          "target": "c",
+          "sourceSha256": "5e67f594c5949a5d99f693bada2750c4797d07a675ee7519b641e673ad40601c",
+          "outputSha256": "2c480e57d7a53aef16afadaec38c3b03bc5634ddf70229c48c3764b69905c809",
+          "expected": "11111\n11\n1121221\n93\n11\n",
+          "observed": "11111\n11\n1121221\n93\n11\n",
+          "emitCommand": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--experimental-strip-types",
+            "/tmp/bend-g14-canonical-worker.mjs",
+            "tests/run/native_map_read_unique.bend",
+            "/tmp/bend-g23-smoke-FVGlXv/native_map_read_unique.c"
+          ],
+          "emitStatus": 0,
+          "clangCommand": [
+            "/usr/bin/clang",
+            "-std=c11",
+            "-O1",
+            "-pthread",
+            "/tmp/bend-g23-smoke-FVGlXv/native_map_read_unique.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-g23-smoke-FVGlXv/native_map_read_unique.c.exe"
+          ],
+          "clangStatus": 0,
+          "consumerCommand": [
+            "/tmp/bend-g23-smoke-FVGlXv/native_map_read_unique.c.exe"
+          ],
+          "consumerStatus": 0
+        },
+        {
+          "source": "tests/run/native_map_read_unique.bend",
+          "target": "js",
+          "sourceSha256": "5e67f594c5949a5d99f693bada2750c4797d07a675ee7519b641e673ad40601c",
+          "outputSha256": "de6e009677d6144d7dffb0236fe9e69c2ebe98edab007aaa4ca0b09b4b4ff55b",
+          "expected": "11111\n11\n1121221\n93\n11\n",
+          "observed": "11111\n11\n1121221\n93\n11\n",
+          "emitCommand": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--experimental-strip-types",
+            "/tmp/bend-g14-canonical-worker.mjs",
+            "tests/run/native_map_read_unique.bend",
+            "/tmp/bend-g23-smoke-FVGlXv/native_map_read_unique.js"
+          ],
+          "emitStatus": 0,
+          "clangCommand": null,
+          "clangStatus": null,
+          "consumerCommand": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--max-old-space-size=3072",
+            "/tmp/bend-g23-smoke-FVGlXv/native_map_read_unique.js"
+          ],
+          "consumerStatus": 0
+        }
+      ]
+    },
+    {
+      "path": "/tmp/bend-g23-smoke-h03zLT/receipt.json",
+      "status": "FAIL",
+      "compilerSha256": "db466aa58339e8866c68c7aece0c8586e4ce5f591f311b71b86b3b25769b50fd",
+      "rows": [
+        {
+          "source": "tests/compile/js_split_capture_chain.bend",
+          "target": "c",
+          "sourceSha256": "b1c34e1766f5d8aad4bb6ca31593c82dc16b893ebfdaeef5800ad5bd1bab4327",
+          "outputSha256": "a0ffed5177400f095c5f893931a780d39f321f2507cba6e3e7aa04ea11e9ce89",
+          "expected": "206\n45\n32\n24\n",
+          "observed": "206\n45\n32\n24\n",
+          "emitCommand": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--experimental-strip-types",
+            "/tmp/bend-g14-canonical-worker.mjs",
+            "tests/compile/js_split_capture_chain.bend",
+            "/tmp/bend-g23-smoke-h03zLT/js_split_capture_chain.c"
+          ],
+          "emitStatus": 0,
+          "clangCommand": [
+            "/usr/bin/clang",
+            "-std=c11",
+            "-O1",
+            "-pthread",
+            "/tmp/bend-g23-smoke-h03zLT/js_split_capture_chain.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-g23-smoke-h03zLT/js_split_capture_chain.c.exe"
+          ],
+          "clangStatus": 0,
+          "consumerCommand": [
+            "/tmp/bend-g23-smoke-h03zLT/js_split_capture_chain.c.exe"
+          ],
+          "consumerStatus": 0
+        },
+        {
+          "source": "tests/compile/js_split_capture_chain.bend",
+          "target": "js",
+          "sourceSha256": "b1c34e1766f5d8aad4bb6ca31593c82dc16b893ebfdaeef5800ad5bd1bab4327",
+          "outputSha256": "eef050bd8a25bdba91436120d1e3c6cc64db4924c4eacc4891322eea4d6c1cc7",
+          "expected": "206\n45\n32\n24\n",
+          "observed": "206\n45\n32\n24\n",
+          "emitCommand": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--experimental-strip-types",
+            "/tmp/bend-g14-canonical-worker.mjs",
+            "tests/compile/js_split_capture_chain.bend",
+            "/tmp/bend-g23-smoke-h03zLT/js_split_capture_chain.js"
+          ],
+          "emitStatus": 0,
+          "clangCommand": null,
+          "clangStatus": null,
+          "consumerCommand": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--max-old-space-size=3072",
+            "/tmp/bend-g23-smoke-h03zLT/js_split_capture_chain.js"
+          ],
+          "consumerStatus": 0
+        },
+        {
+          "source": "tests/reg/phys_storage_paths.bend",
+          "target": "c",
+          "sourceSha256": "6c0d3c08a4fe6dfc0f793ec02225a6e92c1a5e7a32508d091a8b12346c297c17",
+          "outputSha256": "f7fcd315313a16162109e72c109da589ba79040e496e3f7733249b7e84858ee2",
+          "expected": "2655042671\n3,9\n56,15,9;1,5,4\n",
+          "observed": "2655042671\n3,9\n56,15,9;1,5,4\n",
+          "emitCommand": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--experimental-strip-types",
+            "/tmp/bend-g14-canonical-worker.mjs",
+            "tests/reg/phys_storage_paths.bend",
+            "/tmp/bend-g23-smoke-h03zLT/phys_storage_paths.c"
+          ],
+          "emitStatus": 0,
+          "clangCommand": [
+            "/usr/bin/clang",
+            "-std=c11",
+            "-O1",
+            "-pthread",
+            "/tmp/bend-g23-smoke-h03zLT/phys_storage_paths.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-g23-smoke-h03zLT/phys_storage_paths.c.exe"
+          ],
+          "clangStatus": 0,
+          "consumerCommand": [
+            "/tmp/bend-g23-smoke-h03zLT/phys_storage_paths.c.exe"
+          ],
+          "consumerStatus": 0
+        },
+        {
+          "source": "tests/reg/phys_storage_paths.bend",
+          "target": "js",
+          "sourceSha256": "6c0d3c08a4fe6dfc0f793ec02225a6e92c1a5e7a32508d091a8b12346c297c17",
+          "outputSha256": "9f298220e8e6dc5ec9eb4359f2b21072254cd71e1d01234ef80ce2bee9774aef",
+          "expected": "2655042671\n3,9\n56,15,9;1,5,4\n",
+          "observed": "2655042671\n3,9\n56,15,9;1,5,4\n",
+          "emitCommand": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--experimental-strip-types",
+            "/tmp/bend-g14-canonical-worker.mjs",
+            "tests/reg/phys_storage_paths.bend",
+            "/tmp/bend-g23-smoke-h03zLT/phys_storage_paths.js"
+          ],
+          "emitStatus": 0,
+          "clangCommand": null,
+          "clangStatus": null,
+          "consumerCommand": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--max-old-space-size=3072",
+            "/tmp/bend-g23-smoke-h03zLT/phys_storage_paths.js"
+          ],
+          "consumerStatus": 0
+        },
+        {
+          "source": "tests/reg/checker_arena_names.bend",
+          "target": "c",
+          "sourceSha256": "63fc170fe9ba8f6c5ebd53b516e2ea74b84802d0c1f1bc899d250f90be99873d",
+          "outputSha256": "37c56ef87070c41d7009d5583f84ce16ca40638511bfc67917dbf9d098fd55bb",
+          "expected": "0\n",
+          "observed": "0\n",
+          "emitCommand": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--experimental-strip-types",
+            "/tmp/bend-g14-canonical-worker.mjs",
+            "tests/reg/checker_arena_names.bend",
+            "/tmp/bend-g23-smoke-h03zLT/checker_arena_names.c"
+          ],
+          "emitStatus": 0,
+          "clangCommand": [
+            "/usr/bin/clang",
+            "-std=c11",
+            "-O1",
+            "-pthread",
+            "/tmp/bend-g23-smoke-h03zLT/checker_arena_names.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-g23-smoke-h03zLT/checker_arena_names.c.exe"
+          ],
+          "clangStatus": 0,
+          "consumerCommand": [
+            "/tmp/bend-g23-smoke-h03zLT/checker_arena_names.c.exe"
+          ],
+          "consumerStatus": 0
+        },
+        {
+          "source": "tests/reg/checker_arena_names.bend",
+          "target": "js",
+          "sourceSha256": "63fc170fe9ba8f6c5ebd53b516e2ea74b84802d0c1f1bc899d250f90be99873d",
+          "outputSha256": "6210c3c7b818591384c9a66e1c751a9a1ac87f9c21f08d41d19a353342836c62",
+          "expected": "0\n",
+          "observed": "0\n",
+          "emitCommand": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--experimental-strip-types",
+            "/tmp/bend-g14-canonical-worker.mjs",
+            "tests/reg/checker_arena_names.bend",
+            "/tmp/bend-g23-smoke-h03zLT/checker_arena_names.js"
+          ],
+          "emitStatus": 0,
+          "clangCommand": null,
+          "clangStatus": null,
+          "consumerCommand": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--max-old-space-size=3072",
+            "/tmp/bend-g23-smoke-h03zLT/checker_arena_names.js"
+          ],
+          "consumerStatus": 0
+        }
+      ]
+    },
+    {
+      "path": "/tmp/bend-g23-smoke-ZvwIiq/receipt.json",
+      "status": "CHANGED_PATH_C_JS_SMOKE_PASS",
+      "compilerSha256": "db466aa58339e8866c68c7aece0c8586e4ce5f591f311b71b86b3b25769b50fd",
+      "rows": [
+        {
+          "source": "tests/selfhost/lexer.bend",
+          "target": "js",
+          "sourceSha256": "7e5de31ef92c3d1f415729f40771cfe9766b91fa13766e7c8bde51c6cfdfba93",
+          "outputSha256": "a85e89bcb4c0c4ed9c665989fe20ef5174f3bb4d1451580741d10289fc2b32ac",
+          "expected": "name:alpha.beta@0-10:1:1 | number:123n@11-15:1:12 | symbol:+@16-17:1:17 | symbol:=@18-19:1:19 | symbol:=@19-20:1:20 | newline:<NL>@30-31:1:31 | string:\"a\\\"é😀\"@31-39:2:1 | char:'\\\\'@40-44:2:10 | end:@44-44:2:14\nerror:\"open@0-5:1:1 | end:@5-5:1:6\nlexer-token-boundaries-ok\nlexer-name-eof-ok\nlexer-comment-eof-ok\nlexer-newline-position-ok\n",
+          "observed": "name:alpha.beta@0-10:1:1 | number:123n@11-15:1:12 | symbol:+@16-17:1:17 | symbol:=@18-19:1:19 | symbol:=@19-20:1:20 | newline:<NL>@30-31:1:31 | string:\"a\\\"é😀\"@31-39:2:1 | char:'\\\\'@40-44:2:10 | end:@44-44:2:14\nerror:\"open@0-5:1:1 | end:@5-5:1:6\nlexer-token-boundaries-ok\nlexer-name-eof-ok\nlexer-comment-eof-ok\nlexer-newline-position-ok\n",
+          "emitCommand": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--experimental-strip-types",
+            "/tmp/bend-g14-canonical-worker.mjs",
+            "tests/selfhost/lexer.bend",
+            "/tmp/bend-g23-smoke-ZvwIiq/lexer.js"
+          ],
+          "emitStatus": 0,
+          "clangCommand": null,
+          "clangStatus": null,
+          "consumerCommand": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--max-old-space-size=3072",
+            "/tmp/bend-g23-smoke-ZvwIiq/lexer.js"
+          ],
+          "consumerStatus": 0
+        }
+      ]
+    },
+    {
+      "path": "/tmp/bend-g23-smoke-wDxmL6/receipt.json",
+      "status": "CHANGED_PATH_C_JS_SMOKE_PASS",
+      "compilerSha256": "db466aa58339e8866c68c7aece0c8586e4ce5f591f311b71b86b3b25769b50fd",
+      "rows": [
+        {
+          "source": "evals/checker_affinity_step_smoke.bend",
+          "target": "js",
+          "sourceSha256": "66277247a69110327fe12abc4e641c1a87baef5cab70a85fa1285761c9f64c71",
+          "outputSha256": "91ec155bad3fd99c0baef9a41a0b144179eca8f436542a820191136f6ec38743",
+          "expected": "checker-application-single-use-ok\nchecker-application-affine-duplicate-rejected\n",
+          "observed": "checker-application-single-use-ok\nchecker-application-affine-duplicate-rejected\n",
+          "emitCommand": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--experimental-strip-types",
+            "/tmp/bend-g14-canonical-worker.mjs",
+            "evals/checker_affinity_step_smoke.bend",
+            "/tmp/bend-g23-smoke-wDxmL6/checker_affinity_step_smoke.js"
+          ],
+          "emitStatus": 0,
+          "clangCommand": null,
+          "clangStatus": null,
+          "consumerCommand": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--max-old-space-size=3072",
+            "/tmp/bend-g23-smoke-wDxmL6/checker_affinity_step_smoke.js"
+          ],
+          "consumerStatus": 0
+        }
+      ]
+    }
+  ],
+  "typedFixtures": [
+    {
+      "fixture": "CLay",
+      "failures": 0,
+      "chunks": 395242,
+      "artifactSha256": "bc2a443f4ec307c4f6b89d001afeaae30dfb14e369888c77e1061d531c0e2f19",
+      "build": "/tmp/bend-g23-layout-fixed-build.result.json",
+      "run": [
+        "/private/tmp/bend2039g8-accepted-mac-evidence/bun-1.4.3",
+        "evals/clay_layout_step_smoke.ts",
+        "--run=/tmp/bend-g23-layout-fixed.js"
+      ]
+    },
+    {
+      "fixture": "Template scope",
+      "failures": 0,
+      "chunks": 71,
+      "artifactSha256": "7066508e2257340889bd81a5d0105fcf4cef58b2e3d1545f952111c1b06fa5cd",
+      "build": "/tmp/bend-g23-template-scope-fixed-build.result.json",
+      "run": [
+        "/private/tmp/bend2039g8-accepted-mac-evidence/bun-1.4.3",
+        "evals/clay_layout_step_smoke.ts",
+        "--template-scope",
+        "--run=/tmp/bend-g23-template-scope-fixed.js"
+      ]
+    }
+  ],
+  "metal": {
+    "receipt": "/tmp/bend-g23-metal-m0THGt/receipt.json",
+    "status": "METAL_SHARED_RUNTIME_COMPILE_PASS",
+    "runtimeExecution": false
+  },
+  "regression": {
+    "rejectedGeneratedSource": "Local aliases before Match in checker_deforest_producer_0",
+    "repair": "Preserve typed alpha-renamed bindings; dependency-first parameter-match helpers; final declaration positions",
+    "generatedFusionSites": 440,
+    "admittedCheckerSmoke": "evals/checker_affinity_step_smoke.bend",
+    "expected": [
+      "checker-application-single-use-ok",
+      "checker-application-affine-duplicate-rejected"
+    ],
+    "driverBudget": "100000 chunks, quantum64; exhaustion status0 distinct from acceptance1 and rejection2"
+  },
+  "reviews": {
+    "frontend": "bounded static clean",
+    "fusion": "initial clean verdict withdrawn; factoring fix reviewed bounded clean",
+    "runtime": "final bounded static clean; unauthorized author probes excluded from qualification"
+  }
+}

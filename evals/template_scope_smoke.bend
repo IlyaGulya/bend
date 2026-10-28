@@ -1,7 +1,7 @@
 import Base
-import ../../bend2/selfhost/ast.bend as Ast
-import ../../bend2/selfhost/loaded_module.bend as Loader
-import ../../bend2/selfhost/template.bend as Template
+import ../bend2/selfhost/ast.bend as Ast
+import ../bend2/selfhost/loaded_module.bend as Loader
+import ../bend2/selfhost/template.bend as Template
 
 # Boundary regressions for expansion scope that the current template suite
 # does not pin:
@@ -11,7 +11,7 @@ import ../../bend2/selfhost/template.bend as Template
 #    must use the requesting template suffix [g], leaving nested f
 #    unspecialized in g's key even though final rewriting specializes it.
 
-def find_definition(declarations: List<&2, Ast.TopLevel>, key: String) -> Maybe<&2, Ast.Definition>:
+def find_definition(declarations: List<&2, Ast.TopLevel>, +key: String) -> Maybe<&2, Ast.Definition>:
   match declarations:
     case Nil{}: None{}
     case +declaration <> rest:
@@ -27,17 +27,12 @@ def same_source_span(found: Ast.SourceSpan, expected: Ast.SourceSpan) -> Bool:
     case Ast.SpanOf{found_file, found_beg, found_end} Ast.SpanOf{file, beg, end}:
       Bool.and(String.eq(found_file, file), Bool.and(Nat.is_eq(found_beg, beg), Nat.is_eq(found_end, end)))
 
-def report(result: Bool, success: String, failure: String) -> IO(Unit):
-  match result:
-    case True{}: IO.print(success)
-    case False{}: IO.print(failure)
-
 def unclosed_generated_result(result: Template.ExpandResult) -> Bool:
   match result:
     case Template.ExpandFailure{ _, Ast.SpanOf{ "template_scope.bend", 7n, 9n}}: True{}
     case _: False{}
 
-def test_unclosed_generated_body(sp: Ast.SourceSpan) -> Bool:
+def test_unclosed_generated_body(+sp: Ast.SourceSpan) -> Bool:
   app_span = Ast.SpanOf{ "template_scope.bend",  7n,  9n}
   type_a = Ast.TermType{ Ast.TermQuantity{ Ast.QOne{},  sp},  sp}
   inner = Ast.Definition{
@@ -93,12 +88,12 @@ def suffix_instances_result(result: Template.ExpandResult, f_key: String, g_key:
       )
     case _: False{}
 
-def test_suffix_scoped_actual(sp: Ast.SourceSpan) -> Bool:
-  f_span = Ast.SpanOf{ "template_scope.bend",  0n,  1n}
-  g_span = Ast.SpanOf{ "template_scope.bend",  2n,  3n}
-  app_span = Ast.SpanOf{ "template_scope.bend",  7n,  9n}
-  type_a = Ast.TermType{ Ast.TermQuantity{ Ast.QOne{},  sp},  sp}
-  f_definition = Ast.Definition{
+def test_suffix_scoped_actual(+sp: Ast.SourceSpan) -> Bool:
+  +f_span = Ast.SpanOf{ "template_scope.bend",  0n,  1n}
+  +g_span = Ast.SpanOf{ "template_scope.bend",  2n,  3n}
+  +app_span = Ast.SpanOf{ "template_scope.bend",  7n,  9n}
+  +type_a = Ast.TermType{ Ast.TermQuantity{ Ast.QOne{},  sp},  sp}
+  +f_definition = Ast.Definition{
      "f",
      [Ast.TemplateBinder{ "T",  0n,  Ast.TermQuant{},  f_span}],
      Ast.NoTerm{},
@@ -106,7 +101,7 @@ def test_suffix_scoped_actual(sp: Ast.SourceSpan) -> Bool:
      False{},
      f_span
   }
-  g_definition = Ast.Definition{
+  +g_definition = Ast.Definition{
      "g",
      [Ast.TemplateBinder{ "T",  0n,  Ast.TermQuant{},  g_span}],
      Ast.NoTerm{},
@@ -114,25 +109,22 @@ def test_suffix_scoped_actual(sp: Ast.SourceSpan) -> Bool:
      False{},
      g_span
   }
-  f_app = Ast.TermApp{ Ast.TermRef{ "f",  app_span},  Ast.TermTemplate{ type_a,  app_span},  app_span}
+  +f_app = Ast.TermApp{ Ast.TermRef{ "f",  app_span},  Ast.TermTemplate{ type_a,  app_span},  app_span}
   call = Ast.TermApp{ Ast.TermRef{ "g",  app_span},  Ast.TermTemplate{ f_app,  app_span},  app_span}
   caller = Ast.Definition{ "caller",  Nil{},  Ast.NoTerm{},  Ast.DefTerm{ call},  False{},  sp}
   loaded = Loader.LoadedModule{ "",  Ast.Module{ "template_scope.bend",  Nil{},  [Ast.DefTop{ f_definition}, Ast.DefTop{ g_definition}, Ast.DefTop{ caller}]}}
   f_template = Template.TemplateDef{ "f",  "",  Nil{},  ["f", "g", "caller"],  "",  f_definition,  Nil{}}
   g_template = Template.TemplateDef{ "g",  "",  Nil{},  ["f", "g", "caller"],  "",  g_definition,  Nil{}}
-  f_key = Template.generated_local_key(f_template, [type_a])
-  g_key = Template.generated_local_key(g_template, [f_app])
+  +f_key = Template.generated_local_key(f_template, [type_a])
+  +g_key = Template.generated_local_key(g_template, [f_app])
   specialized_g_key = Template.generated_local_key(g_template, [Ast.TermRef{ f_key,  app_span}])
   Bool.and(Bool.not(String.eq(g_key, specialized_g_key)), suffix_instances_result(Template.expand([loaded]), f_key, g_key, f_span, g_span))
 
-law main:
-  IO(Unit)
+type TemplateScopeSmoke is Data:
+  TemplateScopeSmoke{failures: U32}
 
-def main():
-  sp = Ast.SpanOf{ "template_scope.bend",  0n,  1n}
-  do IO<Unit>:
-    report(test_unclosed_generated_body(sp), "template-unclosed-generated-body-rejected", "template-unclosed-generated-body-accepted")
-    report(test_suffix_scoped_actual(sp), "template-suffix-scoped-identity-ok", "template-suffix-scoped-identity-failed")
-
-#| template-unclosed-generated-body-rejected
-#| template-suffix-scoped-identity-ok
+def main(modules: List<&2, Loader.LoadedModule>) -> TemplateScopeSmoke:
+  +sp = Ast.SpanOf{ "template_scope.bend",  0n,  1n}
+  TemplateScopeSmoke{U32.add(
+    Bool.pick(U32, test_unclosed_generated_body(sp), 0, 1),
+    Bool.pick(U32, test_suffix_scoped_actual(sp), 0, 1))}

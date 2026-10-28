@@ -834,7 +834,7 @@ function bodyFree(body: B.Body): number[] {
 // scrutinized binders come first; captures come after, hence remain visible in
 // native constructor branches. This includes computed conditions and nested
 // fields. Helpers call only earlier generated helpers, never source functions.
-function factorHelper(body: B.Body, scope: Map<number, Binding>, result: B.LTerm, owner: string, first: number[], kind: string, stem: string, direct = false): B.LTerm {
+function factorHelper(body: B.Body, scope: Map<number, Binding>, result: B.LTerm, owner: string, first: number[], kind: string, stem: string, direct = false, output = generated): B.LTerm {
   const ids = [...first, ...bodyFree(body).filter(id => !first.includes(id))];
   const parameters = ids.map<ParserParameter>(id => {
     const binding = scope.get(id);
@@ -849,7 +849,7 @@ function factorHelper(body: B.Body, scope: Map<number, Binding>, result: B.LTerm
     available.add(parameter[2]);
   }
   const name = reserve(prefix + '_' + stem + '_' + helperSerial++);
-  generated.push({name, parameters, result: direct ? result : progress(result), body, owner, kind});
+  output.push({name, parameters, result: direct ? result : progress(result), body, owner, kind});
   return app(name, ids.map(id => B.Var(scope.get(id)!.name, id)));
 }
 function factorMatch(body: B.Match, scope: Map<number, Binding>, result: B.LTerm, owner: string, direct = false): B.Body {
@@ -1323,15 +1323,23 @@ function freshenDeforestationId(): number {return syntheticId++;}
 // splicing two definitions into one helper could otherwise alias a forwarded
 // capture or a substituted formal. References are rewritten through the same
 // environment the composer already threads for parameter substitution.
-function freshenDeforestationPatterns(patterns: readonly B.Patt[], env: DeforestEnv): B.Patt[] {
-  return patterns.map(pattern => {
+function freshenDeforestationPatterns(patterns: readonly B.Patt[], env: DeforestEnv, state: DeforestState): B.Patt[] | undefined {
+  const out: B.Patt[] = [];
+  for (const pattern of patterns) {
     if (pattern.$ === 'PVar') {
-      const id = freshenDeforestationId();
+      const binding = ownerBindings.get(state.owner)?.get(pattern.i);
+      if (!binding) return undefined;
+      const id = freshenDeforestationId(), type = substituteBinder(binding.type, env);
       env.set(pattern.i, {$: 'Var', k: pattern.k, i: id});
-      return {...pattern, i: id};
+      state.bindings.set(id, {id, name: pattern.k, type, quantity: pattern.q});
+      out.push({...pattern, i: id});
+    } else {
+      const x = freshenDeforestationPatterns(pattern.x, env, state);
+      if (!x) return undefined;
+      out.push({...pattern, x});
     }
-    return {...pattern, x: freshenDeforestationPatterns(pattern.x, env)};
-  });
+  }
+  return out;
 }
 const deforestProducerKinds: Record<string, true> = {'pure-source-body': true, 'pure-ordered-match': true,
   'deforested-producer': true, 'deforested-continuation': true};
@@ -1371,11 +1379,13 @@ function uniqueParameterIds(parameters: ParserParameter[]): boolean {
   return true;
 }
 type DeforestState = {recordType: B.LTerm; constructor: string; arity: number; continuation: string;
-  continuationArgs: B.LTerm[]; nodes: number; producers: string[]; erased: Set<number>; eliminated: Map<string, number>; depth: number};
+  continuationArgs: B.LTerm[]; nodes: number; producers: string[]; erased: Set<number>; eliminated: Map<string, number>; depth: number;
+  owner: string; bindings: Map<number, Binding>};
 function composeDeforestationBody(body: B.Body, env: DeforestEnv, state: DeforestState): B.Body | undefined {
   if (body.$ === 'Local') {
     const values = body.v.map(value => substituteBinder(value, env));
-    const inner: DeforestEnv = new Map(env), k = freshenDeforestationPatterns(body.k, inner);
+    const inner: DeforestEnv = new Map(env), k = freshenDeforestationPatterns(body.k, inner, state);
+    if (!k) return undefined;
     const f = composeDeforestationBody(body.f, inner, state);
     if (!f) return undefined;
     return {...body, k, v: values, f};
@@ -1383,7 +1393,8 @@ function composeDeforestationBody(body: B.Body, env: DeforestEnv, state: Defores
   if (body.$ === 'Match') {
     const scrutinees = body.e.map(value => substituteBinder(value, env)), rows: B.Match['r'] = [];
     for (const row of body.r) {
-      const inner: DeforestEnv = new Map(env), p = freshenDeforestationPatterns(row.p, inner);
+      const inner: DeforestEnv = new Map(env), p = freshenDeforestationPatterns(row.p, inner, state);
+      if (!p) return undefined;
       const f = composeDeforestationBody(row.f, inner, state);
       if (!f) return undefined;
       rows.push({p, f});
@@ -1410,13 +1421,15 @@ function composeDeforestationTerm(term: B.LTerm, env: DeforestEnv, state: Defore
     if (target === undefined || !isDeforestableProducer(target, state.recordType)) return undefined;
     if (target.parameters.length !== args.length || target.parameters.some(parameter => parameter[0].$ === 'None')) return undefined;
     if (state.depth + 1 > DEFOREST_DEPTH) return undefined;
-    const inner: DeforestState = {...state, depth: state.depth + 1, nodes: state.nodes, producers: [...state.producers, target.name]};
+    const inner: DeforestState = {...state, owner: target.owner, depth: state.depth + 1, nodes: state.nodes, producers: [...state.producers, target.name]};
     const scope: DeforestEnv = new Map(), declarations: {value: SourceVar; argument: B.LTerm; quantity: B.Quant; span: ParserParameter[4]}[] = [];
     for (let index = 0; index < args.length; index++) {
       const parameter = target.parameters[index]!;
       const argument = substituteBinder(args[index]!, env);
       if (freeBinderIds(argument).some(id => state.erased.has(id))) return undefined;
       const value = deforestVariable();
+      const type = substituteBinder(parameter[3], scope);
+      state.bindings.set(value.i, {id: value.i, name: value.k, type, quantity: parameter[0]});
       scope.set(parameter[2], value);
       declarations.push({value, argument, quantity: parameter[0], span: parameter[4]});
     }
@@ -1435,6 +1448,39 @@ function composeDeforestationTerm(term: B.LTerm, env: DeforestEnv, state: Defore
   }
   return undefined;
 }
+// Inlining a pure helper can expose a match after computed locals. Reuse the
+// ordinary dependency-first match factoring so every scrutinized value is a
+// parameter again, without rebuilding the eliminated result record.
+function factorDeforestationBody(body: B.Body, state: DeforestState, result: B.LTerm, output: typeof generated): B.Body | undefined {
+  if (body.$ === 'Local') {
+    const f = factorDeforestationBody(body.f, state, result, output);
+    return f ? {...body, f} : undefined;
+  }
+  if (body.$ !== 'Match') return body;
+  const rows: B.Match['r'] = [];
+  for (const row of body.r) {
+    const f = factorDeforestationBody(row.f, state, result, output);
+    if (!f) return undefined;
+    rows.push({...row, f});
+  }
+  const first: number[] = [];
+  for (const expression of body.e) {
+    if (expression.$ !== 'Var' || first.includes(expression.i)) return undefined;
+    first.push(expression.i);
+  }
+  const matched = {...body, r: rows};
+  // A refused dependent/missing capture must leave the original call intact.
+  // All helpers stay local to this attempt until the complete rewrite passes.
+  const available = new Set<number>();
+  for (const id of [...first, ...bodyFree(matched).filter(id => !first.includes(id))]) {
+    const binding = state.bindings.get(id);
+    if (!binding || freeBinderIds(binding.type).some(id => !available.has(id))) return undefined;
+    available.add(id);
+  }
+  return factorHelper(matched, state.bindings, result, state.owner, first,
+    'deforested-match', 'deforest_match', true, output);
+}
+
 function referencesBefore(def: (typeof generated)[number], limit: number,
   positions: Map<string, number>, inserted: Map<string, number>): boolean {
   let ok = true;
@@ -1540,7 +1586,9 @@ function attemptDeforestation(caller: (typeof generated)[number], local: B.Local
   const fusedName = prefix + '_deforest_producer_' + serial;
   const state: DeforestState = {recordType: consumer.parameters[0]![3], constructor: pattern.k, arity: fields.length,
     continuation: continuationName, continuationArgs: captures.map(parameter => B.Var(parameter[1], parameter[2])),
-    nodes: 0, producers: [producer.name],
+    nodes: 0, producers: [producer.name], owner: producer.owner,
+    bindings: new Map(fusedParameters.map(parameter => [parameter[2],
+      {id: parameter[2], name: parameter[1], type: parameter[3], quantity: parameter[0]}])),
     erased: new Set(producer.parameters.filter(parameter => parameter[0].$ === 'None').map(parameter => parameter[2])),
     eliminated: new Map(), depth: 0};
   const fusedBody = composeDeforestationBody(producer.body, new Map(), state);
@@ -1551,21 +1599,24 @@ function attemptDeforestation(caller: (typeof generated)[number], local: B.Local
   // binder may share an id with any fused parameter, or source reprinting from
   // numeric ids would let the inner binder capture that parameter.
   for (const id of bodyBinderIds(fusedBody)) if (fusedIds.has(id)) return undefined;
+  const matches: typeof generated = [];
+  const admittedBody = factorDeforestationBody(fusedBody, state, consumer.result, matches);
+  if (!admittedBody) return rejectDeforestation('match-capture');
   const continuation = {name: continuationName, parameters: continuationParameters, result: consumer.result,
     body: row.f, owner: consumer.owner, kind: 'deforested-continuation'};
   const fused = {name: fusedName, parameters: fusedParameters, result: consumer.result,
-    body: fusedBody, owner: producer.owner, kind: 'deforested-producer'};
-  const positions = new Map(generated.map((def, index) => [def.name, index]));
-  const index = positions.get(consumer.name)!;
-  const inserted = new Map([[continuationName, index], [fusedName, index + 1]]);
-  if (!referencesBefore(continuation, index, positions, inserted) || !referencesBefore(fused, index + 1, positions, inserted))
+    body: admittedBody, owner: producer.owner, kind: 'deforested-producer'};
+  const index = generated.indexOf(consumer), replacement = [continuation, ...matches, fused];
+  const positions = new Map(generated.map((def, at) =>
+    [def.name, at < index ? at : at + replacement.length - 1]));
+  const inserted = new Map(replacement.map((def, at) => [def.name, index + at]));
+  if (replacement.some((def, at) => !referencesBefore(def, index + at, positions, inserted)))
     return rejectDeforestation('forward-reference');
   reserve(continuationName);
   reserve(fusedName);
   deforestationSerial++;
-  generated.splice(index, 1, continuation, fused);
-  generatedByName.set(continuationName, continuation);
-  generatedByName.set(fusedName, fused);
+  generated.splice(index, 1, ...replacement);
+  for (const def of replacement) generatedByName.set(def.name, def);
   generatedByName.delete(consumer.name);
   deforestationNodes += state.nodes;
   const eliminated = new Map<string, {type: string; constructor: string; count: number}>();
