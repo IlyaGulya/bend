@@ -2209,8 +2209,27 @@ def multi_round_n(items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds
   match Nat.is_gt(left, 0n):
     case True{}: multi_round_n(items, facts, fwds, banned, layouts, width, Nat.sub(left, 1n), multi_round(items, facts, fwds, banned, layouts, width, state, MultiUp{Map.new(&2, Bool), Map.new(&2, Bool)}))
     case False{}: state
+# The loop starts from the optimistic candidate, never from the empty map: a
+# position is assumed unboxed and a code is assumed multi, and each round removes
+# only what its premises do not support. Starting empty would make every premise
+# about a neighbour false on the first pass, so a self-forwarding tail recursion
+# (chunk forwarding its own record parameter) or any mutually forwarding pair
+# would never seed at all. Removal is monotone, so the iteration settles at the
+# greatest fixed point the rules allow.
 def multi_round_start(items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, layouts: Map<&2, MultiLayout>, width: Nat) -> MultiUp:
-  multi_round_n(items, facts, fwds, banned, layouts, width, 12n, MultiUp{Map.new(&2, Bool), Map.new(&2, Bool)})
+  multi_round_n(items, facts, fwds, banned, layouts, width, 12n, multi_round_seed(items, Map.new(&2, Bool), Map.new(&2, Bool)))
+def multi_round_seed(items: List<&2, BIR.Code>, multi: Map<&2, Bool>, up: Map<&2, Bool>) -> MultiUp:
+  match items:
+    case Nil{}: MultiUp{up, multi}
+    case code <> rest: multi_round_seed_one(code, rest, multi, up)
+def multi_round_seed_one(code: BIR.Code, rest: List<&2, BIR.Code>, multi: Map<&2, Bool>, up: Map<&2, Bool>) -> MultiUp:
+  match code:
+    case BIR.Code{id, _, parameters, _}:
+      multi_round_seed(rest, Map.set(&2, Bool, multi, U32.show(id), True{}), multi_seed_ups(parameters, 0n, id, up))
+def multi_seed_ups(items: List<&2, BIR.Parameter>, index: Nat, id: U32, up: Map<&2, Bool>) -> Map<&2, Bool>:
+  match items:
+    case Nil{}: up
+    case _ <> rest: multi_seed_ups(rest, (index + 1n : Nat), id, Map.set(&2, Bool, up, multi_up_key(id, index), True{}))
 
 type MRewCtx is Data:
   MRewCtx{code: U32, layouts: Map<&2, MultiLayout>, multi: Map<&2, Bool>, up: Map<&2, Bool>, width: Nat, params: Map<&2, MultiParam>, private: Bool, sub: Maybe<&2, MultiSubst>, cur: Maybe<&2, U32>, bindings: Map<&2, MultiCtor>, uses: Map<&2, Nat>}
