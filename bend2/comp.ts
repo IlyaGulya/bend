@@ -268,6 +268,10 @@ const OPERATIONS: Record<string, Intr> = Object.setPrototypeOf({
   string_append: { JS: "($0 + $1)" },
   string_contains: { JS: "string_contains($0, $1)" },
   string_length: { JS: "[...str_out($0)].length" },
+  // C only: Base's String.cmp hands back both consumed strings and their
+  // order. The helper only reads them, so the arguments themselves are the
+  // result, laid out as (String, String, Cmp tag).
+  string_cmp: { C: ["$0", "$1", "string_cmp_tag(e, $0, $1)"] },
   ...Object.fromEntries(Object.entries({
     new: "array_new($0, $1)", set: "($0[$1 % $0.length] = $2, $0)",
     get: "{$: \"Tuple\", fst: $0, snd: $0[$1 % $0.length]}",
@@ -4777,6 +4781,32 @@ AINLINE u64 term_peek(DEV u64* H, Term t) {
     return w64_load(&H[term_loc(t)]) >> 24;
   }
   return term_loc(t);
+}
+
+// Base's String.cmp, reading both strings in place: the first differing code
+// decides, a shorter prefix sorts first, and neither string is consumed. A
+// character is its full u32, so the comparison is unsigned.
+INLINE int string_cmp_read(Env e, Term a, Term b) {
+  for (;;) {
+    bool ca = term_aux(a) == CID(SCon);
+    bool cb = term_aux(b) == CID(SCon);
+    if (ca != cb) return ca ? 1 : -1;
+    if (!ca) return 0;
+    u64 la = term_peek(e.mem, a);
+    u64 lb = term_peek(e.mem, b);
+    u32 xa = (u32)e.mem[la];
+    u32 xb = (u32)e.mem[lb];
+    if (xa != xb) return xa < xb ? -1 : 1;
+    a = e.mem[la + 1];
+    b = e.mem[lb + 1];
+  }
+}
+
+// Cmp's tags are LT, EQ, GT, so a negative, zero or positive answer is 0, 1
+// or 2, the same encoding U32.cmp leaves in its result.
+INLINE u64 string_cmp_tag(Env e, Term a, Term b) {
+  int c = string_cmp_read(e, a, b);
+  return (u64)(c > 0) + (u64)(c >= 0);
 }
 
 // Base's Map.bit, reading the key in place: 33 bits a char, a presence bit
