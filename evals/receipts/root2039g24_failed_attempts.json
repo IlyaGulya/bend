@@ -1468,8 +1468,7 @@
           }
         ]
       }
-    }
-    ,
+    },
     {
       "runId": "local2039g24r3",
       "status": "RESOURCE_LIMIT",
@@ -1478,6 +1477,15 @@
       "receipt": "evals/receipts/root2039g24r3_rejected.json",
       "receiptSha256": "5bee5af098ff55ad5fe95e3c2232a5f31e7f235aebaa555f467ae4dea3ec05f3",
       "reason": "Canonical C generation exceeded original 8589934592-byte RSS guard after all 12972 definitions / 13594 events validated; no native executable or bootstrap."
+    },
+    {
+      "runId": "local2039g24r4",
+      "status": "FAIL",
+      "accepted": false,
+      "byteFixedpoint": false,
+      "receipt": "evals/receipts/root2039g24r4_rejected.json",
+      "receiptSha256": "d77a012a50a4ecc64a3285c1d3d8510e4f52bba2c93529244da9902c278a2c3e",
+      "reason": "Full native build validated 12974 definitions / 13596 events and all95seedfixtures passed; stageOne53261354bytes; original600000ms bootstrap guard expired during stage-two-check, no stageTwo."
     }
   ],
   "interpretation": [

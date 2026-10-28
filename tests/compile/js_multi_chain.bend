@@ -9,8 +9,10 @@
 # its zero arm returns its own parameter, so a forwarded result is destructured
 # by the next `settle`. `stash` is an ordinary boxed consumer: its tuple field
 # can only hold a real record, so the private result is materialized exactly
-# once before it is stored, and `describe` reads the fields back. `unwrap` is
-# the nested-pattern region shape: its arms nest constructor patterns that can
+# once before it is stored, and `describe` reads the fields back. `relay` feeds
+# its own decomposed parameter into a selected call whose result it stores, so
+# that call must expand the parameter and keep the private convention. `unwrap`
+# is the nested-pattern region shape: its arms nest constructor patterns that can
 # fail, and each arm calls `scale` before it leaves.
 import Base
 
@@ -86,6 +88,15 @@ def escape_after_forward() -> U32:
   y = roll(x)
   stash_read(stash(y))
 
+# A private parameter must stay decomposed through the call; its stored result
+# is boxed once. The parameterized entry reaches the rewritten call path.
+def relay(r: JsMultiSched) -> JsMultiSched:
+  p = stash(roll(r))
+  JsMultiHalt{stash_read(p)}
+
+def relay_reach(z: U32) -> U32:
+  describe(settle(relay(JsMultiHalt{z})))
+
 # Scalar parameter flags shrink before arity is decided. The tail chain must
 # never stop relaxation at equal counts with different flags.
 def quad_a(a: U32, b: U32, c: U32, d: U32, e: U32, f: U32, g: U32, h: U32, i: U32) -> JsMultiQuad:
@@ -126,6 +137,7 @@ def main() -> IO(Unit):
     Unit <- IO.print(U32.show(after_d()))
     Unit <- IO.print(U32.show(overlapping()))
     Unit <- IO.print(U32.show(escape_after_forward()))
+    Unit <- IO.print(U32.show(relay_reach(41)))
     IO.print(U32.show(quad_sum(quad_c(1))))
 
 #|75
@@ -136,4 +148,5 @@ def main() -> IO(Unit):
 #|76
 #|89
 #|58
+#|20044
 #|45

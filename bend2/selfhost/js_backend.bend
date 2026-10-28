@@ -2992,17 +2992,31 @@ def multi_rewrite_direct(id: U32, code: U32, args: List<&2, BIR.Arg>, next: BIR.
 def multi_rewrite_direct_decide(priv: Bool, id: U32, code: U32, args: List<&2, BIR.Arg>, next: BIR.Block, ctx: MRewCtx, seed: Nat) -> MultiRew:
   match priv:
     case True{}: multi_rewrite_direct_private(id, code, args, next, ctx, seed)
+    case False{}: multi_rewrite_direct_boxed(multi_args_private(args, ctx), id, code, args, next, ctx, seed)
+# A boxed call can name only a boxed local. When the site cannot take the
+# private convention and an argument exists only decomposed, refuse this owner:
+# the plan then withdraws every route that named it, so its callers fall back to
+# its boxed entry instead of reading a missing or decomposed local.
+def multi_rewrite_direct_boxed(decomposed: Bool, id: U32, code: U32, args: List<&2, BIR.Arg>, next: BIR.Block, ctx: MRewCtx, seed: Nat) -> MultiRew:
+  match decomposed:
     case False{}: multi_rewrite_direct_pub(id, code, args, next, ctx, seed)
+    case True{}: multi_rewrite_direct_refused(multi_rewrite_direct_pub(id, code, args, next, ctx, seed))
+def multi_rewrite_direct_refused(r: MultiRew) -> MultiRew:
+  match r:
+    case MultiRew{body, windows, sites, mr, dropped, _, own, next}:
+      MultiRew{body, windows, sites, mr, dropped, True{}, own, next}
 def multi_rewrite_direct_private(id: U32, code: U32, args: List<&2, BIR.Arg>, next: BIR.Block, ctx: MRewCtx, seed: Nat) -> MultiRew:
   multi_rewrite_direct_open(multi_site_uses(next, id, multi_ctx_result(ctx, id, True{}), Nil{}), id, code, args, next, ctx, seed)
 def multi_rewrite_direct_open(open: Bool, id: U32, code: U32, args: List<&2, BIR.Arg>, next: BIR.Block, ctx: MRewCtx, seed: Nat) -> MultiRew:
   match open:
     case True{}: multi_rewrite_direct_body(id, code, multi_expand_args(args, code, ctx), next, multi_ctx_result(ctx, id, True{}), seed, True{})
-    case False{}: multi_rewrite_direct_escape(multi_args_sub_named(args, ctx), id, code, args, next, ctx, seed)
+    case False{}: multi_rewrite_direct_escape(multi_args_private(args, ctx), id, code, args, next, ctx, seed)
 # An escaping result with boxed arguments gains nothing from a private call and
-# immediate reboxing. A decomposed argument still needs the private convention.
-def multi_rewrite_direct_escape(words: Bool, id: U32, code: U32, args: List<&2, BIR.Arg>, next: BIR.Block, ctx: MRewCtx, seed: Nat) -> MultiRew:
-  match words:
+# immediate reboxing. An argument that only exists decomposed still needs the
+# private convention: neither a substituted window word nor an unboxed incoming
+# parameter has a boxed local in a private frame.
+def multi_rewrite_direct_escape(decomposed: Bool, id: U32, code: U32, args: List<&2, BIR.Arg>, next: BIR.Block, ctx: MRewCtx, seed: Nat) -> MultiRew:
+  match decomposed:
     case False{}: multi_rewrite_direct_pub(id, code, args, next, ctx, seed)
     case True{}: multi_rewrite_direct_body(id, code, multi_expand_args(args, code, ctx), next, multi_ctx_result(ctx, id, False{}), seed, True{})
 def multi_rewrite_direct_pub(id: U32, code: U32, args: List<&2, BIR.Arg>, next: BIR.Block, ctx: MRewCtx, seed: Nat) -> MultiRew:
@@ -3071,7 +3085,7 @@ def multi_tail_expand(code: U32, args: List<&2, BIR.Arg>, ctx: MRewCtx) -> List<
 # A boxed tail result has no strict consumer to benefit from a window. Keep the
 # boxed tail call unless an argument already exists only as decomposed words.
 def multi_tail_convertible(code: U32, args: List<&2, BIR.Arg>, ctx: MRewCtx) -> Bool:
-  Bool.and(multi_args_sub_named(args, ctx), Bool.and(multi_multi_get(multi_ctx_multi(ctx), code), Bool.and(multi_args_open(args, code, ctx), multi_tail_arity_ok(args, code, ctx))))
+  Bool.and(multi_args_private(args, ctx), Bool.and(multi_multi_get(multi_ctx_multi(ctx), code), Bool.and(multi_args_open(args, code, ctx), multi_tail_arity_ok(args, code, ctx))))
 def multi_tail_arity_ok(args: List<&2, BIR.Arg>, code: U32, ctx: MRewCtx) -> Bool:
   multi_arity_bound(Nat.add(multi_expanded_count(args, code, ctx, 0n), 1n))
 def multi_expanded_count(args: List<&2, BIR.Arg>, code: U32, ctx: MRewCtx, index: Nat) -> Nat:
@@ -3087,14 +3101,16 @@ def multi_rewrite_tail_convert(convert: Bool, code: U32, args: List<&2, BIR.Arg>
     case False{}: multi_rewrite_tail_pub(code, args, ctx, seed)
     case True{}: multi_rewrite_tail_converted(code, args, ctx, seed)
 def multi_rewrite_tail_pub(code: U32, args: List<&2, BIR.Arg>, ctx: MRewCtx, seed: Nat) -> MultiRew:
-  MultiRew{BIR.TailDirect{code, multi_subst_args(args, ctx)}, Map.new(&2, MultiWindow), Map.new(&2, Bool), Map.new(&2, Bool), Map.new(&2, Bool), multi_args_sub_named(args, ctx), False{}, seed}
-def multi_args_sub_named(args: List<&2, BIR.Arg>, ctx: MRewCtx) -> Bool:
+  MultiRew{BIR.TailDirect{code, multi_subst_args(args, ctx)}, Map.new(&2, MultiWindow), Map.new(&2, Bool), Map.new(&2, Bool), Map.new(&2, Bool), multi_args_private(args, ctx), False{}, seed}
+# An argument needs the private convention when it is a substituted window word
+# or an incoming parameter the private signature keeps decomposed.
+def multi_args_private(args: List<&2, BIR.Arg>, ctx: MRewCtx) -> Bool:
   match args:
     case Nil{}: False{}
-    case BIR.Arg{_, value} <> rest: Bool.or(multi_atom_sub_named(value, ctx), multi_args_sub_named(rest, ctx))
-def multi_atom_sub_named(value: BIR.Atom, ctx: MRewCtx) -> Bool:
+    case BIR.Arg{_, value} <> rest: Bool.or(multi_atom_private(value, ctx), multi_args_private(rest, ctx))
+def multi_atom_private(value: BIR.Atom, ctx: MRewCtx) -> Bool:
   match value:
-    case BIR.Local{id}: multi_sub_found(multi_sub_at(multi_ctx_sub(ctx), id))
+    case BIR.Local{id}: Bool.or(multi_sub_found(multi_sub_at(multi_ctx_sub(ctx), id)), multi_param_unboxed(multi_ctx_params(ctx), id))
     case _: False{}
 def multi_sub_found(found: Maybe<&2, MultiSubst>) -> Bool:
   match found:

@@ -20380,7 +20380,19 @@ def cps_provider_8_multi_rewrite_direct_decide(v_1: Bool, v_3: U32, v_5: U32, v_
     case True{}:
       cps_provider_8_multi_rewrite_direct_private(v_3, v_5, v_7, v_8, v_10, v_12)
     case False{}:
+      cps_provider_8_multi_rewrite_direct_boxed(cps_provider_8_multi_args_private(v_7, v_10), v_3, v_5, v_7, v_8, v_10, v_12)
+
+def cps_provider_8_multi_rewrite_direct_boxed(v_1: Bool, v_3: U32, v_5: U32, v_7: List<&2, BIR.Arg>, v_8: BIR.Block, v_10: cps_provider_8_MRewCtx, v_12: Nat) -> cps_provider_8_MultiRew:
+  match v_1:
+    case False{}:
       cps_provider_8_multi_rewrite_direct_pub(v_3, v_5, v_7, v_8, v_10, v_12)
+    case True{}:
+      cps_provider_8_multi_rewrite_direct_refused(cps_provider_8_multi_rewrite_direct_pub(v_3, v_5, v_7, v_8, v_10, v_12))
+
+def cps_provider_8_multi_rewrite_direct_refused(v_1: cps_provider_8_MultiRew) -> cps_provider_8_MultiRew:
+  match v_1:
+    case cps_provider_8_MultiRew{v_11, v_12, v_13, v_14, v_15, _, v_17, v_18}:
+      cps_provider_8_MultiRew{v_11, v_12, v_13, v_14, v_15, True{}, v_17, v_18}
 
 def cps_provider_8_multi_rewrite_direct_private(v_1: U32, v_3: U32, v_5: List<&2, BIR.Arg>, v_6: BIR.Block, v_8: cps_provider_8_MRewCtx, v_10: Nat) -> cps_provider_8_MultiRew:
   cps_provider_8_multi_rewrite_direct_open(cps_provider_8_multi_site_uses(v_6, v_1, cps_provider_8_multi_ctx_result(v_8, v_1, True{}), []), v_1, v_3, v_5, v_6, v_8, v_10)
@@ -20390,7 +20402,7 @@ def cps_provider_8_multi_rewrite_direct_open(v_1: Bool, v_3: U32, v_5: U32, v_7:
     case True{}:
       cps_provider_8_multi_rewrite_direct_body(v_3, v_5, cps_provider_8_multi_expand_args(v_7, v_5, v_10), v_8, cps_provider_8_multi_ctx_result(v_10, v_3, True{}), v_12, True{})
     case False{}:
-      cps_provider_8_multi_rewrite_direct_escape(cps_provider_8_multi_args_sub_named(v_7, v_10), v_3, v_5, v_7, v_8, v_10, v_12)
+      cps_provider_8_multi_rewrite_direct_escape(cps_provider_8_multi_args_private(v_7, v_10), v_3, v_5, v_7, v_8, v_10, v_12)
 
 def cps_provider_8_multi_rewrite_direct_escape(v_1: Bool, v_3: U32, v_5: U32, v_7: List<&2, BIR.Arg>, v_8: BIR.Block, v_10: cps_provider_8_MRewCtx, v_12: Nat) -> cps_provider_8_MultiRew:
   match v_1:
@@ -20482,7 +20494,7 @@ def cps_provider_8_multi_tail_expand(v_1: U32, v_3: List<&2, BIR.Arg>, v_5: cps_
   cps_provider_8_multi_expand_args(v_3, v_1, v_5)
 
 def cps_provider_8_multi_tail_convertible(v_1: U32, v_3: List<&2, BIR.Arg>, v_5: cps_provider_8_MRewCtx) -> Bool:
-  Bool.and(cps_provider_8_multi_args_sub_named(v_3, v_5), Bool.and(cps_provider_8_multi_multi_get(cps_provider_8_multi_ctx_multi(v_5), v_1), Bool.and(cps_provider_8_multi_args_open(v_3, v_1, v_5), cps_provider_8_multi_tail_arity_ok(v_3, v_1, v_5))))
+  Bool.and(cps_provider_8_multi_args_private(v_3, v_5), Bool.and(cps_provider_8_multi_multi_get(cps_provider_8_multi_ctx_multi(v_5), v_1), Bool.and(cps_provider_8_multi_args_open(v_3, v_1, v_5), cps_provider_8_multi_tail_arity_ok(v_3, v_1, v_5))))
 
 def cps_provider_8_multi_tail_arity_ok(v_1: List<&2, BIR.Arg>, v_3: U32, v_5: cps_provider_8_MRewCtx) -> Bool:
   cps_provider_8_multi_arity_bound(Nat.add(cps_provider_8_multi_expanded_count(v_1, v_3, v_5, 0n), 1n))
@@ -20509,19 +20521,19 @@ def cps_provider_8_multi_rewrite_tail_convert(v_1: Bool, v_3: U32, v_5: List<&2,
       cps_provider_8_multi_rewrite_tail_converted(v_3, v_5, v_7, v_9)
 
 def cps_provider_8_multi_rewrite_tail_pub(v_1: U32, v_3: List<&2, BIR.Arg>, v_5: cps_provider_8_MRewCtx, v_7: Nat) -> cps_provider_8_MultiRew:
-  cps_provider_8_MultiRew{BIR.TailDirect{v_1, cps_provider_8_multi_subst_args(v_3, v_5)}, Map.new(&2, cps_provider_8_MultiWindow), Map.new(&2, Bool), Map.new(&2, Bool), Map.new(&2, Bool), cps_provider_8_multi_args_sub_named(v_3, v_5), False{}, v_7}
+  cps_provider_8_MultiRew{BIR.TailDirect{v_1, cps_provider_8_multi_subst_args(v_3, v_5)}, Map.new(&2, cps_provider_8_MultiWindow), Map.new(&2, Bool), Map.new(&2, Bool), Map.new(&2, Bool), cps_provider_8_multi_args_private(v_3, v_5), False{}, v_7}
 
-def cps_provider_8_multi_args_sub_named(v_1: List<&2, BIR.Arg>, v_3: cps_provider_8_MRewCtx) -> Bool:
+def cps_provider_8_multi_args_private(v_1: List<&2, BIR.Arg>, v_3: cps_provider_8_MRewCtx) -> Bool:
   match v_1:
     case []:
       False{}
     case BIR.Arg{_, v_9} <> v_10:
-      Bool.or(cps_provider_8_multi_atom_sub_named(v_9, v_3), cps_provider_8_multi_args_sub_named(v_10, v_3))
+      Bool.or(cps_provider_8_multi_atom_private(v_9, v_3), cps_provider_8_multi_args_private(v_10, v_3))
 
-def cps_provider_8_multi_atom_sub_named(v_0: BIR.Atom, v_2: cps_provider_8_MRewCtx) -> Bool:
+def cps_provider_8_multi_atom_private(v_0: BIR.Atom, v_2: cps_provider_8_MRewCtx) -> Bool:
   match v_0:
     case BIR.Local{v_5}:
-      cps_provider_8_multi_sub_found(cps_provider_8_multi_sub_at(cps_provider_8_multi_ctx_sub(v_2), v_5))
+      Bool.or(cps_provider_8_multi_sub_found(cps_provider_8_multi_sub_at(cps_provider_8_multi_ctx_sub(v_2), v_5)), cps_provider_8_multi_param_unboxed(cps_provider_8_multi_ctx_params(v_2), v_5))
     case _:
       False{}
 

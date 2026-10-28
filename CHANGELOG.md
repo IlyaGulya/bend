@@ -21,10 +21,15 @@ latest one; the GitHub release carries the same notes.
   Boxed tail calls stay in the boxed convention instead of immediately
   reconstructing a private result. Seven actual emitted-JS regression cases
   pass, including overlapping live results, reentrancy, arity boundaries and
-  boxed escape. Full qualification remains failed: r1/r2 stopped at the
-  original bootstrap deadline; r3 exceeded the original 8-GiB RSS guard
-  during canonical C generation after all 12,972 definitions / 13,594 events
-  validated. No G24 fixedpoint, speedup or memory reduction is claimed.
+  boxed escape. A private incoming parameter remains decomposed when its
+  callee's result escapes to storage; the parameterized regression reproduces
+  the prior missing-local exception and passes with the repaired emitter.
+  Full qualification remains failed: r1/r2/r4 stopped at the original
+  bootstrap deadline. R4 validated all 12,974 definitions / 13,596 events,
+  passed all95 native seed fixtures and produced a53,261,354-byte stage1,
+  but stage2 checking did not finish. R3 exceeded the original8-GiB RSS guard
+  during canonical C generation. No G24 fixedpoint, speedup or memory
+  reduction is claimed.
 
 - G23 completes the full native compiler root and a real native-stage0 →
   stage1 → stage2 byte fixedpoint: 14,096 definitions / 14,686 validation

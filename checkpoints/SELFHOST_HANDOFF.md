@@ -4,16 +4,24 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
-G24 остаётся **не принятым**. Попытки `local2039g24`, `r1`, `r2`, `r3`
-сохранены как FAIL: r1/r2 достигли прежнего bootstrap deadline при
+G24 остаётся **не принятым**. Попытки `local2039g24`, `r1`–`r4`
+сохранены как FAIL: r1/r2/r4 достигли прежнего bootstrap deadline при
 stage-two-check; r3 после проверки 12 972 определений / 13 594 событий
 превысил прежний RSS guard при canonical C generation
 (8 593 440 768 B; footprint 8 581 291 472 B; 28 830 ms).
-Семь emitted-JS regression cases и отдельные C/JS smoke прошли, но это
-не fixedpoint и не performance acceptance. Принятым остаётся G23 ниже.
+R4 собрал полный native root: 12 974 определения / 13 596 событий,
+без исключений и патчей; build 303 009 ms, RSS 5 337 907 200 B,
+footprint 5 690 743 048 B. Прошли 95 seed fixtures; stage1 —
+53 261 354 B, `f289b2944b512c250f5224c010b8fb2eaa52d6fb7c0dbd4b6f0381c72b7f5e39`.
+Stage2 начал check на 331 720 ms, но до исходного guard 600 с не закончил.
+Семь emitted-JS regression cases проходят; новый parameterized case
+воспроизводит прежний ReferenceError для private incoming parameter и
+проходит после исправления. Это не fixedpoint и не performance acceptance.
+Принятым остаётся G23 ниже.
 Точные команды и границы:
 `evals/receipts/root2039g24_failed_attempts.json`,
 `evals/receipts/root2039g24r3_rejected.json`,
+`evals/receipts/root2039g24r4_rejected.json`,
 `evals/receipts/producer2039g24_source_smoke.json`.
 
 
