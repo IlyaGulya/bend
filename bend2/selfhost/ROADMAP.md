@@ -716,6 +716,34 @@ attribution remains OPEN**.
 - [ ] All active workstreams keep the clean build runnable with profiling and
 diagnostic hooks disabled.
 
+### 2.4 Post-G21 FIR/BIR throughput tasks
+
+Task status, priorities, dependencies and acceptance criteria are tracked in
+**br**, under the existing `bend-nxf` selfhost epic. This section is an index,
+not a second task checklist.
+
+| Review ID | br issue | Workstream |
+| --- | --- | --- |
+| THR-01 | `bend-nxf.7` | Comparable baseline and native C cost attribution |
+| THR-02 | `bend-nxf.8` | Reuse typing facts during source-affinity validation |
+| THR-03 | `bend-nxf.9` | Reduce private result and arena-read reconstruction |
+| THR-04 | `bend-nxf.10` | Carry checked signatures through definition finishing |
+| THR-05 | `bend-nxf.11` | Precompute JS continuation capture plans |
+| THR-06 | `bend-nxf.12` | Reuse canonical C constructor plans and metadata indices |
+| THR-07 | `bend-nxf.13` | Reduce clean parse/expand representation churn |
+
+Use `br show <issue>` for the scope and qualification contract, and `br ready`
+for actionable work. THR-02 through THR-07 depend on `bend-nxf.7`; readiness
+and later dependency changes belong in br, not in Markdown checkboxes.
+
+Baseline: accepted G21 source `03c4f278` and its frozen full-root corpus above.
+The goal is faster clean root-to-JS compilation than the official TS producer,
+not a microbenchmark win or a backend switch. Every issue retains its focused
+acceptance criteria and the original ABI/fuel/quantum, resource limits,
+full-root/fixedpoint/consumer gates and selfhost checkpoint discipline.
+Correctness obligations remain in §3.1–§3.2; finite suites do not prove universal
+FIR/BIR laws. Existing unrelated and historical issue states are unchanged.
+
 ---
 
 ## 3. FIR / BIR / C acceptance backlog

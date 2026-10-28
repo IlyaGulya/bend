@@ -50,6 +50,22 @@ lines its run must print, and the gates run on the mini cluster.
                         gates/ping.ts and gen_charts.ts read it there (or at
                         $SITE_REPO)
 
+## Task tracking
+
+- Use **br** for task tracking. Keep task descriptions, priorities,
+  dependencies, acceptance criteria and status in br; do not maintain parallel
+  task checklists in Markdown or session-only TODO lists. Roadmaps may link to
+  br issue IDs and describe architectural context.
+- Start with `br ready` and inspect the selected issue with `br show <id>`.
+  Search existing issues before `br create` to avoid duplicates. Mark work
+  in progress when starting, record blockers as dependencies with `br dep add`,
+  and close issues with `br close` only after their acceptance criteria pass.
+- Use the existing `.beads/` workspace. Run `br init` only when no workspace
+  exists; never reinitialize an existing database with `--force`.
+- Run `br sync --flush-only` after task changes to persist the JSONL export.
+  Keep local SQLite database files out of Git; `.beads/issues.jsonl` is the
+  portable task record. Syncing tasks does not commit or push code.
+
 ## Selfhost version checkpoints
 
 - Commit the current checkpoint and every subsequent selfhost version before
