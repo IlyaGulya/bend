@@ -27,6 +27,9 @@ type JsMultiWake is Data:
 type JsMultiWrapped is Data:
   JsMultiWrapped{wake: JsMultiWake, sched: JsMultiSched, tag: U32}
 
+type JsMultiQuad is Data:
+  JsMultiQuad{a: U32, b: U32, c: U32, d: U32}
+
 def settle(r: JsMultiSched) -> JsMultiSched:
   match r:
     case JsMultiRun{fuel, pc}:
@@ -69,6 +72,36 @@ def stash_read(p: JsMultiSched & U32) -> U32:
 def after_d() -> U32:
   stash_read(stash(chunk(131n, JsMultiRun{5, 7})))
 
+# Both results stay live across another split before their words are forwarded.
+def overlapping() -> U32:
+  x = roll(JsMultiRun{5, 7})
+  y = roll(JsMultiRun{3, 2})
+  a = roll(x)
+  b = roll(y)
+  U32.add(describe(a), describe(b))
+
+# The second private call must materialize its result, not consume x boxed.
+def escape_after_forward() -> U32:
+  x = roll(JsMultiRun{5, 7})
+  y = roll(x)
+  stash_read(stash(y))
+
+# Scalar parameter flags shrink before arity is decided. The tail chain must
+# never stop relaxation at equal counts with different flags.
+def quad_a(a: U32, b: U32, c: U32, d: U32, e: U32, f: U32, g: U32, h: U32, i: U32) -> JsMultiQuad:
+  JsMultiQuad{U32.add(a, b), U32.add(c, d), U32.add(e, f), U32.add(g, U32.add(h, i))}
+
+def quad_b(x: U32) -> JsMultiQuad:
+  quad_a(x, 2, 3, 4, 5, 6, 7, 8, 9)
+
+def quad_c(x: U32) -> JsMultiQuad:
+  quad_b(x)
+
+def quad_sum(q: JsMultiQuad) -> U32:
+  match q:
+    case JsMultiQuad{a, b, c, d}:
+      U32.add(U32.add(a, b), U32.add(c, d))
+
 def scale(l: U32, r: U32) -> U32:
   U32.add(U32.mul(l, 2), r)
 
@@ -90,7 +123,10 @@ def main() -> IO(Unit):
     Unit <- IO.print(U32.show(describe(chunk(2n, JsMultiHalt{9}))))
     Unit <- IO.print(U32.show(unwrap(JsMultiWrapped{JsMultiReady{3}, chunk(131n, JsMultiRun{5, 7}), 4})))
     Unit <- IO.print(U32.show(unwrap(JsMultiWrapped{JsMultiParked{6}, chunk(130n, JsMultiStep{2, 8}), 1})))
-    IO.print(U32.show(after_d()))
+    Unit <- IO.print(U32.show(after_d()))
+    Unit <- IO.print(U32.show(overlapping()))
+    Unit <- IO.print(U32.show(escape_after_forward()))
+    IO.print(U32.show(quad_sum(quad_c(1))))
 
 #|75
 #|1025
@@ -98,3 +134,6 @@ def main() -> IO(Unit):
 #|24
 #|35
 #|76
+#|89
+#|58
+#|45

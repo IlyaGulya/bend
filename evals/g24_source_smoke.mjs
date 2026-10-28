@@ -39,7 +39,7 @@
 import {createHash} from 'node:crypto';
 import {createReadStream, existsSync, mkdtempSync, readFileSync, realpathSync, statSync, writeFileSync} from 'node:fs';
 import {tmpdir} from 'node:os';
-import {basename, join, relative, resolve, sep} from 'node:path';
+import {basename, isAbsolute, join, relative, resolve, sep} from 'node:path';
 import {spawn, spawnSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 

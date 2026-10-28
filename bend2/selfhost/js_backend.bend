@@ -23,6 +23,86 @@ type JSParameter is Data:
   JSParameterNat{}
   JSParameterOther{}
   JSParameterUnresolved{}
+type Caps is Data:
+  Caps{locals: List<&2, U32>, slots: List<&2, U32>}
+type Suffix is Data:
+  Suffix{locals: List<&2, U32>, slots: List<&2, U32>, read_local: Map<&2, Bool>, read_slot: Map<&2, Bool>, bound: Map<&2, Bool>}
+type Held is Data:
+  Held{items: List<&2, U32>, read: Map<&2, Bool>}
+type FrameBits is Data:
+  FrameBits{label: U32, after: Bool, reach: Bool}
+type Plan is Data:
+  Plan{conts: Map<&2, Caps>, thunks: Map<&2, Caps>, frames: Map<&2, Bool>}
+type Step is Data:
+  Step{state: Suffix, facts: List<&2, FrameBits>, plan: Plan}
+type Reads is Data:
+  Reads{locals: List<&2, U32>, slots: List<&2, U32>}
+type MultiLayout is Data:
+  MultiLayout{tag: String, keys: List<&2, String>}
+type MultiParam is Data:
+  MultiParam{id: U32, unboxed: Bool, tag: U32, fields: List<&2, U32>}
+type MultiWindow is Data:
+  MultiWindow{width: Nat, fields: List<&2, U32>, box: Maybe<&2, U32>}
+type MultiShape is Data:
+  MultiCtorShape{constructor: U32, width: Nat}
+  MultiParamShape{position: Nat}
+  MultiResultShape{}
+  MultiOtherShape{}
+type MultiSiteF is Data:
+  MultiSiteF{key: String, callee: U32, tail: Bool, shapes: List<&2, MultiShape>}
+type MultiCtor is Data:
+  MultiCtor{constructor: U32, tag: String, fields: List<&2, BIR.Field>}
+type MultiScan is Data:
+  MultiScan{bindings: Map<&2, MultiCtor>, sites: List<&2, MultiSiteF>}
+type MultiFact is Data:
+  MultiFact{result_ok: Bool, width: Nat, sites: List<&2, MultiSiteF>}
+type MultiUp is Data:
+  MultiUp{up: Map<&2, Bool>, multi: Map<&2, Bool>}
+# One round's answer together with whether it withdrew any flag. A round that
+# withdraws nothing recomputes its own state, so it is the fixed point and the
+# loop stops there without counting flags again.
+type MultiStep is Data:
+  MultiStep{state: MultiUp, changed: Bool}
+# The descending loop's answer and whether it settled. A bound that runs out is a
+# broken operator, not a plan: the solver turns it into an explicit fault.
+type MultiSolve is Data:
+  MultiSolve{state: MultiUp, settled: Bool}
+# One code's parameter pass. It writes only flags that differ from the previous
+# round and measures the rendered arity in the same walk, so the same keys and
+# the same previous state serve the route test, the keep test and the arity test.
+type MultiPass is Data:
+  MultiPass{state: MultiUp, changed: Bool, rendered: Nat}
+type MultiSubst is Data:
+  MultiSubst{id: U32, tag: BIR.Atom, fields: List<&2, BIR.Atom>, param: Bool}
+type MultiRew is Data:
+  MultiRew{body: BIR.Block, windows: Map<&2, MultiWindow>, sites: Map<&2, Bool>, mr: Map<&2, Bool>, dropped: Map<&2, Bool>, failed: Bool, own_mr: Bool, next: Nat}
+type MultiRender is Data:
+  MultiRender{body: BIR.Block, plan: Plan, params: List<&2, MultiParam>, windows: Map<&2, MultiWindow>, sites: Map<&2, Bool>, mr: Map<&2, Bool>, private: Bool, public: Bool, width: Nat, failed: Bool}
+type MultiPlan is Data:
+  MultiPlan{multi: Map<&2, Bool>, layouts: Map<&2, MultiLayout>, renders: Map<&2, MultiRender>, width: Nat, ok: Bool, refused: List<&2, String>}
+type MultiRef is Data:
+  MultiRef{id: U32, tag: String}
+# A forwarding requirement names the caller position a callee parameter is fed
+# from, and the flag key of that position once, so a round reads a flag instead
+# of rebuilding the key from the code and the position.
+type MultiFwd is Data:
+  MultiFwd{caller: U32, shape: MultiShape, up_key: String}
+# A route requirement is one call argument that must arrive opened: the callee
+# code and both flag keys are facts of the call site, not of the round.
+type MultiReq is Data:
+  MultiReq{callee: U32, multi_key: String, up_key: String}
+# A code's value paths either fail on their own or name the unboxed parameters
+# its returns require. Collecting them once keeps the round from walking the body
+# again for every code and every pass.
+type MultiResult is Data:
+  MultiResultOpen{required: List<&2, String>}
+  MultiResultClosed{}
+type MultiCodeFact is Data:
+  MultiCodeFact{width: Nat, sites: List<&2, MultiSiteF>, statics: Map<&2, Bool>, params: List<&2, BIR.Parameter>, captures: Nat, frames: Bool, pidx: Map<&2, Nat>, body: BIR.Block, routes: Map<&2, List<&2, MultiReq>>, tails: List<&2, U32>, result: MultiResult}
+type MRewCtx is Data:
+  MRewCtx{code: U32, layouts: Map<&2, MultiLayout>, multi: Map<&2, Bool>, up: Map<&2, Bool>, width: Nat, params: Map<&2, MultiParam>, private: Bool, sub: Map<&2, MultiSubst>, cur: Maybe<&2, U32>, bindings: Map<&2, MultiCtor>, uses: Map<&2, Nat>}
+type JsCtx is Data:
+  JsCtx{owner: String, plan: Plan, frames: List<&2, U32>, multi: Map<&2, Bool>, render: MultiRender}
 def js_source(sources: List<&2, String>) -> Maybe<&2, String>:
   match sources:
     case Nil{}: None{}
@@ -501,7 +581,7 @@ def tail_call_name_selected(name: String, +values: List<&2, String>, count: Nat,
     case True{}: tail_call_named_name(name, String.join(values, ","), count)
     case False{}: cat(["run_many(", name, ",[", String.join(values, ","), "],$td)"])
 def tail_call_named_name(+name: String, +joined: String, count: Nat) -> String:
-  cat(["($td<64?", name, "(", String.append(joined, ",$td+1"), "):run_named", Nat.show(count), "(", name, ",", String.append(joined, ",$td"), ")"])
+  cat(["($td<64?", name, "(", String.append(joined, ",$td+1"), "):run_named", Nat.show(count), "(", name, ",", String.append(joined, ",$td"), "))"])
 def multi_tail_call(code: U32, +values: List<&2, String>) -> String:
   +count = Nat.add(List.length(&2, String, values), 1n)
   multi_tail_selected(Bool.and(Nat.is_gt(count, 0n), Nat.is_le(count, 32n)), code, values, count)
@@ -510,7 +590,7 @@ def multi_tail_selected(selected: Bool, code: U32, +values: List<&2, String>, co
     case True{}: multi_tail_named(code, String.join(values, ","), count)
     case False{}: cat(["run_many(", code_name(code), ",[", String.join(values, ","), ",$mr],$td)"])
 def multi_tail_named(+code: U32, +joined: String, count: Nat) -> String:
-  cat(["($td<64?", code_name(code), "(", String.append(joined, ",$mr,$td+1"), "):run_named", Nat.show(count), "(", code_name(code), ",", String.append(joined, ",$mr,$td"), ")"])
+  cat(["($td<64?", code_name(code), "(", String.append(joined, ",$mr,$td+1"), "):run_named", Nat.show(count), "(", code_name(code), ",", String.append(joined, ",$mr,$td"), "))"])
 # A tail call keeps the caller's JavaScript frame, so the machine bounds the
 # depth: $td counts the frames the current chain has already used and the call
 # is direct only below 64. The guard is emitted at the call site instead of
@@ -825,8 +905,8 @@ def block(body: BIR.Block, ctx: JsCtx) -> String:
     case BIR.Failure{message}: cat(["throw ", js_quote(message), ";"])
 # One plan for the whole program: the layouts, the one result width, the fixed
 # point over codes and parameter positions, and the two rewritten bodies of every
-# transformed code. Any rewrite that cannot be proven sets `ok` false, and the
-# target then emits exactly the source it emitted before.
+# transformed code. A body the emit cannot take is refused per owner and the
+# rounds solve again without it, so one unsupported code cannot disable the rest.
 def multi_codes_facts(items: List<&2, BIR.Code>, layouts: Map<&2, MultiLayout>, width: Nat, acc: Map<&2, MultiCodeFact>) -> Map<&2, MultiCodeFact>:
   match items:
     case Nil{}: acc
@@ -835,14 +915,9 @@ def multi_codes_fact_one(code: BIR.Code, rest: List<&2, BIR.Code>, layouts: Map<
   match code:
     case BIR.Code{id, captures, parameters, body}:
       multi_codes_facts(rest, layouts, width, Map.set(&2, MultiCodeFact, acc, U32.show(id), multi_code_fact_build(id, captures, parameters, body, layouts, width)))
-def multi_sites_map(items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, acc: Map<&2, List<&2, MultiSiteF>>) -> Map<&2, List<&2, MultiSiteF>>:
-  match items:
-    case Nil{}: acc
-    case BIR.Code{id, _, _, _} <> rest:
-      multi_sites_map(rest, facts, Map.set(&2, List<&2, MultiSiteF>, acc, U32.show(id), multi_fact_sites(multi_fact_of(facts, id))))
 def multi_fact_sites(fact: MultiCodeFact) -> List<&2, MultiSiteF>:
   match fact:
-    case MultiCodeFact{_, sites, _, _, _, _, _, _}: sites
+    case MultiCodeFact{_, sites, _, _, _, _, _, _, _, _, _}: sites
 def multi_params_boxed(items: List<&2, BIR.Parameter>, acc: List<&2, MultiParam>) -> List<&2, MultiParam>:
   match items:
     case Nil{}: List.reverse(&2, MultiParam, acc)
@@ -880,10 +955,21 @@ def multi_local_names(items: List<&2, U32>) -> List<&2, String>:
   match items:
     case Nil{}: Nil{}
     case +item <> rest: local(item) <> multi_local_names(rest)
+# Code bodies are scalar-normalized before multi planning. Fallback rendering
+# uses that same block; applying the pass again could change only this lane.
 def multi_render_plain(body: BIR.Block, parameters: List<&2, BIR.Parameter>) -> MultiRender:
-  multi_render_plain_made(js_scalar(body), parameters)
+  multi_render_plain_made(body, parameters)
 def multi_render_plain_made(scoped: BIR.Block, parameters: List<&2, BIR.Parameter>) -> MultiRender:
   MultiRender{scoped, plan_of(scoped), multi_params_boxed(parameters, Nil{}), Map.new(&2, MultiWindow), Map.new(&2, Bool), Map.new(&2, Bool), False{}, False{}, 0n, False{}}
+# A public duplicate whose rewrite was refused keeps the boxed identity of the code
+# it duplicates: the plain body is the source body, it takes boxed arguments and
+# returns the source object, and its continuation names use the public `$kp` space,
+# so it cannot meet the private body's `$k` names. `public` is the only field that
+# differs from the primary plain render.
+def multi_render_plain_public(body: BIR.Block, parameters: List<&2, BIR.Parameter>) -> MultiRender:
+  multi_render_plain_public_made(body, parameters)
+def multi_render_plain_public_made(scoped: BIR.Block, parameters: List<&2, BIR.Parameter>) -> MultiRender:
+  MultiRender{scoped, plan_of(scoped), multi_params_boxed(parameters, Nil{}), Map.new(&2, MultiWindow), Map.new(&2, Bool), Map.new(&2, Bool), False{}, True{}, 0n, False{}}
 def multi_render_code(code: BIR.Code, layouts: Map<&2, MultiLayout>, width: Nat, state: MultiUp, acc: Map<&2, MultiRender>) -> Map<&2, MultiRender>:
   match code:
     case BIR.Code{id, _, parameters, body}: multi_render_pair(multi_multi_get(multi_prev_multi(state), id), id, parameters, body, layouts, width, state, acc)
@@ -892,9 +978,12 @@ def multi_render_pair(multi: Bool, id: U32, parameters: List<&2, BIR.Parameter>,
     case False{}: Map.set(&2, MultiRender, acc, multi_render_key(id, False{}), multi_render_primary(id, parameters, body, layouts, width, state, False{}))
     case True{}: multi_render_two(id, parameters, body, layouts, width, state, acc)
 def multi_render_two(id: U32, parameters: List<&2, BIR.Parameter>, body: BIR.Block, layouts: Map<&2, MultiLayout>, width: Nat, state: MultiUp, acc: Map<&2, MultiRender>) -> Map<&2, MultiRender>:
-  Map.set(&2, MultiRender, Map.set(&2, MultiRender, acc, multi_render_key(id, False{}), multi_render_primary(id, parameters, body, layouts, width, state, True{})), multi_render_key(id, True{}), multi_render_public(id, parameters, body, layouts, width, state))
+  +uses = multi_uses(body)
+  Map.set(&2, MultiRender, Map.set(&2, MultiRender, acc, multi_render_key(id, False{}), multi_render_primary_uses(id, parameters, body, layouts, width, state, True{}, uses)), multi_render_key(id, True{}), multi_render_public_uses(id, parameters, body, layouts, width, state, uses))
 def multi_render_primary(id: U32, parameters: List<&2, BIR.Parameter>, body: BIR.Block, layouts: Map<&2, MultiLayout>, width: Nat, state: MultiUp, private: Bool) -> MultiRender:
-  multi_render_make(id, body, layouts, width, state, private, False{}, multi_params_for_render(private, parameters, multi_prev_up(state), id, width))
+  multi_render_make(id, body, layouts, width, state, private, False{}, multi_params_for_render(private, parameters, multi_prev_up(state), id, width), multi_uses(body))
+def multi_render_primary_uses(id: U32, parameters: List<&2, BIR.Parameter>, body: BIR.Block, layouts: Map<&2, MultiLayout>, width: Nat, state: MultiUp, private: Bool, uses: Map<&2, Nat>) -> MultiRender:
+  multi_render_make(id, body, layouts, width, state, private, False{}, multi_params_for_render(private, parameters, multi_prev_up(state), id, width), uses)
 # Only a selected multi code may take tag plus words: a code that failed the
 # result or arity proof keeps boxed parameters even where its own uses could be
 # projected, because its callers route the boxed entry and no public duplicate
@@ -903,28 +992,32 @@ def multi_params_for_render(private: Bool, parameters: List<&2, BIR.Parameter>, 
   match private:
     case True{}: multi_params_unboxed(parameters, 0n, up, id, width, Nil{})
     case False{}: multi_params_boxed(parameters, Nil{})
-def multi_render_public(id: U32, parameters: List<&2, BIR.Parameter>, body: BIR.Block, layouts: Map<&2, MultiLayout>, width: Nat, state: MultiUp) -> MultiRender:
-  multi_render_make(id, body, layouts, width, state, False{}, True{}, multi_params_boxed(parameters, Nil{}))
-def multi_render_make(id: U32, body: BIR.Block, layouts: Map<&2, MultiLayout>, width: Nat, state: MultiUp, private: Bool, public: Bool, params: List<&2, MultiParam>) -> MultiRender:
-  multi_render_done(multi_rewrite(body, MRewCtx{id, layouts, multi_prev_multi(state), multi_prev_up(state), width, multi_params_map(params, Map.new(&2, MultiParam)), private, None{}, None{}, Map.new(&2, MultiCtor), multi_uses(body)}, multi_seed_of(id)), id, private, public, params, width)
+def multi_render_public_uses(id: U32, parameters: List<&2, BIR.Parameter>, body: BIR.Block, layouts: Map<&2, MultiLayout>, width: Nat, state: MultiUp, uses: Map<&2, Nat>) -> MultiRender:
+  multi_render_make(id, body, layouts, width, state, False{}, True{}, multi_params_boxed(parameters, Nil{}), uses)
+def multi_render_make(id: U32, body: BIR.Block, layouts: Map<&2, MultiLayout>, width: Nat, state: MultiUp, private: Bool, public: Bool, params: List<&2, MultiParam>, uses: Map<&2, Nat>) -> MultiRender:
+  multi_render_done(multi_rewrite(body, MRewCtx{id, layouts, multi_prev_multi(state), multi_prev_up(state), width, multi_params_map(params, Map.new(&2, MultiParam)), private, Map.new(&2, MultiSubst), None{}, Map.new(&2, MultiCtor), uses}, multi_seed_of(id)), id, private, public, params, width)
 # A synthetic conversion names a hoisted continuation, so its id must be unique
 # over the whole program, not over one rendering: the owner contributes a block
-# of 64 names and the traversal consumes two per conversion. Site and parameter
+# of 64 names and the traversal consumes one per conversion. Site and parameter
 # names come from the disjoint 0x60000000 range, so the three spaces cannot meet.
 def multi_seed_of(id: U32) -> Nat:
   Nat.mul(U32.to_nat(id), 64n)
 def multi_render_done(rw: MultiRew, id: U32, private: Bool, public: Bool, params: List<&2, MultiParam>, width: Nat) -> MultiRender:
   match rw:
     case MultiRew{body, windows, sites, mr, _, failed, _, next}:
-      multi_render_final(body, windows, sites, mr, Bool.or(failed, Bool.or(multi_render_frames(private, body), multi_seed_over(id, next))), private, public, params, width)
+      multi_render_final(body, windows, sites, mr, failed, private, public, params, width, multi_seed_over(id, next))
 def multi_seed_over(id: U32, next: Nat) -> Bool:
-  Nat.is_gt(Nat.sub(next, multi_seed_of(id)), 8n)
-def multi_render_frames(private: Bool, body: BIR.Block) -> Bool:
+  Nat.is_gt(Nat.sub(next, multi_seed_of(id)), 64n)
+# The frame check reads the same plan the render publishes. Frame facts are
+# decided from the region structure, which the windows do not change, so one plan
+# pass answers both and a private render never plans its body twice.
+def multi_render_frames(private: Bool, body: BIR.Block, plan: Plan) -> Bool:
   match private:
-    case True{}: Bool.not(multi_frames_ok(body, plan_of(body)))
+    case True{}: Bool.not(multi_frames_ok(body, plan))
     case False{}: False{}
-def multi_render_final(body: BIR.Block, windows: Map<&2, MultiWindow>, sites: Map<&2, Bool>, mr: Map<&2, Bool>, failed: Bool, private: Bool, public: Bool, params: List<&2, MultiParam>, width: Nat) -> MultiRender:
-  MultiRender{body, plan_of(body), params, windows, sites, mr, private, public, width, failed}
+def multi_render_final(body: BIR.Block, windows: Map<&2, MultiWindow>, sites: Map<&2, Bool>, mr: Map<&2, Bool>, failed: Bool, private: Bool, public: Bool, params: List<&2, MultiParam>, width: Nat, over: Bool) -> MultiRender:
+  +plan = plan_of_windows(body, windows)
+  MultiRender{body, plan, params, windows, sites, mr, private, public, width, Bool.or(failed, Bool.or(multi_render_frames(private, body, plan), over))}
 def multi_render_key(id: U32, public: Bool) -> String:
   multi_render_key_pick(public, id)
 def multi_render_key_pick(public: Bool, id: U32) -> String:
@@ -938,13 +1031,9 @@ def multi_renders(items: List<&2, BIR.Code>, layouts: Map<&2, MultiLayout>, widt
 def multi_render_failed(found: Maybe<&2, MultiRender>) -> Bool:
   match found:
     case Some{MultiRender{_, _, _, _, _, _, _, _, _, failed}}: failed
-    case None{}: False{}
+    case None{}: True{}
 def multi_render_of_key(renders: Map<&2, MultiRender>, +key: String) -> Maybe<&2, MultiRender>:
   IndexLookup.find(MultiRender, renders, key)
-def multi_renders_failed(items: List<&2, BIR.Code>, renders: Map<&2, MultiRender>, acc: Bool) -> Bool:
-  match items:
-    case Nil{}: acc
-    case BIR.Code{id, _, _, _} <> rest: multi_renders_failed(rest, renders, Bool.or(acc, multi_render_failed(multi_render_of_key(renders, multi_render_key(id, False{})))))
 def multi_plan(program: BIR.Program) -> MultiPlan:
   match program:
     case BIR.Program{codes, _, constructors, _, _, _}: multi_plan_build(codes, constructors)
@@ -955,22 +1044,137 @@ def multi_plan_width(codes: List<&2, BIR.Code>, layouts: Map<&2, MultiLayout>) -
 def multi_plan_state(codes: List<&2, BIR.Code>, layouts: Map<&2, MultiLayout>, width: Nat) -> MultiPlan:
   multi_plan_facts(codes, layouts, width, multi_codes_facts(codes, layouts, width, Map.new(&2, MultiCodeFact)))
 def multi_plan_facts(codes: List<&2, BIR.Code>, layouts: Map<&2, MultiLayout>, width: Nat, facts: Map<&2, MultiCodeFact>) -> MultiPlan:
-  multi_plan_final(codes, layouts, width, facts, multi_fwd_index(codes, multi_sites_map(codes, facts, Map.new(&2, List<&2, MultiSiteF>)), Map.new(&2, List<&2, MultiFwd>)))
-def multi_plan_final(codes: List<&2, BIR.Code>, layouts: Map<&2, MultiLayout>, width: Nat, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>) -> MultiPlan:
-  multi_plan_made(codes, layouts, width, multi_round_start(codes, facts, fwds, Map.new(&2, Bool), layouts, width))
-def multi_plan_made(codes: List<&2, BIR.Code>, layouts: Map<&2, MultiLayout>, width: Nat, state: MultiUp) -> MultiPlan:
-  multi_plan_join(codes, layouts, width, state, multi_renders(codes, layouts, width, state, Map.new(&2, MultiRender)))
-def multi_plan_join(codes: List<&2, BIR.Code>, layouts: Map<&2, MultiLayout>, width: Nat, state: MultiUp, renders: Map<&2, MultiRender>) -> MultiPlan:
-  multi_plan_ok_join(Bool.not(multi_renders_failed(codes, renders, False{})), layouts, width, multi_prev_multi(state), renders)
-def multi_plan_ok_join(ok: Bool, layouts: Map<&2, MultiLayout>, width: Nat, multi: Map<&2, Bool>, renders: Map<&2, MultiRender>) -> MultiPlan:
-  MultiPlan{multi_plan_targets(ok, multi), layouts, renders, width, ok}
-def multi_plan_targets(ok: Bool, multi: Map<&2, Bool>) -> Map<&2, Bool>:
-  match ok:
-    case True{}: multi
-    case False{}: Map.new(&2, Bool)
+  multi_plan_solve(codes, layouts, width, facts, multi_fwd_index(codes, facts, Map.new(&2, List<&2, MultiFwd>)), Map.new(&2, Bool), Nat.add(multi_code_count(codes, 0n), 1n))
+# A primary rendering that cannot be proven is refused per owner, never for the
+# program. Banning the owner forces its `multi` flag false in the next solve, so
+# the same rounds withdraw every route, forward and tail flag that named it, and
+# its callers fall back to its boxed entry by the same greatest-fixed-point
+# iteration. Every pass that re-solves adds at least one ban that the previous
+# pass did not hold, so the number of codes bounds the loop.
+def multi_plan_solve(codes: List<&2, BIR.Code>, layouts: Map<&2, MultiLayout>, width: Nat, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, left: Nat) -> MultiPlan:
+  multi_plan_seeded(codes, layouts, width, facts, fwds, banned, left, multi_round_start(codes, facts, fwds, banned, width))
+def multi_plan_seeded(codes: List<&2, BIR.Code>, layouts: Map<&2, MultiLayout>, width: Nat, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, left: Nat, solved: MultiSolve) -> MultiPlan:
+  match solved:
+    case MultiSolve{state, settled}: multi_plan_settled(settled, codes, layouts, width, facts, fwds, banned, left, state)
+def multi_plan_settled(settled: Bool, codes: List<&2, BIR.Code>, layouts: Map<&2, MultiLayout>, width: Nat, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, left: Nat, state: MultiUp) -> MultiPlan:
+  match settled:
+    case True{}: multi_plan_solved(codes, layouts, width, facts, fwds, banned, left, state)
+    case False{}: multi_plan_faulted(codes, layouts, width)
+def multi_plan_solved(codes: List<&2, BIR.Code>, layouts: Map<&2, MultiLayout>, width: Nat, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, left: Nat, state: MultiUp) -> MultiPlan:
+  +renders = multi_renders(codes, layouts, width, state, Map.new(&2, MultiRender))
+  +fails = multi_render_fails(codes, renders, Map.new(&2, Bool))
+  multi_plan_resolve(multi_fails_fresh(codes, fails, banned, False{}), codes, layouts, width, facts, fwds, banned, left, state, renders, fails)
+def multi_plan_resolve(fresh: Bool, codes: List<&2, BIR.Code>, layouts: Map<&2, MultiLayout>, width: Nat, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, left: Nat, state: MultiUp, renders: Map<&2, MultiRender>, fails: Map<&2, Bool>) -> MultiPlan:
+  match fresh:
+    case False{}: multi_plan_join(codes, layouts, width, state, renders, banned)
+    case True{}: multi_plan_resolve_budget(Nat.is_eq(left, 0n), codes, layouts, width, facts, fwds, banned, state, left, fails)
+def multi_plan_resolve_budget(empty: Bool, codes: List<&2, BIR.Code>, layouts: Map<&2, MultiLayout>, width: Nat, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, state: MultiUp, left: Nat, fails: Map<&2, Bool>) -> MultiPlan:
+  match empty:
+    case True{}: multi_plan_faulted(codes, layouts, width)
+    case False{}: multi_plan_solve(codes, layouts, width, facts, fwds, multi_bans_add(codes, fails, banned), Nat.sub(left, 1n))
+def multi_code_count(items: List<&2, BIR.Code>, acc: Nat) -> Nat:
+  match items:
+    case Nil{}: acc
+    case _ <> rest: multi_code_count(rest, Nat.add(acc, 1n))
+# Both unreachable endings are compiler faults, not plans: a relaxation that runs
+# out its proof bound and an owner that callers still select although its body was
+# refused. They are reported as throwing bodies with the offending owner's own
+# name, so the run stops with the fault instead of silently dropping the whole
+# optimization.
+def multi_fault_message() -> String:
+  "bend: multi planning invariant broken: "
+def multi_fault_block(reason: String) -> BIR.Block:
+  BIR.Failure{String.append(multi_fault_message(), reason)}
+def multi_plan_faulted(items: List<&2, BIR.Code>, layouts: Map<&2, MultiLayout>, width: Nat) -> MultiPlan:
+  MultiPlan{Map.new(&2, Bool), layouts, multi_fault_renders(items, Map.new(&2, MultiRender)), width, True{}, Nil{}}
+def multi_fault_renders(items: List<&2, BIR.Code>, acc: Map<&2, MultiRender>) -> Map<&2, MultiRender>:
+  match items:
+    case Nil{}: acc
+    case BIR.Code{id, _, parameters, _} <> rest:
+      multi_fault_renders(rest, Map.set(&2, MultiRender, acc, multi_render_key(id, False{}), multi_fault_boxed(parameters)))
+def multi_fault_boxed(parameters: List<&2, BIR.Parameter>) -> MultiRender:
+  multi_fault_boxed_made(multi_fault_block("relaxation did not settle"), parameters)
+def multi_fault_boxed_made(error: BIR.Block, parameters: List<&2, BIR.Parameter>) -> MultiRender:
+  MultiRender{error, plan_of(error), multi_params_boxed(parameters, Nil{}), Map.new(&2, MultiWindow), Map.new(&2, Bool), Map.new(&2, Bool), False{}, False{}, 0n, False{}}
+# A refused primary owner is banned, so at the join no failed owner can still be
+# multi: the round makes every banned code boxed. A banned owner whose rewritten
+# body was refused keeps exactly its source body, which has the same function
+# name, boxed signature and continuation names as the refused boxed rendering; a
+# refused public duplicate is replaced by the plain public body and its owner
+# keeps its private lane. A selected owner whose primary was refused anyway keeps
+# its signature and throws an explicit fault, because its callers pass the
+# private convention and no plain body can accept it.
+def multi_plan_join(codes: List<&2, BIR.Code>, layouts: Map<&2, MultiLayout>, width: Nat, state: MultiUp, renders: Map<&2, MultiRender>, banned: Map<&2, Bool>) -> MultiPlan:
+  MultiPlan{multi_prev_multi(state), layouts, multi_renders_final(codes, renders, multi_prev_multi(state)), width, True{}, multi_refused(codes, banned, Nil{})}
+def multi_bans_add(items: List<&2, BIR.Code>, fails: Map<&2, Bool>, banned: Map<&2, Bool>) -> Map<&2, Bool>:
+  match items:
+    case Nil{}: banned
+    case BIR.Code{id, _, _, _} <> rest:
+      multi_bans_add(rest, fails, multi_bans_one(multi_up_at(fails, U32.show(id)), U32.show(id), banned))
+def multi_bans_one(failed: Bool, +key: String, banned: Map<&2, Bool>) -> Map<&2, Bool>:
+  match failed:
+    case False{}: banned
+    case True{}: Map.set(&2, Bool, banned, key, True{})
+def multi_refused(items: List<&2, BIR.Code>, banned: Map<&2, Bool>, acc: List<&2, String>) -> List<&2, String>:
+  match items:
+    case Nil{}: List.reverse(&2, String, acc)
+    case BIR.Code{id, _, _, _} <> rest:
+      multi_refused(rest, banned, multi_refused_one(multi_up_at(banned, U32.show(id)), id, acc))
+def multi_refused_one(refused: Bool, id: U32, acc: List<&2, String>) -> List<&2, String>:
+  match refused:
+    case False{}: acc
+    case True{}: U32.show(id) <> acc
+def multi_renders_final(items: List<&2, BIR.Code>, renders: Map<&2, MultiRender>, multi: Map<&2, Bool>) -> Map<&2, MultiRender>:
+  match items:
+    case Nil{}: renders
+    case BIR.Code{id, _, parameters, body} <> rest:
+      multi_renders_final(rest, multi_renders_final_one(multi_render_failed(multi_render_of_key(renders, multi_render_key(id, False{}))), id, parameters, body, renders, multi), multi)
+def multi_renders_final_one(failed: Bool, id: U32, parameters: List<&2, BIR.Parameter>, body: BIR.Block, renders: Map<&2, MultiRender>, multi: Map<&2, Bool>) -> Map<&2, MultiRender>:
+  match failed:
+    case True{}: multi_renders_final_failed(multi_multi_get(multi, id), id, parameters, body, renders)
+    case False{}: multi_renders_final_public(multi_multi_get(multi, id), id, parameters, body, renders)
+def multi_renders_final_failed(multi: Bool, id: U32, parameters: List<&2, BIR.Parameter>, body: BIR.Block, renders: Map<&2, MultiRender>) -> Map<&2, MultiRender>:
+  match multi:
+    case False{}: Map.set(&2, MultiRender, renders, multi_render_key(id, False{}), multi_render_plain(body, parameters))
+    case True{}: Map.set(&2, MultiRender, renders, multi_render_key(id, False{}), multi_fault_selected(id, parameters, renders))
+def multi_fault_selected(id: U32, parameters: List<&2, BIR.Parameter>, renders: Map<&2, MultiRender>) -> MultiRender:
+  match multi_render_of_key(renders, multi_render_key(id, False{})):
+    case Some{MultiRender{_, plan, params, windows, sites, mr, private, public, width, _}}:
+      MultiRender{multi_fault_block("a selected owner was refused"), plan, params, windows, sites, mr, private, public, width, False{}}
+    case None{}: multi_fault_boxed(parameters)
+def multi_renders_final_public(multi: Bool, id: U32, parameters: List<&2, BIR.Parameter>, body: BIR.Block, renders: Map<&2, MultiRender>) -> Map<&2, MultiRender>:
+  match multi:
+    case False{}: renders
+    case True{}: multi_renders_final_public_refused(multi_render_failed(multi_render_of_key(renders, multi_render_key(id, True{}))), id, parameters, body, renders)
+def multi_renders_final_public_refused(refused: Bool, id: U32, parameters: List<&2, BIR.Parameter>, body: BIR.Block, renders: Map<&2, MultiRender>) -> Map<&2, MultiRender>:
+  match refused:
+    case False{}: renders
+    case True{}: Map.set(&2, MultiRender, renders, multi_render_key(id, True{}), multi_render_plain_public(body, parameters))
+# Only a failed primary body bans an owner: that body is the name a boxed caller
+# routes to, and no other body can stand in for its signature. A failed public
+# duplicate is replacement-only, because the plain public render has the same boxed
+# signature; the join swaps it in. A missing render counts as failed.
+def multi_render_fails(items: List<&2, BIR.Code>, renders: Map<&2, MultiRender>, acc: Map<&2, Bool>) -> Map<&2, Bool>:
+  match items:
+    case Nil{}: acc
+    case BIR.Code{id, _, _, _} <> rest:
+      multi_render_fails(rest, renders, multi_fails_add(multi_render_failed(multi_render_of_key(renders, multi_render_key(id, False{}))), id, acc))
+def multi_fails_add(failed: Bool, id: U32, acc: Map<&2, Bool>) -> Map<&2, Bool>:
+  match failed:
+    case False{}: acc
+    case True{}: Map.set(&2, Bool, acc, U32.show(id), True{})
+def multi_fails_fresh(items: List<&2, BIR.Code>, fails: Map<&2, Bool>, banned: Map<&2, Bool>, acc: Bool) -> Bool:
+  match items:
+    case Nil{}: acc
+    case BIR.Code{id, _, _, _} <> rest:
+      multi_fails_fresh(rest, fails, banned, Bool.or(acc, multi_fail_fresh(multi_up_at(fails, U32.show(id)), multi_up_at(banned, U32.show(id)))))
+def multi_fail_fresh(failed: Bool, banned: Bool) -> Bool:
+  match failed:
+    case False{}: False{}
+    case True{}: Bool.not(banned)
 def multi_render_choose(plan: MultiPlan, code: BIR.Code, public: Bool) -> MultiRender:
   match plan:
-    case MultiPlan{_, _, renders, _, ok}: multi_render_lookup(ok, renders, code, public)
+    case MultiPlan{_, _, renders, _, ok, _}: multi_render_lookup(ok, renders, code, public)
 def multi_render_lookup(ok: Bool, renders: Map<&2, MultiRender>, code: BIR.Code, public: Bool) -> MultiRender:
   match code:
     case BIR.Code{id, _, parameters, body}: multi_render_lookup_ok(ok, multi_render_of_key(renders, multi_render_key(id, public)), parameters, body)
@@ -989,10 +1193,15 @@ def multi_render_public_of(plan: MultiPlan, code: BIR.Code) -> MultiRender:
 
 def multi_plan_multi(plan: MultiPlan) -> Map<&2, Bool>:
   match plan:
-    case MultiPlan{multi, _, _, _, _}: multi
+    case MultiPlan{multi, _, _, _, _, _}: multi
 def multi_plan_ok(plan: MultiPlan) -> Bool:
   match plan:
-    case MultiPlan{_, _, _, _, ok}: ok
+    case MultiPlan{_, _, _, _, ok, _}: ok
+# The owners this plan refused: they emit their boxed entry only, and every
+# `multi` route that named them was withdrawn before the plan was joined.
+def multi_plan_refused(plan: MultiPlan) -> List<&2, String>:
+  match plan:
+    case MultiPlan{_, _, _, _, _, refused}: refused
 def multi_code_name(id: U32, public: Bool) -> String:
   match public:
     case True{}: code_name_pub(id)
@@ -1050,8 +1259,6 @@ def multi_public_ok(ok: Bool, id: U32, captures: List<&2, BIR.Use>, item: BIR.Co
 # `plan` is that one body's capture plan: the split emission and the hoisted
 # declaration of the same continuation read one entry, and the plan dies with
 # the body that built it.
-type JsCtx is Data:
-  JsCtx{owner: String, plan: Plan, frames: List<&2, U32>, multi: Map<&2, Bool>, render: MultiRender}
 def js_ctx(owner: String, plan: Plan) -> JsCtx:
   JsCtx{owner, plan, Nil{}, Map.new(&2, Bool), multi_render_plain_state(plan)}
 def js_ctx_multi(owner: String, plan: Plan, multi: Map<&2, Bool>, render: MultiRender) -> JsCtx:
@@ -1094,8 +1301,6 @@ def js_ctx_width(ctx: JsCtx) -> Nat:
 def js_ctx_params(ctx: JsCtx) -> List<&2, MultiParam>:
   match js_ctx_render(ctx):
     case MultiRender{_, _, params, _, _, _, _, _, _, _}: params
-def js_ctx_param(ctx: JsCtx, id: U32) -> Maybe<&2, MultiParam>:
-  multi_param_get(multi_params_map(js_ctx_params(ctx), Map.new(&2, MultiParam)), id)
 def js_ctx_site(ctx: JsCtx, id: U32) -> Bool:
   match js_ctx_render(ctx):
     case MultiRender{_, _, _, _, sites, _, _, _, _, _}: multi_site_get(sites, id)
@@ -1146,18 +1351,6 @@ def thunk_name(owner: String, label: U32) -> String:
 # is a leave of that label a split already preceded, `reach` is any reachable
 # leave of it, and a subtree's answer for an incoming split flag is
 # Bool.or(after, Bool.and(split, reach)).
-type Caps is Data:
-  Caps{locals: List<&2, U32>, slots: List<&2, U32>}
-type Suffix is Data:
-  Suffix{locals: List<&2, U32>, slots: List<&2, U32>, read_local: Map<&2, Bool>, read_slot: Map<&2, Bool>, bound: Map<&2, Bool>}
-type Held is Data:
-  Held{items: List<&2, U32>, read: Map<&2, Bool>}
-type FrameBits is Data:
-  FrameBits{label: U32, after: Bool, reach: Bool}
-type Plan is Data:
-  Plan{conts: Map<&2, Caps>, thunks: Map<&2, Caps>, frames: Map<&2, Bool>}
-type Step is Data:
-  Step{state: Suffix, facts: List<&2, FrameBits>, plan: Plan}
 def split_op(op: BIR.Op) -> Bool:
   match op:
     case BIR.Direct{_, _}: True{}
@@ -1168,8 +1361,6 @@ def split_op(op: BIR.Op) -> Bool:
 # A continuation body is a function of its own, so a read outside it is a value
 # the creating frame owns: WF-2 makes that a local bound before the split or a
 # capture slot of the code, and nothing else.
-type Reads is Data:
-  Reads{locals: List<&2, U32>, slots: List<&2, U32>}
 def reads_new() -> Reads:
   Reads{Nil{}, Nil{}}
 def reads_local(id: U32, reads: Reads) -> Reads:
@@ -1362,38 +1553,62 @@ def plan_flag(map: Map<&2, Bool>, key: String) -> Bool:
 # parent extends that state instead of rescanning it, and the plan itself is
 # threaded through the walk, so a body pays one insertion per site it has, not
 # one merge per node.
+#
+# The pass also takes the windows of the body it walks, because a split that
+# owns a window declares that window's fields at the top of its own
+# continuation: they are locals of the continuation body, never values its site
+# captures. A producer binds its fields in the suffix before it takes its own
+# caps and before it hands that suffix to the statement preceding it, while a
+# split nested after the producer still captures them as ordinary locals,
+# because that split is planned, and its caps taken, before this binding. A body
+# without windows plans exactly as it plans without this argument, which is why
+# the ordinary entry point passes the empty map.
 def plan_of(body: BIR.Block) -> Plan:
-  match plan_block(body, plan_empty()):
+  plan_of_windows(body, Map.new(&2, MultiWindow))
+def plan_of_windows(body: BIR.Block, windows: Map<&2, MultiWindow>) -> Plan:
+  match plan_block(body, windows, plan_empty()):
     case Step{_, _, plan}: plan
-def plan_block(body: BIR.Block, plan: Plan) -> Step:
+def plan_block(body: BIR.Block, windows: Map<&2, MultiWindow>, plan: Plan) -> Step:
   match body:
     case BIR.Return{value}: plan_leaf(suffix_atom(value, suffix_empty()), plan)
     case BIR.TailDirect{_, args}: plan_leaf(suffix_args(args, suffix_empty()), plan)
     case BIR.TailApply{fn, arg}: plan_leaf(suffix_apply(fn, arg, suffix_empty()), plan)
     case BIR.Failure{_}: plan_leaf(suffix_empty(), plan)
     case BIR.LeaveRegion{label}: Step{suffix_empty(), [FrameBits{label, False{}, True{}}], plan}
-    case BIR.Let{id, op, next}: plan_let(id, op, plan_block(next, plan))
-    case BIR.Branch{condition, yes, no}: plan_branch(condition, plan_block(yes, plan), no)
-    case BIR.Region{label, body, next}: plan_region(label, plan_block(body, plan), next)
+    case BIR.Let{id, op, next}: plan_let(id, op, plan_block(next, windows, plan), windows)
+    case BIR.Branch{condition, yes, no}: plan_branch(condition, plan_block(yes, windows, plan), no, windows)
+    case BIR.Region{label, body, next}: plan_region(label, plan_block(body, windows, plan), next, windows)
 def plan_leaf(state: Suffix, plan: Plan) -> Step:
   Step{state, Nil{}, plan}
-def plan_let(id: U32, op: BIR.Op, step: Step) -> Step:
+def plan_let(id: U32, op: BIR.Op, step: Step, windows: Map<&2, MultiWindow>) -> Step:
   match step:
     case Step{state, facts, plan}:
       match split_op(op):
-        case True{}: Step{suffix_bind(id, suffix_op(op, state)), facts_inject(facts, True{}), plan_cont_add(plan, id, suffix_caps(state, Some{id}))}
+        case True{}:
+          held = plan_window_bound(state, windows, id)
+          Step{suffix_bind(id, suffix_op(op, held)), facts_inject(facts, True{}), plan_cont_add(plan, id, suffix_caps(held, Some{id}))}
         case False{}: Step{suffix_bind(id, suffix_op(op, state)), facts, plan}
-def plan_branch(condition: BIR.Atom, yes: Step, no: BIR.Block) -> Step:
+# The locals a split's continuation declares for itself are its window's
+# fields; a site without a window binds nothing, so its suffix is untouched.
+def plan_window_bound(state: Suffix, windows: Map<&2, MultiWindow>, id: U32) -> Suffix:
+  match IndexLookup.find(MultiWindow, windows, cat(["k", U32.show(id)])):
+    case Some{MultiWindow{_, fields, _}}: suffix_binds(fields, state)
+    case None{}: state
+def suffix_binds(items: List<&2, U32>, state: Suffix) -> Suffix:
+  match items:
+    case Nil{}: state
+    case +item <> rest: suffix_binds(rest, suffix_bind(item, state))
+def plan_branch(condition: BIR.Atom, yes: Step, no: BIR.Block, windows: Map<&2, MultiWindow>) -> Step:
   match yes:
     case Step{yes_state, yes_facts, plan}:
-      match plan_block(no, plan):
+      match plan_block(no, windows, plan):
         case Step{no_state, no_facts, plan2}:
           Step{suffix_atom(condition, suffix_join(yes_state, no_state)), facts_merge(yes_facts, no_facts), plan2}
-def plan_region(label: U32, body: Step, next: BIR.Block) -> Step:
+def plan_region(label: U32, body: Step, next: BIR.Block, windows: Map<&2, MultiWindow>) -> Step:
   match body:
     case Step{body_state, body_facts, plan}:
       need = fact_after(body_facts, label)
-      match plan_block(next, plan):
+      match plan_block(next, windows, plan):
         case Step{next_state, next_facts, plan2}:
           facts = facts_merge(body_facts, facts_inject(next_facts, need))
           Step{suffix_join(body_state, next_state), facts, plan_region_sites(plan2, label, need, next_state)}
@@ -1423,8 +1638,10 @@ def plan_region_sites(plan: Plan, label: U32, need: Bool, next_state: Suffix) ->
 # The rewrite runs before the capture plan: the substituted value is what a
 # continuation after a split must capture, and `block`, `conts` and `plan_of`
 # then all read the rewritten body, so the plan and the split emission cannot
-# disagree. It removes one object literal per site and never duplicates one, so
-# it cannot grow the program.
+# disagree. It is applied once to every code body by `js_scalar_program` before
+# any multi plan or rendering reads the program, so no pass decides from a body
+# whose constructors an earlier pass already removed. It removes one object
+# literal per site and never duplicates one, so it cannot grow the program.
 def js_scalar(body: BIR.Block) -> BIR.Block:
   match body:
     case BIR.Let{id, BIR.Construct{constructor, tag, fields}, next}:
@@ -1558,6 +1775,19 @@ def js_scalar_projection(found: Maybe<&2, BIR.Atom>, value: BIR.Atom, constructo
     case Some{atom}: BIR.Copy{atom}
     case None{}: BIR.Project{value, constructor, field, key}
 
+# Normalize once before multi facts, use counts and capture plans are derived.
+# All private, public and fallback renderings then read the same code bodies.
+# Run this before window rewriting: js_scalar does not carry window metadata.
+def js_scalar_program(program: BIR.Program) -> BIR.Program:
+  match program:
+    case BIR.Program{bodies, values, layouts, types, functions, end}:
+      BIR.Program{js_scalar_codes(bodies, Nil{}), values, layouts, types, functions, end}
+def js_scalar_codes(items: List<&2, BIR.Code>, acc: List<&2, BIR.Code>) -> List<&2, BIR.Code>:
+  match items:
+    case Nil{}: List.reverse(&2, BIR.Code, acc)
+    case BIR.Code{id, captures, parameters, body} <> rest:
+      js_scalar_codes(rest, BIR.Code{id, captures, parameters, js_scalar(body)} <> acc)
+
 # A record a code returns, and a record parameter it only destructures, can
 # travel as a tag word plus field words in the machine's own argument stack
 # instead of as an object. The convention is decided per code from BIR alone and
@@ -1583,35 +1813,6 @@ def js_scalar_projection(found: Maybe<&2, BIR.Atom>, value: BIR.Atom, constructo
 # call into another code that is itself unboxed. Anything else keeps today's
 # object, which is always a correct answer, and a code whose rewrite is not
 # proven emits exactly the source it emitted before.
-type MultiLayout is Data:
-  MultiLayout{tag: String, keys: List<&2, String>}
-type MultiParam is Data:
-  MultiParam{id: U32, unboxed: Bool, tag: U32, fields: List<&2, U32>}
-type MultiWindow is Data:
-  MultiWindow{width: Nat, fields: List<&2, U32>, box: Maybe<&2, U32>}
-type MultiShape is Data:
-  MultiCtorShape{constructor: U32, width: Nat}
-  MultiParamShape{position: Nat}
-  MultiResultShape{}
-  MultiOtherShape{}
-type MultiSiteF is Data:
-  MultiSiteF{key: String, callee: U32, tail: Bool, shapes: List<&2, MultiShape>}
-type MultiCtor is Data:
-  MultiCtor{constructor: U32, tag: String, fields: List<&2, BIR.Field>}
-type MultiScan is Data:
-  MultiScan{bindings: Map<&2, MultiCtor>, sites: List<&2, MultiSiteF>}
-type MultiFact is Data:
-  MultiFact{result_ok: Bool, width: Nat, sites: List<&2, MultiSiteF>}
-type MultiUp is Data:
-  MultiUp{up: Map<&2, Bool>, multi: Map<&2, Bool>}
-type MultiSubst is Data:
-  MultiSubst{id: U32, tag: BIR.Atom, fields: List<&2, BIR.Atom>, param: Bool}
-type MultiRew is Data:
-  MultiRew{body: BIR.Block, windows: Map<&2, MultiWindow>, sites: Map<&2, Bool>, mr: Map<&2, Bool>, dropped: Map<&2, Bool>, failed: Bool, own_mr: Bool, next: Nat}
-type MultiRender is Data:
-  MultiRender{body: BIR.Block, plan: Plan, params: List<&2, MultiParam>, windows: Map<&2, MultiWindow>, sites: Map<&2, Bool>, mr: Map<&2, Bool>, private: Bool, public: Bool, width: Nat, failed: Bool}
-type MultiPlan is Data:
-  MultiPlan{multi: Map<&2, Bool>, layouts: Map<&2, MultiLayout>, renders: Map<&2, MultiRender>, width: Nat, ok: Bool}
 
 def multi_live_keys(items: List<&2, Maybe<&2, String>>, acc: List<&2, String>) -> List<&2, String>:
   match items:
@@ -1627,7 +1828,7 @@ def multi_layouts(items: List<&2, BIR.ConstructorLayout>, layouts: Map<&2, Multi
     case BIR.ConstructorLayout{id, +key, _, fields} <> rest:
       multi_layout_add(multi_layouts(rest, layouts), id, key, fields)
 def multi_layout_add(layouts: Map<&2, MultiLayout>, id: U32, +key: String, fields: List<&2, Maybe<&2, String>>) -> Map<&2, MultiLayout>:
-  Map.set(&2, MultiLayout, layouts, U32.show(id), MultiLayout{tag: key, keys: multi_live_keys(fields, Nil{})})
+  Map.set(&2, MultiLayout, layouts, U32.show(id), MultiLayout{key, multi_live_keys(fields, Nil{})})
 def multi_layout(layouts: Map<&2, MultiLayout>, id: U32) -> Maybe<&2, MultiLayout>:
   IndexLookup.find(MultiLayout, layouts, U32.show(id))
 def multi_layout_keys(layouts: Map<&2, MultiLayout>, id: U32) -> List<&2, String>:
@@ -1670,7 +1871,7 @@ def multi_keys_head(same: Bool, right: List<&2, String>, +head: String, left: Li
 # A fresh name is a function of the site or parameter that owns it and a slot, so
 # two renderings of one body and the analysis itself always choose one spelling.
 def multi_fresh(id: U32, slot: Nat) -> U32:
-  U32.add(U32.add(U32.mul(id, 8n : Nat), U32.from_nat(slot)), U32.from_nat(1610612736n))
+  U32.add(U32.add(U32.mul(id, 8), U32.from_nat(slot)), 1610612736)
 def multi_fresh_ids(id: U32, count: Nat) -> List<&2, U32>:
   multi_fresh_range(id, count, 0n, Nil{})
 def multi_fresh_range(id: U32, count: Nat, index: Nat, acc: List<&2, U32>) -> List<&2, U32>:
@@ -1678,10 +1879,6 @@ def multi_fresh_range(id: U32, count: Nat, index: Nat, acc: List<&2, U32>) -> Li
     case True{}: multi_fresh_range(id, count, (index + 1n : Nat), multi_fresh(id, index) <> acc)
     case False{}: List.reverse(&2, U32, acc)
 
-type MultiRef is Data:
-  MultiRef{id: U32, tag: String}
-type MultiFwd is Data:
-  MultiFwd{caller: U32, shape: MultiShape}
 
 def multi_names(value: BIR.Atom, id: U32) -> Bool:
   match value:
@@ -1693,7 +1890,7 @@ def multi_arg_only_names(arg: BIR.Arg, id: U32) -> Bool:
 def multi_args_name(args: List<&2, BIR.Arg>, id: U32) -> Bool:
   match args:
     case Nil{}: False{}
-    case +item <> rest: multi_args_name_one(multi_arg_names(item, id), rest, id)
+    case +item <> rest: multi_args_name_one(multi_arg_only_names(item, id), rest, id)
 def multi_args_name_one(named: Bool, rest: List<&2, BIR.Arg>, id: U32) -> Bool:
   match named:
     case True{}: True{}
@@ -1824,7 +2021,7 @@ def multi_shape_kind(result: Bool, position: Maybe<&2, Nat>, binding: Maybe<&2, 
     case False{}: multi_shape_bound(position, binding, layouts, uses, id)
 def multi_shape_bound(position: Maybe<&2, Nat>, binding: Maybe<&2, MultiCtor>, layouts: Map<&2, MultiLayout>, uses: Map<&2, Nat>, id: U32) -> MultiShape:
   match position:
-    case Some{index}: MultiParamShape{position: index}
+    case Some{index}: MultiParamShape{index}
     case None{}: multi_shape_binding(binding, layouts, uses, id)
 def multi_shape_binding(binding: Maybe<&2, MultiCtor>, layouts: Map<&2, MultiLayout>, uses: Map<&2, Nat>, id: U32) -> MultiShape:
   match binding:
@@ -1832,7 +2029,7 @@ def multi_shape_binding(binding: Maybe<&2, MultiCtor>, layouts: Map<&2, MultiLay
     case None{}: MultiOtherShape{}
 def multi_shape_open(openable: Bool, constructor: U32, fields: List<&2, BIR.Field>) -> MultiShape:
   match openable:
-    case True{}: MultiCtorShape{constructor, width: multi_field_width(fields)}
+    case True{}: MultiCtorShape{constructor, multi_field_width(fields)}
     case False{}: MultiOtherShape{}
 def multi_shapes(args: List<&2, BIR.Arg>, layouts: Map<&2, MultiLayout>, uses: Map<&2, Nat>, params: Map<&2, Nat>, bindings: Map<&2, MultiCtor>, cur: Maybe<&2, U32>) -> List<&2, MultiShape>:
   match args:
@@ -1863,48 +2060,16 @@ def multi_scan_bind(id: U32, constructor: U32, tag: String, fields: List<&2, BIR
 def multi_scan_direct(id: U32, code: U32, args: List<&2, BIR.Arg>, next: BIR.Block, st: MultiScan, layouts: Map<&2, MultiLayout>, uses: Map<&2, Nat>, params: Map<&2, Nat>, cur: Maybe<&2, U32>, owner: U32) -> MultiScan:
   match st:
     case MultiScan{bindings, sites}:
-      multi_scan(next, MultiScan{bindings, MultiSiteF{key: cat(["k", U32.show(id)]), callee: code, tail: False{}, shapes: multi_shapes(args, layouts, uses, params, bindings, cur)} <> sites}, layouts, uses, params, Some{id}, owner)
+      multi_scan(next, MultiScan{bindings, MultiSiteF{cat(["k", U32.show(id)]), code, False{}, multi_shapes(args, layouts, uses, params, bindings, cur)} <> sites}, layouts, uses, params, Some{id}, owner)
 def multi_scan_tail(code: U32, args: List<&2, BIR.Arg>, st: MultiScan, layouts: Map<&2, MultiLayout>, uses: Map<&2, Nat>, params: Map<&2, Nat>, cur: Maybe<&2, U32>, owner: U32) -> MultiScan:
   match st:
     case MultiScan{bindings, sites}:
-      MultiScan{bindings, MultiSiteF{key: cat(["t", U32.show(owner), ":", Nat.show(List.length(&2, MultiSiteF, sites))]), callee: code, tail: True{}, shapes: multi_shapes(args, layouts, uses, params, bindings, cur)} <> sites}
+      MultiScan{bindings, MultiSiteF{cat(["t", U32.show(owner), ":", Nat.show(List.length(&2, MultiSiteF, sites))]), code, True{}, multi_shapes(args, layouts, uses, params, bindings, cur)} <> sites}
 
-def multi_return_ok(value: BIR.Atom, up: Map<&2, Bool>, code: U32, params: Map<&2, Nat>) -> Bool:
-  match value:
-    case BIR.Local{id}: multi_return_local(up, code, params, id)
-    case _: False{}
-def multi_return_local(up: Map<&2, Bool>, code: U32, params: Map<&2, Nat>, id: U32) -> Bool:
-  multi_return_pos(multi_param_of(params, id), up, code)
-def multi_return_pos(position: Maybe<&2, Nat>, up: Map<&2, Bool>, code: U32) -> Bool:
-  match position:
-    case Some{index}: multi_up_get(up, code, index)
-    case None{}: False{}
-# A value path is a place a code hands its caller a value. Every one of them is
-# either a record literal returned at once, a whole unboxed parameter, a throw or
-# a tail call; a tail call into another convention code is checked by the fixed
-# point, since only then does the tag agree with the caller's window.
-def multi_result_ok(body: BIR.Block, up: Map<&2, Bool>, code: U32, params: Map<&2, Nat>) -> Bool:
-  match body:
-    case BIR.Return{value}: multi_return_ok(value, up, code, params)
-    case BIR.Let{id, op, next}: multi_let_result_ok(id, op, next, up, code, params)
-    case BIR.Branch{_, yes, no}: Bool.and(multi_result_ok(yes, up, code, params), multi_result_ok(no, up, code, params))
-    case BIR.Region{_, inner, next}: Bool.and(multi_result_ok(inner, up, code, params), multi_result_ok(next, up, code, params))
-    case BIR.LeaveRegion{_}: True{}
-    case BIR.TailDirect{_, _}: True{}
-    case BIR.TailApply{_, _}: False{}
-    case BIR.Failure{_}: True{}
-def multi_let_result_ok(id: U32, op: BIR.Op, next: BIR.Block, up: Map<&2, Bool>, code: U32, params: Map<&2, Nat>) -> Bool:
-  match op:
-    case BIR.Construct{_, _, _}: multi_construct_result(id, next, up, code, params)
-    case _: multi_result_ok(next, up, code, params)
-def multi_construct_result(id: U32, next: BIR.Block, up: Map<&2, Bool>, code: U32, params: Map<&2, Nat>) -> Bool:
-  match next:
-    case BIR.Return{BIR.Local{known}}: multi_construct_same(U32.is_eq(known, id), next, up, code, params)
-    case _: multi_result_ok(next, up, code, params)
-def multi_construct_same(same: Bool, next: BIR.Block, up: Map<&2, Bool>, code: U32, params: Map<&2, Nat>) -> Bool:
-  match same:
-    case True{}: True{}
-    case False{}: multi_result_ok(next, up, code, params)
+# A value path is a place a code hands its caller a value: a record literal
+# returned at once, a whole unboxed parameter, a throw or a tail call. Their
+# requirements are collected once with the rest of the facts, so the round reads
+# flags instead of walking the body again.
 def multi_local_width(body: BIR.Block, width: Nat) -> Nat:
   match body:
     case BIR.Return{_}: width
@@ -1958,10 +2123,6 @@ def multi_ref_step(same: Bool, tag: String, rest: List<&2, MultiRef>, id: U32) -
   match same:
     case True{}: Some{tag}
     case False{}: multi_ref_tag(rest, id)
-def multi_return_names(value: BIR.Atom, p: U32) -> Bool:
-  match value:
-    case BIR.Local{known}: U32.is_eq(known, p)
-    case _: True{}
 def multi_project_ok(value: BIR.Atom, constructor: U32, key: String, layouts: Map<&2, MultiLayout>, width: Nat, refs: List<&2, MultiRef>, p: U32) -> Bool:
   match value:
     case BIR.Local{known}: multi_project_local(U32.is_eq(known, p), constructor, key, layouts, width, refs, p)
@@ -1999,7 +2160,7 @@ def multi_op_uses(op: BIR.Op, p: U32, layouts: Map<&2, MultiLayout>, width: Nat,
     case BIR.Copy{value}: multi_names_ok(value, p)
     case BIR.PrimitiveCall{_, args, _}: Bool.not(multi_args_name(args, p))
     case BIR.Closure{_, captures, _}: Bool.not(multi_args_name(captures, p))
-    case BIR.Direct{_, args}: Bool.not(multi_args_name(args, p))
+    case BIR.Direct{_, _}: True{}
     case BIR.Apply{fn, arg}: Bool.not(multi_arg_names(fn, arg, p))
     case BIR.LoadSymbol{_, _}: True{}
     case BIR.Construct{_, _, fields}: Bool.not(multi_fields_name(fields, p))
@@ -2008,18 +2169,15 @@ def multi_op_uses(op: BIR.Op, p: U32, layouts: Map<&2, MultiLayout>, width: Nat,
 def multi_names_ok(value: BIR.Atom, p: U32) -> Bool:
   Bool.not(multi_names(value, p))
 def multi_arg_names(fn: BIR.Atom, arg: BIR.Arg, p: U32) -> Bool:
-  Bool.or(multi_names(fn, p), multi_arg_names_one(arg, p))
-def multi_arg_names_one(arg: BIR.Arg, p: U32) -> Bool:
-  match arg:
-    case BIR.Arg{_, value}: multi_names(value, p)
+  Bool.or(multi_names(fn, p), multi_arg_only_names(arg, p))
 def multi_uses_of(body: BIR.Block, p: U32, layouts: Map<&2, MultiLayout>, width: Nat, refs: List<&2, MultiRef>) -> Bool:
   match body:
-    case BIR.Return{value}: multi_return_names(value, p)
+    case BIR.Return{_}: True{}
     case BIR.Let{test, op, next}: multi_let_uses(test, op, next, p, layouts, width, refs)
     case BIR.Branch{condition, yes, no}: Bool.and(multi_names_ok(condition, p), Bool.and(multi_uses_of(yes, p, layouts, width, refs), multi_uses_of(no, p, layouts, width, refs)))
     case BIR.Region{_, inner, next}: Bool.and(multi_uses_of(inner, p, layouts, width, refs), multi_uses_of(next, p, layouts, width, refs))
     case BIR.LeaveRegion{_}: True{}
-    case BIR.TailDirect{_, args}: Bool.not(multi_args_name(args, p))
+    case BIR.TailDirect{_, _}: True{}
     case BIR.TailApply{fn, arg}: Bool.not(multi_arg_names(fn, arg, p))
     case BIR.Failure{_}: True{}
 def multi_let_uses(test: U32, op: BIR.Op, next: BIR.Block, p: U32, layouts: Map<&2, MultiLayout>, width: Nat, refs: List<&2, MultiRef>) -> Bool:
@@ -2054,48 +2212,29 @@ def multi_tails_multi(targets: List<&2, U32>, multi: Map<&2, Bool>) -> Bool:
   match targets:
     case Nil{}: True{}
     case +code <> rest: Bool.and(multi_multi_get(multi, code), multi_tails_multi(rest, multi))
-def multi_rendered(items: List<&2, BIR.Parameter>, index: Nat, up: Map<&2, Bool>, code: U32, width: Nat, acc: Nat) -> Nat:
-  match items:
-    case Nil{}: acc
-    case _ <> rest: multi_rendered(rest, (index + 1n : Nat), up, code, width, multi_rendered_one(multi_up_get(up, code, index), width, acc))
 def multi_rendered_one(unboxed: Bool, width: Nat, acc: Nat) -> Nat:
   match unboxed:
     case True{}: Nat.add(acc, Nat.add(width, 1n))
     case False{}: Nat.add(acc, 1n)
-def multi_arity_ok(code: BIR.Code, up: Map<&2, Bool>, width: Nat) -> Bool:
-  match code:
-    case BIR.Code{id, captures, parameters, _}:
-      multi_arity_check(parameters, id, up, width, List.length(&2, BIR.Use, captures))
-def multi_arity_check(parameters: List<&2, BIR.Parameter>, code: U32, up: Map<&2, Bool>, width: Nat, captured: Nat) -> Bool:
-  multi_arity_count(multi_rendered(parameters, 0n, up, code, width, captured))
 def multi_arity_count(rendered: Nat) -> Bool:
   Bool.and(Nat.is_gt(rendered, 0n), multi_arity_bound(Nat.add(rendered, 1n)))
 def multi_arity_bound(count: Nat) -> Bool:
   Nat.is_le(count, 32n)
-def multi_shape_open_at(shape: MultiShape, up: Map<&2, Bool>, caller: U32) -> Bool:
+def multi_shape_open_at(shape: MultiShape, up: Map<&2, Bool>, +up_key: String) -> Bool:
   match shape:
     case MultiCtorShape{_, _}: True{}
-    case MultiParamShape{position}: multi_up_get(up, caller, position)
+    case MultiParamShape{_}: multi_up_at(up, up_key)
     case MultiResultShape{}: True{}
     case MultiOtherShape{}: False{}
 def multi_forwards_ok(fwds: List<&2, MultiFwd>, up: Map<&2, Bool>) -> Bool:
   match fwds:
     case Nil{}: True{}
-    case MultiFwd{caller, shape} <> rest: Bool.and(multi_shape_open_at(shape, up, caller), multi_forwards_ok(rest, up))
-def multi_fwd_index(items: List<&2, BIR.Code>, sites: Map<&2, List<&2, MultiSiteF>>, acc: Map<&2, List<&2, MultiFwd>>) -> Map<&2, List<&2, MultiFwd>>:
+    case MultiFwd{_, shape, up_key} <> rest: Bool.and(multi_shape_open_at(shape, up, up_key), multi_forwards_ok(rest, up))
+def multi_fwd_index(items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, acc: Map<&2, List<&2, MultiFwd>>) -> Map<&2, List<&2, MultiFwd>>:
   match items:
     case Nil{}: acc
-    case code <> rest: multi_fwd_code(code, multi_sites_of(sites, code), rest, sites, acc)
-def multi_sites_of(sites: Map<&2, List<&2, MultiSiteF>>, code: BIR.Code) -> List<&2, MultiSiteF>:
-  match code:
-    case BIR.Code{id, _, _, _}: multi_sites_found(IndexLookup.find(List<&2, MultiSiteF>, sites, U32.show(id)))
-def multi_sites_found(found: Maybe<&2, List<&2, MultiSiteF>>) -> List<&2, MultiSiteF>:
-  match found:
-    case Some{items}: items
-    case None{}: Nil{}
-def multi_fwd_code(code: BIR.Code, sites: List<&2, MultiSiteF>, rest: List<&2, BIR.Code>, index: Map<&2, List<&2, MultiSiteF>>, acc: Map<&2, List<&2, MultiFwd>>) -> Map<&2, List<&2, MultiFwd>>:
-  match code:
-    case BIR.Code{id, _, _, _}: multi_fwd_index(rest, index, multi_fwd_sites(sites, id, acc))
+    case BIR.Code{id, _, _, _} <> rest:
+      multi_fwd_index(rest, facts, multi_fwd_sites(multi_fact_sites(multi_fact_of(facts, id)), id, acc))
 def multi_fwd_sites(sites: List<&2, MultiSiteF>, caller: U32, acc: Map<&2, List<&2, MultiFwd>>) -> Map<&2, List<&2, MultiFwd>>:
   match sites:
     case Nil{}: acc
@@ -2104,7 +2243,15 @@ def multi_fwd_shapes(shapes: List<&2, MultiShape>, callee: U32, caller: U32, pos
   match shapes:
     case Nil{}: acc
     case +shape <> rest:
-      multi_fwd_shapes(rest, callee, caller, (position + 1n : Nat), multi_fwd_add(acc, callee, position, MultiFwd{caller, shape}))
+      multi_fwd_shapes(rest, callee, caller, (position + 1n : Nat), multi_fwd_add(acc, callee, position, multi_fwd_make(caller, shape)))
+def multi_fwd_make(caller: U32, shape: MultiShape) -> MultiFwd:
+  MultiFwd{caller, shape, multi_shape_key(caller, shape)}
+# A parameter shape constrains one caller position, so its flag key is fixed for
+# every round; a shape that opens on its own needs no key.
+def multi_shape_key(caller: U32, shape: MultiShape) -> String:
+  match shape:
+    case MultiParamShape{position}: multi_up_key(caller, position)
+    case _: ""
 def multi_fwd_add(acc: Map<&2, List<&2, MultiFwd>>, callee: U32, position: Nat, item: MultiFwd) -> Map<&2, List<&2, MultiFwd>>:
   +key = multi_up_key(callee, position)
   multi_fwd_set(acc, key, IndexLookup.find(List<&2, MultiFwd>, acc, key), item)
@@ -2113,15 +2260,13 @@ def multi_fwd_set(acc: Map<&2, List<&2, MultiFwd>>, +key: String, found: Maybe<&
     case Some{items}: Map.set(&2, List<&2, MultiFwd>, acc, key, item <> items)
     case None{}: Map.set(&2, List<&2, MultiFwd>, acc, key, [item])
 
-def multi_forwards_at(fwds: Map<&2, List<&2, MultiFwd>>, code: U32, position: Nat) -> List<&2, MultiFwd>:
-  multi_forwards_found(IndexLookup.find(List<&2, MultiFwd>, fwds, multi_up_key(code, position)))
+def multi_forwards_key(fwds: Map<&2, List<&2, MultiFwd>>, +key: String) -> List<&2, MultiFwd>:
+  multi_forwards_found(IndexLookup.find(List<&2, MultiFwd>, fwds, key))
 def multi_forwards_found(found: Maybe<&2, List<&2, MultiFwd>>) -> List<&2, MultiFwd>:
   match found:
     case Some{items}: items
     case None{}: Nil{}
 
-type MultiCodeFact is Data:
-  MultiCodeFact{width: Nat, sites: List<&2, MultiSiteF>, statics: Map<&2, Bool>, params: List<&2, BIR.Parameter>, captures: Nat, frames: Bool, pidx: Map<&2, Nat>, body: BIR.Block}
 
 def multi_program_width(items: List<&2, BIR.Code>, width: Nat) -> Nat:
   match items:
@@ -2145,101 +2290,260 @@ def multi_code_fact_build(id: U32, captures: List<&2, BIR.Use>, parameters: List
   +pidx = multi_param_index(parameters, 0n, Map.new(&2, Nat))
   +uses = multi_uses(body)
   +scan = multi_scan(body, MultiScan{Map.new(&2, MultiCtor), Nil{}}, layouts, uses, pidx, None{}, id)
-  multi_fact_from_scan(scan, List.length(&2, BIR.Use, captures), parameters, pidx, body, layouts, width, id)
-def multi_fact_from_scan(scan: MultiScan, captured: Nat, parameters: List<&2, BIR.Parameter>, pidx: Map<&2, Nat>, body: BIR.Block, layouts: Map<&2, MultiLayout>, width: Nat, id: U32) -> MultiCodeFact:
+  multi_fact_from_scan(scan, List.length(&2, BIR.Use, captures), parameters, pidx, body, layouts, width, id, uses)
+def multi_fact_from_scan(scan: MultiScan, captured: Nat, parameters: List<&2, BIR.Parameter>, pidx: Map<&2, Nat>, body: BIR.Block, layouts: Map<&2, MultiLayout>, width: Nat, id: U32, uses: Map<&2, Nat>) -> MultiCodeFact:
   match scan:
     case MultiScan{_, sites}:
-      MultiCodeFact{width: multi_local_width(body, 0n), sites, statics: multi_statics(parameters, 0n, id, body, layouts, width, Map.new(&2, Bool)), params: parameters, captures: captured, frames: multi_frames_ok(body, plan_of(body)), pidx, body}
-def multi_statics(items: List<&2, BIR.Parameter>, index: Nat, id: U32, body: BIR.Block, layouts: Map<&2, MultiLayout>, width: Nat, acc: Map<&2, Bool>) -> Map<&2, Bool>:
+      MultiCodeFact{multi_local_width(body, 0n), sites, multi_statics(parameters, 0n, id, body, layouts, width, Map.new(&2, Bool), uses), parameters, captured, multi_frames_ok(body, plan_of(body)), pidx, body, multi_routes(sites, id, Map.new(&2, List<&2, MultiReq>)), multi_tail_targets(sites, Nil{}), multi_result_shape(body, pidx, id, Nil{})}
+def multi_statics(items: List<&2, BIR.Parameter>, index: Nat, id: U32, body: BIR.Block, layouts: Map<&2, MultiLayout>, width: Nat, acc: Map<&2, Bool>, uses: Map<&2, Nat>) -> Map<&2, Bool>:
   match items:
     case Nil{}: acc
     case BIR.Parameter{pid, _} <> rest:
-      multi_statics(rest, (index + 1n : Nat), id, body, layouts, width, Map.set(&2, Bool, acc, multi_up_key(id, index), multi_param_static(body, pid, layouts, width)))
-def multi_fact_ups(fact: MultiCodeFact, id: U32, prev: MultiUp, banned: Map<&2, Bool>, fwds: Map<&2, List<&2, MultiFwd>>, acc: MultiUp) -> MultiUp:
-  match fact:
-    case MultiCodeFact{_, _, statics, params, _, _, _, _}:
-      multi_ups_of(params, 0n, id, statics, prev, banned, fwds, acc)
-def multi_ups_of(items: List<&2, BIR.Parameter>, index: Nat, id: U32, statics: Map<&2, Bool>, prev: MultiUp, banned: Map<&2, Bool>, fwds: Map<&2, List<&2, MultiFwd>>, acc: MultiUp) -> MultiUp:
-  match items:
+      multi_statics(rest, (index + 1n : Nat), id, body, layouts, width, Map.set(&2, Bool, acc, multi_up_key(id, index), multi_param_static_use(multi_used(uses, pid), body, pid, layouts, width)), uses)
+def multi_used(uses: Map<&2, Nat>, id: U32) -> Bool:
+  multi_used_found(IndexLookup.find(Nat, uses, U32.show(id)))
+def multi_used_found(found: Maybe<&2, Nat>) -> Bool:
+  match found:
+    case Some{_}: True{}
+    case None{}: False{}
+# A parameter no atom names is static for free: every use check compares against
+# that parameter, so with no occurrence each of them is vacuously true and the
+# scan cannot answer anything but true. Skipping it saves one body walk per
+# unused parameter.
+def multi_param_static_use(used: Bool, body: BIR.Block, pid: U32, layouts: Map<&2, MultiLayout>, width: Nat) -> Bool:
+  match used:
+    case False{}: True{}
+    case True{}: multi_param_static(body, pid, layouts, width)
+# Every parameter position a code owns is constrained by the sites that pass it
+# on: an argument that is one of the caller's parameters requires the callee to
+# be multi and that callee position to be unboxed. Those requirements are facts
+# of the body, so they are collected once and every round reads only flags.
+def multi_routes(sites: List<&2, MultiSiteF>, id: U32, acc: Map<&2, List<&2, MultiReq>>) -> Map<&2, List<&2, MultiReq>>:
+  match sites:
     case Nil{}: acc
-    case _ <> rest:
-      multi_ups_of(rest, (index + 1n : Nat), id, statics, prev, banned, fwds, multi_ups_set(acc, multi_up_key(id, index), multi_pos_up(statics, id, index, prev, banned, fwds)))
-def multi_ups_set(acc: MultiUp, +key: String, flag: Bool) -> MultiUp:
-  match acc:
-    case MultiUp{up, multi}: MultiUp{Map.set(&2, Bool, up, key, flag), multi}
-def multi_pos_up(statics: Map<&2, Bool>, id: U32, index: Nat, prev: MultiUp, banned: Map<&2, Bool>, fwds: Map<&2, List<&2, MultiFwd>>) -> Bool:
-  multi_pos_up_static(multi_static_at(statics, id, index), id, index, prev, banned, fwds)
+    case MultiSiteF{_, callee, _, shapes} <> rest:
+      multi_routes(rest, id, multi_route_shapes(shapes, 0n, callee, id, acc))
+def multi_route_shapes(shapes: List<&2, MultiShape>, index: Nat, callee: U32, id: U32, acc: Map<&2, List<&2, MultiReq>>) -> Map<&2, List<&2, MultiReq>>:
+  match shapes:
+    case Nil{}: acc
+    case shape <> rest:
+      multi_route_shapes(rest, (index + 1n : Nat), callee, id, multi_route_shape(shape, index, callee, id, acc))
+def multi_route_shape(shape: MultiShape, index: Nat, callee: U32, id: U32, acc: Map<&2, List<&2, MultiReq>>) -> Map<&2, List<&2, MultiReq>>:
+  match shape:
+    case MultiParamShape{position}: multi_route_add(acc, multi_up_key(id, position), MultiReq{callee, U32.show(callee), multi_up_key(callee, index)})
+    case _: acc
+def multi_route_add(acc: Map<&2, List<&2, MultiReq>>, +key: String, item: MultiReq) -> Map<&2, List<&2, MultiReq>>:
+  multi_route_set(acc, key, IndexLookup.find(List<&2, MultiReq>, acc, key), item)
+def multi_route_set(acc: Map<&2, List<&2, MultiReq>>, +key: String, found: Maybe<&2, List<&2, MultiReq>>, item: MultiReq) -> Map<&2, List<&2, MultiReq>>:
+  match found:
+    case Some{items}: Map.set(&2, List<&2, MultiReq>, acc, key, item <> items)
+    case None{}: Map.set(&2, List<&2, MultiReq>, acc, key, [item])
+# A value path either fails for the body alone or names the unboxed parameters
+# its returns require. The check is a conjunction over positions, so collecting
+# them once turns the per-round test into one flag read per required position.
+def multi_result_shape(body: BIR.Block, pidx: Map<&2, Nat>, id: U32, acc: List<&2, String>) -> MultiResult:
+  multi_result_shape_of(multi_result_reqs(body, pidx, id, acc))
+def multi_result_shape_of(found: Maybe<&2, List<&2, String>>) -> MultiResult:
+  match found:
+    case Some{required}: MultiResultOpen{required}
+    case None{}: MultiResultClosed{}
+def multi_result_reqs(body: BIR.Block, pidx: Map<&2, Nat>, id: U32, acc: List<&2, String>) -> Maybe<&2, List<&2, String>>:
+  match body:
+    case BIR.Return{value}: multi_return_req(value, pidx, id, acc)
+    case BIR.Let{binding, op, next}: multi_let_reqs(binding, op, next, pidx, id, acc)
+    case BIR.Branch{_, yes, no}: multi_reqs_and(multi_result_reqs(yes, pidx, id, acc), no, pidx, id, acc)
+    case BIR.Region{_, inner, next}: multi_reqs_and(multi_result_reqs(inner, pidx, id, acc), next, pidx, id, acc)
+    case BIR.LeaveRegion{_}: Some{acc}
+    case BIR.TailDirect{_, _}: Some{acc}
+    case BIR.TailApply{_, _}: None{}
+    case BIR.Failure{_}: Some{acc}
+def multi_reqs_and(left: Maybe<&2, List<&2, String>>, right: BIR.Block, pidx: Map<&2, Nat>, id: U32, acc: List<&2, String>) -> Maybe<&2, List<&2, String>>:
+  match left:
+    case None{}: None{}
+    case Some{first}: multi_reqs_join(first, multi_result_reqs(right, pidx, id, acc))
+def multi_reqs_join(first: List<&2, String>, right: Maybe<&2, List<&2, String>>) -> Maybe<&2, List<&2, String>>:
+  match right:
+    case None{}: None{}
+    case Some{second}: Some{List.append(&2, String, first, second)}
+def multi_return_req(value: BIR.Atom, pidx: Map<&2, Nat>, id: U32, acc: List<&2, String>) -> Maybe<&2, List<&2, String>>:
+  match value:
+    case BIR.Local{known}: multi_return_pos_req(multi_param_of(pidx, known), id, acc)
+    case _: None{}
+def multi_return_pos_req(position: Maybe<&2, Nat>, id: U32, acc: List<&2, String>) -> Maybe<&2, List<&2, String>>:
+  match position:
+    case Some{index}: Some{multi_up_key(id, index) <> acc}
+    case None{}: None{}
+def multi_let_reqs(binding: U32, op: BIR.Op, next: BIR.Block, pidx: Map<&2, Nat>, id: U32, acc: List<&2, String>) -> Maybe<&2, List<&2, String>>:
+  match op:
+    case BIR.Construct{_, _, _}: multi_construct_reqs(binding, next, pidx, id, acc)
+    case _: multi_result_reqs(next, pidx, id, acc)
+def multi_construct_reqs(binding: U32, next: BIR.Block, pidx: Map<&2, Nat>, id: U32, acc: List<&2, String>) -> Maybe<&2, List<&2, String>>:
+  match next:
+    case BIR.Return{BIR.Local{known}}: multi_construct_same_reqs(U32.is_eq(known, binding), next, pidx, id, acc)
+    case _: multi_result_reqs(next, pidx, id, acc)
+def multi_construct_same_reqs(same: Bool, next: BIR.Block, pidx: Map<&2, Nat>, id: U32, acc: List<&2, String>) -> Maybe<&2, List<&2, String>>:
+  match same:
+    case True{}: Some{acc}
+    case False{}: multi_result_reqs(next, pidx, id, acc)
+def multi_result_holds(result: MultiResult, up: Map<&2, Bool>) -> Bool:
+  match result:
+    case MultiResultOpen{required}: multi_result_required(required, up)
+    case MultiResultClosed{}: False{}
+def multi_result_required(items: List<&2, String>, up: Map<&2, Bool>) -> Bool:
+  match items:
+    case Nil{}: True{}
+    case +key <> rest: Bool.and(multi_up_at(up, key), multi_result_required(rest, up))
+def multi_routes_key(routes: Map<&2, List<&2, MultiReq>>, +key: String) -> List<&2, MultiReq>:
+  multi_routes_found(IndexLookup.find(List<&2, MultiReq>, routes, key))
+def multi_routes_found(found: Maybe<&2, List<&2, MultiReq>>) -> List<&2, MultiReq>:
+  match found:
+    case Some{items}: items
+    case None{}: Nil{}
+def multi_routes_ok(items: List<&2, MultiReq>, prev: MultiUp) -> Bool:
+  match items:
+    case Nil{}: True{}
+    case MultiReq{_, multi_key, up_key} <> rest:
+      Bool.and(Bool.and(multi_up_at(multi_prev_multi(prev), multi_key), multi_up_at(multi_prev_up(prev), up_key)), multi_routes_ok(rest, prev))
+def multi_up_at(up: Map<&2, Bool>, +key: String) -> Bool:
+  multi_up_found(IndexLookup.find(Bool, up, key))
 def multi_static_at(statics: Map<&2, Bool>, id: U32, index: Nat) -> Bool:
-  multi_up_found(IndexLookup.find(Bool, statics, multi_up_key(id, index)))
-def multi_pos_up_static(static: Bool, id: U32, index: Nat, prev: MultiUp, banned: Map<&2, Bool>, fwds: Map<&2, List<&2, MultiFwd>>) -> Bool:
-  match static:
-    case False{}: False{}
-    case True{}: Bool.and(Bool.not(multi_banned(banned, id)), multi_forwards_ok(multi_forwards_at(fwds, id, index), multi_prev_up(prev)))
+  multi_up_at(statics, multi_up_key(id, index))
 def multi_prev_up(prev: MultiUp) -> Map<&2, Bool>:
   match prev:
     case MultiUp{up, _}: up
 def multi_prev_multi(prev: MultiUp) -> Map<&2, Bool>:
   match prev:
     case MultiUp{_, multi}: multi
-def multi_fact_multi(fact: MultiCodeFact, id: U32, prev: MultiUp, banned: Map<&2, Bool>, width: Nat) -> Bool:
+def multi_fact_multi(fact: MultiCodeFact, id: U32, prev: MultiUp, banned: Map<&2, Bool>, width: Nat, rendered: Nat) -> Bool:
   match fact:
-    case MultiCodeFact{fact_width, sites, _, params, captures, frames, pidx, body}:
-      multi_fact_decided(Bool.not(multi_banned(banned, id)), id, body, fact_width, captures, frames, params, pidx, sites, prev, width)
-def multi_fact_decided(free: Bool, id: U32, body: BIR.Block, fact_width: Nat, captures: Nat, frames: Bool, params: List<&2, BIR.Parameter>, pidx: Map<&2, Nat>, sites: List<&2, MultiSiteF>, prev: MultiUp, width: Nat) -> Bool:
+    case MultiCodeFact{fact_width, _, _, _, _, frames, _, _, _, tails, result}:
+      multi_fact_decided(Bool.not(multi_banned(banned, id)), id, result, fact_width, frames, rendered, tails, prev, width)
+def multi_fact_decided(free: Bool, id: U32, result: MultiResult, fact_width: Nat, frames: Bool, rendered: Nat, tails: List<&2, U32>, prev: MultiUp, width: Nat) -> Bool:
   match free:
     case False{}: False{}
-    case True{}: multi_fact_checked(id, body, fact_width, captures, frames, params, pidx, sites, prev, width)
-def multi_fact_checked(id: U32, body: BIR.Block, fact_width: Nat, captures: Nat, frames: Bool, params: List<&2, BIR.Parameter>, pidx: Map<&2, Nat>, sites: List<&2, MultiSiteF>, prev: MultiUp, width: Nat) -> Bool:
+    case True{}: multi_fact_checked(id, result, fact_width, frames, rendered, tails, prev, width)
+def multi_fact_checked(id: U32, result: MultiResult, fact_width: Nat, frames: Bool, rendered: Nat, tails: List<&2, U32>, prev: MultiUp, width: Nat) -> Bool:
   match frames:
     case False{}: False{}
-    case True{}: multi_fact_result(id, body, fact_width, captures, params, pidx, sites, prev, width)
-def multi_fact_result(id: U32, body: BIR.Block, fact_width: Nat, captures: Nat, params: List<&2, BIR.Parameter>, pidx: Map<&2, Nat>, sites: List<&2, MultiSiteF>, prev: MultiUp, width: Nat) -> Bool:
-  multi_fact_shapes(multi_result_ok(body, multi_prev_up(prev), id, pidx), id, body, fact_width, captures, params, pidx, sites, prev, width)
-def multi_fact_shapes(result: Bool, id: U32, body: BIR.Block, fact_width: Nat, captures: Nat, params: List<&2, BIR.Parameter>, pidx: Map<&2, Nat>, sites: List<&2, MultiSiteF>, prev: MultiUp, width: Nat) -> Bool:
+    case True{}: multi_fact_result(id, result, fact_width, rendered, tails, prev, width)
+def multi_fact_result(id: U32, result: MultiResult, fact_width: Nat, rendered: Nat, tails: List<&2, U32>, prev: MultiUp, width: Nat) -> Bool:
+  multi_fact_shapes(multi_result_holds(result, multi_prev_up(prev)), id, fact_width, rendered, tails, prev, width)
+def multi_fact_shapes(result: Bool, id: U32, fact_width: Nat, rendered: Nat, tails: List<&2, U32>, prev: MultiUp, width: Nat) -> Bool:
   match result:
     case False{}: False{}
-    case True{}: multi_fact_arity(multi_arity_check(params, id, multi_prev_up(prev), width, captures), fact_width, sites, prev)
-def multi_fact_arity(arity: Bool, fact_width: Nat, sites: List<&2, MultiSiteF>, prev: MultiUp) -> Bool:
+    case True{}: multi_fact_arity(multi_arity_count(rendered), fact_width, tails, prev)
+def multi_fact_arity(arity: Bool, fact_width: Nat, tails: List<&2, U32>, prev: MultiUp) -> Bool:
   match arity:
     case False{}: False{}
-    case True{}: Bool.and(Nat.is_le(fact_width, 4n), multi_tails_multi(multi_tail_targets(sites, Nil{}), multi_prev_multi(prev)))
-def multi_round(items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, layouts: Map<&2, MultiLayout>, width: Nat, prev: MultiUp, acc: MultiUp) -> MultiUp:
+    case True{}: Bool.and(Nat.is_le(fact_width, 4n), multi_tails_multi(tails, multi_prev_multi(prev)))
+# A round only narrows: every flag it derives is intersected with the flag the
+# previous round held. Parameter flags alone cannot carry that invariant, because
+# a code's arity is measured from its parameter widths while its tail targets and
+# forwarding routes are read from a neighbour's flags, so a code flag can be
+# re-derived after the premise that withdrew it is gone: a wide parameter list
+# fails the arity bound while the parameters are still assumed unboxed, then
+# passes once the same round has boxed them. Intersecting each derived flag with
+# the previous state makes a round withdraw true flags only, which is what makes
+# `changed` a fixed point test instead of a cycle detector.
+#
+# The accumulator starts from the previous state, and a flag is written only when
+# it differs: a persistent map shares every untouched subtree, so a settled round
+# copies nothing. Each parameter builds its key once and reads the previous flag,
+# the static flag, its forwarding requirements and its route requirements by the
+# keys the facts already hold; no round walks a body or rescans a site list.
+def multi_round(items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, width: Nat, prev: MultiUp, acc: MultiUp) -> MultiStep:
   match items:
-    case Nil{}: acc
-    case code <> rest: multi_round_code(code, rest, facts, fwds, banned, layouts, width, prev, acc)
-def multi_round_code(code: BIR.Code, rest: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, layouts: Map<&2, MultiLayout>, width: Nat, prev: MultiUp, acc: MultiUp) -> MultiUp:
+    case Nil{}: MultiStep{acc, False{}}
+    case code <> rest: multi_round_code(code, rest, facts, fwds, banned, width, prev, acc)
+def multi_round_code(code: BIR.Code, rest: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, width: Nat, prev: MultiUp, acc: MultiUp) -> MultiStep:
   match code:
-    case BIR.Code{id, _, _, _}: multi_round_fact(id, rest, multi_fact_of(facts, id), facts, fwds, banned, layouts, width, prev, acc)
+    case BIR.Code{id, _, _, _}: multi_round_fact(id, rest, multi_fact_of(facts, id), facts, fwds, banned, width, prev, acc)
 def multi_fact_of(facts: Map<&2, MultiCodeFact>, id: U32) -> MultiCodeFact:
   match IndexLookup.find(MultiCodeFact, facts, U32.show(id)):
     case Some{+item}: item
-    case None{}: MultiCodeFact{0n, Nil{}, Map.new(&2, Bool), Nil{}, 0n, False{}, Map.new(&2, Nat), BIR.Failure{""}}
-def multi_round_fact(id: U32, rest: List<&2, BIR.Code>, fact: MultiCodeFact, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, layouts: Map<&2, MultiLayout>, width: Nat, prev: MultiUp, acc: MultiUp) -> MultiUp:
-  multi_round_next(rest, facts, fwds, banned, layouts, width, prev, multi_prev_add(multi_fact_ups(fact, id, prev, banned, fwds, acc), id, multi_fact_multi(fact, id, prev, banned, width)))
-def multi_prev_add(acc: MultiUp, id: U32, flag: Bool) -> MultiUp:
+    case None{}: MultiCodeFact{0n, Nil{}, Map.new(&2, Bool), Nil{}, 0n, False{}, Map.new(&2, Nat), BIR.Failure{""}, Map.new(&2, List<&2, MultiReq>), Nil{}, MultiResultClosed{}}
+def multi_round_fact(id: U32, rest: List<&2, BIR.Code>, fact: MultiCodeFact, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, width: Nat, prev: MultiUp, acc: MultiUp) -> MultiStep:
+  match fact:
+    case MultiCodeFact{_, _, statics, params, captures, _, _, _, routes, _, _}:
+      multi_round_flags(id, rest, fact, facts, fwds, banned, width, prev, multi_pass_params(params, 0n, id, statics, routes, prev, fwds, width, MultiPass{acc, False{}, captures}))
+def multi_round_flags(id: U32, rest: List<&2, BIR.Code>, fact: MultiCodeFact, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, width: Nat, prev: MultiUp, pass: MultiPass) -> MultiStep:
+  match pass:
+    case MultiPass{state, changed, rendered}:
+      +previous = multi_multi_get(multi_prev_multi(prev), id)
+      +computed = multi_fact_multi(fact, id, prev, banned, width, rendered)
+      multi_round_multi(state, U32.show(id), previous, multi_round_keep(computed, previous), changed, rest, facts, fwds, banned, width, prev)
+def multi_round_multi(acc: MultiUp, +key: String, previous: Bool, flag: Bool, changed: Bool, rest: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, width: Nat, prev: MultiUp) -> MultiStep:
+  match flag:
+    case True{}: multi_round_next(rest, facts, fwds, banned, width, prev, acc, changed)
+    case False{}: multi_round_multi_drop(acc, key, previous, changed, rest, facts, fwds, banned, width, prev)
+def multi_round_multi_drop(acc: MultiUp, +key: String, previous: Bool, changed: Bool, rest: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, width: Nat, prev: MultiUp) -> MultiStep:
+  match previous:
+    case False{}: multi_round_next(rest, facts, fwds, banned, width, prev, acc, changed)
+    case True{}: multi_round_next(rest, facts, fwds, banned, width, prev, multi_multi_clear(acc, key), True{})
+def multi_multi_clear(acc: MultiUp, +key: String) -> MultiUp:
   match acc:
-    case MultiUp{up, multi}: MultiUp{up, Map.set(&2, Bool, multi, U32.show(id), flag)}
-def multi_round_next(rest: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, layouts: Map<&2, MultiLayout>, width: Nat, prev: MultiUp, acc: MultiUp) -> MultiUp:
-  multi_round(rest, facts, fwds, banned, layouts, width, prev, acc)
-def multi_round_n(items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, layouts: Map<&2, MultiLayout>, width: Nat, left: Nat, state: MultiUp) -> MultiUp:
-  match Nat.is_gt(left, 0n):
-    case True{}: multi_round_n(items, facts, fwds, banned, layouts, width, Nat.sub(left, 1n), multi_round(items, facts, fwds, banned, layouts, width, state, MultiUp{Map.new(&2, Bool), Map.new(&2, Bool)}))
-    case False{}: state
-# The loop starts from the optimistic candidate, never from the empty map: a
-# position is assumed unboxed and a code is assumed multi, and each round removes
-# only what its premises do not support. Starting empty would make every premise
-# about a neighbour false on the first pass, so a self-forwarding tail recursion
-# (chunk forwarding its own record parameter) or any mutually forwarding pair
-# would never seed at all. Removal is monotone, so the iteration settles at the
-# greatest fixed point the rules allow.
-def multi_round_start(items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, layouts: Map<&2, MultiLayout>, width: Nat) -> MultiUp:
-  multi_round_until(items, facts, fwds, banned, layouts, width, multi_round_budget(items, multi_round_seed(items, Map.new(&2, Bool), Map.new(&2, Bool))), multi_round_seed(items, Map.new(&2, Bool), Map.new(&2, Bool)))
-# Each round that is not the last strictly removes a true flag, so a state with
-# the same number of true flags is a fixed point and the loop may stop; the
-# budget is the number of initial flags plus one, which is a proof that the loop
-# terminates even on a long tail chain. The empty answer on exhaustion is only
-# reachable if the relaxation itself removes flags without narrowing, i.e. if the
-# operator is wrong, and it declines the transform rather than emitting it.
+    case MultiUp{up, multi}: MultiUp{up, Map.set(&2, Bool, multi, key, False{})}
+def multi_round_next(rest: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, width: Nat, prev: MultiUp, acc: MultiUp, changed: Bool) -> MultiStep:
+  match multi_round(rest, facts, fwds, banned, width, prev, acc):
+    case MultiStep{state, changed_rest}:
+      MultiStep{state, Bool.or(changed, changed_rest)}
+def multi_round_keep(computed: Bool, previous: Bool) -> Bool:
+  Bool.and(computed, previous)
+# One code's parameter pass. The key is built once and serves the static flag, the
+# forwarding requirements, the route requirements and the previous flag; a flag
+# is written only when it withdraws, and the rendered arity is accumulated from
+# the same previous flags the round already read.
+def multi_pass_params(items: List<&2, BIR.Parameter>, index: Nat, id: U32, statics: Map<&2, Bool>, routes: Map<&2, List<&2, MultiReq>>, prev: MultiUp, fwds: Map<&2, List<&2, MultiFwd>>, width: Nat, pass: MultiPass) -> MultiPass:
+  match items:
+    case Nil{}: pass
+    case _ <> rest:
+      multi_pass_params(rest, (index + 1n : Nat), id, statics, routes, prev, fwds, width, multi_pass_one(id, index, statics, routes, prev, fwds, width, pass))
+def multi_pass_one(id: U32, index: Nat, statics: Map<&2, Bool>, routes: Map<&2, List<&2, MultiReq>>, prev: MultiUp, fwds: Map<&2, List<&2, MultiFwd>>, width: Nat, pass: MultiPass) -> MultiPass:
+  match pass:
+    case MultiPass{state, changed, rendered}:
+      +key = multi_up_key(id, index)
+      +previous = multi_up_at(multi_prev_up(prev), key)
+      multi_pass_static(multi_up_at(statics, key), key, previous, routes, prev, fwds, width, changed, multi_rendered_one(previous, width, rendered), state)
+def multi_pass_static(static: Bool, +key: String, previous: Bool, routes: Map<&2, List<&2, MultiReq>>, prev: MultiUp, fwds: Map<&2, List<&2, MultiFwd>>, width: Nat, changed: Bool, rendered: Nat, acc: MultiUp) -> MultiPass:
+  match static:
+    case False{}: multi_pass_write(acc, key, previous, False{}, changed, rendered)
+    case True{}: multi_pass_open(multi_forwards_ok(multi_forwards_key(fwds, key), multi_prev_up(prev)), key, previous, routes, prev, changed, rendered, acc)
+def multi_pass_open(open: Bool, +key: String, previous: Bool, routes: Map<&2, List<&2, MultiReq>>, prev: MultiUp, changed: Bool, rendered: Nat, acc: MultiUp) -> MultiPass:
+  match open:
+    case False{}: multi_pass_write(acc, key, previous, False{}, changed, rendered)
+    case True{}: multi_pass_write(acc, key, previous, Bool.and(multi_routes_ok(multi_routes_key(routes, key), prev), previous), changed, rendered)
+def multi_pass_write(acc: MultiUp, +key: String, previous: Bool, flag: Bool, changed: Bool, rendered: Nat) -> MultiPass:
+  match flag:
+    case True{}: MultiPass{acc, changed, rendered}
+    case False{}: multi_pass_drop(acc, key, previous, changed, rendered)
+def multi_pass_drop(acc: MultiUp, +key: String, previous: Bool, changed: Bool, rendered: Nat) -> MultiPass:
+  match previous:
+    case False{}: MultiPass{acc, changed, rendered}
+    case True{}: multi_pass_clear(acc, key, rendered)
+def multi_pass_clear(acc: MultiUp, +key: String, rendered: Nat) -> MultiPass:
+  match acc:
+    case MultiUp{up, multi}: MultiPass{MultiUp{Map.set(&2, Bool, up, key, False{}), multi}, True{}, rendered}
+# The loop starts from the optimistic candidate for codes, never from the empty
+# map: a code is assumed multi, and each round removes only what its premises do
+# not support. Starting empty would make every premise about a neighbour false on
+# the first pass, so a self-forwarding tail recursion (chunk forwarding its own
+# record parameter) or any mutually forwarding pair would never seed at all.
+# Parameter flags are not optimistic: they start from the static-use facts, so a
+# scalar parameter is already boxed when the first round measures its owner's
+# arity. Seeding those flags true made a wide parameter list fail the width bound
+# in one round and pass it in the next only because the previous round had boxed
+# the very parameters it measured, and a state that flips like that is not a
+# fixed point even when its true count repeats.
+def multi_round_start(items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, width: Nat) -> MultiSolve:
+  multi_round_seeded(items, facts, fwds, banned, width, multi_round_seed(items, facts, banned, Map.new(&2, Bool), Map.new(&2, Bool)))
+def multi_round_seeded(items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, width: Nat, state: MultiUp) -> MultiSolve:
+  multi_round_until(items, facts, fwds, banned, width, multi_round_budget(items, state), state)
+# Every flag a round derives is intersected with the flag the previous round
+# held, so a round withdraws true flags and never restores one. The budget is the
+# number of initial flags plus one: each round that is not the settled one
+# strictly removes a true flag, so that many rounds settle any chain, even a long
+# tail chain. Running it out means the relaxation stopped narrowing, i.e. the
+# operator is wrong; that is reported as a fault, never as a working program.
 def multi_round_budget(items: List<&2, BIR.Code>, state: MultiUp) -> Nat:
   Nat.add(multi_true_count(items, state), 1n)
 def multi_true_count(items: List<&2, BIR.Code>, state: MultiUp) -> Nat:
@@ -2257,58 +2561,35 @@ def multi_true_flags(items: List<&2, BIR.Parameter>, id: U32, index: Nat, state:
   match items:
     case Nil{}: acc
     case _ <> rest: multi_true_flags(rest, id, (index + 1n : Nat), state, multi_true_multi(multi_up_get(multi_prev_up(state), id, index), acc))
-def multi_round_until(items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, layouts: Map<&2, MultiLayout>, width: Nat, left: Nat, state: MultiUp) -> MultiUp:
-  multi_round_until_step(items, facts, fwds, banned, layouts, width, left, state, multi_round(items, facts, fwds, banned, layouts, width, state, MultiUp{Map.new(&2, Bool), Map.new(&2, Bool)}))
-def multi_round_until_step(items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, layouts: Map<&2, MultiLayout>, width: Nat, left: Nat, state: MultiUp, next: MultiUp) -> MultiUp:
-  match Nat.is_eq(multi_true_count(items, next), multi_true_count(items, state)):
-    case True{}: next
-    case False{}: multi_round_more(Nat.is_eq(left, 0n), items, facts, fwds, banned, layouts, width, left, next)
-def multi_round_more(empty: Bool, items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, layouts: Map<&2, MultiLayout>, width: Nat, left: Nat, next: MultiUp) -> MultiUp:
+def multi_round_until(items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, width: Nat, left: Nat, state: MultiUp) -> MultiSolve:
+  multi_round_until_step(items, facts, fwds, banned, width, left, state, multi_round(items, facts, fwds, banned, width, state, state))
+def multi_round_until_step(items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, width: Nat, left: Nat, state: MultiUp, step: MultiStep) -> MultiSolve:
+  match step:
+    case MultiStep{next, changed}: multi_round_step_changed(changed, items, facts, fwds, banned, width, left, next)
+def multi_round_step_changed(changed: Bool, items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, width: Nat, left: Nat, next: MultiUp) -> MultiSolve:
+  match changed:
+    case False{}: MultiSolve{next, True{}}
+    case True{}: multi_round_more(Nat.is_eq(left, 0n), items, facts, fwds, banned, width, Nat.sub(left, 1n), next)
+def multi_round_more(empty: Bool, items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, width: Nat, left: Nat, next: MultiUp) -> MultiSolve:
   match empty:
-    case True{}: MultiUp{Map.new(&2, Bool), Map.new(&2, Bool)}
-    case False{}: multi_round_until(items, facts, fwds, banned, layouts, width, Nat.sub(left, 1n), next)
-# A state that one more relaxation pass would still narrow is not a fixed point:
-# some remaining `multi` code could then name a private tail entry whose callee
-# was already removed, and the caller would read a window that the boxed callee
-# never wrote. Declining the whole transform is the only sound answer, and it is
-# bounded by one extra pass over the facts.
-def multi_round_settle(items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, layouts: Map<&2, MultiLayout>, width: Nat, state: MultiUp) -> MultiUp:
-  match multi_settled(items, state, multi_round(items, facts, fwds, banned, layouts, width, state, MultiUp{Map.new(&2, Bool), Map.new(&2, Bool)}), True{}):
-    case True{}: state
-    case False{}: MultiUp{Map.new(&2, Bool), Map.new(&2, Bool)}
-def multi_settled(items: List<&2, BIR.Code>, state: MultiUp, next: MultiUp, acc: Bool) -> Bool:
-  match items:
-    case Nil{}: acc
-    case BIR.Code{id, _, parameters, _} <> rest:
-      multi_settled(rest, state, next, Bool.and(acc, multi_code_settled(id, parameters, state, next)))
-def multi_code_settled(id: U32, parameters: List<&2, BIR.Parameter>, state: MultiUp, next: MultiUp) -> Bool:
-  Bool.and(multi_flag_settled(multi_multi_get(multi_prev_multi(state), id), multi_multi_get(multi_prev_multi(next), id)), multi_ups_settled(parameters, id, 0n, multi_prev_up(state), multi_prev_up(next)))
-def multi_ups_settled(items: List<&2, BIR.Parameter>, id: U32, index: Nat, before: Map<&2, Bool>, after: Map<&2, Bool>) -> Bool:
-  match items:
-    case Nil{}: True{}
-    case _ <> rest: Bool.and(multi_flag_settled(multi_up_get(before, id, index), multi_up_get(after, id, index)), multi_ups_settled(rest, id, (index + 1n : Nat), before, after))
-def multi_flag_settled(before: Bool, after: Bool) -> Bool:
-  match before:
-    case False{}: True{}
-    case True{}:
-      match after:
-        case True{}: True{}
-        case False{}: False{}
-def multi_round_seed(items: List<&2, BIR.Code>, multi: Map<&2, Bool>, up: Map<&2, Bool>) -> MultiUp:
+    case True{}: MultiSolve{next, False{}}
+    case False{}: multi_round_until(items, facts, fwds, banned, width, left, next)
+def multi_fact_statics(facts: Map<&2, MultiCodeFact>, id: U32) -> Map<&2, Bool>:
+  match multi_fact_of(facts, id):
+    case MultiCodeFact{_, _, statics, _, _, _, _, _, _, _, _}: statics
+def multi_round_seed(items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, banned: Map<&2, Bool>, multi: Map<&2, Bool>, up: Map<&2, Bool>) -> MultiUp:
   match items:
     case Nil{}: MultiUp{up, multi}
-    case code <> rest: multi_round_seed_one(code, rest, multi, up)
-def multi_round_seed_one(code: BIR.Code, rest: List<&2, BIR.Code>, multi: Map<&2, Bool>, up: Map<&2, Bool>) -> MultiUp:
+    case code <> rest: multi_round_seed_one(code, rest, facts, banned, multi, up)
+def multi_round_seed_one(code: BIR.Code, rest: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, banned: Map<&2, Bool>, multi: Map<&2, Bool>, up: Map<&2, Bool>) -> MultiUp:
   match code:
     case BIR.Code{id, _, parameters, _}:
-      multi_round_seed(rest, Map.set(&2, Bool, multi, U32.show(id), True{}), multi_seed_ups(parameters, 0n, id, up))
-def multi_seed_ups(items: List<&2, BIR.Parameter>, index: Nat, id: U32, up: Map<&2, Bool>) -> Map<&2, Bool>:
+      multi_round_seed(rest, facts, banned, Map.set(&2, Bool, multi, U32.show(id), Bool.not(multi_banned(banned, id))), multi_seed_ups(parameters, 0n, id, multi_fact_statics(facts, id), up))
+def multi_seed_ups(items: List<&2, BIR.Parameter>, index: Nat, id: U32, statics: Map<&2, Bool>, up: Map<&2, Bool>) -> Map<&2, Bool>:
   match items:
     case Nil{}: up
-    case _ <> rest: multi_seed_ups(rest, (index + 1n : Nat), id, Map.set(&2, Bool, up, multi_up_key(id, index), True{}))
+    case _ <> rest: multi_seed_ups(rest, (index + 1n : Nat), id, statics, Map.set(&2, Bool, up, multi_up_key(id, index), multi_static_at(statics, id, index)))
 
-type MRewCtx is Data:
-  MRewCtx{code: U32, layouts: Map<&2, MultiLayout>, multi: Map<&2, Bool>, up: Map<&2, Bool>, width: Nat, params: Map<&2, MultiParam>, private: Bool, sub: Maybe<&2, MultiSubst>, cur: Maybe<&2, U32>, bindings: Map<&2, MultiCtor>, uses: Map<&2, Nat>}
 
 def multi_param_get(params: Map<&2, MultiParam>, id: U32) -> Maybe<&2, MultiParam>:
   IndexLookup.find(MultiParam, params, U32.show(id))
@@ -2359,12 +2640,12 @@ def multi_pad_take(items: List<&2, BIR.Atom>, width: Nat, index: Nat, acc: List<
 # The tag plus the field words of one argument. A record literal is opened in its
 # constructor's own field order, an unboxed parameter forwards its own words, and
 # a window forwards the words its continuation already bound.
-def multi_forward_atoms(value: BIR.Atom, layouts: Map<&2, MultiLayout>, params: Map<&2, MultiParam>, bindings: Map<&2, MultiCtor>, sub: Maybe<&2, MultiSubst>, width: Nat) -> List<&2, BIR.Atom>:
+def multi_forward_atoms(value: BIR.Atom, layouts: Map<&2, MultiLayout>, params: Map<&2, MultiParam>, bindings: Map<&2, MultiCtor>, sub: Map<&2, MultiSubst>, width: Nat) -> List<&2, BIR.Atom>:
   match value:
     case BIR.Local{id}: multi_forward_local(id, layouts, params, bindings, sub, width)
     case _: multi_pad([value], width)
-def multi_forward_local(id: U32, layouts: Map<&2, MultiLayout>, params: Map<&2, MultiParam>, bindings: Map<&2, MultiCtor>, sub: Maybe<&2, MultiSubst>, width: Nat) -> List<&2, BIR.Atom>:
-  multi_forward_kind(multi_param_get(params, id), multi_binding(bindings, id), sub, id, layouts, params, width, bindings)
+def multi_forward_local(id: U32, layouts: Map<&2, MultiLayout>, params: Map<&2, MultiParam>, bindings: Map<&2, MultiCtor>, sub: Map<&2, MultiSubst>, width: Nat) -> List<&2, BIR.Atom>:
+  multi_forward_kind(multi_param_get(params, id), multi_binding(bindings, id), multi_sub_at(sub, id), id, layouts, params, width, bindings)
 def multi_forward_kind(position: Maybe<&2, MultiParam>, binding: Maybe<&2, MultiCtor>, sub: Maybe<&2, MultiSubst>, id: U32, layouts: Map<&2, MultiLayout>, params: Map<&2, MultiParam>, width: Nat, bindings: Map<&2, MultiCtor>) -> List<&2, BIR.Atom>:
   match position:
     case Some{MultiParam{known, unboxed, tag, fields}}: multi_forward_flags(unboxed, tag, fields, binding, sub, id, layouts, params, width, bindings, known)
@@ -2405,7 +2686,7 @@ def multi_open_value(value: BIR.Atom, ctx: MRewCtx) -> Bool:
 def multi_open_local(id: U32, ctx: MRewCtx) -> Bool:
   match ctx:
     case MRewCtx{_, layouts, _, _, width, params, private, sub, _, bindings, uses}:
-      multi_open_kind(multi_param_get(params, id), multi_binding(bindings, id), sub, id, layouts, width, private, uses)
+      multi_open_kind(multi_param_get(params, id), multi_binding(bindings, id), multi_sub_at(sub, id), id, layouts, width, private, uses)
 def multi_open_kind(position: Maybe<&2, MultiParam>, binding: Maybe<&2, MultiCtor>, sub: Maybe<&2, MultiSubst>, id: U32, layouts: Map<&2, MultiLayout>, width: Nat, private: Bool, uses: Map<&2, Nat>) -> Bool:
   match position:
     case Some{MultiParam{_, unboxed, _, _}}: multi_open_flags(unboxed, binding, sub, id, layouts, width, private, uses)
@@ -2471,11 +2752,17 @@ def multi_subst_args(args: List<&2, BIR.Arg>, ctx: MRewCtx) -> List<&2, BIR.Arg>
 def multi_atom(value: BIR.Atom, ctx: MRewCtx) -> BIR.Atom:
   value
 
+def multi_site_call(args: List<&2, BIR.Arg>, callee: U32, id: U32, ctx: MRewCtx) -> Bool:
+  multi_site_call_named(multi_args_name(args, id), args, callee, id, ctx)
+def multi_site_call_named(named: Bool, args: List<&2, BIR.Arg>, callee: U32, id: U32, ctx: MRewCtx) -> Bool:
+  match named:
+    case False{}: True{}
+    case True{}: Bool.and(multi_args_open(args, callee, ctx), multi_site_args(args, callee, id, ctx, 0n))
 def multi_site_args(args: List<&2, BIR.Arg>, callee: U32, id: U32, ctx: MRewCtx, index: Nat) -> Bool:
   match args:
     case Nil{}: True{}
     case BIR.Arg{_, value} <> rest:
-      multi_site_arg(multi_names(value, id), multi_up_get(multi_ctx_up(ctx), callee, index), rest, callee, id, ctx, index)
+      multi_site_arg(multi_names(value, id), Bool.and(multi_multi_get(multi_ctx_multi(ctx), callee), multi_up_get(multi_ctx_up(ctx), callee, index)), rest, callee, id, ctx, index)
 def multi_site_arg(named: Bool, required: Bool, rest: List<&2, BIR.Arg>, callee: U32, id: U32, ctx: MRewCtx, index: Nat) -> Bool:
   match named:
     case False{}: multi_site_args(rest, callee, id, ctx, (index + 1n : Nat))
@@ -2488,7 +2775,7 @@ def multi_site_op(op: BIR.Op, id: U32, ctx: MRewCtx, refs: List<&2, MultiRef>) -
   match op:
     case BIR.Project{value, constructor, _, key}: multi_site_project(value, constructor, key, id, ctx, refs)
     case BIR.HasTag{value, _, _}: Bool.not(multi_names(value, id))
-    case BIR.Direct{callee, args}: multi_site_args(args, callee, id, ctx, 0n)
+    case BIR.Direct{callee, args}: multi_site_call(args, callee, id, ctx)
     case BIR.Copy{value}: Bool.not(multi_names(value, id))
     case BIR.PrimitiveCall{_, args, _}: Bool.not(multi_args_name(args, id))
     case BIR.Closure{_, captures, _}: Bool.not(multi_args_name(captures, id))
@@ -2512,7 +2799,7 @@ def multi_site_uses(body: BIR.Block, id: U32, ctx: MRewCtx, refs: List<&2, Multi
     case BIR.Branch{condition, yes, no}: Bool.and(Bool.not(multi_names(condition, id)), Bool.and(multi_site_uses(yes, id, ctx, refs), multi_site_uses(no, id, ctx, refs)))
     case BIR.Region{_, inner, next}: Bool.and(multi_site_uses(inner, id, ctx, refs), multi_site_uses(next, id, ctx, refs))
     case BIR.LeaveRegion{_}: True{}
-    case BIR.TailDirect{callee, args}: multi_site_args(args, callee, id, ctx, 0n)
+    case BIR.TailDirect{callee, args}: multi_site_call(args, callee, id, ctx)
     case BIR.TailApply{fn, arg}: Bool.not(multi_arg_names(fn, arg, id))
     case BIR.Failure{_}: True{}
 def multi_site_let(test: U32, op: BIR.Op, next: BIR.Block, id: U32, ctx: MRewCtx, refs: List<&2, MultiRef>) -> Bool:
@@ -2563,7 +2850,7 @@ def multi_project_rewrite(value: BIR.Atom, constructor: U32, field: U32, key: St
 def multi_project_local_rewrite(known: U32, constructor: U32, field: U32, key: String, ctx: MRewCtx) -> BIR.Op:
   match ctx:
     case MRewCtx{_, layouts, _, _, _, params, _, sub, _, _, _}:
-      multi_project_choose(multi_param_get(params, known), sub, known, layouts, constructor, field, key)
+      multi_project_choose(multi_param_get(params, known), multi_sub_at(sub, known), known, layouts, constructor, field, key)
 def multi_project_choose(position: Maybe<&2, MultiParam>, sub: Maybe<&2, MultiSubst>, known: U32, layouts: Map<&2, MultiLayout>, constructor: U32, field: U32, key: String) -> BIR.Op:
   match position:
     case Some{MultiParam{_, unboxed, _, fields}}: multi_project_flags(unboxed, fields, sub, known, layouts, constructor, field, key)
@@ -2588,7 +2875,7 @@ def multi_has_tag_rewrite(value: BIR.Atom, constructor: U32, tag: String, ctx: M
 def multi_has_tag_local(known: U32, constructor: U32, tag: String, ctx: MRewCtx) -> BIR.Op:
   match ctx:
     case MRewCtx{_, _, _, _, _, params, _, sub, _, _, _}:
-      multi_has_tag_choose(multi_param_get(params, known), sub, known, constructor, tag)
+      multi_has_tag_choose(multi_param_get(params, known), multi_sub_at(sub, known), known, constructor, tag)
 def multi_has_tag_choose(position: Maybe<&2, MultiParam>, sub: Maybe<&2, MultiSubst>, known: U32, constructor: U32, tag: String) -> BIR.Op:
   match position:
     case Some{MultiParam{_, unboxed, tagid, _}}: multi_has_tag_flags(unboxed, tagid, sub, known, constructor, tag)
@@ -2609,7 +2896,7 @@ def multi_tag_eq(value: BIR.Atom, tag: String, constructor: U32) -> BIR.Op:
   BIR.PrimitiveCall{BIR.PrimStringEq{}, [BIR.Arg{BIR.Many{}, value}, BIR.Arg{BIR.Many{}, BIR.TextValue{tag}}], Nil{}}
 
 def multi_site_private(callee: U32, args: List<&2, BIR.Arg>, next: BIR.Block, id: U32, ctx: MRewCtx) -> Bool:
-  Bool.and(multi_multi_get(multi_ctx_multi(ctx), callee), Bool.and(multi_args_open(args, callee, ctx), multi_site_uses(next, id, ctx, Nil{})))
+  Bool.and(multi_multi_get(multi_ctx_multi(ctx), callee), multi_args_open(args, callee, ctx))
 def multi_ctx_multi(ctx: MRewCtx) -> Map<&2, Bool>:
   match ctx:
     case MRewCtx{_, _, multi, _, _, _, _, _, _, _, _}: multi
@@ -2637,9 +2924,23 @@ def multi_ctx_bindings(ctx: MRewCtx) -> Map<&2, MultiCtor>:
 def multi_ctx_uses(ctx: MRewCtx) -> Map<&2, Nat>:
   match ctx:
     case MRewCtx{_, _, _, _, _, _, _, _, _, _, uses}: uses
-def multi_ctx_sub(ctx: MRewCtx) -> Maybe<&2, MultiSubst>:
+def multi_ctx_sub(ctx: MRewCtx) -> Map<&2, MultiSubst>:
   match ctx:
     case MRewCtx{_, _, _, _, _, _, _, sub, _, _, _}: sub
+def multi_sub_at(sub: Map<&2, MultiSubst>, id: U32) -> Maybe<&2, MultiSubst>:
+  IndexLookup.find(MultiSubst, sub, U32.show(id))
+def multi_ctx_result(ctx: MRewCtx, id: U32, open: Bool) -> MRewCtx:
+  match ctx:
+    case MRewCtx{owner, layouts, multi, up, width, params, private, sub, _, bindings, uses}:
+      MRewCtx{owner, layouts, multi, up, width, params, private, multi_sub_add(open, sub, id, width), Some{id}, bindings, uses}
+def multi_sub_add(open: Bool, sub: Map<&2, MultiSubst>, id: U32, width: Nat) -> Map<&2, MultiSubst>:
+  match open:
+    case False{}: sub
+    case True{}: Map.set(&2, MultiSubst, sub, U32.show(id), MultiSubst{id, BIR.Local{id}, multi_window_fields(id, width), False{}})
+def multi_call_window(id: U32, ctx: MRewCtx) -> MultiWindow:
+  match multi_sub_at(multi_ctx_sub(ctx), id):
+    case None{}: MultiWindow{multi_ctx_width(ctx), Nil{}, Some{id}}
+    case Some{_}: MultiWindow{multi_ctx_width(ctx), multi_fresh_ids(id, multi_ctx_width(ctx)), None{}}
 def multi_ctx_cur(ctx: MRewCtx) -> Maybe<&2, U32>:
   match ctx:
     case MRewCtx{_, _, _, _, _, _, _, _, cur, _, _}: cur
@@ -2693,12 +2994,20 @@ def multi_rewrite_direct_decide(priv: Bool, id: U32, code: U32, args: List<&2, B
     case True{}: multi_rewrite_direct_private(id, code, args, next, ctx, seed)
     case False{}: multi_rewrite_direct_pub(id, code, args, next, ctx, seed)
 def multi_rewrite_direct_private(id: U32, code: U32, args: List<&2, BIR.Arg>, next: BIR.Block, ctx: MRewCtx, seed: Nat) -> MultiRew:
-  match ctx:
-    case MRewCtx{code: owner, layouts, multi, up, width, params, private, _, _, bindings, uses}:
-      multi_rewrite_direct_body(id, code, args, next, MRewCtx{owner, layouts, multi, up, width, params, private, Some{MultiSubst{id, BIR.Local{id}, multi_window_fields(id, width), False{}}}, Some{id}, bindings, uses}, seed, True{})
+  multi_rewrite_direct_open(multi_site_uses(next, id, multi_ctx_result(ctx, id, True{}), Nil{}), id, code, args, next, ctx, seed)
+def multi_rewrite_direct_open(open: Bool, id: U32, code: U32, args: List<&2, BIR.Arg>, next: BIR.Block, ctx: MRewCtx, seed: Nat) -> MultiRew:
+  match open:
+    case True{}: multi_rewrite_direct_body(id, code, multi_expand_args(args, code, ctx), next, multi_ctx_result(ctx, id, True{}), seed, True{})
+    case False{}: multi_rewrite_direct_escape(multi_args_sub_named(args, ctx), id, code, args, next, ctx, seed)
+# An escaping result with boxed arguments gains nothing from a private call and
+# immediate reboxing. A decomposed argument still needs the private convention.
+def multi_rewrite_direct_escape(words: Bool, id: U32, code: U32, args: List<&2, BIR.Arg>, next: BIR.Block, ctx: MRewCtx, seed: Nat) -> MultiRew:
+  match words:
+    case False{}: multi_rewrite_direct_pub(id, code, args, next, ctx, seed)
+    case True{}: multi_rewrite_direct_body(id, code, multi_expand_args(args, code, ctx), next, multi_ctx_result(ctx, id, False{}), seed, True{})
 def multi_rewrite_direct_pub(id: U32, code: U32, args: List<&2, BIR.Arg>, next: BIR.Block, ctx: MRewCtx, seed: Nat) -> MultiRew:
   match ctx:
-    case MRewCtx{code: owner, layouts, multi, up, width, params, private, sub, _, bindings, uses}:
+    case MRewCtx{owner, layouts, multi, up, width, params, private, sub, _, bindings, uses}:
       multi_rewrite_direct_body(id, code, args, next, MRewCtx{owner, layouts, multi, up, width, params, private, sub, Some{id}, bindings, uses}, seed, False{})
 def multi_rewrite_direct_body(id: U32, code: U32, args: List<&2, BIR.Arg>, next: BIR.Block, ctx: MRewCtx, seed: Nat, priv: Bool) -> MultiRew:
   +r = multi_rewrite(next, ctx, seed)
@@ -2715,7 +3024,7 @@ def multi_rewrite_site_route(priv: Bool, id: U32, code: U32, args: List<&2, BIR.
     case False{}:
       MultiRew{BIR.Let{id, BIR.Direct{code, multi_subst_args(args, ctx)}, body}, windows, Map.set(&2, Bool, sites, key, False{}), Map.set(&2, Bool, mr, key, own), dropped, Bool.or(failed, Bool.and(own, Bool.not(multi_ctx_private(ctx)))), own, seed}
     case True{}:
-      MultiRew{BIR.Let{id, BIR.Direct{code, multi_expand_args(args, code, ctx)}, body}, Map.set(&2, MultiWindow, windows, key, MultiWindow{multi_ctx_width(ctx), multi_fresh_ids(id, multi_ctx_width(ctx)), None{}}), Map.set(&2, Bool, sites, key, True{}), Map.set(&2, Bool, mr, key, own), dropped, Bool.or(failed, Bool.and(own, Bool.not(multi_ctx_private(ctx)))), own, seed}
+      MultiRew{BIR.Let{id, BIR.Direct{code, args}, body}, Map.set(&2, MultiWindow, windows, key, multi_call_window(id, ctx)), Map.set(&2, Bool, sites, key, True{}), Map.set(&2, Bool, mr, key, own), dropped, Bool.or(failed, Bool.and(own, Bool.not(multi_ctx_private(ctx)))), own, seed}
 def multi_rewrite_apply(id: U32, fn: BIR.Atom, arg: BIR.Arg, next: BIR.Block, ctx: MRewCtx, seed: Nat) -> MultiRew:
   +r = multi_rewrite(next, ctx, seed)
   multi_rewrite_apply_made(id, fn, arg, r, ctx)
@@ -2759,14 +3068,16 @@ def multi_rewrite_tail_private(priv: Bool, code: U32, args: List<&2, BIR.Arg>, c
     case False{}: multi_rewrite_tail_convert(multi_tail_convertible(code, args, ctx), code, args, ctx, seed)
 def multi_tail_expand(code: U32, args: List<&2, BIR.Arg>, ctx: MRewCtx) -> List<&2, BIR.Arg>:
   multi_expand_args(args, code, ctx)
+# A boxed tail result has no strict consumer to benefit from a window. Keep the
+# boxed tail call unless an argument already exists only as decomposed words.
 def multi_tail_convertible(code: U32, args: List<&2, BIR.Arg>, ctx: MRewCtx) -> Bool:
-  Bool.and(multi_multi_get(multi_ctx_multi(ctx), code), Bool.and(multi_args_open(args, code, ctx), multi_tail_arity_ok(args, code, ctx)))
+  Bool.and(multi_args_sub_named(args, ctx), Bool.and(multi_multi_get(multi_ctx_multi(ctx), code), Bool.and(multi_args_open(args, code, ctx), multi_tail_arity_ok(args, code, ctx))))
 def multi_tail_arity_ok(args: List<&2, BIR.Arg>, code: U32, ctx: MRewCtx) -> Bool:
   multi_arity_bound(Nat.add(multi_expanded_count(args, code, ctx, 0n), 1n))
 def multi_expanded_count(args: List<&2, BIR.Arg>, code: U32, ctx: MRewCtx, index: Nat) -> Nat:
   match args:
     case Nil{}: 0n
-    case _ <> rest: Nat.add(multi_expanded_one(multi_up_get(multi_ctx_up(ctx), code, index), ctx), multi_expanded_count(rest, code, (index + 1n : Nat), ctx))
+    case _ <> rest: Nat.add(multi_expanded_one(multi_up_get(multi_ctx_up(ctx), code, index), ctx), multi_expanded_count(rest, code, ctx, Nat.add(index, 1n)))
 def multi_expanded_one(required: Bool, ctx: MRewCtx) -> Nat:
   match required:
     case True{}: Nat.add(multi_ctx_width(ctx), 1n)
@@ -2778,15 +3089,22 @@ def multi_rewrite_tail_convert(convert: Bool, code: U32, args: List<&2, BIR.Arg>
 def multi_rewrite_tail_pub(code: U32, args: List<&2, BIR.Arg>, ctx: MRewCtx, seed: Nat) -> MultiRew:
   MultiRew{BIR.TailDirect{code, multi_subst_args(args, ctx)}, Map.new(&2, MultiWindow), Map.new(&2, Bool), Map.new(&2, Bool), Map.new(&2, Bool), multi_args_sub_named(args, ctx), False{}, seed}
 def multi_args_sub_named(args: List<&2, BIR.Arg>, ctx: MRewCtx) -> Bool:
-  match multi_ctx_sub(ctx):
-    case Some{MultiSubst{id, _, _, _}}: multi_args_name(args, id)
+  match args:
+    case Nil{}: False{}
+    case BIR.Arg{_, value} <> rest: Bool.or(multi_atom_sub_named(value, ctx), multi_args_sub_named(rest, ctx))
+def multi_atom_sub_named(value: BIR.Atom, ctx: MRewCtx) -> Bool:
+  match value:
+    case BIR.Local{id}: multi_sub_found(multi_sub_at(multi_ctx_sub(ctx), id))
+    case _: False{}
+def multi_sub_found(found: Maybe<&2, MultiSubst>) -> Bool:
+  match found:
+    case Some{_}: True{}
     case None{}: False{}
 def multi_rewrite_tail_converted(code: U32, args: List<&2, BIR.Arg>, ctx: MRewCtx, seed: Nat) -> MultiRew:
   +cid = multi_counter_id(seed)
-  +bid = U32.inc(cid)
   +key = cat(["k", U32.show(cid)])
-  +win = MultiWindow{multi_ctx_width(ctx), Nil{}, Some{bid}}
-  MultiRew{BIR.Let{cid, BIR.Direct{code, multi_expand_args(args, code, ctx)}, BIR.Return{BIR.Local{bid}}}, Map.set(&2, MultiWindow, Map.new(&2, MultiWindow), key, win), Map.set(&2, Bool, Map.new(&2, Bool), key, True{}), Map.set(&2, Bool, Map.new(&2, Bool), key, False{}), Map.new(&2, Bool), False{}, False{}, Nat.add(seed, 2n)}
+  +win = MultiWindow{multi_ctx_width(ctx), Nil{}, Some{cid}}
+  MultiRew{BIR.Let{cid, BIR.Direct{code, multi_expand_args(args, code, ctx)}, BIR.Return{BIR.Local{cid}}}, Map.set(&2, MultiWindow, Map.new(&2, MultiWindow), key, win), Map.set(&2, Bool, Map.new(&2, Bool), key, True{}), Map.set(&2, Bool, Map.new(&2, Bool), key, False{}), Map.new(&2, Bool), False{}, False{}, Nat.add(seed, 1n)}
 
 # A split writes the continuation's captures above the private stack pointer
 # and hands the callee and its continuation to the machine: it stores the frame
@@ -2809,17 +3127,18 @@ def return_step(value: BIR.Atom, ctx: JsCtx) -> String:
     case Some{text}: text
     case None{}: cat(["return ", atom(value), ";"])
 def multi_return_forward(value: BIR.Atom, ctx: JsCtx) -> Maybe<&2, String>:
-  match value:
-    case BIR.Local{id}: multi_param_forward(js_ctx_private(ctx), js_ctx_param(ctx, id), js_ctx_width(ctx))
-    case _: None{}
-def multi_param_forward(private: Bool, found: Maybe<&2, MultiParam>, width: Nat) -> Maybe<&2, String>:
+  multi_return_private(js_ctx_private(ctx), value, ctx)
+def multi_return_private(private: Bool, value: BIR.Atom, ctx: JsCtx) -> Maybe<&2, String>:
   match private:
     case False{}: None{}
-    case True{}: multi_param_forward_of(found, width)
-def multi_param_forward_of(found: Maybe<&2, MultiParam>, width: Nat) -> Maybe<&2, String>:
+    case True{}: multi_return_emit(value, ctx)
+def multi_return_emit(value: BIR.Atom, ctx: JsCtx) -> Maybe<&2, String>:
+  match value:
+    case BIR.Local{id}: multi_param_forward_of(multi_params_find(js_ctx_params(ctx), id), js_ctx_width(ctx))
+    case _: None{}
+def multi_param_forward_of(found: MultiParam, width: Nat) -> Maybe<&2, String>:
   match found:
-    case Some{MultiParam{_, unboxed, tag, fields}}: multi_param_forward_flags(unboxed, tag, fields, width)
-    case None{}: None{}
+    case MultiParam{_, unboxed, tag, fields}: multi_param_forward_flags(unboxed, tag, fields, width)
 def multi_param_forward_flags(unboxed: Bool, tag: U32, fields: List<&2, U32>, width: Nat) -> Maybe<&2, String>:
   match unboxed:
     case True{}: Some{multi_window_write(local(tag), multi_atom_list(fields), width)}
@@ -2963,7 +3282,7 @@ def multi_slot_binds(items: List<&2, U32>, offset: Nat, index: Nat) -> String:
     case +item <> rest: cat(["const ", local(item), "=$stArgs[$base+", Nat.show(Nat.add(Nat.add(offset, 1n), index)), "];", multi_slot_binds(rest, offset, (index + 1n : Nat))])
 def multi_box_bind(box: Maybe<&2, U32>, id: U32, offset: Nat) -> String:
   match box:
-    case Some{target}: cat(["const ", local(target), "=$multi_box(", local(id), ",$base,", Nat.show(offset), ");"])
+    case Some{target}: cat([local(target), "=$multi_box(", local(id), ",$base,", Nat.show(offset), ");"])
     case None{}: ""
 def multi_slot_clear(width: Nat, offset: Nat, index: Nat) -> String:
   match Nat.is_lt(index, width):
@@ -3565,8 +3884,12 @@ def emit_effects(program: BIR.Program, effects: JSEffects) -> EmitResult:
   match effects:
     case JSEffectsFailure{message, span}: EmitFailure{message, span}
     case JSEffectsReady{text}: EmitSuccess{program_source(program, text)}
-def program_source(program: BIR.Program, effects: String) -> String:
-  +natives = js_native_markers(program)
+def program_source(+program: BIR.Program, effects: String) -> String:
+  program_source_scoped(js_scalar_program(program), js_native_markers(program), effects)
+# One normalized program feeds the plan and the rendering: `codes` renders the
+# bodies the plan was built from, so a code selected for a result window, a
+# public body and an unselected body all carry the same scalar replacements.
+def program_source_scoped(+program: BIR.Program, natives: Map<&2, String>, effects: String) -> String:
   +plan = multi_plan(program)
   match program:
     case BIR.Program{bodies, values, layouts, types, functions, end}:

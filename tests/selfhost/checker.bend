@@ -39,9 +39,8 @@ def check_single_result_output(result: Checked.CheckResult, success: String, fai
 def report_cross_namespace_marker(result: Checked.CheckResult):
   match result:
     case Checked.CheckFailure{Checked.Diagnostic{_, _, message, _, _}}:
-      match String.eq(message, "unknown name marker"):
-        case True{}: IO.print("checker-cross-namespace-marker-unknown")
-        case False{}: IO.print("checker-cross-namespace-marker-misdiagnosed")
+      IO.print(Bool.pick(String, String.eq(message, "unknown name marker"),
+        "checker-cross-namespace-marker-unknown", "checker-cross-namespace-marker-misdiagnosed"))
     case Checked.CheckSuccess{_}: IO.print("checker-cross-namespace-marker-visible")
 
 def check_triple_result_output(result: Checked.CheckResult, success: String, failure: String):

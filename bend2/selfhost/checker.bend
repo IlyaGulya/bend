@@ -597,7 +597,7 @@ def resolved_name_kind_plain(store: ArenaStore, +name_id: U32, +kind: Scope.Glob
   ArenaResult{store, +name} = arena_name_text(store, name_id)
   {ArenaResult{store, Scope.resolved_kind(name, kind, scope)} : ArenaResult<Scope.ResolvedName>}
 
-def resolved_name_store(store: ArenaStore, +name_id: U32, +kind_tag: U32, +serial: Nat, resolved: Scope.ResolvedName) -> ArenaResult<Scope.ResolvedName>:
+def resolved_name_store(store: ArenaStore, +name_id: U32, +kind_tag: U32, +serial: Nat, +resolved: Scope.ResolvedName) -> ArenaResult<Scope.ResolvedName>:
   match store:
     case ArenaStore{source, transient}:
       {ArenaResult{ArenaStore{source, Arena.resolved_ref_put(transient, name_id, kind_tag, resolved, serial)}, resolved} : ArenaResult<Scope.ResolvedName>}
@@ -3427,21 +3427,21 @@ def check_infer_term_sort(v_1: ArenaStore, v_3: Inference, v_5: U32, v_6: Ast.So
 
 def infer_global_reference(value: Scope.ResolvedName, v_4: U32, v_5: Ast.SourceSpan) -> Inference:
   match value:
-    case Scope.ResolvedName{_, _, Some{global}}:
+    case Scope.ResolvedName{_, Some{global}}:
       match global:
         case Scope.ArenaGlobal{_, _, _, ty, _, _}:
           Inferred{v_4, ty, IR.TypedOccurrence{v_4, ty, None{}, Some{checked_symbol(global)}, Nil{}, Nil{}}}
-    case Scope.ResolvedName{name, _, None{}}:
+    case Scope.ResolvedName{name, None{}}:
       fail(v_5, String.append("unknown name ", name), "a declared name", name)
 
 def infer_global_adt(v_1: ArenaStore, value: Scope.ResolvedName, v_6: IR.Words, v_8: U32, v_9: Ast.SourceSpan, v_12: List<&2, Binding>, v_13: Scope.ArenaGlobalScope) -> ArenaResult<Inference>:
   match value:
-    case Scope.ResolvedName{_, _, Some{global}}:
+    case Scope.ResolvedName{_, Some{global}}:
       match global:
         case Scope.ArenaGlobal{_, _, _, ty, _, _}:
           ArenaResult{v_38, +v_39} = infer_adt_args(v_1, v_6, ty, v_12, v_13, v_8, v_9)
           {ArenaResult{v_38, inference_symbol(v_39, checked_symbol(global))} : ArenaResult<Inference>}
-    case Scope.ResolvedName{name, _, None{}}:
+    case Scope.ResolvedName{name, None{}}:
       v_50000070 = fail(v_9, String.append("unknown datatype ", name), "a declared datatype", name)
       {ArenaResult{v_1, v_50000070} : ArenaResult<Inference>}
 

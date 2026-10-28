@@ -5,6 +5,27 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- G24 is an unaccepted optimization candidate: indexed scope reads share
+  Base's `Map.find` traversal, declaration identities are reused only within
+  one checked-definition frame, canonical names are derived only when needed,
+  and single-use private CPS helpers are inlined
+  with scoped binder freshening and quantity checks. JS record-field rendering
+  uses literal keys while retaining the computed `__proto__` spelling.
+  `String.cmp` now also has a stack-bounded JS intrinsic, preserving full-U32
+  character order and the returned string pair; 50,000-character comparisons
+  pass on C and JS. The JS backend carries proven internal record results and
+  parameters as tag/field words across direct and tail calls, while boxed
+  public entries preserve host identity and getters. Local scalar replacement
+  runs before result-window and capture planning in every rendering lane;
+  admission narrows monotonically, refusing unsupported owners individually.
+  Boxed tail calls stay in the boxed convention instead of immediately
+  reconstructing a private result. Seven actual emitted-JS regression cases
+  pass, including overlapping live results, reentrancy, arity boundaries and
+  boxed escape. Full qualification remains failed: r1/r2 stopped at the
+  original bootstrap deadline; r3 exceeded the original 8-GiB RSS guard
+  during canonical C generation after all 12,972 definitions / 13,594 events
+  validated. No G24 fixedpoint, speedup or memory reduction is claimed.
+
 - G23 completes the full native compiler root and a real native-stage0 →
   stage1 → stage2 byte fixedpoint: 14,096 definitions / 14,686 validation
   events, zero excluded checks or output patches. Both unchanged images are

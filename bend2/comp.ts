@@ -268,10 +268,12 @@ const OPERATIONS: Record<string, Intr> = Object.setPrototypeOf({
   string_append: { JS: "($0 + $1)" },
   string_contains: { JS: "string_contains($0, $1)" },
   string_length: { JS: "[...str_out($0)].length" },
-  // C only: Base's String.cmp hands back both consumed strings and their
-  // order. The helper only reads them, so the arguments themselves are the
-  // result, laid out as (String, String, Cmp tag).
-  string_cmp: { C: ["$0", "$1", "string_cmp_tag(e, $0, $1)"] },
+  // Base's comparison returns both consumed strings and their order. The
+  // native result is flat; JS keeps the declared nested Tuple representation.
+  string_cmp: {
+    C: ["$0", "$1", "string_cmp_tag(e, $0, $1)"],
+    JS: "string_cmp($0, $1)",
+  },
   ...Object.fromEntries(Object.entries({
     new: "array_new($0, $1)", set: "($0[$1 % $0.length] = $2, $0)",
     get: "{$: \"Tuple\", fst: $0, snd: $0[$1 % $0.length]}",
@@ -554,6 +556,29 @@ function char_len(s, at = 0) {
 function char_code(s) {
   return s.length < 4 ? s.codePointAt(0)
     : (s.charCodeAt(1) << 22 | s.charCodeAt(2) << 11 | s.charCodeAt(3)) >>> 0;
+}
+
+function char_code_at(s, at) {
+  return s[at] === "\uDC00"
+    ? (s.charCodeAt(at + 1) << 22 | s.charCodeAt(at + 2) << 11
+      | s.charCodeAt(at + 3)) >>> 0
+    : s.codePointAt(at);
+}
+
+function string_cmp(a, b) {
+  let i = 0, j = 0, order = 0;
+  while (i < a.length && j < b.length) {
+    const x = char_code_at(a, i), y = char_code_at(b, j);
+    if (x !== y) {
+      order = x < y ? -1 : 1;
+      break;
+    }
+    i += char_len(a, i);
+    j += char_len(b, j);
+  }
+  if (order === 0) order = Number(i < a.length) - Number(j < b.length);
+  return {$: "Tuple", fst: {$: "Tuple", fst: a, snd: b},
+    snd: {$: order < 0 ? "LT" : order === 0 ? "EQ" : "GT"}};
 }
 
 function string_contains(s, p) {

@@ -16,16 +16,13 @@ type Global is Data:
 type ArenaGlobal is Data:
   ArenaGlobal{key: String, namespace: String, local_key: String, ty: U32, value: IR.OptionalTerm, kind: GlobalKind}
 
-# One reference resolved against one immutable global scope: the declared text,
-# the canonical key that scope assigns to it, and the selected declaration
-# (Nothing when the scope declares no such name). The record is a checking-
-# invocation fact: the resolver builds it once per reference and its consumers
-# use the declaration handle directly instead of repeating the name read, the
-# scope index search and the canonical qualification. It is never a global
-# name->declaration or term->type cache, so one text may still resolve
-# differently under another scope.
+# One reference resolved against one immutable global scope. Consumers reuse its
+# declared text and selected declaration, without another name read or scope
+# lookup. Canonical text is derived only when requested, from that declaration.
+# The fact lives within one checking invocation, never in a global name or type
+# cache: another scope may select a different declaration for the same text.
 type ResolvedName is Data:
-  ResolvedName{name: String, canonical: String, global: Maybe<&2, ArenaGlobal>}
+  ResolvedName{name: String, global: Maybe<&2, ArenaGlobal>}
 
 # Segments retain alias/candidate/completeness semantics. The immutable lookup
 # snapshot has first-entry/family/kind precedence across the ordered segments.
@@ -108,8 +105,8 @@ def equal_names_result(left: String, right: String, +scope: ArenaGlobalScope, sa
 def equal_names(+left: String, +right: String, scope: ArenaGlobalScope) -> Bool:
   equal_names_result(left, right, scope, String.eq(left, right))
 
-def resolved_result(+name: String, result: Maybe<&2, ArenaGlobal>) -> ResolvedName:
-  ResolvedName{name, canonical_name_result(name, result), result}
+def resolved_result(+name: String, +result: Maybe<&2, ArenaGlobal>) -> ResolvedName:
+  ResolvedName{name, result}
 
 def resolved(+name: String, scope: ArenaGlobalScope) -> ResolvedName:
   resolved_result(name, lookup(name, scope))
@@ -119,12 +116,12 @@ def resolved_kind(+name: String, +kind: GlobalKind, scope: ArenaGlobalScope) -> 
 
 def resolved_text(value: ResolvedName) -> String:
   match value:
-    case ResolvedName{name, _, _}: name
+    case ResolvedName{name, _}: name
 
 def resolved_canonical(value: ResolvedName) -> String:
   match value:
-    case ResolvedName{_, canonical, _}: canonical
+    case ResolvedName{name, global}: canonical_name_result(name, global)
 
 def resolved_global(value: ResolvedName) -> Maybe<&2, ArenaGlobal>:
   match value:
-    case ResolvedName{_, _, global}: global
+    case ResolvedName{_, global}: global

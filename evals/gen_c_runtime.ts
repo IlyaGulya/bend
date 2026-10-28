@@ -31,12 +31,12 @@ const FIXTURE = join(ROOT, "evals/c_backend_runtime.bend");
 // Tables/Spins/Segments/Requests markers exist, io_eff/io_node keep their
 // 2-arg/4-arg ABI, SIGSEGV/SIGBUS trapping and --RTS parsing are present, and
 // C Chars stay native u32 words (the packed JS encoding is JS-only).
-// G23 adds host-only mandatory inlining for tiny accessors, read-only String
-// comparison and owned Map reads. The shared runtime keeps device address-space
-// qualifiers and the existing term/refcount, IO and four-slot ABI.
+// G24 adds Map.find's shared read-only traversal and owned-holder promotion;
+// G23 host-only tiny-accessor inlining and String/Map reads remain. Device
+// address-space qualifiers, term/refcount, IO and four-slot ABI are unchanged.
 // KERNEL_SHA always names the current official release, so a stale working
 // kernel fails closed.
-const COMP_SHA = "db466aa58339e8866c68c7aece0c8586e4ce5f591f311b71b86b3b25769b50fd";
+const COMP_SHA = "880a9b3b86f273852a39fc664f8c3d7b71e3860b6d365e4321949fc812b6e7cc";
 const KERNEL_SHA = officialKernelSha256(ROOT);
 
 const sha = (bytes: string | Buffer): string =>

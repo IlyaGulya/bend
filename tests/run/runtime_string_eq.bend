@@ -49,14 +49,14 @@ def is_lt_rank(r: U32) -> Bool:
 def is_gt_rank(r: U32) -> Bool:
   U32.is_eq(r, 2)
 
-def is_le_rank(r: U32) -> Bool:
+def is_le_rank(+r: U32) -> Bool:
   Bool.or(U32.is_eq(r, 0), U32.is_eq(r, 1))
 
-def is_ge_rank(r: U32) -> Bool:
+def is_ge_rank(+r: U32) -> Bool:
   Bool.or(U32.is_eq(r, 1), U32.is_eq(r, 2))
 
 # The differential: every predicate must answer the order String.order walks.
-def agrees(a: String, b: String) -> Bool:
+def agrees(+a: String, +b: String) -> Bool:
   Bool.and(Bool.and(Bool.and(Bool.and(
     same_bool(String.eq(a, b), is_eq_rank(order_rank(a, b))),
     same_bool(String.is_lt(a, b), is_lt_rank(order_rank(a, b)))),
@@ -64,7 +64,7 @@ def agrees(a: String, b: String) -> Bool:
     same_bool(String.is_gt(a, b), is_gt_rank(order_rank(a, b)))),
     same_bool(String.is_ge(a, b), is_ge_rank(order_rank(a, b))))
 
-def expect(a: String, b: String, want: U32) -> IO(Unit):
+def expect(+a: String, +b: String, want: U32) -> IO(Unit):
   check(Bool.and(agrees(a, b), U32.is_eq(order_rank(a, b), want)),
     "string comparison disagrees with String.order")
 

@@ -1,0 +1,460 @@
+{
+  "schemaVersion": 1,
+  "status": "FAILED_G24_R2_DIAGNOSTIC_ATTRIBUTION",
+  "compilerAccepted": false,
+  "acceptanceEvidence": false,
+  "newFixedpointClaim": false,
+  "newSpeedupClaim": false,
+  "scope": "Unchanged failed-r2 compiler artifacts on the frozen G22 root; separate sampled native EMIT and bounded emitted-JS CHECK window. Not clean timing.",
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "timeoutMs": 600000
+  },
+  "artifacts": {
+    "native": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r2/native",
+      "sha256": "277f2727f0bf33591436393a97821b4e4a3748f5b85907936aa439ce5985358f",
+      "bytes": 19534232
+    },
+    "image": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r2/bootstrap.json.cases/stage-one.js",
+      "sha256": "417d7929d5188f73e96388b4640786493e253c355bffa0a768c97b641c109236",
+      "bytes": 59865638
+    },
+    "generatedC": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r2/native.c",
+      "sha256": "7c509fad887854fdc55170ef89e2908326bcc87aff8bb36042aee22aa3ed9b7e",
+      "bytes": 63967814
+    }
+  },
+  "javascript": {
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--experimental-strip-types",
+      "/private/tmp/bend-g24-r2-check-profile-CWDgbo/profiled-throughput.mjs",
+      "js",
+      "/private/tmp/bend-g24-r2-check-profile-CWDgbo/request.json",
+      "/private/tmp/bend-g24-r2-check-profile-CWDgbo/result.json"
+    ],
+    "request": {
+      "path": "/private/tmp/bend-g24-r2-check-profile-CWDgbo/request.json",
+      "sha256": "c474c5d8d9559d25939dcf69a20fde6dce6f229798ea216aa00877b17ecc88ac",
+      "bytes": 22485
+    },
+    "result": {
+      "path": "/private/tmp/bend-g24-r2-check-profile-CWDgbo/result.json",
+      "sha256": "e478ee619aaf310a17c7c428ca4d80d21f0d75ee0b878af062b535301d07b1fe",
+      "bytes": 4476
+    },
+    "window": {
+      "startStep": 1000000,
+      "endStep": 1250000,
+      "wallMs": 13371.16337499999,
+      "cpuMs": 14043.24,
+      "memoryStart": {
+        "rss": 1930100736,
+        "heapTotal": 1150238720,
+        "heapUsed": 867929736,
+        "external": 10495625,
+        "arrayBuffers": 33231
+      },
+      "memoryEnd": {
+        "rss": 2016673792,
+        "heapTotal": 1247019008,
+        "heapUsed": 979108984,
+        "external": 10495625,
+        "arrayBuffers": 33231
+      }
+    },
+    "cpuProfile": {
+      "path": "/private/tmp/bend-g24-r2-check-profile-CWDgbo/profiles/selfhost-72275-thread-1-iFJ8tp/000001-check-window-0.cpuprofile",
+      "sha256": "d3d0b4394fe7434c225664687d6da491605c9eedf172b1d784de14b011da873a",
+      "bytes": 3230551
+    },
+    "sampledMs": 14372.792,
+    "leaders": [
+      {
+        "fn": "run_base",
+        "line": 20,
+        "selfMs": 1521.168,
+        "share": 0.10583663911646395,
+        "owner": null
+      },
+      {
+        "fn": "",
+        "line": 114444,
+        "selfMs": 1346.882,
+        "share": 0.09371053306831408,
+        "owner": null
+      },
+      {
+        "fn": "post",
+        "line": 112,
+        "selfMs": 1001.459,
+        "share": 0.06967741549449821,
+        "owner": null
+      },
+      {
+        "fn": "$multi_box",
+        "line": 103,
+        "selfMs": 565.7149999999982,
+        "share": 0.03936013267290022,
+        "owner": null
+      },
+      {
+        "fn": "$b6850",
+        "line": 49602,
+        "selfMs": 401.4529999999999,
+        "share": 0.027931455488954406,
+        "owner": "checker_core_steps_v1.checker_advance"
+      },
+      {
+        "fn": "$p_map_bit",
+        "line": 269,
+        "selfMs": 309.4100000000001,
+        "share": 0.021527480534053522,
+        "owner": null
+      },
+      {
+        "fn": "$split_done",
+        "line": 105,
+        "selfMs": 296.41700000000014,
+        "share": 0.020623480810130664,
+        "owner": null
+      },
+      {
+        "fn": "$b6851",
+        "line": 49609,
+        "selfMs": 273.4069999999999,
+        "share": 0.019022539253333658,
+        "owner": "checker_core_steps_v1.checker_chunk"
+      },
+      {
+        "fn": "$b395",
+        "line": 13543,
+        "selfMs": 254.46400000000003,
+        "share": 0.017704562899122134,
+        "owner": "Map.get.go"
+      },
+      {
+        "fn": "$b399",
+        "line": 13567,
+        "selfMs": 134.751,
+        "share": 0.009375422673618329,
+        "owner": "Map.find"
+      },
+      {
+        "fn": "$k118947",
+        "line": 49610,
+        "selfMs": 133.967,
+        "share": 0.009320875164686165,
+        "owner": null
+      },
+      {
+        "fn": "(garbage collector)",
+        "line": 0,
+        "selfMs": 119.712,
+        "share": 0.008329070649599604,
+        "owner": null
+      },
+      {
+        "fn": "$b6849",
+        "line": 49596,
+        "selfMs": 114.37100000000001,
+        "share": 0.007957465744999302,
+        "owner": "checker_core_steps_v1.checker_pop"
+      },
+      {
+        "fn": "$k118892",
+        "line": 49598,
+        "selfMs": 111.96000000000001,
+        "share": 0.007789718239852076,
+        "owner": null
+      },
+      {
+        "fn": "$b6848",
+        "line": 49594,
+        "selfMs": 109.91499999999999,
+        "share": 0.007647435515660423,
+        "owner": "checker_core_steps_v1.checker_step_one"
+      },
+      {
+        "fn": "$k118916",
+        "line": 49604,
+        "selfMs": 88.372,
+        "share": 0.006148561810398425,
+        "owner": null
+      },
+      {
+        "fn": "$b398",
+        "line": 13563,
+        "selfMs": 58.458999999999996,
+        "share": 0.004067337786562277,
+        "owner": "Map.find.node"
+      },
+      {
+        "fn": "$k7668",
+        "line": 14538,
+        "selfMs": 50.086,
+        "share": 0.0034847787402753757,
+        "owner": null
+      },
+      {
+        "fn": "$b1379",
+        "line": 20148,
+        "selfMs": 47.084,
+        "share": 0.0032759118757162854,
+        "owner": "checker_core_steps_v1.checker_pure_arena_get_word_region"
+      },
+      {
+        "fn": "$b6842",
+        "line": 49267,
+        "selfMs": 46.752,
+        "share": 0.0032528126755052185,
+        "owner": "checker_core_steps_v1.checker_step_group_13"
+      },
+      {
+        "fn": "$b385",
+        "line": 13482,
+        "selfMs": 45.621,
+        "share": 0.003174122327798246,
+        "owner": "Map.seek.go"
+      },
+      {
+        "fn": "$b377",
+        "line": 13446,
+        "selfMs": 44.70700000000001,
+        "share": 0.003110529951313565,
+        "owner": "Map.put.go"
+      },
+      {
+        "fn": "$b13105",
+        "line": 14529,
+        "selfMs": 39.834,
+        "share": 0.0027714865699023546,
+        "owner": null
+      },
+      {
+        "fn": "$b4500",
+        "line": 35801,
+        "selfMs": 37.418,
+        "share": 0.002603391185233878,
+        "owner": "checker_core_steps_v1.checker_match_2231"
+      }
+    ]
+  },
+  "native": {
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "evals/heavy_gate.ts",
+      "--memory-mib",
+      "8192",
+      "--rss-mib",
+      "8192",
+      "--poll-ms",
+      "10",
+      "--timeout-ms",
+      "600000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "/private/tmp/bend-g24-r2-emit-profile-8gbj7D/profile-emit.mjs",
+      "--out-dir=/private/tmp/bend-g24-r2-emit-profile-8gbj7D/sample",
+      "--timeout-ms=600000",
+      "--sample-interval-ms=1",
+      "--top-frames=100",
+      "--source-map=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r2/native.c",
+      "--",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r2/native",
+      "+RTS",
+      "--threads",
+      "1",
+      "--gpu",
+      "off",
+      "--RTS",
+      "/private/tmp/bend2039g22-tiny-inline/checkpoints/.bootstrap_compiler_root_remote2039g21.bend",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/base.bend",
+      "/private/tmp/bend-g23-wave-evidence-cOFisz/paired-native-aHBKgz/candidate-1.json.runtime.tsv",
+      "/private/tmp/bend-g23-wave-evidence-cOFisz/paired-native-aHBKgz/candidate-1.json.exports.txt",
+      "compile",
+      "/private/tmp/bend-g24-r2-emit-profile-8gbj7D/output.mjs"
+    ],
+    "summary": {
+      "path": "/private/tmp/bend-g24-r2-emit-profile-8gbj7D/sample/summary.json",
+      "sha256": "dede06a50f3c46b2025aa1a9a696650254165191f9e5dc1fba9e90fd87a456ba",
+      "bytes": 162726
+    },
+    "sampler": {
+      "path": "/private/tmp/bend-g24-r2-emit-profile-8gbj7D/profile-emit.mjs",
+      "sha256": "72e6f61045fb901aba2caff58daf2a28731ba8f929de085844b5ef0c4db27ffe",
+      "bytes": 51093
+    },
+    "sourceSampler": {
+      "path": "/Users/ilyagulya/Projects/My/bend/evals/native_check_profile.mjs",
+      "sha256": "ccbda09cca2e181706c9f07adfd872ebcd6a9f2ca7ad0a59e66a85a9f19b6e6c",
+      "bytes": 51095
+    },
+    "phase": "emit",
+    "hostTrace": {
+      "path": "/private/tmp/bend-g24-r2-emit-profile-8gbj7D/sample/child.stderr",
+      "sha256": "832ba97b6f6cf93c118a5b6a01c9cab8caec9d25d9ce4a5fa9aaddeec5b74c84",
+      "bytes": 3422
+    },
+    "phaseEvidence": "Native stderr NATIVE_PHASE_START emit then NATIVE_PHASE emit (102260.854ms,6986272chunks@64); the throwaway sampler changes the two phase predicates only.",
+    "rawSamplerCheckLabelsAreLegacy": true,
+    "totalSamples": 75240,
+    "topSelf": [
+      {
+        "symbol": "term_drop",
+        "image": "native",
+        "detail": "+ 672,80,...  [0x1028218dc,0x10282168c,...]",
+        "selfSamples": 13058,
+        "inclusiveSamples": 13850,
+        "nodes": 590
+      },
+      {
+        "symbol": "WL_FID_Clo_apply",
+        "image": "native",
+        "detail": "+ 80,1340,...  [0x1032bec70,0x1032bf15c,...]",
+        "selfSamples": 10220,
+        "inclusiveSamples": 10615,
+        "nodes": 6
+      },
+      {
+        "symbol": "map_find_read",
+        "image": "native",
+        "detail": "+ 224,296,...  [0x103319b50,0x103319b98,...]",
+        "selfSamples": 6712,
+        "inclusiveSamples": 14438,
+        "nodes": 6
+      },
+      {
+        "symbol": "heap_free",
+        "image": "native",
+        "detail": "+ 52,44,...  [0x1024ecc48,0x1024ecc40,...]",
+        "selfSamples": 4437,
+        "inclusiveSamples": 4437,
+        "nodes": 489
+      },
+      {
+        "symbol": "ctr_take",
+        "image": "native",
+        "detail": "+ 136  [0x102ea4a5c]",
+        "selfSamples": 4381,
+        "inclusiveSamples": 8378,
+        "nodes": 1268
+      },
+      {
+        "symbol": "WL_FID_emitter_steps_v1_emitter_advance",
+        "image": "native",
+        "detail": "+ 780,316,...  [0x1026ef680,0x1026ef4b0,...]",
+        "selfSamples": 3754,
+        "inclusiveSamples": 6183,
+        "nodes": 11
+      },
+      {
+        "symbol": "rfc_wrap",
+        "image": "native",
+        "detail": "+ 140,136,...  [0x1033f7f00,0x1033f7efc,...]",
+        "selfSamples": 3190,
+        "inclusiveSamples": 4402,
+        "nodes": 606
+      },
+      {
+        "symbol": "span_fade",
+        "image": "native",
+        "detail": "+ 176,192,...  [0x1033f8238,0x1033f8248,...]",
+        "selfSamples": 2593,
+        "inclusiveSamples": 4655,
+        "nodes": 784
+      },
+      {
+        "symbol": "map_cur_bit",
+        "image": "native",
+        "detail": "+ 124,52,...  [0x1032e6b30,0x1032e6ae8,...]",
+        "selfSamples": 2559,
+        "inclusiveSamples": 2559,
+        "nodes": 1
+      },
+      {
+        "symbol": "string_cmp_read",
+        "image": "native",
+        "detail": "+ 64,60,...  [0x102a5ca94,0x102a5ca90,...]",
+        "selfSamples": 2529,
+        "inclusiveSamples": 2529,
+        "nodes": 8
+      },
+      {
+        "symbol": "heap_alloc",
+        "image": "native",
+        "detail": "+ 44  [0x1028213fc]",
+        "selfSamples": 2310,
+        "inclusiveSamples": 2310,
+        "nodes": 598
+      },
+      {
+        "symbol": "WL_FID_String_append",
+        "image": "native",
+        "detail": "+ 200,32,...  [0x102f57850,0x102f577a8,...]",
+        "selfSamples": 2071,
+        "inclusiveSamples": 3288,
+        "nodes": 6
+      },
+      {
+        "symbol": "WL_FID_Map_set",
+        "image": "native",
+        "detail": "+ 92  [0x1028c6df8]",
+        "selfSamples": 2052,
+        "inclusiveSamples": 5462,
+        "nodes": 9
+      },
+      {
+        "symbol": "rfc_seal",
+        "image": "native",
+        "detail": "+ 0  [0x102bc4e1c]",
+        "selfSamples": 1604,
+        "inclusiveSamples": 1604,
+        "nodes": 656
+      },
+      {
+        "symbol": "WL_FID_emitter_steps_v1_emitter_step_one",
+        "image": "native",
+        "detail": "+ 411732,64,...  [0x10317772c,0x103112f18,...]",
+        "selfSamples": 1233,
+        "inclusiveSamples": 8996,
+        "nodes": 486
+      },
+      {
+        "symbol": "WL_FID_String_append_k27899",
+        "image": "native",
+        "detail": "+ 80  [0x1028c5c28]",
+        "selfSamples": 631,
+        "inclusiveSamples": 1777,
+        "nodes": 5
+      }
+    ],
+    "attribution": "Darwin sampled stacks, not CPU time or allocation bytes; sampling overhead unmeasured."
+  },
+  "findings": [
+    {
+      "kind": "source-observed",
+      "claim": "Boxed tails and escaping strict results entered the private convention and immediately reconstructed a boxed object even when their arguments remained boxed; public-tail routing is now repaired structurally, without disabling internal result lowering."
+    },
+    {
+      "kind": "source-observed",
+      "claim": "Return rendering rebuilt a full parameter Map for each Local return, including boxed bodies; now only private returns search the small retained parameter list."
+    },
+    {
+      "kind": "source-observed",
+      "claim": "ResolvedName eagerly canonicalized declaration-only queries; now stores exact text and the chosen declaration and derives canonical text only when requested."
+    },
+    {
+      "kind": "limit",
+      "claim": "The sampled native emit is NOT the check phase despite legacy check labels in the unmodified sampler metadata. Actual host phase events above identify emit."
+    },
+    {
+      "kind": "limit",
+      "claim": "Neither profile establishes full-phase CPU shares, speedup, retained-memory reduction or the final candidate performance. Allr2 full attempts remain failed."
+    }
+  ]
+}

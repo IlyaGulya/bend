@@ -463,6 +463,100 @@ type cps_provider_8_JSParameter is Data:
   cps_provider_8_JSParameterOther{}
   cps_provider_8_JSParameterUnresolved{}
 
+type cps_provider_8_Caps is Data:
+  cps_provider_8_Caps{locals: List<&2, U32>, slots: List<&2, U32>}
+
+type cps_provider_8_Suffix is Data:
+  cps_provider_8_Suffix{locals: List<&2, U32>, slots: List<&2, U32>, read_local: Map<&2, Bool>, read_slot: Map<&2, Bool>, bound: Map<&2, Bool>}
+
+type cps_provider_8_Held is Data:
+  cps_provider_8_Held{items: List<&2, U32>, read: Map<&2, Bool>}
+
+type cps_provider_8_FrameBits is Data:
+  cps_provider_8_FrameBits{label: U32, after: Bool, reach: Bool}
+
+type cps_provider_8_Plan is Data:
+  cps_provider_8_Plan{conts: Map<&2, cps_provider_8_Caps>, thunks: Map<&2, cps_provider_8_Caps>, frames: Map<&2, Bool>}
+
+type cps_provider_8_Step is Data:
+  cps_provider_8_Step{state: cps_provider_8_Suffix, facts: List<&2, cps_provider_8_FrameBits>, plan: cps_provider_8_Plan}
+
+type cps_provider_8_Reads is Data:
+  cps_provider_8_Reads{locals: List<&2, U32>, slots: List<&2, U32>}
+
+type cps_provider_8_MultiLayout is Data:
+  cps_provider_8_MultiLayout{tag: String, keys: List<&2, String>}
+
+type cps_provider_8_MultiParam is Data:
+  cps_provider_8_MultiParam{id: U32, unboxed: Bool, tag: U32, fields: List<&2, U32>}
+
+type cps_provider_8_MultiWindow is Data:
+  cps_provider_8_MultiWindow{width: Nat, fields: List<&2, U32>, box: Maybe<&2, U32>}
+
+type cps_provider_8_MultiShape is Data:
+  cps_provider_8_MultiCtorShape{constructor: U32, width: Nat}
+  cps_provider_8_MultiParamShape{position: Nat}
+  cps_provider_8_MultiResultShape{}
+  cps_provider_8_MultiOtherShape{}
+
+type cps_provider_8_MultiSiteF is Data:
+  cps_provider_8_MultiSiteF{key: String, callee: U32, tail: Bool, shapes: List<&2, cps_provider_8_MultiShape>}
+
+type cps_provider_8_MultiCtor is Data:
+  cps_provider_8_MultiCtor{constructor: U32, tag: String, fields: List<&2, BIR.Field>}
+
+type cps_provider_8_MultiScan is Data:
+  cps_provider_8_MultiScan{bindings: Map<&2, cps_provider_8_MultiCtor>, sites: List<&2, cps_provider_8_MultiSiteF>}
+
+type cps_provider_8_MultiFact is Data:
+  cps_provider_8_MultiFact{result_ok: Bool, width: Nat, sites: List<&2, cps_provider_8_MultiSiteF>}
+
+type cps_provider_8_MultiUp is Data:
+  cps_provider_8_MultiUp{up: Map<&2, Bool>, multi: Map<&2, Bool>}
+
+type cps_provider_8_MultiStep is Data:
+  cps_provider_8_MultiStep{state: cps_provider_8_MultiUp, changed: Bool}
+
+type cps_provider_8_MultiSolve is Data:
+  cps_provider_8_MultiSolve{state: cps_provider_8_MultiUp, settled: Bool}
+
+type cps_provider_8_MultiPass is Data:
+  cps_provider_8_MultiPass{state: cps_provider_8_MultiUp, changed: Bool, rendered: Nat}
+
+type cps_provider_8_MultiSubst is Data:
+  cps_provider_8_MultiSubst{id: U32, tag: BIR.Atom, fields: List<&2, BIR.Atom>, param: Bool}
+
+type cps_provider_8_MultiRew is Data:
+  cps_provider_8_MultiRew{body: BIR.Block, windows: Map<&2, cps_provider_8_MultiWindow>, sites: Map<&2, Bool>, mr: Map<&2, Bool>, dropped: Map<&2, Bool>, failed: Bool, own_mr: Bool, next: Nat}
+
+type cps_provider_8_MultiRender is Data:
+  cps_provider_8_MultiRender{body: BIR.Block, plan: cps_provider_8_Plan, params: List<&2, cps_provider_8_MultiParam>, windows: Map<&2, cps_provider_8_MultiWindow>, sites: Map<&2, Bool>, mr: Map<&2, Bool>, private: Bool, public: Bool, width: Nat, failed: Bool}
+
+type cps_provider_8_MultiPlan is Data:
+  cps_provider_8_MultiPlan{multi: Map<&2, Bool>, layouts: Map<&2, cps_provider_8_MultiLayout>, renders: Map<&2, cps_provider_8_MultiRender>, width: Nat, ok: Bool, refused: List<&2, String>}
+
+type cps_provider_8_MultiRef is Data:
+  cps_provider_8_MultiRef{id: U32, tag: String}
+
+type cps_provider_8_MultiFwd is Data:
+  cps_provider_8_MultiFwd{caller: U32, shape: cps_provider_8_MultiShape, up_key: String}
+
+type cps_provider_8_MultiReq is Data:
+  cps_provider_8_MultiReq{callee: U32, multi_key: String, up_key: String}
+
+type cps_provider_8_MultiResult is Data:
+  cps_provider_8_MultiResultOpen{required: List<&2, String>}
+  cps_provider_8_MultiResultClosed{}
+
+type cps_provider_8_MultiCodeFact is Data:
+  cps_provider_8_MultiCodeFact{width: Nat, sites: List<&2, cps_provider_8_MultiSiteF>, statics: Map<&2, Bool>, params: List<&2, BIR.Parameter>, captures: Nat, frames: Bool, pidx: Map<&2, Nat>, body: BIR.Block, routes: Map<&2, List<&2, cps_provider_8_MultiReq>>, tails: List<&2, U32>, result: cps_provider_8_MultiResult}
+
+type cps_provider_8_MRewCtx is Data:
+  cps_provider_8_MRewCtx{code: U32, layouts: Map<&2, cps_provider_8_MultiLayout>, multi: Map<&2, Bool>, up: Map<&2, Bool>, width: Nat, params: Map<&2, cps_provider_8_MultiParam>, private: Bool, sub: Map<&2, cps_provider_8_MultiSubst>, cur: Maybe<&2, U32>, bindings: Map<&2, cps_provider_8_MultiCtor>, uses: Map<&2, Nat>}
+
+type cps_provider_8_JsCtx is Data:
+  cps_provider_8_JsCtx{owner: String, plan: cps_provider_8_Plan, frames: List<&2, U32>, multi: Map<&2, Bool>, render: cps_provider_8_MultiRender}
+
 type cps_provider_8_JSCidResult is Data:
   cps_provider_8_JSCidDone{source: String}
   cps_provider_8_JSCidFailure{message: String}
@@ -498,30 +592,6 @@ type cps_provider_8_TagGroup is Data:
 
 type cps_provider_8_JSDescriptorHead is Data:
   cps_provider_8_JSDescriptorHead{key: String, args: List<&2, BIR.Descriptor>}
-
-type cps_provider_8_Caps is Data:
-  cps_provider_8_Caps{locals: List<&2, U32>, slots: List<&2, U32>}
-
-type cps_provider_8_Plan is Data:
-  cps_provider_8_Plan{conts: Map<&2, cps_provider_8_Caps>, thunks: Map<&2, cps_provider_8_Caps>, frames: Map<&2, Bool>}
-
-type cps_provider_8_JsCtx is Data:
-  cps_provider_8_JsCtx{owner: String, plan: cps_provider_8_Plan, frames: List<&2, U32>}
-
-type cps_provider_8_Suffix is Data:
-  cps_provider_8_Suffix{locals: List<&2, U32>, slots: List<&2, U32>, read_local: Map<&2, Bool>, read_slot: Map<&2, Bool>, bound: Map<&2, Bool>}
-
-type cps_provider_8_Held is Data:
-  cps_provider_8_Held{items: List<&2, U32>, read: Map<&2, Bool>}
-
-type cps_provider_8_FrameBits is Data:
-  cps_provider_8_FrameBits{label: U32, after: Bool, reach: Bool}
-
-type cps_provider_8_Step is Data:
-  cps_provider_8_Step{state: cps_provider_8_Suffix, facts: List<&2, cps_provider_8_FrameBits>, plan: cps_provider_8_Plan}
-
-type cps_provider_8_Reads is Data:
-  cps_provider_8_Reads{locals: List<&2, U32>, slots: List<&2, U32>}
 
 type cps_provider_9_EmitResult is Data:
   cps_provider_9_EmitSuccess{source: String}
@@ -16762,18 +16832,38 @@ def cps_provider_8_call(v_1: U32, v_4: List<&2, String>) -> String:
   cps_provider_8_cat([cps_provider_8_code_name(v_1), "(", String.join(v_4, ","), ")"])
 
 def cps_provider_8_tail_call(v_1: U32, +v_4: List<&2, String>) -> String:
-  +v_8 = List.length(&2, String, v_4)
-  cps_provider_8_tail_call_selected(v_1, v_4, v_8, Bool.and(Nat.is_gt(v_8, 0n), Nat.is_le(v_8, 32n)))
+  cps_provider_8_tail_call_name(cps_provider_8_code_name(v_1), v_4)
 
-def cps_provider_8_tail_call_selected(v_1: U32, v_4: List<&2, String>, v_6: Nat, v_8: Bool) -> String:
+def cps_provider_8_tail_call_name(v_1: String, +v_4: List<&2, String>) -> String:
+  +v_8 = List.length(&2, String, v_4)
+  cps_provider_8_tail_call_name_selected(v_1, v_4, v_8, Bool.and(Nat.is_gt(v_8, 0n), Nat.is_le(v_8, 32n)))
+
+def cps_provider_8_tail_call_name_selected(v_1: String, +v_4: List<&2, String>, v_6: Nat, v_8: Bool) -> String:
   match v_8:
     case True{}:
-      cps_provider_8_tail_call_named(v_1, String.join(v_4, ","), v_6)
+      cps_provider_8_tail_call_named_name(v_1, String.join(v_4, ","), v_6)
     case False{}:
-      cps_provider_8_cat(["run_many(", cps_provider_8_code_name(v_1), ",[", String.join(v_4, ","), "],$td)"])
+      cps_provider_8_cat(["run_many(", v_1, ",[", String.join(v_4, ","), "],$td)"])
 
-def cps_provider_8_tail_call_named(+v_1: U32, +v_3: String, v_5: Nat) -> String:
-  cps_provider_8_cat(["($td<64?", cps_provider_8_code_name(v_1), "(", String.append(v_3, ",$td+1"), "):run_named", Nat.show(v_5), "(", cps_provider_8_code_name(v_1), ",", String.append(v_3, ",$td)"), ")"])
+def cps_provider_8_tail_call_named_name(+v_1: String, +v_3: String, v_5: Nat) -> String:
+  cps_provider_8_cat(["($td<64?", v_1, "(", String.append(v_3, ",$td+1"), "):run_named", Nat.show(v_5), "(", v_1, ",", String.append(v_3, ",$td"), "))"])
+
+def cps_provider_8_multi_tail_call(v_1: U32, +v_4: List<&2, String>) -> String:
+  +v_8 = Nat.add(List.length(&2, String, v_4), 1n)
+  cps_provider_8_multi_tail_selected(Bool.and(Nat.is_gt(v_8, 0n), Nat.is_le(v_8, 32n)), v_1, v_4, v_8)
+
+def cps_provider_8_multi_tail_selected(v_1: Bool, v_3: U32, +v_6: List<&2, String>, v_8: Nat) -> String:
+  match v_1:
+    case True{}:
+      cps_provider_8_multi_tail_named(v_3, String.join(v_6, ","), v_8)
+    case False{}:
+      cps_provider_8_cat(["run_many(", cps_provider_8_code_name(v_3), ",[", String.join(v_6, ","), ",$mr],$td)"])
+
+def cps_provider_8_multi_tail_named(+v_1: U32, +v_3: String, v_5: Nat) -> String:
+  cps_provider_8_cat(["($td<64?", cps_provider_8_code_name(v_1), "(", String.append(v_3, ",$mr,$td+1"), "):run_named", Nat.show(v_5), "(", cps_provider_8_code_name(v_1), ",", String.append(v_3, ",$mr,$td"), "))"])
+
+def cps_provider_8_tail_call_selected(v_1: U32, v_4: List<&2, String>, v_6: Nat, v_8: Bool) -> String:
+  cps_provider_8_tail_call_name_selected(cps_provider_8_code_name(v_1), v_4, v_6, v_8)
 
 def cps_provider_8_public_closure(v_2: List<&2, String>, v_4: String) -> String:
   match v_2:
@@ -16783,10 +16873,16 @@ def cps_provider_8_public_closure(v_2: List<&2, String>, v_4: String) -> String:
       cps_provider_8_cat(["run_clo((", v_8, ",$raw=undefined)=>{const $base0=$ksp,$sp0=$sp;return run_force(", cps_provider_8_public_closure(v_9, v_4), ",$raw,$base0,$sp0);})"])
 
 def cps_provider_8_closure(v_1: U32, +v_3: List<&2, BIR.Arg>, +v_5: List<&2, BIR.Parameter>) -> String:
+  cps_provider_8_closure_named(cps_provider_8_code_name(v_1), v_3, v_5)
+
+def cps_provider_8_closure_named(v_1: String, +v_3: List<&2, BIR.Arg>, +v_5: List<&2, BIR.Parameter>) -> String:
   +v_9 = cps_provider_8_captured_names(v_3, 0)
   +v_12 = cps_provider_8_parameter_names(v_5)
-  v_17 = cps_provider_8_public_closure(v_12, cps_provider_8_tail_call(v_1, List.append(&2, String, v_9, v_12)))
+  v_17 = cps_provider_8_public_closure(v_12, cps_provider_8_tail_call_name(v_1, List.append(&2, String, v_9, v_12)))
   cps_provider_8_closure_captures(v_3, v_9, v_17)
+
+def cps_provider_8_multi_closure(v_1: cps_provider_8_JsCtx, v_3: U32, +v_5: List<&2, BIR.Arg>, +v_7: List<&2, BIR.Parameter>) -> String:
+  cps_provider_8_closure_named(cps_provider_8_multi_target_name(cps_provider_8_js_ctx_targets(v_1), v_3), v_5, v_7)
 
 def cps_provider_8_closure_captures(+v_1: List<&2, BIR.Arg>, v_4: List<&2, String>, v_6: String) -> String:
   match v_1:
@@ -16795,12 +16891,95 @@ def cps_provider_8_closure_captures(+v_1: List<&2, BIR.Arg>, v_4: List<&2, Strin
     case _:
       cps_provider_8_cat(["((", String.join(v_4, ","), ")=>", v_6, ")(", String.join(cps_provider_8_arguments(v_1), ","), ")"])
 
+def cps_provider_8_js_field_text(v_1: String) -> String:
+  cps_provider_8_js_field_proto(String.eq(v_1, "__proto__"), v_1)
+
+def cps_provider_8_js_field_proto(v_1: Bool, +v_3: String) -> String:
+  match v_1:
+    case True{}:
+      cps_provider_8_cat(["[", cps_provider_8_js_quote(v_3), "]:"])
+    case False{}:
+      cps_provider_8_cat([cps_provider_8_js_quote(v_3), ":"])
+
+def cps_provider_8_js_plain_key(v_1: String) -> Bool:
+  cps_provider_8_js_plain_key_first(String.eq(v_1, "__proto__"), String.to_list(v_1))
+
+def cps_provider_8_js_plain_key_first(v_1: Bool, v_4: List<&2, Char>) -> Bool:
+  match v_1:
+    case True{}:
+      False{}
+    case False{}:
+      cps_provider_8_js_plain_key_chars(v_4)
+
+def cps_provider_8_js_plain_key_chars(v_2: List<&2, Char>) -> Bool:
+  match v_2:
+    case []:
+      False{}
+    case +v_6 <> v_7:
+      cps_provider_8_js_plain_key_head(cps_provider_8_js_plain_head(v_6), v_7)
+
+def cps_provider_8_js_plain_key_head(v_1: Bool, v_4: List<&2, Char>) -> Bool:
+  match v_1:
+    case True{}:
+      cps_provider_8_js_plain_key_tail(v_4)
+    case False{}:
+      False{}
+
+def cps_provider_8_js_plain_key_tail(v_2: List<&2, Char>) -> Bool:
+  match v_2:
+    case []:
+      True{}
+    case +v_6 <> v_7:
+      cps_provider_8_js_plain_key_tail_more(cps_provider_8_js_word(v_6), v_7)
+
+def cps_provider_8_js_plain_key_tail_more(v_1: Bool, v_4: List<&2, Char>) -> Bool:
+  match v_1:
+    case True{}:
+      cps_provider_8_js_plain_key_tail(v_4)
+    case False{}:
+      False{}
+
+def cps_provider_8_js_plain_head(+v_1: Char) -> Bool:
+  match v_1:
+    case '_':
+      True{}
+    case '$':
+      True{}
+    case _:
+      Char.is_alpha(v_1)
+
+def cps_provider_8_js_member_text(v_0: BIR.Atom, v_2: String) -> String:
+  cps_provider_8_js_member_selected(cps_provider_8_js_member_atom(v_0), cps_provider_8_js_plain_key(v_2), v_2)
+
+def cps_provider_8_js_member_atom(v_0: BIR.Atom) -> Bool:
+  match v_0:
+    case BIR.Word{_}:
+      False{}
+    case BIR.Natural{_}:
+      False{}
+    case _:
+      True{}
+
+def cps_provider_8_js_member_selected(v_1: Bool, v_3: Bool, +v_5: String) -> String:
+  match v_1:
+    case False{}:
+      cps_provider_8_cat(["[", cps_provider_8_js_quote(v_5), "]"])
+    case True{}:
+      cps_provider_8_js_member_plain(v_3, v_5)
+
+def cps_provider_8_js_member_plain(v_1: Bool, +v_3: String) -> String:
+  match v_1:
+    case True{}:
+      String.append(".", v_3)
+    case False{}:
+      cps_provider_8_cat(["[", cps_provider_8_js_quote(v_3), "]"])
+
 def cps_provider_8_record_fields(v_1: List<&2, BIR.Field>) -> String:
   match v_1:
     case []:
       ""
     case BIR.Field{_, v_9, _, v_11} <> v_12:
-      cps_provider_8_cat([",[", cps_provider_8_js_quote(v_9), "]:", cps_provider_8_atom(v_11), cps_provider_8_record_fields(v_12)])
+      cps_provider_8_cat([",", cps_provider_8_js_field_text(v_9), cps_provider_8_atom(v_11), cps_provider_8_record_fields(v_12)])
 
 def cps_provider_8_foreign_parameters(v_1: Nat, v_3: Nat) -> List<&2, String>:
   match v_1:
@@ -16988,26 +17167,26 @@ def cps_provider_8_js_nat_answer_io(v_1: Maybe<&2, BIR.Descriptor>, +v_4: Map<&2
     case None{}:
       False{}
 
-def cps_provider_8_operation(v_0: BIR.Op) -> String:
+def cps_provider_8_operation(v_0: BIR.Op, v_2: cps_provider_8_JsCtx) -> String:
   match v_0:
-    case BIR.Copy{v_3}:
-      cps_provider_8_atom(v_3)
-    case BIR.PrimitiveCall{v_8, v_9, _}:
-      cps_provider_8_cat([cps_provider_8_primitive_name(v_8), "(", String.join(cps_provider_8_arguments(v_9), ","), ")"])
-    case BIR.Closure{v_17, v_18, v_19}:
-      cps_provider_8_closure(v_17, v_18, v_19)
-    case BIR.Direct{v_23, v_24}:
-      cps_provider_8_cat(["run_loop(", cps_provider_8_call(v_23, cps_provider_8_arguments(v_24)), ")"])
-    case BIR.Apply{v_31, BIR.Arg{_, v_33}}:
-      cps_provider_8_cat(["run_loop(run_tail(", cps_provider_8_atom(v_31), ",", cps_provider_8_atom(v_33), "))"])
-    case BIR.LoadSymbol{_, v_40}:
-      cps_provider_8_cat(["$D[", cps_provider_8_js_quote(v_40), "]"])
-    case BIR.Construct{_, v_47, v_48}:
-      cps_provider_8_cat(["({$:", cps_provider_8_js_quote(v_47), cps_provider_8_record_fields(v_48), "})"])
-    case BIR.Project{v_56, _, _, v_59}:
-      cps_provider_8_cat([cps_provider_8_atom(v_56), "[", cps_provider_8_js_quote(v_59), "]"])
-    case BIR.HasTag{v_66, _, v_68}:
-      cps_provider_8_tag_test(cps_provider_8_atom(v_66), v_68)
+    case BIR.Copy{v_5}:
+      cps_provider_8_atom(v_5)
+    case BIR.PrimitiveCall{v_10, v_11, _}:
+      cps_provider_8_cat([cps_provider_8_primitive_name(v_10), "(", String.join(cps_provider_8_arguments(v_11), ","), ")"])
+    case BIR.Closure{v_19, v_20, v_21}:
+      cps_provider_8_multi_closure(v_2, v_19, v_20, v_21)
+    case BIR.Direct{v_25, v_26}:
+      cps_provider_8_cat(["run_loop(", cps_provider_8_multi_target_name(cps_provider_8_js_ctx_targets(v_2), v_25), "(", String.join(cps_provider_8_arguments(v_26), ","), "))"])
+    case BIR.Apply{v_34, BIR.Arg{_, v_36}}:
+      cps_provider_8_cat(["run_loop(run_tail(", cps_provider_8_atom(v_34), ",", cps_provider_8_atom(v_36), "))"])
+    case BIR.LoadSymbol{_, v_43}:
+      cps_provider_8_cat(["$D[", cps_provider_8_js_quote(v_43), "]"])
+    case BIR.Construct{_, v_50, v_51}:
+      cps_provider_8_cat(["({$:", cps_provider_8_js_quote(v_50), cps_provider_8_record_fields(v_51), "})"])
+    case BIR.Project{v_59, _, _, v_62}:
+      cps_provider_8_cat([cps_provider_8_atom(v_59), cps_provider_8_js_member_text(v_59, v_62)])
+    case BIR.HasTag{v_69, _, v_71}:
+      cps_provider_8_tag_test(cps_provider_8_atom(v_69), v_71)
 
 def cps_provider_8_tag_test(+v_1: String, v_3: String) -> String:
   cps_provider_8_cat(["(", v_1, "&&", v_1, ".$===", cps_provider_8_js_quote(v_3), ")"])
@@ -17114,68 +17293,638 @@ def cps_provider_8_region(+v_1: U32, +v_2: BIR.Block, +v_3: BIR.Block, v_5: cps_
 def cps_provider_8_block(v_0: BIR.Block, v_2: cps_provider_8_JsCtx) -> String:
   match v_0:
     case BIR.Return{v_5}:
-      cps_provider_8_cat(["return ", cps_provider_8_atom(v_5), ";"])
-    case BIR.Let{v_11, v_12, v_13}:
-      cps_provider_8_let_step(v_11, v_12, v_13, v_2)
-    case BIR.Branch{v_18, v_19, v_20}:
-      cps_provider_8_cat(["if(", cps_provider_8_atom(v_18), "){", cps_provider_8_block(v_19, v_2), "}else{", cps_provider_8_block(v_20, v_2), "}"])
-    case BIR.Region{v_27, v_28, v_29}:
-      cps_provider_8_region(v_27, v_28, v_29, v_2)
-    case BIR.LeaveRegion{v_32}:
-      cps_provider_8_leave_step(v_32, v_2)
-    case BIR.TailDirect{v_36, v_37}:
-      cps_provider_8_cat(["return ", cps_provider_8_tail_call(v_36, cps_provider_8_arguments(v_37)), ";"])
-    case BIR.TailApply{v_44, BIR.Arg{_, v_46}}:
-      cps_provider_8_cat(["return run_tail(", cps_provider_8_atom(v_44), ",", cps_provider_8_atom(v_46), ");"])
-    case BIR.Failure{v_51}:
-      cps_provider_8_cat(["throw ", cps_provider_8_js_quote(v_51), ";"])
+      cps_provider_8_return_step(v_5, v_2)
+    case BIR.Let{v_10, v_11, v_12}:
+      cps_provider_8_let_step(v_10, v_11, v_12, v_2)
+    case BIR.Branch{v_17, v_18, v_19}:
+      cps_provider_8_cat(["if(", cps_provider_8_atom(v_17), "){", cps_provider_8_block(v_18, v_2), "}else{", cps_provider_8_block(v_19, v_2), "}"])
+    case BIR.Region{v_26, v_27, v_28}:
+      cps_provider_8_region(v_26, v_27, v_28, v_2)
+    case BIR.LeaveRegion{v_31}:
+      cps_provider_8_leave_step(v_31, v_2)
+    case BIR.TailDirect{v_35, v_36}:
+      cps_provider_8_tail_step(v_35, v_36, v_2)
+    case BIR.TailApply{v_41, BIR.Arg{_, v_43}}:
+      cps_provider_8_cat(["return run_tail(", cps_provider_8_atom(v_41), ",", cps_provider_8_atom(v_43), ");"])
+    case BIR.Failure{v_48}:
+      cps_provider_8_cat(["throw ", cps_provider_8_js_quote(v_48), ";"])
 
-def cps_provider_8_code(v_0: BIR.Code) -> String:
+def cps_provider_8_multi_codes_facts(v_1: List<&2, BIR.Code>, v_4: Map<&2, cps_provider_8_MultiLayout>, v_6: Nat, v_9: Map<&2, cps_provider_8_MultiCodeFact>) -> Map<&2, cps_provider_8_MultiCodeFact>:
+  match v_1:
+    case []:
+      v_9
+    case v_14 <> v_15:
+      cps_provider_8_multi_codes_fact_one(v_14, v_15, v_4, v_6, v_9)
+
+def cps_provider_8_multi_codes_fact_one(v_0: BIR.Code, v_2: List<&2, BIR.Code>, v_5: Map<&2, cps_provider_8_MultiLayout>, v_7: Nat, v_10: Map<&2, cps_provider_8_MultiCodeFact>) -> Map<&2, cps_provider_8_MultiCodeFact>:
   match v_0:
-    case BIR.Code{v_6, v_7, v_8, v_9}:
-      v_14 = List.append(&2, String, cps_provider_8_capture_names(v_7, 0), cps_provider_8_parameter_names(v_8))
-      +v_18 = cps_provider_8_js_ctx(U32.show(v_6), cps_provider_8_plan_of(v_9))
-      cps_provider_8_cat(["function ", cps_provider_8_code_name(v_6), "(", String.join(List.append(&2, String, v_14, ["$td=0"]), ","), "){", cps_provider_8_block(v_9, v_18), "}\n", String.join(cps_provider_8_conts(v_9, v_18), "")])
+    case BIR.Code{v_17, v_18, v_19, v_20}:
+      cps_provider_8_multi_codes_facts(v_2, v_5, v_7, Map.set(&2, cps_provider_8_MultiCodeFact, v_10, U32.show(v_17), cps_provider_8_multi_code_fact_build(v_17, v_18, v_19, v_20, v_5, v_7)))
 
-def cps_provider_8_codes(v_1: List<&2, BIR.Code>) -> String:
+def cps_provider_8_multi_fact_sites(v_1: cps_provider_8_MultiCodeFact) -> List<&2, cps_provider_8_MultiSiteF>:
+  match v_1:
+    case cps_provider_8_MultiCodeFact{_, v_16, _, _, _, _, _, _, _, _, _}:
+      v_16
+
+def cps_provider_8_multi_params_boxed(v_1: List<&2, BIR.Parameter>, v_4: List<&2, cps_provider_8_MultiParam>) -> List<&2, cps_provider_8_MultiParam>:
+  match v_1:
+    case []:
+      List.reverse(&2, cps_provider_8_MultiParam, v_4)
+    case BIR.Parameter{v_11, _} <> v_13:
+      cps_provider_8_multi_params_boxed(v_13, cps_provider_8_MultiParam{v_11, False{}, 0, []} <> v_4)
+
+def cps_provider_8_multi_params_unboxed(v_1: List<&2, BIR.Parameter>, v_3: Nat, v_6: Map<&2, Bool>, v_8: U32, v_10: Nat, v_13: List<&2, cps_provider_8_MultiParam>) -> List<&2, cps_provider_8_MultiParam>:
+  match v_1:
+    case []:
+      List.reverse(&2, cps_provider_8_MultiParam, v_13)
+    case BIR.Parameter{v_20, _} <> v_22:
+      cps_provider_8_multi_params_unboxed(v_22, Nat.add(v_3, 1n), v_6, v_8, v_10, cps_provider_8_multi_param_one(cps_provider_8_multi_up_get(v_6, v_8, v_3), v_20, v_10) <> v_13)
+
+def cps_provider_8_multi_param_one(v_1: Bool, v_3: U32, v_5: Nat) -> cps_provider_8_MultiParam:
+  match v_1:
+    case True{}:
+      cps_provider_8_MultiParam{v_3, True{}, cps_provider_8_multi_fresh(v_3, 7n), cps_provider_8_multi_fresh_ids(v_3, v_5)}
+    case False{}:
+      cps_provider_8_MultiParam{v_3, False{}, 0, []}
+
+def cps_provider_8_multi_params_find(v_2: List<&2, cps_provider_8_MultiParam>, v_4: U32) -> cps_provider_8_MultiParam:
+  match v_2:
+    case []:
+      cps_provider_8_MultiParam{v_4, False{}, 0, []}
+    case cps_provider_8_MultiParam{v_11, v_12, v_13, v_14} <> v_15:
+      cps_provider_8_multi_params_pick(U32.is_eq(v_11, v_4), cps_provider_8_MultiParam{v_11, v_12, v_13, v_14}, v_15, v_4)
+
+def cps_provider_8_multi_params_pick(v_1: Bool, v_3: cps_provider_8_MultiParam, v_6: List<&2, cps_provider_8_MultiParam>, v_8: U32) -> cps_provider_8_MultiParam:
+  match v_1:
+    case True{}:
+      v_3
+    case False{}:
+      cps_provider_8_multi_params_find(v_6, v_8)
+
+def cps_provider_8_multi_params_map(v_2: List<&2, cps_provider_8_MultiParam>, v_5: Map<&2, cps_provider_8_MultiParam>) -> Map<&2, cps_provider_8_MultiParam>:
+  match v_2:
+    case []:
+      v_5
+    case cps_provider_8_MultiParam{v_13, _, _, _} <> v_17:
+      cps_provider_8_multi_params_map(v_17, Map.set(&2, cps_provider_8_MultiParam, v_5, U32.show(v_13), cps_provider_8_multi_params_find(v_2, v_13)))
+
+def cps_provider_8_multi_param_names(v_2: List<&2, cps_provider_8_MultiParam>) -> List<&2, String>:
+  match v_2:
+    case []:
+      []
+    case cps_provider_8_MultiParam{v_10, v_11, v_12, v_13} <> v_14:
+      List.append(&2, String, cps_provider_8_multi_param_name(v_10, v_11, v_12, v_13), cps_provider_8_multi_param_names(v_14))
+
+def cps_provider_8_multi_param_name(v_1: U32, v_3: Bool, v_5: U32, v_8: List<&2, U32>) -> List<&2, String>:
+  match v_3:
+    case False{}:
+      [cps_provider_8_local(v_1)]
+    case True{}:
+      cps_provider_8_local(v_5) <> cps_provider_8_multi_local_names(v_8)
+
+def cps_provider_8_multi_local_names(v_2: List<&2, U32>) -> List<&2, String>:
+  match v_2:
+    case []:
+      []
+    case +v_7 <> v_8:
+      cps_provider_8_local(v_7) <> cps_provider_8_multi_local_names(v_8)
+
+def cps_provider_8_multi_render_plain(v_0: BIR.Block, v_2: List<&2, BIR.Parameter>) -> cps_provider_8_MultiRender:
+  cps_provider_8_multi_render_plain_made(v_0, v_2)
+
+def cps_provider_8_multi_render_plain_made(v_0: BIR.Block, v_2: List<&2, BIR.Parameter>) -> cps_provider_8_MultiRender:
+  cps_provider_8_MultiRender{v_0, cps_provider_8_plan_of(v_0), cps_provider_8_multi_params_boxed(v_2, []), Map.new(&2, cps_provider_8_MultiWindow), Map.new(&2, Bool), Map.new(&2, Bool), False{}, False{}, 0n, False{}}
+
+def cps_provider_8_multi_render_plain_public(v_0: BIR.Block, v_2: List<&2, BIR.Parameter>) -> cps_provider_8_MultiRender:
+  cps_provider_8_multi_render_plain_public_made(v_0, v_2)
+
+def cps_provider_8_multi_render_plain_public_made(v_0: BIR.Block, v_2: List<&2, BIR.Parameter>) -> cps_provider_8_MultiRender:
+  cps_provider_8_MultiRender{v_0, cps_provider_8_plan_of(v_0), cps_provider_8_multi_params_boxed(v_2, []), Map.new(&2, cps_provider_8_MultiWindow), Map.new(&2, Bool), Map.new(&2, Bool), False{}, True{}, 0n, False{}}
+
+def cps_provider_8_multi_render_code(v_0: BIR.Code, v_3: Map<&2, cps_provider_8_MultiLayout>, v_5: Nat, v_7: cps_provider_8_MultiUp, v_10: Map<&2, cps_provider_8_MultiRender>) -> Map<&2, cps_provider_8_MultiRender>:
+  match v_0:
+    case BIR.Code{v_17, _, v_19, v_20}:
+      cps_provider_8_multi_render_pair(cps_provider_8_multi_multi_get(cps_provider_8_multi_prev_multi(v_7), v_17), v_17, v_19, v_20, v_3, v_5, v_7, v_10)
+
+def cps_provider_8_multi_render_pair(v_1: Bool, v_3: U32, v_5: List<&2, BIR.Parameter>, v_6: BIR.Block, v_9: Map<&2, cps_provider_8_MultiLayout>, v_11: Nat, v_13: cps_provider_8_MultiUp, v_16: Map<&2, cps_provider_8_MultiRender>) -> Map<&2, cps_provider_8_MultiRender>:
+  match v_1:
+    case False{}:
+      Map.set(&2, cps_provider_8_MultiRender, v_16, cps_provider_8_multi_render_key(v_3, False{}), cps_provider_8_multi_render_primary(v_3, v_5, v_6, v_9, v_11, v_13, False{}))
+    case True{}:
+      cps_provider_8_multi_render_two(v_3, v_5, v_6, v_9, v_11, v_13, v_16)
+
+def cps_provider_8_multi_render_two(v_1: U32, v_3: List<&2, BIR.Parameter>, v_4: BIR.Block, v_7: Map<&2, cps_provider_8_MultiLayout>, v_9: Nat, v_11: cps_provider_8_MultiUp, v_14: Map<&2, cps_provider_8_MultiRender>) -> Map<&2, cps_provider_8_MultiRender>:
+  +v_19 = cps_provider_8_multi_uses(v_4)
+  Map.set(&2, cps_provider_8_MultiRender, Map.set(&2, cps_provider_8_MultiRender, v_14, cps_provider_8_multi_render_key(v_1, False{}), cps_provider_8_multi_render_primary_uses(v_1, v_3, v_4, v_7, v_9, v_11, True{}, v_19)), cps_provider_8_multi_render_key(v_1, True{}), cps_provider_8_multi_render_public_uses(v_1, v_3, v_4, v_7, v_9, v_11, v_19))
+
+def cps_provider_8_multi_render_primary(v_1: U32, v_3: List<&2, BIR.Parameter>, v_4: BIR.Block, v_7: Map<&2, cps_provider_8_MultiLayout>, v_9: Nat, v_11: cps_provider_8_MultiUp, v_13: Bool) -> cps_provider_8_MultiRender:
+  cps_provider_8_multi_render_make(v_1, v_4, v_7, v_9, v_11, v_13, False{}, cps_provider_8_multi_params_for_render(v_13, v_3, cps_provider_8_multi_prev_up(v_11), v_1, v_9), cps_provider_8_multi_uses(v_4))
+
+def cps_provider_8_multi_render_primary_uses(v_1: U32, v_3: List<&2, BIR.Parameter>, v_4: BIR.Block, v_7: Map<&2, cps_provider_8_MultiLayout>, v_9: Nat, v_11: cps_provider_8_MultiUp, v_13: Bool, v_16: Map<&2, Nat>) -> cps_provider_8_MultiRender:
+  cps_provider_8_multi_render_make(v_1, v_4, v_7, v_9, v_11, v_13, False{}, cps_provider_8_multi_params_for_render(v_13, v_3, cps_provider_8_multi_prev_up(v_11), v_1, v_9), v_16)
+
+def cps_provider_8_multi_params_for_render(v_1: Bool, v_3: List<&2, BIR.Parameter>, v_6: Map<&2, Bool>, v_8: U32, v_10: Nat) -> List<&2, cps_provider_8_MultiParam>:
+  match v_1:
+    case True{}:
+      cps_provider_8_multi_params_unboxed(v_3, 0n, v_6, v_8, v_10, [])
+    case False{}:
+      cps_provider_8_multi_params_boxed(v_3, [])
+
+def cps_provider_8_multi_render_public_uses(v_1: U32, v_3: List<&2, BIR.Parameter>, v_4: BIR.Block, v_7: Map<&2, cps_provider_8_MultiLayout>, v_9: Nat, v_11: cps_provider_8_MultiUp, v_14: Map<&2, Nat>) -> cps_provider_8_MultiRender:
+  cps_provider_8_multi_render_make(v_1, v_4, v_7, v_9, v_11, False{}, True{}, cps_provider_8_multi_params_boxed(v_3, []), v_14)
+
+def cps_provider_8_multi_render_make(v_1: U32, v_2: BIR.Block, v_5: Map<&2, cps_provider_8_MultiLayout>, v_7: Nat, v_9: cps_provider_8_MultiUp, v_11: Bool, v_13: Bool, v_16: List<&2, cps_provider_8_MultiParam>, v_19: Map<&2, Nat>) -> cps_provider_8_MultiRender:
+  cps_provider_8_multi_render_done(cps_provider_8_multi_rewrite(v_2, cps_provider_8_MRewCtx{v_1, v_5, cps_provider_8_multi_prev_multi(v_9), cps_provider_8_multi_prev_up(v_9), v_7, cps_provider_8_multi_params_map(v_16, Map.new(&2, cps_provider_8_MultiParam)), v_11, Map.new(&2, cps_provider_8_MultiSubst), None{}, Map.new(&2, cps_provider_8_MultiCtor), v_19}, cps_provider_8_multi_seed_of(v_1)), v_1, v_11, v_13, v_16, v_7)
+
+def cps_provider_8_multi_seed_of(v_1: U32) -> Nat:
+  Nat.mul(U32.to_nat(v_1), 64n)
+
+def cps_provider_8_multi_render_done(v_1: cps_provider_8_MultiRew, v_3: U32, v_5: Bool, v_7: Bool, v_10: List<&2, cps_provider_8_MultiParam>, v_12: Nat) -> cps_provider_8_MultiRender:
+  match v_1:
+    case cps_provider_8_MultiRew{v_22, v_23, v_24, v_25, _, v_27, _, v_29}:
+      cps_provider_8_multi_render_final(v_22, v_23, v_24, v_25, v_27, v_5, v_7, v_10, v_12, cps_provider_8_multi_seed_over(v_3, v_29))
+
+def cps_provider_8_multi_seed_over(v_1: U32, v_3: Nat) -> Bool:
+  Nat.is_gt(Nat.sub(v_3, cps_provider_8_multi_seed_of(v_1)), 64n)
+
+def cps_provider_8_multi_render_frames(v_1: Bool, v_2: BIR.Block, v_4: cps_provider_8_Plan) -> Bool:
+  match v_1:
+    case True{}:
+      Bool.not(cps_provider_8_multi_frames_ok(v_2, v_4))
+    case False{}:
+      False{}
+
+def cps_provider_8_multi_render_final(v_0: BIR.Block, v_3: Map<&2, cps_provider_8_MultiWindow>, v_6: Map<&2, Bool>, v_9: Map<&2, Bool>, v_11: Bool, v_13: Bool, v_15: Bool, v_18: List<&2, cps_provider_8_MultiParam>, v_20: Nat, v_22: Bool) -> cps_provider_8_MultiRender:
+  +v_26 = cps_provider_8_plan_of_windows(v_0, v_3)
+  cps_provider_8_MultiRender{v_0, v_26, v_18, v_3, v_6, v_9, v_13, v_15, v_20, Bool.or(v_11, Bool.or(cps_provider_8_multi_render_frames(v_13, v_0, v_26), v_22))}
+
+def cps_provider_8_multi_render_key(v_1: U32, v_3: Bool) -> String:
+  cps_provider_8_multi_render_key_pick(v_3, v_1)
+
+def cps_provider_8_multi_render_key_pick(v_1: Bool, v_3: U32) -> String:
+  match v_1:
+    case True{}:
+      cps_provider_8_cat(["u", U32.show(v_3)])
+    case False{}:
+      cps_provider_8_cat(["r", U32.show(v_3)])
+
+def cps_provider_8_multi_renders(v_1: List<&2, BIR.Code>, v_4: Map<&2, cps_provider_8_MultiLayout>, v_6: Nat, v_8: cps_provider_8_MultiUp, v_11: Map<&2, cps_provider_8_MultiRender>) -> Map<&2, cps_provider_8_MultiRender>:
+  match v_1:
+    case []:
+      v_11
+    case v_16 <> v_17:
+      cps_provider_8_multi_renders(v_17, v_4, v_6, v_8, cps_provider_8_multi_render_code(v_16, v_4, v_6, v_8, v_11))
+
+def cps_provider_8_multi_render_failed(v_2: Maybe<&2, cps_provider_8_MultiRender>) -> Bool:
+  match v_2:
+    case Some{cps_provider_8_MultiRender{_, _, _, _, _, _, _, _, _, v_23}}:
+      v_23
+    case None{}:
+      True{}
+
+def cps_provider_8_multi_render_of_key(v_2: Map<&2, cps_provider_8_MultiRender>, +v_4: String) -> Maybe<&2, cps_provider_8_MultiRender>:
+  IndexLookup.find(cps_provider_8_MultiRender, v_2, v_4)
+
+def cps_provider_8_multi_plan(v_0: BIR.Program) -> cps_provider_8_MultiPlan:
+  match v_0:
+    case BIR.Program{v_8, _, v_10, _, _, _}:
+      cps_provider_8_multi_plan_build(v_8, v_10)
+
+def cps_provider_8_multi_plan_build(v_1: List<&2, BIR.Code>, v_3: List<&2, BIR.ConstructorLayout>) -> cps_provider_8_MultiPlan:
+  cps_provider_8_multi_plan_width(v_1, cps_provider_8_multi_layouts(v_3, Map.new(&2, cps_provider_8_MultiLayout)))
+
+def cps_provider_8_multi_plan_width(v_1: List<&2, BIR.Code>, v_4: Map<&2, cps_provider_8_MultiLayout>) -> cps_provider_8_MultiPlan:
+  cps_provider_8_multi_plan_state(v_1, v_4, cps_provider_8_multi_program_width(v_1, 0n))
+
+def cps_provider_8_multi_plan_state(v_1: List<&2, BIR.Code>, v_4: Map<&2, cps_provider_8_MultiLayout>, v_6: Nat) -> cps_provider_8_MultiPlan:
+  cps_provider_8_multi_plan_facts(v_1, v_4, v_6, cps_provider_8_multi_codes_facts(v_1, v_4, v_6, Map.new(&2, cps_provider_8_MultiCodeFact)))
+
+def cps_provider_8_multi_plan_facts(v_1: List<&2, BIR.Code>, v_4: Map<&2, cps_provider_8_MultiLayout>, v_6: Nat, v_9: Map<&2, cps_provider_8_MultiCodeFact>) -> cps_provider_8_MultiPlan:
+  cps_provider_8_multi_plan_solve(v_1, v_4, v_6, v_9, cps_provider_8_multi_fwd_index(v_1, v_9, Map.new(&2, List<&2, cps_provider_8_MultiFwd>)), Map.new(&2, Bool), Nat.add(cps_provider_8_multi_code_count(v_1, 0n), 1n))
+
+def cps_provider_8_multi_plan_solve(v_1: List<&2, BIR.Code>, v_4: Map<&2, cps_provider_8_MultiLayout>, v_6: Nat, v_9: Map<&2, cps_provider_8_MultiCodeFact>, v_13: Map<&2, List<&2, cps_provider_8_MultiFwd>>, v_16: Map<&2, Bool>, v_18: Nat) -> cps_provider_8_MultiPlan:
+  cps_provider_8_multi_plan_seeded(v_1, v_4, v_6, v_9, v_13, v_16, v_18, cps_provider_8_multi_round_start(v_1, v_9, v_13, v_16, v_6))
+
+def cps_provider_8_multi_plan_seeded(v_1: List<&2, BIR.Code>, v_4: Map<&2, cps_provider_8_MultiLayout>, v_6: Nat, v_9: Map<&2, cps_provider_8_MultiCodeFact>, v_13: Map<&2, List<&2, cps_provider_8_MultiFwd>>, v_16: Map<&2, Bool>, v_18: Nat, v_20: cps_provider_8_MultiSolve) -> cps_provider_8_MultiPlan:
+  match v_20:
+    case cps_provider_8_MultiSolve{v_24, v_25}:
+      cps_provider_8_multi_plan_settled(v_25, v_1, v_4, v_6, v_9, v_13, v_16, v_18, v_24)
+
+def cps_provider_8_multi_plan_settled(v_1: Bool, v_3: List<&2, BIR.Code>, v_6: Map<&2, cps_provider_8_MultiLayout>, v_8: Nat, v_11: Map<&2, cps_provider_8_MultiCodeFact>, v_15: Map<&2, List<&2, cps_provider_8_MultiFwd>>, v_18: Map<&2, Bool>, v_20: Nat, v_22: cps_provider_8_MultiUp) -> cps_provider_8_MultiPlan:
+  match v_1:
+    case True{}:
+      cps_provider_8_multi_plan_solved(v_3, v_6, v_8, v_11, v_15, v_18, v_20, v_22)
+    case False{}:
+      cps_provider_8_multi_plan_faulted(v_3, v_6, v_8)
+
+def cps_provider_8_multi_plan_solved(v_1: List<&2, BIR.Code>, v_4: Map<&2, cps_provider_8_MultiLayout>, v_6: Nat, v_9: Map<&2, cps_provider_8_MultiCodeFact>, v_13: Map<&2, List<&2, cps_provider_8_MultiFwd>>, v_16: Map<&2, Bool>, v_18: Nat, v_20: cps_provider_8_MultiUp) -> cps_provider_8_MultiPlan:
+  +v_25 = cps_provider_8_multi_renders(v_1, v_4, v_6, v_20, Map.new(&2, cps_provider_8_MultiRender))
+  +v_29 = cps_provider_8_multi_render_fails(v_1, v_25, Map.new(&2, Bool))
+  cps_provider_8_multi_plan_resolve(cps_provider_8_multi_fails_fresh(v_1, v_29, v_16, False{}), v_1, v_4, v_6, v_9, v_13, v_16, v_18, v_20, v_25, v_29)
+
+def cps_provider_8_multi_plan_resolve(v_1: Bool, v_3: List<&2, BIR.Code>, v_6: Map<&2, cps_provider_8_MultiLayout>, v_8: Nat, v_11: Map<&2, cps_provider_8_MultiCodeFact>, v_15: Map<&2, List<&2, cps_provider_8_MultiFwd>>, v_18: Map<&2, Bool>, v_20: Nat, v_22: cps_provider_8_MultiUp, v_25: Map<&2, cps_provider_8_MultiRender>, v_28: Map<&2, Bool>) -> cps_provider_8_MultiPlan:
+  match v_1:
+    case False{}:
+      cps_provider_8_multi_plan_join(v_3, v_6, v_8, v_22, v_25, v_18)
+    case True{}:
+      cps_provider_8_multi_plan_resolve_budget(Nat.is_eq(v_20, 0n), v_3, v_6, v_8, v_11, v_15, v_18, v_22, v_20, v_28)
+
+def cps_provider_8_multi_plan_resolve_budget(v_1: Bool, v_3: List<&2, BIR.Code>, v_6: Map<&2, cps_provider_8_MultiLayout>, v_8: Nat, v_11: Map<&2, cps_provider_8_MultiCodeFact>, v_15: Map<&2, List<&2, cps_provider_8_MultiFwd>>, v_18: Map<&2, Bool>, v_20: cps_provider_8_MultiUp, v_22: Nat, v_25: Map<&2, Bool>) -> cps_provider_8_MultiPlan:
+  match v_1:
+    case True{}:
+      cps_provider_8_multi_plan_faulted(v_3, v_6, v_8)
+    case False{}:
+      cps_provider_8_multi_plan_solve(v_3, v_6, v_8, v_11, v_15, cps_provider_8_multi_bans_add(v_3, v_25, v_18), Nat.sub(v_22, 1n))
+
+def cps_provider_8_multi_code_count(v_1: List<&2, BIR.Code>, v_3: Nat) -> Nat:
+  match v_1:
+    case []:
+      v_3
+    case _ <> v_8:
+      cps_provider_8_multi_code_count(v_8, Nat.add(v_3, 1n))
+
+def cps_provider_8_multi_fault_message() -> String:
+  "bend: multi planning invariant broken: "
+
+def cps_provider_8_multi_fault_block(v_1: String) -> BIR.Block:
+  BIR.Failure{String.append(cps_provider_8_multi_fault_message, v_1)}
+
+def cps_provider_8_multi_plan_faulted(v_1: List<&2, BIR.Code>, v_4: Map<&2, cps_provider_8_MultiLayout>, v_6: Nat) -> cps_provider_8_MultiPlan:
+  cps_provider_8_MultiPlan{Map.new(&2, Bool), v_4, cps_provider_8_multi_fault_renders(v_1, Map.new(&2, cps_provider_8_MultiRender)), v_6, True{}, []}
+
+def cps_provider_8_multi_fault_renders(v_1: List<&2, BIR.Code>, v_4: Map<&2, cps_provider_8_MultiRender>) -> Map<&2, cps_provider_8_MultiRender>:
+  match v_1:
+    case []:
+      v_4
+    case BIR.Code{v_12, _, v_14, _} <> v_16:
+      cps_provider_8_multi_fault_renders(v_16, Map.set(&2, cps_provider_8_MultiRender, v_4, cps_provider_8_multi_render_key(v_12, False{}), cps_provider_8_multi_fault_boxed(v_14)))
+
+def cps_provider_8_multi_fault_boxed(v_1: List<&2, BIR.Parameter>) -> cps_provider_8_MultiRender:
+  cps_provider_8_multi_fault_boxed_made(cps_provider_8_multi_fault_block("relaxation did not settle"), v_1)
+
+def cps_provider_8_multi_fault_boxed_made(v_0: BIR.Block, v_2: List<&2, BIR.Parameter>) -> cps_provider_8_MultiRender:
+  cps_provider_8_MultiRender{v_0, cps_provider_8_plan_of(v_0), cps_provider_8_multi_params_boxed(v_2, []), Map.new(&2, cps_provider_8_MultiWindow), Map.new(&2, Bool), Map.new(&2, Bool), False{}, False{}, 0n, False{}}
+
+def cps_provider_8_multi_plan_join(v_1: List<&2, BIR.Code>, v_4: Map<&2, cps_provider_8_MultiLayout>, v_6: Nat, v_8: cps_provider_8_MultiUp, v_11: Map<&2, cps_provider_8_MultiRender>, v_14: Map<&2, Bool>) -> cps_provider_8_MultiPlan:
+  cps_provider_8_MultiPlan{cps_provider_8_multi_prev_multi(v_8), v_4, cps_provider_8_multi_renders_final(v_1, v_11, cps_provider_8_multi_prev_multi(v_8)), v_6, True{}, cps_provider_8_multi_refused(v_1, v_14, [])}
+
+def cps_provider_8_multi_bans_add(v_1: List<&2, BIR.Code>, v_4: Map<&2, Bool>, v_7: Map<&2, Bool>) -> Map<&2, Bool>:
+  match v_1:
+    case []:
+      v_7
+    case BIR.Code{v_15, _, _, _} <> v_19:
+      cps_provider_8_multi_bans_add(v_19, v_4, cps_provider_8_multi_bans_one(cps_provider_8_multi_up_at(v_4, U32.show(v_15)), U32.show(v_15), v_7))
+
+def cps_provider_8_multi_bans_one(v_1: Bool, +v_3: String, v_6: Map<&2, Bool>) -> Map<&2, Bool>:
+  match v_1:
+    case False{}:
+      v_6
+    case True{}:
+      Map.set(&2, Bool, v_6, v_3, True{})
+
+def cps_provider_8_multi_refused(v_1: List<&2, BIR.Code>, v_4: Map<&2, Bool>, v_7: List<&2, String>) -> List<&2, String>:
+  match v_1:
+    case []:
+      List.reverse(&2, String, v_7)
+    case BIR.Code{v_16, _, _, _} <> v_20:
+      cps_provider_8_multi_refused(v_20, v_4, cps_provider_8_multi_refused_one(cps_provider_8_multi_up_at(v_4, U32.show(v_16)), v_16, v_7))
+
+def cps_provider_8_multi_refused_one(v_1: Bool, v_3: U32, v_6: List<&2, String>) -> List<&2, String>:
+  match v_1:
+    case False{}:
+      v_6
+    case True{}:
+      U32.show(v_3) <> v_6
+
+def cps_provider_8_multi_renders_final(v_1: List<&2, BIR.Code>, v_4: Map<&2, cps_provider_8_MultiRender>, v_7: Map<&2, Bool>) -> Map<&2, cps_provider_8_MultiRender>:
+  match v_1:
+    case []:
+      v_4
+    case BIR.Code{v_15, _, v_17, v_18} <> v_19:
+      cps_provider_8_multi_renders_final(v_19, cps_provider_8_multi_renders_final_one(cps_provider_8_multi_render_failed(cps_provider_8_multi_render_of_key(v_4, cps_provider_8_multi_render_key(v_15, False{}))), v_15, v_17, v_18, v_4, v_7), v_7)
+
+def cps_provider_8_multi_renders_final_one(v_1: Bool, v_3: U32, v_5: List<&2, BIR.Parameter>, v_6: BIR.Block, v_9: Map<&2, cps_provider_8_MultiRender>, v_12: Map<&2, Bool>) -> Map<&2, cps_provider_8_MultiRender>:
+  match v_1:
+    case True{}:
+      cps_provider_8_multi_renders_final_failed(cps_provider_8_multi_multi_get(v_12, v_3), v_3, v_5, v_6, v_9)
+    case False{}:
+      cps_provider_8_multi_renders_final_public(cps_provider_8_multi_multi_get(v_12, v_3), v_3, v_5, v_6, v_9)
+
+def cps_provider_8_multi_renders_final_failed(v_1: Bool, v_3: U32, v_5: List<&2, BIR.Parameter>, v_6: BIR.Block, v_9: Map<&2, cps_provider_8_MultiRender>) -> Map<&2, cps_provider_8_MultiRender>:
+  match v_1:
+    case False{}:
+      Map.set(&2, cps_provider_8_MultiRender, v_9, cps_provider_8_multi_render_key(v_3, False{}), cps_provider_8_multi_render_plain(v_6, v_5))
+    case True{}:
+      Map.set(&2, cps_provider_8_MultiRender, v_9, cps_provider_8_multi_render_key(v_3, False{}), cps_provider_8_multi_fault_selected(v_3, v_5, v_9))
+
+def native_match_cps_provider_8_multi_fault_selected_0(v_30: Maybe<&2, cps_provider_8_MultiRender>, v_3: List<&2, BIR.Parameter>) -> cps_provider_8_MultiRender:
+  match v_30:
+    case Some{cps_provider_8_MultiRender{_, v_21, v_22, v_23, v_24, v_25, v_26, v_27, v_28, _}}:
+      cps_provider_8_MultiRender{cps_provider_8_multi_fault_block("a selected owner was refused"), v_21, v_22, v_23, v_24, v_25, v_26, v_27, v_28, False{}}
+    case None{}:
+      cps_provider_8_multi_fault_boxed(v_3)
+
+def cps_provider_8_multi_fault_selected(v_1: U32, v_3: List<&2, BIR.Parameter>, v_6: Map<&2, cps_provider_8_MultiRender>) -> cps_provider_8_MultiRender:
+  native_match_cps_provider_8_multi_fault_selected_0(cps_provider_8_multi_render_of_key(v_6, cps_provider_8_multi_render_key(v_1, False{})), v_3)
+
+def cps_provider_8_multi_renders_final_public(v_1: Bool, v_3: U32, v_5: List<&2, BIR.Parameter>, v_6: BIR.Block, v_9: Map<&2, cps_provider_8_MultiRender>) -> Map<&2, cps_provider_8_MultiRender>:
+  match v_1:
+    case False{}:
+      v_9
+    case True{}:
+      cps_provider_8_multi_renders_final_public_refused(cps_provider_8_multi_render_failed(cps_provider_8_multi_render_of_key(v_9, cps_provider_8_multi_render_key(v_3, True{}))), v_3, v_5, v_6, v_9)
+
+def cps_provider_8_multi_renders_final_public_refused(v_1: Bool, v_3: U32, v_5: List<&2, BIR.Parameter>, v_6: BIR.Block, v_9: Map<&2, cps_provider_8_MultiRender>) -> Map<&2, cps_provider_8_MultiRender>:
+  match v_1:
+    case False{}:
+      v_9
+    case True{}:
+      Map.set(&2, cps_provider_8_MultiRender, v_9, cps_provider_8_multi_render_key(v_3, True{}), cps_provider_8_multi_render_plain_public(v_6, v_5))
+
+def cps_provider_8_multi_render_fails(v_1: List<&2, BIR.Code>, v_4: Map<&2, cps_provider_8_MultiRender>, v_7: Map<&2, Bool>) -> Map<&2, Bool>:
+  match v_1:
+    case []:
+      v_7
+    case BIR.Code{v_15, _, _, _} <> v_19:
+      cps_provider_8_multi_render_fails(v_19, v_4, cps_provider_8_multi_fails_add(cps_provider_8_multi_render_failed(cps_provider_8_multi_render_of_key(v_4, cps_provider_8_multi_render_key(v_15, False{}))), v_15, v_7))
+
+def cps_provider_8_multi_fails_add(v_1: Bool, v_3: U32, v_6: Map<&2, Bool>) -> Map<&2, Bool>:
+  match v_1:
+    case False{}:
+      v_6
+    case True{}:
+      Map.set(&2, Bool, v_6, U32.show(v_3), True{})
+
+def cps_provider_8_multi_fails_fresh(v_1: List<&2, BIR.Code>, v_4: Map<&2, Bool>, v_7: Map<&2, Bool>, v_9: Bool) -> Bool:
+  match v_1:
+    case []:
+      v_9
+    case BIR.Code{v_16, _, _, _} <> v_20:
+      cps_provider_8_multi_fails_fresh(v_20, v_4, v_7, Bool.or(v_9, cps_provider_8_multi_fail_fresh(cps_provider_8_multi_up_at(v_4, U32.show(v_16)), cps_provider_8_multi_up_at(v_7, U32.show(v_16)))))
+
+def cps_provider_8_multi_fail_fresh(v_1: Bool, v_3: Bool) -> Bool:
+  match v_1:
+    case False{}:
+      False{}
+    case True{}:
+      Bool.not(v_3)
+
+def cps_provider_8_multi_render_choose(v_1: cps_provider_8_MultiPlan, v_2: BIR.Code, v_4: Bool) -> cps_provider_8_MultiRender:
+  match v_1:
+    case cps_provider_8_MultiPlan{_, _, v_14, _, v_16, _}:
+      cps_provider_8_multi_render_lookup(v_16, v_14, v_2, v_4)
+
+def cps_provider_8_multi_render_lookup(v_1: Bool, v_4: Map<&2, cps_provider_8_MultiRender>, v_5: BIR.Code, v_7: Bool) -> cps_provider_8_MultiRender:
+  match v_5:
+    case BIR.Code{v_13, _, v_15, v_16}:
+      cps_provider_8_multi_render_lookup_ok(v_1, cps_provider_8_multi_render_of_key(v_4, cps_provider_8_multi_render_key(v_13, v_7)), v_15, v_16)
+
+def cps_provider_8_multi_render_lookup_ok(v_1: Bool, v_4: Maybe<&2, cps_provider_8_MultiRender>, v_6: List<&2, BIR.Parameter>, v_7: BIR.Block) -> cps_provider_8_MultiRender:
+  match v_1:
+    case False{}:
+      cps_provider_8_multi_render_plain(v_7, v_6)
+    case True{}:
+      cps_provider_8_multi_render_found(v_4, v_7, v_6)
+
+def cps_provider_8_multi_render_found(v_2: Maybe<&2, cps_provider_8_MultiRender>, v_3: BIR.Block, v_5: List<&2, BIR.Parameter>) -> cps_provider_8_MultiRender:
+  match v_2:
+    case Some{+v_8}:
+      v_8
+    case None{}:
+      cps_provider_8_multi_render_plain(v_3, v_5)
+
+def cps_provider_8_multi_render_primary_of(v_1: cps_provider_8_MultiPlan, v_2: BIR.Code) -> cps_provider_8_MultiRender:
+  cps_provider_8_multi_render_choose(v_1, v_2, False{})
+
+def cps_provider_8_multi_render_public_of(v_1: cps_provider_8_MultiPlan, v_2: BIR.Code) -> cps_provider_8_MultiRender:
+  cps_provider_8_multi_render_choose(v_1, v_2, True{})
+
+def cps_provider_8_multi_plan_multi(v_1: cps_provider_8_MultiPlan) -> Map<&2, Bool>:
+  match v_1:
+    case cps_provider_8_MultiPlan{v_10, _, _, _, _, _}:
+      v_10
+
+def cps_provider_8_multi_plan_ok(v_1: cps_provider_8_MultiPlan) -> Bool:
+  match v_1:
+    case cps_provider_8_MultiPlan{_, _, _, _, v_13, _}:
+      v_13
+
+def cps_provider_8_multi_plan_refused(v_1: cps_provider_8_MultiPlan) -> List<&2, String>:
+  match v_1:
+    case cps_provider_8_MultiPlan{_, _, _, _, _, v_15}:
+      v_15
+
+def cps_provider_8_multi_code_name(v_1: U32, v_3: Bool) -> String:
+  match v_3:
+    case True{}:
+      cps_provider_8_code_name_pub(v_1)
+    case False{}:
+      cps_provider_8_code_name(v_1)
+
+def cps_provider_8_multi_owner(v_1: U32, v_3: Bool) -> String:
+  match v_3:
+    case True{}:
+      cps_provider_8_cat([U32.show(v_1), "P"])
+    case False{}:
+      U32.show(v_1)
+
+def cps_provider_8_multi_render_plan(v_1: cps_provider_8_MultiRender) -> cps_provider_8_Plan:
+  match v_1:
+    case cps_provider_8_MultiRender{_, v_14, _, _, _, _, _, _, _, _}:
+      v_14
+
+def cps_provider_8_multi_render_body(v_1: cps_provider_8_MultiRender) -> BIR.Block:
+  match v_1:
+    case cps_provider_8_MultiRender{v_12, _, _, _, _, _, _, _, _, _}:
+      v_12
+
+def cps_provider_8_multi_render_params(v_1: cps_provider_8_MultiRender) -> List<&2, cps_provider_8_MultiParam>:
+  match v_1:
+    case cps_provider_8_MultiRender{_, _, v_16, _, _, _, _, _, _, _}:
+      v_16
+
+def cps_provider_8_multi_render_private(v_1: cps_provider_8_MultiRender) -> Bool:
+  match v_1:
+    case cps_provider_8_MultiRender{_, _, _, _, _, _, v_19, _, _, _}:
+      v_19
+
+def cps_provider_8_multi_signature(v_1: List<&2, BIR.Use>, v_3: cps_provider_8_MultiRender) -> List<&2, String>:
+  cps_provider_8_multi_sig_names(cps_provider_8_multi_render_private(v_3), List.append(&2, String, cps_provider_8_capture_names(v_1, 0), cps_provider_8_multi_param_names(cps_provider_8_multi_render_params(v_3))))
+
+def cps_provider_8_multi_sig_names(v_1: Bool, v_4: List<&2, String>) -> List<&2, String>:
+  match v_1:
+    case True{}:
+      List.append(&2, String, v_4, ["$mr", "$td=0"])
+    case False{}:
+      List.append(&2, String, v_4, ["$td=0"])
+
+def cps_provider_8_multi_code_emit(v_1: U32, v_3: List<&2, BIR.Use>, v_5: cps_provider_8_MultiRender, v_7: cps_provider_8_MultiPlan, v_9: Bool) -> String:
+  cps_provider_8_multi_code_emit_ctx(cps_provider_8_js_ctx_multi(cps_provider_8_multi_owner(v_1, v_9), cps_provider_8_multi_render_plan(v_5), cps_provider_8_multi_plan_multi(v_7), v_5), v_1, v_3, v_5, v_9)
+
+def cps_provider_8_multi_code_emit_ctx(v_1: cps_provider_8_JsCtx, v_3: U32, v_5: List<&2, BIR.Use>, v_7: cps_provider_8_MultiRender, v_9: Bool) -> String:
+  cps_provider_8_cat(["function ", cps_provider_8_multi_code_name(v_3, v_9), "(", String.join(cps_provider_8_multi_signature(v_5, v_7), ","), "){", cps_provider_8_block(cps_provider_8_multi_render_body(v_7), v_1), "}\n", String.join(cps_provider_8_conts(cps_provider_8_multi_render_body(v_7), v_1), "")])
+
+def cps_provider_8_code(v_0: BIR.Code, v_2: cps_provider_8_MultiPlan) -> String:
+  match v_0:
+    case BIR.Code{v_8, v_9, _, _}:
+      cps_provider_8_multi_code_emit(v_8, v_9, cps_provider_8_multi_render_primary_of(v_2, v_0), v_2, False{})
+
+def cps_provider_8_codes(v_1: List<&2, BIR.Code>, v_3: cps_provider_8_MultiPlan) -> String:
   match v_1:
     case []:
       ""
-    case v_5 <> v_6:
-      cps_provider_8_cat([cps_provider_8_code(v_5), cps_provider_8_codes(v_6)])
+    case v_7 <> v_8:
+      cps_provider_8_cat([cps_provider_8_code(v_7, v_3), cps_provider_8_multi_public_code(v_7, v_3), cps_provider_8_codes(v_8, v_3)])
+
+def cps_provider_8_multi_public_code(v_0: BIR.Code, v_2: cps_provider_8_MultiPlan) -> String:
+  match v_0:
+    case BIR.Code{v_8, v_9, _, _}:
+      cps_provider_8_multi_public_pick(cps_provider_8_multi_multi_get(cps_provider_8_multi_plan_multi(v_2), v_8), cps_provider_8_multi_plan_ok(v_2), v_8, v_9, v_0, v_2)
+
+def cps_provider_8_multi_public_pick(v_1: Bool, v_3: Bool, v_5: U32, v_7: List<&2, BIR.Use>, v_8: BIR.Code, v_10: cps_provider_8_MultiPlan) -> String:
+  match v_1:
+    case False{}:
+      ""
+    case True{}:
+      cps_provider_8_multi_public_ok(v_3, v_5, v_7, v_8, v_10)
+
+def cps_provider_8_multi_public_ok(v_1: Bool, v_3: U32, v_5: List<&2, BIR.Use>, v_6: BIR.Code, v_8: cps_provider_8_MultiPlan) -> String:
+  match v_1:
+    case False{}:
+      ""
+    case True{}:
+      cps_provider_8_multi_code_emit(v_3, v_5, cps_provider_8_multi_render_public_of(v_8, v_6), v_8, True{})
 
 def cps_provider_8_js_ctx(v_1: String, v_3: cps_provider_8_Plan) -> cps_provider_8_JsCtx:
-  cps_provider_8_JsCtx{v_1, v_3, []}
+  cps_provider_8_JsCtx{v_1, v_3, [], Map.new(&2, Bool), cps_provider_8_multi_render_plain_state(v_3)}
+
+def cps_provider_8_js_ctx_multi(v_1: String, v_3: cps_provider_8_Plan, v_6: Map<&2, Bool>, v_8: cps_provider_8_MultiRender) -> cps_provider_8_JsCtx:
+  cps_provider_8_JsCtx{v_1, v_3, [], v_6, v_8}
+
+def cps_provider_8_multi_render_plain_state(v_1: cps_provider_8_Plan) -> cps_provider_8_MultiRender:
+  cps_provider_8_MultiRender{BIR.Failure{""}, v_1, [], Map.new(&2, cps_provider_8_MultiWindow), Map.new(&2, Bool), Map.new(&2, Bool), False{}, False{}, 0n, False{}}
 
 def cps_provider_8_js_ctx_inside(v_1: cps_provider_8_JsCtx, v_3: U32) -> cps_provider_8_JsCtx:
   match v_1:
-    case cps_provider_8_JsCtx{v_8, v_9, v_10}:
-      cps_provider_8_JsCtx{v_8, v_9, v_3 <> v_10}
+    case cps_provider_8_JsCtx{v_10, v_11, v_12, v_13, v_14}:
+      cps_provider_8_JsCtx{v_10, v_11, v_3 <> v_12, v_13, v_14}
 
 def cps_provider_8_js_ctx_owner(v_1: cps_provider_8_JsCtx) -> String:
   match v_1:
-    case cps_provider_8_JsCtx{v_6, _, _}:
-      v_6
+    case cps_provider_8_JsCtx{v_8, _, _, _, _}:
+      v_8
 
 def cps_provider_8_js_ctx_has(v_1: cps_provider_8_JsCtx, v_3: U32) -> Bool:
   match v_1:
-    case cps_provider_8_JsCtx{_, _, v_10}:
-      cps_provider_8_frame_has(v_10, v_3)
+    case cps_provider_8_JsCtx{_, _, v_12, _, _}:
+      cps_provider_8_frame_has(v_12, v_3)
 
 def cps_provider_8_js_ctx_cont(v_1: cps_provider_8_JsCtx, v_3: U32) -> cps_provider_8_Caps:
   match v_1:
-    case cps_provider_8_JsCtx{_, v_9, _}:
-      cps_provider_8_plan_cont(v_9, v_3)
+    case cps_provider_8_JsCtx{_, v_11, _, _, _}:
+      cps_provider_8_plan_cont(v_11, v_3)
 
 def cps_provider_8_js_ctx_thunk(v_1: cps_provider_8_JsCtx, v_3: U32) -> cps_provider_8_Caps:
   match v_1:
-    case cps_provider_8_JsCtx{_, v_9, _}:
-      cps_provider_8_plan_thunk(v_9, v_3)
+    case cps_provider_8_JsCtx{_, v_11, _, _, _}:
+      cps_provider_8_plan_thunk(v_11, v_3)
 
 def cps_provider_8_js_ctx_frame(v_1: cps_provider_8_JsCtx, v_3: U32) -> Bool:
   match v_1:
-    case cps_provider_8_JsCtx{_, v_9, _}:
-      cps_provider_8_plan_frame(v_9, v_3)
+    case cps_provider_8_JsCtx{_, v_11, _, _, _}:
+      cps_provider_8_plan_frame(v_11, v_3)
+
+def cps_provider_8_js_ctx_targets(v_1: cps_provider_8_JsCtx) -> Map<&2, Bool>:
+  match v_1:
+    case cps_provider_8_JsCtx{_, _, _, v_12, _}:
+      v_12
+
+def cps_provider_8_js_ctx_render(v_1: cps_provider_8_JsCtx) -> cps_provider_8_MultiRender:
+  match v_1:
+    case cps_provider_8_JsCtx{_, _, _, _, v_12}:
+      v_12
+
+def native_match_cps_provider_8_js_ctx_private_0(v_24: cps_provider_8_MultiRender) -> Bool:
+  match v_24:
+    case cps_provider_8_MultiRender{_, _, _, _, _, _, v_20, _, _, _}:
+      v_20
+
+def cps_provider_8_js_ctx_private(v_1: cps_provider_8_JsCtx) -> Bool:
+  native_match_cps_provider_8_js_ctx_private_0(cps_provider_8_js_ctx_render(v_1))
+
+def native_match_cps_provider_8_js_ctx_public_0(v_24: cps_provider_8_MultiRender) -> Bool:
+  match v_24:
+    case cps_provider_8_MultiRender{_, _, _, _, _, _, _, v_21, _, _}:
+      v_21
+
+def cps_provider_8_js_ctx_public(v_1: cps_provider_8_JsCtx) -> Bool:
+  native_match_cps_provider_8_js_ctx_public_0(cps_provider_8_js_ctx_render(v_1))
+
+def native_match_cps_provider_8_js_ctx_width_0(v_24: cps_provider_8_MultiRender) -> Nat:
+  match v_24:
+    case cps_provider_8_MultiRender{_, _, _, _, _, _, _, _, v_22, _}:
+      v_22
+
+def cps_provider_8_js_ctx_width(v_1: cps_provider_8_JsCtx) -> Nat:
+  native_match_cps_provider_8_js_ctx_width_0(cps_provider_8_js_ctx_render(v_1))
+
+def native_match_cps_provider_8_js_ctx_params_0(v_25: cps_provider_8_MultiRender) -> List<&2, cps_provider_8_MultiParam>:
+  match v_25:
+    case cps_provider_8_MultiRender{_, _, v_17, _, _, _, _, _, _, _}:
+      v_17
+
+def cps_provider_8_js_ctx_params(v_1: cps_provider_8_JsCtx) -> List<&2, cps_provider_8_MultiParam>:
+  native_match_cps_provider_8_js_ctx_params_0(cps_provider_8_js_ctx_render(v_1))
+
+def native_match_cps_provider_8_js_ctx_site_0(v_26: cps_provider_8_MultiRender, v_3: U32) -> Bool:
+  match v_26:
+    case cps_provider_8_MultiRender{_, _, _, _, v_20, _, _, _, _, _}:
+      cps_provider_8_multi_site_get(v_20, v_3)
+
+def cps_provider_8_js_ctx_site(v_1: cps_provider_8_JsCtx, v_3: U32) -> Bool:
+  native_match_cps_provider_8_js_ctx_site_0(cps_provider_8_js_ctx_render(v_1), v_3)
+
+def cps_provider_8_multi_site_get(v_2: Map<&2, Bool>, v_4: U32) -> Bool:
+  cps_provider_8_multi_up_found(IndexLookup.find(Bool, v_2, cps_provider_8_cat(["k", U32.show(v_4)])))
+
+def native_match_cps_provider_8_js_ctx_window_0(v_28: cps_provider_8_MultiRender, v_3: U32) -> Maybe<&2, cps_provider_8_MultiWindow>:
+  match v_28:
+    case cps_provider_8_MultiRender{_, _, _, v_20, _, _, _, _, _, _}:
+      IndexLookup.find(cps_provider_8_MultiWindow, v_20, cps_provider_8_cat(["k", U32.show(v_3)]))
+
+def cps_provider_8_js_ctx_window(v_1: cps_provider_8_JsCtx, v_3: U32) -> Maybe<&2, cps_provider_8_MultiWindow>:
+  native_match_cps_provider_8_js_ctx_window_0(cps_provider_8_js_ctx_render(v_1), v_3)
+
+def native_match_cps_provider_8_js_ctx_mr_0(v_28: cps_provider_8_MultiRender, v_3: U32) -> Bool:
+  match v_28:
+    case cps_provider_8_MultiRender{_, _, _, _, _, v_21, _, _, _, _}:
+      cps_provider_8_multi_up_found(IndexLookup.find(Bool, v_21, cps_provider_8_cat(["k", U32.show(v_3)])))
+
+def cps_provider_8_js_ctx_mr(v_1: cps_provider_8_JsCtx, v_3: U32) -> Bool:
+  native_match_cps_provider_8_js_ctx_mr_0(cps_provider_8_js_ctx_render(v_1), v_3)
+
+def native_match_cps_provider_8_cont_name_ctx_0(v_4: Bool, v_3: U32) -> String:
+  match v_4:
+    case True{}:
+      cps_provider_8_cat(["$kp", U32.show(v_3)])
+    case False{}:
+      cps_provider_8_cont_name(v_3)
+
+def cps_provider_8_cont_name_ctx(v_1: cps_provider_8_JsCtx, v_3: U32) -> String:
+  native_match_cps_provider_8_cont_name_ctx_0(cps_provider_8_js_ctx_public(v_1), v_3)
+
+def cps_provider_8_code_name_pub(v_1: U32) -> String:
+  cps_provider_8_cat(["$b", U32.show(v_1), "_pub"])
+
+def cps_provider_8_multi_target_name(v_2: Map<&2, Bool>, v_4: U32) -> String:
+  cps_provider_8_multi_target_pick(cps_provider_8_multi_multi_get(v_2, v_4), v_4)
+
+def cps_provider_8_multi_target_pick(v_1: Bool, v_3: U32) -> String:
+  match v_1:
+    case True{}:
+      cps_provider_8_code_name_pub(v_3)
+    case False{}:
+      cps_provider_8_code_name(v_3)
 
 def cps_provider_8_frame_has(v_2: List<&2, U32>, v_4: U32) -> Bool:
   match v_2:
@@ -17504,78 +18253,99 @@ def native_match_cps_provider_8_plan_flag_0(v_9: Maybe<&2, Bool>) -> Bool:
 def cps_provider_8_plan_flag(v_2: Map<&2, Bool>, v_4: String) -> Bool:
   native_match_cps_provider_8_plan_flag_0(IndexLookup.find(Bool, v_2, v_4))
 
-def native_match_cps_provider_8_plan_of_0(v_10: cps_provider_8_Step) -> cps_provider_8_Plan:
-  match v_10:
-    case cps_provider_8_Step{_, _, v_9}:
-      v_9
-
 def cps_provider_8_plan_of(v_0: BIR.Block) -> cps_provider_8_Plan:
-  native_match_cps_provider_8_plan_of_0(cps_provider_8_plan_block(v_0, cps_provider_8_plan_empty))
+  cps_provider_8_plan_of_windows(v_0, Map.new(&2, cps_provider_8_MultiWindow))
 
-def cps_provider_8_plan_block(v_0: BIR.Block, v_2: cps_provider_8_Plan) -> cps_provider_8_Step:
+def native_match_cps_provider_8_plan_of_windows_0(v_13: cps_provider_8_Step) -> cps_provider_8_Plan:
+  match v_13:
+    case cps_provider_8_Step{_, _, v_12}:
+      v_12
+
+def cps_provider_8_plan_of_windows(v_0: BIR.Block, v_3: Map<&2, cps_provider_8_MultiWindow>) -> cps_provider_8_Plan:
+  native_match_cps_provider_8_plan_of_windows_0(cps_provider_8_plan_block(v_0, v_3, cps_provider_8_plan_empty))
+
+def cps_provider_8_plan_block(v_0: BIR.Block, v_3: Map<&2, cps_provider_8_MultiWindow>, v_5: cps_provider_8_Plan) -> cps_provider_8_Step:
   match v_0:
-    case BIR.Return{v_5}:
-      cps_provider_8_plan_leaf(cps_provider_8_suffix_atom(v_5, cps_provider_8_suffix_empty), v_2)
-    case BIR.TailDirect{_, v_12}:
-      cps_provider_8_plan_leaf(cps_provider_8_suffix_args(v_12, cps_provider_8_suffix_empty), v_2)
-    case BIR.TailApply{v_18, v_19}:
-      cps_provider_8_plan_leaf(cps_provider_8_suffix_apply(v_18, v_19, cps_provider_8_suffix_empty), v_2)
+    case BIR.Return{v_8}:
+      cps_provider_8_plan_leaf(cps_provider_8_suffix_atom(v_8, cps_provider_8_suffix_empty), v_5)
+    case BIR.TailDirect{_, v_15}:
+      cps_provider_8_plan_leaf(cps_provider_8_suffix_args(v_15, cps_provider_8_suffix_empty), v_5)
+    case BIR.TailApply{v_21, v_22}:
+      cps_provider_8_plan_leaf(cps_provider_8_suffix_apply(v_21, v_22, cps_provider_8_suffix_empty), v_5)
     case BIR.Failure{_}:
-      cps_provider_8_plan_leaf(cps_provider_8_suffix_empty, v_2)
-    case BIR.LeaveRegion{v_28}:
-      cps_provider_8_Step{cps_provider_8_suffix_empty, [cps_provider_8_FrameBits{v_28, False{}, True{}}], v_2}
-    case BIR.Let{v_33, v_34, v_35}:
-      cps_provider_8_plan_let(v_33, v_34, cps_provider_8_plan_block(v_35, v_2))
-    case BIR.Branch{v_41, v_42, v_43}:
-      cps_provider_8_plan_branch(v_41, cps_provider_8_plan_block(v_42, v_2), v_43)
-    case BIR.Region{v_48, v_49, v_50}:
-      cps_provider_8_plan_region(v_48, cps_provider_8_plan_block(v_49, v_2), v_50)
+      cps_provider_8_plan_leaf(cps_provider_8_suffix_empty, v_5)
+    case BIR.LeaveRegion{v_31}:
+      cps_provider_8_Step{cps_provider_8_suffix_empty, [cps_provider_8_FrameBits{v_31, False{}, True{}}], v_5}
+    case BIR.Let{v_36, v_37, v_38}:
+      cps_provider_8_plan_let(v_36, v_37, cps_provider_8_plan_block(v_38, v_3, v_5), v_3)
+    case BIR.Branch{v_44, v_45, v_46}:
+      cps_provider_8_plan_branch(v_44, cps_provider_8_plan_block(v_45, v_3, v_5), v_46, v_3)
+    case BIR.Region{v_51, v_52, v_53}:
+      cps_provider_8_plan_region(v_51, cps_provider_8_plan_block(v_52, v_3, v_5), v_53, v_3)
 
 def cps_provider_8_plan_leaf(v_1: cps_provider_8_Suffix, v_3: cps_provider_8_Plan) -> cps_provider_8_Step:
   cps_provider_8_Step{v_1, [], v_3}
 
-def native_match_cps_provider_8_plan_let_0(v_12: Bool, v_1: U32, v_2: BIR.Op, v_9: cps_provider_8_Suffix, v_10: List<&2, cps_provider_8_FrameBits>, v_11: cps_provider_8_Plan) -> cps_provider_8_Step:
-  match v_12:
+def native_match_cps_provider_8_plan_let_0(v_19: Bool, v_1: U32, v_2: BIR.Op, v_7: Map<&2, cps_provider_8_MultiWindow>, v_12: cps_provider_8_Suffix, v_13: List<&2, cps_provider_8_FrameBits>, v_14: cps_provider_8_Plan) -> cps_provider_8_Step:
+  match v_19:
     case True{}:
-      cps_provider_8_Step{cps_provider_8_suffix_bind(v_1, cps_provider_8_suffix_op(v_2, v_9)), cps_provider_8_facts_inject(v_10, True{}), cps_provider_8_plan_cont_add(v_11, v_1, cps_provider_8_suffix_caps(v_9, Some{v_1}))}
+      v_18 = cps_provider_8_plan_window_bound(v_12, v_7, v_1)
+      cps_provider_8_Step{cps_provider_8_suffix_bind(v_1, cps_provider_8_suffix_op(v_2, v_18)), cps_provider_8_facts_inject(v_13, True{}), cps_provider_8_plan_cont_add(v_14, v_1, cps_provider_8_suffix_caps(v_18, Some{v_1}))}
     case False{}:
-      cps_provider_8_Step{cps_provider_8_suffix_bind(v_1, cps_provider_8_suffix_op(v_2, v_9)), v_10, v_11}
+      cps_provider_8_Step{cps_provider_8_suffix_bind(v_1, cps_provider_8_suffix_op(v_2, v_12)), v_13, v_14}
 
-def native_match_cps_provider_8_plan_let_1(v_4: cps_provider_8_Step, v_1: U32, v_2: BIR.Op) -> cps_provider_8_Step:
+def native_match_cps_provider_8_plan_let_1(v_4: cps_provider_8_Step, v_1: U32, v_2: BIR.Op, v_7: Map<&2, cps_provider_8_MultiWindow>) -> cps_provider_8_Step:
   match v_4:
-    case cps_provider_8_Step{v_9, v_10, v_11}:
-      native_match_cps_provider_8_plan_let_0(cps_provider_8_split_op(v_2), v_1, v_2, v_9, v_10, v_11)
+    case cps_provider_8_Step{v_12, v_13, v_14}:
+      native_match_cps_provider_8_plan_let_0(cps_provider_8_split_op(v_2), v_1, v_2, v_7, v_12, v_13, v_14)
 
-def cps_provider_8_plan_let(v_1: U32, v_2: BIR.Op, v_4: cps_provider_8_Step) -> cps_provider_8_Step:
-  native_match_cps_provider_8_plan_let_1(v_4, v_1, v_2)
+def cps_provider_8_plan_let(v_1: U32, v_2: BIR.Op, v_4: cps_provider_8_Step, v_7: Map<&2, cps_provider_8_MultiWindow>) -> cps_provider_8_Step:
+  native_match_cps_provider_8_plan_let_1(v_4, v_1, v_2, v_7)
 
-def native_match_cps_provider_8_plan_branch_0(v_18: cps_provider_8_Step, v_0: BIR.Atom, v_8: cps_provider_8_Suffix, v_9: List<&2, cps_provider_8_FrameBits>) -> cps_provider_8_Step:
-  match v_18:
-    case cps_provider_8_Step{v_15, v_16, v_17}:
-      cps_provider_8_Step{cps_provider_8_suffix_atom(v_0, cps_provider_8_suffix_join(v_8, v_15)), cps_provider_8_facts_merge(v_9, v_16), v_17}
+def native_match_cps_provider_8_plan_window_bound_0(v_16: Maybe<&2, cps_provider_8_MultiWindow>, v_1: cps_provider_8_Suffix) -> cps_provider_8_Suffix:
+  match v_16:
+    case Some{cps_provider_8_MultiWindow{_, v_14, _}}:
+      cps_provider_8_suffix_binds(v_14, v_1)
+    case None{}:
+      v_1
 
-def native_match_cps_provider_8_plan_branch_1(v_2: cps_provider_8_Step, v_0: BIR.Atom, v_3: BIR.Block) -> cps_provider_8_Step:
+def cps_provider_8_plan_window_bound(v_1: cps_provider_8_Suffix, v_4: Map<&2, cps_provider_8_MultiWindow>, v_6: U32) -> cps_provider_8_Suffix:
+  native_match_cps_provider_8_plan_window_bound_0(IndexLookup.find(cps_provider_8_MultiWindow, v_4, cps_provider_8_cat(["k", U32.show(v_6)])), v_1)
+
+def cps_provider_8_suffix_binds(v_2: List<&2, U32>, v_4: cps_provider_8_Suffix) -> cps_provider_8_Suffix:
   match v_2:
-    case cps_provider_8_Step{v_8, v_9, v_10}:
-      native_match_cps_provider_8_plan_branch_0(cps_provider_8_plan_block(v_3, v_10), v_0, v_8, v_9)
+    case []:
+      v_4
+    case +v_8 <> v_9:
+      cps_provider_8_suffix_binds(v_9, cps_provider_8_suffix_bind(v_8, v_4))
 
-def cps_provider_8_plan_branch(v_0: BIR.Atom, v_2: cps_provider_8_Step, v_3: BIR.Block) -> cps_provider_8_Step:
-  native_match_cps_provider_8_plan_branch_1(v_2, v_0, v_3)
+def native_match_cps_provider_8_plan_branch_0(v_21: cps_provider_8_Step, v_0: BIR.Atom, v_11: cps_provider_8_Suffix, v_12: List<&2, cps_provider_8_FrameBits>) -> cps_provider_8_Step:
+  match v_21:
+    case cps_provider_8_Step{v_18, v_19, v_20}:
+      cps_provider_8_Step{cps_provider_8_suffix_atom(v_0, cps_provider_8_suffix_join(v_11, v_18)), cps_provider_8_facts_merge(v_12, v_19), v_20}
 
-def native_match_cps_provider_8_plan_region_0(v_26: cps_provider_8_Step, v_1: U32, v_9: cps_provider_8_Suffix, v_10: List<&2, cps_provider_8_FrameBits>, v_14: Bool) -> cps_provider_8_Step:
-  match v_26:
-    case cps_provider_8_Step{v_19, v_20, v_21}:
-      v_25 = cps_provider_8_facts_merge(v_10, cps_provider_8_facts_inject(v_20, v_14))
-      cps_provider_8_Step{cps_provider_8_suffix_join(v_9, v_19), v_25, cps_provider_8_plan_region_sites(v_21, v_1, v_14, v_19)}
+def native_match_cps_provider_8_plan_branch_1(v_2: cps_provider_8_Step, v_0: BIR.Atom, v_3: BIR.Block, v_6: Map<&2, cps_provider_8_MultiWindow>) -> cps_provider_8_Step:
+  match v_2:
+    case cps_provider_8_Step{v_11, v_12, v_13}:
+      native_match_cps_provider_8_plan_branch_0(cps_provider_8_plan_block(v_3, v_6, v_13), v_0, v_11, v_12)
 
-def native_match_cps_provider_8_plan_region_1(v_3: cps_provider_8_Step, v_1: U32, v_4: BIR.Block) -> cps_provider_8_Step:
+def cps_provider_8_plan_branch(v_0: BIR.Atom, v_2: cps_provider_8_Step, v_3: BIR.Block, v_6: Map<&2, cps_provider_8_MultiWindow>) -> cps_provider_8_Step:
+  native_match_cps_provider_8_plan_branch_1(v_2, v_0, v_3, v_6)
+
+def native_match_cps_provider_8_plan_region_0(v_29: cps_provider_8_Step, v_1: U32, v_12: cps_provider_8_Suffix, v_13: List<&2, cps_provider_8_FrameBits>, v_17: Bool) -> cps_provider_8_Step:
+  match v_29:
+    case cps_provider_8_Step{v_22, v_23, v_24}:
+      v_28 = cps_provider_8_facts_merge(v_13, cps_provider_8_facts_inject(v_23, v_17))
+      cps_provider_8_Step{cps_provider_8_suffix_join(v_12, v_22), v_28, cps_provider_8_plan_region_sites(v_24, v_1, v_17, v_22)}
+
+def native_match_cps_provider_8_plan_region_1(v_3: cps_provider_8_Step, v_1: U32, v_4: BIR.Block, v_7: Map<&2, cps_provider_8_MultiWindow>) -> cps_provider_8_Step:
   match v_3:
-    case cps_provider_8_Step{v_9, v_10, v_11}:
-      v_14 = cps_provider_8_fact_after(v_10, v_1)
-      native_match_cps_provider_8_plan_region_0(cps_provider_8_plan_block(v_4, v_11), v_1, v_9, v_10, v_14)
+    case cps_provider_8_Step{v_12, v_13, v_14}:
+      v_17 = cps_provider_8_fact_after(v_13, v_1)
+      native_match_cps_provider_8_plan_region_0(cps_provider_8_plan_block(v_4, v_7, v_14), v_1, v_12, v_13, v_17)
 
-def cps_provider_8_plan_region(v_1: U32, v_3: cps_provider_8_Step, v_4: BIR.Block) -> cps_provider_8_Step:
-  native_match_cps_provider_8_plan_region_1(v_3, v_1, v_4)
+def cps_provider_8_plan_region(v_1: U32, v_3: cps_provider_8_Step, v_4: BIR.Block, v_7: Map<&2, cps_provider_8_MultiWindow>) -> cps_provider_8_Step:
+  native_match_cps_provider_8_plan_region_1(v_3, v_1, v_4, v_7)
 
 def cps_provider_8_plan_region_sites(v_1: cps_provider_8_Plan, v_3: U32, v_5: Bool, v_7: cps_provider_8_Suffix) -> cps_provider_8_Plan:
   match v_5:
@@ -17584,34 +18354,2381 @@ def cps_provider_8_plan_region_sites(v_1: cps_provider_8_Plan, v_3: U32, v_5: Bo
     case True{}:
       cps_provider_8_plan_thunk_add(cps_provider_8_plan_frame_add(v_1, v_3, True{}), v_3, cps_provider_8_suffix_caps(v_7, None{}))
 
-def cps_provider_8_let_step(v_1: U32, v_2: BIR.Op, v_3: BIR.Block, v_5: cps_provider_8_JsCtx) -> String:
-  match v_2:
-    case BIR.Direct{v_9, v_10}:
-      cps_provider_8_split_direct(v_1, v_9, v_10, cps_provider_8_js_ctx_cont(v_5, v_1))
-    case BIR.Apply{v_15, v_16}:
-      cps_provider_8_split_apply(v_1, v_15, v_16, cps_provider_8_js_ctx_cont(v_5, v_1))
+def cps_provider_8_js_scalar(v_0: BIR.Block) -> BIR.Block:
+  match v_0:
+    case BIR.Let{v_6, BIR.Construct{v_7, v_8, v_9}, v_10}:
+      cps_provider_8_js_scalar_let(v_6, v_7, v_8, v_9, v_10)
+    case BIR.Let{v_15, v_16, v_17}:
+      BIR.Let{v_15, v_16, cps_provider_8_js_scalar(v_17)}
+    case BIR.Branch{v_22, v_23, v_24}:
+      BIR.Branch{v_22, cps_provider_8_js_scalar(v_23), cps_provider_8_js_scalar(v_24)}
+    case BIR.Region{v_30, v_31, v_32}:
+      BIR.Region{v_30, cps_provider_8_js_scalar(v_31), cps_provider_8_js_scalar(v_32)}
     case _:
-      cps_provider_8_cat(["const ", cps_provider_8_local(v_1), "=", cps_provider_8_operation(v_2), ";", cps_provider_8_block(v_3, v_5)])
+      v_0
 
-def cps_provider_8_split_direct(v_1: U32, v_3: U32, v_5: List<&2, BIR.Arg>, v_7: cps_provider_8_Caps) -> String:
-  +v_10 = List.length(&2, BIR.Arg, v_5)
-  cps_provider_8_split_direct_selected(Bool.and(Nat.is_gt(v_10, 0n), Nat.is_le(v_10, 32n)), v_1, v_3, v_5, v_7, v_10)
+def cps_provider_8_js_scalar_let(v_1: U32, v_3: U32, v_5: String, v_7: List<&2, BIR.Field>, v_8: BIR.Block) -> BIR.Block:
+  cps_provider_8_js_scalar_repeatable(cps_provider_8_js_scalar_fields(v_7), v_1, v_3, v_5, v_7, v_8)
 
-def cps_provider_8_split_direct_selected(v_1: Bool, v_3: U32, v_5: U32, v_7: List<&2, BIR.Arg>, v_9: cps_provider_8_Caps, v_11: Nat) -> String:
+def cps_provider_8_js_scalar_repeatable(v_1: Bool, v_3: U32, v_5: U32, v_7: String, v_9: List<&2, BIR.Field>, v_10: BIR.Block) -> BIR.Block:
   match v_1:
     case True{}:
-      cps_provider_8_split_direct_args(v_3, v_5, v_7, v_9, v_11)
+      cps_provider_8_js_scalar_escapes(cps_provider_8_js_scalar_block_ok(v_10, v_3, v_9), v_3, v_5, v_7, v_9, v_10)
     case False{}:
-      cps_provider_8_split_direct_many(v_3, v_5, v_7, v_9)
+      BIR.Let{v_3, BIR.Construct{v_5, v_7, v_9}, cps_provider_8_js_scalar(v_10)}
 
-def cps_provider_8_split_direct_args(v_1: U32, v_3: U32, v_5: List<&2, BIR.Arg>, v_7: cps_provider_8_Caps, v_9: Nat) -> String:
-  cps_provider_8_cat(["{const ", cps_provider_8_arg_temps(v_5, 0n), ";", cps_provider_8_cap_stores(cps_provider_8_caps_locals(v_7)), cps_provider_8_slot_stores(cps_provider_8_caps_slots(v_7)), "if($td<64){const $kb=$sp-", Nat.show(cps_provider_8_cap_total(v_7)), ",$ki=$split_enter(", cps_provider_8_cont_name(v_1), ",$kb);try{return $split_done(", cps_provider_8_code_name(v_3), "(", String.join(cps_provider_8_arg_temp_names(v_5, 0n), ","), "),$ki,$td+1);}catch($e){$split_abort($ki,$kb);throw $e;}}", cps_provider_8_arg_moves(v_9, 0n), "return $split(", cps_provider_8_code_name(v_3), ",", Nat.show(v_9), ",", cps_provider_8_cont_name(v_1), ",$sp-", Nat.show(cps_provider_8_cap_total(v_7)), ");}"])
+def cps_provider_8_js_scalar_escapes(v_1: Bool, v_3: U32, v_5: U32, v_7: String, v_9: List<&2, BIR.Field>, v_10: BIR.Block) -> BIR.Block:
+  match v_1:
+    case True{}:
+      cps_provider_8_js_scalar(cps_provider_8_js_scalar_block(v_10, v_3, v_9))
+    case False{}:
+      BIR.Let{v_3, BIR.Construct{v_5, v_7, v_9}, cps_provider_8_js_scalar(v_10)}
 
-def cps_provider_8_split_direct_many(v_1: U32, v_3: U32, v_5: List<&2, BIR.Arg>, v_7: cps_provider_8_Caps) -> String:
-  cps_provider_8_cat([cps_provider_8_cap_stores(cps_provider_8_caps_locals(v_7)), cps_provider_8_slot_stores(cps_provider_8_caps_slots(v_7)), "return $splitm(", cps_provider_8_code_name(v_3), ",[", String.join(cps_provider_8_arguments(v_5), ","), "],", cps_provider_8_cont_name(v_1), ",$sp-", Nat.show(cps_provider_8_cap_total(v_7)), ");"])
+def cps_provider_8_js_scalar_fields(v_1: List<&2, BIR.Field>) -> Bool:
+  match v_1:
+    case []:
+      True{}
+    case BIR.Field{_, _, _, v_11} <> v_12:
+      cps_provider_8_js_scalar_fields_value(cps_provider_8_js_scalar_value(v_11), v_12)
 
-def cps_provider_8_split_apply(v_1: U32, v_2: BIR.Atom, v_3: BIR.Arg, v_5: cps_provider_8_Caps) -> String:
-  cps_provider_8_cat([cps_provider_8_cap_stores(cps_provider_8_caps_locals(v_5)), cps_provider_8_slot_stores(cps_provider_8_caps_slots(v_5)), "return $split1(", cps_provider_8_atom(v_2), ",", cps_provider_8_arg_atom(v_3), ",", cps_provider_8_cont_name(v_1), ",$sp-", Nat.show(cps_provider_8_cap_total(v_5)), ");"])
+def cps_provider_8_js_scalar_fields_value(v_1: Bool, v_3: List<&2, BIR.Field>) -> Bool:
+  match v_1:
+    case True{}:
+      cps_provider_8_js_scalar_fields(v_3)
+    case False{}:
+      False{}
+
+def cps_provider_8_js_scalar_value(v_0: BIR.Atom) -> Bool:
+  match v_0:
+    case BIR.Symbol{_, _}:
+      False{}
+    case BIR.FloatBits{_}:
+      False{}
+    case BIR.Local{_}:
+      True{}
+    case BIR.Capture{_}:
+      True{}
+    case BIR.Word{_}:
+      True{}
+    case BIR.Natural{_}:
+      True{}
+    case BIR.TextValue{_}:
+      True{}
+    case BIR.Boolean{_}:
+      True{}
+    case BIR.Null{}:
+      True{}
+    case BIR.Undefined{}:
+      True{}
+
+def cps_provider_8_js_scalar_block_ok(v_0: BIR.Block, v_2: U32, v_4: List<&2, BIR.Field>) -> Bool:
+  match v_0:
+    case BIR.Return{v_7}:
+      Bool.not(cps_provider_8_js_scalar_atom_used(v_7, v_2))
+    case BIR.Let{_, v_13, v_14}:
+      Bool.and(cps_provider_8_js_scalar_op_ok(v_13, v_2, v_4), cps_provider_8_js_scalar_block_ok(v_14, v_2, v_4))
+    case BIR.Branch{v_20, v_21, v_22}:
+      Bool.and(Bool.not(cps_provider_8_js_scalar_atom_used(v_20, v_2)), Bool.and(cps_provider_8_js_scalar_block_ok(v_21, v_2, v_4), cps_provider_8_js_scalar_block_ok(v_22, v_2, v_4)))
+    case BIR.Region{_, v_30, v_31}:
+      Bool.and(cps_provider_8_js_scalar_block_ok(v_30, v_2, v_4), cps_provider_8_js_scalar_block_ok(v_31, v_2, v_4))
+    case BIR.LeaveRegion{_}:
+      True{}
+    case BIR.TailDirect{_, v_39}:
+      Bool.not(cps_provider_8_js_scalar_args_used(v_39, v_2))
+    case BIR.TailApply{v_43, v_44}:
+      Bool.not(cps_provider_8_js_scalar_reads(cps_provider_8_apply_reads(v_43, v_44, cps_provider_8_reads_new), v_2))
+    case BIR.Failure{_}:
+      True{}
+
+def cps_provider_8_js_scalar_op_ok(v_0: BIR.Op, v_2: U32, v_4: List<&2, BIR.Field>) -> Bool:
+  match v_0:
+    case BIR.Project{v_10, _, _, v_13}:
+      cps_provider_8_js_scalar_project_ok(v_10, v_13, v_2, v_4)
+    case _:
+      Bool.not(cps_provider_8_js_scalar_reads(cps_provider_8_op_reads(v_0, cps_provider_8_reads_new), v_2))
+
+def cps_provider_8_js_scalar_project_ok(v_0: BIR.Atom, +v_2: String, v_4: U32, v_6: List<&2, BIR.Field>) -> Bool:
+  match v_0:
+    case BIR.Local{v_9}:
+      cps_provider_8_js_scalar_project_local(U32.is_eq(v_9, v_4), v_2, v_6)
+    case _:
+      True{}
+
+def cps_provider_8_js_scalar_project_local(v_1: Bool, +v_3: String, v_5: List<&2, BIR.Field>) -> Bool:
+  match v_1:
+    case True{}:
+      cps_provider_8_js_scalar_project_field(cps_provider_8_js_scalar_field_at(v_5, v_3))
+    case False{}:
+      True{}
+
+def cps_provider_8_js_scalar_project_field(v_1: Maybe<&2, BIR.Atom>) -> Bool:
+  match v_1:
+    case Some{v_4}:
+      cps_provider_8_js_scalar_value(v_4)
+    case None{}:
+      False{}
+
+def cps_provider_8_js_scalar_field_at(v_1: List<&2, BIR.Field>, v_3: String) -> Maybe<&2, BIR.Atom>:
+  match v_1:
+    case []:
+      None{}
+    case BIR.Field{_, +v_11, _, v_13} <> v_14:
+      cps_provider_8_js_scalar_field_at_same(String.eq(v_3, v_11), v_13, v_14, v_3)
+
+def cps_provider_8_js_scalar_field_at_same(v_1: Bool, v_2: BIR.Atom, v_4: List<&2, BIR.Field>, +v_6: String) -> Maybe<&2, BIR.Atom>:
+  match v_1:
+    case True{}:
+      Some{v_2}
+    case False{}:
+      cps_provider_8_js_scalar_field_at(v_4, v_6)
+
+def cps_provider_8_js_scalar_reads(v_1: cps_provider_8_Reads, v_3: U32) -> Bool:
+  match v_1:
+    case cps_provider_8_Reads{v_7, _}:
+      cps_provider_8_js_scalar_mentions(v_7, v_3)
+
+def cps_provider_8_js_scalar_mentions(v_2: List<&2, U32>, v_4: U32) -> Bool:
+  match v_2:
+    case []:
+      False{}
+    case +v_8 <> v_9:
+      cps_provider_8_js_scalar_mentions_one(U32.is_eq(v_8, v_4), v_9, v_4)
+
+def cps_provider_8_js_scalar_mentions_one(v_1: Bool, v_4: List<&2, U32>, v_6: U32) -> Bool:
+  match v_1:
+    case True{}:
+      True{}
+    case False{}:
+      cps_provider_8_js_scalar_mentions(v_4, v_6)
+
+def cps_provider_8_js_scalar_atom_used(v_0: BIR.Atom, v_2: U32) -> Bool:
+  cps_provider_8_js_scalar_reads(cps_provider_8_atom_reads(v_0, cps_provider_8_reads_new), v_2)
+
+def cps_provider_8_js_scalar_args_used(v_1: List<&2, BIR.Arg>, v_3: U32) -> Bool:
+  cps_provider_8_js_scalar_reads(cps_provider_8_args_reads(v_1, cps_provider_8_reads_new), v_3)
+
+def cps_provider_8_js_scalar_block(v_0: BIR.Block, v_2: U32, v_4: List<&2, BIR.Field>) -> BIR.Block:
+  match v_0:
+    case BIR.Let{v_8, v_9, v_10}:
+      BIR.Let{v_8, cps_provider_8_js_scalar_op(v_9, v_2, v_4), cps_provider_8_js_scalar_block(v_10, v_2, v_4)}
+    case BIR.Branch{v_16, v_17, v_18}:
+      BIR.Branch{v_16, cps_provider_8_js_scalar_block(v_17, v_2, v_4), cps_provider_8_js_scalar_block(v_18, v_2, v_4)}
+    case BIR.Region{v_24, v_25, v_26}:
+      BIR.Region{v_24, cps_provider_8_js_scalar_block(v_25, v_2, v_4), cps_provider_8_js_scalar_block(v_26, v_2, v_4)}
+    case _:
+      v_0
+
+def cps_provider_8_js_scalar_op(v_0: BIR.Op, v_2: U32, v_4: List<&2, BIR.Field>) -> BIR.Op:
+  match v_0:
+    case BIR.Project{v_9, v_10, v_11, v_12}:
+      cps_provider_8_js_scalar_projection(cps_provider_8_js_scalar_projected(v_9, v_12, v_2, v_4), v_9, v_10, v_11, v_12)
+    case _:
+      v_0
+
+def cps_provider_8_js_scalar_projected(v_0: BIR.Atom, +v_2: String, v_4: U32, v_6: List<&2, BIR.Field>) -> Maybe<&2, BIR.Atom>:
+  match v_0:
+    case BIR.Local{v_9}:
+      cps_provider_8_js_scalar_projected_local(U32.is_eq(v_9, v_4), v_2, v_6)
+    case _:
+      None{}
+
+def cps_provider_8_js_scalar_projected_local(v_1: Bool, +v_3: String, v_5: List<&2, BIR.Field>) -> Maybe<&2, BIR.Atom>:
+  match v_1:
+    case True{}:
+      cps_provider_8_js_scalar_field_at(v_5, v_3)
+    case False{}:
+      None{}
+
+def cps_provider_8_js_scalar_projection(v_1: Maybe<&2, BIR.Atom>, v_2: BIR.Atom, v_4: U32, v_6: U32, +v_8: String) -> BIR.Op:
+  match v_1:
+    case Some{v_10}:
+      BIR.Copy{v_10}
+    case None{}:
+      BIR.Project{v_2, v_4, v_6, v_8}
+
+def cps_provider_8_js_scalar_program(v_0: BIR.Program) -> BIR.Program:
+  match v_0:
+    case BIR.Program{v_7, v_8, v_9, v_10, v_11, v_12}:
+      BIR.Program{cps_provider_8_js_scalar_codes(v_7, []), v_8, v_9, v_10, v_11, v_12}
+
+def cps_provider_8_js_scalar_codes(v_1: List<&2, BIR.Code>, v_3: List<&2, BIR.Code>) -> List<&2, BIR.Code>:
+  match v_1:
+    case []:
+      List.reverse(&2, BIR.Code, v_3)
+    case BIR.Code{v_10, v_11, v_12, v_13} <> v_14:
+      cps_provider_8_js_scalar_codes(v_14, BIR.Code{v_10, v_11, v_12, cps_provider_8_js_scalar(v_13)} <> v_3)
+
+def cps_provider_8_multi_live_keys(v_3: List<&2, Maybe<&2, String>>, v_6: List<&2, String>) -> List<&2, String>:
+  match v_3:
+    case []:
+      List.reverse(&2, String, v_6)
+    case v_12 <> v_13:
+      cps_provider_8_multi_live_key(v_12, v_13, v_6)
+
+def cps_provider_8_multi_live_key(v_2: Maybe<&2, String>, v_6: List<&2, Maybe<&2, String>>, v_9: List<&2, String>) -> List<&2, String>:
+  match v_2:
+    case Some{+v_13}:
+      cps_provider_8_multi_live_keys(v_6, v_13 <> v_9)
+    case None{}:
+      cps_provider_8_multi_live_keys(v_6, v_9)
+
+def cps_provider_8_multi_layouts(v_1: List<&2, BIR.ConstructorLayout>, v_4: Map<&2, cps_provider_8_MultiLayout>) -> Map<&2, cps_provider_8_MultiLayout>:
+  match v_1:
+    case []:
+      v_4
+    case BIR.ConstructorLayout{v_12, +v_13, _, v_15} <> v_16:
+      cps_provider_8_multi_layout_add(cps_provider_8_multi_layouts(v_16, v_4), v_12, v_13, v_15)
+
+def cps_provider_8_multi_layout_add(v_2: Map<&2, cps_provider_8_MultiLayout>, v_4: U32, +v_6: String, v_10: List<&2, Maybe<&2, String>>) -> Map<&2, cps_provider_8_MultiLayout>:
+  Map.set(&2, cps_provider_8_MultiLayout, v_2, U32.show(v_4), cps_provider_8_MultiLayout{v_6, cps_provider_8_multi_live_keys(v_10, [])})
+
+def cps_provider_8_multi_layout(v_2: Map<&2, cps_provider_8_MultiLayout>, v_4: U32) -> Maybe<&2, cps_provider_8_MultiLayout>:
+  IndexLookup.find(cps_provider_8_MultiLayout, v_2, U32.show(v_4))
+
+def cps_provider_8_multi_layout_keys(v_2: Map<&2, cps_provider_8_MultiLayout>, v_4: U32) -> List<&2, String>:
+  cps_provider_8_multi_layout_keys_of(cps_provider_8_multi_layout(v_2, v_4))
+
+def cps_provider_8_multi_layout_keys_of(v_2: Maybe<&2, cps_provider_8_MultiLayout>) -> List<&2, String>:
+  match v_2:
+    case Some{cps_provider_8_MultiLayout{_, v_8}}:
+      v_8
+    case None{}:
+      []
+
+def cps_provider_8_multi_layout_tag(v_2: Map<&2, cps_provider_8_MultiLayout>, v_4: U32) -> Maybe<&2, String>:
+  cps_provider_8_multi_layout_tag_of(cps_provider_8_multi_layout(v_2, v_4))
+
+def cps_provider_8_multi_layout_tag_of(v_2: Maybe<&2, cps_provider_8_MultiLayout>) -> Maybe<&2, String>:
+  match v_2:
+    case Some{cps_provider_8_MultiLayout{v_7, _}}:
+      Some{v_7}
+    case None{}:
+      None{}
+
+def cps_provider_8_multi_key_at(v_2: List<&2, String>, v_4: String, v_6: Nat) -> Maybe<&2, Nat>:
+  match v_2:
+    case []:
+      None{}
+    case +v_11 <> v_12:
+      cps_provider_8_multi_key_at_step(String.eq(v_11, v_4), v_12, v_4, v_6)
+
+def cps_provider_8_multi_key_at_step(v_1: Bool, v_4: List<&2, String>, +v_6: String, v_8: Nat) -> Maybe<&2, Nat>:
+  match v_1:
+    case True{}:
+      Some{v_8}
+    case False{}:
+      cps_provider_8_multi_key_at(v_4, v_6, Nat.add(v_8, 1n))
+
+def cps_provider_8_multi_keys_eq(v_2: List<&2, String>, v_5: List<&2, String>) -> Bool:
+  match v_2:
+    case []:
+      cps_provider_8_multi_keys_empty(v_5)
+    case +v_10 <> v_11:
+      cps_provider_8_multi_keys_tail(v_5, v_10, v_11)
+
+def cps_provider_8_multi_keys_empty(v_2: List<&2, String>) -> Bool:
+  match v_2:
+    case []:
+      True{}
+    case _:
+      False{}
+
+def cps_provider_8_multi_keys_tail(v_2: List<&2, String>, +v_4: String, v_7: List<&2, String>) -> Bool:
+  match v_2:
+    case []:
+      False{}
+    case +v_11 <> v_12:
+      cps_provider_8_multi_keys_head(String.eq(v_4, v_11), v_12, v_4, v_7)
+
+def cps_provider_8_multi_keys_head(v_1: Bool, v_4: List<&2, String>, +v_6: String, v_9: List<&2, String>) -> Bool:
+  match v_1:
+    case True{}:
+      cps_provider_8_multi_keys_eq(v_9, v_4)
+    case False{}:
+      False{}
+
+def cps_provider_8_multi_fresh(v_1: U32, v_3: Nat) -> U32:
+  U32.add(U32.add(U32.mul(v_1, 8), U32.from_nat(v_3)), 1610612736)
+
+def cps_provider_8_multi_fresh_ids(v_1: U32, v_3: Nat) -> List<&2, U32>:
+  cps_provider_8_multi_fresh_range(v_1, v_3, 0n, [])
+
+def native_match_cps_provider_8_multi_fresh_range_0(v_14: Bool, v_1: U32, v_3: Nat, v_5: Nat, v_8: List<&2, U32>) -> List<&2, U32>:
+  match v_14:
+    case True{}:
+      cps_provider_8_multi_fresh_range(v_1, v_3, Nat.add(v_5, 1n), cps_provider_8_multi_fresh(v_1, v_5) <> v_8)
+    case False{}:
+      List.reverse(&2, U32, v_8)
+
+def cps_provider_8_multi_fresh_range(v_1: U32, v_3: Nat, v_5: Nat, v_8: List<&2, U32>) -> List<&2, U32>:
+  native_match_cps_provider_8_multi_fresh_range_0(Nat.is_lt(v_5, v_3), v_1, v_3, v_5, v_8)
+
+def cps_provider_8_multi_names(v_0: BIR.Atom, v_2: U32) -> Bool:
+  match v_0:
+    case BIR.Local{v_5}:
+      U32.is_eq(v_5, v_2)
+    case _:
+      False{}
+
+def cps_provider_8_multi_arg_only_names(v_0: BIR.Arg, v_2: U32) -> Bool:
+  match v_0:
+    case BIR.Arg{_, v_7}:
+      cps_provider_8_multi_names(v_7, v_2)
+
+def cps_provider_8_multi_args_name(v_1: List<&2, BIR.Arg>, v_3: U32) -> Bool:
+  match v_1:
+    case []:
+      False{}
+    case +v_7 <> v_8:
+      cps_provider_8_multi_args_name_one(cps_provider_8_multi_arg_only_names(v_7, v_3), v_8, v_3)
+
+def cps_provider_8_multi_args_name_one(v_1: Bool, v_3: List<&2, BIR.Arg>, v_5: U32) -> Bool:
+  match v_1:
+    case True{}:
+      True{}
+    case False{}:
+      cps_provider_8_multi_args_name(v_3, v_5)
+
+def cps_provider_8_multi_fields_name(v_1: List<&2, BIR.Field>, v_3: U32) -> Bool:
+  match v_1:
+    case []:
+      False{}
+    case BIR.Field{_, _, _, v_13} <> v_14:
+      cps_provider_8_multi_fields_name_one(cps_provider_8_multi_names(v_13, v_3), v_14, v_3)
+
+def cps_provider_8_multi_fields_name_one(v_1: Bool, v_3: List<&2, BIR.Field>, v_5: U32) -> Bool:
+  match v_1:
+    case True{}:
+      True{}
+    case False{}:
+      cps_provider_8_multi_fields_name(v_3, v_5)
+
+def cps_provider_8_multi_uses(v_0: BIR.Block) -> Map<&2, Nat>:
+  cps_provider_8_multi_uses_block(v_0, Map.new(&2, Nat))
+
+def cps_provider_8_multi_use_atom(v_0: BIR.Atom, v_3: Map<&2, Nat>) -> Map<&2, Nat>:
+  match v_0:
+    case BIR.Local{v_7}:
+      cps_provider_8_multi_use_one(v_3, v_7)
+    case _:
+      v_3
+
+def cps_provider_8_multi_use_one(v_2: Map<&2, Nat>, v_4: U32) -> Map<&2, Nat>:
+  cps_provider_8_multi_use_add(IndexLookup.find(Nat, v_2, U32.show(v_4)), v_2, v_4)
+
+def cps_provider_8_multi_use_add(v_2: Maybe<&2, Nat>, v_5: Map<&2, Nat>, v_7: U32) -> Map<&2, Nat>:
+  match v_2:
+    case Some{v_11}:
+      Map.set(&2, Nat, v_5, U32.show(v_7), Nat.add(v_11, 1n))
+    case None{}:
+      Map.set(&2, Nat, v_5, U32.show(v_7), 1n)
+
+def cps_provider_8_multi_use_arg(v_0: BIR.Arg, v_3: Map<&2, Nat>) -> Map<&2, Nat>:
+  match v_0:
+    case BIR.Arg{_, v_9}:
+      cps_provider_8_multi_use_atom(v_9, v_3)
+
+def cps_provider_8_multi_use_args(v_1: List<&2, BIR.Arg>, v_4: Map<&2, Nat>) -> Map<&2, Nat>:
+  match v_1:
+    case []:
+      v_4
+    case +v_9 <> v_10:
+      cps_provider_8_multi_use_args(v_10, cps_provider_8_multi_use_arg(v_9, v_4))
+
+def cps_provider_8_multi_use_field(v_0: BIR.Field, v_3: Map<&2, Nat>) -> Map<&2, Nat>:
+  match v_0:
+    case BIR.Field{_, _, _, v_13}:
+      cps_provider_8_multi_use_atom(v_13, v_3)
+
+def cps_provider_8_multi_use_fields(v_1: List<&2, BIR.Field>, v_4: Map<&2, Nat>) -> Map<&2, Nat>:
+  match v_1:
+    case []:
+      v_4
+    case +v_9 <> v_10:
+      cps_provider_8_multi_use_fields(v_10, cps_provider_8_multi_use_field(v_9, v_4))
+
+def cps_provider_8_multi_use_op(v_0: BIR.Op, v_3: Map<&2, Nat>) -> Map<&2, Nat>:
+  match v_0:
+    case BIR.Copy{v_7}:
+      cps_provider_8_multi_use_atom(v_7, v_3)
+    case BIR.PrimitiveCall{_, v_13, _}:
+      cps_provider_8_multi_use_args(v_13, v_3)
+    case BIR.Closure{_, v_20, _}:
+      cps_provider_8_multi_use_args(v_20, v_3)
+    case BIR.Direct{_, v_26}:
+      cps_provider_8_multi_use_args(v_26, v_3)
+    case BIR.Apply{v_30, v_31}:
+      cps_provider_8_multi_use_arg(v_31, cps_provider_8_multi_use_atom(v_30, v_3))
+    case BIR.LoadSymbol{_, _}:
+      v_3
+    case BIR.Construct{_, _, v_43}:
+      cps_provider_8_multi_use_fields(v_43, v_3)
+    case BIR.Project{v_49, _, _, _}:
+      cps_provider_8_multi_use_atom(v_49, v_3)
+    case BIR.HasTag{v_57, _, _}:
+      cps_provider_8_multi_use_atom(v_57, v_3)
+
+def cps_provider_8_multi_uses_block(v_0: BIR.Block, v_3: Map<&2, Nat>) -> Map<&2, Nat>:
+  match v_0:
+    case BIR.Return{v_7}:
+      cps_provider_8_multi_use_atom(v_7, v_3)
+    case BIR.Let{_, v_13, v_14}:
+      cps_provider_8_multi_uses_block(v_14, cps_provider_8_multi_use_op(v_13, v_3))
+    case BIR.Branch{v_20, v_21, v_22}:
+      cps_provider_8_multi_uses_block(v_22, cps_provider_8_multi_uses_block(v_21, cps_provider_8_multi_use_atom(v_20, v_3)))
+    case BIR.Region{_, v_30, v_31}:
+      cps_provider_8_multi_uses_block(v_31, cps_provider_8_multi_uses_block(v_30, v_3))
+    case BIR.LeaveRegion{_}:
+      v_3
+    case BIR.TailDirect{_, v_39}:
+      cps_provider_8_multi_use_args(v_39, v_3)
+    case BIR.TailApply{v_43, v_44}:
+      cps_provider_8_multi_use_arg(v_44, cps_provider_8_multi_use_atom(v_43, v_3))
+    case BIR.Failure{_}:
+      v_3
+
+def cps_provider_8_multi_param_index(v_1: List<&2, BIR.Parameter>, v_3: Nat, v_6: Map<&2, Nat>) -> Map<&2, Nat>:
+  match v_1:
+    case []:
+      v_6
+    case BIR.Parameter{v_12, _} <> v_14:
+      cps_provider_8_multi_param_index(v_14, Nat.add(v_3, 1n), Map.set(&2, Nat, v_6, U32.show(v_12), v_3))
+
+def cps_provider_8_multi_param_of(v_2: Map<&2, Nat>, v_4: U32) -> Maybe<&2, Nat>:
+  IndexLookup.find(Nat, v_2, U32.show(v_4))
+
+def cps_provider_8_multi_up_key(v_1: U32, v_3: Nat) -> String:
+  cps_provider_8_cat([U32.show(v_1), ":", Nat.show(v_3)])
+
+def cps_provider_8_multi_up_get(v_2: Map<&2, Bool>, v_4: U32, v_6: Nat) -> Bool:
+  cps_provider_8_multi_up_found(IndexLookup.find(Bool, v_2, cps_provider_8_multi_up_key(v_4, v_6)))
+
+def cps_provider_8_multi_up_found(v_2: Maybe<&2, Bool>) -> Bool:
+  match v_2:
+    case Some{v_5}:
+      v_5
+    case None{}:
+      False{}
+
+def cps_provider_8_multi_multi_get(v_2: Map<&2, Bool>, v_4: U32) -> Bool:
+  cps_provider_8_multi_multi_found(IndexLookup.find(Bool, v_2, U32.show(v_4)))
+
+def cps_provider_8_multi_multi_found(v_2: Maybe<&2, Bool>) -> Bool:
+  match v_2:
+    case Some{v_5}:
+      v_5
+    case None{}:
+      False{}
+
+def cps_provider_8_multi_banned(v_2: Map<&2, Bool>, v_4: U32) -> Bool:
+  cps_provider_8_multi_multi_get(v_2, v_4)
+
+def cps_provider_8_multi_ctor_one_use(v_2: Map<&2, Nat>, v_4: U32) -> Bool:
+  cps_provider_8_multi_ctor_one_found(IndexLookup.find(Nat, v_2, U32.show(v_4)))
+
+def cps_provider_8_multi_ctor_one_found(v_2: Maybe<&2, Nat>) -> Bool:
+  match v_2:
+    case Some{v_5}:
+      Nat.is_eq(v_5, 1n)
+    case None{}:
+      False{}
+
+def cps_provider_8_multi_fields_inert(v_1: List<&2, BIR.Field>) -> Bool:
+  match v_1:
+    case []:
+      True{}
+    case BIR.Field{_, _, _, v_11} <> v_12:
+      cps_provider_8_multi_fields_tail(cps_provider_8_js_scalar_value(v_11), v_12)
+
+def cps_provider_8_multi_fields_tail(v_1: Bool, v_3: List<&2, BIR.Field>) -> Bool:
+  match v_1:
+    case True{}:
+      cps_provider_8_multi_fields_inert(v_3)
+    case False{}:
+      False{}
+
+def cps_provider_8_multi_field_keys(v_1: List<&2, BIR.Field>, v_4: List<&2, String>) -> List<&2, String>:
+  match v_1:
+    case []:
+      List.reverse(&2, String, v_4)
+    case BIR.Field{_, +v_14, _, _} <> v_17:
+      cps_provider_8_multi_field_keys(v_17, v_14 <> v_4)
+
+def cps_provider_8_multi_field_width(v_1: List<&2, BIR.Field>) -> Nat:
+  List.length(&2, BIR.Field, v_1)
+
+def cps_provider_8_multi_ctor_openable(v_2: Map<&2, Nat>, v_5: Map<&2, cps_provider_8_MultiLayout>, v_7: U32, v_9: U32, v_11: List<&2, BIR.Field>) -> Bool:
+  cps_provider_8_multi_ctor_openable_uses(cps_provider_8_multi_ctor_one_use(v_2, v_7), v_5, v_9, v_11)
+
+def cps_provider_8_multi_ctor_openable_uses(v_1: Bool, v_4: Map<&2, cps_provider_8_MultiLayout>, v_6: U32, v_8: List<&2, BIR.Field>) -> Bool:
+  match v_1:
+    case False{}:
+      False{}
+    case True{}:
+      Bool.and(cps_provider_8_multi_fields_inert(v_8), cps_provider_8_multi_keys_eq(cps_provider_8_multi_field_keys(v_8, []), cps_provider_8_multi_layout_keys(v_4, v_6)))
+
+def cps_provider_8_multi_binding(v_2: Map<&2, cps_provider_8_MultiCtor>, v_4: U32) -> Maybe<&2, cps_provider_8_MultiCtor>:
+  IndexLookup.find(cps_provider_8_MultiCtor, v_2, U32.show(v_4))
+
+def cps_provider_8_multi_cur_is(v_2: Maybe<&2, U32>, v_4: U32) -> Bool:
+  match v_2:
+    case Some{v_7}:
+      U32.is_eq(v_7, v_4)
+    case None{}:
+      False{}
+
+def cps_provider_8_multi_shape(v_0: BIR.Atom, v_3: Map<&2, cps_provider_8_MultiLayout>, v_6: Map<&2, Nat>, v_9: Map<&2, Nat>, v_12: Map<&2, cps_provider_8_MultiCtor>, v_15: Maybe<&2, U32>) -> cps_provider_8_MultiShape:
+  match v_0:
+    case BIR.Local{v_18}:
+      cps_provider_8_multi_shape_local(v_18, v_3, v_6, v_9, v_12, v_15)
+    case _:
+      cps_provider_8_MultiOtherShape{}
+
+def cps_provider_8_multi_shape_local(v_1: U32, v_4: Map<&2, cps_provider_8_MultiLayout>, v_7: Map<&2, Nat>, v_10: Map<&2, Nat>, v_13: Map<&2, cps_provider_8_MultiCtor>, v_16: Maybe<&2, U32>) -> cps_provider_8_MultiShape:
+  cps_provider_8_multi_shape_kind(cps_provider_8_multi_cur_is(v_16, v_1), cps_provider_8_multi_param_of(v_10, v_1), cps_provider_8_multi_binding(v_13, v_1), v_4, v_7, v_1)
+
+def cps_provider_8_multi_shape_kind(v_1: Bool, v_4: Maybe<&2, Nat>, v_7: Maybe<&2, cps_provider_8_MultiCtor>, v_10: Map<&2, cps_provider_8_MultiLayout>, v_13: Map<&2, Nat>, v_15: U32) -> cps_provider_8_MultiShape:
+  match v_1:
+    case True{}:
+      cps_provider_8_MultiResultShape{}
+    case False{}:
+      cps_provider_8_multi_shape_bound(v_4, v_7, v_10, v_13, v_15)
+
+def cps_provider_8_multi_shape_bound(v_2: Maybe<&2, Nat>, v_5: Maybe<&2, cps_provider_8_MultiCtor>, v_8: Map<&2, cps_provider_8_MultiLayout>, v_11: Map<&2, Nat>, v_13: U32) -> cps_provider_8_MultiShape:
+  match v_2:
+    case Some{v_16}:
+      cps_provider_8_MultiParamShape{v_16}
+    case None{}:
+      cps_provider_8_multi_shape_binding(v_5, v_8, v_11, v_13)
+
+def cps_provider_8_multi_shape_binding(v_2: Maybe<&2, cps_provider_8_MultiCtor>, v_5: Map<&2, cps_provider_8_MultiLayout>, v_8: Map<&2, Nat>, v_10: U32) -> cps_provider_8_MultiShape:
+  match v_2:
+    case Some{cps_provider_8_MultiCtor{v_15, _, v_17}}:
+      cps_provider_8_multi_shape_open(cps_provider_8_multi_ctor_openable(v_8, v_5, v_10, v_15, v_17), v_15, v_17)
+    case None{}:
+      cps_provider_8_MultiOtherShape{}
+
+def cps_provider_8_multi_shape_open(v_1: Bool, v_3: U32, v_5: List<&2, BIR.Field>) -> cps_provider_8_MultiShape:
+  match v_1:
+    case True{}:
+      cps_provider_8_MultiCtorShape{v_3, cps_provider_8_multi_field_width(v_5)}
+    case False{}:
+      cps_provider_8_MultiOtherShape{}
+
+def cps_provider_8_multi_shapes(v_1: List<&2, BIR.Arg>, v_4: Map<&2, cps_provider_8_MultiLayout>, v_7: Map<&2, Nat>, v_10: Map<&2, Nat>, v_13: Map<&2, cps_provider_8_MultiCtor>, v_16: Maybe<&2, U32>) -> List<&2, cps_provider_8_MultiShape>:
+  match v_1:
+    case []:
+      []
+    case BIR.Arg{_, v_23} <> v_24:
+      cps_provider_8_multi_shape(v_23, v_4, v_7, v_10, v_13, v_16) <> cps_provider_8_multi_shapes(v_24, v_4, v_7, v_10, v_13, v_16)
+
+def cps_provider_8_multi_scan(v_0: BIR.Block, v_2: cps_provider_8_MultiScan, v_5: Map<&2, cps_provider_8_MultiLayout>, v_8: Map<&2, Nat>, v_11: Map<&2, Nat>, v_14: Maybe<&2, U32>, v_16: U32) -> cps_provider_8_MultiScan:
+  match v_0:
+    case BIR.Return{_}:
+      v_2
+    case BIR.Let{v_23, v_24, v_25}:
+      cps_provider_8_multi_scan_let(v_23, v_24, v_25, v_2, v_5, v_8, v_11, v_14, v_16)
+    case BIR.Branch{_, v_31, v_32}:
+      cps_provider_8_multi_scan(v_32, cps_provider_8_multi_scan(v_31, v_2, v_5, v_8, v_11, v_14, v_16), v_5, v_8, v_11, v_14, v_16)
+    case BIR.Region{_, v_39, v_40}:
+      cps_provider_8_multi_scan(v_40, cps_provider_8_multi_scan(v_39, v_2, v_5, v_8, v_11, v_14, v_16), v_5, v_8, v_11, v_14, v_16)
+    case BIR.LeaveRegion{_}:
+      v_2
+    case BIR.TailDirect{v_47, v_48}:
+      cps_provider_8_multi_scan_tail(v_47, v_48, v_2, v_5, v_8, v_11, v_14, v_16)
+    case BIR.TailApply{_, _}:
+      v_2
+    case BIR.Failure{_}:
+      v_2
+
+def cps_provider_8_multi_scan_let(v_1: U32, v_2: BIR.Op, v_3: BIR.Block, v_5: cps_provider_8_MultiScan, v_8: Map<&2, cps_provider_8_MultiLayout>, v_11: Map<&2, Nat>, v_14: Map<&2, Nat>, v_17: Maybe<&2, U32>, v_19: U32) -> cps_provider_8_MultiScan:
+  match v_2:
+    case BIR.Construct{v_24, v_25, v_26}:
+      cps_provider_8_multi_scan_bind(v_1, v_24, v_25, v_26, v_3, v_5, v_8, v_11, v_14, v_17, v_19)
+    case BIR.Direct{v_30, v_31}:
+      cps_provider_8_multi_scan_direct(v_1, v_30, v_31, v_3, v_5, v_8, v_11, v_14, v_17, v_19)
+    case BIR.Apply{_, _}:
+      cps_provider_8_multi_scan(v_3, v_5, v_8, v_11, v_14, Some{v_1}, v_19)
+    case _:
+      cps_provider_8_multi_scan(v_3, v_5, v_8, v_11, v_14, v_17, v_19)
+
+def cps_provider_8_multi_scan_bind(v_1: U32, v_3: U32, v_5: String, v_7: List<&2, BIR.Field>, v_8: BIR.Block, v_10: cps_provider_8_MultiScan, v_13: Map<&2, cps_provider_8_MultiLayout>, v_16: Map<&2, Nat>, v_19: Map<&2, Nat>, v_22: Maybe<&2, U32>, v_24: U32) -> cps_provider_8_MultiScan:
+  match v_10:
+    case cps_provider_8_MultiScan{v_28, v_29}:
+      cps_provider_8_multi_scan(v_8, cps_provider_8_MultiScan{Map.set(&2, cps_provider_8_MultiCtor, v_28, U32.show(v_1), cps_provider_8_MultiCtor{v_3, v_5, v_7}), v_29}, v_13, v_16, v_19, v_22, v_24)
+
+def cps_provider_8_multi_scan_direct(v_1: U32, v_3: U32, v_5: List<&2, BIR.Arg>, v_6: BIR.Block, v_8: cps_provider_8_MultiScan, v_11: Map<&2, cps_provider_8_MultiLayout>, v_14: Map<&2, Nat>, v_17: Map<&2, Nat>, v_20: Maybe<&2, U32>, v_22: U32) -> cps_provider_8_MultiScan:
+  match v_8:
+    case cps_provider_8_MultiScan{v_26, v_27}:
+      cps_provider_8_multi_scan(v_6, cps_provider_8_MultiScan{v_26, cps_provider_8_MultiSiteF{cps_provider_8_cat(["k", U32.show(v_1)]), v_3, False{}, cps_provider_8_multi_shapes(v_5, v_11, v_14, v_17, v_26, v_20)} <> v_27}, v_11, v_14, v_17, Some{v_1}, v_22)
+
+def cps_provider_8_multi_scan_tail(v_1: U32, v_3: List<&2, BIR.Arg>, v_5: cps_provider_8_MultiScan, v_8: Map<&2, cps_provider_8_MultiLayout>, v_11: Map<&2, Nat>, v_14: Map<&2, Nat>, v_17: Maybe<&2, U32>, v_19: U32) -> cps_provider_8_MultiScan:
+  match v_5:
+    case cps_provider_8_MultiScan{v_23, v_24}:
+      cps_provider_8_MultiScan{v_23, cps_provider_8_MultiSiteF{cps_provider_8_cat(["t", U32.show(v_19), ":", Nat.show(List.length(&2, cps_provider_8_MultiSiteF, v_24))]), v_1, True{}, cps_provider_8_multi_shapes(v_3, v_8, v_11, v_14, v_23, v_17)} <> v_24}
+
+def cps_provider_8_multi_local_width(v_0: BIR.Block, v_2: Nat) -> Nat:
+  match v_0:
+    case BIR.Return{_}:
+      v_2
+    case BIR.Let{v_9, v_10, v_11}:
+      cps_provider_8_multi_width_let(v_9, v_10, v_11, v_2)
+    case BIR.Branch{_, v_17, v_18}:
+      cps_provider_8_multi_local_width(v_18, cps_provider_8_multi_local_width(v_17, v_2))
+    case BIR.Region{_, v_25, v_26}:
+      cps_provider_8_multi_local_width(v_26, cps_provider_8_multi_local_width(v_25, v_2))
+    case _:
+      v_2
+
+def cps_provider_8_multi_width_let(v_1: U32, v_2: BIR.Op, v_3: BIR.Block, v_5: Nat) -> Nat:
+  match v_2:
+    case BIR.Construct{_, _, v_12}:
+      cps_provider_8_multi_width_ctor(v_1, v_3, cps_provider_8_multi_field_width(v_12), v_5)
+    case _:
+      cps_provider_8_multi_local_width(v_3, v_5)
+
+def cps_provider_8_multi_width_ctor(v_1: U32, v_2: BIR.Block, v_4: Nat, v_6: Nat) -> Nat:
+  match v_2:
+    case BIR.Return{BIR.Local{v_9}}:
+      cps_provider_8_multi_width_same(U32.is_eq(v_9, v_1), v_2, v_4, v_6)
+    case _:
+      cps_provider_8_multi_local_width(v_2, v_6)
+
+def cps_provider_8_multi_width_same(v_1: Bool, v_2: BIR.Block, v_4: Nat, v_6: Nat) -> Nat:
+  match v_1:
+    case True{}:
+      Nat.max(v_4, v_6)
+    case False{}:
+      cps_provider_8_multi_local_width(v_2, v_6)
+
+def cps_provider_8_multi_no_value(v_0: BIR.Block) -> Bool:
+  match v_0:
+    case BIR.Return{_}:
+      False{}
+    case BIR.Let{_, _, v_9}:
+      cps_provider_8_multi_no_value(v_9)
+    case BIR.Branch{_, v_15, v_16}:
+      Bool.and(cps_provider_8_multi_no_value(v_15), cps_provider_8_multi_no_value(v_16))
+    case BIR.Region{_, v_23, v_24}:
+      Bool.and(cps_provider_8_multi_no_value(v_23), cps_provider_8_multi_no_value(v_24))
+    case BIR.LeaveRegion{_}:
+      True{}
+    case BIR.TailDirect{_, _}:
+      False{}
+    case BIR.TailApply{_, _}:
+      False{}
+    case BIR.Failure{_}:
+      True{}
+
+def cps_provider_8_multi_frames_ok(v_0: BIR.Block, v_2: cps_provider_8_Plan) -> Bool:
+  match v_0:
+    case BIR.Return{_}:
+      True{}
+    case BIR.Let{_, _, v_11}:
+      cps_provider_8_multi_frames_ok(v_11, v_2)
+    case BIR.Branch{_, v_17, v_18}:
+      Bool.and(cps_provider_8_multi_frames_ok(v_17, v_2), cps_provider_8_multi_frames_ok(v_18, v_2))
+    case BIR.Region{v_24, v_25, v_26}:
+      cps_provider_8_multi_region_frames(v_24, v_25, v_26, v_2)
+    case _:
+      True{}
+
+def native_match_cps_provider_8_multi_region_frames_0(v_6: Bool, v_2: BIR.Block, v_3: BIR.Block, v_5: cps_provider_8_Plan) -> Bool:
+  match v_6:
+    case True{}:
+      Bool.and(cps_provider_8_multi_no_value(v_3), cps_provider_8_multi_frames_ok(v_2, v_5))
+    case False{}:
+      Bool.and(cps_provider_8_multi_frames_ok(v_2, v_5), cps_provider_8_multi_frames_ok(v_3, v_5))
+
+def cps_provider_8_multi_region_frames(v_1: U32, v_2: BIR.Block, v_3: BIR.Block, v_5: cps_provider_8_Plan) -> Bool:
+  native_match_cps_provider_8_multi_region_frames_0(cps_provider_8_plan_frame(v_5, v_1), v_2, v_3, v_5)
+
+def cps_provider_8_multi_ref_tag(v_2: List<&2, cps_provider_8_MultiRef>, v_4: U32) -> Maybe<&2, String>:
+  match v_2:
+    case []:
+      None{}
+    case cps_provider_8_MultiRef{v_10, v_11} <> v_12:
+      cps_provider_8_multi_ref_step(U32.is_eq(v_10, v_4), v_11, v_12, v_4)
+
+def cps_provider_8_multi_ref_step(v_1: Bool, v_3: String, v_6: List<&2, cps_provider_8_MultiRef>, v_8: U32) -> Maybe<&2, String>:
+  match v_1:
+    case True{}:
+      Some{v_3}
+    case False{}:
+      cps_provider_8_multi_ref_tag(v_6, v_8)
+
+def cps_provider_8_multi_project_ok(v_0: BIR.Atom, v_2: U32, v_4: String, v_7: Map<&2, cps_provider_8_MultiLayout>, v_9: Nat, v_12: List<&2, cps_provider_8_MultiRef>, v_14: U32) -> Bool:
+  match v_0:
+    case BIR.Local{v_17}:
+      cps_provider_8_multi_project_local(U32.is_eq(v_17, v_14), v_2, v_4, v_7, v_9, v_12, v_14)
+    case _:
+      True{}
+
+def cps_provider_8_multi_project_local(v_1: Bool, v_3: U32, v_5: String, v_8: Map<&2, cps_provider_8_MultiLayout>, v_10: Nat, v_13: List<&2, cps_provider_8_MultiRef>, v_15: U32) -> Bool:
+  match v_1:
+    case False{}:
+      True{}
+    case True{}:
+      cps_provider_8_multi_project_refined(cps_provider_8_multi_ref_tag(v_13, v_15), v_3, v_5, v_8, v_10)
+
+def cps_provider_8_multi_project_refined(v_2: Maybe<&2, String>, v_4: U32, v_6: String, v_9: Map<&2, cps_provider_8_MultiLayout>, v_11: Nat) -> Bool:
+  match v_2:
+    case None{}:
+      False{}
+    case Some{v_14}:
+      cps_provider_8_multi_project_layout(String.eq(v_14, cps_provider_8_multi_layout_tag_text(v_9, v_4)), cps_provider_8_multi_layout(v_9, v_4), v_6, v_11)
+
+def cps_provider_8_multi_layout_tag_text(v_2: Map<&2, cps_provider_8_MultiLayout>, v_4: U32) -> String:
+  cps_provider_8_multi_layout_tag_text_of(cps_provider_8_multi_layout_tag(v_2, v_4))
+
+def cps_provider_8_multi_layout_tag_text_of(v_2: Maybe<&2, String>) -> String:
+  match v_2:
+    case Some{+v_5}:
+      v_5
+    case None{}:
+      ""
+
+def cps_provider_8_multi_project_layout(v_1: Bool, v_4: Maybe<&2, cps_provider_8_MultiLayout>, v_6: String, v_8: Nat) -> Bool:
+  match v_1:
+    case False{}:
+      False{}
+    case True{}:
+      cps_provider_8_multi_project_slot(cps_provider_8_multi_layout_keys_of(v_4), v_6, v_8)
+
+def cps_provider_8_multi_project_slot(v_2: List<&2, String>, v_4: String, v_6: Nat) -> Bool:
+  cps_provider_8_multi_project_index(cps_provider_8_multi_key_at(v_2, v_4, 0n), v_6)
+
+def cps_provider_8_multi_project_index(v_2: Maybe<&2, Nat>, v_4: Nat) -> Bool:
+  match v_2:
+    case Some{v_7}:
+      Nat.is_lt(v_7, v_4)
+    case None{}:
+      False{}
+
+def cps_provider_8_multi_op_uses(v_0: BIR.Op, v_2: U32, v_5: Map<&2, cps_provider_8_MultiLayout>, v_7: Nat, v_10: List<&2, cps_provider_8_MultiRef>) -> Bool:
+  match v_0:
+    case BIR.Copy{v_13}:
+      cps_provider_8_multi_names_ok(v_13, v_2)
+    case BIR.PrimitiveCall{_, v_19, _}:
+      Bool.not(cps_provider_8_multi_args_name(v_19, v_2))
+    case BIR.Closure{_, v_26, _}:
+      Bool.not(cps_provider_8_multi_args_name(v_26, v_2))
+    case BIR.Direct{_, _}:
+      True{}
+    case BIR.Apply{v_35, v_36}:
+      Bool.not(cps_provider_8_multi_arg_names(v_35, v_36, v_2))
+    case BIR.LoadSymbol{_, _}:
+      True{}
+    case BIR.Construct{_, _, v_47}:
+      Bool.not(cps_provider_8_multi_fields_name(v_47, v_2))
+    case BIR.Project{v_53, v_54, _, v_56}:
+      cps_provider_8_multi_project_ok(v_53, v_54, v_56, v_5, v_7, v_10, v_2)
+    case BIR.HasTag{v_61, _, _}:
+      cps_provider_8_multi_names_ok(v_61, v_2)
+
+def cps_provider_8_multi_names_ok(v_0: BIR.Atom, v_2: U32) -> Bool:
+  Bool.not(cps_provider_8_multi_names(v_0, v_2))
+
+def cps_provider_8_multi_arg_names(v_0: BIR.Atom, v_1: BIR.Arg, v_3: U32) -> Bool:
+  Bool.or(cps_provider_8_multi_names(v_0, v_3), cps_provider_8_multi_arg_only_names(v_1, v_3))
+
+def cps_provider_8_multi_uses_of(v_0: BIR.Block, v_2: U32, v_5: Map<&2, cps_provider_8_MultiLayout>, v_7: Nat, v_10: List<&2, cps_provider_8_MultiRef>) -> Bool:
+  match v_0:
+    case BIR.Return{_}:
+      True{}
+    case BIR.Let{v_17, v_18, v_19}:
+      cps_provider_8_multi_let_uses(v_17, v_18, v_19, v_2, v_5, v_7, v_10)
+    case BIR.Branch{v_24, v_25, v_26}:
+      Bool.and(cps_provider_8_multi_names_ok(v_24, v_2), Bool.and(cps_provider_8_multi_uses_of(v_25, v_2, v_5, v_7, v_10), cps_provider_8_multi_uses_of(v_26, v_2, v_5, v_7, v_10)))
+    case BIR.Region{_, v_34, v_35}:
+      Bool.and(cps_provider_8_multi_uses_of(v_34, v_2, v_5, v_7, v_10), cps_provider_8_multi_uses_of(v_35, v_2, v_5, v_7, v_10))
+    case BIR.LeaveRegion{_}:
+      True{}
+    case BIR.TailDirect{_, _}:
+      True{}
+    case BIR.TailApply{v_46, v_47}:
+      Bool.not(cps_provider_8_multi_arg_names(v_46, v_47, v_2))
+    case BIR.Failure{_}:
+      True{}
+
+def cps_provider_8_multi_let_uses(v_1: U32, v_2: BIR.Op, v_3: BIR.Block, v_5: U32, v_8: Map<&2, cps_provider_8_MultiLayout>, v_10: Nat, v_13: List<&2, cps_provider_8_MultiRef>) -> Bool:
+  match v_2:
+    case BIR.HasTag{BIR.Local{v_18}, _, v_20}:
+      cps_provider_8_multi_tag_uses(U32.is_eq(v_18, v_5), v_1, v_3, v_5, v_8, v_10, v_13, v_20)
+    case _:
+      Bool.and(cps_provider_8_multi_op_uses(v_2, v_5, v_8, v_10, v_13), cps_provider_8_multi_uses_of(v_3, v_5, v_8, v_10, v_13))
+
+def cps_provider_8_multi_tag_uses(v_1: Bool, v_3: U32, v_4: BIR.Block, v_6: U32, v_9: Map<&2, cps_provider_8_MultiLayout>, v_11: Nat, v_14: List<&2, cps_provider_8_MultiRef>, v_16: String) -> Bool:
+  match v_1:
+    case False{}:
+      cps_provider_8_multi_uses_of(v_4, v_6, v_9, v_11, v_14)
+    case True{}:
+      cps_provider_8_multi_tag_branch(v_3, v_4, v_6, v_9, v_11, v_14, v_16)
+
+def cps_provider_8_multi_tag_branch(v_1: U32, v_2: BIR.Block, v_4: U32, v_7: Map<&2, cps_provider_8_MultiLayout>, v_9: Nat, v_12: List<&2, cps_provider_8_MultiRef>, v_14: String) -> Bool:
+  match v_2:
+    case BIR.Branch{BIR.Local{v_19}, v_20, v_21}:
+      cps_provider_8_multi_tag_arm(U32.is_eq(v_19, v_1), v_20, v_21, v_4, v_7, v_9, v_12, v_14)
+    case _:
+      cps_provider_8_multi_uses_of(v_2, v_4, v_7, v_9, v_12)
+
+def cps_provider_8_multi_tag_arm(v_1: Bool, v_2: BIR.Block, v_3: BIR.Block, v_5: U32, v_8: Map<&2, cps_provider_8_MultiLayout>, v_10: Nat, v_13: List<&2, cps_provider_8_MultiRef>, v_15: String) -> Bool:
+  match v_1:
+    case False{}:
+      cps_provider_8_multi_uses_of(v_2, v_5, v_8, v_10, v_13)
+    case True{}:
+      Bool.and(cps_provider_8_multi_uses_of(v_2, v_5, v_8, v_10, cps_provider_8_MultiRef{v_5, v_15} <> v_13), cps_provider_8_multi_uses_of(v_3, v_5, v_8, v_10, v_13))
+
+def cps_provider_8_multi_param_static(v_0: BIR.Block, v_2: U32, v_5: Map<&2, cps_provider_8_MultiLayout>, v_7: Nat) -> Bool:
+  cps_provider_8_multi_uses_of(v_0, v_2, v_5, v_7, [])
+
+def cps_provider_8_multi_tail_targets(v_2: List<&2, cps_provider_8_MultiSiteF>, v_5: List<&2, U32>) -> List<&2, U32>:
+  match v_2:
+    case []:
+      List.reverse(&2, U32, v_5)
+    case cps_provider_8_MultiSiteF{_, v_15, v_16, _} <> v_18:
+      cps_provider_8_multi_tail_targets(v_18, cps_provider_8_multi_tail_target(v_16, v_15, v_5))
+
+def cps_provider_8_multi_tail_target(v_1: Bool, v_3: U32, v_6: List<&2, U32>) -> List<&2, U32>:
+  match v_1:
+    case True{}:
+      v_3 <> v_6
+    case False{}:
+      v_6
+
+def cps_provider_8_multi_tails_multi(v_2: List<&2, U32>, v_5: Map<&2, Bool>) -> Bool:
+  match v_2:
+    case []:
+      True{}
+    case +v_9 <> v_10:
+      Bool.and(cps_provider_8_multi_multi_get(v_5, v_9), cps_provider_8_multi_tails_multi(v_10, v_5))
+
+def cps_provider_8_multi_rendered_one(v_1: Bool, v_3: Nat, v_5: Nat) -> Nat:
+  match v_1:
+    case True{}:
+      Nat.add(v_5, Nat.add(v_3, 1n))
+    case False{}:
+      Nat.add(v_5, 1n)
+
+def cps_provider_8_multi_arity_count(v_1: Nat) -> Bool:
+  Bool.and(Nat.is_gt(v_1, 0n), cps_provider_8_multi_arity_bound(Nat.add(v_1, 1n)))
+
+def cps_provider_8_multi_arity_bound(v_1: Nat) -> Bool:
+  Nat.is_le(v_1, 32n)
+
+def cps_provider_8_multi_shape_open_at(v_1: cps_provider_8_MultiShape, v_4: Map<&2, Bool>, +v_6: String) -> Bool:
+  match v_1:
+    case cps_provider_8_MultiCtorShape{_, _}:
+      True{}
+    case cps_provider_8_MultiParamShape{_}:
+      cps_provider_8_multi_up_at(v_4, v_6)
+    case cps_provider_8_MultiResultShape{}:
+      True{}
+    case cps_provider_8_MultiOtherShape{}:
+      False{}
+
+def cps_provider_8_multi_forwards_ok(v_2: List<&2, cps_provider_8_MultiFwd>, v_5: Map<&2, Bool>) -> Bool:
+  match v_2:
+    case []:
+      True{}
+    case cps_provider_8_MultiFwd{_, v_12, v_13} <> v_14:
+      Bool.and(cps_provider_8_multi_shape_open_at(v_12, v_5, v_13), cps_provider_8_multi_forwards_ok(v_14, v_5))
+
+def cps_provider_8_multi_fwd_index(v_1: List<&2, BIR.Code>, v_4: Map<&2, cps_provider_8_MultiCodeFact>, v_8: Map<&2, List<&2, cps_provider_8_MultiFwd>>) -> Map<&2, List<&2, cps_provider_8_MultiFwd>>:
+  match v_1:
+    case []:
+      v_8
+    case BIR.Code{v_17, _, _, _} <> v_21:
+      cps_provider_8_multi_fwd_index(v_21, v_4, cps_provider_8_multi_fwd_sites(cps_provider_8_multi_fact_sites(cps_provider_8_multi_fact_of(v_4, v_17)), v_17, v_8))
+
+def cps_provider_8_multi_fwd_sites(v_2: List<&2, cps_provider_8_MultiSiteF>, v_4: U32, v_8: Map<&2, List<&2, cps_provider_8_MultiFwd>>) -> Map<&2, List<&2, cps_provider_8_MultiFwd>>:
+  match v_2:
+    case []:
+      v_8
+    case cps_provider_8_MultiSiteF{_, v_18, _, v_20} <> v_21:
+      cps_provider_8_multi_fwd_sites(v_21, v_4, cps_provider_8_multi_fwd_shapes(v_20, v_18, v_4, 0n, v_8))
+
+def cps_provider_8_multi_fwd_shapes(v_2: List<&2, cps_provider_8_MultiShape>, v_4: U32, v_6: U32, v_8: Nat, v_12: Map<&2, List<&2, cps_provider_8_MultiFwd>>) -> Map<&2, List<&2, cps_provider_8_MultiFwd>>:
+  match v_2:
+    case []:
+      v_12
+    case +v_18 <> v_19:
+      cps_provider_8_multi_fwd_shapes(v_19, v_4, v_6, Nat.add(v_8, 1n), cps_provider_8_multi_fwd_add(v_12, v_4, v_8, cps_provider_8_multi_fwd_make(v_6, v_18)))
+
+def cps_provider_8_multi_fwd_make(v_1: U32, v_3: cps_provider_8_MultiShape) -> cps_provider_8_MultiFwd:
+  cps_provider_8_MultiFwd{v_1, v_3, cps_provider_8_multi_shape_key(v_1, v_3)}
+
+def cps_provider_8_multi_shape_key(v_1: U32, v_3: cps_provider_8_MultiShape) -> String:
+  match v_3:
+    case cps_provider_8_MultiParamShape{v_6}:
+      cps_provider_8_multi_up_key(v_1, v_6)
+    case _:
+      ""
+
+def cps_provider_8_multi_fwd_add(v_3: Map<&2, List<&2, cps_provider_8_MultiFwd>>, v_5: U32, v_7: Nat, v_9: cps_provider_8_MultiFwd) -> Map<&2, List<&2, cps_provider_8_MultiFwd>>:
+  +v_15 = cps_provider_8_multi_up_key(v_5, v_7)
+  cps_provider_8_multi_fwd_set(v_3, v_15, IndexLookup.find(List<&2, cps_provider_8_MultiFwd>, v_3, v_15), v_9)
+
+def cps_provider_8_multi_fwd_set(v_3: Map<&2, List<&2, cps_provider_8_MultiFwd>>, +v_5: String, v_9: Maybe<&2, List<&2, cps_provider_8_MultiFwd>>, v_11: cps_provider_8_MultiFwd) -> Map<&2, List<&2, cps_provider_8_MultiFwd>>:
+  match v_9:
+    case Some{v_16}:
+      Map.set(&2, List<&2, cps_provider_8_MultiFwd>, v_3, v_5, v_11 <> v_16)
+    case None{}:
+      Map.set(&2, List<&2, cps_provider_8_MultiFwd>, v_3, v_5, [v_11])
+
+def cps_provider_8_multi_forwards_key(v_3: Map<&2, List<&2, cps_provider_8_MultiFwd>>, +v_5: String) -> List<&2, cps_provider_8_MultiFwd>:
+  cps_provider_8_multi_forwards_found(IndexLookup.find(List<&2, cps_provider_8_MultiFwd>, v_3, v_5))
+
+def cps_provider_8_multi_forwards_found(v_3: Maybe<&2, List<&2, cps_provider_8_MultiFwd>>) -> List<&2, cps_provider_8_MultiFwd>:
+  match v_3:
+    case Some{v_7}:
+      v_7
+    case None{}:
+      []
+
+def cps_provider_8_multi_program_width(v_1: List<&2, BIR.Code>, v_3: Nat) -> Nat:
+  match v_1:
+    case []:
+      v_3
+    case v_7 <> v_8:
+      cps_provider_8_multi_program_width(v_8, cps_provider_8_multi_width_cap(cps_provider_8_multi_code_local_width(v_7), v_3))
+
+def cps_provider_8_multi_code_local_width(v_0: BIR.Code) -> Nat:
+  match v_0:
+    case BIR.Code{_, _, _, v_9}:
+      cps_provider_8_multi_local_width(v_9, 0n)
+
+def cps_provider_8_multi_width_cap(v_1: Nat, v_3: Nat) -> Nat:
+  cps_provider_8_multi_width_keep(Nat.is_le(v_1, 4n), v_1, v_3)
+
+def cps_provider_8_multi_width_keep(v_1: Bool, v_3: Nat, v_5: Nat) -> Nat:
+  match v_1:
+    case True{}:
+      Nat.max(v_3, v_5)
+    case False{}:
+      v_5
+
+def cps_provider_8_multi_code_fact(v_0: BIR.Code, v_3: Map<&2, cps_provider_8_MultiLayout>, v_5: Nat) -> cps_provider_8_MultiCodeFact:
+  match v_0:
+    case BIR.Code{v_11, v_12, v_13, v_14}:
+      cps_provider_8_multi_code_fact_build(v_11, v_12, v_13, v_14, v_3, v_5)
+
+def cps_provider_8_multi_code_fact_build(v_1: U32, v_3: List<&2, BIR.Use>, v_5: List<&2, BIR.Parameter>, v_6: BIR.Block, v_9: Map<&2, cps_provider_8_MultiLayout>, v_11: Nat) -> cps_provider_8_MultiCodeFact:
+  +v_16 = cps_provider_8_multi_param_index(v_5, 0n, Map.new(&2, Nat))
+  +v_19 = cps_provider_8_multi_uses(v_6)
+  +v_23 = cps_provider_8_multi_scan(v_6, cps_provider_8_MultiScan{Map.new(&2, cps_provider_8_MultiCtor), []}, v_9, v_19, v_16, None{}, v_1)
+  cps_provider_8_multi_fact_from_scan(v_23, List.length(&2, BIR.Use, v_3), v_5, v_16, v_6, v_9, v_11, v_1, v_19)
+
+def cps_provider_8_multi_fact_from_scan(v_1: cps_provider_8_MultiScan, v_3: Nat, v_5: List<&2, BIR.Parameter>, v_8: Map<&2, Nat>, v_9: BIR.Block, v_12: Map<&2, cps_provider_8_MultiLayout>, v_14: Nat, v_16: U32, v_19: Map<&2, Nat>) -> cps_provider_8_MultiCodeFact:
+  match v_1:
+    case cps_provider_8_MultiScan{_, v_24}:
+      cps_provider_8_MultiCodeFact{cps_provider_8_multi_local_width(v_9, 0n), v_24, cps_provider_8_multi_statics(v_5, 0n, v_16, v_9, v_12, v_14, Map.new(&2, Bool), v_19), v_5, v_3, cps_provider_8_multi_frames_ok(v_9, cps_provider_8_plan_of(v_9)), v_8, v_9, cps_provider_8_multi_routes(v_24, v_16, Map.new(&2, List<&2, cps_provider_8_MultiReq>)), cps_provider_8_multi_tail_targets(v_24, []), cps_provider_8_multi_result_shape(v_9, v_8, v_16, [])}
+
+def cps_provider_8_multi_statics(v_1: List<&2, BIR.Parameter>, v_3: Nat, v_5: U32, v_6: BIR.Block, v_9: Map<&2, cps_provider_8_MultiLayout>, v_11: Nat, v_14: Map<&2, Bool>, v_17: Map<&2, Nat>) -> Map<&2, Bool>:
+  match v_1:
+    case []:
+      v_14
+    case BIR.Parameter{v_23, _} <> v_25:
+      cps_provider_8_multi_statics(v_25, Nat.add(v_3, 1n), v_5, v_6, v_9, v_11, Map.set(&2, Bool, v_14, cps_provider_8_multi_up_key(v_5, v_3), cps_provider_8_multi_param_static_use(cps_provider_8_multi_used(v_17, v_23), v_6, v_23, v_9, v_11)), v_17)
+
+def cps_provider_8_multi_used(v_2: Map<&2, Nat>, v_4: U32) -> Bool:
+  cps_provider_8_multi_used_found(IndexLookup.find(Nat, v_2, U32.show(v_4)))
+
+def cps_provider_8_multi_used_found(v_2: Maybe<&2, Nat>) -> Bool:
+  match v_2:
+    case Some{_}:
+      True{}
+    case None{}:
+      False{}
+
+def cps_provider_8_multi_param_static_use(v_1: Bool, v_2: BIR.Block, v_4: U32, v_7: Map<&2, cps_provider_8_MultiLayout>, v_9: Nat) -> Bool:
+  match v_1:
+    case False{}:
+      True{}
+    case True{}:
+      cps_provider_8_multi_param_static(v_2, v_4, v_7, v_9)
+
+def cps_provider_8_multi_routes(v_2: List<&2, cps_provider_8_MultiSiteF>, v_4: U32, v_8: Map<&2, List<&2, cps_provider_8_MultiReq>>) -> Map<&2, List<&2, cps_provider_8_MultiReq>>:
+  match v_2:
+    case []:
+      v_8
+    case cps_provider_8_MultiSiteF{_, v_18, _, v_20} <> v_21:
+      cps_provider_8_multi_routes(v_21, v_4, cps_provider_8_multi_route_shapes(v_20, 0n, v_18, v_4, v_8))
+
+def cps_provider_8_multi_route_shapes(v_2: List<&2, cps_provider_8_MultiShape>, v_4: Nat, v_6: U32, v_8: U32, v_12: Map<&2, List<&2, cps_provider_8_MultiReq>>) -> Map<&2, List<&2, cps_provider_8_MultiReq>>:
+  match v_2:
+    case []:
+      v_12
+    case v_18 <> v_19:
+      cps_provider_8_multi_route_shapes(v_19, Nat.add(v_4, 1n), v_6, v_8, cps_provider_8_multi_route_shape(v_18, v_4, v_6, v_8, v_12))
+
+def cps_provider_8_multi_route_shape(v_1: cps_provider_8_MultiShape, v_3: Nat, v_5: U32, v_7: U32, v_11: Map<&2, List<&2, cps_provider_8_MultiReq>>) -> Map<&2, List<&2, cps_provider_8_MultiReq>>:
+  match v_1:
+    case cps_provider_8_MultiParamShape{v_16}:
+      cps_provider_8_multi_route_add(v_11, cps_provider_8_multi_up_key(v_7, v_16), cps_provider_8_MultiReq{v_5, U32.show(v_5), cps_provider_8_multi_up_key(v_5, v_3)})
+    case _:
+      v_11
+
+def cps_provider_8_multi_route_add(v_3: Map<&2, List<&2, cps_provider_8_MultiReq>>, +v_5: String, v_7: cps_provider_8_MultiReq) -> Map<&2, List<&2, cps_provider_8_MultiReq>>:
+  cps_provider_8_multi_route_set(v_3, v_5, IndexLookup.find(List<&2, cps_provider_8_MultiReq>, v_3, v_5), v_7)
+
+def cps_provider_8_multi_route_set(v_3: Map<&2, List<&2, cps_provider_8_MultiReq>>, +v_5: String, v_9: Maybe<&2, List<&2, cps_provider_8_MultiReq>>, v_11: cps_provider_8_MultiReq) -> Map<&2, List<&2, cps_provider_8_MultiReq>>:
+  match v_9:
+    case Some{v_16}:
+      Map.set(&2, List<&2, cps_provider_8_MultiReq>, v_3, v_5, v_11 <> v_16)
+    case None{}:
+      Map.set(&2, List<&2, cps_provider_8_MultiReq>, v_3, v_5, [v_11])
+
+def cps_provider_8_multi_result_shape(v_0: BIR.Block, v_3: Map<&2, Nat>, v_5: U32, v_8: List<&2, String>) -> cps_provider_8_MultiResult:
+  cps_provider_8_multi_result_shape_of(cps_provider_8_multi_result_reqs(v_0, v_3, v_5, v_8))
+
+def cps_provider_8_multi_result_shape_of(v_3: Maybe<&2, List<&2, String>>) -> cps_provider_8_MultiResult:
+  match v_3:
+    case Some{v_6}:
+      cps_provider_8_MultiResultOpen{v_6}
+    case None{}:
+      cps_provider_8_MultiResultClosed{}
+
+def cps_provider_8_multi_result_reqs(v_0: BIR.Block, v_3: Map<&2, Nat>, v_5: U32, v_8: List<&2, String>) -> Maybe<&2, List<&2, String>>:
+  match v_0:
+    case BIR.Return{v_13}:
+      cps_provider_8_multi_return_req(v_13, v_3, v_5, v_8)
+    case BIR.Let{v_18, v_19, v_20}:
+      cps_provider_8_multi_let_reqs(v_18, v_19, v_20, v_3, v_5, v_8)
+    case BIR.Branch{_, v_26, v_27}:
+      cps_provider_8_multi_reqs_and(cps_provider_8_multi_result_reqs(v_26, v_3, v_5, v_8), v_27, v_3, v_5, v_8)
+    case BIR.Region{_, v_34, v_35}:
+      cps_provider_8_multi_reqs_and(cps_provider_8_multi_result_reqs(v_34, v_3, v_5, v_8), v_35, v_3, v_5, v_8)
+    case BIR.LeaveRegion{_}:
+      Some{v_8}
+    case BIR.TailDirect{_, _}:
+      Some{v_8}
+    case BIR.TailApply{_, _}:
+      None{}
+    case BIR.Failure{_}:
+      Some{v_8}
+
+def cps_provider_8_multi_reqs_and(v_3: Maybe<&2, List<&2, String>>, v_4: BIR.Block, v_7: Map<&2, Nat>, v_9: U32, v_12: List<&2, String>) -> Maybe<&2, List<&2, String>>:
+  match v_3:
+    case None{}:
+      None{}
+    case Some{v_17}:
+      cps_provider_8_multi_reqs_join(v_17, cps_provider_8_multi_result_reqs(v_4, v_7, v_9, v_12))
+
+def cps_provider_8_multi_reqs_join(v_2: List<&2, String>, v_6: Maybe<&2, List<&2, String>>) -> Maybe<&2, List<&2, String>>:
+  match v_6:
+    case None{}:
+      None{}
+    case Some{v_11}:
+      Some{List.append(&2, String, v_2, v_11)}
+
+def cps_provider_8_multi_return_req(v_0: BIR.Atom, v_3: Map<&2, Nat>, v_5: U32, v_8: List<&2, String>) -> Maybe<&2, List<&2, String>>:
+  match v_0:
+    case BIR.Local{v_13}:
+      cps_provider_8_multi_return_pos_req(cps_provider_8_multi_param_of(v_3, v_13), v_5, v_8)
+    case _:
+      None{}
+
+def cps_provider_8_multi_return_pos_req(v_2: Maybe<&2, Nat>, v_4: U32, v_7: List<&2, String>) -> Maybe<&2, List<&2, String>>:
+  match v_2:
+    case Some{v_12}:
+      Some{cps_provider_8_multi_up_key(v_4, v_12) <> v_7}
+    case None{}:
+      None{}
+
+def cps_provider_8_multi_let_reqs(v_1: U32, v_2: BIR.Op, v_3: BIR.Block, v_6: Map<&2, Nat>, v_8: U32, v_11: List<&2, String>) -> Maybe<&2, List<&2, String>>:
+  match v_2:
+    case BIR.Construct{_, _, _}:
+      cps_provider_8_multi_construct_reqs(v_1, v_3, v_6, v_8, v_11)
+    case _:
+      cps_provider_8_multi_result_reqs(v_3, v_6, v_8, v_11)
+
+def cps_provider_8_multi_construct_reqs(v_1: U32, v_2: BIR.Block, v_5: Map<&2, Nat>, v_7: U32, v_10: List<&2, String>) -> Maybe<&2, List<&2, String>>:
+  match v_2:
+    case BIR.Return{BIR.Local{v_15}}:
+      cps_provider_8_multi_construct_same_reqs(U32.is_eq(v_15, v_1), v_2, v_5, v_7, v_10)
+    case _:
+      cps_provider_8_multi_result_reqs(v_2, v_5, v_7, v_10)
+
+def cps_provider_8_multi_construct_same_reqs(v_1: Bool, v_2: BIR.Block, v_5: Map<&2, Nat>, v_7: U32, v_10: List<&2, String>) -> Maybe<&2, List<&2, String>>:
+  match v_1:
+    case True{}:
+      Some{v_10}
+    case False{}:
+      cps_provider_8_multi_result_reqs(v_2, v_5, v_7, v_10)
+
+def cps_provider_8_multi_result_holds(v_1: cps_provider_8_MultiResult, v_4: Map<&2, Bool>) -> Bool:
+  match v_1:
+    case cps_provider_8_MultiResultOpen{v_7}:
+      cps_provider_8_multi_result_required(v_7, v_4)
+    case cps_provider_8_MultiResultClosed{}:
+      False{}
+
+def cps_provider_8_multi_result_required(v_2: List<&2, String>, v_5: Map<&2, Bool>) -> Bool:
+  match v_2:
+    case []:
+      True{}
+    case +v_9 <> v_10:
+      Bool.and(cps_provider_8_multi_up_at(v_5, v_9), cps_provider_8_multi_result_required(v_10, v_5))
+
+def cps_provider_8_multi_routes_key(v_3: Map<&2, List<&2, cps_provider_8_MultiReq>>, +v_5: String) -> List<&2, cps_provider_8_MultiReq>:
+  cps_provider_8_multi_routes_found(IndexLookup.find(List<&2, cps_provider_8_MultiReq>, v_3, v_5))
+
+def cps_provider_8_multi_routes_found(v_3: Maybe<&2, List<&2, cps_provider_8_MultiReq>>) -> List<&2, cps_provider_8_MultiReq>:
+  match v_3:
+    case Some{v_7}:
+      v_7
+    case None{}:
+      []
+
+def cps_provider_8_multi_routes_ok(v_2: List<&2, cps_provider_8_MultiReq>, v_4: cps_provider_8_MultiUp) -> Bool:
+  match v_2:
+    case []:
+      True{}
+    case cps_provider_8_MultiReq{_, v_11, v_12} <> v_13:
+      Bool.and(Bool.and(cps_provider_8_multi_up_at(cps_provider_8_multi_prev_multi(v_4), v_11), cps_provider_8_multi_up_at(cps_provider_8_multi_prev_up(v_4), v_12)), cps_provider_8_multi_routes_ok(v_13, v_4))
+
+def cps_provider_8_multi_up_at(v_2: Map<&2, Bool>, +v_4: String) -> Bool:
+  cps_provider_8_multi_up_found(IndexLookup.find(Bool, v_2, v_4))
+
+def cps_provider_8_multi_static_at(v_2: Map<&2, Bool>, v_4: U32, v_6: Nat) -> Bool:
+  cps_provider_8_multi_up_at(v_2, cps_provider_8_multi_up_key(v_4, v_6))
+
+def cps_provider_8_multi_prev_up(v_1: cps_provider_8_MultiUp) -> Map<&2, Bool>:
+  match v_1:
+    case cps_provider_8_MultiUp{v_6, _}:
+      v_6
+
+def cps_provider_8_multi_prev_multi(v_1: cps_provider_8_MultiUp) -> Map<&2, Bool>:
+  match v_1:
+    case cps_provider_8_MultiUp{_, v_7}:
+      v_7
+
+def cps_provider_8_multi_fact_multi(v_1: cps_provider_8_MultiCodeFact, v_3: U32, v_5: cps_provider_8_MultiUp, v_8: Map<&2, Bool>, v_10: Nat, v_12: Nat) -> Bool:
+  match v_1:
+    case cps_provider_8_MultiCodeFact{v_25, _, _, _, _, v_30, _, _, _, v_34, v_35}:
+      cps_provider_8_multi_fact_decided(Bool.not(cps_provider_8_multi_banned(v_8, v_3)), v_3, v_35, v_25, v_30, v_12, v_34, v_5, v_10)
+
+def cps_provider_8_multi_fact_decided(v_1: Bool, v_3: U32, v_5: cps_provider_8_MultiResult, v_7: Nat, v_9: Bool, v_11: Nat, v_14: List<&2, U32>, v_16: cps_provider_8_MultiUp, v_18: Nat) -> Bool:
+  match v_1:
+    case False{}:
+      False{}
+    case True{}:
+      cps_provider_8_multi_fact_checked(v_3, v_5, v_7, v_9, v_11, v_14, v_16, v_18)
+
+def cps_provider_8_multi_fact_checked(v_1: U32, v_3: cps_provider_8_MultiResult, v_5: Nat, v_7: Bool, v_9: Nat, v_12: List<&2, U32>, v_14: cps_provider_8_MultiUp, v_16: Nat) -> Bool:
+  match v_7:
+    case False{}:
+      False{}
+    case True{}:
+      cps_provider_8_multi_fact_result(v_1, v_3, v_5, v_9, v_12, v_14, v_16)
+
+def cps_provider_8_multi_fact_result(v_1: U32, v_3: cps_provider_8_MultiResult, v_5: Nat, v_7: Nat, v_10: List<&2, U32>, v_12: cps_provider_8_MultiUp, v_14: Nat) -> Bool:
+  cps_provider_8_multi_fact_shapes(cps_provider_8_multi_result_holds(v_3, cps_provider_8_multi_prev_up(v_12)), v_1, v_5, v_7, v_10, v_12, v_14)
+
+def cps_provider_8_multi_fact_shapes(v_1: Bool, v_3: U32, v_5: Nat, v_7: Nat, v_10: List<&2, U32>, v_12: cps_provider_8_MultiUp, v_14: Nat) -> Bool:
+  match v_1:
+    case False{}:
+      False{}
+    case True{}:
+      cps_provider_8_multi_fact_arity(cps_provider_8_multi_arity_count(v_7), v_5, v_10, v_12)
+
+def cps_provider_8_multi_fact_arity(v_1: Bool, v_3: Nat, v_6: List<&2, U32>, v_8: cps_provider_8_MultiUp) -> Bool:
+  match v_1:
+    case False{}:
+      False{}
+    case True{}:
+      Bool.and(Nat.is_le(v_3, 4n), cps_provider_8_multi_tails_multi(v_6, cps_provider_8_multi_prev_multi(v_8)))
+
+def cps_provider_8_multi_round(v_1: List<&2, BIR.Code>, v_4: Map<&2, cps_provider_8_MultiCodeFact>, v_8: Map<&2, List<&2, cps_provider_8_MultiFwd>>, v_11: Map<&2, Bool>, v_13: Nat, v_15: cps_provider_8_MultiUp, v_17: cps_provider_8_MultiUp) -> cps_provider_8_MultiStep:
+  match v_1:
+    case []:
+      cps_provider_8_MultiStep{v_17, False{}}
+    case v_21 <> v_22:
+      cps_provider_8_multi_round_code(v_21, v_22, v_4, v_8, v_11, v_13, v_15, v_17)
+
+def cps_provider_8_multi_round_code(v_0: BIR.Code, v_2: List<&2, BIR.Code>, v_5: Map<&2, cps_provider_8_MultiCodeFact>, v_9: Map<&2, List<&2, cps_provider_8_MultiFwd>>, v_12: Map<&2, Bool>, v_14: Nat, v_16: cps_provider_8_MultiUp, v_18: cps_provider_8_MultiUp) -> cps_provider_8_MultiStep:
+  match v_0:
+    case BIR.Code{v_24, _, _, _}:
+      cps_provider_8_multi_round_fact(v_24, v_2, cps_provider_8_multi_fact_of(v_5, v_24), v_5, v_9, v_12, v_14, v_16, v_18)
+
+def native_match_cps_provider_8_multi_fact_of_0(v_13: Maybe<&2, cps_provider_8_MultiCodeFact>) -> cps_provider_8_MultiCodeFact:
+  match v_13:
+    case Some{+v_8}:
+      v_8
+    case None{}:
+      cps_provider_8_MultiCodeFact{0n, [], Map.new(&2, Bool), [], 0n, False{}, Map.new(&2, Nat), BIR.Failure{""}, Map.new(&2, List<&2, cps_provider_8_MultiReq>), [], cps_provider_8_MultiResultClosed{}}
+
+def cps_provider_8_multi_fact_of(v_2: Map<&2, cps_provider_8_MultiCodeFact>, v_4: U32) -> cps_provider_8_MultiCodeFact:
+  native_match_cps_provider_8_multi_fact_of_0(IndexLookup.find(cps_provider_8_MultiCodeFact, v_2, U32.show(v_4)))
+
+def cps_provider_8_multi_round_fact(v_1: U32, v_3: List<&2, BIR.Code>, v_5: cps_provider_8_MultiCodeFact, v_8: Map<&2, cps_provider_8_MultiCodeFact>, v_12: Map<&2, List<&2, cps_provider_8_MultiFwd>>, v_15: Map<&2, Bool>, v_17: Nat, v_19: cps_provider_8_MultiUp, v_21: cps_provider_8_MultiUp) -> cps_provider_8_MultiStep:
+  match v_5:
+    case cps_provider_8_MultiCodeFact{_, _, v_36, v_37, v_38, _, _, _, v_42, _, _}:
+      cps_provider_8_multi_round_flags(v_1, v_3, v_5, v_8, v_12, v_15, v_17, v_19, cps_provider_8_multi_pass_params(v_37, 0n, v_1, v_36, v_42, v_19, v_12, v_17, cps_provider_8_MultiPass{v_21, False{}, v_38}))
+
+def cps_provider_8_multi_round_flags(v_1: U32, v_3: List<&2, BIR.Code>, v_5: cps_provider_8_MultiCodeFact, v_8: Map<&2, cps_provider_8_MultiCodeFact>, v_12: Map<&2, List<&2, cps_provider_8_MultiFwd>>, v_15: Map<&2, Bool>, v_17: Nat, v_19: cps_provider_8_MultiUp, v_21: cps_provider_8_MultiPass) -> cps_provider_8_MultiStep:
+  match v_21:
+    case cps_provider_8_MultiPass{v_26, v_27, v_28}:
+      +v_32 = cps_provider_8_multi_multi_get(cps_provider_8_multi_prev_multi(v_19), v_1)
+      +v_35 = cps_provider_8_multi_fact_multi(v_5, v_1, v_19, v_15, v_17, v_28)
+      cps_provider_8_multi_round_multi(v_26, U32.show(v_1), v_32, cps_provider_8_multi_round_keep(v_35, v_32), v_27, v_3, v_8, v_12, v_15, v_17, v_19)
+
+def cps_provider_8_multi_round_multi(v_1: cps_provider_8_MultiUp, +v_3: String, v_5: Bool, v_7: Bool, v_9: Bool, v_11: List<&2, BIR.Code>, v_14: Map<&2, cps_provider_8_MultiCodeFact>, v_18: Map<&2, List<&2, cps_provider_8_MultiFwd>>, v_21: Map<&2, Bool>, v_23: Nat, v_25: cps_provider_8_MultiUp) -> cps_provider_8_MultiStep:
+  match v_7:
+    case True{}:
+      cps_provider_8_multi_round_next(v_11, v_14, v_18, v_21, v_23, v_25, v_1, v_9)
+    case False{}:
+      cps_provider_8_multi_round_multi_drop(v_1, v_3, v_5, v_9, v_11, v_14, v_18, v_21, v_23, v_25)
+
+def cps_provider_8_multi_round_multi_drop(v_1: cps_provider_8_MultiUp, +v_3: String, v_5: Bool, v_7: Bool, v_9: List<&2, BIR.Code>, v_12: Map<&2, cps_provider_8_MultiCodeFact>, v_16: Map<&2, List<&2, cps_provider_8_MultiFwd>>, v_19: Map<&2, Bool>, v_21: Nat, v_23: cps_provider_8_MultiUp) -> cps_provider_8_MultiStep:
+  match v_5:
+    case False{}:
+      cps_provider_8_multi_round_next(v_9, v_12, v_16, v_19, v_21, v_23, v_1, v_7)
+    case True{}:
+      cps_provider_8_multi_round_next(v_9, v_12, v_16, v_19, v_21, v_23, cps_provider_8_multi_multi_clear(v_1, v_3), True{})
+
+def cps_provider_8_multi_multi_clear(v_1: cps_provider_8_MultiUp, +v_3: String) -> cps_provider_8_MultiUp:
+  match v_1:
+    case cps_provider_8_MultiUp{v_7, v_8}:
+      cps_provider_8_MultiUp{v_7, Map.set(&2, Bool, v_8, v_3, False{})}
+
+def native_match_cps_provider_8_multi_round_next_0(v_26: cps_provider_8_MultiStep, v_19: Bool) -> cps_provider_8_MultiStep:
+  match v_26:
+    case cps_provider_8_MultiStep{v_24, v_25}:
+      cps_provider_8_MultiStep{v_24, Bool.or(v_19, v_25)}
+
+def cps_provider_8_multi_round_next(v_1: List<&2, BIR.Code>, v_4: Map<&2, cps_provider_8_MultiCodeFact>, v_8: Map<&2, List<&2, cps_provider_8_MultiFwd>>, v_11: Map<&2, Bool>, v_13: Nat, v_15: cps_provider_8_MultiUp, v_17: cps_provider_8_MultiUp, v_19: Bool) -> cps_provider_8_MultiStep:
+  native_match_cps_provider_8_multi_round_next_0(cps_provider_8_multi_round(v_1, v_4, v_8, v_11, v_13, v_15, v_17), v_19)
+
+def cps_provider_8_multi_round_keep(v_1: Bool, v_3: Bool) -> Bool:
+  Bool.and(v_1, v_3)
+
+def cps_provider_8_multi_pass_params(v_1: List<&2, BIR.Parameter>, v_3: Nat, v_5: U32, v_8: Map<&2, Bool>, v_12: Map<&2, List<&2, cps_provider_8_MultiReq>>, v_14: cps_provider_8_MultiUp, v_18: Map<&2, List<&2, cps_provider_8_MultiFwd>>, v_20: Nat, v_22: cps_provider_8_MultiPass) -> cps_provider_8_MultiPass:
+  match v_1:
+    case []:
+      v_22
+    case _ <> v_27:
+      cps_provider_8_multi_pass_params(v_27, Nat.add(v_3, 1n), v_5, v_8, v_12, v_14, v_18, v_20, cps_provider_8_multi_pass_one(v_5, v_3, v_8, v_12, v_14, v_18, v_20, v_22))
+
+def cps_provider_8_multi_pass_one(v_1: U32, v_3: Nat, v_6: Map<&2, Bool>, v_10: Map<&2, List<&2, cps_provider_8_MultiReq>>, v_12: cps_provider_8_MultiUp, v_16: Map<&2, List<&2, cps_provider_8_MultiFwd>>, v_18: Nat, v_20: cps_provider_8_MultiPass) -> cps_provider_8_MultiPass:
+  match v_20:
+    case cps_provider_8_MultiPass{v_25, v_26, v_27}:
+      +v_30 = cps_provider_8_multi_up_key(v_1, v_3)
+      +v_34 = cps_provider_8_multi_up_at(cps_provider_8_multi_prev_up(v_12), v_30)
+      cps_provider_8_multi_pass_static(cps_provider_8_multi_up_at(v_6, v_30), v_30, v_34, v_10, v_12, v_16, v_18, v_26, cps_provider_8_multi_rendered_one(v_34, v_18, v_27), v_25)
+
+def cps_provider_8_multi_pass_static(v_1: Bool, +v_3: String, v_5: Bool, v_9: Map<&2, List<&2, cps_provider_8_MultiReq>>, v_11: cps_provider_8_MultiUp, v_15: Map<&2, List<&2, cps_provider_8_MultiFwd>>, v_17: Nat, v_19: Bool, v_21: Nat, v_23: cps_provider_8_MultiUp) -> cps_provider_8_MultiPass:
+  match v_1:
+    case False{}:
+      cps_provider_8_multi_pass_write(v_23, v_3, v_5, False{}, v_19, v_21)
+    case True{}:
+      cps_provider_8_multi_pass_open(cps_provider_8_multi_forwards_ok(cps_provider_8_multi_forwards_key(v_15, v_3), cps_provider_8_multi_prev_up(v_11)), v_3, v_5, v_9, v_11, v_19, v_21, v_23)
+
+def cps_provider_8_multi_pass_open(v_1: Bool, +v_3: String, v_5: Bool, v_9: Map<&2, List<&2, cps_provider_8_MultiReq>>, v_11: cps_provider_8_MultiUp, v_13: Bool, v_15: Nat, v_17: cps_provider_8_MultiUp) -> cps_provider_8_MultiPass:
+  match v_1:
+    case False{}:
+      cps_provider_8_multi_pass_write(v_17, v_3, v_5, False{}, v_13, v_15)
+    case True{}:
+      cps_provider_8_multi_pass_write(v_17, v_3, v_5, Bool.and(cps_provider_8_multi_routes_ok(cps_provider_8_multi_routes_key(v_9, v_3), v_11), v_5), v_13, v_15)
+
+def cps_provider_8_multi_pass_write(v_1: cps_provider_8_MultiUp, +v_3: String, v_5: Bool, v_7: Bool, v_9: Bool, v_11: Nat) -> cps_provider_8_MultiPass:
+  match v_7:
+    case True{}:
+      cps_provider_8_MultiPass{v_1, v_9, v_11}
+    case False{}:
+      cps_provider_8_multi_pass_drop(v_1, v_3, v_5, v_9, v_11)
+
+def cps_provider_8_multi_pass_drop(v_1: cps_provider_8_MultiUp, +v_3: String, v_5: Bool, v_7: Bool, v_9: Nat) -> cps_provider_8_MultiPass:
+  match v_5:
+    case False{}:
+      cps_provider_8_MultiPass{v_1, v_7, v_9}
+    case True{}:
+      cps_provider_8_multi_pass_clear(v_1, v_3, v_9)
+
+def cps_provider_8_multi_pass_clear(v_1: cps_provider_8_MultiUp, +v_3: String, v_5: Nat) -> cps_provider_8_MultiPass:
+  match v_1:
+    case cps_provider_8_MultiUp{v_9, v_10}:
+      cps_provider_8_MultiPass{cps_provider_8_MultiUp{Map.set(&2, Bool, v_9, v_3, False{}), v_10}, True{}, v_5}
+
+def cps_provider_8_multi_round_start(v_1: List<&2, BIR.Code>, v_4: Map<&2, cps_provider_8_MultiCodeFact>, v_8: Map<&2, List<&2, cps_provider_8_MultiFwd>>, v_11: Map<&2, Bool>, v_13: Nat) -> cps_provider_8_MultiSolve:
+  cps_provider_8_multi_round_seeded(v_1, v_4, v_8, v_11, v_13, cps_provider_8_multi_round_seed(v_1, v_4, v_11, Map.new(&2, Bool), Map.new(&2, Bool)))
+
+def cps_provider_8_multi_round_seeded(v_1: List<&2, BIR.Code>, v_4: Map<&2, cps_provider_8_MultiCodeFact>, v_8: Map<&2, List<&2, cps_provider_8_MultiFwd>>, v_11: Map<&2, Bool>, v_13: Nat, v_15: cps_provider_8_MultiUp) -> cps_provider_8_MultiSolve:
+  cps_provider_8_multi_round_until(v_1, v_4, v_8, v_11, v_13, cps_provider_8_multi_round_budget(v_1, v_15), v_15)
+
+def cps_provider_8_multi_round_budget(v_1: List<&2, BIR.Code>, v_3: cps_provider_8_MultiUp) -> Nat:
+  Nat.add(cps_provider_8_multi_true_count(v_1, v_3), 1n)
+
+def cps_provider_8_multi_true_count(v_1: List<&2, BIR.Code>, v_3: cps_provider_8_MultiUp) -> Nat:
+  cps_provider_8_multi_true_codes(v_1, v_3, 0n)
+
+def cps_provider_8_multi_true_codes(v_1: List<&2, BIR.Code>, v_3: cps_provider_8_MultiUp, v_5: Nat) -> Nat:
+  match v_1:
+    case []:
+      v_5
+    case BIR.Code{v_12, _, v_14, _} <> v_16:
+      cps_provider_8_multi_true_codes(v_16, v_3, cps_provider_8_multi_true_flags(v_14, v_12, 0n, v_3, cps_provider_8_multi_true_multi(cps_provider_8_multi_multi_get(cps_provider_8_multi_prev_multi(v_3), v_12), v_5)))
+
+def cps_provider_8_multi_true_multi(v_1: Bool, v_3: Nat) -> Nat:
+  match v_1:
+    case True{}:
+      Nat.add(v_3, 1n)
+    case False{}:
+      v_3
+
+def cps_provider_8_multi_true_flags(v_1: List<&2, BIR.Parameter>, v_3: U32, v_5: Nat, v_7: cps_provider_8_MultiUp, v_9: Nat) -> Nat:
+  match v_1:
+    case []:
+      v_9
+    case _ <> v_14:
+      cps_provider_8_multi_true_flags(v_14, v_3, Nat.add(v_5, 1n), v_7, cps_provider_8_multi_true_multi(cps_provider_8_multi_up_get(cps_provider_8_multi_prev_up(v_7), v_3, v_5), v_9))
+
+def cps_provider_8_multi_round_until(v_1: List<&2, BIR.Code>, v_4: Map<&2, cps_provider_8_MultiCodeFact>, v_8: Map<&2, List<&2, cps_provider_8_MultiFwd>>, v_11: Map<&2, Bool>, v_13: Nat, v_15: Nat, v_17: cps_provider_8_MultiUp) -> cps_provider_8_MultiSolve:
+  cps_provider_8_multi_round_until_step(v_1, v_4, v_8, v_11, v_13, v_15, v_17, cps_provider_8_multi_round(v_1, v_4, v_8, v_11, v_13, v_17, v_17))
+
+def cps_provider_8_multi_round_until_step(v_1: List<&2, BIR.Code>, v_4: Map<&2, cps_provider_8_MultiCodeFact>, v_8: Map<&2, List<&2, cps_provider_8_MultiFwd>>, v_11: Map<&2, Bool>, v_13: Nat, v_15: Nat, v_17: cps_provider_8_MultiUp, v_19: cps_provider_8_MultiStep) -> cps_provider_8_MultiSolve:
+  match v_19:
+    case cps_provider_8_MultiStep{v_23, v_24}:
+      cps_provider_8_multi_round_step_changed(v_24, v_1, v_4, v_8, v_11, v_13, v_15, v_23)
+
+def cps_provider_8_multi_round_step_changed(v_1: Bool, v_3: List<&2, BIR.Code>, v_6: Map<&2, cps_provider_8_MultiCodeFact>, v_10: Map<&2, List<&2, cps_provider_8_MultiFwd>>, v_13: Map<&2, Bool>, v_15: Nat, v_17: Nat, v_19: cps_provider_8_MultiUp) -> cps_provider_8_MultiSolve:
+  match v_1:
+    case False{}:
+      cps_provider_8_MultiSolve{v_19, True{}}
+    case True{}:
+      cps_provider_8_multi_round_more(Nat.is_eq(v_17, 0n), v_3, v_6, v_10, v_13, v_15, Nat.sub(v_17, 1n), v_19)
+
+def cps_provider_8_multi_round_more(v_1: Bool, v_3: List<&2, BIR.Code>, v_6: Map<&2, cps_provider_8_MultiCodeFact>, v_10: Map<&2, List<&2, cps_provider_8_MultiFwd>>, v_13: Map<&2, Bool>, v_15: Nat, v_17: Nat, v_19: cps_provider_8_MultiUp) -> cps_provider_8_MultiSolve:
+  match v_1:
+    case True{}:
+      cps_provider_8_MultiSolve{v_19, False{}}
+    case False{}:
+      cps_provider_8_multi_round_until(v_3, v_6, v_10, v_13, v_15, v_17, v_19)
+
+def native_match_cps_provider_8_multi_fact_statics_0(v_30: cps_provider_8_MultiCodeFact) -> Map<&2, Bool>:
+  match v_30:
+    case cps_provider_8_MultiCodeFact{_, _, v_21, _, _, _, _, _, _, _, _}:
+      v_21
+
+def cps_provider_8_multi_fact_statics(v_2: Map<&2, cps_provider_8_MultiCodeFact>, v_4: U32) -> Map<&2, Bool>:
+  native_match_cps_provider_8_multi_fact_statics_0(cps_provider_8_multi_fact_of(v_2, v_4))
+
+def cps_provider_8_multi_round_seed(v_1: List<&2, BIR.Code>, v_4: Map<&2, cps_provider_8_MultiCodeFact>, v_7: Map<&2, Bool>, v_10: Map<&2, Bool>, v_13: Map<&2, Bool>) -> cps_provider_8_MultiUp:
+  match v_1:
+    case []:
+      cps_provider_8_MultiUp{v_13, v_10}
+    case v_17 <> v_18:
+      cps_provider_8_multi_round_seed_one(v_17, v_18, v_4, v_7, v_10, v_13)
+
+def cps_provider_8_multi_round_seed_one(v_0: BIR.Code, v_2: List<&2, BIR.Code>, v_5: Map<&2, cps_provider_8_MultiCodeFact>, v_8: Map<&2, Bool>, v_11: Map<&2, Bool>, v_14: Map<&2, Bool>) -> cps_provider_8_MultiUp:
+  match v_0:
+    case BIR.Code{v_20, _, v_22, _}:
+      cps_provider_8_multi_round_seed(v_2, v_5, v_8, Map.set(&2, Bool, v_11, U32.show(v_20), Bool.not(cps_provider_8_multi_banned(v_8, v_20))), cps_provider_8_multi_seed_ups(v_22, 0n, v_20, cps_provider_8_multi_fact_statics(v_5, v_20), v_14))
+
+def cps_provider_8_multi_seed_ups(v_1: List<&2, BIR.Parameter>, v_3: Nat, v_5: U32, v_8: Map<&2, Bool>, v_11: Map<&2, Bool>) -> Map<&2, Bool>:
+  match v_1:
+    case []:
+      v_11
+    case _ <> v_17:
+      cps_provider_8_multi_seed_ups(v_17, Nat.add(v_3, 1n), v_5, v_8, Map.set(&2, Bool, v_11, cps_provider_8_multi_up_key(v_5, v_3), cps_provider_8_multi_static_at(v_8, v_5, v_3)))
+
+def cps_provider_8_multi_param_get(v_2: Map<&2, cps_provider_8_MultiParam>, v_4: U32) -> Maybe<&2, cps_provider_8_MultiParam>:
+  IndexLookup.find(cps_provider_8_MultiParam, v_2, U32.show(v_4))
+
+def cps_provider_8_multi_param_unboxed(v_2: Map<&2, cps_provider_8_MultiParam>, v_4: U32) -> Bool:
+  cps_provider_8_multi_param_unboxed_of(cps_provider_8_multi_param_get(v_2, v_4))
+
+def cps_provider_8_multi_param_unboxed_of(v_2: Maybe<&2, cps_provider_8_MultiParam>) -> Bool:
+  match v_2:
+    case Some{cps_provider_8_MultiParam{_, v_9, _, _}}:
+      v_9
+    case None{}:
+      False{}
+
+def cps_provider_8_multi_param_tag(v_2: Map<&2, cps_provider_8_MultiParam>, v_4: U32) -> U32:
+  cps_provider_8_multi_param_tag_of(cps_provider_8_multi_param_get(v_2, v_4), v_4)
+
+def cps_provider_8_multi_param_tag_of(v_2: Maybe<&2, cps_provider_8_MultiParam>, v_4: U32) -> U32:
+  match v_2:
+    case Some{cps_provider_8_MultiParam{_, _, v_12, _}}:
+      v_12
+    case None{}:
+      v_4
+
+def cps_provider_8_multi_param_fields(v_2: Map<&2, cps_provider_8_MultiParam>, v_4: U32) -> List<&2, U32>:
+  cps_provider_8_multi_param_fields_of(cps_provider_8_multi_param_get(v_2, v_4))
+
+def cps_provider_8_multi_param_fields_of(v_2: Maybe<&2, cps_provider_8_MultiParam>) -> List<&2, U32>:
+  match v_2:
+    case Some{cps_provider_8_MultiParam{_, _, _, v_12}}:
+      v_12
+    case None{}:
+      []
+
+def cps_provider_8_multi_nth(v_1: List<&2, BIR.Atom>, v_3: Nat) -> BIR.Atom:
+  match v_1:
+    case []:
+      BIR.Undefined{}
+    case +v_6 <> v_7:
+      cps_provider_8_multi_nth_step(Nat.is_eq(v_3, 0n), v_6, v_7, v_3)
+
+def cps_provider_8_multi_nth_step(v_1: Bool, v_2: BIR.Atom, v_4: List<&2, BIR.Atom>, v_6: Nat) -> BIR.Atom:
+  match v_1:
+    case True{}:
+      v_2
+    case False{}:
+      cps_provider_8_multi_nth(v_4, Nat.sub(v_6, 1n))
+
+def cps_provider_8_multi_atom_list(v_2: List<&2, U32>) -> List<&2, BIR.Atom>:
+  match v_2:
+    case []:
+      []
+    case +v_6 <> v_7:
+      BIR.Local{v_6} <> cps_provider_8_multi_atom_list(v_7)
+
+def cps_provider_8_multi_pad(v_1: List<&2, BIR.Atom>, v_3: Nat) -> List<&2, BIR.Atom>:
+  cps_provider_8_multi_pad_range(v_1, v_3, 0n, [])
+
+def cps_provider_8_multi_pad_range(v_1: List<&2, BIR.Atom>, v_3: Nat, v_5: Nat, v_7: List<&2, BIR.Atom>) -> List<&2, BIR.Atom>:
+  cps_provider_8_multi_pad_step(Nat.is_lt(v_5, v_3), v_1, v_3, v_5, v_7)
+
+def cps_provider_8_multi_pad_step(v_1: Bool, v_3: List<&2, BIR.Atom>, v_5: Nat, v_7: Nat, v_9: List<&2, BIR.Atom>) -> List<&2, BIR.Atom>:
+  match v_1:
+    case False{}:
+      List.reverse(&2, BIR.Atom, v_9)
+    case True{}:
+      cps_provider_8_multi_pad_take(v_3, v_5, v_7, v_9)
+
+def cps_provider_8_multi_pad_take(v_1: List<&2, BIR.Atom>, v_3: Nat, v_5: Nat, v_7: List<&2, BIR.Atom>) -> List<&2, BIR.Atom>:
+  match v_1:
+    case []:
+      cps_provider_8_multi_pad_range([], v_3, Nat.add(v_5, 1n), BIR.Undefined{} <> v_7)
+    case +v_14 <> v_15:
+      cps_provider_8_multi_pad_range(v_15, v_3, Nat.add(v_5, 1n), v_14 <> v_7)
+
+def cps_provider_8_multi_forward_atoms(v_0: BIR.Atom, v_3: Map<&2, cps_provider_8_MultiLayout>, v_6: Map<&2, cps_provider_8_MultiParam>, v_9: Map<&2, cps_provider_8_MultiCtor>, v_12: Map<&2, cps_provider_8_MultiSubst>, v_14: Nat) -> List<&2, BIR.Atom>:
+  match v_0:
+    case BIR.Local{v_17}:
+      cps_provider_8_multi_forward_local(v_17, v_3, v_6, v_9, v_12, v_14)
+    case _:
+      cps_provider_8_multi_pad([v_0], v_14)
+
+def cps_provider_8_multi_forward_local(v_1: U32, v_4: Map<&2, cps_provider_8_MultiLayout>, v_7: Map<&2, cps_provider_8_MultiParam>, v_10: Map<&2, cps_provider_8_MultiCtor>, v_13: Map<&2, cps_provider_8_MultiSubst>, v_15: Nat) -> List<&2, BIR.Atom>:
+  cps_provider_8_multi_forward_kind(cps_provider_8_multi_param_get(v_7, v_1), cps_provider_8_multi_binding(v_10, v_1), cps_provider_8_multi_sub_at(v_13, v_1), v_1, v_4, v_7, v_15, v_10)
+
+def cps_provider_8_multi_forward_kind(v_2: Maybe<&2, cps_provider_8_MultiParam>, v_5: Maybe<&2, cps_provider_8_MultiCtor>, v_8: Maybe<&2, cps_provider_8_MultiSubst>, v_10: U32, v_13: Map<&2, cps_provider_8_MultiLayout>, v_16: Map<&2, cps_provider_8_MultiParam>, v_18: Nat, v_21: Map<&2, cps_provider_8_MultiCtor>) -> List<&2, BIR.Atom>:
+  match v_2:
+    case Some{cps_provider_8_MultiParam{v_27, v_28, v_29, v_30}}:
+      cps_provider_8_multi_forward_flags(v_28, v_29, v_30, v_5, v_8, v_10, v_13, v_16, v_18, v_21, v_27)
+    case None{}:
+      cps_provider_8_multi_forward_other(v_5, v_8, v_10, v_13, v_16, v_18, v_21)
+
+def cps_provider_8_multi_forward_flags(v_1: Bool, v_3: U32, v_6: List<&2, U32>, v_9: Maybe<&2, cps_provider_8_MultiCtor>, v_12: Maybe<&2, cps_provider_8_MultiSubst>, v_14: U32, v_17: Map<&2, cps_provider_8_MultiLayout>, v_20: Map<&2, cps_provider_8_MultiParam>, v_22: Nat, v_25: Map<&2, cps_provider_8_MultiCtor>, v_27: U32) -> List<&2, BIR.Atom>:
+  match v_1:
+    case True{}:
+      BIR.Local{v_3} <> cps_provider_8_multi_pad(cps_provider_8_multi_atom_list(v_6), v_22)
+    case False{}:
+      cps_provider_8_multi_forward_other(v_9, v_12, v_14, v_17, v_20, v_22, v_25)
+
+def cps_provider_8_multi_forward_other(v_2: Maybe<&2, cps_provider_8_MultiCtor>, v_5: Maybe<&2, cps_provider_8_MultiSubst>, v_7: U32, v_10: Map<&2, cps_provider_8_MultiLayout>, v_13: Map<&2, cps_provider_8_MultiParam>, v_15: Nat, v_18: Map<&2, cps_provider_8_MultiCtor>) -> List<&2, BIR.Atom>:
+  match v_2:
+    case Some{cps_provider_8_MultiCtor{_, v_24, v_25}}:
+      BIR.TextValue{v_24} <> cps_provider_8_multi_pad(cps_provider_8_multi_field_atoms(v_25), v_15)
+    case None{}:
+      cps_provider_8_multi_forward_sub(v_5, v_7, v_15)
+
+def cps_provider_8_multi_field_atoms(v_1: List<&2, BIR.Field>) -> List<&2, BIR.Atom>:
+  match v_1:
+    case []:
+      []
+    case BIR.Field{_, _, _, v_11} <> v_12:
+      v_11 <> cps_provider_8_multi_field_atoms(v_12)
+
+def cps_provider_8_multi_forward_sub(v_2: Maybe<&2, cps_provider_8_MultiSubst>, v_4: U32, v_6: Nat) -> List<&2, BIR.Atom>:
+  match v_2:
+    case Some{cps_provider_8_MultiSubst{v_12, v_13, v_14, v_15}}:
+      cps_provider_8_multi_forward_window(U32.is_eq(v_12, v_4), v_13, v_14, v_6)
+    case None{}:
+      cps_provider_8_multi_pad([], v_6)
+
+def cps_provider_8_multi_forward_window(v_1: Bool, v_2: BIR.Atom, v_4: List<&2, BIR.Atom>, v_6: Nat) -> List<&2, BIR.Atom>:
+  match v_1:
+    case False{}:
+      cps_provider_8_multi_pad([], v_6)
+    case True{}:
+      v_2 <> cps_provider_8_multi_pad(v_4, v_6)
+
+def cps_provider_8_multi_open_arg(v_0: BIR.Atom, v_2: Bool, v_4: cps_provider_8_MRewCtx) -> Bool:
+  match v_2:
+    case False{}:
+      True{}
+    case True{}:
+      cps_provider_8_multi_open_value(v_0, v_4)
+
+def cps_provider_8_multi_open_value(v_0: BIR.Atom, v_2: cps_provider_8_MRewCtx) -> Bool:
+  match v_0:
+    case BIR.Local{v_5}:
+      cps_provider_8_multi_open_local(v_5, v_2)
+    case _:
+      False{}
+
+def cps_provider_8_multi_open_local(v_1: U32, v_3: cps_provider_8_MRewCtx) -> Bool:
+  match v_3:
+    case cps_provider_8_MRewCtx{_, v_17, _, _, v_20, v_21, v_22, v_23, _, v_25, v_26}:
+      cps_provider_8_multi_open_kind(cps_provider_8_multi_param_get(v_21, v_1), cps_provider_8_multi_binding(v_25, v_1), cps_provider_8_multi_sub_at(v_23, v_1), v_1, v_17, v_20, v_22, v_26)
+
+def cps_provider_8_multi_open_kind(v_2: Maybe<&2, cps_provider_8_MultiParam>, v_5: Maybe<&2, cps_provider_8_MultiCtor>, v_8: Maybe<&2, cps_provider_8_MultiSubst>, v_10: U32, v_13: Map<&2, cps_provider_8_MultiLayout>, v_15: Nat, v_17: Bool, v_20: Map<&2, Nat>) -> Bool:
+  match v_2:
+    case Some{cps_provider_8_MultiParam{_, v_27, _, _}}:
+      cps_provider_8_multi_open_flags(v_27, v_5, v_8, v_10, v_13, v_15, v_17, v_20)
+    case None{}:
+      cps_provider_8_multi_open_other(v_5, v_8, v_10, v_13, v_15, v_17, v_20)
+
+def cps_provider_8_multi_open_flags(v_1: Bool, v_4: Maybe<&2, cps_provider_8_MultiCtor>, v_7: Maybe<&2, cps_provider_8_MultiSubst>, v_9: U32, v_12: Map<&2, cps_provider_8_MultiLayout>, v_14: Nat, v_16: Bool, v_19: Map<&2, Nat>) -> Bool:
+  match v_1:
+    case True{}:
+      True{}
+    case False{}:
+      cps_provider_8_multi_open_other(v_4, v_7, v_9, v_12, v_14, v_16, v_19)
+
+def cps_provider_8_multi_open_other(v_2: Maybe<&2, cps_provider_8_MultiCtor>, v_5: Maybe<&2, cps_provider_8_MultiSubst>, v_7: U32, v_10: Map<&2, cps_provider_8_MultiLayout>, v_12: Nat, v_14: Bool, v_17: Map<&2, Nat>) -> Bool:
+  match v_2:
+    case Some{cps_provider_8_MultiCtor{v_22, _, v_24}}:
+      cps_provider_8_multi_open_ctor(cps_provider_8_multi_ctor_openable(v_17, v_10, v_7, v_22, v_24), Nat.is_le(cps_provider_8_multi_field_width(v_24), v_12))
+    case None{}:
+      cps_provider_8_multi_open_sub(v_5, v_7, v_14)
+
+def cps_provider_8_multi_open_ctor(v_1: Bool, v_3: Bool) -> Bool:
+  Bool.and(v_1, v_3)
+
+def cps_provider_8_multi_open_sub(v_2: Maybe<&2, cps_provider_8_MultiSubst>, v_4: U32, v_6: Bool) -> Bool:
+  match v_2:
+    case Some{cps_provider_8_MultiSubst{v_12, v_13, v_14, v_15}}:
+      cps_provider_8_multi_open_window(U32.is_eq(v_12, v_4), v_15, v_14)
+    case None{}:
+      False{}
+
+def cps_provider_8_multi_open_window(v_1: Bool, v_3: Bool, v_5: List<&2, BIR.Atom>) -> Bool:
+  cps_provider_8_multi_open_window_step(v_1, v_3, v_5)
+
+def cps_provider_8_multi_open_window_step(v_1: Bool, v_3: Bool, v_5: List<&2, BIR.Atom>) -> Bool:
+  match v_1:
+    case False{}:
+      False{}
+    case True{}:
+      Bool.not(v_3)
+
+def cps_provider_8_multi_args_open(v_1: List<&2, BIR.Arg>, v_3: U32, v_5: cps_provider_8_MRewCtx) -> Bool:
+  cps_provider_8_multi_args_open_at(v_1, v_3, 0n, v_5)
+
+def cps_provider_8_multi_args_open_at(v_1: List<&2, BIR.Arg>, v_3: U32, v_5: Nat, v_7: cps_provider_8_MRewCtx) -> Bool:
+  match v_1:
+    case []:
+      True{}
+    case BIR.Arg{_, v_13} <> v_14:
+      cps_provider_8_multi_args_open_step(cps_provider_8_multi_open_arg(v_13, cps_provider_8_multi_up_get(cps_provider_8_multi_ctx_up(v_7), v_3, v_5), v_7), v_14, v_3, v_5, v_7)
+
+def cps_provider_8_multi_ctx_up(v_1: cps_provider_8_MRewCtx) -> Map<&2, Bool>:
+  match v_1:
+    case cps_provider_8_MRewCtx{_, _, _, v_18, _, _, _, _, _, _, _}:
+      v_18
+
+def cps_provider_8_multi_args_open_step(v_1: Bool, v_3: List<&2, BIR.Arg>, v_5: U32, v_7: Nat, v_9: cps_provider_8_MRewCtx) -> Bool:
+  match v_1:
+    case False{}:
+      False{}
+    case True{}:
+      cps_provider_8_multi_args_open_at(v_3, v_5, Nat.add(v_7, 1n), v_9)
+
+def cps_provider_8_multi_expand_args(v_1: List<&2, BIR.Arg>, v_3: U32, v_5: cps_provider_8_MRewCtx) -> List<&2, BIR.Arg>:
+  cps_provider_8_multi_expand_at(v_1, v_3, 0n, v_5)
+
+def cps_provider_8_multi_expand_at(v_1: List<&2, BIR.Arg>, v_3: U32, v_5: Nat, v_7: cps_provider_8_MRewCtx) -> List<&2, BIR.Arg>:
+  match v_1:
+    case []:
+      []
+    case BIR.Arg{v_12, v_13} <> v_14:
+      cps_provider_8_multi_expand_one(v_12, v_13, cps_provider_8_multi_up_get(cps_provider_8_multi_ctx_up(v_7), v_3, v_5), v_14, v_3, v_5, v_7)
+
+def cps_provider_8_multi_expand_one(v_0: BIR.Use, v_1: BIR.Atom, v_3: Bool, v_5: List<&2, BIR.Arg>, v_7: U32, v_9: Nat, v_11: cps_provider_8_MRewCtx) -> List<&2, BIR.Arg>:
+  match v_3:
+    case False{}:
+      BIR.Arg{v_0, v_1} <> cps_provider_8_multi_expand_at(v_5, v_7, Nat.add(v_9, 1n), v_11)
+    case True{}:
+      cps_provider_8_multi_expand_forward(v_0, v_1, v_5, v_7, v_9, v_11)
+
+def cps_provider_8_multi_expand_forward(v_0: BIR.Use, v_1: BIR.Atom, v_3: List<&2, BIR.Arg>, v_5: U32, v_7: Nat, v_9: cps_provider_8_MRewCtx) -> List<&2, BIR.Arg>:
+  match v_9:
+    case cps_provider_8_MRewCtx{_, v_23, _, _, v_26, v_27, _, v_29, _, v_31, _}:
+      List.append(&2, BIR.Arg, cps_provider_8_multi_expand_atoms(cps_provider_8_multi_forward_atoms(v_1, v_23, v_27, v_31, v_29, v_26), v_0), cps_provider_8_multi_expand_at(v_3, v_5, Nat.add(v_7, 1n), v_9))
+
+def cps_provider_8_multi_expand_atoms(v_1: List<&2, BIR.Atom>, v_2: BIR.Use) -> List<&2, BIR.Arg>:
+  match v_1:
+    case []:
+      []
+    case +v_6 <> v_7:
+      BIR.Arg{v_2, v_6} <> cps_provider_8_multi_expand_atoms(v_7, v_2)
+
+def cps_provider_8_multi_subst_args(v_1: List<&2, BIR.Arg>, v_3: cps_provider_8_MRewCtx) -> List<&2, BIR.Arg>:
+  match v_1:
+    case []:
+      []
+    case BIR.Arg{v_8, v_9} <> v_10:
+      BIR.Arg{v_8, cps_provider_8_multi_atom(v_9, v_3)} <> cps_provider_8_multi_subst_args(v_10, v_3)
+
+def cps_provider_8_multi_atom(v_0: BIR.Atom, v_2: cps_provider_8_MRewCtx) -> BIR.Atom:
+  v_0
+
+def cps_provider_8_multi_site_call(v_1: List<&2, BIR.Arg>, v_3: U32, v_5: U32, v_7: cps_provider_8_MRewCtx) -> Bool:
+  cps_provider_8_multi_site_call_named(cps_provider_8_multi_args_name(v_1, v_5), v_1, v_3, v_5, v_7)
+
+def cps_provider_8_multi_site_call_named(v_1: Bool, v_3: List<&2, BIR.Arg>, v_5: U32, v_7: U32, v_9: cps_provider_8_MRewCtx) -> Bool:
+  match v_1:
+    case False{}:
+      True{}
+    case True{}:
+      Bool.and(cps_provider_8_multi_args_open(v_3, v_5, v_9), cps_provider_8_multi_site_args(v_3, v_5, v_7, v_9, 0n))
+
+def cps_provider_8_multi_site_args(v_1: List<&2, BIR.Arg>, v_3: U32, v_5: U32, v_7: cps_provider_8_MRewCtx, v_9: Nat) -> Bool:
+  match v_1:
+    case []:
+      True{}
+    case BIR.Arg{_, v_15} <> v_16:
+      cps_provider_8_multi_site_arg(cps_provider_8_multi_names(v_15, v_5), Bool.and(cps_provider_8_multi_multi_get(cps_provider_8_multi_ctx_multi(v_7), v_3), cps_provider_8_multi_up_get(cps_provider_8_multi_ctx_up(v_7), v_3, v_9)), v_16, v_3, v_5, v_7, v_9)
+
+def cps_provider_8_multi_site_arg(v_1: Bool, v_3: Bool, v_5: List<&2, BIR.Arg>, v_7: U32, v_9: U32, v_11: cps_provider_8_MRewCtx, v_13: Nat) -> Bool:
+  match v_1:
+    case False{}:
+      cps_provider_8_multi_site_args(v_5, v_7, v_9, v_11, Nat.add(v_13, 1n))
+    case True{}:
+      cps_provider_8_multi_site_arg_required(v_3, v_5, v_7, v_9, v_11, v_13)
+
+def cps_provider_8_multi_site_arg_required(v_1: Bool, v_3: List<&2, BIR.Arg>, v_5: U32, v_7: U32, v_9: cps_provider_8_MRewCtx, v_11: Nat) -> Bool:
+  match v_1:
+    case True{}:
+      cps_provider_8_multi_site_args(v_3, v_5, v_7, v_9, Nat.add(v_11, 1n))
+    case False{}:
+      False{}
+
+def cps_provider_8_multi_site_op(v_0: BIR.Op, v_2: U32, v_4: cps_provider_8_MRewCtx, v_7: List<&2, cps_provider_8_MultiRef>) -> Bool:
+  match v_0:
+    case BIR.Project{v_13, v_14, _, v_16}:
+      cps_provider_8_multi_site_project(v_13, v_14, v_16, v_2, v_4, v_7)
+    case BIR.HasTag{v_21, _, _}:
+      Bool.not(cps_provider_8_multi_names(v_21, v_2))
+    case BIR.Direct{v_27, v_28}:
+      cps_provider_8_multi_site_call(v_28, v_27, v_2, v_4)
+    case BIR.Copy{v_31}:
+      Bool.not(cps_provider_8_multi_names(v_31, v_2))
+    case BIR.PrimitiveCall{_, v_37, _}:
+      Bool.not(cps_provider_8_multi_args_name(v_37, v_2))
+    case BIR.Closure{_, v_44, _}:
+      Bool.not(cps_provider_8_multi_args_name(v_44, v_2))
+    case BIR.Apply{v_49, v_50}:
+      Bool.not(cps_provider_8_multi_arg_names(v_49, v_50, v_2))
+    case BIR.LoadSymbol{_, _}:
+      True{}
+    case BIR.Construct{_, _, v_61}:
+      Bool.not(cps_provider_8_multi_fields_name(v_61, v_2))
+
+def cps_provider_8_multi_site_project(v_0: BIR.Atom, v_2: U32, v_4: String, v_6: U32, v_8: cps_provider_8_MRewCtx, v_11: List<&2, cps_provider_8_MultiRef>) -> Bool:
+  match v_0:
+    case BIR.Local{v_14}:
+      cps_provider_8_multi_site_project_local(U32.is_eq(v_14, v_6), v_2, v_4, v_6, v_8, v_11)
+    case _:
+      True{}
+
+def cps_provider_8_multi_site_project_local(v_1: Bool, v_3: U32, v_5: String, v_7: U32, v_9: cps_provider_8_MRewCtx, v_12: List<&2, cps_provider_8_MultiRef>) -> Bool:
+  match v_1:
+    case False{}:
+      True{}
+    case True{}:
+      match v_9:
+        case cps_provider_8_MRewCtx{_, v_26, _, _, v_29, _, _, _, _, _, _}:
+          cps_provider_8_multi_project_ok(BIR.Local{v_7}, v_3, v_5, v_26, v_29, v_12, v_7)
+
+def cps_provider_8_multi_site_uses(v_0: BIR.Block, v_2: U32, v_4: cps_provider_8_MRewCtx, v_7: List<&2, cps_provider_8_MultiRef>) -> Bool:
+  match v_0:
+    case BIR.Return{v_10}:
+      Bool.not(cps_provider_8_multi_names(v_10, v_2))
+    case BIR.Let{v_15, v_16, v_17}:
+      cps_provider_8_multi_site_let(v_15, v_16, v_17, v_2, v_4, v_7)
+    case BIR.Branch{v_22, v_23, v_24}:
+      Bool.and(Bool.not(cps_provider_8_multi_names(v_22, v_2)), Bool.and(cps_provider_8_multi_site_uses(v_23, v_2, v_4, v_7), cps_provider_8_multi_site_uses(v_24, v_2, v_4, v_7)))
+    case BIR.Region{_, v_32, v_33}:
+      Bool.and(cps_provider_8_multi_site_uses(v_32, v_2, v_4, v_7), cps_provider_8_multi_site_uses(v_33, v_2, v_4, v_7))
+    case BIR.LeaveRegion{_}:
+      True{}
+    case BIR.TailDirect{v_40, v_41}:
+      cps_provider_8_multi_site_call(v_41, v_40, v_2, v_4)
+    case BIR.TailApply{v_45, v_46}:
+      Bool.not(cps_provider_8_multi_arg_names(v_45, v_46, v_2))
+    case BIR.Failure{_}:
+      True{}
+
+def cps_provider_8_multi_site_let(v_1: U32, v_2: BIR.Op, v_3: BIR.Block, v_5: U32, v_7: cps_provider_8_MRewCtx, v_10: List<&2, cps_provider_8_MultiRef>) -> Bool:
+  match v_2:
+    case BIR.HasTag{BIR.Local{v_15}, _, v_17}:
+      cps_provider_8_multi_site_tag(U32.is_eq(v_15, v_5), v_1, v_3, v_5, v_7, v_10, v_17)
+    case _:
+      Bool.and(cps_provider_8_multi_site_op(v_2, v_5, v_7, v_10), cps_provider_8_multi_site_uses(v_3, v_5, v_7, v_10))
+
+def cps_provider_8_multi_site_tag(v_1: Bool, v_3: U32, v_4: BIR.Block, v_6: U32, v_8: cps_provider_8_MRewCtx, v_11: List<&2, cps_provider_8_MultiRef>, v_13: String) -> Bool:
+  match v_1:
+    case False{}:
+      cps_provider_8_multi_site_uses(v_4, v_6, v_8, v_11)
+    case True{}:
+      cps_provider_8_multi_site_tag_branch(v_3, v_4, v_6, v_8, v_11, v_13)
+
+def cps_provider_8_multi_site_tag_branch(v_1: U32, v_2: BIR.Block, v_4: U32, v_6: cps_provider_8_MRewCtx, v_9: List<&2, cps_provider_8_MultiRef>, v_11: String) -> Bool:
+  match v_2:
+    case BIR.Branch{BIR.Local{v_16}, v_17, v_18}:
+      cps_provider_8_multi_site_tag_arm(U32.is_eq(v_16, v_1), v_17, v_18, v_4, v_6, v_9, v_11)
+    case _:
+      cps_provider_8_multi_site_uses(v_2, v_4, v_6, v_9)
+
+def cps_provider_8_multi_site_tag_arm(v_1: Bool, v_2: BIR.Block, v_3: BIR.Block, v_5: U32, v_7: cps_provider_8_MRewCtx, v_10: List<&2, cps_provider_8_MultiRef>, v_12: String) -> Bool:
+  match v_1:
+    case False{}:
+      cps_provider_8_multi_site_uses(v_2, v_5, v_7, v_10)
+    case True{}:
+      Bool.and(cps_provider_8_multi_site_uses(v_2, v_5, v_7, cps_provider_8_MultiRef{v_5, v_12} <> v_10), cps_provider_8_multi_site_uses(v_3, v_5, v_7, v_10))
+
+def cps_provider_8_multi_slot_at(v_2: List<&2, String>, v_4: String) -> Nat:
+  cps_provider_8_multi_slot_of(cps_provider_8_multi_key_at(v_2, v_4, 0n))
+
+def cps_provider_8_multi_slot_of(v_2: Maybe<&2, Nat>) -> Nat:
+  match v_2:
+    case Some{v_5}:
+      v_5
+    case None{}:
+      0n
+
+def cps_provider_8_multi_op_rewrite(v_0: BIR.Op, v_2: cps_provider_8_MRewCtx) -> BIR.Op:
+  match v_0:
+    case BIR.Project{v_7, v_8, v_9, v_10}:
+      cps_provider_8_multi_project_rewrite(v_7, v_8, v_9, v_10, v_2)
+    case BIR.HasTag{v_15, v_16, v_17}:
+      cps_provider_8_multi_has_tag_rewrite(v_15, v_16, v_17, v_2)
+    case BIR.Copy{v_20}:
+      BIR.Copy{cps_provider_8_multi_atom(v_20, v_2)}
+    case BIR.PrimitiveCall{v_25, v_26, v_27}:
+      BIR.PrimitiveCall{v_25, cps_provider_8_multi_subst_args(v_26, v_2), v_27}
+    case BIR.Closure{v_32, v_33, v_34}:
+      BIR.Closure{v_32, cps_provider_8_multi_subst_args(v_33, v_2), v_34}
+    case BIR.Direct{v_38, v_39}:
+      BIR.Direct{v_38, cps_provider_8_multi_subst_args(v_39, v_2)}
+    case BIR.Apply{v_43, v_44}:
+      BIR.Apply{cps_provider_8_multi_atom(v_43, v_2), cps_provider_8_multi_subst_arg(v_44, v_2)}
+    case BIR.LoadSymbol{v_49, v_50}:
+      BIR.LoadSymbol{v_49, v_50}
+    case BIR.Construct{v_54, v_55, v_56}:
+      BIR.Construct{v_54, v_55, cps_provider_8_multi_subst_fields(v_56, v_2)}
+
+def cps_provider_8_multi_subst_arg(v_0: BIR.Arg, v_2: cps_provider_8_MRewCtx) -> BIR.Arg:
+  match v_0:
+    case BIR.Arg{v_5, v_6}:
+      BIR.Arg{v_5, cps_provider_8_multi_atom(v_6, v_2)}
+
+def cps_provider_8_multi_subst_fields(v_1: List<&2, BIR.Field>, v_3: cps_provider_8_MRewCtx) -> List<&2, BIR.Field>:
+  match v_1:
+    case []:
+      []
+    case BIR.Field{v_10, v_11, v_12, v_13} <> v_14:
+      BIR.Field{v_10, v_11, v_12, cps_provider_8_multi_atom(v_13, v_3)} <> cps_provider_8_multi_subst_fields(v_14, v_3)
+
+def cps_provider_8_multi_project_rewrite(v_0: BIR.Atom, v_2: U32, v_4: U32, v_6: String, v_8: cps_provider_8_MRewCtx) -> BIR.Op:
+  match v_0:
+    case BIR.Local{v_10}:
+      cps_provider_8_multi_project_local_rewrite(v_10, v_2, v_4, v_6, v_8)
+    case _:
+      BIR.Project{cps_provider_8_multi_atom(v_0, v_8), v_2, v_4, v_6}
+
+def cps_provider_8_multi_project_local_rewrite(v_1: U32, v_3: U32, v_5: U32, v_7: String, v_9: cps_provider_8_MRewCtx) -> BIR.Op:
+  match v_9:
+    case cps_provider_8_MRewCtx{_, v_22, _, _, _, v_26, _, v_28, _, _, _}:
+      cps_provider_8_multi_project_choose(cps_provider_8_multi_param_get(v_26, v_1), cps_provider_8_multi_sub_at(v_28, v_1), v_1, v_22, v_3, v_5, v_7)
+
+def cps_provider_8_multi_project_choose(v_2: Maybe<&2, cps_provider_8_MultiParam>, v_5: Maybe<&2, cps_provider_8_MultiSubst>, v_7: U32, v_10: Map<&2, cps_provider_8_MultiLayout>, v_12: U32, v_14: U32, v_16: String) -> BIR.Op:
+  match v_2:
+    case Some{cps_provider_8_MultiParam{_, v_22, _, v_24}}:
+      cps_provider_8_multi_project_flags(v_22, v_24, v_5, v_7, v_10, v_12, v_14, v_16)
+    case None{}:
+      cps_provider_8_multi_project_sub(v_5, v_7, v_10, v_12, v_14, v_16)
+
+def cps_provider_8_multi_project_flags(v_1: Bool, v_4: List<&2, U32>, v_7: Maybe<&2, cps_provider_8_MultiSubst>, v_9: U32, v_12: Map<&2, cps_provider_8_MultiLayout>, v_14: U32, v_16: U32, v_18: String) -> BIR.Op:
+  match v_1:
+    case True{}:
+      BIR.Copy{cps_provider_8_multi_nth(cps_provider_8_multi_atom_list(v_4), cps_provider_8_multi_slot_at(cps_provider_8_multi_layout_keys(v_12, v_14), v_18))}
+    case False{}:
+      cps_provider_8_multi_project_sub(v_7, v_9, v_12, v_14, v_16, v_18)
+
+def cps_provider_8_multi_project_sub(v_2: Maybe<&2, cps_provider_8_MultiSubst>, v_4: U32, v_7: Map<&2, cps_provider_8_MultiLayout>, v_9: U32, v_11: U32, v_13: String) -> BIR.Op:
+  match v_2:
+    case Some{cps_provider_8_MultiSubst{v_18, _, v_20, _}}:
+      cps_provider_8_multi_project_window(U32.is_eq(v_18, v_4), BIR.Local{v_4}, v_20, v_7, v_9, v_11, v_13)
+    case None{}:
+      BIR.Project{BIR.Local{v_4}, v_9, v_11, v_13}
+
+def cps_provider_8_multi_project_window(v_1: Bool, v_2: BIR.Atom, v_4: List<&2, BIR.Atom>, v_7: Map<&2, cps_provider_8_MultiLayout>, v_9: U32, v_11: U32, v_13: String) -> BIR.Op:
+  match v_1:
+    case False{}:
+      BIR.Project{v_2, v_9, v_11, v_13}
+    case True{}:
+      BIR.Copy{cps_provider_8_multi_nth(v_4, cps_provider_8_multi_slot_at(cps_provider_8_multi_layout_keys(v_7, v_9), v_13))}
+
+def cps_provider_8_multi_has_tag_rewrite(v_0: BIR.Atom, v_2: U32, v_4: String, v_6: cps_provider_8_MRewCtx) -> BIR.Op:
+  match v_0:
+    case BIR.Local{v_8}:
+      cps_provider_8_multi_has_tag_local(v_8, v_2, v_4, v_6)
+    case _:
+      BIR.HasTag{cps_provider_8_multi_atom(v_0, v_6), v_2, v_4}
+
+def cps_provider_8_multi_has_tag_local(v_1: U32, v_3: U32, v_5: String, v_7: cps_provider_8_MRewCtx) -> BIR.Op:
+  match v_7:
+    case cps_provider_8_MRewCtx{_, _, _, _, _, v_24, _, v_26, _, _, _}:
+      cps_provider_8_multi_has_tag_choose(cps_provider_8_multi_param_get(v_24, v_1), cps_provider_8_multi_sub_at(v_26, v_1), v_1, v_3, v_5)
+
+def cps_provider_8_multi_has_tag_choose(v_2: Maybe<&2, cps_provider_8_MultiParam>, v_5: Maybe<&2, cps_provider_8_MultiSubst>, v_7: U32, v_9: U32, v_11: String) -> BIR.Op:
+  match v_2:
+    case Some{cps_provider_8_MultiParam{_, v_17, v_18, _}}:
+      cps_provider_8_multi_has_tag_flags(v_17, v_18, v_5, v_7, v_9, v_11)
+    case None{}:
+      cps_provider_8_multi_has_tag_sub(v_5, v_7, v_9, v_11)
+
+def cps_provider_8_multi_has_tag_flags(v_1: Bool, v_3: U32, v_6: Maybe<&2, cps_provider_8_MultiSubst>, v_8: U32, v_10: U32, v_12: String) -> BIR.Op:
+  match v_1:
+    case True{}:
+      cps_provider_8_multi_tag_eq(BIR.Local{v_3}, v_12, v_10)
+    case False{}:
+      cps_provider_8_multi_has_tag_sub(v_6, v_8, v_10, v_12)
+
+def cps_provider_8_multi_has_tag_sub(v_2: Maybe<&2, cps_provider_8_MultiSubst>, v_4: U32, v_6: U32, v_8: String) -> BIR.Op:
+  match v_2:
+    case Some{cps_provider_8_MultiSubst{v_13, _, _, _}}:
+      cps_provider_8_multi_has_tag_window(U32.is_eq(v_13, v_4), v_4, v_6, v_8)
+    case None{}:
+      BIR.HasTag{BIR.Local{v_4}, v_6, v_8}
+
+def cps_provider_8_multi_has_tag_window(v_1: Bool, v_3: U32, v_5: U32, v_7: String) -> BIR.Op:
+  match v_1:
+    case False{}:
+      BIR.HasTag{BIR.Local{v_3}, v_5, v_7}
+    case True{}:
+      cps_provider_8_multi_tag_eq(BIR.Local{v_3}, v_7, v_5)
+
+def cps_provider_8_multi_tag_eq(v_0: BIR.Atom, v_2: String, v_4: U32) -> BIR.Op:
+  BIR.PrimitiveCall{BIR.PrimStringEq{}, [BIR.Arg{BIR.Many{}, v_0}, BIR.Arg{BIR.Many{}, BIR.TextValue{v_2}}], []}
+
+def cps_provider_8_multi_site_private(v_1: U32, v_3: List<&2, BIR.Arg>, v_4: BIR.Block, v_6: U32, v_8: cps_provider_8_MRewCtx) -> Bool:
+  Bool.and(cps_provider_8_multi_multi_get(cps_provider_8_multi_ctx_multi(v_8), v_1), cps_provider_8_multi_args_open(v_3, v_1, v_8))
+
+def cps_provider_8_multi_ctx_multi(v_1: cps_provider_8_MRewCtx) -> Map<&2, Bool>:
+  match v_1:
+    case cps_provider_8_MRewCtx{_, _, v_17, _, _, _, _, _, _, _, _}:
+      v_17
+
+def cps_provider_8_multi_ctx_private(v_1: cps_provider_8_MRewCtx) -> Bool:
+  match v_1:
+    case cps_provider_8_MRewCtx{_, _, _, _, _, _, v_20, _, _, _, _}:
+      v_20
+
+def cps_provider_8_multi_counter_id(v_1: Nat) -> U32:
+  U32.add(U32.from_nat(v_1), U32.from_nat(2013265920n))
+
+def cps_provider_8_multi_return_param(v_0: BIR.Atom, v_2: cps_provider_8_MRewCtx) -> Bool:
+  match v_0:
+    case BIR.Local{v_5}:
+      Bool.and(cps_provider_8_multi_ctx_private(v_2), cps_provider_8_multi_param_unboxed(cps_provider_8_multi_ctx_params(v_2), v_5))
+    case _:
+      False{}
+
+def cps_provider_8_multi_ctx_params(v_1: cps_provider_8_MRewCtx) -> Map<&2, cps_provider_8_MultiParam>:
+  match v_1:
+    case cps_provider_8_MRewCtx{_, _, _, _, _, v_20, _, _, _, _, _}:
+      v_20
+
+def cps_provider_8_multi_ctx_layouts(v_1: cps_provider_8_MRewCtx) -> Map<&2, cps_provider_8_MultiLayout>:
+  match v_1:
+    case cps_provider_8_MRewCtx{_, v_16, _, _, _, _, _, _, _, _, _}:
+      v_16
+
+def cps_provider_8_multi_ctx_width(v_1: cps_provider_8_MRewCtx) -> Nat:
+  match v_1:
+    case cps_provider_8_MRewCtx{_, _, _, _, v_18, _, _, _, _, _, _}:
+      v_18
+
+def cps_provider_8_multi_ctx_bindings(v_1: cps_provider_8_MRewCtx) -> Map<&2, cps_provider_8_MultiCtor>:
+  match v_1:
+    case cps_provider_8_MRewCtx{_, _, _, _, _, _, _, _, _, v_24, _}:
+      v_24
+
+def cps_provider_8_multi_ctx_uses(v_1: cps_provider_8_MRewCtx) -> Map<&2, Nat>:
+  match v_1:
+    case cps_provider_8_MRewCtx{_, _, _, _, _, _, _, _, _, _, v_25}:
+      v_25
+
+def cps_provider_8_multi_ctx_sub(v_1: cps_provider_8_MRewCtx) -> Map<&2, cps_provider_8_MultiSubst>:
+  match v_1:
+    case cps_provider_8_MRewCtx{_, _, _, _, _, _, _, v_22, _, _, _}:
+      v_22
+
+def cps_provider_8_multi_sub_at(v_2: Map<&2, cps_provider_8_MultiSubst>, v_4: U32) -> Maybe<&2, cps_provider_8_MultiSubst>:
+  IndexLookup.find(cps_provider_8_MultiSubst, v_2, U32.show(v_4))
+
+def cps_provider_8_multi_ctx_result(v_1: cps_provider_8_MRewCtx, v_3: U32, v_5: Bool) -> cps_provider_8_MRewCtx:
+  match v_1:
+    case cps_provider_8_MRewCtx{v_18, v_19, v_20, v_21, v_22, v_23, v_24, v_25, _, v_27, v_28}:
+      cps_provider_8_MRewCtx{v_18, v_19, v_20, v_21, v_22, v_23, v_24, cps_provider_8_multi_sub_add(v_5, v_25, v_3, v_22), Some{v_3}, v_27, v_28}
+
+def cps_provider_8_multi_sub_add(v_1: Bool, v_4: Map<&2, cps_provider_8_MultiSubst>, v_6: U32, v_8: Nat) -> Map<&2, cps_provider_8_MultiSubst>:
+  match v_1:
+    case False{}:
+      v_4
+    case True{}:
+      Map.set(&2, cps_provider_8_MultiSubst, v_4, U32.show(v_6), cps_provider_8_MultiSubst{v_6, BIR.Local{v_6}, cps_provider_8_multi_window_fields(v_6, v_8), False{}})
+
+def native_match_cps_provider_8_multi_call_window_0(v_10: Maybe<&2, cps_provider_8_MultiSubst>, v_1: U32, v_3: cps_provider_8_MRewCtx) -> cps_provider_8_MultiWindow:
+  match v_10:
+    case None{}:
+      cps_provider_8_MultiWindow{cps_provider_8_multi_ctx_width(v_3), [], Some{v_1}}
+    case Some{_}:
+      cps_provider_8_MultiWindow{cps_provider_8_multi_ctx_width(v_3), cps_provider_8_multi_fresh_ids(v_1, cps_provider_8_multi_ctx_width(v_3)), None{}}
+
+def cps_provider_8_multi_call_window(v_1: U32, v_3: cps_provider_8_MRewCtx) -> cps_provider_8_MultiWindow:
+  native_match_cps_provider_8_multi_call_window_0(cps_provider_8_multi_sub_at(cps_provider_8_multi_ctx_sub(v_3), v_1), v_1, v_3)
+
+def cps_provider_8_multi_ctx_cur(v_1: cps_provider_8_MRewCtx) -> Maybe<&2, U32>:
+  match v_1:
+    case cps_provider_8_MRewCtx{_, _, _, _, _, _, _, _, v_23, _, _}:
+      v_23
+
+def cps_provider_8_multi_window_fields(v_1: U32, v_3: Nat) -> List<&2, BIR.Atom>:
+  cps_provider_8_multi_atom_list(cps_provider_8_multi_fresh_ids(v_1, v_3))
+
+def cps_provider_8_multi_rewrite(v_0: BIR.Block, v_2: cps_provider_8_MRewCtx, v_4: Nat) -> cps_provider_8_MultiRew:
+  match v_0:
+    case BIR.Return{v_7}:
+      cps_provider_8_MultiRew{v_0, Map.new(&2, cps_provider_8_MultiWindow), Map.new(&2, Bool), Map.new(&2, Bool), Map.new(&2, Bool), False{}, cps_provider_8_multi_return_param(v_7, v_2), v_4}
+    case BIR.Let{v_16, v_17, v_18}:
+      cps_provider_8_multi_rewrite_let(v_16, v_17, v_18, v_2, v_4)
+    case BIR.Branch{v_23, v_24, v_25}:
+      cps_provider_8_multi_rewrite_branch(v_23, v_24, v_25, v_2, v_4)
+    case BIR.Region{v_30, v_31, v_32}:
+      cps_provider_8_multi_rewrite_region(v_30, v_31, v_32, v_2, v_4)
+    case BIR.LeaveRegion{_}:
+      cps_provider_8_MultiRew{v_0, Map.new(&2, cps_provider_8_MultiWindow), Map.new(&2, Bool), Map.new(&2, Bool), Map.new(&2, Bool), False{}, False{}, v_4}
+    case BIR.TailDirect{v_42, v_43}:
+      cps_provider_8_multi_rewrite_tail(v_42, v_43, v_2, v_4)
+    case BIR.TailApply{v_47, v_48}:
+      cps_provider_8_MultiRew{BIR.TailApply{cps_provider_8_multi_atom(v_47, v_2), cps_provider_8_multi_subst_arg(v_48, v_2)}, Map.new(&2, cps_provider_8_MultiWindow), Map.new(&2, Bool), Map.new(&2, Bool), Map.new(&2, Bool), False{}, False{}, v_4}
+    case BIR.Failure{v_56}:
+      cps_provider_8_MultiRew{v_0, Map.new(&2, cps_provider_8_MultiWindow), Map.new(&2, Bool), Map.new(&2, Bool), Map.new(&2, Bool), False{}, False{}, v_4}
+
+def cps_provider_8_multi_rewrite_let(v_1: U32, v_2: BIR.Op, v_3: BIR.Block, v_5: cps_provider_8_MRewCtx, v_7: Nat) -> cps_provider_8_MultiRew:
+  match v_2:
+    case BIR.Construct{v_12, v_13, v_14}:
+      cps_provider_8_multi_rewrite_construct(v_1, v_12, v_13, v_14, v_3, v_5, v_7)
+    case BIR.Direct{v_18, v_19}:
+      cps_provider_8_multi_rewrite_direct(v_1, v_18, v_19, v_3, v_5, v_7)
+    case BIR.Apply{v_23, v_24}:
+      cps_provider_8_multi_rewrite_apply(v_1, v_23, v_24, v_3, v_5, v_7)
+    case _:
+      cps_provider_8_multi_rewrite_op(v_1, v_2, v_3, v_5, v_7)
+
+def cps_provider_8_multi_rewrite_construct(v_1: U32, v_3: U32, v_5: String, v_7: List<&2, BIR.Field>, v_8: BIR.Block, v_10: cps_provider_8_MRewCtx, v_12: Nat) -> cps_provider_8_MultiRew:
+  match v_10:
+    case cps_provider_8_MRewCtx{v_25, v_26, v_27, v_28, v_29, v_30, v_31, v_32, _, v_34, v_35}:
+      cps_provider_8_multi_rewrite_construct_bind(v_1, v_3, v_5, v_7, v_8, cps_provider_8_MRewCtx{v_25, v_26, v_27, v_28, v_29, v_30, v_31, v_32, cps_provider_8_multi_ctx_cur(v_10), Map.set(&2, cps_provider_8_MultiCtor, v_34, U32.show(v_1), cps_provider_8_MultiCtor{v_3, v_5, v_7}), v_35}, v_12)
+
+def cps_provider_8_multi_rewrite_construct_bind(v_1: U32, v_3: U32, v_5: String, v_7: List<&2, BIR.Field>, v_8: BIR.Block, v_10: cps_provider_8_MRewCtx, v_12: Nat) -> cps_provider_8_MultiRew:
+  cps_provider_8_multi_rewrite_construct_made(BIR.Construct{v_3, v_5, v_7}, cps_provider_8_multi_rewrite(v_8, v_10, v_12), v_1, v_8, v_10)
+
+def cps_provider_8_multi_rewrite_construct_made(v_0: BIR.Op, v_2: cps_provider_8_MultiRew, v_4: U32, v_5: BIR.Block, v_7: cps_provider_8_MRewCtx) -> cps_provider_8_MultiRew:
+  match v_2:
+    case cps_provider_8_MultiRew{v_17, v_18, v_19, v_20, v_21, v_22, v_23, v_24}:
+      cps_provider_8_multi_rewrite_construct_join(v_0, v_4, v_5, v_7, v_17, v_18, v_19, v_20, v_21, v_22, v_23, v_24)
+
+def cps_provider_8_multi_rewrite_construct_join(v_0: BIR.Op, v_2: U32, v_3: BIR.Block, v_5: cps_provider_8_MRewCtx, v_6: BIR.Block, v_9: Map<&2, cps_provider_8_MultiWindow>, v_12: Map<&2, Bool>, v_15: Map<&2, Bool>, v_18: Map<&2, Bool>, v_20: Bool, v_22: Bool, v_24: Nat) -> cps_provider_8_MultiRew:
+  cps_provider_8_MultiRew{BIR.Let{v_2, v_0, v_6}, v_9, v_12, v_15, v_18, v_20, cps_provider_8_multi_window_result(v_2, v_3, v_5, v_22), v_24}
+
+def cps_provider_8_multi_window_result(v_1: U32, v_2: BIR.Block, v_4: cps_provider_8_MRewCtx, v_6: Bool) -> Bool:
+  match v_2:
+    case BIR.Return{BIR.Local{v_9}}:
+      cps_provider_8_multi_window_result_same(Bool.and(U32.is_eq(v_9, v_1), cps_provider_8_multi_ctx_private(v_4)), v_6)
+    case _:
+      v_6
+
+def cps_provider_8_multi_window_result_same(v_1: Bool, v_3: Bool) -> Bool:
+  match v_1:
+    case True{}:
+      True{}
+    case False{}:
+      v_3
+
+def cps_provider_8_multi_rew_make(v_0: BIR.Block, v_2: cps_provider_8_MultiRew, v_4: Bool) -> cps_provider_8_MultiRew:
+  match v_2:
+    case cps_provider_8_MultiRew{_, v_15, v_16, v_17, v_18, v_19, _, v_21}:
+      cps_provider_8_MultiRew{v_0, v_15, v_16, v_17, v_18, v_19, v_4, v_21}
+
+def cps_provider_8_multi_rewrite_direct(v_1: U32, v_3: U32, v_5: List<&2, BIR.Arg>, v_6: BIR.Block, v_8: cps_provider_8_MRewCtx, v_10: Nat) -> cps_provider_8_MultiRew:
+  cps_provider_8_multi_rewrite_direct_decide(cps_provider_8_multi_site_private(v_3, v_5, v_6, v_1, v_8), v_1, v_3, v_5, v_6, v_8, v_10)
+
+def cps_provider_8_multi_rewrite_direct_decide(v_1: Bool, v_3: U32, v_5: U32, v_7: List<&2, BIR.Arg>, v_8: BIR.Block, v_10: cps_provider_8_MRewCtx, v_12: Nat) -> cps_provider_8_MultiRew:
+  match v_1:
+    case True{}:
+      cps_provider_8_multi_rewrite_direct_private(v_3, v_5, v_7, v_8, v_10, v_12)
+    case False{}:
+      cps_provider_8_multi_rewrite_direct_pub(v_3, v_5, v_7, v_8, v_10, v_12)
+
+def cps_provider_8_multi_rewrite_direct_private(v_1: U32, v_3: U32, v_5: List<&2, BIR.Arg>, v_6: BIR.Block, v_8: cps_provider_8_MRewCtx, v_10: Nat) -> cps_provider_8_MultiRew:
+  cps_provider_8_multi_rewrite_direct_open(cps_provider_8_multi_site_uses(v_6, v_1, cps_provider_8_multi_ctx_result(v_8, v_1, True{}), []), v_1, v_3, v_5, v_6, v_8, v_10)
+
+def cps_provider_8_multi_rewrite_direct_open(v_1: Bool, v_3: U32, v_5: U32, v_7: List<&2, BIR.Arg>, v_8: BIR.Block, v_10: cps_provider_8_MRewCtx, v_12: Nat) -> cps_provider_8_MultiRew:
+  match v_1:
+    case True{}:
+      cps_provider_8_multi_rewrite_direct_body(v_3, v_5, cps_provider_8_multi_expand_args(v_7, v_5, v_10), v_8, cps_provider_8_multi_ctx_result(v_10, v_3, True{}), v_12, True{})
+    case False{}:
+      cps_provider_8_multi_rewrite_direct_escape(cps_provider_8_multi_args_sub_named(v_7, v_10), v_3, v_5, v_7, v_8, v_10, v_12)
+
+def cps_provider_8_multi_rewrite_direct_escape(v_1: Bool, v_3: U32, v_5: U32, v_7: List<&2, BIR.Arg>, v_8: BIR.Block, v_10: cps_provider_8_MRewCtx, v_12: Nat) -> cps_provider_8_MultiRew:
+  match v_1:
+    case False{}:
+      cps_provider_8_multi_rewrite_direct_pub(v_3, v_5, v_7, v_8, v_10, v_12)
+    case True{}:
+      cps_provider_8_multi_rewrite_direct_body(v_3, v_5, cps_provider_8_multi_expand_args(v_7, v_5, v_10), v_8, cps_provider_8_multi_ctx_result(v_10, v_3, False{}), v_12, True{})
+
+def cps_provider_8_multi_rewrite_direct_pub(v_1: U32, v_3: U32, v_5: List<&2, BIR.Arg>, v_6: BIR.Block, v_8: cps_provider_8_MRewCtx, v_10: Nat) -> cps_provider_8_MultiRew:
+  match v_8:
+    case cps_provider_8_MRewCtx{v_23, v_24, v_25, v_26, v_27, v_28, v_29, v_30, _, v_32, v_33}:
+      cps_provider_8_multi_rewrite_direct_body(v_1, v_3, v_5, v_6, cps_provider_8_MRewCtx{v_23, v_24, v_25, v_26, v_27, v_28, v_29, v_30, Some{v_1}, v_32, v_33}, v_10, False{})
+
+def cps_provider_8_multi_rewrite_direct_body(v_1: U32, v_3: U32, v_5: List<&2, BIR.Arg>, v_6: BIR.Block, v_8: cps_provider_8_MRewCtx, v_10: Nat, v_12: Bool) -> cps_provider_8_MultiRew:
+  +v_16 = cps_provider_8_multi_rewrite(v_6, v_8, v_10)
+  cps_provider_8_multi_rewrite_site(v_1, v_3, v_5, v_16, v_8, v_12)
+
+def cps_provider_8_multi_rewrite_site(v_1: U32, v_3: U32, v_5: List<&2, BIR.Arg>, v_7: cps_provider_8_MultiRew, v_9: cps_provider_8_MRewCtx, v_11: Bool) -> cps_provider_8_MultiRew:
+  match v_7:
+    case cps_provider_8_MultiRew{v_21, v_22, v_23, v_24, v_25, v_26, v_27, v_28}:
+      cps_provider_8_multi_rewrite_site_applied(v_1, v_3, v_5, v_21, v_22, v_23, v_24, v_25, v_26, v_27, v_28, v_9, v_11)
+
+def cps_provider_8_multi_rewrite_site_applied(v_1: U32, v_3: U32, v_5: List<&2, BIR.Arg>, v_6: BIR.Block, v_9: Map<&2, cps_provider_8_MultiWindow>, v_12: Map<&2, Bool>, v_15: Map<&2, Bool>, v_18: Map<&2, Bool>, v_20: Bool, v_22: Bool, v_24: Nat, v_26: cps_provider_8_MRewCtx, v_28: Bool) -> cps_provider_8_MultiRew:
+  +v_32 = cps_provider_8_cat(["k", U32.show(v_1)])
+  cps_provider_8_multi_rewrite_site_route(v_28, v_1, v_3, v_5, v_6, v_9, v_12, v_15, v_18, v_20, v_22, v_24, v_26, v_32)
+
+def cps_provider_8_multi_rewrite_site_route(v_1: Bool, v_3: U32, v_5: U32, v_7: List<&2, BIR.Arg>, v_8: BIR.Block, v_11: Map<&2, cps_provider_8_MultiWindow>, v_14: Map<&2, Bool>, v_17: Map<&2, Bool>, v_20: Map<&2, Bool>, v_22: Bool, v_24: Bool, v_26: Nat, v_28: cps_provider_8_MRewCtx, +v_30: String) -> cps_provider_8_MultiRew:
+  match v_1:
+    case False{}:
+      cps_provider_8_MultiRew{BIR.Let{v_3, BIR.Direct{v_5, cps_provider_8_multi_subst_args(v_7, v_28)}, v_8}, v_11, Map.set(&2, Bool, v_14, v_30, False{}), Map.set(&2, Bool, v_17, v_30, v_24), v_20, Bool.or(v_22, Bool.and(v_24, Bool.not(cps_provider_8_multi_ctx_private(v_28)))), v_24, v_26}
+    case True{}:
+      cps_provider_8_MultiRew{BIR.Let{v_3, BIR.Direct{v_5, v_7}, v_8}, Map.set(&2, cps_provider_8_MultiWindow, v_11, v_30, cps_provider_8_multi_call_window(v_3, v_28)), Map.set(&2, Bool, v_14, v_30, True{}), Map.set(&2, Bool, v_17, v_30, v_24), v_20, Bool.or(v_22, Bool.and(v_24, Bool.not(cps_provider_8_multi_ctx_private(v_28)))), v_24, v_26}
+
+def cps_provider_8_multi_rewrite_apply(v_1: U32, v_2: BIR.Atom, v_3: BIR.Arg, v_4: BIR.Block, v_6: cps_provider_8_MRewCtx, v_8: Nat) -> cps_provider_8_MultiRew:
+  +v_12 = cps_provider_8_multi_rewrite(v_4, v_6, v_8)
+  cps_provider_8_multi_rewrite_apply_made(v_1, v_2, v_3, v_12, v_6)
+
+def cps_provider_8_multi_rewrite_apply_made(v_1: U32, v_2: BIR.Atom, v_3: BIR.Arg, v_5: cps_provider_8_MultiRew, v_7: cps_provider_8_MRewCtx) -> cps_provider_8_MultiRew:
+  match v_5:
+    case cps_provider_8_MultiRew{v_17, v_18, v_19, v_20, v_21, v_22, v_23, v_24}:
+      cps_provider_8_MultiRew{BIR.Let{v_1, BIR.Apply{cps_provider_8_multi_atom(v_2, v_7), cps_provider_8_multi_subst_arg(v_3, v_7)}, v_17}, v_18, v_19, Map.set(&2, Bool, v_20, cps_provider_8_cat(["k", U32.show(v_1)]), v_23), v_21, Bool.or(v_22, Bool.and(v_23, Bool.not(cps_provider_8_multi_ctx_private(v_7)))), v_23, v_24}
+
+def cps_provider_8_multi_rewrite_op(v_1: U32, v_2: BIR.Op, v_3: BIR.Block, v_5: cps_provider_8_MRewCtx, v_7: Nat) -> cps_provider_8_MultiRew:
+  +v_11 = cps_provider_8_multi_rewrite(v_3, v_5, v_7)
+  cps_provider_8_multi_rewrite_op_made(v_1, v_2, v_11, v_5)
+
+def cps_provider_8_multi_rewrite_op_made(v_1: U32, v_2: BIR.Op, v_4: cps_provider_8_MultiRew, v_6: cps_provider_8_MRewCtx) -> cps_provider_8_MultiRew:
+  match v_4:
+    case cps_provider_8_MultiRew{v_16, v_17, v_18, v_19, v_20, v_21, v_22, v_23}:
+      cps_provider_8_MultiRew{BIR.Let{v_1, cps_provider_8_multi_op_rewrite(v_2, v_6), v_16}, v_17, v_18, v_19, v_20, v_21, v_22, v_23}
+
+def cps_provider_8_multi_rewrite_branch(v_0: BIR.Atom, v_1: BIR.Block, v_2: BIR.Block, v_4: cps_provider_8_MRewCtx, v_6: Nat) -> cps_provider_8_MultiRew:
+  cps_provider_8_multi_rewrite_branch_join(v_0, cps_provider_8_multi_rewrite(v_1, v_4, v_6), v_2, v_4, v_6)
+
+def cps_provider_8_multi_rewrite_branch_join(v_0: BIR.Atom, v_2: cps_provider_8_MultiRew, v_3: BIR.Block, v_5: cps_provider_8_MRewCtx, v_7: Nat) -> cps_provider_8_MultiRew:
+  match v_2:
+    case cps_provider_8_MultiRew{v_17, v_18, v_19, v_20, v_21, v_22, v_23, v_24}:
+      cps_provider_8_multi_rewrite_branch_finish(v_0, v_17, v_18, v_19, v_20, v_21, v_22, v_23, v_5, cps_provider_8_multi_rewrite(v_3, v_5, v_24))
+
+def cps_provider_8_multi_rewrite_branch_finish(v_0: BIR.Atom, v_1: BIR.Block, v_4: Map<&2, cps_provider_8_MultiWindow>, v_7: Map<&2, Bool>, v_10: Map<&2, Bool>, v_13: Map<&2, Bool>, v_15: Bool, v_17: Bool, v_19: cps_provider_8_MRewCtx, v_21: cps_provider_8_MultiRew) -> cps_provider_8_MultiRew:
+  match v_21:
+    case cps_provider_8_MultiRew{v_31, v_32, v_33, v_34, v_35, v_36, v_37, v_38}:
+      cps_provider_8_MultiRew{BIR.Branch{v_0, v_1, v_31}, Map.union(&2, cps_provider_8_MultiWindow, v_4, v_32), Map.union(&2, Bool, v_7, v_33), Map.union(&2, Bool, v_10, v_34), Map.union(&2, Bool, v_13, v_35), Bool.or(v_15, v_36), Bool.or(v_17, v_37), v_38}
+
+def cps_provider_8_multi_rewrite_region(v_1: U32, v_2: BIR.Block, v_3: BIR.Block, v_5: cps_provider_8_MRewCtx, v_7: Nat) -> cps_provider_8_MultiRew:
+  cps_provider_8_multi_rewrite_region_join(v_1, v_3, v_5, cps_provider_8_multi_rewrite(v_2, v_5, v_7))
+
+def cps_provider_8_multi_rewrite_region_join(v_1: U32, v_2: BIR.Block, v_4: cps_provider_8_MRewCtx, v_6: cps_provider_8_MultiRew) -> cps_provider_8_MultiRew:
+  match v_6:
+    case cps_provider_8_MultiRew{v_16, v_17, v_18, v_19, v_20, v_21, v_22, v_23}:
+      cps_provider_8_multi_rewrite_region_finish(v_1, v_16, v_17, v_18, v_19, v_20, v_21, v_22, v_4, cps_provider_8_multi_rewrite(v_2, v_4, v_23))
+
+def cps_provider_8_multi_rewrite_region_finish(v_1: U32, v_2: BIR.Block, v_5: Map<&2, cps_provider_8_MultiWindow>, v_8: Map<&2, Bool>, v_11: Map<&2, Bool>, v_14: Map<&2, Bool>, v_16: Bool, v_18: Bool, v_20: cps_provider_8_MRewCtx, v_22: cps_provider_8_MultiRew) -> cps_provider_8_MultiRew:
+  match v_22:
+    case cps_provider_8_MultiRew{v_32, v_33, v_34, v_35, v_36, v_37, v_38, v_39}:
+      cps_provider_8_MultiRew{BIR.Region{v_1, v_2, v_32}, Map.union(&2, cps_provider_8_MultiWindow, v_5, v_33), Map.union(&2, Bool, v_8, v_34), Map.union(&2, Bool, v_11, v_35), Map.union(&2, Bool, v_14, v_36), Bool.or(v_16, v_37), Bool.or(v_18, v_38), v_39}
+
+def cps_provider_8_multi_rewrite_tail(v_1: U32, v_3: List<&2, BIR.Arg>, v_5: cps_provider_8_MRewCtx, v_7: Nat) -> cps_provider_8_MultiRew:
+  cps_provider_8_multi_rewrite_tail_private(cps_provider_8_multi_ctx_private(v_5), v_1, v_3, v_5, v_7)
+
+def cps_provider_8_multi_rewrite_tail_private(v_1: Bool, v_3: U32, v_5: List<&2, BIR.Arg>, v_7: cps_provider_8_MRewCtx, v_9: Nat) -> cps_provider_8_MultiRew:
+  match v_1:
+    case True{}:
+      cps_provider_8_MultiRew{BIR.TailDirect{v_3, cps_provider_8_multi_tail_expand(v_3, v_5, v_7)}, Map.new(&2, cps_provider_8_MultiWindow), Map.new(&2, Bool), Map.new(&2, Bool), Map.new(&2, Bool), Bool.not(cps_provider_8_multi_args_open(v_5, v_3, v_7)), True{}, v_9}
+    case False{}:
+      cps_provider_8_multi_rewrite_tail_convert(cps_provider_8_multi_tail_convertible(v_3, v_5, v_7), v_3, v_5, v_7, v_9)
+
+def cps_provider_8_multi_tail_expand(v_1: U32, v_3: List<&2, BIR.Arg>, v_5: cps_provider_8_MRewCtx) -> List<&2, BIR.Arg>:
+  cps_provider_8_multi_expand_args(v_3, v_1, v_5)
+
+def cps_provider_8_multi_tail_convertible(v_1: U32, v_3: List<&2, BIR.Arg>, v_5: cps_provider_8_MRewCtx) -> Bool:
+  Bool.and(cps_provider_8_multi_args_sub_named(v_3, v_5), Bool.and(cps_provider_8_multi_multi_get(cps_provider_8_multi_ctx_multi(v_5), v_1), Bool.and(cps_provider_8_multi_args_open(v_3, v_1, v_5), cps_provider_8_multi_tail_arity_ok(v_3, v_1, v_5))))
+
+def cps_provider_8_multi_tail_arity_ok(v_1: List<&2, BIR.Arg>, v_3: U32, v_5: cps_provider_8_MRewCtx) -> Bool:
+  cps_provider_8_multi_arity_bound(Nat.add(cps_provider_8_multi_expanded_count(v_1, v_3, v_5, 0n), 1n))
+
+def cps_provider_8_multi_expanded_count(v_1: List<&2, BIR.Arg>, v_3: U32, v_5: cps_provider_8_MRewCtx, v_7: Nat) -> Nat:
+  match v_1:
+    case []:
+      0n
+    case _ <> v_12:
+      Nat.add(cps_provider_8_multi_expanded_one(cps_provider_8_multi_up_get(cps_provider_8_multi_ctx_up(v_5), v_3, v_7), v_5), cps_provider_8_multi_expanded_count(v_12, v_3, v_5, Nat.add(v_7, 1n)))
+
+def cps_provider_8_multi_expanded_one(v_1: Bool, v_3: cps_provider_8_MRewCtx) -> Nat:
+  match v_1:
+    case True{}:
+      Nat.add(cps_provider_8_multi_ctx_width(v_3), 1n)
+    case False{}:
+      1n
+
+def cps_provider_8_multi_rewrite_tail_convert(v_1: Bool, v_3: U32, v_5: List<&2, BIR.Arg>, v_7: cps_provider_8_MRewCtx, v_9: Nat) -> cps_provider_8_MultiRew:
+  match v_1:
+    case False{}:
+      cps_provider_8_multi_rewrite_tail_pub(v_3, v_5, v_7, v_9)
+    case True{}:
+      cps_provider_8_multi_rewrite_tail_converted(v_3, v_5, v_7, v_9)
+
+def cps_provider_8_multi_rewrite_tail_pub(v_1: U32, v_3: List<&2, BIR.Arg>, v_5: cps_provider_8_MRewCtx, v_7: Nat) -> cps_provider_8_MultiRew:
+  cps_provider_8_MultiRew{BIR.TailDirect{v_1, cps_provider_8_multi_subst_args(v_3, v_5)}, Map.new(&2, cps_provider_8_MultiWindow), Map.new(&2, Bool), Map.new(&2, Bool), Map.new(&2, Bool), cps_provider_8_multi_args_sub_named(v_3, v_5), False{}, v_7}
+
+def cps_provider_8_multi_args_sub_named(v_1: List<&2, BIR.Arg>, v_3: cps_provider_8_MRewCtx) -> Bool:
+  match v_1:
+    case []:
+      False{}
+    case BIR.Arg{_, v_9} <> v_10:
+      Bool.or(cps_provider_8_multi_atom_sub_named(v_9, v_3), cps_provider_8_multi_args_sub_named(v_10, v_3))
+
+def cps_provider_8_multi_atom_sub_named(v_0: BIR.Atom, v_2: cps_provider_8_MRewCtx) -> Bool:
+  match v_0:
+    case BIR.Local{v_5}:
+      cps_provider_8_multi_sub_found(cps_provider_8_multi_sub_at(cps_provider_8_multi_ctx_sub(v_2), v_5))
+    case _:
+      False{}
+
+def cps_provider_8_multi_sub_found(v_2: Maybe<&2, cps_provider_8_MultiSubst>) -> Bool:
+  match v_2:
+    case Some{_}:
+      True{}
+    case None{}:
+      False{}
+
+def cps_provider_8_multi_rewrite_tail_converted(v_1: U32, v_3: List<&2, BIR.Arg>, v_5: cps_provider_8_MRewCtx, v_7: Nat) -> cps_provider_8_MultiRew:
+  +v_11 = cps_provider_8_multi_counter_id(v_7)
+  +v_14 = cps_provider_8_cat(["k", U32.show(v_11)])
+  +v_17 = cps_provider_8_MultiWindow{cps_provider_8_multi_ctx_width(v_5), [], Some{v_11}}
+  cps_provider_8_MultiRew{BIR.Let{v_11, BIR.Direct{v_1, cps_provider_8_multi_expand_args(v_3, v_1, v_5)}, BIR.Return{BIR.Local{v_11}}}, Map.set(&2, cps_provider_8_MultiWindow, Map.new(&2, cps_provider_8_MultiWindow), v_14, v_17), Map.set(&2, Bool, Map.new(&2, Bool), v_14, True{}), Map.set(&2, Bool, Map.new(&2, Bool), v_14, False{}), Map.new(&2, Bool), False{}, False{}, Nat.add(v_7, 1n)}
+
+def native_match_cps_provider_8_let_step_0(v_10: Maybe<&2, String>, v_1: U32, v_2: BIR.Op, v_3: BIR.Block, v_5: cps_provider_8_JsCtx) -> String:
+  match v_10:
+    case Some{v_9}:
+      v_9
+    case None{}:
+      cps_provider_8_let_step_plain(v_1, v_2, v_3, v_5)
+
+def cps_provider_8_let_step(v_1: U32, v_2: BIR.Op, v_3: BIR.Block, v_5: cps_provider_8_JsCtx) -> String:
+  native_match_cps_provider_8_let_step_0(cps_provider_8_multi_let_special(v_1, v_2, v_3, v_5), v_1, v_2, v_3, v_5)
+
+def cps_provider_8_let_step_plain(v_1: U32, v_2: BIR.Op, v_3: BIR.Block, v_5: cps_provider_8_JsCtx) -> String:
+  match v_2:
+    case BIR.Direct{v_9, v_10}:
+      cps_provider_8_split_direct(v_1, v_9, v_10, v_5)
+    case BIR.Apply{v_14, v_15}:
+      cps_provider_8_split_apply(v_1, v_14, v_15, cps_provider_8_js_ctx_cont(v_5, v_1), v_5)
+    case _:
+      cps_provider_8_cat(["const ", cps_provider_8_local(v_1), "=", cps_provider_8_operation(v_2, v_5), ";", cps_provider_8_block(v_3, v_5)])
+
+def native_match_cps_provider_8_return_step_0(v_7: Maybe<&2, String>, v_0: BIR.Atom) -> String:
+  match v_7:
+    case Some{v_6}:
+      v_6
+    case None{}:
+      cps_provider_8_cat(["return ", cps_provider_8_atom(v_0), ";"])
+
+def cps_provider_8_return_step(v_0: BIR.Atom, v_2: cps_provider_8_JsCtx) -> String:
+  native_match_cps_provider_8_return_step_0(cps_provider_8_multi_return_forward(v_0, v_2), v_0)
+
+def cps_provider_8_multi_return_forward(v_0: BIR.Atom, v_2: cps_provider_8_JsCtx) -> Maybe<&2, String>:
+  cps_provider_8_multi_return_private(cps_provider_8_js_ctx_private(v_2), v_0, v_2)
+
+def cps_provider_8_multi_return_private(v_1: Bool, v_2: BIR.Atom, v_4: cps_provider_8_JsCtx) -> Maybe<&2, String>:
+  match v_1:
+    case False{}:
+      None{}
+    case True{}:
+      cps_provider_8_multi_return_emit(v_2, v_4)
+
+def cps_provider_8_multi_return_emit(v_0: BIR.Atom, v_2: cps_provider_8_JsCtx) -> Maybe<&2, String>:
+  match v_0:
+    case BIR.Local{v_6}:
+      cps_provider_8_multi_param_forward_of(cps_provider_8_multi_params_find(cps_provider_8_js_ctx_params(v_2), v_6), cps_provider_8_js_ctx_width(v_2))
+    case _:
+      None{}
+
+def cps_provider_8_multi_param_forward_of(v_1: cps_provider_8_MultiParam, v_3: Nat) -> Maybe<&2, String>:
+  match v_1:
+    case cps_provider_8_MultiParam{_, v_11, v_12, v_13}:
+      cps_provider_8_multi_param_forward_flags(v_11, v_12, v_13, v_3)
+
+def cps_provider_8_multi_param_forward_flags(v_1: Bool, v_3: U32, v_6: List<&2, U32>, v_8: Nat) -> Maybe<&2, String>:
+  match v_1:
+    case True{}:
+      Some{cps_provider_8_multi_window_write(cps_provider_8_local(v_3), cps_provider_8_multi_atom_list(v_6), v_8)}
+    case False{}:
+      None{}
+
+def cps_provider_8_multi_window_write(v_1: String, v_3: List<&2, BIR.Atom>, v_5: Nat) -> String:
+  cps_provider_8_cat([cps_provider_8_multi_window_stores(v_3, v_5, 0n), "return ", v_1, ";"])
+
+def native_match_cps_provider_8_multi_window_stores_0(v_6: Bool, v_1: List<&2, BIR.Atom>, v_3: Nat, v_5: Nat) -> String:
+  match v_6:
+    case True{}:
+      cps_provider_8_cat(["$stArgs[$mr+", Nat.show(Nat.add(v_5, 1n)), "]=", cps_provider_8_atom(cps_provider_8_multi_nth(v_1, v_5)), ";", cps_provider_8_multi_window_stores(v_1, v_3, Nat.add(v_5, 1n))])
+    case False{}:
+      ""
+
+def cps_provider_8_multi_window_stores(v_1: List<&2, BIR.Atom>, v_3: Nat, v_5: Nat) -> String:
+  native_match_cps_provider_8_multi_window_stores_0(Nat.is_lt(v_5, v_3), v_1, v_3, v_5)
+
+def cps_provider_8_multi_let_special(v_1: U32, v_2: BIR.Op, v_3: BIR.Block, v_5: cps_provider_8_JsCtx) -> Maybe<&2, String>:
+  match v_2:
+    case BIR.Construct{_, v_12, v_13}:
+      cps_provider_8_multi_result_construct(v_1, v_12, v_13, v_3, v_5)
+    case _:
+      None{}
+
+def cps_provider_8_multi_result_construct(v_1: U32, v_3: String, v_5: List<&2, BIR.Field>, v_6: BIR.Block, v_8: cps_provider_8_JsCtx) -> Maybe<&2, String>:
+  match v_6:
+    case BIR.Return{BIR.Local{v_12}}:
+      cps_provider_8_multi_result_same(Bool.and(U32.is_eq(v_12, v_1), cps_provider_8_js_ctx_private(v_8)), v_3, v_5, v_8)
+    case _:
+      None{}
+
+def cps_provider_8_multi_result_same(v_1: Bool, v_3: String, v_5: List<&2, BIR.Field>, v_7: cps_provider_8_JsCtx) -> Maybe<&2, String>:
+  match v_1:
+    case False{}:
+      None{}
+    case True{}:
+      Some{cps_provider_8_multi_window_write(cps_provider_8_js_quote(v_3), cps_provider_8_multi_field_atoms(v_5), cps_provider_8_js_ctx_width(v_7))}
+
+def native_match_cps_provider_8_tail_step_0(v_6: Bool, v_1: U32, v_3: List<&2, BIR.Arg>, v_5: cps_provider_8_JsCtx) -> String:
+  match v_6:
+    case True{}:
+      cps_provider_8_cat(["return ", cps_provider_8_multi_tail_call(v_1, cps_provider_8_arguments(v_3)), ";"])
+    case False{}:
+      cps_provider_8_cat(["return ", cps_provider_8_tail_call_name(cps_provider_8_multi_target_name(cps_provider_8_js_ctx_targets(v_5), v_1), cps_provider_8_arguments(v_3)), ";"])
+
+def cps_provider_8_tail_step(v_1: U32, v_3: List<&2, BIR.Arg>, v_5: cps_provider_8_JsCtx) -> String:
+  native_match_cps_provider_8_tail_step_0(cps_provider_8_js_ctx_private(v_5), v_1, v_3, v_5)
+
+def cps_provider_8_split_direct(v_1: U32, v_3: U32, v_5: List<&2, BIR.Arg>, v_7: cps_provider_8_JsCtx) -> String:
+  cps_provider_8_split_direct_route(cps_provider_8_js_ctx_site(v_7, v_1), v_1, v_3, v_5, cps_provider_8_js_ctx_cont(v_7, v_1), v_7)
+
+def cps_provider_8_split_direct_route(v_1: Bool, v_3: U32, v_5: U32, v_7: List<&2, BIR.Arg>, v_9: cps_provider_8_Caps, v_11: cps_provider_8_JsCtx) -> String:
+  match v_1:
+    case True{}:
+      cps_provider_8_split_direct_make(cps_provider_8_code_name(v_5), v_3, v_7, v_9, v_11, True{})
+    case False{}:
+      cps_provider_8_split_direct_make(cps_provider_8_multi_target_name(cps_provider_8_js_ctx_targets(v_11), v_5), v_3, v_7, v_9, v_11, False{})
+
+def cps_provider_8_split_direct_make(v_1: String, v_3: U32, v_5: List<&2, BIR.Arg>, v_7: cps_provider_8_Caps, v_9: cps_provider_8_JsCtx, v_11: Bool) -> String:
+  +v_14 = List.length(&2, BIR.Arg, v_5)
+  +v_18 = cps_provider_8_multi_split_fits(v_14, v_11, cps_provider_8_js_ctx_mr(v_9, v_3))
+  cps_provider_8_split_direct_selected(v_18, v_1, v_3, v_5, v_7, v_14, v_9, v_11, cps_provider_8_js_ctx_mr(v_9, v_3))
+
+def cps_provider_8_multi_split_fits(v_1: Nat, v_3: Bool, v_5: Bool) -> Bool:
+  Bool.and(Nat.is_gt(v_1, 0n), Nat.is_le(cps_provider_8_multi_split_count(v_1, v_3, v_5), 32n))
+
+def cps_provider_8_multi_split_count(v_1: Nat, v_3: Bool, v_5: Bool) -> Nat:
+  cps_provider_8_multi_split_added(v_3, v_1)
+
+def cps_provider_8_multi_split_added(v_1: Bool, v_3: Nat) -> Nat:
+  match v_1:
+    case True{}:
+      Nat.add(v_3, 1n)
+    case False{}:
+      v_3
+
+def cps_provider_8_multi_split_mr(v_1: Bool) -> Nat:
+  match v_1:
+    case True{}:
+      1n
+    case False{}:
+      0n
+
+def cps_provider_8_split_direct_selected(v_1: Bool, v_3: String, v_5: U32, v_7: List<&2, BIR.Arg>, v_9: cps_provider_8_Caps, v_11: Nat, v_13: cps_provider_8_JsCtx, v_15: Bool, v_17: Bool) -> String:
+  match v_1:
+    case True{}:
+      cps_provider_8_split_direct_args(v_3, v_5, v_7, v_9, v_11, v_13, v_15, v_17)
+    case False{}:
+      cps_provider_8_split_direct_many(v_3, v_5, v_7, v_9, v_13, v_15, v_17)
+
+def cps_provider_8_split_direct_args(v_1: String, v_3: U32, v_5: List<&2, BIR.Arg>, v_7: cps_provider_8_Caps, v_9: Nat, v_11: cps_provider_8_JsCtx, v_13: Bool, v_15: Bool) -> String:
+  +v_20 = Nat.add(cps_provider_8_cap_total(v_7), cps_provider_8_multi_split_mr(v_15))
+  cps_provider_8_cat(["{const ", cps_provider_8_arg_temps(v_5, 0n), ";", cps_provider_8_cap_stores(cps_provider_8_caps_locals(v_7)), cps_provider_8_slot_stores(cps_provider_8_caps_slots(v_7)), cps_provider_8_multi_mr_store(v_15), "if($td<64){const $kb=$sp-", Nat.show(v_20), ",$ki=$split_enter(", cps_provider_8_cont_name_ctx(v_11, v_3), ",$kb);try{return $split_done(", v_1, "(", String.join(cps_provider_8_multi_call_arg_names(v_5, 0n, v_13), ","), "),$ki,$td+1);}catch($e){$split_abort($ki,$kb);throw $e;}}", cps_provider_8_arg_moves(v_9, 0n), cps_provider_8_multi_window_move(v_13, v_9), "return $split(", v_1, ",", Nat.show(cps_provider_8_multi_split_count(v_9, v_13, v_15)), ",", cps_provider_8_cont_name_ctx(v_11, v_3), ",$sp-", Nat.show(v_20), ");}"])
+
+def cps_provider_8_multi_mr_store(v_1: Bool) -> String:
+  match v_1:
+    case True{}:
+      "$stArgs[$sp++]=$mr;"
+    case False{}:
+      ""
+
+def cps_provider_8_multi_window_move(v_1: Bool, v_3: Nat) -> String:
+  match v_1:
+    case True{}:
+      cps_provider_8_cat(["$tailArgs[", Nat.show(v_3), "]=$sp;"])
+    case False{}:
+      ""
+
+def cps_provider_8_multi_call_arg_names(v_1: List<&2, BIR.Arg>, v_3: Nat, v_5: Bool) -> List<&2, String>:
+  List.append(&2, String, cps_provider_8_multi_call_arg_tail(cps_provider_8_arg_temp_only(v_1, v_3), v_5), ["$td+1"])
+
+def cps_provider_8_multi_call_arg_tail(v_2: List<&2, String>, v_4: Bool) -> List<&2, String>:
+  match v_4:
+    case True{}:
+      List.append(&2, String, v_2, ["$sp"])
+    case False{}:
+      v_2
+
+def cps_provider_8_arg_temp_only(v_1: List<&2, BIR.Arg>, v_3: Nat) -> List<&2, String>:
+  match v_1:
+    case []:
+      []
+    case _ <> v_9:
+      cps_provider_8_cat(["$a", Nat.show(v_3)]) <> cps_provider_8_arg_temp_only(v_9, Nat.add(v_3, 1n))
+
+def cps_provider_8_split_direct_many(v_1: String, v_3: U32, v_5: List<&2, BIR.Arg>, v_7: cps_provider_8_Caps, v_9: cps_provider_8_JsCtx, v_11: Bool, v_13: Bool) -> String:
+  cps_provider_8_cat([cps_provider_8_cap_stores(cps_provider_8_caps_locals(v_7)), cps_provider_8_slot_stores(cps_provider_8_caps_slots(v_7)), cps_provider_8_multi_mr_store(v_13), "return $splitm(", v_1, ",[", String.join(cps_provider_8_multi_many_args(v_5, v_11), ","), "],", cps_provider_8_cont_name_ctx(v_9, v_3), ",$sp-", Nat.show(Nat.add(cps_provider_8_cap_total(v_7), cps_provider_8_multi_split_mr(v_13))), ");"])
+
+def cps_provider_8_multi_many_args(v_1: List<&2, BIR.Arg>, v_3: Bool) -> List<&2, String>:
+  match v_3:
+    case True{}:
+      List.append(&2, String, cps_provider_8_arguments(v_1), ["$sp"])
+    case False{}:
+      cps_provider_8_arguments(v_1)
+
+def cps_provider_8_split_apply(v_1: U32, v_2: BIR.Atom, v_3: BIR.Arg, v_5: cps_provider_8_Caps, v_7: cps_provider_8_JsCtx) -> String:
+  cps_provider_8_cat([cps_provider_8_cap_stores(cps_provider_8_caps_locals(v_5)), cps_provider_8_slot_stores(cps_provider_8_caps_slots(v_5)), cps_provider_8_multi_mr_store(cps_provider_8_js_ctx_mr(v_7, v_1)), "return $split1(", cps_provider_8_atom(v_2), ",", cps_provider_8_arg_atom(v_3), ",", cps_provider_8_cont_name_ctx(v_7, v_1), ",$sp-", Nat.show(cps_provider_8_multi_window_offset(v_5, cps_provider_8_js_ctx_mr(v_7, v_1))), ");"])
 
 def cps_provider_8_arg_atom(v_0: BIR.Arg) -> String:
   match v_0:
@@ -17679,7 +20796,58 @@ def cps_provider_8_slot_binds(v_2: List<&2, U32>, v_4: Nat) -> String:
 
 def cps_provider_8_cont_of(v_1: U32, v_2: BIR.Block, v_4: cps_provider_8_JsCtx) -> String:
   +v_8 = cps_provider_8_js_ctx_cont(v_4, v_1)
-  cps_provider_8_cat(["function ", cps_provider_8_cont_name(v_1), "(", cps_provider_8_local(v_1), ",$base,$td=0){", cps_provider_8_cap_binds(cps_provider_8_caps_locals(v_8), 0n), cps_provider_8_slot_binds(cps_provider_8_caps_slots(v_8), List.length(&2, U32, cps_provider_8_caps_locals(v_8))), cps_provider_8_block(v_2, v_4), "}\n"])
+  cps_provider_8_cat(["function ", cps_provider_8_cont_name_ctx(v_4, v_1), "(", cps_provider_8_local(v_1), ",$base,$td=0){", cps_provider_8_cap_binds(cps_provider_8_caps_locals(v_8), 0n), cps_provider_8_slot_binds(cps_provider_8_caps_slots(v_8), List.length(&2, U32, cps_provider_8_caps_locals(v_8))), cps_provider_8_multi_cont_extra(v_1, v_8, v_4), cps_provider_8_block(v_2, v_4), "}\n"])
+
+def cps_provider_8_multi_cont_extra(v_1: U32, v_3: cps_provider_8_Caps, v_5: cps_provider_8_JsCtx) -> String:
+  cps_provider_8_cat([cps_provider_8_multi_mr_bind(cps_provider_8_js_ctx_mr(v_5, v_1), v_3), cps_provider_8_multi_window_extra(cps_provider_8_js_ctx_window(v_5, v_1), v_1, cps_provider_8_multi_window_offset(v_3, cps_provider_8_js_ctx_mr(v_5, v_1)))])
+
+def cps_provider_8_multi_window_offset(v_1: cps_provider_8_Caps, v_3: Bool) -> Nat:
+  Nat.add(cps_provider_8_cap_total(v_1), cps_provider_8_multi_mr_flag(v_3))
+
+def cps_provider_8_multi_mr_flag(v_1: Bool) -> Nat:
+  match v_1:
+    case True{}:
+      1n
+    case False{}:
+      0n
+
+def cps_provider_8_multi_mr_bind(v_1: Bool, v_3: cps_provider_8_Caps) -> String:
+  match v_1:
+    case True{}:
+      cps_provider_8_cat(["const $mr=$stArgs[$base+", Nat.show(cps_provider_8_cap_total(v_3)), "];"])
+    case False{}:
+      ""
+
+def cps_provider_8_multi_window_extra(v_2: Maybe<&2, cps_provider_8_MultiWindow>, v_4: U32, v_6: Nat) -> String:
+  match v_2:
+    case Some{cps_provider_8_MultiWindow{v_11, v_12, v_13}}:
+      cps_provider_8_cat([cps_provider_8_multi_slot_binds(v_12, v_6, 0n), cps_provider_8_multi_box_bind(v_13, v_4, v_6), cps_provider_8_multi_slot_clear(v_11, v_6, 0n)])
+    case None{}:
+      ""
+
+def cps_provider_8_multi_slot_binds(v_2: List<&2, U32>, v_4: Nat, v_6: Nat) -> String:
+  match v_2:
+    case []:
+      ""
+    case +v_10 <> v_11:
+      cps_provider_8_cat(["const ", cps_provider_8_local(v_10), "=$stArgs[$base+", Nat.show(Nat.add(Nat.add(v_4, 1n), v_6)), "];", cps_provider_8_multi_slot_binds(v_11, v_4, Nat.add(v_6, 1n))])
+
+def cps_provider_8_multi_box_bind(v_2: Maybe<&2, U32>, v_4: U32, v_6: Nat) -> String:
+  match v_2:
+    case Some{v_9}:
+      cps_provider_8_cat([cps_provider_8_local(v_9), "=$multi_box(", cps_provider_8_local(v_4), ",$base,", Nat.show(v_6), ");"])
+    case None{}:
+      ""
+
+def native_match_cps_provider_8_multi_slot_clear_0(v_6: Bool, v_1: Nat, v_3: Nat, v_5: Nat) -> String:
+  match v_6:
+    case True{}:
+      cps_provider_8_cat(["$stArgs[$base+", Nat.show(Nat.add(Nat.add(v_3, 1n), v_5)), "]=undefined;", cps_provider_8_multi_slot_clear(v_1, v_3, Nat.add(v_5, 1n))])
+    case False{}:
+      ""
+
+def cps_provider_8_multi_slot_clear(v_1: Nat, v_3: Nat, v_5: Nat) -> String:
+  native_match_cps_provider_8_multi_slot_clear_0(Nat.is_lt(v_5, v_1), v_1, v_3, v_5)
 
 def cps_provider_8_thunk_of(v_1: String, v_3: U32, v_4: BIR.Block, v_6: cps_provider_8_JsCtx) -> String:
   +v_10 = cps_provider_8_js_ctx_thunk(v_6, v_3)
@@ -18317,17 +21485,18 @@ def cps_provider_8_descriptor(v_0: BIR.Descriptor) -> String:
 def cps_provider_8_deferred(v_1: String, v_3: String) -> String:
   cps_provider_8_cat(["Object.defineProperty($D,", cps_provider_8_js_quote(v_1), ",{enumerable:true,configurable:true,get(){const $base0=$ksp,$sp0=$sp;return run_base(", v_3, ",$base0,$sp0);}});\n"])
 
-def cps_provider_8_declaration(v_0: BIR.Declaration, +v_3: Map<&2, String>, v_5: Nat) -> String:
+def cps_provider_8_declaration(v_0: BIR.Declaration, +v_3: Map<&2, String>, v_5: Nat, v_7: cps_provider_8_MultiPlan) -> String:
   match v_0:
-    case BIR.FunctionDeclaration{v_10, v_11, v_12}:
-      cps_provider_8_cat(["$D[", cps_provider_8_js_quote(v_10), "]=", cps_provider_8_closure(v_11, [], v_12), ";\n"])
-    case BIR.LazyDeclaration{v_18, v_19}:
-      +v_24 = cps_provider_8_js_ctx(cps_provider_8_cat(["L", Nat.show(v_5)]), cps_provider_8_plan_of(v_19))
-      cps_provider_8_cat([cps_provider_8_deferred(v_18, cps_provider_8_cat(["(()=>{", cps_provider_8_block(v_19, v_24), "})()"])), String.join(cps_provider_8_conts(v_19, v_24), "")])
-    case BIR.NativeDeclaration{v_33, v_34, v_35}:
-      cps_provider_8_native_declaration(v_33, v_34, v_35)
-    case BIR.ForeignDeclaration{v_46, _, v_48, v_49, v_50, _, _, v_53, v_54}:
-      cps_provider_8_foreign_declaration(v_46, v_48, v_50, v_49, v_53, v_54, v_3)
+    case BIR.FunctionDeclaration{v_12, v_13, v_14}:
+      cps_provider_8_cat(["$D[", cps_provider_8_js_quote(v_12), "]=", cps_provider_8_closure_named(cps_provider_8_multi_target_name(cps_provider_8_multi_plan_multi(v_7), v_13), [], v_14), ";\n"])
+    case BIR.LazyDeclaration{v_22, v_23}:
+      v_26 = cps_provider_8_js_scalar(v_23)
+      +v_34 = cps_provider_8_js_ctx_multi(cps_provider_8_cat(["L", Nat.show(v_5)]), cps_provider_8_plan_of(v_26), cps_provider_8_multi_plan_multi(v_7), cps_provider_8_multi_render_plain_state(cps_provider_8_plan_of(v_26)))
+      cps_provider_8_cat([cps_provider_8_deferred(v_22, cps_provider_8_cat(["(()=>{", cps_provider_8_block(v_26, v_34), "})()"])), String.join(cps_provider_8_conts(v_26, v_34), "")])
+    case BIR.NativeDeclaration{v_43, v_44, v_45}:
+      cps_provider_8_native_declaration(v_43, v_44, v_45)
+    case BIR.ForeignDeclaration{v_56, _, v_58, v_59, v_60, _, _, v_63, v_64}:
+      cps_provider_8_foreign_declaration(v_56, v_58, v_60, v_59, v_63, v_64, v_3)
 
 def cps_provider_8_foreign_declaration(+v_1: String, v_3: String, v_6: List<&2, String>, v_8: Nat, v_10: List<&2, BIR.Descriptor>, v_11: BIR.Descriptor, +v_14: Map<&2, String>) -> String:
   cps_provider_8_foreign_source(cps_provider_8_js_source(v_6), v_1, v_3, v_8, v_10, v_11, v_14)
@@ -18342,12 +21511,12 @@ def cps_provider_8_foreign_source(v_2: Maybe<&2, String>, +v_4: String, +v_6: St
 def cps_provider_8_native_declaration(+v_1: String, v_2: BIR.Primitive, +v_4: List<&2, BIR.Quantity>) -> String:
   cps_provider_8_cat(["$D[", cps_provider_8_js_quote(v_1), "]=", cps_provider_8_primitive_public(v_2), ";\n$TYPEF[", cps_provider_8_js_quote(v_1), "]={n:", Nat.show(List.length(&2, BIR.Quantity, v_4)), ",q:[", String.join(cps_provider_8_quantities(v_4), ","), "],intrinsic:$D[", cps_provider_8_js_quote(v_1), "]};\n"])
 
-def cps_provider_8_declarations(v_1: List<&2, BIR.Declaration>, +v_4: Map<&2, String>, v_6: Nat) -> String:
+def cps_provider_8_declarations(v_1: List<&2, BIR.Declaration>, +v_4: Map<&2, String>, v_6: Nat, v_8: cps_provider_8_MultiPlan) -> String:
   match v_1:
     case []:
       ""
-    case v_10 <> v_11:
-      cps_provider_8_cat([cps_provider_8_declaration(v_10, v_4, v_6), cps_provider_8_declarations(v_11, v_4, Nat.add(v_6, 1n))])
+    case v_12 <> v_13:
+      cps_provider_8_cat([cps_provider_8_declaration(v_12, v_4, v_6, v_8), cps_provider_8_declarations(v_13, v_4, Nat.add(v_6, 1n), v_8)])
 
 def cps_provider_8_field_names(v_3: List<&2, Maybe<&2, String>>) -> List<&2, String>:
   match v_3:
@@ -18524,25 +21693,25 @@ def cps_provider_8_export_unresolved_item(v_1: cps_provider_8_JSParameter, +v_3:
     case _:
       cps_provider_8_export_unresolved(v_3, v_5, v_8)
 
-def cps_provider_8_export_field(v_0: BIR.Export, +v_3: Map<&2, String>) -> String:
+def cps_provider_8_export_field(v_0: BIR.Export, +v_3: Map<&2, String>, v_6: Map<&2, Bool>) -> String:
   match v_0:
-    case BIR.Export{+v_8, None{}, +v_9, +v_10}:
-      cps_provider_8_export_curried(v_8, v_9, v_10, v_3)
-    case BIR.Export{+v_17, Some{BIR.Entry{v_18, +v_19}}, +v_20, +v_21}:
-      cps_provider_8_export_entry_field(v_17, v_18, v_19, v_20, v_21, v_3)
+    case BIR.Export{+v_11, None{}, +v_12, +v_13}:
+      cps_provider_8_export_curried(v_11, v_12, v_13, v_3)
+    case BIR.Export{+v_20, Some{BIR.Entry{v_21, +v_22}}, +v_23, +v_24}:
+      cps_provider_8_export_entry_field(v_20, v_21, v_22, v_23, v_24, v_3, v_6)
 
-def native_match_cps_provider_8_export_entry_field_0(v_12: Bool, +v_1: String, v_3: U32, v_7: List<&2, BIR.Descriptor>, v_8: BIR.Descriptor, +v_11: Map<&2, String>) -> String:
-  match v_12:
+def native_match_cps_provider_8_export_entry_field_0(v_15: Bool, +v_1: String, v_3: U32, v_7: List<&2, BIR.Descriptor>, v_8: BIR.Descriptor, +v_11: Map<&2, String>, v_14: Map<&2, Bool>) -> String:
+  match v_15:
     case True{}:
-      cps_provider_8_export_direct_field(v_1, v_3, v_7, v_8, v_11)
+      cps_provider_8_export_direct_field(v_1, v_3, v_7, v_8, v_11, v_14)
     case False{}:
       cps_provider_8_cat(["[", cps_provider_8_js_quote(v_1), "](){return ", cps_provider_8_export_curried_call(v_1, v_7, v_8, v_11), ";}"])
 
-def cps_provider_8_export_entry_field(+v_1: String, v_3: U32, v_5: Nat, v_7: List<&2, BIR.Descriptor>, v_8: BIR.Descriptor, +v_11: Map<&2, String>) -> String:
-  native_match_cps_provider_8_export_entry_field_0(Nat.is_eq(v_5, List.length(&2, BIR.Descriptor, v_7)), v_1, v_3, v_7, v_8, v_11)
+def cps_provider_8_export_entry_field(+v_1: String, v_3: U32, v_5: Nat, v_7: List<&2, BIR.Descriptor>, v_8: BIR.Descriptor, +v_11: Map<&2, String>, v_14: Map<&2, Bool>) -> String:
+  native_match_cps_provider_8_export_entry_field_0(Nat.is_eq(v_5, List.length(&2, BIR.Descriptor, v_7)), v_1, v_3, v_7, v_8, v_11, v_14)
 
-def cps_provider_8_export_direct_field(+v_1: String, v_3: U32, v_5: List<&2, BIR.Descriptor>, v_6: BIR.Descriptor, +v_9: Map<&2, String>) -> String:
-  cps_provider_8_cat(["[", cps_provider_8_js_quote(v_1), "](){if(arguments.length!==", Nat.show(List.length(&2, BIR.Descriptor, v_5)), ")return ", cps_provider_8_export_curried_call(v_1, v_5, v_6, v_9), ";const $base0=$ksp,$sp0=$sp;return ", cps_provider_8_export_result(v_6, v_9, cps_provider_8_cat(["run_base(", cps_provider_8_call(v_3, cps_provider_8_export_arguments(v_5, v_9, 0n)), ",$base0,$sp0)"])), ";}"])
+def cps_provider_8_export_direct_field(+v_1: String, v_3: U32, v_5: List<&2, BIR.Descriptor>, v_6: BIR.Descriptor, +v_9: Map<&2, String>, v_12: Map<&2, Bool>) -> String:
+  cps_provider_8_cat(["[", cps_provider_8_js_quote(v_1), "](){if(arguments.length!==", Nat.show(List.length(&2, BIR.Descriptor, v_5)), ")return ", cps_provider_8_export_curried_call(v_1, v_5, v_6, v_9), ";const $base0=$ksp,$sp0=$sp;return ", cps_provider_8_export_result(v_6, v_9, cps_provider_8_cat(["run_base(", cps_provider_8_multi_target_name(v_12, v_3), "(", String.join(cps_provider_8_export_arguments(v_5, v_9, 0n), ","), ")", ",$base0,$sp0)"])), ";}"])
 
 def native_match_cps_provider_8_export_result_0(v_6: Bool, v_5: String) -> String:
   match v_6:
@@ -18634,19 +21803,19 @@ def cps_provider_8_export_curried_value(v_1: String, v_3: List<&2, BIR.Descripto
 def cps_provider_8_export_curried_call(v_1: String, v_3: List<&2, BIR.Descriptor>, v_4: BIR.Descriptor, +v_7: Map<&2, String>) -> String:
   cps_provider_8_cat([cps_provider_8_export_curried_value(v_1, v_3, v_4, v_7), "(...arguments)"])
 
-def cps_provider_8_export_fields(v_1: List<&2, BIR.Export>, +v_4: Map<&2, String>) -> List<&2, String>:
+def cps_provider_8_export_fields(v_1: List<&2, BIR.Export>, +v_4: Map<&2, String>, v_7: Map<&2, Bool>) -> List<&2, String>:
   match v_1:
     case []:
       []
-    case v_9 <> v_10:
-      cps_provider_8_export_field(v_9, v_4) <> cps_provider_8_export_fields(v_10, v_4)
+    case v_12 <> v_13:
+      cps_provider_8_export_field(v_12, v_4, v_7) <> cps_provider_8_export_fields(v_13, v_4, v_7)
 
-def cps_provider_8_ending(v_0: BIR.Ending, +v_3: Map<&2, String>) -> String:
+def cps_provider_8_ending(v_0: BIR.Ending, +v_3: Map<&2, String>, v_5: cps_provider_8_MultiPlan) -> String:
   match v_0:
-    case BIR.Executable{v_6}:
-      cps_provider_8_js_main(cps_provider_8_descriptor(v_6))
-    case BIR.Library{v_10}:
-      cps_provider_8_cat(["export default {", String.join(cps_provider_8_export_fields(v_10, v_3), ","), "};\n"])
+    case BIR.Executable{v_8}:
+      cps_provider_8_js_main(cps_provider_8_descriptor(v_8))
+    case BIR.Library{v_12}:
+      cps_provider_8_cat(["export default {", String.join(cps_provider_8_export_fields(v_12, v_3, cps_provider_8_multi_plan_multi(v_5)), ","), "};\n"])
 
 def cps_provider_8_export_check(v_1: List<&2, BIR.Export>, +v_4: Map<&2, String>) -> Maybe<&2, String>:
   match v_1:
@@ -18698,17 +21867,20 @@ def cps_provider_8_emit_effects(v_0: BIR.Program, v_2: cps_provider_8_JSEffects)
     case cps_provider_8_JSEffectsReady{v_9}:
       cps_provider_8_EmitSuccess{cps_provider_8_program_source(v_0, v_9)}
 
-def native_match_cps_provider_8_program_source_0(v_0: BIR.Program, v_2: String, +v_6: Map<&2, String>) -> String:
-  match v_0:
-    case BIR.Program{v_13, v_14, v_15, v_16, v_17, v_18}:
-      cps_provider_8_cat([cps_provider_8_js_runtime, cps_provider_8_js_runtime_direct, cps_provider_8_js_runtime_extra, cps_provider_8_js_runtime_show, cps_provider_8_js_runtime_cli, cps_provider_8_js_runtime_io, cps_provider_8_js_runtime_array, cps_provider_8_js_runtime_foreign, cps_provider_8_js_runtime_namespace, cps_provider_8_primitive_runtime, cps_provider_8_constructor_layouts(v_15), cps_provider_8_families(v_16), cps_provider_8_type_functions(v_17), v_2, cps_provider_8_codes(v_13), cps_provider_8_declarations(v_14, v_6, 0n), cps_provider_8_ending(v_18, v_6)])
+def cps_provider_8_program_source(+v_0: BIR.Program, v_2: String) -> String:
+  cps_provider_8_program_source_scoped(cps_provider_8_js_scalar_program(v_0), cps_provider_8_js_native_markers(v_0), v_2)
 
-def cps_provider_8_program_source(v_0: BIR.Program, v_2: String) -> String:
-  +v_6 = cps_provider_8_js_native_markers(v_0)
-  native_match_cps_provider_8_program_source_0(v_0, v_2, v_6)
+def native_match_cps_provider_8_program_source_scoped_0(+v_0: BIR.Program, v_3: Map<&2, String>, v_5: String, +v_9: cps_provider_8_MultiPlan) -> String:
+  match v_0:
+    case BIR.Program{v_16, v_17, v_18, v_19, v_20, v_21}:
+      cps_provider_8_cat([cps_provider_8_js_runtime, cps_provider_8_js_runtime_direct, cps_provider_8_js_runtime_extra, cps_provider_8_js_runtime_show, cps_provider_8_js_runtime_cli, cps_provider_8_js_runtime_io, cps_provider_8_js_runtime_array, cps_provider_8_js_runtime_foreign, cps_provider_8_js_runtime_namespace, cps_provider_8_primitive_runtime, cps_provider_8_constructor_layouts(v_18), cps_provider_8_families(v_19), cps_provider_8_type_functions(v_20), v_5, cps_provider_8_codes(v_16, v_9), cps_provider_8_declarations(v_17, v_3, 0n, v_9), cps_provider_8_ending(v_21, v_3, v_9)])
+
+def cps_provider_8_program_source_scoped(+v_0: BIR.Program, v_3: Map<&2, String>, v_5: String) -> String:
+  +v_9 = cps_provider_8_multi_plan(v_0)
+  native_match_cps_provider_8_program_source_scoped_0(v_0, v_3, v_5, v_9)
 
 def cps_provider_8_js_runtime_direct() -> String:
-  "function $split_enter(k,b) { const i=$ksp++; $kFn[i]=k; $kBase[i]=b; $kKind[i]=0; return i; }\nfunction $split_done(x,i,d) { if(x===$TAIL_PENDING||x===$CALL_PENDING||x===$LEAVE_PENDING||$ksp!==i+1)return x; const k=$kFn[i],b=$kBase[i]; $kFn[i]=undefined; $ksp=i; $sp=b; return k(x,b,d); }\nfunction $split_abort(i,b) { while($ksp>i)$kFn[--$ksp]=undefined; $sp=b; $tailFn=undefined; $tailCount=0; }\n"
+  "function $multi_box(t,b,c) { const ks=$FIELDS[t]; if(ks===undefined) throw \"bend: unresolved multi-result tag\"; const o={$:t}; let j=0; for(let i=0;i<ks.length;i++) { const k=ks[i]; if(k===null) continue; const v=$stArgs[b+c+1+j]; j++; if(k===\"__proto__\") Object.defineProperty(o,k,{value:v,enumerable:true,configurable:true,writable:true}); else o[k]=v; } return o; }\nfunction $split_enter(k,b) { const i=$ksp++; $kFn[i]=k; $kBase[i]=b; $kKind[i]=0; return i; }\nfunction $split_done(x,i,d) { if(x===$TAIL_PENDING||x===$CALL_PENDING||x===$LEAVE_PENDING||$ksp!==i+1)return x; const k=$kFn[i],b=$kBase[i]; $kFn[i]=undefined; $ksp=i; $sp=b; return k(x,b,d); }\nfunction $split_abort(i,b) { while($ksp>i)$kFn[--$ksp]=undefined; $sp=b; $tailFn=undefined; $tailCount=0; }\n"
 
 def cps_provider_8_js_runtime() -> String:
   "const $D = Object.create(null);\nconst $BEND_TAIL = Symbol(\"bend.tail\");\nconst $td = 64;\nconst $TAIL_PENDING = Object.create(null), $tailArgs = Array(32);\nconst $CALL_PENDING = Object.create(null), $LEAVE_PENDING = Object.create(null);\nconst $stArgs = [], $kFn = [], $kBase = [], $kKind = [];\nlet $sp = 0, $ksp = 0, $leaveThunk;\nfunction $split(f,count,k,base) { $tailFn=f; $tailCount=count; $kFn[$ksp]=k; $kBase[$ksp]=base; $kKind[$ksp]=0; $ksp+=1; return $CALL_PENDING; }\nfunction $splitm(f,a,k,base) { $tailFn=f; $tailCount=-2; $tailRest=a; $kFn[$ksp]=k; $kBase[$ksp]=base; $kKind[$ksp]=0; $ksp+=1; return $CALL_PENDING; }\nfunction $split1(f,x,k,base) { const j=f[$BEND_TAIL]; $tailFn=j||f; $tailCount=j?-3:-1; $tailUnary=x; $kFn[$ksp]=k; $kBase[$ksp]=base; $kKind[$ksp]=0; $ksp+=1; return $CALL_PENDING; }\nfunction $frame(t,base) { $kFn[$ksp]=t; $kBase[$ksp]=base; $kKind[$ksp]=1; $ksp+=1; }\nlet $tailFn, $tailCount=0, $tailUnary, $tailRest;\nfunction tail_many(f,a) { $tailFn=f; $tailCount=-2; $tailRest=a; return $TAIL_PENDING; }\nfunction tail_unary(f,x) { $tailFn=f; $tailCount=-1; $tailUnary=x; return $TAIL_PENDING; }\nfunction tail_named(f,n) { $tailFn=f; $tailCount=n; return $TAIL_PENDING; }\nfunction $run(f, xs, n) { let x=run_loop(f); for (let i=0;i<n;i++) x=run_call1(x,xs[i]); return x; }\nfunction $curried(f, n, g, t, x, r) { const step = (args) => function (...more) { const xs = args.concat(more); if (xs.length < n) return step(xs); for (const i of g) xs[i] = nat_in(xs[i]); for (const i of t) xs[i] = str_in(xs[i]); for (const i of x) xs[i] = Math.fround(xs[i]); return r($run(f, xs, n)); }; return step([]); }\nfunction run_loop(x) { return run_base(x,$ksp,$sp); }\nfunction run_call1(f,a) { const b0=$ksp, s0=$sp; return run_base(f(a),b0,s0); }\nfunction run_base(x,k0,s0) { try { for(;;) { while (x===$TAIL_PENDING) { const f=$tailFn, count=$tailCount; $tailFn=undefined; $tailCount=0; if(count===-1) { const a=$tailUnary; $tailUnary=undefined; x=f(a,$BEND_TAIL); } else x=tail_dispatch(f,count); } if (x===$CALL_PENDING) { const f=$tailFn, count=$tailCount; $tailFn=undefined; $tailCount=0; if(count===1) { const a0=$tailArgs[0]; $tailArgs[0]=undefined; x=f(a0); } else if(count===2) { const a0=$tailArgs[0],a1=$tailArgs[1]; $tailArgs[0]=$tailArgs[1]=undefined; x=f(a0,a1); } else if(count===-1) { const a=$tailUnary; $tailUnary=undefined; x=f(a); } else if(count===-3) { const a=$tailUnary; $tailUnary=undefined; x=f(a,$BEND_TAIL); } else x=tail_dispatch(f,count); continue; } if (x===$LEAVE_PENDING) { let i=$ksp; while(i>k0&&($kKind[i-1]===0||$kFn[i-1]!==$leaveThunk))i-=1; if(i===k0)throw \"bend: a region leave reached no private frame\"; i-=1; const t=$kFn[i], b=$kBase[i]; $kFn[i]=undefined; $ksp=i; $sp=b; x=t(undefined,b); continue; } if ($ksp===k0) { $sp=s0; return x; } $ksp-=1; const k=$kFn[$ksp], b=$kBase[$ksp], r=$kKind[$ksp]; $kFn[$ksp]=undefined; $sp=b; if(r===1) continue; x=k(x,b); } } catch(e) { $ksp=k0; $sp=s0; $tailFn=undefined; $tailCount=0; throw e; } }\nfunction tail_dispatch(f,count) { switch(count) {\ncase -2: { const a=$tailRest; $tailRest=undefined; return f(...a); }\ncase 1: { const a0=$tailArgs[0]; $tailArgs[0]=undefined; return f(a0); }\ncase 2: { const a0=$tailArgs[0],a1=$tailArgs[1]; $tailArgs[0]=$tailArgs[1]=undefined; return f(a0,a1); }\ncase 3: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=undefined; return f(a0,a1,a2); }\ncase 4: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=undefined; return f(a0,a1,a2,a3); }\ncase 5: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=undefined; return f(a0,a1,a2,a3,a4); }\ncase 6: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=undefined; return f(a0,a1,a2,a3,a4,a5); }\ncase 7: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=undefined; return f(a0,a1,a2,a3,a4,a5,a6); }\ncase 8: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7); }\ncase 9: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8); }\ncase 10: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9); }\ncase 11: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10); }\ncase 12: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11); }\ncase 13: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12); }\ncase 14: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13); }\ncase 15: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14); }\ncase 16: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15); }\ncase 17: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16); }\ncase 18: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17); }\ncase 19: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18); }\ncase 20: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19); }\ncase 21: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20); }\ncase 22: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21); }\ncase 23: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22); }\ncase 24: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23); }\ncase 25: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24); }\ncase 26: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25); }\ncase 27: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26); }\ncase 28: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27); }\ncase 29: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27],a28=$tailArgs[28]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=$tailArgs[28]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28); }\ncase 30: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27],a28=$tailArgs[28],a29=$tailArgs[29]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=$tailArgs[28]=$tailArgs[29]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29); }\ncase 31: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27],a28=$tailArgs[28],a29=$tailArgs[29],a30=$tailArgs[30]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=$tailArgs[28]=$tailArgs[29]=$tailArgs[30]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30); }\ncase 32: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27],a28=$tailArgs[28],a29=$tailArgs[29],a30=$tailArgs[30],a31=$tailArgs[31]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=$tailArgs[28]=$tailArgs[29]=$tailArgs[30]=$tailArgs[31]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,a31); }\ndefault: throw \"bend: invalid private tail frame\";\n} }\nfunction run_force(x,raw,b0,s0) { return raw===$BEND_TAIL?x:run_base(x,b0,s0); }\nfunction run_many(f,a,d=$td) { return d<64?f(...a,d+1):tail_many(f,a); }\nfunction run_tail(f,x) { const j=f[$BEND_TAIL]; return j ? tail_unary(j,x) : f(x); }\nfunction run_clo(j) { j[$BEND_TAIL]=j; return j; }\nfunction nat_chk(x) { if(x>281474976710655) throw \"bend: a Nat past the largest immediate 2^48-1\"; return x; }\nfunction char_new(c) { return c < 0xD800 || c >= 0xE000 && c <= 0x10FFFF ? String.fromCodePoint(c) : String.fromCharCode(0xDC00, c >>> 22, c >>> 11 & 0x7FF, c & 0x7FF); }\nfunction char_len(s, at=0) { return s[at] === \"\\uDC00\" ? 4 : s.codePointAt(at) > 0xFFFF ? 2 : 1; }\nfunction char_code_at(s, at) { return s[at] === \"\\uDC00\" ? (s.charCodeAt(at+1) << 22 | s.charCodeAt(at+2) << 11 | s.charCodeAt(at+3)) >>> 0 : s.codePointAt(at); }\nfunction char_code(s) { return char_code_at(s, 0); }\nfunction str_out(s) { return s.replace(/\\uDC00[^]{3}/gu, \"\\uFFFD\"); }\nfunction str_in(s) { return s.replace(/\\p{Cs}/gu, \"\\uFFFD\"); }\nfunction cmp_new(a,b) { return {$:a<b?\"LT\":a===b?\"EQ\":\"GT\"}; }\nfunction word_to_u32(w) { let x=0; for(let i=0;w.$===\"WCon\";i++,w=w.tail) if(w.head)x|=1<<i; return x>>>0; }\nfunction u32_to_word(x) { let w={$:\"WNil\"}; for(let i=31;i>=0;i--) w={$:\"WCon\",head:!!((x>>>i)&1),tail:w}; return w; }\nfunction run_named1(f,a0,d) { return d<64?f(a0,d+1):($tailArgs[0]=a0,tail_named(f,1)); }\nfunction run_named2(f,a0,a1,d) { return d<64?f(a0,a1,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,tail_named(f,2)); }\nfunction run_named3(f,a0,a1,a2,d) { return d<64?f(a0,a1,a2,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,tail_named(f,3)); }\nfunction run_named4(f,a0,a1,a2,a3,d) { return d<64?f(a0,a1,a2,a3,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,tail_named(f,4)); }\nfunction run_named5(f,a0,a1,a2,a3,a4,d) { return d<64?f(a0,a1,a2,a3,a4,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,tail_named(f,5)); }\nfunction run_named6(f,a0,a1,a2,a3,a4,a5,d) { return d<64?f(a0,a1,a2,a3,a4,a5,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,tail_named(f,6)); }\nfunction run_named7(f,a0,a1,a2,a3,a4,a5,a6,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,tail_named(f,7)); }\nfunction run_named8(f,a0,a1,a2,a3,a4,a5,a6,a7,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,tail_named(f,8)); }\nfunction run_named9(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,tail_named(f,9)); }\nfunction run_named10(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,tail_named(f,10)); }\nfunction run_named11(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,tail_named(f,11)); }\nfunction run_named12(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,tail_named(f,12)); }\nfunction run_named13(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,tail_named(f,13)); }\nfunction run_named14(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,tail_named(f,14)); }\nfunction run_named15(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,tail_named(f,15)); }\nfunction run_named16(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,tail_named(f,16)); }\nfunction run_named17(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,tail_named(f,17)); }\nfunction run_named18(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,tail_named(f,18)); }\nfunction run_named19(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,tail_named(f,19)); }\nfunction run_named20(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,tail_named(f,20)); }\nfunction run_named21(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,tail_named(f,21)); }\nfunction run_named22(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,tail_named(f,22)); }\nfunction run_named23(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,tail_named(f,23)); }\nfunction run_named24(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,tail_named(f,24)); }\nfunction run_named25(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,tail_named(f,25)); }\nfunction run_named26(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,tail_named(f,26)); }\nfunction run_named27(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,tail_named(f,27)); }\nfunction run_named28(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,tail_named(f,28)); }\nfunction run_named29(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,$tailArgs[28]=a28,tail_named(f,29)); }\nfunction run_named30(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,$tailArgs[28]=a28,$tailArgs[29]=a29,tail_named(f,30)); }\nfunction run_named31(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,$tailArgs[28]=a28,$tailArgs[29]=a29,$tailArgs[30]=a30,tail_named(f,31)); }\nfunction run_named32(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,a31,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,a31,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,$tailArgs[28]=a28,$tailArgs[29]=a29,$tailArgs[30]=a30,$tailArgs[31]=a31,tail_named(f,32)); }\n"

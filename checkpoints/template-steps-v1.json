@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "algorithm": "raw-AST typed boxed-continuation CPS with bounded dependent request groups, dependency-first ordered match, projection values, bounded nonrecursive storage islands, bounded private-helper result deforestation and structurally recursive native heterogeneous-stack chunks",
+  "algorithm": "raw-AST typed boxed-continuation CPS with bounded dependent request groups, dependency-first ordered match, projection values, bounded nonrecursive storage islands, bounded private-helper result deforestation, bounded private-region helper/continuation inlining and quantity-checked alias scalarization, and structurally recursive native heterogeneous-stack chunks",
   "generationConfig": {
     "base": "bend2/base.bend",
     "canonical": "bend2/selfhost/template.bend",
@@ -104,7 +104,7 @@
     "bend2/selfhost/path.bend": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/path.bend",
     "/Users/ilyagulya/Projects/My/bend/bend2/base.bend": "/Users/ilyagulya/Projects/My/bend/bend2/base.bend"
   },
-  "nativeTerminationClaim": "Generated source handlers and continuation helpers form an acyclic declaration graph. Result-deforested producer and continuation helpers are private, acyclic and emitted before their users; each forwards the same affine fields and captures once. Only the native chunk scheduler is self-recursive, structurally decreasing an operational Nat on every RunState transition. Zero returns the remaining Run unchanged; RunFinished returns directly. Native push/pop transfers affine progress, resume and stack once, never reassociates Bound and never allocates composition closures. This does not alter canonical semantic fuel or claim termination of the complete host-driven computation.",
+  "nativeTerminationClaim": "Generated source handlers and continuation helpers form an acyclic declaration graph. Result-deforested producer and continuation helpers are private, acyclic and emitted before their users; each forwards the same affine fields and captures once. Single-use private helpers are additionally spliced into their sole call site only after alpha-freshening every retained binder and checking every parameter quantity, which removes a call but introduces no new declaration, recursion or effect. Only the native chunk scheduler is self-recursive, structurally decreasing an operational Nat on every RunState transition. Zero returns the remaining Run unchanged; RunFinished returns directly. Native push/pop transfers affine progress, resume and stack once, never reassociates Bound and never allocates composition closures. This does not alter canonical semantic fuel or claim termination of the complete host-driven computation.",
   "progressABI": "typed-native-stack-v57t",
   "boxedTransport": {
     "type": "TemplateValue",
@@ -15564,6 +15564,974 @@
     "sites": [],
     "rejectedSites": []
   },
+  "privateRegionScalarization": {
+    "policy": "A generated private helper referenced exactly once is a non-escaping continuation. Its sole call is replaced by its body when splicing is grammar-safe: a match-free body at a body tail (locals follow locals), a single-expression body at any value position, and a root match only at a definition body (never a row or local tail) with exactly one Match node, live non-erased caller-parameter scrutinees in strictly increasing telescope order, and no computed scrutinee. Parameters are substituted only by variables or literals, every retained Body/term binder is alpha-freshened through one scope-aware environment, and a variable parameter used more than once along one sequential path (mutually exclusive match rows use the per-binder maximum, exactly like administrative grading) is accepted only when the caller binder is Many or is one call-site parameter this pass relaxes to Many under the same authenticated-Data kind test; locals are never relabelled and an erased argument may not consume a Lone binder. Sites record how many caller parameters they promoted. Independently, private `name = value` aliases are scalarized away when the value is a variable or literal and the quantity/use-count rules prove no duplication (a Lone alias forwards at most one use to a value that still has at most one use; a literal or alias is never forwarded into a match scrutinee, which must keep its relative pending-binder order). Private source handlers, pure source bodies, traced boundaries, request dispatch, evaluation order, semantic fuel and quantum 64 are untouched; refused shapes stay exactly as generated.",
+    "bounds": {
+      "inlineSites": 16384,
+      "inlinedNodes": 4000000,
+      "siteNodes": 32768,
+      "depth": 64,
+      "scalarPasses": 6,
+      "scalarNodes": 262144,
+      "scalarTotalNodes": 12000000
+    },
+    "kinds": [
+      "ordered-match",
+      "pure-ordered-match",
+      "continuation",
+      "deforested-continuation",
+      "deforested-match",
+      "deforested-producer"
+    ],
+    "helpersBefore": 417,
+    "helpersAfter": 301,
+    "sites": [
+      {
+        "helper": "template_match_10",
+        "caller": "template_body_collect_template_decls",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 18,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_12",
+        "caller": "template_body_collect_template_decl",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 48,
+        "promoted": 2
+      },
+      {
+        "helper": "template_match_15",
+        "caller": "template_body_qualify_match",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 18,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_17",
+        "caller": "template_body_find_template",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 14,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_18",
+        "caller": "template_body_find_template_match",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 13,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_19",
+        "caller": "template_body_flatten_application",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 64,
+        "promoted": 1
+      },
+      {
+        "helper": "template_match_24",
+        "caller": "template_body_take_template_arg",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 13,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_25",
+        "caller": "template_body_reapply_args",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 26,
+        "promoted": 1
+      },
+      {
+        "helper": "template_match_26",
+        "caller": "template_body_generated_local_key",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 48,
+        "promoted": 1
+      },
+      {
+        "helper": "template_match_29",
+        "caller": "template_body_fresh_generated_key_match",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 41,
+        "promoted": 3
+      },
+      {
+        "helper": "template_match_30",
+        "caller": "template_body_generated_candidate",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 20,
+        "promoted": 1
+      },
+      {
+        "helper": "template_match_45",
+        "caller": "template_body_strip_namespace_match",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 26,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_46",
+        "caller": "template_body_strip_namespace_prefix_match",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 16,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_47",
+        "caller": "template_body_scoped_templates",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 54,
+        "promoted": 3
+      },
+      {
+        "helper": "template_match_48",
+        "caller": "template_body_templates_with_captures",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 37,
+        "promoted": 1
+      },
+      {
+        "helper": "template_match_52",
+        "caller": "template_body_capture_import_names",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 52,
+        "promoted": 2
+      },
+      {
+        "helper": "template_match_54",
+        "caller": "template_body_capture_module_names",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 26,
+        "promoted": 1
+      },
+      {
+        "helper": "template_match_57",
+        "caller": "template_body_capture_declaration_names",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 31,
+        "promoted": 2
+      },
+      {
+        "helper": "template_match_58",
+        "caller": "template_body_capture_constructor_names",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 63,
+        "promoted": 2
+      },
+      {
+        "helper": "template_match_67",
+        "caller": "template_body_capture_name",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 40,
+        "promoted": 1
+      },
+      {
+        "helper": "template_match_69",
+        "caller": "template_body_capture_strings",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 49,
+        "promoted": 1
+      },
+      {
+        "helper": "template_match_70",
+        "caller": "template_body_capture_patterns",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 38,
+        "promoted": 1
+      },
+      {
+        "helper": "template_match_71",
+        "caller": "template_body_capture_pattern",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 58,
+        "promoted": 2
+      },
+      {
+        "helper": "template_match_72",
+        "caller": "template_body_capture_terms",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 38,
+        "promoted": 1
+      },
+      {
+        "helper": "template_match_77",
+        "caller": "template_body_capture_term",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 929,
+        "promoted": 2
+      },
+      {
+        "helper": "template_match_78",
+        "caller": "template_body_expand_term",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 733,
+        "promoted": 2
+      },
+      {
+        "helper": "template_match_82",
+        "caller": "template_body_expand_constructor_stable",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 31,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_83",
+        "caller": "template_body_expand_application_spine",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 73,
+        "promoted": 1
+      },
+      {
+        "helper": "template_match_85",
+        "caller": "template_body_expand_application_template",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 78,
+        "promoted": 3
+      },
+      {
+        "helper": "template_match_90",
+        "caller": "template_body_expand_application_arguments",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 77,
+        "promoted": 3
+      },
+      {
+        "helper": "template_match_91",
+        "caller": "template_body_specialize_head",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 20,
+        "promoted": 1
+      },
+      {
+        "helper": "template_match_92",
+        "caller": "template_body_drop_args",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 29,
+        "promoted": 1
+      },
+      {
+        "helper": "template_match_94",
+        "caller": "template_body_specialize_definition",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 36,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_95",
+        "caller": "template_body_specialize_definition_result",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 12,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_101",
+        "caller": "template_body_specialize_prefix",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 38,
+        "promoted": 1
+      },
+      {
+        "helper": "template_match_105",
+        "caller": "template_body_substitute_optional",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 17,
+        "promoted": 1
+      },
+      {
+        "helper": "template_match_106",
+        "caller": "template_body_substitute_body",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 17,
+        "promoted": 1
+      },
+      {
+        "helper": "template_match_107",
+        "caller": "template_body_expand_terms",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 46,
+        "promoted": 1
+      },
+      {
+        "helper": "template_match_109",
+        "caller": "template_body_strip_template_decls",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 18,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_110",
+        "caller": "template_body_strip_template_definition",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 131,
+        "promoted": 4
+      },
+      {
+        "helper": "template_match_111",
+        "caller": "template_body_strip_canonical_template",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 68,
+        "promoted": 4
+      },
+      {
+        "helper": "template_match_112",
+        "caller": "template_body_strip_instance_or_definition",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 59,
+        "promoted": 4
+      },
+      {
+        "helper": "template_match_114",
+        "caller": "template_body_canonical_template_key",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 14,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_115",
+        "caller": "template_body_canonical_template_match",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 13,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_117",
+        "caller": "template_body_generated_local_keys",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 14,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_118",
+        "caller": "template_body_generated_local_key_match",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 40,
+        "promoted": 2
+      },
+      {
+        "helper": "template_match_122",
+        "caller": "template_body_template_instances_for_keys",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 16,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_123",
+        "caller": "template_body_template_instance_definition",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 60,
+        "promoted": 3
+      },
+      {
+        "helper": "template_match_129",
+        "caller": "template_body_expand_definition",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 54,
+        "promoted": 1
+      },
+      {
+        "helper": "template_match_130",
+        "caller": "template_body_expand_body",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 31,
+        "promoted": 2
+      },
+      {
+        "helper": "template_match_131",
+        "caller": "template_body_expand_optional",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 31,
+        "promoted": 2
+      },
+      {
+        "helper": "template_match_134",
+        "caller": "template_body_collect_actual_term",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 647,
+        "promoted": 1
+      },
+      {
+        "helper": "template_match_137",
+        "caller": "template_body_collect_actual_application",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 71,
+        "promoted": 2
+      },
+      {
+        "helper": "template_match_138",
+        "caller": "template_body_collect_actual_prefix",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 18,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_141",
+        "caller": "template_body_wrapped_prefix_cons",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 13,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_146",
+        "caller": "template_body_collect_actual_definition",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 62,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_150",
+        "caller": "template_body_collect_actual_module",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 57,
+        "promoted": 4
+      },
+      {
+        "helper": "template_match_154",
+        "caller": "template_body_actual_in_catalog_found",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 62,
+        "promoted": 2
+      },
+      {
+        "helper": "template_match_157",
+        "caller": "template_body_template_aliases_found",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 40,
+        "promoted": 1
+      },
+      {
+        "helper": "template_match_158",
+        "caller": "template_body_template_local_alias",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 12,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_160",
+        "caller": "template_body_imported_alias_names",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 18,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_161",
+        "caller": "template_body_imported_alias_match",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 58,
+        "promoted": 4
+      },
+      {
+        "helper": "template_match_162",
+        "caller": "template_body_actual_in_aliases",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 44,
+        "promoted": 1
+      },
+      {
+        "helper": "template_match_164",
+        "caller": "template_body_actual_sites_for_key",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 24,
+        "promoted": 1
+      },
+      {
+        "helper": "template_match_165",
+        "caller": "template_body_expand_actual_values",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 73,
+        "promoted": 2
+      },
+      {
+        "helper": "template_match_172",
+        "caller": "template_body_has_string",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 28,
+        "promoted": 1
+      },
+      {
+        "helper": "template_match_173",
+        "caller": "template_body_has_string_match",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 12,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_175",
+        "caller": "template_body_has_top_key",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 14,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_177",
+        "caller": "template_body_find_generated_identity",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 14,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_178",
+        "caller": "template_body_find_generated_identity_match",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 13,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_182",
+        "caller": "template_body_generated_actuals",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 65,
+        "promoted": 1
+      },
+      {
+        "helper": "template_match_183",
+        "caller": "template_body_generated_actual_case",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 117,
+        "promoted": 3
+      },
+      {
+        "helper": "template_match_184",
+        "caller": "template_body_generated_identity_collision",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 22,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_186",
+        "caller": "template_body_generated_actual_new",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 55,
+        "promoted": 3
+      },
+      {
+        "helper": "template_match_187",
+        "caller": "template_body_generated_actual_complete",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 12,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_191",
+        "caller": "template_body_has_template_source_definition",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 43,
+        "promoted": 1
+      },
+      {
+        "helper": "template_match_195",
+        "caller": "template_body_template_owned_by_module",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 22,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_197",
+        "caller": "template_body_generated_for_module",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 27,
+        "promoted": 1
+      },
+      {
+        "helper": "template_match_198",
+        "caller": "template_body_generated_for_module_match",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 133,
+        "promoted": 5
+      },
+      {
+        "helper": "template_match_199",
+        "caller": "template_body_generated_for_module_here",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 64,
+        "promoted": 5
+      },
+      {
+        "helper": "template_match_200",
+        "caller": "template_body_generated_for_module_merge",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 17,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_201",
+        "caller": "template_body_generate_round",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 56,
+        "promoted": 2
+      },
+      {
+        "helper": "template_match_203",
+        "caller": "template_body_generate_scoped_round",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 22,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_204",
+        "caller": "template_body_generate_round_loaded",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 81,
+        "promoted": 3
+      },
+      {
+        "helper": "template_match_205",
+        "caller": "template_body_generate_round_merge",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 67,
+        "promoted": 1
+      },
+      {
+        "helper": "template_match_206",
+        "caller": "template_body_generate_until_result",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 27,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_208",
+        "caller": "template_body_local_templates",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 14,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_209",
+        "caller": "template_body_local_template_match",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 83,
+        "promoted": 4
+      },
+      {
+        "helper": "template_match_211",
+        "caller": "template_body_imported_templates",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 16,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_213",
+        "caller": "template_body_imported_from",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 16,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_215",
+        "caller": "template_body_imported_from_match",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 50,
+        "promoted": 2
+      },
+      {
+        "helper": "template_match_219",
+        "caller": "template_body_expand_scoped_modules",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 18,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_226",
+        "caller": "template_body_invalid_template_decl",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 11,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_227",
+        "caller": "template_body_invalid_application",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 873,
+        "promoted": 2
+      },
+      {
+        "helper": "template_match_228",
+        "caller": "template_body_invalid_reference",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 11,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_229",
+        "caller": "template_body_invalid_application_spine",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 70,
+        "promoted": 1
+      },
+      {
+        "helper": "template_match_231",
+        "caller": "template_body_invalid_application_head",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 47,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_232",
+        "caller": "template_body_invalid_application_arity",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 72,
+        "promoted": 2
+      },
+      {
+        "helper": "template_match_233",
+        "caller": "template_body_invalid_application_arguments",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 77,
+        "promoted": 3
+      },
+      {
+        "helper": "template_match_234",
+        "caller": "template_body_invalid_application_parts",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 68,
+        "promoted": 1
+      },
+      {
+        "helper": "template_match_236",
+        "caller": "template_body_invalid_template_argument",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 111,
+        "promoted": 5
+      },
+      {
+        "helper": "template_match_237",
+        "caller": "template_body_invalid_capture_context",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 26,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_239",
+        "caller": "template_body_invalid_capture_strings",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 67,
+        "promoted": 2
+      },
+      {
+        "helper": "template_match_240",
+        "caller": "template_body_invalid_capture_patterns",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 112,
+        "promoted": 1
+      },
+      {
+        "helper": "template_match_241",
+        "caller": "template_body_invalid_capture_terms",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 52,
+        "promoted": 1
+      },
+      {
+        "helper": "template_match_243",
+        "caller": "template_body_invalid_capture_string_word",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 132,
+        "promoted": 0
+      },
+      {
+        "helper": "template_match_245",
+        "caller": "template_body_invalid_capture",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 1142,
+        "promoted": 1
+      },
+      {
+        "helper": "template_match_246",
+        "caller": "template_body_has_open_vars",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 628,
+        "promoted": 1
+      },
+      {
+        "helper": "template_match_247",
+        "caller": "template_body_has_open_vars_terms",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 46,
+        "promoted": 1
+      },
+      {
+        "helper": "template_match_248",
+        "caller": "template_body_invalid_terms",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 60,
+        "promoted": 1
+      },
+      {
+        "helper": "template_match_254",
+        "caller": "template_body_invalid_definition",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 34,
+        "promoted": 1
+      },
+      {
+        "helper": "template_match_264",
+        "caller": "template_body_template_expand_templates",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 51,
+        "promoted": 2
+      },
+      {
+        "helper": "template_match_265",
+        "caller": "template_body_template_expand_modules",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 53,
+        "promoted": 2
+      },
+      {
+        "helper": "template_match_270",
+        "caller": "template_body_template_expand_round",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 78,
+        "promoted": 1
+      },
+      {
+        "helper": "template_match_271",
+        "caller": "template_body_template_expand_generated",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 38,
+        "promoted": 3
+      },
+      {
+        "helper": "template_match_274",
+        "caller": "template_body_invalid_scoped_modules",
+        "kind": "ordered-match",
+        "position": "def",
+        "nodes": 16,
+        "promoted": 0
+      }
+    ],
+    "rejectedSites": [
+      {
+        "reason": "arity",
+        "count": 344
+      },
+      {
+        "reason": "position",
+        "count": 97
+      }
+    ],
+    "promotedCallerQuantities": 146,
+    "eliminatedAliasBindings": 301,
+    "eliminatedAliasNodes": 602,
+    "scalarBudgetExhaustedDefs": 0,
+    "scalarNodesVisited": 1706,
+    "scalarRejections": []
+  },
   "pureCallClassification": {
     "policy": "Live source argument required. Projections do not construct values or call functions. Checker arena wrappers and core_bound_unaffected may compose admitted helpers with native Arena/U32/Nat and IR.arena_* scalar range/bit calls and bounded constructors, in dependency order; this admits the nonrecursive arena view/accessor closure but no recursion, indirect calls or function binders. All other definitions retain CPS",
     "definitions": [
@@ -15658,28 +16626,13 @@
       "kind": "ordered-match"
     },
     {
-      "name": "template_match_10",
-      "owner": "collect_template_decls",
-      "kind": "ordered-match"
-    },
-    {
       "name": "template_continuation_11",
       "owner": "collect_template_decl",
       "kind": "continuation"
     },
     {
-      "name": "template_match_12",
-      "owner": "collect_template_decl",
-      "kind": "ordered-match"
-    },
-    {
       "name": "template_match_13",
       "owner": "has_template_binder",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_15",
-      "owner": "qualify_match",
       "kind": "ordered-match"
     },
     {
@@ -15688,49 +16641,9 @@
       "kind": "ordered-match"
     },
     {
-      "name": "template_match_17",
-      "owner": "find_template",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_18",
-      "owner": "find_template_match",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_19",
-      "owner": "flatten_application",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_24",
-      "owner": "take_template_arg",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_25",
-      "owner": "reapply_args",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_26",
-      "owner": "generated_local_key",
-      "kind": "ordered-match"
-    },
-    {
       "name": "template_continuation_28",
       "owner": "fresh_generated_key",
       "kind": "continuation"
-    },
-    {
-      "name": "template_match_29",
-      "owner": "fresh_generated_key_match",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_30",
-      "owner": "generated_candidate",
-      "kind": "ordered-match"
     },
     {
       "name": "template_continuation_33",
@@ -15753,26 +16666,6 @@
       "kind": "continuation"
     },
     {
-      "name": "template_match_45",
-      "owner": "strip_namespace_match",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_46",
-      "owner": "strip_namespace_prefix_match",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_47",
-      "owner": "scoped_templates",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_48",
-      "owner": "templates_with_captures",
-      "kind": "ordered-match"
-    },
-    {
       "name": "template_continuation_49",
       "owner": "scope_capture_names",
       "kind": "continuation"
@@ -15788,17 +16681,7 @@
       "kind": "continuation"
     },
     {
-      "name": "template_match_52",
-      "owner": "capture_import_names",
-      "kind": "ordered-match"
-    },
-    {
       "name": "template_match_53",
-      "owner": "capture_module_names",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_54",
       "owner": "capture_module_names",
       "kind": "ordered-match"
     },
@@ -15811,16 +16694,6 @@
       "name": "template_continuation_56",
       "owner": "capture_declaration_names",
       "kind": "continuation"
-    },
-    {
-      "name": "template_match_57",
-      "owner": "capture_declaration_names",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_58",
-      "owner": "capture_constructor_names",
-      "kind": "ordered-match"
     },
     {
       "name": "template_match_59",
@@ -15863,33 +16736,8 @@
       "kind": "ordered-match"
     },
     {
-      "name": "template_match_67",
-      "owner": "capture_name",
-      "kind": "ordered-match"
-    },
-    {
       "name": "template_match_68",
       "owner": "capture_key",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_69",
-      "owner": "capture_strings",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_70",
-      "owner": "capture_patterns",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_71",
-      "owner": "capture_pattern",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_72",
-      "owner": "capture_terms",
       "kind": "ordered-match"
     },
     {
@@ -15908,34 +16756,9 @@
       "kind": "continuation"
     },
     {
-      "name": "template_match_77",
-      "owner": "capture_term",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_78",
-      "owner": "expand_term",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_82",
-      "owner": "expand_constructor_stable",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_83",
-      "owner": "expand_application_spine",
-      "kind": "ordered-match"
-    },
-    {
       "name": "template_continuation_84",
       "owner": "expand_application_template",
       "kind": "continuation"
-    },
-    {
-      "name": "template_match_85",
-      "owner": "expand_application_template",
-      "kind": "ordered-match"
     },
     {
       "name": "template_continuation_87",
@@ -15953,34 +16776,9 @@
       "kind": "continuation"
     },
     {
-      "name": "template_match_90",
-      "owner": "expand_application_arguments",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_91",
-      "owner": "specialize_head",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_92",
-      "owner": "drop_args",
-      "kind": "ordered-match"
-    },
-    {
       "name": "template_continuation_93",
       "owner": "specialize_definition",
       "kind": "continuation"
-    },
-    {
-      "name": "template_match_94",
-      "owner": "specialize_definition",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_95",
-      "owner": "specialize_definition_result",
-      "kind": "ordered-match"
     },
     {
       "name": "template_continuation_96",
@@ -16008,28 +16806,8 @@
       "kind": "continuation"
     },
     {
-      "name": "template_match_101",
-      "owner": "specialize_prefix",
-      "kind": "ordered-match"
-    },
-    {
       "name": "template_match_103",
       "owner": "substitute_binders",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_105",
-      "owner": "substitute_optional",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_106",
-      "owner": "substitute_body",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_107",
-      "owner": "expand_terms",
       "kind": "ordered-match"
     },
     {
@@ -16038,53 +16816,13 @@
       "kind": "ordered-match"
     },
     {
-      "name": "template_match_109",
-      "owner": "strip_template_decls",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_110",
-      "owner": "strip_template_definition",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_111",
-      "owner": "strip_canonical_template",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_112",
-      "owner": "strip_instance_or_definition",
-      "kind": "ordered-match"
-    },
-    {
       "name": "template_match_113",
       "owner": "canonical_template_key",
       "kind": "ordered-match"
     },
     {
-      "name": "template_match_114",
-      "owner": "canonical_template_key",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_115",
-      "owner": "canonical_template_match",
-      "kind": "ordered-match"
-    },
-    {
       "name": "template_match_116",
       "owner": "generated_local_keys",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_117",
-      "owner": "generated_local_keys",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_118",
-      "owner": "generated_local_key_match",
       "kind": "ordered-match"
     },
     {
@@ -16103,16 +16841,6 @@
       "kind": "ordered-match"
     },
     {
-      "name": "template_match_122",
-      "owner": "template_instances_for_keys",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_123",
-      "owner": "template_instance_definition",
-      "kind": "ordered-match"
-    },
-    {
       "name": "template_match_124",
       "owner": "expand_constructors",
       "kind": "ordered-match"
@@ -16123,28 +16851,8 @@
       "kind": "ordered-match"
     },
     {
-      "name": "template_match_129",
-      "owner": "expand_definition",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_130",
-      "owner": "expand_body",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_131",
-      "owner": "expand_optional",
-      "kind": "ordered-match"
-    },
-    {
       "name": "template_match_132",
       "owner": "expand_binders",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_134",
-      "owner": "collect_actual_term",
       "kind": "ordered-match"
     },
     {
@@ -16158,21 +16866,6 @@
       "kind": "continuation"
     },
     {
-      "name": "template_match_137",
-      "owner": "collect_actual_application",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_138",
-      "owner": "collect_actual_prefix",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_141",
-      "owner": "wrapped_prefix_cons",
-      "kind": "ordered-match"
-    },
-    {
       "name": "template_match_143",
       "owner": "collect_actual_declarations",
       "kind": "ordered-match"
@@ -16183,19 +16876,9 @@
       "kind": "continuation"
     },
     {
-      "name": "template_match_146",
-      "owner": "collect_actual_definition",
-      "kind": "ordered-match"
-    },
-    {
       "name": "template_continuation_148",
       "owner": "collect_actual_modules",
       "kind": "continuation"
-    },
-    {
-      "name": "template_match_150",
-      "owner": "collect_actual_module",
-      "kind": "ordered-match"
     },
     {
       "name": "template_continuation_151",
@@ -16213,11 +16896,6 @@
       "kind": "continuation"
     },
     {
-      "name": "template_match_154",
-      "owner": "actual_in_catalog_found",
-      "kind": "ordered-match"
-    },
-    {
       "name": "template_continuation_155",
       "owner": "template_aliases_found",
       "kind": "continuation"
@@ -16228,33 +16906,8 @@
       "kind": "continuation"
     },
     {
-      "name": "template_match_157",
-      "owner": "template_aliases_found",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_158",
-      "owner": "template_local_alias",
-      "kind": "ordered-match"
-    },
-    {
       "name": "template_match_159",
       "owner": "imported_alias_names",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_160",
-      "owner": "imported_alias_names",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_161",
-      "owner": "imported_alias_match",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_162",
-      "owner": "actual_in_aliases",
       "kind": "ordered-match"
     },
     {
@@ -16263,28 +16916,8 @@
       "kind": "ordered-match"
     },
     {
-      "name": "template_match_164",
-      "owner": "actual_sites_for_key",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_165",
-      "owner": "expand_actual_values",
-      "kind": "ordered-match"
-    },
-    {
       "name": "template_match_166",
       "owner": "collect_actual_binders",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_172",
-      "owner": "has_string",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_173",
-      "owner": "has_string_match",
       "kind": "ordered-match"
     },
     {
@@ -16293,23 +16926,8 @@
       "kind": "ordered-match"
     },
     {
-      "name": "template_match_175",
-      "owner": "has_top_key",
-      "kind": "ordered-match"
-    },
-    {
       "name": "template_match_176",
       "owner": "find_generated_identity",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_177",
-      "owner": "find_generated_identity",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_178",
-      "owner": "find_generated_identity_match",
       "kind": "ordered-match"
     },
     {
@@ -16328,34 +16946,9 @@
       "kind": "continuation"
     },
     {
-      "name": "template_match_182",
-      "owner": "generated_actuals",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_183",
-      "owner": "generated_actual_case",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_184",
-      "owner": "generated_identity_collision",
-      "kind": "ordered-match"
-    },
-    {
       "name": "template_continuation_185",
       "owner": "generated_actual_new",
       "kind": "continuation"
-    },
-    {
-      "name": "template_match_186",
-      "owner": "generated_actual_new",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_187",
-      "owner": "generated_actual_complete",
-      "kind": "ordered-match"
     },
     {
       "name": "template_match_189",
@@ -16364,11 +16957,6 @@
     },
     {
       "name": "template_match_190",
-      "owner": "has_template_source_definition",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_191",
       "owner": "has_template_source_definition",
       "kind": "ordered-match"
     },
@@ -16388,38 +16976,8 @@
       "kind": "ordered-match"
     },
     {
-      "name": "template_match_195",
-      "owner": "template_owned_by_module",
-      "kind": "ordered-match"
-    },
-    {
       "name": "template_match_196",
       "owner": "generated_for_module",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_197",
-      "owner": "generated_for_module",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_198",
-      "owner": "generated_for_module_match",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_199",
-      "owner": "generated_for_module_here",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_200",
-      "owner": "generated_for_module_merge",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_201",
-      "owner": "generate_round",
       "kind": "ordered-match"
     },
     {
@@ -16428,47 +16986,12 @@
       "kind": "ordered-match"
     },
     {
-      "name": "template_match_203",
-      "owner": "generate_scoped_round",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_204",
-      "owner": "generate_round_loaded",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_205",
-      "owner": "generate_round_merge",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_206",
-      "owner": "generate_until_result",
-      "kind": "ordered-match"
-    },
-    {
       "name": "template_match_207",
       "owner": "local_templates",
       "kind": "ordered-match"
     },
     {
-      "name": "template_match_208",
-      "owner": "local_templates",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_209",
-      "owner": "local_template_match",
-      "kind": "ordered-match"
-    },
-    {
       "name": "template_match_210",
-      "owner": "imported_templates",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_211",
       "owner": "imported_templates",
       "kind": "ordered-match"
     },
@@ -16478,19 +17001,9 @@
       "kind": "ordered-match"
     },
     {
-      "name": "template_match_213",
-      "owner": "imported_from",
-      "kind": "ordered-match"
-    },
-    {
       "name": "template_continuation_214",
       "owner": "imported_from_match",
       "kind": "continuation"
-    },
-    {
-      "name": "template_match_215",
-      "owner": "imported_from_match",
-      "kind": "ordered-match"
     },
     {
       "name": "template_continuation_216",
@@ -16504,11 +17017,6 @@
     },
     {
       "name": "template_match_218",
-      "owner": "expand_scoped_modules",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_219",
       "owner": "expand_scoped_modules",
       "kind": "ordered-match"
     },
@@ -16528,103 +17036,13 @@
       "kind": "ordered-match"
     },
     {
-      "name": "template_match_226",
-      "owner": "invalid_template_decl",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_227",
-      "owner": "invalid_application",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_228",
-      "owner": "invalid_reference",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_229",
-      "owner": "invalid_application_spine",
-      "kind": "ordered-match"
-    },
-    {
       "name": "template_continuation_230",
       "owner": "invalid_application_head",
       "kind": "continuation"
     },
     {
-      "name": "template_match_231",
-      "owner": "invalid_application_head",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_232",
-      "owner": "invalid_application_arity",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_233",
-      "owner": "invalid_application_arguments",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_234",
-      "owner": "invalid_application_parts",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_236",
-      "owner": "invalid_template_argument",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_237",
-      "owner": "invalid_capture_context",
-      "kind": "ordered-match"
-    },
-    {
       "name": "template_match_238",
       "owner": "invalid_capture_key",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_239",
-      "owner": "invalid_capture_strings",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_240",
-      "owner": "invalid_capture_patterns",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_241",
-      "owner": "invalid_capture_terms",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_243",
-      "owner": "invalid_capture_string_word",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_245",
-      "owner": "invalid_capture",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_246",
-      "owner": "has_open_vars",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_247",
-      "owner": "has_open_vars_terms",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_248",
-      "owner": "invalid_terms",
       "kind": "ordered-match"
     },
     {
@@ -16643,11 +17061,6 @@
       "kind": "continuation"
     },
     {
-      "name": "template_match_254",
-      "owner": "invalid_definition",
-      "kind": "ordered-match"
-    },
-    {
       "name": "template_match_257",
       "owner": "invalid_binders",
       "kind": "ordered-match"
@@ -16663,16 +17076,6 @@
       "kind": "ordered-match"
     },
     {
-      "name": "template_match_264",
-      "owner": "template_expand_templates",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_265",
-      "owner": "template_expand_modules",
-      "kind": "ordered-match"
-    },
-    {
       "name": "template_match_266",
       "owner": "generated_declarations",
       "kind": "ordered-match"
@@ -16683,27 +17086,12 @@
       "kind": "ordered-match"
     },
     {
-      "name": "template_match_270",
-      "owner": "template_expand_round",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_271",
-      "owner": "template_expand_generated",
-      "kind": "ordered-match"
-    },
-    {
       "name": "template_continuation_272",
       "owner": "invalid_scoped_modules",
       "kind": "continuation"
     },
     {
       "name": "template_match_273",
-      "owner": "invalid_scoped_modules",
-      "kind": "ordered-match"
-    },
-    {
-      "name": "template_match_274",
       "owner": "invalid_scoped_modules",
       "kind": "ordered-match"
     }
@@ -16718,92 +17106,48 @@
       "to": "template_match_7"
     },
     {
-      "from": "template_match_10",
-      "to": "template_match_9"
-    },
-    {
       "from": "template_body_collect_template_decls",
-      "to": "template_match_10"
+      "to": "template_match_9"
     },
     {
       "from": "template_continuation_11",
       "to": "template_body_collect_template_decls"
     },
     {
-      "from": "template_match_12",
+      "from": "template_body_collect_template_decl",
       "to": "template_continuation_11"
     },
     {
-      "from": "template_match_12",
-      "to": "template_body_collect_template_decls"
-    },
-    {
       "from": "template_body_collect_template_decl",
-      "to": "template_match_12"
+      "to": "template_body_collect_template_decls"
     },
     {
       "from": "template_body_has_template_binder",
       "to": "template_match_13"
     },
     {
-      "from": "template_body_qualify_match",
-      "to": "template_match_15"
-    },
-    {
-      "from": "template_match_17",
+      "from": "template_body_find_template",
       "to": "template_match_16"
     },
     {
-      "from": "template_body_find_template",
-      "to": "template_match_17"
-    },
-    {
-      "from": "template_match_18",
+      "from": "template_body_find_template_match",
       "to": "template_body_find_template"
     },
     {
-      "from": "template_body_find_template_match",
-      "to": "template_match_18"
-    },
-    {
-      "from": "template_match_19",
-      "to": "template_body_span_of"
-    },
-    {
       "from": "template_body_flatten_application",
-      "to": "template_match_19"
+      "to": "template_body_span_of"
     },
     {
       "from": "template_body_template_for_head",
       "to": "template_body_find_template"
     },
     {
-      "from": "template_body_take_template_arg",
-      "to": "template_match_24"
-    },
-    {
-      "from": "template_body_reapply_args",
-      "to": "template_match_25"
-    },
-    {
-      "from": "template_body_generated_local_key",
-      "to": "template_match_26"
-    },
-    {
       "from": "template_body_fresh_generated_key",
       "to": "template_continuation_28"
     },
     {
-      "from": "template_match_29",
-      "to": "template_body_fresh_generated_key"
-    },
-    {
       "from": "template_body_fresh_generated_key_match",
-      "to": "template_match_29"
-    },
-    {
-      "from": "template_body_generated_candidate",
-      "to": "template_match_30"
+      "to": "template_body_fresh_generated_key"
     },
     {
       "from": "template_body_generated_canonical_key",
@@ -16946,24 +17290,8 @@
       "to": "template_body_encode_quantity"
     },
     {
-      "from": "template_body_strip_namespace_match",
-      "to": "template_match_45"
-    },
-    {
-      "from": "template_body_strip_namespace_prefix_match",
-      "to": "template_match_46"
-    },
-    {
       "from": "template_body_template_capture_names",
       "to": "template_pure_template_capture_names"
-    },
-    {
-      "from": "template_body_scoped_templates",
-      "to": "template_match_47"
-    },
-    {
-      "from": "template_body_templates_with_captures",
-      "to": "template_match_48"
     },
     {
       "from": "template_continuation_50",
@@ -16978,32 +17306,16 @@
       "to": "template_continuation_51"
     },
     {
-      "from": "template_body_capture_import_names",
-      "to": "template_match_52"
-    },
-    {
-      "from": "template_match_54",
-      "to": "template_match_53"
-    },
-    {
       "from": "template_body_capture_module_names",
-      "to": "template_match_54"
+      "to": "template_match_53"
     },
     {
       "from": "template_continuation_56",
       "to": "template_match_55"
     },
     {
-      "from": "template_match_57",
-      "to": "template_continuation_56"
-    },
-    {
       "from": "template_body_capture_declaration_names",
-      "to": "template_match_57"
-    },
-    {
-      "from": "template_body_capture_constructor_names",
-      "to": "template_match_58"
+      "to": "template_continuation_56"
     },
     {
       "from": "template_continuation_60",
@@ -17042,12 +17354,8 @@
       "to": "template_match_65"
     },
     {
-      "from": "template_match_67",
-      "to": "template_match_66"
-    },
-    {
       "from": "template_body_capture_name",
-      "to": "template_match_67"
+      "to": "template_match_66"
     },
     {
       "from": "template_body_capture_key",
@@ -17058,32 +17366,16 @@
       "to": "template_match_68"
     },
     {
-      "from": "template_match_69",
-      "to": "template_body_capture_key"
-    },
-    {
       "from": "template_body_capture_strings",
-      "to": "template_match_69"
-    },
-    {
-      "from": "template_body_capture_patterns",
-      "to": "template_match_70"
-    },
-    {
-      "from": "template_match_71",
       "to": "template_body_capture_key"
-    },
-    {
-      "from": "template_match_71",
-      "to": "template_body_capture_patterns"
     },
     {
       "from": "template_body_capture_pattern",
-      "to": "template_match_71"
+      "to": "template_body_capture_key"
     },
     {
-      "from": "template_body_capture_terms",
-      "to": "template_match_72"
+      "from": "template_body_capture_pattern",
+      "to": "template_body_capture_patterns"
     },
     {
       "from": "template_match_74",
@@ -17130,84 +17422,76 @@
       "to": "template_body_capture_terms"
     },
     {
-      "from": "template_match_77",
+      "from": "template_body_capture_term",
       "to": "template_body_reference_key"
-    },
-    {
-      "from": "template_match_77",
-      "to": "template_body_capture_key"
-    },
-    {
-      "from": "template_match_77",
-      "to": "template_body_capture_terms"
-    },
-    {
-      "from": "template_match_77",
-      "to": "template_body_capture_key"
-    },
-    {
-      "from": "template_match_77",
-      "to": "template_body_capture_terms"
-    },
-    {
-      "from": "template_match_77",
-      "to": "template_body_capture_strings"
-    },
-    {
-      "from": "template_match_77",
-      "to": "template_body_capture_terms"
-    },
-    {
-      "from": "template_match_77",
-      "to": "template_body_capture_terms"
-    },
-    {
-      "from": "template_match_77",
-      "to": "template_body_capture_key"
-    },
-    {
-      "from": "template_match_77",
-      "to": "template_body_capture_terms"
-    },
-    {
-      "from": "template_match_77",
-      "to": "template_body_capture_string_names"
-    },
-    {
-      "from": "template_match_77",
-      "to": "template_body_capture_key"
-    },
-    {
-      "from": "template_match_77",
-      "to": "template_body_capture_terms"
-    },
-    {
-      "from": "template_match_77",
-      "to": "template_body_capture_terms"
-    },
-    {
-      "from": "template_match_77",
-      "to": "template_body_capture_patterns"
-    },
-    {
-      "from": "template_match_77",
-      "to": "template_body_capture_patterns"
-    },
-    {
-      "from": "template_match_77",
-      "to": "template_continuation_76"
     },
     {
       "from": "template_body_capture_term",
-      "to": "template_match_77"
+      "to": "template_body_capture_key"
     },
     {
-      "from": "template_match_78",
-      "to": "template_body_reference_key"
+      "from": "template_body_capture_term",
+      "to": "template_body_capture_terms"
+    },
+    {
+      "from": "template_body_capture_term",
+      "to": "template_body_capture_key"
+    },
+    {
+      "from": "template_body_capture_term",
+      "to": "template_body_capture_terms"
+    },
+    {
+      "from": "template_body_capture_term",
+      "to": "template_body_capture_strings"
+    },
+    {
+      "from": "template_body_capture_term",
+      "to": "template_body_capture_terms"
+    },
+    {
+      "from": "template_body_capture_term",
+      "to": "template_body_capture_terms"
+    },
+    {
+      "from": "template_body_capture_term",
+      "to": "template_body_capture_key"
+    },
+    {
+      "from": "template_body_capture_term",
+      "to": "template_body_capture_terms"
+    },
+    {
+      "from": "template_body_capture_term",
+      "to": "template_body_capture_string_names"
+    },
+    {
+      "from": "template_body_capture_term",
+      "to": "template_body_capture_key"
+    },
+    {
+      "from": "template_body_capture_term",
+      "to": "template_body_capture_terms"
+    },
+    {
+      "from": "template_body_capture_term",
+      "to": "template_body_capture_terms"
+    },
+    {
+      "from": "template_body_capture_term",
+      "to": "template_body_capture_patterns"
+    },
+    {
+      "from": "template_body_capture_term",
+      "to": "template_body_capture_patterns"
+    },
+    {
+      "from": "template_body_capture_term",
+      "to": "template_continuation_76"
     },
     {
       "from": "template_body_expand_term",
-      "to": "template_match_78"
+      "to": "template_body_reference_key"
     },
     {
       "from": "template_body_expand_stable_terms",
@@ -17218,40 +17502,28 @@
       "to": "template_body_expand_stable_terms"
     },
     {
-      "from": "template_body_expand_constructor_stable",
-      "to": "template_match_82"
-    },
-    {
       "from": "template_body_expand_application",
       "to": "template_body_flatten_application"
     },
     {
-      "from": "template_match_83",
-      "to": "template_body_template_for_head"
-    },
-    {
       "from": "template_body_expand_application_spine",
-      "to": "template_match_83"
+      "to": "template_body_template_for_head"
     },
     {
       "from": "template_continuation_84",
       "to": "template_body_take_template_args"
     },
     {
-      "from": "template_match_85",
+      "from": "template_body_expand_application_template",
       "to": "template_body_expand_term"
-    },
-    {
-      "from": "template_match_85",
-      "to": "template_body_expand_term"
-    },
-    {
-      "from": "template_match_85",
-      "to": "template_continuation_84"
     },
     {
       "from": "template_body_expand_application_template",
-      "to": "template_match_85"
+      "to": "template_body_expand_term"
+    },
+    {
+      "from": "template_body_expand_application_template",
+      "to": "template_continuation_84"
     },
     {
       "from": "template_body_template_arity",
@@ -17286,40 +17558,20 @@
       "to": "template_continuation_88"
     },
     {
-      "from": "template_match_90",
+      "from": "template_body_expand_application_arguments",
       "to": "template_body_expand_term"
-    },
-    {
-      "from": "template_match_90",
-      "to": "template_body_expand_term"
-    },
-    {
-      "from": "template_match_90",
-      "to": "template_continuation_89"
     },
     {
       "from": "template_body_expand_application_arguments",
-      "to": "template_match_90"
+      "to": "template_body_expand_term"
     },
     {
-      "from": "template_body_specialize_head",
-      "to": "template_match_91"
-    },
-    {
-      "from": "template_body_drop_args",
-      "to": "template_match_92"
-    },
-    {
-      "from": "template_match_94",
-      "to": "template_continuation_93"
+      "from": "template_body_expand_application_arguments",
+      "to": "template_continuation_89"
     },
     {
       "from": "template_body_specialize_definition",
-      "to": "template_match_94"
-    },
-    {
-      "from": "template_body_specialize_definition_result",
-      "to": "template_match_95"
+      "to": "template_continuation_93"
     },
     {
       "from": "template_continuation_97",
@@ -17342,32 +17594,16 @@
       "to": "template_continuation_99"
     },
     {
-      "from": "template_match_101",
-      "to": "template_continuation_100"
-    },
-    {
       "from": "template_body_specialize_prefix",
-      "to": "template_match_101"
+      "to": "template_continuation_100"
     },
     {
       "from": "template_body_substitute_binders",
       "to": "template_match_103"
     },
     {
-      "from": "template_body_substitute_optional",
-      "to": "template_match_105"
-    },
-    {
-      "from": "template_body_substitute_body",
-      "to": "template_match_106"
-    },
-    {
-      "from": "template_match_107",
-      "to": "template_body_expand_term"
-    },
-    {
       "from": "template_body_expand_terms",
-      "to": "template_match_107"
+      "to": "template_body_expand_term"
     },
     {
       "from": "template_match_108",
@@ -17382,80 +17618,48 @@
       "to": "template_body_expand_term"
     },
     {
-      "from": "template_match_109",
+      "from": "template_body_strip_template_decls",
       "to": "template_match_108"
     },
     {
-      "from": "template_body_strip_template_decls",
-      "to": "template_match_109"
-    },
-    {
-      "from": "template_body_strip_template_definition",
-      "to": "template_match_110"
-    },
-    {
-      "from": "template_match_111",
-      "to": "template_body_strip_template_decls"
-    },
-    {
-      "from": "template_match_111",
+      "from": "template_body_strip_canonical_template",
       "to": "template_body_strip_template_decls"
     },
     {
       "from": "template_body_strip_canonical_template",
-      "to": "template_match_111"
-    },
-    {
-      "from": "template_match_112",
-      "to": "template_body_strip_template_decls"
-    },
-    {
-      "from": "template_match_112",
       "to": "template_body_strip_template_decls"
     },
     {
       "from": "template_body_strip_instance_or_definition",
-      "to": "template_match_112"
+      "to": "template_body_strip_template_decls"
+    },
+    {
+      "from": "template_body_strip_instance_or_definition",
+      "to": "template_body_strip_template_decls"
     },
     {
       "from": "template_match_113",
       "to": "template_body_strip_namespace"
     },
     {
-      "from": "template_match_114",
+      "from": "template_body_canonical_template_key",
       "to": "template_match_113"
     },
     {
-      "from": "template_body_canonical_template_key",
-      "to": "template_match_114"
-    },
-    {
-      "from": "template_match_115",
+      "from": "template_body_canonical_template_match",
       "to": "template_body_canonical_template_key"
     },
     {
-      "from": "template_body_canonical_template_match",
-      "to": "template_match_115"
-    },
-    {
-      "from": "template_match_117",
+      "from": "template_body_generated_local_keys",
       "to": "template_match_116"
     },
     {
-      "from": "template_body_generated_local_keys",
-      "to": "template_match_117"
-    },
-    {
-      "from": "template_match_118",
-      "to": "template_body_generated_local_keys"
-    },
-    {
-      "from": "template_match_118",
+      "from": "template_body_generated_local_key_match",
       "to": "template_body_generated_local_keys"
     },
     {
       "from": "template_body_generated_local_key_match",
-      "to": "template_match_118"
+      "to": "template_body_generated_local_keys"
     },
     {
       "from": "template_continuation_119",
@@ -17486,24 +17690,16 @@
       "to": "template_body_has_generated_local_key"
     },
     {
-      "from": "template_match_122",
+      "from": "template_body_template_instances_for_keys",
       "to": "template_match_121"
     },
     {
-      "from": "template_body_template_instances_for_keys",
-      "to": "template_match_122"
-    },
-    {
-      "from": "template_match_123",
-      "to": "template_body_template_instances_for_keys"
-    },
-    {
-      "from": "template_match_123",
+      "from": "template_body_template_instance_definition",
       "to": "template_body_template_instances_for_keys"
     },
     {
       "from": "template_body_template_instance_definition",
-      "to": "template_match_123"
+      "to": "template_body_template_instances_for_keys"
     },
     {
       "from": "template_body_expand_constructors",
@@ -17522,24 +17718,12 @@
       "to": "template_body_expand_term"
     },
     {
-      "from": "template_body_expand_definition",
-      "to": "template_match_129"
-    },
-    {
-      "from": "template_match_130",
-      "to": "template_body_expand_term"
-    },
-    {
       "from": "template_body_expand_body",
-      "to": "template_match_130"
-    },
-    {
-      "from": "template_match_131",
       "to": "template_body_expand_term"
     },
     {
       "from": "template_body_expand_optional",
-      "to": "template_match_131"
+      "to": "template_body_expand_term"
     },
     {
       "from": "template_match_132",
@@ -17554,32 +17738,16 @@
       "to": "template_match_132"
     },
     {
-      "from": "template_body_collect_actual_term",
-      "to": "template_match_134"
-    },
-    {
       "from": "template_continuation_136",
       "to": "template_match_135"
     },
     {
-      "from": "template_match_137",
+      "from": "template_body_collect_actual_application",
       "to": "template_body_collect_actual_term"
     },
     {
-      "from": "template_match_137",
-      "to": "template_continuation_136"
-    },
-    {
       "from": "template_body_collect_actual_application",
-      "to": "template_match_137"
-    },
-    {
-      "from": "template_body_collect_actual_prefix",
-      "to": "template_match_138"
-    },
-    {
-      "from": "template_body_wrapped_prefix_cons",
-      "to": "template_match_141"
+      "to": "template_continuation_136"
     },
     {
       "from": "template_body_collect_actual_terms",
@@ -17606,10 +17774,6 @@
       "to": "template_continuation_144"
     },
     {
-      "from": "template_body_collect_actual_definition",
-      "to": "template_match_146"
-    },
-    {
       "from": "template_body_collect_actual_body",
       "to": "template_body_collect_actual_term"
     },
@@ -17622,12 +17786,8 @@
       "to": "template_continuation_148"
     },
     {
-      "from": "template_match_150",
-      "to": "template_body_scope_capture_names"
-    },
-    {
       "from": "template_body_collect_actual_module",
-      "to": "template_match_150"
+      "to": "template_body_scope_capture_names"
     },
     {
       "from": "template_body_actual_in_catalog",
@@ -17650,80 +17810,48 @@
       "to": "template_match_152"
     },
     {
-      "from": "template_match_154",
-      "to": "template_continuation_153"
-    },
-    {
       "from": "template_body_actual_in_catalog_found",
-      "to": "template_match_154"
+      "to": "template_continuation_153"
     },
     {
       "from": "template_continuation_156",
       "to": "template_continuation_155"
     },
     {
-      "from": "template_match_157",
+      "from": "template_body_template_aliases_found",
       "to": "template_body_strip_namespace"
     },
     {
-      "from": "template_match_157",
+      "from": "template_body_template_aliases_found",
       "to": "template_continuation_156"
     },
     {
-      "from": "template_body_template_aliases_found",
-      "to": "template_match_157"
-    },
-    {
-      "from": "template_body_template_local_alias",
-      "to": "template_match_158"
-    },
-    {
-      "from": "template_match_160",
+      "from": "template_body_imported_alias_names",
       "to": "template_match_159"
     },
     {
-      "from": "template_body_imported_alias_names",
-      "to": "template_match_160"
-    },
-    {
-      "from": "template_match_161",
-      "to": "template_body_imported_alias_names"
-    },
-    {
-      "from": "template_match_161",
+      "from": "template_body_imported_alias_match",
       "to": "template_body_imported_alias_names"
     },
     {
       "from": "template_body_imported_alias_match",
-      "to": "template_match_161"
-    },
-    {
-      "from": "template_match_162",
-      "to": "template_body_first_actual"
+      "to": "template_body_imported_alias_names"
     },
     {
       "from": "template_body_actual_in_aliases",
-      "to": "template_match_162"
-    },
-    {
-      "from": "template_match_164",
-      "to": "template_match_163"
+      "to": "template_body_first_actual"
     },
     {
       "from": "template_body_actual_sites_for_key",
-      "to": "template_match_164"
-    },
-    {
-      "from": "template_match_165",
-      "to": "template_body_expand_terms"
-    },
-    {
-      "from": "template_match_165",
-      "to": "template_body_capture_terms"
+      "to": "template_match_163"
     },
     {
       "from": "template_body_expand_actual_values",
-      "to": "template_match_165"
+      "to": "template_body_expand_terms"
+    },
+    {
+      "from": "template_body_expand_actual_values",
+      "to": "template_body_capture_terms"
     },
     {
       "from": "template_match_166",
@@ -17754,40 +17882,20 @@
       "to": "template_body_collect_actual_term"
     },
     {
-      "from": "template_body_has_string",
-      "to": "template_match_172"
-    },
-    {
-      "from": "template_match_173",
+      "from": "template_body_has_string_match",
       "to": "template_body_has_string"
     },
     {
-      "from": "template_body_has_string_match",
-      "to": "template_match_173"
-    },
-    {
-      "from": "template_match_175",
+      "from": "template_body_has_top_key",
       "to": "template_match_174"
     },
     {
-      "from": "template_body_has_top_key",
-      "to": "template_match_175"
-    },
-    {
-      "from": "template_match_177",
+      "from": "template_body_find_generated_identity",
       "to": "template_match_176"
     },
     {
-      "from": "template_body_find_generated_identity",
-      "to": "template_match_177"
-    },
-    {
-      "from": "template_match_178",
-      "to": "template_body_find_generated_identity"
-    },
-    {
       "from": "template_body_find_generated_identity_match",
-      "to": "template_match_178"
+      "to": "template_body_find_generated_identity"
     },
     {
       "from": "template_body_template_span",
@@ -17814,72 +17922,52 @@
       "to": "template_continuation_180"
     },
     {
-      "from": "template_match_182",
+      "from": "template_body_generated_actuals",
       "to": "template_pure_template_name"
     },
     {
-      "from": "template_match_182",
+      "from": "template_body_generated_actuals",
       "to": "template_body_encode_string"
     },
     {
-      "from": "template_match_182",
+      "from": "template_body_generated_actuals",
       "to": "template_body_serialize_terms"
     },
     {
-      "from": "template_match_182",
-      "to": "template_continuation_181"
-    },
-    {
       "from": "template_body_generated_actuals",
-      "to": "template_match_182"
+      "to": "template_continuation_181"
     },
     {
       "from": "template_body_template_name",
       "to": "template_pure_template_name"
     },
     {
-      "from": "template_match_183",
+      "from": "template_body_generated_actual_case",
       "to": "template_body_has_top_key"
     },
     {
-      "from": "template_body_generated_actual_case",
-      "to": "template_match_183"
-    },
-    {
-      "from": "template_match_184",
+      "from": "template_body_generated_identity_collision",
       "to": "template_pure_template_span"
     },
     {
-      "from": "template_match_184",
-      "to": "template_body_generated_actuals"
-    },
-    {
       "from": "template_body_generated_identity_collision",
-      "to": "template_match_184"
+      "to": "template_body_generated_actuals"
     },
     {
       "from": "template_continuation_185",
       "to": "template_body_generated_actuals"
     },
     {
-      "from": "template_match_186",
+      "from": "template_body_generated_actual_new",
       "to": "template_pure_template_span"
     },
     {
-      "from": "template_match_186",
+      "from": "template_body_generated_actual_new",
       "to": "template_body_specialize_definition"
     },
     {
-      "from": "template_match_186",
-      "to": "template_continuation_185"
-    },
-    {
       "from": "template_body_generated_actual_new",
-      "to": "template_match_186"
-    },
-    {
-      "from": "template_body_generated_actual_complete",
-      "to": "template_match_187"
+      "to": "template_continuation_185"
     },
     {
       "from": "template_match_190",
@@ -17890,12 +17978,8 @@
       "to": "template_match_189"
     },
     {
-      "from": "template_match_191",
-      "to": "template_match_190"
-    },
-    {
       "from": "template_body_has_template_source_definition",
-      "to": "template_match_191"
+      "to": "template_match_190"
     },
     {
       "from": "template_match_192",
@@ -17910,156 +17994,96 @@
       "to": "template_match_193"
     },
     {
-      "from": "template_match_195",
-      "to": "template_match_194"
-    },
-    {
       "from": "template_body_template_owned_by_module",
-      "to": "template_match_195"
+      "to": "template_match_194"
     },
     {
       "from": "template_match_196",
       "to": "template_body_template_owned_by_module"
     },
     {
-      "from": "template_match_197",
+      "from": "template_body_generated_for_module",
       "to": "template_match_196"
     },
     {
-      "from": "template_body_generated_for_module",
-      "to": "template_match_197"
-    },
-    {
-      "from": "template_match_198",
+      "from": "template_body_generated_for_module_match",
       "to": "template_body_generated_for_module"
-    },
-    {
-      "from": "template_match_198",
-      "to": "template_body_actual_in_catalog"
-    },
-    {
-      "from": "template_match_198",
-      "to": "template_body_generated_actuals"
     },
     {
       "from": "template_body_generated_for_module_match",
-      "to": "template_match_198"
+      "to": "template_body_actual_in_catalog"
     },
     {
-      "from": "template_match_199",
-      "to": "template_body_generated_for_module"
+      "from": "template_body_generated_for_module_match",
+      "to": "template_body_generated_actuals"
     },
     {
       "from": "template_body_generated_for_module_here",
-      "to": "template_match_199"
-    },
-    {
-      "from": "template_body_generated_for_module_merge",
-      "to": "template_match_200"
-    },
-    {
-      "from": "template_match_201",
-      "to": "template_body_collect_actual_modules"
+      "to": "template_body_generated_for_module"
     },
     {
       "from": "template_body_generate_round",
-      "to": "template_match_201"
+      "to": "template_body_collect_actual_modules"
     },
     {
       "from": "template_match_202",
       "to": "template_body_generated_for_module"
     },
     {
-      "from": "template_match_203",
+      "from": "template_body_generate_scoped_round",
       "to": "template_match_202"
     },
     {
-      "from": "template_body_generate_scoped_round",
-      "to": "template_match_203"
-    },
-    {
-      "from": "template_match_204",
-      "to": "template_body_generate_scoped_round"
-    },
-    {
       "from": "template_body_generate_round_loaded",
-      "to": "template_match_204"
-    },
-    {
-      "from": "template_body_generate_round_merge",
-      "to": "template_match_205"
+      "to": "template_body_generate_scoped_round"
     },
     {
       "from": "template_body_generate_until_stable",
       "to": "template_body_generate_round"
     },
     {
-      "from": "template_match_206",
+      "from": "template_body_generate_until_result",
       "to": "template_body_generate_until_stable"
     },
     {
-      "from": "template_body_generate_until_result",
-      "to": "template_match_206"
-    },
-    {
-      "from": "template_match_208",
+      "from": "template_body_local_templates",
       "to": "template_match_207"
     },
     {
-      "from": "template_body_local_templates",
-      "to": "template_match_208"
-    },
-    {
-      "from": "template_match_209",
+      "from": "template_body_local_template_match",
       "to": "template_body_strip_namespace"
     },
     {
-      "from": "template_match_209",
-      "to": "template_body_local_templates"
-    },
-    {
-      "from": "template_match_209",
+      "from": "template_body_local_template_match",
       "to": "template_body_local_templates"
     },
     {
       "from": "template_body_local_template_match",
-      "to": "template_match_209"
-    },
-    {
-      "from": "template_match_211",
-      "to": "template_match_210"
+      "to": "template_body_local_templates"
     },
     {
       "from": "template_body_imported_templates",
-      "to": "template_match_211"
-    },
-    {
-      "from": "template_match_213",
-      "to": "template_match_212"
+      "to": "template_match_210"
     },
     {
       "from": "template_body_imported_from",
-      "to": "template_match_213"
+      "to": "template_match_212"
     },
     {
       "from": "template_continuation_214",
       "to": "template_body_imported_from"
     },
     {
-      "from": "template_match_215",
+      "from": "template_body_imported_from_match",
       "to": "template_body_strip_namespace"
     },
     {
-      "from": "template_match_215",
+      "from": "template_body_imported_from_match",
       "to": "template_continuation_214"
     },
     {
-      "from": "template_match_215",
-      "to": "template_body_imported_from"
-    },
-    {
       "from": "template_body_imported_from_match",
-      "to": "template_match_215"
+      "to": "template_body_imported_from"
     },
     {
       "from": "template_continuation_217",
@@ -18078,12 +18102,8 @@
       "to": "template_continuation_217"
     },
     {
-      "from": "template_match_219",
-      "to": "template_match_218"
-    },
-    {
       "from": "template_body_expand_scoped_modules",
-      "to": "template_match_219"
+      "to": "template_match_218"
     },
     {
       "from": "template_body_has_late_template_binder",
@@ -18102,96 +18122,56 @@
       "to": "template_match_224"
     },
     {
-      "from": "template_match_226",
+      "from": "template_body_invalid_template_decl",
       "to": "template_body_invalid_template_decls"
     },
     {
-      "from": "template_body_invalid_template_decl",
-      "to": "template_match_226"
-    },
-    {
-      "from": "template_match_227",
+      "from": "template_body_invalid_application",
       "to": "template_body_find_template"
     },
     {
-      "from": "template_match_227",
+      "from": "template_body_invalid_application",
       "to": "template_body_flatten_application"
     },
     {
-      "from": "template_body_invalid_application",
-      "to": "template_match_227"
-    },
-    {
-      "from": "template_body_invalid_reference",
-      "to": "template_match_228"
-    },
-    {
-      "from": "template_match_229",
+      "from": "template_body_invalid_application_spine",
       "to": "template_body_template_for_head"
     },
     {
-      "from": "template_body_invalid_application_spine",
-      "to": "template_match_229"
-    },
-    {
-      "from": "template_match_231",
+      "from": "template_body_invalid_application_head",
       "to": "template_body_template_arity"
     },
     {
-      "from": "template_match_231",
+      "from": "template_body_invalid_application_head",
       "to": "template_continuation_230"
     },
     {
-      "from": "template_body_invalid_application_head",
-      "to": "template_match_231"
-    },
-    {
-      "from": "template_match_232",
+      "from": "template_body_invalid_application_arity",
       "to": "template_body_take_template_args"
     },
     {
-      "from": "template_body_invalid_application_arity",
-      "to": "template_match_232"
-    },
-    {
-      "from": "template_match_233",
+      "from": "template_body_invalid_application_arguments",
       "to": "template_body_drop_args"
     },
     {
-      "from": "template_body_invalid_application_arguments",
-      "to": "template_match_233"
-    },
-    {
-      "from": "template_match_234",
-      "to": "template_body_invalid_application"
-    },
-    {
-      "from": "template_match_234",
+      "from": "template_body_invalid_application_parts",
       "to": "template_body_invalid_application"
     },
     {
       "from": "template_body_invalid_application_parts",
-      "to": "template_match_234"
-    },
-    {
-      "from": "template_match_236",
       "to": "template_body_invalid_application"
     },
     {
-      "from": "template_match_236",
-      "to": "template_body_invalid_template_args"
+      "from": "template_body_invalid_template_argument",
+      "to": "template_body_invalid_application"
     },
     {
       "from": "template_body_invalid_template_argument",
-      "to": "template_match_236"
-    },
-    {
-      "from": "template_match_237",
-      "to": "template_pure_template_capture_names"
+      "to": "template_body_invalid_template_args"
     },
     {
       "from": "template_body_invalid_capture_context",
-      "to": "template_match_237"
+      "to": "template_pure_template_capture_names"
     },
     {
       "from": "template_body_invalid_capture_key",
@@ -18202,24 +18182,12 @@
       "to": "template_match_238"
     },
     {
-      "from": "template_match_239",
-      "to": "template_body_invalid_capture_key"
-    },
-    {
       "from": "template_body_invalid_capture_strings",
-      "to": "template_match_239"
-    },
-    {
-      "from": "template_match_240",
       "to": "template_body_invalid_capture_key"
     },
     {
       "from": "template_body_invalid_capture_patterns",
-      "to": "template_match_240"
-    },
-    {
-      "from": "template_body_invalid_capture_terms",
-      "to": "template_match_241"
+      "to": "template_body_invalid_capture_key"
     },
     {
       "from": "template_body_invalid_capture_string_bit",
@@ -18228,22 +18196,18 @@
     {
       "from": "template_body_invalid_capture_string_bit",
       "to": "template_body_invalid_capture_key"
-    },
-    {
-      "from": "template_match_243",
-      "to": "template_body_invalid_capture_key"
-    },
-    {
-      "from": "template_match_243",
-      "to": "template_body_invalid_capture_key"
-    },
-    {
-      "from": "template_match_243",
-      "to": "template_body_invalid_capture_string_bit"
     },
     {
       "from": "template_body_invalid_capture_string_word",
-      "to": "template_match_243"
+      "to": "template_body_invalid_capture_key"
+    },
+    {
+      "from": "template_body_invalid_capture_string_word",
+      "to": "template_body_invalid_capture_key"
+    },
+    {
+      "from": "template_body_invalid_capture_string_word",
+      "to": "template_body_invalid_capture_string_bit"
     },
     {
       "from": "template_body_invalid_capture_string",
@@ -18266,96 +18230,80 @@
       "to": "template_body_invalid_capture_string_word"
     },
     {
-      "from": "template_match_245",
+      "from": "template_body_invalid_capture",
       "to": "template_body_reference_key"
     },
     {
-      "from": "template_match_245",
+      "from": "template_body_invalid_capture",
       "to": "template_body_invalid_capture_key"
     },
     {
-      "from": "template_match_245",
-      "to": "template_body_invalid_capture_terms"
-    },
-    {
-      "from": "template_match_245",
-      "to": "template_body_invalid_capture_key"
-    },
-    {
-      "from": "template_match_245",
-      "to": "template_body_invalid_capture_terms"
-    },
-    {
-      "from": "template_match_245",
-      "to": "template_body_invalid_capture_strings"
-    },
-    {
-      "from": "template_match_245",
-      "to": "template_body_invalid_capture_terms"
-    },
-    {
-      "from": "template_match_245",
-      "to": "template_body_invalid_capture_terms"
-    },
-    {
-      "from": "template_match_245",
-      "to": "template_body_invalid_capture_key"
-    },
-    {
-      "from": "template_match_245",
-      "to": "template_body_invalid_capture_terms"
-    },
-    {
-      "from": "template_match_245",
-      "to": "template_body_invalid_capture_string"
-    },
-    {
-      "from": "template_match_245",
-      "to": "template_body_invalid_capture_key"
-    },
-    {
-      "from": "template_match_245",
-      "to": "template_body_invalid_capture_terms"
-    },
-    {
-      "from": "template_match_245",
-      "to": "template_body_invalid_capture_terms"
-    },
-    {
-      "from": "template_match_245",
-      "to": "template_body_invalid_capture_patterns"
-    },
-    {
-      "from": "template_match_245",
-      "to": "template_body_invalid_capture_patterns"
-    },
-    {
-      "from": "template_match_245",
+      "from": "template_body_invalid_capture",
       "to": "template_body_invalid_capture_terms"
     },
     {
       "from": "template_body_invalid_capture",
-      "to": "template_match_245"
+      "to": "template_body_invalid_capture_key"
     },
     {
-      "from": "template_body_has_open_vars",
-      "to": "template_match_246"
+      "from": "template_body_invalid_capture",
+      "to": "template_body_invalid_capture_terms"
     },
     {
-      "from": "template_match_247",
-      "to": "template_body_has_open_vars"
+      "from": "template_body_invalid_capture",
+      "to": "template_body_invalid_capture_strings"
+    },
+    {
+      "from": "template_body_invalid_capture",
+      "to": "template_body_invalid_capture_terms"
+    },
+    {
+      "from": "template_body_invalid_capture",
+      "to": "template_body_invalid_capture_terms"
+    },
+    {
+      "from": "template_body_invalid_capture",
+      "to": "template_body_invalid_capture_key"
+    },
+    {
+      "from": "template_body_invalid_capture",
+      "to": "template_body_invalid_capture_terms"
+    },
+    {
+      "from": "template_body_invalid_capture",
+      "to": "template_body_invalid_capture_string"
+    },
+    {
+      "from": "template_body_invalid_capture",
+      "to": "template_body_invalid_capture_key"
+    },
+    {
+      "from": "template_body_invalid_capture",
+      "to": "template_body_invalid_capture_terms"
+    },
+    {
+      "from": "template_body_invalid_capture",
+      "to": "template_body_invalid_capture_terms"
+    },
+    {
+      "from": "template_body_invalid_capture",
+      "to": "template_body_invalid_capture_patterns"
+    },
+    {
+      "from": "template_body_invalid_capture",
+      "to": "template_body_invalid_capture_patterns"
+    },
+    {
+      "from": "template_body_invalid_capture",
+      "to": "template_body_invalid_capture_terms"
     },
     {
       "from": "template_body_has_open_vars_terms",
-      "to": "template_match_247"
-    },
-    {
-      "from": "template_match_248",
-      "to": "template_body_invalid_application"
+      "to": "template_body_has_open_vars"
     },
     {
       "from": "template_body_invalid_terms",
-      "to": "template_match_248"
+      "to": "template_body_invalid_application"
     },
     {
       "from": "template_match_250",
@@ -18414,16 +18362,12 @@
       "to": "template_continuation_252"
     },
     {
-      "from": "template_match_254",
+      "from": "template_body_invalid_definition",
       "to": "template_body_invalid_definitions"
     },
     {
-      "from": "template_match_254",
-      "to": "template_continuation_253"
-    },
-    {
       "from": "template_body_invalid_definition",
-      "to": "template_match_254"
+      "to": "template_continuation_253"
     },
     {
       "from": "template_body_invalid_def_body",
@@ -18494,16 +18438,8 @@
       "to": "template_body_invalid_template_definitions"
     },
     {
-      "from": "template_body_template_expand_templates",
-      "to": "template_match_264"
-    },
-    {
-      "from": "template_match_265",
-      "to": "template_body_generate_until_stable"
-    },
-    {
       "from": "template_body_template_expand_modules",
-      "to": "template_match_265"
+      "to": "template_body_generate_until_stable"
     },
     {
       "from": "template_match_267",
@@ -18518,20 +18454,12 @@
       "to": "template_body_generated_declarations"
     },
     {
-      "from": "template_match_270",
+      "from": "template_body_template_expand_round",
       "to": "template_body_generated_modules"
     },
     {
-      "from": "template_body_template_expand_round",
-      "to": "template_match_270"
-    },
-    {
-      "from": "template_match_271",
-      "to": "template_body_expand_modules"
-    },
-    {
       "from": "template_body_template_expand_generated",
-      "to": "template_match_271"
+      "to": "template_body_expand_modules"
     },
     {
       "from": "template_continuation_272",
@@ -18550,12 +18478,8 @@
       "to": "template_continuation_272"
     },
     {
-      "from": "template_match_274",
-      "to": "template_match_273"
-    },
-    {
       "from": "template_body_invalid_scoped_modules",
-      "to": "template_match_274"
+      "to": "template_match_273"
     }
   ],
   "residualSourceCalls": 0,
@@ -18570,13 +18494,13 @@
     "checkpoints/checker_core_driver.bend": "25593371e3c4077865f5265e967f3a672ab123b19d672aea85330500f8c46b18",
     "checkpoints/bootstrap-real-source-corpus.json": "0c86976251badbf22ce010fdd203515ba89120750d626e36e3d96511748831c0",
     "bend2/bend.ts": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
-    "bend2/comp.ts": "db466aa58339e8866c68c7aece0c8586e4ce5f591f311b71b86b3b25769b50fd",
+    "bend2/comp.ts": "880a9b3b86f273852a39fc664f8c3d7b71e3860b6d365e4321949fc812b6e7cc",
     "bend2/selfhost/parser.bend": "7389188a68a205bfccdd6a3457ba0f11e689967751e31fa6d35eaec3b09e3e37",
-    "bend2/base.bend": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+    "bend2/base.bend": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
     "evals/heavy_gate.ts": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015",
     "evals/validation_profile.ts": "d0bfd8124b334cb1db4792e49675290a971ae82730e57029173b07ff23d6938d",
-    "checkpoints/checker-core-owned-source-v1.json": "8a23553bc606fb1b53c154f53ea0b5ecb245c71f897dc8e6e978ffbe0db0650a",
-    "evals/checker_core_step_lower.ts": "b88ba06a7087a5135e12e9e1a1bce633b313a30503b214b0d29bb91e65cc48b2",
+    "checkpoints/checker-core-owned-source-v1.json": "9fa59d028fa7ced80dccfe1bfee5964aeda61cc2a1a7ca616957799e8855b901",
+    "evals/checker_core_step_lower.ts": "21a47855e891ab115fb2ce4c70b7b699b376c6488f2505b7f0d6893f8d66daf9",
     "evals/checker_core_owned_source.ts": "7b9fc4fb80aa87ef0ce44310031e5bfe909f8abd9672f16609c435daa87eb450",
     "evals/emitter_step_lower.ts": "38c49a093bb91b16d058baba69303a15277e40bbeeb3aff1bf4ec0c1831817b3",
     "evals/template_step_lower.ts": "24bb3b87949f3d68073e2ec407c339b75f5124a877106d24fbc27ca9dbb95de3",
@@ -18588,17 +18512,17 @@
     "evals/bootstrap_source_oracle.ts": "5fb9785388bf42bb5a39596ed4064351a756857f6b7edbda4ab38f482d046789",
     "evals/canonical_cps_source.ts": "58b32128eb80ed0ca99c59914e46ad24694135562919052dca5cf80722adae97",
     "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
-    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_arena.bend": "2a26c3d8ce66412591030fa2fd6df9f9e53c0fececd9d9ae702def2f475f1752",
-    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/scope_lookup.bend": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_arena.bend": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/scope_lookup.bend": "e75dc874de6026e2104a7545a19f42fd6995aefecbb1d315c6ae3e097697e590",
     "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_ir.bend": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
-    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/index_lookup.bend": "a178b0d5b135490634e1c85efaa0a8d1e0c34c94610615ecf822da6a2932f31d",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/index_lookup.bend": "7b7b45946be711d0ba384e15f6823fded5ff97d6a526a6fb74a0448c13d61f84",
     "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
     "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/loaded_module.bend": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
     "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checked_frontend.bend": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
     "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/backend_ir.bend": "162a554cec1c9e1b5edab69b5cfae730c70886548f4f51603a7537845ab5ec48",
     "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_backend_sharing.bend": "78992d00aad3a458dd6b9ea424edf0de61c95b54487f92cd53283e705488c35f",
     "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/emitter.bend": "47d68ba5f0b54c334e2c940b7bb6aabc7f3bba27142b816f27df8225cf3fae4f",
-    "/Users/ilyagulya/Projects/My/bend/checkpoints/emitter_owned_v1.bend": "dafe215815a40158fed26aae96f59932d3ba562412ae56679d0637f94aabe32d",
+    "/Users/ilyagulya/Projects/My/bend/checkpoints/emitter_owned_v1.bend": "ec266d7e3552ea7efd7321796eeabfb52dd8ccbcaa4186103b2d8602f5de5a50",
     "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/core.bend": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
     "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/sha256.bend": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
     "bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
@@ -18606,10 +18530,10 @@
     "bend2/selfhost/loaded_module.bend": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
     "bend2/selfhost/sha256.bend": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
     "bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
-    "/Users/ilyagulya/Projects/My/bend/bend2/base.bend": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce"
+    "/Users/ilyagulya/Projects/My/bend/bend2/base.bend": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614"
   },
   "outputs": {
-    "checkpoints/template_steps_v1.bend": "8bb7f6b343b83e75932f5b11bae9dfe0c1e552c3a0c57bcc48071dd518d85d67",
+    "checkpoints/template_steps_v1.bend": "b9f4d860de0c58a274e1f23e90558191e23d7ac0de18d1fd452914160b9a5ae5",
     "checkpoints/template_steps_component_v1.bend": "86c9e3b009a91b233a314d76ddd65d83ecd66e620231e63121ba625c853b3e39"
   },
   "validation": {
@@ -18617,5 +18541,5 @@
     "nativeBuildRun": false,
     "testsRun": false
   },
-  "generationManifestSha256": "50b5d5457d0bdc9bfef70d14e7d0b252913a7ef764ece2bbc264f2eb3d103330"
+  "generationManifestSha256": "b04734a1617b47c6a38adf830c4bec052003bab4d902bd1a9ee86d47f50774c2"
 }

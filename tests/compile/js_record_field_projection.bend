@@ -9,17 +9,15 @@ import Base
 type Keys is Data:
   Keys{__proto__: U32, toString: U32, value: U32}
 
-def build(x: U32) -> Keys:
+def build(+x: U32) -> Keys:
   Keys{x, U32.add(x, 1), U32.add(x, 2)}
 
 def widen(k: Keys) -> U32:
   Keys{a, b, c} = k
   U32.add(U32.add(a, b), c)
 
-def scalar(x: U32) -> U32:
-  k = Keys{x, U32.add(x, 1), U32.add(x, 2)}
-  Keys{a, b, c} = k
-  U32.add(U32.add(a, b), c)
+def scalar(+x: U32) -> U32:
+  widen(Keys{x, U32.add(x, 1), U32.add(x, 2)})
 
 def main() -> IO(Unit):
   do IO<Unit>:

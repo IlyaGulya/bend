@@ -30,7 +30,7 @@ def u32_of(x: Maybe<&2, U32>, d: U32) -> U32:
 def none_u32(x: Maybe<&2, U32>) -> Bool:
   Maybe.is_none(&2, U32, x)
 
-def hit_u32(x: Maybe<&2, U32>, want: U32) -> Bool:
+def hit_u32(x: Maybe<&2, U32>, +want: U32) -> Bool:
   U32.is_eq(u32_of(x, U32.add(want, 1)), want)
 
 def str_of(x: Maybe<&2, String>, d: String) -> String:
@@ -40,7 +40,7 @@ def str_of(x: Maybe<&2, String>, d: String) -> String:
     case Some{v}:
       v
 
-def same_str(x: Maybe<&2, String>, want: String) -> Bool:
+def same_str(x: Maybe<&2, String>, +want: String) -> Bool:
   String.eq(str_of(x, String.append("miss:", want)), want)
 
 # Value shapes: a packed word, an inline node and a nested node of boxes.
@@ -111,17 +111,12 @@ def gen_outer(m: Map<&2, Outer>, k: String, es: String, ins: String,
 
 # A first-class lookup and a partial application are closures of the source
 # definition: they must answer the same words without the in-place path.
-def fc_find(g: Map<&2, U32> -> String -> Maybe<&2, U32>,
+def fc_find(g: @+map: Map<&2, U32> -> @+key: String -> Maybe<&2, U32>,
   m: Map<&2, U32>, k: String, want: U32) -> Bool:
   hit_u32(g(m, k), want)
 
-def part_find(f: String -> Maybe<&2, U32>, k: String, want: U32) -> Bool:
+def part_find(f: @+key: String -> Maybe<&2, U32>, k: String, want: U32) -> Bool:
   hit_u32(f(k), want)
-
-def first_class() -> Bool:
-  Bool.and(fc_find(Map.find(U32), seed_u32(), "ab", 5),
-    Bool.and(Bool.not(fc_find(Map.find(U32), seed_u32(), "zz", 43)),
-      part_find(Map.find(U32, seed_u32()), "ba", 6)))
 
 # A borrowed map read twice: the callee never owns the trie, so both calls
 # must answer and the caller's map must survive them.
@@ -141,6 +136,11 @@ def shared_read(+m: Map<&2, U32>) -> U32:
 def seed_u32() -> Map<&2, U32>:
   Map.set(&2, U32, Map.set(&2, U32, Map.set(&2, U32, Map.new(&2, U32),
     "ab", 5), "ba", 6), "abc", 7)
+
+def first_class() -> Bool:
+  Bool.and(fc_find(Map.find(U32), seed_u32(), "ab", 5),
+    Bool.and(Bool.not(fc_find(Map.find(U32), seed_u32(), "zz", 43)),
+      part_find(Map.find(U32, seed_u32()), "ba", 6)))
 
 def seed_str() -> Map<&2, String>:
   Map.set(&2, String, Map.set(&2, String, Map.new(&2, String), "s", "hello"),
@@ -169,7 +169,7 @@ def cycle(n: Nat, acc: U32) -> U32:
     case 0n:
       acc
     case 1n+more:
-      m = Map.set(&2, U32, Map.set(&2, U32, Map.new(&2, U32), "a", 1), "b", 2)
+      +m = Map.set(&2, U32, Map.set(&2, U32, Map.new(&2, U32), "a", 1), "b", 2)
       here = U32.add(u32_of(Map.find(U32, m, "b"), 0),
         u32_of(Map.find(U32, Map.set(&2, U32, m, "c", 3), "c"), 0))
       miss = u32_of(Map.find(U32, MNode{0n, MLeaf{"a", 1}, MLeaf{"b", 2}}, "z"),

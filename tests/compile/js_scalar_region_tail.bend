@@ -20,7 +20,7 @@ def deep(w: Wrap) -> U32:
     case Wrap{Pair{l, r}, tag}: U32.add(scale(l, r), tag)
     case Wrap{Leaf{v}, tag}: U32.add(U32.mul(v, 3), tag)
 
-def spin(n: Nat, w: Wrap) -> U32:
+def spin(+n: Nat, w: Wrap) -> U32:
   match n:
     case 0n: deep(w)
     case 1n+p: spin(p, Wrap{Pair{U32.add(U32.from_nat(p), 1), U32.mul(U32.from_nat(p), 2)}, U32.add(U32.from_nat(p), 3)})

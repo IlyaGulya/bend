@@ -1408,20 +1408,20 @@ def put_ctr_leaf(arena: Arena, +key_id: U32, span: Ast.SourceSpan) -> Arena & U3
 # frame), so every open gets a fresh serial even when no rewind separates two
 # frames. A fact records that serial plus the exact tagged name id and the
 # requested kind; a hit must match all three, so a reopened frame, a colliding
-# slot or another scope can only miss and fall back to the scope index. Facts
-# live in the transient lane, so a rewind physically ends them with the
-# declaration as well. Slots stay odd, away from slot 0 and the frame slot 2;
+# slot or another scope can only miss and fall back to the scope index. Rewind
+# may retain memo entries; the fresh serial prevents reuse across declarations.
+# Slots stay odd, away from slot 0 and the frame slot 2;
 # a collision replaces one cache entry and can also drop the open marker, which
 # only disables reuse until the next open.
-def resolution_frame_serial(arena: Arena) -> Arena & Nat:
-  match arena:
-    case Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}:
-      resolution_frame_serial.result(Array.get(Nat, depths, 7), nodes, patterns, binders, words, naturals, names, counts, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo)
-
 def resolution_frame_serial.result(result: Array<Nat> & Nat, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, name_ids: Map<&2, U32>, node_closed: Array<U32>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>) -> Arena & Nat:
   match result:
     case Tuple{depths, +serial}:
       (Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}, serial)
+
+def resolution_frame_serial(arena: Arena) -> Arena & Nat:
+  match arena:
+    case Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}:
+      resolution_frame_serial.result(Array.get(Nat, depths, 7), nodes, patterns, binders, words, naturals, names, counts, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo)
 
 def resolution_frame_set(arena: Arena, entry: SubstMemoEntry) -> Arena:
   match arena:
@@ -1469,12 +1469,15 @@ def resolved_ref_put(arena: Arena, +name_id: U32, +kind_tag: U32, resolved: Scop
     case Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}:
       resolved_ref_put.result(nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo, name_id, kind_tag, resolved, serial)
 
+def resolved_ref_select(arena: Arena, resolved: Scope.ResolvedName, same: Bool) -> Arena & Maybe<&2, Scope.ResolvedName>:
+  match same:
+    case True{}: (arena, Some{resolved})
+    case False{}: (arena, None{})
+
 def resolved_ref_read(entry: SubstMemoEntry, +name_id: U32, +kind_tag: U32, +serial: Nat, arena: Arena) -> Arena & Maybe<&2, Scope.ResolvedName>:
   match entry:
     case ResolvedRefSaved{saved_name, saved_kind, resolved, +saved_serial}:
-      match Bool.and(U32.is_eq(saved_name, name_id), Bool.and(U32.is_eq(saved_kind, kind_tag), Nat.is_eq(saved_serial, serial))):
-        case True{}: (arena, Some{resolved})
-        case False{}: (arena, None{})
+      resolved_ref_select(arena, resolved, Bool.and(U32.is_eq(saved_name, name_id), Bool.and(U32.is_eq(saved_kind, kind_tag), Nat.is_eq(saved_serial, serial))))
     case _: (arena, None{})
 
 def resolved_ref_get.result(result: Array<SubstMemoEntry> & SubstMemoEntry, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>, node_closed: Array<U32>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, case_prefix: Array<CasePrefixEntry>, +name_id: U32, +kind_tag: U32, +serial: Nat) -> Arena & Maybe<&2, Scope.ResolvedName>:

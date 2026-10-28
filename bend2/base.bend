@@ -2028,8 +2028,7 @@ def String.cmp(a, b):
 # projection drops them and keeps only the order; String.order remains the
 # order-only walk.
 def String.eq(a: String, b: String) -> Bool:
-  ((key2, k2), c) = String.cmp(a, b)
-  Cmp.is_eq(c)
+  Cmp.is_eq(Pair.snd(String & String, Cmp, String.cmp(a, b)))
 
 def String.length(s: String) -> Nat:
   match s:
@@ -2072,20 +2071,16 @@ def String.order(a: String, b: String) -> Cmp:
   String.order.go(a, b, EQ{})
 
 def String.is_lt(a: String, b: String) -> Bool:
-  ((key2, k2), c) = String.cmp(a, b)
-  Cmp.is_lt(c)
+  Cmp.is_lt(Pair.snd(String & String, Cmp, String.cmp(a, b)))
 
 def String.is_le(a: String, b: String) -> Bool:
-  ((key2, k2), c) = String.cmp(a, b)
-  Cmp.is_le(c)
+  Cmp.is_le(Pair.snd(String & String, Cmp, String.cmp(a, b)))
 
 def String.is_gt(a: String, b: String) -> Bool:
-  ((key2, k2), c) = String.cmp(a, b)
-  Cmp.is_gt(c)
+  Cmp.is_gt(Pair.snd(String & String, Cmp, String.cmp(a, b)))
 
 def String.is_ge(a: String, b: String) -> Bool:
-  ((key2, k2), c) = String.cmp(a, b)
-  Cmp.is_ge(c)
+  Cmp.is_ge(Pair.snd(String & String, Cmp, String.cmp(a, b)))
 
 law String.starts_with:
   for s: String
@@ -2957,39 +2952,34 @@ def Map.get(-V: Data, d: V, m: Map<&2, V>, key: String) -> Map<&2, V> & V:
 # follows the bit each node names rather than assuming the next position, so
 # a public MNode may name any position; the map and the query are consumed
 # and a hit shares the value the map held.
-def Map.find.leaf(-V: Data, +value: V, r: (String & String) & Cmp) ->
-  Maybe<&2, V>:
-  ((key2, k2), c) = r
-  match c:
-    case EQ{}:
+# A leaf tests the query against the key it holds: String.eq is exactly the
+# order comparison's equality case, and the native lanes lower it to a direct
+# equality test that needs neither the returned string pair nor the order.
+def Map.find.leaf(-V: Data, +value: V, same: Bool) -> Maybe<&2, V>:
+  match same:
+    case True{}:
       Some{value}
-    case o:
+    case False{}:
       None{}
 
-def Map.find.position(-V: Data, map: Map<&2, V>) -> Nat:
-  match map:
-    case MNode{pos, _, _}:
-      pos
-    case _:
-      0n
-
-def Map.find.bit(key: String, position: Nat) -> Bool:
-  Pair.snd(String, Bool, Map.bit(key, position))
-
-def Map.find.go(-V: Data, +map: Map<&2, V>, +key: String, bit: Bool) ->
+# Match the primitive's returned pair in its own parameter scope. The selected
+# child and the returned query flow directly into the next lookup.
+def Map.find.node(-V: Data, lo: Map<&2, V>, hi: Map<&2, V>, r: String & Bool) ->
   Maybe<&2, V>:
-  match map bit:
-    case MTip{} _:
-      None{}
-    case MLeaf{k, v} _:
-      Map.find.leaf(V, v, String.cmp(key, k))
-    case MNode{_, +lo, _} False{}:
-      Map.find.go(V, lo, key, Map.find.bit(key, Map.find.position(V, lo)))
-    case MNode{_, _, +hi} True{}:
-      Map.find.go(V, hi, key, Map.find.bit(key, Map.find.position(V, hi)))
+  match r:
+    case Tuple{key, False{}}:
+      Map.find(V, lo, key)
+    case Tuple{key, True{}}:
+      Map.find(V, hi, key)
 
 def Map.find(-V: Data, +map: Map<&2, V>, +key: String) -> Maybe<&2, V>:
-  Map.find.go(V, map, key, Map.find.bit(key, Map.find.position(V, map)))
+  match map:
+    case MTip{}:
+      None{}
+    case MLeaf{k, v}:
+      Map.find.leaf(V, v, String.eq(key, k))
+    case MNode{pos, lo, hi}:
+      Map.find.node(V, lo, hi, Map.bit(key, pos))
 
 def Map.pop.lo(
   a, -V: Kind(a), pos: Nat, hi: Map<a, V>, r0: Map<a, V> & Maybe<a, V>

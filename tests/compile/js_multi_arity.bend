@@ -55,7 +55,8 @@ def total29(a0: U32, a1: U32, a2: U32, a3: U32, a4: U32, a5: U32, a6: U32,
     a14: U32, a15: U32, a16: U32, a17: U32, a18: U32, a19: U32, a20: U32,
     a21: U32, a22: U32, a23: U32, a24: U32, a25: U32, a26: U32, a27: U32,
     a28: U32) -> U32:
-  U32.add(U32.add(U32.add(U32.add(U32.add(U32.add(U32.add(U32.add(U32.add(U32.add(U32.add(U32.add(U32.add(U32.add(a0, a1), U32.add(a2, a3)), U32.add(a4, a5)), U32.add(a6, a7)), U32.add(a8, a9)), U32.add(a10, a11)), U32.add(a12, a13)), U32.add(a14, a15)), U32.add(a16, a17)), U32.add(a18, a19)), U32.add(a20, a21)), U32.add(a22, a23)), U32.add(a24, a25)), U32.add(a26, a27), a28)
+  U32.add(total28(a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12,
+    a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23, a24, a25, a26, a27), a28)
 
 def wide29_go(total: U32, r: JsMultiSched) -> JsMultiSched:
   match r:

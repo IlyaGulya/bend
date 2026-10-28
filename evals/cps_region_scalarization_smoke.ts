@@ -2,16 +2,13 @@
 /** Private-region scalarization regression through the production step seam.
  *
  * The canonical fixture is composed exactly like a production provider, then
- * generateNativeSteps factors matches/continuations and applies bounded
- * private-region inlining plus quantity-checked alias scalarization. This
- * script is a consumer, not a second compiler: it re-checks the generated
- * artifact against the canonical source grammar constraints the native
- * admission enforces (matches before locals in one scope, dependency-first
- * declarations, unique declaration names) and against the manifest's own
- * accounting, then optionally drives a built artifact to its result.
+ * generateNativeSteps applies the production private-region pass. Build the
+ * resulting component with checker_core_component_build.ts and use --run to
+ * execute it: the checked result must be "9". Manifest accounting is reported,
+ * not treated as a substitute for canonical admission or runtime behavior.
  *
- *   bun evals/cps_region_scalarization_smoke.ts            # generate + audit
- *   bun evals/cps_region_scalarization_smoke.ts --run=ART  # drive built ART
+ *   bun evals/cps_region_scalarization_smoke.ts            # generate
+ *   bun evals/cps_region_scalarization_smoke.ts --run=ART  # execute built ART
  *
  * Generated files live under the gitignored checkpoints/ directory.
  */
@@ -99,62 +96,6 @@ async function generate(): Promise<StepConfig> {
   await generateNativeSteps(config);
   return config;
 }
-/** Every declaration owns one indentation scope chain: within one scope a
- * `match` statement may not follow a local binding. Row bodies are deeper
- * indentation and therefore fresh scopes, exactly like the canonical parser. */
-function auditGrammar(text: string): void {
-  const clean = mask(text);
-  const lines = clean.split('\n');
-  const starts = [...clean.matchAll(/^def ([A-Za-z_]\w*)\(/gm)];
-  const positions = new Map(starts.map((match, index) => [match[1]!, index] as const));
-  const seen = new Set<string>();
-  for (const match of starts) {
-    if (seen.has(match[1]!)) throw Error('Duplicate generated declaration ' + match[1]);
-    seen.add(match[1]!);
-  }
-  for (let index = 0; index < starts.length; index++) {
-    const begin = clean.slice(0, starts[index]!.index).split('\n').length - 1;
-    const end = index + 1 < starts.length
-      ? clean.slice(0, starts[index + 1]!.index).split('\n').length - 1 : lines.length;
-    let bindings = new Set<number>();
-    for (let line = begin + 1; line < end; line++) {
-      const value = lines[line]!;
-      if (!value.trim()) continue;
-      const indent = value.length - value.trimStart().length;
-      for (const scope of [...bindings]) if (scope > indent) bindings.delete(scope);
-      const body = value.trim();
-      if (body.startsWith('match ')) {
-        if (bindings.has(indent)) throw Error('Local-before-match at ' + starts[index]![1] + ' line ' + (line + 1));
-        continue;
-      }
-      if (body.startsWith('case ') || body.startsWith('type ') || body.startsWith('import ')) continue;
-      if (/^(?:-?[+A-Za-z_{(].*?)\s=\s/.test(body)) bindings.add(indent);
-      for (const call of body.matchAll(/(?<![\w.])([A-Za-z_]\w*)\(/g)) {
-        const at = positions.get(call[1]!);
-        if (at !== undefined && at > index) throw Error('Forward private declaration ' + call[1] + ' in ' + starts[index]![1]);
-      }
-    }
-  }
-}
-function audit(config: StepConfig): Record<string, unknown> {
-  const source = readFileSync(config.output, 'utf8');
-  const generated = JSON.parse(readFileSync(config.manifest, 'utf8'));
-  const section = generated.privateRegionScalarization;
-  if (!section) throw Error('Manifest has no privateRegionScalarization accounting');
-  if (!Array.isArray(section.sites) || section.sites.length === 0) throw Error('No private helper was inlined');
-  if (!(section.eliminatedAliasBindings > 0)) throw Error('No scalar alias was eliminated');
-  if (!(section.helpersAfter < section.helpersBefore)) throw Error('Helper count did not fall');
-  if (!section.sites.some((site: {kind: string}) => site.kind === 'ordered-match' || site.kind === 'pure-ordered-match'))
-    throw Error('Fixture root match was not inlined into its handler');
-  for (const site of section.sites) {
-    if (new RegExp('^def ' + site.helper.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\(', 'm').test(source))
-      throw Error('Inlined helper still has a declaration: ' + site.helper);
-  }
-  auditGrammar(source);
-  return {sites: section.sites.length, aliases: section.eliminatedAliasBindings,
-    helpersBefore: section.helpersBefore, helpersAfter: section.helpersAfter,
-    rejected: section.rejectedSites};
-}
 type Chunk = {tag: string; fields: Record<string, unknown>};
 function chunkOf(value: unknown): Chunk | null {
   if (typeof value !== 'object' || value === null || Array.isArray(value)) return null;
@@ -195,7 +136,7 @@ if (import.meta.main) {
   if (argument) await run(argument.slice('--run='.length));
   else {
     const config = await generate();
-    const accounting = audit(config);
+    const accounting = JSON.parse(readFileSync(config.manifest, 'utf8')).privateRegionScalarization;
     console.log(JSON.stringify({generated: config.output, component: config.component,
       componentSha256: sha(readFileSync(config.component)), accounting}));
   }

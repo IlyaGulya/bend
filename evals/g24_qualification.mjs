@@ -234,8 +234,8 @@ function preflightTools({repository, bun, node, clang, llvmBin}) {
   if (nodeVersion.status !== 0 || nodeVersion.stdout.trim() !== 'v23.11.0')
     fail('unreachable prerequisite: node must be the accepted v23.11.0 V8 runtime, got ' + cap(nodeVersion.stdout + nodeVersion.stderr));
   const clangVersion = spawnSync(clang, ['--version'], {cwd: repository, encoding: 'utf8', timeout: 60000});
-  if (clangVersion.status !== 0)
-    fail('unreachable prerequisite: C compiler ' + clang + ': ' + cap(clangVersion.stderr));
+  if (clangVersion.status !== 0 || !/^Apple clang version 21\./m.test(clangVersion.stdout))
+    fail('unreachable prerequisite: native LLVM split requires Apple clang 21 at ' + clang + ': ' + cap(clangVersion.stdout + clangVersion.stderr));
   for (const tool of ['opt', 'llvm-split']) {
     const path = resolve(llvmBin, tool);
     if (!existsSync(path)) fail('unreachable prerequisite: missing ' + path);
@@ -311,13 +311,13 @@ function validateBindings(bindingsPath, {repository, frozenRepository, controlNa
   };
 }
 
-function childEnv({repository, node, bun, llvmBin}) {
+function childEnv({repository, node, bun, clang, llvmBin}) {
   const path = [dirname(node), dirname(bun), llvmBin, '/opt/homebrew/bin', '/usr/bin', '/bin', '/usr/sbin', '/sbin',
     process.env.PATH ?? ''].filter(Boolean).join(':');
   // Self-guarded scripts call guardHeavyGate without options and would
   // otherwise inherit heavy_gate's 3072/2048/100 defaults. These values are
   // authoritative for every child, independent of the caller's environment.
-  return {...process.env, PATH: path, BEND_NO_TELEMETRY: '1',
+  return {...process.env, PATH: path, CC: clang, BEND_NO_TELEMETRY: '1',
     HEAVY_GATE_MEMORY_MIB: String(LIMITS.memoryMiB),
     HEAVY_GATE_RSS_MIB: String(LIMITS.rssMiB),
     HEAVY_GATE_POLL_MS: String(LIMITS.pollMs),
@@ -351,7 +351,7 @@ function createRun({repository, runId, node, bun, clang, llvmBin, out, phase}) {
     acceptanceOwner: 'parent',
     boundedReceiptBytes: MAX_RECEIPT_BYTES,
   };
-  const env = childEnv({repository, node, bun, llvmBin});
+  const env = childEnv({repository, node, bun, clang, llvmBin});
   let published = false;
 
   function publish() {
@@ -1397,7 +1397,7 @@ async function main() {
   const repository = realpathSync(resolve(values.get('--repository') ?? resolve(dirname(SCRIPT), '..')));
   const bun = realpathSync(values.get('--bun') ?? process.execPath);
   const node = realpathSync(required(values, '--node'));
-  const clang = values.get('--clang') ?? 'clang';
+  const clang = values.get('--clang') ?? '/usr/bin/clang';
   const llvmBin = resolve(values.get('--llvm-bin') ?? '/opt/homebrew/opt/llvm@21/bin');
   const phase = values.get('--phase') ?? 'all';
   if (!['all', 'correctness', 'throughput'].includes(phase)) fail('--phase must be all, correctness or throughput');
@@ -1424,7 +1424,7 @@ async function main() {
     if (/^[a-f0-9]{64}$/.test(process.env.HEAVY_GATE_LEASE_TOKEN ?? ''))
       fail('do not wrap g24_qualification inside another heavy_gate: it applies the accepted 8192MiB/600s guard to each heavy step itself');
     run.receipt.preflight = preflightTools({repository, bun, node, clang, llvmBin});
-    process.env.PATH = childEnv({repository, node, bun, llvmBin}).PATH;
+    process.env.PATH = childEnv({repository, node, bun, clang, llvmBin}).PATH;
     Object.assign(process.env, {
       HEAVY_GATE_MEMORY_MIB: String(LIMITS.memoryMiB),
       HEAVY_GATE_RSS_MIB: String(LIMITS.rssMiB),

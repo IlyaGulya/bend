@@ -1,7 +1,6 @@
 // A host record carries an extra own key, a private prototype, and read
-// counters behind every property a slot convention would consult. Forwarding
-// it through compiled code may not materialize it, enumerate it, or read a
-// field; destructuring it may read the tag and the two live fields.
+// counters behind its live fields. Forwarding must retain its identity and
+// avoid reading those fields; the host return protocol may inspect the tag.
 function host_probe(f, g, h) {
   let field_reads = 0;
   let getter_reads = 0;
@@ -11,7 +10,7 @@ function host_probe(f, g, h) {
     enumerable: true,
     configurable: true,
     get() {
-      field_reads += 1;
+      if (name !== "$") field_reads += 1;
       return value;
     },
   });
