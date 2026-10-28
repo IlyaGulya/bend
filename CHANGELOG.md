@@ -24,11 +24,13 @@ latest one; the GitHub release carries the same notes.
   boxed escape. A private incoming parameter remains decomposed when its
   callee's result escapes to storage; the parameterized regression reproduces
   the prior missing-local exception and passes with the repaired emitter.
-  Compiler-owned unary applications now use the existing bounded direct-call
-  continuation protocol; host callbacks retain their public calling convention.
-  Eight emitted-JS cases pass; exception recovery and region leaves also pass
-  a separate runtime smoke. R5 was canceled after review found a public
-  unwind-boundary defect; public entry depth64 is restored. R6 passed the full
+  R6 tried the bounded direct-call continuation protocol for compiler-owned
+  unary applications; host callbacks retained their public calling convention.
+  Eight emitted-JS cases and a separate exception/region runtime smoke passed.
+  R5 was canceled after review found a public unwind-boundary defect.
+  R10 restores queued unary dispatch and removes the extra closure-depth
+  plumbing; all twelve emitted-JS consumers pass on V8 and JavaScriptCore.
+  Its full qualification and performance comparison are pending. R6 passed the full
   native build and 95 seed fixtures, but its 57,228,966-byte stage1 did not
   finish stage2 checking before the original bootstrap deadline.
   R7 retains immutable per-body occurrence maps across render rounds and avoids
@@ -55,6 +57,11 @@ latest one; the GitHub release carries the same notes.
   indirect-only code. All twelve emitted-JS consumers pass. Full R9 qualification
   still timed out during stage2 checking after validating 13,048 definitions /
   13,672 events and all 95 native seed fixtures; stage1 is 47,703,851 bytes.
+  A subsequent isolated guarded run did complete the full R9 stage1 → stage2
+  byte fixedpoint (`cmp` PASS, SHA-256
+  `e9946ab94c33f236dfa1ab51d3145d4ba564fcb61ac399b51800a6d964046e23`).
+  Its CPU-profiled 496.083-s run does not pass the original combined bootstrap
+  guard or establish full consumer/performance acceptance.
   Full qualification remains failed: r1/r2/r4/r6/r7/r8/r9 stopped at the original
   bootstrap deadline. R4 validated all 12,974 definitions / 13,596 events,
   passed all95 native seed fixtures and produced a53,261,354-byte stage1,

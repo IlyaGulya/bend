@@ -54,8 +54,16 @@ R8 не переклассифицирован. В image 6 249 private bodies и
 Полный R9 тоже FAIL: 13 048 definitions / 13 672 events, все 95 seed fixtures
 PASS. Stage1 — 47 703 851 bytes; native emit 47 001 ms / 4 086 813 advances.
 Stage2 начал check на 226 022 ms, но guard 600 057 ms снова остановил run.
-Private-entry отбор уменьшил image, но не решил timeout. Далее — измерить
-остаточную стоимость JS checker и добиться полного fixedpoint; guards прежние.
+Последующий отдельный guarded JS-root run завершился: неизменённый R9 stage1
+своим parser/checker/emitter собрал полный stage2; `cmp` PASS. Оба image —
+47 703 851 bytes, SHA256 `e9946ab94c33f236dfa1ab51d3145d4ba564fcb61ac399b51800a6d964046e23`.
+Guard 496 083 ms, peak RSS 3 821 060 096 B, footprint 3 496 520 192 B.
+Check 372 398 ms, emit 100 381 ms; внутри был CPU-only window, это не clean
+performance evidence. Исходный общий bootstrap guard остаётся FAIL; consumer
+suites на обоих image ещё не пройдены. R10 отдельно проверяет возврат косвенных
+closure calls к очереди trampoline, не меняя private-result lowering и guards.
+Все 12 emitted-JS consumers проходят на V8 и JavaScriptCore; полная
+unobserved квалификация и performance comparison ещё требуются.
 Принятым остаётся G23 ниже.
 Точные команды и границы:
 `evals/receipts/root2039g24_failed_attempts.json`,
@@ -68,6 +76,8 @@ Private-entry отбор уменьшил image, но не решил timeout. �
 `evals/receipts/root2039g24r9_rejected.json`,
 `evals/receipts/producer2039g24r8_complete_check.json`,
 `evals/receipts/producer2039g24r9_source_smoke.json`,
+`evals/receipts/producer2039g24r9_isolated_fixedpoint.json`,
+`evals/receipts/producer2039g24r10_source_smoke.json`,
 `evals/receipts/producer2039g24r4_diagnostic.json`,
 `evals/receipts/producer2039g24_source_smoke.json`.
 

@@ -635,7 +635,7 @@ def public_closure(names: List<&2, String>, body: String) -> String:
   match names:
     case Nil{}: body
     case name <> rest:
-      cat(["run_clo((", name, ",$raw=undefined,$depth=0)=>{const $td=$raw===$BEND_TAIL?$depth:64;const $base0=$ksp,$sp0=$sp;return run_force(", public_closure(rest, body), ",$raw,$base0,$sp0);})"])
+      cat(["run_clo((", name, ",$raw=undefined)=>{const $base0=$ksp,$sp0=$sp;return run_force(", public_closure(rest, body), ",$raw,$base0,$sp0);})"])
 def closure(code: U32, +captures: List<&2, BIR.Arg>, +parameters: List<&2, BIR.Parameter>) -> String:
   closure_named(code_name(code), captures, parameters)
 def closure_named(name: String, +captures: List<&2, BIR.Arg>, +parameters: List<&2, BIR.Parameter>) -> String:
@@ -3514,7 +3514,7 @@ def multi_many_args(args: List<&2, BIR.Arg>, private: Bool) -> List<&2, String>:
     case True{}: List.append(&2, String, arguments(args), ["$sp"])
     case False{}: arguments(args)
 def split_apply(id: U32, fn: BIR.Atom, arg: BIR.Arg, caps: Caps, ctx: JsCtx) -> String:
-  cat([cap_stores(caps_locals(caps)), slot_stores(caps_slots(caps)), multi_mr_store(js_ctx_mr(ctx, id)), "return $split_apply(", atom(fn), ",", arg_atom(arg), ",", cont_name_ctx(ctx, id), ",$sp-", Nat.show(multi_window_offset(caps, js_ctx_mr(ctx, id))), ",$td);"])
+  cat([cap_stores(caps_locals(caps)), slot_stores(caps_slots(caps)), multi_mr_store(js_ctx_mr(ctx, id)), "return $split1(", atom(fn), ",", arg_atom(arg), ",", cont_name_ctx(ctx, id), ",$sp-", Nat.show(multi_window_offset(caps, js_ctx_mr(ctx, id))), ");"])
 def arg_atom(arg: BIR.Arg) -> String:
   match arg:
     case BIR.Arg{_, value}: atom(value)
@@ -4204,7 +4204,7 @@ def program_source_scoped(+program: BIR.Program, natives: Map<&2, String>, effec
 # Materialize with constructor-specific object literals: own data properties,
 # including __proto__, without invoking inherited setters or defining each field.
 def js_runtime_direct() -> String:
-  "const $BOXES=Object.create(null);\nfunction $multi_box(t,b,c) { const f=$BOXES[t]; if(f===undefined) throw \"bend: unresolved multi-result tag\"; return f(t,b+c); }\nfunction $split_enter(k,b) { const i=$ksp++; $kFn[i]=k; $kBase[i]=b; $kKind[i]=0; return i; }\nfunction $split_done(x,i,d) { if(x===$TAIL_PENDING||x===$CALL_PENDING||x===$LEAVE_PENDING||$ksp!==i+1)return x; const k=$kFn[i],b=$kBase[i]; $kFn[i]=undefined; $ksp=i; $sp=b; return k(x,b,d); }\nfunction $split_abort(i,b) { while($ksp>i)$kFn[--$ksp]=undefined; $sp=b; $tailFn=undefined; $tailCount=0; }\nfunction $split_apply(f,x,k,b,d) { if(d>=64)return $split1(f,x,k,b); const j=f[$BEND_TAIL],i=$split_enter(k,b); if(!j) { $tailFn=f; $tailCount=-1; $tailUnary=x; return $CALL_PENDING; } try { return $split_done(j(x,$BEND_TAIL,d+1),i,d+1); } catch(e) { $split_abort(i,b); throw e; } }\n"
+  "const $BOXES=Object.create(null);\nfunction $multi_box(t,b,c) { const f=$BOXES[t]; if(f===undefined) throw \"bend: unresolved multi-result tag\"; return f(t,b+c); }\nfunction $split_enter(k,b) { const i=$ksp++; $kFn[i]=k; $kBase[i]=b; $kKind[i]=0; return i; }\nfunction $split_done(x,i,d) { if(x===$TAIL_PENDING||x===$CALL_PENDING||x===$LEAVE_PENDING||$ksp!==i+1)return x; const k=$kFn[i],b=$kBase[i]; $kFn[i]=undefined; $ksp=i; $sp=b; return k(x,b,d); }\nfunction $split_abort(i,b) { while($ksp>i)$kFn[--$ksp]=undefined; $sp=b; $tailFn=undefined; $tailCount=0; }\n"
 
 # Trusted target runtime; public/native callback and reflection ABI is retained.
 def js_runtime() -> String:
