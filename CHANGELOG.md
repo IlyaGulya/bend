@@ -38,7 +38,9 @@ latest one; the GitHub release carries the same notes.
   a second rewritten body. Twelve emitted-JS cases pass; the factory regression
   exercises the adapter with inherited setters, opaque host payloads, reentry,
   exception cleanup and independently retained results.
-  Full qualification remains failed: r1/r2/r4/r6 stopped at the original
+  R7 validated all 13,012 definitions / 13,634 events and all 95 native seed
+  fixtures, but its 52,143,515-byte stage1 also timed out during stage2 checking.
+  Full qualification remains failed: r1/r2/r4/r6/r7 stopped at the original
   bootstrap deadline. R4 validated all 12,974 definitions / 13,596 events,
   passed all95 native seed fixtures and produced a53,261,354-byte stage1,
   but stage2 checking did not finish. R3 exceeded the original8-GiB RSS guard

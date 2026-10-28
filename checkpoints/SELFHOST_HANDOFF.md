@@ -33,8 +33,11 @@ Bounded unary Apply прошёл 8 emitted-JS cases; отдельный runtime 
 Объединённый emitter прошёл 12 JS-сценариев; новый factory case реально выбрал
 адаптер и сохранил host identity, own properties, reentry и unwind при исключении.
 Source review адаптера: `cfed944ac403a4ee56c22a793c94307cd00b8ce2`, PASS,
-но не runtime/performance acceptance. Полная R7-квалификация ещё не завершена;
-guard limits и public ABI не менялись.
+но не runtime/performance acceptance. Полная R7-квалификация тоже FAIL:
+13 012 definitions / 13 634 events, все 95 native seed fixtures PASS;
+stage1 — 52 143 515 bytes. Native emit — 76 399 ms / 6 659 673 advances.
+Stage2 начал check на 286 609 ms и не закончил к прежнему guard 600 000 ms.
+Guard limits и public ABI не менялись; stage2 и byte fixedpoint не получены.
 Принятым остаётся G23 ниже.
 Точные команды и границы:
 `evals/receipts/root2039g24_failed_attempts.json`,
@@ -42,6 +45,7 @@ guard limits и public ABI не менялись.
 `evals/receipts/root2039g24r4_rejected.json`,
 `evals/receipts/root2039g24r5_rejected.json`,
 `evals/receipts/root2039g24r6_rejected.json`,
+`evals/receipts/root2039g24r7_rejected.json`,
 `evals/receipts/producer2039g24r4_diagnostic.json`,
 `evals/receipts/producer2039g24_source_smoke.json`.
 
