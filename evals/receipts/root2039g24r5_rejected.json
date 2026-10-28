@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "status": "CANCELLED_KNOWN_PUBLIC_UNWIND_DEFECT",
+  "runId": "local2039g24r5",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "release": "Bend2.0.39",
+  "parentCheckpoint": "7033684a",
+  "source": {
+    "path": "bend2/selfhost/js_backend.bend",
+    "sha256": "dd839bb826617805019a3feb5450b6f19e1b40ac043a7f4dc83437dafccdac60"
+  },
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "evals/g24_qualification.mjs",
+    "--run-id=local2039g24r5",
+    "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "--bun=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--clang=/usr/bin/clang",
+    "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+    "--phase=all",
+    "--bindings=/private/tmp/bend-g24-wave-evidence-lXWelR/g23-control-bindings.json",
+    "--frozen-repository=/private/tmp/bend2039g22-tiny-inline",
+    "--control-native=/private/tmp/bend-g23-qualified-uWzQmR/bend-remote2039g23-native",
+    "--control-image=/private/tmp/bend-g23-qualified-uWzQmR/stage-one.js",
+    "--out=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r5"
+  ],
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "timeoutMs": 600000
+  },
+  "reason": "Read-only adversarial review found public closure depth0 could invoke the body before run_force/run_base establishes its exception boundary. Parent canceled before full compiler-root composition; no native compiler-root/fixedpoint/throughput claim. Internal trampoline depth reset remains0; public closure entry must retain64.",
+  "lastRecordedSteps": [
+    {
+      "label": "checker_core_owned_source.ts",
+      "status": "PASS",
+      "elapsedMs": 4678
+    },
+    {
+      "label": "template_step_lower.ts",
+      "status": "PASS",
+      "elapsedMs": 83
+    },
+    {
+      "label": "checker_core_step_lower.ts",
+      "status": "PASS",
+      "elapsedMs": 198
+    },
+    {
+      "label": "emitter_step_lower.ts",
+      "status": "PASS",
+      "elapsedMs": 1525
+    },
+    {
+      "label": "parser-source",
+      "status": "PASS",
+      "elapsedMs": 17765
+    },
+    {
+      "label": "parser-public-source",
+      "status": "PASS",
+      "elapsedMs": 3233
+    },
+    {
+      "label": "parser-source-gate",
+      "status": "PASS",
+      "elapsedMs": 12546
+    },
+    {
+      "label": "parser-prepare",
+      "status": "PASS",
+      "elapsedMs": 17549
+    },
+    {
+      "label": "parser-build",
+      "status": "PASS",
+      "elapsedMs": 7310
+    },
+    {
+      "label": "parser-public-native",
+      "status": "PASS",
+      "elapsedMs": 1648
+    },
+    {
+      "label": "parser-native-gate",
+      "status": "RUNNING"
+    }
+  ],
+  "changedPathEvidence": {
+    "cases": 8,
+    "allPass": true,
+    "artifact": "/private/tmp/bend-g24-wave-evidence-lXWelR/emitter-multi-014.js",
+    "artifactSha256": "0303c2fea324a496124d8724519ae716aaa6c76c6218ec20a441eda7abcfbbe1",
+    "publicExceptionBoundaryNotCovered": true
+  },
+  "canonicalReceipt": {
+    "path": "checkpoints/local2039g24r5/receipt.json",
+    "statusAtCancellation": "IN_PROGRESS",
+    "sha256": "db3ede6765517f0f0b6a7d3bb3924067da58e0bcad185eb35f5dbd4d03c410f7"
+  },
+  "frozenInputs": [
+    {
+      "path": "checkpoints/.bootstrap_parser_rebuild_local2039g24r5_source.bend",
+      "sha256": "56a1b8ece135e55d9e6eaf4be3ff8ae47744e70185dbe46711c6a3037d74d6a3"
+    },
+    {
+      "path": "checkpoints/.bootstrap_parser_rebuild_local2039g24r5_generated_fuel.bend",
+      "sha256": "1f87959ff0030b21d5d5add2b3c9f30a5868875bf115e9358a0c68bfb56de4cd"
+    }
+  ]
+}

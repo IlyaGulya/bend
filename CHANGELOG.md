@@ -24,6 +24,10 @@ latest one; the GitHub release carries the same notes.
   boxed escape. A private incoming parameter remains decomposed when its
   callee's result escapes to storage; the parameterized regression reproduces
   the prior missing-local exception and passes with the repaired emitter.
+  Compiler-owned unary applications now use the existing bounded direct-call
+  continuation protocol; host callbacks retain their public calling convention.
+  Eight emitted-JS cases pass; exception recovery and region leaves also pass
+  a separate runtime smoke. Full qualification of this revision is pending.
   Full qualification remains failed: r1/r2/r4 stopped at the original
   bootstrap deadline. R4 validated all 12,974 definitions / 13,596 events,
   passed all95 native seed fixtures and produced a53,261,354-byte stage1,
