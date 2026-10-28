@@ -58,11 +58,18 @@ type MultiFact is Data:
   MultiFact{result_ok: Bool, width: Nat, sites: List<&2, MultiSiteF>}
 type MultiUp is Data:
   MultiUp{up: Map<&2, Bool>, multi: Map<&2, Bool>}
-# One round's answer together with whether it withdrew any flag. A round that
-# withdraws nothing recomputes its own state, so it is the fixed point and the
-# loop stops there without counting flags again.
+# The codes one round still has to examine. The first round examines every code;
+# every later round examines exactly the codes a withdrawal in the previous round
+# reaches through the reverse index. `seen` admits one entry per code, so a code
+# that several changed owners reach is still examined once.
+type MultiDirty is Data:
+  MultiDirty{ids: List<&2, U32>, seen: Map<&2, Bool>}
+# One round's answer together with whether it withdrew any flag, and the codes the
+# next round must examine because an owner they read withdrew one. A round that
+# withdraws nothing in its examined set is the fixed point: the codes it skipped
+# read only flags that did not move, so it stops there without counting flags.
 type MultiStep is Data:
-  MultiStep{state: MultiUp, changed: Bool}
+  MultiStep{state: MultiUp, changed: Bool, next: MultiDirty}
 # The descending loop's answer and whether it settled. A bound that runs out is a
 # broken operator, not a plan: the solver turns it into an explicit fault.
 type MultiSolve is Data:
@@ -2574,6 +2581,99 @@ def multi_fact_arity(arity: Bool, fact_width: Nat, tails: List<&2, U32>, prev: M
   match arity:
     case False{}: False{}
     case True{}: Bool.and(Nat.is_le(fact_width, 4n), multi_tails_multi(tails, multi_prev_multi(prev)))
+
+# Every flag a code evaluates is a flag some code owns, so a code can only change
+# when an owner it reads changed. The reverse index holds, for one owner, every
+# code that reads any of its flags, and it is the exact inverse of the reads the
+# round makes from the facts that already exist:
+#   - the code itself, because its own parameter flags feed its rendered arity,
+#     its result positions and its own `multi` flag through the keep test;
+#   - every caller that forwards into one of its positions, because that
+#     position's forwarding fact reads the caller's position flag;
+#   - every callee its positions route into, because the route fact reads the
+#     callee's `multi` flag and the callee position flag;
+#   - every tail target it calls, because the tail test reads the target's
+#     `multi` flag.
+# A forwarding fact is keyed by the callee position it feeds, so walking a code's
+# own positions finds every caller; a route fact is keyed by the owner position it
+# constrains and names its callee; a tail target is a fact field. Nothing here is
+# inferred from a symbol name, and no edge is optional: an omitted edge would leave
+# a code unexamined after a premise it reads withdrew, so the changed-round guard
+# in `multi_round_next` treats such a gap as a fault rather than a settled state.
+def multi_rev_index(items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, acc: Map<&2, List<&2, U32>>) -> Map<&2, List<&2, U32>>:
+  match items:
+    case Nil{}: acc
+    case BIR.Code{id, _, _, _} <> rest:
+      multi_rev_index(rest, facts, fwds, multi_rev_code(multi_fact_of(facts, id), id, fwds, acc))
+def multi_rev_code(fact: MultiCodeFact, id: U32, fwds: Map<&2, List<&2, MultiFwd>>, acc: Map<&2, List<&2, U32>>) -> Map<&2, List<&2, U32>>:
+  match fact:
+    case MultiCodeFact{_, _, _, params, _, _, _, _, _, routes, tails, _}:
+      multi_rev_tails(tails, id, multi_rev_params(params, 0n, id, routes, fwds, multi_rev_add(acc, id, id)))
+def multi_rev_params(items: List<&2, BIR.Parameter>, index: Nat, id: U32, routes: Map<&2, List<&2, MultiReq>>, fwds: Map<&2, List<&2, MultiFwd>>, acc: Map<&2, List<&2, U32>>) -> Map<&2, List<&2, U32>>:
+  match items:
+    case Nil{}: acc
+    case _ <> rest:
+      multi_rev_params(rest, (index + 1n : Nat), id, routes, fwds, multi_rev_position(id, index, routes, fwds, acc))
+def multi_rev_position(id: U32, index: Nat, routes: Map<&2, List<&2, MultiReq>>, fwds: Map<&2, List<&2, MultiFwd>>, acc: Map<&2, List<&2, U32>>) -> Map<&2, List<&2, U32>>:
+  +key = multi_up_key(id, index)
+  multi_rev_routes(multi_routes_key(routes, key), id, multi_rev_fwds(multi_forwards_key(fwds, key), id, acc))
+def multi_rev_fwds(items: List<&2, MultiFwd>, dependent: U32, acc: Map<&2, List<&2, U32>>) -> Map<&2, List<&2, U32>>:
+  match items:
+    case Nil{}: acc
+    case MultiFwd{caller, _, _} <> rest: multi_rev_fwds(rest, dependent, multi_rev_add(acc, caller, dependent))
+def multi_rev_routes(items: List<&2, MultiReq>, dependent: U32, acc: Map<&2, List<&2, U32>>) -> Map<&2, List<&2, U32>>:
+  match items:
+    case Nil{}: acc
+    case MultiReq{callee, _, _} <> rest: multi_rev_routes(rest, dependent, multi_rev_add(acc, callee, dependent))
+def multi_rev_tails(items: List<&2, U32>, dependent: U32, acc: Map<&2, List<&2, U32>>) -> Map<&2, List<&2, U32>>:
+  match items:
+    case Nil{}: acc
+    case +callee <> rest: multi_rev_tails(rest, dependent, multi_rev_add(acc, callee, dependent))
+def multi_rev_add(acc: Map<&2, List<&2, U32>>, owner: U32, dependent: U32) -> Map<&2, List<&2, U32>>:
+  +key = U32.show(owner)
+  multi_rev_put(acc, key, IndexLookup.find(List<&2, U32>, acc, key), dependent)
+def multi_rev_put(acc: Map<&2, List<&2, U32>>, +key: String, found: Maybe<&2, List<&2, U32>>, dependent: U32) -> Map<&2, List<&2, U32>>:
+  match found:
+    case Some{items}: Map.set(&2, List<&2, U32>, acc, key, dependent <> items)
+    case None{}: Map.set(&2, List<&2, U32>, acc, key, [dependent])
+
+# The queue is a list plus a set, so a code that two changed owners both reach, or
+# that the reverse index names once per reading fact, is examined once. Queues only
+# ever hold codes that read a flag that moved: the first round is built from the
+# program's code list, every later round from the reverse index of the owners that
+# withdrew.
+def multi_dirty_empty() -> MultiDirty:
+  MultiDirty{Nil{}, Map.new(&2, Bool)}
+def multi_dirty_ids(dirty: MultiDirty) -> List<&2, U32>:
+  match dirty:
+    case MultiDirty{ids, _}: ids
+def multi_dirty_seen(dirty: MultiDirty) -> Map<&2, Bool>:
+  match dirty:
+    case MultiDirty{_, seen}: seen
+def multi_dirty_add(dirty: MultiDirty, id: U32) -> MultiDirty:
+  +key = U32.show(id)
+  multi_dirty_put(dirty, key, IndexLookup.find(Bool, multi_dirty_seen(dirty), key), id)
+def multi_dirty_put(dirty: MultiDirty, +key: String, found: Maybe<&2, Bool>, id: U32) -> MultiDirty:
+  match found:
+    case Some{_}: dirty
+    case None{}: MultiDirty{id <> multi_dirty_ids(dirty), Map.set(&2, Bool, multi_dirty_seen(dirty), key, True{})}
+def multi_dirty_each(items: List<&2, U32>, dirty: MultiDirty) -> MultiDirty:
+  match items:
+    case Nil{}: dirty
+    case +id <> rest: multi_dirty_each(rest, multi_dirty_add(dirty, id))
+def multi_dirty_deps(dirty: MultiDirty, rev: Map<&2, List<&2, U32>>, changed: Bool, owner: U32) -> MultiDirty:
+  match changed:
+    case False{}: dirty
+    case True{}: multi_dirty_each(multi_rev_get(rev, U32.show(owner)), dirty)
+def multi_rev_get(rev: Map<&2, List<&2, U32>>, +key: String) -> List<&2, U32>:
+  match IndexLookup.find(List<&2, U32>, rev, key):
+    case Some{items}: items
+    case None{}: Nil{}
+def multi_code_ids(items: List<&2, BIR.Code>, acc: List<&2, U32>) -> List<&2, U32>:
+  match items:
+    case Nil{}: List.reverse(&2, U32, acc)
+    case BIR.Code{id, _, _, _} <> rest: multi_code_ids(rest, id <> acc)
+
 # A round only narrows: every flag it derives is intersected with the flag the
 # previous round held. Parameter flags alone cannot carry that invariant, because
 # a code's arity is measured from its parameter widths while its tail targets and
@@ -2584,47 +2684,59 @@ def multi_fact_arity(arity: Bool, fact_width: Nat, tails: List<&2, U32>, prev: M
 # the previous state makes a round withdraw true flags only, which is what makes
 # `changed` a fixed point test instead of a cycle detector.
 #
+# A round is synchronous: every examined code reads `prev`, the state the previous
+# round produced, and writes only its own keys into the next state, so the order
+# the codes are visited in cannot change the answer. That also makes a code's
+# answer a function of the flags it reads: a code whose read owners all kept
+# their flags answers exactly what it answered in the round that produced `prev`,
+# and visiting it again could withdraw nothing. So the first round examines every
+# code, and every later round examines only the codes the reverse index reaches
+# from an owner that withdrew a flag.
+#
 # The accumulator starts from the previous state, and a flag is written only when
 # it differs: a persistent map shares every untouched subtree, so a settled round
 # copies nothing. Each parameter builds its key once and reads the previous flag,
 # the static flag, its forwarding requirements and its route requirements by the
 # keys the facts already hold; no round walks a body or rescans a site list.
-def multi_round(items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, width: Nat, prev: MultiUp, acc: MultiUp) -> MultiStep:
-  match items:
-    case Nil{}: MultiStep{acc, False{}}
-    case code <> rest: multi_round_code(code, rest, facts, fwds, banned, width, prev, acc)
-def multi_round_code(code: BIR.Code, rest: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, width: Nat, prev: MultiUp, acc: MultiUp) -> MultiStep:
-  match code:
-    case BIR.Code{id, _, _, _}: multi_round_fact(id, rest, multi_fact_of(facts, id), facts, fwds, banned, width, prev, acc)
+def multi_round(ids: List<&2, U32>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, rev: Map<&2, List<&2, U32>>, banned: Map<&2, Bool>, width: Nat, prev: MultiUp, acc: MultiStep) -> MultiStep:
+  match ids:
+    case Nil{}: acc
+    case id <> rest: multi_round_one(id, rest, facts, fwds, rev, banned, width, prev, acc)
+def multi_round_one(id: U32, rest: List<&2, U32>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, rev: Map<&2, List<&2, U32>>, banned: Map<&2, Bool>, width: Nat, prev: MultiUp, acc: MultiStep) -> MultiStep:
+  match acc:
+    case MultiStep{state, changed, next}:
+      multi_round_fact(id, rest, multi_fact_of(facts, id), facts, fwds, rev, banned, width, prev, state, changed, next)
 def multi_fact_of(facts: Map<&2, MultiCodeFact>, id: U32) -> MultiCodeFact:
   match IndexLookup.find(MultiCodeFact, facts, U32.show(id)):
     case Some{+item}: item
     case None{}: MultiCodeFact{0n, Nil{}, Map.new(&2, Bool), Nil{}, 0n, False{}, Map.new(&2, Nat), BIR.Failure{""}, Map.new(&2, Nat), Map.new(&2, List<&2, MultiReq>), Nil{}, MultiResultClosed{}}
-def multi_round_fact(id: U32, rest: List<&2, BIR.Code>, fact: MultiCodeFact, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, width: Nat, prev: MultiUp, acc: MultiUp) -> MultiStep:
+def multi_round_fact(id: U32, rest: List<&2, U32>, fact: MultiCodeFact, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, rev: Map<&2, List<&2, U32>>, banned: Map<&2, Bool>, width: Nat, prev: MultiUp, state: MultiUp, changed: Bool, next: MultiDirty) -> MultiStep:
   match fact:
     case MultiCodeFact{_, _, statics, params, captures, _, _, _, _, routes, _, _}:
-      multi_round_flags(id, rest, fact, facts, fwds, banned, width, prev, multi_pass_params(params, 0n, id, statics, routes, prev, fwds, width, MultiPass{acc, False{}, captures}))
-def multi_round_flags(id: U32, rest: List<&2, BIR.Code>, fact: MultiCodeFact, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, width: Nat, prev: MultiUp, pass: MultiPass) -> MultiStep:
+      multi_round_flags(id, rest, fact, facts, fwds, rev, banned, width, prev, changed, next, multi_pass_params(params, 0n, id, statics, routes, prev, fwds, width, MultiPass{state, False{}, captures}))
+def multi_round_flags(id: U32, rest: List<&2, U32>, fact: MultiCodeFact, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, rev: Map<&2, List<&2, U32>>, banned: Map<&2, Bool>, width: Nat, prev: MultiUp, changed: Bool, next: MultiDirty, pass: MultiPass) -> MultiStep:
   match pass:
-    case MultiPass{state, changed, rendered}:
+    case MultiPass{state, pass_changed, rendered}:
       +previous = multi_multi_get(multi_prev_multi(prev), id)
       +computed = multi_fact_multi(fact, id, prev, banned, width, rendered)
-      multi_round_multi(state, U32.show(id), previous, multi_round_keep(computed, previous), changed, rest, facts, fwds, banned, width, prev)
-def multi_round_multi(acc: MultiUp, +key: String, previous: Bool, flag: Bool, changed: Bool, rest: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, width: Nat, prev: MultiUp) -> MultiStep:
+      multi_round_multi(id, rest, facts, fwds, rev, banned, width, prev, changed, next, pass_changed, state, previous, multi_round_keep(computed, previous))
+def multi_round_multi(id: U32, rest: List<&2, U32>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, rev: Map<&2, List<&2, U32>>, banned: Map<&2, Bool>, width: Nat, prev: MultiUp, changed: Bool, next: MultiDirty, pass_changed: Bool, state: MultiUp, previous: Bool, flag: Bool) -> MultiStep:
   match flag:
-    case True{}: multi_round_next(rest, facts, fwds, banned, width, prev, acc, changed)
-    case False{}: multi_round_multi_drop(acc, key, previous, changed, rest, facts, fwds, banned, width, prev)
-def multi_round_multi_drop(acc: MultiUp, +key: String, previous: Bool, changed: Bool, rest: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, width: Nat, prev: MultiUp) -> MultiStep:
+    case True{}: multi_round_next(id, rest, facts, fwds, rev, banned, width, prev, changed, next, pass_changed, state)
+    case False{}: multi_round_multi_drop(id, rest, facts, fwds, rev, banned, width, prev, changed, next, pass_changed, state, previous)
+def multi_round_multi_drop(id: U32, rest: List<&2, U32>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, rev: Map<&2, List<&2, U32>>, banned: Map<&2, Bool>, width: Nat, prev: MultiUp, changed: Bool, next: MultiDirty, pass_changed: Bool, state: MultiUp, previous: Bool) -> MultiStep:
   match previous:
-    case False{}: multi_round_next(rest, facts, fwds, banned, width, prev, acc, changed)
-    case True{}: multi_round_next(rest, facts, fwds, banned, width, prev, multi_multi_clear(acc, key), True{})
+    case False{}: multi_round_next(id, rest, facts, fwds, rev, banned, width, prev, changed, next, pass_changed, state)
+    case True{}: multi_round_next(id, rest, facts, fwds, rev, banned, width, prev, changed, next, True{}, multi_multi_clear(state, U32.show(id)))
 def multi_multi_clear(acc: MultiUp, +key: String) -> MultiUp:
   match acc:
     case MultiUp{up, multi}: MultiUp{up, Map.set(&2, Bool, multi, key, False{})}
-def multi_round_next(rest: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, width: Nat, prev: MultiUp, acc: MultiUp, changed: Bool) -> MultiStep:
-  match multi_round(rest, facts, fwds, banned, width, prev, acc):
-    case MultiStep{state, changed_rest}:
-      MultiStep{state, Bool.or(changed, changed_rest)}
+# A code that withdrew any of its own flags is queued again through its own edge,
+# so a changed round always leaves a nonempty queue; a changed round with an empty
+# queue would mean an edge is missing, and the loop reports that as a fault
+# instead of settling on a state a complete round would have withdrawn from.
+def multi_round_next(id: U32, rest: List<&2, U32>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, rev: Map<&2, List<&2, U32>>, banned: Map<&2, Bool>, width: Nat, prev: MultiUp, changed: Bool, next: MultiDirty, code_changed: Bool, state: MultiUp) -> MultiStep:
+  multi_round(rest, facts, fwds, rev, banned, width, prev, MultiStep{state, Bool.or(changed, code_changed), multi_dirty_deps(next, rev, code_changed, id)})
 def multi_round_keep(computed: Bool, previous: Bool) -> Bool:
   Bool.and(computed, previous)
 # One code's parameter pass. The key is built once and serves the static flag, the
@@ -2673,15 +2785,19 @@ def multi_pass_clear(acc: MultiUp, +key: String, rendered: Nat) -> MultiPass:
 # the very parameters it measured, and a state that flips like that is not a
 # fixed point even when its true count repeats.
 def multi_round_start(items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, width: Nat) -> MultiSolve:
-  multi_round_seeded(items, facts, fwds, banned, width, multi_round_seed(items, facts, banned, Map.new(&2, Bool), Map.new(&2, Bool)))
-def multi_round_seeded(items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, width: Nat, state: MultiUp) -> MultiSolve:
-  multi_round_until(items, facts, fwds, banned, width, multi_round_budget(items, state), state)
+  +rev = multi_rev_index(items, facts, fwds, Map.new(&2, List<&2, U32>))
+  multi_round_seeded(items, facts, fwds, rev, banned, width, multi_round_seed(items, facts, banned, Map.new(&2, Bool), Map.new(&2, Bool)))
+def multi_round_seeded(items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, rev: Map<&2, List<&2, U32>>, banned: Map<&2, Bool>, width: Nat, state: MultiUp) -> MultiSolve:
+  multi_round_until(multi_code_ids(items, Nil{}), facts, fwds, rev, banned, width, multi_round_budget(items, state), state)
 # Every flag a round derives is intersected with the flag the previous round
 # held, so a round withdraws true flags and never restores one. The budget is the
 # number of initial flags plus one: each round that is not the settled one
 # strictly removes a true flag, so that many rounds settle any chain, even a long
-# tail chain. Running it out means the relaxation stopped narrowing, i.e. the
-# operator is wrong; that is reported as a fault, never as a working program.
+# tail chain. A round that examines only the codes a withdrawal reaches removes
+# flags at the same rate, so the same number bounds it, and the queue cannot make
+# the loop run longer than the round that examines every code would. Running the
+# budget out means the relaxation stopped narrowing, i.e. the operator is wrong;
+# that is reported as a fault, never as a working program.
 def multi_round_budget(items: List<&2, BIR.Code>, state: MultiUp) -> Nat:
   Nat.add(multi_true_count(items, state), 1n)
 def multi_true_count(items: List<&2, BIR.Code>, state: MultiUp) -> Nat:
@@ -2699,19 +2815,27 @@ def multi_true_flags(items: List<&2, BIR.Parameter>, id: U32, index: Nat, state:
   match items:
     case Nil{}: acc
     case _ <> rest: multi_true_flags(rest, id, (index + 1n : Nat), state, multi_true_multi(multi_up_get(multi_prev_up(state), id, index), acc))
-def multi_round_until(items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, width: Nat, left: Nat, state: MultiUp) -> MultiSolve:
-  multi_round_until_step(items, facts, fwds, banned, width, left, state, multi_round(items, facts, fwds, banned, width, state, state))
-def multi_round_until_step(items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, width: Nat, left: Nat, state: MultiUp, step: MultiStep) -> MultiSolve:
+def multi_round_until(ids: List<&2, U32>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, rev: Map<&2, List<&2, U32>>, banned: Map<&2, Bool>, width: Nat, left: Nat, state: MultiUp) -> MultiSolve:
+  multi_round_until_step(facts, fwds, rev, banned, width, left, multi_round(ids, facts, fwds, rev, banned, width, state, MultiStep{state, False{}, multi_dirty_empty()}))
+def multi_round_until_step(facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, rev: Map<&2, List<&2, U32>>, banned: Map<&2, Bool>, width: Nat, left: Nat, step: MultiStep) -> MultiSolve:
   match step:
-    case MultiStep{next, changed}: multi_round_step_changed(changed, items, facts, fwds, banned, width, left, next)
-def multi_round_step_changed(changed: Bool, items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, width: Nat, left: Nat, next: MultiUp) -> MultiSolve:
+    case MultiStep{state, changed, work}: multi_round_step_changed(changed, facts, fwds, rev, banned, width, left, state, work)
+def multi_round_step_changed(changed: Bool, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, rev: Map<&2, List<&2, U32>>, banned: Map<&2, Bool>, width: Nat, left: Nat, state: MultiUp, work: MultiDirty) -> MultiSolve:
   match changed:
-    case False{}: MultiSolve{next, True{}}
-    case True{}: multi_round_more(Nat.is_eq(left, 0n), items, facts, fwds, banned, width, Nat.sub(left, 1n), next)
-def multi_round_more(empty: Bool, items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, width: Nat, left: Nat, next: MultiUp) -> MultiSolve:
+    case False{}: MultiSolve{state, True{}}
+    case True{}: multi_round_queued(multi_dirty_ids(work), facts, fwds, rev, banned, width, left, state, work)
+# A changed round always queues at least the owner it withdrew from, through that
+# owner's self edge, so an empty queue here means the reverse index is missing an
+# edge. That is reported as an unsettled relaxation, which the plan turns into an
+# explicit fault: never as a settled state a complete round would have withdrawn.
+def multi_round_queued(ids: List<&2, U32>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, rev: Map<&2, List<&2, U32>>, banned: Map<&2, Bool>, width: Nat, left: Nat, state: MultiUp, work: MultiDirty) -> MultiSolve:
+  match ids:
+    case Nil{}: MultiSolve{state, False{}}
+    case _ <> _: multi_round_more(Nat.is_eq(left, 0n), facts, fwds, rev, banned, width, Nat.sub(left, 1n), state, work)
+def multi_round_more(empty: Bool, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, rev: Map<&2, List<&2, U32>>, banned: Map<&2, Bool>, width: Nat, left: Nat, state: MultiUp, work: MultiDirty) -> MultiSolve:
   match empty:
-    case True{}: MultiSolve{next, False{}}
-    case False{}: multi_round_until(items, facts, fwds, banned, width, left, next)
+    case True{}: MultiSolve{state, False{}}
+    case False{}: multi_round_until(multi_dirty_ids(work), facts, fwds, rev, banned, width, left, state)
 def multi_fact_statics(facts: Map<&2, MultiCodeFact>, id: U32) -> Map<&2, Bool>:
   match multi_fact_of(facts, id):
     case MultiCodeFact{_, _, statics, _, _, _, _, _, _, _, _, _}: statics
