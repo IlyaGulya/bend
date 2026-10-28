@@ -1512,6 +1512,14 @@
       "byteFixedpoint": false,
       "receipt": "evals/receipts/root2039g24r7_rejected.json",
       "reason": "Full native root validated 13012 definitions/13634 events and all95seedfixtures passed; stageOne52143515bytes. Original600000ms bootstrap deadline expired during stage-two-check; no stageTwo."
+    },
+    {
+      "runId": "local2039g24r8",
+      "status": "FAIL",
+      "accepted": false,
+      "byteFixedpoint": false,
+      "receipt": "evals/receipts/root2039g24r8_rejected.json",
+      "reason": "Full native root validated 13043 definitions/13666 events and all95seedfixtures passed; stageOne53082886bytes. Native emit47807ms/4229690advances; original600000ms bootstrap guard expired during stage-two-check, no stageTwo."
     }
   ],
   "interpretation": [

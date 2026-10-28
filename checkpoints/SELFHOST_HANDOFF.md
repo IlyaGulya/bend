@@ -38,6 +38,13 @@ Source review адаптера: `cfed944ac403a4ee56c22a793c94307cd00b8ce2`, PASS
 stage1 — 52 143 515 bytes. Native emit — 76 399 ms / 6 659 673 advances.
 Stage2 начал check на 286 609 ms и не закончил к прежнему guard 600 000 ms.
 Guard limits и public ABI не менялись; stage2 и byte fixedpoint не получены.
+R8 заменил materialization на constructor-specific object literals и ввёл
+dependency-driven synchronous convergence. 12 consumer programs byte-identical
+старому solver, V8/JSC smoke PASS; literal boxer source review `ce9f88fc` PASS.
+Полный R8 тоже FAIL: 13 043 definitions / 13 666 events, все 95 seed fixtures
+PASS, stage1 53 082 886 bytes. Native emit 47 807 ms / 4 229 690 advances.
+Stage2 начал check на 227 550 ms, но не закончил до исходного guard 600 000 ms.
+Далее нужно измерить весь JS check и его прогресс, не менять guards.
 Принятым остаётся G23 ниже.
 Точные команды и границы:
 `evals/receipts/root2039g24_failed_attempts.json`,
@@ -46,6 +53,7 @@ Guard limits и public ABI не менялись; stage2 и byte fixedpoint не
 `evals/receipts/root2039g24r5_rejected.json`,
 `evals/receipts/root2039g24r6_rejected.json`,
 `evals/receipts/root2039g24r7_rejected.json`,
+`evals/receipts/root2039g24r8_rejected.json`,
 `evals/receipts/producer2039g24r4_diagnostic.json`,
 `evals/receipts/producer2039g24_source_smoke.json`.
 

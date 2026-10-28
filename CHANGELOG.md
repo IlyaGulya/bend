@@ -46,7 +46,9 @@ latest one; the GitHub release carries the same notes.
   consumer programs remain byte-identical to the full-scan solver's output.
   R7 validated all 13,012 definitions / 13,634 events and all 95 native seed
   fixtures, but its 52,143,515-byte stage1 also timed out during stage2 checking.
-  Full qualification remains failed: r1/r2/r4/r6/r7 stopped at the original
+  R8 validated 13,043 definitions / 13,666 events and all 95 native seed
+  fixtures; stage1 is 53,082,886 bytes, but stage2 checking again timed out.
+  Full qualification remains failed: r1/r2/r4/r6/r7/r8 stopped at the original
   bootstrap deadline. R4 validated all 12,974 definitions / 13,596 events,
   passed all95 native seed fixtures and produced a53,261,354-byte stage1,
   but stage2 checking did not finish. R3 exceeded the original8-GiB RSS guard
