@@ -523,11 +523,69 @@ def closure_captures(+captures: List<&2, BIR.Arg>, names: List<&2, String>, body
   match captures:
     case Nil{}: body
     case _: cat(["((", String.join(names, ","), ")=>", body, ")(", String.join(arguments(captures), ","), ")"])
+# A field key is a compile-time string in BIR, so the emitted object can name it
+# as a literal property instead of computing it. comp.ts already spells every
+# field that way and computes only `__proto__`, whose literal form sets a
+# prototype instead of defining a field; the selfhost target wrote every field
+# as a computed store, which hands the key back to the runtime on each
+# allocation and denies the engine the shared literal map that makes a record
+# allocation a clone. The same key is a named property of the projection below
+# whenever it is a plain JavaScript identifier, so a read needs no keyed lookup.
+def js_field_text(key: String) -> String:
+  js_field_proto(String.eq(key, "__proto__"), key)
+def js_field_proto(proto: Bool, +key: String) -> String:
+  match proto:
+    case True{}: cat(["[", js_quote(key), "]:"])
+    case False{}: cat([js_quote(key), ":"])
+def js_plain_key(key: String) -> Bool:
+  js_plain_key_first(String.eq(key, "__proto__"), String.to_list(key))
+def js_plain_key_first(proto: Bool, chars: List<&2, Char>) -> Bool:
+  match proto:
+    case True{}: False{}
+    case False{}: js_plain_key_chars(chars)
+def js_plain_key_chars(chars: List<&2, Char>) -> Bool:
+  match chars:
+    case Nil{}: False{}
+    case +head <> rest: js_plain_key_head(js_plain_head(head), rest)
+def js_plain_key_head(head: Bool, rest: List<&2, Char>) -> Bool:
+  match head:
+    case True{}: js_plain_key_tail(rest)
+    case False{}: False{}
+def js_plain_key_tail(chars: List<&2, Char>) -> Bool:
+  match chars:
+    case Nil{}: True{}
+    case +head <> rest: js_plain_key_tail_more(js_word(head), rest)
+def js_plain_key_tail_more(word: Bool, rest: List<&2, Char>) -> Bool:
+  match word:
+    case True{}: js_plain_key_tail(rest)
+    case False{}: False{}
+def js_plain_head(+char: Char) -> Bool:
+  match char:
+    case '_': True{}
+    case '$': True{}
+    case _: Char.is_alpha(char)
+# A projection of a numeric atom keeps the keyed spelling: `123.a` is not a
+# JavaScript expression, and only a Word or Nat atom renders as bare digits.
+def js_member_text(value: BIR.Atom, key: String) -> String:
+  js_member_selected(js_member_atom(value), js_plain_key(key), key)
+def js_member_atom(value: BIR.Atom) -> Bool:
+  match value:
+    case BIR.Word{_}: False{}
+    case BIR.Natural{_}: False{}
+    case _: True{}
+def js_member_selected(referenced: Bool, plain: Bool, +key: String) -> String:
+  match referenced:
+    case False{}: cat(["[", js_quote(key), "]"])
+    case True{}: js_member_plain(plain, key)
+def js_member_plain(plain: Bool, +key: String) -> String:
+  match plain:
+    case True{}: String.append(".", key)
+    case False{}: cat(["[", js_quote(key), "]"])
 def record_fields(fields: List<&2, BIR.Field>) -> String:
   match fields:
     case Nil{}: ""
     case BIR.Field{_, key, _, value} <> rest:
-      cat([",[", js_quote(key), "]:", atom(value), record_fields(rest)])
+      cat([",", js_field_text(key), atom(value), record_fields(rest)])
 # A foreign definition is a request constructor. BIR application is unary, so
 # the value is curried: one arrow per live parameter and then the continuation.
 # The request names the effect the source registered; its continuation is the
@@ -666,7 +724,7 @@ def operation(op: BIR.Op) -> String:
     case BIR.Apply{fn, BIR.Arg{_, value}}: cat(["run_loop(run_tail(", atom(fn), ",", atom(value), "))"])
     case BIR.LoadSymbol{_, key}: cat(["$D[", js_quote(key), "]"])
     case BIR.Construct{_, tag, fields}: cat(["({$:", js_quote(tag), record_fields(fields), "})"])
-    case BIR.Project{value, _, _, key}: cat([atom(value), "[", js_quote(key), "]"])
+    case BIR.Project{value, _, _, key}: cat([atom(value), js_member_text(value, key)])
     case BIR.HasTag{value, _, tag}: tag_test(atom(value), tag)
 def tag_test(+value: String, tag: String) -> String:
   cat(["(", value, "&&", value, ".$===", js_quote(tag), ")"])
@@ -752,8 +810,9 @@ def code(item: BIR.Code) -> String:
   match item:
     case BIR.Code{id, captures, parameters, body}:
       names = List.append(&2, String, capture_names(captures, 0), parameter_names(parameters))
-      +ctx = js_ctx(U32.show(id), plan_of(body))
-      cat(["function ", code_name(id), "(", String.join(List.append(&2, String, names, ["$td=0"]), ","), "){", block(body, ctx), "}\n", String.join(conts(body, ctx), "")])
+      scoped = js_scalar(body)
+      +ctx = js_ctx(U32.show(id), plan_of(scoped))
+      cat(["function ", code_name(id), "(", String.join(List.append(&2, String, names, ["$td=0"]), ","), "){", block(scoped, ctx), "}\n", String.join(conts(scoped, ctx), "")])
 def codes(items: List<&2, BIR.Code>) -> String:
   match items:
     case Nil{}: ""
@@ -1071,6 +1130,162 @@ def plan_region_sites(plan: Plan, label: U32, need: Bool, next_state: Suffix) ->
   match need:
     case False{}: plan_frame_add(plan, label, False{})
     case True{}: plan_thunk_add(plan_frame_add(plan, label, True{}), label, suffix_caps(next_state, None{}))
+
+# A record that never leaves its own body is a binding, not a value. When every
+# use of a `Construct` local in the block that follows it is a `Project` of one
+# of that record's own fields, the record is never observed: each projection
+# reads a value the constructing frame already holds and the allocation is gone.
+# This is decided from this body's BIR alone. A local that is returned, passed,
+# tail-called, captured, copied, stored in another record, tag-tested or named
+# by any other operand still escapes: a value that reaches another code, a
+# closure, a foreign function, the host or the public trampoline keeps its boxed
+# record, so no escaping or aliased record is rewritten here.
+#
+# A field read is not always a read. A `Symbol` atom runs a lazy declaration's
+# getter, which may reenter, and a `FloatBits` atom allocates a fresh view, so a
+# record holding either is left alone; every field of an eliminated record is a
+# value its constructing frame evaluated once, and dropping the constructor
+# therefore drops only the allocation, not an evaluation. Scalars are read where
+# the record was projected, inside the same frame or the same restored capture,
+# so an evaluated value, a capture order and an exception order are unchanged.
+#
+# The rewrite runs before the capture plan: the substituted value is what a
+# continuation after a split must capture, and `block`, `conts` and `plan_of`
+# then all read the rewritten body, so the plan and the split emission cannot
+# disagree. It removes one object literal per site and never duplicates one, so
+# it cannot grow the program.
+def js_scalar(body: BIR.Block) -> BIR.Block:
+  match body:
+    case BIR.Let{id, BIR.Construct{constructor, tag, fields}, next}:
+      js_scalar_let(id, constructor, tag, fields, next)
+    case BIR.Let{id, op, next}: BIR.Let{id, op, js_scalar(next)}
+    case BIR.Branch{condition, yes, no}: BIR.Branch{condition, js_scalar(yes), js_scalar(no)}
+    case BIR.Region{label, inner, next}: BIR.Region{label, js_scalar(inner), js_scalar(next)}
+    case _: body
+# A record with an evaluated field keeps its constructor, so its block is never
+# even scanned: the common `Symbol` field of a static record is rejected here.
+def js_scalar_let(id: U32, constructor: U32, tag: String, fields: List<&2, BIR.Field>, next: BIR.Block) -> BIR.Block:
+  js_scalar_repeatable(js_scalar_fields(fields), id, constructor, tag, fields, next)
+def js_scalar_repeatable(repeatable: Bool, id: U32, constructor: U32, tag: String, fields: List<&2, BIR.Field>, next: BIR.Block) -> BIR.Block:
+  match repeatable:
+    case True{}: js_scalar_escapes(js_scalar_block_ok(next, id, fields), id, constructor, tag, fields, next)
+    case False{}: BIR.Let{id, BIR.Construct{constructor, tag, fields}, js_scalar(next)}
+# `js_scalar_block_ok` answers whether the block leaves the record unobserved,
+# so its True answer is the one that removes the allocation: a block that
+# returns, passes or otherwise names the record keeps the constructor.
+def js_scalar_escapes(unobserved: Bool, id: U32, constructor: U32, tag: String, fields: List<&2, BIR.Field>, next: BIR.Block) -> BIR.Block:
+  match unobserved:
+    case True{}: js_scalar(js_scalar_block(next, id, fields))
+    case False{}: BIR.Let{id, BIR.Construct{constructor, tag, fields}, js_scalar(next)}
+
+def js_scalar_fields(fields: List<&2, BIR.Field>) -> Bool:
+  match fields:
+    case Nil{}: True{}
+    case BIR.Field{_, _, _, value} <> rest: js_scalar_fields_value(js_scalar_value(value), rest)
+def js_scalar_fields_value(repeatable: Bool, rest: List<&2, BIR.Field>) -> Bool:
+  match repeatable:
+    case True{}: js_scalar_fields(rest)
+    case False{}: False{}
+# Values that are already evaluated: reading one again is a read of the same
+# JavaScript binding, in the frame that built the record or in the capture that
+# restored it. The two excluded atoms are the two that evaluate something.
+def js_scalar_value(value: BIR.Atom) -> Bool:
+  match value:
+    case BIR.Symbol{_, _}: False{}
+    case BIR.FloatBits{_}: False{}
+    case BIR.Local{_}: True{}
+    case BIR.Capture{_}: True{}
+    case BIR.Word{_}: True{}
+    case BIR.Natural{_}: True{}
+    case BIR.TextValue{_}: True{}
+    case BIR.Boolean{_}: True{}
+    case BIR.Null{}: True{}
+    case BIR.Undefined{}: True{}
+# True when the record is observed as a value anywhere in the block: every
+# operand form is classified by the read set `op_reads` already computes, so
+# this pass adds no second traversal rule of its own.
+def js_scalar_block_ok(body: BIR.Block, id: U32, fields: List<&2, BIR.Field>) -> Bool:
+  match body:
+    case BIR.Return{value}: Bool.not(js_scalar_atom_used(value, id))
+    case BIR.Let{_, op, next}: Bool.and(js_scalar_op_ok(op, id, fields), js_scalar_block_ok(next, id, fields))
+    case BIR.Branch{condition, yes, no}:
+      Bool.and(Bool.not(js_scalar_atom_used(condition, id)), Bool.and(js_scalar_block_ok(yes, id, fields), js_scalar_block_ok(no, id, fields)))
+    case BIR.Region{_, inner, next}: Bool.and(js_scalar_block_ok(inner, id, fields), js_scalar_block_ok(next, id, fields))
+    case BIR.LeaveRegion{_}: True{}
+    case BIR.TailDirect{_, args}: Bool.not(js_scalar_args_used(args, id))
+    case BIR.TailApply{fn, arg}: Bool.not(js_scalar_reads(apply_reads(fn, arg, reads_new()), id))
+    case BIR.Failure{_}: True{}
+def js_scalar_op_ok(op: BIR.Op, id: U32, fields: List<&2, BIR.Field>) -> Bool:
+  match op:
+    case BIR.Project{value, _, _, key}: js_scalar_project_ok(value, key, id, fields)
+    case _: Bool.not(js_scalar_reads(op_reads(op, reads_new()), id))
+# A projection of this record is its one observation: the field must exist and
+# be a value, not an evaluation. A projection of anything else cannot name a
+# local, so it is not a use of this record.
+def js_scalar_project_ok(value: BIR.Atom, +key: String, id: U32, fields: List<&2, BIR.Field>) -> Bool:
+  match value:
+    case BIR.Local{known}: js_scalar_project_local(U32.is_eq(known, id), key, fields)
+    case _: True{}
+def js_scalar_project_local(same: Bool, +key: String, fields: List<&2, BIR.Field>) -> Bool:
+  match same:
+    case True{}: js_scalar_project_field(js_scalar_field_at(fields, key))
+    case False{}: True{}
+def js_scalar_project_field(found: Maybe<&2, BIR.Atom>) -> Bool:
+  match found:
+    case Some{value}: js_scalar_value(value)
+    case None{}: False{}
+def js_scalar_field_at(fields: List<&2, BIR.Field>, key: String) -> Maybe<&2, BIR.Atom>:
+  match fields:
+    case Nil{}: None{}
+    case BIR.Field{_, +known, _, value} <> rest: js_scalar_field_at_same(String.eq(key, known), value, rest, key)
+def js_scalar_field_at_same(same: Bool, value: BIR.Atom, rest: List<&2, BIR.Field>, +key: String) -> Maybe<&2, BIR.Atom>:
+  match same:
+    case True{}: Some{value}
+    case False{}: js_scalar_field_at(rest, key)
+def js_scalar_reads(reads: Reads, id: U32) -> Bool:
+  match reads:
+    case Reads{locals, _}: js_scalar_mentions(locals, id)
+def js_scalar_mentions(items: List<&2, U32>, id: U32) -> Bool:
+  match items:
+    case Nil{}: False{}
+    case +item <> rest: js_scalar_mentions_one(U32.is_eq(item, id), rest, id)
+def js_scalar_mentions_one(same: Bool, rest: List<&2, U32>, id: U32) -> Bool:
+  match same:
+    case True{}: True{}
+    case False{}: js_scalar_mentions(rest, id)
+def js_scalar_atom_used(value: BIR.Atom, id: U32) -> Bool:
+  js_scalar_reads(atom_reads(value, reads_new()), id)
+def js_scalar_args_used(args: List<&2, BIR.Arg>, id: U32) -> Bool:
+  js_scalar_reads(args_reads(args, reads_new()), id)
+# The scan above admitted this block, so every projection of this local resolves
+# to a field of the record it came from; a projection that resolves nothing
+# belongs to another value and keeps its spelling.
+def js_scalar_block(body: BIR.Block, id: U32, fields: List<&2, BIR.Field>) -> BIR.Block:
+  match body:
+    case BIR.Let{next_id, op, next}:
+      BIR.Let{next_id, js_scalar_op(op, id, fields), js_scalar_block(next, id, fields)}
+    case BIR.Branch{condition, yes, no}:
+      BIR.Branch{condition, js_scalar_block(yes, id, fields), js_scalar_block(no, id, fields)}
+    case BIR.Region{label, inner, next}:
+      BIR.Region{label, js_scalar_block(inner, id, fields), js_scalar_block(next, id, fields)}
+    case _: body
+def js_scalar_op(op: BIR.Op, id: U32, fields: List<&2, BIR.Field>) -> BIR.Op:
+  match op:
+    case BIR.Project{value, constructor, field, key}:
+      js_scalar_projection(js_scalar_projected(value, key, id, fields), value, constructor, field, key)
+    case _: op
+def js_scalar_projected(value: BIR.Atom, +key: String, id: U32, fields: List<&2, BIR.Field>) -> Maybe<&2, BIR.Atom>:
+  match value:
+    case BIR.Local{known}: js_scalar_projected_local(U32.is_eq(known, id), key, fields)
+    case _: None{}
+def js_scalar_projected_local(same: Bool, +key: String, fields: List<&2, BIR.Field>) -> Maybe<&2, BIR.Atom>:
+  match same:
+    case True{}: js_scalar_field_at(fields, key)
+    case False{}: None{}
+def js_scalar_projection(found: Maybe<&2, BIR.Atom>, value: BIR.Atom, constructor: U32, field: U32, +key: String) -> BIR.Op:
+  match found:
+    case Some{atom}: BIR.Copy{atom}
+    case None{}: BIR.Project{value, constructor, field, key}
 
 # A split writes the continuation's captures above the private stack pointer
 # and hands the callee and its continuation to the machine: it stores the frame
@@ -1475,8 +1690,9 @@ def declaration(item: BIR.Declaration, +natives: Map<&2, String>, index: Nat) ->
     case BIR.FunctionDeclaration{key, code, parameters}:
       cat(["$D[", js_quote(key), "]=", closure(code, Nil{}, parameters), ";\n"])
     case BIR.LazyDeclaration{key, body}:
-      +ctx = js_ctx(cat(["L", Nat.show(index)]), plan_of(body))
-      cat([deferred(key, cat(["(()=>{", block(body, ctx), "})()"])), String.join(conts(body, ctx), "")])
+      scoped = js_scalar(body)
+      +ctx = js_ctx(cat(["L", Nat.show(index)]), plan_of(scoped))
+      cat([deferred(key, cat(["(()=>{", block(scoped, ctx), "})()"])), String.join(conts(scoped, ctx), "")])
     case BIR.NativeDeclaration{key, primitive, uses}:
       native_declaration(key, primitive, uses)
     case BIR.ForeignDeclaration{key, _, imported, arity, decl_sources, _, _, parameter_types, result}:
