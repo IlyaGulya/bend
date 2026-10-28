@@ -2231,7 +2231,34 @@ def multi_round_n(items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds
 # would never seed at all. Removal is monotone, so the iteration settles at the
 # greatest fixed point the rules allow.
 def multi_round_start(items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, layouts: Map<&2, MultiLayout>, width: Nat) -> MultiUp:
-  multi_round_n(items, facts, fwds, banned, layouts, width, 12n, multi_round_seed(items, Map.new(&2, Bool), Map.new(&2, Bool)))
+  multi_round_settle(items, facts, fwds, banned, layouts, width, multi_round_n(items, facts, fwds, banned, layouts, width, 16n, multi_round_seed(items, Map.new(&2, Bool), Map.new(&2, Bool))))
+# A state that one more relaxation pass would still narrow is not a fixed point:
+# some remaining `multi` code could then name a private tail entry whose callee
+# was already removed, and the caller would read a window that the boxed callee
+# never wrote. Declining the whole transform is the only sound answer, and it is
+# bounded by one extra pass over the facts.
+def multi_round_settle(items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, layouts: Map<&2, MultiLayout>, width: Nat, state: MultiUp) -> MultiUp:
+  match multi_settled(items, state, multi_round(items, facts, fwds, banned, layouts, width, state, MultiUp{Map.new(&2, Bool), Map.new(&2, Bool)}), True{}):
+    case True{}: state
+    case False{}: MultiUp{Map.new(&2, Bool), Map.new(&2, Bool)}
+def multi_settled(items: List<&2, BIR.Code>, state: MultiUp, next: MultiUp, acc: Bool) -> Bool:
+  match items:
+    case Nil{}: acc
+    case BIR.Code{id, _, parameters, _} <> rest:
+      multi_settled(rest, state, next, Bool.and(acc, multi_code_settled(id, parameters, state, next)))
+def multi_code_settled(id: U32, parameters: List<&2, BIR.Parameter>, state: MultiUp, next: MultiUp) -> Bool:
+  Bool.and(multi_flag_settled(multi_multi_get(multi_prev_multi(state), id), multi_multi_get(multi_prev_multi(next), id)), multi_ups_settled(parameters, id, 0n, multi_prev_up(state), multi_prev_up(next)))
+def multi_ups_settled(items: List<&2, BIR.Parameter>, id: U32, index: Nat, before: Map<&2, Bool>, after: Map<&2, Bool>) -> Bool:
+  match items:
+    case Nil{}: True{}
+    case _ <> rest: Bool.and(multi_flag_settled(multi_up_get(before, id, index), multi_up_get(after, id, index)), multi_ups_settled(rest, id, (index + 1n : Nat), before, after))
+def multi_flag_settled(before: Bool, after: Bool) -> Bool:
+  match before:
+    case False{}: True{}
+    case True{}:
+      match after:
+        case True{}: True{}
+        case False{}: False{}
 def multi_round_seed(items: List<&2, BIR.Code>, multi: Map<&2, Bool>, up: Map<&2, Bool>) -> MultiUp:
   match items:
     case Nil{}: MultiUp{up, multi}
@@ -3241,7 +3268,7 @@ def declaration(item: BIR.Declaration, +natives: Map<&2, String>, index: Nat, pl
       cat(["$D[", js_quote(key), "]=", closure_named(multi_target_name(multi_plan_multi(plan), code), Nil{}, parameters), ";\n"])
     case BIR.LazyDeclaration{key, body}:
       scoped = js_scalar(body)
-      +ctx = js_ctx(cat(["L", Nat.show(index)]), plan_of(scoped))
+      +ctx = js_ctx_multi(cat(["L", Nat.show(index)]), plan_of(scoped), multi_plan_multi(plan), multi_render_plain_state(plan_of(scoped)))
       cat([deferred(key, cat(["(()=>{", block(scoped, ctx), "})()"])), String.join(conts(scoped, ctx), "")])
     case BIR.NativeDeclaration{key, primitive, uses}:
       native_declaration(key, primitive, uses)
