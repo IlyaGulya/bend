@@ -2050,12 +2050,6 @@ def multi_arity_count(rendered: Nat) -> Bool:
   Bool.and(Nat.is_gt(rendered, 0n), multi_arity_bound(Nat.add(rendered, 1n)))
 def multi_arity_bound(count: Nat) -> Bool:
   Nat.is_le(count, 32n)
-def multi_result_ok_known(statics: Map<&2, Bool>, code: U32, up: Map<&2, Bool>) -> Bool:
-  multi_static_true(IndexLookup.find(Bool, statics, U32.show(code)), up, code)
-def multi_static_true(found: Maybe<&2, Bool>, up: Map<&2, Bool>, code: U32) -> Bool:
-  match found:
-    case Some{flag}: Bool.and(flag, multi_up_get(up, code, 0n))
-    case None{}: False{}
 def multi_shape_open_at(shape: MultiShape, up: Map<&2, Bool>, caller: U32) -> Bool:
   match shape:
     case MultiCtorShape{_, _}: True{}
@@ -2272,9 +2266,12 @@ def multi_forward_local(id: U32, layouts: Map<&2, MultiLayout>, params: Map<&2, 
   multi_forward_kind(multi_param_get(params, id), multi_binding(bindings, id), sub, id, layouts, params, width, bindings)
 def multi_forward_kind(position: Maybe<&2, MultiParam>, binding: Maybe<&2, MultiCtor>, sub: Maybe<&2, MultiSubst>, id: U32, layouts: Map<&2, MultiLayout>, params: Map<&2, MultiParam>, width: Nat, bindings: Map<&2, MultiCtor>) -> List<&2, BIR.Atom>:
   match position:
-    case Some{MultiParam{_, True{}, tag, fields}}:
-      BIR.Local{tag} <> multi_pad(multi_atom_list(fields), width)
-    case _: multi_forward_other(binding, sub, id, layouts, params, width, bindings)
+    case Some{MultiParam{known, unboxed, tag, fields}}: multi_forward_flags(unboxed, tag, fields, binding, sub, id, layouts, params, width, bindings, known)
+    case None{}: multi_forward_other(binding, sub, id, layouts, params, width, bindings)
+def multi_forward_flags(unboxed: Bool, tag: U32, fields: List<&2, U32>, binding: Maybe<&2, MultiCtor>, sub: Maybe<&2, MultiSubst>, id: U32, layouts: Map<&2, MultiLayout>, params: Map<&2, MultiParam>, width: Nat, bindings: Map<&2, MultiCtor>, known: U32) -> List<&2, BIR.Atom>:
+  match unboxed:
+    case True{}: BIR.Local{tag} <> multi_pad(multi_atom_list(fields), width)
+    case False{}: multi_forward_other(binding, sub, id, layouts, params, width, bindings)
 def multi_forward_other(binding: Maybe<&2, MultiCtor>, sub: Maybe<&2, MultiSubst>, id: U32, layouts: Map<&2, MultiLayout>, params: Map<&2, MultiParam>, width: Nat, bindings: Map<&2, MultiCtor>) -> List<&2, BIR.Atom>:
   match binding:
     case Some{MultiCtor{_, tag, fields}}: BIR.TextValue{tag} <> multi_pad(multi_field_atoms(fields), width)
@@ -2310,8 +2307,12 @@ def multi_open_local(id: U32, ctx: MRewCtx) -> Bool:
       multi_open_kind(multi_param_get(params, id), multi_binding(bindings, id), sub, id, layouts, width, private, uses)
 def multi_open_kind(position: Maybe<&2, MultiParam>, binding: Maybe<&2, MultiCtor>, sub: Maybe<&2, MultiSubst>, id: U32, layouts: Map<&2, MultiLayout>, width: Nat, private: Bool, uses: Map<&2, Nat>) -> Bool:
   match position:
-    case Some{MultiParam{_, True{}, _, _}}: True{}
-    case _: multi_open_other(binding, sub, id, layouts, width, private, uses)
+    case Some{MultiParam{_, unboxed, _, _}}: multi_open_flags(unboxed, binding, sub, id, layouts, width, private, uses)
+    case None{}: multi_open_other(binding, sub, id, layouts, width, private, uses)
+def multi_open_flags(unboxed: Bool, binding: Maybe<&2, MultiCtor>, sub: Maybe<&2, MultiSubst>, id: U32, layouts: Map<&2, MultiLayout>, width: Nat, private: Bool, uses: Map<&2, Nat>) -> Bool:
+  match unboxed:
+    case True{}: True{}
+    case False{}: multi_open_other(binding, sub, id, layouts, width, private, uses)
 def multi_open_other(binding: Maybe<&2, MultiCtor>, sub: Maybe<&2, MultiSubst>, id: U32, layouts: Map<&2, MultiLayout>, width: Nat, private: Bool, uses: Map<&2, Nat>) -> Bool:
   match binding:
     case Some{MultiCtor{constructor, _, fields}}: multi_open_ctor(multi_ctor_openable(uses, layouts, id, constructor, fields), Nat.is_le(multi_field_width(fields), width))
@@ -2464,9 +2465,12 @@ def multi_project_local_rewrite(known: U32, constructor: U32, field: U32, key: S
       multi_project_choose(multi_param_get(params, known), sub, known, layouts, constructor, field, key)
 def multi_project_choose(position: Maybe<&2, MultiParam>, sub: Maybe<&2, MultiSubst>, known: U32, layouts: Map<&2, MultiLayout>, constructor: U32, field: U32, key: String) -> BIR.Op:
   match position:
-    case Some{MultiParam{_, True{}, _, fields}}:
-      BIR.Copy{multi_nth(multi_atom_list(fields), multi_slot_at(multi_layout_keys(layouts, constructor), key))}
-    case _: multi_project_sub(sub, known, layouts, constructor, field, key)
+    case Some{MultiParam{_, unboxed, _, fields}}: multi_project_flags(unboxed, fields, sub, known, layouts, constructor, field, key)
+    case None{}: multi_project_sub(sub, known, layouts, constructor, field, key)
+def multi_project_flags(unboxed: Bool, fields: List<&2, U32>, sub: Maybe<&2, MultiSubst>, known: U32, layouts: Map<&2, MultiLayout>, constructor: U32, field: U32, key: String) -> BIR.Op:
+  match unboxed:
+    case True{}: BIR.Copy{multi_nth(multi_atom_list(fields), multi_slot_at(multi_layout_keys(layouts, constructor), key))}
+    case False{}: multi_project_sub(sub, known, layouts, constructor, field, key)
 def multi_project_sub(sub: Maybe<&2, MultiSubst>, known: U32, layouts: Map<&2, MultiLayout>, constructor: U32, field: U32, key: String) -> BIR.Op:
   match sub:
     case Some{MultiSubst{id, _, fields, _}}:
@@ -2491,8 +2495,12 @@ def multi_has_tag_local(known: U32, constructor: U32, tag: String, ctx: MRewCtx)
       multi_has_tag_choose(multi_param_get(params, known), sub, known, constructor, tag)
 def multi_has_tag_choose(position: Maybe<&2, MultiParam>, sub: Maybe<&2, MultiSubst>, known: U32, constructor: U32, tag: String) -> BIR.Op:
   match position:
-    case Some{MultiParam{_, True{}, tagid, _}}: multi_tag_eq(BIR.Local{tagid}, tag, constructor)
-    case _: multi_has_tag_sub(sub, known, constructor, tag)
+    case Some{MultiParam{_, unboxed, tagid, _}}: multi_has_tag_flags(unboxed, tagid, sub, known, constructor, tag)
+    case None{}: multi_has_tag_sub(sub, known, constructor, tag)
+def multi_has_tag_flags(unboxed: Bool, tagid: U32, sub: Maybe<&2, MultiSubst>, known: U32, constructor: U32, tag: String) -> BIR.Op:
+  match unboxed:
+    case True{}: multi_tag_eq(BIR.Local{tagid}, tag, constructor)
+    case False{}: multi_has_tag_sub(sub, known, constructor, tag)
 def multi_has_tag_sub(sub: Maybe<&2, MultiSubst>, known: U32, constructor: U32, tag: String) -> BIR.Op:
   match sub:
     case Some{MultiSubst{id, _, _, _}}: multi_has_tag_window(U32.is_eq(id, known), known, constructor, tag)
@@ -2512,8 +2520,6 @@ def multi_ctx_multi(ctx: MRewCtx) -> Map<&2, Bool>:
 def multi_ctx_private(ctx: MRewCtx) -> Bool:
   match ctx:
     case MRewCtx{_, _, _, _, _, _, private, _, _, _, _}: private
-def multi_ctx_seed_free() -> Nat:
-  0n
 def multi_counter_id(seed: Nat) -> U32:
   U32.add(U32.from_nat(seed), U32.from_nat(2013265920n))
 def multi_return_param(value: BIR.Atom, ctx: MRewCtx) -> Bool:
@@ -2713,8 +2719,12 @@ def multi_param_forward(private: Bool, found: Maybe<&2, MultiParam>, width: Nat)
     case True{}: multi_param_forward_of(found, width)
 def multi_param_forward_of(found: Maybe<&2, MultiParam>, width: Nat) -> Maybe<&2, String>:
   match found:
-    case Some{MultiParam{_, True{}, tag, fields}}: Some{multi_window_write(local(tag), multi_atom_list(fields), width)}
-    case _: None{}
+    case Some{MultiParam{_, unboxed, tag, fields}}: multi_param_forward_flags(unboxed, tag, fields, width)
+    case None{}: None{}
+def multi_param_forward_flags(unboxed: Bool, tag: U32, fields: List<&2, U32>, width: Nat) -> Maybe<&2, String>:
+  match unboxed:
+    case True{}: Some{multi_window_write(local(tag), multi_atom_list(fields), width)}
+    case False{}: None{}
 def multi_window_write(tag: String, items: List<&2, BIR.Atom>, width: Nat) -> String:
   cat([multi_window_stores(items, width, 0n), "return ", tag, ";"])
 def multi_window_stores(items: List<&2, BIR.Atom>, width: Nat, index: Nat) -> String:
@@ -2750,10 +2760,10 @@ def split_direct_make(name: String, id: U32, args: List<&2, BIR.Arg>, caps: Caps
 def multi_split_fits(count: Nat, private: Bool, mr: Bool) -> Bool:
   Bool.and(Nat.is_gt(count, 0n), Nat.is_le(multi_split_count(count, private, mr), 32n))
 def multi_split_count(count: Nat, private: Bool, mr: Bool) -> Nat:
-  multi_split_count_private(private, Nat.add(count, multi_split_mr(mr)))
-def multi_split_count_private(private: Bool, count: Nat) -> Nat:
+  multi_split_added(private, Nat.add(count, multi_split_mr(mr)))
+def multi_split_added(private: Bool, count: Nat) -> Nat:
   match private:
-    case True{}: count
+    case True{}: Nat.add(count, 1n)
     case False{}: count
 def multi_split_mr(mr: Bool) -> Nat:
   match mr:
