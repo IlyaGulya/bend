@@ -38,7 +38,10 @@ latest one; the GitHub release carries the same notes.
   identity. The new accessor/exception regression fails before the repair and
   passes after it. Fifteen actual C/JS consumers and fourteen identical JS
   artifacts on JavaScriptCore pass, including shared F32 bit patterns.
-  Full R11 compiler/fixedpoint and performance qualification is still pending.
+  Full R11 qualification still failed: all 13,104 definitions / 13,729 events
+  and 95 seed fixtures passed; stage2 checking took 349.031 s and emission
+  began at 576.465 s, before the original 600-s guard stopped the run.
+  No R11 fixedpoint or performance acceptance is claimed.
   R6 passed the full
   native build and 95 seed fixtures, but its 57,228,966-byte stage1 did not
   finish stage2 checking before the original bootstrap deadline.

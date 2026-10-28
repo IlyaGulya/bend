@@ -72,8 +72,12 @@ C использует существующий owned cursor runtime и обыч
 старом portable emitter, воспроизвёл пропущенный getter на новом intrinsic
 и проходит после исправления eager-порядка полей. Проверены 15 C/JS consumers
 и те же 14 JS artifacts на JavaScriptCore, включая shared F32 `-0`/`3.25`.
-Полная R11 qualification ещё не завершена; это не принятие compiler root.
+Полная R11 qualification FAIL: native 13 104 definitions / 13 729 events,
+95 seed fixtures PASS, stage1 44 237 687 bytes. Stage2 check завершился за
+349 031 ms; emit начался на 576 465 ms. Исходный guard 600 055 ms остановил
+его до stage2 artifact. Fixedpoint/performance acceptance нет.
 Receipt: `evals/receipts/producer2039g24r11_map_find_smoke.json`.
+`evals/receipts/root2039g24r11_rejected.json`.
 Принятым остаётся G23 ниже.
 Точные команды и границы:
 `evals/receipts/root2039g24_failed_attempts.json`,
