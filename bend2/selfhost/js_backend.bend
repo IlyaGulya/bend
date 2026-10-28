@@ -691,28 +691,28 @@ def tag_unseen(value: Maybe<&2, Bool>) -> Bool:
   match value:
     case None{}: True{}
     case Some{_}: False{}
-def tag_group_selected(selected: Bool, subject: BIR.Atom, arm: TaggedRegion, input: BIR.Block, arms: List<&2, TagArm>, seen: Map<&2, Bool>, count: Nat) -> TagGroup:
+def tag_group_selected(selected: Bool, subject: BIR.Atom, arm: TaggedRegion, input: BIR.Block, ctx: JsCtx, arms: List<&2, TagArm>, seen: Map<&2, Bool>, count: Nat) -> TagGroup:
   match selected:
     case False{}: TagGroup{arms, input, count}
     case True{}:
       match arm:
         case TaggedRegion{label, condition, _, +tag, body, rest}:
-          tag_group_arm(region_needs_frame(body, label), subject, rest, TagArm{label, condition, tag, body} <> arms, Map.set(&2, Bool, seen, tag, True{}), count)
+          tag_group_arm(js_ctx_frame(ctx, label), subject, rest, ctx, TagArm{label, condition, tag, body} <> arms, Map.set(&2, Bool, seen, tag, True{}), count)
 # A frame-form region owns its leaves on the private stack, so it cannot join a
 # switch arm: the arm body is not the place its `next` block is reached from.
-def tag_group_arm(framed: Bool, subject: BIR.Atom, rest: BIR.Block, arms: List<&2, TagArm>, seen: Map<&2, Bool>, count: Nat) -> TagGroup:
+def tag_group_arm(framed: Bool, subject: BIR.Atom, rest: BIR.Block, ctx: JsCtx, arms: List<&2, TagArm>, seen: Map<&2, Bool>, count: Nat) -> TagGroup:
   match framed:
     case True{}: TagGroup{arms, rest, count}
-    case False{}: tag_group(subject, rest, arms, seen, Nat.add(count, 1n))
-def tag_group_view(view: Maybe<&2, TaggedRegion>, +subject: BIR.Atom, input: BIR.Block, arms: List<&2, TagArm>, +seen: Map<&2, Bool>, count: Nat) -> TagGroup:
+    case False{}: tag_group(subject, rest, ctx, arms, seen, Nat.add(count, 1n))
+def tag_group_view(view: Maybe<&2, TaggedRegion>, +subject: BIR.Atom, input: BIR.Block, ctx: JsCtx, arms: List<&2, TagArm>, +seen: Map<&2, Bool>, count: Nat) -> TagGroup:
   match view:
     case None{}: TagGroup{arms, input, count}
     case Some{+arm}:
       match arm:
         case TaggedRegion{_, _, candidate, +tag, _, _}:
-          tag_group_selected(Bool.and(tag_subject_same(subject, candidate), tag_unseen(IndexLookup.find(Bool, seen, tag))), subject, arm, input, arms, seen, count)
-def tag_group(subject: BIR.Atom, +input: BIR.Block, arms: List<&2, TagArm>, seen: Map<&2, Bool>, count: Nat) -> TagGroup:
-  tag_group_view(tagged_region(input), subject, input, arms, seen, count)
+          tag_group_selected(Bool.and(tag_subject_same(subject, candidate), tag_unseen(IndexLookup.find(Bool, seen, tag))), subject, arm, input, ctx, arms, seen, count)
+def tag_group(subject: BIR.Atom, +input: BIR.Block, ctx: JsCtx, arms: List<&2, TagArm>, seen: Map<&2, Bool>, count: Nat) -> TagGroup:
+  tag_group_view(tagged_region(input), subject, input, ctx, arms, seen, count)
 def tag_arms(arms: List<&2, TagArm>, ctx: JsCtx) -> String:
   match arms:
     case Nil{}: ""
@@ -733,9 +733,9 @@ def region_view(view: Maybe<&2, TaggedRegion>, label: U32, body: BIR.Block, next
     case Some{arm}:
       match arm:
         case TaggedRegion{case_label, condition, +subject, +tag, case_body, rest}:
-          tag_render_group(tag_group(subject, rest, [TagArm{case_label, condition, tag, case_body}], Map.set(&2, Bool, Map.new(&2, Bool), tag, True{}), 1n), subject, label, body, next, ctx)
+          tag_render_group(tag_group(subject, rest, ctx, [TagArm{case_label, condition, tag, case_body}], Map.set(&2, Bool, Map.new(&2, Bool), tag, True{}), 1n), subject, label, body, next, ctx)
 def region(+label: U32, +body: BIR.Block, +next: BIR.Block, ctx: JsCtx) -> String:
-  match region_needs_frame(body, label):
+  match js_ctx_frame(ctx, label):
     case True{}: region_frame(label, body, next, ctx)
     case False{}: region_view(tagged_region(BIR.Region{label, body, next}), label, body, next, ctx)
 def block(body: BIR.Block, ctx: JsCtx) -> String:
@@ -752,7 +752,7 @@ def code(item: BIR.Code) -> String:
   match item:
     case BIR.Code{id, captures, parameters, body}:
       names = List.append(&2, String, capture_names(captures, 0), parameter_names(parameters))
-      +ctx = js_ctx(U32.show(id))
+      +ctx = js_ctx(U32.show(id), plan_of(body))
       cat(["function ", code_name(id), "(", String.join(List.append(&2, String, names, ["$td=0"]), ","), "){", block(body, ctx), "}\n", String.join(conts(body, ctx), "")])
 def codes(items: List<&2, BIR.Code>) -> String:
   match items:
@@ -764,19 +764,31 @@ def codes(items: List<&2, BIR.Code>) -> String:
 # regions whose `next` block the private frame stack owns, so a leave there
 # renders as a frame unwind instead of a JavaScript break. A call continuation
 # is named after the call's own local id, which WF-2 makes program-unique.
+# `plan` is that one body's capture plan: the split emission and the hoisted
+# declaration of the same continuation read one entry, and the plan dies with
+# the body that built it.
 type JsCtx is Data:
-  JsCtx{owner: String, frames: List<&2, U32>}
-def js_ctx(owner: String) -> JsCtx:
-  JsCtx{owner, Nil{}}
+  JsCtx{owner: String, plan: Plan, frames: List<&2, U32>}
+def js_ctx(owner: String, plan: Plan) -> JsCtx:
+  JsCtx{owner, plan, Nil{}}
 def js_ctx_inside(ctx: JsCtx, label: U32) -> JsCtx:
   match ctx:
-    case JsCtx{owner, frames}: JsCtx{owner, label <> frames}
+    case JsCtx{owner, plan, frames}: JsCtx{owner, plan, label <> frames}
 def js_ctx_owner(ctx: JsCtx) -> String:
   match ctx:
-    case JsCtx{owner, _}: owner
+    case JsCtx{owner, _, _}: owner
 def js_ctx_has(ctx: JsCtx, label: U32) -> Bool:
   match ctx:
-    case JsCtx{_, frames}: frame_has(frames, label)
+    case JsCtx{_, _, frames}: frame_has(frames, label)
+def js_ctx_cont(ctx: JsCtx, id: U32) -> Caps:
+  match ctx:
+    case JsCtx{_, plan, _}: plan_cont(plan, id)
+def js_ctx_thunk(ctx: JsCtx, label: U32) -> Caps:
+  match ctx:
+    case JsCtx{_, plan, _}: plan_thunk(plan, label)
+def js_ctx_frame(ctx: JsCtx, label: U32) -> Bool:
+  match ctx:
+    case JsCtx{_, plan, _}: plan_frame(plan, label)
 def frame_has(frames: List<&2, U32>, label: U32) -> Bool:
   match frames:
     case Nil{}: False{}
@@ -790,36 +802,40 @@ def cont_name(id: U32) -> String:
 def thunk_name(owner: String, label: U32) -> String:
   cat(["$r", owner, "_", U32.show(label)])
 
-# A region's leaves stay inside one JavaScript function unless a non-tail call
-# splits the block: that call's continuation is a function of its own. The
-# region owns a private frame exactly then. The analysis only decides where a
-# frame is needed; every leave of a frame-form region unwinds the private
-# stack, so a region with a frame is always correct.
-def region_needs_frame(body: BIR.Block, label: U32) -> Bool:
-  leave_after_split(body, label, False{})
-def leave_after_split(body: BIR.Block, label: U32, split: Bool) -> Bool:
-  match body:
-    case BIR.LeaveRegion{known}: leave_here(U32.is_eq(known, label), split)
-    case BIR.Let{_, op, next}: leave_after_split(next, label, Bool.or(split, split_op(op)))
-    case BIR.Branch{_, yes, no}: Bool.or(leave_after_split(yes, label, split), leave_after_split(no, label, split))
-    case BIR.Region{known, body, next}: leave_after_region(leave_after_split(body, label, split), body, next, label, split, known)
-    case _: False{}
-def leave_here(same: Bool, split: Bool) -> Bool:
-  match same:
-    case True{}: split
-    case False{}: False{}
-def leave_after_region(inside: Bool, body: BIR.Block, next: BIR.Block, label: U32, split: Bool, known: U32) -> Bool:
-  match inside:
-    case True{}: True{}
-    case False{}: leave_after_split(next, label, Bool.or(split, region_needs_frame(body, known)))
+# One plan per immutable body, decided from the tail up. A suffix records the
+# values it reads at its last traversal position, the whole read set, and the
+# locals it binds, so a preceding op extends it without rescanning the block it
+# precedes. The split emission and the hoisted continuation/thunk declaration
+# therefore read one entry, and a long split chain is analyzed once instead of
+# once per referring site.
+#
+# Region frame facts are decided in the same pass. A region's leaves stay inside
+# one JavaScript function unless a non-tail call splits the block; the region
+# owns a private frame exactly then, and every leave of a frame-form region
+# unwinds the private stack, so a region with a frame is always correct. `after`
+# is a leave of that label a split already preceded, `reach` is any reachable
+# leave of it, and a subtree's answer for an incoming split flag is
+# Bool.or(after, Bool.and(split, reach)).
+type Caps is Data:
+  Caps{locals: List<&2, U32>, slots: List<&2, U32>}
+type Suffix is Data:
+  Suffix{locals: List<&2, U32>, slots: List<&2, U32>, read_local: Map<&2, Bool>, read_slot: Map<&2, Bool>, bound: Map<&2, Bool>}
+type Held is Data:
+  Held{items: List<&2, U32>, read: Map<&2, Bool>}
+type FrameBits is Data:
+  FrameBits{label: U32, after: Bool, reach: Bool}
+type Plan is Data:
+  Plan{conts: Map<&2, Caps>, thunks: Map<&2, Caps>, frames: Map<&2, Bool>}
+type Step is Data:
+  Step{state: Suffix, facts: List<&2, FrameBits>, plan: Plan}
 def split_op(op: BIR.Op) -> Bool:
   match op:
     case BIR.Direct{_, _}: True{}
     case BIR.Apply{_, _}: True{}
     case _: False{}
 
-# Every value a block reads, in traversal order with duplicates kept. A
-# continuation body is a function of its own, so a read outside it is a value
+# Every value a block reads, in reverse traversal order with duplicates kept.
+# A continuation body is a function of its own, so a read outside it is a value
 # the creating frame owns: WF-2 makes that a local bound before the split or a
 # capture slot of the code, and nothing else.
 type Reads is Data:
@@ -864,29 +880,87 @@ def op_reads(op: BIR.Op, reads: Reads) -> Reads:
     case BIR.Project{value, _, _, _}: atom_reads(value, reads)
     case BIR.HasTag{value, _, _}: atom_reads(value, reads)
     case _: reads
-def block_reads(body: BIR.Block, reads: Reads) -> Reads:
-  match body:
-    case BIR.Return{value}: atom_reads(value, reads)
-    case BIR.Let{_, op, next}: block_reads(next, op_reads(op, reads))
-    case BIR.Branch{condition, yes, no}: block_reads(no, block_reads(yes, atom_reads(condition, reads)))
-    case BIR.Region{_, body, next}: block_reads(next, block_reads(body, reads))
-    case BIR.TailDirect{_, args}: args_reads(args, reads)
-    case BIR.TailApply{fn, arg}: apply_reads(fn, arg, reads)
-    case _: reads
-def block_binds(body: BIR.Block, bound: Map<&2, Bool>) -> Map<&2, Bool>:
-  match body:
-    case BIR.Let{id, _, next}: block_binds(next, Map.set(&2, Bool, bound, U32.show(id), True{}))
-    case BIR.Branch{_, yes, no}: block_binds(no, block_binds(yes, bound))
-    case BIR.Region{_, body, next}: block_binds(next, block_binds(body, bound))
-    case _: bound
+
+# A suffix is the state of the block that follows a site: each value once, at
+# its last traversal position, the whole read set, and the locals it binds.
+# Reads arrive in reverse traversal order, so the first appearance there is that
+# last position: folding a site's own reads onto the suffix of the block after
+# it costs one step per read and never rescans that block.
+def suffix_empty() -> Suffix:
+  Suffix{Nil{}, Nil{}, Map.new(&2, Bool), Map.new(&2, Bool), Map.new(&2, Bool)}
+def suffix_fold(items: List<&2, U32>, held: Held) -> Held:
+  match items:
+    case Nil{}: held
+    case +item <> rest:
+      match held:
+        case Held{acc, read}: suffix_fold_one(item, rest, acc, read)
+def suffix_fold_one(item: U32, rest: List<&2, U32>, +acc: List<&2, U32>, read: Map<&2, Bool>) -> Held:
+  +key = U32.show(item)
+  match IndexLookup.find(Bool, read, key):
+    case Some{_}: suffix_fold(rest, Held{acc, read})
+    case None{}: suffix_fold(rest, Held{item <> acc, Map.set(&2, Bool, read, key, True{})})
+def suffix_reads(locals: List<&2, U32>, slots: List<&2, U32>, rest: Suffix) -> Suffix:
+  match rest:
+    case Suffix{known, known_slots, read_local, read_slot, bound}:
+      suffix_folded(suffix_fold(locals, Held{known, read_local}), suffix_fold(slots, Held{known_slots, read_slot}), bound)
+def suffix_folded(locals: Held, slots: Held, bound: Map<&2, Bool>) -> Suffix:
+  match locals slots:
+    case Held{known, read_local} Held{known_slots, read_slot}:
+      Suffix{known, known_slots, read_local, read_slot, bound}
+def suffix_atom(value: BIR.Atom, rest: Suffix) -> Suffix:
+  match atom_reads(value, reads_new()):
+    case Reads{locals, slots}: suffix_reads(locals, slots, rest)
+def suffix_args(args: List<&2, BIR.Arg>, rest: Suffix) -> Suffix:
+  match args_reads(args, reads_new()):
+    case Reads{locals, slots}: suffix_reads(locals, slots, rest)
+def suffix_apply(fn: BIR.Atom, arg: BIR.Arg, rest: Suffix) -> Suffix:
+  match apply_reads(fn, arg, reads_new()):
+    case Reads{locals, slots}: suffix_reads(locals, slots, rest)
+def suffix_op(op: BIR.Op, rest: Suffix) -> Suffix:
+  match op_reads(op, reads_new()):
+    case Reads{locals, slots}: suffix_reads(locals, slots, rest)
+def suffix_prefix(items: List<&2, U32>, held: Map<&2, Bool>, acc: List<&2, U32>) -> List<&2, U32>:
+  match items:
+    case Nil{}: acc
+    case +item <> rest: suffix_prefix(rest, held, suffix_prefix_one(item, held, acc))
+def suffix_prefix_one(item: U32, held: Map<&2, Bool>, acc: List<&2, U32>) -> List<&2, U32>:
+  match IndexLookup.find(Bool, held, U32.show(item)):
+    case Some{_}: acc
+    case None{}: item <> acc
+# Two suffixes in traversal order: a value the right side also reads lands at
+# its right-hand position, so the left keeps only what the right does not read.
+def suffix_join(left: Suffix, right: Suffix) -> Suffix:
+  match left right:
+    case Suffix{locals, slots, read_local, read_slot, bound} Suffix{later, later_slots, later_local, later_slot, later_bound}:
+      Suffix{suffix_joined(locals, later_local, later), suffix_joined(slots, later_slot, later_slots), Map.union(&2, Bool, read_local, later_local), Map.union(&2, Bool, read_slot, later_slot), Map.union(&2, Bool, bound, later_bound)}
+def suffix_joined(items: List<&2, U32>, held: Map<&2, Bool>, later: List<&2, U32>) -> List<&2, U32>:
+  List.append(&2, U32, List.reverse(&2, U32, suffix_prefix(items, held, Nil{})), later)
+def suffix_bind(id: U32, state: Suffix) -> Suffix:
+  match state:
+    case Suffix{locals, slots, read_local, read_slot, bound}:
+      Suffix{locals, slots, read_local, read_slot, Map.set(&2, Bool, bound, U32.show(id), True{})}
 # `result` is the split's own local: it arrives as the continuation's argument,
 # never as a capture. A region thunk has no such local.
-type Caps is Data:
-  Caps{locals: List<&2, U32>, slots: List<&2, U32>}
-def caps_of(next: BIR.Block, result: Maybe<&2, U32>) -> Caps:
-  match block_reads(next, reads_new()):
-    case Reads{locals, slots}:
-      Caps{caps_local_filter(locals, block_binds(next, Map.new(&2, Bool)), result, Nil{}), caps_slot_filter(slots, Nil{})}
+def suffix_caps(state: Suffix, result: Maybe<&2, U32>) -> Caps:
+  match state:
+    case Suffix{locals, slots, _, _, bound}:
+      Caps{caps_bound(locals, bound, result, Nil{}), slots}
+def caps_bound(items: List<&2, U32>, bound: Map<&2, Bool>, result: Maybe<&2, U32>, acc: List<&2, U32>) -> List<&2, U32>:
+  match items:
+    case Nil{}: List.reverse(&2, U32, acc)
+    case +item <> rest: caps_bound(rest, bound, result, caps_bound_one(item, bound, result, acc))
+def caps_bound_one(item: U32, bound: Map<&2, Bool>, result: Maybe<&2, U32>, acc: List<&2, U32>) -> List<&2, U32>:
+  match IndexLookup.find(Bool, bound, U32.show(item)):
+    case Some{_}: acc
+    case None{}: caps_result(item, result, acc)
+def caps_result(item: U32, result: Maybe<&2, U32>, acc: List<&2, U32>) -> List<&2, U32>:
+  match result:
+    case None{}: item <> acc
+    case Some{id}: caps_result_id(U32.is_eq(item, id), item, acc)
+def caps_result_id(same: Bool, item: U32, acc: List<&2, U32>) -> List<&2, U32>:
+  match same:
+    case True{}: acc
+    case False{}: item <> acc
 def caps_locals(caps: Caps) -> List<&2, U32>:
   match caps:
     case Caps{locals, _}: locals
@@ -895,38 +969,108 @@ def caps_slots(caps: Caps) -> List<&2, U32>:
     case Caps{_, slots}: slots
 def cap_total(caps: Caps) -> Nat:
   Nat.add(List.length(&2, U32, caps_locals(caps)), List.length(&2, U32, caps_slots(caps)))
-def caps_local_filter(items: List<&2, U32>, bound: Map<&2, Bool>, result: Maybe<&2, U32>, acc: List<&2, U32>) -> List<&2, U32>:
-  match items:
-    case Nil{}: acc
-    case +item <> rest: caps_local_filter(rest, bound, result, caps_local_one(item, bound, result, acc))
-def caps_local_one(item: U32, bound: Map<&2, Bool>, result: Maybe<&2, U32>, acc: List<&2, U32>) -> List<&2, U32>:
-  match IndexLookup.find(Bool, bound, U32.show(item)):
-    case Some{_}: acc
-    case None{}: caps_local_keep(item, result, acc)
-def caps_local_keep(item: U32, result: Maybe<&2, U32>, acc: List<&2, U32>) -> List<&2, U32>:
-  match result:
-    case None{}: caps_add(item, acc)
-    case Some{id}: caps_local_same(U32.is_eq(item, id), item, acc)
-def caps_local_same(same: Bool, item: U32, acc: List<&2, U32>) -> List<&2, U32>:
-  match same:
-    case True{}: acc
-    case False{}: caps_add(item, acc)
-def caps_slot_filter(items: List<&2, U32>, acc: List<&2, U32>) -> List<&2, U32>:
-  match items:
-    case Nil{}: acc
-    case +item <> rest: caps_slot_filter(rest, caps_add(item, acc))
-def caps_add(item: U32, acc: List<&2, U32>) -> List<&2, U32>:
-  match caps_in(acc, item):
-    case True{}: acc
-    case False{}: item <> acc
-def caps_in(items: List<&2, U32>, item: U32) -> Bool:
-  match items:
+
+# Region frame facts. A fact is one claim about one label, decided from the
+# bottom up: `after` is a leave of that label a split already preceded, `reach`
+# is any reachable leave of it, and a subtree's answer for an incoming split
+# flag is Bool.or(after, Bool.and(split, reach)). Claims are never merged away:
+# a lookup ORs every claim it sees, so a branch or a region only concatenates
+# its children's claims, and a nested frame-form region lifts them all.
+def fact_after(facts: List<&2, FrameBits>, label: U32) -> Bool:
+  match facts:
     case Nil{}: False{}
-    case +head <> rest: caps_in_one(U32.is_eq(head, item), rest, item)
-def caps_in_one(same: Bool, rest: List<&2, U32>, item: U32) -> Bool:
+    case FrameBits{known, after, _} <> rest: fact_after_here(U32.is_eq(known, label), after, rest, label)
+def fact_after_here(same: Bool, after: Bool, rest: List<&2, FrameBits>, label: U32) -> Bool:
   match same:
-    case True{}: True{}
-    case False{}: caps_in(rest, item)
+    case True{}: Bool.or(after, fact_after(rest, label))
+    case False{}: fact_after(rest, label)
+def facts_merge(left: List<&2, FrameBits>, right: List<&2, FrameBits>) -> List<&2, FrameBits>:
+  List.append(&2, FrameBits, left, right)
+# A split before this subtree makes every leave in it reachable after a split.
+def facts_elevate(facts: List<&2, FrameBits>) -> List<&2, FrameBits>:
+  match facts:
+    case Nil{}: Nil{}
+    case FrameBits{label, after, reach} <> rest: FrameBits{label, Bool.or(after, reach), reach} <> facts_elevate(rest)
+def facts_inject(facts: List<&2, FrameBits>, split: Bool) -> List<&2, FrameBits>:
+  match split:
+    case False{}: facts
+    case True{}: facts_elevate(facts)
+
+def plan_empty() -> Plan:
+  Plan{Map.new(&2, Caps), Map.new(&2, Caps), Map.new(&2, Bool)}
+def plan_cont_add(plan: Plan, id: U32, caps: Caps) -> Plan:
+  match plan:
+    case Plan{conts, thunks, frames}: Plan{Map.set(&2, Caps, conts, U32.show(id), caps), thunks, frames}
+def plan_thunk_add(plan: Plan, label: U32, caps: Caps) -> Plan:
+  match plan:
+    case Plan{conts, thunks, frames}: Plan{conts, Map.set(&2, Caps, thunks, U32.show(label), caps), frames}
+def plan_frame_add(plan: Plan, label: U32, need: Bool) -> Plan:
+  match plan:
+    case Plan{conts, thunks, frames}: Plan{conts, thunks, Map.set(&2, Bool, frames, U32.show(label), need)}
+def plan_cont(plan: Plan, id: U32) -> Caps:
+  match plan:
+    case Plan{conts, _, _}: plan_caps(conts, U32.show(id))
+def plan_thunk(plan: Plan, label: U32) -> Caps:
+  match plan:
+    case Plan{_, thunks, _}: plan_caps(thunks, U32.show(label))
+def plan_frame(plan: Plan, label: U32) -> Bool:
+  match plan:
+    case Plan{_, _, frames}: plan_flag(frames, U32.show(label))
+# The pass below registers exactly the sites the renderer visits, so a missing
+# entry is unreachable; the empty answer keeps both readers total.
+def plan_caps(map: Map<&2, Caps>, key: String) -> Caps:
+  match IndexLookup.find(Caps, map, key):
+    case Some{+caps}: caps
+    case None{}: Caps{Nil{}, Nil{}}
+def plan_flag(map: Map<&2, Bool>, key: String) -> Bool:
+  match IndexLookup.find(Bool, map, key):
+    case Some{+flag}: flag
+    case None{}: False{}
+
+# One bottom-up pass decides every suffix, every frame fact and both lookup
+# tables at once. A node returns the state of the block it covers, so its
+# parent extends that state instead of rescanning it, and the plan itself is
+# threaded through the walk, so a body pays one insertion per site it has, not
+# one merge per node.
+def plan_of(body: BIR.Block) -> Plan:
+  match plan_block(body, plan_empty()):
+    case Step{_, _, plan}: plan
+def plan_block(body: BIR.Block, plan: Plan) -> Step:
+  match body:
+    case BIR.Return{value}: plan_leaf(suffix_atom(value, suffix_empty()), plan)
+    case BIR.TailDirect{_, args}: plan_leaf(suffix_args(args, suffix_empty()), plan)
+    case BIR.TailApply{fn, arg}: plan_leaf(suffix_apply(fn, arg, suffix_empty()), plan)
+    case BIR.Failure{_}: plan_leaf(suffix_empty(), plan)
+    case BIR.LeaveRegion{label}: Step{suffix_empty(), [FrameBits{label, False{}, True{}}], plan}
+    case BIR.Let{id, op, next}: plan_let(id, op, plan_block(next, plan))
+    case BIR.Branch{condition, yes, no}: plan_branch(condition, plan_block(yes, plan), no)
+    case BIR.Region{label, body, next}: plan_region(label, plan_block(body, plan), next)
+def plan_leaf(state: Suffix, plan: Plan) -> Step:
+  Step{state, Nil{}, plan}
+def plan_let(id: U32, op: BIR.Op, step: Step) -> Step:
+  match step:
+    case Step{state, facts, plan}:
+      match split_op(op):
+        case True{}: Step{suffix_bind(id, suffix_op(op, state)), facts_inject(facts, True{}), plan_cont_add(plan, id, suffix_caps(state, Some{id}))}
+        case False{}: Step{suffix_bind(id, suffix_op(op, state)), facts, plan}
+def plan_branch(condition: BIR.Atom, yes: Step, no: BIR.Block) -> Step:
+  match yes:
+    case Step{yes_state, yes_facts, plan}:
+      match plan_block(no, plan):
+        case Step{no_state, no_facts, plan2}:
+          Step{suffix_atom(condition, suffix_join(yes_state, no_state)), facts_merge(yes_facts, no_facts), plan2}
+def plan_region(label: U32, body: Step, next: BIR.Block) -> Step:
+  match body:
+    case Step{body_state, body_facts, plan}:
+      need = fact_after(body_facts, label)
+      match plan_block(next, plan):
+        case Step{next_state, next_facts, plan2}:
+          facts = facts_merge(body_facts, facts_inject(next_facts, need))
+          Step{suffix_join(body_state, next_state), facts, plan_region_sites(plan2, label, need, next_state)}
+def plan_region_sites(plan: Plan, label: U32, need: Bool, next_state: Suffix) -> Plan:
+  match need:
+    case False{}: plan_frame_add(plan, label, False{})
+    case True{}: plan_thunk_add(plan_frame_add(plan, label, True{}), label, suffix_caps(next_state, None{}))
 
 # A split writes the continuation's captures above the private stack pointer
 # and hands the callee and its continuation to the machine: it stores the frame
@@ -937,24 +1081,21 @@ def caps_in_one(same: Bool, rest: List<&2, U32>, item: U32) -> Bool:
 # filled.
 def let_step(id: U32, op: BIR.Op, next: BIR.Block, ctx: JsCtx) -> String:
   match op:
-    case BIR.Direct{code, args}: split_direct(id, code, args, next)
-    case BIR.Apply{fn, arg}: split_apply(id, fn, arg, next)
+    case BIR.Direct{code, args}: split_direct(id, code, args, js_ctx_cont(ctx, id))
+    case BIR.Apply{fn, arg}: split_apply(id, fn, arg, js_ctx_cont(ctx, id))
     case _: cat(["const ", local(id), "=", operation(op), ";", block(next, ctx)])
-def split_direct(id: U32, code: U32, args: List<&2, BIR.Arg>, next: BIR.Block) -> String:
+def split_direct(id: U32, code: U32, args: List<&2, BIR.Arg>, caps: Caps) -> String:
   +count = List.length(&2, BIR.Arg, args)
-  split_direct_selected(Bool.and(Nat.is_gt(count, 0n), Nat.is_le(count, 32n)), id, code, args, next, count)
-def split_direct_selected(selected: Bool, id: U32, code: U32, args: List<&2, BIR.Arg>, next: BIR.Block, count: Nat) -> String:
+  split_direct_selected(Bool.and(Nat.is_gt(count, 0n), Nat.is_le(count, 32n)), id, code, args, caps, count)
+def split_direct_selected(selected: Bool, id: U32, code: U32, args: List<&2, BIR.Arg>, caps: Caps, count: Nat) -> String:
   match selected:
-    case True{}: split_direct_args(id, code, args, next, count)
-    case False{}: split_direct_many(id, code, args, next)
-def split_direct_args(id: U32, code: U32, args: List<&2, BIR.Arg>, next: BIR.Block, count: Nat) -> String:
-  +caps = caps_of(next, Some{id})
+    case True{}: split_direct_args(id, code, args, caps, count)
+    case False{}: split_direct_many(id, code, args, caps)
+def split_direct_args(id: U32, code: U32, args: List<&2, BIR.Arg>, caps: Caps, count: Nat) -> String:
   cat(["{const ", arg_temps(args, 0n), ";", cap_stores(caps_locals(caps)), slot_stores(caps_slots(caps)), "if($td<64){const $kb=$sp-", Nat.show(cap_total(caps)), ",$ki=$split_enter(", cont_name(id), ",$kb);try{return $split_done(", code_name(code), "(", String.join(arg_temp_names(args, 0n), ","), "),$ki,$td+1);}catch($e){$split_abort($ki,$kb);throw $e;}}", arg_moves(count, 0n), "return $split(", code_name(code), ",", Nat.show(count), ",", cont_name(id), ",$sp-", Nat.show(cap_total(caps)), ");}"])
-def split_direct_many(id: U32, code: U32, args: List<&2, BIR.Arg>, next: BIR.Block) -> String:
-  +caps = caps_of(next, Some{id})
+def split_direct_many(id: U32, code: U32, args: List<&2, BIR.Arg>, caps: Caps) -> String:
   cat([cap_stores(caps_locals(caps)), slot_stores(caps_slots(caps)), "return $splitm(", code_name(code), ",[", String.join(arguments(args), ","), "],", cont_name(id), ",$sp-", Nat.show(cap_total(caps)), ");"])
-def split_apply(id: U32, fn: BIR.Atom, arg: BIR.Arg, next: BIR.Block) -> String:
-  +caps = caps_of(next, Some{id})
+def split_apply(id: U32, fn: BIR.Atom, arg: BIR.Arg, caps: Caps) -> String:
   cat([cap_stores(caps_locals(caps)), slot_stores(caps_slots(caps)), "return $split1(", atom(fn), ",", arg_atom(arg), ",", cont_name(id), ",$sp-", Nat.show(cap_total(caps)), ");"])
 def arg_atom(arg: BIR.Arg) -> String:
   match arg:
@@ -994,13 +1135,13 @@ def slot_binds(items: List<&2, U32>, index: Nat) -> String:
     case Nil{}: ""
     case +item <> rest: cat(["const ", capture(item), "=$stArgs[$base+", Nat.show(index), "];", slot_binds(rest, (index + 1n : Nat))])
 def cont_of(id: U32, next: BIR.Block, ctx: JsCtx) -> String:
-  +caps = caps_of(next, Some{id})
+  +caps = js_ctx_cont(ctx, id)
   cat(["function ", cont_name(id), "(", local(id), ",$base,$td=0){", cap_binds(caps_locals(caps), 0n), slot_binds(caps_slots(caps), List.length(&2, U32, caps_locals(caps))), block(next, ctx), "}\n"])
 def thunk_of(owner: String, label: U32, next: BIR.Block, ctx: JsCtx) -> String:
-  +caps = caps_of(next, None{})
+  +caps = js_ctx_thunk(ctx, label)
   cat(["function ", thunk_name(owner, label), "($x,$base,$td=0){", cap_binds(caps_locals(caps), 0n), slot_binds(caps_slots(caps), List.length(&2, U32, caps_locals(caps))), block(next, ctx), "}\n"])
 def region_frame(label: U32, body: BIR.Block, next: BIR.Block, ctx: JsCtx) -> String:
-  +caps = caps_of(next, None{})
+  +caps = js_ctx_thunk(ctx, label)
   cat([cap_stores(caps_locals(caps)), slot_stores(caps_slots(caps)), "$frame(", thunk_name(js_ctx_owner(ctx), label), ",$sp-", Nat.show(cap_total(caps)), ");", block(body, js_ctx_inside(ctx, label))])
 def leave_step(label: U32, ctx: JsCtx) -> String:
   match js_ctx_has(ctx, label):
@@ -1020,7 +1161,7 @@ def conts_let(id: U32, op: BIR.Op, next: BIR.Block, ctx: JsCtx) -> List<&2, Stri
     case True{}: cont_of(id, next, ctx) <> conts(next, ctx)
     case False{}: conts(next, ctx)
 def conts_region(label: U32, body: BIR.Block, next: BIR.Block, ctx: JsCtx) -> List<&2, String>:
-  match region_needs_frame(body, label):
+  match js_ctx_frame(ctx, label):
     case True{}: thunk_of(js_ctx_owner(ctx), label, next, ctx) <> List.append(&2, String, conts(body, js_ctx_inside(ctx, label)), conts(next, ctx))
     case False{}: List.append(&2, String, conts(body, ctx), conts(next, ctx))
 
@@ -1334,7 +1475,7 @@ def declaration(item: BIR.Declaration, +natives: Map<&2, String>, index: Nat) ->
     case BIR.FunctionDeclaration{key, code, parameters}:
       cat(["$D[", js_quote(key), "]=", closure(code, Nil{}, parameters), ";\n"])
     case BIR.LazyDeclaration{key, body}:
-      +ctx = js_ctx(cat(["L", Nat.show(index)]))
+      +ctx = js_ctx(cat(["L", Nat.show(index)]), plan_of(body))
       cat([deferred(key, cat(["(()=>{", block(body, ctx), "})()"])), String.join(conts(body, ctx), "")])
     case BIR.NativeDeclaration{key, primitive, uses}:
       native_declaration(key, primitive, uses)
