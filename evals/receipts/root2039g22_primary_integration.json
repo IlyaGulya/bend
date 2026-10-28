@@ -1,0 +1,279 @@
+{
+  "schemaVersion": 1,
+  "status": "PRIMARY_G22_INTEGRATION_PASS",
+  "branch": "selfhost/integration",
+  "sourceCheckpoint": "6e854821",
+  "acceptedCheckpoint": "67e6ae03",
+  "previousPrimaryCheckpoint": "bbf74ef8",
+  "merge": "fast-forward",
+  "sourceBinding": {
+    "acceptedReceipt": "evals/receipts/root2039g22_native_fixedpoint.json",
+    "acceptedReceiptSha256": "a658df05049a2684afd1f62a6fbb13a483e485640ff517f915cddb06b89c82e7",
+    "verifiedFiles": 91,
+    "mismatches": [],
+    "compilerSha256": "030492cf37c416f769440b0ae35ed95e672bb4d33966178623bf47643d426da7"
+  },
+  "images": [
+    {
+      "stage": "stageOne",
+      "sha256": "6f3dff55cee825d064b1d2f9d0c3268fd0d629dd93043d90d6fc00f43eba5978",
+      "bytes": 30222543
+    },
+    {
+      "stage": "stageTwo",
+      "sha256": "6f3dff55cee825d064b1d2f9d0c3268fd0d629dd93043d90d6fc00f43eba5978",
+      "bytes": 30222543
+    }
+  ],
+  "actualByteCompareEqual": true,
+  "postMergeSmoke": {
+    "status": "PASS",
+    "root": "/Users/ilyagulya/Projects/My/bend",
+    "compilerSha256": "030492cf37c416f769440b0ae35ed95e672bb4d33966178623bf47643d426da7",
+    "rows": [
+      {
+        "source": "tests/run/native_numeric_boundaries.bend",
+        "sourceSha256": "cc0d73e8727f3980541b2269b8082a3a454e76f4f0bea3bf0d69372c2773a93b",
+        "cSha256": "d957a23db4b2edec43432854d6e34cba2c57f740027c130fc39adedee3a7f7e9",
+        "artifactSha256": "77e8e0054f5f5f17c1829f696700b22cd55ebe580e6dbfd01fe2d6cc375e6558",
+        "emit": {
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--experimental-strip-types",
+            "/tmp/bend-g14-canonical-worker.mjs",
+            "tests/run/native_numeric_boundaries.bend",
+            "/private/tmp/bend-g22-primary-smoke-F3otIR/native_numeric_boundaries.c"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 585.7196250000001,
+          "stdoutBytes": 235,
+          "stdoutSha256": "2a42cf70f680bc0a9da850f4a170ffe674c000de1d58999e5acf5f2508d6554a",
+          "stderrBytes": 177,
+          "stderrSha256": "2bead3fe9cf1a22a3bae8c6282d92c12271032aada895833b1ea0a52298dbb83"
+        },
+        "cc": {
+          "command": [
+            "/usr/bin/clang",
+            "-std=c11",
+            "-O1",
+            "-pthread",
+            "/private/tmp/bend-g22-primary-smoke-F3otIR/native_numeric_boundaries.c",
+            "-lm",
+            "-o",
+            "/private/tmp/bend-g22-primary-smoke-F3otIR/native_numeric_boundaries"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 517.9937920000001,
+          "stdoutBytes": 0,
+          "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderrBytes": 0,
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "execute": {
+          "command": [
+            "/private/tmp/bend-g22-primary-smoke-F3otIR/native_numeric_boundaries"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 3.8147500000000036,
+          "stdoutBytes": 39,
+          "stdoutSha256": "b75af3eeada3d7b78b43a374e976eb0deb20a2b3e2d0c8902551780f58200e1d",
+          "stderrBytes": 0,
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "expected": "0\n0\n1\n1\n2\n30\n31\n31\n0\n0\n1\n31\n32\n32\n1\n32",
+        "passed": true
+      },
+      {
+        "source": "tests/reg/phys_storage_paths.bend",
+        "sourceSha256": "6c0d3c08a4fe6dfc0f793ec02225a6e92c1a5e7a32508d091a8b12346c297c17",
+        "cSha256": "75bc19f6086a59bcb58bc8671a10dcfa553982ce297ab28df0e71cc5b7ebec18",
+        "artifactSha256": "bc5e3d6dab533b4be5a5df4eb1420684e5af503e0815850f5eaed505ff4edc44",
+        "emit": {
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--experimental-strip-types",
+            "/tmp/bend-g14-canonical-worker.mjs",
+            "tests/reg/phys_storage_paths.bend",
+            "/private/tmp/bend-g22-primary-smoke-F3otIR/phys_storage_paths.c"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 280.72900000000004,
+          "stdoutBytes": 221,
+          "stdoutSha256": "b3b6033f08b378ec749b5edf0ea8e5c044c02c01e87d84756bec138059148855",
+          "stderrBytes": 177,
+          "stderrSha256": "a725b24f72f489c4f410ede1552b4333e6837a4ac232360df5b2a4d1e3b0bcd5"
+        },
+        "cc": {
+          "command": [
+            "/usr/bin/clang",
+            "-std=c11",
+            "-O1",
+            "-pthread",
+            "/private/tmp/bend-g22-primary-smoke-F3otIR/phys_storage_paths.c",
+            "-lm",
+            "-o",
+            "/private/tmp/bend-g22-primary-smoke-F3otIR/phys_storage_paths"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 278.066458,
+          "stdoutBytes": 0,
+          "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderrBytes": 0,
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "execute": {
+          "command": [
+            "/private/tmp/bend-g22-primary-smoke-F3otIR/phys_storage_paths"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 3.204875000000129,
+          "stdoutBytes": 29,
+          "stdoutSha256": "eda1c1a09f514d807c2e219e1acdffc2356d9ea24830a013484f9294e6860ee4",
+          "stderrBytes": 0,
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "expected": "2655042671\n3,9\n56,15,9;1,5,4",
+        "passed": true
+      },
+      {
+        "source": "tests/reg/checker_arena_names.bend",
+        "sourceSha256": "63fc170fe9ba8f6c5ebd53b516e2ea74b84802d0c1f1bc899d250f90be99873d",
+        "cSha256": "2031ee50fe24d0100400919388f3d61f5fd49d914e2b1772f46ed369169161be",
+        "artifactSha256": "b81a9732caa0878e5275d789a933052ed4a7c2440b346c74019093695615bfbc",
+        "emit": {
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--experimental-strip-types",
+            "/tmp/bend-g14-canonical-worker.mjs",
+            "tests/reg/checker_arena_names.bend",
+            "/private/tmp/bend-g22-primary-smoke-F3otIR/checker_arena_names.c"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 563.6805000000002,
+          "stdoutBytes": 223,
+          "stdoutSha256": "a993128aeaec999186810681ebb7a7236c1c0fd29b4699a929c7f22ca07e5d56",
+          "stderrBytes": 177,
+          "stderrSha256": "aae16ec8a689ca5f90aca9ed127c6c53bf848d58ee88edf318ec816c1417d2a5"
+        },
+        "cc": {
+          "command": [
+            "/usr/bin/clang",
+            "-std=c11",
+            "-O1",
+            "-pthread",
+            "/private/tmp/bend-g22-primary-smoke-F3otIR/checker_arena_names.c",
+            "-lm",
+            "-o",
+            "/private/tmp/bend-g22-primary-smoke-F3otIR/checker_arena_names"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 867.9520000000002,
+          "stdoutBytes": 0,
+          "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderrBytes": 0,
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "execute": {
+          "command": [
+            "/private/tmp/bend-g22-primary-smoke-F3otIR/checker_arena_names"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 3.6426660000001903,
+          "stdoutBytes": 2,
+          "stdoutSha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+          "stderrBytes": 0,
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "expected": "0",
+        "passed": true
+      },
+      {
+        "source": "tests/run/array_fork.bend",
+        "sourceSha256": "8bed7ef93fcd6eeb964ca7ee3c87b9fbe3e2e576716ad647e4e6de265962352f",
+        "cSha256": "56a4676e5583b3a9c3a7a099194dfe9f8f721f6210453eff75bb342d2ad366cf",
+        "artifactSha256": "763c8157683f159eaa5843d352d01b8feff5b5fbe865b47d6b7bc39e6d66e7c3",
+        "emit": {
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--experimental-strip-types",
+            "/tmp/bend-g14-canonical-worker.mjs",
+            "tests/run/array_fork.bend",
+            "/private/tmp/bend-g22-primary-smoke-F3otIR/array_fork.c"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 324.8763329999997,
+          "stdoutBytes": 205,
+          "stdoutSha256": "a709bb4de843a9af4d79b00f721f7f1a2d2e3b881f58bd712a6a39e5923fc789",
+          "stderrBytes": 177,
+          "stderrSha256": "b3dc6e435a292c498db4684f03b34d9c81612b64ca5d949508cf50ccc53d2672"
+        },
+        "cc": {
+          "command": [
+            "/usr/bin/clang",
+            "-std=c11",
+            "-O1",
+            "-pthread",
+            "/private/tmp/bend-g22-primary-smoke-F3otIR/array_fork.c",
+            "-lm",
+            "-o",
+            "/private/tmp/bend-g22-primary-smoke-F3otIR/array_fork"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 274.52320800000007,
+          "stdoutBytes": 0,
+          "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderrBytes": 0,
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "execute": {
+          "command": [
+            "/private/tmp/bend-g22-primary-smoke-F3otIR/array_fork"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 3.636167000000114,
+          "stdoutBytes": 45,
+          "stdoutSha256": "2f0688b36aed0c66198b9ef2ea7ffcfafabde87631e6e3c72561c25a728ad58b",
+          "stderrBytes": 0,
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "expected": "136\n100\n100\n96\n99\n156\n42\n42\n7\n8\n12\n845495236",
+        "passed": true
+      }
+    ]
+  },
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 294322176,
+    "peakFootprintBytes": 226071072,
+    "elapsedMs": 3902,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "/tmp/bend-g22-primary-smoke.mjs"
+    ],
+    "label": "heavy command",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793173295247-07edc6d9d5ab9467.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "scope": "Accepted G22 source integrated into primary checkout; actual newly emitted C consumers rebuilt and executed after integration. No compiler images, profiles, AST transports, raw logs or temporary acceptance scripts are committed."
+}
