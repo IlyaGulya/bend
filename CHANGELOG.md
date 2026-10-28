@@ -14,9 +14,12 @@ latest one; the GitHub release carries the same notes.
   as g18. All 95 seed fixtures and 18 complete semantic parser approvals
   pass, but bootstrap again reaches 600 s during stage-two check; no stage2
   or new byte fixedpoint is produced. No runtime improvement is established
-  by these unpaired measurements. Separate companion gates are still
-  running and are not inferred successful here.
-  Receipt: `evals/receipts/root2039g20_o2_bootstrap_rejected.json`.
+  by these unpaired measurements. Both complete 47-case C/JS matrices,
+  33 native target/library consumers, native admission boundaries and five
+  nested host-export consumers subsequently pass. The unchanged-image
+  95+95 suite is not run because no stage2 or fixedpoint exists.
+  Receipts: `evals/receipts/root2039g20_o2_bootstrap_rejected.json` and
+  `evals/receipts/root2039g20_full_companions_rejected.json`.
 
 - The g18 candidate reuses canonical `Map.bit` for immutable read-only lookup
   instead of rebuilding a cursor in Bend. Existing backward-position, NUL,

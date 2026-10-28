@@ -1,0 +1,732 @@
+{
+  "schemaVersion": 1,
+  "status": "G20_BOTH_47_CASE_MATRICES_AND_NATIVE_HOST_CONSUMERS_PASS_BOOTSTRAP_REMAINS_REJECTED",
+  "sourceCheckpoint": "3a357a12",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "runtime": {
+    "bun": "1.4.3",
+    "revision": "c6da4a4d3010e5553438c60f6bd76d981976867c"
+  },
+  "commands": [
+    {
+      "label": "checker_core_owned_source.ts",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/checker_core_owned_source.ts"
+      ],
+      "stdout": "/tmp/bend-remote2039g20-admission-ksXa9y/checker_core_owned_source.ts.stdout",
+      "stderr": "/tmp/bend-remote2039g20-admission-ksXa9y/checker_core_owned_source.ts.stderr",
+      "started": 1793149455197,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 5547
+    },
+    {
+      "label": "template_step_lower.ts",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/template_step_lower.ts"
+      ],
+      "stdout": "/tmp/bend-remote2039g20-admission-ksXa9y/template_step_lower.ts.stdout",
+      "stderr": "/tmp/bend-remote2039g20-admission-ksXa9y/template_step_lower.ts.stderr",
+      "started": 1793149460745,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 612
+    },
+    {
+      "label": "checker_core_step_lower.ts",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/checker_core_step_lower.ts"
+      ],
+      "stdout": "/tmp/bend-remote2039g20-admission-ksXa9y/checker_core_step_lower.ts.stdout",
+      "stderr": "/tmp/bend-remote2039g20-admission-ksXa9y/checker_core_step_lower.ts.stderr",
+      "started": 1793149461357,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 2888
+    },
+    {
+      "label": "emitter_step_lower.ts",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/emitter_step_lower.ts"
+      ],
+      "stdout": "/tmp/bend-remote2039g20-admission-ksXa9y/emitter_step_lower.ts.stdout",
+      "stderr": "/tmp/bend-remote2039g20-admission-ksXa9y/emitter_step_lower.ts.stderr",
+      "started": 1793149464246,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 5003
+    },
+    {
+      "label": "parser-source",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "evals/bootstrap_parser_rebuild.ts",
+        "--prepare-source",
+        "--run-id",
+        "remote2039g20"
+      ],
+      "stdout": "/tmp/bend-remote2039g20-admission-ksXa9y/parser-source.stdout",
+      "stderr": "/tmp/bend-remote2039g20-admission-ksXa9y/parser-source.stderr",
+      "started": 1793149469250,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 22612
+    },
+    {
+      "label": "parser-public-source",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "evals/bootstrap_parser_public_gate.ts",
+        "--parser=checkpoints/.bootstrap_parser_rebuild_remote2039g20_source.bend",
+        "--entry=parse_module_tokens",
+        "--report=checkpoints/bootstrap-parser-public-remote2039g20-source.json"
+      ],
+      "stdout": "/tmp/bend-remote2039g20-admission-ksXa9y/parser-public-source.stdout",
+      "stderr": "/tmp/bend-remote2039g20-admission-ksXa9y/parser-public-source.stderr",
+      "started": 1793149491862,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 5007
+    },
+    {
+      "label": "parser-source-gate",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "evals/bootstrap_parser_fast.ts",
+        "--parser=checkpoints/.bootstrap_parser_rebuild_remote2039g20_source.bend",
+        "--entry=parse_module_tokens",
+        "--public-report=checkpoints/bootstrap-parser-public-remote2039g20-source.json",
+        "--report=checkpoints/bootstrap-parser-source-gate-remote2039g20.json"
+      ],
+      "stdout": "/tmp/bend-remote2039g20-admission-ksXa9y/parser-source-gate.stdout",
+      "stderr": "/tmp/bend-remote2039g20-admission-ksXa9y/parser-source-gate.stderr",
+      "started": 1793149496869,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 13659
+    },
+    {
+      "label": "parser-prepare",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "evals/bootstrap_parser_rebuild.ts",
+        "--prepare",
+        "--run-id",
+        "remote2039g20",
+        "--source-gate",
+        "checkpoints/bootstrap-parser-source-gate-remote2039g20.json"
+      ],
+      "stdout": "/tmp/bend-remote2039g20-admission-ksXa9y/parser-prepare.stdout",
+      "stderr": "/tmp/bend-remote2039g20-admission-ksXa9y/parser-prepare.stderr",
+      "started": 1793149510529,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 25506
+    },
+    {
+      "label": "parser-build",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "evals/bootstrap_parser_rebuild.ts",
+        "--build-native",
+        "--run-id",
+        "remote2039g20"
+      ],
+      "stdout": "/tmp/bend-remote2039g20-admission-ksXa9y/parser-build.stdout",
+      "stderr": "/tmp/bend-remote2039g20-admission-ksXa9y/parser-build.stderr",
+      "started": 1793149536035,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 10527
+    },
+    {
+      "label": "parser-public-native",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "evals/bootstrap_parser_public_gate.ts",
+        "--parser=checkpoints/.bootstrap_parser_rebuild_remote2039g20_generated_fuel.bend",
+        "--entry=parse_with_fuel",
+        "--report=checkpoints/bootstrap-parser-public-remote2039g20-native.json"
+      ],
+      "stdout": "/tmp/bend-remote2039g20-admission-ksXa9y/parser-public-native.stdout",
+      "stderr": "/tmp/bend-remote2039g20-admission-ksXa9y/parser-public-native.stderr",
+      "started": 1793149546562,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 2421
+    },
+    {
+      "label": "parser-native-gate",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "evals/bootstrap_parser_fast.ts",
+        "--parser=checkpoints/.bootstrap_parser_rebuild_remote2039g20_generated_fuel.bend",
+        "--entry=parse_with_fuel",
+        "--component=checkpoints/bootstrap-parser-rebuild-remote2039g20.js",
+        "--component-build=checkpoints/bootstrap-parser-rebuild-remote2039g20.native-build.result.json",
+        "--public-report=checkpoints/bootstrap-parser-public-remote2039g20-native.json",
+        "--report=checkpoints/bootstrap-parser-candidate-gate-remote2039g20.json"
+      ],
+      "stdout": "/tmp/bend-remote2039g20-admission-ksXa9y/parser-native-gate.stdout",
+      "stderr": "/tmp/bend-remote2039g20-admission-ksXa9y/parser-native-gate.stderr",
+      "started": 1793149548984,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 80210
+    },
+    {
+      "label": "parser-accept",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "evals/bootstrap_parser_rebuild.ts",
+        "--build",
+        "--run-id",
+        "remote2039g20",
+        "--candidate-gate",
+        "checkpoints/bootstrap-parser-candidate-gate-remote2039g20.json"
+      ],
+      "stdout": "/tmp/bend-remote2039g20-admission-ksXa9y/parser-accept.stdout",
+      "stderr": "/tmp/bend-remote2039g20-admission-ksXa9y/parser-accept.stderr",
+      "started": 1793149629195,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 1959
+    },
+    {
+      "label": "compose",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/selfhost_driver_source.ts",
+        "--parser-build=checkpoints/bootstrap-parser-rebuild-remote2039g20.native-build.result.json",
+        "--root=checkpoints/.bootstrap_compiler_root_remote2039g20.bend",
+        "--manifest=checkpoints/selfhost-root-remote2039g20.json"
+      ],
+      "stdout": "/tmp/bend-remote2039g20-admission-ksXa9y/compose.stdout",
+      "stderr": "/tmp/bend-remote2039g20-admission-ksXa9y/compose.stderr",
+      "started": 1793149631155,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 616
+    },
+    {
+      "label": "js-build",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "evals/checker_core_component_build.ts",
+        "--file=checkpoints/.bootstrap_compiler_root_remote2039g20.bend",
+        "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step,emit_c_modules_start,emit_c_library_start,c_emitter_step",
+        "--artifact=checkpoints/root-remote2039g20.js",
+        "--report=checkpoints/root-remote2039g20-build"
+      ],
+      "stdout": "/tmp/bend-remote2039g20-admission-ksXa9y/js-build.stdout",
+      "stderr": "/tmp/bend-remote2039g20-admission-ksXa9y/js-build.stderr",
+      "started": 1793149631772,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 45122
+    },
+    {
+      "label": "capture-compile",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "/tmp/bend-g20-consumer-worker.mjs",
+        "/Users/ilyagulya/bend-g20-native-o2-ad9f06bf-d309-45ea-94cf-a76575683085/evals/candidate_host.ts",
+        "--candidate=checkpoints/root-remote2039g20.js",
+        "--candidate-build=checkpoints/root-remote2039g20-build.result.json",
+        "--parser=checkpoints/bootstrap-parser-rebuild-remote2039g20.js",
+        "evals/repro_js_non_tail_reclaim.bend",
+        "-o",
+        "/tmp/bend-remote2039g20-admission-ksXa9y/capture.js"
+      ],
+      "stdout": "/tmp/bend-remote2039g20-admission-ksXa9y/capture-compile.stdout",
+      "stderr": "/tmp/bend-remote2039g20-admission-ksXa9y/capture-compile.stderr",
+      "started": 1793149676895,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 7812
+    },
+    {
+      "label": "capture-run",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/tmp/bend-remote2039g20-admission-ksXa9y/capture.js"
+      ],
+      "stdout": "/tmp/bend-remote2039g20-admission-ksXa9y/capture-run.stdout",
+      "stderr": "/tmp/bend-remote2039g20-admission-ksXa9y/capture-run.stderr",
+      "started": 1793149684708,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 972
+    },
+    {
+      "label": "atomic-js-array_fork",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/c_target_fixtures_run.ts",
+        "--driver=/tmp/bend-remote2039g20-driver",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--target=js",
+        "--smoke-case=array_fork",
+        "--logs=/tmp/bend-remote2039g20-admission-ksXa9y/atomic-js-array_fork",
+        "--keep"
+      ],
+      "stdout": "/tmp/bend-remote2039g20-admission-ksXa9y/atomic-js-array_fork.stdout",
+      "stderr": "/tmp/bend-remote2039g20-admission-ksXa9y/atomic-js-array_fork.stderr",
+      "started": 1793149685682,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 10233
+    },
+    {
+      "label": "atomic-js-array_atomic_fadd",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/c_target_fixtures_run.ts",
+        "--driver=/tmp/bend-remote2039g20-driver",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--target=js",
+        "--smoke-case=array_atomic_fadd",
+        "--logs=/tmp/bend-remote2039g20-admission-ksXa9y/atomic-js-array_atomic_fadd",
+        "--keep"
+      ],
+      "stdout": "/tmp/bend-remote2039g20-admission-ksXa9y/atomic-js-array_atomic_fadd.stdout",
+      "stderr": "/tmp/bend-remote2039g20-admission-ksXa9y/atomic-js-array_atomic_fadd.stderr",
+      "started": 1793149695915,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 9365
+    },
+    {
+      "label": "atomic-js-array_atomic_edges",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/c_target_fixtures_run.ts",
+        "--driver=/tmp/bend-remote2039g20-driver",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--target=js",
+        "--smoke-case=array_atomic_edges",
+        "--logs=/tmp/bend-remote2039g20-admission-ksXa9y/atomic-js-array_atomic_edges",
+        "--keep"
+      ],
+      "stdout": "/tmp/bend-remote2039g20-admission-ksXa9y/atomic-js-array_atomic_edges.stdout",
+      "stderr": "/tmp/bend-remote2039g20-admission-ksXa9y/atomic-js-array_atomic_edges.stderr",
+      "started": 1793149705280,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 9263
+    },
+    {
+      "label": "atomic-c-array_fork",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/c_target_fixtures_run.ts",
+        "--driver=/tmp/bend-remote2039g20-driver",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--target=c",
+        "--smoke-case=array_fork",
+        "--logs=/tmp/bend-remote2039g20-admission-ksXa9y/atomic-c-array_fork",
+        "--keep"
+      ],
+      "stdout": "/tmp/bend-remote2039g20-admission-ksXa9y/atomic-c-array_fork.stdout",
+      "stderr": "/tmp/bend-remote2039g20-admission-ksXa9y/atomic-c-array_fork.stderr",
+      "started": 1793149714543,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 29442
+    },
+    {
+      "label": "atomic-c-array_atomic_fadd",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/c_target_fixtures_run.ts",
+        "--driver=/tmp/bend-remote2039g20-driver",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--target=c",
+        "--smoke-case=array_atomic_fadd",
+        "--logs=/tmp/bend-remote2039g20-admission-ksXa9y/atomic-c-array_atomic_fadd",
+        "--keep"
+      ],
+      "stdout": "/tmp/bend-remote2039g20-admission-ksXa9y/atomic-c-array_atomic_fadd.stdout",
+      "stderr": "/tmp/bend-remote2039g20-admission-ksXa9y/atomic-c-array_atomic_fadd.stderr",
+      "started": 1793149743986,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 28141
+    },
+    {
+      "label": "atomic-c-array_atomic_edges",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/c_target_fixtures_run.ts",
+        "--driver=/tmp/bend-remote2039g20-driver",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--target=c",
+        "--smoke-case=array_atomic_edges",
+        "--logs=/tmp/bend-remote2039g20-admission-ksXa9y/atomic-c-array_atomic_edges",
+        "--keep"
+      ],
+      "stdout": "/tmp/bend-remote2039g20-admission-ksXa9y/atomic-c-array_atomic_edges.stdout",
+      "stderr": "/tmp/bend-remote2039g20-admission-ksXa9y/atomic-c-array_atomic_edges.stderr",
+      "started": 1793149772128,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 29125
+    },
+    {
+      "label": "native-build",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "evals/native_compiler_experiment.ts",
+        "--mode=build",
+        "--corpus=checkpoints/root-remote2039g20.native.corpus.json",
+        "--artifact=/tmp/bend-remote2039g20-native",
+        "--report=checkpoints/root-remote2039g20-native-build.json",
+        "--cc-pipeline=llvm-split",
+        "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+        "--cc-opt=2"
+      ],
+      "stdout": "/tmp/bend-remote2039g20-admission-ksXa9y/native-build.stdout",
+      "stderr": "/tmp/bend-remote2039g20-admission-ksXa9y/native-build.stderr",
+      "started": 1793149801286,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 278740
+    },
+    {
+      "label": "bootstrap",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "evals/selfhost_bootstrap_gate.ts",
+        "--native-build=checkpoints/root-remote2039g20-native-build.json",
+        "--native-corpus=checkpoints/root-remote2039g20.native.corpus.json",
+        "--root=checkpoints/.bootstrap_compiler_root_remote2039g20.bend",
+        "--root-manifest=checkpoints/selfhost-root-remote2039g20.json",
+        "--parser=checkpoints/bootstrap-parser-rebuild-remote2039g20.js",
+        "--parser-build=checkpoints/bootstrap-parser-rebuild-remote2039g20.native-build.result.json",
+        "--report=checkpoints/selfhost-remote2039g20-bootstrap.json"
+      ],
+      "stdout": "/tmp/bend-remote2039g20-admission-ksXa9y/bootstrap.stdout",
+      "stderr": "/tmp/bend-remote2039g20-admission-ksXa9y/bootstrap.stderr",
+      "started": 1793150080156,
+      "status": "FAIL",
+      "exitCode": 2,
+      "signal": null,
+      "elapsedMs": 600163
+    },
+    {
+      "label": "matrix-c",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/c_target_fixtures_run.ts",
+        "--driver=/tmp/bend-remote2039g20-driver",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--target=c",
+        "--logs=/tmp/bend-remote2039g20-admission-ksXa9y/matrix-c",
+        "--keep"
+      ],
+      "stdout": "/tmp/bend-remote2039g20-admission-ksXa9y/matrix-c.stdout",
+      "stderr": "/tmp/bend-remote2039g20-admission-ksXa9y/matrix-c.stderr",
+      "started": 1793150680320,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 982425
+    },
+    {
+      "label": "matrix-js",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/c_target_fixtures_run.ts",
+        "--driver=/tmp/bend-remote2039g20-driver",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--target=js",
+        "--logs=/tmp/bend-remote2039g20-admission-ksXa9y/matrix-js",
+        "--keep"
+      ],
+      "stdout": "/tmp/bend-remote2039g20-admission-ksXa9y/matrix-js.stdout",
+      "stderr": "/tmp/bend-remote2039g20-admission-ksXa9y/matrix-js.stderr",
+      "started": 1793151662746,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 218941
+    },
+    {
+      "label": "native-consumers",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "/tmp/bend-remote2039g20-native-foreign-suite.mjs"
+      ],
+      "stdout": "/tmp/bend-remote2039g20-admission-ksXa9y/native-consumers.stdout",
+      "stderr": "/tmp/bend-remote2039g20-admission-ksXa9y/native-consumers.stderr",
+      "started": 1793151881687,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 210564
+    },
+    {
+      "label": "native-admission-boundaries",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "/tmp/bend-g20-admission-boundaries.mjs"
+      ],
+      "stdout": "/tmp/bend-remote2039g20-admission-ksXa9y/native-admission-boundaries.stdout",
+      "stderr": "/tmp/bend-remote2039g20-admission-ksXa9y/native-admission-boundaries.stderr",
+      "started": 1793152092251,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 37853
+    },
+    {
+      "label": "nested-host-consumers",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "/tmp/bend-remote2039g20-nested-host.mjs"
+      ],
+      "stdout": "/tmp/bend-remote2039g20-admission-ksXa9y/nested-host-consumers.stdout",
+      "stderr": "/tmp/bend-remote2039g20-admission-ksXa9y/nested-host-consumers.stderr",
+      "started": 1793152130105,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 36991
+    }
+  ],
+  "rejectedBootstrapReceipt": "evals/receipts/root2039g20_o2_bootstrap_rejected.json",
+  "nativeBinarySha256": "369d1e0ff010b370171d9987752cd0202124eda3f3435822ddae5d7651f108d2",
+  "matrices": [
+    {
+      "target": "c",
+      "pins": {
+        "mode": "acceptance-matrix",
+        "target": "c",
+        "node": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "nodeVersion": "v23.11.0",
+        "v8": "12.9.202.28-node.14|--max-old-space-size=3072,-e,process.stdout.write(process.versions.v8 + \"|\" + process.execArgv.join(\",\"))",
+        "driver": "/tmp/bend-remote2039g20-driver",
+        "guardianTs": "/Users/ilyagulya/bend-g20-native-o2-ad9f06bf-d309-45ea-94cf-a76575683085/evals/heavy_gate.ts",
+        "guardianTsSha256": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015",
+        "guardianNativeC": "/Users/ilyagulya/bend-g20-native-o2-ad9f06bf-d309-45ea-94cf-a76575683085/evals/heavy_gate_native.c",
+        "guardianNativeCSha256": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b",
+        "cwd": "/Users/ilyagulya/bend-g20-native-o2-ad9f06bf-d309-45ea-94cf-a76575683085",
+        "base": "/Users/ilyagulya/bend-g20-native-o2-ad9f06bf-d309-45ea-94cf-a76575683085/bend2/base.bend",
+        "baseSha256": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+        "runtime": "/Users/ilyagulya/bend-g20-native-o2-ad9f06bf-d309-45ea-94cf-a76575683085/bend2/selfhost/c_runtime.c",
+        "runtimeSha256": "351dd1aff6ab09c9ed1c014c4dab3a8b72bff01b17aff026b66b4fd5cc3da85d",
+        "logs": "/tmp/bend-remote2039g20-admission-ksXa9y/matrix-c",
+        "gate": {
+          "memoryMiB": 8192,
+          "rssMiB": 8192,
+          "pollMs": 10,
+          "timeoutMs": 600000
+        },
+        "fixtures": 47
+      }
+    },
+    {
+      "target": "js",
+      "pins": {
+        "mode": "acceptance-matrix",
+        "target": "js",
+        "node": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "nodeVersion": "v23.11.0",
+        "v8": "12.9.202.28-node.14|--max-old-space-size=3072,-e,process.stdout.write(process.versions.v8 + \"|\" + process.execArgv.join(\",\"))",
+        "driver": "/tmp/bend-remote2039g20-driver",
+        "guardianTs": "/Users/ilyagulya/bend-g20-native-o2-ad9f06bf-d309-45ea-94cf-a76575683085/evals/heavy_gate.ts",
+        "guardianTsSha256": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015",
+        "guardianNativeC": "/Users/ilyagulya/bend-g20-native-o2-ad9f06bf-d309-45ea-94cf-a76575683085/evals/heavy_gate_native.c",
+        "guardianNativeCSha256": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b",
+        "cwd": "/Users/ilyagulya/bend-g20-native-o2-ad9f06bf-d309-45ea-94cf-a76575683085",
+        "base": "/Users/ilyagulya/bend-g20-native-o2-ad9f06bf-d309-45ea-94cf-a76575683085/bend2/base.bend",
+        "baseSha256": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+        "runtime": "/Users/ilyagulya/bend-g20-native-o2-ad9f06bf-d309-45ea-94cf-a76575683085/bend2/selfhost/c_runtime.c",
+        "runtimeSha256": "351dd1aff6ab09c9ed1c014c4dab3a8b72bff01b17aff026b66b4fd5cc3da85d",
+        "logs": "/tmp/bend-remote2039g20-admission-ksXa9y/matrix-js",
+        "gate": {
+          "memoryMiB": 8192,
+          "rssMiB": 8192,
+          "pollMs": 10,
+          "timeoutMs": 600000
+        },
+        "fixtures": 47
+      }
+    }
+  ],
+  "nativeConsumers": {
+    "status": "NATIVE_FOREIGN_AND_LIBRARY_SMOKE_PASS",
+    "rows": 33,
+    "receipt": "/tmp/bend-remote2039g20-native-foreign-xvjY9u/receipt.json"
+  },
+  "nativeAdmission": {
+    "status": "NATIVE_DATATYPE_AND_EXECUTABLE_ADMISSION_PASS",
+    "receipt": "/Users/ilyagulya/bend-g20-native-o2-ad9f06bf-d309-45ea-94cf-a76575683085/checkpoints/.g20-native-admission-bsSx5S/receipt.json"
+  },
+  "hostConsumers": {
+    "status": "ACTUAL_ALIAS_AND_HOST_EXPORT_CONSUMERS_PASS",
+    "rows": 5,
+    "receipt": "/tmp/bend-remote2039g20-host-alias-EcuRk2/receipt.json"
+  },
+  "unchangedImageSuites": {
+    "status": "NOT_RUN_FULL_CHAIN_FAILED",
+    "stageTwoPublished": false
+  },
+  "acceptanceError": "Error: Error: bootstrap failed; see /tmp/bend-remote2039g20-admission-ksXa9y/bootstrap.stderr"
+}
