@@ -5,15 +5,25 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
-- The g21 candidate restores the accepted g8 `checker_arena.bend` bytes:
-  `Arena.name` threads the result of canonical `Map.get` instead of using
-  immutable `IndexLookup.find`. Native split compilation returns to O1;
-  rejected g20's optional O2 policy is removed. Stable IDs, prefixes,
-  Unicode, rewind and sentinel cases pass on actual JS and C; the
-  native-validated checker preserves complete checked FIR on the exercised
-  small inputs. Full-root build and native-seed bootstrap acceptance remain
-  pending; no timing improvement or new byte fixedpoint is claimed.
-  Receipt: `evals/receipts/root2039g21_map_restore_smoke.json`.
+- G21 completes the full native compiler build and a real native-stage0 →
+  stage1 → stage2 byte fixedpoint under the original 8-GiB / 600-s limits
+  per gate. All 12,157 definitions / 12,736 events validate with zero
+  excluded checks or output patches. Native build: 157.031 s, peak RSS
+  5,432,262,656 B; bootstrap: 437.094 s, peak RSS 5,252,530,176 B.
+  Stage1 and stage2 are unchanged, byte-identical 30,222,543-byte files,
+  SHA-256 `6f3dff55cee825d064b1d2f9d0c3268fd0d629dd93043d90d6fc00f43eba5978`.
+  Both complete 47-case C/JS matrices, 33 native target/library consumers,
+  12 admission-boundary cases and five nested host exports pass.
+  Each unchanged emitted image additionally passes all 95 original fixtures
+  and 130 fresh full semantic parser approvals: 285 fixture runs including
+  native seed. This separate companion takes 194.416 s.
+  `Arena.name` restores canonical `Map.get`; native LLVM split stays O1.
+  The suite authenticates fixture sources and exact per-fixture manifests,
+  including programs without a Base import; injected byte drift is rejected.
+  These runtime checks are not a universal FIR/BIR law proof or an
+  official-compiler speed claim. Earlier failed versions remain rejected.
+  Receipts: `evals/receipts/root2039g21_native_fixedpoint.json` and
+  `evals/receipts/root2039g21_emitted_suites.json`.
 
 - The g20 split-O2 native-seed trial is **rejected**, not selected for the
   next candidate. Its full native root builds in 278.558 s with peak RSS

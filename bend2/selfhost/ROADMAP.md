@@ -7,6 +7,34 @@ Detailed evidence and reasoning live in the linked receipts and notes.
 This index does not replace a receipt.
 ## Current full native-seed checkpoint
 
+The current accepted checkpoint is **remote2039g21**, source `03c4f278`.
+Fresh parser admission, the full **12,157-definition / 12,736-event** native
+build, and the actual native-stage0 → stage1 → stage2 byte fixedpoint pass.
+No source checks are excluded and no output bytes are patched.
+
+The native build takes **157,031 ms**, peak RSS **5,432,262,656 B** and
+footprint **5,179,594,752 B**. Bootstrap takes **437,094 ms**, peak RSS
+**5,252,530,176 B** and footprint **3,776,131,920 B**. Each keeps the original
+**8-GiB / 600-s** gate; the whole companion suite is not a single timed gate.
+Both unchanged images are **30,222,543 bytes**, SHA-256
+`6f3dff55cee825d064b1d2f9d0c3268fd0d629dd93043d90d6fc00f43eba5978`.
+
+All 95 native-seed fixtures and 18 full-root semantic parser approvals pass.
+Each unchanged stage1/stage2 also passes all original 95 fixtures (31 negative)
+and 130 fresh semantic parser approvals: **285 total fixture executions**.
+That separate companion completes in **194,416 ms**, peak RSS 3,238,379,520 B.
+Both full 47-case C/JS matrices, 33 native target/library consumers,
+12 admission-boundary cases and five nested host exports pass.
+
+`Arena.name` uses canonical `Map.get`; native split compilation uses O1.
+The 13-export ABI, 64-transition quantum and 8,000,000 parser fuel are intact.
+No universal FIR/BIR law proof, official-speed win or 3072-MiB heap claim follows.
+Exact commands, runtime/limits and 91 source/protected input hashes:
+`evals/receipts/root2039g21_native_fixedpoint.json` and
+`evals/receipts/root2039g21_emitted_suites.json`.
+
+### Historical g8b checkpoint
+
 The `remote2039g8b` checkpoint on source `ee48ca2f` passes the complete
 native build and real native-stage0 → stage1 → stage2 bootstrap.
 All **12,071 bodies / 12,651 events** validate; exclusions and output

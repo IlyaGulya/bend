@@ -2,6 +2,27 @@
 
 ## Статус и границы
 
+Текущий проверенный source — `03c4f278` (g21). Общий
+CheckedFIR → Backend IR → JS/C путь прошёл собственные свежие parser/native
+gates и настоящий native-stage0 → stage1 → stage2 byte fixedpoint:
+30 222 543 байта, `6f3dff55cee825d064b1d2f9d0c3268fd0d629dd93043d90d6fc00f43eba5978`.
+Проверены 12 157 определений / 12 736 событий без исключений и патчей,
+обе 47-case C/JS матрицы, native/library/host consumers и 285
+seed/stage1/stage2 fixture executions. 8-ГиБ / 600-секундные gates сохранены.
+Нормативные контракты и открытые универсальные обязательства — в
+`../bend2/selfhost/FIR_LAWS.md` и `../bend2/selfhost/BIR_LAWS.md`.
+Runtime acceptance не является доказательством всех этих законов.
+Точные команды и границы:
+`../evals/receipts/root2039g21_native_fixedpoint.json`,
+`../evals/receipts/root2039g21_emitted_suites.json`.
+
+Исторические доказательства standalone C-id helper, 57y/57aa и прежние
+числа ниже относятся только к собственным pinned source/executable.
+Они не переносятся на изменённый lowering или новый renderer; g21 принят
+по своей цепочке, не по старым helper-тестам.
+
+### Исторические checkpoints
+
 Это архитектурный контракт принятого functional FIR/BIR cutover compiler57y,
 не победа над official. Историческая performance-версия55 остаётся reference.
 Полный57y root8396/8793 нативно проверен; новый unchanged stage1/stage2 exact

@@ -8,7 +8,7 @@
  * Source-only fixtures are freshly parsed by each image; no AST/cache inputs.
  */
 import {runHeavyGate,guardHeavyGate} from './heavy_gate.ts';
-import {authenticateNativeSeedBuild,requireCorpusCoversWorkload,workloadRows} from './native_seed_runtime.mjs';
+import {authenticateNativeSeedBuild,requireCorpusCoversWorkload,workloadRows,corpusFor,runtimeManifest} from './native_seed_runtime.mjs';
 import {parserParity,isolatedParserParity} from './selfhost_parser_parity.ts';
 import {readAcceptedParserBuild} from './selfhost_driver_source.ts';
 import {sourceFileTagForSelfhostImage,sourceFileTagFromRoot} from './checker_core_step_runtime.mjs';
@@ -114,13 +114,14 @@ if(!worker){
    requireProof(Array.isArray(fixtures)&&fixtures.length===95&&new Set(fixtures.map(row=>row.name)).size===95&&seedRows.length===95,'Missing complete 95 original fixtures/native seed rows');
    for(const fixture of fixtures){
     const row=seedRows.find((row:Record<string,any>)=>row.name===fixture.name);
+    // Native fixture hashes are certified separately from the root input closure.
+    pin(fixture.file,fixture.sourceSha256);
     requireProof(typeof fixture.source==='string'&&fixture.sourceSha256===sha(fixture.source)&&readFileSync(fixture.file,'utf8')===fixture.source&&inputs[fixture.file]===fixture.sourceSha256,'Original fixture source drift: '+fixture.name);
     requireProof(row?.passed===true&&row.accepted===fixture.accepted&&row.sourceSha256===fixture.sourceSha256&&row.parserSha256===auth.binarySha256&&row.compilerSha256===auth.binarySha256,'Original native seed row mismatch: '+fixture.name);
     const manifest=join(String(request.sidecars),'native-fixture-'+fixture.name+'.runtime.tsv');
-    const manifestRows=readFileSync(manifest,'utf8').trim().split('\n').map(line=>line.split('\t'));
-    const fixtureManifestRow=manifestRows.find(row=>row.length===3&&row[0]==='B'&&row[2]===realpathSync(fixture.file));
-    const baseManifestRow=manifestRows.find(row=>row.length===3&&row[0]==='B'&&row[2]===realpathSync('bend2/base.bend'));
-    requireProof(row.native?.binarySha256===auth.binarySha256&&hash(manifest)===row.native.manifestSha256&&fixtureManifestRow&&baseManifestRow,'Missing exact native seed manifest receipt: '+fixture.name);
+    pin(manifest,row.native?.manifestSha256);
+    const expectedManifest=runtimeManifest(corpusFor(workloadRows(fixture.file,'js')));
+    requireProof(row.native?.binarySha256===auth.binarySha256&&readFileSync(manifest,'utf8')===expectedManifest,'Missing exact native seed manifest receipt: '+fixture.name);
     const artifact=join(String(request.sidecars),'native-fixture-'+fixture.name+'.js');
     if(fixture.accepted)requireProof(existsSync(artifact)&&readFileSync(artifact).length>0&&row.native?.artifactSha256===hash(artifact),'Missing native seed artifact receipt: '+fixture.name);
     else requireProof(!existsSync(artifact)&&row.native?.artifactSha256===null,'Negative native seed row emitted an artifact: '+fixture.name);

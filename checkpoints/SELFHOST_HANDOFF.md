@@ -4,7 +4,49 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
-## Актуальный принятый checkpoint: remote2039g8b
+## Актуальный принятый checkpoint: remote2039g21
+
+Source `03c4f278`: завершены свежая parser admission, полный native compiler
+root и настоящий native-stage0 → stage1 → stage2 byte fixedpoint.
+Проверены **12 157 определений / 12 736 событий**, без исключённых проверок
+и output patches. Лимиты прежние: **8 ГиБ RSS/footprint, 600 с на каждый gate**;
+это не суммарный 600-секундный лимит всей цепочки и companion-матриц.
+
+| Gate | Время, мс | Peak RSS, B | Peak footprint, B |
+|---|---:|---:|---:|
+| Native build | 157031 | 5432262656 | 5179594752 |
+| Native-seed bootstrap | 437094 | 5252530176 | 3776131920 |
+| Отдельный unchanged-image 95+95 companion | 194416 | 3238379520 | 1172993408 |
+
+Оба реальных файла имеют **30 222 543 байта**, SHA-256
+`6f3dff55cee825d064b1d2f9d0c3268fd0d629dd93043d90d6fc00f43eba5978`.
+Stage1 использует собственные parser/checker/emitter для полного root;
+пройдены 18 полных semantic AST approvals. 95 native-seed fixtures PASS.
+Затем каждый неизменённый stage1/stage2 отдельно прошёл все исходные 95
+fixtures, включая 31 отрицательный случай, и 130 fresh semantic parser
+approvals. Всего 285 fixture executions. Compiler images не патчились.
+
+Обе полные C/JS матрицы по 47 случаев, 33 native target/library consumers,
+12 admission-boundary случаев и 5 nested host exports PASS. Сохранены
+Array.atomic, String ownership/append/prefix, nested physical-layout,
+non-tail/capture-stack, Nat-boundary и unread-native-export регрессии.
+Все 91 source/protected input сверены с байтами кандидатного checkout.
+Квитанции с точными выполненными командами, runtime, guard и source hashes:
+`evals/receipts/root2039g21_native_fixedpoint.json`,
+`evals/receipts/root2039g21_emitted_suites.json`.
+
+Producer: Bend 2.0.39 / Bun 1.4.3; LLVM split O1. Emitted compiler:
+Node 23.11.0 / V8 worker, stack 256 MiB, old 6144 MiB, young 128 MiB.
+`BUN_JSC_forceRAMSize=4294967296` — GC hint, не hard memory limit.
+13-export ABI, parser fuel 8 000 000 и quantum 64 не менялись.
+G21 возвращает canonical `Map.get` в `Arena.name`; O2 из отклонённого g20
+не выбран. Universal FIR/BIR proofs, победа над official и heap 3072 MiB
+не заявляются. GPU/WASM и новые IR backends не проверялись этими gates.
+
+Ниже — история прежних checkpoints. Их «сейчас» и «принят» относятся только
+к собственным source/image; g9a/g12/g14/g15/g16/g18/g20 остаются отклонёнными.
+
+## История: принятый checkpoint remote2039g8b
 
 На source `ee48ca2f` завершены полная native-сборка и настоящий native-seed
 stage1/stage2 fixedpoint под исходными **8 ГиБ / 600 с** на каждый gate.
