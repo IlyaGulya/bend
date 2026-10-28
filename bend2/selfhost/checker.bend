@@ -28,6 +28,16 @@ type Binding is Data:
   Binding{key: String, quantity: Ast.Quantity, ty: U32, type_depth: Nat, value: IR.OptionalTerm}
 type UsageEntry is Data:
   Usage{index: Nat, quantity: Ast.Quantity}
+# One resolved non-lambda application head: quantity and expected argument domain
+# come from a single function-type resolution and WHNF. The view is consumed
+# twice by the same App walk step and never outlives that invocation.
+type ApplicationView is Data:
+  ApplicationViewValue{quantity: Maybe<&2, Ast.Quantity>, expected: Maybe<&2, U32>}
+# Definition finishing carries the exact telescope built for recursive
+# self-visibility and the body-checking environment, so finishing does not rebuild
+# them for the same binders, scope and definition obligation.
+type DefinitionSelf is Data:
+  DefinitionSelfValue{scope: Scope.ArenaGlobalScope, telescope: Maybe<&2, U32>}
 type TermOrder is Data:
   OrderLess{}
   OrderEqual{}
@@ -35,6 +45,8 @@ type TermOrder is Data:
 type Inference is Data:
   Inferred{term: U32, ty: U32, occurrence: IR.Occurrence}
   InferenceFailure{diagnostic: Checked.Diagnostic}
+type DefinitionBodyTyping is Data:
+  DefinitionBodyTyped{inference: Inference, env: List<&2, Binding>}
 type ScrutineeTyping is Data:
   ScrutineeTypes{types: IR.Words, occurrences: List<&2, IR.Occurrence>}
   ScrutineeTypeFailure{diagnostic: Checked.Diagnostic}
@@ -7761,33 +7773,22 @@ def function_type_of(v_1: ArenaStore, v_3: U32, v_6: List<&2, Binding>, v_7: Sco
     case _:
       {ArenaResult{v_15, None{}} : ArenaResult<Maybe<&2, U32>>}
 
-def function_quantity_from_type_view(v_20038201: ArenaStore, v_0: U32) -> ArenaResult<Maybe<&2, Ast.Quantity>>:
-  ArenaResult{v_20038202, +v_20038203} = arena_get_node(v_20038201, v_0)
-  match v_20038203:
-    case Arena.TermAll{+v_20038210, +v_20038211, +v_20038213, +v_20038214, +v_20038215, +v_20038216}:
-      v_8 = v_20038210
-      {ArenaResult{v_20038202, Some{v_8}} : ArenaResult<Maybe<&2, Ast.Quantity>>}
-    case _:
-      {ArenaResult{v_20038202, None{}} : ArenaResult<Maybe<&2, Ast.Quantity>>}
-
-def function_quantity_from_type(v_20038218: ArenaStore, v_0: U32, v_1: Scope.ArenaGlobalScope) -> ArenaResult<Maybe<&2, Ast.Quantity>>:
-  ArenaResult{v_20038219, +v_20038220} = whnf(v_20038218, 64n, v_0, v_1)
-  ArenaResult{v_20038221, +v_20038222} = function_quantity_from_type_view(v_20038219, v_20038220)
-  {ArenaResult{v_20038221, v_20038222} : ArenaResult<Maybe<&2, Ast.Quantity>>}
-
-def function_argument_quantity_result(v_20038223: ArenaStore, v_1: Maybe<&2, U32>, v_2: Scope.ArenaGlobalScope) -> ArenaResult<Maybe<&2, Ast.Quantity>>:
-  match v_1:
-    case Some{+v_20038224}:
-      v_5 = v_20038224
-      ArenaResult{v_20038225, +v_20038226} = function_quantity_from_type(v_20038223, v_5, v_2)
-      {ArenaResult{v_20038225, v_20038226} : ArenaResult<Maybe<&2, Ast.Quantity>>}
+def function_view_typed(store: ArenaStore, ty: Maybe<&2, U32>, globals: Scope.ArenaGlobalScope) -> ArenaResult<ApplicationView>:
+  match ty:
+    case Some{+bound}:
+      ArenaResult{next, +view} = whnf(store, 64n, bound, globals)
+      ArenaResult{final, +node} = arena_get_node(next, view)
+      match node:
+        case Arena.TermAll{+quantity, _, _, +expected, _, _}:
+          {ArenaResult{final, ApplicationViewValue{Some{quantity}, Some{expected}}} : ArenaResult<ApplicationView>}
+        case _:
+          {ArenaResult{final, ApplicationViewValue{None{}, None{}}} : ArenaResult<ApplicationView>}
     case None{}:
-      {ArenaResult{v_20038223, None{}} : ArenaResult<Maybe<&2, Ast.Quantity>>}
+      {ArenaResult{store, ApplicationViewValue{None{}, None{}}} : ArenaResult<ApplicationView>}
 
-def function_argument_quantity(v_20038227: ArenaStore, v_0: U32, v_3: List<&2, Binding>, v_4: Scope.ArenaGlobalScope) -> ArenaResult<Maybe<&2, Ast.Quantity>>:
-  ArenaResult{v_20038228, +v_20038229} = function_type_of(v_20038227, v_0, v_3, v_4)
-  ArenaResult{v_20038230, +v_20038231} = function_argument_quantity_result(v_20038228, v_20038229, v_4)
-  {ArenaResult{v_20038230, v_20038231} : ArenaResult<Maybe<&2, Ast.Quantity>>}
+def function_application_view(store: ArenaStore, term: U32, env: List<&2, Binding>, globals: Scope.ArenaGlobalScope) -> ArenaResult<ApplicationView>:
+  ArenaResult{next, +ty} = function_type_of(store, term, env, globals)
+  function_view_typed(next, ty, globals)
 
 def collect_telescope_quantities_view(v_20038232: ArenaStore, v_0: U32, v_1: U32, v_3: Nat, v_4: Scope.ArenaGlobalScope) -> ArenaResult<IR.Quantities>:
   ArenaResult{v_20038233, +v_20038234} = arena_get_node(v_20038232, v_0)
@@ -8262,48 +8263,24 @@ def term_usage_map_lambda_expected(v_20038676: ArenaStore, v_1: Maybe<&2, U32>, 
       ArenaResult{v_20038684, +v_20038685} = term_usage_map(v_20038682, v_6, Nat.add(v_9, 1n), Binding{v_5, Ast.QMany{}, v_24, List.length(&2, Binding, v_12), IR.NoTerm{}} <> v_12, v_13, None{}, v_15)
       {ArenaResult{v_20038684, v_20038685} : ArenaResult<List<&2, UsageEntry>>}
 
-def term_usage_map_argument_expected_view(v_20038686: ArenaStore, v_0: U32) -> ArenaResult<Maybe<&2, U32>>:
-  ArenaResult{v_20038687, +v_20038688} = arena_get_node(v_20038686, v_0)
-  match v_20038688:
-    case Arena.TermAll{+v_20038695, +v_20038696, +v_20038698, +v_20038699, +v_20038700, +v_20038701}:
-      v_11 = v_20038699
-      {ArenaResult{v_20038687, Some{v_11}} : ArenaResult<Maybe<&2, U32>>}
-    case _:
-      {ArenaResult{v_20038687, None{}} : ArenaResult<Maybe<&2, U32>>}
+def term_usage_map_application_arguments(store: ArenaStore, expected: Maybe<&2, U32>, head: U32, argument: U32, depth: Nat, env: List<&2, Binding>, globals: Scope.ArenaGlobalScope, flag: Bool) -> ArenaResult<List<&2, UsageEntry>>:
+  ArenaResult{next, +head_usage} = term_usage_map(store, head, depth, env, globals, None{}, flag)
+  ArenaResult{final, +argument_usage} = term_usage_map(next, argument, depth, env, globals, expected, flag)
+  merged = usage_merge(head_usage, argument_usage, False{})
+  {ArenaResult{final, merged} : ArenaResult<List<&2, UsageEntry>>}
 
-def term_usage_map_argument_expected(v_20038703: ArenaStore, v_1: Maybe<&2, U32>, v_2: Scope.ArenaGlobalScope) -> ArenaResult<Maybe<&2, U32>>:
-  match v_1:
-    case Some{+v_20038704}:
-      v_5 = v_20038704
-      ArenaResult{v_20038705, +v_20038706} = whnf(v_20038703, 64n, v_5, v_2)
-      ArenaResult{v_20038707, +v_20038708} = term_usage_map_argument_expected_view(v_20038705, v_20038706)
-      {ArenaResult{v_20038707, v_20038708} : ArenaResult<Maybe<&2, U32>>}
-    case None{}:
-      {ArenaResult{v_20038703, None{}} : ArenaResult<Maybe<&2, U32>>}
-
-def term_usage_map_application_quantity(v_1: ArenaStore, v_3: Maybe<&2, Ast.Quantity>, v_5: U32, v_7: U32, v_9: Nat, v_12: List<&2, Binding>, v_13: Scope.ArenaGlobalScope, v_15: Bool) -> ArenaResult<List<&2, UsageEntry>>:
-  match v_3:
-    case Some{+v_21}:
-      match v_21:
-        case Ast.QZero{}:
-          ArenaResult{v_25, +v_26} = term_usage_map(v_1, v_5, v_9, v_12, v_13, None{}, v_15)
-          {ArenaResult{v_25, v_26} : ArenaResult<List<&2, UsageEntry>>}
-        case _:
-          ArenaResult{v_32, +v_33} = function_type_of(v_1, v_5, v_12, v_13)
-          ArenaResult{v_37, +v_38} = term_usage_map_argument_expected(v_32, v_33, v_13)
-          v_40 = v_38
-          ArenaResult{v_44, +v_45} = term_usage_map(v_37, v_5, v_9, v_12, v_13, None{}, v_15)
-          ArenaResult{v_49, +v_50} = term_usage_map(v_44, v_7, v_9, v_12, v_13, v_40, v_15)
-          v_50000241 = usage_merge(v_45, v_50, False{})
-          {ArenaResult{v_49, v_50000241} : ArenaResult<List<&2, UsageEntry>>}
-    case _:
-      ArenaResult{v_57, +v_58} = function_type_of(v_1, v_5, v_12, v_13)
-      ArenaResult{v_62, +v_63} = term_usage_map_argument_expected(v_57, v_58, v_13)
-      v_65 = v_63
-      ArenaResult{v_69, +v_70} = term_usage_map(v_62, v_5, v_9, v_12, v_13, None{}, v_15)
-      ArenaResult{v_74, +v_75} = term_usage_map(v_69, v_7, v_9, v_12, v_13, v_65, v_15)
-      v_50000242 = usage_merge(v_70, v_75, False{})
-      {ArenaResult{v_74, v_50000242} : ArenaResult<List<&2, UsageEntry>>}
+def term_usage_map_application_view(store: ArenaStore, view: ApplicationView, head: U32, argument: U32, depth: Nat, env: List<&2, Binding>, globals: Scope.ArenaGlobalScope, flag: Bool) -> ArenaResult<List<&2, UsageEntry>>:
+  match view:
+    case ApplicationViewValue{+quantity, +expected}:
+      match quantity:
+        case Some{+value}:
+          match value:
+            case Ast.QZero{}:
+              term_usage_map(store, head, depth, env, globals, None{}, flag)
+            case _:
+              term_usage_map_application_arguments(store, expected, head, argument, depth, env, globals, flag)
+        case None{}:
+          term_usage_map_application_arguments(store, expected, head, argument, depth, env, globals, flag)
 
 def term_usage_map_family_result(v_1: ArenaStore, v_3: FamilyLowering, v_5: U32, v_6: IR.Words, v_8: Nat, v_11: List<&2, Binding>, v_12: Scope.ArenaGlobalScope, v_15: Maybe<&2, U32>, v_17: Bool) -> ArenaResult<List<&2, UsageEntry>>:
   match v_3:
@@ -8432,8 +8409,8 @@ def term_usage_map(v_1: ArenaStore, v_3: U32, v_5: Nat, v_8: List<&2, Binding>, 
         case _:
           v_271 = v_236
           v_273 = v_237
-          ArenaResult{v_277, +v_278} = function_argument_quantity(v_242, v_271, v_8, v_9)
-          ArenaResult{v_282, +v_283} = term_usage_map_application_quantity(v_277, v_278, v_271, v_273, v_5, v_8, v_9, v_14)
+          ArenaResult{v_277, +v_278} = function_application_view(v_242, v_271, v_8, v_9)
+          ArenaResult{v_282, +v_283} = term_usage_map_application_view(v_277, v_278, v_271, v_273, v_5, v_8, v_9, v_14)
           {ArenaResult{v_282, v_283} : ArenaResult<List<&2, UsageEntry>>}
     case Arena.TermFill{+v_288, +v_289, +v_290, +v_291}:
       +v_293 = IR.Words{v_289, v_290}
@@ -10426,38 +10403,34 @@ def check_termination_result(v_1: Bool, v_3: String, v_4: Ast.SourceSpan) -> May
       +v_14 = {None{} : Maybe<&2, Checked.Diagnostic>}
       v_14
 
-def check_termination(v_1: ArenaStore, v_3: Bool, v_5: String, v_6: IR.Words, v_8: U32, v_9: Ast.SourceSpan, v_10: Scope.ArenaGlobalScope) -> ArenaResult<Maybe<&2, Checked.Diagnostic>>:
+def check_termination(v_1: ArenaStore, v_3: Bool, v_5: String, v_6: IR.Words, v_8: Nat, v_9: U32, v_10: Ast.SourceSpan, v_11: Scope.ArenaGlobalScope) -> ArenaResult<Maybe<&2, Checked.Diagnostic>>:
   match v_3:
     case True{}:
       {ArenaResult{v_1, None{}} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
     case False{}:
-      ArenaResult{v_18, +v_19} = binder_count(v_1, v_6)
-      v_21 = v_19
-      ArenaResult{v_25, +v_26} = parameter_vars(v_18, v_6, v_21, v_9)
+      ArenaResult{v_25, +v_26} = parameter_vars(v_1, v_6, v_8, v_10)
       v_28 = v_26
       ArenaResult{v_32, +v_33} = binders_quantities(v_25, v_6)
       v_35 = v_33
-      ArenaResult{v_39, +v_40} = recursion_terminates(v_32, v_8, v_5, v_28, v_35, v_21, v_10)
-      v_50000310 = check_termination_result(v_40, v_5, v_9)
+      ArenaResult{v_39, +v_40} = recursion_terminates(v_32, v_9, v_5, v_28, v_35, v_8, v_11)
+      v_50000310 = check_termination_result(v_40, v_5, v_10)
       {ArenaResult{v_39, v_50000310} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
 
-def validate_definition_termination(v_20041235: ArenaStore, v_2: Maybe<&2, Checked.Diagnostic>, v_4: IR.Words, v_5: U32, v_6: U32, v_7: Scope.ArenaGlobalScope, v_9: Bool) -> ArenaResult<Maybe<&2, Checked.Diagnostic>>:
+def validate_definition_termination(v_20041235: ArenaStore, v_2: Maybe<&2, Checked.Diagnostic>, v_4: IR.Words, v_5: Nat, v_6: U32, v_7: U32, v_8: Scope.ArenaGlobalScope, v_10: Bool, v_12: List<&2, Binding>) -> ArenaResult<Maybe<&2, Checked.Diagnostic>>:
   match v_2:
     case Some{+v_20041236}:
       v_13 = v_20041236
       {ArenaResult{v_20041235, Some{v_13}} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
     case None{}:
-      ArenaResult{v_20041237, +v_20041238} = binder_count(v_20041235, v_4)
-      v_17 = v_20041238
-      ArenaResult{v_20041239, +v_20041240} = binders_env(v_20041237, v_4, [])
-      ArenaResult{v_20041241, +v_20041242} = binder_usage_map(v_20041239, v_17, v_5, v_20041240, v_7, Some{v_6}, v_9)
-      ArenaResult{v_20041243, +v_20041244} = check_binder_usage_map(v_20041241, v_4, v_17, v_20041242)
+      ArenaResult{v_20041241, +v_20041242} = binder_usage_map(v_20041235, v_5, v_6, v_12, v_8, Some{v_7}, v_10)
+      ArenaResult{v_20041243, +v_20041244} = check_binder_usage_map(v_20041241, v_4, v_5, v_20041242)
       {ArenaResult{v_20041243, v_20041244} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
 
-def validate_definition_uses(v_20041245: ArenaStore, v_1: Bool, v_3: String, v_5: IR.Words, v_6: U32, v_7: U32, v_8: Ast.SourceSpan, v_9: Scope.ArenaGlobalScope, v_11: Bool) -> ArenaResult<Maybe<&2, Checked.Diagnostic>>:
-  ArenaResult{v_20041246, +v_20041247} = check_termination(v_20041245, v_1, v_3, v_5, v_6, v_8, v_9)
-  ArenaResult{v_20041248, +v_20041249} = validate_definition_termination(v_20041246, v_20041247, v_5, v_6, v_7, v_9, v_11)
-  {ArenaResult{v_20041248, v_20041249} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
+def validate_definition_uses(v_20041245: ArenaStore, v_1: Bool, v_3: String, v_5: IR.Words, v_6: U32, v_7: U32, v_8: Ast.SourceSpan, v_9: Scope.ArenaGlobalScope, v_11: Bool, v_13: List<&2, Binding>) -> ArenaResult<Maybe<&2, Checked.Diagnostic>>:
+  ArenaResult{v_20041246, +count} = binder_count(v_20041245, v_5)
+  ArenaResult{v_20041248, +v_20041249} = check_termination(v_20041246, v_1, v_3, v_5, count, v_6, v_8, v_9)
+  ArenaResult{v_20041250, +v_20041251} = validate_definition_termination(v_20041248, v_20041249, v_5, count, v_6, v_7, v_9, v_11, v_13)
+  {ArenaResult{v_20041250, v_20041251} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
 
 def store_definition_declared(v_1: ArenaStore, v_2: Scope.ArenaGlobal, v_4: String, v_6: String, v_8: U32, v_10: U32, v_11: Scope.ArenaGlobalScope, v_12: Scope.ArenaGlobalScope, v_13: Ast.SourceSpan) -> ArenaResult<ScopedState>:
   match v_2:
@@ -10567,16 +10540,25 @@ def check_definition_inferred_type(v_1: ArenaStore, v_3: Inference, v_5: String,
       v_42 = v_40
       {ArenaResult{v_1, ScopedStateFailure{v_42}} : ArenaResult<ScopedState>}
 
-def check_definition_finish(v_20041323: ArenaStore, v_0: IR.OptionalTerm, v_2: String, v_4: IR.Words, v_5: U32, v_6: U32, v_8: String, v_9: Scope.ArenaGlobalScope, v_10: Scope.ArenaGlobalScope, v_11: Ast.SourceSpan) -> ArenaResult<ScopedState>:
+def check_definition_declared_finish(store: ArenaStore, telescope: U32, binders: IR.Words, declared: U32, name: String, term: U32, body_ty: U32, stored: String, outer: Scope.ArenaGlobalScope, visible: Scope.ArenaGlobalScope, span: Ast.SourceSpan) -> ArenaResult<ScopedState>:
+  ArenaResult{next, +signature} = infer(store, telescope, [], visible)
+  ArenaResult{final, +lambda} = binders_lambda(next, binders, term)
+  check_definition_declared_type(final, signature, name, telescope, declared, lambda, body_ty, stored, outer, visible, span)
+
+def check_definition_finish(v_20041323: ArenaStore, v_0: IR.OptionalTerm, v_2: String, v_4: IR.Words, v_5: U32, v_6: U32, v_8: String, v_9: Scope.ArenaGlobalScope, v_10: Scope.ArenaGlobalScope, v_11: Ast.SourceSpan, v_12: Maybe<&2, U32>) -> ArenaResult<ScopedState>:
   match v_0:
     case IR.SomeTerm{+v_20041324}:
       v_14 = v_20041324
-      ArenaResult{v_20041325, +v_20041326} = binders_type(v_20041323, v_4, v_14)
-      v_17 = v_20041326
-      ArenaResult{v_20041327, +v_20041328} = infer(v_20041325, v_17, [], v_10)
-      ArenaResult{v_20041329, +v_20041330} = binders_lambda(v_20041327, v_4, v_5)
-      ArenaResult{v_20041331, +v_20041332} = check_definition_declared_type(v_20041329, v_20041328, v_2, v_17, v_14, v_20041330, v_6, v_8, v_9, v_10, v_11)
-      {ArenaResult{v_20041331, v_20041332} : ArenaResult<ScopedState>}
+      # The declared telescope was already built for recursive self-visibility
+      # over these exact binders and result type; infer/body-fit/canonicalize
+      # still run on it below. The fallback keeps this helper valid when no
+      # self-visibility product was built.
+      match v_12:
+        case Some{+telescope}:
+          check_definition_declared_finish(v_20041323, telescope, v_4, v_14, v_2, v_5, v_6, v_8, v_9, v_10, v_11)
+        case None{}:
+          ArenaResult{v_20041325, +v_20041326} = binders_type(v_20041323, v_4, v_14)
+          check_definition_declared_finish(v_20041325, v_20041326, v_4, v_14, v_2, v_5, v_6, v_8, v_9, v_10, v_11)
     case IR.NoTerm{}:
       ArenaResult{v_20041333, +v_20041334} = binders_type(v_20041323, v_4, v_6)
       v_23 = v_20041334
@@ -10585,24 +10567,24 @@ def check_definition_finish(v_20041323: ArenaStore, v_0: IR.OptionalTerm, v_2: S
       ArenaResult{v_20041339, +v_20041340} = check_definition_inferred_type(v_20041337, v_20041336, v_2, v_23, v_20041338, v_8, v_9, v_10, v_11)
       {ArenaResult{v_20041339, v_20041340} : ArenaResult<ScopedState>}
 
-def check_definition_uses_result(v_20041341: ArenaStore, v_2: Maybe<&2, Checked.Diagnostic>, v_3: IR.OptionalTerm, v_5: String, v_7: IR.Words, v_8: U32, v_9: U32, v_10: U32, v_12: Bool, v_14: String, v_15: Scope.ArenaGlobalScope, v_16: Scope.ArenaGlobalScope, v_17: Ast.SourceSpan, occurrence: IR.Occurrence) -> ArenaResult<ScopedState>:
+def check_definition_uses_result(v_20041341: ArenaStore, v_2: Maybe<&2, Checked.Diagnostic>, v_3: IR.OptionalTerm, v_5: String, v_7: IR.Words, v_8: U32, v_9: U32, v_10: U32, v_12: Bool, v_14: String, v_15: Scope.ArenaGlobalScope, v_16: Scope.ArenaGlobalScope, v_17: Ast.SourceSpan, occurrence: IR.Occurrence, telescope: Maybe<&2, U32>) -> ArenaResult<ScopedState>:
   match v_2:
     case Some{+v_20041342}:
       v_20 = v_20041342
       {ArenaResult{v_20041341, ScopedStateFailure{v_20}} : ArenaResult<ScopedState>}
     case None{}:
       ArenaResult{published_store, +published} = arena_publish_occurrence(v_20041341, occurrence)
-      ArenaResult{v_20041343, +v_20041344} = check_definition_finish(published_store, v_3, v_5, v_7, occurrence_term(published), v_10, v_14, v_15, v_16, v_17)
+      ArenaResult{v_20041343, +v_20041344} = check_definition_finish(published_store, v_3, v_5, v_7, occurrence_term(published), v_10, v_14, v_15, v_16, v_17, telescope)
       {ArenaResult{v_20041343, scoped_checked(v_20041344, published)} : ArenaResult<ScopedState>}
 
-def check_definition_term_result(v_20041345: ArenaStore, v_1: Inference, v_2: IR.OptionalTerm, v_4: String, v_6: IR.Words, v_7: U32, v_9: Bool, v_11: String, v_12: Scope.ArenaGlobalScope, v_13: Scope.ArenaGlobalScope, v_14: Ast.SourceSpan) -> ArenaResult<ScopedState>:
+def check_definition_term_result(v_20041345: ArenaStore, v_1: Inference, v_2: IR.OptionalTerm, v_4: String, v_6: IR.Words, v_7: U32, v_9: Bool, v_11: String, v_12: Scope.ArenaGlobalScope, v_13: Scope.ArenaGlobalScope, v_14: Ast.SourceSpan, v_15: List<&2, Binding>, v_16: Maybe<&2, U32>) -> ArenaResult<ScopedState>:
   match v_1:
     case Inferred{+v_20041346, +v_20041347, +occ_v_20041346}:
       v_18 = v_20041346
       v_19 = v_20041347
       v_22 = definition_expected_body(v_2, v_19)
-      ArenaResult{v_20041348, +v_20041349} = validate_definition_uses(v_20041345, v_9, v_4, v_6, v_7, v_22, v_14, v_13, True{})
-      ArenaResult{v_20041350, +v_20041351} = check_definition_uses_result(v_20041348, v_20041349, v_2, v_4, v_6, v_7, v_18, v_19, v_9, v_11, v_12, v_13, v_14, occ_v_20041346)
+      ArenaResult{v_20041348, +v_20041349} = validate_definition_uses(v_20041345, v_9, v_4, v_6, v_7, v_22, v_14, v_13, True{}, v_15)
+      ArenaResult{v_20041350, +v_20041351} = check_definition_uses_result(v_20041348, v_20041349, v_2, v_4, v_6, v_7, v_18, v_19, v_9, v_11, v_12, v_13, v_14, occ_v_20041346, v_16)
       {ArenaResult{v_20041350, v_20041351} : ArenaResult<ScopedState>}
     case InferenceFailure{+v_20041352}:
       v_26 = v_20041352
@@ -10620,18 +10602,17 @@ def check_definition_body(v_20041354: ArenaStore, v_0: IR.DefBody, v_2: String, 
   match v_0:
     case IR.DefTerm{+v_20041355}:
       v_15 = v_20041355
-      ArenaResult{v_20041356, +v_20041357} = definition_visible_self(v_20041354, v_5, v_2, v_9, v_4, v_11)
-      v_18 = v_20041357
-      ArenaResult{v_20041358, +v_20041359} = definition_term_inference(v_20041356, v_5, v_15, v_4, v_18)
-      v_21 = v_20041359
-      ArenaResult{v_20041360, +v_20041361} = check_definition_term_result(v_20041358, v_21, v_5, v_2, v_4, v_15, v_7, v_9, v_10, v_18, v_12)
+      ArenaResult{v_20041356, +self} = definition_visible_self(v_20041354, v_5, v_2, v_9, v_4, v_11)
+      v_18 = definition_self_scope(self)
+      ArenaResult{v_20041358, +body} = definition_term_inference(v_20041356, v_5, v_15, v_4, v_18)
+      ArenaResult{v_20041360, +v_20041361} = check_definition_term_result(v_20041358, definition_body_inference(body), v_5, v_2, v_4, v_15, v_7, v_9, v_10, v_18, v_12, definition_body_env(body), definition_self_telescope(self))
       {ArenaResult{v_20041360, v_20041361} : ArenaResult<ScopedState>}
     case IR.DefImports{+v_20041362}:
       v_24 = v_20041362
       ArenaResult{v_20041363, +v_20041364} = check_import_definition(v_20041354, v_2, v_4, v_5, v_24, v_9, v_10, v_11, v_12)
       {ArenaResult{v_20041363, v_20041364} : ArenaResult<ScopedState>}
 
-def definition_visible_self(v_1: ArenaStore, v_2: IR.OptionalTerm, v_4: String, v_6: String, v_7: IR.Words, v_8: Scope.ArenaGlobalScope) -> ArenaResult<Scope.ArenaGlobalScope>:
+def definition_visible_self(v_1: ArenaStore, v_2: IR.OptionalTerm, v_4: String, v_6: String, v_7: IR.Words, v_8: Scope.ArenaGlobalScope) -> ArenaResult<DefinitionSelf>:
   match v_2:
     case IR.SomeTerm{+v_12}:
       v_14 = v_12
@@ -10640,33 +10621,50 @@ def definition_visible_self(v_1: ArenaStore, v_2: IR.OptionalTerm, v_4: String, 
       # The bare local name and the canonical name differ only in their key
       # field, so both self entries carry this one retained telescope: the
       # local alias derives from the published record instead of repeating
-      # the publication step. Prepend order stays canonical-then-local.
+      # the publication step. Prepend order stays canonical-then-local. The
+      # same exact telescope is carried to definition finishing.
       v_50000332 = canonical_key(v_6, v_4)
       ArenaResult{v_25, +v_26} = arena_publish_global(v_18, Scope.ArenaGlobal{v_50000332, v_6, v_4, v_21, IR.NoTerm{}, Scope.GlobalDefinition{}})
       ArenaResult{v_31, +v_32} = global_scope_prepend(v_25, v_26, v_8)
       ArenaResult{v_36, +v_37} = global_scope_prepend(v_31, global_local_alias(v_26), v_32)
-      {ArenaResult{v_36, v_37} : ArenaResult<Scope.ArenaGlobalScope>}
+      {ArenaResult{v_36, DefinitionSelfValue{v_37, Some{v_21}}} : ArenaResult<DefinitionSelf>}
     case IR.NoTerm{}:
-      {ArenaResult{v_1, v_8} : ArenaResult<Scope.ArenaGlobalScope>}
+      {ArenaResult{v_1, DefinitionSelfValue{v_8, None{}}} : ArenaResult<DefinitionSelf>}
 
-def definition_term_inference_uncached(v_20041377: ArenaStore, v_0: IR.OptionalTerm, v_1: U32, v_3: IR.Words, v_4: Scope.ArenaGlobalScope) -> ArenaResult<Inference>:
+def definition_self_scope(value: DefinitionSelf) -> Scope.ArenaGlobalScope:
+  match value:
+    case DefinitionSelfValue{scope, _}: scope
+
+def definition_self_telescope(value: DefinitionSelf) -> Maybe<&2, U32>:
+  match value:
+    case DefinitionSelfValue{_, telescope}: telescope
+
+def definition_term_inference_uncached(v_20041377: ArenaStore, v_0: IR.OptionalTerm, v_1: U32, v_3: IR.Words, v_4: Scope.ArenaGlobalScope) -> ArenaResult<DefinitionBodyTyping>:
   match v_0:
     case IR.SomeTerm{+v_20041378}:
       v_7 = v_20041378
       ArenaResult{v_20041379, +v_20041380} = binders_env(v_20041377, v_3, [])
       ArenaResult{v_20041381, +v_20041382} = check_term(v_20041379, v_1, v_20041380, v_4, v_7)
-      {ArenaResult{v_20041381, v_20041382} : ArenaResult<Inference>}
+      {ArenaResult{v_20041381, DefinitionBodyTyped{v_20041382, v_20041380}} : ArenaResult<DefinitionBodyTyping>}
     case IR.NoTerm{}:
       ArenaResult{v_20041383, +v_20041384} = binders_env(v_20041377, v_3, [])
       ArenaResult{v_20041385, +v_20041386} = infer(v_20041383, v_1, v_20041384, v_4)
-      {ArenaResult{v_20041385, v_20041386} : ArenaResult<Inference>}
+      {ArenaResult{v_20041385, DefinitionBodyTyped{v_20041386, v_20041384}} : ArenaResult<DefinitionBodyTyping>}
 
-def scalar_frame_finish(result: ArenaResult<Inference>) -> ArenaResult<Inference>:
+def definition_body_inference(value: DefinitionBodyTyping) -> Inference:
+  match value:
+    case DefinitionBodyTyped{inference, _}: inference
+
+def definition_body_env(value: DefinitionBodyTyping) -> List<&2, Binding>:
+  match value:
+    case DefinitionBodyTyped{_, env}: env
+
+def scalar_frame_finish(result: ArenaResult<DefinitionBodyTyping>) -> ArenaResult<DefinitionBodyTyping>:
   match result:
     case ArenaResult{store, value}:
-      {ArenaResult{scalar_frame_store(store, Arena.SubstMemoEmpty{}), value} : ArenaResult<Inference>}
+      {ArenaResult{scalar_frame_store(store, Arena.SubstMemoEmpty{}), value} : ArenaResult<DefinitionBodyTyping>}
 
-def definition_term_inference(store: ArenaStore, ty: IR.OptionalTerm, term: U32, binders: IR.Words, +scope: Scope.ArenaGlobalScope) -> ArenaResult<Inference>:
+def definition_term_inference(store: ArenaStore, ty: IR.OptionalTerm, term: U32, binders: IR.Words, +scope: Scope.ArenaGlobalScope) -> ArenaResult<DefinitionBodyTyping>:
   scalar_frame_finish(definition_term_inference_uncached(scalar_frame_store(store, Arena.ScalarSchemaOpen{scope}), ty, term, binders, scope))
 
 def check_definition(v_20041387: ArenaStore, v_0: IR.Definition, v_2: String, v_3: Scope.ArenaGlobalScope, v_4: Scope.ArenaGlobalScope) -> ArenaResult<ScopedState>:
@@ -11120,8 +11118,8 @@ def predeclare_definition_signatures(store: ArenaStore, declarations: List<&2, I
     case Nil{}:
       {ArenaResult{store, visible} : ArenaResult<Scope.ArenaGlobalScope>}
     case IR.DefTop{IR.Definition{key, binders, result, _, _, _, +definition_occurrence, +definition_facts}} <> rest:
-      ArenaResult{next, scope} = definition_visible_self(store, result, key, namespace, binders, visible)
-      predeclare_definition_signatures(next, rest, namespace, scope)
+      ArenaResult{next, +self} = definition_visible_self(store, result, key, namespace, binders, visible)
+      predeclare_definition_signatures(next, rest, namespace, definition_self_scope(self))
     case _ <> rest:
       predeclare_definition_signatures(store, rest, namespace, visible)
 
