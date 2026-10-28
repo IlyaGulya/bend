@@ -114,6 +114,16 @@ def check_affine_result(result: Checked.CheckResult):
     case Checked.CheckFailure{Checked.Diagnostic{_, _, _, _, _}}: IO.print("checker-affine-duplicate-rejected")
     case Checked.CheckSuccess{_}: IO.print("checker-affine-duplicate-accepted")
 
+def check_application_affine_result(result: Checked.CheckResult):
+  match result:
+    case Checked.CheckFailure{Checked.Diagnostic{_, _, _, _, _}}: IO.print("checker-application-affine-duplicate-rejected")
+    case Checked.CheckSuccess{_}: IO.print("checker-application-affine-duplicate-accepted")
+
+def check_application_single_result(result: Checked.CheckResult):
+  match result:
+    case Checked.CheckFailure{Checked.Diagnostic{_, _, _, _, _}}: IO.print("checker-application-single-use-failed")
+    case Checked.CheckSuccess{_}: IO.print("checker-application-single-use-ok")
+
 def rejects_at_span(diagnostic: Checked.Diagnostic, expected: Ast.SourceSpan) -> Bool:
   match diagnostic:
     case Checked.Diagnostic{_, Ast.SpanOf{found_file, found_beg, found_end}, _, _, _}:
@@ -503,6 +513,49 @@ def main():
   duplicate_module = Ast.Module{ "affine.bend",  Nil{},  [Ast.DefTop{ duplicate}]}
   duplicate_loaded = Loader.LoadedModule{ "",  duplicate_module}
   check_affine_result(Checker.check([duplicate_loaded]))
+  # Application arguments are still source-walked and merged for the affine
+  # obligation: one QOne binder consumed by both arguments must be rejected even
+  # though the optimization resolves the applied function type once per App.
+  use_quant = Ast.Definition{
+     "use_quant",
+     [Ast.Binder{ Ast.QOne{},  "q",  0n,  Ast.TermQuant{},  sp}],
+     Ast.NoTerm{},
+     Ast.DefTerm{ Ast.TermVar{ "q",  0n,  sp}},
+     False{},
+     sp
+  }
+  application_duplicate = Ast.Definition{
+     "application_duplicate",
+     [Ast.Binder{ Ast.QOne{},  "q",  0n,  Ast.TermQuant{},  sp}],
+     Ast.NoTerm{},
+     Ast.DefTerm{ Ast.TermMin{
+       Ast.TermApp{ Ast.TermRef{ "use_quant",  sp},  Ast.TermVar{ "q",  0n,  sp},  sp},
+       Ast.TermApp{ Ast.TermRef{ "use_quant",  sp},  Ast.TermVar{ "q",  0n,  sp},  sp},
+       sp
+    }},
+     False{},
+     sp
+  }
+  application_affine_module = Ast.Module{ "application-affine.bend",  Nil{},  [Ast.DefTop{ use_quant}, Ast.DefTop{ application_duplicate}]}
+  application_affine_loaded = Loader.LoadedModule{ "",  application_affine_module}
+  # Each distinct QOne binder is consumed by exactly one application argument:
+  # mapping an argument more than once would over-count and reject this.
+  application_single_use = Ast.Definition{
+     "application_single_use",
+     [Ast.Binder{ Ast.QOne{},  "left",  0n,  Ast.TermQuant{},  sp}, Ast.Binder{ Ast.QOne{},  "right",  1n,  Ast.TermQuant{},  sp}],
+     Ast.NoTerm{},
+     Ast.DefTerm{ Ast.TermMin{
+       Ast.TermApp{ Ast.TermRef{ "use_quant",  sp},  Ast.TermVar{ "left",  1n,  sp},  sp},
+       Ast.TermApp{ Ast.TermRef{ "use_quant",  sp},  Ast.TermVar{ "right",  0n,  sp},  sp},
+       sp
+    }},
+     False{},
+     sp
+  }
+  application_single_module = Ast.Module{ "application-single.bend",  Nil{},  [Ast.DefTop{ use_quant}, Ast.DefTop{ application_single_use}]}
+  application_single_loaded = Loader.LoadedModule{ "",  application_single_module}
+  check_application_single_result(Checker.check([application_single_loaded]))
+  check_application_affine_result(Checker.check([application_affine_loaded]))
   loop_definition = Ast.Definition{
      "loop",
      Nil{},
@@ -598,6 +651,8 @@ def main():
 #| checker-nested-exhaustiveness-rejected
 #| checker-exhaustiveness-error
 #| checker-affine-duplicate-rejected
+#| checker-application-single-use-ok
+#| checker-application-affine-duplicate-rejected
 #| checker-termination-rejected
 #| checker-unsafe-recursion-ok
 #| checker-declaration-order-rejected
