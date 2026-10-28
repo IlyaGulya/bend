@@ -252,8 +252,8 @@ def scalar_bits(store: ArenaStore, id: U32, remaining: Nat, +globals: Scope.Aren
             case _ _: {ArenaResult{store, None{}} : ArenaResult<Maybe<&2, U32>>}
         case _: {ArenaResult{store, None{}} : ArenaResult<Maybe<&2, U32>>}
 
-def scalar_occurrence(store: ArenaStore, +term: U32, +ty: U32, name: String, fields: IR.Words, +globals: Scope.ArenaGlobalScope, span: Ast.SourceSpan) -> ArenaResult<Inference>:
-  match Scope.lookup_kind(name, Scope.GlobalConstructor{}, globals):
+def scalar_occurrence(store: ArenaStore, +term: U32, +ty: U32, value: Scope.ResolvedName, fields: IR.Words, +globals: Scope.ArenaGlobalScope, span: Ast.SourceSpan) -> ArenaResult<Inference>:
+  match Scope.resolved_global(value):
     case Some{global}:
       +symbol = checked_symbol(global)
       match symbol:
@@ -554,6 +554,91 @@ def checked_symbol(global: Scope.ArenaGlobal) -> IR.Symbol:
   match global:
     case Scope.ArenaGlobal{_, owner, local, ty, _, kind}:
       IR.Symbol{owner, local, checked_symbol_kind(kind), ty}
+
+# A reference resolves once per checking invocation and every consumer in that
+# invocation uses the returned declaration record. The only retained form is a
+# bounded transient memo slot keyed by the exact name-pool id, the requested
+# global kind and the checked definition frame's serial; it is readable only
+# while that frame is open (resolution_frame_begin/end around
+# definition_term_inference) and its typing closure threads the frame's exact
+# scope. Opening a frame bumps the serial, so a second frame can never read a
+# fact from the first even if no arena rewind separates them. Nothing here maps
+# a term to a type: a name id may still resolve differently under another scope,
+# and a hit answers only the declaration that scope selected.
+def resolution_frame_begin(store: ArenaStore, scope: Scope.ArenaGlobalScope) -> ArenaStore:
+  match store:
+    case ArenaStore{source, transient}: ArenaStore{Arena.resolution_frame_open(source, scope), transient}
+
+def resolution_frame_end(store: ArenaStore) -> ArenaStore:
+  match store:
+    case ArenaStore{source, transient}: ArenaStore{Arena.resolution_frame_clear(source), transient}
+
+def resolution_frame_finish(result: ArenaResult<DefinitionBodyTyping>) -> ArenaResult<DefinitionBodyTyping>:
+  match result:
+    case ArenaResult{store, value}: {ArenaResult{resolution_frame_end(store), value} : ArenaResult<DefinitionBodyTyping>}
+
+def resolution_frame(store: ArenaStore) -> ArenaResult<Maybe<&2, Nat>>:
+  match store:
+    case ArenaStore{source, transient}:
+      match Arena.resolution_frame_get(source):
+        case Tuple{retained, found}: {ArenaResult{ArenaStore{retained, transient}, found} : ArenaResult<Maybe<&2, Nat>>}
+
+def resolved_name_kind_tag(kind: Scope.GlobalKind) -> U32:
+  match kind:
+    case Scope.GlobalFamily{}: 1
+    case Scope.GlobalConstructor{}: 2
+    case Scope.GlobalDefinition{}: 3
+
+def resolved_name_plain(store: ArenaStore, +name_id: U32, scope: Scope.ArenaGlobalScope) -> ArenaResult<Scope.ResolvedName>:
+  ArenaResult{store, +name} = arena_name_text(store, name_id)
+  {ArenaResult{store, Scope.resolved(name, scope)} : ArenaResult<Scope.ResolvedName>}
+
+def resolved_name_kind_plain(store: ArenaStore, +name_id: U32, +kind: Scope.GlobalKind, scope: Scope.ArenaGlobalScope) -> ArenaResult<Scope.ResolvedName>:
+  ArenaResult{store, +name} = arena_name_text(store, name_id)
+  {ArenaResult{store, Scope.resolved_kind(name, kind, scope)} : ArenaResult<Scope.ResolvedName>}
+
+def resolved_name_store(store: ArenaStore, +name_id: U32, +kind_tag: U32, +serial: Nat, resolved: Scope.ResolvedName) -> ArenaResult<Scope.ResolvedName>:
+  match store:
+    case ArenaStore{source, transient}:
+      {ArenaResult{ArenaStore{source, Arena.resolved_ref_put(transient, name_id, kind_tag, resolved, serial)}, resolved} : ArenaResult<Scope.ResolvedName>}
+
+def resolved_name_hit(store: ArenaStore, hit: Maybe<&2, Scope.ResolvedName>, +name_id: U32, +kind_tag: U32, +serial: Nat, scope: Scope.ArenaGlobalScope) -> ArenaResult<Scope.ResolvedName>:
+  match hit:
+    case Some{resolved}: {ArenaResult{store, resolved} : ArenaResult<Scope.ResolvedName>}
+    case None{}:
+      ArenaResult{store, +resolved} = resolved_name_plain(store, name_id, scope)
+      resolved_name_store(store, name_id, kind_tag, serial, resolved)
+
+def resolved_kind_hit(store: ArenaStore, hit: Maybe<&2, Scope.ResolvedName>, +name_id: U32, +kind: Scope.GlobalKind, +kind_tag: U32, +serial: Nat, scope: Scope.ArenaGlobalScope) -> ArenaResult<Scope.ResolvedName>:
+  match hit:
+    case Some{resolved}: {ArenaResult{store, resolved} : ArenaResult<Scope.ResolvedName>}
+    case None{}:
+      ArenaResult{store, +resolved} = resolved_name_kind_plain(store, name_id, kind, scope)
+      resolved_name_store(store, name_id, kind_tag, serial, resolved)
+
+def resolved_name_framed(store: ArenaStore, +name_id: U32, +kind_tag: U32, +serial: Nat, scope: Scope.ArenaGlobalScope) -> ArenaResult<Scope.ResolvedName>:
+  match store:
+    case ArenaStore{source, transient}:
+      match Arena.resolved_ref_get(transient, name_id, kind_tag, serial):
+        case Tuple{arena, hit}: resolved_name_hit(ArenaStore{source, arena}, hit, name_id, kind_tag, serial, scope)
+
+def resolved_name_kind_framed(store: ArenaStore, +name_id: U32, +kind: Scope.GlobalKind, +kind_tag: U32, +serial: Nat, scope: Scope.ArenaGlobalScope) -> ArenaResult<Scope.ResolvedName>:
+  match store:
+    case ArenaStore{source, transient}:
+      match Arena.resolved_ref_get(transient, name_id, kind_tag, serial):
+        case Tuple{arena, hit}: resolved_kind_hit(ArenaStore{source, arena}, hit, name_id, kind, kind_tag, serial, scope)
+
+def resolved_name(store: ArenaStore, +name_id: U32, scope: Scope.ArenaGlobalScope) -> ArenaResult<Scope.ResolvedName>:
+  ArenaResult{store, +frame} = resolution_frame(store)
+  match frame:
+    case None{}: resolved_name_plain(store, name_id, scope)
+    case Some{+serial}: resolved_name_framed(store, name_id, 0, serial, scope)
+
+def resolved_name_kind(store: ArenaStore, +name_id: U32, +kind: Scope.GlobalKind, scope: Scope.ArenaGlobalScope) -> ArenaResult<Scope.ResolvedName>:
+  ArenaResult{store, +frame} = resolution_frame(store)
+  match frame:
+    case None{}: resolved_name_kind_plain(store, name_id, kind, scope)
+    case Some{+serial}: resolved_name_kind_framed(store, name_id, kind, resolved_name_kind_tag(kind), serial, scope)
 
 def occurrence_retype(occurrence: IR.Occurrence, term: U32, ty: U32) -> IR.Occurrence:
   match occurrence:
@@ -1714,10 +1799,8 @@ def whnf_application(v_20033053: ArenaStore, v_0: U32, v_2: Nat, v_3: U32, v_4: 
       ArenaResult{v_20033069, +v_20033070} = whnf_beta(v_20033054, v_2, v_4, v_14, v_5)
       {ArenaResult{v_20033069, v_20033070} : ArenaResult<U32>}
     case Arena.TermRef{+v_20033073, +v_20033075}:
-      ArenaResult{v_20033076, +v_20033077} = arena_name_text(v_20033054, v_20033073)
-      +v_20033074 = v_20033077
-      v_19 = v_20033074
-      ArenaResult{v_20033078, +v_20033079} = whnf_application_global(v_20033076, Scope.lookup(v_19, v_5), v_2, v_3, v_4, v_5)
+      ArenaResult{v_20033076, +v_20033074} = resolved_name(v_20033054, v_20033073, v_5)
+      ArenaResult{v_20033078, +v_20033079} = whnf_application_global(v_20033076, Scope.resolved_global(v_20033074), v_2, v_3, v_4, v_5)
       {ArenaResult{v_20033078, v_20033079} : ArenaResult<U32>}
     case _:
       {ArenaResult{v_20033054, v_3} : ArenaResult<U32>}
@@ -1947,10 +2030,8 @@ def whnf(v_20033248: ArenaStore, v_1: Nat, v_2: U32, v_3: Scope.ArenaGlobalScope
           ArenaResult{v_20033300, +v_20033301} = family_lowered_whnf(v_20033298, v_5, v_2, v_3, v_20033299)
           {ArenaResult{v_20033300, v_20033301} : ArenaResult<U32>}
         case Arena.TermRef{+v_20033304, +v_20033306}:
-          ArenaResult{v_20033307, +v_20033308} = arena_name_text(v_20033250, v_20033304)
-          +v_20033305 = v_20033308
-          v_45 = v_20033305
-          ArenaResult{v_20033309, +v_20033310} = whnf_ref_result(v_20033307, Scope.lookup(v_45, v_3), v_5, v_2, v_3)
+          ArenaResult{v_20033307, +v_20033305} = resolved_name(v_20033250, v_20033304, v_3)
+          ArenaResult{v_20033309, +v_20033310} = whnf_ref_result(v_20033307, Scope.resolved_global(v_20033305), v_5, v_2, v_3)
           {ArenaResult{v_20033309, v_20033310} : ArenaResult<U32>}
         case Arena.TermApp{+v_20033314, +v_20033315, +v_20033316}:
           v_51 = v_20033314
@@ -3344,28 +3425,24 @@ def check_infer_term_sort(v_1: ArenaStore, v_3: Inference, v_5: U32, v_6: Ast.So
       v_39 = v_37
       {ArenaResult{v_1, InferenceFailure{v_39}} : ArenaResult<Inference>}
 
-def infer_global_reference(v_1: Maybe<&2, Scope.ArenaGlobal>, v_3: String, v_4: U32, v_5: Ast.SourceSpan) -> Inference:
-  match v_1:
-    case Some{+v_20034793}:
-      +v_8 = v_20034793
-      match v_8:
-        case Scope.ArenaGlobal{+v_20034794, +v_20034795, +v_20034796, +v_20034797, +v_20034798, +v_20034799}:
-          v_18 = v_20034797
-          Inferred{v_4, v_18, IR.TypedOccurrence{v_4, v_18, None{}, Some{checked_symbol(v_8)}, Nil{}, Nil{}}}
-    case None{}:
-      fail(v_5, String.append("unknown name ", v_3), "a declared name", v_3)
+def infer_global_reference(value: Scope.ResolvedName, v_4: U32, v_5: Ast.SourceSpan) -> Inference:
+  match value:
+    case Scope.ResolvedName{_, _, Some{global}}:
+      match global:
+        case Scope.ArenaGlobal{_, _, _, ty, _, _}:
+          Inferred{v_4, ty, IR.TypedOccurrence{v_4, ty, None{}, Some{checked_symbol(global)}, Nil{}, Nil{}}}
+    case Scope.ResolvedName{name, _, None{}}:
+      fail(v_5, String.append("unknown name ", name), "a declared name", name)
 
-def infer_global_adt(v_1: ArenaStore, v_3: Maybe<&2, Scope.ArenaGlobal>, v_5: String, v_6: IR.Words, v_8: U32, v_9: Ast.SourceSpan, v_12: List<&2, Binding>, v_13: Scope.ArenaGlobalScope) -> ArenaResult<Inference>:
-  match v_3:
-    case Some{+v_18}:
-      +v_20 = v_18
-      match v_20:
-        case Scope.ArenaGlobal{+v_27, +v_28, +v_29, +v_30, +v_31, +v_32}:
-          v_34 = v_30
-          ArenaResult{v_38, +v_39} = infer_adt_args(v_1, v_6, v_34, v_12, v_13, v_8, v_9)
-          {ArenaResult{v_38, inference_symbol(v_39, checked_symbol(v_20))} : ArenaResult<Inference>}
-    case None{}:
-      v_50000070 = fail(v_9, String.append("unknown datatype ", v_5), "a declared datatype", v_5)
+def infer_global_adt(v_1: ArenaStore, value: Scope.ResolvedName, v_6: IR.Words, v_8: U32, v_9: Ast.SourceSpan, v_12: List<&2, Binding>, v_13: Scope.ArenaGlobalScope) -> ArenaResult<Inference>:
+  match value:
+    case Scope.ResolvedName{_, _, Some{global}}:
+      match global:
+        case Scope.ArenaGlobal{_, _, _, ty, _, _}:
+          ArenaResult{v_38, +v_39} = infer_adt_args(v_1, v_6, ty, v_12, v_13, v_8, v_9)
+          {ArenaResult{v_38, inference_symbol(v_39, checked_symbol(global))} : ArenaResult<Inference>}
+    case Scope.ResolvedName{name, _, None{}}:
+      v_50000070 = fail(v_9, String.append("unknown datatype ", name), "a declared datatype", name)
       {ArenaResult{v_1, v_50000070} : ArenaResult<Inference>}
 
 def binding_type_at(v_20034810: ArenaStore, v_1: Binding, v_3: Nat) -> ArenaResult<U32>:
@@ -3635,20 +3712,14 @@ def infer_raw(v_1: ArenaStore, v_3: U32, v_6: List<&2, Binding>, v_7: Scope.Aren
       v_50000080 = fail(v_47, "bang marker is only valid on a named application head", "a named function application", "a standalone bang marker")
       {ArenaResult{v_14, v_50000080} : ArenaResult<Inference>}
     case Arena.TermRef{+v_51, +v_52}:
-      ArenaResult{v_56, +v_57} = arena_name_text(v_14, v_51)
-      +v_59 = v_57
-      v_61 = v_59
-      v_63 = v_52
-      v_50000081 = infer_global_reference(Scope.lookup(v_61, v_7), v_61, v_3, v_63)
+      ArenaResult{v_56, +v_59} = resolved_name(v_14, v_51, v_7)
+      v_50000081 = infer_global_reference(v_59, v_3, v_52)
       {ArenaResult{v_56, v_50000081} : ArenaResult<Inference>}
     case Arena.TermAdt{+v_72, +v_73, +v_74, +v_75, +v_76, +v_77}:
-      ArenaResult{v_81, +v_82} = arena_name_text(v_14, v_72)
-      +v_84 = v_82
+      ArenaResult{v_81, +v_84} = resolved_name(v_14, v_72, v_7)
       +v_86 = IR.Words{v_73, v_74}
-      v_88 = v_84
-      v_90 = v_86
       v_92 = v_77
-      ArenaResult{v_97, +v_98} = infer_global_adt(v_81, Scope.lookup(v_88, v_7), v_88, v_90, v_3, v_92, v_6, v_7)
+      ArenaResult{v_97, +v_98} = infer_global_adt(v_81, v_84, v_86, v_3, v_92, v_6, v_7)
       {ArenaResult{v_97, v_98} : ArenaResult<Inference>}
     case Arena.TermFill{+v_103, +v_104, +v_105, +v_106}:
       +v_108 = IR.Words{v_104, v_105}
@@ -3855,14 +3926,12 @@ def canonicalize_pattern(v_1: ArenaStore, v_3: U32, v_4: Scope.ArenaGlobalScope)
       ArenaResult{v_44, +v_45} = arena_put_pattern(v_11, Arena.PatternVar{v_29, v_31, v_33, v_35})
       {ArenaResult{v_44, v_45} : ArenaResult<U32>}
     case Arena.PatternCtr{+v_50, +v_51, +v_52, +v_53}:
-      ArenaResult{v_57, +v_58} = arena_name_text(v_11, v_50)
-      +v_60 = v_58
+      ArenaResult{v_57, +v_60} = resolved_name(v_11, v_50, v_4)
       +v_62 = IR.Words{v_51, v_52}
-      v_64 = v_60
       v_66 = v_62
       v_68 = v_53
       ArenaResult{v_72, +v_73} = canonicalize_patterns(v_57, v_66, v_4)
-      ArenaResult{v_78, +v_79} = arena_name(v_72, Scope.canonical_name(v_64, v_4))
+      ArenaResult{v_78, +v_79} = arena_name(v_72, Scope.resolved_canonical(v_60))
       v_50000085 = arena_words_start(v_73)
       v_50000086 = arena_words_count(v_73)
       ArenaResult{v_85, +v_86} = arena_put_pattern(v_78, Arena.PatternCtr{v_79, v_50000085, v_50000086, v_68})
@@ -3891,11 +3960,9 @@ def canonicalize_term(v_1: ArenaStore, v_3: U32, v_4: Scope.ArenaGlobalScope) ->
       ArenaResult{v_40, +v_41} = arena_put_node(v_11, Arena.TermVar{v_27, v_29, v_31})
       {ArenaResult{v_40, v_41} : ArenaResult<U32>}
     case Arena.TermRef{+v_44, +v_45}:
-      ArenaResult{v_49, +v_50} = arena_name_text(v_11, v_44)
-      +v_52 = v_50
-      v_54 = v_52
+      ArenaResult{v_49, +v_52} = resolved_name(v_11, v_44, v_4)
       v_56 = v_45
-      ArenaResult{v_61, +v_62} = arena_name(v_49, Scope.canonical_name(v_54, v_4))
+      ArenaResult{v_61, +v_62} = arena_name(v_49, Scope.resolved_canonical(v_52))
       ArenaResult{v_66, +v_67} = arena_put_node(v_61, Arena.TermRef{v_62, v_56})
       {ArenaResult{v_66, v_67} : ArenaResult<U32>}
     case Arena.TermBang{+v_70, +v_71}:
@@ -6571,13 +6638,13 @@ def check_term_constructor_global_result(v_1: ArenaStore, v_3: Maybe<&2, Scope.A
       v_50000229 = fail(v_7, String.append("unknown constructor ", v_5), "a declared constructor", v_5)
       {ArenaResult{v_1, v_50000229} : ArenaResult<Inference>}
 
-def check_term_constructor_allowed(v_1: ArenaStore, v_3: Bool, v_5: String, v_6: IR.Words, v_7: Ast.SourceSpan, v_8: IR.Words, v_9: IR.Names, v_11: U32, v_14: List<&2, Binding>, v_15: Scope.ArenaGlobalScope, v_17: U32, v_19: U32) -> ArenaResult<Inference>:
+def check_term_constructor_allowed(v_1: ArenaStore, v_3: Bool, v_5: Scope.ResolvedName, v_6: IR.Words, v_7: Ast.SourceSpan, v_8: IR.Words, v_9: IR.Names, v_11: U32, v_14: List<&2, Binding>, v_15: Scope.ArenaGlobalScope, v_17: U32, v_19: U32) -> ArenaResult<Inference>:
   match v_3:
     case True{}:
-      v_50000230 = fail(v_7, "constructor is excluded from this datatype goal", "a remaining constructor", v_5)
+      v_50000230 = fail(v_7, "constructor is excluded from this datatype goal", "a remaining constructor", Scope.resolved_text(v_5))
       {ArenaResult{v_1, v_50000230} : ArenaResult<Inference>}
     case False{}:
-      ArenaResult{v_28, +v_29} = check_term_constructor_global_result(v_1, Scope.lookup_kind(v_5, Scope.GlobalConstructor{}, v_15), v_5, v_6, v_7, v_8, v_11, v_14, v_15, v_17, v_19)
+      ArenaResult{v_28, +v_29} = check_term_constructor_global_result(v_1, Scope.resolved_global(v_5), Scope.resolved_text(v_5), v_6, v_7, v_8, v_11, v_14, v_15, v_17, v_19)
       {ArenaResult{v_28, v_29} : ArenaResult<Inference>}
 
 # Exact bounded scalar typing proof. Names select scope entries; every selected
@@ -6611,23 +6678,32 @@ def scalar_global_identity(left: Maybe<&2, Scope.ArenaGlobal>, right: Maybe<&2, 
 def scalar_reference_constructor(expected: String) -> Bool:
   Bool.or(String.eq(expected, "True"), Bool.or(String.eq(expected, "False"), Bool.or(String.eq(expected, "Zero"), Bool.or(String.eq(expected, "Succ"), Bool.or(String.eq(expected, "WNil"), String.eq(expected, "WCon"))))))
 
-def scalar_reference_identity(+name: String, +ns: String, +globals: Scope.ArenaGlobalScope, +expected: String) -> Bool:
-  match scalar_reference_constructor(expected):
-    case True{}:
-      scalar_global_identity(Scope.lookup_kind(name, Scope.GlobalConstructor{}, globals), Scope.lookup_kind(canonical_key(ns, expected), Scope.GlobalConstructor{}, globals))
-    case False{}:
-      match String.eq(expected, "Word"):
-        case True{}:
-          scalar_global_identity(Scope.lookup(name, globals), Scope.lookup_kind(canonical_key(ns, expected), Scope.GlobalDefinition{}, globals))
-        case False{}:
-          scalar_global_identity(Scope.lookup(name, globals), Scope.lookup_kind(canonical_key(ns, expected), Scope.GlobalFamily{}, globals))
+# The original proof selects by the expected name's role: a literal reference
+# selects the constructor bucket, everything else the generic family-first
+# bucket. Both forms consume the fact resolved for that exact selection.
+def scalar_reference_identity_ctor(value: Scope.ResolvedName, +ns: String, +globals: Scope.ArenaGlobalScope, +expected: String) -> Bool:
+  scalar_global_identity(Scope.resolved_global(value), Scope.lookup_kind(canonical_key(ns, expected), Scope.GlobalConstructor{}, globals))
 
+def scalar_reference_identity_bucket(value: Scope.ResolvedName, +ns: String, +globals: Scope.ArenaGlobalScope, +expected: String) -> Bool:
+  match String.eq(expected, "Word"):
+    case True{}:
+      scalar_global_identity(Scope.resolved_global(value), Scope.lookup_kind(canonical_key(ns, expected), Scope.GlobalDefinition{}, globals))
+    case False{}:
+      scalar_global_identity(Scope.resolved_global(value), Scope.lookup_kind(canonical_key(ns, expected), Scope.GlobalFamily{}, globals))
 
 def scalar_schema_name(store: ArenaStore, id: U32, +ns: String, +globals: Scope.ArenaGlobalScope, +expected: String, canonical: Bool) -> ArenaResult<Bool>:
-  ArenaResult{store, +name} = arena_name_text(store, id)
   match canonical:
-    case True{}: {ArenaResult{store, scalar_reference_identity(name, ns, globals, expected)} : ArenaResult<Bool>}
-    case False{}: {ArenaResult{store, String.eq(name, expected)} : ArenaResult<Bool>}
+    case True{}:
+      match scalar_reference_constructor(expected):
+        case True{}:
+          ArenaResult{store, +value} = resolved_name_kind(store, id, Scope.GlobalConstructor{}, globals)
+          {ArenaResult{store, scalar_reference_identity_ctor(value, ns, globals, expected)} : ArenaResult<Bool>}
+        case False{}:
+          ArenaResult{store, +value} = resolved_name(store, id, globals)
+          {ArenaResult{store, scalar_reference_identity_bucket(value, ns, globals, expected)} : ArenaResult<Bool>}
+    case False{}:
+      ArenaResult{store, +name} = arena_name_text(store, id)
+      {ArenaResult{store, String.eq(name, expected)} : ArenaResult<Bool>}
 
 def scalar_schema_1(store: ArenaStore, id: U32, +ns: String, +globals: Scope.ArenaGlobalScope) -> ArenaResult<Bool>:
   ArenaResult{store, +node} = arena_get_node(store, id)
@@ -7161,8 +7237,8 @@ def scalar_literal_name_hit(key: U32, saved: Maybe<&2, U32>) -> Bool:
     case None{}: False{}
 
 def scalar_closed_bit_name(store: ArenaStore, key: U32, +ns: String, +globals: Scope.ArenaGlobalScope) -> ArenaResult<Bool>:
-  ArenaResult{store, +name} = arena_name_text(store, key)
-  {ArenaResult{store, Bool.or(scalar_reference_identity(name, ns, globals, "True"), scalar_reference_identity(name, ns, globals, "False"))} : ArenaResult<Bool>}
+  ArenaResult{store, +value} = resolved_name_kind(store, key, Scope.GlobalConstructor{}, globals)
+  {ArenaResult{store, Bool.or(scalar_reference_identity_ctor(value, ns, globals, "True"), scalar_reference_identity_ctor(value, ns, globals, "False"))} : ArenaResult<Bool>}
 
 def scalar_literal_bit_names(+names: ScalarLiteralNames, key: U32, valid: Bool) -> ScalarLiteralNames:
   match valid:
@@ -7310,10 +7386,19 @@ def scalar_schema_prepared(store: ArenaStore, +selected: Scope.ArenaGlobal, +ns:
     case ArenaStore{source, transient}:
       scalar_schema_prepared_result(transient, selected, ns, globals, local, Arena.scalar_frame_get(source))
 
-def scalar_certificate_global(store: ArenaStore, +selected: Maybe<&2, Scope.ArenaGlobal>, +goal: String, start: U32, +globals: Scope.ArenaGlobalScope) -> ArenaResult<Bool>:
+def scalar_reference_identity_goal(store: ArenaStore, +goal_id: U32, goal: Scope.ResolvedName, +ns: String, +globals: Scope.ArenaGlobalScope, +expected: String) -> ArenaResult<Bool>:
+  match scalar_reference_constructor(expected):
+    case True{}:
+      ArenaResult{store, +constructor} = resolved_name_kind(store, goal_id, Scope.GlobalConstructor{}, globals)
+      {ArenaResult{store, scalar_reference_identity_ctor(constructor, ns, globals, expected)} : ArenaResult<Bool>}
+    case False{}:
+      {ArenaResult{store, scalar_reference_identity_bucket(goal, ns, globals, expected)} : ArenaResult<Bool>}
+
+def scalar_certificate_global(store: ArenaStore, +selected: Maybe<&2, Scope.ArenaGlobal>, goal_id: U32, goal: Scope.ResolvedName, start: U32, +globals: Scope.ArenaGlobalScope) -> ArenaResult<Bool>:
   match selected:
     case Some{Scope.ArenaGlobal{key, ns, local, ty, IR.NoTerm{}, Scope.GlobalConstructor{}}}:
-      match Bool.and(String.eq(Scope.canonical_name(goal, globals), key), Bool.and(scalar_global_identity(selected, Scope.lookup_kind(canonical_key(ns, local), Scope.GlobalConstructor{}, globals)), scalar_reference_identity(goal, ns, globals, local))):
+      ArenaResult{store, +reference} = scalar_reference_identity_goal(store, goal_id, goal, ns, globals, local)
+      match Bool.and(String.eq(Scope.resolved_canonical(goal), key), Bool.and(scalar_global_identity(selected, Scope.lookup_kind(canonical_key(ns, local), Scope.GlobalConstructor{}, globals)), reference)):
         case True{}:
           ArenaResult{store, +schemas} = scalar_schema_prepared(store, Scope.ArenaGlobal{key, ns, local, ty, IR.NoTerm{}, Scope.GlobalConstructor{}}, ns, globals, local)
           match schemas:
@@ -7324,7 +7409,7 @@ def scalar_certificate_global(store: ArenaStore, +selected: Maybe<&2, Scope.Aren
         case False{}: {ArenaResult{store, False{}} : ArenaResult<Bool>}
     case _: {ArenaResult{store, False{}} : ArenaResult<Bool>}
 
-def scalar_constructor_certificate(store: ArenaStore, goal_key: U32, goal_args: U32, exclusions: U32, +name: String, fields: IR.Words, +globals: Scope.ArenaGlobalScope) -> ArenaResult<Bool>:
+def scalar_constructor_certificate(store: ArenaStore, goal_key: U32, goal_args: U32, exclusions: U32, constructor: Scope.ResolvedName, fields: IR.Words, +globals: Scope.ArenaGlobalScope) -> ArenaResult<Bool>:
   match U32.is_eq(goal_args, 0):
     case True{}:
       match U32.is_eq(exclusions, 0):
@@ -7333,22 +7418,22 @@ def scalar_constructor_certificate(store: ArenaStore, goal_key: U32, goal_args: 
             case IR.Words{start, count}:
               match U32.is_eq(count, 1):
                 case True{}:
-                  ArenaResult{store, +goal} = arena_name_text(store, goal_key)
-                  scalar_certificate_global(store, Scope.lookup_kind(name, Scope.GlobalConstructor{}, globals), goal, start, globals)
+                  ArenaResult{store, +goal} = resolved_name(store, goal_key, globals)
+                  scalar_certificate_global(store, Scope.resolved_global(constructor), goal_key, goal, start, globals)
                 case False{}: {ArenaResult{store, False{}} : ArenaResult<Bool>}
             case _: {ArenaResult{store, False{}} : ArenaResult<Bool>}
         case False{}: {ArenaResult{store, False{}} : ArenaResult<Bool>}
     case False{}: {ArenaResult{store, False{}} : ArenaResult<Bool>}
 
-def scalar_constructor_dispatch(store: ArenaStore, certified: Bool, name: String, fields: IR.Words, span: Ast.SourceSpan, parameters: IR.Words, exclusions: IR.Names, goal: U32, env: List<&2, Binding>, globals: Scope.ArenaGlobalScope, term: U32, view: U32) -> ArenaResult<Inference>:
+def scalar_constructor_dispatch(store: ArenaStore, certified: Bool, constructor: Scope.ResolvedName, fields: IR.Words, span: Ast.SourceSpan, parameters: IR.Words, exclusions: IR.Names, goal: U32, env: List<&2, Binding>, globals: Scope.ArenaGlobalScope, term: U32, view: U32) -> ArenaResult<Inference>:
   match certified:
-    case True{}: scalar_occurrence(store, term, goal, name, fields, globals, span)
+    case True{}: scalar_occurrence(store, term, goal, constructor, fields, globals, span)
     case False{}:
-      ArenaResult{store, +excluded} = has_canonical_name(store, name, exclusions, globals)
-      check_term_constructor_allowed(store, excluded, name, fields, span, parameters, exclusions, goal, env, globals, term, view)
+      ArenaResult{store, +excluded} = has_canonical_name(store, Scope.resolved_text(constructor), exclusions, globals)
+      check_term_constructor_allowed(store, excluded, constructor, fields, span, parameters, exclusions, goal, env, globals, term, view)
 
 
-def check_term_constructor_view(v_1: ArenaStore, v_3: U32, v_5: String, v_6: IR.Words, v_7: Ast.SourceSpan, v_9: U32, v_12: List<&2, Binding>, v_13: Scope.ArenaGlobalScope, v_15: U32) -> ArenaResult<Inference>:
+def check_term_constructor_view(v_1: ArenaStore, v_3: U32, v_5: Scope.ResolvedName, v_6: IR.Words, v_7: Ast.SourceSpan, v_9: U32, v_12: List<&2, Binding>, v_13: Scope.ArenaGlobalScope, v_15: U32) -> ArenaResult<Inference>:
   ArenaResult{v_22, +v_23} = arena_get_node(v_1, v_3)
   match v_23:
     case Arena.TermAdt{+v_30, +v_31, +v_32, +v_33, +v_34, +v_35}:
@@ -7479,14 +7564,12 @@ def check_term_raw(v_20037884: ArenaStore, v_0: U32, v_3: List<&2, Binding>, v_4
     case Arena.TermString{chars, names, span}:
       check_string_literal(v_20037885, v_0, chars, names, span, v_3, v_4, v_5)
     case Arena.TermCtr{+v_20037917, +v_20037919, +v_20037920, +v_20037922}:
-      ArenaResult{v_20037923, +v_20037924} = arena_name_text(v_20037885, v_20037917)
-      +v_20037918 = v_20037924
+      ArenaResult{v_20037923, +v_20037918} = resolved_name_kind(v_20037885, v_20037917, Scope.GlobalConstructor{}, v_4)
       +v_20037921 = IR.Words{v_20037919, v_20037920}
-      v_28 = v_20037918
       v_29 = v_20037921
       v_30 = v_20037922
       ArenaResult{v_20037925, +v_20037926} = whnf(v_20037923, 64n, v_5, v_4)
-      ArenaResult{v_20037927, +v_20037928} = check_term_constructor_view(v_20037925, v_20037926, v_28, v_29, v_30, v_5, v_3, v_4, v_0)
+      ArenaResult{v_20037927, +v_20037928} = check_term_constructor_view(v_20037925, v_20037926, v_20037918, v_29, v_30, v_5, v_3, v_4, v_0)
       {ArenaResult{v_20037927, v_20037928} : ArenaResult<Inference>}
     case Arena.TermMat{+v_20037933, +v_20037935, +v_20037936, +v_20037937}:
       ArenaResult{v_20037938, +v_20037939} = arena_name_text(v_20037885, v_20037933)
@@ -7759,10 +7842,8 @@ def function_type_of(v_1: ArenaStore, v_3: U32, v_6: List<&2, Binding>, v_7: Sco
       ArenaResult{v_73, +v_74} = function_type_of_binding_result(v_15, lookup_binding(v_67, v_6), List.length(&2, Binding, v_6))
       {ArenaResult{v_73, v_74} : ArenaResult<Maybe<&2, U32>>}
     case Arena.TermRef{+v_77, +v_78}:
-      ArenaResult{v_82, +v_83} = arena_name_text(v_15, v_77)
-      +v_85 = v_83
-      v_87 = v_85
-      v_50000238 = function_type_of_global_result(Scope.lookup(v_87, v_7))
+      ArenaResult{v_82, +v_85} = resolved_name(v_15, v_77, v_7)
+      v_50000238 = function_type_of_global_result(Scope.resolved_global(v_85))
       {ArenaResult{v_82, v_50000238} : ArenaResult<Maybe<&2, U32>>}
     case Arena.TermApp{+v_93, +v_94, +v_95}:
       v_97 = v_93
@@ -10665,7 +10746,7 @@ def scalar_frame_finish(result: ArenaResult<DefinitionBodyTyping>) -> ArenaResul
       {ArenaResult{scalar_frame_store(store, Arena.SubstMemoEmpty{}), value} : ArenaResult<DefinitionBodyTyping>}
 
 def definition_term_inference(store: ArenaStore, ty: IR.OptionalTerm, term: U32, binders: IR.Words, +scope: Scope.ArenaGlobalScope) -> ArenaResult<DefinitionBodyTyping>:
-  scalar_frame_finish(definition_term_inference_uncached(scalar_frame_store(store, Arena.ScalarSchemaOpen{scope}), ty, term, binders, scope))
+  resolution_frame_finish(scalar_frame_finish(definition_term_inference_uncached(resolution_frame_begin(scalar_frame_store(store, Arena.ScalarSchemaOpen{scope}), scope), ty, term, binders, scope)))
 
 def check_definition(v_20041387: ArenaStore, v_0: IR.Definition, v_2: String, v_3: Scope.ArenaGlobalScope, v_4: Scope.ArenaGlobalScope) -> ArenaResult<ScopedState>:
   match v_0:

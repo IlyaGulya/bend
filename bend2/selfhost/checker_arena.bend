@@ -71,6 +71,8 @@ type SubstMemoEntry is Data:
   SubstMemoSaved{node_id: U32, index: Nat, value_id: U32, depth: Nat, output_id: U32, epoch: Nat}
   CtrLeafSaved{key_id: U32, span: Ast.SourceSpan, output_id: U32}
   PublishedTerm{node_id: U32, output_id: U32, epoch: Nat}
+  ResolvedRefSaved{name_id: U32, kind_tag: U32, resolved: Scope.ResolvedName, serial: Nat}
+  ResolutionFrameOpen{scope: Scope.ArenaGlobalScope, serial: Nat}
   ScalarSchemaOpen{scope: Scope.ArenaGlobalScope}
   ScalarSchemaSaved{scope: Scope.ArenaGlobalScope, selected: Scope.ArenaGlobal, valid: Bool}
   StringSchemaSaved{scope: Scope.ArenaGlobalScope, selected: Scope.ArenaGlobal, valid: Bool}
@@ -85,6 +87,8 @@ type CasePrefixEntry is Data:
 # counts[2 * pool] is used; counts[2 * pool + 1] is capacity.
 # depths[pool] retains the Array allocation depth independently of rewind.
 # depths[6] is a monotonically increasing rewind generation; pool growth keeps it.
+# depths[7] is the checked-definition resolution-frame serial: every frame open
+# increments it in the source arena, so a reopened frame never reuses a fact.
 # Primitive metadata arrays keep the threaded Arena layout bounded.
 # Metadata lanes share their owning pool capacity/depth, are written on every
 # append, and clear the identical discarded suffix on rewind. Published nodes,
@@ -93,7 +97,8 @@ type CasePrefixEntry is Data:
 # the transient declaration-local lifetime: each slot records depths[6] at put
 # time and a rewind increments that generation, so every earlier slot is
 # invisible without clearing the table. Snapshot lanes (scalar/string schema,
-# source constructor leaves) live in the source arena, whose generation is fixed.
+# source constructor leaves, the resolution frame marker and its serial) live in
+# the source arena and use their own witness instead of depths[6].
 type Arena is Type:
   Arena{nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>, node_closed: Array<U32>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>}
 
@@ -1396,6 +1401,91 @@ def ctr_leaf_lookup(+key_id: U32, +span: Ast.SourceSpan, result: Arena & SubstMe
 
 def put_ctr_leaf(arena: Arena, +key_id: U32, span: Ast.SourceSpan) -> Arena & U32:
   ctr_leaf_lookup(key_id, span, subst_memo_get(arena, key_id, 0))
+
+# Resolved-reference facts are valid only inside one checked definition frame.
+# The frame's monotonic serial lives in depths[7] of the source arena and its
+# open marker in source memo slot 2 (slot 0 stays the scalar/string schema
+# frame), so every open gets a fresh serial even when no rewind separates two
+# frames. A fact records that serial plus the exact tagged name id and the
+# requested kind; a hit must match all three, so a reopened frame, a colliding
+# slot or another scope can only miss and fall back to the scope index. Facts
+# live in the transient lane, so a rewind physically ends them with the
+# declaration as well. Slots stay odd, away from slot 0 and the frame slot 2;
+# a collision replaces one cache entry and can also drop the open marker, which
+# only disables reuse until the next open.
+def resolution_frame_serial(arena: Arena) -> Arena & Nat:
+  match arena:
+    case Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}:
+      resolution_frame_serial.result(Array.get(Nat, depths, 7), nodes, patterns, binders, words, naturals, names, counts, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo)
+
+def resolution_frame_serial.result(result: Array<Nat> & Nat, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, name_ids: Map<&2, U32>, node_closed: Array<U32>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>) -> Arena & Nat:
+  match result:
+    case Tuple{depths, +serial}:
+      (Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}, serial)
+
+def resolution_frame_set(arena: Arena, entry: SubstMemoEntry) -> Arena:
+  match arena:
+    case Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}:
+      Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, Array.set(SubstMemoEntry, subst_memo, 2, entry)}
+
+def resolution_frame_open_serial(arena: Arena, +serial: Nat, scope: Scope.ArenaGlobalScope) -> Arena:
+  match arena:
+    case Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}:
+      Arena{nodes, patterns, binders, words, naturals, names, counts, Array.set(Nat, depths, 7, Nat.add(serial, 1n)), name_ids, node_closed, node_bounds, pattern_depths, case_prefix, Array.set(SubstMemoEntry, subst_memo, 2, ResolutionFrameOpen{scope, serial})}
+
+def resolution_frame_open_count(result: Arena & Nat, scope: Scope.ArenaGlobalScope) -> Arena:
+  match result:
+    case Tuple{arena, +serial}: resolution_frame_open_serial(arena, serial, scope)
+
+def resolution_frame_open(arena: Arena, scope: Scope.ArenaGlobalScope) -> Arena:
+  resolution_frame_open_count(resolution_frame_serial(arena), scope)
+
+def resolution_frame_read(entry: SubstMemoEntry) -> Maybe<&2, Nat>:
+  match entry:
+    case ResolutionFrameOpen{_, +serial}: Some{serial}
+    case _: None{}
+
+def resolution_frame_get.result(result: Array<SubstMemoEntry> & SubstMemoEntry, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>, node_closed: Array<U32>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, case_prefix: Array<CasePrefixEntry>) -> Arena & Maybe<&2, Nat>:
+  match result:
+    case Tuple{subst_memo, entry}:
+      (Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}, resolution_frame_read(entry))
+
+def resolution_frame_get(arena: Arena) -> Arena & Maybe<&2, Nat>:
+  match arena:
+    case Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}:
+      resolution_frame_get.result(Array.get(SubstMemoEntry, subst_memo, 2), nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix)
+
+def resolution_frame_clear(arena: Arena) -> Arena:
+  resolution_frame_set(arena, SubstMemoEmpty{})
+
+def resolved_ref_slot(+name_id: U32, +kind_tag: U32) -> U32:
+  U32.add(U32.and(subst_memo_slot(name_id, U32.add(kind_tag, 8192)), 4094), 1)
+
+def resolved_ref_put.result(nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>, node_closed: Array<U32>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, +name_id: U32, +kind_tag: U32, resolved: Scope.ResolvedName, +serial: Nat) -> Arena:
+  Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, Array.set(SubstMemoEntry, subst_memo, resolved_ref_slot(name_id, kind_tag), ResolvedRefSaved{name_id, kind_tag, resolved, serial})}
+
+def resolved_ref_put(arena: Arena, +name_id: U32, +kind_tag: U32, resolved: Scope.ResolvedName, +serial: Nat) -> Arena:
+  match arena:
+    case Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}:
+      resolved_ref_put.result(nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo, name_id, kind_tag, resolved, serial)
+
+def resolved_ref_read(entry: SubstMemoEntry, +name_id: U32, +kind_tag: U32, +serial: Nat, arena: Arena) -> Arena & Maybe<&2, Scope.ResolvedName>:
+  match entry:
+    case ResolvedRefSaved{saved_name, saved_kind, resolved, +saved_serial}:
+      match Bool.and(U32.is_eq(saved_name, name_id), Bool.and(U32.is_eq(saved_kind, kind_tag), Nat.is_eq(saved_serial, serial))):
+        case True{}: (arena, Some{resolved})
+        case False{}: (arena, None{})
+    case _: (arena, None{})
+
+def resolved_ref_get.result(result: Array<SubstMemoEntry> & SubstMemoEntry, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>, node_closed: Array<U32>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, case_prefix: Array<CasePrefixEntry>, +name_id: U32, +kind_tag: U32, +serial: Nat) -> Arena & Maybe<&2, Scope.ResolvedName>:
+  match result:
+    case Tuple{subst_memo, entry}:
+      resolved_ref_read(entry, name_id, kind_tag, serial, Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo})
+
+def resolved_ref_get(arena: Arena, +name_id: U32, +kind_tag: U32, +serial: Nat) -> Arena & Maybe<&2, Scope.ResolvedName>:
+  match arena:
+    case Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}:
+      resolved_ref_get.result(Array.get(SubstMemoEntry, subst_memo, resolved_ref_slot(name_id, kind_tag)), nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, name_id, kind_tag, serial)
 
 def generation.result(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, name_ids: Map<&2, U32>, node_closed: Array<U32>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, result: Array<Nat> & Nat) -> Arena & Nat:
   match result:

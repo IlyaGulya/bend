@@ -36,6 +36,14 @@ def check_single_result_output(result: Checked.CheckResult, success: String, fai
         case _: IO.print(failure)
     case Checked.CheckFailure{_}: IO.print(failure)
 
+def report_cross_namespace_marker(result: Checked.CheckResult):
+  match result:
+    case Checked.CheckFailure{Checked.Diagnostic{_, _, message, _, _}}:
+      match String.eq(message, "unknown name marker"):
+        case True{}: IO.print("checker-cross-namespace-marker-unknown")
+        case False{}: IO.print("checker-cross-namespace-marker-misdiagnosed")
+    case Checked.CheckSuccess{_}: IO.print("checker-cross-namespace-marker-visible")
+
 def check_triple_result_output(result: Checked.CheckResult, success: String, failure: String):
   match result:
     case Checked.CheckSuccess{Checked.CheckedProgram{_, modules, _, _}}:
@@ -580,6 +588,27 @@ def main():
   order_loaded = Loader.LoadedModule{ "",  order_module}
   check_result_output(Checker.check([order_loaded]), "checker-declaration-order-accepted", "checker-declaration-order-rejected")
 
+  # A name resolved in one module's namespace must not answer the same text in
+  # another namespace that never imported it. Both modules are checked in one
+  # call, so a name id shared by interning cannot leak a declaration across the
+  # per-module scopes; the second module must still report an unknown name.
+  scope_marker = Ast.Definition{ "marker",  Nil{},  Ast.SomeTerm{ type_term},  Ast.DefTerm{ type_term},  False{},  sp}
+  scope_marker_use = Ast.Definition{ "marker_use",  Nil{},  Ast.SomeTerm{ type_term},  Ast.DefTerm{ Ast.TermRef{ "marker",  sp}},  False{},  sp}
+  scope_left_module = Ast.Module{ "scope-left.bend",  Nil{},  [Ast.DefTop{ scope_marker}, Ast.DefTop{ scope_marker_use}]}
+  scope_left_loaded = Loader.LoadedModule{ "Left",  scope_left_module}
+  scope_outside_use = Ast.Definition{ "outside_marker_use",  Nil{},  Ast.SomeTerm{ type_term},  Ast.DefTerm{ Ast.TermRef{ "marker",  sp}},  False{},  sp}
+  scope_outside_module = Ast.Module{ "scope-outside.bend",  Nil{},  [Ast.DefTop{ scope_outside_use}]}
+  scope_outside_loaded = Loader.LoadedModule{ "",  scope_outside_module}
+  report_cross_namespace_marker(Checker.check([scope_left_loaded, scope_outside_loaded]))
+
+  # Recursive self-visibility publishes both the canonical key and the bare
+  # local alias. Referring to the definition by its canonical key in its own
+  # namespace must select that same self declaration.
+  canonical_self = Ast.Definition{ "canonical_self",  Nil{},  Ast.SomeTerm{ type_term},  Ast.DefTerm{ Ast.TermRef{ "Left.canonical_self",  sp}},  True{},  sp}
+  canonical_self_module = Ast.Module{ "canonical-self.bend",  Nil{},  [Ast.DefTop{ canonical_self}]}
+  canonical_self_loaded = Loader.LoadedModule{ "Left",  canonical_self_module}
+  check_single_result_output(Checker.check([canonical_self_loaded]), "checker-canonical-self-ok", "checker-canonical-self-failed")
+
   # `type G10TemplateBox<~a: Type> is Data:` parses, and Template.expand keeps the
   # template binder in place, so the declaration checker must reject it at the
   # parameter's own span: no instantiation ever expands it and lowering refuses
@@ -656,5 +685,7 @@ def main():
 #| checker-termination-rejected
 #| checker-unsafe-recursion-ok
 #| checker-declaration-order-rejected
+#| checker-cross-namespace-marker-unknown
+#| checker-canonical-self-ok
 #| checker-datatype-template-parameter-rejected
 #| checker-datatype-erased-parameter-ok
