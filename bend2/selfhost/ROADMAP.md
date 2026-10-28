@@ -1,13 +1,52 @@
 # Bend selfhost roadmap
 
-Persistent backlog for the current integration line (`work/fir-ir-integrated57ab`).
+Persistent backlog for the current integration line (`selfhost/integration`).
 The latest image-bound checkpoints are in §1. Earlier failures remain recorded
 under their original image IDs; a later pass never reclassifies an older run.
 Detailed evidence and reasoning live in the linked receipts and notes.
 This index does not replace a receipt.
 ## Current full native-seed checkpoint
 
-The current accepted checkpoint is **remote2039g22**, source `6e854821`.
+The current accepted checkpoint is **remote2039g23**, compiler source
+`04e0b600`. Full native validation covers **14,096 definitions / 14,686
+events**, with zero excluded checks or output patches. The real native-stage0
+→ stage1 → stage2 byte fixedpoint passes: both unchanged files are
+**32,959,574 bytes**, SHA-256
+`6b206ac5b6d84a6d7296837ae8249e49657551ff16eaddc87f44baecef7e42d5`.
+Stage1 uses its own parser/checker/emitter for the full stage2 root.
+
+Native build: **171,426 ms**, peak RSS **5,844,910,080 B**, footprint
+**5,188,999,048 B**. Bootstrap: **471,747 ms**, peak RSS **6,482,542,592 B**,
+footprint **4,836,062,464 B**. The original **8-GiB / 600-s per-guard**
+limits, ABI13, parser fuel8M and quantum64 remain unchanged.
+Actual-stage-one coverage is **52 C / 53 JS** cases; the last JS case was
+recompiled and executed after repairing only its `#|` delimiter whitespace.
+The original full JS matrix remains failed, not rewritten. All33 native/library,
+12 admission and5 nested-host consumers pass. Each unchanged image passes
+the original95 fixtures (31 negative) and130 fresh semantic AST approvals:
+**285 fixture executions** including native seed. That companion completes
+in310,067ms after remote ENOSPC is resolved by relocating the unchanged
+108 authenticated inputs and images to the timing host.
+
+Three interleaved frozen-G22-root pairs per runtime give native medians
+**100.409 → 99.506 s** (no significant total gain) and emitted-JS medians
+**384.141 → 315.708 s** (observed1.217x). All three JS pairs are faster,
+but whole-run ranges overlap and variance is material. Parse/expand improve;
+emission regresses. No isolated-slice gain, native speedup, retained-memory
+reduction or official-TS win is claimed. Unmet individual performance
+criteria remain tracked in br. The canonical-JS seed parser's large-file
+`String_to_list` stack failure remains recorded; the stage1 matrices use
+their own parser. This acceptance does not prove universal FIR/BIR laws,
+pure-C selfhosting, GPU or WASM support.
+All91 source/protected inputs match the integration checkout. Source changes,
+required frozen inputs and compact receipts belong to this checkpoint:
+`evals/receipts/root2039g23_native_fixedpoint.json`,
+`evals/receipts/root2039g23_emitted_suites.json`,
+`evals/receipts/producer2039g23_throughput.json`.
+
+### Historical g22 checkpoint
+
+The accepted **remote2039g22** checkpoint uses source `6e854821`.
 Fresh parser admission, the full **12,157-definition / 12,736-event** native
 build, and the real native-stage0 → stage1 → stage2 byte fixedpoint pass,
 with zero excluded checks or output patches. G22 forces host inlining only

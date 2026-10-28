@@ -60,5 +60,5 @@ def main() -> IO(Unit):
     report(U32.is_eq(outcome(100000n, Checker.checker_start([duplicate_module(sp)])), 2),
       "checker-application-affine-duplicate-rejected", "checker-application-affine-duplicate-accepted")
 
-#| checker-application-single-use-ok
-#| checker-application-affine-duplicate-rejected
+#|checker-application-single-use-ok
+#|checker-application-affine-duplicate-rejected

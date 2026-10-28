@@ -4,7 +4,74 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
-## Актуальный принятый checkpoint: remote2039g22
+## Актуальный принятый checkpoint: remote2039g23
+
+Compiler source `04e0b600`: полный native compiler root и настоящий
+native-stage0 → stage1 → stage2 byte fixedpoint завершены. Проверены
+**14 096 определений / 14 686 событий**, без исключений и патчей.
+В основной `selfhost/integration` интегрирована одна параллельная волна:
+native String/Map reads, application/signature facts, bounded result fusion,
+JS capture plans, C constructor plans и lexer/template caches.
+Исходные affine/quantity/termination checks, ABI13, quantum64 и parser fuel8M
+сохранены; occurrence-only affine validation и глобальный term→type cache
+не вводились.
+
+| Gate | Время, мс | Peak RSS, B | Peak footprint, B |
+|---|---:|---:|---:|
+| Native build | 171426 | 5844910080 | 5188999048 |
+| Native-seed bootstrap | 471747 | 6482542592 | 4836062464 |
+| Отдельный unchanged-image 95+95 companion | 310067 | 3121627136 | 1556886944 |
+
+Лимиты — **8 ГиБ RSS/footprint и 600 с на каждый guard**, не на всю
+последовательность. Stage1 и stage2 — **32 959 574 байта**, SHA-256
+`6b206ac5b6d84a6d7296837ae8249e49657551ff16eaddc87f44baecef7e42d5`.
+Файлы независимо побайтно сравнены. Stage1 своим parser/checker/emitter
+собрал полный stage2 root. Все 91 source/protected input совпали с основным
+checkout; frozen root/parser/corpus inputs сохранены с checkpoint.
+
+На настоящем неизменённом stage1 покрыты **52 C / 53 JS** consumers.
+В исходном полном JS matrix 52 случая прошли, а checker fixture исполнился
+правильно, но его `#|` expectations содержали лишние пробелы. После удаления
+только этих пробелов последний случай отдельно заново скомпилирован и
+исполнен тем же image. Исходный matrix receipt остаётся FAIL.
+Пройдены также 33 native/library, 12 admission-boundary и 5 nested-host
+consumers. Каждый неизменённый образ прошёл исходные 95 fixtures
+(31 отрицательный) и 130 свежих full semantic AST approvals;
+вместе с native seed — **285 fixture executions**.
+
+Три чередующиеся same-host пары на неизменном frozen G22 corpus:
+
+| Runtime, root → JS | G22 median, с | G23 median, с | Граница вывода |
+|---|---:|---:|---|
+| Native | 100.409 | 99.506 | значимого общего ускорения нет |
+| Emitted JS | 384.141 | 315.708 | 1.217x median; пары 1.031x / 1.220x / 1.100x |
+
+JS parse/expand имеют непересекающиеся диапазоны, но emission замедлился:
+19.634 → 24.890 с. Whole-run variance существенна; общий выигрыш не
+атрибутирован отдельным slices или checker. Снижение retained memory,
+native speedup и победа над official TS не заявляются. Невыполненные
+индивидуальные performance-критерии остаются в `br`, не закрываются
+на основании общего JS результата.
+
+Прежние отказы сохранены отдельно. Canonical-JS seed parser переполняет
+стек в `String_to_list` на большом generated checker import; stage1 matrix
+использует собственный parser, а не скрытый fallback. Первая попытка
+95+95 остановлена remote `ENOSPC`; companion завершён локально после
+переноса тех же файлов по тем же абсолютным путям и проверки 108 input
+hashes и обоих images. Лимиты, bytes и исходные 95 fixtures не менялись.
+Неуспешные попытки не объявлены принятыми.
+
+Producer: Bend2.0.39 / Bun1.4.3, LLVM split O1. Native build/bootstrap:
+Apple M3 Pro; парные timings и завершённый companion: Apple M1 Max.
+V8 worker: Node23.11.0, stack256MiB, old6144MiB, young128MiB;
+matrix consumer heap3072MiB. Это не pure-C selfhosting и не universal
+FIR/BIR proof; GPU/WASM не квалифицированы.
+Точные команды, runtime/limits, source hashes, результаты и отказы:
+`evals/receipts/root2039g23_native_fixedpoint.json`,
+`evals/receipts/root2039g23_emitted_suites.json`,
+`evals/receipts/producer2039g23_throughput.json`.
+
+## История: принятый checkpoint remote2039g22
 
 Source `6e854821`: свежая parser admission, полный native compiler root
 и настоящий native-stage0 → stage1 → stage2 byte fixedpoint завершены.

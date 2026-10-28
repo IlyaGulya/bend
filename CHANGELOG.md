@@ -5,18 +5,33 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
-- G23 is a pending, not accepted, optimization candidate: native String/Map
-  reads avoid rebuilding their inputs; checker application walks share one
-  resolved argument view and retain their declared telescope; bounded private
-  result fusion preserves scoped binder identities. JS capture plans and C
-  constructor plans are compilation-local; frontend token/template caches retain
-  their original context. Changed-path String/Map/capture consumers, lexer
-  boundaries, typed-step template scope and CLay checks pass. A runnable checker
-  affinity regression caught a fusion source-admission failure; typed,
-  dependency-first match factoring repairs it and retains all 440 fusion sites.
-  Both single-use acceptance and duplicate-use rejection now execute correctly.
-  Full-root performance and fresh native/bootstrap qualification remain required.
-  Receipt: `evals/receipts/producer2039g23_source_smoke.json`.
+- G23 completes the full native compiler root and a real native-stage0 →
+  stage1 → stage2 byte fixedpoint: 14,096 definitions / 14,686 validation
+  events, zero excluded checks or output patches. Both unchanged images are
+  32,959,574 bytes, SHA-256
+  `6b206ac5b6d84a6d7296837ae8249e49657551ff16eaddc87f44baecef7e42d5`.
+  Native build: 171.426 s; bootstrap: 471.747 s, under the original
+  8-GiB / 600-s per-guard limits. Actual-stage-one coverage is 52 C / 53 JS
+  cases, including an independently recompiled checker case after fixing only
+  its expectation-delimiter whitespace. Native/library, admission and host
+  consumers pass. Each unchanged image passes all 95 original fixtures and
+  130 fresh full semantic AST approvals: 285 fixture executions with native seed.
+  The separate companion completes in 310.067 s after byte-preserving relocation
+  from a disk-full build host. Earlier failed attempts remain failed.
+  Three interleaved frozen-root pairs per runtime give emitted-JS medians
+  384.141 → 315.708 s (observed 1.217x); all three JS pairs are faster, but
+  whole-run variance is material. Parse/expand improve; emission regresses.
+  Native medians 100.409 → 99.506 s do not establish a significant gain.
+  No per-slice gain, memory reduction or official-TS win is claimed.
+  Native String/Map reads preserve source ownership, application/signature
+  facts stay invocation-scoped, and typed bounded result fusion preserves
+  binder identities. Capture/constructor plans and lexer/template caches
+  remain compilation-local. Source-only affine checks, ABI13, quantum64
+  and parser fuel8M are unchanged. The canonical-JS seed parser's large-file
+  `String_to_list` stack failure remains recorded; stage1 uses its own parser.
+  Receipts: `evals/receipts/root2039g23_native_fixedpoint.json`,
+  `evals/receipts/root2039g23_emitted_suites.json`,
+  `evals/receipts/producer2039g23_throughput.json`.
 
 - G22 forces host inlining only for seven tiny term/size accessors before
   LLVM partitioning; ordinary `INLINE`, device code and loop/segment policies

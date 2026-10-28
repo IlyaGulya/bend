@@ -105,8 +105,42 @@ type cps_provider_2_Scan is Data:
 type cps_provider_2_Build is Data:
   cps_provider_2_Build{entries: List<&2, cps_provider_2_Entry>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, by_native: Map<&2, U32>, stages: Map<&2, U32>, next: U32}
 
+type cps_provider_3_CWord is Data:
+  cps_provider_3_CWord32{}
+  cps_provider_3_CWord64{}
+  cps_provider_3_CWordBox{}
+
+type cps_provider_3_BoxReason is Data:
+  cps_provider_3_BoxOpen{}
+  cps_provider_3_BoxUnresolved{key: String}
+  cps_provider_3_BoxArray{}
+  cps_provider_3_BoxIo{}
+  cps_provider_3_BoxRecursive{key: String}
+  cps_provider_3_BoxWide{words: Nat}
+
+type cps_provider_3_Layout is Data:
+  cps_provider_3_LayoutWord{word: cps_provider_3_CWord}
+  cps_provider_3_LayoutBox{reason: cps_provider_3_BoxReason}
+  cps_provider_3_LayoutData{words: List<&2, cps_provider_3_CWord>, arms: List<&2, cps_provider_3_LayArm>}
+
+type cps_provider_3_LayArm is Data:
+  cps_provider_3_LayArm{key: String, fields: List<&2, cps_provider_3_Layout>}
+
+type cps_provider_3_NodeSlot is Data:
+  cps_provider_3_NodeSlot{ordinal: U32, offset: Nat, layout: cps_provider_3_Layout}
+
+type cps_provider_3_Node is Data:
+  cps_provider_3_Node{words: List<&2, cps_provider_3_CWord>, slots: List<&2, cps_provider_3_NodeSlot>, packed: Bool}
+
+type cps_provider_3_NodeResult is Data:
+  cps_provider_3_NodeFound{node: cps_provider_3_Node}
+  cps_provider_3_NodeFailed{message: String}
+
+type cps_provider_3_Plan is Data:
+  cps_provider_3_Plan{nodes: Map<&2, cps_provider_3_NodeResult>, arms: Map<&2, BIR.DescriptorArm>}
+
 type cps_provider_3_Context is Data:
-  cps_provider_3_Context{context: cps_provider_7_NfContext, families: List<&2, BIR.Family>, type_functions: List<&2, BIR.TypeFunction>}
+  cps_provider_3_Context{context: cps_provider_7_NfContext, families: List<&2, BIR.Family>, plan: cps_provider_3_Plan}
 
 type cps_provider_2_Plan is Data:
   cps_provider_2_Plan{cids: List<&2, cps_provider_2_CidRow>, cid_macros: Map<&2, String>, fid_macros: Map<&2, String>, entries: List<&2, cps_provider_2_Entry>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, by_native: Map<&2, U32>, stages: Map<&2, U32>, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>, declarations: List<&2, BIR.Declaration>, main_pure: Bool, show_desc: String, show_names: String, imports: List<&2, cps_provider_2_CImport>, fkeys: List<&2, String>, ctx: cps_provider_3_Context, sharing: Sharing.SharingPlan, library: Bool, exports: List<&2, BIR.Export>}
@@ -182,27 +216,6 @@ type cps_provider_2_Control is Data:
   cps_provider_2_ControlOk{segments: String, rows: List<&2, cps_provider_2_SegText>, max_arity: Nat}
   cps_provider_2_ControlFail{message: String}
 
-type cps_provider_3_CWord is Data:
-  cps_provider_3_CWord32{}
-  cps_provider_3_CWord64{}
-  cps_provider_3_CWordBox{}
-
-type cps_provider_3_BoxReason is Data:
-  cps_provider_3_BoxOpen{}
-  cps_provider_3_BoxUnresolved{key: String}
-  cps_provider_3_BoxArray{}
-  cps_provider_3_BoxIo{}
-  cps_provider_3_BoxRecursive{key: String}
-  cps_provider_3_BoxWide{words: Nat}
-
-type cps_provider_3_Layout is Data:
-  cps_provider_3_LayoutWord{word: cps_provider_3_CWord}
-  cps_provider_3_LayoutBox{reason: cps_provider_3_BoxReason}
-  cps_provider_3_LayoutData{words: List<&2, cps_provider_3_CWord>, arms: List<&2, cps_provider_3_LayArm>}
-
-type cps_provider_3_LayArm is Data:
-  cps_provider_3_LayArm{key: String, fields: List<&2, cps_provider_3_Layout>}
-
 type cps_provider_3_LayoutResult is Data:
   cps_provider_3_LayoutFound{layout: cps_provider_3_Layout}
   cps_provider_3_LayoutFailed{message: String}
@@ -246,16 +259,6 @@ type cps_provider_3_FillResult is Data:
 type cps_provider_3_UnfillResult is Data:
   cps_provider_3_UnfillFound{unfill: cps_provider_3_Unfill}
   cps_provider_3_UnfillFailed{message: String}
-
-type cps_provider_3_NodeSlot is Data:
-  cps_provider_3_NodeSlot{ordinal: U32, offset: Nat, layout: cps_provider_3_Layout}
-
-type cps_provider_3_Node is Data:
-  cps_provider_3_Node{words: List<&2, cps_provider_3_CWord>, slots: List<&2, cps_provider_3_NodeSlot>, packed: Bool}
-
-type cps_provider_3_NodeResult is Data:
-  cps_provider_3_NodeFound{node: cps_provider_3_Node}
-  cps_provider_3_NodeFailed{message: String}
 
 type cps_provider_3_SlotResult is Data:
   cps_provider_3_SlotFound{slot: cps_provider_3_NodeSlot}
@@ -317,7 +320,7 @@ type cps_provider_5_CidSym is Data:
   cps_provider_5_CidSym{cid: U32, key: String}
 
 type cps_provider_5_World is Data:
-  cps_provider_5_World{ctx: cps_provider_3_Context, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>, cids: List<&2, cps_provider_5_CidSym>}
+  cps_provider_5_World{ctx: cps_provider_3_Context, constructors: List<&2, BIR.ConstructorLayout>, cids: List<&2, cps_provider_5_CidSym>}
 
 type cps_provider_5_Code is Data:
   cps_provider_5_CodeOk{lines: List<&2, String>}
@@ -496,14 +499,29 @@ type cps_provider_8_TagGroup is Data:
 type cps_provider_8_JSDescriptorHead is Data:
   cps_provider_8_JSDescriptorHead{key: String, args: List<&2, BIR.Descriptor>}
 
+type cps_provider_8_Caps is Data:
+  cps_provider_8_Caps{locals: List<&2, U32>, slots: List<&2, U32>}
+
+type cps_provider_8_Plan is Data:
+  cps_provider_8_Plan{conts: Map<&2, cps_provider_8_Caps>, thunks: Map<&2, cps_provider_8_Caps>, frames: Map<&2, Bool>}
+
 type cps_provider_8_JsCtx is Data:
-  cps_provider_8_JsCtx{owner: String, frames: List<&2, U32>}
+  cps_provider_8_JsCtx{owner: String, plan: cps_provider_8_Plan, frames: List<&2, U32>}
+
+type cps_provider_8_Suffix is Data:
+  cps_provider_8_Suffix{locals: List<&2, U32>, slots: List<&2, U32>, read_local: Map<&2, Bool>, read_slot: Map<&2, Bool>, bound: Map<&2, Bool>}
+
+type cps_provider_8_Held is Data:
+  cps_provider_8_Held{items: List<&2, U32>, read: Map<&2, Bool>}
+
+type cps_provider_8_FrameBits is Data:
+  cps_provider_8_FrameBits{label: U32, after: Bool, reach: Bool}
+
+type cps_provider_8_Step is Data:
+  cps_provider_8_Step{state: cps_provider_8_Suffix, facts: List<&2, cps_provider_8_FrameBits>, plan: cps_provider_8_Plan}
 
 type cps_provider_8_Reads is Data:
   cps_provider_8_Reads{locals: List<&2, U32>, slots: List<&2, U32>}
-
-type cps_provider_8_Caps is Data:
-  cps_provider_8_Caps{locals: List<&2, U32>, slots: List<&2, U32>}
 
 type cps_provider_9_EmitResult is Data:
   cps_provider_9_EmitSuccess{source: String}
@@ -4901,7 +4919,7 @@ def cps_provider_2_arm_index_one(v_1: Bool, v_3: String, v_5: List<&2, BIR.Descr
 def cps_provider_2_phys_world(+v_1: cps_provider_2_Plan) -> cps_provider_5_World:
   match v_1:
     case cps_provider_2_Plan{v_23, v_24, v_25, v_26, v_27, v_28, v_29, v_30, v_31, v_32, v_33, v_34, v_35, v_36, v_37, v_38, v_39, v_40, v_41, _, _}:
-      cps_provider_5_world(v_40, v_32, v_33, cps_provider_2_phys_cids(v_23))
+      cps_provider_5_world(v_40, v_32, cps_provider_2_phys_cids(v_23))
 
 def cps_provider_2_phys_cids(v_2: List<&2, cps_provider_2_CidRow>) -> List<&2, cps_provider_5_CidSym>:
   match v_2:
@@ -9342,7 +9360,10 @@ def cps_provider_2_render_rewrite(v_1: String, v_4: Map<&2, String>, v_7: Map<&2
 def cps_provider_3_context(+v_0: BIR.Program) -> cps_provider_3_Context:
   match v_0:
     case BIR.Program{+v_8, +v_9, +v_10, +v_11, +v_12, +v_13}:
-      cps_provider_3_Context{cps_provider_7_nf_context(v_11, v_12), v_11, v_12}
+      +v_15 = cps_provider_7_nf_context(v_11, v_12)
+      +v_18 = cps_provider_3_plan_arm_index(v_11)
+      +v_22 = {cps_provider_3_Context{v_15, v_11, cps_provider_3_Plan{Map.new(&2, cps_provider_3_NodeResult), v_18}} : cps_provider_3_Context}
+      cps_provider_3_Context{v_15, v_11, cps_provider_3_Plan{cps_provider_3_plan_node_index(v_22, v_10), v_18}}
 
 def cps_provider_3_context_nf(+v_1: cps_provider_3_Context) -> cps_provider_7_NfContext:
   match v_1:
@@ -9354,54 +9375,42 @@ def cps_provider_3_context_families(+v_1: cps_provider_3_Context) -> List<&2, BI
     case cps_provider_3_Context{+v_6, +v_7, +v_8}:
       v_7
 
-def cps_provider_3_context_type_functions(+v_1: cps_provider_3_Context) -> List<&2, BIR.TypeFunction>:
+def cps_provider_3_context_plan(+v_1: cps_provider_3_Context) -> cps_provider_3_Plan:
   match v_1:
     case cps_provider_3_Context{+v_6, +v_7, +v_8}:
       v_8
 
-def native_match_cps_provider_3_family_lookup_0(v_21: Bool, +v_1: String, +v_7: BIR.Family, v_8: List<&2, BIR.Family>) -> Maybe<&2, BIR.Family>:
-  match v_21:
-    case True{}:
-      Some{v_7}
-    case False{}:
-      cps_provider_3_family_lookup(v_1, v_8)
+def native_match_cps_provider_3_context_nodes_0(v_9: cps_provider_3_Plan) -> Map<&2, cps_provider_3_NodeResult>:
+  match v_9:
+    case cps_provider_3_Plan{+v_7, +v_8}:
+      v_7
 
-def native_match_cps_provider_3_family_lookup_1(+v_7: BIR.Family, +v_1: String, v_8: List<&2, BIR.Family>) -> Maybe<&2, BIR.Family>:
-  match v_7:
-    case BIR.Family{+v_15, +v_16, +v_17, +v_18, +v_19, +v_20}:
-      native_match_cps_provider_3_family_lookup_0(String.eq(v_1, v_15), v_1, v_7, v_8)
+def cps_provider_3_context_nodes(+v_1: cps_provider_3_Context) -> Map<&2, cps_provider_3_NodeResult>:
+  native_match_cps_provider_3_context_nodes_0(cps_provider_3_context_plan(v_1))
 
-def native_match_cps_provider_3_family_lookup_2(+v_3: List<&2, BIR.Family>, +v_1: String) -> Maybe<&2, BIR.Family>:
-  match v_3:
-    case []:
-      None{}
-    case +v_7 <> v_8:
-      native_match_cps_provider_3_family_lookup_1(v_7, v_1, v_8)
+def native_match_cps_provider_3_context_arms_0(v_8: cps_provider_3_Plan) -> Map<&2, BIR.DescriptorArm>:
+  match v_8:
+    case cps_provider_3_Plan{+v_6, +v_7}:
+      v_7
 
-def cps_provider_3_family_lookup(+v_1: String, +v_3: List<&2, BIR.Family>) -> Maybe<&2, BIR.Family>:
-  native_match_cps_provider_3_family_lookup_2(v_3, v_1)
+def cps_provider_3_context_arms(+v_1: cps_provider_3_Context) -> Map<&2, BIR.DescriptorArm>:
+  native_match_cps_provider_3_context_arms_0(cps_provider_3_context_plan(v_1))
 
-def native_match_cps_provider_3_function_lookup_0(v_19: Bool, +v_1: String, +v_7: BIR.TypeFunction, v_8: List<&2, BIR.TypeFunction>) -> Maybe<&2, BIR.TypeFunction>:
-  match v_19:
-    case True{}:
-      Some{v_7}
-    case False{}:
-      cps_provider_3_function_lookup(v_1, v_8)
+def cps_provider_3_nf_families(+v_0: cps_provider_7_NfContext) -> Map<&2, BIR.Family>:
+  match v_0:
+    case cps_provider_7_NfContext{+v_4, +v_5}:
+      v_4
 
-def native_match_cps_provider_3_function_lookup_1(+v_7: BIR.TypeFunction, +v_1: String, v_8: List<&2, BIR.TypeFunction>) -> Maybe<&2, BIR.TypeFunction>:
-  match v_7:
-    case BIR.TypeFunction{+v_14, +v_15, +v_16, +v_17, +v_18}:
-      native_match_cps_provider_3_function_lookup_0(String.eq(v_1, v_14), v_1, v_7, v_8)
+def cps_provider_3_nf_functions(+v_0: cps_provider_7_NfContext) -> Map<&2, BIR.TypeFunction>:
+  match v_0:
+    case cps_provider_7_NfContext{+v_4, +v_5}:
+      v_5
 
-def native_match_cps_provider_3_function_lookup_2(+v_3: List<&2, BIR.TypeFunction>, +v_1: String) -> Maybe<&2, BIR.TypeFunction>:
-  match v_3:
-    case []:
-      None{}
-    case +v_7 <> v_8:
-      native_match_cps_provider_3_function_lookup_1(v_7, v_1, v_8)
+def cps_provider_3_family_lookup(+v_1: cps_provider_3_Context, +v_3: String) -> Maybe<&2, BIR.Family>:
+  cps_provider_7_family_of(v_3, cps_provider_3_nf_families(cps_provider_3_context_nf(v_1)))
 
-def cps_provider_3_function_lookup(+v_1: String, +v_3: List<&2, BIR.TypeFunction>) -> Maybe<&2, BIR.TypeFunction>:
-  native_match_cps_provider_3_function_lookup_2(v_3, v_1)
+def cps_provider_3_function_lookup(+v_1: cps_provider_3_Context, +v_3: String) -> Maybe<&2, BIR.TypeFunction>:
+  cps_provider_7_function_of(v_3, cps_provider_3_nf_functions(cps_provider_3_context_nf(v_1)))
 
 def native_match_cps_provider_3_arm_of_0(v_24: Maybe<&2, BIR.DescriptorArm>, +v_1: String, v_8: List<&2, BIR.Family>) -> Maybe<&2, BIR.DescriptorArm>:
   match v_24:
@@ -9447,6 +9456,27 @@ def native_match_cps_provider_3_arm_in_2(+v_3: List<&2, BIR.DescriptorArm>, +v_1
 def cps_provider_3_arm_in(+v_1: String, +v_3: List<&2, BIR.DescriptorArm>) -> Maybe<&2, BIR.DescriptorArm>:
   native_match_cps_provider_3_arm_in_2(v_3, v_1)
 
+def cps_provider_3_plan_arm_index(+v_1: List<&2, BIR.Family>) -> Map<&2, BIR.DescriptorArm>:
+  match v_1:
+    case []:
+      Map.new(&2, BIR.DescriptorArm)
+    case +v_5 <> v_6:
+      match v_5:
+        case BIR.Family{+v_13, +v_14, +v_15, +v_16, +v_17, +v_18}:
+          cps_provider_3_plan_family_arms(v_18, cps_provider_3_plan_arm_index(v_6))
+
+def cps_provider_3_plan_family_arms(+v_1: List<&2, BIR.DescriptorArm>, +v_3: Map<&2, BIR.DescriptorArm>) -> Map<&2, BIR.DescriptorArm>:
+  match v_1:
+    case []:
+      v_3
+    case +v_7 <> v_8:
+      match v_7:
+        case BIR.DescriptorArm{+v_11, +v_12}:
+          Map.set(&2, BIR.DescriptorArm, cps_provider_3_plan_family_arms(v_8, v_3), v_11, {BIR.DescriptorArm{v_11, v_12} : BIR.DescriptorArm})
+
+def cps_provider_3_arm_declared(+v_1: cps_provider_3_Context, +v_3: String) -> Maybe<&2, BIR.DescriptorArm>:
+  IndexLookup.find(BIR.DescriptorArm, cps_provider_3_context_arms(v_1), v_3)
+
 def cps_provider_3_live_field(+v_0: BIR.Quantity) -> Bool:
   match v_0:
     case BIR.Erased{}:
@@ -9483,26 +9513,26 @@ def native_match_cps_provider_3_layout_of_val_0(v_6: Bool, +v_1: cps_provider_3_
 def cps_provider_3_layout_of_val(+v_1: cps_provider_3_Context, +v_3: cps_provider_7_NfVal, +v_5: Nat) -> cps_provider_3_LayoutResult:
   native_match_cps_provider_3_layout_of_val_0(Nat.is_eq(v_5, 0n), v_1, v_3, v_5)
 
-def native_match_cps_provider_3_layout_val_0(v_31: Maybe<&2, BIR.Family>, +v_1: cps_provider_3_Context, +v_5: Nat, +v_9: String, +v_10: List<&2, cps_provider_7_NfVal>) -> cps_provider_3_LayoutResult:
-  match v_31:
-    case Some{+v_14}:
-      cps_provider_3_layout_family(v_1, v_14, v_10, v_5)
+def native_match_cps_provider_3_layout_val_0(v_30: Maybe<&2, BIR.Family>, +v_1: cps_provider_3_Context, +v_5: Nat, +v_9: String, +v_10: List<&2, cps_provider_7_NfVal>) -> cps_provider_3_LayoutResult:
+  match v_30:
+    case Some{+v_13}:
+      cps_provider_3_layout_family(v_1, v_13, v_10, v_5)
     case None{}:
       cps_provider_3_layout_unresolved(v_1, v_9)
 
 def native_match_cps_provider_3_layout_val_1(+v_3: cps_provider_7_NfVal, +v_1: cps_provider_3_Context, +v_5: Nat) -> cps_provider_3_LayoutResult:
   match v_3:
     case cps_provider_7_NfType{+v_9, +v_10}:
-      native_match_cps_provider_3_layout_val_0(cps_provider_3_family_lookup(v_9, cps_provider_3_context_families(v_1)), v_1, v_5, v_9, v_10)
-    case cps_provider_7_NfCtor{+v_19, +v_20}:
+      native_match_cps_provider_3_layout_val_0(cps_provider_3_family_lookup(v_1, v_9), v_1, v_5, v_9, v_10)
+    case cps_provider_7_NfCtor{+v_18, +v_19}:
       cps_provider_3_LayoutFound{cps_provider_3_LayoutBox{cps_provider_3_BoxOpen{}}}
-    case cps_provider_7_NfQuantity{+v_22}:
+    case cps_provider_7_NfQuantity{+v_21}:
       cps_provider_3_LayoutFound{cps_provider_3_LayoutBox{cps_provider_3_BoxOpen{}}}
-    case cps_provider_7_NfKind{+v_24}:
+    case cps_provider_7_NfKind{+v_23}:
       cps_provider_3_LayoutFound{cps_provider_3_LayoutBox{cps_provider_3_BoxOpen{}}}
-    case cps_provider_7_NfOther{+v_26}:
+    case cps_provider_7_NfOther{+v_25}:
       cps_provider_3_LayoutFound{cps_provider_3_LayoutBox{cps_provider_3_BoxOpen{}}}
-    case cps_provider_7_NfMissing{+v_28}:
+    case cps_provider_7_NfMissing{+v_27}:
       cps_provider_3_LayoutFound{cps_provider_3_LayoutBox{cps_provider_3_BoxOpen{}}}
     case _:
       cps_provider_3_LayoutFound{cps_provider_3_LayoutBox{cps_provider_3_BoxOpen{}}}
@@ -9510,15 +9540,15 @@ def native_match_cps_provider_3_layout_val_1(+v_3: cps_provider_7_NfVal, +v_1: c
 def cps_provider_3_layout_val(+v_1: cps_provider_3_Context, +v_3: cps_provider_7_NfVal, +v_5: Nat) -> cps_provider_3_LayoutResult:
   native_match_cps_provider_3_layout_val_1(v_3, v_1, v_5)
 
-def native_match_cps_provider_3_layout_unresolved_0(v_9: Maybe<&2, BIR.TypeFunction>, +v_3: String) -> cps_provider_3_LayoutResult:
-  match v_9:
-    case Some{+v_8}:
+def native_match_cps_provider_3_layout_unresolved_0(v_8: Maybe<&2, BIR.TypeFunction>, +v_3: String) -> cps_provider_3_LayoutResult:
+  match v_8:
+    case Some{+v_7}:
       cps_provider_3_LayoutFound{cps_provider_3_LayoutBox{cps_provider_3_BoxOpen{}}}
     case None{}:
       cps_provider_3_LayoutFound{cps_provider_3_LayoutBox{cps_provider_3_BoxUnresolved{v_3}}}
 
 def cps_provider_3_layout_unresolved(+v_1: cps_provider_3_Context, +v_3: String) -> cps_provider_3_LayoutResult:
-  native_match_cps_provider_3_layout_unresolved_0(cps_provider_3_function_lookup(v_3, cps_provider_3_context_type_functions(v_1)), v_3)
+  native_match_cps_provider_3_layout_unresolved_0(cps_provider_3_function_lookup(v_1, v_3), v_3)
 
 def native_match_cps_provider_3_layout_family_0(+v_17: Maybe<&2, String>, +v_1: cps_provider_3_Context, +v_5: List<&2, cps_provider_7_NfVal>, +v_7: Nat, +v_15: String, +v_20: List<&2, BIR.DescriptorArm>) -> cps_provider_3_LayoutResult:
   match v_17:
@@ -9740,29 +9770,29 @@ def native_match_cps_provider_3_reaches_1(v_19: Bool, +v_1: cps_provider_3_Conte
 def cps_provider_3_reaches(+v_1: cps_provider_3_Context, +v_2: BIR.Descriptor, +v_5: List<&2, cps_provider_7_NfVal>, +v_7: String, +v_10: List<&2, String>, +v_12: Nat) -> Bool:
   native_match_cps_provider_3_reaches_1(Nat.is_eq(v_12, 0n), v_1, v_2, v_5, v_7, v_10, v_12)
 
-def native_match_cps_provider_3_reaches_val_0(v_29: Bool, +v_1: cps_provider_3_Context, +v_5: String, +v_8: List<&2, String>, +v_10: Nat, +v_15: List<&2, cps_provider_7_NfVal>) -> Bool:
-  match v_29:
+def native_match_cps_provider_3_reaches_val_0(v_28: Bool, +v_1: cps_provider_3_Context, +v_5: String, +v_8: List<&2, String>, +v_10: Nat, +v_15: List<&2, cps_provider_7_NfVal>) -> Bool:
+  match v_28:
     case True{}:
       True{}
     case False{}:
       cps_provider_3_args_reach(v_1, v_15, v_5, v_8, v_10)
 
-def native_match_cps_provider_3_reaches_val_1(v_28: Maybe<&2, BIR.Family>, +v_1: cps_provider_3_Context, +v_5: String, +v_8: List<&2, String>, +v_10: Nat, +v_14: String, +v_15: List<&2, cps_provider_7_NfVal>) -> Bool:
-  match v_28:
+def native_match_cps_provider_3_reaches_val_1(v_27: Maybe<&2, BIR.Family>, +v_1: cps_provider_3_Context, +v_5: String, +v_8: List<&2, String>, +v_10: Nat, +v_14: String, +v_15: List<&2, cps_provider_7_NfVal>) -> Bool:
+  match v_27:
     case None{}:
       cps_provider_3_args_reach(v_1, v_15, v_5, v_8, v_10)
-    case Some{+v_21}:
-      native_match_cps_provider_3_reaches_val_0(cps_provider_3_family_reach(v_1, v_21, v_15, v_5, v_14 <> v_8, v_10), v_1, v_5, v_8, v_10, v_15)
+    case Some{+v_20}:
+      native_match_cps_provider_3_reaches_val_0(cps_provider_3_family_reach(v_1, v_20, v_15, v_5, v_14 <> v_8, v_10), v_1, v_5, v_8, v_10, v_15)
 
-def native_match_cps_provider_3_reaches_val_2(v_27: Bool, +v_1: cps_provider_3_Context, +v_5: String, +v_8: List<&2, String>, +v_10: Nat, +v_14: String, +v_15: List<&2, cps_provider_7_NfVal>) -> Bool:
-  match v_27:
+def native_match_cps_provider_3_reaches_val_2(v_26: Bool, +v_1: cps_provider_3_Context, +v_5: String, +v_8: List<&2, String>, +v_10: Nat, +v_14: String, +v_15: List<&2, cps_provider_7_NfVal>) -> Bool:
+  match v_26:
     case True{}:
       False{}
     case False{}:
-      native_match_cps_provider_3_reaches_val_1(cps_provider_3_family_lookup(v_14, cps_provider_3_context_families(v_1)), v_1, v_5, v_8, v_10, v_14, v_15)
+      native_match_cps_provider_3_reaches_val_1(cps_provider_3_family_lookup(v_1, v_14), v_1, v_5, v_8, v_10, v_14, v_15)
 
-def native_match_cps_provider_3_reaches_val_3(v_26: Bool, +v_1: cps_provider_3_Context, +v_5: String, +v_8: List<&2, String>, +v_10: Nat, +v_14: String, +v_15: List<&2, cps_provider_7_NfVal>) -> Bool:
-  match v_26:
+def native_match_cps_provider_3_reaches_val_3(v_25: Bool, +v_1: cps_provider_3_Context, +v_5: String, +v_8: List<&2, String>, +v_10: Nat, +v_14: String, +v_15: List<&2, cps_provider_7_NfVal>) -> Bool:
+  match v_25:
     case True{}:
       True{}
     case False{}:
@@ -10009,29 +10039,77 @@ def cps_provider_3_ceil_log2_go(+v_1: Nat, +v_3: Nat, +v_5: Nat) -> Nat:
   native_match_cps_provider_3_ceil_log2_go_1(Nat.is_lt(v_1, v_5), v_1, v_3, v_5)
 
 def cps_provider_3_node_layout(+v_1: cps_provider_3_Context, +v_3: String) -> cps_provider_3_NodeResult:
-  cps_provider_3_node_layout_fuel(v_1, v_3, cps_provider_3_layout_fuel)
-
-def native_match_cps_provider_3_node_layout_fuel_0(v_21: cps_provider_3_Slots) -> cps_provider_3_NodeResult:
-  match v_21:
-    case cps_provider_3_SlotsFail{+v_17}:
-      cps_provider_3_NodeFailed{v_17}
-    case cps_provider_3_SlotsOk{+v_19}:
-      cps_provider_3_node_finish(v_19)
-
-def native_match_cps_provider_3_node_layout_fuel_1(+v_10: BIR.DescriptorArm, +v_1: cps_provider_3_Context, +v_5: Nat) -> cps_provider_3_NodeResult:
-  match v_10:
-    case BIR.DescriptorArm{+v_13, +v_14}:
-      native_match_cps_provider_3_node_layout_fuel_0(cps_provider_3_node_slots(v_1, v_14, 0, 0n, v_5, []))
-
-def native_match_cps_provider_3_node_layout_fuel_2(v_20: Maybe<&2, BIR.DescriptorArm>, +v_1: cps_provider_3_Context, +v_3: String, +v_5: Nat) -> cps_provider_3_NodeResult:
-  match v_20:
-    case None{}:
-      cps_provider_3_NodeFailed{String.append("the constructor `", String.append(v_3, "` is in no declared family arm"))}
-    case Some{+v_10}:
-      native_match_cps_provider_3_node_layout_fuel_1(v_10, v_1, v_5)
+  cps_provider_3_node_at(v_1, v_3, cps_provider_3_layout_fuel)
 
 def cps_provider_3_node_layout_fuel(+v_1: cps_provider_3_Context, +v_3: String, +v_5: Nat) -> cps_provider_3_NodeResult:
-  native_match_cps_provider_3_node_layout_fuel_2(cps_provider_3_arm_of(v_3, cps_provider_3_context_families(v_1)), v_1, v_3, v_5)
+  cps_provider_3_node_at(v_1, v_3, v_5)
+
+def native_match_cps_provider_3_node_at_0(v_8: Bool, +v_1: cps_provider_3_Context, +v_3: String, +v_5: Nat) -> cps_provider_3_NodeResult:
+  match v_8:
+    case True{}:
+      cps_provider_3_plan_node(v_1, v_3)
+    case False{}:
+      cps_provider_3_node_compute(v_1, v_3, v_5)
+
+def cps_provider_3_node_at(+v_1: cps_provider_3_Context, +v_3: String, +v_5: Nat) -> cps_provider_3_NodeResult:
+  native_match_cps_provider_3_node_at_0(Nat.is_eq(v_5, cps_provider_3_layout_fuel), v_1, v_3, v_5)
+
+def native_match_cps_provider_3_plan_node_0(v_9: Maybe<&2, cps_provider_3_NodeResult>, +v_1: cps_provider_3_Context, +v_3: String) -> cps_provider_3_NodeResult:
+  match v_9:
+    case Some{+v_8}:
+      v_8
+    case None{}:
+      cps_provider_3_node_declared(v_1, v_3)
+
+def cps_provider_3_plan_node(+v_1: cps_provider_3_Context, +v_3: String) -> cps_provider_3_NodeResult:
+  native_match_cps_provider_3_plan_node_0(IndexLookup.find(cps_provider_3_NodeResult, cps_provider_3_context_nodes(v_1), v_3), v_1, v_3)
+
+def native_match_cps_provider_3_node_compute_0(v_12: Maybe<&2, BIR.DescriptorArm>, +v_1: cps_provider_3_Context, +v_3: String, +v_5: Nat) -> cps_provider_3_NodeResult:
+  match v_12:
+    case None{}:
+      cps_provider_3_NodeFailed{cps_provider_3_unresolved_message(v_3)}
+    case Some{+v_11}:
+      cps_provider_3_node_arm(v_1, v_11, v_5)
+
+def cps_provider_3_node_compute(+v_1: cps_provider_3_Context, +v_3: String, +v_5: Nat) -> cps_provider_3_NodeResult:
+  native_match_cps_provider_3_node_compute_0(cps_provider_3_arm_of(v_3, cps_provider_3_context_families(v_1)), v_1, v_3, v_5)
+
+def cps_provider_3_unresolved_message(+v_1: String) -> String:
+  String.append("the constructor `", String.append(v_1, "` is in no declared family arm"))
+
+def native_match_cps_provider_3_node_arm_0(v_15: cps_provider_3_Slots) -> cps_provider_3_NodeResult:
+  match v_15:
+    case cps_provider_3_SlotsFail{+v_12}:
+      cps_provider_3_NodeFailed{v_12}
+    case cps_provider_3_SlotsOk{+v_14}:
+      cps_provider_3_node_finish(v_14)
+
+def native_match_cps_provider_3_node_arm_1(+v_2: BIR.DescriptorArm, +v_1: cps_provider_3_Context, +v_4: Nat) -> cps_provider_3_NodeResult:
+  match v_2:
+    case BIR.DescriptorArm{+v_8, +v_9}:
+      native_match_cps_provider_3_node_arm_0(cps_provider_3_node_slots(v_1, v_9, 0, 0n, v_4, []))
+
+def cps_provider_3_node_arm(+v_1: cps_provider_3_Context, +v_2: BIR.DescriptorArm, +v_4: Nat) -> cps_provider_3_NodeResult:
+  native_match_cps_provider_3_node_arm_1(v_2, v_1, v_4)
+
+def cps_provider_3_plan_node_index(+v_1: cps_provider_3_Context, +v_3: List<&2, BIR.ConstructorLayout>) -> Map<&2, cps_provider_3_NodeResult>:
+  match v_3:
+    case []:
+      Map.new(&2, cps_provider_3_NodeResult)
+    case +v_9 <> v_10:
+      match v_9:
+        case BIR.ConstructorLayout{+v_15, +v_16, +v_17, +v_18}:
+          Map.set(&2, cps_provider_3_NodeResult, cps_provider_3_plan_node_index(v_1, v_10), v_16, cps_provider_3_node_declared(v_1, v_16))
+
+def native_match_cps_provider_3_node_declared_0(v_10: Maybe<&2, BIR.DescriptorArm>, +v_1: cps_provider_3_Context, +v_3: String) -> cps_provider_3_NodeResult:
+  match v_10:
+    case Some{+v_7}:
+      cps_provider_3_node_arm(v_1, v_7, cps_provider_3_layout_fuel)
+    case None{}:
+      cps_provider_3_NodeFailed{cps_provider_3_unresolved_message(v_3)}
+
+def cps_provider_3_node_declared(+v_1: cps_provider_3_Context, +v_3: String) -> cps_provider_3_NodeResult:
+  native_match_cps_provider_3_node_declared_0(cps_provider_3_arm_declared(v_1, v_3), v_1, v_3)
 
 def native_match_cps_provider_3_node_slots_0(v_36: cps_provider_3_LayoutResult, +v_1: cps_provider_3_Context, +v_5: U32, +v_7: Nat, +v_9: Nat, +v_12: List<&2, cps_provider_3_NodeSlot>, v_18: List<&2, BIR.DescriptorField>) -> cps_provider_3_Slots:
   match v_36:
@@ -10382,57 +10460,57 @@ def cps_provider_3_head_other(+v_0: BIR.Descriptor) -> cps_provider_3_HeadResult
     case _:
       cps_provider_3_HeadBoxed{cps_provider_3_BoxOpen{}}
 
-def native_match_cps_provider_3_head_value_0(v_49: Bool, +v_7: String, +v_21: Maybe<&2, String>) -> cps_provider_3_HeadResult:
+def native_match_cps_provider_3_head_value_0(v_47: Bool, +v_7: String, +v_20: Maybe<&2, String>) -> cps_provider_3_HeadResult:
+  match v_47:
+    case True{}:
+      cps_provider_3_HeadFound{v_7, v_20}
+    case False{}:
+      cps_provider_3_HeadBoxed{cps_provider_3_BoxOpen{}}
+
+def native_match_cps_provider_3_head_value_1(+v_11: BIR.Family, +v_7: String, +v_8: List<&2, cps_provider_7_NfVal>) -> cps_provider_3_HeadResult:
+  match v_11:
+    case BIR.Family{+v_18, +v_19, +v_20, +v_21, +v_22, +v_23}:
+      native_match_cps_provider_3_head_value_0(Nat.is_eq(List.length(&2, cps_provider_7_NfVal, v_8), v_22), v_7, v_20)
+
+def native_match_cps_provider_3_head_value_2(v_49: Bool, +v_7: String, +v_34: Maybe<&2, String>) -> cps_provider_3_HeadResult:
   match v_49:
     case True{}:
-      cps_provider_3_HeadFound{v_7, v_21}
+      cps_provider_3_HeadFound{v_7, v_34}
     case False{}:
       cps_provider_3_HeadBoxed{cps_provider_3_BoxOpen{}}
 
-def native_match_cps_provider_3_head_value_1(+v_12: BIR.Family, +v_7: String, +v_8: List<&2, cps_provider_7_NfVal>) -> cps_provider_3_HeadResult:
-  match v_12:
-    case BIR.Family{+v_19, +v_20, +v_21, +v_22, +v_23, +v_24}:
-      native_match_cps_provider_3_head_value_0(Nat.is_eq(List.length(&2, cps_provider_7_NfVal, v_8), v_23), v_7, v_21)
-
-def native_match_cps_provider_3_head_value_2(v_51: Bool, +v_7: String, +v_36: Maybe<&2, String>) -> cps_provider_3_HeadResult:
-  match v_51:
-    case True{}:
-      cps_provider_3_HeadFound{v_7, v_36}
-    case False{}:
-      cps_provider_3_HeadBoxed{cps_provider_3_BoxOpen{}}
-
-def native_match_cps_provider_3_head_value_3(+v_36: Maybe<&2, String>, +v_7: String, +v_8: List<&2, cps_provider_7_NfVal>, +v_38: Nat) -> cps_provider_3_HeadResult:
-  match v_36:
-    case Some{+v_41}:
-      native_match_cps_provider_3_head_value_2(Nat.is_eq(List.length(&2, cps_provider_7_NfVal, v_8), v_38), v_7, v_36)
+def native_match_cps_provider_3_head_value_3(+v_34: Maybe<&2, String>, +v_7: String, +v_8: List<&2, cps_provider_7_NfVal>, +v_36: Nat) -> cps_provider_3_HeadResult:
+  match v_34:
+    case Some{+v_39}:
+      native_match_cps_provider_3_head_value_2(Nat.is_eq(List.length(&2, cps_provider_7_NfVal, v_8), v_36), v_7, v_34)
     case None{}:
       cps_provider_3_HeadBoxed{cps_provider_3_BoxOpen{}}
 
-def native_match_cps_provider_3_head_value_4(+v_29: BIR.TypeFunction, +v_7: String, +v_8: List<&2, cps_provider_7_NfVal>) -> cps_provider_3_HeadResult:
-  match v_29:
-    case BIR.TypeFunction{+v_35, +v_36, +v_37, +v_38, +v_39}:
-      native_match_cps_provider_3_head_value_3(v_36, v_7, v_8, v_38)
+def native_match_cps_provider_3_head_value_4(+v_27: BIR.TypeFunction, +v_7: String, +v_8: List<&2, cps_provider_7_NfVal>) -> cps_provider_3_HeadResult:
+  match v_27:
+    case BIR.TypeFunction{+v_33, +v_34, +v_35, +v_36, +v_37}:
+      native_match_cps_provider_3_head_value_3(v_34, v_7, v_8, v_36)
 
-def native_match_cps_provider_3_head_value_5(v_50: Maybe<&2, BIR.TypeFunction>, +v_7: String, +v_8: List<&2, cps_provider_7_NfVal>) -> cps_provider_3_HeadResult:
-  match v_50:
-    case Some{+v_29}:
-      native_match_cps_provider_3_head_value_4(v_29, v_7, v_8)
+def native_match_cps_provider_3_head_value_5(v_48: Maybe<&2, BIR.TypeFunction>, +v_7: String, +v_8: List<&2, cps_provider_7_NfVal>) -> cps_provider_3_HeadResult:
+  match v_48:
+    case Some{+v_27}:
+      native_match_cps_provider_3_head_value_4(v_27, v_7, v_8)
     case None{}:
       cps_provider_3_HeadBoxed{cps_provider_3_BoxUnresolved{v_7}}
 
-def native_match_cps_provider_3_head_value_6(v_48: Maybe<&2, BIR.Family>, +v_1: cps_provider_3_Context, +v_7: String, +v_8: List<&2, cps_provider_7_NfVal>) -> cps_provider_3_HeadResult:
-  match v_48:
-    case Some{+v_12}:
-      native_match_cps_provider_3_head_value_1(v_12, v_7, v_8)
+def native_match_cps_provider_3_head_value_6(v_46: Maybe<&2, BIR.Family>, +v_1: cps_provider_3_Context, +v_7: String, +v_8: List<&2, cps_provider_7_NfVal>) -> cps_provider_3_HeadResult:
+  match v_46:
+    case Some{+v_11}:
+      native_match_cps_provider_3_head_value_1(v_11, v_7, v_8)
     case None{}:
-      native_match_cps_provider_3_head_value_5(cps_provider_3_function_lookup(v_7, cps_provider_3_context_type_functions(v_1)), v_7, v_8)
+      native_match_cps_provider_3_head_value_5(cps_provider_3_function_lookup(v_1, v_7), v_7, v_8)
 
 def native_match_cps_provider_3_head_value_7(+v_3: cps_provider_7_NfVal, +v_1: cps_provider_3_Context) -> cps_provider_3_HeadResult:
   match v_3:
     case cps_provider_7_NfType{+v_7, +v_8}:
-      native_match_cps_provider_3_head_value_6(cps_provider_3_family_lookup(v_7, cps_provider_3_context_families(v_1)), v_1, v_7, v_8)
-    case cps_provider_7_NfOther{+v_44}:
-      cps_provider_3_head_other(v_44)
+      native_match_cps_provider_3_head_value_6(cps_provider_3_family_lookup(v_1, v_7), v_1, v_7, v_8)
+    case cps_provider_7_NfOther{+v_42}:
+      cps_provider_3_head_other(v_42)
     case _:
       cps_provider_3_HeadBoxed{cps_provider_3_BoxOpen{}}
 
@@ -10484,14 +10562,14 @@ def native_match_cps_provider_3_arm_fields_value_0(+v_14: BIR.DescriptorArm, +v_
 def native_match_cps_provider_3_arm_fields_value_1(v_22: Maybe<&2, BIR.DescriptorArm>, +v_1: cps_provider_3_Context, +v_3: String, +v_10: List<&2, cps_provider_7_NfVal>) -> cps_provider_3_FieldsResult:
   match v_22:
     case None{}:
-      cps_provider_3_FieldsFailed{String.append("the constructor `", String.append(v_3, "` is in no declared family arm"))}
+      cps_provider_3_FieldsFailed{cps_provider_3_unresolved_message(v_3)}
     case Some{+v_14}:
       native_match_cps_provider_3_arm_fields_value_0(v_14, v_1, v_10)
 
 def native_match_cps_provider_3_arm_fields_value_2(+v_5: cps_provider_7_NfVal, +v_1: cps_provider_3_Context, +v_3: String) -> cps_provider_3_FieldsResult:
   match v_5:
     case cps_provider_7_NfType{+v_9, +v_10}:
-      native_match_cps_provider_3_arm_fields_value_1(cps_provider_3_arm_of(v_3, cps_provider_3_context_families(v_1)), v_1, v_3, v_10)
+      native_match_cps_provider_3_arm_fields_value_1(cps_provider_3_arm_declared(v_1, v_3), v_1, v_3, v_10)
     case _:
       cps_provider_3_FieldsFailed{"the applied type is not a named family application"}
 
@@ -11132,8 +11210,8 @@ def cps_provider_4_scan(v_2: List<&2, Char>, +v_4: cps_provider_4_Mode, +v_6: Bo
 def cps_provider_4_rewrite(v_1: String, v_4: Map<&2, String>, v_7: Map<&2, String>) -> cps_provider_4_LinkResult:
   cps_provider_4_link_result(cps_provider_4_scan(cps_provider_4_chars_forward(v_1), cps_provider_4_CodeMode{}, False{}, None{}, [], v_4, v_7))
 
-def cps_provider_5_world(+v_0: cps_provider_3_Context, +v_2: List<&2, BIR.ConstructorLayout>, +v_4: List<&2, BIR.Family>, +v_7: List<&2, cps_provider_5_CidSym>) -> cps_provider_5_World:
-  cps_provider_5_World{v_0, v_2, v_4, v_7}
+def cps_provider_5_world(+v_0: cps_provider_3_Context, +v_2: List<&2, BIR.ConstructorLayout>, +v_5: List<&2, cps_provider_5_CidSym>) -> cps_provider_5_World:
+  cps_provider_5_World{v_0, v_2, v_5}
 
 def cps_provider_5_join_text(+v_2: List<&2, String>) -> String:
   String.join(v_2, "")
@@ -11181,8 +11259,8 @@ def cps_provider_5_ctor_find(+v_1: U32, +v_3: List<&2, BIR.ConstructorLayout>) -
 
 def cps_provider_5_ctor_of(+v_1: U32, +v_3: cps_provider_5_World) -> Maybe<&2, BIR.ConstructorLayout>:
   match v_3:
-    case cps_provider_5_World{v_9, v_10, v_11, v_12}:
-      cps_provider_5_ctor_find(v_1, v_10)
+    case cps_provider_5_World{v_8, v_9, v_10}:
+      cps_provider_5_ctor_find(v_1, v_9)
 
 def cps_provider_5_cid_find(+v_1: String, +v_4: List<&2, cps_provider_5_CidSym>) -> Maybe<&2, U32>:
   match v_4:
@@ -11196,8 +11274,8 @@ def cps_provider_5_cid_find(+v_1: String, +v_4: List<&2, cps_provider_5_CidSym>)
 
 def cps_provider_5_cid_of(+v_1: String, +v_3: cps_provider_5_World) -> Maybe<&2, U32>:
   match v_3:
-    case cps_provider_5_World{v_10, v_11, v_12, v_13}:
-      cps_provider_5_cid_find(v_1, v_13)
+    case cps_provider_5_World{v_9, v_10, v_11}:
+      cps_provider_5_cid_find(v_1, v_11)
 
 def cps_provider_5_cid_text_of(+v_2: Maybe<&2, U32>) -> Maybe<&2, String>:
   match v_2:
@@ -11662,9 +11740,9 @@ def cps_provider_5_fill_result_jobs(+v_0: cps_provider_3_FillResult, +v_2: Strin
 
 def cps_provider_5_fill_data_jobs(+v_1: cps_provider_5_World, +v_2: cps_provider_3_Layout, +v_4: String, +v_6: cps_provider_5_Dst, +v_8: String) -> List<&2, cps_provider_5_Job>:
   match v_1:
-    case cps_provider_5_World{v_15, v_16, v_17, v_18}:
-      v_20 = cps_provider_3_layout_fill(v_15, v_2)
-      cps_provider_5_fill_result_jobs(v_20, v_4, v_6, v_8)
+    case cps_provider_5_World{v_14, v_15, v_16}:
+      v_18 = cps_provider_3_layout_fill(v_14, v_2)
+      cps_provider_5_fill_result_jobs(v_18, v_4, v_6, v_8)
 
 def cps_provider_5_fill_jobs(+v_1: cps_provider_5_World, +v_2: cps_provider_3_Layout, +v_4: String, +v_6: cps_provider_5_Dst, +v_8: String) -> List<&2, cps_provider_5_Job>:
   match v_2:
@@ -11684,9 +11762,9 @@ def cps_provider_5_unfill_result_jobs(+v_0: cps_provider_3_UnfillResult, +v_2: c
 
 def cps_provider_5_unfill_data_jobs(+v_1: cps_provider_5_World, +v_2: cps_provider_3_Layout, +v_4: cps_provider_5_Src, +v_6: String, +v_8: String) -> List<&2, cps_provider_5_Job>:
   match v_1:
-    case cps_provider_5_World{v_15, v_16, v_17, v_18}:
-      v_20 = cps_provider_3_layout_unfill(v_15, v_2)
-      cps_provider_5_unfill_result_jobs(v_20, v_4, v_6, v_8)
+    case cps_provider_5_World{v_14, v_15, v_16}:
+      v_18 = cps_provider_3_layout_unfill(v_14, v_2)
+      cps_provider_5_unfill_result_jobs(v_18, v_4, v_6, v_8)
 
 def cps_provider_5_unfill_word_jobs(+v_0: cps_provider_3_CWord, +v_2: cps_provider_5_Src, +v_4: String, +v_6: String) -> List<&2, cps_provider_5_Job>:
   match v_0:
@@ -11924,9 +12002,9 @@ def cps_provider_5_construct_cid(+v_2: Maybe<&2, U32>, +v_4: cps_provider_5_Worl
       cps_provider_5_PartFail{cps_provider_5_join_text(["the constructor `", v_6, "` has no canonical CID row"])}
     case Some{v_13}:
       match v_4:
-        case cps_provider_5_World{v_18, v_19, v_20, v_21}:
-          v_23 = cps_provider_3_node_layout(v_18, v_6)
-          cps_provider_5_construct_layout(v_23, v_4, v_13, v_6, v_9)
+        case cps_provider_5_World{v_17, v_18, v_19}:
+          v_21 = cps_provider_3_node_layout(v_17, v_6)
+          cps_provider_5_construct_layout(v_21, v_4, v_13, v_6, v_9)
 
 def cps_provider_5_construct_generic(+v_1: cps_provider_5_World, +v_3: String, +v_6: List<&2, cps_provider_5_Operand>) -> cps_provider_5_Part:
   v_10 = cps_provider_5_cid_of(v_3, v_1)
@@ -12075,42 +12153,19 @@ def cps_provider_5_arm_fields_of(+v_1: List<&2, cps_provider_3_LayArm>, +v_3: St
           v_15 = String.eq(v_12, v_3)
           Bool.pick(Maybe<&2, List<&2, cps_provider_3_Layout>>, v_15, Some{v_13}, cps_provider_5_arm_fields_of(v_9, v_3))
 
+def cps_provider_5_arm_fields_declared(+v_1: Maybe<&2, BIR.DescriptorArm>) -> Maybe<&2, List<&2, BIR.DescriptorField>>:
+  match v_1:
+    case None{}:
+      None{}
+    case Some{+v_5}:
+      match v_5:
+        case BIR.DescriptorArm{+v_8, +v_9}:
+          Some{v_9}
+
 def cps_provider_5_arm_descriptor_fields(+v_1: cps_provider_5_World, +v_3: String) -> Maybe<&2, List<&2, BIR.DescriptorField>>:
   match v_1:
-    case cps_provider_5_World{v_10, v_11, v_12, v_13}:
-      cps_provider_5_family_arm_fields(v_12, v_3)
-
-def native_match_cps_provider_5_family_arm_fields_0(v_26: Maybe<&2, List<&2, BIR.DescriptorField>>, +v_3: String, v_9: List<&2, BIR.Family>) -> Maybe<&2, List<&2, BIR.DescriptorField>>:
-  match v_26:
-    case None{}:
-      cps_provider_5_family_arm_fields(v_9, v_3)
-    case Some{v_25}:
-      Some{v_25}
-
-def native_match_cps_provider_5_family_arm_fields_1(+v_8: BIR.Family, +v_3: String, v_9: List<&2, BIR.Family>) -> Maybe<&2, List<&2, BIR.DescriptorField>>:
-  match v_8:
-    case BIR.Family{v_16, v_17, v_18, v_19, v_20, v_21}:
-      native_match_cps_provider_5_family_arm_fields_0(cps_provider_5_descriptor_arm_fields(v_21, v_3), v_3, v_9)
-
-def native_match_cps_provider_5_family_arm_fields_2(+v_1: List<&2, BIR.Family>, +v_3: String) -> Maybe<&2, List<&2, BIR.DescriptorField>>:
-  match v_1:
-    case []:
-      None{}
-    case +v_8 <> v_9:
-      native_match_cps_provider_5_family_arm_fields_1(v_8, v_3, v_9)
-
-def cps_provider_5_family_arm_fields(+v_1: List<&2, BIR.Family>, +v_3: String) -> Maybe<&2, List<&2, BIR.DescriptorField>>:
-  native_match_cps_provider_5_family_arm_fields_2(v_1, v_3)
-
-def cps_provider_5_descriptor_arm_fields(+v_1: List<&2, BIR.DescriptorArm>, +v_3: String) -> Maybe<&2, List<&2, BIR.DescriptorField>>:
-  match v_1:
-    case []:
-      None{}
-    case +v_8 <> v_9:
-      match v_8:
-        case BIR.DescriptorArm{v_12, v_13}:
-          v_15 = String.eq(v_12, v_3)
-          Bool.pick(Maybe<&2, List<&2, BIR.DescriptorField>>, v_15, Some{v_13}, cps_provider_5_descriptor_arm_fields(v_9, v_3))
+    case cps_provider_5_World{v_9, v_10, v_11}:
+      cps_provider_5_arm_fields_declared(cps_provider_3_arm_declared(v_9, v_3))
 
 def native_match_cps_provider_5_step_key_0(v_8: BIR.ConstructorLayout) -> Maybe<&2, String>:
   match v_8:
@@ -12127,17 +12182,17 @@ def native_match_cps_provider_5_step_key_1(v_17: Maybe<&2, BIR.ConstructorLayout
 def cps_provider_5_step_key(+v_1: cps_provider_5_World, +v_3: U32) -> Maybe<&2, String>:
   native_match_cps_provider_5_step_key_1(cps_provider_5_ctor_of(v_3, v_1))
 
-def native_match_cps_provider_5_cell_lgs_0(v_18: cps_provider_3_CellResult) -> Maybe<&2, cps_provider_3_Cell>:
-  match v_18:
-    case cps_provider_3_CellFailed{v_15}:
+def native_match_cps_provider_5_cell_lgs_0(v_16: cps_provider_3_CellResult) -> Maybe<&2, cps_provider_3_Cell>:
+  match v_16:
+    case cps_provider_3_CellFailed{v_13}:
       None{}
-    case cps_provider_3_CellFound{v_17}:
-      Some{v_17}
+    case cps_provider_3_CellFound{v_15}:
+      Some{v_15}
 
 def native_match_cps_provider_5_cell_lgs_1(+v_1: cps_provider_5_World, +v_2: BIR.Descriptor) -> Maybe<&2, cps_provider_3_Cell>:
   match v_1:
-    case cps_provider_5_World{v_9, v_10, v_11, v_12}:
-      native_match_cps_provider_5_cell_lgs_0(cps_provider_3_array_cell(v_9, v_2))
+    case cps_provider_5_World{v_8, v_9, v_10}:
+      native_match_cps_provider_5_cell_lgs_0(cps_provider_3_array_cell(v_8, v_2))
 
 def cps_provider_5_cell_lgs(+v_1: cps_provider_5_World, +v_2: BIR.Descriptor) -> Maybe<&2, cps_provider_3_Cell>:
   native_match_cps_provider_5_cell_lgs_1(v_1, v_2)
@@ -12444,24 +12499,24 @@ def native_match_cps_provider_5_resolve_buf_field_5(+v_11: cps_provider_3_Layout
 def cps_provider_5_resolve_buf_field(+v_1: cps_provider_5_World, +v_3: String, +v_5: U32, +v_7: String, +v_9: String, +v_11: cps_provider_3_Layout, +v_13: String, +v_15: String, +v_18: List<&2, cps_provider_5_PathStep>) -> cps_provider_5_PathResult:
   native_match_cps_provider_5_resolve_buf_field_5(v_11, v_1, v_3, v_5, v_7, v_9, v_13, v_15, v_18)
 
-def native_match_cps_provider_5_resolve_node_slot_0(v_31: cps_provider_3_NodeSlot, +v_1: cps_provider_5_World, +v_7: Nat, +v_9: String, +v_11: String, +v_13: String, +v_16: List<&2, cps_provider_5_PathStep>) -> cps_provider_5_PathResult:
-  match v_31:
-    case cps_provider_3_NodeSlot{v_35, v_36, v_37}:
-      cps_provider_5_advance(v_1, cps_provider_5_StSlot{Nat.add(v_7, v_36), v_37, v_9, v_11, v_13, False{}}, v_16)
+def native_match_cps_provider_5_resolve_node_slot_0(v_29: cps_provider_3_NodeSlot, +v_1: cps_provider_5_World, +v_7: Nat, +v_9: String, +v_11: String, +v_13: String, +v_16: List<&2, cps_provider_5_PathStep>) -> cps_provider_5_PathResult:
+  match v_29:
+    case cps_provider_3_NodeSlot{v_33, v_34, v_35}:
+      cps_provider_5_advance(v_1, cps_provider_5_StSlot{Nat.add(v_7, v_34), v_35, v_9, v_11, v_13, False{}}, v_16)
 
-def native_match_cps_provider_5_resolve_node_slot_1(v_38: cps_provider_3_SlotResult, +v_1: cps_provider_5_World, +v_3: String, +v_7: Nat, +v_9: String, +v_11: String, +v_13: String, +v_16: List<&2, cps_provider_5_PathStep>) -> cps_provider_5_PathResult:
-  match v_38:
+def native_match_cps_provider_5_resolve_node_slot_1(v_36: cps_provider_3_SlotResult, +v_1: cps_provider_5_World, +v_3: String, +v_7: Nat, +v_9: String, +v_11: String, +v_13: String, +v_16: List<&2, cps_provider_5_PathStep>) -> cps_provider_5_PathResult:
+  match v_36:
     case cps_provider_3_SlotErased{}:
       cps_provider_5_PathFail{cps_provider_5_join_text(["the projection of `", v_3, "` names an erased field"])}
-    case cps_provider_3_SlotFailed{v_29}:
-      cps_provider_5_PathFail{v_29}
-    case cps_provider_3_SlotFound{v_31}:
-      native_match_cps_provider_5_resolve_node_slot_0(v_31, v_1, v_7, v_9, v_11, v_13, v_16)
+    case cps_provider_3_SlotFailed{v_27}:
+      cps_provider_5_PathFail{v_27}
+    case cps_provider_3_SlotFound{v_29}:
+      native_match_cps_provider_5_resolve_node_slot_0(v_29, v_1, v_7, v_9, v_11, v_13, v_16)
 
 def native_match_cps_provider_5_resolve_node_slot_2(+v_1: cps_provider_5_World, +v_3: String, +v_5: U32, +v_7: Nat, +v_9: String, +v_11: String, +v_13: String, +v_16: List<&2, cps_provider_5_PathStep>) -> cps_provider_5_PathResult:
   match v_1:
-    case cps_provider_5_World{v_22, v_23, v_24, v_25}:
-      native_match_cps_provider_5_resolve_node_slot_1(cps_provider_3_node_slot(v_22, v_3, v_5), v_1, v_3, v_7, v_9, v_11, v_13, v_16)
+    case cps_provider_5_World{v_21, v_22, v_23}:
+      native_match_cps_provider_5_resolve_node_slot_1(cps_provider_3_node_slot(v_21, v_3, v_5), v_1, v_3, v_7, v_9, v_11, v_13, v_16)
 
 def cps_provider_5_resolve_node_slot(+v_1: cps_provider_5_World, +v_3: String, +v_5: U32, +v_7: Nat, +v_9: String, +v_11: String, +v_13: String, +v_16: List<&2, cps_provider_5_PathStep>) -> cps_provider_5_PathResult:
   native_match_cps_provider_5_resolve_node_slot_2(v_1, v_3, v_5, v_7, v_9, v_11, v_13, v_16)
@@ -12573,46 +12628,46 @@ def native_match_cps_provider_5_leaf_state_1(v_34: cps_provider_5_PathResult) ->
 def cps_provider_5_leaf_state(+v_1: cps_provider_5_World, +v_3: cps_provider_5_PathState, +v_4: BIR.Descriptor, +v_7: List<&2, cps_provider_5_PathStep>) -> cps_provider_5_PathResult:
   native_match_cps_provider_5_leaf_state_1(cps_provider_5_array_from_state(v_1, v_3, v_4))
 
-def native_match_cps_provider_5_resolve_path_0(v_39: cps_provider_3_NodeSlot, +v_1: cps_provider_5_World, v_9: List<&2, cps_provider_5_PathStep>) -> cps_provider_5_PathResult:
-  match v_39:
-    case cps_provider_3_NodeSlot{v_43, v_44, v_45}:
-      cps_provider_5_advance(v_1, cps_provider_5_StSlot{0n, v_45, "pbn", "0", "1", True{}}, v_9)
+def native_match_cps_provider_5_resolve_path_0(v_37: cps_provider_3_NodeSlot, +v_1: cps_provider_5_World, v_9: List<&2, cps_provider_5_PathStep>) -> cps_provider_5_PathResult:
+  match v_37:
+    case cps_provider_3_NodeSlot{v_41, v_42, v_43}:
+      cps_provider_5_advance(v_1, cps_provider_5_StSlot{0n, v_43, "pbn", "0", "1", True{}}, v_9)
 
-def native_match_cps_provider_5_resolve_path_1(v_61: cps_provider_3_SlotResult, +v_1: cps_provider_5_World, v_9: List<&2, cps_provider_5_PathStep>) -> cps_provider_5_PathResult:
-  match v_61:
-    case cps_provider_3_SlotFound{v_39}:
-      native_match_cps_provider_5_resolve_path_0(v_39, v_1, v_9)
+def native_match_cps_provider_5_resolve_path_1(v_59: cps_provider_3_SlotResult, +v_1: cps_provider_5_World, v_9: List<&2, cps_provider_5_PathStep>) -> cps_provider_5_PathResult:
+  match v_59:
+    case cps_provider_3_SlotFound{v_37}:
+      native_match_cps_provider_5_resolve_path_0(v_37, v_1, v_9)
     case cps_provider_3_SlotErased{}:
       cps_provider_5_PathFail{"a packed projection names an erased field"}
-    case cps_provider_3_SlotFailed{v_48}:
-      cps_provider_5_PathFail{v_48}
+    case cps_provider_3_SlotFailed{v_46}:
+      cps_provider_5_PathFail{v_46}
 
-def native_match_cps_provider_5_resolve_path_2(v_36: Bool, +v_1: cps_provider_5_World, v_9: List<&2, cps_provider_5_PathStep>, v_13: U32, v_17: String, v_22: cps_provider_3_Context) -> cps_provider_5_PathResult:
-  match v_36:
+def native_match_cps_provider_5_resolve_path_2(v_34: Bool, +v_1: cps_provider_5_World, v_9: List<&2, cps_provider_5_PathStep>, v_13: U32, v_17: String, v_21: cps_provider_3_Context) -> cps_provider_5_PathResult:
+  match v_34:
     case True{}:
-      native_match_cps_provider_5_resolve_path_1(cps_provider_3_node_slot(v_22, v_17, v_13), v_1, v_9)
+      native_match_cps_provider_5_resolve_path_1(cps_provider_3_node_slot(v_21, v_17, v_13), v_1, v_9)
     case False{}:
       cps_provider_5_resolve_node_slot(v_1, v_17, v_13, 0n, "pbn", cps_provider_5_unique_expr("pbt"), cps_provider_5_static_expr("pbt"), v_9)
 
-def native_match_cps_provider_5_resolve_path_3(v_30: cps_provider_3_Node, +v_1: cps_provider_5_World, v_9: List<&2, cps_provider_5_PathStep>, v_13: U32, v_17: String, v_22: cps_provider_3_Context) -> cps_provider_5_PathResult:
-  match v_30:
-    case cps_provider_3_Node{v_34, v_35, v_36}:
-      native_match_cps_provider_5_resolve_path_2(v_36, v_1, v_9, v_13, v_17, v_22)
+def native_match_cps_provider_5_resolve_path_3(v_28: cps_provider_3_Node, +v_1: cps_provider_5_World, v_9: List<&2, cps_provider_5_PathStep>, v_13: U32, v_17: String, v_21: cps_provider_3_Context) -> cps_provider_5_PathResult:
+  match v_28:
+    case cps_provider_3_Node{v_32, v_33, v_34}:
+      native_match_cps_provider_5_resolve_path_2(v_34, v_1, v_9, v_13, v_17, v_21)
 
-def native_match_cps_provider_5_resolve_path_4(v_60: cps_provider_3_NodeResult, +v_1: cps_provider_5_World, v_9: List<&2, cps_provider_5_PathStep>, v_13: U32, v_17: String, v_22: cps_provider_3_Context) -> cps_provider_5_PathResult:
-  match v_60:
-    case cps_provider_3_NodeFailed{v_28}:
-      cps_provider_5_PathFail{v_28}
-    case cps_provider_3_NodeFound{v_30}:
-      native_match_cps_provider_5_resolve_path_3(v_30, v_1, v_9, v_13, v_17, v_22)
+def native_match_cps_provider_5_resolve_path_4(v_58: cps_provider_3_NodeResult, +v_1: cps_provider_5_World, v_9: List<&2, cps_provider_5_PathStep>, v_13: U32, v_17: String, v_21: cps_provider_3_Context) -> cps_provider_5_PathResult:
+  match v_58:
+    case cps_provider_3_NodeFailed{v_26}:
+      cps_provider_5_PathFail{v_26}
+    case cps_provider_3_NodeFound{v_28}:
+      native_match_cps_provider_5_resolve_path_3(v_28, v_1, v_9, v_13, v_17, v_21)
 
 def native_match_cps_provider_5_resolve_path_5(+v_1: cps_provider_5_World, v_9: List<&2, cps_provider_5_PathStep>, v_13: U32, v_17: String) -> cps_provider_5_PathResult:
   match v_1:
-    case cps_provider_5_World{v_22, v_23, v_24, v_25}:
-      native_match_cps_provider_5_resolve_path_4(cps_provider_3_node_layout(v_22, v_17), v_1, v_9, v_13, v_17, v_22)
+    case cps_provider_5_World{v_21, v_22, v_23}:
+      native_match_cps_provider_5_resolve_path_4(cps_provider_3_node_layout(v_21, v_17), v_1, v_9, v_13, v_17, v_21)
 
-def native_match_cps_provider_5_resolve_path_6(v_59: Maybe<&2, String>, +v_1: cps_provider_5_World, v_9: List<&2, cps_provider_5_PathStep>, v_12: U32, v_13: U32) -> cps_provider_5_PathResult:
-  match v_59:
+def native_match_cps_provider_5_resolve_path_6(v_57: Maybe<&2, String>, +v_1: cps_provider_5_World, v_9: List<&2, cps_provider_5_PathStep>, v_12: U32, v_13: U32) -> cps_provider_5_PathResult:
+  match v_57:
     case None{}:
       cps_provider_5_PathFail{cps_provider_5_join_text(["BIR projects constructor ", U32.show(v_12), " with no layout row"])}
     case Some{v_17}:
@@ -12622,10 +12677,10 @@ def native_match_cps_provider_5_resolve_path_7(+v_8: cps_provider_5_PathStep, +v
   match v_8:
     case cps_provider_5_PathField{v_12, v_13}:
       native_match_cps_provider_5_resolve_path_6(cps_provider_5_step_key(v_1, v_12), v_1, v_9, v_12, v_13)
-    case cps_provider_5_PathHalf{v_54, v_55}:
-      cps_provider_5_root_array_path(v_1, v_55, v_4)
-    case cps_provider_5_PathLeafCell{v_58}:
-      cps_provider_5_root_array_path(v_1, v_58, v_4)
+    case cps_provider_5_PathHalf{v_52, v_53}:
+      cps_provider_5_root_array_path(v_1, v_53, v_4)
+    case cps_provider_5_PathLeafCell{v_56}:
+      cps_provider_5_root_array_path(v_1, v_56, v_4)
 
 def native_match_cps_provider_5_resolve_path_8(+v_4: List<&2, cps_provider_5_PathStep>, +v_1: cps_provider_5_World) -> cps_provider_5_PathResult:
   match v_4:
@@ -13667,9 +13722,9 @@ def cps_provider_5_project_slot(+v_0: cps_provider_3_SlotResult, +v_2: cps_provi
       match v_15:
         case cps_provider_3_NodeSlot{v_19, v_20, v_21}:
           match v_2:
-            case cps_provider_5_World{v_26, v_27, v_28, v_29}:
-              v_31 = cps_provider_3_slot_unfill(v_26, v_5, v_7)
-              cps_provider_5_project_plan(v_31, v_2, v_3, v_21, v_20, v_9)
+            case cps_provider_5_World{v_25, v_26, v_27}:
+              v_29 = cps_provider_3_slot_unfill(v_25, v_5, v_7)
+              cps_provider_5_project_plan(v_29, v_2, v_3, v_21, v_20, v_9)
 
 def cps_provider_5_project_layout(+v_0: cps_provider_3_NodeResult, +v_2: cps_provider_5_World, +v_4: String, +v_6: U32, +v_8: String) -> cps_provider_5_Part:
   match v_0:
@@ -13677,15 +13732,15 @@ def cps_provider_5_project_layout(+v_0: cps_provider_3_NodeResult, +v_2: cps_pro
       cps_provider_5_PartFail{v_11}
     case cps_provider_3_NodeFound{v_13}:
       match v_2:
-        case cps_provider_5_World{v_18, v_19, v_20, v_21}:
-          v_23 = cps_provider_3_node_slot(v_18, v_4, v_6)
-          cps_provider_5_project_slot(v_23, v_2, v_13, v_4, v_6, v_8)
+        case cps_provider_5_World{v_17, v_18, v_19}:
+          v_21 = cps_provider_3_node_slot(v_17, v_4, v_6)
+          cps_provider_5_project_slot(v_21, v_2, v_13, v_4, v_6, v_8)
 
 def cps_provider_5_project_node(+v_1: cps_provider_5_World, +v_3: String, +v_5: U32, +v_7: String) -> cps_provider_5_Part:
   match v_1:
-    case cps_provider_5_World{v_13, v_14, v_15, v_16}:
-      v_18 = cps_provider_3_node_layout(v_13, v_3)
-      cps_provider_5_project_layout(v_18, v_1, v_3, v_5, v_7)
+    case cps_provider_5_World{v_12, v_13, v_14}:
+      v_16 = cps_provider_3_node_layout(v_12, v_3)
+      cps_provider_5_project_layout(v_16, v_1, v_3, v_5, v_7)
 
 def cps_provider_5_project_marker(+v_1: Bool, +v_3: String, +v_5: String, +v_7: U32, +v_9: cps_provider_5_World) -> cps_provider_5_Part:
   match v_1:
@@ -13806,8 +13861,8 @@ def cps_provider_5_array_cell_result(+v_0: cps_provider_3_CellResult) -> cps_pro
 
 def native_match_cps_provider_5_array_cell_0(+v_1: cps_provider_5_World, +v_9: BIR.Descriptor) -> cps_provider_5_CellOut:
   match v_1:
-    case cps_provider_5_World{v_14, v_15, v_16, v_17}:
-      cps_provider_5_array_cell_result(cps_provider_3_array_cell(v_14, v_9))
+    case cps_provider_5_World{v_13, v_14, v_15}:
+      cps_provider_5_array_cell_result(cps_provider_3_array_cell(v_13, v_9))
 
 def native_match_cps_provider_5_array_cell_1(+v_3: List<&2, BIR.Descriptor>, +v_1: cps_provider_5_World, +v_4: BIR.Primitive) -> cps_provider_5_CellOut:
   match v_3:
@@ -14390,34 +14445,34 @@ def cps_provider_5_show_native_kind(+v_1: String) -> cps_provider_5_ShowKind:
     case _:
       cps_provider_5_ShowKindOk{7n}
 
-def native_match_cps_provider_5_show_kind_family_0(v_17: Maybe<&2, String>) -> cps_provider_5_ShowKind:
-  match v_17:
-    case Some{v_22}:
-      cps_provider_5_show_native_kind(v_22)
+def native_match_cps_provider_5_show_kind_family_0(v_16: Maybe<&2, String>) -> cps_provider_5_ShowKind:
+  match v_16:
+    case Some{v_21}:
+      cps_provider_5_show_native_kind(v_21)
     case None{}:
       cps_provider_5_ShowKindOk{7n}
 
-def native_match_cps_provider_5_show_kind_family_1(v_24: Bool, v_17: Maybe<&2, String>) -> cps_provider_5_ShowKind:
-  match v_24:
+def native_match_cps_provider_5_show_kind_family_1(v_23: Bool, v_16: Maybe<&2, String>) -> cps_provider_5_ShowKind:
+  match v_23:
     case True{}:
       cps_provider_5_ShowKindFailed{"main's type IO.OP cannot be printed as data"}
     case False{}:
-      native_match_cps_provider_5_show_kind_family_0(v_17)
+      native_match_cps_provider_5_show_kind_family_0(v_16)
 
-def native_match_cps_provider_5_show_kind_family_2(v_8: BIR.Family) -> cps_provider_5_ShowKind:
-  match v_8:
-    case BIR.Family{v_15, v_16, v_17, v_18, v_19, v_20}:
-      native_match_cps_provider_5_show_kind_family_1(String.eq(v_15, "IO.OP"), v_17)
+def native_match_cps_provider_5_show_kind_family_2(v_7: BIR.Family) -> cps_provider_5_ShowKind:
+  match v_7:
+    case BIR.Family{v_14, v_15, v_16, v_17, v_18, v_19}:
+      native_match_cps_provider_5_show_kind_family_1(String.eq(v_14, "IO.OP"), v_16)
 
-def native_match_cps_provider_5_show_kind_family_3(v_23: Maybe<&2, BIR.Family>) -> cps_provider_5_ShowKind:
-  match v_23:
+def native_match_cps_provider_5_show_kind_family_3(v_22: Maybe<&2, BIR.Family>) -> cps_provider_5_ShowKind:
+  match v_22:
     case None{}:
       cps_provider_5_ShowKindFailed{"main's type is a type former and cannot be printed"}
-    case Some{v_8}:
-      native_match_cps_provider_5_show_kind_family_2(v_8)
+    case Some{v_7}:
+      native_match_cps_provider_5_show_kind_family_2(v_7)
 
 def cps_provider_5_show_kind_family(+v_1: String, +v_3: cps_provider_3_Context) -> cps_provider_5_ShowKind:
-  native_match_cps_provider_5_show_kind_family_3(cps_provider_3_family_lookup(v_1, cps_provider_3_context_families(v_3)))
+  native_match_cps_provider_5_show_kind_family_3(cps_provider_3_family_lookup(v_3, v_1))
 
 def cps_provider_5_show_kind_head(+v_0: cps_provider_3_HeadResult, +v_1: cps_provider_3_Context) -> cps_provider_5_ShowKind:
   match v_0:
@@ -16987,33 +17042,33 @@ def cps_provider_8_tag_unseen(v_2: Maybe<&2, Bool>) -> Bool:
     case Some{_}:
       False{}
 
-def cps_provider_8_tag_group_selected(v_1: Bool, v_2: BIR.Atom, v_4: cps_provider_8_TaggedRegion, v_5: BIR.Block, v_8: List<&2, cps_provider_8_TagArm>, v_11: Map<&2, Bool>, v_13: Nat) -> cps_provider_8_TagGroup:
+def cps_provider_8_tag_group_selected(v_1: Bool, v_2: BIR.Atom, v_4: cps_provider_8_TaggedRegion, v_5: BIR.Block, v_7: cps_provider_8_JsCtx, v_10: List<&2, cps_provider_8_TagArm>, v_13: Map<&2, Bool>, v_15: Nat) -> cps_provider_8_TagGroup:
   match v_1:
     case False{}:
-      cps_provider_8_TagGroup{v_8, v_5, v_13}
+      cps_provider_8_TagGroup{v_10, v_5, v_15}
     case True{}:
       match v_4:
-        case cps_provider_8_TaggedRegion{v_21, v_22, _, +v_24, v_25, v_26}:
-          cps_provider_8_tag_group_arm(cps_provider_8_region_needs_frame(v_25, v_21), v_2, v_26, cps_provider_8_TagArm{v_21, v_22, v_24, v_25} <> v_8, Map.set(&2, Bool, v_11, v_24, True{}), v_13)
+        case cps_provider_8_TaggedRegion{v_23, v_24, _, +v_26, v_27, v_28}:
+          cps_provider_8_tag_group_arm(cps_provider_8_js_ctx_frame(v_7, v_23), v_2, v_28, v_7, cps_provider_8_TagArm{v_23, v_24, v_26, v_27} <> v_10, Map.set(&2, Bool, v_13, v_26, True{}), v_15)
 
-def cps_provider_8_tag_group_arm(v_1: Bool, v_2: BIR.Atom, v_3: BIR.Block, v_6: List<&2, cps_provider_8_TagArm>, v_9: Map<&2, Bool>, v_11: Nat) -> cps_provider_8_TagGroup:
+def cps_provider_8_tag_group_arm(v_1: Bool, v_2: BIR.Atom, v_3: BIR.Block, v_5: cps_provider_8_JsCtx, v_8: List<&2, cps_provider_8_TagArm>, v_11: Map<&2, Bool>, v_13: Nat) -> cps_provider_8_TagGroup:
   match v_1:
     case True{}:
-      cps_provider_8_TagGroup{v_6, v_3, v_11}
+      cps_provider_8_TagGroup{v_8, v_3, v_13}
     case False{}:
-      cps_provider_8_tag_group(v_2, v_3, v_6, v_9, Nat.add(v_11, 1n))
+      cps_provider_8_tag_group(v_2, v_3, v_5, v_8, v_11, Nat.add(v_13, 1n))
 
-def cps_provider_8_tag_group_view(v_2: Maybe<&2, cps_provider_8_TaggedRegion>, +v_3: BIR.Atom, v_4: BIR.Block, v_7: List<&2, cps_provider_8_TagArm>, +v_10: Map<&2, Bool>, v_12: Nat) -> cps_provider_8_TagGroup:
+def cps_provider_8_tag_group_view(v_2: Maybe<&2, cps_provider_8_TaggedRegion>, +v_3: BIR.Atom, v_4: BIR.Block, v_6: cps_provider_8_JsCtx, v_9: List<&2, cps_provider_8_TagArm>, +v_12: Map<&2, Bool>, v_14: Nat) -> cps_provider_8_TagGroup:
   match v_2:
     case None{}:
-      cps_provider_8_TagGroup{v_7, v_4, v_12}
-    case Some{+v_15}:
-      match v_15:
-        case cps_provider_8_TaggedRegion{_, _, v_24, +v_25, _, _}:
-          cps_provider_8_tag_group_selected(Bool.and(cps_provider_8_tag_subject_same(v_3, v_24), cps_provider_8_tag_unseen(IndexLookup.find(Bool, v_10, v_25))), v_3, v_15, v_4, v_7, v_10, v_12)
+      cps_provider_8_TagGroup{v_9, v_4, v_14}
+    case Some{+v_17}:
+      match v_17:
+        case cps_provider_8_TaggedRegion{_, _, v_26, +v_27, _, _}:
+          cps_provider_8_tag_group_selected(Bool.and(cps_provider_8_tag_subject_same(v_3, v_26), cps_provider_8_tag_unseen(IndexLookup.find(Bool, v_12, v_27))), v_3, v_17, v_4, v_6, v_9, v_12, v_14)
 
-def cps_provider_8_tag_group(v_0: BIR.Atom, +v_1: BIR.Block, v_4: List<&2, cps_provider_8_TagArm>, v_7: Map<&2, Bool>, v_9: Nat) -> cps_provider_8_TagGroup:
-  cps_provider_8_tag_group_view(cps_provider_8_tagged_region(v_1), v_0, v_1, v_4, v_7, v_9)
+def cps_provider_8_tag_group(v_0: BIR.Atom, +v_1: BIR.Block, v_3: cps_provider_8_JsCtx, v_6: List<&2, cps_provider_8_TagArm>, v_9: Map<&2, Bool>, v_11: Nat) -> cps_provider_8_TagGroup:
+  cps_provider_8_tag_group_view(cps_provider_8_tagged_region(v_1), v_0, v_1, v_3, v_6, v_9, v_11)
 
 def cps_provider_8_tag_arms(v_2: List<&2, cps_provider_8_TagArm>, v_4: cps_provider_8_JsCtx) -> String:
   match v_2:
@@ -17044,7 +17099,7 @@ def cps_provider_8_region_view(v_2: Maybe<&2, cps_provider_8_TaggedRegion>, v_4:
     case Some{v_12}:
       match v_12:
         case cps_provider_8_TaggedRegion{v_19, v_20, +v_21, +v_22, v_23, v_24}:
-          cps_provider_8_tag_render_group(cps_provider_8_tag_group(v_21, v_24, [cps_provider_8_TagArm{v_19, v_20, v_22, v_23}], Map.set(&2, Bool, Map.new(&2, Bool), v_22, True{}), 1n), v_21, v_4, v_5, v_6, v_8)
+          cps_provider_8_tag_render_group(cps_provider_8_tag_group(v_21, v_24, v_8, [cps_provider_8_TagArm{v_19, v_20, v_22, v_23}], Map.set(&2, Bool, Map.new(&2, Bool), v_22, True{}), 1n), v_21, v_4, v_5, v_6, v_8)
 
 def native_match_cps_provider_8_region_0(v_6: Bool, +v_1: U32, +v_2: BIR.Block, +v_3: BIR.Block, v_5: cps_provider_8_JsCtx) -> String:
   match v_6:
@@ -17054,7 +17109,7 @@ def native_match_cps_provider_8_region_0(v_6: Bool, +v_1: U32, +v_2: BIR.Block, 
       cps_provider_8_region_view(cps_provider_8_tagged_region(BIR.Region{v_1, v_2, v_3}), v_1, v_2, v_3, v_5)
 
 def cps_provider_8_region(+v_1: U32, +v_2: BIR.Block, +v_3: BIR.Block, v_5: cps_provider_8_JsCtx) -> String:
-  native_match_cps_provider_8_region_0(cps_provider_8_region_needs_frame(v_2, v_1), v_1, v_2, v_3, v_5)
+  native_match_cps_provider_8_region_0(cps_provider_8_js_ctx_frame(v_5, v_1), v_1, v_2, v_3, v_5)
 
 def cps_provider_8_block(v_0: BIR.Block, v_2: cps_provider_8_JsCtx) -> String:
   match v_0:
@@ -17079,8 +17134,8 @@ def cps_provider_8_code(v_0: BIR.Code) -> String:
   match v_0:
     case BIR.Code{v_6, v_7, v_8, v_9}:
       v_14 = List.append(&2, String, cps_provider_8_capture_names(v_7, 0), cps_provider_8_parameter_names(v_8))
-      +v_17 = cps_provider_8_js_ctx(U32.show(v_6))
-      cps_provider_8_cat(["function ", cps_provider_8_code_name(v_6), "(", String.join(List.append(&2, String, v_14, ["$td=0"]), ","), "){", cps_provider_8_block(v_9, v_17), "}\n", String.join(cps_provider_8_conts(v_9, v_17), "")])
+      +v_18 = cps_provider_8_js_ctx(U32.show(v_6), cps_provider_8_plan_of(v_9))
+      cps_provider_8_cat(["function ", cps_provider_8_code_name(v_6), "(", String.join(List.append(&2, String, v_14, ["$td=0"]), ","), "){", cps_provider_8_block(v_9, v_18), "}\n", String.join(cps_provider_8_conts(v_9, v_18), "")])
 
 def cps_provider_8_codes(v_1: List<&2, BIR.Code>) -> String:
   match v_1:
@@ -17089,23 +17144,38 @@ def cps_provider_8_codes(v_1: List<&2, BIR.Code>) -> String:
     case v_5 <> v_6:
       cps_provider_8_cat([cps_provider_8_code(v_5), cps_provider_8_codes(v_6)])
 
-def cps_provider_8_js_ctx(v_1: String) -> cps_provider_8_JsCtx:
-  cps_provider_8_JsCtx{v_1, []}
+def cps_provider_8_js_ctx(v_1: String, v_3: cps_provider_8_Plan) -> cps_provider_8_JsCtx:
+  cps_provider_8_JsCtx{v_1, v_3, []}
 
 def cps_provider_8_js_ctx_inside(v_1: cps_provider_8_JsCtx, v_3: U32) -> cps_provider_8_JsCtx:
   match v_1:
-    case cps_provider_8_JsCtx{v_7, v_8}:
-      cps_provider_8_JsCtx{v_7, v_3 <> v_8}
+    case cps_provider_8_JsCtx{v_8, v_9, v_10}:
+      cps_provider_8_JsCtx{v_8, v_9, v_3 <> v_10}
 
 def cps_provider_8_js_ctx_owner(v_1: cps_provider_8_JsCtx) -> String:
   match v_1:
-    case cps_provider_8_JsCtx{v_5, _}:
-      v_5
+    case cps_provider_8_JsCtx{v_6, _, _}:
+      v_6
 
 def cps_provider_8_js_ctx_has(v_1: cps_provider_8_JsCtx, v_3: U32) -> Bool:
   match v_1:
-    case cps_provider_8_JsCtx{_, v_8}:
-      cps_provider_8_frame_has(v_8, v_3)
+    case cps_provider_8_JsCtx{_, _, v_10}:
+      cps_provider_8_frame_has(v_10, v_3)
+
+def cps_provider_8_js_ctx_cont(v_1: cps_provider_8_JsCtx, v_3: U32) -> cps_provider_8_Caps:
+  match v_1:
+    case cps_provider_8_JsCtx{_, v_9, _}:
+      cps_provider_8_plan_cont(v_9, v_3)
+
+def cps_provider_8_js_ctx_thunk(v_1: cps_provider_8_JsCtx, v_3: U32) -> cps_provider_8_Caps:
+  match v_1:
+    case cps_provider_8_JsCtx{_, v_9, _}:
+      cps_provider_8_plan_thunk(v_9, v_3)
+
+def cps_provider_8_js_ctx_frame(v_1: cps_provider_8_JsCtx, v_3: U32) -> Bool:
+  match v_1:
+    case cps_provider_8_JsCtx{_, v_9, _}:
+      cps_provider_8_plan_frame(v_9, v_3)
 
 def cps_provider_8_frame_has(v_2: List<&2, U32>, v_4: U32) -> Bool:
   match v_2:
@@ -17126,36 +17196,6 @@ def cps_provider_8_cont_name(v_1: U32) -> String:
 
 def cps_provider_8_thunk_name(v_1: String, v_3: U32) -> String:
   cps_provider_8_cat(["$r", v_1, "_", U32.show(v_3)])
-
-def cps_provider_8_region_needs_frame(v_0: BIR.Block, v_2: U32) -> Bool:
-  cps_provider_8_leave_after_split(v_0, v_2, False{})
-
-def cps_provider_8_leave_after_split(v_0: BIR.Block, v_2: U32, v_4: Bool) -> Bool:
-  match v_0:
-    case BIR.LeaveRegion{v_7}:
-      cps_provider_8_leave_here(U32.is_eq(v_7, v_2), v_4)
-    case BIR.Let{_, v_13, v_14}:
-      cps_provider_8_leave_after_split(v_14, v_2, Bool.or(v_4, cps_provider_8_split_op(v_13)))
-    case BIR.Branch{_, v_21, v_22}:
-      Bool.or(cps_provider_8_leave_after_split(v_21, v_2, v_4), cps_provider_8_leave_after_split(v_22, v_2, v_4))
-    case BIR.Region{v_27, v_28, v_29}:
-      cps_provider_8_leave_after_region(cps_provider_8_leave_after_split(v_28, v_2, v_4), v_28, v_29, v_2, v_4, v_27)
-    case _:
-      False{}
-
-def cps_provider_8_leave_here(v_1: Bool, v_3: Bool) -> Bool:
-  match v_1:
-    case True{}:
-      v_3
-    case False{}:
-      False{}
-
-def cps_provider_8_leave_after_region(v_1: Bool, v_2: BIR.Block, v_3: BIR.Block, v_5: U32, v_7: Bool, v_9: U32) -> Bool:
-  match v_1:
-    case True{}:
-      True{}
-    case False{}:
-      cps_provider_8_leave_after_split(v_3, v_5, Bool.or(v_7, cps_provider_8_region_needs_frame(v_2, v_9)))
 
 def cps_provider_8_split_op(v_0: BIR.Op) -> Bool:
   match v_0:
@@ -17236,41 +17276,136 @@ def cps_provider_8_op_reads(v_0: BIR.Op, v_2: cps_provider_8_Reads) -> cps_provi
     case _:
       v_2
 
-def cps_provider_8_block_reads(v_0: BIR.Block, v_2: cps_provider_8_Reads) -> cps_provider_8_Reads:
-  match v_0:
-    case BIR.Return{v_5}:
-      cps_provider_8_atom_reads(v_5, v_2)
-    case BIR.Let{_, v_11, v_12}:
-      cps_provider_8_block_reads(v_12, cps_provider_8_op_reads(v_11, v_2))
-    case BIR.Branch{v_18, v_19, v_20}:
-      cps_provider_8_block_reads(v_20, cps_provider_8_block_reads(v_19, cps_provider_8_atom_reads(v_18, v_2)))
-    case BIR.Region{_, v_27, v_28}:
-      cps_provider_8_block_reads(v_28, cps_provider_8_block_reads(v_27, v_2))
-    case BIR.TailDirect{_, v_34}:
-      cps_provider_8_args_reads(v_34, v_2)
-    case BIR.TailApply{v_38, v_39}:
-      cps_provider_8_apply_reads(v_38, v_39, v_2)
-    case _:
-      v_2
+def cps_provider_8_suffix_empty() -> cps_provider_8_Suffix:
+  cps_provider_8_Suffix{[], [], Map.new(&2, Bool), Map.new(&2, Bool), Map.new(&2, Bool)}
 
-def cps_provider_8_block_binds(v_0: BIR.Block, v_3: Map<&2, Bool>) -> Map<&2, Bool>:
-  match v_0:
-    case BIR.Let{v_9, _, v_11}:
-      cps_provider_8_block_binds(v_11, Map.set(&2, Bool, v_3, U32.show(v_9), True{}))
-    case BIR.Branch{_, v_18, v_19}:
-      cps_provider_8_block_binds(v_19, cps_provider_8_block_binds(v_18, v_3))
-    case BIR.Region{_, v_25, v_26}:
-      cps_provider_8_block_binds(v_26, cps_provider_8_block_binds(v_25, v_3))
-    case _:
-      v_3
+def cps_provider_8_suffix_fold(v_2: List<&2, U32>, v_4: cps_provider_8_Held) -> cps_provider_8_Held:
+  match v_2:
+    case []:
+      v_4
+    case +v_8 <> v_9:
+      match v_4:
+        case cps_provider_8_Held{v_12, v_13}:
+          cps_provider_8_suffix_fold_one(v_8, v_9, v_12, v_13)
 
-def native_match_cps_provider_8_caps_of_0(v_14: cps_provider_8_Reads, v_0: BIR.Block, v_3: Maybe<&2, U32>) -> cps_provider_8_Caps:
-  match v_14:
+def native_match_cps_provider_8_suffix_fold_one_0(v_20: Maybe<&2, Bool>, v_1: U32, v_4: List<&2, U32>, +v_7: List<&2, U32>, v_10: Map<&2, Bool>, +v_13: String) -> cps_provider_8_Held:
+  match v_20:
+    case Some{_}:
+      cps_provider_8_suffix_fold(v_4, cps_provider_8_Held{v_7, v_10})
+    case None{}:
+      cps_provider_8_suffix_fold(v_4, cps_provider_8_Held{v_1 <> v_7, Map.set(&2, Bool, v_10, v_13, True{})})
+
+def cps_provider_8_suffix_fold_one(v_1: U32, v_4: List<&2, U32>, +v_7: List<&2, U32>, v_10: Map<&2, Bool>) -> cps_provider_8_Held:
+  +v_13 = U32.show(v_1)
+  native_match_cps_provider_8_suffix_fold_one_0(IndexLookup.find(Bool, v_10, v_13), v_1, v_4, v_7, v_10, v_13)
+
+def cps_provider_8_suffix_reads(v_2: List<&2, U32>, v_5: List<&2, U32>, v_7: cps_provider_8_Suffix) -> cps_provider_8_Suffix:
+  match v_7:
+    case cps_provider_8_Suffix{v_14, v_15, v_16, v_17, v_18}:
+      cps_provider_8_suffix_folded(cps_provider_8_suffix_fold(v_2, cps_provider_8_Held{v_14, v_16}), cps_provider_8_suffix_fold(v_5, cps_provider_8_Held{v_15, v_17}), v_18)
+
+def cps_provider_8_suffix_folded(v_1: cps_provider_8_Held, v_3: cps_provider_8_Held, v_6: Map<&2, Bool>) -> cps_provider_8_Suffix:
+  match v_1, v_3:
+    case cps_provider_8_Held{v_12, v_13}, cps_provider_8_Held{v_14, v_15}:
+      cps_provider_8_Suffix{v_12, v_14, v_13, v_15, v_6}
+
+def native_match_cps_provider_8_suffix_atom_0(v_10: cps_provider_8_Reads, v_2: cps_provider_8_Suffix) -> cps_provider_8_Suffix:
+  match v_10:
+    case cps_provider_8_Reads{v_8, v_9}:
+      cps_provider_8_suffix_reads(v_8, v_9, v_2)
+
+def cps_provider_8_suffix_atom(v_0: BIR.Atom, v_2: cps_provider_8_Suffix) -> cps_provider_8_Suffix:
+  native_match_cps_provider_8_suffix_atom_0(cps_provider_8_atom_reads(v_0, cps_provider_8_reads_new), v_2)
+
+def native_match_cps_provider_8_suffix_args_0(v_11: cps_provider_8_Reads, v_3: cps_provider_8_Suffix) -> cps_provider_8_Suffix:
+  match v_11:
     case cps_provider_8_Reads{v_9, v_10}:
-      cps_provider_8_Caps{cps_provider_8_caps_local_filter(v_9, cps_provider_8_block_binds(v_0, Map.new(&2, Bool)), v_3, []), cps_provider_8_caps_slot_filter(v_10, [])}
+      cps_provider_8_suffix_reads(v_9, v_10, v_3)
 
-def cps_provider_8_caps_of(v_0: BIR.Block, v_3: Maybe<&2, U32>) -> cps_provider_8_Caps:
-  native_match_cps_provider_8_caps_of_0(cps_provider_8_block_reads(v_0, cps_provider_8_reads_new), v_0, v_3)
+def cps_provider_8_suffix_args(v_1: List<&2, BIR.Arg>, v_3: cps_provider_8_Suffix) -> cps_provider_8_Suffix:
+  native_match_cps_provider_8_suffix_args_0(cps_provider_8_args_reads(v_1, cps_provider_8_reads_new), v_3)
+
+def native_match_cps_provider_8_suffix_apply_0(v_11: cps_provider_8_Reads, v_3: cps_provider_8_Suffix) -> cps_provider_8_Suffix:
+  match v_11:
+    case cps_provider_8_Reads{v_9, v_10}:
+      cps_provider_8_suffix_reads(v_9, v_10, v_3)
+
+def cps_provider_8_suffix_apply(v_0: BIR.Atom, v_1: BIR.Arg, v_3: cps_provider_8_Suffix) -> cps_provider_8_Suffix:
+  native_match_cps_provider_8_suffix_apply_0(cps_provider_8_apply_reads(v_0, v_1, cps_provider_8_reads_new), v_3)
+
+def native_match_cps_provider_8_suffix_op_0(v_10: cps_provider_8_Reads, v_2: cps_provider_8_Suffix) -> cps_provider_8_Suffix:
+  match v_10:
+    case cps_provider_8_Reads{v_8, v_9}:
+      cps_provider_8_suffix_reads(v_8, v_9, v_2)
+
+def cps_provider_8_suffix_op(v_0: BIR.Op, v_2: cps_provider_8_Suffix) -> cps_provider_8_Suffix:
+  native_match_cps_provider_8_suffix_op_0(cps_provider_8_op_reads(v_0, cps_provider_8_reads_new), v_2)
+
+def cps_provider_8_suffix_prefix(v_2: List<&2, U32>, v_5: Map<&2, Bool>, v_8: List<&2, U32>) -> List<&2, U32>:
+  match v_2:
+    case []:
+      v_8
+    case +v_13 <> v_14:
+      cps_provider_8_suffix_prefix(v_14, v_5, cps_provider_8_suffix_prefix_one(v_13, v_5, v_8))
+
+def native_match_cps_provider_8_suffix_prefix_one_0(v_13: Maybe<&2, Bool>, v_1: U32, v_7: List<&2, U32>) -> List<&2, U32>:
+  match v_13:
+    case Some{_}:
+      v_7
+    case None{}:
+      v_1 <> v_7
+
+def cps_provider_8_suffix_prefix_one(v_1: U32, v_4: Map<&2, Bool>, v_7: List<&2, U32>) -> List<&2, U32>:
+  native_match_cps_provider_8_suffix_prefix_one_0(IndexLookup.find(Bool, v_4, U32.show(v_1)), v_1, v_7)
+
+def cps_provider_8_suffix_join(v_1: cps_provider_8_Suffix, v_3: cps_provider_8_Suffix) -> cps_provider_8_Suffix:
+  match v_1, v_3:
+    case cps_provider_8_Suffix{v_15, v_16, v_17, v_18, v_19}, cps_provider_8_Suffix{v_20, v_21, v_22, v_23, v_24}:
+      cps_provider_8_Suffix{cps_provider_8_suffix_joined(v_15, v_22, v_20), cps_provider_8_suffix_joined(v_16, v_23, v_21), Map.union(&2, Bool, v_17, v_22), Map.union(&2, Bool, v_18, v_23), Map.union(&2, Bool, v_19, v_24)}
+
+def cps_provider_8_suffix_joined(v_2: List<&2, U32>, v_5: Map<&2, Bool>, v_8: List<&2, U32>) -> List<&2, U32>:
+  List.append(&2, U32, List.reverse(&2, U32, cps_provider_8_suffix_prefix(v_2, v_5, [])), v_8)
+
+def cps_provider_8_suffix_bind(v_1: U32, v_3: cps_provider_8_Suffix) -> cps_provider_8_Suffix:
+  match v_3:
+    case cps_provider_8_Suffix{v_10, v_11, v_12, v_13, v_14}:
+      cps_provider_8_Suffix{v_10, v_11, v_12, v_13, Map.set(&2, Bool, v_14, U32.show(v_1), True{})}
+
+def cps_provider_8_suffix_caps(v_1: cps_provider_8_Suffix, v_4: Maybe<&2, U32>) -> cps_provider_8_Caps:
+  match v_1:
+    case cps_provider_8_Suffix{v_11, v_12, _, _, v_15}:
+      cps_provider_8_Caps{cps_provider_8_caps_bound(v_11, v_15, v_4, []), v_12}
+
+def cps_provider_8_caps_bound(v_2: List<&2, U32>, v_5: Map<&2, Bool>, v_8: Maybe<&2, U32>, v_11: List<&2, U32>) -> List<&2, U32>:
+  match v_2:
+    case []:
+      List.reverse(&2, U32, v_11)
+    case +v_17 <> v_18:
+      cps_provider_8_caps_bound(v_18, v_5, v_8, cps_provider_8_caps_bound_one(v_17, v_5, v_8, v_11))
+
+def native_match_cps_provider_8_caps_bound_one_0(v_16: Maybe<&2, Bool>, v_1: U32, v_7: Maybe<&2, U32>, v_10: List<&2, U32>) -> List<&2, U32>:
+  match v_16:
+    case Some{_}:
+      v_10
+    case None{}:
+      cps_provider_8_caps_result(v_1, v_7, v_10)
+
+def cps_provider_8_caps_bound_one(v_1: U32, v_4: Map<&2, Bool>, v_7: Maybe<&2, U32>, v_10: List<&2, U32>) -> List<&2, U32>:
+  native_match_cps_provider_8_caps_bound_one_0(IndexLookup.find(Bool, v_4, U32.show(v_1)), v_1, v_7, v_10)
+
+def cps_provider_8_caps_result(v_1: U32, v_4: Maybe<&2, U32>, v_7: List<&2, U32>) -> List<&2, U32>:
+  match v_4:
+    case None{}:
+      v_1 <> v_7
+    case Some{v_11}:
+      cps_provider_8_caps_result_id(U32.is_eq(v_1, v_11), v_1, v_7)
+
+def cps_provider_8_caps_result_id(v_1: Bool, v_3: U32, v_6: List<&2, U32>) -> List<&2, U32>:
+  match v_1:
+    case True{}:
+      v_6
+    case False{}:
+      v_3 <> v_6
 
 def cps_provider_8_caps_locals(v_1: cps_provider_8_Caps) -> List<&2, U32>:
   match v_1:
@@ -17285,99 +17420,198 @@ def cps_provider_8_caps_slots(v_1: cps_provider_8_Caps) -> List<&2, U32>:
 def cps_provider_8_cap_total(v_1: cps_provider_8_Caps) -> Nat:
   Nat.add(List.length(&2, U32, cps_provider_8_caps_locals(v_1)), List.length(&2, U32, cps_provider_8_caps_slots(v_1)))
 
-def cps_provider_8_caps_local_filter(v_2: List<&2, U32>, v_5: Map<&2, Bool>, v_8: Maybe<&2, U32>, v_11: List<&2, U32>) -> List<&2, U32>:
-  match v_2:
-    case []:
-      v_11
-    case +v_16 <> v_17:
-      cps_provider_8_caps_local_filter(v_17, v_5, v_8, cps_provider_8_caps_local_one(v_16, v_5, v_8, v_11))
-
-def native_match_cps_provider_8_caps_local_one_0(v_16: Maybe<&2, Bool>, v_1: U32, v_7: Maybe<&2, U32>, v_10: List<&2, U32>) -> List<&2, U32>:
-  match v_16:
-    case Some{_}:
-      v_10
-    case None{}:
-      cps_provider_8_caps_local_keep(v_1, v_7, v_10)
-
-def cps_provider_8_caps_local_one(v_1: U32, v_4: Map<&2, Bool>, v_7: Maybe<&2, U32>, v_10: List<&2, U32>) -> List<&2, U32>:
-  native_match_cps_provider_8_caps_local_one_0(IndexLookup.find(Bool, v_4, U32.show(v_1)), v_1, v_7, v_10)
-
-def cps_provider_8_caps_local_keep(v_1: U32, v_4: Maybe<&2, U32>, v_7: List<&2, U32>) -> List<&2, U32>:
-  match v_4:
-    case None{}:
-      cps_provider_8_caps_add(v_1, v_7)
-    case Some{v_12}:
-      cps_provider_8_caps_local_same(U32.is_eq(v_1, v_12), v_1, v_7)
-
-def cps_provider_8_caps_local_same(v_1: Bool, v_3: U32, v_6: List<&2, U32>) -> List<&2, U32>:
-  match v_1:
-    case True{}:
-      v_6
-    case False{}:
-      cps_provider_8_caps_add(v_3, v_6)
-
-def cps_provider_8_caps_slot_filter(v_2: List<&2, U32>, v_5: List<&2, U32>) -> List<&2, U32>:
-  match v_2:
-    case []:
-      v_5
-    case +v_10 <> v_11:
-      cps_provider_8_caps_slot_filter(v_11, cps_provider_8_caps_add(v_10, v_5))
-
-def native_match_cps_provider_8_caps_add_0(v_5: Bool, v_1: U32, v_4: List<&2, U32>) -> List<&2, U32>:
-  match v_5:
-    case True{}:
-      v_4
-    case False{}:
-      v_1 <> v_4
-
-def cps_provider_8_caps_add(v_1: U32, v_4: List<&2, U32>) -> List<&2, U32>:
-  native_match_cps_provider_8_caps_add_0(cps_provider_8_caps_in(v_4, v_1), v_1, v_4)
-
-def cps_provider_8_caps_in(v_2: List<&2, U32>, v_4: U32) -> Bool:
+def cps_provider_8_fact_after(v_2: List<&2, cps_provider_8_FrameBits>, v_4: U32) -> Bool:
   match v_2:
     case []:
       False{}
-    case +v_8 <> v_9:
-      cps_provider_8_caps_in_one(U32.is_eq(v_8, v_4), v_9, v_4)
+    case cps_provider_8_FrameBits{v_10, v_11, _} <> v_13:
+      cps_provider_8_fact_after_here(U32.is_eq(v_10, v_4), v_11, v_13, v_4)
 
-def cps_provider_8_caps_in_one(v_1: Bool, v_4: List<&2, U32>, v_6: U32) -> Bool:
+def cps_provider_8_fact_after_here(v_1: Bool, v_3: Bool, v_6: List<&2, cps_provider_8_FrameBits>, v_8: U32) -> Bool:
   match v_1:
     case True{}:
-      True{}
+      Bool.or(v_3, cps_provider_8_fact_after(v_6, v_8))
     case False{}:
-      cps_provider_8_caps_in(v_4, v_6)
+      cps_provider_8_fact_after(v_6, v_8)
+
+def cps_provider_8_facts_merge(v_2: List<&2, cps_provider_8_FrameBits>, v_5: List<&2, cps_provider_8_FrameBits>) -> List<&2, cps_provider_8_FrameBits>:
+  List.append(&2, cps_provider_8_FrameBits, v_2, v_5)
+
+def cps_provider_8_facts_elevate(v_2: List<&2, cps_provider_8_FrameBits>) -> List<&2, cps_provider_8_FrameBits>:
+  match v_2:
+    case []:
+      []
+    case cps_provider_8_FrameBits{v_9, v_10, v_11} <> v_12:
+      cps_provider_8_FrameBits{v_9, Bool.or(v_10, v_11), v_11} <> cps_provider_8_facts_elevate(v_12)
+
+def cps_provider_8_facts_inject(v_2: List<&2, cps_provider_8_FrameBits>, v_4: Bool) -> List<&2, cps_provider_8_FrameBits>:
+  match v_4:
+    case False{}:
+      v_2
+    case True{}:
+      cps_provider_8_facts_elevate(v_2)
+
+def cps_provider_8_plan_empty() -> cps_provider_8_Plan:
+  cps_provider_8_Plan{Map.new(&2, cps_provider_8_Caps), Map.new(&2, cps_provider_8_Caps), Map.new(&2, Bool)}
+
+def cps_provider_8_plan_cont_add(v_1: cps_provider_8_Plan, v_3: U32, v_5: cps_provider_8_Caps) -> cps_provider_8_Plan:
+  match v_1:
+    case cps_provider_8_Plan{v_10, v_11, v_12}:
+      cps_provider_8_Plan{Map.set(&2, cps_provider_8_Caps, v_10, U32.show(v_3), v_5), v_11, v_12}
+
+def cps_provider_8_plan_thunk_add(v_1: cps_provider_8_Plan, v_3: U32, v_5: cps_provider_8_Caps) -> cps_provider_8_Plan:
+  match v_1:
+    case cps_provider_8_Plan{v_10, v_11, v_12}:
+      cps_provider_8_Plan{v_10, Map.set(&2, cps_provider_8_Caps, v_11, U32.show(v_3), v_5), v_12}
+
+def cps_provider_8_plan_frame_add(v_1: cps_provider_8_Plan, v_3: U32, v_5: Bool) -> cps_provider_8_Plan:
+  match v_1:
+    case cps_provider_8_Plan{v_10, v_11, v_12}:
+      cps_provider_8_Plan{v_10, v_11, Map.set(&2, Bool, v_12, U32.show(v_3), v_5)}
+
+def cps_provider_8_plan_cont(v_1: cps_provider_8_Plan, v_3: U32) -> cps_provider_8_Caps:
+  match v_1:
+    case cps_provider_8_Plan{v_8, _, _}:
+      cps_provider_8_plan_caps(v_8, U32.show(v_3))
+
+def cps_provider_8_plan_thunk(v_1: cps_provider_8_Plan, v_3: U32) -> cps_provider_8_Caps:
+  match v_1:
+    case cps_provider_8_Plan{_, v_9, _}:
+      cps_provider_8_plan_caps(v_9, U32.show(v_3))
+
+def cps_provider_8_plan_frame(v_1: cps_provider_8_Plan, v_3: U32) -> Bool:
+  match v_1:
+    case cps_provider_8_Plan{_, _, v_10}:
+      cps_provider_8_plan_flag(v_10, U32.show(v_3))
+
+def native_match_cps_provider_8_plan_caps_0(v_9: Maybe<&2, cps_provider_8_Caps>) -> cps_provider_8_Caps:
+  match v_9:
+    case Some{+v_8}:
+      v_8
+    case None{}:
+      cps_provider_8_Caps{[], []}
+
+def cps_provider_8_plan_caps(v_2: Map<&2, cps_provider_8_Caps>, v_4: String) -> cps_provider_8_Caps:
+  native_match_cps_provider_8_plan_caps_0(IndexLookup.find(cps_provider_8_Caps, v_2, v_4))
+
+def native_match_cps_provider_8_plan_flag_0(v_9: Maybe<&2, Bool>) -> Bool:
+  match v_9:
+    case Some{+v_8}:
+      v_8
+    case None{}:
+      False{}
+
+def cps_provider_8_plan_flag(v_2: Map<&2, Bool>, v_4: String) -> Bool:
+  native_match_cps_provider_8_plan_flag_0(IndexLookup.find(Bool, v_2, v_4))
+
+def native_match_cps_provider_8_plan_of_0(v_10: cps_provider_8_Step) -> cps_provider_8_Plan:
+  match v_10:
+    case cps_provider_8_Step{_, _, v_9}:
+      v_9
+
+def cps_provider_8_plan_of(v_0: BIR.Block) -> cps_provider_8_Plan:
+  native_match_cps_provider_8_plan_of_0(cps_provider_8_plan_block(v_0, cps_provider_8_plan_empty))
+
+def cps_provider_8_plan_block(v_0: BIR.Block, v_2: cps_provider_8_Plan) -> cps_provider_8_Step:
+  match v_0:
+    case BIR.Return{v_5}:
+      cps_provider_8_plan_leaf(cps_provider_8_suffix_atom(v_5, cps_provider_8_suffix_empty), v_2)
+    case BIR.TailDirect{_, v_12}:
+      cps_provider_8_plan_leaf(cps_provider_8_suffix_args(v_12, cps_provider_8_suffix_empty), v_2)
+    case BIR.TailApply{v_18, v_19}:
+      cps_provider_8_plan_leaf(cps_provider_8_suffix_apply(v_18, v_19, cps_provider_8_suffix_empty), v_2)
+    case BIR.Failure{_}:
+      cps_provider_8_plan_leaf(cps_provider_8_suffix_empty, v_2)
+    case BIR.LeaveRegion{v_28}:
+      cps_provider_8_Step{cps_provider_8_suffix_empty, [cps_provider_8_FrameBits{v_28, False{}, True{}}], v_2}
+    case BIR.Let{v_33, v_34, v_35}:
+      cps_provider_8_plan_let(v_33, v_34, cps_provider_8_plan_block(v_35, v_2))
+    case BIR.Branch{v_41, v_42, v_43}:
+      cps_provider_8_plan_branch(v_41, cps_provider_8_plan_block(v_42, v_2), v_43)
+    case BIR.Region{v_48, v_49, v_50}:
+      cps_provider_8_plan_region(v_48, cps_provider_8_plan_block(v_49, v_2), v_50)
+
+def cps_provider_8_plan_leaf(v_1: cps_provider_8_Suffix, v_3: cps_provider_8_Plan) -> cps_provider_8_Step:
+  cps_provider_8_Step{v_1, [], v_3}
+
+def native_match_cps_provider_8_plan_let_0(v_12: Bool, v_1: U32, v_2: BIR.Op, v_9: cps_provider_8_Suffix, v_10: List<&2, cps_provider_8_FrameBits>, v_11: cps_provider_8_Plan) -> cps_provider_8_Step:
+  match v_12:
+    case True{}:
+      cps_provider_8_Step{cps_provider_8_suffix_bind(v_1, cps_provider_8_suffix_op(v_2, v_9)), cps_provider_8_facts_inject(v_10, True{}), cps_provider_8_plan_cont_add(v_11, v_1, cps_provider_8_suffix_caps(v_9, Some{v_1}))}
+    case False{}:
+      cps_provider_8_Step{cps_provider_8_suffix_bind(v_1, cps_provider_8_suffix_op(v_2, v_9)), v_10, v_11}
+
+def native_match_cps_provider_8_plan_let_1(v_4: cps_provider_8_Step, v_1: U32, v_2: BIR.Op) -> cps_provider_8_Step:
+  match v_4:
+    case cps_provider_8_Step{v_9, v_10, v_11}:
+      native_match_cps_provider_8_plan_let_0(cps_provider_8_split_op(v_2), v_1, v_2, v_9, v_10, v_11)
+
+def cps_provider_8_plan_let(v_1: U32, v_2: BIR.Op, v_4: cps_provider_8_Step) -> cps_provider_8_Step:
+  native_match_cps_provider_8_plan_let_1(v_4, v_1, v_2)
+
+def native_match_cps_provider_8_plan_branch_0(v_18: cps_provider_8_Step, v_0: BIR.Atom, v_8: cps_provider_8_Suffix, v_9: List<&2, cps_provider_8_FrameBits>) -> cps_provider_8_Step:
+  match v_18:
+    case cps_provider_8_Step{v_15, v_16, v_17}:
+      cps_provider_8_Step{cps_provider_8_suffix_atom(v_0, cps_provider_8_suffix_join(v_8, v_15)), cps_provider_8_facts_merge(v_9, v_16), v_17}
+
+def native_match_cps_provider_8_plan_branch_1(v_2: cps_provider_8_Step, v_0: BIR.Atom, v_3: BIR.Block) -> cps_provider_8_Step:
+  match v_2:
+    case cps_provider_8_Step{v_8, v_9, v_10}:
+      native_match_cps_provider_8_plan_branch_0(cps_provider_8_plan_block(v_3, v_10), v_0, v_8, v_9)
+
+def cps_provider_8_plan_branch(v_0: BIR.Atom, v_2: cps_provider_8_Step, v_3: BIR.Block) -> cps_provider_8_Step:
+  native_match_cps_provider_8_plan_branch_1(v_2, v_0, v_3)
+
+def native_match_cps_provider_8_plan_region_0(v_26: cps_provider_8_Step, v_1: U32, v_9: cps_provider_8_Suffix, v_10: List<&2, cps_provider_8_FrameBits>, v_14: Bool) -> cps_provider_8_Step:
+  match v_26:
+    case cps_provider_8_Step{v_19, v_20, v_21}:
+      v_25 = cps_provider_8_facts_merge(v_10, cps_provider_8_facts_inject(v_20, v_14))
+      cps_provider_8_Step{cps_provider_8_suffix_join(v_9, v_19), v_25, cps_provider_8_plan_region_sites(v_21, v_1, v_14, v_19)}
+
+def native_match_cps_provider_8_plan_region_1(v_3: cps_provider_8_Step, v_1: U32, v_4: BIR.Block) -> cps_provider_8_Step:
+  match v_3:
+    case cps_provider_8_Step{v_9, v_10, v_11}:
+      v_14 = cps_provider_8_fact_after(v_10, v_1)
+      native_match_cps_provider_8_plan_region_0(cps_provider_8_plan_block(v_4, v_11), v_1, v_9, v_10, v_14)
+
+def cps_provider_8_plan_region(v_1: U32, v_3: cps_provider_8_Step, v_4: BIR.Block) -> cps_provider_8_Step:
+  native_match_cps_provider_8_plan_region_1(v_3, v_1, v_4)
+
+def cps_provider_8_plan_region_sites(v_1: cps_provider_8_Plan, v_3: U32, v_5: Bool, v_7: cps_provider_8_Suffix) -> cps_provider_8_Plan:
+  match v_5:
+    case False{}:
+      cps_provider_8_plan_frame_add(v_1, v_3, False{})
+    case True{}:
+      cps_provider_8_plan_thunk_add(cps_provider_8_plan_frame_add(v_1, v_3, True{}), v_3, cps_provider_8_suffix_caps(v_7, None{}))
 
 def cps_provider_8_let_step(v_1: U32, v_2: BIR.Op, v_3: BIR.Block, v_5: cps_provider_8_JsCtx) -> String:
   match v_2:
     case BIR.Direct{v_9, v_10}:
-      cps_provider_8_split_direct(v_1, v_9, v_10, v_3)
-    case BIR.Apply{v_14, v_15}:
-      cps_provider_8_split_apply(v_1, v_14, v_15, v_3)
+      cps_provider_8_split_direct(v_1, v_9, v_10, cps_provider_8_js_ctx_cont(v_5, v_1))
+    case BIR.Apply{v_15, v_16}:
+      cps_provider_8_split_apply(v_1, v_15, v_16, cps_provider_8_js_ctx_cont(v_5, v_1))
     case _:
       cps_provider_8_cat(["const ", cps_provider_8_local(v_1), "=", cps_provider_8_operation(v_2), ";", cps_provider_8_block(v_3, v_5)])
 
-def cps_provider_8_split_direct(v_1: U32, v_3: U32, v_5: List<&2, BIR.Arg>, v_6: BIR.Block) -> String:
-  +v_9 = List.length(&2, BIR.Arg, v_5)
-  cps_provider_8_split_direct_selected(Bool.and(Nat.is_gt(v_9, 0n), Nat.is_le(v_9, 32n)), v_1, v_3, v_5, v_6, v_9)
+def cps_provider_8_split_direct(v_1: U32, v_3: U32, v_5: List<&2, BIR.Arg>, v_7: cps_provider_8_Caps) -> String:
+  +v_10 = List.length(&2, BIR.Arg, v_5)
+  cps_provider_8_split_direct_selected(Bool.and(Nat.is_gt(v_10, 0n), Nat.is_le(v_10, 32n)), v_1, v_3, v_5, v_7, v_10)
 
-def cps_provider_8_split_direct_selected(v_1: Bool, v_3: U32, v_5: U32, v_7: List<&2, BIR.Arg>, v_8: BIR.Block, v_10: Nat) -> String:
+def cps_provider_8_split_direct_selected(v_1: Bool, v_3: U32, v_5: U32, v_7: List<&2, BIR.Arg>, v_9: cps_provider_8_Caps, v_11: Nat) -> String:
   match v_1:
     case True{}:
-      cps_provider_8_split_direct_args(v_3, v_5, v_7, v_8, v_10)
+      cps_provider_8_split_direct_args(v_3, v_5, v_7, v_9, v_11)
     case False{}:
-      cps_provider_8_split_direct_many(v_3, v_5, v_7, v_8)
+      cps_provider_8_split_direct_many(v_3, v_5, v_7, v_9)
 
-def cps_provider_8_split_direct_args(v_1: U32, v_3: U32, v_5: List<&2, BIR.Arg>, v_6: BIR.Block, v_8: Nat) -> String:
-  +v_12 = cps_provider_8_caps_of(v_6, Some{v_1})
-  cps_provider_8_cat(["{const ", cps_provider_8_arg_temps(v_5, 0n), ";", cps_provider_8_cap_stores(cps_provider_8_caps_locals(v_12)), cps_provider_8_slot_stores(cps_provider_8_caps_slots(v_12)), "if($td<64){const $kb=$sp-", Nat.show(cps_provider_8_cap_total(v_12)), ",$ki=$split_enter(", cps_provider_8_cont_name(v_1), ",$kb);try{return $split_done(", cps_provider_8_code_name(v_3), "(", String.join(cps_provider_8_arg_temp_names(v_5, 0n), ","), "),$ki,$td+1);}catch($e){$split_abort($ki,$kb);throw $e;}}", cps_provider_8_arg_moves(v_8, 0n), "return $split(", cps_provider_8_code_name(v_3), ",", Nat.show(v_8), ",", cps_provider_8_cont_name(v_1), ",$sp-", Nat.show(cps_provider_8_cap_total(v_12)), ");}"])
+def cps_provider_8_split_direct_args(v_1: U32, v_3: U32, v_5: List<&2, BIR.Arg>, v_7: cps_provider_8_Caps, v_9: Nat) -> String:
+  cps_provider_8_cat(["{const ", cps_provider_8_arg_temps(v_5, 0n), ";", cps_provider_8_cap_stores(cps_provider_8_caps_locals(v_7)), cps_provider_8_slot_stores(cps_provider_8_caps_slots(v_7)), "if($td<64){const $kb=$sp-", Nat.show(cps_provider_8_cap_total(v_7)), ",$ki=$split_enter(", cps_provider_8_cont_name(v_1), ",$kb);try{return $split_done(", cps_provider_8_code_name(v_3), "(", String.join(cps_provider_8_arg_temp_names(v_5, 0n), ","), "),$ki,$td+1);}catch($e){$split_abort($ki,$kb);throw $e;}}", cps_provider_8_arg_moves(v_9, 0n), "return $split(", cps_provider_8_code_name(v_3), ",", Nat.show(v_9), ",", cps_provider_8_cont_name(v_1), ",$sp-", Nat.show(cps_provider_8_cap_total(v_7)), ");}"])
 
-def cps_provider_8_split_direct_many(v_1: U32, v_3: U32, v_5: List<&2, BIR.Arg>, v_6: BIR.Block) -> String:
-  +v_10 = cps_provider_8_caps_of(v_6, Some{v_1})
-  cps_provider_8_cat([cps_provider_8_cap_stores(cps_provider_8_caps_locals(v_10)), cps_provider_8_slot_stores(cps_provider_8_caps_slots(v_10)), "return $splitm(", cps_provider_8_code_name(v_3), ",[", String.join(cps_provider_8_arguments(v_5), ","), "],", cps_provider_8_cont_name(v_1), ",$sp-", Nat.show(cps_provider_8_cap_total(v_10)), ");"])
+def cps_provider_8_split_direct_many(v_1: U32, v_3: U32, v_5: List<&2, BIR.Arg>, v_7: cps_provider_8_Caps) -> String:
+  cps_provider_8_cat([cps_provider_8_cap_stores(cps_provider_8_caps_locals(v_7)), cps_provider_8_slot_stores(cps_provider_8_caps_slots(v_7)), "return $splitm(", cps_provider_8_code_name(v_3), ",[", String.join(cps_provider_8_arguments(v_5), ","), "],", cps_provider_8_cont_name(v_1), ",$sp-", Nat.show(cps_provider_8_cap_total(v_7)), ");"])
 
-def cps_provider_8_split_apply(v_1: U32, v_2: BIR.Atom, v_3: BIR.Arg, v_4: BIR.Block) -> String:
-  +v_8 = cps_provider_8_caps_of(v_4, Some{v_1})
-  cps_provider_8_cat([cps_provider_8_cap_stores(cps_provider_8_caps_locals(v_8)), cps_provider_8_slot_stores(cps_provider_8_caps_slots(v_8)), "return $split1(", cps_provider_8_atom(v_2), ",", cps_provider_8_arg_atom(v_3), ",", cps_provider_8_cont_name(v_1), ",$sp-", Nat.show(cps_provider_8_cap_total(v_8)), ");"])
+def cps_provider_8_split_apply(v_1: U32, v_2: BIR.Atom, v_3: BIR.Arg, v_5: cps_provider_8_Caps) -> String:
+  cps_provider_8_cat([cps_provider_8_cap_stores(cps_provider_8_caps_locals(v_5)), cps_provider_8_slot_stores(cps_provider_8_caps_slots(v_5)), "return $split1(", cps_provider_8_atom(v_2), ",", cps_provider_8_arg_atom(v_3), ",", cps_provider_8_cont_name(v_1), ",$sp-", Nat.show(cps_provider_8_cap_total(v_5)), ");"])
 
 def cps_provider_8_arg_atom(v_0: BIR.Arg) -> String:
   match v_0:
@@ -17444,15 +17678,15 @@ def cps_provider_8_slot_binds(v_2: List<&2, U32>, v_4: Nat) -> String:
       cps_provider_8_cat(["const ", cps_provider_8_capture(v_8), "=$stArgs[$base+", Nat.show(v_4), "];", cps_provider_8_slot_binds(v_9, Nat.add(v_4, 1n))])
 
 def cps_provider_8_cont_of(v_1: U32, v_2: BIR.Block, v_4: cps_provider_8_JsCtx) -> String:
-  +v_8 = cps_provider_8_caps_of(v_2, Some{v_1})
+  +v_8 = cps_provider_8_js_ctx_cont(v_4, v_1)
   cps_provider_8_cat(["function ", cps_provider_8_cont_name(v_1), "(", cps_provider_8_local(v_1), ",$base,$td=0){", cps_provider_8_cap_binds(cps_provider_8_caps_locals(v_8), 0n), cps_provider_8_slot_binds(cps_provider_8_caps_slots(v_8), List.length(&2, U32, cps_provider_8_caps_locals(v_8))), cps_provider_8_block(v_2, v_4), "}\n"])
 
 def cps_provider_8_thunk_of(v_1: String, v_3: U32, v_4: BIR.Block, v_6: cps_provider_8_JsCtx) -> String:
-  +v_10 = cps_provider_8_caps_of(v_4, None{})
+  +v_10 = cps_provider_8_js_ctx_thunk(v_6, v_3)
   cps_provider_8_cat(["function ", cps_provider_8_thunk_name(v_1, v_3), "($x,$base,$td=0){", cps_provider_8_cap_binds(cps_provider_8_caps_locals(v_10), 0n), cps_provider_8_slot_binds(cps_provider_8_caps_slots(v_10), List.length(&2, U32, cps_provider_8_caps_locals(v_10))), cps_provider_8_block(v_4, v_6), "}\n"])
 
 def cps_provider_8_region_frame(v_1: U32, v_2: BIR.Block, v_3: BIR.Block, v_5: cps_provider_8_JsCtx) -> String:
-  +v_9 = cps_provider_8_caps_of(v_3, None{})
+  +v_9 = cps_provider_8_js_ctx_thunk(v_5, v_1)
   cps_provider_8_cat([cps_provider_8_cap_stores(cps_provider_8_caps_locals(v_9)), cps_provider_8_slot_stores(cps_provider_8_caps_slots(v_9)), "$frame(", cps_provider_8_thunk_name(cps_provider_8_js_ctx_owner(v_5), v_1), ",$sp-", Nat.show(cps_provider_8_cap_total(v_9)), ");", cps_provider_8_block(v_2, cps_provider_8_js_ctx_inside(v_5, v_1))])
 
 def native_match_cps_provider_8_leave_step_0(v_4: Bool, v_1: U32, v_3: cps_provider_8_JsCtx) -> String:
@@ -17494,7 +17728,7 @@ def native_match_cps_provider_8_conts_region_0(v_16: Bool, v_1: U32, v_2: BIR.Bl
       List.append(&2, String, cps_provider_8_conts(v_2, v_5), cps_provider_8_conts(v_3, v_5))
 
 def cps_provider_8_conts_region(v_1: U32, v_2: BIR.Block, v_3: BIR.Block, v_5: cps_provider_8_JsCtx) -> List<&2, String>:
-  native_match_cps_provider_8_conts_region_0(cps_provider_8_region_needs_frame(v_2, v_1), v_1, v_2, v_3, v_5)
+  native_match_cps_provider_8_conts_region_0(cps_provider_8_js_ctx_frame(v_5, v_1), v_1, v_2, v_3, v_5)
 
 def cps_provider_8_primitive_name(v_0: BIR.Primitive) -> String:
   match v_0:
@@ -18088,12 +18322,12 @@ def cps_provider_8_declaration(v_0: BIR.Declaration, +v_3: Map<&2, String>, v_5:
     case BIR.FunctionDeclaration{v_10, v_11, v_12}:
       cps_provider_8_cat(["$D[", cps_provider_8_js_quote(v_10), "]=", cps_provider_8_closure(v_11, [], v_12), ";\n"])
     case BIR.LazyDeclaration{v_18, v_19}:
-      +v_23 = cps_provider_8_js_ctx(cps_provider_8_cat(["L", Nat.show(v_5)]))
-      cps_provider_8_cat([cps_provider_8_deferred(v_18, cps_provider_8_cat(["(()=>{", cps_provider_8_block(v_19, v_23), "})()"])), String.join(cps_provider_8_conts(v_19, v_23), "")])
-    case BIR.NativeDeclaration{v_32, v_33, v_34}:
-      cps_provider_8_native_declaration(v_32, v_33, v_34)
-    case BIR.ForeignDeclaration{v_45, _, v_47, v_48, v_49, _, _, v_52, v_53}:
-      cps_provider_8_foreign_declaration(v_45, v_47, v_49, v_48, v_52, v_53, v_3)
+      +v_24 = cps_provider_8_js_ctx(cps_provider_8_cat(["L", Nat.show(v_5)]), cps_provider_8_plan_of(v_19))
+      cps_provider_8_cat([cps_provider_8_deferred(v_18, cps_provider_8_cat(["(()=>{", cps_provider_8_block(v_19, v_24), "})()"])), String.join(cps_provider_8_conts(v_19, v_24), "")])
+    case BIR.NativeDeclaration{v_33, v_34, v_35}:
+      cps_provider_8_native_declaration(v_33, v_34, v_35)
+    case BIR.ForeignDeclaration{v_46, _, v_48, v_49, v_50, _, _, v_53, v_54}:
+      cps_provider_8_foreign_declaration(v_46, v_48, v_50, v_49, v_53, v_54, v_3)
 
 def cps_provider_8_foreign_declaration(+v_1: String, v_3: String, v_6: List<&2, String>, v_8: Nat, v_10: List<&2, BIR.Descriptor>, v_11: BIR.Descriptor, +v_14: Map<&2, String>) -> String:
   cps_provider_8_foreign_source(cps_provider_8_js_source(v_6), v_1, v_3, v_8, v_10, v_11, v_14)

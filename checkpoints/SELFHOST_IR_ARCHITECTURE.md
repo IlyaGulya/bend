@@ -2,28 +2,41 @@
 
 ## Статус и границы
 
-Текущий проверенный source — `6e854821` (g22). Общий
-CheckedFIR → Backend IR → JS/C путь прошёл собственные свежие parser/native
-gates и настоящий native-stage0 → stage1 → stage2 byte fixedpoint:
-30 222 543 байта, `6f3dff55cee825d064b1d2f9d0c3268fd0d629dd93043d90d6fc00f43eba5978`.
-Проверены 12 157 определений / 12 736 событий без исключений и патчей,
-обе 47-case C/JS матрицы, native/library/admission/host consumers и 285
-seed/stage1/stage2 fixture executions. 8-ГиБ / 600-секундные gates сохранены.
-G22 меняет только host inline семи tiny runtime accessors; алгоритмы FIR/BIR
-и emitted JS bytes прежние. Три чередующиеся same-host пары G21/G22 дают
-1.645x median native root-to-JS и 1.703x check; это не победа над official TS.
-Нормативные контракты и открытые универсальные обязательства — в
-`../bend2/selfhost/FIR_LAWS.md` и `../bend2/selfhost/BIR_LAWS.md`.
-Runtime acceptance не является доказательством всех этих законов.
+Текущий проверенный compiler source — `04e0b600` (g23). Общий
+CheckedFIR → Backend IR → JS/C путь завершил полный native compiler root
+и настоящий native-stage0 → stage1 → stage2 byte fixedpoint:
+32 959 574 байта, `6b206ac5b6d84a6d7296837ae8249e49657551ff16eaddc87f44baecef7e42d5`.
+Native validation — 14 096 определений / 14 686 событий, без исключений
+и патчей. Неизменённый stage1 покрывает 52 C / 53 JS cases; последний
+JS case отдельно перекомпилирован после исправления только пробелов
+в `#|` expectations. Исходный failed matrix сохранён. Native/library,
+admission/host consumers и 285 seed/stage1/stage2 fixture executions PASS.
+Каждый emitted image имеет 130 свежих full semantic AST approvals.
+Исходные 8-ГиБ / 600-секундные guards, ABI13, quantum64 и fuel8M сохранены.
+
+G23 объединяет native String/Map reads, короткоживущие application/signature
+facts, typed/scoped bounded result fusion, capture/constructor plans и
+lexer/template caches. Source-only affine obligations остаются проверками
+исходного тела; occurrence-only usage witness и global term→type cache
+не вводились. Нормативные контракты и универсальные обязательства:
+`../bend2/selfhost/FIR_LAWS.md`, `../bend2/selfhost/BIR_LAWS.md`.
+Runtime acceptance не является доказательством этих законов.
+
+Парные whole-root G22/G23 measurements дают JS median1.217x с существенной
+вариацией; значимого native выигрыша нет, emission замедлился. Отдельные
+slice gains и снижение памяти не заявляются. Старый canonical-JS seed
+parser имеет large-file stack failure; stage1 использует собственный parser.
+Remote ENOSPC companion завершён после byte-preserving relocation;
+исходные отказы сохранены. Это не pure-C selfhosting и не official-TS win.
 Точные команды и границы:
-`../evals/receipts/root2039g22_native_fixedpoint.json`,
-`../evals/receipts/root2039g22_emitted_suites.json`,
-`../evals/receipts/producer2039g22_throughput.json`.
+`../evals/receipts/root2039g23_native_fixedpoint.json`,
+`../evals/receipts/root2039g23_emitted_suites.json`,
+`../evals/receipts/producer2039g23_throughput.json`.
 
 Исторические доказательства standalone C-id helper, 57y/57aa, G21 и прежние
 числа ниже относятся только к собственным pinned source/executable.
-Они не переносятся на изменённый lowering или новый renderer; g22 принят
-по своей полной цепочке, не по старым helper-тестам.
+Они не переносятся на изменённый lowering или новый renderer; g23 принят
+по собственной полной цепочке, не по старым helper-тестам.
 
 ## История: статус 57ab до cutover (не текущий)
 
