@@ -906,17 +906,19 @@ def multi_params_for_render(private: Bool, parameters: List<&2, BIR.Parameter>, 
 def multi_render_public(id: U32, parameters: List<&2, BIR.Parameter>, body: BIR.Block, layouts: Map<&2, MultiLayout>, width: Nat, state: MultiUp) -> MultiRender:
   multi_render_make(id, body, layouts, width, state, False{}, True{}, multi_params_boxed(parameters, Nil{}))
 def multi_render_make(id: U32, body: BIR.Block, layouts: Map<&2, MultiLayout>, width: Nat, state: MultiUp, private: Bool, public: Bool, params: List<&2, MultiParam>) -> MultiRender:
-  multi_render_done(multi_rewrite(body, MRewCtx{id, layouts, multi_prev_multi(state), multi_prev_up(state), width, multi_params_map(params, Map.new(&2, MultiParam)), private, None{}, None{}, Map.new(&2, MultiCtor), multi_uses(body)}, multi_seed_of(id)), private, public, params, width)
+  multi_render_done(multi_rewrite(body, MRewCtx{id, layouts, multi_prev_multi(state), multi_prev_up(state), width, multi_params_map(params, Map.new(&2, MultiParam)), private, None{}, None{}, Map.new(&2, MultiCtor), multi_uses(body)}, multi_seed_of(id)), id, private, public, params, width)
 # A synthetic conversion names a hoisted continuation, so its id must be unique
 # over the whole program, not over one rendering: the owner contributes a block
 # of 64 names and the traversal consumes two per conversion. Site and parameter
 # names come from the disjoint 0x60000000 range, so the three spaces cannot meet.
 def multi_seed_of(id: U32) -> Nat:
   Nat.mul(U32.to_nat(id), 64n)
-def multi_render_done(rw: MultiRew, private: Bool, public: Bool, params: List<&2, MultiParam>, width: Nat) -> MultiRender:
+def multi_render_done(rw: MultiRew, id: U32, private: Bool, public: Bool, params: List<&2, MultiParam>, width: Nat) -> MultiRender:
   match rw:
-    case MultiRew{body, windows, sites, mr, _, failed, _, _}:
-      multi_render_final(body, windows, sites, mr, Bool.or(failed, multi_render_frames(private, body)), private, public, params, width)
+    case MultiRew{body, windows, sites, mr, _, failed, _, next}:
+      multi_render_final(body, windows, sites, mr, Bool.or(failed, Bool.or(multi_render_frames(private, body), multi_seed_over(id, next))), private, public, params, width)
+def multi_seed_over(id: U32, next: Nat) -> Bool:
+  Nat.is_gt(Nat.sub(next, multi_seed_of(id)), 64n)
 def multi_render_frames(private: Bool, body: BIR.Block) -> Bool:
   match private:
     case True{}: Bool.not(multi_frames_ok(body, plan_of(body)))
@@ -2821,7 +2823,7 @@ def split_direct_make(name: String, id: U32, args: List<&2, BIR.Arg>, caps: Caps
 def multi_split_fits(count: Nat, private: Bool, mr: Bool) -> Bool:
   Bool.and(Nat.is_gt(count, 0n), Nat.is_le(multi_split_count(count, private, mr), 32n))
 def multi_split_count(count: Nat, private: Bool, mr: Bool) -> Nat:
-  multi_split_added(private, Nat.add(count, multi_split_mr(mr)))
+  multi_split_added(private, count)
 def multi_split_added(private: Bool, count: Nat) -> Nat:
   match private:
     case True{}: Nat.add(count, 1n)
@@ -2856,9 +2858,11 @@ def arg_temp_only(args: List<&2, BIR.Arg>, index: Nat) -> List<&2, String>:
     case Nil{}: Nil{}
     case _ <> rest: cat(["$a", Nat.show(index)]) <> arg_temp_only(rest, (index + 1n : Nat))
 def split_direct_many(name: String, id: U32, args: List<&2, BIR.Arg>, caps: Caps, ctx: JsCtx, private: Bool, mr: Bool) -> String:
-  cat([cap_stores(caps_locals(caps)), slot_stores(caps_slots(caps)), multi_mr_store(mr), "return $splitm(", name, ",[", String.join(arguments(args), private_arg_tail(private)), "],", cont_name_ctx(ctx, id), ",$sp-", Nat.show(Nat.add(cap_total(caps), multi_split_mr(mr))), ");"])
-def private_arg_tail(private: Bool, mr: Bool) -> String:
-  private_arg_tail_one(private)
+  cat([cap_stores(caps_locals(caps)), slot_stores(caps_slots(caps)), multi_mr_store(mr), "return $splitm(", name, ",[", String.join(multi_many_args(args, private), ","), "],", cont_name_ctx(ctx, id), ",$sp-", Nat.show(Nat.add(cap_total(caps), multi_split_mr(mr))), ");"])
+def multi_many_args(args: List<&2, BIR.Arg>, private: Bool) -> List<&2, String>:
+  match private:
+    case True{}: List.append(&2, String, arguments(args), ["$sp"])
+    case False{}: arguments(args)
 def split_apply(id: U32, fn: BIR.Atom, arg: BIR.Arg, caps: Caps, ctx: JsCtx) -> String:
   cat([cap_stores(caps_locals(caps)), slot_stores(caps_slots(caps)), multi_mr_store(js_ctx_mr(ctx, id)), "return $split1(", atom(fn), ",", arg_atom(arg), ",", cont_name_ctx(ctx, id), ",$sp-", Nat.show(multi_window_offset(caps, js_ctx_mr(ctx, id))), ");"])
 def arg_atom(arg: BIR.Arg) -> String:
