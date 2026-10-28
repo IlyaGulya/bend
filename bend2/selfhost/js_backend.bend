@@ -894,12 +894,12 @@ def multi_render_pair(multi: Bool, id: U32, parameters: List<&2, BIR.Parameter>,
 def multi_render_two(id: U32, parameters: List<&2, BIR.Parameter>, body: BIR.Block, layouts: Map<&2, MultiLayout>, width: Nat, state: MultiUp, acc: Map<&2, MultiRender>) -> Map<&2, MultiRender>:
   Map.set(&2, MultiRender, Map.set(&2, MultiRender, acc, multi_render_key(id, False{}), multi_render_primary(id, parameters, body, layouts, width, state, True{})), multi_render_key(id, True{}), multi_render_public(id, parameters, body, layouts, width, state))
 def multi_render_primary(id: U32, parameters: List<&2, BIR.Parameter>, body: BIR.Block, layouts: Map<&2, MultiLayout>, width: Nat, state: MultiUp, private: Bool) -> MultiRender:
-  multi_render_make(id, body, layouts, width, state, private, False{}, multi_render_params(private, parameters, multi_prev_up(state), id, width))
+  multi_render_make(id, body, layouts, width, state, private, False{}, multi_params_for_render(private, parameters, multi_prev_up(state), id, width))
 # Only a selected multi code may take tag plus words: a code that failed the
 # result or arity proof keeps boxed parameters even where its own uses could be
 # projected, because its callers route the boxed entry and no public duplicate
 # exists for it.
-def multi_render_params(private: Bool, parameters: List<&2, BIR.Parameter>, up: Map<&2, Bool>, id: U32, width: Nat) -> List<&2, MultiParam>:
+def multi_params_for_render(private: Bool, parameters: List<&2, BIR.Parameter>, up: Map<&2, Bool>, id: U32, width: Nat) -> List<&2, MultiParam>:
   match private:
     case True{}: multi_params_unboxed(parameters, 0n, up, id, width, Nil{})
     case False{}: multi_params_boxed(parameters, Nil{})
@@ -2510,11 +2510,6 @@ def multi_project_flags(unboxed: Bool, fields: List<&2, U32>, sub: Maybe<&2, Mul
   match unboxed:
     case True{}: BIR.Copy{multi_nth(multi_atom_list(fields), multi_slot_at(multi_layout_keys(layouts, constructor), key))}
     case False{}: multi_project_sub(sub, known, layouts, constructor, field, key)
-def multi_project_sub(sub: Maybe<&2, MultiSubst>, known: U32, layouts: Map<&2, MultiLayout>, constructor: U32, field: U32, key: String) -> BIR.Op:
-  match sub:
-    case Some{MultiSubst{id, _, fields, _}}:
-      multi_project_window(U32.is_eq(id, known), fields, layouts, constructor, field, key)
-    case None{}: BIR.Project{BIR.Local{known}, constructor, field, key}
 def multi_project_sub(sub: Maybe<&2, MultiSubst>, known: U32, layouts: Map<&2, MultiLayout>, constructor: U32, field: U32, key: String) -> BIR.Op:
   match sub:
     case Some{MultiSubst{id, _, fields, _}}:
