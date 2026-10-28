@@ -524,8 +524,30 @@ def js_quote_chars(chars: List<&2, Char>) -> String:
     case +char <> rest:
       String.append(js_escape_char(char), js_quote_chars(rest))
 
-def js_quote(text: String) -> String:
-  String.append("\"", js_quote_chars(String.to_list(text)))
+# Most emitted names need no escape; scan the string without rebuilding its chars.
+def js_quote_plain(text: String) -> Bool:
+  match text:
+    case SNil{}: True{}
+    case SCon{char, rest}: js_quote_plain_next(js_quote_plain_char(char), rest)
+def js_quote_plain_next(plain: Bool, rest: String) -> Bool:
+  match plain:
+    case True{}: js_quote_plain(rest)
+    case False{}: False{}
+def js_quote_plain_char(char: Char) -> Bool:
+  match char:
+    case '\"': False{}
+    case '\\': False{}
+    case '\n': False{}
+    case '\r': False{}
+    case '\t': False{}
+    case '\u{0}': False{}
+    case _: Bool.not(js_char_packed(Char.to_u32(char)))
+def js_quote_ready(plain: Bool, text: String) -> String:
+  match plain:
+    case True{}: String.append("\"", String.append(text, "\""))
+    case False{}: String.append("\"", js_quote_chars(String.to_list(text)))
+def js_quote(+text: String) -> String:
+  js_quote_ready(js_quote_plain(text), text)
 
 def bool_source(value: Bool) -> String:
   match value:
