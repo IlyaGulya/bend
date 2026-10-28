@@ -871,7 +871,7 @@ def multi_params_map(items: List<&2, MultiParam>, acc: Map<&2, MultiParam>) -> M
 def multi_param_names(items: List<&2, MultiParam>) -> List<&2, String>:
   match items:
     case Nil{}: Nil{}
-    case MultiParam{id, unboxed, tag, fields} <> rest: multi_param_name(id, unboxed, tag, fields) <> multi_param_names(rest)
+    case MultiParam{id, unboxed, tag, fields} <> rest: List.append(&2, String, multi_param_name(id, unboxed, tag, fields), multi_param_names(rest))
 def multi_param_name(id: U32, unboxed: Bool, tag: U32, fields: List<&2, U32>) -> List<&2, String>:
   match unboxed:
     case False{}: [local(id)]
@@ -918,7 +918,7 @@ def multi_render_done(rw: MultiRew, id: U32, private: Bool, public: Bool, params
     case MultiRew{body, windows, sites, mr, _, failed, _, next}:
       multi_render_final(body, windows, sites, mr, Bool.or(failed, Bool.or(multi_render_frames(private, body), multi_seed_over(id, next))), private, public, params, width)
 def multi_seed_over(id: U32, next: Nat) -> Bool:
-  Nat.is_gt(Nat.sub(next, multi_seed_of(id)), 64n)
+  Nat.is_gt(Nat.sub(next, multi_seed_of(id)), 8n)
 def multi_render_frames(private: Bool, body: BIR.Block) -> Bool:
   match private:
     case True{}: Bool.not(multi_frames_ok(body, plan_of(body)))
@@ -2426,7 +2426,7 @@ def multi_expand_one(use: BIR.Use, value: BIR.Atom, required: Bool, rest: List<&
 def multi_expand_forward(use: BIR.Use, value: BIR.Atom, rest: List<&2, BIR.Arg>, callee: U32, index: Nat, ctx: MRewCtx) -> List<&2, BIR.Arg>:
   match ctx:
     case MRewCtx{_, layouts, _, _, width, params, _, sub, _, bindings, _}:
-      multi_expand_atoms(multi_forward_atoms(value, layouts, params, bindings, sub, width), use) <> multi_expand_at(rest, callee, (index + 1n : Nat), ctx)
+      List.append(&2, BIR.Arg, multi_expand_atoms(multi_forward_atoms(value, layouts, params, bindings, sub, width), use), multi_expand_at(rest, callee, (index + 1n : Nat), ctx))
 def multi_expand_atoms(items: List<&2, BIR.Atom>, use: BIR.Use) -> List<&2, BIR.Arg>:
   match items:
     case Nil{}: Nil{}
@@ -2635,9 +2635,12 @@ def multi_rewrite_construct(id: U32, constructor: U32, tag: String, fields: List
     case MRewCtx{code, layouts, multi, up, width, params, private, sub, _, bindings, uses}:
       multi_rewrite_construct_bind(id, constructor, tag, fields, next, MRewCtx{code, layouts, multi, up, width, params, private, sub, multi_ctx_cur(ctx), Map.set(&2, MultiCtor, bindings, U32.show(id), MultiCtor{constructor, tag, fields}), uses}, seed)
 def multi_rewrite_construct_bind(id: U32, constructor: U32, tag: String, fields: List<&2, BIR.Field>, next: BIR.Block, ctx: MRewCtx, seed: Nat) -> MultiRew:
-  +b = BIR.Construct{constructor, tag, fields}
-  +r = multi_rewrite(next, ctx, seed)
-  multi_rew_make(BIR.Let{id, b, r.body}, r, multi_window_result(id, next, ctx, r.own_mr))
+  multi_rewrite_construct_made(BIR.Construct{constructor, tag, fields}, multi_rewrite(next, ctx, seed), id, next, ctx)
+def multi_rewrite_construct_made(op: BIR.Op, r: MultiRew, id: U32, next: BIR.Block, ctx: MRewCtx) -> MultiRew:
+  match r:
+    case MultiRew{body, windows, sites, mr, dropped, failed, own, rest}: multi_rewrite_construct_join(op, id, next, ctx, body, windows, sites, mr, dropped, failed, own, rest)
+def multi_rewrite_construct_join(op: BIR.Op, id: U32, next: BIR.Block, ctx: MRewCtx, body: BIR.Block, windows: Map<&2, MultiWindow>, sites: Map<&2, Bool>, mr: Map<&2, Bool>, dropped: Map<&2, Bool>, failed: Bool, own: Bool, rest: Nat) -> MultiRew:
+  MultiRew{BIR.Let{id, op, body}, windows, sites, mr, dropped, failed, multi_window_result(id, next, ctx, own), rest}
 def multi_window_result(id: U32, next: BIR.Block, ctx: MRewCtx, own: Bool) -> Bool:
   match next:
     case BIR.Return{BIR.Local{known}}: multi_window_result_same(Bool.and(U32.is_eq(known, id), multi_ctx_private(ctx)), own)
