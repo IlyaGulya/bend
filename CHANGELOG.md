@@ -5,6 +5,16 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- The g21 candidate restores the accepted g8 `checker_arena.bend` bytes:
+  `Arena.name` threads the result of canonical `Map.get` instead of using
+  immutable `IndexLookup.find`. Native split compilation returns to O1;
+  rejected g20's optional O2 policy is removed. Stable IDs, prefixes,
+  Unicode, rewind and sentinel cases pass on actual JS and C; the
+  native-validated checker preserves complete checked FIR on the exercised
+  small inputs. Full-root build and native-seed bootstrap acceptance remain
+  pending; no timing improvement or new byte fixedpoint is claimed.
+  Receipt: `evals/receipts/root2039g21_map_restore_smoke.json`.
+
 - The g20 split-O2 native-seed trial is **rejected**, not selected for the
   next candidate. Its full native root builds in 278.558 s with peak RSS
   5,448,794,112 bytes under the original 8-GiB/600-s guard, checking all

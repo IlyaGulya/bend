@@ -1,0 +1,447 @@
+{
+  "schemaVersion": 1,
+  "status": "G21_RESTORED_ACCEPTED_ARENA_MAP_NATIVE_VALIDATION_AND_JS_C_SMOKE_PASS_FULL_ACCEPTANCE_PENDING",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "sourceRestoration": {
+    "file": "bend2/selfhost/checker_arena.bend",
+    "sha256": "2a26c3d8ce66412591030fa2fd6df9f9e53c0fececd9d9ae702def2f475f1752",
+    "acceptedG8SourceSha256": "2a26c3d8ce66412591030fa2fd6df9f9e53c0fececd9d9ae702def2f475f1752",
+    "scope": "Entire source file matches accepted g8; g21 also restores the O1-only native split policy after rejected g20. No speedup inferred."
+  },
+  "arenaSmoke": {
+    "schemaVersion": 1,
+    "status": "G21_CANONICAL_ARENA_NAME_IDS_JS_C_PASS",
+    "compilerAccepted": false,
+    "byteFixedpoint": false,
+    "scope": "Canonical native validation/codegen and actual JS/C execution of the existing arena ID/prefix/Unicode/rewind/sentinel regression; not selfhost acceptance.",
+    "root": "/private/tmp/bend2039g21-name-map",
+    "directory": "/tmp/bend-g21-arena-map-vuPA9a",
+    "rows": [
+      {
+        "command": [
+          "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+          "--experimental-strip-types",
+          "/tmp/bend-g14-canonical-worker.mjs",
+          "tests/reg/checker_arena_names.bend",
+          "/tmp/bend-g21-arena-map-vuPA9a/arena.js"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 338.153125,
+        "stdoutSha256": "8eb32f1fe9082a709f19a776790f424a6e8a2683be74352b85e8465b705b6603",
+        "stderrSha256": "d0520e80654be89d5c143f31ddfade8c644036053f2f7ccfefc2c9e0feb539e5"
+      },
+      {
+        "command": [
+          "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+          "/tmp/bend-g21-arena-map-vuPA9a/arena.js"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 30.018208000000016,
+        "stdoutSha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "command": [
+          "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+          "--experimental-strip-types",
+          "/tmp/bend-g14-canonical-worker.mjs",
+          "tests/reg/checker_arena_names.bend",
+          "/tmp/bend-g21-arena-map-vuPA9a/arena.c"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 469.9845,
+        "stdoutSha256": "7cef209765d973b04a1b54c84c659bc3b2339f64d36d7869ac6f8b58e77af22c",
+        "stderrSha256": "105117826b105c121e88bccc0ca058d8b0a06aef2d5947021740acc2b8c6f15e"
+      },
+      {
+        "command": [
+          "clang",
+          "-std=c11",
+          "-O0",
+          "-pthread",
+          "/tmp/bend-g21-arena-map-vuPA9a/arena.c",
+          "-lm",
+          "-o",
+          "/tmp/bend-g21-arena-map-vuPA9a/arena.c.exe"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 566.658042,
+        "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "command": [
+          "/tmp/bend-g21-arena-map-vuPA9a/arena.c.exe"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 3.3326670000001286,
+        "stdoutSha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "sourceSha256": "2a26c3d8ce66412591030fa2fd6df9f9e53c0fececd9d9ae702def2f475f1752",
+    "jsSha256": "6210c3c7b818591384c9a66e1c751a9a1ac87f9c21f08d41d19a353342836c62",
+    "cSha256": "961f928c329b4b5c317e1d8a7544661a57202746baf2978489bab26ec9186811"
+  },
+  "targetSmoke": {
+    "schemaVersion": 1,
+    "status": "G21_CHECKED_FIR_AND_JS_C_CONSUMERS_PASS",
+    "compilerAccepted": false,
+    "byteFixedpoint": false,
+    "scope": "Source parsing and checking with retained g9a frontend; current native-validated emitter; actual JS/C execution, aliases and unchanged 32-page frontier bound. Not full compiler acceptance.",
+    "directory": "/tmp/bend-g21-mini-FLLe5U",
+    "frontend": {
+      "path": "/tmp/bend-g10-retained-frontend.js",
+      "sha256": "63fdd105001ccde3e9df352ac3723973366cca004e7469fa7d875896c6450ee5"
+    },
+    "emitter": {
+      "path": "/tmp/bend-g21-emitter.js",
+      "sha256": "c1bd3f7600e30d6d0fe03ae8e8a920eb3da8f39207d73b64adbbc814711d4bb8",
+      "build": "/tmp/bend-g21-emitter-build.result.json",
+      "buildSha256": "b2422ded89303fb459b3ad51ec453e6d9d67fd0c0409c79f207033c634c99b87"
+    },
+    "rows": [
+      {
+        "source": "tests/run/nat_successor_boundaries.bend",
+        "target": "js",
+        "sourceSha256": "0d467ab6406f5ab41429f1710d626b45bbb07425d653b47a05b22862deb3296f",
+        "output": "/tmp/bend-g21-mini-FLLe5U/nat_successor_boundaries.bend.js",
+        "outputSha256": "43f62d9f933bba740f883f93caddfa0a9d496653e8893f9b529f289ad56258d4",
+        "emitMs": 375.9818750000004,
+        "expected": "1\n33\n256\n257\n4294967296\n4294967297\n",
+        "consumer": {
+          "command": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "/tmp/bend-g21-mini-FLLe5U/nat_successor_boundaries.bend.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 32.977208000000246,
+          "stdoutSha256": "43ce9261f0744c8d26125762ab1c43e5e4ce506b5f1395a317eacc3dcc2deda9",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "passed": true
+      },
+      {
+        "source": "tests/run/nat_successor_boundaries.bend",
+        "target": "c",
+        "sourceSha256": "0d467ab6406f5ab41429f1710d626b45bbb07425d653b47a05b22862deb3296f",
+        "output": "/tmp/bend-g21-mini-FLLe5U/nat_successor_boundaries.bend.c",
+        "outputSha256": "91973ce71e1be2458ec1507033171aa8a304716f7dc7a7aba9a1e6e69163b43f",
+        "emitMs": 11104.748208,
+        "expected": "1\n33\n256\n257\n4294967296\n4294967297\n",
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/tmp/bend-g21-mini-FLLe5U/nat_successor_boundaries.bend.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-g21-mini-FLLe5U/nat_successor_boundaries.bend.c.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 827.349041999998,
+          "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderrSha256": "0723ba179d27a0720dade6588b1804078b468e0c3bc9d77cb252fd350605f8f7"
+        },
+        "consumer": {
+          "command": [
+            "/tmp/bend-g21-mini-FLLe5U/nat_successor_boundaries.bend.c.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 5.80370799999946,
+          "stdoutSha256": "43ce9261f0744c8d26125762ab1c43e5e4ce506b5f1395a317eacc3dcc2deda9",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "passed": true
+      },
+      {
+        "source": "tests/run/index_lookup_cursor.bend",
+        "target": "js",
+        "sourceSha256": "07354cd9fbe31ec429912dbc070d82532b1cf9b80f6a62cdae07a103deef2802",
+        "output": "/tmp/bend-g21-mini-FLLe5U/index_lookup_cursor.bend.js",
+        "outputSha256": "e3f1cd41c33371af2bf9c4a6bbbf99405a8147ae41f0eee361f8410641757582",
+        "emitMs": 299.6705409999995,
+        "expected": "999,999,1,8,9,5,10,12,21,22,999\n",
+        "consumer": {
+          "command": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "/tmp/bend-g21-mini-FLLe5U/index_lookup_cursor.bend.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 37.47441699999763,
+          "stdoutSha256": "6ad17e6f07908cf96bbeb79c1608ab528ce08d15c308c8fc9c1999422f1a09c7",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "passed": true
+      },
+      {
+        "source": "tests/run/index_lookup_cursor.bend",
+        "target": "c",
+        "sourceSha256": "07354cd9fbe31ec429912dbc070d82532b1cf9b80f6a62cdae07a103deef2802",
+        "output": "/tmp/bend-g21-mini-FLLe5U/index_lookup_cursor.bend.c",
+        "outputSha256": "c02cd5211f822f2c930e4a4dd77a5a1f4aa224c3bbec5e75bd5d9427b7a1d80c",
+        "emitMs": 12653.900291000005,
+        "expected": "999,999,1,8,9,5,10,12,21,22,999\n",
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/tmp/bend-g21-mini-FLLe5U/index_lookup_cursor.bend.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-g21-mini-FLLe5U/index_lookup_cursor.bend.c.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 932.0443339999983,
+          "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderrSha256": "37b16ea694d491b707ca584398df22cf75935bdfa2da078b9260baf97ccf98a0"
+        },
+        "consumer": {
+          "command": [
+            "/tmp/bend-g21-mini-FLLe5U/index_lookup_cursor.bend.c.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 3.4887089999974705,
+          "stdoutSha256": "6ad17e6f07908cf96bbeb79c1608ab528ce08d15c308c8fc9c1999422f1a09c7",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "passed": true
+      },
+      {
+        "source": "evals/c_step_library_fixture.bend",
+        "target": "js",
+        "exports": [
+          "U32.mul"
+        ],
+        "sourceSha256": "5e53a4815f2fc7f12c3fdea7bfc12764daf65096b125a22a5f884c0cf0e710df",
+        "output": "/tmp/bend-g21-mini-FLLe5U/unread-native.js",
+        "outputSha256": "7d0ad35700b76811090b50f07e168c8af5df1ce7b5595b6b0b6ff3a1ce9b9083",
+        "expected": "6\n",
+        "consumer": {
+          "command": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--input-type=module",
+            "-e",
+            "const lib=(await import(\"file:///tmp/bend-g21-mini-FLLe5U/unread-native.js\")).default;const value=lib[\"U32.mul\"](2,3);if(value!==6)throw Error(\"Native product differs\");console.log(value);"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 42.58995799999684,
+          "stdoutSha256": "06e9d52c1720fca412803e3b07c4b228ff113e303f4c7ab94665319d832bbfb7",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "passed": true
+      },
+      {
+        "source": "evals/c_step_library_fixture.bend",
+        "target": "c",
+        "exports": [
+          "U32.mul"
+        ],
+        "sourceSha256": "5e53a4815f2fc7f12c3fdea7bfc12764daf65096b125a22a5f884c0cf0e710df",
+        "output": "/tmp/bend-g21-mini-FLLe5U/unread-native.c",
+        "outputSha256": "e6e9766023214b33da8211d14c2c7c29786959e0bb83a53d951d4776062e4027",
+        "expected": "6\n",
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/tmp/bend-g21-mini-FLLe5U/unread-native.c",
+            "/tmp/bend-g12-native-export-caller.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-g21-mini-FLLe5U/unread-native.c.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 784.7379579999979,
+          "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderrSha256": "3197ff2a25cf36bbc1bb33566f7b79da4c670070858f5b7d9659c85dcc79b82d"
+        },
+        "consumer": {
+          "command": [
+            "/tmp/bend-g21-mini-FLLe5U/unread-native.c.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 2.706124999996973,
+          "stdoutSha256": "06e9d52c1720fca412803e3b07c4b228ff113e303f4c7ab94665319d832bbfb7",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "passed": true
+      }
+    ]
+  },
+  "checkerBuild": {
+    "status": "JS_GENERATED_NOT_YET_EXECUTED",
+    "provenancePath": "/tmp/bend-g21-checker-build.provenance.json",
+    "provenanceSha256": "ed94a13c9ddd7b0dce109449f1197d5ec50a07cd83ffe400402ae3c5b1be4cc1",
+    "sourcePath": "/private/tmp/bend2039g21-name-map/checkpoints/checker_core_steps_component_v1.bend",
+    "sourceSha256": "ca15a467e804983f454a63e9db64a38c1077a2d49104d488556d0609557521cf",
+    "exports": [
+      "check_expanded_start",
+      "inspect_checked_start",
+      "checker_step"
+    ],
+    "artifactPath": "/tmp/bend-g21-checker.js",
+    "artifactSha256": "8ee41025bfa5b8c6d61a698ead6379f468be22ff048d6d5b8a0325acbf62fb5f",
+    "bytes": 4717564,
+    "eventsFullyValidated": 5894,
+    "checkedDefinitions": 5622,
+    "liveBodies": 5622,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "checkedOutputRetention": "native e",
+    "nativeRetention": "native checked e retained through all JS definition folding; scope-local higher caches released between definitions; no serialization or source-value fallback",
+    "nativeCheckedBodies": 5622,
+    "expectedSourceDefinitions": 5622,
+    "toolchain": "CANONICAL NATIVE LOAD/CHECK; CANONICAL JS PREPARE/EMIT/RELEASE; Node/V8 automatic GC",
+    "preparedCount": 5285,
+    "releasedCount": 5285,
+    "maxSimultaneousE": 5622,
+    "maxSimultaneousH": 2844,
+    "countsCaveat": "Definition slots, not unique term graphs; signature metadata does not prepare higher bodies",
+    "runtime": {
+      "name": "node",
+      "node": "23.11.0",
+      "v8": "12.9.202.28-node.14",
+      "executable": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "heapLimitMiB": 3072,
+      "stackSizeMb": 256,
+      "heapSizeLimitBytes": 3271557120,
+      "manualGC": false
+    },
+    "cpuMs": 5172.833,
+    "compiledExecution": "NOT_RUN",
+    "selfhostGreen": false,
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 805519360,
+      "peakFootprintBytes": 804445608,
+      "elapsedMs": 3483,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend2039g21-name-map/evals/checker_core_component_build.ts",
+        "--worker",
+        "--file=/private/tmp/bend2039g21-name-map/checkpoints/checker_core_steps_component_v1.bend",
+        "--exports=check_expanded_start,inspect_checked_start,checker_step",
+        "--artifact=/tmp/bend-g21-checker.js",
+        "--report=/tmp/bend-g21-checker-build",
+        "--inputs-sha256=a787925125183f30d1518b6363b6dfb349684a3420cd76858454f56049258c5d"
+      ],
+      "label": "Full-native CheckerCore component JS build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793151651187-25769ce5e055b8a5.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "emitterBuild": {
+    "status": "JS_GENERATED_NOT_YET_EXECUTED",
+    "provenancePath": "/tmp/bend-g21-emitter-build.provenance.json",
+    "provenanceSha256": "0e4115a0fd6927c5a01f7e6d3ffb37e5d5d3e76d1b199a9ede0d9c55e0228d2a",
+    "sourcePath": "/private/tmp/bend2039g21-name-map/checkpoints/emitter_steps_component_v1.bend",
+    "sourceSha256": "e6bd090dc9b2a0b381e4a896922c91869571445b194a60898d893e1f2ce3b3c8",
+    "exports": [
+      "emit_modules_start",
+      "emit_library_start",
+      "emitter_step",
+      "emit_c_modules_start",
+      "emit_c_library_start",
+      "c_emitter_step"
+    ],
+    "artifactPath": "/tmp/bend-g21-emitter.js",
+    "artifactSha256": "c1bd3f7600e30d6d0fe03ae8e8a920eb3da8f39207d73b64adbbc814711d4bb8",
+    "bytes": 6882640,
+    "eventsFullyValidated": 5912,
+    "checkedDefinitions": 5450,
+    "liveBodies": 5450,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "checkedOutputRetention": "native e",
+    "nativeRetention": "native checked e retained through all JS definition folding; scope-local higher caches released between definitions; no serialization or source-value fallback",
+    "nativeCheckedBodies": 5450,
+    "expectedSourceDefinitions": 5450,
+    "toolchain": "CANONICAL NATIVE LOAD/CHECK; CANONICAL JS PREPARE/EMIT/RELEASE; Node/V8 automatic GC",
+    "preparedCount": 4843,
+    "releasedCount": 4843,
+    "maxSimultaneousE": 5450,
+    "maxSimultaneousH": 3163,
+    "countsCaveat": "Definition slots, not unique term graphs; signature metadata does not prepare higher bodies",
+    "runtime": {
+      "name": "node",
+      "node": "23.11.0",
+      "v8": "12.9.202.28-node.14",
+      "executable": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "heapLimitMiB": 3072,
+      "stackSizeMb": 256,
+      "heapSizeLimitBytes": 3271557120,
+      "manualGC": false
+    },
+    "cpuMs": 19344.971,
+    "compiledExecution": "NOT_RUN",
+    "selfhostGreen": false,
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 2410807296,
+      "peakFootprintBytes": 2504015400,
+      "elapsedMs": 13827,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend2039g21-name-map/evals/checker_core_component_build.ts",
+        "--worker",
+        "--file=/private/tmp/bend2039g21-name-map/checkpoints/emitter_steps_component_v1.bend",
+        "--exports=emit_modules_start,emit_library_start,emitter_step,emit_c_modules_start,emit_c_library_start,c_emitter_step",
+        "--artifact=/tmp/bend-g21-emitter.js",
+        "--report=/tmp/bend-g21-emitter-build",
+        "--inputs-sha256=68e5412692460b3a77a89a5db5291664f815b5fdd904a2d3b12d2de5a2cd5bf4"
+      ],
+      "label": "Full-native CheckerCore component JS build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793151654759-36e5182a6e8e30e3.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "smokeRunner": {
+    "path": "/tmp/bend-g21-mini.mjs",
+    "sha256": "ce360e4bd8ad3c9b98e2e31c500489f2cfc3fdd1364bc4ff82d41b142c9fe645"
+  },
+  "scope": "Small checked-FIR comparison and actual target consumers, not full-root timing or bootstrap. Failed whole-input harness attempts are not compiler acceptance evidence."
+}
