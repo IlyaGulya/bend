@@ -7,7 +7,37 @@ Detailed evidence and reasoning live in the linked receipts and notes.
 This index does not replace a receipt.
 ## Current full native-seed checkpoint
 
-The current accepted checkpoint is **remote2039g21**, source `03c4f278`.
+The current accepted checkpoint is **remote2039g22**, source `6e854821`.
+Fresh parser admission, the full **12,157-definition / 12,736-event** native
+build, and the real native-stage0 → stage1 → stage2 byte fixedpoint pass,
+with zero excluded checks or output patches. G22 forces host inlining only
+for seven tiny runtime bit/load/size helpers; Bend algorithms are unchanged.
+
+Native build: **324,311 ms**, peak RSS **4,266,737,664 B**, footprint
+**4,774,860,392 B**. Bootstrap: **502,646 ms**, peak RSS **2,918,023,168 B**,
+footprint **3,240,314,936 B**. Original **8-GiB / 600-s** per-guard limits stay.
+Both unchanged images remain **30,222,543 bytes**, SHA-256
+`6f3dff55cee825d064b1d2f9d0c3268fd0d629dd93043d90d6fc00f43eba5978`.
+All 95 native-seed fixtures, 18 root semantic AST approvals, both 47-case
+C/JS matrices, 33 native/library, 12 admission and five nested host consumers
+pass. Each unchanged image additionally passes the original 95 fixtures
+(31 negative) and 130 full semantic parser approvals: **285 total executions**.
+That separate companion takes **250,338 ms**. All 91 source/protected inputs match.
+
+Three interleaved same-host G21/G22 native pairs reduce median root-to-JS
+from **184.462 s to 112.151 s (1.645x)**, check from **128.609 s to 75.529 s
+(1.703x)**. A separate sample confirms no out-of-line frames for the seven
+helpers; sampled time is excluded from the medians. Build/bootstrap times
+above are unpaired observations. The emitted JS image and all source algorithms,
+13-export ABI, parser fuel and quantum remain unchanged; no official-TS win,
+universal FIR/BIR law proof, 3072-MiB heap or GPU/WASM claim follows.
+Receipts: `evals/receipts/root2039g22_native_fixedpoint.json`,
+`evals/receipts/root2039g22_emitted_suites.json` and
+`evals/receipts/producer2039g22_throughput.json`.
+
+### Historical g21 checkpoint
+
+The **remote2039g21** checkpoint uses source `03c4f278`.
 Fresh parser admission, the full **12,157-definition / 12,736-event** native
 build, and the actual native-stage0 → stage1 → stage2 byte fixedpoint pass.
 No source checks are excluded and no output bytes are patched.
@@ -731,6 +761,7 @@ not a second task checklist.
 | THR-05 | `bend-nxf.11` | Precompute JS continuation capture plans |
 | THR-06 | `bend-nxf.12` | Reuse canonical C constructor plans and metadata indices |
 | THR-07 | `bend-nxf.13` | Reduce clean parse/expand representation churn |
+| THR-08 | `bend-nxf.14` | Inline tiny native runtime accessors before LLVM split |
 
 Use `br show <issue>` for the scope and qualification contract, and `br ready`
 for actionable work. THR-02 through THR-07 depend on `bend-nxf.7`; readiness

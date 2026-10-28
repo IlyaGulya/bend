@@ -5,12 +5,24 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
-- The G22 candidate forces host inlining only for seven tiny term/size
-  accessors before LLVM partitioning; ordinary `INLINE`, device code and
-  loop/segment policies are unchanged. Four real C consumers pass.
-  Full native/bootstrap/performance qualification is pending; this is not
-  an accepted compiler or a speedup claim.
-  Receipt: `evals/receipts/producer2039g22_tiny_inline_smoke.json`.
+- G22 forces host inlining only for seven tiny term/size accessors before
+  LLVM partitioning; ordinary `INLINE`, device code and loop/segment policies
+  are unchanged. Three interleaved same-host G21/G22 pairs reduce median
+  native root-to-JS time from 184.462 s to 112.151 s (1.645x) and checker
+  time from 128.609 s to 75.529 s (1.703x). The separate sampled run is not
+  included in those medians. This does not beat the official TS producer.
+  Fresh full native validation passes all 12,157 definitions / 12,736 events
+  with zero exclusions or output patches. Native build: 324.311 s; real
+  native-stage0 → stage1 → stage2 bootstrap: 502.646 s. Both complete
+  47-case C/JS matrices, 33 native/library consumers, 12 admission boundaries
+  and five nested host consumers pass. Both unchanged emitted images pass
+  the original 95 fixtures and 130 fresh semantic parser approvals each;
+  this separate companion takes 250.338 s. Stage1/stage2 remain byte-identical
+  30,222,543-byte files with the G21 SHA-256. Original 8-GiB / 600-s guards,
+  all source algorithms, the 13-export ABI, parser fuel and quantum are intact.
+  Receipts: `evals/receipts/root2039g22_native_fixedpoint.json`,
+  `evals/receipts/root2039g22_emitted_suites.json` and
+  `evals/receipts/producer2039g22_throughput.json`.
 
 - THR-01 records three sequential full-root runs per implementation on an
   Apple M1 Max: median TS 17.870 s, native G21 172.797 s, emitted JS

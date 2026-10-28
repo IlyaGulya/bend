@@ -4,7 +4,61 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
-## Актуальный принятый checkpoint: remote2039g21
+## Актуальный принятый checkpoint: remote2039g22
+
+Source `6e854821`: свежая parser admission, полный native compiler root
+и настоящий native-stage0 → stage1 → stage2 byte fixedpoint завершены.
+Проверены **12 157 определений / 12 736 событий**, без исключений и патчей.
+Изменение — только mandatory host inline семи tiny bit/load/size helpers
+в `bend2/comp.ts`. Обычный `INLINE`, device expansion, большие loop/segment
+тела и Bend-алгоритмы не менялись. После удаления ровно этих аннотаций
+generated C побайтно совпадает с G21.
+
+| Gate | Время, мс | Peak RSS, B | Peak footprint, B |
+|---|---:|---:|---:|
+| Native build | 324311 | 4266737664 | 4774860392 |
+| Native-seed bootstrap | 502646 | 2918023168 | 3240314936 |
+| Отдельный unchanged-image 95+95 companion | 250338 | 1743994880 | 1323714408 |
+
+Исходные **8 ГиБ RSS/footprint и 600 с на каждый gate** сохранены.
+Stage1/stage2 — **30 222 543 байта**, SHA-256
+`6f3dff55cee825d064b1d2f9d0c3268fd0d629dd93043d90d6fc00f43eba5978`.
+Скачанные файлы независимо сверены по размеру, SHA-256 и полному byte compare.
+Stage1 использует собственные parser/checker/emitter для полного stage2 root.
+Пройдены 95 native-seed fixtures и 18 full semantic AST approvals; затем
+каждый неизменённый образ прошёл исходные 95 fixtures (31 отрицательный)
+и 130 fresh semantic parser approvals. Всего 285 fixture executions.
+Обе матрицы C/JS по 47 случаев, 33 native/library, 12 admission-boundary
+и 5 nested host-export consumers PASS. Все 91 source/protected input
+совпали с кандидатным checkout. Frozen input corpus сохранён с версией.
+
+На одном Apple M1 Max выполнены три чередующиеся пары G21/G22:
+
+| Native phase | G21 median, с | G22 median, с | Ускорение |
+|---|---:|---:|---:|
+| Root → JS | 184.462 | 112.151 | 1.645x |
+| Check | 128.609 | 75.529 | 1.703x |
+
+Все шесть output SHA совпадают с fixedpoint. Отдельный профиль G22 не входит
+в medians: 72 541 main-thread samples, отдельных frames семи helpers нет.
+Sample stacks — не CPU-time shares и не allocation attribution.
+Native binary перенесён на timing host без изменений; LLVM tool hashes
+build host совпадают с принятым toolchain. Build/bootstrap времена выше —
+отдельные непарные наблюдения, не доказательство ускорения этих gates.
+
+Producer: Bend 2.0.39 / Bun 1.4.3, LLVM split O1. Emitted compiler:
+Node 23.11.0 / V8 worker, stack 256 MiB, old 6144 MiB, young 128 MiB.
+13-export ABI, parser fuel 8 000 000 и quantum 64 прежние.
+`BUN_JSC_forceRAMSize=4294967296` — GC hint, не hard memory limit.
+Победа над official TS, universal FIR/BIR proofs, heap 3072 MiB и GPU/WASM
+этой приёмкой не заявляются. Память не сравнивать по одному непарному gate.
+
+Точные команды, hashes, runtime/limits, timing/memory и результаты:
+`evals/receipts/root2039g22_native_fixedpoint.json`,
+`evals/receipts/root2039g22_emitted_suites.json`,
+`evals/receipts/producer2039g22_throughput.json`.
+
+## История: принятый checkpoint remote2039g21
 
 Source `03c4f278`: завершены свежая parser admission, полный native compiler
 root и настоящий native-stage0 → stage1 → stage2 byte fixedpoint.
