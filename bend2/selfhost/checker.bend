@@ -6002,22 +6002,22 @@ def check_pattern_global_result(v_1: ArenaStore, v_3: Maybe<&2, Scope.ArenaGloba
       ArenaResult{v_32, +v_33} = check_pattern_global(v_1, v_28, v_5, v_6, v_7, v_9, v_11, v_13, v_15, v_18, v_19, v_20, pattern_id)
       {ArenaResult{v_32, v_33} : ArenaResult<PatternTyping>}
 
-def check_pattern_exclusion_result(v_1: ArenaStore, v_3: Bool, v_5: String, v_6: IR.Names, v_8: String, v_9: IR.Words, v_10: IR.Words, v_12: Maybe<&2, Ast.Quantity>, v_14: U32, v_16: Nat, v_19: List<&2, Binding>, v_20: Ast.SourceSpan, v_21: Scope.ArenaGlobalScope, pattern_id: U32) -> ArenaResult<PatternTyping>:
+def check_pattern_exclusion_result(v_1: ArenaStore, v_3: Bool, v_5: Scope.ResolvedName, v_6: IR.Names, v_8: String, v_9: IR.Words, v_10: IR.Words, v_12: Maybe<&2, Ast.Quantity>, v_14: U32, v_16: Nat, v_19: List<&2, Binding>, v_20: Ast.SourceSpan, v_21: Scope.ArenaGlobalScope, pattern_id: U32) -> ArenaResult<PatternTyping>:
   +v_26 = v_3
   match v_26:
     case False{}:
-      ArenaResult{v_31, +v_32} = check_pattern_global_result(v_1, Scope.lookup_kind(v_5, Scope.GlobalConstructor{}, v_21), v_8, v_9, v_10, v_12, v_5, v_14, v_16, v_19, v_20, v_21, pattern_id)
+      ArenaResult{v_31, +v_32} = check_pattern_global_result(v_1, Scope.resolved_global(v_5), v_8, v_9, v_10, v_12, Scope.resolved_text(v_5), v_14, v_16, v_19, v_20, v_21, pattern_id)
       +v_34 = v_32
       v_36 = v_31
       {ArenaResult{v_36, v_34} : ArenaResult<PatternTyping>}
     case True{}:
       v_50000204 = span_file(v_20)
-      v_50000205 = Checked.Diagnostic{v_50000204, v_20, "constructor is excluded from this datatype goal", "a remaining constructor", v_5}
+      v_50000205 = Checked.Diagnostic{v_50000204, v_20, "constructor is excluded from this datatype goal", "a remaining constructor", Scope.resolved_text(v_5)}
       +v_40 = PatternTypeFailure{v_50000205}
       v_42 = v_1
       {ArenaResult{v_42, v_40} : ArenaResult<PatternTyping>}
 
-def check_pattern_typed_view(v_1: ArenaStore, v_3: U32, v_4: IR.Words, v_6: Maybe<&2, Ast.Quantity>, v_8: String, v_10: U32, v_12: Nat, v_15: List<&2, Binding>, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, pattern_id: U32) -> ArenaResult<PatternTyping>:
+def check_pattern_typed_view(v_1: ArenaStore, v_3: U32, v_4: IR.Words, v_6: Maybe<&2, Ast.Quantity>, v_8: Scope.ResolvedName, v_10: U32, v_12: Nat, v_15: List<&2, Binding>, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, pattern_id: U32) -> ArenaResult<PatternTyping>:
   ArenaResult{v_24, +v_25} = arena_get_node(v_1, v_3)
   match v_25:
     case Arena.TermAdt{+v_32, +v_33, +v_34, +v_35, +v_36, +v_37}:
@@ -6028,7 +6028,7 @@ def check_pattern_typed_view(v_1: ArenaStore, v_3: U32, v_4: IR.Words, v_6: Mayb
       v_50 = v_44
       v_52 = v_46
       v_54 = v_48
-      ArenaResult{v_58, +v_59} = has_canonical_name(v_41, v_8, v_54, v_17)
+      ArenaResult{v_58, +v_59} = has_canonical_name(v_41, Scope.resolved_text(v_8), v_54, v_17)
       ArenaResult{v_63, +v_64} = check_pattern_exclusion_result(v_58, v_59, v_8, v_54, v_50, v_52, v_4, v_6, v_10, v_12, v_15, v_16, v_17, pattern_id)
       {ArenaResult{v_63, v_64} : ArenaResult<PatternTyping>}
     case _:
@@ -6049,14 +6049,12 @@ def check_pattern_typed(v_20037336: ArenaStore, v_0: U32, v_1: U32, v_3: Maybe<&
       ArenaResult{v_20037346, +v_20037347} = check_pattern_variable_field_quantity(v_20037344, v_3, v_0, v_15, v_17, v_1, v_5, v_8, v_18, v_9)
       {ArenaResult{v_20037346, v_20037347} : ArenaResult<PatternTyping>}
     case Arena.PatternCtr{+v_20037348, +v_20037350, +v_20037351, +v_20037353}:
-      ArenaResult{v_20037354, +v_20037355} = arena_name_text(v_20037337, v_20037348)
-      +v_20037349 = v_20037355
+      ArenaResult{v_20037354, +v_20037349} = resolved_name_kind(v_20037337, v_20037348, Scope.GlobalConstructor{}, v_9)
       +v_20037352 = IR.Words{v_20037350, v_20037351}
-      v_23 = v_20037349
       v_24 = v_20037352
       v_25 = v_20037353
       ArenaResult{v_20037356, +v_20037357} = whnf(v_20037354, 64n, v_1, v_9)
-      ArenaResult{v_20037358, +v_20037359} = check_pattern_typed_view(v_20037356, v_20037357, v_24, v_3, v_23, v_1, v_5, v_8, v_25, v_9, v_0)
+      ArenaResult{v_20037358, +v_20037359} = check_pattern_typed_view(v_20037356, v_20037357, v_24, v_3, v_20037349, v_1, v_5, v_8, v_25, v_9, v_0)
       {ArenaResult{v_20037358, v_20037359} : ArenaResult<PatternTyping>}
 
 def pattern_source_span(v_20037360: ArenaStore, v_0: U32) -> ArenaResult<Ast.SourceSpan>:
