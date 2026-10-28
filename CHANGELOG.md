@@ -41,6 +41,9 @@ latest one; the GitHub release carries the same notes.
   Result windows now materialize through constructor-specific object literals,
   not per-field assignment or `defineProperty`; all twelve cases also pass on
   JavaScriptCore, including erased fields and computed `__proto__` keys.
+  Flag convergence now revisits only owners reached by changed dependencies,
+  keeping synchronous rounds and the existing descending-state budget. Twelve
+  consumer programs remain byte-identical to the full-scan solver's output.
   R7 validated all 13,012 definitions / 13,634 events and all 95 native seed
   fixtures, but its 52,143,515-byte stage1 also timed out during stage2 checking.
   Full qualification remains failed: r1/r2/r4/r6/r7 stopped at the original

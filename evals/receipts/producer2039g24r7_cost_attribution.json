@@ -213,5 +213,214 @@
     "/private/tmp/bend-g24-r7-check-profile-KxIQgK/request.json",
     "/private/tmp/bend-g24-r7-check-profile-KxIQgK/result.json"
   ],
-  "note": "Historical r4 directory in the retained driver stores this R7 window under a distinct PID/thread; CPU profile URLs and profiler metadata bind the R7 image."
+  "note": "Historical r4 directory in the retained driver stores this R7 window under a distinct PID/thread; CPU profile URLs and profiler metadata bind the R7 image.",
+  "nativeEmit": {
+    "scope": "Separate sampled native R7 emitter on the same immutable G22 root; no speedup or allocation-byte claim.",
+    "summary": {
+      "path": "/private/tmp/bend-g24-r7-emit-profile-XQtxoi/sample/summary.json",
+      "sha256": "69f57cd071c9bd8cec96e3d89bdac59da72c98c0efb7067cbd7f758679822fe9",
+      "bytes": 163070
+    },
+    "sample": {
+      "path": "/private/tmp/bend-g24-r7-emit-profile-XQtxoi/sample/check.sample.txt",
+      "sha256": "b3cc1d4b4a5da427349a3d15a1e5243d5c4052b7e12c10ade6f4d6514e10e77b",
+      "bytes": 794620
+    },
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "evals/heavy_gate.ts",
+      "--memory-mib",
+      "8192",
+      "--rss-mib",
+      "8192",
+      "--poll-ms",
+      "10",
+      "--timeout-ms",
+      "600000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "/private/tmp/bend-g24-r7-emit-profile-XQtxoi/profile-emit.mjs",
+      "--out-dir=/private/tmp/bend-g24-r7-emit-profile-XQtxoi/sample",
+      "--timeout-ms=600000",
+      "--sample-interval-ms=1",
+      "--top-frames=100",
+      "--source-map=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r7/native.c",
+      "--",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r7/native",
+      "+RTS",
+      "--threads",
+      "1",
+      "--gpu",
+      "off",
+      "--RTS",
+      "/private/tmp/bend2039g22-tiny-inline/checkpoints/.bootstrap_compiler_root_remote2039g21.bend",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/base.bend",
+      "/private/tmp/bend-g23-wave-evidence-cOFisz/paired-native-aHBKgz/candidate-1.json.runtime.tsv",
+      "/private/tmp/bend-g23-wave-evidence-cOFisz/paired-native-aHBKgz/candidate-1.json.exports.txt",
+      "compile",
+      "/private/tmp/bend-g24-r7-emit-profile-XQtxoi/output.mjs"
+    ],
+    "binarySha256": "14d6044ce7a5c331cf312889fd6a12755012e3ad4ef08a912bd5b4396dbe24ba",
+    "hostElapsedMs": 77395.94,
+    "hostUserCpuMs": 70628.424,
+    "chunkAdvances": 6002513,
+    "chunkQuantum": 64,
+    "topSelf": [
+      {
+        "symbol": "term_drop",
+        "image": "native",
+        "detail": "+ 672,688,...  [0x1051c9150,0x1051c9160,...]",
+        "selfSamples": 9914,
+        "inclusiveSamples": 10595,
+        "nodes": 451
+      },
+      {
+        "symbol": "WL_FID_Clo_apply",
+        "image": "native",
+        "detail": "+ 124,1280,...  [0x105ce182c,0x105ce1cb0,...]",
+        "selfSamples": 7583,
+        "inclusiveSamples": 8495,
+        "nodes": 5
+      },
+      {
+        "symbol": "map_find_read",
+        "image": "native",
+        "detail": "+ 224,296,...  [0x105d42a90,0x105d42ad8,...]",
+        "selfSamples": 5391,
+        "inclusiveSamples": 12098,
+        "nodes": 6
+      },
+      {
+        "symbol": "heap_free",
+        "image": "native",
+        "detail": "+ 52,44,...  [0x104ec4c48,0x104ec4c40,...]",
+        "selfSamples": 4225,
+        "inclusiveSamples": 4225,
+        "nodes": 439
+      },
+      {
+        "symbol": "WL_FID_emitter_steps_v1_emitter_advance",
+        "image": "native",
+        "detail": "+ 756,1068,...  [0x1050c8470,0x1050c85a8,...]",
+        "selfSamples": 3592,
+        "inclusiveSamples": 6119,
+        "nodes": 11
+      },
+      {
+        "symbol": "ctr_take",
+        "image": "native",
+        "detail": "+ 52,36,...  [0x1058be3c0,0x1058be3b0,...]",
+        "selfSamples": 3351,
+        "inclusiveSamples": 5066,
+        "nodes": 888
+      },
+      {
+        "symbol": "rfc_wrap",
+        "image": "native",
+        "detail": "+ 140,132,...  [0x105dfea08,0x105dfea00,...]",
+        "selfSamples": 2523,
+        "inclusiveSamples": 3554,
+        "nodes": 541
+      },
+      {
+        "symbol": "heap_alloc",
+        "image": "native",
+        "detail": "+ 44,4,...  [0x1051c8c70,0x1051c8c48,...]",
+        "selfSamples": 2267,
+        "inclusiveSamples": 2267,
+        "nodes": 477
+      },
+      {
+        "symbol": "string_cmp_read",
+        "image": "native",
+        "detail": "+ 64,60,...  [0x1053f2764,0x1053f2760,...]",
+        "selfSamples": 1704,
+        "inclusiveSamples": 1704,
+        "nodes": 14
+      },
+      {
+        "symbol": "WL_FID_String_append",
+        "image": "native",
+        "detail": "+ 204,32,...  [0x105972cc4,0x105972c18,...]",
+        "selfSamples": 1585,
+        "inclusiveSamples": 2615,
+        "nodes": 6
+      },
+      {
+        "symbol": "span_fade",
+        "image": "native",
+        "detail": "+ 160  [0x105dfed30]",
+        "selfSamples": 1427,
+        "inclusiveSamples": 2453,
+        "nodes": 475
+      },
+      {
+        "symbol": "rfc_seal",
+        "image": "native",
+        "detail": "+ 0,8,...  [0x10556ffd0,0x10556ffd8,...]",
+        "selfSamples": 1315,
+        "inclusiveSamples": 1315,
+        "nodes": 530
+      },
+      {
+        "symbol": "map_cur_bit",
+        "image": "native",
+        "detail": "+ 124,52,...  [0x105d05198,0x105d05150,...]",
+        "selfSamples": 1074,
+        "inclusiveSamples": 1074,
+        "nodes": 1
+      },
+      {
+        "symbol": "WL_FID_Map_set",
+        "image": "native",
+        "detail": "+ 92  [0x105264530]",
+        "selfSamples": 885,
+        "inclusiveSamples": 2368,
+        "nodes": 10
+      },
+      {
+        "symbol": "WL_FID_emitter_steps_v1_emitter_step_one",
+        "image": "native",
+        "detail": "+ 293528  [0x105b71dfc]",
+        "selfSamples": 862,
+        "inclusiveSamples": 7418,
+        "nodes": 446
+      },
+      {
+        "symbol": "WL_FID_String_append_k27985",
+        "image": "native",
+        "detail": "+ 76  [0x104f4fc1c]",
+        "selfSamples": 500,
+        "inclusiveSamples": 1682,
+        "nodes": 5
+      },
+      {
+        "symbol": "spare_free",
+        "image": "native",
+        "detail": "+ 16,0  [0x1058be384,0x1058be374]",
+        "selfSamples": 482,
+        "inclusiveSamples": 482,
+        "nodes": 88
+      },
+      {
+        "symbol": "WL_FID_Map_diff",
+        "image": "native",
+        "detail": "+ 488  [0x1058f1b98]",
+        "selfSamples": 356,
+        "inclusiveSamples": 1614,
+        "nodes": 9
+      }
+    ],
+    "limitations": [
+      "Attribution is symbol-level only: the accepted image has no __DWARF segments (see child.machO.dwarfSegments), so sample cannot report source lines, inlined frames or variables.",
+      "Sample counts are sampled thread stacks (including blocked/sleeping threads) at a nominal 1-ms run-time interval; they are not CPU time and must not be rescaled to hostElapsedMs or treated as CPU shares.",
+      "Per-thread totals are separate sample populations. Only the main-thread subtree is the compiler compute thread for --threads 1; other threads are runtime threads and may be blocked. waitingSamples counts only conservative wait primitives; nonWaitingSamples is not CPU.",
+      "No allocation attribution: this helper observes stacks only. Per-object allocation or byte attribution would require a separately instrumented diagnostic rebuild and is explicitly not claimed here.",
+      "External sampling suspends the target per sample; the resulting slowdown of the check span is not measured by an A/B run, so hostElapsedMs and host CPU are perturbed by an unknown amount.",
+      "Only the check window is sampled. Parse, expand, emit and fixedpoint comparison are outside the sample window.",
+      "sample reports physical footprint at its own attach/report time; that is not an allocation measure and not a phase peak.",
+      "The sampler attaches by pid to the child this helper spawned; if attach failed, status is profile_incomplete rather than a silent fallback."
+    ],
+    "note": "The copied helper retains checkPhase/check.sample labels; actual NATIVE_PHASE_START/END observed emit. Counts are sampled stacks, not allocation bytes; source-map ownership is heuristic, not DWARF."
+  }
 }

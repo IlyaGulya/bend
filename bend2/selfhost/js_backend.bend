@@ -2596,10 +2596,9 @@ def multi_fact_arity(arity: Bool, fact_width: Nat, tails: List<&2, U32>, prev: M
 #     `multi` flag.
 # A forwarding fact is keyed by the callee position it feeds, so walking a code's
 # own positions finds every caller; a route fact is keyed by the owner position it
-# constrains and names its callee; a tail target is a fact field. Nothing here is
-# inferred from a symbol name, and no edge is optional: an omitted edge would leave
-# a code unexamined after a premise it reads withdrew, so the changed-round guard
-# in `multi_round_next` treats such a gap as a fault rather than a settled state.
+# constrains and names its callee; a tail target is a fact field. Every edge comes
+# from these facts, not symbol names. The empty-queue guard detects a missing self
+# edge only; the inverse index must still include every other flag reader.
 def multi_rev_index(items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, acc: Map<&2, List<&2, U32>>) -> Map<&2, List<&2, U32>>:
   match items:
     case Nil{}: acc
@@ -2620,7 +2619,11 @@ def multi_rev_position(id: U32, index: Nat, routes: Map<&2, List<&2, MultiReq>>,
 def multi_rev_fwds(items: List<&2, MultiFwd>, dependent: U32, acc: Map<&2, List<&2, U32>>) -> Map<&2, List<&2, U32>>:
   match items:
     case Nil{}: acc
-    case MultiFwd{caller, _, _} <> rest: multi_rev_fwds(rest, dependent, multi_rev_add(acc, caller, dependent))
+    case MultiFwd{caller, shape, _} <> rest: multi_rev_fwds(rest, dependent, multi_rev_fwd_shape(shape, caller, dependent, acc))
+def multi_rev_fwd_shape(shape: MultiShape, caller: U32, dependent: U32, acc: Map<&2, List<&2, U32>>) -> Map<&2, List<&2, U32>>:
+  match shape:
+    case MultiParamShape{_}: multi_rev_add(acc, caller, dependent)
+    case _: acc
 def multi_rev_routes(items: List<&2, MultiReq>, dependent: U32, acc: Map<&2, List<&2, U32>>) -> Map<&2, List<&2, U32>>:
   match items:
     case Nil{}: acc
