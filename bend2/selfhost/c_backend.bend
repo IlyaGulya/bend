@@ -1598,7 +1598,7 @@ def arm_index_one(found: Bool, key: String, rest: List<&2, BIR.DescriptorArm>, +
 def phys_world(+plan: Plan) -> Phys.World:
   match plan:
     case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing, _, _}:
-      Phys.world(ctx, constructors, families, phys_cids(cids))
+      Phys.world(ctx, constructors, phys_cids(cids))
 
 def phys_cids(cids: List<&2, CidRow>) -> List<&2, Phys.CidSym>:
   match cids:

@@ -786,6 +786,124 @@ def deep_chain_check() -> Bool:
   +ctx = CLay.context(program_deep())
   Nat.is_eq(classify(CLay.value_layout(ctx, BIR.DescriptorRef{"F399", Nil{}})), 0n)
 
+# ---------------------------------------------------------------------------
+# The plan and the uncached rule answer the same node, per program
+# ---------------------------------------------------------------------------
+#
+# A plan entry exists only for a constructor the program declares a row for, so
+# these programs are the only place a plan is consulted: `program_rows` declares
+# rows for Pt, Er and W32 (and none for Box, which must still resolve), and the
+# two shadow programs declare one key each with different declarations.
+
+def erased_fld() -> BIR.DescriptorField:
+  BIR.DescriptorField{None{}, BIR.Erased{}, ref("U32", Nil{})}
+
+def fam_erased() -> BIR.Family:
+  fam("Er", None{}, 0n, [arm("Er", [fld(ref("U32", Nil{})), erased_fld(), fld(ref("Nat", Nil{}))])])
+
+def families_plan() -> List<&2, BIR.Family>:
+  fam_erased() <> families()
+
+def row_pt() -> BIR.ConstructorLayout:
+  BIR.ConstructorLayout{0, "Pt", None{}, Nil{}}
+
+def row_er() -> BIR.ConstructorLayout:
+  BIR.ConstructorLayout{1, "Er", None{}, Nil{}}
+
+def row_w32() -> BIR.ConstructorLayout:
+  BIR.ConstructorLayout{2, "W32", None{}, Nil{}}
+
+def program_rows() -> BIR.Program:
+  BIR.Program{Nil{}, Nil{}, [row_pt(), row_er(), row_w32()], families_plan(), type_functions(), BIR.Library{Nil{}}}
+
+# The same constructor key with a different declaration: a plan belongs to one
+# program, so this context's Pt is three words while the other context's stays
+# two.
+def fam_pt3() -> BIR.Family:
+  fam("Pt", None{}, 0n, [arm("Pt", [fld(ref("U32", Nil{})), fld(ref("U32", Nil{})), fld(ref("U32", Nil{}))])])
+
+def program_scope() -> BIR.Program:
+  BIR.Program{Nil{}, Nil{}, [row_pt()], [fam_nat(), fam_u32(), fam_pt3()], type_functions(), BIR.Library{Nil{}}}
+
+# One constructor key declared twice: the first family wins, as the family scan
+# does, so the node is the one-word packed form and the declared fields are the
+# first family's single field.
+def fam_same_one() -> BIR.Family:
+  fam("One", None{}, 0n, [arm("Same", [fld(ref("U32", Nil{}))])])
+
+def fam_same_two() -> BIR.Family:
+  fam("Two", None{}, 0n, [arm("Same", [fld(ref("U32", Nil{})), fld(ref("U32", Nil{}))])])
+
+def program_first() -> BIR.Program:
+  BIR.Program{Nil{}, Nil{}, [BIR.ConstructorLayout{0, "Same", None{}, Nil{}}], [fam_nat(), fam_u32(), fam_same_one(), fam_same_two()], type_functions(), BIR.Library{Nil{}}}
+
+# Two live fields and one erased: the second slot's ordinal is 2, not 1, and the
+# erased field takes no word.
+def erased_slot_ordinals(+slots: List<&2, CLay.NodeSlot>) -> Bool:
+  match slots:
+    case Nil{}:
+      False{}
+    case +first <> rest:
+      match first:
+        case CLay.NodeSlot{+ord1, +off1, +lay1}:
+          match rest:
+            case Nil{}:
+              False{}
+            case +second <> more:
+              match second:
+                case CLay.NodeSlot{+ord2, +off2, +lay2}:
+                  both(U32.is_eq(ord1, 0), both(U32.is_eq(ord2, U32.from_nat(2n)), both(Nat.is_eq(off1, 0n), both(Nat.is_eq(off2, 1n), both(Nat.is_eq(CLay.layout_words(lay1), 1n), Nat.is_eq(CLay.layout_words(lay2), 1n))))))
+
+def check_erased_node(+nr: CLay.NodeResult) -> Bool:
+  match nr:
+    case CLay.NodeFailed{+message}:
+      False{}
+    case CLay.NodeFound{+node}:
+      match node:
+        case CLay.Node{+words, +slots, +packed}:
+          both(bool_eq(packed, False{}), both(Nat.is_eq(List.length(&2, CLay.CWord, words), 2n), both(first_word_32(words), both(Nat.is_eq(List.length(&2, CLay.NodeSlot, slots), 2n), erased_slot_ordinals(slots)))))
+
+def check_three_word_node(+nr: CLay.NodeResult) -> Bool:
+  match nr:
+    case CLay.NodeFailed{+message}:
+      False{}
+    case CLay.NodeFound{+node}:
+      match node:
+        case CLay.Node{+words, +slots, +packed}:
+          both(bool_eq(packed, False{}), both(Nat.is_eq(List.length(&2, CLay.CWord, words), 3n), Nat.is_eq(List.length(&2, CLay.NodeSlot, slots), 3n)))
+
+def check_packed_one(+nr: CLay.NodeResult) -> Bool:
+  match nr:
+    case CLay.NodeFailed{+message}:
+      False{}
+    case CLay.NodeFound{+node}:
+      match node:
+        case CLay.Node{+words, +slots, +packed}:
+          both(bool_eq(packed, True{}), both(Nat.is_eq(List.length(&2, CLay.CWord, words), 1n), both(first_word_32(words), Nat.is_eq(List.length(&2, CLay.NodeSlot, slots), 1n))))
+
+def check_node_failed(+nr: CLay.NodeResult) -> Bool:
+  match nr:
+    case CLay.NodeFailed{+message}:
+      True{}
+    case CLay.NodeFound{+node}:
+      False{}
+
+def check_declared_count(+mr: Maybe<&2, BIR.DescriptorArm>, +pwant: Nat) -> Bool:
+  match mr:
+    case None{}:
+      False{}
+    case Some{+arm}:
+      match arm:
+        case BIR.DescriptorArm{+key, +fields}:
+          Nat.is_eq(List.length(&2, BIR.DescriptorField, fields), pwant)
+
+def check_declared_none(+mr: Maybe<&2, BIR.DescriptorArm>) -> Bool:
+  match mr:
+    case None{}:
+      True{}
+    case Some{+arm}:
+      False{}
+
 def main(modules: List<&2, Loader.LoadedModule>) -> ClaySmoke:
   +ctx = CLay.context(program())
   +pt = CLay.value_layout(ctx, ref("Pt", Nil{}))
@@ -871,4 +989,25 @@ def main(modules: List<&2, Loader.LoadedModule>) -> ClaySmoke:
   f40 = fail(args_first_is(aarr, "U32"))
   f41 = fail(check_args_pair(apair))
   f42 = fail(check_args_failure(aopen))
-  ClaySmoke{U32.add(f1, U32.add(f2, U32.add(f3, U32.add(f4, U32.add(f5, U32.add(f6, U32.add(f7, U32.add(f8, U32.add(f9, U32.add(f10, U32.add(f11, U32.add(f12, U32.add(f13, U32.add(f14, U32.add(f15, U32.add(f16, U32.add(f17, U32.add(f18, U32.add(f19, U32.add(f20, U32.add(f21, U32.add(f22, U32.add(f23, U32.add(f24, U32.add(f25, U32.add(f26, U32.add(f27, U32.add(f28, U32.add(f29, U32.add(f30, U32.add(f31, U32.add(f32, U32.add(f33, U32.add(f34, U32.add(f35, U32.add(f36, U32.add(f37, U32.add(f38, U32.add(f39, U32.add(f40, U32.add(f41, U32.add(f42, U32.add(fail(deep_chain_check()), U32.add(fail(check_io_native(CLay.head_native(ctx, ref("IO", [ref("Nat", Nil{})])))), U32.add(fail(check_io_under(CLay.head_native(ctx, ref("IO", Nil{})))), U32.add(fail(check_io_native(CLay.head_native(ctx, ref("MyIO", Nil{})))), fail(check_shadow_io(CLay.head_native(CLay.context(program_shadow()), ref("IO", [ref("Nat", Nil{})]))))))))))))))))))))))))))))))))))))))))))))))))))}
+  # The plan, per program. `rpt` is the plan's Pt and `ptn` the same key's node
+  # from a program with no constructor rows, so the two must agree; `ptn2` is
+  # that context asked again after three later contexts were built, so no plan
+  # entry leaks between them; `rbox` has no row at all and must still resolve.
+  +ctxr = CLay.context(program_rows())
+  +rpt = CLay.node_layout(ctxr, "Pt")
+  +rbox = CLay.node_layout(ctxr, "Box")
+  +rboxv = CLay.value_layout(ctxr, ref("Box", [ref("U32", Nil{})]))
+  +rw32 = CLay.node_layout(ctxr, "W32")
+  +rer = CLay.node_layout(ctxr, "Er")
+  +rstarve = CLay.node_layout_fuel(ctxr, "Pt", 1n)
+  +scoped = CLay.context(program_scope())
+  +spt = CLay.node_layout(scoped, "Pt")
+  +first = CLay.context(program_first())
+  +fsame = CLay.node_layout(first, "Same")
+  +dp = CLay.arm_declared(ctxr, "Pt")
+  +der = CLay.arm_declared(ctxr, "Er")
+  +dchan = CLay.arm_declared(ctxr, "Chan")
+  +dfirst = CLay.arm_declared(first, "Same")
+  +ptn2 = CLay.node_layout(ctx, "Pt")
+  +planf = U32.add(fail(check_pt_node(rpt)), U32.add(fail(check_box_declared_node(rbox)), U32.add(fail(check_box_value(rboxv)), U32.add(fail(check_w32_packed(rw32)), U32.add(fail(check_erased_node(rer)), U32.add(fail(check_node_failed(rstarve)), U32.add(fail(check_three_word_node(spt)), U32.add(fail(check_packed_one(fsame)), U32.add(fail(check_declared_count(dp, 2n)), U32.add(fail(check_declared_count(der, 3n)), U32.add(fail(check_declared_none(dchan)), U32.add(fail(check_declared_count(dfirst, 1n)), fail(check_pt_node(ptn2))))))))))))))
+  ClaySmoke{U32.add(planf, U32.add(f1, U32.add(f2, U32.add(f3, U32.add(f4, U32.add(f5, U32.add(f6, U32.add(f7, U32.add(f8, U32.add(f9, U32.add(f10, U32.add(f11, U32.add(f12, U32.add(f13, U32.add(f14, U32.add(f15, U32.add(f16, U32.add(f17, U32.add(f18, U32.add(f19, U32.add(f20, U32.add(f21, U32.add(f22, U32.add(f23, U32.add(f24, U32.add(f25, U32.add(f26, U32.add(f27, U32.add(f28, U32.add(f29, U32.add(f30, U32.add(f31, U32.add(f32, U32.add(f33, U32.add(f34, U32.add(f35, U32.add(f36, U32.add(f37, U32.add(f38, U32.add(f39, U32.add(f40, U32.add(f41, U32.add(f42, U32.add(fail(deep_chain_check()), U32.add(fail(check_io_native(CLay.head_native(ctx, ref("IO", [ref("Nat", Nil{})])))), U32.add(fail(check_io_under(CLay.head_native(ctx, ref("IO", Nil{})))), U32.add(fail(check_io_native(CLay.head_native(ctx, ref("MyIO", Nil{})))), fail(check_shadow_io(CLay.head_native(CLay.context(program_shadow()), ref("IO", [ref("Nat", Nil{})])))))))))))))))))))))))))))))))))))))))))))))))))))}

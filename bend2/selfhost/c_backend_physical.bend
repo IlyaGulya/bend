@@ -40,7 +40,7 @@ type CidSym is Data:
   CidSym{cid: U32, key: String}
 
 type World is Data:
-  World{ctx: CLay.Context, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>, cids: List<&2, CidSym>}
+  World{ctx: CLay.Context, constructors: List<&2, BIR.ConstructorLayout>, cids: List<&2, CidSym>}
 
 type Code is Data:
   CodeOk{lines: List<&2, String>}
@@ -108,8 +108,8 @@ type ShowToken is Data:
   ShowTokText{text: String}
   ShowTokPat{pattern: BIR.DescriptorPattern}
 
-def world(+pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pcids: List<&2, CidSym>) -> World:
-  World{pctx, pconstructors, pfamilies, pcids}
+def world(+pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pcids: List<&2, CidSym>) -> World:
+  World{pctx, pconstructors, pcids}
 
 def join_text(+pparts: List<&2, String>) -> String:
   String.join(pparts, "")
@@ -153,7 +153,7 @@ def ctor_find(+pid: U32, +prows: List<&2, BIR.ConstructorLayout>) -> Maybe<&2, B
 
 def ctor_of(+pid: U32, +pw: World) -> Maybe<&2, BIR.ConstructorLayout>:
   match pw:
-    case World{ctx, constructors, families, cids}: ctor_find(pid, constructors)
+    case World{ctx, constructors, cids}: ctor_find(pid, constructors)
 
 def cid_find(+pwant: String, +pcids: List<&2, CidSym>) -> Maybe<&2, U32>:
   match pcids:
@@ -166,7 +166,7 @@ def cid_find(+pwant: String, +pcids: List<&2, CidSym>) -> Maybe<&2, U32>:
 
 def cid_of(+pkey: String, +pw: World) -> Maybe<&2, U32>:
   match pw:
-    case World{ctx, constructors, families, cids}: cid_find(pkey, cids)
+    case World{ctx, constructors, cids}: cid_find(pkey, cids)
 
 def cid_text_of(+pfound: Maybe<&2, U32>) -> Maybe<&2, String>:
   match pfound:
@@ -551,7 +551,7 @@ def fill_result_jobs(+pfr: CLay.FillResult, +pterm: String, +pdst: Dst, +ptag: S
 
 def fill_data_jobs(+pw: World, +playout: CLay.Layout, +pterm: String, +pdst: Dst, +ptag: String) -> List<&2, Job>:
   match pw:
-    case World{ctx, constructors, families, cids}:
+    case World{ctx, constructors, cids}:
       fr = CLay.layout_fill(ctx, playout)
       fill_result_jobs(fr, pterm, pdst, ptag)
 
@@ -572,7 +572,7 @@ def unfill_result_jobs(+pur: CLay.UnfillResult, +psrc: Src, +pout: String, +ptag
 
 def unfill_data_jobs(+pw: World, +playout: CLay.Layout, +psrc: Src, +pout: String, +ptag: String) -> List<&2, Job>:
   match pw:
-    case World{ctx, constructors, families, cids}:
+    case World{ctx, constructors, cids}:
       ur = CLay.layout_unfill(ctx, playout)
       unfill_result_jobs(ur, psrc, pout, ptag)
 
@@ -738,7 +738,7 @@ def construct_cid(+pfound: Maybe<&2, U32>, +pw: World, +pkey: String, +poperands
     case None{}: PartFail{join_text(["the constructor `", pkey, "` has no canonical CID row"])}
     case Some{cid}:
       match pw:
-        case World{ctx, constructors, families, cids}:
+        case World{ctx, constructors, cids}:
           node = CLay.node_layout(ctx, pkey)
           construct_layout(node, pw, cid, pkey, poperands)
 
@@ -874,28 +874,19 @@ def arm_fields_of(+parms: List<&2, CLay.LayArm>, +pkey: String) -> Maybe<&2, Lis
           same = String.eq(key, pkey)
           Bool.pick(Maybe<&2, List<&2, CLay.Layout>>, same, Some{fields}, arm_fields_of(rest, pkey))
 
+# A constructor's declared fields, erased slots included and in declaration
+# order, from CLay's plan index: the first declaration of the key wins, exactly
+# as the family scan did, without walking every family and every arm per step.
+def arm_fields_declared(+pfound: Maybe<&2, BIR.DescriptorArm>) -> Maybe<&2, List<&2, BIR.DescriptorField>>:
+  match pfound:
+    case None{}: None{}
+    case Some{+arm}:
+      match arm:
+        case BIR.DescriptorArm{+key, +fields}: Some{fields}
+
 def arm_descriptor_fields(+pw: World, +pkey: String) -> Maybe<&2, List<&2, BIR.DescriptorField>>:
   match pw:
-    case World{ctx, constructors, families, cids}: family_arm_fields(families, pkey)
-
-def family_arm_fields(+pfamilies: List<&2, BIR.Family>, +pkey: String) -> Maybe<&2, List<&2, BIR.DescriptorField>>:
-  match pfamilies:
-    case Nil{}: None{}
-    case +family <> rest:
-      match family:
-        case BIR.Family{key, name, native, quantity_prefix, arity, arms}:
-          match descriptor_arm_fields(arms, pkey):
-            case None{}: family_arm_fields(rest, pkey)
-            case Some{fields}: Some{fields}
-
-def descriptor_arm_fields(+parms: List<&2, BIR.DescriptorArm>, +pkey: String) -> Maybe<&2, List<&2, BIR.DescriptorField>>:
-  match parms:
-    case Nil{}: None{}
-    case +arm <> rest:
-      match arm:
-        case BIR.DescriptorArm{key, fields}:
-          same = String.eq(key, pkey)
-          Bool.pick(Maybe<&2, List<&2, BIR.DescriptorField>>, same, Some{fields}, descriptor_arm_fields(rest, pkey))
+    case World{ctx, constructors, cids}: arm_fields_declared(CLay.arm_declared(ctx, pkey))
 
 def step_key(+pw: World, +pconstructor: U32) -> Maybe<&2, String>:
   match ctor_of(pconstructor, pw):
@@ -906,7 +897,7 @@ def step_key(+pw: World, +pconstructor: U32) -> Maybe<&2, String>:
 
 def cell_lgs(+pw: World, +pelement: BIR.Descriptor) -> Maybe<&2, CLay.Cell>:
   match pw:
-    case World{ctx, constructors, families, cids}:
+    case World{ctx, constructors, cids}:
       match CLay.array_cell(ctx, pelement):
         case CLay.CellFailed{message}: None{}
         case CLay.CellFound{cell}: Some{cell}
@@ -1061,7 +1052,7 @@ def resolve_buf_field(+pw: World, +pkey: String, +pdeclared: U32, +ploc: String,
 
 def resolve_node_slot(+pw: World, +pkey: String, +pdeclared: U32, +pstart: Nat, +pbase: String, +puniq: String, +pstat: String, +prest: List<&2, PathStep>) -> PathResult:
   match pw:
-    case World{ctx, constructors, families, cids}:
+    case World{ctx, constructors, cids}:
       match CLay.node_slot(ctx, pkey, pdeclared):
         case CLay.SlotErased{}: PathFail{join_text(["the projection of `", pkey, "` names an erased field"])}
         case CLay.SlotFailed{message}: PathFail{message}
@@ -1138,7 +1129,7 @@ def resolve_path(+pw: World, +psteps: List<&2, PathStep>) -> PathResult:
             case None{}: PathFail{join_text(["BIR projects constructor ", U32.show(constructor), " with no layout row"])}
             case Some{key}:
               match pw:
-                case World{ctx, constructors, families, cids}:
+                case World{ctx, constructors, cids}:
                   match CLay.node_layout(ctx, key):
                     case CLay.NodeFailed{message}: PathFail{message}
                     case CLay.NodeFound{found}:
@@ -1727,7 +1718,7 @@ def project_slot(+pslot: CLay.SlotResult, +pw: World, +pnode: CLay.Node, +pkey: 
       match found:
         case CLay.NodeSlot{ordinal, offset, layout}:
           match pw:
-            case World{ctx, constructors, families, cids}:
+            case World{ctx, constructors, cids}:
               plan = CLay.slot_unfill(ctx, pkey, pfield)
               project_plan(plan, pw, pnode, layout, offset, pvalue)
 
@@ -1736,13 +1727,13 @@ def project_layout(+pnode: CLay.NodeResult, +pw: World, +pkey: String, +pfield: 
     case CLay.NodeFailed{message}: PartFail{message}
     case CLay.NodeFound{node}:
       match pw:
-        case World{ctx, constructors, families, cids}:
+        case World{ctx, constructors, cids}:
           slot = CLay.node_slot(ctx, pkey, pfield)
           project_slot(slot, pw, node, pkey, pfield, pvalue)
 
 def project_node(+pw: World, +pkey: String, +pfield: U32, +pvalue: String) -> Part:
   match pw:
-    case World{ctx, constructors, families, cids}:
+    case World{ctx, constructors, cids}:
       node = CLay.node_layout(ctx, pkey)
       project_layout(node, pw, pkey, pfield, pvalue)
 
@@ -1835,7 +1826,7 @@ def array_cell(+pw: World, +ptypes: List<&2, BIR.Descriptor>, +pprimitive: BIR.P
     case Nil{}: CellFail{join_text(["the array primitive `", array_label(pprimitive), "` carries no instantiated element Descriptor; lowering must supply PrimitiveCall.types"])}
     case +element <> Nil{}:
       match pw:
-        case World{ctx, constructors, families, cids}: array_cell_result(CLay.array_cell(ctx, element))
+        case World{ctx, constructors, cids}: array_cell_result(CLay.array_cell(ctx, element))
     case _: CellFail{join_text(["the array primitive `", array_label(pprimitive), "` must carry exactly one element Descriptor"])}
 
 def operand_at(+pargs: List<&2, Operand>, +pindex: Nat) -> Maybe<&2, Operand>:
@@ -2295,7 +2286,7 @@ def show_native_kind(+pmarker: String) -> ShowKind:
 # refuses by name even though it is a declared type, because its values are
 # requests rather than data.
 def show_kind_family(+pkey: String, +pctx: CLay.Context) -> ShowKind:
-  match CLay.family_lookup(pkey, CLay.context_families(pctx)):
+  match CLay.family_lookup(pctx, pkey):
     case None{}: ShowKindFailed{"main's type is a type former and cannot be printed"}
     case Some{family}:
       match family:

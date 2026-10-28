@@ -64,7 +64,7 @@ def program() -> BIR.Program:
 
 def world() -> Phys.World:
   ctx = CLay.context(program())
-  Phys.world(ctx, constructors(), families(), [Phys.CidSym{16, "Pair"}, Phys.CidSym{34, "Pt"}, Phys.CidSym{35, "Fl"}, Phys.CidSym{18, "Seg"}, Phys.CidSym{17, "BoxP"}, Phys.CidSym{15, "Unit"}, Phys.CidSym{6, "Arr"}, Phys.CidSym{14, "True"}, Phys.CidSym{13, "False"}, Phys.CidSym{22, "BoxM"}, Phys.CidSym{20, "Circle"}, Phys.CidSym{21, "Rect"}, Phys.CidSym{19, "Wide"}, Phys.CidSym{0, "Tuple"}, Phys.CidSym{23, "Wrap"}, Phys.CidSym{24, "E"}, Phys.CidSym{25, "BoxArr"}, Phys.CidSym{26, "ChA"}, Phys.CidSym{27, "ChB"}, Phys.CidSym{30, "WrapE"}, Phys.CidSym{28, "CA"}, Phys.CidSym{29, "CB"}, Phys.CidSym{31, "FlagsS"}, Phys.CidSym{32, "Chr"}])
+  Phys.world(ctx, constructors(), [Phys.CidSym{16, "Pair"}, Phys.CidSym{34, "Pt"}, Phys.CidSym{35, "Fl"}, Phys.CidSym{18, "Seg"}, Phys.CidSym{17, "BoxP"}, Phys.CidSym{15, "Unit"}, Phys.CidSym{6, "Arr"}, Phys.CidSym{14, "True"}, Phys.CidSym{13, "False"}, Phys.CidSym{22, "BoxM"}, Phys.CidSym{20, "Circle"}, Phys.CidSym{21, "Rect"}, Phys.CidSym{19, "Wide"}, Phys.CidSym{0, "Tuple"}, Phys.CidSym{23, "Wrap"}, Phys.CidSym{24, "E"}, Phys.CidSym{25, "BoxArr"}, Phys.CidSym{26, "ChA"}, Phys.CidSym{27, "ChB"}, Phys.CidSym{30, "WrapE"}, Phys.CidSym{28, "CA"}, Phys.CidSym{29, "CB"}, Phys.CidSym{31, "FlagsS"}, Phys.CidSym{32, "Chr"}])
 
 def show_part(+part: Phys.Part) -> String:
   match part:

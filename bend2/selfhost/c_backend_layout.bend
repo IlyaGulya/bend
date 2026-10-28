@@ -48,10 +48,28 @@
 # which the authoritative rule boxes (a dependent field, a telescoped value).
 #
 # Layouts are interned by construction, not by a table: a Lay is a value, and
-# two lays of one type are equal word for word. The renderer should memoize
-# node_layout by constructor key, which is what makes a whole program's
-# layout linear in its type graph; value_layout is only needed where a
-# declared type, an array element, or a show descriptor is laid out.
+# two lays of one type are equal word for word. Constructor nodes and declared
+# arms are the exception, and `Context.plan` is their one table: it is built
+# once per program, holds the canonical node (words, slot ordinals, slot
+# offsets) of every declared constructor row and the declared arm of every
+# constructor key, and every consumer reads it instead of recomputing. That is
+# what makes a whole program's layout linear in its type graph. The plan is a
+# value of the compilation context, never a global: no layout fact outlives the
+# program it was computed for. value_layout is still the only source of an
+# instantiated value layout, and it is only needed where a declared type, an
+# array element, or a show descriptor is laid out.
+#
+# A plan entry is not an instantiated layout. The canonical node of a generic
+# constructor is computed at the family's own arguments, so its generic fields
+# are one box each (`Box` lays out as `[Box]`, `Pair<a, b>` as `[Box, Box]`);
+# the value layout of `Pair<U32, Nat>` is `[w32, w64]`. Production and
+# conversion pair one against the other and never replace one with the other.
+#
+# A plan entry is also a fact of one budget. Node layout reads the normalizer's
+# fuel, so `node_at` serves the plan only to a caller at the plan's own budget
+# (`layout_fuel`); a caller with any other budget, including a starved one, gets
+# the uncached rule at its own fuel, and a failure computed at one budget is
+# never handed to another.
 #
 # Shared normalizer. Type expressions are normalized by
 # bend2/selfhost/descriptor_nf.bend (owner FIRContract; imports Base and
@@ -71,10 +89,13 @@
 
 #
 # After the swap Context carries no evaluator state: it is the program's
-# families and type functions, which descriptor_nf.nf_context takes.
+# families and type functions, which descriptor_nf.nf_context takes. Family and
+# type-function lookup reads that same nf context's indices — the one index
+# descriptor_nf already builds — rather than scanning the declared lists again.
 
 import Base
 import ./descriptor_nf.bend as NF
+import ./index_lookup.bend as IndexLookup
 import ./backend_ir.bend as BIR
 
 # ---------------------------------------------------------------------------
@@ -220,7 +241,26 @@ type CellResult is Data:
 # ---------------------------------------------------------------------------
 
 type Context is Data:
-  Context{context: NF.NfContext, families: List<&2, BIR.Family>, type_functions: List<&2, BIR.TypeFunction>}
+  Context{context: NF.NfContext, families: List<&2, BIR.Family>, plan: Plan}
+
+# The canonical plan of one program, built once by `context`:
+#
+#   * `nodes` is the canonical node of every declared constructor row, keyed by
+#     the constructor's canonical key. A hit answers the node words, the slot
+#     ordinals and the slot offsets that construction, projection, conversion
+#     and the Cid metadata would otherwise each recompute from the type graph.
+#     A key with no row (an arm the program declares no constructor for) is
+#     absent; a lookup miss is answered from the arm index at the same budget,
+#     so a miss is the same node, or the same failure, the uncached rule gives.
+#   * `arms` is the declared arm of every constructor key, first declaration
+#     wins, so a projection reads a constructor's declared fields (erased slots
+#     included, in declaration order) instead of scanning every family.
+#
+# Nothing else is cached: a value layout, a Fill/Unfill program and a show
+# descriptor are still built where they are used, because only node layout and
+# the arm's declared fields are facts of the constructor key alone.
+type Plan is Data:
+  Plan{nodes: Map<&2, NodeResult>, arms: Map<&2, BIR.DescriptorArm>}
 
 type Plans is Data:
   PlansOk{plans: List<&2, LayArm>}
@@ -250,48 +290,59 @@ type FormArmResult is Data:
 def context(+program: BIR.Program) -> Context:
   match program:
     case BIR.Program{+codes, +declarations, +constructors, +families, +type_functions, +ending}:
-      Context{NF.nf_context(families, type_functions), families, type_functions}
+      +index = NF.nf_context(families, type_functions)
+      +arms = plan_arm_index(families)
+      # The node entries are computed through a context whose plan already holds
+      # the arm index and no node: `plan_node_index` reads the arm index and the
+      # normalizer only, so the plan it returns is complete and no entry is ever
+      # computed against a half-built table.
+      +bare = {Context{index, families, Plan{Map.new(&2, NodeResult), arms}} : Context}
+      Context{index, families, Plan{plan_node_index(bare, constructors), arms}}
 
 def context_nf(+ctx: Context) -> NF.NfContext:
   match ctx:
-    case Context{+index, +families, +type_functions}:
+    case Context{+index, +families, +plan}:
       index
 
 def context_families(+ctx: Context) -> List<&2, BIR.Family>:
   match ctx:
-    case Context{+index, +families, +type_functions}:
+    case Context{+index, +families, +plan}:
       families
 
-def context_type_functions(+ctx: Context) -> List<&2, BIR.TypeFunction>:
+def context_plan(+ctx: Context) -> Plan:
   match ctx:
-    case Context{+index, +families, +type_functions}:
+    case Context{+index, +families, +plan}:
+      plan
+
+def context_nodes(+ctx: Context) -> Map<&2, NodeResult>:
+  match context_plan(ctx):
+    case Plan{+nodes, +arms}:
+      nodes
+
+def context_arms(+ctx: Context) -> Map<&2, BIR.DescriptorArm>:
+  match context_plan(ctx):
+    case Plan{+nodes, +arms}:
+      arms
+
+def nf_families(+context: NF.NfContext) -> Map<&2, BIR.Family>:
+  match context:
+    case NF.NfContext{+families, +type_functions}:
+      families
+
+def nf_functions(+context: NF.NfContext) -> Map<&2, BIR.TypeFunction>:
+  match context:
+    case NF.NfContext{+families, +type_functions}:
       type_functions
 
-def family_lookup(+key: String, +families: List<&2, BIR.Family>) -> Maybe<&2, BIR.Family>:
-  match families:
-    case Nil{}:
-      None{}
-    case +family <> rest:
-      match family:
-        case BIR.Family{+known, +name, +native, +quantity_prefix, +arity, +arms}:
-          match String.eq(key, known):
-            case True{}:
-              Some{family}
-            case False{}:
-              family_lookup(key, rest)
+# Family and type-function lookup read the normalizer's own indices: the one
+# canonical index of a program's families and type functions, built by
+# descriptor_nf.nf_context, which is also what every reduction consults. Its
+# first declaration wins for a duplicate key, exactly like the list rule here.
+def family_lookup(+ctx: Context, +key: String) -> Maybe<&2, BIR.Family>:
+  NF.family_of(key, nf_families(context_nf(ctx)))
 
-def function_lookup(+key: String, +functions: List<&2, BIR.TypeFunction>) -> Maybe<&2, BIR.TypeFunction>:
-  match functions:
-    case Nil{}:
-      None{}
-    case +function <> rest:
-      match function:
-        case BIR.TypeFunction{+known, +native, +quantity_prefix, +arity, +body}:
-          match String.eq(key, known):
-            case True{}:
-              Some{function}
-            case False{}:
-              function_lookup(key, rest)
+def function_lookup(+ctx: Context, +key: String) -> Maybe<&2, BIR.TypeFunction>:
+  NF.function_of(key, nf_functions(context_nf(ctx)))
 
 # ---------------------------------------------------------------------------
 # Name lookup: exact canonical keys only
@@ -322,6 +373,32 @@ def arm_in(+key: String, +arms: List<&2, BIR.DescriptorArm>) -> Maybe<&2, BIR.De
               Some{arm}
             case False{}:
               arm_in(key, rest)
+
+# The declared arm of every constructor key, first declaration wins. `arm_of`
+# scans the families from the head and stops at the first matching arm; the
+# index is folded from the tail and every nearer declaration is written last,
+# so both rules answer the same arm for a key declared more than once.
+def plan_arm_index(+families: List<&2, BIR.Family>) -> Map<&2, BIR.DescriptorArm>:
+  match families:
+    case Nil{}:
+      Map.new(&2, BIR.DescriptorArm)
+    case +family <> rest:
+      match family:
+        case BIR.Family{+key, +name, +native, +quantity_prefix, +arity, +arms}:
+          plan_family_arms(arms, plan_arm_index(rest))
+
+def plan_family_arms(+arms: List<&2, BIR.DescriptorArm>, +acc: Map<&2, BIR.DescriptorArm>) -> Map<&2, BIR.DescriptorArm>:
+  match arms:
+    case Nil{}:
+      acc
+    case +arm <> rest:
+      match arm:
+        case BIR.DescriptorArm{+key, +fields}:
+          Map.set(&2, BIR.DescriptorArm, plan_family_arms(rest, acc), key, {BIR.DescriptorArm{key, fields} : BIR.DescriptorArm})
+
+# The plan's declared arm for one constructor key.
+def arm_declared(+ctx: Context, +key: String) -> Maybe<&2, BIR.DescriptorArm>:
+  IndexLookup.find(BIR.DescriptorArm, context_arms(ctx), key)
 
 def live_field(+quantity: BIR.Quantity) -> Bool:
   match quantity:
@@ -364,7 +441,7 @@ def layout_of_val(+ctx: Context, +val: NF.NfVal, +fuel: Nat) -> LayoutResult:
 def layout_val(+ctx: Context, +val: NF.NfVal, +fuel: Nat) -> LayoutResult:
   match val:
     case NF.NfType{+key, +args}:
-      match family_lookup(key, context_families(ctx)):
+      match family_lookup(ctx, key):
         case Some{+family}:
           layout_family(ctx, family, args, fuel)
         case None{}:
@@ -389,7 +466,7 @@ def layout_val(+ctx: Context, +val: NF.NfVal, +fuel: Nat) -> LayoutResult:
 # a lowering inconsistency is visible in a review, while both lay out as one
 # box.
 def layout_unresolved(+ctx: Context, +key: String) -> LayoutResult:
-  match function_lookup(key, context_type_functions(ctx)):
+  match function_lookup(ctx, key):
     case Some{+function}:
       LayoutFound{LayoutBox{BoxOpen{}}}
     case None{}:
@@ -566,7 +643,7 @@ def reaches_val(+ctx: Context, +val: NF.NfVal, +target: String, +seen: List<&2, 
             case True{}:
               False{}
             case False{}:
-              match family_lookup(key, context_families(ctx)):
+              match family_lookup(ctx, key):
                 case None{}:
                   args_reach(ctx, args, target, seen, fuel)
                 case Some{+family}:
@@ -767,21 +844,81 @@ def ceil_log2_go(+power: Nat, +shift: Nat, +count: Nat) -> Nat:
 # Constructor nodes
 # ---------------------------------------------------------------------------
 
+# The canonical node of one constructor, from the plan at the plan's own budget.
 def node_layout(+ctx: Context, +key: String) -> NodeResult:
-  node_layout_fuel(ctx, key, layout_fuel())
+  node_at(ctx, key, layout_fuel())
 
+# The canonical node at an explicit budget. `form_arm` converts a value layout's
+# fields against the canonical node of each arm at the fuel its own conversion
+# was planned with, so the budget is part of the question and never dropped.
 def node_layout_fuel(+ctx: Context, +key: String, +fuel: Nat) -> NodeResult:
+  node_at(ctx, key, fuel)
+
+# A plan entry is a node computed at `layout_fuel` from the constructor's
+# declared fields, so it answers a caller at exactly that budget and nothing
+# else: a starved caller still fails where it failed before, and no failure
+# computed under one budget is ever reported under another.
+def node_at(+ctx: Context, +key: String, +fuel: Nat) -> NodeResult:
+  match Nat.is_eq(fuel, layout_fuel()):
+    case True{}:
+      plan_node(ctx, key)
+    case False{}:
+      node_compute(ctx, key, fuel)
+
+# A row key answers from the plan; a key the plan holds no row for (an arm the
+# program declares no constructor row for) is answered from the declared-arm
+# index at the plan's budget, so it is still the node, or the failure, the
+# uncached rule gives.
+def plan_node(+ctx: Context, +key: String) -> NodeResult:
+  match IndexLookup.find(NodeResult, context_nodes(ctx), key):
+    case Some{+node}:
+      node
+    case None{}:
+      node_declared(ctx, key)
+
+# The uncached rule: the first declared arm of the key, its live fields laid out
+# in declaration order, erased fields advancing the ordinal but taking no word.
+def node_compute(+ctx: Context, +key: String, +fuel: Nat) -> NodeResult:
   match arm_of(key, context_families(ctx)):
     case None{}:
-      NodeFailed{String.append("the constructor `", String.append(key, "` is in no declared family arm"))}
+      NodeFailed{unresolved_message(key)}
     case Some{+arm}:
-      match arm:
-        case BIR.DescriptorArm{+ctor, +fields}:
-          match node_slots(ctx, fields, 0, 0n, fuel, Nil{}):
-            case SlotsFail{+message}:
-              NodeFailed{message}
-            case SlotsOk{+slots}:
-              node_finish(slots)
+      node_arm(ctx, arm, fuel)
+
+def unresolved_message(+key: String) -> String:
+  String.append("the constructor `", String.append(key, "` is in no declared family arm"))
+
+def node_arm(+ctx: Context, +arm: BIR.DescriptorArm, +fuel: Nat) -> NodeResult:
+  match arm:
+    case BIR.DescriptorArm{+ctor, +fields}:
+      match node_slots(ctx, fields, 0, 0n, fuel, Nil{}):
+        case SlotsFail{+message}:
+          NodeFailed{message}
+        case SlotsOk{+slots}:
+          node_finish(slots)
+
+# Every declared constructor row's canonical node, computed once, keyed by the
+# row's canonical key. Two rows of one key can only agree, because the node
+# depends on the key's declared arm alone.
+def plan_node_index(+ctx: Context, +rows: List<&2, BIR.ConstructorLayout>) -> Map<&2, NodeResult>:
+  match rows:
+    case Nil{}:
+      Map.new(&2, NodeResult)
+    case +row <> rest:
+      match row:
+        case BIR.ConstructorLayout{+id, +key, +native, +fields}:
+          Map.set(&2, NodeResult, plan_node_index(ctx, rest), key, node_declared(ctx, key))
+
+# The plan-budget node of one constructor key, read from the declared-arm index
+# instead of the family list. It builds the plan's entries and answers a key the
+# plan holds no row for; the arm is the same one the list scan stops at, so the
+# node is the same node.
+def node_declared(+ctx: Context, +key: String) -> NodeResult:
+  match arm_declared(ctx, key):
+    case Some{+arm}:
+      node_arm(ctx, arm, layout_fuel())
+    case None{}:
+      NodeFailed{unresolved_message(key)}
 
 def node_slots(+ctx: Context, +fields: List<&2, BIR.DescriptorField>, +ordinal: U32, +offset: Nat, +fuel: Nat, +acc: List<&2, NodeSlot>) -> Slots:
   match fields:
@@ -1047,7 +1184,7 @@ def head_other(+source: BIR.Descriptor) -> HeadResult:
 def head_value(+ctx: Context, +val: NF.NfVal) -> HeadResult:
   match val:
     case NF.NfType{+key, +args}:
-      match family_lookup(key, context_families(ctx)):
+      match family_lookup(ctx, key):
         case Some{+family}:
           match family:
             case BIR.Family{+known, +name, +native, +quantity_prefix, +arity, +arms}:
@@ -1057,7 +1194,7 @@ def head_value(+ctx: Context, +val: NF.NfVal) -> HeadResult:
                 case False{}:
                   HeadBoxed{BoxOpen{}}
         case None{}:
-          match function_lookup(key, context_type_functions(ctx)):
+          match function_lookup(ctx, key):
             case Some{+function}:
               match function:
                 case BIR.TypeFunction{+known, +native, +quantity_prefix, +arity, +body}:
@@ -1105,9 +1242,9 @@ def arm_fields(+ctx: Context, +ctor: String, +ty: BIR.Descriptor) -> FieldsResul
 def arm_fields_value(+ctx: Context, +ctor: String, +val: NF.NfVal) -> FieldsResult:
   match val:
     case NF.NfType{+key, +args}:
-      match arm_of(ctor, context_families(ctx)):
+      match arm_declared(ctx, ctor):
         case None{}:
-          FieldsFailed{String.append("the constructor `", String.append(ctor, "` is in no declared family arm"))}
+          FieldsFailed{unresolved_message(ctor)}
         case Some{+arm}:
           match arm:
             case BIR.DescriptorArm{+known, +fields}:
