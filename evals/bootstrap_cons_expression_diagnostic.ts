@@ -157,7 +157,7 @@ export async function collectConsExpressionDiagnostics(selected?: string[]) {
       if (!oracle.accepted) row.stage0Failure = { failure: oracle.failure, error: String(oracle.error) };
       try {
         // Both producer and symbol combining are the actual current Bend code.
-        const raw = apply("lexer.tokens", [stringTerm(fixture.source)]);
+        const raw = apply("lexer:tokens", [stringTerm(fixture.source)]);
         const combined = apply("combine_symbols", [raw, B.Ctr("SymbolCombineScan", [])]);
         row.lexerTokens = observe.tokens(raw); row.combinedTokens = observe.tokens(combined);
         const result = node(observe.decode(apply("parse_module_tokens", [combined, stringTerm(file)])));
@@ -189,7 +189,7 @@ export async function collectConsExpressionDiagnostics(selected?: string[]) {
         if (fixture.expression !== undefined) {
           const scope = listTerm((fixture.scope ?? []).map((name, index) => B.Ctr("Scope", [stringTerm(name), natTerm(index)])));
           const depth = natTerm(fixture.scope?.length ?? 0), fileTerm = stringTerm(file);
-          const rawExpr = apply("lexer.tokens", [stringTerm(fixture.expression)]);
+          const rawExpr = apply("lexer:tokens", [stringTerm(fixture.expression)]);
           const input = apply("combine_symbols", [rawExpr, B.Ctr("SymbolCombineScan", [])]);
           const atom = apply("parse_atom", [fileTerm, input, scope, depth]);
           const atomResult = observe.ctor(atom), atomPair = observe.ctor(atomResult.x[0]);

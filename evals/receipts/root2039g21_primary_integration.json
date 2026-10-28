@@ -1,0 +1,625 @@
+{
+  "schemaVersion": 1,
+  "status": "G21_PRIMARY_INTEGRATION_SMOKE_PASS",
+  "sourceCheckpoint": "03c4f278",
+  "acceptanceCheckpoint": "d61c7281",
+  "primaryPreviousHead": "1f844231",
+  "scope": "Integrate the byte-identical accepted compiler source closure into the primary checkout, retain represented primary-only lowering/linker/gate work, preserve pre-existing uncommitted snapshots, exercise actual merged C/JS and compile-diagnostic lanes. This is not a new timed full bootstrap.",
+  "primaryRoot": "/Users/ilyagulya/Projects/My/bend",
+  "sourceClosure": {
+    "count": 91,
+    "allByteIdenticalToAcceptedInputs": true,
+    "files": [
+      {
+        "path": "evals/native_compiler_experiment.ts",
+        "sha256": "9108d727d3a46add61f672be9a96095c2cd7a65dbe6a3e7108e2964a90ef7d46"
+      },
+      {
+        "path": "evals/native_compiler_llvm.ts",
+        "sha256": "d8f2c420662e3ff93795ebe866cbfe7a459b131b74c3243ba2f2ba9d625e8af3"
+      },
+      {
+        "path": "bend2/bend.ts",
+        "sha256": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e"
+      },
+      {
+        "path": "bend2/comp.ts",
+        "sha256": "f95eed20344ca291bf74a1e4ffe574f788ea22a86adc66d5bfe0f681523245ef"
+      },
+      {
+        "path": "evals/native_compiler_driver.bend",
+        "sha256": "768203e900f53cdf8d90b50966631ca3a3964dd50003658b07a28b39395f3ec3"
+      },
+      {
+        "path": "evals/native_compiler_host.c",
+        "sha256": "7d75edf7c7b8ac045df772b242e885801b9ab3fae5fc346957489a35847d66fe"
+      },
+      {
+        "path": "bend2/base.bend",
+        "sha256": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce"
+      },
+      {
+        "path": "evals/heavy_gate.ts",
+        "sha256": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015"
+      },
+      {
+        "path": "evals/heavy_gate_native.c",
+        "sha256": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b"
+      },
+      {
+        "path": "checkpoints/root-remote2039g21.native.corpus.json",
+        "sha256": "3bb8e7c2e6e5087b29dd8123036f4dad6c8a5e12a0bdbd8add376305d9a1ab43"
+      },
+      {
+        "path": "checkpoints/.bootstrap_compiler_root_remote2039g21.bend",
+        "sha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed"
+      },
+      {
+        "path": "bend2/selfhost/ast.bend",
+        "sha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83"
+      },
+      {
+        "path": "bend2/selfhost/lexer.bend",
+        "sha256": "a81265d4ab248c5ea74bf52987e1163773866a01b264ff1a98895d91139d6f53"
+      },
+      {
+        "path": "bend2/selfhost/core.bend",
+        "sha256": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511"
+      },
+      {
+        "path": "bend2/selfhost/loaded_module.bend",
+        "sha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e"
+      },
+      {
+        "path": "bend2/selfhost/backend_ir.bend",
+        "sha256": "162a554cec1c9e1b5edab69b5cfae730c70886548f4f51603a7537845ab5ec48"
+      },
+      {
+        "path": "bend2/selfhost/checked_frontend.bend",
+        "sha256": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e"
+      },
+      {
+        "path": "bend2/selfhost/checker_arena.bend",
+        "sha256": "2a26c3d8ce66412591030fa2fd6df9f9e53c0fececd9d9ae702def2f475f1752"
+      },
+      {
+        "path": "bend2/selfhost/scope_lookup.bend",
+        "sha256": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf"
+      },
+      {
+        "path": "bend2/selfhost/checker_ir.bend",
+        "sha256": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b"
+      },
+      {
+        "path": "bend2/selfhost/index_lookup.bend",
+        "sha256": "a178b0d5b135490634e1c85efaa0a8d1e0c34c94610615ecf822da6a2932f31d"
+      },
+      {
+        "path": "checkpoints/template_steps_v1.bend",
+        "sha256": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4"
+      },
+      {
+        "path": "bend2/selfhost/sha256.bend",
+        "sha256": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6"
+      },
+      {
+        "path": "bend2/selfhost/path.bend",
+        "sha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8"
+      },
+      {
+        "path": "checkpoints/checker_core_steps_v1.bend",
+        "sha256": "93e8fd5ce7aafe40084d1b0023eff79de18cb6f00b625cab43b002535cfe288f"
+      },
+      {
+        "path": "checkpoints/emitter_steps_v1.bend",
+        "sha256": "e73baadfada36d919619746607593e928e82a338073c5b73e200d66d2d69a05a"
+      },
+      {
+        "path": "bend2/selfhost/c_backend_sharing.bend",
+        "sha256": "78992d00aad3a458dd6b9ea424edf0de61c95b54487f92cd53283e705488c35f"
+      },
+      {
+        "path": "bend2/effs/print.c",
+        "sha256": "58657b7351daee89121e1df2856f102743c9db7640257e50c6009a0f1080b00e"
+      },
+      {
+        "path": "bend2/effs/print.js",
+        "sha256": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9"
+      },
+      {
+        "path": "bend2/effs/write.c",
+        "sha256": "8807a5f655db452c1d846354560c26fe1e94289e5dc0be231d0b71ecc876d02f"
+      },
+      {
+        "path": "bend2/effs/write.js",
+        "sha256": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb"
+      },
+      {
+        "path": "bend2/effs/print_err.c",
+        "sha256": "f84aa11c8d0d6af6fa2fee28411f95714d6744ad97156990e43e55c292c9c6fb"
+      },
+      {
+        "path": "bend2/effs/print_err.js",
+        "sha256": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e"
+      },
+      {
+        "path": "bend2/effs/get_env.c",
+        "sha256": "b4903e94681340f9e02187457fabe9461c1b4e43646b7e1573f5d21e954e3a34"
+      },
+      {
+        "path": "bend2/effs/get_env.js",
+        "sha256": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4"
+      },
+      {
+        "path": "bend2/effs/args.c",
+        "sha256": "7717332d0b8c8ba28d6dbe60b62a23dce99ea6828ada7d1f9b664f4dc388e84e"
+      },
+      {
+        "path": "bend2/effs/args.js",
+        "sha256": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82"
+      },
+      {
+        "path": "bend2/effs/process_run.c",
+        "sha256": "554cfbdf9a6de163f00fc1b23dc8f3df10821cfce336caa1cb5db439b8a55e1f"
+      },
+      {
+        "path": "bend2/effs/process_run.js",
+        "sha256": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729"
+      },
+      {
+        "path": "bend2/effs/random_u32.c",
+        "sha256": "75429b2b42e00562177fe33a5e18d2730478847f58c4038b048e78131e1b8c0a"
+      },
+      {
+        "path": "bend2/effs/random_u32.js",
+        "sha256": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2"
+      },
+      {
+        "path": "bend2/effs/spawn.c",
+        "sha256": "05e11ae3f1461d9c72440af3b1786c076b418d2faff45639ac25ba464ee73cd5"
+      },
+      {
+        "path": "bend2/effs/spawn.js",
+        "sha256": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b"
+      },
+      {
+        "path": "bend2/effs/sleep.c",
+        "sha256": "1dde3701026517d5272d2ff5344d3a8643bec264dbad9f266fdae1c4aaf7601c"
+      },
+      {
+        "path": "bend2/effs/sleep.js",
+        "sha256": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934"
+      },
+      {
+        "path": "bend2/effs/now.c",
+        "sha256": "fc4c1d87a4fb2ace7d5b6c57b434cc3d953a15bdf213020912df6c17aa2352d6"
+      },
+      {
+        "path": "bend2/effs/now.js",
+        "sha256": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9"
+      },
+      {
+        "path": "bend2/effs/thread_count.c",
+        "sha256": "d4889ed7757dccce03729c9568b88188128f2c1576166a3dc184a8707ed44568"
+      },
+      {
+        "path": "bend2/effs/thread_count.js",
+        "sha256": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9"
+      },
+      {
+        "path": "bend2/effs/chan.c",
+        "sha256": "af09b2749741bcc54f56c8f81803073818a165d4cad4c817708e359d677b2a52"
+      },
+      {
+        "path": "bend2/effs/chan.js",
+        "sha256": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f"
+      },
+      {
+        "path": "bend2/effs/file_open.c",
+        "sha256": "b987bcb0f9a89d769714ddf8cbecca211c4392e4098da19b411d09f5c088d360"
+      },
+      {
+        "path": "bend2/effs/file_open.js",
+        "sha256": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694"
+      },
+      {
+        "path": "bend2/effs/file_read.c",
+        "sha256": "ab577225fa98a034c09d7eb6326b74808756dc6203b0e2599a459876382f090d"
+      },
+      {
+        "path": "bend2/effs/file_read.js",
+        "sha256": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7"
+      },
+      {
+        "path": "bend2/effs/file_size.c",
+        "sha256": "ed0d74fd6b9f14ea471bfe5dd80ecbb2c5abb6a8406519fb2c7e1a1acf3dd5af"
+      },
+      {
+        "path": "bend2/effs/file_size.js",
+        "sha256": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b"
+      },
+      {
+        "path": "bend2/effs/file_write.c",
+        "sha256": "da810ad9aa76ad1431622292529fa3edebabc4b6a7ee20ae833097b71bb595e5"
+      },
+      {
+        "path": "bend2/effs/file_write.js",
+        "sha256": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0"
+      },
+      {
+        "path": "bend2/effs/file_close.c",
+        "sha256": "033da9beb0b484fbc8784044193bf69004f858f6ad86e0c31b4beb89df1349ca"
+      },
+      {
+        "path": "bend2/effs/file_close.js",
+        "sha256": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe"
+      },
+      {
+        "path": "bend2/effs/tcp_listen.c",
+        "sha256": "efc7528de96abd9f62f299833c1ac7b0e86528292c746b114d2684b5bac52899"
+      },
+      {
+        "path": "bend2/effs/tcp_listen.js",
+        "sha256": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399"
+      },
+      {
+        "path": "bend2/effs/tcp_accept.c",
+        "sha256": "bf7ca1685ed388ce97827ea8379881fbdf5359c7c663ad03eeb8da34bd8584ef"
+      },
+      {
+        "path": "bend2/effs/tcp_accept.js",
+        "sha256": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d"
+      },
+      {
+        "path": "bend2/effs/tcp_connect.c",
+        "sha256": "8d17c097138709d71e9d9e1fbc4255007c5e80c93ee384c4a3510b6ac8d10da3"
+      },
+      {
+        "path": "bend2/effs/tcp_connect.js",
+        "sha256": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb"
+      },
+      {
+        "path": "bend2/effs/tcp_send.c",
+        "sha256": "993cc8ee5b39fd54a4aeace102602ecf2841ce1f402fe6b2407ebaca837383f9"
+      },
+      {
+        "path": "bend2/effs/tcp_send.js",
+        "sha256": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6"
+      },
+      {
+        "path": "bend2/effs/tcp_recv.c",
+        "sha256": "249c8789cd2f541ad00068882de16a00870c2f81a8168b0ac7a59db1e3cb0c6f"
+      },
+      {
+        "path": "bend2/effs/tcp_recv.js",
+        "sha256": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7"
+      },
+      {
+        "path": "bend2/effs/udp_bind.c",
+        "sha256": "a1be1bc5c03d430fc6eb43982651073e144872956fadaee98c3700be59352ee3"
+      },
+      {
+        "path": "bend2/effs/udp_bind.js",
+        "sha256": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5"
+      },
+      {
+        "path": "bend2/effs/udp_send_to.c",
+        "sha256": "b3a87e56958d8071a368da2edb4748e9496b3eed58b93d6cb4f8af398dd1011a"
+      },
+      {
+        "path": "bend2/effs/udp_send_to.js",
+        "sha256": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247"
+      },
+      {
+        "path": "bend2/effs/udp_recv_from.c",
+        "sha256": "1ce914be6cd6153732258f06343e5bcf9765a7fac7e3c3f0462facba7060e067"
+      },
+      {
+        "path": "bend2/effs/udp_recv_from.js",
+        "sha256": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad"
+      },
+      {
+        "path": "bend2/effs/socket_close.c",
+        "sha256": "abea115d2928d4942a9d89898d2022c0f1b19c52db48d0b060c2356d261bfa77"
+      },
+      {
+        "path": "bend2/effs/socket_close.js",
+        "sha256": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380"
+      },
+      {
+        "path": "bend2/effs/listener_close.c",
+        "sha256": "11f6bac6342a37e97b9656e96bdca7d052ed0a7a0cab3b05ea87657020cfb7a2"
+      },
+      {
+        "path": "bend2/effs/listener_close.js",
+        "sha256": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8"
+      },
+      {
+        "path": "bend2/effs/window.c",
+        "sha256": "bf8d5779775ba9566d4bbeb8706a9ec993efb724dae7af8a76c38501ab4092c2"
+      },
+      {
+        "path": "bend2/effs/window_open.js",
+        "sha256": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d"
+      },
+      {
+        "path": "bend2/effs/window_frame.js",
+        "sha256": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f"
+      },
+      {
+        "path": "bend2/effs/window_set_title.js",
+        "sha256": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513"
+      },
+      {
+        "path": "bend2/effs/window_grab.js",
+        "sha256": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668"
+      },
+      {
+        "path": "bend2/effs/window_close.js",
+        "sha256": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590"
+      },
+      {
+        "path": "bend2/effs/audio.c",
+        "sha256": "f0fac2bee02918b4958ad1e7508945824fcd98ce9a2e7ede657304c4f8905b85"
+      },
+      {
+        "path": "bend2/effs/audio_open.js",
+        "sha256": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9"
+      },
+      {
+        "path": "bend2/effs/audio_write.js",
+        "sha256": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6"
+      },
+      {
+        "path": "bend2/effs/audio_close.js",
+        "sha256": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62"
+      }
+    ]
+  },
+  "artifacts": [
+    {
+      "stage": "stageOne",
+      "path": "/Users/ilyagulya/bend-g21-name-map-bba3270b-8033-4279-8d41-681b4dba77c0/checkpoints/selfhost-remote2039g21-bootstrap.json.cases/stage-one.js",
+      "sha256": "6f3dff55cee825d064b1d2f9d0c3268fd0d629dd93043d90d6fc00f43eba5978",
+      "bytes": 30222543
+    },
+    {
+      "stage": "stageTwo",
+      "path": "/Users/ilyagulya/bend-g21-name-map-bba3270b-8033-4279-8d41-681b4dba77c0/checkpoints/selfhost-remote2039g21-bootstrap.json.cases/stage-two.js",
+      "sha256": "6f3dff55cee825d064b1d2f9d0c3268fd0d629dd93043d90d6fc00f43eba5978",
+      "bytes": 30222543
+    }
+  ],
+  "byteEqual": true,
+  "acceptedReceipts": [
+    {
+      "path": "evals/receipts/root2039g21_native_fixedpoint.json",
+      "sha256": "9c9342e7ef4fc871cf80dadfe09bf2f2e4b9ef3313f8b0865a83b154007400f5"
+    },
+    {
+      "path": "evals/receipts/root2039g21_emitted_suites.json",
+      "sha256": "bea62d6c417b8c2d95281a8602ed9dc601344c0c357448f40074ba14508618ce"
+    }
+  ],
+  "primaryOnlyWork": {
+    "reviewedCommits": [
+      "768bf3d3",
+      "6e6f6a10",
+      "8f845f08",
+      "a8967d46",
+      "ba98f426",
+      "d1437a74",
+      "1f844231"
+    ],
+    "disposition": "Candidate shared lowering and lexical linker already retain the primary implementation with subsequent extensions; candidate target gate retains declared-import lane selection, missing-target diagnostics and the original permanent fixtures. Historical helper/57ab proof boundaries retained as historical, not current.",
+    "removedObsoleteGenerator": "evals/js_emit_step_lower.ts",
+    "replacement": "evals/emitter_step_lower.ts"
+  },
+  "preservedSnapshots": {
+    "count": 18,
+    "stash": "4778e89776140409cb65b5649f5edcbbfdd944c7",
+    "archive": "checkpoints/pre-g21-primary-4de023f3-1285-4e0e-bf74-f03d9f5f5ec1.tar.gz",
+    "archiveSha256": "de2c1d70250829e401e1221b71c858ebac866ed63347fac99e1a9d53c15edbe3",
+    "manifest": "checkpoints/pre-g21-primary-4de023f3-1285-4e0e-bf74-f03d9f5f5ec1.json",
+    "files": [
+      {
+        "path": "checkpoints/.bootstrap_compiler_root_v1.bend",
+        "sha256": "efab3bf81dd52f597645b20ddda482e11b961d342115ab62152535de55c26d26",
+        "archiveMatches": true,
+        "stashMatches": true
+      },
+      {
+        "path": "checkpoints/checker-core-owned-source-v1.json",
+        "sha256": "28480525f20ea2f13fe6298dd2a8bde38a1b7138c58de0485619adfdd8cb28fb",
+        "archiveMatches": true,
+        "stashMatches": true
+      },
+      {
+        "path": "checkpoints/checker-core-steps-v1.json",
+        "sha256": "823857bc43fe3659da001c86b6be0ad6df9341dff08b4d18d09af89923d1623b",
+        "archiveMatches": true,
+        "stashMatches": true
+      },
+      {
+        "path": "checkpoints/checker_core_owned_component_v1.bend",
+        "sha256": "d4a4308323e066735ad3c4c12e9155e2d055091eaabaf27eede9f9c4322cd088",
+        "archiveMatches": true,
+        "stashMatches": true
+      },
+      {
+        "path": "checkpoints/checker_core_owned_driver_v1.bend",
+        "sha256": "66c2bbff0891a6a9ab92d588854e7828748cfc6cd7ba360bb4ae13744995af66",
+        "archiveMatches": true,
+        "stashMatches": true
+      },
+      {
+        "path": "checkpoints/checker_core_owned_v1.bend",
+        "sha256": "439ebf50a6a78169c6ffe93e476da31e26254f84fb119296de9fe4799f518c32",
+        "archiveMatches": true,
+        "stashMatches": true
+      },
+      {
+        "path": "checkpoints/checker_core_steps_component_v1.bend",
+        "sha256": "ca15a467e804983f454a63e9db64a38c1077a2d49104d488556d0609557521cf",
+        "archiveMatches": true,
+        "stashMatches": true
+      },
+      {
+        "path": "checkpoints/checker_core_steps_driver_v1.bend",
+        "sha256": "a03c90bee66b8849a14192bbbcc925acdb089456e2a4a4bc52247a968f77827f",
+        "archiveMatches": true,
+        "stashMatches": true
+      },
+      {
+        "path": "checkpoints/checker_core_steps_emit_driver_v1.bend",
+        "sha256": "c81a4de7c39dab27ce56bac2cbd1161baa4a5ee56124572b1ffd274fb5f0832b",
+        "archiveMatches": true,
+        "stashMatches": true
+      },
+      {
+        "path": "checkpoints/checker_core_steps_v1.bend",
+        "sha256": "2d1c12618ce29fbc9052d449fc6c6de4caa4119a4fb541e3eae951f314fed247",
+        "archiveMatches": true,
+        "stashMatches": true
+      },
+      {
+        "path": "checkpoints/js-emit-steps-v1.json",
+        "sha256": "8c9b2b7bd2c78bc08e00d410c334ae2b2a23cecd3fe618c62414f44f76809d57",
+        "archiveMatches": true,
+        "stashMatches": true
+      },
+      {
+        "path": "checkpoints/js_emit_owned_v1.bend",
+        "sha256": "6653110e8e7f3b403f8c05c1154a352ad7b8b1bbcad4d4e46a7bc70f0d5bbd0e",
+        "archiveMatches": true,
+        "stashMatches": true
+      },
+      {
+        "path": "checkpoints/js_emit_steps_component_v1.bend",
+        "sha256": "9ac25318154205a03e38a537d520f97f1402aa2a2c86436c28554e00ba89bf25",
+        "archiveMatches": true,
+        "stashMatches": true
+      },
+      {
+        "path": "checkpoints/js_emit_steps_v1.bend",
+        "sha256": "6e46966ccbe619d7935e97395de8a76fc2c6b92b96228f62d530f527f7eaa2b0",
+        "archiveMatches": true,
+        "stashMatches": true
+      },
+      {
+        "path": "checkpoints/selfhost-steps-driver-source-v1.json",
+        "sha256": "050dacc7d79402a75dd66ed50748979bee1552f309b2beda60c269a3545e4e94",
+        "archiveMatches": true,
+        "stashMatches": true
+      },
+      {
+        "path": "checkpoints/template-steps-v1.json",
+        "sha256": "b30a029f20f5b7f848830975088bd554a37313fd098ad8ccad5dbda2c1e4aa57",
+        "archiveMatches": true,
+        "stashMatches": true
+      },
+      {
+        "path": "checkpoints/template_steps_component_v1.bend",
+        "sha256": "86c9e3b009a91b233a314d76ddd65d83ecd66e620231e63121ba625c853b3e39",
+        "archiveMatches": true,
+        "stashMatches": true
+      },
+      {
+        "path": "checkpoints/template_steps_v1.bend",
+        "sha256": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4",
+        "archiveMatches": true,
+        "stashMatches": true
+      }
+    ],
+    "untrackedFilesUntouched": true
+  },
+  "smoke": {
+    "command": [
+      "env",
+      "PATH=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools:/opt/homebrew/bin:/usr/bin:/bin",
+      "BUN_JSC_forceRAMSize=4294967296",
+      "HEAVY_GATE_MEMORY_MIB=8192",
+      "HEAVY_GATE_RSS_MIB=8192",
+      "HEAVY_GATE_POLL_MS=10",
+      "HEAVY_GATE_TIMEOUT_MS=600000",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/heavy_gate.ts",
+      "--memory-mib",
+      "8192",
+      "--rss-mib",
+      "8192",
+      "--poll-ms",
+      "10",
+      "--timeout-ms",
+      "600000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "gates/selfhost.ts",
+      "--stage1",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--stage1-arg",
+      "/tmp/bend-g13-consumer-worker.mjs",
+      "--stage1-arg",
+      "/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+      "--stage1-arg",
+      "--candidate=/Users/ilyagulya/bend-g21-name-map-bba3270b-8033-4279-8d41-681b4dba77c0/checkpoints/selfhost-remote2039g21-bootstrap.json.cases/stage-one.js",
+      "--stage1-arg",
+      "--parser=/Users/ilyagulya/bend-g21-name-map-bba3270b-8033-4279-8d41-681b4dba77c0/checkpoints/selfhost-remote2039g21-bootstrap.json.cases/stage-one.js",
+      "gates/selfhost_cases/missing_c_target.bend",
+      "gates/selfhost_cases/missing_js_target.bend",
+      "tests/run/template_call.bend",
+      "tests/run/descriptor_show.bend",
+      "tests/run/c_backend_link.bend"
+    ],
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 2478817280,
+      "peakFootprintBytes": 2276967744,
+      "elapsedMs": 212759,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "gates/selfhost.ts",
+        "--stage1",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--stage1-arg",
+        "/tmp/bend-g13-consumer-worker.mjs",
+        "--stage1-arg",
+        "/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+        "--stage1-arg",
+        "--candidate=/Users/ilyagulya/bend-g21-name-map-bba3270b-8033-4279-8d41-681b4dba77c0/checkpoints/selfhost-remote2039g21-bootstrap.json.cases/stage-one.js",
+        "--stage1-arg",
+        "--parser=/Users/ilyagulya/bend-g21-name-map-bba3270b-8033-4279-8d41-681b4dba77c0/checkpoints/selfhost-remote2039g21-bootstrap.json.cases/stage-one.js",
+        "gates/selfhost_cases/missing_c_target.bend",
+        "gates/selfhost_cases/missing_js_target.bend",
+        "tests/run/template_call.bend",
+        "tests/run/descriptor_show.bend",
+        "tests/run/c_backend_link.bend"
+      ],
+      "label": "heavy command",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793156397354-c50ab2a74fb042ff.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "output": [
+      "PASS gates/selfhost_cases/missing_c_target.bend js",
+      "PASS gates/selfhost_cases/missing_c_target.bend native (diagnostic missing_c_target.c)",
+      "PASS gates/selfhost_cases/missing_js_target.bend js (diagnostic missing_js_target.js)",
+      "PASS gates/selfhost_cases/missing_js_target.bend native",
+      "PASS tests/run/template_call.bend js",
+      "PASS tests/run/template_call.bend native",
+      "PASS tests/run/descriptor_show.bend js",
+      "PASS tests/run/descriptor_show.bend native",
+      "PASS tests/run/c_backend_link.bend js",
+      "PASS tests/run/c_backend_link.bend native"
+    ]
+  }
+}

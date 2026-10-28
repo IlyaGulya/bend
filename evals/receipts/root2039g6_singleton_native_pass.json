@@ -1,0 +1,346 @@
+{
+  "schemaVersion": 1,
+  "status": "FULL_G6_SINGLETON_TRIE_NATIVE_BUILD_PASS",
+  "sourceCheckpoint": "e49205c1",
+  "nativeBuildAccepted": true,
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "report": {
+    "path": "checkpoints/root-release2039g6-native-build.json",
+    "sha256": "87d2e59ae580e7d61dcc5a2b4671e42bcbf55837b5def02a9ef4bb5f2287bd6d"
+  },
+  "source": "/private/tmp/bend2039-upgrade/checkpoints/.bootstrap_compiler_root_release2039g4.bend",
+  "sourceSha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+  "kernelSha256": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+  "compilerSha256": "318c55c449115cb820bf77c3ac500a1c07ed8473adbbe6eed9c61088f4a0009e",
+  "runtime": {
+    "name": "bun",
+    "executable": "/opt/homebrew/Cellar/bun/1.4.3/bin/bun",
+    "execArgv": [],
+    "bun": "1.4.3",
+    "revision": "c6da4a4d3010e5553438c60f6bd76d981976867c",
+    "heapLimitMiB": null,
+    "stackMiB": null,
+    "stack": "Bun main-thread default",
+    "automaticGcRamHint": {
+      "source": "BUN_JSC_forceRAMSize",
+      "bytes": "4294967296",
+      "hardLimit": false
+    },
+    "manualGC": false,
+    "profiling": null
+  },
+  "checkedDefinitions": 12148,
+  "eventsFullyValidated": 12728,
+  "checksExcluded": 0,
+  "outputPatches": 0,
+  "cPath": "/tmp/bend2039g6-native.c",
+  "cSha256": "d80523697068430ade64ffbd598df6dc7a7dd1e5c0cd737b4a73d2ee4a8f668f",
+  "cBytes": 55202666,
+  "artifact": "/tmp/bend2039g6-native",
+  "artifactSha256": "8709e53e83c2b4a72f6f388b4214cb66f2a6358b4a04de4abc7ec26aa32d5d0d",
+  "validationMs": 1956.5523750000002,
+  "codegenMs": 389061.04045800003,
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 5312544768,
+    "peakFootprintBytes": 5065824160,
+    "elapsedMs": 565105,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "/opt/homebrew/Cellar/bun/1.4.3/bin/bun",
+      "--smol",
+      "/private/tmp/bend2039-upgrade/evals/native_compiler_experiment.ts",
+      "--mode=build",
+      "--corpus=checkpoints/root-release2039g4.native.corpus.json",
+      "--artifact=/tmp/bend2039g6-native",
+      "--report=checkpoints/root-release2039g6-native-build.json",
+      "--cc-pipeline=llvm-split",
+      "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+      "--cc-opt=1",
+      "--internal=build"
+    ],
+    "label": "Native CPU compiler build",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793086603522-1b6be7f2332d6a11.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "ccOptimization": {
+    "level": 1,
+    "flag": "-O1",
+    "officialDefault": false,
+    "diagnosticTradeoff": true
+  },
+  "llvm": {
+    "kind": "llvm-split",
+    "status": "PASS",
+    "elapsedMs": 170917.28429100002,
+    "partitions": 4,
+    "maxBackendChildren": 3,
+    "stages": [
+      {
+        "name": "clang-version",
+        "command": [
+          "/usr/bin/clang",
+          "--version"
+        ],
+        "status": "PASS",
+        "wallMs": 38.816542,
+        "userSeconds": 0.01,
+        "systemSeconds": 0.01,
+        "maxRssBytes": 14991360
+      },
+      {
+        "name": "opt-version",
+        "command": [
+          "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/opt",
+          "--version"
+        ],
+        "status": "PASS",
+        "wallMs": 131.132375,
+        "userSeconds": 0.01,
+        "systemSeconds": 0.04,
+        "maxRssBytes": 24002560
+      },
+      {
+        "name": "llvm-split-version",
+        "command": [
+          "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/llvm-split",
+          "--version"
+        ],
+        "status": "PASS",
+        "wallMs": 30.09170800000004,
+        "userSeconds": 0.01,
+        "systemSeconds": 0,
+        "maxRssBytes": 19972096
+      },
+      {
+        "name": "sdk",
+        "command": [
+          "/usr/bin/xcrun",
+          "--show-sdk-path"
+        ],
+        "status": "PASS",
+        "wallMs": 23.474874999999997,
+        "userSeconds": 0,
+        "systemSeconds": 0,
+        "maxRssBytes": 8634368
+      },
+      {
+        "name": "abi-macros",
+        "command": [
+          "/usr/bin/clang",
+          "-std=c11",
+          "-O1",
+          "-E",
+          "-dM",
+          "/tmp/bend2039g6-native.c",
+          "-isysroot",
+          "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
+        ],
+        "status": "PASS",
+        "wallMs": 2584.61625,
+        "userSeconds": 2.03,
+        "systemSeconds": 0.13,
+        "maxRssBytes": 604487680
+      },
+      {
+        "name": "abi-driver",
+        "command": [
+          "/usr/bin/clang",
+          "-std=c11",
+          "-O1",
+          "-c",
+          "/tmp/bend2039g6-native.c",
+          "-isysroot",
+          "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+          "-o",
+          "/tmp/bend2039g6-native",
+          "-###"
+        ],
+        "status": "PASS",
+        "wallMs": 48.1530829999997,
+        "userSeconds": 0.01,
+        "systemSeconds": 0.01,
+        "maxRssBytes": 15990784
+      },
+      {
+        "name": "frontend",
+        "command": [
+          "/usr/bin/clang",
+          "-std=c11",
+          "-O1",
+          "-Xclang",
+          "-disable-llvm-passes",
+          "-emit-llvm",
+          "-c",
+          "/tmp/bend2039g6-native.c",
+          "-isysroot",
+          "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+          "-o",
+          "/tmp/.native-llvm-KmKgXX/raw.bc"
+        ],
+        "status": "PASS",
+        "wallMs": 32782.231125,
+        "userSeconds": 26.18,
+        "systemSeconds": 1.45,
+        "maxRssBytes": 5164580864
+      },
+      {
+        "name": "mem2reg-always-inline",
+        "command": [
+          "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/opt",
+          "-passes=function(mem2reg),always-inline",
+          "/tmp/.native-llvm-KmKgXX/raw.bc",
+          "-o",
+          "/tmp/.native-llvm-KmKgXX/prepared.bc"
+        ],
+        "status": "PASS",
+        "wallMs": 16867.973832999996,
+        "userSeconds": 14.6,
+        "systemSeconds": 0.72,
+        "maxRssBytes": 2848800768
+      },
+      {
+        "name": "split",
+        "command": [
+          "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/llvm-split",
+          "-j4",
+          "/tmp/.native-llvm-KmKgXX/prepared.bc",
+          "-o",
+          "/tmp/.native-llvm-KmKgXX/part.bc"
+        ],
+        "status": "PASS",
+        "wallMs": 11382.895333,
+        "userSeconds": 8.56,
+        "systemSeconds": 0.56,
+        "maxRssBytes": 1867628544
+      },
+      {
+        "name": "opt-codegen-3",
+        "command": [
+          "/usr/bin/clang",
+          "-O1",
+          "-x",
+          "ir",
+          "-c",
+          "/tmp/.native-llvm-KmKgXX/part.bc3",
+          "-isysroot",
+          "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+          "-o",
+          "/tmp/.native-llvm-KmKgXX/part3.o"
+        ],
+        "status": "PASS",
+        "wallMs": 106694.76654099999,
+        "userSeconds": 52.21,
+        "systemSeconds": 1.14,
+        "maxRssBytes": 1675706368
+      },
+      {
+        "name": "opt-codegen-2",
+        "command": [
+          "/usr/bin/clang",
+          "-O1",
+          "-x",
+          "ir",
+          "-c",
+          "/tmp/.native-llvm-KmKgXX/part.bc2",
+          "-isysroot",
+          "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+          "-o",
+          "/tmp/.native-llvm-KmKgXX/part2.o"
+        ],
+        "status": "PASS",
+        "wallMs": 64338.15895799999,
+        "userSeconds": 28.18,
+        "systemSeconds": 0.79,
+        "maxRssBytes": 1540947968
+      },
+      {
+        "name": "opt-codegen-1",
+        "command": [
+          "/usr/bin/clang",
+          "-O1",
+          "-x",
+          "ir",
+          "-c",
+          "/tmp/.native-llvm-KmKgXX/part.bc1",
+          "-isysroot",
+          "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+          "-o",
+          "/tmp/.native-llvm-KmKgXX/part1.o"
+        ],
+        "status": "PASS",
+        "wallMs": 47632.76979200001,
+        "userSeconds": 21.5,
+        "systemSeconds": 0.64,
+        "maxRssBytes": 1086324736
+      },
+      {
+        "name": "opt-codegen-0",
+        "command": [
+          "/usr/bin/clang",
+          "-O1",
+          "-x",
+          "ir",
+          "-c",
+          "/tmp/.native-llvm-KmKgXX/part.bc0",
+          "-isysroot",
+          "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+          "-o",
+          "/tmp/.native-llvm-KmKgXX/part0.o"
+        ],
+        "status": "PASS",
+        "wallMs": 38000.727750000005,
+        "userSeconds": 17.21,
+        "systemSeconds": 0.56,
+        "maxRssBytes": 919273472
+      },
+      {
+        "name": "link",
+        "command": [
+          "/usr/bin/clang",
+          "/tmp/.native-llvm-KmKgXX/part0.o",
+          "/tmp/.native-llvm-KmKgXX/part1.o",
+          "/tmp/.native-llvm-KmKgXX/part2.o",
+          "/tmp/.native-llvm-KmKgXX/part3.o",
+          "-isysroot",
+          "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+          "-lpthread",
+          "-lm",
+          "-o",
+          "/tmp/bend2039g6-native"
+        ],
+        "status": "PASS",
+        "wallMs": 207.8840419999906,
+        "userSeconds": 0.2,
+        "systemSeconds": 0.06,
+        "maxRssBytes": 125681664
+      }
+    ]
+  },
+  "protectedPins": {
+    "/private/tmp/bend2039-upgrade/evals/native_compiler_experiment.ts": "9108d727d3a46add61f672be9a96095c2cd7a65dbe6a3e7108e2964a90ef7d46",
+    "/private/tmp/bend2039-upgrade/evals/native_compiler_llvm.ts": "d8f2c420662e3ff93795ebe866cbfe7a459b131b74c3243ba2f2ba9d625e8af3",
+    "/private/tmp/bend2039-upgrade/bend2/bend.ts": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+    "/private/tmp/bend2039-upgrade/bend2/comp.ts": "318c55c449115cb820bf77c3ac500a1c07ed8473adbbe6eed9c61088f4a0009e",
+    "/private/tmp/bend2039-upgrade/evals/native_compiler_driver.bend": "768203e900f53cdf8d90b50966631ca3a3964dd50003658b07a28b39395f3ec3",
+    "/private/tmp/bend2039-upgrade/evals/native_compiler_host.c": "7d75edf7c7b8ac045df772b242e885801b9ab3fae5fc346957489a35847d66fe",
+    "/private/tmp/bend2039-upgrade/bend2/base.bend": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+    "/private/tmp/bend2039-upgrade/evals/heavy_gate.ts": "204f3529704435455d20a9d5a126a8e9c62e002b6fed9044c8319da8a3c26ff2",
+    "/private/tmp/bend2039-upgrade/evals/heavy_gate_native.c": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b",
+    "/private/tmp/bend2039-upgrade/checkpoints/root-release2039g4.native.corpus.json": "acfb20bad4804cff7d9c2e2de4edf47caacccb79949dc0ad37c20c5bbcaf4102"
+  },
+  "notes": [
+    "Complete unchanged frozen G4 compiler workload passes original8GiB RSS/footprint and600s whole-build deadline. Native build pass only; fresh parser/composition/consumer matrices and actual byte fixedpoint remain in progress.",
+    "C bytes exactly match prior full G4 and completed profiling diagnostic; no kernel changes, excluded checks or output patches.",
+    "This is an unprofiled acceptance run. Do not interpret differences from sampled diagnostics as a controlled speedup estimate."
+  ]
+}

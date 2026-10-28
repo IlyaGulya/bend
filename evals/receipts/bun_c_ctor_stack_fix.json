@@ -1,0 +1,249 @@
+{
+  "schemaVersion": 1,
+  "status": "PRODUCER_CTOR_STACK_FIX_SCOPED_PASS",
+  "wholeCompilerAccepted": false,
+  "runtime": {
+    "name": "bun",
+    "version": "1.4.2",
+    "revision": "744846f844374847c902b5e7fd59b4342a51ef99",
+    "stack": "default",
+    "gc": "default"
+  },
+  "changedSource": {
+    "path": "bend2/comp.ts",
+    "sha256": "0aef67b664841f4c6cc636da63a48fbdfb99b2d1240457decc0484403beb553b"
+  },
+  "unchangedKernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+  "baselineCompilerSha256": "a84170d5a84f21386383ccd478a1dac687eb664d89c21b284cd1134513963b70",
+  "commands": [
+    [
+      "bun",
+      "evals/heavy_gate.ts",
+      "--memory-mib",
+      "8192",
+      "--rss-mib",
+      "8192",
+      "--poll-ms",
+      "10",
+      "--timeout-ms",
+      "600000",
+      "--",
+      "bun",
+      "/tmp/bend-ctr-verify.ts"
+    ]
+  ],
+  "driverHistory": "First execution completed ten passing inputs, then stopped on an accidentally selected intentional typecheck-rejection fixture tests/compile/erasure_dead_param.bend, before that input reached codegen. Continued only the remaining four valid inputs, including tests/reg/native_erased_layout.bend. This is not a narrowed acceptance corpus or a producer failure.",
+  "rows": [
+    {
+      "file": "evals/repro_bun_c_ctor_stack_1024.bend",
+      "sourceSha256": "8ed5ba49c8c84fe0753a718250e05626ae7625ea7c46ae95e31d9bec673334e6",
+      "want": "1024n",
+      "native": "1024n",
+      "javascript": "1024n",
+      "byteIdenticalToFrozen": true,
+      "cBytes": 123208,
+      "cSha256": "0cfc0a5ab7300fc4658a3b2aac924253a472ac7bbb7debe599ed384de3ae3968",
+      "elapsedMs": 1273.2265830000001
+    },
+    {
+      "file": "evals/repro_bun_c_ctor_stack_8192.bend",
+      "sourceSha256": "8b394a24444a30e5e35441eadb82bda122151c589c668a58f2d6590b105784c1",
+      "want": "8192n",
+      "native": "8192n",
+      "javascript": "8192n",
+      "byteIdenticalToFrozen": null,
+      "cBytes": 448962,
+      "cSha256": "5d5b3514d5e7333e8e1f0110f8ee84ea01a277cce2c7a3e6e421a9971c64e114",
+      "elapsedMs": 1713.556917
+    },
+    {
+      "file": "tests/reg/ctor_field_order.bend",
+      "sourceSha256": "d6a0ebdf0fd862af55407a60f8ed321540357487bc7cedc0395a308aa05dec14",
+      "want": "shared\nmiddle\nshared",
+      "native": "shared\nmiddle\nshared",
+      "javascript": "shared\nmiddle\nshared",
+      "byteIdenticalToFrozen": true,
+      "cBytes": 82292,
+      "cSha256": "507ef6cd986ada6ca1c419285fe8eee0c889a64ac31a50f8bc6fd016ceee8bd1",
+      "elapsedMs": 575.7320420000001
+    },
+    {
+      "file": "tests/reg/phys_storage_paths.bend",
+      "sourceSha256": "b3f1aad4a75d028845f301816982a0d98a9606d239ce4d3c674a91ac5bf5fd85",
+      "want": "2655042671\n3,9",
+      "native": "2655042671\n3,9",
+      "javascript": "2655042671\n3,9",
+      "byteIdenticalToFrozen": true,
+      "cBytes": 98505,
+      "cSha256": "36f1dd7895d8b8bafd0fe58849f166789b720dc66d1a6f994cc9b3c15256f094",
+      "elapsedMs": 1042.3178330000005
+    },
+    {
+      "file": "tests/reg/brw_audit3_dependent_array.bend",
+      "sourceSha256": "7f979264891f53114ad432c92ebc7c88c6ddf7ed1c607c647fc2a5ff97ffe8cc",
+      "want": "7",
+      "native": "7",
+      "javascript": "7",
+      "byteIdenticalToFrozen": true,
+      "cBytes": 81031,
+      "cSha256": "a156d98a55e185d99dfc605df4508224ec5ea7abfbb505a0378232bc021f9f59",
+      "elapsedMs": 1306.9134160000003
+    },
+    {
+      "file": "tests/compile/family_two_indices.bend",
+      "sourceSha256": "1bbb61e6608bfd636a47c81d1d580ac2c5bb262717d5cc28d14f3b4c4f6c3fad",
+      "want": "64",
+      "native": "64",
+      "javascript": "64",
+      "byteIdenticalToFrozen": true,
+      "cBytes": 100780,
+      "cSha256": "4f1ab52827bdc2ab067088895a64d4c30ab83ddcf5b778014934f794a619a997",
+      "elapsedMs": 524.5304589999996
+    },
+    {
+      "file": "tests/compile/array_generic_cell.bend",
+      "sourceSha256": "97ba0e0bacdf14cb2b412190579bdedc29ac650bc31ca739c5b1b3a24e24718a",
+      "want": "(False{}, 32)",
+      "native": "(False{}, 32)",
+      "javascript": "(False{}, 32)",
+      "byteIdenticalToFrozen": true,
+      "cBytes": 85976,
+      "cSha256": "399f791922ebfdf2d89ab1bebc65dfd36e1dc48861719dd238640e37712840b6",
+      "elapsedMs": 373.89437499999985
+    },
+    {
+      "file": "tests/compile/float_unboxed_ctor.bend",
+      "sourceSha256": "bc5bb3e4acd4b37a0a779f0cfad508e7dcac2080539144763c7f0190c47edcd9",
+      "want": "375",
+      "native": "375",
+      "javascript": "375",
+      "byteIdenticalToFrozen": true,
+      "cBytes": 81642,
+      "cSha256": "0be1d5809637997c5475a56bc624f7681cfa1cc201b1559dd0aa3229392f0413",
+      "elapsedMs": 901.6095420000001
+    },
+    {
+      "file": "tests/compile/word_boxed_sequence.bend",
+      "sourceSha256": "7a040de56ae834879cc0836434631f32cb1712f3ea84198d3dbedf87a3857699",
+      "want": "84",
+      "native": "84",
+      "javascript": "84",
+      "byteIdenticalToFrozen": true,
+      "cBytes": 87736,
+      "cSha256": "adc4851fe842c527e3d11c8b91ca78f331180ed20de004cdf626452cbcb10cde",
+      "elapsedMs": 862.5789160000004
+    },
+    {
+      "file": "tests/compile/literal_reads.bend",
+      "sourceSha256": "60278a3465ea7d0bc6708671522f2a812b2322513375af2a86152f8cfc9c3107",
+      "want": "97 310",
+      "native": "97 310",
+      "javascript": "97 310",
+      "byteIdenticalToFrozen": true,
+      "cBytes": 87379,
+      "cSha256": "f6c204e7e178d66c1b3aa2bb68b2b61e214bb9b8ce5219d2c950710bf10736c2",
+      "elapsedMs": 546.9178330000013
+    },
+    {
+      "file": "tests/reg/native_erased_layout.bend",
+      "sourceSha256": "b3b9b2b55e05a2f8b31c558f639cbdcecfca7b8621d24ab698ad6969328e7606",
+      "want": "7",
+      "native": "7",
+      "javascript": "7",
+      "byteIdenticalToFrozen": true,
+      "cBytes": 76775,
+      "cSha256": "d6c1583128117b82fbc3191a880d3b40e5f123e7ed28a46d937129949c8d438e",
+      "elapsedMs": 2035.9787500000002
+    },
+    {
+      "file": "tests/run/list_rebox_sum.bend",
+      "sourceSha256": "c046078c5a6c852d539c7456e4ce5fcf55d1556b8c37a08c1a8b711a1e9b379c",
+      "want": "7\n3\nbounded",
+      "native": "7\n3\nbounded",
+      "javascript": "7\n3\nbounded",
+      "byteIdenticalToFrozen": true,
+      "cBytes": 100534,
+      "cSha256": "1889a4e80f593b62ae0d1ecd0847a47a283d1239368add44a9740b3fe3d979e6",
+      "elapsedMs": 1709.4777080000003
+    },
+    {
+      "file": "tests/run/family_field_hot.bend",
+      "sourceSha256": "3c16b7fd120b7f0f904f6bcbc73559033e056571302408c551848377a648eb6a",
+      "want": "5",
+      "native": "5",
+      "javascript": "5",
+      "byteIdenticalToFrozen": true,
+      "cBytes": 84219,
+      "cSha256": "20ddb6a1e2f75b3b7018ede29b43af07f33fa9144983ae5592d55b5a9cc4c831",
+      "elapsedMs": 694.2046250000003
+    },
+    {
+      "file": "tests/io/sleep_order.bend",
+      "sourceSha256": "40b1d61dc28b6875e23cb356ad019cf8b4942ca88f3822386c01d1de3a873d7c",
+      "want": "a\nb\nc\nd",
+      "native": "a\nb\nc\nd",
+      "javascript": "a\nb\nc\nd",
+      "byteIdenticalToFrozen": true,
+      "cBytes": 85859,
+      "cSha256": "58286e307ec2ba91eb3ce4b3fe41f8ee1337c3ab2a0c41ed6cee4f33a438ce3c",
+      "elapsedMs": 514.4439999999995
+    }
+  ],
+  "guardians": [
+    {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792995549771-89232c6b74de4c0d.json",
+      "result": {
+        "status": "FAIL",
+        "reason": "command_exit",
+        "commandExitCode": 1,
+        "commandSignal": 0,
+        "peakRssBytes": 768622592,
+        "peakFootprintBytes": 681395976,
+        "elapsedMs": 15740,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 1,
+        "command": [
+          "bun",
+          "/tmp/bend-ctr-verify.ts"
+        ],
+        "label": "heavy command",
+        "exitCode": 1,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792995549771-89232c6b74de4c0d.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792995677605-29bbb2ba3d4a4e72.json",
+      "result": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 297320448,
+        "peakFootprintBytes": 165315976,
+        "elapsedMs": 5222,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "bun",
+          "/tmp/bend-ctr-verify.ts"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792995677605-29bbb2ba3d4a4e72.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    }
+  ],
+  "notClaimed": [
+    "Full frozen native build",
+    "Current compiler bootstrap fixedpoint",
+    "General constructor/effect semantic proof"
+  ]
+}

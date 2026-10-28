@@ -1,0 +1,834 @@
+{
+  "schemaVersion": 1,
+  "status": "G12_NATIVE_BUILD_AND_CONSUMERS_PASS_BOOTSTRAP_DEADLINE_REJECTED",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "sourceCheckpoint": "b2005397",
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "runtime": {
+    "bun": "1.4.3",
+    "revision": "c6da4a4d3010e5553438c60f6bd76d981976867c"
+  },
+  "commands": [
+    {
+      "label": "checker_core_owned_source.ts",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/checker_core_owned_source.ts"
+      ],
+      "status": "PASS",
+      "elapsedMs": 6608
+    },
+    {
+      "label": "template_step_lower.ts",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/template_step_lower.ts"
+      ],
+      "status": "PASS",
+      "elapsedMs": 588
+    },
+    {
+      "label": "checker_core_step_lower.ts",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/checker_core_step_lower.ts"
+      ],
+      "status": "PASS",
+      "elapsedMs": 3454
+    },
+    {
+      "label": "emitter_step_lower.ts",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/emitter_step_lower.ts"
+      ],
+      "status": "PASS",
+      "elapsedMs": 6018
+    },
+    {
+      "label": "parser-source",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "evals/bootstrap_parser_rebuild.ts",
+        "--prepare-source",
+        "--run-id",
+        "remote2039g12"
+      ],
+      "status": "PASS",
+      "elapsedMs": 24831
+    },
+    {
+      "label": "parser-public-source",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "evals/bootstrap_parser_public_gate.ts",
+        "--parser=checkpoints/.bootstrap_parser_rebuild_remote2039g12_source.bend",
+        "--entry=parse_module_tokens",
+        "--report=checkpoints/bootstrap-parser-public-remote2039g12-source.json"
+      ],
+      "status": "PASS",
+      "elapsedMs": 5258
+    },
+    {
+      "label": "parser-source-gate",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "evals/bootstrap_parser_fast.ts",
+        "--parser=checkpoints/.bootstrap_parser_rebuild_remote2039g12_source.bend",
+        "--entry=parse_module_tokens",
+        "--public-report=checkpoints/bootstrap-parser-public-remote2039g12-source.json",
+        "--report=checkpoints/bootstrap-parser-source-gate-remote2039g12.json"
+      ],
+      "status": "PASS",
+      "elapsedMs": 17903
+    },
+    {
+      "label": "parser-prepare",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "evals/bootstrap_parser_rebuild.ts",
+        "--prepare",
+        "--run-id",
+        "remote2039g12",
+        "--source-gate",
+        "checkpoints/bootstrap-parser-source-gate-remote2039g12.json"
+      ],
+      "status": "PASS",
+      "elapsedMs": 28720
+    },
+    {
+      "label": "parser-build",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "evals/bootstrap_parser_rebuild.ts",
+        "--build-native",
+        "--run-id",
+        "remote2039g12"
+      ],
+      "status": "PASS",
+      "elapsedMs": 11461
+    },
+    {
+      "label": "parser-public-native",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "evals/bootstrap_parser_public_gate.ts",
+        "--parser=checkpoints/.bootstrap_parser_rebuild_remote2039g12_generated_fuel.bend",
+        "--entry=parse_with_fuel",
+        "--report=checkpoints/bootstrap-parser-public-remote2039g12-native.json"
+      ],
+      "status": "PASS",
+      "elapsedMs": 2472
+    },
+    {
+      "label": "parser-native-gate",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "evals/bootstrap_parser_fast.ts",
+        "--parser=checkpoints/.bootstrap_parser_rebuild_remote2039g12_generated_fuel.bend",
+        "--entry=parse_with_fuel",
+        "--component=checkpoints/bootstrap-parser-rebuild-remote2039g12.js",
+        "--component-build=checkpoints/bootstrap-parser-rebuild-remote2039g12.native-build.result.json",
+        "--public-report=checkpoints/bootstrap-parser-public-remote2039g12-native.json",
+        "--report=checkpoints/bootstrap-parser-candidate-gate-remote2039g12.json"
+      ],
+      "status": "PASS",
+      "elapsedMs": 86198
+    },
+    {
+      "label": "parser-accept",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "evals/bootstrap_parser_rebuild.ts",
+        "--build",
+        "--run-id",
+        "remote2039g12",
+        "--candidate-gate",
+        "checkpoints/bootstrap-parser-candidate-gate-remote2039g12.json"
+      ],
+      "status": "PASS",
+      "elapsedMs": 2213
+    },
+    {
+      "label": "compose",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/selfhost_driver_source.ts",
+        "--parser-build=checkpoints/bootstrap-parser-rebuild-remote2039g12.native-build.result.json",
+        "--root=checkpoints/.bootstrap_compiler_root_remote2039g12.bend",
+        "--manifest=checkpoints/selfhost-root-remote2039g12.json"
+      ],
+      "status": "PASS",
+      "elapsedMs": 688
+    },
+    {
+      "label": "js-build",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "evals/checker_core_component_build.ts",
+        "--file=checkpoints/.bootstrap_compiler_root_remote2039g12.bend",
+        "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step,emit_c_modules_start,emit_c_library_start,c_emitter_step",
+        "--artifact=checkpoints/root-remote2039g12.js",
+        "--report=checkpoints/root-remote2039g12-build"
+      ],
+      "status": "PASS",
+      "elapsedMs": 60600
+    },
+    {
+      "label": "capture-compile",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/candidate-worker.mjs",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/evals/candidate_host.ts",
+        "--candidate=checkpoints/root-remote2039g12.js",
+        "--candidate-build=checkpoints/root-remote2039g12-build.result.json",
+        "--parser=checkpoints/bootstrap-parser-rebuild-remote2039g12.js",
+        "evals/repro_js_non_tail_reclaim.bend",
+        "-o",
+        "/tmp/bend-remote2039g12-admission-J1srzF/capture.js"
+      ],
+      "status": "PASS",
+      "elapsedMs": 9807
+    },
+    {
+      "label": "capture-run",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/tmp/bend-remote2039g12-admission-J1srzF/capture.js"
+      ],
+      "status": "PASS",
+      "elapsedMs": 1537
+    },
+    {
+      "label": "atomic-js-array_fork",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/c_target_fixtures_run.ts",
+        "--driver=/tmp/bend-remote2039g12-driver",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--target=js",
+        "--smoke-case=array_fork",
+        "--logs=/tmp/bend-remote2039g12-admission-J1srzF/atomic-js-array_fork",
+        "--keep"
+      ],
+      "status": "PASS",
+      "elapsedMs": 11669
+    },
+    {
+      "label": "atomic-js-array_atomic_fadd",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/c_target_fixtures_run.ts",
+        "--driver=/tmp/bend-remote2039g12-driver",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--target=js",
+        "--smoke-case=array_atomic_fadd",
+        "--logs=/tmp/bend-remote2039g12-admission-J1srzF/atomic-js-array_atomic_fadd",
+        "--keep"
+      ],
+      "status": "PASS",
+      "elapsedMs": 10841
+    },
+    {
+      "label": "atomic-js-array_atomic_edges",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/c_target_fixtures_run.ts",
+        "--driver=/tmp/bend-remote2039g12-driver",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--target=js",
+        "--smoke-case=array_atomic_edges",
+        "--logs=/tmp/bend-remote2039g12-admission-J1srzF/atomic-js-array_atomic_edges",
+        "--keep"
+      ],
+      "status": "PASS",
+      "elapsedMs": 10643
+    },
+    {
+      "label": "atomic-c-array_fork",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/c_target_fixtures_run.ts",
+        "--driver=/tmp/bend-remote2039g12-driver",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--target=c",
+        "--smoke-case=array_fork",
+        "--logs=/tmp/bend-remote2039g12-admission-J1srzF/atomic-c-array_fork",
+        "--keep"
+      ],
+      "status": "PASS",
+      "elapsedMs": 34343
+    },
+    {
+      "label": "atomic-c-array_atomic_fadd",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/c_target_fixtures_run.ts",
+        "--driver=/tmp/bend-remote2039g12-driver",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--target=c",
+        "--smoke-case=array_atomic_fadd",
+        "--logs=/tmp/bend-remote2039g12-admission-J1srzF/atomic-c-array_atomic_fadd",
+        "--keep"
+      ],
+      "status": "PASS",
+      "elapsedMs": 31874
+    },
+    {
+      "label": "atomic-c-array_atomic_edges",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/c_target_fixtures_run.ts",
+        "--driver=/tmp/bend-remote2039g12-driver",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--target=c",
+        "--smoke-case=array_atomic_edges",
+        "--logs=/tmp/bend-remote2039g12-admission-J1srzF/atomic-c-array_atomic_edges",
+        "--keep"
+      ],
+      "status": "PASS",
+      "elapsedMs": 31285
+    },
+    {
+      "label": "native-build",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "evals/native_compiler_experiment.ts",
+        "--mode=build",
+        "--corpus=checkpoints/root-remote2039g12.native.corpus.json",
+        "--artifact=/tmp/bend-remote2039g12-native",
+        "--report=checkpoints/root-remote2039g12-native-build.json",
+        "--cc-pipeline=llvm-split",
+        "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+        "--cc-opt=1"
+      ],
+      "status": "PASS",
+      "elapsedMs": 418645
+    },
+    {
+      "label": "bootstrap",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "evals/selfhost_bootstrap_gate.ts",
+        "--native-build=checkpoints/root-remote2039g12-native-build.json",
+        "--native-corpus=checkpoints/root-remote2039g12.native.corpus.json",
+        "--root=checkpoints/.bootstrap_compiler_root_remote2039g12.bend",
+        "--root-manifest=checkpoints/selfhost-root-remote2039g12.json",
+        "--parser=checkpoints/bootstrap-parser-rebuild-remote2039g12.js",
+        "--parser-build=checkpoints/bootstrap-parser-rebuild-remote2039g12.native-build.result.json",
+        "--report=checkpoints/selfhost-remote2039g12-bootstrap.json"
+      ],
+      "status": "FAIL",
+      "elapsedMs": 600163
+    },
+    {
+      "label": "matrix-c",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/c_target_fixtures_run.ts",
+        "--driver=/tmp/bend-remote2039g12-driver",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--target=c",
+        "--logs=/tmp/bend-remote2039g12-admission-J1srzF/matrix-c",
+        "--keep"
+      ],
+      "status": "PASS",
+      "elapsedMs": 1208192
+    },
+    {
+      "label": "matrix-js",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/c_target_fixtures_run.ts",
+        "--driver=/tmp/bend-remote2039g12-driver",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--target=js",
+        "--logs=/tmp/bend-remote2039g12-admission-J1srzF/matrix-js",
+        "--keep"
+      ],
+      "status": "PASS",
+      "elapsedMs": 403802
+    },
+    {
+      "label": "native-consumers",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "/tmp/bend-remote2039g12-native-foreign-suite.mjs"
+      ],
+      "status": "PASS",
+      "elapsedMs": 212320
+    },
+    {
+      "label": "nested-host-consumers",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "/tmp/bend-remote2039g12-nested-host.mjs"
+      ],
+      "status": "PASS",
+      "elapsedMs": 89676
+    }
+  ],
+  "native": {
+    "status": "NATIVE_EXECUTABLE_BUILT_NOT_YET_RUN",
+    "source": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/checkpoints/.bootstrap_compiler_root_remote2039g12.bend",
+    "sourceSha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+    "compilerSha256": "f95eed20344ca291bf74a1e4ffe574f788ea22a86adc66d5bfe0f681523245ef",
+    "kernelSha256": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+    "artifact": "/tmp/bend-remote2039g12-native",
+    "artifactSha256": "49713b2c16488f01c86f7ce8f0192e468629bfa93d099b67d81d9bdf38454ac7",
+    "cPath": "/tmp/bend-remote2039g12-native.c",
+    "cSha256": "a85c9aa52365d0a955376dcb7f177e06b0bdc7829b35c972ef058d1b0c55401c",
+    "checkedDefinitions": 12114,
+    "eventsFullyValidated": 12694,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "elapsedMs": 300992.128584,
+    "codegenMs": 293322.677,
+    "validationMs": 3360.3714999999993,
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 5328519168,
+      "peakFootprintBytes": 5689218400,
+      "elapsedMs": 418413,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/evals/native_compiler_experiment.ts",
+        "--mode=build",
+        "--corpus=checkpoints/root-remote2039g12.native.corpus.json",
+        "--artifact=/tmp/bend-remote2039g12-native",
+        "--report=checkpoints/root-remote2039g12-native-build.json",
+        "--cc-pipeline=llvm-split",
+        "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+        "--cc-opt=1",
+        "--internal=build"
+      ],
+      "label": "Native CPU compiler build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1793130363551-7d9d7a99dc97d727.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "ccPipeline": {
+      "kind": "llvm-split",
+      "status": "PASS",
+      "optimization": "-O1",
+      "partitions": 4,
+      "elapsedMs": 116760.88033300001,
+      "temporaryFilesRemoved": true,
+      "stages": [
+        {
+          "name": "clang-version",
+          "status": "PASS",
+          "command": [
+            "/usr/bin/clang",
+            "--version"
+          ]
+        },
+        {
+          "name": "opt-version",
+          "status": "PASS",
+          "command": [
+            "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/opt",
+            "--version"
+          ]
+        },
+        {
+          "name": "llvm-split-version",
+          "status": "PASS",
+          "command": [
+            "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/llvm-split",
+            "--version"
+          ]
+        },
+        {
+          "name": "sdk",
+          "status": "PASS",
+          "command": [
+            "/usr/bin/xcrun",
+            "--show-sdk-path"
+          ]
+        },
+        {
+          "name": "abi-macros",
+          "status": "PASS",
+          "command": [
+            "/usr/bin/clang",
+            "-std=c11",
+            "-O1",
+            "-E",
+            "-dM",
+            "/tmp/bend-remote2039g12-native.c",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
+          ]
+        },
+        {
+          "name": "abi-driver",
+          "status": "PASS",
+          "command": [
+            "/usr/bin/clang",
+            "-std=c11",
+            "-O1",
+            "-c",
+            "/tmp/bend-remote2039g12-native.c",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-o",
+            "/tmp/bend-remote2039g12-native",
+            "-###"
+          ]
+        },
+        {
+          "name": "frontend",
+          "status": "PASS",
+          "command": [
+            "/usr/bin/clang",
+            "-std=c11",
+            "-O1",
+            "-Xclang",
+            "-disable-llvm-passes",
+            "-emit-llvm",
+            "-c",
+            "/tmp/bend-remote2039g12-native.c",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-o",
+            "/tmp/.native-llvm-CywoAm/raw.bc"
+          ]
+        },
+        {
+          "name": "mem2reg-always-inline",
+          "status": "PASS",
+          "command": [
+            "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/opt",
+            "-passes=function(mem2reg),always-inline",
+            "/tmp/.native-llvm-CywoAm/raw.bc",
+            "-o",
+            "/tmp/.native-llvm-CywoAm/prepared.bc"
+          ]
+        },
+        {
+          "name": "split",
+          "status": "PASS",
+          "command": [
+            "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/llvm-split",
+            "-j4",
+            "/tmp/.native-llvm-CywoAm/prepared.bc",
+            "-o",
+            "/tmp/.native-llvm-CywoAm/part.bc"
+          ]
+        },
+        {
+          "name": "opt-codegen-3",
+          "status": "PASS",
+          "command": [
+            "/usr/bin/clang",
+            "-O1",
+            "-x",
+            "ir",
+            "-c",
+            "/tmp/.native-llvm-CywoAm/part.bc3",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-o",
+            "/tmp/.native-llvm-CywoAm/part3.o"
+          ]
+        },
+        {
+          "name": "opt-codegen-2",
+          "status": "PASS",
+          "command": [
+            "/usr/bin/clang",
+            "-O1",
+            "-x",
+            "ir",
+            "-c",
+            "/tmp/.native-llvm-CywoAm/part.bc2",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-o",
+            "/tmp/.native-llvm-CywoAm/part2.o"
+          ]
+        },
+        {
+          "name": "opt-codegen-1",
+          "status": "PASS",
+          "command": [
+            "/usr/bin/clang",
+            "-O1",
+            "-x",
+            "ir",
+            "-c",
+            "/tmp/.native-llvm-CywoAm/part.bc1",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-o",
+            "/tmp/.native-llvm-CywoAm/part1.o"
+          ]
+        },
+        {
+          "name": "opt-codegen-0",
+          "status": "PASS",
+          "command": [
+            "/usr/bin/clang",
+            "-O1",
+            "-x",
+            "ir",
+            "-c",
+            "/tmp/.native-llvm-CywoAm/part.bc0",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-o",
+            "/tmp/.native-llvm-CywoAm/part0.o"
+          ]
+        },
+        {
+          "name": "link",
+          "status": "PASS",
+          "command": [
+            "/usr/bin/clang",
+            "/tmp/.native-llvm-CywoAm/part0.o",
+            "/tmp/.native-llvm-CywoAm/part1.o",
+            "/tmp/.native-llvm-CywoAm/part2.o",
+            "/tmp/.native-llvm-CywoAm/part3.o",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-lpthread",
+            "-lm",
+            "-o",
+            "/tmp/bend-remote2039g12-native"
+          ]
+        }
+      ]
+    }
+  },
+  "bootstrap": {
+    "status": "FAIL",
+    "passed": false,
+    "selfhostGreen": false,
+    "guardian": {
+      "status": "FAIL",
+      "reason": "deadline_exceeded",
+      "commandExitCode": -1,
+      "commandSignal": 15,
+      "peakRssBytes": 2642313216,
+      "peakFootprintBytes": 2029426784,
+      "elapsedMs": 600015,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 1,
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/evals/selfhost_bootstrap_gate.ts",
+        "--native-build=checkpoints/root-remote2039g12-native-build.json",
+        "--native-corpus=checkpoints/root-remote2039g12.native.corpus.json",
+        "--root=checkpoints/.bootstrap_compiler_root_remote2039g12.bend",
+        "--root-manifest=checkpoints/selfhost-root-remote2039g12.json",
+        "--parser=checkpoints/bootstrap-parser-rebuild-remote2039g12.js",
+        "--parser-build=checkpoints/bootstrap-parser-rebuild-remote2039g12.native-build.result.json",
+        "--report=checkpoints/selfhost-remote2039g12-bootstrap.json",
+        "--worker"
+      ],
+      "label": "Real full selfhost step bootstrap",
+      "exitCode": 1,
+      "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1793130782270-e8aa9248ebf14192.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "fixtureCount": 95,
+    "fixturesPassed": true,
+    "parserComparisonsRecorded": 0,
+    "nativePhases": [
+      {
+        "phase": "parse",
+        "elapsedMs": 18291.184,
+        "userCpuMs": 16670.899,
+        "systemCpuMs": 283.116,
+        "modules": 18,
+        "sourceBytes": 7424772,
+        "foreignBytes": 78415,
+        "eagerFuelCells": 144000000,
+        "fuelBuildMs": 498.696
+      },
+      {
+        "phase": "expand",
+        "elapsedMs": 17150.829,
+        "userCpuMs": 15669.118,
+        "systemCpuMs": 219.535,
+        "chunkAdvances": 1601601,
+        "chunkQuantum": 64
+      },
+      {
+        "phase": "check",
+        "elapsedMs": 185154.693,
+        "userCpuMs": 169500.836,
+        "systemCpuMs": 2395.288,
+        "chunkAdvances": 9751334,
+        "chunkQuantum": 64
+      },
+      {
+        "phase": "emit",
+        "elapsedMs": 26471.267,
+        "userCpuMs": 24189.427,
+        "systemCpuMs": 440.227,
+        "chunkAdvances": 1396219,
+        "chunkQuantum": 64
+      }
+    ],
+    "lastPhase": {
+      "event": "phase",
+      "phase": "stage-two-check",
+      "elapsedMs": 466687.108917,
+      "rssBytes": 1130151936,
+      "heapUsedBytes": 454157520,
+      "heapLimitBytes": 6643777536
+    },
+    "stageOne": {
+      "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/checkpoints/selfhost-remote2039g12-bootstrap.json.cases/stage-one.js",
+      "sha256": "30e5dd8b1c37c80a743a106f1c5e1123a96a11b46798ce9be596c14ed31c5099",
+      "bytes": 28518892
+    },
+    "stageTwo": null
+  },
+  "bulkEvidence": [
+    {
+      "path": "/tmp/bend-g12-full-evidence/receipt.json",
+      "sha256": "c35b6ee0e8e117e5200c41e68b1a01166b29a50a191bc2779b96a3ffd084f9da"
+    },
+    {
+      "path": "/tmp/bend-g12-full-evidence/root-remote2039g12-native-build.json",
+      "sha256": "e925b759c7689185432640bd04eb038382682c60eeb4a8af31d4a24e76b65c9a"
+    },
+    {
+      "path": "/tmp/bend-g12-full-evidence/selfhost-remote2039g12-bootstrap.json",
+      "sha256": "1a4bc7c261160766bf9a7862af88d1560cdf7daa0a929d124a2be638ecc1ec28"
+    }
+  ]
+}

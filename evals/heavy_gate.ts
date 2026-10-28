@@ -13,7 +13,7 @@
  */
 import {spawn} from 'node:child_process';
 import {createHash,randomBytes} from 'node:crypto';
-import {mkdir,readFile,rename,rm,lstat,open,writeFile} from 'node:fs/promises';
+import {mkdir,readFile,rename,rm,lstat,open,writeFile,chmod} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {dirname,join,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -30,6 +30,9 @@ export interface HeavyGateOptions {
 }
 export interface HeavyGateResult {
  status:HeavyGateStatus;
+ reportPhase:'decision'|'complete';
+ ownedTreeStopped:boolean|null;
+ supervisorExitCode:number;
  reason:string;
  command:string[];
  label:string;
@@ -119,6 +122,7 @@ async function prepareNativeHelper(timeoutMs:number):Promise<string>{
   const code=await helperExit(process.env.CC??'cc',['-O2','-std=c11','-Wall','-Wextra',source,'-o',temporary],
    Math.min(timeoutMs,helperCompilationTimeoutMs));
   if(code!==0)throw Error(`heavy-gate native helper compilation exited ${code}`);
+  await chmod(temporary,0o700);
   await rename(temporary,executable);
  }finally{await rm(temporary,{force:true});}
  return executable;
@@ -168,6 +172,24 @@ async function authenticatedLease(timeoutMs:number):Promise<boolean>{
  if(code===2)throw Error('heavy-gate inherited lease deadline expired');
  return code===0;
 }
+/**
+ * Apply the receipt contract to a supervisor record. A decision-phase record is
+ * provisional: the supervisor may still be cleaning the owned tree and can be
+ * killed before the final record. Only a complete record with the owned tree
+ * confirmed stopped may succeed. A rejected PASS must not keep the supervisor's
+ * zero exit: callers/CLI use the effective exitCode, while the raw supervisor
+ * code stays in supervisorExitCode for evidence.
+ */
+export function classifyGateResult(record:Record<string,any>,supervisorExitCode:number,command:readonly string[],settings:{label?:string;memoryMiB:number;rssMiB:number;timeoutMs:number},reportPath:string):HeavyGateResult{
+ if(!['PASS','FAIL','RESOURCE_LIMIT','LOCK_BUSY'].includes(record.status))throw Error('invalid heavy-gate supervisor status');
+ const reportPhase=record.reportPhase==='complete'?'complete':'decision';
+ const ownedTreeStopped=record.ownedTreeStopped===true?true:record.ownedTreeStopped===false?false:null;
+ const incomplete=reportPhase!=='complete'||ownedTreeStopped===false||(ownedTreeStopped===null&&record.status==='PASS');
+ const status=(incomplete&&record.status==='PASS'?'FAIL':record.status) as HeavyGateStatus;
+ const exitCode=incomplete&&supervisorExitCode===0?1:supervisorExitCode;
+ return {...record,status,reportPhase,ownedTreeStopped,supervisorExitCode,command:[...command],label:settings.label??'heavy command',exitCode,
+  reportPath,memoryLimitBytes:settings.memoryMiB*MiB,rssLimitBytes:settings.rssMiB*MiB,timeoutMs:settings.timeoutMs};
+}
 /** Public behavior seam. Never nests: guarded entrypoints authenticate the lease. */
 export async function runHeavyGate(command:readonly string[],options:HeavyGateOptions={}):Promise<HeavyGateResult>{
  if(command.length===0||!command[0])throw Error('heavy-gate requires a command');
@@ -180,6 +202,11 @@ export async function runHeavyGate(command:readonly string[],options:HeavyGateOp
  const child=spawn(helper,['--run',settings.lockPath,token,String(settings.memoryMiB*MiB),String(settings.rssMiB*MiB),
   String(settings.pollMs),String(settings.termGraceMs),String(settings.timeoutMs),'--',...command],{
   stdio:['pipe','inherit','inherit',reportFile.fd],
+  // The supervisor owns the deadline and the owned process tree. It must not
+  // die with the launcher's process group: a group SIGKILL of the launcher
+  // otherwise leaves an empty receipt and no terminal outcome. Its stdin is
+  // the lifeline; EOF/HUP from a dead launcher is handled natively.
+  detached:true,
   env:{...process.env,[leaseToken]:token,[leasePath]:settings.lockPath},
  });
  const stop=()=>{if(!child.stdin?.destroyed)child.stdin?.end('s');};
@@ -201,9 +228,7 @@ export async function runHeavyGate(command:readonly string[],options:HeavyGateOp
  const reportSize=(await lstat(reportPath)).size;
  if(reportSize===0||reportSize>16384)throw Error(`heavy-gate supervisor exited ${exitCode} without a valid bounded report`);
  const record=JSON.parse(await readFile(reportPath,'utf8'));
- if(!['PASS','FAIL','RESOURCE_LIMIT','LOCK_BUSY'].includes(record.status))throw Error('invalid heavy-gate supervisor status');
- const result:HeavyGateResult={...record,command:[...command],label:settings.label,exitCode,
-  reportPath,memoryLimitBytes:settings.memoryMiB*MiB,rssLimitBytes:settings.rssMiB*MiB,timeoutMs:settings.timeoutMs};
+ const result=classifyGateResult(record,exitCode,command,settings,reportPath);
  await writeFile(reportPath,JSON.stringify(result)+'\n',{mode:0o600});
  console.error('HEAVY_GATE '+JSON.stringify(result));
  return result;

@@ -12,6 +12,7 @@ import {dirname,isAbsolute,posix,relative,resolve} from 'node:path';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {Worker,isMainThread,workerData} from 'node:worker_threads';
 import {guardHeavyGate,runHeavyGate} from './heavy_gate.ts';
+import {sourceFiles,sourceFilePath,COMPILED_SOURCE_FILE_TAG} from './checker_core_step_runtime.mjs';
 
 type Corpus={schemaVersion:number;directory:string;root:string;officialCommit:string;files:{path:string;sha256:string}[]};
 type Options={mode:'official'|'component';corpus:string;report:string;component?:string;driver:string;outputSmokeDriver:'production'|'frozen-v41';exports?:string;stopAfter:'check'|'compile'};
@@ -21,7 +22,7 @@ const hash=(path:string)=>sha(readFileSync(path));
 const json=(value:unknown)=>JSON.stringify(value,null,2)+'\n';
 const save=(path:string,value:unknown,exclusive=false)=>writeFileSync(path,json(value),exclusive?{flag:'wx'}:undefined);
 const guard={memoryMiB:8192,rssMiB:8192,pollMs:10};
-const ABI=['parsed_module','parse_with_fuel','expand_modules_start','template_step','check_expanded_start','inspect_checked_start','checker_step','emit_modules_start','emit_library_start','emitter_step'];
+const ABI=['parsed_module','parse_with_fuel','expand_modules_start','template_step','check_expanded_start','inspect_checked_start','checker_step','emit_modules_start','emit_library_start','emitter_step','emit_c_modules_start','emit_c_library_start','c_emitter_step'];
 // Frozen output is an explicit historical test input, never a production decoder.
 const frozenV41ABI=['parsed_module','parse_with_fuel','expand_modules_start','template_step','check_expanded_start','checker_step','emit_modules_start','emit_library_start','emitter_step'];
 const productionRuntime=resolve(repository,'evals/checker_core_step_runtime.mjs');
@@ -82,9 +83,18 @@ function parsed(api:any,file:string,source:string):any{
  return feedback.value.result.module;
 }
 function loadOwn(api:any,c:Corpus,expected:Map<string,string>){
- const seen=new Map<string,string>(),active=new Set<string>(),observed=new Set<string>(),modules:any[]=[];
+ const seen=new Map<string,string>(),active=new Set<string>(),observed=new Set<string>(),modules:any[]=[],foreign=new Map<string,string>();
  let declarations=0;
  const observe=(path:string)=>{const at=realpathSync(path);if(!expected.has(at))throw Error('Unexpected compiler input: '+at);observed.add(at);return at;};
+ // The declared `.js` alternative is BIR metadata; this host only reads the
+ // bytes of the path BIR resolves from it and keys the bag by that same path.
+ const observeForeign=(module:string,declared:string)=>{
+  const key=sourceFilePath(module,declared),source=readFileSync(key,'utf8');
+  observe(key);
+  const known=foreign.get(key);
+  if(known!==undefined&&known!==source)throw Error('Declared source path resolves to different bytes: '+key);
+  foreign.set(key,source);
+ };
  const namespace=(parent:string,path:string)=>path==='Base'?'':posix.normalize(isAbsolute(path)?path.replace(/\.bend$/,''):posix.dirname(parent)+'/'+path.replace(/\.bend$/,''));
  function visit(path:string,scope:string){
   const file=observe(path);
@@ -93,18 +103,18 @@ function loadOwn(api:any,c:Corpus,expected:Map<string,string>){
   seen.set(file,scope);active.add(file);
   const module=parsed(api,file,readFileSync(file,'utf8'));
   const tops=items(module.declarations);declarations+=tops.length;
-  for(const top of tops)if(tag(top)==='DefTop'&&tag(top.definition.body)==='DefImports')for(const imported of items(top.definition.body.paths))if(imported.endsWith('.js'))observe(resolve(dirname(file),imported));
+  for(const top of tops)if(tag(top)==='DefTop'&&tag(top.definition.body)==='DefImports')for(const imported of items(top.definition.body.paths))if(imported.endsWith('.js'))observeForeign(file,imported);
   for(const imported of items(module.imports)){
    const path=imported.path;
    if(typeof path!=='string'||/^0x[0-9a-f]+\//.test(path))throw Error('Nonlocal/malformed import in frozen corpus');
    const child=path==='Base'?resolve(c.directory,'bend2/base.bend'):resolve(dirname(file),path);
-   if(path.endsWith('.js'))observe(child);else visit(child,namespace(scope,path));
+   if(path.endsWith('.js'))observeForeign(file,path);else visit(child,namespace(scope,path));
   }
   modules.push(api.parsed_module(scope,module));active.delete(file);
  }
  visit(resolve(c.directory,c.root),'');
  if(observed.size!==expected.size||[...expected.keys()].some(path=>!observed.has(path)))throw Error('Own compiler did not load the exact complete frozen corpus');
- return {modules:list(modules),moduleCount:seen.size,declarations,inputFiles:observed.size};
+ return {modules:list(modules),moduleCount:seen.size,declarations,inputFiles:observed.size,files:[...foreign].map(([path,source])=>({path,source}))};
 }
 
 async function worker(requestPath:string,requestSha256:string){
@@ -144,8 +154,10 @@ async function worker(requestPath:string,requestSha256:string){
   }else{
    ({api,driver}=await phase('compiler-startup',async()=>({api:(await import(pathToFileURL(o.component!).href)).default,driver:await import(pathToFileURL(o.driver).href)})));
    if(!api||!ABI.every(key=>typeof api[key]==='function'))throw Error('Compiler component ABI is incomplete');
-   let loaded=await phase('load-parse',()=>loadOwn(api,corpus,expected));report.moduleCount=loaded.moduleCount;report.sourceDeclarations=loaded.declarations;
-   let modules=loaded.modules;loaded=undefined as any;
+   const loaded=await phase('load-parse',()=>loadOwn(api,corpus,expected));report.moduleCount=loaded.moduleCount;report.sourceDeclarations=loaded.declarations;
+   let modules=loaded.modules;
+   // The benchmark component is a checker_core_component_build (comp.ts) image.
+   const files=sourceFiles(loaded.files,COMPILED_SOURCE_FILE_TAG);
    let expanded=await phase('expand',()=>driver.runTemplateSteps({...api,expand_modules_start:(input:any)=>{modules=undefined;return api.expand_modules_start(input);}},modules));
    if(tag(expanded)!=='ExpandSuccess')throw Error('Own expansion failed: '+JSON.stringify(expanded));
    let checked=await phase('check',()=>driver.runCheckerSteps({...api,check_expanded_start:(input:any)=>{expanded=undefined;return api.check_expanded_start(input);}},expanded.modules));
@@ -157,8 +169,8 @@ async function worker(requestPath:string,requestSha256:string){
     if(receipt.schemaVersion!==1||receipt.corpusSha256!==report.corpusSha256||!Array.isArray(receipt.exports)||!receipt.exports.length||receipt.exports.some((key:any)=>typeof key!=='string')||new Set(receipt.exports).size!==receipt.exports.length)throw Error('Missing exact official export-set receipt');
     exportNames=receipt.exports;
     // The public typed entry owns its FIR input and accepts explicit exports.
-    const emission={...api,emit_library_start:(input:any,exports:any)=>{checked=undefined;return api.emit_library_start(input,exports);}};
-    const emitted=await phase('emit',()=>driver.runLibraryEmitterSteps(emission,checked.program,list(exportNames!)));
+    const emission={...api,emit_library_start:(input:unknown,exports:unknown,sources:unknown)=>{checked=undefined;return api.emit_library_start(input,exports,sources);}};
+    const emitted=await phase('emit',()=>driver.runLibraryEmitterSteps(emission,checked.program,list(exportNames!),files));
     if(tag(emitted)!=='EmitSuccess')throw Error('Own emission failed: '+emitted.message);source=emitted.source;
    }
   }

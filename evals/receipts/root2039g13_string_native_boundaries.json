@@ -1,0 +1,322 @@
+{
+  "schemaVersion": 1,
+  "status": "ACTUAL_STRING_OWNERSHIP_PREFIX_AND_NATIVE_EXPORT_CONSUMERS_PASS",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "scope": "Source parsing and checking with retained g9a frontend; current native-validated emitter; actual JS/C execution, aliases and unchanged 32-page frontier bound. Not full compiler acceptance.",
+  "directory": "/tmp/bend-g13-ownership-after-spMdN7",
+  "frontend": {
+    "path": "/tmp/bend-g10-retained-frontend.js",
+    "sha256": "63fdd105001ccde3e9df352ac3723973366cca004e7469fa7d875896c6450ee5"
+  },
+  "emitter": {
+    "path": "/tmp/bend-g13-ownership-emitter.js",
+    "sha256": "4096d6912ae92740b9fbcb44fe0b156aeb25098e8acb8602fa2478a2dc4eb7be",
+    "build": "/tmp/bend-g13-ownership-emitter-build.result.json",
+    "buildSha256": "ea1f1c5e047127cb5d9305547252ea7623ad9ef5e6698c4e3a73554eee10f027"
+  },
+  "rows": [
+    {
+      "source": "tests/run/native_string_borrow.bend",
+      "target": "js",
+      "sourceSha256": "fa7bf986528e3aeb476d605ac79c3a0a3c3c9fae669ed34d54da1ec1ac107f89",
+      "output": "/tmp/bend-g13-ownership-after-spMdN7/native_string_borrow.bend.js",
+      "outputSha256": "7724f1d059ec2bdd2865bb3412ad21a2686611059267b4b052f5a0bf5dbf377d",
+      "emitMs": 333.6708749999998,
+      "expected": "2\nbounded\n",
+      "consumer": {
+        "command": [
+          "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+          "/tmp/bend-g13-ownership-after-spMdN7/native_string_borrow.bend.js"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 50.96437500000002,
+        "stdout": "2\nbounded\n",
+        "stderr": ""
+      },
+      "passed": true
+    },
+    {
+      "source": "tests/run/native_string_borrow.bend",
+      "target": "c",
+      "sourceSha256": "fa7bf986528e3aeb476d605ac79c3a0a3c3c9fae669ed34d54da1ec1ac107f89",
+      "output": "/tmp/bend-g13-ownership-after-spMdN7/native_string_borrow.bend.c",
+      "outputSha256": "31b493be16deafc87fc8cb0653a2f9385c37926dba08a976aa7a7d9d70edeec4",
+      "emitMs": 12471.368083000001,
+      "expected": "2\nbounded\n",
+      "clang": {
+        "command": [
+          "clang",
+          "-std=c11",
+          "-O0",
+          "-pthread",
+          "/tmp/bend-g13-ownership-after-spMdN7/native_string_borrow.bend.c",
+          "-lm",
+          "-o",
+          "/tmp/bend-g13-ownership-after-spMdN7/native_string_borrow.bend.c.exe"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 1085.7186660000007,
+        "stderrSha256": "e73c3f3e9d70235abe5f5d7ec251b0f46f94353e43602ffaad9d8fce22a63159"
+      },
+      "consumer": {
+        "command": [
+          "/tmp/bend-g13-ownership-after-spMdN7/native_string_borrow.bend.c.exe"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 29.509750000001077,
+        "stdout": "2\nbounded\n",
+        "stderr": ""
+      },
+      "passed": true
+    },
+    {
+      "source": "tests/base/map_prefix_keys.bend",
+      "target": "js",
+      "sourceSha256": "904e89c542bfbf7386baef8bc7a291a734137b859b7f2d5e4557383df613aa0a",
+      "output": "/tmp/bend-g13-ownership-after-spMdN7/map_prefix_keys.bend.js",
+      "outputSha256": "9553f1555427d61a748ca54047db7df5e83edd79fd0d47d583fe38b4d9ccdfda",
+      "emitMs": 228.08433299999888,
+      "expected": "a=2,ab=1,b=3,.\na=20,ab=1,b=3,c=30,.\na=2,ab=1,b=3,c=30,.\nLTGTLT\n=4,𝄞=5,𝄞a=6,.\nLTGTLT\nTFTTF\n",
+      "consumer": {
+        "command": [
+          "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+          "/tmp/bend-g13-ownership-after-spMdN7/map_prefix_keys.bend.js"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 38.226584,
+        "stdout": "a=2,ab=1,b=3,.\na=20,ab=1,b=3,c=30,.\na=2,ab=1,b=3,c=30,.\nLTGTLT\n=4,𝄞=5,𝄞a=6,.\nLTGTLT\nTFTTF\n",
+        "stderr": ""
+      },
+      "passed": true
+    },
+    {
+      "source": "tests/base/map_prefix_keys.bend",
+      "target": "c",
+      "sourceSha256": "904e89c542bfbf7386baef8bc7a291a734137b859b7f2d5e4557383df613aa0a",
+      "output": "/tmp/bend-g13-ownership-after-spMdN7/map_prefix_keys.bend.c",
+      "outputSha256": "3e6bf43ac7f7d25f75c510994bb2a1f4dbd34d92838e03679cbaefc6bbc241c5",
+      "emitMs": 13486.178208999998,
+      "expected": "a=2,ab=1,b=3,.\na=20,ab=1,b=3,c=30,.\na=2,ab=1,b=3,c=30,.\nLTGTLT\n=4,𝄞=5,𝄞a=6,.\nLTGTLT\nTFTTF\n",
+      "clang": {
+        "command": [
+          "clang",
+          "-std=c11",
+          "-O0",
+          "-pthread",
+          "/tmp/bend-g13-ownership-after-spMdN7/map_prefix_keys.bend.c",
+          "-lm",
+          "-o",
+          "/tmp/bend-g13-ownership-after-spMdN7/map_prefix_keys.bend.c.exe"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 826.8874999999971,
+        "stderrSha256": "5096918a7fc19c39f77474a9118e229c8d8220130585068d87bda81315c6a521"
+      },
+      "consumer": {
+        "command": [
+          "/tmp/bend-g13-ownership-after-spMdN7/map_prefix_keys.bend.c.exe"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 3.4697910000031698,
+        "stdout": "a=2,ab=1,b=3,.\na=20,ab=1,b=3,c=30,.\na=2,ab=1,b=3,c=30,.\nLTGTLT\n=4,𝄞=5,𝄞a=6,.\nLTGTLT\nTFTTF\n",
+        "stderr": ""
+      },
+      "passed": true
+    },
+    {
+      "source": "tests/base/text_ops.bend",
+      "target": "js",
+      "sourceSha256": "509b5789efdc0de6d64408cfb72e3749a6e3016fe1483e501c89ff146a859bb4",
+      "output": "/tmp/bend-g13-ownership-after-spMdN7/text_ops.bend.js",
+      "outputSha256": "0319f684f22aaa5007eb1de17009e41d6fb0bd8b834d82f0bcde80ab16101a6f",
+      "emitMs": 218.18587500000285,
+      "expected": "14\n",
+      "consumer": {
+        "command": [
+          "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+          "/tmp/bend-g13-ownership-after-spMdN7/text_ops.bend.js"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 35.57554099999834,
+        "stdout": "14\n",
+        "stderr": ""
+      },
+      "passed": true
+    },
+    {
+      "source": "tests/base/text_ops.bend",
+      "target": "c",
+      "sourceSha256": "509b5789efdc0de6d64408cfb72e3749a6e3016fe1483e501c89ff146a859bb4",
+      "output": "/tmp/bend-g13-ownership-after-spMdN7/text_ops.bend.c",
+      "outputSha256": "cd3a4e29d794edfee216acce6b1e26495c27aa31846f1e27e38233d1b4a767d8",
+      "emitMs": 13015.010875,
+      "expected": "14\n",
+      "clang": {
+        "command": [
+          "clang",
+          "-std=c11",
+          "-O0",
+          "-pthread",
+          "/tmp/bend-g13-ownership-after-spMdN7/text_ops.bend.c",
+          "-lm",
+          "-o",
+          "/tmp/bend-g13-ownership-after-spMdN7/text_ops.bend.c.exe"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 924.9840829999957,
+        "stderrSha256": "65a5b8ff28ff5df7a4ad6c0583c4b88e35020ab6416fe82a72e00386bd65b385"
+      },
+      "consumer": {
+        "command": [
+          "/tmp/bend-g13-ownership-after-spMdN7/text_ops.bend.c.exe"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 3.446750000002794,
+        "stdout": "14\n",
+        "stderr": ""
+      },
+      "passed": true
+    },
+    {
+      "source": "evals/c_step_library_fixture.bend",
+      "target": "js",
+      "exports": [
+        "U32.mul"
+      ],
+      "sourceSha256": "5e53a4815f2fc7f12c3fdea7bfc12764daf65096b125a22a5f884c0cf0e710df",
+      "output": "/tmp/bend-g13-ownership-after-spMdN7/unread-native.js",
+      "outputSha256": "77255bf746f5da49aff9290444378e83815acdd1fa3672901119414209307ed7",
+      "expected": "6\n",
+      "consumer": {
+        "command": [
+          "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+          "--input-type=module",
+          "-e",
+          "const lib=(await import(\"file:///tmp/bend-g13-ownership-after-spMdN7/unread-native.js\")).default;const value=lib[\"U32.mul\"](2,3);if(value!==6)throw Error(\"Native product differs\");console.log(value);"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 44.65820800000802,
+        "stdout": "6\n",
+        "stderr": ""
+      },
+      "passed": true
+    },
+    {
+      "source": "evals/c_step_library_fixture.bend",
+      "target": "c",
+      "exports": [
+        "U32.mul"
+      ],
+      "sourceSha256": "5e53a4815f2fc7f12c3fdea7bfc12764daf65096b125a22a5f884c0cf0e710df",
+      "output": "/tmp/bend-g13-ownership-after-spMdN7/unread-native.c",
+      "outputSha256": "907b502d81850a14cd0d138fa38d3b8c0c12e0f1ebecea97d9908ff5e90ae722",
+      "expected": "6\n",
+      "clang": {
+        "command": [
+          "clang",
+          "-std=c11",
+          "-O0",
+          "-pthread",
+          "/tmp/bend-g13-ownership-after-spMdN7/unread-native.c",
+          "/tmp/bend-g12-native-export-caller.c",
+          "-lm",
+          "-o",
+          "/tmp/bend-g13-ownership-after-spMdN7/unread-native.c.exe"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 784.7677499999991,
+        "stderrSha256": "5d493a485e15f5beef1f8835b5ec71d03d6935e0876ad7c69b0a66817048a77b"
+      },
+      "consumer": {
+        "command": [
+          "/tmp/bend-g13-ownership-after-spMdN7/unread-native.c.exe"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 3.0985840000066673,
+        "stdout": "6\n",
+        "stderr": ""
+      },
+      "passed": true
+    }
+  ],
+  "emitterBuild": {
+    "sourcePath": "/private/tmp/bend2039g13-c-boundaries/checkpoints/emitter_steps_component_v1.bend",
+    "sourceSha256": "e6bd090dc9b2a0b381e4a896922c91869571445b194a60898d893e1f2ce3b3c8",
+    "artifactSha256": "4096d6912ae92740b9fbcb44fe0b156aeb25098e8acb8602fa2478a2dc4eb7be",
+    "checkedDefinitions": 5424,
+    "eventsFullyValidated": 5887,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 2477637632,
+      "peakFootprintBytes": 2577407616,
+      "elapsedMs": 13375,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend2039g13-c-boundaries/evals/checker_core_component_build.ts",
+        "--worker",
+        "--file=/private/tmp/bend2039g13-c-boundaries/checkpoints/emitter_steps_component_v1.bend",
+        "--exports=emit_modules_start,emit_library_start,emitter_step,emit_c_modules_start,emit_c_library_start,c_emitter_step",
+        "--artifact=/tmp/bend-g13-ownership-emitter.js",
+        "--report=/tmp/bend-g13-ownership-emitter-build",
+        "--inputs-sha256=1c162751dfa7a8dc4a44457737c2ba249fcd614d3b130ded3687da235b70ce04"
+      ],
+      "label": "Full-native CheckerCore component JS build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793134458682-03822342c47ab166.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 2258042880,
+    "peakFootprintBytes": 2296474656,
+    "elapsedMs": 83240,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "--experimental-strip-types",
+      "/tmp/bend-g13-consumer-worker.mjs",
+      "/tmp/bend-g13-ownership-after.mjs"
+    ],
+    "label": "heavy command",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793134513402-892e86ff86388439.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "before": {
+    "path": "evals/receipts/root2039g12_boundary_before.json",
+    "ownershipReceipt": "/tmp/bend-g12-new-boundaries-gyC4qX/receipt.json"
+  }
+}

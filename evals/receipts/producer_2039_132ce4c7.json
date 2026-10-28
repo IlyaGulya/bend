@@ -1,0 +1,476 @@
+{
+  "schemaVersion": 1,
+  "status": "PASS",
+  "scope": "Actual 2.0.39 producer smoke, not full compiler acceptance",
+  "runtime": {
+    "bun": "1.4.2",
+    "revision": "744846f844374847c902b5e7fd59b4342a51ef99"
+  },
+  "command": [
+    "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+    "/private/tmp/bend2039-producer-smoke.wFDSwd/run.ts"
+  ],
+  "inputs": {
+    "bend2/bend.ts": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+    "bend2/comp.ts": "132ce4c74e944387ae1860a366c4776455f78fd462766f255063583775d00cd7",
+    "bend2/base.bend": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+    "tests/reg/ctor_field_order.bend": "d6a0ebdf0fd862af55407a60f8ed321540357487bc7cedc0395a308aa05dec14",
+    "tests/reg/generic_ctor_domains.bend": "7d4d7f558c000111e9be72a8685dc45bdaf235afe977ea73e4ecd18757f83f5b",
+    "tests/reg/phys_storage_paths.bend": "b3f1aad4a75d028845f301816982a0d98a9606d239ce4d3c674a91ac5bf5fd85",
+    "tests/run/js_late_fold.bend": "a6a22487d40cf9d7aa886270019e7eb8d13d8ff2380a892aaf1ac188bec667c2",
+    "tests/run/word_match_coverage.bend": "d9ffd19522099cd487cee350c984373453136d2bdd5b35e7c7eac15f56474060",
+    "evals/repro_bun_c_ctor_stack_8192.bend": "8b394a24444a30e5e35441eadb82bda122151c589c668a58f2d6590b105784c1"
+  },
+  "runner": {
+    "path": "/tmp/bend2039-producer-smoke.wFDSwd/run.ts",
+    "sha256": "655e5af773babbf4be8c26f5d14bf2e3f5653b8dbe6d94d3c2778bb35b2d1915"
+  },
+  "rawReceipt": {
+    "path": "/tmp/bend2039-producer-smoke.wFDSwd/receipt.json",
+    "sha256": "d3029f8c06b8163c4995c9d3476f67f2f9eff93c706f85c419ef3af5d664a6fa"
+  },
+  "guardian": {
+    "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793001452582-6e7fbd47b5dec19d.json",
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 383926272,
+    "peakFootprintBytes": 361006496,
+    "elapsedMs": 23057,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "bun",
+      "/tmp/bend2039-producer-smoke.wFDSwd/run.ts"
+    ],
+    "label": "heavy command",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793001452582-6e7fbd47b5dec19d.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "rows": [
+    {
+      "source": "tests/reg/ctor_field_order.bend",
+      "status": "PASS",
+      "expected": "shared\nmiddle\nshared",
+      "observed": {
+        "c": "shared\nmiddle\nshared",
+        "js": "shared\nmiddle\nshared"
+      },
+      "artifacts": {
+        "c": {
+          "path": "/private/tmp/bend2039-producer-smoke.wFDSwd/ctor_field_order.c",
+          "sha256": "378fe365c34738177bbe35b02f17fd1106fc16b90c126f6ff4a6d646c46d5806",
+          "bytes": 85343
+        },
+        "js": {
+          "path": "/private/tmp/bend2039-producer-smoke.wFDSwd/ctor_field_order.js",
+          "sha256": "2f36599bf8276ffe9f5c0e543ff8ca22c9f1a0564278b1f4f2067cab6f446aed",
+          "bytes": 15608
+        }
+      },
+      "stages": {
+        "emit": {
+          "command": [
+            "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+            "bend2/main.ts",
+            "tests/reg/ctor_field_order.bend",
+            "-o",
+            "/private/tmp/bend2039-producer-smoke.wFDSwd/ctor_field_order.c",
+            "-o",
+            "/private/tmp/bend2039-producer-smoke.wFDSwd/ctor_field_order.js"
+          ],
+          "exit": 0,
+          "signal": null,
+          "elapsedMs": 625.986625
+        },
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/private/tmp/bend2039-producer-smoke.wFDSwd/ctor_field_order.c",
+            "-lm",
+            "-o",
+            "/private/tmp/bend2039-producer-smoke.wFDSwd/ctor_field_order"
+          ],
+          "exit": 0,
+          "signal": null,
+          "elapsedMs": 1581.436791
+        },
+        "native": {
+          "command": [
+            "/private/tmp/bend2039-producer-smoke.wFDSwd/ctor_field_order"
+          ],
+          "exit": 0,
+          "signal": null,
+          "elapsedMs": 9.167666000000281
+        },
+        "javascript": {
+          "command": [
+            "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+            "/private/tmp/bend2039-producer-smoke.wFDSwd/ctor_field_order.js"
+          ],
+          "exit": 0,
+          "signal": null,
+          "elapsedMs": 98.67008299999998
+        }
+      }
+    },
+    {
+      "source": "tests/reg/generic_ctor_domains.bend",
+      "status": "PASS",
+      "expected": "15\n21",
+      "observed": {
+        "c": "15\n21",
+        "js": "15\n21"
+      },
+      "artifacts": {
+        "c": {
+          "path": "/private/tmp/bend2039-producer-smoke.wFDSwd/generic_ctor_domains.c",
+          "sha256": "b17e90ec7c21889b396b3b8843b2059ab7400d0641947e3a9a61ca159b851310",
+          "bytes": 94496
+        },
+        "js": {
+          "path": "/private/tmp/bend2039-producer-smoke.wFDSwd/generic_ctor_domains.js",
+          "sha256": "712c298d5152fbd5a5a179dd74dc8a078a1d2faf18edd9d6ab2d4fb0319ae209",
+          "bytes": 18314
+        }
+      },
+      "stages": {
+        "emit": {
+          "command": [
+            "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+            "bend2/main.ts",
+            "tests/reg/generic_ctor_domains.bend",
+            "-o",
+            "/private/tmp/bend2039-producer-smoke.wFDSwd/generic_ctor_domains.c",
+            "-o",
+            "/private/tmp/bend2039-producer-smoke.wFDSwd/generic_ctor_domains.js"
+          ],
+          "exit": 0,
+          "signal": null,
+          "elapsedMs": 1094.6073330000004
+        },
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/private/tmp/bend2039-producer-smoke.wFDSwd/generic_ctor_domains.c",
+            "-lm",
+            "-o",
+            "/private/tmp/bend2039-producer-smoke.wFDSwd/generic_ctor_domains"
+          ],
+          "exit": 0,
+          "signal": null,
+          "elapsedMs": 897.3132499999997
+        },
+        "native": {
+          "command": [
+            "/private/tmp/bend2039-producer-smoke.wFDSwd/generic_ctor_domains"
+          ],
+          "exit": 0,
+          "signal": null,
+          "elapsedMs": 6.18487499999992
+        },
+        "javascript": {
+          "command": [
+            "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+            "/private/tmp/bend2039-producer-smoke.wFDSwd/generic_ctor_domains.js"
+          ],
+          "exit": 0,
+          "signal": null,
+          "elapsedMs": 24.615082999999686
+        }
+      }
+    },
+    {
+      "source": "tests/reg/phys_storage_paths.bend",
+      "status": "PASS",
+      "expected": "2655042671\n3,9",
+      "observed": {
+        "c": "2655042671\n3,9",
+        "js": "2655042671\n3,9"
+      },
+      "artifacts": {
+        "c": {
+          "path": "/private/tmp/bend2039-producer-smoke.wFDSwd/phys_storage_paths.c",
+          "sha256": "4517a551fb27ef56c91f5fe0b33b5774efde5f4280d66931821a7ffe18a5a24b",
+          "bytes": 102281
+        },
+        "js": {
+          "path": "/private/tmp/bend2039-producer-smoke.wFDSwd/phys_storage_paths.js",
+          "sha256": "fa1cd3af6d2b917479ee1c1cb22e149f01584c539f6f86adf91e275a98e142b2",
+          "bytes": 26536
+        }
+      },
+      "stages": {
+        "emit": {
+          "command": [
+            "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+            "bend2/main.ts",
+            "tests/reg/phys_storage_paths.bend",
+            "-o",
+            "/private/tmp/bend2039-producer-smoke.wFDSwd/phys_storage_paths.c",
+            "-o",
+            "/private/tmp/bend2039-producer-smoke.wFDSwd/phys_storage_paths.js"
+          ],
+          "exit": 0,
+          "signal": null,
+          "elapsedMs": 1664.3433750000004
+        },
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/private/tmp/bend2039-producer-smoke.wFDSwd/phys_storage_paths.c",
+            "-lm",
+            "-o",
+            "/private/tmp/bend2039-producer-smoke.wFDSwd/phys_storage_paths"
+          ],
+          "exit": 0,
+          "signal": null,
+          "elapsedMs": 864.800416
+        },
+        "native": {
+          "command": [
+            "/private/tmp/bend2039-producer-smoke.wFDSwd/phys_storage_paths"
+          ],
+          "exit": 0,
+          "signal": null,
+          "elapsedMs": 9.765124999999898
+        },
+        "javascript": {
+          "command": [
+            "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+            "/private/tmp/bend2039-producer-smoke.wFDSwd/phys_storage_paths.js"
+          ],
+          "exit": 0,
+          "signal": null,
+          "elapsedMs": 80.64129200000025
+        }
+      }
+    },
+    {
+      "source": "tests/run/js_late_fold.bend",
+      "status": "PASS",
+      "expected": "1",
+      "observed": {
+        "c": "1",
+        "js": "1"
+      },
+      "artifacts": {
+        "c": {
+          "path": "/private/tmp/bend2039-producer-smoke.wFDSwd/js_late_fold.c",
+          "sha256": "fe22a3de65d1a18a96706b6d5d43e52c07b13268de000e38b844779aca85c6c5",
+          "bytes": 84157
+        },
+        "js": {
+          "path": "/private/tmp/bend2039-producer-smoke.wFDSwd/js_late_fold.js",
+          "sha256": "48d5e8b6b86bb6cbcab2b5eb8bd942d69224497a270738edb1b0bea8a0ae960f",
+          "bytes": 14298
+        }
+      },
+      "stages": {
+        "emit": {
+          "command": [
+            "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+            "bend2/main.ts",
+            "tests/run/js_late_fold.bend",
+            "-o",
+            "/private/tmp/bend2039-producer-smoke.wFDSwd/js_late_fold.c",
+            "-o",
+            "/private/tmp/bend2039-producer-smoke.wFDSwd/js_late_fold.js"
+          ],
+          "exit": 0,
+          "signal": null,
+          "elapsedMs": 1207.8973340000002
+        },
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/private/tmp/bend2039-producer-smoke.wFDSwd/js_late_fold.c",
+            "-lm",
+            "-o",
+            "/private/tmp/bend2039-producer-smoke.wFDSwd/js_late_fold"
+          ],
+          "exit": 0,
+          "signal": null,
+          "elapsedMs": 1330.2145839999994
+        },
+        "native": {
+          "command": [
+            "/private/tmp/bend2039-producer-smoke.wFDSwd/js_late_fold"
+          ],
+          "exit": 0,
+          "signal": null,
+          "elapsedMs": 13.14941699999872
+        },
+        "javascript": {
+          "command": [
+            "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+            "/private/tmp/bend2039-producer-smoke.wFDSwd/js_late_fold.js"
+          ],
+          "exit": 0,
+          "signal": null,
+          "elapsedMs": 47.87762499999917
+        }
+      }
+    },
+    {
+      "source": "tests/run/word_match_coverage.bend",
+      "status": "PASS",
+      "expected": "17,27,37,27,27,37,12,16,12,16,16,12",
+      "observed": {
+        "c": "17,27,37,27,27,37,12,16,12,16,16,12",
+        "js": "17,27,37,27,27,37,12,16,12,16,16,12"
+      },
+      "artifacts": {
+        "c": {
+          "path": "/private/tmp/bend2039-producer-smoke.wFDSwd/word_match_coverage.c",
+          "sha256": "e4ab131c02b079deb5b9316aad73d3c14662a380017f94b9b0d164a694136a0b",
+          "bytes": 102415
+        },
+        "js": {
+          "path": "/private/tmp/bend2039-producer-smoke.wFDSwd/word_match_coverage.js",
+          "sha256": "daf87f326a08c6ae45df65610c7ae0f42a5b155bc507200e5bccac19b6d86a70",
+          "bytes": 17922
+        }
+      },
+      "stages": {
+        "emit": {
+          "command": [
+            "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+            "bend2/main.ts",
+            "tests/run/word_match_coverage.bend",
+            "-o",
+            "/private/tmp/bend2039-producer-smoke.wFDSwd/word_match_coverage.c",
+            "-o",
+            "/private/tmp/bend2039-producer-smoke.wFDSwd/word_match_coverage.js"
+          ],
+          "exit": 0,
+          "signal": null,
+          "elapsedMs": 2038.5152910000015
+        },
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/private/tmp/bend2039-producer-smoke.wFDSwd/word_match_coverage.c",
+            "-lm",
+            "-o",
+            "/private/tmp/bend2039-producer-smoke.wFDSwd/word_match_coverage"
+          ],
+          "exit": 0,
+          "signal": null,
+          "elapsedMs": 2283.4811250000002
+        },
+        "native": {
+          "command": [
+            "/private/tmp/bend2039-producer-smoke.wFDSwd/word_match_coverage"
+          ],
+          "exit": 0,
+          "signal": null,
+          "elapsedMs": 31.310749999998734
+        },
+        "javascript": {
+          "command": [
+            "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+            "/private/tmp/bend2039-producer-smoke.wFDSwd/word_match_coverage.js"
+          ],
+          "exit": 0,
+          "signal": null,
+          "elapsedMs": 122.84316699999908
+        }
+      }
+    },
+    {
+      "source": "evals/repro_bun_c_ctor_stack_8192.bend",
+      "status": "PASS",
+      "expected": "8192n",
+      "observed": {
+        "c": "8192n",
+        "js": "8192n"
+      },
+      "artifacts": {
+        "c": {
+          "path": "/private/tmp/bend2039-producer-smoke.wFDSwd/repro_bun_c_ctor_stack_8192.c",
+          "sha256": "5669bc589ecf87ab20b8f124d85301da742d284bf68d32bb5a0bf95b79dd2ddc",
+          "bytes": 451794
+        },
+        "js": {
+          "path": "/private/tmp/bend2039-producer-smoke.wFDSwd/repro_bun_c_ctor_stack_8192.js",
+          "sha256": "451f44e0ba98fb1745fbb1ed6aeafbbbc6dfbf6854680f61e2b86c94e12315c4",
+          "bytes": 22262
+        }
+      },
+      "stages": {
+        "emit": {
+          "command": [
+            "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+            "bend2/main.ts",
+            "evals/repro_bun_c_ctor_stack_8192.bend",
+            "-o",
+            "/private/tmp/bend2039-producer-smoke.wFDSwd/repro_bun_c_ctor_stack_8192.c",
+            "-o",
+            "/private/tmp/bend2039-producer-smoke.wFDSwd/repro_bun_c_ctor_stack_8192.js"
+          ],
+          "exit": 0,
+          "signal": null,
+          "elapsedMs": 6073.7955
+        },
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/private/tmp/bend2039-producer-smoke.wFDSwd/repro_bun_c_ctor_stack_8192.c",
+            "-lm",
+            "-o",
+            "/private/tmp/bend2039-producer-smoke.wFDSwd/repro_bun_c_ctor_stack_8192"
+          ],
+          "exit": 0,
+          "signal": null,
+          "elapsedMs": 2775.519042
+        },
+        "native": {
+          "command": [
+            "/private/tmp/bend2039-producer-smoke.wFDSwd/repro_bun_c_ctor_stack_8192"
+          ],
+          "exit": 0,
+          "signal": null,
+          "elapsedMs": 6.122749999998632
+        },
+        "javascript": {
+          "command": [
+            "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+            "/private/tmp/bend2039-producer-smoke.wFDSwd/repro_bun_c_ctor_stack_8192.js"
+          ],
+          "exit": 0,
+          "signal": null,
+          "elapsedMs": 51.14570800000001
+        }
+      }
+    }
+  ],
+  "notClaimed": [
+    "full compiler root",
+    "selfhost C renderer acceptance",
+    "stage1/stage2 byte fixedpoint"
+  ]
+}

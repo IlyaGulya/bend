@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "status": "REJECTED_FULL_NATIVE_FACTS_FIRST_DEFAULT_GC_RSS_LIMIT",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "sourceCommit": "88fbe115",
+  "report": "/private/tmp/bend2039-upgrade/checkpoints/root-release2039e-facts-first-build.json",
+  "guardian": {
+    "status": "RESOURCE_LIMIT",
+    "reason": "rss_limit",
+    "commandExitCode": -1,
+    "commandSignal": 15,
+    "peakRssBytes": 8687566848,
+    "peakFootprintBytes": 8680807312,
+    "elapsedMs": 24196,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 73,
+    "command": [
+      "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+      "--smol",
+      "/private/tmp/bend2039-upgrade/evals/native_compiler_experiment.ts",
+      "--mode=build",
+      "--corpus=checkpoints/root-release2039e-native.corpus.json",
+      "--artifact=/tmp/bend2039-facts-first-native",
+      "--report=checkpoints/root-release2039e-facts-first-build.json",
+      "--cc-opt=0",
+      "--internal=build"
+    ],
+    "label": "Native CPU compiler build",
+    "exitCode": 73,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793025162327-467f2a14f324e1eb.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "lastProgress": {
+    "phase": "compile_book",
+    "event": "start",
+    "unixMs": 1793025167766,
+    "pid": 68542,
+    "worker": false,
+    "rssBytes": 2413887488,
+    "heapUsedBytes": 1449504163,
+    "cpuMs": 8736.861,
+    "checkedDefinitions": 12111
+  },
+  "failure": {
+    "phase": "compile_book",
+    "diagnostic": "rss_limit"
+  },
+  "notes": "Analysis-only passes preserve nine actual C/JS outputs and eight previous artifact bytes, but unchanged Bun default automatic GC still crosses external8192MiB guard. Next control will lower only automatic-GC RAM heuristic using documented BUN_JSC_forceRAMSize; external guard stays authoritative, not the heuristic."
+}

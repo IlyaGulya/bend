@@ -1,0 +1,166 @@
+{
+  "schemaVersion": 1,
+  "status": "NAT_HOST_RUNTIME_AND_CANONICAL_CONSUMERS_PASS_NOT_FULL_SELFHOST_EMITTER",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "parentCheckpoint": "d2d4f480",
+  "scope": "The exact changed constant js_runtime_extra declaration was compiled by canonical Bend CLI and executed; direct and alias host fixtures plus library-produced shadow Nat values ran through canonical CLI. Full regenerated selfhost emitter/nested host suite is not yet exercised.",
+  "inputs": {
+    "bend2/selfhost/js_backend.bend": "29c300f93cd34f9afb51cd629d0e5bcadec265dca4e366c83da15323760f73f1",
+    "tests/io/nat_host_export.js": "ac9c19742fe0636bdfb19933f4f2f9319853ec8a7c2097b7d43267a63b561825",
+    "tests/io/nat_alias_export.js": "51262689de3d7259ebe5631a65f78be8633c7fdec5a63a82aa035a692004c6cb",
+    "tests/io/shadowed_nat_export.js": "b787338199bf0b4c045f69eea05dfb717c82eda966a84bcb43aff9f28f9740ba",
+    "bend2/comp.ts": "318c55c449115cb820bf77c3ac500a1c07ed8473adbbe6eed9c61088f4a0009e",
+    "bend2/bend.ts": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e"
+  },
+  "runtime": {
+    "bun": "1.4.3",
+    "revision": "c6da4a4d3010e5553438c60f6bd76d981976867c"
+  },
+  "runtimeDeclaration": {
+    "compiled": "/tmp/bend2039g7-nat-runtime.mjs",
+    "artifactSha256": "e2db8f17947d38deb66e2ae5111fc621e9cb7d5e56f8fa473070767ea06afe83",
+    "accepted": [
+      0,
+      281474976710656,
+      9007199254740992
+    ],
+    "rejected": [
+      {
+        "value": "-1",
+        "type": "number"
+      },
+      {
+        "value": "1.5",
+        "type": "number"
+      },
+      {
+        "value": "1",
+        "type": "bigint"
+      },
+      {
+        "value": "9007199254740994",
+        "type": "number"
+      },
+      {
+        "value": "Infinity",
+        "type": "number"
+      },
+      {
+        "value": "NaN",
+        "type": "number"
+      }
+    ],
+    "observedErrors": [
+      "bend: expected a Nat host number: an integer from 0 to 2^53",
+      "bend: expected a Nat host number: an integer from 0 to 2^53",
+      "bend: expected a Nat host number: an integer from 0 to 2^53",
+      "bend: expected a Nat host number: an integer from 0 to 2^53",
+      "bend: expected a Nat host number: an integer from 0 to 2^53",
+      "bend: expected a Nat host number: an integer from 0 to 2^53"
+    ],
+    "compileGuardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 84082688,
+      "peakFootprintBytes": 61194960,
+      "elapsedMs": 199,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "bend2/main.ts",
+        "evals/.host_nat_runtime_smoke.bend",
+        "-o",
+        "/tmp/bend2039g7-nat-runtime.mjs"
+      ],
+      "label": "heavy command",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793091556475-7b80f8ec071ddbc0.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "canonicalConsumers": [
+    {
+      "name": "nat_host_export",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/opt/homebrew/bin/bun",
+        "bend2/main.ts",
+        "tests/io/nat_host_export.bend"
+      ],
+      "status": 0,
+      "stdout": "0\n",
+      "stderr": "HEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":171261952,\"peakFootprintBytes\":109675888,\"elapsedMs\":396,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/opt/homebrew/bin/bun\",\"bend2/main.ts\",\"tests/io/nat_host_export.bend\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793091609797-3d6433eed4c42551.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n"
+    },
+    {
+      "name": "nat_alias_export",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/opt/homebrew/bin/bun",
+        "bend2/main.ts",
+        "tests/io/nat_alias_export.bend"
+      ],
+      "status": 0,
+      "stdout": "0\n",
+      "stderr": "HEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":162791424,\"peakFootprintBytes\":110265664,\"elapsedMs\":277,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/opt/homebrew/bin/bun\",\"bend2/main.ts\",\"tests/io/nat_alias_export.bend\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793091610230-acf05d9a29993856.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n"
+    },
+    {
+      "name": "shadowed_nat_export",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/opt/homebrew/bin/bun",
+        "bend2/main.ts",
+        "tests/io/shadowed_nat_export.bend"
+      ],
+      "status": 0,
+      "stdout": "0\n",
+      "stderr": "HEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":164790272,\"peakFootprintBytes\":110511520,\"elapsedMs\":427,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/opt/homebrew/bin/bun\",\"bend2/main.ts\",\"tests/io/shadowed_nat_export.bend\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793091653269-0dfe04841830b31e.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n"
+    }
+  ],
+  "rejectedProbe": {
+    "name": "shadowed_nat_export hardcoded private constructor tag",
+    "observed": "3\n",
+    "reason": "Canonical and selfhost emitters intentionally use different private constructor tag names; the consumer now obtains genuine ADT values from the compiled library."
+  },
+  "notClaimed": [
+    "full regenerated selfhost emitter",
+    "full native compiler build",
+    "stage1/stage2 fixedpoint"
+  ]
+}

@@ -1,0 +1,240 @@
+{
+  "schemaVersion": 1,
+  "kind": "canonical-native-profile-run",
+  "diagnosticOnly": true,
+  "acceptanceEvidence": false,
+  "status": "NOT_PASS_WORKER_HEAP_LIMIT",
+  "runtime": "node v23.11.0/V8 (no Bun)",
+  "componentSha256": "4a91665c634dff4b1da9d17bdc80786efc03bd0d0e89865ed22e085c1026060a",
+  "command": [
+    "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+    "--experimental-strip-types",
+    "evals/native_stage_profile_build.ts",
+    "--artifact-dir=/tmp/native-stage-canonical-final",
+    "--canonical-bir=/tmp/canonical-source-bir-c.json",
+    "--canonical-sources=/tmp/sources-source-c.json",
+    "--canonical-runtime=bend2/selfhost/c_runtime.c",
+    "--canonical-checked=/tmp/checked-source-c.json",
+    "--canonical-component=/private/tmp/bend-fir-root-aa9/checkpoints/root-final-art.js"
+  ],
+  "guard": {
+    "entry": "guardHeavyGate",
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000,
+    "workerLimits": {
+      "stackSizeMb": 256,
+      "maxOldGenerationSizeMb": 3072
+    },
+    "internalBypass": false
+  },
+  "result": {
+    "exitCode": 1,
+    "reason": "ERR_WORKER_OUT_OF_MEMORY: Worker terminated due to reaching memory limit: JS heap out of memory",
+    "elapsedMs": 101984,
+    "peakRssBytes": 3394748416,
+    "peakFootprintBytes": 3631272288,
+    "ownedTreeStopped": true,
+    "reportPhase": "complete",
+    "nativePhaseRows": 0,
+    "artifactProduced": false,
+    "profileProduced": false,
+    "capRaise": false,
+    "retry": false
+  },
+  "transport": {
+    "generatedFixture": "checkpoints/native_stage_profile_generated_fixture.bend",
+    "generatedFixtureSha256": "ef98fcac013f127a218430aa1b3f43c191092cbc41d66b3f41f02715be65a108",
+    "birSha256": "f272d5531b76fcbb05c3fe6c096a60bb32cb930f5a4103c6161aa10c287bada6",
+    "sourcesSha256": "f8edf1aaa5d07b3c17e4d3b26411c3517541bfba68939eca17ebcf87de307836",
+    "runtimeSha256": "478c1ba7d0d0626c1927d11c4af3b3d4cef520db41afd8722ebf55d5050769c3",
+    "sourceSha256": "d1001497df01fa274cd4a67e7a3bd596853e9ee45ecf3fc133084c3a9cfc883b",
+    "checkedSha256": "9e220b61c64648ee4070be7b053cd10db92a039cf07f20575bdaa517d89f6bbe",
+    "sources": 56,
+    "unknownConstructors": 0
+  },
+  "rawLog": {
+    "path": "/tmp/native-stage-canonical-final.log",
+    "sha256": "14d810f2206b0563d4cfecfa1d0323b3f6657ef0d8844d17bea4c1dcd769cb99",
+    "bytes": 2386
+  },
+  "note": "The 3072 MiB old-generation worker cap was reached while loading/checking/generating the canonical fixture; no native phase ran. This is NOT a profiling pass, NOT a cap raise, and NOT retried. It does not claim full compiler HOST/FP/C execution. The opt-in compiler_profile instrumentation and real valid/invalid compile smoke were added after this run; they do not retroactively identify this run\u2019s internal boundary. Native host emitter labels have a source fix but no post-fix native run; old rows remain historical.",
+  "profilerInstrumentation": {
+    "status": "opt-in source added and real changed-path smoke exercised; old OOM run remains uninstrumented/unknown boundary",
+    "collector": "evals/compiler_profile.mjs (existing)",
+    "sharedWorkerPath": "evals/native_stage_profile_build.ts build() calls exported compilePhases(); --profile-dir binds the exact runDirectory with a profile-ready message and supervises worker error/exit receipts",
+    "spans": [
+      "module-import",
+      "book_load",
+      "book_valid",
+      "compile_book"
+    ],
+    "provenance": [
+      "source/kernel/compiler/driver/host/manifest/canonical input SHA-256",
+      "generated fixture SHA-256 record",
+      "runtime execPath/execArgv/versions",
+      "worker limits",
+      "command",
+      "artifact dir"
+    ],
+    "realCompileSmoke": {
+      "harness": "/tmp/stage-prof-review/smoke.mjs (throwaway; imports the shared compilePhases, not a builder CLI smoke branch)",
+      "valid": {
+        "driver": "evals/c_target_array_nat.bend",
+        "summary": "/tmp/stage-prof-review/valid-profiles/profile-31781-thread-0-qFudXe/summary.json",
+        "summarySha256": "daeb930746cf767cbb089705f4a08b0dfbd4b6c5aa6f477b5eb07d36f93a0f51",
+        "status": "completed",
+        "measurementStatus": "complete",
+        "incompleteEvidence": false,
+        "spans": [
+          [
+            "module-import",
+            "completed"
+          ],
+          [
+            "book_load",
+            "completed"
+          ],
+          [
+            "book_valid",
+            "completed"
+          ],
+          [
+            "compile_book",
+            "completed"
+          ]
+        ]
+      },
+      "invalid": {
+        "driver": "/tmp/stage-prof-review/tiny_invalid.bend (valid fixture plus malformed suffix)",
+        "summary": "/tmp/stage-prof-review/invalid-profiles/profile-31781-thread-0-rdHDD9/summary.json",
+        "summarySha256": "03987579a597acae39ebcb743445ef797f27391ec71009d3a1e12aafef16a194",
+        "status": "failed",
+        "measurementStatus": "complete",
+        "incompleteEvidence": false,
+        "spans": [
+          [
+            "module-import",
+            "completed"
+          ],
+          [
+            "book_load",
+            "failed"
+          ]
+        ]
+      },
+      "log": "/tmp/stage-prof-review/smoke.log",
+      "logSha256": "448816d0a2d3cec4df953c85a96b6e580f3f12f01b9fc4addf8bfe8ac30db34d",
+      "cExecution": {
+        "cPath": "/tmp/stage-prof-review/crun.c",
+        "cBytes": 81153,
+        "cSha256": "94a57dbda989a3edd8923d39d8f12952fa6c68ea2c68004d429916d9e9eb9dc3",
+        "binary": "/tmp/stage-prof-review/crun.bin",
+        "binarySha256": "a6ea3f8737e22222376ec993cd5b4b17003a974009a7e73d3a694dbe886d1fb1",
+        "stdout": "/tmp/stage-prof-review/crun.out",
+        "stdoutValue": "7\n",
+        "stdoutSha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+        "exitStatus": 0,
+        "log": "/tmp/stage-prof-review/compile_run.log",
+        "logSha256": "9b1c12bdf227ac3e3fce4cbce3b8c55d55ee0f40eef6448b5637a929294f2742",
+        "timingTypes": [
+          "number",
+          "number"
+        ]
+      }
+    },
+    "knownBuilderFailure": {
+      "command": "node --experimental-strip-types evals/native_stage_profile_build.ts --profile-dir=/tmp/stage-prof-review/builder-fail3",
+      "summary": "/tmp/stage-prof-review/builder-fail3/profile-19275-thread-1-9cu0sf/summary.json",
+      "summarySha256": "1d532821d50f8e8f3481281c4258c734f6b628c5ef3b7a8d3b2f05c0b47353a8",
+      "log": "/tmp/stage-prof-review/builder-fail3.log",
+      "logSha256": "51827b2f92cf60cce4ff5572dfe270ee620ded27bb910e397825c7d3c55873af",
+      "workerFailureReceipt": null,
+      "note": "known throw finishes failed; supervisor exit sees summary.json and writes no interrupted receipt"
+    },
+    "workerTermination": {
+      "harness": "/tmp/stage-prof-review/term-smoke.mjs imports the shared superviseProfileWorker; one worker throws, one exits 137",
+      "error": {
+        "receipt": "/tmp/stage-prof-review/term-error-run/worker-failure.json",
+        "sha256": "292b29d42f12807a932f0e930ce6e86ff61289f800cd96e9b5435af84dfb3a83",
+        "status": "interrupted"
+      },
+      "exit": {
+        "receipt": "/tmp/stage-prof-review/term-exit-run/worker-failure.json",
+        "sha256": "20d706fd3056a9534096186d01eb9cd9c3517e6369f9a87afadd66dcc1d24779",
+        "status": "interrupted"
+      },
+      "log": "/tmp/stage-prof-review/term-smoke.log",
+      "logSha256": "89dfe94feb1ef9496eeec1f43196fe219a3ee8201340a69f272abe21302c7d2b"
+    },
+    "oldPermanentSmokeRetracted": "the removed --profile-smoke branch was bare begin/end (or handmade error), exercised none of the new spans, and was not changed-path proof; no claim uses it",
+    "oldRun": "the 46124798 OOM run predates instrumentation; its internal boundary remains unknown",
+    "compilePhasesReturn": "returns only c/validationMs/codegenMs, avoiding extra caller-held wrapper references; not a release/live-heap claim (compiler module cache and FL may retain the book)",
+    "fixtureHashTiming": "generated fixture SHA-256 recorded immediately after transport, before compilePhases",
+    "commandIdentity": "[process.execPath, ...process.execArgv, ...process.argv.slice(1)] in profileExecution",
+    "nativeExecutionCapture": "after native spawn, raw stdout and stderr are written with wx before error/status checks; return records exitStatus, signal, error, paths, bytes and SHA-256; failure errors cite paths, not a replacement output",
+    "supervisorZeroExit": {
+      "receipt": "/tmp/stage-prof-review/term-zero-run/worker-failure.json",
+      "sha256": "e3f87f623727008083da7f473a16b34106fe4c6dc9236e1f2543a05684e3d549",
+      "status": "failed",
+      "log": "/tmp/stage-prof-review/term-smoke-zero.log",
+      "logSha256": "2e45fa242424e1152382bc892fa0ad90fb4fac380d6074e82dbba99006e44994",
+      "observedExitCode": 1,
+      "note": "exit 0 without a terminal result writes a failed receipt; known nonzero throw with summary writes no interrupted receipt"
+    },
+    "nativeHostLabelFix": {
+      "template": "unchanged: finished shapes0, pending shapes1, direct shapes2, bound shapes3",
+      "emitter": "pending=sum(requestGroups), direct=shapes1, bound=shapes2, finished=shapes0",
+      "status": "source fixed; no native rerun; old native rows if any retain the known label defect"
+    },
+    "compileBookObserver": {
+      "adapter": "evals/compiler_profile.mjs createCompileBookObserver (existing)",
+      "call": "profile present: C.compile_book(book,{observe: observer.observe}); no profile: C.compile_book(book)",
+      "evidence": {
+        "harness": "/tmp/stage-prof-review/observer_smoke.mjs",
+        "log": "/tmp/stage-prof-review/observer_smoke.log",
+        "logSha256": "df9eb5ee5d3de662455e18923bf11036c94fe80fac4fe9dbcf12d13bbd8cfe6f",
+        "onSummary": "/tmp/stage-prof-review/observer-on/profile-37697-thread-0-KxIbhe/summary.json",
+        "onSummarySha256": "b9cafa7e6ddca4fab2d7a9f3ddc06ed269bae3883eeb103b0c70ae7046c6077a",
+        "onC": "/tmp/stage-prof-review/observer-on.c",
+        "onCSha256": "94a57dbda989a3edd8923d39d8f12952fa6c68ea2c68004d429916d9e9eb9dc3",
+        "offC": "/tmp/stage-prof-review/observer-off.c",
+        "offCSha256": "94a57dbda989a3edd8923d39d8f12952fa6c68ea2c68004d429916d9e9eb9dc3",
+        "identicalC": true,
+        "cBytes": 81153,
+        "cPassSpans": 2,
+        "cPassNames": [
+          "c-pass-1",
+          "c-pass-2"
+        ],
+        "observationKinds": {
+          "compiler-state": 3,
+          "compiler-retention": 3,
+          "compiler-memo-sizes": 3
+        },
+        "timingTypes": [
+          "number",
+          "number"
+        ]
+      },
+      "failedPath": "any compilePhases throw is closed by the caller abortOpen(failed); nested observer spans are open spans and are unwound; the invalid fixture exercises book_load failure, not a post-c-pass compile failure",
+      "nestedFailure": {
+        "harness": "/tmp/stage-prof-review/observer_fail.mjs",
+        "log": "/tmp/stage-prof-review/observer_fail.log",
+        "logSha256": "3a7685e66f33011b69c8db687731439856dd844280aa6da092b61c5faa176511",
+        "status": "failed",
+        "spans": [
+          [
+            "c-reachability",
+            "failed"
+          ],
+          [
+            "c-pass-1",
+            "failed"
+          ]
+        ]
+      }
+    }
+  }
+}

@@ -5,15 +5,398 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
-- A standalone selfhost helper now resolves hand-written `CID(<key>)` and
-  `FID(<key>)` markers lexically for the pending BIR→C renderer: whole markers
-  link by exact key, comments and quoted/character literals stay untouched, an
-  LF or CRLF backslash splice keeps an identifier as one token, and a missing key
-  is a link failure naming the spelling. The helper is integrated alone; the live
-  canonical C emitter and the legacy C path are untouched. Verified by ALL PROOFS
-  CHECK plus interpreted, JS and C (`clang -O1`) consumer regression runs; the new
-  `tests/run/c_backend_link.bend` pin covers comments, literals, LF/CRLF
-  continuations and the exact-miss category.
+- G21 completes the full native compiler build and a real native-stage0 →
+  stage1 → stage2 byte fixedpoint under the original 8-GiB / 600-s limits
+  per gate. All 12,157 definitions / 12,736 events validate with zero
+  excluded checks or output patches. Native build: 157.031 s, peak RSS
+  5,432,262,656 B; bootstrap: 437.094 s, peak RSS 5,252,530,176 B.
+  Stage1 and stage2 are unchanged, byte-identical 30,222,543-byte files,
+  SHA-256 `6f3dff55cee825d064b1d2f9d0c3268fd0d629dd93043d90d6fc00f43eba5978`.
+  Both complete 47-case C/JS matrices, 33 native target/library consumers,
+  12 admission-boundary cases and five nested host exports pass.
+  Each unchanged emitted image additionally passes all 95 original fixtures
+  and 130 fresh full semantic parser approvals: 285 fixture runs including
+  native seed. This separate companion takes 194.416 s.
+  `Arena.name` restores canonical `Map.get`; native LLVM split stays O1.
+  The suite authenticates fixture sources and exact per-fixture manifests,
+  including programs without a Base import; injected byte drift is rejected.
+  These runtime checks are not a universal FIR/BIR law proof or an
+  official-compiler speed claim. Earlier failed versions remain rejected.
+  Receipts: `evals/receipts/root2039g21_native_fixedpoint.json` and
+  `evals/receipts/root2039g21_emitted_suites.json`.
+
+- The g20 split-O2 native-seed trial is **rejected**, not selected for the
+  next candidate. Its full native root builds in 278.558 s with peak RSS
+  5,448,794,112 bytes under the original 8-GiB/600-s guard, checking all
+  12,156 definitions / 12,735 events without exclusions or output patches.
+  Frontend/ABI/pre-split stages remain O1; partition stages use explicit O2.
+  The generated C and 30,220,181-byte stage1 have the same observed SHA256
+  as g18. All 95 seed fixtures and 18 complete semantic parser approvals
+  pass, but bootstrap again reaches 600 s during stage-two check; no stage2
+  or new byte fixedpoint is produced. No runtime improvement is established
+  by these unpaired measurements. Both complete 47-case C/JS matrices,
+  33 native target/library consumers, native admission boundaries and five
+  nested host-export consumers subsequently pass. The unchanged-image
+  95+95 suite is not run because no stage2 or fixedpoint exists.
+  Receipts: `evals/receipts/root2039g20_o2_bootstrap_rejected.json` and
+  `evals/receipts/root2039g20_full_companions_rejected.json`.
+
+- The g18 candidate reuses canonical `Map.bit` for immutable read-only lookup
+  instead of rebuilding a cursor in Bend. Existing backward-position, NUL,
+  Unicode and arbitrary-U32 character checks pass on actual JS and C.
+  Shared lowering folds only canonical constant Nat successor atoms below
+  the conservative U32 cut; dynamic successors retain the runtime overflow
+  check. Static/dynamic successor values across 255, 256 and 2^32 agree on
+  both targets. Twenty-four existing target/library consumers and the two
+  new successor consumers pass; the full matrices retain their original
+  cases and add the three index/Nat boundary fixtures (47 cases each).
+  The full native root builds in 322.502 s under the unchanged 8-GiB/600-s
+  guard (12,156 bodies / 12,735 events; zero exclusions or output patches).
+  G18 is nevertheless **rejected**: bootstrap reaches the unchanged
+  600-s deadline during stage-two check, after all 95 seed fixtures and
+  18 complete semantic parser approvals pass. Stage1 is 30,220,181 bytes;
+  no stage2 or new byte fixedpoint is claimed. A separate profiled complete
+  check takes 266.920 s; it is diagnostic, not full-bootstrap acceptance.
+  Receipts: `evals/receipts/producer2039g18_native_bit_consumers.json` and
+  `evals/receipts/root2039g18_bootstrap_rejected.json`.
+  Both complete 47-case C/JS matrices, 33 native target/library consumers
+  and five nested host consumers subsequently pass. The separate boundary
+  probe had an invalid positive source (`def main()` without its law);
+  the canonical parser rejects it too. Full-chain acceptance stays failed.
+  Receipt: `evals/receipts/root2039g18_full_companions_rejected.json`.
+
+- The g16 candidate fixes nested inline-data C conversions: one-arm values
+  have no tag switch, multi-arm values retain their destination tag, each
+  field has distinct temporaries, and both cursors cross short-arm padding.
+  `phys_storage_paths` now checks unequal nested arm widths; it and
+  `checker_arena_names` compile and print the expected results on actual C/JS.
+  JS direct non-tail calls can complete synchronously within the existing
+  depth-64 budget, preserving pending/region frames, capture-slot release,
+  argument order and exception recovery. Sixteen backend consumers pass,
+  including deep recursion, the 12-million-iteration capture witness and
+  the borrowed-String heap bound; 20,000 overflow/recovery pairs also pass.
+  The deep non-tail witness joins both full target matrices (44 cases each).
+  The full native build passes (12,156 bodies / 12,736 events, zero
+  exclusions/patches): 453.278 s, peak RSS 4,443,586,560 B. This version is
+  nevertheless **rejected**: the unchanged 600-second bootstrap deadline
+  stops at stage-two-check after all 95 seed fixtures and 18 complete
+  semantic parser approvals. Stage1 is 30,823,620 bytes; no stage2 exists.
+  The emitted compiler runs in a Node/V8 worker; a Bun/JSC prefix profile
+  is not an attribution of that worker's deadline.
+  Receipts: `evals/receipts/root2039g16_boundary_consumers.json` and
+  `evals/receipts/root2039g16_bootstrap_rejected.json`.
+
+- The g15 C append repair uses one rendering path for direct and first-class
+  `String.append`: borrow the head, transfer the tail, and release freshly
+  allocated heads or owned staged heads only after evaluation. Borrowed
+  projected heads are snapshotted before a consuming tail can clear their
+  source field. Eight real JS/C consumers pass, including repeated field
+  aliases and the unchanged 32-page heap-frontier regression.
+  Native bootstrap admission no longer mistakes a signal or runtime fault
+  for an expected source rejection, and its 600-second quota is explicit.
+  The full fresh native build passes (12,125 bodies / 12,705 events; zero
+  exclusions/patches): 406.678 s, peak RSS 4,806,852,608 B. G15 is nevertheless
+  **rejected**: the unchanged 600-second bootstrap deadline stops stage-two
+  checking, which starts at 449.453 s. All 95 native-seed fixtures and 18
+  complete semantic parser approvals pass; stage1 is 28,552,669 bytes, no
+  stage2 or new fixedpoint exists. Receipts:
+  `evals/receipts/root2039g15_append_boundaries.json` and
+  `evals/receipts/root2039g15_bootstrap_rejected.json`.
+
+- The g14 candidate uses the existing immutable `IndexLookup.find` for arena
+  name hits rather than rebuilding a `Map.get` path. Existing prefix, Unicode,
+  repeat, rewind and sentinel cases pass on actual JS and compiled C.
+  This combines the previously isolated lookup change with g12's producer
+  ownership-generation repair and g13's C-backend fixes. Full-root timing and
+  a new bootstrap are not inferred from these consumer passes.
+  Receipt: `evals/receipts/producer2039g14_name_lookup_smoke.json`.
+
+- The g13 C-backend boundary repair preserves proper-prefix `String.cmp`
+  ordering, stages natives read only by library exports, and calls saturated
+  native exports with their full arity. Borrowing String helpers now release
+  owned staged arguments and fresh literal temporaries after computing their
+  result; scalar Nat/F32/U32 words are never treated as owned boxed Terms.
+  Eight real JS/C consumers pass, including the unread `U32.mul` export,
+  `map_prefix_keys`, `text_ops`, and the alias/value/fresh-literal regression
+  `native_string_borrow` with the unchanged 32-page heap-frontier bound.
+  Both target matrices now retain those three added cases. This is bounded
+  backend evidence; no g13 full compiler or fixedpoint is accepted yet.
+  Receipt: `evals/receipts/root2039g13_string_native_boundaries.json`.
+
+- The g12 producer candidate refreshes borrowed-argument answers when monotone
+  ownership facts grow, retaining immutable snapshots at individual call sites.
+  Nine actual C/JS programs preserve identical emitted bytes. The complete
+  frozen g10a root now builds in 197.008 s, including 119.590 s of C generation,
+  under the unchanged 8-GiB/600-s gate (peak RSS 5,392,596,992 B). All 12,114
+  bodies / 12,694 events validate without exclusions or output patches, and
+  the real binary passes 21 C/JS/library consumers. The runtime is unchanged
+  apart from its reviewed compiler-source provenance comment. A subsequent
+  fresh parser/root chain passes native validation/build in 418.413 s and both
+  complete 40-case target matrices, but g12 remains **rejected**: bootstrap
+  reaches stage-two-check at 466.687 s and hits the unchanged 600-s deadline.
+  Its real native seed passes all 95 fixtures and emits stage1 (28,518,892 B);
+  no stage2 or byte fixedpoint is produced. Native-generated C also exposes
+  pre-existing prefix-comparison, unread-native-export and borrowed-String
+  lifetime failures; those are repaired separately in g13, not retroactively
+  accepted as g12 behavior. Full-chain receipt:
+  `evals/receipts/root2039g12_bootstrap_deadline_rejected.json`.
+  The datatype typed-step JS regression also executes correctly. Its combined
+  four-target metacompilation wrapper reaches an aggregate 600-s quota during
+  the first C leg; no per-C-leg timeout or semantic failure is inferred.
+  The two new regression files now use the canonical `#|` marker format.
+  Receipts: `evals/receipts/producer2039g12_borrow_generation_smoke.json`,
+  `evals/receipts/producer2039g12_frozen_native_pass.json`,
+  `evals/receipts/producer2039g12_typed_meta_probe.json` and
+  `evals/receipts/root2039g12_boundary_before.json`.
+
+- The g10 boundary candidate rejects retained datatype template parameters at
+  their own checker spans and admits executables only with a runnable root
+  `main`, while preserving inferred/Unit mains and mainless libraries.
+  The public typed-step checker/emitter before/after regressions pass.
+  JS `F32.read` now matches canonical decimal rounding and ASCII whitespace;
+  `F32.pow` preserves the IEEE unit-base cases. C transfers owned String/Word
+  operands to consuming helpers and fixes reversed Word bit order. Four
+  numeric programs pass on each actual JS/C target, including shared Words.
+  Both complete 40-case C/JS target matrices also pass, retaining all original
+  cases and the four numeric regressions. G10a remains **rejected** at the
+  unchanged 600-second native
+  C-producer deadline in `compile_book`, before LLVM or bootstrap. All 12,114
+  bodies / 12,694 events validate, with zero exclusions/patches; peak RSS is
+  6,519,111,680 B. No native binary or new byte fixedpoint is claimed.
+  Receipts: `evals/receipts/root2039g10_checker_entry.json`,
+  `evals/receipts/root2039g10_numeric_consumers.json`,
+  `evals/receipts/root2039g10a_native_deadline_rejected.json` and
+  `evals/receipts/root2039g10a_full_matrices.json`.
+
+- The g9a candidate adds the nine `Array.atomic.*` primitives to the common
+  catalog and JS/C targets. All three atomic consumer scenarios pass on each
+  target, including wrapped indices, shared aliases, partial CAS and F32 bits.
+  Fresh parser admission and full native validation/build pass (12,099 bodies,
+  12,679 events; zero exclusions/patches; 273.066 s, peak RSS 5,381,029,888 B).
+  This version is nevertheless **rejected**: bootstrap hits the unchanged
+  600-second deadline in stage-two-check. Native seed fixtures and 18 complete
+  parser approvals pass, but there is no stage2 or new byte fixedpoint.
+  Receipt: `evals/receipts/root2039g9a_atomic_bootstrap_rejected.json`.
+  Both complete 36-case target matrices, seven native foreign/library and five
+  nested host-export consumers also pass. The built native compiler passes
+  all six atomic JS/C consumers. A separate bounded Bun/JSC profile identifies
+  map lookup and trampoline work; it does not establish a whole-check cause.
+  Receipts: `evals/receipts/root2039g9a_full_consumers.json`,
+  `evals/receipts/root2039g9a_jsc_and_native_atomics.json`.
+
+- The complete g8 native-seed selfhost checkpoint passes on the pinned
+  Bend 2.0.39/Bun 1.4.3 sources under the original 8 GiB / 600 s gates.
+  All 12,071 bodies / 12,651 events validate without exclusions or output
+  patches; the native build completes in 263.744 s (peak RSS 5,388,206,080 B).
+  Its real native stage0 produces stage1; unchanged stage1 parses, checks and
+  emits the full root to byte-identical stage2: 28,334,920 bytes,
+  SHA-256 `0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885`.
+  Bootstrap completes in 557.437 s, peak RSS 4,738,695,168 B. All 95 seed
+  fixtures, 18 complete root parser comparisons, both 33-case C/JS matrices,
+  seven native foreign/library scenarios and five nested host exports pass.
+  This accepts the native-seed route, not a controlled speedup or every
+  historical seed route. Receipt: `evals/receipts/root2039g8b_native_fixedpoint.json`.
+  A separate unchanged-image suite also passes all 95 fixtures on stage1 and
+  all 95 on stage2 (285 native-seed/stage1/stage2 results total), with fresh
+  source parsing and complete AST parity; receipt:
+  `evals/receipts/root2039g8b_emitted_suites.json`.
+
+- The reduced C-producer memory diagnostic now emits current typed do-bindings
+  and dependency-ordered definitions, and preserves canonical error diagnostics.
+  Fresh literal and chain/linear runs expose reachability/pass-1 heap samples
+  and speculative segment growth under the original resource guards.
+  These are reduced mechanism reproducers, not a full-root OOM or speedup claim.
+  Receipt: `evals/receipts/producer2039g8_reduced_memory.json`.
+
+- Full-root selfhost profiling off/on now has two alternating pairs on one
+  unchanged accepted g8 stage1 image and source closure. All four legs pass
+  the original guards and emit byte-identical compiler images. Median
+  operational wall/CPU differences are +15.79%/+16.14%, sampled guardian
+  RSS/footprint +2.30%/+2.20%; these include collector/checkpoint overhead
+  and are not exclusive-stage or retained-memory measurements.
+  Receipt: `evals/receipts/profile2039g8_full_root_overhead.json`.
+
+- The resource guardian publishes its compiled helper with private permissions
+  before the atomic rename. Guarded descendants now work after a cold build
+  under a group-writable umask; unsafe pre-existing cache entries still fail
+  closed. The complete 14-case guardian suite passes.
+  Component-build and physical-storage gates pin the reviewed guardian source
+  exactly; the stale pre-fix pin no longer blocks a fresh native parser build.
+  The component-build smoke validates 356 definitions / 511 events and its
+  emitted arithmetic library executes with result `7`; full-root acceptance
+  remains separate.
+
+- A bounded C-codegen development probe validates the complete frozen root,
+  streams phase/pass progress and stops at an explicit pass or codegen-time
+  budget. It reuses the compiler observer without full-profile snapshots,
+  records input hashes, process CPU and host contention context, publishes no
+  compiler image and never substitutes its cutoff for full acceptance.
+
+- The g8r3 candidate keeps arena name IDs while rebuilding descriptors and
+  emits bounded direct JavaScript tail calls. Fresh parser acceptance and
+  native validation of all 12,041 JS-root definitions pass, and the unpatched
+  12-million-iteration capture-loop consumer prints `24000011`. The candidate
+  remains rejected: native C production exceeds the unchanged 600-second
+  deadline in `compile_book`, with peak RSS 4,415,438,848 bytes. No full
+  g8r3 bootstrap or byte fixedpoint is claimed.
+
+- Opt-in selfhost emitter traces bracket catalog, lowering, descriptor
+  normalization, layouts/sharing, JS/C rendering and link planning at native
+  scheduler boundaries. Both real backend consumers pass with identical
+  emitted bytes with tracing off/on. Reports authenticate image-specific
+  constructor encoding and expose missing coverage and retained-span limits;
+  timings are diagnostic intervals, not exclusive source CPU or full-root
+  overhead measurements.
+
+- Transient checker substitution/publication memo entries are invalidated by
+  the arena's rewind generation instead of rewriting all 4096 slots after
+  every declaration. Lookups reject older epochs before exposing reused
+  handles; source-only cache lanes and the case-prefix reclamation stay
+  unchanged. The fresh g7 native build, both 33-case backend matrices and the
+  interpreter/JS/C lifecycle regression pass; its monolithic bootstrap remains
+  rejected at the unchanged 600-second stage-two-check deadline.
+
+- The selfhost JavaScript Nat host-input guard reports the host range failure
+  directly, rather than routing invalid inputs through arithmetic overflow.
+  Boundary fixtures check rejection and values instead of exception wording;
+  the shadow-Nat consumer uses library-produced ADT values rather than private
+  constructor tags. All five real nested host-export consumers now pass through
+  the regenerated g7 compiler. Full-bootstrap admission remains separate.
+
+- Descriptor normalization counts surviving arrow binders separately from
+  substituted arguments and eliminated lets. Arrows, kinds and captured
+  environments are quoted at their final scope, preserving both a moved
+  arrow's own binder and its captured outer type. The typed-step consumer
+  passes 38 semantic cases, and the canonical C consumer emits, links and
+  prints `26`; full-compiler and byte-fixedpoint acceptance remain separate.
+
+- Selfhost JavaScript continuations reclaim a popped frame's capture slots
+  after rebinding them into locals. A bounded nested non-tail loop now runs
+  twelve million iterations on Node's default stack and prints `24000011`
+  instead of failing with the machine memory fault; full bootstrap admission
+  remains separate.
+
+- A flat immutable compiler-use-map experiment preserves nine actual C/JS
+  programs and their emitted bytes, but is rejected: the full compiler root
+  does not publish C before the unchanged 600-second deadline. No compiler
+  acceptance or timing/memory improvement is claimed.
+
+- Compiler variable-use singleton tries are reused by numeric probe ID across
+  definition scopes and fixedpoint passes. The immutable trie representation
+  and counts are unchanged. Nine real C/JS programs retain identical bytes.
+  The complete native root now passes the original 8 GiB / 600 s guard in
+  565.1 s with identical C bytes; stage1/stage2 acceptance remains separate.
+
+- The fresh g6 root passes all 33 C and 33 JavaScript backend cases and the
+  native foreign/library scenarios. Its real native-seed bootstrap emits
+  stage1, passes all 95 seed fixtures and parses the entire root without the
+  previous capture-stack fault, but exceeds 600 seconds at stage-two checking.
+  A separate nested Nat host-export consumer also fails. Neither is accepted
+  as a completed compiler bootstrap or byte fixedpoint.
+
+- A separate completed g6 diagnostic runs the unchanged stage1's own parser,
+  checker and emitter on the full root and emits a byte-identical stage2:
+  26,619,233 bytes, SHA-256 `096f6c92`. It takes 1483.4 seconds under a
+  diagnostic 1800-second deadline; the original 600-second bootstrap remains
+  rejected. This establishes exact bytes, not monolithic bootstrap admission.
+
+- Native C generation traverses nested constructors with an explicit stack,
+  preserving field order, layouts and ownership without exhausting Bun's
+  JavaScript stack on large literal values. The 8192-character regression now
+  compiles and prints its length natively. Field order, generic constructor
+  domains, physical layouts and word-match folding are exercised on the
+  Bend 2.0.39 source base.
+
+- Compiler dependency discovery reads declared signatures instead of reopening
+  checked body type motives. C constructor uses, including foreign `CID(...)`
+  references, register their owning families when needed. Eight focused C/JS
+  programs pass; complete-root memory and selfhost fixedpoint remain unaccepted.
+
+- Compiler string-literal lowering builds one constructor chain without keeping
+  a literal for every remaining suffix. Numeric atoms still share by value.
+  Supplementary Unicode scalars preserve character order and count in native,
+  JS and interpreted execution; full-root memory acceptance remains separate.
+
+- Native spin specialization keys reuse interned layout IDs instead of copying
+  the shared layout graph into JSON. Parameter, result and erased-layout groups
+  remain distinct. Nine C/JS programs pass and eight prior artifacts preserve
+  their bytes; complete compiler-root verification is separate.
+
+- Native ownership/heating emission publishes the pass that first adds no
+  facts, instead of repeating it solely to collect C text. Earlier passes'
+  text is discarded. Nine actual C/JS programs keep identical emitted bytes;
+  complete-root timing, memory and fixedpoint remain separate measurements.
+
+- Native bootstrap authenticates generated C through resolved paths, like its
+  executable. macOS `/tmp` aliases no longer reject unchanged C; wrong digests
+  still fail authentication.
+
+- Native local naming cleans each distinct stem once per definition rather
+  than once per extracted word. Packed-layout checks avoid temporary strings.
+  Nine actual C/JS programs retain identical emitted bytes; complete-root
+  timing and memory remain separate measurements.
+
+- A body-scoped normalized-type cache experiment preserved eight C/JS outputs,
+  but its full native build still exceeded the 8 GiB footprint guard. It was
+  rejected and reverted; no memory improvement or compiler acceptance is claimed.
+
+- Applying Bun's `--smol` to the actual C producer also failed the full native
+  RSS guard. That runtime control was rejected; the original producer runtime
+  configuration is retained.
+
+- Opt-in compiler profiles distinguish process-wide CPU from collector-thread
+  CPU and label typed-step intervals as request envelopes, not isolated
+  provider time. Allocation volume and unverified Bun heap-statistics fields
+  remain unavailable instead of being inferred from heap capacity. Real worker
+  boundary smoke passes on Bun 1.4.3 and Node 23.11.0; full-root profiling
+  overhead remains unmeasured.
+
+- The 2.0.39 selfhost migration uses one bounded-left JS literal serializer
+  for scalar and full-u32 Char codes, removing a duplicate growing-prefix
+  path. Current-source parser roles no longer fall back to historical checkout
+  paths. Canonical CLI Char/String, affine non-tail and host-export fixtures
+  pass; composed compiler and fixedpoint re-admission remain separate gates.
+
+- Selfhost JavaScript foreign continuations adapt the answer inside `IO(A)`,
+  not the `IO` container: host surrogate Char answers become U+FFFD and F32
+  answers round before Bend uses them. The regenerated full root passes those
+  regressions, public text exports and deep non-tail calls; this smoke is not
+  yet a native-build or stage1/stage2 fixedpoint acceptance.
+
+- Selfhost JavaScript executables preserve the program name in `IO.args` and
+  `IO.args_bytes` and use the canonical `+RTS ... -RTS` / `--RTS` boundaries.
+  The regenerated full compiler passes six actual argument-consumer cases;
+  native build and byte fixedpoint remain separate acceptance gates.
+
+- The selfhost C runtime template takes its insertion markers from the actual
+  canonical `runtime_c` argument slots, not nearby section titles. Generated
+  constructor/function tables now follow their ABI typedefs; the real wide
+  record emitter/clang/native regression passes.
+
+- The experimental native LLVM pipeline splits before ordinary O1 optimization,
+  after mandatory helper inlining, and bounds partition compiles to three
+  concurrent children. The full generated C links and the resulting compiler
+  compiles and runs a foreign consumer under the original memory guard.
+  This backend-only smoke is not whole-build or byte-fixedpoint acceptance.
+
+- Selfhost C constructor-field types instantiate under the family arguments and
+  every preceding declared field, including erased fields. A pure `List<U32>`
+  main now emits, compiles and prints `[1, 2]` instead of being refused as open.
+  Full g2 native generation publishes C below the memory guard, but its complete
+  build still exceeds the original 600-second deadline; no fixedpoint is claimed.
+
+- The g2 backend matrices retain all 31 earlier inputs and add the existing
+  generic-constructor regression. All 32 programs pass on C and JavaScript
+  through 160 guarded stages, including wide nodes and ordinary datatype SHOW.
+  Complete native build and compiler byte fixedpoint remain separate gates.
+
+- Datatypes are headers: the selfhost checker publishes each family's name,
+  module aliases and kind telescope before any parameter, field or body is
+  checked, so a field, index telescope or kind may name a family declared later
+  in the module. Mutually recursive tree types now check like they do in the
+  native book; undefined names, duplicate headers, ill-kinded fields and every
+  body still fail their own category in source order. Forward constructor
+  values in a field type are unchanged.
 
 - Native C value layouts box records wider than eight words instead of carrying
   large inline intermediates. Scalar word encoding and the physical runtime
@@ -548,6 +931,152 @@ latest one; the GitHub release carries the same notes.
   generated delimiters and the main IO thunk contract.
 - The shared selfhost Core provides single-pattern binder depth directly,
   without building a singleton pattern list.
+
+## 2.0.39 (2026-10-23)
+
+- **`bend --publish` sends only files inside the entry's directory**: a
+  `../` climb, a symlink out of it or a `LICENSE` that links out is refused
+  before mining, with no hub request (#1836, PR #1838 by oxura).
+- **`File.open(path, "x")`** creates a new file and fails with `EEXIST` if
+  the path exists, in one step (#1821, PR #1824).
+- **Non-UTF-8 arguments**: `IO.args_bytes` gives each argument's bytes, and
+  `File.open_bytes` opens a path given as bytes (#1798, PR #1799 by
+  viridale).
+- **`Process.run` runs through one worker on Bun and Node**, so it no
+  longer ends the run on Node, and a child that leaves stdin unread no
+  longer hangs it (#1468, PR #1831 by oxura).
+- **Metal: the lane spill of 2.0.38 is gone** (PR #1809): it made
+  `bend -o` of a `!` program build 17% slower. A full lane fails with
+  `ERR_DEEP` again, as in 2.0.37.
+- **Fixes**:
+  - The GPU build sees a closure in a later instance of the same datatype
+    (#1513, PR #1542).
+  - C: a read-only walk borrows its list when a sum type puts a word where
+    another constructor has a box (#1805, PR #1806 by viridale); a memory
+    fault ends the program by its signal (SIGSEGV, SIGBUS), not exit 1,
+    after flushing output (PR #1828 by oxura).
+  - `IO.get_env` refuses a name with a `=`, which read part of another
+    variable on C and Node (#1794, PR #1795 by orezraey).
+- **CLI**: `bend -o` never overwrites an input through a hard link or with
+  the GPU archive `<out>.gpu` (PRs #1797 by sebastian-griego and #1826 by
+  toprameen); a `$CC` that is not a usable clang 14+ ends the build with
+  its reason, instead of a silent plain-clang build (#1802, PR #1804 by
+  Yi-111-a).
+- **Tools**: the formatter keeps body columns after `(`, `;`, tuple commas
+  and in nested lambdas, and keeps a generic's `>` apart from a following
+  `=` (PRs #1803 by toprameen, #1811, #1816, #1833, #1839 by vicmcorrea).
+- **Docs**: BendTT proves adequacy, a checked law holds at each closed
+  instance (PR #1627 by ScottMoore0); the guide and BendRT say a hot type
+  counts the fields of every node, shared or not (#1559, PRs #1812 by
+  vicmcorrea and #1813), and BendRT matches the runtime on the corpus, JS
+  requests and the CUDA cube (#1822, PR #1823).
+
+## 2.0.38 (2026-10-20)
+
+- **A compiled program's runtime options go between `+RTS` and `-RTS`**
+  (#1466, PR #1530 by viridale). **Breaking:** `./main --threads 4` now
+  passes `--threads 4` to the program (`IO.args`); write `./main +RTS
+  --threads 4 -RTS`. A trailing `-RTS` may be left off, `BENDRTS` holds
+  options too (the command line wins), `--` stops option reading and
+  reaches the program, and an unknown option inside the bracket is an
+  error. `--threads` takes digits, `--gpu` takes `on`, `off` or a size in
+  `GB` or `MB`.
+- **JS modules keep their names apart.** **Breaking for JS hosts:** a
+  constructor's JS tag is its name in the file that declares it, so a
+  value crosses modules and matches the right arm (#1105, PR #1488 by
+  oxura); imported export keys and foreign JS def ids keep their `:`
+  (#1758, #1759, #1766, PR #1760 by oxura).
+- **`TCP.send` and `TCP.try_send` hand back unsent bytes**, a
+  `List<&2, U32>` to resume with `TCP.send_bytes`, so a write cut inside a
+  UTF-8 character loses nothing (#1764, PR #1765 by oxura). **Breaking**
+  for code that read the residue as a String.
+- **Native windows emit `Text` events** with the typed characters on
+  Linux and macOS (#1019, PR #1441 by oxura).
+- **A `Char` holds any u32 on every lane**; a non-scalar becomes U+FFFD
+  only where text leaves Bend (#1080, PR #1411 by oxura).
+- **`--verdict`**:
+  - The verdict says why each def it lists relies on unsafe or foreign
+    code (PR #1531 by MattCozendey), and hints when those defs come only
+    through unused imports (#1463, PR #1558).
+  - A def specialized at a finite `~` parameter is checked by the kernel
+    over each value, so an empty type no longer passes unchecked (#1186,
+    PR #1225 by nicolas-abril); a `~` constant takes its model from the
+    template's instances (PR #1580 by nicolas-abril).
+  - The kernel accepts a self-call on a constructor rebuilt around a
+    smaller part of its input, as the checker does (#1167, PR #1200 by
+    nicolas-abril).
+  - Fixes: annotations under η and let inlining (#1665, #1669, PR #1666 by
+    aaaxn); a bare constructor in a type (#1619, PR #1620 by ScottMoore0);
+    shared group prefixes (PR #1704 by sebastian-griego); kernel failures
+    show their details (#1535, PR #1536 by viridale).
+- **Faster**:
+  - A GPU bang chains its rounds on the device, three command buffers in
+    flight, with no host round trip per stage (PR #1447 by nicolas-abril).
+  - A flat generic def's spin takes words at its instance's layouts
+    (#1195, PR #1588).
+  - `String.order` walks both strings once: 8x on C, and `String.eq` of
+    long strings no longer overflows the JS lane (PR #1459 by aldeni);
+    `String.contains` is linear on JS (PR #1628 by sebastian-griego).
+  - Emission allocates 40% less on large files (PR #1617 by
+    nicolas-abril); word matches with many literals compile faster (PR
+    #1387 by Iann29).
+  - `U32.pow` by squaring and `F32.show` without a second conversion on C
+    (PRs #1567 and #1591 by sebastian-griego); `F32.read` rejects bad input
+    in linear time (PR #1625 by toprameen); expired channel waiters leave
+    in constant time (PR #1671 by sebastian-griego).
+  - CUDA keeps its L1 cache in `bend_dev` (PR #1602 by wakamex).
+- **Fixes**:
+  - Metal: a full lane stack spills to the heap, so non-tail recursion
+    under `!` no longer faults at 1023 frames (#1393, #1394, PR #1439 by
+    totaland).
+  - C: a shared word is written back to its fork frame slot (PR #1615 by
+    viridale); a recursive spine is freed cell by cell (#1307, PR #1438 by
+    oxura); native channels free their rows and unread values (#1268, PR
+    #1532 by oxura); Nat powers and bit widths take checked paths (#1709,
+    #1710, PR #1713 by oxura); functions only an effect calls stay
+    reachable (#1711, #1712, PR #1714 by oxura); the crash trap is
+    async-signal-safe (PR #1655 by adeerkhan).
+  - IO: ready effects yield to other computations every 64 (#1719, PR
+    #1723 by oxura); `IO.exit` flushes buffered output (PR #1519 by
+    vicmcorrea); file and JS stream writes fail on zero progress (#1445,
+    PRs #1446 by oxura and #1747 by vicmcorrea); nested JS IO schedulers
+    are isolated and resume their own channel waiters (#1524, #1761,
+    #1770, PRs #1525 and #1762 by oxura); UDP receive buffers are bounded
+    (#1695, PR #1698 by oxura); `TCP.connect` checks its arguments on JS
+    (PR #1618 by vicmcorrea); JS `Audio.write` counts whole frames and
+    paces on monotonic time (PRs #1683 by toprameen and #1597 by
+    vicmcorrea).
+  - Base: `List.any`, `all`, `contains` and `find` stop once the answer is
+    known (#1726-#1729, PR #1730 by oxura); prefix checks stop at the
+    prefix (#1640, PR #1645 by EpsilonPhoenix); `F32.round` keeps negative
+    zero and rounds once (#1611, PRs #1613 by oxura and #1547 by
+    vicmcorrea); `F32.lerp` stays finite and keeps its endpoints (#1607,
+    #1749, PRs #1608 and #1754 by oxura); `F32.to_nat` keeps wide values
+    (#1636, PR #1642 by oxura); JS `U32.to_f32` keeps zero positive and
+    scalar F32 host inputs are rounded (#1692, #1568, PRs #1693 and #1569
+    by oxura).
+  - Effects: `CID`/`FID` are scanned with the source's own comment rules
+    (#1604, PR #1653 by adeerkhan); a bad Nat from a JS host says its range
+    (#1634, PR #1656 by oxura).
+- **CLI**:
+  - `bend page.html -o <dir>` never overwrites its own page (PR #1690 by
+    toprameen); inline HTML modules stay apart from real assets and from
+    each other (#1752, #1753, #1767, PRs #1756 and #1768 by oxura); decoded
+    module paths are classified right (#1570, PR #1571 by oxura).
+  - Output finishes after short writes to a pipe (PR #1691 by toprameen);
+    a failed update check keeps the command's status (PR #1603 by
+    vicmcorrea); filtered Base output keeps `@unsafe` (PR #1538 by
+    toprameen).
+- **Tools**: the formatter keeps column-pinned blocks, nested match arms,
+  inline bodies and mixed line endings (PRs #1302 by dearlordylord, #1755,
+  #1672 by oxura, #1583, #1584, #1590, #1757 by vicmcorrea and
+  sebastian-griego); the LSP keeps match scopes across forall bodies (PR
+  #1791 by vicmcorrea). **Breaking for bend-lint rule authors:** option
+  constructors are `OptionNum`, `OptionFlag` and `OptionText` (PR #1565
+  by vicmcorrea); bend-lint also fixes new buffers, cancelled runs and
+  downloaded checkouts (PRs #1745, #1746 by oxura, #1587, #1605 by
+  vicmcorrea).
+
 ## 2.0.37 (2026-10-13)
 
 - **A Nat crosses to a JS host as a plain number** (PR #1506 by

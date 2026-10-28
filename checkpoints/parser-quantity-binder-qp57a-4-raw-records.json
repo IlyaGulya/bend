@@ -1,0 +1,82 @@
+{
+ "schemaVersion": 1,
+ "status": "PRESERVED_ON_DISK_IGNORED_BY_GIT",
+ "note": "raw gate/build records for run qp57a-4 live in the worktree for authentication and are deliberately untracked, per the repository rule that bulk logs and evidence archives stay out of git; these digests bind the compact receipts to the physical files",
+ "files": [
+  {
+   "path": "checkpoints/parser-candidate-gate-qp57a-4-600s.json",
+   "sha256": "f9eb738b8171619652f8a055590802d324e0aa1343191dbf8c352e06b3300efb",
+   "bytes": 582596
+  },
+  {
+   "path": "checkpoints/bootstrap-parser-rebuild-qp57a-4.result.json",
+   "sha256": "42184ce90a524baa97e4609da5c9d4c7da5bb178e393f7369fa83e05ad10eb26",
+   "bytes": 112127
+  },
+  {
+   "path": "checkpoints/bootstrap-parser-rebuild-qp57a-4.candidate-gates-v1.json",
+   "sha256": "f4049222f8b6fa7a993321cb9a0db871b70c205ae764838acb533dbea2bc1056",
+   "bytes": 56231
+  },
+  {
+   "path": "checkpoints/bootstrap-parser-rebuild-qp57a-4.acceptance-authorized.json",
+   "sha256": "53562553db4472ef6b33b72cfa1c624a332ee462536e4ceffb1ed7ce55bfcfe7",
+   "bytes": 105077
+  },
+  {
+   "path": "checkpoints/bootstrap-parser-rebuild-qp57a-4.build.guardian.json",
+   "sha256": "f9f5b5a446b3022b0b244a6f9d7c7b3b74a5babc1b9c178ee834c9b222990839",
+   "bytes": 989
+  },
+  {
+   "path": "checkpoints/bootstrap-parser-rebuild-qp57a-4.build.jsonl",
+   "sha256": "39459a46e98bed7e91655fe499c3f028524e35d8259cacb781292b855af564fe",
+   "bytes": 5967
+  },
+  {
+   "path": "checkpoints/bootstrap-parser-rebuild-qp57a-4.build.request.json",
+   "sha256": "c98654093bdb812482356a156d695446703b81072d7302d37d6afebfb54d7311",
+   "bytes": 5923
+  },
+  {
+   "path": "checkpoints/bootstrap-parser-rebuild-qp57a-4.progress.json",
+   "sha256": "e2cd9676e84454ea9c556ffbd75531ce61b3373ae17948cdf6578fd013e2fa50",
+   "bytes": 310
+  },
+  {
+   "path": "checkpoints/bootstrap-parser-rebuild-qp57a-4.900s-rejected.acceptance-authorized.json",
+   "sha256": "b902a155caa53a7e73565df16ab2295e1195598f13ceed10e1d4c5c290458e26",
+   "bytes": 103562
+  },
+  {
+   "path": "checkpoints/bootstrap-parser-rebuild-qp57a-4.900s-rejected.build.guardian.json",
+   "sha256": "4c0fb6f130f5c59c284ccf63c28e5b9c1648134798a9e3c032c410fad95cb481",
+   "bytes": 984
+  },
+  {
+   "path": "checkpoints/bootstrap-parser-rebuild-qp57a-4.900s-rejected.build.jsonl",
+   "sha256": "36c2c93ee369e0ac43ea0eec12683e95c84094eaa018c8bd113abdc3437251eb",
+   "bytes": 5967
+  },
+  {
+   "path": "checkpoints/bootstrap-parser-rebuild-qp57a-4.900s-rejected.build.request.json",
+   "sha256": "c98654093bdb812482356a156d695446703b81072d7302d37d6afebfb54d7311",
+   "bytes": 5923
+  },
+  {
+   "path": "checkpoints/bootstrap-parser-rebuild-qp57a-4.900s-rejected.candidate-gates-v1.json",
+   "sha256": "43b6ab5f66af9ef9f938742e9e9144811863c0d23c0a8fde1fc5f80674d2673a",
+   "bytes": 55471
+  },
+  {
+   "path": "checkpoints/bootstrap-parser-rebuild-qp57a-4.900s-rejected.progress.json",
+   "sha256": "87f1aa113fb79f26ef45d5d8726266ab6eedd350ce9dc480fb4b32cb7c52ce63",
+   "bytes": 310
+  },
+  {
+   "path": "checkpoints/bootstrap-parser-rebuild-qp57a-4.900s-rejected.result.json",
+   "sha256": "93f3bb87200904c560e4ad2351d093cac4055bcd118b11d91ad642e3d364ad8a",
+   "bytes": 110612
+  }
+ ]
+}

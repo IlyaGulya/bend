@@ -18,12 +18,14 @@ typedef struct {
   size_t module_count;
   size_t module_capacity;
   Term parse;
+  Term files;
   const char* base;
   u64 source_bytes;
   u64 foreign_bytes;
   u64 fuel_build_ns;
   u64 fuel_cells;
   u64 parsed_sources;
+  const char* target_suffix;
 } NativeLoader;
 
 static void native_cpu_sample(struct rusage* usage) {
@@ -155,34 +157,94 @@ static char* native_join(const char* parent, const char* path) {
   return joined;
 }
 
-// POSIX lexical normalization, matching the existing Node namespace rule.
-static char* native_scope(const char* parent, const char* path) {
-  if (strcmp(path, "Base") == 0) return io_mem(strdup(""));
-  char* joined = native_join(parent, path);
+// POSIX lexical normalization, matching the existing Node namespace rule. It
+// is also the exact rule BIR uses for a declared foreign path, so the host bag
+// is keyed by the same string the renderer derives.
+static char* native_normalized(const char* joined, bool strip_bend) {
   size_t length = strlen(joined);
-  if (length >= 5 && strcmp(joined + length - 5, ".bend") == 0) joined[length - 5] = 0;
-  bool absolute = joined[0] == '/';
-  char** parts = io_mem(malloc((strlen(joined) + 1) * sizeof(char*)));
+  char* text = io_mem(strdup(joined));
+  if (strip_bend && length >= 5 && strcmp(text + length - 5, ".bend") == 0) {
+    text[length - 5] = 0;
+    length -= 5;
+  }
+  bool absolute = text[0] == '/';
+  char** parts = io_mem(malloc((length + 1) * sizeof(char*)));
   size_t count = 0;
   char* save;
-  for (char* part = strtok_r(joined, "/", &save); part; part = strtok_r(NULL, "/", &save)) {
+  for (char* part = strtok_r(text, "/", &save); part; part = strtok_r(NULL, "/", &save)) {
     if (strcmp(part, ".") == 0) continue;
     if (strcmp(part, "..") == 0 && count && strcmp(parts[count - 1], "..") != 0) count--;
     else if (strcmp(part, "..") != 0 || !absolute) parts[count++] = part;
   }
-  char* scope = io_mem(malloc(length + 2));
+  char* result = io_mem(malloc(length + 2));
   size_t at = absolute ? 1 : 0;
-  if (absolute) scope[0] = '/';
+  if (absolute) result[0] = '/';
   for (size_t i = 0; i < count; i++) {
-    if (i) scope[at++] = '/';
+    if (i) result[at++] = '/';
     size_t n = strlen(parts[i]);
-    memcpy(scope + at, parts[i], n);
+    memcpy(result + at, parts[i], n);
     at += n;
   }
-  scope[at] = 0;
+  result[at] = 0;
   free(parts);
+  free(text);
+  return result;
+}
+
+static char* native_scope(const char* parent, const char* path) {
+  if (strcmp(path, "Base") == 0) return io_mem(strdup(""));
+  char* joined = native_join(parent, path);
+  char* scope = native_normalized(joined, true);
   free(joined);
   return scope;
+}
+
+static bool native_manifest_external(const NativeLoader* loader, const char* real) {
+  for (size_t i = 0; i < loader->count; i++)
+    if (loader->inputs[i].state == -1 && strcmp(loader->inputs[i].path, real) == 0) return true;
+  return false;
+}
+
+// The declared alternative for the explicit target is BIR metadata: the
+// renderer resolves it and joins by that exact resolved path. The host only
+// reads the bytes of the path BIR derives and hands them over as a passive
+// BIR.SourceFile. The target suffix is chosen by the phase, never guessed.
+static bool native_suffix(const char* name, size_t length, const char* suffix) {
+  size_t suffix_length = strlen(suffix);
+  return length >= suffix_length && strcmp(name + length - suffix_length, suffix) == 0;
+}
+
+static void native_foreign(Env e, NativeLoader* loader, const char* module, const char* declared) {
+  // DefImports lists one alternative per target; only the explicit target's
+  // declared alternative is a BIR link source.
+  size_t declared_length = strlen(declared);
+  if (!native_suffix(declared, declared_length, loader->target_suffix)) return;
+  char* joined = native_join(module, declared);
+  char* key = native_normalized(joined, false);
+  free(joined);
+  char* real = realpath(key, NULL);
+  if (!real) {
+    fprintf(stderr, "native foreign target %s path: %s\n", loader->target_suffix, key);
+    err_fail("native experiment: missing declared foreign source for the explicit target");
+  }
+  if (!native_manifest_external(loader, real)) {
+    fprintf(stderr, "native foreign target %s path: %s\n", loader->target_suffix, real);
+    err_fail("native experiment: foreign source outside the authenticated manifest");
+  }
+  u64 length;
+  char* bytes = native_read(key, &length);
+  loader->foreign_bytes += length;
+  // Exact canonical book key `../bend2/selfhost/backend_ir:SourceFile`.
+  // comp.ts name_clean preserves case; fail closed if this nominal carrier
+  // changes rather than guessing a suffix, numeric id or alternate constructor.
+#ifndef CID____bend2_selfhost_backend_ir_SourceFile
+#error "canonical BIR.SourceFile constructor id is missing from the generated book"
+#endif
+  Term entry = io_node(e, CID____bend2_selfhost_backend_ir_SourceFile, io_str(e, key, strlen(key)), io_str(e, bytes, length));
+  loader->files = io_node(e, CID(Con), entry, loader->files);
+  free(real);
+  free(bytes);
+  free(key);
 }
 
 static void native_visit(Env e, NativeLoader* loader, const char* path, const char* scope) {
@@ -226,9 +288,20 @@ static void native_visit(Env e, NativeLoader* loader, const char* path, const ch
     io_errs(e, message);
     err_fail("native experiment: actual Bend parser failed");
   }
-  Term parsed[2];
-  native_fields(e, result, CID(NativeParsed), 2, parsed);
-  Term imports = parsed[0], load = parsed[1];
+  Term parsed[3];
+  native_fields(e, result, CID(NativeParsed), 3, parsed);
+  Term imports = parsed[0], foreign = parsed[1], load = parsed[2];
+  while (term_aux(foreign) == CID(Con)) {
+    Term cell[2];
+    native_fields(e, foreign, CID(Con), 2, cell);
+    foreign = cell[1];
+    u64 length;
+    char* declared = io_cstr(e, cell[0], &length);
+    if (io_nul(declared, length)) err_fail("native experiment: NUL in declared foreign path");
+    native_foreign(e, loader, input->path, declared);
+    free(declared);
+  }
+  native_fields(e, foreign, CID(Nil), 0, NULL);
   while (term_aux(imports) == CID(Con)) {
     Term pair[2];
     native_fields(e, imports, CID(Con), 2, pair);
@@ -236,8 +309,9 @@ static void native_visit(Env e, NativeLoader* loader, const char* path, const ch
     u64 length;
     char* imported = io_cstr(e, pair[0], &length);
     if (io_nul(imported, length)) err_fail("native experiment: NUL in import");
-    if (length >= 3 && strcmp(imported + length - 3, ".js") == 0) {
-      // Foreign bytes are separately read and authenticated by the manifest.
+    if (native_suffix(imported, length, ".js") || native_suffix(imported, length, ".c")) {
+      // Module-level foreign imports are not BIR link sources; the definition's
+      // own DefImports alternatives above are the declared target.
       free(imported);
       continue;
     }
@@ -260,7 +334,7 @@ static void native_visit(Env e, NativeLoader* loader, const char* path, const ch
 }
 
 static NativeLoader native_manifest(const char* file, const char* base, Term parse) {
-  NativeLoader loader = { .parse = parse, .base = base };
+  NativeLoader loader = { .parse = parse, .files = term_pak(CID(Nil), 0), .base = base };
   u64 size;
   char* bytes = native_read(file, &size);
   char* line_save;
@@ -276,9 +350,10 @@ static NativeLoader native_manifest(const char* file, const char* base, Term par
     loader.inputs = io_mem(realloc(loader.inputs, (loader.count + 1) * sizeof(NativeInput)));
     loader.inputs[loader.count++] = (NativeInput){ real, io_mem(strdup(scope)), line[0] == 'E' ? -1 : 0 };
     if (line[0] == 'E') {
+      // Existence and readability are checked here; the bytes that actually
+      // reach the emitter are read when a definition declares that path.
       u64 length;
       char* foreign = native_read(real, &length);
-      loader.foreign_bytes += length;
       free(foreign);
     }
   }
@@ -308,15 +383,23 @@ static Term native_exports(Env e, const char* path) {
 
 static Term native_experiment_run(Env e, Term* f, IoWork* work) {
   (void)work;
-  if (io_argc != 7) err_fail("native experiment: expected root base manifest exports check|compile output");
-  for (u32 i = 0; i < 10; i++) native_closed(f[i]);
-  bool compile = strcmp(io_argv[5], "compile") == 0;
-  if (!compile && strcmp(io_argv[5], "check") != 0) err_fail("native experiment: invalid phase");
+  if (io_argc != 7 && io_argc != 8) err_fail("native experiment: expected root base manifest exports check|compile output [runtime]");
+  for (u32 i = 0; i < 14; i++) native_closed(f[i]);
+  // 0 library emission, 1 runnable module emission for source fixtures,
+  // -1 check only. The emitter entry point is selected in the checked driver.
+  int action = strcmp(io_argv[5], "compile") == 0 ? 0
+    : strcmp(io_argv[5], "compile-module") == 0 ? 1
+    : strcmp(io_argv[5], "check") == 0 ? -1
+    : strcmp(io_argv[5], "compile-c") == 0 ? 3
+    : strcmp(io_argv[5], "compile-c-module") == 0 ? 4 : 2;
+  if (action == 2) err_fail("native experiment: invalid phase");
+  if (action >= 3 && io_argc != 8) err_fail("native experiment: a C phase needs the runtime source path");
   fprintf(stderr, "NATIVE_BEGIN {\"computeThreads\":%u,\"parserFuel\":8000000,\"phase\":\"%s\",\"phaseTraceVersion\":3}\n", pool_size, io_argv[5]);
   u64 started = io_tick();
   struct rusage cpu_started;
   native_phase_start("parse", &cpu_started);
   NativeLoader loader = native_manifest(io_argv[3], io_argv[2], f[0]);
+  loader.target_suffix = action >= 3 ? ".c" : ".js";
   native_visit(e, &loader, io_argv[1], "");
   for (size_t i = 0; i < loader.count; i++) {
     if (loader.inputs[i].state == 0) err_fail("native experiment: workload source was omitted");
@@ -340,9 +423,49 @@ static Term native_experiment_run(Env e, Term* f, IoWork* work) {
   modules = native_accepted(e, native_apply(e, f[3], expanded));
   Term checked = native_drive(e, f[4], modules, f[5],
     CID(NativeCheckerFinished), CID(NativeCheckerMore), "check");
+  if (action >= 3) {
+    // The C seam takes the same passive bag beside the runtime's actual source
+    // bytes; the host never derives a target path or a namespace itself.
+    u64 runtime_length;
+    char* runtime_bytes = native_read(io_argv[7], &runtime_length);
+    Term runtime = io_str(e, runtime_bytes, runtime_length);
+    Term cemit = native_accepted(e, native_apply(e, f[13], checked));
+    // A NativeCLibrary node holds exports, runtime and files as three
+    // adjacent words (nested Data fields expand to their value layouts);
+    // NativeCModule holds two. Both use the same seal/term_ctr encoding as
+    // generated constructor code, only through explicit word counts.
+    u64 library_words = 3;
+    Term request;
+    if (action == 3) {
+      u64 loc = heap_alloc(e, cls_fit((u32)library_words));
+      e.mem[loc] = io_seal(e, native_exports(e, io_argv[4]), CID(NativeCLibrary));
+      e.mem[loc + 1] = io_seal(e, runtime, CID(NativeCLibrary));
+      e.mem[loc + 2] = io_seal(e, loader.files, CID(NativeCLibrary));
+      request = term_ctr(CID(NativeCLibrary), loc);
+    } else {
+      request = io_node(e, CID(NativeCModule), runtime, loader.files);
+    }
+    Term emission = native_drive(e, f[10],
+      io_tup(e, cemit, request), f[11],
+      CID(NativeCEmitterFinished), CID(NativeCEmitterMore), "emit-c");
+    Term source = native_accepted(e, native_apply(e, f[12], emission));
+    u64 length;
+    char* bytes = io_cstr(e, source, &length);
+    FILE* output = fopen(io_argv[6], "wx");
+    if (!output) err_fail("native experiment: output must be a fresh writable path");
+    io_out(output, bytes, length);
+    if (fclose(output) != 0) err_fail("native experiment: output close failed");
+    free(bytes);
+    printf("NATIVE_RESULT {\"result\":\"EmitSuccess\",\"bytes\":%llu,\"modules\":%zu}\n", (unsigned long long)length, loader.module_count);
+    return term_pak(CID(Unit), 0);
+  }
   Term emit = native_accepted(e, native_apply(e, f[6], checked));
-  if (compile) {
-    Term emission = native_drive(e, f[7], io_tup(e, emit, native_exports(e, io_argv[4])), f[8],
+  if (action >= 0) {
+    Term request = action == 0
+      ? io_node(e, CID(NativeLibrary), native_exports(e, io_argv[4]), loader.files)
+      : io_box(e, CID(NativeModule), loader.files);
+    Term emission = native_drive(e, f[7],
+      io_tup(e, emit, request), f[8],
       CID(NativeEmitterFinished), CID(NativeEmitterMore), "emit");
     Term source = native_accepted(e, native_apply(e, f[9], emission));
     u64 length;

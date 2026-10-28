@@ -21,7 +21,7 @@ const fixtures=[
 ];
 const rows=[];
 for(const item of fixtures){
- const raw=call('lexer.tokens',[closed(JSON.stringify(item.source))]);
+ const raw=call('lexer:tokens',[closed(JSON.stringify(item.source))]);
  const combined=call('combine_symbols',[raw,B.Ctr('SymbolCombineScan',[])]);
  const inputTokens=tokens(combined),publicResult=ctor(call('parse',[closed(JSON.stringify(item.name)),closed(JSON.stringify(item.source))]));
  const row:any={...item,lexerTokens:tokens(raw),combinedTokens:inputTokens,result:publicResult.k};

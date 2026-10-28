@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "status": "COMPLETE_SCOPED_46_PROOF_WITH_ERRFAIL_FIX",
+  "physicalCommit": "573244d7",
+  "physicalSha256": "daf8a1373395773020f1842e492271594835d95c2b50709648bd1e1a9cfae7f8",
+  "receipt": "evals/physical_storage_acceptance_receipt_fixed6.json",
+  "logs": "checkpoints/storage-fixed-v14",
+  "fixed5": "46-edge PASS on f4f preserved",
+  "fixed3": "REJECTED preserved"
+}

@@ -67,7 +67,7 @@ async function lexer(): Promise<(source: string) => Token[]> {
   Stage0.book_valid(book);
   // This is the same public JS-library export path used by the stage-0 module
   // loader. Only Lexer.tokens is a root; production parser closure is absent.
-  const source = js_lib(book, ["tokens"], ["tokens"]);
+  const source = js_lib(book, true, {roots: ["tokens"], exports: ["tokens"]});
   // The module bytes come from the current lexer book, not an author-time
   // module path; static import cannot load this runtime-generated library.
   const module = await import("data:text/javascript;base64," + Buffer.from(source).toString("base64"));

@@ -1,0 +1,489 @@
+{
+  "schemaVersion": 1,
+  "status": "DIAGNOSTIC_DEFAULT_HOST_STACK_RANGEERROR",
+  "acceptanceEvidence": false,
+  "guardian": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "commandExitCode": 1,
+    "commandSignal": 0,
+    "peakRssBytes": 2101559296,
+    "peakFootprintBytes": 2178644184,
+    "elapsedMs": 12040,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "command": [
+      "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "--experimental-strip-types",
+      "--max-old-space-size=3072",
+      "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+      "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-db147-full-bootstrap-1.json.cases/stage-one.js",
+      "--library",
+      "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step,emit_c_modules_start,emit_c_library_start,c_emitter_step",
+      "--stage-profile=/tmp/root-stage1-full-profile-1",
+      "--stage-progress",
+      "/private/tmp/bend-parser-cutover667/checkpoints/.bootstrap_compiler_root_v1.bend",
+      "-o",
+      "/tmp/root-stage1-full-profile-1-output.mjs",
+      "--base=/private/tmp/bend-parser-cutover667/bend2/base.bend"
+    ],
+    "label": "heavy command",
+    "exitCode": 1,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792938616248-2c8d9dcf29bbb07e.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "profile": {
+    "schemaVersion": 1,
+    "kind": "compiler-profile",
+    "profilerVersion": "compiler-profile/1",
+    "diagnosticOnly": true,
+    "acceptanceEvidence": false,
+    "status": "failed",
+    "workloadStatus": "failed",
+    "measurementStatus": "complete",
+    "incompleteEvidence": false,
+    "error": "Maximum call stack size exceeded\nRangeError: Maximum call stack size exceeded\n    at $b293 (file:///private/tmp/bend-parser-cutover667/checkpoints/root-db147-full-bootstrap-1.json.cases/stage-one.js:11251:15)\n    at $b293 (file:///private/tmp/bend-parser-cutover667/checkpoints/root-db147-full-bootstrap-1.json.cases/stage-one.js:11251:245)\n    at $b293 (file:///private/tmp/bend-parser-cutover667/checkpoints/root-db147-full-bootstrap-1.json.cases/stage-one.js:11251:245)\n    at $b293 (file:///private/tmp/bend-parser-cutover667/checkpoints/root-db147-full-bootstrap-1.json.cases/stage-one.js:11251:245)\n    at $b293 (file:///private/tmp/bend-parser-cutover667/checkpoints/root-db147-full-bootstrap-1.json.cases/stage-one.js:11251:245)\n    at $b293 (file:///private/tmp/bend-parser-cutover667/checkpoints/root-db147-full-bootstrap-1.json.cases/stage-one.js:11251:245)\n    at $b293 (file:///private/tmp/bend-parser-cutover667/checkpoints/root-db147-full-bootstrap-1.json.cases/stage-one.js:11251:245)\n    at $b293 (file:///private/tmp/bend-parser-cutover667/checkpoints/root-db147-full-bootstrap-1.json.cases/stage-one.js:11251:245)\n    at $b293 (file:///private/tmp/bend-parser-cutover667/checkpoints/root-db147-full-bootstrap-1.json.cases/stage-one.js:11251:245)\n    at $b293 (file:///private/tmp/bend-parser-cutover667/checkpoints/root-db147-full-bootstrap-1.json.cases/stage-one.js:11251:245)",
+    "execution": {
+      "stage": "selfhost-candidate",
+      "mode": "typed-step",
+      "target": "js",
+      "sourcePath": "/private/tmp/bend-parser-cutover667/checkpoints/.bootstrap_compiler_root_v1.bend",
+      "sourceSha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+      "candidatePath": "/private/tmp/bend-parser-cutover667/checkpoints/root-db147-full-bootstrap-1.json.cases/stage-one.js",
+      "candidateSha256": "30bef0b037425acdac2066bbfcf315cc298ce1243f2e5307743258839b2dc981",
+      "parserPath": "/private/tmp/bend-parser-cutover667/checkpoints/root-db147-full-bootstrap-1.json.cases/stage-one.js",
+      "parserSha256": "30bef0b037425acdac2066bbfcf315cc298ce1243f2e5307743258839b2dc981",
+      "basePath": "/private/tmp/bend-parser-cutover667/bend2/base.bend",
+      "baseSha256": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+      "sourceFileTag": "../bend2/selfhost/backend_ir.SourceFile",
+      "library": true,
+      "exports": [
+        "parsed_module",
+        "parse_with_fuel",
+        "expand_modules_start",
+        "template_step",
+        "check_expanded_start",
+        "inspect_checked_start",
+        "checker_step",
+        "emit_modules_start",
+        "emit_library_start",
+        "emitter_step",
+        "emit_c_modules_start",
+        "emit_c_library_start",
+        "c_emitter_step"
+      ],
+      "outputPath": "/tmp/root-stage1-full-profile-1-output.mjs",
+      "command": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-db147-full-bootstrap-1.json.cases/stage-one.js",
+        "--library",
+        "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step,emit_c_modules_start,emit_c_library_start,c_emitter_step",
+        "--stage-profile=/tmp/root-stage1-full-profile-1",
+        "--stage-progress",
+        "/private/tmp/bend-parser-cutover667/checkpoints/.bootstrap_compiler_root_v1.bend",
+        "-o",
+        "/tmp/root-stage1-full-profile-1-output.mjs",
+        "--base=/private/tmp/bend-parser-cutover667/bend2/base.bend"
+      ],
+      "scope": "candidate_host.ts typed-step ABI; source emission only, no external link step"
+    },
+    "identity": {
+      "pid": 67707,
+      "parentPid": 67706,
+      "threadId": 0,
+      "isMainThread": true
+    },
+    "profileId": "7bf82bda-5161-4709-a3d3-6910eca0282b",
+    "runtime": {
+      "name": "node",
+      "versions": {
+        "node": "23.11.0",
+        "acorn": "8.14.1",
+        "ada": "3.2.1",
+        "amaro": "0.4.1",
+        "ares": "1.34.4",
+        "brotli": "1.1.0",
+        "cjs_module_lexer": "2.1.0",
+        "cldr": "46.0",
+        "icu": "76.1",
+        "llhttp": "9.2.1",
+        "modules": "131",
+        "napi": "10",
+        "nbytes": "0.1.1",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.64.0",
+        "openssl": "3.0.16",
+        "simdjson": "3.12.2",
+        "simdutf": "6.0.3",
+        "sqlite": "3.49.1",
+        "tz": "2025a",
+        "undici": "6.21.2",
+        "unicode": "16.0",
+        "uv": "1.50.0",
+        "uvwasi": "0.0.21",
+        "v8": "12.9.202.28-node.14",
+        "zlib": "1.3.0.1-motley-788cb3c",
+        "zstd": "1.5.6"
+      },
+      "platform": "darwin",
+      "arch": "arm64",
+      "execPath": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "execArgv": [
+        "--experimental-strip-types",
+        "--max-old-space-size=3072"
+      ]
+    },
+    "run": {
+      "runDirectory": "/tmp/root-stage1-full-profile-1/profile-67707-thread-0-5LRpUS",
+      "startedAt": "2026-10-25T14:30:16.409Z",
+      "endedAt": "2026-10-25T14:30:28.177Z",
+      "wallMs": 11766.222292,
+      "startMonotonicMs": 143.084792,
+      "endMonotonicMs": 11909.307084,
+      "rawDetail": true,
+      "eventsPath": "/tmp/root-stage1-full-profile-1/profile-67707-thread-0-5LRpUS/events.jsonl"
+    },
+    "measurement": {
+      "wall": {
+        "kind": "monotonic performance.now",
+        "scope": "collector process"
+      },
+      "cpu": {
+        "kind": "process.cpuUsage boundary delta",
+        "scope": "every thread in this process; child processes excluded; not exclusive across overlapping spans"
+      },
+      "memory": {
+        "kind": "process.memoryUsage boundary snapshot",
+        "scope": "RSS process-wide; heapUsed boundary sample, not allocation or retained bytes"
+      },
+      "sampling": null
+    },
+    "sampling": {
+      "config": null,
+      "status": "disabled",
+      "reason": null,
+      "spans": []
+    },
+    "spans": [
+      {
+        "id": 1,
+        "parentId": null,
+        "depth": 0,
+        "name": "startup-import",
+        "details": {
+          "candidatePath": "/private/tmp/bend-parser-cutover667/checkpoints/root-db147-full-bootstrap-1.json.cases/stage-one.js",
+          "parserPath": "/private/tmp/bend-parser-cutover667/checkpoints/root-db147-full-bootstrap-1.json.cases/stage-one.js",
+          "target": "js",
+          "library": true,
+          "parserModule": "candidate"
+        },
+        "status": "completed",
+        "startedAt": "2026-10-25T14:30:16.413Z",
+        "startedMonotonicMs": 145.695625,
+        "sample": null,
+        "excluded": false,
+        "endedAt": "2026-10-25T14:30:17.041Z",
+        "endedMonotonicMs": 773.282125,
+        "wallMs": 627.5864999999999,
+        "cpu": {
+          "kind": "process-boundary-delta",
+          "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+          "userMs": 585.5830000000001,
+          "systemMs": 57.772000000000006
+        },
+        "boundaryMemory": {
+          "start": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 154419200,
+            "heapTotalBytes": 15712256,
+            "heapUsedBytes": 10635208,
+            "externalBytes": 29070197,
+            "arrayBuffersBytes": 19816903
+          },
+          "end": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 400965632,
+            "heapTotalBytes": 72450048,
+            "heapUsedBytes": 60967920,
+            "externalBytes": 28956228,
+            "arrayBuffersBytes": 19702934
+          },
+          "delta": {
+            "kind": "boundary-snapshot-delta",
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "heapUsedDeltaBytes": 50332712,
+            "rssDeltaBytes": 246546432,
+            "caveat": "a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "parentId": null,
+        "depth": 0,
+        "name": "parse-import-fuel",
+        "details": {
+          "input": "/private/tmp/bend-parser-cutover667/checkpoints/.bootstrap_compiler_root_v1.bend",
+          "target": "js",
+          "closeReason": "candidate host terminated",
+          "error": "Maximum call stack size exceeded"
+        },
+        "status": "failed",
+        "startedAt": "2026-10-25T14:30:17.042Z",
+        "startedMonotonicMs": 774.025667,
+        "sample": null,
+        "excluded": false,
+        "endedAt": "2026-10-25T14:30:28.176Z",
+        "endedMonotonicMs": 11908.555875,
+        "wallMs": 11134.530208,
+        "cpu": {
+          "kind": "process-boundary-delta",
+          "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+          "userMs": 12660.766,
+          "systemMs": 467.41599999999994
+        },
+        "boundaryMemory": {
+          "start": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 401014784,
+            "heapTotalBytes": 72450048,
+            "heapUsedBytes": 61044232,
+            "externalBytes": 28956228,
+            "arrayBuffersBytes": 19702934
+          },
+          "end": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 1871708160,
+            "heapTotalBytes": 791511040,
+            "heapUsedBytes": 756666296,
+            "externalBytes": 9266718,
+            "arrayBuffersBytes": 16643
+          },
+          "delta": {
+            "kind": "boundary-snapshot-delta",
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "heapUsedDeltaBytes": 695622064,
+            "rssDeltaBytes": 1470693376,
+            "caveat": "a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage"
+          }
+        }
+      }
+    ],
+    "observations": [
+      {
+        "id": 1,
+        "spanId": null,
+        "at": "2026-10-25T14:30:16.413Z",
+        "elapsedMs": 2.039874999999995,
+        "kind": "stage-group-metadata",
+        "name": "compiler-stage-groups",
+        "scope": "diagnostic stage report",
+        "units": null,
+        "unitsByField": null,
+        "value": null,
+        "values": {
+          "startup-import": "explicit-span",
+          "parse-import-fuel": "explicit-span+exact-counter",
+          "template-expand": "explicit-span+exact-step-counter",
+          "check-signature-body": "explicit-span+exact-step-counter",
+          "check-publication": "included-in-check-signature-body",
+          "emit-catalog": "typed-progress-sample",
+          "emit-backend-lowering": "typed-progress-sample",
+          "emit-descriptor-nf": "typed-progress-sample",
+          "emit-layouts": "typed-progress-sample",
+          "emit-sharing": "typed-progress-sample",
+          "emit-render-js": "typed-progress-sample",
+          "emit-render-c": "typed-progress-sample",
+          "emit-link-planning": "typed-progress-sample",
+          "emit-emitter-entry": "typed-progress-sample",
+          "link": "unreachable-in-candidate-host"
+        },
+        "source": "evals/compiler_stage_profile.mjs",
+        "details": {
+          "schemaVersion": 1,
+          "groups": [
+            {
+              "name": "startup-import",
+              "measurement": "explicit-span",
+              "provider": "candidate host module import"
+            },
+            {
+              "name": "parse-import-fuel",
+              "measurement": "explicit-span+exact-counter",
+              "provider": "compiled parser, host IO, eager fuel construction"
+            },
+            {
+              "name": "template-expand",
+              "measurement": "explicit-span+exact-step-counter",
+              "provider": "typed template Run"
+            },
+            {
+              "name": "check-signature-body",
+              "measurement": "explicit-span+exact-step-counter",
+              "granularity": "one native check_modules Run; the checker does not expose a host-visible signature/body split"
+            },
+            {
+              "name": "check-publication",
+              "measurement": "included-in-check-signature-body",
+              "granularity": "FIR publication runs inside the ordinary Checker.check Run before its transient rewind; there is no separate host boundary, and its canonical helpers appear only in sampled request attribution when reached"
+            },
+            {
+              "name": "emit-catalog",
+              "measurement": "typed-progress-sample",
+              "provider": "canonical module lower_catalog"
+            },
+            {
+              "name": "emit-backend-lowering",
+              "measurement": "typed-progress-sample",
+              "provider": "canonical module backend_lower"
+            },
+            {
+              "name": "emit-descriptor-nf",
+              "measurement": "typed-progress-sample",
+              "provider": "canonical module descriptor_nf"
+            },
+            {
+              "name": "emit-layouts",
+              "measurement": "typed-progress-sample",
+              "provider": "canonical module c_backend_layout"
+            },
+            {
+              "name": "emit-sharing",
+              "measurement": "typed-progress-sample",
+              "provider": "canonical module c_backend_sharing"
+            },
+            {
+              "name": "emit-render-js",
+              "measurement": "typed-progress-sample",
+              "provider": "canonical modules js_emit/js_backend"
+            },
+            {
+              "name": "emit-render-c",
+              "measurement": "typed-progress-sample",
+              "provider": "canonical modules c_emit/c_emit_core/c_backend/c_backend_physical"
+            },
+            {
+              "name": "emit-link-planning",
+              "measurement": "typed-progress-sample",
+              "provider": "canonical module c_backend_link; source-level link planning, not the external linker"
+            },
+            {
+              "name": "emit-emitter-entry",
+              "measurement": "typed-progress-sample",
+              "provider": "canonical module emitter"
+            },
+            {
+              "name": "link",
+              "measurement": "unreachable-in-candidate-host",
+              "prerequisite": "the typed-step candidate emits source only; native_compiler_experiment performs the external clang/link step"
+            }
+          ],
+          "attractionNote": "explicit spans, exact counters and sampled chunk-boundary attribution are separate evidence types and are never added together"
+        }
+      }
+    ],
+    "fineGrain": {
+      "spans": {
+        "count": 17,
+        "completed": 16,
+        "failed": 1,
+        "aborted": 0,
+        "summedWallMsNotExclusive": 11105.622794,
+        "byName": {
+          "parse-file": {
+            "count": 17,
+            "completed": 16,
+            "failed": 1,
+            "aborted": 0,
+            "summedWallMsNotExclusive": 11105.622794
+          }
+        },
+        "otherNames": 0,
+        "failedSamples": [
+          {
+            "name": "parse-file",
+            "startedAt": "2026-10-25T14:30:25.629Z",
+            "endedAt": "2026-10-25T14:30:28.176Z",
+            "wallMs": 2546.5753330000007,
+            "error": "Maximum call stack size exceeded"
+          }
+        ],
+        "failedSamplesOmitted": 0
+      },
+      "observations": {
+        "count": 0,
+        "kinds": {},
+        "otherKinds": 0
+      }
+    },
+    "summary": {
+      "spanCount": 19,
+      "summarizedSpanCount": 2,
+      "excludedFineGrainSpans": 17,
+      "topLevelSpanCount": 2,
+      "failedSpans": [
+        "parse-import-fuel"
+      ],
+      "abortedSpans": [],
+      "failedSpanCount": 2,
+      "abortedSpanCount": 0,
+      "sampledSpans": 0,
+      "observations": 1,
+      "observationCount": 1,
+      "aggregatedFineObservations": 0,
+      "observationKinds": {
+        "stage-group-metadata": 1
+      },
+      "retainedObservationKinds": {
+        "stage-group-metadata": 1
+      },
+      "rawEventsWritten": 40,
+      "measurementStatus": "complete",
+      "incompleteEvidence": false,
+      "unclosedSpans": {
+        "count": 0,
+        "names": [],
+        "closeStatus": "aborted"
+      }
+    },
+    "limits": [
+      "diagnostic only: profile files do not certify acceptance, bootstrap green, fixedpoint or benchmark results",
+      "span CPU is a process.cpuUsage boundary delta over all threads in this process; child processes are excluded and require their own rusage receipt; nested or overlapping spans overlap and no exclusive CPU is derived",
+      "boundary heapUsed deltas are not allocation, live or retained bytes; RSS is process-wide",
+      "sampled CPU/allocation profiles are statistical, include collected objects for allocation, and have no Bend source map",
+      "child-process CPU/RSS exists only where the producer records a child receipt (e.g. NATIVE_PHASE or llvm time -lp); it is never inferred",
+      "rawDetail streams every event to events.jsonl; fine spans/observations are aggregated in memory, but JSON serialization and I/O overhead remains and is not measured",
+      "fullroot overhead/control and complete stage coverage are not established by a tiny smoke run"
+    ]
+  },
+  "rawProfile": {
+    "summary": "/tmp/root-stage1-full-profile-1/profile-67707-thread-0-5LRpUS/summary.json",
+    "sha256": "d7e1ca22abe200aa0917e1e9c4f00286af62322d4fd2f2d3a0551bcb8755688d"
+  },
+  "observedFrame": {
+    "file": "/private/tmp/bend-parser-cutover667/checkpoints/root-db147-full-bootstrap-1.json.cases/stage-one.js",
+    "sha256": "30bef0b037425acdac2066bbfcf315cc298ce1243f2e5307743258839b2dc981",
+    "line": 11251,
+    "function": "$b293",
+    "sourceName": "String.from_list",
+    "bindingEvidence": "stage-one.js:34624 maps $D[\"String.from_list\"] to run_named1($b293,...)",
+    "sourceDefinition": "bend2/base.bend:2061-2066"
+  },
+  "limits": {
+    "hostOldGenerationMiB": 3072,
+    "hostStackFlag": "not supplied; actual default stack size not measured",
+    "guardianMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "scope": "Fresh full-root candidate_host diagnostic with stage1 image30bef0b0 and profiling enabled; failure in parse-import-fuel before check. No stage2 artifact produced.",
+  "notInferred": [
+    "This is not the earlier full bootstrap worker: that worker explicitly had256MiB stack and6144MiB old generation",
+    "The earlier600-second stage-two-check timeout is not reclassified as stack overflow",
+    "No successful full-input profiling or overhead A/B claimed",
+    "No native C failure or semantic mismatch established"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "status": "REJECTED_FULL_NATIVE_LAYOUT_ID_RSS_LIMIT",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "sourceCommit": "edaf097a",
+  "report": "/private/tmp/bend2039-upgrade/checkpoints/root-release2039e-layout-id-build.json",
+  "guardian": {
+    "status": "RESOURCE_LIMIT",
+    "reason": "rss_limit",
+    "commandExitCode": -1,
+    "commandSignal": 15,
+    "peakRssBytes": 8926691328,
+    "peakFootprintBytes": 8948374560,
+    "elapsedMs": 24540,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 73,
+    "command": [
+      "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+      "--smol",
+      "/private/tmp/bend2039-upgrade/evals/native_compiler_experiment.ts",
+      "--mode=build",
+      "--corpus=checkpoints/root-release2039e-native.corpus.json",
+      "--artifact=/tmp/bend2039-layout-id-native",
+      "--report=checkpoints/root-release2039e-layout-id-build.json",
+      "--cc-opt=0",
+      "--internal=build"
+    ],
+    "label": "Native CPU compiler build",
+    "exitCode": 73,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793024733683-34aa4b9a1917a432.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "lastProgress": {
+    "phase": "compile_book",
+    "event": "start",
+    "unixMs": 1793024739644,
+    "pid": 27931,
+    "worker": false,
+    "rssBytes": 2448080896,
+    "heapUsedBytes": 1430922309,
+    "cpuMs": 8715.111,
+    "checkedDefinitions": 12111
+  },
+  "failure": {
+    "phase": "compile_book",
+    "diagnostic": "rss_limit"
+  },
+  "notes": "Full canonical validation completes; unchanged8192MiB guard stops compile_book. Nine actual C/JS executions and eight byte comparisons pass separately, not full-root acceptance. Removing JSON layout DAG keys alone does not complete native build."
+}

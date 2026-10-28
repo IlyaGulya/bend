@@ -1,0 +1,640 @@
+{
+  "schemaVersion": 1,
+  "status": "EMBEDDED_PARSER_CUTOVER_PUBLIC_PARITY_PASS",
+  "wholeCompilerAccepted": false,
+  "baseCommit": "34c64741",
+  "worktree": "/private/tmp/bend-parser-cutover667",
+  "parser": {
+    "status": "PARSER_ACCEPTED_NATIVE_SEMANTICS",
+    "canonicalSha256": "7389188a68a205bfccdd6a3457ba0f11e689967751e31fa6d35eaec3b09e3e37",
+    "artifact": {
+      "path": "/private/tmp/bend-parser-cutover667/checkpoints/bootstrap-parser-rebuild-cutover667-1.js",
+      "bytes": 2834193,
+      "sha256": "0e7b3c4295d5fc3e64cad4cb23eeb01c7c6051ae7df15893dd18622b226ca33b"
+    },
+    "generatedSource": {
+      "path": "/private/tmp/bend-parser-cutover667/checkpoints/.bootstrap_parser_rebuild_cutover667-1_generated_fuel.bend",
+      "bytes": 651694,
+      "sha256": "1f87959ff0030b21d5d5add2b3c9f30a5868875bf115e9358a0c68bfb56de4cd"
+    },
+    "acceptance": {
+      "path": "/private/tmp/bend-parser-cutover667/checkpoints/bootstrap-parser-rebuild-cutover667-1.result.json",
+      "bytes": 112987,
+      "sha256": "2c9135c068378c985612562c20c10a3a2e86359aa1f40372f810a952ea14a76b"
+    },
+    "sourceGateRows": 71,
+    "candidateGateRows": 75,
+    "sourceGate": {
+      "path": "/private/tmp/bend-parser-cutover667/checkpoints/cutover667-1-source-full.json",
+      "bytes": 365293,
+      "sha256": "4eb99d788844a61cff85a809933e60e4e396f0d1f015d2d1b7f2dddc5e62e1b1"
+    },
+    "candidateGate": {
+      "path": "/private/tmp/bend-parser-cutover667/checkpoints/cutover667-1-candidate-full.json",
+      "bytes": 586095,
+      "sha256": "8345847e2c106d42d33d126724653e002a0e6702767053bb555023c05bd3cc40"
+    },
+    "publicRegression": {
+      "source": {
+        "path": "/private/tmp/bend-parser-cutover667/checkpoints/cutover667-1-source-public.json",
+        "bytes": 963,
+        "sha256": "dabc1646914e4be3d7ae7786e0263c322c9b787de178516feb82dbafc17eca2a"
+      },
+      "candidate": {
+        "path": "/private/tmp/bend-parser-cutover667/checkpoints/cutover667-1-candidate-public.json",
+        "bytes": 980,
+        "sha256": "3a805760a538b761cd23e1402c405420b1d2d2cb1d1fda6caaf39baba25be546"
+      },
+      "each": {
+        "tests": 15,
+        "assertions": 264
+      }
+    },
+    "parserArtifactMatchesPriorAccepted": "0e7b3c4295d5fc3e64cad4cb23eeb01c7c6051ae7df15893dd18622b226ca33b; regeneration identity, not a stage1/stage2 fixedpoint"
+  },
+  "composition": {
+    "manifest": {
+      "path": "/private/tmp/bend-parser-cutover667/checkpoints/selfhost-steps-driver-source-v1.json",
+      "bytes": 64155,
+      "sha256": "1145e36aed7c62d33450bca0a4ce85b935370d7a093d10cf001200c1e780cda2"
+    },
+    "root": {
+      "path": "/private/tmp/bend-parser-cutover667/checkpoints/.bootstrap_compiler_root_v1.bend",
+      "bytes": 653895,
+      "sha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed"
+    },
+    "parserSource": "/private/tmp/bend-parser-cutover667/checkpoints/.bootstrap_parser_rebuild_cutover667-1_generated_fuel.bend",
+    "parserSourceSha256": "1f87959ff0030b21d5d5add2b3c9f30a5868875bf115e9358a0c68bfb56de4cd",
+    "parserBodiesChanged": 0,
+    "parserDatatypesChanged": 0,
+    "parserRequestKontChanged": false,
+    "authenticatedParserInputs": 306,
+    "authenticatedTypedStepInputs": 61,
+    "typedSteps": [
+      {
+        "manifest": {
+          "path": "/private/tmp/bend-parser-cutover667/checkpoints/template-steps-v1.json",
+          "bytes": 559595,
+          "sha256": "4bd32c94175f2d84e31519ee0d59d7a49bac2454360c05d459af3efe8b69f5ae"
+        },
+        "parserPin": "7389188a68a205bfccdd6a3457ba0f11e689967751e31fa6d35eaec3b09e3e37",
+        "outputs": {
+          "checkpoints/template_steps_v1.bend": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4",
+          "checkpoints/template_steps_component_v1.bend": "86c9e3b009a91b233a314d76ddd65d83ecd66e620231e63121ba625c853b3e39"
+        },
+        "definitions": 196,
+        "quantum": 64
+      },
+      {
+        "manifest": {
+          "path": "/private/tmp/bend-parser-cutover667/checkpoints/checker-core-steps-v1.json",
+          "bytes": 4966118,
+          "sha256": "f1b3d613a4c5ac28ddbc456bc465538e4feea814163d830e9722381afc097609"
+        },
+        "parserPin": "7389188a68a205bfccdd6a3457ba0f11e689967751e31fa6d35eaec3b09e3e37",
+        "outputs": {
+          "checkpoints/checker_core_steps_v1.bend": "d6000fd556d550f45ccca6adeaaa6e2b0d6aa2fc7604fae0959d650f6d7d175c",
+          "checkpoints/checker_core_steps_component_v1.bend": "ca15a467e804983f454a63e9db64a38c1077a2d49104d488556d0609557521cf",
+          "checkpoints/checker_core_steps_driver_v1.bend": "0a21e90c6eca75d51684c5c75fd52fae28a86d7f369052d7943a7101f9a1bfc8"
+        },
+        "definitions": 1141,
+        "quantum": 64
+      },
+      {
+        "manifest": {
+          "path": "/private/tmp/bend-parser-cutover667/checkpoints/emitter-steps-v1.json",
+          "bytes": 6016372,
+          "sha256": "f0902e9b03e3f614395ab30b4cdd8bfb6d2b6eab20feb12dc1fb719f8699cc09"
+        },
+        "parserPin": "7389188a68a205bfccdd6a3457ba0f11e689967751e31fa6d35eaec3b09e3e37",
+        "outputs": {
+          "checkpoints/emitter_steps_v1.bend": "7c3c910495229565dbe229fab89d081e1ea08194f6abc89cccb97b19f20d3473",
+          "checkpoints/emitter_steps_component_v1.bend": "e6bd090dc9b2a0b381e4a896922c91869571445b194a60898d893e1f2ce3b3c8"
+        },
+        "definitions": 1883,
+        "quantum": 64
+      }
+    ]
+  },
+  "build": {
+    "status": "JS_GENERATED_NOT_YET_EXECUTED",
+    "provenancePath": "/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-rep.provenance.json",
+    "provenanceSha256": "b107137fd1b9a5817a9ee6b44828bf178ea7f5f68c0c4551634b7fb888a79094",
+    "sourcePath": "/private/tmp/bend-parser-cutover667/checkpoints/.bootstrap_compiler_root_v1.bend",
+    "sourceSha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+    "exports": [
+      "parsed_module",
+      "parse_with_fuel",
+      "expand_modules_start",
+      "template_step",
+      "check_expanded_start",
+      "inspect_checked_start",
+      "checker_step",
+      "emit_modules_start",
+      "emit_library_start",
+      "emitter_step",
+      "emit_c_modules_start",
+      "emit_c_library_start",
+      "c_emitter_step"
+    ],
+    "artifactPath": "/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+    "artifactSha256": "db147cba480109443fe8cfbd0efa2f1c167af7f6b9f7e2d623a0b1032c677dbe",
+    "bytes": 18039083,
+    "eventsFullyValidated": 12450,
+    "checkedDefinitions": 11889,
+    "liveBodies": 11889,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "checkedOutputRetention": "native e",
+    "nativeRetention": "native checked e retained through all JS definition folding; scope-local higher caches released between definitions; no serialization or source-value fallback",
+    "nativeCheckedBodies": 11889,
+    "expectedSourceDefinitions": 11889,
+    "toolchain": "CANONICAL NATIVE LOAD/CHECK; CANONICAL JS PREPARE/EMIT/RELEASE; Node/V8 automatic GC",
+    "preparedCount": 11565,
+    "releasedCount": 11997,
+    "maxSimultaneousE": 11889,
+    "maxSimultaneousH": 2,
+    "countsCaveat": "Definition slots, not unique term graphs; signature metadata does not prepare higher bodies",
+    "runtime": {
+      "name": "node",
+      "node": "23.11.0",
+      "v8": "12.9.202.28-node.14",
+      "executable": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "heapLimitMiB": 3072,
+      "stackSizeMb": 256,
+      "heapSizeLimitBytes": 3271557120,
+      "manualGC": false
+    },
+    "cpuMs": 67228.83,
+    "compiledExecution": "NOT_RUN",
+    "selfhostGreen": false,
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 3209117696,
+      "peakFootprintBytes": 3296361632,
+      "elapsedMs": 61954,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend-parser-cutover667/evals/checker_core_component_build.ts",
+        "--worker",
+        "--file=/private/tmp/bend-parser-cutover667/checkpoints/.bootstrap_compiler_root_v1.bend",
+        "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step,emit_c_modules_start,emit_c_library_start,c_emitter_step",
+        "--artifact=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "--report=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-rep",
+        "--inputs-sha256=69e9467877544c7218893737fd08b1b796cabb66c50a64b2f87a9c330fe41747"
+      ],
+      "label": "Full-native CheckerCore component JS build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792932416711-a0c4c855da97a641.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "publicDifferential": {
+    "raw": {
+      "path": "/private/tmp/bend-parser-cutover667/checkpoints/cutover667-1-public-differential.json",
+      "bytes": 139124,
+      "sha256": "e1e8788c1f75c2d53b7ea2be1ebcac4c92e5dcd6e7e007186472b141adf1e390"
+    },
+    "receipt": {
+      "path": "/private/tmp/bend-parser-cutover667/checkpoints/cutover667-1-public-differential.receipt.json",
+      "bytes": 20686,
+      "sha256": "d86d764c7eee81b74157ab65c6a8c0217653864e47343d05a3f44dacb5725b7a"
+    },
+    "rows": [
+      {
+        "name": "plus-body-local",
+        "source": "def f(x: Nat) -> Nat:\n  +l : Nat = x\n  l\n",
+        "sourceSha256": "0e4cef0140250f6a9c3e40e1d7bfc0dc4ff150feace28220f444516282ddc046",
+        "expected": {
+          "construct": "body-local-plus",
+          "quantity": "QMany"
+        },
+        "inline": "ParseSuccess",
+        "external": "ParseSuccess",
+        "astSame": true,
+        "firstDifference": null
+      },
+      {
+        "name": "typed-body-local",
+        "source": "def f(x: Nat) -> Nat:\n  l : Nat = x\n  l\n",
+        "sourceSha256": "2f1d43f3a104ef615ed5e519533cbdf68bb197ce90eb045f965bb8e0ab3a4167",
+        "expected": {
+          "construct": "body-local-typed",
+          "quantity": "QOne"
+        },
+        "inline": "ParseSuccess",
+        "external": "ParseSuccess",
+        "astSame": true,
+        "firstDifference": null
+      },
+      {
+        "name": "plus-do-bind",
+        "source": "def f(x: Nat) -> Nat:\n  do M<>: +y : Nat <- x; return y\n",
+        "sourceSha256": "5aaecf503ed82304b1b7c7c28abcfa80a6e523956c4f33e857e3a229887b61f8",
+        "expected": {
+          "construct": "do-plus-bind",
+          "quantity": "QMany"
+        },
+        "inline": "ParseSuccess",
+        "external": "ParseSuccess",
+        "astSame": true,
+        "firstDifference": null
+      },
+      {
+        "name": "typed-do-bind",
+        "source": "def f(x: Nat) -> Nat:\n  do M<>: y : Nat <- x; return y\n",
+        "sourceSha256": "f7627df3b0943427b12feeaf5bc4fd8d108fd2abc24411e9ab1f669b3cc60bdf",
+        "expected": {
+          "construct": "do-typed-bind",
+          "quantity": "None"
+        },
+        "inline": "ParseSuccess",
+        "external": "ParseSuccess",
+        "astSame": true,
+        "firstDifference": null
+      },
+      {
+        "name": "untyped-control",
+        "source": "def f(x: Nat) -> Nat:\n  l = x\n  do M<>: y <- x; return y\n",
+        "sourceSha256": "cf3022736bebeadfb2770ab6b600c525b2100753a44e4626a26c7abb77d447c0",
+        "expected": {
+          "construct": "control-untyped",
+          "quantity": "QOne"
+        },
+        "inline": "ParseSuccess",
+        "external": "ParseSuccess",
+        "astSame": true,
+        "firstDifference": null
+      }
+    ],
+    "abiFailures": [],
+    "oracleRejected": [],
+    "fuelCells": 2000000
+  },
+  "guards": [
+    {
+      "raw": {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792931452134-916e57ca822b9907.json",
+        "bytes": 776,
+        "sha256": "248acdd30b6b048cfdd6e218088fdd39ba1ab4801000062a911b04392d3b6386"
+      },
+      "command": [
+        "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+        "--smol",
+        "/private/tmp/bend-parser-cutover667/evals/bootstrap_parser_rebuild.ts",
+        "--worker-prepare-source",
+        "--run-id",
+        "cutover667-1",
+        "--canonical-sha256",
+        "7389188a68a205bfccdd6a3457ba0f11e689967751e31fa6d35eaec3b09e3e37"
+      ],
+      "elapsedMs": 22548,
+      "peakRssBytes": 807845888,
+      "peakFootprintBytes": 401376408,
+      "status": "PASS",
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "commandExitCode": 0
+    },
+    {
+      "raw": {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792931693317-f81d5cec1b15fb63.json",
+        "bytes": 682,
+        "sha256": "06d90282bec6960145ccf703ec2fbb1ff36eb634d95af2ff08be8ea484952b51"
+      },
+      "command": [
+        "bun",
+        "evals/bootstrap_parser_public_gate.ts",
+        "--parser=checkpoints/.bootstrap_parser_rebuild_cutover667-1_source.bend",
+        "--entry=parse_module_tokens",
+        "--report=checkpoints/cutover667-1-source-public.json"
+      ],
+      "elapsedMs": 3315,
+      "peakRssBytes": 312836096,
+      "peakFootprintBytes": 237978992,
+      "status": "PASS",
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "commandExitCode": 0
+    },
+    {
+      "raw": {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792931696689-6b42e8c34f7d0907.json",
+        "bytes": 736,
+        "sha256": "3a7e15d82b12ca653ad2a82e20dd87dfb13f42304370e6c925665beb25b2febd"
+      },
+      "command": [
+        "bun",
+        "evals/bootstrap_parser_fast.ts",
+        "--parser=checkpoints/.bootstrap_parser_rebuild_cutover667-1_source.bend",
+        "--entry=parse_module_tokens",
+        "--public-report=checkpoints/cutover667-1-source-public.json",
+        "--report=checkpoints/cutover667-1-source-full.json"
+      ],
+      "elapsedMs": 11674,
+      "peakRssBytes": 946847744,
+      "peakFootprintBytes": 634837544,
+      "status": "PASS",
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "commandExitCode": 0
+    },
+    {
+      "raw": {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792931788428-b560ae024da5c195.json",
+        "bytes": 858,
+        "sha256": "fa79bd6048c2756b6f628cea636dd38899138c2c55577673d4b75aba99416828"
+      },
+      "command": [
+        "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+        "--smol",
+        "/private/tmp/bend-parser-cutover667/evals/bootstrap_parser_rebuild.ts",
+        "--worker-prepare",
+        "--run-id",
+        "cutover667-1",
+        "--canonical-sha256",
+        "7389188a68a205bfccdd6a3457ba0f11e689967751e31fa6d35eaec3b09e3e37",
+        "--source-gate",
+        "/private/tmp/bend-parser-cutover667/checkpoints/cutover667-1-source-full.json"
+      ],
+      "elapsedMs": 18315,
+      "peakRssBytes": 399474688,
+      "peakFootprintBytes": 241862168,
+      "status": "PASS",
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "commandExitCode": 0
+    },
+    {
+      "raw": {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792931806858-93bf2bc23a823ec7.json",
+        "bytes": 771,
+        "sha256": "1793b60bace1f177492dd43c7e38e65702284d04428d6ef56774ed51e76b00c8"
+      },
+      "command": [
+        "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+        "--smol",
+        "/private/tmp/bend-parser-cutover667/evals/bootstrap_parser_rebuild.ts",
+        "--worker-build-native",
+        "--run-id",
+        "cutover667-1",
+        "--canonical-sha256",
+        "7389188a68a205bfccdd6a3457ba0f11e689967751e31fa6d35eaec3b09e3e37"
+      ],
+      "elapsedMs": 1163,
+      "peakRssBytes": 238305280,
+      "peakFootprintBytes": 146817864,
+      "status": "PASS",
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "commandExitCode": 0
+    },
+    {
+      "raw": {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792931808074-4c54424c3f6cccf5.json",
+        "bytes": 1098,
+        "sha256": "10cba81559765d36a6b65fe0e35cdca0662e12c58415fd4eb4e6223d7c52a4e7"
+      },
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend-parser-cutover667/evals/checker_core_component_build.ts",
+        "--worker",
+        "--file=/private/tmp/bend-parser-cutover667/checkpoints/.bootstrap_parser_rebuild_cutover667-1_generated_fuel.bend",
+        "--exports=parse_with_fuel",
+        "--artifact=/private/tmp/bend-parser-cutover667/checkpoints/bootstrap-parser-rebuild-cutover667-1.js",
+        "--report=/private/tmp/bend-parser-cutover667/checkpoints/bootstrap-parser-rebuild-cutover667-1.native-build",
+        "--inputs-sha256=4987b2ad08a249e17a7c07d3b135c85a8a1a5fa4641d0373da1490918b6ae574"
+      ],
+      "elapsedMs": 7032,
+      "peakRssBytes": 1706360832,
+      "peakFootprintBytes": 1766090832,
+      "status": "PASS",
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "commandExitCode": 0
+    },
+    {
+      "raw": {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792931851720-556e2e16d151a37f.json",
+        "bytes": 689,
+        "sha256": "03d537c29b69dd162c30649308015faeae106f2981f013bc8f614a1ebc324aff"
+      },
+      "command": [
+        "bun",
+        "evals/bootstrap_parser_public_gate.ts",
+        "--parser=checkpoints/.bootstrap_parser_rebuild_cutover667-1_generated_fuel.bend",
+        "--entry=parse_with_fuel",
+        "--report=checkpoints/cutover667-1-candidate-public.json"
+      ],
+      "elapsedMs": 2180,
+      "peakRssBytes": 778305536,
+      "peakFootprintBytes": 688441024,
+      "status": "PASS",
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "commandExitCode": 0
+    },
+    {
+      "raw": {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792931853977-81995744807cfe89.json",
+        "bytes": 910,
+        "sha256": "bd6b20c2f9309279d708bf663418ba960a18870f1bb8b9411b394447a7c23916"
+      },
+      "command": [
+        "bun",
+        "evals/bootstrap_parser_fast.ts",
+        "--parser=checkpoints/.bootstrap_parser_rebuild_cutover667-1_generated_fuel.bend",
+        "--entry=parse_with_fuel",
+        "--component=checkpoints/bootstrap-parser-rebuild-cutover667-1.js",
+        "--component-build=checkpoints/bootstrap-parser-rebuild-cutover667-1.native-build.result.json",
+        "--public-report=checkpoints/cutover667-1-candidate-public.json",
+        "--report=checkpoints/cutover667-1-candidate-full.json"
+      ],
+      "elapsedMs": 55964,
+      "peakRssBytes": 1644314624,
+      "peakFootprintBytes": 1453505296,
+      "status": "PASS",
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "commandExitCode": 0
+    },
+    {
+      "raw": {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792931910046-b4282ad5bf2e3ae0.json",
+        "bytes": 859,
+        "sha256": "efd2d082122f018fbf184d1f868e32a23987feef40ec53ff122c6ecf13c20339"
+      },
+      "command": [
+        "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+        "--smol",
+        "/private/tmp/bend-parser-cutover667/evals/bootstrap_parser_rebuild.ts",
+        "--worker-build",
+        "--run-id",
+        "cutover667-1",
+        "--canonical-sha256",
+        "7389188a68a205bfccdd6a3457ba0f11e689967751e31fa6d35eaec3b09e3e37",
+        "--candidate-gate",
+        "/private/tmp/bend-parser-cutover667/checkpoints/cutover667-1-candidate-full.json"
+      ],
+      "elapsedMs": 1297,
+      "peakRssBytes": 294060032,
+      "peakFootprintBytes": 219939680,
+      "status": "PASS",
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "commandExitCode": 0
+    },
+    {
+      "raw": {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792932403442-b0ae9a32051f76a4.json",
+        "bytes": 521,
+        "sha256": "b79cf5e454b03c0a1e3efa5fca3459eb12e3a2b7e77e2ce94586b0083386d71f"
+      },
+      "command": [
+        "bun",
+        "evals/checker_core_owned_source.ts"
+      ],
+      "elapsedMs": 3911,
+      "peakRssBytes": 1336229888,
+      "peakFootprintBytes": 730039808,
+      "status": "PASS",
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "commandExitCode": 0
+    },
+    {
+      "raw": {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792932407432-8e56af5c6242128f.json",
+        "bytes": 513,
+        "sha256": "0afd1268899050ef340d5ac84d7f8b99a1e6ec48fd58be4990b9824f8951dbc7"
+      },
+      "command": [
+        "bun",
+        "evals/template_step_lower.ts"
+      ],
+      "elapsedMs": 390,
+      "peakRssBytes": 194838528,
+      "peakFootprintBytes": 150373144,
+      "status": "PASS",
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "commandExitCode": 0
+    },
+    {
+      "raw": {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792932407879-a1dced20cdf0c084.json",
+        "bytes": 518,
+        "sha256": "4577df0932091bdf4ed14f15ee5ab566e49ea104e4483066556a1cf695f28a47"
+      },
+      "command": [
+        "bun",
+        "evals/checker_core_step_lower.ts"
+      ],
+      "elapsedMs": 2874,
+      "peakRssBytes": 737558528,
+      "peakFootprintBytes": 545555560,
+      "status": "PASS",
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "commandExitCode": 0
+    },
+    {
+      "raw": {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792932410826-996ab2f157f1d441.json",
+        "bytes": 515,
+        "sha256": "931a1f72696e71d12be0b1a2be6ef9b3e920205341dcf03627338704ad07ef6c"
+      },
+      "command": [
+        "bun",
+        "evals/emitter_step_lower.ts"
+      ],
+      "elapsedMs": 5336,
+      "peakRssBytes": 1609957376,
+      "peakFootprintBytes": 1001883208,
+      "status": "PASS",
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "commandExitCode": 0
+    },
+    {
+      "raw": {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792932416245-11c3bb909afd5ed9.json",
+        "bytes": 607,
+        "sha256": "a53d1288eb55a183f35257f429281a5b300bcaa332be287ebcf3e6f5a1a95682"
+      },
+      "command": [
+        "bun",
+        "evals/selfhost_driver_source.ts",
+        "--parser-build=checkpoints/bootstrap-parser-rebuild-cutover667-1.native-build.result.json"
+      ],
+      "elapsedMs": 397,
+      "peakRssBytes": 146096128,
+      "peakFootprintBytes": 85410464,
+      "status": "PASS",
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "commandExitCode": 0
+    },
+    {
+      "raw": {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792932416711-a0c4c855da97a641.json",
+        "bytes": 1241,
+        "sha256": "9f03b01c847c17731aacea64139c519c999343314c9d54c5beb85c4fc376d18e"
+      },
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend-parser-cutover667/evals/checker_core_component_build.ts",
+        "--worker",
+        "--file=/private/tmp/bend-parser-cutover667/checkpoints/.bootstrap_compiler_root_v1.bend",
+        "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step,emit_c_modules_start,emit_c_library_start,c_emitter_step",
+        "--artifact=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "--report=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-rep",
+        "--inputs-sha256=69e9467877544c7218893737fd08b1b796cabb66c50a64b2f87a9c330fe41747"
+      ],
+      "elapsedMs": 61954,
+      "peakRssBytes": 3209117696,
+      "peakFootprintBytes": 3296361632,
+      "status": "PASS",
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "commandExitCode": 0
+    },
+    {
+      "raw": {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792932737108-89f3b8f5999b96ec.json",
+        "bytes": 770,
+        "sha256": "3c158fb7147e6ecc9b658d54a6ffc5a174ee90ecff207a38f353f996db7582ad"
+      },
+      "command": [
+        "bun",
+        "evals/parser_inline_root_differential.ts",
+        "--inline=checkpoints/root-cutover667-1-art.js",
+        "--external=checkpoints/bootstrap-parser-rebuild-cutover667-1.js",
+        "--report=checkpoints/cutover667-1-public-differential.json",
+        "--receipt=checkpoints/cutover667-1-public-differential.receipt.json"
+      ],
+      "elapsedMs": 811,
+      "peakRssBytes": 279642112,
+      "peakFootprintBytes": 219843520,
+      "status": "PASS",
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "commandExitCode": 0
+    }
+  ],
+  "scope": "Tree-local full canonical parser acceptance, штатная regeneration of all three typed steps and root, full11889-body native admission, same five real public parse results now identical. No manual root patch, AST cache, omitted checks or output patch. No current-image C matrix/full compiler corpus/fixedpoint/native HOST claim."
+}

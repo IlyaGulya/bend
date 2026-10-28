@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "status": "FULL_G4_NATIVE_WITHOUT_RAM_HEURISTIC_REJECTED_RSS",
+  "nativeBuildAccepted": false,
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "report": {
+    "path": "checkpoints/root-release2039g4-native-build.json",
+    "sha256": "0e6191043049b0f84fc7edf7551e94712b881a295b0c45c03073cf684a0c140e"
+  },
+  "sourceVersion": "205f69ff",
+  "reason": "Invocation omitted BUN_JSC_forceRAMSize=4294967296 used by successful prior full native build. This run itself is rejected; no result reclassification. Next run must use a fresh report and record the established heuristic, not change hard guard.",
+  "lastProgress": {
+    "phase": "compile_book",
+    "event": "start",
+    "unixMs": 1793081627189,
+    "pid": 28184,
+    "worker": false,
+    "rssBytes": 2665761312,
+    "heapUsedBytes": 1174590728,
+    "cpuMs": 8511.959,
+    "checkedDefinitions": 12148
+  },
+  "guardian": {
+    "status": "RESOURCE_LIMIT",
+    "reason": "rss_limit",
+    "commandExitCode": -1,
+    "commandSignal": 15,
+    "peakRssBytes": 8752332800,
+    "peakFootprintBytes": 8079891248,
+    "elapsedMs": 27343,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 73,
+    "command": [
+      "/opt/homebrew/Cellar/bun/1.4.3/bin/bun",
+      "--smol",
+      "/private/tmp/bend2039-upgrade/evals/native_compiler_experiment.ts",
+      "--mode=build",
+      "--corpus=checkpoints/root-release2039g4.native.corpus.json",
+      "--artifact=/tmp/bend2039g4-native",
+      "--report=checkpoints/root-release2039g4-native-build.json",
+      "--cc-pipeline=llvm-split",
+      "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+      "--cc-opt=1",
+      "--internal=build"
+    ],
+    "label": "Native CPU compiler build",
+    "exitCode": 73,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793081622643-59760242acaf008d.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  }
+}

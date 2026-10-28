@@ -1,0 +1,1252 @@
+{
+  "schemaVersion": 1,
+  "status": "OLDPINNED_DIAGNOSTIC_OOM_FINE_LOCALIZED",
+  "acceptanceEvidence": false,
+  "sourceVersion": "03d0d144 frozen driver/transport/machines; Main682865df collector/probe",
+  "terminal": {
+    "status": "DIAGNOSTIC_WORKER_FAILED",
+    "acceptanceEvidence": false,
+    "frozenWorkload": "OLDPINNED_DIAGNOSTIC_03d0",
+    "workerExit": 1,
+    "error": "Error [ERR_WORKER_OUT_OF_MEMORY]: Worker terminated due to reaching memory limit: JS heap out of memory",
+    "profilePath": "/tmp/native03d0-fine-1-profiles/profile-17471-thread-1-a5cbDt",
+    "workerLimits": {
+      "stackSizeMb": 256,
+      "maxOldGenerationSizeMb": 3072
+    },
+    "runtime": {
+      "node": "v23.11.0",
+      "v8": "12.9.202.28-node.14"
+    },
+    "command": [
+      "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "/private/tmp/bend-fir-integrated57ab/checkpoints/native03d0-fine.ts"
+    ]
+  },
+  "guardian": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "commandExitCode": 1,
+    "commandSignal": 0,
+    "peakRssBytes": 3489955840,
+    "peakFootprintBytes": 3619656368,
+    "elapsedMs": 80132,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "command": [
+      "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "/private/tmp/bend-fir-integrated57ab/checkpoints/native03d0-fine.ts"
+    ],
+    "label": "Frozen03d0 fine codegen attribution diagnostic",
+    "exitCode": 1,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792938483601-442f0303a01b990e.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "invocation": {
+    "launcherCommand": [
+      "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "--experimental-strip-types",
+      "--max-old-space-size=3072",
+      "checkpoints/native03d0-fine.ts"
+    ],
+    "cwd": "/private/tmp/bend-fir-integrated57ab",
+    "supervisedCommand": [
+      "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "/private/tmp/bend-fir-integrated57ab/checkpoints/native03d0-fine.ts"
+    ],
+    "workerLimits": {
+      "stackSizeMb": 256,
+      "maxOldGenerationSizeMb": 3072
+    },
+    "guard": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 600000
+    }
+  },
+  "probe": {
+    "executedPath": "/private/tmp/bend-fir-integrated57ab/checkpoints/native03d0-fine.ts",
+    "archivedPath": "/tmp/native03d0-fine-1-profiles/profile-17471-thread-1-a5cbDt/executed-probe.ts",
+    "sha256": "ffaedf4d1841464cc75c1a6f8c8b4847f83244911f66c49afaaa2658faf8d44a"
+  },
+  "observation": {
+    "kind": "FROZEN_03D0_FINE_EVENT_ANALYSIS",
+    "diagnosticOnly": true,
+    "counts": {
+      "lines": 397986,
+      "begin": 67887,
+      "end": 67884,
+      "observation": 262215,
+      "completedDefinitions": 9551
+    },
+    "coarse": [
+      {
+        "id": 1,
+        "phase": "module-import",
+        "wallMs": 259.87587500000006,
+        "cpu": {
+          "kind": "process-boundary-delta",
+          "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+          "userMs": 181.125,
+          "systemMs": 8.849999999999994
+        },
+        "boundaryMemory": {
+          "start": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 130072576,
+            "heapTotalBytes": 17285120,
+            "heapUsedBytes": 12469776,
+            "externalBytes": 17473993,
+            "arrayBuffersBytes": 7095140
+          },
+          "end": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 164724736,
+            "heapTotalBytes": 19382272,
+            "heapUsedBytes": 14395480,
+            "externalBytes": 24695431,
+            "arrayBuffersBytes": 221793
+          },
+          "delta": {
+            "kind": "boundary-snapshot-delta",
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "heapUsedDeltaBytes": 1925704,
+            "rssDeltaBytes": 34652160,
+            "caveat": "a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage"
+          }
+        },
+        "details": {}
+      },
+      {
+        "id": 2,
+        "phase": "book_load",
+        "wallMs": 8933.031625,
+        "cpu": {
+          "kind": "process-boundary-delta",
+          "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+          "userMs": 4171.87,
+          "systemMs": 176.328
+        },
+        "boundaryMemory": {
+          "start": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 164773888,
+            "heapTotalBytes": 19382272,
+            "heapUsedBytes": 14443104,
+            "externalBytes": 24695431,
+            "arrayBuffersBytes": 221793
+          },
+          "end": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 600195072,
+            "heapTotalBytes": 434241536,
+            "heapUsedBytes": 414738112,
+            "externalBytes": 17276848,
+            "arrayBuffersBytes": 16675
+          },
+          "delta": {
+            "kind": "boundary-snapshot-delta",
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "heapUsedDeltaBytes": 400295008,
+            "rssDeltaBytes": 435421184,
+            "caveat": "a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage"
+          }
+        },
+        "details": {}
+      },
+      {
+        "id": 3,
+        "phase": "book_valid",
+        "wallMs": 2543.808916,
+        "cpu": {
+          "kind": "process-boundary-delta",
+          "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+          "userMs": 3163.892,
+          "systemMs": 160.845
+        },
+        "boundaryMemory": {
+          "start": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 600195072,
+            "heapTotalBytes": 434241536,
+            "heapUsedBytes": 414795632,
+            "externalBytes": 17276848,
+            "arrayBuffersBytes": 16675
+          },
+          "end": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 1275953152,
+            "heapTotalBytes": 1091485696,
+            "heapUsedBytes": 1057771464,
+            "externalBytes": 17276848,
+            "arrayBuffersBytes": 16675
+          },
+          "delta": {
+            "kind": "boundary-snapshot-delta",
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "heapUsedDeltaBytes": 642975832,
+            "rssDeltaBytes": 675758080,
+            "caveat": "a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage"
+          }
+        },
+        "details": {}
+      },
+      {
+        "id": 5,
+        "phase": "c-reachability",
+        "name": "main",
+        "wallMs": 20993.353875000004,
+        "cpu": {
+          "kind": "process-boundary-delta",
+          "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+          "userMs": 10973.583000000002,
+          "systemMs": 836.1769999999999
+        },
+        "boundaryMemory": {
+          "start": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 1275969536,
+            "heapTotalBytes": 1091485696,
+            "heapUsedBytes": 1057917968,
+            "externalBytes": 17276848,
+            "arrayBuffersBytes": 16675
+          },
+          "end": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 2016083968,
+            "heapTotalBytes": 1730592768,
+            "heapUsedBytes": 1665972792,
+            "externalBytes": 17276848,
+            "arrayBuffersBytes": 16675
+          },
+          "delta": {
+            "kind": "boundary-snapshot-delta",
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "heapUsedDeltaBytes": 608054824,
+            "rssDeltaBytes": 740114432,
+            "caveat": "a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage"
+          }
+        },
+        "details": {
+          "name": "main",
+          "eExists": true,
+          "hExists": false,
+          "retainedHigher": 0,
+          "segments": 0,
+          "spins": 0,
+          "ownFacts": 0,
+          "hotFacts": 0,
+          "staticFacts": 0,
+          "memos": {
+            "opens": 0,
+            "uses": 0,
+            "folds": 0,
+            "spines": 0,
+            "steps": 0
+          }
+        }
+      }
+    ],
+    "openSpans": [
+      {
+        "type": "begin",
+        "id": 4,
+        "parentId": null,
+        "depth": 0,
+        "name": "compile_book",
+        "details": {},
+        "sample": null,
+        "at": "2026-10-25T14:28:16.300Z"
+      },
+      {
+        "type": "begin",
+        "id": 9609,
+        "parentId": 4,
+        "depth": 1,
+        "name": "c-pass-1",
+        "details": {
+          "name": "main"
+        },
+        "sample": null,
+        "at": "2026-10-25T14:28:37.295Z"
+      },
+      {
+        "type": "begin",
+        "id": 67886,
+        "parentId": 9609,
+        "depth": 2,
+        "name": "c-definition",
+        "details": {
+          "name": "../checkpoints/native_stage_profile_generated_fixture:files",
+          "summary": false
+        },
+        "sample": null,
+        "at": "2026-10-25T14:29:03.639Z"
+      }
+    ],
+    "slowestCompletedDefinitions": [
+      {
+        "id": 62240,
+        "phase": "c-definition",
+        "name": "../checkpoints/emitter_steps_v1:emitter_step_group_22",
+        "wallMs": 2059.0265419999996,
+        "cpu": {
+          "kind": "process-boundary-delta",
+          "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+          "userMs": 4047.842000000004,
+          "systemMs": 261.69699999999966
+        },
+        "boundaryMemory": {
+          "start": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 2656501760,
+            "heapTotalBytes": 2395078656,
+            "heapUsedBytes": 1999046184,
+            "externalBytes": 17270085,
+            "arrayBuffersBytes": 16675
+          },
+          "end": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 2688827392,
+            "heapTotalBytes": 2468069376,
+            "heapUsedBytes": 2135410696,
+            "externalBytes": 17270085,
+            "arrayBuffersBytes": 16675
+          },
+          "delta": {
+            "kind": "boundary-snapshot-delta",
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "heapUsedDeltaBytes": 136364512,
+            "rssDeltaBytes": 32325632,
+            "caveat": "a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage"
+          }
+        },
+        "details": {
+          "name": "../checkpoints/emitter_steps_v1:emitter_step_group_22",
+          "summary": false,
+          "eExists": true,
+          "hExists": true,
+          "retainedHigher": 64,
+          "segments": 39741,
+          "spins": 4693,
+          "ownFacts": 21193,
+          "hotFacts": 683,
+          "staticFacts": 58,
+          "memos": {
+            "opens": 317,
+            "uses": 1793,
+            "folds": 64,
+            "spines": 518,
+            "steps": 106103
+          }
+        }
+      },
+      {
+        "id": 52395,
+        "phase": "c-definition",
+        "name": "../checkpoints/emitter_steps_v1:emitter_body_cps_provider_2_runtime_cid_aliases",
+        "wallMs": 1179.262333999999,
+        "cpu": {
+          "kind": "process-boundary-delta",
+          "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+          "userMs": 1212.2390000000014,
+          "systemMs": 28.57900000000018
+        },
+        "boundaryMemory": {
+          "start": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 2675769344,
+            "heapTotalBytes": 2448637952,
+            "heapUsedBytes": 2406534928,
+            "externalBytes": 17271223,
+            "arrayBuffersBytes": 16675
+          },
+          "end": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 2687483904,
+            "heapTotalBytes": 2452045824,
+            "heapUsedBytes": 2402165784,
+            "externalBytes": 17271223,
+            "arrayBuffersBytes": 16675
+          },
+          "delta": {
+            "kind": "boundary-snapshot-delta",
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "heapUsedDeltaBytes": -4369144,
+            "rssDeltaBytes": 11714560,
+            "caveat": "a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage"
+          }
+        },
+        "details": {
+          "name": "../checkpoints/emitter_steps_v1:emitter_body_cps_provider_2_runtime_cid_aliases",
+          "summary": false,
+          "eExists": true,
+          "hExists": true,
+          "retainedHigher": 3,
+          "segments": 32200,
+          "spins": 4347,
+          "ownFacts": 18946,
+          "hotFacts": 683,
+          "staticFacts": 56,
+          "memos": {
+            "opens": 49,
+            "uses": 478,
+            "folds": 32,
+            "spines": 143,
+            "steps": 390
+          }
+        }
+      },
+      {
+        "id": 47913,
+        "phase": "c-definition",
+        "name": "../checkpoints/emitter_steps_v1:emitter_body_cps_provider_8_js_runtime",
+        "wallMs": 957.8160830000052,
+        "cpu": {
+          "kind": "process-boundary-delta",
+          "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+          "userMs": 1113.286,
+          "systemMs": 29.85699999999997
+        },
+        "boundaryMemory": {
+          "start": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 2557919232,
+            "heapTotalBytes": 2329100288,
+            "heapUsedBytes": 1721569272,
+            "externalBytes": 17271223,
+            "arrayBuffersBytes": 16675
+          },
+          "end": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 2597421056,
+            "heapTotalBytes": 2348417024,
+            "heapUsedBytes": 2055100664,
+            "externalBytes": 17271223,
+            "arrayBuffersBytes": 16675
+          },
+          "delta": {
+            "kind": "boundary-snapshot-delta",
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "heapUsedDeltaBytes": 333531392,
+            "rssDeltaBytes": 39501824,
+            "caveat": "a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage"
+          }
+        },
+        "details": {
+          "name": "../checkpoints/emitter_steps_v1:emitter_body_cps_provider_8_js_runtime",
+          "summary": false,
+          "eExists": true,
+          "hExists": true,
+          "retainedHigher": 1,
+          "segments": 27463,
+          "spins": 4147,
+          "ownFacts": 17650,
+          "hotFacts": 679,
+          "staticFacts": 53,
+          "memos": {
+            "opens": 0,
+            "uses": 0,
+            "folds": 0,
+            "spines": 1,
+            "steps": 72171
+          }
+        }
+      },
+      {
+        "id": 66306,
+        "phase": "c-definition",
+        "name": "../checkpoints/emitter_steps_v1:emitter_step_one",
+        "wallMs": 934.4751249999972,
+        "cpu": {
+          "kind": "process-boundary-delta",
+          "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+          "userMs": 703.3110000000015,
+          "systemMs": 80.67000000000007
+        },
+        "boundaryMemory": {
+          "start": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 2693070848,
+            "heapTotalBytes": 2472443904,
+            "heapUsedBytes": 2368306888,
+            "externalBytes": 17270085,
+            "arrayBuffersBytes": 16675
+          },
+          "end": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 2741354496,
+            "heapTotalBytes": 2523086848,
+            "heapUsedBytes": 2471840624,
+            "externalBytes": 17270085,
+            "arrayBuffersBytes": 16675
+          },
+          "delta": {
+            "kind": "boundary-snapshot-delta",
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "heapUsedDeltaBytes": 103533736,
+            "rssDeltaBytes": 48283648,
+            "caveat": "a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage"
+          }
+        },
+        "details": {
+          "name": "../checkpoints/emitter_steps_v1:emitter_step_one",
+          "summary": false,
+          "eExists": true,
+          "hExists": true,
+          "retainedHigher": 1575,
+          "segments": 43348,
+          "spins": 5297,
+          "ownFacts": 21236,
+          "hotFacts": 683,
+          "staticFacts": 58,
+          "memos": {
+            "opens": 11903,
+            "uses": 62456,
+            "folds": 1746,
+            "spines": 16776,
+            "steps": 12809
+          }
+        }
+      },
+      {
+        "id": 47889,
+        "phase": "c-definition",
+        "name": "../checkpoints/emitter_steps_v1:emitter_body_cps_provider_8_js_runtime_type_eval",
+        "wallMs": 816.4699160000018,
+        "cpu": {
+          "kind": "process-boundary-delta",
+          "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+          "userMs": 1994.0849999999991,
+          "systemMs": 137.23599999999988
+        },
+        "boundaryMemory": {
+          "start": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 2562375680,
+            "heapTotalBytes": 2358181888,
+            "heapUsedBytes": 2320412360,
+            "externalBytes": 17276848,
+            "arrayBuffersBytes": 16675
+          },
+          "end": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 2553331712,
+            "heapTotalBytes": 2324316160,
+            "heapUsedBytes": 1600645592,
+            "externalBytes": 17271223,
+            "arrayBuffersBytes": 16675
+          },
+          "delta": {
+            "kind": "boundary-snapshot-delta",
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "heapUsedDeltaBytes": -719766768,
+            "rssDeltaBytes": -9043968,
+            "caveat": "a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage"
+          }
+        },
+        "details": {
+          "name": "../checkpoints/emitter_steps_v1:emitter_body_cps_provider_8_js_runtime_type_eval",
+          "summary": false,
+          "eExists": true,
+          "hExists": true,
+          "retainedHigher": 1,
+          "segments": 27443,
+          "spins": 4147,
+          "ownFacts": 17650,
+          "hotFacts": 679,
+          "staticFacts": 53,
+          "memos": {
+            "opens": 0,
+            "uses": 0,
+            "folds": 0,
+            "spines": 1,
+            "steps": 3939
+          }
+        }
+      },
+      {
+        "id": 63881,
+        "phase": "c-definition",
+        "name": "../checkpoints/emitter_steps_v1:emitter_step_group_4",
+        "wallMs": 406.5965419999993,
+        "cpu": {
+          "kind": "process-boundary-delta",
+          "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+          "userMs": 22.51299999999901,
+          "systemMs": 8.108999999999924
+        },
+        "boundaryMemory": {
+          "start": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 2691579904,
+            "heapTotalBytes": 2470739968,
+            "heapUsedBytes": 2283563848,
+            "externalBytes": 17270085,
+            "arrayBuffersBytes": 16675
+          },
+          "end": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 2691776512,
+            "heapTotalBytes": 2470739968,
+            "heapUsedBytes": 2283801648,
+            "externalBytes": 17270085,
+            "arrayBuffersBytes": 16675
+          },
+          "delta": {
+            "kind": "boundary-snapshot-delta",
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "heapUsedDeltaBytes": 237800,
+            "rssDeltaBytes": 196608,
+            "caveat": "a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage"
+          }
+        },
+        "details": {
+          "name": "../checkpoints/emitter_steps_v1:emitter_step_group_4",
+          "summary": false,
+          "eExists": true,
+          "hExists": true,
+          "retainedHigher": 74,
+          "segments": 41044,
+          "spins": 4958,
+          "ownFacts": 21211,
+          "hotFacts": 683,
+          "staticFacts": 58,
+          "memos": {
+            "opens": 518,
+            "uses": 2275,
+            "folds": 8,
+            "spines": 590,
+            "steps": 0
+          }
+        }
+      },
+      {
+        "id": 53702,
+        "phase": "c-definition",
+        "name": "../checkpoints/emitter_steps_v1:emitter_body_cps_provider_1_project_native",
+        "wallMs": 259.81995800000004,
+        "cpu": {
+          "kind": "process-boundary-delta",
+          "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+          "userMs": 167.99500000000262,
+          "systemMs": 6.91399999999976
+        },
+        "boundaryMemory": {
+          "start": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 2652667904,
+            "heapTotalBytes": 2389426176,
+            "heapUsedBytes": 1687209688,
+            "externalBytes": 17270085,
+            "arrayBuffersBytes": 16675
+          },
+          "end": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 2653388800,
+            "heapTotalBytes": 2390409216,
+            "heapUsedBytes": 1705422208,
+            "externalBytes": 17270085,
+            "arrayBuffersBytes": 16675
+          },
+          "delta": {
+            "kind": "boundary-snapshot-delta",
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "heapUsedDeltaBytes": 18212520,
+            "rssDeltaBytes": 720896,
+            "caveat": "a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage"
+          }
+        },
+        "details": {
+          "name": "../checkpoints/emitter_steps_v1:emitter_body_cps_provider_1_project_native",
+          "summary": false,
+          "eExists": true,
+          "hExists": true,
+          "retainedHigher": 5,
+          "segments": 33412,
+          "spins": 4431,
+          "ownFacts": 19253,
+          "hotFacts": 683,
+          "staticFacts": 58,
+          "memos": {
+            "opens": 1742,
+            "uses": 9072,
+            "folds": 494,
+            "spines": 1533,
+            "steps": 0
+          }
+        }
+      },
+      {
+        "id": 26287,
+        "phase": "c-definition",
+        "name": "../checkpoints/checker_core_steps_v1:checker_match_699",
+        "wallMs": 259.17962499999703,
+        "cpu": {
+          "kind": "process-boundary-delta",
+          "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+          "userMs": 523.4520000000011,
+          "systemMs": 10.177999999999884
+        },
+        "boundaryMemory": {
+          "start": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 2474622976,
+            "heapTotalBytes": 2264367104,
+            "heapUsedBytes": 2226545640,
+            "externalBytes": 17276848,
+            "arrayBuffersBytes": 16675
+          },
+          "end": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 2474852352,
+            "heapTotalBytes": 2264367104,
+            "heapUsedBytes": 2228512792,
+            "externalBytes": 17276848,
+            "arrayBuffersBytes": 16675
+          },
+          "delta": {
+            "kind": "boundary-snapshot-delta",
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "heapUsedDeltaBytes": 1967152,
+            "rssDeltaBytes": 229376,
+            "caveat": "a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage"
+          }
+        },
+        "details": {
+          "name": "../checkpoints/checker_core_steps_v1:checker_match_699",
+          "summary": false,
+          "eExists": true,
+          "hExists": true,
+          "retainedHigher": 13,
+          "segments": 9966,
+          "spins": 2173,
+          "ownFacts": 8117,
+          "hotFacts": 646,
+          "staticFacts": 25,
+          "memos": {
+            "opens": 96,
+            "uses": 428,
+            "folds": 15,
+            "spines": 110,
+            "steps": 0
+          }
+        }
+      },
+      {
+        "id": 30288,
+        "phase": "c-definition",
+        "name": "../checkpoints/checker_core_steps_v1:checker_match_3209",
+        "wallMs": 259.1307919999963,
+        "cpu": {
+          "kind": "process-boundary-delta",
+          "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+          "userMs": 24.99499999999898,
+          "systemMs": 3.6239999999997963
+        },
+        "boundaryMemory": {
+          "start": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 2434416640,
+            "heapTotalBytes": 2154840064,
+            "heapUsedBytes": 1586348352,
+            "externalBytes": 17276848,
+            "arrayBuffersBytes": 16675
+          },
+          "end": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 2434433024,
+            "heapTotalBytes": 2154840064,
+            "heapUsedBytes": 1589675520,
+            "externalBytes": 17276848,
+            "arrayBuffersBytes": 16675
+          },
+          "delta": {
+            "kind": "boundary-snapshot-delta",
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "heapUsedDeltaBytes": 3327168,
+            "rssDeltaBytes": 16384,
+            "caveat": "a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage"
+          }
+        },
+        "details": {
+          "name": "../checkpoints/checker_core_steps_v1:checker_match_3209",
+          "summary": false,
+          "eExists": true,
+          "hExists": true,
+          "retainedHigher": 56,
+          "segments": 12985,
+          "spins": 2668,
+          "ownFacts": 10215,
+          "hotFacts": 654,
+          "staticFacts": 35,
+          "memos": {
+            "opens": 686,
+            "uses": 3470,
+            "folds": 134,
+            "spines": 907,
+            "steps": 6
+          }
+        }
+      },
+      {
+        "id": 62117,
+        "phase": "c-definition",
+        "name": "../checkpoints/emitter_steps_v1:emitter_step_group_24",
+        "wallMs": 253.1111249999958,
+        "cpu": {
+          "kind": "process-boundary-delta",
+          "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+          "userMs": 149.84199999999691,
+          "systemMs": 5.249000000000251
+        },
+        "boundaryMemory": {
+          "start": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 2655731712,
+            "heapTotalBytes": 2394046464,
+            "heapUsedBytes": 1983266528,
+            "externalBytes": 17270085,
+            "arrayBuffersBytes": 16675
+          },
+          "end": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 2657091584,
+            "heapTotalBytes": 2395668480,
+            "heapUsedBytes": 2007939352,
+            "externalBytes": 17270085,
+            "arrayBuffersBytes": 16675
+          },
+          "delta": {
+            "kind": "boundary-snapshot-delta",
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "heapUsedDeltaBytes": 24672824,
+            "rssDeltaBytes": 1359872,
+            "caveat": "a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage"
+          }
+        },
+        "details": {
+          "name": "../checkpoints/emitter_steps_v1:emitter_step_group_24",
+          "summary": false,
+          "eExists": true,
+          "hExists": true,
+          "retainedHigher": 51,
+          "segments": 39677,
+          "spins": 4671,
+          "ownFacts": 21191,
+          "hotFacts": 683,
+          "staticFacts": 58,
+          "memos": {
+            "opens": 1284,
+            "uses": 3252,
+            "folds": 20,
+            "spines": 956,
+            "steps": 0
+          }
+        }
+      },
+      {
+        "id": 27058,
+        "phase": "c-definition",
+        "name": "../checkpoints/emitter_steps_v1:emitter_match_1948",
+        "wallMs": 220.58083299999998,
+        "cpu": {
+          "kind": "process-boundary-delta",
+          "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+          "userMs": 209.65599999999904,
+          "systemMs": 5.285000000000082
+        },
+        "boundaryMemory": {
+          "start": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 2436202496,
+            "heapTotalBytes": 2147024896,
+            "heapUsedBytes": 1432001120,
+            "externalBytes": 17276848,
+            "arrayBuffersBytes": 16675
+          },
+          "end": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 2434891776,
+            "heapTotalBytes": 2149269504,
+            "heapUsedBytes": 1474287792,
+            "externalBytes": 17276848,
+            "arrayBuffersBytes": 16675
+          },
+          "delta": {
+            "kind": "boundary-snapshot-delta",
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "heapUsedDeltaBytes": 42286672,
+            "rssDeltaBytes": -1310720,
+            "caveat": "a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage"
+          }
+        },
+        "details": {
+          "name": "../checkpoints/emitter_steps_v1:emitter_match_1948",
+          "summary": false,
+          "eExists": true,
+          "hExists": true,
+          "retainedHigher": 4,
+          "segments": 10471,
+          "spins": 2249,
+          "ownFacts": 8572,
+          "hotFacts": 648,
+          "staticFacts": 26,
+          "memos": {
+            "opens": 66,
+            "uses": 446,
+            "folds": 32,
+            "spines": 118,
+            "steps": 10621
+          }
+        }
+      },
+      {
+        "id": 31472,
+        "phase": "c-definition",
+        "name": "../checkpoints/checker_core_steps_v1:checker_match_2317",
+        "wallMs": 190.42795800000022,
+        "cpu": {
+          "kind": "process-boundary-delta",
+          "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+          "userMs": 9.209999999999127,
+          "systemMs": 0.9320000000002437
+        },
+        "boundaryMemory": {
+          "start": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 2434433024,
+            "heapTotalBytes": 2154840064,
+            "heapUsedBytes": 1635202200,
+            "externalBytes": 17276848,
+            "arrayBuffersBytes": 16675
+          },
+          "end": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 2434433024,
+            "heapTotalBytes": 2154840064,
+            "heapUsedBytes": 1625408728,
+            "externalBytes": 17276848,
+            "arrayBuffersBytes": 16675
+          },
+          "delta": {
+            "kind": "boundary-snapshot-delta",
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "heapUsedDeltaBytes": -9793472,
+            "rssDeltaBytes": 0,
+            "caveat": "a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage"
+          }
+        },
+        "details": {
+          "name": "../checkpoints/checker_core_steps_v1:checker_match_2317",
+          "summary": false,
+          "eExists": true,
+          "hExists": true,
+          "retainedHigher": 12,
+          "segments": 13726,
+          "spins": 2760,
+          "ownFacts": 10666,
+          "hotFacts": 657,
+          "staticFacts": 35,
+          "memos": {
+            "opens": 69,
+            "uses": 346,
+            "folds": 13,
+            "spines": 92,
+            "steps": 0
+          }
+        }
+      }
+    ],
+    "sampledEndHeapMax": {
+      "bytes": 2482589240,
+      "row": {
+        "id": 67887,
+        "phase": "prepare",
+        "name": "../checkpoints/native_stage_profile_generated_fixture:files",
+        "wallMs": 0.08029099999839673,
+        "heapUsedBytes": 2482589240
+      },
+      "note": "Only observed end-boundary isolate heapUsed samples, not continuous peak or live/retained bytes"
+    },
+    "lastEvents": [
+      {
+        "type": "observation",
+        "id": 262211,
+        "spanId": 9609,
+        "at": "2026-10-25T14:29:03.639Z",
+        "elapsedMs": 59088.182583,
+        "kind": "compiler-retention",
+        "name": "definition-state",
+        "scope": "in-process checked-body/higher presence flags",
+        "units": "boolean",
+        "unitsByField": null,
+        "value": null,
+        "values": {
+          "eExists": true,
+          "hExists": false
+        },
+        "source": null,
+        "details": {
+          "compilerName": "../checkpoints/emitter_steps_v1:emitter_pop"
+        }
+      },
+      {
+        "type": "observation",
+        "id": 262212,
+        "spanId": 9609,
+        "at": "2026-10-25T14:29:03.639Z",
+        "elapsedMs": 59088.190667,
+        "kind": "compiler-memo-sizes",
+        "name": "memos",
+        "scope": "in-process memo cache entry counts",
+        "units": "entries",
+        "unitsByField": null,
+        "value": null,
+        "values": {
+          "opens": 0,
+          "uses": 0,
+          "folds": 0,
+          "spines": 0,
+          "steps": 0
+        },
+        "source": null,
+        "details": {
+          "compilerName": "../checkpoints/emitter_steps_v1:emitter_pop"
+        }
+      },
+      {
+        "type": "begin",
+        "id": 67886,
+        "parentId": 9609,
+        "depth": 2,
+        "name": "c-definition",
+        "details": {
+          "name": "../checkpoints/native_stage_profile_generated_fixture:files",
+          "summary": false
+        },
+        "sample": null,
+        "at": "2026-10-25T14:29:03.639Z"
+      },
+      {
+        "type": "begin",
+        "id": 67887,
+        "parentId": 67886,
+        "depth": 3,
+        "name": "prepare",
+        "details": {
+          "name": "../checkpoints/native_stage_profile_generated_fixture:files",
+          "summary": false
+        },
+        "sample": null,
+        "at": "2026-10-25T14:29:03.639Z"
+      },
+      {
+        "type": "observation",
+        "id": 262213,
+        "spanId": 67887,
+        "at": "2026-10-25T14:29:03.639Z",
+        "elapsedMs": 59088.288583,
+        "kind": "compiler-state",
+        "name": "../checkpoints/native_stage_profile_generated_fixture:files",
+        "scope": "in-process compile_book cache/fact/segment entry counts",
+        "units": "entries",
+        "unitsByField": null,
+        "value": null,
+        "values": {
+          "retainedHigher": 1,
+          "segments": 43351,
+          "spins": 5298,
+          "ownFacts": 21238,
+          "hotFacts": 683,
+          "staticFacts": 58
+        },
+        "source": null,
+        "details": null
+      },
+      {
+        "type": "observation",
+        "id": 262214,
+        "spanId": 67887,
+        "at": "2026-10-25T14:29:03.639Z",
+        "elapsedMs": 59088.2975,
+        "kind": "compiler-retention",
+        "name": "definition-state",
+        "scope": "in-process checked-body/higher presence flags",
+        "units": "boolean",
+        "unitsByField": null,
+        "value": null,
+        "values": {
+          "eExists": true,
+          "hExists": true
+        },
+        "source": null,
+        "details": {
+          "compilerName": "../checkpoints/native_stage_profile_generated_fixture:files"
+        }
+      },
+      {
+        "type": "observation",
+        "id": 262215,
+        "spanId": 67887,
+        "at": "2026-10-25T14:29:03.639Z",
+        "elapsedMs": 59088.305958,
+        "kind": "compiler-memo-sizes",
+        "name": "memos",
+        "scope": "in-process memo cache entry counts",
+        "units": "entries",
+        "unitsByField": null,
+        "value": null,
+        "values": {
+          "opens": 0,
+          "uses": 0,
+          "folds": 0,
+          "spines": 0,
+          "steps": 0
+        },
+        "source": null,
+        "details": {
+          "compilerName": "../checkpoints/native_stage_profile_generated_fixture:files"
+        }
+      },
+      {
+        "type": "end",
+        "id": 67887,
+        "parentId": 67886,
+        "name": "prepare",
+        "status": "completed",
+        "wallMs": 0.08029099999839673,
+        "cpu": {
+          "kind": "process-boundary-delta",
+          "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+          "userMs": 0.062000000005355105,
+          "systemMs": 0.01999999999998181
+        },
+        "boundaryMemory": {
+          "start": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 2741370880,
+            "heapTotalBytes": 2523086848,
+            "heapUsedBytes": 2482499240,
+            "externalBytes": 17270085,
+            "arrayBuffersBytes": 16675
+          },
+          "end": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 2741370880,
+            "heapTotalBytes": 2523086848,
+            "heapUsedBytes": 2482589240,
+            "externalBytes": 17270085,
+            "arrayBuffersBytes": 16675
+          },
+          "delta": {
+            "kind": "boundary-snapshot-delta",
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "heapUsedDeltaBytes": 90000,
+            "rssDeltaBytes": 0,
+            "caveat": "a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage"
+          }
+        },
+        "details": {
+          "name": "../checkpoints/native_stage_profile_generated_fixture:files",
+          "summary": false,
+          "eExists": true,
+          "hExists": true,
+          "retainedHigher": 1,
+          "segments": 43351,
+          "spins": 5298,
+          "ownFacts": 21238,
+          "hotFacts": 683,
+          "staticFacts": 58,
+          "memos": {
+            "opens": 0,
+            "uses": 0,
+            "folds": 0,
+            "spines": 0,
+            "steps": 0
+          }
+        },
+        "at": "2026-10-25T14:29:03.639Z"
+      }
+    ],
+    "raw": {
+      "path": "/tmp/native03d0-fine-1-profiles/profile-17471-thread-1-a5cbDt/events.jsonl",
+      "bytes": 238143216,
+      "sha256": "741b2511dc6dd9966deabc6876359b01c298870d56a33a5a2d5e67ba80e2bcff"
+    },
+    "checkpoint": {
+      "inputs": {
+        "/private/tmp/bend-native-merged-03d0/bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+        "/private/tmp/bend-native-merged-03d0/bend2/comp.ts": "a84170d5a84f21386383ccd478a1dac687eb664d89c21b284cd1134513963b70",
+        "/private/tmp/bend-native-merged-03d0/bend2/base.bend": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+        "/private/tmp/bend-native-merged-03d0/evals/native_stage_profile_driver.bend": "dd1b86b49f66039949c3efd962973e784a938fdce8a4beb7a2a324f591f3171a",
+        "/private/tmp/bend-native-merged-03d0/checkpoints/native_stage_profile_generated_fixture.bend": "ef98fcac013f127a218430aa1b3f43c191092cbc41d66b3f41f02715be65a108",
+        "/private/tmp/bend-native-merged-03d0/checkpoints/emitter_steps_v1.bend": "d7dbe31856eb8d9e53eeddefab0ea4eed56eafe6420a7478d4c37b53d63fb956",
+        "/private/tmp/bend-native-merged-03d0/checkpoints/checker_core_steps_v1.bend": "d6000fd556d550f45ccca6adeaaa6e2b0d6aa2fc7604fae0959d650f6d7d175c",
+        "/private/tmp/bend-native-merged-03d0/checkpoints/template_steps_v1.bend": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4"
+      },
+      "activeSpans": [
+        {
+          "id": 4,
+          "parentId": null,
+          "name": "compile_book",
+          "details": {},
+          "startedAt": "2026-10-25T14:28:16.300Z",
+          "startedMonotonicMs": 12640.417125
+        },
+        {
+          "id": 9609,
+          "parentId": 4,
+          "name": "c-pass-1",
+          "details": {
+            "name": "main"
+          },
+          "startedAt": "2026-10-25T14:28:37.295Z",
+          "startedMonotonicMs": 33635.007292
+        }
+      ],
+      "counts": {
+        "spans": 9609,
+        "coarseSpans": 6,
+        "fineSpans": 9603,
+        "observations": 58731,
+        "retainedObservations": 3,
+        "fineObservations": 58728
+      },
+      "elapsedMs": 32743.805458000003,
+      "process": {
+        "cpu": {
+          "kind": "process-boundary-delta",
+          "scope": "process.cpuUsage delta since collector creation; every thread in this process; child processes excluded",
+          "userMs": 18493.527,
+          "systemMs": 1183.953
+        },
+        "memory": {
+          "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+          "rssBytes": 2016083968,
+          "heapTotalBytes": 1730592768,
+          "heapUsedBytes": 1666016360,
+          "externalBytes": 17276848,
+          "arrayBuffersBytes": 16675
+        }
+      }
+    }
+  },
+  "interpretation": {
+    "observed": "The same oldpinned diagnostic enters c-pass-1 and dies with the files() transport definition still open; its prepare span completed. No program()/runtime() or general heap-owner cause is inferred.",
+    "incomplete": true,
+    "scope": "Compiler observer raw-detail diagnostic; not a current compiler-root, benchmark, or workload acceptance. Observer raw serialization/I/O overhead is included; timing is not comparable to the earlier untraced run.",
+    "notEstablished": [
+      "Minimal failing input",
+      "Files literal alone reproduces OOM",
+      "Retained/live owner bytes",
+      "Continuous isolate-heap peak",
+      "Cause or boundary of any different historical OOM",
+      "Current root native C/HOST artifact"
+    ]
+  }
+}

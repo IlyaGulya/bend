@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "status": "SCOPED_NF_AND_REAL_C_CONSUMER_PASS",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "scope": "38 typed-step descriptor semantic cases plus actual canonical BIR C emission, clang and native execution; not full compiler-root admission",
+  "inputs": {
+    "bend2/selfhost/descriptor_nf.bend": "c727bfe0adf97f86dc44960ca2c46fd890f0d8557157ba883af40d738d3e72dd",
+    "bend2/selfhost/c_backend_layout.bend": "e61bf74b165935dfa625abba48c6475399e340f10b4d328451e30902be3db878",
+    "evals/descriptor_nf_smoke.bend": "0cc2299c516d28d582509445c2fdd8376266d5f07ec25d8e5575dabd37f829d6",
+    "evals/descriptor_nf_step_smoke.ts": "1c7db43cb6381834421cfa02b4d931bdd87c95bce2e94cc38f56f49375500791",
+    "evals/c_backend_step_smoke.ts": "417ea224cfb57c84d39c050830372ee69560647f47b1bf337f3bd151ba8c8f0c"
+  },
+  "normalizer": {
+    "receipt": "evals/receipts/nf2039g3_quoted_scope_smoke.json",
+    "receiptSha256": "5d1b436bcec63eff7cc3cba45711a7e98e1c5f42c8840479d2f8d6d252b7eee6",
+    "observed": {
+      "bits": "11111111111111111111111111111111111111",
+      "chunks": 189
+    }
+  },
+  "build": {
+    "sourcePath": "/private/tmp/bend2039g3-nf-arrow/checkpoints/c_backend_steps_component_v1.bend",
+    "sourceSha256": "d574f5e7c95adb2e65565ca533304652ba723003b2a1aea347e70e5691552dff",
+    "artifactPath": "/tmp/bend2039g3-nf-quoted-c-consumer-v3.js",
+    "artifactSha256": "26603240569fee959c6ffe573cd40948a29f342aa2d7a46526bdd54539d223a6",
+    "checkedDefinitions": 3581,
+    "eventsFullyValidated": 3928,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "runtime": {
+      "name": "node",
+      "node": "23.11.0",
+      "v8": "12.9.202.28-node.14",
+      "executable": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "heapLimitMiB": 3072,
+      "stackSizeMb": 256,
+      "heapSizeLimitBytes": 3271557120,
+      "manualGC": false
+    },
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 1143242752,
+      "peakFootprintBytes": 1174732880,
+      "elapsedMs": 3614,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend2039g3-nf-arrow/evals/checker_core_component_build.ts",
+        "--worker",
+        "--file=/private/tmp/bend2039g3-nf-arrow/checkpoints/c_backend_steps_component_v1.bend",
+        "--exports=expand_modules_start,template_step",
+        "--artifact=/tmp/bend2039g3-nf-quoted-c-consumer-v3.js",
+        "--report=/private/tmp/bend2039g3-nf-arrow/checkpoints/descriptor-nf-g3-quoted-c-consumer-v3",
+        "--inputs-sha256=187fe5f73c488e9c7190894f20cabca61d61139d5ee1267b1a986f18d0ef23e2"
+      ],
+      "label": "Full-native CheckerCore component JS build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793080972441-f4b1149b3f7aa908.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "run": {
+    "expected": "26",
+    "observed": "26",
+    "chunks": 27275,
+    "sourceBytes": 89864,
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 262701056,
+      "peakFootprintBytes": 188925320,
+      "elapsedMs": 681,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/c_backend_step_smoke.ts",
+        "--run=/tmp/bend2039g3-nf-quoted-c-consumer-v3.js"
+      ],
+      "label": "heavy command",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793081025774-560f041133ce2007.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "repairs": "Standalone C-smoke composition leaves shared IndexLookup as ordinary native import, matching production emitter; tag guards accept bare and qualified nominal Run tags. Historical rejected receipts remain rejected."
+}

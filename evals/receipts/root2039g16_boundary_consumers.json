@@ -1,0 +1,765 @@
+{
+  "schemaVersion": 1,
+  "status": "G16_PHYSICAL_AND_BOUNDED_DIRECT_CALL_CONSUMERS_PASS_FULL_ACCEPTANCE_PENDING",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "sourceBase": "23aab663",
+  "physicalCommits": [
+    "3c44bf18",
+    "8d6a4aa7",
+    "768553d4"
+  ],
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "sourceHashes": {
+    "bend2/selfhost/js_backend.bend": "b7657f4acfae68aa47641fe42c3ccfb5292cd4c036b636e1be20c0382cfa1a3f",
+    "bend2/selfhost/c_backend_physical.bend": "d71b3dcb1132e843a1bdf8ade4e55a85dc369a8e072381c2aa4385179a4eaf9c",
+    "tests/reg/phys_storage_paths.bend": "6c0d3c08a4fe6dfc0f793ec02225a6e92c1a5e7a32508d091a8b12346c297c17",
+    "evals/c_target_fixtures_run.ts": "a67388e3757ddd488b9edc430a585a3821b9edaac2a929ad0293cedf80f0949c",
+    "bend2/comp.ts": "f95eed20344ca291bf74a1e4ffe574f788ea22a86adc66d5bfe0f681523245ef",
+    "bend2/bend.ts": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e"
+  },
+  "intermediateRejected": {
+    "status": "FAIL",
+    "scope": "First physical draft compiled C but omitted short-arm padding; not accepted",
+    "row": {
+      "source": "tests/reg/phys_storage_paths.bend",
+      "target": "c",
+      "sourceSha256": "6c0d3c08a4fe6dfc0f793ec02225a6e92c1a5e7a32508d091a8b12346c297c17",
+      "output": "/tmp/bend-g16-consumers-64URUt/phys_storage_paths.bend.c",
+      "outputSha256": "4fc531c3dba920824fbe77730b0fb377d3caf646b146d10fd52c682aea2353ea",
+      "emitMs": 13309.878125000001,
+      "expected": "2655042671\n3,9\n56,15,9;1,5,4\n",
+      "clang": {
+        "command": [
+          "clang",
+          "-std=c11",
+          "-O0",
+          "-pthread",
+          "/tmp/bend-g16-consumers-64URUt/phys_storage_paths.bend.c",
+          "-lm",
+          "-o",
+          "/tmp/bend-g16-consumers-64URUt/phys_storage_paths.bend.c.exe"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 1187.017499999998,
+        "stdoutBytes": 0,
+        "stderrBytes": 9173
+      },
+      "consumer": {
+        "command": [
+          "/tmp/bend-g16-consumers-64URUt/phys_storage_paths.bend.c.exe"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 3.1973330000000715,
+        "stdoutBytes": 29,
+        "stderrBytes": 0
+      },
+      "passed": false
+    },
+    "observed": "2655042671\n3,9\n56,15,9;1,7,0\n"
+  },
+  "emitterBuild": {
+    "status": "JS_GENERATED_NOT_YET_EXECUTED",
+    "provenancePath": "/tmp/bend-g16-final-emitter-build.provenance.json",
+    "provenanceSha256": "ad7a60cf5bf002732e0977fec5d12bcec57d801d36293d83eeab688f06ee5adb",
+    "sourcePath": "/private/tmp/bend2039g16-boundaries/checkpoints/emitter_steps_component_v1.bend",
+    "sourceSha256": "e6bd090dc9b2a0b381e4a896922c91869571445b194a60898d893e1f2ce3b3c8",
+    "exports": [
+      "emit_modules_start",
+      "emit_library_start",
+      "emitter_step",
+      "emit_c_modules_start",
+      "emit_c_library_start",
+      "c_emitter_step"
+    ],
+    "artifactPath": "/tmp/bend-g16-final-emitter.js",
+    "artifactSha256": "579c6a67f5cd4daaa04355f66f38697a4c8f4cd63793c16f41b07838c0ae122e",
+    "bytes": 6880398,
+    "eventsFullyValidated": 5912,
+    "checkedDefinitions": 5449,
+    "liveBodies": 5449,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "checkedOutputRetention": "native e",
+    "nativeRetention": "native checked e retained through all JS definition folding; scope-local higher caches released between definitions; no serialization or source-value fallback",
+    "nativeCheckedBodies": 5449,
+    "expectedSourceDefinitions": 5449,
+    "toolchain": "CANONICAL NATIVE LOAD/CHECK; CANONICAL JS PREPARE/EMIT/RELEASE; Node/V8 automatic GC",
+    "preparedCount": 4842,
+    "releasedCount": 4842,
+    "maxSimultaneousE": 5449,
+    "maxSimultaneousH": 3158,
+    "countsCaveat": "Definition slots, not unique term graphs; signature metadata does not prepare higher bodies",
+    "runtime": {
+      "name": "node",
+      "node": "23.11.0",
+      "v8": "12.9.202.28-node.14",
+      "executable": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "heapLimitMiB": 3072,
+      "stackSizeMb": 256,
+      "heapSizeLimitBytes": 3271557120,
+      "manualGC": false
+    },
+    "cpuMs": 18998.336,
+    "compiledExecution": "NOT_RUN",
+    "selfhostGreen": false,
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 2443870208,
+      "peakFootprintBytes": 2540047032,
+      "elapsedMs": 13326,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend2039g16-boundaries/evals/checker_core_component_build.ts",
+        "--worker",
+        "--file=/private/tmp/bend2039g16-boundaries/checkpoints/emitter_steps_component_v1.bend",
+        "--exports=emit_modules_start,emit_library_start,emitter_step,emit_c_modules_start,emit_c_library_start,c_emitter_step",
+        "--artifact=/tmp/bend-g16-final-emitter.js",
+        "--report=/tmp/bend-g16-final-emitter-build",
+        "--inputs-sha256=89b20e7a59cf6ba87df686b81848b98fa8613d66f54e92b6da07f4f0c544ce2a"
+      ],
+      "label": "Full-native CheckerCore component JS build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793140114718-314c2cf9c762c5f1.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "consumers": {
+    "scope": "Source parsing and checking with retained g9a frontend; current native-validated emitter; actual JS/C execution, aliases and unchanged 32-page frontier bound. Not full compiler acceptance.",
+    "frontend": {
+      "path": "/tmp/bend-g10-retained-frontend.js",
+      "sha256": "63fdd105001ccde3e9df352ac3723973366cca004e7469fa7d875896c6450ee5"
+    },
+    "emitter": {
+      "path": "/tmp/bend-g16-final-emitter.js",
+      "sha256": "579c6a67f5cd4daaa04355f66f38697a4c8f4cd63793c16f41b07838c0ae122e",
+      "build": "/tmp/bend-g16-final-emitter-build.result.json",
+      "buildSha256": "f98555fcbac4519e57bbac337344842c9f8b718306c3fd684b178ad9c2773774"
+    },
+    "status": "G16_DIRECT_CALL_PHYSICAL_STORAGE_AND_NATIVE_CONSUMERS_PASS",
+    "rows": [
+      {
+        "source": "tests/reg/phys_storage_paths.bend",
+        "target": "js",
+        "sourceSha256": "6c0d3c08a4fe6dfc0f793ec02225a6e92c1a5e7a32508d091a8b12346c297c17",
+        "output": "/tmp/bend-g16-final-consumers-KkPNDZ/phys_storage_paths.bend.js",
+        "outputSha256": "c45d8e0356f459f57c752f6acdea0bfc6d0b86d4161f15beceda5932100e8fb3",
+        "emitMs": 326.2803749999998,
+        "expected": "2655042671\n3,9\n56,15,9;1,5,4\n",
+        "consumer": {
+          "command": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "/tmp/bend-g16-final-consumers-KkPNDZ/phys_storage_paths.bend.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 37.12504200000012,
+          "stdoutBytes": 29,
+          "stderrBytes": 0
+        },
+        "passed": true,
+        "observed": "2655042671\n3,9\n56,15,9;1,5,4\n"
+      },
+      {
+        "source": "tests/reg/phys_storage_paths.bend",
+        "target": "c",
+        "sourceSha256": "6c0d3c08a4fe6dfc0f793ec02225a6e92c1a5e7a32508d091a8b12346c297c17",
+        "output": "/tmp/bend-g16-final-consumers-KkPNDZ/phys_storage_paths.bend.c",
+        "outputSha256": "27910d9fe0b1dd6332c303157984fd864ce57457a619b64d0b46b207249a9429",
+        "emitMs": 12406.977916,
+        "expected": "2655042671\n3,9\n56,15,9;1,5,4\n",
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/tmp/bend-g16-final-consumers-KkPNDZ/phys_storage_paths.bend.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-g16-final-consumers-KkPNDZ/phys_storage_paths.bend.c.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 1145.6412079999973,
+          "stdoutBytes": 0,
+          "stderrBytes": 9557
+        },
+        "consumer": {
+          "command": [
+            "/tmp/bend-g16-final-consumers-KkPNDZ/phys_storage_paths.bend.c.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 2.8065830000014103,
+          "stdoutBytes": 29,
+          "stderrBytes": 0
+        },
+        "passed": true,
+        "observed": "2655042671\n3,9\n56,15,9;1,5,4\n"
+      },
+      {
+        "source": "tests/reg/checker_arena_names.bend",
+        "target": "js",
+        "sourceSha256": "63fc170fe9ba8f6c5ebd53b516e2ea74b84802d0c1f1bc899d250f90be99873d",
+        "output": "/tmp/bend-g16-final-consumers-KkPNDZ/checker_arena_names.bend.js",
+        "outputSha256": "224e1f5d09c5fb33b9e2f4b78205e446c3cdab379fc6b42372221f3c7b3bb488",
+        "emitMs": 475.3023749999993,
+        "expected": "0\n",
+        "consumer": {
+          "command": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "/tmp/bend-g16-final-consumers-KkPNDZ/checker_arena_names.bend.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 47.47033399999782,
+          "stdoutBytes": 2,
+          "stderrBytes": 0
+        },
+        "passed": true,
+        "observed": "0\n"
+      },
+      {
+        "source": "tests/reg/checker_arena_names.bend",
+        "target": "c",
+        "sourceSha256": "63fc170fe9ba8f6c5ebd53b516e2ea74b84802d0c1f1bc899d250f90be99873d",
+        "output": "/tmp/bend-g16-final-consumers-KkPNDZ/checker_arena_names.bend.c",
+        "outputSha256": "3733538ce6867baa1593a8fcbe871bda387e40ccbd70052704d80cbcdf31f65a",
+        "emitMs": 35278.193458,
+        "expected": "0\n",
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/tmp/bend-g16-final-consumers-KkPNDZ/checker_arena_names.bend.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-g16-final-consumers-KkPNDZ/checker_arena_names.bend.c.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 2045.949416000003,
+          "stdoutBytes": 0,
+          "stderrBytes": 10861
+        },
+        "consumer": {
+          "command": [
+            "/tmp/bend-g16-final-consumers-KkPNDZ/checker_arena_names.bend.c.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 4.170665999990888,
+          "stdoutBytes": 2,
+          "stderrBytes": 0
+        },
+        "passed": true,
+        "observed": "0\n"
+      },
+      {
+        "source": "evals/repro_js_non_tail_stack.bend",
+        "target": "js",
+        "sourceSha256": "84f472df74bcec4eb38a7b4405a14d1dbe1771fe9af2223900045ad9c6e29b29",
+        "output": "/tmp/bend-g16-final-consumers-KkPNDZ/repro_js_non_tail_stack.bend.js",
+        "outputSha256": "fe146d741d33e3670bb181e34cdb3be2933dfd1172aaeaf863191a70025c684d",
+        "emitMs": 185.62174999999115,
+        "expected": "60000\n20000\n40000\n",
+        "consumer": {
+          "command": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "/tmp/bend-g16-final-consumers-KkPNDZ/repro_js_non_tail_stack.bend.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 57.29604200000176,
+          "stdoutBytes": 18,
+          "stderrBytes": 0
+        },
+        "passed": true,
+        "observed": "60000\n20000\n40000\n"
+      },
+      {
+        "source": "evals/repro_js_non_tail_stack.bend",
+        "target": "c",
+        "sourceSha256": "84f472df74bcec4eb38a7b4405a14d1dbe1771fe9af2223900045ad9c6e29b29",
+        "output": "/tmp/bend-g16-final-consumers-KkPNDZ/repro_js_non_tail_stack.bend.c",
+        "outputSha256": "bcd3110cd18ae512a2689e34f57f84a2f87888e728451b0daa5090d66f0596db",
+        "emitMs": 11304.934208000006,
+        "expected": "60000\n20000\n40000\n",
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/tmp/bend-g16-final-consumers-KkPNDZ/repro_js_non_tail_stack.bend.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-g16-final-consumers-KkPNDZ/repro_js_non_tail_stack.bend.c.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 799.2581659999996,
+          "stdoutBytes": 0,
+          "stderrBytes": 8327
+        },
+        "consumer": {
+          "command": [
+            "/tmp/bend-g16-final-consumers-KkPNDZ/repro_js_non_tail_stack.bend.c.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 25.376124999995227,
+          "stdoutBytes": 18,
+          "stderrBytes": 0
+        },
+        "passed": true,
+        "observed": "60000\n20000\n40000\n"
+      },
+      {
+        "source": "evals/repro_js_non_tail_reclaim.bend",
+        "target": "js",
+        "sourceSha256": "60a7a10e8c99d5a83a9f8f95ab71998da3614e0856abf9d7f245d356c94c4c75",
+        "output": "/tmp/bend-g16-final-consumers-KkPNDZ/repro_js_non_tail_reclaim.bend.js",
+        "outputSha256": "d7e0ffb17d644d65fee6abaa16ed1be04aa2e59d534998d50a4efb3359ca6e02",
+        "emitMs": 188.82120799999393,
+        "expected": "24000011\n",
+        "consumer": {
+          "command": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "/tmp/bend-g16-final-consumers-KkPNDZ/repro_js_non_tail_reclaim.bend.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 703.411957999997,
+          "stdoutBytes": 9,
+          "stderrBytes": 0
+        },
+        "passed": true,
+        "observed": "24000011\n"
+      },
+      {
+        "source": "evals/repro_js_non_tail_reclaim.bend",
+        "target": "c",
+        "sourceSha256": "60a7a10e8c99d5a83a9f8f95ab71998da3614e0856abf9d7f245d356c94c4c75",
+        "output": "/tmp/bend-g16-final-consumers-KkPNDZ/repro_js_non_tail_reclaim.bend.c",
+        "outputSha256": "ec7a1b85f7d7c966412ce13996d2f7ad15228a0e91631b8f34ce8ef3515a40a1",
+        "emitMs": 11504.389707999988,
+        "expected": "24000011\n",
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/tmp/bend-g16-final-consumers-KkPNDZ/repro_js_non_tail_reclaim.bend.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-g16-final-consumers-KkPNDZ/repro_js_non_tail_reclaim.bend.c.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 857.2772089999926,
+          "stdoutBytes": 0,
+          "stderrBytes": 8435
+        },
+        "consumer": {
+          "command": [
+            "/tmp/bend-g16-final-consumers-KkPNDZ/repro_js_non_tail_reclaim.bend.c.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 4909.160374999992,
+          "stdoutBytes": 9,
+          "stderrBytes": 0
+        },
+        "passed": true,
+        "observed": "24000011\n"
+      },
+      {
+        "source": "evals/c_target_region_leave_repeat.bend",
+        "target": "js",
+        "sourceSha256": "e0ff9c485e11bddd85e045bf1a7ccdc6be911d924a7950be2b552d71bd092fc1",
+        "output": "/tmp/bend-g16-final-consumers-KkPNDZ/c_target_region_leave_repeat.bend.js",
+        "outputSha256": "3df8449f6dcd3385c6fb176decb1b2c5cadcc4cf74e239f8ed797e540db729b4",
+        "emitMs": 193.5281249999971,
+        "expected": "7\n6\n",
+        "consumer": {
+          "command": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "/tmp/bend-g16-final-consumers-KkPNDZ/c_target_region_leave_repeat.bend.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 34.88345800001116,
+          "stdoutBytes": 4,
+          "stderrBytes": 0
+        },
+        "passed": true,
+        "observed": "7\n6\n"
+      },
+      {
+        "source": "evals/c_target_region_leave_repeat.bend",
+        "target": "c",
+        "sourceSha256": "e0ff9c485e11bddd85e045bf1a7ccdc6be911d924a7950be2b552d71bd092fc1",
+        "output": "/tmp/bend-g16-final-consumers-KkPNDZ/c_target_region_leave_repeat.bend.c",
+        "outputSha256": "c93a0b25745547d2079393ea8af894ca3492332a6a83a268ca411391d807384e",
+        "emitMs": 11190.099875,
+        "expected": "7\n6\n",
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/tmp/bend-g16-final-consumers-KkPNDZ/c_target_region_leave_repeat.bend.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-g16-final-consumers-KkPNDZ/c_target_region_leave_repeat.bend.c.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 769.611625000005,
+          "stdoutBytes": 0,
+          "stderrBytes": 8597
+        },
+        "consumer": {
+          "command": [
+            "/tmp/bend-g16-final-consumers-KkPNDZ/c_target_region_leave_repeat.bend.c.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 3.238500000006752,
+          "stdoutBytes": 4,
+          "stderrBytes": 0
+        },
+        "passed": true,
+        "observed": "7\n6\n"
+      },
+      {
+        "source": "evals/c_target_region_tail_capture.bend",
+        "target": "js",
+        "sourceSha256": "5dbbb2fdf2821a6c4cd66bb9061608195f9ac6fbbc7387bad1813fdf81c9a1e4",
+        "output": "/tmp/bend-g16-final-consumers-KkPNDZ/c_target_region_tail_capture.bend.js",
+        "outputSha256": "7afe27c66790b307b4225266d12fabf144f3a88714caa0d7689c5073825a1932",
+        "emitMs": 186.1766250000219,
+        "expected": "11\n12\n",
+        "consumer": {
+          "command": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "/tmp/bend-g16-final-consumers-KkPNDZ/c_target_region_tail_capture.bend.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 32.40212499999325,
+          "stdoutBytes": 6,
+          "stderrBytes": 0
+        },
+        "passed": true,
+        "observed": "11\n12\n"
+      },
+      {
+        "source": "evals/c_target_region_tail_capture.bend",
+        "target": "c",
+        "sourceSha256": "5dbbb2fdf2821a6c4cd66bb9061608195f9ac6fbbc7387bad1813fdf81c9a1e4",
+        "output": "/tmp/bend-g16-final-consumers-KkPNDZ/c_target_region_tail_capture.bend.c",
+        "outputSha256": "88aece3840f12772870ad8c4a23f37df0d059cc7af46397f642c98be51f13b66",
+        "emitMs": 11598.635250000021,
+        "expected": "11\n12\n",
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/tmp/bend-g16-final-consumers-KkPNDZ/c_target_region_tail_capture.bend.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-g16-final-consumers-KkPNDZ/c_target_region_tail_capture.bend.c.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 773.3999170000025,
+          "stdoutBytes": 0,
+          "stderrBytes": 8597
+        },
+        "consumer": {
+          "command": [
+            "/tmp/bend-g16-final-consumers-KkPNDZ/c_target_region_tail_capture.bend.c.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 3.262209000007715,
+          "stdoutBytes": 6,
+          "stderrBytes": 0
+        },
+        "passed": true,
+        "observed": "11\n12\n"
+      },
+      {
+        "source": "tests/run/native_string_borrow.bend",
+        "target": "js",
+        "sourceSha256": "8f9006f9d0b690e8ccd0a947f8d6691b35af669eff4e7b0d25830f00d8dec715",
+        "output": "/tmp/bend-g16-final-consumers-KkPNDZ/native_string_borrow.bend.js",
+        "outputSha256": "4daf875598ea5f8e5578dbde916418739e18bafdd219216bef101ca39d01d9e3",
+        "emitMs": 203.12683399999514,
+        "expected": "2\nz\nabab\nbounded\n",
+        "consumer": {
+          "command": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "/tmp/bend-g16-final-consumers-KkPNDZ/native_string_borrow.bend.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 49.96608399998513,
+          "stdoutBytes": 17,
+          "stderrBytes": 0
+        },
+        "passed": true,
+        "observed": "2\nz\nabab\nbounded\n"
+      },
+      {
+        "source": "tests/run/native_string_borrow.bend",
+        "target": "c",
+        "sourceSha256": "8f9006f9d0b690e8ccd0a947f8d6691b35af669eff4e7b0d25830f00d8dec715",
+        "output": "/tmp/bend-g16-final-consumers-KkPNDZ/native_string_borrow.bend.c",
+        "outputSha256": "5ed63398f625a91c9c04741d3d583df150f0415e51b942314bbb4f11796b2532",
+        "emitMs": 11805.660375000007,
+        "expected": "2\nz\nabab\nbounded\n",
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/tmp/bend-g16-final-consumers-KkPNDZ/native_string_borrow.bend.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-g16-final-consumers-KkPNDZ/native_string_borrow.bend.c.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 762.2325420000125,
+          "stdoutBytes": 0,
+          "stderrBytes": 8165
+        },
+        "consumer": {
+          "command": [
+            "/tmp/bend-g16-final-consumers-KkPNDZ/native_string_borrow.bend.c.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 63.20145799999591,
+          "stdoutBytes": 17,
+          "stderrBytes": 0
+        },
+        "passed": true,
+        "observed": "2\nz\nabab\nbounded\n"
+      },
+      {
+        "source": "evals/c_step_library_fixture.bend",
+        "target": "js",
+        "exports": [
+          "U32.mul"
+        ],
+        "sourceSha256": "5e53a4815f2fc7f12c3fdea7bfc12764daf65096b125a22a5f884c0cf0e710df",
+        "output": "/tmp/bend-g16-final-consumers-KkPNDZ/unread-native.js",
+        "outputSha256": "62d6e32f29c7f02ed3620964ec77ec3de9f5479103c8adf30dddbe6b78c1827c",
+        "expected": "6\n",
+        "consumer": {
+          "command": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--input-type=module",
+            "-e",
+            "const lib=(await import(\"file:///tmp/bend-g16-final-consumers-KkPNDZ/unread-native.js\")).default;const value=lib[\"U32.mul\"](2,3);if(value!==6)throw Error(\"Native product differs\");console.log(value);"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 41.81295900000259,
+          "stdoutBytes": 2,
+          "stderrBytes": 0
+        },
+        "passed": true,
+        "observed": "6\n"
+      },
+      {
+        "source": "evals/c_step_library_fixture.bend",
+        "target": "c",
+        "exports": [
+          "U32.mul"
+        ],
+        "sourceSha256": "5e53a4815f2fc7f12c3fdea7bfc12764daf65096b125a22a5f884c0cf0e710df",
+        "output": "/tmp/bend-g16-final-consumers-KkPNDZ/unread-native.c",
+        "outputSha256": "8abf3b4307ea233c191c03e5128e323a4960a3b0b4a1d5b18e3ccc236b805bee",
+        "expected": "6\n",
+        "clang": {
+          "command": [
+            "clang",
+            "-std=c11",
+            "-O0",
+            "-pthread",
+            "/tmp/bend-g16-final-consumers-KkPNDZ/unread-native.c",
+            "/tmp/bend-g12-native-export-caller.c",
+            "-lm",
+            "-o",
+            "/tmp/bend-g16-final-consumers-KkPNDZ/unread-native.c.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 767.6839579999796,
+          "stdoutBytes": 0,
+          "stderrBytes": 7517
+        },
+        "consumer": {
+          "command": [
+            "/tmp/bend-g16-final-consumers-KkPNDZ/unread-native.c.exe"
+          ],
+          "status": 0,
+          "signal": null,
+          "elapsedMs": 2.8224170000175945,
+          "stdoutBytes": 2,
+          "stderrBytes": 0
+        },
+        "passed": true,
+        "observed": "6\n"
+      }
+    ],
+    "guardian": {
+      "status": "PASS",
+      "elapsedMs": 184313,
+      "peakRssBytes": 2732965888,
+      "peakFootprintBytes": 2698600640,
+      "timeoutMs": 600000,
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793140163090-d707ce6e6d8e0793.json",
+      "command": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "/tmp/bend-g13-consumer-worker.mjs",
+        "/tmp/bend-g16-final-consumers.mjs"
+      ]
+    }
+  },
+  "exceptionRecovery": {
+    "scope": "Same final emitter, actual public library; Number Nat ABI; every overflow followed by a valid call, default Node stack",
+    "source": "import Base\n\ndef inc(x: Nat) -> Nat:\n  Nat.add(x, 1n)\n\ndef nested(+x: Nat) -> Nat:\n  y = inc(x)\n  Nat.add(y, x)\n",
+    "artifact": {
+      "path": "/tmp/bend-g16-final-exceptions-mCZcKP/exception.js",
+      "sha256": "cf3b9be1d0c281ab496785f11f6131425c9fe2c3a5db88b2afef43cb7e545f4c"
+    },
+    "consumerSource": "import lib from '/tmp/bend-g16-final-exceptions-mCZcKP/exception.js';\nlet caught=0;for(let i=0;i<20000;i++){try{lib.nested(281474976710655);}catch(e){caught++;}if(lib.nested(3)!==7)throw Error('Continuation state corrupted after exception');}if(caught!==20000)throw Error('Missing Nat overflow');console.log(caught+',7');\n",
+    "consumerCommand": [
+      "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "/tmp/bend-g16-exception-execute.mjs"
+    ],
+    "observed": "20000,7\n",
+    "status": "PASS",
+    "elapsedMs": 66,
+    "peakRssBytes": 50380800,
+    "peakFootprintBytes": 21924336,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793140677826-999dbf6325b1935c.json"
+  },
+  "fullCanonicalJSBuild": {
+    "status": "JS_GENERATED_NOT_YET_EXECUTED",
+    "provenancePath": "/tmp/bend-g16-probe-compiler-build-v3.provenance.json",
+    "provenanceSha256": "2d58d5132d78f2429f8d0fc568643bec691ac61c1db2a0b4e520e8bf5a487468",
+    "sourcePath": "/private/tmp/bend2039g16-boundaries/checkpoints/.bootstrap_compiler_root_probe2039g16.bend",
+    "sourceSha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+    "exports": [
+      "parsed_module",
+      "parse_with_fuel",
+      "expand_modules_start",
+      "template_step",
+      "check_expanded_start",
+      "inspect_checked_start",
+      "checker_step",
+      "emit_modules_start",
+      "emit_library_start",
+      "emitter_step",
+      "emit_c_modules_start",
+      "emit_c_library_start",
+      "c_emitter_step"
+    ],
+    "artifactPath": "/tmp/bend-g16-probe-compiler.js",
+    "artifactSha256": "304ed6f441d4fc55f75a599b1d4f7856690187659457184abf86b19b785954e7",
+    "bytes": 13985921,
+    "eventsFullyValidated": 12697,
+    "checkedDefinitions": 12126,
+    "liveBodies": 12126,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "checkedOutputRetention": "native e",
+    "nativeRetention": "native checked e retained through all JS definition folding; scope-local higher caches released between definitions; no serialization or source-value fallback",
+    "nativeCheckedBodies": 12126,
+    "expectedSourceDefinitions": 12126,
+    "toolchain": "CANONICAL NATIVE LOAD/CHECK; CANONICAL JS PREPARE/EMIT/RELEASE; Node/V8 automatic GC",
+    "preparedCount": 11773,
+    "releasedCount": 11773,
+    "maxSimultaneousE": 12126,
+    "maxSimultaneousH": 3158,
+    "countsCaveat": "Definition slots, not unique term graphs; signature metadata does not prepare higher bodies",
+    "runtime": {
+      "name": "node",
+      "node": "23.11.0",
+      "v8": "12.9.202.28-node.14",
+      "executable": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "heapLimitMiB": 3072,
+      "stackSizeMb": 256,
+      "heapSizeLimitBytes": 3271557120,
+      "manualGC": false
+    },
+    "cpuMs": 46070.877,
+    "compiledExecution": "NOT_RUN",
+    "selfhostGreen": false,
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 3228925952,
+      "peakFootprintBytes": 3308289152,
+      "elapsedMs": 31074,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend2039g16-boundaries/evals/checker_core_component_build.ts",
+        "--worker",
+        "--file=/private/tmp/bend2039g16-boundaries/checkpoints/.bootstrap_compiler_root_probe2039g16.bend",
+        "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step,emit_c_modules_start,emit_c_library_start,c_emitter_step",
+        "--artifact=/tmp/bend-g16-probe-compiler.js",
+        "--report=/tmp/bend-g16-probe-compiler-build-v3",
+        "--inputs-sha256=e3dd5fe21a682c4b676b4481282987be83255389a2037f268626abe19db4fd6f"
+      ],
+      "label": "Full-native CheckerCore component JS build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793140509132-07a9cc83b9687de1.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "acceptanceBoundary": "The full canonical producer build is not a native-seed/selfhost fixedpoint. Native C build, fresh parser admission, both full 44-case matrices, all 95 seed fixtures, native/host export suites and exact stage1/stage2 equality remain required."
+}

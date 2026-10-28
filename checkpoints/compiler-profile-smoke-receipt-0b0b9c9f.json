@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "kind": "compiler-profile-smoke-receipt",
+  "diagnosticOnly": true,
+  "acceptanceEvidence": false,
+  "status": "PASS",
+  "baseCommit": "0b0b9c9f8e3924e1dc61b2c346327a895aff69e4",
+  "baseCommitSubject": "evals: fix compiler profile observation accounting",
+  "verificationWorktree": "/private/tmp/bend-profiling-verify57ab",
+  "command": "node --experimental-strip-types evals/compiler_profile_smoke.ts",
+  "logPath": "/tmp/profile-evidence/merged-smoke-0b0b9c9f-pin.log",
+  "logSha256": "5e5ee98eb5e0cdeb00187b8f07057076a67679df8d9b3506dbb9439044d6e271",
+  "evidencePath": "checkpoints/compiler-profile-smoke-v1.json",
+  "evidenceSha256": "5ce94152fd8d354b45c2b87a1a1350d876fc5719d7695bab80c1d1cbef0f8461",
+  "cases": [
+    "componentValid",
+    "componentRejected",
+    "componentCutoff",
+    "nativeRejected",
+    "directC",
+    "directRejected",
+    "directCodegenFailure",
+    "measurementIncomplete",
+    "terminatedWorkerCheckpoint",
+    "collectorContract"
+  ],
+  "sourcePins": {
+    "evals/compiler_profile.mjs": "99fca04a701af1fec88e49ab3ec4673ada67fd504ed22d6901b1937e997b4ae8",
+    "evals/selfhost_cpu_profile.mjs": "5d5fc8d329a3b600522c58eeac59c49c515109bc7f48845d8177cb520129a1c0",
+    "evals/native_compiler_experiment.ts": "acf8371500009002366f0758280ca3383fcb3cb607a3469d30b73a146c97ae57",
+    "evals/checker_core_component_build.ts": "85bc4ae037acbbaa1c5f8ccc97287fdcb6ddc36fbdb8e8906586ef17e11f218b",
+    "bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+    "bend2/comp.ts": "a84170d5a84f21386383ccd478a1dac687eb664d89c21b284cd1134513963b70"
+  },
+  "guardianPins": {
+    "evals/heavy_gate.ts": "204f3529704435455d20a9d5a126a8e9c62e002b6fed9044c8319da8a3c26ff2",
+    "evals/heavy_gate_native.c": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b"
+  },
+  "pinUpdate": "evals/checker_core_component_build.ts stale historical heavy_gate pins updated to the merged 0b0b9c9f guardian source; no behavior, limit, or acceptance change",
+  "limits": [
+    "one post-fix merged 10-case smoke; an earlier pre-fix attempt failed on stale guardian source pins before any profile case ran; fullroot profiling/overhead and llvm-split link remain unverified",
+    "diagnostic only: profile files do not certify acceptance, bootstrap green, fixedpoint or benchmark results",
+    "span CPU is a process.cpuUsage boundary delta over all threads in this process; child processes are excluded and require their own rusage receipt; nested or overlapping spans overlap and no exclusive CPU is derived",
+    "boundary heapUsed deltas are not allocation, live or retained bytes; RSS is process-wide",
+    "sampled CPU/allocation profiles are statistical, include collected objects for allocation, and have no Bend source map",
+    "child-process CPU/RSS exists only where the producer records a child receipt (e.g. NATIVE_PHASE or llvm time -lp); it is never inferred",
+    "rawDetail streams every event to events.jsonl; fine spans/observations are aggregated in memory, but JSON serialization and I/O overhead remains and is not measured",
+    "fullroot overhead/control and complete stage coverage are not established by a tiny smoke run"
+  ],
+  "verificationAttempts": [
+    {
+      "attempt": 1,
+      "status": "FAIL",
+      "phase": "plain component build (before profiling setup)",
+      "casesExecuted": [],
+      "cause": "Error: Protected input drift: evals/heavy_gate.ts; component builder still pinned the pre-guardian heavy_gate.ts/heavy_gate_native.c hashes",
+      "logPath": "/tmp/profile-evidence/merged-smoke-0b0b9c9f.log",
+      "logSha256": "4f30db568428f259b2cee6c4d9d48571013d3df13ba28784d5648ccf2f4999e1",
+      "remediation": "updated only the two stale guardian pins to the merged 0b0b9c9f source hashes in verification commit 3b08b9b8; no behavior or limits changed"
+    },
+    {
+      "attempt": 2,
+      "status": "PASS",
+      "phase": "post-fix merged 10-case smoke",
+      "casesExecuted": [
+        "componentValid",
+        "componentRejected",
+        "componentCutoff",
+        "nativeRejected",
+        "directC",
+        "directRejected",
+        "directCodegenFailure",
+        "measurementIncomplete",
+        "terminatedWorkerCheckpoint",
+        "collectorContract"
+      ],
+      "logPath": "/tmp/profile-evidence/merged-smoke-0b0b9c9f-pin.log",
+      "logSha256": "5e5ee98eb5e0cdeb00187b8f07057076a67679df8d9b3506dbb9439044d6e271",
+      "evidencePath": "checkpoints/compiler-profile-smoke-v1.json",
+      "evidenceSha256": "5ce94152fd8d354b45c2b87a1a1350d876fc5719d7695bab80c1d1cbef0f8461"
+    }
+  ],
+  "preFixFailures": 1,
+  "postFixPasses": 1,
+  "runCountTotal": 2
+}

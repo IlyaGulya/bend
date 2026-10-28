@@ -1,0 +1,10 @@
+# C target fixture: contiguous '?' sequences that form C trigraphs. The C
+# emitter must escape each '?' so clang -std=c11 phase 1 cannot rewrite the
+# literal; stdout must reproduce the source text exactly. Text is the
+# assertion, not the emitted escape spelling.
+import Base
+
+def main() -> IO(Unit):
+  IO.print("??=??/??'??(??)??!??<??>??-")
+
+#|??=??/??'??(??)??!??<??>??-

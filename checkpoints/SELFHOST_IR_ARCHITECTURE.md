@@ -1,6 +1,30 @@
 # Selfhost: Checked FIR → Backend IR
 
-## Status 57ab (IN_PROGRESS) — supersedes the pinned 57y status below
+## Статус и границы
+
+Текущий проверенный source — `03c4f278` (g21). Общий
+CheckedFIR → Backend IR → JS/C путь прошёл собственные свежие parser/native
+gates и настоящий native-stage0 → stage1 → stage2 byte fixedpoint:
+30 222 543 байта, `6f3dff55cee825d064b1d2f9d0c3268fd0d629dd93043d90d6fc00f43eba5978`.
+Проверены 12 157 определений / 12 736 событий без исключений и патчей,
+обе 47-case C/JS матрицы, native/library/host consumers и 285
+seed/stage1/stage2 fixture executions. 8-ГиБ / 600-секундные gates сохранены.
+Нормативные контракты и открытые универсальные обязательства — в
+`../bend2/selfhost/FIR_LAWS.md` и `../bend2/selfhost/BIR_LAWS.md`.
+Runtime acceptance не является доказательством всех этих законов.
+Точные команды и границы:
+`../evals/receipts/root2039g21_native_fixedpoint.json`,
+`../evals/receipts/root2039g21_emitted_suites.json`.
+
+Исторические доказательства standalone C-id helper, 57y/57aa и прежние
+числа ниже относятся только к собственным pinned source/executable.
+Они не переносятся на изменённый lowering или новый renderer; g21 принят
+по своей цепочке, не по старым helper-тестам.
+
+## История: статус 57ab до cutover (не текущий)
+
+This retained entry records the pre-cutover state, not the current g21.
+Its “current”, “pending” and “unintegrated” wording is historical.
 
 - 57ab is the current **IN_PROGRESS** integration candidate: common CheckedFIR
   lowering extraction reviewed at `768bf3d3`; C cutover/schema/runtime/JS-foreign
@@ -27,7 +51,8 @@
   CIRRenderer/CIRLayouts/JSIRForeign refs). Foreign boundary policy (BOX/callback
   conversion) and hot=0/no-seal are unverified target choices until gate evidence.
 
-## Статус и границы
+
+### Исторические checkpoints
 
 Это архитектурный контракт принятого functional FIR/BIR cutover compiler57y,
 не победа над official. Историческая performance-версия55 остаётся reference.
@@ -94,20 +119,45 @@ build/run/consumer за262.388s под прежними8GiB guards; runtime phys
 
 
 
-Единственный источник этого контракта — этот файл; оперативный статус, команды,
-хеши и результаты находятся в SELFHOST_HANDOFF.md и компактных version receipts.
+Нормативные спецификации текущего source (`943de390`) находятся в
+`../bend2/selfhost/FIR_LAWS.md` (Checked FIR) и `../bend2/selfhost/BIR_LAWS.md`
+(lowering и Backend IR). Этот файл — историческая архитектурная запись cutover
+compiler57y/57t: приведённые ниже статусы, числа, хеши и receipts остаются
+привязанными к своим source и не переклассифицируются для нового source. Для
+текущего source он сохраняет исторический контекст и больше не является
+единственным источником контракта. §4 сохраняется как исходная формулировка
+обязательств; актуальные версии и их proof-status — в двух спецификациях:
+
+| старый ID (ниже) | актуальная спецификация |
+|---|---|
+| F1 | FIR_LAWS FIR-R1–R5, §13 п.1–2 |
+| F2 | FIR_LAWS FIR-Q1–Q8 |
+| F3 | FIR_LAWS FIR-O1–O4, FIR-I1–I5 |
+| L1–L4 | BIR_LAWS: erasure, strict operands, application, closure/captures |
+| L5 | BIR_LAWS: layouts, fields, patterns |
+| L6 | BIR_LAWS: control flow и termination |
+| L7 | BIR_LAWS: descriptors и normalization |
+| B1–B2 | BIR_LAWS: primitives и target ABI |
+| G1–G2 | BIR_LAWS: determinism и admission |
+| K5 | BIR_LAWS: `Run`/`Stack` protocol |
+| K1–K4 | исторические обязательства отвергнутого 57r, не текущий ABI |
+
 compiler-ir-contract-v56.json содержит проверенные небольшие модели владения и
 операций, а НЕ доказательство корректности полноценного FIR/BIR-компилятора.
 
-Первая выполняемая миграция — реальный checker-to-JS путь, включая native C
+Первая выполнявшаяся на тот момент миграция — реальный checker-to-JS путь, включая native C
 исполнение самого компилятора, generated root и semantic oracle. Это не означает,
 что уже существует новый C/Metal/CUDA renderer для Backend IR. Старый standalone
 C-emitter не является доказательством такого renderer; его затронутые потребители
-должны быть явно мигрированы и описаны, а не молча объявлены работоспособными.
-Конкретный ещё живой legacy boundary: driver.dispatch_c → inspect_checked →
-c_emit.bend с SyntaxTerm/DefBody. Обычный JS path этот readback не использует.
-Поэтому утверждение «все старые пути удалены, любой backend идёт через BIR»
-сейчас неверно; compatibility C branch не является новым BIR renderer.
+должны были быть явно мигрированы и описаны, а не молча объявлены работоспособными.
+Историческая граница, к которой привязаны статусы выше: driver.dispatch_c →
+inspect_checked → c_emit.bend с SyntaxTerm/DefBody. На текущем source `943de390`
+её больше нет: `driver.dispatch_c` → `c_emit.bend`/`c_emit_core.bend` вызывает
+`BackendLower.lower` напрямую, а `inspect_checked`/readback не имеет
+production-потребителя (FIR_LAWS FIR-I4). Обычный JS path readback не использовал и
+раньше. Поэтому прежний вывод «C branch — compatibility path, не новый BIR
+renderer» остаётся историческим: текущий C path идёт через тот же BIR lowering,
+что и JS, и это не доказывает корректность renderer.
 
 
 ## Поток данных

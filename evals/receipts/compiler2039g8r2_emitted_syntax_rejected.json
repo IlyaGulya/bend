@@ -1,0 +1,201 @@
+{
+  "schemaVersion": 1,
+  "status": "G8R2_NATIVE_VALIDATION_PASS_EMITTED_JS_SYNTAX_REJECTED",
+  "compilerAccepted": false,
+  "nativeBuildAccepted": false,
+  "byteFixedpoint": false,
+  "sourceCommit": "637f7701",
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "runtime": {
+    "name": "node",
+    "node": "23.11.0",
+    "v8": "12.9.202.28-node.14",
+    "executable": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+    "heapLimitMiB": 3072,
+    "stackSizeMb": 256,
+    "heapSizeLimitBytes": 3271557120,
+    "manualGC": false
+  },
+  "inputs": {
+    "bend2/selfhost/checker.bend": "9ec3d7c4eeeb88d9782225a12b79ddc5e08561641dd130e7789345b3197ab95f",
+    "bend2/selfhost/js_backend.bend": "9b9b781939893704772a2ef738c042ad70b5a2565758b9b0acd2cab652040736",
+    "evals/repro_js_non_tail_reclaim.bend": "60a7a10e8c99d5a83a9f8f95ab71998da3614e0856abf9d7f245d356c94c4c75",
+    "checkpoints/.bootstrap_compiler_root_release2039g8r2.bend": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+    "checkpoints/checker_core_steps_v1.bend": "33d7b74d27e82f5c2c8608420c244f4a46f78f3d31e2b6c1a783261db3c9e30f",
+    "checkpoints/emitter_steps_v1.bend": "4903b6895688df6183551d6561b16a922ae0ae218b8cff0c2732b5e677a95e0a",
+    "checkpoints/template_steps_v1.bend": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4"
+  },
+  "nativeValidation": {
+    "status": "JS_GENERATED_NOT_YET_EXECUTED",
+    "checkedDefinitions": 12041,
+    "eventsFullyValidated": 12612,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "artifactSha256": "ff1ed3b8a86262f39608e23568839854c1857bfcd8f9ded877453d9e794f2090",
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 3096985600,
+      "peakFootprintBytes": 3206122824,
+      "elapsedMs": 97674,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend2039g8-js-call-cost/evals/checker_core_component_build.ts",
+        "--worker",
+        "--file=/private/tmp/bend2039g8-js-call-cost/checkpoints/.bootstrap_compiler_root_release2039g8r2.bend",
+        "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step,emit_c_modules_start,emit_c_library_start,c_emitter_step",
+        "--artifact=/private/tmp/bend2039g8-js-call-cost/checkpoints/root-release2039g8r2.js",
+        "--report=/private/tmp/bend2039g8-js-call-cost/checkpoints/root-release2039g8r2-build",
+        "--inputs-sha256=07ac9f0f8decb8aeb1ea22a1e4cd605d982e4728365c97ffec40ab181f853ab1"
+      ],
+      "label": "Full-native CheckerCore component JS build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793101357645-86c7e956057b83ce.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "commands": [
+    {
+      "label": "template-source",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/opt/homebrew/bin/bun",
+        "evals/template_step_lower.ts"
+      ],
+      "status": "PASS",
+      "elapsedMs": 2273
+    },
+    {
+      "label": "compose",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/opt/homebrew/bin/bun",
+        "evals/selfhost_driver_source.ts",
+        "--parser-build=checkpoints/bootstrap-parser-rebuild-release2039g8r2.native-build.result.json",
+        "--root=checkpoints/.bootstrap_compiler_root_release2039g8r2.bend",
+        "--manifest=checkpoints/selfhost-root-release2039g8r2.json"
+      ],
+      "status": "PASS",
+      "elapsedMs": 1500
+    },
+    {
+      "label": "js-build",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "--smol",
+        "evals/checker_core_component_build.ts",
+        "--file=checkpoints/.bootstrap_compiler_root_release2039g8r2.bend",
+        "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step,emit_c_modules_start,emit_c_library_start,c_emitter_step",
+        "--artifact=checkpoints/root-release2039g8r2.js",
+        "--report=checkpoints/root-release2039g8r2-build"
+      ],
+      "status": "PASS",
+      "elapsedMs": 97767
+    },
+    {
+      "label": "capture-compile",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--experimental-strip-types",
+        "/tmp/bend2039-candidate-worker.mjs",
+        "/private/tmp/bend2039g8-js-call-cost/evals/candidate_host.ts",
+        "--candidate=checkpoints/root-release2039g8r2.js",
+        "--candidate-build=checkpoints/root-release2039g8r2-build.result.json",
+        "--parser=checkpoints/bootstrap-parser-rebuild-release2039g8r2.js",
+        "evals/repro_js_non_tail_reclaim.bend",
+        "-o",
+        "/tmp/bend2039g8r2-admission-ASd4qx/capture.js"
+      ],
+      "status": "PASS",
+      "elapsedMs": 14236
+    },
+    {
+      "label": "capture-run",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "/tmp/bend2039g8r2-admission-ASd4qx/capture.js"
+      ],
+      "status": "FAIL",
+      "elapsedMs": 101
+    }
+  ],
+  "failure": {
+    "type": "SyntaxError",
+    "message": "Unexpected token ')'",
+    "source": "tail_call_named",
+    "cause": "Conditional expression had its closing parenthesis but no opening parenthesis; run_force closure source is syntactically invalid.",
+    "consumer": [
+      "/opt/homebrew/bin/bun",
+      "evals/heavy_gate.ts",
+      "--memory-mib",
+      "8192",
+      "--rss-mib",
+      "8192",
+      "--poll-ms",
+      "10",
+      "--timeout-ms",
+      "600000",
+      "--",
+      "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "/tmp/bend2039g8r2-admission-ASd4qx/capture.js"
+    ],
+    "outputSha256": "6501e9ba4d4a6419630cf46471c198e6592f3caa366569bfb7d9e0994cf8cdee"
+  },
+  "note": "No images or emitted JS patches included. First binder diagnostic type error is corrected and all native validation passes; real JS consumer still fails before execution. No performance or fixedpoint claim."
+}

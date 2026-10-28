@@ -1,0 +1,846 @@
+{
+  "schemaVersion": 1,
+  "status": "ACTUAL_FILES_LITERAL_ISOLATION_CODEGEN_PASS",
+  "diagnosticOnly": true,
+  "acceptanceEvidence": false,
+  "terminal": {
+    "status": "ISOLATED_LITERAL_CODEGEN_COMPLETED",
+    "diagnosticOnly": true,
+    "acceptanceEvidence": false,
+    "input": "/private/tmp/bend-native-merged-03d0/checkpoints/files56-isolated.bend",
+    "inputSha256": "1962a4e2aebbb307864cedc9d39f99f103a9f88b42ec24a53f06e35a320367aa",
+    "inputBytes": 280093,
+    "result": {
+      "kind": "completed",
+      "cBytes": 3470450,
+      "cSha256": "ec4bc38320b22ec296f980ae8881bab8cdc1b82f70bd25e14d9e5ac73241cd2b",
+      "passes": 2,
+      "releases": 15,
+      "validationEvents": 543,
+      "node": "v23.11.0",
+      "v8": "12.9.202.28-node.14"
+    },
+    "error": null,
+    "profilePath": "/tmp/files56-isolation-1-profiles/profile-76506-thread-1-ynYKNq",
+    "workerExit": 0,
+    "workerLimits": {
+      "stackSizeMb": 256,
+      "maxOldGenerationSizeMb": 3072
+    },
+    "command": [
+      "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "/private/tmp/bend-fir-integrated57ab/checkpoints/files56-isolation.ts"
+    ]
+  },
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 2811691008,
+    "peakFootprintBytes": 2932953168,
+    "elapsedMs": 10320,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "/private/tmp/bend-fir-integrated57ab/checkpoints/files56-isolation.ts"
+    ],
+    "label": "Exact56-file literal isolation diagnostic",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792939235117-547455d4a1d3a4d1.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "invocation": {
+    "launcherCommand": [
+      "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "--experimental-strip-types",
+      "--max-old-space-size=3072",
+      "checkpoints/files56-isolation.ts"
+    ],
+    "cwd": "/private/tmp/bend-fir-integrated57ab"
+  },
+  "source": {
+    "originalTransport": "/private/tmp/bend-native-merged-03d0/checkpoints/native_stage_profile_generated_fixture.bend",
+    "originalSha256": "ef98fcac013f127a218430aa1b3f43c191092cbc41d66b3f41f02715be65a108",
+    "isolatedInput": "/private/tmp/bend-native-merged-03d0/checkpoints/files56-isolated.bend",
+    "isolatedSha256": "1962a4e2aebbb307864cedc9d39f99f103a9f88b42ec24a53f06e35a320367aa",
+    "sourceBytes": 280093,
+    "literalBodyBytes": 279909,
+    "literalBodySha256": "2365c5ce4ebfe6327bb15afa0954fc6bbadab7d54d2bd754375a5ef0fe2c5bb1",
+    "exactBodyCopied": true,
+    "sourceFileRecords": 56,
+    "change": "Imports only original Base/BIR schema; exact files() body becomes pure main(). No Template/Checker/Emitter machine imports, program() or runtime() in this reduced diagnostic."
+  },
+  "probe": {
+    "executedPath": "/private/tmp/bend-fir-integrated57ab/checkpoints/files56-isolation.ts",
+    "archivedPath": "/tmp/files56-isolation-1-profiles/profile-76506-thread-1-ynYKNq/executed-probe.ts",
+    "sha256": "620874b30a046a0264b2f4174a3e24b2c0e1a6623e6c0d32b436787768fd26ca"
+  },
+  "profile": {
+    "schemaVersion": 1,
+    "kind": "compiler-profile",
+    "profilerVersion": "compiler-profile/1",
+    "diagnosticOnly": true,
+    "acceptanceEvidence": false,
+    "status": "completed",
+    "workloadStatus": "completed",
+    "measurementStatus": "complete",
+    "incompleteEvidence": false,
+    "error": null,
+    "execution": {
+      "diagnosticOnly": true,
+      "acceptanceEvidence": false,
+      "kind": "exact frozen03d0 files literal in isolation; imports only Base and original BIR schema; not original full workload",
+      "input": "/private/tmp/bend-native-merged-03d0/checkpoints/files56-isolated.bend",
+      "inputSha256": "1962a4e2aebbb307864cedc9d39f99f103a9f88b42ec24a53f06e35a320367aa",
+      "kernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+      "compilerSha256": "a84170d5a84f21386383ccd478a1dac687eb664d89c21b284cd1134513963b70",
+      "baseSha256": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+      "birSha256": "3614f816b109012c2ccb202ce6164efad9d82b1bf5f9decbc52c27ebaafe94c5",
+      "scriptSha256": "620874b30a046a0264b2f4174a3e24b2c0e1a6623e6c0d32b436787768fd26ca",
+      "workerLimits": {
+        "stackSizeMb": 256,
+        "maxOldGenerationSizeMb": 3072
+      }
+    },
+    "identity": {
+      "pid": 76506,
+      "parentPid": 76505,
+      "threadId": 1,
+      "isMainThread": false
+    },
+    "profileId": "5cbb2b22-987e-4f54-9444-c037c8846194",
+    "runtime": {
+      "name": "node",
+      "versions": {
+        "node": "23.11.0",
+        "acorn": "8.14.1",
+        "ada": "3.2.1",
+        "amaro": "0.4.1",
+        "ares": "1.34.4",
+        "brotli": "1.1.0",
+        "cjs_module_lexer": "2.1.0",
+        "cldr": "46.0",
+        "icu": "76.1",
+        "llhttp": "9.2.1",
+        "modules": "131",
+        "napi": "10",
+        "nbytes": "0.1.1",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.64.0",
+        "openssl": "3.0.16",
+        "simdjson": "3.12.2",
+        "simdutf": "6.0.3",
+        "sqlite": "3.49.1",
+        "tz": "2025a",
+        "undici": "6.21.2",
+        "unicode": "16.0",
+        "uv": "1.50.0",
+        "uvwasi": "0.0.21",
+        "v8": "12.9.202.28-node.14",
+        "zlib": "1.3.0.1-motley-788cb3c",
+        "zstd": "1.5.6"
+      },
+      "platform": "darwin",
+      "arch": "arm64",
+      "execPath": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "execArgv": []
+    },
+    "run": {
+      "runDirectory": "/tmp/files56-isolation-1-profiles/profile-76506-thread-1-ynYKNq",
+      "startedAt": "2026-10-25T14:40:35.293Z",
+      "endedAt": "2026-10-25T14:40:45.207Z",
+      "wallMs": 9912.697,
+      "startMonotonicMs": 156.708542,
+      "endMonotonicMs": 10069.405542,
+      "rawDetail": true,
+      "eventsPath": "/tmp/files56-isolation-1-profiles/profile-76506-thread-1-ynYKNq/events.jsonl"
+    },
+    "measurement": {
+      "wall": {
+        "kind": "monotonic performance.now",
+        "scope": "collector process"
+      },
+      "cpu": {
+        "kind": "process.cpuUsage boundary delta",
+        "scope": "every thread in this process; child processes excluded; not exclusive across overlapping spans"
+      },
+      "memory": {
+        "kind": "process.memoryUsage boundary snapshot",
+        "scope": "RSS process-wide; heapUsed boundary sample, not allocation or retained bytes"
+      },
+      "sampling": null
+    },
+    "sampling": {
+      "config": null,
+      "status": "disabled",
+      "reason": null,
+      "spans": []
+    },
+    "spans": [
+      {
+        "id": 1,
+        "parentId": null,
+        "depth": 0,
+        "name": "module-import",
+        "details": {},
+        "status": "completed",
+        "startedAt": "2026-10-25T14:40:35.296Z",
+        "startedMonotonicMs": 157.652167,
+        "sample": null,
+        "excluded": false,
+        "endedAt": "2026-10-25T14:40:35.360Z",
+        "endedMonotonicMs": 222.411125,
+        "wallMs": 64.758958,
+        "cpu": {
+          "kind": "process-boundary-delta",
+          "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+          "userMs": 180.00599999999997,
+          "systemMs": 6.678000000000004
+        },
+        "boundaryMemory": {
+          "start": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 138461184,
+            "heapTotalBytes": 16760832,
+            "heapUsedBytes": 12450720,
+            "externalBytes": 11149723,
+            "arrayBuffersBytes": 770870
+          },
+          "end": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 154370048,
+            "heapTotalBytes": 19382272,
+            "heapUsedBytes": 14447616,
+            "externalBytes": 18371161,
+            "arrayBuffersBytes": 221481
+          },
+          "delta": {
+            "kind": "boundary-snapshot-delta",
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "heapUsedDeltaBytes": 1996896,
+            "rssDeltaBytes": 15908864,
+            "caveat": "a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "parentId": null,
+        "depth": 0,
+        "name": "book_load",
+        "details": {},
+        "status": "completed",
+        "startedAt": "2026-10-25T14:40:35.361Z",
+        "startedMonotonicMs": 222.989417,
+        "sample": null,
+        "excluded": false,
+        "endedAt": "2026-10-25T14:40:35.439Z",
+        "endedMonotonicMs": 301.052917,
+        "wallMs": 78.06349999999998,
+        "cpu": {
+          "kind": "process-boundary-delta",
+          "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+          "userMs": 162.45100000000002,
+          "systemMs": 12.704999999999998
+        },
+        "boundaryMemory": {
+          "start": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 156336128,
+            "heapTotalBytes": 19382272,
+            "heapUsedBytes": 14493632,
+            "externalBytes": 18371161,
+            "arrayBuffersBytes": 221481
+          },
+          "end": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 193347584,
+            "heapTotalBytes": 39174144,
+            "heapUsedBytes": 23396640,
+            "externalBytes": 17280973,
+            "arrayBuffersBytes": 20800
+          },
+          "delta": {
+            "kind": "boundary-snapshot-delta",
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "heapUsedDeltaBytes": 8903008,
+            "rssDeltaBytes": 37011456,
+            "caveat": "a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "parentId": null,
+        "depth": 0,
+        "name": "book_valid",
+        "details": {},
+        "status": "completed",
+        "startedAt": "2026-10-25T14:40:35.440Z",
+        "startedMonotonicMs": 301.742834,
+        "sample": null,
+        "excluded": false,
+        "endedAt": "2026-10-25T14:40:35.486Z",
+        "endedMonotonicMs": 348.250292,
+        "wallMs": 46.507457999999986,
+        "cpu": {
+          "kind": "process-boundary-delta",
+          "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+          "userMs": 104.69600000000003,
+          "systemMs": 5.1299999999999955
+        },
+        "boundaryMemory": {
+          "start": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 193347584,
+            "heapTotalBytes": 39174144,
+            "heapUsedBytes": 23429464,
+            "externalBytes": 17280973,
+            "arrayBuffersBytes": 20800
+          },
+          "end": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 197967872,
+            "heapTotalBytes": 58081280,
+            "heapUsedBytes": 28710864,
+            "externalBytes": 17280973,
+            "arrayBuffersBytes": 20800
+          },
+          "delta": {
+            "kind": "boundary-snapshot-delta",
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "heapUsedDeltaBytes": 5281400,
+            "rssDeltaBytes": 4620288,
+            "caveat": "a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "parentId": null,
+        "depth": 0,
+        "name": "compile_book",
+        "details": {
+          "cBytes": 3470450
+        },
+        "status": "completed",
+        "startedAt": "2026-10-25T14:40:35.487Z",
+        "startedMonotonicMs": 348.838,
+        "sample": null,
+        "excluded": false,
+        "endedAt": "2026-10-25T14:40:45.206Z",
+        "endedMonotonicMs": 10068.39575,
+        "wallMs": 9719.55775,
+        "cpu": {
+          "kind": "process-boundary-delta",
+          "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+          "userMs": 11949.548999999999,
+          "systemMs": 939.898
+        },
+        "boundaryMemory": {
+          "start": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 198033408,
+            "heapTotalBytes": 58081280,
+            "heapUsedBytes": 28991936,
+            "externalBytes": 17280973,
+            "arrayBuffersBytes": 20800
+          },
+          "end": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 2768928768,
+            "heapTotalBytes": 2285764608,
+            "heapUsedBytes": 2158789344,
+            "externalBytes": 17270085,
+            "arrayBuffersBytes": 16675
+          },
+          "delta": {
+            "kind": "boundary-snapshot-delta",
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "heapUsedDeltaBytes": 2129797408,
+            "rssDeltaBytes": 2570895360,
+            "caveat": "a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "parentId": 4,
+        "depth": 1,
+        "name": "c-reachability",
+        "details": {
+          "name": "main",
+          "eExists": true,
+          "hExists": false,
+          "retainedHigher": 0,
+          "segments": 0,
+          "spins": 0,
+          "ownFacts": 0,
+          "hotFacts": 0,
+          "staticFacts": 0,
+          "memos": {
+            "opens": 0,
+            "uses": 0,
+            "folds": 0,
+            "spines": 0,
+            "steps": 0
+          }
+        },
+        "status": "completed",
+        "startedAt": "2026-10-25T14:40:35.489Z",
+        "startedMonotonicMs": 351.286584,
+        "sample": null,
+        "excluded": false,
+        "endedAt": "2026-10-25T14:40:35.493Z",
+        "endedMonotonicMs": 355.540959,
+        "wallMs": 4.254374999999982,
+        "cpu": {
+          "kind": "process-boundary-delta",
+          "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+          "userMs": 5.247999999999934,
+          "systemMs": 1.347999999999999
+        },
+        "boundaryMemory": {
+          "start": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 198131712,
+            "heapTotalBytes": 58343424,
+            "heapUsedBytes": 29179288,
+            "externalBytes": 17280973,
+            "arrayBuffersBytes": 20800
+          },
+          "end": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 198344704,
+            "heapTotalBytes": 58343424,
+            "heapUsedBytes": 30160392,
+            "externalBytes": 17280973,
+            "arrayBuffersBytes": 20800
+          },
+          "delta": {
+            "kind": "boundary-snapshot-delta",
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "heapUsedDeltaBytes": 981104,
+            "rssDeltaBytes": 212992,
+            "caveat": "a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "parentId": 4,
+        "depth": 1,
+        "name": "c-pass-1",
+        "details": {
+          "name": "main",
+          "eExists": true,
+          "hExists": false,
+          "retainedHigher": 0,
+          "segments": 1,
+          "spins": 0,
+          "ownFacts": 0,
+          "hotFacts": 0,
+          "staticFacts": 3,
+          "memos": {
+            "opens": 0,
+            "uses": 0,
+            "folds": 0,
+            "spines": 0,
+            "steps": 0
+          }
+        },
+        "status": "completed",
+        "startedAt": "2026-10-25T14:40:35.494Z",
+        "startedMonotonicMs": 355.902667,
+        "sample": null,
+        "excluded": false,
+        "endedAt": "2026-10-25T14:40:40.402Z",
+        "endedMonotonicMs": 5264.363,
+        "wallMs": 4908.460333,
+        "cpu": {
+          "kind": "process-boundary-delta",
+          "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+          "userMs": 5944.964,
+          "systemMs": 641.92
+        },
+        "boundaryMemory": {
+          "start": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 198344704,
+            "heapTotalBytes": 58343424,
+            "heapUsedBytes": 30213600,
+            "externalBytes": 17280973,
+            "arrayBuffersBytes": 20800
+          },
+          "end": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 2471542784,
+            "heapTotalBytes": 2242379776,
+            "heapUsedBytes": 2213765616,
+            "externalBytes": 17276848,
+            "arrayBuffersBytes": 16675
+          },
+          "delta": {
+            "kind": "boundary-snapshot-delta",
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "heapUsedDeltaBytes": 2183552016,
+            "rssDeltaBytes": 2273198080,
+            "caveat": "a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage"
+          }
+        }
+      },
+      {
+        "id": 10,
+        "parentId": 4,
+        "depth": 1,
+        "name": "c-pass-2",
+        "details": {
+          "name": "main",
+          "eExists": true,
+          "hExists": false,
+          "retainedHigher": 0,
+          "segments": 1,
+          "spins": 0,
+          "ownFacts": 0,
+          "hotFacts": 0,
+          "staticFacts": 3,
+          "memos": {
+            "opens": 0,
+            "uses": 0,
+            "folds": 0,
+            "spines": 0,
+            "steps": 0
+          }
+        },
+        "status": "completed",
+        "startedAt": "2026-10-25T14:40:40.403Z",
+        "startedMonotonicMs": 5264.67775,
+        "sample": null,
+        "excluded": false,
+        "endedAt": "2026-10-25T14:40:45.186Z",
+        "endedMonotonicMs": 10047.820542,
+        "wallMs": 4783.142792,
+        "cpu": {
+          "kind": "process-boundary-delta",
+          "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+          "userMs": 5934.723000000001,
+          "systemMs": 293.384
+        },
+        "boundaryMemory": {
+          "start": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 2471542784,
+            "heapTotalBytes": 2242379776,
+            "heapUsedBytes": 2213824584,
+            "externalBytes": 17276848,
+            "arrayBuffersBytes": 16675
+          },
+          "end": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 2754363392,
+            "heapTotalBytes": 2271248384,
+            "heapUsedBytes": 2143747936,
+            "externalBytes": 17270085,
+            "arrayBuffersBytes": 16675
+          },
+          "delta": {
+            "kind": "boundary-snapshot-delta",
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "heapUsedDeltaBytes": -70076648,
+            "rssDeltaBytes": 282820608,
+            "caveat": "a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage"
+          }
+        }
+      }
+    ],
+    "observations": [
+      {
+        "id": 43,
+        "spanId": 5,
+        "at": "2026-10-25T14:40:35.492Z",
+        "elapsedMs": 197.656417,
+        "kind": "compiler-state",
+        "name": "main",
+        "scope": "in-process compile_book cache/fact/segment entry counts",
+        "units": "entries",
+        "unitsByField": null,
+        "value": null,
+        "values": {
+          "retainedHigher": 0,
+          "segments": 0,
+          "spins": 0,
+          "ownFacts": 0,
+          "hotFacts": 0,
+          "staticFacts": 0
+        },
+        "source": null,
+        "details": null
+      },
+      {
+        "id": 44,
+        "spanId": 5,
+        "at": "2026-10-25T14:40:35.493Z",
+        "elapsedMs": 198.31141699999998,
+        "kind": "compiler-retention",
+        "name": "definition-state",
+        "scope": "in-process checked-body/higher presence flags",
+        "units": "boolean",
+        "unitsByField": null,
+        "value": null,
+        "values": {
+          "eExists": true,
+          "hExists": false
+        },
+        "source": null,
+        "details": {
+          "compilerName": "main"
+        }
+      },
+      {
+        "id": 45,
+        "spanId": 5,
+        "at": "2026-10-25T14:40:35.493Z",
+        "elapsedMs": 198.625708,
+        "kind": "compiler-memo-sizes",
+        "name": "memos",
+        "scope": "in-process memo cache entry counts",
+        "units": "entries",
+        "unitsByField": null,
+        "value": null,
+        "values": {
+          "opens": 0,
+          "uses": 0,
+          "folds": 0,
+          "spines": 0,
+          "steps": 0
+        },
+        "source": null,
+        "details": {
+          "compilerName": "main"
+        }
+      },
+      {
+        "id": 55,
+        "spanId": 7,
+        "at": "2026-10-25T14:40:40.401Z",
+        "elapsedMs": 5106.69925,
+        "kind": "compiler-state",
+        "name": "main",
+        "scope": "in-process compile_book cache/fact/segment entry counts",
+        "units": "entries",
+        "unitsByField": null,
+        "value": null,
+        "values": {
+          "retainedHigher": 0,
+          "segments": 1,
+          "spins": 0,
+          "ownFacts": 0,
+          "hotFacts": 0,
+          "staticFacts": 3
+        },
+        "source": null,
+        "details": null
+      },
+      {
+        "id": 56,
+        "spanId": 7,
+        "at": "2026-10-25T14:40:40.402Z",
+        "elapsedMs": 5107.134958,
+        "kind": "compiler-retention",
+        "name": "definition-state",
+        "scope": "in-process checked-body/higher presence flags",
+        "units": "boolean",
+        "unitsByField": null,
+        "value": null,
+        "values": {
+          "eExists": true,
+          "hExists": false
+        },
+        "source": null,
+        "details": {
+          "compilerName": "main"
+        }
+      },
+      {
+        "id": 57,
+        "spanId": 7,
+        "at": "2026-10-25T14:40:40.402Z",
+        "elapsedMs": 5107.390125,
+        "kind": "compiler-memo-sizes",
+        "name": "memos",
+        "scope": "in-process memo cache entry counts",
+        "units": "entries",
+        "unitsByField": null,
+        "value": null,
+        "values": {
+          "opens": 0,
+          "uses": 0,
+          "folds": 0,
+          "spines": 0,
+          "steps": 0
+        },
+        "source": null,
+        "details": {
+          "compilerName": "main"
+        }
+      },
+      {
+        "id": 67,
+        "spanId": 10,
+        "at": "2026-10-25T14:40:45.183Z",
+        "elapsedMs": 9888.652791999999,
+        "kind": "compiler-state",
+        "name": "main",
+        "scope": "in-process compile_book cache/fact/segment entry counts",
+        "units": "entries",
+        "unitsByField": null,
+        "value": null,
+        "values": {
+          "retainedHigher": 0,
+          "segments": 1,
+          "spins": 0,
+          "ownFacts": 0,
+          "hotFacts": 0,
+          "staticFacts": 3
+        },
+        "source": null,
+        "details": null
+      },
+      {
+        "id": 68,
+        "spanId": 10,
+        "at": "2026-10-25T14:40:45.184Z",
+        "elapsedMs": 9889.8865,
+        "kind": "compiler-retention",
+        "name": "definition-state",
+        "scope": "in-process checked-body/higher presence flags",
+        "units": "boolean",
+        "unitsByField": null,
+        "value": null,
+        "values": {
+          "eExists": true,
+          "hExists": false
+        },
+        "source": null,
+        "details": {
+          "compilerName": "main"
+        }
+      },
+      {
+        "id": 69,
+        "spanId": 10,
+        "at": "2026-10-25T14:40:45.185Z",
+        "elapsedMs": 9890.666167,
+        "kind": "compiler-memo-sizes",
+        "name": "memos",
+        "scope": "in-process memo cache entry counts",
+        "units": "entries",
+        "unitsByField": null,
+        "value": null,
+        "values": {
+          "opens": 0,
+          "uses": 0,
+          "folds": 0,
+          "spines": 0,
+          "steps": 0
+        },
+        "source": null,
+        "details": {
+          "compilerName": "main"
+        }
+      }
+    ],
+    "fineGrain": {
+      "spans": {
+        "count": 5,
+        "completed": 5,
+        "failed": 0,
+        "aborted": 0,
+        "summedWallMsNotExclusive": 9687.743000999999,
+        "byName": {
+          "prepare": {
+            "count": 3,
+            "completed": 3,
+            "failed": 0,
+            "aborted": 0,
+            "summedWallMsNotExclusive": 0.9805009999998333
+          },
+          "c-definition": {
+            "count": 2,
+            "completed": 2,
+            "failed": 0,
+            "aborted": 0,
+            "summedWallMsNotExclusive": 9686.7625
+          }
+        },
+        "otherNames": 0,
+        "failedSamples": [],
+        "failedSamplesOmitted": 0
+      },
+      "observations": {
+        "count": 60,
+        "kinds": {
+          "compiler-state": 5,
+          "compiler-retention": 20,
+          "compiler-memo-sizes": 20,
+          "compiler-release": 15
+        },
+        "otherKinds": 0
+      }
+    },
+    "summary": {
+      "spanCount": 12,
+      "summarizedSpanCount": 7,
+      "excludedFineGrainSpans": 5,
+      "topLevelSpanCount": 4,
+      "failedSpans": [],
+      "abortedSpans": [],
+      "failedSpanCount": 0,
+      "abortedSpanCount": 0,
+      "sampledSpans": 0,
+      "observations": 9,
+      "observationCount": 69,
+      "aggregatedFineObservations": 60,
+      "observationKinds": {
+        "compiler-state": 8,
+        "compiler-retention": 23,
+        "compiler-memo-sizes": 23,
+        "compiler-release": 15
+      },
+      "retainedObservationKinds": {
+        "compiler-state": 3,
+        "compiler-retention": 3,
+        "compiler-memo-sizes": 3
+      },
+      "rawEventsWritten": 94,
+      "measurementStatus": "complete",
+      "incompleteEvidence": false,
+      "unclosedSpans": {
+        "count": 0,
+        "names": [],
+        "closeStatus": "aborted"
+      }
+    },
+    "limits": [
+      "diagnostic only: profile files do not certify acceptance, bootstrap green, fixedpoint or benchmark results",
+      "span CPU is a process.cpuUsage boundary delta over all threads in this process; child processes are excluded and require their own rusage receipt; nested or overlapping spans overlap and no exclusive CPU is derived",
+      "boundary heapUsed deltas are not allocation, live or retained bytes; RSS is process-wide",
+      "sampled CPU/allocation profiles are statistical, include collected objects for allocation, and have no Bend source map",
+      "child-process CPU/RSS exists only where the producer records a child receipt (e.g. NATIVE_PHASE or llvm time -lp); it is never inferred",
+      "rawDetail streams every event to events.jsonl; fine spans/observations are aggregated in memory, but JSON serialization and I/O overhead remains and is not measured",
+      "fullroot overhead/control and complete stage coverage are not established by a tiny smoke run"
+    ]
+  },
+  "limitsOfProof": [
+    "The56-entry literal alone completes under the same3072MiB old-generation cap; it is not an isolated OOM or minimal failing input",
+    "c-pass1 heapUsed boundary grows30213600→2213765616B; it includes uncollected garbage and is not allocation/retained bytes",
+    "Two passes and returned3470450B C output were observed; no clang, native binary or native execution in this diagnostic",
+    "This reduced source is not full-workload or current-root acceptance and does not shrink any acceptance corpus",
+    "The original full03d0 OOM remains recorded separately; additive heap-owner causality is not proved"
+  ]
+}

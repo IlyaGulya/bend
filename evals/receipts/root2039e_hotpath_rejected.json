@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "status": "REJECTED_HOTPATH_NATIVE_FOOTPRINT_LIMIT",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "producerSha256": "3e4edcae9b8e41c027f8a68ff15d7b419c18c1b1009b97e794f432fc31194c0e",
+  "sourceCheckpoint": "5b8d89ce",
+  "report": "/private/tmp/bend2039-upgrade/checkpoints/root-release2039e-hotpath-native-build.json",
+  "protectedPins": {
+    "/private/tmp/bend2039-upgrade/evals/native_compiler_experiment.ts": "34ef8122851cf2fd28703d939a2b80253f422c791c37b2c420dea2106c9ac015",
+    "/private/tmp/bend2039-upgrade/evals/native_compiler_llvm.ts": "e41724ecc3048609ddbae65d27056f81b5af3cdabdae0790fed9e34a2eee744c",
+    "/private/tmp/bend2039-upgrade/bend2/bend.ts": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+    "/private/tmp/bend2039-upgrade/bend2/comp.ts": "3e4edcae9b8e41c027f8a68ff15d7b419c18c1b1009b97e794f432fc31194c0e",
+    "/private/tmp/bend2039-upgrade/evals/native_compiler_driver.bend": "768203e900f53cdf8d90b50966631ca3a3964dd50003658b07a28b39395f3ec3",
+    "/private/tmp/bend2039-upgrade/evals/native_compiler_host.c": "c9893207b2e8911b7bdf3608de7e99271d6fab0a9dbc2a0f5e3933157cb97e2e",
+    "/private/tmp/bend2039-upgrade/bend2/base.bend": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+    "/private/tmp/bend2039-upgrade/evals/heavy_gate.ts": "204f3529704435455d20a9d5a126a8e9c62e002b6fed9044c8319da8a3c26ff2",
+    "/private/tmp/bend2039-upgrade/evals/heavy_gate_native.c": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b",
+    "/private/tmp/bend2039-upgrade/checkpoints/root-release2039e-native.corpus.json": "291e4ed35de5585d707e80c6ebae3f4baffb111b4eb2e30d6972be1e1aba639c"
+  },
+  "source": "checkpoints/.bootstrap_compiler_root_release2039e.bend",
+  "corpus": "checkpoints/root-release2039e-native.corpus.json",
+  "guardian": {
+    "status": "RESOURCE_LIMIT",
+    "reason": "physical_footprint_limit",
+    "commandExitCode": -1,
+    "commandSignal": 15,
+    "peakRssBytes": 7690141696,
+    "peakFootprintBytes": 8623463792,
+    "elapsedMs": 384417,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 73,
+    "command": [
+      "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+      "--smol",
+      "/private/tmp/bend2039-upgrade/evals/native_compiler_experiment.ts",
+      "--mode=build",
+      "--corpus=checkpoints/root-release2039e-native.corpus.json",
+      "--artifact=/tmp/bend2039e-hotpath-native",
+      "--report=checkpoints/root-release2039e-hotpath-native-build.json",
+      "--cc-opt=0",
+      "--internal=build"
+    ],
+    "label": "Native CPU compiler build",
+    "exitCode": 73,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793019563134-95bba13f9b44c251.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "lastProgress": {
+    "phase": "compile_book",
+    "event": "start",
+    "unixMs": 1793019622960,
+    "pid": 83211,
+    "worker": false,
+    "rssBytes": 2291220480,
+    "heapUsedBytes": 1416427600,
+    "cpuMs": 10346.301,
+    "checkedDefinitions": 12111
+  },
+  "failure": {
+    "phase": "compile_book",
+    "diagnostic": "physical_footprint_limit"
+  },
+  "note": "All12111 bodies validated; unprofiled codegen exceeds8192MiB physical footprint before C publication. No per-definition observer or allocation ownership attribution. Six focused fixtures pass C/JS and byte comparison to132ce4c7; that does not establish full-root memory success."
+}

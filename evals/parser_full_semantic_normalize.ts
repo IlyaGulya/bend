@@ -647,8 +647,11 @@ function canonicalBook(imports: Import[], tops: Iterable<Value>, environment: B.
         : B.App(B.App(B.Ref("Exists", c.s), c.T, c.s), B.Lam(c.k, c.i, out, c.s), c.s), term(f[2]));
       const n = clauses.findIndex(c => !c.all);
       const templateEnd = clauses.findIndex(clause => !clause.template);
+      // Official v39 marks every law-declared def with `l: true` (loader
+      // metadata, like `b`); the AST proves this declaration is a law, so the
+      // reconstruction carries the same flag instead of leaving it undefined.
       book.tlds[key] = { $: "Def", n: n < 0 ? clauses.length : n, T: B.term_higher(T), v: null,
-        x: templateEnd < 0 ? clauses.length : templateEnd, m: "" };
+        x: templateEnd < 0 ? clauses.length : templateEnd, m: "", l: true };
     } else throw Error("Unknown AST top level " + t.tag);
     // book_load assigns b after parsing; it is loader
     // metadata, not a SyntaxTerm/Declaration field. Retain the same declaration

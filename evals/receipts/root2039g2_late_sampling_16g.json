@@ -1,0 +1,919 @@
+{
+  "schemaVersion": 1,
+  "status": "FULL_G2_CODEGEN_SAMPLING_DIAGNOSTIC_COMPLETE",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "scope": "Full unchanged g2 root plus native bridge, canonical validation and C generation sampled; not a native executable build or bootstrap acceptance",
+  "command": [
+    "env",
+    "HEAVY_GATE_MEMORY_MIB=16384",
+    "HEAVY_GATE_RSS_MIB=16384",
+    "HEAVY_GATE_POLL_MS=10",
+    "HEAVY_GATE_TIMEOUT_MS=600000",
+    "BUN_JSC_forceRAMSize=4294967296",
+    "/opt/homebrew/bin/bun",
+    "/tmp/bend2039g2-emission-jsc-16g.ts",
+    "/tmp/bend2039g2-emission-sampling-16g.json"
+  ],
+  "inputs": {
+    "/private/tmp/bend2039-upgrade/checkpoints/.bootstrap_compiler_root_release2039g2.bend": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+    "/private/tmp/bend2039-upgrade/evals/native_compiler_driver.bend": "768203e900f53cdf8d90b50966631ca3a3964dd50003658b07a28b39395f3ec3",
+    "/private/tmp/bend2039-upgrade/bend2/bend.ts": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+    "/private/tmp/bend2039-upgrade/bend2/comp.ts": "605cc9211f74b0cf6ad056c5736bc1cc282bc8ea29117c3b0c2c28f5d7aef17e",
+    "/private/tmp/bend2039-upgrade/bend2/base.bend": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+    "/private/tmp/bend2039g2-emission-jsc-16g.ts": "dab0371a6da726c882e4f95778c87d7a56b44f9424c86c3a0bd28502aeded708",
+    "/private/tmp/bend2039-upgrade/bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+    "/private/tmp/bend2039-upgrade/bend2/selfhost/lexer.bend": "a81265d4ab248c5ea74bf52987e1163773866a01b264ff1a98895d91139d6f53",
+    "/private/tmp/bend2039-upgrade/bend2/selfhost/core.bend": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+    "/private/tmp/bend2039-upgrade/bend2/selfhost/loaded_module.bend": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+    "/private/tmp/bend2039-upgrade/bend2/selfhost/backend_ir.bend": "f19e76411b589cc396cda80bb8ad387cdb5e9aef17ae287641f0d29696a88e9e",
+    "/private/tmp/bend2039-upgrade/bend2/selfhost/checked_frontend.bend": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+    "/private/tmp/bend2039-upgrade/bend2/selfhost/checker_arena.bend": "fb8651ab2e6304faded5eb312ffe95175a177254f7dd704eca7a9b0896a40e31",
+    "/private/tmp/bend2039-upgrade/bend2/selfhost/scope_lookup.bend": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
+    "/private/tmp/bend2039-upgrade/bend2/selfhost/checker_ir.bend": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+    "/private/tmp/bend2039-upgrade/bend2/selfhost/index_lookup.bend": "563c9b152699b490cf68b264e6c4dea4a4e6770dfcf527cf6c81911cb5ea1b78",
+    "/private/tmp/bend2039-upgrade/checkpoints/template_steps_v1.bend": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4",
+    "/private/tmp/bend2039-upgrade/bend2/selfhost/sha256.bend": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+    "/private/tmp/bend2039-upgrade/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+    "/private/tmp/bend2039-upgrade/checkpoints/checker_core_steps_v1.bend": "d6000fd556d550f45ccca6adeaaa6e2b0d6aa2fc7604fae0959d650f6d7d175c",
+    "/private/tmp/bend2039-upgrade/checkpoints/emitter_steps_v1.bend": "024bd0e0401052a5001c269d24100ba4a65bc572d82723e8e73b2ea6bce21455",
+    "/private/tmp/bend2039-upgrade/bend2/selfhost/c_backend_sharing.bend": "c8861993d2ad81057a9ba8b187eb75f743a9005fbb021b43083e7e2906597a40"
+  },
+  "runtime": {
+    "bun": "1.4.3",
+    "revision": "c6da4a4d3010e5553438c60f6bd76d981976867c",
+    "execArgv": [],
+    "stack": "Bun main-thread default",
+    "manualGC": false,
+    "automaticGcRamHint": "4294967296"
+  },
+  "limits": {
+    "rssMiB": 16384,
+    "footprintMiB": 16384,
+    "outerMs": 600000,
+    "codegenBoundaryMs": 60000,
+    "emissionBoundaryMs": 300000
+  },
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 9598287872,
+    "peakFootprintBytes": 7172857224,
+    "elapsedMs": 288199,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "/opt/homebrew/Cellar/bun/1.4.3/bin/bun",
+      "/private/tmp/bend2039g2-emission-jsc-16g.ts",
+      "/tmp/bend2039g2-emission-sampling-16g.json"
+    ],
+    "label": "Bounded codegen-only Bun sampling diagnostic",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793073945201-c6ae7a8e23073ac0.json",
+    "memoryLimitBytes": 17179869184,
+    "rssLimitBytes": 17179869184
+  },
+  "phases": [
+    {
+      "phase": "module-import",
+      "event": "start",
+      "unixMs": 1793073945236,
+      "cpu": {
+        "user": 13632,
+        "system": 9049
+      },
+      "memory": {
+        "rss": 10584640,
+        "heapTotal": 1961984,
+        "heapUsed": 1961984,
+        "external": 670226,
+        "arrayBuffers": 670226
+      },
+      "runtime": {
+        "bun": "1.4.3",
+        "revision": "c6da4a4d3010e5553438c60f6bd76d981976867c",
+        "execArgv": [],
+        "stack": "Bun main-thread default",
+        "manualGC": false,
+        "automaticGcRamHint": "4294967296"
+      },
+      "sampling": {
+        "api": "bun:jsc.profile",
+        "intervalMicroseconds": 10000,
+        "scope": "compile_book only; statistical samples, not measured CPU time or allocation ownership"
+      },
+      "limits": {
+        "rssMiB": 16384,
+        "footprintMiB": 16384,
+        "outerMs": 600000,
+        "codegenBoundaryMs": 60000,
+        "emissionBoundaryMs": 300000
+      }
+    },
+    {
+      "phase": "book-load-root",
+      "event": "start",
+      "unixMs": 1793073945245,
+      "cpu": {
+        "user": 18836,
+        "system": 10303
+      },
+      "memory": {
+        "rss": 13075056,
+        "heapTotal": 2161664,
+        "heapUsed": 2161664,
+        "external": 670326,
+        "arrayBuffers": 670326
+      }
+    },
+    {
+      "phase": "book-load-root",
+      "event": "complete",
+      "unixMs": 1793073948472,
+      "cpu": {
+        "user": 4691326,
+        "system": 258846
+      },
+      "memory": {
+        "rss": 829359376,
+        "heapTotal": 765885440,
+        "heapUsed": 446313953,
+        "external": 9926241,
+        "arrayBuffers": 100
+      },
+      "events": 12684,
+      "modules": 18
+    },
+    {
+      "phase": "book-load-bridge",
+      "event": "start",
+      "unixMs": 1793073948472,
+      "cpu": {
+        "user": 4691355,
+        "system": 259058
+      },
+      "memory": {
+        "rss": 829359376,
+        "heapTotal": 765885440,
+        "heapUsed": 446313953,
+        "external": 9926241,
+        "arrayBuffers": 100
+      }
+    },
+    {
+      "phase": "book-load-bridge",
+      "event": "complete",
+      "unixMs": 1793073948474,
+      "cpu": {
+        "user": 4692599,
+        "system": 259561
+      },
+      "memory": {
+        "rss": 829359376,
+        "heapTotal": 765885440,
+        "heapUsed": 446313953,
+        "external": 9926241,
+        "arrayBuffers": 100
+      },
+      "events": 12723,
+      "modules": 19
+    },
+    {
+      "phase": "book-valid",
+      "event": "start",
+      "unixMs": 1793073948474,
+      "cpu": {
+        "user": 4692614,
+        "system": 259631
+      },
+      "memory": {
+        "rss": 829359376,
+        "heapTotal": 765885440,
+        "heapUsed": 446313953,
+        "external": 9926241,
+        "arrayBuffers": 100
+      }
+    },
+    {
+      "phase": "book-valid",
+      "event": "complete",
+      "unixMs": 1793073950634,
+      "cpu": {
+        "user": 9775799,
+        "system": 588663
+      },
+      "memory": {
+        "rss": 2423638440,
+        "heapTotal": 2360081408,
+        "heapUsed": 1255135069,
+        "external": 8507881,
+        "arrayBuffers": 100
+      },
+      "events": 12723,
+      "checkedDefinitions": 12144
+    },
+    {
+      "phase": "compile-book",
+      "event": "start",
+      "unixMs": 1793073950634,
+      "cpu": {
+        "user": 9776378,
+        "system": 588865
+      },
+      "memory": {
+        "rss": 2423638440,
+        "heapTotal": 2360081408,
+        "heapUsed": 1255135069,
+        "external": 8507881,
+        "arrayBuffers": 100
+      }
+    },
+    {
+      "phase": "compile-book",
+      "event": "complete",
+      "unixMs": 1793074233026,
+      "cpu": {
+        "user": 444836908,
+        "system": 7615869
+      },
+      "memory": {
+        "rss": 4122140136,
+        "heapTotal": 4276845568,
+        "heapUsed": 2990953486,
+        "external": 455215937,
+        "arrayBuffers": 100
+      },
+      "observations": 1415493,
+      "bytes": 55201172,
+      "error": null
+    }
+  ],
+  "passes": [
+    {
+      "stage": "c-pass-1-before",
+      "elapsedMs": 2458.803291,
+      "facts": {
+        "own": 0,
+        "hot": 0,
+        "stat": 0
+      },
+      "segments": 0,
+      "spins": 0
+    },
+    {
+      "stage": "c-pass-1-after",
+      "elapsedMs": 29798.094958,
+      "facts": {
+        "own": 33483,
+        "hot": 911,
+        "stat": 67
+      },
+      "segments": 0,
+      "spins": 0
+    },
+    {
+      "stage": "c-pass-2-before",
+      "elapsedMs": 29798.726791,
+      "facts": {
+        "own": 33483,
+        "hot": 911,
+        "stat": 67
+      },
+      "segments": 0,
+      "spins": 0
+    },
+    {
+      "stage": "c-pass-2-after",
+      "elapsedMs": 55808.808958,
+      "facts": {
+        "own": 33793,
+        "hot": 946,
+        "stat": 67
+      },
+      "segments": 0,
+      "spins": 0
+    },
+    {
+      "stage": "c-pass-3-before",
+      "elapsedMs": 55809.451291,
+      "facts": {
+        "own": 33793,
+        "hot": 946,
+        "stat": 67
+      },
+      "segments": 0,
+      "spins": 0
+    },
+    {
+      "stage": "c-pass-3-after",
+      "elapsedMs": 81035.203125,
+      "facts": {
+        "own": 33932,
+        "hot": 946,
+        "stat": 67
+      },
+      "segments": 0,
+      "spins": 0
+    },
+    {
+      "stage": "c-pass-4-before",
+      "elapsedMs": 81036.210166,
+      "facts": {
+        "own": 33932,
+        "hot": 946,
+        "stat": 67
+      },
+      "segments": 0,
+      "spins": 0
+    },
+    {
+      "stage": "c-pass-4-after",
+      "elapsedMs": 106579.719916,
+      "facts": {
+        "own": 33987,
+        "hot": 946,
+        "stat": 67
+      },
+      "segments": 0,
+      "spins": 0
+    },
+    {
+      "stage": "c-pass-5-before",
+      "elapsedMs": 106580.783333,
+      "facts": {
+        "own": 33987,
+        "hot": 946,
+        "stat": 67
+      },
+      "segments": 0,
+      "spins": 0
+    },
+    {
+      "stage": "c-pass-5-after",
+      "elapsedMs": 132754.931166,
+      "facts": {
+        "own": 34009,
+        "hot": 946,
+        "stat": 67
+      },
+      "segments": 0,
+      "spins": 0
+    },
+    {
+      "stage": "c-pass-6-before",
+      "elapsedMs": 132756.283375,
+      "facts": {
+        "own": 34009,
+        "hot": 946,
+        "stat": 67
+      },
+      "segments": 0,
+      "spins": 0
+    },
+    {
+      "stage": "c-pass-6-after",
+      "elapsedMs": 168576.542791,
+      "facts": {
+        "own": 34020,
+        "hot": 946,
+        "stat": 67
+      },
+      "segments": 0,
+      "spins": 0
+    },
+    {
+      "stage": "c-pass-7-before",
+      "elapsedMs": 168578.81825,
+      "facts": {
+        "own": 34020,
+        "hot": 946,
+        "stat": 67
+      },
+      "segments": 0,
+      "spins": 0
+    },
+    {
+      "stage": "c-pass-7-after",
+      "elapsedMs": 191573.759291,
+      "facts": {
+        "own": 34023,
+        "hot": 946,
+        "stat": 67
+      },
+      "segments": 0,
+      "spins": 0
+    },
+    {
+      "stage": "c-pass-8-before",
+      "elapsedMs": 191577.411208,
+      "facts": {
+        "own": 34023,
+        "hot": 946,
+        "stat": 67
+      },
+      "segments": 0,
+      "spins": 0
+    },
+    {
+      "stage": "c-pass-8-after",
+      "elapsedMs": 218253.79783300002,
+      "facts": {
+        "own": 34024,
+        "hot": 946,
+        "stat": 67
+      },
+      "segments": 0,
+      "spins": 0
+    },
+    {
+      "stage": "c-pass-9-before",
+      "elapsedMs": 218256.12295800002,
+      "facts": {
+        "own": 34024,
+        "hot": 946,
+        "stat": 67
+      },
+      "segments": 0,
+      "spins": 0
+    },
+    {
+      "stage": "c-pass-9-after",
+      "elapsedMs": 245399.682666,
+      "facts": {
+        "own": 34024,
+        "hot": 946,
+        "stat": 67
+      },
+      "segments": 0,
+      "spins": 0
+    },
+    {
+      "stage": "c-pass-10-before",
+      "elapsedMs": 245401.87125,
+      "facts": {
+        "own": 34024,
+        "hot": 946,
+        "stat": 67
+      },
+      "segments": 0,
+      "spins": 0
+    },
+    {
+      "stage": "c-pass-10-after",
+      "elapsedMs": 277443.320291,
+      "facts": {
+        "own": 34024,
+        "hot": 946,
+        "stat": 67
+      },
+      "segments": 52409,
+      "spins": 6812
+    }
+  ],
+  "sampling": {
+    "scope": "Statistical current-thread stack samples, not measured CPU time or allocation attribution",
+    "sampleIntervalSeconds": 0.01,
+    "traces": 20206,
+    "capturedSeconds": 278.12092291680165,
+    "self": [
+      {
+        "frame": {
+          "sourceID": 4,
+          "name": "map",
+          "location": "#CPBdlN:FTL:bc#45",
+          "line": 1,
+          "column": 11,
+          "category": "FTL",
+          "flags": 1
+        },
+        "samples": 1181
+      },
+      {
+        "frame": {
+          "sourceID": 4294967295,
+          "name": "cloneObject",
+          "location": "#<nil>:None:<nil>",
+          "line": 4294967295,
+          "column": 4294967295,
+          "category": "Unknown Executable",
+          "flags": 0
+        },
+        "samples": 916
+      },
+      {
+        "frame": {
+          "sourceID": 3,
+          "name": "term_higher",
+          "location": "#D16yYP:FTL:bc#0",
+          "sourceURL": "/private/tmp/bend2039-upgrade/bend2/bend.ts",
+          "line": 693,
+          "column": 29,
+          "category": "FTL",
+          "flags": 0
+        },
+        "samples": 910
+      },
+      {
+        "frame": {
+          "sourceID": 3,
+          "name": "Bin",
+          "location": "#BE6hqD:FTL:bc#1",
+          "sourceURL": "/private/tmp/bend2039-upgrade/bend2/bend.ts",
+          "line": 457,
+          "column": 22,
+          "category": "FTL",
+          "flags": 0
+        },
+        "samples": 765
+      },
+      {
+        "frame": {
+          "sourceID": 2,
+          "name": "memo",
+          "location": "#DqUw7B:FTL:bc#55",
+          "sourceURL": "/private/tmp/bend2039-upgrade/bend2/comp.ts",
+          "line": 2480,
+          "column": 7,
+          "category": "FTL",
+          "flags": 0
+        },
+        "samples": 668
+      },
+      {
+        "frame": {
+          "sourceID": 2,
+          "name": "val_new",
+          "location": "#DC5AXj:FTL:bc#36",
+          "sourceURL": "/private/tmp/bend2039-upgrade/bend2/comp.ts",
+          "line": 2244,
+          "column": 16,
+          "category": "FTL",
+          "flags": 0
+        },
+        "samples": 639
+      },
+      {
+        "frame": {
+          "sourceID": 3,
+          "name": "term_higher",
+          "location": "#D16yYP:FTL:bc#39",
+          "sourceURL": "/private/tmp/bend2039-upgrade/bend2/bend.ts",
+          "line": 693,
+          "column": 40,
+          "category": "FTL",
+          "flags": 0
+        },
+        "samples": 609
+      },
+      {
+        "frame": {
+          "sourceID": 2,
+          "name": "term_uses",
+          "location": "#CQua0x:FTL:bc#73",
+          "sourceURL": "/private/tmp/bend2039-upgrade/bend2/comp.ts",
+          "line": 899,
+          "column": 29,
+          "category": "FTL",
+          "flags": 0
+        },
+        "samples": 608
+      },
+      {
+        "frame": {
+          "sourceID": 2,
+          "name": "term_const",
+          "location": "#BP7noc:FTL:bc#1",
+          "sourceURL": "/private/tmp/bend2039-upgrade/bend2/comp.ts",
+          "line": 885,
+          "column": 10,
+          "category": "FTL",
+          "flags": 0
+        },
+        "samples": 534
+      },
+      {
+        "frame": {
+          "sourceID": 3,
+          "name": "All",
+          "location": "#Cdwvib:FTL:bc#1",
+          "sourceURL": "/private/tmp/bend2039-upgrade/bend2/bend.ts",
+          "line": 396,
+          "column": 22,
+          "category": "FTL",
+          "flags": 0
+        },
+        "samples": 495
+      },
+      {
+        "frame": {
+          "sourceID": 3,
+          "name": "term_wnf",
+          "location": "#B5GXXw:DFG:bc#0",
+          "sourceURL": "/private/tmp/bend2039-upgrade/bend2/bend.ts",
+          "line": 2797,
+          "column": 19,
+          "category": "DFG",
+          "flags": 0
+        },
+        "samples": 458
+      },
+      {
+        "frame": {
+          "sourceID": 2,
+          "name": "fun_of",
+          "location": "#ATwNps:FTL:bc#1",
+          "sourceURL": "/private/tmp/bend2039-upgrade/bend2/comp.ts",
+          "line": 1619,
+          "column": 10,
+          "category": "FTL",
+          "flags": 0
+        },
+        "samples": 444
+      },
+      {
+        "frame": {
+          "sourceID": 3,
+          "name": "term_higher",
+          "location": "#D16yYP:FTL:bc#1164",
+          "sourceURL": "/private/tmp/bend2039-upgrade/bend2/bend.ts",
+          "line": 740,
+          "column": 23,
+          "category": "FTL",
+          "flags": 0
+        },
+        "samples": 423
+      },
+      {
+        "frame": {
+          "sourceID": 4,
+          "name": "filter",
+          "location": "#DeKsZT:FTL:bc#45",
+          "line": 1,
+          "column": 11,
+          "category": "FTL",
+          "flags": 1
+        },
+        "samples": 421
+      },
+      {
+        "frame": {
+          "sourceID": 2,
+          "name": "memo",
+          "location": "#DqUw7B:FTL:bc#16",
+          "sourceURL": "/private/tmp/bend2039-upgrade/bend2/comp.ts",
+          "line": 2478,
+          "column": 13,
+          "category": "FTL",
+          "flags": 0
+        },
+        "samples": 390
+      },
+      {
+        "frame": {
+          "sourceID": 4294967295,
+          "name": "stringify",
+          "location": "#<nil>:None:<nil>",
+          "line": 4294967295,
+          "column": 4294967295,
+          "category": "Unknown Executable",
+          "flags": 0
+        },
+        "samples": 328
+      }
+    ],
+    "late180": {
+      "traces": 7074,
+      "self": [
+        {
+          "frame": {
+            "sourceID": 3,
+            "name": "Bin",
+            "location": "#BE6hqD:FTL:bc#1",
+            "sourceURL": "/private/tmp/bend2039-upgrade/bend2/bend.ts",
+            "line": 457,
+            "column": 22,
+            "category": "FTL",
+            "flags": 0
+          },
+          "samples": 535
+        },
+        {
+          "frame": {
+            "sourceID": 2,
+            "name": "fun_of",
+            "location": "#ATwNps:FTL:bc#1",
+            "sourceURL": "/private/tmp/bend2039-upgrade/bend2/comp.ts",
+            "line": 1619,
+            "column": 10,
+            "category": "FTL",
+            "flags": 0
+          },
+          "samples": 442
+        },
+        {
+          "frame": {
+            "sourceID": 4,
+            "name": "map",
+            "location": "#CPBdlN:FTL:bc#60",
+            "line": 1,
+            "column": 11,
+            "category": "FTL",
+            "flags": 1
+          },
+          "samples": 332
+        },
+        {
+          "frame": {
+            "sourceID": 2,
+            "name": "term_const",
+            "location": "#BP7noc:FTL:bc#1",
+            "sourceURL": "/private/tmp/bend2039-upgrade/bend2/comp.ts",
+            "line": 885,
+            "column": 10,
+            "category": "FTL",
+            "flags": 0
+          },
+          "samples": 298
+        },
+        {
+          "frame": {
+            "sourceID": 3,
+            "name": "term_higher",
+            "location": "#D16yYP:FTL:bc#0",
+            "sourceURL": "/private/tmp/bend2039-upgrade/bend2/bend.ts",
+            "line": 693,
+            "column": 29,
+            "category": "FTL",
+            "flags": 0
+          },
+          "samples": 291
+        },
+        {
+          "frame": {
+            "sourceID": 4294967295,
+            "name": "cloneObject",
+            "location": "#<nil>:None:<nil>",
+            "line": 4294967295,
+            "column": 4294967295,
+            "category": "Unknown Executable",
+            "flags": 0
+          },
+          "samples": 269
+        },
+        {
+          "frame": {
+            "sourceID": 3,
+            "name": "term_higher",
+            "location": "#D16yYP:FTL:bc#1164",
+            "sourceURL": "/private/tmp/bend2039-upgrade/bend2/bend.ts",
+            "line": 740,
+            "column": 23,
+            "category": "FTL",
+            "flags": 0
+          },
+          "samples": 261
+        },
+        {
+          "frame": {
+            "sourceID": 2,
+            "name": "ctr_build",
+            "location": "#B3lEE5:FTL:bc#55",
+            "sourceURL": "/private/tmp/bend2039-upgrade/bend2/comp.ts",
+            "line": 1357,
+            "column": 40,
+            "category": "FTL",
+            "flags": 0
+          },
+          "samples": 247
+        },
+        {
+          "frame": {
+            "sourceID": 3,
+            "name": "Ann",
+            "location": "#EFykKX:FTL:bc#1",
+            "sourceURL": "/private/tmp/bend2039-upgrade/bend2/bend.ts",
+            "line": 446,
+            "column": 22,
+            "category": "FTL",
+            "flags": 0
+          },
+          "samples": 238
+        },
+        {
+          "frame": {
+            "sourceID": 2,
+            "name": "",
+            "location": "#BvF7pL:FTL:bc#102",
+            "sourceURL": "/private/tmp/bend2039-upgrade/bend2/comp.ts",
+            "line": 2251,
+            "column": 18,
+            "category": "FTL",
+            "flags": 0
+          },
+          "samples": 224
+        },
+        {
+          "frame": {
+            "sourceID": 2,
+            "name": "tele_unbind",
+            "location": "#AVpYf9:FTL:bc#1",
+            "sourceURL": "/private/tmp/bend2039-upgrade/bend2/comp.ts",
+            "line": 981,
+            "column": 10,
+            "category": "FTL",
+            "flags": 0
+          },
+          "samples": 222
+        },
+        {
+          "frame": {
+            "sourceID": 2,
+            "name": "",
+            "location": "#A4SBKf:FTL:bc#95",
+            "sourceURL": "/private/tmp/bend2039-upgrade/bend2/comp.ts",
+            "line": 1551,
+            "column": 40,
+            "category": "FTL",
+            "flags": 0
+          },
+          "samples": 211
+        },
+        {
+          "frame": {
+            "sourceID": 2,
+            "name": "ctr_domains",
+            "location": "#BWaNpr:FTL:bc#0",
+            "sourceURL": "/private/tmp/bend2039-upgrade/bend2/comp.ts",
+            "line": 1304,
+            "column": 9,
+            "category": "FTL",
+            "flags": 0
+          },
+          "samples": 205
+        },
+        {
+          "frame": {
+            "sourceID": 3,
+            "name": "term_higher",
+            "location": "#D16yYP:FTL:bc#39",
+            "sourceURL": "/private/tmp/bend2039-upgrade/bend2/bend.ts",
+            "line": 693,
+            "column": 40,
+            "category": "FTL",
+            "flags": 0
+          },
+          "samples": 201
+        },
+        {
+          "frame": {
+            "sourceID": 2,
+            "name": "term_uses",
+            "location": "#CQua0x:FTL:bc#73",
+            "sourceURL": "/private/tmp/bend2039-upgrade/bend2/comp.ts",
+            "line": 899,
+            "column": 29,
+            "category": "FTL",
+            "flags": 0
+          },
+          "samples": 194
+        },
+        {
+          "frame": {
+            "sourceID": 2,
+            "name": "emit_ctr",
+            "location": "#C5jEOF:FTL:bc#787",
+            "sourceURL": "/private/tmp/bend2039-upgrade/bend2/comp.ts",
+            "line": 2944,
+            "column": 45,
+            "category": "FTL",
+            "flags": 0
+          },
+          "samples": 185
+        }
+      ]
+    }
+  },
+  "raw": {
+    "report": {
+      "path": "/tmp/bend2039g2-emission-sampling-16g.json",
+      "sha256": "044a021a63729be4c6ecd4e27cc4c79ef51affbe4818c0180ea5377906b2458f"
+    },
+    "sampling": {
+      "path": "/tmp/bend2039g2-emission-sampling-16g.json.sampling.json",
+      "sha256": "ad6d146406289a30d145646c39f95af482133f3f3beb721d9515f1b9ef8d733d",
+      "bytes": 391204961
+    }
+  },
+  "notes": [
+    "User-authorized diagnostic RSS/footprint guard is16GiB; acceptance remains8GiB/600s.",
+    "BUN_JSC_forceRAMSize=4GiB is an automatic-GC RAM heuristic, not a hard heap cap. Default stack and automatic GC; no manual GC.",
+    "compile-book terminal wall/CPU includes profiler finalization and raw JSON serialization; per-frame sample counts are not CPU time or allocation/live-byte ownership.",
+    "The returned55201172-byte C string was not published or compiled by this diagnostic; no C artifact hash or native-build success is claimed.",
+    "The diagnostic peak RSS exceeds8GiB. The smaller physical footprint does not override the RSS guard.",
+    "Historical rejected native-build receipts remain rejected."
+  ]
+}

@@ -277,7 +277,7 @@ async function semanticVariant(graph: ParserGraph, fixture: Fixture, alignedSwap
   const native = entries.map(name => nativeNat(book, (book.tlds[name] as B.Def).v!));
   const nativeMain = B.term_show(B.term_lower(B.term_snf(book, (book.tlds.main as B.Def).v!)));
   const literalMain = B.term_show(B.term_lower(B.term_snf(book, B.term_higher(parseTerm(book, valuesTuple(fixture.inputs.map(input => input.expected + 'n')))))));
-  const librarySource = Comp.js_lib(book, entries, entries);
+  const librarySource = Comp.js_lib(book,true,{roots:entries,exports:entries});
   // Library bytes are compiler output generated from this runtime book, not an author-time module.
   const compiled = (await import('data:text/javascript;base64,' + Buffer.from(librarySource).toString('base64'))).default;
   const jsLibrary = entries.map(name => Number(compiled[name]()));
@@ -290,7 +290,7 @@ async function semanticVariant(graph: ParserGraph, fixture: Fixture, alignedSwap
     await writeFile(jsPath, jsSource); await writeFile(cPath, cSource);
     jsRuntime = run(process.execPath, [jsPath], bounds.timeMs);
     run(process.env.CC ?? 'cc', ['-std=c11', '-O1', cPath, '-lpthread', '-lm', '-o', executable], bounds.timeMs);
-    cRuntime = run(executable, ['--threads', '1', '--gpu', 'off'], bounds.timeMs);
+    cRuntime = run(executable, ['+RTS', '--threads', '1', '--gpu', 'off', '-RTS'], bounds.timeMs);
   } finally {await rm(directory, {recursive: true, force: true});}
   const signature = graph.signatures.get('matrix')!;
   const original = graph.bodies.get('matrix')!;

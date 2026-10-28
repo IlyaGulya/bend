@@ -5,18 +5,38 @@
  * Only import paths and the ten public ABI entries are composed; no parser
  * body, datatype, Request or Kont is rewritten.
  */
-import {readFileSync,writeFileSync,realpathSync} from 'node:fs';
+import {readFileSync,writeFileSync,realpathSync,existsSync} from 'node:fs';
 import {resolve,dirname,relative,posix} from 'node:path';
 import {homedir} from 'node:os';
-import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
-const release='4ff8545f19b09b7d2b8ca2303668100eac8efd66';
+import {OFFICIAL_BEND_RELEASE, OFFICIAL_BEND_VERSION, officialKernelSource} from './release_identity.ts';
+const release=OFFICIAL_BEND_RELEASE;
 const repository=resolve(import.meta.dir,'..');
 const sha=(text:string|Uint8Array)=>createHash('sha256').update(text).digest('hex');
 const object=(value:unknown):Record<string,any>=>{
  if(!value||typeof value!=='object'||Array.isArray(value))throw Error('Expected canonical parser build object');
  return value as Record<string,any>;
 };
+
+const parserConsumerSources:Readonly<Record<string,string>>={
+ 'checker_core_slice.bend':'checkpoints/checker_core_owned_v1.bend',
+ 'checker_core_driver.bend':'checkpoints/checker_core_owned_driver_v1.bend',
+ 'base.bend':'bend2/base.bend',
+ 'loaded_module.bend':'bend2/selfhost/loaded_module.bend',
+ 'ast.bend':'bend2/selfhost/ast.bend',
+ 'js_emit.bend':'bend2/selfhost/js_emit.bend',
+ 'lexer.bend':'bend2/selfhost/lexer.bend',
+ 'core.bend':'bend2/selfhost/core.bend',
+ 'path.bend':'bend2/selfhost/path.bend',
+};
+
+/** Historical names select current source roles, never another checkout. */
+export function currentParserConsumerPath(role:string,parserPath:string):string{
+ if(role==='.parser_definition_body_shape_generated_fuel.bend')return realpathSync(parserPath);
+ const source=parserConsumerSources[role];
+ if(typeof source!=='string')throw Error('Unknown current parser consumer role: '+role);
+ return realpathSync(resolve(repository,source));
+}
 
 /** Authenticate the native receipt only. This is not parser/root admission;
  * callers must also require the fresh producer's final semantic acceptance. */
@@ -44,7 +64,7 @@ export function authenticateNativeParserReceipt(path:string){
    ||protectedPins[current]!==digest)throw Error('Canonical release parser producer drift: '+field);
  }
  const kernel=realpathSync(resolve(repository,'bend2/bend.ts'));
- const officialKernelSha256=sha(execFileSync('git',['show',release+':bend2/bend.ts'],{cwd:repository}));
+ const officialKernelSha256=sha(officialKernelSource(repository));
  if(sha(read(kernel))!==officialKernelSha256)throw Error('Kernel differs from exact official release Git blob '+release);
  for(const path of ['evals/heavy_gate.ts','evals/heavy_gate_native.c']){
   const current=realpathSync(resolve(repository,path));
@@ -146,9 +166,7 @@ export function authenticateParserSemanticGate(path:string,options:{
   new Set(migrations.map((row:any)=>row.role)).size!==10)throw Error('Missing current compiler role migration inventory');
  for(const module of inventory.modules){
   const role=module.file.split('/').at(-1),migration=migrations.find((row:any)=>row.role===role);
-  const actual=role==='.parser_definition_body_shape_generated_fuel.bend'?parserPath:
-   role==='checker_core_slice.bend'?resolve(repository,'checkpoints/checker_core_owned_v1.bend'):
-   role==='checker_core_driver.bend'?resolve(repository,'checkpoints/checker_core_owned_driver_v1.bend'):realpathSync(module.file);
+  const actual=currentParserConsumerPath(role,parserPath);
   if(!migration||migration.historicalFile!==module.file||realpathSync(migration.file)!==actual||
    migration.sourceSha256!==sha(read(actual))||currentInputs.get(actual)!==migration.sourceSha256)
    throw Error('Current compiler role/path/hash migration drift: '+role);
@@ -171,7 +189,7 @@ export function authenticateParserSemanticGate(path:string,options:{
   throw Error('Missing parser-bound public regression/raw proof');
  const required=[parserPath,resolve(repository,'bend2/selfhost/parser.bend'),resolve(repository,'bend2/bend.ts'),
   inventoryPath,publicPath,realpathSync(publicReport.rawOutputPath),
-  ...['evals/bootstrap_parser_fast.ts','evals/bootstrap_parser_public_gate.ts','evals/heavy_gate.ts','evals/heavy_gate_native.c']
+  ...['evals/bootstrap_parser_fast.ts','evals/bootstrap_parser_public_gate.ts','evals/selfhost_driver_source.ts','evals/heavy_gate.ts','evals/heavy_gate_native.c']
    .map(path=>resolve(repository,path))];
  let component:Record<string,any>|undefined;
  if(!sourcePhase){
@@ -227,7 +245,7 @@ export function readAcceptedParserBuild(path:string){
  if(wrapper.schemaVersion!==1||wrapper.status!=='PARSER_ACCEPTED_NATIVE_SEMANTICS'||wrapper.admitted!==true||
   wrapper.preparationAdmitted!==false||wrapper.evaluationMode!=='native-artifact'||
   wrapper.compiledExecution!=='FULL_75_SEMANTIC_GATE'||wrapper.checksExcluded!==0||wrapper.outputPatches!==0||
-  wrapper.release!==release||wrapper.releaseKernelSha256!==officialKernelSha256||
+  wrapper.release!==release||wrapper.releaseVersion!==OFFICIAL_BEND_VERSION||wrapper.releaseKernelSha256!==officialKernelSha256||
   wrapper.canonicalSha256!==canonicalSha256||!/^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$/.test(wrapper.runId)||
   stem!==resolve(repository,'checkpoints/bootstrap-parser-rebuild-'+wrapper.runId)||
   wrapper.parserBuildPath!==parserBuild||wrapper.parserBuildSha256!==sha(read(parserBuild))||
@@ -261,7 +279,7 @@ export function readAcceptedParserBuild(path:string){
  const authorization=object(JSON.parse(read(wrapper.authorizationPath)));
  for(const [field,value]of Object.entries(authorization))
   if(JSON.stringify(wrapper[field])!==JSON.stringify(value))throw Error('Final parser authorization differs from wrapper: '+field);
- const proofFields=['node','release','releaseKernelSha256','acceptedInputs','baselineScorecardSha256','runnerSha256','canonicalSha256','guard'];
+ const proofFields=['node','release','releaseVersion','releaseKernelSha256','acceptedInputs','baselineScorecardSha256','runnerSha256','canonicalSha256','guard'];
  for(const phase of ['prepare-source','prepare','build-native','build']){
   const guardian=object(JSON.parse(read(stem+'.'+phase+'.guardian.json')));
   if(guardian.status!=='PASS'||guardian.memoryLimitBytes!==8192*1024*1024||
@@ -338,13 +356,28 @@ export function readAcceptedParserBuild(path:string){
  return {...native,acceptance:wrapper,acceptancePath:realpathSync(wrapperPath),authenticatedInputs:inputs};
 }
 
-export function assembleSelfhostDriver(parserBuild:string){
-const output='checkpoints/.bootstrap_compiler_root_v1.bend';
-const manifest='checkpoints/selfhost-steps-driver-source-v1.json';
+export function assembleSelfhostDriver(parserBuild:string,outputs:{root?:string;manifest?:string;replace?:boolean}={}){
+const output=resolve(outputs.root??'checkpoints/.bootstrap_compiler_root_v1.bend');
+const manifest=resolve(outputs.manifest??'checkpoints/selfhost-steps-driver-source-v1.json');
+if(dirname(output)!==resolve('checkpoints'))throw Error('Compiler root must live directly in checkpoints/: its fixed import block is relative to that directory');
+if(!output.endsWith('.bend')||output===manifest)throw Error('Compiler root must be a distinct .bend file');
+if(!manifest.endsWith('.json'))throw Error('Compiler root manifest must be a .json file');
+// A generated artifact is never silently replaced: an identical rewrite is a
+// no-op, a different one needs the deliberate --replace canonical refresh.
+function publish(path:string,text:string){
+ if(existsSync(path)){
+  if(readFileSync(path,'utf8')!==text){
+   if(!outputs.replace)throw Error('Refusing to overwrite a different generated artifact '+path+'; pass --replace for a deliberate canonical refresh, or fresh --root/--manifest paths');
+   writeFileSync(path,text);
+  }
+  return;
+ }
+ writeFileSync(path,text,{flag:'wx'});
+}
 const authenticated=readAcceptedParserBuild(parserBuild);
 const {parserSource,source}=authenticated;
 const typedStepInputs:Record<string,string>={};
-for(const [mode,stem]of [['template','template'],['checker','checker-core'],['emitter','js-emit']] as const){
+for(const [mode,stem]of [['template','template'],['checker','checker-core'],['emitter','emitter']] as const){
  const path=realpathSync(resolve('checkpoints/'+stem+'-steps-v1.json')),text=readFileSync(path,'utf8');
  const record=object(JSON.parse(text)),{generationManifestSha256,...proof}=record;
  if(generationManifestSha256!==sha(JSON.stringify(proof))||record.generationConfig?.mode!==mode
@@ -372,8 +405,8 @@ for(const [mode,stem]of [['template','template'],['checker','checker-core'],['em
   if(realpathSync(input)!==realpaths[input]||sha(readFileSync(input))!==digest)throw Error('Typed '+mode+' source input drift: '+input);
   typedStepInputs[realpathSync(input)]=digest;
  }
- const producer=mode==='template'?'evals/template_step_lower.ts':mode==='checker'?'evals/checker_core_step_lower.ts':'evals/js_emit_step_lower.ts';
- const output=mode==='template'?'checkpoints/template_steps_v1.bend':mode==='checker'?'checkpoints/checker_core_steps_v1.bend':'checkpoints/js_emit_steps_v1.bend';
+ const producer=mode==='template'?'evals/template_step_lower.ts':mode==='checker'?'evals/checker_core_step_lower.ts':'evals/emitter_step_lower.ts';
+ const output=mode==='template'?'checkpoints/template_steps_v1.bend':mode==='checker'?'checkpoints/checker_core_steps_v1.bend':'checkpoints/emitter_steps_v1.bend';
  if(record.generationConfig.generator!==producer||hashes[producer]!==sha(readFileSync(producer))
   ||outputs[output]===undefined)throw Error('Typed '+mode+' canonical producer/output identity drift');
  for(const [output,digest]of Object.entries(outputs)){
@@ -382,8 +415,8 @@ for(const [mode,stem]of [['template','template'],['checker','checker-core'],['em
  }
  if(mode==='checker'&&!record.coverage?.some((row:any)=>row.name==='inspect_checked'))
   throw Error('Missing owner-preserving checked inspection closure');
- if(mode==='emitter'&&!record.coverage?.some((row:any)=>row.name==='emit_library'))
-  throw Error('Missing typed library emission closure');
+ if(mode==='emitter'&&!['emit','emit_library','emit_c','emit_c_library'].every(name=>record.coverage?.some((row:any)=>row.name===name)))
+  throw Error('Missing typed JS or C emission closure');
  if(mode!=='template'){
   const checked=readFileSync(output,'utf8').match(/^import (\S+) as Checked$/m)?.[1];
   if(!checked||realpathSync(resolve(dirname(output),checked))!==realpathSync('bend2/selfhost/checked_frontend.bend'))
@@ -404,7 +437,7 @@ const header=originalHeader.replace(/^import (\S+)( as [A-Za-z_][A-Za-z0-9_]*)?$
 // The parser and the complete native library share lexical import namespaces:
 // constructor tags must remain identical across their authentic AST transport.
 if(header!==originalHeader)throw Error('Compiler root must preserve the accepted parser import header');
-const imports='import ../bend2/selfhost/loaded_module.bend as Loader\nimport ../bend2/selfhost/checked_frontend.bend as Checked\nimport ./template_steps_v1.bend as Template\nimport ./checker_core_steps_v1.bend as CheckerCore\nimport ./js_emit_steps_v1.bend as JSEmit\n\n';
+const imports='import ../bend2/selfhost/loaded_module.bend as Loader\nimport ../bend2/selfhost/backend_ir.bend as BIR\nimport ../bend2/selfhost/checked_frontend.bend as Checked\nimport ./template_steps_v1.bend as Template\nimport ./checker_core_steps_v1.bend as CheckerCore\nimport ./emitter_steps_v1.bend as Emit\n\n';
 const wrappers=`
 # Bend owns parsing, expansion, checking and emission; Node drives typed steps.
 def parsed_module(namespace: String, module: Ast.Module) -> Loader.LoadedModule:
@@ -425,14 +458,23 @@ def inspect_checked_start(program: Checked.CheckedProgram) -> CheckerCore.Checke
 def checker_step(-R: Type, run: CheckerCore.CheckerRun<R>) -> CheckerCore.CheckerRun<R>:
   CheckerCore.checker_step(R, run)
 
-def emit_modules_start(program: Checked.CheckedProgram) -> JSEmit.EmitterRun<JSEmit.EmitResult>:
-  JSEmit.emitter_start(program)
+def emit_modules_start(program: Checked.CheckedProgram, files: List<&2, BIR.SourceFile>) -> Emit.EmitterRun<Emit.EmitResult>:
+  Emit.emitter_start(program, files)
 
-def emit_library_start(program: Checked.CheckedProgram, exports: List<&2, String>) -> JSEmit.EmitterRun<JSEmit.EmitResult>:
-  JSEmit.emitter_library_start(program, exports)
+def emit_library_start(program: Checked.CheckedProgram, exports: List<&2, String>, files: List<&2, BIR.SourceFile>) -> Emit.EmitterRun<Emit.EmitResult>:
+  Emit.emitter_library_start(program, exports, files)
 
-def emitter_step(-R: Type, run: JSEmit.EmitterRun<R>) -> JSEmit.EmitterRun<R>:
-  JSEmit.emitter_step(R, run)
+def emitter_step(-R: Type, run: Emit.EmitterRun<R>) -> Emit.EmitterRun<R>:
+  Emit.emitter_step(R, run)
+
+def emit_c_modules_start(program: Checked.CheckedProgram, runtime: String, files: List<&2, BIR.SourceFile>) -> Emit.EmitterRun<Emit.EmitResult>:
+  Emit.cemit_start(program, runtime, files)
+
+def emit_c_library_start(program: Checked.CheckedProgram, exports: List<&2, String>, runtime: String, files: List<&2, BIR.SourceFile>) -> Emit.EmitterRun<Emit.EmitResult>:
+  Emit.cemit_library_start(program, exports, runtime, files)
+
+def c_emitter_step(-R: Type, run: Emit.EmitterRun<R>) -> Emit.EmitterRun<R>:
+  Emit.emitter_step(R, run)
 `;
 const existing=new Set([...declarations.matchAll(/^def ([^ (]+)\(/gm)].map(x=>x[1]));
 for(const match of wrappers.matchAll(/^def ([^ (]+)\(/gm))if(existing.has(match[1]))throw Error('Compiler wrapper shadows parser definition: '+match[1]);
@@ -441,13 +483,20 @@ const embedding={start:prefix.length,chars:declarations.length,sha256:sha(declar
 if(root.slice(embedding.start,embedding.start+embedding.chars)!==declarations)throw Error('Parser declaration composition drift');
 for(const [path,digest]of Object.entries({...authenticated.authenticatedInputs,...typedStepInputs}))
  if(sha(readFileSync(path))!==digest)throw Error('Root source input changed during assembly: '+path);
-writeFileSync(output,root);
-writeFileSync(manifest,JSON.stringify({schemaVersion:1,algorithm:'Exact accepted parser declarations in root namespace; import-path-only relocation plus typed compiler wrappers',parserBuild:authenticated.parserBuild,parserBuildSha256:sha(readFileSync(authenticated.parserBuild)),parserProvenancePath:authenticated.provenancePath,parserProvenanceSha256:authenticated.accepted.provenanceSha256,officialKernelRelease:release,officialKernelSha256:authenticated.officialKernelSha256,authenticatedParserInputs:authenticated.authenticatedInputs,authenticatedTypedStepInputs:typedStepInputs,parserSource:resolve(parserSource),parserSourceSha256:sha(source),parserDeclarationStart:declaration.index,parserDeclarationSha256:sha(declarations),output:resolve(output),outputSha256:sha(root),embedding,importChanges,wrapperSha256:sha(wrappers),generator:resolve(import.meta.path),generatorSha256:sha(readFileSync(import.meta.path,'utf8')),parserBodiesChanged:0,parserDatatypesChanged:0,parserRequestKontChanged:false},null,2)+'\n');
+publish(output,root);
+publish(manifest,JSON.stringify({schemaVersion:1,algorithm:'Exact accepted parser declarations in root namespace; import-path-only relocation plus typed compiler wrappers',parserBuild:authenticated.parserBuild,parserBuildSha256:sha(readFileSync(authenticated.parserBuild)),parserProvenancePath:authenticated.provenancePath,parserProvenanceSha256:authenticated.accepted.provenanceSha256,officialKernelRelease:release,officialKernelSha256:authenticated.officialKernelSha256,authenticatedParserInputs:authenticated.authenticatedInputs,authenticatedTypedStepInputs:typedStepInputs,parserSource:resolve(parserSource),parserSourceSha256:sha(source),parserDeclarationStart:declaration.index,parserDeclarationSha256:sha(declarations),output:resolve(output),outputSha256:sha(root),embedding,importChanges,wrapperSha256:sha(wrappers),generator:resolve(import.meta.path),generatorSha256:sha(readFileSync(import.meta.path,'utf8')),parserBodiesChanged:0,parserDatatypesChanged:0,parserRequestKontChanged:false},null,2)+'\n');
 console.log(JSON.stringify({output,manifest,chars:root.length,parserDeclarationsUnchanged:true}));
 }
 if(import.meta.main){
- const args=process.argv.slice(2);
- if(args.length!==1||!args[0]!.startsWith('--parser-build=')||!args[0]!.slice('--parser-build='.length))
-  throw Error('Usage: bun evals/selfhost_driver_source.ts --parser-build=<fresh canonical native-build.result.json>');
- assembleSelfhostDriver(args[0]!.slice('--parser-build='.length));
+ const options=new Map<string,string>();let replace=false;
+ for(const argument of process.argv.slice(2)){
+  if(argument==='--replace'&&!replace){replace=true;continue;}
+  const at=argument.indexOf('='),key=argument.slice(0,at),value=argument.slice(at+1);
+  if(at<0||!['--parser-build','--root','--manifest'].includes(key)||!value||options.has(key))
+   throw Error('Usage: bun evals/selfhost_driver_source.ts --parser-build=<fresh canonical native-build.result.json> [--root=PATH --manifest=PATH [--replace]]');
+  options.set(key,value);
+ }
+ if(!options.has('--parser-build'))
+  throw Error('Usage: bun evals/selfhost_driver_source.ts --parser-build=<fresh canonical native-build.result.json> [--root=PATH --manifest=PATH [--replace]]');
+ assembleSelfhostDriver(options.get('--parser-build')!,{root:options.get('--root'),manifest:options.get('--manifest'),replace});
 }

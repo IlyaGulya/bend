@@ -10,6 +10,6 @@ try{
  const file=join(dir,'lexer_bridge.bend');writeFileSync(file,'import Base\nimport '+root+'/bend2/selfhost/lexer.bend as Lexer\ndef tokens(source: String) -> List<&2, Lexer.Token>:\n  Lexer.tokens(source)\n');
  const book=B.book_nil();await B.book_load(book,file,'',new Map());B.book_valid(book);
  if(book.hols||book.open)throw Error('Incomplete native Lexer validation');
- const code=Comp.js_lib(book,['tokens'],['tokens']);writeFileSync('checkpoints/bootstrap-lexer-token-producer.js',code);
+ const code=Comp.js_lib(book,true,{roots:['tokens'],exports:['tokens']});writeFileSync('checkpoints/bootstrap-lexer-token-producer.js',code);
  console.log(JSON.stringify({status:'PASS',declarations:book.order.length,bytes:Buffer.byteLength(code),proof:'Actual unchanged Bend Lexer.tokens compiled by unchanged stage0 compiler; full native validation zero exclusions; no host tokenizer'}));
 }catch(error){console.error(error&&typeof error==='object'&&'$'in error&&error.$==='Err'?B.err_show(error as Parameters<typeof B.err_show>[0]):String(error));process.exitCode=2;}finally{rmSync(dir,{recursive:true,force:true});}

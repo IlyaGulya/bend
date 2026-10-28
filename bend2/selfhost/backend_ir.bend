@@ -1,4 +1,5 @@
 import Base
+import ./ast.bend as Ast
 
 # Runtime operands contain no source syntax or effects. IDs are labels only;
 # code bodies and descriptor programs own structurally decreasing trees.
@@ -16,7 +17,7 @@ type Atom is Data:
   Word{value: U32}
   Natural{value: Nat}
   FloatBits{bits: U32}
-  Text{value: String}
+  TextValue{value: String}
   Boolean{value: Bool}
   Null{}
   Undefined{}
@@ -115,6 +116,15 @@ type Primitive is Data:
   PrimArraySwap{}
   PrimArraySize{}
   PrimArrayClone{}
+  PrimArrayAtomicAdd{}
+  PrimArrayAtomicMin{}
+  PrimArrayAtomicMax{}
+  PrimArrayAtomicAnd{}
+  PrimArrayAtomicOr{}
+  PrimArrayAtomicXor{}
+  PrimArrayAtomicExch{}
+  PrimArrayAtomicCas{}
+  PrimArrayAtomicFadd{}
   PrimNatPredecessor{}
   PrimNatSuccessor{}
   PrimCharNew{}
@@ -176,7 +186,7 @@ type Descriptor is Data:
 
 type Op is Data:
   Copy{value: Atom}
-  PrimitiveCall{primitive: Primitive, args: List<&2, Arg>}
+  PrimitiveCall{primitive: Primitive, args: List<&2, Arg>, types: List<&2, Descriptor>}
   Closure{code: U32, captures: List<&2, Arg>, parameters: List<&2, Parameter>}
   Direct{code: U32, args: List<&2, Arg>}
   Apply{fn: Atom, arg: Arg}
@@ -184,8 +194,6 @@ type Op is Data:
   Construct{constructor: U32, tag: String, fields: List<&2, Field>}
   Project{value: Atom, constructor: U32, field: U32, key: String}
   HasTag{value: Atom, constructor: U32, tag: String}
-  DescriptorValue{descriptor: Descriptor}
-  Foreign{path: String, key: String, arity: Nat}
 
 # Let operands are strict. Tail calls only appear as block terminators. Ordered
 # over-application is a sequence of strict Direct/Apply lets, never one arg list.
@@ -211,7 +219,9 @@ type Declaration is Data:
   FunctionDeclaration{key: String, code: U32, parameters: List<&2, Parameter>}
   LazyDeclaration{key: String, body: Block}
   NativeDeclaration{key: String, primitive: Primitive, quantities: List<&2, Quantity>}
-  ForeignDeclaration{key: String, path: String, imported: String, arity: Nat}
+  # Foreign declarations retain every declared import alternative, so each
+  # target selects by extension from authoritative paths and never derives one.
+  ForeignDeclaration{key: String, namespace: String, imported: String, arity: Nat, sources: List<&2, String>, quantities: List<&2, Quantity>, span: Ast.SourceSpan, parameter_types: List<&2, Descriptor>, result: Descriptor}
 type ConstructorLayout is Data:
   ConstructorLayout{id: U32, key: String, native: Maybe<&2, String>, fields: List<&2, Maybe<&2, String>>}
 type DescriptorField is Data:
@@ -225,9 +235,14 @@ type TypeFunction is Data:
 type Entry is Data:
   Entry{code: U32, arity: Nat}
 type Export is Data:
-  Export{key: String, entry: Maybe<&2, Entry>}
+  Export{key: String, entry: Maybe<&2, Entry>, parameter_types: List<&2, Descriptor>, result: Descriptor}
 type Ending is Data:
   Executable{main_type: Descriptor}
   Library{exports: List<&2, Export>}
 type Program is Data:
   Program{codes: List<&2, Code>, declarations: List<&2, Declaration>, constructors: List<&2, ConstructorLayout>, families: List<&2, Family>, type_functions: List<&2, TypeFunction>, ending: Ending}
+
+# A passive target source carried from an IO adapter to a renderer: the bytes
+# and the exact declared path, never a target guess or a rewritten specifier.
+type SourceFile is Data:
+  SourceFile{path: String, source: String}

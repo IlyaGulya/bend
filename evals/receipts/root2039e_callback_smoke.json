@@ -1,0 +1,282 @@
+{
+  "schemaVersion": 1,
+  "status": "ROOT_GENERATED_CALLBACK_AND_STACK_SMOKE_PASS_NOT_FIXEDPOINT",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "scope": "Full current compiler root generation and actual emitted JS behavior; not native C build or bootstrap acceptance.",
+  "parser": {
+    "proof": {
+      "path": "/private/tmp/bend2039-upgrade/checkpoints/bootstrap-parser-rebuild-release2039e.result.json",
+      "bytes": 111866,
+      "sha256": "e90ab58a2a67388beb8e01c05dd9b4c2f0b4484ffb5ef698b3f09fb6712fee98"
+    },
+    "status": "PARSER_ACCEPTED_NATIVE_SEMANTICS",
+    "sourceRows": 71,
+    "candidateRows": 75
+  },
+  "build": {
+    "status": "JS_GENERATED_NOT_YET_EXECUTED",
+    "provenancePath": "/private/tmp/bend2039-upgrade/checkpoints/root-release2039e-build.provenance.json",
+    "provenanceSha256": "9ad7b72a49eeea4f369c8b11db4cb2225dedd438e517e58583faaf7d4e568aa0",
+    "sourcePath": "/private/tmp/bend2039-upgrade/checkpoints/.bootstrap_compiler_root_release2039e.bend",
+    "sourceSha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+    "exports": [
+      "parsed_module",
+      "parse_with_fuel",
+      "expand_modules_start",
+      "template_step",
+      "check_expanded_start",
+      "inspect_checked_start",
+      "checker_step",
+      "emit_modules_start",
+      "emit_library_start",
+      "emitter_step",
+      "emit_c_modules_start",
+      "emit_c_library_start",
+      "c_emitter_step"
+    ],
+    "artifactPath": "/private/tmp/bend2039-upgrade/checkpoints/root-release2039e.js",
+    "artifactSha256": "74435250e7a4e5059412fb4fec92efdcf66cec21350d2d8fb490140f0ffb74a6",
+    "bytes": 13828024,
+    "eventsFullyValidated": 12650,
+    "checkedDefinitions": 12081,
+    "liveBodies": 12081,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "checkedOutputRetention": "native e",
+    "nativeRetention": "native checked e retained through all JS definition folding; scope-local higher caches released between definitions; no serialization or source-value fallback",
+    "nativeCheckedBodies": 12081,
+    "expectedSourceDefinitions": 12081,
+    "toolchain": "CANONICAL NATIVE LOAD/CHECK; CANONICAL JS PREPARE/EMIT/RELEASE; Node/V8 automatic GC",
+    "preparedCount": 11728,
+    "releasedCount": 11728,
+    "maxSimultaneousE": 12081,
+    "maxSimultaneousH": 3095,
+    "countsCaveat": "Definition slots, not unique term graphs; signature metadata does not prepare higher bodies",
+    "runtime": {
+      "name": "node",
+      "node": "23.11.0",
+      "v8": "12.9.202.28-node.14",
+      "executable": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "heapLimitMiB": 3072,
+      "stackSizeMb": 256,
+      "heapSizeLimitBytes": 3271557120,
+      "manualGC": false
+    },
+    "cpuMs": 68402.67,
+    "compiledExecution": "NOT_RUN",
+    "selfhostGreen": false,
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 3187687424,
+      "peakFootprintBytes": 3250293016,
+      "elapsedMs": 64788,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend2039-upgrade/evals/checker_core_component_build.ts",
+        "--worker",
+        "--file=/private/tmp/bend2039-upgrade/checkpoints/.bootstrap_compiler_root_release2039e.bend",
+        "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step,emit_c_modules_start,emit_c_library_start,c_emitter_step",
+        "--artifact=/private/tmp/bend2039-upgrade/checkpoints/root-release2039e.js",
+        "--report=/private/tmp/bend2039-upgrade/checkpoints/root-release2039e-build",
+        "--inputs-sha256=97847e3795bee19b04499b7d29ec276f7628245e4537e8ffe7749714718d5f34"
+      ],
+      "label": "Full-native CheckerCore component JS build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793008880321-b96eab944938fd85.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "proof": {
+      "path": "/private/tmp/bend2039-upgrade/checkpoints/root-release2039e-build.result.json",
+      "bytes": 3497,
+      "sha256": "8701a769272de9f647dcc98d30a099ab4b62d34ba6df6e7e9af5cdbe5526f726"
+    }
+  },
+  "smoke": {
+    "status": "PASS",
+    "dir": "/tmp/bend2039e-smoke-eLKfYu",
+    "pins": {
+      "/private/tmp/bend2039-upgrade/checkpoints/root-release2039e.js": "74435250e7a4e5059412fb4fec92efdcf66cec21350d2d8fb490140f0ffb74a6",
+      "/private/tmp/bend2039-upgrade/checkpoints/root-release2039e-build.result.json": "8701a769272de9f647dcc98d30a099ab4b62d34ba6df6e7e9af5cdbe5526f726",
+      "/private/tmp/bend2039-upgrade/bend2/bend.ts": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+      "/private/tmp/bend2039-upgrade/bend2/comp.ts": "132ce4c74e944387ae1860a366c4776455f78fd462766f255063583775d00cd7",
+      "/private/tmp/bend2039-upgrade/bend2/base.bend": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce"
+    },
+    "rows": [
+      {
+        "input": "tests/reg/js_char_full_u32.bend",
+        "target": "js",
+        "exit": 0,
+        "stdout": "4\n4294967295\n57343\n55295\n57344\n1114111\n65533\n55296\n65533\n3\na�b\n����",
+        "stderr": "",
+        "expected": "4\n4294967295\n57343\n55295\n57344\n1114111\n65533\n55296\n65533\n3\na�b\n����",
+        "bytes": 374283,
+        "sha256": "baa68918d6f87e6e17d0aca80d979607fa75fec35e02e0f6d25d43681737ffe2"
+      },
+      {
+        "input": "tests/io/f32_host_export.bend",
+        "target": "js",
+        "exit": 0,
+        "stdout": "0\n16777216",
+        "stderr": "",
+        "expected": "0\n16777216",
+        "bytes": 358284,
+        "sha256": "9b1f08f6901684f60202b6ec110f956e031476e81a805afdbcf57d615bead5e9"
+      },
+      {
+        "input": "tests/reg/js_non_tail_returns.bend",
+        "target": "js",
+        "exit": 0,
+        "stdout": "200\n200\n400\n4",
+        "stderr": "",
+        "expected": "200\n200\n400\n4",
+        "bytes": 385463,
+        "sha256": "5d2b6ad23b793f753b2d0638b0a5337e67c5423e8a50b689919bb7baafbcc304"
+      },
+      {
+        "input": "evals/repro_js_non_tail_stack.bend",
+        "target": "js",
+        "exit": 0,
+        "stdout": "60000\n20000\n40000",
+        "stderr": "",
+        "expected": "60000\n20000\n40000",
+        "bytes": 360865,
+        "sha256": "8f4654c6fa4ac2f6be3c86e060df977ed2d759a36178502a31a65c6344621dd6"
+      },
+      {
+        "input": "tests/io/text_host_export.bend",
+        "target": "js",
+        "exit": 0,
+        "stdout": "0",
+        "stderr": "",
+        "expected": "0",
+        "bytes": 359178,
+        "sha256": "a5704a496040b0cc4986132e31b3741f2a5f1f851f90bec46ce1b70cb1bb0a1c"
+      }
+    ],
+    "guards": [
+      {
+        "label": "Emit tests/reg/js_char_full_u32.bend",
+        "command": [
+          "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+          "--experimental-strip-types",
+          "/tmp/bend2039-candidate-worker.mjs",
+          "/private/tmp/bend2039-upgrade/evals/candidate_host.ts",
+          "--candidate=/private/tmp/bend2039-upgrade/checkpoints/root-release2039e.js",
+          "--candidate-build=/private/tmp/bend2039-upgrade/checkpoints/root-release2039e-build.result.json",
+          "/private/tmp/bend2039-upgrade/tests/reg/js_char_full_u32.bend",
+          "-o",
+          "/tmp/bend2039e-smoke-eLKfYu/js_char_full_u32.bend.js"
+        ],
+        "exitCode": 0,
+        "stdout": "{\"output\":\"/tmp/bend2039e-smoke-eLKfYu/js_char_full_u32.bend.js\",\"bytes\":374283,\"sha256\":\"baa68918d6f87e6e17d0aca80d979607fa75fec35e02e0f6d25d43681737ffe2\",\"target\":\"js\",\"library\":false,\"modules\":2,\"foreignFiles\":61}\n",
+        "stderr": "(node:68682) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+      },
+      {
+        "label": "Emit tests/io/f32_host_export.bend",
+        "command": [
+          "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+          "--experimental-strip-types",
+          "/tmp/bend2039-candidate-worker.mjs",
+          "/private/tmp/bend2039-upgrade/evals/candidate_host.ts",
+          "--candidate=/private/tmp/bend2039-upgrade/checkpoints/root-release2039e.js",
+          "--candidate-build=/private/tmp/bend2039-upgrade/checkpoints/root-release2039e-build.result.json",
+          "/private/tmp/bend2039-upgrade/tests/io/f32_host_export.bend",
+          "-o",
+          "/tmp/bend2039e-smoke-eLKfYu/f32_host_export.bend.js"
+        ],
+        "exitCode": 0,
+        "stdout": "{\"output\":\"/tmp/bend2039e-smoke-eLKfYu/f32_host_export.bend.js\",\"bytes\":358284,\"sha256\":\"9b1f08f6901684f60202b6ec110f956e031476e81a805afdbcf57d615bead5e9\",\"target\":\"js\",\"library\":false,\"modules\":2,\"foreignFiles\":60}\n",
+        "stderr": "(node:70793) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+      },
+      {
+        "label": "Emit tests/reg/js_non_tail_returns.bend",
+        "command": [
+          "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+          "--experimental-strip-types",
+          "/tmp/bend2039-candidate-worker.mjs",
+          "/private/tmp/bend2039-upgrade/evals/candidate_host.ts",
+          "--candidate=/private/tmp/bend2039-upgrade/checkpoints/root-release2039e.js",
+          "--candidate-build=/private/tmp/bend2039-upgrade/checkpoints/root-release2039e-build.result.json",
+          "/private/tmp/bend2039-upgrade/tests/reg/js_non_tail_returns.bend",
+          "-o",
+          "/tmp/bend2039e-smoke-eLKfYu/js_non_tail_returns.bend.js"
+        ],
+        "exitCode": 0,
+        "stdout": "{\"output\":\"/tmp/bend2039e-smoke-eLKfYu/js_non_tail_returns.bend.js\",\"bytes\":385463,\"sha256\":\"5d2b6ad23b793f753b2d0638b0a5337e67c5423e8a50b689919bb7baafbcc304\",\"target\":\"js\",\"library\":false,\"modules\":2,\"foreignFiles\":58}\n",
+        "stderr": "(node:72706) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+      },
+      {
+        "label": "Emit evals/repro_js_non_tail_stack.bend",
+        "command": [
+          "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+          "--experimental-strip-types",
+          "/tmp/bend2039-candidate-worker.mjs",
+          "/private/tmp/bend2039-upgrade/evals/candidate_host.ts",
+          "--candidate=/private/tmp/bend2039-upgrade/checkpoints/root-release2039e.js",
+          "--candidate-build=/private/tmp/bend2039-upgrade/checkpoints/root-release2039e-build.result.json",
+          "/private/tmp/bend2039-upgrade/evals/repro_js_non_tail_stack.bend",
+          "-o",
+          "/tmp/bend2039e-smoke-eLKfYu/repro_js_non_tail_stack.bend.js"
+        ],
+        "exitCode": 0,
+        "stdout": "{\"output\":\"/tmp/bend2039e-smoke-eLKfYu/repro_js_non_tail_stack.bend.js\",\"bytes\":360865,\"sha256\":\"8f4654c6fa4ac2f6be3c86e060df977ed2d759a36178502a31a65c6344621dd6\",\"target\":\"js\",\"library\":false,\"modules\":2,\"foreignFiles\":58}\n",
+        "stderr": "(node:74848) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+      },
+      {
+        "label": "Emit tests/io/text_host_export.bend",
+        "command": [
+          "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+          "--experimental-strip-types",
+          "/tmp/bend2039-candidate-worker.mjs",
+          "/private/tmp/bend2039-upgrade/evals/candidate_host.ts",
+          "--candidate=/private/tmp/bend2039-upgrade/checkpoints/root-release2039e.js",
+          "--candidate-build=/private/tmp/bend2039-upgrade/checkpoints/root-release2039e-build.result.json",
+          "/private/tmp/bend2039-upgrade/tests/io/text_host_export.bend",
+          "-o",
+          "/tmp/bend2039e-smoke-eLKfYu/text_host_export.bend.js"
+        ],
+        "exitCode": 0,
+        "stdout": "{\"output\":\"/tmp/bend2039e-smoke-eLKfYu/text_host_export.bend.js\",\"bytes\":359178,\"sha256\":\"a5704a496040b0cc4986132e31b3741f2a5f1f851f90bec46ce1b70cb1bb0a1c\",\"target\":\"js\",\"library\":false,\"modules\":2,\"foreignFiles\":59}\n",
+        "stderr": "(node:76414) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+      }
+    ],
+    "elapsedMs": 34877.212958,
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 1365377024,
+      "peakFootprintBytes": 1376840416,
+      "elapsedMs": 34927,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "bun",
+        "/tmp/bend2039e-smoke.ts"
+      ],
+      "label": "heavy command",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793009183131-87b8ddc07d42f94d.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "changes": [
+    "Foreign continuation adaptation uses IO answer descriptor, not IO container descriptor."
+  ],
+  "previousRejectedReceipt": "evals/receipts/root2039d_foreign_rejected.json"
+}

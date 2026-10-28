@@ -1,0 +1,396 @@
+{
+  "schemaVersion": 1,
+  "kind": "compiler-profile-ab-4a916",
+  "diagnosticOnly": true,
+  "acceptanceEvidence": false,
+  "artifact": {
+    "path": "/private/tmp/bend-fir-root-aa9/checkpoints/root-final-art.js",
+    "sha256": "4a91665c634dff4b1da9d17bdc80786efc03bd0d0e89865ed22e085c1026060a",
+    "bytes": 16912082,
+    "receipt": "checkpoints/root-final-rep.result.json",
+    "receiptSha256": "c05146584fc34e0891cf68119c27a71e913ddb7a3a269f77240e3c045abb5e54"
+  },
+  "source": {
+    "path": "/private/tmp/bend-stage-aa9-followup/evals/c_target_multiarm.bend",
+    "sha256": "19534b50a377c4142b352e2c1072a9c586f70585b65dc10414eb7e442842f2ac",
+    "bytes": 962
+  },
+  "environment": {
+    "platform": "Darwin",
+    "arch": "arm64",
+    "bun": "1.4.2"
+  },
+  "offOn": {
+    "js": {
+      "off": {
+        "path": "/tmp/ab-js-off.js",
+        "bytes": 291363,
+        "sha256": "1effbc8d41d12bb77c5db9a4fa4c335cae8d20714b3f0263035a8b8198536e5c"
+      },
+      "on": {
+        "path": "/tmp/ab-js-on2.js",
+        "bytes": 291363,
+        "sha256": "1effbc8d41d12bb77c5db9a4fa4c335cae8d20714b3f0263035a8b8198536e5c"
+      },
+      "byteEqual": true
+    },
+    "c": {
+      "off": {
+        "path": "/tmp/ab-c-off.c",
+        "bytes": 842696,
+        "sha256": "3005e365bece6ff1da3a6f1637a0ed644401fc2b0bbbec1d49fba8ef600827ba"
+      },
+      "on": {
+        "path": "/tmp/ab-c-on.c",
+        "bytes": 842696,
+        "sha256": "3005e365bece6ff1da3a6f1637a0ed644401fc2b0bbbec1d49fba8ef600827ba"
+      },
+      "byteEqual": true,
+      "clangExecution": "NOT RUN: fresh component C is known to fail clang (redefinition of b0r, b0o undeclared); byte equality proves emission only, not execution",
+      "executionStatus": "C_EMISSION_EQUIVALENT_NOT_EXECUTED",
+      "equivalenceScope": "byte-for-byte emission with profiling disabled/enabled; not a C program execution pass"
+    }
+  },
+  "profiles": {
+    "js": {
+      "target": "js",
+      "path": "/tmp/ab-js-on2-profile/profile-34320-thread-0-uNz4Dr/summary.json",
+      "sha256": "950dfdfed02dfeeba906a5f193cc92431a3eb1d4e369a14108ba92d0cd3eeeac",
+      "status": "completed",
+      "measurementStatus": "complete",
+      "incompleteEvidence": false,
+      "spans": [
+        {
+          "name": "startup-import",
+          "status": "completed",
+          "wallMs": 119.168208
+        },
+        {
+          "name": "parse-import-fuel",
+          "status": "completed",
+          "wallMs": 500.338125
+        },
+        {
+          "name": "template-expand",
+          "status": "completed",
+          "wallMs": 465.1245829999999
+        },
+        {
+          "name": "check-signature-body",
+          "status": "completed",
+          "wallMs": 4053.0409170000003
+        },
+        {
+          "name": "emit",
+          "status": "completed",
+          "wallMs": 464.1260420000008
+        },
+        {
+          "name": "output-write",
+          "status": "completed",
+          "wallMs": 1.4238750000004075
+        }
+      ],
+      "observations": [
+        {
+          "kind": "stage-group-metadata",
+          "name": "compiler-stage-groups",
+          "value": null,
+          "values": {
+            "startup-import": "explicit-span",
+            "parse-import-fuel": "explicit-span+exact-counter",
+            "template-expand": "explicit-span+exact-step-counter",
+            "check-signature-body": "explicit-span+exact-step-counter",
+            "check-publication": "included-in-check-signature-body",
+            "emit-catalog": "typed-progress-sample",
+            "emit-backend-lowering": "typed-progress-sample",
+            "emit-descriptor-nf": "typed-progress-sample",
+            "emit-layouts": "typed-progress-sample",
+            "emit-sharing": "typed-progress-sample",
+            "emit-render-js": "typed-progress-sample",
+            "emit-render-c": "typed-progress-sample",
+            "emit-link-planning": "typed-progress-sample",
+            "emit-emitter-entry": "typed-progress-sample",
+            "link": "unreachable-in-candidate-host"
+          },
+          "units": null
+        },
+        {
+          "kind": "stage-attribution-table",
+          "name": "typed-request-groups",
+          "value": null,
+          "values": {
+            "requestConstructors": 4648,
+            "conflicts": 0
+          },
+          "units": null
+        },
+        {
+          "kind": "phase-exact-counters",
+          "name": "parse-import-fuel",
+          "value": null,
+          "values": {
+            "modules": 2,
+            "parses": 2,
+            "fuelCells": 16000000,
+            "sourceBytes": 76586,
+            "foreignFiles": 56,
+            "parserFuelCellsPerParse": 8000000
+          },
+          "units": null
+        },
+        {
+          "kind": "typed-step-exact-counters",
+          "name": "template-expand-steps",
+          "value": 28072,
+          "values": null,
+          "units": "host-step-calls"
+        },
+        {
+          "kind": "typed-progress-samples",
+          "name": "template-expand-typed-progress",
+          "value": null,
+          "values": {
+            "requestBoundarySamples": 12589,
+            "template-expand": 12589
+          },
+          "units": "request-boundary-samples"
+        },
+        {
+          "kind": "typed-step-exact-counters",
+          "name": "check-signature-body-steps",
+          "value": 138999,
+          "values": null,
+          "units": "host-step-calls"
+        },
+        {
+          "kind": "typed-progress-samples",
+          "name": "check-signature-body-typed-progress",
+          "value": null,
+          "values": {
+            "requestBoundarySamples": 30610,
+            "check-signature-body": 30610
+          },
+          "units": "request-boundary-samples"
+        },
+        {
+          "kind": "typed-step-exact-counters",
+          "name": "emit-steps",
+          "value": 11186,
+          "values": null,
+          "units": "host-step-calls"
+        },
+        {
+          "kind": "typed-progress-samples",
+          "name": "emit-typed-progress",
+          "value": null,
+          "values": {
+            "requestBoundarySamples": 2691,
+            "emit-backend-lowering": 710,
+            "emit-catalog": 355,
+            "emit-descriptor-nf": 90,
+            "emit-render-js": 1536
+          },
+          "units": "request-boundary-samples"
+        },
+        {
+          "kind": "phase-exact-counters",
+          "name": "output-write",
+          "value": null,
+          "values": {
+            "bytes": 291363,
+            "modules": 2,
+            "foreignFiles": 56
+          },
+          "units": null
+        }
+      ],
+      "provenance": {
+        "sourcePath": "/private/tmp/bend-stage-aa9-followup/evals/c_target_multiarm.bend",
+        "sourceSha256": "19534b50a377c4142b352e2c1072a9c586f70585b65dc10414eb7e442842f2ac",
+        "candidatePath": "/private/tmp/bend-fir-root-aa9/checkpoints/root-final-art.js",
+        "candidateSha256": "4a91665c634dff4b1da9d17bdc80786efc03bd0d0e89865ed22e085c1026060a",
+        "parserSha256": "4a91665c634dff4b1da9d17bdc80786efc03bd0d0e89865ed22e085c1026060a",
+        "baseSha256": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+        "target": "js"
+      }
+    },
+    "c": {
+      "target": "c",
+      "path": "/tmp/ab-c-on-profile/profile-6572-thread-0-zIrOWS/summary.json",
+      "sha256": "1d3bd23b2c26f8291e7b6b0cabbb4ff12584e19806379c2cec10438854b23f80",
+      "status": "completed",
+      "measurementStatus": "complete",
+      "incompleteEvidence": false,
+      "spans": [
+        {
+          "name": "startup-import",
+          "status": "completed",
+          "wallMs": 120.50308299999998
+        },
+        {
+          "name": "parse-import-fuel",
+          "status": "completed",
+          "wallMs": 553.8689999999999
+        },
+        {
+          "name": "template-expand",
+          "status": "completed",
+          "wallMs": 204.95058299999994
+        },
+        {
+          "name": "check-signature-body",
+          "status": "completed",
+          "wallMs": 3313.316417
+        },
+        {
+          "name": "emit",
+          "status": "completed",
+          "wallMs": 9549.081958
+        },
+        {
+          "name": "output-write",
+          "status": "completed",
+          "wallMs": 3.2686670000002778
+        }
+      ],
+      "observations": [
+        {
+          "kind": "stage-group-metadata",
+          "name": "compiler-stage-groups",
+          "value": null,
+          "values": {
+            "startup-import": "explicit-span",
+            "parse-import-fuel": "explicit-span+exact-counter",
+            "template-expand": "explicit-span+exact-step-counter",
+            "check-signature-body": "explicit-span+exact-step-counter",
+            "check-publication": "included-in-check-signature-body",
+            "emit-catalog": "typed-progress-sample",
+            "emit-backend-lowering": "typed-progress-sample",
+            "emit-descriptor-nf": "typed-progress-sample",
+            "emit-layouts": "typed-progress-sample",
+            "emit-sharing": "typed-progress-sample",
+            "emit-render-js": "typed-progress-sample",
+            "emit-render-c": "typed-progress-sample",
+            "emit-link-planning": "typed-progress-sample",
+            "emit-emitter-entry": "typed-progress-sample",
+            "link": "unreachable-in-candidate-host"
+          },
+          "units": null
+        },
+        {
+          "kind": "stage-attribution-table",
+          "name": "typed-request-groups",
+          "value": null,
+          "values": {
+            "requestConstructors": 4648,
+            "conflicts": 0
+          },
+          "units": null
+        },
+        {
+          "kind": "phase-exact-counters",
+          "name": "parse-import-fuel",
+          "value": null,
+          "values": {
+            "modules": 2,
+            "parses": 2,
+            "fuelCells": 16000000,
+            "sourceBytes": 76586,
+            "foreignFiles": 56,
+            "parserFuelCellsPerParse": 8000000
+          },
+          "units": null
+        },
+        {
+          "kind": "typed-step-exact-counters",
+          "name": "template-expand-steps",
+          "value": 28072,
+          "values": null,
+          "units": "host-step-calls"
+        },
+        {
+          "kind": "typed-progress-samples",
+          "name": "template-expand-typed-progress",
+          "value": null,
+          "values": {
+            "requestBoundarySamples": 12589,
+            "template-expand": 12589
+          },
+          "units": "request-boundary-samples"
+        },
+        {
+          "kind": "typed-step-exact-counters",
+          "name": "check-signature-body-steps",
+          "value": 138999,
+          "values": null,
+          "units": "host-step-calls"
+        },
+        {
+          "kind": "typed-progress-samples",
+          "name": "check-signature-body-typed-progress",
+          "value": null,
+          "values": {
+            "requestBoundarySamples": 30610,
+            "check-signature-body": 30610
+          },
+          "units": "request-boundary-samples"
+        },
+        {
+          "kind": "typed-step-exact-counters",
+          "name": "emit-steps",
+          "value": 839260,
+          "values": null,
+          "units": "host-step-calls"
+        },
+        {
+          "kind": "typed-progress-samples",
+          "name": "emit-typed-progress",
+          "value": null,
+          "values": {
+            "requestBoundarySamples": 394317,
+            "emit-backend-lowering": 710,
+            "emit-catalog": 355,
+            "emit-descriptor-nf": 6122,
+            "emit-layouts": 5601,
+            "emit-link-planning": 242016,
+            "emit-render-c": 139513
+          },
+          "units": "request-boundary-samples"
+        },
+        {
+          "kind": "phase-exact-counters",
+          "name": "output-write",
+          "value": null,
+          "values": {
+            "bytes": 842696,
+            "modules": 2,
+            "foreignFiles": 56
+          },
+          "units": null
+        }
+      ],
+      "provenance": {
+        "sourcePath": "/private/tmp/bend-stage-aa9-followup/evals/c_target_multiarm.bend",
+        "sourceSha256": "19534b50a377c4142b352e2c1072a9c586f70585b65dc10414eb7e442842f2ac",
+        "candidatePath": "/private/tmp/bend-fir-root-aa9/checkpoints/root-final-art.js",
+        "candidateSha256": "4a91665c634dff4b1da9d17bdc80786efc03bd0d0e89865ed22e085c1026060a",
+        "parserSha256": "4a91665c634dff4b1da9d17bdc80786efc03bd0d0e89865ed22e085c1026060a",
+        "baseSha256": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+        "target": "c"
+      }
+    }
+  },
+  "manifests": {
+    "checkpoints/template-steps-v1.json": "01df14fc5366f893922156529c9538260f4ff166eb63941d81ee4793d72ac94f",
+    "checkpoints/checker-core-steps-v1.json": "da75496bfeaae3d59150e669db7e93b07b90f64d9d8cd7bf99675afbbe704971",
+    "checkpoints/emitter-steps-v1.json": "63c51f8970fb6aaf024101c70d804893ea757b3c68cfd132b6bdfdd87b096619"
+  },
+  "nativeDiagnostic": {
+    "status": "pending guarded run",
+    "scope": "aa9/d7 emitter, 27 groups; guardHeavyGate 8G/10ms/600s; worker 3072/256; real c_backend.emit request",
+    "note": "not claimed as compiler workload or exact source CPU attribution"
+  },
+  "note": "Profile-on and profile-off outputs are byte-identical. Span/CPU/memory scopes are explicit. Typed progress groups are sampled request-boundary attribution, not exact CPU; exact step counters are host call counts. C execution is not claimed.",
+  "status": "C_EMISSION_EQUIVALENT_NOT_EXECUTED"
+}

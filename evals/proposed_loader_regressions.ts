@@ -59,7 +59,7 @@ try{
    const file=join(dir,fixture.name+'.bend');writeFileSync(file,fixture.source);const book=K.book_nil();let stage='load';
    try{
     await K.book_load(book,file,'',new Map());stage='full-validation';K.book_valid(book);stage='codegen';
-    const code=Comp.js_lib(book,['main'],['main']),js=join(dir,fixture.name+'-'+label+'.js');writeFileSync(js,code);stage='execution';
+    const code=Comp.js_lib(book,true,{roots:['main'],exports:['main']}),js=join(dir,fixture.name+'-'+label+'.js');writeFileSync(js,code);stage='execution';
     const child=Bun.spawn([process.execPath,'-e','import('+JSON.stringify(js)+').then(m=>console.log(String(m.default.main())))'],{stdout:'pipe',stderr:'pipe'});
     const value=(await new Response(child.stdout).text()).trim(),stderr=await new Response(child.stderr).text(),exit=await child.exited;
     if(exit!==0||!('value'in fixture)||value!==String(fixture.value))throw Error('Unexpected compiled output '+value+'; exit='+exit+'; stderr='+stderr);

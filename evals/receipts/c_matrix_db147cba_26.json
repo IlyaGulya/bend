@@ -1,0 +1,2310 @@
+{
+  "schemaVersion": 1,
+  "status": "PASS",
+  "wholeCompilerAccepted": false,
+  "sourceCommit": "04fb246b (run source; later a286ad47 changes receipts/docs only)",
+  "command": [
+    "bun",
+    "evals/c_target_fixtures_run.ts",
+    "--host=/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+    "--component=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+    "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+    "--tag=../bend2/selfhost/backend_ir.SourceFile",
+    "--node=/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+    "--target=c",
+    "--keep",
+    "--logs=/tmp/bend-accept26-db147cba-04fb246b-run1"
+  ],
+  "pins": {
+    "mode": "acceptance-matrix",
+    "target": "c",
+    "node": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+    "nodeVersion": "v23.11.0",
+    "v8": "12.9.202.28-node.14|--max-old-space-size=3072,-e,process.stdout.write(process.versions.v8 + \"|\" + process.execArgv.join(\",\"))",
+    "host": "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+    "component": "/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+    "parser": "/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+    "tag": "../bend2/selfhost/backend_ir.SourceFile",
+    "hostSha256": "2596997a2a578cb371e11e8cb0858e4ebd9f53b1679d2814f3068a0db29613e4",
+    "componentSha256": "db147cba480109443fe8cfbd0efa2f1c167af7f6b9f7e2d623a0b1032c677dbe",
+    "parserSha256": "db147cba480109443fe8cfbd0efa2f1c167af7f6b9f7e2d623a0b1032c677dbe",
+    "guardianTs": "/private/tmp/bend-fir-integrated57ab/evals/heavy_gate.ts",
+    "guardianTsSha256": "204f3529704435455d20a9d5a126a8e9c62e002b6fed9044c8319da8a3c26ff2",
+    "guardianNativeC": "/private/tmp/bend-fir-integrated57ab/evals/heavy_gate_native.c",
+    "guardianNativeCSha256": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b",
+    "cwd": "/private/tmp/bend-fir-integrated57ab",
+    "base": "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+    "baseSha256": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+    "runtime": "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c",
+    "runtimeSha256": "478c1ba7d0d0626c1927d11c4af3b3d4cef520db41afd8722ebf55d5050769c3",
+    "logs": "/tmp/bend-accept26-db147cba-04fb246b-run1",
+    "gate": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 600000
+    },
+    "fixtures": 26
+  },
+  "runnerSha256": "4adbf1f6e9790b6c283a3585f30ae2a480ebea5cf5575dad8339c5028817222c",
+  "summary": {
+    "fixtures": 26,
+    "passed": 26,
+    "failed": 0,
+    "stages": 78,
+    "allCompleteStoppedAndExitZero": true,
+    "sumGuardElapsedMs": 671100,
+    "peakRssBytes": 1975779328,
+    "peakFootprintBytes": 2047690136,
+    "outerObservedWallSeconds": 674.87,
+    "interpretation": "Stage durations are summed serial guarded wall time; peaks are sampled stage tree maxima, not retained/live or per-object bytes"
+  },
+  "stageRecordColumns": [
+    "stage",
+    "elapsedMs",
+    "peakRssBytes",
+    "peakFootprintBytes",
+    "guardianReportSha256",
+    "argvSha256"
+  ],
+  "stageRecordInterpretation": "Every recorded stage is PASS with effective/command/supervisor exits0, complete report and ownedTreeStopped true, individually checked against raw native guard. Exact argv and complete streams retained per <stem>.<stage>.*.",
+  "childCommands": [
+    {
+      "fixture": "c_target_alias_paths",
+      "stage": "emit",
+      "argv": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+        "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+        "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "/private/tmp/bend-fir-integrated57ab/evals/c_target_alias_paths.bend",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_alias_paths.c",
+        "--base",
+        "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+        "--runtime-c",
+        "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+      ]
+    },
+    {
+      "fixture": "c_target_alias_paths",
+      "stage": "clang",
+      "argv": [
+        "clang",
+        "-std=c11",
+        "-O0",
+        "-ferror-limit=0",
+        "-pthread",
+        "-lm",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_alias_paths",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_alias_paths.c"
+      ]
+    },
+    {
+      "fixture": "c_target_alias_paths",
+      "stage": "run",
+      "argv": [
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_alias_paths"
+      ]
+    },
+    {
+      "fixture": "c_target_array_nat",
+      "stage": "emit",
+      "argv": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+        "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+        "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "/private/tmp/bend-fir-integrated57ab/evals/c_target_array_nat.bend",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_array_nat.c",
+        "--base",
+        "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+        "--runtime-c",
+        "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+      ]
+    },
+    {
+      "fixture": "c_target_array_nat",
+      "stage": "clang",
+      "argv": [
+        "clang",
+        "-std=c11",
+        "-O0",
+        "-ferror-limit=0",
+        "-pthread",
+        "-lm",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_array_nat",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_array_nat.c"
+      ]
+    },
+    {
+      "fixture": "c_target_array_nat",
+      "stage": "run",
+      "argv": [
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_array_nat"
+      ]
+    },
+    {
+      "fixture": "c_target_array_nested",
+      "stage": "emit",
+      "argv": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+        "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+        "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "/private/tmp/bend-fir-integrated57ab/evals/c_target_array_nested.bend",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_array_nested.c",
+        "--base",
+        "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+        "--runtime-c",
+        "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+      ]
+    },
+    {
+      "fixture": "c_target_array_nested",
+      "stage": "clang",
+      "argv": [
+        "clang",
+        "-std=c11",
+        "-O0",
+        "-ferror-limit=0",
+        "-pthread",
+        "-lm",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_array_nested",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_array_nested.c"
+      ]
+    },
+    {
+      "fixture": "c_target_array_nested",
+      "stage": "run",
+      "argv": [
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_array_nested"
+      ]
+    },
+    {
+      "fixture": "c_target_array_u32",
+      "stage": "emit",
+      "argv": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+        "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+        "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "/private/tmp/bend-fir-integrated57ab/evals/c_target_array_u32.bend",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_array_u32.c",
+        "--base",
+        "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+        "--runtime-c",
+        "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+      ]
+    },
+    {
+      "fixture": "c_target_array_u32",
+      "stage": "clang",
+      "argv": [
+        "clang",
+        "-std=c11",
+        "-O0",
+        "-ferror-limit=0",
+        "-pthread",
+        "-lm",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_array_u32",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_array_u32.c"
+      ]
+    },
+    {
+      "fixture": "c_target_array_u32",
+      "stage": "run",
+      "argv": [
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_array_u32"
+      ]
+    },
+    {
+      "fixture": "c_target_array_wide",
+      "stage": "emit",
+      "argv": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+        "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+        "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "/private/tmp/bend-fir-integrated57ab/evals/c_target_array_wide.bend",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_array_wide.c",
+        "--base",
+        "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+        "--runtime-c",
+        "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+      ]
+    },
+    {
+      "fixture": "c_target_array_wide",
+      "stage": "clang",
+      "argv": [
+        "clang",
+        "-std=c11",
+        "-O0",
+        "-ferror-limit=0",
+        "-pthread",
+        "-lm",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_array_wide",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_array_wide.c"
+      ]
+    },
+    {
+      "fixture": "c_target_array_wide",
+      "stage": "run",
+      "argv": [
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_array_wide"
+      ]
+    },
+    {
+      "fixture": "c_target_bool_fields",
+      "stage": "emit",
+      "argv": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+        "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+        "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "/private/tmp/bend-fir-integrated57ab/evals/c_target_bool_fields.bend",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_bool_fields.c",
+        "--base",
+        "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+        "--runtime-c",
+        "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+      ]
+    },
+    {
+      "fixture": "c_target_bool_fields",
+      "stage": "clang",
+      "argv": [
+        "clang",
+        "-std=c11",
+        "-O0",
+        "-ferror-limit=0",
+        "-pthread",
+        "-lm",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_bool_fields",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_bool_fields.c"
+      ]
+    },
+    {
+      "fixture": "c_target_bool_fields",
+      "stage": "run",
+      "argv": [
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_bool_fields"
+      ]
+    },
+    {
+      "fixture": "c_target_bool_prims",
+      "stage": "emit",
+      "argv": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+        "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+        "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "/private/tmp/bend-fir-integrated57ab/evals/c_target_bool_prims.bend",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_bool_prims.c",
+        "--base",
+        "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+        "--runtime-c",
+        "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+      ]
+    },
+    {
+      "fixture": "c_target_bool_prims",
+      "stage": "clang",
+      "argv": [
+        "clang",
+        "-std=c11",
+        "-O0",
+        "-ferror-limit=0",
+        "-pthread",
+        "-lm",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_bool_prims",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_bool_prims.c"
+      ]
+    },
+    {
+      "fixture": "c_target_bool_prims",
+      "stage": "run",
+      "argv": [
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_bool_prims"
+      ]
+    },
+    {
+      "fixture": "c_target_bool_xor",
+      "stage": "emit",
+      "argv": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+        "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+        "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "/private/tmp/bend-fir-integrated57ab/evals/c_target_bool_xor.bend",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_bool_xor.c",
+        "--base",
+        "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+        "--runtime-c",
+        "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+      ]
+    },
+    {
+      "fixture": "c_target_bool_xor",
+      "stage": "clang",
+      "argv": [
+        "clang",
+        "-std=c11",
+        "-O0",
+        "-ferror-limit=0",
+        "-pthread",
+        "-lm",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_bool_xor",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_bool_xor.c"
+      ]
+    },
+    {
+      "fixture": "c_target_bool_xor",
+      "stage": "run",
+      "argv": [
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_bool_xor"
+      ]
+    },
+    {
+      "fixture": "c_target_branch_arms",
+      "stage": "emit",
+      "argv": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+        "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+        "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "/private/tmp/bend-fir-integrated57ab/evals/c_target_branch_arms.bend",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_branch_arms.c",
+        "--base",
+        "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+        "--runtime-c",
+        "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+      ]
+    },
+    {
+      "fixture": "c_target_branch_arms",
+      "stage": "clang",
+      "argv": [
+        "clang",
+        "-std=c11",
+        "-O0",
+        "-ferror-limit=0",
+        "-pthread",
+        "-lm",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_branch_arms",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_branch_arms.c"
+      ]
+    },
+    {
+      "fixture": "c_target_branch_arms",
+      "stage": "run",
+      "argv": [
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_branch_arms"
+      ]
+    },
+    {
+      "fixture": "c_target_char_head",
+      "stage": "emit",
+      "argv": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+        "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+        "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "/private/tmp/bend-fir-integrated57ab/evals/c_target_char_head.bend",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_char_head.c",
+        "--base",
+        "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+        "--runtime-c",
+        "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+      ]
+    },
+    {
+      "fixture": "c_target_char_head",
+      "stage": "clang",
+      "argv": [
+        "clang",
+        "-std=c11",
+        "-O0",
+        "-ferror-limit=0",
+        "-pthread",
+        "-lm",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_char_head",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_char_head.c"
+      ]
+    },
+    {
+      "fixture": "c_target_char_head",
+      "stage": "run",
+      "argv": [
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_char_head"
+      ]
+    },
+    {
+      "fixture": "c_target_char_to_list",
+      "stage": "emit",
+      "argv": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+        "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+        "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "/private/tmp/bend-fir-integrated57ab/evals/c_target_char_to_list.bend",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_char_to_list.c",
+        "--base",
+        "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+        "--runtime-c",
+        "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+      ]
+    },
+    {
+      "fixture": "c_target_char_to_list",
+      "stage": "clang",
+      "argv": [
+        "clang",
+        "-std=c11",
+        "-O0",
+        "-ferror-limit=0",
+        "-pthread",
+        "-lm",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_char_to_list",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_char_to_list.c"
+      ]
+    },
+    {
+      "fixture": "c_target_char_to_list",
+      "stage": "run",
+      "argv": [
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_char_to_list"
+      ]
+    },
+    {
+      "fixture": "c_target_clo_field",
+      "stage": "emit",
+      "argv": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+        "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+        "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "/private/tmp/bend-fir-integrated57ab/evals/c_target_clo_field.bend",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_clo_field.c",
+        "--base",
+        "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+        "--runtime-c",
+        "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+      ]
+    },
+    {
+      "fixture": "c_target_clo_field",
+      "stage": "clang",
+      "argv": [
+        "clang",
+        "-std=c11",
+        "-O0",
+        "-ferror-limit=0",
+        "-pthread",
+        "-lm",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_clo_field",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_clo_field.c"
+      ]
+    },
+    {
+      "fixture": "c_target_clo_field",
+      "stage": "run",
+      "argv": [
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_clo_field"
+      ]
+    },
+    {
+      "fixture": "c_target_disjoint_type_cells",
+      "stage": "emit",
+      "argv": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+        "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+        "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "/private/tmp/bend-fir-integrated57ab/evals/c_target_disjoint_type_cells.bend",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_disjoint_type_cells.c",
+        "--base",
+        "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+        "--runtime-c",
+        "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+      ]
+    },
+    {
+      "fixture": "c_target_disjoint_type_cells",
+      "stage": "clang",
+      "argv": [
+        "clang",
+        "-std=c11",
+        "-O0",
+        "-ferror-limit=0",
+        "-pthread",
+        "-lm",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_disjoint_type_cells",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_disjoint_type_cells.c"
+      ]
+    },
+    {
+      "fixture": "c_target_disjoint_type_cells",
+      "stage": "run",
+      "argv": [
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_disjoint_type_cells"
+      ]
+    },
+    {
+      "fixture": "c_target_drop_fields",
+      "stage": "emit",
+      "argv": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+        "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+        "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "/private/tmp/bend-fir-integrated57ab/evals/c_target_drop_fields.bend",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_drop_fields.c",
+        "--base",
+        "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+        "--runtime-c",
+        "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+      ]
+    },
+    {
+      "fixture": "c_target_drop_fields",
+      "stage": "clang",
+      "argv": [
+        "clang",
+        "-std=c11",
+        "-O0",
+        "-ferror-limit=0",
+        "-pthread",
+        "-lm",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_drop_fields",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_drop_fields.c"
+      ]
+    },
+    {
+      "fixture": "c_target_drop_fields",
+      "stage": "run",
+      "argv": [
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_drop_fields"
+      ]
+    },
+    {
+      "fixture": "c_target_multiarm",
+      "stage": "emit",
+      "argv": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+        "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+        "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "/private/tmp/bend-fir-integrated57ab/evals/c_target_multiarm.bend",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_multiarm.c",
+        "--base",
+        "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+        "--runtime-c",
+        "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+      ]
+    },
+    {
+      "fixture": "c_target_multiarm",
+      "stage": "clang",
+      "argv": [
+        "clang",
+        "-std=c11",
+        "-O0",
+        "-ferror-limit=0",
+        "-pthread",
+        "-lm",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_multiarm",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_multiarm.c"
+      ]
+    },
+    {
+      "fixture": "c_target_multiarm",
+      "stage": "run",
+      "argv": [
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_multiarm"
+      ]
+    },
+    {
+      "fixture": "c_target_nested_adt",
+      "stage": "emit",
+      "argv": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+        "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+        "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "/private/tmp/bend-fir-integrated57ab/evals/c_target_nested_adt.bend",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_nested_adt.c",
+        "--base",
+        "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+        "--runtime-c",
+        "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+      ]
+    },
+    {
+      "fixture": "c_target_nested_adt",
+      "stage": "clang",
+      "argv": [
+        "clang",
+        "-std=c11",
+        "-O0",
+        "-ferror-limit=0",
+        "-pthread",
+        "-lm",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_nested_adt",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_nested_adt.c"
+      ]
+    },
+    {
+      "fixture": "c_target_nested_adt",
+      "stage": "run",
+      "argv": [
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_nested_adt"
+      ]
+    },
+    {
+      "fixture": "c_target_region_leave_repeat",
+      "stage": "emit",
+      "argv": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+        "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+        "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "/private/tmp/bend-fir-integrated57ab/evals/c_target_region_leave_repeat.bend",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_region_leave_repeat.c",
+        "--base",
+        "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+        "--runtime-c",
+        "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+      ]
+    },
+    {
+      "fixture": "c_target_region_leave_repeat",
+      "stage": "clang",
+      "argv": [
+        "clang",
+        "-std=c11",
+        "-O0",
+        "-ferror-limit=0",
+        "-pthread",
+        "-lm",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_region_leave_repeat",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_region_leave_repeat.c"
+      ]
+    },
+    {
+      "fixture": "c_target_region_leave_repeat",
+      "stage": "run",
+      "argv": [
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_region_leave_repeat"
+      ]
+    },
+    {
+      "fixture": "c_target_region_tail_capture",
+      "stage": "emit",
+      "argv": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+        "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+        "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "/private/tmp/bend-fir-integrated57ab/evals/c_target_region_tail_capture.bend",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_region_tail_capture.c",
+        "--base",
+        "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+        "--runtime-c",
+        "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+      ]
+    },
+    {
+      "fixture": "c_target_region_tail_capture",
+      "stage": "clang",
+      "argv": [
+        "clang",
+        "-std=c11",
+        "-O0",
+        "-ferror-limit=0",
+        "-pthread",
+        "-lm",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_region_tail_capture",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_region_tail_capture.c"
+      ]
+    },
+    {
+      "fixture": "c_target_region_tail_capture",
+      "stage": "run",
+      "argv": [
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_region_tail_capture"
+      ]
+    },
+    {
+      "fixture": "c_target_repeat_capture",
+      "stage": "emit",
+      "argv": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+        "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+        "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "/private/tmp/bend-fir-integrated57ab/evals/c_target_repeat_capture.bend",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_repeat_capture.c",
+        "--base",
+        "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+        "--runtime-c",
+        "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+      ]
+    },
+    {
+      "fixture": "c_target_repeat_capture",
+      "stage": "clang",
+      "argv": [
+        "clang",
+        "-std=c11",
+        "-O0",
+        "-ferror-limit=0",
+        "-pthread",
+        "-lm",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_repeat_capture",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_repeat_capture.c"
+      ]
+    },
+    {
+      "fixture": "c_target_repeat_capture",
+      "stage": "run",
+      "argv": [
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_repeat_capture"
+      ]
+    },
+    {
+      "fixture": "c_target_repeat_data",
+      "stage": "emit",
+      "argv": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+        "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+        "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "/private/tmp/bend-fir-integrated57ab/evals/c_target_repeat_data.bend",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_repeat_data.c",
+        "--base",
+        "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+        "--runtime-c",
+        "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+      ]
+    },
+    {
+      "fixture": "c_target_repeat_data",
+      "stage": "clang",
+      "argv": [
+        "clang",
+        "-std=c11",
+        "-O0",
+        "-ferror-limit=0",
+        "-pthread",
+        "-lm",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_repeat_data",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_repeat_data.c"
+      ]
+    },
+    {
+      "fixture": "c_target_repeat_data",
+      "stage": "run",
+      "argv": [
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_repeat_data"
+      ]
+    },
+    {
+      "fixture": "c_target_string_from_list",
+      "stage": "emit",
+      "argv": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+        "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+        "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "/private/tmp/bend-fir-integrated57ab/evals/c_target_string_from_list.bend",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_string_from_list.c",
+        "--base",
+        "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+        "--runtime-c",
+        "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+      ]
+    },
+    {
+      "fixture": "c_target_string_from_list",
+      "stage": "clang",
+      "argv": [
+        "clang",
+        "-std=c11",
+        "-O0",
+        "-ferror-limit=0",
+        "-pthread",
+        "-lm",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_string_from_list",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_string_from_list.c"
+      ]
+    },
+    {
+      "fixture": "c_target_string_from_list",
+      "stage": "run",
+      "argv": [
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_string_from_list"
+      ]
+    },
+    {
+      "fixture": "c_target_trigraph_literal",
+      "stage": "emit",
+      "argv": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+        "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+        "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "/private/tmp/bend-fir-integrated57ab/evals/c_target_trigraph_literal.bend",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_trigraph_literal.c",
+        "--base",
+        "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+        "--runtime-c",
+        "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+      ]
+    },
+    {
+      "fixture": "c_target_trigraph_literal",
+      "stage": "clang",
+      "argv": [
+        "clang",
+        "-std=c11",
+        "-O0",
+        "-ferror-limit=0",
+        "-pthread",
+        "-lm",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_trigraph_literal",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_trigraph_literal.c"
+      ]
+    },
+    {
+      "fixture": "c_target_trigraph_literal",
+      "stage": "run",
+      "argv": [
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_trigraph_literal"
+      ]
+    },
+    {
+      "fixture": "c_target_utf8_astral",
+      "stage": "emit",
+      "argv": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+        "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+        "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "/private/tmp/bend-fir-integrated57ab/evals/c_target_utf8_astral.bend",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_utf8_astral.c",
+        "--base",
+        "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+        "--runtime-c",
+        "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+      ]
+    },
+    {
+      "fixture": "c_target_utf8_astral",
+      "stage": "clang",
+      "argv": [
+        "clang",
+        "-std=c11",
+        "-O0",
+        "-ferror-limit=0",
+        "-pthread",
+        "-lm",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_utf8_astral",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_utf8_astral.c"
+      ]
+    },
+    {
+      "fixture": "c_target_utf8_astral",
+      "stage": "run",
+      "argv": [
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_utf8_astral"
+      ]
+    },
+    {
+      "fixture": "c_target_utf8_literal",
+      "stage": "emit",
+      "argv": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+        "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+        "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "/private/tmp/bend-fir-integrated57ab/evals/c_target_utf8_literal.bend",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_utf8_literal.c",
+        "--base",
+        "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+        "--runtime-c",
+        "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+      ]
+    },
+    {
+      "fixture": "c_target_utf8_literal",
+      "stage": "clang",
+      "argv": [
+        "clang",
+        "-std=c11",
+        "-O0",
+        "-ferror-limit=0",
+        "-pthread",
+        "-lm",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_utf8_literal",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_utf8_literal.c"
+      ]
+    },
+    {
+      "fixture": "c_target_utf8_literal",
+      "stage": "run",
+      "argv": [
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_utf8_literal"
+      ]
+    },
+    {
+      "fixture": "c_target_wide_record",
+      "stage": "emit",
+      "argv": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+        "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+        "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "/private/tmp/bend-fir-integrated57ab/evals/c_target_wide_record.bend",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_wide_record.c",
+        "--base",
+        "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+        "--runtime-c",
+        "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+      ]
+    },
+    {
+      "fixture": "c_target_wide_record",
+      "stage": "clang",
+      "argv": [
+        "clang",
+        "-std=c11",
+        "-O0",
+        "-ferror-limit=0",
+        "-pthread",
+        "-lm",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_wide_record",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_wide_record.c"
+      ]
+    },
+    {
+      "fixture": "c_target_wide_record",
+      "stage": "run",
+      "argv": [
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_wide_record"
+      ]
+    },
+    {
+      "fixture": "phys_storage_paths",
+      "stage": "emit",
+      "argv": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+        "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+        "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "/private/tmp/bend-fir-integrated57ab/tests/reg/phys_storage_paths.bend",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/phys_storage_paths.c",
+        "--base",
+        "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+        "--runtime-c",
+        "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+      ]
+    },
+    {
+      "fixture": "phys_storage_paths",
+      "stage": "clang",
+      "argv": [
+        "clang",
+        "-std=c11",
+        "-O0",
+        "-ferror-limit=0",
+        "-pthread",
+        "-lm",
+        "-o",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/phys_storage_paths",
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/phys_storage_paths.c"
+      ]
+    },
+    {
+      "fixture": "phys_storage_paths",
+      "stage": "run",
+      "argv": [
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/phys_storage_paths"
+      ]
+    }
+  ],
+  "corpus": {
+    "relationship": "All26 source hashes identical to preceding667e7f33 C26 receipt; no filters, smoke selector, exclusions or new target outputs",
+    "previousReceipt": "evals/receipts/c_matrix_667e7f33_26.json",
+    "previousReceiptSha256": "a7f619b2ca27b50fc828a2d3d63d63cfb9fc06954e2afa8bba444511e684bbd7",
+    "count": 26
+  },
+  "parserBoundary": "Same db147cba image supplies both compiler and inline parse_with_fuel; no external parser substituted",
+  "nativeProducerProof": "evals/receipts/inline_parser_cutover_db147cba.json (11889 checked/live bodies,0 exclusions/patches,13 exports; distinct from this runtime execution receipt)",
+  "hostLimits": {
+    "oldGenerationMiB": 3072,
+    "stackFlag": "not supplied; no producer-stack limit attributed to this CLI host"
+  },
+  "rawEvidence": {
+    "directory": "/tmp/bend-accept26-db147cba-04fb246b-run1",
+    "manifestPath": "/tmp/bend-accept26-db147cba-04fb246b-run1/evidence.manifest.json",
+    "manifestSha256": "41873e3212d119ed4904c55cf2db36075bfe18b03ffccec21dd120b9e07c97fd",
+    "fileCount": 495
+  },
+  "notClaimed": [
+    "Full JS corpus",
+    "current-root byte fixedpoint (the independent full bootstrap timed out at stage-two-check)",
+    "Native C codegen/HOST artifact within3072MiB",
+    "General semantic-preservation or ownership proof",
+    "profiling overhead or retained/live memory"
+  ],
+  "rows": [
+    {
+      "fixture": "/private/tmp/bend-fir-integrated57ab/evals/c_target_alias_paths.bend",
+      "sourceSha256": "5e5f5dee9376664013f1d7ce055fa45af40c40b9e2fbee02e8755e84abdf932f",
+      "expected": "8",
+      "observedRaw": "8\n",
+      "status": "PASS",
+      "stages": [
+        [
+          "emit",
+          20066,
+          1420476416,
+          1458586744,
+          "b48108281bad218f95c78e35d5c1ef27965428c2891fa558756971bc5918a6b7",
+          "e628ff72bd2e81d7177ef30de9593a48916db2f67baad61decd599d541c24617"
+        ],
+        [
+          "clang",
+          1191,
+          134955008,
+          90571448,
+          "4f98ff08986cb7940fe9a3f4932ab8b562855885e1e2767bc5b200e2fcaed1b8",
+          "1f20ddbb21631cece630bffccb5d0e89387c9433e0a2c8c7446c012d15f9581d"
+        ],
+        [
+          "run",
+          15,
+          131072,
+          311440,
+          "ce1d2cc12ae6286247db7f757f14e1fc5225524a3528169a452a7dffe8244ceb",
+          "59d6838ca8340b20c7a5146583d99f93fc6d78598e2dc7dae76c7363eefc39cc"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_alias_paths.c": {
+          "bytes": 1123806,
+          "sha256": "f0798bda406a234a883c0da2101c96beb72ebd5baac231c5c3cf2ebc7db4450d"
+        },
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_alias_paths": {
+          "bytes": 954312,
+          "sha256": "14c76df220aab6557ad227c3ab97c2a480104a8773d36c2fa4250e10bc2037e1"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-fir-integrated57ab/evals/c_target_array_nat.bend",
+      "sourceSha256": "1f5d1ebc34537453b7733daff35973d09fb919ccf7af18c98fe948858d8f1462",
+      "expected": "7",
+      "observedRaw": "7\n",
+      "status": "PASS",
+      "stages": [
+        [
+          "emit",
+          21089,
+          1469300736,
+          1511578312,
+          "4bcf5cf5c1b2aa080d1ea44f9fdb2494d2494d35f2ade90799465a7473f86628",
+          "23639d14afb5720ad8224db1f634c1229c51e966ada00da2095fda55b743a89e"
+        ],
+        [
+          "clang",
+          1227,
+          134987776,
+          90489504,
+          "140725a6a08de20c0a83ae0e07731060d2133bd2dd6d40636181f792df0716b4",
+          "d84ecb769fd0baf1c23904ea91b857277c939b2e5bd21927f83dc8e22ac16b15"
+        ],
+        [
+          "run",
+          15,
+          131072,
+          311440,
+          "bc008f34c960d0c797ac55222aa4d8908cd667460b469cc74a2d717617898853",
+          "3629f2a9b8ddd2c0b1110aeb22e9adc96d0e0a23013b4ecbf8a2f2e0aee1729a"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_array_nat.c": {
+          "bytes": 1125463,
+          "sha256": "be6edd540946cd5439ea6c9241d8a1f47ac0aaf232a697597d38a1d06a8255bd"
+        },
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_array_nat": {
+          "bytes": 954336,
+          "sha256": "e46675cd99f37c8d9d7855e4a4d0b964420b5f4a0933b7e7623caa48c1c7ebb7"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-fir-integrated57ab/evals/c_target_array_nested.bend",
+      "sourceSha256": "3387f428bc07319bb66a07e64e0b7635efc01ea7400ec35ad4bc13eda04ff8dc",
+      "expected": "12",
+      "observedRaw": "12\n",
+      "status": "PASS",
+      "stages": [
+        [
+          "emit",
+          18867,
+          1590329344,
+          1638318920,
+          "62b9ec0c659e9b79ef962f840c9c82379a0fb0bcf8d11bb59e8fd841f3f8f94a",
+          "a6f3b32cd4aa9dd65307182395260c73062cb6e0f01eb7a3581d05297469efb4"
+        ],
+        [
+          "clang",
+          896,
+          134430720,
+          89932472,
+          "cdef5879413bae6c48aaeef816a4196f394dbda40b0a7d73bc2be2d60c35074e",
+          "bc4f448a4c0b8bbb719dcedebd4bf0e5cfc44eaa59d80a8e8cc022adf2cbcf3d"
+        ],
+        [
+          "run",
+          15,
+          229376,
+          311440,
+          "0d3d49fbdb527f61e1033eda96bcc316bb463f9f49448965572415d6a08c2972",
+          "d5042cd63fdcdef430c5fb81f68e750f07a4a40c09d40bc60f554705517a28bd"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_array_nested.c": {
+          "bytes": 1130740,
+          "sha256": "cd894024e5117824b2d999413aa805c3c320771ea216c2dbe62395cb9d409268"
+        },
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_array_nested": {
+          "bytes": 954456,
+          "sha256": "5827abd53adbf0397ac11744981c9936a8eae7e786950fb77ff71254c50bdbfe"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-fir-integrated57ab/evals/c_target_array_u32.bend",
+      "sourceSha256": "9e5752bf27faa913b0473c78d10141e9e8942c8bc56ba22a337265ab29fff2fa",
+      "expected": "15",
+      "observedRaw": "15\n",
+      "status": "PASS",
+      "stages": [
+        [
+          "emit",
+          18812,
+          1644773376,
+          1697715840,
+          "021a93f35437690702340f02dbd3bf3f407c63bf8e04c07f6c7d5c6794e0e1c5",
+          "5efaac31e057abfed583696ddb6c8bec31f194f18318d7e347a2d14fc6728e34"
+        ],
+        [
+          "clang",
+          1179,
+          134627328,
+          90325712,
+          "d558f8fa11ce6b5b570137ff23e3c1c7371dab7cd008156a5e7a98dc5283453e",
+          "f44e2093216ea13fe40181e6198233096cc6ff88f25c9708ea680e78d29d5646"
+        ],
+        [
+          "run",
+          13,
+          131072,
+          311440,
+          "187b57c556682c932542a4175948bd9075276aa0754770ec5a6f12b8f873bada",
+          "1a066d41145c34d937f5b5711c56c381ad19a99fafdbc463595afafbbee228c9"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_array_u32.c": {
+          "bytes": 1134608,
+          "sha256": "b74523260547eb2c55a0138aa77569545fa1632907fc191982cbb3190a7057e3"
+        },
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_array_u32": {
+          "bytes": 954752,
+          "sha256": "b777a0492e5e5e3cb75968e71ba77392649f2e11b7d178e2af262ddb0ebe6096"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-fir-integrated57ab/evals/c_target_array_wide.bend",
+      "sourceSha256": "fd151ba4438b94e76b9eaaa6e77a5c1bfe469726e90a92787f1a33458021cde1",
+      "expected": "16",
+      "observedRaw": "16\n",
+      "status": "PASS",
+      "stages": [
+        [
+          "emit",
+          19174,
+          1733246976,
+          1792029608,
+          "38e63b8ac2326577a743429b4f830bf31c6aded39051ce304ec53530777d4d17",
+          "335b57d12d55390e29a9e98118261bc6d619f897b67b3d4753379183db930614"
+        ],
+        [
+          "clang",
+          1001,
+          135479296,
+          91013864,
+          "d5e4e73b6f0d1d0b060b328ca69b838dd9eca29e9da0c6317f217efaad5270c2",
+          "57f34e78b1d91936e77def4f422f7384579a261b5807ae28bed7d50d0a438199"
+        ],
+        [
+          "run",
+          25,
+          32768,
+          98376,
+          "567df2af48ef7efd3204a1ee9b2b7131da3d124192da68aedd628f1660f11823",
+          "6853327b25df23cec5196936ca7ab7820b32c3beb0f8d56717e118eba281bd49"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_array_wide.c": {
+          "bytes": 1138387,
+          "sha256": "07891df20fd531adee00709ef2d7be5c8251063567520ebfa0c2a7bff875ac9d"
+        },
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_array_wide": {
+          "bytes": 971312,
+          "sha256": "4e2e1b9dcc7b426b9cbd96fb38b6ad8dfd3baac490cc37d93885caf537721561"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-fir-integrated57ab/evals/c_target_bool_fields.bend",
+      "sourceSha256": "262d7aeaf81288c1d6a5c031b89c607ea509a0e92d19c3789922f78d23471de0",
+      "expected": "True\nFalse\n1",
+      "observedRaw": "True\nFalse\n1\n",
+      "status": "PASS",
+      "stages": [
+        [
+          "emit",
+          27524,
+          1695416320,
+          1791604032,
+          "8921a139ed876f8dc2925f7d89c3ee103ed789e3abcc922e11fa0baf9401e0a0",
+          "66b21a01e69d10d2a42d306c72dee4d6e3cc0adfdc06a89f7f6668dac616604f"
+        ],
+        [
+          "clang",
+          1963,
+          136691712,
+          91488952,
+          "b5110a1cb7a58a2619da21c72c3d33725998e32547db187c116ea429ae7fbcdc",
+          "1f40328878943b3d06890753db8da3e170543c17a8e6aff03d986f9a7f281c11"
+        ],
+        [
+          "run",
+          34,
+          2392064,
+          1524000,
+          "a888d928844549e1bf29c3ce89c7fefc6d6a6a8de93fd382d8c4c0bd75d97f3c",
+          "23dcf0ea205766ca454c751e5c9cd54a635315021ade53c194943fd0a75ee1e1"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_bool_fields.c": {
+          "bytes": 1137385,
+          "sha256": "b64235f4d143f5a4436040738a1ea6c71c7cc8b1ad2a795589473a6b0b424789"
+        },
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_bool_fields": {
+          "bytes": 954744,
+          "sha256": "92ee20b1394dbfb39e665b3d0a89bb9d17a242c794ae0eec030c21b19e723521"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-fir-integrated57ab/evals/c_target_bool_prims.bend",
+      "sourceSha256": "bc2c9dd125503eaaae6cf233da61400cae28d2ca7da2b09027ae1fe3da408688",
+      "expected": "1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n1\n0\n1\n1\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n0\n1\n0\n0\n1\n1\n0\n1\n1\n0\n1\n0\n1\n0",
+      "observedRaw": "1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n1\n0\n1\n1\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n0\n1\n0\n0\n1\n1\n0\n1\n1\n0\n1\n0\n1\n0\n",
+      "status": "PASS",
+      "stages": [
+        [
+          "emit",
+          21570,
+          1948352512,
+          2017033104,
+          "15306a878eb2c8a37b6f1a5d19d873684a322b26f255ec040023a287e4e45a8a",
+          "18725bf5a0b8c2224f3fcfb7fc806113455492fe1232f8ef8445cd4772016247"
+        ],
+        [
+          "clang",
+          1282,
+          147718144,
+          103105256,
+          "6798d9a1c3a55ce12c65e4b07777a6f7e9eb0a07baa0e11a709e85a156e4dee5",
+          "bed746c131edd73e972c2fb6422226501129631b367f5dc9a680f5b2f383ebfa"
+        ],
+        [
+          "run",
+          15,
+          131072,
+          311440,
+          "70c753b8924bd26a0c62b8b53ca416b12ac1f97383057bee0321243eaba2561c",
+          "0b5f7a56a21193374bd682514a1598871248ec2b3277824baffb199ee8037fd3"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_bool_prims.c": {
+          "bytes": 1256755,
+          "sha256": "1c49185860354dc26a5bb4f6d38eba70d594dfb401880d94913c0023c8e5fb3f"
+        },
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_bool_prims": {
+          "bytes": 1043552,
+          "sha256": "0f0a27a71aaf635a8bad29033476925a293a4728c53b4fd0b5ee06dcfe768c69"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-fir-integrated57ab/evals/c_target_bool_xor.bend",
+      "sourceSha256": "aab827abf7a9213392fdf3bda0e61d0170774d93e5a204b37c92115749c00e79",
+      "expected": "False\nTrue\nTrue\nFalse",
+      "observedRaw": "False\nTrue\nTrue\nFalse\n",
+      "status": "PASS",
+      "stages": [
+        [
+          "emit",
+          36497,
+          1777647616,
+          1943725232,
+          "9008f8d9614721f196cbbabe7e6b9fd09bb4267dce4a204adbf03b2fa9a34386",
+          "862f695226b1c6aa4158b7c9f519ac3cee37a2491b601cee91fff49d2df04c3a"
+        ],
+        [
+          "clang",
+          1646,
+          136216576,
+          91734760,
+          "57376b900a30e9171d8043e34a12622e4f6547cf9349c5cb2215764ec145c9e2",
+          "6af4db5d95df170475efb0e6b94eb823431626843903490048003097eeaf406b"
+        ],
+        [
+          "run",
+          27,
+          1048576,
+          819392,
+          "44efdd5855125578f921c14def33011e0de2feb3ffa63169fab07ee16bf77bf9",
+          "f2c985589c9efeb6d5e037f3bdedf056a57e1c9be426e5df57d1fffdeff14b68"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_bool_xor.c": {
+          "bytes": 1127470,
+          "sha256": "c38fd67fab6518ef8609ffb874cf7fbd86bead145c5472a1f8785e96683fa528"
+        },
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_bool_xor": {
+          "bytes": 954512,
+          "sha256": "a627f44347d6e2f55c26c92f7a2096f2634856d6df81f3c7aab6ba19d194bc84"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-fir-integrated57ab/evals/c_target_branch_arms.bend",
+      "sourceSha256": "113f0729f92d7b0275f4d5941d7ae6cc21d1c1968b4e4abcffdb7534587a8719",
+      "expected": "hi",
+      "observedRaw": "hi\n",
+      "status": "PASS",
+      "stages": [
+        [
+          "emit",
+          20356,
+          1328316416,
+          1361782656,
+          "f6d8a855ce8b7e601a5e633f6f21b7b4f2100c79b22e9945d5a1af5d14500ffc",
+          "6c56532831971dda8f364cfe470b448ef0a4705cfe1c93a7c10c8fec7a49b358"
+        ],
+        [
+          "clang",
+          1437,
+          137560064,
+          91439824,
+          "48c850ab8abef0241191b102ab1a222f6c62a5681eee0c712b23c0c1633cdef4",
+          "2170273363903dde6b11e742688bf22e167904984def0767cc98e204c4723fb1"
+        ],
+        [
+          "run",
+          29,
+          1703936,
+          1212800,
+          "9c76d22bbe7fbb6f685347d9c6600b67abeea3e149b6809d1b236fb193b679de",
+          "70271e1b33483a3c2a917b0b067680f8562b97602ff74c8c164064996ef766a5"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_branch_arms.c": {
+          "bytes": 1126568,
+          "sha256": "a8abd6777929584da47b37277908857b27ff2f72f68ff142346b29bc9f9518d6"
+        },
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_branch_arms": {
+          "bytes": 954424,
+          "sha256": "61e6b55cda1eb8c1b176114d4119179e725b59bde0053e337026bf5f2a02ef81"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-fir-integrated57ab/evals/c_target_char_head.bend",
+      "sourceSha256": "cc5811d968465d9756d579a854e68a649d08b521789c38afb7ebf0ec116422eb",
+      "expected": "955\n955",
+      "observedRaw": "955\n955\n",
+      "status": "PASS",
+      "stages": [
+        [
+          "emit",
+          19784,
+          1811791872,
+          1872695600,
+          "566dc703b4992be1c59d2de93849f233a3072a488b3b9e19d03f2dc6fbf0a058",
+          "ed76d2e10c5a1df66695aa7382efe37b078c9c505c90d72c312e3acdfc19a9f6"
+        ],
+        [
+          "clang",
+          960,
+          133480448,
+          90833592,
+          "a22f2dda0d70468107ac16b9c5bfb4a252e156c2f9abaf13f0b0da8dd5480704",
+          "fcce587087656c2175973ddd388d55fb28ae0a930af45bd5f01a9ed49ec04a7f"
+        ],
+        [
+          "run",
+          13,
+          671744,
+          245832,
+          "ca32e27c692179c853b649c594d090c01a3315a5cbd76e0b87c74f2379e5a986",
+          "5bab8e12d2d6c88ff4fe1e5c89fc0a49feac996a2d25db36fd5b1ea30c70f32c"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_char_head.c": {
+          "bytes": 1131379,
+          "sha256": "1b7117779afcef49dd4271e7f3268b4f71cef7ed4bf8e60a8b33ca40195da2a9"
+        },
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_char_head": {
+          "bytes": 954656,
+          "sha256": "21af161690eea2729a4b249e3d2dd5171f4fbb37aa209ae6b3ad22acc1402768"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-fir-integrated57ab/evals/c_target_char_to_list.bend",
+      "sourceSha256": "69788352c9b92708c9166d7e78cecd2e1e3ad33adf013eea5d8f2f3cff4262aa",
+      "expected": "955\n120",
+      "observedRaw": "955\n120\n",
+      "status": "PASS",
+      "stages": [
+        [
+          "emit",
+          19540,
+          1975779328,
+          2047690136,
+          "fe441de2a106b31fe3229c9ef33ef0a048e96f33241ff6f53b355cdc2b8a6910",
+          "f92a6d0aba964ce8976475e9b54f16b29337cb42e1bd010d0822d71dadf6dbfd"
+        ],
+        [
+          "clang",
+          1316,
+          135282688,
+          90735312,
+          "7d7797b51daeb73d85ed66f907ab1d041d3cea669f5e88aa051f33fd9bb41cc7",
+          "22a66c272192efd9c1f3969d12510342eedb531086a01d37aeb0c94461786231"
+        ],
+        [
+          "run",
+          15,
+          131072,
+          311440,
+          "6c7098057035182289fd3eab3879f6d06f4b8511c96d1c8eef219f1d752529fd",
+          "51787d5ee7c011e4edf1a4d6052bfb87758f1e7e4905e170f1b4a5cfef88c72c"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_char_to_list.c": {
+          "bytes": 1129485,
+          "sha256": "20f1616d0a5bf0aceab5ce4d7df1a4e7f4b32030eca25fd5d2f3a88ed3f1e49f"
+        },
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_char_to_list": {
+          "bytes": 954584,
+          "sha256": "14d3205af7fe8a5624bfafb24a86aafa045fbc6d6c5c2fc67a5c0a3a2f0e2d7b"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-fir-integrated57ab/evals/c_target_clo_field.bend",
+      "sourceSha256": "7e1e922c18100bf2b4b588859f555012848843525a56785b1f33e13dec197b4f",
+      "expected": "7",
+      "observedRaw": "7\n",
+      "status": "PASS",
+      "stages": [
+        [
+          "emit",
+          22383,
+          1666351104,
+          1720376448,
+          "78e3f0377a3779424631c1a4a8aaea2145f38297bf28dd54a50ed02154d76fb5",
+          "ec59af92e4c279ea1ba549481bebe2311d2799ca832c228f7772ec94e21e5327"
+        ],
+        [
+          "clang",
+          935,
+          134381568,
+          89916112,
+          "f066fe433935e4f230e6a92b91fce765f0b20aa450f62af9521f214808c93ea4",
+          "e9b7a15e8715ae3f884f3163fde12ad871409eaf56a2310f255801628b5f0938"
+        ],
+        [
+          "run",
+          15,
+          147456,
+          311440,
+          "34ef1ad3c849ec2d9a68b5b42d2efcf92ba59e8ecb4511c0d3e3966e1be831ee",
+          "3745064d1d06b2f3c8afc370f0f639708d5a1fb11389a203d1b1d07dddc396b8"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_clo_field.c": {
+          "bytes": 1125930,
+          "sha256": "d8a5279b6ad30bfd7cb1fe29bbd6e2c4ecd01e306ed3f09a71bee8a8a40afabe"
+        },
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_clo_field": {
+          "bytes": 954432,
+          "sha256": "41162cb33dc7c3d737fb0a7311f8056b9300b8261693b6ded4e25aca8ad4cd61"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-fir-integrated57ab/evals/c_target_disjoint_type_cells.bend",
+      "sourceSha256": "5b6ead1a37e317d4fed3b5060a0527f982045dd336d2ec385690b974fb92a6da",
+      "expected": "5",
+      "observedRaw": "5\n",
+      "status": "PASS",
+      "stages": [
+        [
+          "emit",
+          18800,
+          1381679104,
+          1418623216,
+          "9968bc6115d0651217679d9fc61b96bf259f8a2f42c9606b0547ad52b8d62e2a",
+          "1d6a7d198b5bdf34989b9fbd9e416566aa4a0e79bc10937ec52b3bb0171bdde2"
+        ],
+        [
+          "clang",
+          922,
+          136888320,
+          92406480,
+          "acd8ba3880f9921c9db59e47d13d374fc24f168c0de780e3dd66a8a56bf4cf00",
+          "dd7788e01ef127a95b6e6433fc952ac1500c612e7a19a9bfe4812df36184bc74"
+        ],
+        [
+          "run",
+          15,
+          131072,
+          311440,
+          "5955323201a6b60a82bd2e4e736c7b1d4e784224e0ad509dfe8158890a924c61",
+          "66df2d89357ed92061b1f19b0fb600c1bcb1eef88415583cccefa33041b02f2a"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_disjoint_type_cells.c": {
+          "bytes": 1133417,
+          "sha256": "9cd0cdd34fe994b8aa4e1da6ff045e5199a4f981988a239e529baf0102c5f7c7"
+        },
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_disjoint_type_cells": {
+          "bytes": 954528,
+          "sha256": "f0126c2134058eef084395a9b3be73fd6b8151eb517bbf7de58a084a938f2f78"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-fir-integrated57ab/evals/c_target_drop_fields.bend",
+      "sourceSha256": "cc3f60ad76053e080ff234002c89b488beb5a06c823d4d516466dd90fb9f0bd6",
+      "expected": "5",
+      "observedRaw": "5\n",
+      "status": "PASS",
+      "stages": [
+        [
+          "emit",
+          20428,
+          1630388224,
+          1682428176,
+          "a5f76b1a7f5b26defbc9eb85a5f591b21e034e2f59ea16e7528d29c2880e6f53",
+          "f65d68f2847bb591c4c5ddf42b2f5362aab559ecae37cff3851562947013d79d"
+        ],
+        [
+          "clang",
+          1189,
+          135331840,
+          90882768,
+          "0d96eb871b8c5b20c3c453b2e4c1833743d1c9226963821a1e5ac2e6f503ad7e",
+          "bfbdc59659e90887efad74852b85f6fc23ab5331a93962598700dc057a5e6dc5"
+        ],
+        [
+          "run",
+          13,
+          131072,
+          311440,
+          "65569069ddce91472cf7d646cfa94bb58bd7aab808becec1553f87971873e62f",
+          "de10d534a7f8b400681471ff7385fca5c7461fa9de2909368bc7e4230889c479"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_drop_fields.c": {
+          "bytes": 1123628,
+          "sha256": "fc1d3e7d2facb5232245f88dd523183a585b78b22edcb5ff827722e5ccd74af8"
+        },
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_drop_fields": {
+          "bytes": 954312,
+          "sha256": "aa67a4b5edc4924cdc9819a0f05327cc8b9ba2ec3d1c1d8712d4cd20ef2cc49c"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-fir-integrated57ab/evals/c_target_multiarm.bend",
+      "sourceSha256": "19534b50a377c4142b352e2c1072a9c586f70585b65dc10414eb7e442842f2ac",
+      "expected": "13",
+      "observedRaw": "13\n",
+      "status": "PASS",
+      "stages": [
+        [
+          "emit",
+          33980,
+          1526759424,
+          1843840616,
+          "b7e17174478f95a4762109f41876fb6eb4b4552f7c6aa8a1fa602ceca2591985",
+          "f78340843a20be550b47fbc8b228955e1e38dab9df66fd46a59df79b869aad1b"
+        ],
+        [
+          "clang",
+          1162,
+          133660672,
+          89883344,
+          "f2cb4c634b072063a2e493ca7c13427025c2c04471c14f8d14be5329007d27b1",
+          "595354eb21b590e2b97104270aaea068ad157f9340a83ab65b4a599a58366028"
+        ],
+        [
+          "run",
+          13,
+          131072,
+          311440,
+          "642ec6445a26288ee7d9d0d14c1b2ec9cc71005f654ae5a0e61b5551da21d57f",
+          "cdd76e24bc6ff0ee3b2bfa35c258f499b4ef24cd5c94f4db029e25958458f856"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_multiarm.c": {
+          "bytes": 1127551,
+          "sha256": "739741470fba86c14d3a2f931ab3efabafca1f0819d7e41a11578cc43b6023f9"
+        },
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_multiarm": {
+          "bytes": 954608,
+          "sha256": "80c0c7d5e1df7f73e2aa8af960ff975686b7744781f0422d9806e44690c4cad8"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-fir-integrated57ab/evals/c_target_nested_adt.bend",
+      "sourceSha256": "704014f43ec2fb031640e41fad7a0960ca189a57ddcfaab4c198ef00a20be6cc",
+      "expected": "15",
+      "observedRaw": "15\n",
+      "status": "PASS",
+      "stages": [
+        [
+          "emit",
+          24434,
+          1712128000,
+          1769336112,
+          "bb8b2f15fe1e71388822dc30b095b72414c3d78f3af5013e573e800c645ce1f0",
+          "01903a24cea5a9ae3aabe2cbf7878beb62b14a527ce3824ba1a6b79ce6629250"
+        ],
+        [
+          "clang",
+          1176,
+          136282112,
+          91767504,
+          "12a4b4b6d929f1e409a5efa97efb994c62506f896ff1e3911a9d77e060ce6880",
+          "d7f3bf18da0501b06ce84deeebaf95e08fb3b221f2bbb3a6b4c02a4721fbf31b"
+        ],
+        [
+          "run",
+          14,
+          688128,
+          262264,
+          "b269792965621d588bf183ffa5a757c87dcd4413230ed8920e9c66a269db070e",
+          "56f591d3f7037ddf8182bad567d98ad4acf53ed883cf7285d012a5c757006f36"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_nested_adt.c": {
+          "bytes": 1134675,
+          "sha256": "a334801609e92368a8b329014eb265c7cc297c7bd00b95a45744caa998c64ffb"
+        },
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_nested_adt": {
+          "bytes": 954608,
+          "sha256": "de378eb54373fa74a5f57af4d7b5ed05e43f924bdbf990972a2664acc9cf7701"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-fir-integrated57ab/evals/c_target_region_leave_repeat.bend",
+      "sourceSha256": "e0ff9c485e11bddd85e045bf1a7ccdc6be911d924a7950be2b552d71bd092fc1",
+      "expected": "7\n6",
+      "observedRaw": "7\n6\n",
+      "status": "PASS",
+      "stages": [
+        [
+          "emit",
+          24913,
+          1348583424,
+          1445102040,
+          "b312087d030bace37c1ef29c2f6077d14909617dd152395dc96bca46f701ed15",
+          "09f061e6a6369bc60df3f071218532feeffb6a5b75e6f1531d124d56ee054aa2"
+        ],
+        [
+          "clang",
+          966,
+          133988352,
+          91390672,
+          "538216903251180aa5e330b6fc7cc413fe0b0aa6ff7a6972dae163c9a791d289",
+          "36f16ad6bad81714971c37e970f1961be4515eadefed6ac579f414f3e6c8e833"
+        ],
+        [
+          "run",
+          29,
+          1720320,
+          1196416,
+          "5acd8cecc13b83bc6c62f29549427364df06c9d6b7820bcdb9fa145552a350a8",
+          "60487581a4d2a09bdccd85d284fcb9ec3621ebcee00ca7f2baf6265d0b404f8e"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_region_leave_repeat.c": {
+          "bytes": 1128141,
+          "sha256": "754a4a504c53bb864950670afa72962f040a0b7b20e2f968f4f6aabe43060de3"
+        },
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_region_leave_repeat": {
+          "bytes": 954528,
+          "sha256": "224abf7ccd06d1cc0006fe02bc804503f48863dfe449a79124487bc8554a8d51"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-fir-integrated57ab/evals/c_target_region_tail_capture.bend",
+      "sourceSha256": "5dbbb2fdf2821a6c4cd66bb9061608195f9ac6fbbc7387bad1813fdf81c9a1e4",
+      "expected": "11\n12",
+      "observedRaw": "11\n12\n",
+      "status": "PASS",
+      "stages": [
+        [
+          "emit",
+          55108,
+          1743077376,
+          1895471280,
+          "dc7b511f44e5baac657cda7d139e028ce2239b97ce103bebf7aa0bedc937c69f",
+          "37690f0ec8283bfbcce192c03a1c0d62a3ee95ea4d1720566064a36c115fd3a8"
+        ],
+        [
+          "clang",
+          1328,
+          134299648,
+          89834192,
+          "3a0ca96edde398f1c249316bebb3e350e613ccc7b9458f1421cee1ea324a27bd",
+          "010edf51deb17420dc59bf52a6fd9a29a47016fea745c311c0b465b2a3bd1280"
+        ],
+        [
+          "run",
+          30,
+          2424832,
+          1573176,
+          "d209b3f4b80b2f6785fd9a38ab326cba269215078e78589f0789aaaab4b34bfe",
+          "a0ae5518b45bb0e7fc863c70a9894653e046438a23ffc62b6df2516a6fbd1a8e"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_region_tail_capture.c": {
+          "bytes": 1127154,
+          "sha256": "5509533c7a418f467001e222478ea7c0ce785c705c24cdade108e443d16bea23"
+        },
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_region_tail_capture": {
+          "bytes": 954560,
+          "sha256": "bd394ae4d6838ddd255f618eff9f4adae2cbe8325cefca4f1891c2d69b75e55c"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-fir-integrated57ab/evals/c_target_repeat_capture.bend",
+      "sourceSha256": "59dd7417420f4128ce84e65e14276c5c35d6b764d7d25b3d5a1a4f02e2d239fe",
+      "expected": "10",
+      "observedRaw": "10\n",
+      "status": "PASS",
+      "stages": [
+        [
+          "emit",
+          23429,
+          1623015424,
+          1677119208,
+          "d6a4c19046a2ec0894167ea019895a2b1515e29248edd2a9a71cd2816849201a",
+          "aee7b2711542cd44f2fc2efeb250a69ce4339014a2ebd969adbdd991e61f8e44"
+        ],
+        [
+          "clang",
+          1181,
+          134971392,
+          90604240,
+          "67ded4932155aaa360c9a988e2ac9af98adbb7d532e35103837a6c1b2f8ee9fa",
+          "59c910c889fe1b28b2534a85a4dec3415a743b5e9af6bd8e97f00059a32865b3"
+        ],
+        [
+          "run",
+          14,
+          229376,
+          311440,
+          "b6afd1a0eae3f4fbb8891492a290dac18530cfda10d06482b05113941033e795",
+          "4fb79948e830ca5249ee59143abd84e1387ce3c58d17ad3799d2c1bd9d23949a"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_repeat_capture.c": {
+          "bytes": 1124433,
+          "sha256": "8b0d79b12a35b3180a7b8b0d4b615f9f25253a1fdf84dc1a0d660474c3b5422d"
+        },
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_repeat_capture": {
+          "bytes": 954376,
+          "sha256": "4c6c229f302b20ee71c6193a90178e8e15f27b90451c0fe5c870a41b076ea2e8"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-fir-integrated57ab/evals/c_target_repeat_data.bend",
+      "sourceSha256": "b871c3b5242184e47ee9e7c034b2d6f62e31a1159ed6c8e259b6e9b2bd240546",
+      "expected": "8",
+      "observedRaw": "8\n",
+      "status": "PASS",
+      "stages": [
+        [
+          "emit",
+          19861,
+          1939914752,
+          2010004560,
+          "1cd6c726f21a718ac01e6b888167d190c2c04ab232b7a14d1d57f8d97687ef29",
+          "4a6e4bc2c9eceddbd9e9d5b8c7a5cae9c0c503acb385dbd0931e7b921e621a15"
+        ],
+        [
+          "clang",
+          965,
+          133939200,
+          89457336,
+          "e38b1876a78e1ed4a106897d48508261e59acee47a83de142ba2d5e9bbbaa80e",
+          "25f937655cc07078ab6d6701dcfaf258f460bdee260b073a7ca8eebc718e6399"
+        ],
+        [
+          "run",
+          12,
+          131072,
+          311440,
+          "c21bbc192137a222eb86ff86252712293ee3eaef339444e2a2c9d5cedabb2799",
+          "7804cfab87e4717a8c342275a46cc0c02eb34cd518497dcdebcc8193e934c506"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_repeat_data.c": {
+          "bytes": 1124352,
+          "sha256": "cbd5d174e923aeb725eb2e8b1c8104ee4b773560a63f1b7666a5ed538c959dfc"
+        },
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_repeat_data": {
+          "bytes": 954376,
+          "sha256": "2f22394a6947b9dd1a2ac1567389d5a4675f633e9fe7cda1102934f11843977e"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-fir-integrated57ab/evals/c_target_string_from_list.bend",
+      "sourceSha256": "2fdc63032bff8c9187ad0ab3533f44c0cb9dedfd9f7113e7b4f4f84e94d50d65",
+      "expected": "λx\n955\n955\n120",
+      "observedRaw": "λx\n955\n955\n120\n",
+      "status": "PASS",
+      "stages": [
+        [
+          "emit",
+          18893,
+          1775566848,
+          1838237216,
+          "cb72edbdb745df0fd391ff110ba9ea22e4b363961cf08eda5f1d35fe64769f10",
+          "c59fada7ad677b8c88261c2b224dc8a554e6a0a203c66e0b44109e8d1a39a11a"
+        ],
+        [
+          "clang",
+          1337,
+          137068544,
+          92603088,
+          "70adbc6a85f7cbeea30bebd153eb4d41b24faf07efbaae0bedd4b6406d884af0",
+          "70bb27dfedb0e296cbc71cffa4415cd52b88dd3305283892673df1b7463989b1"
+        ],
+        [
+          "run",
+          15,
+          131072,
+          311440,
+          "451126f2c6403a660a4486d344691ad0b9c5133d2c7fdca2960bf24c312c5a68",
+          "3d5326b16b376e50ede8c9c62153e8d7923f82e91359505720f23c93c8b63ab3"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_string_from_list.c": {
+          "bytes": 1140689,
+          "sha256": "6cc70889d7805be151d03056f13612dd11bb6dba29ef5ffc8cc1978eb450cde1"
+        },
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_string_from_list": {
+          "bytes": 971496,
+          "sha256": "d416d254b0a1109dc2ef9152f376f343c76fc97d7a834e853e0f8a3f8bc924bf"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-fir-integrated57ab/evals/c_target_trigraph_literal.bend",
+      "sourceSha256": "f036aa1315914c907429f883b010ff5e33b3cd75dab84137c8f1ea11574cc901",
+      "expected": "??=??/??'??(??)??!??<??>??-",
+      "observedRaw": "??=??/??'??(??)??!??<??>??-\n",
+      "status": "PASS",
+      "stages": [
+        [
+          "emit",
+          18806,
+          1405550592,
+          1443955304,
+          "9b711efce902e95e0edfb1e8dc513dcd9fc9d3f4211f309c08d77061ff05f31c",
+          "ffb7680dfeba3fe8aadb1fd9019e4ffc132b468d8a89980e139b295950c6ad19"
+        ],
+        [
+          "clang",
+          980,
+          131842048,
+          89277136,
+          "95c44ae1995e89c21fab4df7afea13faeffa578b56eb7638f013654ac57f7137",
+          "3ae8e9583e4b0ddefb842c550873934ebfaee621dafd517511d702cbc8ab03ea"
+        ],
+        [
+          "run",
+          15,
+          229376,
+          311440,
+          "90dfe1cca49f395f8cc7bdb8b16032f6baf42819e4867e340379c38ef0831f9d",
+          "c3e0cca7513e0c2bbfef7aa422ddd4b90b30644d7e0969714a6830206c387637"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_trigraph_literal.c": {
+          "bytes": 1121096,
+          "sha256": "8e4e4ca80f07edac316cad6e34b6b8016b9d616247f17d5e9ec7261752ea4783"
+        },
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_trigraph_literal": {
+          "bytes": 954200,
+          "sha256": "a7a8280d2ee2337ebdbabe701063e6ad7f491f845892e791efa42561e5c4b8af"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-fir-integrated57ab/evals/c_target_utf8_astral.bend",
+      "sourceSha256": "8b601c81baf7514313012117ea8dfac6ff4d4f0931725cc525f4f9e7f630a88a",
+      "expected": "𝄞",
+      "observedRaw": "𝄞\n",
+      "status": "PASS",
+      "stages": [
+        [
+          "emit",
+          18444,
+          1574830080,
+          1623097176,
+          "4d3732b3d58f1e27910ffbf2991b1fc49cbf222c07afd6bd1d25f8684a3ca61e",
+          "10f0533b7a4bfc851bd525a151872243b6da1c5b75249ba13310444794f40788"
+        ],
+        [
+          "clang",
+          1193,
+          132726784,
+          88965792,
+          "d2764d8e2eadba368c7e204bdfee6bdc46dc2ca45b7814cecfaff3d88439561c",
+          "1b5073b57ab2d3d98c8327f13add0a22f09188999a146555cf12f0fe308df693"
+        ],
+        [
+          "run",
+          15,
+          131072,
+          311440,
+          "bc15d80e9c9c556a44c0d756779d04332bb3baacf81ce027e96fd69c3eb156d6",
+          "b2180b4447d3c0a89d4c231fc9d8ebb956e5c9575010bc53006438bc1f2447b3"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_utf8_astral.c": {
+          "bytes": 1121066,
+          "sha256": "b4226cb12127dbbf86a20a901a399eacb19f383d6191731016b82d6dfb37d826"
+        },
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_utf8_astral": {
+          "bytes": 954200,
+          "sha256": "889fbf191e47e6da123a4a788002a6be3846c84738fa6256df5b431d1b74e587"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-fir-integrated57ab/evals/c_target_utf8_literal.bend",
+      "sourceSha256": "e9873e12d727b50ee32ef7afc1a2971f83fe27e314c2a4653e1f453e776342db",
+      "expected": "λx",
+      "observedRaw": "λx\n",
+      "status": "PASS",
+      "stages": [
+        [
+          "emit",
+          18549,
+          1374945280,
+          1410856864,
+          "0c13c5af62c6efe63b8eec875098003012c2c71ac27d7f190c631f78300019f5",
+          "a05b1bbc6910516fac3dcf2a1cb2216f2f96d96b1e94f602d3440765bc27940c"
+        ],
+        [
+          "clang",
+          1154,
+          133726208,
+          89260728,
+          "c8b518d9a052a1a11f36ca124b3e0403e6e48b493264556df2feae1966307b06",
+          "7805f2a1e6785da89f675a2acc9edc770aa386cd624602a43590d65412f56b0e"
+        ],
+        [
+          "run",
+          15,
+          163840,
+          311440,
+          "7503e83cb2bfb84dbe8d7020164061897bca16e72d3a2a77ceee48fd39b2b27d",
+          "1060fe3af3afcc406a2ae716fb7bb4530c41da3d6a4c73fe07a7a2a13742280b"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_utf8_literal.c": {
+          "bytes": 1121059,
+          "sha256": "8eafd9fb34834e598a10701959622c4aaf2d144746edd498a906cb49a015debc"
+        },
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_utf8_literal": {
+          "bytes": 954200,
+          "sha256": "47177aec2ce47a013d2c95af9816f258623207f5fabfe8427e8721cdb77ff811"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-fir-integrated57ab/evals/c_target_wide_record.bend",
+      "sourceSha256": "88cca90b9c2ee71d14d73bf704c02f99866e70203f3f5b026522832f7f478c7c",
+      "expected": "133",
+      "observedRaw": "133\n",
+      "status": "PASS",
+      "stages": [
+        [
+          "emit",
+          57086,
+          1755873280,
+          1885541376,
+          "4d639d82d658dca6a8670b476cea12845a74a82217296df1e0e79b40a5c1ccf8",
+          "19e29d925c39fce63afc4f6bfe4c125c9b9b169d4fb3f8f9b8f42a23a46d6441"
+        ],
+        [
+          "clang",
+          1315,
+          135462912,
+          90866408,
+          "6ba7a91bbcf8dbb0f9ec58700bba22acbb8736a49d561482b934d5e7f4a8745a",
+          "db0c805b5479b7e7a0a13a6d98017df35967a91b50e8a205c8cb5c435338fdd6"
+        ],
+        [
+          "run",
+          30,
+          2179072,
+          1409312,
+          "af42014d7b688bd2e08eeac0af9bcb4eff1bd1b26dafd4bb031d7a8e529bc7c7",
+          "52683e72832760758c0a7429227cc968d1286a70b5c456372a86739c26610a4d"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_wide_record.c": {
+          "bytes": 1128230,
+          "sha256": "940bfd6ea40967ba01a7e899ebe856334e162e8c6b561b30992cf9299e7938f3"
+        },
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/c_target_wide_record": {
+          "bytes": 954376,
+          "sha256": "53925517d72c28f147764373c95c92370fe6b5aa3024b9b779cf2ce8e5253792"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-fir-integrated57ab/tests/reg/phys_storage_paths.bend",
+      "sourceSha256": "b3f1aad4a75d028845f301816982a0d98a9606d239ce4d3c674a91ac5bf5fd85",
+      "expected": "2655042671\n3,9",
+      "observedRaw": "2655042671\n3,9\n",
+      "status": "PASS",
+      "stages": [
+        [
+          "emit",
+          21389,
+          1387724800,
+          1423227912,
+          "ecc6598e1704a4fb222ad0925d1f621b228855e69e9146fc84e6958962879b1d",
+          "306c84bf83afb7d5b51ff1ede492e3f024f30941f3cb17ad2a866da9b5b7cccc"
+        ],
+        [
+          "clang",
+          941,
+          138739712,
+          94290640,
+          "48606f69f5c75cca56c636c73cd81bb26aca8768f85d1167e36b0fd2ff81f539",
+          "9869a7507b9bda1f4e1f8683caf4058c693e95a8f20f5eb0a3593b8817cd2121"
+        ],
+        [
+          "run",
+          15,
+          114688,
+          311440,
+          "0ce80f23d2929704c1d911a91d3d31093a6a289cb310bb47554fcf68f4844ed0",
+          "f4f07b0ecd708b0474e7b55f581bf595c81ab4a096e8fec768d9951976bfee38"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/phys_storage_paths.c": {
+          "bytes": 1188635,
+          "sha256": "56da1713cfa5f49b4a9709cc0bbc7987d00f0255e8da03cf1dbf6316cad58ec4"
+        },
+        "/tmp/bend-accept26-db147cba-04fb246b-run1/phys_storage_paths": {
+          "bytes": 1005856,
+          "sha256": "0e7cce78bdbe2d5dbd424d31d7a539d62fad6ba7b7a962c2f2592e2e896c0585"
+        }
+      }
+    }
+  ]
+}

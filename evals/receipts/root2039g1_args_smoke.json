@@ -1,0 +1,465 @@
+{
+  "schemaVersion": 1,
+  "status": "FULL_JS_ROOT_ARGUMENT_REGRESSION_PASS_NATIVE_AND_FIXEDPOINT_PENDING",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "release": "Bend 2.0.39",
+  "runtime": {
+    "supervisor": "Bun 1.4.3",
+    "producer": {
+      "name": "node",
+      "node": "23.11.0",
+      "v8": "12.9.202.28-node.14",
+      "executable": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "heapLimitMiB": 3072,
+      "stackSizeMb": 256,
+      "heapSizeLimitBytes": 3271557120,
+      "manualGC": false
+    }
+  },
+  "limits": {
+    "rssMiB": 8192,
+    "footprintMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000,
+    "manualGC": false
+  },
+  "parser": {
+    "path": "checkpoints/bootstrap-parser-rebuild-release2039g1.result.json",
+    "sha256": "b39f36e2c4f72ea23f2ca1bf2bb43b632e526e05cf286f2744ac9011e0a1b8b1",
+    "status": "PARSER_ACCEPTED_NATIVE_SEMANTICS",
+    "artifactSha256": "94f05a4e00e8fa6ac0b57bbdaa3546d4f5110b7bbf03c3160f338b8a75f6d86f",
+    "sourceRows": 71,
+    "compiledRows": 75,
+    "sourcePublic": {
+      "passed": 15,
+      "assertions": 264
+    },
+    "checksExcluded": 0,
+    "outputPatches": 0
+  },
+  "build": {
+    "path": "checkpoints/root-release2039g1-build-abi.result.json",
+    "sha256": "281d94c00b31f1af5197f3faa94be5ccf98fb1e7c0e837774ea6d642a5b9600e",
+    "artifactSha256": "aa94999e2f28680d4b2ef752514c1806f3c7cf180128461781e183542869e508",
+    "bytes": 13837297,
+    "checkedDefinitions": 12110,
+    "eventsFullyValidated": 12680,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 3208740864,
+      "peakFootprintBytes": 3325346384,
+      "elapsedMs": 34255,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend2039-upgrade/evals/checker_core_component_build.ts",
+        "--worker",
+        "--file=/private/tmp/bend2039-upgrade/checkpoints/.bootstrap_compiler_root_release2039g1.bend",
+        "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step,emit_c_modules_start,emit_c_library_start,c_emitter_step",
+        "--artifact=/private/tmp/bend2039-upgrade/checkpoints/root-release2039g1.js",
+        "--report=/private/tmp/bend2039-upgrade/checkpoints/root-release2039g1-build-abi",
+        "--inputs-sha256=fdb1b88f46fc29ef5d86c8188e66ed291dc288ac362c8db4fd2c1417c336f736"
+      ],
+      "label": "Full-native CheckerCore component JS build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793032663674-f5f813de7f4d900d.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "regression": {
+    "before": {
+      "binarySha256": "9db80b9752433c58229b8db29f3a76b5b94593f8b52a8be457b8b161635be46e",
+      "status": "FAIL",
+      "cases": [
+        {
+          "command": [
+            "/opt/homebrew/bin/bun",
+            "/tmp/bend2039-args-regression-CMxIJQ/args.js"
+          ],
+          "expected": "True 0",
+          "observed": "no program",
+          "status": 0,
+          "stderr": "",
+          "passed": false
+        },
+        {
+          "command": [
+            "/opt/homebrew/bin/bun",
+            "/tmp/bend2039-args-regression-CMxIJQ/args.js",
+            "one",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "-RTS",
+            "--",
+            "--threads",
+            "two"
+          ],
+          "expected": "True 4",
+          "observed": "False 4",
+          "status": 0,
+          "stderr": "",
+          "passed": false
+        }
+      ]
+    },
+    "after": {
+      "schemaVersion": 1,
+      "status": "PASS",
+      "scope": "Actual full-root JS renderer emits argument consumers; not native build or fixedpoint acceptance",
+      "candidate": {
+        "path": "/private/tmp/bend2039-upgrade/checkpoints/root-release2039g1.js",
+        "sha256": "aa94999e2f28680d4b2ef752514c1806f3c7cf180128461781e183542869e508"
+      },
+      "build": {
+        "path": "/private/tmp/bend2039-upgrade/checkpoints/root-release2039g1-build-abi.result.json",
+        "sha256": "281d94c00b31f1af5197f3faa94be5ccf98fb1e7c0e837774ea6d642a5b9600e"
+      },
+      "parser": {
+        "path": "/private/tmp/bend2039-upgrade/checkpoints/bootstrap-parser-rebuild-release2039g1.js",
+        "sha256": "94f05a4e00e8fa6ac0b57bbdaa3546d4f5110b7bbf03c3160f338b8a75f6d86f"
+      },
+      "rows": [
+        {
+          "command": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--experimental-strip-types",
+            "/tmp/bend2039-candidate-worker.mjs",
+            "/private/tmp/bend2039-upgrade/evals/candidate_host.ts",
+            "--candidate=checkpoints/root-release2039g1.js",
+            "--candidate-build=checkpoints/root-release2039g1-build-abi.result.json",
+            "--parser=checkpoints/bootstrap-parser-rebuild-release2039g1.js",
+            "tests/io/args.bend",
+            "-o",
+            "/tmp/bend2039-rootg1-args-9Rgo07/args.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "stdout": "{\"output\":\"/tmp/bend2039-rootg1-args-9Rgo07/args.js\",\"bytes\":358034,\"sha256\":\"8c7f2154712e9cbb4773b1b63a2a9e7e4dcde704ed289fc3f84c7d6f7a26938c\",\"target\":\"js\",\"library\":false,\"modules\":2,\"foreignFiles\":58}\n",
+          "stderr": "(node:75053) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n",
+          "elapsedMs": 5312.276208
+        },
+        {
+          "command": [
+            "/opt/homebrew/bin/bun",
+            "/tmp/bend2039-rootg1-args-9Rgo07/args.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "stdout": "True 0\n",
+          "stderr": "",
+          "elapsedMs": 42.81987500000014,
+          "expected": "True 0",
+          "passed": true
+        },
+        {
+          "command": [
+            "/opt/homebrew/bin/bun",
+            "/tmp/bend2039-rootg1-args-9Rgo07/args.js",
+            "one",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "-RTS",
+            "--",
+            "--threads",
+            "two"
+          ],
+          "status": 0,
+          "signal": null,
+          "stdout": "True 4\n",
+          "stderr": "",
+          "elapsedMs": 27.607750000000124,
+          "expected": "True 4",
+          "passed": true
+        },
+        {
+          "command": [
+            "/opt/homebrew/bin/bun",
+            "/tmp/bend2039-rootg1-args-9Rgo07/args.js",
+            "--RTS",
+            "--threads",
+            "one"
+          ],
+          "status": 0,
+          "signal": null,
+          "stdout": "True 2\n",
+          "stderr": "",
+          "elapsedMs": 29.844292000000678,
+          "expected": "True 2",
+          "passed": true
+        },
+        {
+          "command": [
+            "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+            "--experimental-strip-types",
+            "/tmp/bend2039-candidate-worker.mjs",
+            "/private/tmp/bend2039-upgrade/evals/candidate_host.ts",
+            "--candidate=checkpoints/root-release2039g1.js",
+            "--candidate-build=checkpoints/root-release2039g1-build-abi.result.json",
+            "--parser=checkpoints/bootstrap-parser-rebuild-release2039g1.js",
+            "tests/io/args_bytes.bend",
+            "-o",
+            "/tmp/bend2039-rootg1-args-9Rgo07/args_bytes.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "stdout": "{\"output\":\"/tmp/bend2039-rootg1-args-9Rgo07/args_bytes.js\",\"bytes\":359007,\"sha256\":\"9b690c9f80b13b90ffea73c24e3f39733234db8d0ae0d7185d3b805fb5ee689b\",\"target\":\"js\",\"library\":false,\"modules\":2,\"foreignFiles\":58}\n",
+          "stderr": "(node:76883) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n",
+          "elapsedMs": 5684.2021669999995
+        },
+        {
+          "command": [
+            "/opt/homebrew/bin/bun",
+            "/tmp/bend2039-rootg1-args-9Rgo07/args_bytes.js"
+          ],
+          "status": 0,
+          "signal": null,
+          "stdout": "True 0\n",
+          "stderr": "",
+          "elapsedMs": 34.23791700000038,
+          "expected": "True 0",
+          "passed": true
+        },
+        {
+          "command": [
+            "/opt/homebrew/bin/bun",
+            "/tmp/bend2039-rootg1-args-9Rgo07/args_bytes.js",
+            "one",
+            "+RTS",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "-RTS",
+            "--",
+            "--threads",
+            "two"
+          ],
+          "status": 0,
+          "signal": null,
+          "stdout": "True 4\n",
+          "stderr": "",
+          "elapsedMs": 21.768958000000566,
+          "expected": "True 4",
+          "passed": true
+        },
+        {
+          "command": [
+            "/opt/homebrew/bin/bun",
+            "/tmp/bend2039-rootg1-args-9Rgo07/args_bytes.js",
+            "--RTS",
+            "--threads",
+            "one"
+          ],
+          "status": 0,
+          "signal": null,
+          "stdout": "True 2\n",
+          "stderr": "",
+          "elapsedMs": 23.480459000000337,
+          "expected": "True 2",
+          "passed": true
+        }
+      ]
+    },
+    "probeSource": "import {readFileSync,writeFileSync,mkdtempSync} from 'node:fs';\nimport {createHash} from 'node:crypto';\nimport {spawnSync} from 'node:child_process';\nimport {resolve} from 'node:path';\nconst root='/private/tmp/bend2039-upgrade',dir=mkdtempSync('/tmp/bend2039-rootg1-args-');\nconst candidate='checkpoints/root-release2039g1.js',build='checkpoints/root-release2039g1-build-abi.result.json',parser='checkpoints/bootstrap-parser-rebuild-release2039g1.js';\nconst sha=p=>createHash('sha256').update(readFileSync(p)).digest('hex');\nconst receipt={schemaVersion:1,status:'IN_PROGRESS',scope:'Actual full-root JS renderer emits argument consumers; not native build or fixedpoint acceptance',candidate:{path:resolve(root,candidate),sha256:sha(resolve(root,candidate))},build:{path:resolve(root,build),sha256:sha(resolve(root,build))},parser:{path:resolve(root,parser),sha256:sha(resolve(root,parser))},rows:[]};\nfunction run(command){const start=performance.now(),p=spawnSync(command[0],command.slice(1),{cwd:root,encoding:'utf8',timeout:120000});const row={command,status:p.status,signal:p.signal,stdout:p.stdout,stderr:p.stderr,elapsedMs:performance.now()-start};receipt.rows.push(row);if(p.status!==0)throw Error(JSON.stringify(row));return row;}\ntry{\nfor(const name of ['args','args_bytes']){\n const output=dir+'/'+name+'.js';\n run(['/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node','--experimental-strip-types','/tmp/bend2039-candidate-worker.mjs',resolve(root,'evals/candidate_host.ts'),'--candidate='+candidate,'--candidate-build='+build,'--parser='+parser,'tests/io/'+name+'.bend','-o',output]);\n for(const [args,expected]of [[[],'True 0'],[['one','+RTS','--threads','1','--gpu','off','-RTS','--','--threads','two'],'True 4'],[['--RTS','--threads','one'],'True 2']]){\n  const row=run(['/opt/homebrew/bin/bun',output,...args]);row.expected=expected;row.passed=row.stdout.trim()===expected;if(!row.passed)throw Error('Output mismatch: '+JSON.stringify(row));\n }\n}\nreceipt.status='PASS';\n}catch(error){receipt.status='FAIL';receipt.error=String(error);process.exitCode=1;}\nwriteFileSync(dir+'/receipt.json',JSON.stringify(receipt,null,2)+'\\n');console.log(JSON.stringify({status:receipt.status,receipt:dir+'/receipt.json',rows:receipt.rows.map(({status,expected,passed,stdout})=>({status,expected,passed,stdout})),error:receipt.error}));\n",
+    "workerSource": "import {Worker} from 'node:worker_threads';\nimport {pathToFileURL} from 'node:url';\nconst [script,...argv]=process.argv.slice(2);\nif(!script)throw Error('Expected candidate runner and arguments');\nconst worker=new Worker(pathToFileURL(script),{argv,resourceLimits:{stackSizeMb:256,maxOldGenerationSizeMb:3072}});\nworker.once('error',error=>{console.error(error);process.exitCode=1;});\nworker.once('exit',code=>{process.exitCode=code;});\n"
+  },
+  "profiling": {
+    "path": "checkpoints/compiler-profile-smoke-v1.json",
+    "sha256": "ddbd5aef569ebf251cc282d79cd49ee028030623bc354c7e04da3442b71d9e44",
+    "status": "PASS",
+    "cases": [
+      "componentValid",
+      "componentRejected",
+      "componentCutoff",
+      "nativeRejected",
+      "directC",
+      "directRejected",
+      "directCodegenFailure",
+      "measurementIncomplete",
+      "terminatedWorkerCheckpoint",
+      "collectorContract"
+    ],
+    "scope": "Real merged profiling smoke only; full-root overhead remains unmeasured"
+  },
+  "commands": [
+    {
+      "argv": [
+        "/opt/homebrew/bin/bun",
+        "--smol",
+        "evals/bootstrap_parser_rebuild.ts",
+        "--prepare-source",
+        "--run-id",
+        "release2039g1"
+      ],
+      "exitCode": 0,
+      "elapsedMs": 19893
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/bun",
+        "evals/bootstrap_parser_public_gate.ts",
+        "--parser=checkpoints/.bootstrap_parser_rebuild_release2039g1_source.bend",
+        "--entry=parse_module_tokens",
+        "--report=checkpoints/bootstrap-parser-public-release2039g1-source.json"
+      ],
+      "exitCode": 0,
+      "elapsedMs": 3362
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/bun",
+        "evals/bootstrap_parser_fast.ts",
+        "--parser=checkpoints/.bootstrap_parser_rebuild_release2039g1_source.bend",
+        "--entry=parse_module_tokens",
+        "--public-report=checkpoints/bootstrap-parser-public-release2039g1-source.json",
+        "--report=checkpoints/bootstrap-parser-source-gate-release2039g1.json"
+      ],
+      "exitCode": 0,
+      "elapsedMs": 13229
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/bun",
+        "--smol",
+        "evals/bootstrap_parser_rebuild.ts",
+        "--prepare",
+        "--run-id",
+        "release2039g1",
+        "--source-gate",
+        "checkpoints/bootstrap-parser-source-gate-release2039g1.json"
+      ],
+      "exitCode": 0,
+      "elapsedMs": 18101
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/bun",
+        "--smol",
+        "evals/bootstrap_parser_rebuild.ts",
+        "--build-native",
+        "--run-id",
+        "release2039g1"
+      ],
+      "exitCode": 0,
+      "elapsedMs": 7513
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/bun",
+        "evals/bootstrap_parser_public_gate.ts",
+        "--parser=checkpoints/.bootstrap_parser_rebuild_release2039g1_generated_fuel.bend",
+        "--entry=parse_with_fuel",
+        "--report=checkpoints/bootstrap-parser-public-release2039g1-candidate.json"
+      ],
+      "exitCode": 0,
+      "elapsedMs": 1952
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/bun",
+        "evals/bootstrap_parser_fast.ts",
+        "--parser=checkpoints/.bootstrap_parser_rebuild_release2039g1_generated_fuel.bend",
+        "--entry=parse_with_fuel",
+        "--component=checkpoints/bootstrap-parser-rebuild-release2039g1.js",
+        "--component-build=checkpoints/bootstrap-parser-rebuild-release2039g1.native-build.result.json",
+        "--public-report=checkpoints/bootstrap-parser-public-release2039g1-candidate.json",
+        "--report=checkpoints/bootstrap-parser-candidate-gate-release2039g1.json"
+      ],
+      "exitCode": 0,
+      "elapsedMs": 53988
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/bun",
+        "--smol",
+        "evals/bootstrap_parser_rebuild.ts",
+        "--build",
+        "--run-id",
+        "release2039g1",
+        "--candidate-gate",
+        "checkpoints/bootstrap-parser-candidate-gate-release2039g1.json"
+      ],
+      "exitCode": 0,
+      "elapsedMs": 1403
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/bun",
+        "evals/checker_core_component_build.ts",
+        "--file=checkpoints/.bootstrap_compiler_root_release2039g1.bend",
+        "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step,emit_c_modules_start,emit_c_library_start,c_emitter_step",
+        "--artifact=checkpoints/root-release2039g1.js",
+        "--report=checkpoints/root-release2039g1-build-abi"
+      ],
+      "exitCode": 0,
+      "elapsedMs": 34401
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/opt/homebrew/bin/bun",
+        "/tmp/bend2039-rootg1-args-smoke.mjs"
+      ],
+      "exitCode": 0,
+      "elapsedMs": 11274
+    }
+  ],
+  "inputs": [
+    {
+      "path": "bend2/bend.ts",
+      "sha256": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e"
+    },
+    {
+      "path": "bend2/comp.ts",
+      "sha256": "e132ab4863ee64fe9fbe9b817adfd429e4e5627c52babfc43c88adf2aad6416d"
+    },
+    {
+      "path": "bend2/base.bend",
+      "sha256": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce"
+    },
+    {
+      "path": "bend2/selfhost/js_backend.bend",
+      "sha256": "d19dcde5d67a674b2d08e3f80f477b8892d9e6d4b3d4d2ac6d2f1c6b4f631fb2"
+    },
+    {
+      "path": "checkpoints/.bootstrap_compiler_root_release2039g1.bend",
+      "sha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed"
+    },
+    {
+      "path": "checkpoints/root-release2039g1-native.corpus.json",
+      "sha256": "ca83e776d8ae845825c9352de9aa4415be7626787933aa55ce2c9812a12731f0"
+    },
+    {
+      "path": "checkpoints/emitter_steps_v1.bend",
+      "sha256": "b8b8f47b715a7874091c8d7829110826d5a61eb68a2ea1127cfa625e020cd10b"
+    }
+  ]
+}

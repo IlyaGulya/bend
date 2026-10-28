@@ -1,0 +1,169 @@
+{
+  "branch": "work/sharedem-final-754",
+  "bySource": {
+    "backend_lower.bend": 357,
+    "c_backend.bend": 419,
+    "c_backend_layout.bend": 81,
+    "c_backend_link.bend": 52,
+    "c_backend_physical.bend": 250,
+    "c_emit_core.bend": 11,
+    "descriptor_nf.bend": 51,
+    "emitter.bend": 6,
+    "js_backend.bend": 201,
+    "js_emit.bend": 4,
+    "lower_catalog.bend": 244
+  },
+  "canonical": {
+    "compositionSourceSha256": "160c7f20fcb9c886bff7886aa34ccaade4c5b47260ab55c7403fdb3b5d0d82f3",
+    "emitter": "bend2/selfhost/emitter.bend",
+    "loweringSourceSha256": "f4f8dd9b86f78d1d6a9f3e8eb2985225cb8d687b28489b880eb953b6ce620895",
+    "providers": [
+      "bend2/selfhost/backend_lower.bend",
+      "bend2/selfhost/c_backend.bend",
+      "bend2/selfhost/c_backend_layout.bend",
+      "bend2/selfhost/c_backend_link.bend",
+      "bend2/selfhost/c_backend_physical.bend",
+      "bend2/selfhost/c_emit_core.bend",
+      "bend2/selfhost/descriptor_nf.bend",
+      "bend2/selfhost/js_backend.bend",
+      "bend2/selfhost/js_emit.bend",
+      "bend2/selfhost/lower_catalog.bend"
+    ]
+  },
+  "coverage": {
+    "added": [
+      "c_string_literal",
+      "chars_forward",
+      "chars_rev",
+      "join_lines",
+      "join_pieces",
+      "line_text",
+      "literal_high",
+      "literal_piece",
+      "literal_pieces",
+      "literal_plain",
+      "literal_plain_of",
+      "literal_wide",
+      "literal_wide_of",
+      "oct3",
+      "octals",
+      "pieces_fold",
+      "pieces_from_end",
+      "split_lines",
+      "split_lines_each",
+      "text_of_pieces",
+      "text_of_rev",
+      "text_prepend",
+      "utf8_byte_len",
+      "utf8_bytes",
+      "utf8_bytes_deep",
+      "utf8_bytes_deep_of",
+      "utf8_bytes_of",
+      "utf8_bytes_wide",
+      "utf8_bytes_wide_of",
+      "utf8_len_go",
+      "utf8_width",
+      "utf8_width_of",
+      "utf8_width_two",
+      "utf8_width_wide"
+    ],
+    "count": 1676,
+    "exactCanonicalCoverage": true,
+    "exactSetEquality": true,
+    "excludedDefinitions": [],
+    "generatedPrivateRecursiveHelpers": 0,
+    "omittedDefinitions": [],
+    "previous": 1645,
+    "recursiveHelpers": 1,
+    "removed": [
+      "c_escape_char",
+      "c_quote",
+      "c_quote_chars"
+    ],
+    "residualCheckerCalls": 0,
+    "residualSourceCalls": 0
+  },
+  "engine": {
+    "advanceFunction": "emitter_advance",
+    "castBoxFunction": "emitter_cast_box",
+    "fuelType": "Nat",
+    "function": "emitter_chunk",
+    "popFunction": "emitter_pop",
+    "publicStep": "emitter_step",
+    "quantum": 64,
+    "rawStep": "emitter_step_one",
+    "recursion": "structural Nat",
+    "runFinishedConstructor": "EmitterRunFinished",
+    "runStateConstructor": "EmitterRunState",
+    "runType": "EmitterRun",
+    "selfRecursiveFunctions": [
+      "emitter_chunk"
+    ],
+    "semanticFuelChanged": false,
+    "stackDoneConstructor": "EmitterStackDone",
+    "stackMoreConstructor": "EmitterStackMore",
+    "stackType": "EmitterStack",
+    "start": "emitter_start",
+    "zeroFuel": "return remaining Run unchanged"
+  },
+  "idempotence": {
+    "checkerStepSourceUnchanged": true,
+    "emitterReused": true,
+    "outputsByteIdentical": true,
+    "ownedProducerByteIdentical": true,
+    "templateStepSourceUnchanged": true
+  },
+  "kind": "shared-emitter-final-regeneration",
+  "manifests": {
+    "checker": "da75496bfeaae3d59150e669db7e93b07b90f64d9d8cd7bf99675afbbe704971",
+    "emitter": "63c51f8970fb6aaf024101c70d804893ea757b3c68cfd132b6bdfdd87b096619",
+    "template": "01df14fc5366f893922156529c9538260f4ff166eb63941d81ee4793d72ac94f"
+  },
+  "module": {
+    "bytes": 2702264,
+    "directSites": 1866,
+    "fusedSites": 693,
+    "lazyChoices": 30,
+    "pendingSites": 1196,
+    "pureSites": 340,
+    "sourceCalls": 4070,
+    "topLevelDefinitions": 3328,
+    "types": 160
+  },
+  "outputs": {
+    "checkpoints/emitter_steps_component_v1.bend": "e6bd090dc9b2a0b381e4a896922c91869571445b194a60898d893e1f2ce3b3c8",
+    "checkpoints/emitter_steps_v1.bend": "d7dbe31856eb8d9e53eeddefab0ea4eed56eafe6420a7478d4c37b53d63fb956"
+  },
+  "owned": {
+    "checkerOwned": "26a5190448f591357274f971e1150e2ca5c366328486a20af1dc761b5311c210",
+    "emitterOwned": "9c78550607446995e7a97000ea7184f266681d1f9b0172d0d8e508b66f827580",
+    "ownedSourceManifest": "1085b965c33728e157b53c3715e5b274c109705c3ba64df1c83fac3117349d44"
+  },
+  "producers": [
+    "evals/checker_core_owned_source.ts",
+    "evals/emitter_step_lower.ts",
+    "evals/template_step_lower.ts",
+    "evals/checker_core_step_lower.ts"
+  ],
+  "protectedInputs": 68,
+  "publicABI": [
+    "parsed_module",
+    "parse_with_fuel",
+    "expand_modules_start",
+    "template_step",
+    "check_expanded_start",
+    "inspect_checked_start",
+    "checker_step",
+    "emit_modules_start",
+    "emit_library_start",
+    "emitter_step",
+    "emit_c_modules_start",
+    "emit_c_library_start",
+    "c_emitter_step"
+  ],
+  "schemaVersion": 1,
+  "scope": "pure JS source generation from canonical final source; no native build, no heavy lane, no AST/image/log artifacts",
+  "sourceHead": "754ff301",
+  "staleProtectedInputs": [],
+  "worktree": "/private/tmp/bend-fir-sharedem-754"
+}

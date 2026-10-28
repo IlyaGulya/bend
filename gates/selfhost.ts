@@ -43,7 +43,8 @@ function fail(message: string): never {
   process.exit(1);
 }
 
-function run(bin: string, args: string[], cwd: string): Result {
+function run(bin: string, args: string[], cwd: string,
+  env: Record<string, string> = {}): Result {
   const got = child.spawnSync(bin, args, {
     cwd,
     encoding: "utf8",
@@ -52,7 +53,7 @@ function run(bin: string, args: string[], cwd: string): Result {
     // stderr once per host/day; it is not program behavior and would make
     // the comparison depend on the calendar. BEND_NO_TELEMETRY is the
     // documented switch that skips it.
-    env: { ...process.env, BEND_NO_TELEMETRY: "1" },
+    env: { ...process.env, BEND_NO_TELEMETRY: "1", ...env },
   });
   if (got.error !== undefined) {
     return { code: 127, out: got.stdout ?? "", err: String(got.error) };
@@ -144,10 +145,10 @@ function default_files(): string[] {
     "tests/run/descriptor_show.bend",
     // A failed nested pattern row falls through to the later rows.
     "tests/run/word_match_coverage.bend",
-    // Lexical C id linker: whole CID/FID keys, comment/literal passthrough,
-    // LF/CRLF spliced identifiers, and the exact-key miss category.
-    "tests/run/c_backend_link.bend",
     "tests/run/state_machine.bend",
+    // Lexical CID/FID linking: whole ids, comment/literal passthrough, LF+CRLF.
+    "tests/run/c_backend_link.bend",
+    "tests/run/family_field_hot.bend",
     // Current foreign ABI: native callback into a Bend closure, own-type
     // layout, shared sealed values, nullary constructors, and one shared .js
     // module whose stateful nullary effect is called twice and then read by a
@@ -157,8 +158,43 @@ function default_files(): string[] {
     "tests/io/foreign_shared.bend",
     "tests/io/marshal_imported_nullary.bend",
     "tests/io/shared_module_state.bend",
+    // Host Nat at the export seam: the four fixtures whose effect builds an
+    // inner library with the compiler under test (see HOST_EXPORT_FIXTURES).
+    "tests/io/nat_host_export.bend",
+    "tests/io/nat_alias_export.bend",
+    "tests/io/shadowed_nat_export.bend",
+    "tests/io/generic_export_identity.bend",
+    // Host text at the same seam: an exported Char or String argument is read
+    // with str_in and a completed result published with str_out.
+    "tests/io/text_host_export.bend",
     // IO read failure and read-back through the real File surface.
     "tests/io/file_roundtrip.bend",
+    // C target representation: scalars, wide/nested arrays, multi-arm tags,
+    // dropped affine fields, string codepoints, and the storage witness.
+    "evals/c_target_wide_record.bend",
+    "evals/c_target_nested_adt.bend",
+    "evals/c_target_array_u32.bend",
+    "evals/c_target_array_wide.bend",
+    "evals/c_target_array_nat.bend",
+    "evals/c_target_array_nested.bend",
+    "evals/c_target_multiarm.bend",
+    "evals/c_target_drop_fields.bend",
+    "evals/c_target_char_head.bend",
+    "evals/c_target_char_to_list.bend",
+    "evals/c_target_string_from_list.bend",
+    "evals/c_target_bool_prims.bend",
+    "evals/c_target_clo_field.bend",
+    "tests/reg/phys_storage_paths.bend",
+    "tests/reg/generic_ctor_domains.bend",
+    "evals/c_target_show_data.bend",
+    "evals/c_target_user_ctor_show.bend",
+    "evals/c_target_wide_node.bend",
+    "tests/io/args.bend",
+    "tests/io/args_bytes.bend",
+    "evals/repro_js_non_tail_reclaim.bend",
+    // Show and literal transport: a String literal is Bend String data, so a
+    // code that is no Unicode scalar keeps its exact value and its escapes.
+    "tests/show/string_literal_any_code.bend",
     // Target selection: an absent C target must fail only the native lane, an
     // absent JS target only the JS lane, each with a real diagnostic.
     "gates/selfhost_cases/missing_c_target.bend",
@@ -235,6 +271,35 @@ function build_c(source: string, out: string, cwd: string): void {
   }
 }
 
+// These fixtures build an inner library from inside their effect. The inner
+// library must be built by the compiler under test, not by a fixed path, so
+// the gate supplies the exact command. Stage 0 is named explicitly for the
+// official lane; the candidate lane names its library runner and has no
+// fallback (the candidate image is a typed-step library, not a process).
+const HOST_EXPORT_FIXTURES = new Set([
+  "nat_host_export.bend",
+  "nat_alias_export.bend",
+  "shadowed_nat_export.bend",
+  "generic_export_identity.bend",
+  "text_host_export.bend",
+]);
+
+// The inner build takes the same command shape as the outer compile: the
+// stage executable, its fixed arguments, then `<input> -o <output>`. Stage 1 is
+// therefore whatever process drives the candidate image (for the JS target,
+// `bun evals/candidate_host.ts --candidate=<component>`), never the image
+// alone, and its library entry is selected by the `.mjs` output path.
+function inner_compiler(stage: Stage): string[] {
+  if (stage.command.bin === "") {
+    fail("host-export fixture needs the stage " + (stage.name === "stage 0" ? 0 : 1) + " compiler");
+  }
+  return [stage.command.bin, ...stage.command.args];
+}
+
+function host_export_env(stage: Stage): Record<string, string> {
+  return { BEND_INNER_LIBRARY_COMPILER: JSON.stringify(inner_compiler(stage)) };
+}
+
 function main(): void {
   const config = args_parse();
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "bend-selfhost-"));
@@ -251,9 +316,11 @@ function main(): void {
       // interpreter cannot be the reference; both compilers must report the
       // same missing target instead.
       let reference: Result | null = null;
+      const hostExport = HOST_EXPORT_FIXTURES.has(path.basename(fixture.file));
       if (fixture.diagnostics.length === 0) {
         reference = run(config.stage0.bin,
-          [...config.stage0.args, fixture.file], cwd);
+          [...config.stage0.args, fixture.file], cwd,
+          hostExport ? host_export_env(stages[0]) : {});
         if (reference.code !== 0 || reference.out.trim() !== fixture.want) {
           fail(label + " stage 0 interpreter output differs from #| expectation\n"
             + reference.out + reference.err);
@@ -284,8 +351,9 @@ function main(): void {
             return executable;
           })
           : outputs;
-        const runs = executables.map((out) => lane === "js"
-          ? run(BUN, [out], tmp) : run(out, [], tmp));
+        const runs = executables.map((out, i) => lane === "js"
+          ? run(BUN, [out], tmp, hostExport ? host_export_env(stages[i]) : {})
+          : run(out, [], tmp));
         same(label + " " + lane, runs[0], runs[1]);
         if (reference !== null) same(label + " stage 0 " + lane, reference, runs[0]);
         for (const got of runs) {

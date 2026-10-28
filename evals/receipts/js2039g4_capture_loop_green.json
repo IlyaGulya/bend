@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "status": "ACTUAL_EMITTED_CAPTURE_LOOP_RED_GREEN_PASS",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "sourceCheckpoint": "205f69ff",
+  "scope": "Actual old native-emitted JS fails; freshly rebuilt full13-export current compiler emits public consumer JS that completes12M nested non-tail continuation iterations without generated-output changes and on default Node stack.",
+  "inputs": {
+    "bend2/selfhost/js_backend.bend": "065af126503a63c7af6eb696a6802242249180d092a0c4ad7cf59986b0723578",
+    "bend2/selfhost/descriptor_nf.bend": "c727bfe0adf97f86dc44960ca2c46fd890f0d8557157ba883af40d738d3e72dd",
+    "evals/repro_js_non_tail_reclaim.bend": "60a7a10e8c99d5a83a9f8f95ab71998da3614e0856abf9d7f245d356c94c4c75"
+  },
+  "red": {
+    "receipt": "evals/receipts/js2039g4_capture_loop_red.json",
+    "sha256": "de5a5a8f7aad5f5b6f2dd64d58b10b8b0f09d81f0227fc0efa9eabd28eebf260"
+  },
+  "green": {
+    "image": {
+      "path": "/private/tmp/bend2039-upgrade/checkpoints/root-release2039g4.js",
+      "sha256": "6634d26776a10e835388fdbca9ccd73bae016cc03cb5fb27cecea11a1d9f6a8b"
+    },
+    "build": {
+      "checkedDefinitions": 12118,
+      "eventsFullyValidated": 12689,
+      "checksExcluded": 0,
+      "outputPatches": 0,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 3146711040,
+        "peakFootprintBytes": 3226679680,
+        "elapsedMs": 34197,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "node",
+          "--experimental-strip-types",
+          "--max-old-space-size=3072",
+          "/private/tmp/bend2039-upgrade/evals/checker_core_component_build.ts",
+          "--worker",
+          "--file=/private/tmp/bend2039-upgrade/checkpoints/.bootstrap_compiler_root_release2039g4.bend",
+          "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step,emit_c_modules_start,emit_c_library_start,c_emitter_step",
+          "--artifact=/private/tmp/bend2039-upgrade/checkpoints/root-release2039g4.js",
+          "--report=/private/tmp/bend2039-upgrade/checkpoints/root-release2039g4-build",
+          "--inputs-sha256=cf4652241c8d19567a1ae30e0f5ca7e21f6b9ca6429de0dbec05dbc53fff1537"
+        ],
+        "label": "Full-native CheckerCore component JS build",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793081485527-5c9d503fa5f30514.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    "compileCommand": [
+      "/opt/homebrew/bin/bun",
+      "evals/heavy_gate.ts",
+      "--memory-mib",
+      "8192",
+      "--rss-mib",
+      "8192",
+      "--poll-ms",
+      "10",
+      "--timeout-ms",
+      "600000",
+      "--",
+      "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "--experimental-strip-types",
+      "/tmp/bend2039-candidate-worker.mjs",
+      "/private/tmp/bend2039-upgrade/evals/candidate_host.ts",
+      "--candidate=checkpoints/root-release2039g4.js",
+      "--candidate-build=checkpoints/root-release2039g4-build.result.json",
+      "--parser=checkpoints/bootstrap-parser-rebuild-release2039g4.js",
+      "evals/repro_js_non_tail_reclaim.bend",
+      "-o",
+      "/tmp/bend2039g4-resumed-MPEeJs/capture.js"
+    ],
+    "canonicalSeedWorker": {
+      "path": "/tmp/bend2039-candidate-worker.mjs",
+      "sha256": "4110eddb3be6dcc91ee4f64ea30a08fa92bca88509b563fc89685c77ad3585bb",
+      "stackMiB": 256,
+      "oldGenerationMiB": 3072,
+      "note": "Pre-existing canonical comp.ts-emitted seed policy for Base.String.to_list; not the tested selfhost-emitted program stack policy"
+    },
+    "program": {
+      "path": "/tmp/bend2039g4-resumed-MPEeJs/capture.js",
+      "sha256": "3b5bdaf3c86820045de3df282013647240ead2e3a215e2b151d4cb63358b2a4b",
+      "bytes": 363857
+    },
+    "expected": "24000011",
+    "observed": "24000011",
+    "runtime": {
+      "name": "node",
+      "version": "23.11.0",
+      "stack": "main-thread default",
+      "manualGC": false
+    },
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 54018048,
+      "peakFootprintBytes": 19646264,
+      "elapsedMs": 1032,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "/tmp/bend2039g4-resumed-MPEeJs/capture.js"
+      ],
+      "label": "heavy command",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793081621535-74df818e5ab88148.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "fullRootNativeAdmission": "Pending; original no-RAM-hint native run rejected by RSS guard, retained separately."
+}

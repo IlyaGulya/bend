@@ -1,0 +1,221 @@
+{
+  "schemaVersion": 1,
+  "status": "PARSER_ACCEPTED_NATIVE_SEMANTICS",
+  "sourceCheckpoint": "1757bdbc",
+  "runId": "release2039d",
+  "canonicalSha256": "7389188a68a205bfccdd6a3457ba0f11e689967751e31fa6d35eaec3b09e3e37",
+  "artifactSha256": "94f05a4e00e8fa6ac0b57bbdaa3546d4f5110b7bbf03c3160f338b8a75f6d86f",
+  "proof": {
+    "path": "/private/tmp/bend2039-upgrade/checkpoints/bootstrap-parser-rebuild-release2039d.result.json",
+    "bytes": 111866,
+    "sha256": "fd12a7111c59c24bf1bc2a45a4ff19390cf29b780fcedeee53aff174cb9bfcb1"
+  },
+  "native": {
+    "proof": {
+      "path": "/private/tmp/bend2039-upgrade/checkpoints/bootstrap-parser-rebuild-release2039d.native-build.result.json",
+      "bytes": 3104,
+      "sha256": "2f660d46ab81007982235bb86af4b240e8603eefa60429b59abc7b0ed323c978"
+    },
+    "sourceSha256": "1f87959ff0030b21d5d5add2b3c9f30a5868875bf115e9358a0c68bfb56de4cd",
+    "artifactSha256": "94f05a4e00e8fa6ac0b57bbdaa3546d4f5110b7bbf03c3160f338b8a75f6d86f",
+    "bytes": 1823910,
+    "checkedDefinitions": 1638,
+    "liveBodies": 1638,
+    "eventsFullyValidated": 1851,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "runtime": {
+      "name": "node",
+      "node": "23.11.0",
+      "v8": "12.9.202.28-node.14",
+      "executable": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "heapLimitMiB": 3072,
+      "stackSizeMb": 256,
+      "heapSizeLimitBytes": 3271557120,
+      "manualGC": false
+    },
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 1080328192,
+      "peakFootprintBytes": 2009332624,
+      "elapsedMs": 29821,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend2039-upgrade/evals/checker_core_component_build.ts",
+        "--worker",
+        "--file=/private/tmp/bend2039-upgrade/checkpoints/.bootstrap_parser_rebuild_release2039d_generated_fuel.bend",
+        "--exports=parse_with_fuel",
+        "--artifact=/private/tmp/bend2039-upgrade/checkpoints/bootstrap-parser-rebuild-release2039d.js",
+        "--report=/private/tmp/bend2039-upgrade/checkpoints/bootstrap-parser-rebuild-release2039d.native-build",
+        "--inputs-sha256=664ab0b9a95b3d457af0c9a5ac13c02bf18808b3e53f7391b38e838ba6ac6f49"
+      ],
+      "label": "Full-native CheckerCore component JS build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793006675143-18f4bc17dc391f52.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "source": {
+    "completed": true,
+    "rows": 71,
+    "counts": {
+      "focused": {
+        "total": 23,
+        "accepted": 22,
+        "acceptanceParity": 23,
+        "semanticParity": 23,
+        "literalSpanParity": 23
+      },
+      "whole29": {
+        "total": 29,
+        "accepted": 23,
+        "acceptanceParity": 29,
+        "semanticParity": 29,
+        "literalSpanParity": 29
+      },
+      "literals": {
+        "total": 13,
+        "accepted": 13,
+        "acceptanceParity": 13,
+        "semanticParity": 13,
+        "literalSpanParity": 13
+      },
+      "real": {
+        "total": 6,
+        "accepted": 6,
+        "acceptanceParity": 6,
+        "semanticParity": 6,
+        "literalSpanParity": 6
+      }
+    },
+    "publicRegressions": {
+      "parserSha256": "56a1b8ece135e55d9e6eaf4be3ff8ae47744e70185dbe46711c6a3037d74d6a3",
+      "passed": 15,
+      "failed": 0,
+      "assertions": 264,
+      "reportPath": "/private/tmp/bend2039-upgrade/checkpoints/bootstrap-parser-public-release2039d-source.json",
+      "reportSha256": "576f458a2cb17e08b3ddec6e21611d2e8f1882c7c664ddecefc54384d581a59f"
+    },
+    "sourceSpecificExceptions": 0,
+    "checksExcluded": 0,
+    "outputPatches": 0
+  },
+  "candidate": {
+    "completed": true,
+    "rows": 75,
+    "counts": {
+      "focused": {
+        "total": 23,
+        "accepted": 22,
+        "acceptanceParity": 23,
+        "semanticParity": 23,
+        "literalSpanParity": 23
+      },
+      "whole29": {
+        "total": 29,
+        "accepted": 23,
+        "acceptanceParity": 29,
+        "semanticParity": 29,
+        "literalSpanParity": 29
+      },
+      "literals": {
+        "total": 13,
+        "accepted": 13,
+        "acceptanceParity": 13,
+        "semanticParity": 13,
+        "literalSpanParity": 13
+      },
+      "real": {
+        "total": 10,
+        "accepted": 10,
+        "acceptanceParity": 10,
+        "semanticParity": 10,
+        "literalSpanParity": 10
+      }
+    },
+    "publicRegressions": {
+      "parserSha256": "1f87959ff0030b21d5d5add2b3c9f30a5868875bf115e9358a0c68bfb56de4cd",
+      "passed": 15,
+      "failed": 0,
+      "assertions": 264,
+      "reportPath": "/private/tmp/bend2039-upgrade/checkpoints/bootstrap-parser-public-release2039d-candidate.json",
+      "reportSha256": "1003a65fcb27417cc8c988ace566b49c319f181686945b22631fa736118b151f"
+    },
+    "sourceSpecificExceptions": 0,
+    "checksExcluded": 0,
+    "outputPatches": 0
+  },
+  "roleMigrations": [
+    {
+      "role": "checker_core_driver.bend",
+      "historicalFile": "/Users/ilyagulya/Projects/My/bend/checkpoints/checker_core_driver.bend",
+      "file": "/private/tmp/bend2039-upgrade/checkpoints/checker_core_owned_driver_v1.bend",
+      "sourceSha256": "58bfe1831fc56fe479e47076dc22aad608e321f51b51ee3c195d6bb706c6e3df"
+    },
+    {
+      "role": ".parser_definition_body_shape_generated_fuel.bend",
+      "historicalFile": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/.parser_definition_body_shape_generated_fuel.bend",
+      "file": "/private/tmp/bend2039-upgrade/checkpoints/.bootstrap_parser_rebuild_release2039d_generated_fuel.bend",
+      "sourceSha256": "1f87959ff0030b21d5d5add2b3c9f30a5868875bf115e9358a0c68bfb56de4cd"
+    },
+    {
+      "role": "base.bend",
+      "historicalFile": "/Users/ilyagulya/Projects/My/bend/bend2/base.bend",
+      "file": "/private/tmp/bend2039-upgrade/bend2/base.bend",
+      "sourceSha256": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce"
+    },
+    {
+      "role": "loaded_module.bend",
+      "historicalFile": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/loaded_module.bend",
+      "file": "/private/tmp/bend2039-upgrade/bend2/selfhost/loaded_module.bend",
+      "sourceSha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e"
+    },
+    {
+      "role": "ast.bend",
+      "historicalFile": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/ast.bend",
+      "file": "/private/tmp/bend2039-upgrade/bend2/selfhost/ast.bend",
+      "sourceSha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83"
+    },
+    {
+      "role": "checker_core_slice.bend",
+      "historicalFile": "/Users/ilyagulya/Projects/My/bend/checkpoints/checker_core_slice.bend",
+      "file": "/private/tmp/bend2039-upgrade/checkpoints/checker_core_owned_v1.bend",
+      "sourceSha256": "26a5190448f591357274f971e1150e2ca5c366328486a20af1dc761b5311c210"
+    },
+    {
+      "role": "js_emit.bend",
+      "historicalFile": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/js_emit.bend",
+      "file": "/private/tmp/bend2039-upgrade/bend2/selfhost/js_emit.bend",
+      "sourceSha256": "a71920560786084ab9713c4af89f62d2d0e1eaef7cc24e46ea24940d012fded6"
+    },
+    {
+      "role": "lexer.bend",
+      "historicalFile": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/lexer.bend",
+      "file": "/private/tmp/bend2039-upgrade/bend2/selfhost/lexer.bend",
+      "sourceSha256": "a81265d4ab248c5ea74bf52987e1163773866a01b264ff1a98895d91139d6f53"
+    },
+    {
+      "role": "core.bend",
+      "historicalFile": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/core.bend",
+      "file": "/private/tmp/bend2039-upgrade/bend2/selfhost/core.bend",
+      "sourceSha256": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511"
+    },
+    {
+      "role": "path.bend",
+      "historicalFile": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/path.bend",
+      "file": "/private/tmp/bend2039-upgrade/bend2/selfhost/path.bend",
+      "sourceSha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8"
+    }
+  ],
+  "scope": "Accepted current-release parser only; compiler root, JS renderer correction, native executable and stage1/stage2 byte fixedpoint remain separate unverified boundaries."
+}

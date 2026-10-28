@@ -1,0 +1,434 @@
+{
+  "schemaVersion": 1,
+  "status": "G8R3_NATIVE_C_CODEGEN_DEADLINE_REJECTED",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "sourceCheckpoint": "34ddf720",
+  "scope": "Fresh complete parser acceptance and full native-validated JS compiler root; actual unpatched 12M capture-loop consumer passes; C producer is rejected at unchanged deadline before publication; no backend matrices or bootstrap executed by this chain",
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "runtime": {
+    "bun": "1.4.3",
+    "revision": "c6da4a4d3010e5553438c60f6bd76d981976867c"
+  },
+  "inputs": {
+    "bend2/comp.ts": "318c55c449115cb820bf77c3ac500a1c07ed8473adbbe6eed9c61088f4a0009e",
+    "bend2/bend.ts": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+    "bend2/selfhost/checker.bend": "9ec3d7c4eeeb88d9782225a12b79ddc5e08561641dd130e7789345b3197ab95f",
+    "bend2/selfhost/js_backend.bend": "27a41911687aad58a8f413b4691dce68eccdacc706b3613aca177b118965f771",
+    "checkpoints/checker_core_steps_v1.bend": "33d7b74d27e82f5c2c8608420c244f4a46f78f3d31e2b6c1a783261db3c9e30f",
+    "checkpoints/emitter_steps_v1.bend": "81362675a58df5551f101d578afa976098c742fd4b4fa97e3182b6d31fe675dd",
+    "checkpoints/.bootstrap_compiler_root_release2039g8r3.bend": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+    "checkpoints/selfhost-root-release2039g8r3.json": "2f94eaf70c6b239a33509f580f222b7559d79e98a79566be117e2a0dceb1af3a",
+    "checkpoints/root-release2039g8r3.native.corpus.json": "05ba5dd05c34f524e3ee314c6ec5cb213f3ae37f219cc4b4cee6c34bf2279563"
+  },
+  "parser": {
+    "status": "PARSER_ACCEPTED_NATIVE_SEMANTICS",
+    "admitted": true,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "reportSha256": "9f5166b5e273b7a4805a43f3e51bcf716377c7b9480aa28ce64f5a604010bf29"
+  },
+  "javascript": {
+    "status": "JS_GENERATED_NOT_YET_EXECUTED",
+    "artifactSha256": "d225e40c7dd0940dd975c3a8cc25acbb01b31bc3df915ae8027613688e1f16ca",
+    "checkedDefinitions": 12041,
+    "eventsFullyValidated": 12612,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "runtime": {
+      "name": "node",
+      "node": "23.11.0",
+      "v8": "12.9.202.28-node.14",
+      "executable": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "heapLimitMiB": 3072,
+      "stackSizeMb": 256,
+      "heapSizeLimitBytes": 3271557120,
+      "manualGC": false
+    },
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 3024420864,
+      "peakFootprintBytes": 3190342224,
+      "elapsedMs": 111487,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend2039g8-js-call-cost/evals/checker_core_component_build.ts",
+        "--worker",
+        "--file=/private/tmp/bend2039g8-js-call-cost/checkpoints/.bootstrap_compiler_root_release2039g8r3.bend",
+        "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step,emit_c_modules_start,emit_c_library_start,c_emitter_step",
+        "--artifact=/private/tmp/bend2039g8-js-call-cost/checkpoints/root-release2039g8r3.js",
+        "--report=/private/tmp/bend2039g8-js-call-cost/checkpoints/root-release2039g8r3-build",
+        "--inputs-sha256=28b903ae5063b8faf1ce7b4142b9bafa64cd0419b51a9fb3bdb6aeddf5ef50b1"
+      ],
+      "label": "Full-native CheckerCore component JS build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793102611046-0a7c5591888c1733.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "capture": {
+    "command": [
+      "/opt/homebrew/bin/bun",
+      "evals/heavy_gate.ts",
+      "--memory-mib",
+      "8192",
+      "--rss-mib",
+      "8192",
+      "--poll-ms",
+      "10",
+      "--timeout-ms",
+      "600000",
+      "--",
+      "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "/tmp/bend2039g8r3-admission-JMjuoi/capture.js"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 1651,
+    "stdout": "24000011",
+    "emittedSha256": "4256f399a3f8ae24b37e9500e5f0b5ca01dba098f804b81452d0a6e2dbd9cac1"
+  },
+  "native": {
+    "failure": {
+      "phase": "compile_book",
+      "diagnostic": "deadline_exceeded"
+    },
+    "lastProgress": {
+      "phase": "compile_book",
+      "event": "start",
+      "unixMs": 1793102755081,
+      "pid": 24817,
+      "worker": false,
+      "rssBytes": 2448198080,
+      "heapUsedBytes": 1428727001,
+      "cpuMs": 12449.757,
+      "checkedDefinitions": 12071
+    },
+    "guardian": {
+      "status": "FAIL",
+      "reason": "deadline_exceeded",
+      "commandExitCode": -1,
+      "commandSignal": 15,
+      "peakRssBytes": 4415438848,
+      "peakFootprintBytes": 4234940856,
+      "elapsedMs": 601046,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 1,
+      "command": [
+        "/opt/homebrew/Cellar/bun/1.4.3/bin/bun",
+        "--smol",
+        "/private/tmp/bend2039g8-js-call-cost/evals/native_compiler_experiment.ts",
+        "--mode=build",
+        "--corpus=checkpoints/root-release2039g8r3.native.corpus.json",
+        "--artifact=/tmp/bend2039g8r3-native",
+        "--report=checkpoints/root-release2039g8r3-native-build.json",
+        "--cc-pipeline=llvm-split",
+        "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+        "--cc-opt=1",
+        "--internal=build"
+      ],
+      "label": "Native CPU compiler build",
+      "exitCode": 1,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793102741023-b9107ba553b9773e.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "commands": [
+    {
+      "label": "parser-source",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "--smol",
+        "evals/bootstrap_parser_rebuild.ts",
+        "--prepare-source",
+        "--run-id",
+        "release2039g8r3"
+      ],
+      "stdout": "/tmp/bend2039g8r3-admission-JMjuoi/parser-source.stdout",
+      "stderr": "/tmp/bend2039g8r3-admission-JMjuoi/parser-source.stderr",
+      "started": 1793102211247,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 58941
+    },
+    {
+      "label": "parser-public-source",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "--smol",
+        "evals/bootstrap_parser_public_gate.ts",
+        "--parser=checkpoints/.bootstrap_parser_rebuild_release2039g8r3_source.bend",
+        "--entry=parse_module_tokens",
+        "--report=checkpoints/bootstrap-parser-public-release2039g8r3-source.json"
+      ],
+      "stdout": "/tmp/bend2039g8r3-admission-JMjuoi/parser-public-source.stdout",
+      "stderr": "/tmp/bend2039g8r3-admission-JMjuoi/parser-public-source.stderr",
+      "started": 1793102270191,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 10163
+    },
+    {
+      "label": "parser-source-gate",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "--smol",
+        "evals/bootstrap_parser_fast.ts",
+        "--parser=checkpoints/.bootstrap_parser_rebuild_release2039g8r3_source.bend",
+        "--entry=parse_module_tokens",
+        "--public-report=checkpoints/bootstrap-parser-public-release2039g8r3-source.json",
+        "--report=checkpoints/bootstrap-parser-source-gate-release2039g8r3.json"
+      ],
+      "stdout": "/tmp/bend2039g8r3-admission-JMjuoi/parser-source-gate.stdout",
+      "stderr": "/tmp/bend2039g8r3-admission-JMjuoi/parser-source-gate.stderr",
+      "started": 1793102280355,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 30693
+    },
+    {
+      "label": "parser-prepare",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "--smol",
+        "evals/bootstrap_parser_rebuild.ts",
+        "--prepare",
+        "--run-id",
+        "release2039g8r3",
+        "--source-gate",
+        "checkpoints/bootstrap-parser-source-gate-release2039g8r3.json"
+      ],
+      "stdout": "/tmp/bend2039g8r3-admission-JMjuoi/parser-prepare.stdout",
+      "stderr": "/tmp/bend2039g8r3-admission-JMjuoi/parser-prepare.stderr",
+      "started": 1793102311049,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 59204
+    },
+    {
+      "label": "parser-build",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "--smol",
+        "evals/bootstrap_parser_rebuild.ts",
+        "--build-native",
+        "--run-id",
+        "release2039g8r3"
+      ],
+      "stdout": "/tmp/bend2039g8r3-admission-JMjuoi/parser-build.stdout",
+      "stderr": "/tmp/bend2039g8r3-admission-JMjuoi/parser-build.stderr",
+      "started": 1793102370253,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 23906
+    },
+    {
+      "label": "parser-public-native",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "--smol",
+        "evals/bootstrap_parser_public_gate.ts",
+        "--parser=checkpoints/.bootstrap_parser_rebuild_release2039g8r3_generated_fuel.bend",
+        "--entry=parse_with_fuel",
+        "--report=checkpoints/bootstrap-parser-public-release2039g8r3-native.json"
+      ],
+      "stdout": "/tmp/bend2039g8r3-admission-JMjuoi/parser-public-native.stdout",
+      "stderr": "/tmp/bend2039g8r3-admission-JMjuoi/parser-public-native.stderr",
+      "started": 1793102394159,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 6382
+    },
+    {
+      "label": "parser-native-gate",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "--smol",
+        "evals/bootstrap_parser_fast.ts",
+        "--parser=checkpoints/.bootstrap_parser_rebuild_release2039g8r3_generated_fuel.bend",
+        "--entry=parse_with_fuel",
+        "--component=checkpoints/bootstrap-parser-rebuild-release2039g8r3.js",
+        "--component-build=checkpoints/bootstrap-parser-rebuild-release2039g8r3.native-build.result.json",
+        "--public-report=checkpoints/bootstrap-parser-public-release2039g8r3-native.json",
+        "--report=checkpoints/bootstrap-parser-candidate-gate-release2039g8r3.json"
+      ],
+      "stdout": "/tmp/bend2039g8r3-admission-JMjuoi/parser-native-gate.stdout",
+      "stderr": "/tmp/bend2039g8r3-admission-JMjuoi/parser-native-gate.stderr",
+      "started": 1793102400541,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 207524
+    },
+    {
+      "label": "parser-accept",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "--smol",
+        "evals/bootstrap_parser_rebuild.ts",
+        "--build",
+        "--run-id",
+        "release2039g8r3",
+        "--candidate-gate",
+        "checkpoints/bootstrap-parser-candidate-gate-release2039g8r3.json"
+      ],
+      "stdout": "/tmp/bend2039g8r3-admission-JMjuoi/parser-accept.stdout",
+      "stderr": "/tmp/bend2039g8r3-admission-JMjuoi/parser-accept.stderr",
+      "started": 1793102608065,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 2349
+    },
+    {
+      "label": "compose",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/opt/homebrew/bin/bun",
+        "evals/selfhost_driver_source.ts",
+        "--parser-build=checkpoints/bootstrap-parser-rebuild-release2039g8r3.native-build.result.json",
+        "--root=checkpoints/.bootstrap_compiler_root_release2039g8r3.bend",
+        "--manifest=checkpoints/selfhost-root-release2039g8r3.json"
+      ],
+      "stdout": "/tmp/bend2039g8r3-admission-JMjuoi/compose.stdout",
+      "stderr": "/tmp/bend2039g8r3-admission-JMjuoi/compose.stderr",
+      "started": 1793102610414,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 561
+    },
+    {
+      "label": "js-build",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "--smol",
+        "evals/checker_core_component_build.ts",
+        "--file=checkpoints/.bootstrap_compiler_root_release2039g8r3.bend",
+        "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step,emit_c_modules_start,emit_c_library_start,c_emitter_step",
+        "--artifact=checkpoints/root-release2039g8r3.js",
+        "--report=checkpoints/root-release2039g8r3-build"
+      ],
+      "stdout": "/tmp/bend2039g8r3-admission-JMjuoi/js-build.stdout",
+      "stderr": "/tmp/bend2039g8r3-admission-JMjuoi/js-build.stderr",
+      "started": 1793102610975,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 111598
+    },
+    {
+      "label": "capture-compile",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--experimental-strip-types",
+        "/tmp/bend2039-candidate-worker.mjs",
+        "/private/tmp/bend2039g8-js-call-cost/evals/candidate_host.ts",
+        "--candidate=checkpoints/root-release2039g8r3.js",
+        "--candidate-build=checkpoints/root-release2039g8r3-build.result.json",
+        "--parser=checkpoints/bootstrap-parser-rebuild-release2039g8r3.js",
+        "evals/repro_js_non_tail_reclaim.bend",
+        "-o",
+        "/tmp/bend2039g8r3-admission-JMjuoi/capture.js"
+      ],
+      "stdout": "/tmp/bend2039g8r3-admission-JMjuoi/capture-compile.stdout",
+      "stderr": "/tmp/bend2039g8r3-admission-JMjuoi/capture-compile.stderr",
+      "started": 1793102722574,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 16699
+    },
+    {
+      "label": "capture-run",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "/tmp/bend2039g8r3-admission-JMjuoi/capture.js"
+      ],
+      "stdout": "/tmp/bend2039g8r3-admission-JMjuoi/capture-run.stdout",
+      "stderr": "/tmp/bend2039g8r3-admission-JMjuoi/capture-run.stderr",
+      "started": 1793102739273,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 1651
+    },
+    {
+      "label": "native-build",
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "--smol",
+        "evals/native_compiler_experiment.ts",
+        "--mode=build",
+        "--corpus=checkpoints/root-release2039g8r3.native.corpus.json",
+        "--artifact=/tmp/bend2039g8r3-native",
+        "--report=checkpoints/root-release2039g8r3-native-build.json",
+        "--cc-pipeline=llvm-split",
+        "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+        "--cc-opt=1"
+      ],
+      "stdout": "/tmp/bend2039g8r3-admission-JMjuoi/native-build.stdout",
+      "stderr": "/tmp/bend2039g8r3-admission-JMjuoi/native-build.stderr",
+      "started": 1793102740952,
+      "status": "FAIL",
+      "exitCode": 2,
+      "signal": null,
+      "elapsedMs": 601136
+    }
+  ]
+}

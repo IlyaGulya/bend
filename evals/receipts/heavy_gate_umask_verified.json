@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "status": "HELPER_PUBLICATION_UMASK_FIX_VERIFIED",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "problem": {
+    "host": "nhs",
+    "umask": "002",
+    "publishedModeBefore": "775",
+    "ownerUid": 1000,
+    "error": "unsafe native helper cache",
+    "point": "authenticated descendant before compiler loading"
+  },
+  "change": "chmod the freshly compiled temporary helper to 0700 before atomic publication; keep pre-existing unsafe-cache refusal unchanged",
+  "regression": {
+    "before": {
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "test",
+        "evals/heavy_gate.test.ts",
+        "--test-name-pattern",
+        "cold helper cache"
+      ],
+      "passed": 0,
+      "failed": 1,
+      "observedExit": 1
+    },
+    "after": {
+      "command": [
+        "/opt/homebrew/bin/bun",
+        "test",
+        "evals/heavy_gate.test.ts"
+      ],
+      "passed": 14,
+      "failed": 0,
+      "assertions": 129,
+      "elapsedMs": 6550
+    }
+  },
+  "actualSurface": {
+    "host": "nhs",
+    "status": "PROBE_STOPPED",
+    "reason": "pass-budget",
+    "checkedDefinitions": 12071,
+    "eventsFullyValidated": 12651,
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 4274200576,
+      "peakFootprintBytes": 4274200576,
+      "elapsedMs": 51732,
+      "timeoutMs": 180000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/home/ilyagulya/.bun/bin/bun",
+        "/home/ilyagulya/bend-probe-19122128-e3668df6-290f-4a57-a01b-0816ebbe9dd0/evals/compiler_codegen_probe.ts",
+        "--root=/home/ilyagulya/bend-probe-19122128-e3668df6-290f-4a57-a01b-0816ebbe9dd0/checkpoints/.bootstrap_compiler_root_release2039g8r3.bend",
+        "--bridge=/home/ilyagulya/bend-probe-19122128-e3668df6-290f-4a57-a01b-0816ebbe9dd0/evals/native_compiler_driver.bend",
+        "--report=/home/ilyagulya/bend-probe-19122128-e3668df6-290f-4a57-a01b-0816ebbe9dd0/baseline-2.json",
+        "--passes=1",
+        "--max-codegen-ms=60000"
+      ],
+      "label": "Bounded full-root C codegen probe",
+      "exitCode": 0,
+      "reportPath": "/home/ilyagulya/bend-probe-19122128-e3668df6-290f-4a57-a01b-0816ebbe9dd0/tmp/bend-heavy-gate-1000/report-1793109069497-23cc2f71525149ed.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "cachePolicy": "fresh isolated TMPDIR; the unsafe default-cache file created by the initial probe is removed separately after verification",
+    "linuxMeasurement": "RSS from VmRSS; footprint is VmRSS + VmSwap, not macOS phys_footprint"
+  },
+  "inputs": {
+    "evals/heavy_gate.ts": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015",
+    "evals/heavy_gate_native.c": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b",
+    "evals/heavy_gate.test.ts": "3bc56f45f7972f96c09868682b507b74d6606be480f283e35e306364f79e2e48"
+  }
+}

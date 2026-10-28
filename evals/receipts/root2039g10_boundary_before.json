@@ -1,0 +1,701 @@
+{
+  "schemaVersion": 1,
+  "status": "BEFORE_FIX_NATIVE_BOUNDARIES_OBSERVED",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "binary": {
+    "path": "/tmp/bend-g9-native",
+    "sha256": "76c246aa114d3768db523d7d02fb1a0b55ebad5edcc5d7c4fcc6692ef4e1be71"
+  },
+  "scope": "Before-fix observations from real native compiler; no synthetic CheckedProgram/BIR",
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 191594496,
+    "peakFootprintBytes": 139216120,
+    "elapsedMs": 52143,
+    "timeoutMs": 180000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "/tmp/bend2039g8-accepted-mac-evidence/bun-1.4.3",
+      "/tmp/bend-g10-boundaries-before.mjs"
+    ],
+    "label": "heavy command",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793121536865-064fbb8d84ff93ec.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "rows": [
+    {
+      "name": "type-template",
+      "library": false,
+      "target": "js",
+      "source": "evals/.g10-type-template-witness.bend",
+      "sourceText": "import Base\n\ntype G10TemplateBox<~a: Type> is Data:\n\ndef main() -> U32:\n  0\n",
+      "sourceSha256": "258b5b8a0504068f8cf9863f2244d5b42979a7912299968695395eda167f0f3b",
+      "command": [
+        "/tmp/bend-g9-native",
+        "+RTS",
+        "--threads",
+        "1",
+        "--gpu",
+        "off",
+        "--RTS",
+        "/private/tmp/bend2039g8-js-call-cost/evals/.g10-type-template-witness.bend",
+        "/private/tmp/bend2039g8-js-call-cost/bend2/base.bend",
+        "/tmp/bend-g10-boundaries-before-SdRufH/type-template-js.tsv",
+        "/tmp/bend-g10-boundaries-before-SdRufH/type-template-js.exports",
+        "compile-module",
+        "/tmp/bend-g10-boundaries-before-SdRufH/type-template-js.js"
+      ],
+      "status": 1,
+      "signal": null,
+      "elapsedMs": 2635,
+      "phases": [
+        "parse",
+        "expand",
+        "check",
+        "emit"
+      ],
+      "phaseResults": [
+        {
+          "phase": "parse",
+          "elapsedMs": 433.421,
+          "userCpuMs": 415.546,
+          "systemCpuMs": 13.233,
+          "modules": 2,
+          "sourceBytes": 79553,
+          "foreignBytes": 78415,
+          "eagerFuelCells": 16000000,
+          "fuelBuildMs": 57.444
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 227.132,
+          "userCpuMs": 223.207,
+          "systemCpuMs": 1.6,
+          "chunkAdvances": 28624,
+          "chunkQuantum": 64
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 1951.214,
+          "userCpuMs": 1791.082,
+          "systemCpuMs": 13.801,
+          "chunkAdvances": 143310,
+          "chunkQuantum": 64
+        },
+        {
+          "phase": "emit",
+          "elapsedMs": 13.28,
+          "userCpuMs": 12.7,
+          "systemCpuMs": 0.545,
+          "chunkAdvances": 136,
+          "chunkQuantum": 64
+        }
+      ],
+      "diagnostic": "unexpanded template binder reached JS emission\nbend: native experiment: Bend rejected the input",
+      "outputPublished": false
+    },
+    {
+      "name": "type-template",
+      "library": false,
+      "target": "c",
+      "source": "evals/.g10-type-template-witness.bend",
+      "sourceText": "import Base\n\ntype G10TemplateBox<~a: Type> is Data:\n\ndef main() -> U32:\n  0\n",
+      "sourceSha256": "258b5b8a0504068f8cf9863f2244d5b42979a7912299968695395eda167f0f3b",
+      "command": [
+        "/tmp/bend-g9-native",
+        "+RTS",
+        "--threads",
+        "1",
+        "--gpu",
+        "off",
+        "--RTS",
+        "/private/tmp/bend2039g8-js-call-cost/evals/.g10-type-template-witness.bend",
+        "/private/tmp/bend2039g8-js-call-cost/bend2/base.bend",
+        "/tmp/bend-g10-boundaries-before-SdRufH/type-template-c.tsv",
+        "/tmp/bend-g10-boundaries-before-SdRufH/type-template-c.exports",
+        "compile-c-module",
+        "/tmp/bend-g10-boundaries-before-SdRufH/type-template-c.c",
+        "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/c_runtime.c"
+      ],
+      "status": 1,
+      "signal": null,
+      "elapsedMs": 2581,
+      "phases": [
+        "parse",
+        "expand",
+        "check",
+        "emit-c"
+      ],
+      "phaseResults": [
+        {
+          "phase": "parse",
+          "elapsedMs": 461.243,
+          "userCpuMs": 424.829,
+          "systemCpuMs": 13.971,
+          "modules": 2,
+          "sourceBytes": 79553,
+          "foreignBytes": 305668,
+          "eagerFuelCells": 16000000,
+          "fuelBuildMs": 63.784
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 230.36,
+          "userCpuMs": 224.455,
+          "systemCpuMs": 1.619,
+          "chunkAdvances": 28624,
+          "chunkQuantum": 64
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 1856.412,
+          "userCpuMs": 1790.429,
+          "systemCpuMs": 10.72,
+          "chunkAdvances": 143310,
+          "chunkQuantum": 64
+        },
+        {
+          "phase": "emit-c",
+          "elapsedMs": 22.387,
+          "userCpuMs": 21.786,
+          "systemCpuMs": 0.571,
+          "chunkAdvances": 136,
+          "chunkQuantum": 64
+        }
+      ],
+      "diagnostic": "unexpanded template binder reached JS emission\nbend: native experiment: Bend rejected the input",
+      "outputPublished": false
+    },
+    {
+      "name": "mainless",
+      "library": false,
+      "target": "js",
+      "source": "evals/.g10-mainless-witness.bend",
+      "sourceText": "import Base\n\ndef twice(+x: U32) -> U32:\n  U32.add(x, x)\n",
+      "sourceSha256": "17ad056227d68e2bb4d13584ac77f0259d240e9b1b9c7f6c083e27157d328396",
+      "command": [
+        "/tmp/bend-g9-native",
+        "+RTS",
+        "--threads",
+        "1",
+        "--gpu",
+        "off",
+        "--RTS",
+        "/private/tmp/bend2039g8-js-call-cost/evals/.g10-mainless-witness.bend",
+        "/private/tmp/bend2039g8-js-call-cost/bend2/base.bend",
+        "/tmp/bend-g10-boundaries-before-SdRufH/mainless-js.tsv",
+        "/tmp/bend-g10-boundaries-before-SdRufH/mainless-js.exports",
+        "compile-module",
+        "/tmp/bend-g10-boundaries-before-SdRufH/mainless-js.js"
+      ],
+      "status": 0,
+      "signal": null,
+      "elapsedMs": 3145,
+      "phases": [
+        "parse",
+        "expand",
+        "check",
+        "emit"
+      ],
+      "phaseResults": [
+        {
+          "phase": "parse",
+          "elapsedMs": 728.926,
+          "userCpuMs": 422.899,
+          "systemCpuMs": 16.258,
+          "modules": 2,
+          "sourceBytes": 79533,
+          "foreignBytes": 78415,
+          "eagerFuelCells": 16000000,
+          "fuelBuildMs": 61.395
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 229.188,
+          "userCpuMs": 224.439,
+          "systemCpuMs": 1.229,
+          "chunkAdvances": 28619,
+          "chunkQuantum": 64
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 1938.555,
+          "userCpuMs": 1798.503,
+          "systemCpuMs": 12.918,
+          "chunkAdvances": 143125,
+          "chunkQuantum": 64
+        },
+        {
+          "phase": "emit",
+          "elapsedMs": 234.096,
+          "userCpuMs": 219.743,
+          "systemCpuMs": 4.697,
+          "chunkAdvances": 15000,
+          "chunkQuantum": 64
+        }
+      ],
+      "diagnostic": "",
+      "outputPublished": true,
+      "outputSha256": "a91619919f7c9b77ed44fe6d1a5928132207c3785487b151e78703efa17a20be",
+      "consumer": {
+        "command": [
+          "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+          "/tmp/bend-g10-boundaries-before-SdRufH/mainless-js.js"
+        ],
+        "status": 0,
+        "signal": null,
+        "stdout": "",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "mainless",
+      "library": false,
+      "target": "c",
+      "source": "evals/.g10-mainless-witness.bend",
+      "sourceText": "import Base\n\ndef twice(+x: U32) -> U32:\n  U32.add(x, x)\n",
+      "sourceSha256": "17ad056227d68e2bb4d13584ac77f0259d240e9b1b9c7f6c083e27157d328396",
+      "command": [
+        "/tmp/bend-g9-native",
+        "+RTS",
+        "--threads",
+        "1",
+        "--gpu",
+        "off",
+        "--RTS",
+        "/private/tmp/bend2039g8-js-call-cost/evals/.g10-mainless-witness.bend",
+        "/private/tmp/bend2039g8-js-call-cost/bend2/base.bend",
+        "/tmp/bend-g10-boundaries-before-SdRufH/mainless-c.tsv",
+        "/tmp/bend-g10-boundaries-before-SdRufH/mainless-c.exports",
+        "compile-c-module",
+        "/tmp/bend-g10-boundaries-before-SdRufH/mainless-c.c",
+        "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/c_runtime.c"
+      ],
+      "status": 1,
+      "signal": null,
+      "elapsedMs": 3010,
+      "phases": [
+        "parse",
+        "expand",
+        "check",
+        "emit-c"
+      ],
+      "phaseResults": [
+        {
+          "phase": "parse",
+          "elapsedMs": 511.899,
+          "userCpuMs": 422.178,
+          "systemCpuMs": 12.859,
+          "modules": 2,
+          "sourceBytes": 79533,
+          "foreignBytes": 305668,
+          "eagerFuelCells": 16000000,
+          "fuelBuildMs": 64.609
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 247.617,
+          "userCpuMs": 228.527,
+          "systemCpuMs": 1.676,
+          "chunkAdvances": 28619,
+          "chunkQuantum": 64
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 2087.135,
+          "userCpuMs": 1805.181,
+          "systemCpuMs": 10.986,
+          "chunkAdvances": 143125,
+          "chunkQuantum": 64
+        },
+        {
+          "phase": "emit-c",
+          "elapsedMs": 150.378,
+          "userCpuMs": 111.128,
+          "systemCpuMs": 2.798,
+          "chunkAdvances": 8720,
+          "chunkQuantum": 64
+        }
+      ],
+      "diagnostic": "main's type is abstract or open and cannot be printed\nbend: native experiment: Bend rejected the input",
+      "outputPublished": false
+    },
+    {
+      "name": "mainless",
+      "library": true,
+      "target": "js",
+      "source": "evals/.g10-mainless-witness.bend",
+      "sourceText": "import Base\n\ndef twice(+x: U32) -> U32:\n  U32.add(x, x)\n",
+      "sourceSha256": "17ad056227d68e2bb4d13584ac77f0259d240e9b1b9c7f6c083e27157d328396",
+      "command": [
+        "/tmp/bend-g9-native",
+        "+RTS",
+        "--threads",
+        "1",
+        "--gpu",
+        "off",
+        "--RTS",
+        "/private/tmp/bend2039g8-js-call-cost/evals/.g10-mainless-witness.bend",
+        "/private/tmp/bend2039g8-js-call-cost/bend2/base.bend",
+        "/tmp/bend-g10-boundaries-before-SdRufH/mainless-js-library.tsv",
+        "/tmp/bend-g10-boundaries-before-SdRufH/mainless-js-library.exports",
+        "compile",
+        "/tmp/bend-g10-boundaries-before-SdRufH/mainless-js-library.js"
+      ],
+      "status": 0,
+      "signal": null,
+      "elapsedMs": 3999,
+      "phases": [
+        "parse",
+        "expand",
+        "check",
+        "emit"
+      ],
+      "phaseResults": [
+        {
+          "phase": "parse",
+          "elapsedMs": 719.533,
+          "userCpuMs": 434.108,
+          "systemCpuMs": 16.931,
+          "modules": 2,
+          "sourceBytes": 79533,
+          "foreignBytes": 78415,
+          "eagerFuelCells": 16000000,
+          "fuelBuildMs": 76.347
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 246.71,
+          "userCpuMs": 226.122,
+          "systemCpuMs": 1.336,
+          "chunkAdvances": 28619,
+          "chunkQuantum": 64
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 2641.677,
+          "userCpuMs": 1862.114,
+          "systemCpuMs": 15.568,
+          "chunkAdvances": 143125,
+          "chunkQuantum": 64
+        },
+        {
+          "phase": "emit",
+          "elapsedMs": 370.709,
+          "userCpuMs": 235.349,
+          "systemCpuMs": 3.428,
+          "chunkAdvances": 15007,
+          "chunkQuantum": 64
+        }
+      ],
+      "diagnostic": "",
+      "outputPublished": true,
+      "outputSha256": "535b16b9028958effd0d251df0c859167bc34008539eaca7aacca7f950e70524",
+      "consumer": {
+        "command": [
+          "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+          "--input-type=module",
+          "-e",
+          "const lib=(await import(\"file:///tmp/bend-g10-boundaries-before-SdRufH/mainless-js-library.js\")).default; const result=lib.twice(21); if(result!==42)throw Error('Wrong library value'); console.log(result);"
+        ],
+        "status": 0,
+        "signal": null,
+        "stdout": "42\n",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "mainless",
+      "library": true,
+      "target": "c",
+      "source": "evals/.g10-mainless-witness.bend",
+      "sourceText": "import Base\n\ndef twice(+x: U32) -> U32:\n  U32.add(x, x)\n",
+      "sourceSha256": "17ad056227d68e2bb4d13584ac77f0259d240e9b1b9c7f6c083e27157d328396",
+      "command": [
+        "/tmp/bend-g9-native",
+        "+RTS",
+        "--threads",
+        "1",
+        "--gpu",
+        "off",
+        "--RTS",
+        "/private/tmp/bend2039g8-js-call-cost/evals/.g10-mainless-witness.bend",
+        "/private/tmp/bend2039g8-js-call-cost/bend2/base.bend",
+        "/tmp/bend-g10-boundaries-before-SdRufH/mainless-c-library.tsv",
+        "/tmp/bend-g10-boundaries-before-SdRufH/mainless-c-library.exports",
+        "compile-c",
+        "/tmp/bend-g10-boundaries-before-SdRufH/mainless-c-library.c",
+        "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/c_runtime.c"
+      ],
+      "status": 0,
+      "signal": null,
+      "elapsedMs": 15164,
+      "phases": [
+        "parse",
+        "expand",
+        "check",
+        "emit-c"
+      ],
+      "phaseResults": [
+        {
+          "phase": "parse",
+          "elapsedMs": 960.566,
+          "userCpuMs": 450.959,
+          "systemCpuMs": 20.53,
+          "modules": 2,
+          "sourceBytes": 79533,
+          "foreignBytes": 305668,
+          "eagerFuelCells": 16000000,
+          "fuelBuildMs": 93.793
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 540.4,
+          "userCpuMs": 250.846,
+          "systemCpuMs": 3.44,
+          "chunkAdvances": 28619,
+          "chunkQuantum": 64
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 2830.775,
+          "userCpuMs": 1974.9,
+          "systemCpuMs": 21.598,
+          "chunkAdvances": 143125,
+          "chunkQuantum": 64
+        },
+        {
+          "phase": "emit-c",
+          "elapsedMs": 10793.506,
+          "userCpuMs": 7530.036,
+          "systemCpuMs": 61.844,
+          "chunkAdvances": 1230451,
+          "chunkQuantum": 64
+        }
+      ],
+      "diagnostic": "",
+      "outputPublished": true,
+      "outputSha256": "b7ae106bf4daabb370048b9cc3c1c702c2cd91862b209141e7a0cea3337cdb66",
+      "consumer": {
+        "command": [
+          "/tmp/bend-g10-boundaries-before-SdRufH/mainless-c-library.c.exe"
+        ],
+        "status": 0,
+        "signal": null,
+        "stdout": "42\n",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "clang": {
+        "command": [
+          "clang",
+          "-std=c11",
+          "-O0",
+          "-pthread",
+          "/tmp/bend-g10-boundaries-before-SdRufH/mainless-c-library.c",
+          "/tmp/bend-g10-library-caller.c",
+          "-lm",
+          "-o",
+          "/tmp/bend-g10-boundaries-before-SdRufH/mainless-c-library.c.exe"
+        ],
+        "status": 0,
+        "signal": null,
+        "stderrSha256": "d97fafea603055e137cf6fa04f6f5a0ad3ce242ab4eb1839f0d57ebd9c567cc7"
+      }
+    },
+    {
+      "name": "unit-main",
+      "library": false,
+      "target": "js",
+      "source": "evals/.g10-unit-main-witness.bend",
+      "sourceText": "import Base\n\ndef main() -> Unit:\n  Unit{}\n",
+      "sourceSha256": "d9547a331c99450e710145a490764c41b608f92c8a3bbf10e836d66c0d7bd2b4",
+      "command": [
+        "/tmp/bend-g9-native",
+        "+RTS",
+        "--threads",
+        "1",
+        "--gpu",
+        "off",
+        "--RTS",
+        "/private/tmp/bend2039g8-js-call-cost/evals/.g10-unit-main-witness.bend",
+        "/private/tmp/bend2039g8-js-call-cost/bend2/base.bend",
+        "/tmp/bend-g10-boundaries-before-SdRufH/unit-main-js.tsv",
+        "/tmp/bend-g10-boundaries-before-SdRufH/unit-main-js.exports",
+        "compile-module",
+        "/tmp/bend-g10-boundaries-before-SdRufH/unit-main-js.js"
+      ],
+      "status": 0,
+      "signal": null,
+      "elapsedMs": 3879,
+      "phases": [
+        "parse",
+        "expand",
+        "check",
+        "emit"
+      ],
+      "phaseResults": [
+        {
+          "phase": "parse",
+          "elapsedMs": 589.823,
+          "userCpuMs": 476.678,
+          "systemCpuMs": 15.686,
+          "modules": 2,
+          "sourceBytes": 79519,
+          "foreignBytes": 78415,
+          "eagerFuelCells": 16000000,
+          "fuelBuildMs": 82.967
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 486.982,
+          "userCpuMs": 255.775,
+          "systemCpuMs": 2.063,
+          "chunkAdvances": 28593,
+          "chunkQuantum": 64
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 2475.836,
+          "userCpuMs": 2036.256,
+          "systemCpuMs": 16.799,
+          "chunkAdvances": 143178,
+          "chunkQuantum": 64
+        },
+        {
+          "phase": "emit",
+          "elapsedMs": 311.247,
+          "userCpuMs": 248.347,
+          "systemCpuMs": 3.953,
+          "chunkAdvances": 14999,
+          "chunkQuantum": 64
+        }
+      ],
+      "diagnostic": "",
+      "outputPublished": true,
+      "outputSha256": "077928b1df438e33812df2cb88cbaa4bb0bd7580ff332a86ab6d46c5c10a059e",
+      "consumer": {
+        "command": [
+          "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+          "/tmp/bend-g10-boundaries-before-SdRufH/unit-main-js.js"
+        ],
+        "status": 0,
+        "signal": null,
+        "stdout": "Unit{}\n",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "unit-main",
+      "library": false,
+      "target": "c",
+      "source": "evals/.g10-unit-main-witness.bend",
+      "sourceText": "import Base\n\ndef main() -> Unit:\n  Unit{}\n",
+      "sourceSha256": "d9547a331c99450e710145a490764c41b608f92c8a3bbf10e836d66c0d7bd2b4",
+      "command": [
+        "/tmp/bend-g9-native",
+        "+RTS",
+        "--threads",
+        "1",
+        "--gpu",
+        "off",
+        "--RTS",
+        "/private/tmp/bend2039g8-js-call-cost/evals/.g10-unit-main-witness.bend",
+        "/private/tmp/bend2039g8-js-call-cost/bend2/base.bend",
+        "/tmp/bend-g10-boundaries-before-SdRufH/unit-main-c.tsv",
+        "/tmp/bend-g10-boundaries-before-SdRufH/unit-main-c.exports",
+        "compile-c-module",
+        "/tmp/bend-g10-boundaries-before-SdRufH/unit-main-c.c",
+        "/private/tmp/bend2039g8-js-call-cost/bend2/selfhost/c_runtime.c"
+      ],
+      "status": 0,
+      "signal": null,
+      "elapsedMs": 14127,
+      "phases": [
+        "parse",
+        "expand",
+        "check",
+        "emit-c"
+      ],
+      "phaseResults": [
+        {
+          "phase": "parse",
+          "elapsedMs": 541.533,
+          "userCpuMs": 472.481,
+          "systemCpuMs": 16.66,
+          "modules": 2,
+          "sourceBytes": 79519,
+          "foreignBytes": 305668,
+          "eagerFuelCells": 16000000,
+          "fuelBuildMs": 71.406
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 252.331,
+          "userCpuMs": 243.453,
+          "systemCpuMs": 1.323,
+          "chunkAdvances": 28593,
+          "chunkQuantum": 64
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 2093.848,
+          "userCpuMs": 1963.742,
+          "systemCpuMs": 11.967,
+          "chunkAdvances": 143178,
+          "chunkQuantum": 64
+        },
+        {
+          "phase": "emit-c",
+          "elapsedMs": 11205.479,
+          "userCpuMs": 7580.073,
+          "systemCpuMs": 58.851,
+          "chunkAdvances": 1205137,
+          "chunkQuantum": 64
+        }
+      ],
+      "diagnostic": "",
+      "outputPublished": true,
+      "outputSha256": "29193d89a9a13700dec3534c0a4062d46021d7aae23bf4d79464d72c343628bd",
+      "consumer": {
+        "command": [
+          "/tmp/bend-g10-boundaries-before-SdRufH/unit-main-c.c.exe"
+        ],
+        "status": 0,
+        "signal": null,
+        "stdout": "Unit{}\n",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "clang": {
+        "command": [
+          "clang",
+          "-std=c11",
+          "-O0",
+          "-pthread",
+          "/tmp/bend-g10-boundaries-before-SdRufH/unit-main-c.c",
+          "-lm",
+          "-o",
+          "/tmp/bend-g10-boundaries-before-SdRufH/unit-main-c.c.exe"
+        ],
+        "status": 0,
+        "signal": null,
+        "stderrSha256": "6d0d55caf5a7fca4fc7747b063c9a937d68ee632e51570874911fc54999400d6"
+      }
+    }
+  ],
+  "observedDefects": [
+    "Datatype template parameter reaches successful checking and is rejected only by lowering for both targets.",
+    "Mainless executable is successfully emitted by JS and runs empty, while C rejects it."
+  ],
+  "positiveControls": [
+    "Same mainless source as explicit library: actual JS and C calls twice(21) both return 42.",
+    "Pure Unit-returning executable main succeeds on both targets and prints Unit{}."
+  ]
+}

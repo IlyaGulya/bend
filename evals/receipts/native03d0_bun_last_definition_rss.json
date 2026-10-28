@@ -1,0 +1,244 @@
+{
+  "schemaVersion": 1,
+  "status": "BUN_RSS_DIAGNOSTIC_LAST_DEFINITION_LOCALIZED",
+  "acceptanceEvidence": false,
+  "sourceCheckpoint": "54011d67",
+  "producer": {
+    "path": "/private/tmp/bend-fir-integrated57ab/bend2/comp.ts",
+    "bytes": 202544,
+    "sha256": "0aef67b664841f4c6cc636da63a48fbdfb99b2d1240457decc0484403beb553b"
+  },
+  "runtime": {
+    "name": "bun",
+    "version": "1.4.2",
+    "revision": "744846f844374847c902b5e7fd59b4342a51ef99",
+    "execPath": "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+    "execArgv": [],
+    "stack": "Bun main-thread default",
+    "gc": "Bun default; no added GC or --smol"
+  },
+  "inputs": [
+    {
+      "path": "/private/tmp/bend-native-merged-03d0/bend2/bend.ts",
+      "bytes": 138233,
+      "sha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e"
+    },
+    {
+      "path": "/private/tmp/bend-native-merged-03d0/bend2/comp.ts",
+      "bytes": 200681,
+      "sha256": "a84170d5a84f21386383ccd478a1dac687eb664d89c21b284cd1134513963b70"
+    },
+    {
+      "path": "/private/tmp/bend-native-merged-03d0/bend2/base.bend",
+      "bytes": 75624,
+      "sha256": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c"
+    },
+    {
+      "path": "/private/tmp/bend-native-merged-03d0/evals/native_stage_profile_driver.bend",
+      "bytes": 17167,
+      "sha256": "dd1b86b49f66039949c3efd962973e784a938fdce8a4beb7a2a324f591f3171a"
+    },
+    {
+      "path": "/private/tmp/bend-native-merged-03d0/checkpoints/native_stage_profile_generated_fixture.bend",
+      "bytes": 793517,
+      "sha256": "ef98fcac013f127a218430aa1b3f43c191092cbc41d66b3f41f02715be65a108"
+    },
+    {
+      "path": "/private/tmp/bend-native-merged-03d0/checkpoints/emitter_steps_v1.bend",
+      "bytes": 2702264,
+      "sha256": "d7dbe31856eb8d9e53eeddefab0ea4eed56eafe6420a7478d4c37b53d63fb956"
+    },
+    {
+      "path": "/private/tmp/bend-native-merged-03d0/checkpoints/checker_core_steps_v1.bend",
+      "bytes": 2710173,
+      "sha256": "d6000fd556d550f45ccca6adeaaa6e2b0d6aa2fc7604fae0959d650f6d7d175c"
+    },
+    {
+      "path": "/private/tmp/bend-native-merged-03d0/checkpoints/template_steps_v1.bend",
+      "bytes": 347539,
+      "sha256": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4"
+    }
+  ],
+  "guard": {
+    "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792996402383-41fff15cc107e7f0.json",
+    "result": {
+      "status": "RESOURCE_LIMIT",
+      "reason": "physical_footprint_limit",
+      "commandExitCode": -1,
+      "commandSignal": 15,
+      "peakRssBytes": 8185561088,
+      "peakFootprintBytes": 8590711456,
+      "elapsedMs": 165492,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 73,
+      "command": [
+        "bun",
+        "checkpoints/native03d0_bun_last_definition.ts"
+      ],
+      "label": "heavy command",
+      "exitCode": 73,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792996402383-41fff15cc107e7f0.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "lastOpenDefinition": {
+    "stage": "c-definition-before",
+    "name": "profile_emitter_runtime",
+    "definitionCount": 9563,
+    "completedDefinitions": 9562,
+    "elapsedMs": 163157.42970799998,
+    "cpu": {
+      "user": 46608210,
+      "system": 13985111
+    },
+    "memory": {
+      "rss": 7676706816,
+      "heapTotal": 7839067136,
+      "heapUsed": 3932572032,
+      "external": 79678864,
+      "arrayBuffers": 100
+    },
+    "state": {
+      "eExists": true,
+      "hExists": false,
+      "memos": {
+        "opens": 0,
+        "uses": 0,
+        "folds": 0,
+        "spines": 0,
+        "steps": 0
+      },
+      "retainedHigher": 0,
+      "segments": 44360,
+      "spins": 5302,
+      "ownFacts": 21248,
+      "hotFacts": 683,
+      "staticFacts": 89
+    }
+  },
+  "observedEntries": [
+    {
+      "name": "../checkpoints/native_stage_profile_generated_fixture:runtime",
+      "definitionCount": 9553,
+      "completedDefinitions": 9552,
+      "elapsedMs": 129131.785083,
+      "cpu": {
+        "user": 38405592,
+        "system": 9184654
+      },
+      "memory": {
+        "rss": 4175855616,
+        "heapTotal": 6584640512,
+        "heapUsed": 3879451024,
+        "external": 70171136,
+        "arrayBuffers": 100
+      },
+      "state": {
+        "eExists": true,
+        "hExists": false,
+        "memos": {
+          "opens": 0,
+          "uses": 0,
+          "folds": 0,
+          "spines": 0,
+          "steps": 0
+        },
+        "retainedHigher": 0,
+        "segments": 43351,
+        "spins": 5298,
+        "ownFacts": 21238,
+        "hotFacts": 683,
+        "staticFacts": 59
+      }
+    },
+    {
+      "name": "../checkpoints/native_stage_profile_generated_fixture:program",
+      "definitionCount": 9554,
+      "completedDefinitions": 9553,
+      "elapsedMs": 143019.492333,
+      "cpu": {
+        "user": 41513995,
+        "system": 11854328
+      },
+      "memory": {
+        "rss": 5808422912,
+        "heapTotal": 7826905088,
+        "heapUsed": 2275386285,
+        "external": 66898141,
+        "arrayBuffers": 100
+      },
+      "state": {
+        "eExists": true,
+        "hExists": false,
+        "memos": {
+          "opens": 0,
+          "uses": 0,
+          "folds": 0,
+          "spines": 0,
+          "steps": 0
+        },
+        "retainedHigher": 0,
+        "segments": 43352,
+        "spins": 5298,
+        "ownFacts": 21238,
+        "hotFacts": 683,
+        "staticFacts": 59
+      }
+    },
+    {
+      "name": "profile_emitter_runtime",
+      "definitionCount": 9563,
+      "completedDefinitions": 9562,
+      "elapsedMs": 163157.601875,
+      "cpu": {
+        "user": 46608235,
+        "system": 13985263
+      },
+      "memory": {
+        "rss": 7676755968,
+        "heapTotal": 7839067136,
+        "heapUsed": 3932572032,
+        "external": 79678864,
+        "arrayBuffers": 100
+      },
+      "state": {
+        "eExists": true,
+        "hExists": false,
+        "memos": {
+          "opens": 0,
+          "uses": 0,
+          "folds": 0,
+          "spines": 0,
+          "steps": 0
+        },
+        "retainedHigher": 0,
+        "segments": 44360,
+        "spins": 5302,
+        "ownFacts": 21248,
+        "hotFacts": 683,
+        "staticFacts": 89
+      }
+    }
+  ],
+  "observer": {
+    "kind": "Every c-definition-before overwrites one small latest-definition checkpoint; one aggregate sample per second; no CPU/heap sampling, no forced GC.",
+    "runner": {
+      "path": "/private/tmp/bend-fir-integrated57ab/checkpoints/native03d0_bun_last_definition.ts",
+      "bytes": 4689,
+      "sha256": "4714ebd9e46354a22a804c2f59482ef9b218113221a0e9f45b4e5e2ee46cd084"
+    },
+    "rawEvents": {
+      "path": "/tmp/native03d0-bun-last-definition-1.events.jsonl",
+      "sha256": "3d9016229d94cd3fd4e84d649366acedfe7bcdbd436fc44196bfc5af085574e6"
+    }
+  },
+  "artifactExists": false,
+  "limits": [
+    "This instrumented run differs in runtime/GC timing from the original29s coarse observer failure; the original last definition remains unknown.",
+    "Entry-boundary heapUsed is not allocation or retained/live ownership attribution.",
+    "Passing the files/runtime/program definitions here does not establish full codegen completion."
+  ]
+}

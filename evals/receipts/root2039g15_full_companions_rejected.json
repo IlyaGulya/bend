@@ -1,0 +1,1352 @@
+{
+  "schemaVersion": 1,
+  "status": "G15_FULL_COMPANIONS_RECORDED_BOOTSTRAP_REMAINS_REJECTED",
+  "sourceCheckpoint": "f7747c0c",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "scope": "Terminal companions collected after the already recorded g15 bootstrap rejection; no reruns and no reclassification.",
+  "bootstrapReceipt": "evals/receipts/root2039g15_bootstrap_rejected.json",
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "runtime": {
+    "bun": "1.4.3",
+    "revision": "c6da4a4d3010e5553438c60f6bd76d981976867c"
+  },
+  "nativeBinarySha256": "9831507af7f6b30dbe42ec04363d1a4f4feb7389c1891a07ce930ef728254fbb",
+  "orchestration": {
+    "original": "/tmp/bend-remote2039g15-admission-Ja5agO/receipt.json",
+    "sha256": "a4c51286897346e514c673db87265c02eb1f14a95d26945016a3ca4f25004f5b",
+    "status": "FAIL",
+    "commands": [
+      {
+        "label": "checker_core_owned_source.ts",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "evals/heavy_gate.ts",
+          "--memory-mib",
+          "8192",
+          "--rss-mib",
+          "8192",
+          "--poll-ms",
+          "10",
+          "--timeout-ms",
+          "600000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "evals/checker_core_owned_source.ts"
+        ],
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "elapsedMs": 6773
+      },
+      {
+        "label": "template_step_lower.ts",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "evals/heavy_gate.ts",
+          "--memory-mib",
+          "8192",
+          "--rss-mib",
+          "8192",
+          "--poll-ms",
+          "10",
+          "--timeout-ms",
+          "600000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "evals/template_step_lower.ts"
+        ],
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "elapsedMs": 676
+      },
+      {
+        "label": "checker_core_step_lower.ts",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "evals/heavy_gate.ts",
+          "--memory-mib",
+          "8192",
+          "--rss-mib",
+          "8192",
+          "--poll-ms",
+          "10",
+          "--timeout-ms",
+          "600000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "evals/checker_core_step_lower.ts"
+        ],
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "elapsedMs": 3363
+      },
+      {
+        "label": "emitter_step_lower.ts",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "evals/heavy_gate.ts",
+          "--memory-mib",
+          "8192",
+          "--rss-mib",
+          "8192",
+          "--poll-ms",
+          "10",
+          "--timeout-ms",
+          "600000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "evals/emitter_step_lower.ts"
+        ],
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "elapsedMs": 2261
+      },
+      {
+        "label": "parser-source",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/bootstrap_parser_rebuild.ts",
+          "--prepare-source",
+          "--run-id",
+          "remote2039g15"
+        ],
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "elapsedMs": 25053
+      },
+      {
+        "label": "parser-public-source",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/bootstrap_parser_public_gate.ts",
+          "--parser=checkpoints/.bootstrap_parser_rebuild_remote2039g15_source.bend",
+          "--entry=parse_module_tokens",
+          "--report=checkpoints/bootstrap-parser-public-remote2039g15-source.json"
+        ],
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "elapsedMs": 5168
+      },
+      {
+        "label": "parser-source-gate",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/bootstrap_parser_fast.ts",
+          "--parser=checkpoints/.bootstrap_parser_rebuild_remote2039g15_source.bend",
+          "--entry=parse_module_tokens",
+          "--public-report=checkpoints/bootstrap-parser-public-remote2039g15-source.json",
+          "--report=checkpoints/bootstrap-parser-source-gate-remote2039g15.json"
+        ],
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "elapsedMs": 16009
+      },
+      {
+        "label": "parser-prepare",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/bootstrap_parser_rebuild.ts",
+          "--prepare",
+          "--run-id",
+          "remote2039g15",
+          "--source-gate",
+          "checkpoints/bootstrap-parser-source-gate-remote2039g15.json"
+        ],
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "elapsedMs": 27581
+      },
+      {
+        "label": "parser-build",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/bootstrap_parser_rebuild.ts",
+          "--build-native",
+          "--run-id",
+          "remote2039g15"
+        ],
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "elapsedMs": 11597
+      },
+      {
+        "label": "parser-public-native",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/bootstrap_parser_public_gate.ts",
+          "--parser=checkpoints/.bootstrap_parser_rebuild_remote2039g15_generated_fuel.bend",
+          "--entry=parse_with_fuel",
+          "--report=checkpoints/bootstrap-parser-public-remote2039g15-native.json"
+        ],
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "elapsedMs": 2692
+      },
+      {
+        "label": "parser-native-gate",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/bootstrap_parser_fast.ts",
+          "--parser=checkpoints/.bootstrap_parser_rebuild_remote2039g15_generated_fuel.bend",
+          "--entry=parse_with_fuel",
+          "--component=checkpoints/bootstrap-parser-rebuild-remote2039g15.js",
+          "--component-build=checkpoints/bootstrap-parser-rebuild-remote2039g15.native-build.result.json",
+          "--public-report=checkpoints/bootstrap-parser-public-remote2039g15-native.json",
+          "--report=checkpoints/bootstrap-parser-candidate-gate-remote2039g15.json"
+        ],
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "elapsedMs": 86865
+      },
+      {
+        "label": "parser-accept",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/bootstrap_parser_rebuild.ts",
+          "--build",
+          "--run-id",
+          "remote2039g15",
+          "--candidate-gate",
+          "checkpoints/bootstrap-parser-candidate-gate-remote2039g15.json"
+        ],
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "elapsedMs": 2201
+      },
+      {
+        "label": "compose",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "evals/heavy_gate.ts",
+          "--memory-mib",
+          "8192",
+          "--rss-mib",
+          "8192",
+          "--poll-ms",
+          "10",
+          "--timeout-ms",
+          "600000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "evals/selfhost_driver_source.ts",
+          "--parser-build=checkpoints/bootstrap-parser-rebuild-remote2039g15.native-build.result.json",
+          "--root=checkpoints/.bootstrap_compiler_root_remote2039g15.bend",
+          "--manifest=checkpoints/selfhost-root-remote2039g15.json"
+        ],
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "elapsedMs": 704
+      },
+      {
+        "label": "js-build",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/checker_core_component_build.ts",
+          "--file=checkpoints/.bootstrap_compiler_root_remote2039g15.bend",
+          "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step,emit_c_modules_start,emit_c_library_start,c_emitter_step",
+          "--artifact=checkpoints/root-remote2039g15.js",
+          "--report=checkpoints/root-remote2039g15-build"
+        ],
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "elapsedMs": 56717
+      },
+      {
+        "label": "capture-compile",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "evals/heavy_gate.ts",
+          "--memory-mib",
+          "8192",
+          "--rss-mib",
+          "8192",
+          "--poll-ms",
+          "10",
+          "--timeout-ms",
+          "600000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "/tmp/bend-g13-consumer-worker.mjs",
+          "/Users/ilyagulya/bend-g15-append-ba359cac-a8ad-4bcf-b77c-efe2a2e720e5/evals/candidate_host.ts",
+          "--candidate=checkpoints/root-remote2039g15.js",
+          "--candidate-build=checkpoints/root-remote2039g15-build.result.json",
+          "--parser=checkpoints/bootstrap-parser-rebuild-remote2039g15.js",
+          "evals/repro_js_non_tail_reclaim.bend",
+          "-o",
+          "/tmp/bend-remote2039g15-admission-Ja5agO/capture.js"
+        ],
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "elapsedMs": 7819
+      },
+      {
+        "label": "capture-run",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "evals/heavy_gate.ts",
+          "--memory-mib",
+          "8192",
+          "--rss-mib",
+          "8192",
+          "--poll-ms",
+          "10",
+          "--timeout-ms",
+          "600000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "/tmp/bend-remote2039g15-admission-Ja5agO/capture.js"
+        ],
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "elapsedMs": 1430
+      },
+      {
+        "label": "atomic-js-array_fork",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "evals/c_target_fixtures_run.ts",
+          "--driver=/tmp/bend-remote2039g15-driver",
+          "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--target=js",
+          "--smoke-case=array_fork",
+          "--logs=/tmp/bend-remote2039g15-admission-Ja5agO/atomic-js-array_fork",
+          "--keep"
+        ],
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "elapsedMs": 11526
+      },
+      {
+        "label": "atomic-js-array_atomic_fadd",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "evals/c_target_fixtures_run.ts",
+          "--driver=/tmp/bend-remote2039g15-driver",
+          "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--target=js",
+          "--smoke-case=array_atomic_fadd",
+          "--logs=/tmp/bend-remote2039g15-admission-Ja5agO/atomic-js-array_atomic_fadd",
+          "--keep"
+        ],
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "elapsedMs": 9799
+      },
+      {
+        "label": "atomic-js-array_atomic_edges",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "evals/c_target_fixtures_run.ts",
+          "--driver=/tmp/bend-remote2039g15-driver",
+          "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--target=js",
+          "--smoke-case=array_atomic_edges",
+          "--logs=/tmp/bend-remote2039g15-admission-Ja5agO/atomic-js-array_atomic_edges",
+          "--keep"
+        ],
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "elapsedMs": 9578
+      },
+      {
+        "label": "atomic-c-array_fork",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "evals/c_target_fixtures_run.ts",
+          "--driver=/tmp/bend-remote2039g15-driver",
+          "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--target=c",
+          "--smoke-case=array_fork",
+          "--logs=/tmp/bend-remote2039g15-admission-Ja5agO/atomic-c-array_fork",
+          "--keep"
+        ],
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "elapsedMs": 31744
+      },
+      {
+        "label": "atomic-c-array_atomic_fadd",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "evals/c_target_fixtures_run.ts",
+          "--driver=/tmp/bend-remote2039g15-driver",
+          "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--target=c",
+          "--smoke-case=array_atomic_fadd",
+          "--logs=/tmp/bend-remote2039g15-admission-Ja5agO/atomic-c-array_atomic_fadd",
+          "--keep"
+        ],
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "elapsedMs": 30813
+      },
+      {
+        "label": "atomic-c-array_atomic_edges",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "evals/c_target_fixtures_run.ts",
+          "--driver=/tmp/bend-remote2039g15-driver",
+          "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--target=c",
+          "--smoke-case=array_atomic_edges",
+          "--logs=/tmp/bend-remote2039g15-admission-Ja5agO/atomic-c-array_atomic_edges",
+          "--keep"
+        ],
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "elapsedMs": 30563
+      },
+      {
+        "label": "native-build",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/native_compiler_experiment.ts",
+          "--mode=build",
+          "--corpus=checkpoints/root-remote2039g15.native.corpus.json",
+          "--artifact=/tmp/bend-remote2039g15-native",
+          "--report=checkpoints/root-remote2039g15-native-build.json",
+          "--cc-pipeline=llvm-split",
+          "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+          "--cc-opt=1"
+        ],
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "elapsedMs": 406898
+      },
+      {
+        "label": "bootstrap",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/selfhost_bootstrap_gate.ts",
+          "--native-build=checkpoints/root-remote2039g15-native-build.json",
+          "--native-corpus=checkpoints/root-remote2039g15.native.corpus.json",
+          "--root=checkpoints/.bootstrap_compiler_root_remote2039g15.bend",
+          "--root-manifest=checkpoints/selfhost-root-remote2039g15.json",
+          "--parser=checkpoints/bootstrap-parser-rebuild-remote2039g15.js",
+          "--parser-build=checkpoints/bootstrap-parser-rebuild-remote2039g15.native-build.result.json",
+          "--report=checkpoints/selfhost-remote2039g15-bootstrap.json"
+        ],
+        "status": "FAIL",
+        "exitCode": 2,
+        "signal": null,
+        "elapsedMs": 600176
+      },
+      {
+        "label": "matrix-c",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "evals/c_target_fixtures_run.ts",
+          "--driver=/tmp/bend-remote2039g15-driver",
+          "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--target=c",
+          "--logs=/tmp/bend-remote2039g15-admission-Ja5agO/matrix-c",
+          "--keep"
+        ],
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "elapsedMs": 1279817
+      },
+      {
+        "label": "matrix-js",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "evals/c_target_fixtures_run.ts",
+          "--driver=/tmp/bend-remote2039g15-driver",
+          "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--target=js",
+          "--logs=/tmp/bend-remote2039g15-admission-Ja5agO/matrix-js",
+          "--keep"
+        ],
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "elapsedMs": 423580
+      },
+      {
+        "label": "native-consumers",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "evals/heavy_gate.ts",
+          "--memory-mib",
+          "8192",
+          "--rss-mib",
+          "8192",
+          "--poll-ms",
+          "10",
+          "--timeout-ms",
+          "600000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/tmp/bend-remote2039g15-native-foreign-suite.mjs"
+        ],
+        "status": "FAIL",
+        "exitCode": 1,
+        "signal": null,
+        "elapsedMs": 295230
+      },
+      {
+        "label": "native-admission-boundaries",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "evals/heavy_gate.ts",
+          "--memory-mib",
+          "8192",
+          "--rss-mib",
+          "8192",
+          "--poll-ms",
+          "10",
+          "--timeout-ms",
+          "600000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/tmp/bend-g15-admission-boundaries.mjs"
+        ],
+        "status": "FAIL",
+        "exitCode": 1,
+        "signal": null,
+        "elapsedMs": 240
+      },
+      {
+        "label": "nested-host-consumers",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "evals/heavy_gate.ts",
+          "--memory-mib",
+          "8192",
+          "--rss-mib",
+          "8192",
+          "--poll-ms",
+          "10",
+          "--timeout-ms",
+          "600000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/tmp/bend-remote2039g15-nested-host.mjs"
+        ],
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "elapsedMs": 85901
+      }
+    ]
+  },
+  "matrices": [
+    {
+      "target": "c",
+      "summary": {
+        "status": "PASS",
+        "mode": "acceptance-matrix",
+        "target": "c",
+        "fixtures": 43,
+        "logDir": "/tmp/bend-remote2039g15-admission-Ja5agO/matrix-c",
+        "nodeVersion": "v23.11.0",
+        "v8": "12.9.202.28-node.14|--max-old-space-size=3072,-e,process.stdout.write(process.versions.v8 + \"|\" + process.execArgv.join(\",\"))"
+      },
+      "rows": [
+        {
+          "fixture": "c_target_wide_record.bend",
+          "target": "c",
+          "observed": "133"
+        },
+        {
+          "fixture": "c_target_nested_adt.bend",
+          "target": "c",
+          "observed": "15"
+        },
+        {
+          "fixture": "c_target_array_u32.bend",
+          "target": "c",
+          "observed": "15"
+        },
+        {
+          "fixture": "c_target_array_wide.bend",
+          "target": "c",
+          "observed": "16"
+        },
+        {
+          "fixture": "c_target_multiarm.bend",
+          "target": "c",
+          "observed": "13"
+        },
+        {
+          "fixture": "c_target_char_head.bend",
+          "target": "c",
+          "observed": "955\n955"
+        },
+        {
+          "fixture": "c_target_char_to_list.bend",
+          "target": "c",
+          "observed": "955\n120"
+        },
+        {
+          "fixture": "c_target_string_from_list.bend",
+          "target": "c",
+          "observed": "λx\n955\n955\n120"
+        },
+        {
+          "fixture": "c_target_array_nat.bend",
+          "target": "c",
+          "observed": "7"
+        },
+        {
+          "fixture": "c_target_array_nested.bend",
+          "target": "c",
+          "observed": "12"
+        },
+        {
+          "fixture": "c_target_drop_fields.bend",
+          "target": "c",
+          "observed": "5"
+        },
+        {
+          "fixture": "c_target_utf8_literal.bend",
+          "target": "c",
+          "observed": "λx"
+        },
+        {
+          "fixture": "c_target_utf8_astral.bend",
+          "target": "c",
+          "observed": "𝄞"
+        },
+        {
+          "fixture": "c_target_trigraph_literal.bend",
+          "target": "c",
+          "observed": "??=??/??'??(??)??!??<??>??-"
+        },
+        {
+          "fixture": "phys_storage_paths.bend",
+          "target": "c",
+          "observed": "2655042671\n3,9"
+        },
+        {
+          "fixture": "generic_ctor_domains.bend",
+          "target": "c",
+          "observed": "15\n21"
+        },
+        {
+          "fixture": "c_target_bool_prims.bend",
+          "target": "c",
+          "observed": "1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n1\n0\n1\n1\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n0\n1\n0\n0\n1\n1\n0\n1\n1\n0\n1\n0\n1\n0"
+        },
+        {
+          "fixture": "c_target_clo_field.bend",
+          "target": "c",
+          "observed": "7"
+        },
+        {
+          "fixture": "c_target_repeat_data.bend",
+          "target": "c",
+          "observed": "8"
+        },
+        {
+          "fixture": "c_target_disjoint_type_cells.bend",
+          "target": "c",
+          "observed": "5"
+        },
+        {
+          "fixture": "c_target_repeat_capture.bend",
+          "target": "c",
+          "observed": "10"
+        },
+        {
+          "fixture": "c_target_alias_paths.bend",
+          "target": "c",
+          "observed": "8"
+        },
+        {
+          "fixture": "c_target_branch_arms.bend",
+          "target": "c",
+          "observed": "hi"
+        },
+        {
+          "fixture": "c_target_region_leave_repeat.bend",
+          "target": "c",
+          "observed": "7\n6"
+        },
+        {
+          "fixture": "c_target_bool_fields.bend",
+          "target": "c",
+          "observed": "True\nFalse\n1"
+        },
+        {
+          "fixture": "c_target_region_tail_capture.bend",
+          "target": "c",
+          "observed": "11\n12"
+        },
+        {
+          "fixture": "c_target_bool_xor.bend",
+          "target": "c",
+          "observed": "False\nTrue\nTrue\nFalse"
+        },
+        {
+          "fixture": "c_target_show_data.bend",
+          "target": "c",
+          "observed": "[1, 2]"
+        },
+        {
+          "fixture": "c_target_user_ctor_show.bend",
+          "target": "c",
+          "observed": "c_target_q_ctors.T.Tuple{c_target_q_ctors.T.Con{1, c_target_q_ctors.T.Nil{}}, 2}"
+        },
+        {
+          "fixture": "c_target_wide_node.bend",
+          "target": "c",
+          "observed": "13\n11\n0"
+        },
+        {
+          "fixture": "args.bend",
+          "target": "c",
+          "observed": "True 0"
+        },
+        {
+          "fixture": "args_bytes.bend",
+          "target": "c",
+          "observed": "True 0"
+        },
+        {
+          "fixture": "repro_js_non_tail_reclaim.bend",
+          "target": "c",
+          "observed": "24000011"
+        },
+        {
+          "fixture": "array_fork.bend",
+          "target": "c",
+          "observed": "136\n100\n100\n96\n99\n156\n42\n42\n7\n8\n12\n845495236"
+        },
+        {
+          "fixture": "array_atomic_fadd.bend",
+          "target": "c",
+          "observed": "68\n2448.25"
+        },
+        {
+          "fixture": "array_atomic_edges.bend",
+          "target": "c",
+          "observed": "4294967295\n2\n42\n42\n42\n7\n2147483648\n0\n1266679808\n1266679808"
+        },
+        {
+          "fixture": "f32_read_round_once.bend",
+          "target": "c",
+          "observed": "1065353215 1065353217 1266679808 2139095039 2139095040 1 3212836863\n1065353215 1065353217 1266679808 2139095039 1"
+        },
+        {
+          "fixture": "f32_read_whitespace.bend",
+          "target": "c",
+          "observed": "1 1 1 1 1 1 1\nnone none none none none none none none none none none none none\nnone none none none none none\n-125 0.5 inf nan\nnone none none none\nnone none none none none"
+        },
+        {
+          "fixture": "f32_pow_unit_base.bend",
+          "target": "c",
+          "observed": "1 1 1 1 8"
+        },
+        {
+          "fixture": "word_float_roundtrip.bend",
+          "target": "c",
+          "observed": "1065353216\n2147483648\n1\n2139095040\n1065353217\n2130706432"
+        },
+        {
+          "fixture": "map_prefix_keys.bend",
+          "target": "c",
+          "observed": "a=2,ab=1,b=3,.\na=20,ab=1,b=3,c=30,.\na=2,ab=1,b=3,c=30,.\nLTGTLT\n=4,𝄞=5,𝄞a=6,.\nLTGTLT\nTFTTF"
+        },
+        {
+          "fixture": "text_ops.bend",
+          "target": "c",
+          "observed": "14"
+        },
+        {
+          "fixture": "native_string_borrow.bend",
+          "target": "c",
+          "observed": "2\nz\nabab\nbounded"
+        }
+      ],
+      "stdoutSha256": "34a1eb3384d66408ad95736cd941712b0b77db42dd220ed09b428126f06d994b",
+      "pinsSha256": "d51e7f2104aebc0151eb20313640d5c4d89423bdeb53e0afde26a7a69ea168c7",
+      "pins": {
+        "mode": "acceptance-matrix",
+        "target": "c",
+        "node": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "nodeVersion": "v23.11.0",
+        "v8": "12.9.202.28-node.14|--max-old-space-size=3072,-e,process.stdout.write(process.versions.v8 + \"|\" + process.execArgv.join(\",\"))",
+        "driver": "/tmp/bend-remote2039g15-driver",
+        "guardianTs": "/Users/ilyagulya/bend-g15-append-ba359cac-a8ad-4bcf-b77c-efe2a2e720e5/evals/heavy_gate.ts",
+        "guardianTsSha256": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015",
+        "guardianNativeC": "/Users/ilyagulya/bend-g15-append-ba359cac-a8ad-4bcf-b77c-efe2a2e720e5/evals/heavy_gate_native.c",
+        "guardianNativeCSha256": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b",
+        "cwd": "/Users/ilyagulya/bend-g15-append-ba359cac-a8ad-4bcf-b77c-efe2a2e720e5",
+        "base": "/Users/ilyagulya/bend-g15-append-ba359cac-a8ad-4bcf-b77c-efe2a2e720e5/bend2/base.bend",
+        "baseSha256": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+        "runtime": "/Users/ilyagulya/bend-g15-append-ba359cac-a8ad-4bcf-b77c-efe2a2e720e5/bend2/selfhost/c_runtime.c",
+        "runtimeSha256": "351dd1aff6ab09c9ed1c014c4dab3a8b72bff01b17aff026b66b4fd5cc3da85d",
+        "logs": "/tmp/bend-remote2039g15-admission-Ja5agO/matrix-c",
+        "gate": {
+          "memoryMiB": 8192,
+          "rssMiB": 8192,
+          "pollMs": 10,
+          "timeoutMs": 600000
+        },
+        "fixtures": 43
+      }
+    },
+    {
+      "target": "js",
+      "summary": {
+        "status": "PASS",
+        "mode": "acceptance-matrix",
+        "target": "js",
+        "fixtures": 43,
+        "logDir": "/tmp/bend-remote2039g15-admission-Ja5agO/matrix-js",
+        "nodeVersion": "v23.11.0",
+        "v8": "12.9.202.28-node.14|--max-old-space-size=3072,-e,process.stdout.write(process.versions.v8 + \"|\" + process.execArgv.join(\",\"))"
+      },
+      "rows": [
+        {
+          "fixture": "c_target_wide_record.bend",
+          "target": "js",
+          "observed": "133"
+        },
+        {
+          "fixture": "c_target_nested_adt.bend",
+          "target": "js",
+          "observed": "15"
+        },
+        {
+          "fixture": "c_target_array_u32.bend",
+          "target": "js",
+          "observed": "15"
+        },
+        {
+          "fixture": "c_target_array_wide.bend",
+          "target": "js",
+          "observed": "16"
+        },
+        {
+          "fixture": "c_target_multiarm.bend",
+          "target": "js",
+          "observed": "13"
+        },
+        {
+          "fixture": "c_target_char_head.bend",
+          "target": "js",
+          "observed": "955\n955"
+        },
+        {
+          "fixture": "c_target_char_to_list.bend",
+          "target": "js",
+          "observed": "955\n120"
+        },
+        {
+          "fixture": "c_target_string_from_list.bend",
+          "target": "js",
+          "observed": "λx\n955\n955\n120"
+        },
+        {
+          "fixture": "c_target_array_nat.bend",
+          "target": "js",
+          "observed": "7"
+        },
+        {
+          "fixture": "c_target_array_nested.bend",
+          "target": "js",
+          "observed": "12"
+        },
+        {
+          "fixture": "c_target_drop_fields.bend",
+          "target": "js",
+          "observed": "5"
+        },
+        {
+          "fixture": "c_target_utf8_literal.bend",
+          "target": "js",
+          "observed": "λx"
+        },
+        {
+          "fixture": "c_target_utf8_astral.bend",
+          "target": "js",
+          "observed": "𝄞"
+        },
+        {
+          "fixture": "c_target_trigraph_literal.bend",
+          "target": "js",
+          "observed": "??=??/??'??(??)??!??<??>??-"
+        },
+        {
+          "fixture": "phys_storage_paths.bend",
+          "target": "js",
+          "observed": "2655042671\n3,9"
+        },
+        {
+          "fixture": "generic_ctor_domains.bend",
+          "target": "js",
+          "observed": "15\n21"
+        },
+        {
+          "fixture": "c_target_bool_prims.bend",
+          "target": "js",
+          "observed": "1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n1\n0\n1\n1\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n0\n1\n0\n0\n1\n1\n0\n1\n1\n0\n1\n0\n1\n0"
+        },
+        {
+          "fixture": "c_target_clo_field.bend",
+          "target": "js",
+          "observed": "7"
+        },
+        {
+          "fixture": "c_target_repeat_data.bend",
+          "target": "js",
+          "observed": "8"
+        },
+        {
+          "fixture": "c_target_disjoint_type_cells.bend",
+          "target": "js",
+          "observed": "5"
+        },
+        {
+          "fixture": "c_target_repeat_capture.bend",
+          "target": "js",
+          "observed": "10"
+        },
+        {
+          "fixture": "c_target_alias_paths.bend",
+          "target": "js",
+          "observed": "8"
+        },
+        {
+          "fixture": "c_target_branch_arms.bend",
+          "target": "js",
+          "observed": "hi"
+        },
+        {
+          "fixture": "c_target_region_leave_repeat.bend",
+          "target": "js",
+          "observed": "7\n6"
+        },
+        {
+          "fixture": "c_target_bool_fields.bend",
+          "target": "js",
+          "observed": "True\nFalse\n1"
+        },
+        {
+          "fixture": "c_target_region_tail_capture.bend",
+          "target": "js",
+          "observed": "11\n12"
+        },
+        {
+          "fixture": "c_target_bool_xor.bend",
+          "target": "js",
+          "observed": "False\nTrue\nTrue\nFalse"
+        },
+        {
+          "fixture": "c_target_show_data.bend",
+          "target": "js",
+          "observed": "[1, 2]"
+        },
+        {
+          "fixture": "c_target_user_ctor_show.bend",
+          "target": "js",
+          "observed": "c_target_q_ctors.T.Tuple{c_target_q_ctors.T.Con{1, c_target_q_ctors.T.Nil{}}, 2}"
+        },
+        {
+          "fixture": "c_target_wide_node.bend",
+          "target": "js",
+          "observed": "13\n11\n0"
+        },
+        {
+          "fixture": "args.bend",
+          "target": "js",
+          "observed": "True 0"
+        },
+        {
+          "fixture": "args_bytes.bend",
+          "target": "js",
+          "observed": "True 0"
+        },
+        {
+          "fixture": "repro_js_non_tail_reclaim.bend",
+          "target": "js",
+          "observed": "24000011"
+        },
+        {
+          "fixture": "array_fork.bend",
+          "target": "js",
+          "observed": "136\n100\n100\n96\n99\n156\n42\n42\n7\n8\n12\n845495236"
+        },
+        {
+          "fixture": "array_atomic_fadd.bend",
+          "target": "js",
+          "observed": "68\n2448.25"
+        },
+        {
+          "fixture": "array_atomic_edges.bend",
+          "target": "js",
+          "observed": "4294967295\n2\n42\n42\n42\n7\n2147483648\n0\n1266679808\n1266679808"
+        },
+        {
+          "fixture": "f32_read_round_once.bend",
+          "target": "js",
+          "observed": "1065353215 1065353217 1266679808 2139095039 2139095040 1 3212836863\n1065353215 1065353217 1266679808 2139095039 1"
+        },
+        {
+          "fixture": "f32_read_whitespace.bend",
+          "target": "js",
+          "observed": "1 1 1 1 1 1 1\nnone none none none none none none none none none none none none\nnone none none none none none\n-125 0.5 inf nan\nnone none none none\nnone none none none none"
+        },
+        {
+          "fixture": "f32_pow_unit_base.bend",
+          "target": "js",
+          "observed": "1 1 1 1 8"
+        },
+        {
+          "fixture": "word_float_roundtrip.bend",
+          "target": "js",
+          "observed": "1065353216\n2147483648\n1\n2139095040\n1065353217\n2130706432"
+        },
+        {
+          "fixture": "map_prefix_keys.bend",
+          "target": "js",
+          "observed": "a=2,ab=1,b=3,.\na=20,ab=1,b=3,c=30,.\na=2,ab=1,b=3,c=30,.\nLTGTLT\n=4,𝄞=5,𝄞a=6,.\nLTGTLT\nTFTTF"
+        },
+        {
+          "fixture": "text_ops.bend",
+          "target": "js",
+          "observed": "14"
+        },
+        {
+          "fixture": "native_string_borrow.bend",
+          "target": "js",
+          "observed": "2\nz\nabab\nbounded"
+        }
+      ],
+      "stdoutSha256": "8a62c0c30abb6d91d6032216992f87039874fe9a33dc7d19e81d96297a7d8e82",
+      "pinsSha256": "5276ea1ab0f2d2427c8ed89d26ebdf004276c89e8463194e77e052aaf6057f44",
+      "pins": {
+        "mode": "acceptance-matrix",
+        "target": "js",
+        "node": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "nodeVersion": "v23.11.0",
+        "v8": "12.9.202.28-node.14|--max-old-space-size=3072,-e,process.stdout.write(process.versions.v8 + \"|\" + process.execArgv.join(\",\"))",
+        "driver": "/tmp/bend-remote2039g15-driver",
+        "guardianTs": "/Users/ilyagulya/bend-g15-append-ba359cac-a8ad-4bcf-b77c-efe2a2e720e5/evals/heavy_gate.ts",
+        "guardianTsSha256": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015",
+        "guardianNativeC": "/Users/ilyagulya/bend-g15-append-ba359cac-a8ad-4bcf-b77c-efe2a2e720e5/evals/heavy_gate_native.c",
+        "guardianNativeCSha256": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b",
+        "cwd": "/Users/ilyagulya/bend-g15-append-ba359cac-a8ad-4bcf-b77c-efe2a2e720e5",
+        "base": "/Users/ilyagulya/bend-g15-append-ba359cac-a8ad-4bcf-b77c-efe2a2e720e5/bend2/base.bend",
+        "baseSha256": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+        "runtime": "/Users/ilyagulya/bend-g15-append-ba359cac-a8ad-4bcf-b77c-efe2a2e720e5/bend2/selfhost/c_runtime.c",
+        "runtimeSha256": "351dd1aff6ab09c9ed1c014c4dab3a8b72bff01b17aff026b66b4fd5cc3da85d",
+        "logs": "/tmp/bend-remote2039g15-admission-Ja5agO/matrix-js",
+        "gate": {
+          "memoryMiB": 8192,
+          "rssMiB": 8192,
+          "pollMs": 10,
+          "timeoutMs": 600000
+        },
+        "fixtures": 43
+      }
+    }
+  ],
+  "nativeConsumers": {
+    "original": "/tmp/bend-remote2039g15-native-foreign-zqjBzw/receipt.json",
+    "sha256": "3e365847bc3666a563cba4188af341748a6a28d303090f7d033ce86ae0a212d1",
+    "status": "FAIL",
+    "binary": {
+      "path": "/tmp/bend-remote2039g15-native",
+      "sha256": "9831507af7f6b30dbe42ec04363d1a4f4feb7389c1891a07ce930ef728254fbb"
+    },
+    "completed": [
+      {
+        "source": "tests/run/c_backend_link.bend",
+        "target": "c",
+        "passed": true,
+        "expected": "linked-comment-kept\nliteral-kept\nfid-linked\nsplice-kept\nsplice-kept\nmissing",
+        "observed": "linked-comment-kept\nliteral-kept\nfid-linked\nsplice-kept\nsplice-kept\nmissing",
+        "outputSha256": "17f5cdb641e60be17fca5e23fd20574b5cd6ca169816f2c85b8313b11864d4a4"
+      },
+      {
+        "source": "tests/run/c_backend_link.bend",
+        "target": "js",
+        "passed": true,
+        "expected": "linked-comment-kept\nliteral-kept\nfid-linked\nsplice-kept\nsplice-kept\nmissing",
+        "observed": "linked-comment-kept\nliteral-kept\nfid-linked\nsplice-kept\nsplice-kept\nmissing",
+        "outputSha256": "7844a35039f739856bd900b7e46cf9aba7326995e393385297a998c49598154f"
+      },
+      {
+        "source": "tests/run/family_field_hot.bend",
+        "target": "c",
+        "passed": true,
+        "expected": "5",
+        "observed": "5",
+        "outputSha256": "152693962960c6e13f44badba9470aa6deb0eceb50795afe95bbe191a053d55b"
+      },
+      {
+        "source": "tests/run/family_field_hot.bend",
+        "target": "js",
+        "passed": true,
+        "expected": "5",
+        "observed": "5",
+        "outputSha256": "fad24d8229db9cee7f70d43221d102a7510c6d0772c36b3c638546394625d5d5"
+      },
+      {
+        "source": "tests/run/list_rebox_sum.bend",
+        "target": "c",
+        "passed": true,
+        "expected": "7\n3\nbounded",
+        "observed": "7\n3\nbounded",
+        "outputSha256": "661a3e8985b25296d4529195674beb38cab03ef7e3263fc7d0c9c35f139e7853"
+      },
+      {
+        "source": "tests/run/list_rebox_sum.bend",
+        "target": "js",
+        "passed": true,
+        "expected": "7\n3\nbounded",
+        "observed": "7\n3\nbounded",
+        "outputSha256": "db645ffe55d312f5126d4382cca26c1d4cd5b9327b93bccbc26194fb9aae253e"
+      },
+      {
+        "source": "tests/run/array_fork.bend",
+        "target": "c",
+        "passed": true,
+        "expected": "136\n100\n100\n96\n99\n156\n42\n42\n7\n8\n12\n845495236",
+        "observed": "136\n100\n100\n96\n99\n156\n42\n42\n7\n8\n12\n845495236",
+        "outputSha256": "2366802c4b5e484afaaee8cea4b5f59ca2f67fa0a266a7f7067e57d63cb8f935"
+      },
+      {
+        "source": "tests/run/array_fork.bend",
+        "target": "js",
+        "passed": true,
+        "expected": "136\n100\n100\n96\n99\n156\n42\n42\n7\n8\n12\n845495236",
+        "observed": "136\n100\n100\n96\n99\n156\n42\n42\n7\n8\n12\n845495236",
+        "outputSha256": "961333f3dac2d727ebacba775c4090080d0589d1bd204d205aea2a23fb565dce"
+      },
+      {
+        "source": "tests/run/array_atomic_fadd.bend",
+        "target": "c",
+        "passed": true,
+        "expected": "68\n2448.25",
+        "observed": "68\n2448.25",
+        "outputSha256": "0761e4101b87be45f47ec8413b450e9a01ac04180d97c629768c303f6c9a9a6a"
+      },
+      {
+        "source": "tests/run/array_atomic_fadd.bend",
+        "target": "js",
+        "passed": true,
+        "expected": "68\n2448.25",
+        "observed": "68\n2448.25",
+        "outputSha256": "63f70d0afdaaf4c04e418033dec681d9e0c8a5f09a5a440076facca786c1b93a"
+      },
+      {
+        "source": "tests/run/array_atomic_edges.bend",
+        "target": "c",
+        "passed": true,
+        "expected": "4294967295\n2\n42\n42\n42\n7\n2147483648\n0\n1266679808\n1266679808",
+        "observed": "4294967295\n2\n42\n42\n42\n7\n2147483648\n0\n1266679808\n1266679808",
+        "outputSha256": "7880d39ef200f58c68200f520d727e346dc82015fd5367f39e6dd46f4a8336c7"
+      },
+      {
+        "source": "tests/run/array_atomic_edges.bend",
+        "target": "js",
+        "passed": true,
+        "expected": "4294967295\n2\n42\n42\n42\n7\n2147483648\n0\n1266679808\n1266679808",
+        "observed": "4294967295\n2\n42\n42\n42\n7\n2147483648\n0\n1266679808\n1266679808",
+        "outputSha256": "4aa2dda01e5ae8ac8a9ff45a5ab071a5e7d2cff308578e80b05ebaaaeb44ce32"
+      },
+      {
+        "source": "tests/run/f32_read_round_once.bend",
+        "target": "c",
+        "passed": true,
+        "expected": "1065353215 1065353217 1266679808 2139095039 2139095040 1 3212836863\n1065353215 1065353217 1266679808 2139095039 1",
+        "observed": "1065353215 1065353217 1266679808 2139095039 2139095040 1 3212836863\n1065353215 1065353217 1266679808 2139095039 1",
+        "outputSha256": "1e1c3c234882e89284d7960223887e1d8ae0ffcc0fa8318961f128ba6f9ead98"
+      },
+      {
+        "source": "tests/run/f32_read_round_once.bend",
+        "target": "js",
+        "passed": true,
+        "expected": "1065353215 1065353217 1266679808 2139095039 2139095040 1 3212836863\n1065353215 1065353217 1266679808 2139095039 1",
+        "observed": "1065353215 1065353217 1266679808 2139095039 2139095040 1 3212836863\n1065353215 1065353217 1266679808 2139095039 1",
+        "outputSha256": "45b486b2a4ce98e84f5118bbb985389913308c24274606c5efb16b0281f3e0cb"
+      },
+      {
+        "source": "tests/run/f32_read_whitespace.bend",
+        "target": "c",
+        "passed": true,
+        "expected": "1 1 1 1 1 1 1\nnone none none none none none none none none none none none none\nnone none none none none none\n-125 0.5 inf nan\nnone none none none\nnone none none none none",
+        "observed": "1 1 1 1 1 1 1\nnone none none none none none none none none none none none none\nnone none none none none none\n-125 0.5 inf nan\nnone none none none\nnone none none none none",
+        "outputSha256": "2619175f847312c676e27962f78890b0d6a834b58e8858709c01078930ff15db"
+      },
+      {
+        "source": "tests/run/f32_read_whitespace.bend",
+        "target": "js",
+        "passed": true,
+        "expected": "1 1 1 1 1 1 1\nnone none none none none none none none none none none none none\nnone none none none none none\n-125 0.5 inf nan\nnone none none none\nnone none none none none",
+        "observed": "1 1 1 1 1 1 1\nnone none none none none none none none none none none none none\nnone none none none none none\n-125 0.5 inf nan\nnone none none none\nnone none none none none",
+        "outputSha256": "65d0db3fc1297eaf3f56f60f0e6225fb72d29118393012c3ace3ffddaef45eac"
+      },
+      {
+        "source": "tests/run/f32_pow_unit_base.bend",
+        "target": "c",
+        "passed": true,
+        "expected": "1 1 1 1 8",
+        "observed": "1 1 1 1 8",
+        "outputSha256": "c53acd31b97f1a83c0d18cc98193fd101d29a98956dedee84c095887200812a8"
+      },
+      {
+        "source": "tests/run/f32_pow_unit_base.bend",
+        "target": "js",
+        "passed": true,
+        "expected": "1 1 1 1 8",
+        "observed": "1 1 1 1 8",
+        "outputSha256": "020bea88710f3c58438567413d2860d936678b52b85136a721f598dc82c5caa9"
+      },
+      {
+        "source": "tests/run/word_float_roundtrip.bend",
+        "target": "c",
+        "passed": true,
+        "expected": "1065353216\n2147483648\n1\n2139095040\n1065353217\n2130706432",
+        "observed": "1065353216\n2147483648\n1\n2139095040\n1065353217\n2130706432",
+        "outputSha256": "771c1ed127f2121d9a17c08d4bb74ffafd76c689adc6f9369bc94ccdebecdc67"
+      },
+      {
+        "source": "tests/run/word_float_roundtrip.bend",
+        "target": "js",
+        "passed": true,
+        "expected": "1065353216\n2147483648\n1\n2139095040\n1065353217\n2130706432",
+        "observed": "1065353216\n2147483648\n1\n2139095040\n1065353217\n2130706432",
+        "outputSha256": "38f1fd3bc9bc0571cea58c5a8f2c43df7229215e64b840287f0ee245df317ddf"
+      },
+      {
+        "source": "tests/base/map_prefix_keys.bend",
+        "target": "c",
+        "passed": true,
+        "expected": "a=2,ab=1,b=3,.\na=20,ab=1,b=3,c=30,.\na=2,ab=1,b=3,c=30,.\nLTGTLT\n=4,𝄞=5,𝄞a=6,.\nLTGTLT\nTFTTF",
+        "observed": "a=2,ab=1,b=3,.\na=20,ab=1,b=3,c=30,.\na=2,ab=1,b=3,c=30,.\nLTGTLT\n=4,𝄞=5,𝄞a=6,.\nLTGTLT\nTFTTF",
+        "outputSha256": "3214385095a8cb133404ba59b3e9f9d2a68e89ceb771d7ed74127a049b2d3ebe"
+      },
+      {
+        "source": "tests/base/map_prefix_keys.bend",
+        "target": "js",
+        "passed": true,
+        "expected": "a=2,ab=1,b=3,.\na=20,ab=1,b=3,c=30,.\na=2,ab=1,b=3,c=30,.\nLTGTLT\n=4,𝄞=5,𝄞a=6,.\nLTGTLT\nTFTTF",
+        "observed": "a=2,ab=1,b=3,.\na=20,ab=1,b=3,c=30,.\na=2,ab=1,b=3,c=30,.\nLTGTLT\n=4,𝄞=5,𝄞a=6,.\nLTGTLT\nTFTTF",
+        "outputSha256": "9553f1555427d61a748ca54047db7df5e83edd79fd0d47d583fe38b4d9ccdfda"
+      },
+      {
+        "source": "tests/base/text_ops.bend",
+        "target": "c",
+        "passed": true,
+        "expected": "14",
+        "observed": "14",
+        "outputSha256": "5d0569c33e633654091d33f3abc3b71653bd1ebf92126b766f3242aae85dd792"
+      },
+      {
+        "source": "tests/base/text_ops.bend",
+        "target": "js",
+        "passed": true,
+        "expected": "14",
+        "observed": "14",
+        "outputSha256": "0319f684f22aaa5007eb1de17009e41d6fb0bd8b834d82f0bcde80ab16101a6f"
+      },
+      {
+        "source": "tests/run/native_string_borrow.bend",
+        "target": "c",
+        "passed": true,
+        "expected": "2\nz\nabab\nbounded",
+        "observed": "2\nz\nabab\nbounded",
+        "outputSha256": "e302b88af7fa880b06959e4061dccd938e04cd757104da02b510f4594a2d9686"
+      },
+      {
+        "source": "tests/run/native_string_borrow.bend",
+        "target": "js",
+        "passed": true,
+        "expected": "2\nz\nabab\nbounded",
+        "observed": "2\nz\nabab\nbounded",
+        "outputSha256": "93ae0c90f50e48637fe4b44eb063c1cbf437d92d45a8c60648c87c4912b508be"
+      }
+    ],
+    "failure": {
+      "source": "tests/reg/checker_arena_names.bend",
+      "target": "c",
+      "label": "clang",
+      "command": [
+        "clang",
+        "-std=c11",
+        "-O0",
+        "-pthread",
+        "/tmp/bend-remote2039g15-native-foreign-zqjBzw/checker_arena_names-c.c",
+        "-lm",
+        "-o",
+        "/tmp/bend-remote2039g15-native-foreign-zqjBzw/checker_arena_names-c"
+      ],
+      "status": 1,
+      "signal": null,
+      "elapsedMs": 956.172332999995,
+      "stderrSha256": "5910f4145a3c03c18e2cf8478e26ce5ccd79c00905314a096fafb942a51bc2ad",
+      "errors": [
+        "use of undeclared identifier 'asf3w'",
+        "redefinition of 'asf3w'",
+        "redefinition of 'asf3w'",
+        "use of undeclared identifier 'asf3w'",
+        "redefinition of 'asf3w'",
+        "redefinition of 'asf3w'",
+        "use of undeclared identifier 'asf3w'",
+        "redefinition of 'asf3w'",
+        "redefinition of 'asf3w'",
+        "use of undeclared identifier 'asf3w'",
+        "redefinition of 'asf3w'",
+        "redefinition of 'asf3w'",
+        "use of undeclared identifier 'agx0f3w'",
+        "redefinition of 'agx0f3w'",
+        "redefinition of 'agx0f3w'",
+        "use of undeclared identifier 'agx1f3w'",
+        "redefinition of 'agx1f3w'",
+        "redefinition of 'agx1f3w'",
+        "use of undeclared identifier 'agx0f3w'"
+      ]
+    }
+  },
+  "nativeAdmission": {
+    "status": "HARNESS_INPUT_BOUNDARY_ERROR_NOT_COMPILER_EVIDENCE",
+    "error": "Native workload input escaped the repository: /private/tmp/bend-g15-native-admission-EwXFst/template.bend",
+    "note": "No g15 datatype/executable-admission result is claimed; g16 runner uses a repository-local source directory."
+  }
+}

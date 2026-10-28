@@ -1,0 +1,1124 @@
+{
+ "schemaVersion": 1,
+ "kind": "C_FULL_MATRIX",
+ "status": "FAIL_ALL_23_EMIT",
+ "mode": "acceptance-matrix",
+ "target": "c",
+ "worktree": {
+  "path": "/private/tmp/bend-fir-accept-6b1d",
+  "branch": "work/fir-accept-6b1d",
+  "baseCommit": "6b1d6743",
+  "fixtureCommit": "c975286b"
+ },
+ "component": {
+  "path": "/private/tmp/bend-cand-allbody57ab/checkpoints/cand-allbody57ab-art4.js",
+  "sha256": "433aadb54af3255d76dd41bf410b0e4002a675018389b497d6cb42448d7b0f03",
+  "bytes": 17834145
+ },
+ "host": {
+  "path": "/private/tmp/bend-cand-allbody57ab/evals/candidate_host.ts",
+  "sha256": "2596997a2a578cb371e11e8cb0858e4ebd9f53b1679d2814f3068a0db29613e4",
+  "note": "allbody host; diff from a56f57e3 is only optional --checked-out/--sources-out debug writes"
+ },
+ "parser": {
+  "path": "/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+  "sha256": "0e7b3c4295d5fc3e64cad4cb23eeb01c7c6051ae7df15893dd18622b226ca33b"
+ },
+ "tag": "../bend2/selfhost/backend_ir.SourceFile",
+ "node": {
+  "path": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+  "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5",
+  "version": "v23.11.0",
+  "heapMiB": 3072
+ },
+ "guardian": {
+  "path": "/private/tmp/bend-fir-accept-6b1d/evals/heavy_gate.ts",
+  "sha256": "204f3529704435455d20a9d5a126a8e9c62e002b6fed9044c8319da8a3c26ff2",
+  "nativeCSha256": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b",
+  "memoryMiB": 8192,
+  "rssMiB": 8192,
+  "pollMs": 10,
+  "timeoutMs": 600000,
+  "per": "stage"
+ },
+ "baseSha256": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+ "runtimeCSha256": "478c1ba7d0d0626c1927d11c4af3b3d4cef520db41afd8722ebf55d5050769c3",
+ "runner": {
+  "path": "evals/c_target_fixtures_run.ts",
+  "sha256": "c1a27d84b92ca0186bbc9cc387e8c3deca6761b88c7daea88f0acf3065c547b8"
+ },
+ "command": [
+  "bun",
+  "evals/c_target_fixtures_run.ts",
+  "--host=/private/tmp/bend-cand-allbody57ab/evals/candidate_host.ts",
+  "--component=/private/tmp/bend-cand-allbody57ab/checkpoints/cand-allbody57ab-art4.js",
+  "--parser=/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+  "--tag=../bend2/selfhost/backend_ir.SourceFile",
+  "--node=/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+  "--target=c",
+  "--logs=/tmp/accept23-c-1792914553"
+ ],
+ "cwd": "/private/tmp/bend-fir-accept-6b1d",
+ "outcome": {
+  "cases": 23,
+  "passed": 0,
+  "failed": 23,
+  "allSameError": true,
+  "error": "candidate: emission failed: a form field is not a single word",
+  "origin": "Observed literal: bend2/selfhost/c_backend_physical.bend:1178, inside read_body -> StSlot{... packed=False} -> case CLay.LayoutData{words, arms}: PartFail{\"a form field is not a single word\"}. The admitted Physical 256f5777 has no form_node or StForm; the actual BIR consumer/path that reaches this branch is NOT identified by this evidence and is left to Control/Storage."
+ },
+ "cases": [
+  {
+   "name": "evals/c_target_wide_record",
+   "sourceSha256": "88cca90b9c2ee71d14d73bf704c02f99866e70203f3f5b026522832f7f478c7c",
+   "expected": "133",
+   "emitExit": 1,
+   "emitStderrLastLine": "candidate: emission failed: a form field is not a single word",
+   "emitStderrSha256": "9e15d45a25e32d0ebb3a9e4e016e670e8494b128d71935116266435eab3918f8",
+   "gate": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "exitCode": 1,
+    "commandExitCode": 1,
+    "peakRssBytes": 1012252672,
+    "peakFootprintBytes": 1033764504,
+    "elapsedMs": 15788,
+    "timeoutMs": 600000
+   }
+  },
+  {
+   "name": "evals/c_target_nested_adt",
+   "sourceSha256": "704014f43ec2fb031640e41fad7a0960ca189a57ddcfaab4c198ef00a20be6cc",
+   "expected": "15",
+   "emitExit": 1,
+   "emitStderrLastLine": "candidate: emission failed: a form field is not a single word",
+   "emitStderrSha256": "da902a4461d98dc673c08ab5d9de4e67e519563d74c5860b93ff3800ee5cd618",
+   "gate": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "exitCode": 1,
+    "commandExitCode": 1,
+    "peakRssBytes": 1021706240,
+    "peakFootprintBytes": 1043496912,
+    "elapsedMs": 16184,
+    "timeoutMs": 600000
+   }
+  },
+  {
+   "name": "evals/c_target_array_u32",
+   "sourceSha256": "9e5752bf27faa913b0473c78d10141e9e8942c8bc56ba22a337265ab29fff2fa",
+   "expected": "15",
+   "emitExit": 1,
+   "emitStderrLastLine": "candidate: emission failed: a form field is not a single word",
+   "emitStderrSha256": "ae8323d98a73aa96ef87ffe68785721789fbd221b8a7c8a75825468e448eeb1a",
+   "gate": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "exitCode": 1,
+    "commandExitCode": 1,
+    "peakRssBytes": 990691328,
+    "peakFootprintBytes": 1036712664,
+    "elapsedMs": 26902,
+    "timeoutMs": 600000
+   }
+  },
+  {
+   "name": "evals/c_target_array_wide",
+   "sourceSha256": "fd151ba4438b94e76b9eaaa6e77a5c1bfe469726e90a92787f1a33458021cde1",
+   "expected": "16",
+   "emitExit": 1,
+   "emitStderrLastLine": "candidate: emission failed: a form field is not a single word",
+   "emitStderrSha256": "b3eb666ccb30b6927602100aaaa8059123e0c770c5b97a74054d92bb6a30cfa1",
+   "gate": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "exitCode": 1,
+    "commandExitCode": 1,
+    "peakRssBytes": 1014759424,
+    "peakFootprintBytes": 1051574272,
+    "elapsedMs": 28540,
+    "timeoutMs": 600000
+   }
+  },
+  {
+   "name": "evals/c_target_multiarm",
+   "sourceSha256": "19534b50a377c4142b352e2c1072a9c586f70585b65dc10414eb7e442842f2ac",
+   "expected": "13",
+   "emitExit": 1,
+   "emitStderrLastLine": "candidate: emission failed: a form field is not a single word",
+   "emitStderrSha256": "db5f92391e15503d148cde01220e7cfe3e896ee9cca83e80d298bd06f3b3b4ba",
+   "gate": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "exitCode": 1,
+    "commandExitCode": 1,
+    "peakRssBytes": 1032945664,
+    "peakFootprintBytes": 1055130224,
+    "elapsedMs": 22175,
+    "timeoutMs": 600000
+   }
+  },
+  {
+   "name": "evals/c_target_char_head",
+   "sourceSha256": "cc5811d968465d9756d579a854e68a649d08b521789c38afb7ebf0ec116422eb",
+   "expected": "955\n955",
+   "emitExit": 1,
+   "emitStderrLastLine": "candidate: emission failed: a form field is not a single word",
+   "emitStderrSha256": "8eb90027a284954554a958f212fe9a47d847f60fc242b62333dd2de4a0693680",
+   "gate": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "exitCode": 1,
+    "commandExitCode": 1,
+    "peakRssBytes": 923271168,
+    "peakFootprintBytes": 1042693616,
+    "elapsedMs": 29917,
+    "timeoutMs": 600000
+   }
+  },
+  {
+   "name": "evals/c_target_char_to_list",
+   "sourceSha256": "69788352c9b92708c9166d7e78cecd2e1e3ad33adf013eea5d8f2f3cff4262aa",
+   "expected": "955\n120",
+   "emitExit": 1,
+   "emitStderrLastLine": "candidate: emission failed: a form field is not a single word",
+   "emitStderrSha256": "20f0344d3be13159e0e8610a05085f08fb91ddbdd50b9f8fada592edea3d5044",
+   "gate": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "exitCode": 1,
+    "commandExitCode": 1,
+    "peakRssBytes": 1013661696,
+    "peakFootprintBytes": 1034779736,
+    "elapsedMs": 22534,
+    "timeoutMs": 600000
+   }
+  },
+  {
+   "name": "evals/c_target_string_from_list",
+   "sourceSha256": "2fdc63032bff8c9187ad0ab3533f44c0cb9dedfd9f7113e7b4f4f84e94d50d65",
+   "expected": "\u03bbx\n955\n955\n120",
+   "emitExit": 1,
+   "emitStderrLastLine": "candidate: emission failed: a form field is not a single word",
+   "emitStderrSha256": "7a9aa2057e003332eee36fa0f0b15ec6fb1ae1844174d7abeb30b05e3cc2bd74",
+   "gate": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "exitCode": 1,
+    "commandExitCode": 1,
+    "peakRssBytes": 1033437184,
+    "peakFootprintBytes": 1055654536,
+    "elapsedMs": 10822,
+    "timeoutMs": 600000
+   }
+  },
+  {
+   "name": "evals/c_target_array_nat",
+   "sourceSha256": "1f5d1ebc34537453b7733daff35973d09fb919ccf7af18c98fe948858d8f1462",
+   "expected": "7",
+   "emitExit": 1,
+   "emitStderrLastLine": "candidate: emission failed: a form field is not a single word",
+   "emitStderrSha256": "17dc4d9f91e7cefa4a3a54d4a35b353fbabcbfe8d59588174cf9eb6a2e9c291e",
+   "gate": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "exitCode": 1,
+    "commandExitCode": 1,
+    "peakRssBytes": 1026686976,
+    "peakFootprintBytes": 1048494128,
+    "elapsedMs": 12205,
+    "timeoutMs": 600000
+   }
+  },
+  {
+   "name": "evals/c_target_array_nested",
+   "sourceSha256": "3387f428bc07319bb66a07e64e0b7635efc01ea7400ec35ad4bc13eda04ff8dc",
+   "expected": "12",
+   "emitExit": 1,
+   "emitStderrLastLine": "candidate: emission failed: a form field is not a single word",
+   "emitStderrSha256": "80313788c03ef25a069cd84e9b53debed172c386e4ab56be1e7a49268dc7aae1",
+   "gate": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "exitCode": 1,
+    "commandExitCode": 1,
+    "peakRssBytes": 1018855424,
+    "peakFootprintBytes": 1040678936,
+    "elapsedMs": 12072,
+    "timeoutMs": 600000
+   }
+  },
+  {
+   "name": "evals/c_target_drop_fields",
+   "sourceSha256": "cc3f60ad76053e080ff234002c89b488beb5a06c823d4d516466dd90fb9f0bd6",
+   "expected": "5",
+   "emitExit": 1,
+   "emitStderrLastLine": "candidate: emission failed: a form field is not a single word",
+   "emitStderrSha256": "bb71b7fc564622624cfb0b34f6607bd869abe433f506e395c097408362e66b3c",
+   "gate": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "exitCode": 1,
+    "commandExitCode": 1,
+    "peakRssBytes": 1024262144,
+    "peakFootprintBytes": 1045691840,
+    "elapsedMs": 12225,
+    "timeoutMs": 600000
+   }
+  },
+  {
+   "name": "evals/c_target_utf8_literal",
+   "sourceSha256": "e9873e12d727b50ee32ef7afc1a2971f83fe27e314c2a4653e1f453e776342db",
+   "expected": "\u03bbx",
+   "emitExit": 1,
+   "emitStderrLastLine": "candidate: emission failed: a form field is not a single word",
+   "emitStderrSha256": "f768c879d286fc6432358dfa8726b35db4df61a8ae2d42d5e53f65dcd4d5fa9a",
+   "gate": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "exitCode": 1,
+    "commandExitCode": 1,
+    "peakRssBytes": 1025228800,
+    "peakFootprintBytes": 1047216464,
+    "elapsedMs": 11536,
+    "timeoutMs": 600000
+   }
+  },
+  {
+   "name": "evals/c_target_utf8_astral",
+   "sourceSha256": "8b601c81baf7514313012117ea8dfac6ff4d4f0931725cc525f4f9e7f630a88a",
+   "expected": "\ud834\udd1e",
+   "emitExit": 1,
+   "emitStderrLastLine": "candidate: emission failed: a form field is not a single word",
+   "emitStderrSha256": "91e9391859326e0a028f011f2bb418fe7b9441a137659ef120cda72463327803",
+   "gate": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "exitCode": 1,
+    "commandExitCode": 1,
+    "peakRssBytes": 1029324800,
+    "peakFootprintBytes": 1051492952,
+    "elapsedMs": 8127,
+    "timeoutMs": 600000
+   }
+  },
+  {
+   "name": "evals/c_target_trigraph_literal",
+   "sourceSha256": "f036aa1315914c907429f883b010ff5e33b3cd75dab84137c8f1ea11574cc901",
+   "expected": "??=??/??'??(??)??!??<??>??-",
+   "emitExit": 1,
+   "emitStderrLastLine": "candidate: emission failed: a form field is not a single word",
+   "emitStderrSha256": "39a77620110d9638ca920787eee0cf9342f05a8114d2f93acc40e8991276f5c8",
+   "gate": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "exitCode": 1,
+    "commandExitCode": 1,
+    "peakRssBytes": 1010827264,
+    "peakFootprintBytes": 1031666368,
+    "elapsedMs": 7797,
+    "timeoutMs": 600000
+   }
+  },
+  {
+   "name": "tests/reg/phys_storage_paths",
+   "sourceSha256": "b3f1aad4a75d028845f301816982a0d98a9606d239ce4d3c674a91ac5bf5fd85",
+   "expected": "2655042671\n3,9",
+   "emitExit": 1,
+   "emitStderrLastLine": "candidate: emission failed: a form field is not a single word",
+   "emitStderrSha256": "643b9835c5aa57579cf7a54aeab4104879aa22f856f0f485c729a25862cc663e",
+   "gate": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "exitCode": 1,
+    "commandExitCode": 1,
+    "peakRssBytes": 1028849664,
+    "peakFootprintBytes": 1050755288,
+    "elapsedMs": 11498,
+    "timeoutMs": 600000
+   }
+  },
+  {
+   "name": "evals/c_target_bool_prims",
+   "sourceSha256": "bc2c9dd125503eaaae6cf233da61400cae28d2ca7da2b09027ae1fe3da408688",
+   "expected": "1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n1\n0\n1\n1\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n0\n1\n0\n0\n1\n1\n0\n1\n1\n0\n1\n0\n1\n0",
+   "emitExit": 1,
+   "emitStderrLastLine": "candidate: emission failed: a form field is not a single word",
+   "emitStderrSha256": "cc4dd0eb5a3e620d0419f0836643fbcd24438bfabe47d5ee3e6ba320c21ba135",
+   "gate": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "exitCode": 1,
+    "commandExitCode": 1,
+    "peakRssBytes": 1040334848,
+    "peakFootprintBytes": 1062962352,
+    "elapsedMs": 18154,
+    "timeoutMs": 600000
+   }
+  },
+  {
+   "name": "evals/c_target_clo_field",
+   "sourceSha256": "7e1e922c18100bf2b4b588859f555012848843525a56785b1f33e13dec197b4f",
+   "expected": "7",
+   "emitExit": 1,
+   "emitStderrLastLine": "candidate: emission failed: a form field is not a single word",
+   "emitStderrSha256": "053d2fc6a352bfdf4714f184051fd07652b7ea1484e470ee572bddd4568778b6",
+   "gate": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "exitCode": 1,
+    "commandExitCode": 1,
+    "peakRssBytes": 1021837312,
+    "peakFootprintBytes": 1042676296,
+    "elapsedMs": 16427,
+    "timeoutMs": 600000
+   }
+  },
+  {
+   "name": "evals/c_target_repeat_data",
+   "sourceSha256": "b871c3b5242184e47ee9e7c034b2d6f62e31a1159ed6c8e259b6e9b2bd240546",
+   "expected": "8",
+   "emitExit": 1,
+   "emitStderrLastLine": "candidate: emission failed: a form field is not a single word",
+   "emitStderrSha256": "e1bb1d46732c39cb10aa345a8879c95355721da2e5a1837bf139d5521c11e882",
+   "gate": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "exitCode": 1,
+    "commandExitCode": 1,
+    "peakRssBytes": 935329792,
+    "peakFootprintBytes": 1039662888,
+    "elapsedMs": 17559,
+    "timeoutMs": 600000
+   }
+  },
+  {
+   "name": "evals/c_target_disjoint_type_cells",
+   "sourceSha256": "5b6ead1a37e317d4fed3b5060a0527f982045dd336d2ec385690b974fb92a6da",
+   "expected": "5",
+   "emitExit": 1,
+   "emitStderrLastLine": "candidate: emission failed: a form field is not a single word",
+   "emitStderrSha256": "ead5b568a7154b308c2ef4fdb616d29db925b88867f343e261c7cf8ba305d6d6",
+   "gate": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "exitCode": 1,
+    "commandExitCode": 1,
+    "peakRssBytes": 1020100608,
+    "peakFootprintBytes": 1041448360,
+    "elapsedMs": 10452,
+    "timeoutMs": 600000
+   }
+  },
+  {
+   "name": "evals/c_target_repeat_capture",
+   "sourceSha256": "59dd7417420f4128ce84e65e14276c5c35d6b764d7d25b3d5a1a4f02e2d239fe",
+   "expected": "10",
+   "emitExit": 1,
+   "emitStderrLastLine": "candidate: emission failed: a form field is not a single word",
+   "emitStderrSha256": "1a5b7a9c51b6cdd09929241955efd9558a678803eccf5c4ede1b8392602be97e",
+   "gate": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "exitCode": 1,
+    "commandExitCode": 1,
+    "peakRssBytes": 1016545280,
+    "peakFootprintBytes": 1047445168,
+    "elapsedMs": 24532,
+    "timeoutMs": 600000
+   }
+  },
+  {
+   "name": "evals/c_target_alias_paths",
+   "sourceSha256": "5e5f5dee9376664013f1d7ce055fa45af40c40b9e2fbee02e8755e84abdf932f",
+   "expected": "8",
+   "emitExit": 1,
+   "emitStderrLastLine": "candidate: emission failed: a form field is not a single word",
+   "emitStderrSha256": "d46582f8bf17c225dbe22bd2b42b79a74f3edc0aa626b8be482c8b518c605520",
+   "gate": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "exitCode": 1,
+    "commandExitCode": 1,
+    "peakRssBytes": 1018920960,
+    "peakFootprintBytes": 1043480576,
+    "elapsedMs": 34583,
+    "timeoutMs": 600000
+   }
+  },
+  {
+   "name": "evals/c_target_branch_arms",
+   "sourceSha256": "113f0729f92d7b0275f4d5941d7ae6cc21d1c1968b4e4abcffdb7534587a8719",
+   "expected": "hi",
+   "emitExit": 1,
+   "emitStderrLastLine": "candidate: emission failed: a form field is not a single word",
+   "emitStderrSha256": "67c0ff21783fb8bbb5d263573104b5b1772a9c3509bf6197410295a97591d108",
+   "gate": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "exitCode": 1,
+    "commandExitCode": 1,
+    "peakRssBytes": 1028079616,
+    "peakFootprintBytes": 1050132912,
+    "elapsedMs": 21537,
+    "timeoutMs": 600000
+   }
+  },
+  {
+   "name": "evals/c_target_region_leave_repeat",
+   "sourceSha256": "e0ff9c485e11bddd85e045bf1a7ccdc6be911d924a7950be2b552d71bd092fc1",
+   "expected": "7\n6",
+   "emitExit": 1,
+   "emitStderrLastLine": "candidate: emission failed: a form field is not a single word",
+   "emitStderrSha256": "3ef04059bc26dcf012775ca2b4124ab0110cbdb454555308841f13c8ca5d18f2",
+   "gate": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "exitCode": 1,
+    "commandExitCode": 1,
+    "peakRssBytes": 1038942208,
+    "peakFootprintBytes": 1061126768,
+    "elapsedMs": 18929,
+    "timeoutMs": 600000
+   }
+  }
+ ],
+ "logs": {
+  "dir": "/tmp/accept23-c-1792914553",
+  "fileCount": 139,
+  "files": {
+   "c_target_alias_paths.emit.exit": {
+    "bytes": 2,
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+   },
+   "c_target_alias_paths.emit.gate.json": {
+    "bytes": 2448,
+    "sha256": "7a8e2bfd24ddd6a219c16be75750ea44d624442dcd866ca615bbdd0a98c02a26"
+   },
+   "c_target_alias_paths.emit.gate.report.json": {
+    "bytes": 1364,
+    "sha256": "7f1c4ffd9397e650b585d8cd1a6b62e11a243d255dbd6edefdcb4218bfd1c84b"
+   },
+   "c_target_alias_paths.emit.stderr": {
+    "bytes": 239,
+    "sha256": "d46582f8bf17c225dbe22bd2b42b79a74f3edc0aa626b8be482c8b518c605520"
+   },
+   "c_target_alias_paths.emit.stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "c_target_alias_paths.pins.json": {
+    "bytes": 1161,
+    "sha256": "b1154bc8b44d57865f438e1c57b1346528ee0ea15ec68f0639afae290c68b13e"
+   },
+   "c_target_array_nat.emit.exit": {
+    "bytes": 2,
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+   },
+   "c_target_array_nat.emit.gate.json": {
+    "bytes": 2430,
+    "sha256": "71d18d193423975dddfbfc6d585ce55f8f2b706178c5456b5b301ad9053d44bb"
+   },
+   "c_target_array_nat.emit.gate.report.json": {
+    "bytes": 1354,
+    "sha256": "81ae35fd301f2c00d158da2efc67df34d15e3172826a55017f9eb63516c16436"
+   },
+   "c_target_array_nat.emit.stderr": {
+    "bytes": 239,
+    "sha256": "17dc4d9f91e7cefa4a3a54d4a35b353fbabcbfe8d59588174cf9eb6a2e9c291e"
+   },
+   "c_target_array_nat.emit.stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "c_target_array_nat.pins.json": {
+    "bytes": 1157,
+    "sha256": "a00da9d98d45993803dbfd59368657e18febae55aad247a398c1429b1bd8b56b"
+   },
+   "c_target_array_nested.emit.exit": {
+    "bytes": 2,
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+   },
+   "c_target_array_nested.emit.gate.json": {
+    "bytes": 2457,
+    "sha256": "9b3ecedac2067db6643ead1ecbc2ac1be11e4880d08bcc7ccc8494e0a58ae140"
+   },
+   "c_target_array_nested.emit.gate.report.json": {
+    "bytes": 1369,
+    "sha256": "02aed594d4b75fee59c2373cbfdaa9699db67990ed344896c7cd13a9f360f2d8"
+   },
+   "c_target_array_nested.emit.stderr": {
+    "bytes": 239,
+    "sha256": "80313788c03ef25a069cd84e9b53debed172c386e4ab56be1e7a49268dc7aae1"
+   },
+   "c_target_array_nested.emit.stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "c_target_array_nested.pins.json": {
+    "bytes": 1164,
+    "sha256": "69d32b393e1623e02d2d71a6c544e9815766bad3bdb2e20917462d85e47ca46a"
+   },
+   "c_target_array_u32.emit.exit": {
+    "bytes": 2,
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+   },
+   "c_target_array_u32.emit.gate.json": {
+    "bytes": 2429,
+    "sha256": "e66f526523fbeb11d5d0f746274aead8c851a0b0ac58db230b2e1959023538b2"
+   },
+   "c_target_array_u32.emit.gate.report.json": {
+    "bytes": 1353,
+    "sha256": "b8a71cee0728fed3afe5235cfca8a4269ef80af05ff79c6c0dc5824ffeed8cf5"
+   },
+   "c_target_array_u32.emit.stderr": {
+    "bytes": 239,
+    "sha256": "ae8323d98a73aa96ef87ffe68785721789fbd221b8a7c8a75825468e448eeb1a"
+   },
+   "c_target_array_u32.emit.stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "c_target_array_u32.pins.json": {
+    "bytes": 1158,
+    "sha256": "c5a546a23b67722b7439b511e2b773f0ad06fe3932994c191df2dace13d860b8"
+   },
+   "c_target_array_wide.emit.exit": {
+    "bytes": 2,
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+   },
+   "c_target_array_wide.emit.gate.json": {
+    "bytes": 2439,
+    "sha256": "ec1f3cc6aa76597459436486f46765b01d2ffac2f8c13cc3215ae32f3a042389"
+   },
+   "c_target_array_wide.emit.gate.report.json": {
+    "bytes": 1359,
+    "sha256": "095cc01e572bab11908c5f21c7a41636975293b60057a3d30fe5d4815d246595"
+   },
+   "c_target_array_wide.emit.stderr": {
+    "bytes": 239,
+    "sha256": "b3eb666ccb30b6927602100aaaa8059123e0c770c5b97a74054d92bb6a30cfa1"
+   },
+   "c_target_array_wide.emit.stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "c_target_array_wide.pins.json": {
+    "bytes": 1160,
+    "sha256": "fb24849c84bd851b1b8400ec00a6d4ca3b033cebcb743e8675d5dafbc054b3a6"
+   },
+   "c_target_bool_prims.emit.exit": {
+    "bytes": 2,
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+   },
+   "c_target_bool_prims.emit.gate.json": {
+    "bytes": 2439,
+    "sha256": "96861958f9c13e18a8a4658fc1a32c2ac8d912b127cf94b08cc021dd9ea0d299"
+   },
+   "c_target_bool_prims.emit.gate.report.json": {
+    "bytes": 1359,
+    "sha256": "eb7e8457682b65bd786ebed9cd72a9e8a4f040b069d2eab4c714b78bf9de6bf1"
+   },
+   "c_target_bool_prims.emit.stderr": {
+    "bytes": 239,
+    "sha256": "cc4dd0eb5a3e620d0419f0836643fbcd24438bfabe47d5ee3e6ba320c21ba135"
+   },
+   "c_target_bool_prims.emit.stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "c_target_bool_prims.pins.json": {
+    "bytes": 1297,
+    "sha256": "4e1ecf6930730ae5b34a84dfa31afe2f245f4c481facb6df43c94579eb9ccb35"
+   },
+   "c_target_branch_arms.emit.exit": {
+    "bytes": 2,
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+   },
+   "c_target_branch_arms.emit.gate.json": {
+    "bytes": 2448,
+    "sha256": "a6f056b77174336bdc3ec9c8b3a7dd054292fdbb7579c4fb22740ba1747e0792"
+   },
+   "c_target_branch_arms.emit.gate.report.json": {
+    "bytes": 1364,
+    "sha256": "fcbe64d9213b9ff48a205290515598b7d0252fcc2312205a46e8a8c0b4bd0949"
+   },
+   "c_target_branch_arms.emit.stderr": {
+    "bytes": 239,
+    "sha256": "67c0ff21783fb8bbb5d263573104b5b1772a9c3509bf6197410295a97591d108"
+   },
+   "c_target_branch_arms.emit.stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "c_target_branch_arms.pins.json": {
+    "bytes": 1162,
+    "sha256": "960a5599ef81b20bdde638b590ad0dabedcae61cff78525b6f089ed01d69bf1f"
+   },
+   "c_target_char_head.emit.exit": {
+    "bytes": 2,
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+   },
+   "c_target_char_head.emit.gate.json": {
+    "bytes": 2429,
+    "sha256": "a80578f5a452351aff4a060f6243478e6c81c4acf5c3671e2286fe773977287f"
+   },
+   "c_target_char_head.emit.gate.report.json": {
+    "bytes": 1353,
+    "sha256": "b6efabeadecda45b7d159b74d8ed6bec10c23d4464775d2658402f3d26a8db39"
+   },
+   "c_target_char_head.emit.stderr": {
+    "bytes": 239,
+    "sha256": "8eb90027a284954554a958f212fe9a47d847f60fc242b62333dd2de4a0693680"
+   },
+   "c_target_char_head.emit.stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "c_target_char_head.pins.json": {
+    "bytes": 1164,
+    "sha256": "2ee6871b45f944543acf7890b758269dd91c1fa67d04f25350c7a9b2ea24c3a2"
+   },
+   "c_target_char_to_list.emit.exit": {
+    "bytes": 2,
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+   },
+   "c_target_char_to_list.emit.gate.json": {
+    "bytes": 2457,
+    "sha256": "09b71e90733e260f801323bc440ab157ab374244e36e0b7fcbee05fd1a456194"
+   },
+   "c_target_char_to_list.emit.gate.report.json": {
+    "bytes": 1369,
+    "sha256": "5494e5ebeb8c918651c97470436560fecaddd29badd02d800353b8a2efafde6f"
+   },
+   "c_target_char_to_list.emit.stderr": {
+    "bytes": 239,
+    "sha256": "20f0344d3be13159e0e8610a05085f08fb91ddbdd50b9f8fada592edea3d5044"
+   },
+   "c_target_char_to_list.emit.stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "c_target_char_to_list.pins.json": {
+    "bytes": 1170,
+    "sha256": "83985765a98fcf422ebca9652f818b9b0f2ede51fd4ec9006619ac32c0a9988c"
+   },
+   "c_target_clo_field.emit.exit": {
+    "bytes": 2,
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+   },
+   "c_target_clo_field.emit.gate.json": {
+    "bytes": 2430,
+    "sha256": "abe54404996d518f95272759e79ef38e1514f3e3357619f559080e66fcf18fb1"
+   },
+   "c_target_clo_field.emit.gate.report.json": {
+    "bytes": 1354,
+    "sha256": "c8930ec6a3497ce6d0544e4d152a0b0e15555176d893c822dbcf9e1dbe0f2008"
+   },
+   "c_target_clo_field.emit.stderr": {
+    "bytes": 239,
+    "sha256": "053d2fc6a352bfdf4714f184051fd07652b7ea1484e470ee572bddd4568778b6"
+   },
+   "c_target_clo_field.emit.stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "c_target_clo_field.pins.json": {
+    "bytes": 1157,
+    "sha256": "aa49291817351d436f9f87f342ec6d7f2c084d7aba578bf06a162fdbfb0950ba"
+   },
+   "c_target_disjoint_type_cells.emit.exit": {
+    "bytes": 2,
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+   },
+   "c_target_disjoint_type_cells.emit.gate.json": {
+    "bytes": 2520,
+    "sha256": "b2e45d3dbb0a34a7008b4a36685ea13f184730f91c1758105ef50ffdfbb7b4c5"
+   },
+   "c_target_disjoint_type_cells.emit.gate.report.json": {
+    "bytes": 1404,
+    "sha256": "540945136e21c27b1ff4ae0266b7f91835b8cde6adfafd8bb34bdfcf05ca2ece"
+   },
+   "c_target_disjoint_type_cells.emit.stderr": {
+    "bytes": 239,
+    "sha256": "ead5b568a7154b308c2ef4fdb616d29db925b88867f343e261c7cf8ba305d6d6"
+   },
+   "c_target_disjoint_type_cells.emit.stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "c_target_disjoint_type_cells.pins.json": {
+    "bytes": 1177,
+    "sha256": "580c68a390ec54226f6fcfcc080a4814f62368cadddf6bfc2e6ddb753895fe3e"
+   },
+   "c_target_drop_fields.emit.exit": {
+    "bytes": 2,
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+   },
+   "c_target_drop_fields.emit.gate.json": {
+    "bytes": 2448,
+    "sha256": "734eecbe2869bf3fd9ee23c7d19f4020da1ee5964345b009c5e404fb1164e512"
+   },
+   "c_target_drop_fields.emit.gate.report.json": {
+    "bytes": 1364,
+    "sha256": "eb2bd60676c896b138d29dcf1478be27c52189ee5744c15b9cacb9438a5f778a"
+   },
+   "c_target_drop_fields.emit.stderr": {
+    "bytes": 239,
+    "sha256": "bb71b7fc564622624cfb0b34f6607bd869abe433f506e395c097408362e66b3c"
+   },
+   "c_target_drop_fields.emit.stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "c_target_drop_fields.pins.json": {
+    "bytes": 1161,
+    "sha256": "3d6d6113f94d30b8dd48068ea6bfa89c8f62840f5a9a795cbf713396f305779c"
+   },
+   "c_target_multiarm.emit.exit": {
+    "bytes": 2,
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+   },
+   "c_target_multiarm.emit.gate.json": {
+    "bytes": 2421,
+    "sha256": "6201d63943bc8bc80d02e7d80a108446cdb985fab0a8bcefd5a38da9074b5c18"
+   },
+   "c_target_multiarm.emit.gate.report.json": {
+    "bytes": 1349,
+    "sha256": "3fc7f9dd4c095c2d1c0addfd4e4eaa2d0e9ea07eabea9bd2167e944e44dc584a"
+   },
+   "c_target_multiarm.emit.stderr": {
+    "bytes": 239,
+    "sha256": "db5f92391e15503d148cde01220e7cfe3e896ee9cca83e80d298bd06f3b3b4ba"
+   },
+   "c_target_multiarm.emit.stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "c_target_multiarm.pins.json": {
+    "bytes": 1156,
+    "sha256": "384c97438c119119430925bd2bcbcb3b587b25277fd0427ace8afb2c7d66c0f2"
+   },
+   "c_target_nested_adt.emit.exit": {
+    "bytes": 2,
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+   },
+   "c_target_nested_adt.emit.gate.json": {
+    "bytes": 2439,
+    "sha256": "e87a795ff897e026284098e32e6ef88a571e4808585a2a170f5fd0e12fcd00b0"
+   },
+   "c_target_nested_adt.emit.gate.report.json": {
+    "bytes": 1359,
+    "sha256": "609ac4c77c23866eace7f3edc2af4ad2cb32a1ba4ebe73f3ca2f00915d7a550a"
+   },
+   "c_target_nested_adt.emit.stderr": {
+    "bytes": 239,
+    "sha256": "da902a4461d98dc673c08ab5d9de4e67e519563d74c5860b93ff3800ee5cd618"
+   },
+   "c_target_nested_adt.emit.stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "c_target_nested_adt.pins.json": {
+    "bytes": 1160,
+    "sha256": "1a5451254bbc6106bf5ff2bb207fc362c9a9b91a41c0233ea70ff981f20662ff"
+   },
+   "c_target_region_leave_repeat.emit.exit": {
+    "bytes": 2,
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+   },
+   "c_target_region_leave_repeat.emit.gate.json": {
+    "bytes": 2520,
+    "sha256": "12e516290a56386047b3cf8c7822b6eaf2a6efcdd80a0ccf805c15eceb0dd917"
+   },
+   "c_target_region_leave_repeat.emit.gate.report.json": {
+    "bytes": 1404,
+    "sha256": "562bb5498aad6d6d681f5ab774f8f6acaa407cdadf07a36229c0d59380aead26"
+   },
+   "c_target_region_leave_repeat.emit.stderr": {
+    "bytes": 239,
+    "sha256": "3ef04059bc26dcf012775ca2b4124ab0110cbdb454555308841f13c8ca5d18f2"
+   },
+   "c_target_region_leave_repeat.emit.stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "c_target_region_leave_repeat.pins.json": {
+    "bytes": 1180,
+    "sha256": "880fec1ef7f114eb6e618c3dae07098ba4392d1b8bddb0f5a5d4c23d2c49e917"
+   },
+   "c_target_repeat_capture.emit.exit": {
+    "bytes": 2,
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+   },
+   "c_target_repeat_capture.emit.gate.json": {
+    "bytes": 2475,
+    "sha256": "fce7925842486ec1298400a3a91748fd0633d884e5afc11c9c509d1413e7c6e8"
+   },
+   "c_target_repeat_capture.emit.gate.report.json": {
+    "bytes": 1379,
+    "sha256": "ba24bb2a41920f5e192a337926b577d40d8866a9d1e50105e5706746fe1352cb"
+   },
+   "c_target_repeat_capture.emit.stderr": {
+    "bytes": 239,
+    "sha256": "1a5b7a9c51b6cdd09929241955efd9558a678803eccf5c4ede1b8392602be97e"
+   },
+   "c_target_repeat_capture.emit.stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "c_target_repeat_capture.pins.json": {
+    "bytes": 1168,
+    "sha256": "7cea923948776167631e306ac845e0b9084f5da7d51bbf324fdba16fe1d68eef"
+   },
+   "c_target_repeat_data.emit.exit": {
+    "bytes": 2,
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+   },
+   "c_target_repeat_data.emit.gate.json": {
+    "bytes": 2447,
+    "sha256": "7833f307b2fb2bcfd41f5907a9c741f0574ea06833da7a3d120d2aa7eaa631c5"
+   },
+   "c_target_repeat_data.emit.gate.report.json": {
+    "bytes": 1363,
+    "sha256": "32f2c5721bd1e8045c96efa638e073cfb5f996f86ae6e734c7513b9b42507398"
+   },
+   "c_target_repeat_data.emit.stderr": {
+    "bytes": 239,
+    "sha256": "e1bb1d46732c39cb10aa345a8879c95355721da2e5a1837bf139d5521c11e882"
+   },
+   "c_target_repeat_data.emit.stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "c_target_repeat_data.pins.json": {
+    "bytes": 1161,
+    "sha256": "8032327332ffd8902b5ecad14b04bcfe7dfe6f70c6dde5f600b3ec1f4738550a"
+   },
+   "c_target_string_from_list.emit.exit": {
+    "bytes": 2,
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+   },
+   "c_target_string_from_list.emit.gate.json": {
+    "bytes": 2493,
+    "sha256": "61b2f1a2eb61e8f025f5e42ad9aac7712a6e5c524d0da50f74e1791bddff6c48"
+   },
+   "c_target_string_from_list.emit.gate.report.json": {
+    "bytes": 1389,
+    "sha256": "0ea07901dcbe44ae1ced300ee5d646a9bbe686b1dd1d60a79a7bfc38ad345c8c"
+   },
+   "c_target_string_from_list.emit.stderr": {
+    "bytes": 239,
+    "sha256": "7a9aa2057e003332eee36fa0f0b15ec6fb1ae1844174d7abeb30b05e3cc2bd74"
+   },
+   "c_target_string_from_list.emit.stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "c_target_string_from_list.pins.json": {
+    "bytes": 1188,
+    "sha256": "dd5c4665e1859163a585a21ee5ba1da97ba935c27c98388240edf3206373ba63"
+   },
+   "c_target_trigraph_literal.emit.exit": {
+    "bytes": 2,
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+   },
+   "c_target_trigraph_literal.emit.gate.json": {
+    "bytes": 2492,
+    "sha256": "1e50eda5b40eb43514658d99148a729553f91099d8716994f8a610302c601110"
+   },
+   "c_target_trigraph_literal.emit.gate.report.json": {
+    "bytes": 1388,
+    "sha256": "56afd6f91e52a2d8ec4d66a1e78d59a706cbf904d9642b7601d5760400697781"
+   },
+   "c_target_trigraph_literal.emit.stderr": {
+    "bytes": 238,
+    "sha256": "39a77620110d9638ca920787eee0cf9342f05a8114d2f93acc40e8991276f5c8"
+   },
+   "c_target_trigraph_literal.emit.stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "c_target_trigraph_literal.pins.json": {
+    "bytes": 1197,
+    "sha256": "3252b5fbe264231601ac1bb5c149c7badb48271202132b762c0bafa6979121f8"
+   },
+   "c_target_utf8_astral.emit.exit": {
+    "bytes": 2,
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+   },
+   "c_target_utf8_astral.emit.gate.json": {
+    "bytes": 2447,
+    "sha256": "bb1d0d37de053b748a7dd6bb2d172c2ef8b4f6d7070ac792806a890ae9e0895b"
+   },
+   "c_target_utf8_astral.emit.gate.report.json": {
+    "bytes": 1363,
+    "sha256": "18aab26387ed2b17e2e3c45a659d8998730f047708fee4ae0664accc69d41bbf"
+   },
+   "c_target_utf8_astral.emit.stderr": {
+    "bytes": 238,
+    "sha256": "91e9391859326e0a028f011f2bb418fe7b9441a137659ef120cda72463327803"
+   },
+   "c_target_utf8_astral.emit.stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "c_target_utf8_astral.pins.json": {
+    "bytes": 1164,
+    "sha256": "d1826c9486951371d9b8df028c3f94127a64780e456ee95c55deacf30cb185f0"
+   },
+   "c_target_utf8_literal.emit.exit": {
+    "bytes": 2,
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+   },
+   "c_target_utf8_literal.emit.gate.json": {
+    "bytes": 2457,
+    "sha256": "25104b4447af2978bf7ce6dfa845e28f28cddc639d25a09c196ed0a6000f47c2"
+   },
+   "c_target_utf8_literal.emit.gate.report.json": {
+    "bytes": 1369,
+    "sha256": "12f5f253a2672fbc55a949d0d2f7ed690bbe623768a107d238c928653d5c3c56"
+   },
+   "c_target_utf8_literal.emit.stderr": {
+    "bytes": 239,
+    "sha256": "f768c879d286fc6432358dfa8726b35db4df61a8ae2d42d5e53f65dcd4d5fa9a"
+   },
+   "c_target_utf8_literal.emit.stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "c_target_utf8_literal.pins.json": {
+    "bytes": 1165,
+    "sha256": "52f2cb2b15a8af806e536b340ab4d828e537774e6b99bff00b068009222b77e5"
+   },
+   "c_target_wide_record.emit.exit": {
+    "bytes": 2,
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+   },
+   "c_target_wide_record.emit.gate.json": {
+    "bytes": 2448,
+    "sha256": "bb215f32cc0b99fec5ff323537360afa31e5756056b783f0a91f79e2fc2bdf40"
+   },
+   "c_target_wide_record.emit.gate.report.json": {
+    "bytes": 1364,
+    "sha256": "84b396fd6067fb6db628c2a937a1eea36c62970d50db407d1d05f905894827b3"
+   },
+   "c_target_wide_record.emit.stderr": {
+    "bytes": 239,
+    "sha256": "9e15d45a25e32d0ebb3a9e4e016e670e8494b128d71935116266435eab3918f8"
+   },
+   "c_target_wide_record.emit.stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "c_target_wide_record.pins.json": {
+    "bytes": 1163,
+    "sha256": "2ded1f5900ac2cb79ccfd974a10439f1f45c7eb94c867e1d8c5beac23c51c656"
+   },
+   "matrix.pins.json": {
+    "bytes": 1714,
+    "sha256": "de45e637786c036920f68a5589ce2e5671d47dd3231c3072851a02fb33a6a4f9"
+   },
+   "phys_storage_paths.emit.exit": {
+    "bytes": 2,
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+   },
+   "phys_storage_paths.emit.gate.json": {
+    "bytes": 2438,
+    "sha256": "7e232ba60f8b47f600dce7c7684fd99ae3f4716d09be7f566aaa4474ee018103"
+   },
+   "phys_storage_paths.emit.gate.report.json": {
+    "bytes": 1358,
+    "sha256": "7e79cb9af53a66e17527e63bbe5137bc0d66488d53b85b6533f113bcfb050906"
+   },
+   "phys_storage_paths.emit.stderr": {
+    "bytes": 239,
+    "sha256": "643b9835c5aa57579cf7a54aeab4104879aa22f856f0f485c729a25862cc663e"
+   },
+   "phys_storage_paths.emit.stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "phys_storage_paths.pins.json": {
+    "bytes": 1175,
+    "sha256": "0bc587eaed7fc3046968c0fa538801fe9927a1d420d4a48433b24f9aa0c42aa4"
+   }
+  }
+ },
+ "notes": [
+  "All 23 cases were attempted; none was skipped and no filter/smoke-case was used. Every emit ran under the repaired guardian with complete/stopped true and exit1; no clang/run stage began.",
+  "No generated C output existed, so no output patches. No input/export/fuel/bounds/caps changed and no code fix was attempted during the frozen matrix.",
+  "This receipt is matrix evidence only, not C acceptance/root FP/native proof.",
+  "Receipt correction (receipt-only; no rerun, raw untouched): origin prose fixed to the observed read_body/StSlot packed=False/LayoutData branch; no form_node/StForm exists in admitted Physical 256f5777, and no exact consumer is invented."
+ ],
+ "observedLiteral": "Observed literal: bend2/selfhost/c_backend_physical.bend:1178, inside read_body -> StSlot{... packed=False} -> case CLay.LayoutData{words, arms}: PartFail{\"a form field is not a single word\"}. The admitted Physical 256f5777 has no form_node or StForm; the actual BIR consumer/path that reaches this branch is NOT identified by this evidence and is left to Control/Storage."
+}

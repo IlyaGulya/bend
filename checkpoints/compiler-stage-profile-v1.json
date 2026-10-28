@@ -1,0 +1,956 @@
+{
+  "schemaVersion": 3,
+  "kind": "compiler-stage-profile-evidence",
+  "diagnosticOnly": true,
+  "acceptanceEvidence": false,
+  "generatedAt": "2026-10-24T19:18:37.694Z",
+  "implementation": {
+    "evals/candidate_host.ts": "a56f57e32d0fa475a0564f18a3930137a084cb6a4ce49b05f496e76331d2a22a",
+    "evals/checker_core_step_runtime.mjs": "a52b065e99126f6b0fe47d4d74538757faa1e3f8652ba3f4bb818c64498e32d5",
+    "evals/compiler_stage_profile.mjs": "3e9a679575b4cbd21f5f8263fc13f8bc5d62d63fb720a91f9be8d3f1d3219f07",
+    "evals/compiler_stage_profile.test.ts": "b2b3248c8f663744d7fedb3c16a1ace0d9f1bddf83eb934ed33f4e001637c44a",
+    "evals/compiler_stage_report.mjs": "9e1ea10cb15628ffef28dc5ed6076e79b46ff80c57a344b599f109eb78ce560e",
+    "evals/native_stage_profile_build.ts": "d74309d4d6d448224b3d2096e4c577cf16f1ea2c9619613cc96dc5de726d81f7",
+    "evals/native_stage_profile_driver.bend": "33b9a65705133ae2f92f69135499284835f3becc8c1c13afb02edf05adb3e25f",
+    "evals/native_stage_profile_host.c": "c76e87a152b3d68800c408de266c7a77ea9a4a80fad2599e6c1b1f1f428f1026",
+    "evals/selfhost_bootstrap_worker.mjs": "bb9dd197c5ea12ae0d376aac3823ec63abb4a29d41ecf3b6a26f0b1998c6a908",
+    "bend2/selfhost/RESEARCH_STAGE_PROFILING.md": "9ae4426977f5104ee97d6032686376a571086e50bb5ab89d8644d10d1abbcea6"
+  },
+  "collectorDependency": {
+    "path": "evals/compiler_profile.mjs",
+    "owner": "ProducerProfilingImpl",
+    "note": "imported unchanged; not part of this commit; unitsByField confirmed"
+  },
+  "execution": {
+    "stage": "selfhost-candidate",
+    "componentPath": "/private/tmp/bend-fir-integrated57ab/checkpoints/root-sharedem-art.js",
+    "componentSha256": "fcd8cca2d566ad80591a74d0000d60eb14c5e82e2427bd28917ea07ecc4cb4d6",
+    "componentBytes": 16789267,
+    "sourcePath": "/private/tmp/bend-fir-integrated57ab/checkpoints/.bootstrap_compiler_root_v1.bend",
+    "sourceSha256": "b0b92b67225c1b67972c9fe2a1096962a14926633508936c86d8b93b73cbd36b",
+    "compilerSha256": "a84170d5a84f21386383ccd478a1dac687eb664d89c21b284cd1134513963b70",
+    "kernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+    "inputPath": "/tmp/stage-tiny.bend",
+    "inputSha256": "d95f59ee2e349d0bcd797d50e1d97a82e763d5eaa594abe040d05bd2013c8010",
+    "runtime": {
+      "name": "bun",
+      "versions": {
+        "node": "26.3.0",
+        "bun": "1.4.2",
+        "boringssl": "41bf9b59c2ebf277a7aa427e1ecad5cc80dd4d4f",
+        "openssl": "1.1.0",
+        "llhttp": "9.3.0",
+        "libarchive": "ded82291ab41d5e355831b96b0e1ff49e24d8939",
+        "mimalloc": "6a64e1ba7f5b2130d4efccb67ec87fd0003f0f6a",
+        "picohttpparser": "066d2b1e9ab820703db0837a7255d92d30f0c9f5",
+        "uwebsockets": "744846f844374847c902b5e7fd59b4342a51ef99",
+        "webkit": "2e2aa2290fac856d6f451ceacb58f7f5b44dd057",
+        "zig": "04e7f6ac1e009525bc00934f20199c68f04e0a24",
+        "zlib": "12731092979c6d07f42da27da673a9f6c7b13586",
+        "tinycc": "05f0fafaa3be31e31d7b4b5c17dc60f62c991171",
+        "lolhtml": "725ce499aa9b71e38b7a2d0a9fbb6d7294a4079e",
+        "ares": "c7a3138dcfe3bb0eaaf10c0c24c36dc66dc790ab",
+        "libdeflate": "c8c56a20f8f621e6a966b716b31f1dedab6a41e3",
+        "usockets": "744846f844374847c902b5e7fd59b4342a51ef99",
+        "lshpack": "8905c024b6d052f083a3d11d0a169b3c2735c8a1",
+        "zstd": "f8745da6ff1ad1e7bab384bd1f9d742439278e99",
+        "v8": "14.6.202.34-node.20",
+        "uv": "1.48.0",
+        "napi": "10",
+        "icu": "78.1",
+        "unicode": "17.0",
+        "sqlite": "3.51.0",
+        "modules": "147"
+      },
+      "platform": "darwin",
+      "arch": "arm64",
+      "execPath": "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+      "execArgv": []
+    },
+    "target": "js",
+    "mode": "typed-step library emission"
+  },
+  "classification": {
+    "binding": "observed Run namespace + exact registered fully qualified request tag + declared canonical source + component receipt artifact/generated-output binding",
+    "tables": {
+      "artifact": {
+        "path": "/private/tmp/bend-fir-integrated57ab/checkpoints/root-sharedem-art.js",
+        "sha256": "fcd8cca2d566ad80591a74d0000d60eb14c5e82e2427bd28917ea07ecc4cb4d6"
+      },
+      "receipt": {
+        "path": "/private/tmp/bend-fir-integrated57ab/checkpoints/root-sharedem-rep.result.json",
+        "sha256": "e018406a05a67a60f4bc69b97c89c7311ca747386f22635f1a9b537c58934bfc",
+        "artifactSha256": "fcd8cca2d566ad80591a74d0000d60eb14c5e82e2427bd28917ea07ecc4cb4d6",
+        "provenancePath": "/private/tmp/bend-fir-integrated57ab/checkpoints/root-sharedem-rep.provenance.json"
+      },
+      "manifests": [
+        {
+          "namespace": "checker_core_steps_v1",
+          "protocol": "Checker",
+          "sources": 0,
+          "artifactBinding": {
+            "status": "verified",
+            "reason": null,
+            "checks": [
+              {
+                "output": "checkpoints/checker_core_steps_v1.bend",
+                "expectedSha256": "d6000fd556d550f45ccca6adeaaa6e2b0d6aa2fc7604fae0959d650f6d7d175c",
+                "actualSha256": "d6000fd556d550f45ccca6adeaaa6e2b0d6aa2fc7604fae0959d650f6d7d175c",
+                "status": "verified"
+              },
+              {
+                "output": "checkpoints/checker_core_steps_component_v1.bend",
+                "expectedSha256": "ca15a467e804983f454a63e9db64a38c1077a2d49104d488556d0609557521cf",
+                "actualSha256": null,
+                "status": "missing"
+              },
+              {
+                "output": "checkpoints/checker_core_steps_driver_v1.bend",
+                "expectedSha256": "0a21e90c6eca75d51684c5c75fd52fae28a86d7f369052d7943a7101f9a1bfc8",
+                "actualSha256": null,
+                "status": "missing"
+              }
+            ],
+            "note": "all outputs shared between manifest and receipt must match; unloaded sibling outputs are recorded but not required"
+          },
+          "basenameCollisions": []
+        },
+        {
+          "namespace": "template_steps_v1",
+          "protocol": "Template",
+          "sources": 0,
+          "artifactBinding": {
+            "status": "verified",
+            "reason": null,
+            "checks": [
+              {
+                "output": "checkpoints/template_steps_v1.bend",
+                "expectedSha256": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4",
+                "actualSha256": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4",
+                "status": "verified"
+              },
+              {
+                "output": "checkpoints/template_steps_component_v1.bend",
+                "expectedSha256": "86c9e3b009a91b233a314d76ddd65d83ecd66e620231e63121ba625c853b3e39",
+                "actualSha256": null,
+                "status": "missing"
+              }
+            ],
+            "note": "all outputs shared between manifest and receipt must match; unloaded sibling outputs are recorded but not required"
+          },
+          "basenameCollisions": []
+        },
+        {
+          "namespace": "emitter_steps_v1",
+          "protocol": "Emitter",
+          "sources": 11,
+          "artifactBinding": {
+            "status": "verified",
+            "reason": null,
+            "checks": [
+              {
+                "output": "checkpoints/emitter_steps_v1.bend",
+                "expectedSha256": "b8a9cf3d0c6cf9e7a094c8ff792d2d91c5b9416701542219540edf8dcc5cc6d5",
+                "actualSha256": "b8a9cf3d0c6cf9e7a094c8ff792d2d91c5b9416701542219540edf8dcc5cc6d5",
+                "status": "verified"
+              },
+              {
+                "output": "checkpoints/emitter_steps_component_v1.bend",
+                "expectedSha256": "e6bd090dc9b2a0b381e4a896922c91869571445b194a60898d893e1f2ce3b3c8",
+                "actualSha256": null,
+                "status": "missing"
+              }
+            ],
+            "note": "all outputs shared between manifest and receipt must match; unloaded sibling outputs are recorded but not required"
+          },
+          "basenameCollisions": []
+        }
+      ]
+    },
+    "tests": "bun test evals/compiler_stage_profile.test.ts: 16 passed, 0 failed (classification, artifact binding, finish fail-closed contract, rejected close retention)"
+  },
+  "validJs": {
+    "offArtifactSha256": "5db9119d4f0a8d35ec3c809d1c41b0ad767e0b45d27dcef3aca8bde0063a609c",
+    "onArtifactSha256": "5db9119d4f0a8d35ec3c809d1c41b0ad767e0b45d27dcef3aca8bde0063a609c",
+    "bytes": 289409,
+    "identical": true,
+    "profileStatus": "completed",
+    "reportPath": "/tmp/bind-js2/profile-32653-thread-0-vR8V8M/summary.json",
+    "spans": [
+      {
+        "name": "startup-import",
+        "status": "completed",
+        "wallMs": 585.075
+      },
+      {
+        "name": "parse-import-fuel",
+        "status": "completed",
+        "wallMs": 1208.156
+      },
+      {
+        "name": "template-expand",
+        "status": "completed",
+        "wallMs": 358.214
+      },
+      {
+        "name": "check-signature-body",
+        "status": "completed",
+        "wallMs": 10254.641
+      },
+      {
+        "name": "emit",
+        "status": "completed",
+        "wallMs": 1111.755
+      },
+      {
+        "name": "output-write",
+        "status": "completed",
+        "wallMs": 1.665
+      }
+    ],
+    "observations": {
+      "parse-import-fuel": {
+        "values": {
+          "modules": 2,
+          "parses": 2,
+          "fuelCells": 16000000,
+          "sourceBytes": 75681,
+          "foreignFiles": 56,
+          "parserFuelCellsPerParse": 8000000
+        },
+        "unitsByField": {
+          "modules": "modules",
+          "parses": "parses",
+          "fuelCells": "fuel-cells",
+          "sourceBytes": "bytes",
+          "foreignFiles": "files",
+          "parserFuelCellsPerParse": "fuel-cells"
+        }
+      },
+      "template-expand-steps": {
+        "value": 27565,
+        "units": "host-step-calls"
+      },
+      "template-expand-typed-progress": {
+        "values": {
+          "requestBoundarySamples": 12433,
+          "template-expand": 12433
+        },
+        "progressShapes": {
+          "Direct": 1434,
+          "Finished": 13698,
+          "Pending": 12433
+        },
+        "observedRunNamespace": "template_steps_v1",
+        "artifactBinding": {
+          "status": "verified",
+          "reason": null,
+          "checks": [
+            {
+              "output": "checkpoints/template_steps_v1.bend",
+              "expectedSha256": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4",
+              "actualSha256": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4",
+              "status": "verified"
+            },
+            {
+              "output": "checkpoints/template_steps_component_v1.bend",
+              "expectedSha256": "86c9e3b009a91b233a314d76ddd65d83ecd66e620231e63121ba625c853b3e39",
+              "actualSha256": null,
+              "status": "missing"
+            }
+          ],
+          "note": "all outputs shared between manifest and receipt must match; unloaded sibling outputs are recorded but not required"
+        },
+        "groupBases": {
+          "template-expand": [
+            "protocol-coarse"
+          ]
+        },
+        "unclassifiedSamples": 0,
+        "unclassifiedReasons": {}
+      },
+      "check-signature-body-steps": {
+        "value": 137708,
+        "units": "host-step-calls"
+      },
+      "check-signature-body-typed-progress": {
+        "values": {
+          "requestBoundarySamples": 30573,
+          "check-signature-body": 30573
+        },
+        "progressShapes": {
+          "Direct": 38555,
+          "Finished": 68580,
+          "Pending": 30573
+        },
+        "observedRunNamespace": "checker_core_steps_v1",
+        "artifactBinding": {
+          "status": "verified",
+          "reason": null,
+          "checks": [
+            {
+              "output": "checkpoints/checker_core_steps_v1.bend",
+              "expectedSha256": "d6000fd556d550f45ccca6adeaaa6e2b0d6aa2fc7604fae0959d650f6d7d175c",
+              "actualSha256": "d6000fd556d550f45ccca6adeaaa6e2b0d6aa2fc7604fae0959d650f6d7d175c",
+              "status": "verified"
+            },
+            {
+              "output": "checkpoints/checker_core_steps_component_v1.bend",
+              "expectedSha256": "ca15a467e804983f454a63e9db64a38c1077a2d49104d488556d0609557521cf",
+              "actualSha256": null,
+              "status": "missing"
+            },
+            {
+              "output": "checkpoints/checker_core_steps_driver_v1.bend",
+              "expectedSha256": "0a21e90c6eca75d51684c5c75fd52fae28a86d7f369052d7943a7101f9a1bfc8",
+              "actualSha256": null,
+              "status": "missing"
+            }
+          ],
+          "note": "all outputs shared between manifest and receipt must match; unloaded sibling outputs are recorded but not required"
+        },
+        "groupBases": {
+          "check-signature-body": [
+            "protocol-coarse"
+          ]
+        },
+        "unclassifiedSamples": 0,
+        "unclassifiedReasons": {}
+      },
+      "emit-steps": {
+        "value": 11130,
+        "units": "host-step-calls"
+      },
+      "emit-typed-progress": {
+        "values": {
+          "requestBoundarySamples": 2616,
+          "emit-backend-lowering": 657,
+          "emit-catalog": 343,
+          "emit-descriptor-nf": 113,
+          "emit-render-js": 1503
+        },
+        "progressShapes": {
+          "Direct": 2986,
+          "Finished": 5528,
+          "Pending": 2616
+        },
+        "observedRunNamespace": "emitter_steps_v1",
+        "artifactBinding": {
+          "status": "verified",
+          "reason": null,
+          "checks": [
+            {
+              "output": "checkpoints/emitter_steps_v1.bend",
+              "expectedSha256": "b8a9cf3d0c6cf9e7a094c8ff792d2d91c5b9416701542219540edf8dcc5cc6d5",
+              "actualSha256": "b8a9cf3d0c6cf9e7a094c8ff792d2d91c5b9416701542219540edf8dcc5cc6d5",
+              "status": "verified"
+            },
+            {
+              "output": "checkpoints/emitter_steps_component_v1.bend",
+              "expectedSha256": "e6bd090dc9b2a0b381e4a896922c91869571445b194a60898d893e1f2ce3b3c8",
+              "actualSha256": null,
+              "status": "missing"
+            }
+          ],
+          "note": "all outputs shared between manifest and receipt must match; unloaded sibling outputs are recorded but not required"
+        },
+        "groupBases": {
+          "emit-backend-lowering": [
+            "verified-canonical-source"
+          ],
+          "emit-catalog": [
+            "verified-canonical-source"
+          ],
+          "emit-descriptor-nf": [
+            "verified-canonical-source"
+          ],
+          "emit-render-js": [
+            "verified-canonical-source"
+          ]
+        },
+        "unclassifiedSamples": 0,
+        "unclassifiedReasons": {}
+      },
+      "output-write": {
+        "values": {
+          "bytes": 289409,
+          "modules": 2,
+          "foreignFiles": 56
+        },
+        "unitsByField": {
+          "bytes": "bytes",
+          "modules": "modules",
+          "foreignFiles": "files"
+        }
+      }
+    }
+  },
+  "cFailure": {
+    "diagnosticIdentical": true,
+    "diagnostic": "Bun v1.4.2 (macOS arm64)",
+    "exitCode": 1,
+    "profileStatus": "failed",
+    "error": "Maximum call stack size exceeded.",
+    "failedSpans": [
+      "emit"
+    ],
+    "spans": [
+      {
+        "name": "startup-import",
+        "status": "completed",
+        "wallMs": 1971.106
+      },
+      {
+        "name": "parse-import-fuel",
+        "status": "completed",
+        "wallMs": 4030.816
+      },
+      {
+        "name": "template-expand",
+        "status": "completed",
+        "wallMs": 1959.391
+      },
+      {
+        "name": "check-signature-body",
+        "status": "completed",
+        "wallMs": 31793.892
+      },
+      {
+        "name": "emit",
+        "status": "failed",
+        "wallMs": 25227.707
+      }
+    ],
+    "observations": {
+      "parse-import-fuel": {
+        "values": {
+          "modules": 2,
+          "parses": 2,
+          "fuelCells": 16000000,
+          "sourceBytes": 75681,
+          "foreignFiles": 56,
+          "parserFuelCellsPerParse": 8000000
+        },
+        "unitsByField": {
+          "modules": "modules",
+          "parses": "parses",
+          "fuelCells": "fuel-cells",
+          "sourceBytes": "bytes",
+          "foreignFiles": "files",
+          "parserFuelCellsPerParse": "fuel-cells"
+        }
+      },
+      "template-expand-steps": {
+        "value": 27565,
+        "units": "host-step-calls"
+      },
+      "template-expand-typed-progress": {
+        "values": {
+          "requestBoundarySamples": 12433,
+          "template-expand": 12433
+        },
+        "progressShapes": {
+          "Direct": 1434,
+          "Finished": 13698,
+          "Pending": 12433
+        },
+        "observedRunNamespace": "template_steps_v1",
+        "artifactBinding": {
+          "status": "verified",
+          "reason": null,
+          "checks": [
+            {
+              "output": "checkpoints/template_steps_v1.bend",
+              "expectedSha256": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4",
+              "actualSha256": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4",
+              "status": "verified"
+            },
+            {
+              "output": "checkpoints/template_steps_component_v1.bend",
+              "expectedSha256": "86c9e3b009a91b233a314d76ddd65d83ecd66e620231e63121ba625c853b3e39",
+              "actualSha256": null,
+              "status": "missing"
+            }
+          ],
+          "note": "all outputs shared between manifest and receipt must match; unloaded sibling outputs are recorded but not required"
+        },
+        "groupBases": {
+          "template-expand": [
+            "protocol-coarse"
+          ]
+        },
+        "unclassifiedSamples": 0,
+        "unclassifiedReasons": {}
+      },
+      "check-signature-body-steps": {
+        "value": 137708,
+        "units": "host-step-calls"
+      },
+      "check-signature-body-typed-progress": {
+        "values": {
+          "requestBoundarySamples": 30573,
+          "check-signature-body": 30573
+        },
+        "progressShapes": {
+          "Direct": 38555,
+          "Finished": 68580,
+          "Pending": 30573
+        },
+        "observedRunNamespace": "checker_core_steps_v1",
+        "artifactBinding": {
+          "status": "verified",
+          "reason": null,
+          "checks": [
+            {
+              "output": "checkpoints/checker_core_steps_v1.bend",
+              "expectedSha256": "d6000fd556d550f45ccca6adeaaa6e2b0d6aa2fc7604fae0959d650f6d7d175c",
+              "actualSha256": "d6000fd556d550f45ccca6adeaaa6e2b0d6aa2fc7604fae0959d650f6d7d175c",
+              "status": "verified"
+            },
+            {
+              "output": "checkpoints/checker_core_steps_component_v1.bend",
+              "expectedSha256": "ca15a467e804983f454a63e9db64a38c1077a2d49104d488556d0609557521cf",
+              "actualSha256": null,
+              "status": "missing"
+            },
+            {
+              "output": "checkpoints/checker_core_steps_driver_v1.bend",
+              "expectedSha256": "0a21e90c6eca75d51684c5c75fd52fae28a86d7f369052d7943a7101f9a1bfc8",
+              "actualSha256": null,
+              "status": "missing"
+            }
+          ],
+          "note": "all outputs shared between manifest and receipt must match; unloaded sibling outputs are recorded but not required"
+        },
+        "groupBases": {
+          "check-signature-body": [
+            "protocol-coarse"
+          ]
+        },
+        "unclassifiedSamples": 0,
+        "unclassifiedReasons": {}
+      },
+      "emit-steps": {
+        "value": 315073,
+        "units": "host-step-calls"
+      },
+      "emit-typed-progress": {
+        "values": {
+          "requestBoundarySamples": 148690,
+          "emit-backend-lowering": 629,
+          "emit-catalog": 343,
+          "emit-descriptor-nf": 6138,
+          "emit-layouts": 5529,
+          "emit-link-planning": 1238,
+          "emit-render-c": 134813
+        },
+        "progressShapes": {
+          "Direct": 8942,
+          "Finished": 157441,
+          "Pending": 148690
+        },
+        "observedRunNamespace": "emitter_steps_v1",
+        "artifactBinding": {
+          "status": "verified",
+          "reason": null,
+          "checks": [
+            {
+              "output": "checkpoints/emitter_steps_v1.bend",
+              "expectedSha256": "b8a9cf3d0c6cf9e7a094c8ff792d2d91c5b9416701542219540edf8dcc5cc6d5",
+              "actualSha256": "b8a9cf3d0c6cf9e7a094c8ff792d2d91c5b9416701542219540edf8dcc5cc6d5",
+              "status": "verified"
+            },
+            {
+              "output": "checkpoints/emitter_steps_component_v1.bend",
+              "expectedSha256": "e6bd090dc9b2a0b381e4a896922c91869571445b194a60898d893e1f2ce3b3c8",
+              "actualSha256": null,
+              "status": "missing"
+            }
+          ],
+          "note": "all outputs shared between manifest and receipt must match; unloaded sibling outputs are recorded but not required"
+        },
+        "groupBases": {
+          "emit-backend-lowering": [
+            "verified-canonical-source"
+          ],
+          "emit-catalog": [
+            "verified-canonical-source"
+          ],
+          "emit-descriptor-nf": [
+            "verified-canonical-source"
+          ],
+          "emit-render-c": [
+            "verified-canonical-source"
+          ],
+          "emit-layouts": [
+            "verified-canonical-source"
+          ],
+          "emit-link-planning": [
+            "verified-canonical-source"
+          ]
+        },
+        "unclassifiedSamples": 0,
+        "unclassifiedReasons": {}
+      }
+    }
+  },
+  "invalid": {
+    "diagnosticIdentical": true,
+    "diagnostic": "candidate: checking failed: constructor result does not match expected datatype",
+    "exitCode": 1,
+    "profileStatus": "failed",
+    "failedSpans": [
+      "check-signature-body"
+    ],
+    "spans": [
+      {
+        "name": "startup-import",
+        "status": "completed"
+      },
+      {
+        "name": "parse-import-fuel",
+        "status": "completed"
+      },
+      {
+        "name": "template-expand",
+        "status": "completed"
+      },
+      {
+        "name": "check-signature-body",
+        "status": "failed"
+      }
+    ]
+  },
+  "partialFailure": {
+    "diagnosticIdentical": true,
+    "diagnostic": "candidate: parser rejected /private/tmp/stage-syntax.bend: invalid or unsupported top-level syntax",
+    "exitCode": 1,
+    "profileStatus": "failed",
+    "spans": [
+      {
+        "name": "startup-import",
+        "status": "completed",
+        "closeReason": null
+      },
+      {
+        "name": "parse-import-fuel",
+        "status": "failed",
+        "closeReason": "candidate host terminated"
+      }
+    ]
+  },
+  "nativeChunkProfile": {
+    "status": "mechanism/group-tag check only; actual Emitter workload coverage OPEN",
+    "actualEmitterWorkload": "OPEN: needs a fresh component built after the CIR source fix, real checker-produced FIR or a legitimate canonical BIR renderer entry, and a receipt-bound manifest",
+    "artifactBinding": {
+      "status": "verified-by-builder",
+      "requiredOutput": "checkpoints/emitter_steps_v1.bend",
+      "expectedOutputSha256": "b8a9cf3d0c6cf9e7a094c8ff792d2d91c5b9416701542219540edf8dcc5cc6d5",
+      "actualOutputSha256": "b8a9cf3d0c6cf9e7a094c8ff792d2d91c5b9416701542219540edf8dcc5cc6d5"
+    },
+    "group7": {
+      "index": 7,
+      "label": "render-c",
+      "sources": [
+        "bend2/selfhost/c_backend.bend"
+      ]
+    },
+    "fixtureRequest": {
+      "group": 7,
+      "canonicalName": "cps_provider_2_nat_c",
+      "label": "render-c"
+    },
+    "guardedBuilder": {
+      "status": "implemented-not-exercised-in-retained-run",
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 600000,
+      "workerLimits": {
+        "stackSizeMb": 256,
+        "maxOldGenerationSizeMb": 3072
+      },
+      "note": "retained native mechanism run predates heavy_gate wiring; future runs must use the guarded builder"
+    },
+    "cSha256": "4552d61dae726ac6a8ac7a114cb7554d7925dfedba2f20ae5d593c51ff9fe693",
+    "artifactSha256": "69332024ce65628b7eebee190fb362d02e8d82bd922d8424de3c40a90152ae1d",
+    "kernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+    "compilerSha256": "a84170d5a84f21386383ccd478a1dac687eb664d89c21b284cd1134513963b70",
+    "phases": [
+      {
+        "name": "template-chunks",
+        "values": {
+          "elapsedMs": 0.438,
+          "userCpuMs": 0.054,
+          "systemCpuMs": 0.384,
+          "chunkAdvances": 2,
+          "chunkQuantum": 64,
+          "shapeFinished": 1,
+          "shapePending": 0,
+          "shapeDirect": 0,
+          "shapeBound": 1
+        },
+        "unitsByField": {
+          "elapsedMs": "milliseconds",
+          "userCpuMs": "milliseconds",
+          "systemCpuMs": "milliseconds",
+          "chunkAdvances": "host-step-calls",
+          "chunkQuantum": "steps-per-call",
+          "shapeFinished": "chunk-boundary-samples",
+          "shapePending": "chunk-boundary-samples",
+          "shapeDirect": "chunk-boundary-samples",
+          "shapeBound": "chunk-boundary-samples"
+        },
+        "requestGroups": {}
+      },
+      {
+        "name": "checker-chunks",
+        "values": {
+          "elapsedMs": 0.097,
+          "userCpuMs": 0.069,
+          "systemCpuMs": 0.027,
+          "chunkAdvances": 3,
+          "chunkQuantum": 64,
+          "shapeFinished": 3,
+          "shapePending": 0,
+          "shapeDirect": 0,
+          "shapeBound": 0
+        },
+        "unitsByField": {
+          "elapsedMs": "milliseconds",
+          "userCpuMs": "milliseconds",
+          "systemCpuMs": "milliseconds",
+          "chunkAdvances": "host-step-calls",
+          "chunkQuantum": "steps-per-call",
+          "shapeFinished": "chunk-boundary-samples",
+          "shapePending": "chunk-boundary-samples",
+          "shapeDirect": "chunk-boundary-samples",
+          "shapeBound": "chunk-boundary-samples"
+        },
+        "requestGroups": {}
+      },
+      {
+        "name": "template-pending-chunks",
+        "values": {
+          "elapsedMs": 0.038,
+          "userCpuMs": 0.036,
+          "systemCpuMs": 0.001,
+          "chunkAdvances": 2,
+          "chunkQuantum": 64,
+          "shapeFinished": 1,
+          "shapePending": 1,
+          "shapeDirect": 0,
+          "shapeBound": 0
+        },
+        "unitsByField": {
+          "elapsedMs": "milliseconds",
+          "userCpuMs": "milliseconds",
+          "systemCpuMs": "milliseconds",
+          "chunkAdvances": "host-step-calls",
+          "chunkQuantum": "steps-per-call",
+          "shapeFinished": "chunk-boundary-samples",
+          "shapePending": "chunk-boundary-samples",
+          "shapeDirect": "chunk-boundary-samples",
+          "shapeBound": "chunk-boundary-samples"
+        },
+        "requestGroups": {}
+      },
+      {
+        "name": "emitter-chunks",
+        "values": {
+          "elapsedMs": 0.345,
+          "userCpuMs": 0.043,
+          "systemCpuMs": 0.278,
+          "chunkAdvances": 2,
+          "chunkQuantum": 64,
+          "shapeFinished": 1,
+          "shapePending": 0,
+          "shapeDirect": 0,
+          "shapeBound": 0
+        },
+        "unitsByField": {
+          "elapsedMs": "milliseconds",
+          "userCpuMs": "milliseconds",
+          "systemCpuMs": "milliseconds",
+          "chunkAdvances": "host-step-calls",
+          "chunkQuantum": "steps-per-call",
+          "shapeFinished": "chunk-boundary-samples",
+          "shapePending": "chunk-boundary-samples",
+          "shapeDirect": "chunk-boundary-samples",
+          "shapeBound": "chunk-boundary-samples"
+        },
+        "requestGroups": {
+          "7": 1
+        }
+      }
+    ],
+    "note": "profile-only native driver over the real generated Template/Checker/Emitter Run machines; the Emitter fixture invokes a real canonical c_backend renderer request and classifies only its outer request group; this is not a compiler workload, a source-substage span or a source-call CPU claim"
+  },
+  "nativeCoarseTrace": {
+    "kind": "preserved native stderr diagnostic trace, not a fresh run",
+    "logPath": "/private/tmp/signature-publish57z/evidence/comparison/A1.stderr.log",
+    "logSha256": "34c8f79e0cdb4dab356d9dde7158d0a242c9f9a9f014d309a9ba1e8c2fa9e3b1",
+    "observations": [
+      {
+        "kind": "native-begin",
+        "name": "begin",
+        "unitsByField": null,
+        "values": {
+          "computeThreads": 1,
+          "parserFuel": 8000000
+        },
+        "details": {
+          "phase": "check",
+          "phaseTraceVersion": 3
+        }
+      },
+      {
+        "kind": "native-fuel-exact",
+        "name": "parser-fuel-1",
+        "unitsByField": null,
+        "values": {
+          "elapsedMs": 14.581,
+          "cells": 8000000,
+          "processPeakRssBeforeBytes": 4292608,
+          "processPeakRssAfterBytes": 68321280
+        },
+        "details": {
+          "sourceOrdinal": 1,
+          "note": "eager parser fuel cells constructed for one source; peak RSS before/after includes the whole process"
+        }
+      },
+      {
+        "kind": "native-phase-coarse-span",
+        "name": "parse",
+        "unitsByField": null,
+        "values": {
+          "elapsedMs": 134.076,
+          "userCpuMs": 129.969,
+          "systemCpuMs": 4.106
+        },
+        "details": {
+          "granularity": "coarse phase boundary; CPU is process-wide including compute threads and is not exclusive across overlapping phases",
+          "modules": 1,
+          "sourceBytes": 165123,
+          "foreignBytes": 0,
+          "eagerFuelCells": 8000000,
+          "fuelBuildMs": 14.581
+        }
+      },
+      {
+        "kind": "native-phase-coarse-span",
+        "name": "expand",
+        "unitsByField": null,
+        "values": {
+          "elapsedMs": 13.534,
+          "userCpuMs": 13.003,
+          "systemCpuMs": 0.53,
+          "chunkAdvances": 7513,
+          "chunkQuantum": 64
+        },
+        "details": {
+          "granularity": "coarse phase boundary; CPU is process-wide including compute threads and is not exclusive across overlapping phases"
+        }
+      },
+      {
+        "kind": "native-phase-coarse-span",
+        "name": "check",
+        "unitsByField": null,
+        "values": {
+          "elapsedMs": 815.236,
+          "userCpuMs": 809.358,
+          "systemCpuMs": 5.875,
+          "chunkAdvances": 143884,
+          "chunkQuantum": 64
+        },
+        "details": {
+          "granularity": "coarse phase boundary; CPU is process-wide including compute threads and is not exclusive across overlapping phases"
+        }
+      }
+    ],
+    "scope": "child-process RUSAGE_SELF + monotonic wall; coarse phases only; not additive with parent CPU"
+  },
+  "coverage": {
+    "measuredExplicitSpans": [
+      "startup-import",
+      "parse-import-fuel",
+      "template-expand",
+      "check-signature-body",
+      "emit",
+      "output-write"
+    ],
+    "measuredExactCounters": [
+      "host-step calls per phase",
+      "module/parse/fuel-cell/source-byte counts",
+      "output bytes"
+    ],
+    "sampledGroupsObservedJs": [
+      "template-expand",
+      "check-signature-body",
+      "emit-backend-lowering",
+      "emit-catalog",
+      "emit-descriptor-nf",
+      "emit-render-js"
+    ],
+    "sampledGroupsObservedC": [
+      "emit-backend-lowering",
+      "emit-catalog",
+      "emit-descriptor-nf",
+      "emit-layouts",
+      "emit-link-planning",
+      "emit-render-c"
+    ],
+    "groupsWithZeroSamplesOnThisWorkload": [
+      "emit-sharing",
+      "emit-emitter-entry"
+    ],
+    "prerequisites": {
+      "check-publication": "included in ordinary Checker.check before transient rewind; no separate host boundary",
+      "emit-render-c": "C entry executed and failed inside Base String.split recursion after 134813 render-c samples; failed span recorded, no C pass",
+      "emit-sharing": "zero samples on this tiny workload",
+      "link": "external clang/link not performed by candidate_host",
+      "nativeActualEmitterWorkload": "OPEN: scalar-leaf request only demonstrates group tagging; needs fresh CIR-regenerated component and real FIR/BIR input",
+      "nativeDirectShape": "Direct code 2 not observed in bounded native fixture; observed in real JS Run samples",
+      "fullNativeCompilerRun": "not executed; no fullroot/native acceptance run"
+    },
+    "evidenceKinds": "spans, exact counters and sampled chunk-boundary attribution are separate and not additive"
+  },
+  "limits": [
+    "tiny workload; fullroot overhead and complete coverage not established",
+    "sampled attribution is not time-weighted or exact per-function CPU",
+    "native chunk attribution counts progress shapes/outer groups only; no source substage, per-function or exclusive CPU",
+    "native mechanism run predates guarded builder wiring; actual Emitter workload OPEN",
+    "component manifest must match artifact receipt and generated output pins"
+  ],
+  "finishContract": {
+    "completedWithOpenStage": {
+      "workloadStatus": "completed",
+      "measurementStatus": "incomplete",
+      "incompleteEvidence": true,
+      "unclosedSpans": {
+        "count": 1,
+        "names": [
+          "leaked-stage"
+        ],
+        "closeStatus": "aborted"
+      },
+      "abortedSpans": [
+        "leaked-stage"
+      ]
+    },
+    "failedWithOpenStage": {
+      "workloadStatus": "failed",
+      "measurementStatus": "complete",
+      "incompleteEvidence": false,
+      "failedSpans": [
+        "failed-stage"
+      ],
+      "unclosedSpans": {
+        "count": 0,
+        "names": [],
+        "closeStatus": "aborted"
+      }
+    },
+    "note": "captured from the real collector; a rejected wrapper close is tested separately and does not hide the stage"
+  }
+}

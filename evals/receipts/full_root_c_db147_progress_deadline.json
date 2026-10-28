@@ -1,0 +1,658 @@
+{
+  "schemaVersion": 1,
+  "status": "DIAGNOSTIC_DEADLINE_CHECK_WITH_DURABLE_PROGRESS",
+  "acceptanceEvidence": false,
+  "sourceVersion": "c3822669 integration; b8f81a40 source-owner profiling implementation",
+  "guard": {
+    "status": "FAIL",
+    "reason": "deadline_exceeded",
+    "commandExitCode": -1,
+    "commandSignal": 15,
+    "peakRssBytes": 2151219200,
+    "peakFootprintBytes": 2619437920,
+    "elapsedMs": 600213,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "command": [
+      "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "/private/tmp/bend-parser-cutover667/checkpoints/root_c_progress_diagnostic.ts"
+    ],
+    "label": "Full-root C through existing256MiB worker policy",
+    "exitCode": 1,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792945098018-d060c04705bec6c4.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "checkpoint": {
+    "path": "/tmp/root-db147-c-progressdiag-profile-1/profile-95307-thread-1-iOKUvY/checkpoint.json",
+    "sha256": "50c5faf10ddb8432c31a7b73155ed2c5a0cb3087780ae5c183dc801a695d1a09",
+    "data": {
+      "schemaVersion": 1,
+      "kind": "compiler-profile-checkpoint",
+      "profilerVersion": "compiler-profile/1",
+      "profileId": "07f4d5c9-1c7e-413d-b935-9b6c57f2db36",
+      "execution": {
+        "stage": "selfhost-candidate",
+        "mode": "typed-step",
+        "target": "c",
+        "sourcePath": "/private/tmp/bend-parser-cutover667/checkpoints/.bootstrap_compiler_root_v1.bend",
+        "sourceSha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+        "candidatePath": "/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "candidateSha256": "db147cba480109443fe8cfbd0efa2f1c167af7f6b9f7e2d623a0b1032c677dbe",
+        "parserPath": "/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "parserSha256": "db147cba480109443fe8cfbd0efa2f1c167af7f6b9f7e2d623a0b1032c677dbe",
+        "basePath": "/private/tmp/bend-parser-cutover667/bend2/base.bend",
+        "baseSha256": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+        "sourceFileTag": "../bend2/selfhost/backend_ir.SourceFile",
+        "library": true,
+        "exports": [
+          "parsed_module",
+          "parse_with_fuel",
+          "expand_modules_start",
+          "template_step",
+          "check_expanded_start",
+          "inspect_checked_start",
+          "checker_step",
+          "emit_modules_start",
+          "emit_library_start",
+          "emitter_step",
+          "emit_c_modules_start",
+          "emit_c_library_start",
+          "c_emitter_step"
+        ],
+        "outputPath": "/tmp/root-db147-c-progressdiag-1.c",
+        "command": [
+          "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+          "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+          "--library",
+          "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step,emit_c_modules_start,emit_c_library_start,c_emitter_step",
+          "--stage-profile=/tmp/root-db147-c-progressdiag-profile-1",
+          "--stage-progress",
+          "/private/tmp/bend-parser-cutover667/checkpoints/.bootstrap_compiler_root_v1.bend",
+          "-o",
+          "/tmp/root-db147-c-progressdiag-1.c",
+          "--base=/private/tmp/bend-parser-cutover667/bend2/base.bend",
+          "--runtime-c=/private/tmp/bend-parser-cutover667/bend2/selfhost/c_runtime.c"
+        ],
+        "scope": "candidate_host.ts typed-step ABI; source emission only, no external link step"
+      },
+      "identity": {
+        "pid": 95307,
+        "parentPid": 95303,
+        "threadId": 1,
+        "isMainThread": false
+      },
+      "runDirectory": "/tmp/root-db147-c-progressdiag-profile-1/profile-95307-thread-1-iOKUvY",
+      "checkpointPath": "/tmp/root-db147-c-progressdiag-profile-1/profile-95307-thread-1-iOKUvY/checkpoint.json",
+      "rawDetail": true,
+      "status": "running",
+      "error": null,
+      "updatedAt": "2026-10-25T16:28:17.637Z",
+      "elapsedMs": 599254.680208,
+      "process": {
+        "cpu": {
+          "kind": "process-boundary-delta",
+          "scope": "process.cpuUsage delta since collector creation; every thread in this process; child processes excluded",
+          "userMs": 161193.323,
+          "systemMs": 8629.387999999999
+        },
+        "memory": {
+          "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+          "rssBytes": 906969088,
+          "heapTotalBytes": 1255866368,
+          "heapUsedBytes": 1083732048,
+          "externalBytes": 10339152,
+          "arrayBuffersBytes": 16671
+        }
+      },
+      "activeSpans": [
+        {
+          "id": 22,
+          "parentId": null,
+          "name": "check-signature-body",
+          "details": {
+            "inputModules": 18
+          },
+          "startedAt": "2026-10-25T16:20:13.474Z",
+          "startedMonotonicMs": 115431.971
+        }
+      ],
+      "activeSpanCount": 1,
+      "counts": {
+        "spans": 22,
+        "coarseSpans": 4,
+        "fineSpans": 18,
+        "observations": 543,
+        "retainedObservations": 543,
+        "fineObservations": 0
+      },
+      "lastCompletedSpans": [
+        {
+          "id": 1,
+          "parentId": null,
+          "name": "startup-import",
+          "status": "completed",
+          "startedAt": "2026-10-25T16:18:18.374Z",
+          "endedAt": "2026-10-25T16:18:18.803Z",
+          "wallMs": 428.817667,
+          "cpu": {
+            "kind": "process-boundary-delta",
+            "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+            "userMs": 266.61799999999994,
+            "systemMs": 12.328000000000003
+          },
+          "boundaryMemory": {
+            "start": {
+              "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+              "rssBytes": 175767552,
+              "heapTotalBytes": 17022976,
+              "heapUsedBytes": 11798584,
+              "externalBytes": 28498793,
+              "arrayBuffersBytes": 18169622
+            },
+            "end": {
+              "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+              "rssBytes": 198197248,
+              "heapTotalBytes": 42369024,
+              "heapUsedBytes": 33774744,
+              "externalBytes": 46532141,
+              "arrayBuffersBytes": 18055754
+            },
+            "delta": {
+              "kind": "boundary-snapshot-delta",
+              "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+              "heapUsedDeltaBytes": 21976160,
+              "rssDeltaBytes": 22429696,
+              "caveat": "a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage"
+            }
+          },
+          "details": {
+            "candidatePath": "/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+            "parserPath": "/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+            "target": "c",
+            "library": true,
+            "parserModule": "candidate"
+          }
+        },
+        {
+          "id": 2,
+          "parentId": null,
+          "name": "parse-import-fuel",
+          "status": "completed",
+          "startedAt": "2026-10-25T16:18:18.804Z",
+          "endedAt": "2026-10-25T16:19:07.881Z",
+          "wallMs": 49077.409666,
+          "cpu": {
+            "kind": "process-boundary-delta",
+            "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+            "userMs": 20934.214,
+            "systemMs": 1247.5430000000001
+          },
+          "boundaryMemory": {
+            "start": {
+              "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+              "rssBytes": 198197248,
+              "heapTotalBytes": 42369024,
+              "heapUsedBytes": 33851456,
+              "externalBytes": 46532141,
+              "arrayBuffersBytes": 18055754
+            },
+            "end": {
+              "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+              "rssBytes": 1908965376,
+              "heapTotalBytes": 971456512,
+              "heapUsedBytes": 573592600,
+              "externalBytes": 10339152,
+              "arrayBuffersBytes": 16671
+            },
+            "delta": {
+              "kind": "boundary-snapshot-delta",
+              "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+              "heapUsedDeltaBytes": 539741144,
+              "rssDeltaBytes": 1710768128,
+              "caveat": "a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage"
+            }
+          },
+          "details": {
+            "input": "/private/tmp/bend-parser-cutover667/checkpoints/.bootstrap_compiler_root_v1.bend",
+            "target": "c",
+            "modules": 18,
+            "foreignFiles": 56
+          }
+        },
+        {
+          "id": 21,
+          "parentId": null,
+          "name": "template-expand",
+          "status": "completed",
+          "startedAt": "2026-10-25T16:19:07.885Z",
+          "endedAt": "2026-10-25T16:20:13.375Z",
+          "wallMs": 65489.74462500001,
+          "cpu": {
+            "kind": "process-boundary-delta",
+            "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+            "userMs": 12371.626999999997,
+            "systemMs": 926.691
+          },
+          "boundaryMemory": {
+            "start": {
+              "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+              "rssBytes": 1909145600,
+              "heapTotalBytes": 971456512,
+              "heapUsedBytes": 573731240,
+              "externalBytes": 10339152,
+              "arrayBuffersBytes": 16671
+            },
+            "end": {
+              "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+              "rssBytes": 494911488,
+              "heapTotalBytes": 976175104,
+              "heapUsedBytes": 810071000,
+              "externalBytes": 10339152,
+              "arrayBuffersBytes": 16671
+            },
+            "delta": {
+              "kind": "boundary-snapshot-delta",
+              "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+              "heapUsedDeltaBytes": 236339760,
+              "rssDeltaBytes": -1414234112,
+              "caveat": "a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage"
+            }
+          },
+          "details": {
+            "inputModules": 18,
+            "result": "ExpandSuccess"
+          }
+        }
+      ],
+      "recentObservations": [
+        {
+          "id": 528,
+          "spanId": 22,
+          "at": "2026-10-25T16:28:02.616Z",
+          "elapsedMs": 584233.2494580001,
+          "kind": "typed-step-progress",
+          "name": "check-signature-body",
+          "scope": "latest observed host-visible bounded-step boundary",
+          "units": "host-step-calls",
+          "unitsByField": null,
+          "value": 3777533,
+          "values": null,
+          "source": "checker_core_step_runtime.mjs",
+          "details": {
+            "protocol": "Checker",
+            "nativeChunkQuantum": 64,
+            "progressShape": "Pending",
+            "request": "checker_core_steps_v1.CheckerRequest_whnf_beta_cases_view",
+            "runNamespace": "checker_core_steps_v1",
+            "granularity": "first boundary then at most once per second; not a substage duration, live-process claim, or continuous sample"
+          }
+        },
+        {
+          "id": 529,
+          "spanId": 22,
+          "at": "2026-10-25T16:28:03.616Z",
+          "elapsedMs": 585233.2597500001,
+          "kind": "typed-step-progress",
+          "name": "check-signature-body",
+          "scope": "latest observed host-visible bounded-step boundary",
+          "units": "host-step-calls",
+          "unitsByField": null,
+          "value": 3821613,
+          "values": null,
+          "source": "checker_core_step_runtime.mjs",
+          "details": {
+            "protocol": "Checker",
+            "nativeChunkQuantum": 64,
+            "progressShape": "Pending",
+            "request": "checker_core_steps_v1.CheckerRequest_pattern_row_index_segments_complete",
+            "runNamespace": "checker_core_steps_v1",
+            "granularity": "first boundary then at most once per second; not a substage duration, live-process claim, or continuous sample"
+          }
+        },
+        {
+          "id": 530,
+          "spanId": 22,
+          "at": "2026-10-25T16:28:04.617Z",
+          "elapsedMs": 586234.641958,
+          "kind": "typed-step-progress",
+          "name": "check-signature-body",
+          "scope": "latest observed host-visible bounded-step boundary",
+          "units": "host-step-calls",
+          "unitsByField": null,
+          "value": 3858318,
+          "values": null,
+          "source": "checker_core_step_runtime.mjs",
+          "details": {
+            "protocol": "Checker",
+            "nativeChunkQuantum": 64,
+            "progressShape": "Finished",
+            "request": null,
+            "runNamespace": "checker_core_steps_v1",
+            "granularity": "first boundary then at most once per second; not a substage duration, live-process claim, or continuous sample"
+          }
+        },
+        {
+          "id": 531,
+          "spanId": 22,
+          "at": "2026-10-25T16:28:05.636Z",
+          "elapsedMs": 587253.20725,
+          "kind": "typed-step-progress",
+          "name": "check-signature-body",
+          "scope": "latest observed host-visible bounded-step boundary",
+          "units": "host-step-calls",
+          "unitsByField": null,
+          "value": 3897865,
+          "values": null,
+          "source": "checker_core_step_runtime.mjs",
+          "details": {
+            "protocol": "Checker",
+            "nativeChunkQuantum": 64,
+            "progressShape": "Direct",
+            "request": null,
+            "runNamespace": "checker_core_steps_v1",
+            "granularity": "first boundary then at most once per second; not a substage duration, live-process claim, or continuous sample"
+          }
+        },
+        {
+          "id": 532,
+          "spanId": 22,
+          "at": "2026-10-25T16:28:06.636Z",
+          "elapsedMs": 588253.204958,
+          "kind": "typed-step-progress",
+          "name": "check-signature-body",
+          "scope": "latest observed host-visible bounded-step boundary",
+          "units": "host-step-calls",
+          "unitsByField": null,
+          "value": 3931694,
+          "values": null,
+          "source": "checker_core_step_runtime.mjs",
+          "details": {
+            "protocol": "Checker",
+            "nativeChunkQuantum": 64,
+            "progressShape": "Finished",
+            "request": null,
+            "runNamespace": "checker_core_steps_v1",
+            "granularity": "first boundary then at most once per second; not a substage duration, live-process claim, or continuous sample"
+          }
+        },
+        {
+          "id": 533,
+          "spanId": 22,
+          "at": "2026-10-25T16:28:07.636Z",
+          "elapsedMs": 589253.2075,
+          "kind": "typed-step-progress",
+          "name": "check-signature-body",
+          "scope": "latest observed host-visible bounded-step boundary",
+          "units": "host-step-calls",
+          "unitsByField": null,
+          "value": 4004147,
+          "values": null,
+          "source": "checker_core_step_runtime.mjs",
+          "details": {
+            "protocol": "Checker",
+            "nativeChunkQuantum": 64,
+            "progressShape": "Pending",
+            "request": "checker_core_steps_v1.CheckerRequest_arena_subst_memo_lookup",
+            "runNamespace": "checker_core_steps_v1",
+            "granularity": "first boundary then at most once per second; not a substage duration, live-process claim, or continuous sample"
+          }
+        },
+        {
+          "id": 534,
+          "spanId": 22,
+          "at": "2026-10-25T16:28:08.636Z",
+          "elapsedMs": 590253.21675,
+          "kind": "typed-step-progress",
+          "name": "check-signature-body",
+          "scope": "latest observed host-visible bounded-step boundary",
+          "units": "host-step-calls",
+          "unitsByField": null,
+          "value": 4049162,
+          "values": null,
+          "source": "checker_core_step_runtime.mjs",
+          "details": {
+            "protocol": "Checker",
+            "nativeChunkQuantum": 64,
+            "progressShape": "Finished",
+            "request": null,
+            "runNamespace": "checker_core_steps_v1",
+            "granularity": "first boundary then at most once per second; not a substage duration, live-process claim, or continuous sample"
+          }
+        },
+        {
+          "id": 535,
+          "spanId": 22,
+          "at": "2026-10-25T16:28:09.636Z",
+          "elapsedMs": 591253.3718750001,
+          "kind": "typed-step-progress",
+          "name": "check-signature-body",
+          "scope": "latest observed host-visible bounded-step boundary",
+          "units": "host-step-calls",
+          "unitsByField": null,
+          "value": 4062211,
+          "values": null,
+          "source": "checker_core_step_runtime.mjs",
+          "details": {
+            "protocol": "Checker",
+            "nativeChunkQuantum": 64,
+            "progressShape": "Finished",
+            "request": null,
+            "runNamespace": "checker_core_steps_v1",
+            "granularity": "first boundary then at most once per second; not a substage duration, live-process claim, or continuous sample"
+          }
+        },
+        {
+          "id": 536,
+          "spanId": 22,
+          "at": "2026-10-25T16:28:10.636Z",
+          "elapsedMs": 592253.347042,
+          "kind": "typed-step-progress",
+          "name": "check-signature-body",
+          "scope": "latest observed host-visible bounded-step boundary",
+          "units": "host-step-calls",
+          "unitsByField": null,
+          "value": 4070445,
+          "values": null,
+          "source": "checker_core_step_runtime.mjs",
+          "details": {
+            "protocol": "Checker",
+            "nativeChunkQuantum": 64,
+            "progressShape": "Finished",
+            "request": null,
+            "runNamespace": "checker_core_steps_v1",
+            "granularity": "first boundary then at most once per second; not a substage duration, live-process claim, or continuous sample"
+          }
+        },
+        {
+          "id": 537,
+          "spanId": 22,
+          "at": "2026-10-25T16:28:11.636Z",
+          "elapsedMs": 593253.42175,
+          "kind": "typed-step-progress",
+          "name": "check-signature-body",
+          "scope": "latest observed host-visible bounded-step boundary",
+          "units": "host-step-calls",
+          "unitsByField": null,
+          "value": 4087794,
+          "values": null,
+          "source": "checker_core_step_runtime.mjs",
+          "details": {
+            "protocol": "Checker",
+            "nativeChunkQuantum": 64,
+            "progressShape": "Pending",
+            "request": "checker_core_steps_v1.CheckerRequest_global_segments_constructor_candidates",
+            "runNamespace": "checker_core_steps_v1",
+            "granularity": "first boundary then at most once per second; not a substage duration, live-process claim, or continuous sample"
+          }
+        },
+        {
+          "id": 538,
+          "spanId": 22,
+          "at": "2026-10-25T16:28:12.636Z",
+          "elapsedMs": 594253.417583,
+          "kind": "typed-step-progress",
+          "name": "check-signature-body",
+          "scope": "latest observed host-visible bounded-step boundary",
+          "units": "host-step-calls",
+          "unitsByField": null,
+          "value": 4118908,
+          "values": null,
+          "source": "checker_core_step_runtime.mjs",
+          "details": {
+            "protocol": "Checker",
+            "nativeChunkQuantum": 64,
+            "progressShape": "Finished",
+            "request": null,
+            "runNamespace": "checker_core_steps_v1",
+            "granularity": "first boundary then at most once per second; not a substage duration, live-process claim, or continuous sample"
+          }
+        },
+        {
+          "id": 539,
+          "spanId": 22,
+          "at": "2026-10-25T16:28:13.636Z",
+          "elapsedMs": 595253.4542500001,
+          "kind": "typed-step-progress",
+          "name": "check-signature-body",
+          "scope": "latest observed host-visible bounded-step boundary",
+          "units": "host-step-calls",
+          "unitsByField": null,
+          "value": 4142053,
+          "values": null,
+          "source": "checker_core_step_runtime.mjs",
+          "details": {
+            "protocol": "Checker",
+            "nativeChunkQuantum": 64,
+            "progressShape": "Pending",
+            "request": "checker_core_steps_v1.CheckerRequest_arena_copy_word_range",
+            "runNamespace": "checker_core_steps_v1",
+            "granularity": "first boundary then at most once per second; not a substage duration, live-process claim, or continuous sample"
+          }
+        },
+        {
+          "id": 540,
+          "spanId": 22,
+          "at": "2026-10-25T16:28:14.636Z",
+          "elapsedMs": 596253.474292,
+          "kind": "typed-step-progress",
+          "name": "check-signature-body",
+          "scope": "latest observed host-visible bounded-step boundary",
+          "units": "host-step-calls",
+          "unitsByField": null,
+          "value": 4158188,
+          "values": null,
+          "source": "checker_core_step_runtime.mjs",
+          "details": {
+            "protocol": "Checker",
+            "nativeChunkQuantum": 64,
+            "progressShape": "Direct",
+            "request": null,
+            "runNamespace": "checker_core_steps_v1",
+            "granularity": "first boundary then at most once per second; not a substage duration, live-process claim, or continuous sample"
+          }
+        },
+        {
+          "id": 541,
+          "spanId": 22,
+          "at": "2026-10-25T16:28:15.636Z",
+          "elapsedMs": 597253.498208,
+          "kind": "typed-step-progress",
+          "name": "check-signature-body",
+          "scope": "latest observed host-visible bounded-step boundary",
+          "units": "host-step-calls",
+          "unitsByField": null,
+          "value": 4175555,
+          "values": null,
+          "source": "checker_core_step_runtime.mjs",
+          "details": {
+            "protocol": "Checker",
+            "nativeChunkQuantum": 64,
+            "progressShape": "Pending",
+            "request": "checker_core_steps_v1.CheckerRequest_constructor_argument_usage",
+            "runNamespace": "checker_core_steps_v1",
+            "granularity": "first boundary then at most once per second; not a substage duration, live-process claim, or continuous sample"
+          }
+        },
+        {
+          "id": 542,
+          "spanId": 22,
+          "at": "2026-10-25T16:28:16.636Z",
+          "elapsedMs": 598253.519083,
+          "kind": "typed-step-progress",
+          "name": "check-signature-body",
+          "scope": "latest observed host-visible bounded-step boundary",
+          "units": "host-step-calls",
+          "unitsByField": null,
+          "value": 4184799,
+          "values": null,
+          "source": "checker_core_step_runtime.mjs",
+          "details": {
+            "protocol": "Checker",
+            "nativeChunkQuantum": 64,
+            "progressShape": "Finished",
+            "request": null,
+            "runNamespace": "checker_core_steps_v1",
+            "granularity": "first boundary then at most once per second; not a substage duration, live-process claim, or continuous sample"
+          }
+        },
+        {
+          "id": 543,
+          "spanId": 22,
+          "at": "2026-10-25T16:28:17.637Z",
+          "elapsedMs": 599254.563333,
+          "kind": "typed-step-progress",
+          "name": "check-signature-body",
+          "scope": "latest observed host-visible bounded-step boundary",
+          "units": "host-step-calls",
+          "unitsByField": null,
+          "value": 4204542,
+          "values": null,
+          "source": "checker_core_step_runtime.mjs",
+          "details": {
+            "protocol": "Checker",
+            "nativeChunkQuantum": 64,
+            "progressShape": "Pending",
+            "request": "checker_core_steps_v1.CheckerRequest_core_subst_at",
+            "runNamespace": "checker_core_steps_v1",
+            "granularity": "first boundary then at most once per second; not a substage duration, live-process claim, or continuous sample"
+          }
+        }
+      ]
+    }
+  },
+  "probe": {
+    "executedPath": "/private/tmp/bend-parser-cutover667/checkpoints/root_c_progress_diagnostic.ts",
+    "archivedPath": "/tmp/root-db147-c-progressdiag-profile-1/profile-95307-thread-1-iOKUvY/executed-probe.ts",
+    "sha256": "4ea7ff845f332a6f186388c6dba0b5300c1b5334c4f431aab423a3b082384443"
+  },
+  "policy": {
+    "workerStackMiB": 256,
+    "workerOldGenerationMiB": 3072,
+    "guardMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000,
+    "manualGC": false,
+    "acceptanceCorpusNarrowed": false
+  },
+  "classification": {
+    "lastObservedPhase": "check-signature-body",
+    "lastObservedHostStepCalls": 4204542,
+    "notObserved": [
+      "OOM",
+      "completed full check",
+      "C emission start",
+      "C output",
+      "native binary"
+    ],
+    "contrast": "Earlier worker diagnostic reached emit; this separately pinned diagnostic did not. Its process CPU at599.25s is169.82s across all threads, not600s CPU. Scheduling/I/O/observer contributions to unaccounted wall are not attributed; do not call this a measured regression or faster/slower run."
+  },
+  "limitsOfProof": [
+    "Latest tags are bounded-step boundary observations, not exact internal stage time",
+    "No full-input unprofiled/profiling overhead A/B",
+    "No phase completion inferred from a Finished progress constructor",
+    "No resource/liveness conclusion from stale running checkpoint alone; final guardian complete/stopped supplies termination evidence"
+  ]
+}

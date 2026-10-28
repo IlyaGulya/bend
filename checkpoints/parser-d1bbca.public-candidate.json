@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "parserPath": "/private/tmp/bend-fir-integrated57ab/checkpoints/.bootstrap_parser_rebuild_ir57ab-parser-d1bbca_generated_fuel.bend",
+  "parserSha256": "9a7696eef1fc4965a7f9d8fc36e4f6bb779c51e4d1623ea3d04f5e1c3a6eaa65",
+  "canonicalSha256": "eade8cec5cb889d4e2ac346b5afaf363e09823862cd46acdb6e4271f6a7501dd",
+  "entryPoint": "parse_with_fuel",
+  "publicTestEntryPoint": "parse_with_fuel",
+  "sourceEntryExplanation": "Source public tests call parse, which executes Lexer.tokens/combine_symbols then parse_module_tokens; generated tests call parse_with_fuel.",
+  "command": [
+    "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+    "test",
+    "evals/parser_bootstrap_compatibility.test.ts"
+  ],
+  "exitCode": 0,
+  "passed": 15,
+  "failed": 0,
+  "assertions": 264,
+  "rawOutputPath": "/private/tmp/bend-fir-integrated57ab/checkpoints/parser-d1bbca.public-candidate.json.output.txt",
+  "rawOutputSha256": "3c63ceebc7ad5dd8627c0acdcf7cc5eed80e3c88746453f8969d9f2098185d61"
+}

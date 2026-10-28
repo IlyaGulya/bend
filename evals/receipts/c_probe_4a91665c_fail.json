@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 1,
+  "kind": "C_PROBE_CLANG_FAILURE",
+  "status": "FAIL_CLANG_PRECHECK",
+  "scope": "PROBE_ONLY: one C module (evals/c_target_array_nat.bend) and one C library (evals/c_step_library_fixture.bend); no full matrix was run",
+  "component": {
+    "path": "/private/tmp/bend-fir-root-aa9/checkpoints/root-final-art.js",
+    "sha256": "4a91665c634dff4b1da9d17bdc80786efc03bd0d0e89865ed22e085c1026060a",
+    "bytes": 16912082,
+    "checkedDefinitions": 11179,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "buildReceipt": "/private/tmp/bend-fir-root-aa9/checkpoints/root-final-rep.result.json",
+    "buildReceiptSha256": "c05146584fc34e0891cf68119c27a71e913ddb7a3a269f77240e3c045abb5e54",
+    "root": "/private/tmp/bend-fir-root-aa9/checkpoints/.bootstrap_compiler_root_v1.bend",
+    "rootSha256": "b0b92b67225c1b67972c9fe2a1096962a14926633508936c86d8b93b73cbd36b",
+    "emitterSteps": "/private/tmp/bend-fir-root-aa9/checkpoints/emitter_steps_v1.bend",
+    "emitterStepsSha256": "d7dbe31856eb8d9e53eeddefab0ea4eed56eafe6420a7478d4c37b53d63fb956",
+    "carrierTag": "../bend2/selfhost/backend_ir.SourceFile",
+    "candidateHost": "/private/tmp/bend-fir-root-aa9/evals/candidate_host.ts",
+    "candidateHostSha256": "a56f57e32d0fa475a0564f18a3930137a084cb6a4ce49b05f496e76331d2a22a"
+  },
+  "commands": {
+    "module_emit": [
+      "node",
+      "--experimental-strip-types",
+      "--max-old-space-size=3072",
+      "/private/tmp/bend-fir-root-aa9/evals/candidate_host.ts",
+      "--candidate=/private/tmp/bend-fir-root-aa9/checkpoints/root-final-art.js",
+      "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+      "/private/tmp/bend-fir-root-aa9/evals/c_target_array_nat.bend",
+      "-o",
+      "/tmp/root-final-probe/module.c",
+      "--base=/private/tmp/bend-fir-root-aa9/bend2/base.bend",
+      "--runtime-c=/private/tmp/bend-fir-root-aa9/bend2/selfhost/c_runtime.c"
+    ],
+    "module_clang": [
+      "clang",
+      "-std=c11",
+      "-O0",
+      "-pthread",
+      "-lm",
+      "-o",
+      "/tmp/root-final-probe/module",
+      "/tmp/root-final-probe/module.c"
+    ],
+    "library_emit": [
+      "node",
+      "--experimental-strip-types",
+      "--max-old-space-size=3072",
+      "/private/tmp/bend-fir-root-aa9/evals/candidate_host.ts",
+      "--candidate=/private/tmp/bend-fir-root-aa9/checkpoints/root-final-art.js",
+      "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+      "--library",
+      "--exports=add,symbol_add,partial,zero,factory,mk",
+      "/private/tmp/bend-fir-root-aa9/evals/c_step_library_fixture.bend",
+      "-o",
+      "/tmp/root-final-probe/lib.c",
+      "--base=/private/tmp/bend-fir-root-aa9/bend2/base.bend",
+      "--runtime-c=/private/tmp/bend-fir-root-aa9/bend2/selfhost/c_runtime.c"
+    ],
+    "library_clang": [
+      "clang",
+      "-std=c11",
+      "-O0",
+      "-pthread",
+      "-lm",
+      "-o",
+      "/tmp/root-final-probe/lib",
+      "/tmp/root-final-probe/lib.c",
+      "/private/tmp/bend-fir-root-aa9/evals/c_backend_library_caller.c"
+    ]
+  },
+  "emission": {
+    "module": {
+      "exit": 0,
+      "path": "/tmp/root-final-probe/module.c",
+      "bytes": 840315,
+      "sha256": "60771a936227fb6ab5e02d513af2c372b002ba25b1f71da4abdb2e0427c3d3d9",
+      "rawLog": "/tmp/root-final-probe/module.emit.log",
+      "rawLogSha256": "f7cad1242615cc054a2143d244c5616e5614a043b36322847e7af44bfa9c8678"
+    },
+    "library": {
+      "exit": 0,
+      "path": "/tmp/root-final-probe/lib.c",
+      "bytes": 840358,
+      "sha256": "1a61cf285dd0273a105d52e8862f53ffc7d7fa0f2047213734cdcd59965bfdb5",
+      "rawLog": "/tmp/root-final-probe/lib.emit.log",
+      "rawLogSha256": "f5bcdfd5f0b5e31de847c36857363c37d253c3bea84457a791890555e8ba8c4b"
+    }
+  },
+  "clang": {
+    "module": {
+      "status": "nonzero (compilation failed; stderr was captured with head -5, so the full tail is not in the transcript)",
+      "observed": [
+        "module.c:1501:34: warning: braces around scalar initializer [-Wbraced-scalar-init]",
+        "module.c:4348:6: error: redefinition of 'b0r'",
+        " 4348 | Term b0r = 0;"
+      ],
+      "fragment": "/tmp/root-final-probe/module.fragment.txt",
+      "fragmentSha256": "3b502a7b24bd482e0c308f071a28693cc8ef7671f6408d5e289d3dc3e4cfe644",
+      "full_stderr": "LOST_TAIL: the original clang invocation piped stderr through head -5; the remaining lines and the total warning/error count were not captured. Per Main, the old 4a91665c clang was NOT rerun to fill this loss.",
+      "lost_tail_note": "Only the first five stderr lines are known; full warning/error totals for module.c are unknown. library.c totals were captured in full (1 warning, 20 errors)."
+    },
+    "library": {
+      "status": "nonzero: 1 warning and 20 errors generated",
+      "observed": [
+        "lib.c:4682:6: error: redefinition of 'b0r'",
+        " 4682 | Term b0r = 0;",
+        "lib.c:4681:116: note: previous definition is here",
+        " 4681 | Term b0t = lv690;Term b0f[2];u64 b0s = ... u32 b0i = 0; Term b0r = 0;",
+        "fatal error: too many errors emitted, stopping now [-ferror-limit=]",
+        "1 warning and 20 errors generated."
+      ],
+      "fragment": "/tmp/root-final-probe/lib.fragment.txt",
+      "fragmentSha256": "91e759374d8e4c9484986a0b6d94ba6e06c7840b56cabf89abf24c18a56ae86e"
+    }
+  },
+  "supporting_minimal_program": {
+    "source": "import Base; type T is Data: T{a: U32}; def main() -> T: T{42}",
+    "path": "/tmp/root-final-probe/pure3.c",
+    "bytes": 836758,
+    "sha256": "b62624e17f58a6ca2d25ef42d48ae27639effccffa98055f1aa25826b7de5b5e",
+    "clang_observed": [
+      "pure3.c:4344:6: error: redefinition of 'b0r'",
+      "pure3.c:4356:5: error: use of undeclared identifier 'b0o'",
+      "pure3.c:4423:6: error: redefinition of 'b0r'"
+    ],
+    "fragment": "/tmp/root-final-probe/pure3.fragment.txt",
+    "fragmentSha256": "4e8f1b339dd66c66a3f2781832902eecbb6354628b853adf544d361fe9ef26f0"
+  },
+  "finding": {
+    "shape": "Inside one GNU statement expression the scalar prelude from bend2/selfhost/c_backend_physical.bend:681 (`... u32 b0i = 0; Term b0r = 0;`) is immediately followed by a second `Term b0r = 0;`; later the same expression assigns `b0r = term_pak(...)`, then indexes `b0r[b0o] = b0r;` (also zero-length `u64 ...[0]` arrays). Prelude/unfill disagree on b0r's kind (scalar vs array).",
+    "breadth": "Same emitted shape for C module, C library, and a minimal pure main; not fixture-specific.",
+    "secondary": "module.c SHOW_DESC is emitted as { { 0 } } (braced scalar initializer warning).",
+    "attribution": "Not attributed in this receipt; source evidence points at the common generated arm around c_backend_physical.bend:681 and the physical unfill kind."
+  },
+  "notes": [
+    "No bulk C source is committed; emitted .c files and raw logs remain in /tmp/root-final-probe with the hashes above.",
+    "No source, fixture, or narrowing changes were made.",
+    "Next probe runs only on a fresh fixed component; the full 15-fixture/missing/JS matrix was not run for this artifact.",
+    "clang was not re-run to capture stderr; observed lines above are from the recorded invocation.",
+    "LOST TAIL: module.c clang stderr was truncated by head -5 in the original run; it is unknown beyond the recorded lines and was not rerun. Future runs never pipe clang/test output: full raw stdout+stderr are saved and excerpts read without dropping the raw."
+  ]
+}

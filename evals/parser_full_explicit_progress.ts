@@ -1362,6 +1362,14 @@ export function instrumentExplicitProgress(graph: ParserGraph, options: Explicit
   return { declarations, source, declarationMap, supportDeclarations, supportFunctions, typeDeclarations, parameterWitnesses, consumptionLiterals, consumptionExpressions, operations, functions, closures, execute: (name, args, runtimeOptions = {}) => executeGenerated(graph, functions, name, args, runtimeOptions, composeName, prefixName, supportFunctions) };
 }
 
+/** v39 keeps every u32 in a JS Char: a Unicode scalar is its own code units,
+ * and a value past the scalars is 0xDC00 plus three 11-bit pieces, which
+ * `Char.code` decodes and `str_out` would render as U+FFFD. */
+const charCodeUnits = (text: string, at = 0): number =>
+  text[at] === "\uDC00" ? 4 : (text.codePointAt(at) ?? 0) > 0xffff ? 2 : 1;
+const charCodeAt = (text: string): number => text.length < 4 ? text.codePointAt(0) ?? 0
+  : ((text.charCodeAt(1) << 22 | text.charCodeAt(2) << 11 | text.charCodeAt(3)) >>> 0);
+
 /** Small semantic evaluator of the actual generated writer AST. The production
  * path is the rendered Bend declarations above; this seam executes precisely
  * those declarations, not a second progress classifier. */
@@ -1392,9 +1400,8 @@ function executeGenerated(graph: ParserGraph, functions: Map<string, ExplicitFun
       }
     }
     if (typeof value === "string" && (constructor === "SNil" || constructor === "SCon")) {
-      const code = value.codePointAt(0);
-      return code === undefined ? constructorValue("SNil")
-        : constructorValue("SCon", constructorValue("Chr", code), value.slice(code > 0xffff ? 2 : 1));
+      return value.length === 0 ? constructorValue("SNil")
+        : constructorValue("SCon", constructorValue("Chr", charCodeAt(value)), value.slice(charCodeUnits(value)));
     }
     return value;
   }

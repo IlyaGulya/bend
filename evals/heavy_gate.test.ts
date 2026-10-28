@@ -1,8 +1,8 @@
 import {expect,test} from 'bun:test';
-import {mkdtemp,readFile,writeFile,rm,access} from 'node:fs/promises';
+import {mkdtemp,readdir,readFile,writeFile,rm,access} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join,resolve} from 'node:path';
-import {runHeavyGate,type HeavyGateResult} from './heavy_gate.ts';
+import {classifyGateResult,runHeavyGate,type HeavyGateResult} from './heavy_gate.ts';
 
 const gate=resolve(import.meta.dir,'heavy_gate.ts');
 const safe={memoryMiB:512,rssMiB:512,pollMs:20,termGraceMs:150,timeoutMs:5000};
@@ -33,7 +33,7 @@ test('normal and failed command exits have distinct recorded outcomes and stale 
   // A dead owner's file is not a live kernel lease. It must not block new work.
   await writeFile(lockPath,'999999 0 999998 stale-token\n',{mode:0o600});
   const pass=await runHeavyGate(['/bin/sh','-c','sleep 0.1; exit 0'],{...safe,lockPath,label:'normal exit'});
-  expect(pass.status).toBe('PASS');expect(pass.exitCode).toBe(0);
+  expect(pass.status).toBe('PASS');expect(pass.reportPhase).toBe('complete');expect(pass.ownedTreeStopped).toBe(true);expect(pass.exitCode).toBe(0);
   expect(pass.commandExitCode).toBe(0);expect(pass.reason).toBe('command_exit');
   expect(pass.elapsedMs).toBeGreaterThanOrEqual(80);
   expect(pass.timeoutMs).toBe(safe.timeoutMs);
@@ -52,7 +52,7 @@ test('a contending gate never starts its command and the lease is reusable after
   owner=runHeavyGate(['/bin/sh','-c','touch "$1"; while [ ! -f "$2" ]; do sleep 0.05; done','fixture',ready,release],{...safe,lockPath});
   await eventually(ready);
   const busy=await runHeavyGate(['/bin/sh','-c','touch "$1"','fixture',forbidden],{...safe,lockPath});
-  expect(busy.status).toBe('LOCK_BUSY');expect(busy.exitCode).toBe(75);
+  expect(busy.status).toBe('LOCK_BUSY');expect(busy.reportPhase).toBe('complete');expect(busy.ownedTreeStopped).toBeNull();expect(busy.exitCode).toBe(75);
   expect(busy.reason).toBe('exclusive_lock_busy');
   expect(await Bun.file(forbidden).exists()).toBe(false);
   await writeFile(release,'release');expect((await owner).status).toBe('PASS');
@@ -79,6 +79,29 @@ process.exitCode=await child.exited;
   expect(result.commandExitCode).toBe(7);
  }finally{await rm(directory,{recursive:true,force:true});}
 },10000);
+
+test('cold helper cache is reusable by guarded descendants with a permissive umask',async()=>{
+ const directory=await mkdtemp(join(tmpdir(),'heavy-gate-umask-'));
+ const script=join(directory,'guarded.ts'),lockPath=join(directory,'gate.lock');
+ try{
+  await writeFile(script,`import {guardHeavyGate} from ${JSON.stringify(gate)};
+process.umask(0o002);
+await guardHeavyGate(import.meta.path,${JSON.stringify({...safe,timeoutMs:15000,lockPath})});
+console.log('guarded fixture completed');
+`);
+  const child=Bun.spawn([process.execPath,script],{
+   env:{...process.env,TMPDIR:directory,HEAVY_GATE_LEASE_TOKEN:undefined,HEAVY_GATE_LEASE_PATH:undefined},
+   stdout:'pipe',stderr:'pipe',
+  });
+  const [stdout,stderr,exit]=await Promise.all([
+   new Response(child.stdout).text(),new Response(child.stderr).text(),child.exited,
+  ]);
+  const record=stderr.trim().split('\n').find(line=>line.startsWith('HEAVY_GATE '));
+  const status=record===undefined?null:JSON.parse(record.slice('HEAVY_GATE '.length)).status;
+  expect({exit,stdout:stdout.trim(),status})
+   .toEqual({exit:0,stdout:'guarded fixture completed',status:'PASS'});
+ }finally{await rm(directory,{recursive:true,force:true});}
+},20000);
 
 test('deadline cancels authenticated detached descendants without resetting the parent allowance and releases the lease',async()=>{
  const directory=await mkdtemp(join(tmpdir(),'heavy-gate-test-')),lockPath=join(directory,'gate.lock');
@@ -274,3 +297,92 @@ test('parent death triggers cleanup and automatically releases the stale kernel 
   }finally{owner.kill('SIGKILL');await owner.exited;}
  }finally{await rm(directory,{recursive:true,force:true});}
 },10000);
+
+test('launcher process-group kill leaves the supervisor independent and terminal',async()=>{
+ const directory=await mkdtemp(join(tmpdir(),'heavy-gate-test-')),lockPath=join(directory,'gate.lock');
+ const ready=join(directory,'ready'),script=join(directory,'launcher.ts');
+ // The launcher subprocess gets a private TMPDIR, so its guardian's own
+ // private report directory cannot collide with concurrent gate runs.
+ const reportDir=join(directory,`bend-heavy-gate-${process.getuid?.()??0}`);
+ const before=new Set(await readdir(reportDir).catch(()=>[] as string[]));
+ let launcher:Bun.Subprocess|undefined;
+ try{
+  const command=['/bin/sh','-c','echo $$ > "$1"; exec sleep 30','fixture',ready];
+  await writeFile(script,`import {runHeavyGate} from ${JSON.stringify(gate)};
+await runHeavyGate(${JSON.stringify(command)},${JSON.stringify({...safe,lockPath,timeoutMs:3000,label:'launcher group kill'})});`);
+  // The launcher is its own process-group leader so the fixture can kill the
+  // whole group exactly as a job-control launcher would.
+  launcher=Bun.spawn([process.execPath,script],{detached:true,stdio:['ignore','ignore','ignore'],env:{...process.env,TMPDIR:directory}});
+  await eventually(ready);
+  process.kill(-launcher.pid,'SIGKILL');await launcher.exited;
+  // The detached native supervisor survives the group kill, observes the
+  // lifeline EOF, stops the owned command and writes a bounded terminal
+  // receipt. It must not leave an empty report or a hanging lease.
+  const deadline=Date.now()+8000;let receipt:Record<string,unknown>|undefined;
+  while(Date.now()<deadline){
+   for(const name of (await readdir(reportDir).catch(()=>[] as string[])).filter(name=>name.startsWith('report-')&&!before.has(name))){
+    try{
+     const text=await readFile(join(reportDir,name),'utf8');
+     if(text.trim()){
+      const parsed=JSON.parse(text);
+      // The decision record is provisional; wait for the final record that
+      // confirms owned cleanup, without assuming how quickly it lands.
+      if(parsed.reportPhase==='complete'){receipt=parsed;break;}
+     }
+    }catch{}
+   }
+   if(receipt)break;
+   await Bun.sleep(20);
+  }
+  expect(receipt).toBeDefined();
+  expect(receipt!.status).toBe('FAIL');
+  expect(receipt!.reportPhase).toBe('complete');
+  expect(receipt!.ownedTreeStopped).toBe(true);
+  expect(['interrupted','deadline_exceeded','command_signal','descendants_after_exit']).toContain(receipt!.reason);
+  // The provisional receipt may land while owned cleanup is still running;
+  // the lease is released only after the owned tree is confirmed gone.
+  const leaseDeadline=Date.now()+8000;let probe:HeavyGateResult|undefined;
+  while(Date.now()<leaseDeadline){
+   probe=await runHeavyGate(['true'],{...safe,lockPath});
+   if(probe.status==='PASS')break;
+   await Bun.sleep(50);
+  }
+  expect(probe?.status).toBe('PASS');
+  await expectStopped(Number((await readFile(ready,'utf8')).trim()));
+ }finally{
+  if(launcher)launcher.kill('SIGKILL');
+  await rm(directory,{recursive:true,force:true});
+ }
+},20000);
+
+test('receipt classification forces a nonzero exit when PASS is incomplete',()=>{
+ // Pure contract check through the exported seam: crafted supervisor records,
+ // no process, no acceptance claim. The raw supervisor exit is kept as data.
+ const settings={label:'contract check',memoryMiB:64,rssMiB:64,timeoutMs:5000};
+ const classify=(record:Record<string,unknown>,exit:number)=>classifyGateResult(record,exit,['true'],settings,'/tmp/report.json');
+ const completePass=classify({status:'PASS',reason:'command_exit',reportPhase:'complete',ownedTreeStopped:true},0);
+ expect(completePass.status).toBe('PASS');expect(completePass.exitCode).toBe(0);
+ expect(completePass.supervisorExitCode).toBe(0);expect(completePass.reportPhase).toBe('complete');expect(completePass.ownedTreeStopped).toBe(true);
+ expect(completePass.label).toBe('contract check');
+ const unlabeled=classifyGateResult({status:'PASS',reason:'command_exit',reportPhase:'complete',ownedTreeStopped:true},0,['true'],{memoryMiB:64,rssMiB:64,timeoutMs:5000},'/tmp/report.json');
+ expect(unlabeled.label).toBe('heavy command');
+ for(const record of [
+  {status:'PASS',reason:'deadline_exceeded',reportPhase:'decision',ownedTreeStopped:false},
+  {status:'PASS',reason:'deadline_exceeded',reportPhase:'complete',ownedTreeStopped:false},
+  {status:'PASS',reason:'deadline_exceeded',reportPhase:'complete',ownedTreeStopped:null},
+  {status:'PASS',reason:'deadline_exceeded'},
+ ]){
+  const rejected=classify(record as Record<string,unknown>,0);
+  expect(rejected.status).toBe('FAIL');
+  expect(rejected.exitCode).toBe(1);
+  expect(rejected.supervisorExitCode).toBe(0);
+  expect(rejected.reason).toBe('deadline_exceeded');
+  expect(rejected.reportPhase==='complete'&&rejected.ownedTreeStopped===true).toBe(false);
+ }
+ const failed=classify({status:'FAIL',reason:'command_exit',reportPhase:'complete',ownedTreeStopped:true},1);
+ expect(failed.status).toBe('FAIL');expect(failed.exitCode).toBe(1);expect(failed.supervisorExitCode).toBe(1);
+ const limited=classify({status:'RESOURCE_LIMIT',reason:'rss_limit',reportPhase:'complete',ownedTreeStopped:true},73);
+ expect(limited.status).toBe('RESOURCE_LIMIT');expect(limited.exitCode).toBe(73);expect(limited.supervisorExitCode).toBe(73);
+ const busy=classify({status:'LOCK_BUSY',reason:'exclusive_lock_busy',reportPhase:'complete',ownedTreeStopped:null},75);
+ expect(busy.status).toBe('LOCK_BUSY');expect(busy.exitCode).toBe(75);expect(busy.supervisorExitCode).toBe(75);
+},5000);

@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "status": "REJECTED_EAGER_ARROW_MATERIALIZATION",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "scope": "The output-depth candidate passes36existing semantic cases but fails a new captured dependent-arrow relocation boundary; not integrated",
+  "inputs": {
+    "bend2/selfhost/descriptor_nf.bend": "91c090d29956b901b43b5945b8411a7a20ade3cdb1eed2af383e0b02f7a9b054",
+    "evals/descriptor_nf_smoke.bend": "7f162ee6fe74029d395a97cba0e85ee6aca5c25e73f580e39f11dca18bb626da",
+    "evals/descriptor_nf_step_smoke.ts": "0f750b766382d6a6a5fa0dbc2c28b361c92a512265f410ad9ec50f5eb836c307"
+  },
+  "artifact": {
+    "path": "/tmp/bend2039g3-nf-relocated-red-component.js",
+    "sha256": "26d8918b1c2aa88e9131452f29c56cc1384ff07b0c39dabd38a6025a17c6e95b"
+  },
+  "observed": "1111111111111111111111111111111111110",
+  "expected": "1111111111111111111111111111111111111",
+  "build": {
+    "checkedDefinitions": 621,
+    "eventsFullyValidated": 833,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "runtime": {
+      "name": "node",
+      "node": "23.11.0",
+      "v8": "12.9.202.28-node.14",
+      "executable": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "heapLimitMiB": 3072,
+      "stackSizeMb": 256,
+      "heapSizeLimitBytes": 3271557120,
+      "manualGC": false
+    },
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 301547520,
+      "peakFootprintBytes": 267524896,
+      "elapsedMs": 2225,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend2039g3-nf-arrow/evals/checker_core_component_build.ts",
+        "--worker",
+        "--file=/private/tmp/bend2039g3-nf-arrow/checkpoints/descriptor_nf_steps_component_v1.bend",
+        "--exports=expand_modules_start,template_step",
+        "--artifact=/tmp/bend2039g3-nf-relocated-red-component.js",
+        "--report=/private/tmp/bend2039g3-nf-arrow/checkpoints/descriptor-nf-g3-relocated-red-component",
+        "--inputs-sha256=5a2245a685fdd38ab34c960f7fde392f66c431e4c962b4f5b069048e8f619de8"
+      ],
+      "label": "Full-native CheckerCore component JS build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793078800563-aab1b14a7a4b4a57.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "run": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "commandExitCode": 1,
+    "commandSignal": 0,
+    "peakRssBytes": 50429952,
+    "peakFootprintBytes": 32359024,
+    "elapsedMs": 79,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "command": [
+      "/opt/homebrew/bin/bun",
+      "evals/descriptor_nf_step_smoke.ts",
+      "--run=/tmp/bend2039g3-nf-relocated-red-component.js"
+    ],
+    "label": "heavy command",
+    "exitCode": 1,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793078802877-1c6853fd0cacf1e4.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "finding": "A dependent arrow saved under an eliminated let is materialized before its final output scope is known. Reusing it under an intervening arrow captures that argument instead of the original outer type."
+}

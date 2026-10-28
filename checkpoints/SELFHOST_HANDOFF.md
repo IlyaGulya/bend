@@ -1,6 +1,61 @@
 # Self-hosting: полный handoff следующему сеансу
 
-## Status 57ab (IN_PROGRESS) — read before any statement below
+## 1. Цель и первый шаг
+
+Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
+
+## Актуальный принятый checkpoint: remote2039g21
+
+Source `03c4f278`: завершены свежая parser admission, полный native compiler
+root и настоящий native-stage0 → stage1 → stage2 byte fixedpoint.
+Проверены **12 157 определений / 12 736 событий**, без исключённых проверок
+и output patches. Лимиты прежние: **8 ГиБ RSS/footprint, 600 с на каждый gate**;
+это не суммарный 600-секундный лимит всей цепочки и companion-матриц.
+
+| Gate | Время, мс | Peak RSS, B | Peak footprint, B |
+|---|---:|---:|---:|
+| Native build | 157031 | 5432262656 | 5179594752 |
+| Native-seed bootstrap | 437094 | 5252530176 | 3776131920 |
+| Отдельный unchanged-image 95+95 companion | 194416 | 3238379520 | 1172993408 |
+
+Оба реальных файла имеют **30 222 543 байта**, SHA-256
+`6f3dff55cee825d064b1d2f9d0c3268fd0d629dd93043d90d6fc00f43eba5978`.
+Stage1 использует собственные parser/checker/emitter для полного root;
+пройдены 18 полных semantic AST approvals. 95 native-seed fixtures PASS.
+Затем каждый неизменённый stage1/stage2 отдельно прошёл все исходные 95
+fixtures, включая 31 отрицательный случай, и 130 fresh semantic parser
+approvals. Всего 285 fixture executions. Compiler images не патчились.
+
+Обе полные C/JS матрицы по 47 случаев, 33 native target/library consumers,
+12 admission-boundary случаев и 5 nested host exports PASS. Сохранены
+Array.atomic, String ownership/append/prefix, nested physical-layout,
+non-tail/capture-stack, Nat-boundary и unread-native-export регрессии.
+Все 91 source/protected input сверены с байтами кандидатного checkout.
+Квитанции с точными выполненными командами, runtime, guard и source hashes:
+`evals/receipts/root2039g21_native_fixedpoint.json`,
+`evals/receipts/root2039g21_emitted_suites.json`.
+
+Producer: Bend 2.0.39 / Bun 1.4.3; LLVM split O1. Emitted compiler:
+Node 23.11.0 / V8 worker, stack 256 MiB, old 6144 MiB, young 128 MiB.
+`BUN_JSC_forceRAMSize=4294967296` — GC hint, не hard memory limit.
+13-export ABI, parser fuel 8 000 000 и quantum 64 не менялись.
+G21 возвращает canonical `Map.get` в `Arena.name`; O2 из отклонённого g20
+не выбран. Universal FIR/BIR proofs, победа над official и heap 3072 MiB
+не заявляются. GPU/WASM и новые IR backends не проверялись этими gates.
+
+При интеграции сохранены все 18 прежних незакоммиченных generated snapshots:
+Git stash `4778e89776140409cb65b5649f5edcbbfdd944c7` и ignored-архив
+`checkpoints/pre-g21-primary-4de023f3-1285-4e0e-bf74-f03d9f5f5ec1.tar.gz`.
+Оба носителя сверены с исходными SHA-256. Старые snapshots не подмешаны в
+проверенный compiler root; untracked experiments не изменялись.
+
+Ниже — история прежних checkpoints. Их «сейчас» и «принят» относятся только
+к собственным source/image; g9a/g12/g14/g15/g16/g18/g20 остаются отклонёнными.
+
+## История: статус 57ab до cutover (не текущий)
+
+Запись ниже сохранена для provenance прежних helper-проверок. Её слова
+«current», «pending» и «unintegrated» описывают только прежний 57ab.
 
 - **Current integration candidate: 57ab, IN_PROGRESS. Not accepted.** The common
   CheckedFIR lowering extraction was reviewed at `768bf3d3`; the full C cutover,
@@ -56,9 +111,49 @@
 - Everything below describes earlier pinned checkpoints. Treat its “current”
   wording as historical, not as the status of 57ab.
 
-## 1. Цель и первый шаг
 
-Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
+## История: принятый checkpoint remote2039g8b
+
+На source `ee48ca2f` завершены полная native-сборка и настоящий native-seed
+stage1/stage2 fixedpoint под исходными **8 ГиБ / 600 с** на каждый gate.
+Проверены 12 071 тело / 12 651 событие без исключённых проверок и output patches.
+Native build: 263 744 мс, peak RSS 5 388 206 080 B.
+Bootstrap: 557 437 мс, peak RSS 4 738 695 168 B.
+Оба реальных файла: **28 334 920 байт**, SHA-256
+`0ff9027452d2b2bffb54f010d271a66aa5828eedfada41a391f359cb8e6de885`.
+Stage1 использует собственные parser/checker/emitter для полного root.
+Все 95 native-seed fixtures, 18 полных semantic parser approvals,
+33 C + 33 JS случая, 7 native foreign/library и 5 nested host exports PASS.
+Точная квитанция: `evals/receipts/root2039g8b_native_fixedpoint.json`.
+Все 53 source/foreign входа root сверены с локальными байтами.
+
+Ниже сохранена **история** предыдущих версий, а не текущий статус.
+Отдельный JS-seed default-stack отказ не объявляется исправленным.
+Полный profiling off/on контроль завершён: две чередующиеся пары одного
+неизменного g8 stage1 на полном root дали одинаковые выходные байты; квитанция
+`evals/receipts/profile2039g8_full_root_overhead.json`. Отдельный сокращённый
+репродуктор памяти выполнен и сохранён в
+`evals/receipts/producer2039g8_reduced_memory.json`.
+
+Следующий g9a добавляет девять Array.atomic.* и проходит три atomic-сценария
+на каждом JS/C target. Свежие parser admission и полная native-сборка
+12 099 тел / 12 679 событий PASS: 273 066 мс, peak RSS 5 381 029 888 B.
+Но g9a **отклонён**: bootstrap остановлен прежним дедлайном 600 с в
+stage-two-check; stage2 и нового fixedpoint нет. Есть настоящий stage1,
+95 native-seed fixtures и 18 полных parser approvals. Доказательства и точная
+граница: `evals/receipts/root2039g9a_atomic_bootstrap_rejected.json`.
+Последующий g12 завершил свежие parser gates, native build (418.413 с) и обе
+40-case матрицы, но тоже **отклонён**: stage-two-check начался на 466.687 с,
+затем сработал прежний deadline 600 с. Все 95 native-seed fixtures прошли;
+stage1 — 28 518 892 B, stage2 нет. Квитанция:
+`evals/receipts/root2039g12_bootstrap_deadline_rejected.json`.
+G13 исправляет C proper-prefix comparison, unread native library exports и
+утечки owned String у native-value/fresh-literal вызовов. Восемь JS/C
+consumers проходят, включая неизменную 32-page heap-границу; свежая полная
+приёмка ещё не заявляется. Квитанция:
+`evals/receipts/root2039g13_string_native_boundaries.json`.
+Дальше — завершение новой полной приёмки без увеличения лимитов. Принятым
+остаётся g8; g9a/g12 не считаются новым fixedpoint.
 
 СЕЙЧАС принят host57aa: compa84170d5… с общим C-only inline cutoff8 words.
 Physical WIDE247 и JS layouts прежние; scalar structural layouts сохраняются,

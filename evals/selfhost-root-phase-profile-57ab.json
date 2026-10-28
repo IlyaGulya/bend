@@ -1,0 +1,173 @@
+{
+  "schema": "selfhost-root-phase-profile-57ab-v1",
+  "date": "2026-10-24",
+  "source": {
+    "branch": "work/fir-nf-combined57ab",
+    "head": "d47f859b",
+    "contents": "115522b4 array facts, 6255f91e partial fix, NF 5b595ac7 + 3606f27f, datatype headers 1cd2d4df, SCC composer 34e4b7e0, consumer ABI/harness, array fact dump",
+    "regeneration": "owned 1141; checker steps 1141/4223/1541/4914; template 196/755/512/414; emitter 855/1710/482/4/1414"
+  },
+  "run": {
+    "kind": "existing --profile-root diagnostic; no bootstrap acceptance; seed fixture suites skipped by the mode",
+    "command": "SELFHOST_CPU_PROFILE_DIR=/tmp/prof57ab bun --smol evals/selfhost_bootstrap_gate.ts --component=/private/tmp/combined-root5/component.js --component-build=/private/tmp/combined-root5/component.result.result.json --root=checkpoints/.bootstrap_compiler_root_v1.bend --root-manifest=checkpoints/selfhost-steps-driver-source-v1.json --parser=checkpoints/bootstrap-parser-rebuild-p75comb4.js --parser-build=checkpoints/bootstrap-parser-rebuild-p75comb4.native-build.result.json --profile-root=true --report=checkpoints/selfhost-steps-root-profile-p75comb4.json",
+    "status": "ROOT_COMPILER_PROFILE_PASS",
+    "totalWallMs": 224652,
+    "componentSha256": "8935d50387f026e16657242aad7cc564d2bd8afee43cd458e84fc904daca2bb2",
+    "parserArtifactSha256": "1464037ba20c190ea51083d5824665fa665ce8d5657264544f4515e2339a3ee0",
+    "workerPhaseFiles": "/tmp/prof57ab/selfhost-7112-thread-1-mcH7qj/*.json"
+  },
+  "correction": "Phase marks are phase STARTS, not completions. The earlier claim that stage-one emit dominated the aggregate (167.9 s) was wrong: that interval is check+expand. Emit is 7 s. This receipt supersedes that attribution.",
+  "phases": [
+    {
+      "phase": "root parse (parser oracle)",
+      "wallMs": 45055,
+      "note": "stage-one-parse boundary to stage-one"
+    },
+    {
+      "phase": "expand",
+      "wallMs": 6265,
+      "cpuMs": 6737
+    },
+    {
+      "phase": "check",
+      "wallMs": 162580,
+      "cpuMs": 174625,
+      "userCpuMs": 170441,
+      "systemCpuMs": 4184
+    },
+    {
+      "phase": "emit",
+      "wallMs": 7069,
+      "cpuMs": 8835
+    },
+    {
+      "phase": "stage-one execute",
+      "wallMs": 450
+    }
+  ],
+  "checkSelfTime": {
+    "totalSampledMs": 162893,
+    "rows": [
+      {
+        "function": "(anonymous) continuation closures in component.js",
+        "seconds": 42.2,
+        "share": 0.259
+      },
+      {
+        "function": "checker_core_steps_v1.checker_chunk",
+        "seconds": 15.5,
+        "share": 0.095
+      },
+      {
+        "function": "checker_core_steps_v1.checker_step_one",
+        "seconds": 13.6,
+        "share": 0.083
+      },
+      {
+        "function": "checker_core_steps_v1.checker_step",
+        "seconds": 13.2,
+        "share": 0.081
+      },
+      {
+        "function": "(garbage collector)",
+        "seconds": 11.6,
+        "share": 0.071
+      },
+      {
+        "function": "index_lookup (four frames)",
+        "seconds": 11.1,
+        "share": 0.068
+      },
+      {
+        "function": "Map.get",
+        "seconds": 5.0,
+        "share": 0.031
+      },
+      {
+        "function": "f",
+        "seconds": 4.3,
+        "share": 0.026
+      }
+    ],
+    "cpsStepMachineryShare": 0.545,
+    "interpretation": "Check is the cost centre and it is dominated by the CPS request/step dispatch and its per-request continuation closures. GC is 7.1 %, not a blow-up. Emit's own profile is 7.6 s total. Generic CPS attribution does NOT by itself exclude duplicated producer work or a source regression; there is no matched per-phase baseline for the 57y source in the repository (its receipt records only the comparison event at 551490 ms and the stage sizes), so no causal claim beyond the measured shares is made."
+  },
+  "aggregateFailure": {
+    "report": "checkpoints/selfhost-steps-bootstrap-p75comb4-h.json",
+    "status": "FAIL",
+    "guardian": "deadline_exceeded, 600014 ms, events 4045, parseRows 164, fixtureRows 95, peak RSS 4.59-5.14 GiB across two runs",
+    "timelineMs": {
+      "seedFixtures": 93700,
+      "stageOneParse": 32100,
+      "stageOneExpand": 6300,
+      "stageOneCheck": 167800,
+      "stageOneEmit": 7200,
+      "stageOneExecute": 7200,
+      "stageTwoParse": 33700,
+      "stageTwoExpand": 0,
+      "stageTwoCheck": "killed at 600000; no completion mark"
+    },
+    "note": "Two independent runs agree to the second. The fixedpoint comparison mark was never reached, so no comparison certificate exists for this tree."
+  },
+  "reference57y": {
+    "checkpoint": "checkpoints/compiler-ir-checkpoint-v57y.json",
+    "originalGateStatus": "FAIL",
+    "guardian": "deadline_exceeded, 600041 ms",
+    "comparisonEventMs": 551490.093209,
+    "stageBytes": 13746315,
+    "stageSha256": "d10de8af5147788952f414c261d66b8e9987155d82b0f8af975e73c0110aacf2",
+    "certificateBoundary": "failed aggregate report + its .cases/stage-one.js and stage-two.js, comparison event, plus an explicit parent-side `cmp -s` and shasum/wc",
+    "companionCommand": "bun --smol evals/selfhost_emitted_suites.ts --fixedpoint-report=checkpoints/selfhost-ir57y-cursor-bootstrap-a.json --stage-sha256=d10de8af5147788952f414c261d66b8e9987155d82b0f8af975e73c0110aacf2 --stage-bytes=13746315 --report=checkpoints/selfhost-ir57y-cursor-emitted-suites-a.json --worker",
+    "companionElapsedMs": 247537,
+    "companionStatus": "PASS"
+  },
+  "hostProbe": {
+    "nhs": {
+      "platform": "Linux x86_64",
+      "cpus": 12,
+      "memoryGB": 69,
+      "bun": "1.4.3 at ~/.bun/bin",
+      "node": "v22.22.1",
+      "singleCoreLoop": "227 ms vs 338 ms local (1.49x)",
+      "rejected": "evals/bootstrap_parser_rebuild.ts refuses non-darwin: 'Accepted physical-footprint guardian requires macOS'. Same guardian family wraps the bootstrap gate, so the accepted path cannot run there."
+    },
+    "misaka": {
+      "platform": "Linux x86_64",
+      "cpus": 4,
+      "memoryGB": 8,
+      "availableGB": 3.9,
+      "bun": "absent",
+      "node": "absent",
+      "rejected": "no runtime and no headroom for the 8 GiB guardian"
+    },
+    "radix-home.ccrowd.in": "refused: remote host key changed (possible MITM); not accepted",
+    "stamp65.ru": "unresolved hostname",
+    "conclusion": "No authorized faster host can run the accepted guardian path; the guardian is macOS-only by design, so the comparison must fit 600 s on macOS."
+  },
+  "claims": {
+    "aggregatePass": false,
+    "comparisonCertificate": false,
+    "bootstrapGreen": false,
+    "diagnosticOnly": true
+  },
+  "nextOptions": [
+    "a faster macOS host under the unchanged guardians",
+    "a Main decision on the 600 s envelope (not taken by this agent)",
+    "a provider-level fix of the measured check hot path (CPS request dispatch / per-request continuation allocation), which is outside this slice's ownership"
+  ],
+  "requestCost": {
+    "method": "instrumented copy of the built component (one counter increment inside generated checker_step_one) driven by a throwaway host that parses, expands and checks the full root with the component's own step ABI, run under node --stack-size=262144 --max-old-space-size=6144 (the declared worker policy)",
+    "stepOneCalls": 194871876,
+    "checkWallMs": 172825,
+    "nsPerRequest": 886,
+    "derivedFromShares": {
+      "continuationBodiesNs": 229,
+      "trampolineNs": 245,
+      "indexLookupNs": 104,
+      "gcNs": 63,
+      "remainderNs": 245
+    },
+    "removableCeiling": "The only source-level removable piece inside the permitted fix class is the request-group wrapper plus its second dispatch, a strict subset of the 245 ns trampoline. Even a perfect single-dispatch rewrite leaves every body, index lookup, GC and arena cost in place, so the best case is a few percent of check (single-digit seconds per stage), not the ~60 s the aggregate needs.",
+    "conclusion": "At 195 M requests and 886 ns/request, closing the ~60 s gap would require removing roughly half of the trampoline in every stage plus the fixture executions, which is the architectural direction already measured and rejected (first-order, register stack, frame schema). No permitted source-level fix is sufficient; the decision is the envelope or the host."
+  }
+}

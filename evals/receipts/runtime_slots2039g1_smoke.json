@@ -1,0 +1,183 @@
+{
+  "schemaVersion": 1,
+  "status": "RUNTIME_SLOT_REGRESSION_PASS",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "scope": "Actual unchanged g1 compiler renders regenerated runtime; real C wide-record emit/clang/native run prints133. Not full C matrix or bootstrap acceptance.",
+  "sourceVersion": "9a444434 plus runtime slot repair",
+  "commands": [
+    {
+      "argv": [
+        "/opt/homebrew/bin/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/opt/homebrew/bin/bun",
+        "evals/gen_c_runtime.ts"
+      ],
+      "exitCode": 0,
+      "elapsedMs": 179
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/bun",
+        "evals/c_target_fixtures_run.ts",
+        "--driver=/tmp/bend2039g1-driver",
+        "--node=/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--target=c",
+        "--smoke-case=c_target_wide_record",
+        "--keep",
+        "--logs=/tmp/bend2039g1-slots-wide-b"
+      ],
+      "exitCode": 0,
+      "elapsedMs": 27457
+    }
+  ],
+  "sourceHashes": {
+    "evals/gen_c_runtime.ts": "f20d9825759a2cb84372c656349cfb578edcedd3ecdcf5085ad4a73a73da2c95",
+    "bend2/selfhost/c_runtime.c": "a8c50f5b7ea3b08bd32ae629546170ded00046237c91859278b4e124e9923626",
+    "evals/c_backend_runtime.bend": "31e2626026f38a78e2250151251c56da04d38688d5e0eb270dd4a64be676c5ea",
+    "bend2/comp.ts": "e132ab4863ee64fe9fbe9b817adfd429e4e5627c52babfc43c88adf2aad6416d",
+    "checkpoints/root-release2039g1.js": "aa94999e2f28680d4b2ef752514c1806f3c7cf180128461781e183542869e508"
+  },
+  "expected": "133",
+  "observed": "133",
+  "stages": [
+    {
+      "stage": "emit",
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 1866956800,
+      "peakFootprintBytes": 1981722080,
+      "elapsedMs": 25531,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/bin/sh",
+        "-c",
+        "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+        "sh",
+        "/tmp/bend2039g1-slots-wide-b/c_target_wide_record.emit.stdout",
+        "/tmp/bend2039g1-slots-wide-b/c_target_wide_record.emit.stderr",
+        "/tmp/bend2039g1-driver",
+        "/private/tmp/bend2039-upgrade/evals/c_target_wide_record.bend",
+        "-o",
+        "/tmp/bend2039g1-slots-wide-b/c_target_wide_record.c",
+        "--base",
+        "/private/tmp/bend2039-upgrade/bend2/base.bend",
+        "--runtime-c",
+        "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+      ],
+      "label": "c_target_wide_record:emit",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793035198585-899334ecb87bc715.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592,
+      "argv": [
+        "/tmp/bend2039g1-driver",
+        "/private/tmp/bend2039-upgrade/evals/c_target_wide_record.bend",
+        "-o",
+        "/tmp/bend2039g1-slots-wide-b/c_target_wide_record.c",
+        "--base",
+        "/private/tmp/bend2039-upgrade/bend2/base.bend",
+        "--runtime-c",
+        "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+      ],
+      "stdoutPath": "/tmp/bend2039g1-slots-wide-b/c_target_wide_record.emit.stdout",
+      "stderrPath": "/tmp/bend2039g1-slots-wide-b/c_target_wide_record.emit.stderr"
+    },
+    {
+      "stage": "clang",
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 137510912,
+      "peakFootprintBytes": 92799696,
+      "elapsedMs": 1714,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/bin/sh",
+        "-c",
+        "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+        "sh",
+        "/tmp/bend2039g1-slots-wide-b/c_target_wide_record.clang.stdout",
+        "/tmp/bend2039g1-slots-wide-b/c_target_wide_record.clang.stderr",
+        "clang",
+        "-std=c11",
+        "-O0",
+        "-ferror-limit=0",
+        "-pthread",
+        "-lm",
+        "-o",
+        "/tmp/bend2039g1-slots-wide-b/c_target_wide_record",
+        "/tmp/bend2039g1-slots-wide-b/c_target_wide_record.c"
+      ],
+      "label": "c_target_wide_record:clang",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793035224126-019b3d73c463a4d2.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592,
+      "argv": [
+        "clang",
+        "-std=c11",
+        "-O0",
+        "-ferror-limit=0",
+        "-pthread",
+        "-lm",
+        "-o",
+        "/tmp/bend2039g1-slots-wide-b/c_target_wide_record",
+        "/tmp/bend2039g1-slots-wide-b/c_target_wide_record.c"
+      ],
+      "stdoutPath": "/tmp/bend2039g1-slots-wide-b/c_target_wide_record.clang.stdout",
+      "stderrPath": "/tmp/bend2039g1-slots-wide-b/c_target_wide_record.clang.stderr"
+    },
+    {
+      "stage": "run",
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 147456,
+      "peakFootprintBytes": 311440,
+      "elapsedMs": 18,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/bin/sh",
+        "-c",
+        "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+        "sh",
+        "/tmp/bend2039g1-slots-wide-b/c_target_wide_record.run.stdout",
+        "/tmp/bend2039g1-slots-wide-b/c_target_wide_record.run.stderr",
+        "/tmp/bend2039g1-slots-wide-b/c_target_wide_record"
+      ],
+      "label": "c_target_wide_record:run",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793035225852-33f9c5c6e8c1ea72.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592,
+      "argv": [
+        "/tmp/bend2039g1-slots-wide-b/c_target_wide_record"
+      ],
+      "stdoutPath": "/tmp/bend2039g1-slots-wide-b/c_target_wide_record.run.stdout",
+      "stderrPath": "/tmp/bend2039g1-slots-wide-b/c_target_wide_record.run.stderr"
+    }
+  ]
+}

@@ -1,0 +1,377 @@
+{
+  "schemaVersion": 1,
+  "status": "WORKING8192MIB_UNOBSERVED_CODEGEN_DEADLINE",
+  "accepted": false,
+  "scope": "Same complete frozen03d0 native diagnostic input; no compile_book observer installed",
+  "temporaryWorkingPolicy": {
+    "workerOldGenerationMiB": 8192,
+    "workerStackMiB": 256,
+    "treeGuardMiB": 12288,
+    "pollMs": 10,
+    "deadlineMs": 600000,
+    "exclusiveHeavyChildren": 1,
+    "laterOptimizationTargetMiB": 3072
+  },
+  "runtime": {
+    "node": "23.11.0",
+    "bunLauncher": "not used"
+  },
+  "guardPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792948105165-6fe4a28f8a62ca06.json",
+  "guard": {
+    "status": "FAIL",
+    "reason": "deadline_exceeded",
+    "commandExitCode": -1,
+    "commandSignal": 15,
+    "peakRssBytes": 6999818240,
+    "peakFootprintBytes": 7550635336,
+    "elapsedMs": 600420,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "command": [
+      "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "/private/tmp/bend-fir-integrated57ab/checkpoints/native03d0_working_8g_clean.ts"
+    ],
+    "label": "Frozen03d0 fine codegen attribution diagnostic",
+    "exitCode": 1,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792948105165-6fe4a28f8a62ca06.json",
+    "memoryLimitBytes": 12884901888,
+    "rssLimitBytes": 12884901888
+  },
+  "run": {
+    "schemaVersion": 1,
+    "kind": "compiler-profile",
+    "profilerVersion": "compiler-profile/1",
+    "diagnosticOnly": true,
+    "acceptanceEvidence": false,
+    "status": "running",
+    "execution": {
+      "diagnosticOnly": true,
+      "acceptanceEvidence": false,
+      "workload": "OLDPINNED_DIAGNOSTIC_03d0",
+      "inputs": {
+        "/private/tmp/bend-native-merged-03d0/bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+        "/private/tmp/bend-native-merged-03d0/bend2/comp.ts": "a84170d5a84f21386383ccd478a1dac687eb664d89c21b284cd1134513963b70",
+        "/private/tmp/bend-native-merged-03d0/bend2/base.bend": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+        "/private/tmp/bend-native-merged-03d0/evals/native_stage_profile_driver.bend": "dd1b86b49f66039949c3efd962973e784a938fdce8a4beb7a2a324f591f3171a",
+        "/private/tmp/bend-native-merged-03d0/checkpoints/native_stage_profile_generated_fixture.bend": "ef98fcac013f127a218430aa1b3f43c191092cbc41d66b3f41f02715be65a108",
+        "/private/tmp/bend-native-merged-03d0/checkpoints/emitter_steps_v1.bend": "d7dbe31856eb8d9e53eeddefab0ea4eed56eafe6420a7478d4c37b53d63fb956",
+        "/private/tmp/bend-native-merged-03d0/checkpoints/checker_core_steps_v1.bend": "d6000fd556d550f45ccca6adeaaa6e2b0d6aa2fc7604fae0959d650f6d7d175c",
+        "/private/tmp/bend-native-merged-03d0/checkpoints/template_steps_v1.bend": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4"
+      },
+      "observerSource": "99fca04a701af1fec88e49ab3ec4673ada67fd504ed22d6901b1937e997b4ae8",
+      "scriptSha256": "029551b8bc1d9ca2d04b83207da84b2f38594b6f1dc9b78d39f5bcb02f8d2be8",
+      "workerLimits": {
+        "stackSizeMb": 256,
+        "maxOldGenerationSizeMb": 8192
+      },
+      "note": "Same frozen source workload as prior OOM; User-approved temporary working policy:8192MiB worker old-generation and12288MiB tree RSS/footprint guard;3072MiB remains the later optimization target. Stack256MiB and deadline600s unchanged. Exact same frozen03d0 workload and observer detail. No generator/kernel/compiler/input edits, no manual GC, no narrowed roots or checks. No compile_book observer is installed; only module/load/validation/whole-codegen boundary collection remains. This is a working build/control, not an isolated overhead claim."
+    },
+    "identity": {
+      "pid": 2378,
+      "parentPid": 2376,
+      "threadId": 1,
+      "isMainThread": false
+    },
+    "runtime": {
+      "name": "node",
+      "versions": {
+        "node": "23.11.0",
+        "acorn": "8.14.1",
+        "ada": "3.2.1",
+        "amaro": "0.4.1",
+        "ares": "1.34.4",
+        "brotli": "1.1.0",
+        "cjs_module_lexer": "2.1.0",
+        "cldr": "46.0",
+        "icu": "76.1",
+        "llhttp": "9.2.1",
+        "modules": "131",
+        "napi": "10",
+        "nbytes": "0.1.1",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.64.0",
+        "openssl": "3.0.16",
+        "simdjson": "3.12.2",
+        "simdutf": "6.0.3",
+        "sqlite": "3.49.1",
+        "tz": "2025a",
+        "undici": "6.21.2",
+        "unicode": "16.0",
+        "uv": "1.50.0",
+        "uvwasi": "0.0.21",
+        "v8": "12.9.202.28-node.14",
+        "zlib": "1.3.0.1-motley-788cb3c",
+        "zstd": "1.5.6"
+      },
+      "platform": "darwin",
+      "arch": "arm64",
+      "execPath": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "execArgv": []
+    },
+    "runDirectory": "/tmp/native03d0-working-8g-clean-1-profiles/profile-2378-thread-1-n1Lfsf",
+    "startedAt": "2026-10-25T17:08:25.476Z",
+    "startMonotonicMs": 274.230917,
+    "rawDetail": false,
+    "checkpointPath": "/tmp/native03d0-working-8g-clean-1-profiles/profile-2378-thread-1-n1Lfsf/checkpoint.json",
+    "measurement": {
+      "wall": {
+        "kind": "monotonic performance.now",
+        "scope": "collector process"
+      },
+      "cpu": {
+        "kind": "process.cpuUsage boundary delta",
+        "scope": "every thread in this process; child processes excluded; not exclusive across overlapping spans"
+      },
+      "memory": {
+        "kind": "process.memoryUsage boundary snapshot",
+        "scope": "RSS process-wide; heapUsed boundary sample, not allocation or retained bytes"
+      },
+      "sampling": null
+    },
+    "sampling": {
+      "config": null,
+      "status": "disabled",
+      "reason": null,
+      "spans": []
+    },
+    "limits": [
+      "diagnostic only: profile files do not certify acceptance, bootstrap green, fixedpoint or benchmark results",
+      "span CPU is a process.cpuUsage boundary delta over all threads in this process; child processes are excluded and require their own rusage receipt; nested or overlapping spans overlap and no exclusive CPU is derived",
+      "boundary heapUsed deltas are not allocation, live or retained bytes; RSS is process-wide",
+      "sampled CPU/allocation profiles are statistical, include collected objects for allocation, and have no Bend source map",
+      "child-process CPU/RSS exists only where the producer records a child receipt (e.g. NATIVE_PHASE or llvm time -lp); it is never inferred",
+      "rawDetail streams every event to events.jsonl; fine spans/observations are aggregated in memory, but JSON serialization and I/O overhead remains and is not measured",
+      "fullroot overhead/control and complete stage coverage are not established by a tiny smoke run"
+    ]
+  },
+  "checkpoint": {
+    "schemaVersion": 1,
+    "kind": "compiler-profile-checkpoint",
+    "profilerVersion": "compiler-profile/1",
+    "profileId": "b5357de8-44b2-4956-9c0a-64b5bd3bf76d",
+    "execution": {
+      "diagnosticOnly": true,
+      "acceptanceEvidence": false,
+      "workload": "OLDPINNED_DIAGNOSTIC_03d0",
+      "inputs": {
+        "/private/tmp/bend-native-merged-03d0/bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+        "/private/tmp/bend-native-merged-03d0/bend2/comp.ts": "a84170d5a84f21386383ccd478a1dac687eb664d89c21b284cd1134513963b70",
+        "/private/tmp/bend-native-merged-03d0/bend2/base.bend": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+        "/private/tmp/bend-native-merged-03d0/evals/native_stage_profile_driver.bend": "dd1b86b49f66039949c3efd962973e784a938fdce8a4beb7a2a324f591f3171a",
+        "/private/tmp/bend-native-merged-03d0/checkpoints/native_stage_profile_generated_fixture.bend": "ef98fcac013f127a218430aa1b3f43c191092cbc41d66b3f41f02715be65a108",
+        "/private/tmp/bend-native-merged-03d0/checkpoints/emitter_steps_v1.bend": "d7dbe31856eb8d9e53eeddefab0ea4eed56eafe6420a7478d4c37b53d63fb956",
+        "/private/tmp/bend-native-merged-03d0/checkpoints/checker_core_steps_v1.bend": "d6000fd556d550f45ccca6adeaaa6e2b0d6aa2fc7604fae0959d650f6d7d175c",
+        "/private/tmp/bend-native-merged-03d0/checkpoints/template_steps_v1.bend": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4"
+      },
+      "observerSource": "99fca04a701af1fec88e49ab3ec4673ada67fd504ed22d6901b1937e997b4ae8",
+      "scriptSha256": "029551b8bc1d9ca2d04b83207da84b2f38594b6f1dc9b78d39f5bcb02f8d2be8",
+      "workerLimits": {
+        "stackSizeMb": 256,
+        "maxOldGenerationSizeMb": 8192
+      },
+      "note": "Same frozen source workload as prior OOM; User-approved temporary working policy:8192MiB worker old-generation and12288MiB tree RSS/footprint guard;3072MiB remains the later optimization target. Stack256MiB and deadline600s unchanged. Exact same frozen03d0 workload and observer detail. No generator/kernel/compiler/input edits, no manual GC, no narrowed roots or checks. No compile_book observer is installed; only module/load/validation/whole-codegen boundary collection remains. This is a working build/control, not an isolated overhead claim."
+    },
+    "identity": {
+      "pid": 2378,
+      "parentPid": 2376,
+      "threadId": 1,
+      "isMainThread": false
+    },
+    "runDirectory": "/tmp/native03d0-working-8g-clean-1-profiles/profile-2378-thread-1-n1Lfsf",
+    "checkpointPath": "/tmp/native03d0-working-8g-clean-1-profiles/profile-2378-thread-1-n1Lfsf/checkpoint.json",
+    "rawDetail": false,
+    "status": "running",
+    "error": null,
+    "updatedAt": "2026-10-25T17:08:34.893Z",
+    "elapsedMs": 9412.820249999999,
+    "process": {
+      "cpu": {
+        "kind": "process-boundary-delta",
+        "scope": "process.cpuUsage delta since collector creation; every thread in this process; child processes excluded",
+        "userMs": 8083.551,
+        "systemMs": 394.299
+      },
+      "memory": {
+        "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+        "rssBytes": 1269235712,
+        "heapTotalBytes": 1085456384,
+        "heapUsedBytes": 1061857584,
+        "externalBytes": 17276848,
+        "arrayBuffersBytes": 16675
+      }
+    },
+    "activeSpans": [
+      {
+        "id": 4,
+        "parentId": null,
+        "name": "compile_book",
+        "details": {},
+        "startedAt": "2026-10-25T17:08:34.893Z",
+        "startedMonotonicMs": 9687.005375
+      }
+    ],
+    "activeSpanCount": 1,
+    "counts": {
+      "spans": 4,
+      "coarseSpans": 4,
+      "fineSpans": 0,
+      "observations": 0,
+      "retainedObservations": 0,
+      "fineObservations": 0
+    },
+    "lastCompletedSpans": [
+      {
+        "id": 1,
+        "parentId": null,
+        "name": "module-import",
+        "status": "completed",
+        "startedAt": "2026-10-25T17:08:25.482Z",
+        "endedAt": "2026-10-25T17:08:25.603Z",
+        "wallMs": 120.79279200000002,
+        "cpu": {
+          "kind": "process-boundary-delta",
+          "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+          "userMs": 196.60700000000003,
+          "systemMs": 7.374000000000002
+        },
+        "boundaryMemory": {
+          "start": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 132300800,
+            "heapTotalBytes": 17547264,
+            "heapUsedBytes": 12501976,
+            "externalBytes": 17474955,
+            "arrayBuffersBytes": 7096102
+          },
+          "end": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 147111936,
+            "heapTotalBytes": 19906560,
+            "heapUsedBytes": 14508360,
+            "externalBytes": 24696393,
+            "arrayBuffersBytes": 268713
+          },
+          "delta": {
+            "kind": "boundary-snapshot-delta",
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "heapUsedDeltaBytes": 2006384,
+            "rssDeltaBytes": 14811136,
+            "caveat": "a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage"
+          }
+        },
+        "details": {}
+      },
+      {
+        "id": 2,
+        "parentId": null,
+        "name": "book_load",
+        "status": "completed",
+        "startedAt": "2026-10-25T17:08:25.610Z",
+        "endedAt": "2026-10-25T17:08:31.358Z",
+        "wallMs": 5748.1756669999995,
+        "cpu": {
+          "kind": "process-boundary-delta",
+          "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+          "userMs": 4213.785,
+          "systemMs": 195.96699999999998
+        },
+        "boundaryMemory": {
+          "start": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 147144704,
+            "heapTotalBytes": 19906560,
+            "heapUsedBytes": 14537568,
+            "externalBytes": 24696393,
+            "arrayBuffersBytes": 268713
+          },
+          "end": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 586383360,
+            "heapTotalBytes": 419299328,
+            "heapUsedBytes": 393245136,
+            "externalBytes": 17276848,
+            "arrayBuffersBytes": 16675
+          },
+          "delta": {
+            "kind": "boundary-snapshot-delta",
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "heapUsedDeltaBytes": 378707568,
+            "rssDeltaBytes": 439238656,
+            "caveat": "a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage"
+          }
+        },
+        "details": {}
+      },
+      {
+        "id": 3,
+        "parentId": null,
+        "name": "book_valid",
+        "status": "completed",
+        "startedAt": "2026-10-25T17:08:31.358Z",
+        "endedAt": "2026-10-25T17:08:34.892Z",
+        "wallMs": 3534.188292,
+        "cpu": {
+          "kind": "process-boundary-delta",
+          "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+          "userMs": 3665.6449999999995,
+          "systemMs": 189.24200000000002
+        },
+        "boundaryMemory": {
+          "start": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 586383360,
+            "heapTotalBytes": 419299328,
+            "heapUsedBytes": 393284040,
+            "externalBytes": 17276848,
+            "arrayBuffersBytes": 16675
+          },
+          "end": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 1269235712,
+            "heapTotalBytes": 1085456384,
+            "heapUsedBytes": 1061807536,
+            "externalBytes": 17276848,
+            "arrayBuffersBytes": 16675
+          },
+          "delta": {
+            "kind": "boundary-snapshot-delta",
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "heapUsedDeltaBytes": 668523496,
+            "rssDeltaBytes": 682852352,
+            "caveat": "a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage"
+          }
+        },
+        "details": {}
+      }
+    ],
+    "recentObservations": []
+  },
+  "executedProbe": {
+    "path": "/tmp/native03d0-working-8g-clean-1-profiles/profile-2378-thread-1-n1Lfsf/executed-probe.ts",
+    "sha256": "029551b8bc1d9ca2d04b83207da84b2f38594b6f1dc9b78d39f5bcb02f8d2be8"
+  },
+  "rawEvidence": {
+    "runSha256": "d2f58331162faec06ef73053efb8014cc50c6545f380274a6c1a73916b9489fb",
+    "checkpointSha256": "7bf72a48f0ef937ba30266bb5c7272a9f8ed5b31bccfd84aef82c045ffe0a48f"
+  },
+  "observations": {
+    "sameEightFrozenInputHashes": true,
+    "compileBookObserverInstalled": false,
+    "noFineEventLogExpected": true,
+    "oomObserved": false,
+    "cOutputExists": false,
+    "parentTerminalResultExists": false,
+    "outerWallSeconds": 600.86
+  },
+  "metadataCorrection": "The inherited execution.note phrase same observer detail is stale. The executed call is C.compile_book(book), rawDetail false, with no createCompileBookObserver import or installation. Whole-phase boundary collector remains installed.",
+  "notClaimed": [
+    "The deadline cause or the executing c-pass at termination",
+    "Profiling A/B overhead or benefit",
+    "Native C compile/run or current compiler root acceptance",
+    "Retained/live memory or requested allocation bytes",
+    "Deferred3072MiB target"
+  ],
+  "next": "Capture bounded statistical CPU evidence on unchanged frozen input under the same8GiB heap; no automatic timeout or resource increase."
+}

@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "kind": "heavy_gate_lifecycle_evidence",
+  "branch": "work/gate-lifecycle",
+  "worktree": "/private/tmp/bend-gate57ab",
+  "parentCommit": "f46ad0f6",
+  "commits": {
+    "328cac5d": "detached supervisor; terminal receipt at decision; report fd overwritten",
+    "317b38a6": "remove bounded cleanup release; lease released only on exited && !live",
+    "b9e418e6": "reportPhase decision|complete and ownedTreeStopped true|false|null; runHeavyGate requires complete + confirmed stopped for PASS"
+  },
+  "environment": {
+    "os": "macOS 25.6.0 arm64",
+    "runtime": "bun 1.4.2",
+    "nativeHelper": "heavy_gate_native.c compiled by the existing prepareNativeHelper path with the platform clang; no flags or limits changed",
+    "limits": "guard limits untouched; focused fixtures used memoryMiB 512, rssMiB 512, pollMs 20, termGraceMs 150, timeoutMs 5000 (deadline fixture 2000, launcher fixture 3000)"
+  },
+  "before": {
+    "defect": "launcher process-group SIGKILL killed the supervisor with the launcher; no terminal guardian receipt; experiment report can remain IN_PROGRESS",
+    "fixture": "launcher.ts calls runHeavyGate(['/bin/sh','-c','echo $$ > ready; exec sleep 30'], {lockPath: private, timeoutMs: 3000}); launcher spawned detached; test kills the launcher's process group with SIGKILL after the command starts",
+    "command": "bun test evals/heavy_gate.test.ts -t \"launcher process-group\"",
+    "rawOutputObserved": [
+      "(fail) launcher process-group kill leaves the supervisor independent and terminal [8343.39ms]",
+      "error: expect(received).toBeDefined()",
+      "Received: undefined"
+    ],
+    "rawOutputRetention": "The failing assertion text above was retained in the session transcript; no file copy was written. The test command was not piped through grep for this run."
+  },
+  "after": {
+    "fix": "supervisor spawned detached; stdin lifeline EOF/termination handled natively; terminal reason written immediately at decision (report fd overwritten, one bounded record); a provisional receipt may precede cleanup, final record supersedes it",
+    "sameFixtureResult": [
+      "1 pass / 11 filtered out / 0 fail",
+      "5 expect() calls",
+      "[392.00ms]"
+    ],
+    "reuseProof": "after the detached supervisor stops the owned command and releases the lease, runHeavyGate(['true'], same lockPath) returned PASS; the launcher-kill test waits for that observable release",
+    "fullSuite": "12 pass / 0 fail on repeated runs, with the known unlocalized failure below preserved",
+    "focusedRun": {
+      "command": "bun test evals/heavy_gate.test.ts -t \"normal and failed|launcher process-group\"",
+      "rawOutputPath": "/tmp/gate-evidence/focused-phase-contract.log",
+      "rawOutputSha256": "cdc9ccdab03a7d2ca589388eb9e5114a1e252ef10c4516ba84dd70b2d6766856",
+      "bytes": 1574,
+      "result": "2 pass / 0 fail; 21 expect() calls; [1076.00ms]",
+      "receiptEvidence": "both HEAVY_GATE records show reportPhase complete and ownedTreeStopped true; launcher-kill fixture waits for the complete record, not the provisional decision window",
+      "note": "one focused run, full raw output saved, no grep"
+    },
+    "focusedExitContract": {
+      "command": "bun test evals/heavy_gate.test.ts -t \"receipt classification\"",
+      "rawOutputPath": "/tmp/gate-evidence/focused-exit-contract.log",
+      "rawOutputSha256": "377d495f8dd3c1b0b061b0b5eeb7637cf3108dd847caf7fc20b4a144f3202fab",
+      "bytes": 118,
+      "result": "1 pass / 0 fail / 34 expect() calls / [102.00ms]",
+      "coverage": "complete PASS stays 0; decision, incomplete-false, null-stopped and missing-phase PASS records are rejected FAIL with exit 1 and supervisorExitCode 0, reason preserved; FAIL stays 1; RESOURCE_LIMIT 73; LOCK_BUSY 75"
+    },
+    "focusedLabelContract": {
+      "command": "bun test evals/heavy_gate.test.ts -t \"receipt classification\"",
+      "rawOutputPath": "/tmp/gate-evidence/focused-label-contract.log",
+      "rawOutputSha256": "3bd260ae40f767eeedb3ec21c484d4f7f689c2d067fcd28d628e0763d5a50918",
+      "bytes": 117,
+      "result": "1 pass / 0 fail / 36 expect() calls / [87.00ms]",
+      "coverage": "explicit label preserved; absent label defaults to the normalize value; exit/phase/status semantics unchanged"
+    }
+  },
+  "knownUnlocalizedFailure": {
+    "test": "deadline cancels authenticated detached descendants without resetting the parent allowance and releases the lease",
+    "observedCount": 1,
+    "rawOutputObserved": "(fail) ... [2703.03ms] ; 11 pass ; 1 fail",
+    "lostDetail": "The command piped bun test through grep -E for pass/fail summary, so the assertion text, diff and stderr were discarded. No artifact or file copy exists. The exact failing assertion is UNKNOWN.",
+    "reproduction": "Not reproduced in 4 isolated deadline-test runs or 5 subsequent full-suite runs; those passes do not erase this observation.",
+    "classification": "NOT classified as fixture or guard. The gate returned at 2703.03 ms, inside the test's <5000 ms bound, so the failure occurred after return among: TERM marker existence, single-shot expectStopped(root/child), receipt fields, or lease-reuse PASS. The guard's only release path is exited && !live; no evidence establishes that invariant was violated, but the exact cause is unknown.",
+    "risk": "Emitted with explicit risk. Not hidden by polling expectStopped, not outvoted by repeated passes."
+  },
+  "releasePathAudit": [
+    "lock_error / LOCK_BUSY / sampler_unavailable / subreaper_unavailable / launch_error: close before a command root exists (or on root < 0)",
+    "lease_error: kill(root,SIGKILL) and waitpid(root) before close",
+    "normal and launcher-death paths: close only when exited && !live, after SIGTERM, grace, SIGKILL of the owned tree",
+    "untrappable SIGKILL of the supervisor before any terminal decision: receipt may be absent; classify incomplete, never PASS/OOM"
+  ],
+  "evidencePolicy": {
+    "futureTestCommands": "MUST write full raw stdout/stderr to a file and preserve it; never pipe test output through grep or any assertion-discarding filter",
+    "noMultiRunVoting": "Repeated passes do not convert an observed failure into green; a new failure is diagnosed from preserved raw output",
+    "nextVerification": "after merged source, exactly one focused run with full raw output, routed by Main"
+  },
+  "notRun": [
+    "no full native/root build",
+    "no cap/timeout/lock changes",
+    "no duplicate heavy external smoke; the existing launcher-group-kill regression is the changed-path evidence"
+  ],
+  "isolation": {
+    "problem": "the new launcher-group-kill fixture scanned the global private report directory and accepted the first new nonempty JSON, so a concurrent gate could supply a foreign report",
+    "fix": "the launcher subprocess is spawned with TMPDIR set to the fixture directory, so its guardian private report directory is private to this test; the fixture scans only that directory",
+    "scope": "test isolation only; deadline expectations and the unknown-flake risk are unchanged; expectStopped is not weakened or polled"
+  },
+  "contract": {
+    "reportPhase": "decision = provisional terminal reason recorded before destructive cleanup; complete = final record after the loop exits",
+    "ownedTreeStopped": "true only when exited && !live was observed; false while a launched owned tree is still present; null only for pre-root error receipts",
+    "runHeavyGate": "a decision record, a false stopped state, or PASS with null stopped state is classified as failure, preserving the supervisor reason; only complete + ownedTreeStopped true may be PASS",
+    "consumerRule": "provisional/missing evidence is INCOMPLETE or FAIL, never PASS or observed OOM",
+    "effectiveExit": "a PASS rejected for incomplete evidence becomes FAIL with a nonzero effective exitCode (1 when the supervisor exited 0); the raw supervisor code is preserved as supervisorExitCode; original terminal reason unchanged. Complete PASS 0 / FAIL 1 / RESOURCE_LIMIT 73 / LOCK_BUSY 75 keep the supervisor exit.",
+    "classificationSeam": "classifyGateResult(record, supervisorExitCode, command, settings, reportPath) is the single exported record-to-result transformation used by runHeavyGate, so guardHeavyGate and the CLI consume the effective nonzero exit.",
+    "label": "classifyGateResult defaults an absent settings.label to 'heavy command', matching normalize; the exported result label is always a string."
+  },
+  "sourceCommit": "b9e418e6",
+  "jointVerification": {
+    "sourceHead": "0b0b9c9f",
+    "worktree": "/private/tmp/bend-gate-verify57ab",
+    "branch": "work/gate-verify",
+    "command": "bun test evals/heavy_gate.test.ts -t \"normal and failed|launcher process-group|receipt classification\"",
+    "rawOutputPath": "/tmp/gate-evidence/joint-focused-0b0b9c9f.log",
+    "rawOutputSha256": "05f9d1b7af90f493ffbd77eab1c113a6d0923c146e8abc0d12b6222ed1646879",
+    "bytes": 1641,
+    "exit": 0,
+    "result": "3 pass / 0 fail / 57 expect() calls / [2.31s]",
+    "coverage": "normal and failed exits; launcher process-group kill with complete receipt and lease reuse; receipt classification (including nonzero effective exit for rejected PASS)",
+    "policy": "exactly one merged focused run with full unfiltered stdout/stderr; not a full suite; no full native/root build; repeated runs were not used to outvote the preserved unknown deadline failure"
+  }
+}

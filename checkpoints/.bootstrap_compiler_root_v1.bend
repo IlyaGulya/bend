@@ -6,9 +6,11 @@ import ../bend2/selfhost/lexer.bend as Lexer
 import ../bend2/selfhost/core.bend as Core
 
 import ../bend2/selfhost/loaded_module.bend as Loader
+import ../bend2/selfhost/backend_ir.bend as BIR
+import ../bend2/selfhost/checked_frontend.bend as Checked
 import ./template_steps_v1.bend as Template
 import ./checker_core_steps_v1.bend as CheckerCore
-import ./js_emit_steps_v1.bend as JSEmit
+import ./emitter_steps_v1.bend as Emit
 
 type ParseResult is Data:
   ParseSuccess{module: Ast.Module}
@@ -31,7 +33,6 @@ type MatchChainState is Data:
 type PatternScanMode is Data:
   PatternExpect{quantity: Ast.Quantity, beg: Nat}
   PatternCompleted{pattern: Ast.SyntaxPattern}
-  PatternNoNat{number: Lexer.Token, quantity: Ast.Quantity, beg: Nat, end: Nat}
   PatternBadNat{beg: Nat, end: Nat}
 
 type PatternFrame is Data:
@@ -106,19 +107,19 @@ type PatternExpectAction is Data:
   PatternExpectActionRow7{}
   PatternExpectActionRow8{}
   PatternExpectActionRow9{quantity: Ast.Quantity}
-  PatternExpectActionRow10{quantity: Ast.Quantity}
+  PatternExpectActionRow10{}
+  PatternExpectActionRow12{quantity: Ast.Quantity}
   PatternExpectActionRow13{quantity: Ast.Quantity}
   PatternExpectActionRow14{quantity: Ast.Quantity}
-  PatternExpectActionRow15{quantity: Ast.Quantity}
-  PatternExpectActionRow26{quantity: Ast.Quantity}
+  PatternExpectActionRow25{quantity: Ast.Quantity}
 
 type PatternCompletedText is Data:
+  PatternCompletedTextRow15{}
   PatternCompletedTextRow16{}
   PatternCompletedTextRow17{}
   PatternCompletedTextRow18{}
   PatternCompletedTextRow19{}
-  PatternCompletedTextRow20{}
-  PatternCompletedTextRow24{}
+  PatternCompletedTextRow23{}
   PatternCompletedTextOther{}
 
 type DoTokenAction is Data:
@@ -183,164 +184,164 @@ type FeedbackCursorWitness is Data:
 
 type FeedbackFrame is Data:
   KontProgress{}
-  Kont_80115{capture_1: Nat}
-  Kont_81687{capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: Nat, capture_5: List<&2, Lexer.Token>, capture_6: Ast.SyntaxTerm}
-  Kont_84990{capture_0: List<&2, Ast.SyntaxTerm>, capture_1: List<&2, Lexer.Token>, capture_2: String, capture_3: String, capture_4: Nat}
-  Kont_88036{capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm, capture_2: Ast.SyntaxTerm}
-  Kont_88306{capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm, capture_2: Ast.SyntaxTerm}
-  Kont_90526{capture_0: List<&2, Ast.SyntaxPattern>, capture_1: Ast.Quantity, capture_2: Ast.SourceSpan, capture_3: List<&2, Ast.SyntaxTerm>}
-  Kont_90971{capture_0: Ast.SourceSpan, capture_1: List<&2, Ast.SyntaxTerm>}
-  Kont_91247{capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SourceSpan, capture_3: Ast.SyntaxTerm}
-  Kont_91522{capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SourceSpan, capture_3: Ast.SyntaxTerm}
-  Kont_91784{capture_0: String, capture_1: Ast.SourceSpan, capture_2: Ast.SyntaxTerm}
-  Kont_92207{capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm}
-  Kont_92458{capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm}
-  Kont_92903{capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm}
-  Kont_93415{capture_0: Ast.Quantity, capture_1: String, capture_2: Nat, capture_3: Ast.SourceSpan, capture_4: Ast.SyntaxTerm}
-  Kont_93651{capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm}
-  Kont_94171{capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm}
-  Kont_94510{capture_0: List<&2, String>, capture_1: List<&2, Nat>, capture_2: List<&2, Ast.Quantity>, capture_3: Ast.SourceSpan, capture_4: List<&2, Ast.SyntaxTerm>}
-  Kont_94763{capture_0: Nat, capture_1: Ast.SourceSpan, capture_2: Ast.SyntaxTerm}
-  Kont_98606{capture_0: Ast.SourceSpan}
-  Kont_98480{capture_0: String, capture_1: List<&2, Ast.SyntaxPattern>, capture_2: Ast.Quantity, capture_3: Ast.SyntaxTerm, capture_4: Ast.SourceSpan}
-  Kont_98308{capture_0: List<&2, Ast.SyntaxPattern>, capture_1: Ast.SourceSpan}
-  Kont_98169{capture_0: String, capture_1: List<&2, Ast.SyntaxTerm>, capture_2: Ast.SourceSpan}
-  Kont_97955{capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SyntaxTerm, capture_3: Ast.SourceSpan}
-  Kont_97739{capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SyntaxTerm, capture_3: Ast.SourceSpan}
-  Kont_97521{capture_0: String, capture_1: String, capture_2: Ast.SyntaxTerm, capture_3: Ast.SourceSpan}
-  Kont_97276{capture_0: String, capture_1: Ast.SourceSpan}
-  Kont_97139{capture_0: String, capture_1: List<&2, Ast.SyntaxTerm>, capture_2: Ast.SourceSpan}
-  Kont_96996{capture_0: String, capture_1: List<&2, Ast.SyntaxTerm>, capture_2: Ast.SourceSpan}
-  Kont_96852{capture_0: String, capture_1: List<&2, String>, capture_2: Ast.SourceSpan}
-  Kont_96702{capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SourceSpan}
-  Kont_96564{capture_0: Maybe<&2, Ast.Quantity>, capture_1: String, capture_2: Nat, capture_3: Ast.SourceSpan}
-  Kont_96409{capture_0: String, capture_1: Ast.Quantity, capture_2: String, capture_3: Nat, capture_4: Ast.SyntaxTerm, capture_5: Ast.SourceSpan}
-  Kont_96237{capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SourceSpan}
-  Kont_95979{capture_0: Ast.SourceSpan}
-  Kont_95859{capture_0: Ast.SourceSpan}
-  Kont_95735{capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SourceSpan}
-  Kont_95598{capture_0: String, capture_1: List<&2, String>, capture_2: List<&2, Nat>, capture_3: List<&2, Ast.Quantity>, capture_4: Ast.SyntaxTerm, capture_5: Ast.SourceSpan}
-  Kont_95426{capture_0: String, capture_1: Nat, capture_2: Ast.SyntaxTerm, capture_3: Ast.SourceSpan}
-  Kont_95278{capture_0: Ast.SourceSpan}
-  Kont_98987{capture_0: Ast.SyntaxTerm}
-  Kont_99231{capture_0: String, capture_1: List<&2, Ast.SyntaxTerm>}
-  Kont_104178{capture_0: List<&2, Lexer.Token>}
-  Kont_130390{capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: Nat, capture_5: List<&2, PatternFrame>, capture_6: List<&2, Scope>, capture_7: Nat, capture_8: PatternScanGoal}
-  Kont_135760{capture_1: Ast.SyntaxPattern}
-  Kont_135996{capture_1: List<&2, Ast.SyntaxTerm>}
-  Kont_136505{capture_1: String, capture_2: Ast.SourceSpan}
-  Kont_137652{capture_1: List<&2, Lexer.Token>, capture_2: String, capture_3: Nat, capture_4: Nat, capture_5: List<&2, PatternFrame>, capture_6: List<&2, Scope>, capture_7: Nat, capture_8: PatternScanGoal}
-  Kont_139383{capture_1: String, capture_2: Nat, capture_3: Ast.SyntaxPattern}
-  Kont_140214{capture_1: String, capture_2: Nat}
-  Kont_143575{capture_1: String, capture_2: List<&2, PatternFrame>, capture_3: List<&2, Scope>, capture_4: Nat, capture_5: PatternScanGoal}
-  Kont_149539{capture_1: String, capture_2: Ast.SyntaxPattern, capture_3: List<&2, PatternFrame>, capture_4: List<&2, Scope>, capture_5: Nat, capture_6: PatternScanGoal}
-  Kont_171514{capture_1: String, capture_2: Nat}
-  Kont_180668{capture_1: String, capture_2: String, capture_3: Nat, capture_4: Nat, capture_5: List<&2, Lexer.Token>, capture_6: List<&2, Scope>, capture_7: Nat}
-  Kont_182284{capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: List<&2, Lexer.Token>}
-  Kont_188365{capture_1: String, capture_2: Nat}
-  Kont_188877{capture_1: String, capture_2: String, capture_3: List<&2, Ast.SyntaxTerm>, capture_4: Nat, capture_5: Nat}
-  Kont_190204{capture_1: String, capture_2: String, capture_3: List<&2, Ast.SyntaxTerm>, capture_4: String, capture_5: Nat, capture_6: Ast.SyntaxTerm, capture_7: Nat, capture_8: Nat, capture_9: List<&2, Scope>, capture_10: Nat, capture_11: Nat}
-  Kont_193278{lexical_capture_4: String, lexical_capture_6: String, lexical_capture_8: List<&2, Ast.SyntaxTerm>, lexical_capture_10: String, lexical_capture_12: Nat, lexical_capture_13: Ast.SyntaxTerm, lexical_capture_29: Ast.SyntaxTerm, lexical_capture_15: Nat, lexical_capture_17: Nat, lexical_capture_22: Nat}
-  Kont_194209{capture_1: String, capture_2: String, capture_3: List<&2, Ast.SyntaxTerm>, capture_4: String, capture_5: Nat, capture_6: Nat, capture_7: Nat, capture_8: List<&2, Scope>, capture_9: Nat, capture_10: Nat}
-  Kont_195221{lexical_capture_4: String, lexical_capture_10: String, lexical_capture_12: Nat, lexical_capture_22: Nat, lexical_capture_13: Ast.SyntaxTerm, lexical_capture_29: Ast.SyntaxTerm}
-  Kont_195872{capture_1: String, capture_2: String, capture_3: List<&2, Ast.SyntaxTerm>, capture_4: String, capture_5: Nat, capture_6: Ast.SyntaxTerm, capture_7: Nat, capture_8: Nat, capture_9: List<&2, Scope>, capture_10: Nat, capture_11: Nat}
-  Kont_197937{capture_1: String, capture_2: String, capture_3: List<&2, Ast.SyntaxTerm>, capture_4: Ast.SyntaxTerm, capture_5: Nat, capture_6: Nat, capture_7: List<&2, Scope>, capture_8: Nat, capture_9: Nat}
-  Kont_198505{capture_1: String, capture_2: String, capture_3: List<&2, Ast.SyntaxTerm>, capture_4: Nat, capture_5: Nat, capture_6: List<&2, Scope>, capture_7: Nat, capture_8: Nat}
-  Kont_199867{lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: List<&2, Ast.SyntaxTerm>, lexical_capture_6: Ast.SyntaxTerm, lexical_capture_7: Ast.SyntaxTerm, lexical_capture_11: Nat, lexical_capture_13: Nat, lexical_capture_18: Nat}
-  Kont_203528{capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: Nat, capture_5: List<&2, Lexer.Token>}
-  Kont_204683{capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: List<&2, Scope>, capture_5: Nat}
-  Kont_205868{lexical_capture_4: String, lexical_capture_5: Ast.SyntaxTerm, lexical_capture_7: Nat}
-  Kont_206560{capture_1: String, capture_2: Ast.SyntaxTerm, capture_3: Nat, capture_4: Nat, capture_5: List<&2, Scope>, capture_6: Nat}
-  Kont_207285{capture_1: String, capture_2: Ast.SyntaxTerm, capture_3: Ast.SyntaxTerm, capture_4: Nat, capture_5: Nat}
-  Kont_207622{capture_1: String, capture_2: Ast.SyntaxTerm, capture_3: Ast.SyntaxTerm, capture_4: Nat, capture_5: Nat}
-  Kont_210179{capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: List<&2, Lexer.Token>, capture_5: Nat, capture_6: List<&2, Scope>, capture_7: Nat}
-  Kont_211415{capture_1: String, capture_2: List<&2, Lexer.Token>, capture_3: Nat, capture_4: List<&2, Scope>, capture_5: Nat}
-  Kont_211838{capture_1: String, capture_2: Ast.SyntaxTerm}
-  Kont_212739{capture_1: String, capture_2: List<&2, Scope>, capture_3: Nat}
-  Kont_215605{capture_1: String, capture_2: String, capture_3: Nat, capture_4: List<&2, Scope>, capture_5: Nat}
-  Kont_219232{lexical_capture_98: String, lexical_capture_99: String, lexical_capture_100: Ast.SyntaxTerm, lexical_capture_107: Nat}
-  Kont_218906{lexical_capture_98: String, lexical_capture_99: String, lexical_capture_100: Ast.SyntaxTerm, lexical_capture_107: Nat}
-  Kont_218566{lexical_capture_98: String, lexical_capture_99: String, lexical_capture_100: Ast.SyntaxTerm, lexical_capture_107: Nat}
-  Kont_217735{lexical_capture_49: String, lexical_capture_50: String, lexical_capture_51: Ast.SyntaxTerm, lexical_capture_52: List<&2, Lexer.Token>, lexical_capture_53: String, lexical_capture_55: Nat, lexical_capture_56: List<&2, Scope>, lexical_capture_57: Nat}
-  Kont_220426{lexical_capture_1: String, lexical_capture_3: String, lexical_capture_4: Ast.SyntaxTerm, lexical_capture_8: Nat}
-  Kont_220779{lexical_capture_1: String}
-  Kont_221166{lexical_capture_2: String, lexical_capture_3: Ast.SyntaxTerm, lexical_capture_0: Ast.SyntaxTerm, lexical_capture_5: Nat}
-  Kont_223768{lexical_capture_4: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_6: Nat, lexical_capture_9: List<&2, Scope>, lexical_capture_11: Nat}
-  Kont_224175{lexical_capture_4: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_6: Nat}
-  Kont_226967{lexical_capture_1: String, lexical_capture_5: Nat, lexical_capture_10: List<&2, Scope>, lexical_capture_12: Nat}
-  Kont_227491{lexical_capture_2: String, lexical_capture_3: Ast.SyntaxTerm, lexical_capture_0: Ast.SyntaxTerm, lexical_capture_5: Nat, lexical_capture_10: Nat}
-  Kont_229293{lexical_capture_1: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_6: Nat, lexical_capture_9: List<&2, Scope>, lexical_capture_11: Nat}
-  Kont_230229{lexical_capture_6: String, lexical_capture_21: String, lexical_capture_8: Nat, lexical_capture_10: Nat, lexical_capture_13: List<&2, Scope>, lexical_capture_15: Nat}
-  Kont_231832{lexical_capture_1: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_10: List<&2, Scope>, lexical_capture_12: Nat}
-  Kont_232628{lexical_capture_7: Ast.SyntaxTerm, lexical_capture_28: Ast.SyntaxTerm, lexical_capture_6: String, lexical_capture_11: Nat}
-  Kont_233304{lexical_capture_1: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_4: String, lexical_capture_6: Nat, lexical_capture_9: List<&2, Scope>, lexical_capture_11: Nat}
-  Kont_235549{lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_20: List<&2, Lexer.Token>}
-  Kont_235313{lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_14: Nat}
-  Kont_238944{lexical_capture_3: String, lexical_capture_8: List<&2, Lexer.Token>, lexical_capture_10: String, lexical_capture_13: List<&2, Scope>, lexical_capture_15: Nat, lexical_capture_17: List<&2, Ast.SyntaxTerm>}
-  Kont_240637{lexical_capture_2: String, lexical_capture_4: String, lexical_capture_6: Nat, lexical_capture_8: Nat, lexical_capture_9: Ast.Quantity, lexical_capture_0: Ast.SyntaxTerm, lexical_capture_22: Nat}
-  Kont_242825{lexical_capture_1: String, lexical_capture_23: String, lexical_capture_25: Nat, lexical_capture_10: Nat, lexical_capture_11: Ast.Quantity, lexical_capture_6: List<&2, Scope>, lexical_capture_8: Nat}
-  Kont_244077{lexical_capture_1: String, lexical_capture_22: String, lexical_capture_5: Nat, lexical_capture_24: Nat, lexical_capture_10: Nat}
-  Kont_245881{lexical_capture_1: String, lexical_capture_5: Nat, lexical_capture_14: List<&2, Scope>, lexical_capture_16: Nat}
-  Kont_247191{lexical_capture_3: String, lexical_capture_4: Ast.SyntaxTerm, lexical_capture_6: Nat, lexical_capture_7: Lexer.Token}
-  Kont_247684{capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: List<&2, Lexer.Token>, capture_3: List<&2, Scope>, capture_4: Nat, capture_5: Nat}
-  Kont_247975{lexical_capture_1: String, lexical_capture_6: List<&2, Scope>, lexical_capture_8: Nat, lexical_capture_10: Nat, lexical_capture_3: List<&2, Lexer.Token>}
-  Kont_250807{capture_0: List<&2, Ast.SyntaxTerm>, capture_1: List<&2, Lexer.Token>, capture_2: String, capture_3: Ast.SyntaxTerm, capture_4: List<&2, Scope>, capture_5: Nat, capture_6: Nat}
-  Kont_251451{lexical_capture_3: String, lexical_capture_30: Ast.SyntaxTerm, lexical_capture_5: Lexer.Token, lexical_capture_15: List<&2, Scope>, lexical_capture_17: Nat, lexical_capture_19: Nat, lexical_capture_7: List<&2, Lexer.Token>}
-  Kont_257647{lexical_capture_1: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_18: Lexer.Token, lexical_capture_7: List<&2, Scope>, lexical_capture_9: Nat, lexical_capture_11: Nat, lexical_capture_19: List<&2, Lexer.Token>}
-  Kont_254183{lexical_capture_1: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_7: List<&2, Scope>, lexical_capture_9: Nat, lexical_capture_11: Nat, lexical_capture_39: Nat}
-  Kont_260115{lexical_capture_6: String, lexical_capture_7: Ast.SyntaxTerm, lexical_capture_9: Lexer.Token, lexical_capture_20: Nat, lexical_capture_14: List<&2, Scope>, lexical_capture_16: Nat, lexical_capture_18: Nat, lexical_capture_11: List<&2, Lexer.Token>}
-  Kont_261576{capture_0: List<&2, Ast.SyntaxTerm>, capture_1: List<&2, Lexer.Token>, capture_2: String, capture_3: Ast.SyntaxTerm, capture_4: List<&2, Scope>, capture_5: Nat, capture_6: Nat}
-  Kont_262487{lexical_capture_1: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_4: List<&2, Lexer.Token>, lexical_capture_6: List<&2, Lexer.Token>, lexical_capture_9: List<&2, Scope>, lexical_capture_11: Nat, lexical_capture_13: Nat, lexical_capture_15: Nat}
-  Kont_266526{lexical_capture_3: String, lexical_capture_5: String, lexical_capture_8: Ast.SyntaxTerm, lexical_capture_13: List<&2, Scope>, lexical_capture_15: Nat, lexical_capture_17: Nat, lexical_capture_19: Nat}
-  Kont_267821{lexical_capture_3: String, lexical_capture_4: Ast.SyntaxTerm, lexical_capture_9: List<&2, Scope>, lexical_capture_11: Nat, lexical_capture_13: Nat, lexical_capture_15: Nat}
-  Kont_268939{capture_0: Bool, capture_1: Ast.SyntaxTerm, capture_2: List<&2, Lexer.Token>, capture_3: Bool, capture_4: String, capture_5: Ast.SyntaxTerm, capture_6: List<&2, Scope>, capture_7: Nat, capture_8: Nat}
-  Kont_270218{lexical_capture_17: Bool, lexical_capture_3: String, lexical_capture_4: Ast.SyntaxTerm, lexical_capture_9: List<&2, Scope>, lexical_capture_11: Nat, lexical_capture_13: Nat, lexical_capture_15: Nat, lexical_capture_6: List<&2, Lexer.Token>}
-  Kont_272762{lexical_capture_6: String, lexical_capture_7: Ast.SyntaxTerm, lexical_capture_8: Ast.SyntaxTerm, lexical_capture_10: Nat, lexical_capture_12: Nat, lexical_capture_15: List<&2, Scope>, lexical_capture_17: Nat, lexical_capture_19: Nat}
-  Kont_273921{capture_0: List<&2, Lexer.Token>, capture_1: String, capture_2: Ast.SyntaxTerm, capture_4: Nat, capture_5: Nat, capture_6: List<&2, Scope>, capture_7: Nat, capture_8: Nat}
-  Kont_275704{lexical_capture_1: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_7: List<&2, Scope>, lexical_capture_9: Nat, lexical_capture_11: Nat, lexical_capture_13: Nat, lexical_capture_15: Nat}
-  Kont_278209{lexical_capture_3: String, lexical_capture_5: String, lexical_capture_8: Ast.SyntaxTerm, lexical_capture_13: List<&2, Scope>, lexical_capture_15: Nat, lexical_capture_17: Nat, lexical_capture_19: Nat}
-  Kont_286523{lexical_capture_1: String}
-  Kont_288084{capture_1: List<&2, Lexer.Token>, capture_2: String, capture_3: List<&2, Scope>, capture_4: Nat, capture_5: List<&2, Ast.SyntaxPattern>, capture_6: Nat, capture_7: List<&2, Ast.SyntaxTerm>}
-  Kont_289976{lexical_capture_3: List<&2, Ast.SyntaxPattern>, lexical_capture_8: List<&2, Scope>, lexical_capture_10: Nat, lexical_capture_12: String, lexical_capture_14: Nat, lexical_capture_16: Nat, lexical_capture_22: Ast.Quantity}
-  Kont_291436{lexical_capture_3: List<&2, Ast.SyntaxTerm>, lexical_capture_7: List<&2, Ast.SyntaxPattern>, lexical_capture_13: Ast.Quantity, lexical_capture_15: String, lexical_capture_17: Nat}
-  Kont_292095{lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_9: Nat, lexical_capture_14: List<&2, Scope>, lexical_capture_16: Nat, lexical_capture_17: Ast.Quantity}
-  Kont_293675{lexical_capture_3: String, lexical_capture_5: String, lexical_capture_7: Nat, lexical_capture_10: Ast.SyntaxPattern, lexical_capture_19: Ast.Quantity, lexical_capture_11: Ast.SyntaxTerm}
-  Kont_294298{lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_9: Nat, lexical_capture_14: List<&2, Scope>, lexical_capture_16: Nat}
-  Kont_296746{lexical_capture_3: String, lexical_capture_5: List<&2, Lexer.Token>, lexical_capture_7: Nat, lexical_capture_9: Nat, lexical_capture_12: List<&2, Scope>, lexical_capture_14: Nat}
-  Kont_297565{lexical_capture_4: Ast.SyntaxPattern, lexical_capture_7: List<&2, Scope>, lexical_capture_9: Nat, lexical_capture_11: String, lexical_capture_13: List<&2, Lexer.Token>, lexical_capture_15: Nat, lexical_capture_17: Nat, lexical_capture_20: List<&2, Scope>, lexical_capture_22: Nat}
-  Kont_298818{lexical_capture_2: Ast.SyntaxTerm, lexical_capture_5: Ast.SyntaxPattern, lexical_capture_12: String, lexical_capture_14: Nat}
-  Kont_299400{lexical_capture_1: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_10: List<&2, Scope>, lexical_capture_12: Nat}
-  Kont_299888{lexical_capture_1: List<&2, Ast.SyntaxTerm>, lexical_capture_13: Lexer.Token, lexical_capture_3: String, lexical_capture_5: Nat}
-  Kont_303051{lexical_capture_1: String, lexical_capture_6: List<&2, Scope>, lexical_capture_8: Nat, lexical_capture_10: List<&2, Ast.SyntaxTerm>}
-  Kont_303638{lexical_capture_3: String, lexical_capture_5: List<&2, Lexer.Token>, lexical_capture_9: Nat, lexical_capture_12: List<&2, Scope>, lexical_capture_14: Nat, lexical_capture_16: Nat, lexical_capture_18: List<&2, Ast.SyntaxTerm>}
-  Kont_306679{capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: Nat}
-  Kont_307704{lexical_capture_5: List<&2, Ast.SyntaxPattern>, lexical_capture_3: String, lexical_capture_15: Nat}
-  Kont_312950{capture_0: String, capture_1: List<&2, Ast.TelescopeItem>, capture_2: List<&2, Scope>, capture_3: Nat, capture_4: String, capture_5: Nat, capture_6: Ast.SyntaxTerm, capture_7: List<&2, Lexer.Token>, capture_8: Nat}
-  Kont_313598{capture_1: String, capture_2: List<&2, Ast.TelescopeItem>, capture_3: List<&2, Scope>, capture_4: Nat, capture_5: String, capture_6: Nat, capture_7: List<&2, Lexer.Token>}
-  Kont_316399{capture_0: String, capture_1: String, capture_2: Ast.Quantity, capture_3: Nat, capture_4: List<&2, Ast.TelescopeItem>, capture_5: List<&2, Scope>, capture_6: Nat, capture_7: Ast.SyntaxTerm, capture_8: List<&2, Lexer.Token>, capture_9: Nat}
-  Kont_317051{capture_1: String, capture_2: String, capture_3: Ast.Quantity, capture_4: Nat, capture_5: List<&2, Ast.TelescopeItem>, capture_6: List<&2, Scope>, capture_7: Nat, capture_8: List<&2, Lexer.Token>}
-  Kont_318645{}
-  Kont_320316{lexical_capture_0: Lexer.Token, lexical_capture_2: List<&2, Lexer.Token>, lexical_capture_8: String, lexical_capture_10: String, lexical_capture_12: Nat, lexical_capture_14: List<&2, Ast.TelescopeItem>, lexical_capture_5: Ast.SyntaxTerm}
-  Kont_321745{capture_1: Lexer.Token, capture_2: String, capture_3: String, capture_4: Nat, capture_5: List<&2, Ast.TelescopeItem>, capture_6: List<&2, Scope>, capture_7: Nat}
-  Kont_322114{lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat, lexical_capture_7: List<&2, Ast.TelescopeItem>, lexical_capture_13: Lexer.Token, lexical_capture_15: List<&2, Lexer.Token>}
-  Kont_325109{lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat}
-  Kont_330414{}
-  Kont_330279{}
-  Kont_333031{lexical_capture_3: String, lexical_capture_26: Lexer.Token, lexical_capture_27: List<&2, Lexer.Token>, lexical_capture_9: Nat, lexical_capture_12: List<&2, Scope>, lexical_capture_14: Nat, lexical_capture_16: List<&2, Ast.ConstructorDecl>, lexical_capture_18: String, lexical_capture_20: Nat}
-  Kont_335087{lexical_capture_6: String, lexical_capture_8: String, lexical_capture_10: Nat, lexical_capture_14: List<&2, Ast.TelescopeItem>, lexical_capture_2: Ast.SyntaxTerm}
-  Kont_335919{lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_9: List<&2, Ast.TelescopeItem>, lexical_capture_11: List<&2, Lexer.Token>, lexical_capture_16: List<&2, Scope>, lexical_capture_18: Nat}
-  Kont_337986{lexical_capture_26: Lexer.Token, lexical_capture_1: String, lexical_capture_19: String, lexical_capture_5: Nat, lexical_capture_7: Nat}
-  Kont_337520{lexical_capture_26: Lexer.Token, lexical_capture_1: String, lexical_capture_19: String, lexical_capture_5: Nat, lexical_capture_7: Nat}
-  Kont_340017{lexical_capture_12: String, lexical_capture_14: String, lexical_capture_3: List<&2, Ast.Clause>, lexical_capture_16: Nat, lexical_capture_17: Lexer.Token, lexical_capture_5: List<&2, Lexer.Token>}
-  Kont_343965{lexical_capture_1: String, lexical_capture_31: String, lexical_capture_32: Nat, lexical_capture_33: Nat, lexical_capture_5: Nat, lexical_capture_7: Bool, lexical_capture_8: Ast.Quantity, lexical_capture_11: List<&2, Scope>, lexical_capture_13: Nat, lexical_capture_15: List<&2, Ast.Clause>}
-  Kont_345931{lexical_capture_1: String, lexical_capture_7: Nat, lexical_capture_9: Bool, lexical_capture_10: Ast.Quantity, lexical_capture_12: String, lexical_capture_14: Nat, lexical_capture_17: Ast.SyntaxTerm, lexical_capture_20: List<&2, Scope>, lexical_capture_22: Nat, lexical_capture_24: List<&2, Ast.Clause>}
-  Kont_348237{lexical_capture_1: String, lexical_capture_17: String, lexical_capture_5: Nat, lexical_capture_24: Lexer.Token, lexical_capture_25: List<&2, Lexer.Token>}
-  Kont_353723{lexical_capture_12: Map<&2, TopOwner>, lexical_capture_19: List<&2, Lexer.Token>, lexical_capture_3: List<&2, Lexer.Token>, lexical_capture_1: String, lexical_capture_7: String, lexical_capture_9: List<&2, Ast.TopLevel>}
-  Kont_353432{lexical_capture_12: Map<&2, TopOwner>, lexical_capture_19: List<&2, Lexer.Token>, lexical_capture_3: List<&2, Lexer.Token>, lexical_capture_1: String, lexical_capture_7: String, lexical_capture_9: List<&2, Ast.TopLevel>}
-  Kont_353139{lexical_capture_12: Map<&2, TopOwner>, lexical_capture_19: List<&2, Lexer.Token>, lexical_capture_3: List<&2, Lexer.Token>, lexical_capture_1: String, lexical_capture_7: String, lexical_capture_9: List<&2, Ast.TopLevel>}
-  Kont_352849{lexical_capture_12: Map<&2, TopOwner>, lexical_capture_19: List<&2, Lexer.Token>, lexical_capture_3: List<&2, Lexer.Token>, lexical_capture_1: String, lexical_capture_7: String, lexical_capture_9: List<&2, Ast.TopLevel>}
-  Kont_355624{lexical_capture_7: String, lexical_capture_3: List<&2, Ast.ModuleImport>}
-  Kont_356077{lexical_capture_3: String}
+  Kont_80664{capture_1: Nat}
+  Kont_82236{capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: Nat, capture_5: List<&2, Lexer.Token>, capture_6: Ast.SyntaxTerm}
+  Kont_85539{capture_0: List<&2, Ast.SyntaxTerm>, capture_1: List<&2, Lexer.Token>, capture_2: String, capture_3: String, capture_4: Nat}
+  Kont_88585{capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm, capture_2: Ast.SyntaxTerm}
+  Kont_88855{capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm, capture_2: Ast.SyntaxTerm}
+  Kont_91075{capture_0: List<&2, Ast.SyntaxPattern>, capture_1: Ast.Quantity, capture_2: Ast.SourceSpan, capture_3: List<&2, Ast.SyntaxTerm>}
+  Kont_91520{capture_0: Ast.SourceSpan, capture_1: List<&2, Ast.SyntaxTerm>}
+  Kont_91796{capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SourceSpan, capture_3: Ast.SyntaxTerm}
+  Kont_92071{capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SourceSpan, capture_3: Ast.SyntaxTerm}
+  Kont_92333{capture_0: String, capture_1: Ast.SourceSpan, capture_2: Ast.SyntaxTerm}
+  Kont_92756{capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm}
+  Kont_93007{capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm}
+  Kont_93452{capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm}
+  Kont_93964{capture_0: Ast.Quantity, capture_1: String, capture_2: Nat, capture_3: Ast.SourceSpan, capture_4: Ast.SyntaxTerm}
+  Kont_94200{capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm}
+  Kont_94720{capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm}
+  Kont_95059{capture_0: List<&2, String>, capture_1: List<&2, Nat>, capture_2: List<&2, Ast.Quantity>, capture_3: Ast.SourceSpan, capture_4: List<&2, Ast.SyntaxTerm>}
+  Kont_95312{capture_0: Nat, capture_1: Ast.SourceSpan, capture_2: Ast.SyntaxTerm}
+  Kont_99155{capture_0: Ast.SourceSpan}
+  Kont_99029{capture_0: String, capture_1: List<&2, Ast.SyntaxPattern>, capture_2: Ast.Quantity, capture_3: Ast.SyntaxTerm, capture_4: Ast.SourceSpan}
+  Kont_98857{capture_0: List<&2, Ast.SyntaxPattern>, capture_1: Ast.SourceSpan}
+  Kont_98718{capture_0: String, capture_1: List<&2, Ast.SyntaxTerm>, capture_2: Ast.SourceSpan}
+  Kont_98504{capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SyntaxTerm, capture_3: Ast.SourceSpan}
+  Kont_98288{capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SyntaxTerm, capture_3: Ast.SourceSpan}
+  Kont_98070{capture_0: String, capture_1: String, capture_2: Ast.SyntaxTerm, capture_3: Ast.SourceSpan}
+  Kont_97825{capture_0: String, capture_1: Ast.SourceSpan}
+  Kont_97688{capture_0: String, capture_1: List<&2, Ast.SyntaxTerm>, capture_2: Ast.SourceSpan}
+  Kont_97545{capture_0: String, capture_1: List<&2, Ast.SyntaxTerm>, capture_2: Ast.SourceSpan}
+  Kont_97401{capture_0: String, capture_1: List<&2, String>, capture_2: Ast.SourceSpan}
+  Kont_97251{capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SourceSpan}
+  Kont_97113{capture_0: Maybe<&2, Ast.Quantity>, capture_1: String, capture_2: Nat, capture_3: Ast.SourceSpan}
+  Kont_96958{capture_0: String, capture_1: Ast.Quantity, capture_2: String, capture_3: Nat, capture_4: Ast.SyntaxTerm, capture_5: Ast.SourceSpan}
+  Kont_96786{capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SourceSpan}
+  Kont_96528{capture_0: Ast.SourceSpan}
+  Kont_96408{capture_0: Ast.SourceSpan}
+  Kont_96284{capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SourceSpan}
+  Kont_96147{capture_0: String, capture_1: List<&2, String>, capture_2: List<&2, Nat>, capture_3: List<&2, Ast.Quantity>, capture_4: Ast.SyntaxTerm, capture_5: Ast.SourceSpan}
+  Kont_95975{capture_0: String, capture_1: Nat, capture_2: Ast.SyntaxTerm, capture_3: Ast.SourceSpan}
+  Kont_95827{capture_0: Ast.SourceSpan}
+  Kont_99536{capture_0: Ast.SyntaxTerm}
+  Kont_99780{capture_0: String, capture_1: List<&2, Ast.SyntaxTerm>}
+  Kont_104727{capture_0: List<&2, Lexer.Token>}
+  Kont_130823{capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: Nat, capture_5: List<&2, PatternFrame>, capture_6: List<&2, Scope>, capture_7: Nat, capture_8: PatternScanGoal}
+  Kont_136112{capture_1: Ast.SyntaxPattern}
+  Kont_136348{capture_1: List<&2, Ast.SyntaxTerm>}
+  Kont_136857{capture_1: String, capture_2: Ast.SourceSpan}
+  Kont_138004{capture_1: List<&2, Lexer.Token>, capture_2: String, capture_3: Nat, capture_4: Nat, capture_5: List<&2, PatternFrame>, capture_6: List<&2, Scope>, capture_7: Nat, capture_8: PatternScanGoal}
+  Kont_139735{capture_1: String, capture_2: Nat, capture_3: Ast.SyntaxPattern}
+  Kont_140566{capture_1: String, capture_2: Nat}
+  Kont_143905{capture_1: String, capture_2: List<&2, PatternFrame>, capture_3: List<&2, Scope>, capture_4: Nat, capture_5: PatternScanGoal}
+  Kont_149803{capture_1: String, capture_2: Ast.SyntaxPattern, capture_3: List<&2, PatternFrame>, capture_4: List<&2, Scope>, capture_5: Nat, capture_6: PatternScanGoal}
+  Kont_171361{capture_1: String, capture_2: Nat}
+  Kont_180515{capture_1: String, capture_2: String, capture_3: Nat, capture_4: Nat, capture_5: List<&2, Lexer.Token>, capture_6: List<&2, Scope>, capture_7: Nat}
+  Kont_182131{capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: List<&2, Lexer.Token>}
+  Kont_188212{capture_1: String, capture_2: Nat}
+  Kont_188724{capture_1: String, capture_2: String, capture_3: List<&2, Ast.SyntaxTerm>, capture_4: Nat, capture_5: Nat}
+  Kont_190051{capture_1: String, capture_2: String, capture_3: List<&2, Ast.SyntaxTerm>, capture_4: String, capture_5: Nat, capture_6: Ast.SyntaxTerm, capture_7: Nat, capture_8: Nat, capture_9: List<&2, Scope>, capture_10: Nat, capture_11: Nat}
+  Kont_193125{lexical_capture_4: String, lexical_capture_6: String, lexical_capture_8: List<&2, Ast.SyntaxTerm>, lexical_capture_10: String, lexical_capture_12: Nat, lexical_capture_13: Ast.SyntaxTerm, lexical_capture_29: Ast.SyntaxTerm, lexical_capture_15: Nat, lexical_capture_17: Nat, lexical_capture_22: Nat}
+  Kont_194056{capture_1: String, capture_2: String, capture_3: List<&2, Ast.SyntaxTerm>, capture_4: String, capture_5: Nat, capture_6: Nat, capture_7: Nat, capture_8: List<&2, Scope>, capture_9: Nat, capture_10: Nat}
+  Kont_195068{lexical_capture_4: String, lexical_capture_10: String, lexical_capture_12: Nat, lexical_capture_22: Nat, lexical_capture_13: Ast.SyntaxTerm, lexical_capture_29: Ast.SyntaxTerm}
+  Kont_195719{capture_1: String, capture_2: String, capture_3: List<&2, Ast.SyntaxTerm>, capture_4: String, capture_5: Nat, capture_6: Ast.SyntaxTerm, capture_7: Nat, capture_8: Nat, capture_9: List<&2, Scope>, capture_10: Nat, capture_11: Nat}
+  Kont_197784{capture_1: String, capture_2: String, capture_3: List<&2, Ast.SyntaxTerm>, capture_4: Ast.SyntaxTerm, capture_5: Nat, capture_6: Nat, capture_7: List<&2, Scope>, capture_8: Nat, capture_9: Nat}
+  Kont_198352{capture_1: String, capture_2: String, capture_3: List<&2, Ast.SyntaxTerm>, capture_4: Nat, capture_5: Nat, capture_6: List<&2, Scope>, capture_7: Nat, capture_8: Nat}
+  Kont_199714{lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: List<&2, Ast.SyntaxTerm>, lexical_capture_6: Ast.SyntaxTerm, lexical_capture_7: Ast.SyntaxTerm, lexical_capture_11: Nat, lexical_capture_13: Nat, lexical_capture_18: Nat}
+  Kont_202679{capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: Nat, capture_5: List<&2, Lexer.Token>}
+  Kont_203834{capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: List<&2, Scope>, capture_5: Nat}
+  Kont_205019{lexical_capture_4: String, lexical_capture_5: Ast.SyntaxTerm, lexical_capture_7: Nat}
+  Kont_205711{capture_1: String, capture_2: Ast.SyntaxTerm, capture_3: Nat, capture_4: Nat, capture_5: List<&2, Scope>, capture_6: Nat}
+  Kont_206436{capture_1: String, capture_2: Ast.SyntaxTerm, capture_3: Ast.SyntaxTerm, capture_4: Nat, capture_5: Nat}
+  Kont_206773{capture_1: String, capture_2: Ast.SyntaxTerm, capture_3: Ast.SyntaxTerm, capture_4: Nat, capture_5: Nat}
+  Kont_209330{capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: List<&2, Lexer.Token>, capture_5: Nat, capture_6: List<&2, Scope>, capture_7: Nat}
+  Kont_210566{capture_1: String, capture_2: List<&2, Lexer.Token>, capture_3: Nat, capture_4: List<&2, Scope>, capture_5: Nat}
+  Kont_210989{capture_1: String, capture_2: Ast.SyntaxTerm}
+  Kont_211890{capture_1: String, capture_2: List<&2, Scope>, capture_3: Nat}
+  Kont_214756{capture_1: String, capture_2: String, capture_3: Nat, capture_4: List<&2, Scope>, capture_5: Nat}
+  Kont_218383{lexical_capture_98: String, lexical_capture_99: String, lexical_capture_100: Ast.SyntaxTerm, lexical_capture_107: Nat}
+  Kont_218057{lexical_capture_98: String, lexical_capture_99: String, lexical_capture_100: Ast.SyntaxTerm, lexical_capture_107: Nat}
+  Kont_217717{lexical_capture_98: String, lexical_capture_99: String, lexical_capture_100: Ast.SyntaxTerm, lexical_capture_107: Nat}
+  Kont_216886{lexical_capture_49: String, lexical_capture_50: String, lexical_capture_51: Ast.SyntaxTerm, lexical_capture_52: List<&2, Lexer.Token>, lexical_capture_53: String, lexical_capture_55: Nat, lexical_capture_56: List<&2, Scope>, lexical_capture_57: Nat}
+  Kont_219577{lexical_capture_1: String, lexical_capture_3: String, lexical_capture_4: Ast.SyntaxTerm, lexical_capture_8: Nat}
+  Kont_219930{lexical_capture_1: String}
+  Kont_220317{lexical_capture_2: String, lexical_capture_3: Ast.SyntaxTerm, lexical_capture_0: Ast.SyntaxTerm, lexical_capture_5: Nat}
+  Kont_222919{lexical_capture_4: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_6: Nat, lexical_capture_9: List<&2, Scope>, lexical_capture_11: Nat}
+  Kont_223326{lexical_capture_4: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_6: Nat}
+  Kont_226118{lexical_capture_1: String, lexical_capture_5: Nat, lexical_capture_10: List<&2, Scope>, lexical_capture_12: Nat}
+  Kont_226642{lexical_capture_2: String, lexical_capture_3: Ast.SyntaxTerm, lexical_capture_0: Ast.SyntaxTerm, lexical_capture_5: Nat, lexical_capture_10: Nat}
+  Kont_228444{lexical_capture_1: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_6: Nat, lexical_capture_9: List<&2, Scope>, lexical_capture_11: Nat}
+  Kont_229380{lexical_capture_6: String, lexical_capture_21: String, lexical_capture_8: Nat, lexical_capture_10: Nat, lexical_capture_13: List<&2, Scope>, lexical_capture_15: Nat}
+  Kont_230983{lexical_capture_1: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_10: List<&2, Scope>, lexical_capture_12: Nat}
+  Kont_231779{lexical_capture_7: Ast.SyntaxTerm, lexical_capture_28: Ast.SyntaxTerm, lexical_capture_6: String, lexical_capture_11: Nat}
+  Kont_232455{lexical_capture_1: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_4: String, lexical_capture_6: Nat, lexical_capture_9: List<&2, Scope>, lexical_capture_11: Nat}
+  Kont_235478{lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_20: List<&2, Lexer.Token>}
+  Kont_235238{lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_14: Nat}
+  Kont_238873{lexical_capture_3: String, lexical_capture_8: List<&2, Lexer.Token>, lexical_capture_10: String, lexical_capture_13: List<&2, Scope>, lexical_capture_15: Nat, lexical_capture_17: List<&2, Ast.SyntaxTerm>}
+  Kont_240566{lexical_capture_2: String, lexical_capture_4: String, lexical_capture_6: Nat, lexical_capture_8: Nat, lexical_capture_9: Ast.Quantity, lexical_capture_0: Ast.SyntaxTerm, lexical_capture_22: Nat}
+  Kont_242754{lexical_capture_1: String, lexical_capture_23: String, lexical_capture_25: Nat, lexical_capture_10: Nat, lexical_capture_11: Ast.Quantity, lexical_capture_6: List<&2, Scope>, lexical_capture_8: Nat}
+  Kont_244006{lexical_capture_1: String, lexical_capture_22: String, lexical_capture_5: Nat, lexical_capture_24: Nat, lexical_capture_10: Nat}
+  Kont_245814{lexical_capture_1: String, lexical_capture_5: Nat, lexical_capture_14: List<&2, Scope>, lexical_capture_16: Nat}
+  Kont_247124{lexical_capture_3: String, lexical_capture_4: Ast.SyntaxTerm, lexical_capture_6: Nat, lexical_capture_7: Lexer.Token}
+  Kont_247617{capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: List<&2, Lexer.Token>, capture_3: List<&2, Scope>, capture_4: Nat, capture_5: Nat}
+  Kont_247908{lexical_capture_1: String, lexical_capture_6: List<&2, Scope>, lexical_capture_8: Nat, lexical_capture_10: Nat, lexical_capture_3: List<&2, Lexer.Token>}
+  Kont_250740{capture_0: List<&2, Ast.SyntaxTerm>, capture_1: List<&2, Lexer.Token>, capture_2: String, capture_3: Ast.SyntaxTerm, capture_4: List<&2, Scope>, capture_5: Nat, capture_6: Nat}
+  Kont_251384{lexical_capture_3: String, lexical_capture_30: Ast.SyntaxTerm, lexical_capture_5: Lexer.Token, lexical_capture_15: List<&2, Scope>, lexical_capture_17: Nat, lexical_capture_19: Nat, lexical_capture_7: List<&2, Lexer.Token>}
+  Kont_257580{lexical_capture_1: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_18: Lexer.Token, lexical_capture_7: List<&2, Scope>, lexical_capture_9: Nat, lexical_capture_11: Nat, lexical_capture_19: List<&2, Lexer.Token>}
+  Kont_254116{lexical_capture_1: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_7: List<&2, Scope>, lexical_capture_9: Nat, lexical_capture_11: Nat, lexical_capture_39: Nat}
+  Kont_260048{lexical_capture_6: String, lexical_capture_7: Ast.SyntaxTerm, lexical_capture_9: Lexer.Token, lexical_capture_20: Nat, lexical_capture_14: List<&2, Scope>, lexical_capture_16: Nat, lexical_capture_18: Nat, lexical_capture_11: List<&2, Lexer.Token>}
+  Kont_261509{capture_0: List<&2, Ast.SyntaxTerm>, capture_1: List<&2, Lexer.Token>, capture_2: String, capture_3: Ast.SyntaxTerm, capture_4: List<&2, Scope>, capture_5: Nat, capture_6: Nat}
+  Kont_262420{lexical_capture_1: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_4: List<&2, Lexer.Token>, lexical_capture_6: List<&2, Lexer.Token>, lexical_capture_9: List<&2, Scope>, lexical_capture_11: Nat, lexical_capture_13: Nat, lexical_capture_15: Nat}
+  Kont_266459{lexical_capture_3: String, lexical_capture_5: String, lexical_capture_8: Ast.SyntaxTerm, lexical_capture_13: List<&2, Scope>, lexical_capture_15: Nat, lexical_capture_17: Nat, lexical_capture_19: Nat}
+  Kont_267754{lexical_capture_3: String, lexical_capture_4: Ast.SyntaxTerm, lexical_capture_9: List<&2, Scope>, lexical_capture_11: Nat, lexical_capture_13: Nat, lexical_capture_15: Nat}
+  Kont_268872{capture_0: Bool, capture_1: Ast.SyntaxTerm, capture_2: List<&2, Lexer.Token>, capture_3: Bool, capture_4: String, capture_5: Ast.SyntaxTerm, capture_6: List<&2, Scope>, capture_7: Nat, capture_8: Nat}
+  Kont_270151{lexical_capture_17: Bool, lexical_capture_3: String, lexical_capture_4: Ast.SyntaxTerm, lexical_capture_9: List<&2, Scope>, lexical_capture_11: Nat, lexical_capture_13: Nat, lexical_capture_15: Nat, lexical_capture_6: List<&2, Lexer.Token>}
+  Kont_272695{lexical_capture_6: String, lexical_capture_7: Ast.SyntaxTerm, lexical_capture_8: Ast.SyntaxTerm, lexical_capture_10: Nat, lexical_capture_12: Nat, lexical_capture_15: List<&2, Scope>, lexical_capture_17: Nat, lexical_capture_19: Nat}
+  Kont_273854{capture_0: List<&2, Lexer.Token>, capture_1: String, capture_2: Ast.SyntaxTerm, capture_4: Nat, capture_5: Nat, capture_6: List<&2, Scope>, capture_7: Nat, capture_8: Nat}
+  Kont_275637{lexical_capture_1: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_7: List<&2, Scope>, lexical_capture_9: Nat, lexical_capture_11: Nat, lexical_capture_13: Nat, lexical_capture_15: Nat}
+  Kont_278142{lexical_capture_3: String, lexical_capture_5: String, lexical_capture_8: Ast.SyntaxTerm, lexical_capture_13: List<&2, Scope>, lexical_capture_15: Nat, lexical_capture_17: Nat, lexical_capture_19: Nat}
+  Kont_286456{lexical_capture_1: String}
+  Kont_288017{capture_1: List<&2, Lexer.Token>, capture_2: String, capture_3: List<&2, Scope>, capture_4: Nat, capture_5: List<&2, Ast.SyntaxPattern>, capture_6: Nat, capture_7: List<&2, Ast.SyntaxTerm>}
+  Kont_289909{lexical_capture_3: List<&2, Ast.SyntaxPattern>, lexical_capture_8: List<&2, Scope>, lexical_capture_10: Nat, lexical_capture_12: String, lexical_capture_14: Nat, lexical_capture_16: Nat, lexical_capture_22: Ast.Quantity}
+  Kont_291369{lexical_capture_3: List<&2, Ast.SyntaxTerm>, lexical_capture_7: List<&2, Ast.SyntaxPattern>, lexical_capture_13: Ast.Quantity, lexical_capture_15: String, lexical_capture_17: Nat}
+  Kont_292028{lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_9: Nat, lexical_capture_14: List<&2, Scope>, lexical_capture_16: Nat, lexical_capture_17: Ast.Quantity}
+  Kont_293608{lexical_capture_3: String, lexical_capture_5: String, lexical_capture_7: Nat, lexical_capture_10: Ast.SyntaxPattern, lexical_capture_19: Ast.Quantity, lexical_capture_11: Ast.SyntaxTerm}
+  Kont_294231{lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_9: Nat, lexical_capture_14: List<&2, Scope>, lexical_capture_16: Nat}
+  Kont_296679{lexical_capture_3: String, lexical_capture_5: List<&2, Lexer.Token>, lexical_capture_7: Nat, lexical_capture_9: Nat, lexical_capture_12: List<&2, Scope>, lexical_capture_14: Nat}
+  Kont_297498{lexical_capture_4: Ast.SyntaxPattern, lexical_capture_7: List<&2, Scope>, lexical_capture_9: Nat, lexical_capture_11: String, lexical_capture_13: List<&2, Lexer.Token>, lexical_capture_15: Nat, lexical_capture_17: Nat, lexical_capture_20: List<&2, Scope>, lexical_capture_22: Nat}
+  Kont_298751{lexical_capture_2: Ast.SyntaxTerm, lexical_capture_5: Ast.SyntaxPattern, lexical_capture_12: String, lexical_capture_14: Nat}
+  Kont_299333{lexical_capture_1: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_10: List<&2, Scope>, lexical_capture_12: Nat}
+  Kont_299821{lexical_capture_1: List<&2, Ast.SyntaxTerm>, lexical_capture_13: Lexer.Token, lexical_capture_3: String, lexical_capture_5: Nat}
+  Kont_302984{lexical_capture_1: String, lexical_capture_6: List<&2, Scope>, lexical_capture_8: Nat, lexical_capture_10: List<&2, Ast.SyntaxTerm>}
+  Kont_303571{lexical_capture_3: String, lexical_capture_5: List<&2, Lexer.Token>, lexical_capture_9: Nat, lexical_capture_12: List<&2, Scope>, lexical_capture_14: Nat, lexical_capture_16: Nat, lexical_capture_18: List<&2, Ast.SyntaxTerm>}
+  Kont_306612{capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: Nat}
+  Kont_307637{lexical_capture_5: List<&2, Ast.SyntaxPattern>, lexical_capture_3: String, lexical_capture_15: Nat}
+  Kont_312883{capture_0: String, capture_1: List<&2, Ast.TelescopeItem>, capture_2: List<&2, Scope>, capture_3: Nat, capture_4: String, capture_5: Nat, capture_6: Ast.SyntaxTerm, capture_7: List<&2, Lexer.Token>, capture_8: Nat}
+  Kont_313531{capture_1: String, capture_2: List<&2, Ast.TelescopeItem>, capture_3: List<&2, Scope>, capture_4: Nat, capture_5: String, capture_6: Nat, capture_7: List<&2, Lexer.Token>}
+  Kont_316332{capture_0: String, capture_1: String, capture_2: Ast.Quantity, capture_3: Nat, capture_4: List<&2, Ast.TelescopeItem>, capture_5: List<&2, Scope>, capture_6: Nat, capture_7: Ast.SyntaxTerm, capture_8: List<&2, Lexer.Token>, capture_9: Nat}
+  Kont_316984{capture_1: String, capture_2: String, capture_3: Ast.Quantity, capture_4: Nat, capture_5: List<&2, Ast.TelescopeItem>, capture_6: List<&2, Scope>, capture_7: Nat, capture_8: List<&2, Lexer.Token>}
+  Kont_318578{}
+  Kont_320249{lexical_capture_0: Lexer.Token, lexical_capture_2: List<&2, Lexer.Token>, lexical_capture_8: String, lexical_capture_10: String, lexical_capture_12: Nat, lexical_capture_14: List<&2, Ast.TelescopeItem>, lexical_capture_5: Ast.SyntaxTerm}
+  Kont_321678{capture_1: Lexer.Token, capture_2: String, capture_3: String, capture_4: Nat, capture_5: List<&2, Ast.TelescopeItem>, capture_6: List<&2, Scope>, capture_7: Nat}
+  Kont_322047{lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat, lexical_capture_7: List<&2, Ast.TelescopeItem>, lexical_capture_13: Lexer.Token, lexical_capture_15: List<&2, Lexer.Token>}
+  Kont_325042{lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat}
+  Kont_330347{}
+  Kont_330212{}
+  Kont_332964{lexical_capture_3: String, lexical_capture_26: Lexer.Token, lexical_capture_27: List<&2, Lexer.Token>, lexical_capture_9: Nat, lexical_capture_12: List<&2, Scope>, lexical_capture_14: Nat, lexical_capture_16: List<&2, Ast.ConstructorDecl>, lexical_capture_18: String, lexical_capture_20: Nat}
+  Kont_335020{lexical_capture_6: String, lexical_capture_8: String, lexical_capture_10: Nat, lexical_capture_14: List<&2, Ast.TelescopeItem>, lexical_capture_2: Ast.SyntaxTerm}
+  Kont_335852{lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_9: List<&2, Ast.TelescopeItem>, lexical_capture_11: List<&2, Lexer.Token>, lexical_capture_16: List<&2, Scope>, lexical_capture_18: Nat}
+  Kont_337919{lexical_capture_26: Lexer.Token, lexical_capture_1: String, lexical_capture_19: String, lexical_capture_5: Nat, lexical_capture_7: Nat}
+  Kont_337453{lexical_capture_26: Lexer.Token, lexical_capture_1: String, lexical_capture_19: String, lexical_capture_5: Nat, lexical_capture_7: Nat}
+  Kont_339950{lexical_capture_12: String, lexical_capture_14: String, lexical_capture_3: List<&2, Ast.Clause>, lexical_capture_16: Nat, lexical_capture_17: Lexer.Token, lexical_capture_5: List<&2, Lexer.Token>}
+  Kont_343898{lexical_capture_1: String, lexical_capture_31: String, lexical_capture_32: Nat, lexical_capture_33: Nat, lexical_capture_5: Nat, lexical_capture_7: Bool, lexical_capture_8: Ast.Quantity, lexical_capture_11: List<&2, Scope>, lexical_capture_13: Nat, lexical_capture_15: List<&2, Ast.Clause>}
+  Kont_345864{lexical_capture_1: String, lexical_capture_7: Nat, lexical_capture_9: Bool, lexical_capture_10: Ast.Quantity, lexical_capture_12: String, lexical_capture_14: Nat, lexical_capture_17: Ast.SyntaxTerm, lexical_capture_20: List<&2, Scope>, lexical_capture_22: Nat, lexical_capture_24: List<&2, Ast.Clause>}
+  Kont_348170{lexical_capture_1: String, lexical_capture_17: String, lexical_capture_5: Nat, lexical_capture_24: Lexer.Token, lexical_capture_25: List<&2, Lexer.Token>}
+  Kont_353656{lexical_capture_12: Map<&2, TopOwner>, lexical_capture_19: List<&2, Lexer.Token>, lexical_capture_3: List<&2, Lexer.Token>, lexical_capture_1: String, lexical_capture_7: String, lexical_capture_9: List<&2, Ast.TopLevel>}
+  Kont_353365{lexical_capture_12: Map<&2, TopOwner>, lexical_capture_19: List<&2, Lexer.Token>, lexical_capture_3: List<&2, Lexer.Token>, lexical_capture_1: String, lexical_capture_7: String, lexical_capture_9: List<&2, Ast.TopLevel>}
+  Kont_353072{lexical_capture_12: Map<&2, TopOwner>, lexical_capture_19: List<&2, Lexer.Token>, lexical_capture_3: List<&2, Lexer.Token>, lexical_capture_1: String, lexical_capture_7: String, lexical_capture_9: List<&2, Ast.TopLevel>}
+  Kont_352782{lexical_capture_12: Map<&2, TopOwner>, lexical_capture_19: List<&2, Lexer.Token>, lexical_capture_3: List<&2, Lexer.Token>, lexical_capture_1: String, lexical_capture_7: String, lexical_capture_9: List<&2, Ast.TopLevel>}
+  Kont_355557{lexical_capture_7: String, lexical_capture_3: List<&2, Ast.ModuleImport>}
+  Kont_356010{lexical_capture_3: String}
 
 type FeedbackKont is Data:
   FeedbackKont{frame: FeedbackFrame, progress: Progress}
@@ -431,14 +432,14 @@ def feedback_attach_with_progress(+before: Progress, step: FeedbackControl, fram
 def feedback_attach(step: FeedbackControl, frame: FeedbackFrame) -> FeedbackControl:
   feedback_attach_with_progress(NoProgress{}, step, frame)
 
-def feedback_make_Kont_135996(capture_1: List<&2, Ast.SyntaxTerm>) -> FeedbackFrame:
-  Kont_135996{capture_1}
+def feedback_make_Kont_136348(capture_1: List<&2, Ast.SyntaxTerm>) -> FeedbackFrame:
+  Kont_136348{capture_1}
 
 def feedback_pack_14(result: Maybe<&2, List<&2, Ast.SyntaxPattern>>) -> FeedbackControl:
   FeedbackControl{FeedbackDone{Value_14{result}}, Nil{}, NoProgress{}, NoProgress{}}
 
-def feedback_make_Kont_136505(capture_1: String, capture_2: Ast.SourceSpan) -> FeedbackFrame:
-  Kont_136505{capture_1, capture_2}
+def feedback_make_Kont_136857(capture_1: String, capture_2: Ast.SourceSpan) -> FeedbackFrame:
+  Kont_136857{capture_1, capture_2}
 
 def feedback_make_literal_pattern_fields(terms: List<&2, Ast.SyntaxTerm>) -> FeedbackRequest:
   Request_literal_pattern_fields{terms}
@@ -449,7 +450,7 @@ def feedback_pack_13(result: Maybe<&2, Ast.SyntaxPattern>) -> FeedbackControl:
 def step_literal_pattern_tree(term: Ast.SyntaxTerm) -> FeedbackControl:
   match term:
     case Ast.TermCtr{key, fields, position}:
-      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_literal_pattern_fields(fields)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_136505(key, position))
+      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_literal_pattern_fields(fields)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_136857(key, position))
     case _:
       feedback_pack_13(None{})
 
@@ -519,72 +520,72 @@ def step_literal_pattern(term: Ast.SyntaxTerm) -> FeedbackControl:
 def step_literal_pattern_fields(terms: List<&2, Ast.SyntaxTerm>) -> FeedbackControl:
   match terms:
     case term <> rest:
-      feedback_attach(step_literal_pattern(term), feedback_make_Kont_135996(rest))
+      feedback_attach(step_literal_pattern(term), feedback_make_Kont_136348(rest))
     case Nil{}:
       feedback_pack_14(Some{Nil{}})
 
-def feedback_make_Kont_95278(capture_0: Ast.SourceSpan) -> FeedbackFrame:
-  Kont_95278{capture_0}
+def feedback_make_Kont_95827(capture_0: Ast.SourceSpan) -> FeedbackFrame:
+  Kont_95827{capture_0}
 
-def feedback_make_Kont_95426(capture_0: String, capture_1: Nat, capture_2: Ast.SyntaxTerm, capture_3: Ast.SourceSpan) -> FeedbackFrame:
-  Kont_95426{capture_0, capture_1, capture_2, capture_3}
+def feedback_make_Kont_95975(capture_0: String, capture_1: Nat, capture_2: Ast.SyntaxTerm, capture_3: Ast.SourceSpan) -> FeedbackFrame:
+  Kont_95975{capture_0, capture_1, capture_2, capture_3}
 
-def feedback_make_Kont_95598(capture_0: String, capture_1: List<&2, String>, capture_2: List<&2, Nat>, capture_3: List<&2, Ast.Quantity>, capture_4: Ast.SyntaxTerm, capture_5: Ast.SourceSpan) -> FeedbackFrame:
-  Kont_95598{capture_0, capture_1, capture_2, capture_3, capture_4, capture_5}
+def feedback_make_Kont_96147(capture_0: String, capture_1: List<&2, String>, capture_2: List<&2, Nat>, capture_3: List<&2, Ast.Quantity>, capture_4: Ast.SyntaxTerm, capture_5: Ast.SourceSpan) -> FeedbackFrame:
+  Kont_96147{capture_0, capture_1, capture_2, capture_3, capture_4, capture_5}
 
-def feedback_make_Kont_95735(capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SourceSpan) -> FeedbackFrame:
-  Kont_95735{capture_0, capture_1, capture_2}
+def feedback_make_Kont_96284(capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SourceSpan) -> FeedbackFrame:
+  Kont_96284{capture_0, capture_1, capture_2}
 
-def feedback_make_Kont_95859(capture_0: Ast.SourceSpan) -> FeedbackFrame:
-  Kont_95859{capture_0}
+def feedback_make_Kont_96408(capture_0: Ast.SourceSpan) -> FeedbackFrame:
+  Kont_96408{capture_0}
 
-def feedback_make_Kont_95979(capture_0: Ast.SourceSpan) -> FeedbackFrame:
-  Kont_95979{capture_0}
+def feedback_make_Kont_96528(capture_0: Ast.SourceSpan) -> FeedbackFrame:
+  Kont_96528{capture_0}
 
-def feedback_make_Kont_96237(capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SourceSpan) -> FeedbackFrame:
-  Kont_96237{capture_0, capture_1, capture_2}
+def feedback_make_Kont_96786(capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SourceSpan) -> FeedbackFrame:
+  Kont_96786{capture_0, capture_1, capture_2}
 
-def feedback_make_Kont_96409(capture_0: String, capture_1: Ast.Quantity, capture_2: String, capture_3: Nat, capture_4: Ast.SyntaxTerm, capture_5: Ast.SourceSpan) -> FeedbackFrame:
-  Kont_96409{capture_0, capture_1, capture_2, capture_3, capture_4, capture_5}
+def feedback_make_Kont_96958(capture_0: String, capture_1: Ast.Quantity, capture_2: String, capture_3: Nat, capture_4: Ast.SyntaxTerm, capture_5: Ast.SourceSpan) -> FeedbackFrame:
+  Kont_96958{capture_0, capture_1, capture_2, capture_3, capture_4, capture_5}
 
-def feedback_make_Kont_96564(capture_0: Maybe<&2, Ast.Quantity>, capture_1: String, capture_2: Nat, capture_3: Ast.SourceSpan) -> FeedbackFrame:
-  Kont_96564{capture_0, capture_1, capture_2, capture_3}
+def feedback_make_Kont_97113(capture_0: Maybe<&2, Ast.Quantity>, capture_1: String, capture_2: Nat, capture_3: Ast.SourceSpan) -> FeedbackFrame:
+  Kont_97113{capture_0, capture_1, capture_2, capture_3}
 
-def feedback_make_Kont_96702(capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SourceSpan) -> FeedbackFrame:
-  Kont_96702{capture_0, capture_1, capture_2}
+def feedback_make_Kont_97251(capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SourceSpan) -> FeedbackFrame:
+  Kont_97251{capture_0, capture_1, capture_2}
 
-def feedback_make_Kont_96852(capture_0: String, capture_1: List<&2, String>, capture_2: Ast.SourceSpan) -> FeedbackFrame:
-  Kont_96852{capture_0, capture_1, capture_2}
+def feedback_make_Kont_97401(capture_0: String, capture_1: List<&2, String>, capture_2: Ast.SourceSpan) -> FeedbackFrame:
+  Kont_97401{capture_0, capture_1, capture_2}
 
-def feedback_make_Kont_96996(capture_0: String, capture_1: List<&2, Ast.SyntaxTerm>, capture_2: Ast.SourceSpan) -> FeedbackFrame:
-  Kont_96996{capture_0, capture_1, capture_2}
+def feedback_make_Kont_97545(capture_0: String, capture_1: List<&2, Ast.SyntaxTerm>, capture_2: Ast.SourceSpan) -> FeedbackFrame:
+  Kont_97545{capture_0, capture_1, capture_2}
 
-def feedback_make_Kont_97139(capture_0: String, capture_1: List<&2, Ast.SyntaxTerm>, capture_2: Ast.SourceSpan) -> FeedbackFrame:
-  Kont_97139{capture_0, capture_1, capture_2}
+def feedback_make_Kont_97688(capture_0: String, capture_1: List<&2, Ast.SyntaxTerm>, capture_2: Ast.SourceSpan) -> FeedbackFrame:
+  Kont_97688{capture_0, capture_1, capture_2}
 
-def feedback_make_Kont_97276(capture_0: String, capture_1: Ast.SourceSpan) -> FeedbackFrame:
-  Kont_97276{capture_0, capture_1}
+def feedback_make_Kont_97825(capture_0: String, capture_1: Ast.SourceSpan) -> FeedbackFrame:
+  Kont_97825{capture_0, capture_1}
 
-def feedback_make_Kont_97521(capture_0: String, capture_1: String, capture_2: Ast.SyntaxTerm, capture_3: Ast.SourceSpan) -> FeedbackFrame:
-  Kont_97521{capture_0, capture_1, capture_2, capture_3}
+def feedback_make_Kont_98070(capture_0: String, capture_1: String, capture_2: Ast.SyntaxTerm, capture_3: Ast.SourceSpan) -> FeedbackFrame:
+  Kont_98070{capture_0, capture_1, capture_2, capture_3}
 
-def feedback_make_Kont_97739(capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SyntaxTerm, capture_3: Ast.SourceSpan) -> FeedbackFrame:
-  Kont_97739{capture_0, capture_1, capture_2, capture_3}
+def feedback_make_Kont_98288(capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SyntaxTerm, capture_3: Ast.SourceSpan) -> FeedbackFrame:
+  Kont_98288{capture_0, capture_1, capture_2, capture_3}
 
-def feedback_make_Kont_97955(capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SyntaxTerm, capture_3: Ast.SourceSpan) -> FeedbackFrame:
-  Kont_97955{capture_0, capture_1, capture_2, capture_3}
+def feedback_make_Kont_98504(capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SyntaxTerm, capture_3: Ast.SourceSpan) -> FeedbackFrame:
+  Kont_98504{capture_0, capture_1, capture_2, capture_3}
 
-def feedback_make_Kont_98169(capture_0: String, capture_1: List<&2, Ast.SyntaxTerm>, capture_2: Ast.SourceSpan) -> FeedbackFrame:
-  Kont_98169{capture_0, capture_1, capture_2}
+def feedback_make_Kont_98718(capture_0: String, capture_1: List<&2, Ast.SyntaxTerm>, capture_2: Ast.SourceSpan) -> FeedbackFrame:
+  Kont_98718{capture_0, capture_1, capture_2}
 
-def feedback_make_Kont_98308(capture_0: List<&2, Ast.SyntaxPattern>, capture_1: Ast.SourceSpan) -> FeedbackFrame:
-  Kont_98308{capture_0, capture_1}
+def feedback_make_Kont_98857(capture_0: List<&2, Ast.SyntaxPattern>, capture_1: Ast.SourceSpan) -> FeedbackFrame:
+  Kont_98857{capture_0, capture_1}
 
-def feedback_make_Kont_98480(capture_0: String, capture_1: List<&2, Ast.SyntaxPattern>, capture_2: Ast.Quantity, capture_3: Ast.SyntaxTerm, capture_4: Ast.SourceSpan) -> FeedbackFrame:
-  Kont_98480{capture_0, capture_1, capture_2, capture_3, capture_4}
+def feedback_make_Kont_99029(capture_0: String, capture_1: List<&2, Ast.SyntaxPattern>, capture_2: Ast.Quantity, capture_3: Ast.SyntaxTerm, capture_4: Ast.SourceSpan) -> FeedbackFrame:
+  Kont_99029{capture_0, capture_1, capture_2, capture_3, capture_4}
 
-def feedback_make_Kont_98606(capture_0: Ast.SourceSpan) -> FeedbackFrame:
-  Kont_98606{capture_0}
+def feedback_make_Kont_99155(capture_0: Ast.SourceSpan) -> FeedbackFrame:
+  Kont_99155{capture_0}
 
 def feedback_make_map_operator_term(v_0: Ast.SyntaxTerm, v_2: String) -> FeedbackRequest:
   Request_map_operator_term{v_0, v_2}
@@ -746,62 +747,62 @@ def step_map_operator_term(v_0: Ast.SyntaxTerm, +v_2: String) -> FeedbackControl
     case Ast.TermRef{v_11, v_12}:
       feedback_pack_11(Ast.TermRef{map_operator_key(v_2, v_11), v_12})
     case Ast.TermBang{v_15, v_16}:
-      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_15, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_95278(v_16))
+      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_15, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_95827(v_16))
     case Ast.TermSub{v_22, v_23, v_24, v_25}:
-      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_23, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_95426(v_2, v_22, v_24, v_25))
+      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_23, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_95975(v_2, v_22, v_24, v_25))
     case Ast.TermLet{v_34, v_35, v_36, v_37, v_38, v_39}:
-      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_terms(v_37, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_95598(v_2, v_34, v_35, v_36, v_38, v_39))
+      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_terms(v_37, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_96147(v_2, v_34, v_35, v_36, v_38, v_39))
     case Ast.TermAnn{v_44, v_45, v_46}:
-      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_44, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_95735(v_2, v_45, v_46))
+      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_44, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_96284(v_2, v_45, v_46))
     case Ast.TermTemplate{v_50, v_51}:
-      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_50, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_95859(v_51))
+      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_50, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_96408(v_51))
     case Ast.TermType{v_55, v_56}:
-      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_55, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_95979(v_56))
+      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_55, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_96528(v_56))
     case Ast.TermQuant{}:
       feedback_pack_11(Ast.TermQuant{})
     case Ast.TermQuantity{v_60, v_61}:
       feedback_pack_11(Ast.TermQuantity{v_60, v_61})
     case Ast.TermMin{v_65, v_66, v_67}:
-      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_65, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_96237(v_2, v_66, v_67))
+      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_65, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_96786(v_2, v_66, v_67))
     case Ast.TermAll{v_76, v_77, v_78, v_79, v_80, v_81}:
-      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_79, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_96409(v_2, v_76, v_77, v_78, v_80, v_81))
+      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_79, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_96958(v_2, v_76, v_77, v_78, v_80, v_81))
     case Ast.TermLam{v_89, v_90, v_91, v_92, v_93}:
-      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_92, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_96564(v_89, v_90, v_91, v_93))
+      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_92, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_97113(v_89, v_90, v_91, v_93))
     case Ast.TermApp{v_98, v_99, v_100}:
-      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_98, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_96702(v_2, v_99, v_100))
+      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_98, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_97251(v_2, v_99, v_100))
     case Ast.TermAdt{v_107, v_108, v_109, v_110}:
-      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_terms(v_108, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_96852(v_107, v_109, v_110))
+      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_terms(v_108, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_97401(v_107, v_109, v_110))
     case Ast.TermFill{v_115, v_116, v_117}:
-      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_115, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_96996(v_2, v_116, v_117))
+      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_115, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_97545(v_2, v_116, v_117))
     case Ast.TermPlus{v_123, v_124, v_125}:
-      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_123, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_97139(v_2, v_124, v_125))
+      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_123, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_97688(v_2, v_124, v_125))
     case Ast.TermCtr{v_131, v_132, v_133}:
-      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_terms(v_132, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_97276(v_131, v_133))
+      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_terms(v_132, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_97825(v_131, v_133))
     case Ast.TermString{v_138, v_139, v_140}:
       feedback_pack_11(Ast.TermString{v_138, v_139, v_140})
     case Ast.TermMat{v_145, v_146, v_147, v_148}:
-      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_146, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_97521(v_2, v_145, v_147, v_148))
+      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_146, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_98070(v_2, v_145, v_147, v_148))
     case Ast.TermAbsurd{v_152}:
       feedback_pack_11(Ast.TermAbsurd{v_152})
     case Ast.TermEqual{v_157, v_158, v_159, v_160}:
-      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_157, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_97739(v_2, v_158, v_159, v_160))
+      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_157, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_98288(v_2, v_158, v_159, v_160))
     case Ast.TermRefl{v_165}:
       feedback_pack_11(Ast.TermRefl{v_165})
     case Ast.TermRewrite{v_170, v_171, v_172, v_173}:
-      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_170, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_97955(v_2, v_171, v_172, v_173))
+      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_170, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_98504(v_2, v_171, v_172, v_173))
     case Ast.TermHole{v_179, v_180}:
       feedback_pack_11(Ast.TermHole{v_179, v_180})
     case Ast.BodyMatch{v_184, v_185, v_186}:
-      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_terms(v_184, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_98169(v_2, v_185, v_186))
+      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_terms(v_184, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_98718(v_2, v_185, v_186))
     case Ast.BodyCase{v_192, v_193, v_194}:
-      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_193, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_98308(v_192, v_194))
+      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_193, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_98857(v_192, v_194))
     case Ast.BodyLocal{v_201, v_202, v_203, v_204, v_205}:
-      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_terms(v_203, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_98480(v_2, v_201, v_202, v_204, v_205))
+      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_terms(v_203, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_99029(v_2, v_201, v_202, v_204, v_205))
     case Ast.BodyReply{v_209, v_210}:
-      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_209, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_98606(v_210))
+      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_209, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_99155(v_210))
 
-def feedback_make_Kont_99231(capture_0: String, capture_1: List<&2, Ast.SyntaxTerm>) -> FeedbackFrame:
-  Kont_99231{capture_0, capture_1}
+def feedback_make_Kont_99780(capture_0: String, capture_1: List<&2, Ast.SyntaxTerm>) -> FeedbackFrame:
+  Kont_99780{capture_0, capture_1}
 
 def feedback_pack_12(result: List<&2, Ast.SyntaxTerm>) -> FeedbackControl:
   FeedbackControl{FeedbackDone{Value_12{result}}, Nil{}, NoProgress{}, NoProgress{}}
@@ -811,13 +812,13 @@ def step_map_operator_terms(v_1: List<&2, Ast.SyntaxTerm>, +v_3: String) -> Feed
     case []:
       feedback_pack_12([])
     case v_7 <> v_8:
-      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_7, v_3)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_99231(v_3, v_8))
+      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_7, v_3)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_99780(v_3, v_8))
 
 def feedback_pack_15(result: Maybe<&2, Nat>) -> FeedbackControl:
   FeedbackControl{FeedbackDone{Value_15{result}}, Nil{}, NoProgress{}, NoProgress{}}
 
-def feedback_make_Kont_80115(capture_1: Nat) -> FeedbackFrame:
-  Kont_80115{capture_1}
+def feedback_make_Kont_80664(capture_1: Nat) -> FeedbackFrame:
+  Kont_80664{capture_1}
 
 def has_nat_suffix_reversed(reversed: List<&2, Char>) -> Bool:
   match reversed:
@@ -876,7 +877,7 @@ def step_nat_literal_tokens(tokens: List<&2, Lexer.Token>, +stop: Nat) -> Feedba
 def step_nat_literal_tokens_plus(adjacent: Bool, tokens: List<&2, Lexer.Token>, value: Nat, stop: Nat) -> FeedbackControl:
   match adjacent:
     case True{}:
-      feedback_attach(step_nat_literal_tokens(tokens, stop), feedback_make_Kont_80115(value))
+      feedback_attach(step_nat_literal_tokens(tokens, stop), feedback_make_Kont_80664(value))
     case False{}:
       feedback_pack_15(None{})
 
@@ -1218,11 +1219,11 @@ def string_chars(+file: String, chars: List<&2, Char>, beg: Nat, end: Nat) -> As
 def parse_string(file: String, text: String, beg: Nat, end: Nat, rest: List<&2, Lexer.Token>) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   parse_string_result(string_chars(file, String.to_list(strip_quotes(text)), beg, end), rest)
 
-def feedback_make_Kont_182284(capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: List<&2, Lexer.Token>) -> FeedbackFrame:
-  Kont_182284{capture_1, capture_2, capture_3, capture_4}
+def feedback_make_Kont_182131(capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: List<&2, Lexer.Token>) -> FeedbackFrame:
+  Kont_182131{capture_1, capture_2, capture_3, capture_4}
 
-def feedback_make_Kont_180668(capture_1: String, capture_2: String, capture_3: Nat, capture_4: Nat, capture_5: List<&2, Lexer.Token>, capture_6: List<&2, Scope>, capture_7: Nat) -> FeedbackFrame:
-  Kont_180668{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7}
+def feedback_make_Kont_180515(capture_1: String, capture_2: String, capture_3: Nat, capture_4: Nat, capture_5: List<&2, Lexer.Token>, capture_6: List<&2, Scope>, capture_7: Nat) -> FeedbackFrame:
+  Kont_180515{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7}
 
 def do_first_col(tokens: List<&2, Lexer.Token>) -> Nat:
   match tokens:
@@ -1246,14 +1247,14 @@ def skip_lines(tokens: List<&2, Lexer.Token>) -> List<&2, Lexer.Token>:
     case Nil{}:
       Nil{}
 
-def feedback_make_Kont_188877(capture_1: String, capture_2: String, capture_3: List<&2, Ast.SyntaxTerm>, capture_4: Nat, capture_5: Nat) -> FeedbackFrame:
-  Kont_188877{capture_1, capture_2, capture_3, capture_4, capture_5}
+def feedback_make_Kont_188724(capture_1: String, capture_2: String, capture_3: List<&2, Ast.SyntaxTerm>, capture_4: Nat, capture_5: Nat) -> FeedbackFrame:
+  Kont_188724{capture_1, capture_2, capture_3, capture_4, capture_5}
 
 def feedback_make_parse_do_typed_bind(file: String, monad: String, args: List<&2, Ast.SyntaxTerm>, tokens: List<&2, Lexer.Token>, beg: Nat, end: Nat, scope: List<&2, Scope>, depth: Nat, col: Nat) -> FeedbackRequest:
   Request_parse_do_typed_bind{file, monad, args, tokens, beg, end, scope, depth, col}
 
-def feedback_make_Kont_247975(lexical_capture_1: String, lexical_capture_6: List<&2, Scope>, lexical_capture_8: Nat, lexical_capture_10: Nat, lexical_capture_3: List<&2, Lexer.Token>) -> FeedbackFrame:
-  Kont_247975{lexical_capture_1, lexical_capture_6, lexical_capture_8, lexical_capture_10, lexical_capture_3}
+def feedback_make_Kont_247908(lexical_capture_1: String, lexical_capture_6: List<&2, Scope>, lexical_capture_8: Nat, lexical_capture_10: Nat, lexical_capture_3: List<&2, Lexer.Token>) -> FeedbackFrame:
+  Kont_247908{lexical_capture_1, lexical_capture_6, lexical_capture_8, lexical_capture_10, lexical_capture_3}
 
 def feedback_make_parse_atom_scan(file: String, tokens: List<&2, Lexer.Token>, scanned: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat) -> FeedbackRequest:
   Request_parse_atom_scan{file, tokens, scanned, scope, depth}
@@ -1262,14 +1263,14 @@ def step_parse_atom(file: String, +tokens: List<&2, Lexer.Token>, scope: List<&2
   FeedbackControl{FeedbackCall{feedback_make_parse_atom_scan(file, tokens, skip_lines(tokens), scope, depth)}, Nil{}, NoProgress{}, NoProgress{}}
 
 def step_parse_term(+file: String, +tokens: List<&2, Lexer.Token>, +scope: List<&2, Scope>, +depth: Nat, level: Nat) -> FeedbackControl:
-  feedback_attach(step_parse_atom(file, tokens, scope, depth), feedback_make_Kont_247975(file, scope, depth, level, tokens))
+  feedback_attach(step_parse_atom(file, tokens, scope, depth), feedback_make_Kont_247908(file, scope, depth, level, tokens))
 
 def step_parse_do_return_scan(+file: String, +key: String, +args: List<&2, Ast.SyntaxTerm>, tokens: List<&2, Lexer.Token>, scanned: List<&2, Lexer.Token>, +beg: Nat, +end: Nat, +scope: List<&2, Scope>, +depth: Nat, col: Nat) -> FeedbackControl:
   match scanned:
     case +return_token <> +rest:
       match return_token:
         case Lexer.TokenInfo{Lexer.NameToken{}, "return", _, _, _, _}:
-          feedback_attach(step_parse_term(file, rest, scope, depth, 0n), feedback_make_Kont_188877(file, key, args, beg, end))
+          feedback_attach(step_parse_term(file, rest, scope, depth, 0n), feedback_make_Kont_188724(file, key, args, beg, end))
         case Lexer.TokenInfo{feedback_field_6_0, feedback_field_6_1, feedback_field_6_2, feedback_field_6_3, feedback_field_6_4, feedback_field_6_5}:
           FeedbackControl{FeedbackCall{feedback_make_parse_do_typed_bind(file, key, args, (Lexer.TokenInfo{feedback_field_6_0, feedback_field_6_1, feedback_field_6_2, feedback_field_6_3, feedback_field_6_4, feedback_field_6_5} : Lexer.Token) <> rest, beg, end, scope, depth, col)}, Nil{}, NoProgress{}, NoProgress{}}
     case Nil{}:
@@ -1313,15 +1314,15 @@ def feedback_pack_9(result: ((List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) 
     case ((result_0_0, result_0_1), result_1):
       FeedbackControl{FeedbackDone{Value_9{result_0_0, result_0_1, result_1}}, Nil{}, NoProgress{}, NoProgress{}}
 
-def feedback_make_Kont_238944(lexical_capture_3: String, lexical_capture_8: List<&2, Lexer.Token>, lexical_capture_10: String, lexical_capture_13: List<&2, Scope>, lexical_capture_15: Nat, lexical_capture_17: List<&2, Ast.SyntaxTerm>) -> FeedbackFrame:
-  Kont_238944{lexical_capture_3, lexical_capture_8, lexical_capture_10, lexical_capture_13, lexical_capture_15, lexical_capture_17}
+def feedback_make_Kont_238873(lexical_capture_3: String, lexical_capture_8: List<&2, Lexer.Token>, lexical_capture_10: String, lexical_capture_13: List<&2, Scope>, lexical_capture_15: Nat, lexical_capture_17: List<&2, Ast.SyntaxTerm>) -> FeedbackFrame:
+  Kont_238873{lexical_capture_3, lexical_capture_8, lexical_capture_10, lexical_capture_13, lexical_capture_15, lexical_capture_17}
 
 def step_parse_term_args_first(is_close: Bool, +file: String, token: Lexer.Token, rest: List<&2, Lexer.Token>, +tokens: List<&2, Lexer.Token>, close: String, +scope: List<&2, Scope>, +depth: Nat, +acc: List<&2, Ast.SyntaxTerm>) -> FeedbackControl:
   match is_close:
     case True{}:
       feedback_pack_9(((List.reverse(&2, Ast.SyntaxTerm, acc), rest), True{}))
     case False{}:
-      feedback_attach(step_parse_term(file, tokens, scope, depth, 0n), feedback_make_Kont_238944(file, tokens, close, scope, depth, acc))
+      feedback_attach(step_parse_term(file, tokens, scope, depth, 0n), feedback_make_Kont_238873(file, tokens, close, scope, depth, acc))
 
 def token_text(token: Lexer.Token) -> String:
   match token:
@@ -1347,7 +1348,7 @@ def step_parse_do_atom(+file: String, +tokens: List<&2, Lexer.Token>, +beg: Nat,
             case +open <> +after_open:
               match open:
                 case Lexer.TokenInfo{_, "<", _, _, _, _}:
-                  feedback_attach(step_parse_term_args(file, after_open, ">", scope, depth, Nil{}), feedback_make_Kont_180668(file, key, beg, end, tokens, scope, depth))
+                  feedback_attach(step_parse_term_args(file, after_open, ">", scope, depth, Nil{}), feedback_make_Kont_180515(file, key, beg, end, tokens, scope, depth))
                 case Lexer.TokenInfo{_, "<>", _, _, _, _}:
                   step_parse_do_atom_args_result(((Nil{}, after_open), True{}), file, key, beg, end, tokens, scope, depth)
                 case Lexer.TokenInfo{+feedback_field_12_0, +feedback_field_12_1, +feedback_field_12_2, +feedback_field_12_3, +feedback_field_12_4, +feedback_field_12_5}:
@@ -1369,11 +1370,11 @@ def extend_scope_result(is_underscore: Bool, key: String, index: Nat, scope: Lis
 def extend_scope(+key: String, index: Nat, scope: List<&2, Scope>) -> List<&2, Scope>:
   extend_scope_result(String.eq(key, "_"), key, index, scope)
 
-def feedback_make_Kont_235313(lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_14: Nat) -> FeedbackFrame:
-  Kont_235313{lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_14}
+def feedback_make_Kont_235238(lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_14: Nat) -> FeedbackFrame:
+  Kont_235238{lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_14}
 
-def feedback_make_Kont_235549(lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_20: List<&2, Lexer.Token>) -> FeedbackFrame:
-  Kont_235549{lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_20}
+def feedback_make_Kont_235478(lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_20: List<&2, Lexer.Token>) -> FeedbackFrame:
+  Kont_235478{lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_20}
 
 def lookup_result(+key: String, rest: List<&2, Scope>, +depth: Nat) -> Maybe<&2, Nat>:
   match rest:
@@ -1400,15 +1401,31 @@ def parse_name_term_lookup(found: Maybe<&2, Nat>, file: String, key: String, beg
     case None{}:
       ((Ast.TermRef{key,  span(file, beg, end)}, tokens), True{})
 
+def feedback_make_parse_body_scan(file: String, tokens: List<&2, Lexer.Token>, scanned: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, parent_col: Nat) -> FeedbackRequest:
+  Request_parse_body_scan{file, tokens, scanned, scope, depth, parent_col}
+
+def step_parse_body(file: String, +tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, parent_col: Nat) -> FeedbackControl:
+  FeedbackControl{FeedbackCall{feedback_make_parse_body_scan(file, tokens, skip_lines(tokens), scope, depth, parent_col)}, Nil{}, NoProgress{}, NoProgress{}}
+
+def step_parse_lambda_block_scan(+file: String, +tokens: List<&2, Lexer.Token>, scanned: List<&2, Lexer.Token>, +scope: List<&2, Scope>, +depth: Nat) -> FeedbackControl:
+  match scanned:
+    case Lexer.TokenInfo{_, _, _, _, _, col} <> _:
+      step_parse_body(file, tokens, scope, depth, Nat.sub(col, 1n))
+    case Nil{}:
+      step_parse_term(file, tokens, scope, depth, 0n)
+
+def step_parse_lambda_block(+file: String, +tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat) -> FeedbackControl:
+  step_parse_lambda_block_scan(file, tokens, skip_lines(tokens), scope, depth)
+
 def step_parse_name_term(+file: String, +key: String, +beg: Nat, +end: Nat, +tokens: List<&2, Lexer.Token>, +scope: List<&2, Scope>, +depth: Nat) -> FeedbackControl:
   match tokens:
     case +next <> +rest:
       match next:
         case Lexer.TokenInfo{ _, "=>",  _,  _,  _,  _}:
           next_scope = extend_scope(key, depth, scope)
-          feedback_attach(step_parse_term(file, rest, next_scope, (depth + 1n : Nat), 0n), feedback_make_Kont_235313(file, key, beg, end, depth))
+          feedback_attach(step_parse_lambda_block(file, rest, next_scope, (depth + 1n : Nat)), feedback_make_Kont_235238(file, key, beg, end, depth))
         case Lexer.TokenInfo{ _, "{",  _,  _,  _,  _}:
-          feedback_attach(step_parse_term_args(file, rest, "}", scope, depth, Nil{}), feedback_make_Kont_235549(file, key, beg, end, rest))
+          feedback_attach(step_parse_term_args(file, rest, "}", scope, depth, Nil{}), feedback_make_Kont_235478(file, key, beg, end, rest))
         case _:
           feedback_pack_5(parse_name_term_lookup(lookup(key, scope, depth), file, key, beg, end, tokens))
     case Nil{}:
@@ -1429,7 +1446,7 @@ def step_parse_atom_name_dispatch(text: String, +file: String, +scope: List<&2, 
         case +open <> +more:
           match open:
             case Lexer.TokenInfo{ _, "(",  _,  _,  _,  _}:
-              feedback_attach(step_parse_term(file, more, scope, depth, 0n), feedback_make_Kont_182284(file, beg, end, rest))
+              feedback_attach(step_parse_term(file, more, scope, depth, 0n), feedback_make_Kont_182131(file, beg, end, rest))
             case _:
               feedback_pack_5(((Ast.TermHole{ "parse-error: expected (",  span(file, beg, end)}, rest), False{}))
         case Nil{}:
@@ -1453,8 +1470,8 @@ def parse_atom_symbol_row_0(rest: List<&2, Lexer.Token>, +file: String, beg: Nat
 def parse_atom_symbol_row_10(+file: String, tokens: List<&2, Lexer.Token>, beg: Nat, end: Nat) -> Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool):
   ((Ast.TermHole{ "parse-error: expected a term",  span(file, beg, end)}, tokens), False{})
 
-def feedback_make_Kont_204683(capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: List<&2, Scope>, capture_5: Nat) -> FeedbackFrame:
-  Kont_204683{capture_1, capture_2, capture_3, capture_4, capture_5}
+def feedback_make_Kont_203834(capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: List<&2, Scope>, capture_5: Nat) -> FeedbackFrame:
+  Kont_203834{capture_1, capture_2, capture_3, capture_4, capture_5}
 
 def step_parse_list(+file: String, +tokens: List<&2, Lexer.Token>, +beg: Nat, +end: Nat, +scope: List<&2, Scope>, +depth: Nat) -> FeedbackControl:
   match tokens:
@@ -1463,33 +1480,33 @@ def step_parse_list(+file: String, +tokens: List<&2, Lexer.Token>, +beg: Nat, +e
         case Lexer.TokenInfo{_, "]", _, _, _, _}:
           feedback_pack_5(((Ast.TermCtr{"Nil", Nil{}, span(file, beg, token_end(close))}, after_close), True{}))
         case Lexer.TokenInfo{feedback_field_6_0, feedback_field_6_1, feedback_field_6_2, feedback_field_6_3, feedback_field_6_4, feedback_field_6_5}:
-          feedback_attach(step_parse_term(file, tokens, scope, depth, 0n), feedback_make_Kont_204683(file, beg, token_end((Lexer.TokenInfo{feedback_field_6_0, feedback_field_6_1, feedback_field_6_2, feedback_field_6_3, feedback_field_6_4, feedback_field_6_5} : Lexer.Token)), scope, depth))
+          feedback_attach(step_parse_term(file, tokens, scope, depth, 0n), feedback_make_Kont_203834(file, beg, token_end((Lexer.TokenInfo{feedback_field_6_0, feedback_field_6_1, feedback_field_6_2, feedback_field_6_3, feedback_field_6_4, feedback_field_6_5} : Lexer.Token)), scope, depth))
     case Nil{}:
       feedback_pack_5(((Ast.TermHole{"parse-error: expected ]", span(file, end, end)}, Nil{}), False{}))
 
 def step_parse_atom_symbol_row_1(+file: String, scope: List<&2, Scope>, depth: Nat, rest: List<&2, Lexer.Token>, beg: Nat, end: Nat) -> FeedbackControl:
   step_parse_list(file, rest, beg, end, scope, depth)
 
-def feedback_make_Kont_210179(capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: List<&2, Lexer.Token>, capture_5: Nat, capture_6: List<&2, Scope>, capture_7: Nat) -> FeedbackFrame:
-  Kont_210179{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7}
+def feedback_make_Kont_209330(capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: List<&2, Lexer.Token>, capture_5: Nat, capture_6: List<&2, Scope>, capture_7: Nat) -> FeedbackFrame:
+  Kont_209330{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7}
 
 def step_parse_parenthesized(+file: String, +tokens: List<&2, Lexer.Token>, beg: Nat, end: Nat, col: Nat, +scope: List<&2, Scope>, +depth: Nat) -> FeedbackControl:
-  feedback_attach(step_parse_term_args(file, tokens, ")", scope, depth, Nil{}), feedback_make_Kont_210179(file, beg, end, tokens, col, scope, depth))
+  feedback_attach(step_parse_term_args(file, tokens, ")", scope, depth, Nil{}), feedback_make_Kont_209330(file, beg, end, tokens, col, scope, depth))
 
 def step_parse_atom_symbol_row_2(+file: String, scope: List<&2, Scope>, depth: Nat, rest: List<&2, Lexer.Token>, beg: Nat, end: Nat, col: Nat) -> FeedbackControl:
   step_parse_parenthesized(file, rest, beg, end, col, scope, depth)
 
-def feedback_make_Kont_231832(lexical_capture_1: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_10: List<&2, Scope>, lexical_capture_12: Nat) -> FeedbackFrame:
-  Kont_231832{lexical_capture_1, lexical_capture_5, lexical_capture_7, lexical_capture_10, lexical_capture_12}
+def feedback_make_Kont_230983(lexical_capture_1: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_10: List<&2, Scope>, lexical_capture_12: Nat) -> FeedbackFrame:
+  Kont_230983{lexical_capture_1, lexical_capture_5, lexical_capture_7, lexical_capture_10, lexical_capture_12}
 
 def step_parse_rewrite(+file: String, tokens: List<&2, Lexer.Token>, beg: Nat, end: Nat, +scope: List<&2, Scope>, +depth: Nat) -> FeedbackControl:
-  feedback_attach(step_parse_term(file, tokens, scope, depth, 0n), feedback_make_Kont_231832(file, beg, end, scope, depth))
+  feedback_attach(step_parse_term(file, tokens, scope, depth, 0n), feedback_make_Kont_230983(file, beg, end, scope, depth))
 
 def step_parse_atom_symbol_row_3(+file: String, scope: List<&2, Scope>, depth: Nat, rest: List<&2, Lexer.Token>, beg: Nat, end: Nat) -> FeedbackControl:
   step_parse_rewrite(file, rest, beg, end, scope, depth)
 
-def feedback_make_Kont_242825(lexical_capture_1: String, lexical_capture_23: String, lexical_capture_25: Nat, lexical_capture_10: Nat, lexical_capture_11: Ast.Quantity, lexical_capture_6: List<&2, Scope>, lexical_capture_8: Nat) -> FeedbackFrame:
-  Kont_242825{lexical_capture_1, lexical_capture_23, lexical_capture_25, lexical_capture_10, lexical_capture_11, lexical_capture_6, lexical_capture_8}
+def feedback_make_Kont_242754(lexical_capture_1: String, lexical_capture_23: String, lexical_capture_25: Nat, lexical_capture_10: Nat, lexical_capture_11: Ast.Quantity, lexical_capture_6: List<&2, Scope>, lexical_capture_8: Nat) -> FeedbackFrame:
+  Kont_242754{lexical_capture_1, lexical_capture_23, lexical_capture_25, lexical_capture_10, lexical_capture_11, lexical_capture_6, lexical_capture_8}
 
 def step_parse_all_named(+file: String, +tokens: List<&2, Lexer.Token>, +scope: List<&2, Scope>, +depth: Nat, +beg: Nat, quantity: Ast.Quantity) -> FeedbackControl:
   match tokens:
@@ -1500,7 +1517,7 @@ def step_parse_all_named(+file: String, +tokens: List<&2, Lexer.Token>, +scope: 
             case +colon <> after_colon:
               match colon:
                 case Lexer.TokenInfo{ _, ":",  _,  _,  _,  _}:
-                  feedback_attach(step_parse_term(file, after_colon, scope, depth, 1n), feedback_make_Kont_242825(file, key, key_end, beg, quantity, scope, depth))
+                  feedback_attach(step_parse_term(file, after_colon, scope, depth, 1n), feedback_make_Kont_242754(file, key, key_end, beg, quantity, scope, depth))
                 case Lexer.TokenInfo{+feedback_field_10_0, +feedback_field_10_1, +feedback_field_10_2, +feedback_field_10_3, +feedback_field_10_4, +feedback_field_10_5}:
                   feedback_pack_5(((Ast.TermHole{ "parse-error: expected :",  span(file, token_beg((Lexer.TokenInfo{feedback_field_10_0, feedback_field_10_1, feedback_field_10_2, feedback_field_10_3, feedback_field_10_4, feedback_field_10_5} : Lexer.Token)), token_end((Lexer.TokenInfo{feedback_field_10_0, feedback_field_10_1, feedback_field_10_2, feedback_field_10_3, feedback_field_10_4, feedback_field_10_5} : Lexer.Token)))}, rest), False{}))
             case Nil{}:
@@ -1545,14 +1562,14 @@ def step_parse_amp(+file: String, +tokens: List<&2, Lexer.Token>, +scope: List<&
 def step_parse_atom_symbol_row_5(+file: String, scope: List<&2, Scope>, depth: Nat, rest: List<&2, Lexer.Token>, beg: Nat, end: Nat) -> FeedbackControl:
   step_parse_amp(file, rest, scope, depth, beg, end)
 
-def feedback_make_Kont_244077(lexical_capture_1: String, lexical_capture_22: String, lexical_capture_5: Nat, lexical_capture_24: Nat, lexical_capture_10: Nat) -> FeedbackFrame:
-  Kont_244077{lexical_capture_1, lexical_capture_22, lexical_capture_5, lexical_capture_24, lexical_capture_10}
+def feedback_make_Kont_244006(lexical_capture_1: String, lexical_capture_22: String, lexical_capture_5: Nat, lexical_capture_24: Nat, lexical_capture_10: Nat) -> FeedbackFrame:
+  Kont_244006{lexical_capture_1, lexical_capture_22, lexical_capture_5, lexical_capture_24, lexical_capture_10}
 
-def feedback_make_Kont_245881(lexical_capture_1: String, lexical_capture_5: Nat, lexical_capture_14: List<&2, Scope>, lexical_capture_16: Nat) -> FeedbackFrame:
-  Kont_245881{lexical_capture_1, lexical_capture_5, lexical_capture_14, lexical_capture_16}
+def feedback_make_Kont_245814(lexical_capture_1: String, lexical_capture_5: Nat, lexical_capture_14: List<&2, Scope>, lexical_capture_16: Nat) -> FeedbackFrame:
+  Kont_245814{lexical_capture_1, lexical_capture_5, lexical_capture_14, lexical_capture_16}
 
 def step_parse_plus_sugar(+file: String, key: String, beg: Nat, name_beg: Nat, name_end: Nat, tokens: List<&2, Lexer.Token>, +scope: List<&2, Scope>, +depth: Nat) -> FeedbackControl:
-  feedback_attach(step_parse_name_term(file, key, name_beg, name_end, tokens, scope, depth), feedback_make_Kont_245881(file, beg, scope, depth))
+  feedback_attach(step_parse_name_term(file, key, name_beg, name_end, tokens, scope, depth), feedback_make_Kont_245814(file, beg, scope, depth))
 
 def step_parse_many_lambda(+file: String, +tokens: List<&2, Lexer.Token>, +beg: Nat, +scope: List<&2, Scope>, +depth: Nat) -> FeedbackControl:
   match tokens:
@@ -1564,7 +1581,7 @@ def step_parse_many_lambda(+file: String, +tokens: List<&2, Lexer.Token>, +beg: 
               match arrow:
                 case Lexer.TokenInfo{ _, "=>",  _,  _,  _,  _}:
                   next_scope = extend_scope(key, depth, scope)
-                  feedback_attach(step_parse_term(file, after_arrow, next_scope, (depth + 1n : Nat), 0n), feedback_make_Kont_244077(file, key, beg, end, depth))
+                  feedback_attach(step_parse_lambda_block(file, after_arrow, next_scope, (depth + 1n : Nat)), feedback_make_Kont_244006(file, key, beg, end, depth))
                 case _:
                   step_parse_plus_sugar(file, key, beg, name_beg, end, rest, scope, depth)
             case Nil{}:
@@ -1577,21 +1594,21 @@ def step_parse_many_lambda(+file: String, +tokens: List<&2, Lexer.Token>, +beg: 
 def step_parse_atom_symbol_row_6(+file: String, scope: List<&2, Scope>, depth: Nat, rest: List<&2, Lexer.Token>, beg: Nat) -> FeedbackControl:
   step_parse_many_lambda(file, rest, beg, scope, depth)
 
-def feedback_make_Kont_215605(capture_1: String, capture_2: String, capture_3: Nat, capture_4: List<&2, Scope>, capture_5: Nat) -> FeedbackFrame:
-  Kont_215605{capture_1, capture_2, capture_3, capture_4, capture_5}
+def feedback_make_Kont_214756(capture_1: String, capture_2: String, capture_3: Nat, capture_4: List<&2, Scope>, capture_5: Nat) -> FeedbackFrame:
+  Kont_214756{capture_1, capture_2, capture_3, capture_4, capture_5}
 
-def feedback_make_Kont_220779(lexical_capture_1: String) -> FeedbackFrame:
-  Kont_220779{lexical_capture_1}
+def feedback_make_Kont_219930(lexical_capture_1: String) -> FeedbackFrame:
+  Kont_219930{lexical_capture_1}
 
 def step_parse_match_tail(+file: String, tokens: List<&2, Lexer.Token>, beg: Nat, scope: List<&2, Scope>, depth: Nat) -> FeedbackControl:
-  feedback_attach(step_parse_term(file, tokens, scope, depth, 0n), feedback_make_Kont_220779(file))
+  feedback_attach(step_parse_term(file, tokens, scope, depth, 0n), feedback_make_Kont_219930(file))
 
 def step_parse_match_expr_after_name(+file: String, +original: List<&2, Lexer.Token>, key: String, scanned: List<&2, Lexer.Token>, +beg: Nat, +scope: List<&2, Scope>, +depth: Nat) -> FeedbackControl:
   match scanned:
     case +colon <> after_colon:
       match colon:
         case Lexer.TokenInfo{_, ":", _, _, _, _}:
-          feedback_attach(step_parse_term(file, after_colon, scope, depth, 0n), feedback_make_Kont_215605(file, key, beg, scope, depth))
+          feedback_attach(step_parse_term(file, after_colon, scope, depth, 0n), feedback_make_Kont_214756(file, key, beg, scope, depth))
         case _:
           step_parse_match_tail(file, original, beg, scope, depth)
     case Nil{}:
@@ -1633,17 +1650,17 @@ def step_parse_absurd(+file: String, +tokens: List<&2, Lexer.Token>, +beg: Nat, 
 def step_parse_atom_symbol_row_7(+file: String, scope: List<&2, Scope>, depth: Nat, rest: List<&2, Lexer.Token>, beg: Nat, end: Nat) -> FeedbackControl:
   step_parse_absurd(file, rest, beg, end, scope, depth)
 
-def feedback_make_Kont_188365(capture_1: String, capture_2: Nat) -> FeedbackFrame:
-  Kont_188365{capture_1, capture_2}
+def feedback_make_Kont_188212(capture_1: String, capture_2: Nat) -> FeedbackFrame:
+  Kont_188212{capture_1, capture_2}
 
 def step_parse_template_term(+file: String, tokens: List<&2, Lexer.Token>, beg: Nat, scope: List<&2, Scope>, depth: Nat) -> FeedbackControl:
-  feedback_attach(step_parse_term(file, tokens, scope, depth, 12n), feedback_make_Kont_188365(file, beg))
+  feedback_attach(step_parse_term(file, tokens, scope, depth, 12n), feedback_make_Kont_188212(file, beg))
 
 def step_parse_atom_symbol_row_8(+file: String, scope: List<&2, Scope>, depth: Nat, rest: List<&2, Lexer.Token>, beg: Nat) -> FeedbackControl:
   step_parse_template_term(file, rest, beg, scope, depth)
 
-def feedback_make_Kont_226967(lexical_capture_1: String, lexical_capture_5: Nat, lexical_capture_10: List<&2, Scope>, lexical_capture_12: Nat) -> FeedbackFrame:
-  Kont_226967{lexical_capture_1, lexical_capture_5, lexical_capture_10, lexical_capture_12}
+def feedback_make_Kont_226118(lexical_capture_1: String, lexical_capture_5: Nat, lexical_capture_10: List<&2, Scope>, lexical_capture_12: Nat) -> FeedbackFrame:
+  Kont_226118{lexical_capture_1, lexical_capture_5, lexical_capture_10, lexical_capture_12}
 
 def step_parse_brace(+file: String, +tokens: List<&2, Lexer.Token>, +beg: Nat, +end: Nat, +scope: List<&2, Scope>, +depth: Nat) -> FeedbackControl:
   match tokens:
@@ -1660,7 +1677,7 @@ def step_parse_brace(+file: String, +tokens: List<&2, Lexer.Token>, +beg: Nat, +
             case Nil{}:
               feedback_pack_5(((Ast.TermHole{ "parse-error: expected }",  span(file, end, end)}, after_first), False{}))
         case _:
-          feedback_attach(step_parse_term(file, tokens, scope, depth, 0n), feedback_make_Kont_226967(file, beg, scope, depth))
+          feedback_attach(step_parse_term(file, tokens, scope, depth, 0n), feedback_make_Kont_226118(file, beg, scope, depth))
     case Nil{}:
       feedback_pack_5(((Ast.TermHole{ "parse-error: expected a term or ==}",  span(file, end, end)}, Nil{}), False{}))
 
@@ -2053,12 +2070,22 @@ def parse_number_float_result(result: Nat & Bool, +file: String, +beg: Nat, +end
     case (_, False{}):
       ((Ast.TermHole{"parse-error: unsupported or non-finite numeric literal", span(file, beg, end)}, rest), False{})
 
-def parse_number_missing_nat(has_suffix: Bool, file: String, text: String, beg: Nat, end: Nat, rest: List<&2, Lexer.Token>) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
-  match has_suffix:
+def parse_scalar_number_range(in_range: Bool, file: String, value: Nat, beg: Nat, end: Nat, rest: List<&2, Lexer.Token>) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+  match in_range:
     case True{}:
-      ((Ast.TermHole{ "parse-error: invalid natural literal",  span(file, beg, end)}, rest), False{})
+      ((u32_literal(file, value, beg, end), rest), True{})
     case False{}:
+      ((Ast.TermHole{"parse-error: unsigned integer literal exceeds 4294967295", span(file, beg, end)}, rest), False{})
+
+def parse_scalar_number_read(result: Maybe<&2, Nat>, file: String, text: String, beg: Nat, end: Nat, rest: List<&2, Lexer.Token>) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+  match result:
+    case Some{+value}:
+      parse_scalar_number_range(Nat.is_le(value, 4294967295n), file, value, beg, end, rest)
+    case None{}:
       parse_number_float_result(float32_bits(text), file, beg, end, rest)
+
+def parse_scalar_number(file: String, +text: String, beg: Nat, end: Nat, rest: List<&2, Lexer.Token>) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+  parse_scalar_number_read(Nat.read(text), file, text, beg, end, rest)
 
 def nat_succ_chain(+file: String, value: Nat, +beg: Nat, +end: Nat) -> Ast.SyntaxTerm:
   match value:
@@ -2077,13 +2104,13 @@ def nat_literal_large(is_large: Bool, +file: String, value: Nat, +beg: Nat, +end
 def nat_literal(file: String, +value: Nat, beg: Nat, end: Nat) -> Ast.SyntaxTerm:
   nat_literal_large(Nat.is_lt(256n, value), file, value, beg, end)
 
-def feedback_make_Kont_203528(capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: Nat, capture_5: List<&2, Lexer.Token>) -> FeedbackFrame:
-  Kont_203528{capture_1, capture_2, capture_3, capture_4, capture_5}
+def feedback_make_Kont_202679(capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: Nat, capture_5: List<&2, Lexer.Token>) -> FeedbackFrame:
+  Kont_202679{capture_1, capture_2, capture_3, capture_4, capture_5}
 
 def step_parse_nat_literal_plus(adjacent: Bool, +file: String, +value: Nat, +beg: Nat, +end: Nat, tokens: List<&2, Lexer.Token>, +rest: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat) -> FeedbackControl:
   match adjacent:
     case True{}:
-      feedback_attach(step_parse_term(file, rest, scope, depth, 0n), feedback_make_Kont_203528(file, value, beg, end, rest))
+      feedback_attach(step_parse_term(file, rest, scope, depth, 0n), feedback_make_Kont_202679(file, value, beg, end, rest))
     case False{}:
       feedback_pack_5(((nat_literal(file, value, beg, end), tokens), True{}))
 
@@ -2098,37 +2125,26 @@ def step_parse_nat_literal(+file: String, +value: Nat, +beg: Nat, +end: Nat, +to
     case Nil{}:
       feedback_pack_5(((nat_literal(file, value, beg, end), Nil{}), True{}))
 
-def step_parse_number_nat_value(has_suffix: Bool, +value: Nat, +file: String, +beg: Nat, +end: Nat, +rest: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat) -> FeedbackControl:
-  match has_suffix:
+def step_parse_number_nat_range(in_range: Bool, value: Nat, +file: String, +beg: Nat, +end: Nat, +rest: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat) -> FeedbackControl:
+  match in_range:
     case True{}:
       step_parse_nat_literal(file, value, beg, end, rest, scope, depth)
     case False{}:
-      feedback_pack_5(((u32_literal(file, value, beg, end), rest), True{}))
+      feedback_pack_5(((Ast.TermHole{"parse-error: natural literal exceeds 4294967295", span(file, beg, end)}, rest), False{}))
 
-def step_parse_number_nat_range(in_range: Bool, +has_suffix: Bool, value: Nat, +file: String, +beg: Nat, +end: Nat, +rest: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat) -> FeedbackControl:
-  match in_range:
-    case True{}:
-      step_parse_number_nat_value(has_suffix, value, file, beg, end, rest, scope, depth)
-    case False{}:
-      match has_suffix:
-        case True{}:
-          feedback_pack_5(((Ast.TermHole{ "parse-error: natural literal exceeds 4294967295",  span(file, beg, end)}, rest), False{}))
-        case False{}:
-          feedback_pack_5(((Ast.TermHole{ "parse-error: unsigned integer literal exceeds 4294967295",  span(file, beg, end)}, rest), False{}))
-
-def step_parse_number_nat_result(result: Maybe<&2, Nat>, +has_suffix: Bool, +file: String, text: String, +beg: Nat, +end: Nat, +rest: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat) -> FeedbackControl:
+def step_parse_number_nat_result(result: Maybe<&2, Nat>, +file: String, +beg: Nat, +end: Nat, +rest: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat) -> FeedbackControl:
   match result:
     case Some{+value}:
-      step_parse_number_nat_range(Nat.is_le(value, 4294967295n), has_suffix, value, file, beg, end, rest, scope, depth)
+      step_parse_number_nat_range(Nat.is_le(value, 4294967295n), value, file, beg, end, rest, scope, depth)
     case None{}:
-      feedback_pack_5(parse_number_missing_nat(has_suffix, file, text, beg, end, rest))
+      feedback_pack_5(((Ast.TermHole{"parse-error: invalid natural literal", span(file, beg, end)}, rest), False{}))
 
-def step_parse_number_suffix(has_suffix: Bool, +file: String, +text: String, +beg: Nat, +end: Nat, +rest: List<&2, Lexer.Token>, +scope: List<&2, Scope>, +depth: Nat) -> FeedbackControl:
+def step_parse_number_suffix(has_suffix: Bool, +file: String, +text: String, +beg: Nat, +end: Nat, +rest: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat) -> FeedbackControl:
   match has_suffix:
     case True{}:
-      step_parse_number_nat_result(Nat.read(drop_nat_suffix(text)), True{}, file, text, beg, end, rest, scope, depth)
+      step_parse_number_nat_result(Nat.read(drop_nat_suffix(text)), file, beg, end, rest, scope, depth)
     case False{}:
-      step_parse_number_nat_result(Nat.read(text), False{}, file, text, beg, end, rest, scope, depth)
+      feedback_pack_5(parse_scalar_number(file, text, beg, end, rest))
 
 def step_parse_number(file: String, +text: String, beg: Nat, end: Nat, rest: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat) -> FeedbackControl:
   step_parse_number_suffix(has_nat_suffix(text), file, text, beg, end, rest, scope, depth)
@@ -2169,11 +2185,11 @@ def body_scan_action(token: Lexer.Token) -> BodyScanAction:
     case _:
       BodyScanActionRow6{}
 
-def feedback_make_Kont_299400(lexical_capture_1: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_10: List<&2, Scope>, lexical_capture_12: Nat) -> FeedbackFrame:
-  Kont_299400{lexical_capture_1, lexical_capture_5, lexical_capture_7, lexical_capture_10, lexical_capture_12}
+def feedback_make_Kont_299333(lexical_capture_1: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_10: List<&2, Scope>, lexical_capture_12: Nat) -> FeedbackFrame:
+  Kont_299333{lexical_capture_1, lexical_capture_5, lexical_capture_7, lexical_capture_10, lexical_capture_12}
 
-def feedback_make_Kont_303051(lexical_capture_1: String, lexical_capture_6: List<&2, Scope>, lexical_capture_8: Nat, lexical_capture_10: List<&2, Ast.SyntaxTerm>) -> FeedbackFrame:
-  Kont_303051{lexical_capture_1, lexical_capture_6, lexical_capture_8, lexical_capture_10}
+def feedback_make_Kont_302984(lexical_capture_1: String, lexical_capture_6: List<&2, Scope>, lexical_capture_8: Nat, lexical_capture_10: List<&2, Ast.SyntaxTerm>) -> FeedbackFrame:
+  Kont_302984{lexical_capture_1, lexical_capture_6, lexical_capture_8, lexical_capture_10}
 
 def step_parse_terms_until_colon(+file: String, +tokens: List<&2, Lexer.Token>, +scope: List<&2, Scope>, +depth: Nat, +acc: List<&2, Ast.SyntaxTerm>) -> FeedbackControl:
   match tokens:
@@ -2182,12 +2198,12 @@ def step_parse_terms_until_colon(+file: String, +tokens: List<&2, Lexer.Token>, 
         case Lexer.TokenInfo{ _, ":",  _,  _,  _,  _}:
           feedback_pack_9(((List.reverse(&2, Ast.SyntaxTerm, acc), tokens), True{}))
         case _:
-          feedback_attach(step_parse_term(file, tokens, scope, depth, 0n), feedback_make_Kont_303051(file, scope, depth, acc))
+          feedback_attach(step_parse_term(file, tokens, scope, depth, 0n), feedback_make_Kont_302984(file, scope, depth, acc))
     case Nil{}:
       feedback_pack_9(((List.reverse(&2, Ast.SyntaxTerm, acc), Nil{}), False{}))
 
 def step_parse_match_body(+file: String, tokens: List<&2, Lexer.Token>, beg: Nat, col: Nat, +scope: List<&2, Scope>, +depth: Nat) -> FeedbackControl:
-  feedback_attach(step_parse_terms_until_colon(file, tokens, scope, depth, Nil{}), feedback_make_Kont_299400(file, beg, col, scope, depth))
+  feedback_attach(step_parse_terms_until_colon(file, tokens, scope, depth, Nil{}), feedback_make_Kont_299333(file, beg, col, scope, depth))
 
 def step_parse_body_token_row_0(file: String, scope: List<&2, Scope>, depth: Nat, +rest: List<&2, Lexer.Token>, beg: Nat, col: Nat) -> FeedbackControl:
   step_parse_match_body(file, rest, beg, col, scope, depth)
@@ -2229,28 +2245,28 @@ def destructuring_has_equal(tokens: List<&2, Lexer.Token>, nesting: Nat) -> Bool
     case _ <> rest depth:
       destructuring_has_equal(rest, depth)
 
-def feedback_make_Kont_296746(lexical_capture_3: String, lexical_capture_5: List<&2, Lexer.Token>, lexical_capture_7: Nat, lexical_capture_9: Nat, lexical_capture_12: List<&2, Scope>, lexical_capture_14: Nat) -> FeedbackFrame:
-  Kont_296746{lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_9, lexical_capture_12, lexical_capture_14}
+def feedback_make_Kont_296679(lexical_capture_3: String, lexical_capture_5: List<&2, Lexer.Token>, lexical_capture_7: Nat, lexical_capture_9: Nat, lexical_capture_12: List<&2, Scope>, lexical_capture_14: Nat) -> FeedbackFrame:
+  Kont_296679{lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_9, lexical_capture_12, lexical_capture_14}
 
-def feedback_make_Kont_171514(capture_1: String, capture_2: Nat) -> FeedbackFrame:
-  Kont_171514{capture_1, capture_2}
+def feedback_make_Kont_171361(capture_1: String, capture_2: Nat) -> FeedbackFrame:
+  Kont_171361{capture_1, capture_2}
 
 def feedback_make_pattern_scan(tokens: List<&2, Lexer.Token>, file: String, mode: PatternScanMode, frames: List<&2, PatternFrame>, scope: List<&2, Scope>, depth: Nat, goal: PatternScanGoal) -> FeedbackRequest:
   Request_pattern_scan{tokens, file, mode, frames, scope, depth, goal}
 
 def step_parse_pattern_atom(+file: String, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, +depth: Nat) -> FeedbackControl:
-  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_pattern_scan(tokens, file, PatternExpect{Ast.QOne{}, 0n}, Nil{}, scope, depth, PatternSingleGoal{})}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_171514(file, depth))
+  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_pattern_scan(tokens, file, PatternExpect{Ast.QOne{}, 0n}, Nil{}, scope, depth, PatternSingleGoal{})}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_171361(file, depth))
 
-def feedback_make_Kont_286523(lexical_capture_1: String) -> FeedbackFrame:
-  Kont_286523{lexical_capture_1}
+def feedback_make_Kont_286456(lexical_capture_1: String) -> FeedbackFrame:
+  Kont_286456{lexical_capture_1}
 
 def step_parse_reply(+file: String, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat) -> FeedbackControl:
-  feedback_attach(step_parse_term(file, tokens, scope, depth, 0n), feedback_make_Kont_286523(file))
+  feedback_attach(step_parse_term(file, tokens, scope, depth, 0n), feedback_make_Kont_286456(file))
 
 def step_parse_destructuring_recognized(is_local: Bool, +file: String, +tokens: List<&2, Lexer.Token>, beg: Nat, col: Nat, +scope: List<&2, Scope>, +depth: Nat) -> FeedbackControl:
   match is_local:
     case True{}:
-      feedback_attach(step_parse_pattern_atom(file, tokens, scope, depth), feedback_make_Kont_296746(file, tokens, beg, col, scope, depth))
+      feedback_attach(step_parse_pattern_atom(file, tokens, scope, depth), feedback_make_Kont_296679(file, tokens, beg, col, scope, depth))
     case False{}:
       step_parse_reply(file, tokens, scope, depth)
 
@@ -2263,11 +2279,11 @@ def step_parse_body_token_row_1(file: String, tokens: List<&2, Lexer.Token>, sco
 def step_parse_body_token_row_2(file: String, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, parent_col: Nat, beg: Nat) -> FeedbackControl:
   step_parse_destructuring_local(file, tokens, beg, parent_col, scope, depth)
 
-def feedback_make_Kont_292095(lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_9: Nat, lexical_capture_14: List<&2, Scope>, lexical_capture_16: Nat, lexical_capture_17: Ast.Quantity) -> FeedbackFrame:
-  Kont_292095{lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_9, lexical_capture_14, lexical_capture_16, lexical_capture_17}
+def feedback_make_Kont_292028(lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_9: Nat, lexical_capture_14: List<&2, Scope>, lexical_capture_16: Nat, lexical_capture_17: Ast.Quantity) -> FeedbackFrame:
+  Kont_292028{lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_9, lexical_capture_14, lexical_capture_16, lexical_capture_17}
 
 def step_parse_local_body(+file: String, key: String, beg: Nat, key_end: Nat, col: Nat, tokens: List<&2, Lexer.Token>, +scope: List<&2, Scope>, +depth: Nat, quantity: Ast.Quantity) -> FeedbackControl:
-  feedback_attach(step_parse_term(file, tokens, scope, depth, 0n), feedback_make_Kont_292095(file, key, beg, key_end, col, scope, depth, quantity))
+  feedback_attach(step_parse_term(file, tokens, scope, depth, 0n), feedback_make_Kont_292028(file, key, beg, key_end, col, scope, depth, quantity))
 
 def step_parse_body_next_row_0(file: String, scope: List<&2, Scope>, depth: Nat, parent_col: Nat, key: String, beg: Nat, end: Nat, after_next: List<&2, Lexer.Token>) -> FeedbackControl:
   step_parse_local_body(file, key, beg, end, parent_col, after_next, scope, depth, Ast.QOne{})
@@ -2290,8 +2306,8 @@ def local_array_write(tokens: List<&2, Lexer.Token>) -> Bool:
     case Nil{}:
       False{}
 
-def feedback_make_Kont_289976(lexical_capture_3: List<&2, Ast.SyntaxPattern>, lexical_capture_8: List<&2, Scope>, lexical_capture_10: Nat, lexical_capture_12: String, lexical_capture_14: Nat, lexical_capture_16: Nat, lexical_capture_22: Ast.Quantity) -> FeedbackFrame:
-  Kont_289976{lexical_capture_3, lexical_capture_8, lexical_capture_10, lexical_capture_12, lexical_capture_14, lexical_capture_16, lexical_capture_22}
+def feedback_make_Kont_289909(lexical_capture_3: List<&2, Ast.SyntaxPattern>, lexical_capture_8: List<&2, Scope>, lexical_capture_10: Nat, lexical_capture_12: String, lexical_capture_14: Nat, lexical_capture_16: Nat, lexical_capture_22: Ast.Quantity) -> FeedbackFrame:
+  Kont_289909{lexical_capture_3, lexical_capture_8, lexical_capture_10, lexical_capture_12, lexical_capture_14, lexical_capture_16, lexical_capture_22}
 
 def feedback_make_parse_local_values_next(remaining: List<&2, Ast.SyntaxPattern>, file: String, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, line: Nat, acc: List<&2, Ast.SyntaxTerm>) -> FeedbackRequest:
   Request_parse_local_values_next{remaining, file, tokens, scope, depth, line, acc}
@@ -2309,11 +2325,11 @@ def token_end_of(tokens: List<&2, Lexer.Token>, fallback: Nat) -> Nat:
 def step_parse_parallel_binders_result(ok_patterns: Bool, +patterns: List<&2, Ast.SyntaxPattern>, +after_equals: List<&2, Lexer.Token>, next_scope: List<&2, Scope>, next_depth: Nat, +file: String, +beg: Nat, col: Nat, +scope: List<&2, Scope>, +depth: Nat, quantity: Ast.Quantity) -> FeedbackControl:
   match ok_patterns:
     case True{}:
-      feedback_attach(step_parse_local_values(file, after_equals, scope, depth, patterns, Nil{}), feedback_make_Kont_289976(patterns, next_scope, next_depth, file, beg, col, quantity))
+      feedback_attach(step_parse_local_values(file, after_equals, scope, depth, patterns, Nil{}), feedback_make_Kont_289909(patterns, next_scope, next_depth, file, beg, col, quantity))
     case False{}:
       feedback_pack_5(((Ast.TermHole{ "parse-error: expected parallel binders",  span(file, beg, token_end_of(after_equals, beg))}, after_equals), False{}))
 
-def feedback_consumer_289284(v_312: Pair(Pair(Pair(Pair(List<&2, Ast.SyntaxPattern>, List<&2, Lexer.Token>), List<&2, Scope>), Nat), Bool), v_1: String, v_5: Nat, v_7: Nat, v_10: List<&2, Scope>, v_12: Nat, v_13: Ast.Quantity) -> FeedbackControl:
+def feedback_consumer_289217(v_312: Pair(Pair(Pair(Pair(List<&2, Ast.SyntaxPattern>, List<&2, Lexer.Token>), List<&2, Scope>), Nat), Bool), v_1: String, v_5: Nat, v_7: Nat, v_10: List<&2, Scope>, v_12: Nat, v_13: Ast.Quantity) -> FeedbackControl:
   match v_312:
     case ((((v_313, v_314), v_315), v_316), v_317):
       step_parse_parallel_binders_result(v_317, v_313, v_314, v_315, v_316, v_1, v_5, v_7, v_10, v_12, v_13)
@@ -2335,7 +2351,7 @@ def parse_local_binders(+file: String, tokens: List<&2, Lexer.Token>, scope: Lis
       ((((List.reverse(&2, Ast.SyntaxPattern, acc), Nil{}), scope), depth), False{})
 
 def step_parse_parallel_local(+file: String, tokens: List<&2, Lexer.Token>, beg: Nat, col: Nat, +scope: List<&2, Scope>, +depth: Nat, +quantity: Ast.Quantity) -> FeedbackControl:
-  feedback_consumer_289284(parse_local_binders(file, tokens, scope, depth, quantity, Nil{}), file, beg, col, scope, depth, quantity)
+  feedback_consumer_289217(parse_local_binders(file, tokens, scope, depth, quantity, Nil{}), file, beg, col, scope, depth, quantity)
 
 def step_decl_parallel_or_reply(is_parallel: Bool, +file: String, tokens: List<&2, Lexer.Token>, group: List<&2, Lexer.Token>, beg: Nat, col: Nat, +scope: List<&2, Scope>, +depth: Nat, quantity: Ast.Quantity) -> FeedbackControl:
   match is_parallel:
@@ -2344,11 +2360,11 @@ def step_decl_parallel_or_reply(is_parallel: Bool, +file: String, tokens: List<&
     case False{}:
       step_parse_reply(file, tokens, scope, depth)
 
-def feedback_make_Kont_294298(lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_9: Nat, lexical_capture_14: List<&2, Scope>, lexical_capture_16: Nat) -> FeedbackFrame:
-  Kont_294298{lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_9, lexical_capture_14, lexical_capture_16}
+def feedback_make_Kont_294231(lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_9: Nat, lexical_capture_14: List<&2, Scope>, lexical_capture_16: Nat) -> FeedbackFrame:
+  Kont_294231{lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_9, lexical_capture_14, lexical_capture_16}
 
 def step_parse_array_write_local(+file: String, key: String, beg: Nat, key_end: Nat, col: Nat, tokens: List<&2, Lexer.Token>, +scope: List<&2, Scope>, +depth: Nat) -> FeedbackControl:
-  feedback_attach(step_parse_term(file, tokens, scope, depth, 0n), feedback_make_Kont_294298(file, key, beg, key_end, col, scope, depth))
+  feedback_attach(step_parse_term(file, tokens, scope, depth, 0n), feedback_make_Kont_294231(file, key, beg, key_end, col, scope, depth))
 
 # Recognize the local-assignment marker before constructing speculative patterns.
 # Nested markers and delimiters belonging to an enclosing term are not locals.
@@ -2367,14 +2383,12 @@ def local_group_has_equal(tokens: List<&2, Lexer.Token>) -> Bool:
   match tokens:
     case +token <> rest:
       match token:
-        case Lexer.TokenInfo{Lexer.NewlineToken{}, _, _, _, _, _}:
-          False{}
-        case Lexer.TokenInfo{Lexer.EndToken{}, _, _, _, _, _}:
-          False{}
         case Lexer.TokenInfo{_, "=", _, _, _, _}:
           True{}
-        case Lexer.TokenInfo{_, _, _, _, _, _}:
+        case Lexer.TokenInfo{Lexer.NameToken{}, _, _, _, _, _}:
           local_group_has_equal(rest)
+        case _:
+          False{}
     case Nil{}:
       False{}
 
@@ -2455,8 +2469,8 @@ def step_parse_body_scan(+file: String, tokens: List<&2, Lexer.Token>, scanned: 
     case Nil{}:
       feedback_pack_5(((Ast.TermHole{ "parse-error: expected a body",  span(file, 0n, 0n)}, Nil{}), False{}))
 
-def feedback_make_Kont_303638(lexical_capture_3: String, lexical_capture_5: List<&2, Lexer.Token>, lexical_capture_9: Nat, lexical_capture_12: List<&2, Scope>, lexical_capture_14: Nat, lexical_capture_16: Nat, lexical_capture_18: List<&2, Ast.SyntaxTerm>) -> FeedbackFrame:
-  Kont_303638{lexical_capture_3, lexical_capture_5, lexical_capture_9, lexical_capture_12, lexical_capture_14, lexical_capture_16, lexical_capture_18}
+def feedback_make_Kont_303571(lexical_capture_3: String, lexical_capture_5: List<&2, Lexer.Token>, lexical_capture_9: Nat, lexical_capture_12: List<&2, Scope>, lexical_capture_14: Nat, lexical_capture_16: Nat, lexical_capture_18: List<&2, Ast.SyntaxTerm>) -> FeedbackFrame:
+  Kont_303571{lexical_capture_3, lexical_capture_5, lexical_capture_9, lexical_capture_12, lexical_capture_14, lexical_capture_16, lexical_capture_18}
 
 def parse_case_rows_stop(acc: List<&2, Ast.SyntaxTerm>, tokens: List<&2, Lexer.Token>) -> (List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Bool:
   match acc:
@@ -2465,16 +2479,16 @@ def parse_case_rows_stop(acc: List<&2, Ast.SyntaxTerm>, tokens: List<&2, Lexer.T
     case _:
       ((List.reverse(&2, Ast.SyntaxTerm, acc), tokens), True{})
 
-def feedback_make_Kont_306679(capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: Nat) -> FeedbackFrame:
-  Kont_306679{capture_1, capture_2, capture_3, capture_4}
+def feedback_make_Kont_306612(capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: Nat) -> FeedbackFrame:
+  Kont_306612{capture_1, capture_2, capture_3, capture_4}
 
 def step_parse_case_row(+file: String, tokens: List<&2, Lexer.Token>, beg: Nat, col: Nat, +scope: List<&2, Scope>, +depth: Nat, arity: Nat) -> FeedbackControl:
-  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_pattern_scan(tokens, file, PatternExpect{Ast.QOne{}, 0n}, Nil{}, scope, depth, PatternCaseGoal{Nil{}, scope, depth})}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_306679(file, beg, col, arity))
+  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_pattern_scan(tokens, file, PatternExpect{Ast.QOne{}, 0n}, Nil{}, scope, depth, PatternCaseGoal{Nil{}, scope, depth})}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_306612(file, beg, col, arity))
 
 def step_parse_case_row_indented(is_indented: Bool, +file: String, +tokens: List<&2, Lexer.Token>, rest: List<&2, Lexer.Token>, parent_col: Nat, +scope: List<&2, Scope>, +depth: Nat, +arity: Nat, +acc: List<&2, Ast.SyntaxTerm>, beg: Nat, col: Nat) -> FeedbackControl:
   match is_indented:
     case True{}:
-      feedback_attach(step_parse_case_row(file, rest, beg, col, scope, depth, arity), feedback_make_Kont_303638(file, tokens, parent_col, scope, depth, arity, acc))
+      feedback_attach(step_parse_case_row(file, rest, beg, col, scope, depth, arity), feedback_make_Kont_303571(file, tokens, parent_col, scope, depth, arity, acc))
     case False{}:
       feedback_pack_9(parse_case_rows_stop(acc, tokens))
 
@@ -2486,8 +2500,8 @@ def feedback_pack_1(result: ((((List<&2, Ast.TelescopeItem> & List<&2, Lexer.Tok
     case ((((result_0_0_0_0, result_0_0_0_1), result_0_0_1), result_0_1), result_1):
       FeedbackControl{FeedbackDone{Value_1{result_0_0_0_0, result_0_0_0_1, result_0_0_1, result_0_1, result_1}}, Nil{}, NoProgress{}, NoProgress{}}
 
-def feedback_make_Kont_317051(capture_1: String, capture_2: String, capture_3: Ast.Quantity, capture_4: Nat, capture_5: List<&2, Ast.TelescopeItem>, capture_6: List<&2, Scope>, capture_7: Nat, capture_8: List<&2, Lexer.Token>) -> FeedbackFrame:
-  Kont_317051{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8}
+def feedback_make_Kont_316984(capture_1: String, capture_2: String, capture_3: Ast.Quantity, capture_4: Nat, capture_5: List<&2, Ast.TelescopeItem>, capture_6: List<&2, Scope>, capture_7: Nat, capture_8: List<&2, Lexer.Token>) -> FeedbackFrame:
+  Kont_316984{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8}
 
 def step_parse_def_binders(file: String, +tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, acc: List<&2, Ast.TelescopeItem>) -> FeedbackControl:
   FeedbackControl{FeedbackCall{feedback_make_parse_def_binders_scan(file, tokens, skip_lines(tokens), scope, depth, acc)}, Nil{}, NoProgress{}, NoProgress{}}
@@ -2503,7 +2517,7 @@ def step_parse_def_binder_scan(+file: String, +key: String, quantity: Ast.Quanti
     case +colon <> +after_colon:
       match colon:
         case Lexer.TokenInfo{ _, ":",  _,  _,  _,  _}:
-          feedback_attach(step_parse_term(file, after_colon, scope, depth, 0n), feedback_make_Kont_317051(file, key, quantity, beg, acc, scope, depth, after_colon))
+          feedback_attach(step_parse_term(file, after_colon, scope, depth, 0n), feedback_make_Kont_316984(file, key, quantity, beg, acc, scope, depth, after_colon))
         case _:
           step_parse_untyped_def_binder(file, key, beg, tokens, scope, depth, acc)
     case _:
@@ -2523,15 +2537,15 @@ def step_parse_def_binder_prefix(file: String, +tokens: List<&2, Lexer.Token>, +
     case Nil{}:
       feedback_pack_1(((((List.reverse(&2, Ast.TelescopeItem, acc), []), scope), depth), False{}))
 
-def feedback_make_Kont_313598(capture_1: String, capture_2: List<&2, Ast.TelescopeItem>, capture_3: List<&2, Scope>, capture_4: Nat, capture_5: String, capture_6: Nat, capture_7: List<&2, Lexer.Token>) -> FeedbackFrame:
-  Kont_313598{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7}
+def feedback_make_Kont_313531(capture_1: String, capture_2: List<&2, Ast.TelescopeItem>, capture_3: List<&2, Scope>, capture_4: Nat, capture_5: String, capture_6: Nat, capture_7: List<&2, Lexer.Token>) -> FeedbackFrame:
+  Kont_313531{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7}
 
 def step_parse_template_def_binder_after_name(+file: String, key: String, beg: Nat, +original: List<&2, Lexer.Token>, scanned: List<&2, Lexer.Token>, +scope: List<&2, Scope>, +depth: Nat, +acc: List<&2, Ast.TelescopeItem>) -> FeedbackControl:
   match scanned:
     case +colon <> +after_colon:
       match colon:
         case Lexer.TokenInfo{ _, ":",  _,  _,  _,  _}:
-          feedback_attach(step_parse_term(file, after_colon, scope, depth, 0n), feedback_make_Kont_313598(file, acc, scope, depth, key, beg, after_colon))
+          feedback_attach(step_parse_term(file, after_colon, scope, depth, 0n), feedback_make_Kont_313531(file, acc, scope, depth, key, beg, after_colon))
         case _:
           feedback_pack_1(((((List.reverse(&2, Ast.TelescopeItem, acc), original), scope), depth), False{}))
     case Nil{}:
@@ -2575,14 +2589,14 @@ def step_parse_def_binders_scan(+file: String, tokens: List<&2, Lexer.Token>, sc
     case Nil{}:
       feedback_pack_1(((((List.reverse(&2, Ast.TelescopeItem, acc), []), scope), depth), False{}))
 
-def feedback_make_Kont_194209(capture_1: String, capture_2: String, capture_3: List<&2, Ast.SyntaxTerm>, capture_4: String, capture_5: Nat, capture_6: Nat, capture_7: Nat, capture_8: List<&2, Scope>, capture_9: Nat, capture_10: Nat) -> FeedbackFrame:
-  Kont_194209{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, capture_9, capture_10}
+def feedback_make_Kont_194056(capture_1: String, capture_2: String, capture_3: List<&2, Ast.SyntaxTerm>, capture_4: String, capture_5: Nat, capture_6: Nat, capture_7: Nat, capture_8: List<&2, Scope>, capture_9: Nat, capture_10: Nat) -> FeedbackFrame:
+  Kont_194056{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, capture_9, capture_10}
 
-def feedback_make_Kont_198505(capture_1: String, capture_2: String, capture_3: List<&2, Ast.SyntaxTerm>, capture_4: Nat, capture_5: Nat, capture_6: List<&2, Scope>, capture_7: Nat, capture_8: Nat) -> FeedbackFrame:
-  Kont_198505{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8}
+def feedback_make_Kont_198352(capture_1: String, capture_2: String, capture_3: List<&2, Ast.SyntaxTerm>, capture_4: Nat, capture_5: Nat, capture_6: List<&2, Scope>, capture_7: Nat, capture_8: Nat) -> FeedbackFrame:
+  Kont_198352{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8}
 
 def step_parse_do_untyped(+file: String, monad: String, args: List<&2, Ast.SyntaxTerm>, tokens: List<&2, Lexer.Token>, beg: Nat, end: Nat, +scope: List<&2, Scope>, +depth: Nat, col: Nat) -> FeedbackControl:
-  feedback_attach(step_parse_term(file, tokens, scope, depth, 0n), feedback_make_Kont_198505(file, monad, args, beg, end, scope, depth, col))
+  feedback_attach(step_parse_term(file, tokens, scope, depth, 0n), feedback_make_Kont_198352(file, monad, args, beg, end, scope, depth, col))
 
 def step_parse_do_typed_bind(+file: String, +monad: String, +args: List<&2, Ast.SyntaxTerm>, +tokens: List<&2, Lexer.Token>, +beg: Nat, +end: Nat, +scope: List<&2, Scope>, +depth: Nat, +col: Nat) -> FeedbackControl:
   match tokens:
@@ -2593,7 +2607,7 @@ def step_parse_do_typed_bind(+file: String, +monad: String, +args: List<&2, Ast.
             case +colon <> after_colon:
               match colon:
                 case Lexer.TokenInfo{_, ":", _, _, _, _}:
-                  feedback_attach(step_parse_term(file, after_colon, scope, depth, 1n), feedback_make_Kont_194209(file, monad, args, key, key_beg, beg, end, scope, depth, col))
+                  feedback_attach(step_parse_term(file, after_colon, scope, depth, 1n), feedback_make_Kont_194056(file, monad, args, key, key_beg, beg, end, scope, depth, col))
                 case _:
                   step_parse_do_untyped(file, monad, args, tokens, beg, end, scope, depth, col)
             case _:
@@ -2611,7 +2625,7 @@ def feedback_pack_8(result: ((List<&2, Ast.ModuleImport> & List<&2, Lexer.Token>
 def feedback_make_parse_imports_result(ok: Bool, item: Ast.ModuleImport, after: List<&2, Lexer.Token>, file: String, acc: List<&2, Ast.ModuleImport>) -> FeedbackRequest:
   Request_parse_imports_result{ok, item, after, file, acc}
 
-def feedback_consumer_329211(v_322: Pair(Pair(Ast.ModuleImport, List<&2, Lexer.Token>), Bool), v_1: String, v_7: List<&2, Ast.ModuleImport>) -> FeedbackControl:
+def feedback_consumer_329144(v_322: Pair(Pair(Ast.ModuleImport, List<&2, Lexer.Token>), Bool), v_1: String, v_7: List<&2, Ast.ModuleImport>) -> FeedbackControl:
   match v_322:
     case ((v_323, v_324), v_325):
       FeedbackControl{FeedbackCall{feedback_make_parse_imports_result(v_325, v_323, v_324, v_1, v_7)}, Nil{}, NoProgress{}, NoProgress{}}
@@ -2719,7 +2733,7 @@ def step_parse_imports_scan(+file: String, tokens: List<&2, Lexer.Token>, scanne
     case +token <> rest:
       match token:
         case Lexer.TokenInfo{ Lexer.NameToken{},  "import",  _,  _,  _,  _}:
-          feedback_consumer_329211(parse_module_import(file, token, rest), file, acc)
+          feedback_consumer_329144(parse_module_import(file, token, rest), file, acc)
         case _:
           feedback_pack_8(((List.reverse(&2, Ast.ModuleImport, acc), tokens), True{}))
     case Nil{}:
@@ -2732,16 +2746,16 @@ def step_parse_imports_result(ok: Bool, +item: Ast.ModuleImport, +after: List<&2
     case False{}:
       feedback_pack_8(((List.reverse(&2, Ast.ModuleImport, item <> acc), after), False{}))
 
-def feedback_make_Kont_345931(lexical_capture_1: String, lexical_capture_7: Nat, lexical_capture_9: Bool, lexical_capture_10: Ast.Quantity, lexical_capture_12: String, lexical_capture_14: Nat, lexical_capture_17: Ast.SyntaxTerm, lexical_capture_20: List<&2, Scope>, lexical_capture_22: Nat, lexical_capture_24: List<&2, Ast.Clause>) -> FeedbackFrame:
-  Kont_345931{lexical_capture_1, lexical_capture_7, lexical_capture_9, lexical_capture_10, lexical_capture_12, lexical_capture_14, lexical_capture_17, lexical_capture_20, lexical_capture_22, lexical_capture_24}
+def feedback_make_Kont_345864(lexical_capture_1: String, lexical_capture_7: Nat, lexical_capture_9: Bool, lexical_capture_10: Ast.Quantity, lexical_capture_12: String, lexical_capture_14: Nat, lexical_capture_17: Ast.SyntaxTerm, lexical_capture_20: List<&2, Scope>, lexical_capture_22: Nat, lexical_capture_24: List<&2, Ast.Clause>) -> FeedbackFrame:
+  Kont_345864{lexical_capture_1, lexical_capture_7, lexical_capture_9, lexical_capture_10, lexical_capture_12, lexical_capture_14, lexical_capture_17, lexical_capture_20, lexical_capture_22, lexical_capture_24}
 
 def feedback_pack_0(result: ((((List<&2, Ast.Clause> & List<&2, Lexer.Token>) & List<&2, Scope>) & Nat) & Bool)) -> FeedbackControl:
   match result:
     case ((((result_0_0_0_0, result_0_0_0_1), result_0_0_1), result_0_1), result_1):
       FeedbackControl{FeedbackDone{Value_0{result_0_0_0_0, result_0_0_0_1, result_0_0_1, result_0_1, result_1}}, Nil{}, NoProgress{}, NoProgress{}}
 
-def feedback_make_Kont_343965(lexical_capture_1: String, lexical_capture_31: String, lexical_capture_32: Nat, lexical_capture_33: Nat, lexical_capture_5: Nat, lexical_capture_7: Bool, lexical_capture_8: Ast.Quantity, lexical_capture_11: List<&2, Scope>, lexical_capture_13: Nat, lexical_capture_15: List<&2, Ast.Clause>) -> FeedbackFrame:
-  Kont_343965{lexical_capture_1, lexical_capture_31, lexical_capture_32, lexical_capture_33, lexical_capture_5, lexical_capture_7, lexical_capture_8, lexical_capture_11, lexical_capture_13, lexical_capture_15}
+def feedback_make_Kont_343898(lexical_capture_1: String, lexical_capture_31: String, lexical_capture_32: Nat, lexical_capture_33: Nat, lexical_capture_5: Nat, lexical_capture_7: Bool, lexical_capture_8: Ast.Quantity, lexical_capture_11: List<&2, Scope>, lexical_capture_13: Nat, lexical_capture_15: List<&2, Ast.Clause>) -> FeedbackFrame:
+  Kont_343898{lexical_capture_1, lexical_capture_31, lexical_capture_32, lexical_capture_33, lexical_capture_5, lexical_capture_7, lexical_capture_8, lexical_capture_11, lexical_capture_13, lexical_capture_15}
 
 def step_parse_law_clause_name(+file: String, +tokens: List<&2, Lexer.Token>, beg: Nat, universal: Bool, quantity: Ast.Quantity, +scope: List<&2, Scope>, +depth: Nat, +acc: List<&2, Ast.Clause>) -> FeedbackControl:
   match tokens:
@@ -2752,7 +2766,7 @@ def step_parse_law_clause_name(+file: String, +tokens: List<&2, Lexer.Token>, be
             case +colon <> after_colon:
               match colon:
                 case Lexer.TokenInfo{ _, ":",  _,  _,  _,  _}:
-                  feedback_attach(step_parse_term(file, after_colon, scope, depth, 0n), feedback_make_Kont_343965(file, key, key_beg, key_end, beg, universal, quantity, scope, depth, acc))
+                  feedback_attach(step_parse_term(file, after_colon, scope, depth, 0n), feedback_make_Kont_343898(file, key, key_beg, key_end, beg, universal, quantity, scope, depth, acc))
                 case _:
                   feedback_pack_0(((((List.reverse(&2, Ast.Clause, acc), after_name), scope), depth), False{}))
             case Nil{}:
@@ -2871,14 +2885,14 @@ def step_parse_law_clause_condition_scan(+file: String, tokens: List<&2, Lexer.T
     case +where_token <> after_where:
       match where_token:
         case Lexer.TokenInfo{ _, "where",  _,  _,  _,  _}:
-          feedback_attach(step_parse_term(file, after_where, next_scope, next_depth, 0n), feedback_make_Kont_345931(file, beg, universal, quantity, key, key_beg, ty, next_scope, next_depth, acc))
+          feedback_attach(step_parse_term(file, after_where, next_scope, next_depth, 0n), feedback_make_Kont_345864(file, beg, universal, quantity, key, key_beg, ty, next_scope, next_depth, acc))
         case _:
           step_finish_law_clause(file, tokens, beg, universal, quantity, key, key_beg, key_end, ty, next_scope, next_depth, acc)
     case Nil{}:
       step_finish_law_clause(file, Nil{}, beg, universal, quantity, key, key_beg, key_end, ty, next_scope, next_depth, acc)
 
-def feedback_make_Kont_288084(capture_1: List<&2, Lexer.Token>, capture_2: String, capture_3: List<&2, Scope>, capture_4: Nat, capture_5: List<&2, Ast.SyntaxPattern>, capture_6: Nat, capture_7: List<&2, Ast.SyntaxTerm>) -> FeedbackFrame:
-  Kont_288084{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7}
+def feedback_make_Kont_288017(capture_1: List<&2, Lexer.Token>, capture_2: String, capture_3: List<&2, Scope>, capture_4: Nat, capture_5: List<&2, Ast.SyntaxPattern>, capture_6: Nat, capture_7: List<&2, Ast.SyntaxTerm>) -> FeedbackFrame:
+  Kont_288017{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7}
 
 def feedback_pack_2(result: (((List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Nat) & Bool)) -> FeedbackControl:
   match result:
@@ -2906,28 +2920,28 @@ def step_parse_local_values_next(remaining: List<&2, Ast.SyntaxPattern>, +file: 
     case Nil{}:
       feedback_pack_2((((List.reverse(&2, Ast.SyntaxTerm, acc), tokens), line), True{}))
     case _ <> more:
-      feedback_attach(step_parse_term(file, tokens, scope, depth, 0n), feedback_make_Kont_288084(tokens, file, scope, depth, more, first_line(skip_lines(tokens)), acc))
+      feedback_attach(step_parse_term(file, tokens, scope, depth, 0n), feedback_make_Kont_288017(tokens, file, scope, depth, more, first_line(skip_lines(tokens)), acc))
 
-def feedback_make_Kont_217735(lexical_capture_49: String, lexical_capture_50: String, lexical_capture_51: Ast.SyntaxTerm, lexical_capture_52: List<&2, Lexer.Token>, lexical_capture_53: String, lexical_capture_55: Nat, lexical_capture_56: List<&2, Scope>, lexical_capture_57: Nat) -> FeedbackFrame:
-  Kont_217735{lexical_capture_49, lexical_capture_50, lexical_capture_51, lexical_capture_52, lexical_capture_53, lexical_capture_55, lexical_capture_56, lexical_capture_57}
+def feedback_make_Kont_216886(lexical_capture_49: String, lexical_capture_50: String, lexical_capture_51: Ast.SyntaxTerm, lexical_capture_52: List<&2, Lexer.Token>, lexical_capture_53: String, lexical_capture_55: Nat, lexical_capture_56: List<&2, Scope>, lexical_capture_57: Nat) -> FeedbackFrame:
+  Kont_216886{lexical_capture_49, lexical_capture_50, lexical_capture_51, lexical_capture_52, lexical_capture_53, lexical_capture_55, lexical_capture_56, lexical_capture_57}
 
-def feedback_make_Kont_218566(lexical_capture_98: String, lexical_capture_99: String, lexical_capture_100: Ast.SyntaxTerm, lexical_capture_107: Nat) -> FeedbackFrame:
-  Kont_218566{lexical_capture_98, lexical_capture_99, lexical_capture_100, lexical_capture_107}
+def feedback_make_Kont_217717(lexical_capture_98: String, lexical_capture_99: String, lexical_capture_100: Ast.SyntaxTerm, lexical_capture_107: Nat) -> FeedbackFrame:
+  Kont_217717{lexical_capture_98, lexical_capture_99, lexical_capture_100, lexical_capture_107}
 
-def feedback_make_Kont_218906(lexical_capture_98: String, lexical_capture_99: String, lexical_capture_100: Ast.SyntaxTerm, lexical_capture_107: Nat) -> FeedbackFrame:
-  Kont_218906{lexical_capture_98, lexical_capture_99, lexical_capture_100, lexical_capture_107}
+def feedback_make_Kont_218057(lexical_capture_98: String, lexical_capture_99: String, lexical_capture_100: Ast.SyntaxTerm, lexical_capture_107: Nat) -> FeedbackFrame:
+  Kont_218057{lexical_capture_98, lexical_capture_99, lexical_capture_100, lexical_capture_107}
 
-def feedback_make_Kont_219232(lexical_capture_98: String, lexical_capture_99: String, lexical_capture_100: Ast.SyntaxTerm, lexical_capture_107: Nat) -> FeedbackFrame:
-  Kont_219232{lexical_capture_98, lexical_capture_99, lexical_capture_100, lexical_capture_107}
+def feedback_make_Kont_218383(lexical_capture_98: String, lexical_capture_99: String, lexical_capture_100: Ast.SyntaxTerm, lexical_capture_107: Nat) -> FeedbackFrame:
+  Kont_218383{lexical_capture_98, lexical_capture_99, lexical_capture_100, lexical_capture_107}
 
 def feedback_make_parse_match_chain_state(state: MatchChainState) -> FeedbackRequest:
   Request_parse_match_chain_state{state}
 
-def feedback_make_Kont_220426(lexical_capture_1: String, lexical_capture_3: String, lexical_capture_4: Ast.SyntaxTerm, lexical_capture_8: Nat) -> FeedbackFrame:
-  Kont_220426{lexical_capture_1, lexical_capture_3, lexical_capture_4, lexical_capture_8}
+def feedback_make_Kont_219577(lexical_capture_1: String, lexical_capture_3: String, lexical_capture_4: Ast.SyntaxTerm, lexical_capture_8: Nat) -> FeedbackFrame:
+  Kont_219577{lexical_capture_1, lexical_capture_3, lexical_capture_4, lexical_capture_8}
 
 def step_parse_match_tail_with_head(+file: String, key: String, head: Ast.SyntaxTerm, tokens: List<&2, Lexer.Token>, +beg: Nat, scope: List<&2, Scope>, depth: Nat) -> FeedbackControl:
-  feedback_attach(step_parse_match_tail(file, tokens, beg, scope, depth), feedback_make_Kont_220426(file, key, head, beg))
+  feedback_attach(step_parse_match_tail(file, tokens, beg, scope, depth), feedback_make_Kont_219577(file, key, head, beg))
 
 def step_parse_match_chain_state(state: MatchChainState) -> FeedbackControl:
   match state:
@@ -2946,7 +2960,7 @@ def step_parse_match_chain_state(state: MatchChainState) -> FeedbackControl:
         case +colon <> after_colon:
           match colon:
             case Lexer.TokenInfo{ _, ":",  _,  _,  _,  _}:
-              feedback_attach(step_parse_term(file, after_colon, scope, depth, 0n), feedback_make_Kont_217735(file, key, head, original, next_key, beg, scope, depth))
+              feedback_attach(step_parse_term(file, after_colon, scope, depth, 0n), feedback_make_Kont_216886(file, key, head, original, next_key, beg, scope, depth))
             case _:
               step_parse_match_tail_with_head(file, key, head, original, beg, scope, depth)
         case Nil{}:
@@ -2958,11 +2972,11 @@ def step_parse_match_chain_state(state: MatchChainState) -> FeedbackControl:
             case +semicolon <> +after_semicolon:
               match semicolon:
                 case Lexer.TokenInfo{ _, ";",  _,  _,  _,  _}:
-                  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_parse_match_chain_state(MatchChainStart{file, next_key, next_head, after_semicolon, skip_lines(after_semicolon), beg, scope, depth})}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_218566(file, key, head, beg))
+                  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_parse_match_chain_state(MatchChainStart{file, next_key, next_head, after_semicolon, skip_lines(after_semicolon), beg, scope, depth})}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_217717(file, key, head, beg))
                 case _:
-                  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_parse_match_chain_state(MatchChainStart{file, next_key, next_head, after_head, skip_lines(after_head), beg, scope, depth})}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_218906(file, key, head, beg))
+                  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_parse_match_chain_state(MatchChainStart{file, next_key, next_head, after_head, skip_lines(after_head), beg, scope, depth})}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_218057(file, key, head, beg))
             case Nil{}:
-              feedback_attach(FeedbackControl{FeedbackCall{feedback_make_parse_match_chain_state(MatchChainStart{file, next_key, next_head, after_head, skip_lines(after_head), beg, scope, depth})}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_219232(file, key, head, beg))
+              feedback_attach(FeedbackControl{FeedbackCall{feedback_make_parse_match_chain_state(MatchChainStart{file, next_key, next_head, after_head, skip_lines(after_head), beg, scope, depth})}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_218383(file, key, head, beg))
         case False{}:
           feedback_pack_5(((next_head, after_head), False{}))
     case MatchChainAfterMatch{file, key, head, +matched, +after_matched, ok_matched, beg}:
@@ -2972,11 +2986,11 @@ def step_parse_match_chain_state(state: MatchChainState) -> FeedbackControl:
         case False{}:
           feedback_pack_5(((matched, after_matched), False{}))
 
-def feedback_make_Kont_140214(capture_1: String, capture_2: Nat) -> FeedbackFrame:
-  Kont_140214{capture_1, capture_2}
+def feedback_make_Kont_140566(capture_1: String, capture_2: Nat) -> FeedbackFrame:
+  Kont_140566{capture_1, capture_2}
 
 def step_parse_pattern_tuple(+file: String, beg: Nat, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat) -> FeedbackControl:
-  feedback_attach(step_parse_pattern_atom(file, tokens, scope, depth), feedback_make_Kont_140214(file, beg))
+  feedback_attach(step_parse_pattern_atom(file, tokens, scope, depth), feedback_make_Kont_140566(file, beg))
 
 def step_parse_term_args_after_separator(is_close: Bool, file: String, +term: Ast.SyntaxTerm, after: List<&2, Lexer.Token>, tail: List<&2, Lexer.Token>, close: String, scope: List<&2, Scope>, depth: Nat, +acc: List<&2, Ast.SyntaxTerm>) -> FeedbackControl:
   match is_close:
@@ -3008,11 +3022,11 @@ def step_parse_term_tail(+file: String, +left: Ast.SyntaxTerm, tokens: List<&2, 
 # Syntactic consumption and AST spans differ for a grouped single term.
 # Operator adjacency follows the consumed closing token, not the inner span.
 
-def feedback_make_Kont_254183(lexical_capture_1: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_7: List<&2, Scope>, lexical_capture_9: Nat, lexical_capture_11: Nat, lexical_capture_39: Nat) -> FeedbackFrame:
-  Kont_254183{lexical_capture_1, lexical_capture_2, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_39}
+def feedback_make_Kont_254116(lexical_capture_1: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_7: List<&2, Scope>, lexical_capture_9: Nat, lexical_capture_11: Nat, lexical_capture_39: Nat) -> FeedbackFrame:
+  Kont_254116{lexical_capture_1, lexical_capture_2, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_39}
 
-def feedback_make_Kont_257647(lexical_capture_1: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_18: Lexer.Token, lexical_capture_7: List<&2, Scope>, lexical_capture_9: Nat, lexical_capture_11: Nat, lexical_capture_19: List<&2, Lexer.Token>) -> FeedbackFrame:
-  Kont_257647{lexical_capture_1, lexical_capture_2, lexical_capture_18, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_19}
+def feedback_make_Kont_257580(lexical_capture_1: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_18: Lexer.Token, lexical_capture_7: List<&2, Scope>, lexical_capture_9: Nat, lexical_capture_11: Nat, lexical_capture_19: List<&2, Lexer.Token>) -> FeedbackFrame:
+  Kont_257580{lexical_capture_1, lexical_capture_2, lexical_capture_18, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_19}
 
 def operator_glued_name(end: Nat, tokens: List<&2, Lexer.Token>) -> Bool:
   match tokens:
@@ -3025,8 +3039,8 @@ def operator_glued_name(end: Nat, tokens: List<&2, Lexer.Token>) -> Bool:
     case Nil{}:
       False{}
 
-def feedback_make_Kont_251451(lexical_capture_3: String, lexical_capture_30: Ast.SyntaxTerm, lexical_capture_5: Lexer.Token, lexical_capture_15: List<&2, Scope>, lexical_capture_17: Nat, lexical_capture_19: Nat, lexical_capture_7: List<&2, Lexer.Token>) -> FeedbackFrame:
-  Kont_251451{lexical_capture_3, lexical_capture_30, lexical_capture_5, lexical_capture_15, lexical_capture_17, lexical_capture_19, lexical_capture_7}
+def feedback_make_Kont_251384(lexical_capture_3: String, lexical_capture_30: Ast.SyntaxTerm, lexical_capture_5: Lexer.Token, lexical_capture_15: List<&2, Scope>, lexical_capture_17: Nat, lexical_capture_19: Nat, lexical_capture_7: List<&2, Lexer.Token>) -> FeedbackFrame:
+  Kont_251384{lexical_capture_3, lexical_capture_30, lexical_capture_5, lexical_capture_15, lexical_capture_17, lexical_capture_19, lexical_capture_7}
 
 def token_beg_first(term: Ast.SyntaxTerm) -> Nat:
   match term:
@@ -3093,7 +3107,7 @@ def step_parse_bang_call(is_adjacent: Bool, +file: String, +left: Ast.SyntaxTerm
       match left:
         case Ast.TermRef{ +_,  +_}:
           bang = { Ast.TermBang{ left,  span(file, token_beg_first(left), token_end(next))} : Ast.SyntaxTerm }
-          feedback_attach(step_parse_term_args(file, after_open, ")", scope, depth, Nil{}), feedback_make_Kont_251451(file, bang, open, scope, depth, level, after_open))
+          feedback_attach(step_parse_term_args(file, after_open, ")", scope, depth, Nil{}), feedback_make_Kont_251384(file, bang, open, scope, depth, level, after_open))
         case Ast.TermVar{feedback_field_7_0, feedback_field_7_1, feedback_field_7_2}:
           feedback_pack_5(((Ast.TermHole{ "parse-error: expected a named reference before !",  span(file, token_beg_first((Ast.TermVar{feedback_field_7_0, feedback_field_7_1, feedback_field_7_2} : Ast.SyntaxTerm)), token_end(next))}, rest), False{}))
         case Ast.TermRef{feedback_field_7_0, feedback_field_7_1}:
@@ -3155,15 +3169,15 @@ def step_parse_bang_call(is_adjacent: Bool, +file: String, +left: Ast.SyntaxTerm
     case False{}:
       feedback_pack_5(((left, original), True{}))
 
-def feedback_make_Kont_278209(lexical_capture_3: String, lexical_capture_5: String, lexical_capture_8: Ast.SyntaxTerm, lexical_capture_13: List<&2, Scope>, lexical_capture_15: Nat, lexical_capture_17: Nat, lexical_capture_19: Nat) -> FeedbackFrame:
-  Kont_278209{lexical_capture_3, lexical_capture_5, lexical_capture_8, lexical_capture_13, lexical_capture_15, lexical_capture_17, lexical_capture_19}
+def feedback_make_Kont_278142(lexical_capture_3: String, lexical_capture_5: String, lexical_capture_8: Ast.SyntaxTerm, lexical_capture_13: List<&2, Scope>, lexical_capture_15: Nat, lexical_capture_17: Nat, lexical_capture_19: Nat) -> FeedbackFrame:
+  Kont_278142{lexical_capture_3, lexical_capture_5, lexical_capture_8, lexical_capture_13, lexical_capture_15, lexical_capture_17, lexical_capture_19}
 
 def step_parse_operator_precedence(is_nested: Bool, +file: String, name: String, priority: Nat, +left: Ast.SyntaxTerm, tokens: List<&2, Lexer.Token>, +scope: List<&2, Scope>, +depth: Nat, level: Nat, end: Nat, all_tokens: List<&2, Lexer.Token>) -> FeedbackControl:
   match is_nested:
     case True{}:
       feedback_pack_5(((left, all_tokens), True{}))
     case False{}:
-      feedback_attach(step_parse_term(file, tokens, scope, depth, (priority + 1n : Nat)), feedback_make_Kont_278209(file, name, left, scope, depth, level, end))
+      feedback_attach(step_parse_term(file, tokens, scope, depth, (priority + 1n : Nat)), feedback_make_Kont_278142(file, name, left, scope, depth, level, end))
 
 def step_parse_operator(file: String, name: String, +priority: Nat, left: Ast.SyntaxTerm, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, +level: Nat, end: Nat, all_tokens: List<&2, Lexer.Token>) -> FeedbackControl:
   step_parse_operator_precedence(Nat.is_lt(priority, level), file, name, priority, left, tokens, scope, depth, level, end, all_tokens)
@@ -3182,17 +3196,17 @@ def step_parse_glued_operator(is_glued: Bool, file: String, key: String, priorit
     case False{}:
       step_parse_operator(file, key, priority, left, remaining, scope, depth, level, end, all_tokens)
 
-def feedback_make_Kont_275704(lexical_capture_1: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_7: List<&2, Scope>, lexical_capture_9: Nat, lexical_capture_11: Nat, lexical_capture_13: Nat, lexical_capture_15: Nat) -> FeedbackFrame:
-  Kont_275704{lexical_capture_1, lexical_capture_2, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15}
+def feedback_make_Kont_275637(lexical_capture_1: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_7: List<&2, Scope>, lexical_capture_9: Nat, lexical_capture_11: Nat, lexical_capture_13: Nat, lexical_capture_15: Nat) -> FeedbackFrame:
+  Kont_275637{lexical_capture_1, lexical_capture_2, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15}
 
 def step_parse_index_tail(+file: String, left: Ast.SyntaxTerm, tokens: List<&2, Lexer.Token>, +scope: List<&2, Scope>, +depth: Nat, level: Nat, beg: Nat, open_end: Nat) -> FeedbackControl:
-  feedback_attach(step_parse_term(file, tokens, scope, depth, 0n), feedback_make_Kont_275704(file, left, scope, depth, level, beg, open_end))
+  feedback_attach(step_parse_term(file, tokens, scope, depth, 0n), feedback_make_Kont_275637(file, left, scope, depth, level, beg, open_end))
 
-def feedback_make_Kont_262487(lexical_capture_1: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_4: List<&2, Lexer.Token>, lexical_capture_6: List<&2, Lexer.Token>, lexical_capture_9: List<&2, Scope>, lexical_capture_11: Nat, lexical_capture_13: Nat, lexical_capture_15: Nat) -> FeedbackFrame:
-  Kont_262487{lexical_capture_1, lexical_capture_2, lexical_capture_4, lexical_capture_6, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15}
+def feedback_make_Kont_262420(lexical_capture_1: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_4: List<&2, Lexer.Token>, lexical_capture_6: List<&2, Lexer.Token>, lexical_capture_9: List<&2, Scope>, lexical_capture_11: Nat, lexical_capture_13: Nat, lexical_capture_15: Nat) -> FeedbackFrame:
+  Kont_262420{lexical_capture_1, lexical_capture_2, lexical_capture_4, lexical_capture_6, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15}
 
 def step_parse_less_or_adt_args(+file: String, left: Ast.SyntaxTerm, +tokens: List<&2, Lexer.Token>, all_tokens: List<&2, Lexer.Token>, +scope: List<&2, Scope>, +depth: Nat, level: Nat, end: Nat) -> FeedbackControl:
-  feedback_attach(step_parse_term(file, tokens, scope, depth, 5n), feedback_make_Kont_262487(file, left, tokens, all_tokens, scope, depth, level, end))
+  feedback_attach(step_parse_term(file, tokens, scope, depth, 5n), feedback_make_Kont_262420(file, left, tokens, all_tokens, scope, depth, level, end))
 
 def step_parse_less_or_adt_nested(is_spaced: Bool, file: String, +left: Ast.SyntaxTerm, tokens: List<&2, Lexer.Token>, +all_tokens: List<&2, Lexer.Token>, open_beg: Nat, scope: List<&2, Scope>, depth: Nat, level: Nat, end: Nat) -> FeedbackControl:
   match is_spaced:
@@ -3211,21 +3225,21 @@ def step_parse_less_or_adt_precedence(is_nested: Bool, +file: String, +left: Ast
 def step_parse_less_or_adt(file: String, left: Ast.SyntaxTerm, tokens: List<&2, Lexer.Token>, all_tokens: List<&2, Lexer.Token>, open_beg: Nat, scope: List<&2, Scope>, depth: Nat, +level: Nat, end: Nat) -> FeedbackControl:
   step_parse_less_or_adt_precedence(Nat.is_lt(4n, level), file, left, tokens, all_tokens, open_beg, scope, depth, level, end)
 
-def feedback_make_Kont_267821(lexical_capture_3: String, lexical_capture_4: Ast.SyntaxTerm, lexical_capture_9: List<&2, Scope>, lexical_capture_11: Nat, lexical_capture_13: Nat, lexical_capture_15: Nat) -> FeedbackFrame:
-  Kont_267821{lexical_capture_3, lexical_capture_4, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15}
+def feedback_make_Kont_267754(lexical_capture_3: String, lexical_capture_4: Ast.SyntaxTerm, lexical_capture_9: List<&2, Scope>, lexical_capture_11: Nat, lexical_capture_13: Nat, lexical_capture_15: Nat) -> FeedbackFrame:
+  Kont_267754{lexical_capture_3, lexical_capture_4, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15}
 
 def step_parse_min_precedence(is_nested: Bool, +file: String, +left: Ast.SyntaxTerm, +tokens: List<&2, Lexer.Token>, +scope: List<&2, Scope>, +depth: Nat, level: Nat, end: Nat) -> FeedbackControl:
   match is_nested:
     case True{}:
       feedback_pack_5(((left, tokens), True{}))
     case False{}:
-      feedback_attach(step_parse_term(file, tokens, scope, depth, 5n), feedback_make_Kont_267821(file, left, scope, depth, level, end))
+      feedback_attach(step_parse_term(file, tokens, scope, depth, 5n), feedback_make_Kont_267754(file, left, scope, depth, level, end))
 
 def step_parse_min_operator(file: String, left: Ast.SyntaxTerm, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, +level: Nat, end: Nat) -> FeedbackControl:
   step_parse_min_precedence(Nat.is_lt(5n, level), file, left, tokens, scope, depth, level, end)
 
-def feedback_make_Kont_266526(lexical_capture_3: String, lexical_capture_5: String, lexical_capture_8: Ast.SyntaxTerm, lexical_capture_13: List<&2, Scope>, lexical_capture_15: Nat, lexical_capture_17: Nat, lexical_capture_19: Nat) -> FeedbackFrame:
-  Kont_266526{lexical_capture_3, lexical_capture_5, lexical_capture_8, lexical_capture_13, lexical_capture_15, lexical_capture_17, lexical_capture_19}
+def feedback_make_Kont_266459(lexical_capture_3: String, lexical_capture_5: String, lexical_capture_8: Ast.SyntaxTerm, lexical_capture_13: List<&2, Scope>, lexical_capture_15: Nat, lexical_capture_17: Nat, lexical_capture_19: Nat) -> FeedbackFrame:
+  Kont_266459{lexical_capture_3, lexical_capture_5, lexical_capture_8, lexical_capture_13, lexical_capture_15, lexical_capture_17, lexical_capture_19}
 
 def operator_rhs_level(right_assoc: Bool, priority: Nat) -> Nat:
   match right_assoc:
@@ -3240,18 +3254,18 @@ def step_parse_operator_right_precedence(is_nested: Bool, +file: String, key: St
       feedback_pack_5(((left, tokens), True{}))
     case False{}:
       rhs_level = operator_rhs_level(right_assoc, priority)
-      feedback_attach(step_parse_term(file, tokens, scope, depth, rhs_level), feedback_make_Kont_266526(file, key, left, scope, depth, level, end))
+      feedback_attach(step_parse_term(file, tokens, scope, depth, rhs_level), feedback_make_Kont_266459(file, key, left, scope, depth, level, end))
 
 def step_parse_operator_right(file: String, key: String, +priority: Nat, left: Ast.SyntaxTerm, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, +level: Nat, end: Nat, right_assoc: Bool) -> FeedbackControl:
   step_parse_operator_right_precedence(Nat.is_lt(priority, level), file, key, priority, left, tokens, scope, depth, level, end, right_assoc)
 
-def feedback_make_Kont_270218(lexical_capture_17: Bool, lexical_capture_3: String, lexical_capture_4: Ast.SyntaxTerm, lexical_capture_9: List<&2, Scope>, lexical_capture_11: Nat, lexical_capture_13: Nat, lexical_capture_15: Nat, lexical_capture_6: List<&2, Lexer.Token>) -> FeedbackFrame:
-  Kont_270218{lexical_capture_17, lexical_capture_3, lexical_capture_4, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15, lexical_capture_6}
+def feedback_make_Kont_270151(lexical_capture_17: Bool, lexical_capture_3: String, lexical_capture_4: Ast.SyntaxTerm, lexical_capture_9: List<&2, Scope>, lexical_capture_11: Nat, lexical_capture_13: Nat, lexical_capture_15: Nat, lexical_capture_6: List<&2, Lexer.Token>) -> FeedbackFrame:
+  Kont_270151{lexical_capture_17, lexical_capture_3, lexical_capture_4, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15, lexical_capture_6}
 
 def step_parse_pair_operator_precedence(is_nested: Bool, +file: String, +left: Ast.SyntaxTerm, +tokens: List<&2, Lexer.Token>, +scope: List<&2, Scope>, +depth: Nat, level: Nat, end: Nat, amp: Bool) -> FeedbackControl:
   match is_nested:
     case False{}:
-      feedback_attach(step_parse_term(file, tokens, scope, depth, 1n), feedback_make_Kont_270218(amp, file, left, scope, depth, level, end, tokens))
+      feedback_attach(step_parse_term(file, tokens, scope, depth, 1n), feedback_make_Kont_270151(amp, file, left, scope, depth, level, end, tokens))
     case True{}:
       feedback_pack_5(((left, tokens), True{}))
 
@@ -3289,7 +3303,7 @@ def step_parse_term_tail_at(+file: String, +left: Ast.SyntaxTerm, +tokens: List<
             case "->":
               match level:
                 case 0n:
-                  feedback_attach(step_parse_term(file, rest, extend_scope("_", depth, scope), (depth + 1n : Nat), 0n), feedback_make_Kont_254183(file, left, scope, depth, level, end))
+                  feedback_attach(step_parse_term(file, rest, extend_scope("_", depth, scope), (depth + 1n : Nat), 0n), feedback_make_Kont_254116(file, left, scope, depth, level, end))
                 case _:
                   feedback_pack_5(((left, tokens), True{}))
             case "<":
@@ -3345,7 +3359,7 @@ def step_parse_term_tail_at(+file: String, +left: Ast.SyntaxTerm, +tokens: List<
                 case Nil{}:
                   feedback_pack_5(((left, tokens), True{}))
             case "(":
-              feedback_attach(step_parse_term_args(file, rest, ")", scope, depth, Nil{}), feedback_make_Kont_257647(file, left, next, scope, depth, level, rest))
+              feedback_attach(step_parse_term_args(file, rest, ")", scope, depth, Nil{}), feedback_make_Kont_257580(file, left, next, scope, depth, level, rest))
             case "[":
               step_parse_index_tail(file, left, rest, scope, depth, level, token_beg_first(left), end)
             case _:
@@ -3379,17 +3393,17 @@ def feedback_pack_10(result: ((List<&2, Ast.TopLevel> & Bool) & List<&2, Lexer.T
     case ((result_0_0, result_0_1), result_1):
       FeedbackControl{FeedbackDone{Value_10{result_0_0, result_0_1, result_1}}, Nil{}, NoProgress{}, NoProgress{}}
 
-def feedback_make_Kont_352849(lexical_capture_12: Map<&2, TopOwner>, lexical_capture_19: List<&2, Lexer.Token>, lexical_capture_3: List<&2, Lexer.Token>, lexical_capture_1: String, lexical_capture_7: String, lexical_capture_9: List<&2, Ast.TopLevel>) -> FeedbackFrame:
-  Kont_352849{lexical_capture_12, lexical_capture_19, lexical_capture_3, lexical_capture_1, lexical_capture_7, lexical_capture_9}
+def feedback_make_Kont_352782(lexical_capture_12: Map<&2, TopOwner>, lexical_capture_19: List<&2, Lexer.Token>, lexical_capture_3: List<&2, Lexer.Token>, lexical_capture_1: String, lexical_capture_7: String, lexical_capture_9: List<&2, Ast.TopLevel>) -> FeedbackFrame:
+  Kont_352782{lexical_capture_12, lexical_capture_19, lexical_capture_3, lexical_capture_1, lexical_capture_7, lexical_capture_9}
 
-def feedback_make_Kont_353139(lexical_capture_12: Map<&2, TopOwner>, lexical_capture_19: List<&2, Lexer.Token>, lexical_capture_3: List<&2, Lexer.Token>, lexical_capture_1: String, lexical_capture_7: String, lexical_capture_9: List<&2, Ast.TopLevel>) -> FeedbackFrame:
-  Kont_353139{lexical_capture_12, lexical_capture_19, lexical_capture_3, lexical_capture_1, lexical_capture_7, lexical_capture_9}
+def feedback_make_Kont_353072(lexical_capture_12: Map<&2, TopOwner>, lexical_capture_19: List<&2, Lexer.Token>, lexical_capture_3: List<&2, Lexer.Token>, lexical_capture_1: String, lexical_capture_7: String, lexical_capture_9: List<&2, Ast.TopLevel>) -> FeedbackFrame:
+  Kont_353072{lexical_capture_12, lexical_capture_19, lexical_capture_3, lexical_capture_1, lexical_capture_7, lexical_capture_9}
 
-def feedback_make_Kont_353432(lexical_capture_12: Map<&2, TopOwner>, lexical_capture_19: List<&2, Lexer.Token>, lexical_capture_3: List<&2, Lexer.Token>, lexical_capture_1: String, lexical_capture_7: String, lexical_capture_9: List<&2, Ast.TopLevel>) -> FeedbackFrame:
-  Kont_353432{lexical_capture_12, lexical_capture_19, lexical_capture_3, lexical_capture_1, lexical_capture_7, lexical_capture_9}
+def feedback_make_Kont_353365(lexical_capture_12: Map<&2, TopOwner>, lexical_capture_19: List<&2, Lexer.Token>, lexical_capture_3: List<&2, Lexer.Token>, lexical_capture_1: String, lexical_capture_7: String, lexical_capture_9: List<&2, Ast.TopLevel>) -> FeedbackFrame:
+  Kont_353365{lexical_capture_12, lexical_capture_19, lexical_capture_3, lexical_capture_1, lexical_capture_7, lexical_capture_9}
 
-def feedback_make_Kont_353723(lexical_capture_12: Map<&2, TopOwner>, lexical_capture_19: List<&2, Lexer.Token>, lexical_capture_3: List<&2, Lexer.Token>, lexical_capture_1: String, lexical_capture_7: String, lexical_capture_9: List<&2, Ast.TopLevel>) -> FeedbackFrame:
-  Kont_353723{lexical_capture_12, lexical_capture_19, lexical_capture_3, lexical_capture_1, lexical_capture_7, lexical_capture_9}
+def feedback_make_Kont_353656(lexical_capture_12: Map<&2, TopOwner>, lexical_capture_19: List<&2, Lexer.Token>, lexical_capture_3: List<&2, Lexer.Token>, lexical_capture_1: String, lexical_capture_7: String, lexical_capture_9: List<&2, Ast.TopLevel>) -> FeedbackFrame:
+  Kont_353656{lexical_capture_12, lexical_capture_19, lexical_capture_3, lexical_capture_1, lexical_capture_7, lexical_capture_9}
 
 def feedback_pack_6(result: ((Ast.TopLevel & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   match result:
@@ -3410,11 +3424,11 @@ def parse_name_scan(original: List<&2, Lexer.Token>, tokens: List<&2, Lexer.Toke
 def parse_name(+tokens: List<&2, Lexer.Token>) -> (String & List<&2, Lexer.Token>) & Bool:
   parse_name_scan(tokens, skip_lines(tokens))
 
-def feedback_make_Kont_325109(lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat) -> FeedbackFrame:
-  Kont_325109{lexical_capture_1, lexical_capture_3, lexical_capture_5}
+def feedback_make_Kont_325042(lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat) -> FeedbackFrame:
+  Kont_325042{lexical_capture_1, lexical_capture_3, lexical_capture_5}
 
 def step_parse_definition_with_binders(+file: String, key: String, beg: Nat, tokens: List<&2, Lexer.Token>, path: String) -> FeedbackControl:
-  feedback_attach(step_parse_def_binders(file, tokens, Nil{}, 0n, Nil{}), feedback_make_Kont_325109(file, key, beg))
+  feedback_attach(step_parse_def_binders(file, tokens, Nil{}, 0n, Nil{}), feedback_make_Kont_325042(file, key, beg))
 
 def step_parse_definition_name_tail(+key: String, +after_name: List<&2, Lexer.Token>, +file: String, +def_token: Lexer.Token, path: String) -> FeedbackControl:
   match after_name:
@@ -3441,8 +3455,8 @@ def step_parse_definition(+file: String, tokens: List<&2, Lexer.Token>, path: St
     case Nil{}:
       feedback_pack_6(((Ast.DefTop{ Ast.Definition{ "",  Nil{},  Ast.NoTerm{},  Ast.DefTerm{Ast.TermHole{ "parse-error: expected def",  span(file, 0n, 0n)}},  False{},  span(file, 0n, 0n)}}, Nil{}), False{}))
 
-def feedback_make_Kont_348237(lexical_capture_1: String, lexical_capture_17: String, lexical_capture_5: Nat, lexical_capture_24: Lexer.Token, lexical_capture_25: List<&2, Lexer.Token>) -> FeedbackFrame:
-  Kont_348237{lexical_capture_1, lexical_capture_17, lexical_capture_5, lexical_capture_24, lexical_capture_25}
+def feedback_make_Kont_348170(lexical_capture_1: String, lexical_capture_17: String, lexical_capture_5: Nat, lexical_capture_24: Lexer.Token, lexical_capture_25: List<&2, Lexer.Token>) -> FeedbackFrame:
+  Kont_348170{lexical_capture_1, lexical_capture_17, lexical_capture_5, lexical_capture_24, lexical_capture_25}
 
 def law_failure(+file: String, key: String, beg: Nat, +end: Nat, rest: List<&2, Lexer.Token>) -> (Ast.TopLevel & List<&2, Lexer.Token>) & Bool:
   body = { Ast.TermHole{ "parse-error: malformed or unsupported law",  span(file, end, end)} : Ast.SyntaxTerm }
@@ -3458,7 +3472,7 @@ def step_parse_law_decl(+file: String, +tokens: List<&2, Lexer.Token>, +beg: Nat
             case +colon <> +after_colon:
               match colon:
                 case Lexer.TokenInfo{ _, ":",  _,  _,  _,  _}:
-                  feedback_attach(step_parse_law_clauses(file, after_colon, Nil{}, 0n, Nil{}), feedback_make_Kont_348237(file, key, beg, colon, after_colon))
+                  feedback_attach(step_parse_law_clauses(file, after_colon, Nil{}, 0n, Nil{}), feedback_make_Kont_348170(file, key, beg, colon, after_colon))
                 case Lexer.TokenInfo{feedback_field_10_0, feedback_field_10_1, feedback_field_10_2, feedback_field_10_3, feedback_field_10_4, feedback_field_10_5}:
                   feedback_pack_6(law_failure(file, key, beg, token_beg((Lexer.TokenInfo{feedback_field_10_0, feedback_field_10_1, feedback_field_10_2, feedback_field_10_3, feedback_field_10_4, feedback_field_10_5} : Lexer.Token)), after_name))
             case Nil{}:
@@ -3468,14 +3482,14 @@ def step_parse_law_decl(+file: String, +tokens: List<&2, Lexer.Token>, +beg: Nat
     case Nil{}:
       feedback_pack_6(law_failure(file, "", beg, beg, Nil{}))
 
-def feedback_make_Kont_337520(lexical_capture_26: Lexer.Token, lexical_capture_1: String, lexical_capture_19: String, lexical_capture_5: Nat, lexical_capture_7: Nat) -> FeedbackFrame:
-  Kont_337520{lexical_capture_26, lexical_capture_1, lexical_capture_19, lexical_capture_5, lexical_capture_7}
+def feedback_make_Kont_337453(lexical_capture_26: Lexer.Token, lexical_capture_1: String, lexical_capture_19: String, lexical_capture_5: Nat, lexical_capture_7: Nat) -> FeedbackFrame:
+  Kont_337453{lexical_capture_26, lexical_capture_1, lexical_capture_19, lexical_capture_5, lexical_capture_7}
 
-def feedback_make_Kont_337986(lexical_capture_26: Lexer.Token, lexical_capture_1: String, lexical_capture_19: String, lexical_capture_5: Nat, lexical_capture_7: Nat) -> FeedbackFrame:
-  Kont_337986{lexical_capture_26, lexical_capture_1, lexical_capture_19, lexical_capture_5, lexical_capture_7}
+def feedback_make_Kont_337919(lexical_capture_26: Lexer.Token, lexical_capture_1: String, lexical_capture_19: String, lexical_capture_5: Nat, lexical_capture_7: Nat) -> FeedbackFrame:
+  Kont_337919{lexical_capture_26, lexical_capture_1, lexical_capture_19, lexical_capture_5, lexical_capture_7}
 
-def feedback_make_Kont_335919(lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_9: List<&2, Ast.TelescopeItem>, lexical_capture_11: List<&2, Lexer.Token>, lexical_capture_16: List<&2, Scope>, lexical_capture_18: Nat) -> FeedbackFrame:
-  Kont_335919{lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_16, lexical_capture_18}
+def feedback_make_Kont_335852(lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_9: List<&2, Ast.TelescopeItem>, lexical_capture_11: List<&2, Lexer.Token>, lexical_capture_16: List<&2, Scope>, lexical_capture_18: Nat) -> FeedbackFrame:
+  Kont_335852{lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_16, lexical_capture_18}
 
 def type_failure(+file: String, key: String, beg: Nat, +end: Nat, rest: List<&2, Lexer.Token>) -> (Ast.TopLevel & List<&2, Lexer.Token>) & Bool:
   error = { Ast.TermHole{ "parse-error: malformed or unsupported type declaration",  span(file, end, end)} : Ast.SyntaxTerm }
@@ -3487,7 +3501,7 @@ def step_parse_type_header_scan(+file: String, +key: String, +beg: Nat, col: Nat
     case +is_token <> after_is:
       match is_token:
         case Lexer.TokenInfo{ _, "is",  _,  _,  _,  _}:
-          feedback_attach(step_parse_term(file, after_is, scope, depth, 0n), feedback_make_Kont_335919(file, key, beg, col, params, tokens, scope, depth))
+          feedback_attach(step_parse_term(file, after_is, scope, depth, 0n), feedback_make_Kont_335852(file, key, beg, col, params, tokens, scope, depth))
         case Lexer.TokenInfo{feedback_field_6_0, feedback_field_6_1, feedback_field_6_2, feedback_field_6_3, feedback_field_6_4, feedback_field_6_5}:
           feedback_pack_6(type_failure(file, key, beg, token_beg((Lexer.TokenInfo{feedback_field_6_0, feedback_field_6_1, feedback_field_6_2, feedback_field_6_3, feedback_field_6_4, feedback_field_6_5} : Lexer.Token)), tokens))
     case Nil{}:
@@ -3505,10 +3519,10 @@ def step_parse_type_decl(+file: String, +tokens: List<&2, Lexer.Token>, +beg: Na
             case +open <> +after_open:
               match open:
                 case Lexer.TokenInfo{ _, "<",  _,  _,  _,  _}:
-                  feedback_attach(step_parse_def_binders(file, after_open, Nil{}, 0n, Nil{}), feedback_make_Kont_337520(open, file, key, beg, col))
+                  feedback_attach(step_parse_def_binders(file, after_open, Nil{}, 0n, Nil{}), feedback_make_Kont_337453(open, file, key, beg, col))
                 case Lexer.TokenInfo{_, "<-", start, end, line, column}:
                   erased = { Lexer.TokenInfo{Lexer.SymbolToken{}, "-", (start + 1n : Nat), end, line, (column + 1n : Nat)} : Lexer.Token }
-                  feedback_attach(step_parse_def_binders(file, erased <> after_open, Nil{}, 0n, Nil{}), feedback_make_Kont_337986(open, file, key, beg, col))
+                  feedback_attach(step_parse_def_binders(file, erased <> after_open, Nil{}, 0n, Nil{}), feedback_make_Kont_337919(open, file, key, beg, col))
                 case Lexer.TokenInfo{_, "<>", _, _, _, _}:
                   step_parse_type_header(file, key, beg, col, Nil{}, after_open, Nil{}, 0n)
                 case _:
@@ -3520,20 +3534,20 @@ def step_parse_type_decl(+file: String, +tokens: List<&2, Lexer.Token>, +beg: Na
     case Nil{}:
       feedback_pack_6(type_failure(file, "", beg, beg, Nil{}))
 
-def feedback_make_Kont_330279() -> FeedbackFrame:
-  Kont_330279{}
+def feedback_make_Kont_330212() -> FeedbackFrame:
+  Kont_330212{}
 
-def feedback_make_Kont_330414() -> FeedbackFrame:
-  Kont_330414{}
+def feedback_make_Kont_330347() -> FeedbackFrame:
+  Kont_330347{}
 
 def step_parse_unsafe_definition(+tokens: List<&2, Lexer.Token>, +file: String, +path: String) -> FeedbackControl:
   match tokens:
     case Lexer.TokenInfo{_, "def", _, _, _, _} <> _:
-      feedback_attach(step_parse_definition(file, tokens, path), feedback_make_Kont_330279())
+      feedback_attach(step_parse_definition(file, tokens, path), feedback_make_Kont_330212())
     case Nil{}:
-      feedback_attach(step_parse_definition(file, (Nil{} : List<&2, Lexer.Token>), path), feedback_make_Kont_330414())
+      feedback_attach(step_parse_definition(file, (Nil{} : List<&2, Lexer.Token>), path), feedback_make_Kont_330347())
     case Con{feedback_field_4_0, feedback_field_4_1}:
-      feedback_attach(step_parse_definition(file, (Con{feedback_field_4_0, feedback_field_4_1} : List<&2, Lexer.Token>), path), feedback_make_Kont_330414())
+      feedback_attach(step_parse_definition(file, (Con{feedback_field_4_0, feedback_field_4_1} : List<&2, Lexer.Token>), path), feedback_make_Kont_330347())
 
 def step_parse_unsafe(+file: String, +tokens: List<&2, Lexer.Token>, +path: String) -> FeedbackControl:
   match tokens:
@@ -3553,13 +3567,13 @@ def step_parse_top_scan(+file: String, +tokens: List<&2, Lexer.Token>, scanned: 
         case Lexer.TokenInfo{ Lexer.ErrorToken{},  _,  _,  _,  _,  _}:
           feedback_pack_10(((List.reverse(&2, Ast.TopLevel, acc), False{}), tokens))
         case Lexer.TokenInfo{ Lexer.NameToken{},  "law", beg,  _,  _,  _}:
-          feedback_attach(step_parse_law_decl(file, rest, beg), feedback_make_Kont_352849(owners, rest, tokens, file, path, acc))
+          feedback_attach(step_parse_law_decl(file, rest, beg), feedback_make_Kont_352782(owners, rest, tokens, file, path, acc))
         case Lexer.TokenInfo{ Lexer.NameToken{},  "type", beg,  _,  _, col}:
-          feedback_attach(step_parse_type_decl(file, rest, beg, col), feedback_make_Kont_353139(owners, rest, tokens, file, path, acc))
+          feedback_attach(step_parse_type_decl(file, rest, beg, col), feedback_make_Kont_353072(owners, rest, tokens, file, path, acc))
         case Lexer.TokenInfo{ Lexer.SymbolToken{},  "@",  _,  _,  _,  _}:
-          feedback_attach(step_parse_unsafe(file, rest, path), feedback_make_Kont_353432(owners, rest, tokens, file, path, acc))
+          feedback_attach(step_parse_unsafe(file, rest, path), feedback_make_Kont_353365(owners, rest, tokens, file, path, acc))
         case Lexer.TokenInfo{ Lexer.NameToken{},  "def", beg, end, line, col}:
-          feedback_attach(step_parse_definition(file, Lexer.TokenInfo{Lexer.NameToken{}, "def", beg, end, line, col} <> rest, path), feedback_make_Kont_353723(owners, rest, tokens, file, path, acc))
+          feedback_attach(step_parse_definition(file, Lexer.TokenInfo{Lexer.NameToken{}, "def", beg, end, line, col} <> rest, path), feedback_make_Kont_353656(owners, rest, tokens, file, path, acc))
         case _:
           feedback_pack_10(((List.reverse(&2, Ast.TopLevel, acc), False{}), tokens))
     case Nil{}:
@@ -3588,8 +3602,8 @@ def feedback_pack_7(result: ((List<&2, Ast.ConstructorDecl> & List<&2, Lexer.Tok
     case ((result_0_0, result_0_1), result_1):
       FeedbackControl{FeedbackDone{Value_7{result_0_0, result_0_1, result_1}}, Nil{}, NoProgress{}, NoProgress{}}
 
-def feedback_make_Kont_333031(lexical_capture_3: String, lexical_capture_26: Lexer.Token, lexical_capture_27: List<&2, Lexer.Token>, lexical_capture_9: Nat, lexical_capture_12: List<&2, Scope>, lexical_capture_14: Nat, lexical_capture_16: List<&2, Ast.ConstructorDecl>, lexical_capture_18: String, lexical_capture_20: Nat) -> FeedbackFrame:
-  Kont_333031{lexical_capture_3, lexical_capture_26, lexical_capture_27, lexical_capture_9, lexical_capture_12, lexical_capture_14, lexical_capture_16, lexical_capture_18, lexical_capture_20}
+def feedback_make_Kont_332964(lexical_capture_3: String, lexical_capture_26: Lexer.Token, lexical_capture_27: List<&2, Lexer.Token>, lexical_capture_9: Nat, lexical_capture_12: List<&2, Scope>, lexical_capture_14: Nat, lexical_capture_16: List<&2, Ast.ConstructorDecl>, lexical_capture_18: String, lexical_capture_20: Nat) -> FeedbackFrame:
+  Kont_332964{lexical_capture_3, lexical_capture_26, lexical_capture_27, lexical_capture_9, lexical_capture_12, lexical_capture_14, lexical_capture_16, lexical_capture_18, lexical_capture_20}
 
 def step_parse_type_constructor_indent(is_indented: Bool, +file: String, +tokens: List<&2, Lexer.Token>, rest: List<&2, Lexer.Token>, col: Nat, +scope: List<&2, Scope>, +depth: Nat, +acc: List<&2, Ast.ConstructorDecl>, key: String, beg: Nat) -> FeedbackControl:
   match is_indented:
@@ -3598,7 +3612,7 @@ def step_parse_type_constructor_indent(is_indented: Bool, +file: String, +tokens
         case +open <> +after_open:
           match open:
             case Lexer.TokenInfo{ _, "{",  _,  _,  _,  _}:
-              feedback_attach(step_parse_def_binders(file, after_open, scope, depth, Nil{}), feedback_make_Kont_333031(file, open, after_open, col, scope, depth, acc, key, beg))
+              feedback_attach(step_parse_def_binders(file, after_open, scope, depth, Nil{}), feedback_make_Kont_332964(file, open, after_open, col, scope, depth, acc, key, beg))
             case _:
               feedback_pack_7(((List.reverse(&2, Ast.ConstructorDecl, acc), tokens), False{}))
         case Nil{}:
@@ -3646,8 +3660,6 @@ def step_pattern_finish(goal: PatternScanGoal, +pattern: Ast.SyntaxPattern, +aft
 
 def step_pattern_scan_empty_step(mode: PatternScanMode, +file: String, +tokens: List<&2, Lexer.Token>, +frames: List<&2, PatternFrame>, +scope: List<&2, Scope>, +depth: Nat, +goal: PatternScanGoal) -> FeedbackControl:
   match mode:
-    case PatternNoNat{number, quantity, beg, end}:
-      step_pattern_finish(goal, Ast.PatternVar{"", depth, quantity, span(file, beg, end)}, number <> tokens, scope, depth, False{})
     case PatternBadNat{beg, end}:
       step_pattern_finish(goal, Ast.PatternVar{"", depth, Ast.QOne{}, span(file, beg, end)}, tokens, scope, depth, False{})
     case PatternCompleted{+pattern}:
@@ -3666,57 +3678,57 @@ def step_pattern_scan_empty_step(mode: PatternScanMode, +file: String, +tokens: 
 def pattern_completed_text_test_5(same: Bool, +text: String) -> PatternCompletedText:
   match same:
     case True{}:
-      PatternCompletedTextRow24{}
+      PatternCompletedTextRow23{}
     case False{}:
       PatternCompletedTextOther{}
 
 def pattern_completed_text_test_4(same: Bool, +text: String) -> PatternCompletedText:
   match same:
     case True{}:
-      PatternCompletedTextRow20{}
+      PatternCompletedTextRow19{}
     case False{}:
       pattern_completed_text_test_5(String.eq(text, "+"), text)
 
 def pattern_completed_text_test_3(same: Bool, +text: String) -> PatternCompletedText:
   match same:
     case True{}:
-      PatternCompletedTextRow19{}
+      PatternCompletedTextRow18{}
     case False{}:
       pattern_completed_text_test_4(String.eq(text, "}"), text)
 
 def pattern_completed_text_test_2(same: Bool, +text: String) -> PatternCompletedText:
   match same:
     case True{}:
-      PatternCompletedTextRow18{}
+      PatternCompletedTextRow17{}
     case False{}:
       pattern_completed_text_test_3(String.eq(text, "]"), text)
 
 def pattern_completed_text_test_1(same: Bool, +text: String) -> PatternCompletedText:
   match same:
     case True{}:
-      PatternCompletedTextRow17{}
+      PatternCompletedTextRow16{}
     case False{}:
       pattern_completed_text_test_2(String.eq(text, ":"), text)
 
 def pattern_completed_text_test_0(same: Bool, +text: String) -> PatternCompletedText:
   match same:
     case True{}:
-      PatternCompletedTextRow16{}
+      PatternCompletedTextRow15{}
     case False{}:
       pattern_completed_text_test_1(String.eq(text, ","), text)
 
 def pattern_completed_text(+text: String) -> PatternCompletedText:
   pattern_completed_text_test_0(String.eq(text, "<>"), text)
 
-def feedback_make_Kont_149539(capture_1: String, capture_2: Ast.SyntaxPattern, capture_3: List<&2, PatternFrame>, capture_4: List<&2, Scope>, capture_5: Nat, capture_6: PatternScanGoal) -> FeedbackFrame:
-  Kont_149539{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6}
+def feedback_make_Kont_149803(capture_1: String, capture_2: Ast.SyntaxPattern, capture_3: List<&2, PatternFrame>, capture_4: List<&2, Scope>, capture_5: Nat, capture_6: PatternScanGoal) -> FeedbackFrame:
+  Kont_149803{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6}
 
-def step_pattern_scan_row_16(ctx: PatternScanContext, rest: List<&2, Lexer.Token>, left: Ast.SyntaxPattern) -> FeedbackControl:
+def step_pattern_scan_row_15(ctx: PatternScanContext, rest: List<&2, Lexer.Token>, left: Ast.SyntaxPattern) -> FeedbackControl:
   match ctx:
     case PatternScanContext{+file, +tokens, frames, +scope, +depth, goal}:
-      feedback_attach(step_parse_pattern_atom(file, rest, scope, depth), feedback_make_Kont_149539(file, left, frames, scope, depth, goal))
+      feedback_attach(step_parse_pattern_atom(file, rest, scope, depth), feedback_make_Kont_149803(file, left, frames, scope, depth, goal))
 
-def step_pattern_scan_row_17(ctx: PatternScanContext, +pattern: Ast.SyntaxPattern, +cursor_tail_1: List<&2, Lexer.Token>) -> FeedbackControl:
+def step_pattern_scan_row_16(ctx: PatternScanContext, +pattern: Ast.SyntaxPattern, +cursor_tail_1: List<&2, Lexer.Token>) -> FeedbackControl:
   match ctx:
     case PatternScanContext{+file, +tokens, frames, +scope, +depth, +goal}:
       match frames:
@@ -3729,7 +3741,7 @@ def step_pattern_scan_row_17(ctx: PatternScanContext, +pattern: Ast.SyntaxPatter
             case PatternCaseGoal{acc, before_scope, before_depth}:
               FeedbackControl{FeedbackCall{feedback_make_pattern_scan(cursor_tail_1, file, PatternExpect{Ast.QOne{}, 0n}, Nil{}, scope, depth, PatternCaseGoal{pattern <> acc, scope, depth})}, Nil{}, NoProgress{}, NoProgress{}}
 
-def step_pattern_scan_row_18(ctx: PatternScanContext, +pattern: Ast.SyntaxPattern) -> FeedbackControl:
+def step_pattern_scan_row_17(ctx: PatternScanContext, +pattern: Ast.SyntaxPattern) -> FeedbackControl:
   match ctx:
     case PatternScanContext{+file, +tokens, frames, +scope, +depth, +goal}:
       match frames:
@@ -3752,7 +3764,7 @@ def pattern_list_fields(fields: List<&2, Ast.SyntaxPattern>, result: Ast.SyntaxP
 def make_pattern_list(fields: List<&2, Ast.SyntaxPattern>, +file: String, +beg: Nat, +end: Nat) -> Ast.SyntaxPattern:
   pattern_list_fields(fields, Ast.PatternCtr{"Nil", Nil{}, span(file, beg, end)}, file, beg, end)
 
-def step_pattern_scan_row_19(ctx: PatternScanContext, close_end: Nat, +pattern: Ast.SyntaxPattern, cursor_tail_1: List<&2, Lexer.Token>) -> FeedbackControl:
+def step_pattern_scan_row_18(ctx: PatternScanContext, close_end: Nat, +pattern: Ast.SyntaxPattern, cursor_tail_1: List<&2, Lexer.Token>) -> FeedbackControl:
   match ctx:
     case PatternScanContext{+file, +tokens, frames, +scope, +depth, +goal}:
       match frames:
@@ -3761,7 +3773,7 @@ def step_pattern_scan_row_19(ctx: PatternScanContext, close_end: Nat, +pattern: 
         case _:
           step_pattern_finish(goal, pattern, tokens, scope, depth, False{})
 
-def step_pattern_scan_row_20(ctx: PatternScanContext, +close_end: Nat, +pattern: Ast.SyntaxPattern, +cursor_tail_1: List<&2, Lexer.Token>) -> FeedbackControl:
+def step_pattern_scan_row_19(ctx: PatternScanContext, +close_end: Nat, +pattern: Ast.SyntaxPattern, +cursor_tail_1: List<&2, Lexer.Token>) -> FeedbackControl:
   match ctx:
     case PatternScanContext{+file, +tokens, frames, +scope, +depth, +goal}:
       match frames:
@@ -3772,7 +3784,7 @@ def step_pattern_scan_row_20(ctx: PatternScanContext, +close_end: Nat, +pattern:
         case Nil{}:
           step_pattern_finish(goal, pattern, tokens, scope, depth, True{})
 
-def step_pattern_scan_row_21(ctx: PatternScanContext, +pattern: Ast.SyntaxPattern, +cursor_tail_1: List<&2, Lexer.Token>) -> FeedbackControl:
+def step_pattern_scan_row_20(ctx: PatternScanContext, +pattern: Ast.SyntaxPattern, +cursor_tail_1: List<&2, Lexer.Token>) -> FeedbackControl:
   match ctx:
     case PatternScanContext{+file, +tokens, +frames, +scope, +depth, +goal}:
       match frames:
@@ -3785,7 +3797,7 @@ def step_pattern_scan_row_21(ctx: PatternScanContext, +pattern: Ast.SyntaxPatter
             case PatternCaseGoal{acc, before_scope, before_depth}:
               FeedbackControl{FeedbackCall{feedback_make_pattern_scan(cursor_tail_1, file, PatternCompleted{pattern}, Nil{}, scope, depth, PatternCaseGoal{acc, before_scope, before_depth})}, Nil{}, NoProgress{}, NoProgress{}}
 
-def step_pattern_scan_row_22(ctx: PatternScanContext, key: String, beg: Nat, end: Nat, +pattern: Ast.SyntaxPattern, +cursor_tail_2: List<&2, Lexer.Token>) -> FeedbackControl:
+def step_pattern_scan_row_21(ctx: PatternScanContext, key: String, beg: Nat, end: Nat, +pattern: Ast.SyntaxPattern, +cursor_tail_2: List<&2, Lexer.Token>) -> FeedbackControl:
   match ctx:
     case PatternScanContext{+file, +tokens, frames, +scope, +depth, +goal}:
       match frames:
@@ -3794,7 +3806,7 @@ def step_pattern_scan_row_22(ctx: PatternScanContext, key: String, beg: Nat, end
         case Nil{}:
           step_pattern_finish(goal, pattern, tokens, scope, depth, True{})
 
-def step_pattern_scan_row_23(ctx: PatternScanContext, +key: String, beg: Nat, end: Nat, +pattern: Ast.SyntaxPattern, +cursor_tail_1: List<&2, Lexer.Token>) -> FeedbackControl:
+def step_pattern_scan_row_22(ctx: PatternScanContext, +key: String, beg: Nat, end: Nat, +pattern: Ast.SyntaxPattern, +cursor_tail_1: List<&2, Lexer.Token>) -> FeedbackControl:
   match ctx:
     case PatternScanContext{+file, +tokens, frames, +scope, +depth, +goal}:
       match frames:
@@ -3803,7 +3815,7 @@ def step_pattern_scan_row_23(ctx: PatternScanContext, +key: String, beg: Nat, en
         case Nil{}:
           step_pattern_finish(goal, pattern, tokens, scope, depth, True{})
 
-def step_pattern_scan_row_24(ctx: PatternScanContext, beg: Nat, +pattern: Ast.SyntaxPattern, +cursor_tail_1: List<&2, Lexer.Token>) -> FeedbackControl:
+def step_pattern_scan_row_23(ctx: PatternScanContext, beg: Nat, +pattern: Ast.SyntaxPattern, +cursor_tail_1: List<&2, Lexer.Token>) -> FeedbackControl:
   match ctx:
     case PatternScanContext{+file, +tokens, frames, +scope, +depth, +goal}:
       match frames:
@@ -3812,7 +3824,7 @@ def step_pattern_scan_row_24(ctx: PatternScanContext, beg: Nat, +pattern: Ast.Sy
         case Nil{}:
           step_pattern_finish(goal, pattern, tokens, scope, depth, True{})
 
-def step_pattern_scan_row_25(ctx: PatternScanContext, +pattern: Ast.SyntaxPattern) -> FeedbackControl:
+def step_pattern_scan_row_24(ctx: PatternScanContext, +pattern: Ast.SyntaxPattern) -> FeedbackControl:
   match ctx:
     case PatternScanContext{+file, +tokens, frames, +scope, +depth, +goal}:
       match frames:
@@ -3823,26 +3835,26 @@ def step_pattern_scan_row_25(ctx: PatternScanContext, +pattern: Ast.SyntaxPatter
 
 def step_pattern_scan_completed_fields(choice: PatternCompletedText, kind: Lexer.TokenKind, lookahead: Maybe<&2, Lexer.Token>, +text: String, +token_beg: Nat, +token_end: Nat, +pattern: Ast.SyntaxPattern, +ctx: PatternScanContext, +cursor_tail_1: List<&2, Lexer.Token>, +cursor_tail_1: List<&2, Lexer.Token>, +cursor_tail_2: List<&2, Lexer.Token>) -> FeedbackControl:
   match choice kind lookahead:
+    case PatternCompletedTextRow15{} _ _:
+      step_pattern_scan_row_15(ctx, cursor_tail_1, pattern)
     case PatternCompletedTextRow16{} _ _:
-      step_pattern_scan_row_16(ctx, cursor_tail_1, pattern)
+      step_pattern_scan_row_16(ctx, pattern, cursor_tail_1)
     case PatternCompletedTextRow17{} _ _:
-      step_pattern_scan_row_17(ctx, pattern, cursor_tail_1)
+      step_pattern_scan_row_17(ctx, pattern)
     case PatternCompletedTextRow18{} _ _:
-      step_pattern_scan_row_18(ctx, pattern)
+      step_pattern_scan_row_18(ctx, token_end, pattern, cursor_tail_1)
     case PatternCompletedTextRow19{} _ _:
       step_pattern_scan_row_19(ctx, token_end, pattern, cursor_tail_1)
-    case PatternCompletedTextRow20{} _ _:
-      step_pattern_scan_row_20(ctx, token_end, pattern, cursor_tail_1)
     case _ Lexer.NewlineToken{} _:
-      step_pattern_scan_row_21(ctx, pattern, cursor_tail_1)
+      step_pattern_scan_row_20(ctx, pattern, cursor_tail_1)
     case _ Lexer.NameToken{} Some{Lexer.TokenInfo{_, "{", _, _, _, _}}:
-      step_pattern_scan_row_22(ctx, text, token_beg, token_end, pattern, cursor_tail_2)
+      step_pattern_scan_row_21(ctx, text, token_beg, token_end, pattern, cursor_tail_2)
     case _ Lexer.NameToken{} _:
-      step_pattern_scan_row_23(ctx, text, token_beg, token_end, pattern, cursor_tail_1)
-    case PatternCompletedTextRow24{} _ _:
-      step_pattern_scan_row_24(ctx, token_beg, pattern, cursor_tail_1)
+      step_pattern_scan_row_22(ctx, text, token_beg, token_end, pattern, cursor_tail_1)
+    case PatternCompletedTextRow23{} _ _:
+      step_pattern_scan_row_23(ctx, token_beg, pattern, cursor_tail_1)
     case _ _ _:
-      step_pattern_scan_row_25(ctx, pattern)
+      step_pattern_scan_row_24(ctx, pattern)
 
 def step_pattern_scan_completed_step(+token: Lexer.Token, lookahead: Maybe<&2, Lexer.Token>, pattern: Ast.SyntaxPattern, ctx: PatternScanContext, +cursor_tail_1: List<&2, Lexer.Token>, +cursor_tail_1: List<&2, Lexer.Token>, +cursor_tail_2: List<&2, Lexer.Token>) -> FeedbackControl:
   match token:
@@ -3852,33 +3864,33 @@ def step_pattern_scan_completed_step(+token: Lexer.Token, lookahead: Maybe<&2, L
 def pattern_expect_action_test_14(+token: Lexer.Token, quantity: Ast.Quantity, lookahead: Maybe<&2, Lexer.Token>) -> PatternExpectAction:
   match token quantity lookahead:
     case _ quantity _:
-      PatternExpectActionRow26{quantity}
+      PatternExpectActionRow25{quantity}
 
 def pattern_expect_action_test_13(+token: Lexer.Token, quantity: Ast.Quantity, lookahead: Maybe<&2, Lexer.Token>) -> PatternExpectAction:
   match token quantity lookahead:
     case Lexer.TokenInfo{_, "}", _, close_end, _, _} quantity _:
-      PatternExpectActionRow15{quantity}
+      PatternExpectActionRow14{quantity}
     case +next_token next_quantity next_lookahead:
       pattern_expect_action_test_14(next_token, next_quantity, next_lookahead)
 
 def pattern_expect_action_test_12(+token: Lexer.Token, quantity: Ast.Quantity, lookahead: Maybe<&2, Lexer.Token>) -> PatternExpectAction:
   match token quantity lookahead:
     case Lexer.TokenInfo{_, "]", _, close_end, _, _} quantity _:
-      PatternExpectActionRow14{quantity}
+      PatternExpectActionRow13{quantity}
     case +next_token next_quantity next_lookahead:
       pattern_expect_action_test_13(next_token, next_quantity, next_lookahead)
 
 def pattern_expect_action_test_11(+token: Lexer.Token, quantity: Ast.Quantity, lookahead: Maybe<&2, Lexer.Token>) -> PatternExpectAction:
   match token quantity lookahead:
     case Lexer.TokenInfo{Lexer.NewlineToken{}, _, _, _, _, _} quantity _:
-      PatternExpectActionRow13{quantity}
+      PatternExpectActionRow12{quantity}
     case +next_token next_quantity next_lookahead:
       pattern_expect_action_test_12(next_token, next_quantity, next_lookahead)
 
 def pattern_expect_action_test_10(+token: Lexer.Token, quantity: Ast.Quantity, lookahead: Maybe<&2, Lexer.Token>) -> PatternExpectAction:
   match token quantity lookahead:
-    case Lexer.TokenInfo{Lexer.NumberToken{}, +text, +beg, +end, line, col} quantity _:
-      PatternExpectActionRow10{quantity}
+    case Lexer.TokenInfo{Lexer.NumberToken{}, +text, +beg, +end, _, _} _ _:
+      PatternExpectActionRow10{}
     case +next_token next_quantity next_lookahead:
       pattern_expect_action_test_11(next_token, next_quantity, next_lookahead)
 
@@ -3955,8 +3967,8 @@ def pattern_expect_action_test_0(+token: Lexer.Token, quantity: Ast.Quantity, lo
 def pattern_expect_action(+token: Lexer.Token, quantity: Ast.Quantity, lookahead: Maybe<&2, Lexer.Token>) -> PatternExpectAction:
   pattern_expect_action_test_0(token, quantity, lookahead)
 
-def feedback_make_Kont_143575(capture_1: String, capture_2: List<&2, PatternFrame>, capture_3: List<&2, Scope>, capture_4: Nat, capture_5: PatternScanGoal) -> FeedbackFrame:
-  Kont_143575{capture_1, capture_2, capture_3, capture_4, capture_5}
+def feedback_make_Kont_143905(capture_1: String, capture_2: List<&2, PatternFrame>, capture_3: List<&2, Scope>, capture_4: Nat, capture_5: PatternScanGoal) -> FeedbackFrame:
+  Kont_143905{capture_1, capture_2, capture_3, capture_4, capture_5}
 
 def feedback_make_parse_pattern_tuple(file: String, beg: Nat, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat) -> FeedbackRequest:
   Request_parse_pattern_tuple{file, beg, tokens, scope, depth}
@@ -3964,12 +3976,22 @@ def feedback_make_parse_pattern_tuple(file: String, beg: Nat, tokens: List<&2, L
 def step_pattern_scan_row_0(ctx: PatternScanContext, beg: Nat, rest: List<&2, Lexer.Token>) -> FeedbackControl:
   match ctx:
     case PatternScanContext{+file, +tokens, frames, +scope, +depth, goal}:
-      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_parse_pattern_tuple(file, beg, rest, scope, depth)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_143575(file, frames, scope, depth, goal))
+      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_parse_pattern_tuple(file, beg, rest, scope, depth)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_143905(file, frames, scope, depth, goal))
 
 def step_pattern_scan_row_1(ctx: PatternScanContext, beg: Nat, end: Nat, cursor_tail_1: List<&2, Lexer.Token>) -> FeedbackControl:
   match ctx:
     case PatternScanContext{+file, +tokens, frames, +scope, +depth, goal}:
       FeedbackControl{FeedbackCall{feedback_make_pattern_scan(cursor_tail_1, file, PatternExpect{Ast.QOne{}, 0n}, PatternFrameOf{"[]", beg, end, Nil{}, scope, depth} <> frames, scope, depth, goal)}, Nil{}, NoProgress{}, NoProgress{}}
+
+def feedback_make_Kont_138004(capture_1: List<&2, Lexer.Token>, capture_2: String, capture_3: Nat, capture_4: Nat, capture_5: List<&2, PatternFrame>, capture_6: List<&2, Scope>, capture_7: Nat, capture_8: PatternScanGoal) -> FeedbackFrame:
+  Kont_138004{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8}
+
+def step_pattern_literal_result(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool, +file: String, +beg: Nat, +end: Nat, frames: List<&2, PatternFrame>, +scope: List<&2, Scope>, +depth: Nat, +goal: PatternScanGoal) -> FeedbackControl:
+  match result:
+    case ((term, after), True{}):
+      feedback_attach(step_literal_pattern(term), feedback_make_Kont_138004(after, file, beg, end, frames, scope, depth, goal))
+    case ((_, after), False{}):
+      step_pattern_finish(goal, Ast.PatternVar{"", depth, Ast.QOne{}, span(file, beg, end)}, after, scope, depth, False{})
 
 def nat_pattern(+file: String, value: Nat, +beg: Nat, +end: Nat) -> Ast.SyntaxPattern:
   match value:
@@ -3978,13 +4000,13 @@ def nat_pattern(+file: String, value: Nat, +beg: Nat, +end: Nat) -> Ast.SyntaxPa
     case 1n+rest:
       Ast.PatternCtr{ "Succ",  [nat_pattern(file, rest, beg, end)],  span(file, beg, end)}
 
-def feedback_make_Kont_130390(capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: Nat, capture_5: List<&2, PatternFrame>, capture_6: List<&2, Scope>, capture_7: Nat, capture_8: PatternScanGoal) -> FeedbackFrame:
-  Kont_130390{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8}
+def feedback_make_Kont_130823(capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: Nat, capture_5: List<&2, PatternFrame>, capture_6: List<&2, Scope>, capture_7: Nat, capture_8: PatternScanGoal) -> FeedbackFrame:
+  Kont_130823{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8}
 
 def step_pattern_nat_tail_allowed(allowed: Bool, +file: String, value: Nat, +beg: Nat, +end: Nat, +tokens: List<&2, Lexer.Token>, frames: List<&2, PatternFrame>, +scope: List<&2, Scope>, +depth: Nat, +goal: PatternScanGoal) -> FeedbackControl:
   match allowed:
     case True{}:
-      feedback_attach(step_parse_pattern_atom(file, tokens, scope, depth), feedback_make_Kont_130390(file, value, beg, end, frames, scope, depth, goal))
+      feedback_attach(step_parse_pattern_atom(file, tokens, scope, depth), feedback_make_Kont_130823(file, value, beg, end, frames, scope, depth, goal))
     case False{}:
       step_pattern_finish(goal, Ast.PatternVar{"", depth, Ast.QOne{}, span(file, beg, end)}, tokens, scope, depth, False{})
 
@@ -4016,24 +4038,24 @@ def step_pattern_nat_read(result: Maybe<&2, Nat>, +file: String, +tokens: List<&
     case None{}:
       step_pattern_finish(goal, Ast.PatternVar{"", depth, Ast.QOne{}, span(file, beg, end)}, tokens, scope, depth, False{})
 
-def step_pattern_number_start(is_nat: Bool, +file: String, +text: String, +beg: Nat, +end: Nat, line: Nat, col: Nat, quantity: Ast.Quantity, +tokens: List<&2, Lexer.Token>, +frames: List<&2, PatternFrame>, +scope: List<&2, Scope>, +depth: Nat, +goal: PatternScanGoal) -> FeedbackControl:
+def step_pattern_number_start(is_nat: Bool, +file: String, +text: String, +beg: Nat, +end: Nat, +tokens: List<&2, Lexer.Token>, +frames: List<&2, PatternFrame>, +scope: List<&2, Scope>, +depth: Nat, +goal: PatternScanGoal) -> FeedbackControl:
   match is_nat:
     case True{}:
       step_pattern_nat_read(Nat.read(drop_nat_suffix(text)), file, tokens, beg, end, frames, scope, depth, goal)
     case False{}:
-      FeedbackControl{FeedbackCall{feedback_make_pattern_scan(tokens, file, PatternNoNat{Lexer.TokenInfo{Lexer.NumberToken{}, text, beg, end, line, col}, quantity, beg, end}, frames, scope, depth, goal)}, Nil{}, NoProgress{}, NoProgress{}}
+      step_pattern_literal_result(parse_scalar_number(file, text, beg, end, tokens), file, beg, end, frames, scope, depth, goal)
 
-def step_pattern_scan_row_10(ctx: PatternScanContext, +text: String, +beg: Nat, +end: Nat, line: Nat, col: Nat, +rest: List<&2, Lexer.Token>, quantity: Ast.Quantity) -> FeedbackControl:
+def step_pattern_scan_row_10(ctx: PatternScanContext, +text: String, +beg: Nat, +end: Nat, +rest: List<&2, Lexer.Token>) -> FeedbackControl:
   match ctx:
     case PatternScanContext{+file, +tokens, frames, +scope, +depth, goal}:
-      step_pattern_number_start(has_nat_suffix(text), file, text, beg, end, line, col, quantity, rest, frames, scope, depth, goal)
+      step_pattern_number_start(has_nat_suffix(text), file, text, beg, end, rest, frames, scope, depth, goal)
 
-def step_pattern_scan_row_13(ctx: PatternScanContext, quantity: Ast.Quantity, initial_beg: Nat, +cursor_tail_1: List<&2, Lexer.Token>) -> FeedbackControl:
+def step_pattern_scan_row_12(ctx: PatternScanContext, quantity: Ast.Quantity, initial_beg: Nat, +cursor_tail_1: List<&2, Lexer.Token>) -> FeedbackControl:
   match ctx:
     case PatternScanContext{+file, +tokens, frames, +scope, +depth, goal}:
       FeedbackControl{FeedbackCall{feedback_make_pattern_scan(cursor_tail_1, file, PatternExpect{quantity, initial_beg}, frames, scope, depth, goal)}, Nil{}, NoProgress{}, NoProgress{}}
 
-def step_pattern_scan_row_14(ctx: PatternScanContext, close_end: Nat, quantity: Ast.Quantity, +initial_beg: Nat, cursor_tail_1: List<&2, Lexer.Token>) -> FeedbackControl:
+def step_pattern_scan_row_13(ctx: PatternScanContext, close_end: Nat, quantity: Ast.Quantity, +initial_beg: Nat, cursor_tail_1: List<&2, Lexer.Token>) -> FeedbackControl:
   match ctx:
     case PatternScanContext{+file, +tokens, frames, +scope, +depth, +goal}:
       match frames:
@@ -4042,7 +4064,7 @@ def step_pattern_scan_row_14(ctx: PatternScanContext, close_end: Nat, quantity: 
         case _:
           step_pattern_finish(goal, Ast.PatternVar{"", depth, quantity, span(file, initial_beg, initial_beg)}, tokens, scope, depth, False{})
 
-def step_pattern_scan_row_15(ctx: PatternScanContext, +close_end: Nat, quantity: Ast.Quantity, +initial_beg: Nat, +cursor_tail_1: List<&2, Lexer.Token>) -> FeedbackControl:
+def step_pattern_scan_row_14(ctx: PatternScanContext, +close_end: Nat, quantity: Ast.Quantity, +initial_beg: Nat, +cursor_tail_1: List<&2, Lexer.Token>) -> FeedbackControl:
   match ctx:
     case PatternScanContext{+file, +tokens, frames, +scope, +depth, +goal}:
       match frames:
@@ -4053,22 +4075,12 @@ def step_pattern_scan_row_15(ctx: PatternScanContext, +close_end: Nat, quantity:
         case Nil{}:
           step_pattern_finish(goal, Ast.PatternVar{"", depth, quantity, span(file, initial_beg, initial_beg)}, tokens, scope, depth, False{})
 
-def feedback_make_Kont_137652(capture_1: List<&2, Lexer.Token>, capture_2: String, capture_3: Nat, capture_4: Nat, capture_5: List<&2, PatternFrame>, capture_6: List<&2, Scope>, capture_7: Nat, capture_8: PatternScanGoal) -> FeedbackFrame:
-  Kont_137652{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8}
-
-def step_pattern_literal_result(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool, +file: String, +beg: Nat, +end: Nat, frames: List<&2, PatternFrame>, +scope: List<&2, Scope>, +depth: Nat, +goal: PatternScanGoal) -> FeedbackControl:
-  match result:
-    case ((term, after), True{}):
-      feedback_attach(step_literal_pattern(term), feedback_make_Kont_137652(after, file, beg, end, frames, scope, depth, goal))
-    case ((_, after), False{}):
-      step_pattern_finish(goal, Ast.PatternVar{"", depth, Ast.QOne{}, span(file, beg, end)}, after, scope, depth, False{})
-
 def step_pattern_scan_row_2(ctx: PatternScanContext, text: String, +beg: Nat, +end: Nat, rest: List<&2, Lexer.Token>) -> FeedbackControl:
   match ctx:
     case PatternScanContext{+file, +tokens, frames, +scope, +depth, goal}:
       step_pattern_literal_result(parse_char_literal(file, text, beg, end, rest), file, beg, end, frames, scope, depth, goal)
 
-def step_pattern_scan_row_26(ctx: PatternScanContext, quantity: Ast.Quantity, +initial_beg: Nat) -> FeedbackControl:
+def step_pattern_scan_row_25(ctx: PatternScanContext, quantity: Ast.Quantity, +initial_beg: Nat) -> FeedbackControl:
   match ctx:
     case PatternScanContext{+file, +tokens, frames, +scope, +depth, +goal}:
       match frames:
@@ -4136,16 +4148,16 @@ def step_pattern_scan_expect_run(+token: Lexer.Token, action: PatternExpectActio
           step_pattern_scan_row_8(ctx, text, token_beg, token_end, cursor_tail_1)
         case PatternExpectActionRow9{quantity}:
           step_pattern_scan_row_9(ctx, text, token_end, quantity, initial_beg, cursor_tail_1)
-        case PatternExpectActionRow10{quantity}:
-          step_pattern_scan_row_10(ctx, text, token_beg, token_end, token_line, token_col, cursor_tail_1, quantity)
+        case PatternExpectActionRow10{}:
+          step_pattern_scan_row_10(ctx, text, token_beg, token_end, cursor_tail_1)
+        case PatternExpectActionRow12{quantity}:
+          step_pattern_scan_row_12(ctx, quantity, initial_beg, cursor_tail_1)
         case PatternExpectActionRow13{quantity}:
-          step_pattern_scan_row_13(ctx, quantity, initial_beg, cursor_tail_1)
+          step_pattern_scan_row_13(ctx, token_end, quantity, initial_beg, cursor_tail_1)
         case PatternExpectActionRow14{quantity}:
           step_pattern_scan_row_14(ctx, token_end, quantity, initial_beg, cursor_tail_1)
-        case PatternExpectActionRow15{quantity}:
-          step_pattern_scan_row_15(ctx, token_end, quantity, initial_beg, cursor_tail_1)
-        case PatternExpectActionRow26{quantity}:
-          step_pattern_scan_row_26(ctx, quantity, initial_beg)
+        case PatternExpectActionRow25{quantity}:
+          step_pattern_scan_row_25(ctx, quantity, initial_beg)
 
 def step_pattern_scan_expect_step(+token: Lexer.Token, quantity: Ast.Quantity, lookahead: Maybe<&2, Lexer.Token>, +initial_beg: Nat, ctx: PatternScanContext, +cursor_tail_1: List<&2, Lexer.Token>, +cursor_tail_1: List<&2, Lexer.Token>, +cursor_tail_2: List<&2, Lexer.Token>) -> FeedbackControl:
   step_pattern_scan_expect_run(token, pattern_expect_action(token, quantity, lookahead), initial_beg, ctx, cursor_tail_1, cursor_tail_1, cursor_tail_2)
@@ -4156,8 +4168,6 @@ def step_pattern_scan_token_step(mode: PatternScanMode, +token: Lexer.Token, +lo
       step_pattern_scan_expect_step(token, quantity, lookahead, initial_beg, PatternScanContext{file, tokens, frames, scope, depth, goal}, cursor_tail_1, cursor_tail_1, cursor_tail_2)
     case PatternCompleted{pattern}:
       step_pattern_scan_completed_step(token, lookahead, pattern, PatternScanContext{file, tokens, frames, scope, depth, goal}, cursor_tail_1, cursor_tail_1, cursor_tail_2)
-    case PatternNoNat{number, quantity, beg, end}:
-      step_pattern_finish(goal, Ast.PatternVar{"", depth, quantity, span(file, beg, end)}, number <> tokens, scope, depth, False{})
     case PatternBadNat{beg, end}:
       step_pattern_finish(goal, Ast.PatternVar{"", depth, Ast.QOne{}, span(file, beg, end)}, tokens, scope, depth, False{})
 
@@ -4272,11 +4282,11 @@ def feedback_pack_resume(+segment_progress: Progress, +control: FeedbackControl)
     case FeedbackControl{_, _, _, own_progress}:
       FeedbackResume{feedback_prefix_inherited(segment_progress, control), segment_progress, own_progress}
 
-def evaluation_context_parse_typed_operator_namespace_95542(v_11: List<&2, Lexer.Token>, v_303: Ast.SyntaxTerm) -> Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool):
+def evaluation_context_parse_typed_operator_namespace_96091(v_11: List<&2, Lexer.Token>, v_303: Ast.SyntaxTerm) -> Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool):
   ((v_303, v_11), True{})
 
-def feedback_resume_Kont_104178(capture_0: List<&2, Lexer.Token>, result: Ast.SyntaxTerm) -> FeedbackControl:
-  feedback_pack_5(evaluation_context_parse_typed_operator_namespace_95542(capture_0, result))
+def feedback_resume_Kont_104727(capture_0: List<&2, Lexer.Token>, result: Ast.SyntaxTerm) -> FeedbackControl:
+  feedback_pack_5(evaluation_context_parse_typed_operator_namespace_96091(capture_0, result))
 
 def nat_pattern_tail(+file: String, value: Nat, tail: Ast.SyntaxPattern, +beg: Nat, +end: Nat) -> Ast.SyntaxPattern:
   match value:
@@ -4299,7 +4309,7 @@ def step_pattern_nat_tail_result(result: (Ast.SyntaxPattern & List<&2, Lexer.Tok
     case ((_, after), ((_, _), False{})):
       step_pattern_finish(goal, Ast.PatternVar{"", depth, Ast.QOne{}, span(file, beg, end)}, after, scope, depth, False{})
 
-def feedback_resume_Kont_130390(capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: Nat, capture_5: List<&2, PatternFrame>, capture_6: List<&2, Scope>, capture_7: Nat, capture_8: PatternScanGoal, result: ((Ast.SyntaxPattern & List<&2, Lexer.Token>) & ((List<&2, Scope> & Nat) & Bool))) -> FeedbackControl:
+def feedback_resume_Kont_130823(capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: Nat, capture_5: List<&2, PatternFrame>, capture_6: List<&2, Scope>, capture_7: Nat, capture_8: PatternScanGoal, result: ((Ast.SyntaxPattern & List<&2, Lexer.Token>) & ((List<&2, Scope> & Nat) & Bool))) -> FeedbackControl:
   step_pattern_nat_tail_result(result, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8)
 
 def literal_pattern_fields_cons(result: Maybe<&2, List<&2, Ast.SyntaxPattern>>, head: Ast.SyntaxPattern) -> Maybe<&2, List<&2, Ast.SyntaxPattern>>:
@@ -4309,20 +4319,20 @@ def literal_pattern_fields_cons(result: Maybe<&2, List<&2, Ast.SyntaxPattern>>, 
     case None{}:
       None{}
 
-def feedback_resume_Kont_135760(capture_1: Ast.SyntaxPattern, result: Maybe<&2, List<&2, Ast.SyntaxPattern>>) -> FeedbackControl:
+def feedback_resume_Kont_136112(capture_1: Ast.SyntaxPattern, result: Maybe<&2, List<&2, Ast.SyntaxPattern>>) -> FeedbackControl:
   feedback_pack_14(literal_pattern_fields_cons(result, capture_1))
 
-def feedback_make_Kont_135760(capture_1: Ast.SyntaxPattern) -> FeedbackFrame:
-  Kont_135760{capture_1}
+def feedback_make_Kont_136112(capture_1: Ast.SyntaxPattern) -> FeedbackFrame:
+  Kont_136112{capture_1}
 
 def step_literal_pattern_field(result: Maybe<&2, Ast.SyntaxPattern>, rest: List<&2, Ast.SyntaxTerm>) -> FeedbackControl:
   match result:
     case Some{head}:
-      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_literal_pattern_fields(rest)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_135760(head))
+      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_literal_pattern_fields(rest)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_136112(head))
     case None{}:
       feedback_pack_14(None{})
 
-def feedback_resume_Kont_135996(capture_1: List<&2, Ast.SyntaxTerm>, result: Maybe<&2, Ast.SyntaxPattern>) -> FeedbackControl:
+def feedback_resume_Kont_136348(capture_1: List<&2, Ast.SyntaxTerm>, result: Maybe<&2, Ast.SyntaxPattern>) -> FeedbackControl:
   step_literal_pattern_field(result, capture_1)
 
 def literal_pattern_constructor(result: Maybe<&2, List<&2, Ast.SyntaxPattern>>, key: String, position: Ast.SourceSpan) -> Maybe<&2, Ast.SyntaxPattern>:
@@ -4332,7 +4342,7 @@ def literal_pattern_constructor(result: Maybe<&2, List<&2, Ast.SyntaxPattern>>, 
     case None{}:
       None{}
 
-def feedback_resume_Kont_136505(capture_1: String, capture_2: Ast.SourceSpan, result: Maybe<&2, List<&2, Ast.SyntaxPattern>>) -> FeedbackControl:
+def feedback_resume_Kont_136857(capture_1: String, capture_2: Ast.SourceSpan, result: Maybe<&2, List<&2, Ast.SyntaxPattern>>) -> FeedbackControl:
   feedback_pack_13(literal_pattern_constructor(result, capture_1, capture_2))
 
 def step_pattern_literal_finish(result: Maybe<&2, Ast.SyntaxPattern>, +after: List<&2, Lexer.Token>, +file: String, beg: Nat, end: Nat, frames: List<&2, PatternFrame>, +scope: List<&2, Scope>, +depth: Nat, +goal: PatternScanGoal) -> FeedbackControl:
@@ -4342,7 +4352,7 @@ def step_pattern_literal_finish(result: Maybe<&2, Ast.SyntaxPattern>, +after: Li
     case None{}:
       step_pattern_finish(goal, Ast.PatternVar{"", depth, Ast.QOne{}, span(file, beg, end)}, after, scope, depth, False{})
 
-def feedback_resume_Kont_137652(capture_1: List<&2, Lexer.Token>, capture_2: String, capture_3: Nat, capture_4: Nat, capture_5: List<&2, PatternFrame>, capture_6: List<&2, Scope>, capture_7: Nat, capture_8: PatternScanGoal, result: Maybe<&2, Ast.SyntaxPattern>) -> FeedbackControl:
+def feedback_resume_Kont_138004(capture_1: List<&2, Lexer.Token>, capture_2: String, capture_3: Nat, capture_4: Nat, capture_5: List<&2, PatternFrame>, capture_6: List<&2, Scope>, capture_7: Nat, capture_8: PatternScanGoal, result: Maybe<&2, Ast.SyntaxPattern>) -> FeedbackControl:
   step_pattern_literal_finish(result, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8)
 
 def feedback_pack_4(result: ((Ast.SyntaxPattern & List<&2, Lexer.Token>) & ((List<&2, Scope> & Nat) & Bool))) -> FeedbackControl:
@@ -4357,18 +4367,18 @@ def pattern_tuple_tail_result(result: (Ast.SyntaxPattern & List<&2, Lexer.Token>
     case ((_, after), ((scope, depth), False{})):
       ((left, after), ((scope, depth), False{}))
 
-def feedback_resume_Kont_139383(capture_1: String, capture_2: Nat, capture_3: Ast.SyntaxPattern, result: ((Ast.SyntaxPattern & List<&2, Lexer.Token>) & ((List<&2, Scope> & Nat) & Bool))) -> FeedbackControl:
+def feedback_resume_Kont_139735(capture_1: String, capture_2: Nat, capture_3: Ast.SyntaxPattern, result: ((Ast.SyntaxPattern & List<&2, Lexer.Token>) & ((List<&2, Scope> & Nat) & Bool))) -> FeedbackControl:
   feedback_pack_4(pattern_tuple_tail_result(result, capture_1, capture_2, capture_3))
 
-def feedback_make_Kont_139383(capture_1: String, capture_2: Nat, capture_3: Ast.SyntaxPattern) -> FeedbackFrame:
-  Kont_139383{capture_1, capture_2, capture_3}
+def feedback_make_Kont_139735(capture_1: String, capture_2: Nat, capture_3: Ast.SyntaxPattern) -> FeedbackFrame:
+  Kont_139735{capture_1, capture_2, capture_3}
 
 def step_pattern_tuple_delimiter(+tokens: List<&2, Lexer.Token>, +file: String, +beg: Nat, +left: Ast.SyntaxPattern, +scope: List<&2, Scope>, +depth: Nat) -> FeedbackControl:
   match tokens:
     case Lexer.TokenInfo{_, ")", _, _, _, _} <> rest:
       feedback_pack_4(((left, rest), ((scope, depth), True{})))
     case Lexer.TokenInfo{_, ",", _, _, _, _} <> rest:
-      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_parse_pattern_tuple(file, beg, rest, scope, depth)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_139383(file, beg, left))
+      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_parse_pattern_tuple(file, beg, rest, scope, depth)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_139735(file, beg, left))
     case Nil{}:
       feedback_pack_4(((left, (Nil{} : List<&2, Lexer.Token>)), ((scope, depth), False{})))
     case Con{feedback_field_6_0, feedback_field_6_1}:
@@ -4381,7 +4391,7 @@ def step_pattern_tuple_head_result(result: ((Ast.SyntaxPattern & List<&2, Lexer.
     case ((pattern, after), ((scope, depth), False{})):
       feedback_pack_4(((pattern, after), ((scope, depth), False{})))
 
-def feedback_resume_Kont_140214(capture_1: String, capture_2: Nat, result: ((Ast.SyntaxPattern & List<&2, Lexer.Token>) & ((List<&2, Scope> & Nat) & Bool))) -> FeedbackControl:
+def feedback_resume_Kont_140566(capture_1: String, capture_2: Nat, result: ((Ast.SyntaxPattern & List<&2, Lexer.Token>) & ((List<&2, Scope> & Nat) & Bool))) -> FeedbackControl:
   step_pattern_tuple_head_result(result, capture_1, capture_2)
 
 def step_pattern_group_result(result: (Ast.SyntaxPattern & List<&2, Lexer.Token>) & ((List<&2, Scope> & Nat) & Bool), file: String, frames: List<&2, PatternFrame>, scope: List<&2, Scope>, depth: Nat, +goal: PatternScanGoal) -> FeedbackControl:
@@ -4391,7 +4401,7 @@ def step_pattern_group_result(result: (Ast.SyntaxPattern & List<&2, Lexer.Token>
     case ((pattern, after), ((_, _), False{})):
       step_pattern_finish(goal, pattern, after, scope, depth, False{})
 
-def feedback_resume_Kont_143575(capture_1: String, capture_2: List<&2, PatternFrame>, capture_3: List<&2, Scope>, capture_4: Nat, capture_5: PatternScanGoal, result: ((Ast.SyntaxPattern & List<&2, Lexer.Token>) & ((List<&2, Scope> & Nat) & Bool))) -> FeedbackControl:
+def feedback_resume_Kont_143905(capture_1: String, capture_2: List<&2, PatternFrame>, capture_3: List<&2, Scope>, capture_4: Nat, capture_5: PatternScanGoal, result: ((Ast.SyntaxPattern & List<&2, Lexer.Token>) & ((List<&2, Scope> & Nat) & Bool))) -> FeedbackControl:
   step_pattern_group_result(result, capture_1, capture_2, capture_3, capture_4, capture_5)
 
 def pattern_beg(pattern: Ast.SyntaxPattern) -> Nat:
@@ -4409,7 +4419,7 @@ def step_pattern_cons_result(result: (Ast.SyntaxPattern & List<&2, Lexer.Token>)
     case ((_, after), ((_, _), False{})):
       step_pattern_finish(goal, left, after, scope, depth, False{})
 
-def feedback_resume_Kont_149539(capture_1: String, capture_2: Ast.SyntaxPattern, capture_3: List<&2, PatternFrame>, capture_4: List<&2, Scope>, capture_5: Nat, capture_6: PatternScanGoal, result: ((Ast.SyntaxPattern & List<&2, Lexer.Token>) & ((List<&2, Scope> & Nat) & Bool))) -> FeedbackControl:
+def feedback_resume_Kont_149803(capture_1: String, capture_2: Ast.SyntaxPattern, capture_3: List<&2, PatternFrame>, capture_4: List<&2, Scope>, capture_5: Nat, capture_6: PatternScanGoal, result: ((Ast.SyntaxPattern & List<&2, Lexer.Token>) & ((List<&2, Scope> & Nat) & Bool))) -> FeedbackControl:
   step_pattern_cons_result(result, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6)
 
 def pattern_single_result(result: PatternScanOutcome, file: String, depth: Nat) -> (Ast.SyntaxPattern & List<&2, Lexer.Token>) & ((List<&2, Scope> & Nat) & Bool):
@@ -4419,10 +4429,10 @@ def pattern_single_result(result: PatternScanOutcome, file: String, depth: Nat) 
     case PatternCaseOutcome{patterns, after, scope, next_depth, ok}:
       ((Ast.PatternVar{"", depth, Ast.QOne{}, span(file, 0n, 0n)}, after), ((scope, next_depth), False{}))
 
-def feedback_resume_Kont_171514(capture_1: String, capture_2: Nat, result: PatternScanOutcome) -> FeedbackControl:
+def feedback_resume_Kont_171361(capture_1: String, capture_2: Nat, result: PatternScanOutcome) -> FeedbackControl:
   feedback_pack_4(pattern_single_result(result, capture_1, capture_2))
 
-def feedback_resume_Kont_180668(capture_1: String, capture_2: String, capture_3: Nat, capture_4: Nat, capture_5: List<&2, Lexer.Token>, capture_6: List<&2, Scope>, capture_7: Nat, result: ((List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_180515(capture_1: String, capture_2: String, capture_3: Nat, capture_4: Nat, capture_5: List<&2, Lexer.Token>, capture_6: List<&2, Scope>, capture_7: Nat, result: ((List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   step_parse_do_atom_args_result(result, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7)
 
 def parse_kind_close(close: Lexer.Token, tail: List<&2, Lexer.Token>, term: Ast.SyntaxTerm, file: String, beg: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
@@ -4441,7 +4451,7 @@ def parse_kind_result(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool, f
     case _:
       ((Ast.TermHole{"parse-error: expected a term", span(file, beg, end)}, rest), False{})
 
-def feedback_resume_Kont_182284(capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: List<&2, Lexer.Token>, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_182131(capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: List<&2, Lexer.Token>, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   feedback_pack_5(parse_kind_result(result, capture_1, capture_2, capture_3, capture_4))
 
 def parse_template_term_result(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool, file: String, beg: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
@@ -4451,7 +4461,7 @@ def parse_template_term_result(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>) 
     case ((term, after), False{}):
       ((term, after), False{})
 
-def feedback_resume_Kont_188365(capture_1: String, capture_2: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_188212(capture_1: String, capture_2: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   feedback_pack_5(parse_template_term_result(result, capture_1, capture_2))
 
 def append_terms(left: List<&2, Ast.SyntaxTerm>, right: List<&2, Ast.SyntaxTerm>) -> List<&2, Ast.SyntaxTerm>:
@@ -4521,21 +4531,21 @@ def parse_do_return_value_result(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>
     case ((value, after_value), False{}):
       ((value, after_value), False{})
 
-def feedback_resume_Kont_188877(capture_1: String, capture_2: String, capture_3: List<&2, Ast.SyntaxTerm>, capture_4: Nat, capture_5: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_188724(capture_1: String, capture_2: String, capture_3: List<&2, Ast.SyntaxTerm>, capture_4: Nat, capture_5: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   feedback_pack_5(parse_do_return_value_result(result, capture_1, capture_2, capture_3, capture_4, capture_5))
 
-def feedback_make_Kont_193278(lexical_capture_4: String, lexical_capture_6: String, lexical_capture_8: List<&2, Ast.SyntaxTerm>, lexical_capture_10: String, lexical_capture_12: Nat, lexical_capture_13: Ast.SyntaxTerm, lexical_capture_29: Ast.SyntaxTerm, lexical_capture_15: Nat, lexical_capture_17: Nat, lexical_capture_22: Nat) -> FeedbackFrame:
-  Kont_193278{lexical_capture_4, lexical_capture_6, lexical_capture_8, lexical_capture_10, lexical_capture_12, lexical_capture_13, lexical_capture_29, lexical_capture_15, lexical_capture_17, lexical_capture_22}
+def feedback_make_Kont_193125(lexical_capture_4: String, lexical_capture_6: String, lexical_capture_8: List<&2, Ast.SyntaxTerm>, lexical_capture_10: String, lexical_capture_12: Nat, lexical_capture_13: Ast.SyntaxTerm, lexical_capture_29: Ast.SyntaxTerm, lexical_capture_15: Nat, lexical_capture_17: Nat, lexical_capture_22: Nat) -> FeedbackFrame:
+  Kont_193125{lexical_capture_4, lexical_capture_6, lexical_capture_8, lexical_capture_10, lexical_capture_12, lexical_capture_13, lexical_capture_29, lexical_capture_15, lexical_capture_17, lexical_capture_22}
 
 def step_parse_do_typed_bind_value_result(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool, +file: String, +monad: String, +args: List<&2, Ast.SyntaxTerm>, +key: String, key_beg: Nat, ty: Ast.SyntaxTerm, +beg: Nat, +end: Nat, scope: List<&2, Scope>, +depth: Nat, col: Nat) -> FeedbackControl:
   match result:
     case ((value, after_value), True{}):
       next_scope = extend_scope(key, depth, scope)
-      feedback_attach(step_parse_do_return(file, monad, args, skip_rewrite_semicolon(after_value), beg, end, next_scope, (depth + 1n : Nat), col), feedback_make_Kont_193278(file, monad, args, key, key_beg, ty, value, beg, end, depth))
+      feedback_attach(step_parse_do_return(file, monad, args, skip_rewrite_semicolon(after_value), beg, end, next_scope, (depth + 1n : Nat), col), feedback_make_Kont_193125(file, monad, args, key, key_beg, ty, value, beg, end, depth))
     case ((value, after_value), False{}):
       feedback_pack_5(((value, after_value), False{}))
 
-def feedback_resume_Kont_190204(capture_1: String, capture_2: String, capture_3: List<&2, Ast.SyntaxTerm>, capture_4: String, capture_5: Nat, capture_6: Ast.SyntaxTerm, capture_7: Nat, capture_8: Nat, capture_9: List<&2, Scope>, capture_10: Nat, capture_11: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_190051(capture_1: String, capture_2: String, capture_3: List<&2, Ast.SyntaxTerm>, capture_4: String, capture_5: Nat, capture_6: Ast.SyntaxTerm, capture_7: Nat, capture_8: Nat, capture_9: List<&2, Scope>, capture_10: Nat, capture_11: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   step_parse_do_typed_bind_value_result(result, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, capture_9, capture_10, capture_11)
 
 def parse_do_typed_bind_call_result(result: Ast.SyntaxTerm & Bool, after_body: List<&2, Lexer.Token>) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
@@ -4556,7 +4566,7 @@ def with_term_result(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool, us
     case ((term, after), ok):
       use(term, after, ok)
 
-def feedback_resume_Kont_193278(lexical_capture_4: String, lexical_capture_6: String, lexical_capture_8: List<&2, Ast.SyntaxTerm>, lexical_capture_10: String, lexical_capture_12: Nat, lexical_capture_13: Ast.SyntaxTerm, lexical_capture_29: Ast.SyntaxTerm, lexical_capture_15: Nat, lexical_capture_17: Nat, lexical_capture_22: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_193125(lexical_capture_4: String, lexical_capture_6: String, lexical_capture_8: List<&2, Ast.SyntaxTerm>, lexical_capture_10: String, lexical_capture_12: Nat, lexical_capture_13: Ast.SyntaxTerm, lexical_capture_29: Ast.SyntaxTerm, lexical_capture_15: Nat, lexical_capture_17: Nat, lexical_capture_22: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   feedback_pack_5(with_term_result(result, body => after_body => ok_body => parse_do_typed_bind_body_result(ok_body, body, after_body, lexical_capture_4, lexical_capture_6, lexical_capture_8, lexical_capture_10, lexical_capture_12, lexical_capture_13, lexical_capture_29, lexical_capture_15, lexical_capture_17, lexical_capture_22)))
 
 def do_token_action(bind_token: Lexer.Token) -> DoTokenAction:
@@ -4571,17 +4581,17 @@ def do_token_action(bind_token: Lexer.Token) -> DoTokenAction:
 def do_token_branch_2(+bind_token: Lexer.Token, after_bind: List<&2, Lexer.Token>, +file: String) -> Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool):
   ((Ast.TermHole{"parse-error: expected <- in do binding", span(file, token_beg(bind_token), token_end(bind_token))}, bind_token <> after_bind), False{})
 
-def feedback_make_Kont_190204(capture_1: String, capture_2: String, capture_3: List<&2, Ast.SyntaxTerm>, capture_4: String, capture_5: Nat, capture_6: Ast.SyntaxTerm, capture_7: Nat, capture_8: Nat, capture_9: List<&2, Scope>, capture_10: Nat, capture_11: Nat) -> FeedbackFrame:
-  Kont_190204{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, capture_9, capture_10, capture_11}
+def feedback_make_Kont_190051(capture_1: String, capture_2: String, capture_3: List<&2, Ast.SyntaxTerm>, capture_4: String, capture_5: Nat, capture_6: Ast.SyntaxTerm, capture_7: Nat, capture_8: Nat, capture_9: List<&2, Scope>, capture_10: Nat, capture_11: Nat) -> FeedbackFrame:
+  Kont_190051{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, capture_9, capture_10, capture_11}
 
 def step_do_token_branch_0(after_bind: List<&2, Lexer.Token>, ty: Ast.SyntaxTerm, +file: String, monad: String, args: List<&2, Ast.SyntaxTerm>, key: String, key_beg: Nat, beg: Nat, end: Nat, +scope: List<&2, Scope>, +depth: Nat, col: Nat) -> FeedbackControl:
-  feedback_attach(step_parse_term(file, after_bind, scope, depth, 0n), feedback_make_Kont_190204(file, monad, args, key, key_beg, ty, beg, end, scope, depth, col))
+  feedback_attach(step_parse_term(file, after_bind, scope, depth, 0n), feedback_make_Kont_190051(file, monad, args, key, key_beg, ty, beg, end, scope, depth, col))
 
-def feedback_make_Kont_195872(capture_1: String, capture_2: String, capture_3: List<&2, Ast.SyntaxTerm>, capture_4: String, capture_5: Nat, capture_6: Ast.SyntaxTerm, capture_7: Nat, capture_8: Nat, capture_9: List<&2, Scope>, capture_10: Nat, capture_11: Nat) -> FeedbackFrame:
-  Kont_195872{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, capture_9, capture_10, capture_11}
+def feedback_make_Kont_195719(capture_1: String, capture_2: String, capture_3: List<&2, Ast.SyntaxTerm>, capture_4: String, capture_5: Nat, capture_6: Ast.SyntaxTerm, capture_7: Nat, capture_8: Nat, capture_9: List<&2, Scope>, capture_10: Nat, capture_11: Nat) -> FeedbackFrame:
+  Kont_195719{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, capture_9, capture_10, capture_11}
 
 def step_parse_do_assignment(+file: String, monad: String, args: List<&2, Ast.SyntaxTerm>, key: String, key_beg: Nat, ty: Ast.SyntaxTerm, tokens: List<&2, Lexer.Token>, beg: Nat, end: Nat, +scope: List<&2, Scope>, +depth: Nat, col: Nat) -> FeedbackControl:
-  feedback_attach(step_parse_term(file, tokens, scope, depth, 0n), feedback_make_Kont_195872(file, monad, args, key, key_beg, ty, beg, end, scope, depth, col))
+  feedback_attach(step_parse_term(file, tokens, scope, depth, 0n), feedback_make_Kont_195719(file, monad, args, key, key_beg, ty, beg, end, scope, depth, col))
 
 def step_do_token_branch_1(after_bind: List<&2, Lexer.Token>, ty: Ast.SyntaxTerm, +file: String, monad: String, args: List<&2, Ast.SyntaxTerm>, key: String, key_beg: Nat, beg: Nat, end: Nat, +scope: List<&2, Scope>, +depth: Nat, col: Nat) -> FeedbackControl:
   step_parse_do_assignment(file, monad, args, key, key_beg, ty, after_bind, beg, end, scope, depth, col)
@@ -4607,7 +4617,7 @@ def step_parse_do_typed_bind_type_result(result: (Ast.SyntaxTerm & List<&2, Lexe
     case ((ty, after_ty), True{}):
       feedback_pack_5(((ty, after_ty), False{}))
 
-def feedback_resume_Kont_194209(capture_1: String, capture_2: String, capture_3: List<&2, Ast.SyntaxTerm>, capture_4: String, capture_5: Nat, capture_6: Nat, capture_7: Nat, capture_8: List<&2, Scope>, capture_9: Nat, capture_10: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_194056(capture_1: String, capture_2: String, capture_3: List<&2, Ast.SyntaxTerm>, capture_4: String, capture_5: Nat, capture_6: Nat, capture_7: Nat, capture_8: List<&2, Scope>, capture_9: Nat, capture_10: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   step_parse_do_typed_bind_type_result(result, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, capture_9, capture_10)
 
 def make_do_assignment_result(term: Ast.SyntaxTerm, after_body: List<&2, Lexer.Token>) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
@@ -4625,29 +4635,29 @@ def parse_do_assignment_body_result(ok_body: Bool, body: Ast.SyntaxTerm, +after_
     case False{}:
       ((body, after_body), False{})
 
-def feedback_resume_Kont_195221(lexical_capture_4: String, lexical_capture_10: String, lexical_capture_12: Nat, lexical_capture_22: Nat, lexical_capture_13: Ast.SyntaxTerm, lexical_capture_29: Ast.SyntaxTerm, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_195068(lexical_capture_4: String, lexical_capture_10: String, lexical_capture_12: Nat, lexical_capture_22: Nat, lexical_capture_13: Ast.SyntaxTerm, lexical_capture_29: Ast.SyntaxTerm, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   feedback_pack_5(with_term_result(result, body => after_body => ok_body => parse_do_assignment_body_result(ok_body, body, after_body, lexical_capture_4, lexical_capture_10, lexical_capture_12, lexical_capture_22, lexical_capture_13, lexical_capture_29)))
 
-def feedback_make_Kont_195221(lexical_capture_4: String, lexical_capture_10: String, lexical_capture_12: Nat, lexical_capture_22: Nat, lexical_capture_13: Ast.SyntaxTerm, lexical_capture_29: Ast.SyntaxTerm) -> FeedbackFrame:
-  Kont_195221{lexical_capture_4, lexical_capture_10, lexical_capture_12, lexical_capture_22, lexical_capture_13, lexical_capture_29}
+def feedback_make_Kont_195068(lexical_capture_4: String, lexical_capture_10: String, lexical_capture_12: Nat, lexical_capture_22: Nat, lexical_capture_13: Ast.SyntaxTerm, lexical_capture_29: Ast.SyntaxTerm) -> FeedbackFrame:
+  Kont_195068{lexical_capture_4, lexical_capture_10, lexical_capture_12, lexical_capture_22, lexical_capture_13, lexical_capture_29}
 
 def step_parse_do_assignment_value_result(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool, +file: String, monad: String, args: List<&2, Ast.SyntaxTerm>, +key: String, key_beg: Nat, ty: Ast.SyntaxTerm, beg: Nat, end: Nat, scope: List<&2, Scope>, +depth: Nat, col: Nat) -> FeedbackControl:
   match result:
     case ((value, after_value), True{}):
       next_scope = extend_scope(key, depth, scope)
-      feedback_attach(step_parse_do_return(file, monad, args, skip_rewrite_semicolon(after_value), beg, end, next_scope, (depth + 1n : Nat), col), feedback_make_Kont_195221(file, key, key_beg, depth, ty, value))
+      feedback_attach(step_parse_do_return(file, monad, args, skip_rewrite_semicolon(after_value), beg, end, next_scope, (depth + 1n : Nat), col), feedback_make_Kont_195068(file, key, key_beg, depth, ty, value))
     case ((value, after_value), False{}):
       feedback_pack_5(((value, after_value), False{}))
 
-def feedback_resume_Kont_195872(capture_1: String, capture_2: String, capture_3: List<&2, Ast.SyntaxTerm>, capture_4: String, capture_5: Nat, capture_6: Ast.SyntaxTerm, capture_7: Nat, capture_8: Nat, capture_9: List<&2, Scope>, capture_10: Nat, capture_11: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_195719(capture_1: String, capture_2: String, capture_3: List<&2, Ast.SyntaxTerm>, capture_4: String, capture_5: Nat, capture_6: Ast.SyntaxTerm, capture_7: Nat, capture_8: Nat, capture_9: List<&2, Scope>, capture_10: Nat, capture_11: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   step_parse_do_assignment_value_result(result, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, capture_9, capture_10, capture_11)
 
-def feedback_make_Kont_199867(lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: List<&2, Ast.SyntaxTerm>, lexical_capture_6: Ast.SyntaxTerm, lexical_capture_7: Ast.SyntaxTerm, lexical_capture_11: Nat, lexical_capture_13: Nat, lexical_capture_18: Nat) -> FeedbackFrame:
-  Kont_199867{lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_6, lexical_capture_7, lexical_capture_11, lexical_capture_13, lexical_capture_18}
+def feedback_make_Kont_199714(lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: List<&2, Ast.SyntaxTerm>, lexical_capture_6: Ast.SyntaxTerm, lexical_capture_7: Ast.SyntaxTerm, lexical_capture_11: Nat, lexical_capture_13: Nat, lexical_capture_18: Nat) -> FeedbackFrame:
+  Kont_199714{lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_6, lexical_capture_7, lexical_capture_11, lexical_capture_13, lexical_capture_18}
 
 def step_parse_do_bind(+file: String, +monad: String, +args: List<&2, Ast.SyntaxTerm>, ty: Ast.SyntaxTerm, value: Ast.SyntaxTerm, tokens: List<&2, Lexer.Token>, +beg: Nat, +end: Nat, scope: List<&2, Scope>, +depth: Nat, col: Nat) -> FeedbackControl:
   next_scope = extend_scope("_", depth, scope)
-  feedback_attach(step_parse_do_return(file, monad, args, skip_rewrite_semicolon(tokens), beg, end, next_scope, (depth + 1n : Nat), col), feedback_make_Kont_199867(file, monad, args, ty, value, beg, end, depth))
+  feedback_attach(step_parse_do_return(file, monad, args, skip_rewrite_semicolon(tokens), beg, end, next_scope, (depth + 1n : Nat), col), feedback_make_Kont_199714(file, monad, args, ty, value, beg, end, depth))
 
 def step_parse_do_untyped_value_result(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool, file: String, monad: String, args: List<&2, Ast.SyntaxTerm>, action: Ast.SyntaxTerm, beg: Nat, end: Nat, scope: List<&2, Scope>, depth: Nat, col: Nat) -> FeedbackControl:
   match result:
@@ -4656,11 +4666,11 @@ def step_parse_do_untyped_value_result(result: (Ast.SyntaxTerm & List<&2, Lexer.
     case ((value, after_value), False{}):
       feedback_pack_5(((value, after_value), False{}))
 
-def feedback_resume_Kont_197937(capture_1: String, capture_2: String, capture_3: List<&2, Ast.SyntaxTerm>, capture_4: Ast.SyntaxTerm, capture_5: Nat, capture_6: Nat, capture_7: List<&2, Scope>, capture_8: Nat, capture_9: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_197784(capture_1: String, capture_2: String, capture_3: List<&2, Ast.SyntaxTerm>, capture_4: Ast.SyntaxTerm, capture_5: Nat, capture_6: Nat, capture_7: List<&2, Scope>, capture_8: Nat, capture_9: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   step_parse_do_untyped_value_result(result, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, capture_9)
 
-def feedback_make_Kont_197937(capture_1: String, capture_2: String, capture_3: List<&2, Ast.SyntaxTerm>, capture_4: Ast.SyntaxTerm, capture_5: Nat, capture_6: Nat, capture_7: List<&2, Scope>, capture_8: Nat, capture_9: Nat) -> FeedbackFrame:
-  Kont_197937{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, capture_9}
+def feedback_make_Kont_197784(capture_1: String, capture_2: String, capture_3: List<&2, Ast.SyntaxTerm>, capture_4: Ast.SyntaxTerm, capture_5: Nat, capture_6: Nat, capture_7: List<&2, Scope>, capture_8: Nat, capture_9: Nat) -> FeedbackFrame:
+  Kont_197784{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, capture_9}
 
 def do_final_type(args: List<&2, Ast.SyntaxTerm>, +head: Ast.SyntaxTerm, +source_span: Ast.SourceSpan) -> Ast.SyntaxTerm:
   match args:
@@ -4710,7 +4720,7 @@ def step_parse_do_untyped_after_action(+file: String, +monad: String, +args: Lis
     case +bind_token <> after_bind:
       match bind_token:
         case Lexer.TokenInfo{_, "<-", _, _, _, _}:
-          feedback_attach(step_parse_term(file, after_bind, scope, depth, 0n), feedback_make_Kont_197937(file, monad, args, action, beg, end, scope, depth, col))
+          feedback_attach(step_parse_term(file, after_bind, scope, depth, 0n), feedback_make_Kont_197784(file, monad, args, action, beg, end, scope, depth, col))
         case _:
           step_parse_do_untyped_step(file, monad, args, action, after_action, beg, end, scope, depth, col)
     case Nil{}:
@@ -4723,15 +4733,15 @@ def step_parse_do_untyped_action_result(ok: Bool, +action: Ast.SyntaxTerm, +afte
     case False{}:
       feedback_pack_5(((action, after_action), False{}))
 
-def feedback_consumer_196249(v_280: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_4: String, v_6: String, v_8: List<&2, Ast.SyntaxTerm>, v_10: Nat, v_12: Nat, v_15: List<&2, Scope>, v_17: Nat, v_19: Nat) -> FeedbackControl:
+def feedback_consumer_196096(v_280: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_4: String, v_6: String, v_8: List<&2, Ast.SyntaxTerm>, v_10: Nat, v_12: Nat, v_15: List<&2, Scope>, v_17: Nat, v_19: Nat) -> FeedbackControl:
   match v_280:
     case ((v_281, v_282), v_283):
       step_parse_do_untyped_action_result(v_283, v_281, v_282, v_4, v_6, v_8, v_10, v_12, v_15, v_17, v_19)
 
 def step_parse_do_untyped_result(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool, file: String, monad: String, args: List<&2, Ast.SyntaxTerm>, beg: Nat, end: Nat, scope: List<&2, Scope>, depth: Nat, col: Nat) -> FeedbackControl:
-  feedback_consumer_196249(result, file, monad, args, beg, end, scope, depth, col)
+  feedback_consumer_196096(result, file, monad, args, beg, end, scope, depth, col)
 
-def feedback_resume_Kont_198505(capture_1: String, capture_2: String, capture_3: List<&2, Ast.SyntaxTerm>, capture_4: Nat, capture_5: Nat, capture_6: List<&2, Scope>, capture_7: Nat, capture_8: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_198352(capture_1: String, capture_2: String, capture_3: List<&2, Ast.SyntaxTerm>, capture_4: Nat, capture_5: Nat, capture_6: List<&2, Scope>, capture_7: Nat, capture_8: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   step_parse_do_untyped_result(result, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8)
 
 def parse_do_bind_call_result(result: Ast.SyntaxTerm & Bool, after_body: List<&2, Lexer.Token>) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
@@ -4746,14 +4756,14 @@ def parse_do_bind_body_result(ok_body: Bool, body: Ast.SyntaxTerm, +after_body: 
     case False{}:
       ((body, after_body), False{})
 
-def feedback_resume_Kont_199867(lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: List<&2, Ast.SyntaxTerm>, lexical_capture_6: Ast.SyntaxTerm, lexical_capture_7: Ast.SyntaxTerm, lexical_capture_11: Nat, lexical_capture_13: Nat, lexical_capture_18: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_199714(lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: List<&2, Ast.SyntaxTerm>, lexical_capture_6: Ast.SyntaxTerm, lexical_capture_7: Ast.SyntaxTerm, lexical_capture_11: Nat, lexical_capture_13: Nat, lexical_capture_18: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   feedback_pack_5(with_term_result(result, body => after_body => ok_body => parse_do_bind_body_result(ok_body, body, after_body, lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_6, lexical_capture_7, lexical_capture_11, lexical_capture_13, lexical_capture_18)))
 
-def feedback_make_Kont_81687(capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: Nat, capture_5: List<&2, Lexer.Token>, capture_6: Ast.SyntaxTerm) -> FeedbackFrame:
-  Kont_81687{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6}
+def feedback_make_Kont_82236(capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: Nat, capture_5: List<&2, Lexer.Token>, capture_6: Ast.SyntaxTerm) -> FeedbackFrame:
+  Kont_82236{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6}
 
 def step_parse_nat_literal_tail_quantity_0(v_12: List<&2, Lexer.Token>, +v_17: List<&2, Lexer.Token>, +v_16: Ast.SyntaxTerm, v_4: String, +v_6: Nat, v_8: Nat, v_10: Nat) -> FeedbackControl:
-  feedback_attach(step_nat_literal_tokens(v_12, token_end_of(v_17, token_end_first(v_16))), feedback_make_Kont_81687(v_4, v_6, v_8, v_10, v_17, v_16))
+  feedback_attach(step_nat_literal_tokens(v_12, token_end_of(v_17, token_end_first(v_16))), feedback_make_Kont_82236(v_4, v_6, v_8, v_10, v_17, v_16))
 
 def step_parse_nat_literal_tail(v_2: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_4: String, +v_6: Nat, v_8: Nat, v_10: Nat, v_12: List<&2, Lexer.Token>) -> FeedbackControl:
   match v_2:
@@ -4762,7 +4772,7 @@ def step_parse_nat_literal_tail(v_2: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.To
     case ((v_25, v_26), False{}):
       feedback_pack_5(((v_25, v_26), False{}))
 
-def feedback_resume_Kont_203528(capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: Nat, capture_5: List<&2, Lexer.Token>, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_202679(capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: Nat, capture_5: List<&2, Lexer.Token>, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   step_parse_nat_literal_tail(result, capture_1, capture_2, capture_3, capture_4, capture_5)
 
 def expr_finish_list(result: Ast.SyntaxTerm & Bool, rest: List<&2, Lexer.Token>) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
@@ -4770,8 +4780,8 @@ def expr_finish_list(result: Ast.SyntaxTerm & Bool, rest: List<&2, Lexer.Token>)
     case (list, good):
       ((list, rest), good)
 
-def feedback_make_Kont_205868(lexical_capture_4: String, lexical_capture_5: Ast.SyntaxTerm, lexical_capture_7: Nat) -> FeedbackFrame:
-  Kont_205868{lexical_capture_4, lexical_capture_5, lexical_capture_7}
+def feedback_make_Kont_205019(lexical_capture_4: String, lexical_capture_5: Ast.SyntaxTerm, lexical_capture_7: Nat) -> FeedbackFrame:
+  Kont_205019{lexical_capture_4, lexical_capture_5, lexical_capture_7}
 
 def make_list_cons(item: Ast.SyntaxTerm, result: Ast.SyntaxTerm & Bool, file: String, beg: Nat, end: Nat) -> Ast.SyntaxTerm & Bool:
   match result:
@@ -4785,18 +4795,18 @@ def make_list(+file: String, items: List<&2, Ast.SyntaxTerm>, +beg: Nat, +end: N
     case +item <> rest:
       make_list_cons(item, make_list(file, rest, beg, end), file, beg, end)
 
-def feedback_make_Kont_206560(capture_1: String, capture_2: Ast.SyntaxTerm, capture_3: Nat, capture_4: Nat, capture_5: List<&2, Scope>, capture_6: Nat) -> FeedbackFrame:
-  Kont_206560{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6}
+def feedback_make_Kont_205711(capture_1: String, capture_2: Ast.SyntaxTerm, capture_3: Nat, capture_4: Nat, capture_5: List<&2, Scope>, capture_6: Nat) -> FeedbackFrame:
+  Kont_205711{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6}
 
 def step_parse_array_literal(+file: String, value: Ast.SyntaxTerm, tokens: List<&2, Lexer.Token>, beg: Nat, end: Nat, +scope: List<&2, Scope>, +depth: Nat) -> FeedbackControl:
-  feedback_attach(step_parse_term(file, tokens, scope, depth, 12n), feedback_make_Kont_206560(file, value, beg, end, scope, depth))
+  feedback_attach(step_parse_term(file, tokens, scope, depth, 12n), feedback_make_Kont_205711(file, value, beg, end, scope, depth))
 
 def step_expr_match_list_separator(+separator: Lexer.Token, +after_separator: List<&2, Lexer.Token>, +file: String, +first: Ast.SyntaxTerm, +beg: Nat, end: Nat, +scope: List<&2, Scope>, +depth: Nat) -> FeedbackControl:
   match separator:
     case Lexer.TokenInfo{_, ":", +_, +_, +_, +_}:
       step_parse_array_literal(file, first, after_separator, beg, end, scope, depth)
     case Lexer.TokenInfo{_, ",", _, _, _, _}:
-      feedback_attach(step_parse_term_args(file, after_separator, "]", scope, depth, Nil{}), feedback_make_Kont_205868(file, first, beg))
+      feedback_attach(step_parse_term_args(file, after_separator, "]", scope, depth, Nil{}), feedback_make_Kont_205019(file, first, beg))
     case Lexer.TokenInfo{_, "]", _, _, _, _}:
       feedback_pack_5(expr_finish_list(make_list(file, [first], beg, token_end(separator)), after_separator))
     case Lexer.TokenInfo{+feedback_field_8_0, +feedback_field_8_1, +feedback_field_8_2, +feedback_field_8_3, +feedback_field_8_4, +feedback_field_8_5}:
@@ -4811,7 +4821,7 @@ def step_expr_match_ok_after(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>) & 
     case ((first, after_first), True{}):
       feedback_pack_5(((first, after_first), False{}))
 
-def feedback_resume_Kont_204683(capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: List<&2, Scope>, capture_5: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_203834(capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: List<&2, Scope>, capture_5: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   step_expr_match_ok_after(result, capture_1, capture_2, capture_3, capture_4, capture_5)
 
 def expr_finish_list_items(ok_items: Bool, items: List<&2, Ast.SyntaxTerm>, +after_items: List<&2, Lexer.Token>, file: String, +first: Ast.SyntaxTerm, beg: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
@@ -4826,7 +4836,7 @@ def with_args_result(result: (List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) 
     case ((args, after), ok):
       use(args, after, ok)
 
-def feedback_resume_Kont_205868(lexical_capture_4: String, lexical_capture_5: Ast.SyntaxTerm, lexical_capture_7: Nat, result: ((List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_205019(lexical_capture_4: String, lexical_capture_5: Ast.SyntaxTerm, lexical_capture_7: Nat, result: ((List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   feedback_pack_5(with_args_result(result, items => after_items => ok_items => expr_finish_list_items(ok_items, items, after_items, lexical_capture_4, lexical_capture_5, lexical_capture_7)))
 
 def array_shape_action(shape: Lexer.Token) -> ArrayShapeAction:
@@ -4841,17 +4851,17 @@ def array_shape_action(shape: Lexer.Token) -> ArrayShapeAction:
 def array_shape_branch_2(+shape: Lexer.Token, after_shape: List<&2, Lexer.Token>, +file: String) -> Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool):
   ((Ast.TermHole{"parse-error: expected * or ^ in array literal", span(file, token_beg(shape), token_end(shape))}, shape <> after_shape), False{})
 
-def feedback_make_Kont_207285(capture_1: String, capture_2: Ast.SyntaxTerm, capture_3: Ast.SyntaxTerm, capture_4: Nat, capture_5: Nat) -> FeedbackFrame:
-  Kont_207285{capture_1, capture_2, capture_3, capture_4, capture_5}
+def feedback_make_Kont_206436(capture_1: String, capture_2: Ast.SyntaxTerm, capture_3: Ast.SyntaxTerm, capture_4: Nat, capture_5: Nat) -> FeedbackFrame:
+  Kont_206436{capture_1, capture_2, capture_3, capture_4, capture_5}
 
 def step_array_shape_branch_0(after_shape: List<&2, Lexer.Token>, +file: String, value: Ast.SyntaxTerm, ty: Ast.SyntaxTerm, beg: Nat, end: Nat, scope: List<&2, Scope>, depth: Nat) -> FeedbackControl:
-  feedback_attach(step_parse_term(file, after_shape, scope, depth, 0n), feedback_make_Kont_207285(file, value, ty, beg, end))
+  feedback_attach(step_parse_term(file, after_shape, scope, depth, 0n), feedback_make_Kont_206436(file, value, ty, beg, end))
 
-def feedback_make_Kont_207622(capture_1: String, capture_2: Ast.SyntaxTerm, capture_3: Ast.SyntaxTerm, capture_4: Nat, capture_5: Nat) -> FeedbackFrame:
-  Kont_207622{capture_1, capture_2, capture_3, capture_4, capture_5}
+def feedback_make_Kont_206773(capture_1: String, capture_2: Ast.SyntaxTerm, capture_3: Ast.SyntaxTerm, capture_4: Nat, capture_5: Nat) -> FeedbackFrame:
+  Kont_206773{capture_1, capture_2, capture_3, capture_4, capture_5}
 
 def step_array_shape_branch_1(after_shape: List<&2, Lexer.Token>, +file: String, value: Ast.SyntaxTerm, ty: Ast.SyntaxTerm, beg: Nat, end: Nat, scope: List<&2, Scope>, depth: Nat) -> FeedbackControl:
-  feedback_attach(step_parse_term(file, after_shape, scope, depth, 0n), feedback_make_Kont_207622(file, value, ty, beg, end))
+  feedback_attach(step_parse_term(file, after_shape, scope, depth, 0n), feedback_make_Kont_206773(file, value, ty, beg, end))
 
 def step_array_shape_run(action: ArrayShapeAction, +shape: Lexer.Token, +after_shape: List<&2, Lexer.Token>, +file: String, +value: Ast.SyntaxTerm, +ty: Ast.SyntaxTerm, +beg: Nat, +end: Nat, +scope: List<&2, Scope>, +depth: Nat) -> FeedbackControl:
   match action:
@@ -4874,7 +4884,7 @@ def step_expr_match_array_type(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>) 
     case ((ty, after_ty), True{}):
       feedback_pack_5(((ty, after_ty), False{}))
 
-def feedback_resume_Kont_206560(capture_1: String, capture_2: Ast.SyntaxTerm, capture_3: Nat, capture_4: Nat, capture_5: List<&2, Scope>, capture_6: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_205711(capture_1: String, capture_2: Ast.SyntaxTerm, capture_3: Nat, capture_4: Nat, capture_5: List<&2, Scope>, capture_6: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   step_expr_match_array_type(result, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6)
 
 def array_call_result(result: Ast.SyntaxTerm & Bool, after: List<&2, Lexer.Token>) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
@@ -5003,7 +5013,7 @@ def expr_match_array_count(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bo
     case ((count, after_count), True{}):
       ((count, after_count), False{})
 
-def feedback_resume_Kont_207285(capture_1: String, capture_2: Ast.SyntaxTerm, capture_3: Ast.SyntaxTerm, capture_4: Nat, capture_5: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_206436(capture_1: String, capture_2: Ast.SyntaxTerm, capture_3: Ast.SyntaxTerm, capture_4: Nat, capture_5: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   feedback_pack_5(expr_match_array_count(result, capture_1, capture_2, capture_3, capture_4, capture_5))
 
 def expr_match_array_depth_close(close: Lexer.Token, after_close: List<&2, Lexer.Token>, file: String, value: Ast.SyntaxTerm, ty: Ast.SyntaxTerm, array_depth: Ast.SyntaxTerm, beg: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
@@ -5022,7 +5032,7 @@ def expr_match_array_depth(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bo
     case ((array_depth, after_depth), True{}):
       ((array_depth, after_depth), False{})
 
-def feedback_resume_Kont_207622(capture_1: String, capture_2: Ast.SyntaxTerm, capture_3: Ast.SyntaxTerm, capture_4: Nat, capture_5: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_206773(capture_1: String, capture_2: Ast.SyntaxTerm, capture_3: Ast.SyntaxTerm, capture_4: Nat, capture_5: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   feedback_pack_5(expr_match_array_depth(result, capture_1, capture_2, capture_3, capture_4, capture_5))
 
 def make_tuple_cons(first: Ast.SyntaxTerm, result: Ast.SyntaxTerm & Bool, file: String, beg: Nat, end: Nat) -> Ast.SyntaxTerm & Bool:
@@ -5049,17 +5059,11 @@ def parse_parenthesized_terms(terms: List<&2, Ast.SyntaxTerm>, +after: List<&2, 
     case +first <> rest:
       parse_parenthesized_tuple_result(make_tuple(rest, first, file, beg, token_end_of(after, end)), after)
 
-def feedback_make_Kont_211415(capture_1: String, capture_2: List<&2, Lexer.Token>, capture_3: Nat, capture_4: List<&2, Scope>, capture_5: Nat) -> FeedbackFrame:
-  Kont_211415{capture_1, capture_2, capture_3, capture_4, capture_5}
-
-def feedback_make_parse_body_scan(file: String, tokens: List<&2, Lexer.Token>, scanned: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, parent_col: Nat) -> FeedbackRequest:
-  Request_parse_body_scan{file, tokens, scanned, scope, depth, parent_col}
-
-def step_parse_body(file: String, +tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, parent_col: Nat) -> FeedbackControl:
-  FeedbackControl{FeedbackCall{feedback_make_parse_body_scan(file, tokens, skip_lines(tokens), scope, depth, parent_col)}, Nil{}, NoProgress{}, NoProgress{}}
+def feedback_make_Kont_210566(capture_1: String, capture_2: List<&2, Lexer.Token>, capture_3: Nat, capture_4: List<&2, Scope>, capture_5: Nat) -> FeedbackFrame:
+  Kont_210566{capture_1, capture_2, capture_3, capture_4, capture_5}
 
 def step_parse_parenthesized_body(+file: String, +tokens: List<&2, Lexer.Token>, beg: Nat, end: Nat, col: Nat, +scope: List<&2, Scope>, +depth: Nat) -> FeedbackControl:
-  feedback_attach(step_parse_body(file, tokens, scope, depth, col), feedback_make_Kont_211415(file, tokens, beg, scope, depth))
+  feedback_attach(step_parse_body(file, tokens, scope, depth, col), feedback_make_Kont_210566(file, tokens, beg, scope, depth))
 
 def step_parse_parenthesized_result(result: (List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Bool, +file: String, +beg: Nat, +end: Nat, tokens: List<&2, Lexer.Token>, col: Nat, scope: List<&2, Scope>, depth: Nat) -> FeedbackControl:
   match result:
@@ -5068,7 +5072,7 @@ def step_parse_parenthesized_result(result: (List<&2, Ast.SyntaxTerm> & List<&2,
     case (_, False{}):
       step_parse_parenthesized_body(file, tokens, beg, end, col, scope, depth)
 
-def feedback_resume_Kont_210179(capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: List<&2, Lexer.Token>, capture_5: Nat, capture_6: List<&2, Scope>, capture_7: Nat, result: ((List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_209330(capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: List<&2, Lexer.Token>, capture_5: Nat, capture_6: List<&2, Scope>, capture_7: Nat, result: ((List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   step_parse_parenthesized_result(result, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7)
 
 def parse_parenthesized_body_result(body: Ast.SyntaxTerm, rest: List<&2, Lexer.Token>) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
@@ -5078,11 +5082,11 @@ def parse_parenthesized_body_result(body: Ast.SyntaxTerm, rest: List<&2, Lexer.T
     case _:
       ((body, rest), True{})
 
-def feedback_make_Kont_212739(capture_1: String, capture_2: List<&2, Scope>, capture_3: Nat) -> FeedbackFrame:
-  Kont_212739{capture_1, capture_2, capture_3}
+def feedback_make_Kont_211890(capture_1: String, capture_2: List<&2, Scope>, capture_3: Nat) -> FeedbackFrame:
+  Kont_211890{capture_1, capture_2, capture_3}
 
 def step_parse_typed_operator(+file: String, tokens: List<&2, Lexer.Token>, beg: Nat, +scope: List<&2, Scope>, +depth: Nat) -> FeedbackControl:
-  feedback_attach(step_parse_term(file, tokens, scope, depth, 0n), feedback_make_Kont_212739(file, scope, depth))
+  feedback_attach(step_parse_term(file, tokens, scope, depth, 0n), feedback_make_Kont_211890(file, scope, depth))
 
 def step_parse_parenthesized_body_close(close: Lexer.Token, rest: List<&2, Lexer.Token>, body: Ast.SyntaxTerm, file: String, tokens: List<&2, Lexer.Token>, beg: Nat, scope: List<&2, Scope>, depth: Nat) -> FeedbackControl:
   match close:
@@ -5098,18 +5102,18 @@ def step_parse_parenthesized_body_result_checked(result: (Ast.SyntaxTerm & List<
     case _:
       step_parse_typed_operator(file, tokens, beg, scope, depth)
 
-def feedback_resume_Kont_211415(capture_1: String, capture_2: List<&2, Lexer.Token>, capture_3: Nat, capture_4: List<&2, Scope>, capture_5: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_210566(capture_1: String, capture_2: List<&2, Lexer.Token>, capture_3: Nat, capture_4: List<&2, Scope>, capture_5: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   step_parse_parenthesized_body_result_checked(result, capture_1, capture_2, capture_3, capture_4, capture_5)
 
-def feedback_make_Kont_104178(capture_0: List<&2, Lexer.Token>) -> FeedbackFrame:
-  Kont_104178{capture_0}
+def feedback_make_Kont_104727(capture_0: List<&2, Lexer.Token>) -> FeedbackFrame:
+  Kont_104727{capture_0}
 
 def step_parse_typed_operator_namespace(v_1: Bool, v_3: String, v_4: Ast.SyntaxTerm, v_6: String, +v_7: Ast.SyntaxTerm, v_9: List<&2, Lexer.Token>, v_11: List<&2, Lexer.Token>) -> FeedbackControl:
   match v_1:
     case True{}:
       feedback_pack_5(((Ast.TermHole{"parse-error: expected a type name after :", span(v_3, token_beg_first(v_7), token_end_first(v_7))}, v_9), False{}))
     case False{}:
-      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_4, v_6)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_104178(v_11))
+      feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_4, v_6)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_104727(v_11))
 
 def term_head_name(term: Ast.SyntaxTerm) -> String:
   match term:
@@ -5143,16 +5147,16 @@ def step_parse_typed_operator_type(result: (Ast.SyntaxTerm & List<&2, Lexer.Toke
     case ((ty, after_ty), True{}):
       feedback_pack_5(((ty, after_ty), False{}))
 
-def feedback_resume_Kont_211838(capture_1: String, capture_2: Ast.SyntaxTerm, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_210989(capture_1: String, capture_2: Ast.SyntaxTerm, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   step_parse_typed_operator_type(result, capture_1, capture_2)
 
-def feedback_make_Kont_211838(capture_1: String, capture_2: Ast.SyntaxTerm) -> FeedbackFrame:
-  Kont_211838{capture_1, capture_2}
+def feedback_make_Kont_210989(capture_1: String, capture_2: Ast.SyntaxTerm) -> FeedbackFrame:
+  Kont_210989{capture_1, capture_2}
 
 def step_parse_typed_operator_colon(+colon: Lexer.Token, after_colon: List<&2, Lexer.Token>, after_term: List<&2, Lexer.Token>, term: Ast.SyntaxTerm, +file: String, scope: List<&2, Scope>, depth: Nat) -> FeedbackControl:
   match colon:
     case Lexer.TokenInfo{_, ":", +_, +_, +_, +_}:
-      feedback_attach(step_parse_term(file, after_colon, scope, depth, 0n), feedback_make_Kont_211838(file, term))
+      feedback_attach(step_parse_term(file, after_colon, scope, depth, 0n), feedback_make_Kont_210989(file, term))
     case Lexer.TokenInfo{+feedback_field_4_0, +feedback_field_4_1, +feedback_field_4_2, +feedback_field_4_3, +feedback_field_4_4, +feedback_field_4_5}:
       feedback_pack_5(((Ast.TermHole{"parse-error: expected :", span(file, token_beg((Lexer.TokenInfo{feedback_field_4_0, feedback_field_4_1, feedback_field_4_2, feedback_field_4_3, feedback_field_4_4, feedback_field_4_5} : Lexer.Token)), token_end((Lexer.TokenInfo{feedback_field_4_0, feedback_field_4_1, feedback_field_4_2, feedback_field_4_3, feedback_field_4_4, feedback_field_4_5} : Lexer.Token)))}, after_term), False{}))
 
@@ -5165,7 +5169,7 @@ def step_parse_typed_operator_term(result: (Ast.SyntaxTerm & List<&2, Lexer.Toke
     case ((term, after_term), True{}):
       feedback_pack_5(((term, after_term), False{}))
 
-def feedback_resume_Kont_212739(capture_1: String, capture_2: List<&2, Scope>, capture_3: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_211890(capture_1: String, capture_2: List<&2, Scope>, capture_3: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   step_parse_typed_operator_term(result, capture_1, capture_2, capture_3)
 
 def step_parse_match_chain(file: String, key: String, head: Ast.SyntaxTerm, +tokens: List<&2, Lexer.Token>, beg: Nat, scope: List<&2, Scope>, depth: Nat) -> FeedbackControl:
@@ -5189,51 +5193,51 @@ def step_parse_match_expr_parsed_head(ok: Bool, +head: Ast.SyntaxTerm, +after_he
     case False{}:
       feedback_pack_5(((head, after_head), False{}))
 
-def feedback_consumer_214670(v_281: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_4: String, v_6: String, v_8: Nat, v_11: List<&2, Scope>, v_13: Nat) -> FeedbackControl:
+def feedback_consumer_213821(v_281: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_4: String, v_6: String, v_8: Nat, v_11: List<&2, Scope>, v_13: Nat) -> FeedbackControl:
   match v_281:
     case ((v_282, v_283), v_284):
       step_parse_match_expr_parsed_head(v_284, v_282, v_283, v_4, v_6, v_8, v_11, v_13)
 
 def step_parse_match_expr_head_result(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool, file: String, key: String, beg: Nat, scope: List<&2, Scope>, depth: Nat) -> FeedbackControl:
-  feedback_consumer_214670(result, file, key, beg, scope, depth)
+  feedback_consumer_213821(result, file, key, beg, scope, depth)
 
-def feedback_resume_Kont_215605(capture_1: String, capture_2: String, capture_3: Nat, capture_4: List<&2, Scope>, capture_5: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_214756(capture_1: String, capture_2: String, capture_3: Nat, capture_4: List<&2, Scope>, capture_5: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   step_parse_match_expr_head_result(result, capture_1, capture_2, capture_3, capture_4, capture_5)
 
-def feedback_consumer_217718_quantity_0(v_6: String, v_8: String, v_9: Ast.SyntaxTerm, v_11: List<&2, Lexer.Token>, v_13: String, v_25: Ast.SyntaxTerm, +v_26: List<&2, Lexer.Token>, v_27: Bool, v_15: Nat, v_18: List<&2, Scope>, v_20: Nat) -> FeedbackControl:
+def feedback_consumer_216869_quantity_0(v_6: String, v_8: String, v_9: Ast.SyntaxTerm, v_11: List<&2, Lexer.Token>, v_13: String, v_25: Ast.SyntaxTerm, +v_26: List<&2, Lexer.Token>, v_27: Bool, v_15: Nat, v_18: List<&2, Scope>, v_20: Nat) -> FeedbackControl:
   FeedbackControl{FeedbackCall{feedback_make_parse_match_chain_state(MatchChainAfterHead{v_6, v_8, v_9, v_11, v_13, v_25, v_26, v_27, skip_lines(v_26), v_15, v_18, v_20})}, [], NoProgress{}, NoProgress{}}
 
-def feedback_consumer_217718(v_4: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_6: String, v_8: String, v_9: Ast.SyntaxTerm, v_11: List<&2, Lexer.Token>, v_13: String, v_15: Nat, v_18: List<&2, Scope>, v_20: Nat) -> FeedbackControl:
+def feedback_consumer_216869(v_4: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_6: String, v_8: String, v_9: Ast.SyntaxTerm, v_11: List<&2, Lexer.Token>, v_13: String, v_15: Nat, v_18: List<&2, Scope>, v_20: Nat) -> FeedbackControl:
   match v_4:
     case ((v_25, v_26), v_27):
-      feedback_consumer_217718_quantity_0(v_6, v_8, v_9, v_11, v_13, v_25, v_26, v_27, v_15, v_18, v_20)
+      feedback_consumer_216869_quantity_0(v_6, v_8, v_9, v_11, v_13, v_25, v_26, v_27, v_15, v_18, v_20)
 
-def feedback_resume_Kont_217735(lexical_capture_49: String, lexical_capture_50: String, lexical_capture_51: Ast.SyntaxTerm, lexical_capture_52: List<&2, Lexer.Token>, lexical_capture_53: String, lexical_capture_55: Nat, lexical_capture_56: List<&2, Scope>, lexical_capture_57: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_217718(result, lexical_capture_49, lexical_capture_50, lexical_capture_51, lexical_capture_52, lexical_capture_53, lexical_capture_55, lexical_capture_56, lexical_capture_57)
+def feedback_resume_Kont_216886(lexical_capture_49: String, lexical_capture_50: String, lexical_capture_51: Ast.SyntaxTerm, lexical_capture_52: List<&2, Lexer.Token>, lexical_capture_53: String, lexical_capture_55: Nat, lexical_capture_56: List<&2, Scope>, lexical_capture_57: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_216869(result, lexical_capture_49, lexical_capture_50, lexical_capture_51, lexical_capture_52, lexical_capture_53, lexical_capture_55, lexical_capture_56, lexical_capture_57)
 
-def feedback_consumer_218549(v_284: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_98: String, v_99: String, v_100: Ast.SyntaxTerm, v_107: Nat) -> FeedbackControl:
+def feedback_consumer_217700(v_284: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_98: String, v_99: String, v_100: Ast.SyntaxTerm, v_107: Nat) -> FeedbackControl:
   match v_284:
     case ((v_285, v_286), v_287):
       FeedbackControl{FeedbackCall{feedback_make_parse_match_chain_state(MatchChainAfterMatch{v_98, v_99, v_100, v_285, v_286, v_287, v_107})}, Nil{}, NoProgress{}, NoProgress{}}
 
-def feedback_resume_Kont_218566(lexical_capture_98: String, lexical_capture_99: String, lexical_capture_100: Ast.SyntaxTerm, lexical_capture_107: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_218549(result, lexical_capture_98, lexical_capture_99, lexical_capture_100, lexical_capture_107)
+def feedback_resume_Kont_217717(lexical_capture_98: String, lexical_capture_99: String, lexical_capture_100: Ast.SyntaxTerm, lexical_capture_107: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_217700(result, lexical_capture_98, lexical_capture_99, lexical_capture_100, lexical_capture_107)
 
-def feedback_consumer_218889(v_283: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_98: String, v_99: String, v_100: Ast.SyntaxTerm, v_107: Nat) -> FeedbackControl:
+def feedback_consumer_218040(v_283: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_98: String, v_99: String, v_100: Ast.SyntaxTerm, v_107: Nat) -> FeedbackControl:
   match v_283:
     case ((v_284, v_285), v_286):
       FeedbackControl{FeedbackCall{feedback_make_parse_match_chain_state(MatchChainAfterMatch{v_98, v_99, v_100, v_284, v_285, v_286, v_107})}, Nil{}, NoProgress{}, NoProgress{}}
 
-def feedback_resume_Kont_218906(lexical_capture_98: String, lexical_capture_99: String, lexical_capture_100: Ast.SyntaxTerm, lexical_capture_107: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_218889(result, lexical_capture_98, lexical_capture_99, lexical_capture_100, lexical_capture_107)
+def feedback_resume_Kont_218057(lexical_capture_98: String, lexical_capture_99: String, lexical_capture_100: Ast.SyntaxTerm, lexical_capture_107: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_218040(result, lexical_capture_98, lexical_capture_99, lexical_capture_100, lexical_capture_107)
 
-def feedback_consumer_219215(v_282: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_98: String, v_99: String, v_100: Ast.SyntaxTerm, v_107: Nat) -> FeedbackControl:
+def feedback_consumer_218366(v_282: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_98: String, v_99: String, v_100: Ast.SyntaxTerm, v_107: Nat) -> FeedbackControl:
   match v_282:
     case ((v_283, v_284), v_285):
       FeedbackControl{FeedbackCall{feedback_make_parse_match_chain_state(MatchChainAfterMatch{v_98, v_99, v_100, v_283, v_284, v_285, v_107})}, Nil{}, NoProgress{}, NoProgress{}}
 
-def feedback_resume_Kont_219232(lexical_capture_98: String, lexical_capture_99: String, lexical_capture_100: Ast.SyntaxTerm, lexical_capture_107: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_219215(result, lexical_capture_98, lexical_capture_99, lexical_capture_100, lexical_capture_107)
+def feedback_resume_Kont_218383(lexical_capture_98: String, lexical_capture_99: String, lexical_capture_100: Ast.SyntaxTerm, lexical_capture_107: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_218366(result, lexical_capture_98, lexical_capture_99, lexical_capture_100, lexical_capture_107)
 
 def parse_match_tail_with_head_result(ok_tail: Bool, +tail: Ast.SyntaxTerm, +after_tail: List<&2, Lexer.Token>, file: String, key: String, head: Ast.SyntaxTerm, beg: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match ok_tail:
@@ -5242,7 +5246,7 @@ def parse_match_tail_with_head_result(ok_tail: Bool, +tail: Ast.SyntaxTerm, +aft
     case False{}:
       ((tail, after_tail), False{})
 
-def feedback_resume_Kont_220426(lexical_capture_1: String, lexical_capture_3: String, lexical_capture_4: Ast.SyntaxTerm, lexical_capture_8: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_219577(lexical_capture_1: String, lexical_capture_3: String, lexical_capture_4: Ast.SyntaxTerm, lexical_capture_8: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   feedback_pack_5(with_term_result(result, tail => after_tail => ok_tail => parse_match_tail_with_head_result(ok_tail, tail, after_tail, lexical_capture_1, lexical_capture_3, lexical_capture_4, lexical_capture_8)))
 
 def match_tail_scan_is_colon(close: Lexer.Token) -> MatchTailScanAction:
@@ -5314,7 +5318,7 @@ def parse_match_tail_result(ok_tail: Bool, file: String, tail: Ast.SyntaxTerm, +
     case False{}:
       ((tail, after_tail), False{})
 
-def feedback_resume_Kont_220779(lexical_capture_1: String, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_219930(lexical_capture_1: String, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   feedback_pack_5(with_term_result(result, tail => after_tail => ok_tail => parse_match_tail_result(ok_tail, lexical_capture_1, tail, after_tail)))
 
 def parse_brace_equal_type_result(ok_ty: Bool, after_ty: List<&2, Lexer.Token>, ty: Ast.SyntaxTerm, file: String, left: Ast.SyntaxTerm, right: Ast.SyntaxTerm, beg: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
@@ -5328,7 +5332,7 @@ def parse_brace_equal_type_result(ok_ty: Bool, after_ty: List<&2, Lexer.Token>, 
     case _ _:
       ((ty, after_ty), False{})
 
-def feedback_resume_Kont_221166(lexical_capture_2: String, lexical_capture_3: Ast.SyntaxTerm, lexical_capture_0: Ast.SyntaxTerm, lexical_capture_5: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_220317(lexical_capture_2: String, lexical_capture_3: Ast.SyntaxTerm, lexical_capture_0: Ast.SyntaxTerm, lexical_capture_5: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   feedback_pack_5(with_term_result(result, ty => after_ty => ok_ty => parse_brace_equal_type_result(ok_ty, after_ty, ty, lexical_capture_2, lexical_capture_3, lexical_capture_0, lexical_capture_5)))
 
 def brace_equal_right_is_colon(colon: Lexer.Token) -> Bool:
@@ -5341,11 +5345,11 @@ def brace_equal_right_is_colon(colon: Lexer.Token) -> Bool:
 def brace_equal_right_branch_1(after_right: List<&2, Lexer.Token>, +file: String, +colon: Lexer.Token) -> Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool):
   ((Ast.TermHole{ "parse-error: expected :",  span(file, token_beg(colon), token_end(colon))}, after_right), False{})
 
-def feedback_make_Kont_221166(lexical_capture_2: String, lexical_capture_3: Ast.SyntaxTerm, lexical_capture_0: Ast.SyntaxTerm, lexical_capture_5: Nat) -> FeedbackFrame:
-  Kont_221166{lexical_capture_2, lexical_capture_3, lexical_capture_0, lexical_capture_5}
+def feedback_make_Kont_220317(lexical_capture_2: String, lexical_capture_3: Ast.SyntaxTerm, lexical_capture_0: Ast.SyntaxTerm, lexical_capture_5: Nat) -> FeedbackFrame:
+  Kont_220317{lexical_capture_2, lexical_capture_3, lexical_capture_0, lexical_capture_5}
 
 def step_brace_equal_right_branch_0(right: Ast.SyntaxTerm, +file: String, left: Ast.SyntaxTerm, beg: Nat, scope: List<&2, Scope>, depth: Nat, after_colon: List<&2, Lexer.Token>) -> FeedbackControl:
-  feedback_attach(step_parse_term(file, after_colon, scope, depth, 0n), feedback_make_Kont_221166(file, left, right, beg))
+  feedback_attach(step_parse_term(file, after_colon, scope, depth, 0n), feedback_make_Kont_220317(file, left, right, beg))
 
 def step_brace_equal_right_run(is_colon: Bool, after_right: List<&2, Lexer.Token>, right: Ast.SyntaxTerm, +file: String, left: Ast.SyntaxTerm, beg: Nat, scope: List<&2, Scope>, depth: Nat, +colon: Lexer.Token, after_colon: List<&2, Lexer.Token>) -> FeedbackControl:
   match is_colon:
@@ -5361,13 +5365,13 @@ def step_parse_brace_equal_right_result(ok_right: Bool, +after_right: List<&2, L
     case _ _:
       feedback_pack_5(((right, after_right), False{}))
 
-def feedback_consumer_223751(v_286: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_4: String, v_2: Ast.SyntaxTerm, v_6: Nat, v_9: List<&2, Scope>, v_11: Nat) -> FeedbackControl:
+def feedback_consumer_222902(v_286: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_4: String, v_2: Ast.SyntaxTerm, v_6: Nat, v_9: List<&2, Scope>, v_11: Nat) -> FeedbackControl:
   match v_286:
     case ((v_287, v_288), v_289):
       step_parse_brace_equal_right_result(v_289, v_288, v_287, v_4, v_2, v_6, v_9, v_11)
 
-def feedback_resume_Kont_223768(lexical_capture_4: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_6: Nat, lexical_capture_9: List<&2, Scope>, lexical_capture_11: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_223751(result, lexical_capture_4, lexical_capture_2, lexical_capture_6, lexical_capture_9, lexical_capture_11)
+def feedback_resume_Kont_222919(lexical_capture_4: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_6: Nat, lexical_capture_9: List<&2, Scope>, lexical_capture_11: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_222902(result, lexical_capture_4, lexical_capture_2, lexical_capture_6, lexical_capture_9, lexical_capture_11)
 
 def brace_annot_is_colon(close: Lexer.Token) -> Bool:
   match close:
@@ -5396,7 +5400,7 @@ def parse_brace_annot_type_result(ok_ty: Bool, after_ty: List<&2, Lexer.Token>, 
     case _ _:
       ((ty, after_ty), False{})
 
-def feedback_resume_Kont_224175(lexical_capture_4: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_6: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_223326(lexical_capture_4: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_6: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   feedback_pack_5(with_term_result(result, ty => after_ty => ok_ty => parse_brace_annot_type_result(ok_ty, after_ty, ty, lexical_capture_4, lexical_capture_2, lexical_capture_6)))
 
 def brace_equals_action(equals: Lexer.Token) -> BraceEqualsAction:
@@ -5413,26 +5417,26 @@ def brace_equals_action(equals: Lexer.Token) -> BraceEqualsAction:
 def brace_equals_branch_3(+equals: Lexer.Token, after_left: List<&2, Lexer.Token>, +file: String) -> Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool):
   ((Ast.TermHole{ "parse-error: expected ==",  span(file, token_beg(equals), token_end(equals))}, after_left), False{})
 
-def feedback_make_Kont_229293(lexical_capture_1: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_6: Nat, lexical_capture_9: List<&2, Scope>, lexical_capture_11: Nat) -> FeedbackFrame:
-  Kont_229293{lexical_capture_1, lexical_capture_2, lexical_capture_6, lexical_capture_9, lexical_capture_11}
+def feedback_make_Kont_228444(lexical_capture_1: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_6: Nat, lexical_capture_9: List<&2, Scope>, lexical_capture_11: Nat) -> FeedbackFrame:
+  Kont_228444{lexical_capture_1, lexical_capture_2, lexical_capture_6, lexical_capture_9, lexical_capture_11}
 
 def step_parse_inequality(+file: String, left: Ast.SyntaxTerm, tokens: List<&2, Lexer.Token>, beg: Nat, +scope: List<&2, Scope>, +depth: Nat) -> FeedbackControl:
-  feedback_attach(step_parse_term(file, tokens, scope, depth, 0n), feedback_make_Kont_229293(file, left, beg, scope, depth))
+  feedback_attach(step_parse_term(file, tokens, scope, depth, 0n), feedback_make_Kont_228444(file, left, beg, scope, depth))
 
 def step_brace_equals_branch_0(after_equals: List<&2, Lexer.Token>, left: Ast.SyntaxTerm, +file: String, beg: Nat, +scope: List<&2, Scope>, +depth: Nat) -> FeedbackControl:
   step_parse_inequality(file, left, after_equals, beg, scope, depth)
 
-def feedback_make_Kont_223768(lexical_capture_4: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_6: Nat, lexical_capture_9: List<&2, Scope>, lexical_capture_11: Nat) -> FeedbackFrame:
-  Kont_223768{lexical_capture_4, lexical_capture_2, lexical_capture_6, lexical_capture_9, lexical_capture_11}
+def feedback_make_Kont_222919(lexical_capture_4: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_6: Nat, lexical_capture_9: List<&2, Scope>, lexical_capture_11: Nat) -> FeedbackFrame:
+  Kont_222919{lexical_capture_4, lexical_capture_2, lexical_capture_6, lexical_capture_9, lexical_capture_11}
 
 def step_brace_equals_branch_1(after_equals: List<&2, Lexer.Token>, left: Ast.SyntaxTerm, +file: String, beg: Nat, +scope: List<&2, Scope>, +depth: Nat) -> FeedbackControl:
-  feedback_attach(step_parse_term(file, after_equals, scope, depth, 0n), feedback_make_Kont_223768(file, left, beg, scope, depth))
+  feedback_attach(step_parse_term(file, after_equals, scope, depth, 0n), feedback_make_Kont_222919(file, left, beg, scope, depth))
 
-def feedback_make_Kont_224175(lexical_capture_4: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_6: Nat) -> FeedbackFrame:
-  Kont_224175{lexical_capture_4, lexical_capture_2, lexical_capture_6}
+def feedback_make_Kont_223326(lexical_capture_4: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_6: Nat) -> FeedbackFrame:
+  Kont_223326{lexical_capture_4, lexical_capture_2, lexical_capture_6}
 
 def step_brace_equals_branch_2(after_equals: List<&2, Lexer.Token>, left: Ast.SyntaxTerm, +file: String, beg: Nat, +scope: List<&2, Scope>, +depth: Nat) -> FeedbackControl:
-  feedback_attach(step_parse_term(file, after_equals, scope, depth, 0n), feedback_make_Kont_224175(file, left, beg))
+  feedback_attach(step_parse_term(file, after_equals, scope, depth, 0n), feedback_make_Kont_223326(file, left, beg))
 
 def step_brace_equals_run(action: BraceEqualsAction, +equals: Lexer.Token, +after_equals: List<&2, Lexer.Token>, after_left: List<&2, Lexer.Token>, +left: Ast.SyntaxTerm, +file: String, +beg: Nat, +scope: List<&2, Scope>, +depth: Nat) -> FeedbackControl:
   match action:
@@ -5455,13 +5459,13 @@ def step_parse_brace_left_result(ok_left: Bool, +after_left: List<&2, Lexer.Toke
     case _ _:
       feedback_pack_5(((left, after_left), False{}))
 
-def feedback_consumer_226950(v_287: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_1: String, v_5: Nat, v_10: List<&2, Scope>, v_12: Nat) -> FeedbackControl:
+def feedback_consumer_226101(v_287: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_1: String, v_5: Nat, v_10: List<&2, Scope>, v_12: Nat) -> FeedbackControl:
   match v_287:
     case ((v_288, v_289), v_290):
       step_parse_brace_left_result(v_290, v_289, v_288, v_1, v_5, v_10, v_12)
 
-def feedback_resume_Kont_226967(lexical_capture_1: String, lexical_capture_5: Nat, lexical_capture_10: List<&2, Scope>, lexical_capture_12: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_226950(result, lexical_capture_1, lexical_capture_5, lexical_capture_10, lexical_capture_12)
+def feedback_resume_Kont_226118(lexical_capture_1: String, lexical_capture_5: Nat, lexical_capture_10: List<&2, Scope>, lexical_capture_12: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_226101(result, lexical_capture_1, lexical_capture_5, lexical_capture_10, lexical_capture_12)
 
 def inequality_is_colon(close: Lexer.Token) -> Bool:
   match close:
@@ -5491,7 +5495,7 @@ def parse_inequality_type_result(ok_ty: Bool, ty: Ast.SyntaxTerm, after_ty: List
     case _ _:
       ((ty, after_ty), False{})
 
-def feedback_resume_Kont_227491(lexical_capture_2: String, lexical_capture_3: Ast.SyntaxTerm, lexical_capture_0: Ast.SyntaxTerm, lexical_capture_5: Nat, lexical_capture_10: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_226642(lexical_capture_2: String, lexical_capture_3: Ast.SyntaxTerm, lexical_capture_0: Ast.SyntaxTerm, lexical_capture_5: Nat, lexical_capture_10: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   feedback_pack_5(with_term_result(result, ty => after_ty => ok_ty => parse_inequality_type_result(ok_ty, ty, after_ty, lexical_capture_2, lexical_capture_3, lexical_capture_0, lexical_capture_5, lexical_capture_10)))
 
 def inequality_right_is_colon(colon: Lexer.Token) -> Bool:
@@ -5504,11 +5508,11 @@ def inequality_right_is_colon(colon: Lexer.Token) -> Bool:
 def inequality_right_branch_1(after_right: List<&2, Lexer.Token>, +file: String, +colon: Lexer.Token) -> Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool):
   ((Ast.TermHole{"parse-error: expected :", span(file, token_beg(colon), token_end(colon))}, after_right), False{})
 
-def feedback_make_Kont_227491(lexical_capture_2: String, lexical_capture_3: Ast.SyntaxTerm, lexical_capture_0: Ast.SyntaxTerm, lexical_capture_5: Nat, lexical_capture_10: Nat) -> FeedbackFrame:
-  Kont_227491{lexical_capture_2, lexical_capture_3, lexical_capture_0, lexical_capture_5, lexical_capture_10}
+def feedback_make_Kont_226642(lexical_capture_2: String, lexical_capture_3: Ast.SyntaxTerm, lexical_capture_0: Ast.SyntaxTerm, lexical_capture_5: Nat, lexical_capture_10: Nat) -> FeedbackFrame:
+  Kont_226642{lexical_capture_2, lexical_capture_3, lexical_capture_0, lexical_capture_5, lexical_capture_10}
 
 def step_inequality_right_branch_0(right: Ast.SyntaxTerm, +file: String, left: Ast.SyntaxTerm, beg: Nat, scope: List<&2, Scope>, +depth: Nat, after_colon: List<&2, Lexer.Token>) -> FeedbackControl:
-  feedback_attach(step_parse_term(file, after_colon, scope, depth, 0n), feedback_make_Kont_227491(file, left, right, beg, depth))
+  feedback_attach(step_parse_term(file, after_colon, scope, depth, 0n), feedback_make_Kont_226642(file, left, right, beg, depth))
 
 def step_inequality_right_run(is_colon: Bool, right: Ast.SyntaxTerm, after_right: List<&2, Lexer.Token>, +file: String, left: Ast.SyntaxTerm, beg: Nat, scope: List<&2, Scope>, +depth: Nat, +colon: Lexer.Token, after_colon: List<&2, Lexer.Token>) -> FeedbackControl:
   match is_colon:
@@ -5524,13 +5528,13 @@ def step_parse_inequality_right_result(ok_right: Bool, +right: Ast.SyntaxTerm, +
     case _ _:
       feedback_pack_5(((right, after_right), False{}))
 
-def feedback_consumer_229276(v_288: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_1: String, v_2: Ast.SyntaxTerm, v_6: Nat, v_9: List<&2, Scope>, v_11: Nat) -> FeedbackControl:
+def feedback_consumer_228427(v_288: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_1: String, v_2: Ast.SyntaxTerm, v_6: Nat, v_9: List<&2, Scope>, v_11: Nat) -> FeedbackControl:
   match v_288:
     case ((v_289, v_290), v_291):
       step_parse_inequality_right_result(v_291, v_289, v_290, v_1, v_2, v_6, v_9, v_11)
 
-def feedback_resume_Kont_229293(lexical_capture_1: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_6: Nat, lexical_capture_9: List<&2, Scope>, lexical_capture_11: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_229276(result, lexical_capture_1, lexical_capture_2, lexical_capture_6, lexical_capture_9, lexical_capture_11)
+def feedback_resume_Kont_228444(lexical_capture_1: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_6: Nat, lexical_capture_9: List<&2, Scope>, lexical_capture_11: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_228427(result, lexical_capture_1, lexical_capture_2, lexical_capture_6, lexical_capture_9, lexical_capture_11)
 
 def rewrite_motive_is_colon(colon: Lexer.Token) -> Bool:
   match colon:
@@ -5542,14 +5546,14 @@ def rewrite_motive_is_colon(colon: Lexer.Token) -> Bool:
 def rewrite_motive_branch_1(+file: String, tokens: List<&2, Lexer.Token>, +colon: Lexer.Token) -> Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool):
   ((Ast.TermHole{ "parse-error: expected :",  span(file, token_beg(colon), token_end(colon))}, tokens), False{})
 
-def feedback_make_Kont_233304(lexical_capture_1: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_4: String, lexical_capture_6: Nat, lexical_capture_9: List<&2, Scope>, lexical_capture_11: Nat) -> FeedbackFrame:
-  Kont_233304{lexical_capture_1, lexical_capture_2, lexical_capture_4, lexical_capture_6, lexical_capture_9, lexical_capture_11}
+def feedback_make_Kont_232455(lexical_capture_1: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_4: String, lexical_capture_6: Nat, lexical_capture_9: List<&2, Scope>, lexical_capture_11: Nat) -> FeedbackFrame:
+  Kont_232455{lexical_capture_1, lexical_capture_2, lexical_capture_4, lexical_capture_6, lexical_capture_9, lexical_capture_11}
 
 def step_rewrite_motive_branch_0(+file: String, equation: Ast.SyntaxTerm, +key: String, beg: Nat, +scope: List<&2, Scope>, +depth: Nat, after_colon: List<&2, Lexer.Token>) -> FeedbackControl:
   # Rewrite exposes its implicit value binder; ordinary "_" binders do not.
   base_scope = { Scope{"_", depth} <> scope : List<&2, Scope> }
   motive_scope = extend_scope(key, (depth + 1n : Nat), base_scope)
-  feedback_attach(step_parse_term(file, after_colon, motive_scope, (depth + 2n : Nat), 0n), feedback_make_Kont_233304(file, equation, key, beg, scope, depth))
+  feedback_attach(step_parse_term(file, after_colon, motive_scope, (depth + 2n : Nat), 0n), feedback_make_Kont_232455(file, equation, key, beg, scope, depth))
 
 def step_rewrite_motive_run(is_colon: Bool, +file: String, equation: Ast.SyntaxTerm, +key: String, tokens: List<&2, Lexer.Token>, beg: Nat, +scope: List<&2, Scope>, +depth: Nat, +colon: Lexer.Token, after_colon: List<&2, Lexer.Token>) -> FeedbackControl:
   match is_colon:
@@ -5565,6 +5569,9 @@ def step_parse_rewrite_motive(+file: String, equation: Ast.SyntaxTerm, +key: Str
     case Nil{}:
       feedback_pack_5(((Ast.TermHole{ "parse-error: expected :",  span(file, end, end)}, Nil{}), False{}))
 
+# A lambda body is a block, as in the canonical parser's parse_block.
+# Keep the existing local/match grammar and its outer-before-inner scope rules.
+
 def step_parse_rewrite_equation_result(ok_equation: Bool, +equation: Ast.SyntaxTerm, +after_equation: List<&2, Lexer.Token>, file: String, key: String, beg: Nat, end: Nat, scope: List<&2, Scope>, depth: Nat) -> FeedbackControl:
   match ok_equation:
     case True{}:
@@ -5572,21 +5579,21 @@ def step_parse_rewrite_equation_result(ok_equation: Bool, +equation: Ast.SyntaxT
     case False{}:
       feedback_pack_5(((equation, after_equation), False{}))
 
-def feedback_consumer_230212(v_289: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_6: String, v_21: String, v_8: Nat, v_10: Nat, v_13: List<&2, Scope>, v_15: Nat) -> FeedbackControl:
+def feedback_consumer_229363(v_289: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_6: String, v_21: String, v_8: Nat, v_10: Nat, v_13: List<&2, Scope>, v_15: Nat) -> FeedbackControl:
   match v_289:
     case ((v_290, v_291), v_292):
       step_parse_rewrite_equation_result(v_292, v_290, v_291, v_6, v_21, v_8, v_10, v_13, v_15)
 
-def feedback_resume_Kont_230229(lexical_capture_6: String, lexical_capture_21: String, lexical_capture_8: Nat, lexical_capture_10: Nat, lexical_capture_13: List<&2, Scope>, lexical_capture_15: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_230212(result, lexical_capture_6, lexical_capture_21, lexical_capture_8, lexical_capture_10, lexical_capture_13, lexical_capture_15)
+def feedback_resume_Kont_229380(lexical_capture_6: String, lexical_capture_21: String, lexical_capture_8: Nat, lexical_capture_10: Nat, lexical_capture_13: List<&2, Scope>, lexical_capture_15: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_229363(result, lexical_capture_6, lexical_capture_21, lexical_capture_8, lexical_capture_10, lexical_capture_13, lexical_capture_15)
 
-def feedback_make_Kont_230229(lexical_capture_6: String, lexical_capture_21: String, lexical_capture_8: Nat, lexical_capture_10: Nat, lexical_capture_13: List<&2, Scope>, lexical_capture_15: Nat) -> FeedbackFrame:
-  Kont_230229{lexical_capture_6, lexical_capture_21, lexical_capture_8, lexical_capture_10, lexical_capture_13, lexical_capture_15}
+def feedback_make_Kont_229380(lexical_capture_6: String, lexical_capture_21: String, lexical_capture_8: Nat, lexical_capture_10: Nat, lexical_capture_13: List<&2, Scope>, lexical_capture_15: Nat) -> FeedbackFrame:
+  Kont_229380{lexical_capture_6, lexical_capture_21, lexical_capture_8, lexical_capture_10, lexical_capture_13, lexical_capture_15}
 
 def step_parse_rewrite_first_at_name(+first: Ast.SyntaxTerm, after_at: List<&2, Lexer.Token>, +after_first: List<&2, Lexer.Token>, +file: String, beg: Nat, end: Nat, +scope: List<&2, Scope>, +depth: Nat) -> FeedbackControl:
   match first:
     case Ast.TermVar{key, _, _}:
-      feedback_attach(step_parse_term(file, after_at, scope, depth, 0n), feedback_make_Kont_230229(file, key, beg, end, scope, depth))
+      feedback_attach(step_parse_term(file, after_at, scope, depth, 0n), feedback_make_Kont_229380(file, key, beg, end, scope, depth))
     case Ast.TermVar{+feedback_field_4_0, +feedback_field_4_1, +feedback_field_4_2}:
       feedback_pack_5(((Ast.TermHole{"parse-error: expected a name before @", span(file, token_beg_first((Ast.TermVar{feedback_field_4_0, feedback_field_4_1, feedback_field_4_2} : Ast.SyntaxTerm)), token_end_first((Ast.TermVar{feedback_field_4_0, feedback_field_4_1, feedback_field_4_2} : Ast.SyntaxTerm)))}, after_first), False{}))
     case Ast.TermRef{+feedback_field_4_0, +feedback_field_4_1}:
@@ -5664,13 +5671,13 @@ def step_parse_rewrite_first_result(ok_first: Bool, +first: Ast.SyntaxTerm, +aft
     case False{} _:
       feedback_pack_5(((first, after_first), False{}))
 
-def feedback_consumer_231815(v_290: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_1: String, v_5: Nat, v_7: Nat, v_10: List<&2, Scope>, v_12: Nat) -> FeedbackControl:
+def feedback_consumer_230966(v_290: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_1: String, v_5: Nat, v_7: Nat, v_10: List<&2, Scope>, v_12: Nat) -> FeedbackControl:
   match v_290:
     case ((v_291, v_292), v_293):
       step_parse_rewrite_first_result(v_293, v_291, v_292, v_1, v_5, v_7, v_10, v_12)
 
-def feedback_resume_Kont_231832(lexical_capture_1: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_10: List<&2, Scope>, lexical_capture_12: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_231815(result, lexical_capture_1, lexical_capture_5, lexical_capture_7, lexical_capture_10, lexical_capture_12)
+def feedback_resume_Kont_230983(lexical_capture_1: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_10: List<&2, Scope>, lexical_capture_12: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_230966(result, lexical_capture_1, lexical_capture_5, lexical_capture_7, lexical_capture_10, lexical_capture_12)
 
 def parse_rewrite_body_result(ok_body: Bool, +body: Ast.SyntaxTerm, after_body: List<&2, Lexer.Token>, equation: Ast.SyntaxTerm, proof: Ast.SyntaxTerm, file: String, beg: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match ok_body:
@@ -5679,11 +5686,11 @@ def parse_rewrite_body_result(ok_body: Bool, +body: Ast.SyntaxTerm, after_body: 
     case False{}:
       ((body, after_body), False{})
 
-def feedback_resume_Kont_232628(lexical_capture_7: Ast.SyntaxTerm, lexical_capture_28: Ast.SyntaxTerm, lexical_capture_6: String, lexical_capture_11: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_231779(lexical_capture_7: Ast.SyntaxTerm, lexical_capture_28: Ast.SyntaxTerm, lexical_capture_6: String, lexical_capture_11: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   feedback_pack_5(with_term_result(result, body => after_body => ok_body => parse_rewrite_body_result(ok_body, body, after_body, lexical_capture_7, lexical_capture_28, lexical_capture_6, lexical_capture_11)))
 
-def feedback_make_Kont_232628(lexical_capture_7: Ast.SyntaxTerm, lexical_capture_28: Ast.SyntaxTerm, lexical_capture_6: String, lexical_capture_11: Nat) -> FeedbackFrame:
-  Kont_232628{lexical_capture_7, lexical_capture_28, lexical_capture_6, lexical_capture_11}
+def feedback_make_Kont_231779(lexical_capture_7: Ast.SyntaxTerm, lexical_capture_28: Ast.SyntaxTerm, lexical_capture_6: String, lexical_capture_11: Nat) -> FeedbackFrame:
+  Kont_231779{lexical_capture_7, lexical_capture_28, lexical_capture_6, lexical_capture_11}
 
 def step_parse_rewrite_motive_result(ok_motive: Bool, +motive: Ast.SyntaxTerm, +after_motive: List<&2, Lexer.Token>, +file: String, equation: Ast.SyntaxTerm, key: String, +beg: Nat, scope: List<&2, Scope>, +depth: Nat) -> FeedbackControl:
   match ok_motive:
@@ -5691,17 +5698,17 @@ def step_parse_rewrite_motive_result(ok_motive: Bool, +motive: Ast.SyntaxTerm, +
       inner = { Ast.TermLam{None{}, key, (depth + 1n : Nat), motive, span(file, beg, token_end_first(motive))} : Ast.SyntaxTerm }
       proof = { Ast.TermLam{None{}, "_", depth, inner, span(file, beg, token_end_first(motive))} : Ast.SyntaxTerm }
       body_tokens = skip_rewrite_semicolon(after_motive)
-      feedback_attach(step_parse_term(file, body_tokens, scope, depth, 0n), feedback_make_Kont_232628(equation, proof, file, beg))
+      feedback_attach(step_parse_term(file, body_tokens, scope, depth, 0n), feedback_make_Kont_231779(equation, proof, file, beg))
     case False{}:
       feedback_pack_5(((motive, after_motive), False{}))
 
-def feedback_consumer_233287(v_291: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_1: String, v_2: Ast.SyntaxTerm, v_4: String, v_6: Nat, v_9: List<&2, Scope>, v_11: Nat) -> FeedbackControl:
+def feedback_consumer_232438(v_291: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_1: String, v_2: Ast.SyntaxTerm, v_4: String, v_6: Nat, v_9: List<&2, Scope>, v_11: Nat) -> FeedbackControl:
   match v_291:
     case ((v_292, v_293), v_294):
       step_parse_rewrite_motive_result(v_294, v_292, v_293, v_1, v_2, v_4, v_6, v_9, v_11)
 
-def feedback_resume_Kont_233304(lexical_capture_1: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_4: String, lexical_capture_6: Nat, lexical_capture_9: List<&2, Scope>, lexical_capture_11: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_233287(result, lexical_capture_1, lexical_capture_2, lexical_capture_4, lexical_capture_6, lexical_capture_9, lexical_capture_11)
+def feedback_resume_Kont_232455(lexical_capture_1: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_4: String, lexical_capture_6: Nat, lexical_capture_9: List<&2, Scope>, lexical_capture_11: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_232438(result, lexical_capture_1, lexical_capture_2, lexical_capture_4, lexical_capture_6, lexical_capture_9, lexical_capture_11)
 
 def parse_name_lambda_result(ok: Bool, body: Ast.SyntaxTerm, +after: List<&2, Lexer.Token>, file: String, key: String, beg: Nat, end: Nat, depth: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match ok:
@@ -5710,11 +5717,11 @@ def parse_name_lambda_result(ok: Bool, body: Ast.SyntaxTerm, +after: List<&2, Le
     case False{}:
       ((body, after), False{})
 
-def feedback_resume_Kont_235313(lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_14: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_235238(lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_14: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   feedback_pack_5(with_term_result(result, body => after => ok => parse_name_lambda_result(ok, body, after, lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_14)))
 
-def feedback_make_Kont_84990(capture_0: List<&2, Ast.SyntaxTerm>, capture_1: List<&2, Lexer.Token>, capture_2: String, capture_3: String, capture_4: Nat) -> FeedbackFrame:
-  Kont_84990{capture_0, capture_1, capture_2, capture_3, capture_4}
+def feedback_make_Kont_85539(capture_0: List<&2, Ast.SyntaxTerm>, capture_1: List<&2, Lexer.Token>, capture_2: String, capture_3: String, capture_4: Nat) -> FeedbackFrame:
+  Kont_85539{capture_0, capture_1, capture_2, capture_3, capture_4}
 
 def consumed_token_end_all(tokens: List<&2, Lexer.Token>, fallback: Nat) -> Nat:
   match tokens:
@@ -5733,28 +5740,28 @@ def step_consumed_token_end(+tokens: List<&2, Lexer.Token>, remaining: List<&2, 
 def step_parse_name_constructor_result(v_1: Bool, v_3: List<&2, Ast.SyntaxTerm>, +v_5: List<&2, Lexer.Token>, +v_7: String, v_9: String, +v_11: Nat, +v_13: Nat, v_15: List<&2, Lexer.Token>) -> FeedbackControl:
   match v_1:
     case True{}:
-      feedback_attach(step_consumed_token_end(v_15, v_5, v_13), feedback_make_Kont_84990(v_3, v_5, v_7, v_9, v_11))
+      feedback_attach(step_consumed_token_end(v_15, v_5, v_13), feedback_make_Kont_85539(v_3, v_5, v_7, v_9, v_11))
     case False{}:
       feedback_pack_5(((Ast.TermHole{"parse-error: expected constructor fields", span(v_7, v_11, v_13)}, v_5), False{}))
 
-def feedback_consumer_235532(v_292: Pair(Pair(List<&2, Ast.SyntaxTerm>, List<&2, Lexer.Token>), Bool), v_1: String, v_3: String, v_5: Nat, v_7: Nat, v_20: List<&2, Lexer.Token>) -> FeedbackControl:
+def feedback_consumer_235461(v_292: Pair(Pair(List<&2, Ast.SyntaxTerm>, List<&2, Lexer.Token>), Bool), v_1: String, v_3: String, v_5: Nat, v_7: Nat, v_20: List<&2, Lexer.Token>) -> FeedbackControl:
   match v_292:
     case ((v_293, v_294), v_295):
       step_parse_name_constructor_result(v_295, v_293, v_294, v_1, v_3, v_5, v_7, v_20)
 
-def feedback_resume_Kont_235549(lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_20: List<&2, Lexer.Token>, result: ((List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_235532(result, lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_20)
+def feedback_resume_Kont_235478(lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_20: List<&2, Lexer.Token>, result: ((List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_235461(result, lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_20)
 
 def feedback_make_parse_term_args_first_result(ok: Bool, term: Ast.SyntaxTerm, after: List<&2, Lexer.Token>, file: String, tokens: List<&2, Lexer.Token>, close: String, scope: List<&2, Scope>, depth: Nat, acc: List<&2, Ast.SyntaxTerm>) -> FeedbackRequest:
   Request_parse_term_args_first_result{ok, term, after, file, tokens, close, scope, depth, acc}
 
-def feedback_consumer_238926(v_293: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_3: String, v_8: List<&2, Lexer.Token>, v_10: String, v_13: List<&2, Scope>, v_15: Nat, v_17: List<&2, Ast.SyntaxTerm>) -> FeedbackControl:
+def feedback_consumer_238855(v_293: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_3: String, v_8: List<&2, Lexer.Token>, v_10: String, v_13: List<&2, Scope>, v_15: Nat, v_17: List<&2, Ast.SyntaxTerm>) -> FeedbackControl:
   match v_293:
     case ((v_294, v_295), v_296):
       FeedbackControl{FeedbackCall{feedback_make_parse_term_args_first_result(v_296, v_294, v_295, v_3, v_8, v_10, v_13, v_15, v_17)}, Nil{}, NoProgress{}, NoProgress{}}
 
-def feedback_resume_Kont_238944(lexical_capture_3: String, lexical_capture_8: List<&2, Lexer.Token>, lexical_capture_10: String, lexical_capture_13: List<&2, Scope>, lexical_capture_15: Nat, lexical_capture_17: List<&2, Ast.SyntaxTerm>, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_238926(result, lexical_capture_3, lexical_capture_8, lexical_capture_10, lexical_capture_13, lexical_capture_15, lexical_capture_17)
+def feedback_resume_Kont_238873(lexical_capture_3: String, lexical_capture_8: List<&2, Lexer.Token>, lexical_capture_10: String, lexical_capture_13: List<&2, Scope>, lexical_capture_15: Nat, lexical_capture_17: List<&2, Ast.SyntaxTerm>, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_238855(result, lexical_capture_3, lexical_capture_8, lexical_capture_10, lexical_capture_13, lexical_capture_15, lexical_capture_17)
 
 def parse_all_named_body_result(ok_body: Bool, body: Ast.SyntaxTerm, +after_body: List<&2, Lexer.Token>, file: String, key: String, key_end: Nat, beg: Nat, quantity: Ast.Quantity, ty: Ast.SyntaxTerm, idx: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match ok_body:
@@ -5763,7 +5770,7 @@ def parse_all_named_body_result(ok_body: Bool, body: Ast.SyntaxTerm, +after_body
     case False{}:
       ((body, after_body), False{})
 
-def feedback_resume_Kont_240637(lexical_capture_2: String, lexical_capture_4: String, lexical_capture_6: Nat, lexical_capture_8: Nat, lexical_capture_9: Ast.Quantity, lexical_capture_0: Ast.SyntaxTerm, lexical_capture_22: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_240566(lexical_capture_2: String, lexical_capture_4: String, lexical_capture_6: Nat, lexical_capture_8: Nat, lexical_capture_9: Ast.Quantity, lexical_capture_0: Ast.SyntaxTerm, lexical_capture_22: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   feedback_pack_5(with_term_result(result, body => after_body => ok_body => parse_all_named_body_result(ok_body, body, after_body, lexical_capture_2, lexical_capture_4, lexical_capture_6, lexical_capture_8, lexical_capture_9, lexical_capture_0, lexical_capture_22)))
 
 def all_named_type_is_colon(arrow: Lexer.Token) -> Bool:
@@ -5776,13 +5783,13 @@ def all_named_type_is_colon(arrow: Lexer.Token) -> Bool:
 def all_named_type_branch_1(after_ty: List<&2, Lexer.Token>, +file: String, +arrow: Lexer.Token) -> Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool):
   ((Ast.TermHole{ "parse-error: expected ->", span(file, token_beg(arrow), token_end(arrow))}, after_ty), False{})
 
-def feedback_make_Kont_240637(lexical_capture_2: String, lexical_capture_4: String, lexical_capture_6: Nat, lexical_capture_8: Nat, lexical_capture_9: Ast.Quantity, lexical_capture_0: Ast.SyntaxTerm, lexical_capture_22: Nat) -> FeedbackFrame:
-  Kont_240637{lexical_capture_2, lexical_capture_4, lexical_capture_6, lexical_capture_8, lexical_capture_9, lexical_capture_0, lexical_capture_22}
+def feedback_make_Kont_240566(lexical_capture_2: String, lexical_capture_4: String, lexical_capture_6: Nat, lexical_capture_8: Nat, lexical_capture_9: Ast.Quantity, lexical_capture_0: Ast.SyntaxTerm, lexical_capture_22: Nat) -> FeedbackFrame:
+  Kont_240566{lexical_capture_2, lexical_capture_4, lexical_capture_6, lexical_capture_8, lexical_capture_9, lexical_capture_0, lexical_capture_22}
 
 def step_all_named_type_branch_0(ty: Ast.SyntaxTerm, +file: String, +key: String, key_end: Nat, beg: Nat, quantity: Ast.Quantity, scope: List<&2, Scope>, +depth: Nat, after_arrow: List<&2, Lexer.Token>) -> FeedbackControl:
   idx = depth
   next_scope = extend_scope(key, depth, scope)
-  feedback_attach(step_parse_term(file, after_arrow, next_scope, (depth + 1n : Nat), 0n), feedback_make_Kont_240637(file, key, key_end, beg, quantity, ty, idx))
+  feedback_attach(step_parse_term(file, after_arrow, next_scope, (depth + 1n : Nat), 0n), feedback_make_Kont_240566(file, key, key_end, beg, quantity, ty, idx))
 
 def step_all_named_type_run(is_colon: Bool, ty: Ast.SyntaxTerm, after_ty: List<&2, Lexer.Token>, +file: String, +key: String, key_end: Nat, beg: Nat, quantity: Ast.Quantity, scope: List<&2, Scope>, +depth: Nat, +arrow: Lexer.Token, after_arrow: List<&2, Lexer.Token>) -> FeedbackControl:
   match is_colon:
@@ -5798,13 +5805,13 @@ def step_parse_all_named_type_result(ok_ty: Bool, +ty: Ast.SyntaxTerm, +after_ty
     case _ _:
       feedback_pack_5(((ty, after_ty), False{}))
 
-def feedback_consumer_242808(v_294: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_1: String, v_23: String, v_25: Nat, v_10: Nat, v_11: Ast.Quantity, v_6: List<&2, Scope>, v_8: Nat) -> FeedbackControl:
+def feedback_consumer_242737(v_294: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_1: String, v_23: String, v_25: Nat, v_10: Nat, v_11: Ast.Quantity, v_6: List<&2, Scope>, v_8: Nat) -> FeedbackControl:
   match v_294:
     case ((v_295, v_296), v_297):
       step_parse_all_named_type_result(v_297, v_295, v_296, v_1, v_23, v_25, v_10, v_11, v_6, v_8)
 
-def feedback_resume_Kont_242825(lexical_capture_1: String, lexical_capture_23: String, lexical_capture_25: Nat, lexical_capture_10: Nat, lexical_capture_11: Ast.Quantity, lexical_capture_6: List<&2, Scope>, lexical_capture_8: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_242808(result, lexical_capture_1, lexical_capture_23, lexical_capture_25, lexical_capture_10, lexical_capture_11, lexical_capture_6, lexical_capture_8)
+def feedback_resume_Kont_242754(lexical_capture_1: String, lexical_capture_23: String, lexical_capture_25: Nat, lexical_capture_10: Nat, lexical_capture_11: Ast.Quantity, lexical_capture_6: List<&2, Scope>, lexical_capture_8: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_242737(result, lexical_capture_1, lexical_capture_23, lexical_capture_25, lexical_capture_10, lexical_capture_11, lexical_capture_6, lexical_capture_8)
 
 def parse_many_lambda_body_result(ok_body: Bool, body: Ast.SyntaxTerm, +after_body: List<&2, Lexer.Token>, file: String, key: String, beg: Nat, end: Nat, depth: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match ok_body:
@@ -5813,18 +5820,18 @@ def parse_many_lambda_body_result(ok_body: Bool, body: Ast.SyntaxTerm, +after_bo
     case False{}:
       ((body, after_body), False{})
 
-def feedback_resume_Kont_244077(lexical_capture_1: String, lexical_capture_22: String, lexical_capture_5: Nat, lexical_capture_24: Nat, lexical_capture_10: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_244006(lexical_capture_1: String, lexical_capture_22: String, lexical_capture_5: Nat, lexical_capture_24: Nat, lexical_capture_10: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   feedback_pack_5(with_term_result(result, body => after_body => ok_body => parse_many_lambda_body_result(ok_body, body, after_body, lexical_capture_1, lexical_capture_22, lexical_capture_5, lexical_capture_24, lexical_capture_10)))
 
-def feedback_make_Kont_247191(lexical_capture_3: String, lexical_capture_4: Ast.SyntaxTerm, lexical_capture_6: Nat, lexical_capture_7: Lexer.Token) -> FeedbackFrame:
-  Kont_247191{lexical_capture_3, lexical_capture_4, lexical_capture_6, lexical_capture_7}
+def feedback_make_Kont_247124(lexical_capture_3: String, lexical_capture_4: Ast.SyntaxTerm, lexical_capture_6: Nat, lexical_capture_7: Lexer.Token) -> FeedbackFrame:
+  Kont_247124{lexical_capture_3, lexical_capture_4, lexical_capture_6, lexical_capture_7}
 
 def step_parse_plus_args_spaced(is_spaced: Bool, +file: String, +head: Ast.SyntaxTerm, +beg: Nat, open: Lexer.Token, rest: List<&2, Lexer.Token>, after_head: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat) -> FeedbackControl:
   match is_spaced:
     case True{}:
       feedback_pack_5(((Ast.TermPlus{head,  Nil{},  span(file, beg, token_end_first(head))}, after_head), True{}))
     case False{}:
-      feedback_attach(step_parse_term_args(file, rest, ">", scope, depth, Nil{}), feedback_make_Kont_247191(file, head, beg, open))
+      feedback_attach(step_parse_term_args(file, rest, ">", scope, depth, Nil{}), feedback_make_Kont_247124(file, head, beg, open))
 
 def step_parse_plus_sugar_args(+file: String, +head: Ast.SyntaxTerm, +beg: Nat, +after_head: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat) -> FeedbackControl:
   match after_head:
@@ -5860,13 +5867,13 @@ def step_parse_plus_sugar_head_result(ok_head: Bool, +head: Ast.SyntaxTerm, +aft
     case False{}:
       feedback_pack_5(((head, after_head), False{}))
 
-def feedback_consumer_245864(v_295: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_1: String, v_5: Nat, v_14: List<&2, Scope>, v_16: Nat) -> FeedbackControl:
+def feedback_consumer_245797(v_295: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_1: String, v_5: Nat, v_14: List<&2, Scope>, v_16: Nat) -> FeedbackControl:
   match v_295:
     case ((v_296, v_297), v_298):
       step_parse_plus_sugar_head_result(v_298, v_296, v_297, v_1, v_5, v_14, v_16)
 
-def feedback_resume_Kont_245881(lexical_capture_1: String, lexical_capture_5: Nat, lexical_capture_14: List<&2, Scope>, lexical_capture_16: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_245864(result, lexical_capture_1, lexical_capture_5, lexical_capture_14, lexical_capture_16)
+def feedback_resume_Kont_245814(lexical_capture_1: String, lexical_capture_5: Nat, lexical_capture_14: List<&2, Scope>, lexical_capture_16: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_245797(result, lexical_capture_1, lexical_capture_5, lexical_capture_14, lexical_capture_16)
 
 def parse_plus_args_result(ok_args: Bool, args: List<&2, Ast.SyntaxTerm>, +after_args: List<&2, Lexer.Token>, file: String, +head: Ast.SyntaxTerm, beg: Nat, +open: Lexer.Token) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match ok_args:
@@ -5875,29 +5882,29 @@ def parse_plus_args_result(ok_args: Bool, args: List<&2, Ast.SyntaxTerm>, +after
     case False{}:
       ((Ast.TermHole{"parse-error: expected plus datatype arguments", span(file, token_beg(open), token_end(open))}, after_args), False{})
 
-def feedback_resume_Kont_247191(lexical_capture_3: String, lexical_capture_4: Ast.SyntaxTerm, lexical_capture_6: Nat, lexical_capture_7: Lexer.Token, result: ((List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_247124(lexical_capture_3: String, lexical_capture_4: Ast.SyntaxTerm, lexical_capture_6: Nat, lexical_capture_7: Lexer.Token, result: ((List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   feedback_pack_5(with_args_result(result, args => after_args => ok_args => parse_plus_args_result(ok_args, args, after_args, lexical_capture_3, lexical_capture_4, lexical_capture_6, lexical_capture_7)))
 
-def feedback_resume_Kont_247684(capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: List<&2, Lexer.Token>, capture_3: List<&2, Scope>, capture_4: Nat, capture_5: Nat, result: Nat) -> FeedbackControl:
+def feedback_resume_Kont_247617(capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: List<&2, Lexer.Token>, capture_3: List<&2, Scope>, capture_4: Nat, capture_5: Nat, result: Nat) -> FeedbackControl:
   FeedbackControl{FeedbackCall{feedback_make_parse_term_tail_at(capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, result)}, Nil{}, NoProgress{}, NoProgress{}}
 
-def feedback_make_Kont_247684(capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: List<&2, Lexer.Token>, capture_3: List<&2, Scope>, capture_4: Nat, capture_5: Nat) -> FeedbackFrame:
-  Kont_247684{capture_0, capture_1, capture_2, capture_3, capture_4, capture_5}
+def feedback_make_Kont_247617(capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: List<&2, Lexer.Token>, capture_3: List<&2, Scope>, capture_4: Nat, capture_5: Nat) -> FeedbackFrame:
+  Kont_247617{capture_0, capture_1, capture_2, capture_3, capture_4, capture_5}
 
 def step_parse_term_atom_result(ok: Bool, +left: Ast.SyntaxTerm, +rest: List<&2, Lexer.Token>, file: String, scope: List<&2, Scope>, depth: Nat, level: Nat, original: List<&2, Lexer.Token>) -> FeedbackControl:
   match ok:
     case True{}:
-      feedback_attach(step_consumed_token_end(original, rest, token_end_first(left)), feedback_make_Kont_247684(file, left, rest, scope, depth, level))
+      feedback_attach(step_consumed_token_end(original, rest, token_end_first(left)), feedback_make_Kont_247617(file, left, rest, scope, depth, level))
     case False{}:
       feedback_pack_5(((left, rest), False{}))
 
-def feedback_consumer_247958(v_296: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_1: String, v_6: List<&2, Scope>, v_8: Nat, v_10: Nat, v_3: List<&2, Lexer.Token>) -> FeedbackControl:
+def feedback_consumer_247891(v_296: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_1: String, v_6: List<&2, Scope>, v_8: Nat, v_10: Nat, v_3: List<&2, Lexer.Token>) -> FeedbackControl:
   match v_296:
     case ((v_297, v_298), v_299):
       step_parse_term_atom_result(v_299, v_297, v_298, v_1, v_6, v_8, v_10, v_3)
 
-def feedback_resume_Kont_247975(lexical_capture_1: String, lexical_capture_6: List<&2, Scope>, lexical_capture_8: Nat, lexical_capture_10: Nat, lexical_capture_3: List<&2, Lexer.Token>, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_247958(result, lexical_capture_1, lexical_capture_6, lexical_capture_8, lexical_capture_10, lexical_capture_3)
+def feedback_resume_Kont_247908(lexical_capture_1: String, lexical_capture_6: List<&2, Scope>, lexical_capture_8: Nat, lexical_capture_10: Nat, lexical_capture_3: List<&2, Lexer.Token>, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_247891(result, lexical_capture_1, lexical_capture_6, lexical_capture_8, lexical_capture_10, lexical_capture_3)
 
 def step_parse_application_applied_result(ok_apply: Bool, +applied: Ast.SyntaxTerm, +after_args: List<&2, Lexer.Token>, file: String, scope: List<&2, Scope>, depth: Nat, level: Nat, consumed_end: Nat) -> FeedbackControl:
   match ok_apply:
@@ -5906,35 +5913,35 @@ def step_parse_application_applied_result(ok_apply: Bool, +applied: Ast.SyntaxTe
     case False{}:
       feedback_pack_5(((applied, after_args), False{}))
 
-def feedback_consumer_250219(v_297: Pair(Ast.SyntaxTerm, Bool), v_3: List<&2, Lexer.Token>, v_5: String, v_9: List<&2, Scope>, v_11: Nat, v_13: Nat, v_21: Nat) -> FeedbackControl:
+def feedback_consumer_250152(v_297: Pair(Ast.SyntaxTerm, Bool), v_3: List<&2, Lexer.Token>, v_5: String, v_9: List<&2, Scope>, v_11: Nat, v_13: Nat, v_21: Nat) -> FeedbackControl:
   match v_297:
     case (v_298, v_299):
       step_parse_application_applied_result(v_299, v_298, v_3, v_5, v_9, v_11, v_13, v_21)
 
-def step_evaluation_context_parse_application_args_result_241691(v_3: List<&2, Ast.SyntaxTerm>, +v_5: List<&2, Lexer.Token>, +v_7: String, +v_8: Ast.SyntaxTerm, v_12: List<&2, Scope>, v_14: Nat, v_16: Nat, v_304: Nat) -> FeedbackControl:
+def step_evaluation_context_parse_application_args_result_241624(v_3: List<&2, Ast.SyntaxTerm>, +v_5: List<&2, Lexer.Token>, +v_7: String, +v_8: Ast.SyntaxTerm, v_12: List<&2, Scope>, v_14: Nat, v_16: Nat, v_304: Nat) -> FeedbackControl:
   v_24 = v_304
-  feedback_consumer_250219(apply_terms(v_3, v_7, v_8, token_beg_first(v_8)), v_5, v_7, v_12, v_14, v_16, v_24)
+  feedback_consumer_250152(apply_terms(v_3, v_7, v_8, token_beg_first(v_8)), v_5, v_7, v_12, v_14, v_16, v_24)
 
-def feedback_resume_Kont_250807(capture_0: List<&2, Ast.SyntaxTerm>, capture_1: List<&2, Lexer.Token>, capture_2: String, capture_3: Ast.SyntaxTerm, capture_4: List<&2, Scope>, capture_5: Nat, capture_6: Nat, result: Nat) -> FeedbackControl:
-  step_evaluation_context_parse_application_args_result_241691(capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, result)
+def feedback_resume_Kont_250740(capture_0: List<&2, Ast.SyntaxTerm>, capture_1: List<&2, Lexer.Token>, capture_2: String, capture_3: Ast.SyntaxTerm, capture_4: List<&2, Scope>, capture_5: Nat, capture_6: Nat, result: Nat) -> FeedbackControl:
+  step_evaluation_context_parse_application_args_result_241624(capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, result)
 
-def feedback_make_Kont_250807(capture_0: List<&2, Ast.SyntaxTerm>, capture_1: List<&2, Lexer.Token>, capture_2: String, capture_3: Ast.SyntaxTerm, capture_4: List<&2, Scope>, capture_5: Nat, capture_6: Nat) -> FeedbackFrame:
-  Kont_250807{capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6}
+def feedback_make_Kont_250740(capture_0: List<&2, Ast.SyntaxTerm>, capture_1: List<&2, Lexer.Token>, capture_2: String, capture_3: Ast.SyntaxTerm, capture_4: List<&2, Scope>, capture_5: Nat, capture_6: Nat) -> FeedbackFrame:
+  Kont_250740{capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6}
 
 def step_parse_application_args_result(v_1: Bool, v_3: List<&2, Ast.SyntaxTerm>, +v_5: List<&2, Lexer.Token>, +v_7: String, +v_8: Ast.SyntaxTerm, v_9: Ast.SyntaxTerm, v_12: List<&2, Scope>, v_14: Nat, v_16: Nat, v_18: List<&2, Lexer.Token>) -> FeedbackControl:
   match v_1:
     case True{}:
-      feedback_attach(step_consumed_token_end(v_18, v_5, token_end_first(v_8)), feedback_make_Kont_250807(v_3, v_5, v_7, v_8, v_12, v_14, v_16))
+      feedback_attach(step_consumed_token_end(v_18, v_5, token_end_first(v_8)), feedback_make_Kont_250740(v_3, v_5, v_7, v_8, v_12, v_14, v_16))
     case False{}:
       feedback_pack_5(((v_9, v_5), False{}))
 
-def feedback_consumer_251434(v_298: Pair(Pair(List<&2, Ast.SyntaxTerm>, List<&2, Lexer.Token>), Bool), +v_3: String, v_30: Ast.SyntaxTerm, +v_5: Lexer.Token, v_15: List<&2, Scope>, v_17: Nat, v_19: Nat, v_7: List<&2, Lexer.Token>) -> FeedbackControl:
+def feedback_consumer_251367(v_298: Pair(Pair(List<&2, Ast.SyntaxTerm>, List<&2, Lexer.Token>), Bool), +v_3: String, v_30: Ast.SyntaxTerm, +v_5: Lexer.Token, v_15: List<&2, Scope>, v_17: Nat, v_19: Nat, v_7: List<&2, Lexer.Token>) -> FeedbackControl:
   match v_298:
     case ((v_299, v_300), v_301):
       step_parse_application_args_result(v_301, v_299, v_300, v_3, v_30, Ast.TermHole{"parse-error: expected bang-call arguments", span(v_3, token_beg(v_5), token_end(v_5))}, v_15, v_17, v_19, v_7)
 
-def feedback_resume_Kont_251451(+lexical_capture_3: String, lexical_capture_30: Ast.SyntaxTerm, +lexical_capture_5: Lexer.Token, lexical_capture_15: List<&2, Scope>, lexical_capture_17: Nat, lexical_capture_19: Nat, lexical_capture_7: List<&2, Lexer.Token>, result: ((List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_251434(result, lexical_capture_3, lexical_capture_30, lexical_capture_5, lexical_capture_15, lexical_capture_17, lexical_capture_19, lexical_capture_7)
+def feedback_resume_Kont_251384(+lexical_capture_3: String, lexical_capture_30: Ast.SyntaxTerm, +lexical_capture_5: Lexer.Token, lexical_capture_15: List<&2, Scope>, lexical_capture_17: Nat, lexical_capture_19: Nat, lexical_capture_7: List<&2, Lexer.Token>, result: ((List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_251367(result, lexical_capture_3, lexical_capture_30, lexical_capture_5, lexical_capture_15, lexical_capture_17, lexical_capture_19, lexical_capture_7)
 
 def feedback_make_parse_term_tail(file: String, left: Ast.SyntaxTerm, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, level: Nat) -> FeedbackRequest:
   Request_parse_term_tail{file, left, tokens, scope, depth, level}
@@ -5946,56 +5953,56 @@ def step_parse_term_arrow_result(ok: Bool, +right: Ast.SyntaxTerm, +after: List<
     case False{}:
       feedback_pack_5(((right, after), False{}))
 
-def feedback_consumer_254166(v_300: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_1: String, v_2: Ast.SyntaxTerm, v_7: List<&2, Scope>, v_9: Nat, v_11: Nat, v_39: Nat) -> FeedbackControl:
+def feedback_consumer_254099(v_300: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_1: String, v_2: Ast.SyntaxTerm, v_7: List<&2, Scope>, v_9: Nat, v_11: Nat, v_39: Nat) -> FeedbackControl:
   match v_300:
     case ((v_301, v_302), v_303):
       step_parse_term_arrow_result(v_303, v_301, v_302, v_1, v_2, v_7, v_9, v_11, v_39)
 
-def feedback_resume_Kont_254183(lexical_capture_1: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_7: List<&2, Scope>, lexical_capture_9: Nat, lexical_capture_11: Nat, lexical_capture_39: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_254166(result, lexical_capture_1, lexical_capture_2, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_39)
+def feedback_resume_Kont_254116(lexical_capture_1: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_7: List<&2, Scope>, lexical_capture_9: Nat, lexical_capture_11: Nat, lexical_capture_39: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_254099(result, lexical_capture_1, lexical_capture_2, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_39)
 
-def feedback_consumer_257630(v_299: Pair(Pair(List<&2, Ast.SyntaxTerm>, List<&2, Lexer.Token>), Bool), +v_1: String, v_2: Ast.SyntaxTerm, +v_18: Lexer.Token, v_7: List<&2, Scope>, v_9: Nat, v_11: Nat, v_19: List<&2, Lexer.Token>) -> FeedbackControl:
+def feedback_consumer_257563(v_299: Pair(Pair(List<&2, Ast.SyntaxTerm>, List<&2, Lexer.Token>), Bool), +v_1: String, v_2: Ast.SyntaxTerm, +v_18: Lexer.Token, v_7: List<&2, Scope>, v_9: Nat, v_11: Nat, v_19: List<&2, Lexer.Token>) -> FeedbackControl:
   match v_299:
     case ((v_300, v_301), v_302):
       step_parse_application_args_result(v_302, v_300, v_301, v_1, v_2, Ast.TermHole{"parse-error: expected application arguments", span(v_1, token_end(v_18), token_end(v_18))}, v_7, v_9, v_11, v_19)
 
-def feedback_resume_Kont_257647(+lexical_capture_1: String, lexical_capture_2: Ast.SyntaxTerm, +lexical_capture_18: Lexer.Token, lexical_capture_7: List<&2, Scope>, lexical_capture_9: Nat, lexical_capture_11: Nat, lexical_capture_19: List<&2, Lexer.Token>, result: ((List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_257630(result, lexical_capture_1, lexical_capture_2, lexical_capture_18, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_19)
+def feedback_resume_Kont_257580(+lexical_capture_1: String, lexical_capture_2: Ast.SyntaxTerm, +lexical_capture_18: Lexer.Token, lexical_capture_7: List<&2, Scope>, lexical_capture_9: Nat, lexical_capture_11: Nat, lexical_capture_19: List<&2, Lexer.Token>, result: ((List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_257563(result, lexical_capture_1, lexical_capture_2, lexical_capture_18, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_19)
 
-def feedback_make_Kont_261576(capture_0: List<&2, Ast.SyntaxTerm>, capture_1: List<&2, Lexer.Token>, capture_2: String, capture_3: Ast.SyntaxTerm, capture_4: List<&2, Scope>, capture_5: Nat, capture_6: Nat) -> FeedbackFrame:
-  Kont_261576{capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6}
+def feedback_make_Kont_261509(capture_0: List<&2, Ast.SyntaxTerm>, capture_1: List<&2, Lexer.Token>, capture_2: String, capture_3: Ast.SyntaxTerm, capture_4: List<&2, Scope>, capture_5: Nat, capture_6: Nat) -> FeedbackFrame:
+  Kont_261509{capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6}
 
 def step_parse_less_many_result(v_1: Bool, v_3: List<&2, Ast.SyntaxTerm>, +v_5: List<&2, Lexer.Token>, +v_7: String, +v_8: Ast.SyntaxTerm, +v_9: Lexer.Token, v_11: Nat, v_14: List<&2, Scope>, v_16: Nat, v_18: Nat, v_20: List<&2, Lexer.Token>) -> FeedbackControl:
   match v_1:
     case True{}:
-      feedback_attach(step_consumed_token_end(v_20, v_5, v_11), feedback_make_Kont_261576(v_3, v_5, v_7, v_8, v_14, v_16, v_18))
+      feedback_attach(step_consumed_token_end(v_20, v_5, v_11), feedback_make_Kont_261509(v_3, v_5, v_7, v_8, v_14, v_16, v_18))
     case False{}:
       feedback_pack_5(((Ast.TermHole{"parse-error: expected datatype arguments", span(v_7, token_beg(v_9), token_end(v_9))}, v_5), False{}))
 
-def feedback_consumer_260098(v_301: Pair(Pair(List<&2, Ast.SyntaxTerm>, List<&2, Lexer.Token>), Bool), v_6: String, v_7: Ast.SyntaxTerm, v_9: Lexer.Token, v_20: Nat, v_14: List<&2, Scope>, v_16: Nat, v_18: Nat, v_11: List<&2, Lexer.Token>) -> FeedbackControl:
+def feedback_consumer_260031(v_301: Pair(Pair(List<&2, Ast.SyntaxTerm>, List<&2, Lexer.Token>), Bool), v_6: String, v_7: Ast.SyntaxTerm, v_9: Lexer.Token, v_20: Nat, v_14: List<&2, Scope>, v_16: Nat, v_18: Nat, v_11: List<&2, Lexer.Token>) -> FeedbackControl:
   match v_301:
     case ((v_302, v_303), v_304):
       step_parse_less_many_result(v_304, v_302, v_303, v_6, v_7, v_9, v_20, v_14, v_16, v_18, v_11)
 
-def feedback_resume_Kont_260115(lexical_capture_6: String, lexical_capture_7: Ast.SyntaxTerm, lexical_capture_9: Lexer.Token, lexical_capture_20: Nat, lexical_capture_14: List<&2, Scope>, lexical_capture_16: Nat, lexical_capture_18: Nat, lexical_capture_11: List<&2, Lexer.Token>, result: ((List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_260098(result, lexical_capture_6, lexical_capture_7, lexical_capture_9, lexical_capture_20, lexical_capture_14, lexical_capture_16, lexical_capture_18, lexical_capture_11)
+def feedback_resume_Kont_260048(lexical_capture_6: String, lexical_capture_7: Ast.SyntaxTerm, lexical_capture_9: Lexer.Token, lexical_capture_20: Nat, lexical_capture_14: List<&2, Scope>, lexical_capture_16: Nat, lexical_capture_18: Nat, lexical_capture_11: List<&2, Lexer.Token>, result: ((List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_260031(result, lexical_capture_6, lexical_capture_7, lexical_capture_9, lexical_capture_20, lexical_capture_14, lexical_capture_16, lexical_capture_18, lexical_capture_11)
 
-def step_evaluation_context_parse_less_many_result_252295(v_3: List<&2, Ast.SyntaxTerm>, +v_5: List<&2, Lexer.Token>, +v_7: String, +v_8: Ast.SyntaxTerm, v_14: List<&2, Scope>, v_16: Nat, v_18: Nat, v_305: Nat) -> FeedbackControl:
+def step_evaluation_context_parse_less_many_result_252228(v_3: List<&2, Ast.SyntaxTerm>, +v_5: List<&2, Lexer.Token>, +v_7: String, +v_8: Ast.SyntaxTerm, v_14: List<&2, Scope>, v_16: Nat, v_18: Nat, v_305: Nat) -> FeedbackControl:
   v_27 = {Ast.TermFill{v_8, v_3, span(v_7, token_beg_first(v_8), v_305)} : Ast.SyntaxTerm}
   FeedbackControl{FeedbackCall{feedback_make_parse_term_tail(v_7, v_27, v_5, v_14, v_16, v_18)}, Nil{}, NoProgress{}, NoProgress{}}
 
-def feedback_resume_Kont_261576(capture_0: List<&2, Ast.SyntaxTerm>, capture_1: List<&2, Lexer.Token>, capture_2: String, capture_3: Ast.SyntaxTerm, capture_4: List<&2, Scope>, capture_5: Nat, capture_6: Nat, result: Nat) -> FeedbackControl:
-  step_evaluation_context_parse_less_many_result_252295(capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, result)
+def feedback_resume_Kont_261509(capture_0: List<&2, Ast.SyntaxTerm>, capture_1: List<&2, Lexer.Token>, capture_2: String, capture_3: Ast.SyntaxTerm, capture_4: List<&2, Scope>, capture_5: Nat, capture_6: Nat, result: Nat) -> FeedbackControl:
+  step_evaluation_context_parse_less_many_result_252228(capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, result)
 
-def feedback_make_Kont_260115(lexical_capture_6: String, lexical_capture_7: Ast.SyntaxTerm, lexical_capture_9: Lexer.Token, lexical_capture_20: Nat, lexical_capture_14: List<&2, Scope>, lexical_capture_16: Nat, lexical_capture_18: Nat, lexical_capture_11: List<&2, Lexer.Token>) -> FeedbackFrame:
-  Kont_260115{lexical_capture_6, lexical_capture_7, lexical_capture_9, lexical_capture_20, lexical_capture_14, lexical_capture_16, lexical_capture_18, lexical_capture_11}
+def feedback_make_Kont_260048(lexical_capture_6: String, lexical_capture_7: Ast.SyntaxTerm, lexical_capture_9: Lexer.Token, lexical_capture_20: Nat, lexical_capture_14: List<&2, Scope>, lexical_capture_16: Nat, lexical_capture_18: Nat, lexical_capture_11: List<&2, Lexer.Token>) -> FeedbackFrame:
+  Kont_260048{lexical_capture_6, lexical_capture_7, lexical_capture_9, lexical_capture_20, lexical_capture_14, lexical_capture_16, lexical_capture_18, lexical_capture_11}
 
 def step_parse_less_named(found: Maybe<&2, String>, wants_many: Bool, +file: String, +left: Ast.SyntaxTerm, +right: Ast.SyntaxTerm, +separator: Lexer.Token, +after_separator: List<&2, Lexer.Token>, +scope: List<&2, Scope>, +depth: Nat, +level: Nat, end: Nat) -> FeedbackControl:
   match found:
     case Some{ _}:
       match wants_many:
         case True{}:
-          feedback_attach(step_parse_term_args(file, after_separator, ">", scope, depth, [right]), feedback_make_Kont_260115(file, left, separator, end, scope, depth, level, after_separator))
+          feedback_attach(step_parse_term_args(file, after_separator, ">", scope, depth, [right]), feedback_make_Kont_260048(file, left, separator, end, scope, depth, level, after_separator))
         case False{}:
           fill = { Ast.TermFill{ left,  [right],  span(file, token_beg_first(left), token_end(separator))} : Ast.SyntaxTerm }
           FeedbackControl{FeedbackCall{feedback_make_parse_term_tail(file, fill, after_separator, scope, depth, level)}, Nil{}, NoProgress{}, NoProgress{}}
@@ -6032,13 +6039,13 @@ def step_parse_less_right_tokens(ok_right: Bool, +after_right: List<&2, Lexer.To
 def step_parse_less_right(ok_right: Bool, after_right: List<&2, Lexer.Token>, right: Ast.SyntaxTerm, file: String, +left: Ast.SyntaxTerm, tokens: List<&2, Lexer.Token>, all_tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, +level: Nat, end: Nat) -> FeedbackControl:
   step_parse_less_right_tokens(ok_right, split_angle_close(after_right), right, file, left, tokens, all_tokens, scope, depth, level, end)
 
-def feedback_consumer_262470(v_302: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_1: String, v_2: Ast.SyntaxTerm, v_4: List<&2, Lexer.Token>, v_6: List<&2, Lexer.Token>, v_9: List<&2, Scope>, v_11: Nat, v_13: Nat, v_15: Nat) -> FeedbackControl:
+def feedback_consumer_262403(v_302: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_1: String, v_2: Ast.SyntaxTerm, v_4: List<&2, Lexer.Token>, v_6: List<&2, Lexer.Token>, v_9: List<&2, Scope>, v_11: Nat, v_13: Nat, v_15: Nat) -> FeedbackControl:
   match v_302:
     case ((v_303, v_304), v_305):
       step_parse_less_right(v_305, v_304, v_303, v_1, v_2, v_4, v_6, v_9, v_11, v_13, v_15)
 
-def feedback_resume_Kont_262487(lexical_capture_1: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_4: List<&2, Lexer.Token>, lexical_capture_6: List<&2, Lexer.Token>, lexical_capture_9: List<&2, Scope>, lexical_capture_11: Nat, lexical_capture_13: Nat, lexical_capture_15: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_262470(result, lexical_capture_1, lexical_capture_2, lexical_capture_4, lexical_capture_6, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15)
+def feedback_resume_Kont_262420(lexical_capture_1: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_4: List<&2, Lexer.Token>, lexical_capture_6: List<&2, Lexer.Token>, lexical_capture_9: List<&2, Scope>, lexical_capture_11: Nat, lexical_capture_13: Nat, lexical_capture_15: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_262403(result, lexical_capture_1, lexical_capture_2, lexical_capture_4, lexical_capture_6, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15)
 
 def step_parse_operator_right_named(key: String, +right: Ast.SyntaxTerm, +after: List<&2, Lexer.Token>, +file: String, +left: Ast.SyntaxTerm, +scope: List<&2, Scope>, +depth: Nat, +level: Nat, +end: Nat) -> FeedbackControl:
   match key:
@@ -6057,13 +6064,13 @@ def step_parse_operator_right_result(ok: Bool, +right: Ast.SyntaxTerm, +after: L
     case False{}:
       feedback_pack_5(((right, after), False{}))
 
-def feedback_consumer_266509(v_303: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_3: String, v_5: String, v_8: Ast.SyntaxTerm, v_13: List<&2, Scope>, v_15: Nat, v_17: Nat, v_19: Nat) -> FeedbackControl:
+def feedback_consumer_266442(v_303: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_3: String, v_5: String, v_8: Ast.SyntaxTerm, v_13: List<&2, Scope>, v_15: Nat, v_17: Nat, v_19: Nat) -> FeedbackControl:
   match v_303:
     case ((v_304, v_305), v_306):
       step_parse_operator_right_result(v_306, v_304, v_305, v_3, v_5, v_8, v_13, v_15, v_17, v_19)
 
-def feedback_resume_Kont_266526(lexical_capture_3: String, lexical_capture_5: String, lexical_capture_8: Ast.SyntaxTerm, lexical_capture_13: List<&2, Scope>, lexical_capture_15: Nat, lexical_capture_17: Nat, lexical_capture_19: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_266509(result, lexical_capture_3, lexical_capture_5, lexical_capture_8, lexical_capture_13, lexical_capture_15, lexical_capture_17, lexical_capture_19)
+def feedback_resume_Kont_266459(lexical_capture_3: String, lexical_capture_5: String, lexical_capture_8: Ast.SyntaxTerm, lexical_capture_13: List<&2, Scope>, lexical_capture_15: Nat, lexical_capture_17: Nat, lexical_capture_19: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_266442(result, lexical_capture_3, lexical_capture_5, lexical_capture_8, lexical_capture_13, lexical_capture_15, lexical_capture_17, lexical_capture_19)
 
 def step_parse_min_precedence_result(ok: Bool, +right: Ast.SyntaxTerm, +after: List<&2, Lexer.Token>, +file: String, +left: Ast.SyntaxTerm, scope: List<&2, Scope>, depth: Nat, level: Nat, end: Nat) -> FeedbackControl:
   match ok:
@@ -6073,13 +6080,13 @@ def step_parse_min_precedence_result(ok: Bool, +right: Ast.SyntaxTerm, +after: L
     case False{}:
       feedback_pack_5(((right, after), False{}))
 
-def feedback_consumer_267804(v_304: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_3: String, v_4: Ast.SyntaxTerm, v_9: List<&2, Scope>, v_11: Nat, v_13: Nat, v_15: Nat) -> FeedbackControl:
+def feedback_consumer_267737(v_304: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_3: String, v_4: Ast.SyntaxTerm, v_9: List<&2, Scope>, v_11: Nat, v_13: Nat, v_15: Nat) -> FeedbackControl:
   match v_304:
     case ((v_305, v_306), v_307):
       step_parse_min_precedence_result(v_307, v_305, v_306, v_3, v_4, v_9, v_11, v_13, v_15)
 
-def feedback_resume_Kont_267821(lexical_capture_3: String, lexical_capture_4: Ast.SyntaxTerm, lexical_capture_9: List<&2, Scope>, lexical_capture_11: Nat, lexical_capture_13: Nat, lexical_capture_15: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_267804(result, lexical_capture_3, lexical_capture_4, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15)
+def feedback_resume_Kont_267754(lexical_capture_3: String, lexical_capture_4: Ast.SyntaxTerm, lexical_capture_9: List<&2, Scope>, lexical_capture_11: Nat, lexical_capture_13: Nat, lexical_capture_15: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_267737(result, lexical_capture_3, lexical_capture_4, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15)
 
 def is_quantity_term(term: Ast.SyntaxTerm) -> Bool:
   match term:
@@ -6097,14 +6104,14 @@ def step_pair_application_result(ok: Bool, +term: Ast.SyntaxTerm, +after: List<&
     case False{}:
       feedback_pack_5(((term, after), False{}))
 
-def feedback_consumer_271109(v_306: Pair(Ast.SyntaxTerm, Bool), v_7: List<&2, Lexer.Token>, v_1: String, v_10: List<&2, Scope>, v_12: Nat, v_14: Nat, v_16: Nat) -> FeedbackControl:
+def feedback_consumer_271042(v_306: Pair(Ast.SyntaxTerm, Bool), v_7: List<&2, Lexer.Token>, v_1: String, v_10: List<&2, Scope>, v_12: Nat, v_14: Nat, v_16: Nat) -> FeedbackControl:
   match v_306:
     case (v_307, v_308):
       step_pair_application_result(v_308, v_307, v_7, v_1, v_10, v_12, v_14, v_16)
 
 def step_pair_application(+file: String, key: String, +left: Ast.SyntaxTerm, right: Ast.SyntaxTerm, +after: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, level: Nat, +end: Nat) -> FeedbackControl:
   span_value = span(file, token_beg_first(left), token_end_of(after, end))
-  feedback_consumer_271109(apply_terms([left, right], file, Ast.TermRef{key, span_value}, token_beg_first(left)), after, file, scope, depth, level, end)
+  feedback_consumer_271042(apply_terms([left, right], file, Ast.TermRef{key, span_value}, token_beg_first(left)), after, file, scope, depth, level, end)
 
 def step_parse_pair_quantity(left_is_quantity: Bool, right_is_quantity: Bool, +file: String, +left: Ast.SyntaxTerm, +right: Ast.SyntaxTerm, +after: List<&2, Lexer.Token>, +scope: List<&2, Scope>, +depth: Nat, +level: Nat, +end: Nat) -> FeedbackControl:
   match left_is_quantity right_is_quantity:
@@ -6124,22 +6131,22 @@ def step_parse_pair_operator_consumed(ok: Bool, +right: Ast.SyntaxTerm, +after: 
     case False{}:
       feedback_pack_5(((right, after), False{}))
 
-def feedback_resume_Kont_268939(capture_0: Bool, capture_1: Ast.SyntaxTerm, capture_2: List<&2, Lexer.Token>, capture_3: Bool, capture_4: String, capture_5: Ast.SyntaxTerm, capture_6: List<&2, Scope>, capture_7: Nat, capture_8: Nat, result: Nat) -> FeedbackControl:
+def feedback_resume_Kont_268872(capture_0: Bool, capture_1: Ast.SyntaxTerm, capture_2: List<&2, Lexer.Token>, capture_3: Bool, capture_4: String, capture_5: Ast.SyntaxTerm, capture_6: List<&2, Scope>, capture_7: Nat, capture_8: Nat, result: Nat) -> FeedbackControl:
   step_parse_pair_operator_consumed(capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, result)
 
-def feedback_make_Kont_268939(capture_0: Bool, capture_1: Ast.SyntaxTerm, capture_2: List<&2, Lexer.Token>, capture_3: Bool, capture_4: String, capture_5: Ast.SyntaxTerm, capture_6: List<&2, Scope>, capture_7: Nat, capture_8: Nat) -> FeedbackFrame:
-  Kont_268939{capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8}
+def feedback_make_Kont_268872(capture_0: Bool, capture_1: Ast.SyntaxTerm, capture_2: List<&2, Lexer.Token>, capture_3: Bool, capture_4: String, capture_5: Ast.SyntaxTerm, capture_6: List<&2, Scope>, capture_7: Nat, capture_8: Nat) -> FeedbackFrame:
+  Kont_268872{capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8}
 
 def step_parse_pair_operator_result(ok: Bool, +right: Ast.SyntaxTerm, +after: List<&2, Lexer.Token>, amp: Bool, file: String, +left: Ast.SyntaxTerm, scope: List<&2, Scope>, depth: Nat, level: Nat, end: Nat, tokens: List<&2, Lexer.Token>) -> FeedbackControl:
-  feedback_attach(step_consumed_token_end(tokens, after, end), feedback_make_Kont_268939(ok, right, after, amp, file, left, scope, depth, level))
+  feedback_attach(step_consumed_token_end(tokens, after, end), feedback_make_Kont_268872(ok, right, after, amp, file, left, scope, depth, level))
 
-def feedback_consumer_270201(v_305: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_17: Bool, v_3: String, v_4: Ast.SyntaxTerm, v_9: List<&2, Scope>, v_11: Nat, v_13: Nat, v_15: Nat, v_6: List<&2, Lexer.Token>) -> FeedbackControl:
+def feedback_consumer_270134(v_305: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_17: Bool, v_3: String, v_4: Ast.SyntaxTerm, v_9: List<&2, Scope>, v_11: Nat, v_13: Nat, v_15: Nat, v_6: List<&2, Lexer.Token>) -> FeedbackControl:
   match v_305:
     case ((v_306, v_307), v_308):
       step_parse_pair_operator_result(v_308, v_306, v_307, v_17, v_3, v_4, v_9, v_11, v_13, v_15, v_6)
 
-def feedback_resume_Kont_270218(lexical_capture_17: Bool, lexical_capture_3: String, lexical_capture_4: Ast.SyntaxTerm, lexical_capture_9: List<&2, Scope>, lexical_capture_11: Nat, lexical_capture_13: Nat, lexical_capture_15: Nat, lexical_capture_6: List<&2, Lexer.Token>, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_270201(result, lexical_capture_17, lexical_capture_3, lexical_capture_4, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15, lexical_capture_6)
+def feedback_resume_Kont_270151(lexical_capture_17: Bool, lexical_capture_3: String, lexical_capture_4: Ast.SyntaxTerm, lexical_capture_9: List<&2, Scope>, lexical_capture_11: Nat, lexical_capture_13: Nat, lexical_capture_15: Nat, lexical_capture_6: List<&2, Lexer.Token>, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_270134(result, lexical_capture_17, lexical_capture_3, lexical_capture_4, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15, lexical_capture_6)
 
 def step_parse_array_set_call_result(call_ok: Bool, +call: Ast.SyntaxTerm, +after_value: List<&2, Lexer.Token>, file: String, scope: List<&2, Scope>, depth: Nat, level: Nat) -> FeedbackControl:
   match call_ok:
@@ -6148,7 +6155,7 @@ def step_parse_array_set_call_result(call_ok: Bool, +call: Ast.SyntaxTerm, +afte
     case False{}:
       feedback_pack_5(((call, after_value), False{}))
 
-def feedback_consumer_272019(v_307: Pair(Ast.SyntaxTerm, Bool), v_4: List<&2, Lexer.Token>, v_6: String, v_15: List<&2, Scope>, v_17: Nat, v_19: Nat) -> FeedbackControl:
+def feedback_consumer_271952(v_307: Pair(Ast.SyntaxTerm, Bool), v_4: List<&2, Lexer.Token>, v_6: String, v_15: List<&2, Scope>, v_17: Nat, v_19: Nat) -> FeedbackControl:
   match v_307:
     case (v_308, v_309):
       step_parse_array_set_call_result(v_309, v_308, v_4, v_6, v_15, v_17, v_19)
@@ -6156,17 +6163,17 @@ def feedback_consumer_272019(v_307: Pair(Ast.SyntaxTerm, Bool), v_4: List<&2, Le
 def step_parse_array_set_value_result(ok_value: Bool, +value: Ast.SyntaxTerm, +after_value: List<&2, Lexer.Token>, +file: String, left: Ast.SyntaxTerm, typed_index: Ast.SyntaxTerm, +beg: Nat, open_end: Nat, scope: List<&2, Scope>, depth: Nat, level: Nat) -> FeedbackControl:
   match ok_value:
     case True{}:
-      feedback_consumer_272019(apply_terms([Ast.TermRef{"U32", span(file, beg, open_end)}, left, typed_index, value], file, Ast.TermRef{"Array.set", span(file, beg, token_end_first(value))}, beg), after_value, file, scope, depth, level)
+      feedback_consumer_271952(apply_terms([Ast.TermRef{"U32", span(file, beg, open_end)}, left, typed_index, value], file, Ast.TermRef{"Array.set", span(file, beg, token_end_first(value))}, beg), after_value, file, scope, depth, level)
     case False{}:
       feedback_pack_5(((value, after_value), False{}))
 
-def feedback_consumer_272745(v_308: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_6: String, v_7: Ast.SyntaxTerm, v_8: Ast.SyntaxTerm, v_10: Nat, v_12: Nat, v_15: List<&2, Scope>, v_17: Nat, v_19: Nat) -> FeedbackControl:
+def feedback_consumer_272678(v_308: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_6: String, v_7: Ast.SyntaxTerm, v_8: Ast.SyntaxTerm, v_10: Nat, v_12: Nat, v_15: List<&2, Scope>, v_17: Nat, v_19: Nat) -> FeedbackControl:
   match v_308:
     case ((v_309, v_310), v_311):
       step_parse_array_set_value_result(v_311, v_309, v_310, v_6, v_7, v_8, v_10, v_12, v_15, v_17, v_19)
 
-def feedback_resume_Kont_272762(lexical_capture_6: String, lexical_capture_7: Ast.SyntaxTerm, lexical_capture_8: Ast.SyntaxTerm, lexical_capture_10: Nat, lexical_capture_12: Nat, lexical_capture_15: List<&2, Scope>, lexical_capture_17: Nat, lexical_capture_19: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_272745(result, lexical_capture_6, lexical_capture_7, lexical_capture_8, lexical_capture_10, lexical_capture_12, lexical_capture_15, lexical_capture_17, lexical_capture_19)
+def feedback_resume_Kont_272695(lexical_capture_6: String, lexical_capture_7: Ast.SyntaxTerm, lexical_capture_8: Ast.SyntaxTerm, lexical_capture_10: Nat, lexical_capture_12: Nat, lexical_capture_15: List<&2, Scope>, lexical_capture_17: Nat, lexical_capture_19: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_272678(result, lexical_capture_6, lexical_capture_7, lexical_capture_8, lexical_capture_10, lexical_capture_12, lexical_capture_15, lexical_capture_17, lexical_capture_19)
 
 def step_parse_array_get_result(ok: Bool, +call: Ast.SyntaxTerm, +tokens: List<&2, Lexer.Token>, file: String, scope: List<&2, Scope>, depth: Nat, level: Nat) -> FeedbackControl:
   match ok:
@@ -6175,21 +6182,21 @@ def step_parse_array_get_result(ok: Bool, +call: Ast.SyntaxTerm, +tokens: List<&
     case False{}:
       feedback_pack_5(((call, tokens), False{}))
 
-def feedback_consumer_276465(v_310: Pair(Ast.SyntaxTerm, Bool), v_5: List<&2, Lexer.Token>, v_1: String, v_8: List<&2, Scope>, v_10: Nat, v_12: Nat) -> FeedbackControl:
+def feedback_consumer_276398(v_310: Pair(Ast.SyntaxTerm, Bool), v_5: List<&2, Lexer.Token>, v_1: String, v_8: List<&2, Scope>, v_10: Nat, v_12: Nat) -> FeedbackControl:
   match v_310:
     case (v_311, v_312):
       step_parse_array_get_result(v_312, v_311, v_5, v_1, v_8, v_10, v_12)
 
 def step_parse_array_get(+file: String, left: Ast.SyntaxTerm, index: Ast.SyntaxTerm, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, level: Nat, +beg: Nat, +end: Nat) -> FeedbackControl:
-  feedback_consumer_276465(apply_terms([Ast.TermRef{"U32", span(file, beg, end)}, left, index], file, Ast.TermRef{"Array.get", span(file, beg, end)}, beg), tokens, file, scope, depth, level)
+  feedback_consumer_276398(apply_terms([Ast.TermRef{"U32", span(file, beg, end)}, left, index], file, Ast.TermRef{"Array.get", span(file, beg, end)}, beg), tokens, file, scope, depth, level)
 
-def feedback_make_Kont_272762(lexical_capture_6: String, lexical_capture_7: Ast.SyntaxTerm, lexical_capture_8: Ast.SyntaxTerm, lexical_capture_10: Nat, lexical_capture_12: Nat, lexical_capture_15: List<&2, Scope>, lexical_capture_17: Nat, lexical_capture_19: Nat) -> FeedbackFrame:
-  Kont_272762{lexical_capture_6, lexical_capture_7, lexical_capture_8, lexical_capture_10, lexical_capture_12, lexical_capture_15, lexical_capture_17, lexical_capture_19}
+def feedback_make_Kont_272695(lexical_capture_6: String, lexical_capture_7: Ast.SyntaxTerm, lexical_capture_8: Ast.SyntaxTerm, lexical_capture_10: Nat, lexical_capture_12: Nat, lexical_capture_15: List<&2, Scope>, lexical_capture_17: Nat, lexical_capture_19: Nat) -> FeedbackFrame:
+  Kont_272695{lexical_capture_6, lexical_capture_7, lexical_capture_8, lexical_capture_10, lexical_capture_12, lexical_capture_15, lexical_capture_17, lexical_capture_19}
 
 def step_parse_index_set_token(set_token: Lexer.Token, after_set: List<&2, Lexer.Token>, after_close: List<&2, Lexer.Token>, +file: String, +left: Ast.SyntaxTerm, +typed_index: Ast.SyntaxTerm, +beg: Nat, +open_end: Nat, +scope: List<&2, Scope>, +depth: Nat, +level: Nat) -> FeedbackControl:
   match set_token:
     case Lexer.TokenInfo{_, "<-", _, _, _, _}:
-      feedback_attach(step_parse_term(file, after_set, scope, depth, 0n), feedback_make_Kont_272762(file, left, typed_index, beg, open_end, scope, depth, level))
+      feedback_attach(step_parse_term(file, after_set, scope, depth, 0n), feedback_make_Kont_272695(file, left, typed_index, beg, open_end, scope, depth, level))
     case _:
       step_parse_array_get(file, left, typed_index, after_close, scope, depth, level, beg, open_end)
 
@@ -6200,7 +6207,7 @@ def step_parse_index_after_close(+after_close: List<&2, Lexer.Token>, +file: Str
     case Nil{}:
       step_parse_array_get(file, left, typed_index, Nil{}, scope, depth, level, beg, open_end)
 
-def feedback_resume_Kont_273921(capture_0: List<&2, Lexer.Token>, capture_1: String, capture_2: Ast.SyntaxTerm, capture_4: Nat, capture_5: Nat, capture_6: List<&2, Scope>, capture_7: Nat, capture_8: Nat, result: Ast.SyntaxTerm) -> FeedbackControl:
+def feedback_resume_Kont_273854(capture_0: List<&2, Lexer.Token>, capture_1: String, capture_2: Ast.SyntaxTerm, capture_4: Nat, capture_5: Nat, capture_6: List<&2, Scope>, capture_7: Nat, capture_8: Nat, result: Ast.SyntaxTerm) -> FeedbackControl:
   step_parse_index_after_close(capture_0, capture_1, capture_2, result, capture_4, capture_5, capture_6, capture_7, capture_8)
 
 def index_result_is_colon(close: Lexer.Token) -> Bool:
@@ -6213,11 +6220,11 @@ def index_result_is_colon(close: Lexer.Token) -> Bool:
 def index_result_branch_1(after_index: List<&2, Lexer.Token>, file: String, +close: Lexer.Token) -> Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool):
   ((Ast.TermHole{"parse-error: expected ]", span(file, token_beg(close), token_end(close))}, after_index), False{})
 
-def feedback_make_Kont_273921(capture_0: List<&2, Lexer.Token>, capture_1: String, capture_2: Ast.SyntaxTerm, capture_4: Nat, capture_5: Nat, capture_6: List<&2, Scope>, capture_7: Nat, capture_8: Nat) -> FeedbackFrame:
-  Kont_273921{capture_0, capture_1, capture_2, capture_4, capture_5, capture_6, capture_7, capture_8}
+def feedback_make_Kont_273854(capture_0: List<&2, Lexer.Token>, capture_1: String, capture_2: Ast.SyntaxTerm, capture_4: Nat, capture_5: Nat, capture_6: List<&2, Scope>, capture_7: Nat, capture_8: Nat) -> FeedbackFrame:
+  Kont_273854{capture_0, capture_1, capture_2, capture_4, capture_5, capture_6, capture_7, capture_8}
 
 def step_index_result_branch_0(index: Ast.SyntaxTerm, file: String, left: Ast.SyntaxTerm, scope: List<&2, Scope>, depth: Nat, level: Nat, beg: Nat, open_end: Nat, after_close: List<&2, Lexer.Token>) -> FeedbackControl:
-  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(index, "U32")}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_273921(after_close, file, left, beg, open_end, scope, depth, level))
+  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(index, "U32")}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_273854(after_close, file, left, beg, open_end, scope, depth, level))
 
 def step_index_result_run(is_colon: Bool, after_index: List<&2, Lexer.Token>, index: Ast.SyntaxTerm, +file: String, left: Ast.SyntaxTerm, scope: List<&2, Scope>, depth: Nat, level: Nat, beg: Nat, open_end: Nat, +close: Lexer.Token, after_close: List<&2, Lexer.Token>) -> FeedbackControl:
   match is_colon:
@@ -6233,13 +6240,13 @@ def step_parse_index_result(ok_index: Bool, +after_index: List<&2, Lexer.Token>,
     case _ _:
       feedback_pack_5(((index, after_index), False{}))
 
-def feedback_consumer_275687(v_309: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_1: String, v_2: Ast.SyntaxTerm, v_7: List<&2, Scope>, v_9: Nat, v_11: Nat, v_13: Nat, v_15: Nat) -> FeedbackControl:
+def feedback_consumer_275620(v_309: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_1: String, v_2: Ast.SyntaxTerm, v_7: List<&2, Scope>, v_9: Nat, v_11: Nat, v_13: Nat, v_15: Nat) -> FeedbackControl:
   match v_309:
     case ((v_310, v_311), v_312):
       step_parse_index_result(v_312, v_311, v_310, v_1, v_2, v_7, v_9, v_11, v_13, v_15)
 
-def feedback_resume_Kont_275704(lexical_capture_1: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_7: List<&2, Scope>, lexical_capture_9: Nat, lexical_capture_11: Nat, lexical_capture_13: Nat, lexical_capture_15: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_275687(result, lexical_capture_1, lexical_capture_2, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15)
+def feedback_resume_Kont_275637(lexical_capture_1: String, lexical_capture_2: Ast.SyntaxTerm, lexical_capture_7: List<&2, Scope>, lexical_capture_9: Nat, lexical_capture_11: Nat, lexical_capture_13: Nat, lexical_capture_15: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_275620(result, lexical_capture_1, lexical_capture_2, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15)
 
 def step_parse_operator_precedence_result(ok: Bool, +right: Ast.SyntaxTerm, +after: List<&2, Lexer.Token>, +file: String, name: String, +left: Ast.SyntaxTerm, scope: List<&2, Scope>, depth: Nat, level: Nat, end: Nat) -> FeedbackControl:
   match ok:
@@ -6252,13 +6259,13 @@ def step_parse_operator_precedence_result(ok: Bool, +right: Ast.SyntaxTerm, +aft
     case False{}:
       feedback_pack_5(((right, after), False{}))
 
-def feedback_consumer_278192(v_311: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_3: String, v_5: String, v_8: Ast.SyntaxTerm, v_13: List<&2, Scope>, v_15: Nat, v_17: Nat, v_19: Nat) -> FeedbackControl:
+def feedback_consumer_278125(v_311: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_3: String, v_5: String, v_8: Ast.SyntaxTerm, v_13: List<&2, Scope>, v_15: Nat, v_17: Nat, v_19: Nat) -> FeedbackControl:
   match v_311:
     case ((v_312, v_313), v_314):
       step_parse_operator_precedence_result(v_314, v_312, v_313, v_3, v_5, v_8, v_13, v_15, v_17, v_19)
 
-def feedback_resume_Kont_278209(lexical_capture_3: String, lexical_capture_5: String, lexical_capture_8: Ast.SyntaxTerm, lexical_capture_13: List<&2, Scope>, lexical_capture_15: Nat, lexical_capture_17: Nat, lexical_capture_19: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_278192(result, lexical_capture_3, lexical_capture_5, lexical_capture_8, lexical_capture_13, lexical_capture_15, lexical_capture_17, lexical_capture_19)
+def feedback_resume_Kont_278142(lexical_capture_3: String, lexical_capture_5: String, lexical_capture_8: Ast.SyntaxTerm, lexical_capture_13: List<&2, Scope>, lexical_capture_15: Nat, lexical_capture_17: Nat, lexical_capture_19: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_278125(result, lexical_capture_3, lexical_capture_5, lexical_capture_8, lexical_capture_13, lexical_capture_15, lexical_capture_17, lexical_capture_19)
 
 def parse_reply_result(ok: Bool, +term: Ast.SyntaxTerm, after: List<&2, Lexer.Token>, file: String) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match ok:
@@ -6267,7 +6274,7 @@ def parse_reply_result(ok: Bool, +term: Ast.SyntaxTerm, after: List<&2, Lexer.To
     case False{}:
       ((term, after), False{})
 
-def feedback_resume_Kont_286523(lexical_capture_1: String, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_286456(lexical_capture_1: String, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   feedback_pack_5(with_term_result(result, term => after => ok => parse_reply_result(ok, term, after, lexical_capture_1)))
 
 def step_parse_local_values_result(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool, tokens: List<&2, Lexer.Token>, file: String, scope: List<&2, Scope>, depth: Nat, remaining: List<&2, Ast.SyntaxPattern>, +line: Nat, +acc: List<&2, Ast.SyntaxTerm>) -> FeedbackControl:
@@ -6277,7 +6284,7 @@ def step_parse_local_values_result(result: (Ast.SyntaxTerm & List<&2, Lexer.Toke
     case (_, False{}):
       feedback_pack_2((((List.reverse(&2, Ast.SyntaxTerm, acc), tokens), line), False{}))
 
-def feedback_resume_Kont_288084(capture_1: List<&2, Lexer.Token>, capture_2: String, capture_3: List<&2, Scope>, capture_4: Nat, capture_5: List<&2, Ast.SyntaxPattern>, capture_6: Nat, capture_7: List<&2, Ast.SyntaxTerm>, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_288017(capture_1: List<&2, Lexer.Token>, capture_2: String, capture_3: List<&2, Scope>, capture_4: Nat, capture_5: List<&2, Ast.SyntaxPattern>, capture_6: Nat, capture_7: List<&2, Ast.SyntaxTerm>, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   step_parse_local_values_result(result, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7)
 
 def body_indented(tokens: List<&2, Lexer.Token>, parent_col: Nat) -> Bool:
@@ -6311,13 +6318,13 @@ def local_group_body_ready(tokens: List<&2, Lexer.Token>, parent_col: Nat, rhs_l
     case Nil{}:
       False{}
 
-def feedback_make_Kont_291436(lexical_capture_3: List<&2, Ast.SyntaxTerm>, lexical_capture_7: List<&2, Ast.SyntaxPattern>, lexical_capture_13: Ast.Quantity, lexical_capture_15: String, lexical_capture_17: Nat) -> FeedbackFrame:
-  Kont_291436{lexical_capture_3, lexical_capture_7, lexical_capture_13, lexical_capture_15, lexical_capture_17}
+def feedback_make_Kont_291369(lexical_capture_3: List<&2, Ast.SyntaxTerm>, lexical_capture_7: List<&2, Ast.SyntaxPattern>, lexical_capture_13: Ast.Quantity, lexical_capture_15: String, lexical_capture_17: Nat) -> FeedbackFrame:
+  Kont_291369{lexical_capture_3, lexical_capture_7, lexical_capture_13, lexical_capture_15, lexical_capture_17}
 
 def step_parse_parallel_body_ready(is_ready: Bool, values: List<&2, Ast.SyntaxTerm>, +after_values: List<&2, Lexer.Token>, patterns: List<&2, Ast.SyntaxPattern>, next_scope: List<&2, Scope>, next_depth: Nat, quantity: Ast.Quantity, +file: String, +beg: Nat, col: Nat) -> FeedbackControl:
   match is_ready:
     case True{}:
-      feedback_attach(step_parse_body(file, skip_rewrite_semicolon(after_values), next_scope, next_depth, col), feedback_make_Kont_291436(values, patterns, quantity, file, beg))
+      feedback_attach(step_parse_body(file, skip_rewrite_semicolon(after_values), next_scope, next_depth, col), feedback_make_Kont_291369(values, patterns, quantity, file, beg))
     case False{}:
       feedback_pack_5(((Ast.TermHole{ "parse-error: expected an indented parallel-let body",  span(file, token_end_of(after_values, beg), token_end_of(after_values, beg))}, after_values), False{}))
 
@@ -6328,13 +6335,13 @@ def step_parse_parallel_values_result(ok_values: Bool, values: List<&2, Ast.Synt
     case False{}:
       feedback_pack_5(((Ast.TermHole{ "parse-error: expected parallel-let values",  span(file, beg, beg)}, after_values), False{}))
 
-def feedback_consumer_289951(v_313: Pair(Pair(Pair(List<&2, Ast.SyntaxTerm>, List<&2, Lexer.Token>), Nat), Bool), v_3: List<&2, Ast.SyntaxPattern>, v_8: List<&2, Scope>, v_10: Nat, v_12: String, v_14: Nat, v_16: Nat, v_22: Ast.Quantity) -> FeedbackControl:
+def feedback_consumer_289884(v_313: Pair(Pair(Pair(List<&2, Ast.SyntaxTerm>, List<&2, Lexer.Token>), Nat), Bool), v_3: List<&2, Ast.SyntaxPattern>, v_8: List<&2, Scope>, v_10: Nat, v_12: String, v_14: Nat, v_16: Nat, v_22: Ast.Quantity) -> FeedbackControl:
   match v_313:
     case (((v_314, v_315), v_316), v_317):
       step_parse_parallel_values_result(v_317, v_314, v_315, v_316, v_3, v_8, v_10, v_12, v_14, v_16, v_22)
 
-def feedback_resume_Kont_289976(lexical_capture_3: List<&2, Ast.SyntaxPattern>, lexical_capture_8: List<&2, Scope>, lexical_capture_10: Nat, lexical_capture_12: String, lexical_capture_14: Nat, lexical_capture_16: Nat, lexical_capture_22: Ast.Quantity, result: (((List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Nat) & Bool)) -> FeedbackControl:
-  feedback_consumer_289951(result, lexical_capture_3, lexical_capture_8, lexical_capture_10, lexical_capture_12, lexical_capture_14, lexical_capture_16, lexical_capture_22)
+def feedback_resume_Kont_289909(lexical_capture_3: List<&2, Ast.SyntaxPattern>, lexical_capture_8: List<&2, Scope>, lexical_capture_10: Nat, lexical_capture_12: String, lexical_capture_14: Nat, lexical_capture_16: Nat, lexical_capture_22: Ast.Quantity, result: (((List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Nat) & Bool)) -> FeedbackControl:
+  feedback_consumer_289884(result, lexical_capture_3, lexical_capture_8, lexical_capture_10, lexical_capture_12, lexical_capture_14, lexical_capture_16, lexical_capture_22)
 
 def token_end_first_list(terms: List<&2, Ast.SyntaxTerm>) -> Nat:
   match terms:
@@ -6351,7 +6358,7 @@ def parse_parallel_parsed_body(ok_body: Bool, body: Ast.SyntaxTerm, +after_body:
     case False{}:
       ((body, after_body), False{})
 
-def feedback_resume_Kont_291436(lexical_capture_3: List<&2, Ast.SyntaxTerm>, lexical_capture_7: List<&2, Ast.SyntaxPattern>, lexical_capture_13: Ast.Quantity, lexical_capture_15: String, lexical_capture_17: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_291369(lexical_capture_3: List<&2, Ast.SyntaxTerm>, lexical_capture_7: List<&2, Ast.SyntaxPattern>, lexical_capture_13: Ast.Quantity, lexical_capture_15: String, lexical_capture_17: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   feedback_pack_5(with_term_result(result, body => after_body => ok_body => parse_parallel_parsed_body(ok_body, body, after_body, lexical_capture_3, lexical_capture_7, lexical_capture_13, lexical_capture_15, lexical_capture_17)))
 
 def local_body_ready(tokens: List<&2, Lexer.Token>, parent_col: Nat) -> Bool:
@@ -6365,13 +6372,13 @@ def local_body_ready(tokens: List<&2, Lexer.Token>, parent_col: Nat) -> Bool:
     case Nil{}:
       False{}
 
-def feedback_make_Kont_293675(lexical_capture_3: String, lexical_capture_5: String, lexical_capture_7: Nat, lexical_capture_10: Ast.SyntaxPattern, lexical_capture_19: Ast.Quantity, lexical_capture_11: Ast.SyntaxTerm) -> FeedbackFrame:
-  Kont_293675{lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_10, lexical_capture_19, lexical_capture_11}
+def feedback_make_Kont_293608(lexical_capture_3: String, lexical_capture_5: String, lexical_capture_7: Nat, lexical_capture_10: Ast.SyntaxPattern, lexical_capture_19: Ast.Quantity, lexical_capture_11: Ast.SyntaxTerm) -> FeedbackFrame:
+  Kont_293608{lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_10, lexical_capture_19, lexical_capture_11}
 
 def step_parse_local_body_ready(is_ready: Bool, +file: String, key: String, beg: Nat, col: Nat, pattern: Ast.SyntaxPattern, +value: Ast.SyntaxTerm, +after_value: List<&2, Lexer.Token>, next_scope: List<&2, Scope>, depth: Nat, quantity: Ast.Quantity) -> FeedbackControl:
   match is_ready:
     case True{}:
-      feedback_attach(step_parse_body(file, skip_rewrite_semicolon(after_value), next_scope, (depth + 1n : Nat), col), feedback_make_Kont_293675(file, key, beg, pattern, quantity, value))
+      feedback_attach(step_parse_body(file, skip_rewrite_semicolon(after_value), next_scope, (depth + 1n : Nat), col), feedback_make_Kont_293608(file, key, beg, pattern, quantity, value))
     case False{}:
       feedback_pack_5(((Ast.TermHole{ "parse-error: expected an indented local body",  span(file, token_end_first(value), token_end_first(value))}, after_value), False{}))
 
@@ -6387,13 +6394,13 @@ def step_parse_local_body_term_result(ok_value: Bool, file: String, key: String,
     case False{}:
       feedback_pack_5(((value, after_value), False{}))
 
-def feedback_consumer_292078(v_314: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_1: String, v_3: String, v_5: Nat, v_7: Nat, v_9: Nat, v_14: List<&2, Scope>, v_16: Nat, v_17: Ast.Quantity) -> FeedbackControl:
+def feedback_consumer_292011(v_314: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_1: String, v_3: String, v_5: Nat, v_7: Nat, v_9: Nat, v_14: List<&2, Scope>, v_16: Nat, v_17: Ast.Quantity) -> FeedbackControl:
   match v_314:
     case ((v_315, v_316), v_317):
       step_parse_local_body_term_result(v_317, v_1, v_3, v_5, v_7, v_9, v_315, v_316, v_14, v_16, v_17)
 
-def feedback_resume_Kont_292095(lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_9: Nat, lexical_capture_14: List<&2, Scope>, lexical_capture_16: Nat, lexical_capture_17: Ast.Quantity, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_292078(result, lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_9, lexical_capture_14, lexical_capture_16, lexical_capture_17)
+def feedback_resume_Kont_292028(lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_9: Nat, lexical_capture_14: List<&2, Scope>, lexical_capture_16: Nat, lexical_capture_17: Ast.Quantity, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_292011(result, lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_9, lexical_capture_14, lexical_capture_16, lexical_capture_17)
 
 def parse_local_body_parsed(ok_body: Bool, body: Ast.SyntaxTerm, +after_body: List<&2, Lexer.Token>, file: String, key: String, beg: Nat, pattern: Ast.SyntaxPattern, quantity: Ast.Quantity, +value: Ast.SyntaxTerm) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match ok_body:
@@ -6402,46 +6409,46 @@ def parse_local_body_parsed(ok_body: Bool, body: Ast.SyntaxTerm, +after_body: Li
     case False{}:
       ((body, after_body), False{})
 
-def feedback_resume_Kont_293675(lexical_capture_3: String, lexical_capture_5: String, lexical_capture_7: Nat, lexical_capture_10: Ast.SyntaxPattern, lexical_capture_19: Ast.Quantity, lexical_capture_11: Ast.SyntaxTerm, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_293608(lexical_capture_3: String, lexical_capture_5: String, lexical_capture_7: Nat, lexical_capture_10: Ast.SyntaxPattern, lexical_capture_19: Ast.Quantity, lexical_capture_11: Ast.SyntaxTerm, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   feedback_pack_5(with_term_result(result, body => after_body => ok_body => parse_local_body_parsed(ok_body, body, after_body, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_10, lexical_capture_19, lexical_capture_11)))
 
-def feedback_consumer_294281(v_315: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_1: String, v_3: String, v_5: Nat, v_7: Nat, v_9: Nat, v_14: List<&2, Scope>, v_16: Nat) -> FeedbackControl:
+def feedback_consumer_294214(v_315: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_1: String, v_3: String, v_5: Nat, v_7: Nat, v_9: Nat, v_14: List<&2, Scope>, v_16: Nat) -> FeedbackControl:
   match v_315:
     case ((v_316, v_317), v_318):
       step_parse_local_body_term_result(v_318, v_1, v_3, v_5, v_7, v_9, v_316, v_317, v_14, v_16, Ast.QOne{})
 
-def feedback_resume_Kont_294298(lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_9: Nat, lexical_capture_14: List<&2, Scope>, lexical_capture_16: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_294281(result, lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_9, lexical_capture_14, lexical_capture_16)
+def feedback_resume_Kont_294231(lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_9: Nat, lexical_capture_14: List<&2, Scope>, lexical_capture_16: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_294214(result, lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_9, lexical_capture_14, lexical_capture_16)
 
-def feedback_make_Kont_297565(lexical_capture_4: Ast.SyntaxPattern, lexical_capture_7: List<&2, Scope>, lexical_capture_9: Nat, lexical_capture_11: String, lexical_capture_13: List<&2, Lexer.Token>, lexical_capture_15: Nat, lexical_capture_17: Nat, lexical_capture_20: List<&2, Scope>, lexical_capture_22: Nat) -> FeedbackFrame:
-  Kont_297565{lexical_capture_4, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15, lexical_capture_17, lexical_capture_20, lexical_capture_22}
+def feedback_make_Kont_297498(lexical_capture_4: Ast.SyntaxPattern, lexical_capture_7: List<&2, Scope>, lexical_capture_9: Nat, lexical_capture_11: String, lexical_capture_13: List<&2, Lexer.Token>, lexical_capture_15: Nat, lexical_capture_17: Nat, lexical_capture_20: List<&2, Scope>, lexical_capture_22: Nat) -> FeedbackFrame:
+  Kont_297498{lexical_capture_4, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15, lexical_capture_17, lexical_capture_20, lexical_capture_22}
 
 def step_parse_destructuring_pattern_result(ok_pattern: Bool, after_pattern: List<&2, Lexer.Token>, pattern: Ast.SyntaxPattern, next_scope: List<&2, Scope>, next_depth: Nat, +file: String, +tokens: List<&2, Lexer.Token>, beg: Nat, col: Nat, +scope: List<&2, Scope>, +depth: Nat) -> FeedbackControl:
   match ok_pattern after_pattern:
     case True{} +equals <> after_equals:
       match equals:
         case Lexer.TokenInfo{ _, "=",  _,  _,  _,  _}:
-          feedback_attach(step_parse_term(file, after_equals, scope, depth, 0n), feedback_make_Kont_297565(pattern, next_scope, next_depth, file, tokens, beg, col, scope, depth))
+          feedback_attach(step_parse_term(file, after_equals, scope, depth, 0n), feedback_make_Kont_297498(pattern, next_scope, next_depth, file, tokens, beg, col, scope, depth))
         case _:
           step_parse_reply(file, tokens, scope, depth)
     case _ _:
       step_parse_reply(file, tokens, scope, depth)
 
-def feedback_consumer_296726(v_316: Pair(Pair(Ast.SyntaxPattern, List<&2, Lexer.Token>), Pair(Pair(List<&2, Scope>, Nat), Bool)), v_3: String, v_5: List<&2, Lexer.Token>, v_7: Nat, v_9: Nat, v_12: List<&2, Scope>, v_14: Nat) -> FeedbackControl:
+def feedback_consumer_296659(v_316: Pair(Pair(Ast.SyntaxPattern, List<&2, Lexer.Token>), Pair(Pair(List<&2, Scope>, Nat), Bool)), v_3: String, v_5: List<&2, Lexer.Token>, v_7: Nat, v_9: Nat, v_12: List<&2, Scope>, v_14: Nat) -> FeedbackControl:
   match v_316:
     case ((v_317, v_318), (v_319, v_320), v_321):
       step_parse_destructuring_pattern_result(v_321, v_318, v_317, v_319, v_320, v_3, v_5, v_7, v_9, v_12, v_14)
 
-def feedback_resume_Kont_296746(lexical_capture_3: String, lexical_capture_5: List<&2, Lexer.Token>, lexical_capture_7: Nat, lexical_capture_9: Nat, lexical_capture_12: List<&2, Scope>, lexical_capture_14: Nat, result: ((Ast.SyntaxPattern & List<&2, Lexer.Token>) & ((List<&2, Scope> & Nat) & Bool))) -> FeedbackControl:
-  feedback_consumer_296726(result, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_9, lexical_capture_12, lexical_capture_14)
+def feedback_resume_Kont_296679(lexical_capture_3: String, lexical_capture_5: List<&2, Lexer.Token>, lexical_capture_7: Nat, lexical_capture_9: Nat, lexical_capture_12: List<&2, Scope>, lexical_capture_14: Nat, result: ((Ast.SyntaxPattern & List<&2, Lexer.Token>) & ((List<&2, Scope> & Nat) & Bool))) -> FeedbackControl:
+  feedback_consumer_296659(result, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_9, lexical_capture_12, lexical_capture_14)
 
-def feedback_make_Kont_298818(lexical_capture_2: Ast.SyntaxTerm, lexical_capture_5: Ast.SyntaxPattern, lexical_capture_12: String, lexical_capture_14: Nat) -> FeedbackFrame:
-  Kont_298818{lexical_capture_2, lexical_capture_5, lexical_capture_12, lexical_capture_14}
+def feedback_make_Kont_298751(lexical_capture_2: Ast.SyntaxTerm, lexical_capture_5: Ast.SyntaxPattern, lexical_capture_12: String, lexical_capture_14: Nat) -> FeedbackFrame:
+  Kont_298751{lexical_capture_2, lexical_capture_5, lexical_capture_12, lexical_capture_14}
 
 def step_parse_destructuring_body_ready(is_ready: Bool, +value: Ast.SyntaxTerm, +after_value: List<&2, Lexer.Token>, pattern: Ast.SyntaxPattern, next_scope: List<&2, Scope>, next_depth: Nat, +file: String, beg: Nat, col: Nat) -> FeedbackControl:
   match is_ready:
     case True{}:
-      feedback_attach(step_parse_body(file, skip_rewrite_semicolon(after_value), next_scope, next_depth, col), feedback_make_Kont_298818(value, pattern, file, beg))
+      feedback_attach(step_parse_body(file, skip_rewrite_semicolon(after_value), next_scope, next_depth, col), feedback_make_Kont_298751(value, pattern, file, beg))
     case False{}:
       feedback_pack_5(((Ast.TermHole{ "parse-error: expected an indented destructuring body",  span(file, token_end_first(value), token_end_first(value))}, after_value), False{}))
 
@@ -6452,13 +6459,13 @@ def step_parse_destructuring_value_result(ok_value: Bool, +value: Ast.SyntaxTerm
     case False{}:
       feedback_pack_5(((value, after_value), False{}))
 
-def feedback_consumer_297548(v_317: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_4: Ast.SyntaxPattern, v_7: List<&2, Scope>, v_9: Nat, v_11: String, v_13: List<&2, Lexer.Token>, v_15: Nat, v_17: Nat, v_20: List<&2, Scope>, v_22: Nat) -> FeedbackControl:
+def feedback_consumer_297481(v_317: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_4: Ast.SyntaxPattern, v_7: List<&2, Scope>, v_9: Nat, v_11: String, v_13: List<&2, Lexer.Token>, v_15: Nat, v_17: Nat, v_20: List<&2, Scope>, v_22: Nat) -> FeedbackControl:
   match v_317:
     case ((v_318, v_319), v_320):
       step_parse_destructuring_value_result(v_320, v_318, v_319, v_4, v_7, v_9, v_11, v_13, v_15, v_17, v_20, v_22)
 
-def feedback_resume_Kont_297565(lexical_capture_4: Ast.SyntaxPattern, lexical_capture_7: List<&2, Scope>, lexical_capture_9: Nat, lexical_capture_11: String, lexical_capture_13: List<&2, Lexer.Token>, lexical_capture_15: Nat, lexical_capture_17: Nat, lexical_capture_20: List<&2, Scope>, lexical_capture_22: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_297548(result, lexical_capture_4, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15, lexical_capture_17, lexical_capture_20, lexical_capture_22)
+def feedback_resume_Kont_297498(lexical_capture_4: Ast.SyntaxPattern, lexical_capture_7: List<&2, Scope>, lexical_capture_9: Nat, lexical_capture_11: String, lexical_capture_13: List<&2, Lexer.Token>, lexical_capture_15: Nat, lexical_capture_17: Nat, lexical_capture_20: List<&2, Scope>, lexical_capture_22: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_297481(result, lexical_capture_4, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15, lexical_capture_17, lexical_capture_20, lexical_capture_22)
 
 def parse_destructuring_parsed_body(ok_body: Bool, body: Ast.SyntaxTerm, +after_body: List<&2, Lexer.Token>, +value: Ast.SyntaxTerm, pattern: Ast.SyntaxPattern, file: String, beg: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match ok_body:
@@ -6467,7 +6474,7 @@ def parse_destructuring_parsed_body(ok_body: Bool, body: Ast.SyntaxTerm, +after_
     case False{}:
       ((body, after_body), False{})
 
-def feedback_resume_Kont_298818(lexical_capture_2: Ast.SyntaxTerm, lexical_capture_5: Ast.SyntaxPattern, lexical_capture_12: String, lexical_capture_14: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_298751(lexical_capture_2: Ast.SyntaxTerm, lexical_capture_5: Ast.SyntaxPattern, lexical_capture_12: String, lexical_capture_14: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   feedback_pack_5(with_term_result(result, body => after_body => ok_body => parse_destructuring_parsed_body(ok_body, body, after_body, lexical_capture_2, lexical_capture_5, lexical_capture_12, lexical_capture_14)))
 
 def match_scrutinees_is_colon(colon: Lexer.Token) -> Bool:
@@ -6480,8 +6487,8 @@ def match_scrutinees_is_colon(colon: Lexer.Token) -> Bool:
 def match_scrutinees_branch_1(after_scrutinees: List<&2, Lexer.Token>, +file: String, +colon: Lexer.Token) -> Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool):
   ((Ast.TermHole{ "parse-error: expected :",  span(file, token_beg(colon), token_end(colon))}, after_scrutinees), False{})
 
-def feedback_make_Kont_299888(lexical_capture_1: List<&2, Ast.SyntaxTerm>, lexical_capture_13: Lexer.Token, lexical_capture_3: String, lexical_capture_5: Nat) -> FeedbackFrame:
-  Kont_299888{lexical_capture_1, lexical_capture_13, lexical_capture_3, lexical_capture_5}
+def feedback_make_Kont_299821(lexical_capture_1: List<&2, Ast.SyntaxTerm>, lexical_capture_13: Lexer.Token, lexical_capture_3: String, lexical_capture_5: Nat) -> FeedbackFrame:
+  Kont_299821{lexical_capture_1, lexical_capture_13, lexical_capture_3, lexical_capture_5}
 
 def feedback_make_parse_case_row_indented(is_indented: Bool, file: String, tokens: List<&2, Lexer.Token>, rest: List<&2, Lexer.Token>, parent_col: Nat, scope: List<&2, Scope>, depth: Nat, arity: Nat, acc: List<&2, Ast.SyntaxTerm>, beg: Nat, col: Nat) -> FeedbackRequest:
   Request_parse_case_row_indented{is_indented, file, tokens, rest, parent_col, scope, depth, arity, acc, beg, col}
@@ -6501,7 +6508,7 @@ def step_parse_case_rows(file: String, +tokens: List<&2, Lexer.Token>, parent_co
   step_parse_case_rows_scan(file, tokens, skip_lines(tokens), parent_col, scope, depth, arity, acc)
 
 def step_match_scrutinees_branch_0(+scrutinees: List<&2, Ast.SyntaxTerm>, +file: String, +beg: Nat, col: Nat, scope: List<&2, Scope>, depth: Nat, +colon: Lexer.Token, after_colon: List<&2, Lexer.Token>) -> FeedbackControl:
-  feedback_attach(step_parse_case_rows(file, after_colon, Nat.sub(col, 1n), scope, depth, List.length(&2, Ast.SyntaxTerm, scrutinees), Nil{}), feedback_make_Kont_299888(scrutinees, colon, file, beg))
+  feedback_attach(step_parse_case_rows(file, after_colon, Nat.sub(col, 1n), scope, depth, List.length(&2, Ast.SyntaxTerm, scrutinees), Nil{}), feedback_make_Kont_299821(scrutinees, colon, file, beg))
 
 def step_match_scrutinees_run(is_colon: Bool, after_scrutinees: List<&2, Lexer.Token>, +scrutinees: List<&2, Ast.SyntaxTerm>, +file: String, +beg: Nat, col: Nat, scope: List<&2, Scope>, depth: Nat, +colon: Lexer.Token, after_colon: List<&2, Lexer.Token>) -> FeedbackControl:
   match is_colon:
@@ -6517,13 +6524,13 @@ def step_parse_match_scrutinees(ok_scrutinees: Bool, +after_scrutinees: List<&2,
     case _ _:
       feedback_pack_5(((Ast.TermHole{ "parse-error: expected match scrutinee",  span(file, beg, beg)}, after_scrutinees), False{}))
 
-def feedback_consumer_299383(v_318: Pair(Pair(List<&2, Ast.SyntaxTerm>, List<&2, Lexer.Token>), Bool), v_1: String, v_5: Nat, v_7: Nat, v_10: List<&2, Scope>, v_12: Nat) -> FeedbackControl:
+def feedback_consumer_299316(v_318: Pair(Pair(List<&2, Ast.SyntaxTerm>, List<&2, Lexer.Token>), Bool), v_1: String, v_5: Nat, v_7: Nat, v_10: List<&2, Scope>, v_12: Nat) -> FeedbackControl:
   match v_318:
     case ((v_319, v_320), v_321):
       step_parse_match_scrutinees(v_321, v_320, v_319, v_1, v_5, v_7, v_10, v_12)
 
-def feedback_resume_Kont_299400(lexical_capture_1: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_10: List<&2, Scope>, lexical_capture_12: Nat, result: ((List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_299383(result, lexical_capture_1, lexical_capture_5, lexical_capture_7, lexical_capture_10, lexical_capture_12)
+def feedback_resume_Kont_299333(lexical_capture_1: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_10: List<&2, Scope>, lexical_capture_12: Nat, result: ((List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_299316(result, lexical_capture_1, lexical_capture_5, lexical_capture_7, lexical_capture_10, lexical_capture_12)
 
 def parse_match_cases_result(ok_cases: Bool, cases: List<&2, Ast.SyntaxTerm>, +after_cases: List<&2, Lexer.Token>, +scrutinees: List<&2, Ast.SyntaxTerm>, +colon: Lexer.Token, file: String, beg: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match ok_cases:
@@ -6532,19 +6539,19 @@ def parse_match_cases_result(ok_cases: Bool, cases: List<&2, Ast.SyntaxTerm>, +a
     case False{}:
       ((Ast.TermHole{ "parse-error: expected an indented case", span(file, token_beg(colon), token_end(colon))}, after_cases), False{})
 
-def feedback_resume_Kont_299888(lexical_capture_1: List<&2, Ast.SyntaxTerm>, lexical_capture_13: Lexer.Token, lexical_capture_3: String, lexical_capture_5: Nat, result: ((List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_299821(lexical_capture_1: List<&2, Ast.SyntaxTerm>, lexical_capture_13: Lexer.Token, lexical_capture_3: String, lexical_capture_5: Nat, result: ((List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   feedback_pack_5(with_args_result(result, cases => after_cases => ok_cases => parse_match_cases_result(ok_cases, cases, after_cases, lexical_capture_1, lexical_capture_13, lexical_capture_3, lexical_capture_5)))
 
 def feedback_make_parse_terms_until_colon_result(ok: Bool, term: Ast.SyntaxTerm, after: List<&2, Lexer.Token>, file: String, scope: List<&2, Scope>, depth: Nat, acc: List<&2, Ast.SyntaxTerm>) -> FeedbackRequest:
   Request_parse_terms_until_colon_result{ok, term, after, file, scope, depth, acc}
 
-def feedback_consumer_303033(v_319: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_1: String, v_6: List<&2, Scope>, v_8: Nat, v_10: List<&2, Ast.SyntaxTerm>) -> FeedbackControl:
+def feedback_consumer_302966(v_319: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_1: String, v_6: List<&2, Scope>, v_8: Nat, v_10: List<&2, Ast.SyntaxTerm>) -> FeedbackControl:
   match v_319:
     case ((v_320, v_321), v_322):
       FeedbackControl{FeedbackCall{feedback_make_parse_terms_until_colon_result(v_322, v_320, v_321, v_1, v_6, v_8, v_10)}, Nil{}, NoProgress{}, NoProgress{}}
 
-def feedback_resume_Kont_303051(lexical_capture_1: String, lexical_capture_6: List<&2, Scope>, lexical_capture_8: Nat, lexical_capture_10: List<&2, Ast.SyntaxTerm>, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_303033(result, lexical_capture_1, lexical_capture_6, lexical_capture_8, lexical_capture_10)
+def feedback_resume_Kont_302984(lexical_capture_1: String, lexical_capture_6: List<&2, Scope>, lexical_capture_8: Nat, lexical_capture_10: List<&2, Ast.SyntaxTerm>, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_302966(result, lexical_capture_1, lexical_capture_6, lexical_capture_8, lexical_capture_10)
 
 def step_parse_case_row_result(ok_row: Bool, +row: Ast.SyntaxTerm, +after_row: List<&2, Lexer.Token>, file: String, tokens: List<&2, Lexer.Token>, parent_col: Nat, scope: List<&2, Scope>, depth: Nat, arity: Nat, +acc: List<&2, Ast.SyntaxTerm>) -> FeedbackControl:
   match ok_row:
@@ -6553,13 +6560,13 @@ def step_parse_case_row_result(ok_row: Bool, +row: Ast.SyntaxTerm, +after_row: L
     case False{}:
       feedback_pack_9(((List.reverse(&2, Ast.SyntaxTerm, row <> acc), after_row), False{}))
 
-def feedback_consumer_303620(v_320: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_3: String, v_5: List<&2, Lexer.Token>, v_9: Nat, v_12: List<&2, Scope>, v_14: Nat, v_16: Nat, v_18: List<&2, Ast.SyntaxTerm>) -> FeedbackControl:
+def feedback_consumer_303553(v_320: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_3: String, v_5: List<&2, Lexer.Token>, v_9: Nat, v_12: List<&2, Scope>, v_14: Nat, v_16: Nat, v_18: List<&2, Ast.SyntaxTerm>) -> FeedbackControl:
   match v_320:
     case ((v_321, v_322), v_323):
       step_parse_case_row_result(v_323, v_321, v_322, v_3, v_5, v_9, v_12, v_14, v_16, v_18)
 
-def feedback_resume_Kont_303638(lexical_capture_3: String, lexical_capture_5: List<&2, Lexer.Token>, lexical_capture_9: Nat, lexical_capture_12: List<&2, Scope>, lexical_capture_14: Nat, lexical_capture_16: Nat, lexical_capture_18: List<&2, Ast.SyntaxTerm>, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_303620(result, lexical_capture_3, lexical_capture_5, lexical_capture_9, lexical_capture_12, lexical_capture_14, lexical_capture_16, lexical_capture_18)
+def feedback_resume_Kont_303571(lexical_capture_3: String, lexical_capture_5: List<&2, Lexer.Token>, lexical_capture_9: Nat, lexical_capture_12: List<&2, Scope>, lexical_capture_14: Nat, lexical_capture_16: Nat, lexical_capture_18: List<&2, Ast.SyntaxTerm>, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_303553(result, lexical_capture_3, lexical_capture_5, lexical_capture_9, lexical_capture_12, lexical_capture_14, lexical_capture_16, lexical_capture_18)
 
 def pattern_count_matches(patterns: List<&2, Ast.SyntaxPattern>, count: Nat) -> Bool:
   match patterns:
@@ -6586,13 +6593,13 @@ def case_row_is_colon(colon: Lexer.Token) -> Bool:
 def case_row_branch_1(file: String, tokens: List<&2, Lexer.Token>, +colon: Lexer.Token) -> Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool):
   ((Ast.TermHole{ "parse-error: expected :",  span(file, token_beg(colon), token_end(colon))}, tokens), False{})
 
-def feedback_make_Kont_307704(lexical_capture_5: List<&2, Ast.SyntaxPattern>, lexical_capture_3: String, lexical_capture_15: Nat) -> FeedbackFrame:
-  Kont_307704{lexical_capture_5, lexical_capture_3, lexical_capture_15}
+def feedback_make_Kont_307637(lexical_capture_5: List<&2, Ast.SyntaxPattern>, lexical_capture_3: String, lexical_capture_15: Nat) -> FeedbackFrame:
+  Kont_307637{lexical_capture_5, lexical_capture_3, lexical_capture_15}
 
 def step_parse_case_body_indented(is_indented: Bool, +file: String, patterns: List<&2, Ast.SyntaxPattern>, +after_colon: List<&2, Lexer.Token>, +colon: Lexer.Token, scope: List<&2, Scope>, depth: Nat, beg: Nat, col: Nat) -> FeedbackControl:
   match is_indented:
     case True{}:
-      feedback_attach(step_parse_body(file, after_colon, scope, depth, col), feedback_make_Kont_307704(patterns, file, beg))
+      feedback_attach(step_parse_body(file, after_colon, scope, depth, col), feedback_make_Kont_307637(patterns, file, beg))
     case False{}:
       feedback_pack_5(((Ast.TermHole{ "parse-error: expected an indented case body",  span(file, token_end(colon), token_end(colon))}, after_colon), False{}))
 
@@ -6634,7 +6641,7 @@ def step_parse_case_row_scan_result(result: PatternScanOutcome, +file: String, +
     case PatternSingleOutcome{pattern, after, scope, depth, ok}:
       feedback_pack_5(((Ast.TermHole{"parse-error: unexpected single-pattern outcome", span(file, beg, beg)}, after), False{}))
 
-def feedback_resume_Kont_306679(capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: Nat, result: PatternScanOutcome) -> FeedbackControl:
+def feedback_resume_Kont_306612(capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: Nat, result: PatternScanOutcome) -> FeedbackControl:
   step_parse_case_row_scan_result(result, capture_1, capture_2, capture_3, capture_4)
 
 def parse_case_body_result(ok_body: Bool, +body: Ast.SyntaxTerm, +after_body: List<&2, Lexer.Token>, patterns: List<&2, Ast.SyntaxPattern>, file: String, beg: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
@@ -6644,23 +6651,23 @@ def parse_case_body_result(ok_body: Bool, +body: Ast.SyntaxTerm, +after_body: Li
     case False{}:
       ((body, after_body), False{})
 
-def feedback_resume_Kont_307704(lexical_capture_5: List<&2, Ast.SyntaxPattern>, lexical_capture_3: String, lexical_capture_15: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_307637(lexical_capture_5: List<&2, Ast.SyntaxPattern>, lexical_capture_3: String, lexical_capture_15: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   feedback_pack_5(with_term_result(result, body => after_body => ok_body => parse_case_body_result(ok_body, body, after_body, lexical_capture_5, lexical_capture_3, lexical_capture_15)))
 
-def step_evaluation_context_parse_template_binder_type_result_303184(+v_4: String, v_6: List<&2, Ast.TelescopeItem>, v_9: List<&2, Scope>, +v_11: Nat, +v_13: String, v_15: Nat, +v_26: Ast.SyntaxTerm, +v_27: List<&2, Lexer.Token>, +v_29: Nat, v_306: Nat) -> FeedbackControl:
+def step_evaluation_context_parse_template_binder_type_result_303117(+v_4: String, v_6: List<&2, Ast.TelescopeItem>, v_9: List<&2, Scope>, +v_11: Nat, +v_13: String, v_15: Nat, +v_26: Ast.SyntaxTerm, +v_27: List<&2, Lexer.Token>, +v_29: Nat, v_306: Nat) -> FeedbackControl:
   v_34 = {Ast.TemplateBinder{v_13, v_29, v_26, span(v_4, v_15, v_306)} : Ast.TelescopeItem}
   v_37 = extend_scope(v_13, v_29, v_9)
   step_parse_def_binders(v_4, v_27, v_37, Nat.add(v_11, 1n), v_34 <> v_6)
 
-def feedback_resume_Kont_312950(capture_0: String, capture_1: List<&2, Ast.TelescopeItem>, capture_2: List<&2, Scope>, capture_3: Nat, capture_4: String, capture_5: Nat, capture_6: Ast.SyntaxTerm, capture_7: List<&2, Lexer.Token>, capture_8: Nat, result: Nat) -> FeedbackControl:
-  step_evaluation_context_parse_template_binder_type_result_303184(capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, result)
+def feedback_resume_Kont_312883(capture_0: String, capture_1: List<&2, Ast.TelescopeItem>, capture_2: List<&2, Scope>, capture_3: Nat, capture_4: String, capture_5: Nat, capture_6: Ast.SyntaxTerm, capture_7: List<&2, Lexer.Token>, capture_8: Nat, result: Nat) -> FeedbackControl:
+  step_evaluation_context_parse_template_binder_type_result_303117(capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, result)
 
-def feedback_make_Kont_312950(capture_0: String, capture_1: List<&2, Ast.TelescopeItem>, capture_2: List<&2, Scope>, capture_3: Nat, capture_4: String, capture_5: Nat, capture_6: Ast.SyntaxTerm, capture_7: List<&2, Lexer.Token>, capture_8: Nat) -> FeedbackFrame:
-  Kont_312950{capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8}
+def feedback_make_Kont_312883(capture_0: String, capture_1: List<&2, Ast.TelescopeItem>, capture_2: List<&2, Scope>, capture_3: Nat, capture_4: String, capture_5: Nat, capture_6: Ast.SyntaxTerm, capture_7: List<&2, Lexer.Token>, capture_8: Nat) -> FeedbackFrame:
+  Kont_312883{capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8}
 
 def step_parse_template_binder_type_result_quantity_0(v_17: List<&2, Lexer.Token>, +v_22: List<&2, Lexer.Token>, +v_21: Ast.SyntaxTerm, +v_4: String, +v_6: List<&2, Ast.TelescopeItem>, +v_9: List<&2, Scope>, +v_11: Nat, +v_13: String, v_15: Nat) -> FeedbackControl:
   +v_24 = v_11
-  feedback_attach(step_consumed_token_end(v_17, v_22, token_end_first(v_21)), feedback_make_Kont_312950(v_4, v_6, v_9, v_11, v_13, v_15, v_21, v_22, v_24))
+  feedback_attach(step_consumed_token_end(v_17, v_22, token_end_first(v_21)), feedback_make_Kont_312883(v_4, v_6, v_9, v_11, v_13, v_15, v_21, v_22, v_24))
 
 def step_parse_template_binder_type_result(v_2: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), +v_4: String, +v_6: List<&2, Ast.TelescopeItem>, +v_9: List<&2, Scope>, +v_11: Nat, +v_13: String, v_15: Nat, v_17: List<&2, Lexer.Token>) -> FeedbackControl:
   match v_2:
@@ -6669,23 +6676,23 @@ def step_parse_template_binder_type_result(v_2: Pair(Pair(Ast.SyntaxTerm, List<&
     case ((v_31, v_32), False{}):
       feedback_pack_1(((((List.reverse(&2, Ast.TelescopeItem, v_6), v_32), v_9), v_11), False{}))
 
-def feedback_resume_Kont_313598(capture_1: String, capture_2: List<&2, Ast.TelescopeItem>, capture_3: List<&2, Scope>, capture_4: Nat, capture_5: String, capture_6: Nat, capture_7: List<&2, Lexer.Token>, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_313531(capture_1: String, capture_2: List<&2, Ast.TelescopeItem>, capture_3: List<&2, Scope>, capture_4: Nat, capture_5: String, capture_6: Nat, capture_7: List<&2, Lexer.Token>, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   step_parse_template_binder_type_result(result, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7)
 
-def step_evaluation_context_parse_def_binder_type_result_306196(+v_4: String, +v_6: String, v_7: Ast.Quantity, v_9: Nat, v_11: List<&2, Ast.TelescopeItem>, v_14: List<&2, Scope>, +v_16: Nat, +v_27: Ast.SyntaxTerm, +v_28: List<&2, Lexer.Token>, +v_30: Nat, v_307: Nat) -> FeedbackControl:
+def step_evaluation_context_parse_def_binder_type_result_306129(+v_4: String, +v_6: String, v_7: Ast.Quantity, v_9: Nat, v_11: List<&2, Ast.TelescopeItem>, v_14: List<&2, Scope>, +v_16: Nat, +v_27: Ast.SyntaxTerm, +v_28: List<&2, Lexer.Token>, +v_30: Nat, v_307: Nat) -> FeedbackControl:
   v_35 = {Ast.Binder{v_7, v_6, v_30, v_27, span(v_4, v_9, v_307)} : Ast.TelescopeItem}
   v_38 = extend_scope(v_6, v_30, v_14)
   step_parse_def_binders(v_4, v_28, v_38, Nat.add(v_16, 1n), v_35 <> v_11)
 
-def feedback_resume_Kont_316399(capture_0: String, capture_1: String, capture_2: Ast.Quantity, capture_3: Nat, capture_4: List<&2, Ast.TelescopeItem>, capture_5: List<&2, Scope>, capture_6: Nat, capture_7: Ast.SyntaxTerm, capture_8: List<&2, Lexer.Token>, capture_9: Nat, result: Nat) -> FeedbackControl:
-  step_evaluation_context_parse_def_binder_type_result_306196(capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, capture_9, result)
+def feedback_resume_Kont_316332(capture_0: String, capture_1: String, capture_2: Ast.Quantity, capture_3: Nat, capture_4: List<&2, Ast.TelescopeItem>, capture_5: List<&2, Scope>, capture_6: Nat, capture_7: Ast.SyntaxTerm, capture_8: List<&2, Lexer.Token>, capture_9: Nat, result: Nat) -> FeedbackControl:
+  step_evaluation_context_parse_def_binder_type_result_306129(capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, capture_9, result)
 
-def feedback_make_Kont_316399(capture_0: String, capture_1: String, capture_2: Ast.Quantity, capture_3: Nat, capture_4: List<&2, Ast.TelescopeItem>, capture_5: List<&2, Scope>, capture_6: Nat, capture_7: Ast.SyntaxTerm, capture_8: List<&2, Lexer.Token>, capture_9: Nat) -> FeedbackFrame:
-  Kont_316399{capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, capture_9}
+def feedback_make_Kont_316332(capture_0: String, capture_1: String, capture_2: Ast.Quantity, capture_3: Nat, capture_4: List<&2, Ast.TelescopeItem>, capture_5: List<&2, Scope>, capture_6: Nat, capture_7: Ast.SyntaxTerm, capture_8: List<&2, Lexer.Token>, capture_9: Nat) -> FeedbackFrame:
+  Kont_316332{capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, capture_9}
 
 def step_parse_def_binder_type_result_quantity_0(v_18: List<&2, Lexer.Token>, +v_23: List<&2, Lexer.Token>, +v_22: Ast.SyntaxTerm, +v_4: String, +v_6: String, v_7: Ast.Quantity, v_9: Nat, +v_11: List<&2, Ast.TelescopeItem>, +v_14: List<&2, Scope>, +v_16: Nat) -> FeedbackControl:
   +v_25 = v_16
-  feedback_attach(step_consumed_token_end(v_18, v_23, token_end_first(v_22)), feedback_make_Kont_316399(v_4, v_6, v_7, v_9, v_11, v_14, v_16, v_22, v_23, v_25))
+  feedback_attach(step_consumed_token_end(v_18, v_23, token_end_first(v_22)), feedback_make_Kont_316332(v_4, v_6, v_7, v_9, v_11, v_14, v_16, v_22, v_23, v_25))
 
 def step_parse_def_binder_type_result(v_2: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), +v_4: String, +v_6: String, v_7: Ast.Quantity, v_9: Nat, +v_11: List<&2, Ast.TelescopeItem>, +v_14: List<&2, Scope>, +v_16: Nat, v_18: List<&2, Lexer.Token>) -> FeedbackControl:
   match v_2:
@@ -6694,7 +6701,7 @@ def step_parse_def_binder_type_result(v_2: Pair(Pair(Ast.SyntaxTerm, List<&2, Le
     case ((v_32, v_33), False{}):
       feedback_pack_1(((((List.reverse(&2, Ast.TelescopeItem, v_11), v_33), v_14), v_16), False{}))
 
-def feedback_resume_Kont_317051(capture_1: String, capture_2: String, capture_3: Ast.Quantity, capture_4: Nat, capture_5: List<&2, Ast.TelescopeItem>, capture_6: List<&2, Scope>, capture_7: Nat, capture_8: List<&2, Lexer.Token>, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_316984(capture_1: String, capture_2: String, capture_3: Ast.Quantity, capture_4: Nat, capture_5: List<&2, Ast.TelescopeItem>, capture_6: List<&2, Scope>, capture_7: Nat, capture_8: List<&2, Lexer.Token>, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   step_parse_def_binder_type_result(result, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8)
 
 def feedback_pack_3(result: ((Ast.DefBody & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
@@ -6707,7 +6714,7 @@ def parse_definition_term_result(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>
     case ((term, after), ok):
       ((Ast.DefTerm{term}, after), ok)
 
-def feedback_resume_Kont_318645(result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_318578(result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   feedback_pack_3(parse_definition_term_result(result))
 
 def definition_failure(+file: String, key: String, binders: List<&2, Ast.TelescopeItem>, beg: Nat, +end: Nat, rest: List<&2, Lexer.Token>) -> (Ast.TopLevel & List<&2, Lexer.Token>) & Bool:
@@ -6725,11 +6732,11 @@ def with_def_body_result(result: (Ast.DefBody & List<&2, Lexer.Token>) & Bool, u
     case ((body, after), ok):
       use(body, after, ok)
 
-def feedback_resume_Kont_320316(lexical_capture_0: Lexer.Token, lexical_capture_2: List<&2, Lexer.Token>, lexical_capture_8: String, lexical_capture_10: String, lexical_capture_12: Nat, lexical_capture_14: List<&2, Ast.TelescopeItem>, lexical_capture_5: Ast.SyntaxTerm, result: ((Ast.DefBody & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_320249(lexical_capture_0: Lexer.Token, lexical_capture_2: List<&2, Lexer.Token>, lexical_capture_8: String, lexical_capture_10: String, lexical_capture_12: Nat, lexical_capture_14: List<&2, Ast.TelescopeItem>, lexical_capture_5: Ast.SyntaxTerm, result: ((Ast.DefBody & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   feedback_pack_6(with_def_body_result(result, body => after_body => ok_body => parse_definition_typed_body_result(ok_body, body, after_body, lexical_capture_0, lexical_capture_2, lexical_capture_8, lexical_capture_10, lexical_capture_12, lexical_capture_14, lexical_capture_5)))
 
-def feedback_make_Kont_320316(lexical_capture_0: Lexer.Token, lexical_capture_2: List<&2, Lexer.Token>, lexical_capture_8: String, lexical_capture_10: String, lexical_capture_12: Nat, lexical_capture_14: List<&2, Ast.TelescopeItem>, lexical_capture_5: Ast.SyntaxTerm) -> FeedbackFrame:
-  Kont_320316{lexical_capture_0, lexical_capture_2, lexical_capture_8, lexical_capture_10, lexical_capture_12, lexical_capture_14, lexical_capture_5}
+def feedback_make_Kont_320249(lexical_capture_0: Lexer.Token, lexical_capture_2: List<&2, Lexer.Token>, lexical_capture_8: String, lexical_capture_10: String, lexical_capture_12: Nat, lexical_capture_14: List<&2, Ast.TelescopeItem>, lexical_capture_5: Ast.SyntaxTerm) -> FeedbackFrame:
+  Kont_320249{lexical_capture_0, lexical_capture_2, lexical_capture_8, lexical_capture_10, lexical_capture_12, lexical_capture_14, lexical_capture_5}
 
 def definition_body_is_colon(token: Lexer.Token) -> Bool:
   match token:
@@ -6793,11 +6800,11 @@ def parse_external_imports(+tokens: List<&2, Lexer.Token>, acc: List<&2, String>
 def definition_body_branch_0(tokens: List<&2, Lexer.Token>) -> Pair(Pair(Ast.DefBody, List<&2, Lexer.Token>), Bool):
   parse_definition_imports_result(parse_external_imports(tokens, Nil{}))
 
-def feedback_make_Kont_318645() -> FeedbackFrame:
-  Kont_318645{}
+def feedback_make_Kont_318578() -> FeedbackFrame:
+  Kont_318578{}
 
 def step_definition_body_branch_1(file: String, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat) -> FeedbackControl:
-  feedback_attach(step_parse_body(file, tokens, scope, depth, 0n), feedback_make_Kont_318645())
+  feedback_attach(step_parse_body(file, tokens, scope, depth, 0n), feedback_make_Kont_318578())
 
 def step_definition_body_run(is_colon: Bool, file: String, +tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat) -> FeedbackControl:
   match is_colon:
@@ -6819,7 +6826,7 @@ def step_parse_definition_body(file: String, +tokens: List<&2, Lexer.Token>, sco
 def step_parse_definition_typed_colon(+colon: Lexer.Token, +after_colon: List<&2, Lexer.Token>, after_result: List<&2, Lexer.Token>, result: Ast.SyntaxTerm, header: Lexer.Token, +file: String, +key: String, +beg: Nat, +binders: List<&2, Ast.TelescopeItem>, scope: List<&2, Scope>, depth: Nat) -> FeedbackControl:
   match colon:
     case Lexer.TokenInfo{_, ":", _, _, _, _}:
-      feedback_attach(step_parse_definition_body(file, after_colon, scope, depth), feedback_make_Kont_320316(colon, after_colon, file, key, beg, binders, result))
+      feedback_attach(step_parse_definition_body(file, after_colon, scope, depth), feedback_make_Kont_320249(colon, after_colon, file, key, beg, binders, result))
     case Lexer.TokenInfo{feedback_field_4_0, feedback_field_4_1, feedback_field_4_2, feedback_field_4_3, feedback_field_4_4, feedback_field_4_5}:
       feedback_pack_6(definition_failure(file, key, binders, beg, token_beg((Lexer.TokenInfo{feedback_field_4_0, feedback_field_4_1, feedback_field_4_2, feedback_field_4_3, feedback_field_4_4, feedback_field_4_5} : Lexer.Token)), after_result))
 
@@ -6832,7 +6839,7 @@ def step_parse_definition_typed_result(result_pair: (Ast.SyntaxTerm & List<&2, L
     case ((_, after_result), True{}):
       feedback_pack_6(definition_failure(file, key, binders, beg, token_end(header), after_result))
 
-def feedback_resume_Kont_321745(capture_1: Lexer.Token, capture_2: String, capture_3: String, capture_4: Nat, capture_5: List<&2, Ast.TelescopeItem>, capture_6: List<&2, Scope>, capture_7: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_321678(capture_1: Lexer.Token, capture_2: String, capture_3: String, capture_4: Nat, capture_5: List<&2, Ast.TelescopeItem>, capture_6: List<&2, Scope>, capture_7: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   step_parse_definition_typed_result(result, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7)
 
 def parse_definition_untyped_body_result(ok_body: Bool, body: Ast.DefBody, +after_body: List<&2, Lexer.Token>, file: String, key: String, beg: Nat, binders: List<&2, Ast.TelescopeItem>, header: Lexer.Token, rest: List<&2, Lexer.Token>) -> (Ast.TopLevel & List<&2, Lexer.Token>) & Bool:
@@ -6842,7 +6849,7 @@ def parse_definition_untyped_body_result(ok_body: Bool, body: Ast.DefBody, +afte
     case False{}:
       definition_failure(file, key, binders, beg, token_end(header), rest)
 
-def feedback_resume_Kont_322114(lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat, lexical_capture_7: List<&2, Ast.TelescopeItem>, lexical_capture_13: Lexer.Token, lexical_capture_15: List<&2, Lexer.Token>, result: ((Ast.DefBody & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_322047(lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat, lexical_capture_7: List<&2, Ast.TelescopeItem>, lexical_capture_13: Lexer.Token, lexical_capture_15: List<&2, Lexer.Token>, result: ((Ast.DefBody & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   feedback_pack_6(with_def_body_result(result, body => after_body => ok_body => parse_definition_untyped_body_result(ok_body, body, after_body, lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_13, lexical_capture_15)))
 
 def definition_header_is_colon(header: Lexer.Token) -> DefinitionHeaderAction:
@@ -6857,17 +6864,17 @@ def definition_header_is_colon(header: Lexer.Token) -> DefinitionHeaderAction:
 def definition_header_branch_2(+file: String, key: String, +beg: Nat, binders: List<&2, Ast.TelescopeItem>, tokens: List<&2, Lexer.Token>, +header: Lexer.Token) -> Pair(Pair(Ast.TopLevel, List<&2, Lexer.Token>), Bool):
   definition_failure(file, key, binders, beg, token_beg(header), tokens)
 
-def feedback_make_Kont_321745(capture_1: Lexer.Token, capture_2: String, capture_3: String, capture_4: Nat, capture_5: List<&2, Ast.TelescopeItem>, capture_6: List<&2, Scope>, capture_7: Nat) -> FeedbackFrame:
-  Kont_321745{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7}
+def feedback_make_Kont_321678(capture_1: Lexer.Token, capture_2: String, capture_3: String, capture_4: Nat, capture_5: List<&2, Ast.TelescopeItem>, capture_6: List<&2, Scope>, capture_7: Nat) -> FeedbackFrame:
+  Kont_321678{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7}
 
 def step_definition_header_branch_0(+file: String, key: String, +beg: Nat, binders: List<&2, Ast.TelescopeItem>, +scope: List<&2, Scope>, +depth: Nat, +header: Lexer.Token, +rest: List<&2, Lexer.Token>) -> FeedbackControl:
-  feedback_attach(step_parse_term(file, rest, scope, depth, 0n), feedback_make_Kont_321745(header, file, key, beg, binders, scope, depth))
+  feedback_attach(step_parse_term(file, rest, scope, depth, 0n), feedback_make_Kont_321678(header, file, key, beg, binders, scope, depth))
 
-def feedback_make_Kont_322114(lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat, lexical_capture_7: List<&2, Ast.TelescopeItem>, lexical_capture_13: Lexer.Token, lexical_capture_15: List<&2, Lexer.Token>) -> FeedbackFrame:
-  Kont_322114{lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_13, lexical_capture_15}
+def feedback_make_Kont_322047(lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat, lexical_capture_7: List<&2, Ast.TelescopeItem>, lexical_capture_13: Lexer.Token, lexical_capture_15: List<&2, Lexer.Token>) -> FeedbackFrame:
+  Kont_322047{lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_13, lexical_capture_15}
 
 def step_definition_header_branch_1(+file: String, key: String, +beg: Nat, binders: List<&2, Ast.TelescopeItem>, +scope: List<&2, Scope>, +depth: Nat, +header: Lexer.Token, +rest: List<&2, Lexer.Token>) -> FeedbackControl:
-  feedback_attach(step_parse_definition_body(file, rest, scope, depth), feedback_make_Kont_322114(file, key, beg, binders, header, rest))
+  feedback_attach(step_parse_definition_body(file, rest, scope, depth), feedback_make_Kont_322047(file, key, beg, binders, header, rest))
 
 def step_definition_header_run(is_colon: DefinitionHeaderAction, +file: String, +key: String, +beg: Nat, +binders: List<&2, Ast.TelescopeItem>, tokens: List<&2, Lexer.Token>, +scope: List<&2, Scope>, +depth: Nat, +header: Lexer.Token, +rest: List<&2, Lexer.Token>) -> FeedbackControl:
   match is_colon:
@@ -6895,13 +6902,13 @@ def step_parse_definition_binders_result(ok_binders: Bool, binders: List<&2, Ast
     case False{}:
       feedback_pack_6(definition_failure(file, key, Nil{}, beg, token_end_of(after_binders, beg), after_binders))
 
-def feedback_consumer_325085(v_321: Pair(Pair(Pair(Pair(List<&2, Ast.TelescopeItem>, List<&2, Lexer.Token>), List<&2, Scope>), Nat), Bool), v_1: String, v_3: String, v_5: Nat) -> FeedbackControl:
+def feedback_consumer_325018(v_321: Pair(Pair(Pair(Pair(List<&2, Ast.TelescopeItem>, List<&2, Lexer.Token>), List<&2, Scope>), Nat), Bool), v_1: String, v_3: String, v_5: Nat) -> FeedbackControl:
   match v_321:
     case ((((v_322, v_323), v_324), v_325), v_326):
       step_parse_definition_binders_result(v_326, v_322, v_323, v_324, v_325, v_1, v_3, v_5)
 
-def feedback_resume_Kont_325109(lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat, result: ((((List<&2, Ast.TelescopeItem> & List<&2, Lexer.Token>) & List<&2, Scope>) & Nat) & Bool)) -> FeedbackControl:
-  feedback_consumer_325085(result, lexical_capture_1, lexical_capture_3, lexical_capture_5)
+def feedback_resume_Kont_325042(lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat, result: ((((List<&2, Ast.TelescopeItem> & List<&2, Lexer.Token>) & List<&2, Scope>) & Nat) & Bool)) -> FeedbackControl:
+  feedback_consumer_325018(result, lexical_capture_1, lexical_capture_3, lexical_capture_5)
 
 def mark_unsafe(top: Ast.TopLevel, unsafe: Bool) -> Ast.TopLevel:
   match top:
@@ -6917,22 +6924,22 @@ def with_top_result(result: (Ast.TopLevel & List<&2, Lexer.Token>) & Bool, use: 
     case ((top, after), ok):
       use(top, after, ok)
 
-def feedback_resume_Kont_330279(result: ((Ast.TopLevel & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_330212(result: ((Ast.TopLevel & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   feedback_pack_6(with_top_result(result, top => after => ok => ((mark_unsafe(top, True{}), after), ok)))
 
-def feedback_resume_Kont_330414(result: ((Ast.TopLevel & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_330347(result: ((Ast.TopLevel & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   feedback_pack_6(with_top_result(result, top => after => _ => ((top, after), False{})))
 
 def feedback_make_parse_type_constructor_fields_result(ok_fields: Bool, fields: List<&2, Ast.TelescopeItem>, after_fields: List<&2, Lexer.Token>, file: String, open: Lexer.Token, after_open: List<&2, Lexer.Token>, col: Nat, scope: List<&2, Scope>, depth: Nat, acc: List<&2, Ast.ConstructorDecl>, key: String, beg: Nat) -> FeedbackRequest:
   Request_parse_type_constructor_fields_result{ok_fields, fields, after_fields, file, open, after_open, col, scope, depth, acc, key, beg}
 
-def feedback_consumer_332994(v_323: Pair(Pair(Pair(Pair(List<&2, Ast.TelescopeItem>, List<&2, Lexer.Token>), List<&2, Scope>), Nat), Bool), v_3: String, v_26: Lexer.Token, v_27: List<&2, Lexer.Token>, v_9: Nat, v_12: List<&2, Scope>, v_14: Nat, v_16: List<&2, Ast.ConstructorDecl>, v_18: String, v_20: Nat) -> FeedbackControl:
+def feedback_consumer_332927(v_323: Pair(Pair(Pair(Pair(List<&2, Ast.TelescopeItem>, List<&2, Lexer.Token>), List<&2, Scope>), Nat), Bool), v_3: String, v_26: Lexer.Token, v_27: List<&2, Lexer.Token>, v_9: Nat, v_12: List<&2, Scope>, v_14: Nat, v_16: List<&2, Ast.ConstructorDecl>, v_18: String, v_20: Nat) -> FeedbackControl:
   match v_323:
     case ((((v_324, v_325), v_326), v_327), v_328):
       FeedbackControl{FeedbackCall{feedback_make_parse_type_constructor_fields_result(v_328, v_324, v_325, v_3, v_26, v_27, v_9, v_12, v_14, v_16, v_18, v_20)}, Nil{}, NoProgress{}, NoProgress{}}
 
-def feedback_resume_Kont_333031(lexical_capture_3: String, lexical_capture_26: Lexer.Token, lexical_capture_27: List<&2, Lexer.Token>, lexical_capture_9: Nat, lexical_capture_12: List<&2, Scope>, lexical_capture_14: Nat, lexical_capture_16: List<&2, Ast.ConstructorDecl>, lexical_capture_18: String, lexical_capture_20: Nat, result: ((((List<&2, Ast.TelescopeItem> & List<&2, Lexer.Token>) & List<&2, Scope>) & Nat) & Bool)) -> FeedbackControl:
-  feedback_consumer_332994(result, lexical_capture_3, lexical_capture_26, lexical_capture_27, lexical_capture_9, lexical_capture_12, lexical_capture_14, lexical_capture_16, lexical_capture_18, lexical_capture_20)
+def feedback_resume_Kont_332964(lexical_capture_3: String, lexical_capture_26: Lexer.Token, lexical_capture_27: List<&2, Lexer.Token>, lexical_capture_9: Nat, lexical_capture_12: List<&2, Scope>, lexical_capture_14: Nat, lexical_capture_16: List<&2, Ast.ConstructorDecl>, lexical_capture_18: String, lexical_capture_20: Nat, result: ((((List<&2, Ast.TelescopeItem> & List<&2, Lexer.Token>) & List<&2, Scope>) & Nat) & Bool)) -> FeedbackControl:
+  feedback_consumer_332927(result, lexical_capture_3, lexical_capture_26, lexical_capture_27, lexical_capture_9, lexical_capture_12, lexical_capture_14, lexical_capture_16, lexical_capture_18, lexical_capture_20)
 
 def parse_type_header_constructors_result(ok_constructors: Bool, constructors: List<&2, Ast.ConstructorDecl>, +after_constructors: List<&2, Lexer.Token>, file: String, key: String, beg: Nat, params: List<&2, Ast.TelescopeItem>, +kind: Ast.SyntaxTerm) -> (Ast.TopLevel & List<&2, Lexer.Token>) & Bool:
   declaration = { Ast.TypeDecl{key, params, kind, constructors, span(file, beg, token_end_of(after_constructors, token_end_first(kind)))} : Ast.TypeDecl }
@@ -6943,11 +6950,11 @@ def with_constructor_decls_result(result: (List<&2, Ast.ConstructorDecl> & List<
     case ((constructors, after), ok):
       use(constructors, after, ok)
 
-def feedback_resume_Kont_335087(lexical_capture_6: String, lexical_capture_8: String, lexical_capture_10: Nat, lexical_capture_14: List<&2, Ast.TelescopeItem>, lexical_capture_2: Ast.SyntaxTerm, result: ((List<&2, Ast.ConstructorDecl> & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_335020(lexical_capture_6: String, lexical_capture_8: String, lexical_capture_10: Nat, lexical_capture_14: List<&2, Ast.TelescopeItem>, lexical_capture_2: Ast.SyntaxTerm, result: ((List<&2, Ast.ConstructorDecl> & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   feedback_pack_6(with_constructor_decls_result(result, constructors => after_constructors => ok_constructors => parse_type_header_constructors_result(ok_constructors, constructors, after_constructors, lexical_capture_6, lexical_capture_8, lexical_capture_10, lexical_capture_14, lexical_capture_2)))
 
-def feedback_make_Kont_335087(lexical_capture_6: String, lexical_capture_8: String, lexical_capture_10: Nat, lexical_capture_14: List<&2, Ast.TelescopeItem>, lexical_capture_2: Ast.SyntaxTerm) -> FeedbackFrame:
-  Kont_335087{lexical_capture_6, lexical_capture_8, lexical_capture_10, lexical_capture_14, lexical_capture_2}
+def feedback_make_Kont_335020(lexical_capture_6: String, lexical_capture_8: String, lexical_capture_10: Nat, lexical_capture_14: List<&2, Ast.TelescopeItem>, lexical_capture_2: Ast.SyntaxTerm) -> FeedbackFrame:
+  Kont_335020{lexical_capture_6, lexical_capture_8, lexical_capture_10, lexical_capture_14, lexical_capture_2}
 
 def step_parse_type_constructors(file: String, +tokens: List<&2, Lexer.Token>, col: Nat, scope: List<&2, Scope>, depth: Nat, acc: List<&2, Ast.ConstructorDecl>) -> FeedbackControl:
   step_parse_type_constructors_scan(file, tokens, skip_lines(tokens), col, scope, depth, acc)
@@ -6957,19 +6964,19 @@ def step_parse_type_header_kind_result(ok_kind: Bool, +kind: Ast.SyntaxTerm, +af
     case True{} +colon <> after_colon:
       match colon:
         case Lexer.TokenInfo{ _, ":", _, _, _, _}:
-          feedback_attach(step_parse_type_constructors(file, after_colon, col, scope, depth, Nil{}), feedback_make_Kont_335087(file, key, beg, params, kind))
+          feedback_attach(step_parse_type_constructors(file, after_colon, col, scope, depth, Nil{}), feedback_make_Kont_335020(file, key, beg, params, kind))
         case Lexer.TokenInfo{feedback_field_6_0, feedback_field_6_1, feedback_field_6_2, feedback_field_6_3, feedback_field_6_4, feedback_field_6_5}:
           feedback_pack_6(type_failure(file, key, beg, token_beg((Lexer.TokenInfo{feedback_field_6_0, feedback_field_6_1, feedback_field_6_2, feedback_field_6_3, feedback_field_6_4, feedback_field_6_5} : Lexer.Token)), after_kind))
     case _ _:
       feedback_pack_6(type_failure(file, key, beg, token_end_first(kind), after_kind))
 
-def feedback_consumer_335905(v_324: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_1: String, v_3: String, v_5: Nat, v_7: Nat, v_9: List<&2, Ast.TelescopeItem>, v_11: List<&2, Lexer.Token>, v_16: List<&2, Scope>, v_18: Nat) -> FeedbackControl:
+def feedback_consumer_335838(v_324: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_1: String, v_3: String, v_5: Nat, v_7: Nat, v_9: List<&2, Ast.TelescopeItem>, v_11: List<&2, Lexer.Token>, v_16: List<&2, Scope>, v_18: Nat) -> FeedbackControl:
   match v_324:
     case ((v_325, v_326), v_327):
       step_parse_type_header_kind_result(v_327, v_325, v_326, v_1, v_3, v_5, v_7, v_9, v_11, v_16, v_18)
 
-def feedback_resume_Kont_335919(lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_9: List<&2, Ast.TelescopeItem>, lexical_capture_11: List<&2, Lexer.Token>, lexical_capture_16: List<&2, Scope>, lexical_capture_18: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_335905(result, lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_16, lexical_capture_18)
+def feedback_resume_Kont_335852(lexical_capture_1: String, lexical_capture_3: String, lexical_capture_5: Nat, lexical_capture_7: Nat, lexical_capture_9: List<&2, Ast.TelescopeItem>, lexical_capture_11: List<&2, Lexer.Token>, lexical_capture_16: List<&2, Scope>, lexical_capture_18: Nat, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_335838(result, lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_16, lexical_capture_18)
 
 def step_parse_type_params_result(ok_params: Bool, params: List<&2, Ast.TelescopeItem>, +after_params: List<&2, Lexer.Token>, open: Lexer.Token, +file: String, +key: String, +beg: Nat, col: Nat, scope: List<&2, Scope>, depth: Nat) -> FeedbackControl:
   match ok_params:
@@ -6978,21 +6985,21 @@ def step_parse_type_params_result(ok_params: Bool, params: List<&2, Ast.Telescop
     case False{}:
       feedback_pack_6(type_failure(file, key, beg, token_end(open), after_params))
 
-def feedback_consumer_337496(v_326: Pair(Pair(Pair(Pair(List<&2, Ast.TelescopeItem>, List<&2, Lexer.Token>), List<&2, Scope>), Nat), Bool), v_26: Lexer.Token, v_1: String, v_19: String, v_5: Nat, v_7: Nat) -> FeedbackControl:
+def feedback_consumer_337429(v_326: Pair(Pair(Pair(Pair(List<&2, Ast.TelescopeItem>, List<&2, Lexer.Token>), List<&2, Scope>), Nat), Bool), v_26: Lexer.Token, v_1: String, v_19: String, v_5: Nat, v_7: Nat) -> FeedbackControl:
   match v_326:
     case ((((v_327, v_328), v_329), v_330), v_331):
       step_parse_type_params_result(v_331, v_327, v_328, v_26, v_1, v_19, v_5, v_7, v_329, v_330)
 
-def feedback_resume_Kont_337520(lexical_capture_26: Lexer.Token, lexical_capture_1: String, lexical_capture_19: String, lexical_capture_5: Nat, lexical_capture_7: Nat, result: ((((List<&2, Ast.TelescopeItem> & List<&2, Lexer.Token>) & List<&2, Scope>) & Nat) & Bool)) -> FeedbackControl:
-  feedback_consumer_337496(result, lexical_capture_26, lexical_capture_1, lexical_capture_19, lexical_capture_5, lexical_capture_7)
+def feedback_resume_Kont_337453(lexical_capture_26: Lexer.Token, lexical_capture_1: String, lexical_capture_19: String, lexical_capture_5: Nat, lexical_capture_7: Nat, result: ((((List<&2, Ast.TelescopeItem> & List<&2, Lexer.Token>) & List<&2, Scope>) & Nat) & Bool)) -> FeedbackControl:
+  feedback_consumer_337429(result, lexical_capture_26, lexical_capture_1, lexical_capture_19, lexical_capture_5, lexical_capture_7)
 
-def feedback_consumer_337962(v_325: Pair(Pair(Pair(Pair(List<&2, Ast.TelescopeItem>, List<&2, Lexer.Token>), List<&2, Scope>), Nat), Bool), v_26: Lexer.Token, v_1: String, v_19: String, v_5: Nat, v_7: Nat) -> FeedbackControl:
+def feedback_consumer_337895(v_325: Pair(Pair(Pair(Pair(List<&2, Ast.TelescopeItem>, List<&2, Lexer.Token>), List<&2, Scope>), Nat), Bool), v_26: Lexer.Token, v_1: String, v_19: String, v_5: Nat, v_7: Nat) -> FeedbackControl:
   match v_325:
     case ((((v_326, v_327), v_328), v_329), v_330):
       step_parse_type_params_result(v_330, v_326, v_327, v_26, v_1, v_19, v_5, v_7, v_328, v_329)
 
-def feedback_resume_Kont_337986(lexical_capture_26: Lexer.Token, lexical_capture_1: String, lexical_capture_19: String, lexical_capture_5: Nat, lexical_capture_7: Nat, result: ((((List<&2, Ast.TelescopeItem> & List<&2, Lexer.Token>) & List<&2, Scope>) & Nat) & Bool)) -> FeedbackControl:
-  feedback_consumer_337962(result, lexical_capture_26, lexical_capture_1, lexical_capture_19, lexical_capture_5, lexical_capture_7)
+def feedback_resume_Kont_337919(lexical_capture_26: Lexer.Token, lexical_capture_1: String, lexical_capture_19: String, lexical_capture_5: Nat, lexical_capture_7: Nat, result: ((((List<&2, Ast.TelescopeItem> & List<&2, Lexer.Token>) & List<&2, Scope>) & Nat) & Bool)) -> FeedbackControl:
+  feedback_consumer_337895(result, lexical_capture_26, lexical_capture_1, lexical_capture_19, lexical_capture_5, lexical_capture_7)
 
 def parse_law_body_result(ok_body: Bool, +body: Ast.SyntaxTerm, after_body: List<&2, Lexer.Token>, file: String, key: String, clauses: List<&2, Ast.Clause>, beg: Nat, colon: Lexer.Token, after_clauses: List<&2, Lexer.Token>) -> (Ast.TopLevel & List<&2, Lexer.Token>) & Bool:
   match ok_body:
@@ -7007,7 +7014,7 @@ def with_term_top(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool, use: 
     case ((term, after), ok):
       use(term, after, ok)
 
-def feedback_resume_Kont_340017(lexical_capture_12: String, lexical_capture_14: String, lexical_capture_3: List<&2, Ast.Clause>, lexical_capture_16: Nat, lexical_capture_17: Lexer.Token, lexical_capture_5: List<&2, Lexer.Token>, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+def feedback_resume_Kont_339950(lexical_capture_12: String, lexical_capture_14: String, lexical_capture_3: List<&2, Ast.Clause>, lexical_capture_16: Nat, lexical_capture_17: Lexer.Token, lexical_capture_5: List<&2, Lexer.Token>, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
   feedback_pack_6(with_term_top(result, body => after_body => ok_body => parse_law_body_result(ok_body, body, after_body, lexical_capture_12, lexical_capture_14, lexical_capture_3, lexical_capture_16, lexical_capture_17, lexical_capture_5)))
 
 def feedback_make_parse_law_clause_condition_scan(file: String, tokens: List<&2, Lexer.Token>, scanned: List<&2, Lexer.Token>, beg: Nat, universal: Bool, quantity: Ast.Quantity, key: String, key_beg: Nat, key_end: Nat, ty: Ast.SyntaxTerm, next_scope: List<&2, Scope>, next_depth: Nat, acc: List<&2, Ast.Clause>) -> FeedbackRequest:
@@ -7025,13 +7032,13 @@ def step_parse_law_clause_type_result(ok_ty: Bool, ty: Ast.SyntaxTerm, +after_ty
     case False{}:
       feedback_pack_0(((((List.reverse(&2, Ast.Clause, acc), after_ty), scope), depth), False{}))
 
-def feedback_consumer_343943(v_327: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_1: String, v_31: String, v_32: Nat, v_33: Nat, v_5: Nat, v_7: Bool, v_8: Ast.Quantity, v_11: List<&2, Scope>, v_13: Nat, v_15: List<&2, Ast.Clause>) -> FeedbackControl:
+def feedback_consumer_343876(v_327: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_1: String, v_31: String, v_32: Nat, v_33: Nat, v_5: Nat, v_7: Bool, v_8: Ast.Quantity, v_11: List<&2, Scope>, v_13: Nat, v_15: List<&2, Ast.Clause>) -> FeedbackControl:
   match v_327:
     case ((v_328, v_329), v_330):
       step_parse_law_clause_type_result(v_330, v_328, v_329, v_1, v_31, v_32, v_33, v_5, v_7, v_8, v_11, v_13, v_15)
 
-def feedback_resume_Kont_343965(lexical_capture_1: String, lexical_capture_31: String, lexical_capture_32: Nat, lexical_capture_33: Nat, lexical_capture_5: Nat, lexical_capture_7: Bool, lexical_capture_8: Ast.Quantity, lexical_capture_11: List<&2, Scope>, lexical_capture_13: Nat, lexical_capture_15: List<&2, Ast.Clause>, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_343943(result, lexical_capture_1, lexical_capture_31, lexical_capture_32, lexical_capture_33, lexical_capture_5, lexical_capture_7, lexical_capture_8, lexical_capture_11, lexical_capture_13, lexical_capture_15)
+def feedback_resume_Kont_343898(lexical_capture_1: String, lexical_capture_31: String, lexical_capture_32: Nat, lexical_capture_33: Nat, lexical_capture_5: Nat, lexical_capture_7: Bool, lexical_capture_8: Ast.Quantity, lexical_capture_11: List<&2, Scope>, lexical_capture_13: Nat, lexical_capture_15: List<&2, Ast.Clause>, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_343876(result, lexical_capture_1, lexical_capture_31, lexical_capture_32, lexical_capture_33, lexical_capture_5, lexical_capture_7, lexical_capture_8, lexical_capture_11, lexical_capture_13, lexical_capture_15)
 
 def step_parse_law_clause_condition_result(ok_condition: Bool, +condition: Ast.SyntaxTerm, +after_condition: List<&2, Lexer.Token>, +file: String, beg: Nat, universal: Bool, quantity: Ast.Quantity, key: String, key_beg: Nat, ty: Ast.SyntaxTerm, +next_scope: List<&2, Scope>, +next_depth: Nat, +acc: List<&2, Ast.Clause>) -> FeedbackControl:
   match ok_condition:
@@ -7041,31 +7048,31 @@ def step_parse_law_clause_condition_result(ok_condition: Bool, +condition: Ast.S
     case False{}:
       feedback_pack_0(((((List.reverse(&2, Ast.Clause, acc), after_condition), next_scope), next_depth), False{}))
 
-def feedback_consumer_345909(v_328: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_1: String, v_7: Nat, v_9: Bool, v_10: Ast.Quantity, v_12: String, v_14: Nat, v_17: Ast.SyntaxTerm, v_20: List<&2, Scope>, v_22: Nat, v_24: List<&2, Ast.Clause>) -> FeedbackControl:
+def feedback_consumer_345842(v_328: Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool), v_1: String, v_7: Nat, v_9: Bool, v_10: Ast.Quantity, v_12: String, v_14: Nat, v_17: Ast.SyntaxTerm, v_20: List<&2, Scope>, v_22: Nat, v_24: List<&2, Ast.Clause>) -> FeedbackControl:
   match v_328:
     case ((v_329, v_330), v_331):
       step_parse_law_clause_condition_result(v_331, v_329, v_330, v_1, v_7, v_9, v_10, v_12, v_14, v_17, v_20, v_22, v_24)
 
-def feedback_resume_Kont_345931(lexical_capture_1: String, lexical_capture_7: Nat, lexical_capture_9: Bool, lexical_capture_10: Ast.Quantity, lexical_capture_12: String, lexical_capture_14: Nat, lexical_capture_17: Ast.SyntaxTerm, lexical_capture_20: List<&2, Scope>, lexical_capture_22: Nat, lexical_capture_24: List<&2, Ast.Clause>, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_345909(result, lexical_capture_1, lexical_capture_7, lexical_capture_9, lexical_capture_10, lexical_capture_12, lexical_capture_14, lexical_capture_17, lexical_capture_20, lexical_capture_22, lexical_capture_24)
+def feedback_resume_Kont_345864(lexical_capture_1: String, lexical_capture_7: Nat, lexical_capture_9: Bool, lexical_capture_10: Ast.Quantity, lexical_capture_12: String, lexical_capture_14: Nat, lexical_capture_17: Ast.SyntaxTerm, lexical_capture_20: List<&2, Scope>, lexical_capture_22: Nat, lexical_capture_24: List<&2, Ast.Clause>, result: ((Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_345842(result, lexical_capture_1, lexical_capture_7, lexical_capture_9, lexical_capture_10, lexical_capture_12, lexical_capture_14, lexical_capture_17, lexical_capture_20, lexical_capture_22, lexical_capture_24)
 
-def feedback_make_Kont_340017(lexical_capture_12: String, lexical_capture_14: String, lexical_capture_3: List<&2, Ast.Clause>, lexical_capture_16: Nat, lexical_capture_17: Lexer.Token, lexical_capture_5: List<&2, Lexer.Token>) -> FeedbackFrame:
-  Kont_340017{lexical_capture_12, lexical_capture_14, lexical_capture_3, lexical_capture_16, lexical_capture_17, lexical_capture_5}
+def feedback_make_Kont_339950(lexical_capture_12: String, lexical_capture_14: String, lexical_capture_3: List<&2, Ast.Clause>, lexical_capture_16: Nat, lexical_capture_17: Lexer.Token, lexical_capture_5: List<&2, Lexer.Token>) -> FeedbackFrame:
+  Kont_339950{lexical_capture_12, lexical_capture_14, lexical_capture_3, lexical_capture_16, lexical_capture_17, lexical_capture_5}
 
 def step_parse_law_clauses_result(ok_clauses: Bool, clauses: List<&2, Ast.Clause>, +after_clauses: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, +file: String, +key: String, +beg: Nat, +colon: Lexer.Token, after_colon: List<&2, Lexer.Token>) -> FeedbackControl:
   match ok_clauses:
     case True{}:
-      feedback_attach(step_parse_body(file, after_clauses, scope, depth, 0n), feedback_make_Kont_340017(file, key, clauses, beg, colon, after_clauses))
+      feedback_attach(step_parse_body(file, after_clauses, scope, depth, 0n), feedback_make_Kont_339950(file, key, clauses, beg, colon, after_clauses))
     case False{}:
       feedback_pack_6(law_failure(file, key, beg, token_end(colon), after_colon))
 
-def feedback_consumer_348213(v_329: Pair(Pair(Pair(Pair(List<&2, Ast.Clause>, List<&2, Lexer.Token>), List<&2, Scope>), Nat), Bool), v_1: String, v_17: String, v_5: Nat, v_24: Lexer.Token, v_25: List<&2, Lexer.Token>) -> FeedbackControl:
+def feedback_consumer_348146(v_329: Pair(Pair(Pair(Pair(List<&2, Ast.Clause>, List<&2, Lexer.Token>), List<&2, Scope>), Nat), Bool), v_1: String, v_17: String, v_5: Nat, v_24: Lexer.Token, v_25: List<&2, Lexer.Token>) -> FeedbackControl:
   match v_329:
     case ((((v_330, v_331), v_332), v_333), v_334):
       step_parse_law_clauses_result(v_334, v_330, v_331, v_332, v_333, v_1, v_17, v_5, v_24, v_25)
 
-def feedback_resume_Kont_348237(lexical_capture_1: String, lexical_capture_17: String, lexical_capture_5: Nat, lexical_capture_24: Lexer.Token, lexical_capture_25: List<&2, Lexer.Token>, result: ((((List<&2, Ast.Clause> & List<&2, Lexer.Token>) & List<&2, Scope>) & Nat) & Bool)) -> FeedbackControl:
-  feedback_consumer_348213(result, lexical_capture_1, lexical_capture_17, lexical_capture_5, lexical_capture_24, lexical_capture_25)
+def feedback_resume_Kont_348170(lexical_capture_1: String, lexical_capture_17: String, lexical_capture_5: Nat, lexical_capture_24: Lexer.Token, lexical_capture_25: List<&2, Lexer.Token>, result: ((((List<&2, Ast.Clause> & List<&2, Lexer.Token>) & List<&2, Scope>) & Nat) & Bool)) -> FeedbackControl:
+  feedback_consumer_348146(result, lexical_capture_1, lexical_capture_17, lexical_capture_5, lexical_capture_24, lexical_capture_25)
 
 def feedback_make_parse_top_result(validation: Map<&2, TopOwner> & Bool, top: Ast.TopLevel, after: List<&2, Lexer.Token>, tokens: List<&2, Lexer.Token>, file: String, path: String, acc: List<&2, Ast.TopLevel>) -> FeedbackRequest:
   match validation:
@@ -7137,37 +7144,37 @@ def top_owner_query(top: Ast.TopLevel, owners: Map<&2, TopOwner>) -> Map<&2, Top
     case Ast.LawTop{Ast.LawDecl{key, _, _, _}}:
       Map.get(TopOwner, TopOwnerNone{}, owners, key)
 
-def feedback_consumer_352828(v_333: Pair(Pair(Ast.TopLevel, List<&2, Lexer.Token>), Bool), v_12: Map<&2, TopOwner>, v_19: List<&2, Lexer.Token>, v_3: List<&2, Lexer.Token>, v_1: String, v_7: String, v_9: List<&2, Ast.TopLevel>) -> FeedbackControl:
+def feedback_consumer_352761(v_333: Pair(Pair(Ast.TopLevel, List<&2, Lexer.Token>), Bool), v_12: Map<&2, TopOwner>, v_19: List<&2, Lexer.Token>, v_3: List<&2, Lexer.Token>, v_1: String, v_7: String, v_9: List<&2, Ast.TopLevel>) -> FeedbackControl:
   match v_333:
     case ((+v_334, v_335), v_336):
       FeedbackControl{FeedbackCall{feedback_make_parse_top_result(top_owner_checked_result(top_owner_query(v_334, v_12), v_334, v_336, v_19), v_334, v_335, v_3, v_1, v_7, v_9)}, Nil{}, NoProgress{}, NoProgress{}}
 
-def feedback_resume_Kont_352849(lexical_capture_12: Map<&2, TopOwner>, lexical_capture_19: List<&2, Lexer.Token>, lexical_capture_3: List<&2, Lexer.Token>, lexical_capture_1: String, lexical_capture_7: String, lexical_capture_9: List<&2, Ast.TopLevel>, result: ((Ast.TopLevel & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_352828(result, lexical_capture_12, lexical_capture_19, lexical_capture_3, lexical_capture_1, lexical_capture_7, lexical_capture_9)
+def feedback_resume_Kont_352782(lexical_capture_12: Map<&2, TopOwner>, lexical_capture_19: List<&2, Lexer.Token>, lexical_capture_3: List<&2, Lexer.Token>, lexical_capture_1: String, lexical_capture_7: String, lexical_capture_9: List<&2, Ast.TopLevel>, result: ((Ast.TopLevel & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_352761(result, lexical_capture_12, lexical_capture_19, lexical_capture_3, lexical_capture_1, lexical_capture_7, lexical_capture_9)
 
-def feedback_consumer_353118(v_332: Pair(Pair(Ast.TopLevel, List<&2, Lexer.Token>), Bool), v_12: Map<&2, TopOwner>, v_19: List<&2, Lexer.Token>, v_3: List<&2, Lexer.Token>, v_1: String, v_7: String, v_9: List<&2, Ast.TopLevel>) -> FeedbackControl:
+def feedback_consumer_353051(v_332: Pair(Pair(Ast.TopLevel, List<&2, Lexer.Token>), Bool), v_12: Map<&2, TopOwner>, v_19: List<&2, Lexer.Token>, v_3: List<&2, Lexer.Token>, v_1: String, v_7: String, v_9: List<&2, Ast.TopLevel>) -> FeedbackControl:
   match v_332:
     case ((+v_333, v_334), v_335):
       FeedbackControl{FeedbackCall{feedback_make_parse_top_result(top_owner_checked_result(top_owner_query(v_333, v_12), v_333, v_335, v_19), v_333, v_334, v_3, v_1, v_7, v_9)}, Nil{}, NoProgress{}, NoProgress{}}
 
-def feedback_resume_Kont_353139(lexical_capture_12: Map<&2, TopOwner>, lexical_capture_19: List<&2, Lexer.Token>, lexical_capture_3: List<&2, Lexer.Token>, lexical_capture_1: String, lexical_capture_7: String, lexical_capture_9: List<&2, Ast.TopLevel>, result: ((Ast.TopLevel & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_353118(result, lexical_capture_12, lexical_capture_19, lexical_capture_3, lexical_capture_1, lexical_capture_7, lexical_capture_9)
+def feedback_resume_Kont_353072(lexical_capture_12: Map<&2, TopOwner>, lexical_capture_19: List<&2, Lexer.Token>, lexical_capture_3: List<&2, Lexer.Token>, lexical_capture_1: String, lexical_capture_7: String, lexical_capture_9: List<&2, Ast.TopLevel>, result: ((Ast.TopLevel & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_353051(result, lexical_capture_12, lexical_capture_19, lexical_capture_3, lexical_capture_1, lexical_capture_7, lexical_capture_9)
 
-def feedback_consumer_353411(v_331: Pair(Pair(Ast.TopLevel, List<&2, Lexer.Token>), Bool), v_12: Map<&2, TopOwner>, v_19: List<&2, Lexer.Token>, v_3: List<&2, Lexer.Token>, v_1: String, v_7: String, v_9: List<&2, Ast.TopLevel>) -> FeedbackControl:
+def feedback_consumer_353344(v_331: Pair(Pair(Ast.TopLevel, List<&2, Lexer.Token>), Bool), v_12: Map<&2, TopOwner>, v_19: List<&2, Lexer.Token>, v_3: List<&2, Lexer.Token>, v_1: String, v_7: String, v_9: List<&2, Ast.TopLevel>) -> FeedbackControl:
   match v_331:
     case ((+v_332, v_333), v_334):
       FeedbackControl{FeedbackCall{feedback_make_parse_top_result(top_owner_checked_result(top_owner_query(v_332, v_12), v_332, v_334, v_19), v_332, v_333, v_3, v_1, v_7, v_9)}, Nil{}, NoProgress{}, NoProgress{}}
 
-def feedback_resume_Kont_353432(lexical_capture_12: Map<&2, TopOwner>, lexical_capture_19: List<&2, Lexer.Token>, lexical_capture_3: List<&2, Lexer.Token>, lexical_capture_1: String, lexical_capture_7: String, lexical_capture_9: List<&2, Ast.TopLevel>, result: ((Ast.TopLevel & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_353411(result, lexical_capture_12, lexical_capture_19, lexical_capture_3, lexical_capture_1, lexical_capture_7, lexical_capture_9)
+def feedback_resume_Kont_353365(lexical_capture_12: Map<&2, TopOwner>, lexical_capture_19: List<&2, Lexer.Token>, lexical_capture_3: List<&2, Lexer.Token>, lexical_capture_1: String, lexical_capture_7: String, lexical_capture_9: List<&2, Ast.TopLevel>, result: ((Ast.TopLevel & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_353344(result, lexical_capture_12, lexical_capture_19, lexical_capture_3, lexical_capture_1, lexical_capture_7, lexical_capture_9)
 
-def feedback_consumer_353702(v_330: Pair(Pair(Ast.TopLevel, List<&2, Lexer.Token>), Bool), v_12: Map<&2, TopOwner>, v_19: List<&2, Lexer.Token>, v_3: List<&2, Lexer.Token>, v_1: String, v_7: String, v_9: List<&2, Ast.TopLevel>) -> FeedbackControl:
+def feedback_consumer_353635(v_330: Pair(Pair(Ast.TopLevel, List<&2, Lexer.Token>), Bool), v_12: Map<&2, TopOwner>, v_19: List<&2, Lexer.Token>, v_3: List<&2, Lexer.Token>, v_1: String, v_7: String, v_9: List<&2, Ast.TopLevel>) -> FeedbackControl:
   match v_330:
     case ((+v_331, v_332), v_333):
       FeedbackControl{FeedbackCall{feedback_make_parse_top_result(top_owner_checked_result(top_owner_query(v_331, v_12), v_331, v_333, v_19), v_331, v_332, v_3, v_1, v_7, v_9)}, Nil{}, NoProgress{}, NoProgress{}}
 
-def feedback_resume_Kont_353723(lexical_capture_12: Map<&2, TopOwner>, lexical_capture_19: List<&2, Lexer.Token>, lexical_capture_3: List<&2, Lexer.Token>, lexical_capture_1: String, lexical_capture_7: String, lexical_capture_9: List<&2, Ast.TopLevel>, result: ((Ast.TopLevel & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_353702(result, lexical_capture_12, lexical_capture_19, lexical_capture_3, lexical_capture_1, lexical_capture_7, lexical_capture_9)
+def feedback_resume_Kont_353656(lexical_capture_12: Map<&2, TopOwner>, lexical_capture_19: List<&2, Lexer.Token>, lexical_capture_3: List<&2, Lexer.Token>, lexical_capture_1: String, lexical_capture_7: String, lexical_capture_9: List<&2, Ast.TopLevel>, result: ((Ast.TopLevel & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_353635(result, lexical_capture_12, lexical_capture_19, lexical_capture_3, lexical_capture_1, lexical_capture_7, lexical_capture_9)
 
 def feedback_pack_17(result: ParseResult) -> FeedbackControl:
   FeedbackControl{FeedbackDone{Value_17{result}}, Nil{}, NoProgress{}, NoProgress{}}
@@ -7202,11 +7209,11 @@ def with_top_declarations_result(result: (List<&2, Ast.TopLevel> & Bool) & List<
     case ((declarations, ok), rest):
       use(declarations, ok, rest)
 
-def feedback_resume_Kont_355624(lexical_capture_7: String, lexical_capture_3: List<&2, Ast.ModuleImport>, result: ((List<&2, Ast.TopLevel> & Bool) & List<&2, Lexer.Token>)) -> FeedbackControl:
+def feedback_resume_Kont_355557(lexical_capture_7: String, lexical_capture_3: List<&2, Ast.ModuleImport>, result: ((List<&2, Ast.TopLevel> & Bool) & List<&2, Lexer.Token>)) -> FeedbackControl:
   feedback_pack_17(with_top_declarations_result(result, declarations => ok => rest => parse_module_declarations_result(ok, declarations, rest, lexical_capture_7, lexical_capture_3)))
 
-def feedback_make_Kont_355624(lexical_capture_7: String, lexical_capture_3: List<&2, Ast.ModuleImport>) -> FeedbackFrame:
-  Kont_355624{lexical_capture_7, lexical_capture_3}
+def feedback_make_Kont_355557(lexical_capture_7: String, lexical_capture_3: List<&2, Ast.ModuleImport>) -> FeedbackFrame:
+  Kont_355557{lexical_capture_7, lexical_capture_3}
 
 def top_owners_seed(acc: List<&2, Ast.TopLevel>, owners: Map<&2, TopOwner>) -> Map<&2, TopOwner>:
   match acc:
@@ -7221,17 +7228,17 @@ def step_parse_top(file: String, +tokens: List<&2, Lexer.Token>, path: String, +
 def step_parse_module_imports_result(imports_ok: Bool, imports: List<&2, Ast.ModuleImport>, +after_imports: List<&2, Lexer.Token>, +file: String) -> FeedbackControl:
   match imports_ok:
     case True{}:
-      feedback_attach(step_parse_top(file, after_imports, file, Nil{}), feedback_make_Kont_355624(file, imports))
+      feedback_attach(step_parse_top(file, after_imports, file, Nil{}), feedback_make_Kont_355557(file, imports))
     case False{}:
       feedback_pack_17(ParseFailure{ "invalid module import", "import path with optional as-name", observed(after_imports), error_span(file, after_imports)})
 
-def feedback_consumer_356057(v_334: Pair(Pair(List<&2, Ast.ModuleImport>, List<&2, Lexer.Token>), Bool), v_3: String) -> FeedbackControl:
+def feedback_consumer_355990(v_334: Pair(Pair(List<&2, Ast.ModuleImport>, List<&2, Lexer.Token>), Bool), v_3: String) -> FeedbackControl:
   match v_334:
     case ((v_335, v_336), v_337):
       step_parse_module_imports_result(v_337, v_335, v_336, v_3)
 
-def feedback_resume_Kont_356077(lexical_capture_3: String, result: ((List<&2, Ast.ModuleImport> & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
-  feedback_consumer_356057(result, lexical_capture_3)
+def feedback_resume_Kont_356010(lexical_capture_3: String, result: ((List<&2, Ast.ModuleImport> & List<&2, Lexer.Token>) & Bool)) -> FeedbackControl:
+  feedback_consumer_355990(result, lexical_capture_3)
 
 def nat_literal_tokens_sum_range(valid: Bool, sum: Nat) -> Maybe<&2, Nat>:
   match valid:
@@ -7248,7 +7255,7 @@ def nat_literal_tokens_sum(found: Maybe<&2, Nat>, value: Nat) -> Maybe<&2, Nat>:
     case None{}:
       None{}
 
-def feedback_resume_Kont_80115(capture_1: Nat, result: Maybe<&2, Nat>) -> FeedbackControl:
+def feedback_resume_Kont_80664(capture_1: Nat, result: Maybe<&2, Nat>) -> FeedbackControl:
   feedback_pack_15(nat_literal_tokens_sum(result, capture_1))
 
 def nat_succ_prefix(+file: String, count: Nat, term: Ast.SyntaxTerm, +beg: Nat, +end: Nat) -> Ast.SyntaxTerm:
@@ -7278,1083 +7285,1083 @@ def parse_nat_literal_fold_sum(found: Maybe<&2, Nat>, +file: String, +value: Nat
 def parse_nat_literal_fold(found: Maybe<&2, Nat>, +file: String, +value: Nat, +beg: Nat, +end: Nat, +after_tail: List<&2, Lexer.Token>, +tail: Ast.SyntaxTerm) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   parse_nat_literal_fold_sum(nat_literal_tokens_sum(found, value), file, value, beg, end, after_tail, tail)
 
-def feedback_resume_Kont_81687(capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: Nat, capture_5: List<&2, Lexer.Token>, capture_6: Ast.SyntaxTerm, result: Maybe<&2, Nat>) -> FeedbackControl:
+def feedback_resume_Kont_82236(capture_1: String, capture_2: Nat, capture_3: Nat, capture_4: Nat, capture_5: List<&2, Lexer.Token>, capture_6: Ast.SyntaxTerm, result: Maybe<&2, Nat>) -> FeedbackControl:
   feedback_pack_5(parse_nat_literal_fold(result, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6))
 
-def evaluation_context_parse_name_constructor_result_84616(v_3: List<&2, Ast.SyntaxTerm>, +v_5: List<&2, Lexer.Token>, v_7: String, v_9: String, v_11: Nat, v_280: Nat) -> Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool):
+def evaluation_context_parse_name_constructor_result_85165(v_3: List<&2, Ast.SyntaxTerm>, +v_5: List<&2, Lexer.Token>, v_7: String, v_9: String, v_11: Nat, v_280: Nat) -> Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool):
   ((Ast.TermCtr{v_9, v_3, span(v_7, v_11, v_280)}, v_5), True{})
 
-def feedback_resume_Kont_84990(capture_0: List<&2, Ast.SyntaxTerm>, capture_1: List<&2, Lexer.Token>, capture_2: String, capture_3: String, capture_4: Nat, result: Nat) -> FeedbackControl:
-  feedback_pack_5(evaluation_context_parse_name_constructor_result_84616(capture_0, capture_1, capture_2, capture_3, capture_4, result))
+def feedback_resume_Kont_85539(capture_0: List<&2, Ast.SyntaxTerm>, capture_1: List<&2, Lexer.Token>, capture_2: String, capture_3: String, capture_4: Nat, result: Nat) -> FeedbackControl:
+  feedback_pack_5(evaluation_context_parse_name_constructor_result_85165(capture_0, capture_1, capture_2, capture_3, capture_4, result))
 
-def evaluation_context_map_operator_term_89873(v_173: Ast.SourceSpan, v_297: Ast.SyntaxTerm, v_318: Ast.SyntaxTerm, v_323: Ast.SyntaxTerm) -> Ast.SyntaxTerm:
+def evaluation_context_map_operator_term_90422(v_173: Ast.SourceSpan, v_297: Ast.SyntaxTerm, v_318: Ast.SyntaxTerm, v_323: Ast.SyntaxTerm) -> Ast.SyntaxTerm:
   Ast.TermRewrite{v_297, v_318, v_323, v_173}
 
-def feedback_resume_Kont_88036(capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm, capture_2: Ast.SyntaxTerm, result: Ast.SyntaxTerm) -> FeedbackControl:
-  feedback_pack_11(evaluation_context_map_operator_term_89873(capture_0, capture_1, capture_2, result))
+def feedback_resume_Kont_88585(capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm, capture_2: Ast.SyntaxTerm, result: Ast.SyntaxTerm) -> FeedbackControl:
+  feedback_pack_11(evaluation_context_map_operator_term_90422(capture_0, capture_1, capture_2, result))
 
-def evaluation_context_map_operator_term_89597(v_160: Ast.SourceSpan, v_296: Ast.SyntaxTerm, v_317: Ast.SyntaxTerm, v_322: Ast.SyntaxTerm) -> Ast.SyntaxTerm:
+def evaluation_context_map_operator_term_90146(v_160: Ast.SourceSpan, v_296: Ast.SyntaxTerm, v_317: Ast.SyntaxTerm, v_322: Ast.SyntaxTerm) -> Ast.SyntaxTerm:
   Ast.TermEqual{v_296, v_317, v_322, v_160}
 
-def feedback_resume_Kont_88306(capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm, capture_2: Ast.SyntaxTerm, result: Ast.SyntaxTerm) -> FeedbackControl:
-  feedback_pack_11(evaluation_context_map_operator_term_89597(capture_0, capture_1, capture_2, result))
+def feedback_resume_Kont_88855(capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm, capture_2: Ast.SyntaxTerm, result: Ast.SyntaxTerm) -> FeedbackControl:
+  feedback_pack_11(evaluation_context_map_operator_term_90146(capture_0, capture_1, capture_2, result))
 
-def evaluation_context_map_operator_term_90450(v_201: List<&2, Ast.SyntaxPattern>, v_202: Ast.Quantity, v_205: Ast.SourceSpan, v_300: List<&2, Ast.SyntaxTerm>, v_320: Ast.SyntaxTerm) -> Ast.SyntaxTerm:
+def evaluation_context_map_operator_term_90999(v_201: List<&2, Ast.SyntaxPattern>, v_202: Ast.Quantity, v_205: Ast.SourceSpan, v_300: List<&2, Ast.SyntaxTerm>, v_320: Ast.SyntaxTerm) -> Ast.SyntaxTerm:
   Ast.BodyLocal{v_201, v_202, v_300, v_320, v_205}
 
-def feedback_resume_Kont_90526(capture_0: List<&2, Ast.SyntaxPattern>, capture_1: Ast.Quantity, capture_2: Ast.SourceSpan, capture_3: List<&2, Ast.SyntaxTerm>, result: Ast.SyntaxTerm) -> FeedbackControl:
-  feedback_pack_11(evaluation_context_map_operator_term_90450(capture_0, capture_1, capture_2, capture_3, result))
+def feedback_resume_Kont_91075(capture_0: List<&2, Ast.SyntaxPattern>, capture_1: Ast.Quantity, capture_2: Ast.SourceSpan, capture_3: List<&2, Ast.SyntaxTerm>, result: Ast.SyntaxTerm) -> FeedbackControl:
+  feedback_pack_11(evaluation_context_map_operator_term_90999(capture_0, capture_1, capture_2, capture_3, result))
 
-def evaluation_context_map_operator_term_90119(v_186: Ast.SourceSpan, v_298: List<&2, Ast.SyntaxTerm>, v_319: List<&2, Ast.SyntaxTerm>) -> Ast.SyntaxTerm:
+def evaluation_context_map_operator_term_90668(v_186: Ast.SourceSpan, v_298: List<&2, Ast.SyntaxTerm>, v_319: List<&2, Ast.SyntaxTerm>) -> Ast.SyntaxTerm:
   Ast.BodyMatch{v_298, v_319, v_186}
 
-def feedback_resume_Kont_90971(capture_0: Ast.SourceSpan, capture_1: List<&2, Ast.SyntaxTerm>, result: List<&2, Ast.SyntaxTerm>) -> FeedbackControl:
-  feedback_pack_11(evaluation_context_map_operator_term_90119(capture_0, capture_1, result))
+def feedback_resume_Kont_91520(capture_0: Ast.SourceSpan, capture_1: List<&2, Ast.SyntaxTerm>, result: List<&2, Ast.SyntaxTerm>) -> FeedbackControl:
+  feedback_pack_11(evaluation_context_map_operator_term_90668(capture_0, capture_1, result))
 
-def feedback_make_Kont_88036(capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm, capture_2: Ast.SyntaxTerm) -> FeedbackFrame:
-  Kont_88036{capture_0, capture_1, capture_2}
+def feedback_make_Kont_88585(capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm, capture_2: Ast.SyntaxTerm) -> FeedbackFrame:
+  Kont_88585{capture_0, capture_1, capture_2}
 
-def step_evaluation_context_map_operator_term_89836(+v_2: String, v_172: Ast.SyntaxTerm, v_173: Ast.SourceSpan, v_297: Ast.SyntaxTerm, v_318: Ast.SyntaxTerm) -> FeedbackControl:
-  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_172, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_88036(v_173, v_297, v_318))
+def step_evaluation_context_map_operator_term_90385(+v_2: String, v_172: Ast.SyntaxTerm, v_173: Ast.SourceSpan, v_297: Ast.SyntaxTerm, v_318: Ast.SyntaxTerm) -> FeedbackControl:
+  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_172, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_88585(v_173, v_297, v_318))
 
-def feedback_resume_Kont_91247(capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SourceSpan, capture_3: Ast.SyntaxTerm, result: Ast.SyntaxTerm) -> FeedbackControl:
-  step_evaluation_context_map_operator_term_89836(capture_0, capture_1, capture_2, capture_3, result)
+def feedback_resume_Kont_91796(capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SourceSpan, capture_3: Ast.SyntaxTerm, result: Ast.SyntaxTerm) -> FeedbackControl:
+  step_evaluation_context_map_operator_term_90385(capture_0, capture_1, capture_2, capture_3, result)
 
-def feedback_make_Kont_88306(capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm, capture_2: Ast.SyntaxTerm) -> FeedbackFrame:
-  Kont_88306{capture_0, capture_1, capture_2}
+def feedback_make_Kont_88855(capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm, capture_2: Ast.SyntaxTerm) -> FeedbackFrame:
+  Kont_88855{capture_0, capture_1, capture_2}
 
-def step_evaluation_context_map_operator_term_89560(+v_2: String, v_159: Ast.SyntaxTerm, v_160: Ast.SourceSpan, v_296: Ast.SyntaxTerm, v_317: Ast.SyntaxTerm) -> FeedbackControl:
-  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_159, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_88306(v_160, v_296, v_317))
+def step_evaluation_context_map_operator_term_90109(+v_2: String, v_159: Ast.SyntaxTerm, v_160: Ast.SourceSpan, v_296: Ast.SyntaxTerm, v_317: Ast.SyntaxTerm) -> FeedbackControl:
+  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_159, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_88855(v_160, v_296, v_317))
 
-def feedback_resume_Kont_91522(capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SourceSpan, capture_3: Ast.SyntaxTerm, result: Ast.SyntaxTerm) -> FeedbackControl:
-  step_evaluation_context_map_operator_term_89560(capture_0, capture_1, capture_2, capture_3, result)
+def feedback_resume_Kont_92071(capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SourceSpan, capture_3: Ast.SyntaxTerm, result: Ast.SyntaxTerm) -> FeedbackControl:
+  step_evaluation_context_map_operator_term_90109(capture_0, capture_1, capture_2, capture_3, result)
 
-def evaluation_context_map_operator_term_89326(v_145: String, v_148: Ast.SourceSpan, v_295: Ast.SyntaxTerm, v_316: Ast.SyntaxTerm) -> Ast.SyntaxTerm:
+def evaluation_context_map_operator_term_89875(v_145: String, v_148: Ast.SourceSpan, v_295: Ast.SyntaxTerm, v_316: Ast.SyntaxTerm) -> Ast.SyntaxTerm:
   Ast.TermMat{v_145, v_295, v_316, v_148}
 
-def feedback_resume_Kont_91784(capture_0: String, capture_1: Ast.SourceSpan, capture_2: Ast.SyntaxTerm, result: Ast.SyntaxTerm) -> FeedbackControl:
-  feedback_pack_11(evaluation_context_map_operator_term_89326(capture_0, capture_1, capture_2, result))
+def feedback_resume_Kont_92333(capture_0: String, capture_1: Ast.SourceSpan, capture_2: Ast.SyntaxTerm, result: Ast.SyntaxTerm) -> FeedbackControl:
+  feedback_pack_11(evaluation_context_map_operator_term_89875(capture_0, capture_1, capture_2, result))
 
-def evaluation_context_map_operator_term_88943(v_125: Ast.SourceSpan, v_293: Ast.SyntaxTerm, v_315: List<&2, Ast.SyntaxTerm>) -> Ast.SyntaxTerm:
+def evaluation_context_map_operator_term_89492(v_125: Ast.SourceSpan, v_293: Ast.SyntaxTerm, v_315: List<&2, Ast.SyntaxTerm>) -> Ast.SyntaxTerm:
   Ast.TermPlus{v_293, v_315, v_125}
 
-def feedback_resume_Kont_92207(capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm, result: List<&2, Ast.SyntaxTerm>) -> FeedbackControl:
-  feedback_pack_11(evaluation_context_map_operator_term_88943(capture_0, capture_1, result))
+def feedback_resume_Kont_92756(capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm, result: List<&2, Ast.SyntaxTerm>) -> FeedbackControl:
+  feedback_pack_11(evaluation_context_map_operator_term_89492(capture_0, capture_1, result))
 
-def evaluation_context_map_operator_term_88790(v_117: Ast.SourceSpan, v_292: Ast.SyntaxTerm, v_314: List<&2, Ast.SyntaxTerm>) -> Ast.SyntaxTerm:
+def evaluation_context_map_operator_term_89339(v_117: Ast.SourceSpan, v_292: Ast.SyntaxTerm, v_314: List<&2, Ast.SyntaxTerm>) -> Ast.SyntaxTerm:
   Ast.TermFill{v_292, v_314, v_117}
 
-def feedback_resume_Kont_92458(capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm, result: List<&2, Ast.SyntaxTerm>) -> FeedbackControl:
-  feedback_pack_11(evaluation_context_map_operator_term_88790(capture_0, capture_1, result))
+def feedback_resume_Kont_93007(capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm, result: List<&2, Ast.SyntaxTerm>) -> FeedbackControl:
+  feedback_pack_11(evaluation_context_map_operator_term_89339(capture_0, capture_1, result))
 
-def evaluation_context_map_operator_term_88508(v_100: Ast.SourceSpan, v_290: Ast.SyntaxTerm, v_313: Ast.SyntaxTerm) -> Ast.SyntaxTerm:
+def evaluation_context_map_operator_term_89057(v_100: Ast.SourceSpan, v_290: Ast.SyntaxTerm, v_313: Ast.SyntaxTerm) -> Ast.SyntaxTerm:
   Ast.TermApp{v_290, v_313, v_100}
 
-def feedback_resume_Kont_92903(capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm, result: Ast.SyntaxTerm) -> FeedbackControl:
-  feedback_pack_11(evaluation_context_map_operator_term_88508(capture_0, capture_1, result))
+def feedback_resume_Kont_93452(capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm, result: Ast.SyntaxTerm) -> FeedbackControl:
+  feedback_pack_11(evaluation_context_map_operator_term_89057(capture_0, capture_1, result))
 
-def evaluation_context_map_operator_term_88211(v_76: Ast.Quantity, v_77: String, v_78: Nat, v_81: Ast.SourceSpan, v_288: Ast.SyntaxTerm, v_312: Ast.SyntaxTerm) -> Ast.SyntaxTerm:
+def evaluation_context_map_operator_term_88760(v_76: Ast.Quantity, v_77: String, v_78: Nat, v_81: Ast.SourceSpan, v_288: Ast.SyntaxTerm, v_312: Ast.SyntaxTerm) -> Ast.SyntaxTerm:
   Ast.TermAll{v_76, v_77, v_78, v_288, v_312, v_81}
 
-def feedback_resume_Kont_93415(capture_0: Ast.Quantity, capture_1: String, capture_2: Nat, capture_3: Ast.SourceSpan, capture_4: Ast.SyntaxTerm, result: Ast.SyntaxTerm) -> FeedbackControl:
-  feedback_pack_11(evaluation_context_map_operator_term_88211(capture_0, capture_1, capture_2, capture_3, capture_4, result))
+def feedback_resume_Kont_93964(capture_0: Ast.Quantity, capture_1: String, capture_2: Nat, capture_3: Ast.SourceSpan, capture_4: Ast.SyntaxTerm, result: Ast.SyntaxTerm) -> FeedbackControl:
+  feedback_pack_11(evaluation_context_map_operator_term_88760(capture_0, capture_1, capture_2, capture_3, capture_4, result))
 
-def evaluation_context_map_operator_term_88020(v_67: Ast.SourceSpan, v_287: Ast.SyntaxTerm, v_311: Ast.SyntaxTerm) -> Ast.SyntaxTerm:
+def evaluation_context_map_operator_term_88569(v_67: Ast.SourceSpan, v_287: Ast.SyntaxTerm, v_311: Ast.SyntaxTerm) -> Ast.SyntaxTerm:
   Ast.TermMin{v_287, v_311, v_67}
 
-def feedback_resume_Kont_93651(capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm, result: Ast.SyntaxTerm) -> FeedbackControl:
-  feedback_pack_11(evaluation_context_map_operator_term_88020(capture_0, capture_1, result))
+def feedback_resume_Kont_94200(capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm, result: Ast.SyntaxTerm) -> FeedbackControl:
+  feedback_pack_11(evaluation_context_map_operator_term_88569(capture_0, capture_1, result))
 
-def evaluation_context_map_operator_term_87499(v_46: Ast.SourceSpan, v_284: Ast.SyntaxTerm, v_310: Ast.SyntaxTerm) -> Ast.SyntaxTerm:
+def evaluation_context_map_operator_term_88048(v_46: Ast.SourceSpan, v_284: Ast.SyntaxTerm, v_310: Ast.SyntaxTerm) -> Ast.SyntaxTerm:
   Ast.TermAnn{v_284, v_310, v_46}
 
-def feedback_resume_Kont_94171(capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm, result: Ast.SyntaxTerm) -> FeedbackControl:
-  feedback_pack_11(evaluation_context_map_operator_term_87499(capture_0, capture_1, result))
+def feedback_resume_Kont_94720(capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm, result: Ast.SyntaxTerm) -> FeedbackControl:
+  feedback_pack_11(evaluation_context_map_operator_term_88048(capture_0, capture_1, result))
 
-def evaluation_context_map_operator_term_87351(v_34: List<&2, String>, v_35: List<&2, Nat>, v_36: List<&2, Ast.Quantity>, v_39: Ast.SourceSpan, v_283: List<&2, Ast.SyntaxTerm>, v_309: Ast.SyntaxTerm) -> Ast.SyntaxTerm:
+def evaluation_context_map_operator_term_87900(v_34: List<&2, String>, v_35: List<&2, Nat>, v_36: List<&2, Ast.Quantity>, v_39: Ast.SourceSpan, v_283: List<&2, Ast.SyntaxTerm>, v_309: Ast.SyntaxTerm) -> Ast.SyntaxTerm:
   Ast.TermLet{v_34, v_35, v_36, v_283, v_309, v_39}
 
-def feedback_resume_Kont_94510(capture_0: List<&2, String>, capture_1: List<&2, Nat>, capture_2: List<&2, Ast.Quantity>, capture_3: Ast.SourceSpan, capture_4: List<&2, Ast.SyntaxTerm>, result: Ast.SyntaxTerm) -> FeedbackControl:
-  feedback_pack_11(evaluation_context_map_operator_term_87351(capture_0, capture_1, capture_2, capture_3, capture_4, result))
+def feedback_resume_Kont_95059(capture_0: List<&2, String>, capture_1: List<&2, Nat>, capture_2: List<&2, Ast.Quantity>, capture_3: Ast.SourceSpan, capture_4: List<&2, Ast.SyntaxTerm>, result: Ast.SyntaxTerm) -> FeedbackControl:
+  feedback_pack_11(evaluation_context_map_operator_term_87900(capture_0, capture_1, capture_2, capture_3, capture_4, result))
 
-def evaluation_context_map_operator_term_87142(v_22: Nat, v_25: Ast.SourceSpan, v_282: Ast.SyntaxTerm, v_308: Ast.SyntaxTerm) -> Ast.SyntaxTerm:
+def evaluation_context_map_operator_term_87691(v_22: Nat, v_25: Ast.SourceSpan, v_282: Ast.SyntaxTerm, v_308: Ast.SyntaxTerm) -> Ast.SyntaxTerm:
   Ast.TermSub{v_22, v_282, v_308, v_25}
 
-def feedback_resume_Kont_94763(capture_0: Nat, capture_1: Ast.SourceSpan, capture_2: Ast.SyntaxTerm, result: Ast.SyntaxTerm) -> FeedbackControl:
-  feedback_pack_11(evaluation_context_map_operator_term_87142(capture_0, capture_1, capture_2, result))
+def feedback_resume_Kont_95312(capture_0: Nat, capture_1: Ast.SourceSpan, capture_2: Ast.SyntaxTerm, result: Ast.SyntaxTerm) -> FeedbackControl:
+  feedback_pack_11(evaluation_context_map_operator_term_87691(capture_0, capture_1, capture_2, result))
 
-def evaluation_context_map_operator_term_86976(v_16: Ast.SourceSpan, v_281: Ast.SyntaxTerm) -> Ast.SyntaxTerm:
+def evaluation_context_map_operator_term_87525(v_16: Ast.SourceSpan, v_281: Ast.SyntaxTerm) -> Ast.SyntaxTerm:
   Ast.TermBang{v_281, v_16}
 
-def feedback_resume_Kont_95278(capture_0: Ast.SourceSpan, result: Ast.SyntaxTerm) -> FeedbackControl:
-  feedback_pack_11(evaluation_context_map_operator_term_86976(capture_0, result))
+def feedback_resume_Kont_95827(capture_0: Ast.SourceSpan, result: Ast.SyntaxTerm) -> FeedbackControl:
+  feedback_pack_11(evaluation_context_map_operator_term_87525(capture_0, result))
 
-def feedback_make_Kont_94763(capture_0: Nat, capture_1: Ast.SourceSpan, capture_2: Ast.SyntaxTerm) -> FeedbackFrame:
-  Kont_94763{capture_0, capture_1, capture_2}
+def feedback_make_Kont_95312(capture_0: Nat, capture_1: Ast.SourceSpan, capture_2: Ast.SyntaxTerm) -> FeedbackFrame:
+  Kont_95312{capture_0, capture_1, capture_2}
 
-def step_evaluation_context_map_operator_term_87105(+v_2: String, v_22: Nat, v_24: Ast.SyntaxTerm, v_25: Ast.SourceSpan, v_282: Ast.SyntaxTerm) -> FeedbackControl:
-  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_24, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_94763(v_22, v_25, v_282))
+def step_evaluation_context_map_operator_term_87654(+v_2: String, v_22: Nat, v_24: Ast.SyntaxTerm, v_25: Ast.SourceSpan, v_282: Ast.SyntaxTerm) -> FeedbackControl:
+  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_24, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_95312(v_22, v_25, v_282))
 
-def feedback_resume_Kont_95426(capture_0: String, capture_1: Nat, capture_2: Ast.SyntaxTerm, capture_3: Ast.SourceSpan, result: Ast.SyntaxTerm) -> FeedbackControl:
-  step_evaluation_context_map_operator_term_87105(capture_0, capture_1, capture_2, capture_3, result)
+def feedback_resume_Kont_95975(capture_0: String, capture_1: Nat, capture_2: Ast.SyntaxTerm, capture_3: Ast.SourceSpan, result: Ast.SyntaxTerm) -> FeedbackControl:
+  step_evaluation_context_map_operator_term_87654(capture_0, capture_1, capture_2, capture_3, result)
 
-def feedback_make_Kont_94510(capture_0: List<&2, String>, capture_1: List<&2, Nat>, capture_2: List<&2, Ast.Quantity>, capture_3: Ast.SourceSpan, capture_4: List<&2, Ast.SyntaxTerm>) -> FeedbackFrame:
-  Kont_94510{capture_0, capture_1, capture_2, capture_3, capture_4}
+def feedback_make_Kont_95059(capture_0: List<&2, String>, capture_1: List<&2, Nat>, capture_2: List<&2, Ast.Quantity>, capture_3: Ast.SourceSpan, capture_4: List<&2, Ast.SyntaxTerm>) -> FeedbackFrame:
+  Kont_95059{capture_0, capture_1, capture_2, capture_3, capture_4}
 
-def step_evaluation_context_map_operator_term_87312(+v_2: String, v_34: List<&2, String>, v_35: List<&2, Nat>, v_36: List<&2, Ast.Quantity>, v_38: Ast.SyntaxTerm, v_39: Ast.SourceSpan, v_283: List<&2, Ast.SyntaxTerm>) -> FeedbackControl:
-  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_38, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_94510(v_34, v_35, v_36, v_39, v_283))
+def step_evaluation_context_map_operator_term_87861(+v_2: String, v_34: List<&2, String>, v_35: List<&2, Nat>, v_36: List<&2, Ast.Quantity>, v_38: Ast.SyntaxTerm, v_39: Ast.SourceSpan, v_283: List<&2, Ast.SyntaxTerm>) -> FeedbackControl:
+  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_38, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_95059(v_34, v_35, v_36, v_39, v_283))
 
-def feedback_resume_Kont_95598(capture_0: String, capture_1: List<&2, String>, capture_2: List<&2, Nat>, capture_3: List<&2, Ast.Quantity>, capture_4: Ast.SyntaxTerm, capture_5: Ast.SourceSpan, result: List<&2, Ast.SyntaxTerm>) -> FeedbackControl:
-  step_evaluation_context_map_operator_term_87312(capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, result)
+def feedback_resume_Kont_96147(capture_0: String, capture_1: List<&2, String>, capture_2: List<&2, Nat>, capture_3: List<&2, Ast.Quantity>, capture_4: Ast.SyntaxTerm, capture_5: Ast.SourceSpan, result: List<&2, Ast.SyntaxTerm>) -> FeedbackControl:
+  step_evaluation_context_map_operator_term_87861(capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, result)
 
-def feedback_make_Kont_94171(capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm) -> FeedbackFrame:
-  Kont_94171{capture_0, capture_1}
+def feedback_make_Kont_94720(capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm) -> FeedbackFrame:
+  Kont_94720{capture_0, capture_1}
 
-def step_evaluation_context_map_operator_term_87463(+v_2: String, v_45: Ast.SyntaxTerm, v_46: Ast.SourceSpan, v_284: Ast.SyntaxTerm) -> FeedbackControl:
-  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_45, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_94171(v_46, v_284))
+def step_evaluation_context_map_operator_term_88012(+v_2: String, v_45: Ast.SyntaxTerm, v_46: Ast.SourceSpan, v_284: Ast.SyntaxTerm) -> FeedbackControl:
+  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_45, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_94720(v_46, v_284))
 
-def feedback_resume_Kont_95735(capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SourceSpan, result: Ast.SyntaxTerm) -> FeedbackControl:
-  step_evaluation_context_map_operator_term_87463(capture_0, capture_1, capture_2, result)
+def feedback_resume_Kont_96284(capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SourceSpan, result: Ast.SyntaxTerm) -> FeedbackControl:
+  step_evaluation_context_map_operator_term_88012(capture_0, capture_1, capture_2, result)
 
-def evaluation_context_map_operator_term_87615(v_51: Ast.SourceSpan, v_285: Ast.SyntaxTerm) -> Ast.SyntaxTerm:
+def evaluation_context_map_operator_term_88164(v_51: Ast.SourceSpan, v_285: Ast.SyntaxTerm) -> Ast.SyntaxTerm:
   Ast.TermTemplate{v_285, v_51}
 
-def feedback_resume_Kont_95859(capture_0: Ast.SourceSpan, result: Ast.SyntaxTerm) -> FeedbackControl:
-  feedback_pack_11(evaluation_context_map_operator_term_87615(capture_0, result))
+def feedback_resume_Kont_96408(capture_0: Ast.SourceSpan, result: Ast.SyntaxTerm) -> FeedbackControl:
+  feedback_pack_11(evaluation_context_map_operator_term_88164(capture_0, result))
 
-def evaluation_context_map_operator_term_87725(v_56: Ast.SourceSpan, v_286: Ast.SyntaxTerm) -> Ast.SyntaxTerm:
+def evaluation_context_map_operator_term_88274(v_56: Ast.SourceSpan, v_286: Ast.SyntaxTerm) -> Ast.SyntaxTerm:
   Ast.TermType{v_286, v_56}
 
-def feedback_resume_Kont_95979(capture_0: Ast.SourceSpan, result: Ast.SyntaxTerm) -> FeedbackControl:
-  feedback_pack_11(evaluation_context_map_operator_term_87725(capture_0, result))
+def feedback_resume_Kont_96528(capture_0: Ast.SourceSpan, result: Ast.SyntaxTerm) -> FeedbackControl:
+  feedback_pack_11(evaluation_context_map_operator_term_88274(capture_0, result))
 
-def feedback_make_Kont_93651(capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm) -> FeedbackFrame:
-  Kont_93651{capture_0, capture_1}
+def feedback_make_Kont_94200(capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm) -> FeedbackFrame:
+  Kont_94200{capture_0, capture_1}
 
-def step_evaluation_context_map_operator_term_87984(+v_2: String, v_66: Ast.SyntaxTerm, v_67: Ast.SourceSpan, v_287: Ast.SyntaxTerm) -> FeedbackControl:
-  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_66, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_93651(v_67, v_287))
+def step_evaluation_context_map_operator_term_88533(+v_2: String, v_66: Ast.SyntaxTerm, v_67: Ast.SourceSpan, v_287: Ast.SyntaxTerm) -> FeedbackControl:
+  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_66, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_94200(v_67, v_287))
 
-def feedback_resume_Kont_96237(capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SourceSpan, result: Ast.SyntaxTerm) -> FeedbackControl:
-  step_evaluation_context_map_operator_term_87984(capture_0, capture_1, capture_2, result)
+def feedback_resume_Kont_96786(capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SourceSpan, result: Ast.SyntaxTerm) -> FeedbackControl:
+  step_evaluation_context_map_operator_term_88533(capture_0, capture_1, capture_2, result)
 
-def feedback_make_Kont_93415(capture_0: Ast.Quantity, capture_1: String, capture_2: Nat, capture_3: Ast.SourceSpan, capture_4: Ast.SyntaxTerm) -> FeedbackFrame:
-  Kont_93415{capture_0, capture_1, capture_2, capture_3, capture_4}
+def feedback_make_Kont_93964(capture_0: Ast.Quantity, capture_1: String, capture_2: Nat, capture_3: Ast.SourceSpan, capture_4: Ast.SyntaxTerm) -> FeedbackFrame:
+  Kont_93964{capture_0, capture_1, capture_2, capture_3, capture_4}
 
-def step_evaluation_context_map_operator_term_88177(+v_2: String, v_76: Ast.Quantity, v_77: String, v_78: Nat, v_80: Ast.SyntaxTerm, v_81: Ast.SourceSpan, v_288: Ast.SyntaxTerm) -> FeedbackControl:
-  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_80, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_93415(v_76, v_77, v_78, v_81, v_288))
+def step_evaluation_context_map_operator_term_88726(+v_2: String, v_76: Ast.Quantity, v_77: String, v_78: Nat, v_80: Ast.SyntaxTerm, v_81: Ast.SourceSpan, v_288: Ast.SyntaxTerm) -> FeedbackControl:
+  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_80, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_93964(v_76, v_77, v_78, v_81, v_288))
 
-def feedback_resume_Kont_96409(capture_0: String, capture_1: Ast.Quantity, capture_2: String, capture_3: Nat, capture_4: Ast.SyntaxTerm, capture_5: Ast.SourceSpan, result: Ast.SyntaxTerm) -> FeedbackControl:
-  step_evaluation_context_map_operator_term_88177(capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, result)
+def feedback_resume_Kont_96958(capture_0: String, capture_1: Ast.Quantity, capture_2: String, capture_3: Nat, capture_4: Ast.SyntaxTerm, capture_5: Ast.SourceSpan, result: Ast.SyntaxTerm) -> FeedbackControl:
+  step_evaluation_context_map_operator_term_88726(capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, result)
 
-def evaluation_context_map_operator_term_88363(v_89: Maybe<&2, Ast.Quantity>, v_90: String, v_91: Nat, v_93: Ast.SourceSpan, v_289: Ast.SyntaxTerm) -> Ast.SyntaxTerm:
+def evaluation_context_map_operator_term_88912(v_89: Maybe<&2, Ast.Quantity>, v_90: String, v_91: Nat, v_93: Ast.SourceSpan, v_289: Ast.SyntaxTerm) -> Ast.SyntaxTerm:
   Ast.TermLam{v_89, v_90, v_91, v_289, v_93}
 
-def feedback_resume_Kont_96564(capture_0: Maybe<&2, Ast.Quantity>, capture_1: String, capture_2: Nat, capture_3: Ast.SourceSpan, result: Ast.SyntaxTerm) -> FeedbackControl:
-  feedback_pack_11(evaluation_context_map_operator_term_88363(capture_0, capture_1, capture_2, capture_3, result))
+def feedback_resume_Kont_97113(capture_0: Maybe<&2, Ast.Quantity>, capture_1: String, capture_2: Nat, capture_3: Ast.SourceSpan, result: Ast.SyntaxTerm) -> FeedbackControl:
+  feedback_pack_11(evaluation_context_map_operator_term_88912(capture_0, capture_1, capture_2, capture_3, result))
 
-def feedback_make_Kont_92903(capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm) -> FeedbackFrame:
-  Kont_92903{capture_0, capture_1}
+def feedback_make_Kont_93452(capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm) -> FeedbackFrame:
+  Kont_93452{capture_0, capture_1}
 
-def step_evaluation_context_map_operator_term_88474(+v_2: String, v_99: Ast.SyntaxTerm, v_100: Ast.SourceSpan, v_290: Ast.SyntaxTerm) -> FeedbackControl:
-  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_99, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_92903(v_100, v_290))
+def step_evaluation_context_map_operator_term_89023(+v_2: String, v_99: Ast.SyntaxTerm, v_100: Ast.SourceSpan, v_290: Ast.SyntaxTerm) -> FeedbackControl:
+  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_99, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_93452(v_100, v_290))
 
-def feedback_resume_Kont_96702(capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SourceSpan, result: Ast.SyntaxTerm) -> FeedbackControl:
-  step_evaluation_context_map_operator_term_88474(capture_0, capture_1, capture_2, result)
+def feedback_resume_Kont_97251(capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SourceSpan, result: Ast.SyntaxTerm) -> FeedbackControl:
+  step_evaluation_context_map_operator_term_89023(capture_0, capture_1, capture_2, result)
 
-def evaluation_context_map_operator_term_88631(v_107: String, v_109: List<&2, String>, v_110: Ast.SourceSpan, v_291: List<&2, Ast.SyntaxTerm>) -> Ast.SyntaxTerm:
+def evaluation_context_map_operator_term_89180(v_107: String, v_109: List<&2, String>, v_110: Ast.SourceSpan, v_291: List<&2, Ast.SyntaxTerm>) -> Ast.SyntaxTerm:
   Ast.TermAdt{v_107, v_291, v_109, v_110}
 
-def feedback_resume_Kont_96852(capture_0: String, capture_1: List<&2, String>, capture_2: Ast.SourceSpan, result: List<&2, Ast.SyntaxTerm>) -> FeedbackControl:
-  feedback_pack_11(evaluation_context_map_operator_term_88631(capture_0, capture_1, capture_2, result))
+def feedback_resume_Kont_97401(capture_0: String, capture_1: List<&2, String>, capture_2: Ast.SourceSpan, result: List<&2, Ast.SyntaxTerm>) -> FeedbackControl:
+  feedback_pack_11(evaluation_context_map_operator_term_89180(capture_0, capture_1, capture_2, result))
 
-def feedback_make_Kont_92458(capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm) -> FeedbackFrame:
-  Kont_92458{capture_0, capture_1}
+def feedback_make_Kont_93007(capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm) -> FeedbackFrame:
+  Kont_93007{capture_0, capture_1}
 
-def step_evaluation_context_map_operator_term_88754(+v_2: String, v_116: List<&2, Ast.SyntaxTerm>, v_117: Ast.SourceSpan, v_292: Ast.SyntaxTerm) -> FeedbackControl:
-  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_terms(v_116, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_92458(v_117, v_292))
+def step_evaluation_context_map_operator_term_89303(+v_2: String, v_116: List<&2, Ast.SyntaxTerm>, v_117: Ast.SourceSpan, v_292: Ast.SyntaxTerm) -> FeedbackControl:
+  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_terms(v_116, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_93007(v_117, v_292))
 
-def feedback_resume_Kont_96996(capture_0: String, capture_1: List<&2, Ast.SyntaxTerm>, capture_2: Ast.SourceSpan, result: Ast.SyntaxTerm) -> FeedbackControl:
-  step_evaluation_context_map_operator_term_88754(capture_0, capture_1, capture_2, result)
+def feedback_resume_Kont_97545(capture_0: String, capture_1: List<&2, Ast.SyntaxTerm>, capture_2: Ast.SourceSpan, result: Ast.SyntaxTerm) -> FeedbackControl:
+  step_evaluation_context_map_operator_term_89303(capture_0, capture_1, capture_2, result)
 
-def feedback_make_Kont_92207(capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm) -> FeedbackFrame:
-  Kont_92207{capture_0, capture_1}
+def feedback_make_Kont_92756(capture_0: Ast.SourceSpan, capture_1: Ast.SyntaxTerm) -> FeedbackFrame:
+  Kont_92756{capture_0, capture_1}
 
-def step_evaluation_context_map_operator_term_88907(+v_2: String, v_124: List<&2, Ast.SyntaxTerm>, v_125: Ast.SourceSpan, v_293: Ast.SyntaxTerm) -> FeedbackControl:
-  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_terms(v_124, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_92207(v_125, v_293))
+def step_evaluation_context_map_operator_term_89456(+v_2: String, v_124: List<&2, Ast.SyntaxTerm>, v_125: Ast.SourceSpan, v_293: Ast.SyntaxTerm) -> FeedbackControl:
+  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_terms(v_124, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_92756(v_125, v_293))
 
-def feedback_resume_Kont_97139(capture_0: String, capture_1: List<&2, Ast.SyntaxTerm>, capture_2: Ast.SourceSpan, result: Ast.SyntaxTerm) -> FeedbackControl:
-  step_evaluation_context_map_operator_term_88907(capture_0, capture_1, capture_2, result)
+def feedback_resume_Kont_97688(capture_0: String, capture_1: List<&2, Ast.SyntaxTerm>, capture_2: Ast.SourceSpan, result: Ast.SyntaxTerm) -> FeedbackControl:
+  step_evaluation_context_map_operator_term_89456(capture_0, capture_1, capture_2, result)
 
-def evaluation_context_map_operator_term_89062(v_131: String, v_133: Ast.SourceSpan, v_294: List<&2, Ast.SyntaxTerm>) -> Ast.SyntaxTerm:
+def evaluation_context_map_operator_term_89611(v_131: String, v_133: Ast.SourceSpan, v_294: List<&2, Ast.SyntaxTerm>) -> Ast.SyntaxTerm:
   Ast.TermCtr{v_131, v_294, v_133}
 
-def feedback_resume_Kont_97276(capture_0: String, capture_1: Ast.SourceSpan, result: List<&2, Ast.SyntaxTerm>) -> FeedbackControl:
-  feedback_pack_11(evaluation_context_map_operator_term_89062(capture_0, capture_1, result))
+def feedback_resume_Kont_97825(capture_0: String, capture_1: Ast.SourceSpan, result: List<&2, Ast.SyntaxTerm>) -> FeedbackControl:
+  feedback_pack_11(evaluation_context_map_operator_term_89611(capture_0, capture_1, result))
 
-def feedback_make_Kont_91784(capture_0: String, capture_1: Ast.SourceSpan, capture_2: Ast.SyntaxTerm) -> FeedbackFrame:
-  Kont_91784{capture_0, capture_1, capture_2}
+def feedback_make_Kont_92333(capture_0: String, capture_1: Ast.SourceSpan, capture_2: Ast.SyntaxTerm) -> FeedbackFrame:
+  Kont_92333{capture_0, capture_1, capture_2}
 
-def step_evaluation_context_map_operator_term_89290(+v_2: String, v_145: String, v_147: Ast.SyntaxTerm, v_148: Ast.SourceSpan, v_295: Ast.SyntaxTerm) -> FeedbackControl:
-  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_147, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_91784(v_145, v_148, v_295))
+def step_evaluation_context_map_operator_term_89839(+v_2: String, v_145: String, v_147: Ast.SyntaxTerm, v_148: Ast.SourceSpan, v_295: Ast.SyntaxTerm) -> FeedbackControl:
+  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_147, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_92333(v_145, v_148, v_295))
 
-def feedback_resume_Kont_97521(capture_0: String, capture_1: String, capture_2: Ast.SyntaxTerm, capture_3: Ast.SourceSpan, result: Ast.SyntaxTerm) -> FeedbackControl:
-  step_evaluation_context_map_operator_term_89290(capture_0, capture_1, capture_2, capture_3, result)
+def feedback_resume_Kont_98070(capture_0: String, capture_1: String, capture_2: Ast.SyntaxTerm, capture_3: Ast.SourceSpan, result: Ast.SyntaxTerm) -> FeedbackControl:
+  step_evaluation_context_map_operator_term_89839(capture_0, capture_1, capture_2, capture_3, result)
 
-def feedback_make_Kont_91522(capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SourceSpan, capture_3: Ast.SyntaxTerm) -> FeedbackFrame:
-  Kont_91522{capture_0, capture_1, capture_2, capture_3}
+def feedback_make_Kont_92071(capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SourceSpan, capture_3: Ast.SyntaxTerm) -> FeedbackFrame:
+  Kont_92071{capture_0, capture_1, capture_2, capture_3}
 
-def step_evaluation_context_map_operator_term_89524(+v_2: String, v_158: Ast.SyntaxTerm, v_159: Ast.SyntaxTerm, v_160: Ast.SourceSpan, v_296: Ast.SyntaxTerm) -> FeedbackControl:
-  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_158, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_91522(v_2, v_159, v_160, v_296))
+def step_evaluation_context_map_operator_term_90073(+v_2: String, v_158: Ast.SyntaxTerm, v_159: Ast.SyntaxTerm, v_160: Ast.SourceSpan, v_296: Ast.SyntaxTerm) -> FeedbackControl:
+  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_158, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_92071(v_2, v_159, v_160, v_296))
 
-def feedback_resume_Kont_97739(capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SyntaxTerm, capture_3: Ast.SourceSpan, result: Ast.SyntaxTerm) -> FeedbackControl:
-  step_evaluation_context_map_operator_term_89524(capture_0, capture_1, capture_2, capture_3, result)
+def feedback_resume_Kont_98288(capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SyntaxTerm, capture_3: Ast.SourceSpan, result: Ast.SyntaxTerm) -> FeedbackControl:
+  step_evaluation_context_map_operator_term_90073(capture_0, capture_1, capture_2, capture_3, result)
 
-def feedback_make_Kont_91247(capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SourceSpan, capture_3: Ast.SyntaxTerm) -> FeedbackFrame:
-  Kont_91247{capture_0, capture_1, capture_2, capture_3}
+def feedback_make_Kont_91796(capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SourceSpan, capture_3: Ast.SyntaxTerm) -> FeedbackFrame:
+  Kont_91796{capture_0, capture_1, capture_2, capture_3}
 
-def step_evaluation_context_map_operator_term_89796(+v_2: String, v_171: Ast.SyntaxTerm, v_172: Ast.SyntaxTerm, v_173: Ast.SourceSpan, v_297: Ast.SyntaxTerm) -> FeedbackControl:
-  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_171, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_91247(v_2, v_172, v_173, v_297))
+def step_evaluation_context_map_operator_term_90345(+v_2: String, v_171: Ast.SyntaxTerm, v_172: Ast.SyntaxTerm, v_173: Ast.SourceSpan, v_297: Ast.SyntaxTerm) -> FeedbackControl:
+  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_171, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_91796(v_2, v_172, v_173, v_297))
 
-def feedback_resume_Kont_97955(capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SyntaxTerm, capture_3: Ast.SourceSpan, result: Ast.SyntaxTerm) -> FeedbackControl:
-  step_evaluation_context_map_operator_term_89796(capture_0, capture_1, capture_2, capture_3, result)
+def feedback_resume_Kont_98504(capture_0: String, capture_1: Ast.SyntaxTerm, capture_2: Ast.SyntaxTerm, capture_3: Ast.SourceSpan, result: Ast.SyntaxTerm) -> FeedbackControl:
+  step_evaluation_context_map_operator_term_90345(capture_0, capture_1, capture_2, capture_3, result)
 
-def feedback_make_Kont_90971(capture_0: Ast.SourceSpan, capture_1: List<&2, Ast.SyntaxTerm>) -> FeedbackFrame:
-  Kont_90971{capture_0, capture_1}
+def feedback_make_Kont_91520(capture_0: Ast.SourceSpan, capture_1: List<&2, Ast.SyntaxTerm>) -> FeedbackFrame:
+  Kont_91520{capture_0, capture_1}
 
-def step_evaluation_context_map_operator_term_90076(+v_2: String, v_185: List<&2, Ast.SyntaxTerm>, v_186: Ast.SourceSpan, v_298: List<&2, Ast.SyntaxTerm>) -> FeedbackControl:
-  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_terms(v_185, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_90971(v_186, v_298))
+def step_evaluation_context_map_operator_term_90625(+v_2: String, v_185: List<&2, Ast.SyntaxTerm>, v_186: Ast.SourceSpan, v_298: List<&2, Ast.SyntaxTerm>) -> FeedbackControl:
+  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_terms(v_185, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_91520(v_186, v_298))
 
-def feedback_resume_Kont_98169(capture_0: String, capture_1: List<&2, Ast.SyntaxTerm>, capture_2: Ast.SourceSpan, result: List<&2, Ast.SyntaxTerm>) -> FeedbackControl:
-  step_evaluation_context_map_operator_term_90076(capture_0, capture_1, capture_2, result)
+def feedback_resume_Kont_98718(capture_0: String, capture_1: List<&2, Ast.SyntaxTerm>, capture_2: Ast.SourceSpan, result: List<&2, Ast.SyntaxTerm>) -> FeedbackControl:
+  step_evaluation_context_map_operator_term_90625(capture_0, capture_1, capture_2, result)
 
-def evaluation_context_map_operator_term_90251(v_192: List<&2, Ast.SyntaxPattern>, v_194: Ast.SourceSpan, v_299: Ast.SyntaxTerm) -> Ast.SyntaxTerm:
+def evaluation_context_map_operator_term_90800(v_192: List<&2, Ast.SyntaxPattern>, v_194: Ast.SourceSpan, v_299: Ast.SyntaxTerm) -> Ast.SyntaxTerm:
   Ast.BodyCase{v_192, v_299, v_194}
 
-def feedback_resume_Kont_98308(capture_0: List<&2, Ast.SyntaxPattern>, capture_1: Ast.SourceSpan, result: Ast.SyntaxTerm) -> FeedbackControl:
-  feedback_pack_11(evaluation_context_map_operator_term_90251(capture_0, capture_1, result))
+def feedback_resume_Kont_98857(capture_0: List<&2, Ast.SyntaxPattern>, capture_1: Ast.SourceSpan, result: Ast.SyntaxTerm) -> FeedbackControl:
+  feedback_pack_11(evaluation_context_map_operator_term_90800(capture_0, capture_1, result))
 
-def feedback_make_Kont_90526(capture_0: List<&2, Ast.SyntaxPattern>, capture_1: Ast.Quantity, capture_2: Ast.SourceSpan, capture_3: List<&2, Ast.SyntaxTerm>) -> FeedbackFrame:
-  Kont_90526{capture_0, capture_1, capture_2, capture_3}
+def feedback_make_Kont_91075(capture_0: List<&2, Ast.SyntaxPattern>, capture_1: Ast.Quantity, capture_2: Ast.SourceSpan, capture_3: List<&2, Ast.SyntaxTerm>) -> FeedbackFrame:
+  Kont_91075{capture_0, capture_1, capture_2, capture_3}
 
-def step_evaluation_context_map_operator_term_90411(+v_2: String, v_201: List<&2, Ast.SyntaxPattern>, v_202: Ast.Quantity, v_204: Ast.SyntaxTerm, v_205: Ast.SourceSpan, v_300: List<&2, Ast.SyntaxTerm>) -> FeedbackControl:
-  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_204, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_90526(v_201, v_202, v_205, v_300))
+def step_evaluation_context_map_operator_term_90960(+v_2: String, v_201: List<&2, Ast.SyntaxPattern>, v_202: Ast.Quantity, v_204: Ast.SyntaxTerm, v_205: Ast.SourceSpan, v_300: List<&2, Ast.SyntaxTerm>) -> FeedbackControl:
+  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_term(v_204, v_2)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_91075(v_201, v_202, v_205, v_300))
 
-def feedback_resume_Kont_98480(capture_0: String, capture_1: List<&2, Ast.SyntaxPattern>, capture_2: Ast.Quantity, capture_3: Ast.SyntaxTerm, capture_4: Ast.SourceSpan, result: List<&2, Ast.SyntaxTerm>) -> FeedbackControl:
-  step_evaluation_context_map_operator_term_90411(capture_0, capture_1, capture_2, capture_3, capture_4, result)
+def feedback_resume_Kont_99029(capture_0: String, capture_1: List<&2, Ast.SyntaxPattern>, capture_2: Ast.Quantity, capture_3: Ast.SyntaxTerm, capture_4: Ast.SourceSpan, result: List<&2, Ast.SyntaxTerm>) -> FeedbackControl:
+  step_evaluation_context_map_operator_term_90960(capture_0, capture_1, capture_2, capture_3, capture_4, result)
 
-def evaluation_context_map_operator_term_90562(v_210: Ast.SourceSpan, v_301: Ast.SyntaxTerm) -> Ast.SyntaxTerm:
+def evaluation_context_map_operator_term_91111(v_210: Ast.SourceSpan, v_301: Ast.SyntaxTerm) -> Ast.SyntaxTerm:
   Ast.BodyReply{v_301, v_210}
 
-def feedback_resume_Kont_98606(capture_0: Ast.SourceSpan, result: Ast.SyntaxTerm) -> FeedbackControl:
-  feedback_pack_11(evaluation_context_map_operator_term_90562(capture_0, result))
+def feedback_resume_Kont_99155(capture_0: Ast.SourceSpan, result: Ast.SyntaxTerm) -> FeedbackControl:
+  feedback_pack_11(evaluation_context_map_operator_term_91111(capture_0, result))
 
-def evaluation_context_map_operator_terms_90827(v_302: Ast.SyntaxTerm, v_321: List<&2, Ast.SyntaxTerm>) -> List<&2, Ast.SyntaxTerm>:
+def evaluation_context_map_operator_terms_91376(v_302: Ast.SyntaxTerm, v_321: List<&2, Ast.SyntaxTerm>) -> List<&2, Ast.SyntaxTerm>:
   v_302 <> v_321
 
-def feedback_resume_Kont_98987(capture_0: Ast.SyntaxTerm, result: List<&2, Ast.SyntaxTerm>) -> FeedbackControl:
-  feedback_pack_12(evaluation_context_map_operator_terms_90827(capture_0, result))
+def feedback_resume_Kont_99536(capture_0: Ast.SyntaxTerm, result: List<&2, Ast.SyntaxTerm>) -> FeedbackControl:
+  feedback_pack_12(evaluation_context_map_operator_terms_91376(capture_0, result))
 
-def feedback_make_Kont_98987(capture_0: Ast.SyntaxTerm) -> FeedbackFrame:
-  Kont_98987{capture_0}
+def feedback_make_Kont_99536(capture_0: Ast.SyntaxTerm) -> FeedbackFrame:
+  Kont_99536{capture_0}
 
-def step_evaluation_context_map_operator_terms_90789(+v_3: String, v_8: List<&2, Ast.SyntaxTerm>, v_302: Ast.SyntaxTerm) -> FeedbackControl:
-  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_terms(v_8, v_3)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_98987(v_302))
+def step_evaluation_context_map_operator_terms_91338(+v_3: String, v_8: List<&2, Ast.SyntaxTerm>, v_302: Ast.SyntaxTerm) -> FeedbackControl:
+  feedback_attach(FeedbackControl{FeedbackCall{feedback_make_map_operator_terms(v_8, v_3)}, Nil{}, NoProgress{}, NoProgress{}}, feedback_make_Kont_99536(v_302))
 
-def feedback_resume_Kont_99231(capture_0: String, capture_1: List<&2, Ast.SyntaxTerm>, result: Ast.SyntaxTerm) -> FeedbackControl:
-  step_evaluation_context_map_operator_terms_90789(capture_0, capture_1, result)
+def feedback_resume_Kont_99780(capture_0: String, capture_1: List<&2, Ast.SyntaxTerm>, result: Ast.SyntaxTerm) -> FeedbackControl:
+  step_evaluation_context_map_operator_terms_91338(capture_0, capture_1, result)
 
 def feedback_resume_frame(frame: FeedbackFrame, value: FeedbackValue) -> FeedbackControl:
   match frame:
     case KontProgress{}: FeedbackControl{FeedbackDone{value}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_80115{capture_1}:
+    case Kont_80664{capture_1}:
       match value:
         case Value_15{result}:
-          feedback_resume_Kont_80115(capture_1, result)
+          feedback_resume_Kont_80664(capture_1, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_81687{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6}:
+    case Kont_82236{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6}:
       match value:
         case Value_15{result}:
-          feedback_resume_Kont_81687(capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, result)
+          feedback_resume_Kont_82236(capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_84990{capture_0, capture_1, capture_2, capture_3, capture_4}:
+    case Kont_85539{capture_0, capture_1, capture_2, capture_3, capture_4}:
       match value:
         case Value_16{result}:
-          feedback_resume_Kont_84990(capture_0, capture_1, capture_2, capture_3, capture_4, result)
+          feedback_resume_Kont_85539(capture_0, capture_1, capture_2, capture_3, capture_4, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_88036{capture_0, capture_1, capture_2}:
+    case Kont_88585{capture_0, capture_1, capture_2}:
       match value:
         case Value_11{result}:
-          feedback_resume_Kont_88036(capture_0, capture_1, capture_2, result)
+          feedback_resume_Kont_88585(capture_0, capture_1, capture_2, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_88306{capture_0, capture_1, capture_2}:
+    case Kont_88855{capture_0, capture_1, capture_2}:
       match value:
         case Value_11{result}:
-          feedback_resume_Kont_88306(capture_0, capture_1, capture_2, result)
+          feedback_resume_Kont_88855(capture_0, capture_1, capture_2, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_90526{capture_0, capture_1, capture_2, capture_3}:
+    case Kont_91075{capture_0, capture_1, capture_2, capture_3}:
       match value:
         case Value_11{result}:
-          feedback_resume_Kont_90526(capture_0, capture_1, capture_2, capture_3, result)
+          feedback_resume_Kont_91075(capture_0, capture_1, capture_2, capture_3, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_90971{capture_0, capture_1}:
+    case Kont_91520{capture_0, capture_1}:
       match value:
         case Value_12{result}:
-          feedback_resume_Kont_90971(capture_0, capture_1, result)
+          feedback_resume_Kont_91520(capture_0, capture_1, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_91247{capture_0, capture_1, capture_2, capture_3}:
+    case Kont_91796{capture_0, capture_1, capture_2, capture_3}:
       match value:
         case Value_11{result}:
-          feedback_resume_Kont_91247(capture_0, capture_1, capture_2, capture_3, result)
+          feedback_resume_Kont_91796(capture_0, capture_1, capture_2, capture_3, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_91522{capture_0, capture_1, capture_2, capture_3}:
+    case Kont_92071{capture_0, capture_1, capture_2, capture_3}:
       match value:
         case Value_11{result}:
-          feedback_resume_Kont_91522(capture_0, capture_1, capture_2, capture_3, result)
+          feedback_resume_Kont_92071(capture_0, capture_1, capture_2, capture_3, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_91784{capture_0, capture_1, capture_2}:
+    case Kont_92333{capture_0, capture_1, capture_2}:
       match value:
         case Value_11{result}:
-          feedback_resume_Kont_91784(capture_0, capture_1, capture_2, result)
+          feedback_resume_Kont_92333(capture_0, capture_1, capture_2, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_92207{capture_0, capture_1}:
+    case Kont_92756{capture_0, capture_1}:
       match value:
         case Value_12{result}:
-          feedback_resume_Kont_92207(capture_0, capture_1, result)
+          feedback_resume_Kont_92756(capture_0, capture_1, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_92458{capture_0, capture_1}:
+    case Kont_93007{capture_0, capture_1}:
       match value:
         case Value_12{result}:
-          feedback_resume_Kont_92458(capture_0, capture_1, result)
+          feedback_resume_Kont_93007(capture_0, capture_1, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_92903{capture_0, capture_1}:
+    case Kont_93452{capture_0, capture_1}:
       match value:
         case Value_11{result}:
-          feedback_resume_Kont_92903(capture_0, capture_1, result)
+          feedback_resume_Kont_93452(capture_0, capture_1, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_93415{capture_0, capture_1, capture_2, capture_3, capture_4}:
+    case Kont_93964{capture_0, capture_1, capture_2, capture_3, capture_4}:
       match value:
         case Value_11{result}:
-          feedback_resume_Kont_93415(capture_0, capture_1, capture_2, capture_3, capture_4, result)
+          feedback_resume_Kont_93964(capture_0, capture_1, capture_2, capture_3, capture_4, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_93651{capture_0, capture_1}:
+    case Kont_94200{capture_0, capture_1}:
       match value:
         case Value_11{result}:
-          feedback_resume_Kont_93651(capture_0, capture_1, result)
+          feedback_resume_Kont_94200(capture_0, capture_1, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_94171{capture_0, capture_1}:
+    case Kont_94720{capture_0, capture_1}:
       match value:
         case Value_11{result}:
-          feedback_resume_Kont_94171(capture_0, capture_1, result)
+          feedback_resume_Kont_94720(capture_0, capture_1, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_94510{capture_0, capture_1, capture_2, capture_3, capture_4}:
+    case Kont_95059{capture_0, capture_1, capture_2, capture_3, capture_4}:
       match value:
         case Value_11{result}:
-          feedback_resume_Kont_94510(capture_0, capture_1, capture_2, capture_3, capture_4, result)
+          feedback_resume_Kont_95059(capture_0, capture_1, capture_2, capture_3, capture_4, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_94763{capture_0, capture_1, capture_2}:
+    case Kont_95312{capture_0, capture_1, capture_2}:
       match value:
         case Value_11{result}:
-          feedback_resume_Kont_94763(capture_0, capture_1, capture_2, result)
+          feedback_resume_Kont_95312(capture_0, capture_1, capture_2, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_98606{capture_0}:
+    case Kont_99155{capture_0}:
       match value:
         case Value_11{result}:
-          feedback_resume_Kont_98606(capture_0, result)
+          feedback_resume_Kont_99155(capture_0, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_98480{capture_0, capture_1, capture_2, capture_3, capture_4}:
+    case Kont_99029{capture_0, capture_1, capture_2, capture_3, capture_4}:
       match value:
         case Value_12{result}:
-          feedback_resume_Kont_98480(capture_0, capture_1, capture_2, capture_3, capture_4, result)
+          feedback_resume_Kont_99029(capture_0, capture_1, capture_2, capture_3, capture_4, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_98308{capture_0, capture_1}:
+    case Kont_98857{capture_0, capture_1}:
       match value:
         case Value_11{result}:
-          feedback_resume_Kont_98308(capture_0, capture_1, result)
+          feedback_resume_Kont_98857(capture_0, capture_1, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_98169{capture_0, capture_1, capture_2}:
+    case Kont_98718{capture_0, capture_1, capture_2}:
       match value:
         case Value_12{result}:
-          feedback_resume_Kont_98169(capture_0, capture_1, capture_2, result)
+          feedback_resume_Kont_98718(capture_0, capture_1, capture_2, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_97955{capture_0, capture_1, capture_2, capture_3}:
+    case Kont_98504{capture_0, capture_1, capture_2, capture_3}:
       match value:
         case Value_11{result}:
-          feedback_resume_Kont_97955(capture_0, capture_1, capture_2, capture_3, result)
+          feedback_resume_Kont_98504(capture_0, capture_1, capture_2, capture_3, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_97739{capture_0, capture_1, capture_2, capture_3}:
+    case Kont_98288{capture_0, capture_1, capture_2, capture_3}:
       match value:
         case Value_11{result}:
-          feedback_resume_Kont_97739(capture_0, capture_1, capture_2, capture_3, result)
+          feedback_resume_Kont_98288(capture_0, capture_1, capture_2, capture_3, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_97521{capture_0, capture_1, capture_2, capture_3}:
+    case Kont_98070{capture_0, capture_1, capture_2, capture_3}:
       match value:
         case Value_11{result}:
-          feedback_resume_Kont_97521(capture_0, capture_1, capture_2, capture_3, result)
+          feedback_resume_Kont_98070(capture_0, capture_1, capture_2, capture_3, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_97276{capture_0, capture_1}:
+    case Kont_97825{capture_0, capture_1}:
       match value:
         case Value_12{result}:
-          feedback_resume_Kont_97276(capture_0, capture_1, result)
+          feedback_resume_Kont_97825(capture_0, capture_1, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_97139{capture_0, capture_1, capture_2}:
+    case Kont_97688{capture_0, capture_1, capture_2}:
       match value:
         case Value_11{result}:
-          feedback_resume_Kont_97139(capture_0, capture_1, capture_2, result)
+          feedback_resume_Kont_97688(capture_0, capture_1, capture_2, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_96996{capture_0, capture_1, capture_2}:
+    case Kont_97545{capture_0, capture_1, capture_2}:
       match value:
         case Value_11{result}:
-          feedback_resume_Kont_96996(capture_0, capture_1, capture_2, result)
+          feedback_resume_Kont_97545(capture_0, capture_1, capture_2, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_96852{capture_0, capture_1, capture_2}:
+    case Kont_97401{capture_0, capture_1, capture_2}:
       match value:
         case Value_12{result}:
-          feedback_resume_Kont_96852(capture_0, capture_1, capture_2, result)
+          feedback_resume_Kont_97401(capture_0, capture_1, capture_2, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_96702{capture_0, capture_1, capture_2}:
+    case Kont_97251{capture_0, capture_1, capture_2}:
       match value:
         case Value_11{result}:
-          feedback_resume_Kont_96702(capture_0, capture_1, capture_2, result)
+          feedback_resume_Kont_97251(capture_0, capture_1, capture_2, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_96564{capture_0, capture_1, capture_2, capture_3}:
+    case Kont_97113{capture_0, capture_1, capture_2, capture_3}:
       match value:
         case Value_11{result}:
-          feedback_resume_Kont_96564(capture_0, capture_1, capture_2, capture_3, result)
+          feedback_resume_Kont_97113(capture_0, capture_1, capture_2, capture_3, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_96409{capture_0, capture_1, capture_2, capture_3, capture_4, capture_5}:
+    case Kont_96958{capture_0, capture_1, capture_2, capture_3, capture_4, capture_5}:
       match value:
         case Value_11{result}:
-          feedback_resume_Kont_96409(capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, result)
+          feedback_resume_Kont_96958(capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_96237{capture_0, capture_1, capture_2}:
+    case Kont_96786{capture_0, capture_1, capture_2}:
       match value:
         case Value_11{result}:
-          feedback_resume_Kont_96237(capture_0, capture_1, capture_2, result)
+          feedback_resume_Kont_96786(capture_0, capture_1, capture_2, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_95979{capture_0}:
+    case Kont_96528{capture_0}:
       match value:
         case Value_11{result}:
-          feedback_resume_Kont_95979(capture_0, result)
+          feedback_resume_Kont_96528(capture_0, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_95859{capture_0}:
+    case Kont_96408{capture_0}:
       match value:
         case Value_11{result}:
-          feedback_resume_Kont_95859(capture_0, result)
+          feedback_resume_Kont_96408(capture_0, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_95735{capture_0, capture_1, capture_2}:
+    case Kont_96284{capture_0, capture_1, capture_2}:
       match value:
         case Value_11{result}:
-          feedback_resume_Kont_95735(capture_0, capture_1, capture_2, result)
+          feedback_resume_Kont_96284(capture_0, capture_1, capture_2, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_95598{capture_0, capture_1, capture_2, capture_3, capture_4, capture_5}:
+    case Kont_96147{capture_0, capture_1, capture_2, capture_3, capture_4, capture_5}:
       match value:
         case Value_12{result}:
-          feedback_resume_Kont_95598(capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, result)
+          feedback_resume_Kont_96147(capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_95426{capture_0, capture_1, capture_2, capture_3}:
+    case Kont_95975{capture_0, capture_1, capture_2, capture_3}:
       match value:
         case Value_11{result}:
-          feedback_resume_Kont_95426(capture_0, capture_1, capture_2, capture_3, result)
+          feedback_resume_Kont_95975(capture_0, capture_1, capture_2, capture_3, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_95278{capture_0}:
+    case Kont_95827{capture_0}:
       match value:
         case Value_11{result}:
-          feedback_resume_Kont_95278(capture_0, result)
+          feedback_resume_Kont_95827(capture_0, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_98987{capture_0}:
+    case Kont_99536{capture_0}:
       match value:
         case Value_12{result}:
-          feedback_resume_Kont_98987(capture_0, result)
+          feedback_resume_Kont_99536(capture_0, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_99231{capture_0, capture_1}:
+    case Kont_99780{capture_0, capture_1}:
       match value:
         case Value_11{result}:
-          feedback_resume_Kont_99231(capture_0, capture_1, result)
+          feedback_resume_Kont_99780(capture_0, capture_1, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_104178{capture_0}:
+    case Kont_104727{capture_0}:
       match value:
         case Value_11{result}:
-          feedback_resume_Kont_104178(capture_0, result)
+          feedback_resume_Kont_104727(capture_0, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_130390{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8}:
+    case Kont_130823{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8}:
       match value:
         case Value_4{result_0_0, result_0_1, result_1_0_0, result_1_0_1, result_1_1}:
-          feedback_resume_Kont_130390(capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, ((result_0_0, result_0_1), ((result_1_0_0, result_1_0_1), result_1_1)))
+          feedback_resume_Kont_130823(capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, ((result_0_0, result_0_1), ((result_1_0_0, result_1_0_1), result_1_1)))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_135760{capture_1}:
+    case Kont_136112{capture_1}:
       match value:
         case Value_14{result}:
-          feedback_resume_Kont_135760(capture_1, result)
+          feedback_resume_Kont_136112(capture_1, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_135996{capture_1}:
+    case Kont_136348{capture_1}:
       match value:
         case Value_13{result}:
-          feedback_resume_Kont_135996(capture_1, result)
+          feedback_resume_Kont_136348(capture_1, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_136505{capture_1, capture_2}:
+    case Kont_136857{capture_1, capture_2}:
       match value:
         case Value_14{result}:
-          feedback_resume_Kont_136505(capture_1, capture_2, result)
+          feedback_resume_Kont_136857(capture_1, capture_2, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_137652{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8}:
+    case Kont_138004{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8}:
       match value:
         case Value_13{result}:
-          feedback_resume_Kont_137652(capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, result)
+          feedback_resume_Kont_138004(capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_139383{capture_1, capture_2, capture_3}:
+    case Kont_139735{capture_1, capture_2, capture_3}:
       match value:
         case Value_4{result_0_0, result_0_1, result_1_0_0, result_1_0_1, result_1_1}:
-          feedback_resume_Kont_139383(capture_1, capture_2, capture_3, ((result_0_0, result_0_1), ((result_1_0_0, result_1_0_1), result_1_1)))
+          feedback_resume_Kont_139735(capture_1, capture_2, capture_3, ((result_0_0, result_0_1), ((result_1_0_0, result_1_0_1), result_1_1)))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_140214{capture_1, capture_2}:
+    case Kont_140566{capture_1, capture_2}:
       match value:
         case Value_4{result_0_0, result_0_1, result_1_0_0, result_1_0_1, result_1_1}:
-          feedback_resume_Kont_140214(capture_1, capture_2, ((result_0_0, result_0_1), ((result_1_0_0, result_1_0_1), result_1_1)))
+          feedback_resume_Kont_140566(capture_1, capture_2, ((result_0_0, result_0_1), ((result_1_0_0, result_1_0_1), result_1_1)))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_143575{capture_1, capture_2, capture_3, capture_4, capture_5}:
+    case Kont_143905{capture_1, capture_2, capture_3, capture_4, capture_5}:
       match value:
         case Value_4{result_0_0, result_0_1, result_1_0_0, result_1_0_1, result_1_1}:
-          feedback_resume_Kont_143575(capture_1, capture_2, capture_3, capture_4, capture_5, ((result_0_0, result_0_1), ((result_1_0_0, result_1_0_1), result_1_1)))
+          feedback_resume_Kont_143905(capture_1, capture_2, capture_3, capture_4, capture_5, ((result_0_0, result_0_1), ((result_1_0_0, result_1_0_1), result_1_1)))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_149539{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6}:
+    case Kont_149803{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6}:
       match value:
         case Value_4{result_0_0, result_0_1, result_1_0_0, result_1_0_1, result_1_1}:
-          feedback_resume_Kont_149539(capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, ((result_0_0, result_0_1), ((result_1_0_0, result_1_0_1), result_1_1)))
+          feedback_resume_Kont_149803(capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, ((result_0_0, result_0_1), ((result_1_0_0, result_1_0_1), result_1_1)))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_171514{capture_1, capture_2}:
+    case Kont_171361{capture_1, capture_2}:
       match value:
         case Value_18{result}:
-          feedback_resume_Kont_171514(capture_1, capture_2, result)
+          feedback_resume_Kont_171361(capture_1, capture_2, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_180668{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7}:
+    case Kont_180515{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7}:
       match value:
         case Value_9{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_180668(capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_180515(capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_182284{capture_1, capture_2, capture_3, capture_4}:
+    case Kont_182131{capture_1, capture_2, capture_3, capture_4}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_182284(capture_1, capture_2, capture_3, capture_4, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_182131(capture_1, capture_2, capture_3, capture_4, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_188365{capture_1, capture_2}:
+    case Kont_188212{capture_1, capture_2}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_188365(capture_1, capture_2, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_188212(capture_1, capture_2, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_188877{capture_1, capture_2, capture_3, capture_4, capture_5}:
+    case Kont_188724{capture_1, capture_2, capture_3, capture_4, capture_5}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_188877(capture_1, capture_2, capture_3, capture_4, capture_5, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_188724(capture_1, capture_2, capture_3, capture_4, capture_5, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_190204{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, capture_9, capture_10, capture_11}:
+    case Kont_190051{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, capture_9, capture_10, capture_11}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_190204(capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, capture_9, capture_10, capture_11, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_190051(capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, capture_9, capture_10, capture_11, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_193278{lexical_capture_4, lexical_capture_6, lexical_capture_8, lexical_capture_10, lexical_capture_12, lexical_capture_13, lexical_capture_29, lexical_capture_15, lexical_capture_17, lexical_capture_22}:
+    case Kont_193125{lexical_capture_4, lexical_capture_6, lexical_capture_8, lexical_capture_10, lexical_capture_12, lexical_capture_13, lexical_capture_29, lexical_capture_15, lexical_capture_17, lexical_capture_22}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_193278(lexical_capture_4, lexical_capture_6, lexical_capture_8, lexical_capture_10, lexical_capture_12, lexical_capture_13, lexical_capture_29, lexical_capture_15, lexical_capture_17, lexical_capture_22, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_193125(lexical_capture_4, lexical_capture_6, lexical_capture_8, lexical_capture_10, lexical_capture_12, lexical_capture_13, lexical_capture_29, lexical_capture_15, lexical_capture_17, lexical_capture_22, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_194209{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, capture_9, capture_10}:
+    case Kont_194056{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, capture_9, capture_10}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_194209(capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, capture_9, capture_10, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_194056(capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, capture_9, capture_10, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_195221{lexical_capture_4, lexical_capture_10, lexical_capture_12, lexical_capture_22, lexical_capture_13, lexical_capture_29}:
+    case Kont_195068{lexical_capture_4, lexical_capture_10, lexical_capture_12, lexical_capture_22, lexical_capture_13, lexical_capture_29}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_195221(lexical_capture_4, lexical_capture_10, lexical_capture_12, lexical_capture_22, lexical_capture_13, lexical_capture_29, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_195068(lexical_capture_4, lexical_capture_10, lexical_capture_12, lexical_capture_22, lexical_capture_13, lexical_capture_29, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_195872{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, capture_9, capture_10, capture_11}:
+    case Kont_195719{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, capture_9, capture_10, capture_11}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_195872(capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, capture_9, capture_10, capture_11, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_195719(capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, capture_9, capture_10, capture_11, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_197937{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, capture_9}:
+    case Kont_197784{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, capture_9}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_197937(capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, capture_9, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_197784(capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, capture_9, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_198505{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8}:
+    case Kont_198352{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_198505(capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_198352(capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_199867{lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_6, lexical_capture_7, lexical_capture_11, lexical_capture_13, lexical_capture_18}:
+    case Kont_199714{lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_6, lexical_capture_7, lexical_capture_11, lexical_capture_13, lexical_capture_18}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_199867(lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_6, lexical_capture_7, lexical_capture_11, lexical_capture_13, lexical_capture_18, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_199714(lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_6, lexical_capture_7, lexical_capture_11, lexical_capture_13, lexical_capture_18, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_203528{capture_1, capture_2, capture_3, capture_4, capture_5}:
+    case Kont_202679{capture_1, capture_2, capture_3, capture_4, capture_5}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_203528(capture_1, capture_2, capture_3, capture_4, capture_5, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_202679(capture_1, capture_2, capture_3, capture_4, capture_5, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_204683{capture_1, capture_2, capture_3, capture_4, capture_5}:
+    case Kont_203834{capture_1, capture_2, capture_3, capture_4, capture_5}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_204683(capture_1, capture_2, capture_3, capture_4, capture_5, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_203834(capture_1, capture_2, capture_3, capture_4, capture_5, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_205868{lexical_capture_4, lexical_capture_5, lexical_capture_7}:
+    case Kont_205019{lexical_capture_4, lexical_capture_5, lexical_capture_7}:
       match value:
         case Value_9{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_205868(lexical_capture_4, lexical_capture_5, lexical_capture_7, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_205019(lexical_capture_4, lexical_capture_5, lexical_capture_7, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_206560{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6}:
+    case Kont_205711{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_206560(capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_205711(capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_207285{capture_1, capture_2, capture_3, capture_4, capture_5}:
+    case Kont_206436{capture_1, capture_2, capture_3, capture_4, capture_5}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_207285(capture_1, capture_2, capture_3, capture_4, capture_5, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_206436(capture_1, capture_2, capture_3, capture_4, capture_5, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_207622{capture_1, capture_2, capture_3, capture_4, capture_5}:
+    case Kont_206773{capture_1, capture_2, capture_3, capture_4, capture_5}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_207622(capture_1, capture_2, capture_3, capture_4, capture_5, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_206773(capture_1, capture_2, capture_3, capture_4, capture_5, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_210179{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7}:
+    case Kont_209330{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7}:
       match value:
         case Value_9{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_210179(capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_209330(capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_211415{capture_1, capture_2, capture_3, capture_4, capture_5}:
+    case Kont_210566{capture_1, capture_2, capture_3, capture_4, capture_5}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_211415(capture_1, capture_2, capture_3, capture_4, capture_5, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_210566(capture_1, capture_2, capture_3, capture_4, capture_5, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_211838{capture_1, capture_2}:
+    case Kont_210989{capture_1, capture_2}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_211838(capture_1, capture_2, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_210989(capture_1, capture_2, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_212739{capture_1, capture_2, capture_3}:
+    case Kont_211890{capture_1, capture_2, capture_3}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_212739(capture_1, capture_2, capture_3, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_211890(capture_1, capture_2, capture_3, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_215605{capture_1, capture_2, capture_3, capture_4, capture_5}:
+    case Kont_214756{capture_1, capture_2, capture_3, capture_4, capture_5}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_215605(capture_1, capture_2, capture_3, capture_4, capture_5, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_214756(capture_1, capture_2, capture_3, capture_4, capture_5, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_219232{lexical_capture_98, lexical_capture_99, lexical_capture_100, lexical_capture_107}:
+    case Kont_218383{lexical_capture_98, lexical_capture_99, lexical_capture_100, lexical_capture_107}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_219232(lexical_capture_98, lexical_capture_99, lexical_capture_100, lexical_capture_107, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_218383(lexical_capture_98, lexical_capture_99, lexical_capture_100, lexical_capture_107, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_218906{lexical_capture_98, lexical_capture_99, lexical_capture_100, lexical_capture_107}:
+    case Kont_218057{lexical_capture_98, lexical_capture_99, lexical_capture_100, lexical_capture_107}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_218906(lexical_capture_98, lexical_capture_99, lexical_capture_100, lexical_capture_107, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_218057(lexical_capture_98, lexical_capture_99, lexical_capture_100, lexical_capture_107, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_218566{lexical_capture_98, lexical_capture_99, lexical_capture_100, lexical_capture_107}:
+    case Kont_217717{lexical_capture_98, lexical_capture_99, lexical_capture_100, lexical_capture_107}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_218566(lexical_capture_98, lexical_capture_99, lexical_capture_100, lexical_capture_107, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_217717(lexical_capture_98, lexical_capture_99, lexical_capture_100, lexical_capture_107, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_217735{lexical_capture_49, lexical_capture_50, lexical_capture_51, lexical_capture_52, lexical_capture_53, lexical_capture_55, lexical_capture_56, lexical_capture_57}:
+    case Kont_216886{lexical_capture_49, lexical_capture_50, lexical_capture_51, lexical_capture_52, lexical_capture_53, lexical_capture_55, lexical_capture_56, lexical_capture_57}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_217735(lexical_capture_49, lexical_capture_50, lexical_capture_51, lexical_capture_52, lexical_capture_53, lexical_capture_55, lexical_capture_56, lexical_capture_57, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_216886(lexical_capture_49, lexical_capture_50, lexical_capture_51, lexical_capture_52, lexical_capture_53, lexical_capture_55, lexical_capture_56, lexical_capture_57, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_220426{lexical_capture_1, lexical_capture_3, lexical_capture_4, lexical_capture_8}:
+    case Kont_219577{lexical_capture_1, lexical_capture_3, lexical_capture_4, lexical_capture_8}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_220426(lexical_capture_1, lexical_capture_3, lexical_capture_4, lexical_capture_8, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_219577(lexical_capture_1, lexical_capture_3, lexical_capture_4, lexical_capture_8, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_220779{lexical_capture_1}:
+    case Kont_219930{lexical_capture_1}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_220779(lexical_capture_1, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_219930(lexical_capture_1, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_221166{lexical_capture_2, lexical_capture_3, lexical_capture_0, lexical_capture_5}:
+    case Kont_220317{lexical_capture_2, lexical_capture_3, lexical_capture_0, lexical_capture_5}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_221166(lexical_capture_2, lexical_capture_3, lexical_capture_0, lexical_capture_5, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_220317(lexical_capture_2, lexical_capture_3, lexical_capture_0, lexical_capture_5, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_223768{lexical_capture_4, lexical_capture_2, lexical_capture_6, lexical_capture_9, lexical_capture_11}:
+    case Kont_222919{lexical_capture_4, lexical_capture_2, lexical_capture_6, lexical_capture_9, lexical_capture_11}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_223768(lexical_capture_4, lexical_capture_2, lexical_capture_6, lexical_capture_9, lexical_capture_11, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_222919(lexical_capture_4, lexical_capture_2, lexical_capture_6, lexical_capture_9, lexical_capture_11, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_224175{lexical_capture_4, lexical_capture_2, lexical_capture_6}:
+    case Kont_223326{lexical_capture_4, lexical_capture_2, lexical_capture_6}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_224175(lexical_capture_4, lexical_capture_2, lexical_capture_6, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_223326(lexical_capture_4, lexical_capture_2, lexical_capture_6, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_226967{lexical_capture_1, lexical_capture_5, lexical_capture_10, lexical_capture_12}:
+    case Kont_226118{lexical_capture_1, lexical_capture_5, lexical_capture_10, lexical_capture_12}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_226967(lexical_capture_1, lexical_capture_5, lexical_capture_10, lexical_capture_12, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_226118(lexical_capture_1, lexical_capture_5, lexical_capture_10, lexical_capture_12, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_227491{lexical_capture_2, lexical_capture_3, lexical_capture_0, lexical_capture_5, lexical_capture_10}:
+    case Kont_226642{lexical_capture_2, lexical_capture_3, lexical_capture_0, lexical_capture_5, lexical_capture_10}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_227491(lexical_capture_2, lexical_capture_3, lexical_capture_0, lexical_capture_5, lexical_capture_10, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_226642(lexical_capture_2, lexical_capture_3, lexical_capture_0, lexical_capture_5, lexical_capture_10, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_229293{lexical_capture_1, lexical_capture_2, lexical_capture_6, lexical_capture_9, lexical_capture_11}:
+    case Kont_228444{lexical_capture_1, lexical_capture_2, lexical_capture_6, lexical_capture_9, lexical_capture_11}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_229293(lexical_capture_1, lexical_capture_2, lexical_capture_6, lexical_capture_9, lexical_capture_11, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_228444(lexical_capture_1, lexical_capture_2, lexical_capture_6, lexical_capture_9, lexical_capture_11, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_230229{lexical_capture_6, lexical_capture_21, lexical_capture_8, lexical_capture_10, lexical_capture_13, lexical_capture_15}:
+    case Kont_229380{lexical_capture_6, lexical_capture_21, lexical_capture_8, lexical_capture_10, lexical_capture_13, lexical_capture_15}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_230229(lexical_capture_6, lexical_capture_21, lexical_capture_8, lexical_capture_10, lexical_capture_13, lexical_capture_15, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_229380(lexical_capture_6, lexical_capture_21, lexical_capture_8, lexical_capture_10, lexical_capture_13, lexical_capture_15, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_231832{lexical_capture_1, lexical_capture_5, lexical_capture_7, lexical_capture_10, lexical_capture_12}:
+    case Kont_230983{lexical_capture_1, lexical_capture_5, lexical_capture_7, lexical_capture_10, lexical_capture_12}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_231832(lexical_capture_1, lexical_capture_5, lexical_capture_7, lexical_capture_10, lexical_capture_12, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_230983(lexical_capture_1, lexical_capture_5, lexical_capture_7, lexical_capture_10, lexical_capture_12, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_232628{lexical_capture_7, lexical_capture_28, lexical_capture_6, lexical_capture_11}:
+    case Kont_231779{lexical_capture_7, lexical_capture_28, lexical_capture_6, lexical_capture_11}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_232628(lexical_capture_7, lexical_capture_28, lexical_capture_6, lexical_capture_11, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_231779(lexical_capture_7, lexical_capture_28, lexical_capture_6, lexical_capture_11, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_233304{lexical_capture_1, lexical_capture_2, lexical_capture_4, lexical_capture_6, lexical_capture_9, lexical_capture_11}:
+    case Kont_232455{lexical_capture_1, lexical_capture_2, lexical_capture_4, lexical_capture_6, lexical_capture_9, lexical_capture_11}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_233304(lexical_capture_1, lexical_capture_2, lexical_capture_4, lexical_capture_6, lexical_capture_9, lexical_capture_11, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_232455(lexical_capture_1, lexical_capture_2, lexical_capture_4, lexical_capture_6, lexical_capture_9, lexical_capture_11, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_235549{lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_20}:
+    case Kont_235478{lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_20}:
       match value:
         case Value_9{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_235549(lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_20, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_235478(lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_20, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_235313{lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_14}:
+    case Kont_235238{lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_14}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_235313(lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_14, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_235238(lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_14, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_238944{lexical_capture_3, lexical_capture_8, lexical_capture_10, lexical_capture_13, lexical_capture_15, lexical_capture_17}:
+    case Kont_238873{lexical_capture_3, lexical_capture_8, lexical_capture_10, lexical_capture_13, lexical_capture_15, lexical_capture_17}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_238944(lexical_capture_3, lexical_capture_8, lexical_capture_10, lexical_capture_13, lexical_capture_15, lexical_capture_17, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_238873(lexical_capture_3, lexical_capture_8, lexical_capture_10, lexical_capture_13, lexical_capture_15, lexical_capture_17, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_240637{lexical_capture_2, lexical_capture_4, lexical_capture_6, lexical_capture_8, lexical_capture_9, lexical_capture_0, lexical_capture_22}:
+    case Kont_240566{lexical_capture_2, lexical_capture_4, lexical_capture_6, lexical_capture_8, lexical_capture_9, lexical_capture_0, lexical_capture_22}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_240637(lexical_capture_2, lexical_capture_4, lexical_capture_6, lexical_capture_8, lexical_capture_9, lexical_capture_0, lexical_capture_22, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_240566(lexical_capture_2, lexical_capture_4, lexical_capture_6, lexical_capture_8, lexical_capture_9, lexical_capture_0, lexical_capture_22, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_242825{lexical_capture_1, lexical_capture_23, lexical_capture_25, lexical_capture_10, lexical_capture_11, lexical_capture_6, lexical_capture_8}:
+    case Kont_242754{lexical_capture_1, lexical_capture_23, lexical_capture_25, lexical_capture_10, lexical_capture_11, lexical_capture_6, lexical_capture_8}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_242825(lexical_capture_1, lexical_capture_23, lexical_capture_25, lexical_capture_10, lexical_capture_11, lexical_capture_6, lexical_capture_8, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_242754(lexical_capture_1, lexical_capture_23, lexical_capture_25, lexical_capture_10, lexical_capture_11, lexical_capture_6, lexical_capture_8, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_244077{lexical_capture_1, lexical_capture_22, lexical_capture_5, lexical_capture_24, lexical_capture_10}:
+    case Kont_244006{lexical_capture_1, lexical_capture_22, lexical_capture_5, lexical_capture_24, lexical_capture_10}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_244077(lexical_capture_1, lexical_capture_22, lexical_capture_5, lexical_capture_24, lexical_capture_10, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_244006(lexical_capture_1, lexical_capture_22, lexical_capture_5, lexical_capture_24, lexical_capture_10, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_245881{lexical_capture_1, lexical_capture_5, lexical_capture_14, lexical_capture_16}:
+    case Kont_245814{lexical_capture_1, lexical_capture_5, lexical_capture_14, lexical_capture_16}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_245881(lexical_capture_1, lexical_capture_5, lexical_capture_14, lexical_capture_16, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_245814(lexical_capture_1, lexical_capture_5, lexical_capture_14, lexical_capture_16, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_247191{lexical_capture_3, lexical_capture_4, lexical_capture_6, lexical_capture_7}:
+    case Kont_247124{lexical_capture_3, lexical_capture_4, lexical_capture_6, lexical_capture_7}:
       match value:
         case Value_9{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_247191(lexical_capture_3, lexical_capture_4, lexical_capture_6, lexical_capture_7, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_247124(lexical_capture_3, lexical_capture_4, lexical_capture_6, lexical_capture_7, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_247684{capture_0, capture_1, capture_2, capture_3, capture_4, capture_5}:
+    case Kont_247617{capture_0, capture_1, capture_2, capture_3, capture_4, capture_5}:
       match value:
         case Value_16{result}:
-          feedback_resume_Kont_247684(capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, result)
+          feedback_resume_Kont_247617(capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_247975{lexical_capture_1, lexical_capture_6, lexical_capture_8, lexical_capture_10, lexical_capture_3}:
+    case Kont_247908{lexical_capture_1, lexical_capture_6, lexical_capture_8, lexical_capture_10, lexical_capture_3}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_247975(lexical_capture_1, lexical_capture_6, lexical_capture_8, lexical_capture_10, lexical_capture_3, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_247908(lexical_capture_1, lexical_capture_6, lexical_capture_8, lexical_capture_10, lexical_capture_3, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_250807{capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6}:
+    case Kont_250740{capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6}:
       match value:
         case Value_16{result}:
-          feedback_resume_Kont_250807(capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, result)
+          feedback_resume_Kont_250740(capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_251451{+lexical_capture_3, lexical_capture_30, +lexical_capture_5, lexical_capture_15, lexical_capture_17, lexical_capture_19, lexical_capture_7}:
+    case Kont_251384{+lexical_capture_3, lexical_capture_30, +lexical_capture_5, lexical_capture_15, lexical_capture_17, lexical_capture_19, lexical_capture_7}:
       match value:
         case Value_9{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_251451(lexical_capture_3, lexical_capture_30, lexical_capture_5, lexical_capture_15, lexical_capture_17, lexical_capture_19, lexical_capture_7, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_251384(lexical_capture_3, lexical_capture_30, lexical_capture_5, lexical_capture_15, lexical_capture_17, lexical_capture_19, lexical_capture_7, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_257647{+lexical_capture_1, lexical_capture_2, +lexical_capture_18, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_19}:
+    case Kont_257580{+lexical_capture_1, lexical_capture_2, +lexical_capture_18, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_19}:
       match value:
         case Value_9{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_257647(lexical_capture_1, lexical_capture_2, lexical_capture_18, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_19, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_257580(lexical_capture_1, lexical_capture_2, lexical_capture_18, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_19, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_254183{lexical_capture_1, lexical_capture_2, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_39}:
+    case Kont_254116{lexical_capture_1, lexical_capture_2, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_39}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_254183(lexical_capture_1, lexical_capture_2, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_39, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_254116(lexical_capture_1, lexical_capture_2, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_39, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_260115{lexical_capture_6, lexical_capture_7, lexical_capture_9, lexical_capture_20, lexical_capture_14, lexical_capture_16, lexical_capture_18, lexical_capture_11}:
+    case Kont_260048{lexical_capture_6, lexical_capture_7, lexical_capture_9, lexical_capture_20, lexical_capture_14, lexical_capture_16, lexical_capture_18, lexical_capture_11}:
       match value:
         case Value_9{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_260115(lexical_capture_6, lexical_capture_7, lexical_capture_9, lexical_capture_20, lexical_capture_14, lexical_capture_16, lexical_capture_18, lexical_capture_11, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_260048(lexical_capture_6, lexical_capture_7, lexical_capture_9, lexical_capture_20, lexical_capture_14, lexical_capture_16, lexical_capture_18, lexical_capture_11, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_261576{capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6}:
+    case Kont_261509{capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6}:
       match value:
         case Value_16{result}:
-          feedback_resume_Kont_261576(capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, result)
+          feedback_resume_Kont_261509(capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_262487{lexical_capture_1, lexical_capture_2, lexical_capture_4, lexical_capture_6, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15}:
+    case Kont_262420{lexical_capture_1, lexical_capture_2, lexical_capture_4, lexical_capture_6, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_262487(lexical_capture_1, lexical_capture_2, lexical_capture_4, lexical_capture_6, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_262420(lexical_capture_1, lexical_capture_2, lexical_capture_4, lexical_capture_6, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_266526{lexical_capture_3, lexical_capture_5, lexical_capture_8, lexical_capture_13, lexical_capture_15, lexical_capture_17, lexical_capture_19}:
+    case Kont_266459{lexical_capture_3, lexical_capture_5, lexical_capture_8, lexical_capture_13, lexical_capture_15, lexical_capture_17, lexical_capture_19}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_266526(lexical_capture_3, lexical_capture_5, lexical_capture_8, lexical_capture_13, lexical_capture_15, lexical_capture_17, lexical_capture_19, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_266459(lexical_capture_3, lexical_capture_5, lexical_capture_8, lexical_capture_13, lexical_capture_15, lexical_capture_17, lexical_capture_19, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_267821{lexical_capture_3, lexical_capture_4, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15}:
+    case Kont_267754{lexical_capture_3, lexical_capture_4, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_267821(lexical_capture_3, lexical_capture_4, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_267754(lexical_capture_3, lexical_capture_4, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_268939{capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8}:
+    case Kont_268872{capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8}:
       match value:
         case Value_16{result}:
-          feedback_resume_Kont_268939(capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, result)
+          feedback_resume_Kont_268872(capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_270218{lexical_capture_17, lexical_capture_3, lexical_capture_4, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15, lexical_capture_6}:
+    case Kont_270151{lexical_capture_17, lexical_capture_3, lexical_capture_4, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15, lexical_capture_6}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_270218(lexical_capture_17, lexical_capture_3, lexical_capture_4, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15, lexical_capture_6, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_270151(lexical_capture_17, lexical_capture_3, lexical_capture_4, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15, lexical_capture_6, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_272762{lexical_capture_6, lexical_capture_7, lexical_capture_8, lexical_capture_10, lexical_capture_12, lexical_capture_15, lexical_capture_17, lexical_capture_19}:
+    case Kont_272695{lexical_capture_6, lexical_capture_7, lexical_capture_8, lexical_capture_10, lexical_capture_12, lexical_capture_15, lexical_capture_17, lexical_capture_19}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_272762(lexical_capture_6, lexical_capture_7, lexical_capture_8, lexical_capture_10, lexical_capture_12, lexical_capture_15, lexical_capture_17, lexical_capture_19, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_272695(lexical_capture_6, lexical_capture_7, lexical_capture_8, lexical_capture_10, lexical_capture_12, lexical_capture_15, lexical_capture_17, lexical_capture_19, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_273921{capture_0, capture_1, capture_2, capture_4, capture_5, capture_6, capture_7, capture_8}:
+    case Kont_273854{capture_0, capture_1, capture_2, capture_4, capture_5, capture_6, capture_7, capture_8}:
       match value:
         case Value_11{result}:
-          feedback_resume_Kont_273921(capture_0, capture_1, capture_2, capture_4, capture_5, capture_6, capture_7, capture_8, result)
+          feedback_resume_Kont_273854(capture_0, capture_1, capture_2, capture_4, capture_5, capture_6, capture_7, capture_8, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_275704{lexical_capture_1, lexical_capture_2, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15}:
+    case Kont_275637{lexical_capture_1, lexical_capture_2, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_275704(lexical_capture_1, lexical_capture_2, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_275637(lexical_capture_1, lexical_capture_2, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_278209{lexical_capture_3, lexical_capture_5, lexical_capture_8, lexical_capture_13, lexical_capture_15, lexical_capture_17, lexical_capture_19}:
+    case Kont_278142{lexical_capture_3, lexical_capture_5, lexical_capture_8, lexical_capture_13, lexical_capture_15, lexical_capture_17, lexical_capture_19}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_278209(lexical_capture_3, lexical_capture_5, lexical_capture_8, lexical_capture_13, lexical_capture_15, lexical_capture_17, lexical_capture_19, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_278142(lexical_capture_3, lexical_capture_5, lexical_capture_8, lexical_capture_13, lexical_capture_15, lexical_capture_17, lexical_capture_19, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_286523{lexical_capture_1}:
+    case Kont_286456{lexical_capture_1}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_286523(lexical_capture_1, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_286456(lexical_capture_1, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_288084{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7}:
+    case Kont_288017{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_288084(capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_288017(capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_289976{lexical_capture_3, lexical_capture_8, lexical_capture_10, lexical_capture_12, lexical_capture_14, lexical_capture_16, lexical_capture_22}:
+    case Kont_289909{lexical_capture_3, lexical_capture_8, lexical_capture_10, lexical_capture_12, lexical_capture_14, lexical_capture_16, lexical_capture_22}:
       match value:
         case Value_2{result_0_0_0, result_0_0_1, result_0_1, result_1}:
-          feedback_resume_Kont_289976(lexical_capture_3, lexical_capture_8, lexical_capture_10, lexical_capture_12, lexical_capture_14, lexical_capture_16, lexical_capture_22, (((result_0_0_0, result_0_0_1), result_0_1), result_1))
+          feedback_resume_Kont_289909(lexical_capture_3, lexical_capture_8, lexical_capture_10, lexical_capture_12, lexical_capture_14, lexical_capture_16, lexical_capture_22, (((result_0_0_0, result_0_0_1), result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_291436{lexical_capture_3, lexical_capture_7, lexical_capture_13, lexical_capture_15, lexical_capture_17}:
+    case Kont_291369{lexical_capture_3, lexical_capture_7, lexical_capture_13, lexical_capture_15, lexical_capture_17}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_291436(lexical_capture_3, lexical_capture_7, lexical_capture_13, lexical_capture_15, lexical_capture_17, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_291369(lexical_capture_3, lexical_capture_7, lexical_capture_13, lexical_capture_15, lexical_capture_17, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_292095{lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_9, lexical_capture_14, lexical_capture_16, lexical_capture_17}:
+    case Kont_292028{lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_9, lexical_capture_14, lexical_capture_16, lexical_capture_17}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_292095(lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_9, lexical_capture_14, lexical_capture_16, lexical_capture_17, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_292028(lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_9, lexical_capture_14, lexical_capture_16, lexical_capture_17, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_293675{lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_10, lexical_capture_19, lexical_capture_11}:
+    case Kont_293608{lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_10, lexical_capture_19, lexical_capture_11}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_293675(lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_10, lexical_capture_19, lexical_capture_11, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_293608(lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_10, lexical_capture_19, lexical_capture_11, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_294298{lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_9, lexical_capture_14, lexical_capture_16}:
+    case Kont_294231{lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_9, lexical_capture_14, lexical_capture_16}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_294298(lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_9, lexical_capture_14, lexical_capture_16, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_294231(lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_9, lexical_capture_14, lexical_capture_16, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_296746{lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_9, lexical_capture_12, lexical_capture_14}:
+    case Kont_296679{lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_9, lexical_capture_12, lexical_capture_14}:
       match value:
         case Value_4{result_0_0, result_0_1, result_1_0_0, result_1_0_1, result_1_1}:
-          feedback_resume_Kont_296746(lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_9, lexical_capture_12, lexical_capture_14, ((result_0_0, result_0_1), ((result_1_0_0, result_1_0_1), result_1_1)))
+          feedback_resume_Kont_296679(lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_9, lexical_capture_12, lexical_capture_14, ((result_0_0, result_0_1), ((result_1_0_0, result_1_0_1), result_1_1)))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_297565{lexical_capture_4, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15, lexical_capture_17, lexical_capture_20, lexical_capture_22}:
+    case Kont_297498{lexical_capture_4, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15, lexical_capture_17, lexical_capture_20, lexical_capture_22}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_297565(lexical_capture_4, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15, lexical_capture_17, lexical_capture_20, lexical_capture_22, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_297498(lexical_capture_4, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_13, lexical_capture_15, lexical_capture_17, lexical_capture_20, lexical_capture_22, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_298818{lexical_capture_2, lexical_capture_5, lexical_capture_12, lexical_capture_14}:
+    case Kont_298751{lexical_capture_2, lexical_capture_5, lexical_capture_12, lexical_capture_14}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_298818(lexical_capture_2, lexical_capture_5, lexical_capture_12, lexical_capture_14, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_298751(lexical_capture_2, lexical_capture_5, lexical_capture_12, lexical_capture_14, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_299400{lexical_capture_1, lexical_capture_5, lexical_capture_7, lexical_capture_10, lexical_capture_12}:
+    case Kont_299333{lexical_capture_1, lexical_capture_5, lexical_capture_7, lexical_capture_10, lexical_capture_12}:
       match value:
         case Value_9{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_299400(lexical_capture_1, lexical_capture_5, lexical_capture_7, lexical_capture_10, lexical_capture_12, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_299333(lexical_capture_1, lexical_capture_5, lexical_capture_7, lexical_capture_10, lexical_capture_12, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_299888{lexical_capture_1, lexical_capture_13, lexical_capture_3, lexical_capture_5}:
+    case Kont_299821{lexical_capture_1, lexical_capture_13, lexical_capture_3, lexical_capture_5}:
       match value:
         case Value_9{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_299888(lexical_capture_1, lexical_capture_13, lexical_capture_3, lexical_capture_5, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_299821(lexical_capture_1, lexical_capture_13, lexical_capture_3, lexical_capture_5, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_303051{lexical_capture_1, lexical_capture_6, lexical_capture_8, lexical_capture_10}:
+    case Kont_302984{lexical_capture_1, lexical_capture_6, lexical_capture_8, lexical_capture_10}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_303051(lexical_capture_1, lexical_capture_6, lexical_capture_8, lexical_capture_10, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_302984(lexical_capture_1, lexical_capture_6, lexical_capture_8, lexical_capture_10, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_303638{lexical_capture_3, lexical_capture_5, lexical_capture_9, lexical_capture_12, lexical_capture_14, lexical_capture_16, lexical_capture_18}:
+    case Kont_303571{lexical_capture_3, lexical_capture_5, lexical_capture_9, lexical_capture_12, lexical_capture_14, lexical_capture_16, lexical_capture_18}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_303638(lexical_capture_3, lexical_capture_5, lexical_capture_9, lexical_capture_12, lexical_capture_14, lexical_capture_16, lexical_capture_18, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_303571(lexical_capture_3, lexical_capture_5, lexical_capture_9, lexical_capture_12, lexical_capture_14, lexical_capture_16, lexical_capture_18, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_306679{capture_1, capture_2, capture_3, capture_4}:
+    case Kont_306612{capture_1, capture_2, capture_3, capture_4}:
       match value:
         case Value_18{result}:
-          feedback_resume_Kont_306679(capture_1, capture_2, capture_3, capture_4, result)
+          feedback_resume_Kont_306612(capture_1, capture_2, capture_3, capture_4, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_307704{lexical_capture_5, lexical_capture_3, lexical_capture_15}:
+    case Kont_307637{lexical_capture_5, lexical_capture_3, lexical_capture_15}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_307704(lexical_capture_5, lexical_capture_3, lexical_capture_15, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_307637(lexical_capture_5, lexical_capture_3, lexical_capture_15, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_312950{capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8}:
+    case Kont_312883{capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8}:
       match value:
         case Value_16{result}:
-          feedback_resume_Kont_312950(capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, result)
+          feedback_resume_Kont_312883(capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_313598{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7}:
+    case Kont_313531{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_313598(capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_313531(capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_316399{capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, capture_9}:
+    case Kont_316332{capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, capture_9}:
       match value:
         case Value_16{result}:
-          feedback_resume_Kont_316399(capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, capture_9, result)
+          feedback_resume_Kont_316332(capture_0, capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, capture_9, result)
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_317051{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8}:
+    case Kont_316984{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_317051(capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_316984(capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, capture_8, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_318645{}:
+    case Kont_318578{}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_318645(((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_318578(((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_320316{lexical_capture_0, lexical_capture_2, lexical_capture_8, lexical_capture_10, lexical_capture_12, lexical_capture_14, lexical_capture_5}:
+    case Kont_320249{lexical_capture_0, lexical_capture_2, lexical_capture_8, lexical_capture_10, lexical_capture_12, lexical_capture_14, lexical_capture_5}:
       match value:
         case Value_3{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_320316(lexical_capture_0, lexical_capture_2, lexical_capture_8, lexical_capture_10, lexical_capture_12, lexical_capture_14, lexical_capture_5, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_320249(lexical_capture_0, lexical_capture_2, lexical_capture_8, lexical_capture_10, lexical_capture_12, lexical_capture_14, lexical_capture_5, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_321745{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7}:
+    case Kont_321678{capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_321745(capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_321678(capture_1, capture_2, capture_3, capture_4, capture_5, capture_6, capture_7, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_322114{lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_13, lexical_capture_15}:
+    case Kont_322047{lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_13, lexical_capture_15}:
       match value:
         case Value_3{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_322114(lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_13, lexical_capture_15, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_322047(lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_13, lexical_capture_15, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_325109{lexical_capture_1, lexical_capture_3, lexical_capture_5}:
+    case Kont_325042{lexical_capture_1, lexical_capture_3, lexical_capture_5}:
       match value:
         case Value_1{result_0_0_0_0, result_0_0_0_1, result_0_0_1, result_0_1, result_1}:
-          feedback_resume_Kont_325109(lexical_capture_1, lexical_capture_3, lexical_capture_5, ((((result_0_0_0_0, result_0_0_0_1), result_0_0_1), result_0_1), result_1))
+          feedback_resume_Kont_325042(lexical_capture_1, lexical_capture_3, lexical_capture_5, ((((result_0_0_0_0, result_0_0_0_1), result_0_0_1), result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_330414{}:
+    case Kont_330347{}:
       match value:
         case Value_6{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_330414(((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_330347(((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_330279{}:
+    case Kont_330212{}:
       match value:
         case Value_6{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_330279(((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_330212(((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_333031{lexical_capture_3, lexical_capture_26, lexical_capture_27, lexical_capture_9, lexical_capture_12, lexical_capture_14, lexical_capture_16, lexical_capture_18, lexical_capture_20}:
+    case Kont_332964{lexical_capture_3, lexical_capture_26, lexical_capture_27, lexical_capture_9, lexical_capture_12, lexical_capture_14, lexical_capture_16, lexical_capture_18, lexical_capture_20}:
       match value:
         case Value_1{result_0_0_0_0, result_0_0_0_1, result_0_0_1, result_0_1, result_1}:
-          feedback_resume_Kont_333031(lexical_capture_3, lexical_capture_26, lexical_capture_27, lexical_capture_9, lexical_capture_12, lexical_capture_14, lexical_capture_16, lexical_capture_18, lexical_capture_20, ((((result_0_0_0_0, result_0_0_0_1), result_0_0_1), result_0_1), result_1))
+          feedback_resume_Kont_332964(lexical_capture_3, lexical_capture_26, lexical_capture_27, lexical_capture_9, lexical_capture_12, lexical_capture_14, lexical_capture_16, lexical_capture_18, lexical_capture_20, ((((result_0_0_0_0, result_0_0_0_1), result_0_0_1), result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_335087{lexical_capture_6, lexical_capture_8, lexical_capture_10, lexical_capture_14, lexical_capture_2}:
+    case Kont_335020{lexical_capture_6, lexical_capture_8, lexical_capture_10, lexical_capture_14, lexical_capture_2}:
       match value:
         case Value_7{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_335087(lexical_capture_6, lexical_capture_8, lexical_capture_10, lexical_capture_14, lexical_capture_2, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_335020(lexical_capture_6, lexical_capture_8, lexical_capture_10, lexical_capture_14, lexical_capture_2, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_335919{lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_16, lexical_capture_18}:
+    case Kont_335852{lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_16, lexical_capture_18}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_335919(lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_16, lexical_capture_18, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_335852(lexical_capture_1, lexical_capture_3, lexical_capture_5, lexical_capture_7, lexical_capture_9, lexical_capture_11, lexical_capture_16, lexical_capture_18, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_337986{lexical_capture_26, lexical_capture_1, lexical_capture_19, lexical_capture_5, lexical_capture_7}:
+    case Kont_337919{lexical_capture_26, lexical_capture_1, lexical_capture_19, lexical_capture_5, lexical_capture_7}:
       match value:
         case Value_1{result_0_0_0_0, result_0_0_0_1, result_0_0_1, result_0_1, result_1}:
-          feedback_resume_Kont_337986(lexical_capture_26, lexical_capture_1, lexical_capture_19, lexical_capture_5, lexical_capture_7, ((((result_0_0_0_0, result_0_0_0_1), result_0_0_1), result_0_1), result_1))
+          feedback_resume_Kont_337919(lexical_capture_26, lexical_capture_1, lexical_capture_19, lexical_capture_5, lexical_capture_7, ((((result_0_0_0_0, result_0_0_0_1), result_0_0_1), result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_337520{lexical_capture_26, lexical_capture_1, lexical_capture_19, lexical_capture_5, lexical_capture_7}:
+    case Kont_337453{lexical_capture_26, lexical_capture_1, lexical_capture_19, lexical_capture_5, lexical_capture_7}:
       match value:
         case Value_1{result_0_0_0_0, result_0_0_0_1, result_0_0_1, result_0_1, result_1}:
-          feedback_resume_Kont_337520(lexical_capture_26, lexical_capture_1, lexical_capture_19, lexical_capture_5, lexical_capture_7, ((((result_0_0_0_0, result_0_0_0_1), result_0_0_1), result_0_1), result_1))
+          feedback_resume_Kont_337453(lexical_capture_26, lexical_capture_1, lexical_capture_19, lexical_capture_5, lexical_capture_7, ((((result_0_0_0_0, result_0_0_0_1), result_0_0_1), result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_340017{lexical_capture_12, lexical_capture_14, lexical_capture_3, lexical_capture_16, lexical_capture_17, lexical_capture_5}:
+    case Kont_339950{lexical_capture_12, lexical_capture_14, lexical_capture_3, lexical_capture_16, lexical_capture_17, lexical_capture_5}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_340017(lexical_capture_12, lexical_capture_14, lexical_capture_3, lexical_capture_16, lexical_capture_17, lexical_capture_5, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_339950(lexical_capture_12, lexical_capture_14, lexical_capture_3, lexical_capture_16, lexical_capture_17, lexical_capture_5, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_343965{lexical_capture_1, lexical_capture_31, lexical_capture_32, lexical_capture_33, lexical_capture_5, lexical_capture_7, lexical_capture_8, lexical_capture_11, lexical_capture_13, lexical_capture_15}:
+    case Kont_343898{lexical_capture_1, lexical_capture_31, lexical_capture_32, lexical_capture_33, lexical_capture_5, lexical_capture_7, lexical_capture_8, lexical_capture_11, lexical_capture_13, lexical_capture_15}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_343965(lexical_capture_1, lexical_capture_31, lexical_capture_32, lexical_capture_33, lexical_capture_5, lexical_capture_7, lexical_capture_8, lexical_capture_11, lexical_capture_13, lexical_capture_15, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_343898(lexical_capture_1, lexical_capture_31, lexical_capture_32, lexical_capture_33, lexical_capture_5, lexical_capture_7, lexical_capture_8, lexical_capture_11, lexical_capture_13, lexical_capture_15, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_345931{lexical_capture_1, lexical_capture_7, lexical_capture_9, lexical_capture_10, lexical_capture_12, lexical_capture_14, lexical_capture_17, lexical_capture_20, lexical_capture_22, lexical_capture_24}:
+    case Kont_345864{lexical_capture_1, lexical_capture_7, lexical_capture_9, lexical_capture_10, lexical_capture_12, lexical_capture_14, lexical_capture_17, lexical_capture_20, lexical_capture_22, lexical_capture_24}:
       match value:
         case Value_5{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_345931(lexical_capture_1, lexical_capture_7, lexical_capture_9, lexical_capture_10, lexical_capture_12, lexical_capture_14, lexical_capture_17, lexical_capture_20, lexical_capture_22, lexical_capture_24, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_345864(lexical_capture_1, lexical_capture_7, lexical_capture_9, lexical_capture_10, lexical_capture_12, lexical_capture_14, lexical_capture_17, lexical_capture_20, lexical_capture_22, lexical_capture_24, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_348237{lexical_capture_1, lexical_capture_17, lexical_capture_5, lexical_capture_24, lexical_capture_25}:
+    case Kont_348170{lexical_capture_1, lexical_capture_17, lexical_capture_5, lexical_capture_24, lexical_capture_25}:
       match value:
         case Value_0{result_0_0_0_0, result_0_0_0_1, result_0_0_1, result_0_1, result_1}:
-          feedback_resume_Kont_348237(lexical_capture_1, lexical_capture_17, lexical_capture_5, lexical_capture_24, lexical_capture_25, ((((result_0_0_0_0, result_0_0_0_1), result_0_0_1), result_0_1), result_1))
+          feedback_resume_Kont_348170(lexical_capture_1, lexical_capture_17, lexical_capture_5, lexical_capture_24, lexical_capture_25, ((((result_0_0_0_0, result_0_0_0_1), result_0_0_1), result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_353723{lexical_capture_12, lexical_capture_19, lexical_capture_3, lexical_capture_1, lexical_capture_7, lexical_capture_9}:
+    case Kont_353656{lexical_capture_12, lexical_capture_19, lexical_capture_3, lexical_capture_1, lexical_capture_7, lexical_capture_9}:
       match value:
         case Value_6{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_353723(lexical_capture_12, lexical_capture_19, lexical_capture_3, lexical_capture_1, lexical_capture_7, lexical_capture_9, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_353656(lexical_capture_12, lexical_capture_19, lexical_capture_3, lexical_capture_1, lexical_capture_7, lexical_capture_9, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_353432{lexical_capture_12, lexical_capture_19, lexical_capture_3, lexical_capture_1, lexical_capture_7, lexical_capture_9}:
+    case Kont_353365{lexical_capture_12, lexical_capture_19, lexical_capture_3, lexical_capture_1, lexical_capture_7, lexical_capture_9}:
       match value:
         case Value_6{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_353432(lexical_capture_12, lexical_capture_19, lexical_capture_3, lexical_capture_1, lexical_capture_7, lexical_capture_9, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_353365(lexical_capture_12, lexical_capture_19, lexical_capture_3, lexical_capture_1, lexical_capture_7, lexical_capture_9, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_353139{lexical_capture_12, lexical_capture_19, lexical_capture_3, lexical_capture_1, lexical_capture_7, lexical_capture_9}:
+    case Kont_353072{lexical_capture_12, lexical_capture_19, lexical_capture_3, lexical_capture_1, lexical_capture_7, lexical_capture_9}:
       match value:
         case Value_6{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_353139(lexical_capture_12, lexical_capture_19, lexical_capture_3, lexical_capture_1, lexical_capture_7, lexical_capture_9, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_353072(lexical_capture_12, lexical_capture_19, lexical_capture_3, lexical_capture_1, lexical_capture_7, lexical_capture_9, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_352849{lexical_capture_12, lexical_capture_19, lexical_capture_3, lexical_capture_1, lexical_capture_7, lexical_capture_9}:
+    case Kont_352782{lexical_capture_12, lexical_capture_19, lexical_capture_3, lexical_capture_1, lexical_capture_7, lexical_capture_9}:
       match value:
         case Value_6{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_352849(lexical_capture_12, lexical_capture_19, lexical_capture_3, lexical_capture_1, lexical_capture_7, lexical_capture_9, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_352782(lexical_capture_12, lexical_capture_19, lexical_capture_3, lexical_capture_1, lexical_capture_7, lexical_capture_9, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_355624{lexical_capture_7, lexical_capture_3}:
+    case Kont_355557{lexical_capture_7, lexical_capture_3}:
       match value:
         case Value_10{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_355624(lexical_capture_7, lexical_capture_3, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_355557(lexical_capture_7, lexical_capture_3, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
-    case Kont_356077{lexical_capture_3}:
+    case Kont_356010{lexical_capture_3}:
       match value:
         case Value_8{result_0_0, result_0_1, result_1}:
-          feedback_resume_Kont_356077(lexical_capture_3, ((result_0_0, result_0_1), result_1))
+          feedback_resume_Kont_356010(lexical_capture_3, ((result_0_0, result_0_1), result_1))
         case _: FeedbackControl{FeedbackInvariant{}, Nil{}, NoProgress{}, NoProgress{}}
 
 def feedback_resume(saved: FeedbackKont, value: FeedbackValue, child_progress: Progress) -> FeedbackResume:
@@ -8679,8 +8686,8 @@ def combine_symbols(tokens: List<&2, Lexer.Token>, mode: SymbolCombineMode) -> L
 # The reversed prefix bounds native and emitted-JS stacks independently of the
 # token count. Scanning and merged-token spans retain their original order.
 
-def feedback_make_Kont_356077(lexical_capture_3: String) -> FeedbackFrame:
-  Kont_356077{lexical_capture_3}
+def feedback_make_Kont_356010(lexical_capture_3: String) -> FeedbackFrame:
+  Kont_356010{lexical_capture_3}
 
 def step_parse_imports(file: String, +tokens: List<&2, Lexer.Token>, acc: List<&2, Ast.ModuleImport>) -> FeedbackControl:
   step_parse_imports_scan(file, tokens, skip_lines(tokens), acc)
@@ -8688,7 +8695,7 @@ def step_parse_imports(file: String, +tokens: List<&2, Lexer.Token>, acc: List<&
 def step_parse_module_tokens(+tokens: List<&2, Lexer.Token>, +file: String) -> FeedbackControl:
   match tokens:
     case +_ <> _:
-      feedback_attach(step_parse_imports(file, tokens, Nil{}), feedback_make_Kont_356077(file))
+      feedback_attach(step_parse_imports(file, tokens, Nil{}), feedback_make_Kont_356010(file))
     case Nil{}:
       feedback_pack_17(ParseFailure{ "empty lexer output", "a source token", "end of input", span(file, 0n, 0n)})
 
@@ -8702,23 +8709,35 @@ def parse_with_fuel(fuel: FeedbackFuel, file: String, source: String) -> Feedbac
 def parsed_module(namespace: String, module: Ast.Module) -> Loader.LoadedModule:
   Loader.LoadedModule{namespace, module}
 
-def expand_modules_start(modules: List<&2, Loader.LoadedModule>) -> Template.TemplateProgress<Template.ExpandResult>:
+def expand_modules_start(modules: List<&2, Loader.LoadedModule>) -> Template.TemplateRun<Template.ExpandResult>:
   Template.template_start(modules)
 
-def template_step(request: Template.TemplateRequest) -> Template.TemplateProgress<Template.template_result(request)>:
-  Template.template_step(request)
+def template_step(-R: Type, run: Template.TemplateRun<R>) -> Template.TemplateRun<R>:
+  Template.template_step(R, run)
 
-def check_expanded_start(modules: List<&2, Loader.LoadedModule>) -> CheckerCore.CheckerProgress<CheckerCore.CheckResult>:
+def check_expanded_start(modules: List<&2, Loader.LoadedModule>) -> CheckerCore.CheckerRun<Checked.CheckResult>:
   CheckerCore.checker_start(modules)
 
-def checker_step(request: CheckerCore.CheckerRequest) -> CheckerCore.CheckerProgress<CheckerCore.checker_result(request)>:
-  CheckerCore.checker_step(request)
+def inspect_checked_start(program: Checked.CheckedProgram) -> CheckerCore.CheckerRun<Checked.Inspection>:
+  CheckerCore.checker_inspect_start(program)
 
-def emit_modules_start(modules: List<&2, Loader.LoadedModule>) -> JSEmit.EmitterProgress<JSEmit.EmitResult>:
-  JSEmit.emitter_start(modules)
+def checker_step(-R: Type, run: CheckerCore.CheckerRun<R>) -> CheckerCore.CheckerRun<R>:
+  CheckerCore.checker_step(R, run)
 
-def emit_library_start(modules: List<&2, Loader.LoadedModule>) -> JSEmit.EmitterProgress<JSEmit.EmitResult>:
-  JSEmit.emitter_step(JSEmit.EmitterRequestGroup_8{JSEmit.EmitterRequest_emit_library{modules, ["parsed_module", "parse_with_fuel", "expand_modules_start", "template_step", "check_expanded_start", "checker_step", "emit_modules_start", "emit_library_start", "emitter_step"]}})
+def emit_modules_start(program: Checked.CheckedProgram, files: List<&2, BIR.SourceFile>) -> Emit.EmitterRun<Emit.EmitResult>:
+  Emit.emitter_start(program, files)
 
-def emitter_step(request: JSEmit.EmitterRequest) -> JSEmit.EmitterProgress<JSEmit.emitter_result(request)>:
-  JSEmit.emitter_step(request)
+def emit_library_start(program: Checked.CheckedProgram, exports: List<&2, String>, files: List<&2, BIR.SourceFile>) -> Emit.EmitterRun<Emit.EmitResult>:
+  Emit.emitter_library_start(program, exports, files)
+
+def emitter_step(-R: Type, run: Emit.EmitterRun<R>) -> Emit.EmitterRun<R>:
+  Emit.emitter_step(R, run)
+
+def emit_c_modules_start(program: Checked.CheckedProgram, runtime: String, files: List<&2, BIR.SourceFile>) -> Emit.EmitterRun<Emit.EmitResult>:
+  Emit.cemit_start(program, runtime, files)
+
+def emit_c_library_start(program: Checked.CheckedProgram, exports: List<&2, String>, runtime: String, files: List<&2, BIR.SourceFile>) -> Emit.EmitterRun<Emit.EmitResult>:
+  Emit.cemit_library_start(program, exports, runtime, files)
+
+def c_emitter_step(-R: Type, run: Emit.EmitterRun<R>) -> Emit.EmitterRun<R>:
+  Emit.emitter_step(R, run)

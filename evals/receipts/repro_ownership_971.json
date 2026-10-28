@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "status": "SCOPED_OWNERSHIP_WITNESSES_PASS",
+  "wholeOwnershipLawProven": false,
+  "component": {
+    "path": "/private/tmp/bend-verify-836/checkpoints/verify-836-art.js",
+    "bytes": 17918636,
+    "sha256": "971e0986800a7d331cf5f528bb71dfb4400e4b9177b90224ce33054da48e0422"
+  },
+  "host": {
+    "path": "/private/tmp/bend-verify-836/evals/candidate_host.ts",
+    "bytes": 15679,
+    "sha256": "2596997a2a578cb371e11e8cb0858e4ebd9f53b1679d2814f3068a0db29613e4"
+  },
+  "parser": {
+    "path": "/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+    "bytes": 2834193,
+    "sha256": "0e7b3c4295d5fc3e64cad4cb23eeb01c7c6051ae7df15893dd18622b226ca33b"
+  },
+  "base": {
+    "path": "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+    "bytes": 75624,
+    "sha256": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c"
+  },
+  "runtimeC": {
+    "path": "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c",
+    "bytes": 75336,
+    "sha256": "478c1ba7d0d0626c1927d11c4af3b3d4cef520db41afd8722ebf55d5050769c3"
+  },
+  "nodeRuntime": "v23.11.0|12.9.202.28-node.14",
+  "workerStack": "candidate host has no explicit stack flag; producer worker stack settings do not apply",
+  "hostHeapMiB": 3072,
+  "cwd": "/private/tmp/bend-fir-integrated57ab",
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 1962819584,
+    "peakFootprintBytes": 2033418088,
+    "elapsedMs": 76468,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "/usr/bin/env",
+      "CANDIDATE=/private/tmp/bend-verify-836/checkpoints/verify-836-art.js",
+      "CANDIDATE_HOST=/private/tmp/bend-verify-836/evals/candidate_host.ts",
+      "PARSER=/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+      "BASE=/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+      "RUNTIME_C=/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c",
+      "NODE=/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "OUT=/tmp/bend-ownership-971-run1",
+      "TARGET=c",
+      "CASES=own_cons own_rebox alias_whole_parent",
+      "/bin/sh",
+      "evals/repro_ownership/run_ownership_repro.sh"
+    ],
+    "label": "heavy command",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792927084346-90ec9b0dfc6d7aa0.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "guardianRaw": {
+    "path": "/tmp/bend-ownership-971-run1/guardian.report.json",
+    "bytes": 1070,
+    "sha256": "4e7cbb74f71d3d4ee35b7a8aa1afa2d67701d50969ac994b67a2a3265366b0e1"
+  },
+  "stageLedger": {
+    "path": "/tmp/bend-ownership-971-run1/exits.tsv",
+    "bytes": 177,
+    "sha256": "a7814801d80dde20d8a52d16343a21202b631334dfe83c091c720278e5ea400d"
+  },
+  "commands": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node --experimental-strip-types --max-old-space-size=3072 /private/tmp/bend-verify-836/evals/candidate_host.ts --candidate=/private/tmp/bend-verify-836/checkpoints/verify-836-art.js --parser=/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js --source-tag=../bend2/selfhost/backend_ir.SourceFile /private/tmp/bend-fir-integrated57ab/evals/repro_ownership/own_cons.bend -o /tmp/bend-ownership-971-run1/own_cons.c --base=/private/tmp/bend-fir-integrated57ab/bend2/base.bend --runtime-c=/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c\nclang -std=c11 -O0 -ferror-limit=0 -pthread -lm -o /tmp/bend-ownership-971-run1/own_cons.cbin /tmp/bend-ownership-971-run1/own_cons.c\n/tmp/bend-ownership-971-run1/own_cons.cbin\n/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node --experimental-strip-types --max-old-space-size=3072 /private/tmp/bend-verify-836/evals/candidate_host.ts --candidate=/private/tmp/bend-verify-836/checkpoints/verify-836-art.js --parser=/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js --source-tag=../bend2/selfhost/backend_ir.SourceFile /private/tmp/bend-fir-integrated57ab/evals/repro_ownership/own_rebox.bend -o /tmp/bend-ownership-971-run1/own_rebox.c --base=/private/tmp/bend-fir-integrated57ab/bend2/base.bend --runtime-c=/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c\nclang -std=c11 -O0 -ferror-limit=0 -pthread -lm -o /tmp/bend-ownership-971-run1/own_rebox.cbin /tmp/bend-ownership-971-run1/own_rebox.c\n/tmp/bend-ownership-971-run1/own_rebox.cbin\n/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node --experimental-strip-types --max-old-space-size=3072 /private/tmp/bend-verify-836/evals/candidate_host.ts --candidate=/private/tmp/bend-verify-836/checkpoints/verify-836-art.js --parser=/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js --source-tag=../bend2/selfhost/backend_ir.SourceFile /private/tmp/bend-fir-integrated57ab/evals/repro_ownership/alias_whole_parent.bend -o /tmp/bend-ownership-971-run1/alias_whole_parent.c --base=/private/tmp/bend-fir-integrated57ab/bend2/base.bend --runtime-c=/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c\nclang -std=c11 -O0 -ferror-limit=0 -pthread -lm -o /tmp/bend-ownership-971-run1/alias_whole_parent.cbin /tmp/bend-ownership-971-run1/alias_whole_parent.c\n/tmp/bend-ownership-971-run1/alias_whole_parent.cbin\n",
+  "inputOutputHashes": "candidate\t971e0986800a7d331cf5f528bb71dfb4400e4b9177b90224ce33054da48e0422\t/private/tmp/bend-verify-836/checkpoints/verify-836-art.js\ncandidate_host\t2596997a2a578cb371e11e8cb0858e4ebd9f53b1679d2814f3068a0db29613e4\t/private/tmp/bend-verify-836/evals/candidate_host.ts\nparser\t0e7b3c4295d5fc3e64cad4cb23eeb01c7c6051ae7df15893dd18622b226ca33b\t/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js\nbase\t3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c\t/private/tmp/bend-fir-integrated57ab/bend2/base.bend\nruntime_c\t478c1ba7d0d0626c1927d11c4af3b3d4cef520db41afd8722ebf55d5050769c3\t/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c\ndriver\te1927784794ce41421a7a79011e7f434ebcd9d40aea8fc0368eea2591964cb02\t/private/tmp/bend-fir-integrated57ab/evals/repro_ownership/run_ownership_repro.sh\nsource-own_cons\tad628caf17d68e4ec7330502c48e9f0962173e07f866316108bec8557ab6c45f\t/private/tmp/bend-fir-integrated57ab/evals/repro_ownership/own_cons.bend\nemit-own_cons\tc8d18d3c42a1d5629c4cb549f2d71f43b67415a650b6c0349e3dfdc6c15f72bc\t/tmp/bend-ownership-971-run1/own_cons.c\nbinary-own_cons\t79c00bffd62d03be6893806577dd02d89087e3f166c0386fd67b573b59011f1f\t/tmp/bend-ownership-971-run1/own_cons.cbin\nsource-own_rebox\t3b9658f8bd3c51f0c55f83d92a57330bec013f8eea18a99bfce0f5eabf5f834b\t/private/tmp/bend-fir-integrated57ab/evals/repro_ownership/own_rebox.bend\nemit-own_rebox\t2d5ccc52b7ed3bd94a4ef93f5bf3a6c3fe8a86986a6ca900ee089fd6013b650a\t/tmp/bend-ownership-971-run1/own_rebox.c\nbinary-own_rebox\t2f0d027b8ce46025e9c8734ad7958720ee94f351560f792d94e5a984e433edaa\t/tmp/bend-ownership-971-run1/own_rebox.cbin\nsource-alias_whole_parent\taa8ee8a38efaa49e03f0669af49328d53dbd04a7311145167b783d7d1ed7df5b\t/private/tmp/bend-fir-integrated57ab/evals/repro_ownership/alias_whole_parent.bend\nemit-alias_whole_parent\t2308a21ff80f883540a534035be835942ad8e4b477bd2e0e295839bd133b6a20\t/tmp/bend-ownership-971-run1/alias_whole_parent.c\nbinary-alias_whole_parent\t6a4cba22f6eeb957dc9a8660d258f146b89c46cf167af8153ebb9f732f7284e8\t/tmp/bend-ownership-971-run1/alias_whole_parent.cbin\n",
+  "rows": [
+    {
+      "name": "own_cons",
+      "observedRaw": "3\n129\n129\nbounded\n",
+      "runStderr": "",
+      "artifacts": [
+        {
+          "path": "/tmp/bend-ownership-971-run1/own_cons.c",
+          "bytes": 1141275,
+          "sha256": "c8d18d3c42a1d5629c4cb549f2d71f43b67415a650b6c0349e3dfdc6c15f72bc"
+        },
+        {
+          "path": "/tmp/bend-ownership-971-run1/own_cons.cbin",
+          "bytes": 971776,
+          "sha256": "79c00bffd62d03be6893806577dd02d89087e3f166c0386fd67b573b59011f1f"
+        }
+      ]
+    },
+    {
+      "name": "own_rebox",
+      "observedRaw": "7\n129\n129\nbounded\n",
+      "runStderr": "",
+      "artifacts": [
+        {
+          "path": "/tmp/bend-ownership-971-run1/own_rebox.c",
+          "bytes": 1149402,
+          "sha256": "2d5ccc52b7ed3bd94a4ef93f5bf3a6c3fe8a86986a6ca900ee089fd6013b650a"
+        },
+        {
+          "path": "/tmp/bend-ownership-971-run1/own_rebox.cbin",
+          "bytes": 972128,
+          "sha256": "2f0d027b8ce46025e9c8734ad7958720ee94f351560f792d94e5a984e433edaa"
+        }
+      ]
+    },
+    {
+      "name": "alias_whole_parent",
+      "observedRaw": "9\n",
+      "runStderr": "",
+      "artifacts": [
+        {
+          "path": "/tmp/bend-ownership-971-run1/alias_whole_parent.c",
+          "bytes": 1126136,
+          "sha256": "2308a21ff80f883540a534035be835942ad8e4b477bd2e0e295839bd133b6a20"
+        },
+        {
+          "path": "/tmp/bend-ownership-971-run1/alias_whole_parent.cbin",
+          "bytes": 954456,
+          "sha256": "6a4cba22f6eeb957dc9a8660d258f146b89c46cf167af8153ebb9f732f7284e8"
+        }
+      ]
+    }
+  ],
+  "scope": "Unchanged warm+32-page frontier bound, not live/retained heap. Both memory controls read 129 warm and 129 after (ceiling161); whole-parent value control prints9. Historical520 failures remain preserved. No unique causal source-change or global ownership proof."
+}

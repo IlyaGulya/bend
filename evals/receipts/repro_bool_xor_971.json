@@ -1,0 +1,286 @@
+{
+  "schemaVersion": 1,
+  "status": "MINIMIZED_BOOL_XOR_RUNTIME_FAILURE",
+  "accepted": false,
+  "component": {
+    "path": "/private/tmp/bend-verify-836/checkpoints/verify-836-art.js",
+    "sha256": "971e0986800a7d331cf5f528bb71dfb4400e4b9177b90224ce33054da48e0422",
+    "bytes": 17918636
+  },
+  "parser": {
+    "path": "/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+    "sha256": "0e7b3c4295d5fc3e64cad4cb23eeb01c7c6051ae7df15893dd18622b226ca33b"
+  },
+  "node": {
+    "path": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+    "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5",
+    "version": "v23.11.0",
+    "v8": "12.9.202.28-node.14|--max-old-space-size=3072,-e,process.stdout.write(process.versions.v8 + \"|\" + process.execArgv.join(\",\"))"
+  },
+  "base": {
+    "path": "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+    "sha256": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c"
+  },
+  "runtimeC": {
+    "path": "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c",
+    "sha256": "478c1ba7d0d0626c1927d11c4af3b3d4cef520db41afd8722ebf55d5050769c3"
+  },
+  "caps": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000,
+    "hostHeapMiB": 3072
+  },
+  "rawReceipt": {
+    "path": "/tmp/bend-inline-971-xor-reduction-run1/repro.receipt.json",
+    "bytes": 11613,
+    "sha256": "913d94e8a89d5b49f956fdad32f17fc9c45ebeb2898302fa578138595747fbec"
+  },
+  "fixtures": [
+    {
+      "fixture": "/private/tmp/bend-fir-integrated57ab/evals/repro_inline57ab_bool_xor_projected.bend",
+      "sourceSha256": "88af7219f4e922688a72b029e1be752be3b957dfb3598c1955f13d5a46e6a7b8",
+      "expected": "False",
+      "status": "RUN_FAIL",
+      "detail": "gate=FAIL effective=1 command=1 phase=complete stopped=true; bend: runtime fail-stop"
+    },
+    {
+      "fixture": "/private/tmp/bend-fir-integrated57ab/evals/repro_inline57ab_bool_xor_literal.bend",
+      "sourceSha256": "5a80a2380169c99b8bee85646e87ef4e154e84c65e308ff1590ce3245b4031ee",
+      "expected": "False",
+      "status": "RUN_FAIL",
+      "detail": "gate=FAIL effective=1 command=1 phase=complete stopped=true; bend: runtime fail-stop"
+    }
+  ],
+  "stages": {
+    "repro_inline57ab_bool_xor_projected": {
+      "emit": {
+        "command": [
+          "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=3072",
+          "/private/tmp/bend-verify-836/evals/candidate_host.ts",
+          "--candidate=/private/tmp/bend-verify-836/checkpoints/verify-836-art.js",
+          "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+          "--parser=/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+          "/private/tmp/bend-fir-integrated57ab/evals/repro_inline57ab_bool_xor_projected.bend",
+          "-o",
+          "/tmp/bend-inline-971-xor-reduction-run1/repro_inline57ab_bool_xor_projected.c",
+          "--base=/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+          "--runtime-c=/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+        ],
+        "status": "PASS",
+        "reason": "command_exit",
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "effectiveExitCode": 0,
+        "elapsedMs": 20639,
+        "peakRssBytes": 1635909632,
+        "peakFootprintBytes": 1733910952,
+        "stdoutPath": "/tmp/bend-inline-971-xor-reduction-run1/repro_inline57ab_bool_xor_projected.emit.stdout",
+        "stdoutSha256": "61f0767ca740fdc8d2278f6fbdf9e5b2eb249233d75434e5dbc911c2c886ea27",
+        "stdoutBytes": 318,
+        "stderrPath": "/tmp/bend-inline-971-xor-reduction-run1/repro_inline57ab_bool_xor_projected.emit.stderr",
+        "stderrSha256": "8adfcd4f67b88492975017f2ed97dd99966314d37137a6c160523c05a52cf61c",
+        "stderrBytes": 177,
+        "gatePath": "/tmp/bend-inline-971-xor-reduction-run1/repro_inline57ab_bool_xor_projected.emit.gate.report.json"
+      },
+      "clang": {
+        "command": [
+          "clang",
+          "-std=c11",
+          "-O0",
+          "-ferror-limit=0",
+          "-pthread",
+          "-lm",
+          "-o",
+          "/tmp/bend-inline-971-xor-reduction-run1/repro_inline57ab_bool_xor_projected",
+          "/tmp/bend-inline-971-xor-reduction-run1/repro_inline57ab_bool_xor_projected.c"
+        ],
+        "status": "PASS",
+        "reason": "command_exit",
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "effectiveExitCode": 0,
+        "elapsedMs": 1171,
+        "peakRssBytes": 134021120,
+        "peakFootprintBytes": 89539232,
+        "stdoutPath": "/tmp/bend-inline-971-xor-reduction-run1/repro_inline57ab_bool_xor_projected.clang.stdout",
+        "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdoutBytes": 0,
+        "stderrPath": "/tmp/bend-inline-971-xor-reduction-run1/repro_inline57ab_bool_xor_projected.clang.stderr",
+        "stderrSha256": "875ac75ca680fcf96c21a66e63ebb235fc5a00bc17a7520327486b871c45846d",
+        "stderrBytes": 9197,
+        "gatePath": "/tmp/bend-inline-971-xor-reduction-run1/repro_inline57ab_bool_xor_projected.clang.gate.report.json"
+      },
+      "run": {
+        "command": [
+          "/tmp/bend-inline-971-xor-reduction-run1/repro_inline57ab_bool_xor_projected"
+        ],
+        "status": "FAIL",
+        "reason": "command_exit",
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "commandExitCode": 1,
+        "commandSignal": 0,
+        "effectiveExitCode": 1,
+        "elapsedMs": 13,
+        "peakRssBytes": 655360,
+        "peakFootprintBytes": 475400,
+        "stdoutPath": "/tmp/bend-inline-971-xor-reduction-run1/repro_inline57ab_bool_xor_projected.run.stdout",
+        "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdoutBytes": 0,
+        "stderrPath": "/tmp/bend-inline-971-xor-reduction-run1/repro_inline57ab_bool_xor_projected.run.stderr",
+        "stderrSha256": "2cbbd1308f68fc5f9e6e335928ae04cea79a550863032a303a9449e573adf083",
+        "stderrBytes": 24,
+        "gatePath": "/tmp/bend-inline-971-xor-reduction-run1/repro_inline57ab_bool_xor_projected.run.gate.report.json"
+      }
+    },
+    "repro_inline57ab_bool_xor_literal": {
+      "emit": {
+        "command": [
+          "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=3072",
+          "/private/tmp/bend-verify-836/evals/candidate_host.ts",
+          "--candidate=/private/tmp/bend-verify-836/checkpoints/verify-836-art.js",
+          "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+          "--parser=/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+          "/private/tmp/bend-fir-integrated57ab/evals/repro_inline57ab_bool_xor_literal.bend",
+          "-o",
+          "/tmp/bend-inline-971-xor-reduction-run1/repro_inline57ab_bool_xor_literal.c",
+          "--base=/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+          "--runtime-c=/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+        ],
+        "status": "PASS",
+        "reason": "command_exit",
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "effectiveExitCode": 0,
+        "elapsedMs": 21922,
+        "peakRssBytes": 1953939456,
+        "peakFootprintBytes": 2026242592,
+        "stdoutPath": "/tmp/bend-inline-971-xor-reduction-run1/repro_inline57ab_bool_xor_literal.emit.stdout",
+        "stdoutSha256": "4bd998b6df4193eb6c8f46035a6a2b672837ed9d2c8b89b13e9723a70e05bfaf",
+        "stdoutBytes": 316,
+        "stderrPath": "/tmp/bend-inline-971-xor-reduction-run1/repro_inline57ab_bool_xor_literal.emit.stderr",
+        "stderrSha256": "a8e80b4970e367c327a3c0a2c0d4c40fb547a0cd1fdc8b94e105b70928be9bc8",
+        "stderrBytes": 177,
+        "gatePath": "/tmp/bend-inline-971-xor-reduction-run1/repro_inline57ab_bool_xor_literal.emit.gate.report.json"
+      },
+      "clang": {
+        "command": [
+          "clang",
+          "-std=c11",
+          "-O0",
+          "-ferror-limit=0",
+          "-pthread",
+          "-lm",
+          "-o",
+          "/tmp/bend-inline-971-xor-reduction-run1/repro_inline57ab_bool_xor_literal",
+          "/tmp/bend-inline-971-xor-reduction-run1/repro_inline57ab_bool_xor_literal.c"
+        ],
+        "status": "PASS",
+        "reason": "command_exit",
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "effectiveExitCode": 0,
+        "elapsedMs": 1250,
+        "peakRssBytes": 134086656,
+        "peakFootprintBytes": 89637608,
+        "stdoutPath": "/tmp/bend-inline-971-xor-reduction-run1/repro_inline57ab_bool_xor_literal.clang.stdout",
+        "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdoutBytes": 0,
+        "stderrPath": "/tmp/bend-inline-971-xor-reduction-run1/repro_inline57ab_bool_xor_literal.clang.stderr",
+        "stderrSha256": "e3d714b4f86d1b2c5ef51824a33c1703a3e98b1faad12f5571c2452bdf4f3e17",
+        "stderrBytes": 8759,
+        "gatePath": "/tmp/bend-inline-971-xor-reduction-run1/repro_inline57ab_bool_xor_literal.clang.gate.report.json"
+      },
+      "run": {
+        "command": [
+          "/tmp/bend-inline-971-xor-reduction-run1/repro_inline57ab_bool_xor_literal"
+        ],
+        "status": "FAIL",
+        "reason": "command_exit",
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "commandExitCode": 1,
+        "commandSignal": 0,
+        "effectiveExitCode": 1,
+        "elapsedMs": 17,
+        "peakRssBytes": 131072,
+        "peakFootprintBytes": 311440,
+        "stdoutPath": "/tmp/bend-inline-971-xor-reduction-run1/repro_inline57ab_bool_xor_literal.run.stdout",
+        "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdoutBytes": 0,
+        "stderrPath": "/tmp/bend-inline-971-xor-reduction-run1/repro_inline57ab_bool_xor_literal.run.stderr",
+        "stderrSha256": "2cbbd1308f68fc5f9e6e335928ae04cea79a550863032a303a9449e573adf083",
+        "stderrBytes": 24,
+        "gatePath": "/tmp/bend-inline-971-xor-reduction-run1/repro_inline57ab_bool_xor_literal.run.gate.report.json"
+      }
+    }
+  },
+  "artifacts": [
+    {
+      "source": {
+        "path": "/private/tmp/bend-fir-integrated57ab/evals/repro_inline57ab_bool_xor_projected.bend",
+        "bytes": 387,
+        "sha256": "88af7219f4e922688a72b029e1be752be3b957dfb3598c1955f13d5a46e6a7b8"
+      },
+      "c": {
+        "path": "/tmp/bend-inline-971-xor-reduction-run1/repro_inline57ab_bool_xor_projected.c",
+        "bytes": 1124647,
+        "sha256": "d974c87c74742a5dfc7bdd4f2d04e6b1e656708c51be1b85afbabf1d700530f4"
+      },
+      "executable": {
+        "path": "/tmp/bend-inline-971-xor-reduction-run1/repro_inline57ab_bool_xor_projected",
+        "bytes": 954320,
+        "sha256": "db403265e0b36f4a33ff4b830970876e0621b0ef814aad6c1b312190e133ea17"
+      },
+      "stdout": "",
+      "stderr": "bend: runtime fail-stop\n"
+    },
+    {
+      "source": {
+        "path": "/private/tmp/bend-fir-integrated57ab/evals/repro_inline57ab_bool_xor_literal.bend",
+        "bytes": 212,
+        "sha256": "5a80a2380169c99b8bee85646e87ef4e154e84c65e308ff1590ce3245b4031ee"
+      },
+      "c": {
+        "path": "/tmp/bend-inline-971-xor-reduction-run1/repro_inline57ab_bool_xor_literal.c",
+        "bytes": 1121799,
+        "sha256": "09e702ce73d31b432f88ca365abfc88d7a7efd1197e00968d72037b8f215fd16"
+      },
+      "executable": {
+        "path": "/tmp/bend-inline-971-xor-reduction-run1/repro_inline57ab_bool_xor_literal",
+        "bytes": 954224,
+        "sha256": "bedc48b3b319d983eb9c9160c8b3c63d0f4cbd80d46bd0016ff425a8b01b6cc2"
+      },
+      "stdout": "",
+      "stderr": "bend: runtime fail-stop\n"
+    }
+  ],
+  "finding": {
+    "scope": "Literal Bool.xor(True{},True{}) through Bool.show fails without any record, projected field, preceding IO chain or numeric consumer. Both reduced sources emit and compile, then exit1 with empty stdout/runtime fail-stop.",
+    "source": {
+      "path": "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_backend.bend",
+      "bytes": 208841,
+      "sha256": "83680e5356dcdc24f19f7668f1fba00be676f9c1b153a5832d461505c9d6ad79"
+    },
+    "line": 3942,
+    "expression": "term_aux(a) == (u64)t ? term_aux(b) != (u64)t : term_aux(b) == (u64)t ? t : f",
+    "defect": "In C this conditional is right-associative. The a=True arm returns raw Boolean 0/1 as the constructor CID, not canonical t/f.",
+    "proposedFix": "(term_aux(a) == (u64)t) != (term_aux(b) == (u64)t) ? t : f",
+    "fixStatus": "SOURCE_DEFECT_IDENTIFIED; FIX_NOT_APPLIED_OR_VERIFIED",
+    "causalLimit": "The source defect and failing path are observed; sufficiency of its correction requires fresh generated component and post-fix runtime evidence."
+  }
+}

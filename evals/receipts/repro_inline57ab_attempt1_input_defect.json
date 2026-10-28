@@ -1,0 +1,193 @@
+{
+  "schemaVersion": 1,
+  "kind": "C_INLINE_VALUE_REPRO",
+  "scope": "DIAGNOSTIC_WITNESS_ONLY: three reduced inline-value sources; not the 13-export/24-case acceptance matrix and not a Root GO",
+  "status": "FAIL",
+  "worktree": "/private/tmp/bend-repro-inline57ab",
+  "logs": "checkpoints/repro-inline-values57ab-v1",
+  "host": {
+    "path": "/private/tmp/bend-root57ab-go/evals/candidate_host.ts",
+    "sha256": "2596997a2a578cb371e11e8cb0858e4ebd9f53b1679d2814f3068a0db29613e4"
+  },
+  "component": {
+    "path": "/private/tmp/bend-root57ab-go/checkpoints/root57ab-go-art.js",
+    "sha256": "9941352b639d1f31e381640f77e015e252d601b3815d9f36ea8614496bf50cb4",
+    "bytes": 17846510
+  },
+  "parser": {
+    "path": "/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+    "sha256": "0e7b3c4295d5fc3e64cad4cb23eeb01c7c6051ae7df15893dd18622b226ca33b"
+  },
+  "tag": "../bend2/selfhost/backend_ir.SourceFile",
+  "node": {
+    "path": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+    "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5",
+    "version": "v23.11.0",
+    "v8": "12.9.202.28-node.14|--max-old-space-size=3072,-e,process.stdout.write(process.versions.v8 + \"|\" + process.execArgv.join(\",\"))"
+  },
+  "base": {
+    "path": "/private/tmp/bend-repro-inline57ab/bend2/base.bend",
+    "sha256": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c"
+  },
+  "runtimeC": {
+    "path": "/private/tmp/bend-repro-inline57ab/bend2/selfhost/c_runtime.c",
+    "sha256": "478c1ba7d0d0626c1927d11c4af3b3d4cef520db41afd8722ebf55d5050769c3"
+  },
+  "guardian": {
+    "ts": "/private/tmp/bend-repro-inline57ab/evals/heavy_gate.ts",
+    "tsSha256": "204f3529704435455d20a9d5a126a8e9c62e002b6fed9044c8319da8a3c26ff2",
+    "nativeC": "/private/tmp/bend-repro-inline57ab/evals/heavy_gate_native.c",
+    "nativeCSha256": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b"
+  },
+  "caps": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000,
+    "hostHeapMiB": 3072
+  },
+  "fixtures": [
+    {
+      "fixture": "/private/tmp/bend-repro-inline57ab/evals/repro_inline57ab_bool_projection.bend",
+      "sourceSha256": "149a667a52701d3b15a82090f9ccb46e3fc1c26a58e7cb565e20b9e1eaf1cf1f",
+      "expected": "1\nTrue",
+      "status": "EMIT_FAIL",
+      "detail": "gate=FAIL effective=1 command=1 phase=complete stopped=true; candidate: checking failed: duplicate declaration: Pair"
+    },
+    {
+      "fixture": "/private/tmp/bend-repro-inline57ab/evals/repro_inline57ab_char_codepoint.bend",
+      "sourceSha256": "53e2b677d95a8e1d9a144227ac81ccf97523e541c84d6b55652f32c64328f990",
+      "expected": "955\n955",
+      "status": "EMIT_FAIL",
+      "detail": "gate=FAIL effective=1 command=1 phase=complete stopped=true; candidate: parser rejected /private/tmp/bend-repro-inline57ab/evals/repro_inline57ab_char_codepoint.bend: invalid or unsupported top-level syntax"
+    },
+    {
+      "fixture": "/private/tmp/bend-repro-inline57ab/evals/repro_inline57ab_bool_fill_tags.bend",
+      "sourceSha256": "f1cf8e55d66a97c70952c263c290c1bd0ab54b89ecd4a92089134056171f8e05",
+      "expected": "False\nTrue\nTrue\nFalse",
+      "status": "EMIT_FAIL",
+      "detail": "gate=FAIL effective=1 command=1 phase=complete stopped=true; candidate: checking failed: duplicate declaration: Pair"
+    }
+  ],
+  "stages": {
+    "repro_inline57ab_bool_projection": {
+      "emit": {
+        "command": [
+          "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=3072",
+          "/private/tmp/bend-root57ab-go/evals/candidate_host.ts",
+          "--candidate=/private/tmp/bend-root57ab-go/checkpoints/root57ab-go-art.js",
+          "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+          "--parser=/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+          "/private/tmp/bend-repro-inline57ab/evals/repro_inline57ab_bool_projection.bend",
+          "-o",
+          "checkpoints/repro-inline-values57ab-v1/repro_inline57ab_bool_projection.c",
+          "--base=/private/tmp/bend-repro-inline57ab/bend2/base.bend",
+          "--runtime-c=/private/tmp/bend-repro-inline57ab/bend2/selfhost/c_runtime.c"
+        ],
+        "status": "FAIL",
+        "reason": "command_exit",
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "commandExitCode": 1,
+        "commandSignal": 0,
+        "effectiveExitCode": 1,
+        "elapsedMs": 8053,
+        "peakRssBytes": 986316800,
+        "peakFootprintBytes": 1006302688,
+        "stdoutPath": "checkpoints/repro-inline-values57ab-v1/repro_inline57ab_bool_projection.emit.stdout",
+        "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdoutBytes": 0,
+        "stderrPath": "checkpoints/repro-inline-values57ab-v1/repro_inline57ab_bool_projection.emit.stderr",
+        "stderrSha256": "c934554ca16bae8e1d798c1fd3f425437e80857334a79087d6379aea616759a0",
+        "stderrBytes": 233,
+        "gatePath": "checkpoints/repro-inline-values57ab-v1/repro_inline57ab_bool_projection.emit.gate.report.json"
+      }
+    },
+    "repro_inline57ab_char_codepoint": {
+      "emit": {
+        "command": [
+          "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=3072",
+          "/private/tmp/bend-root57ab-go/evals/candidate_host.ts",
+          "--candidate=/private/tmp/bend-root57ab-go/checkpoints/root57ab-go-art.js",
+          "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+          "--parser=/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+          "/private/tmp/bend-repro-inline57ab/evals/repro_inline57ab_char_codepoint.bend",
+          "-o",
+          "checkpoints/repro-inline-values57ab-v1/repro_inline57ab_char_codepoint.c",
+          "--base=/private/tmp/bend-repro-inline57ab/bend2/base.bend",
+          "--runtime-c=/private/tmp/bend-repro-inline57ab/bend2/selfhost/c_runtime.c"
+        ],
+        "status": "FAIL",
+        "reason": "command_exit",
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "commandExitCode": 1,
+        "commandSignal": 0,
+        "effectiveExitCode": 1,
+        "elapsedMs": 1142,
+        "peakRssBytes": 518881280,
+        "peakFootprintBytes": 509495816,
+        "stdoutPath": "checkpoints/repro-inline-values57ab-v1/repro_inline57ab_char_codepoint.emit.stdout",
+        "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdoutBytes": 0,
+        "stderrPath": "checkpoints/repro-inline-values57ab-v1/repro_inline57ab_char_codepoint.emit.stderr",
+        "stderrSha256": "207f9b8bcd2def15219d9b1d7ae0f5115695dd1c1709abb4125790bef4f4c882",
+        "stderrBytes": 323,
+        "gatePath": "checkpoints/repro-inline-values57ab-v1/repro_inline57ab_char_codepoint.emit.gate.report.json"
+      }
+    },
+    "repro_inline57ab_bool_fill_tags": {
+      "emit": {
+        "command": [
+          "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=3072",
+          "/private/tmp/bend-root57ab-go/evals/candidate_host.ts",
+          "--candidate=/private/tmp/bend-root57ab-go/checkpoints/root57ab-go-art.js",
+          "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+          "--parser=/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+          "/private/tmp/bend-repro-inline57ab/evals/repro_inline57ab_bool_fill_tags.bend",
+          "-o",
+          "checkpoints/repro-inline-values57ab-v1/repro_inline57ab_bool_fill_tags.c",
+          "--base=/private/tmp/bend-repro-inline57ab/bend2/base.bend",
+          "--runtime-c=/private/tmp/bend-repro-inline57ab/bend2/selfhost/c_runtime.c"
+        ],
+        "status": "FAIL",
+        "reason": "command_exit",
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "commandExitCode": 1,
+        "commandSignal": 0,
+        "effectiveExitCode": 1,
+        "elapsedMs": 9120,
+        "peakRssBytes": 968540160,
+        "peakFootprintBytes": 1001272392,
+        "stdoutPath": "checkpoints/repro-inline-values57ab-v1/repro_inline57ab_bool_fill_tags.emit.stdout",
+        "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdoutBytes": 0,
+        "stderrPath": "checkpoints/repro-inline-values57ab-v1/repro_inline57ab_bool_fill_tags.emit.stderr",
+        "stderrSha256": "46fc911049497933e127f82b7e6cce4a78b404c7a80c9ba22917ef456f513e69",
+        "stderrBytes": 233,
+        "gatePath": "checkpoints/repro-inline-values57ab-v1/repro_inline57ab_bool_fill_tags.emit.gate.report.json"
+      }
+    }
+  },
+  "committedSources": [
+    {
+      "path": "/private/tmp/bend-repro-inline57ab/evals/repro_inline57ab_bool_projection.bend",
+      "sha256": "149a667a52701d3b15a82090f9ccb46e3fc1c26a58e7cb565e20b9e1eaf1cf1f"
+    },
+    {
+      "path": "/private/tmp/bend-repro-inline57ab/evals/repro_inline57ab_char_codepoint.bend",
+      "sha256": "53e2b677d95a8e1d9a144227ac81ccf97523e541c84d6b55652f32c64328f990"
+    },
+    {
+      "path": "/private/tmp/bend-repro-inline57ab/evals/repro_inline57ab_bool_fill_tags.bend",
+      "sha256": "f1cf8e55d66a97c70952c263c290c1bd0ab54b89ecd4a92089134056171f8e05"
+    }
+  ]
+}

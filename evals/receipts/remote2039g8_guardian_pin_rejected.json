@@ -1,0 +1,299 @@
+{
+  "schemaVersion": 1,
+  "status": "REMOTE_PARSER_PREPARATION_PASS_STALE_REVIEWED_GUARDIAN_PIN_REJECTED",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "sourceCheckpoint": "96ab078e",
+  "scope": "Fresh M3 macOS checkout; pinned Bun 1.4.3 and Node 23.11.0; generated typed sources before parser proofs. Native parser build refuses the obsolete hard-coded guardian source identity before compiling. No full compiler acceptance claim.",
+  "runtime": {
+    "bun": "1.4.3",
+    "revision": "c6da4a4d3010e5553438c60f6bd76d981976867c"
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "receiptPath": "/tmp/bend-remote2039g8a-admission-ybTTCZ/receipt.json",
+  "rows": [
+    {
+      "label": "checker_core_owned_source.ts",
+      "command": [
+        "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/.tools/bun",
+        "evals/checker_core_owned_source.ts"
+      ],
+      "stdout": "/tmp/bend-remote2039g8a-admission-ybTTCZ/checker_core_owned_source.ts.stdout",
+      "stderr": "/tmp/bend-remote2039g8a-admission-ybTTCZ/checker_core_owned_source.ts.stderr",
+      "started": 1793111361801,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 3038
+    },
+    {
+      "label": "template_step_lower.ts",
+      "command": [
+        "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/.tools/bun",
+        "evals/template_step_lower.ts"
+      ],
+      "stdout": "/tmp/bend-remote2039g8a-admission-ybTTCZ/template_step_lower.ts.stdout",
+      "stderr": "/tmp/bend-remote2039g8a-admission-ybTTCZ/template_step_lower.ts.stderr",
+      "started": 1793111364840,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 377
+    },
+    {
+      "label": "checker_core_step_lower.ts",
+      "command": [
+        "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/.tools/bun",
+        "evals/checker_core_step_lower.ts"
+      ],
+      "stdout": "/tmp/bend-remote2039g8a-admission-ybTTCZ/checker_core_step_lower.ts.stdout",
+      "stderr": "/tmp/bend-remote2039g8a-admission-ybTTCZ/checker_core_step_lower.ts.stderr",
+      "started": 1793111365217,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 1560
+    },
+    {
+      "label": "emitter_step_lower.ts",
+      "command": [
+        "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/.tools/bun",
+        "evals/emitter_step_lower.ts"
+      ],
+      "stdout": "/tmp/bend-remote2039g8a-admission-ybTTCZ/emitter_step_lower.ts.stdout",
+      "stderr": "/tmp/bend-remote2039g8a-admission-ybTTCZ/emitter_step_lower.ts.stderr",
+      "started": 1793111366777,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 2817
+    },
+    {
+      "label": "parser-source",
+      "command": [
+        "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/.tools/bun",
+        "--smol",
+        "evals/bootstrap_parser_rebuild.ts",
+        "--prepare-source",
+        "--run-id",
+        "remote2039g8a"
+      ],
+      "stdout": "/tmp/bend-remote2039g8a-admission-ybTTCZ/parser-source.stdout",
+      "stderr": "/tmp/bend-remote2039g8a-admission-ybTTCZ/parser-source.stderr",
+      "started": 1793111369594,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 11640
+    },
+    {
+      "label": "parser-public-source",
+      "command": [
+        "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/.tools/bun",
+        "--smol",
+        "evals/bootstrap_parser_public_gate.ts",
+        "--parser=checkpoints/.bootstrap_parser_rebuild_remote2039g8a_source.bend",
+        "--entry=parse_module_tokens",
+        "--report=checkpoints/bootstrap-parser-public-remote2039g8a-source.json"
+      ],
+      "stdout": "/tmp/bend-remote2039g8a-admission-ybTTCZ/parser-public-source.stdout",
+      "stderr": "/tmp/bend-remote2039g8a-admission-ybTTCZ/parser-public-source.stderr",
+      "started": 1793111381234,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 2350
+    },
+    {
+      "label": "parser-source-gate",
+      "command": [
+        "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/.tools/bun",
+        "--smol",
+        "evals/bootstrap_parser_fast.ts",
+        "--parser=checkpoints/.bootstrap_parser_rebuild_remote2039g8a_source.bend",
+        "--entry=parse_module_tokens",
+        "--public-report=checkpoints/bootstrap-parser-public-remote2039g8a-source.json",
+        "--report=checkpoints/bootstrap-parser-source-gate-remote2039g8a.json"
+      ],
+      "stdout": "/tmp/bend-remote2039g8a-admission-ybTTCZ/parser-source-gate.stdout",
+      "stderr": "/tmp/bend-remote2039g8a-admission-ybTTCZ/parser-source-gate.stderr",
+      "started": 1793111383585,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 11128
+    },
+    {
+      "label": "parser-prepare",
+      "command": [
+        "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/.tools/bun",
+        "--smol",
+        "evals/bootstrap_parser_rebuild.ts",
+        "--prepare",
+        "--run-id",
+        "remote2039g8a",
+        "--source-gate",
+        "checkpoints/bootstrap-parser-source-gate-remote2039g8a.json"
+      ],
+      "stdout": "/tmp/bend-remote2039g8a-admission-ybTTCZ/parser-prepare.stdout",
+      "stderr": "/tmp/bend-remote2039g8a-admission-ybTTCZ/parser-prepare.stderr",
+      "started": 1793111394713,
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "elapsedMs": 11107
+    },
+    {
+      "label": "parser-build",
+      "command": [
+        "/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/.tools/bun",
+        "--smol",
+        "evals/bootstrap_parser_rebuild.ts",
+        "--build-native",
+        "--run-id",
+        "remote2039g8a"
+      ],
+      "stdout": "/tmp/bend-remote2039g8a-admission-ybTTCZ/parser-build.stdout",
+      "stderr": "/tmp/bend-remote2039g8a-admission-ybTTCZ/parser-build.stderr",
+      "started": 1793111405820,
+      "status": "FAIL",
+      "exitCode": 1,
+      "signal": null,
+      "elapsedMs": 990
+    }
+  ],
+  "observedFailure": "HEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":196280320,\"peakFootprintBytes\":120849224,\"elapsedMs\":709,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/.tools/bun\",\"--smol\",\"/Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/evals/bootstrap_parser_rebuild.ts\",\"--worker-build-native\",\"--run-id\",\"remote2039g8a\",\"--canonical-sha256\",\"7389188a68a205bfccdd6a3457ba0f11e689967751e31fa6d35eaec3b09e3e37\"],\"label\":\"Final canonical bootstrap parser --build-native\",\"exitCode\":0,\"reportPath\":\"/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1793111405962-aa5aa6bbdf7a0c18.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\nError: Protected input drift: /Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/evals/heavy_gate.ts\n150 |     const authorization = await Bun.file(authorizationPath).json();\n151 |     await stableInputs();\n152 |     for (const [path, digest] of Object.entries(authorization.authenticatedInputs) as [string, string][])\n153 |       if (await hash(path) !== digest) throw Error('Prepared native-build input drift: ' + path);\n154 |     const child = Bun.spawn(authorization.command, {stdout: 'inherit', stderr: 'inherit', stdin: 'ignore'});\n155 |     if (await child.exited !== 0) throw Error('Canonical native parser build failed');\n                                              ^\nerror: Canonical native parser build failed\n      at /Users/ilyagulya/bend-full-96ab078e-bbba701f-085b-4986-9a90-aae913804cd8/evals/bootstrap_parser_rebuild.ts:155:41\n\nBun v1.4.3 (macOS arm64)\n",
+  "reviewedGuardianSha256": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015",
+  "obsoleteExpectedGuardianSha256": "204f3529704435455d20a9d5a126a8e9c62e002b6fed9044c8319da8a3c26ff2",
+  "postFixSmoke": {
+    "scope": "Real component builder and executed emitted library; no physical storage suite or full compiler proof",
+    "build": {
+      "status": "JS_GENERATED_NOT_YET_EXECUTED",
+      "provenancePath": "/tmp/bend-guardian-pin-7-build.provenance.json",
+      "provenanceSha256": "bb45f6ff1371f9568b784d24e90774af7ad1c69c17ddbebd2be1e6168f95f93c",
+      "sourcePath": "/private/tmp/bend2039g8-js-call-cost/evals/native_stage_profile_emit_source.bend",
+      "sourceSha256": "d1001497df01fa274cd4a67e7a3bd596853e9ee45ecf3fc133084c3a9cfc883b",
+      "exports": [
+        "main"
+      ],
+      "artifactPath": "/tmp/bend-guardian-pin-7.js",
+      "artifactSha256": "8babb20760dc2e4f4cb73f4007f6724ef2e32c31837d1f86eefef911c0e422e2",
+      "bytes": 4491,
+      "eventsFullyValidated": 511,
+      "checkedDefinitions": 356,
+      "liveBodies": 356,
+      "checksExcluded": 0,
+      "outputPatches": 0,
+      "checkedOutputRetention": "native e",
+      "nativeRetention": "native checked e retained through all JS definition folding; scope-local higher caches released between definitions; no serialization or source-value fallback",
+      "nativeCheckedBodies": 356,
+      "expectedSourceDefinitions": 356,
+      "toolchain": "CANONICAL NATIVE LOAD/CHECK; CANONICAL JS PREPARE/EMIT/RELEASE; Node/V8 automatic GC",
+      "preparedCount": 3,
+      "releasedCount": 3,
+      "maxSimultaneousE": 356,
+      "maxSimultaneousH": 2,
+      "countsCaveat": "Definition slots, not unique term graphs; signature metadata does not prepare higher bodies",
+      "runtime": {
+        "name": "node",
+        "node": "23.11.0",
+        "v8": "12.9.202.28-node.14",
+        "executable": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "heapLimitMiB": 3072,
+        "stackSizeMb": 256,
+        "heapSizeLimitBytes": 3271557120,
+        "manualGC": false
+      },
+      "cpuMs": 410.451,
+      "compiledExecution": "NOT_RUN",
+      "selfhostGreen": false,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 195084288,
+        "peakFootprintBytes": 152137056,
+        "elapsedMs": 895,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "node",
+          "--experimental-strip-types",
+          "--max-old-space-size=3072",
+          "/private/tmp/bend2039g8-js-call-cost/evals/checker_core_component_build.ts",
+          "--worker",
+          "--file=/private/tmp/bend2039g8-js-call-cost/evals/native_stage_profile_emit_source.bend",
+          "--exports=main",
+          "--artifact=/tmp/bend-guardian-pin-7.js",
+          "--report=/tmp/bend-guardian-pin-7-build",
+          "--inputs-sha256=7dfe80f8121bb824dc935db9a21bb0f87df99b7c101a942af0b68335d2ac73a0"
+        ],
+        "label": "Full-native CheckerCore component JS build",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793111560941-a08b3557c1872722.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    "executedCommand": [
+      "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "--input-type=module",
+      "-e",
+      "const library=(await import(\"file:///tmp/bend-guardian-pin-7.js\")).default; const result=typeof library.main===\"function\"?library.main():library.main; if(result!==7)throw Error(\"Expected arithmetic consumer 7, got \"+result); console.log(result)"
+    ],
+    "exitCode": 0,
+    "stdout": "7\n"
+  }
+}

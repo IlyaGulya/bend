@@ -386,3 +386,31 @@ The ownership boundary above is historical. Current authorized typed-step
 CheckerCore/JSEmit integration passes full native validation and21 actual runtime
 scenarios; see `checker-core-integration.md` for the explicit Node trust boundary,
 current closure evidence and the remaining full self-bootstrap/Template scope.
+
+## Quantity-annotated local binders (run qp57a-4)
+
+The candidate parser rejected `+name : T = value` in function bodies and in do
+blocks, and rejected `+name : T <- action` in do blocks, while the stage0
+compiler accepts all three. The rejection surfaced as
+`invalid or unsupported top-level syntax` at the `:` of the binder: the body
+scanner asked `local_group_has_equal`, which only walks name tokens, so an
+annotation fell through to reply parsing.
+
+`parser.bend` now routes an annotated name group (plain or `+`) through a typed
+local path that parses the type, requires `=`, wraps the value in `TermAnn` and
+keeps the quantity on the binder (`QMany` for `+`). Do blocks accept
+`+name : T = value` (a let with a `QMany` quantity) and
+`+name : T <- action` (a bind whose lambda carries the `QMany` marker instead of
+`None`). Untyped `+name = value` and parallel typed groups stay rejected exactly
+as the stage0 compiler rejects them; the pre-existing acceptance of body
+`+name = value` is untouched.
+
+Evidence: canonical source sha `7389188a68a205bfccdd6a3457ba0f11e689967751e31fa6d35eaec3b09e3e37`,
+artifact `0e7b3c4295d5fc3e64cad4cb23eeb01c7c6051ae7df15893dd18622b226ca33b`
+(2,834,193 B), 15/15 public tests, 75-case candidate gate admitted with zero
+source exceptions, zero excluded checks and zero output patches. The three
+fixtures that use the forms now compile and run with their declared outputs:
+`list_rebox_sum` prints `7`, `3`, `bounded`; `c_backend_link` prints its six
+expected lines; `family_field_hot` prints `5`. Run qp57a-3 is recorded as
+rejected: it dropped the quantity on `<-` binders and failed with
+`invalid use quantity for s`.

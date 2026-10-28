@@ -19,10 +19,15 @@ if(childContext){
  });
 }
 
+// Shared with evals/compiler_profile.mjs so both profilers use one inspector
+// interval and one synchronous-callback contract.
+export const CPU_SAMPLING_INTERVAL_US=1000;
+export const ALLOCATION_SAMPLING_INTERVAL_BYTES=4194304;
+
 // A local inspector Session invokes these callbacks synchronously on Node 23.
 // Failing explicitly on a different implementation avoids profiling the wrong
 // interval while the compiler continues its synchronous execution.
-function post(session,method,params={}){
+export function inspectorPost(session,method,params={}){
  let completed=false,result,error;
  session.post(method,params,(failure,value)=>{completed=true;error=failure;result=value;});
  if(!completed)throw Error('Selfhost CPU profiling requires synchronous local inspector callbacks: '+method);
@@ -36,7 +41,7 @@ export function createCpuProfiler(directory,execution){
  const runDirectory=mkdtempSync(join(root,`selfhost-${process.pid}-thread-${threadId}-`));
  const identity={pid:process.pid,threadId,isMainThread};
  const startedAt=new Date().toISOString();
- const allocationSamplingIntervalBytes=4194304;
+ const allocationSamplingIntervalBytes=ALLOCATION_SAMPLING_INTERVAL_BYTES;
  const run={schemaVersion:1,kind:'selfhost-worker-cpu-profile',acceptanceEvidence:false,runDirectory,startedAt,...identity,execution,runtime:{versions:process.versions,platform:process.platform,arch:process.arch,execPath:process.execPath,execArgv:process.execArgv},samplingIntervalUs:1000,allocationSamplingIntervalBytes,allocationScope:'worker-isolate allocation samples, including objects collected by minor and major GC; statistical estimates, not exact byte counts',cpuScope:'process.cpuUsage: entire process, not exclusively this worker or spawned fixture children',memoryScope:'process.memoryUsage: RSS is process-wide; other fields describe this worker isolate',profileScope:'local inspector session: this worker isolate; spawned fixture children have separate CLI CPU profiles and resource summaries'};
  writeFileSync(join(runDirectory,'run.json'),JSON.stringify(run,null,2)+'\n',{flag:'wx'});
  const session=new Session();
@@ -46,8 +51,8 @@ export function createCpuProfiler(directory,execution){
   const interval=active;
   const endedAt=new Date().toISOString(),endedMs=performance.now();
   const cpuUs=process.cpuUsage(interval.cpuStart),memoryEnd=process.memoryUsage();
-  const {profile}=post(session,'Profiler.stop');
-  const allocationProfile=post(session,'HeapProfiler.stopSampling').profile;
+  const {profile}=inspectorPost(session,'Profiler.stop');
+  const allocationProfile=inspectorPost(session,'HeapProfiler.stopSampling').profile;
   active=undefined;
   writeFileSync(interval.profilePath,JSON.stringify(profile)+'\n',{flag:'wx'});
   writeFileSync(interval.allocationProfilePath,JSON.stringify(allocationProfile)+'\n',{flag:'wx'});
@@ -59,15 +64,15 @@ export function createCpuProfiler(directory,execution){
   const number=++sequence;
   const label=[phase,details.parserBoundary].filter(Boolean).join('-').replace(/[^A-Za-z0-9_.-]/g,'_').slice(0,120);
   const stem=join(runDirectory,String(number).padStart(6,'0')+'-'+label);
-  post(session,'Profiler.start');
-  post(session,'HeapProfiler.startSampling',{samplingInterval:allocationSamplingIntervalBytes,includeObjectsCollectedByMajorGC:true,includeObjectsCollectedByMinorGC:true});
+  inspectorPost(session,'Profiler.start');
+  inspectorPost(session,'HeapProfiler.startSampling',{samplingInterval:allocationSamplingIntervalBytes,includeObjectsCollectedByMajorGC:true,includeObjectsCollectedByMinorGC:true});
   active={sequence:number,phase,details:{...details},profilePath:stem+'.cpuprofile',allocationProfilePath:stem+'.heapprofile',summaryPath:stem+'.json',startedAt:new Date().toISOString(),startedMs:performance.now(),cpuStart:process.cpuUsage(),memoryStart:process.memoryUsage()};
  }
  try{
   session.connect();
-  post(session,'Profiler.enable');
-  post(session,'Profiler.setSamplingInterval',{interval:1000});
-  post(session,'HeapProfiler.enable');
+  inspectorPost(session,'Profiler.enable');
+  inspectorPost(session,'Profiler.setSamplingInterval',{interval:CPU_SAMPLING_INTERVAL_US});
+  inspectorPost(session,'HeapProfiler.enable');
  }catch(error){session.disconnect();throw error;}
  return {
   mark,

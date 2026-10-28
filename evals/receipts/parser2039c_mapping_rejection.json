@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "status": "REJECTED_PREPARATION_AUTHENTICATOR_MAPPING",
+  "selfhostAccepted": false,
+  "byteFixedpoint": false,
+  "sourceGate": {
+    "path": "/private/tmp/bend2039-upgrade/checkpoints/bootstrap-parser-source-gate-release2039c.json",
+    "bytes": 361904,
+    "sha256": "7750cd39d062c64c1073b25a6f727c8db9787d70611e27cc901225ab0cb1b56b",
+    "preparationAdmitted": true,
+    "completed": true,
+    "counts": {
+      "focused": {
+        "total": 23,
+        "accepted": 22,
+        "acceptanceParity": 23,
+        "semanticParity": 23,
+        "literalSpanParity": 23
+      },
+      "whole29": {
+        "total": 29,
+        "accepted": 23,
+        "acceptanceParity": 29,
+        "semanticParity": 29,
+        "literalSpanParity": 29
+      },
+      "literals": {
+        "total": 13,
+        "accepted": 13,
+        "acceptanceParity": 13,
+        "semanticParity": 13,
+        "literalSpanParity": 13
+      },
+      "real": {
+        "total": 6,
+        "accepted": 6,
+        "acceptanceParity": 6,
+        "semanticParity": 6,
+        "literalSpanParity": 6
+      }
+    }
+  },
+  "preparationGuard": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "commandExitCode": 2,
+    "commandSignal": 0,
+    "peakRssBytes": 54083584,
+    "peakFootprintBytes": 31097504,
+    "elapsedMs": 190,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "command": [
+      "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+      "--smol",
+      "/private/tmp/bend2039-upgrade/evals/bootstrap_parser_rebuild.ts",
+      "--worker-prepare",
+      "--run-id",
+      "release2039c",
+      "--canonical-sha256",
+      "7389188a68a205bfccdd6a3457ba0f11e689967751e31fa6d35eaec3b09e3e37",
+      "--source-gate",
+      "/private/tmp/bend2039-upgrade/checkpoints/bootstrap-parser-source-gate-release2039c.json"
+    ],
+    "label": "Final canonical bootstrap parser --prepare",
+    "exitCode": 1,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793006206570-8b1d2667d6495c00.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "error": "Current compiler role/path/hash migration drift: base.bend",
+  "correction": "One fail-closed currentParserConsumerPath resolver is shared by the gate and its authenticator, and its source is included in semantic input provenance.",
+  "smoke": {
+    "runtime": {
+      "bun": "1.4.2",
+      "revision": "744846f844374847c902b5e7fd59b4342a51ef99"
+    },
+    "paths": [
+      {
+        "role": "checker_core_driver.bend",
+        "path": "/private/tmp/bend2039-upgrade/checkpoints/checker_core_owned_driver_v1.bend"
+      },
+      {
+        "role": ".parser_definition_body_shape_generated_fuel.bend",
+        "path": "/private/tmp/bend2039-upgrade/checkpoints/.bootstrap_parser_rebuild_release2039c_source.bend"
+      },
+      {
+        "role": "base.bend",
+        "path": "/private/tmp/bend2039-upgrade/bend2/base.bend"
+      },
+      {
+        "role": "loaded_module.bend",
+        "path": "/private/tmp/bend2039-upgrade/bend2/selfhost/loaded_module.bend"
+      },
+      {
+        "role": "ast.bend",
+        "path": "/private/tmp/bend2039-upgrade/bend2/selfhost/ast.bend"
+      },
+      {
+        "role": "checker_core_slice.bend",
+        "path": "/private/tmp/bend2039-upgrade/checkpoints/checker_core_owned_v1.bend"
+      },
+      {
+        "role": "js_emit.bend",
+        "path": "/private/tmp/bend2039-upgrade/bend2/selfhost/js_emit.bend"
+      },
+      {
+        "role": "lexer.bend",
+        "path": "/private/tmp/bend2039-upgrade/bend2/selfhost/lexer.bend"
+      },
+      {
+        "role": "core.bend",
+        "path": "/private/tmp/bend2039-upgrade/bend2/selfhost/core.bend"
+      },
+      {
+        "role": "path.bend",
+        "path": "/private/tmp/bend2039-upgrade/bend2/selfhost/path.bend"
+      }
+    ],
+    "unknownRejected": true
+  },
+  "correctedInputs": [
+    {
+      "path": "/private/tmp/bend2039-upgrade/evals/selfhost_driver_source.ts",
+      "bytes": 40248,
+      "sha256": "be4c39ba888193b85b331955a29f00cabe836420b8d1d5800086fba2c159ac2d"
+    },
+    {
+      "path": "/private/tmp/bend2039-upgrade/evals/bootstrap_parser_fast.ts",
+      "bytes": 36621,
+      "sha256": "c05ece520063125f96a604b63733cbfb25864e6b3121a5455d4e46fa59eb8713"
+    }
+  ],
+  "scope": "Path resolver exercised only; fresh full parser admission follows under a new run ID."
+}

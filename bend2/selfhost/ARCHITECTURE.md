@@ -1,5 +1,22 @@
 # Self-host parser architecture: current boundary and historical graph
 
+## IR specifications
+
+This file records the parser migration history. The compiler's checked-FIR and backend-IR boundaries are specified separately:
+
+- [`FIR_LAWS.md`](./FIR_LAWS.md) — what `Checked.CheckedProgram` guarantees (ownership, publication, signatures, occurrences, failure), what it does not, and the open proof obligations.
+- [`BIR_LAWS.md`](./BIR_LAWS.md) — the lowering contract and `BIR.Program` well-formedness, consuming FIR as specified in `FIR_LAWS.md`.
+
+Current runtime checkpoint: `remote2039g8b`, source `ee48ca2f`, uses the
+shared CheckedFIR → BIR lowering and both target renderers. Its complete
+native build and real native-stage0 → stage1 → stage2 byte fixedpoint pass
+the original 8 GiB / 600 s gates. Both images contain 28,334,920 identical
+bytes (`0ff90274…6de885`); stage1 supplies its own full-root parser, checker
+and emitter. The complete C/JS matrices and native/host consumers pass.
+See `evals/receipts/root2039g8b_native_fixedpoint.json` for exact source,
+runtime, command, memory and timing evidence. Historical parser milestones
+below retain their original scope; they are not the current compiler status.
+
 At baseline `f640d74948c5db9f6b2298db721327b61f894711`, the main grammar SCC contained **161 functions**. Its demonstrated shortest do-expression cycle was `parse_do_return → parse_do_return_scan → parse_term → parse_atom → parse_atom_scan → parse_do_atom → parse_do_atom_args_result → parse_do_atom_colon → parse_do_return`. This is a cross-boundary cycle through the shared expression parser, not an isolated do-scanner recursion.
 
 **Decision:** a local do scanner is insufficient. A separate expression parser returns a remainder that Bend cannot prove decreases relative to the do driver's input: `driver(after, ...)` fails with “expected: a decreasing self-call” even when that parser consumes a token. Use the generated, typed Request/Kont feedback cut, not a handwritten whole-parser migration, arbitrary fuel, or unchecked same-token recursion. The checkpointed canonical intrinsic repairs are recorded below; parity/span differences remain untouched.
@@ -126,7 +143,7 @@ The complete source AST also records the pre-existing unbound `depth` argument a
 
 ## Independent integration milestones
 
-**HYBRID (not SELFHOST GREEN), resource-blocked:** stage-0 host parser and import graph → generated real `Ast.Module` values → selfhost `Checker.check` (symbol resolution and checking) → selfhost `JSEmit.emit` → JS-only driver. `gates/hybrid.ts`, `gates/hybrid_gate.ts`, and `hybrid_driver.bend` isolate this path; they never invoke `Loader.load` on target source or the native emitter. After the shared-contract cutover, the existing gate completes host module conversion but exceeds its 3GiB RSS ceiling during runner compilation (exit73), before runner execution or parity comparison. `BEND_HYBRID_TRACE_FILE` optionally records phase boundaries; `checkpoints/hybrid-phases.jsonl` retains the observed boundary. Host import resolution remains host work; no HYBRID PASS or bootstrap is claimed.
+**HYBRID (not SELFHOST GREEN), resource-blocked:** stage-0 host parser and import graph → generated real `Ast.Module` values → selfhost `Checker.check` (symbol resolution and checking) → selfhost `JSEmit.render` → JS-only driver. `gates/hybrid.ts`, `gates/hybrid_gate.ts`, and `hybrid_driver.bend` isolate this path; they never invoke `Loader.load` on target source or the native emitter. After the shared-contract cutover, the existing gate completes host module conversion but exceeds its 3GiB RSS ceiling during runner compilation (exit73), before runner execution or parity comparison. `BEND_HYBRID_TRACE_FILE` optionally records phase boundaries; `checkpoints/hybrid-phases.jsonl` retains the observed boundary. Host import resolution remains host work; no HYBRID PASS or bootstrap is claimed.
 
 `loaded_module.bend` owns `LoadedModule{namespace,module}` and imports only Base and Ast. Checker, Template, JSEmit, both emitters' shared-type consumers, and the hybrid driver import this pure contract rather than Loader's parser/IO implementation. Loader, its real driver and the loader test use the same nominal type directly; there is no legacy re-export. An actual compiled contract round-trip returns `"module-contract-ok"`; that smoke does not establish full checker/emitter parity.
 
@@ -262,4 +279,4 @@ Fuel must follow a no-progress invariant: every dispatcher transition either con
 The current residual graph has a longest helper-only path of 11 definitions after removing the selected feedback set. This bounds only direct residual-helper traversal; it does not establish the pending-Kont stack height or a fuel bound.
 
 Historical structural target: zero inter-SCC forward edges and zero non-singleton SCCs; structurally decreasing self-recursive singleton SCCs are valid. At the snapshot source, 43 cyclic SCCs consisted of 26 singletons and 17 non-singletons, including the 160-definition SCC 204. The snapshot's Gate A frontier was the three-node mutual SCC `parse_unicode_digits` → `parse_unicode_digit_code` → `parse_unicode_digit_result` → `parse_unicode_digits` (line 492 forward reference). None of these counts or that frontier applies to the current parser.
-Ownership evidence: `bend2/bend.lean` spells `Many` binders as `+x`; `architecture_probe_affine_nat.bend` proves `+code: Nat` permits one comparison use plus one value use and prints `(65n, True{})`. Applied this marker to the analogous Unicode and float-digit/scaling parameters that are used more than once.
+Ownership evidence: `bend2/bend.lean` (the file is now `bend2/bendtt.lean`; the old path no longer exists) spells `Many` binders as `+x`; `architecture_probe_affine_nat.bend` proves `+code: Nat` permits one comparison use plus one value use and prints `(65n, True{})`. Applied this marker to the analogous Unicode and float-digit/scaling parameters that are used more than once.

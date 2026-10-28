@@ -22,6 +22,263 @@ type LinkResult is Data:
   LinkSuccess{source: String}
   LinkFailure{message: String}
 
+# ---------------------------------------------------------------------------
+# Linear text construction
+#
+# Base's String.append recurses over its first argument, String.concat recurses
+# over its first element, and String.from_list/String.to_list recurse once per
+# character; every one of those is non-tail, so assembling a large translation
+# unit through them grows the stack with the text. The helpers here are all tail
+# calls: text_of_pieces reverses only the piece list, seeds the accumulator with
+# the last piece and prepends the rest through text_prepend, so no step walks an
+# already built string and the transient character list is bounded by the
+# largest piece. Per-character cost is one cons per pass, not a constant-time
+# guarantee independent of the allocator:
+#   chars_rev(s, acc)     = reverse(s) ++ acc        (walk s forward, cons)
+#   text_of_rev(chars, a) = a with chars prepended in reverse (walk forward, cons
+#                           onto the String as SCon)
+#   pieces_rev(parts, a)  = reverse(parts) concatenated onto a char list
+#   text_of_pieces(parts) = parts concatenated in order
+# Concatenating k parts therefore costs one walk over each part's characters and
+# no choice of chunk size; if peak temporary space ever matters, folding pieces
+# in reverse keeps the temporary list at the largest piece instead of the whole
+# text, at the cost of rebuilding each piece separately.
+def chars_rev(source: String, +acc: List<&2, Char>) -> List<&2, Char>:
+  match source:
+    case SNil{}: acc
+    case SCon{head, tail}: chars_rev(tail, head <> acc)
+
+def text_of_rev(chars: List<&2, Char>, +acc: String) -> String:
+  match chars:
+    case Nil{}: acc
+    case +char <> rest: text_of_rev(rest, SCon{char, acc})
+
+# text_prepend links a source in front of an already built string without
+# walking or copying that string: chars_rev holds only the source's characters,
+# and each one is consed onto acc.
+def text_prepend(source: String, +acc: String) -> String:
+  text_of_rev(chars_rev(source, Nil{}), acc)
+
+# Pieces are folded from the end: the last piece becomes the accumulator, and
+# every earlier piece is prepended. No step walks the accumulator, so k pieces
+# cost one pass over their own characters and the temporary character list never
+# exceeds the largest piece.
+def pieces_fold(parts: List<&2, String>, +acc: String) -> String:
+  match parts:
+    case Nil{}: acc
+    case +part <> rest: pieces_fold(rest, text_prepend(part, acc))
+
+def pieces_from_end(reversed: List<&2, String>) -> String:
+  match reversed:
+    case Nil{}: ""
+    case +last <> rest: pieces_fold(rest, last)
+
+def text_of_pieces(parts: List<&2, String>) -> String:
+  pieces_from_end(List.reverse(&2, String, parts))
+
+# The scanner reads characters in text order; chars_rev hands back the reverse,
+# so the forward list is one tail-recursive List.reverse away.
+def chars_forward(source: String) -> List<&2, Char>:
+  List.reverse(&2, Char, chars_rev(source, Nil{}))
+
+# ---------------------------------------------------------------------------
+# C string literals
+#
+# A C literal's bytes are what a real C text reader reads — an export name, a
+# foreign source's text — and it reads exactly the count the renderer passes, so
+# both come from one UTF-8 encoding of the text. Bytes are written as
+# three-digit octal escapes: unlike \x they cannot absorb a following hex digit,
+# and they are unambiguous for NUL. Printable ASCII stays readable; quote,
+# backslash and the three C whitespace escapes use their short forms.
+# Definitions are ordered because the checker requires a definition before its
+# use and does not accept a computed match scrutinee.
+def utf8_bytes_deep_of(bmp: Bool, +code: U32) -> List<&2, U32>:
+  match bmp:
+    case True{}: [U32.or(224, U32.shrn(code, 12n)), U32.or(128, U32.and(U32.shrn(code, 6n), 63)), U32.or(128, U32.and(code, 63))]
+    case False{}: [U32.or(240, U32.shrn(code, 18n)), U32.or(128, U32.and(U32.shrn(code, 12n), 63)), U32.or(128, U32.and(U32.shrn(code, 6n), 63)), U32.or(128, U32.and(code, 63))]
+
+def utf8_bytes_deep(+code: U32) -> List<&2, U32>:
+  utf8_bytes_deep_of(U32.is_lt(code, 65536), code)
+
+def utf8_bytes_wide_of(two: Bool, +code: U32) -> List<&2, U32>:
+  match two:
+    case True{}: [U32.or(192, U32.shrn(code, 6n)), U32.or(128, U32.and(code, 63))]
+    case False{}: utf8_bytes_deep(code)
+
+def utf8_bytes_wide(+code: U32) -> List<&2, U32>:
+  utf8_bytes_wide_of(U32.is_lt(code, 2048), code)
+
+def utf8_bytes_of(small: Bool, +code: U32) -> List<&2, U32>:
+  match small:
+    case True{}: [code]
+    case False{}: utf8_bytes_wide(code)
+
+def utf8_bytes(+code: U32) -> List<&2, U32>:
+  utf8_bytes_of(U32.is_lt(code, 128), code)
+
+def oct3(+byte: U32) -> String:
+  text_of_pieces(["\\", U32.show(U32.and(U32.shrn(byte, 6n), 7)), U32.show(U32.and(U32.shrn(byte, 3n), 7)), U32.show(U32.and(byte, 7))])
+
+def octals(bytes: List<&2, U32>, +acc: String) -> String:
+  match bytes:
+    case Nil{}: acc
+    case +byte <> rest: octals(rest, String.append(acc, oct3(byte)))
+
+# Byte width of one code point, computed from the code alone: no byte list and
+# no character list, so a long text costs one tail SCon walk. Thresholds are
+# cascaded, as in utf8_bytes, so an ASCII character performs one comparison.
+def utf8_width_wide(bmp: Bool) -> Nat:
+  match bmp:
+    case True{}: 3n
+    case False{}: 4n
+
+def utf8_width_two(two: Bool, +code: U32) -> Nat:
+  match two:
+    case True{}: 2n
+    case False{}: utf8_width_wide(U32.is_lt(code, 65536))
+
+def utf8_width_of(small: Bool, +code: U32) -> Nat:
+  match small:
+    case True{}: 1n
+    case False{}: utf8_width_two(U32.is_lt(code, 2048), code)
+
+def utf8_width(+code: U32) -> Nat:
+  utf8_width_of(U32.is_lt(code, 128), code)
+
+def utf8_len_go(text: String, +acc: Nat) -> Nat:
+  match text:
+    case SNil{}: acc
+    case SCon{head, tail}: utf8_len_go(tail, Nat.add(acc, utf8_width(Char.to_u32(head))))
+
+def utf8_byte_len(+text: String) -> Nat:
+  utf8_len_go(text, 0n)
+
+def literal_high(code: U32) -> String:
+  octals(utf8_bytes(code), "")
+
+def literal_wide_of(ascii: Bool, +code: U32, +char: Char) -> String:
+  match ascii:
+    case True{}: String.from_list([char])
+    case False{}: literal_high(code)
+
+def literal_wide(+code: U32, +char: Char) -> String:
+  literal_wide_of(U32.is_lt(code, 127), code, char)
+
+def literal_plain_of(printable: Bool, +char: Char) -> String:
+  match printable:
+    case True{}: literal_wide(Char.to_u32(char), char)
+    case False{}: literal_high(Char.to_u32(char))
+
+def literal_plain(+char: Char) -> String:
+  literal_plain_of(U32.is_ge(Char.to_u32(char), 32), char)
+
+def literal_piece(char: Char) -> String:
+  match char:
+    case '"': "\\\""
+    case '\\': "\\\\"
+    case '?': "\\?"
+    case '\n': "\\n"
+    case '\r': "\\r"
+    case '\t': "\\t"
+    case _: literal_plain(char)
+
+# Escaped pieces in text order followed by the closing quote: the input is the
+# reversed character list, so consing each escaped piece yields text order, and
+# the closing quote is seeded first. The literal is then built once, without
+# materialising the body and copying it.
+def literal_pieces(chars: List<&2, Char>, +acc: List<&2, String>) -> List<&2, String>:
+  match chars:
+    case Nil{}: acc
+    case +char <> rest: literal_pieces(rest, literal_piece(char) <> acc)
+
+def c_string_literal(+text: String) -> String:
+  text_of_pieces("\"" <> literal_pieces(chars_rev(text, Nil{}), ["\""]))
+
+# ---------------------------------------------------------------------------
+# Bend text literals
+#
+# A BIR text atom is Bend String data, not text at an FFI boundary: inside Bend
+# every logical Char keeps its exact u32 code, including a separated surrogate
+# and a code past U+10FFFF. No UTF-8 byte string carries those codes — its
+# decoder replaces them — so the internal literal has its own carrier, and
+# c_string_literal above keeps the UTF-8 spelling for real C text.
+#
+# The carrier is still one static C string, read by the runtime helper named
+# bend_text. A printable ASCII Char that cannot confuse the literal is written
+# as itself, and every other Char as '%' and eight lowercase hex digits, most
+# significant first. So one Char never splits across bytes, no escape can
+# absorb the next Char, and the payload holds no NUL, quote, backslash or
+# question mark: the C literal needs no escape at all and the linker's
+# character scan cannot mistake the payload for code. text_byte_len is the byte
+# count of that payload, the count the runtime reads.
+def text_hex_digit(+digit: Nat) -> String:
+  match digit:
+    case 10n: "a"
+    case 11n: "b"
+    case 12n: "c"
+    case 13n: "d"
+    case 14n: "e"
+    case 15n: "f"
+    case _: Nat.show(digit)
+
+def text_hex_nibble(shift: Nat, +code: U32) -> String:
+  text_hex_digit(U32.to_nat(U32.and(U32.shrn(code, shift), 15)))
+
+# One u32 Char, most significant nibble first: exactly eight bytes, so the
+# reader never has to stop inside the escape.
+def text_hex_word(+code: U32) -> String:
+  text_of_pieces([
+    text_hex_nibble(28n, code), text_hex_nibble(24n, code),
+    text_hex_nibble(20n, code), text_hex_nibble(16n, code),
+    text_hex_nibble(12n, code), text_hex_nibble(8n, code),
+    text_hex_nibble(4n, code), text_hex_nibble(0n, code)
+  ])
+
+def text_plain_wide(+code: U32) -> Bool:
+  Bool.and(U32.is_ge(code, 32), U32.is_lt(code, 127))
+
+# Quote, backslash and question mark stay escaped so the payload carries no C
+# escape and no trigraph, and '%' because it starts a Char escape.
+def text_plain_char(+char: Char) -> Bool:
+  match char:
+    case '%': False{}
+    case '"': False{}
+    case '\\': False{}
+    case '?': False{}
+    case _: text_plain_wide(Char.to_u32(char))
+
+def text_piece_of(plain: Bool, +char: Char) -> String:
+  match plain:
+    case True{}: String.from_list([char])
+    case False{}: String.append("%", text_hex_word(Char.to_u32(char)))
+
+def text_piece(+char: Char) -> String:
+  text_piece_of(text_plain_char(char), char)
+
+def text_pieces(chars: List<&2, Char>, +acc: List<&2, String>) -> List<&2, String>:
+  match chars:
+    case Nil{}: acc
+    case +char <> rest: text_pieces(rest, text_piece(char) <> acc)
+
+def c_text_literal(+text: String) -> String:
+  text_of_pieces("\"" <> text_pieces(chars_rev(text, Nil{}), ["\""]))
+
+def text_piece_bytes_of(plain: Bool) -> Nat:
+  match plain:
+    case True{}: 1n
+    case False{}: 9n
+
+def text_piece_bytes(+char: Char) -> Nat:
+  text_piece_bytes_of(text_plain_char(char))
+
+def text_len_go(text: String, +acc: Nat) -> Nat:
+  match text:
+    case SNil{}: acc
+    case SCon{head, tail}: text_len_go(tail, Nat.add(acc, text_piece_bytes(head)))
+
+def text_byte_len(+text: String) -> Nat:
+  text_len_go(text, 0n)
+
 # Only CodeMode can start an invocation; Key collects a candidate's key.
 type Mode is Data:
   CodeMode{}
@@ -40,7 +297,7 @@ type Scan is Data:
 def link_complete(failure: Maybe<&2, String>, output: List<&2, Char>) -> LinkResult:
   match failure:
     case Some{message}: LinkFailure{message}
-    case None{}: LinkSuccess{String.from_list(List.reverse(&2, Char, output))}
+    case None{}: LinkSuccess{text_of_rev(output, "")}
 
 def link_result(result: Scan) -> LinkResult:
   match result:
@@ -148,7 +405,7 @@ def flush_empty(head: Char, output: List<&2, Char>) -> List<&2, Char>:
   ')' <> ('(' <> ('D' <> ('I' <> (head <> output))))
 
 def key_text(collected: List<&2, Char>) -> String:
-  String.from_list(List.reverse(&2, Char, collected))
+  text_of_rev(collected, "")
 
 
 
@@ -269,5 +526,5 @@ def scan(chars: List<&2, Char>, +mode: Mode, +word: Bool, +failure: Maybe<&2, St
             case _: scan(rest, mode, is_word(char), failure, char <> output, cids, fids)
 
 def rewrite(source: String, cids: Map<&2, String>, fids: Map<&2, String>) -> LinkResult:
-  link_result(scan(String.to_list(source), CodeMode{}, False{}, None{}, Nil{}, cids, fids))
+  link_result(scan(chars_forward(source), CodeMode{}, False{}, None{}, Nil{}, cids, fids))
 

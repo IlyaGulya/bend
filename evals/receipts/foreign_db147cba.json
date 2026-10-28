@@ -1,0 +1,1539 @@
+{
+  "schemaVersion": 1,
+  "status": "PASS",
+  "wholeCompilerAccepted": false,
+  "scope": "Three unchanged foreign/lifetime fixtures on both JS and C plus real six-export C-library emit/link/run on currentdb147 inline parser",
+  "report": {
+    "status": "PASS",
+    "sourceCommit": "4424f731",
+    "command": [
+      "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+      "/private/tmp/bend-fir-integrated57ab/checkpoints/foreign_db147_accept.ts"
+    ],
+    "cwd": "/private/tmp/bend-fir-integrated57ab",
+    "scope": "Three real foreign/lifetime fixtures in C and JS, plus real sharedEmitC library emit/link/run. Not full-root/fixedpoint acceptance.",
+    "guard": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 600000
+    },
+    "runtimeFlags": [
+      "--experimental-strip-types",
+      "--max-old-space-size=3072"
+    ],
+    "hostStackLimit": "default; no explicit flag",
+    "nodeRuntime": "v23.11.0|12.9.202.28-node.14",
+    "pins": [
+      {
+        "path": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5",
+        "bytes": 113935712
+      },
+      {
+        "path": "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+        "sha256": "70f8abf932f28f07f722555c6b9aa8e911d67fbc61a89d8bb32b0b7741c74c36",
+        "bytes": 15693
+      },
+      {
+        "path": "/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "sha256": "db147cba480109443fe8cfbd0efa2f1c167af7f6b9f7e2d623a0b1032c677dbe",
+        "bytes": 18039083
+      },
+      {
+        "path": "/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+        "sha256": "db147cba480109443fe8cfbd0efa2f1c167af7f6b9f7e2d623a0b1032c677dbe",
+        "bytes": 18039083
+      },
+      {
+        "path": "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+        "sha256": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+        "bytes": 75624
+      },
+      {
+        "path": "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c",
+        "sha256": "478c1ba7d0d0626c1927d11c4af3b3d4cef520db41afd8722ebf55d5050769c3",
+        "bytes": 75336
+      },
+      {
+        "path": "/private/tmp/bend-fir-integrated57ab/evals/c_backend_library_caller.c",
+        "sha256": "e874c1d3b617c8d4a82adaf50ceb9e2c15715fc18f2cd6d6d5b1b6b9d4d16004",
+        "bytes": 2033
+      },
+      {
+        "path": "/private/tmp/bend-fir-integrated57ab/checkpoints/foreign_db147_accept.ts",
+        "sha256": "e74d1eab4033c760719a737476cfee94f98662eb980c4887bb6f6a4d5a90f934",
+        "bytes": 6846
+      },
+      {
+        "path": "/private/tmp/bend-fir-integrated57ab/evals/heavy_gate.ts",
+        "sha256": "204f3529704435455d20a9d5a126a8e9c62e002b6fed9044c8319da8a3c26ff2",
+        "bytes": 13500
+      },
+      {
+        "path": "/private/tmp/bend-fir-integrated57ab/evals/heavy_gate_native.c",
+        "sha256": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b",
+        "bytes": 15936
+      },
+      {
+        "path": "/private/tmp/bend-fir-integrated57ab/tests/run/list_rebox_sum.bend",
+        "sha256": "c046078c5a6c852d539c7456e4ce5fcf55d1556b8c37a08c1a8b711a1e9b379c",
+        "bytes": 1828
+      },
+      {
+        "path": "/private/tmp/bend-fir-integrated57ab/tests/run/list_rebox_sum.c",
+        "sha256": "fa1864b0c8879b2bb4fb7cbdec43fb2f6bc0e5924d64f6ac9c5fe0153192d820",
+        "bytes": 416
+      },
+      {
+        "path": "/private/tmp/bend-fir-integrated57ab/tests/run/list_rebox_sum.js",
+        "sha256": "b3dfd23affd9dd316cbfdd697faf128deb944c6191cf7da1b651e244aa7938b9",
+        "bytes": 146
+      },
+      {
+        "path": "/private/tmp/bend-fir-integrated57ab/tests/run/family_field_hot.bend",
+        "sha256": "3c16b7fd120b7f0f904f6bcbc73559033e056571302408c551848377a648eb6a",
+        "bytes": 917
+      },
+      {
+        "path": "/private/tmp/bend-fir-integrated57ab/tests/run/c_backend_link.bend",
+        "sha256": "6765dbc7f143592c162b2c9a7dcd8243491ce8adf7b168f0564a6c2ed79b68c9",
+        "bytes": 2700
+      },
+      {
+        "path": "/private/tmp/bend-fir-integrated57ab/evals/c_step_library_fixture.bend",
+        "sha256": "5e53a4815f2fc7f12c3fdea7bfc12764daf65096b125a22a5f884c0cf0e710df",
+        "bytes": 714
+      }
+    ],
+    "rows": [
+      {
+        "source": {
+          "path": "/private/tmp/bend-fir-integrated57ab/tests/run/list_rebox_sum.bend",
+          "sha256": "c046078c5a6c852d539c7456e4ce5fcf55d1556b8c37a08c1a8b711a1e9b379c",
+          "bytes": 1828
+        },
+        "target": "c",
+        "library": false,
+        "expected": "7\n3\nbounded",
+        "status": "PASS",
+        "stages": {
+          "emit": {
+            "command": [
+              "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+              "--experimental-strip-types",
+              "--max-old-space-size=3072",
+              "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+              "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+              "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+              "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+              "/private/tmp/bend-fir-integrated57ab/tests/run/list_rebox_sum.bend",
+              "-o",
+              "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.c.c",
+              "--base",
+              "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+              "--runtime-c",
+              "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+            ],
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 1441710080,
+              "peakFootprintBytes": 1482361800,
+              "elapsedMs": 82804,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/bin/sh",
+                "-c",
+                "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+                "sh",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.c.emit.stdout",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.c.emit.stderr",
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--experimental-strip-types",
+                "--max-old-space-size=3072",
+                "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+                "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+                "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+                "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+                "/private/tmp/bend-fir-integrated57ab/tests/run/list_rebox_sum.bend",
+                "-o",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.c.c",
+                "--base",
+                "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+              ],
+              "label": "list_rebox_sum.c:emit",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792947693099-9864f7ead6c4facc.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            },
+            "gateFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.c.emit.gate.json",
+              "sha256": "b191a9cc4175ad06bb75dd4487afbeb3db920b798264320a5a0619fe9ddad925",
+              "bytes": 2334
+            },
+            "guardianReport": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.c.emit.gate.report.json",
+              "sha256": "61ef5f49b8c232726d978b7778489c4e75393cebba501be2d3ec40eae34f9dbc",
+              "bytes": 1394
+            },
+            "stdout": "{\"output\":\"/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.c.c\",\"bytes\":1159420,\"sha256\":\"1e559f39bc43b60999b076620a6c4534cbba883698430288be2340aa337edea7\",\"target\":\"c\",\"library\":false,\"modules\":2,\"foreignFiles\":57,\"runtime\":\"/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c\"}\n",
+            "stdoutFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.c.emit.stdout",
+              "sha256": "f30cc7dd517f545f6892a3e5755ab30a181193661c7b7b65631f4a7a8f0acf09",
+              "bytes": 300
+            },
+            "stderrFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.c.emit.stderr",
+              "sha256": "40bdde6b2961104fde30e9455ca59e48d6f3cd0388c80b9ff5cc5c1bff4aed0f",
+              "bytes": 177
+            },
+            "passed": true
+          },
+          "clang": {
+            "command": [
+              "clang",
+              "-std=c11",
+              "-O0",
+              "-ferror-limit=0",
+              "-pthread",
+              "-lm",
+              "-o",
+              "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.c.exe",
+              "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.c.c"
+            ],
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 137658368,
+              "peakFootprintBytes": 93143736,
+              "elapsedMs": 8908,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/bin/sh",
+                "-c",
+                "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+                "sh",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.c.clang.stdout",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.c.clang.stderr",
+                "clang",
+                "-std=c11",
+                "-O0",
+                "-ferror-limit=0",
+                "-pthread",
+                "-lm",
+                "-o",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.c.exe",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.c.c"
+              ],
+              "label": "list_rebox_sum.c:clang",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792947775924-baeb8237a0adc41a.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            },
+            "gateFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.c.clang.gate.json",
+              "sha256": "8210d480dc702c83d212d0ee3b82a89d8a02758c08364414bdb137e26f607581",
+              "bytes": 1301
+            },
+            "guardianReport": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.c.clang.gate.report.json",
+              "sha256": "31a0b5331a3ffa1e20080f73d970e2fa25e86e7de015ce0acd86549287c789dd",
+              "bytes": 902
+            },
+            "stdout": "",
+            "stdoutFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.c.clang.stdout",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0
+            },
+            "stderrFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.c.clang.stderr",
+              "sha256": "d6c05f61e19acd55a8a64c069ebb054fa71baff4d561077eb306b32bf9d1ba6e",
+              "bytes": 7895
+            },
+            "passed": true
+          },
+          "run": {
+            "command": [
+              "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.c.exe"
+            ],
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 2031616,
+              "peakFootprintBytes": 1261856,
+              "elapsedMs": 1278,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/bin/sh",
+                "-c",
+                "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+                "sh",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.c.run.stdout",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.c.run.stderr",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.c.exe"
+              ],
+              "label": "list_rebox_sum.c:run",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792947784845-c4f9aee9260464e0.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            },
+            "gateFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.c.run.gate.json",
+              "sha256": "d021862092e7c24e508362214d3071d20a3eaf90bc6a3d0e9c3f376adbffbe63",
+              "bytes": 958
+            },
+            "guardianReport": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.c.run.gate.report.json",
+              "sha256": "171c62ad7ac25762df7e99cdcbbdae1903d845d1aa132ff68d56310a883b0b26",
+              "bytes": 766
+            },
+            "stdout": "7\n3\nbounded\n",
+            "stdoutFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.c.run.stdout",
+              "sha256": "7d3fe20b511fd09902c5c071dbb8058ffa477f798566481078f341edc2820828",
+              "bytes": 12
+            },
+            "stderrFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.c.run.stderr",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0
+            },
+            "passed": true
+          }
+        },
+        "artifacts": [
+          {
+            "path": "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.c.c",
+            "sha256": "1e559f39bc43b60999b076620a6c4534cbba883698430288be2340aa337edea7",
+            "bytes": 1159420
+          },
+          {
+            "path": "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.c.exe",
+            "sha256": "a7970fca8dbf51c1edbdbec1f22a051afc8b5ea38d17ecd157a88e29e3f7946f",
+            "bytes": 988968
+          }
+        ],
+        "observed": "7\n3\nbounded"
+      },
+      {
+        "source": {
+          "path": "/private/tmp/bend-fir-integrated57ab/tests/run/list_rebox_sum.bend",
+          "sha256": "c046078c5a6c852d539c7456e4ce5fcf55d1556b8c37a08c1a8b711a1e9b379c",
+          "bytes": 1828
+        },
+        "target": "js",
+        "library": false,
+        "expected": "7\n3\nbounded",
+        "status": "PASS",
+        "stages": {
+          "emit": {
+            "command": [
+              "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+              "--experimental-strip-types",
+              "--max-old-space-size=3072",
+              "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+              "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+              "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+              "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+              "/private/tmp/bend-fir-integrated57ab/tests/run/list_rebox_sum.bend",
+              "-o",
+              "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.js.js",
+              "--base",
+              "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+              "--runtime-c",
+              "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+            ],
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 1005207552,
+              "peakFootprintBytes": 1026063304,
+              "elapsedMs": 42023,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/bin/sh",
+                "-c",
+                "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+                "sh",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.js.emit.stdout",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.js.emit.stderr",
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--experimental-strip-types",
+                "--max-old-space-size=3072",
+                "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+                "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+                "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+                "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+                "/private/tmp/bend-fir-integrated57ab/tests/run/list_rebox_sum.bend",
+                "-o",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.js.js",
+                "--base",
+                "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+              ],
+              "label": "list_rebox_sum.js:emit",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792947786139-b6f66d8cab4b0d9d.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            },
+            "gateFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.js.emit.gate.json",
+              "sha256": "498fc2cfb23d5de280e804725bfb8451d184665d47f9ff1efa5bfe9358782e71",
+              "bytes": 2341
+            },
+            "guardianReport": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.js.emit.gate.report.json",
+              "sha256": "2a482b78973f5ca684c58fc15903f8bcaaf611b3b05143457c07414ee8ac8d90",
+              "bytes": 1399
+            },
+            "stdout": "{\"output\":\"/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.js.js\",\"bytes\":296340,\"sha256\":\"79c9c46ae9424f2499d9382bb0394f0e81f7192e3823001f73cdf8deaac4f050\",\"target\":\"js\",\"library\":false,\"modules\":2,\"foreignFiles\":57}\n",
+            "stdoutFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.js.emit.stdout",
+              "sha256": "c8e6d9d742555494c56f13108725064bb258ab9b1b657552b61ff690bb856e27",
+              "bytes": 226
+            },
+            "stderrFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.js.emit.stderr",
+              "sha256": "e455bc6fd4f4d54bab7d80bd3f61a0a988274b172a69375e6be90f108bd95658",
+              "bytes": 177
+            },
+            "passed": true
+          },
+          "run": {
+            "command": [
+              "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+              "--max-old-space-size=3072",
+              "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.js.js"
+            ],
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 55263232,
+              "peakFootprintBytes": 20629400,
+              "elapsedMs": 256,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/bin/sh",
+                "-c",
+                "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+                "sh",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.js.run.stdout",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.js.run.stderr",
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--max-old-space-size=3072",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.js.js"
+              ],
+              "label": "list_rebox_sum.js:run",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792947828170-3c85ebf02c8d09c3.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            },
+            "gateFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.js.run.gate.json",
+              "sha256": "e20de3413eaf3deab03e7ed98cc824516be36da8e647bdfdf2fd7b774d5c57e0",
+              "bytes": 1150
+            },
+            "guardianReport": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.js.run.gate.report.json",
+              "sha256": "a580c198401e6b9c78cf950723220c938d4fd4c7e2745e6de2eef1baa69e4c77",
+              "bytes": 854
+            },
+            "stdout": "7\n3\nbounded\n",
+            "stdoutFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.js.run.stdout",
+              "sha256": "7d3fe20b511fd09902c5c071dbb8058ffa477f798566481078f341edc2820828",
+              "bytes": 12
+            },
+            "stderrFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.js.run.stderr",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0
+            },
+            "passed": true
+          }
+        },
+        "artifacts": [
+          {
+            "path": "/tmp/bend-foreign-db147cba-4424f731-run1/list_rebox_sum.js.js",
+            "sha256": "79c9c46ae9424f2499d9382bb0394f0e81f7192e3823001f73cdf8deaac4f050",
+            "bytes": 296340
+          }
+        ],
+        "observed": "7\n3\nbounded"
+      },
+      {
+        "source": {
+          "path": "/private/tmp/bend-fir-integrated57ab/tests/run/family_field_hot.bend",
+          "sha256": "3c16b7fd120b7f0f904f6bcbc73559033e056571302408c551848377a648eb6a",
+          "bytes": 917
+        },
+        "target": "c",
+        "library": false,
+        "expected": "5",
+        "status": "PASS",
+        "stages": {
+          "emit": {
+            "command": [
+              "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+              "--experimental-strip-types",
+              "--max-old-space-size=3072",
+              "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+              "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+              "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+              "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+              "/private/tmp/bend-fir-integrated57ab/tests/run/family_field_hot.bend",
+              "-o",
+              "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.c.c",
+              "--base",
+              "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+              "--runtime-c",
+              "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+            ],
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 1644216320,
+              "peakFootprintBytes": 1700058464,
+              "elapsedMs": 90917,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/bin/sh",
+                "-c",
+                "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+                "sh",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.c.emit.stdout",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.c.emit.stderr",
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--experimental-strip-types",
+                "--max-old-space-size=3072",
+                "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+                "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+                "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+                "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+                "/private/tmp/bend-fir-integrated57ab/tests/run/family_field_hot.bend",
+                "-o",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.c.c",
+                "--base",
+                "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+              ],
+              "label": "family_field_hot.c:emit",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792947828447-e4346d85f6acf4df.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            },
+            "gateFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.c.emit.gate.json",
+              "sha256": "f9b2c781932bfe56caddca9e31a10700ae5a86affa1b66b07ba936453ae43dd3",
+              "bytes": 2348
+            },
+            "guardianReport": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.c.emit.gate.report.json",
+              "sha256": "cef05dde15b14d388cfd86018d907e5b71186ed8a84b1b5bb708f923b939ec21",
+              "bytes": 1404
+            },
+            "stdout": "{\"output\":\"/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.c.c\",\"bytes\":1130939,\"sha256\":\"b85ca60071b83a74016c70675e3b61a115d28a34f4c0324d93cf5604e170f08e\",\"target\":\"c\",\"library\":false,\"modules\":2,\"foreignFiles\":56,\"runtime\":\"/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c\"}\n",
+            "stdoutFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.c.emit.stdout",
+              "sha256": "9b57581f9c6f609500f9bef7d84dc7cb46198a493b89f08efd7bd2555acb66c1",
+              "bytes": 302
+            },
+            "stderrFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.c.emit.stderr",
+              "sha256": "faa1ca2bd295f2000be72a36a5bacd27dc9bdbf43f9f7b03339cf2bc32dc9805",
+              "bytes": 176
+            },
+            "passed": true
+          },
+          "clang": {
+            "command": [
+              "clang",
+              "-std=c11",
+              "-O0",
+              "-ferror-limit=0",
+              "-pthread",
+              "-lm",
+              "-o",
+              "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.c.exe",
+              "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.c.c"
+            ],
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 135512064,
+              "peakFootprintBytes": 91030224,
+              "elapsedMs": 2364,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/bin/sh",
+                "-c",
+                "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+                "sh",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.c.clang.stdout",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.c.clang.stderr",
+                "clang",
+                "-std=c11",
+                "-O0",
+                "-ferror-limit=0",
+                "-pthread",
+                "-lm",
+                "-o",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.c.exe",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.c.c"
+              ],
+              "label": "family_field_hot.c:clang",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792947919378-aabeb53ba9bb049b.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            },
+            "gateFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.c.clang.gate.json",
+              "sha256": "ddc3253be797b7ae8d6f3d1c250143f434887e6a12778bf0c921d83680a99335",
+              "bytes": 1315
+            },
+            "guardianReport": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.c.clang.gate.report.json",
+              "sha256": "194d2084dd1488004445bd366ad82320b8b932d9b836d6438c8930c8a0a432c5",
+              "bytes": 912
+            },
+            "stdout": "",
+            "stdoutFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.c.clang.stdout",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0
+            },
+            "stderrFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.c.clang.stderr",
+              "sha256": "26815ad8a21486023b37380501cdacc374a5ffaf7e023b13339cc667d57fdb73",
+              "bytes": 8003
+            },
+            "passed": true
+          },
+          "run": {
+            "command": [
+              "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.c.exe"
+            ],
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 180224,
+              "peakFootprintBytes": 311440,
+              "elapsedMs": 14,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/bin/sh",
+                "-c",
+                "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+                "sh",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.c.run.stdout",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.c.run.stderr",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.c.exe"
+              ],
+              "label": "family_field_hot.c:run",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792947921753-3a5fc7f548d9865d.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            },
+            "gateFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.c.run.gate.json",
+              "sha256": "ff91b05105308cd8ccc143bcecc7ceea7622ecb68551f1996569f2db02881fb3",
+              "bytes": 964
+            },
+            "guardianReport": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.c.run.gate.report.json",
+              "sha256": "11af20eac5e7a0e13fcd1e87f8f7f0d653b78fadb64ccf3ed975bcaafb28a1b9",
+              "bytes": 770
+            },
+            "stdout": "5\n",
+            "stdoutFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.c.run.stdout",
+              "sha256": "f0b5c2c2211c8d67ed15e75e656c7862d086e9245420892a7de62cd9ec582a06",
+              "bytes": 2
+            },
+            "stderrFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.c.run.stderr",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0
+            },
+            "passed": true
+          }
+        },
+        "artifacts": [
+          {
+            "path": "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.c.c",
+            "sha256": "b85ca60071b83a74016c70675e3b61a115d28a34f4c0324d93cf5604e170f08e",
+            "bytes": 1130939
+          },
+          {
+            "path": "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.c.exe",
+            "sha256": "782bbc543320741382f2c2247628ef9f33c85b8a0e8195a87f38215c67a27b13",
+            "bytes": 954584
+          }
+        ],
+        "observed": "5"
+      },
+      {
+        "source": {
+          "path": "/private/tmp/bend-fir-integrated57ab/tests/run/family_field_hot.bend",
+          "sha256": "3c16b7fd120b7f0f904f6bcbc73559033e056571302408c551848377a648eb6a",
+          "bytes": 917
+        },
+        "target": "js",
+        "library": false,
+        "expected": "5",
+        "status": "PASS",
+        "stages": {
+          "emit": {
+            "command": [
+              "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+              "--experimental-strip-types",
+              "--max-old-space-size=3072",
+              "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+              "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+              "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+              "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+              "/private/tmp/bend-fir-integrated57ab/tests/run/family_field_hot.bend",
+              "-o",
+              "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.js.js",
+              "--base",
+              "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+              "--runtime-c",
+              "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+            ],
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 991395840,
+              "peakFootprintBytes": 1011922760,
+              "elapsedMs": 21436,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/bin/sh",
+                "-c",
+                "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+                "sh",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.js.emit.stdout",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.js.emit.stderr",
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--experimental-strip-types",
+                "--max-old-space-size=3072",
+                "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+                "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+                "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+                "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+                "/private/tmp/bend-fir-integrated57ab/tests/run/family_field_hot.bend",
+                "-o",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.js.js",
+                "--base",
+                "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+              ],
+              "label": "family_field_hot.js:emit",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792947921773-a1bcfe1fed7fa4e0.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            },
+            "gateFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.js.emit.gate.json",
+              "sha256": "2c4baa9e5949a02c13ab3b3dac369b0bca415de7278ce257dbb00b5ec2d70727",
+              "bytes": 2354
+            },
+            "guardianReport": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.js.emit.gate.report.json",
+              "sha256": "a4fe07b9504d2a19a634d9397a36880b17cbf8f65635ae4f397a2f45a5fb9ec9",
+              "bytes": 1408
+            },
+            "stdout": "{\"output\":\"/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.js.js\",\"bytes\":292273,\"sha256\":\"a903fbf3b9e23f7573f4734b547e8e0c77bb7e9523e73251f9575bd00f2148e2\",\"target\":\"js\",\"library\":false,\"modules\":2,\"foreignFiles\":56}\n",
+            "stdoutFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.js.emit.stdout",
+              "sha256": "7ffa34ca10275f523be9254a1807cc368ab13b7f0d36a2a1e01b6e61d9673589",
+              "bytes": 228
+            },
+            "stderrFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.js.emit.stderr",
+              "sha256": "143b4820e72b97ff5b1d3578d93b9248b8d65cb1267088f3fe9931153f161147",
+              "bytes": 177
+            },
+            "passed": true
+          },
+          "run": {
+            "command": [
+              "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+              "--max-old-space-size=3072",
+              "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.js.js"
+            ],
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 46694400,
+              "peakFootprintBytes": 16860816,
+              "elapsedMs": 150,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/bin/sh",
+                "-c",
+                "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+                "sh",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.js.run.stdout",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.js.run.stderr",
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--max-old-space-size=3072",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.js.js"
+              ],
+              "label": "family_field_hot.js:run",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792947943233-2da212dc7e482fe9.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            },
+            "gateFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.js.run.gate.json",
+              "sha256": "b9a4c03e746b1efc0f4bb0606c4635d31a89cd2aff0feb5fa092b03ade3c8bba",
+              "bytes": 1160
+            },
+            "guardianReport": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.js.run.gate.report.json",
+              "sha256": "cecb92b830b6e7b1f1ad4adc9ca9251efb86bfcaf070545ed20dc08185bf5125",
+              "bytes": 862
+            },
+            "stdout": "5\n",
+            "stdoutFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.js.run.stdout",
+              "sha256": "f0b5c2c2211c8d67ed15e75e656c7862d086e9245420892a7de62cd9ec582a06",
+              "bytes": 2
+            },
+            "stderrFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.js.run.stderr",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0
+            },
+            "passed": true
+          }
+        },
+        "artifacts": [
+          {
+            "path": "/tmp/bend-foreign-db147cba-4424f731-run1/family_field_hot.js.js",
+            "sha256": "a903fbf3b9e23f7573f4734b547e8e0c77bb7e9523e73251f9575bd00f2148e2",
+            "bytes": 292273
+          }
+        ],
+        "observed": "5"
+      },
+      {
+        "source": {
+          "path": "/private/tmp/bend-fir-integrated57ab/tests/run/c_backend_link.bend",
+          "sha256": "6765dbc7f143592c162b2c9a7dcd8243491ce8adf7b168f0564a6c2ed79b68c9",
+          "bytes": 2700
+        },
+        "target": "c",
+        "library": false,
+        "expected": "linked-comment-kept\nliteral-kept\nfid-linked\nsplice-kept\nsplice-kept\nmissing",
+        "status": "PASS",
+        "stages": {
+          "emit": {
+            "command": [
+              "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+              "--experimental-strip-types",
+              "--max-old-space-size=3072",
+              "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+              "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+              "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+              "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+              "/private/tmp/bend-fir-integrated57ab/tests/run/c_backend_link.bend",
+              "-o",
+              "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.c.c",
+              "--base",
+              "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+              "--runtime-c",
+              "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+            ],
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 2088239104,
+              "peakFootprintBytes": 2160078120,
+              "elapsedMs": 56396,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/bin/sh",
+                "-c",
+                "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+                "sh",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.c.emit.stdout",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.c.emit.stderr",
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--experimental-strip-types",
+                "--max-old-space-size=3072",
+                "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+                "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+                "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+                "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+                "/private/tmp/bend-fir-integrated57ab/tests/run/c_backend_link.bend",
+                "-o",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.c.c",
+                "--base",
+                "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+              ],
+              "label": "c_backend_link.c:emit",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792947943410-e74bb36a51827f0b.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            },
+            "gateFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.c.emit.gate.json",
+              "sha256": "f263810f263b268973ba4df7527532744fd7882dcc0f91375e09aaf408b0c7d2",
+              "bytes": 2334
+            },
+            "guardianReport": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.c.emit.gate.report.json",
+              "sha256": "098e1e908b1bcd220a9caa82a156b564f3fa55fc00df955de5cf2879bd6aac87",
+              "bytes": 1394
+            },
+            "stdout": "{\"output\":\"/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.c.c\",\"bytes\":1618511,\"sha256\":\"192675194b65569767069fd42b9510805241b1434042da5fe65045f807876af7\",\"target\":\"c\",\"library\":false,\"modules\":5,\"foreignFiles\":56,\"runtime\":\"/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c\"}\n",
+            "stdoutFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.c.emit.stdout",
+              "sha256": "0cfd3c5ac6fa92c4ab4197b24c919cea4c4b3a74e1c70dfcc7e0c5818f54b735",
+              "bytes": 300
+            },
+            "stderrFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.c.emit.stderr",
+              "sha256": "26a6f7070f3dca9f6f620385447c92efa04fef644cf6a788103c8edf5407215f",
+              "bytes": 177
+            },
+            "passed": true
+          },
+          "clang": {
+            "command": [
+              "clang",
+              "-std=c11",
+              "-O0",
+              "-ferror-limit=0",
+              "-pthread",
+              "-lm",
+              "-o",
+              "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.c.exe",
+              "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.c.c"
+            ],
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 181256192,
+              "peakFootprintBytes": 135938816,
+              "elapsedMs": 1985,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/bin/sh",
+                "-c",
+                "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+                "sh",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.c.clang.stdout",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.c.clang.stderr",
+                "clang",
+                "-std=c11",
+                "-O0",
+                "-ferror-limit=0",
+                "-pthread",
+                "-lm",
+                "-o",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.c.exe",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.c.c"
+              ],
+              "label": "c_backend_link.c:clang",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792947999825-388202339f509aa8.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            },
+            "gateFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.c.clang.gate.json",
+              "sha256": "929d5c586150171631c027c03f0795cdaa1ab7dda09ea79e6037ec638aa8bde7",
+              "bytes": 1302
+            },
+            "guardianReport": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.c.clang.gate.report.json",
+              "sha256": "178fb12b279d88ce31b0f219e0bd4579efead9ebc801c2974ecb1d92206710ee",
+              "bytes": 903
+            },
+            "stdout": "",
+            "stdoutFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.c.clang.stdout",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0
+            },
+            "stderrFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.c.clang.stderr",
+              "sha256": "8e45ce627a45e99481dde3c12e4020aef92f57d00554d18a0042037efb0024cc",
+              "bytes": 13934
+            },
+            "passed": true
+          },
+          "run": {
+            "command": [
+              "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.c.exe"
+            ],
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 655360,
+              "peakFootprintBytes": 245832,
+              "elapsedMs": 26,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/bin/sh",
+                "-c",
+                "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+                "sh",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.c.run.stdout",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.c.run.stderr",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.c.exe"
+              ],
+              "label": "c_backend_link.c:run",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792948001820-f11f4b5b7f59d2a7.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            },
+            "gateFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.c.run.gate.json",
+              "sha256": "f9834b2871257a6ffcaf86ac7e0fad55759308de71cec6c6a5e7ff2d1105f729",
+              "bytes": 954
+            },
+            "guardianReport": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.c.run.gate.report.json",
+              "sha256": "5b945550dc3b98372d7379eaa484c8d1c1ca5a02db9aad9a407b5ebd42a31df8",
+              "bytes": 762
+            },
+            "stdout": "linked-comment-kept\nliteral-kept\nfid-linked\nsplice-kept\nsplice-kept\nmissing\n",
+            "stdoutFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.c.run.stdout",
+              "sha256": "8061b6f73ebdc45fee4e5eeba5e26f06c50e2b03bf88d4d61303baf98f80bb62",
+              "bytes": 76
+            },
+            "stderrFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.c.run.stderr",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0
+            },
+            "passed": true
+          }
+        },
+        "artifacts": [
+          {
+            "path": "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.c.c",
+            "sha256": "192675194b65569767069fd42b9510805241b1434042da5fe65045f807876af7",
+            "bytes": 1618511
+          },
+          {
+            "path": "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.c.exe",
+            "sha256": "22b997d7a6c02a40e80fea4d938d8ee66800ef1f9f91f988e8f51d4fc2934e62",
+            "bytes": 1479736
+          }
+        ],
+        "observed": "linked-comment-kept\nliteral-kept\nfid-linked\nsplice-kept\nsplice-kept\nmissing"
+      },
+      {
+        "source": {
+          "path": "/private/tmp/bend-fir-integrated57ab/tests/run/c_backend_link.bend",
+          "sha256": "6765dbc7f143592c162b2c9a7dcd8243491ce8adf7b168f0564a6c2ed79b68c9",
+          "bytes": 2700
+        },
+        "target": "js",
+        "library": false,
+        "expected": "linked-comment-kept\nliteral-kept\nfid-linked\nsplice-kept\nsplice-kept\nmissing",
+        "status": "PASS",
+        "stages": {
+          "emit": {
+            "command": [
+              "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+              "--experimental-strip-types",
+              "--max-old-space-size=3072",
+              "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+              "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+              "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+              "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+              "/private/tmp/bend-fir-integrated57ab/tests/run/c_backend_link.bend",
+              "-o",
+              "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.js.js",
+              "--base",
+              "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+              "--runtime-c",
+              "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+            ],
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 1346060288,
+              "peakFootprintBytes": 1386983168,
+              "elapsedMs": 18654,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/bin/sh",
+                "-c",
+                "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+                "sh",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.js.emit.stdout",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.js.emit.stderr",
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--experimental-strip-types",
+                "--max-old-space-size=3072",
+                "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+                "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+                "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+                "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+                "/private/tmp/bend-fir-integrated57ab/tests/run/c_backend_link.bend",
+                "-o",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.js.js",
+                "--base",
+                "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+              ],
+              "label": "c_backend_link.js:emit",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792948001853-5ca3dd04b2c267f8.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            },
+            "gateFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.js.emit.gate.json",
+              "sha256": "651b0cb6e7a75fe36bf6253f0a3c6f6f766d7f3aa6a8e492480e42a93fff8a75",
+              "bytes": 2341
+            },
+            "guardianReport": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.js.emit.gate.report.json",
+              "sha256": "a6c2edd210b1a17c6d59954b166ab16db46f3b4fedd6ee386a99b020f2005a13",
+              "bytes": 1399
+            },
+            "stdout": "{\"output\":\"/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.js.js\",\"bytes\":405297,\"sha256\":\"9678b9b9d735e55e868e36fd535979c242bf54c5cd71bc0469f23aeb88247648\",\"target\":\"js\",\"library\":false,\"modules\":5,\"foreignFiles\":56}\n",
+            "stdoutFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.js.emit.stdout",
+              "sha256": "e635e1c9e48c5a0fe66d3ad5c84ec1b77acd3f6c5bfc454f3ea0ea3e5a5342db",
+              "bytes": 226
+            },
+            "stderrFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.js.emit.stderr",
+              "sha256": "a5cde55e820bfef9e9aecde38a125430d81302c6a25660c19de776015c5f4200",
+              "bytes": 177
+            },
+            "passed": true
+          },
+          "run": {
+            "command": [
+              "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+              "--max-old-space-size=3072",
+              "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.js.js"
+            ],
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 49315840,
+              "peakFootprintBytes": 18646768,
+              "elapsedMs": 73,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/bin/sh",
+                "-c",
+                "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+                "sh",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.js.run.stdout",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.js.run.stderr",
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--max-old-space-size=3072",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.js.js"
+              ],
+              "label": "c_backend_link.js:run",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792948020514-efa8b1f4c8d5dc6f.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            },
+            "gateFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.js.run.gate.json",
+              "sha256": "b661d6f56438bc801aa6b72dfb8c2092393456920fb393a2ca551d7ddc663bba",
+              "bytes": 1149
+            },
+            "guardianReport": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.js.run.gate.report.json",
+              "sha256": "50e3dc573caf84414b6306e0b82e0e5630f59580d69eba32ce9f9246b9259c42",
+              "bytes": 853
+            },
+            "stdout": "linked-comment-kept\nliteral-kept\nfid-linked\nsplice-kept\nsplice-kept\nmissing\n",
+            "stdoutFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.js.run.stdout",
+              "sha256": "8061b6f73ebdc45fee4e5eeba5e26f06c50e2b03bf88d4d61303baf98f80bb62",
+              "bytes": 76
+            },
+            "stderrFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.js.run.stderr",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0
+            },
+            "passed": true
+          }
+        },
+        "artifacts": [
+          {
+            "path": "/tmp/bend-foreign-db147cba-4424f731-run1/c_backend_link.js.js",
+            "sha256": "9678b9b9d735e55e868e36fd535979c242bf54c5cd71bc0469f23aeb88247648",
+            "bytes": 405297
+          }
+        ],
+        "observed": "linked-comment-kept\nliteral-kept\nfid-linked\nsplice-kept\nsplice-kept\nmissing"
+      },
+      {
+        "source": {
+          "path": "/private/tmp/bend-fir-integrated57ab/evals/c_step_library_fixture.bend",
+          "sha256": "5e53a4815f2fc7f12c3fdea7bfc12764daf65096b125a22a5f884c0cf0e710df",
+          "bytes": 714
+        },
+        "target": "c",
+        "library": true,
+        "expected": "export ok",
+        "status": "PASS",
+        "stages": {
+          "emit": {
+            "command": [
+              "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+              "--experimental-strip-types",
+              "--max-old-space-size=3072",
+              "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+              "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+              "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+              "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+              "/private/tmp/bend-fir-integrated57ab/evals/c_step_library_fixture.bend",
+              "-o",
+              "/tmp/bend-foreign-db147cba-4424f731-run1/c_step_library_fixture.library.c",
+              "--base",
+              "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+              "--runtime-c",
+              "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c",
+              "--library",
+              "--exports=add,symbol_add,partial,zero,factory,mk"
+            ],
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 1756938240,
+              "peakFootprintBytes": 1815576272,
+              "elapsedMs": 27761,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/bin/sh",
+                "-c",
+                "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+                "sh",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/c_step_library_fixture.library.emit.stdout",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/c_step_library_fixture.library.emit.stderr",
+                "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+                "--experimental-strip-types",
+                "--max-old-space-size=3072",
+                "/private/tmp/bend-fir-integrated57ab/evals/candidate_host.ts",
+                "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+                "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+                "--parser=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+                "/private/tmp/bend-fir-integrated57ab/evals/c_step_library_fixture.bend",
+                "-o",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/c_step_library_fixture.library.c",
+                "--base",
+                "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+                "--runtime-c",
+                "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c",
+                "--library",
+                "--exports=add,symbol_add,partial,zero,factory,mk"
+              ],
+              "label": "c_step_library_fixture.library:emit",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792948020599-c93beaec2dda809f.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            },
+            "gateFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/c_step_library_fixture.library.emit.gate.json",
+              "sha256": "01c71acbecb915eb497564c47b3bd49a2da42727afaa27fd79dbcee64a6c5b1f",
+              "bytes": 2558
+            },
+            "guardianReport": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/c_step_library_fixture.library.emit.gate.report.json",
+              "sha256": "90e8cfd7afa19aeb92bc8bb60c318897eb1940677177f24ed017dedd67de3988",
+              "bytes": 1517
+            },
+            "stdout": "{\"output\":\"/tmp/bend-foreign-db147cba-4424f731-run1/c_step_library_fixture.library.c\",\"bytes\":1124793,\"sha256\":\"95a549ff1ed19b0cdb63bb75c707f122a91e1d7acc6e85f9bcfb23e781bdb695\",\"target\":\"c\",\"library\":true,\"exports\":[\"add\",\"symbol_add\",\"partial\",\"zero\",\"factory\",\"mk\"],\"modules\":2,\"foreignFiles\":56,\"runtime\":\"/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c\"}\n",
+            "stdoutFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/c_step_library_fixture.library.emit.stdout",
+              "sha256": "b1dc7dba7d4e3887fbde18ac1ec20ecaad43a3d09870f470c88dca6c4425b7a8",
+              "bytes": 376
+            },
+            "stderrFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/c_step_library_fixture.library.emit.stderr",
+              "sha256": "aa5414446f98eb35116e6a76bf2a869f0b9c31479e9f782b87aa7eed93f3af84",
+              "bytes": 177
+            },
+            "passed": true
+          },
+          "clang": {
+            "command": [
+              "clang",
+              "-std=c11",
+              "-O0",
+              "-ferror-limit=0",
+              "-pthread",
+              "-lm",
+              "-o",
+              "/tmp/bend-foreign-db147cba-4424f731-run1/c_step_library_fixture.library.exe",
+              "/tmp/bend-foreign-db147cba-4424f731-run1/c_step_library_fixture.library.c",
+              "/private/tmp/bend-fir-integrated57ab/evals/c_backend_library_caller.c"
+            ],
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 136822784,
+              "peakFootprintBytes": 91996832,
+              "elapsedMs": 1554,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/bin/sh",
+                "-c",
+                "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+                "sh",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/c_step_library_fixture.library.clang.stdout",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/c_step_library_fixture.library.clang.stderr",
+                "clang",
+                "-std=c11",
+                "-O0",
+                "-ferror-limit=0",
+                "-pthread",
+                "-lm",
+                "-o",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/c_step_library_fixture.library.exe",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/c_step_library_fixture.library.c",
+                "/private/tmp/bend-fir-integrated57ab/evals/c_backend_library_caller.c"
+              ],
+              "label": "c_step_library_fixture.library:clang",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792948048368-65e04a7ce19a3a66.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            },
+            "gateFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/c_step_library_fixture.library.clang.gate.json",
+              "sha256": "f61d6fa8256c8db860276781524a5763f7d779cf3b836838d150c6b4ef49f160",
+              "bytes": 1553
+            },
+            "guardianReport": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/c_step_library_fixture.library.clang.gate.report.json",
+              "sha256": "7821966000803287a8aa92f9ee7cfc716dad234a5cad343214abc4afdf7dff9b",
+              "bytes": 1044
+            },
+            "stdout": "",
+            "stdoutFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/c_step_library_fixture.library.clang.stdout",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0
+            },
+            "stderrFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/c_step_library_fixture.library.clang.stderr",
+              "sha256": "3f39d01105ed94f030f134554c655249a9a6a72f0c94649a97fbcf6737499bec",
+              "bytes": 8651
+            },
+            "passed": true
+          },
+          "run": {
+            "command": [
+              "/tmp/bend-foreign-db147cba-4424f731-run1/c_step_library_fixture.library.exe"
+            ],
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 1671168,
+              "peakFootprintBytes": 1196416,
+              "elapsedMs": 27,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/bin/sh",
+                "-c",
+                "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+                "sh",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/c_step_library_fixture.library.run.stdout",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/c_step_library_fixture.library.run.stderr",
+                "/tmp/bend-foreign-db147cba-4424f731-run1/c_step_library_fixture.library.exe"
+              ],
+              "label": "c_step_library_fixture.library:run",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792948049928-b0fb9174dc2d065e.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            },
+            "gateFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/c_step_library_fixture.library.run.gate.json",
+              "sha256": "58b6de7df1f7966fee6c0f3b33c6477d57ccb1cf92ed757aa63e9576f750a765",
+              "bytes": 1026
+            },
+            "guardianReport": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/c_step_library_fixture.library.run.gate.report.json",
+              "sha256": "c6b835e89ab3c0de8e9b221895cf3ef78fce53240484b2f0e4e51450f859a78d",
+              "bytes": 820
+            },
+            "stdout": "export ok\n",
+            "stdoutFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/c_step_library_fixture.library.run.stdout",
+              "sha256": "24dc50249441e39201d7c328d4119aca8703f2e2901aa37d8226478b27ce5a93",
+              "bytes": 10
+            },
+            "stderrFile": {
+              "path": "/tmp/bend-foreign-db147cba-4424f731-run1/c_step_library_fixture.library.run.stderr",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "bytes": 0
+            },
+            "passed": true
+          }
+        },
+        "artifacts": [
+          {
+            "path": "/tmp/bend-foreign-db147cba-4424f731-run1/c_step_library_fixture.library.c",
+            "sha256": "95a549ff1ed19b0cdb63bb75c707f122a91e1d7acc6e85f9bcfb23e781bdb695",
+            "bytes": 1124793
+          },
+          {
+            "path": "/tmp/bend-foreign-db147cba-4424f731-run1/c_step_library_fixture.library.exe",
+            "sha256": "97602401fbacf4cfb442fef6c44887f1b848ab5021325a6ba5ae7121fa33a887",
+            "bytes": 955152
+          }
+        ],
+        "observed": "export ok"
+      }
+    ],
+    "logs": "/tmp/bend-foreign-db147cba-4424f731-run1"
+  },
+  "summary": {
+    "rows": 7,
+    "stages": 18,
+    "allCompleteStoppedExitZero": true,
+    "sumGuardElapsedMs": 356626,
+    "peakRssBytes": 2088239104,
+    "peakFootprintBytes": 2160078120,
+    "outerWallSeconds": 357.43
+  },
+  "parserBoundary": "Compiler and parser are the same unchangeddb147cba artifact",
+  "ownershipBound": "Original list_rebox_sum frontier bound untouched; frontier pages are not retained/live bytes",
+  "rawEvidence": {
+    "manifest": "/tmp/bend-foreign-db147cba-4424f731-run1/evidence.manifest.json",
+    "sha256": "21eea51edf62cff28cd5d78a8b3eca46aeff0b0e67ac58e733f416f8889685da",
+    "files": 85,
+    "runnerSha256": "e74d1eab4033c760719a737476cfee94f98662eb980c4887bb6f6a4d5a90f934"
+  },
+  "notClaimed": [
+    "Full current JS corpus or byte fixedpoint",
+    "Native C compiler/HOST execution",
+    "General foreign/ownership proof",
+    "Profiling overhead or retained/live bytes"
+  ]
+}

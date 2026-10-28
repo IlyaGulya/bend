@@ -1,0 +1,340 @@
+{
+  "schemaVersion": 1,
+  "kind": "compiler-native-stage-profile-failure",
+  "diagnosticOnly": true,
+  "acceptanceEvidence": false,
+  "sourceHead": "651f6360995c1c70bc0c374b323eb0b1bb2afd68",
+  "scope": "aa9/d7 Emitter, all 27 groups, real c_backend.emit request; not the new 86ef mapping",
+  "builder": {
+    "path": "evals/native_stage_profile_build.ts",
+    "sha256": "e1fd472edd1593c02aa73f3c3c15ea299b17e5905a83aba504f7ae4af743808a"
+  },
+  "driver": {
+    "path": "evals/native_stage_profile_driver.bend",
+    "sha256": "ae5871a284d3110e67632be5a0a26948d1eab3fed44c9ce4d9a23fbce639557d"
+  },
+  "host": {
+    "path": "evals/native_stage_profile_host.c",
+    "sha256": "e96d76b8e50f25d826d1fceddbff60b2128b62a99836e04138637277da1195f4"
+  },
+  "guard": {
+    "entry": "guardHeavyGate(import.meta.url,{label})",
+    "policy": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 600000
+    },
+    "workerLimits": {
+      "stackSizeMb": 256,
+      "maxOldGenerationSizeMb": 3072
+    },
+    "clangTimeoutMs": 300000,
+    "fixtureRunTimeoutMs": 120000,
+    "bypassRemoved": true,
+    "command": "bun evals/native_stage_profile_build.ts --artifact-dir=DIR"
+  },
+  "preBuildAttempt": {
+    "log": "/tmp/native-diag-aa9-precheck-fail.log",
+    "sha256": "85b1089eef664040cad117ea2312ae08eede43d98026cae81b3695f2a24b3155",
+    "bytes": 1181,
+    "elapsedMs": 68,
+    "reason": "mixed layouts+render-c group label rejected before load",
+    "note": "validation bug fixed; no compiler work ran"
+  },
+  "actualAttempt": {
+    "log": "/tmp/native-diag-aa9-run2.log",
+    "sha256": "ee3ddfff3a1a7721feadd3206b444f51a0b83c133098b0dce235af0b71fbf679",
+    "bytes": 1357,
+    "exitCode": 1,
+    "elapsedMs": 12353,
+    "peakRssBytes": 5091704832,
+    "peakFootprintBytes": 4933570784,
+    "memoryLimitBytes": 8589934592,
+    "reason": "RangeError: Maximum call stack size exceeded (Bun/JSC run; not a Node worker-limit classification)",
+    "stack": "comp.ts ty_wnf / ty_adt / adt_of / ctr_adt / emit_ctr",
+    "artifactProduced": false,
+    "nativePhaseRowsProduced": false,
+    "ownedTreeStopped": true,
+    "reportPhase": "complete",
+    "guardReportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792873586364-dc124cb5feeb8990.json",
+    "runtime": "bun/jsc",
+    "peakGiB": 4.742,
+    "peakGB": 5.092,
+    "capsEstablished": false,
+    "classification": "REJECTED_WRONG_RUNTIME_BUN"
+  },
+  "decision": "Actual Node 23.11 run is now the terminal native evidence: codegen and native execution succeeded, the typed witness saw EmitFailure (status 2), and the host failed rather than dropping to Unit. This is not a caps/OOM result and not a profiling PASS. No retry or cap change.",
+  "jsCProfileEvidence": "checkpoints/compiler-profile-ab-4a916.json",
+  "note": "C emission byte equality on 4a916 is proven separately; clang execution is not claimed.",
+  "status": "REJECTED_WRONG_RUNTIME_BUN",
+  "runtime": {
+    "name": "bun",
+    "execPath": "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+    "bun": "1.4.2",
+    "note": "Worker resourceLimits declared under Bun/JSC but not established as enforced; no Node-cap evidence"
+  },
+  "nextRequiredRun": {
+    "runtime": "node v23.11.0",
+    "command": "node --experimental-strip-types evals/native_stage_profile_build.ts --artifact-dir=DIR",
+    "guard": "guardHeavyGate inherited lease; no --internal",
+    "workerLimits": {
+      "stackSizeMb": 256,
+      "maxOldGenerationSizeMb": 3072
+    },
+    "policy": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 600000
+    },
+    "status": "AUTHORIZED BUT NOT RUN"
+  },
+  "prematureNodeAttempt": {
+    "log": "/tmp/native-diag-node-aa9.log",
+    "sha256": "debf8aec34fa92e8618862215f1894773bda21f09f5ccf3355d52d38da81b262",
+    "runtime": "node v23.11.0 via guardHeavyGate",
+    "elapsedMs": 102259,
+    "peakRssBytes": 3029139456,
+    "peakGiB": 2.821,
+    "status": "interrupted",
+    "ownTreeStopped": true,
+    "reason": "main STOP: placeholder empty program/minimal runtime fixture was not legitimate",
+    "countsAsCompliantResult": false
+  },
+  "fixtureStatus": {
+    "program": "canonical c_backend_smoke data copied as passive data",
+    "runtime": "real c_backend_runtime.bend",
+    "authoritativeMetadata": false,
+    "jsProven": false,
+    "nativeRunWithFixedFixture": false,
+    "status": "BLOCKED_ON_AUTHORITATIVE_BIR",
+    "canonicalPipelineProven": true,
+    "nativeRunWithCanonicalBIR": false,
+    "rejectedSmokePath": "evals/native_stage_profile_rejected_smoke.bend (diagnostic only; not canonical)"
+  },
+  "compliantNodeAttempt": {
+    "status": "EMIT_FAILURE_WITNESSED",
+    "log": "/tmp/native-diag-node-canonical.log",
+    "sha256": "4273ccc51f20e3719c25fd2953daad932d7e22e5f128dd9b8fa7f2bfd88f744d",
+    "bytes": 2660,
+    "runtime": "node v23.11.0/V8",
+    "execPath": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+    "command": [
+      "node",
+      "--experimental-strip-types",
+      "evals/native_stage_profile_build.ts",
+      "--artifact-dir=/tmp/native-stage-node-canonical"
+    ],
+    "guard": "guardHeavyGate inherited lease; 8 GiB/10 ms/600 s; no --internal",
+    "workerLimits": {
+      "stackSizeMb": 256,
+      "maxOldGenerationSizeMb": 3072
+    },
+    "elapsedMs": 217834,
+    "peakRssBytes": 6606716928,
+    "peakGB": 6.607,
+    "peakGiB": 6.153,
+    "memoryLimitBytes": 8589934592,
+    "exitCode": 1,
+    "ownedTreeStopped": true,
+    "reportPhase": "complete",
+    "nativeArtifactProduced": true,
+    "phases": [
+      {
+        "name": "template-chunks",
+        "chunkAdvances": 2,
+        "shapes": {
+          "finished": 1,
+          "bound": 1
+        }
+      },
+      {
+        "name": "checker-chunks",
+        "chunkAdvances": 3,
+        "shapes": {
+          "finished": 3
+        }
+      },
+      {
+        "name": "template-pending-chunks",
+        "chunkAdvances": 2,
+        "shapes": {
+          "finished": 1,
+          "pending": 1
+        }
+      },
+      {
+        "name": "emitter-chunks",
+        "chunkAdvances": 3,
+        "shapes": {
+          "finished": 2
+        },
+        "requestGroups": {
+          "12": 1
+        },
+        "fixtureResultStatus": 2,
+        "elapsedMs": 12.678
+      }
+    ],
+    "typedWitness": "fixtureResultStatus 2 = EmitFailure; non-empty EmitSuccess was not observed; the host failed the phase instead of dropping the result",
+    "testedFixture": "evals/native_stage_profile_emit_fixture.bend (canonical c_backend_smoke BIR data) + evals/c_backend_runtime.bend real runtime",
+    "classification": "ACTUAL_NODE_EMIT_FAILURE",
+    "nativeProfilingPass": false,
+    "reason": "canonical c_backend.emit returned EmitFailure for the canonical smoke program/runtime under the aa9/d7 generated Emitter; exact failure message not surfaced by this host",
+    "noRetry": true,
+    "capRaise": false,
+    "guardReportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792874487175-0f1a34dbad1bd7c0.json"
+  },
+  "failureDiagnosis": {
+    "message": "no family declares constructor Nil",
+    "method": "JS generated Emit (comp.ts js_lib) over the same canonical smoke BIR data and real runtime; stepwise emitter_chunk(64n); no native C build",
+    "observedBeforeFix": "EmitFailure message exact: \"no family declares constructor Nil\"",
+    "cause": "canonical c_backend_smoke metadata predates the current sharing schema: runtime constructor layouts exist but no BIR.Family arm declares Nil (and siblings)",
+    "fixtureFix": "added runtime_families() arms for all 15 runtime constructors with their declared arities, then U32 family; no runtime/emitter/generator patch",
+    "afterFix": "JS generated Emit returned EMIT_SUCCESS after 26237 emitter_chunk(64n) steps",
+    "jsCodegenNote": "js_lib generation used node --stack-size=65536 KB = 64 MiB, within the approved 256 MiB source cap; no native worker/guard limit changed; execution default Node",
+    "probeSourceSha256": "b99fbad13d6bed735f64375da9c7021a76eddc6eba9917bbfab0441f01da6eb3",
+    "probeDataSha256": "2241e16db24981a29497f43966a717e415fd82bbb8c414b78ffefd7603598971",
+    "generatedJs": {
+      "bytes": 8114140,
+      "sha256": "cad4f122e23847bc9774a3541ec3c4b9b8ab0bbfaa63665103297a8840dd8374"
+    },
+    "runLog": {
+      "path": "/tmp/run-emit-js-probe9.log",
+      "sha256": "53c314b79e26942b22d7655af7d3990acc03e45ee9d742e43108317a224f481b",
+      "result": "EMIT_SUCCESS",
+      "steps": 26237
+    },
+    "nativeRunStatus": "unchanged: the performed Node native run used the pre-fix metadata and witnessed EmitFailure; this JS proof is not a native run and no native success is claimed",
+    "publicProbe": {
+      "source": "evals/native_stage_profile_emit_probe.bend",
+      "tool": "evals/native_stage_profile_emit_probe.ts",
+      "command": "node --stack-size=65536 --experimental-strip-types evals/native_stage_profile_emit_probe.ts",
+      "jsStackBytes": 67108864,
+      "approvedSourceCapBytes": 268435456,
+      "nativeCapsChanged": false,
+      "result": "EMIT_FAILURE",
+      "message": "no family declares constructor Nil",
+      "steps": 2,
+      "log": "/tmp/public-emit-probe-failure.log",
+      "logSha256": "6fbaf9fb43c6fa79c7bd2a4024f9e3bb95222c9d21d715ce90f7ede98065e6c2",
+      "status": "public source diagnostic; exposes exact typed failure; not a native run"
+    },
+    "reproducedOriginalFailureLog": {
+      "path": "/tmp/run-emit-js-probe.log",
+      "sha256": "f117ebc1ace1be1ca291e0291af09fe111e9419bf65c7490a7ec194724544f5c",
+      "message": "no family declares constructor Nil"
+    },
+    "status": "BLOCKED_ON_AUTHORITATIVE_RUNTIME_FAMILY_METADATA",
+    "afterFamilyAttempt": "REJECTED: hand-built one-family-per-ctor arms with DescriptorNull fields, None-native ConstructorLayouts and unrestricted quantities are not authoritative typed metadata; removed. No EmitSuccess claim.",
+    "correctedFixtureStatus": "NOT ACCEPTED: needs a real checked source -> canonical FIR/lowering -> BIR (or canonical generated fixture) with authoritative runtime family/constructor metadata. The copied smoke BIR data is retained only as the failing public diagnostic input."
+  },
+  "canonicalPipelineProof": {
+    "status": "JS canonical checked-source -> lower -> production C render EMIT_SUCCESS",
+    "source": "evals/native_stage_profile_emit_source.bend",
+    "sourceSha256": "d1001497df01fa274cd4a67e7a3bd596853e9ee45ecf3fc133084c3a9cfc883b",
+    "checkerHost": "evals/candidate_host.ts --checked-out --sources-out",
+    "candidate": "/private/tmp/bend-fir-root-aa9/checkpoints/root-final-art.js",
+    "candidateSha256": "4a91665c634dff4b1da9d17bdc80786efc03bd0d0e89865ed22e085c1026060a",
+    "checkedProgram": {
+      "path": "/tmp/checked-source-c.json",
+      "sha256": "9e220b61c64648ee4070be7b053cd10db92a039cf07f20575bdaa517d89f6bbe",
+      "git": false
+    },
+    "lower": {
+      "component": "evals/native_stage_profile_bir_lower.bend",
+      "request": "generated EmitterRequest_cps_provider_1_lower (group 5)",
+      "steps": 4627,
+      "result": "cps_provider_1_Lowered"
+    },
+    "bir": {
+      "path": "/tmp/canonical-source-bir-c.json",
+      "sha256": "f272d5531b76fcbb05c3fe6c096a60bb32cb930f5a4103c6161aa10c287bada6",
+      "bytes": 1639178,
+      "git": false
+    },
+    "cSources": {
+      "path": "/tmp/sources-source-c.json",
+      "sha256": "f8edf1aaa5d07b3c17e4d3b26411c3517541bfba68939eca17ebcf87de307836",
+      "count": 56,
+      "git": false
+    },
+    "emit": {
+      "component": "evals/native_stage_profile_bir_render.bend",
+      "request": "generated cps_provider_6_render (group 18; canonical C render with source-file joining)",
+      "steps": 826307,
+      "result": "EMIT_SUCCESS",
+      "runtime": "bend2/selfhost/c_runtime.c"
+    },
+    "jsStackBytes": 268435456,
+    "approvedSourceCapBytes": 268435456,
+    "nativeCapsChanged": false,
+    "note": "group 18 is the production C render entry; direct group12 CImport assembly is not claimed. No native run with this canonical BIR yet.",
+    "manifest": "checkpoints/emitter-steps-v1.json",
+    "manifestSha256": "63c51f8970fb6aaf024101c70d804893ea757b3c68cfd132b6bdfdd87b096619",
+    "requestGroups": 27,
+    "lowerOrdinal": 5,
+    "renderOrdinal": 18,
+    "renderName": "cps_provider_6_render",
+    "byteSizes": {
+      "source": 305,
+      "bir": 1639178,
+      "sourcesBundle": 279742,
+      "runtime": 75336,
+      "generatedFixture": 793517
+    },
+    "hashes": {
+      "bir": "f272d5531b76fcbb05c3fe6c096a60bb32cb930f5a4103c6161aa10c287bada6",
+      "sourcesBundle": "f8edf1aaa5d07b3c17e4d3b26411c3517541bfba68939eca17ebcf87de307836",
+      "runtime": "478c1ba7d0d0626c1927d11c4af3b3d4cef520db41afd8722ebf55d5050769c3",
+      "generatedFixture": "ef98fcac013f127a218430aa1b3f43c191092cbc41d66b3f41f02715be65a108"
+    },
+    "generatedFixtureGit": false,
+    "builderTransport": "evals/native_stage_profile_fixture_transport.mjs writes checkpoints/native_stage_profile_generated_fixture.bend before compile; requires --canonical-bir/--canonical-sources/--canonical-runtime",
+    "driverRequest": "EmitterRequestGroup_18 EmitterRequest_cps_provider_6_render{program,runtime,files}",
+    "noNativeRun": true,
+    "transport": {
+      "script": "evals/native_stage_profile_fixture_transport.mjs",
+      "status": "fixed and consumer-smoked",
+      "birSha256": "f272d5531b76fcbb05c3fe6c096a60bb32cb930f5a4103c6161aa10c287bada6",
+      "sourcesSha256": "f8edf1aaa5d07b3c17e4d3b26411c3517541bfba68939eca17ebcf87de307836",
+      "runtimeSha256": "478c1ba7d0d0626c1927d11c4af3b3d4cef520db41afd8722ebf55d5050769c3",
+      "outputSha256": "ef98fcac013f127a218430aa1b3f43c191092cbc41d66b3f41f02715be65a108",
+      "sourceSha256": "d1001497df01fa274cd4a67e7a3bd596853e9ee45ecf3fc133084c3a9cfc883b",
+      "checkedSha256": "9e220b61c64648ee4070be7b053cd10db92a039cf07f20575bdaa517d89f6bbe",
+      "componentSha256": "4a91665c634dff4b1da9d17bdc80786efc03bd0d0e89865ed22e085c1026060a",
+      "byteSizes": {
+        "source": 305,
+        "bir": 1639178,
+        "sources": 279742,
+        "runtime": 75336,
+        "output": 793517
+      },
+      "checks": {
+        "nullaryConstructorsIncluded": true,
+        "unknownConstructorFails": true,
+        "nonCanonicalNamespaceFails": true,
+        "extraOrMissingFieldsFail": true,
+        "sourceBundleExactPathSource": true,
+        "actualHashes": true
+      },
+      "consumerSmoke": {
+        "bookLoadValid": "TRANSPORT_CONSUMER_OK",
+        "log": "/tmp/transport-consumer.log",
+        "sha256": "3704f7f2560a7bc1dcecad3d6fe7e49b7cc9b3775bd0284fac05a6baff794633"
+      },
+      "discriminators": {
+        "badNamespace": "/tmp/transport-bad-namespace.log",
+        "badUnknown": "/tmp/transport-bad-unknown.log",
+        "badExtra": "/tmp/transport-bad-extra.log"
+      }
+    }
+  },
+  "nativeOwnershipFix": {
+    "status": "source fixed; not native-run",
+    "result": "owned result is consumed exactly once by the typed outcome callback; no term_drop follows on the classifier path; phases without a classifier still drop their owned result",
+    "failureSurface": "NativeEmitOutcome carries EmitSuccess source or EmitFailure message+span; driver IO report prints EMIT_SUCCESS or EMIT_FAILURE: <message> and exits 1 on failure; canonical CJoin span retained in the outcome",
+    "note": "previous status-2 path never exercised the double-drop; fixed before any native run"
+  }
+}

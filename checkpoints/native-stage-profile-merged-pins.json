@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "kind": "native-diagnostic-merged-run-pins",
+  "worktree": "/private/tmp/bend-native-merged-03d0",
+  "baseCommit": "03d0d144",
+  "workloadLabel": "OLDPINNED_DIAGNOSTIC",
+  "notLabel": "current C candidate acceptance",
+  "inputs": [
+    {
+      "path": "/tmp/canonical-source-bir-c.json",
+      "bytes": 1639178,
+      "sha256": "f272d5531b76fcbb05c3fe6c096a60bb32cb930f5a4103c6161aa10c287bada6"
+    },
+    {
+      "path": "/tmp/sources-source-c.json",
+      "bytes": 279742,
+      "sha256": "f8edf1aaa5d07b3c17e4d3b26411c3517541bfba68939eca17ebcf87de307836"
+    },
+    {
+      "path": "/tmp/checked-source-c.json",
+      "bytes": 22854363,
+      "sha256": "9e220b61c64648ee4070be7b053cd10db92a039cf07f20575bdaa517d89f6bbe"
+    },
+    {
+      "path": "/private/tmp/bend-fir-root-aa9/checkpoints/root-final-art.js",
+      "bytes": 16912082,
+      "sha256": "4a91665c634dff4b1da9d17bdc80786efc03bd0d0e89865ed22e085c1026060a"
+    },
+    {
+      "path": "/private/tmp/bend-native-merged-03d0/bend2/selfhost/c_runtime.c",
+      "bytes": 75336,
+      "sha256": "478c1ba7d0d0626c1927d11c4af3b3d4cef520db41afd8722ebf55d5050769c3"
+    },
+    {
+      "path": "/private/tmp/bend-native-merged-03d0/checkpoints/native_stage_profile_generated_fixture.bend",
+      "bytes": 793517,
+      "sha256": "ef98fcac013f127a218430aa1b3f43c191092cbc41d66b3f41f02715be65a108"
+    },
+    {
+      "path": "/private/tmp/bend-native-merged-03d0/checkpoints/template_steps_v1.bend",
+      "bytes": 347539,
+      "sha256": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4"
+    },
+    {
+      "path": "/private/tmp/bend-native-merged-03d0/checkpoints/checker_core_steps_v1.bend",
+      "bytes": 2710173,
+      "sha256": "d6000fd556d550f45ccca6adeaaa6e2b0d6aa2fc7604fae0959d650f6d7d175c"
+    },
+    {
+      "path": "/private/tmp/bend-native-merged-03d0/checkpoints/emitter_steps_v1.bend",
+      "bytes": 2702264,
+      "sha256": "d7dbe31856eb8d9e53eeddefab0ea4eed56eafe6420a7478d4c37b53d63fb956"
+    },
+    {
+      "path": "/private/tmp/bend-native-merged-03d0/checkpoints/template-steps-v1.json",
+      "bytes": 559519,
+      "sha256": "01df14fc5366f893922156529c9538260f4ff166eb63941d81ee4793d72ac94f"
+    },
+    {
+      "path": "/private/tmp/bend-native-merged-03d0/checkpoints/checker-core-steps-v1.json",
+      "bytes": 4966038,
+      "sha256": "da75496bfeaae3d59150e669db7e93b07b90f64d9d8cd7bf99675afbbe704971"
+    },
+    {
+      "path": "/private/tmp/bend-native-merged-03d0/checkpoints/emitter-steps-v1.json",
+      "bytes": 5128595,
+      "sha256": "63c51f8970fb6aaf024101c70d804893ea757b3c68cfd132b6bdfdd87b096619"
+    },
+    {
+      "path": "/private/tmp/bend-native-merged-03d0/evals/native_stage_profile_build.ts",
+      "bytes": 21458,
+      "sha256": "a4f54e44a2cdf62632d6409ff310dcb80f86fa573f425729b5623313f9148472"
+    },
+    {
+      "path": "/private/tmp/bend-native-merged-03d0/evals/compiler_profile.mjs",
+      "bytes": 32309,
+      "sha256": "99fca04a701af1fec88e49ab3ec4673ada67fd504ed22d6901b1937e997b4ae8"
+    },
+    {
+      "path": "/private/tmp/bend-native-merged-03d0/evals/native_stage_profile_host.c",
+      "bytes": 5890,
+      "sha256": "d50e96cb10c302024bcb264bafa47eb37dc79c675be4634cccf694b482681793"
+    },
+    {
+      "path": "/private/tmp/bend-native-merged-03d0/evals/native_stage_profile_driver.bend",
+      "bytes": 17167,
+      "sha256": "dd1b86b49f66039949c3efd962973e784a938fdce8a4beb7a2a324f591f3171a"
+    },
+    {
+      "path": "/private/tmp/bend-native-merged-03d0/evals/native_stage_profile_emit_source.bend",
+      "bytes": 305,
+      "sha256": "d1001497df01fa274cd4a67e7a3bd596853e9ee45ecf3fc133084c3a9cfc883b"
+    }
+  ],
+  "command": [
+    "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+    "--experimental-strip-types",
+    "evals/native_stage_profile_build.ts",
+    "--artifact-dir=/tmp/native-stage-merged-03d0-artifacts",
+    "--profile-dir=/tmp/native-stage-merged-03d0-profiles",
+    "--canonical-bir=/tmp/canonical-source-bir-c.json",
+    "--canonical-sources=/tmp/sources-source-c.json",
+    "--canonical-runtime=bend2/selfhost/c_runtime.c",
+    "--canonical-checked=/tmp/checked-source-c.json",
+    "--canonical-component=/private/tmp/bend-fir-root-aa9/checkpoints/root-final-art.js"
+  ],
+  "note": "Frozen old pinned diagnostic workload and generated units; current merged builder/profiler/host. Not current C candidate acceptance."
+}

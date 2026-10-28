@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "status": "G5_FLAT_USAGE_MAPS_REJECTED_FULL_ROOT_DEADLINE",
+  "compilerAccepted": false,
+  "nativeBuildAccepted": false,
+  "byteFixedpoint": false,
+  "sourceCheckpoint": "35abacf1",
+  "runtime": {
+    "name": "bun",
+    "bun": "1.4.3",
+    "revision": "c6da4a4d3010e5553438c60f6bd76d981976867c",
+    "automaticGcRamHint": {
+      "source": "BUN_JSC_forceRAMSize",
+      "bytes": 4294967296,
+      "hardLimit": false
+    },
+    "manualGC": false,
+    "stack": "Bun main-thread default"
+  },
+  "inputs": {
+    "bend2/bend.ts": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+    "bend2/comp.ts": "1034505b49c7cd80ff415be14e581f4cd5bfcd4e622006329d358bd3995594cb",
+    "bend2/base.bend": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+    "checkpoints/.bootstrap_compiler_root_release2039g4.bend": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+    "checkpoints/root-release2039g4.native.corpus.json": "acfb20bad4804cff7d9c2e2de4edf47caacccb79949dc0ad37c20c5bbcaf4102"
+  },
+  "report": {
+    "path": "checkpoints/root-release2039g5-native-build.json",
+    "sha256": "4ad91a692a1665a8148761a9d8a52706ee314708b5f8daa0ac815831987efdf1"
+  },
+  "validationObserved": {
+    "checkedDefinitions": 12148,
+    "eventsFullyValidated": 12728,
+    "source": "Native worker book_valid complete event in full process output",
+    "elapsedMs": 7621.197083
+  },
+  "guardian": {
+    "status": "FAIL",
+    "reason": "deadline_exceeded",
+    "commandExitCode": -1,
+    "commandSignal": 15,
+    "peakRssBytes": 4333862912,
+    "peakFootprintBytes": 4375548296,
+    "elapsedMs": 601073,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "command": [
+      "/opt/homebrew/Cellar/bun/1.4.3/bin/bun",
+      "--smol",
+      "/private/tmp/bend2039-upgrade/evals/native_compiler_experiment.ts",
+      "--mode=build",
+      "--corpus=checkpoints/root-release2039g4.native.corpus.json",
+      "--artifact=/tmp/bend2039g5-native",
+      "--report=checkpoints/root-release2039g5-native-build.json",
+      "--cc-pipeline=llvm-split",
+      "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+      "--cc-opt=1",
+      "--internal=build"
+    ],
+    "label": "Native CPU compiler build",
+    "exitCode": 1,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793083129999-a3caeb3ef688fcc9.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "failure": {
+    "phase": "compile_book",
+    "diagnostic": "deadline_exceeded"
+  },
+  "lastProgress": {
+    "phase": "compile_book",
+    "event": "start",
+    "unixMs": 1793083143729,
+    "pid": 21841,
+    "worker": false,
+    "rssBytes": 2621049328,
+    "heapUsedBytes": 1487558351,
+    "cpuMs": 13350.623,
+    "checkedDefinitions": 12148
+  },
+  "cPublished": false,
+  "nativeArtifactPublished": false,
+  "note": "Nine real C/JS consumers and exact emitted byte parity passed, but the complete unchanged compiler root did not publish C before the original 600 s guard. No speed, memory-improvement, native-build or fixedpoint acceptance follows. Revert the experimental flat-map change."
+}

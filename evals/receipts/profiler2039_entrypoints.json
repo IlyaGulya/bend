@@ -1,0 +1,420 @@
+{
+  "schemaVersion": 1,
+  "status": "CURRENT_PRODUCER_CANDIDATE_AND_WORKER_PROFILING_PASS",
+  "diagnosticOnly": true,
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "commands": [
+    [
+      "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "--experimental-strip-types",
+      "evals/compiler_profile_smoke.ts"
+    ],
+    [
+      "/opt/homebrew/bin/bun",
+      "evals/heavy_gate.ts",
+      "--memory-mib",
+      "8192",
+      "--rss-mib",
+      "8192",
+      "--poll-ms",
+      "10",
+      "--timeout-ms",
+      "600000",
+      "--",
+      "/opt/homebrew/bin/bun",
+      "/tmp/bend2039g7-profile-entry-smoke.mjs"
+    ]
+  ],
+  "producerSmoke": {
+    "schemaVersion": 1,
+    "kind": "compiler-profile-smoke",
+    "diagnosticOnly": true,
+    "acceptanceEvidence": false,
+    "fullrootOrOverheadMeasured": false,
+    "limits": [
+      "diagnostic only: profile files do not certify acceptance, bootstrap green, fixedpoint or benchmark results",
+      "span CPU is a process.cpuUsage boundary delta over all threads in this process; child processes are excluded and require their own rusage receipt; nested or overlapping spans overlap and no exclusive CPU is derived",
+      "span thread CPU is a process.threadCpuUsage boundary delta over the collector thread only; worker threads and runtime helper threads are excluded there and included in the process delta, so their arithmetic difference is a measurement gap, not an attribution",
+      "boundary heapUsed deltas are not allocation, live or retained bytes; RSS is process-wide",
+      "peak RSS is process.resourceUsage().maxRSS (a runtime-documented high-water resident size); it is not memory footprint and no snapshot substitutes one for the other",
+      "footprint, live/retained heap and allocation-request counts are unavailable at these boundaries and stay explicit: the collector never forces GC, and inspector heap sampling is statistical over allocated and collected objects",
+      "sampled CPU/allocation profiles are statistical, include collected objects for allocation, and have no Bend source map",
+      "child-process CPU/RSS exists only where the producer records a child receipt (e.g. NATIVE_PHASE or llvm time -lp); it is never inferred, and worker and child process trees are not enumerable from the collector",
+      "rawDetail streams every event to events.jsonl; fine spans/observations are aggregated in memory, but JSON serialization and I/O overhead remains and is not measured",
+      "fullroot overhead/control and complete stage coverage are not established by a tiny smoke run"
+    ],
+    "source": {
+      "evals/compiler_profile.mjs": "b8b3dddf5a95777532fd73bda601d6bc610859d78371b7fbc593e4e93ec734c1",
+      "evals/selfhost_cpu_profile.mjs": "5d5fc8d329a3b600522c58eeac59c49c515109bc7f48845d8177cb520129a1c0",
+      "evals/native_compiler_experiment.ts": "9108d727d3a46add61f672be9a96095c2cd7a65dbe6a3e7108e2964a90ef7d46",
+      "evals/checker_core_component_build.ts": "85bc4ae037acbbaa1c5f8ccc97287fdcb6ddc36fbdb8e8906586ef17e11f218b",
+      "bend2/bend.ts": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+      "bend2/comp.ts": "318c55c449115cb820bf77c3ac500a1c07ed8473adbbe6eed9c61088f4a0009e"
+    },
+    "cases": {
+      "componentValid": {
+        "status": "JS_GENERATED_NOT_YET_EXECUTED",
+        "identicalArtifact": true,
+        "profileStatus": "completed",
+        "spans": [
+          "load",
+          "book-validation",
+          "codegen"
+        ],
+        "sampledSpans": 3,
+        "observationKinds": {
+          "exact-counter": 3
+        }
+      },
+      "componentRejected": {
+        "status": "FAIL",
+        "stage": "validation",
+        "profileStatus": "failed",
+        "failedSpans": [
+          "book-validation"
+        ]
+      },
+      "componentCutoff": {
+        "status": "ALLOCATION_PROFILE_ONLY",
+        "profileStatus": "completed",
+        "measurementStatus": "complete",
+        "codegenStatus": "aborted",
+        "abortedSpans": [
+          "codegen"
+        ],
+        "fineObservations": 0
+      },
+      "nativeRejected": {
+        "status": "FAIL",
+        "phase": "book_load:bridge",
+        "codegenProfileStatus": "failed",
+        "buildProfileStatus": "failed",
+        "codegenFailedSpans": [
+          "codegen-worker",
+          "book-load"
+        ],
+        "defaultUnchanged": true
+      },
+      "directC": {
+        "status": "completed",
+        "output": "17n",
+        "spans": [
+          "book-load",
+          "book-validation",
+          "compile-book",
+          "c-reachability",
+          "c-pass-1",
+          "c-pass-1-close",
+          "c-publication",
+          "clang",
+          "native-executable"
+        ],
+        "sampledSpans": 3,
+        "observationKinds": {
+          "producer-seam-coverage": 1,
+          "compiler-state": 6,
+          "compiler-retention": 18,
+          "compiler-memo-sizes": 18,
+          "exact-counter": 1,
+          "compiler-release": 12
+        },
+        "passes": 2
+      },
+      "directRejected": {
+        "status": "failed",
+        "failedSpans": [
+          "book-validation"
+        ]
+      },
+      "directCodegenFailure": {
+        "status": "failed",
+        "measurementStatus": "complete",
+        "failedSpans": [
+          "compile-book"
+        ],
+        "abortedSpans": [
+          "c-pass-1"
+        ],
+        "passesObserved": 1,
+        "diagnostic": "Error: an open Array element type"
+      },
+      "measurementIncomplete": {
+        "status": "completed",
+        "measurementStatus": "incomplete",
+        "incompleteEvidence": true,
+        "unclosedSpans": {
+          "count": 1,
+          "names": [
+            "left-open"
+          ],
+          "closeStatus": "aborted"
+        }
+      },
+      "terminatedWorkerCheckpoint": {
+        "status": 9,
+        "summary": false,
+        "checkpointStatus": "running",
+        "activeSpans": [
+          "compile-book"
+        ],
+        "observations": 1,
+        "recentObservationKinds": [
+          "exact-counter"
+        ]
+      },
+      "collectorContract": {
+        "cyclicArrayRejected": true,
+        "nonRawReleaseRows": 0,
+        "adapterReleaseEvents": 2,
+        "adapterSpanNames": [
+          "c-pass-1"
+        ],
+        "adapterUnits": [
+          null,
+          "entries",
+          "lines",
+          "UTF-16 code units",
+          "boolean"
+        ],
+        "observationIds": [
+          1,
+          2
+        ],
+        "observationCount": 2,
+        "checkpointObservationCount": 2,
+        "foreignKeepRejected": true,
+        "staleKeepRejected": true
+      }
+    },
+    "status": "PASS",
+    "temporaryDirectoryRemoved": true
+  },
+  "entrypoints": {
+    "status": "ACTUAL_CANDIDATE_AND_WORKER_PROVENANCE_PASS",
+    "image": {
+      "path": "/private/tmp/bend2039-upgrade/checkpoints/root-release2039g7.js",
+      "sha256": "a507c5c050f185a9610f28934fe3e3dd8fc0c2beab8f9b69baa493e4ec598f2e"
+    },
+    "source": {
+      "path": "/private/tmp/bend2039-upgrade/checkpoints/selfhost-release2039g7-bootstrap.json.cases/type-specialization.bend",
+      "sha256": "2c23d4dd3809789d8c2d850bb30a6f71ec3b59a8f009de87a7fff594d3bef937"
+    },
+    "entries": [
+      {
+        "entry": "candidate",
+        "summaryPath": "/tmp/bend2039g7-profile-entries-wyZN74/candidate/profile-22693-thread-1-ZRX5wR/summary.json",
+        "summarySha256": "80e1f45639fce9fb8e920da75f92efc96b1f82276624634774193b503d49aa4d",
+        "identity": {
+          "pid": 22693,
+          "parentPid": 22683,
+          "threadId": 1,
+          "isMainThread": false,
+          "threadKind": "worker-thread"
+        },
+        "profileSources": {
+          "executingScript": {
+            "path": "/private/tmp/bend2039g7-profile-provenance/evals/candidate_host.ts",
+            "bytes": 18098,
+            "sha256": "b4bae146cfa3f32edbe24c7bf13128c8d7c120b9e17d8c13719560e4beec83ce"
+          },
+          "stageHelper": {
+            "path": "/private/tmp/bend2039g7-profile-provenance/evals/compiler_stage_profile.mjs",
+            "bytes": 113117,
+            "sha256": "979dbef8895010b452c75a4b4bbc9fb24e0a75dba5d5ac8a743b67f427c47640"
+          },
+          "collector": {
+            "path": "/private/tmp/bend2039g7-profile-provenance/evals/compiler_profile.mjs",
+            "bytes": 46915,
+            "sha256": "b8b3dddf5a95777532fd73bda601d6bc610859d78371b7fbc593e4e93ec734c1"
+          }
+        },
+        "parent": {
+          "status": "verified",
+          "declared": {
+            "runDirectory": "/tmp/bend2039g7-profile-entries-wyZN74/parent/profile-22683-thread-0-zjw8AE",
+            "reportPath": "/tmp/bend2039g7-profile-entries-wyZN74/parent/profile-22683-thread-0-zjw8AE/summary.json",
+            "pid": 22683,
+            "threadId": 0,
+            "isMainThread": true,
+            "role": null
+          },
+          "observed": {
+            "kind": "compiler-profile",
+            "schemaVersion": 1,
+            "runDirectory": "/private/tmp/bend2039g7-profile-entries-wyZN74/parent/profile-22683-thread-0-zjw8AE",
+            "identity": {
+              "pid": 22683,
+              "parentPid": 22682,
+              "threadId": 0,
+              "isMainThread": true
+            },
+            "reportPath": "/private/tmp/bend2039g7-profile-entries-wyZN74/parent/profile-22683-thread-0-zjw8AE/summary.json",
+            "runJsonPath": "/private/tmp/bend2039g7-profile-entries-wyZN74/parent/profile-22683-thread-0-zjw8AE/run.json",
+            "runJsonSha256": "0f11d242bfe00dafa6a7ced3fb83763024e3ca0715c853a5c9e45ce698f7e331"
+          },
+          "relation": {
+            "runDirectory": "match",
+            "pid": "match",
+            "threadId": "match",
+            "isMainThread": "match",
+            "reportPath": "match"
+          },
+          "sameProcess": false,
+          "reason": null,
+          "linkKey": "parent collector runDirectory and run.json sha256; the parent profileId is in that profile's own summary.json",
+          "causality": "not asserted: a matching run.json proves that collector run exists with that identity, not that this profile is its child",
+          "topologyNote": "this profile runs on a worker thread, whose creating thread is in this process; the matched profile therefore belongs to a parent process, not to this thread's creator"
+        },
+        "parentThread": {
+          "threadId": null,
+          "isMainThread": null,
+          "sameProcess": true,
+          "source": "this profile runs on a worker thread; node:worker_threads exposes no creating-thread id, so the creating thread is identified only as that of the same process"
+        },
+        "profileId": "41be2608-4b00-458c-a3ce-d6d2d9b4b654"
+      },
+      {
+        "entry": "worker",
+        "summaryPath": "/tmp/bend2039g7-profile-entries-wyZN74/worker/profile-25111-thread-1-APJLU6/summary.json",
+        "summarySha256": "77c1d2ad414fda5daf08976606bfac2e4fd404ce7b6083aa3ffbd259c7f95a7b",
+        "identity": {
+          "pid": 25111,
+          "parentPid": 22683,
+          "threadId": 1,
+          "isMainThread": false,
+          "threadKind": "worker-thread"
+        },
+        "profileSources": {
+          "executingScript": {
+            "path": "/private/tmp/bend2039g7-profile-provenance/evals/selfhost_bootstrap_worker.mjs",
+            "bytes": 36903,
+            "sha256": "82267b31712f26caa6e0fe2b31ff570cc46400e4d542426f5ec9fc2f4ba8e42e"
+          },
+          "stageHelper": {
+            "path": "/private/tmp/bend2039g7-profile-provenance/evals/compiler_stage_profile.mjs",
+            "bytes": 113117,
+            "sha256": "979dbef8895010b452c75a4b4bbc9fb24e0a75dba5d5ac8a743b67f427c47640"
+          },
+          "collector": {
+            "path": "/private/tmp/bend2039g7-profile-provenance/evals/compiler_profile.mjs",
+            "bytes": 46915,
+            "sha256": "b8b3dddf5a95777532fd73bda601d6bc610859d78371b7fbc593e4e93ec734c1"
+          }
+        },
+        "parent": {
+          "status": "verified",
+          "declared": {
+            "runDirectory": "/tmp/bend2039g7-profile-entries-wyZN74/parent/profile-22683-thread-0-zjw8AE",
+            "reportPath": "/tmp/bend2039g7-profile-entries-wyZN74/parent/profile-22683-thread-0-zjw8AE/summary.json",
+            "pid": 22683,
+            "threadId": 0,
+            "isMainThread": true,
+            "role": null
+          },
+          "observed": {
+            "kind": "compiler-profile",
+            "schemaVersion": 1,
+            "runDirectory": "/private/tmp/bend2039g7-profile-entries-wyZN74/parent/profile-22683-thread-0-zjw8AE",
+            "identity": {
+              "pid": 22683,
+              "parentPid": 22682,
+              "threadId": 0,
+              "isMainThread": true
+            },
+            "reportPath": "/private/tmp/bend2039g7-profile-entries-wyZN74/parent/profile-22683-thread-0-zjw8AE/summary.json",
+            "runJsonPath": "/private/tmp/bend2039g7-profile-entries-wyZN74/parent/profile-22683-thread-0-zjw8AE/run.json",
+            "runJsonSha256": "0f11d242bfe00dafa6a7ced3fb83763024e3ca0715c853a5c9e45ce698f7e331"
+          },
+          "relation": {
+            "runDirectory": "match",
+            "pid": "match",
+            "threadId": "match",
+            "isMainThread": "match",
+            "reportPath": "match"
+          },
+          "sameProcess": false,
+          "reason": null,
+          "linkKey": "parent collector runDirectory and run.json sha256; the parent profileId is in that profile's own summary.json",
+          "causality": "not asserted: a matching run.json proves that collector run exists with that identity, not that this profile is its child",
+          "topologyNote": "this profile runs on a worker thread, whose creating thread is in this process; the matched profile therefore belongs to a parent process, not to this thread's creator"
+        },
+        "parentThread": {
+          "threadId": 0,
+          "isMainThread": true,
+          "sameProcess": true,
+          "source": "selfhost_bootstrap_worker.mjs main-thread branch creates this Worker for the request"
+        },
+        "profileId": "a8a94536-bba4-4bda-a90f-dc7faad75b5b"
+      }
+    ],
+    "candidate": {
+      "command": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--experimental-strip-types",
+        "/tmp/bend2039-candidate-worker.mjs",
+        "/tmp/bend2039g7-profile-provenance/evals/candidate_host.ts",
+        "--candidate=/private/tmp/bend2039-upgrade/checkpoints/root-release2039g7.js",
+        "--candidate-build=/private/tmp/bend2039-upgrade/checkpoints/root-release2039g7-build.result.json",
+        "--parser=/private/tmp/bend2039-upgrade/checkpoints/root-release2039g7.js",
+        "--base=/tmp/bend2039g7-profile-provenance/bend2/base.bend",
+        "--stage-profile=/tmp/bend2039g7-profile-entries-wyZN74/candidate",
+        "/private/tmp/bend2039-upgrade/checkpoints/selfhost-release2039g7-bootstrap.json.cases/type-specialization.bend",
+        "-o",
+        "/tmp/bend2039g7-profile-entries-wyZN74/candidate.js"
+      ],
+      "status": 0,
+      "signal": null,
+      "stdout": "{\"output\":\"/tmp/bend2039g7-profile-entries-wyZN74/candidate.js\",\"bytes\":356944,\"sha256\":\"a39bb5ef653be575ec3ed307dd834bdec898432a6b8cb787e674dbd5ebf06a40\",\"target\":\"js\",\"library\":false,\"modules\":2,\"foreignFiles\":58,\"stageProfile\":\"/tmp/bend2039g7-profile-entries-wyZN74/candidate/profile-22693-thread-1-ZRX5wR/summary.json\"}\n",
+      "stderr": "(node:22693) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+    },
+    "execution": {
+      "status": 0,
+      "stdout": "BitOne{}\n",
+      "stderr": ""
+    },
+    "worker": {
+      "command": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--experimental-strip-types",
+        "/tmp/bend2039g7-profile-provenance/evals/selfhost_bootstrap_worker.mjs",
+        "/tmp/bend2039g7-profile-entries-wyZN74/worker-request.json"
+      ],
+      "code": 0,
+      "result": {
+        "passed": true,
+        "compilerBootstrapGreen": false,
+        "selfhostGreen": false,
+        "diagnosticFixture": "type-specialization",
+        "fixtureExecutions": 1
+      },
+      "parserComparisons": 2
+    }
+  },
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 1116094464,
+    "peakFootprintBytes": 1104923408,
+    "elapsedMs": 22985,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "/opt/homebrew/bin/bun",
+      "/tmp/bend2039g7-profile-entry-smoke.mjs"
+    ],
+    "label": "heavy command",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793103518515-6c609f1ad826321a.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "limitations": [
+    "Bounded real CLI/worker smoke; not full-input overhead measurement or current compiler acceptance.",
+    "Process/isolated-thread CPU classes and boundary heap/RSS are distinct; no exclusive per-provider CPU or live-retained bytes inferred."
+  ]
+}

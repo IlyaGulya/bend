@@ -1,0 +1,350 @@
+{
+  "schemaVersion": 1,
+  "status": "SOURCE_FIXES_VERIFIED_CANONICAL_CLI_ONLY",
+  "selfhostAccepted": false,
+  "byteFixedpoint": false,
+  "runtime": {
+    "bun": "1.4.2",
+    "revision": "744846f844374847c902b5e7fd59b4342a51ef99"
+  },
+  "changes": [
+    "Use current worktree bytes for all ten historical parser-consumer roles; reject unknown roles",
+    "Serialize all JS String literals through the existing bounded-left escaping path, including packed non-scalar Char codes",
+    "Publish JSDescriptorHead before constructor patterns",
+    "Correct foreign fixture CID to its declared echo name",
+    "Use affine callable arguments with the decreasing recursion argument first"
+  ],
+  "inputs": [
+    {
+      "path": "/private/tmp/bend2039-upgrade/bend2/bend.ts",
+      "bytes": 138252,
+      "sha256": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e"
+    },
+    {
+      "path": "/private/tmp/bend2039-upgrade/bend2/comp.ts",
+      "bytes": 208209,
+      "sha256": "132ce4c74e944387ae1860a366c4776455f78fd462766f255063583775d00cd7"
+    },
+    {
+      "path": "/private/tmp/bend2039-upgrade/bend2/base.bend",
+      "bytes": 79477,
+      "sha256": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce"
+    },
+    {
+      "path": "/private/tmp/bend2039-upgrade/bend2/selfhost/js_backend.bend",
+      "bytes": 152827,
+      "sha256": "ad2a4d9f012556be5a3e8fcbf3b847f9e84ae98a9892975aec7bce7987b37efb"
+    },
+    {
+      "path": "/private/tmp/bend2039-upgrade/bend2/selfhost/lower_catalog.bend",
+      "bytes": 97260,
+      "sha256": "3543cf73484f955436c4060fcbdcf4373ca9544cd80fa52f3e0114996a9fe9f0"
+    },
+    {
+      "path": "/private/tmp/bend2039-upgrade/evals/bootstrap_parser_fast.ts",
+      "bytes": 37190,
+      "sha256": "2565f56eea8b787d0ed56c2a97a7b5badfa5d0ba68ee55a898ed9beff8d5ff81"
+    },
+    {
+      "path": "/private/tmp/bend2039-upgrade/tests/reg/js_char_full_u32.bend",
+      "bytes": 1937,
+      "sha256": "9c0b37ad055dc7254540ae62925b4a18c485d988db2addc6706284fa755334fd"
+    },
+    {
+      "path": "/private/tmp/bend2039-upgrade/tests/reg/js_char_full_u32.js",
+      "bytes": 703,
+      "sha256": "c7537e9b9583acadd4f7f0a192a2ab843b47929809e4e16c3f8c97b1d4141e39"
+    },
+    {
+      "path": "/private/tmp/bend2039-upgrade/tests/reg/js_non_tail_returns.bend",
+      "bytes": 2040,
+      "sha256": "34ef9d5c30d57f56c6344e7069ed11c5511921525414bc717710c4f0365c353b"
+    },
+    {
+      "path": "/private/tmp/bend2039-upgrade/evals/repro_js_non_tail_stack.bend",
+      "bytes": 1321,
+      "sha256": "84f472df74bcec4eb38a7b4405a14d1dbe1771fe9af2223900045ad9c6e29b29"
+    },
+    {
+      "path": "/private/tmp/bend2039-upgrade/tests/io/text_host_export.bend",
+      "bytes": 564,
+      "sha256": "1b4547d1397b3a1d0a16ca405e1b41378cd693124bebb47649122babfd564497"
+    },
+    {
+      "path": "/private/tmp/bend2039-upgrade/tests/io/text_host_export.js",
+      "bytes": 2987,
+      "sha256": "be2e7ef7a9783a79a4cfe3a04bc8a7d8fed5f4261c17935aac2c18a0fb2d9ab1"
+    }
+  ],
+  "executedCanonicalFixtures": [
+    {
+      "file": "tests/reg/js_char_full_u32.bend",
+      "status": "PASS",
+      "expected": "4\n4294967295\n57343\n55295\n57344\n1114111\n65533\n55296\n65533\n3\na�b\n����",
+      "observed": "4\n4294967295\n57343\n55295\n57344\n1114111\n65533\n55296\n65533\n3\na�b\n����",
+      "stages": {
+        "interp": {
+          "command": [
+            "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+            "bend2/main.ts",
+            "tests/reg/js_char_full_u32.bend"
+          ],
+          "exit": 0,
+          "elapsedMs": 112.40550000000002,
+          "stdout": "4\n4294967295\n57343\n55295\n57344\n1114111\n65533\n55296\n65533\n3\na�b\n����\n",
+          "stderr": ""
+        },
+        "emit": {
+          "command": [
+            "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+            "bend2/main.ts",
+            "tests/reg/js_char_full_u32.bend",
+            "-o",
+            "/private/tmp/bend2039-literal-smoke.rtSj6Q/js_char_full_u32.js"
+          ],
+          "exit": 0,
+          "elapsedMs": 176.970209,
+          "stdout": "",
+          "stderr": ""
+        },
+        "execute": {
+          "command": [
+            "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+            "/private/tmp/bend2039-literal-smoke.rtSj6Q/js_char_full_u32.js"
+          ],
+          "exit": 0,
+          "elapsedMs": 24.451542000000018,
+          "stdout": "4\n4294967295\n57343\n55295\n57344\n1114111\n65533\n55296\n65533\n3\na�b\n����\n",
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "file": "tests/reg/js_non_tail_returns.bend",
+      "status": "PASS",
+      "expected": "200\n200\n400\n4",
+      "observed": "200\n200\n400\n4",
+      "stages": {
+        "interp": {
+          "command": [
+            "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+            "bend2/main.ts",
+            "tests/reg/js_non_tail_returns.bend"
+          ],
+          "exit": 0,
+          "elapsedMs": 173.79929199999998,
+          "stdout": "200\n200\n400\n4\n",
+          "stderr": ""
+        },
+        "emit": {
+          "command": [
+            "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+            "bend2/main.ts",
+            "tests/reg/js_non_tail_returns.bend",
+            "-o",
+            "/private/tmp/bend2039-literal-smoke.rtSj6Q/js_non_tail_returns.js"
+          ],
+          "exit": 0,
+          "elapsedMs": 243.687166,
+          "stdout": "",
+          "stderr": ""
+        },
+        "execute": {
+          "command": [
+            "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+            "/private/tmp/bend2039-literal-smoke.rtSj6Q/js_non_tail_returns.js"
+          ],
+          "exit": 0,
+          "elapsedMs": 37.350333000000035,
+          "stdout": "200\n200\n400\n4\n",
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "file": "tests/io/text_host_export.bend",
+      "status": "PASS",
+      "expected": "0",
+      "observed": "0",
+      "stages": {
+        "interp": {
+          "command": [
+            "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+            "bend2/main.ts",
+            "tests/io/text_host_export.bend"
+          ],
+          "exit": 0,
+          "elapsedMs": 429.438083,
+          "stdout": "0\n",
+          "stderr": ""
+        },
+        "emit": {
+          "command": [
+            "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+            "bend2/main.ts",
+            "tests/io/text_host_export.bend",
+            "-o",
+            "/private/tmp/bend2039-literal-smoke.rtSj6Q/text_host_export.js"
+          ],
+          "exit": 0,
+          "elapsedMs": 130.42174999999997,
+          "stdout": "",
+          "stderr": ""
+        },
+        "execute": {
+          "command": [
+            "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+            "/private/tmp/bend2039-literal-smoke.rtSj6Q/text_host_export.js"
+          ],
+          "exit": 0,
+          "elapsedMs": 147.8788750000001,
+          "stdout": "0\n",
+          "stderr": ""
+        }
+      }
+    }
+  ],
+  "fixtureEvidence": [
+    {
+      "path": "/tmp/bend2039-literal-smoke.rtSj6Q/host-receipt.json",
+      "bytes": 2862,
+      "sha256": "95b80b5466c63143970a81f8e157444846930753c09e5ce7ead9af98ce87f53c"
+    },
+    {
+      "path": "/tmp/bend2039-literal-smoke.rtSj6Q/host-receipt-continued.json",
+      "bytes": 3159,
+      "sha256": "99351374671052c9b2323abbbb831ad19834d0d39636e3fe092a6ce7622c777a"
+    }
+  ],
+  "guard": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 186531840,
+    "peakFootprintBytes": 116131640,
+    "elapsedMs": 1208,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "bun",
+      "/tmp/bend2039-literal-smoke.rtSj6Q/host.ts"
+    ],
+    "label": "heavy command",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793005669373-b42da4b0abd3824d.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "regeneration": [
+    {
+      "path": "/private/tmp/bend2039-upgrade/checkpoints/checker-core-owned-source-v1.json",
+      "bytes": 4418577,
+      "sha256": "83745350c5e792b694a2dd43073914273c1aac5ec548ec3fd3c7d7b31991dea0",
+      "guard": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1347534848,
+        "peakFootprintBytes": 750437936,
+        "elapsedMs": 15978,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "bun",
+          "evals/checker_core_owned_source.ts"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793005813102-d5b243bbc2524717.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "path": "/private/tmp/bend2039-upgrade/checkpoints/emitter-steps-v1.json",
+      "bytes": 6311484,
+      "sha256": "788ddea3c048305f2bd7347c1d7054c3b351898b068b19cbe7c2cccac3c4ea3b",
+      "guard": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1315799040,
+        "peakFootprintBytes": 775062944,
+        "elapsedMs": 8945,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "bun",
+          "evals/emitter_step_lower.ts"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793005829178-cf9fbc3d105e9a14.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    }
+  ],
+  "rejectedParserAttempt": {
+    "path": "/private/tmp/bend2039-upgrade/checkpoints/bootstrap-parser-candidate-gate-release2039b.json",
+    "bytes": 582708,
+    "sha256": "79185f9a5edc734e29210a24a7c819bb9b9ca00b7f0fd7992fd2b04d9b98fdbf",
+    "admitted": false,
+    "completed": true,
+    "counts": {
+      "focused": {
+        "total": 23,
+        "accepted": 22,
+        "acceptanceParity": 23,
+        "semanticParity": 23,
+        "literalSpanParity": 23
+      },
+      "whole29": {
+        "total": 29,
+        "accepted": 23,
+        "acceptanceParity": 29,
+        "semanticParity": 29,
+        "literalSpanParity": 29
+      },
+      "literals": {
+        "total": 13,
+        "accepted": 13,
+        "acceptanceParity": 13,
+        "semanticParity": 13,
+        "literalSpanParity": 13
+      },
+      "real": {
+        "total": 10,
+        "accepted": 10,
+        "acceptanceParity": 9,
+        "semanticParity": 9,
+        "literalSpanParity": 9
+      }
+    },
+    "failures": [
+      {
+        "name": "js_emit.bend",
+        "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/js_emit.bend",
+        "sourceSha256": "a6dfbf46b1693db5558c930055aed11f838fcd95f0420f15540cabb02f5934fa",
+        "canonicalAccepted": true,
+        "stage0Accepted": false,
+        "oracleFailure": {
+          "category": "parser-or-loader",
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/backend_ir.bend",
+          "pos": 415
+        }
+      }
+    ],
+    "disposition": "REJECTED_MIXED_SOURCE_PATHS_NOT_ACCEPTED"
+  },
+  "scope": "Canonical CLI interpreter/emitted JS and source regeneration only. New composed compiler execution, native C root and stage1/stage2 byte fixedpoint remain unverified."
+}

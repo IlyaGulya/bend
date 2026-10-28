@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "kind": "RELEASE_2039_TARGET_IO_FAILFAST",
+  "status": "SCOPED_PASS",
+  "scope": "Real installed Bend2.0.39 executing integrated TargetIO.read_files only; not composed selfhost CLI, matrix, bootstrap or source-producer acceptance",
+  "release": {
+    "version": "2.0.39",
+    "executable": {
+      "path": "/Users/ilyagulya/.bend-2.0.39/bin/bend",
+      "bytes": 63901808,
+      "sha256": "fdd7d89be0904c4beb87c8daf7dc141eb95c0e082c4990df9d7f912097490680"
+    }
+  },
+  "probe": {
+    "path": "/tmp/bend2039-target-io.41AB7g/probe.bend",
+    "bytes": 968,
+    "sha256": "a18ce8722176f1c464579b03e416620d41a6a38c1c5d8f1528ec89911f5aba86",
+    "source": "# Throwaway: a missing first path must not open a later FIFO with no writer.\nimport Base\nimport ../bend2039-upgrade/bend2/selfhost/ast.bend as AST\nimport ../bend2039-upgrade/bend2/selfhost/backend_ir.bend as BIR\nimport ../bend2039-upgrade/bend2/selfhost/target_io.bend as TargetIO\n\ndef absent() -> String:\n  \"/tmp/bend2039-target-io.41AB7g/absent.c\"\n\ndef fifo() -> String:\n  \"/tmp/bend2039-target-io.41AB7g/unopened.fifo\"\n\ndef planned(path: String) -> TargetIO.PlannedFile:\n  TargetIO.PlannedFile{path, AST.SpanOf{\"declared-source.bend\", 7n, 11n}}\n\ndef report(loaded: TargetIO.LoadResult) -> IO(U32):\n  match loaded:\n    case TargetIO.LoadFailure{message, span}:\n      do IO<U32>:\n        Unit <- IO.print(String.append(\"FAILFAST \", message))\n        return 0\n    case TargetIO.LoadSuccess{_}: IO.pure(U32, 1)\n\ndef main() -> IO(U32):\n  do IO<U32>:\n    loaded : TargetIO.LoadResult <- TargetIO.read_files([planned(absent()), planned(fifo())], Nil{})\n    report(loaded)\n",
+    "preconditions": {
+      "missingFirst": true,
+      "secondIsFIFO": true,
+      "writersCreated": false
+    }
+  },
+  "inputs": [
+    {
+      "path": "/private/tmp/bend2039-upgrade/bend2/selfhost/target_io.bend",
+      "bytes": 5407,
+      "sha256": "3c11f3051010d50678a976a27c33ba6f1f181bfc12e9604cde8855b73d67a327"
+    },
+    {
+      "path": "/private/tmp/bend2039-upgrade/bend2/selfhost/backend_ir.bend",
+      "bytes": 8039,
+      "sha256": "40036907a1a69de8f072825eefa92b91a9e6048169004e3ee00208f3647813e4"
+    },
+    {
+      "path": "/private/tmp/bend2039-upgrade/bend2/selfhost/ast.bend",
+      "bytes": 5813,
+      "sha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83"
+    },
+    {
+      "path": "/private/tmp/bend2039-upgrade/bend2/base.bend",
+      "bytes": 79477,
+      "sha256": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce"
+    }
+  ],
+  "initialFailure": {
+    "status": "SOURCE_COMPATIBILITY_FAILURE",
+    "diagnostic": "a fresh constructor name (duplicate declaration: Text)",
+    "location": "bend2/selfhost/backend_ir.bend:20",
+    "cause": "Upstream Base adds a Text window-event constructor; BIR.Atom used the same globally reserved constructor spelling.",
+    "ioExecuted": false,
+    "guardian": {
+      "status": "FAIL",
+      "reason": "command_exit",
+      "commandExitCode": 1,
+      "commandSignal": 0,
+      "peakRssBytes": 61095936,
+      "peakFootprintBytes": 37601904,
+      "elapsedMs": 718,
+      "timeoutMs": 10000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 1,
+      "command": [
+        "bend",
+        "/tmp/bend2039-target-io.41AB7g/probe.bend"
+      ],
+      "label": "heavy command",
+      "exitCode": 1,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792999970813-06de60f78867fb0e.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "correction": {
+    "kind": "SOURCE_NOMINAL_RENAME",
+    "before": "BIR.Text",
+    "after": "BIR.TextValue",
+    "paths": [
+      "bend2/selfhost/backend_ir.bend",
+      "bend2/selfhost/backend_lower.bend",
+      "bend2/selfhost/c_backend.bend",
+      "bend2/selfhost/c_backend_sharing.bend",
+      "bend2/selfhost/js_backend.bend"
+    ],
+    "scope": "Active declaration and all qualified callers, no alias or fallback; historical receipts unchanged."
+  },
+  "result": {
+    "stdout": "FAILFAST cannot open /tmp/bend2039-target-io.41AB7g/absent.c: 2 No such file or directory",
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 91406336,
+      "peakFootprintBytes": 57475744,
+      "elapsedMs": 1375,
+      "timeoutMs": 10000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "bend",
+        "/tmp/bend2039-target-io.41AB7g/probe.bend"
+      ],
+      "label": "heavy command",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793000106027-7ae8866f505d265a.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "acceptanceEvidence": false
+}

@@ -1,19 +1,17 @@
 import ./checker_core_steps_v1.bend as CheckerCore
-import Base
 import ../bend2/selfhost/loaded_module.bend as Loader
 import ../bend2/selfhost/ast.bend as Ast
-import ../bend2/selfhost/js_emit.bend as JSEmit
+import ../bend2/selfhost/backend_ir.bend as BIR
+import ../bend2/selfhost/checked_frontend.bend as Checked
 
-# DIAGNOSTIC: CHECK ALREADY-TEMPLATE-EXPANDED MODULES.
-# The host must establish the template-free/expanded precondition.
 def parsed_module(namespace: String, module: Ast.Module) -> Loader.LoadedModule:
   Loader.LoadedModule{namespace, module}
 
-def check_expanded_start(modules: List<&2, Loader.LoadedModule>) -> CheckerCore.CheckerProgress<CheckerCore.CheckResult>:
+def check_expanded_start(modules: List<&2, Loader.LoadedModule>) -> CheckerCore.CheckerRun<Checked.CheckResult>:
   CheckerCore.checker_start(modules)
 
-def checker_step(request: CheckerCore.CheckerRequest) -> CheckerCore.CheckerProgress<CheckerCore.checker_result(request)>:
-  CheckerCore.checker_step(request)
+def inspect_checked_start(program: Checked.CheckedProgram) -> CheckerCore.CheckerRun<Checked.Inspection>:
+  CheckerCore.checker_inspect_start(program)
 
-def emit_modules(modules: List<&2, Loader.LoadedModule>) -> JSEmit.EmitResult:
-  JSEmit.emit(modules)
+def checker_step(-R: Type, run: CheckerCore.CheckerRun<R>) -> CheckerCore.CheckerRun<R>:
+  CheckerCore.checker_step(R, run)

@@ -1,0 +1,56 @@
+{
+  "schema": "fir-root-final-aa9-receipt-v1",
+  "date": "2026-10-24",
+  "worktree": "/private/tmp/bend-fir-root-aa9",
+  "branch": "work/fir-root-aa9",
+  "baseCommit": "aa9a39a7",
+  "purpose": "Compact evidence for the final thirteen-export root on the final shared emitter. Bulk gate row reports and emitted artifacts stay untracked and are referenced by digest.",
+  "sourceStepOutputs": {
+    "emitterModule": {"path": "checkpoints/emitter_steps_v1.bend", "sha256": "d7dbe31856eb8d9e53eeddefab0ea4eed56eafe6420a7478d4c37b53d63fb956", "bytes": 2702264, "byteFixedAcrossRerun": true},
+    "emitterComponent": {"path": "checkpoints/emitter_steps_component_v1.bend", "sha256": "e6bd090dc9b2a0b381e4a896922c91869571445b194a60898d893e1f2ce3b3c8", "byteFixedAcrossRerun": true},
+    "emitterManifest": {"path": "checkpoints/emitter-steps-v1.json", "sha256": "989043bd61c9800e4e1ac9efe1c4864dba86824ee9c55684952657819c0601fe", "coverageRows": 1676, "note": "metadata-only change from 63c51f89 after rerunning the unchanged producer in this path"},
+    "ownedSource": {"path": "checkpoints/checker-core-owned-source-v1.json", "sha256": "5646f79d91d43ddcfdb2a7cc2db85068692e6cff13ed1e20655fb6819412f351"},
+    "templateSteps": {"path": "checkpoints/template_steps_v1.bend", "sha256": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4", "manifest": "checkpoints/template-steps-v1.json", "manifestSha256": "defc3d44a402495c"},
+    "checkerSteps": {"path": "checkpoints/checker_core_steps_v1.bend", "sha256": "d6000fd556d550f45ccca6adeaaa6e2b0d6aa2fc7604fae0959d650f6d7d175c", "manifest": "checkpoints/checker-core-steps-v1.json", "manifestSha256": "49b8590f7fb3c990"}
+  },
+  "root": {
+    "path": "checkpoints/.bootstrap_compiler_root_v1.bend",
+    "sha256": "b0b92b67225c1b67972c9fe2a1096962a14926633508936c86d8b93b73cbd36b",
+    "chars": 629141,
+    "definitions": 1238,
+    "importLine": "import ./emitter_steps_v1.bend as Emit",
+    "manifest": {"path": "checkpoints/selfhost-steps-driver-source-v1.json", "sha256": "8d6c95fee60357706c22"},
+    "note": "root text is unchanged from the previous assembly because the emitter is imported, not inlined; only the imported module and the manifest moved"
+  },
+  "parserAcceptance": {
+    "run": "ir-aa9-1",
+    "status": "PARSER_ACCEPTED_NATIVE_SEMANTICS",
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "receipt": {"path": "checkpoints/bootstrap-parser-rebuild-ir-aa9-1.native-build.result.json", "fileSha256": "50ab974f7267a792c0af9d0556ebb156772cd5639a63b915558941a710218ec8"},
+    "acceptedResult": {"path": "checkpoints/bootstrap-parser-rebuild-ir-aa9-1.result.json", "fileSha256": "32dce68fe250a82546549ff5611e9346b6bd19524b0ef8e6fb7be980ae2e2fe9"},
+    "provenanceFileSha256": "180a91ba4db79d1473ee38eb9577a8dfa6bbfde5c96868a5e686962c15086faa",
+    "provenanceRecordSha256": "24108d71fb18e6dff88a983549c43f195046784141af9fc6a3f50a96bf1eb1c4",
+    "artifact": {"path": "checkpoints/bootstrap-parser-rebuild-ir-aa9-1.js", "sha256": "1464037ba20c190ea51083d5824665fa665ce8d5657264544f4515e2339a3ee0", "tracked": false},
+    "gates": ["public-source 15 tests PASS", "source-gate 71 rows PASS", "public-candidate 15 tests PASS", "candidate-gate 75 rows PASS"]
+  },
+  "componentBodyProof": {
+    "artifact": {"path": "checkpoints/root-final-art.js", "sha256": "4a91665c634dff4b1da9d17bdc80786efc03bd0d0e89865ed22e085c1026060a", "bytes": 16912082, "tracked": false},
+    "receipt": {"path": "checkpoints/root-final-rep.result.json", "fileSha256": "c05146584fc34e0891cf68119c27a71e913ddb7a3a269f77240e3c045abb5e54"},
+    "status": "JS_GENERATED_NOT_YET_EXECUTED",
+    "checkedDefinitions": 11179,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "provenanceFileSha256": "8882885d6165eec654772cfda40030a324b9f58f2d182621ecd16d339647ca6a",
+    "provenanceRecordSha256": "ed749960f11519005d5d41e593de18a89cfd8d4c7185e0650e44573385272c4e",
+    "emitterPinInLoadedInputs": {"emitter_steps_v1.bend": "d7dbe31856eb8d9e53eeddefab0ea4eed56eafe6420a7478d4c37b53d63fb956"},
+    "exports": ["parsed_module", "parse_with_fuel", "expand_modules_start", "template_step", "check_expanded_start", "inspect_checked_start", "checker_step", "emit_modules_start", "emit_library_start", "emitter_step", "emit_c_modules_start", "emit_c_library_start", "c_emitter_step"]
+  },
+  "carrier": {
+    "type": "BIR.SourceFile{path, source}",
+    "tag": "../bend2/selfhost/backend_ir.SourceFile",
+    "rule": "nominal: provenance or the closure's backend_ir source row; never inferred from the artifact"
+  },
+  "limits": {"guardian": {"memoryMiB": 8192, "rssMiB": 8192, "pollMs": 10, "timeoutMs": 600000}, "worker": {"heapMiB": 3072, "stackMiB": 256}},
+  "claims": {"aggregatePass": false, "bootstrapGreen": false, "cReachable": false, "comparisonCertificate": false, "oldArtifactFcd8cca2Inherited": false}
+}

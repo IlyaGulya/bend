@@ -5,11 +5,12 @@ import {sourceOracle} from './bootstrap_source_oracle.ts';
 import {guardHeavyGate,parseHeavyGateOptions} from './heavy_gate.ts';
 import {compiledLexerABI,lexerConstructorKey} from './bootstrap_parser_eval_abi.ts';
 import {readNativeAstArena} from './bootstrap_ast_transport.ts';
+import {officialKernelSha256 as officialReleaseKernelSha256} from './release_identity.ts';
+import {currentParserConsumerPath} from './selfhost_driver_source.ts';
 import {createHash} from 'node:crypto';
 import {writeFileSync,mkdtempSync,rmSync,readFileSync,realpathSync} from 'node:fs';
 import {resolve,dirname,join,posix} from 'node:path';
 import {tmpdir,homedir} from 'node:os';
-import {execFileSync} from 'node:child_process';
 import {Readable} from 'node:stream';
 import type {ReadableStream as NodeReadableStream} from 'node:stream/web';
 import {createInterface} from 'node:readline';
@@ -40,7 +41,7 @@ const canonicalSha256=createHash('sha256').update(new Uint8Array(await Bun.file(
 const kernelPath=resolve('bend2/bend.ts'),kernelSha256=createHash('sha256').update(readFileSync(kernelPath)).digest('hex');
 const sourceInputs=new Map<string,{file:string,sha256:string}>();
 for(const path of [kernelPath,'bend2/comp.ts','bend2/base.bend','bend2/selfhost/ast.bend','bend2/selfhost/lexer.bend',
- 'evals/bootstrap_parser_fast.ts','evals/bootstrap_parser_public_gate.ts','evals/heavy_gate.ts','evals/heavy_gate_native.c',
+ 'evals/bootstrap_parser_fast.ts','evals/bootstrap_parser_public_gate.ts','evals/selfhost_driver_source.ts','evals/heavy_gate.ts','evals/heavy_gate_native.c',
  'evals/bootstrap_ast_transport.ts','evals/parser_full_semantic_normalize.ts','evals/parser_full_graph.ts','evals/bootstrap_source_oracle.ts','evals/bootstrap_parser_eval_abi.ts','evals/parser_full_fuel_smoke.ts',
  ...(nativeMode?['evals/bootstrap_parser_native_semantic_worker.mjs']:['evals/bootstrap_token_worker.mjs'])]){
  const file=realpathSync(path);sourceInputs.set(file,{file,sha256:createHash('sha256').update(readFileSync(file)).digest('hex')});
@@ -77,7 +78,7 @@ function authenticateNativeComponent(artifact:string,receipt:string){
   const current=realpathSync(path),digest=sha(pin(current));
   if(typeof proof[field]!=='string'||realpathSync(proof[field])!==current||proof[field.replace('Path','Sha256')]!==digest||protectedPins[current]!==digest)throw Error('Native producer drift: '+field);
  }
- const officialKernelSha256=sha(execFileSync('git',['show','4ff8545f19b09b7d2b8ca2303668100eac8efd66:bend2/bend.ts']));
+ const officialKernelSha256=officialReleaseKernelSha256(resolve(import.meta.dir,'..'));
  if(kernelSha256!==officialKernelSha256)throw Error('Native parser gate kernel is not the exact official release');
  for(const path of ['evals/heavy_gate.ts','evals/heavy_gate_native.c']){
   const current=realpathSync(path);if(protectedPins[current]!==sha(pin(current)))throw Error('Missing authenticated native helper '+path);
@@ -261,14 +262,9 @@ const fixtureDir=realpathSync(mkdtempSync(join(tmpdir(),'bend-bootstrap-parser-r
 writeFileSync(fixtureFile,'');writeFileSync(join(fixtureDir,'dependency.bend'),'def value() -> Nat:\n  7n\n');
 // Historical names are stable consumer roles, not stale implementation paths.
 // The generated parser role always parses this run's selected current source.
-const currentRolePaths:Record<string,string>={
- '.parser_definition_body_shape_generated_fuel.bend':parserPath,
- 'checker_core_slice.bend':'checkpoints/checker_core_owned_v1.bend',
- 'checker_core_driver.bend':'checkpoints/checker_core_owned_driver_v1.bend',
-};
 const realCases=await Promise.all(real.modules.map(async(m:unknown)=>{
  if(typeof m!=='object'||m===null||!('file'in m)||typeof m.file!=='string')throw Error('Invalid real-source consumer path');
- const name=m.file.split('/').at(-1)!,file=realpathSync(currentRolePaths[name]??m.file);
+ const name=m.file.split('/').at(-1)!,file=currentParserConsumerPath(name,parserPath);
  const source=await Bun.file(file).text(),sha256=createHash('sha256').update(source).digest('hex'),previous=sourceInputs.get(file);
  if(previous&&previous.sha256!==sha256)throw Error('Real consumer changed during preparation: '+file);
  sourceInputs.set(file,{file,sha256});

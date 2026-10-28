@@ -4,9 +4,10 @@ import {resolve,join} from 'node:path';
 import {tmpdir} from 'node:os';
 import {pathToFileURL} from 'node:url';
 import {spawnSync} from 'node:child_process';
-import {runCheckerSteps,runEmitterSteps} from './checker_core_step_runtime.mjs';
+import {runCheckerSteps,runEmitterSteps,sourceFilesFor,declaredSourcePaths,COMPILED_SOURCE_FILE_TAG} from './checker_core_step_runtime.mjs';
 
 const tag=value=>value?.$?.split('.').at(-1);
+function fuelList(cells){let fuel={$:'FeedbackFuelEnd'};for(let i=0;i<cells;i++)fuel={$:'FeedbackFuelCell',tail:fuel};return fuel;}
 if(isMainThread){
  const [,,requestPath,resultPath]=process.argv;
  if(!requestPath||!resultPath)throw Error('Expected request and result paths');
@@ -30,18 +31,42 @@ if(isMainThread){
   if(tag(feedback)!=='FeedbackComplete'||tag(feedback.value?.result)!=='ParseSuccess')throw Error('Target parser did not accept: '+tag(feedback.value?.result??feedback));
   const module=feedback.value.result.module;
   const loaded=component.parsed_module('',module),modules={$:'Con',head:loaded,tail:{$:'Nil'}};
+  const files=sourceFilesFor(workerData.file,declaredSourcePaths(module),COMPILED_SOURCE_FILE_TAG);
   if(workerData.uncheckedGuard){
    phase('compiled-checked-boundary-guard');
    let refused=false;
-   try{runEmitterSteps(component,modules);}catch(error){if(!String(error).includes('expected owning CheckedProgram'))throw error;refused=true;}
+   try{runEmitterSteps(component,modules,files);}catch(error){if(!String(error).includes('expected owning CheckedProgram'))throw error;refused=true;}
    if(!refused)throw Error('Unchecked syntax crossed the FIR emitter boundary');
    const checked=runCheckerSteps(component,modules);
-   const rejected=tag(checked)==='CheckSuccess'?runEmitterSteps(component,checked.program):checked;
+   const rejected=tag(checked)==='CheckSuccess'?runEmitterSteps(component,checked.program,files):checked;
    if(!['CheckFailure','EmitFailure'].includes(tag(rejected)))throw Error('Unexpanded template reached successful emission');
    const {message,span}=tag(rejected)==='CheckFailure'?rejected.diagnostic:rejected;
    if(span.file!==workerData.file||Number(span.beg)!==workerData.source.indexOf('~')||Number(span.end)<=Number(span.beg)||Number(span.end)>workerData.source.length)throw Error('Typed pipeline failure did not retain the actual template source span');
    phase('complete');
    parentPort.postMessage({passed:true,status:'PASS',name:workerData.name,criterion:'Unchecked syntax cannot cross the emitter boundary; native typed pipeline rejects unexpanded template',checkerTag:tag(checked),rejectionTag:tag(rejected),message,span,uncheckedEmissionRefused:true,phases});
+  }else if(workerData.duplicateDeclaration){
+   // The compiled parser rejects two top-level declarations with one name, so a
+   // duplicate datatype header can only reach the checker as an owned module
+   // value. Each part must check alone; splicing them must fail at the second
+   // declaration's exact span. No diagnostic wording is consulted.
+   phase('compiled-duplicate-parse');
+   const part=feedback=>{const result=feedback.value?.result;if(tag(feedback)!=='FeedbackComplete'||tag(result)!=='ParseSuccess')throw Error('Duplicate declaration part did not parse: '+tag(result??feedback));return result.module;};
+   const second=part(parser.parse_with_fuel(fuelList(2000000),workerData.file,workerData.second));
+   if(tag(module.declarations.tail)!=='Nil'||tag(second.declarations.tail)!=='Nil')throw Error('Duplicate declaration parts must be single-declaration modules');
+   const firstDeclaration=module.declarations.head.declaration,secondDeclaration=second.declarations.head.declaration;
+   const duplicatedIdentity=firstDeclaration.key===secondDeclaration.key;
+   const spliced={...module,declarations:{$:'Con',head:module.declarations.head,tail:second.declarations}};
+   const combined=parser.parse_with_fuel(fuelList(2000000),workerData.file,workerData.source+workerData.second);
+   const parserRefusedCombined=tag(combined)==='FeedbackComplete'&&tag(combined.value?.result)==='ParseFailure';
+   phase('compiled-check');
+   const check=value=>runCheckerSteps(component,{$:'Con',head:component.parsed_module('',value),tail:{$:'Nil'}});
+   const firstAlone=tag(check(module))==='CheckSuccess',secondAlone=tag(check(second))==='CheckSuccess';
+   const checked=check(spliced);
+   observedCheck=checked;
+   const span=checked.diagnostic?.span,blamedSecond=tag(checked)==='CheckFailure'&&span?.beg===secondDeclaration.span?.beg&&span?.end===secondDeclaration.span?.end;
+   const passed=duplicatedIdentity&&firstAlone&&secondAlone&&blamedSecond;
+   phase('complete');
+   parentPort.postMessage({passed,status:passed?'PASS':'FAIL',name:workerData.name,accepted:false,checkerTag:tag(checked),diagnostic:checked.diagnostic,splicedDeclarations:2,duplicatedIdentity,firstAlone,secondAlone,blamedSecond,parserRefusedCombined,phases});
   }else{
   const pending=[module];
   while(pending.length){const value=pending.pop();if(!value||typeof value!=='object')continue;const key=tag(value);if(key==='TemplateBinder'||key==='TermTemplate')throw Error('Target violates already-expanded Template-free precondition');for(const [key,child]of Object.entries(value))if(key!=='$')pending.push(child);}
@@ -52,7 +77,7 @@ if(isMainThread){
   let emitted,emission,output;
   if(accepted){
    phase('compiled-emit');
-   emission=runEmitterSteps(component,checked.program);
+   emission=runEmitterSteps(component,checked.program,files);
    if(tag(emission)!=='EmitSuccess')throw Error('Target emission failed: '+emission.message+' at '+emission.span.file+':'+emission.span.beg+'-'+emission.span.end);
    temporary=mkdtempSync(join(tmpdir(),'bend-checker-target-'));const file=join(temporary,'main.js');writeFileSync(file,emission.source);
    phase('emitted-program-run');

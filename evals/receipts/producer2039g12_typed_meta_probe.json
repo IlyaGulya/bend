@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "status": "G12_DATATYPE_TYPED_JS_PASS_COMBINED_META_SUITE_DEADLINE",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "scope": "Additional metacompilation probe, distinct from the complete native root build and fresh bootstrap gates. The native compiler emits a checker-as-program regression; JS prints the correct rejection and control. The combined four-target wrapper reaches its aggregate 600000-ms quota during the first C metacompilation, before the other fixture runs. This does not establish a per-C-leg timeout or a C semantic failure.",
+  "oracleRepair": "Removed accidental spaces immediately after #| in the two new permanent regression files to follow gates/test.ts:56-69. The first emitted JS printed correct output but the malformed expected-output markers caused the initial comparison failure; no compiler output was patched.",
+  "binary": {
+    "path": "/tmp/bend-g12-frozen-native",
+    "sha256": "00222b4eda8cd3bb42e98058e377c04200b9d81ffcff2ca197d4f31a5904ceee"
+  },
+  "rows": [
+    {
+      "source": "tests/selfhost/datatype_parameters.bend",
+      "sourceSha256": "d5ff0a63ced19e6de4d061aa716153e56da503d792022141b643741f2c1f9dc5",
+      "target": "js",
+      "expected": "checker-datatype-template-parameter-rejected\nchecker-datatype-erased-parameter-ok",
+      "outputSha256": "5ab900bb745f7018e17420f5f29ccae8591343fa6179c1c7db360a768d6272d6",
+      "passed": true,
+      "native": {
+        "command": [
+          "/tmp/bend-g12-frozen-native",
+          "+RTS",
+          "--threads",
+          "1",
+          "--gpu",
+          "off",
+          "--RTS",
+          "/private/tmp/bend2039g12-borrow-generation/tests/selfhost/datatype_parameters.bend",
+          "/private/tmp/bend2039g12-borrow-generation/bend2/base.bend",
+          "/tmp/bend-g12-native-seams-4VUE0B/datatype_parameters-js.tsv",
+          "/tmp/bend-g12-native-seams-4VUE0B/datatype_parameters-js.exports",
+          "compile-module",
+          "/tmp/bend-g12-native-seams-4VUE0B/datatype_parameters-js.js"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 55615,
+        "results": [
+          {
+            "result": "EmitSuccess",
+            "bytes": 11411043,
+            "modules": 11
+          }
+        ],
+        "phaseStarts": [
+          {
+            "phase": "parse"
+          },
+          {
+            "phase": "expand"
+          },
+          {
+            "phase": "check"
+          },
+          {
+            "phase": "emit"
+          }
+        ]
+      },
+      "execute": {
+        "command": [
+          "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+          "--max-old-space-size=3072",
+          "/tmp/bend-g12-native-seams-4VUE0B/datatype_parameters-js.js"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 277.60775000000285,
+        "stdout": "checker-datatype-template-parameter-rejected\nchecker-datatype-erased-parameter-ok\n",
+        "stderr": ""
+      }
+    },
+    {
+      "source": "tests/selfhost/datatype_parameters.bend",
+      "sourceSha256": "d5ff0a63ced19e6de4d061aa716153e56da503d792022141b643741f2c1f9dc5",
+      "target": "c",
+      "expected": "checker-datatype-template-parameter-rejected\nchecker-datatype-erased-parameter-ok"
+    }
+  ],
+  "guardian": {
+    "status": "FAIL",
+    "reason": "deadline_exceeded",
+    "commandExitCode": -1,
+    "commandSignal": 15,
+    "peakRssBytes": 643186688,
+    "peakFootprintBytes": 596035192,
+    "elapsedMs": 600014,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "command": [
+      "/tmp/bend2039g8-accepted-mac-evidence/bun-1.4.3",
+      "/tmp/bend-g12-native-seams.mjs"
+    ],
+    "label": "heavy command",
+    "exitCode": 1,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793130250568-7a93718000b78abb.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "rawReport": {
+    "path": "/private/tmp/bend-g12-native-seams-4VUE0B/receipt.json",
+    "sha256": "caf05661b7bdb5be09b168b8153ba3aa5ce1d84cd5149cf5e586f5b36f748456"
+  }
+}

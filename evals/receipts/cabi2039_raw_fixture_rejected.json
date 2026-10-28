@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "status": "REJECTED_TYPED_RAW_BIR_C_ABI_FIXTURE_METADATA",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "scope": "Raw hand-built BIR executable/library fixture through actual natively admitted typed-step C renderer; not full compiler acceptance",
+  "worktree": "/private/tmp/bend2039-cabi31596",
+  "sourceAuthority": {
+    "scope": "Raw BIR to the real typed-step C render seam; not full compiler or fixedpoint acceptance",
+    "declaration": {
+      "source": "bend2/selfhost/c_emit_core.bend",
+      "canonicalName": "render",
+      "name": "cps_provider_6_render",
+      "kind": "def",
+      "canonicalDeclarationSha256": "d91c2d7f73c22880a4c0357638d99d3fa07bdc94d66edd2a2121a54843b662d3",
+      "composedDeclarationSha256": "ea92cf05d895b5e96c342a2c83538dec3a3afff850badd352970aacb30994cc3"
+    },
+    "coverage": {
+      "name": "cps_provider_6_render",
+      "request": "EmitterRequest_cps_provider_6_render",
+      "requestEnvelope": "EmitterRequestGroup_21",
+      "stepBody": "emitter_body_cps_provider_6_render",
+      "sourceSha256": "ea92cf05d895b5e96c342a2c83538dec3a3afff850badd352970aacb30994cc3",
+      "begin": 669328,
+      "end": 670222,
+      "result": "cps_provider_6_EmitResult",
+      "signature": "def cps_provider_6_render(v_0: BIR.Program, v_2: String, v_4: List<&2, BIR.SourceFile>) -> cps_provider_6_EmitResult"
+    },
+    "sourceSha256": "0a647514f46633f47315dd5c21dd4b98cbd312cde9864cc212b186c6b5e8a410",
+    "librarySourceSha256": "4b8289b6c6b4331749acecabbbead031df56a45a3554a0f1d308dc75f54766ea",
+    "backendSha256": "00acb3f8c650e0e1abc7e42188663ddd21ffc610a2ed92b0aae0474a50345a43"
+  },
+  "build": {
+    "report": {
+      "path": "/private/tmp/bend2039-cabi31596/checkpoints/cabi2039-quantity-build.result.json",
+      "sha256": "daff35554017fc34c06a827ea7fad8bd8429c7656c5565d9058e2336f9853952"
+    },
+    "sourcePath": "/private/tmp/bend2039-cabi31596/checkpoints/cabi2039-quantity.bend",
+    "sourceSha256": "0a647514f46633f47315dd5c21dd4b98cbd312cde9864cc212b186c6b5e8a410",
+    "artifactPath": "/tmp/bend2039-cabi-quantity.js",
+    "artifactSha256": "7f5a19c2114ae096c188dd22919f46af921e99eccca155affc15d0f5b329a158",
+    "checkedDefinitions": 5369,
+    "eventsFullyValidated": 5831,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "exports": [
+      "start",
+      "library_start",
+      "step"
+    ],
+    "runtime": {
+      "name": "node",
+      "node": "23.11.0",
+      "v8": "12.9.202.28-node.14",
+      "executable": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "heapLimitMiB": 3072,
+      "stackSizeMb": 256,
+      "heapSizeLimitBytes": 3271557120,
+      "manualGC": false
+    },
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 1642741760,
+      "peakFootprintBytes": 2512466552,
+      "elapsedMs": 517211,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend2039-cabi31596/evals/checker_core_component_build.ts",
+        "--worker",
+        "--file=/private/tmp/bend2039-cabi31596/checkpoints/cabi2039-quantity.bend",
+        "--exports=start,library_start,step",
+        "--artifact=/tmp/bend2039-cabi-quantity.js",
+        "--report=/private/tmp/bend2039-cabi31596/checkpoints/cabi2039-quantity-build",
+        "--inputs-sha256=e22e3208515b66d4110f35f78e801926e093a6bb344e47ed5c6c205392c3a7bb"
+      ],
+      "label": "Full-native CheckerCore component JS build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793016472519-7f54da11677e85f5.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "provenancePath": "/private/tmp/bend2039-cabi31596/checkpoints/cabi2039-quantity-build.provenance.json",
+    "provenanceSha256": "cb506b9ea95326a9ec46fb004732c7cd2debf637b3c84bc24b6573b543b3683f"
+  },
+  "run": {
+    "guard": {
+      "status": "FAIL",
+      "reason": "command_exit",
+      "commandExitCode": 1,
+      "commandSignal": 0,
+      "peakRssBytes": 94896128,
+      "peakFootprintBytes": 65033232,
+      "elapsedMs": 3915,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 1,
+      "command": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--experimental-strip-types",
+        "/tmp/bend2039-candidate-worker.mjs",
+        "/tmp/bend2039-cabi-typed-run.mjs",
+        "/tmp/bend2039-cabi-quantity.js",
+        "/tmp/bend2039-cabi-quantity"
+      ],
+      "label": "heavy command",
+      "exitCode": 1,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793016990253-0bfdec1405e30e3d.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "observedResult": {
+      "$": "cps_provider_6_EmitFailure",
+      "message": "no family declares constructor Nil",
+      "span": {
+        "$": "SpanOf",
+        "file": "",
+        "beg": 0,
+        "end": 0
+      }
+    },
+    "stderrEvidence": "artifact://20317",
+    "emittedC": false,
+    "clangExecuted": false,
+    "nativeExecuted": false
+  },
+  "note": "The previous attempt was rejected natively for DescriptorArrow using BIR.Affine instead of BIR.Quantity; Once corrected that nominal schema mismatch. The subsequent actual renderer rejects incomplete family metadata. Neither failure licenses native-marker/name fallbacks or checker weakening; fixture/consumer source correction assigned to CAbiConsumer2039."
+}

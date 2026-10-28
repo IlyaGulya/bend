@@ -1,0 +1,88 @@
+{
+  "schema": "peer-slice-integration-57ab-v1",
+  "date": "2026-10-24",
+  "combinedTree": {
+    "branch": "work/fir-nf-combined57ab",
+    "head": "92b4af7b"
+  },
+  "nf": {
+    "current": "work/nf-verified57ab@3a27aad9",
+    "descriptorNfSha256": "79591089ede2107d84c803a76c2e415ad35a0c358563d76aec7af46ee7b4ba98",
+    "receipt": "GuardedNF33: 787 events / 579 checked definitions / 0 excluded / 0 patches, artifact 81541d4a, 168 chunks, 33/33 assertions",
+    "scope": "component evidence only; no timing or deadline claim",
+    "superseded": [
+      "3a27aad9",
+      "30aaa33e",
+      "5b595ac7"
+    ],
+    "pendingCarry": {
+      "commit": "10c2290b",
+      "descriptorNfSha256": "faa6681b32c42a498e7646d46f80c924d6761958eaa872abf90909ac1ba040fc",
+      "receipt": "GuardedNF: 803 events / 594 checked definitions / 0 excluded / 0 patches, artifact 45f87d9d, 173 chunks, 33/33",
+      "generation": "69 definitions / 148 helpers / 316 edges, one recursive helper, quantum 64, semanticFuelChanged false",
+      "reasonDeferred": "not carried into this frozen tree because it moves js_emit bytes and the emitter counts, and Main froze b0ec90a3 as the comparison baseline for the assigned CPS performance slice; it lands in the single final integration pass together with that slice's source, followed by one regeneration, one fresh parser acceptance and the gate"
+    }
+  },
+  "clay": {
+    "current": "work/clay-native57ab@c3b2354f (against NF 10c2290b)",
+    "numbers": "221 definitions / 616 helpers, owned fed9baa4, step output ebca88c4, guarded PASS 254164992 B / 1276 ms under the original guards, host Run failures 0 with 1061790 chunks, artifact 5449d63f, F399=0",
+    "scope": "standalone CLay+NF closure; does not compose into the compiler root",
+    "next": "regenerates exactly once after the combined pass lands (10c2290b + CPS performance source) and produces one receipt for the combined bytes; no regeneration before Root's signal",
+    "superseded": [
+      {
+        "commit": "d26bd496",
+        "note": "against NF 3a27aad9"
+      },
+      {
+        "commit": "d4a2f11e"
+      },
+      {
+        "commit": "f67a5e3a"
+      },
+      {
+        "commit": "4a6b959b"
+      }
+    ]
+  },
+  "datatypeHeaders": {
+    "current": "work/fir-datatype57ab@0178ce4d",
+    "result": "27/27 rows PASS on the combined component rebuilt at this head",
+    "superseded": [
+      "1cd2d4df"
+    ]
+  },
+  "composer": {
+    "current": "34e4b7e0",
+    "note": "Tarjan SCC ordering: dependency-first across groups, source order inside one mutual group"
+  },
+  "arrayFacts": {
+    "commits": [
+      "115522b4",
+      "6255f91e"
+    ],
+    "evidence": "55 array primitive calls, LEAK 0, 13/13 ops, typed is_leaf/leaf_value, nested [Array(U32())], partials 485-487 [U32()]"
+  },
+  "regeneration": {
+    "owned": 1141,
+    "checkerSteps": "1141/4223/1541/4914",
+    "template": 196,
+    "emitter": "853/1710/479/4/1413"
+  },
+  "fp": {
+    "status": "blocked",
+    "reason": "stage-one check is 194,871,876 CPS requests at 886 ns each (172.8 s); the permitted dispatcher flattening can recover single-digit seconds per stage against the ~60 s the 600 s envelope requires",
+    "claims": {
+      "aggregatePass": false,
+      "comparisonCertificate": false,
+      "bootstrapGreen": false,
+      "diagnosticOnly": true
+    },
+    "receipt": "evals/selfhost-root-phase-profile-57ab.json"
+  },
+  "jsForeignConsumer": {
+    "gate": "gates/selfhost.ts from 9ca9679e (taken at 890f8b44): run() merges the spawn env once with the caller env last, inner_compiler() derives the inner build from the stage command (stage 1 = bun evals/candidate_host.ts --candidate=<component>)",
+    "provenanceRun": "four host-export fixtures PASS js against component 8935d503 (combined-root6, scoped old source) with BEND_MAIN_TS, BEND_INNER_LIBRARY_RUNNER and BEND_INNER_LIBRARY_COMPILER unset, so the inner library was built by the candidate image",
+    "correctedClaim": "earlier four/five-fixture PASS lines in this thread, produced with the pre-fix gate (env merged twice, inner_compiler passing the image), are behavioral evidence only; their inner-build provenance was not the candidate and must not be quoted as such",
+    "scoped": "component 8935d503 predates NF 10c2290b; the final pass re-runs these fixtures on the final component and JSIRForeign issues the receipt"
+  }
+}

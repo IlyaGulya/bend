@@ -1,0 +1,158 @@
+{
+  "schemaVersion": 1,
+  "kind": "compiler-profile-smoke",
+  "diagnosticOnly": true,
+  "acceptanceEvidence": false,
+  "fullrootOrOverheadMeasured": false,
+  "limits": [
+    "diagnostic only: profile files do not certify acceptance, bootstrap green, fixedpoint or benchmark results",
+    "span CPU is a process.cpuUsage boundary delta over all threads in this process; child processes are excluded and require their own rusage receipt; nested or overlapping spans overlap and no exclusive CPU is derived",
+    "boundary heapUsed deltas are not allocation, live or retained bytes; RSS is process-wide",
+    "sampled CPU/allocation profiles are statistical, include collected objects for allocation, and have no Bend source map",
+    "child-process CPU/RSS exists only where the producer records a child receipt (e.g. NATIVE_PHASE or llvm time -lp); it is never inferred",
+    "rawDetail streams every event to events.jsonl; fine spans/observations are aggregated in memory, but JSON serialization and I/O overhead remains and is not measured",
+    "fullroot overhead/control and complete stage coverage are not established by a tiny smoke run"
+  ],
+  "source": {
+    "evals/compiler_profile.mjs": "99fca04a701af1fec88e49ab3ec4673ada67fd504ed22d6901b1937e997b4ae8",
+    "evals/selfhost_cpu_profile.mjs": "5d5fc8d329a3b600522c58eeac59c49c515109bc7f48845d8177cb520129a1c0",
+    "evals/native_compiler_experiment.ts": "acf8371500009002366f0758280ca3383fcb3cb607a3469d30b73a146c97ae57",
+    "evals/checker_core_component_build.ts": "85bc4ae037acbbaa1c5f8ccc97287fdcb6ddc36fbdb8e8906586ef17e11f218b",
+    "bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+    "bend2/comp.ts": "a84170d5a84f21386383ccd478a1dac687eb664d89c21b284cd1134513963b70"
+  },
+  "cases": {
+    "componentValid": {
+      "status": "JS_GENERATED_NOT_YET_EXECUTED",
+      "identicalArtifact": true,
+      "profileStatus": "completed",
+      "spans": [
+        "load",
+        "book-validation",
+        "codegen"
+      ],
+      "sampledSpans": 3,
+      "observationKinds": {
+        "exact-counter": 3
+      }
+    },
+    "componentRejected": {
+      "status": "FAIL",
+      "stage": "validation",
+      "profileStatus": "failed",
+      "failedSpans": [
+        "book-validation"
+      ]
+    },
+    "componentCutoff": {
+      "status": "ALLOCATION_PROFILE_ONLY",
+      "profileStatus": "completed",
+      "measurementStatus": "complete",
+      "codegenStatus": "aborted",
+      "abortedSpans": [
+        "codegen"
+      ],
+      "fineObservations": 3
+    },
+    "nativeRejected": {
+      "status": "FAIL",
+      "phase": "book_load:bridge",
+      "codegenProfileStatus": "failed",
+      "buildProfileStatus": "failed",
+      "codegenFailedSpans": [
+        "codegen-worker",
+        "book-load"
+      ],
+      "defaultUnchanged": true
+    },
+    "directC": {
+      "status": "completed",
+      "output": "17n",
+      "spans": [
+        "book-load",
+        "book-validation",
+        "compile-book",
+        "c-reachability",
+        "c-pass-1",
+        "c-publication",
+        "clang",
+        "native-executable"
+      ],
+      "sampledSpans": 3,
+      "observationKinds": {
+        "compiler-state": 5,
+        "compiler-retention": 17,
+        "compiler-memo-sizes": 17,
+        "exact-counter": 1,
+        "compiler-release": 12
+      },
+      "passes": 1
+    },
+    "directRejected": {
+      "status": "failed",
+      "failedSpans": [
+        "book-validation"
+      ]
+    },
+    "directCodegenFailure": {
+      "status": "failed",
+      "measurementStatus": "complete",
+      "failedSpans": [
+        "compile-book"
+      ],
+      "abortedSpans": [
+        "c-pass-1"
+      ],
+      "passesObserved": 1,
+      "diagnostic": "Error: an open Array element type"
+    },
+    "measurementIncomplete": {
+      "status": "completed",
+      "measurementStatus": "incomplete",
+      "incompleteEvidence": true,
+      "unclosedSpans": {
+        "count": 1,
+        "names": [
+          "left-open"
+        ],
+        "closeStatus": "aborted"
+      }
+    },
+    "terminatedWorkerCheckpoint": {
+      "status": 9,
+      "summary": false,
+      "checkpointStatus": "running",
+      "activeSpans": [
+        "compile-book"
+      ],
+      "observations": 1,
+      "recentObservationKinds": [
+        "exact-counter"
+      ]
+    },
+    "collectorContract": {
+      "cyclicArrayRejected": true,
+      "nonRawReleaseRows": 0,
+      "adapterReleaseEvents": 2,
+      "adapterSpanNames": [
+        "c-pass-1"
+      ],
+      "adapterUnits": [
+        "entries",
+        "lines",
+        "UTF-16 code units",
+        "boolean"
+      ],
+      "observationIds": [
+        1,
+        2
+      ],
+      "observationCount": 2,
+      "checkpointObservationCount": 2,
+      "foreignKeepRejected": true,
+      "staleKeepRejected": true
+    }
+  },
+  "status": "PASS",
+  "temporaryDirectoryRemoved": true
+}

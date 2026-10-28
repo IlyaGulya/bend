@@ -1,16 +1,11 @@
 import ./checker_core_owned_v1.bend as CheckerCore
-import Base
 import ../bend2/selfhost/loaded_module.bend as Loader
 import ../bend2/selfhost/ast.bend as Ast
-import ../bend2/selfhost/js_emit.bend as JSEmit
+import ../bend2/selfhost/backend_ir.bend as BIR
+import ../bend2/selfhost/checked_frontend.bend as Checked
 
-# DIAGNOSTIC: CHECK ALREADY-TEMPLATE-EXPANDED MODULES.
-# The host must establish the template-free/expanded precondition.
 def parsed_module(namespace: String, module: Ast.Module) -> Loader.LoadedModule:
   Loader.LoadedModule{namespace, module}
 
-def check_expanded(modules: List<&2, Loader.LoadedModule>) -> CheckerCore.CheckResult:
+def check_expanded(modules: List<&2, Loader.LoadedModule>) -> Checked.CheckResult:
   CheckerCore.check_modules(modules, Nil{})
-
-def emit_modules(modules: List<&2, Loader.LoadedModule>) -> JSEmit.EmitResult:
-  JSEmit.emit(modules)

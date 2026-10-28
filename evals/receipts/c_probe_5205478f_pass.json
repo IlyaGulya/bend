@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "kind": "C_PROBE_PASS",
+  "status": "PASS_PROBE_FULL_RAW",
+  "scope": "One-shot: C module (c_target_array_nat, exercises Nat.show), minimal pure3, C library (c_step_library_fixture + corrected caller); no matrix yet",
+  "component": {
+    "path": "/private/tmp/bend-fir-root-aa9/checkpoints/root-final4-art.js",
+    "sha256": "5205478f22cc6dc7ea7de5b343e40b575044e0965a173c9c539a84be564646c9",
+    "bytes": 16932690,
+    "checkedDefinitions": 11191,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "root": "/private/tmp/bend-fir-root-aa9/checkpoints/.bootstrap_compiler_root_v1.bend",
+    "rootSha256": "b0b92b67225c1b67972c9fe2a1096962a14926633508936c86d8b93b73cbd36b",
+    "emitterSteps": "/private/tmp/bend-fir-root-aa9/checkpoints/emitter_steps_v1.bend",
+    "emitterStepsSha256": "156a74755552831812c4b0e1951965f8563665e9802479d70d491c998fff2cf2",
+    "emitterPinInLoadedInputs": {
+      "emitter_steps_v1.bend": "156a74755552831812c4b0e1951965f8563665e9802479d70d491c998fff2cf2"
+    },
+    "buildReceipt": "/private/tmp/bend-fir-root-aa9/checkpoints/root-final4-rep.result.json",
+    "buildReceiptSha256": "c0875ba243821f0a14c3e3ab122ad510ec7c7079e9fedff3060d1e4289354009",
+    "worktreeCommit": "ff9a50ec",
+    "candidateHostSha256": "a56f57e32d0fa475a0564f18a3930137a084cb6a4ce49b05f496e76331d2a22a",
+    "baseSha256": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+    "runtimeSha256": "478c1ba7d0d0626c1927d11c4af3b3d4cef520db41afd8722ebf55d5050769c3",
+    "callerPath": "/private/tmp/bend-fir-croot57ab/evals/c_backend_library_caller.c",
+    "callerSha256": "e874c1d3b617c8d4a82adaf50ceb9e2c15715fc18f2cd6d6d5b1b6b9d4d16004",
+    "carrierTag": "../bend2/selfhost/backend_ir.SourceFile"
+  },
+  "clangFlags": [
+    "-std=c11",
+    "-O0",
+    "-ferror-limit=0",
+    "-pthread",
+    "-lm"
+  ],
+  "emitExits": {
+    "module.emit": "0",
+    "module.clang": "0",
+    "pure3.emit": "0",
+    "pure3.clang": "0",
+    "library.emit": "0",
+    "library.clang": "0"
+  },
+  "runExits": {
+    "module": "0",
+    "pure3": "0",
+    "library": "0"
+  },
+  "observed": {
+    "module": {
+      "runExit": 0,
+      "stdout": "7\n",
+      "stderr": ""
+    },
+    "pure3": {
+      "runExit": 0,
+      "stdout": "T{42}\n",
+      "stderr": ""
+    },
+    "library": {
+      "runExit": 0,
+      "stdout": "export ok\n",
+      "stderr": ""
+    }
+  },
+  "manifest": {
+    "path": "/tmp/c-probe-5205478f/manifest.json",
+    "sha256": "14bb6063545bee1d3b5c6ef4c1b453af3cb2a53823a7e55b763f37ea21ecbf27"
+  },
+  "notes": [
+    "Full raw stdout/stderr/exit files remain in /tmp/c-probe-5205478f and are hashed by the manifest; no bulk C or logs committed.",
+    "Nat.show(7n) is exercised through the module fixture and now prints 7 with exit 0; the previous ERR_TAGS fail-stop is gone.",
+    "Corrected library fixture/caller (arity1 assertion, zero-arg factory, apply f(7)=12 and g(8)=13, direct factory(7)=12) runs export ok.",
+    "No pipes/head/grep; clang ran once per artifact with -ferror-limit=0; no source/cap/domain changes."
+  ]
+}

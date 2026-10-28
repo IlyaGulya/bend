@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "kind": "compiler-stage-profile-merged-contract-test-receipt",
+  "diagnosticOnly": true,
+  "acceptanceEvidence": false,
+  "jointCommit": "0a32d358",
+  "head": "0a32d358d322e35baf5c3d54be26f65f110db98b",
+  "worktree": "/private/tmp/bend-stage-merged-0a32",
+  "command": "bun test evals/compiler_stage_profile.test.ts --reporter=junit --reporter-outfile=/tmp/stage-merged-0a32.junit.xml",
+  "exitCode": 0,
+  "tests": 16,
+  "assertions": 51,
+  "failures": 0,
+  "testNames": [
+    "stage profile binds a registered namespace and retains fully qualified request tags",
+    "stage profile rejects a foreign namespace instead of matching the simple tag",
+    "stage profile retains tags but does not group without a manifest",
+    "stage profile refuses a basename fallback when sources collide",
+    "stage profile reports a pinned source hash mismatch instead of a group",
+    "stage profile counts an erased Direct request as a shape, not a request sample",
+    "stage profile leaves groups conditional without a component receipt",
+    "stage profile treats a receipt without the profiled artifact hash as unverified",
+    "stage profile records a foreign artifact receipt as mismatch",
+    "stage profile upgrades a receipt-bound manifest to exact groups",
+    "check publication is documented as part of the check Run, not unreachable",
+    "typed progress retains the full constructor identity",
+    "completed finish lets the collector mark an open wrapper stage incomplete",
+    "failed finish closes open wrapper stages as failed boundaries",
+    "a rejected end token does not lose the wrapper span",
+    "a closed wrapper stage leaves a complete measurement"
+  ],
+  "rawLog": {
+    "path": "/tmp/stage-merged-0a32.raw.log",
+    "bytes": 103,
+    "sha256": "78af16c8aae7f5150e3d8cbdd69704bd9d264fb3d36da3c1877e1134b88b51d4"
+  },
+  "junit": {
+    "path": "/tmp/stage-merged-0a32.junit.xml",
+    "bytes": 3417,
+    "sha256": "ed9f3155f33a75511907ee7d47bb2cd04a3b56a3bfac29e1caacbbaf81d2128c"
+  },
+  "inputs": {
+    "evals/compiler_stage_profile.test.ts": "b2b3248c8f663744d7fedb3c16a1ace0d9f1bddf83eb934ed33f4e001637c44a",
+    "evals/compiler_stage_profile.mjs": "3e9a679575b4cbd21f5f8263fc13f8bc5d62d63fb720a91f9be8d3f1d3219f07",
+    "evals/compiler_profile.mjs": "99fca04a701af1fec88e49ab3ec4673ada67fd504ed22d6901b1937e997b4ae8"
+  },
+  "runtime": {
+    "bun": "1.4.2",
+    "node": "v23.11.0",
+    "platform": "Darwin",
+    "arch": "arm64"
+  },
+  "guardInspection": {
+    "status": "static-checked-not-executed",
+    "builder": "evals/native_stage_profile_build.ts",
+    "call": "runHeavyGate(command,{label:\"Bounded native stage profile build\",memoryMiB:8192,rssMiB:8192,pollMs:10,timeoutMs:600000})",
+    "internalChild": "node --experimental-strip-types evals/native_stage_profile_build.ts --internal=build [--artifact-dir=DIR]",
+    "workerLimits": {
+      "stackSizeMb": 256,
+      "maxOldGenerationSizeMb": 3072
+    },
+    "fixedChildDeadlines": {
+      "clangMs": 300000,
+      "fixtureRunMs": 120000
+    },
+    "prerequisite": "run once after Root parser/component phase releases the lane and a fresh shared Emit/root component exists; no duplicate build was started",
+    "duplicateBuildStarted": false
+  },
+  "notRun": [
+    "old fcd C known failure",
+    "fullroot/native acceptance",
+    "actual Emitter workload A/B"
+  ],
+  "note": "one merged unit-contract run only; no heavy/native build or C target run in this receipt"
+}
