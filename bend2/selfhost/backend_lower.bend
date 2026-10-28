@@ -316,6 +316,16 @@ def single_argument(descriptor: BIR.Descriptor) -> Maybe<&2, BIR.Descriptor>:
     case BIR.DescriptorNamedPlus{_, _, [element]}: Some{element}
     case _: None{}
 
+def map_value_argument(descriptor: BIR.Descriptor) -> Maybe<&2, BIR.Descriptor>:
+  match descriptor:
+    case BIR.DescriptorRef{_, [_, element]}: Some{element}
+    case BIR.DescriptorApplication{_, element}: Some{element}
+    case BIR.DescriptorFill{_, [_, element]}: Some{element}
+    case BIR.DescriptorPlus{_, [_, element]}: Some{element}
+    case BIR.DescriptorNamedFill{_, _, [_, element]}: Some{element}
+    case BIR.DescriptorNamedPlus{_, _, [_, element]}: Some{element}
+    case _: None{}
+
 def element_argument(state: State, handle: U32) -> LowerResult<List<&2, BIR.Descriptor>>:
   match element_value(state, handle):
     case LowerResult{state2, [descriptor]}:
@@ -381,11 +391,12 @@ def last_live_argument_type(arguments: List<&2, SourceArgument>) -> Maybe<&2, U3
         case Some{ty}: Some{ty}
         case None{}: occurrence_type(occurrence)
 
-# Array.new's element is the value it is given (its erased -T and depth precede
-# it); every other array primitive operates on its first live argument.
+# Array.new takes its value's type; other array operations take their first
+# live domain. Map.find's erased V directly names the value type.
 def array_element_handle(op: BIR.Primitive, arguments: List<&2, SourceArgument>) -> Maybe<&2, U32>:
   match op:
     case BIR.PrimArrayNew{}: last_live_argument_type(arguments)
+    case BIR.PrimMapFind{}: erased_type_term(arguments)
     case _: live_argument_type(arguments)
 
 def array_element_is_argument(op: BIR.Primitive) -> Bool:
@@ -418,11 +429,18 @@ def array_primitive(+op: BIR.Primitive) -> Bool:
     case BIR.PrimIsArrayNode{}: True{}
     case _: False{}
 
+# Native reads carry their erased element type through the same checked
+# descriptor path as arrays, including when a call is only partially applied.
+def element_primitive(op: BIR.Primitive) -> Bool:
+  match op:
+    case BIR.PrimMapFind{}: True{}
+    case _: array_primitive(op)
+
 def primitive(state: State, op: BIR.Primitive, values: List<&2, BIR.Atom>) -> LowerResult<BIR.Atom>:
   operation(state, BIR.PrimitiveCall{op, atom_arguments(values), Nil{}})
 
 def primitive_call(state: State, +op: BIR.Primitive, +arguments: List<&2, BIR.Arg>, element: Maybe<&2, U32>) -> LowerResult<BIR.Atom>:
-  match array_primitive(op):
+  match element_primitive(op):
     case True{}:
       primitive_call_element(state, op, arguments, element)
     case False{}: operation(state, BIR.PrimitiveCall{op, arguments, Nil{}})
@@ -443,7 +461,7 @@ def effective_arrayed(op: BIR.Primitive, force: Bool) -> Bool:
     case False{}: array_element_is_argument(op)
 
 def primitive_fact(state: State, +op: BIR.Primitive, +values: List<&2, BIR.Atom>, element: Maybe<&2, U32>, force: Bool) -> LowerResult<BIR.Atom>:
-  match array_primitive(op):
+  match element_primitive(op):
     case True{}: primitive_element(state, op, values, element, effective_arrayed(op, force))
     case False{}: primitive(state, op, values)
 def field_values(state: State, constructor: Catalog.Constructor, values: List<&2, BIR.Atom>, index: U32, span: Ast.SourceSpan) -> LowerResult<List<&2, BIR.Field>>:
@@ -732,10 +750,8 @@ def native_match_application_native_3(v_35: LowerResult<Pair(List<&2, BIR.Arg>, 
     case LowerResult{v_23, v_24}:
       native_match_application_native_2(v_24, v_4, v_13, v_14, v_23, element)
 
-# A partially applied array primitive still owes the C target its element type.
-# The checked head occurrence's arrow type is the only surviving source: the
-# domains after the applied arguments are the remaining parameters, and the
-# array (or, for new, the value) domain names the element.
+# A partially applied typed primitive still owes the C target its element
+# type. The checked arrow domains retain it after the applied arguments.
 type ArrowFacts is Data:
   ArrowFacts{uses: List<&2, BIR.Use>, domains: List<&2, BIR.Descriptor>}
 
@@ -769,11 +785,17 @@ def first_element_argument(descriptors: List<&2, BIR.Descriptor>) -> Maybe<&2, B
     case Nil{}: None{}
     case descriptor <> _: single_argument(descriptor)
 
-# new carries its element as the value it is given; every other array primitive
-# operates on its first live domain, whose single argument is the element.
+def first_map_argument(descriptors: List<&2, BIR.Descriptor>) -> Maybe<&2, BIR.Descriptor>:
+  match descriptors:
+    case Nil{}: None{}
+    case descriptor <> _: map_value_argument(descriptor)
+
+# new carries its element as the value it is given. Map's value follows its
+# quantity argument; arrays carry only their element argument.
 def partial_element(op: BIR.Primitive, domains: List<&2, BIR.Descriptor>) -> Maybe<&2, BIR.Descriptor>:
   match op:
     case BIR.PrimArrayNew{}: last_domain(domains)
+    case BIR.PrimMapFind{}: first_map_argument(domains)
     case _: first_element_argument(domains)
 
 def parameterize(parameters: List<&2, BIR.Parameter>, uses: List<&2, BIR.Use>) -> List<&2, BIR.Parameter>:
@@ -846,7 +868,7 @@ def partial_typed(state: State, op: BIR.Primitive, captures: List<&2, BIR.Arg>, 
       partial_array_code(state2, op, captures, parameterize(fresh, parameter_uses(parameters)), element)
 
 def application_native_partial(state: State, op: BIR.Primitive, head: IR.Occurrence, args: List<&2, SourceArgument>, parameters: List<&2, BIR.Parameter>, ty: U32, env: List<&2, Slot>, registry: Catalog.Registry) -> LowerResult<BIR.Atom>:
-  match array_primitive(op):
+  match element_primitive(op):
     case True{}: partial_array_call(state, op, args, parameters, ty, env, registry)
     case False{}: native_match_application_native_0(lower_occurrence(state, head, env, registry), args, env, registry)
 

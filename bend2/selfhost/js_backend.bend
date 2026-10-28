@@ -3689,6 +3689,7 @@ def primitive_name(value: BIR.Primitive) -> String:
     case BIR.PrimNatDivmod{}: "$p_nat_divmod"
     case BIR.PrimStringEq{}: "$p_string_eq"
     case BIR.PrimMapBit{}: "$p_map_bit"
+    case BIR.PrimMapFind{}: "$p_map_find"
     case BIR.PrimStringCmp{}: "$p_string_cmp"
     case BIR.PrimStringToList{}: "$p_string_to_list"
     case BIR.PrimStringLength{}: "$p_string_length"
@@ -3812,6 +3813,7 @@ def primitive_public(value: BIR.Primitive) -> String:
     case BIR.PrimNatDivmod{}: "(a)=>(b)=>nat_divmod(a,b)"
     case BIR.PrimStringEq{}: "(a)=>(b)=>a===b"
     case BIR.PrimMapBit{}: "(key)=>(position)=>$p_map_bit(key,position)"
+    case BIR.PrimMapFind{}: "(map)=>(key)=>$p_map_find(map,key)"
     case BIR.PrimStringCmp{}: "(a)=>(b)=>$p_string_cmp(a,b)"
     case BIR.PrimStringToList{}: "(text)=>$p_string_to_list(text)"
     case BIR.PrimStringLength{}: "(a)=>$p_string_length(a)"
@@ -3856,6 +3858,73 @@ def primitive_public(value: BIR.Primitive) -> String:
     case BIR.PrimIsFalse{}: "(a)=>a===false"
     case BIR.PrimSameValue{}: "(a)=>(b)=>a===b"
     case BIR.PrimFloatBitsEqual{}: "(a)=>(b)=>f32_bits(a)===b"
+
+# A native Map.find reads the trie where it already lives: the map and the
+# query are consumed, a hit shares the stored value by identity, and a miss
+# answers None. One cursor walks the query; the walk never calls Map.bit,
+# rebuilds the query or a node, or builds a String & Bool tuple per node.
+#
+# Base's Map.bit answers (the original query, the bit at a position): the walk
+# it feeds always restarts at the head, so a public MNode may name a position
+# before the one its parent named, past the key's end, or a Nat far past it.
+# The cursor only advances, rewinds to the head whenever a node asks for an
+# earlier character, and answers false once it reached the end of the key.
+#
+# The emitted function is specialized to the constructor and field keys this
+# linked program declares. Each slot is found through the layout's own native
+# marker, never through a source spelling, so a user constructor that happens
+# to be named MLeaf or Some carries the "Data." marker and can never answer a
+# native Map or Maybe role. Some and None are built from Maybe's own layout,
+# so every answer is the program's real Maybe constructor with its declared
+# field; no value is projected, copied or inspected on the way.
+type JsMapFind is Data:
+  JsMapFind{tip: Maybe<&2, String>, leaf: Maybe<&2, String>, leaf_key: Maybe<&2, String>, leaf_value: Maybe<&2, String>, node: Maybe<&2, String>, node_pos: Maybe<&2, String>, node_lo: Maybe<&2, String>, node_hi: Maybe<&2, String>, none: Maybe<&2, String>, some: Maybe<&2, String>, some_value: Maybe<&2, String>}
+
+def map_find_roles(items: List<&2, BIR.ConstructorLayout>, roles: Map<&2, String>) -> Map<&2, String>:
+  match items:
+    case Nil{}: roles
+    case BIR.ConstructorLayout{_, +key, native, fields} <> rest: map_find_roles(rest, map_find_roles_one(key, native, fields, roles))
+def map_find_roles_one(+key: String, native: Maybe<&2, String>, fields: List<&2, Maybe<&2, String>>, roles: Map<&2, String>) -> Map<&2, String>:
+  match native:
+    case None{}: roles
+    case Some{+role}: map_find_keep_role(map_find_role_used(role), key, role, fields, roles)
+def map_find_role_used(role: String) -> Bool:
+  match role:
+    case "Map.MTip": True{}
+    case "Map.MLeaf": True{}
+    case "Map.MNode": True{}
+    case "Maybe.None": True{}
+    case "Maybe.Some": True{}
+    case _: False{}
+def map_find_keep_role(keep: Bool, key: String, +role: String, fields: List<&2, Maybe<&2, String>>, roles: Map<&2, String>) -> Map<&2, String>:
+  match keep:
+    case False{}: roles
+    case True{}: map_find_role_fields(role, fields, 0n, Map.set(&2, String, roles, role, key))
+def map_find_role_fields(+role: String, fields: List<&2, Maybe<&2, String>>, +index: Nat, roles: Map<&2, String>) -> Map<&2, String>:
+  match fields:
+    case Nil{}: roles
+    case None{} <> rest: map_find_role_fields(role, rest, Nat.add(index, 1n), roles)
+    case Some{+field} <> rest: map_find_role_fields(role, rest, Nat.add(index, 1n), Map.set(&2, String, roles, map_find_field_role(role, index), field))
+def map_find_field_role(+role: String, +index: Nat) -> String:
+  cat([role, "#", Nat.show(index)])
+
+# A program reaches the primitive only through Base's native declaration, so a
+# missing role is a compiler inconsistency. It is reported where the emitted
+# function would be called instead of silently answering a wrong Maybe.
+def map_find_runtime(layouts: List<&2, BIR.ConstructorLayout>) -> String:
+  map_find_source(map_find_lookup(map_find_roles(layouts, Map.new(&2, String))))
+def map_find_lookup(+roles: Map<&2, String>) -> JsMapFind:
+  JsMapFind{IndexLookup.find(String, roles, "Map.MTip"), IndexLookup.find(String, roles, "Map.MLeaf"), IndexLookup.find(String, roles, "Map.MLeaf#0"), IndexLookup.find(String, roles, "Map.MLeaf#1"), IndexLookup.find(String, roles, "Map.MNode"), IndexLookup.find(String, roles, "Map.MNode#0"), IndexLookup.find(String, roles, "Map.MNode#1"), IndexLookup.find(String, roles, "Map.MNode#2"), IndexLookup.find(String, roles, "Maybe.None"), IndexLookup.find(String, roles, "Maybe.Some"), IndexLookup.find(String, roles, "Maybe.Some#0")}
+def map_find_source(item: JsMapFind) -> String:
+  match item:
+    case JsMapFind{Some{tip}, Some{leaf}, Some{leaf_key}, Some{leaf_value}, Some{node}, Some{node_pos}, Some{node_lo}, Some{node_hi}, Some{none}, Some{some}, Some{some_value}}: map_find_text(tip, leaf, leaf_key, leaf_value, node, node_pos, node_lo, node_hi, none, some, some_value)
+    case _: map_find_missing()
+def map_find_missing() -> String:
+  "const $p_map_find=(map,key)=>{throw \"bend: native Map.find is linked without its native Map and Maybe constructors\";};\n"
+def map_find_member(+field: String) -> String:
+  js_member_plain(js_plain_key(field), field)
+def map_find_text(tip: String, leaf: String, leaf_key: String, leaf_value: String, node: String, node_pos: String, node_lo: String, node_hi: String, +none: String, some: String, some_value: String) -> String:
+  cat(["const $p_map_find=(map,key)=>{let node=map,at=0,ci=0;for(;;){const tag=node?.$;", "if(tag===", js_quote(leaf), "){const k=node", map_find_member(leaf_key), ",v=node", map_find_member(leaf_value), ";return key===k?{$:", js_quote(some), ",", js_field_text(some_value), "v}:{$:", js_quote(none), "};}", "if(tag===", js_quote(tip), "){return {$:", js_quote(none), "};}", "if(tag!==", js_quote(node), "){throw \"bend: native Map.find reached a node that is not a Map constructor\";}", "const pos=node", map_find_member(node_pos), ",lo=node", map_find_member(node_lo), ",hi=node", map_find_member(node_hi), ",want=Math.floor(pos/33);if(want<ci){at=0;ci=0;}", "while(ci<want&&at<key.length){at+=char_len(key,at);ci+=1;}", "node=(at<key.length&&(pos%33===0||((char_code_at(key,at)>>>(32-pos%33))&1)!==0))?hi:lo;}};\n"])
 
 def primitive_runtime() -> String:
   "const $p_u32_add=(a,b)=>((a+b)>>>0);\nconst $p_u32_sub=(a,b)=>((a-b)>>>0);\nconst $p_u32_mul=(a,b)=>(Math.imul(a,b)>>>0);\nconst $p_u32_div=(a,b)=>(b===0?0:(a/b)>>>0);\nconst $p_nat_add=(a,b)=>nat_chk(a+b);\nconst $p_nat_sub=(a,b)=>(a<b?0:a-b);\nconst $p_nat_mul=(a,b)=>nat_chk(a*b);\nconst $p_nat_cmp=(a,b)=>cmp_new(a,b);\nconst $p_nat_min=(a,b)=>(a<b?a:b);\nconst $p_nat_max=(a,b)=>(a>b?a:b);\nconst $p_string_append=(a,b)=>a+b;\nconst $p_bool_or=(a,b)=>a||b;\nconst $p_bool_xor=(a,b)=>a!==b;\nconst $p_u32_is_zero=(a)=>a===0;\nconst $p_f32_asin=(a)=>Math.fround(Math.asin(a));\nconst $p_f32_acos=(a)=>Math.fround(Math.acos(a));\nconst $p_f32_atan=(a)=>Math.fround(Math.atan(a));\nconst $p_f32_sinh=(a)=>Math.fround(Math.sinh(a));\nconst $p_f32_cosh=(a)=>Math.fround(Math.cosh(a));\nconst $p_f32_tanh=(a)=>Math.fround(Math.tanh(a));\nconst $p_u32_mod=(a,b)=>(b===0?a:a%b);\nconst $p_u32_and=(a,b)=>((a&b)>>>0);\nconst $p_u32_or=(a,b)=>((a|b)>>>0);\nconst $p_u32_xor=(a,b)=>((a^b)>>>0);\nconst $p_u32_is_eq=(a,b)=>a===b;\nconst $p_u32_is_ne=(a,b)=>a!==b;\nconst $p_u32_is_lt=(a,b)=>a<b;\nconst $p_u32_is_le=(a,b)=>a<=b;\nconst $p_u32_is_gt=(a,b)=>a>b;\nconst $p_u32_is_ge=(a,b)=>a>=b;\nconst $p_u32_inc=(a)=>(a+1)>>>0;\nconst $p_u32_not=(a)=>(~a)>>>0;\nconst $p_u32_shl=(a)=>(a<<1)>>>0;\nconst $p_u32_shr=(a)=>a>>>1;\nconst $p_u32_shln=(a,b)=>b>=32?0:(a<<b)>>>0;\nconst $p_u32_shrn=(a,b)=>b>=32?0:a>>>b;\nconst $p_u32_cmp=(a,b)=>cmp_new(a,b);\nconst $p_u32_to_nat=(a)=>a;\nconst $p_u32_from_nat=(a)=>a>>>0;\nconst $p_f32_add=(a,b)=>Math.fround(a+b);\nconst $p_f32_sub=(a,b)=>Math.fround(a-b);\nconst $p_f32_mul=(a,b)=>Math.fround(a*b);\nconst $p_f32_div=(a,b)=>Math.fround(a/b);\nconst $p_f32_mod=(a,b)=>Math.fround(a%b);\nconst $p_f32_neg=(a)=>-a;\nconst $p_f32_sqrt=(a)=>Math.fround(Math.sqrt(a));\nconst $p_f32_abs=(a)=>Math.fround(Math.abs(a));\nconst $p_f32_to_u32=(a)=>(a>=1&&a<4294967296?Math.floor(a):0);\nconst $p_f32_bits=(a)=>f32_bits(a);\nconst $p_f32_show=(a)=>f32_show(a);\nconst $p_f32_read=(a)=>f32_read(a);\nconst $p_f32_is_eq=(a,b)=>a===b;\nconst $p_f32_is_ne=(a,b)=>a!==b;\nconst $p_f32_is_lt=(a,b)=>a<b;\nconst $p_f32_is_le=(a,b)=>a<=b;\nconst $p_f32_is_gt=(a,b)=>a>b;\nconst $p_f32_is_ge=(a,b)=>a>=b;\nconst $p_f32_pow=(a,b)=>f32_pow(a,b);\nconst $p_f32_atan2=(a,b)=>Math.fround(Math.atan2(a,b));\nconst $p_f32_exp=(a)=>Math.fround(Math.exp(a));\nconst $p_f32_log=(a)=>Math.fround(Math.log(a));\nconst $p_f32_log2=(a)=>Math.fround(Math.log2(a));\nconst $p_f32_log10=(a)=>Math.fround(Math.log10(a));\nconst $p_f32_sin=(a)=>Math.fround(Math.sin(a));\nconst $p_f32_cos=(a)=>Math.fround(Math.cos(a));\nconst $p_f32_tan=(a)=>Math.fround(Math.tan(a));\nconst $p_f32_floor=(a)=>Math.fround(Math.floor(a));\nconst $p_f32_ceil=(a)=>Math.fround(Math.ceil(a));\nconst $p_f32_trunc=(a)=>Math.fround(Math.trunc(a));\nconst $p_f32_to_nat=(a)=>Math.floor(a);\nconst $p_u32_to_f32=(a)=>Math.fround(a);\nconst $p_nat_double=(a)=>nat_chk(a+a);\nconst $p_nat_is_lt=(a,b)=>a<b;\nconst $p_nat_divmod=(a,b)=>nat_divmod(a,b);\nconst $p_string_eq=(a,b)=>a===b;\nconst $p_map_bit=(key,position)=>{const character=Math.floor(position/33);if(character>=key.length)return tuple(key,false);const offset=position%33;let at=0;for(let i=0;i<character&&at<key.length;i++)at+=char_len(key,at);return tuple(key,at<key.length&&(offset===0||((char_code_at(key,at)>>>(32-offset))&1)!==0));};\nconst $p_string_cmp=(a,b)=>{let i=0,j=0,order=0;if(a!==b){while(i<a.length&&j<b.length){const x=char_code_at(a,i),y=char_code_at(b,j);if(x!==y){order=x<y?-1:1;break;}i+=char_len(a,i);j+=char_len(b,j);}if(order===0)order=i<a.length?1:j<b.length?-1:0;}return tuple(tuple(a,b),cmp_new(order,0));};\nconst $p_string_to_list=(text)=>{let tail={$:\"Nil\"};for(let i=text.length;i>0;){let n=1;if(i>=4&&text.charCodeAt(i-4)===0xDC00)n=4;else if(i>=2&&text.charCodeAt(i-1)>=0xDC00&&text.charCodeAt(i-1)<=0xDFFF&&text.charCodeAt(i-2)>=0xD800&&text.charCodeAt(i-2)<=0xDBFF)n=2;tail={$:\"Con\",head:text.slice(i-n,i),tail};i-=n;}return tail;};\nconst $p_string_length=(a)=>[...str_out(a)].length;\nconst $p_array_new=(a,b)=>array_new(a,b);\nconst $p_array_set=(a,i,v)=>(a[i%a.length]=v,a);\nconst $p_array_get=(a,i)=>tuple(a,a[i%a.length]);\nconst $p_array_swap=(a,i,v)=>array_swap(a,i,v);\nconst $p_array_atomic_add=(a,i,v)=>array_rmw(a,i,(o)=>((o+v)>>>0));\nconst $p_array_atomic_min=(a,i,v)=>array_rmw(a,i,(o)=>Math.min(o,v));\nconst $p_array_atomic_max=(a,i,v)=>array_rmw(a,i,(o)=>Math.max(o,v));\nconst $p_array_atomic_and=(a,i,v)=>array_rmw(a,i,(o)=>((o&v)>>>0));\nconst $p_array_atomic_or=(a,i,v)=>array_rmw(a,i,(o)=>((o|v)>>>0));\nconst $p_array_atomic_xor=(a,i,v)=>array_rmw(a,i,(o)=>((o^v)>>>0));\nconst $p_array_atomic_exch=(a,i,v)=>array_rmw(a,i,(o)=>v);\nconst $p_array_atomic_cas=(a,i,x,v)=>array_rmw(a,i,(o)=>(o===x?v:o));\nconst $p_array_atomic_fadd=(a,i,v)=>array_rmw(a,i,(o)=>Math.fround(o+v));\nconst $p_array_size=(a)=>tuple(a,a.length);\nconst $p_array_clone=(a)=>tuple(a,a.slice());\nconst $p_nat_predecessor=(a)=>a-1;\nconst $p_nat_successor=(a)=>nat_chk(a+1);\nconst $p_char_new=(a)=>char_new(a);\nconst $p_char_code=(a)=>char_code(a);\nconst $p_string_head=(a)=>a.slice(0,char_len(a));\nconst $p_string_tail=(a)=>a.slice(char_len(a));\nconst $p_word_to_u32=(a)=>word_to_u32(a);\nconst $p_u32_to_word=(a)=>u32_to_word(a);\nconst $p_f32_from_bits=(a)=>f32_from_bits(a);\nconst $p_f32_from_word=(a)=>f32_from_bits(word_to_u32(a));\nconst $p_f32_to_word=(a)=>u32_to_word(f32_bits(a));\nconst $p_array_leaf=(a)=>[a];\nconst $p_array_node=(a,b)=>array_node(a,b);\nconst $p_array_leaf_value=(a)=>a[0];\nconst $p_array_left=(a)=>a.slice(0,a.length>>1);\nconst $p_array_right=(a)=>a.slice(a.length>>1);\nconst $p_is_array_leaf=(a)=>a.length===1;\nconst $p_is_array_node=(a)=>a.length!==1;\nconst $p_is_nat_zero=(a)=>a===0;\nconst $p_is_nat_successor=(a)=>a>0;\nconst $p_is_string_empty=(a)=>a===\"\";\nconst $p_is_string_nonempty=(a)=>a!==\"\";\nconst $p_is_true=(a)=>a===true;\nconst $p_is_false=(a)=>a===false;\nconst $p_same_value=(a,b)=>a===b;\nconst $p_float_bits_equal=(a,b)=>f32_bits(a)===b;\n"
@@ -4194,8 +4263,8 @@ def program_source(+program: BIR.Program, effects: String) -> String:
 def program_source_scoped(+program: BIR.Program, natives: Map<&2, String>, effects: String) -> String:
   +plan = multi_plan(program)
   match program:
-    case BIR.Program{bodies, values, layouts, types, functions, end}:
-      cat([js_runtime(), js_runtime_direct(), js_runtime_extra(), js_runtime_show(), js_runtime_cli(), js_runtime_io(), js_runtime_array(), js_runtime_foreign(), js_runtime_namespace(), primitive_runtime(), constructor_layouts(layouts), families(types), type_functions(functions), effects, codes(bodies, plan), declarations(values, natives, 0n, plan), ending(end, natives, plan)])
+    case BIR.Program{bodies, values, +layouts, types, functions, end}:
+      cat([js_runtime(), js_runtime_direct(), js_runtime_extra(), js_runtime_show(), js_runtime_cli(), js_runtime_io(), js_runtime_array(), js_runtime_foreign(), js_runtime_namespace(), primitive_runtime(), map_find_runtime(layouts), constructor_layouts(layouts), families(types), type_functions(functions), effects, codes(bodies, plan), declarations(values, natives, 0n, plan), ending(end, natives, plan)])
 
 # Publish the same continuation frame before a bounded direct call. A pending
 # result or an unpopped region frame belongs to run_base; only an ordinary

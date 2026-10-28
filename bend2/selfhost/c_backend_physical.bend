@@ -1814,6 +1814,14 @@ def array_label(+pprimitive: BIR.Primitive) -> String:
     case BIR.PrimIsArrayNode{}: "is_array_node"
     case _: "array"
 
+# A missing instantiated Descriptor is a lowering failure, and it names the
+# primitive whose element the target needed: an array operation's element cell,
+# or the value type Base's Map.find shares out of a leaf.
+def descriptor_missing(+pprimitive: BIR.Primitive) -> String:
+  match pprimitive:
+    case BIR.PrimMapFind{}: "the map read `Map.find` carries no instantiated value Descriptor; lowering must supply PrimitiveCall.types"
+    case _: join_text(["the array primitive `", array_label(pprimitive), "` carries no instantiated element Descriptor; lowering must supply PrimitiveCall.types"])
+
 def array_cell_result(+pcell: CLay.CellResult) -> CellOut:
   match pcell:
     case CLay.CellFailed{message}: CellFail{message}
@@ -2186,6 +2194,119 @@ def is_array_primitive(+pprimitive: BIR.Primitive) -> Bool:
     case BIR.PrimIsArrayLeaf{}: True{}
     case BIR.PrimIsArrayNode{}: True{}
     case _: False{}
+
+# ---------------------------------------------------------------------------
+# Map.find
+# ---------------------------------------------------------------------------
+#
+# Base's Map.find reads the trie in place: the map and the query key are
+# consumed own references, a hit shares the stored value out of the leaf the
+# walk keeps, and a miss answers None. The runtime helper owns the whole walk
+# (one cursor over the query, restarted at the head for a public node that
+# names an earlier position, and the full-u32 String semantics), so the target
+# only names the two map nodes and the two Maybe constructors.
+#
+# A map node is read by word offset. Every MNode and MLeaf field is one word by
+# the generic constructor rule (a Nat is w64, a Map and a String are one box,
+# and the value is the generic one-word field), and the offsets come from the
+# canonical node layout: a node with a wider field is a reported failure, never
+# a guessed stride.
+def map_offsets(+pwant: Nat, +pkey: String, +pw: World) -> Part:
+  match pw:
+    case World{ctx, constructors, cids}:
+      match CLay.node_layout(ctx, pkey):
+        case CLay.NodeFailed{message}: PartFail{message}
+        case CLay.NodeFound{node}:
+          match node:
+            case CLay.Node{words, slots, packed}:
+              match Nat.is_eq(List.length(&2, CLay.NodeSlot, slots), pwant):
+                case False{}: PartFail{join_text(["the map node `", pkey, "` does not declare exactly ", Nat.show(pwant), " live fields, so Base's Map.find cannot read it"])}
+                case True{}: map_offsets_walk(pkey, slots, Nil{})
+
+def map_offsets_walk(+pkey: String, +pslots: List<&2, CLay.NodeSlot>, +pacc: List<&2, String>) -> Part:
+  match pslots:
+    case Nil{}: PartOk{String.join(List.reverse(&2, String, pacc), ", ")}
+    case +slot <> rest:
+      match slot:
+        case CLay.NodeSlot{ordinal, offset, layout}:
+          match Nat.is_eq(CLay.layout_words(layout), 1n):
+            case False{}: PartFail{join_text(["the map node `", pkey, "` stores a field wider than one word, so Base's Map.find cannot index it"])}
+            case True{}: map_offsets_walk(pkey, rest, Nat.show(offset) <> pacc)
+
+def map_find_missing(+pkey: String) -> Part:
+  PartFail{join_text(["the program has no `", pkey, "` constructor, which the C runtime contract requires"])}
+
+def map_find_text(+pmap: String, +pquery: String, +pw: World) -> Part:
+  match cid_of("MNode", pw):
+    case None{}: map_find_missing("MNode")
+    case Some{+node}:
+      match cid_of("MLeaf", pw):
+        case None{}: map_find_missing("MLeaf")
+        case Some{+leaf}:
+          match cid_of("Some", pw):
+            case None{}: map_find_missing("Some")
+            case Some{+some}:
+              match cid_of("None", pw):
+                case None{}: map_find_missing("None")
+                case Some{+none}: map_find_build(pmap, pquery, node, leaf, some, none, pw)
+
+# Both arms are built by the ordinary constructor plan, so the node words, the
+# packed form and the field sealing are the ones a source `Some{v}` /
+# `None{}` construction emits. The runtime answered the value the leaf kept,
+# already shared out of the map: it is the canonical one-word value of the
+# instantiated V, so the Some field takes it as it is (a raw scalar word stays
+# a raw word and a box stays one counted box; rfc_seal leaves both alone for a
+# word that is not a plain node).
+def map_find_build(+pmap: String, +pquery: String, +node: U32, +leaf: U32, +some: U32, +none: U32, +pw: World) -> Part:
+  match map_offsets(3n, "MNode", pw) map_offsets(2n, "MLeaf", pw):
+    case PartOk{node_offsets} PartOk{leaf_offsets}:
+      match construct_part(some, [Operand{BIR.Affine{}, "mfm"}], pw):
+        case PartFail{message}: PartFail{message}
+        case PartOk{some_text}:
+          match construct_part(none, Nil{}, pw):
+            case PartFail{message}: PartFail{message}
+            case PartOk{none_text}: PartOk{map_find_expr(pmap, pquery, node, leaf, node_offsets, leaf_offsets, some_text, none_text)}
+    case PartFail{message} _: PartFail{message}
+    case _ PartFail{message}: PartFail{message}
+
+def map_find_expr(+pmap: String, +pquery: String, +node: U32, +leaf: U32, +node_offsets: String, +leaf_offsets: String, +psome: String, +pnone: String) -> String:
+  join_text(["({\n  Term mfm = 0;\n  u32 mfh = (u32)map_find_read(e, ", U32.show(node), "u, ", U32.show(leaf), "u, ", node_offsets, ", ", leaf_offsets, ", ", pmap, ", ", pquery, ", &mfm);\n  mfh ? ", psome, " : ", pnone, ";\n})"])
+
+# The direct call site binds both arguments as own references before this
+# point, so the rendering consumes those two names exactly as the runtime
+# helper consumes the map and the query.
+def map_find_operands(+poperands: List<&2, Operand>, +pw: World) -> Part:
+  match poperands:
+    case [m, key]: map_find_text(operand_text(m), operand_text(key), pw)
+    case _: PartFail{"Base's Map.find takes the map and the query key"}
+
+# A first-class native value is entered with its live arguments in registers
+# and carries no element Descriptor: the answer needs none, because a map leaf
+# stores the canonical one-word value for every instantiated V.
+def map_find_names(+pargs: List<&2, String>, +pw: World) -> Part:
+  match pargs:
+    case [m, key]: map_find_text(m, key, pw)
+    case _: PartFail{"Base's Map.find takes the map and the query key"}
+
+# The checked read carries exactly one instantiated value Descriptor, the V of
+# `Map.find(V)`, which the lowering also uses to mark the shared value's
+# constructors hot. No layout conversion follows from it here: the leaf stores
+# the canonical one-word value of V and the Some node's generic field takes
+# that same word, exactly as a source `Some{v}` construction does.
+def map_find_part(+poperands: List<&2, Operand>, +ptypes: List<&2, BIR.Descriptor>, +pw: World) -> Part:
+  match ptypes:
+    case Nil{}: PartFail{"the map read `Map.find` carries no instantiated value Descriptor; lowering must supply PrimitiveCall.types"}
+    case [_]: map_find_operands(poperands, pw)
+    case _: PartFail{"the map read `Map.find` must carry exactly one instantiated value Descriptor"}
+
+# A primitive that carries an instantiated Descriptor cell plan: an array
+# operation takes its element cell and Map.find takes the value type its leaf
+# shares out. They are bound and consumed the same way; only the physical
+# rendering differs.
+def descriptor_part(+pprimitive: BIR.Primitive, +pargs: List<&2, Operand>, +ptypes: List<&2, BIR.Descriptor>, +pw: World) -> Part:
+  match pprimitive:
+    case BIR.PrimMapFind{}: map_find_part(pargs, ptypes, pw)
+    case _: array_part(pprimitive, pargs, ptypes, pw)
 
 # ---------------------------------------------------------------------------
 # SHOW_DESC / SHOW_NAMES

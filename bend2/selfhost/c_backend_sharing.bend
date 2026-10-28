@@ -700,6 +700,19 @@ def s_array_pair_at(types: List<&2, BIR.Descriptor>, +families: Map<&2, FamilyRo
     case +only <> Nil{}: s_array_pair_one(families, labels, only)
     case _: s_heads_unknown()
 
+# Base's Map.find answers `Maybe<a, V>`: the Some arm carries the value the
+# leaf kept, so the read's flow is the Maybe family plus every head the value
+# type may hold. A missing or extra value Descriptor stays unknown, exactly as
+# the array pair's element does.
+def s_maybe_head_one(+families: Map<&2, FamilyRow>, +labels: Map<&2, String>, only: BIR.Descriptor) -> Heads:
+  s_heads_merge(s_heads_ok([s_family("Maybe")]), s_descriptor_heads(families, labels, only))
+
+def s_maybe_heads_at(types: List<&2, BIR.Descriptor>, +families: Map<&2, FamilyRow>, +labels: Map<&2, String>) -> Heads:
+  match types:
+    case Nil{}: s_heads_unknown()
+    case +only <> Nil{}: s_maybe_head_one(families, labels, only)
+    case _: s_heads_unknown()
+
 def s_primitive_heads(+families: Map<&2, FamilyRow>, +labels: Map<&2, String>, primitive: BIR.Primitive, types: List<&2, BIR.Descriptor>) -> Heads:
   match primitive:
     case BIR.PrimArrayNew{}: s_word_head("Array")
@@ -816,6 +829,7 @@ def s_primitive_heads(+families: Map<&2, FamilyRow>, +labels: Map<&2, String>, p
     case BIR.PrimCharNew{}: s_word_head("Char")
     case BIR.PrimCharCode{}: s_word_head("U32")
     case BIR.PrimMapBit{}: s_word_head("Sigma")
+    case BIR.PrimMapFind{}: s_maybe_heads_at(types, families, labels)
     case BIR.PrimBoolOr{}: s_word_head("Bool")
     case BIR.PrimBoolXor{}: s_word_head("Bool")
     case BIR.PrimIsTrue{}: s_word_head("Bool")

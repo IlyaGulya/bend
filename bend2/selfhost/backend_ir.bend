@@ -107,6 +107,7 @@ type Primitive is Data:
   PrimNatDivmod{}
   PrimStringEq{}
   PrimMapBit{}
+  PrimMapFind{}
   PrimStringCmp{}
   PrimStringToList{}
   PrimStringLength{}

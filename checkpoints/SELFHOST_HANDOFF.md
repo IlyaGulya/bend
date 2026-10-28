@@ -66,6 +66,14 @@ closure calls к очереди trampoline, не меняя private-result lower
 тоже FAIL: native 13 048 definitions / 13 672 events и 95 fixtures PASS;
 stage1 44 155 247 bytes. Stage2 начал check на 246 084 ms; исходный guard
 600 053 ms снова истёк. Сам возврат queued dispatch timeout не решил.
+R11 реализует общий `Base.Map.find` intrinsic в BIR, typed lowering и C/JS.
+C использует существующий owned cursor runtime и обычный constructor plan
+для Maybe; JS не пересобирает trie/query. Новый host-regression прошёл на
+старом portable emitter, воспроизвёл пропущенный getter на новом intrinsic
+и проходит после исправления eager-порядка полей. Проверены 15 C/JS consumers
+и те же 14 JS artifacts на JavaScriptCore, включая shared F32 `-0`/`3.25`.
+Полная R11 qualification ещё не завершена; это не принятие compiler root.
+Receipt: `evals/receipts/producer2039g24r11_map_find_smoke.json`.
 Принятым остаётся G23 ниже.
 Точные команды и границы:
 `evals/receipts/root2039g24_failed_attempts.json`,

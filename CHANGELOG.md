@@ -31,6 +31,14 @@ latest one; the GitHub release carries the same notes.
   R10 restores queued unary dispatch and removes the extra closure-depth
   plumbing; all twelve emitted-JS consumers pass on V8 and JavaScriptCore.
   Its full qualification again reached the original stage2-check deadline.
+  R11 adds the general native `Map.find` primitive to the shared BIR and both
+  selfhost targets. C reuses the owned cursor read and ordinary Maybe
+  construction; JS walks the trie without rebuilding nodes or query strings.
+  Host-backed maps retain eager field-read order, and hits retain value
+  identity. The new accessor/exception regression fails before the repair and
+  passes after it. Fifteen actual C/JS consumers and fourteen identical JS
+  artifacts on JavaScriptCore pass, including shared F32 bit patterns.
+  Full R11 compiler/fixedpoint and performance qualification is still pending.
   R6 passed the full
   native build and 95 seed fixtures, but its 57,228,966-byte stage1 did not
   finish stage2 checking before the original bootstrap deadline.

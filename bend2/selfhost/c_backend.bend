@@ -1361,29 +1361,37 @@ def array_arg_owned(primitive: BIR.Primitive, +index: Nat) -> Bool:
     case BIR.PrimArrayNode{}: Nat.is_lt(index, 2n)
     case _: False{}
 
-def array_step(primitive: BIR.Primitive, args: List<&2, BIR.Arg>, types: List<&2, BIR.Descriptor>, +ctx: Ctx, +index: Nat, +acc: List<&2, Phys.Operand>, +setup: String, continuation: BIR.Block, +owner_tag: U32) -> OpStep:
+# Base's Map.find consumes the map and the query key, exactly as its source
+# declaration takes them; every other Descriptor primitive keeps its array
+# rule.
+def descriptor_arg_owned(primitive: BIR.Primitive, +index: Nat) -> Bool:
+  match primitive:
+    case BIR.PrimMapFind{}: True{}
+    case _: array_arg_owned(primitive, index)
+
+def descriptor_step(primitive: BIR.Primitive, args: List<&2, BIR.Arg>, types: List<&2, BIR.Descriptor>, +ctx: Ctx, +index: Nat, +acc: List<&2, Phys.Operand>, +setup: String, continuation: BIR.Block, +owner_tag: U32) -> OpStep:
   match args:
     case Nil{}:
-      match phys_part(Phys.array_part(primitive, List.reverse(&2, Phys.Operand, acc), types, phys_world(ctx_plan(ctx)))):
+      match phys_part(Phys.descriptor_part(primitive, List.reverse(&2, Phys.Operand, acc), types, phys_world(ctx_plan(ctx)))):
         case PartFail{message}: OpFail{message}
         case PartOk{text}: OpOk{setup, text, ctx}
     case +arg <> rest:
       match arg:
         case BIR.Arg{use, value}:
           +name = cat(["pa", U32.show(owner_tag), "_", Nat.show(index)])
-          match array_arg_owned(primitive, index):
+          match descriptor_arg_owned(primitive, index):
             case True{}:
               match field_owned(value, use, ctx, atoms_after_args(rest, continuation)):
                 case WriteFail{message}: OpFail{message}
                 case WriteOk{text, actx}:
                   +decl = cat(["    Term ", name, " = ", text, ";\n"])
-                  array_step(primitive, rest, types, actx, Nat.add(index, 1n), Phys.Operand{BIR.Affine{}, name} <> acc, String.append(setup, decl), continuation, owner_tag)
+                  descriptor_step(primitive, rest, types, actx, Nat.add(index, 1n), Phys.Operand{BIR.Affine{}, name} <> acc, String.append(setup, decl), continuation, owner_tag)
             case False{}:
               match field_borrow(value, ctx):
                 case PartFail{message}: OpFail{message}
                 case PartOk{text}:
                   +decl = cat(["    Term ", name, " = ", text, ";\n"])
-                  array_step(primitive, rest, types, ctx, Nat.add(index, 1n), Phys.Operand{BIR.Many{}, name} <> acc, String.append(setup, decl), continuation, owner_tag)
+                  descriptor_step(primitive, rest, types, ctx, Nat.add(index, 1n), Phys.Operand{BIR.Many{}, name} <> acc, String.append(setup, decl), continuation, owner_tag)
 
 # Only boxed arguments need caller-side release after a borrowing helper.
 # Scalar Nat/F32/U32 words are not tagged Terms and must never be sunk.
@@ -1463,15 +1471,15 @@ def prim_step(primitive: BIR.Primitive, args: List<&2, BIR.Arg>, types: List<&2,
 
 def array_op_step(primitive: BIR.Primitive, args: List<&2, BIR.Arg>, types: List<&2, BIR.Descriptor>, +ctx: Ctx, continuation: BIR.Block, +owner_tag: U32) -> OpStep:
   match is_atomic_primitive(primitive):
-    case True{}: array_step(primitive, args, types, ctx, 0n, Nil{}, "", continuation, owner_tag)
+    case True{}: descriptor_step(primitive, args, types, ctx, 0n, Nil{}, "", continuation, owner_tag)
     case False{}: array_op_step_element(primitive, args, types, ctx, continuation, owner_tag)
 
 def array_op_step_element(primitive: BIR.Primitive, args: List<&2, BIR.Arg>, types: List<&2, BIR.Descriptor>, +ctx: Ctx, continuation: BIR.Block, +owner_tag: U32) -> OpStep:
-  match is_array_primitive(primitive):
+  match is_descriptor_primitive(primitive):
     case True{}:
       match types:
-        case Nil{}: OpFail{Phys.join_text(["the array primitive `", Phys.array_label(primitive), "` carries no instantiated element Descriptor; lowering must supply PrimitiveCall.types"])}
-        case _: array_step(primitive, args, types, ctx, 0n, Nil{}, "", continuation, owner_tag)
+        case Nil{}: OpFail{Phys.descriptor_missing(primitive)}
+        case _: descriptor_step(primitive, args, types, ctx, 0n, Nil{}, "", continuation, owner_tag)
     case False{}: prim_texts(primitive, args, ctx, 0n, Nil{}, "", "", continuation, owner_tag)
 
 # An array leaf/node test on a lazy path is a predicate over the path state,
@@ -1638,6 +1646,15 @@ def is_array_primitive(primitive: BIR.Primitive) -> Bool:
     case BIR.PrimIsArrayNode{}: True{}
     case _: False{}
 
+# The primitives that carry an instantiated Descriptor: an array operation
+# takes its element cell and Base's Map.find takes the value type its leaf
+# shares out. Both must be given exactly one, so a lowering that drops it is a
+# named plan failure rather than a guessed cell.
+def is_descriptor_primitive(primitive: BIR.Primitive) -> Bool:
+  match primitive:
+    case BIR.PrimMapFind{}: True{}
+    case _: is_array_primitive(primitive)
+
 # The nine atomics are array-shaped but fixed scalar: Array<U32> words, and
 # Array<F32> binary32 words for fadd, so they carry no erased element Descriptor
 # and must not be refused when PrimitiveCall.types is empty.
@@ -1687,8 +1704,14 @@ def bool_part(cond: String, plan: Plan) -> Part:
 
 # A first-class atomic native value enters with its live arguments in registers
 # and needs no element Descriptor, so it renders the same fixed-scalar
-# expression the direct call site does.
+# expression the direct call site does. Base's Map.find also needs no
+# Descriptor here: the answer is the canonical one-word value for every V.
 def prim_part(primitive: BIR.Primitive, +a: List<&2, String>, +plan: Plan) -> Part:
+  match primitive:
+    case BIR.PrimMapFind{}: phys_part(Phys.map_find_names(a, phys_world(plan)))
+    case _: prim_plain_part(primitive, a, plan)
+
+def prim_plain_part(primitive: BIR.Primitive, +a: List<&2, String>, +plan: Plan) -> Part:
   match is_atomic_primitive(primitive):
     case True{}: phys_part(Phys.atomic_prim_part(primitive, a, phys_world(plan)))
     case False{}: prim_scalar_part(primitive, a, plan)

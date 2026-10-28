@@ -677,6 +677,7 @@ def primitive_named(name: String) -> Maybe<&2, BIR.Primitive>:
     case "nat_min": Some{BIR.PrimNatMin{}}
     case "nat_max": Some{BIR.PrimNatMax{}}
     case "map_bit": Some{BIR.PrimMapBit{}}
+    case "map_find": Some{BIR.PrimMapFind{}}
     case "string_cmp": Some{BIR.PrimStringCmp{}}
     case "string_to_list": Some{BIR.PrimStringToList{}}
     case "string_eq": Some{BIR.PrimStringEq{}}
@@ -1620,6 +1621,7 @@ def primitive_arity(value: BIR.Primitive) -> Nat:
     case BIR.PrimNatDivmod{}: 2n
     case BIR.PrimStringEq{}: 2n
     case BIR.PrimMapBit{}: 2n
+    case BIR.PrimMapFind{}: 2n
     case BIR.PrimStringCmp{}: 2n
     case BIR.PrimStringToList{}: 1n
     case BIR.PrimStringLength{}: 1n

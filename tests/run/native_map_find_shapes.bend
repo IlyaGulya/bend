@@ -109,14 +109,22 @@ def gen_outer(m: Map<&2, Outer>, k: String, es: String, ins: String,
   U32.is_eq(outer_digest(outer_of(gen_find(Outer, m, k), Outer{"", Inner{"",
     0n}}), es, ins, en), 111)
 
-# A first-class lookup and a partial application are closures of the source
-# definition: they must answer the same words without the in-place path.
+# First-class and partially applied lookups obey the same result contract.
 def fc_find(g: @+map: Map<&2, U32> -> @+key: String -> Maybe<&2, U32>,
   m: Map<&2, U32>, k: String, want: U32) -> Bool:
   hit_u32(g(m, k), want)
 
 def part_find(f: @+key: String -> Maybe<&2, U32>, k: String, want: U32) -> Bool:
   hit_u32(f(k), want)
+
+def float_bits(x: Maybe<&2, F32>) -> U32:
+  match x:
+    case None{}: 1
+    case Some{v}: F32.bits(v)
+
+def shared_float(+map: Map<&2, F32>) -> Bool:
+  Bool.and(U32.is_eq(float_bits(Map.find(F32, map, "zero")), 2147483648),
+    U32.is_eq(float_bits(Map.find(F32, map, "fraction")), 1078984704))
 
 # A borrowed map read twice: the callee never owns the trie, so both calls
 # must answer and the caller's map must survive them.
@@ -221,6 +229,12 @@ def main() -> IO(Unit):
     Unit <- check(gen_str(seed_str(), "t", "world"), "generic String lookup")
     Unit <- check(gen_outer(seed_outer(), "p", "cc", "dd", 34n),
       "generic nested lookup")
+    Unit <- check(shared_float(Map.set(&2, F32,
+      Map.set(&2, F32, Map.new(&2, F32), "zero", F32.neg(0.0)),
+      "fraction", 3.25)), "shared float values retain their bits")
+    Unit <- check(Maybe.is_none(&2, F32,
+      Map.find(F32, MLeaf{"zero", F32.neg(0.0)}, "missing")),
+      "float miss remains None")
     Unit <- check(first_class(), "first-class and partial lookup")
     Unit <- check(U32.is_eq(probe_twice(seed_u32(), "ab"), 55),
       "borrowed map read twice")

@@ -85,7 +85,7 @@ const fixtures = ['evals/c_target_wide_record', 'evals/c_target_nested_adt',
   'tests/compile/js_multi_chain', 'tests/compile/js_multi_arity',
   ...(target === 'js' ? ['evals/checker_affinity_step_smoke',
     'tests/compile/js_multi_reentrant', 'tests/compile/js_multi_identity',
-    'tests/compile/js_multi_boxed_adapter'] : [])];
+    'tests/compile/js_multi_boxed_adapter', 'tests/compile/js_map_find_identity'] : [])];
 const selected = smokeCase === undefined ? fixtures : fixtures.filter(name => name.endsWith('/' + smokeCase) || name === smokeCase);
 if (selected.length === 0) throw Error('--smoke-case matches no fixture: ' + smokeCase);
 const base = resolve('bend2/base.bend');
