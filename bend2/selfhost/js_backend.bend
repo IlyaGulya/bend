@@ -98,7 +98,7 @@ type MultiResult is Data:
   MultiResultOpen{required: List<&2, String>}
   MultiResultClosed{}
 type MultiCodeFact is Data:
-  MultiCodeFact{width: Nat, sites: List<&2, MultiSiteF>, statics: Map<&2, Bool>, params: List<&2, BIR.Parameter>, captures: Nat, frames: Bool, pidx: Map<&2, Nat>, body: BIR.Block, routes: Map<&2, List<&2, MultiReq>>, tails: List<&2, U32>, result: MultiResult}
+  MultiCodeFact{width: Nat, sites: List<&2, MultiSiteF>, statics: Map<&2, Bool>, params: List<&2, BIR.Parameter>, captures: Nat, frames: Bool, pidx: Map<&2, Nat>, body: BIR.Block, uses: Map<&2, Nat>, routes: Map<&2, List<&2, MultiReq>>, tails: List<&2, U32>, result: MultiResult}
 type MRewCtx is Data:
   MRewCtx{code: U32, layouts: Map<&2, MultiLayout>, multi: Map<&2, Bool>, up: Map<&2, Bool>, width: Nat, params: Map<&2, MultiParam>, private: Bool, sub: Map<&2, MultiSubst>, cur: Maybe<&2, U32>, bindings: Map<&2, MultiCtor>, uses: Map<&2, Nat>}
 type JsCtx is Data:
@@ -939,7 +939,14 @@ def multi_codes_fact_one(code: BIR.Code, rest: List<&2, BIR.Code>, layouts: Map<
       multi_codes_facts(rest, layouts, width, Map.set(&2, MultiCodeFact, acc, U32.show(id), multi_code_fact_build(id, captures, parameters, body, layouts, width)))
 def multi_fact_sites(fact: MultiCodeFact) -> List<&2, MultiSiteF>:
   match fact:
-    case MultiCodeFact{_, sites, _, _, _, _, _, _, _, _, _}: sites
+    case MultiCodeFact{_, sites, _, _, _, _, _, _, _, _, _, _}: sites
+# The occurrence counts of a code's own body, collected once when its facts were
+# built. A render of that code reads them instead of walking the body again on
+# every solve round; they count the source atoms, so a rewritten body never
+# answers for them.
+def multi_fact_uses(fact: MultiCodeFact) -> Map<&2, Nat>:
+  match fact:
+    case MultiCodeFact{_, _, _, _, _, _, _, _, uses, _, _, _}: uses
 def multi_params_boxed(items: List<&2, BIR.Parameter>, acc: List<&2, MultiParam>) -> List<&2, MultiParam>:
   match items:
     case Nil{}: List.reverse(&2, MultiParam, acc)
@@ -992,18 +999,27 @@ def multi_render_plain_public(body: BIR.Block, parameters: List<&2, BIR.Paramete
   multi_render_plain_public_made(body, parameters)
 def multi_render_plain_public_made(scoped: BIR.Block, parameters: List<&2, BIR.Parameter>) -> MultiRender:
   MultiRender{scoped, plan_of(scoped), multi_params_boxed(parameters, Nil{}), Map.new(&2, MultiWindow), Map.new(&2, Bool), Map.new(&2, Bool), False{}, True{}, 0n, False{}}
-def multi_render_code(code: BIR.Code, layouts: Map<&2, MultiLayout>, width: Nat, state: MultiUp, acc: Map<&2, MultiRender>) -> Map<&2, MultiRender>:
+def multi_render_code(code: BIR.Code, layouts: Map<&2, MultiLayout>, width: Nat, state: MultiUp, facts: Map<&2, MultiCodeFact>, acc: Map<&2, MultiRender>) -> Map<&2, MultiRender>:
   match code:
-    case BIR.Code{id, _, parameters, body}: multi_render_pair(multi_multi_get(multi_prev_multi(state), id), id, parameters, body, layouts, width, state, acc)
-def multi_render_pair(multi: Bool, id: U32, parameters: List<&2, BIR.Parameter>, body: BIR.Block, layouts: Map<&2, MultiLayout>, width: Nat, state: MultiUp, acc: Map<&2, MultiRender>) -> Map<&2, MultiRender>:
+    case BIR.Code{id, _, parameters, body}: multi_render_pair(multi_multi_get(multi_prev_multi(state), id), id, parameters, body, layouts, width, state, facts, acc)
+def multi_render_pair(multi: Bool, id: U32, parameters: List<&2, BIR.Parameter>, body: BIR.Block, layouts: Map<&2, MultiLayout>, width: Nat, state: MultiUp, facts: Map<&2, MultiCodeFact>, acc: Map<&2, MultiRender>) -> Map<&2, MultiRender>:
   match multi:
-    case False{}: Map.set(&2, MultiRender, acc, multi_render_key(id, False{}), multi_render_primary(id, parameters, body, layouts, width, state, False{}))
-    case True{}: multi_render_two(id, parameters, body, layouts, width, state, acc)
-def multi_render_two(id: U32, parameters: List<&2, BIR.Parameter>, body: BIR.Block, layouts: Map<&2, MultiLayout>, width: Nat, state: MultiUp, acc: Map<&2, MultiRender>) -> Map<&2, MultiRender>:
-  +uses = multi_uses(body)
+    case False{}: Map.set(&2, MultiRender, acc, multi_render_key(id, False{}), multi_render_primary(id, parameters, body, layouts, width, state, facts, False{}))
+    case True{}: multi_render_two(id, parameters, body, layouts, width, state, facts, acc)
+def multi_render_two(id: U32, parameters: List<&2, BIR.Parameter>, body: BIR.Block, layouts: Map<&2, MultiLayout>, width: Nat, state: MultiUp, facts: Map<&2, MultiCodeFact>, acc: Map<&2, MultiRender>) -> Map<&2, MultiRender>:
+  +uses = multi_render_uses(facts, body, id)
   Map.set(&2, MultiRender, Map.set(&2, MultiRender, acc, multi_render_key(id, False{}), multi_render_primary_uses(id, parameters, body, layouts, width, state, True{}, uses)), multi_render_key(id, True{}), multi_render_public_uses(id, parameters, body, layouts, width, state, uses))
-def multi_render_primary(id: U32, parameters: List<&2, BIR.Parameter>, body: BIR.Block, layouts: Map<&2, MultiLayout>, width: Nat, state: MultiUp, private: Bool) -> MultiRender:
-  multi_render_make(id, body, layouts, width, state, private, False{}, multi_params_for_render(private, parameters, multi_prev_up(state), id, width), multi_uses(body))
+# The occurrence counts a render rewrites against are the ones the code's fact
+# already counted over this same source body. Only a body with no fact falls
+# back to counting itself, so a plan round never walks a body it planned.
+def multi_render_uses(facts: Map<&2, MultiCodeFact>, body: BIR.Block, id: U32) -> Map<&2, Nat>:
+  multi_render_uses_found(IndexLookup.find(MultiCodeFact, facts, U32.show(id)), body)
+def multi_render_uses_found(found: Maybe<&2, MultiCodeFact>, body: BIR.Block) -> Map<&2, Nat>:
+  match found:
+    case Some{+fact}: multi_fact_uses(fact)
+    case None{}: multi_uses(body)
+def multi_render_primary(id: U32, parameters: List<&2, BIR.Parameter>, body: BIR.Block, layouts: Map<&2, MultiLayout>, width: Nat, state: MultiUp, facts: Map<&2, MultiCodeFact>, private: Bool) -> MultiRender:
+  multi_render_make(id, body, layouts, width, state, private, False{}, multi_params_for_render(private, parameters, multi_prev_up(state), id, width), multi_render_uses(facts, body, id))
 def multi_render_primary_uses(id: U32, parameters: List<&2, BIR.Parameter>, body: BIR.Block, layouts: Map<&2, MultiLayout>, width: Nat, state: MultiUp, private: Bool, uses: Map<&2, Nat>) -> MultiRender:
   multi_render_make(id, body, layouts, width, state, private, False{}, multi_params_for_render(private, parameters, multi_prev_up(state), id, width), uses)
 # Only a selected multi code may take tag plus words: a code that failed the
@@ -1046,10 +1062,10 @@ def multi_render_key_pick(public: Bool, id: U32) -> String:
   match public:
     case True{}: cat(["u", U32.show(id)])
     case False{}: cat(["r", U32.show(id)])
-def multi_renders(items: List<&2, BIR.Code>, layouts: Map<&2, MultiLayout>, width: Nat, state: MultiUp, acc: Map<&2, MultiRender>) -> Map<&2, MultiRender>:
+def multi_renders(items: List<&2, BIR.Code>, layouts: Map<&2, MultiLayout>, width: Nat, state: MultiUp, facts: Map<&2, MultiCodeFact>, acc: Map<&2, MultiRender>) -> Map<&2, MultiRender>:
   match items:
     case Nil{}: acc
-    case code <> rest: multi_renders(rest, layouts, width, state, multi_render_code(code, layouts, width, state, acc))
+    case code <> rest: multi_renders(rest, layouts, width, state, facts, multi_render_code(code, layouts, width, state, facts, acc))
 def multi_render_failed(found: Maybe<&2, MultiRender>) -> Bool:
   match found:
     case Some{MultiRender{_, _, _, _, _, _, _, _, _, failed}}: failed
@@ -1083,7 +1099,7 @@ def multi_plan_settled(settled: Bool, codes: List<&2, BIR.Code>, layouts: Map<&2
     case True{}: multi_plan_solved(codes, layouts, width, facts, fwds, banned, left, state)
     case False{}: multi_plan_faulted(codes, layouts, width)
 def multi_plan_solved(codes: List<&2, BIR.Code>, layouts: Map<&2, MultiLayout>, width: Nat, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, left: Nat, state: MultiUp) -> MultiPlan:
-  +renders = multi_renders(codes, layouts, width, state, Map.new(&2, MultiRender))
+  +renders = multi_renders(codes, layouts, width, state, facts, Map.new(&2, MultiRender))
   +fails = multi_render_fails(codes, renders, Map.new(&2, Bool))
   multi_plan_resolve(multi_fails_fresh(codes, fails, banned, False{}), codes, layouts, width, facts, fwds, banned, left, state, renders, fails)
 def multi_plan_resolve(fresh: Bool, codes: List<&2, BIR.Code>, layouts: Map<&2, MultiLayout>, width: Nat, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, left: Nat, state: MultiUp, renders: Map<&2, MultiRender>, fails: Map<&2, Bool>) -> MultiPlan:
@@ -2316,7 +2332,7 @@ def multi_code_fact_build(id: U32, captures: List<&2, BIR.Use>, parameters: List
 def multi_fact_from_scan(scan: MultiScan, captured: Nat, parameters: List<&2, BIR.Parameter>, pidx: Map<&2, Nat>, body: BIR.Block, layouts: Map<&2, MultiLayout>, width: Nat, id: U32, uses: Map<&2, Nat>) -> MultiCodeFact:
   match scan:
     case MultiScan{_, sites}:
-      MultiCodeFact{multi_local_width(body, 0n), sites, multi_statics(parameters, 0n, id, body, layouts, width, Map.new(&2, Bool), uses), parameters, captured, multi_frames_ok(body, plan_of(body)), pidx, body, multi_routes(sites, id, Map.new(&2, List<&2, MultiReq>)), multi_tail_targets(sites, Nil{}), multi_result_shape(body, pidx, id, Nil{})}
+      MultiCodeFact{multi_local_width(body, 0n), sites, multi_statics(parameters, 0n, id, body, layouts, width, Map.new(&2, Bool), uses), parameters, captured, multi_frames_ok(body, plan_of(body)), pidx, body, uses, multi_routes(sites, id, Map.new(&2, List<&2, MultiReq>)), multi_tail_targets(sites, Nil{}), multi_result_shape(body, pidx, id, Nil{})}
 def multi_statics(items: List<&2, BIR.Parameter>, index: Nat, id: U32, body: BIR.Block, layouts: Map<&2, MultiLayout>, width: Nat, acc: Map<&2, Bool>, uses: Map<&2, Nat>) -> Map<&2, Bool>:
   match items:
     case Nil{}: acc
@@ -2438,7 +2454,7 @@ def multi_prev_multi(prev: MultiUp) -> Map<&2, Bool>:
     case MultiUp{_, multi}: multi
 def multi_fact_multi(fact: MultiCodeFact, id: U32, prev: MultiUp, banned: Map<&2, Bool>, width: Nat, rendered: Nat) -> Bool:
   match fact:
-    case MultiCodeFact{fact_width, _, _, _, _, frames, _, _, _, tails, result}:
+    case MultiCodeFact{fact_width, _, _, _, _, frames, _, _, _, _, tails, result}:
       multi_fact_decided(Bool.not(multi_banned(banned, id)), id, result, fact_width, frames, rendered, tails, prev, width)
 def multi_fact_decided(free: Bool, id: U32, result: MultiResult, fact_width: Nat, frames: Bool, rendered: Nat, tails: List<&2, U32>, prev: MultiUp, width: Nat) -> Bool:
   match free:
@@ -2483,10 +2499,10 @@ def multi_round_code(code: BIR.Code, rest: List<&2, BIR.Code>, facts: Map<&2, Mu
 def multi_fact_of(facts: Map<&2, MultiCodeFact>, id: U32) -> MultiCodeFact:
   match IndexLookup.find(MultiCodeFact, facts, U32.show(id)):
     case Some{+item}: item
-    case None{}: MultiCodeFact{0n, Nil{}, Map.new(&2, Bool), Nil{}, 0n, False{}, Map.new(&2, Nat), BIR.Failure{""}, Map.new(&2, List<&2, MultiReq>), Nil{}, MultiResultClosed{}}
+    case None{}: MultiCodeFact{0n, Nil{}, Map.new(&2, Bool), Nil{}, 0n, False{}, Map.new(&2, Nat), BIR.Failure{""}, Map.new(&2, Nat), Map.new(&2, List<&2, MultiReq>), Nil{}, MultiResultClosed{}}
 def multi_round_fact(id: U32, rest: List<&2, BIR.Code>, fact: MultiCodeFact, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, width: Nat, prev: MultiUp, acc: MultiUp) -> MultiStep:
   match fact:
-    case MultiCodeFact{_, _, statics, params, captures, _, _, _, routes, _, _}:
+    case MultiCodeFact{_, _, statics, params, captures, _, _, _, _, routes, _, _}:
       multi_round_flags(id, rest, fact, facts, fwds, banned, width, prev, multi_pass_params(params, 0n, id, statics, routes, prev, fwds, width, MultiPass{acc, False{}, captures}))
 def multi_round_flags(id: U32, rest: List<&2, BIR.Code>, fact: MultiCodeFact, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, width: Nat, prev: MultiUp, pass: MultiPass) -> MultiStep:
   match pass:
@@ -2598,7 +2614,7 @@ def multi_round_more(empty: Bool, items: List<&2, BIR.Code>, facts: Map<&2, Mult
     case False{}: multi_round_until(items, facts, fwds, banned, width, left, next)
 def multi_fact_statics(facts: Map<&2, MultiCodeFact>, id: U32) -> Map<&2, Bool>:
   match multi_fact_of(facts, id):
-    case MultiCodeFact{_, _, statics, _, _, _, _, _, _, _, _}: statics
+    case MultiCodeFact{_, _, statics, _, _, _, _, _, _, _, _, _}: statics
 def multi_round_seed(items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, banned: Map<&2, Bool>, multi: Map<&2, Bool>, up: Map<&2, Bool>) -> MultiUp:
   match items:
     case Nil{}: MultiUp{up, multi}
