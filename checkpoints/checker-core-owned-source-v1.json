@@ -15016,7 +15016,7 @@
       "canonical": "bend2/selfhost/emitter.bend",
       "owned": "checkpoints/emitter_owned_v1.bend",
       "canonicalSha256": "47d68ba5f0b54c334e2c940b7bb6aabc7f3bba27142b816f27df8225cf3fae4f",
-      "sourceSha256": "78627540ea3caae2cd5797b4d852b374792b1483b04caa20118b58ef4eaa2958",
+      "sourceSha256": "447cc59cc31f96b35ecd1788dfdaeee9a8b3114d7d1790a87f62494cc71ff36e",
       "definitionNames": [
         "emitted_js",
         "emitted_c",
@@ -17980,6 +17980,8 @@
         "cps_provider_8_multi_round_more",
         "native_match_cps_provider_8_multi_fact_statics_0",
         "cps_provider_8_multi_fact_statics",
+        "cps_provider_8_multi_direct_targets",
+        "cps_provider_8_multi_direct_sites",
         "cps_provider_8_multi_round_seed",
         "cps_provider_8_multi_round_seed_one",
         "cps_provider_8_multi_seed_ups",
@@ -21508,7 +21510,7 @@
         "cps_provider_8_multi_pass_write": "f0782e1db5d90ddad6cebce5cf3253b382a020aa1a74c141c45d4db6459923d8",
         "cps_provider_8_multi_pass_drop": "8f3a187a15527fb56d2120ddb248115db0044d49d70f00afc3621188c3ba7845",
         "cps_provider_8_multi_pass_clear": "d341c8215092e22aeff9b1dcaa8647b701269fe2694464237ea3fd347ea8a318",
-        "cps_provider_8_multi_round_start": "d22a0bd427f461298b892f7eaca89aeafe87df853d8f899deac898fbe8b73296",
+        "cps_provider_8_multi_round_start": "a11deacd32c8f9533691349c19e05f4204ee44fe9627f87f6256dcabfb75837f",
         "cps_provider_8_multi_round_seeded": "0f8da662d6630fb3de6741b8dd56c25f8b7480d6181af2fa0fd0be452c936b5d",
         "cps_provider_8_multi_round_budget": "cf1aa105b2ead7dc6f4d12796b951f04b082a9d4fe33124e39ac14311c82946e",
         "cps_provider_8_multi_true_count": "6018df490bd15013bdfeecd9a8a05c5306c73560300ef13729f60d1f172d46c5",
@@ -21522,8 +21524,10 @@
         "cps_provider_8_multi_round_more": "45ae79e3cb17d7ca5ac3cee1c64c0d7c79b10df59eddb4fb4992489673c9ad05",
         "native_match_cps_provider_8_multi_fact_statics_0": "4a22225968962357061d40ca18df2e96509fae2632c47bf4c0388d31867c559d",
         "cps_provider_8_multi_fact_statics": "2c7e83d7226566fb10bc825da944f8271d02e7193bf387da3c8a6cb94549276f",
-        "cps_provider_8_multi_round_seed": "c89821a4637ee622684b63b393ceea84f964807ab04d8b715612ad24405748f0",
-        "cps_provider_8_multi_round_seed_one": "9ed789f796f6890e55f3e0f477ce2999ec27915d7e2ab30c122568be61b6b6d8",
+        "cps_provider_8_multi_direct_targets": "abc523d4ec1ec8839465b1b5e7b6abd2355dcd176abbb2cebdd7c26984c71b61",
+        "cps_provider_8_multi_direct_sites": "c5e38c823520f583c71e8b0deb01c246ba39e70edef133d0865f3ef509277fd8",
+        "cps_provider_8_multi_round_seed": "2e40600afcb871b361a929d348d1dbc20aa0a1ed209e5107980f2cd3df36b68a",
+        "cps_provider_8_multi_round_seed_one": "e3376116caf333eafbeef315735f210fe71b59ea2538bf38bce3299c1fdde0d9",
         "cps_provider_8_multi_seed_ups": "a40ad9de27ee5c95a77590ac361877c79861bcd8f19d0808a5cd544418789b01",
         "cps_provider_8_multi_param_get": "f06164791f4c863377ebdc0dffb3a25616b79185007e7f13139605bb32ca515e",
         "cps_provider_8_multi_param_unboxed": "57d3de5555cd6ffb9c879ba0a2322300396fa43c3c527f21415bc4131831b81e",
@@ -23052,7 +23056,7 @@
           "bend2/selfhost/js_emit.bend",
           "bend2/selfhost/lower_catalog.bend"
         ],
-        "sourceSha256": "099a62983750bda2d3bf2ca3de52d90541e8f7adf5670f23f4fed0387cb2b3a7",
+        "sourceSha256": "3cb0575de6b9b60bcb1317ba3cfcd5c81c61d2ed40f0b04fb928dbe2ab9631b2",
         "sources": [
           {
             "canonical": "bend2/selfhost/emitter.bend",
@@ -26515,7 +26519,7 @@
           },
           {
             "canonical": "bend2/selfhost/js_backend.bend",
-            "canonicalSha256": "2e1aa776d9f228bafa1d597a67aef1d34fba5eabcc745080c704259b531ea822",
+            "canonicalSha256": "b07dda7f6a682b45c4f1b417fc007977deec9e02cab52c6864c60ece4ada0b5c",
             "declarationNames": [
               "EmitResult",
               "LinkSource",
@@ -27146,6 +27150,8 @@
               "multi_round_queued",
               "multi_round_more",
               "multi_fact_statics",
+              "multi_direct_targets",
+              "multi_direct_sites",
               "multi_round_seed",
               "multi_round_seed_one",
               "multi_seed_ups",
@@ -28088,6 +28094,8 @@
               "multi_round_queued": "cps_provider_8_multi_round_queued",
               "multi_round_more": "cps_provider_8_multi_round_more",
               "multi_fact_statics": "cps_provider_8_multi_fact_statics",
+              "multi_direct_targets": "cps_provider_8_multi_direct_targets",
+              "multi_direct_sites": "cps_provider_8_multi_direct_sites",
               "multi_round_seed": "cps_provider_8_multi_round_seed",
               "multi_round_seed_one": "cps_provider_8_multi_round_seed_one",
               "multi_seed_ups": "cps_provider_8_multi_seed_ups",
@@ -46761,8 +46769,8 @@
             "canonicalName": "multi_round_start",
             "name": "cps_provider_8_multi_round_start",
             "kind": "def",
-            "canonicalDeclarationSha256": "1ff13a6f4e43f9e38205de0e26aa96685edd790fef4dfc30962fc918502cc024",
-            "composedDeclarationSha256": "d22a0bd427f461298b892f7eaca89aeafe87df853d8f899deac898fbe8b73296"
+            "canonicalDeclarationSha256": "e1ec3c684e3c4db5763b5754e63c5831d2a198a7189cfe00a823a9a77d7267f3",
+            "composedDeclarationSha256": "a11deacd32c8f9533691349c19e05f4204ee44fe9627f87f6256dcabfb75837f"
           },
           {
             "source": "bend2/selfhost/js_backend.bend",
@@ -46857,24 +46865,40 @@
             "canonicalName": "multi_fact_statics",
             "name": "cps_provider_8_multi_fact_statics",
             "kind": "def",
-            "canonicalDeclarationSha256": "db803a9a7e374246a21eb37fc2e088bbb93eb3ab114751f01b806820d4b3c20b",
+            "canonicalDeclarationSha256": "052cd4ce9978d9a50ab7e67ab3f66d3e2654a6a96a40b640b4d88285a42f5724",
             "composedDeclarationSha256": "76594db806d75808dc505cf4ed4152d063c8db682df12972074c763d47970cbf"
+          },
+          {
+            "source": "bend2/selfhost/js_backend.bend",
+            "canonicalName": "multi_direct_targets",
+            "name": "cps_provider_8_multi_direct_targets",
+            "kind": "def",
+            "canonicalDeclarationSha256": "69ae841d5a35481ff8953af37750c15ae9bfbbd753867d9b0542da628f15a2bd",
+            "composedDeclarationSha256": "abc523d4ec1ec8839465b1b5e7b6abd2355dcd176abbb2cebdd7c26984c71b61"
+          },
+          {
+            "source": "bend2/selfhost/js_backend.bend",
+            "canonicalName": "multi_direct_sites",
+            "name": "cps_provider_8_multi_direct_sites",
+            "kind": "def",
+            "canonicalDeclarationSha256": "e9a27a92f5aaed0d1c3473502f7aeea4be35ffef29bd6460480bb7ebeaec8dd5",
+            "composedDeclarationSha256": "c5e38c823520f583c71e8b0deb01c246ba39e70edef133d0865f3ef509277fd8"
           },
           {
             "source": "bend2/selfhost/js_backend.bend",
             "canonicalName": "multi_round_seed",
             "name": "cps_provider_8_multi_round_seed",
             "kind": "def",
-            "canonicalDeclarationSha256": "26542ae25bb66f513df203f46d4fe1d9dde695321c6d43f8154be3a3cf5c7bac",
-            "composedDeclarationSha256": "c89821a4637ee622684b63b393ceea84f964807ab04d8b715612ad24405748f0"
+            "canonicalDeclarationSha256": "e59f7b2aae441083857e3eef81b3be62d9b74cb1db7587c2cd7601001d71f9d5",
+            "composedDeclarationSha256": "2e40600afcb871b361a929d348d1dbc20aa0a1ed209e5107980f2cd3df36b68a"
           },
           {
             "source": "bend2/selfhost/js_backend.bend",
             "canonicalName": "multi_round_seed_one",
             "name": "cps_provider_8_multi_round_seed_one",
             "kind": "def",
-            "canonicalDeclarationSha256": "0c220668d548746fc025eb19829d1a0ae9ce10e956f1092c9113694424556aac",
-            "composedDeclarationSha256": "9ed789f796f6890e55f3e0f477ce2999ec27915d7e2ab30c122568be61b6b6d8"
+            "canonicalDeclarationSha256": "1c820c12562083c80d8e2280dfadd6937747b6070de8c89410dd112a8bd806dc",
+            "composedDeclarationSha256": "e3376116caf333eafbeef315735f210fe71b59ea2538bf38bce3299c1fdde0d9"
           },
           {
             "source": "bend2/selfhost/js_backend.bend",
@@ -51318,7 +51342,7 @@
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/lower_catalog.bend": "e3864a71ac15ce5f1c74ddc7f615d844e92d9ce6e9c55a2b883482b349058adb",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/descriptor_nf.bend": "c727bfe0adf97f86dc44960ca2c46fd890f0d8557157ba883af40d738d3e72dd",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
-          "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/js_backend.bend": "2e1aa776d9f228bafa1d597a67aef1d34fba5eabcc745080c704259b531ea822",
+          "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/js_backend.bend": "b07dda7f6a682b45c4f1b417fc007977deec9e02cab52c6864c60ece4ada0b5c",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_emit_core.bend": "f690db5b6054d4f647b5c02e1281923d5cc66b24c8c2fff7859d811efc5ba380",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_backend.bend": "700042e9ddbc2640fc7690526fefae4e5a5194a80d8b483c7ef5c20e977c1b4e",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_backend_link.bend": "f83c270f2b6f094f2bd220e6e750aa0265c93ae90fa0036dd8d92b86c09e26bd",
@@ -51332,7 +51356,7 @@
           "bend2/selfhost/c_backend_physical.bend": "fdaf576ae0e8f6c5960c9de8297adf62ddf9bd5615e5cbd6dc591943b7d8c8ec",
           "bend2/selfhost/c_emit_core.bend": "f690db5b6054d4f647b5c02e1281923d5cc66b24c8c2fff7859d811efc5ba380",
           "bend2/selfhost/descriptor_nf.bend": "c727bfe0adf97f86dc44960ca2c46fd890f0d8557157ba883af40d738d3e72dd",
-          "bend2/selfhost/js_backend.bend": "2e1aa776d9f228bafa1d597a67aef1d34fba5eabcc745080c704259b531ea822",
+          "bend2/selfhost/js_backend.bend": "b07dda7f6a682b45c4f1b417fc007977deec9e02cab52c6864c60ece4ada0b5c",
           "bend2/selfhost/js_emit.bend": "a71920560786084ab9713c4af89f62d2d0e1eaef7cc24e46ea24940d012fded6",
           "bend2/selfhost/lower_catalog.bend": "e3864a71ac15ce5f1c74ddc7f615d844e92d9ce6e9c55a2b883482b349058adb"
         }
@@ -53423,6 +53447,8 @@
         "cps_provider_8_multi_round_queued",
         "cps_provider_8_multi_round_more",
         "cps_provider_8_multi_fact_statics",
+        "cps_provider_8_multi_direct_targets",
+        "cps_provider_8_multi_direct_sites",
         "cps_provider_8_multi_round_seed",
         "cps_provider_8_multi_round_seed_one",
         "cps_provider_8_multi_seed_ups",
@@ -56036,7 +56062,7 @@
         "cps_provider_8_multi_pass_write": "f0782e1db5d90ddad6cebce5cf3253b382a020aa1a74c141c45d4db6459923d8",
         "cps_provider_8_multi_pass_drop": "8f3a187a15527fb56d2120ddb248115db0044d49d70f00afc3621188c3ba7845",
         "cps_provider_8_multi_pass_clear": "d341c8215092e22aeff9b1dcaa8647b701269fe2694464237ea3fd347ea8a318",
-        "cps_provider_8_multi_round_start": "d22a0bd427f461298b892f7eaca89aeafe87df853d8f899deac898fbe8b73296",
+        "cps_provider_8_multi_round_start": "a11deacd32c8f9533691349c19e05f4204ee44fe9627f87f6256dcabfb75837f",
         "cps_provider_8_multi_round_seeded": "0f8da662d6630fb3de6741b8dd56c25f8b7480d6181af2fa0fd0be452c936b5d",
         "cps_provider_8_multi_round_budget": "cf1aa105b2ead7dc6f4d12796b951f04b082a9d4fe33124e39ac14311c82946e",
         "cps_provider_8_multi_true_count": "6018df490bd15013bdfeecd9a8a05c5306c73560300ef13729f60d1f172d46c5",
@@ -56049,8 +56075,10 @@
         "cps_provider_8_multi_round_queued": "f1cfbd49ffb2a74be41aa58ceef4e6eaf461bd03d2241b1b7c17b9823620b7cd",
         "cps_provider_8_multi_round_more": "45ae79e3cb17d7ca5ac3cee1c64c0d7c79b10df59eddb4fb4992489673c9ad05",
         "cps_provider_8_multi_fact_statics": "76594db806d75808dc505cf4ed4152d063c8db682df12972074c763d47970cbf",
-        "cps_provider_8_multi_round_seed": "c89821a4637ee622684b63b393ceea84f964807ab04d8b715612ad24405748f0",
-        "cps_provider_8_multi_round_seed_one": "9ed789f796f6890e55f3e0f477ce2999ec27915d7e2ab30c122568be61b6b6d8",
+        "cps_provider_8_multi_direct_targets": "abc523d4ec1ec8839465b1b5e7b6abd2355dcd176abbb2cebdd7c26984c71b61",
+        "cps_provider_8_multi_direct_sites": "c5e38c823520f583c71e8b0deb01c246ba39e70edef133d0865f3ef509277fd8",
+        "cps_provider_8_multi_round_seed": "2e40600afcb871b361a929d348d1dbc20aa0a1ed209e5107980f2cd3df36b68a",
+        "cps_provider_8_multi_round_seed_one": "e3376116caf333eafbeef315735f210fe71b59ea2538bf38bce3299c1fdde0d9",
         "cps_provider_8_multi_seed_ups": "a40ad9de27ee5c95a77590ac361877c79861bcd8f19d0808a5cd544418789b01",
         "cps_provider_8_multi_param_get": "f06164791f4c863377ebdc0dffb3a25616b79185007e7f13139605bb32ca515e",
         "cps_provider_8_multi_param_unboxed": "57d3de5555cd6ffb9c879ba0a2322300396fa43c3c527f21415bc4131831b81e",
@@ -106893,7 +106921,7 @@
       "source": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/emitter.bend",
       "sourceSha256": "47d68ba5f0b54c334e2c940b7bb6aabc7f3bba27142b816f27df8225cf3fae4f",
       "output": "/Users/ilyagulya/Projects/My/bend/checkpoints/emitter_owned_v1.bend",
-      "outputSha256": "78627540ea3caae2cd5797b4d852b374792b1483b04caa20118b58ef4eaa2958",
+      "outputSha256": "447cc59cc31f96b35ecd1788dfdaeee9a8b3114d7d1790a87f62494cc71ff36e",
       "extractions": [
         {
           "owner": "cps_provider_1_describe",

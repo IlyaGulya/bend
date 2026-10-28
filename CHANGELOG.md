@@ -48,6 +48,12 @@ latest one; the GitHub release carries the same notes.
   fixtures, but its 52,143,515-byte stage1 also timed out during stage2 checking.
   R8 validated 13,043 definitions / 13,666 events and all 95 native seed
   fixtures; stage1 is 53,082,886 bytes, but stage2 checking again timed out.
+  A separate complete R8 emitted-JS check returned `CheckSuccess` after
+  10,622,986 advances in 386.899 s, exactly matching native's advance count;
+  this does not reclassify the failed bootstrap. R9 seeds private entries only
+  for codes named by direct-call sites, avoiding private/boxed round trips for
+  indirect-only code. All twelve emitted-JS consumers pass; full qualification
+  of this version is pending.
   Full qualification remains failed: r1/r2/r4/r6/r7/r8 stopped at the original
   bootstrap deadline. R4 validated all 12,974 definitions / 13,596 events,
   passed all95 native seed fixtures and produced a53,261,354-byte stage1,

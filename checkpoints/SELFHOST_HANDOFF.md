@@ -44,7 +44,14 @@ dependency-driven synchronous convergence. 12 consumer programs byte-identical
 Полный R8 тоже FAIL: 13 043 definitions / 13 666 events, все 95 seed fixtures
 PASS, stage1 53 082 886 bytes. Native emit 47 807 ms / 4 229 690 advances.
 Stage2 начал check на 227 550 ms, но не закончил до исходного guard 600 000 ms.
-Далее нужно измерить весь JS check и его прогресс, не менять guards.
+Отдельный полный R8 JS-check вернул CheckSuccess: 10 622 986 advances, точно
+как native; 386 899 ms. Guard PASS, но outer diagnostic adapter записал FAIL
+из-за нестандартного checker-only status; исходный report сохранён без правки.
+R8 не переклассифицирован. В image 6 249 private bodies имеют ссылки только
+из своего boxed adapter. R9 ограничивает начальный private candidate set
+целями Direct/TailDirect из code-body facts; indirect-only code остаётся boxed.
+Два независимых source review PASS; все 12 emitted-JS consumers PASS.
+Далее — полный unobserved R9 build/bootstrap/consumer/performance, guards прежние.
 Принятым остаётся G23 ниже.
 Точные команды и границы:
 `evals/receipts/root2039g24_failed_attempts.json`,
@@ -54,6 +61,8 @@ Stage2 начал check на 227 550 ms, но не закончил до исх�
 `evals/receipts/root2039g24r6_rejected.json`,
 `evals/receipts/root2039g24r7_rejected.json`,
 `evals/receipts/root2039g24r8_rejected.json`,
+`evals/receipts/producer2039g24r8_complete_check.json`,
+`evals/receipts/producer2039g24r9_source_smoke.json`,
 `evals/receipts/producer2039g24r4_diagnostic.json`,
 `evals/receipts/producer2039g24_source_smoke.json`.
 

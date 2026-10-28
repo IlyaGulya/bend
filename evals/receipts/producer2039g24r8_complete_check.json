@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "status": "COMPLETE_EMITTED_CHECK_DIAGNOSTIC",
+  "acceptanceEvidence": false,
+  "compilerAccepted": false,
+  "sourceCheckpoint": "e50c1b71",
+  "runId": "local2039g24r8",
+  "scope": "Complete R8 emitted-JS checker on the exact frozen R8 root; progress callback observes public advance count only. Not full bootstrap or paired performance acceptance.",
+  "request": {
+    "path": "/private/tmp/bend-g24-r8-complete-check-uB4B5R/request.json",
+    "sha256": "a09a734f38d7ba46294a0069ab252523b7ccbbd23282f4a76ca9b76dd79a19a8",
+    "bytes": 22793
+  },
+  "driver": {
+    "path": "/private/tmp/bend-g24-r8-complete-check-uB4B5R/complete-check.mjs",
+    "sha256": "373e30229870dadf12601a2cb2282eba8a3f848768a7f4058f4fd8540c70e2f8",
+    "bytes": 13715
+  },
+  "image": {
+    "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r8/bootstrap.json.cases/stage-one.js",
+    "sha256": "fe7059e726b7a850a3852aaacd9570fc6ca663e02c79be9b315886e7a08958fc",
+    "bytes": 53082886
+  },
+  "raw": {
+    "path": "/private/tmp/bend-g24-r8-complete-check-uB4B5R/result.json",
+    "sha256": "1b7af7cde7f3c5fe3e988c1e0c683c7540255390ea14fd96b41771b0c36b6c28",
+    "bytes": 5053
+  },
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "--experimental-strip-types",
+    "/private/tmp/bend-g24-r8-complete-check-uB4B5R/complete-check.mjs",
+    "js",
+    "/private/tmp/bend-g24-r8-complete-check-uB4B5R/request.json",
+    "/private/tmp/bend-g24-r8-complete-check-uB4B5R/result.json"
+  ],
+  "environment": "env HEAVY_GATE_MEMORY_MIB=8192 HEAVY_GATE_RSS_MIB=8192 HEAVY_GATE_POLL_MS=10 HEAVY_GATE_TIMEOUT_MS=600000 BUN_JSC_forceRAMSize=4294967296 ",
+  "checkResult": "CheckSuccess",
+  "stepCounts": {
+    "expand": 1121840,
+    "check": 10622986
+  },
+  "phases": [
+    {
+      "phase": "startup",
+      "elapsedMs": 1453.802083,
+      "userCpuMs": 1388.441,
+      "systemCpuMs": 90.016,
+      "memoryEnd": {
+        "rss": 696958976,
+        "heapTotal": 143966208,
+        "heapUsed": 116871376,
+        "external": 63569925,
+        "arrayBuffers": 53107925
+      }
+    },
+    {
+      "phase": "load-parse",
+      "elapsedMs": 11196.03725,
+      "userCpuMs": 14228.019,
+      "systemCpuMs": 292.11,
+      "memoryEnd": {
+        "rss": 1734574080,
+        "heapTotal": 1122123776,
+        "heapUsed": 932222632,
+        "external": 10481381,
+        "arrayBuffers": 25039
+      }
+    },
+    {
+      "phase": "expand",
+      "elapsedMs": 10668.784416999999,
+      "userCpuMs": 11946.043,
+      "systemCpuMs": 92.308,
+      "memoryEnd": {
+        "rss": 1900462080,
+        "heapTotal": 1284390912,
+        "heapUsed": 1051857752,
+        "external": 10481381,
+        "arrayBuffers": 25039
+      }
+    },
+    {
+      "phase": "check",
+      "elapsedMs": 386898.606041,
+      "userCpuMs": 405861.163,
+      "systemCpuMs": 2013.357,
+      "memoryEnd": {
+        "rss": 3263692800,
+        "heapTotal": 2621800448,
+        "heapUsed": 2356353032,
+        "external": 10481381,
+        "arrayBuffers": 25039
+      }
+    }
+  ],
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 3521921024,
+    "peakFootprintBytes": 3213596560,
+    "elapsedMs": 411253,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128",
+      "/private/tmp/bend-g24-r8-complete-check-uB4B5R/complete-check.mjs",
+      "--worker",
+      "js",
+      "/private/tmp/bend-g24-r8-complete-check-uB4B5R/request.json",
+      "a09a734f38d7ba46294a0069ab252523b7ccbbd23282f4a76ca9b76dd79a19a8",
+      "/private/tmp/bend-g24-r8-complete-check-uB4B5R/result.json"
+    ],
+    "label": "Frozen full-root throughput js",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793222376989-02a88ac000023245.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "nativeCheck": {
+    "phase": "check",
+    "elapsedMs": 62096.05,
+    "userCpuMs": 61624.078,
+    "systemCpuMs": 195.955,
+    "chunkAdvances": 10622986,
+    "chunkQuantum": 64
+  },
+  "limitations": [
+    "Guarded child exited zero with CheckSuccess. Outer diagnostic adapter reclassified its nonstandard CHECK_DIAGNOSTIC_PASS status as FAIL; raw receipt is preserved unchanged.",
+    "No stage-two emission performed by this checker-only diagnostic. Original R8 bootstrap rejection stands.",
+    "Counts agree exactly with native; observed checker execution is slow, not unbounded in this run. No general compiler correctness inferred."
+  ],
+  "privateAdapterReferenceObservation": {
+    "adapters": 9931,
+    "privateReferencedOnlyByItsAdapter": 6249,
+    "method": "Exact emitted private $b<number> identifiers; adapter line references private body in direct and bounded fallback branches plus one function declaration; count=3 means no other textual reference.",
+    "notReachabilityProof": true
+  }
+}

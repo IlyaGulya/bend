@@ -2789,7 +2789,8 @@ def multi_pass_clear(acc: MultiUp, +key: String, rendered: Nat) -> MultiPass:
 # fixed point even when its true count repeats.
 def multi_round_start(items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, banned: Map<&2, Bool>, width: Nat) -> MultiSolve:
   +rev = multi_rev_index(items, facts, fwds, Map.new(&2, List<&2, U32>))
-  multi_round_seeded(items, facts, fwds, rev, banned, width, multi_round_seed(items, facts, banned, Map.new(&2, Bool), Map.new(&2, Bool)))
+  +targets = multi_direct_targets(items, facts, Map.new(&2, Bool))
+  multi_round_seeded(items, facts, fwds, rev, banned, width, multi_round_seed(items, facts, banned, targets, Map.new(&2, Bool), Map.new(&2, Bool)))
 def multi_round_seeded(items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, List<&2, MultiFwd>>, rev: Map<&2, List<&2, U32>>, banned: Map<&2, Bool>, width: Nat, state: MultiUp) -> MultiSolve:
   multi_round_until(multi_code_ids(items, Nil{}), facts, fwds, rev, banned, width, multi_round_budget(items, state), state)
 # Every flag a round derives is intersected with the flag the previous round
@@ -2842,14 +2843,27 @@ def multi_round_more(empty: Bool, facts: Map<&2, MultiCodeFact>, fwds: Map<&2, L
 def multi_fact_statics(facts: Map<&2, MultiCodeFact>, id: U32) -> Map<&2, Bool>:
   match multi_fact_of(facts, id):
     case MultiCodeFact{_, _, statics, _, _, _, _, _, _, _, _, _}: statics
-def multi_round_seed(items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, banned: Map<&2, Bool>, multi: Map<&2, Bool>, up: Map<&2, Bool>) -> MultiUp:
+# Only a direct site can consume the private convention. Closure and exported
+# callers stay boxed, so an indirect-only code needs neither a private body nor
+# an adapter that immediately boxes its result again.
+def multi_direct_targets(items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, acc: Map<&2, Bool>) -> Map<&2, Bool>:
+  match items:
+    case Nil{}: acc
+    case BIR.Code{id, _, _, _} <> rest:
+      multi_direct_targets(rest, facts, multi_direct_sites(multi_fact_sites(multi_fact_of(facts, id)), acc))
+def multi_direct_sites(items: List<&2, MultiSiteF>, acc: Map<&2, Bool>) -> Map<&2, Bool>:
+  match items:
+    case Nil{}: acc
+    case MultiSiteF{_, callee, _, _} <> rest:
+      multi_direct_sites(rest, Map.set(&2, Bool, acc, U32.show(callee), True{}))
+def multi_round_seed(items: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, banned: Map<&2, Bool>, targets: Map<&2, Bool>, multi: Map<&2, Bool>, up: Map<&2, Bool>) -> MultiUp:
   match items:
     case Nil{}: MultiUp{up, multi}
-    case code <> rest: multi_round_seed_one(code, rest, facts, banned, multi, up)
-def multi_round_seed_one(code: BIR.Code, rest: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, banned: Map<&2, Bool>, multi: Map<&2, Bool>, up: Map<&2, Bool>) -> MultiUp:
+    case code <> rest: multi_round_seed_one(code, rest, facts, banned, targets, multi, up)
+def multi_round_seed_one(code: BIR.Code, rest: List<&2, BIR.Code>, facts: Map<&2, MultiCodeFact>, banned: Map<&2, Bool>, targets: Map<&2, Bool>, multi: Map<&2, Bool>, up: Map<&2, Bool>) -> MultiUp:
   match code:
     case BIR.Code{id, _, parameters, _}:
-      multi_round_seed(rest, facts, banned, Map.set(&2, Bool, multi, U32.show(id), Bool.not(multi_banned(banned, id))), multi_seed_ups(parameters, 0n, id, multi_fact_statics(facts, id), up))
+      multi_round_seed(rest, facts, banned, targets, Map.set(&2, Bool, multi, U32.show(id), Bool.and(multi_multi_get(targets, id), Bool.not(multi_banned(banned, id)))), multi_seed_ups(parameters, 0n, id, multi_fact_statics(facts, id), up))
 def multi_seed_ups(items: List<&2, BIR.Parameter>, index: Nat, id: U32, statics: Map<&2, Bool>, up: Map<&2, Bool>) -> Map<&2, Bool>:
   match items:
     case Nil{}: up

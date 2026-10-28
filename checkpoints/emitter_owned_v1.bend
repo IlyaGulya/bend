@@ -19933,7 +19933,8 @@ def cps_provider_8_multi_pass_clear(v_1: cps_provider_8_MultiUp, +v_3: String, v
 
 def cps_provider_8_multi_round_start(v_1: List<&2, BIR.Code>, v_4: Map<&2, cps_provider_8_MultiCodeFact>, v_8: Map<&2, List<&2, cps_provider_8_MultiFwd>>, v_11: Map<&2, Bool>, v_13: Nat) -> cps_provider_8_MultiSolve:
   +v_19 = cps_provider_8_multi_rev_index(v_1, v_4, v_8, Map.new(&2, List<&2, U32>))
-  cps_provider_8_multi_round_seeded(v_1, v_4, v_8, v_19, v_11, v_13, cps_provider_8_multi_round_seed(v_1, v_4, v_11, Map.new(&2, Bool), Map.new(&2, Bool)))
+  +v_23 = cps_provider_8_multi_direct_targets(v_1, v_4, Map.new(&2, Bool))
+  cps_provider_8_multi_round_seeded(v_1, v_4, v_8, v_19, v_11, v_13, cps_provider_8_multi_round_seed(v_1, v_4, v_11, v_23, Map.new(&2, Bool), Map.new(&2, Bool)))
 
 def cps_provider_8_multi_round_seeded(v_1: List<&2, BIR.Code>, v_4: Map<&2, cps_provider_8_MultiCodeFact>, v_8: Map<&2, List<&2, cps_provider_8_MultiFwd>>, v_12: Map<&2, List<&2, U32>>, v_15: Map<&2, Bool>, v_17: Nat, v_19: cps_provider_8_MultiUp) -> cps_provider_8_MultiSolve:
   cps_provider_8_multi_round_until(cps_provider_8_multi_code_ids(v_1, []), v_4, v_8, v_12, v_15, v_17, cps_provider_8_multi_round_budget(v_1, v_19), v_19)
@@ -20002,17 +20003,31 @@ def native_match_cps_provider_8_multi_fact_statics_0(v_32: cps_provider_8_MultiC
 def cps_provider_8_multi_fact_statics(v_2: Map<&2, cps_provider_8_MultiCodeFact>, v_4: U32) -> Map<&2, Bool>:
   native_match_cps_provider_8_multi_fact_statics_0(cps_provider_8_multi_fact_of(v_2, v_4))
 
-def cps_provider_8_multi_round_seed(v_1: List<&2, BIR.Code>, v_4: Map<&2, cps_provider_8_MultiCodeFact>, v_7: Map<&2, Bool>, v_10: Map<&2, Bool>, v_13: Map<&2, Bool>) -> cps_provider_8_MultiUp:
+def cps_provider_8_multi_direct_targets(v_1: List<&2, BIR.Code>, v_4: Map<&2, cps_provider_8_MultiCodeFact>, v_7: Map<&2, Bool>) -> Map<&2, Bool>:
   match v_1:
     case []:
-      cps_provider_8_MultiUp{v_13, v_10}
-    case v_17 <> v_18:
-      cps_provider_8_multi_round_seed_one(v_17, v_18, v_4, v_7, v_10, v_13)
+      v_7
+    case BIR.Code{v_15, _, _, _} <> v_19:
+      cps_provider_8_multi_direct_targets(v_19, v_4, cps_provider_8_multi_direct_sites(cps_provider_8_multi_fact_sites(cps_provider_8_multi_fact_of(v_4, v_15)), v_7))
 
-def cps_provider_8_multi_round_seed_one(v_0: BIR.Code, v_2: List<&2, BIR.Code>, v_5: Map<&2, cps_provider_8_MultiCodeFact>, v_8: Map<&2, Bool>, v_11: Map<&2, Bool>, v_14: Map<&2, Bool>) -> cps_provider_8_MultiUp:
+def cps_provider_8_multi_direct_sites(v_2: List<&2, cps_provider_8_MultiSiteF>, v_5: Map<&2, Bool>) -> Map<&2, Bool>:
+  match v_2:
+    case []:
+      v_5
+    case cps_provider_8_MultiSiteF{_, v_14, _, _} <> v_17:
+      cps_provider_8_multi_direct_sites(v_17, Map.set(&2, Bool, v_5, U32.show(v_14), True{}))
+
+def cps_provider_8_multi_round_seed(v_1: List<&2, BIR.Code>, v_4: Map<&2, cps_provider_8_MultiCodeFact>, v_7: Map<&2, Bool>, v_10: Map<&2, Bool>, v_13: Map<&2, Bool>, v_16: Map<&2, Bool>) -> cps_provider_8_MultiUp:
+  match v_1:
+    case []:
+      cps_provider_8_MultiUp{v_16, v_13}
+    case v_20 <> v_21:
+      cps_provider_8_multi_round_seed_one(v_20, v_21, v_4, v_7, v_10, v_13, v_16)
+
+def cps_provider_8_multi_round_seed_one(v_0: BIR.Code, v_2: List<&2, BIR.Code>, v_5: Map<&2, cps_provider_8_MultiCodeFact>, v_8: Map<&2, Bool>, v_11: Map<&2, Bool>, v_14: Map<&2, Bool>, v_17: Map<&2, Bool>) -> cps_provider_8_MultiUp:
   match v_0:
-    case BIR.Code{v_20, _, v_22, _}:
-      cps_provider_8_multi_round_seed(v_2, v_5, v_8, Map.set(&2, Bool, v_11, U32.show(v_20), Bool.not(cps_provider_8_multi_banned(v_8, v_20))), cps_provider_8_multi_seed_ups(v_22, 0n, v_20, cps_provider_8_multi_fact_statics(v_5, v_20), v_14))
+    case BIR.Code{v_23, _, v_25, _}:
+      cps_provider_8_multi_round_seed(v_2, v_5, v_8, v_11, Map.set(&2, Bool, v_14, U32.show(v_23), Bool.and(cps_provider_8_multi_multi_get(v_11, v_23), Bool.not(cps_provider_8_multi_banned(v_8, v_23)))), cps_provider_8_multi_seed_ups(v_25, 0n, v_23, cps_provider_8_multi_fact_statics(v_5, v_23), v_17))
 
 def cps_provider_8_multi_seed_ups(v_1: List<&2, BIR.Parameter>, v_3: Nat, v_5: U32, v_8: Map<&2, Bool>, v_11: Map<&2, Bool>) -> Map<&2, Bool>:
   match v_1:
