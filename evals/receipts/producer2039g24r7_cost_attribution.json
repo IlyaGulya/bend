@@ -1,0 +1,217 @@
+{
+  "schemaVersion": 1,
+  "status": "BOUNDED_R7_CHECK_PROFILE",
+  "acceptanceEvidence": false,
+  "compilerAccepted": false,
+  "scope": "Actual rejected R7 image on immutable G22 root; 1,000,000..1,250,000 public checker advances. Statistical CPU sample with allocation-profiler overhead; not whole-phase timing, no speedup claim.",
+  "image": {
+    "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r7/bootstrap.json.cases/stage-one.js",
+    "sha256": "1b8494c690a9fee541d2f84e78ba6e8eb672212bb09f2b053276ff546743de52",
+    "bytes": 52143515
+  },
+  "request": {
+    "path": "/private/tmp/bend-g24-r7-check-profile-KxIQgK/request.json",
+    "sha256": "0f855bb2503ed93f7cea557ab5fe1099c764fa4c9bb94a30d9d6b00667203ed5",
+    "bytes": 22643
+  },
+  "driver": {
+    "path": "/private/tmp/bend-g24-r7-check-profile-KxIQgK/profiled-throughput.mjs",
+    "sha256": "34686fb67a7b9477db36cabe968b4d8c52b183023e76987b9f86a91d54262e2a",
+    "bytes": 13985
+  },
+  "report": {
+    "path": "/private/tmp/bend-g24-r7-check-profile-KxIQgK/result.json",
+    "sha256": "520306397cfab3b27accc6a895c8ed642d779accb05d66f6ec6072b4ee30bf04",
+    "bytes": 4471
+  },
+  "profile": {
+    "path": "/private/tmp/bend-g24-r4-check-profile-9LUBoE/profiles/selfhost-93068-thread-1-RkDPP7/000001-check-window-0.cpuprofile",
+    "sha256": "1d3ad018368846e3963c53f0f1981dd6af9a1eec8d9655bc8c60be59780bbb75",
+    "bytes": 13969930
+  },
+  "sampledMs": 19033.834,
+  "leaders": [
+    {
+      "fn": "$multi_box_own",
+      "line": 104,
+      "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r7/bootstrap.json.cases/stage-one.js",
+      "selfMs": 4168.06799999999,
+      "share": 0.21898205059474568
+    },
+    {
+      "fn": "post",
+      "line": 112,
+      "url": "node:inspector",
+      "selfMs": 1060.167,
+      "share": 0.05569907775805967
+    },
+    {
+      "fn": "$b6851",
+      "line": 45681,
+      "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r7/bootstrap.json.cases/stage-one.js",
+      "selfMs": 725.4650000000001,
+      "share": 0.03811449653285829
+    },
+    {
+      "fn": "$split_apply",
+      "line": 108,
+      "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r7/bootstrap.json.cases/stage-one.js",
+      "selfMs": 623.876,
+      "share": 0.032777211359519054
+    },
+    {
+      "fn": "$b6850",
+      "line": 45675,
+      "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r7/bootstrap.json.cases/stage-one.js",
+      "selfMs": 587.2049999999999,
+      "share": 0.03085058953440489
+    },
+    {
+      "fn": "$split_done",
+      "line": 106,
+      "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r7/bootstrap.json.cases/stage-one.js",
+      "selfMs": 379.29199999999975,
+      "share": 0.01992725165092854
+    },
+    {
+      "fn": "$b395",
+      "line": 13558,
+      "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r7/bootstrap.json.cases/stage-one.js",
+      "selfMs": 328.4109999999999,
+      "share": 0.01725406452530793
+    },
+    {
+      "fn": "$b399",
+      "line": 13579,
+      "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r7/bootstrap.json.cases/stage-one.js",
+      "selfMs": 196.08399999999997,
+      "share": 0.010301865614673323
+    },
+    {
+      "fn": "$k118933",
+      "line": 45682,
+      "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r7/bootstrap.json.cases/stage-one.js",
+      "selfMs": 174.041,
+      "share": 0.009143769983493604
+    },
+    {
+      "fn": "$k118878",
+      "line": 45672,
+      "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r7/bootstrap.json.cases/stage-one.js",
+      "selfMs": 151.999,
+      "share": 0.00798572689033644
+    },
+    {
+      "fn": "$multi_box",
+      "line": 103,
+      "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r7/bootstrap.json.cases/stage-one.js",
+      "selfMs": 132.209,
+      "share": 0.006945999423973121
+    },
+    {
+      "fn": "$b398",
+      "line": 13577,
+      "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r7/bootstrap.json.cases/stage-one.js",
+      "selfMs": 112.334,
+      "share": 0.005901806225692628
+    },
+    {
+      "fn": "$b6848",
+      "line": 45669,
+      "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r7/bootstrap.json.cases/stage-one.js",
+      "selfMs": 112.29400000000001,
+      "share": 0.005899704704790429
+    },
+    {
+      "fn": "(garbage collector)",
+      "line": 0,
+      "url": "",
+      "selfMs": 110.085,
+      "share": 0.005783648212966447
+    },
+    {
+      "fn": "$k118902",
+      "line": 45677,
+      "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r7/bootstrap.json.cases/stage-one.js",
+      "selfMs": 99.24699999999999,
+      "share": 0.005214241124515428
+    },
+    {
+      "fn": "$b398_pub",
+      "line": 13578,
+      "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r7/bootstrap.json.cases/stage-one.js",
+      "selfMs": 72.99499999999999,
+      "share": 0.003835012956401742
+    },
+    {
+      "fn": "$b676",
+      "line": 14463,
+      "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r7/bootstrap.json.cases/stage-one.js",
+      "selfMs": 70.375,
+      "share": 0.0036973633373076596
+    },
+    {
+      "fn": "$b385",
+      "line": 13506,
+      "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r7/bootstrap.json.cases/stage-one.js",
+      "selfMs": 61.958,
+      "share": 0.0032551508014622803
+    },
+    {
+      "fn": "$k118891",
+      "line": 45676,
+      "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r7/bootstrap.json.cases/stage-one.js",
+      "selfMs": 58.16700000000001,
+      "share": 0.003055979157956301
+    },
+    {
+      "fn": "run_base",
+      "line": 20,
+      "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r7/bootstrap.json.cases/stage-one.js",
+      "selfMs": 55.876,
+      "share": 0.0029356145482828107
+    },
+    {
+      "fn": "$b6849",
+      "line": 45670,
+      "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r7/bootstrap.json.cases/stage-one.js",
+      "selfMs": 53.16900000000001,
+      "share": 0.002793394121226444
+    },
+    {
+      "fn": "$p_map_bit",
+      "line": 271,
+      "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r7/bootstrap.json.cases/stage-one.js",
+      "selfMs": 52.336000000000006,
+      "share": 0.0027496299484381344
+    },
+    {
+      "fn": "$k7660",
+      "line": 14460,
+      "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r7/bootstrap.json.cases/stage-one.js",
+      "selfMs": 49.539,
+      "share": 0.0026026810993518175
+    },
+    {
+      "fn": "$b573_pub",
+      "line": 14188,
+      "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r7/bootstrap.json.cases/stage-one.js",
+      "selfMs": 48.793,
+      "share": 0.0025634877345257923
+    }
+  ],
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "timeoutMs": 600000
+  },
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "--experimental-strip-types",
+    "/private/tmp/bend-g24-r7-check-profile-KxIQgK/profiled-throughput.mjs",
+    "js",
+    "/private/tmp/bend-g24-r7-check-profile-KxIQgK/request.json",
+    "/private/tmp/bend-g24-r7-check-profile-KxIQgK/result.json"
+  ],
+  "note": "Historical r4 directory in the retained driver stores this R7 window under a distinct PID/thread; CPU profile URLs and profiler metadata bind the R7 image."
+}

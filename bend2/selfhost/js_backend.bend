@@ -1387,7 +1387,7 @@ def multi_adapter_args(captures: List<&2, BIR.Use>, parameters: List<&2, BIR.Par
 def multi_adapter_cont(id: U32) -> String:
   cat(["$kpa", U32.show(id)])
 def multi_adapter_cont_decl(id: U32, width: Nat) -> String:
-  cat(["function ", multi_adapter_cont(id), "($x,$base,$td=0){const $r=$multi_box_own($x,$base,0);", multi_slot_clear(width, 0n, 0n), "return $r;}\n"])
+  cat(["function ", multi_adapter_cont(id), "($x,$base,$td=0){const $r=$multi_box($x,$base,0);", multi_slot_clear(width, 0n, 0n), "return $r;}\n"])
 
 # A rendered block belongs to one owner, a code body or a lazy declaration
 # body, and sees the frame-form regions around it. `frames` names exactly the
@@ -3808,9 +3808,16 @@ def field_names(items: List<&2, Maybe<&2, String>>) -> List<&2, String>:
 def constructor_layout(item: BIR.ConstructorLayout) -> String:
   match item:
     case BIR.ConstructorLayout{_, key, native, fields}:
-      constructor_layout_source(key, optional_text(native), String.join(field_names(fields), ","))
-def constructor_layout_source(+key: String, native: String, fields: String) -> String:
-  cat(["$FIELDS[", js_quote(key), "]=[", fields, "];\n$PRIMITIVES[", js_quote(key), "]=", native, ";\n"])
+      constructor_layout_source(key, optional_text(native), fields)
+def constructor_layout_source(+key: String, native: String, +fields: List<&2, Maybe<&2, String>>) -> String:
+  cat(["$FIELDS[", js_quote(key), "]=[", String.join(field_names(fields), ","), "];\n$PRIMITIVES[", js_quote(key), "]=", native, ";\n$BOXES[", js_quote(key), "]=($t,$b)=>({$:$t", constructor_box_fields(fields, 0n), "});\n"])
+def constructor_box_fields(fields: List<&2, Maybe<&2, String>>, index: Nat) -> String:
+  match fields:
+    case Nil{}: ""
+    case None{} <> rest: constructor_box_fields(rest, index)
+    case Some{key} <> rest:
+      +next = Nat.add(index, 1n)
+      cat([",", js_field_text(key), "$stArgs[$b+", Nat.show(next), "]", constructor_box_fields(rest, next)])
 def constructor_layouts(items: List<&2, BIR.ConstructorLayout>) -> String:
   match items:
     case Nil{}: ""
@@ -4053,12 +4060,10 @@ def program_source_scoped(+program: BIR.Program, natives: Map<&2, String>, effec
 # result or an unpopped region frame belongs to run_base; only an ordinary
 # synchronous result with our frame on top can resume here. Thread depth into
 # the continuation too, so a chain of completed calls cannot reset the bound.
-# $multi_box_own builds exactly what a constructor's object literal builds: every
-# field becomes an own data property, so an inherited setter on a constructor key
-# neither runs nor lets the key go missing. The boxed public entry needs that
-# literal behavior; the private lane keeps the faster $multi_box.
+# Materialize with constructor-specific object literals: own data properties,
+# including __proto__, without invoking inherited setters or defining each field.
 def js_runtime_direct() -> String:
-  "function $multi_box(t,b,c) { const ks=$FIELDS[t]; if(ks===undefined) throw \"bend: unresolved multi-result tag\"; const o={$:t}; let j=0; for(let i=0;i<ks.length;i++) { const k=ks[i]; if(k===null) continue; const v=$stArgs[b+c+1+j]; j++; if(k===\"__proto__\") Object.defineProperty(o,k,{value:v,enumerable:true,configurable:true,writable:true}); else o[k]=v; } return o; }\nfunction $multi_box_own(t,b,c) { const ks=$FIELDS[t]; if(ks===undefined) throw \"bend: unresolved multi-result tag\"; const o={$:t}; let j=0; for(let i=0;i<ks.length;i++) { const k=ks[i]; if(k===null) continue; Object.defineProperty(o,k,{value:$stArgs[b+c+1+j],enumerable:true,configurable:true,writable:true}); j++; } return o; }\nfunction $split_enter(k,b) { const i=$ksp++; $kFn[i]=k; $kBase[i]=b; $kKind[i]=0; return i; }\nfunction $split_done(x,i,d) { if(x===$TAIL_PENDING||x===$CALL_PENDING||x===$LEAVE_PENDING||$ksp!==i+1)return x; const k=$kFn[i],b=$kBase[i]; $kFn[i]=undefined; $ksp=i; $sp=b; return k(x,b,d); }\nfunction $split_abort(i,b) { while($ksp>i)$kFn[--$ksp]=undefined; $sp=b; $tailFn=undefined; $tailCount=0; }\nfunction $split_apply(f,x,k,b,d) { if(d>=64)return $split1(f,x,k,b); const j=f[$BEND_TAIL],i=$split_enter(k,b); if(!j) { $tailFn=f; $tailCount=-1; $tailUnary=x; return $CALL_PENDING; } try { return $split_done(j(x,$BEND_TAIL,d+1),i,d+1); } catch(e) { $split_abort(i,b); throw e; } }\n"
+  "const $BOXES=Object.create(null);\nfunction $multi_box(t,b,c) { const f=$BOXES[t]; if(f===undefined) throw \"bend: unresolved multi-result tag\"; return f(t,b+c); }\nfunction $split_enter(k,b) { const i=$ksp++; $kFn[i]=k; $kBase[i]=b; $kKind[i]=0; return i; }\nfunction $split_done(x,i,d) { if(x===$TAIL_PENDING||x===$CALL_PENDING||x===$LEAVE_PENDING||$ksp!==i+1)return x; const k=$kFn[i],b=$kBase[i]; $kFn[i]=undefined; $ksp=i; $sp=b; return k(x,b,d); }\nfunction $split_abort(i,b) { while($ksp>i)$kFn[--$ksp]=undefined; $sp=b; $tailFn=undefined; $tailCount=0; }\nfunction $split_apply(f,x,k,b,d) { if(d>=64)return $split1(f,x,k,b); const j=f[$BEND_TAIL],i=$split_enter(k,b); if(!j) { $tailFn=f; $tailCount=-1; $tailUnary=x; return $CALL_PENDING; } try { return $split_done(j(x,$BEND_TAIL,d+1),i,d+1); } catch(e) { $split_abort(i,b); throw e; } }\n"
 
 # Trusted target runtime; public/native callback and reflection ABI is retained.
 def js_runtime() -> String:
