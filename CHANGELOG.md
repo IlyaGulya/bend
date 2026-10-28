@@ -14,9 +14,15 @@ latest one; the GitHub release carries the same notes.
   both targets. Twenty-four existing target/library consumers and the two
   new successor consumers pass; the full matrices retain their original
   cases and add the three index/Nat boundary fixtures (47 cases each).
-  Full-root/native/bootstrap acceptance remains pending; the separate
-  lookup micro runs do not establish a full compiler speedup.
-  Receipt: `evals/receipts/producer2039g18_native_bit_consumers.json`.
+  The full native root builds in 322.502 s under the unchanged 8-GiB/600-s
+  guard (12,156 bodies / 12,735 events; zero exclusions or output patches).
+  G18 is nevertheless **rejected**: bootstrap reaches the unchanged
+  600-s deadline during stage-two check, after all 95 seed fixtures and
+  18 complete semantic parser approvals pass. Stage1 is 30,220,181 bytes;
+  no stage2 or new byte fixedpoint is claimed. A separate profiled complete
+  check takes 266.920 s; it is diagnostic, not full-bootstrap acceptance.
+  Receipts: `evals/receipts/producer2039g18_native_bit_consumers.json` and
+  `evals/receipts/root2039g18_bootstrap_rejected.json`.
 
 - The g16 candidate fixes nested inline-data C conversions: one-arm values
   have no tag switch, multi-arm values retain their destination tag, each

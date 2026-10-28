@@ -1,0 +1,1491 @@
+{
+  "schemaVersion": 1,
+  "status": "G18_NATIVE_ROOT_BUILD_PASS_BOOTSTRAP_DEADLINE_REJECTED",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "sourceCheckpoint": "b4659a3f",
+  "release": "Bend 2.0.39",
+  "runtime": {
+    "name": "bun",
+    "executable": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "execArgv": [],
+    "bun": "1.4.3",
+    "revision": "c6da4a4d3010e5553438c60f6bd76d981976867c",
+    "heapLimitMiB": null,
+    "stackMiB": null,
+    "stack": "Bun main-thread default",
+    "automaticGcRamHint": {
+      "source": "BUN_JSC_forceRAMSize",
+      "bytes": "4294967296",
+      "hardLimit": false
+    },
+    "manualGC": false,
+    "profiling": null
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000,
+    "workerStackMiB": 256,
+    "workerOldGenerationMiB": 6144,
+    "workerYoungGenerationMiB": 128,
+    "parserFuel": 8000000,
+    "maxHeavyChildren": 1
+  },
+  "native": {
+    "status": "NATIVE_EXECUTABLE_BUILT_NOT_YET_RUN",
+    "source": "/Users/ilyagulya/bend-g18-native-bit-73936b2c-6d8c-4bb5-907a-cce2236d1342/checkpoints/.bootstrap_compiler_root_remote2039g18.bend",
+    "sourceSha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+    "kernelSha256": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+    "compilerSha256": "f95eed20344ca291bf74a1e4ffe574f788ea22a86adc66d5bfe0f681523245ef",
+    "artifact": "/tmp/bend-remote2039g18-native",
+    "artifactSha256": "411c2b370a6e63ce0c735d68f6ac9c60cb6f0cdbac85bfaabb07a5daecc56b55",
+    "cPath": "/tmp/bend-remote2039g18-native.c",
+    "cSha256": "b1d14cb266c6abff45a16b22c704cd394b00ff1d2d033ecd461c4e5d85622d1c",
+    "checkedDefinitions": 12156,
+    "expectedSourceDefinitions": 12156,
+    "eventsFullyValidated": 12735,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "validationMs": 2518.1099999999997,
+    "codegenMs": 222068.907542,
+    "elapsedMs": 228298.679542,
+    "ccOptimization": {
+      "level": 1,
+      "flag": "-O1",
+      "officialDefault": false,
+      "diagnosticTradeoff": true
+    },
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 5654347776,
+      "peakFootprintBytes": 5144156136,
+      "elapsedMs": 322502,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/bend-g18-native-bit-73936b2c-6d8c-4bb5-907a-cce2236d1342/evals/native_compiler_experiment.ts",
+        "--mode=build",
+        "--corpus=checkpoints/root-remote2039g18.native.corpus.json",
+        "--artifact=/tmp/bend-remote2039g18-native",
+        "--report=checkpoints/root-remote2039g18-native-build.json",
+        "--cc-pipeline=llvm-split",
+        "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+        "--cc-opt=1",
+        "--internal=build"
+      ],
+      "label": "Native CPU compiler build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1793145592130-51d4358aaf4b1024.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "llvm": {
+    "kind": "llvm-split",
+    "status": "PASS",
+    "optimization": "-O1",
+    "partitions": 4,
+    "maxBackendChildren": 3,
+    "elapsedMs": 93647.788333,
+    "temporaryFilesRemoved": true,
+    "versions": {
+      "clang": "Apple clang version 21.0.0 (clang-2100.1.1.101)\nTarget: arm64-apple-darwin25.5.0\nThread model: posix\nInstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin",
+      "opt": "Homebrew LLVM version 21.1.8\n  Optimized build.\n  Default target: arm64-apple-darwin25.5.0\n  Host CPU: apple-m3",
+      "llvm-split": "Homebrew LLVM version 21.1.8\n  Optimized build."
+    },
+    "toolPins": {
+      "/usr/bin/clang": "179301dcb41ea78accc3fa0048a7e6f6710d891945a751a34addd622020c1818",
+      "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/opt": "f0c47819a5c4bccebc4fde8494977ec0bb223e2d47a62c376372942445708e14",
+      "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/llvm-split": "548df9b6333fe8a7a9931962a4ca87d89d2c5a13ba48909dd77c8b8984cdab57",
+      "/usr/bin/time": "d2210b72e8c978748a0f0ac7d0819dda4dd411bb7a2e9730476038b0d695e7a2"
+    },
+    "stages": [
+      {
+        "name": "clang-version",
+        "command": [
+          "/usr/bin/clang",
+          "--version"
+        ],
+        "status": "PASS",
+        "wallMs": 42.25941700000001,
+        "exitCode": 0,
+        "signal": null,
+        "timedRealSeconds": 0.03,
+        "userSeconds": 0,
+        "systemSeconds": 0,
+        "maxRssBytes": 17694720
+      },
+      {
+        "name": "opt-version",
+        "command": [
+          "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/opt",
+          "--version"
+        ],
+        "status": "PASS",
+        "wallMs": 129.182791,
+        "exitCode": 0,
+        "signal": null,
+        "timedRealSeconds": 0.12,
+        "userSeconds": 0.01,
+        "systemSeconds": 0.02,
+        "maxRssBytes": 22102016
+      },
+      {
+        "name": "llvm-split-version",
+        "command": [
+          "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/llvm-split",
+          "--version"
+        ],
+        "status": "PASS",
+        "wallMs": 24.46112499999998,
+        "exitCode": 0,
+        "signal": null,
+        "timedRealSeconds": 0.01,
+        "userSeconds": 0,
+        "systemSeconds": 0,
+        "maxRssBytes": 18841600
+      },
+      {
+        "name": "sdk",
+        "command": [
+          "/usr/bin/xcrun",
+          "--show-sdk-path"
+        ],
+        "status": "PASS",
+        "wallMs": 23.405624999999986,
+        "exitCode": 0,
+        "signal": null,
+        "timedRealSeconds": 0.01,
+        "userSeconds": 0,
+        "systemSeconds": 0,
+        "maxRssBytes": 7356416
+      },
+      {
+        "name": "abi-macros",
+        "command": [
+          "/usr/bin/clang",
+          "-std=c11",
+          "-O1",
+          "-E",
+          "-dM",
+          "/tmp/bend-remote2039g18-native.c",
+          "-isysroot",
+          "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
+        ],
+        "status": "PASS",
+        "wallMs": 1526.31675,
+        "exitCode": 0,
+        "signal": null,
+        "timedRealSeconds": 1.51,
+        "userSeconds": 1.36,
+        "systemSeconds": 0.08,
+        "maxRssBytes": 621674496
+      },
+      {
+        "name": "abi-driver",
+        "command": [
+          "/usr/bin/clang",
+          "-std=c11",
+          "-O1",
+          "-c",
+          "/tmp/bend-remote2039g18-native.c",
+          "-isysroot",
+          "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+          "-o",
+          "/tmp/bend-remote2039g18-native",
+          "-###"
+        ],
+        "status": "PASS",
+        "wallMs": 47.44512499999996,
+        "exitCode": 0,
+        "signal": null,
+        "timedRealSeconds": 0.04,
+        "userSeconds": 0,
+        "systemSeconds": 0.01,
+        "maxRssBytes": 18939904
+      },
+      {
+        "name": "frontend",
+        "command": [
+          "/usr/bin/clang",
+          "-std=c11",
+          "-O1",
+          "-Xclang",
+          "-disable-llvm-passes",
+          "-emit-llvm",
+          "-c",
+          "/tmp/bend-remote2039g18-native.c",
+          "-isysroot",
+          "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+          "-o",
+          "/tmp/.native-llvm-TLujvb/raw.bc"
+        ],
+        "status": "PASS",
+        "wallMs": 25052.324542000002,
+        "exitCode": 0,
+        "signal": null,
+        "timedRealSeconds": 25.04,
+        "userSeconds": 23.12,
+        "systemSeconds": 1.06,
+        "maxRssBytes": 5253660672
+      },
+      {
+        "name": "mem2reg-always-inline",
+        "command": [
+          "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/opt",
+          "-passes=function(mem2reg),always-inline",
+          "/tmp/.native-llvm-TLujvb/raw.bc",
+          "-o",
+          "/tmp/.native-llvm-TLujvb/prepared.bc"
+        ],
+        "status": "PASS",
+        "wallMs": 16858.327332999997,
+        "exitCode": 0,
+        "signal": null,
+        "timedRealSeconds": 16.84,
+        "userSeconds": 15.8,
+        "systemSeconds": 0.51,
+        "maxRssBytes": 2869215232
+      },
+      {
+        "name": "split",
+        "command": [
+          "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/llvm-split",
+          "-j4",
+          "/tmp/.native-llvm-TLujvb/prepared.bc",
+          "-o",
+          "/tmp/.native-llvm-TLujvb/part.bc"
+        ],
+        "status": "PASS",
+        "wallMs": 9283.183332999994,
+        "exitCode": 0,
+        "signal": null,
+        "timedRealSeconds": 9.27,
+        "userSeconds": 8.68,
+        "systemSeconds": 0.34,
+        "maxRssBytes": 1868169216
+      },
+      {
+        "name": "opt-codegen-3",
+        "command": [
+          "/usr/bin/clang",
+          "-O1",
+          "-x",
+          "ir",
+          "-c",
+          "/tmp/.native-llvm-TLujvb/part.bc3",
+          "-isysroot",
+          "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+          "-o",
+          "/tmp/.native-llvm-TLujvb/part3.o"
+        ],
+        "status": "PASS",
+        "wallMs": 40422.77770900001,
+        "exitCode": 0,
+        "signal": null,
+        "timedRealSeconds": 40.41,
+        "userSeconds": 38.26,
+        "systemSeconds": 0.59,
+        "maxRssBytes": 1670873088
+      },
+      {
+        "name": "opt-codegen-2",
+        "command": [
+          "/usr/bin/clang",
+          "-O1",
+          "-x",
+          "ir",
+          "-c",
+          "/tmp/.native-llvm-TLujvb/part.bc2",
+          "-isysroot",
+          "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+          "-o",
+          "/tmp/.native-llvm-TLujvb/part2.o"
+        ],
+        "status": "PASS",
+        "wallMs": 21006.780041000005,
+        "exitCode": 0,
+        "signal": null,
+        "timedRealSeconds": 20.99,
+        "userSeconds": 19.56,
+        "systemSeconds": 0.44,
+        "maxRssBytes": 1678606336
+      },
+      {
+        "name": "opt-codegen-1",
+        "command": [
+          "/usr/bin/clang",
+          "-O1",
+          "-x",
+          "ir",
+          "-c",
+          "/tmp/.native-llvm-TLujvb/part.bc1",
+          "-isysroot",
+          "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+          "-o",
+          "/tmp/.native-llvm-TLujvb/part1.o"
+        ],
+        "status": "PASS",
+        "wallMs": 14861.3695,
+        "exitCode": 0,
+        "signal": null,
+        "timedRealSeconds": 14.85,
+        "userSeconds": 13.73,
+        "systemSeconds": 0.34,
+        "maxRssBytes": 1059962880
+      },
+      {
+        "name": "opt-codegen-0",
+        "command": [
+          "/usr/bin/clang",
+          "-O1",
+          "-x",
+          "ir",
+          "-c",
+          "/tmp/.native-llvm-TLujvb/part.bc0",
+          "-isysroot",
+          "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+          "-o",
+          "/tmp/.native-llvm-TLujvb/part0.o"
+        ],
+        "status": "PASS",
+        "wallMs": 13352.81362500001,
+        "exitCode": 0,
+        "signal": null,
+        "timedRealSeconds": 13.34,
+        "userSeconds": 12.56,
+        "systemSeconds": 0.28,
+        "maxRssBytes": 1048674304
+      },
+      {
+        "name": "link",
+        "command": [
+          "/usr/bin/clang",
+          "/tmp/.native-llvm-TLujvb/part0.o",
+          "/tmp/.native-llvm-TLujvb/part1.o",
+          "/tmp/.native-llvm-TLujvb/part2.o",
+          "/tmp/.native-llvm-TLujvb/part3.o",
+          "-isysroot",
+          "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+          "-lpthread",
+          "-lm",
+          "-o",
+          "/tmp/bend-remote2039g18-native"
+        ],
+        "status": "PASS",
+        "wallMs": 138.75887499999953,
+        "exitCode": 0,
+        "signal": null,
+        "timedRealSeconds": 0.12,
+        "userSeconds": 0.15,
+        "systemSeconds": 0.04,
+        "maxRssBytes": 113803264
+      }
+    ]
+  },
+  "bootstrap": {
+    "status": "FAIL",
+    "passed": false,
+    "criterion": "Accepted native parser + full natively checked compiler root built by the unchanged canonical kernel/compiler under the original native build policy; native stage0 parses/checks/emits real stage-one JS from the exact same root and executes the original seed fixtures; stage one uses its own parser and steps to emit stage two; require byte-identical JS and full semantic AST oracle parity.",
+    "compilerBootstrapGreen": false,
+    "selfhostGreen": false,
+    "requiredExports": [
+      "parsed_module",
+      "parse_with_fuel",
+      "expand_modules_start",
+      "template_step",
+      "check_expanded_start",
+      "inspect_checked_start",
+      "checker_step",
+      "emit_modules_start",
+      "emit_library_start",
+      "emitter_step",
+      "emit_c_modules_start",
+      "emit_c_library_start",
+      "c_emitter_step"
+    ],
+    "guardian": {
+      "status": "FAIL",
+      "reason": "deadline_exceeded",
+      "commandExitCode": -1,
+      "commandSignal": 15,
+      "peakRssBytes": 3871490048,
+      "peakFootprintBytes": 2489528208,
+      "elapsedMs": 600030,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 1,
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/bend-g18-native-bit-73936b2c-6d8c-4bb5-907a-cce2236d1342/evals/selfhost_bootstrap_gate.ts",
+        "--native-build=checkpoints/root-remote2039g18-native-build.json",
+        "--native-corpus=checkpoints/root-remote2039g18.native.corpus.json",
+        "--root=checkpoints/.bootstrap_compiler_root_remote2039g18.bend",
+        "--root-manifest=checkpoints/selfhost-root-remote2039g18.json",
+        "--parser=checkpoints/bootstrap-parser-rebuild-remote2039g18.js",
+        "--parser-build=checkpoints/bootstrap-parser-rebuild-remote2039g18.native-build.result.json",
+        "--report=checkpoints/selfhost-remote2039g18-bootstrap.json",
+        "--worker"
+      ],
+      "label": "Real full selfhost step bootstrap",
+      "exitCode": 1,
+      "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1793145914881-711500b1f46b44e3.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "nativeSeed": {
+      "build": "/Users/ilyagulya/bend-g18-native-bit-73936b2c-6d8c-4bb5-907a-cce2236d1342/checkpoints/root-remote2039g18-native-build.json",
+      "buildSha256": "9143679fecd786c53f557b8d7f4729088bd2dabfca27b5ea13de831864900705",
+      "binary": "/private/tmp/bend-remote2039g18-native",
+      "binarySha256": "411c2b370a6e63ce0c735d68f6ac9c60cb6f0cdbac85bfaabb07a5daecc56b55",
+      "corpus": "/Users/ilyagulya/bend-g18-native-bit-73936b2c-6d8c-4bb5-907a-cce2236d1342/checkpoints/root-remote2039g18.native.corpus.json",
+      "corpusSha256": "a1170bde0af24a6b644bcee76c2edda034ad010b57f004dd2dabaabd98421175",
+      "checkedDefinitions": 12156,
+      "expectedSourceDefinitions": 12156,
+      "eventsFullyValidated": 12735,
+      "cPath": "/tmp/bend-remote2039g18-native.c",
+      "cSha256": "b1d14cb266c6abff45a16b22c704cd394b00ff1d2d033ecd461c4e5d85622d1c",
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 5654347776,
+        "peakFootprintBytes": 5144156136,
+        "elapsedMs": 322502,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/bend-g18-native-bit-73936b2c-6d8c-4bb5-907a-cce2236d1342/evals/native_compiler_experiment.ts",
+          "--mode=build",
+          "--corpus=checkpoints/root-remote2039g18.native.corpus.json",
+          "--artifact=/tmp/bend-remote2039g18-native",
+          "--report=checkpoints/root-remote2039g18-native-build.json",
+          "--cc-pipeline=llvm-split",
+          "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+          "--cc-opt=1",
+          "--internal=build"
+        ],
+        "label": "Native CPU compiler build",
+        "exitCode": 0,
+        "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1793145592130-51d4358aaf4b1024.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "workload": {
+        "target": "js",
+        "sources": 18,
+        "externals": 35
+      }
+    },
+    "nativePhases": [
+      {
+        "phase": "parse",
+        "elapsedMs": 16479.078,
+        "userCpuMs": 15784.586,
+        "systemCpuMs": 169.248,
+        "modules": 18,
+        "sourceBytes": 7459462,
+        "foreignBytes": 78415,
+        "eagerFuelCells": 144000000,
+        "fuelBuildMs": 478.915
+      },
+      {
+        "phase": "expand",
+        "elapsedMs": 14734.303,
+        "userCpuMs": 14161.796,
+        "systemCpuMs": 110.44,
+        "chunkAdvances": 1609921,
+        "chunkQuantum": 64
+      },
+      {
+        "phase": "check",
+        "elapsedMs": 137513.113,
+        "userCpuMs": 132143.906,
+        "systemCpuMs": 1071.955,
+        "chunkAdvances": 9784546,
+        "chunkQuantum": 64
+      },
+      {
+        "phase": "emit",
+        "elapsedMs": 21738.062,
+        "userCpuMs": 20821.299,
+        "systemCpuMs": 252.616,
+        "chunkAdvances": 1392692,
+        "chunkQuantum": 64
+      }
+    ],
+    "phaseBoundaries": [
+      {
+        "event": "phase",
+        "phase": "native-stage-zero-parse",
+        "elapsedMs": 229.852958,
+        "rssBytes": 181059584,
+        "heapUsedBytes": 22671992,
+        "heapLimitBytes": 6643777536
+      },
+      {
+        "event": "phase",
+        "phase": "stage-one-execute",
+        "elapsedMs": 274870.668416,
+        "rssBytes": 171114496,
+        "heapUsedBytes": 14171792,
+        "heapLimitBytes": 6643777536
+      },
+      {
+        "event": "phase",
+        "phase": "stage-two",
+        "elapsedMs": 340769.286416,
+        "rssBytes": 2376286208,
+        "heapUsedBytes": 1179491560,
+        "heapLimitBytes": 6643777536
+      },
+      {
+        "event": "phase",
+        "phase": "stage-two-expand",
+        "elapsedMs": 340769.747166,
+        "rssBytes": 2376286208,
+        "heapUsedBytes": 1179516984,
+        "heapLimitBytes": 6643777536
+      },
+      {
+        "event": "phase",
+        "phase": "stage-two-check",
+        "elapsedMs": 356465.340125,
+        "rssBytes": 2215477248,
+        "heapUsedBytes": 411858328,
+        "heapLimitBytes": 6643777536
+      }
+    ],
+    "stageOne": {
+      "path": "/Users/ilyagulya/bend-g18-native-bit-73936b2c-6d8c-4bb5-907a-cce2236d1342/checkpoints/selfhost-remote2039g18-bootstrap.json.cases/stage-one.js",
+      "sha256": "9c6bf26912514c3d1ce668329f735d76d1e05817498b93c939f0a26b9be3b18d",
+      "bytes": 30220181
+    },
+    "stageTwoPublished": false,
+    "seedFixtures": [
+      {
+        "name": "type-specialization",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "2c23d4dd3809789d8c2d850bb30a6f71ec3b59a8f009de87a7fff594d3bef937",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "constructor-eliminator-hit",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "14999660fd5f3d8d57bd69e2dfb816e80a224aa959fe300a28c1c45e6dc6982a",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "constructor-eliminator-default",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "d4e0e45297075195eed5b457debe85e5941754392a301ac61f44809e27968a29",
+        "output": "BitZero{}"
+      },
+      {
+        "name": "tag-dispatch-nested-fallthrough",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "a1568e3b35ab5f29d11cfd35331515b0af6fa5eacb2e99a19f41b5330f436391",
+        "output": "Results{BitZero{}, BitOne{}, BitOne{}, BitZero{}, BitOne{}}"
+      },
+      {
+        "name": "root-match-local-order",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "175cba4f8e661b2775244d242f33d0faf43049bab7a18a7b57e79aa4e4cdd676",
+        "output": "Result{BitZero{}, BitOne{}, BitOne{}}"
+      },
+      {
+        "name": "native-nat-extrema-boundaries",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "4edfd2827a7cad3afc1527f5c3c812455b526e40ef83b2734bd79cd7def4ef94",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "source-tail-large-recursion",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "50fba9401abf73a3925dc50f089bed4eebfb69a9b2f182547f5e3e3937b63d0f",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "nullary-array-freshness",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "719016f8be4f6b974a70518c01f585dcde8859be52bccea58ff46a0800555896",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "aliased-specialization",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "ef02d443458970bf0bae0d2a6a0049b7f3bc88da9678b1b659943d16330bc557",
+        "output": "specialization-lib.BitOne{}"
+      },
+      {
+        "name": "callback-specialization",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "7f51a179d1d28b86a4fc6a9df6932d1aaf620dfa85197d00cbc9fa1fedb27a27",
+        "output": "BitZero{}"
+      },
+      {
+        "name": "specialized-type-error",
+        "passed": true,
+        "accepted": false,
+        "sourceSha256": "0213d5a9cbfc9604ea73e33c50257c09c5d5e00f63e721d89a3394494ee46062"
+      },
+      {
+        "name": "runtime-template-capture",
+        "passed": true,
+        "accepted": false,
+        "sourceSha256": "7ef06d611221e1cd9313f7308e038bcccb0c934294fd512bd45ce91126d915d3"
+      },
+      {
+        "name": "template-generation-rounds",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "cac73a00f3deff0f9867a71abd65fea6aeffdcdc0ffa2d73b53b5919c818bdaf",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "readonly-index-boundaries",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "81b86f9266650e6e57bd73c2c6c741dcafb31b221d4af7b7de5ccef94616f3bc",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "readonly-index-nonmonotone",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "8876daf8f6feb7c7b4656317164830f06fc6a1f467c7210d8e2a23e11227daff",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "dependent-kind-binding",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "d09b89c2a1050453bc6d1639ac84a908a66fcf8413c23b42c7a9e30e36cce3b5",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "law-completion-binding",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "2aa03a5d2ff7e3d154ab12187b39dd31c7c2a6963698f27948a2a190a8ecf37f",
+        "output": "WNil{}"
+      },
+      {
+        "name": "forward-family-definition",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "b33f392b9139c0128990c881413166eb6cf3179444cd95433c565ac082b8fd0a",
+        "output": "WNil{}"
+      },
+      {
+        "name": "forward-definition-call",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "97f4da569188c189a8d1457a258eead66de64578baec811b559d3446754333a9",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "named-entry-separator-collision",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "ce8bf711b87837cbc67a14ed6f3234d9c45715eebf3b4d63e986b214299f867a",
+        "output": "CSucc{CSucc{CSucc{CZero{}}}}"
+      },
+      {
+        "name": "forward-definition-invalid-body",
+        "passed": true,
+        "accepted": false,
+        "sourceSha256": "3796fe01848e130dbffc7ac8dfd6aeae972f1ddc65c193b3ad78ada374bf5006"
+      },
+      {
+        "name": "recursive-neutral-application-equality",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "d4ebfd86789f77581482c6e5c8f47a17912e5edbbdf6e5a5010fb0cdba4f5e7e",
+        "output": "True{}"
+      },
+      {
+        "name": "application-order",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "d515754b349ba4dd3985d977113503d83698838c57282cd142e314471e80aee8",
+        "output": "Duo{BitOne{}, BitZero{}}"
+      },
+      {
+        "name": "annotated-banged-partial-application",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "265366bfa96b9563845094fb3abf3cec75e042ba6039a440d019d1bbf8bf7f69",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "annotated-banged-partial-result-mismatch",
+        "passed": true,
+        "accepted": false,
+        "sourceSha256": "9687ae6f2da883e006915717442cd4df59929576148853c523df3f85ad373454"
+      },
+      {
+        "name": "renamed-dependent-law-completion",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "67efffba57405e11d52be3311441b8c1631557ab61b3b35d1de69b978a0eb71c",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "law-completion-result-mismatch",
+        "passed": true,
+        "accepted": false,
+        "sourceSha256": "98d12ef11062ed42b3847e076dbb2fedad576e6ec01f88c89461fcfd2e4e20e8"
+      },
+      {
+        "name": "partial-family-application",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "e4e6414bdb3d9524161585fb007e1557b0815782005884c1e3cb3a4dc87af3fa",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "affine-duplicate",
+        "passed": true,
+        "accepted": false,
+        "sourceSha256": "1eab87729494aa38d657d584a655a13923e77f6f463104e08770f00f54facf31"
+      },
+      {
+        "name": "dependent-field-pattern",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "25577204491965929c8a67943fa11e913757bee64dbd7285e5eb9f124700d72d",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "indexed-family-parameter-mismatch",
+        "passed": true,
+        "accepted": false,
+        "sourceSha256": "eea3fa552b43e60fcbb733c3a0363dd60529723bdf09256d5d78ee244220dcd7"
+      },
+      {
+        "name": "equality-congruence-rewrite",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "8393197b610d5b39c04ce5884ab0fffeb32936e05ee3a68a4d42bc0bb205510b",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "rewrite-result-mismatch",
+        "passed": true,
+        "accepted": false,
+        "sourceSha256": "05749623daac71fc3caa1b955d4796ccf86586856880e6efe10c6d2af96c9497"
+      },
+      {
+        "name": "empty-datatype-match",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "678639d3854a305d0df75c8f933a5e239d24da869ab60f7ea4db2ef69c84d942",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "nonempty-datatype-empty-match",
+        "passed": true,
+        "accepted": false,
+        "sourceSha256": "89201d6cade157fa701a59e0537333472c9414671a7365c9386cc6f711fd8b24"
+      },
+      {
+        "name": "abstract-type-empty-match",
+        "passed": true,
+        "accepted": false,
+        "sourceSha256": "39dacd9a8b695faf64cfee62f2473d2e8ecc66ececb030d6796dd6a45a742024"
+      },
+      {
+        "name": "aliased-constructor-conversion",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "d40bd184d4da826e610f46e5b376470c241bf400c154321e4759906c6de5d397",
+        "output": "alias-name-lib.BitOne{}"
+      },
+      {
+        "name": "distinct-imported-family-mismatch",
+        "passed": true,
+        "accepted": false,
+        "sourceSha256": "52882eabd86c89dc126331b004c59c18e37cd9e1db445b1660407c957b1cb51d"
+      },
+      {
+        "name": "same-module-alias-family-equality",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "1459bb0a523b1a543c7662831722c0d31915fc347cc3d23a88329e69de59a675",
+        "output": "scope-left-lib.BitOne{}"
+      },
+      {
+        "name": "same-module-alias-constructor-rows",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "6463a43c6c90eb3f0a047690004df8207430760b2c3710db942248be96464edb",
+        "output": "scope-left-lib.BitOne{}"
+      },
+      {
+        "name": "alias-dependent-conversion",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "0918c7e24572c7843e5dc7734d023e42ac961ce74ff34a1b44070d1237df3ca5",
+        "output": "scope-left-lib.BitOne{}"
+      },
+      {
+        "name": "stuck-first-row-dependent-conversion",
+        "passed": true,
+        "accepted": false,
+        "sourceSha256": "2de665221faf52e991a1c11b5676502efd0fbf02716b045958459d10cf6996b9"
+      },
+      {
+        "name": "local-imported-family-mismatch",
+        "passed": true,
+        "accepted": false,
+        "sourceSha256": "200b4a797c383856a7e369c99486c0ef939ed3bd5a4d14f1758f10a1bc77cd04"
+      },
+      {
+        "name": "datatype-constructor-shared-name",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "cf1ff3a9fdaee568fc064d36da3dc8b72093da197515bce5d9ffd11ec62474bd",
+        "output": "Wrapper{BitOne{}}"
+      },
+      {
+        "name": "constructor-args-field",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "ed8d8898dc20d7789a6927d22d39e0613f0ad2975859e0afbd64c4b5ef6b415b",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "structural-predecessor-recursion",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "2964309f829f1d8139af4aa0bd4ff52e98e8a4f65c8284b92bb6517758d720ea",
+        "output": "CSucc{CSucc{CSucc{CSucc{CZero{}}}}}"
+      },
+      {
+        "name": "structural-original-input-recursion",
+        "passed": true,
+        "accepted": false,
+        "sourceSha256": "3de513ed0101ec41fc3a66d213ee97a4ec46bd6ad4903cf792c1a24671873d97"
+      },
+      {
+        "name": "structural-equal-input-recursion",
+        "passed": true,
+        "accepted": false,
+        "sourceSha256": "a0ed387e14bff247794e4dc18d811f0bcc62fd8857d920479a2f865b9a8ad0dc"
+      },
+      {
+        "name": "structural-growing-input-recursion",
+        "passed": true,
+        "accepted": false,
+        "sourceSha256": "c03c61fb6ccafb0c966a22a78bd0694aa0232d37c59ea743bbf77f9b25a76ce0"
+      },
+      {
+        "name": "recursive-matrix-variable-column",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "5d3613ea59c3d9d6e9c2eec23dc4ff345ff69eed791f67ab713c38dd2b2228ef",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "recursive-matrix-incomplete-variable-column",
+        "passed": true,
+        "accepted": false,
+        "sourceSha256": "cff0f694f6b404cc19e9aecb446762877b1dfc3d7f3fbd70299a1a4e2bb59e0a"
+      },
+      {
+        "name": "copied-constructor-field-quantity",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "075d740f094cc8913a1184848d7dfe2386ca3b640fbecd54aaec6f39710f099a",
+        "output": "CZero{}"
+      },
+      {
+        "name": "affine-constructor-field-quantity",
+        "passed": true,
+        "accepted": false,
+        "sourceSha256": "8b58221d0ac6a903a8ac44b5b673a1b1c070af5fcd3fe689cc58673f4a11385a"
+      },
+      {
+        "name": "erased-constructor-field-quantity",
+        "passed": true,
+        "accepted": false,
+        "sourceSha256": "cc25414153fe5ece095d184424a07208d4bb76d31966ea175cab691c0ee604b7"
+      },
+      {
+        "name": "erased-constructor-default-binding",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "c8a3f957effaf0ac6964e1be74624402bdd66eede92d384b6725deed44cf9dd3",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "long-unicode-string-pattern-tail",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "fc0b4e09b6e16012d6cef0fb8d796817d5b7b658f48b9837d5fccfce8526c202",
+        "output": "Results{BitOne{}, BitZero{}, BitOne{}}"
+      },
+      {
+        "name": "compact-string-native-scalars-and-explicit-equivalence",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "4ef313bc46f9dfda39142fd79bfb6910517532c7172e682a4a255a04a1e14b6f",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "compact-string-imported-template-alias-capture",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "3786bad35796874efd0c4c7dc78f2a97d08b9238f336f6ab2854807e8fd6beaf",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "compact-string-primitive-like-shadow-fallback",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "fc9ed48a88fecaf6b85f90af46378eb42dc9fc1a2391c4b9ea50403e92fa7530",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "compact-string-dependent-explicit-constructor-equality",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "6d97d02c58455eba53395d5a626f6b60d19ef5a48deba95618ac0393c92c0f9e",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "compact-string-template-empty-unused-constructors",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "477e33c81dc909e9449dd36a9aafc8085136d48c350eb31da5eb63d5f48d9b0e",
+        "output": "SNil{}"
+      },
+      {
+        "name": "compact-string-template-zero-unused-true",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "b9ec0f2924bfd00ba010a95a0223c711b331d5b665f3e8690566ca4b5e92929d",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "compact-string-invalid-scalar-custom-constructor-fallback",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "99f41df074e9e17c6c84f960899b1a91ab739f174a1ba89dbd2375bd2b1e7c7b",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "compact-string-tail120001-callback",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "d1be55f37408a9d5e75670f6ed078bc17b7d690294c6f07e294f38b508ca518e",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "patricia-selected-branch-unicode",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "3bc71773178f0b00409007341b300efaf11d0b90e5a725a47e44ffcf7ea590b4",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "mixed-named-closure-tail120001",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "8bf7f4602897dc2b8f70b45fea329ff84780faa40214ade087b339303f03db1e",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "private-tail-register-boundaries",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "95df4b84cf824eee111364977a3d0a5fe3162baa7123e8f5162202cc6a27d6a5",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "compact-string-invalid-native-scalar-deferred-branch",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "1998de6cbbbcd71224bbb8077b37522dc7d059e2115ca56237c4e884d7f526ea",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "dependent-match-goal-refinement",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "78a54dfd45b2e19b0b8e3616af237b899d34185d125e5fa4625809df43fc964c",
+        "output": "BCons{BNil{}}"
+      },
+      {
+        "name": "dependent-vector-goal-refinement",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "030547086f21efffb39fe0e1b6c043d3cd288ecc1de4b4de235c5236f3c5a2e2",
+        "output": "BCons{BNil{}}"
+      },
+      {
+        "name": "dependent-nested-binding-refinement",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "6420d0a0bf70b80e396c28cd4b93f17f7d53d9f8f36b6ad7df07b41e01d79267",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "dependent-tuple-local-binding",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "8421df1a1f10074e8a03648f33476d7cc399da49589d61301ee627f55ca67759",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "neutral-tuple-distinct-index",
+        "passed": true,
+        "accepted": false,
+        "sourceSha256": "5efbb356567f9e598bc28dffac3f5ce045a53058f76b380510b3971a20ffa127"
+      },
+      {
+        "name": "neutral-family-distinct-branches",
+        "passed": true,
+        "accepted": false,
+        "sourceSha256": "9d91f606818564d9645dce24419b131c6f4adea34c5db29fe80575f4a5e98c9d"
+      },
+      {
+        "name": "nested-constructor-cases-disjoint",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "b63f207d8c0a4f3ac6957211b6b544bd0f9a1d035ec3424f61994ceaad9fe5d9",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "nested-constructor-case-duplicate",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "6f60f0b20f7fab9f253fdd4d11c951bc051b7433a910290b89f14099a809df00",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "nested-constructor-ordered-fallback",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "42b753d8c46061341fd80ddf89c4d88a7e53fe6ae99e7d51ee2947ddf151a01f",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "nested-constructor-unreachable-union",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "6c889cf3ba86533907cc5fe6bf7c6ed5bf98d8d99010f49dafebc8fa25ed2ae4",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "annotated-constructor-equality",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "50e08b264b7028924b68bdcf40ed4d80fefd74ad4e90916ec08f78d9e57d86f4",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "annotated-equality-wrong-constructor",
+        "passed": true,
+        "accepted": false,
+        "sourceSha256": "ad1adf13c133f9a05b3bea7812a9d893bc3c11b23536c1a74afe5037462d40c7"
+      },
+      {
+        "name": "annotated-equality-wrong-type",
+        "passed": true,
+        "accepted": false,
+        "sourceSha256": "9d5e981d6bf2096e98e6b90155118e6826646d41e865798578c71b63cbb5ce4e"
+      },
+      {
+        "name": "promoted-data-constructor-field",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "438d6597d4292c2037f2feb53824165e3873e6a64d72a9766b03552b58ba24ce",
+        "output": "CSucc{CZero{}}"
+      },
+      {
+        "name": "promoted-affine-constructor-field",
+        "passed": true,
+        "accepted": false,
+        "sourceSha256": "be2ac4f801424bc7b0c0f0b7b0efcffb4bd5f90e36ed127cd32acc9c92701306"
+      },
+      {
+        "name": "promoted-data-tuple-field",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "112ad5dd4a675fff0fb495bc6b27ebf833abdf3e82073c36cca2329022bd61ee",
+        "output": "CSucc{CZero{}}"
+      },
+      {
+        "name": "promoted-affine-tuple-field",
+        "passed": true,
+        "accepted": false,
+        "sourceSha256": "d522f28669c45241563e5053c882c86a38bff97def828ac5692867072dcaf6ec"
+      },
+      {
+        "name": "nested-structural-recursive-calls",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "2b6bfb1b3df52c545b45ea48567b16ebc9b576add2b6bf89763249084c8992f8",
+        "output": "CSucc{CZero{}}"
+      },
+      {
+        "name": "nested-structural-invalid-inner-call",
+        "passed": true,
+        "accepted": false,
+        "sourceSha256": "8ffb4d6934fb1379e57d411735748def930de217baa7b90a0682f71fdfc31ac9"
+      },
+      {
+        "name": "closed-local-annotation-usage",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "73df624518bd65175db9f1137adfbabc27913a6754d00e8364c38ea9490217c7",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "closed-local-annotation-type-error",
+        "passed": true,
+        "accepted": false,
+        "sourceSha256": "4841d3e3088fb2a938dcd39f0cde96494de3d1dcb9fc8262b6df3b6c19e7a4ba"
+      },
+      {
+        "name": "parallel-local-outer-scope",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "ebfe60fc09d8faa3b043555d565b00f9703ed4ec71d3fb6dbcc1c79e4f58512e",
+        "output": "CSucc{CZero{}}"
+      },
+      {
+        "name": "parallel-local-rhs-independence",
+        "passed": true,
+        "accepted": false,
+        "sourceSha256": "66141e6efc499c3a50e98d36c7781faab3105a6d6c685d325adaa411c4668ef6"
+      },
+      {
+        "name": "projected-local-erased-domain",
+        "passed": true,
+        "accepted": true,
+        "sourceSha256": "50fbcb0968610fe942c0a6c8d3cb1cef7192f30fb0b9d225133538f2014d330f",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "projected-local-affine-domain",
+        "passed": true,
+        "accepted": false,
+        "sourceSha256": "90c0502e47e94041001d70f1676ea2954e4b479976c01ce85fa5e9b95fd7ad09"
+      },
+      {
+        "name": "projected-local-invalid-annotation",
+        "passed": true,
+        "accepted": false,
+        "sourceSha256": "80ecec201d2046d02a6c971aaa6366765160b7d38e5f8c4a0cdd221303649707"
+      },
+      {
+        "name": "dependent-match-wrong-index",
+        "passed": true,
+        "accepted": false,
+        "sourceSha256": "2b738c11d14a879d997dfc072bd32c8e979530cf85c91c75f385086e4c6662bc"
+      }
+    ],
+    "semanticParserApprovals": [
+      {
+        "phase": "stage-two-parse",
+        "file": "/Users/ilyagulya/bend-g18-native-bit-73936b2c-6d8c-4bb5-907a-cce2236d1342/checkpoints/.bootstrap_compiler_root_remote2039g18.bend",
+        "sourceSha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+        "parserSha256": "9c6bf26912514c3d1ce668329f735d76d1e05817498b93c939f0a26b9be3b18d",
+        "oracleAccepted": true,
+        "fullSemanticAST": true,
+        "semanticParity": true
+      },
+      {
+        "phase": "stage-two-parse",
+        "file": "/Users/ilyagulya/bend-g18-native-bit-73936b2c-6d8c-4bb5-907a-cce2236d1342/bend2/base.bend",
+        "sourceSha256": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+        "parserSha256": "9c6bf26912514c3d1ce668329f735d76d1e05817498b93c939f0a26b9be3b18d",
+        "oracleAccepted": true,
+        "fullSemanticAST": true,
+        "semanticParity": true
+      },
+      {
+        "phase": "stage-two-parse",
+        "file": "/Users/ilyagulya/bend-g18-native-bit-73936b2c-6d8c-4bb5-907a-cce2236d1342/bend2/selfhost/ast.bend",
+        "sourceSha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+        "parserSha256": "9c6bf26912514c3d1ce668329f735d76d1e05817498b93c939f0a26b9be3b18d",
+        "oracleAccepted": true,
+        "fullSemanticAST": true,
+        "semanticParity": true
+      },
+      {
+        "phase": "stage-two-parse",
+        "file": "/Users/ilyagulya/bend-g18-native-bit-73936b2c-6d8c-4bb5-907a-cce2236d1342/bend2/selfhost/lexer.bend",
+        "sourceSha256": "a81265d4ab248c5ea74bf52987e1163773866a01b264ff1a98895d91139d6f53",
+        "parserSha256": "9c6bf26912514c3d1ce668329f735d76d1e05817498b93c939f0a26b9be3b18d",
+        "oracleAccepted": true,
+        "fullSemanticAST": true,
+        "semanticParity": true
+      },
+      {
+        "phase": "stage-two-parse",
+        "file": "/Users/ilyagulya/bend-g18-native-bit-73936b2c-6d8c-4bb5-907a-cce2236d1342/bend2/selfhost/core.bend",
+        "sourceSha256": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+        "parserSha256": "9c6bf26912514c3d1ce668329f735d76d1e05817498b93c939f0a26b9be3b18d",
+        "oracleAccepted": true,
+        "fullSemanticAST": true,
+        "semanticParity": true
+      },
+      {
+        "phase": "stage-two-parse",
+        "file": "/Users/ilyagulya/bend-g18-native-bit-73936b2c-6d8c-4bb5-907a-cce2236d1342/bend2/selfhost/loaded_module.bend",
+        "sourceSha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+        "parserSha256": "9c6bf26912514c3d1ce668329f735d76d1e05817498b93c939f0a26b9be3b18d",
+        "oracleAccepted": true,
+        "fullSemanticAST": true,
+        "semanticParity": true
+      },
+      {
+        "phase": "stage-two-parse",
+        "file": "/Users/ilyagulya/bend-g18-native-bit-73936b2c-6d8c-4bb5-907a-cce2236d1342/bend2/selfhost/backend_ir.bend",
+        "sourceSha256": "162a554cec1c9e1b5edab69b5cfae730c70886548f4f51603a7537845ab5ec48",
+        "parserSha256": "9c6bf26912514c3d1ce668329f735d76d1e05817498b93c939f0a26b9be3b18d",
+        "oracleAccepted": true,
+        "fullSemanticAST": true,
+        "semanticParity": true
+      },
+      {
+        "phase": "stage-two-parse",
+        "file": "/Users/ilyagulya/bend-g18-native-bit-73936b2c-6d8c-4bb5-907a-cce2236d1342/bend2/selfhost/checked_frontend.bend",
+        "sourceSha256": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+        "parserSha256": "9c6bf26912514c3d1ce668329f735d76d1e05817498b93c939f0a26b9be3b18d",
+        "oracleAccepted": true,
+        "fullSemanticAST": true,
+        "semanticParity": true
+      },
+      {
+        "phase": "stage-two-parse",
+        "file": "/Users/ilyagulya/bend-g18-native-bit-73936b2c-6d8c-4bb5-907a-cce2236d1342/bend2/selfhost/checker_arena.bend",
+        "sourceSha256": "2d094dd95dc1c2319b77349a028addee4689288d7b476078b6f16e179cb9afeb",
+        "parserSha256": "9c6bf26912514c3d1ce668329f735d76d1e05817498b93c939f0a26b9be3b18d",
+        "oracleAccepted": true,
+        "fullSemanticAST": true,
+        "semanticParity": true
+      },
+      {
+        "phase": "stage-two-parse",
+        "file": "/Users/ilyagulya/bend-g18-native-bit-73936b2c-6d8c-4bb5-907a-cce2236d1342/bend2/selfhost/scope_lookup.bend",
+        "sourceSha256": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
+        "parserSha256": "9c6bf26912514c3d1ce668329f735d76d1e05817498b93c939f0a26b9be3b18d",
+        "oracleAccepted": true,
+        "fullSemanticAST": true,
+        "semanticParity": true
+      },
+      {
+        "phase": "stage-two-parse",
+        "file": "/Users/ilyagulya/bend-g18-native-bit-73936b2c-6d8c-4bb5-907a-cce2236d1342/bend2/selfhost/checker_ir.bend",
+        "sourceSha256": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+        "parserSha256": "9c6bf26912514c3d1ce668329f735d76d1e05817498b93c939f0a26b9be3b18d",
+        "oracleAccepted": true,
+        "fullSemanticAST": true,
+        "semanticParity": true
+      },
+      {
+        "phase": "stage-two-parse",
+        "file": "/Users/ilyagulya/bend-g18-native-bit-73936b2c-6d8c-4bb5-907a-cce2236d1342/bend2/selfhost/index_lookup.bend",
+        "sourceSha256": "a178b0d5b135490634e1c85efaa0a8d1e0c34c94610615ecf822da6a2932f31d",
+        "parserSha256": "9c6bf26912514c3d1ce668329f735d76d1e05817498b93c939f0a26b9be3b18d",
+        "oracleAccepted": true,
+        "fullSemanticAST": true,
+        "semanticParity": true
+      },
+      {
+        "phase": "stage-two-parse",
+        "file": "/Users/ilyagulya/bend-g18-native-bit-73936b2c-6d8c-4bb5-907a-cce2236d1342/checkpoints/template_steps_v1.bend",
+        "sourceSha256": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4",
+        "parserSha256": "9c6bf26912514c3d1ce668329f735d76d1e05817498b93c939f0a26b9be3b18d",
+        "oracleAccepted": true,
+        "fullSemanticAST": true,
+        "semanticParity": true
+      },
+      {
+        "phase": "stage-two-parse",
+        "file": "/Users/ilyagulya/bend-g18-native-bit-73936b2c-6d8c-4bb5-907a-cce2236d1342/bend2/selfhost/sha256.bend",
+        "sourceSha256": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+        "parserSha256": "9c6bf26912514c3d1ce668329f735d76d1e05817498b93c939f0a26b9be3b18d",
+        "oracleAccepted": true,
+        "fullSemanticAST": true,
+        "semanticParity": true
+      },
+      {
+        "phase": "stage-two-parse",
+        "file": "/Users/ilyagulya/bend-g18-native-bit-73936b2c-6d8c-4bb5-907a-cce2236d1342/bend2/selfhost/path.bend",
+        "sourceSha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+        "parserSha256": "9c6bf26912514c3d1ce668329f735d76d1e05817498b93c939f0a26b9be3b18d",
+        "oracleAccepted": true,
+        "fullSemanticAST": true,
+        "semanticParity": true
+      },
+      {
+        "phase": "stage-two-parse",
+        "file": "/Users/ilyagulya/bend-g18-native-bit-73936b2c-6d8c-4bb5-907a-cce2236d1342/checkpoints/checker_core_steps_v1.bend",
+        "sourceSha256": "93e8fd5ce7aafe40084d1b0023eff79de18cb6f00b625cab43b002535cfe288f",
+        "parserSha256": "9c6bf26912514c3d1ce668329f735d76d1e05817498b93c939f0a26b9be3b18d",
+        "oracleAccepted": true,
+        "fullSemanticAST": true,
+        "semanticParity": true
+      },
+      {
+        "phase": "stage-two-parse",
+        "file": "/Users/ilyagulya/bend-g18-native-bit-73936b2c-6d8c-4bb5-907a-cce2236d1342/checkpoints/emitter_steps_v1.bend",
+        "sourceSha256": "e73baadfada36d919619746607593e928e82a338073c5b73e200d66d2d69a05a",
+        "parserSha256": "9c6bf26912514c3d1ce668329f735d76d1e05817498b93c939f0a26b9be3b18d",
+        "oracleAccepted": true,
+        "fullSemanticAST": true,
+        "semanticParity": true
+      },
+      {
+        "phase": "stage-two-parse",
+        "file": "/Users/ilyagulya/bend-g18-native-bit-73936b2c-6d8c-4bb5-907a-cce2236d1342/bend2/selfhost/c_backend_sharing.bend",
+        "sourceSha256": "78992d00aad3a458dd6b9ea424edf0de61c95b54487f92cd53283e705488c35f",
+        "parserSha256": "9c6bf26912514c3d1ce668329f735d76d1e05817498b93c939f0a26b9be3b18d",
+        "oracleAccepted": true,
+        "fullSemanticAST": true,
+        "semanticParity": true
+      }
+    ]
+  },
+  "separateDiagnostic": {
+    "scope": "Standalone complete checking of the equivalent local full root using the authentic g18 stage-one image. V8 inspector CPU sampling was enabled only late in check. This is not the original full bootstrap, not a byte fixedpoint and not a matched-host timing comparison.",
+    "command": [
+      "env",
+      "BUN_JSC_forceRAMSize=4294967296",
+      "/tmp/bend2039g8-accepted-mac-evidence/bun-1.4.3",
+      "evals/heavy_gate.ts",
+      "--memory-mib",
+      "8192",
+      "--rss-mib",
+      "8192",
+      "--poll-ms",
+      "10",
+      "--timeout-ms",
+      "600000",
+      "--",
+      "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "/tmp/bend-g17-node-check-worker.mjs",
+      "/tmp/bend-g18-whole-check-cpu.mjs",
+      "/private/tmp/bend2039g18-map-bit/checkpoints/.bootstrap_compiler_root_probe2039g18.bend",
+      "/tmp/bend-g18-stage-one.js"
+    ],
+    "status": "CHECK_COMPLETED",
+    "source": "/private/tmp/bend2039g18-map-bit/checkpoints/.bootstrap_compiler_root_probe2039g18.bend",
+    "image": "/private/tmp/bend-g18-stage-one.js",
+    "imageSha256": "9c6bf26912514c3d1ce668329f735d76d1e05817498b93c939f0a26b9be3b18d",
+    "runtime": {
+      "execPath": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "versions": {
+        "node": "23.11.0",
+        "acorn": "8.14.1",
+        "ada": "3.2.1",
+        "amaro": "0.4.1",
+        "ares": "1.34.4",
+        "brotli": "1.1.0",
+        "cjs_module_lexer": "2.1.0",
+        "cldr": "46.0",
+        "icu": "76.1",
+        "llhttp": "9.2.1",
+        "modules": "131",
+        "napi": "10",
+        "nbytes": "0.1.1",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.64.0",
+        "openssl": "3.0.16",
+        "simdjson": "3.12.2",
+        "simdutf": "6.0.3",
+        "sqlite": "3.49.1",
+        "tz": "2025a",
+        "undici": "6.21.2",
+        "unicode": "16.0",
+        "uv": "1.50.0",
+        "uvwasi": "0.0.21",
+        "v8": "12.9.202.28-node.14",
+        "zlib": "1.3.0.1-motley-788cb3c",
+        "zstd": "1.5.6"
+      }
+    },
+    "phases": [
+      {
+        "phase": "parse",
+        "wallMs": 27298.342083,
+        "modules": 18
+      },
+      {
+        "phase": "expand",
+        "wallMs": 11019.656625
+      },
+      {
+        "phase": "check",
+        "wallMs": 266920.136458,
+        "cpuUs": {
+          "user": 296713674,
+          "system": 4036407
+        },
+        "steps": 9784545
+      }
+    ],
+    "inputs": {
+      "/private/tmp/bend2039g18-map-bit/checkpoints/.bootstrap_compiler_root_probe2039g18.bend": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+      "/private/tmp/bend2039g18-map-bit/bend2/base.bend": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+      "/private/tmp/bend2039g18-map-bit/bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+      "/private/tmp/bend2039g18-map-bit/bend2/selfhost/lexer.bend": "a81265d4ab248c5ea74bf52987e1163773866a01b264ff1a98895d91139d6f53",
+      "/private/tmp/bend2039g18-map-bit/bend2/selfhost/core.bend": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+      "/private/tmp/bend2039g18-map-bit/bend2/selfhost/loaded_module.bend": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+      "/private/tmp/bend2039g18-map-bit/bend2/selfhost/backend_ir.bend": "162a554cec1c9e1b5edab69b5cfae730c70886548f4f51603a7537845ab5ec48",
+      "/private/tmp/bend2039g18-map-bit/bend2/selfhost/checked_frontend.bend": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+      "/private/tmp/bend2039g18-map-bit/bend2/selfhost/checker_arena.bend": "2d094dd95dc1c2319b77349a028addee4689288d7b476078b6f16e179cb9afeb",
+      "/private/tmp/bend2039g18-map-bit/bend2/selfhost/scope_lookup.bend": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
+      "/private/tmp/bend2039g18-map-bit/bend2/selfhost/checker_ir.bend": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+      "/private/tmp/bend2039g18-map-bit/bend2/selfhost/index_lookup.bend": "a178b0d5b135490634e1c85efaa0a8d1e0c34c94610615ecf822da6a2932f31d",
+      "/private/tmp/bend2039g18-map-bit/checkpoints/template_steps_v1.bend": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4",
+      "/private/tmp/bend2039g18-map-bit/bend2/selfhost/sha256.bend": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+      "/private/tmp/bend2039g18-map-bit/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+      "/private/tmp/bend2039g18-map-bit/checkpoints/checker_core_steps_v1.bend": "93e8fd5ce7aafe40084d1b0023eff79de18cb6f00b625cab43b002535cfe288f",
+      "/private/tmp/bend2039g18-map-bit/checkpoints/emitter_steps_v1.bend": "e73baadfada36d919619746607593e928e82a338073c5b73e200d66d2d69a05a",
+      "/private/tmp/bend2039g18-map-bit/bend2/selfhost/c_backend_sharing.bend": "78992d00aad3a458dd6b9ea424edf0de61c95b54487f92cd53283e705488c35f"
+    },
+    "profilePath": "/tmp/bend-g18-whole-check-cpu-HBIfo5/check.cpuprofile",
+    "guardian": {
+      "status": "PASS",
+      "elapsedMs": 306333,
+      "peakRssBytes": 2674196480,
+      "peakFootprintBytes": 2401648048,
+      "timeoutMs": 600000,
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  }
+}
