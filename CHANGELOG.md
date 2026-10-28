@@ -52,9 +52,10 @@ latest one; the GitHub release carries the same notes.
   10,622,986 advances in 386.899 s, exactly matching native's advance count;
   this does not reclassify the failed bootstrap. R9 seeds private entries only
   for codes named by direct-call sites, avoiding private/boxed round trips for
-  indirect-only code. All twelve emitted-JS consumers pass; full qualification
-  of this version is pending.
-  Full qualification remains failed: r1/r2/r4/r6/r7/r8 stopped at the original
+  indirect-only code. All twelve emitted-JS consumers pass. Full R9 qualification
+  still timed out during stage2 checking after validating 13,048 definitions /
+  13,672 events and all 95 native seed fixtures; stage1 is 47,703,851 bytes.
+  Full qualification remains failed: r1/r2/r4/r6/r7/r8/r9 stopped at the original
   bootstrap deadline. R4 validated all 12,974 definitions / 13,596 events,
   passed all95 native seed fixtures and produced a53,261,354-byte stage1,
   but stage2 checking did not finish. R3 exceeded the original8-GiB RSS guard

@@ -51,7 +51,11 @@ R8 не переклассифицирован. В image 6 249 private bodies и
 из своего boxed adapter. R9 ограничивает начальный private candidate set
 целями Direct/TailDirect из code-body facts; indirect-only code остаётся boxed.
 Два независимых source review PASS; все 12 emitted-JS consumers PASS.
-Далее — полный unobserved R9 build/bootstrap/consumer/performance, guards прежние.
+Полный R9 тоже FAIL: 13 048 definitions / 13 672 events, все 95 seed fixtures
+PASS. Stage1 — 47 703 851 bytes; native emit 47 001 ms / 4 086 813 advances.
+Stage2 начал check на 226 022 ms, но guard 600 057 ms снова остановил run.
+Private-entry отбор уменьшил image, но не решил timeout. Далее — измерить
+остаточную стоимость JS checker и добиться полного fixedpoint; guards прежние.
 Принятым остаётся G23 ниже.
 Точные команды и границы:
 `evals/receipts/root2039g24_failed_attempts.json`,
@@ -61,6 +65,7 @@ R8 не переклассифицирован. В image 6 249 private bodies и
 `evals/receipts/root2039g24r6_rejected.json`,
 `evals/receipts/root2039g24r7_rejected.json`,
 `evals/receipts/root2039g24r8_rejected.json`,
+`evals/receipts/root2039g24r9_rejected.json`,
 `evals/receipts/producer2039g24r8_complete_check.json`,
 `evals/receipts/producer2039g24r9_source_smoke.json`,
 `evals/receipts/producer2039g24r4_diagnostic.json`,
