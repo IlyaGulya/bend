@@ -23,6 +23,11 @@ latest one; the GitHub release carries the same notes.
   check takes 266.920 s; it is diagnostic, not full-bootstrap acceptance.
   Receipts: `evals/receipts/producer2039g18_native_bit_consumers.json` and
   `evals/receipts/root2039g18_bootstrap_rejected.json`.
+  Both complete 47-case C/JS matrices, 33 native target/library consumers
+  and five nested host consumers subsequently pass. The separate boundary
+  probe had an invalid positive source (`def main()` without its law);
+  the canonical parser rejects it too. Full-chain acceptance stays failed.
+  Receipt: `evals/receipts/root2039g18_full_companions_rejected.json`.
 
 - The g16 candidate fixes nested inline-data C conversions: one-arm values
   have no tag switch, multi-arm values retain their destination tag, each
