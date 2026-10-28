@@ -1,0 +1,254 @@
+{
+  "schemaVersion": 1,
+  "status": "G22_TINY_INLINE_C_CONSUMER_SMOKE_PASS_FULL_ACCEPTANCE_PENDING",
+  "issue": "bend-nxf.14",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "baselineCheckpoint": "bbf74ef8",
+  "scope": "Only host AINLINE on cls_fit and six tiny bit/load term accessors. Ordinary INLINE/DFAR and device expansions unchanged.",
+  "compilerSha256": "030492cf37c416f769440b0ae35ed95e672bb4d33966178623bf47643d426da7",
+  "host": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "osRelease": "25.6.0",
+    "osVersion": "Darwin Kernel Version 25.6.0: Fri Jul 31 19:18:49 PDT 2026; root:xnu-12377.161.14~5/RELEASE_ARM64_T6000",
+    "cpu": "Apple M1 Max",
+    "logicalCpus": 10,
+    "memoryBytes": 68719476736
+  },
+  "node": {
+    "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5",
+    "version": "23.11.0"
+  },
+  "helpers": [
+    "term_tag",
+    "term_rfc",
+    "term_aux",
+    "term_loc",
+    "term_triv",
+    "term_peek",
+    "cls_fit"
+  ],
+  "noNoncallHelperUsesInAcceptedC": true,
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 298582016,
+    "peakFootprintBytes": 230330888,
+    "elapsedMs": 3573,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "/tmp/bend-g22-tiny-smoke.mjs"
+    ],
+    "label": "heavy command",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793169686698-cd42e511d0727548.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "rows": [
+    {
+      "source": "tests/run/native_numeric_boundaries.bend",
+      "sourceSha256": "cc0d73e8727f3980541b2269b8082a3a454e76f4f0bea3bf0d69372c2773a93b",
+      "cSha256": "d957a23db4b2edec43432854d6e34cba2c57f740027c130fc39adedee3a7f7e9",
+      "artifactSha256": "77e8e0054f5f5f17c1829f696700b22cd55ebe580e6dbfd01fe2d6cc375e6558",
+      "emit": {
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "/tmp/bend-g14-canonical-worker.mjs",
+          "tests/run/native_numeric_boundaries.bend",
+          "/private/tmp/bend-g22-tiny-smoke-co2m4F/native_numeric_boundaries.c"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 292.013292,
+        "stdout": "{\"status\":\"CANONICAL_PROGRAM_EMITTED\",\"source\":\"/private/tmp/bend2039g22-tiny-inline/tests/run/native_numeric_boundaries.bend\",\"output\":\"/private/tmp/bend-g22-tiny-smoke-co2m4F/native_numeric_boundaries.c\",\"events\":509,\"bytes\":110758}\n",
+        "stderrSha256": "7e5e59b7139dd265f92e1e2206a09ea8a9348a52e27b3cf56af1e56c38527c45"
+      },
+      "cc": {
+        "command": [
+          "/usr/bin/clang",
+          "-std=c11",
+          "-O1",
+          "-pthread",
+          "/private/tmp/bend-g22-tiny-smoke-co2m4F/native_numeric_boundaries.c",
+          "-lm",
+          "-o",
+          "/private/tmp/bend-g22-tiny-smoke-co2m4F/native_numeric_boundaries"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 600.1129169999999,
+        "stdout": "",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "execute": {
+        "command": [
+          "/private/tmp/bend-g22-tiny-smoke-co2m4F/native_numeric_boundaries"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 3.5993330000000014,
+        "stdout": "0\n0\n1\n1\n2\n30\n31\n31\n0\n0\n1\n31\n32\n32\n1\n32\n",
+        "stderr": ""
+      },
+      "expected": "0\n0\n1\n1\n2\n30\n31\n31\n0\n0\n1\n31\n32\n32\n1\n32",
+      "passed": true
+    },
+    {
+      "source": "tests/reg/phys_storage_paths.bend",
+      "sourceSha256": "6c0d3c08a4fe6dfc0f793ec02225a6e92c1a5e7a32508d091a8b12346c297c17",
+      "cSha256": "75bc19f6086a59bcb58bc8671a10dcfa553982ce297ab28df0e71cc5b7ebec18",
+      "artifactSha256": "bc5e3d6dab533b4be5a5df4eb1420684e5af503e0815850f5eaed505ff4edc44",
+      "emit": {
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "/tmp/bend-g14-canonical-worker.mjs",
+          "tests/reg/phys_storage_paths.bend",
+          "/private/tmp/bend-g22-tiny-smoke-co2m4F/phys_storage_paths.c"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 282.90274999999997,
+        "stdout": "{\"status\":\"CANONICAL_PROGRAM_EMITTED\",\"source\":\"/private/tmp/bend2039g22-tiny-inline/tests/reg/phys_storage_paths.bend\",\"output\":\"/private/tmp/bend-g22-tiny-smoke-co2m4F/phys_storage_paths.c\",\"events\":545,\"bytes\":117839}\n",
+        "stderrSha256": "57193864b2874292e495246b4249691f24c909d2717791aa4fd7ebc67ab5f7d1"
+      },
+      "cc": {
+        "command": [
+          "/usr/bin/clang",
+          "-std=c11",
+          "-O1",
+          "-pthread",
+          "/private/tmp/bend-g22-tiny-smoke-co2m4F/phys_storage_paths.c",
+          "-lm",
+          "-o",
+          "/private/tmp/bend-g22-tiny-smoke-co2m4F/phys_storage_paths"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 277.88549999999987,
+        "stdout": "",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "execute": {
+        "command": [
+          "/private/tmp/bend-g22-tiny-smoke-co2m4F/phys_storage_paths"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 3.215208000000075,
+        "stdout": "2655042671\n3,9\n56,15,9;1,5,4\n",
+        "stderr": ""
+      },
+      "expected": "2655042671\n3,9\n56,15,9;1,5,4",
+      "passed": true
+    },
+    {
+      "source": "tests/reg/checker_arena_names.bend",
+      "sourceSha256": "63fc170fe9ba8f6c5ebd53b516e2ea74b84802d0c1f1bc899d250f90be99873d",
+      "cSha256": "2031ee50fe24d0100400919388f3d61f5fd49d914e2b1772f46ed369169161be",
+      "artifactSha256": "b81a9732caa0878e5275d789a933052ed4a7c2440b346c74019093695615bfbc",
+      "emit": {
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "/tmp/bend-g14-canonical-worker.mjs",
+          "tests/reg/checker_arena_names.bend",
+          "/private/tmp/bend-g22-tiny-smoke-co2m4F/checker_arena_names.c"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 489.11420799999973,
+        "stdout": "{\"status\":\"CANONICAL_PROGRAM_EMITTED\",\"source\":\"/private/tmp/bend2039g22-tiny-inline/tests/reg/checker_arena_names.bend\",\"output\":\"/private/tmp/bend-g22-tiny-smoke-co2m4F/checker_arena_names.c\",\"events\":895,\"bytes\":352955}\n",
+        "stderrSha256": "51a2b2f6567a29c6691cdba49b91e308af543b66c43e5b95da620a5bc75cb51b"
+      },
+      "cc": {
+        "command": [
+          "/usr/bin/clang",
+          "-std=c11",
+          "-O1",
+          "-pthread",
+          "/private/tmp/bend-g22-tiny-smoke-co2m4F/checker_arena_names.c",
+          "-lm",
+          "-o",
+          "/private/tmp/bend-g22-tiny-smoke-co2m4F/checker_arena_names"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 864.2903339999998,
+        "stdout": "",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "execute": {
+        "command": [
+          "/private/tmp/bend-g22-tiny-smoke-co2m4F/checker_arena_names"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 3.355416000000332,
+        "stdout": "0\n",
+        "stderr": ""
+      },
+      "expected": "0",
+      "passed": true
+    },
+    {
+      "source": "tests/run/array_fork.bend",
+      "sourceSha256": "8bed7ef93fcd6eeb964ca7ee3c87b9fbe3e2e576716ad647e4e6de265962352f",
+      "cSha256": "56a4676e5583b3a9c3a7a099194dfe9f8f721f6210453eff75bb342d2ad366cf",
+      "artifactSha256": "763c8157683f159eaa5843d352d01b8feff5b5fbe865b47d6b7bc39e6d66e7c3",
+      "emit": {
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "/tmp/bend-g14-canonical-worker.mjs",
+          "tests/run/array_fork.bend",
+          "/private/tmp/bend-g22-tiny-smoke-co2m4F/array_fork.c"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 334.645125,
+        "stdout": "{\"status\":\"CANONICAL_PROGRAM_EMITTED\",\"source\":\"/private/tmp/bend2039g22-tiny-inline/tests/run/array_fork.bend\",\"output\":\"/private/tmp/bend-g22-tiny-smoke-co2m4F/array_fork.c\",\"events\":526,\"bytes\":118716}\n",
+        "stderrSha256": "ce2d4c362b52ef038ac3fa7b4cd9939047e9af8131e47fc4d3a25c4b9710d7fe"
+      },
+      "cc": {
+        "command": [
+          "/usr/bin/clang",
+          "-std=c11",
+          "-O1",
+          "-pthread",
+          "/private/tmp/bend-g22-tiny-smoke-co2m4F/array_fork.c",
+          "-lm",
+          "-o",
+          "/private/tmp/bend-g22-tiny-smoke-co2m4F/array_fork"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 268.86749999999984,
+        "stdout": "",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "execute": {
+        "command": [
+          "/private/tmp/bend-g22-tiny-smoke-co2m4F/array_fork"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 3.672624999999698,
+        "stdout": "136\n100\n100\n96\n99\n156\n42\n42\n7\n8\n12\n845495236\n",
+        "stderr": ""
+      },
+      "expected": "136\n100\n100\n96\n99\n156\n42\n42\n7\n8\n12\n845495236",
+      "passed": true
+    }
+  ]
+}

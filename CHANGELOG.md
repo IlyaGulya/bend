@@ -5,6 +5,13 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- The G22 candidate forces host inlining only for seven tiny term/size
+  accessors before LLVM partitioning; ordinary `INLINE`, device code and
+  loop/segment policies are unchanged. Four real C consumers pass.
+  Full native/bootstrap/performance qualification is pending; this is not
+  an accepted compiler or a speedup claim.
+  Receipt: `evals/receipts/producer2039g22_tiny_inline_smoke.json`.
+
 - THR-01 records three sequential full-root runs per implementation on an
   Apple M1 Max: median TS 17.870 s, native G21 172.797 s, emitted JS
   347.525 s. A separate native checker sample identifies out-of-line tiny

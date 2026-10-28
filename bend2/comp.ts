@@ -4188,6 +4188,14 @@ using namespace metal;
 #endif
 #define FAR static __attribute__((noinline))
 
+// Keep tiny word/load helpers inside callers before a host LLVM split.
+// Ordinary INLINE also covers large spins and must remain discretionary.
+#if DEVICE
+#define AINLINE INLINE
+#else
+#define AINLINE INLINE __attribute__((always_inline))
+#endif
+
 // The device inlines a spin once per caller, so a long one is a call there.
 // The host lets clang decide.
 #if DEVICE
@@ -4608,7 +4616,7 @@ INLINE void bank_push(DEV u64* H, u32 c, u64 head) {
 #define ALC_COLD(e, c) ALC_AT(e, 2 * NCLS_ALL + (c))
 #define KEEP(c)        (KEEP_WORDS >> (c) ? KEEP_WORDS >> (c) : 1)
 
-INLINE u32 cls_fit(u32 words) {
+AINLINE u32 cls_fit(u32 words) {
   return words > 1 ? 32 - CLZ(words - 1) : 0;
 }
 
@@ -4704,23 +4712,23 @@ INLINE Term term_blk(bool arr, u32 cls, u64 loc) {
   return term_make(arr ? TAG_ARR : TAG_BUF, cls, loc);
 }
 
-INLINE u64 term_tag(Term t) {
+AINLINE u64 term_tag(Term t) {
   return (t >> 56) & 0x7f;
 }
 
-INLINE bool term_rfc(Term t) {
+AINLINE bool term_rfc(Term t) {
   return (t & RFC_BIT) != 0;
 }
 
-INLINE u64 term_aux(Term t) {
+AINLINE u64 term_aux(Term t) {
   return (t >> 40) & 0xFFFF;
 }
 
-INLINE u64 term_loc(Term t) {
+AINLINE u64 term_loc(Term t) {
   return t & LOC_MASK;
 }
 
-INLINE bool term_triv(Term t) {
+AINLINE bool term_triv(Term t) {
   return term_tag(t) <= TAG_PAK || t == TERM_HOLE || term_loc(t) < HEAP_OFF;
 }
 
@@ -4764,7 +4772,7 @@ INLINE Term term_keep(Env e, Term t, u32 k) {
 // the cell in one relaxed 64-bit load; the device's plain load may tear into
 // two halves, both holding the same loc. A shared node's fields never change
 // either, so ctr_take copies them before it acquires.
-INLINE u64 term_peek(DEV u64* H, Term t) {
+AINLINE u64 term_peek(DEV u64* H, Term t) {
   if (term_rfc(t)) {
     return w64_load(&H[term_loc(t)]) >> 24;
   }
