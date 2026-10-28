@@ -18499,7 +18499,7 @@
     "bend2/base.bend": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
     "evals/heavy_gate.ts": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015",
     "evals/validation_profile.ts": "d0bfd8124b334cb1db4792e49675290a971ae82730e57029173b07ff23d6938d",
-    "checkpoints/checker-core-owned-source-v1.json": "5a8c895e57071dfd16379b61372948d8bb1bbd0d7de347f64e27e27d4f183a4d",
+    "checkpoints/checker-core-owned-source-v1.json": "3ecb7f9d98a61d58b383e489bbc6195ad0b56c053baebaa3184533d490c29425",
     "evals/checker_core_step_lower.ts": "21a47855e891ab115fb2ce4c70b7b699b376c6488f2505b7f0d6893f8d66daf9",
     "evals/checker_core_owned_source.ts": "7b9fc4fb80aa87ef0ce44310031e5bfe909f8abd9672f16609c435daa87eb450",
     "evals/emitter_step_lower.ts": "38c49a093bb91b16d058baba69303a15277e40bbeeb3aff1bf4ec0c1831817b3",
@@ -18519,10 +18519,10 @@
     "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
     "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/loaded_module.bend": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
     "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checked_frontend.bend": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
-    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/backend_ir.bend": "162a554cec1c9e1b5edab69b5cfae730c70886548f4f51603a7537845ab5ec48",
-    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_backend_sharing.bend": "78992d00aad3a458dd6b9ea424edf0de61c95b54487f92cd53283e705488c35f",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/backend_ir.bend": "c0286db6b192bf5cc917774b7ea5e393d4416263432eb130fb8393b1dffc1cb3",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_backend_sharing.bend": "05adf4ac68b0658425f7fce430709f67bd29c3f1f8a43727412661084c4dbe2c",
     "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/emitter.bend": "47d68ba5f0b54c334e2c940b7bb6aabc7f3bba27142b816f27df8225cf3fae4f",
-    "/Users/ilyagulya/Projects/My/bend/checkpoints/emitter_owned_v1.bend": "4077fb6394642c6c889a90dd9f65027fe72a0c5dd84a690bda846abf66cd0900",
+    "/Users/ilyagulya/Projects/My/bend/checkpoints/emitter_owned_v1.bend": "8d82537fa6e02f07e88eb1cbd378223e7d3f75599df34265dc9fb24358e05fac",
     "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/core.bend": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
     "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/sha256.bend": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
     "bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
@@ -18541,5 +18541,5 @@
     "nativeBuildRun": false,
     "testsRun": false
   },
-  "generationManifestSha256": "c97e08541ec25fb34a7f6c2018934e220751b0e471178b273b181ec43cee72bc"
+  "generationManifestSha256": "0f7f4922182e1475f285c101085510bea0becbcdb51b06b7b2b0ac1e788f6c3d"
 }

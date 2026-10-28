@@ -1,4 +1,4 @@
-# js multi-result: a record that crosses the host seam keeps the object it was
+# A record that crosses the host seam keeps the object it was
 # given. The effect builds a host object with its own extra key, an own getter
 # and a private prototype, then applies two closures that forward the same
 # record and one that matches it. Each forwarder must return that object

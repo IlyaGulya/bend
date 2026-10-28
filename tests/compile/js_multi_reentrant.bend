@@ -1,11 +1,6 @@
-# js multi-result: a host effect reenters compiled code while the caller's
-# split still owns its capture slots, throws through the machine, and then
-# calls the machine again. The reentered calls run the same record chain as
-# the outer program, so their result windows sit above the outer frame's own
-# slots; the outer continuation then reads the outer capture and materializes
-# a record of its own. A window that moved, cleared, or reused the caller's
-# base would change the printed numbers, and an unwind that lost the outer
-# scheduler would fail the second call.
+# A host effect reenters compiled code while the caller owns capture slots,
+# throws through the machine, and then calls it again. Reentered record chains
+# must not overwrite the outer capture or lose its scheduler during unwind.
 import Base
 
 type JsMultiSched is Data:

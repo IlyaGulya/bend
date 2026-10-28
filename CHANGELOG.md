@@ -13,17 +13,13 @@ latest one; the GitHub release carries the same notes.
   uses literal keys while retaining the computed `__proto__` spelling.
   `String.cmp` now also has a stack-bounded JS intrinsic, preserving full-U32
   character order and the returned string pair; 50,000-character comparisons
-  pass on C and JS. The JS backend carries proven internal record results and
-  parameters as tag/field words across direct and tail calls, while boxed
-  public entries preserve host identity and getters. Local scalar replacement
-  runs before result-window and capture planning in every rendering lane;
-  admission narrows monotonically, refusing unsupported owners individually.
-  Boxed tail calls stay in the boxed convention instead of immediately
-  reconstructing a private result. Seven actual emitted-JS regression cases
-  pass, including overlapping live results, reentrancy, arity boundaries and
-  boxed escape. A private incoming parameter remains decomposed when its
-  callee's result escapes to storage; the parameterized regression reproduces
-  the prior missing-local exception and passes with the repaired emitter.
+  pass on C and JS. Earlier G24 revisions transported internal record results
+  and parameters as tag/field words across direct and tail calls, with boxed
+  public entries. Local scalar replacement preceded result-window and capture
+  planning; admission narrowed monotonically, refusing unsupported owners.
+  Seven emitted-JS cases covered overlapping results, reentrancy, arity and
+  boxed escape. A parameterized regression reproduced a missing-local exception
+  when a private incoming parameter's callee result escaped to storage.
   R6 tried the bounded direct-call continuation protocol for compiler-owned
   unary applications; host callbacks retained their public calling convention.
   Eight emitted-JS cases and a separate exception/region runtime smoke passed.
@@ -42,6 +38,12 @@ latest one; the GitHub release carries the same notes.
   and 95 seed fixtures passed; stage2 checking took 349.031 s and emission
   began at 576.465 s, before the original 600-s guard stopped the run.
   No R11 fixedpoint or performance acceptance is claimed.
+  R12 removes the interprocedural result-window solver, private/public body
+  duplication and boxing adapters entirely: calls and returns use one ordinary
+  boxed convention. Local scalar replacement, literal-field rendering,
+  unescaped-string reuse and the general Map.find intrinsic remain. Fifteen
+  C/JS smoke cases pass, including 32/33-live-argument calls; independent source
+  review found no concrete lost-behavior defect. Full qualification is pending.
   R6 passed the full
   native build and 95 seed fixtures, but its 57,228,966-byte stage1 did not
   finish stage2 checking before the original bootstrap deadline.

@@ -1,8 +1,6 @@
-# js backend: a nested pattern that can fail leaves one case and resumes the
-# remaining ones, and a case that calls before its own leave keeps a private
-# region frame while the neighbouring arm joins. The record each arm takes apart
-# is bound, not boxed, across that leave, and the tail call that walks the loop
-# carries a freshly built record into the same destructuring.
+# A failing nested pattern resumes the remaining cases. Calls before a case
+# leaves retain its region frame and record fields; tail recursion carries a
+# fresh record through the same destructuring.
 import Base
 
 type Node is Data:

@@ -1,19 +1,7 @@
-# js multi-result: a scheduler-shaped chain whose steps hand a record to the
-# next code instead of allocating one object per step.
-#
-# `settle` is the producer: every arm builds one of four constructors, so one
-# window width covers the program while the live keys differ. JsMultiRun{fuel,
-# pc} and JsMultiStep{pc, fuel} put a different key in the same slot,
-# JsMultiMark's first field is erased, and JsMultiHalt is narrower. `roll`
-# forwards a record through a tail call, `chunk` recurses past 64 frames, and
-# its zero arm returns its own parameter, so a forwarded result is destructured
-# by the next `settle`. `stash` is an ordinary boxed consumer: its tuple field
-# can only hold a real record, so the private result is materialized exactly
-# once before it is stored, and `describe` reads the fields back. `relay` feeds
-# its own decomposed parameter into a selected call whose result it stores, so
-# that call must expand the parameter and keep the private convention. `unwrap`
-# is the nested-pattern region shape: its arms nest constructor patterns that can
-# fail, and each arm calls `scale` before it leaves.
+# A scheduler-shaped record chain covers different constructor field orders,
+# erased fields, narrower arms, tail forwarding and recursion past 64 frames.
+# Stored and overlapping results must remain independent. Nested patterns can
+# fail and fall through after a call without losing the surrounding frame.
 import Base
 
 type JsMultiSched is Data:
@@ -88,8 +76,7 @@ def escape_after_forward() -> U32:
   y = roll(x)
   stash_read(stash(y))
 
-# A private parameter must stay decomposed through the call; its stored result
-# is boxed once. The parameterized entry reaches the rewritten call path.
+# Forward a parameter through a call whose result is stored before it is read.
 def relay(r: JsMultiSched) -> JsMultiSched:
   p = stash(roll(r))
   JsMultiHalt{stash_read(p)}
@@ -97,8 +84,7 @@ def relay(r: JsMultiSched) -> JsMultiSched:
 def relay_reach(z: U32) -> U32:
   describe(settle(relay(JsMultiHalt{z})))
 
-# Scalar parameter flags shrink before arity is decided. The tail chain must
-# never stop relaxation at equal counts with different flags.
+# Mutually recursive forwarding preserves fields through the entire tail chain.
 def quad_a(a: U32, b: U32, c: U32, d: U32, e: U32, f: U32, g: U32, h: U32, i: U32) -> JsMultiQuad:
   JsMultiQuad{U32.add(a, b), U32.add(c, d), U32.add(e, f), U32.add(g, U32.add(h, i))}
 

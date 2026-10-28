@@ -78,6 +78,13 @@ C использует существующий owned cursor runtime и обыч
 его до stage2 artifact. Fixedpoint/performance acceptance нет.
 Receipt: `evals/receipts/producer2039g24r11_map_find_smoke.json`.
 `evals/receipts/root2039g24r11_rejected.json`.
+R12 удаляет межпроцедурные result windows, solver, private/public дубли тел
+и boxing adapters: обычный boxed call/return остаётся единственным путём.
+Local scalar replacement, literal fields, unescaped-string reuse и общий
+Map.find intrinsic сохранены. Проверены 15 C/JS consumers и те же 14 JS
+artifacts на JavaScriptCore, включая новую границу 32/33 live arguments.
+Независимый bounded source review PASS; полная квалификация ещё не завершена.
+Receipt: `evals/receipts/producer2039g24r12_boxed_smoke.json`.
 Принятым остаётся G23 ниже.
 Точные команды и границы:
 `evals/receipts/root2039g24_failed_attempts.json`,
