@@ -1,0 +1,1720 @@
+{
+  "schemaVersion": 1,
+  "status": "R12_RESTORED_BYTE_AUTHENTICATED_C_JS_MAP_REGRESSIONS_PASS",
+  "acceptedBaseline": {
+    "runId": "local2039g24r12",
+    "sourceCheckpoint": "5916d410",
+    "restoredFrom": "72d2964e",
+    "native": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+      "sha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "bytes": 18808824,
+      "matches": true
+    },
+    "image": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+      "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "bytes": 31758507,
+      "matches": true
+    },
+    "acceptance": {
+      "path": "/Users/ilyagulya/Projects/My/bend/evals/receipts/root2039g24r12_native_fixedpoint.json",
+      "sha256": "cb66ed5542e56516f83d2c04fb80f5ab8597130ab137a4128be8491391911d50",
+      "sourceCheckpoint": "5916d410",
+      "byteFixedpoint": true
+    }
+  },
+  "rejectedCheckpoint": "e1ea3012",
+  "sourceCheckpoint": "09a62103",
+  "coreCheckpoint": "53cd0f47",
+  "scope": "G29 source tail-walk reverted after mandatory paired performance rejection. R12 source/runtime/metadata and regenerated steps authenticated; eight focused canonical C/JS map executions only, not a new full qualification.",
+  "compilerAcceptanceChanged": false,
+  "newFixedpointClaim": false,
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "commands": {
+    "environment": "env HEAVY_GATE_MEMORY_MIB=8192 HEAVY_GATE_RSS_MIB=8192 HEAVY_GATE_POLL_MS=10 HEAVY_GATE_TIMEOUT_MS=600000 BUN_JSC_forceRAMSize=4294967296 ",
+    "restore": "/usr/bin/git restore --source=72d2964e -- bend2/base.bend",
+    "regeneration": [
+      [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/gen_c_runtime.ts"
+      ],
+      [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/checker_core_owned_source.ts"
+      ],
+      [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/checker_core_step_lower.ts"
+      ],
+      [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/template_step_lower.ts"
+      ],
+      [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/emitter_step_lower.ts"
+      ]
+    ],
+    "runtimeCheck": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "evals/gen_c_runtime.ts",
+      "--check"
+    ],
+    "smoke": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "evals/g24_source_smoke.mjs",
+      "--node",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--bun",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--clang",
+      "/usr/bin/clang",
+      "--fixtures",
+      "tests/run/map_bit_native.bend,tests/run/native_map_find_shapes.bend,tests/run/native_map_read_shapes.bend,tests/run/native_map_read_positions.bend",
+      "--targets",
+      "c,js",
+      "--receipt",
+      "/private/tmp/bend-g29-profile-xWLVIr/restored-r12-map-smoke.json"
+    ],
+    "exactShellCommand": "/usr/bin/git restore --source=72d2964e -- bend2/base.bend && env HEAVY_GATE_MEMORY_MIB=8192 HEAVY_GATE_RSS_MIB=8192 HEAVY_GATE_POLL_MS=10 HEAVY_GATE_TIMEOUT_MS=600000 BUN_JSC_forceRAMSize=4294967296 \"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun\" \"evals/gen_c_runtime.ts\" && env HEAVY_GATE_MEMORY_MIB=8192 HEAVY_GATE_RSS_MIB=8192 HEAVY_GATE_POLL_MS=10 HEAVY_GATE_TIMEOUT_MS=600000 BUN_JSC_forceRAMSize=4294967296 \"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun\" \"evals/checker_core_owned_source.ts\" && env HEAVY_GATE_MEMORY_MIB=8192 HEAVY_GATE_RSS_MIB=8192 HEAVY_GATE_POLL_MS=10 HEAVY_GATE_TIMEOUT_MS=600000 BUN_JSC_forceRAMSize=4294967296 \"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun\" \"evals/checker_core_step_lower.ts\" && env HEAVY_GATE_MEMORY_MIB=8192 HEAVY_GATE_RSS_MIB=8192 HEAVY_GATE_POLL_MS=10 HEAVY_GATE_TIMEOUT_MS=600000 BUN_JSC_forceRAMSize=4294967296 \"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun\" \"evals/template_step_lower.ts\" && env HEAVY_GATE_MEMORY_MIB=8192 HEAVY_GATE_RSS_MIB=8192 HEAVY_GATE_POLL_MS=10 HEAVY_GATE_TIMEOUT_MS=600000 BUN_JSC_forceRAMSize=4294967296 \"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun\" \"evals/emitter_step_lower.ts\" && env HEAVY_GATE_MEMORY_MIB=8192 HEAVY_GATE_RSS_MIB=8192 HEAVY_GATE_POLL_MS=10 HEAVY_GATE_TIMEOUT_MS=600000 BUN_JSC_forceRAMSize=4294967296 \"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun\" \"evals/gen_c_runtime.ts\" \"--check\" && env HEAVY_GATE_MEMORY_MIB=8192 HEAVY_GATE_RSS_MIB=8192 HEAVY_GATE_POLL_MS=10 HEAVY_GATE_TIMEOUT_MS=600000 BUN_JSC_forceRAMSize=4294967296 \"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\" \"evals/g24_source_smoke.mjs\" \"--node\" \"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\" \"--bun\" \"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun\" \"--clang\" \"/usr/bin/clang\" \"--fixtures\" \"tests/run/map_bit_native.bend,tests/run/native_map_find_shapes.bend,tests/run/native_map_read_shapes.bend,tests/run/native_map_read_positions.bend\" \"--targets\" \"c,js\" \"--receipt\" \"/private/tmp/bend-g29-profile-xWLVIr/restored-r12-map-smoke.json\""
+  },
+  "runtime": {
+    "node": {
+      "command": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "version": "v23.11.0",
+      "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5"
+    },
+    "bun": {
+      "command": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "version": "1.4.3",
+      "sha256": "28c7dd0a06916aba284d570ef44a2d70e9c538eaf2ba58dfe0910525563b3f79"
+    },
+    "clang": {
+      "command": "/usr/bin/clang",
+      "path": "/usr/bin/clang",
+      "version": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+      "sha256": "b8763cf250e607a778bb4603cecb5b90338814d0a3dfcba0d57b1de242f610e9"
+    }
+  },
+  "byteComparisons": [
+    {
+      "path": "bend2/base.bend",
+      "sha256": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+      "bytes": 81226,
+      "actualSha256": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+      "matches": true
+    },
+    {
+      "path": "bend2/comp.ts",
+      "sha256": "880a9b3b86f273852a39fc664f8c3d7b71e3860b6d365e4321949fc812b6e7cc",
+      "bytes": 235279,
+      "actualSha256": "880a9b3b86f273852a39fc664f8c3d7b71e3860b6d365e4321949fc812b6e7cc",
+      "matches": true
+    },
+    {
+      "path": "bend2/selfhost/backend_ir.bend",
+      "sha256": "c0286db6b192bf5cc917774b7ea5e393d4416263432eb130fb8393b1dffc1cb3",
+      "bytes": 8283,
+      "actualSha256": "c0286db6b192bf5cc917774b7ea5e393d4416263432eb130fb8393b1dffc1cb3",
+      "matches": true
+    },
+    {
+      "path": "bend2/selfhost/lower_catalog.bend",
+      "sha256": "e322065c5ccb0a15f2ab81fd9e6dd689fe8b88ad50535e4f70f503e796164f01",
+      "bytes": 99872,
+      "actualSha256": "e322065c5ccb0a15f2ab81fd9e6dd689fe8b88ad50535e4f70f503e796164f01",
+      "matches": true
+    },
+    {
+      "path": "bend2/selfhost/backend_lower.bend",
+      "sha256": "d5217f4d2117ff9527474847b53caaa6d881570d6fe4a2c24e0af668cfc75b7f",
+      "bytes": 126306,
+      "actualSha256": "d5217f4d2117ff9527474847b53caaa6d881570d6fe4a2c24e0af668cfc75b7f",
+      "matches": true
+    },
+    {
+      "path": "bend2/selfhost/c_backend.bend",
+      "sha256": "71ae3cf1a6d44332d218be095a01fb59bb1b3bdbb606b8ca4e16ead6ca6cd576",
+      "bytes": 221276,
+      "actualSha256": "71ae3cf1a6d44332d218be095a01fb59bb1b3bdbb606b8ca4e16ead6ca6cd576",
+      "matches": true
+    },
+    {
+      "path": "bend2/selfhost/c_backend_physical.bend",
+      "sha256": "b6b3b3b2e0ced250b5b5fdbf4c699cfe1e8867900e3bd7b91ee82bdee3ebc25f",
+      "bytes": 164574,
+      "actualSha256": "b6b3b3b2e0ced250b5b5fdbf4c699cfe1e8867900e3bd7b91ee82bdee3ebc25f",
+      "matches": true
+    },
+    {
+      "path": "bend2/selfhost/c_backend_sharing.bend",
+      "sha256": "05adf4ac68b0658425f7fce430709f67bd29c3f1f8a43727412661084c4dbe2c",
+      "bytes": 126918,
+      "actualSha256": "05adf4ac68b0658425f7fce430709f67bd29c3f1f8a43727412661084c4dbe2c",
+      "matches": true
+    },
+    {
+      "path": "bend2/selfhost/js_backend.bend",
+      "sha256": "9ad0e83cafd243745d7d1b256d3e053258a801350fc5d0e16dd65fec89a35aa0",
+      "bytes": 186486,
+      "actualSha256": "9ad0e83cafd243745d7d1b256d3e053258a801350fc5d0e16dd65fec89a35aa0",
+      "matches": true
+    },
+    {
+      "path": "bend2/selfhost/checker_arena.bend",
+      "sha256": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf",
+      "bytes": 110842,
+      "actualSha256": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf",
+      "matches": true
+    },
+    {
+      "path": "bend2/selfhost/c_runtime.c",
+      "sha256": "6935fa83c1b20b7f8982f04ad54c4e4dae0b9b0ea66fd00f32d169a1d03ac2bf",
+      "bytes": 83931,
+      "actualSha256": "6935fa83c1b20b7f8982f04ad54c4e4dae0b9b0ea66fd00f32d169a1d03ac2bf",
+      "matches": true
+    },
+    {
+      "path": "evals/c_backend_runtime.bend",
+      "sha256": "e8acf220c10f42a7cd82f99948518f0ea2424e073ec5b90419e02e6b64bb2b5a",
+      "bytes": 113124,
+      "actualSha256": "e8acf220c10f42a7cd82f99948518f0ea2424e073ec5b90419e02e6b64bb2b5a",
+      "matches": true
+    },
+    {
+      "path": "evals/gen_c_runtime.ts",
+      "sha256": "e7df0f20694bd365b66b3faac6d26415c02889fa8aad6c31aa71ca5746158246",
+      "bytes": 7193,
+      "actualSha256": "e7df0f20694bd365b66b3faac6d26415c02889fa8aad6c31aa71ca5746158246",
+      "matches": true
+    },
+    {
+      "path": "evals/c_target_fixtures_run.ts",
+      "sha256": "72e446b01a42e9c064a400262953d5a01bccca916a8ecee78aab684114615fb1",
+      "bytes": 13309,
+      "actualSha256": "72e446b01a42e9c064a400262953d5a01bccca916a8ecee78aab684114615fb1",
+      "matches": true
+    },
+    {
+      "path": "tests/run/compiler_rows.bend",
+      "expectedAbsent": true,
+      "absent": true,
+      "matches": true
+    },
+    {
+      "path": "tests/run/compiler_rows_nodes.bend",
+      "expectedAbsent": true,
+      "absent": true,
+      "matches": true
+    },
+    {
+      "path": "tests/compile/compiler_rows_shared.bend",
+      "expectedAbsent": true,
+      "absent": true,
+      "matches": true
+    },
+    {
+      "path": "tests/compile/compiler_rows_drop.bend",
+      "expectedAbsent": true,
+      "absent": true,
+      "matches": true
+    },
+    {
+      "path": "tests/compile/compiler_rows_drop.c",
+      "expectedAbsent": true,
+      "absent": true,
+      "matches": true
+    },
+    {
+      "path": "tests/compile/compiler_rows_drop.js",
+      "expectedAbsent": true,
+      "absent": true,
+      "matches": true
+    },
+    {
+      "path": "checkpoints/checker-core-owned-source-v1.json",
+      "sha256": "3ecb7f9d98a61d58b383e489bbc6195ad0b56c053baebaa3184533d490c29425",
+      "bytes": 4565239,
+      "actualSha256": "3ecb7f9d98a61d58b383e489bbc6195ad0b56c053baebaa3184533d490c29425",
+      "matches": true
+    },
+    {
+      "path": "checkpoints/checker-core-steps-v1.json",
+      "sha256": "cd973ad57134f08587515330c65e44a9fb864f41470a4edf32e5c8f48fb767d6",
+      "bytes": 5727110,
+      "actualSha256": "cd973ad57134f08587515330c65e44a9fb864f41470a4edf32e5c8f48fb767d6",
+      "matches": true
+    }
+  ],
+  "generatedSources": [
+    {
+      "path": "checkpoints/checker_core_steps_v1.bend",
+      "expectedSha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+      "actualSha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+      "matches": true
+    },
+    {
+      "path": "checkpoints/template_steps_v1.bend",
+      "expectedSha256": "b9f4d860de0c58a274e1f23e90558191e23d7ac0de18d1fd452914160b9a5ae5",
+      "actualSha256": "b9f4d860de0c58a274e1f23e90558191e23d7ac0de18d1fd452914160b9a5ae5",
+      "matches": true
+    },
+    {
+      "path": "checkpoints/emitter_steps_v1.bend",
+      "expectedSha256": "7f7c8d2e57a3fcd3925b4286a8300668ae91b7e11a26317cea6da2df5c9ea425",
+      "actualSha256": "7f7c8d2e57a3fcd3925b4286a8300668ae91b7e11a26317cea6da2df5c9ea425",
+      "matches": true
+    }
+  ],
+  "retainedRegression": {
+    "path": "tests/run/map_bit_native.bend",
+    "sha256": "20747705c66e734f4d278c50a078a1915ddc946746dcc79c00f69dd289155f14",
+    "scope": "Useful full-width/astral/isolated-surrogate/NUL consumer regression kept; passes on restored R12."
+  },
+  "retainedInfrastructure": {
+    "path": "evals/g24_qualification.mjs",
+    "sha256": "a8212e066d3fadad484a7699a338fa3170a2978403a6dbab5befc0cf6afc353e",
+    "scope": "Strict rejection policy and --fail-fast-performance retained; actual rejected G29 run proves stopping before consumer matrices."
+  },
+  "restorationRun": {
+    "status": "SOURCE_CHANGED_PATH_SMOKE_PASS",
+    "path": "/private/tmp/bend-g29-profile-xWLVIr/restored-r12-map-smoke.json",
+    "sha256": "9c9904c39039513650231a0b33f0d7285165d2be650464e182cb1e21170e2742",
+    "startedAt": "2026-10-29T18:42:22.505Z",
+    "finishedAt": "2026-10-29T18:42:28.778Z",
+    "harness": {
+      "evals/g24_source_smoke.mjs": "a8331de7ca03df4723ec8e31b34c04f7010ef000d486c855988aafcce2c24c2c",
+      "evals/g24_source_smoke_worker.mjs": "2bc8a7b70399e4bc555f06683c69f1f830ecc42dd15267e51b5239e930083225",
+      "evals/heavy_gate.ts": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015",
+      "evals/heavy_gate_native.c": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b"
+    },
+    "compiler": {
+      "bend2/bend.ts": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+      "bend2/comp.ts": "880a9b3b86f273852a39fc664f8c3d7b71e3860b6d365e4321949fc812b6e7cc",
+      "bend2/base.bend": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614"
+    },
+    "inputs": {
+      "/Users/ilyagulya/Projects/My/bend/tests/run/map_bit_native.bend": "20747705c66e734f4d278c50a078a1915ddc946746dcc79c00f69dd289155f14",
+      "/Users/ilyagulya/Projects/My/bend/bend2/base.bend": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/print.c": "58657b7351daee89121e1df2856f102743c9db7640257e50c6009a0f1080b00e",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/write.c": "8807a5f655db452c1d846354560c26fe1e94289e5dc0be231d0b71ecc876d02f",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/print_err.c": "f84aa11c8d0d6af6fa2fee28411f95714d6744ad97156990e43e55c292c9c6fb",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/get_env.c": "b4903e94681340f9e02187457fabe9461c1b4e43646b7e1573f5d21e954e3a34",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/args.c": "7717332d0b8c8ba28d6dbe60b62a23dce99ea6828ada7d1f9b664f4dc388e84e",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/process_run.c": "554cfbdf9a6de163f00fc1b23dc8f3df10821cfce336caa1cb5db439b8a55e1f",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/random_u32.c": "75429b2b42e00562177fe33a5e18d2730478847f58c4038b048e78131e1b8c0a",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/spawn.c": "05e11ae3f1461d9c72440af3b1786c076b418d2faff45639ac25ba464ee73cd5",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/sleep.c": "1dde3701026517d5272d2ff5344d3a8643bec264dbad9f266fdae1c4aaf7601c",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/now.c": "fc4c1d87a4fb2ace7d5b6c57b434cc3d953a15bdf213020912df6c17aa2352d6",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/thread_count.c": "d4889ed7757dccce03729c9568b88188128f2c1576166a3dc184a8707ed44568",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/chan.c": "af09b2749741bcc54f56c8f81803073818a165d4cad4c817708e359d677b2a52",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_open.c": "b987bcb0f9a89d769714ddf8cbecca211c4392e4098da19b411d09f5c088d360",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_read.c": "ab577225fa98a034c09d7eb6326b74808756dc6203b0e2599a459876382f090d",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_size.c": "ed0d74fd6b9f14ea471bfe5dd80ecbb2c5abb6a8406519fb2c7e1a1acf3dd5af",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_write.c": "da810ad9aa76ad1431622292529fa3edebabc4b6a7ee20ae833097b71bb595e5",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_close.c": "033da9beb0b484fbc8784044193bf69004f858f6ad86e0c31b4beb89df1349ca",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_listen.c": "efc7528de96abd9f62f299833c1ac7b0e86528292c746b114d2684b5bac52899",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_accept.c": "bf7ca1685ed388ce97827ea8379881fbdf5359c7c663ad03eeb8da34bd8584ef",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_connect.c": "8d17c097138709d71e9d9e1fbc4255007c5e80c93ee384c4a3510b6ac8d10da3",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_send.c": "993cc8ee5b39fd54a4aeace102602ecf2841ce1f402fe6b2407ebaca837383f9",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_recv.c": "249c8789cd2f541ad00068882de16a00870c2f81a8168b0ac7a59db1e3cb0c6f",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_bind.c": "a1be1bc5c03d430fc6eb43982651073e144872956fadaee98c3700be59352ee3",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_send_to.c": "b3a87e56958d8071a368da2edb4748e9496b3eed58b93d6cb4f8af398dd1011a",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_recv_from.c": "1ce914be6cd6153732258f06343e5bcf9765a7fac7e3c3f0462facba7060e067",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/socket_close.c": "abea115d2928d4942a9d89898d2022c0f1b19c52db48d0b060c2356d261bfa77",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/listener_close.c": "11f6bac6342a37e97b9656e96bdca7d052ed0a7a0cab3b05ea87657020cfb7a2",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/window.c": "bf8d5779775ba9566d4bbeb8706a9ec993efb724dae7af8a76c38501ab4092c2",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio.c": "f0fac2bee02918b4958ad1e7508945824fcd98ce9a2e7ede657304c4f8905b85",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/print.js": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/write.js": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/print_err.js": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/get_env.js": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/args.js": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/process_run.js": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/random_u32.js": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/spawn.js": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/sleep.js": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/now.js": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/thread_count.js": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/chan.js": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_open.js": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_read.js": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_size.js": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_write.js": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_close.js": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_listen.js": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_accept.js": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_connect.js": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_send.js": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_recv.js": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_bind.js": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_send_to.js": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_recv_from.js": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/socket_close.js": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/listener_close.js": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_open.js": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_frame.js": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_set_title.js": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_grab.js": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_close.js": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_open.js": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_write.js": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_close.js": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+      "/Users/ilyagulya/Projects/My/bend/tests/run/native_map_find_shapes.bend": "65dd6fa368e88694db2b78ed95d50c797cf6363477451d60aab444a93438a042",
+      "/Users/ilyagulya/Projects/My/bend/tests/run/native_map_read_shapes.bend": "74fa88448f525a017236a6e02042304591f0c913c6852783ffdf30c3ff500b78",
+      "/Users/ilyagulya/Projects/My/bend/tests/run/native_map_read_positions.bend": "8133c5203cd17275d7ec72d78354bf43418c52df4d8f7cac08fc00305819374e"
+    },
+    "generatedInputs": {
+      "checkpoints/checker_core_steps_v1.bend": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+      "checkpoints/checker_core_steps_component_v1.bend": "ca15a467e804983f454a63e9db64a38c1077a2d49104d488556d0609557521cf",
+      "checkpoints/checker_core_steps_driver_v1.bend": "0a21e90c6eca75d51684c5c75fd52fae28a86d7f369052d7943a7101f9a1bfc8",
+      "checkpoints/emitter_steps_v1.bend": "7f7c8d2e57a3fcd3925b4286a8300668ae91b7e11a26317cea6da2df5c9ea425"
+    },
+    "rows": [
+      {
+        "index": 0,
+        "source": "tests/run/map_bit_native.bend",
+        "sourceSha256": "20747705c66e734f4d278c50a078a1915ddc946746dcc79c00f69dd289155f14",
+        "target": "c",
+        "expected": "map bit boundaries and keys preserved\n",
+        "observed": "map bit boundaries and keys preserved\n",
+        "outputSha256": "25ad9a6042dea3c92eb5868c15077be1c89fca124d0e0b583b0f232d4cf53a7c",
+        "outputBytes": 131599,
+        "passed": true,
+        "executableSha256": "bbb28f5c4b6fa75eb7c7c1dcb34e259a759159e42374f01847520d4c969095cd",
+        "executableBytes": 90440,
+        "stages": {
+          "emit": {
+            "label": "emit c tests/run/map_bit_native.bend",
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/tests/run/map_bit_native.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/000-map_bit_native.c"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/tests/run/map_bit_native.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/000-map_bit_native.c"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "elapsedMs": 402.191917,
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 194183168,
+              "peakFootprintBytes": 154070440,
+              "elapsedMs": 371,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+                "--experimental-strip-types",
+                "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+                "/Users/ilyagulya/Projects/My/bend/tests/run/map_bit_native.bend",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/000-map_bit_native.c"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793299342841-2caa4c254af160aa.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          },
+          "clang": {
+            "label": "clang tests/run/map_bit_native.bend",
+            "command": [
+              "/usr/bin/clang",
+              "-std=c11",
+              "-O1",
+              "-pthread",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/000-map_bit_native.c",
+              "-lm",
+              "-o",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/000-map_bit_native.c.exe"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/usr/bin/clang",
+              "-std=c11",
+              "-O1",
+              "-pthread",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/000-map_bit_native.c",
+              "-lm",
+              "-o",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/000-map_bit_native.c.exe"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "elapsedMs": 576.237083,
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 82886656,
+              "peakFootprintBytes": 34882184,
+              "elapsedMs": 555,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/usr/bin/clang",
+                "-std=c11",
+                "-O1",
+                "-pthread",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/000-map_bit_native.c",
+                "-lm",
+                "-o",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/000-map_bit_native.c.exe"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793299343251-f045c7f76358a43d.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          },
+          "consumer": {
+            "label": "run c tests/run/map_bit_native.bend",
+            "command": [
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/000-map_bit_native.c.exe"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/000-map_bit_native.c.exe"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "elapsedMs": 36.784832999999935,
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 180224,
+              "peakFootprintBytes": 311440,
+              "elapsedMs": 14,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/000-map_bit_native.c.exe"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793299343828-f5266e9f8ad35865.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          }
+        }
+      },
+      {
+        "index": 0,
+        "source": "tests/run/map_bit_native.bend",
+        "sourceSha256": "20747705c66e734f4d278c50a078a1915ddc946746dcc79c00f69dd289155f14",
+        "target": "js",
+        "expected": "map bit boundaries and keys preserved\n",
+        "observed": "map bit boundaries and keys preserved\n",
+        "outputSha256": "1a9840e7209f7e2161c79575302951a8c98899711a5fd008af17beb41748824c",
+        "outputBytes": 26498,
+        "passed": true,
+        "stages": {
+          "emit": {
+            "label": "emit js tests/run/map_bit_native.bend",
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/tests/run/map_bit_native.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/000-map_bit_native.js"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/tests/run/map_bit_native.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/000-map_bit_native.js"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "elapsedMs": 347.08400000000006,
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 175800320,
+              "peakFootprintBytes": 137391024,
+              "elapsedMs": 324,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+                "--experimental-strip-types",
+                "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+                "/Users/ilyagulya/Projects/My/bend/tests/run/map_bit_native.bend",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/000-map_bit_native.js"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793299343865-8371761665dc2612.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          },
+          "consumer": {
+            "label": "run js tests/run/map_bit_native.bend",
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--max-old-space-size=3072",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/000-map_bit_native.js"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--max-old-space-size=3072",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/000-map_bit_native.js"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "elapsedMs": 62.478791,
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 42663936,
+              "peakFootprintBytes": 12060232,
+              "elapsedMs": 41,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+                "--max-old-space-size=3072",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/000-map_bit_native.js"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793299344216-e180c2db0a6d9741.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          }
+        }
+      },
+      {
+        "index": 1,
+        "source": "tests/run/native_map_find_shapes.bend",
+        "sourceSha256": "65dd6fa368e88694db2b78ed95d50c797cf6363477451d60aab444a93438a042",
+        "target": "c",
+        "expected": "map find reads the trie in place\n",
+        "observed": "map find reads the trie in place\n",
+        "outputSha256": "8063b90e39c27996b9b105dc7973c1393d129815670634646c9c618a1698c8dc",
+        "outputBytes": 304229,
+        "passed": true,
+        "executableSha256": "089c60766595da0202877727554af30a16b6a0840c20198f3f0022ad3781aef6",
+        "executableBytes": 160720,
+        "stages": {
+          "emit": {
+            "label": "emit c tests/run/native_map_find_shapes.bend",
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/tests/run/native_map_find_shapes.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/001-native_map_find_shapes.c"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/tests/run/native_map_find_shapes.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/001-native_map_find_shapes.c"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "elapsedMs": 407.0327500000001,
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 226246656,
+              "peakFootprintBytes": 191580112,
+              "elapsedMs": 386,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+                "--experimental-strip-types",
+                "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+                "/Users/ilyagulya/Projects/My/bend/tests/run/native_map_find_shapes.bend",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/001-native_map_find_shapes.c"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793299344279-503db600e8962d15.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          },
+          "clang": {
+            "label": "clang tests/run/native_map_find_shapes.bend",
+            "command": [
+              "/usr/bin/clang",
+              "-std=c11",
+              "-O1",
+              "-pthread",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/001-native_map_find_shapes.c",
+              "-lm",
+              "-o",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/001-native_map_find_shapes.c.exe"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/usr/bin/clang",
+              "-std=c11",
+              "-O1",
+              "-pthread",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/001-native_map_find_shapes.c",
+              "-lm",
+              "-o",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/001-native_map_find_shapes.c.exe"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "elapsedMs": 718.5015000000003,
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 117456896,
+              "peakFootprintBytes": 69518032,
+              "elapsedMs": 696,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/usr/bin/clang",
+                "-std=c11",
+                "-O1",
+                "-pthread",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/001-native_map_find_shapes.c",
+                "-lm",
+                "-o",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/001-native_map_find_shapes.c.exe"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793299344690-3cd2da541aedac6d.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          },
+          "consumer": {
+            "label": "run c tests/run/native_map_find_shapes.bend",
+            "command": [
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/001-native_map_find_shapes.c.exe"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/001-native_map_find_shapes.c.exe"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "elapsedMs": 37.42750000000024,
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 180224,
+              "peakFootprintBytes": 311440,
+              "elapsedMs": 15,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/001-native_map_find_shapes.c.exe"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793299345410-cd9aaa58fabc5371.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          }
+        }
+      },
+      {
+        "index": 1,
+        "source": "tests/run/native_map_find_shapes.bend",
+        "sourceSha256": "65dd6fa368e88694db2b78ed95d50c797cf6363477451d60aab444a93438a042",
+        "target": "js",
+        "expected": "map find reads the trie in place\n",
+        "observed": "map find reads the trie in place\n",
+        "outputSha256": "90f6176f4804e53b68bac8f6f251fac3d7169b7922c9b42475233e719a2900a4",
+        "outputBytes": 90704,
+        "passed": true,
+        "stages": {
+          "emit": {
+            "label": "emit js tests/run/native_map_find_shapes.bend",
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/tests/run/native_map_find_shapes.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/001-native_map_find_shapes.js"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/tests/run/native_map_find_shapes.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/001-native_map_find_shapes.js"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "elapsedMs": 312.29045799999994,
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 195608576,
+              "peakFootprintBytes": 157281968,
+              "elapsedMs": 291,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+                "--experimental-strip-types",
+                "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+                "/Users/ilyagulya/Projects/My/bend/tests/run/native_map_find_shapes.bend",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/001-native_map_find_shapes.js"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793299345447-93c01cf87ad94164.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          },
+          "consumer": {
+            "label": "run js tests/run/native_map_find_shapes.bend",
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--max-old-space-size=3072",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/001-native_map_find_shapes.js"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--max-old-space-size=3072",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/001-native_map_find_shapes.js"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "elapsedMs": 76.98966599999994,
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 66830336,
+              "peakFootprintBytes": 31852536,
+              "elapsedMs": 55,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+                "--max-old-space-size=3072",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/001-native_map_find_shapes.js"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793299345765-4d70565b9e436bdf.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          }
+        }
+      },
+      {
+        "index": 2,
+        "source": "tests/run/native_map_read_shapes.bend",
+        "sourceSha256": "74fa88448f525a017236a6e02042304591f0c913c6852783ffdf30c3ff500b78",
+        "target": "c",
+        "expected": "1771016\n702\n58101\n202\n11111\n111\n1111\n1110111\n12321\n1044\n111111\n101106\n",
+        "observed": "1771016\n702\n58101\n202\n11111\n111\n1111\n1110111\n12321\n1044\n111111\n101106\n",
+        "outputSha256": "c3ddd353cc62b8a1e67afc4379d1fa51b0c161a34bed969c6ba86ecea462a4cf",
+        "outputBytes": 248796,
+        "passed": true,
+        "executableSha256": "aa7f178c9a1955304213d9a9df4c139a14ad11f5147830e92a0ee8551dcd1544",
+        "executableBytes": 142992,
+        "stages": {
+          "emit": {
+            "label": "emit c tests/run/native_map_read_shapes.bend",
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/tests/run/native_map_read_shapes.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/002-native_map_read_shapes.c"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/tests/run/native_map_read_shapes.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/002-native_map_read_shapes.c"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "elapsedMs": 475.04262500000004,
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 242204672,
+              "peakFootprintBytes": 206588120,
+              "elapsedMs": 452,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+                "--experimental-strip-types",
+                "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+                "/Users/ilyagulya/Projects/My/bend/tests/run/native_map_read_shapes.bend",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/002-native_map_read_shapes.c"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793299345843-9e53299b77e93216.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          },
+          "clang": {
+            "label": "clang tests/run/native_map_read_shapes.bend",
+            "command": [
+              "/usr/bin/clang",
+              "-std=c11",
+              "-O1",
+              "-pthread",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/002-native_map_read_shapes.c",
+              "-lm",
+              "-o",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/002-native_map_read_shapes.c.exe"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/usr/bin/clang",
+              "-std=c11",
+              "-O1",
+              "-pthread",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/002-native_map_read_shapes.c",
+              "-lm",
+              "-o",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/002-native_map_read_shapes.c.exe"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "elapsedMs": 692.6567500000001,
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 109002752,
+              "peakFootprintBytes": 60670624,
+              "elapsedMs": 668,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/usr/bin/clang",
+                "-std=c11",
+                "-O1",
+                "-pthread",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/002-native_map_read_shapes.c",
+                "-lm",
+                "-o",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/002-native_map_read_shapes.c.exe"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793299346326-b540df92978e5dce.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          },
+          "consumer": {
+            "label": "run c tests/run/native_map_read_shapes.bend",
+            "command": [
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/002-native_map_read_shapes.c.exe"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/002-native_map_read_shapes.c.exe"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "elapsedMs": 36.31750000000011,
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 262144,
+              "peakFootprintBytes": 377048,
+              "elapsedMs": 15,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/002-native_map_read_shapes.c.exe"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793299347016-b31a22a6ffc951a1.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          }
+        }
+      },
+      {
+        "index": 2,
+        "source": "tests/run/native_map_read_shapes.bend",
+        "sourceSha256": "74fa88448f525a017236a6e02042304591f0c913c6852783ffdf30c3ff500b78",
+        "target": "js",
+        "expected": "1771016\n702\n58101\n202\n11111\n111\n1111\n1110111\n12321\n1044\n111111\n101106\n",
+        "observed": "1771016\n702\n58101\n202\n11111\n111\n1111\n1110111\n12321\n1044\n111111\n101106\n",
+        "outputSha256": "b7965ee62d121cb46987fcef34dfeee832e8d010ec9528d29a17642ca399393f",
+        "outputBytes": 91801,
+        "passed": true,
+        "stages": {
+          "emit": {
+            "label": "emit js tests/run/native_map_read_shapes.bend",
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/tests/run/native_map_read_shapes.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/002-native_map_read_shapes.js"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/tests/run/native_map_read_shapes.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/002-native_map_read_shapes.js"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "elapsedMs": 327.10370799999964,
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 199819264,
+              "peakFootprintBytes": 159674128,
+              "elapsedMs": 305,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+                "--experimental-strip-types",
+                "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+                "/Users/ilyagulya/Projects/My/bend/tests/run/native_map_read_shapes.bend",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/002-native_map_read_shapes.js"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793299347054-9edd0cf411d6eaec.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          },
+          "consumer": {
+            "label": "run js tests/run/native_map_read_shapes.bend",
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--max-old-space-size=3072",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/002-native_map_read_shapes.js"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--max-old-space-size=3072",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/002-native_map_read_shapes.js"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "elapsedMs": 66.55195800000001,
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 43155456,
+              "peakFootprintBytes": 12420632,
+              "elapsedMs": 43,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+                "--max-old-space-size=3072",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/002-native_map_read_shapes.js"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793299347386-5776913a7316b47d.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          }
+        }
+      },
+      {
+        "index": 3,
+        "source": "tests/run/native_map_read_positions.bend",
+        "sourceSha256": "8133c5203cd17275d7ec72d78354bf43418c52df4d8f7cac08fc00305819374e",
+        "target": "c",
+        "expected": "410117\n11\n61101\n13620011\n12900\n",
+        "observed": "410117\n11\n61101\n13620011\n12900\n",
+        "outputSha256": "06fca4fd7ead8df9d566b3c7fb40a83895789e73861b51733379babd2c0040a6",
+        "outputBytes": 183835,
+        "passed": true,
+        "executableSha256": "7cd0b990278d75673d0151308674f8c4ae6c45cef478b82efdc0391c7d924616",
+        "executableBytes": 106768,
+        "stages": {
+          "emit": {
+            "label": "emit c tests/run/native_map_read_positions.bend",
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/tests/run/native_map_read_positions.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/003-native_map_read_positions.c"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/tests/run/native_map_read_positions.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/003-native_map_read_positions.c"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "elapsedMs": 422.38987499999985,
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 207142912,
+              "peakFootprintBytes": 167849984,
+              "elapsedMs": 398,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+                "--experimental-strip-types",
+                "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+                "/Users/ilyagulya/Projects/My/bend/tests/run/native_map_read_positions.bend",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/003-native_map_read_positions.c"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793299347454-b8afaecd56760500.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          },
+          "clang": {
+            "label": "clang tests/run/native_map_read_positions.bend",
+            "command": [
+              "/usr/bin/clang",
+              "-std=c11",
+              "-O1",
+              "-pthread",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/003-native_map_read_positions.c",
+              "-lm",
+              "-o",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/003-native_map_read_positions.c.exe"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/usr/bin/clang",
+              "-std=c11",
+              "-O1",
+              "-pthread",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/003-native_map_read_positions.c",
+              "-lm",
+              "-o",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/003-native_map_read_positions.c.exe"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "elapsedMs": 472.3353339999994,
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 91668480,
+              "peakFootprintBytes": 43664056,
+              "elapsedMs": 449,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/usr/bin/clang",
+                "-std=c11",
+                "-O1",
+                "-pthread",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/003-native_map_read_positions.c",
+                "-lm",
+                "-o",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/003-native_map_read_positions.c.exe"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793299347882-1acc3218dd8a9495.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          },
+          "consumer": {
+            "label": "run c tests/run/native_map_read_positions.bend",
+            "command": [
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/003-native_map_read_positions.c.exe"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/003-native_map_read_positions.c.exe"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "elapsedMs": 37.24191599999995,
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 278528,
+              "peakFootprintBytes": 377048,
+              "elapsedMs": 16,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/003-native_map_read_positions.c.exe"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793299348354-83ce63b123405471.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          }
+        }
+      },
+      {
+        "index": 3,
+        "source": "tests/run/native_map_read_positions.bend",
+        "sourceSha256": "8133c5203cd17275d7ec72d78354bf43418c52df4d8f7cac08fc00305819374e",
+        "target": "js",
+        "expected": "410117\n11\n61101\n13620011\n12900\n",
+        "observed": "410117\n11\n61101\n13620011\n12900\n",
+        "outputSha256": "2ce73c8a0a8efa7d96f99def1536d71ffafa73c7ce27f6705f5c767a23a762e3",
+        "outputBytes": 82359,
+        "passed": true,
+        "stages": {
+          "emit": {
+            "label": "emit js tests/run/native_map_read_positions.bend",
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/tests/run/native_map_read_positions.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/003-native_map_read_positions.js"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/tests/run/native_map_read_positions.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/003-native_map_read_positions.js"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "elapsedMs": 311.76229200000034,
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 192380928,
+              "peakFootprintBytes": 152759816,
+              "elapsedMs": 290,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+                "--experimental-strip-types",
+                "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+                "/Users/ilyagulya/Projects/My/bend/tests/run/native_map_read_positions.bend",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/003-native_map_read_positions.js"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793299348393-a520c72bc3e8e8ba.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          },
+          "consumer": {
+            "label": "run js tests/run/native_map_read_positions.bend",
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--max-old-space-size=3072",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/003-native_map_read_positions.js"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--max-old-space-size=3072",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/003-native_map_read_positions.js"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "elapsedMs": 69.66949999999997,
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 42909696,
+              "peakFootprintBytes": 12207736,
+              "elapsedMs": 41,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+                "--max-old-space-size=3072",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-E4iOJl/003-native_map_read_positions.js"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793299348714-7bc642246cd1a860.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          }
+        }
+      }
+    ]
+  }
+}

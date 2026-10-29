@@ -4,7 +4,7 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
-### Отклонённый G29: Map.bit tail walk; требуется восстановление R12
+### Отклонённый G29: Map.bit tail walk; R12 восстановлен
 
 Парные CPU/allocation profiles R12/G28 сняты на тех же окнах public checker:
 1M–1.25M, 4M–4.25M, 8M–8.25M. Полный frozen root завершён в обоих случаях:
@@ -53,8 +53,12 @@ native/JS primitive в этом image. Причина полного timing-ра
 Этот флаг обязателен для следующих performance-кандидатов; historical default
 не менялся. Policy smoke пройден на Bun и Node, включая replay отказа G27
 и CLI refusal. Source: `09a62103`; full-root/frozen-input checkpoint: `53cd0f47`.
-Далее сохранить rejected checkpoint, восстановить только G29-owned source
-и подтвердить R12 bytes коротким C/JS restoration smoke; новый full run не нужен.
+Rejected checkpoint: **`e1ea3012`**. G29-owned изменение Base отменено;
+16 source/runtime/metadata files и три regenerated step sources совпали с R12.
+Accepted native/image hashes неизменны. **Восемь C/JS restoration executions
+PASS**, включая расширенную Unicode32/astral/surrogate/NUL regression.
+Полезные regression cases и fail-fast runner сохранены; rejected optimization
+удалена. Это restoration proof, не новая полная квалификация.
 
 Доказательства:
 `evals/receipts/producer2039g29_paired_profile.json`,
@@ -62,7 +66,8 @@ native/JS primitive в этом image. Причина полного timing-ра
 `evals/receipts/producer2039g29_source_smoke.json`,
 `evals/receipts/producer2039g29_early_screen.json`,
 `evals/receipts/producer2039g29_core_fixedpoint.json`,
-`evals/receipts/producer2039g29_throughput.json`.
+`evals/receipts/producer2039g29_throughput.json`,
+`evals/receipts/producer2039g29_restored_r12.json`.
 
 ### Отклонённый G28: compact checker node rows
 

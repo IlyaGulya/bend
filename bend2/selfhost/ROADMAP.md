@@ -116,6 +116,11 @@ Source: `09a62103`; full-root/frozen inputs: `53cd0f47`.
 `evals/receipts/producer2039g29_logical_counts.json`,
 `evals/receipts/producer2039g29_core_fixedpoint.json`,
 `evals/receipts/producer2039g29_throughput.json`.
+Rejection: `e1ea3012`; R12 source/runtime/metadata and three regenerated step
+sources match baseline bytes. Accepted artifacts are unchanged; eight focused
+C/JS restoration executions pass. The useful Unicode regression and fail-fast
+runner are retained; the rejected source tail walk is removed.
+`evals/receipts/producer2039g29_restored_r12.json`.
 
 ## Historical full native-seed checkpoint: G23
 

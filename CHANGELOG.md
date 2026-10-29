@@ -25,12 +25,18 @@ latest one; the GitHub release carries the same notes.
   accepted selfhost C and JS already have key-preserving Map.bit primitives.
   `--fail-fast-performance=true` was exercised on the real qualification run,
   not just replayed policy samples.
+  Rejection: `e1ea3012`. R12 is restored: sixteen source/runtime/metadata
+  files and three regenerated step sources match its bytes; accepted artifacts
+  are unchanged. Eight focused C/JS restoration executions pass. Unicode
+  regression cases and the fail-fast runner remain; the rejected tail walk
+  is removed. This is restoration evidence, not a new full qualification.
   `evals/receipts/producer2039g29_paired_profile.json`,
   `evals/receipts/producer2039g29_logical_counts.json`,
   `evals/receipts/producer2039g29_source_smoke.json`,
   `evals/receipts/producer2039g29_early_screen.json`,
   `evals/receipts/producer2039g29_core_fixedpoint.json`,
-  `evals/receipts/producer2039g29_throughput.json`.
+  `evals/receipts/producer2039g29_throughput.json`,
+  `evals/receipts/producer2039g29_restored_r12.json`.
 
 - G28's compact checker node-store cutover is rejected by its predeclared
   early screen. Eighteen focused canonical C/JS executions and depth,
