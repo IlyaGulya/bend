@@ -30,22 +30,19 @@ type Instruction is Data:
   Stop{failure: BIR.Block}
 type Frame is Data:
   Frame{owner: U32, instructions: List<&2, Instruction>, captures: List<&2, Capture>, capture_count: U32}
-# One descriptor a definition has already normalized, keyed by the checked arena
-# handle it was read from. Lowering only reads the arena, so a handle denotes the
-# same published node for the whole pass, and a definition has one global scope
-# and one reduction context: the same handle here always denotes the same
-# descriptor. `definition_frame` is the only producer of a definition's scope and
-# the only place these facts are dropped, so no fact ever answers for another
-# definition's scope.
-type DescriptorFact is Data:
-  DescriptorFact{handle: U32, descriptor: BIR.Descriptor}
-# The pass's reduction context together with the facts already reduced under it.
-# A fact is only ever written next to the context it was reduced with: the pass
-# starts with this context and no fact, and `definition_frame` republishes the
-# same context with no fact, so no stored descriptor is ever read under another
-# context. Only `facts` is definition-local.
+# One descriptor per definition at a time: the handle this definition described
+# last and the immutable fact it was reduced to. Lowering only reads the arena,
+# so a handle denotes the same published node for the whole pass, and a
+# definition has one global scope and one reduction context, so that handle
+# always denotes that descriptor here. `definition_frame` is the only producer
+# of a definition's scope and the only place a fact is dropped, so no fact ever
+# answers for another definition's scope. A fact is only written beside the
+# context it was reduced with: the pass starts unnormalized and the boundary
+# republishes the same context unnormalized, so no fact is read under another
+# context.
 type Normalization is Data:
-  Normalization{context: DescriptorNf.NfContext, facts: List<&2, DescriptorFact>}
+  Unnormalized{context: DescriptorNf.NfContext}
+  Described{context: DescriptorNf.NfContext, handle: U32, descriptor: BIR.Descriptor}
 type State is Type:
   State{source: Arena.Arena, next_code: U32, next_local: U32, frame: Frame, codes: List<&2, BIR.Code>, failure: Maybe<&2, Problem>, scope: Maybe<&2, Scope.ArenaGlobalScope>, normalizer: Maybe<&2, Normalization>}
 type LowerResult<-T: Type> is Type:
@@ -307,50 +304,33 @@ def atom_arguments(values: List<&2, BIR.Atom>) -> List<&2, BIR.Arg>:
     case Nil{}: Nil{}
     case value <> rest: BIR.Arg{BIR.Affine{}, value} <> atom_arguments(rest)
 
-# How many facts one definition retains. A repeated request for a recent handle
-# is answered from memory and costs at most this many handle comparisons; a
-# definition that asks for more distinct descriptors than this keeps its newest
-# ones instead of growing without bound.
-def normalization_capacity() -> Nat:
-  16n
-
-# A hit returns the very value a fresh read plus reduction would produce, so
-# only that work is replaced: no arena read, no descriptor tree, no normal form.
+# A repeated request for the handle this definition described last is answered
+# from memory: no arena read, no descriptor tree and no normal form is rebuilt.
+# The value it returns is the one a fresh read plus reduction produces.
 def descriptor_found(handle: U32, normalization: Normalization) -> Maybe<&2, BIR.Descriptor>:
   match normalization:
-    case Normalization{_, facts}: fact_search(handle, facts)
+    case Described{_, known, descriptor}: described_at(U32.is_eq(known, handle), descriptor)
+    case Unnormalized{_}: None{}
 
-def fact_search(handle: U32, facts: List<&2, DescriptorFact>) -> Maybe<&2, BIR.Descriptor>:
-  match facts:
-    case Nil{}: None{}
-    case DescriptorFact{key, descriptor} <> rest:
-      fact_found_next(U32.is_eq(key, handle), descriptor, rest, handle)
-
-def fact_found_next(found: Bool, descriptor: BIR.Descriptor, rest: List<&2, DescriptorFact>, handle: U32) -> Maybe<&2, BIR.Descriptor>:
+def described_at(found: Bool, descriptor: BIR.Descriptor) -> Maybe<&2, BIR.Descriptor>:
   match found:
     case True{}: Some{descriptor}
-    case False{}: fact_search(handle, rest)
+    case False{}: None{}
 
-# Newest fact first, oldest dropped: one bounded copy keeps the retained facts
-# from outliving the requests that made them.
-def facts_kept(facts: List<&2, DescriptorFact>, room: Nat) -> List<&2, DescriptorFact>:
-  match room:
-    case 0n: Nil{}
-    case 1n+rest:
-      match facts:
-        case Nil{}: Nil{}
-        case fact <> tail: fact <> facts_kept(tail, rest)
+def normalization_context(+normalization: Normalization) -> DescriptorNf.NfContext:
+  match normalization:
+    case Described{+context, _, _}: context
+    case Unnormalized{+context}: context
 
-# A definition owns a new scope, so no fact of the previous one survives into it.
-# Only the pass-wide context is carried across the boundary.
+# A definition owns a new scope, so the previous definition's fact is dropped
+# here. Only the pass-wide context crosses the boundary.
 def normalization_scope(normalizer: Maybe<&2, Normalization>) -> Maybe<&2, Normalization>:
   match normalizer:
-    case Some{+normalization}: normalization_cleared(normalization)
+    case Some{+normalization}: Some{normalization_cleared(normalization)}
     case None{}: None{}
 
-def normalization_cleared(+normalization: Normalization) -> Maybe<&2, Normalization>:
-  match normalization:
-    case Normalization{+context, _}: Some{Normalization{context, Nil{}}}
+def normalization_cleared(+normalization: Normalization) -> Normalization:
+  Unnormalized{normalization_context(normalization)}
 
 def describe(state: State, handle: U32) -> LowerResult<Maybe<&2, BIR.Descriptor>>:
   match state:
@@ -364,20 +344,18 @@ def describe(state: State, handle: U32) -> LowerResult<Maybe<&2, BIR.Descriptor>
 def describe_found(source: Arena.Arena, code: U32, local: U32, frame: Frame, codes: List<&2, BIR.Code>, failure: Maybe<&2, Problem>, scope: Scope.ArenaGlobalScope, +normalization: Normalization, handle: U32) -> LowerResult<Maybe<&2, BIR.Descriptor>>:
   match descriptor_found(handle, normalization):
     case Some{descriptor}: LowerResult{State{source, code, local, frame, codes, failure, Some{scope}, Some{normalization}}, Some{descriptor}}
-    case None{}: describe_reduced(source, code, local, frame, codes, failure, scope, normalization, handle)
+    case None{}: describe_reduced(source, code, local, frame, codes, failure, scope, normalization_context(normalization), handle)
 
-def describe_reduced(source: Arena.Arena, code: U32, local: U32, frame: Frame, codes: List<&2, BIR.Code>, failure: Maybe<&2, Problem>, scope: Scope.ArenaGlobalScope, normalization: Normalization, handle: U32) -> LowerResult<Maybe<&2, BIR.Descriptor>>:
+def describe_reduced(source: Arena.Arena, code: U32, local: U32, frame: Frame, codes: List<&2, BIR.Code>, failure: Maybe<&2, Problem>, scope: Scope.ArenaGlobalScope, +context: DescriptorNf.NfContext, handle: U32) -> LowerResult<Maybe<&2, BIR.Descriptor>>:
   match Catalog.descriptor(source, handle, scope):
-    case Catalog.CatalogResult{source2, value}: describe_normalized(source2, code, local, frame, codes, failure, scope, normalization, handle, value)
+    case Catalog.CatalogResult{source2, value}: describe_normalized(source2, code, local, frame, codes, failure, scope, context, handle, value)
 
-# The first request for a handle keeps the reduced descriptor as this
+# The first request, and every request for another handle, replaces this
 # definition's fact. A reduction that could not be performed stays the
 # DescriptorFailure the uncached path publishes, so a failure is never replaced.
-def describe_normalized(source: Arena.Arena, code: U32, local: U32, frame: Frame, codes: List<&2, BIR.Code>, failure: Maybe<&2, Problem>, scope: Scope.ArenaGlobalScope, normalization: Normalization, handle: U32, value: BIR.Descriptor) -> LowerResult<Maybe<&2, BIR.Descriptor>>:
-  match normalization:
-    case Normalization{+context, facts}:
-      descriptor = DescriptorNf.normalize_in(context, value)
-      LowerResult{State{source, code, local, frame, codes, failure, Some{scope}, Some{Normalization{context, facts_kept(DescriptorFact{handle, descriptor} <> facts, normalization_capacity())}}}, Some{descriptor}}
+def describe_normalized(source: Arena.Arena, code: U32, local: U32, frame: Frame, codes: List<&2, BIR.Code>, failure: Maybe<&2, Problem>, scope: Scope.ArenaGlobalScope, +context: DescriptorNf.NfContext, handle: U32, value: BIR.Descriptor) -> LowerResult<Maybe<&2, BIR.Descriptor>>:
+  descriptor = DescriptorNf.normalize_in(context, value)
+  LowerResult{State{source, code, local, frame, codes, failure, Some{scope}, Some{Described{context, handle, descriptor}}}, Some{descriptor}}
 
 def element_value(state: State, handle: U32) -> LowerResult<List<&2, BIR.Descriptor>>:
   match describe(state, handle):
@@ -2057,7 +2035,7 @@ def lower_catalog(result: Catalog.BuildResult) -> ProgramResult:
   match result:
     case Catalog.BuildFailure{_, message}: LowerFailure{message, no_span()}
     case Catalog.Built{Checked.CheckedProgram{source, _, _, _}, Catalog.Catalog{work, registry, constructors, families, type_functions, next_code, ending}}:
-      state = State{source, next_code, 0, Frame{0, Nil{}, Nil{}, 0}, Nil{}, None{}, None{}, Some{Normalization{DescriptorNf.nf_context(families, type_functions), Nil{}}}}
+      state = State{source, next_code, 0, Frame{0, Nil{}, Nil{}, 0}, Nil{}, None{}, None{}, Some{Unnormalized{DescriptorNf.nf_context(families, type_functions)}}}
       lower_definitions(definitions(state, work, registry, Nil{}), constructors, families, type_functions, ending)
 def lower_definitions(result: LowerResult<List<&2, BIR.Declaration>>, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>, type_functions: List<&2, BIR.TypeFunction>, ending: BIR.Ending) -> ProgramResult:
   match result:
