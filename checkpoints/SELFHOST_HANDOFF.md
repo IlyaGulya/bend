@@ -24,8 +24,19 @@ tail walk'ом; `Map.bit.go` возвращает исходный shared key, �
 блокера. Unicode32/astral/isolated-surrogate/NUL cases проходят.
 Component build: 6 379 definitions / 6 656 events, zero exclusions/output patches.
 
-Ранний unprofiled A/B запущен; full native root, fresh byte fixedpoint и полная
-performance/consumer квалификация ещё не объявлены. Accepted baseline — R12.
+Ранний unprofiled screen PASS: checker 255 391.836 → 165 654.722 ms
+(−35.14%); RSS +1.88%, footprint −8.59%. Это одна diagnostic pair, не acceptance.
+Source checkpoint: `09a62103`.
+
+Свежий полный native root PASS: **12 455 definitions / 13 049 events**, zero
+excluded checks/output patches. Build guardian: 272 590 ms, peak RSS
+5 903 319 040 B. Actual native-stage0 → stage1 → stage2 byte fixedpoint PASS:
+оба image **31 756 924 B**, SHA-256
+`6699085c29e518fd48885ee1ab1dc898078c60e58528a18506d83f4755608bbf`.
+`cmp` тоже подтвердил равенство. Bootstrap: 503 865 ms, peak RSS 3 283 533 824 B.
+Native executable побайтно совпал с R12: C уже использует native `map_bit`;
+изменение относится к JS-пути. Native speedup не заявляется.
+Полные парные performance/consumer gates ещё идут; accepted baseline — R12.
 `evals/g24_qualification.mjs --fail-fast-performance=true` проверяет все 12
 парных samples сразу после fixedpoint/measurement и останавливается до consumer
 matrices при отказе; default/historical режим не меняет. Policy smoke пройден
@@ -34,7 +45,9 @@ matrices при отказе; default/historical режим не меняет. P
 Доказательства:
 `evals/receipts/producer2039g29_paired_profile.json`,
 `evals/receipts/producer2039g29_logical_counts.json`,
-`evals/receipts/producer2039g29_source_smoke.json`.
+`evals/receipts/producer2039g29_source_smoke.json`,
+`evals/receipts/producer2039g29_early_screen.json`,
+`evals/receipts/producer2039g29_core_fixedpoint.json`.
 
 ### Отклонённый G28: compact checker node rows
 

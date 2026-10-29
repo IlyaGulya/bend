@@ -14,12 +14,18 @@ latest one; the GitHub release carries the same notes.
   through a Boolean-only tail walk, without reintroducing packed Node storage.
   Eight actual C/JS map consumers pass, including full-width characters,
   supplementary characters, isolated surrogates and embedded NUL.
-  Full qualification is pending; R12 remains accepted.
+  The fresh full native root validates 12,455 definitions / 13,049 events;
+  actual native-stage0/stage1/stage2 byte fixedpoint passes with two identical
+  31,756,924-byte images. C already uses native Map.bit, so the native executable
+  is unchanged. Full paired performance/consumer qualification is pending;
+  R12 remains accepted.
   `--fail-fast-performance=true` stops qualification before consumer matrices
   if the predeclared paired timing/memory rule fails.
   `evals/receipts/producer2039g29_paired_profile.json`,
   `evals/receipts/producer2039g29_logical_counts.json`,
-  `evals/receipts/producer2039g29_source_smoke.json`.
+  `evals/receipts/producer2039g29_source_smoke.json`,
+  `evals/receipts/producer2039g29_early_screen.json`,
+  `evals/receipts/producer2039g29_core_fixedpoint.json`.
 
 - G28's compact checker node-store cutover is rejected by its predeclared
   early screen. Eighteen focused canonical C/JS executions and depth,

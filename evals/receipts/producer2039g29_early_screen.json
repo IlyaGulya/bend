@@ -1,0 +1,399 @@
+{
+  "schemaVersion": 1,
+  "status": "G29_EARLY_CHECKER_SCREEN_PASS",
+  "sourceCheckpoint": "09a62103",
+  "compilerAccepted": false,
+  "performanceAccepted": false,
+  "byteFixedpoint": false,
+  "scope": "One unprofiled identical-driver/frozen-root pair permits full qualification, not acceptance.",
+  "policy": {
+    "schemaVersion": 1,
+    "status": "PREDECLARED_BEFORE_EXPERIMENT_RESULTS",
+    "baseline": "local2039g24r12",
+    "baselineSourceCheckpoint": "5916d410",
+    "restoredSourceCheckpoint": "72d2964e",
+    "profilePurpose": "Attribute rejected G28 cost before selecting one narrow experiment. Profiles and logical counters cannot establish speed or allocation-byte savings.",
+    "limits": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 600000,
+      "workerStackMiB": 256,
+      "workerOldGenerationMiB": 6144,
+      "workerYoungGenerationMiB": 128
+    },
+    "screen": {
+      "scope": "One serial unprofiled baseline/candidate canonical-checker pair on the unchanged frozen full compiler corpus with identical parser/expander, driver, runtime and constructor boundary.",
+      "rejectIf": "Candidate checker elapsed time, guardian peak RSS or guardian peak footprint exceeds control by more than 5%, or semantic/source/ownership check fails.",
+      "allSamplesRetained": true,
+      "passMeaning": "Permits full qualification only; no accepted speed or complete-compiler claim."
+    },
+    "qualification": {
+      "required": "Fresh full native validation with zero exclusions/output patches; actual native-stage0 to stage1 to stage2 exact byte equality; complete existing consumers.",
+      "performanceAcceptedOnlyIf": "Both native and JS pipeline arithmetic mean and median improve on all twelve original unprofiled serial interleaved samples, and median peak RSS and footprint do not increase.",
+      "failureAction": "Stop all remaining qualification and consumer work as soon as any mandatory rejection criterion fails. Commit explicitly rejected source and compact evidence, then restore accepted R12."
+    }
+  },
+  "ratios": {
+    "check": 0.6486296692094674,
+    "rss": 1.0188398076424683,
+    "footprint": 0.9140908775184412
+  },
+  "semanticAgreement": {
+    "status": true,
+    "steps": true,
+    "counts": true,
+    "words": true,
+    "source": true
+  },
+  "commands": [
+    {
+      "role": "control",
+      "environment": "env HEAVY_GATE_MEMORY_MIB=8192 HEAVY_GATE_RSS_MIB=8192 HEAVY_GATE_POLL_MS=10 HEAVY_GATE_TIMEOUT_MS=600000 BUN_JSC_forceRAMSize=4294967296 ",
+      "argv": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/private/tmp/bend-g29-profile-xWLVIr/early-checker.mjs",
+        "/private/tmp/bend-g29-profile-xWLVIr/control-early-request.json",
+        "/private/tmp/bend-g29-profile-xWLVIr/control-early-result.json"
+      ]
+    },
+    {
+      "role": "candidate",
+      "environment": "env HEAVY_GATE_MEMORY_MIB=8192 HEAVY_GATE_RSS_MIB=8192 HEAVY_GATE_POLL_MS=10 HEAVY_GATE_TIMEOUT_MS=600000 BUN_JSC_forceRAMSize=4294967296 ",
+      "argv": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/private/tmp/bend-g29-profile-xWLVIr/early-checker.mjs",
+        "/private/tmp/bend-g29-profile-xWLVIr/candidate-early-request.json",
+        "/private/tmp/bend-g29-profile-xWLVIr/candidate-early-result.json"
+      ]
+    }
+  ],
+  "samples": [
+    {
+      "role": "control",
+      "image": {
+        "path": "/private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+        "sha256": "c806cc8ef12c6bfa280059e4a067466d4ca0d6ce28e4d4f64bc843cb9a74a00e"
+      },
+      "report": {
+        "path": "/private/tmp/bend-g29-profile-xWLVIr/control-early-result.json",
+        "sha256": "84603953e3726d88ac08588e67ba2dfcf5df2f45f8e61908357134ae49d74ef7"
+      },
+      "status": "G29_MAP_BIT_FULL_CORPUS_SCREEN_PASS",
+      "phases": [
+        {
+          "phase": "startup",
+          "elapsedMs": 1168.285625,
+          "userCpuMs": 1045.578,
+          "systemCpuMs": 104.054,
+          "memoryEnd": {
+            "rss": 499073024,
+            "heapTotal": 126156800,
+            "heapUsed": 88102160,
+            "external": 40101434,
+            "arrayBuffers": 5297445
+          }
+        },
+        {
+          "phase": "load-parse",
+          "elapsedMs": 13916.776333,
+          "userCpuMs": 14606.308,
+          "systemCpuMs": 470.276,
+          "memoryEnd": {
+            "rss": 804732928,
+            "heapTotal": 642449408,
+            "heapUsed": 529428392,
+            "external": 3063491,
+            "arrayBuffers": 24859
+          }
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 8154.709166999999,
+          "userCpuMs": 7879.238,
+          "systemCpuMs": 152.55,
+          "memoryEnd": {
+            "rss": 911294464,
+            "heapTotal": 765919232,
+            "heapUsed": 676600456,
+            "external": 3063491,
+            "arrayBuffers": 24859
+          }
+        },
+        {
+          "phase": "constructor-boundary",
+          "elapsedMs": 25461.477959,
+          "userCpuMs": 22758.361,
+          "systemCpuMs": 452.405,
+          "memoryEnd": {
+            "rss": 1044873216,
+            "heapTotal": 772341760,
+            "heapUsed": 575514864,
+            "external": 3063491,
+            "arrayBuffers": 24859
+          }
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 255391.835583,
+          "userCpuMs": 247223.821,
+          "systemCpuMs": 6113.802,
+          "memoryEnd": {
+            "rss": 1675198464,
+            "heapTotal": 2209185792,
+            "heapUsed": 2110124656,
+            "external": 3063491,
+            "arrayBuffers": 24859
+          }
+        },
+        {
+          "phase": "storage",
+          "elapsedMs": 27.398665999993682,
+          "userCpuMs": 26.987,
+          "systemCpuMs": 2.159,
+          "memoryEnd": {
+            "rss": 1676476416,
+            "heapTotal": 2209185792,
+            "heapUsed": 2110765048,
+            "external": 3129027,
+            "arrayBuffers": 90395
+          }
+        }
+      ],
+      "stepCounts": {
+        "expand": 1004927,
+        "check": 10078835
+      },
+      "storage": {
+        "sourceNodeUsed": 2254791,
+        "sourceNodeCapacity": 4194304,
+        "sourceNodeCarrier": "Array",
+        "sourceWordUsed": 2423369,
+        "sourceWordCapacity": 4194304,
+        "sourceWordDepth": 22,
+        "sourceCounts": [
+          2254791,
+          4194304,
+          447744,
+          524288,
+          69061,
+          131072,
+          2423369,
+          4194304,
+          0,
+          1,
+          64096,
+          65536
+        ],
+        "carrier": "Array",
+        "byteLength": null,
+        "sha256": "4838cd165d82cebb9831c0ee0c8e3ed34593acebe54fa0dd28be7c6ea6726835",
+        "maxWord": 2254780,
+        "hashEncoding": "host-little-endian-u32",
+        "limitations": [
+          "Final source tape only; no transient peak-capacity claim.",
+          "64-KiB hash scratch is allocated only after the measured check phase.",
+          "No heap snapshot, inspector or V8 flags are enabled."
+        ]
+      },
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 2275868672,
+        "peakFootprintBytes": 2702815176,
+        "elapsedMs": 305172,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "/private/tmp/bend-g29-profile-xWLVIr/early-checker.mjs",
+          "/private/tmp/bend-g29-profile-xWLVIr/control-early-request.json",
+          "/private/tmp/bend-g29-profile-xWLVIr/control-early-result.json"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793295111669-a22ea0ae32135fed.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "role": "candidate",
+      "image": {
+        "path": "/private/tmp/bend-g29-profile-xWLVIr/map-checker-v2.js",
+        "sha256": "e2a349a4c40782f52fef9f0253808be8ba9af24ccfea20c772068a65a34fc689"
+      },
+      "report": {
+        "path": "/private/tmp/bend-g29-profile-xWLVIr/candidate-early-result.json",
+        "sha256": "01fb6c133fd9c59b8dae96f04c52dc7e2cf0ceec7d1241bce188f7bbe7fa0629"
+      },
+      "status": "G29_MAP_BIT_FULL_CORPUS_SCREEN_PASS",
+      "phases": [
+        {
+          "phase": "startup",
+          "elapsedMs": 1090.1234579999998,
+          "userCpuMs": 1026.338,
+          "systemCpuMs": 82.284,
+          "memoryEnd": {
+            "rss": 499859456,
+            "heapTotal": 125894656,
+            "heapUsed": 88099248,
+            "external": 40101129,
+            "arrayBuffers": 5297140
+          }
+        },
+        {
+          "phase": "load-parse",
+          "elapsedMs": 9917.022958000001,
+          "userCpuMs": 12739.845,
+          "systemCpuMs": 330.672,
+          "memoryEnd": {
+            "rss": 1309458432,
+            "heapTotal": 885981184,
+            "heapUsed": 805875048,
+            "external": 3064556,
+            "arrayBuffers": 24859
+          }
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 6944.3629580000015,
+          "userCpuMs": 7450.654,
+          "systemCpuMs": 123.116,
+          "memoryEnd": {
+            "rss": 1464942592,
+            "heapTotal": 1038024704,
+            "heapUsed": 923295000,
+            "external": 3064556,
+            "arrayBuffers": 24859
+          }
+        },
+        {
+          "phase": "constructor-boundary",
+          "elapsedMs": 22041.871832999997,
+          "userCpuMs": 20654.179,
+          "systemCpuMs": 264.146,
+          "memoryEnd": {
+            "rss": 1591427072,
+            "heapTotal": 910508032,
+            "heapUsed": 651199864,
+            "external": 3063491,
+            "arrayBuffers": 24859
+          }
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 165654.721833,
+          "userCpuMs": 173572.044,
+          "systemCpuMs": 3289.125,
+          "memoryEnd": {
+            "rss": 2155921408,
+            "heapTotal": 1997111296,
+            "heapUsed": 1850943944,
+            "external": 3063491,
+            "arrayBuffers": 24859
+          }
+        },
+        {
+          "phase": "storage",
+          "elapsedMs": 44.805292000004556,
+          "userCpuMs": 26.862,
+          "systemCpuMs": 3.69,
+          "memoryEnd": {
+            "rss": 2156052480,
+            "heapTotal": 1997111296,
+            "heapUsed": 1851851352,
+            "external": 3129027,
+            "arrayBuffers": 90395
+          }
+        }
+      ],
+      "stepCounts": {
+        "expand": 1004927,
+        "check": 10078835
+      },
+      "storage": {
+        "sourceNodeUsed": 2254791,
+        "sourceNodeCapacity": 4194304,
+        "sourceNodeCarrier": "Array",
+        "sourceWordUsed": 2423369,
+        "sourceWordCapacity": 4194304,
+        "sourceWordDepth": 22,
+        "sourceCounts": [
+          2254791,
+          4194304,
+          447744,
+          524288,
+          69061,
+          131072,
+          2423369,
+          4194304,
+          0,
+          1,
+          64096,
+          65536
+        ],
+        "carrier": "Array",
+        "byteLength": null,
+        "sha256": "4838cd165d82cebb9831c0ee0c8e3ed34593acebe54fa0dd28be7c6ea6726835",
+        "maxWord": 2254780,
+        "hashEncoding": "host-little-endian-u32",
+        "limitations": [
+          "Final source tape only; no transient peak-capacity claim.",
+          "64-KiB hash scratch is allocated only after the measured check phase.",
+          "No heap snapshot, inspector or V8 flags are enabled."
+        ]
+      },
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 2318745600,
+        "peakFootprintBytes": 2470618696,
+        "elapsedMs": 206982,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "/private/tmp/bend-g29-profile-xWLVIr/early-checker.mjs",
+          "/private/tmp/bend-g29-profile-xWLVIr/candidate-early-request.json",
+          "/private/tmp/bend-g29-profile-xWLVIr/candidate-early-result.json"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793295416955-0ecf1f5d5b77b41c.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    }
+  ]
+}
