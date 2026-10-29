@@ -836,14 +836,6 @@ def s_primitive_heads(+families: Map<&2, FamilyRow>, +labels: Map<&2, String>, p
     case BIR.PrimIsFalse{}: s_word_head("Bool")
     case BIR.PrimSameValue{}: s_word_head("Bool")
     case BIR.PrimFloatBitsEqual{}: s_word_head("Bool")
-    # The row store is an opaque compiler-private value: it is no declared
-    # family, so no constructor head flows out of it. A read answers the
-    # declared pair, so Sigma plus every head the instantiated T may hold.
-    case BIR.PrimCompilerRowsNew{}: s_heads_ok(Nil{})
-    case BIR.PrimCompilerRowsAppend{}: s_heads_ok(Nil{})
-    case BIR.PrimCompilerRowsGrow{}: s_heads_ok(Nil{})
-    case BIR.PrimCompilerRowsRewind{}: s_heads_ok(Nil{})
-    case BIR.PrimCompilerRowsGet{}: s_array_pair_at(types, families, labels)
     case _: s_heads_unknown()
 
 def s_is_array_prim(primitive: BIR.Primitive) -> Bool:

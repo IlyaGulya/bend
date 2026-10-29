@@ -94,6 +94,11 @@ a complete compiler or selfhost renderer qualification. R12 remains accepted.
 `evals/receipts/producer2039g28_storage_baseline.json`,
 `evals/receipts/producer2039g28_source_smoke.json`,
 `evals/receipts/producer2039g28_early_screen.json`.
+Rejected source/frozen inputs: `29dc43a0`. R12's sixteen source/runtime/metadata
+files and three generated step sources match baseline bytes; six obsolete row
+fixtures are removed and four focused C/JS restoration executions pass.
+Accepted native/image hashes are unchanged; this is restoration, not a new
+full qualification: `evals/receipts/producer2039g28_restored_r12.json`.
 
 ## Historical full native-seed checkpoint: G23
 

@@ -2907,5 +2907,6 @@
     "Focused changed-path smokes and refusal scenarios are not full compiler, byte fixedpoint or performance acceptance.",
     "All initial fixture syntax failures and runtime failures remain in original temporary receipts; passing outcomes are not used to relabel them.",
     "These executions use canonical comp.ts C/JS emission; selfhost primitive renderer runtime paths are not claimed qualified by them."
-  ]
+  ],
+  "sourceCheckpoint": "29dc43a0"
 }

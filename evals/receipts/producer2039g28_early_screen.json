@@ -4,7 +4,7 @@
   "compilerAccepted": false,
   "byteFixedpoint": false,
   "performanceAccepted": false,
-  "sourceCheckpoint": "Containing rejected-source checkpoint; exact sourcePins below",
+  "sourceCheckpoint": "29dc43a0",
   "baseline": {
     "schemaVersion": 1,
     "status": "R12_CONTROLS_AUTHENTICATED_BEFORE_G27",

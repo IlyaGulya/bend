@@ -700,11 +700,6 @@ def primitive_named(name: String) -> Maybe<&2, BIR.Primitive>:
     case "array_atomic_exch": Some{BIR.PrimArrayAtomicExch{}}
     case "array_atomic_cas": Some{BIR.PrimArrayAtomicCas{}}
     case "array_atomic_fadd": Some{BIR.PrimArrayAtomicFadd{}}
-    case "compilerrows_new": Some{BIR.PrimCompilerRowsNew{}}
-    case "compilerrows_get": Some{BIR.PrimCompilerRowsGet{}}
-    case "compilerrows_append": Some{BIR.PrimCompilerRowsAppend{}}
-    case "compilerrows_grow": Some{BIR.PrimCompilerRowsGrow{}}
-    case "compilerrows_rewind": Some{BIR.PrimCompilerRowsRewind{}}
     case _: None{}
 
 def definition_key(registry: Registry, key: String) -> Maybe<&2, DefinitionHeader>:
@@ -1671,11 +1666,6 @@ def primitive_arity(value: BIR.Primitive) -> Nat:
     case BIR.PrimIsFalse{}: 1n
     case BIR.PrimSameValue{}: 2n
     case BIR.PrimFloatBitsEqual{}: 2n
-    case BIR.PrimCompilerRowsNew{}: 2n
-    case BIR.PrimCompilerRowsGet{}: 2n
-    case BIR.PrimCompilerRowsAppend{}: 2n
-    case BIR.PrimCompilerRowsGrow{}: 1n
-    case BIR.PrimCompilerRowsRewind{}: 2n
 
 def constructor_field(constructor: Constructor, identity: U32) -> Maybe<&2, ConstructorField>:
   match constructor:

@@ -6,6 +6,8 @@
 
 ### Отклонённый G28: compact checker node rows
 
+Rejected source/frozen-input checkpoint: **`29dc43a0`**.
+
 G28 заменил только постоянный `Array<Node>` на opaque affine `CompilerRows`:
 JS — packed U32 slot/payload tapes и cold refs; C — существующие ARR/BUF,
 без второго boxed Node tree. Canonical compiler SHA-256:
@@ -33,6 +35,12 @@ actual-object sizes получены отдельным малым R12 sample, �
 `evals/receipts/producer2039g28_early_screen.json`.
 Required frozen source: `checkpoints/.bootstrap_compiler_root_g28_screen.bend`,
 manifest: `checkpoints/local2039g28/root.screen.corpus.json`.
+
+**R12 восстановлен:** 16 source/runtime/metadata files и 3 generated
+checker/template/emitter step sources побайтно совпали с baseline;
+6 obsolete row fixtures удалены. Четыре focused C/JS restoration executions PASS.
+Accepted native/image SHA-256 не изменились. Это restoration evidence, не новая
+полная квалификация: `evals/receipts/producer2039g28_restored_r12.json`.
 
 ### Отклонённый G27: compiler-private U32 word tapes; R12 восстановлен
 

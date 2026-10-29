@@ -1338,14 +1338,6 @@ def prim_default_owned(primitive: BIR.Primitive, +index: Nat) -> Bool:
     case BIR.PrimStringCmp{}: Nat.is_lt(index, 2n)
     case BIR.PrimMapBit{}: Nat.is_eq(index, 0n)
     case BIR.PrimNatDivmod{}: Nat.is_eq(index, 0n)
-    # The row store consumes the store it returns, and the value it appends.
-    # A read keeps the store as the pair's first field, so it is owned here
-    # too; only the raw index/target words are borrowed.
-    case BIR.PrimCompilerRowsNew{}: True{}
-    case BIR.PrimCompilerRowsGet{}: Nat.is_eq(index, 0n)
-    case BIR.PrimCompilerRowsAppend{}: True{}
-    case BIR.PrimCompilerRowsGrow{}: True{}
-    case BIR.PrimCompilerRowsRewind{}: Nat.is_eq(index, 0n)
     case _: False{}
 
 def array_arg_owned(primitive: BIR.Primitive, +index: Nat) -> Bool:
@@ -1714,25 +1706,7 @@ def bool_part(cond: String, plan: Plan) -> Part:
 # and needs no element Descriptor, so it renders the same fixed-scalar
 # expression the direct call site does. Base's Map.find also needs no
 # Descriptor here: the answer is the canonical one-word value for every V.
-
-# Compiler rows are an opaque compiler-private store: the runtime helper owns
-# every word, and the backend only names the store operation. The read answers
-# the pair `CompilerRows(T) & T`, which the physical constructor plan wraps.
-def is_compiler_rows_primitive(primitive: BIR.Primitive) -> Bool:
-  match primitive:
-    case BIR.PrimCompilerRowsNew{}: True{}
-    case BIR.PrimCompilerRowsGet{}: True{}
-    case BIR.PrimCompilerRowsAppend{}: True{}
-    case BIR.PrimCompilerRowsGrow{}: True{}
-    case BIR.PrimCompilerRowsRewind{}: True{}
-    case _: False{}
-
 def prim_part(primitive: BIR.Primitive, +a: List<&2, String>, +plan: Plan) -> Part:
-  match is_compiler_rows_primitive(primitive):
-    case True{}: phys_part(Phys.compiler_rows_part(primitive, a, phys_world(plan)))
-    case False{}: prim_part_other(primitive, a, plan)
-
-def prim_part_other(primitive: BIR.Primitive, +a: List<&2, String>, +plan: Plan) -> Part:
   match primitive:
     case BIR.PrimMapFind{}: phys_part(Phys.map_find_names(a, phys_world(plan)))
     case _: prim_plain_part(primitive, a, plan)

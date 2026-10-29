@@ -18,6 +18,11 @@ latest one; the GitHub release carries the same notes.
   `evals/receipts/producer2039g28_storage_baseline.json`,
   `evals/receipts/producer2039g28_source_smoke.json`,
   `evals/receipts/producer2039g28_early_screen.json`.
+  Rejected source/frozen inputs: `29dc43a0`. R12 is restored: sixteen
+  source/runtime/metadata files and three generated step sources match
+  baseline bytes; six obsolete row fixtures are removed. Four focused C/JS
+  restoration executions pass; accepted native/image hashes are unchanged.
+  `evals/receipts/producer2039g28_restored_r12.json`.
 
 - G27's compiler-private U32 word-tape cutover is rejected under its
   predeclared performance rule. Full native validation passes 12,468
