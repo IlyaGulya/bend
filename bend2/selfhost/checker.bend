@@ -3971,8 +3971,7 @@ def canonicalize_strings(store: ArenaStore, range: IR.Names, scope: Scope.ArenaG
           ArenaResult{store, +name_id} = arena_get_word(store, start)
           ArenaResult{store, +tail} = canonicalize_strings(store, IR.Names{IR.arena_range_index(start, 1), U32.sub(count, 1)}, scope)
           ArenaResult{store, +canonical} = canonical_name_id(store, name_id, scope)
-          ArenaResult{store, +cursor} = arena_word_cursor(store)
-          arena_names_prepend_count(store, canonical, arena_names_start(tail), arena_names_count(tail), cursor)
+          arena_names_cons_id(store, canonical, tail)
 
 def canonicalize_patterns(v_20035248: ArenaStore, v_1: IR.Words, v_2: Scope.ArenaGlobalScope) -> ArenaResult<IR.Words>:
   ArenaResult{v_20035249, +v_20035250} = arena_words_view(v_20035248, v_1)
@@ -13686,6 +13685,11 @@ def arena_names_cons_append(store: ArenaStore, head: U32, +start: U32, +count: U
     case ArenaStore{source, transient}:
       match Arena.put_word_adjacent(transient, head, IR.arena_tape_offset(start)):
         case Tuple{transient, +id}: arena_names_cons_appended(source, transient, head, start, count, id, U32.is_eq(id, 0))
+
+def arena_names_cons_id(store: ArenaStore, head: U32, tail: IR.Names) -> ArenaResult<IR.Names>:
+  match tail:
+    case IR.Names{+start, +count}:
+      arena_names_cons_tail(store, head, start, count, U32.is_eq(count, 0), Bool.and(IR.arena_is_transient(start), IR.arena_is_reverse(start)))
 
 def arena_names_cons(store: ArenaStore, head: String, tail: IR.Names) -> ArenaResult<IR.Names>:
   match tail:
