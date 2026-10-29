@@ -579,13 +579,16 @@ def checked_symbol(global: Scope.ArenaGlobal) -> IR.Symbol:
 # A reference resolves once per checking invocation and every consumer in that
 # invocation uses the returned declaration record. The only retained form is a
 # bounded transient memo slot keyed by the exact name-pool id, the requested
-# global kind and the checked definition frame's serial; it is readable only
-# while that frame is open (resolution_frame_begin/end around
-# definition_term_inference) and its typing closure threads the frame's exact
-# scope. Opening a frame bumps the serial, so a second frame can never read a
-# fact from the first even if no arena rewind separates them. Nothing here maps
-# a term to a type: a name id may still resolve differently under another scope,
-# and a hit answers only the declaration that scope selected.
+# global kind and the checked frame's serial; it is readable only while that
+# frame is open (resolution_frame_begin/end around definition_term_inference)
+# and its typing closure threads the frame's exact scope. Opening a frame bumps
+# the serial, so a second frame can never read a fact from the first even if no
+# arena rewind separates them. Nothing here maps a term to a type: a name id may
+# still resolve differently under another scope, and a hit answers only the
+# declaration that scope selected. The same slot also retains the canonical
+# name id of that declaration once node canonicalization asks for it; that walk
+# opens its own frame, so repeated spellings reuse one identity without another
+# scope lookup, canonical text build or intern lookup.
 def resolution_frame_begin(store: ArenaStore, scope: Scope.ArenaGlobalScope) -> ArenaStore:
   match store:
     case ArenaStore{source, transient}: ArenaStore{Arena.resolution_frame_open(source, scope), transient}
@@ -660,6 +663,54 @@ def resolved_name_kind(store: ArenaStore, +name_id: U32, +kind: Scope.GlobalKind
   match frame:
     case None{}: resolved_name_kind_plain(store, name_id, kind, scope)
     case Some{+serial}: resolved_name_kind_framed(store, name_id, kind, resolved_name_kind_tag(kind), serial, scope)
+
+# Canonical identity of one name id is demanded only by node canonicalization,
+# which needs a name-pool id rather than text. An unresolved spelling is already
+# its own identity: canonicalizing it must not build text or intern anything.
+# A resolved spelling interns the selected declaration's canonical text once,
+# then the same frame slot carries that id beside the resolution it came from.
+# The slot, kind tag and frame serial that answered the resolution also answer
+# the id, so a reopened frame, another scope or another kind can only miss; the
+# source spelling in the record stays untouched for diagnostics.
+def canonical_name_id_of(store: ArenaStore, +name_id: U32, +value: Scope.ResolvedName) -> ArenaResult<U32>:
+  match Scope.resolved_global(value):
+    case None{}: {ArenaResult{store, name_id} : ArenaResult<U32>}
+    case Some{global}: arena_name(store, Scope.canonical_of(global))
+
+def canonical_name_id_store(store: ArenaStore, +name_id: U32, +kind_tag: U32, +serial: Nat, +value: Scope.ResolvedName, +canonical: U32) -> ArenaResult<U32>:
+  match store:
+    case ArenaStore{source, transient}:
+      {ArenaResult{ArenaStore{source, Arena.resolved_ref_put(transient, name_id, kind_tag, Scope.resolved_with_canonical(value, canonical), serial)}, canonical} : ArenaResult<U32>}
+
+def canonical_name_id_resolved(store: ArenaStore, +name_id: U32, +kind_tag: U32, +serial: Nat, +value: Scope.ResolvedName) -> ArenaResult<U32>:
+  match Scope.resolved_canonical_id(value):
+    case Some{+canonical}: {ArenaResult{store, canonical} : ArenaResult<U32>}
+    case None{}:
+      ArenaResult{store, +canonical} = canonical_name_id_of(store, name_id, value)
+      canonical_name_id_store(store, name_id, kind_tag, serial, value, canonical)
+
+def canonical_name_id_hit(store: ArenaStore, hit: Maybe<&2, Scope.ResolvedName>, +name_id: U32, +kind_tag: U32, +serial: Nat, scope: Scope.ArenaGlobalScope) -> ArenaResult<U32>:
+  match hit:
+    case Some{resolved}: canonical_name_id_resolved(store, name_id, kind_tag, serial, resolved)
+    case None{}:
+      ArenaResult{store, +resolved} = resolved_name_plain(store, name_id, scope)
+      canonical_name_id_resolved(store, name_id, kind_tag, serial, resolved)
+
+def canonical_name_id_framed(store: ArenaStore, +name_id: U32, +kind_tag: U32, +serial: Nat, scope: Scope.ArenaGlobalScope) -> ArenaResult<U32>:
+  match store:
+    case ArenaStore{source, transient}:
+      match Arena.resolved_ref_get(transient, name_id, kind_tag, serial):
+        case Tuple{arena, hit}: canonical_name_id_hit(ArenaStore{source, arena}, hit, name_id, kind_tag, serial, scope)
+
+def canonical_name_id_plain(store: ArenaStore, +name_id: U32, scope: Scope.ArenaGlobalScope) -> ArenaResult<U32>:
+  ArenaResult{store, +resolved} = resolved_name_plain(store, name_id, scope)
+  canonical_name_id_of(store, name_id, resolved)
+
+def canonical_name_id(store: ArenaStore, +name_id: U32, scope: Scope.ArenaGlobalScope) -> ArenaResult<U32>:
+  ArenaResult{store, +frame} = resolution_frame(store)
+  match frame:
+    case None{}: canonical_name_id_plain(store, name_id, scope)
+    case Some{+serial}: canonical_name_id_framed(store, name_id, 0, serial, scope)
 
 def occurrence_retype(occurrence: IR.Occurrence, term: U32, ty: U32) -> IR.Occurrence:
   match occurrence:
@@ -3448,21 +3499,21 @@ def check_infer_term_sort(v_1: ArenaStore, v_3: Inference, v_5: U32, v_6: Ast.So
 
 def infer_global_reference(value: Scope.ResolvedName, v_4: U32, v_5: Ast.SourceSpan) -> Inference:
   match value:
-    case Scope.ResolvedName{_, Some{global}}:
+    case Scope.ResolvedName{_, Some{global}, _}:
       match global:
         case Scope.ArenaGlobal{_, _, _, ty, _, _}:
           Inferred{v_4, ty, IR.TypedOccurrence{v_4, ty, None{}, Some{checked_symbol(global)}, Nil{}, Nil{}}}
-    case Scope.ResolvedName{name, None{}}:
+    case Scope.ResolvedName{name, None{}, _}:
       fail(v_5, String.append("unknown name ", name), "a declared name", name)
 
 def infer_global_adt(v_1: ArenaStore, value: Scope.ResolvedName, v_6: IR.Words, v_8: U32, v_9: Ast.SourceSpan, v_12: List<&2, Binding>, v_13: Scope.ArenaGlobalScope) -> ArenaResult<Inference>:
   match value:
-    case Scope.ResolvedName{_, Some{global}}:
+    case Scope.ResolvedName{_, Some{global}, _}:
       match global:
         case Scope.ArenaGlobal{_, _, _, ty, _, _}:
           ArenaResult{v_38, +v_39} = infer_adt_args(v_1, v_6, ty, v_12, v_13, v_8, v_9)
           {ArenaResult{v_38, inference_symbol(v_39, checked_symbol(global))} : ArenaResult<Inference>}
-    case Scope.ResolvedName{name, None{}}:
+    case Scope.ResolvedName{name, None{}, _}:
       v_50000070 = fail(v_9, String.append("unknown datatype ", name), "a declared datatype", name)
       {ArenaResult{v_1, v_50000070} : ArenaResult<Inference>}
 
@@ -3911,17 +3962,17 @@ def has_canonical_name(v_20035229: ArenaStore, v_1: String, v_4: IR.Names, v_5: 
           v_20035235 = v_20035230
           {ArenaResult{v_20035235, v_20035234} : ArenaResult<Bool>}
 
-def canonicalize_strings(v_20035239: ArenaStore, v_2: IR.Names, v_3: Scope.ArenaGlobalScope) -> ArenaResult<IR.Names>:
-  ArenaResult{v_20035240, +v_20035241} = arena_names_view(v_20035239, v_2)
-  match v_20035241:
-    case IR.NameNil{}:
-      {ArenaResult{v_20035240, IR.Names{0, 0}} : ArenaResult<IR.Names>}
-    case IR.NameCons{+v_20035242, +v_20035243}:
-      +v_8 = v_20035242
-      v_9 = v_20035243
-      ArenaResult{v_20035244, +v_20035245} = canonicalize_strings(v_20035240, v_9, v_3)
-      ArenaResult{v_20035246, +v_20035247} = arena_names_cons(v_20035244, Scope.canonical_name(v_8, v_3), v_20035245)
-      {ArenaResult{v_20035246, v_20035247} : ArenaResult<IR.Names>}
+def canonicalize_strings(store: ArenaStore, range: IR.Names, scope: Scope.ArenaGlobalScope) -> ArenaResult<IR.Names>:
+  match range:
+    case IR.Names{+start, +count}:
+      match U32.is_eq(count, 0):
+        case True{}: {ArenaResult{store, IR.Names{0, 0}} : ArenaResult<IR.Names>}
+        case False{}:
+          ArenaResult{store, +name_id} = arena_get_word(store, start)
+          ArenaResult{store, +tail} = canonicalize_strings(store, IR.Names{IR.arena_range_index(start, 1), U32.sub(count, 1)}, scope)
+          ArenaResult{store, +canonical} = canonical_name_id(store, name_id, scope)
+          ArenaResult{store, +cursor} = arena_word_cursor(store)
+          arena_names_prepend_count(store, canonical, arena_names_start(tail), arena_names_count(tail), cursor)
 
 def canonicalize_patterns(v_20035248: ArenaStore, v_1: IR.Words, v_2: Scope.ArenaGlobalScope) -> ArenaResult<IR.Words>:
   ArenaResult{v_20035249, +v_20035250} = arena_words_view(v_20035248, v_1)
@@ -3947,12 +3998,11 @@ def canonicalize_pattern(v_1: ArenaStore, v_3: U32, v_4: Scope.ArenaGlobalScope)
       ArenaResult{v_44, +v_45} = arena_put_pattern(v_11, Arena.PatternVar{v_29, v_31, v_33, v_35})
       {ArenaResult{v_44, v_45} : ArenaResult<U32>}
     case Arena.PatternCtr{+v_50, +v_51, +v_52, +v_53}:
-      ArenaResult{v_57, +v_60} = resolved_name(v_11, v_50, v_4)
       +v_62 = IR.Words{v_51, v_52}
       v_66 = v_62
       v_68 = v_53
-      ArenaResult{v_72, +v_73} = canonicalize_patterns(v_57, v_66, v_4)
-      ArenaResult{v_78, +v_79} = arena_name(v_72, Scope.resolved_canonical(v_60))
+      ArenaResult{v_72, +v_73} = canonicalize_patterns(v_11, v_66, v_4)
+      ArenaResult{v_78, +v_79} = canonical_name_id(v_72, v_50, v_4)
       v_50000085 = arena_words_start(v_73)
       v_50000086 = arena_words_count(v_73)
       ArenaResult{v_85, +v_86} = arena_put_pattern(v_78, Arena.PatternCtr{v_79, v_50000085, v_50000086, v_68})
@@ -3981,9 +4031,8 @@ def canonicalize_term(v_1: ArenaStore, v_3: U32, v_4: Scope.ArenaGlobalScope) ->
       ArenaResult{v_40, +v_41} = arena_put_node(v_11, Arena.TermVar{v_27, v_29, v_31})
       {ArenaResult{v_40, v_41} : ArenaResult<U32>}
     case Arena.TermRef{+v_44, +v_45}:
-      ArenaResult{v_49, +v_52} = resolved_name(v_11, v_44, v_4)
       v_56 = v_45
-      ArenaResult{v_61, +v_62} = arena_name(v_49, Scope.resolved_canonical(v_52))
+      ArenaResult{v_61, +v_62} = canonical_name_id(v_11, v_44, v_4)
       ArenaResult{v_66, +v_67} = arena_put_node(v_61, Arena.TermRef{v_62, v_56})
       {ArenaResult{v_66, v_67} : ArenaResult<U32>}
     case Arena.TermBang{+v_70, +v_71}:
@@ -4110,17 +4159,14 @@ def canonicalize_term(v_1: ArenaStore, v_3: U32, v_4: Scope.ArenaGlobalScope) ->
       ArenaResult{v_467, +v_468} = arena_put_node(v_460, Arena.TermPlus{v_456, v_50000097, v_50000098, v_451})
       {ArenaResult{v_467, v_468} : ArenaResult<U32>}
     case Arena.TermAdt{+v_475, +v_476, +v_477, +v_478, +v_479, +v_480}:
-      ArenaResult{v_484, +v_485} = arena_name_text(v_11, v_475)
-      +v_487 = v_485
       +v_489 = IR.Words{v_476, v_477}
       +v_491 = IR.Names{v_478, v_479}
-      v_493 = v_487
       v_495 = v_489
       v_497 = v_491
       v_499 = v_480
-      ArenaResult{v_503, +v_504} = canonicalize_terms(v_484, v_495, v_4)
+      ArenaResult{v_503, +v_504} = canonicalize_terms(v_11, v_495, v_4)
       ArenaResult{v_508, +v_509} = canonicalize_strings(v_503, v_497, v_4)
-      ArenaResult{v_514, +v_515} = arena_name(v_508, Scope.canonical_name(v_493, v_4))
+      ArenaResult{v_514, +v_515} = canonical_name_id(v_508, v_475, v_4)
       v_50000099 = arena_words_start(v_504)
       v_50000100 = arena_words_count(v_504)
       v_50000101 = arena_names_start(v_509)
@@ -4130,28 +4176,22 @@ def canonicalize_term(v_1: ArenaStore, v_3: U32, v_4: Scope.ArenaGlobalScope) ->
     case Arena.TermString{chars, names, span}:
       arena_put_node(v_11, Arena.TermString{chars, string_canonical_names(names, v_4), span})
     case Arena.TermCtr{+v_529, +v_530, +v_531, +v_532}:
-      ArenaResult{v_536, +v_537} = arena_name_text(v_11, v_529)
-      +v_539 = v_537
       +v_541 = IR.Words{v_530, v_531}
-      v_543 = v_539
       v_545 = v_541
       v_547 = v_532
-      ArenaResult{v_551, +v_552} = canonicalize_terms(v_536, v_545, v_4)
-      ArenaResult{v_557, +v_558} = arena_name(v_551, Scope.canonical_name(v_543, v_4))
+      ArenaResult{v_551, +v_552} = canonicalize_terms(v_11, v_545, v_4)
+      ArenaResult{v_557, +v_558} = canonical_name_id(v_551, v_529, v_4)
       v_50000103 = arena_words_start(v_552)
       v_50000104 = arena_words_count(v_552)
       ArenaResult{v_564, +v_565} = arena_put_node(v_557, Arena.TermCtr{v_558, v_50000103, v_50000104, v_547})
       {ArenaResult{v_564, v_565} : ArenaResult<U32>}
     case Arena.TermMat{+v_570, +v_571, +v_572, +v_573}:
-      ArenaResult{v_577, +v_578} = arena_name_text(v_11, v_570)
-      +v_580 = v_578
-      v_582 = v_580
       v_584 = v_571
       v_586 = v_572
       v_588 = v_573
-      ArenaResult{v_592, +v_593} = canonicalize_term(v_577, v_584, v_4)
+      ArenaResult{v_592, +v_593} = canonicalize_term(v_11, v_584, v_4)
       ArenaResult{v_597, +v_598} = canonicalize_term(v_592, v_586, v_4)
-      ArenaResult{v_603, +v_604} = arena_name(v_597, Scope.canonical_name(v_582, v_4))
+      ArenaResult{v_603, +v_604} = canonical_name_id(v_597, v_570, v_4)
       ArenaResult{v_608, +v_609} = arena_put_node(v_603, Arena.TermMat{v_604, v_593, v_598, v_588})
       {ArenaResult{v_608, v_609} : ArenaResult<U32>}
     case Arena.TermAbsurd{+v_611}:
@@ -4228,6 +4268,15 @@ def canonicalize_term(v_1: ArenaStore, v_3: U32, v_4: Scope.ArenaGlobalScope) ->
       ArenaResult{v_825, +v_826} = canonicalize_term(v_11, v_819, v_4)
       ArenaResult{v_830, +v_831} = arena_put_node(v_825, Arena.BodyReply{v_826, v_821})
       {ArenaResult{v_830, v_831} : ArenaResult<U32>}
+
+# Canonicalizing one stored term or pattern walk asks repeated spellings for the
+# same canonical identity under one immutable scope, and the walk never
+# publishes a global, so one frame can answer them all. The frame serial keeps
+# the answers bound to that scope: a later walk opens a new frame and can only
+# miss, so no canonical id survives a scope change.
+def canonicalize_term_framed(store: ArenaStore, +term: U32, scope: Scope.ArenaGlobalScope) -> ArenaResult<U32>:
+  match canonicalize_term(resolution_frame_begin(store, scope), term, scope):
+    case ArenaResult{written, value}: {ArenaResult{resolution_frame_end(written), value} : ArenaResult<U32>}
 
 def mat_branch_goal_view(v_1: ArenaStore, v_3: U32, v_5: U32, v_7: String, v_8: IR.Words, v_10: Nat, v_11: Ast.SourceSpan, v_12: Scope.ArenaGlobalScope) -> ArenaResult<U32>:
   ArenaResult{v_19, +v_20} = arena_get_node(v_1, v_3)
@@ -9159,7 +9208,7 @@ def check_constructors_fields_result(v_1: ArenaStore, v_4: Maybe<&2, Checked.Dia
       v_28 = v_26
       {ArenaResult{v_1, ScopedStateFailure{v_28}} : ArenaResult<ScopedState>}
     case None{}:
-      ArenaResult{v_32, +v_33} = canonicalize_term(v_1, v_21, v_15)
+      ArenaResult{v_32, +v_33} = canonicalize_term_framed(v_1, v_21, v_15)
       v_50000271 = canonical_key(v_13, v_18)
       ArenaResult{v_38, +v_39} = arena_publish_global(v_32, Scope.ArenaGlobal{v_50000271, v_13, v_18, v_33, IR.NoTerm{}, Scope.GlobalConstructor{}})
       v_41 = v_39
@@ -9265,7 +9314,7 @@ def check_import_foreign_head(v_1: ArenaStore, v_4: Maybe<&2, String>, v_6: U32,
           v_29 = v_1
           {ArenaResult{v_29, v_27} : ArenaResult<ScopedState>}
         case True{}:
-          ArenaResult{v_34, +v_35} = canonicalize_term(v_1, v_6, v_12)
+          ArenaResult{v_34, +v_35} = canonicalize_term_framed(v_1, v_6, v_12)
           v_50000287 = canonical_key(v_10, v_8)
           ArenaResult{v_40, +v_41} = arena_publish_global(v_34, Scope.ArenaGlobal{v_50000287, v_10, v_8, v_35, IR.NoTerm{}, Scope.GlobalDefinition{}})
           ArenaResult{v_45, +v_46} = global_scope_prepend(v_40, v_41, v_11)
@@ -9341,8 +9390,8 @@ def check_type_decl_ir(v_1: ArenaStore, v_21: String, v_23: IR.Words, v_25: U32,
   ArenaResult{v_60, +v_61} = arena_put_node(v_51, Arena.TermAdt{v_52, v_50000294, v_50000295, v_50000296, v_50000297, v_29})
   ArenaResult{v_65, +v_66} = binders_lambda(v_60, v_23, v_61)
   v_68 = v_66
-  ArenaResult{v_72, +v_73} = canonicalize_term(v_65, v_36, v_6)
-  ArenaResult{v_77, +v_78} = canonicalize_term(v_72, v_68, v_6)
+  ArenaResult{v_72, +v_73} = canonicalize_term_framed(v_65, v_36, v_6)
+  ArenaResult{v_77, +v_78} = canonicalize_term_framed(v_72, v_68, v_6)
   v_50000298 = canonical_key(v_4, v_21)
   ArenaResult{v_83, +v_84} = arena_publish_global(v_77, Scope.ArenaGlobal{v_50000298, v_4, v_21, v_73, IR.SomeTerm{v_78}, Scope.GlobalFamily{}})
   v_86 = v_84
@@ -10540,7 +10589,7 @@ def store_definition_declared(v_1: ArenaStore, v_2: Scope.ArenaGlobal, v_4: Stri
           match v_28:
             case Scope.GlobalDefinition{}:
               v_30 = v_26
-              ArenaResult{v_34, +v_35} = canonicalize_term(v_1, v_30, v_12)
+              ArenaResult{v_34, +v_35} = canonicalize_term_framed(v_1, v_30, v_12)
               v_37 = v_35
               ArenaResult{v_41, +v_42} = fits_term(v_34, v_8, v_37, v_12)
               +v_44 = v_42
@@ -10587,9 +10636,9 @@ def store_definition_result(v_1: ArenaStore, v_3: Maybe<&2, Scope.ArenaGlobal>, 
       {ArenaResult{v_36, v_37} : ArenaResult<ScopedState>}
 
 def store_definition(v_20041285: ArenaStore, v_1: String, v_3: String, v_4: U32, v_5: U32, v_6: Scope.ArenaGlobalScope, v_7: Scope.ArenaGlobalScope, v_8: Ast.SourceSpan) -> ArenaResult<ScopedState>:
-  ArenaResult{v_20041286, +v_20041287} = canonicalize_term(v_20041285, v_4, v_7)
+  ArenaResult{v_20041286, +v_20041287} = canonicalize_term_framed(v_20041285, v_4, v_7)
   v_12 = v_20041287
-  ArenaResult{v_20041288, +v_20041289} = canonicalize_term(v_20041286, v_5, v_7)
+  ArenaResult{v_20041288, +v_20041289} = canonicalize_term_framed(v_20041286, v_5, v_7)
   v_15 = v_20041289
   ArenaResult{v_20041290, +v_20041291} = store_definition_result(v_20041288, Scope.lookup(canonical_key(v_3, v_1), v_6), v_1, v_3, v_12, v_15, v_6, v_7, v_8)
   {ArenaResult{v_20041290, v_20041291} : ArenaResult<ScopedState>}
@@ -10843,7 +10892,7 @@ def law_quantifier(v_20041435: ArenaStore, v_1: Bool, v_2: Ast.Quantity, v_4: St
 def check_law_result(v_1: ArenaStore, v_3: Inference, v_5: String, v_7: U32, v_9: String, v_10: Scope.ArenaGlobalScope, v_11: Scope.ArenaGlobalScope) -> ArenaResult<ScopedState>:
   match v_3:
     case Inferred{+v_17, +v_18, +occ_v_17}:
-      ArenaResult{v_22, +v_23} = canonicalize_term(v_1, v_17, v_11)
+      ArenaResult{v_22, +v_23} = canonicalize_term_framed(v_1, v_17, v_11)
       v_50000333 = canonical_key(v_9, v_5)
       ArenaResult{v_28, +v_29} = arena_publish_global(v_22, Scope.ArenaGlobal{v_50000333, v_9, v_5, v_23, IR.NoTerm{}, Scope.GlobalDefinition{}})
       ArenaResult{v_33, +v_34} = global_scope_prepend(v_28, v_29, v_10)
@@ -11019,7 +11068,7 @@ def inherit_law_definition(v_20041595: ArenaStore, v_0: IR.Definition, v_1: U32,
       v_14 = v_20041600
       v_15 = v_20041601
       ArenaResult{v_20041602, +v_20041603} = global_scope(v_20041595, law_signature_scope(global_scope_entries(v_2)))
-      ArenaResult{v_20041604, +v_20041605} = canonicalize_term(v_20041602, v_1, v_20041603)
+      ArenaResult{v_20041604, +v_20041605} = canonicalize_term_framed(v_20041602, v_1, v_20041603)
       v_21 = v_20041605
       ArenaResult{v_20041606, +v_20041607} = inherit_law_binders(v_20041604, v_11, v_21, IR.Words{0, 0}, 0n, v_12, v_10, v_13, v_14, v_15, v_2)
       {ArenaResult{v_20041606, v_20041607} : ArenaResult<DefinitionElaboration>}

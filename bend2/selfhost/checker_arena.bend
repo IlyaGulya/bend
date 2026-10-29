@@ -1402,17 +1402,23 @@ def ctr_leaf_lookup(+key_id: U32, +span: Ast.SourceSpan, result: Arena & SubstMe
 def put_ctr_leaf(arena: Arena, +key_id: U32, span: Ast.SourceSpan) -> Arena & U32:
   ctr_leaf_lookup(key_id, span, subst_memo_get(arena, key_id, 0))
 
-# Resolved-reference facts are valid only inside one checked definition frame.
-# The frame's monotonic serial lives in depths[7] of the source arena and its
-# open marker in source memo slot 2 (slot 0 stays the scalar/string schema
-# frame), so every open gets a fresh serial even when no rewind separates two
-# frames. A fact records that serial plus the exact tagged name id and the
-# requested kind; a hit must match all three, so a reopened frame, a colliding
-# slot or another scope can only miss and fall back to the scope index. Rewind
-# may retain memo entries; the fresh serial prevents reuse across declarations.
+# Resolved-reference facts are valid only inside one checked frame. The frame's
+# monotonic serial lives in depths[7] of the source arena and its open marker in
+# source memo slot 2 (slot 0 stays the scalar/string schema frame), so every
+# open gets a fresh serial even when no rewind separates two frames. A fact
+# records that serial plus the exact tagged name id and the requested kind; a
+# hit must match all three, so a reopened frame, a colliding slot or another
+# scope can only miss and fall back to the scope index. One fact also carries
+# the interned identity of the selected declaration's canonical name, filled by
+# the first consumer that needs a name-pool id instead of text; the resolution
+# alone never pays for it, and the same serial/name/kind witness keeps a stale
+# id from surviving a scope change. Rewind may retain memo entries; the fresh
+# serial prevents reuse across declarations.
 # Slots stay odd, away from slot 0 and the frame slot 2;
 # a collision replaces one cache entry and can also drop the open marker, which
 # only disables reuse until the next open.
+# Node canonicalization opens the same kind of frame around one stored walk,
+# which never publishes a global, so its repeated spellings share one serial.
 def resolution_frame_serial.result(result: Array<Nat> & Nat, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, name_ids: Map<&2, U32>, node_closed: Array<U32>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>) -> Arena & Nat:
   match result:
     case Tuple{depths, +serial}:
