@@ -1,0 +1,1030 @@
+{
+  "schemaVersion": 1,
+  "status": "R12_PROFILE_COMPLETE",
+  "acceptanceEvidence": false,
+  "baseline": {
+    "acceptance": {
+      "path": "/Users/ilyagulya/Projects/My/bend/evals/receipts/root2039g24r12_native_fixedpoint.json",
+      "sha256": "cb66ed5542e56516f83d2c04fb80f5ab8597130ab137a4128be8491391911d50",
+      "sourceCheckpoint": "5916d410",
+      "byteFixedpoint": true
+    },
+    "binary": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+      "sha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "bytes": 18808824
+    },
+    "image": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+      "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "bytes": 31758507
+    }
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "commands": {
+    "js": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--experimental-strip-types",
+      "/private/tmp/bend-g25-checker-lcO8pH/profiled-throughput.mjs",
+      "js",
+      "/private/tmp/bend-g25-checker-lcO8pH/request.json",
+      "/private/tmp/bend-g25-checker-lcO8pH/result.json"
+    ],
+    "native": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "evals/heavy_gate.ts",
+      "--memory-mib",
+      "8192",
+      "--rss-mib",
+      "8192",
+      "--poll-ms",
+      "10",
+      "--timeout-ms",
+      "600000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "evals/native_check_profile.mjs",
+      "--out-dir=/private/tmp/bend-g25-native-check-VEXARk/sample",
+      "--source-map=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native.c",
+      "--",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+      "+RTS",
+      "--threads",
+      "1",
+      "--gpu",
+      "off",
+      "--RTS",
+      "/private/tmp/bend2039g22-tiny-inline/checkpoints/.bootstrap_compiler_root_remote2039g21.bend",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/base.bend",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/throughput/native-candidate-1.json.runtime.tsv",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/throughput/native-candidate-1.json.exports.txt",
+      "compile",
+      "/private/tmp/bend-g25-native-check-VEXARk/output.mjs"
+    ]
+  },
+  "frozen": {
+    "root": "/private/tmp/bend2039g22-tiny-inline/checkpoints/.bootstrap_compiler_root_remote2039g21.bend",
+    "sha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+    "inputs": {
+      "/private/tmp/bend2039g22-tiny-inline/bend2/base.bend": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/args.js": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/audio_close.js": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/audio_open.js": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/audio_write.js": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/chan.js": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/file_close.js": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/file_open.js": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/file_read.js": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/file_size.js": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/file_write.js": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/get_env.js": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/listener_close.js": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/now.js": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/print.js": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/print_err.js": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/process_run.js": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/random_u32.js": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/sleep.js": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/socket_close.js": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/spawn.js": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/tcp_accept.js": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/tcp_connect.js": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/tcp_listen.js": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/tcp_recv.js": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/tcp_send.js": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/thread_count.js": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/udp_bind.js": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/udp_recv_from.js": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/udp_send_to.js": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/window_close.js": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/window_frame.js": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/window_grab.js": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/window_open.js": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/window_set_title.js": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/write.js": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/backend_ir.bend": "162a554cec1c9e1b5edab69b5cfae730c70886548f4f51603a7537845ab5ec48",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/c_backend_sharing.bend": "78992d00aad3a458dd6b9ea424edf0de61c95b54487f92cd53283e705488c35f",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/checked_frontend.bend": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/checker_arena.bend": "2a26c3d8ce66412591030fa2fd6df9f9e53c0fececd9d9ae702def2f475f1752",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/checker_ir.bend": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/core.bend": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/index_lookup.bend": "a178b0d5b135490634e1c85efaa0a8d1e0c34c94610615ecf822da6a2932f31d",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/lexer.bend": "a81265d4ab248c5ea74bf52987e1163773866a01b264ff1a98895d91139d6f53",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/loaded_module.bend": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/scope_lookup.bend": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/sha256.bend": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+      "/private/tmp/bend2039g22-tiny-inline/checkpoints/.bootstrap_compiler_root_remote2039g21.bend": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+      "/private/tmp/bend2039g22-tiny-inline/checkpoints/checker_core_steps_v1.bend": "93e8fd5ce7aafe40084d1b0023eff79de18cb6f00b625cab43b002535cfe288f",
+      "/private/tmp/bend2039g22-tiny-inline/checkpoints/emitter_steps_v1.bend": "e73baadfada36d919619746607593e928e82a338073c5b73e200d66d2d69a05a",
+      "/private/tmp/bend2039g22-tiny-inline/checkpoints/template_steps_v1.bend": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4"
+    }
+  },
+  "js": {
+    "report": {
+      "path": "/private/tmp/bend-g25-checker-lcO8pH/result.json",
+      "sha256": "7a07c4e74647ad7d81142c701223e22e0746c68295a4834b0a56fb0de0e2f7b6"
+    },
+    "status": "PASS",
+    "output": {
+      "path": "/private/tmp/bend-g25-checker-lcO8pH/result.json.output.mjs",
+      "bytes": 29948466,
+      "sha256": "c33227e028d767df9a9fff75663e42eb7374919dcf8e7dff14936a98d20008fb"
+    },
+    "stepCounts": {
+      "expand": 1004927,
+      "check": 10078835,
+      "emit": 1225480
+    },
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 2588164096,
+      "peakFootprintBytes": 2686291032,
+      "elapsedMs": 325550,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/private/tmp/bend-g25-checker-lcO8pH/profiled-throughput.mjs",
+        "--worker",
+        "js",
+        "/private/tmp/bend-g25-checker-lcO8pH/request.json",
+        "d4cd4fe3541355701b13c5346ae7880bc469eed26c3138da397d467c4b83e532",
+        "/private/tmp/bend-g25-checker-lcO8pH/result.json"
+      ],
+      "label": "Frozen full-root throughput js",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793244975369-926bd7040fc3f70b.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "windows": [
+      {
+        "steps": {
+          "start": 1000000,
+          "end": 1250000
+        },
+        "wallMs": 10641.558417000007,
+        "cpuMs": 12761.702,
+        "sampledMs": 11669.625,
+        "cpuSelfTop": [
+          {
+            "name": "post",
+            "sampledMs": 1019.084
+          },
+          {
+            "name": "checker_core_steps_v1.checker_advance",
+            "sampledMs": 449.96799999999905
+          },
+          {
+            "name": "run_base",
+            "sampledMs": 330.54099999999994
+          },
+          {
+            "name": "checker_core_steps_v1.checker_chunk",
+            "sampledMs": 298.1179999999996
+          },
+          {
+            "name": "Map.get.go",
+            "sampledMs": 279.1259999999998
+          },
+          {
+            "name": "<host ABI wrapper>",
+            "sampledMs": 229.12900000000002
+          },
+          {
+            "name": "$split_done",
+            "sampledMs": 163.919
+          },
+          {
+            "name": "checker_core_steps_v1.checker_pop",
+            "sampledMs": 149.002
+          },
+          {
+            "name": "(garbage collector)",
+            "sampledMs": 146.998
+          },
+          {
+            "name": "term_usage_map",
+            "sampledMs": 133.33600000000004
+          },
+          {
+            "name": "whnf",
+            "sampledMs": 121.33300000000001
+          },
+          {
+            "name": "$p_map_bit",
+            "sampledMs": 116.541
+          },
+          {
+            "name": "../bend2/selfhost/scope_lookup.lookup",
+            "sampledMs": 108.54100000000001
+          },
+          {
+            "name": "checker_core_steps_v1.checker_step_one",
+            "sampledMs": 108.04299999999999
+          },
+          {
+            "name": "arena_get_node_region",
+            "sampledMs": 94.70700000000001
+          },
+          {
+            "name": "../bend2/selfhost/checker_arena.put_node.metadata",
+            "sampledMs": 90.20199999999998
+          },
+          {
+            "name": "arena_publish_term_view",
+            "sampledMs": 75.667
+          },
+          {
+            "name": "infer_raw",
+            "sampledMs": 74.41199999999998
+          },
+          {
+            "name": "arena_get_word_region",
+            "sampledMs": 72.25200000000001
+          },
+          {
+            "name": "check_term_raw",
+            "sampledMs": 66.751
+          },
+          {
+            "name": "finish_inference",
+            "sampledMs": 64.58199999999998
+          },
+          {
+            "name": "canonicalize_term",
+            "sampledMs": 62.623000000000005
+          },
+          {
+            "name": "arena_publish_occurrence",
+            "sampledMs": 60.49599999999999
+          },
+          {
+            "name": "core_subst_open",
+            "sampledMs": 59.333000000000006
+          },
+          {
+            "name": "equal_raw_ordinary",
+            "sampledMs": 57.541999999999994
+          },
+          {
+            "name": "infer_adt_args_view",
+            "sampledMs": 56.792
+          },
+          {
+            "name": "lower_family_sugar_family",
+            "sampledMs": 53.706
+          },
+          {
+            "name": "materialize_node",
+            "sampledMs": 53.248000000000005
+          }
+        ],
+        "allocationTop": [
+          {
+            "name": "checker_core_steps_v1.checker_advance",
+            "estimatedBytes": 666901824
+          },
+          {
+            "name": "checker_core_steps_v1.checker_pop",
+            "estimatedBytes": 352323552
+          },
+          {
+            "name": "Map.get.go",
+            "estimatedBytes": 348129936
+          },
+          {
+            "name": "arena_get_node_region",
+            "estimatedBytes": 188749584
+          },
+          {
+            "name": "arena_get_word_region",
+            "estimatedBytes": 171971712
+          },
+          {
+            "name": "checker_core_steps_v1.checker_step_group_13",
+            "estimatedBytes": 109056800
+          },
+          {
+            "name": "../bend2/selfhost/checker_arena.bound_read.node",
+            "estimatedBytes": 104861520
+          },
+          {
+            "name": "arena_publish_occurrence",
+            "estimatedBytes": 104861464
+          },
+          {
+            "name": "whnf",
+            "estimatedBytes": 96471784
+          },
+          {
+            "name": "../bend2/selfhost/checker_arena.node_count",
+            "estimatedBytes": 83889360
+          },
+          {
+            "name": "term_usage_map",
+            "estimatedBytes": 79694864
+          },
+          {
+            "name": "../bend2/selfhost/checker_arena.node_has_flag.count",
+            "estimatedBytes": 67110400
+          },
+          {
+            "name": "../bend2/selfhost/checker_arena.word_count",
+            "estimatedBytes": 62916480
+          },
+          {
+            "name": "finish_inference",
+            "estimatedBytes": 58723120
+          },
+          {
+            "name": "$k7624",
+            "estimatedBytes": 58721664
+          },
+          {
+            "name": "arena_publish_occurrences",
+            "estimatedBytes": 54528272
+          },
+          {
+            "name": "arena_publication_uncached",
+            "estimatedBytes": 54528216
+          },
+          {
+            "name": "$k89014",
+            "estimatedBytes": 50333760
+          },
+          {
+            "name": "arena_publish_term_view",
+            "estimatedBytes": 50332864
+          },
+          {
+            "name": "../bend2/selfhost/checker_arena.word_pool.copy.loop",
+            "estimatedBytes": 50332032
+          }
+        ],
+        "cpuProfileSha256": "3820e95dbd0206969ab366f4237c33b38144cf429ba455f0a4a2957e4f6e7c68",
+        "allocationProfileSha256": "e744b339e66b4b5903960c1f4c71ee800a23fe92449fa6c5cb5fb5bedb1c4eb6"
+      },
+      {
+        "steps": {
+          "start": 4000000,
+          "end": 4250000
+        },
+        "wallMs": 6905.869207999989,
+        "cpuMs": 7022.817,
+        "sampledMs": 8045.834,
+        "cpuSelfTop": [
+          {
+            "name": "post",
+            "sampledMs": 1140.042
+          },
+          {
+            "name": "checker_core_steps_v1.checker_advance",
+            "sampledMs": 367.9549999999997
+          },
+          {
+            "name": "checker_core_steps_v1.checker_chunk",
+            "sampledMs": 296.7989999999999
+          },
+          {
+            "name": "run_base",
+            "sampledMs": 270.29299999999995
+          },
+          {
+            "name": "<host ABI wrapper>",
+            "sampledMs": 204.248
+          },
+          {
+            "name": "Map.get.go",
+            "sampledMs": 172.37800000000001
+          },
+          {
+            "name": "whnf",
+            "sampledMs": 167.92300000000003
+          },
+          {
+            "name": "checker_core_steps_v1.checker_pop",
+            "sampledMs": 148.05000000000004
+          },
+          {
+            "name": "(garbage collector)",
+            "sampledMs": 117.12299999999999
+          },
+          {
+            "name": "checker_core_steps_v1.checker_step_one",
+            "sampledMs": 97.46000000000001
+          },
+          {
+            "name": "arena_get_word_region",
+            "sampledMs": 90.86699999999998
+          },
+          {
+            "name": "../bend2/selfhost/scope_lookup.lookup",
+            "sampledMs": 83.918
+          },
+          {
+            "name": "$split_done",
+            "sampledMs": 75.04500000000002
+          },
+          {
+            "name": "../bend2/selfhost/checker_arena.put_node.metadata",
+            "sampledMs": 56.291000000000004
+          },
+          {
+            "name": "../bend2/selfhost/checker_arena.put_word",
+            "sampledMs": 48.625000000000014
+          },
+          {
+            "name": "arena_get_node_region",
+            "sampledMs": 46.70800000000001
+          },
+          {
+            "name": "$p_map_bit",
+            "sampledMs": 44.20199999999999
+          },
+          {
+            "name": "core_subst_at",
+            "sampledMs": 43.543000000000006
+          },
+          {
+            "name": "arena_copy_word_range",
+            "sampledMs": 42.209
+          },
+          {
+            "name": "arena_bound_node",
+            "sampledMs": 34.877
+          },
+          {
+            "name": "../bend2/selfhost/checker_arena.put_node.closed_append",
+            "sampledMs": 33.126
+          },
+          {
+            "name": "whnf_patterns",
+            "sampledMs": 32.70700000000001
+          },
+          {
+            "name": "",
+            "sampledMs": 30.874
+          },
+          {
+            "name": "arena_publish_term_view",
+            "sampledMs": 30.374000000000002
+          },
+          {
+            "name": "../bend2/selfhost/checker_ir.arena_range_index",
+            "sampledMs": 30.083000000000006
+          },
+          {
+            "name": "equal_raw_distinct",
+            "sampledMs": 29.043000000000003
+          },
+          {
+            "name": "check_pattern_typed_view",
+            "sampledMs": 29.000000000000004
+          },
+          {
+            "name": "term_usage_map",
+            "sampledMs": 29.000000000000004
+          }
+        ],
+        "allocationTop": [
+          {
+            "name": "checker_core_steps_v1.checker_advance",
+            "estimatedBytes": 796926912
+          },
+          {
+            "name": "checker_core_steps_v1.checker_pop",
+            "estimatedBytes": 444598752
+          },
+          {
+            "name": "Map.get.go",
+            "estimatedBytes": 339741344
+          },
+          {
+            "name": "arena_get_word_region",
+            "estimatedBytes": 251665776
+          },
+          {
+            "name": "whnf",
+            "estimatedBytes": 171971472
+          },
+          {
+            "name": "core_subst_at",
+            "estimatedBytes": 88084112
+          },
+          {
+            "name": "arena_get_node_region",
+            "estimatedBytes": 88083264
+          },
+          {
+            "name": "../bend2/selfhost/checker_arena.node_count",
+            "estimatedBytes": 83889360
+          },
+          {
+            "name": "../bend2/selfhost/checker_arena.bound_read.node",
+            "estimatedBytes": 79694640
+          },
+          {
+            "name": "arena_constructor_owner",
+            "estimatedBytes": 79694640
+          },
+          {
+            "name": "arena_publish_occurrence",
+            "estimatedBytes": 71306176
+          },
+          {
+            "name": "scope_segment_name_aliases",
+            "estimatedBytes": 71306000
+          },
+          {
+            "name": "arena_bound_terms",
+            "estimatedBytes": 67111488
+          },
+          {
+            "name": "arena_words_cons",
+            "estimatedBytes": 62917680
+          },
+          {
+            "name": "arena_name_text",
+            "estimatedBytes": 62916288
+          },
+          {
+            "name": "arena_words_append",
+            "estimatedBytes": 54528208
+          },
+          {
+            "name": "$k89014",
+            "estimatedBytes": 54528120
+          },
+          {
+            "name": "global_segments_has_constructor_owner",
+            "estimatedBytes": 50333952
+          },
+          {
+            "name": "pattern_value",
+            "estimatedBytes": 50333536
+          },
+          {
+            "name": "$k6385",
+            "estimatedBytes": 50332992
+          }
+        ],
+        "cpuProfileSha256": "776a9d1cd3282e8dffc792410c301002334e599734775f902a03792e4c6bddd9",
+        "allocationProfileSha256": "489b13679380a3bc34c5d78139c2c2bf016b00674c488de415a1c74de9f4db44"
+      },
+      {
+        "steps": {
+          "start": 8000000,
+          "end": 8250000
+        },
+        "wallMs": 7089.432582999987,
+        "cpuMs": 7413.736,
+        "sampledMs": 8397.833,
+        "cpuSelfTop": [
+          {
+            "name": "post",
+            "sampledMs": 1307.958
+          },
+          {
+            "name": "run_base",
+            "sampledMs": 690.8750000000002
+          },
+          {
+            "name": "<host ABI wrapper>",
+            "sampledMs": 589.6139999999995
+          },
+          {
+            "name": "checker_core_steps_v1.checker_advance",
+            "sampledMs": 372.32899999999984
+          },
+          {
+            "name": "checker_core_steps_v1.checker_chunk",
+            "sampledMs": 306.9239999999999
+          },
+          {
+            "name": "Map.get.go",
+            "sampledMs": 192.709
+          },
+          {
+            "name": "Map.seek.go",
+            "sampledMs": 165.709
+          },
+          {
+            "name": "$p_map_bit",
+            "sampledMs": 161.99699999999999
+          },
+          {
+            "name": "(garbage collector)",
+            "sampledMs": 157.661
+          },
+          {
+            "name": "checker_core_steps_v1.checker_pop",
+            "sampledMs": 131.49699999999999
+          },
+          {
+            "name": "Map.diff",
+            "sampledMs": 125.62400000000001
+          },
+          {
+            "name": "Map.ins.go",
+            "sampledMs": 100.04400000000001
+          },
+          {
+            "name": "whnf",
+            "sampledMs": 95.03999999999999
+          },
+          {
+            "name": "Map.diff.step",
+            "sampledMs": 89.546
+          },
+          {
+            "name": "arena_get_word_region",
+            "sampledMs": 85.456
+          },
+          {
+            "name": "checker_core_steps_v1.checker_step_one",
+            "sampledMs": 79.75500000000001
+          },
+          {
+            "name": "$split_done",
+            "sampledMs": 76.33099999999999
+          },
+          {
+            "name": "arena_copy_word_range",
+            "sampledMs": 58.455999999999996
+          },
+          {
+            "name": "../bend2/selfhost/checker_arena.put_node.metadata",
+            "sampledMs": 54.416
+          },
+          {
+            "name": "global_index_insert",
+            "sampledMs": 49.876000000000005
+          },
+          {
+            "name": "../bend2/selfhost/scope_lookup.lookup",
+            "sampledMs": 48.748999999999995
+          },
+          {
+            "name": "arena_get_node_region",
+            "sampledMs": 38.792
+          },
+          {
+            "name": "arena_constructor_owner",
+            "sampledMs": 35.375
+          },
+          {
+            "name": "$p_string_head",
+            "sampledMs": 35.043000000000006
+          },
+          {
+            "name": "arena_get_word",
+            "sampledMs": 34.96100000000001
+          },
+          {
+            "name": "$p_string_tail",
+            "sampledMs": 34.916
+          },
+          {
+            "name": "../bend2/selfhost/checker_arena.resolved_ref_get",
+            "sampledMs": 34.79299999999999
+          },
+          {
+            "name": "resolved_name",
+            "sampledMs": 31.124000000000006
+          }
+        ],
+        "allocationTop": [
+          {
+            "name": "checker_core_steps_v1.checker_advance",
+            "estimatedBytes": 729818144
+          },
+          {
+            "name": "checker_core_steps_v1.checker_pop",
+            "estimatedBytes": 394266816
+          },
+          {
+            "name": "arena_get_word_region",
+            "estimatedBytes": 348137184
+          },
+          {
+            "name": "Map.get.go",
+            "estimatedBytes": 335547064
+          },
+          {
+            "name": "Map.seek.go",
+            "estimatedBytes": 230689160
+          },
+          {
+            "name": "$p_string_tail",
+            "estimatedBytes": 222299248
+          },
+          {
+            "name": "whnf",
+            "estimatedBytes": 197137840
+          },
+          {
+            "name": "arena_constructor_owner",
+            "estimatedBytes": 117444400
+          },
+          {
+            "name": "Map.ins.go",
+            "estimatedBytes": 109052904
+          },
+          {
+            "name": "$p_map_bit",
+            "estimatedBytes": 109052736
+          },
+          {
+            "name": "Map.diff.step",
+            "estimatedBytes": 104858352
+          },
+          {
+            "name": "arena_get_node_region",
+            "estimatedBytes": 100666656
+          },
+          {
+            "name": "arena_copy_word_range",
+            "estimatedBytes": 92278368
+          },
+          {
+            "name": "arena_name_text",
+            "estimatedBytes": 83888784
+          },
+          {
+            "name": "scope_segment_name_aliases",
+            "estimatedBytes": 79694912
+          },
+          {
+            "name": "pattern_value",
+            "estimatedBytes": 79694880
+          },
+          {
+            "name": "scope_name_is_in",
+            "estimatedBytes": 79693800
+          },
+          {
+            "name": "../bend2/selfhost/checker_arena.node_count",
+            "estimatedBytes": 75500640
+          },
+          {
+            "name": "../bend2/selfhost/checker_arena.bound_read.node",
+            "estimatedBytes": 75500400
+          },
+          {
+            "name": "checker_core_steps_v1.checker_step_group_13",
+            "estimatedBytes": 71306256
+          }
+        ],
+        "cpuProfileSha256": "3f7be51d77e50f7207ecd8ad9ae94f35686327153a351edae93edf51023d0473",
+        "allocationProfileSha256": "8fb8a244e16c9945b5a9bb798f214082408460d4d2b64d641da6a200043e8772"
+      }
+    ]
+  },
+  "native": {
+    "summary": {
+      "path": "/private/tmp/bend-g25-native-check-VEXARk/sample/summary.json",
+      "sha256": "d6864b8d2c71de550b4a507ba6cf381b2113b9a59358e53ad8367086b9cee1a0"
+    },
+    "status": "complete",
+    "checkPhase": {
+      "name": "check",
+      "identification": "native_compiler_host.c stderr protocol: NATIVE_PHASE_START {\"phase\":\"check\"} ... NATIVE_PHASE {\"phase\":\"check\",...}",
+      "startHelperMs": 11023.235,
+      "endHelperMs": 90402.564,
+      "helperObservedWallMs": 79379.329,
+      "hostElapsedMs": 79379.686,
+      "hostUserCpuMs": 68755.78,
+      "hostSystemCpuMs": 863.485,
+      "hostChunkAdvances": 10078835,
+      "hostChunkQuantum": 64,
+      "attribution": "hostElapsedMs/userCpuMs/systemCpuMs are the native host getrusage(RUSAGE_SELF)+monotonic receipt for the check span; the external sampler perturbs that span by an unmeasured amount"
+    },
+    "mainThreadTop": [
+      {
+        "symbol": "WL_FID_Clo_apply",
+        "image": "native",
+        "detail": "+ 368  [0x101ac53dc]",
+        "selfSamples": 5268,
+        "inclusiveSamples": 5519,
+        "nodes": 5
+      },
+      {
+        "symbol": "term_drop",
+        "image": "native",
+        "detail": "+ 516  [0x1010969e4]",
+        "selfSamples": 4703,
+        "inclusiveSamples": 4834,
+        "nodes": 626
+      },
+      {
+        "symbol": "map_find_read",
+        "image": "native",
+        "detail": "+ 540,536,...  [0x101b257bc,0x101b257b8,...]",
+        "selfSamples": 4484,
+        "inclusiveSamples": 6632,
+        "nodes": 6
+      },
+      {
+        "symbol": "string_cmp_read",
+        "image": "native",
+        "detail": "+ 128  [0x1012c5424]",
+        "selfSamples": 3533,
+        "inclusiveSamples": 3533,
+        "nodes": 40
+      },
+      {
+        "symbol": "ctr_take",
+        "image": "native",
+        "detail": "+ 136  [0x1016e7528]",
+        "selfSamples": 2958,
+        "inclusiveSamples": 4981,
+        "nodes": 1702
+      },
+      {
+        "symbol": "rfc_seal",
+        "image": "native",
+        "detail": "+ 0  [0x1013ce790]",
+        "selfSamples": 2719,
+        "inclusiveSamples": 2719,
+        "nodes": 1743
+      },
+      {
+        "symbol": "rfc_wrap",
+        "image": "native",
+        "detail": "+ 88  [0x101c4aa50]",
+        "selfSamples": 2283,
+        "inclusiveSamples": 2986,
+        "nodes": 938
+      },
+      {
+        "symbol": "heap_free",
+        "image": "native",
+        "detail": "+ 44,52  [0x100dd4c40,0x100dd4c48]",
+        "selfSamples": 2261,
+        "inclusiveSamples": 2261,
+        "nodes": 831
+      },
+      {
+        "symbol": "heap_alloc",
+        "image": "native",
+        "detail": "+ 44,4  [0x1010965a0,0x101096578]",
+        "selfSamples": 1836,
+        "inclusiveSamples": 1836,
+        "nodes": 860
+      },
+      {
+        "symbol": "WL_FID_checker_core_steps_v1_checker_advance",
+        "image": "native",
+        "detail": "+ 864  [0x101ac384c]",
+        "selfSamples": 1603,
+        "inclusiveSamples": 2334,
+        "nodes": 12
+      },
+      {
+        "symbol": "span_fade",
+        "image": "native",
+        "detail": "+ 160  [0x101c4adac]",
+        "selfSamples": 1559,
+        "inclusiveSamples": 3151,
+        "nodes": 579
+      },
+      {
+        "symbol": "map_cur_bit",
+        "image": "native",
+        "detail": "+ 72,88,...  [0x101ae79b0,0x101ae79c0,...]",
+        "selfSamples": 1369,
+        "inclusiveSamples": 1369,
+        "nodes": 4
+      },
+      {
+        "symbol": "WL_FID_checker_core_steps_v1_checker_step_one",
+        "image": "native",
+        "detail": "+ 282148  [0x101a3a800]",
+        "selfSamples": 1125,
+        "inclusiveSamples": 6751,
+        "nodes": 334
+      },
+      {
+        "symbol": "map_bit",
+        "image": "native",
+        "detail": "+ 172  [0x101acf978]",
+        "selfSamples": 756,
+        "inclusiveSamples": 756,
+        "nodes": 18
+      },
+      {
+        "symbol": "rfc_bump",
+        "image": "native",
+        "detail": "+ 8  [0x1013ce884]",
+        "selfSamples": 646,
+        "inclusiveSamples": 646,
+        "nodes": 209
+      },
+      {
+        "symbol": "spin_79",
+        "image": "native",
+        "detail": "+ 640  [0x101ac6a18]",
+        "selfSamples": 580,
+        "inclusiveSamples": 1317,
+        "nodes": 321
+      },
+      {
+        "symbol": "WL_FID_checker_core_steps_v1_checker_chunk",
+        "image": "native",
+        "detail": "+ 4,20,...  [0x1012bc030,0x1012bc040,...]",
+        "selfSamples": 532,
+        "inclusiveSamples": 532,
+        "nodes": 1
+      },
+      {
+        "symbol": "map_get_read",
+        "image": "native",
+        "detail": "+ 336  [0x1016078c0]",
+        "selfSamples": 400,
+        "inclusiveSamples": 2485,
+        "nodes": 10
+      },
+      {
+        "symbol": "spin_48",
+        "image": "native",
+        "detail": "+ 256  [0x100fb4d9c]",
+        "selfSamples": 322,
+        "inclusiveSamples": 992,
+        "nodes": 311
+      },
+      {
+        "symbol": "term_keep",
+        "image": "native",
+        "detail": "+ 0  [0x101ac5a3c]",
+        "selfSamples": 307,
+        "inclusiveSamples": 537,
+        "nodes": 227
+      },
+      {
+        "symbol": "spare_free",
+        "image": "native",
+        "detail": "+ 0  [0x1016e7488]",
+        "selfSamples": 297,
+        "inclusiveSamples": 297,
+        "nodes": 215
+      },
+      {
+        "symbol": "a32_load_acq",
+        "image": "native",
+        "detail": "+ 0  [0x100dd4c98]",
+        "selfSamples": 290,
+        "inclusiveSamples": 290,
+        "nodes": 170
+      },
+      {
+        "symbol": "spin_80",
+        "image": "native",
+        "detail": "+ 244  [0x1012bebac]",
+        "selfSamples": 286,
+        "inclusiveSamples": 550,
+        "nodes": 290
+      },
+      {
+        "symbol": "WL_FID_checker_core_steps_v1_checker_advance_k50568",
+        "image": "native",
+        "detail": "+ 36,40  [0x100fb2a90,0x100fb2a94]",
+        "selfSamples": 270,
+        "inclusiveSamples": 270,
+        "nodes": 2
+      }
+    ],
+    "output": {
+      "path": "/private/tmp/bend-g25-native-check-VEXARk/output.mjs",
+      "sha256": "c33227e028d767df9a9fff75663e42eb7374919dcf8e7dff14936a98d20008fb",
+      "bytes": 29948466
+    }
+  },
+  "chosenChange": {
+    "file": "bend2/selfhost/checker.bend",
+    "symbol": "arena_copy_word_range",
+    "mechanism": "Thread source/transient word arrays inside the copy loop; reconstruct Arena/ArenaStore only once per range. Per-element full-tag dispatch and read-before-write retained, including tag wrap. No other source optimization included."
+  },
+  "limitations": [
+    "CPU windows and allocations are sampled with profiler overhead; no clean-time comparison or whole-phase allocation volume is inferred.",
+    "Native sample records stacks, not allocation; symbol locations are heuristic without DWARF.",
+    "Generated helper ownership is inferred by unique source-helper reachability, not a native source map.",
+    "The initially reported c_emitter_step owner for anonymous host ABI wrappers was a mapping-boundary error; corrected here.",
+    "Source review counted record constructors, not exact executed heap allocations."
+  ]
+}

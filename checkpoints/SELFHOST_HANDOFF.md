@@ -3,6 +3,22 @@
 ## 1. Цель и первый шаг
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
+### Текущий кандидат G25: array-level word-range fusion
+
+На принятом R12 выполнены три bounded CPU/allocation окна JS checker и отдельный
+native checker sample на frozen G22 root; оба полных прогона сохранили прежний
+output SHA-256. Выбран только `arena_copy_word_range`: в цикле передаются две
+word arrays, `Arena`/`ArenaStore` восстанавливаются один раз. Каждый элемент
+сохраняет `IR.arena_range_index`, порядок read-before-write и выбор владельца
+после U32 wrap. Другие checker оптимизации и изменения лимитов не входят.
+
+`evals/checker_word_range_smoke.bend` исполняет девять сценариев через generated
+checker steps; C и JS PASS. Профиль и точные команды:
+`evals/receipts/producer2039g25_r12_profile.json`,
+`evals/receipts/producer2039g25_range_smoke.json`.
+Полная свежая квалификация G25 и paired performance против R12 ещё не выполнены;
+кандидат не принят, новый fixedpoint или ускорение пока не заявляются.
+
 
 ### Принятый checkpoint: local2039g24r12
 

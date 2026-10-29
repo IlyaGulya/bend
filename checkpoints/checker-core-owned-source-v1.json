@@ -1,16 +1,16 @@
 {
   "schemaVersion": 2,
   "source": "bend2/selfhost/checker.bend",
-  "sourceSha256": "fa1d63e8f5de8f8afb9d47bca13104ad43285dcc195589666323bbda675366bc",
+  "sourceSha256": "492f51d28015d663c7568f19a89f4e62b61dff64d61dab3f5a8bf6b3dd0b5a6e",
   "slice": "checkpoints/checker_core_owned_v1.bend",
-  "sliceSha256": "20c637b53ca033e923a4ec4f2217333679ed8116e3f8950f4bc4b30bb421704b",
+  "sliceSha256": "acf502554ff543b127d4812c05ad4ca2b61f20d8e2f3b160621ebc5403ae1524",
   "root": "check_modules",
   "publicRoots": [
     "check_modules",
     "inspect_checked"
   ],
   "closureDiscovery": "Union of fixedpoints of binding-aware authentic sourceOracle Body references from checking and explicit owner-preserving inspection; fresh complete closure, not historical membership.",
-  "definitions": 1161,
+  "definitions": 1163,
   "definitionNames": [
     "inference_keep",
     "inference_child",
@@ -874,6 +874,8 @@
     "arena_set_word_region",
     "arena_set_word",
     "arena_word_cursor",
+    "arena_copy_word_lanes",
+    "arena_copy_word_range_nonempty",
     "arena_copy_word_range",
     "arena_reserve_source_naturals",
     "arena_set_natural_region",
@@ -5334,8 +5336,18 @@
     "arena_set_word_region",
     "arena_set_word",
     "arena_word_cursor",
-    "native_match_arena_copy_word_range_0",
-    "native_match_arena_copy_word_range_1",
+    "native_match_arena_copy_word_lanes_0",
+    "native_match_arena_copy_word_lanes_1",
+    "native_match_arena_copy_word_lanes_2",
+    "native_match_arena_copy_word_lanes_3",
+    "native_match_arena_copy_word_lanes_4",
+    "native_match_arena_copy_word_lanes_5",
+    "arena_copy_word_lanes",
+    "native_match_arena_copy_word_range_nonempty_0",
+    "native_match_arena_copy_word_range_nonempty_1",
+    "native_match_arena_copy_word_range_nonempty_2",
+    "native_match_arena_copy_word_range_nonempty_3",
+    "arena_copy_word_range_nonempty",
     "arena_copy_word_range",
     "arena_reserve_source_naturals",
     "arena_set_natural_region",
@@ -10332,10 +10344,20 @@
     "arena_reserve_source_words": "357b88c07a0cd995719b3a270c3c5d34b857c09bc963b352ff554332932c8c8a",
     "arena_set_word_region": "f7a78a69dac30e30135a9dc879b4e3fbaef85c463b39276e9c3eb450a2d21a81",
     "arena_set_word": "c1f3f841b8ff82f02dd709a0c0557648b2b3caf4e5395c4dc8247b6ac4006682",
-    "arena_word_cursor": "4073539b5a5e22bc2e4ef8228613d489b67b05ed657b83f56a7d0c5e92fe4db9",
-    "native_match_arena_copy_word_range_0": "e9aca5287efe05d9edb9d6c371cd6ac2bd63fc56816fe027c86bac17f1c7f8b7",
-    "native_match_arena_copy_word_range_1": "62503116375aef7496ac96af862ac703dc138801d843c040a1d1244b1deb0c81",
-    "arena_copy_word_range": "ad0c317f2c06c43af6b7d4ae13d03978216610d23857841e20458fb725b37ac3",
+    "arena_word_cursor": "bf9bb5c79477a995d2f732ebe4b394136207ab96461b0c22e8e56accb1eb08c8",
+    "native_match_arena_copy_word_lanes_0": "c5d577f75f89faee0a99e3286911bcbf613c29e0159750535f157cee8efdcd13",
+    "native_match_arena_copy_word_lanes_1": "ad970a1ceed4dd305c5b362981c9abf5d6070909b4a36d939c36d83b200a3f04",
+    "native_match_arena_copy_word_lanes_2": "adefe8b9dd39edc37c513fd970ce40a6a0fa10b501a95f785a535db09a850aac",
+    "native_match_arena_copy_word_lanes_3": "6c2264558494a06eef88139f86ca538bd67705a37c6aae9ebb1a96f8a154999d",
+    "native_match_arena_copy_word_lanes_4": "f418910e0adf582d0b29856d49baeec4dd51674a44e64e7d7ba8272cd33d84ae",
+    "native_match_arena_copy_word_lanes_5": "0021711125285b1ee100f917229e17b4b8e30b7d83ae3738305faf38dcbbd463",
+    "arena_copy_word_lanes": "61afd83f502d506d6e796f0f631ee82616a0d0a420b3ef68716ea7af217d5f74",
+    "native_match_arena_copy_word_range_nonempty_0": "a61798b782764e2f247076f302719c6bdb973d394e5ceae7bb8156edf8b5e969",
+    "native_match_arena_copy_word_range_nonempty_1": "7bbb42dc13972f92eefa619ab619dccc5fd2d4e2b40b38cdfa8f23ab6d22dc6d",
+    "native_match_arena_copy_word_range_nonempty_2": "d9963532e5a8666533da69aebe885ac023a2d4288638177fc4666434a21c9e4b",
+    "native_match_arena_copy_word_range_nonempty_3": "701688bbaba32b4f526b7f51c47d00b64536856a56530e49950266324ea2e3f6",
+    "arena_copy_word_range_nonempty": "922ba61eca6060b2377167d0309c461940d8ddc750ace253fa002b95d7307f95",
+    "arena_copy_word_range": "185c5a0ec8a095060cac48381e6780e90e84eef655f52f56f6ceda60d6b20148",
     "arena_reserve_source_naturals": "b46bcc9cfc38a47d0e5cf1a6680b484ffa148f9bd7c7b262fd2322f9b2adca83",
     "arena_set_natural_region": "68c9ce407faf46d5b2e2dfbe5086ff533fcfb2b25944831e0ea6e010ae8b4cfc",
     "arena_set_natural": "9314831afd55df9d4dff536ff16758025026cff1c44a05264cb974b877294eab",
@@ -14470,8 +14492,16 @@
     "native_match_arena_case_prefix_eligible_1": "arena_case_prefix_eligible",
     "native_match_arena_case_prefix_region_0": "arena_case_prefix_region",
     "native_match_arena_case_prefix_region_1": "arena_case_prefix_region",
-    "native_match_arena_copy_word_range_0": "arena_copy_word_range",
-    "native_match_arena_copy_word_range_1": "arena_copy_word_range",
+    "native_match_arena_copy_word_lanes_0": "arena_copy_word_lanes",
+    "native_match_arena_copy_word_lanes_1": "arena_copy_word_lanes",
+    "native_match_arena_copy_word_lanes_2": "arena_copy_word_lanes",
+    "native_match_arena_copy_word_lanes_3": "arena_copy_word_lanes",
+    "native_match_arena_copy_word_lanes_4": "arena_copy_word_lanes",
+    "native_match_arena_copy_word_lanes_5": "arena_copy_word_lanes",
+    "native_match_arena_copy_word_range_nonempty_0": "arena_copy_word_range_nonempty",
+    "native_match_arena_copy_word_range_nonempty_1": "arena_copy_word_range_nonempty",
+    "native_match_arena_copy_word_range_nonempty_2": "arena_copy_word_range_nonempty",
+    "native_match_arena_copy_word_range_nonempty_3": "arena_copy_word_range_nonempty",
     "native_match_arena_bound_range_combine_0": "arena_bound_range_combine",
     "native_match_arena_bound_range_combine_1": "arena_bound_range_combine",
     "native_match_arena_bound_range_combine_2": "arena_bound_range_combine",
@@ -54000,11 +54030,19 @@
     },
     {
       "name": "arena_word_cursor",
-      "exactCanonicalBlockSha256": "4073539b5a5e22bc2e4ef8228613d489b67b05ed657b83f56a7d0c5e92fe4db9"
+      "exactCanonicalBlockSha256": "bf9bb5c79477a995d2f732ebe4b394136207ab96461b0c22e8e56accb1eb08c8"
+    },
+    {
+      "name": "arena_copy_word_lanes",
+      "exactCanonicalBlockSha256": "26651aa12f9a56d6783ac38cf723de973d44877c31a7d8b737703ef37a67c008"
+    },
+    {
+      "name": "arena_copy_word_range_nonempty",
+      "exactCanonicalBlockSha256": "980bcda9bdcca97d0468bfcb624c924bef1cdf979df96c6e8cf304358865d85f"
     },
     {
       "name": "arena_copy_word_range",
-      "exactCanonicalBlockSha256": "5d71cd6de429786dfbfdb1fc9502ddb94a9260a73b6d73a82169e2ddbcb3a45d"
+      "exactCanonicalBlockSha256": "185c5a0ec8a095060cac48381e6780e90e84eef655f52f56f6ceda60d6b20148"
     },
     {
       "name": "arena_reserve_source_naturals",
@@ -93937,26 +93975,175 @@
       "producers": 0
     },
     {
-      "owner": "arena_copy_word_range",
-      "helper": "native_match_arena_copy_word_range_0",
+      "owner": "arena_copy_word_lanes",
+      "helper": "native_match_arena_copy_word_lanes_0",
       "kind": "local",
       "captures": [
-        3,
         5,
+        7,
         9,
-        12
+        13,
+        19,
+        23
       ],
       "producers": 1
     },
     {
-      "owner": "arena_copy_word_range",
-      "helper": "native_match_arena_copy_word_range_1",
+      "owner": "arena_copy_word_lanes",
+      "helper": "native_match_arena_copy_word_lanes_1",
+      "kind": "local",
+      "captures": [
+        2,
+        7,
+        9,
+        13,
+        19,
+        23
+      ],
+      "producers": 1
+    },
+    {
+      "owner": "arena_copy_word_lanes",
+      "helper": "native_match_arena_copy_word_lanes_2",
+      "kind": "local",
+      "captures": [
+        5,
+        7,
+        9,
+        13,
+        19,
+        23
+      ],
+      "producers": 1
+    },
+    {
+      "owner": "arena_copy_word_lanes",
+      "helper": "native_match_arena_copy_word_lanes_3",
+      "kind": "local",
+      "captures": [
+        2,
+        7,
+        9,
+        13,
+        19,
+        23
+      ],
+      "producers": 1
+    },
+    {
+      "owner": "arena_copy_word_lanes",
+      "helper": "native_match_arena_copy_word_lanes_4",
       "kind": "match",
       "captures": [
+        2,
+        5,
         7,
+        9,
+        13,
+        19,
+        21,
+        23
+      ],
+      "producers": 2
+    },
+    {
+      "owner": "arena_copy_word_lanes",
+      "helper": "native_match_arena_copy_word_lanes_5",
+      "kind": "match",
+      "captures": [
+        11,
+        2,
+        5,
+        7,
+        9,
+        13
+      ],
+      "producers": 0
+    },
+    {
+      "owner": "arena_copy_word_range_nonempty",
+      "helper": "native_match_arena_copy_word_range_nonempty_0",
+      "kind": "local",
+      "captures": [
+        29,
+        30,
+        31,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        57,
+        58,
+        59,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70
+      ],
+      "producers": 1
+    },
+    {
+      "owner": "arena_copy_word_range_nonempty",
+      "helper": "native_match_arena_copy_word_range_nonempty_1",
+      "kind": "match",
+      "captures": [
+        14,
+        3,
+        5,
+        7,
+        9,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42
+      ],
+      "producers": 0
+    },
+    {
+      "owner": "arena_copy_word_range_nonempty",
+      "helper": "native_match_arena_copy_word_range_nonempty_2",
+      "kind": "match",
+      "captures": [
+        13,
+        3,
+        5,
+        7,
+        9,
+        14
+      ],
+      "producers": 0
+    },
+    {
+      "owner": "arena_copy_word_range_nonempty",
+      "helper": "native_match_arena_copy_word_range_nonempty_3",
+      "kind": "match",
+      "captures": [
         1,
         3,
         5,
+        7,
         9
       ],
       "producers": 0

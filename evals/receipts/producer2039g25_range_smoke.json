@@ -1,0 +1,306 @@
+{
+  "schemaVersion": 1,
+  "status": "SOURCE_CHANGED_PATH_SMOKE_PASS",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "scope": "Nine word-copy behavior cases on actual canonical-source-derived checker steps, emitted and executed on C and JS; not full compiler qualification.",
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "evals/g24_source_smoke.mjs",
+    "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "--bun=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--clang=/usr/bin/clang",
+    "--fixtures",
+    "evals/checker_word_range_smoke.bend",
+    "--targets",
+    "c,js",
+    "--receipt",
+    "/private/tmp/bend-g25-checker-lcO8pH/word-ranges-smoke-structural.json"
+  ],
+  "environment": "env HEAVY_GATE_MEMORY_MIB=8192 HEAVY_GATE_RSS_MIB=8192 HEAVY_GATE_POLL_MS=10 HEAVY_GATE_TIMEOUT_MS=600000 BUN_JSC_forceRAMSize=4294967296 ",
+  "source": {
+    "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker.bend",
+    "sha256": "492f51d28015d663c7568f19a89f4e62b61dff64d61dab3f5a8bf6b3dd0b5a6e"
+  },
+  "fixture": {
+    "path": "/Users/ilyagulya/Projects/My/bend/evals/checker_word_range_smoke.bend",
+    "sha256": "6e5086838f9d45a154e270e93648099ca5a6a18761ef2664ff852f6f01fced28"
+  },
+  "report": {
+    "path": "/private/tmp/bend-g25-checker-lcO8pH/word-ranges-smoke-structural.json",
+    "sha256": "643d1ce16ad6b7c1830fe2304fc3fcaa41a44b2876fbc72f1061f30b3dea0892"
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "compiler": {
+    "bend2/bend.ts": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+    "bend2/comp.ts": "880a9b3b86f273852a39fc664f8c3d7b71e3860b6d365e4321949fc812b6e7cc",
+    "bend2/base.bend": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614"
+  },
+  "runtime": {
+    "node": {
+      "command": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "version": "v23.11.0",
+      "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5"
+    },
+    "bun": {
+      "command": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "version": "1.4.3",
+      "sha256": "28c7dd0a06916aba284d570ef44a2d70e9c538eaf2ba58dfe0910525563b3f79"
+    },
+    "clang": {
+      "command": "/usr/bin/clang",
+      "path": "/usr/bin/clang",
+      "version": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+      "sha256": "b8763cf250e607a778bb4603cecb5b90338814d0a3dfcba0d57b1de242f610e9"
+    }
+  },
+  "generatedInputs": {
+    "checkpoints/checker_core_steps_v1.bend": "85a0a87ab7bcc02b5c872de7fee1c4f590a7e9b2272e1bf2c201063cea573523",
+    "checkpoints/checker_core_steps_component_v1.bend": "ca15a467e804983f454a63e9db64a38c1077a2d49104d488556d0609557521cf",
+    "checkpoints/checker_core_steps_driver_v1.bend": "0a21e90c6eca75d51684c5c75fd52fae28a86d7f369052d7943a7101f9a1bfc8",
+    "checkpoints/emitter_steps_v1.bend": "7f7c8d2e57a3fcd3925b4286a8300668ae91b7e11a26317cea6da2df5c9ea425"
+  },
+  "rows": [
+    {
+      "source": "evals/checker_word_range_smoke.bend",
+      "target": "c",
+      "passed": true,
+      "expected": "source-overlap:1\ntransient-reverse-overlap:1\nsource-to-transient:1\ntransient-to-source:1\nreverse-source:1\nreverse-destination:1\nnonzero-offset:1\nempty-invalid-handles:1\ntag-wrap:1\n",
+      "observed": "source-overlap:1\ntransient-reverse-overlap:1\nsource-to-transient:1\ntransient-to-source:1\nreverse-source:1\nreverse-destination:1\nnonzero-offset:1\nempty-invalid-handles:1\ntag-wrap:1\n",
+      "stages": {
+        "emit": {
+          "status": "PASS",
+          "elapsedMs": 15073.494499999999,
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--experimental-strip-types",
+            "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+            "/Users/ilyagulya/Projects/My/bend/evals/checker_word_range_smoke.bend",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-eo8OFO/000-checker_word_range_smoke.c"
+          ],
+          "guardian": {
+            "status": "PASS",
+            "reason": "command_exit",
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "peakRssBytes": 1902182400,
+            "peakFootprintBytes": 2075096704,
+            "elapsedMs": 15037,
+            "timeoutMs": 600000,
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "supervisorExitCode": 0,
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/evals/checker_word_range_smoke.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-eo8OFO/000-checker_word_range_smoke.c"
+            ],
+            "label": "heavy command",
+            "exitCode": 0,
+            "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793246666148-8377cd5baee94aad.json",
+            "memoryLimitBytes": 8589934592,
+            "rssLimitBytes": 8589934592
+          },
+          "stdout": "{\"status\":\"CANONICAL_PROGRAM_EMITTED\",\"source\":\"/Users/ilyagulya/Projects/My/bend/evals/checker_word_range_smoke.bend\",\"output\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-eo8OFO/000-checker_word_range_smoke.c\",\"events\":6675,\"bytes\":15066255}\n"
+        },
+        "clang": {
+          "status": "PASS",
+          "elapsedMs": 31651.938459000005,
+          "command": [
+            "/usr/bin/clang",
+            "-std=c11",
+            "-O1",
+            "-pthread",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-eo8OFO/000-checker_word_range_smoke.c",
+            "-lm",
+            "-o",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-eo8OFO/000-checker_word_range_smoke.c.exe"
+          ],
+          "guardian": {
+            "status": "PASS",
+            "reason": "command_exit",
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "peakRssBytes": 2467184640,
+            "peakFootprintBytes": 2323024464,
+            "elapsedMs": 31614,
+            "timeoutMs": 600000,
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "supervisorExitCode": 0,
+            "command": [
+              "/usr/bin/clang",
+              "-std=c11",
+              "-O1",
+              "-pthread",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-eo8OFO/000-checker_word_range_smoke.c",
+              "-lm",
+              "-o",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-eo8OFO/000-checker_word_range_smoke.c.exe"
+            ],
+            "label": "heavy command",
+            "exitCode": 0,
+            "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793246681275-ec670dbfadc07d15.json",
+            "memoryLimitBytes": 8589934592,
+            "rssLimitBytes": 8589934592
+          },
+          "stdout": ""
+        },
+        "consumer": {
+          "status": "PASS",
+          "elapsedMs": 39.451374999996915,
+          "command": [
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-eo8OFO/000-checker_word_range_smoke.c.exe"
+          ],
+          "guardian": {
+            "status": "PASS",
+            "reason": "command_exit",
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "peakRssBytes": 131072,
+            "peakFootprintBytes": 311440,
+            "elapsedMs": 14,
+            "timeoutMs": 600000,
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "supervisorExitCode": 0,
+            "command": [
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-eo8OFO/000-checker_word_range_smoke.c.exe"
+            ],
+            "label": "heavy command",
+            "exitCode": 0,
+            "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793246712924-30d41283234d0bca.json",
+            "memoryLimitBytes": 8589934592,
+            "rssLimitBytes": 8589934592
+          },
+          "stdout": "source-overlap:1\ntransient-reverse-overlap:1\nsource-to-transient:1\ntransient-to-source:1\nreverse-source:1\nreverse-destination:1\nnonzero-offset:1\nempty-invalid-handles:1\ntag-wrap:1\n"
+        }
+      }
+    },
+    {
+      "source": "evals/checker_word_range_smoke.bend",
+      "target": "js",
+      "passed": true,
+      "expected": "source-overlap:1\ntransient-reverse-overlap:1\nsource-to-transient:1\ntransient-to-source:1\nreverse-source:1\nreverse-destination:1\nnonzero-offset:1\nempty-invalid-handles:1\ntag-wrap:1\n",
+      "observed": "source-overlap:1\ntransient-reverse-overlap:1\nsource-to-transient:1\ntransient-to-source:1\nreverse-source:1\nreverse-destination:1\nnonzero-offset:1\nempty-invalid-handles:1\ntag-wrap:1\n",
+      "stages": {
+        "emit": {
+          "status": "PASS",
+          "elapsedMs": 2340.4671249999956,
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--experimental-strip-types",
+            "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+            "/Users/ilyagulya/Projects/My/bend/evals/checker_word_range_smoke.bend",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-eo8OFO/000-checker_word_range_smoke.js"
+          ],
+          "guardian": {
+            "status": "PASS",
+            "reason": "command_exit",
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "peakRssBytes": 988659712,
+            "peakFootprintBytes": 1006184088,
+            "elapsedMs": 2318,
+            "timeoutMs": 600000,
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "supervisorExitCode": 0,
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/evals/checker_word_range_smoke.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-eo8OFO/000-checker_word_range_smoke.js"
+            ],
+            "label": "heavy command",
+            "exitCode": 0,
+            "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793246712961-d6dc23874b76dd96.json",
+            "memoryLimitBytes": 8589934592,
+            "rssLimitBytes": 8589934592
+          },
+          "stdout": "{\"status\":\"CANONICAL_PROGRAM_EMITTED\",\"source\":\"/Users/ilyagulya/Projects/My/bend/evals/checker_word_range_smoke.bend\",\"output\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-eo8OFO/000-checker_word_range_smoke.js\",\"events\":6675,\"bytes\":5681764}\n"
+        },
+        "consumer": {
+          "status": "PASS",
+          "elapsedMs": 110.36987499999668,
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--max-old-space-size=3072",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-eo8OFO/000-checker_word_range_smoke.js"
+          ],
+          "guardian": {
+            "status": "PASS",
+            "reason": "command_exit",
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "peakRssBytes": 80429056,
+            "peakFootprintBytes": 50400136,
+            "elapsedMs": 86,
+            "timeoutMs": 600000,
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "supervisorExitCode": 0,
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--max-old-space-size=3072",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-eo8OFO/000-checker_word_range_smoke.js"
+            ],
+            "label": "heavy command",
+            "exitCode": 0,
+            "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793246715315-8d4b6d91cc0a325d.json",
+            "memoryLimitBytes": 8589934592,
+            "rssLimitBytes": 8589934592
+          },
+          "stdout": "source-overlap:1\ntransient-reverse-overlap:1\nsource-to-transient:1\ntransient-to-source:1\nreverse-source:1\nreverse-destination:1\nnonzero-offset:1\nempty-invalid-handles:1\ntag-wrap:1\n"
+        }
+      }
+    }
+  ],
+  "priorHarnessFailures": [
+    {
+      "path": "/private/tmp/bend-g25-checker-lcO8pH/word-ranges-smoke.json",
+      "sha256": "55af6bf8c24a5efbd07607858935d3761d1c8447b433df774ab662ed509ab1f7",
+      "status": "FAIL",
+      "error": "emission failed for tests/reg/checker_word_ranges.bend (c): heavy gate FAIL (phase complete, ownedTreeStopped true, commandExitCode 1, exit 1, reason command_exit)",
+      "diagnostic": "(node:28551) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\nError:\n- message  : a parameter or field scrutinee (a match cannot scrutinize a computed value: give it its own def)\nLocation:\n334 |     case Loader.LoadedModule{namespace, Ast.Module{_, _, declarations}} <> rest:\n335>|       match String.eq(owner, namespace):\n    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n336 |         case False{}: capture_module_names(owner, alias, rest)\n"
+    },
+    {
+      "path": "/private/tmp/bend-g25-checker-lcO8pH/word-ranges-smoke-owned.json",
+      "sha256": "e7b0da160194b89aac5d03aabf8dd260404fbfd75e5c9beef806871bbe56255c",
+      "status": "FAIL",
+      "error": "emission failed for evals/checker_word_range_smoke.bend (c): heavy gate FAIL (phase complete, ownedTreeStopped true, commandExitCode 1, exit 1, reason command_exit)",
+      "diagnostic": "(node:62409) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\nError:\n- message  : a parameter or field scrutinee (a match cannot scrutinize a computed value: give it its own def)\nLocation:\n10 |     case 1n+rest:\n11>|       Tuple{arena, _} = Arena.put_word(arena, value)\n   |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n12 |       fill(arena, rest, U32.add(value, 1))\n"
+    },
+    {
+      "path": "/private/tmp/bend-g25-checker-lcO8pH/word-ranges-smoke-native-matches.json",
+      "sha256": "f8278b269b659c4078730e9180f8b23930b75d6434bfb54e6771024f9bd07d98",
+      "status": "FAIL",
+      "error": "emission failed for evals/checker_word_range_smoke.bend (c): heavy gate FAIL (phase complete, ownedTreeStopped true, commandExitCode 1, exit 1, reason command_exit)",
+      "diagnostic": "(node:99394) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\nError:\n- message  : 'rest' can't be matched in this position (it is matched after a local statement or after a match on a later binder, it was already matched, or it is a def)\nLocation:\n20 |       same = Bool.and(ok, U32.is_eq(value, head))\n21>|       match rest:\n   |             ^^^^\n22 |         case Nil{}: {Checker.ArenaResult{store, same} : Checker.ArenaResult<Bool>}\n"
+    },
+    {
+      "path": "/private/tmp/bend-g25-checker-lcO8pH/word-ranges-smoke-ordered-matches.json",
+      "sha256": "7ff413dd96b9440598d1c8eaca14e0c0b2e21a479c29ebdd83dba38c9f7874ef",
+      "status": "FAIL",
+      "error": "emission failed for evals/checker_word_range_smoke.bend (c): heavy gate FAIL (phase complete, ownedTreeStopped true, commandExitCode 1, exit 1, reason command_exit)",
+      "diagnostic": "(node:19842) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\nError:\n- expected : a filled definition (an unfilled law is a dead claim: live code cannot use it)\n- observed : occurrence_retype\nContext:\n- term       : U32\n- ty         : U32\n- _          : IR.Occurrence\n- occurrence : IR.Occurrence\nLocation: inference_keep\n101 |   match result:\n102>|     case Inferred{+term, +ty, _}: Inferred{term, ty, occurrence_retype(occurrence, term, ty)}\n    |                                                      ^^^^^^^^^^^^^^^^^\n103 |     case InferenceFailure{diagnostic}: InferenceFailure{diagnostic}\n"
+    },
+    {
+      "path": "/private/tmp/bend-g25-checker-lcO8pH/word-ranges-smoke-admitted-steps.json",
+      "sha256": "b90f29de7bf4a9d03e2843857cbf7924c858445c6fed6d3f1437339d7d7a4548",
+      "status": "FAIL",
+      "error": "emission failed for evals/checker_word_range_smoke.bend (c): heavy gate FAIL (phase complete, ownedTreeStopped true, commandExitCode 1, exit 1, reason command_exit)",
+      "diagnostic": "(node:67043) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\nError:\n- expected : a decreasing self-call (arguments are read left to right: each passed unchanged until one shrinks)\n- observed : check_words_step\nContext:\n- start : U32\n- head  : U32\n- _31   : List<&2, U32> - Nil{}\n- ok    : Bool\n- store : Checker.ArenaStore\n- value : U32\nLocation: check_words_step\n21 |     case +head <> rest Checker.ArenaResult{store, value}:\n22>|       check_words_step(U32.add(start, 1), rest, Bool.and(ok, U32.is_eq(value, head)), Checker.checker_pure_arena_get_word(store, U32.add(start, 1)))\n   |       ^^^^^^^^^^^^^^^^\n23 | \n"
+    }
+  ]
+}

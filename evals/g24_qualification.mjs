@@ -266,12 +266,12 @@ function validateBindings(bindingsPath, {repository, frozenRepository, controlNa
     fail('throughput bindings lack the accepted baseline output hash');
   if (!existsSync(frozenRepository)) fail('unreachable prerequisite: frozen repository not found: ' + frozenRepository);
   const frozen = realpathSync(frozenRepository);
-  if (!existsSync(controlNative)) fail('unreachable prerequisite: G23 control native binary not found: ' + controlNative);
-  if (!existsSync(controlImage)) fail('unreachable prerequisite: G23 control stage-one image not found: ' + controlImage);
+  if (!existsSync(controlNative)) fail('unreachable prerequisite: control native binary not found: ' + controlNative);
+  if (!existsSync(controlImage)) fail('unreachable prerequisite: control stage-one image not found: ' + controlImage);
   if (fileSha(controlNative) !== bindings.native.sha256 || statSync(controlNative).size !== bindings.native.bytes)
-    fail('G23 control native binary does not match the bindings');
+    fail('control native binary does not match the bindings');
   if (fileSha(controlImage) !== bindings.image.sha256 || statSync(controlImage).size !== bindings.image.bytes)
-    fail('G23 control stage-one image does not match the bindings');
+    fail('control stage-one image does not match the bindings');
 
   const recordedRoot = bindings.frozenRoot.path;
   // The frozen root lives directly in <frozen repository>/checkpoints, so the
@@ -1329,7 +1329,7 @@ async function runThroughput(run, context) {
       row.repetition = repetition;
       if (role === 'control') {
         if (report.output.sha256 !== bindings.expectedBaselineOutput)
-          fail('G23 control output differs from the accepted baseline');
+          fail('control output differs from the accepted baseline');
       } else if (mode === 'native') {
         candidateExpected ??= report.output.sha256;
         if (report.output.sha256 !== candidateExpected) fail('candidate native repetitions emit different bytes');
@@ -1365,8 +1365,7 @@ async function runThroughput(run, context) {
       criterion: 'exact stage-one/stage-two byte equality was required before measurement'},
     outputAuthentication: {candidateNativeEqualsCandidateJs: true, candidateSha256: candidateExpected,
       controlMatchesAcceptedBaseline: true, controlSha256: controlReport.output.sha256,
-      g23EqualitySkippedSilently: false,
-      rule: 'the G24 emitter may intentionally change bytes; candidate native and JS lanes are compared to each other and the G23 control is compared to its accepted baseline'},
+      rule: 'candidate native and JS lanes are compared to each other; the control is compared to its authenticated accepted baseline'},
     control: {native: bindings.controlNative, nativeSha256: bindings.controlNativeSha256,
       image: bindings.controlImage, imageSha256: bindings.controlImageSha256,
       outputSha256: controlReport.output.sha256},

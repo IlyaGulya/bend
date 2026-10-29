@@ -5,6 +5,16 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- G25 measures the qualified R12 checker and fuses arena word-range copying:
+  only the evolving source/transient word arrays cross each loop iteration;
+  the surrounding arenas and store are reconstructed once per nonempty range.
+  Each element still computes its tagged handle with U32 wrap and reads before
+  writing, preserving overlap and cross-owner behavior. Nine cases execute on
+  both C and JS through admitted checker steps. Full compiler qualification
+  and same-host performance comparison against R12 are pending.
+  `evals/receipts/producer2039g25_r12_profile.json`,
+  `evals/receipts/producer2039g25_range_smoke.json`.
+
 - G24 R12 is a qualified full native-seed compiler checkpoint. Indexed scope
   reads share Base's `Map.find` traversal; declaration identities are reused within
   one checked-definition frame, canonical names are derived only when needed,
