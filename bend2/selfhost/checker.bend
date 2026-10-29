@@ -13196,45 +13196,12 @@ def arena_word_cursor(store: ArenaStore) -> ArenaResult<U32>:
     case ArenaStore{source, transient}:
       arena_word_cursor_word_count_result_24(Arena.word_count(transient), source)
 
-# Copy through the evolving arrays, preserving read-before-write on overlap.
-# Select each element's owner after range arithmetic, including U32 tag wrap.
-def arena_copy_word_lanes(source_items: Array<U32>, transient_items: Array<U32>, +source: U32, +destination: U32, remaining: Nat, +offset: U32) -> Array<U32> & Array<U32>:
-  match remaining:
-    case 0n: (source_items, transient_items)
-    case 1n+rest:
-      +from = IR.arena_range_index(source, offset)
-      +to = IR.arena_range_index(destination, offset)
-      match IR.arena_is_transient(from) IR.arena_is_transient(to):
-        case False{} False{}:
-          Tuple{source_items, value} = Array.get(U32, source_items, IR.arena_tape_offset(from))
-          arena_copy_word_lanes(Array.set(U32, source_items, IR.arena_tape_offset(to), value), transient_items, source, destination, rest, U32.add(offset, 1))
-        case True{} True{}:
-          Tuple{transient_items, value} = Array.get(U32, transient_items, IR.arena_tape_offset(from))
-          arena_copy_word_lanes(source_items, Array.set(U32, transient_items, IR.arena_tape_offset(to), value), source, destination, rest, U32.add(offset, 1))
-        case False{} True{}:
-          Tuple{source_items, value} = Array.get(U32, source_items, IR.arena_tape_offset(from))
-          arena_copy_word_lanes(source_items, Array.set(U32, transient_items, IR.arena_tape_offset(to), value), source, destination, rest, U32.add(offset, 1))
-        case True{} False{}:
-          Tuple{transient_items, value} = Array.get(U32, transient_items, IR.arena_tape_offset(from))
-          arena_copy_word_lanes(Array.set(U32, source_items, IR.arena_tape_offset(to), value), transient_items, source, destination, rest, U32.add(offset, 1))
-
-# Preserve every other arena lane and reconstruct records once per range.
-def arena_copy_word_range_nonempty(store: ArenaStore, +source: U32, +destination: U32, remaining: Nat, offset: U32) -> ArenaStore:
-  match store:
-    case ArenaStore{source_arena, transient_arena}:
-      match source_arena:
-        case Arena.Arena{source_nodes, source_patterns, source_binders, source_words, source_naturals, source_names, source_counts, source_depths, source_ids, source_closed, source_bounds, source_pattern_depths, source_prefix, source_memo}:
-          match transient_arena:
-            case Arena.Arena{transient_nodes, transient_patterns, transient_binders, transient_words, transient_naturals, transient_names, transient_counts, transient_depths, transient_ids, transient_closed, transient_bounds, transient_pattern_depths, transient_prefix, transient_memo}:
-              Tuple{source_words, transient_words} = arena_copy_word_lanes(source_words, transient_words, source, destination, remaining, offset)
-              ArenaStore{
-                Arena.Arena{source_nodes, source_patterns, source_binders, source_words, source_naturals, source_names, source_counts, source_depths, source_ids, source_closed, source_bounds, source_pattern_depths, source_prefix, source_memo},
-                Arena.Arena{transient_nodes, transient_patterns, transient_binders, transient_words, transient_naturals, transient_names, transient_counts, transient_depths, transient_ids, transient_closed, transient_bounds, transient_pattern_depths, transient_prefix, transient_memo}}
-
 def arena_copy_word_range(store: ArenaStore, +source: U32, +destination: U32, remaining: Nat, +offset: U32) -> ArenaStore:
   match remaining:
     case 0n: store
-    case _: arena_copy_word_range_nonempty(store, source, destination, remaining, offset)
+    case 1n+rest:
+      ArenaResult{next, value} = arena_get_word(store, IR.arena_range_index(source, offset))
+      arena_copy_word_range(arena_set_word(next, IR.arena_range_index(destination, offset), value), source, destination, rest, U32.add(offset, 1))
 
 def arena_reserve_naturals(store: ArenaStore, count: U32) -> ArenaResult<U32>:
   match store:

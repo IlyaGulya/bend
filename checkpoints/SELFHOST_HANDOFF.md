@@ -29,9 +29,11 @@ ABI13, quantum64 и parser fuel 8M сохранены.
 94 380.379 → 94 245.603 ms (−0.14%), JS 310 832.650 → 308 769.638 ms
 (−0.66%), но JS arithmetic mean вырос на 2.07%. Predeclared all-sample rule
 не выполнен; ускорение не доказано. RSS/footprint смешанные, универсальное
-снижение памяти не заявляется. Fusion не принимается в текущий checker;
-принятым baseline остаётся R12 ниже. Source `53b99143` и frozen inputs
-сохраняются как явно отклонённая версия; другие оптимизации не добавлялись.
+снижение памяти не заявляется. Fusion удалён из текущего checker; canonical
+source и regenerated checker steps побайтно совпали с принятым R12.
+Все девять range-сценариев повторно прошли на C и JS после восстановления.
+Принятым baseline остаётся R12 ниже. Source `53b99143` и frozen inputs
+сохранены в rejected checkpoint `198734b8`; другие оптимизации не добавлялись.
 
 Точные команды, runtime, source pins, все timings и фиксированный corpus:
 `evals/receipts/root2039g25_correctness.json`,
@@ -39,6 +41,7 @@ ABI13, quantum64 и parser fuel 8M сохранены.
 Профиль: `evals/receipts/producer2039g25_r12_profile.json`.
 Range regression: `evals/checker_word_range_smoke.bend`,
 `evals/receipts/producer2039g25_range_smoke.json`.
+Восстановление baseline: `evals/receipts/root2039g25_restored_r12.json`.
 
 ### Принятый checkpoint: local2039g24r12
 

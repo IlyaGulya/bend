@@ -1,0 +1,297 @@
+{
+  "schemaVersion": 1,
+  "status": "R12_CANONICAL_CHECKER_RESTORED_BYTE_IDENTICAL_RANGE_REGRESSIONS_PASS",
+  "acceptedBaseline": "local2039g24r12",
+  "acceptedSourceCheckpoint": "5916d410",
+  "rejectedCandidateSourceCheckpoint": "53b99143",
+  "rejectedCheckpoint": "198734b8",
+  "reason": "Rejected G25 optimization is removed, not silently kept as a claimed speedup; preserve consumer-visible range-copy regressions and authenticated R12-control qualification support.",
+  "canonicalChecker": {
+    "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker.bend",
+    "sha256": "fa1d63e8f5de8f8afb9d47bca13104ad43285dcc195589666323bbda675366bc",
+    "bytes": 909340
+  },
+  "acceptedCanonicalSourceSha256": "fa1d63e8f5de8f8afb9d47bca13104ad43285dcc195589666323bbda675366bc",
+  "loweredChecker": {
+    "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/checker_core_steps_v1.bend",
+    "sha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+    "bytes": 3102607
+  },
+  "acceptedLoweredCheckerSha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+  "acceptedArtifactAuthentication": {
+    "native": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+      "sha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "bytes": 18808824
+    },
+    "image": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+      "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "bytes": 31758507
+    }
+  },
+  "commands": {
+    "environment": "env HEAVY_GATE_MEMORY_MIB=8192 HEAVY_GATE_RSS_MIB=8192 HEAVY_GATE_POLL_MS=10 HEAVY_GATE_TIMEOUT_MS=600000 BUN_JSC_forceRAMSize=4294967296 ",
+    "regenerateOwned": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "evals/heavy_gate.ts",
+      "--memory-mib",
+      "8192",
+      "--rss-mib",
+      "8192",
+      "--poll-ms",
+      "10",
+      "--timeout-ms",
+      "600000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "evals/checker_core_owned_source.ts"
+    ],
+    "regenerateCheckerSteps": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "evals/heavy_gate.ts",
+      "--memory-mib",
+      "8192",
+      "--rss-mib",
+      "8192",
+      "--poll-ms",
+      "10",
+      "--timeout-ms",
+      "600000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "evals/checker_core_step_lower.ts"
+    ],
+    "smoke": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "evals/g24_source_smoke.mjs",
+      "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--bun=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--clang=/usr/bin/clang",
+      "--fixtures",
+      "evals/checker_word_range_smoke.bend",
+      "--targets",
+      "c,js",
+      "--receipt",
+      "/private/tmp/bend-g25-checker-lcO8pH/word-ranges-smoke-restored-r12.json"
+    ]
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "fixture": {
+    "path": "/Users/ilyagulya/Projects/My/bend/evals/checker_word_range_smoke.bend",
+    "sha256": "6e5086838f9d45a154e270e93648099ca5a6a18761ef2664ff852f6f01fced28",
+    "bytes": 4800
+  },
+  "report": {
+    "path": "/private/tmp/bend-g25-checker-lcO8pH/word-ranges-smoke-restored-r12.json",
+    "sha256": "9842fdf36b20e44c42bbef5ce9a32481f1dd64fef830bbfad6d12146ecda1066",
+    "bytes": 39756
+  },
+  "rows": [
+    {
+      "target": "c",
+      "passed": true,
+      "expected": "source-overlap:1\ntransient-reverse-overlap:1\nsource-to-transient:1\ntransient-to-source:1\nreverse-source:1\nreverse-destination:1\nnonzero-offset:1\nempty-invalid-handles:1\ntag-wrap:1\n",
+      "observed": "source-overlap:1\ntransient-reverse-overlap:1\nsource-to-transient:1\ntransient-to-source:1\nreverse-source:1\nreverse-destination:1\nnonzero-offset:1\nempty-invalid-handles:1\ntag-wrap:1\n",
+      "stages": {
+        "emit": {
+          "status": "PASS",
+          "elapsedMs": 18122.900999999998,
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--experimental-strip-types",
+            "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+            "/Users/ilyagulya/Projects/My/bend/evals/checker_word_range_smoke.bend",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-PysO2G/000-checker_word_range_smoke.c"
+          ],
+          "guardian": {
+            "status": "PASS",
+            "reason": "command_exit",
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "peakRssBytes": 2223652864,
+            "peakFootprintBytes": 2309587880,
+            "elapsedMs": 18090,
+            "timeoutMs": 600000,
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "supervisorExitCode": 0,
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/evals/checker_word_range_smoke.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-PysO2G/000-checker_word_range_smoke.c"
+            ],
+            "label": "heavy command",
+            "exitCode": 0,
+            "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793256155019-2c58dec76bb727e8.json",
+            "memoryLimitBytes": 8589934592,
+            "rssLimitBytes": 8589934592
+          },
+          "stdout": "{\"status\":\"CANONICAL_PROGRAM_EMITTED\",\"source\":\"/Users/ilyagulya/Projects/My/bend/evals/checker_word_range_smoke.bend\",\"output\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-PysO2G/000-checker_word_range_smoke.c\",\"events\":6666,\"bytes\":15047620}\n"
+        },
+        "clang": {
+          "status": "PASS",
+          "elapsedMs": 35068.337709,
+          "command": [
+            "/usr/bin/clang",
+            "-std=c11",
+            "-O1",
+            "-pthread",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-PysO2G/000-checker_word_range_smoke.c",
+            "-lm",
+            "-o",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-PysO2G/000-checker_word_range_smoke.c.exe"
+          ],
+          "guardian": {
+            "status": "PASS",
+            "reason": "command_exit",
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "peakRssBytes": 2160705536,
+            "peakFootprintBytes": 2645592896,
+            "elapsedMs": 35030,
+            "timeoutMs": 600000,
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "supervisorExitCode": 0,
+            "command": [
+              "/usr/bin/clang",
+              "-std=c11",
+              "-O1",
+              "-pthread",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-PysO2G/000-checker_word_range_smoke.c",
+              "-lm",
+              "-o",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-PysO2G/000-checker_word_range_smoke.c.exe"
+            ],
+            "label": "heavy command",
+            "exitCode": 0,
+            "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793256173171-66b904c77b4e0fbb.json",
+            "memoryLimitBytes": 8589934592,
+            "rssLimitBytes": 8589934592
+          },
+          "stdout": ""
+        },
+        "consumer": {
+          "status": "PASS",
+          "elapsedMs": 48.57024999999703,
+          "command": [
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-PysO2G/000-checker_word_range_smoke.c.exe"
+          ],
+          "guardian": {
+            "status": "PASS",
+            "reason": "command_exit",
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "peakRssBytes": 114688,
+            "peakFootprintBytes": 311440,
+            "elapsedMs": 16,
+            "timeoutMs": 600000,
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "supervisorExitCode": 0,
+            "command": [
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-PysO2G/000-checker_word_range_smoke.c.exe"
+            ],
+            "label": "heavy command",
+            "exitCode": 0,
+            "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793256208239-4664bbc733df2cd6.json",
+            "memoryLimitBytes": 8589934592,
+            "rssLimitBytes": 8589934592
+          },
+          "stdout": "source-overlap:1\ntransient-reverse-overlap:1\nsource-to-transient:1\ntransient-to-source:1\nreverse-source:1\nreverse-destination:1\nnonzero-offset:1\nempty-invalid-handles:1\ntag-wrap:1\n"
+        }
+      }
+    },
+    {
+      "target": "js",
+      "passed": true,
+      "expected": "source-overlap:1\ntransient-reverse-overlap:1\nsource-to-transient:1\ntransient-to-source:1\nreverse-source:1\nreverse-destination:1\nnonzero-offset:1\nempty-invalid-handles:1\ntag-wrap:1\n",
+      "observed": "source-overlap:1\ntransient-reverse-overlap:1\nsource-to-transient:1\ntransient-to-source:1\nreverse-source:1\nreverse-destination:1\nnonzero-offset:1\nempty-invalid-handles:1\ntag-wrap:1\n",
+      "stages": {
+        "emit": {
+          "status": "PASS",
+          "elapsedMs": 2643.5904169999994,
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--experimental-strip-types",
+            "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+            "/Users/ilyagulya/Projects/My/bend/evals/checker_word_range_smoke.bend",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-PysO2G/000-checker_word_range_smoke.js"
+          ],
+          "guardian": {
+            "status": "PASS",
+            "reason": "command_exit",
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "peakRssBytes": 1012793344,
+            "peakFootprintBytes": 1027894016,
+            "elapsedMs": 2621,
+            "timeoutMs": 600000,
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "supervisorExitCode": 0,
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/evals/checker_word_range_smoke.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-PysO2G/000-checker_word_range_smoke.js"
+            ],
+            "label": "heavy command",
+            "exitCode": 0,
+            "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793256208278-403db68820b5b72a.json",
+            "memoryLimitBytes": 8589934592,
+            "rssLimitBytes": 8589934592
+          },
+          "stdout": "{\"status\":\"CANONICAL_PROGRAM_EMITTED\",\"source\":\"/Users/ilyagulya/Projects/My/bend/evals/checker_word_range_smoke.bend\",\"output\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-PysO2G/000-checker_word_range_smoke.js\",\"events\":6666,\"bytes\":5670488}\n"
+        },
+        "consumer": {
+          "status": "PASS",
+          "elapsedMs": 135.64870799999335,
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--max-old-space-size=3072",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-PysO2G/000-checker_word_range_smoke.js"
+          ],
+          "guardian": {
+            "status": "PASS",
+            "reason": "command_exit",
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "peakRssBytes": 80265216,
+            "peakFootprintBytes": 50219864,
+            "elapsedMs": 113,
+            "timeoutMs": 600000,
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "supervisorExitCode": 0,
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--max-old-space-size=3072",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-PysO2G/000-checker_word_range_smoke.js"
+            ],
+            "label": "heavy command",
+            "exitCode": 0,
+            "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793256210936-623096dc15f24345.json",
+            "memoryLimitBytes": 8589934592,
+            "rssLimitBytes": 8589934592
+          },
+          "stdout": "source-overlap:1\ntransient-reverse-overlap:1\nsource-to-transient:1\ntransient-to-source:1\nreverse-source:1\nreverse-destination:1\nnonzero-offset:1\nempty-invalid-handles:1\ntag-wrap:1\n"
+        }
+      }
+    }
+  ],
+  "notes": [
+    "G25 full-root/fixedpoint/performance receipts describe the rejected source checkpoint, not the restored current checker.",
+    "The restored canonical checker and generated checker-step source are byte-identical to accepted R12; both retained R12 binary/image hashes match.",
+    "No new full R12 bootstrap or performance rerun is claimed; the post-restoration run executes all nine range-copy cases on C and JS."
+  ]
+}

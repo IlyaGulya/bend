@@ -16,11 +16,14 @@ latest one; the GitHub release carries the same notes.
   RSS and footprint results are mixed; no demonstrated speedup or universal
   memory reduction is accepted. R12 remains the accepted compiler checkpoint.
   Nine C/JS regressions preserve sequential overlap, owner selection, reverse
-  ranges, zero count and U32 tag wrap. Rejected implementation source: `53b99143`.
+  ranges, zero count and U32 tag wrap. The rejected fusion is removed; canonical
+  and regenerated checker sources are byte-identical to accepted R12, and all
+  nine cases pass again on C and JS. Rejected implementation source: `53b99143`.
   `evals/receipts/root2039g25_correctness.json`,
   `evals/receipts/root2039g25_throughput.json`,
   `evals/receipts/producer2039g25_r12_profile.json`,
   `evals/receipts/producer2039g25_range_smoke.json`.
+  `evals/receipts/root2039g25_restored_r12.json`.
 
 - G24 R12 is a qualified full native-seed compiler checkpoint. Indexed scope
   reads share Base's `Map.find` traversal; declaration identities are reused within
