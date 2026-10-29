@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "status": "REJECTED_COMPUTED_SCRUTINEE_SOURCE_SMOKE",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "sourceCheckpoint": "a5f7cef5",
+  "pendingDelta": "word_bound.word binds +id instead of id; canonical source pin in initial smoke receipt",
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "evals/g24_source_smoke.mjs",
+    "--node",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "--bun",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--clang",
+    "/usr/bin/clang",
+    "--fixtures",
+    "evals/scheduler_chunk_smoke.bend,evals/checker_word_range_smoke.bend,tests/reg/checker_arena_bound.bend,tests/reg/checker_arena_closed.bend,tests/reg/checker_arena_generation.bend,tests/reg/checker_arena_memo.bend,tests/reg/checker_arena_names.bend,tests/reg/checker_arena_quantities.bend",
+    "--targets",
+    "c,js",
+    "--receipt",
+    "/private/tmp/bend-g26-wave-OqMEMI/integrated-path-smoke-fixed.json"
+  ],
+  "environment": "env HEAVY_GATE_MEMORY_MIB=8192 HEAVY_GATE_RSS_MIB=8192 HEAVY_GATE_POLL_MS=10 HEAVY_GATE_TIMEOUT_MS=600000 BUN_JSC_forceRAMSize=4294967296",
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "timeoutMs": 600000,
+    "pollMs": 10
+  },
+  "rows": [
+    {
+      "source": "evals/scheduler_chunk_smoke.bend",
+      "target": "c",
+      "passed": true
+    },
+    {
+      "source": "evals/scheduler_chunk_smoke.bend",
+      "target": "js",
+      "passed": true
+    },
+    {
+      "source": "evals/checker_word_range_smoke.bend",
+      "target": "c",
+      "passed": false,
+      "diagnostic": "(node:41732) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\nError:\n- message  : a parameter or field scrutinee (a match cannot scrutinize a computed value: give it its own def)\nLocation:\n553 |     case MetadataRead{counts, depths, +used, +capacity, +depth}:\n554>|       match U32.is_eq(U32.add(expected, 1), used):\n    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n555 |         case True{}: put_word.result(case_prefix, subst_memo, node_bounds, pattern_depths, node_closed, nodes, patterns, binders, naturals, names, counts, depths, name_ids, word_pool.put(WordPool{words, used, capacity, depth}, value))\nHEAVY_GATE {\"status\":\"FAIL\",\"reason\":\"command_exit\",\"commandExitCode\":1,\"commandSignal\":0,\"peakRssBytes\":352894976,\"peakFootprintBytes\":326762176,\"elapsedMs\":1271,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":1,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"--experimental-strip-types\",\"/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs\",\"/Users/ilyagulya/Projects/My/bend/evals/checker_word_range_smoke.bend\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-ieLfXi/001-checker_word_range_smoke.c\"],\"label\":\"heavy command\",\"exitCode\":1,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793265272163-84d660b0ccd2b9bc.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n"
+    }
+  ],
+  "note": "Scheduler consumer passes C and JS; range-smoke emission exposes computed U32 dispatch in direct arena dependency. All five computed comparison/flag dispatches are moved to named-parameter helpers in the next source revision."
+}

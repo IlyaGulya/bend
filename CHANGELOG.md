@@ -5,6 +5,16 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- G26 integrates a fuel-threaded scheduler chunk, owner-preserving fused arena
+  reads, checking-frame canonical name IDs, last-descriptor reuse within a
+  definition and single publication of checked occurrences. Sixteen actual
+  C/JS changed-path consumers pass, including chunk boundaries, heterogeneous
+  continuations, arena certificates, rewind and tagged word ranges. Initial
+  source-smoke failures are retained; full compiler/fixedpoint and paired
+  R12 performance qualification remain pending.
+  `evals/receipts/producer2039g26_source_smoke.json`,
+  `evals/receipts/producer2039g26_qualification_plan.json`.
+
 - G25's arena word-range fusion is rejected as a performance optimization.
   Its fresh full compiler passes 12,465 definitions / 13,059 validation events,
   actual native-stage0 → stage1 → stage2 byte fixedpoint, all 59 C / 64 JS

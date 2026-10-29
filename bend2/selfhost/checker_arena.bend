@@ -548,12 +548,15 @@ def word_count(arena: Arena) -> Arena & U32:
 def put_word_adjacent.miss(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, node_closed: Array<U32>, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>) -> Arena & U32:
   (Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}, 0)
 
+def put_word_adjacent.select(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, node_closed: Array<U32>, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>, value: U32, used: U32, capacity: U32, depth: Nat, adjacent: Bool) -> Arena & U32:
+  match adjacent:
+    case True{}: put_word.result(case_prefix, subst_memo, node_bounds, pattern_depths, node_closed, nodes, patterns, binders, naturals, names, counts, depths, name_ids, word_pool.put(WordPool{words, used, capacity, depth}, value))
+    case False{}: put_word_adjacent.miss(case_prefix, subst_memo, node_bounds, pattern_depths, node_closed, nodes, patterns, binders, words, naturals, names, counts, depths, name_ids)
+
 def put_word_adjacent.metadata(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, node_closed: Array<U32>, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, name_ids: Map<&2, U32>, value: U32, +expected: U32, result: MetadataRead) -> Arena & U32:
   match result:
     case MetadataRead{counts, depths, +used, +capacity, +depth}:
-      match U32.is_eq(U32.add(expected, 1), used):
-        case True{}: put_word.result(case_prefix, subst_memo, node_bounds, pattern_depths, node_closed, nodes, patterns, binders, naturals, names, counts, depths, name_ids, word_pool.put(WordPool{words, used, capacity, depth}, value))
-        case False{}: put_word_adjacent.miss(case_prefix, subst_memo, node_bounds, pattern_depths, node_closed, nodes, patterns, binders, words, naturals, names, counts, depths, name_ids)
+      put_word_adjacent.select(case_prefix, subst_memo, node_bounds, pattern_depths, node_closed, nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, value, used, capacity, depth, U32.is_eq(U32.add(expected, 1), used))
 
 # Appends only for the exact adjacency the caller names; a published word slot is
 # never zero here because adjacency forces the cursor to be one past a masked tape
@@ -601,19 +604,19 @@ def node_is_closed(arena: Arena, +id: U32) -> Arena & Bool:
 # authorizes closed compound transient terms. Local source/leaf bits stay 1/2.
 # The in-range gate and the flag read share the counts already destructured from
 # this one Arena, so a query reconstructs the record exactly once.
-def node_has_flag.result(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, mask: U32, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>, node_closed: Array<U32>, +id: U32, used: U32) -> Arena & Bool:
-  match U32.cmp(id, used):
+def node_has_flag.result(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, mask: U32, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>, node_closed: Array<U32>, +id: U32, order: Cmp) -> Arena & Bool:
+  match order:
     case LT{}: node_is_closed.result(case_prefix, subst_memo, node_bounds, pattern_depths, mask, nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, Array.get(U32, node_closed, id))
     case _: (Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}, False{})
 
-def node_has_flag.used(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, mask: U32, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, depths: Array<Nat>, name_ids: Map<&2, U32>, node_closed: Array<U32>, counts: Array<U32>, +id: U32) -> Arena & Bool:
-  match Array.get(U32, counts, 0):
-    case Tuple{counts, used}: node_has_flag.result(case_prefix, subst_memo, node_bounds, pattern_depths, mask, nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, id, used)
+def node_has_flag.used(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, mask: U32, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, depths: Array<Nat>, name_ids: Map<&2, U32>, node_closed: Array<U32>, result: Array<U32> & U32, +id: U32) -> Arena & Bool:
+  match result:
+    case Tuple{counts, used}: node_has_flag.result(case_prefix, subst_memo, node_bounds, pattern_depths, mask, nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, id, U32.cmp(id, used))
 
 def node_has_flag(arena: Arena, id: U32, mask: U32) -> Arena & Bool:
   match arena:
     case Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}:
-      node_has_flag.used(case_prefix, subst_memo, node_bounds, pattern_depths, mask, nodes, patterns, binders, words, naturals, names, depths, name_ids, node_closed, counts, id)
+      node_has_flag.used(case_prefix, subst_memo, node_bounds, pattern_depths, mask, nodes, patterns, binders, words, naturals, names, depths, name_ids, node_closed, Array.get(U32, counts, 0), id)
 
 def node_is_trusted_closed(arena: Arena, id: U32) -> Arena & Bool:
   node_has_flag(arena, U32.and(id, 2147483647), 10)
@@ -631,20 +634,20 @@ def node_ctor_certify.order(case_prefix: Array<CasePrefixEntry>, subst_memo: Arr
     case LT{}: node_ctor_certify.flags(case_prefix, subst_memo, node_bounds, pattern_depths, id, nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, Array.get(U32, node_closed, id))
     case _: Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}
 
-def node_ctor_certify.used(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, +id: U32, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, depths: Array<Nat>, name_ids: Map<&2, U32>, node_closed: Array<U32>, counts: Array<U32>) -> Arena:
-  match Array.get(U32, counts, 0):
+def node_ctor_certify.used(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, +id: U32, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, depths: Array<Nat>, name_ids: Map<&2, U32>, node_closed: Array<U32>, result: Array<U32> & U32) -> Arena:
+  match result:
     case Tuple{counts, used}: node_ctor_certify.order(case_prefix, subst_memo, node_bounds, pattern_depths, id, nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, U32.cmp(id, used))
 
-def node_ctor_certify.source(arena: Arena, +id: U32, local: Bool) -> Arena:
+def node_ctor_certify.source(local: Bool, arena: Arena, +id: U32) -> Arena:
   match local:
     case False{}: arena
     case True{}:
       match arena:
         case Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}:
-          node_ctor_certify.used(case_prefix, subst_memo, node_bounds, pattern_depths, id, nodes, patterns, binders, words, naturals, names, depths, name_ids, node_closed, counts)
+          node_ctor_certify.used(case_prefix, subst_memo, node_bounds, pattern_depths, id, nodes, patterns, binders, words, naturals, names, depths, name_ids, node_closed, Array.get(U32, counts, 0))
 
 def node_ctor_certify(arena: Arena, +id: U32) -> Arena:
-  node_ctor_certify.source(arena, id, U32.is_eq(U32.and(id, 2147483648), 0))
+  node_ctor_certify.source(U32.is_eq(U32.and(id, 2147483648), 0), arena, id)
 
 # Encoded Nat metadata: 0 means uncertified; 1+bound means a known local
 # free-variable bound (node lane) or binder count (pattern lane). No Nat index
@@ -660,33 +663,41 @@ def bound_max(+left: Nat, +right: Nat) -> Nat:
 def bound_read.result(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>, node_closed: Array<U32>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, value: Nat) -> Arena & Nat:
   (Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}, value)
 
-def bound_read.node.lane(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>, node_closed: Array<U32>, pattern_depths: Array<Nat>, node_bounds: Array<Nat>, +id: U32, used: U32) -> Arena & Nat:
-  match U32.cmp(id, used):
-    case LT{}:
-      match Array.get(Nat, node_bounds, id):
-        case Tuple{node_bounds, value}: bound_read.result(case_prefix, subst_memo, nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, value)
+def bound_read.node.value(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>, node_closed: Array<U32>, pattern_depths: Array<Nat>, result: Array<Nat> & Nat) -> Arena & Nat:
+  match result:
+    case Tuple{node_bounds, value}: bound_read.result(case_prefix, subst_memo, nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, value)
+
+def bound_read.node.lane(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>, node_closed: Array<U32>, pattern_depths: Array<Nat>, node_bounds: Array<Nat>, +id: U32, order: Cmp) -> Arena & Nat:
+  match order:
+    case LT{}: bound_read.node.value(case_prefix, subst_memo, nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, pattern_depths, Array.get(Nat, node_bounds, id))
     case _: bound_read.result(case_prefix, subst_memo, nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, 0n)
+
+def bound_read.node.count(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, depths: Array<Nat>, name_ids: Map<&2, U32>, node_closed: Array<U32>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, +id: U32, result: Array<U32> & U32) -> Arena & Nat:
+  match result:
+    case Tuple{counts, used}: bound_read.node.lane(case_prefix, subst_memo, nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, pattern_depths, node_bounds, id, U32.cmp(id, used))
 
 def bound_read.node.used(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>, node_closed: Array<U32>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, +id: U32, local: Bool) -> Arena & Nat:
   match local:
     case False{}: bound_read.result(case_prefix, subst_memo, nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, 0n)
-    case True{}:
-      match Array.get(U32, counts, 0):
-        case Tuple{counts, used}: bound_read.node.lane(case_prefix, subst_memo, nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, pattern_depths, node_bounds, id, used)
+    case True{}: bound_read.node.count(case_prefix, subst_memo, nodes, patterns, binders, words, naturals, names, depths, name_ids, node_closed, node_bounds, pattern_depths, id, Array.get(U32, counts, 0))
 
-def bound_read.pattern.lane(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>, node_closed: Array<U32>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, +id: U32, used: U32) -> Arena & Nat:
-  match U32.cmp(id, used):
-    case LT{}:
-      match Array.get(Nat, pattern_depths, id):
-        case Tuple{pattern_depths, value}: bound_read.result(case_prefix, subst_memo, nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, value)
+def bound_read.pattern.value(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>, node_closed: Array<U32>, node_bounds: Array<Nat>, result: Array<Nat> & Nat) -> Arena & Nat:
+  match result:
+    case Tuple{pattern_depths, value}: bound_read.result(case_prefix, subst_memo, nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, value)
+
+def bound_read.pattern.lane(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>, node_closed: Array<U32>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, +id: U32, order: Cmp) -> Arena & Nat:
+  match order:
+    case LT{}: bound_read.pattern.value(case_prefix, subst_memo, nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, Array.get(Nat, pattern_depths, id))
     case _: bound_read.result(case_prefix, subst_memo, nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, 0n)
+
+def bound_read.pattern.count(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, depths: Array<Nat>, name_ids: Map<&2, U32>, node_closed: Array<U32>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, +id: U32, result: Array<U32> & U32) -> Arena & Nat:
+  match result:
+    case Tuple{counts, used}: bound_read.pattern.lane(case_prefix, subst_memo, nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, id, U32.cmp(id, used))
 
 def bound_read.pattern.used(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>, node_closed: Array<U32>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, +id: U32, local: Bool) -> Arena & Nat:
   match local:
     case False{}: bound_read.result(case_prefix, subst_memo, nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, 0n)
-    case True{}:
-      match Array.get(U32, counts, 2):
-        case Tuple{counts, used}: bound_read.pattern.lane(case_prefix, subst_memo, nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, id, used)
+    case True{}: bound_read.pattern.count(case_prefix, subst_memo, nodes, patterns, binders, words, naturals, names, depths, name_ids, node_closed, node_bounds, pattern_depths, id, Array.get(U32, counts, 2))
 
 # The owner-local tag, the lane's own used count and the encoded value all come
 # from one Arena destructuring; no count accessor reconstructs the record again.
@@ -703,31 +714,32 @@ def bound_read(arena: Arena, +id: U32, pattern: Bool) -> Arena & Nat:
 # A tape element and the bound it names live in one Arena here: the word lane and
 # the encoded lane are read from the same destructuring, so a range walk builds
 # one record per element instead of one for the handle and one for the bound.
-def word_bound.word(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>, node_closed: Array<U32>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, +offset: U32, pattern: Bool) -> Arena & Nat:
-  match Array.get(U32, words, offset):
-    case Tuple{words, id}: bound_read.select(case_prefix, subst_memo, nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, U32.is_eq(U32.and(id, 2147483648), 0), pattern, id)
+def word_bound.word(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, result: Array<U32> & U32, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>, node_closed: Array<U32>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, pattern: Bool) -> Arena & Nat:
+  match result:
+    case Tuple{words, +id}: bound_read.select(case_prefix, subst_memo, nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, U32.is_eq(U32.and(id, 2147483648), 0), pattern, id)
 
 def word_bound(arena: Arena, +offset: U32, pattern: Bool) -> Arena & Nat:
   match arena:
     case Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}:
-      word_bound.word(case_prefix, subst_memo, nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, offset, pattern)
+      word_bound.word(case_prefix, subst_memo, nodes, patterns, binders, Array.get(U32, words, offset), naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, pattern)
+
+def node_bound.flag(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>, node_closed: Array<U32>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, id: U32, certified: Bool) -> Arena & Nat:
+  match certified:
+    case False{}: bound_read.result(case_prefix, subst_memo, nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, 0n)
+    case True{}: bound_read.node.value(case_prefix, subst_memo, nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, pattern_depths, Array.get(Nat, node_bounds, id))
 
 def node_bound.certified(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, +id: U32, result: Array<U32> & U32) -> Arena & Nat:
   match result:
     case Tuple{node_closed, flags}:
-      match U32.is_ne(U32.and(flags, 4), 0):
-        case False{}: bound_read.result(case_prefix, subst_memo, nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, 0n)
-        case True{}:
-          match Array.get(Nat, node_bounds, id):
-            case Tuple{node_bounds, value}: bound_read.result(case_prefix, subst_memo, nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, value)
+      node_bound.flag(case_prefix, subst_memo, nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, id, U32.is_ne(U32.and(flags, 4), 0))
 
 def node_bound.order(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>, node_closed: Array<U32>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, +id: U32, order: Cmp) -> Arena & Nat:
   match order:
     case LT{}: node_bound.certified(case_prefix, subst_memo, nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_bounds, pattern_depths, id, Array.get(U32, node_closed, id))
     case _: bound_read.result(case_prefix, subst_memo, nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, 0n)
 
-def node_bound.used(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, depths: Array<Nat>, name_ids: Map<&2, U32>, node_closed: Array<U32>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, +id: U32, counts: Array<U32>) -> Arena & Nat:
-  match Array.get(U32, counts, 0):
+def node_bound.used(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, depths: Array<Nat>, name_ids: Map<&2, U32>, node_closed: Array<U32>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, +id: U32, result: Array<U32> & U32) -> Arena & Nat:
+  match result:
     case Tuple{counts, used}: node_bound.order(case_prefix, subst_memo, nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, id, U32.cmp(id, used))
 
 # These accessors take owner-local IDs, after the store chooses the region.
@@ -737,7 +749,7 @@ def node_bound(arena: Arena, +id: U32, trusted: Bool) -> Arena & Nat:
     case Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}:
       match trusted:
         case False{}: bound_read.node.used(case_prefix, subst_memo, nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, id, True{})
-        case True{}: node_bound.used(case_prefix, subst_memo, nodes, patterns, binders, words, naturals, names, depths, name_ids, node_closed, node_bounds, pattern_depths, id, counts)
+        case True{}: node_bound.used(case_prefix, subst_memo, nodes, patterns, binders, words, naturals, names, depths, name_ids, node_closed, node_bounds, pattern_depths, id, Array.get(U32, counts, 0))
 
 def node_certificate_flags.bound(bound: Nat) -> U32:
   match bound:

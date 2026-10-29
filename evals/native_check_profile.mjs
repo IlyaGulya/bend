@@ -563,7 +563,7 @@ function runSymbolMap(options) {
   const coverageNames = new Map((manifest.coverage ?? []).map(row => [row.name, row]));
   const classify = (module, owner, helper, coverage) => {
     if (owner === 'checker_step_one' || owner === 'checker_advance' || owner === 'checker_chunk'
-      || /_(step_one|advance|chunk)$/.test(owner))
+      || /_(step_one|advance|chunk|chunk_state)$/.test(owner))
       return ['scheduler', 'generated step/chunk dispatch'];
     if (helper && (helper.kind === 'ordered-match' || helper.kind === 'pure-ordered-match' || helper.kind === 'continuation'))
       return ['generated-match-continuation', 'CPS match/continuation helper: source semantics and administrative reconstruction are blended'];
@@ -648,7 +648,7 @@ function runSymbolMap(options) {
     scheduler: ['native_drive', 'native_experiment_run', 'native_experiment_use', 'native_apply', 'native_accepted',
       'native_closed', 'work_loop', 'pool_step', 'pool_work', 'pool_rows', 'pool_turn', 'pool_open', 'pool_try',
       'pool_mmap', 'pool_stack', 'io_step', 'io_loop', 'monk_step', 'root_take', 'root_done', 'cube_run',
-      'ring_rewind', 'ring_flip', 'ring_lap', 'ring_push', 'checker_step_one', 'checker_advance', 'checker_chunk'],
+      'ring_rewind', 'ring_flip', 'ring_lap', 'ring_push', 'checker_step_one', 'checker_advance', 'checker_chunk', 'checker_chunk_state'],
     unclassified: ['term_aux', 'term_blk', 'term_loc', 'term_peek', 'term_rfc', 'term_sink', 'term_tag',
       'term_triv', 'rfc_wrap', 'rfc_seal', 'rfc_bump', 'io_box', 'io_node', 'io_str', 'io_tup', 'io_cbuf', 'io_bit',
       'io_eff', 'io_push', 'io_pop', 'io_park_add', 'io_park_cut', 'io_spawn', 'io_wait_on', 'io_take', 'io_sync',

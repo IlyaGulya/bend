@@ -4,6 +4,19 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
+### Текущий кандидат G26
+
+Интегрированы пять независимых изменений: scheduler chunk передаёт progress и
+typed stack без промежуточного RunState; fused arena reads сохраняют владельца;
+canonical name IDs живут в checking frame; lowering повторно использует последний
+descriptor только внутри одной definition; checked occurrence публикуется один раз.
+Финальный changed-path smoke: все 16 C/JS consumers PASS. Первые исходные ошибки
+сохранены как отказы, не как accepted versions. Полная native/fixedpoint/consumer
+квалификация и paired performance против R12 ещё не завершены; принят R12 ниже.
+Команды, source pins и неизменённые guards:
+`evals/receipts/producer2039g26_source_smoke.json`,
+`evals/receipts/producer2039g26_qualification_plan.json`.
+
 ### Отклонённый G25: array-level word-range fusion
 
 Профиль принятого R12: три bounded CPU/allocation окна JS checker и отдельный

@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "status": "PLANNED_G26_FULL_QUALIFICATION",
+  "compilerAccepted": false,
+  "scope": "All five integrated optimizations; parent-only serial heavy runs with accepted R12 controls and frozen G22 workload",
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "evals/g24_qualification.mjs",
+    "--run-id=local2039g26",
+    "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "--bun=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--clang=/usr/bin/clang",
+    "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+    "--phase=all",
+    "--bindings=/Users/ilyagulya/Projects/My/bend/evals/receipts/producer2039g25_r12_bindings.json",
+    "--frozen-repository=/private/tmp/bend2039g22-tiny-inline",
+    "--control-native=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+    "--control-image=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+    "--out=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g26"
+  ],
+  "environment": "env HEAVY_GATE_MEMORY_MIB=8192 HEAVY_GATE_RSS_MIB=8192 HEAVY_GATE_POLL_MS=10 HEAVY_GATE_TIMEOUT_MS=600000 BUN_JSC_forceRAMSize=4294967296",
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000,
+    "workerStackMiB": 256,
+    "workerOldGenerationMiB": 6144,
+    "workerYoungGenerationMiB": 128,
+    "parserFuel": 8000000,
+    "quantum": 64
+  },
+  "baseline": {
+    "acceptance": {
+      "path": "/Users/ilyagulya/Projects/My/bend/evals/receipts/root2039g24r12_native_fixedpoint.json",
+      "sha256": "cb66ed5542e56516f83d2c04fb80f5ab8597130ab137a4128be8491391911d50",
+      "sourceCheckpoint": "5916d410",
+      "byteFixedpoint": true
+    },
+    "native": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+      "sha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "bytes": 18808824
+    },
+    "image": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+      "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "bytes": 31758507
+    },
+    "frozenRoot": {
+      "path": "/private/tmp/bend2039g22-tiny-inline/checkpoints/.bootstrap_compiler_root_remote2039g21.bend",
+      "sha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+      "bytes": 653895
+    }
+  },
+  "performanceDecisionRule": {
+    "preserveEveryMeasurement": true,
+    "compilerCorrectnessRequiresFullNativeRoot": true,
+    "requiresActualStageOneStageTwoByteEquality": true,
+    "requiresEveryConsumerGate": true,
+    "performanceAcceptedOnlyIf": "For each native and JS runtime, candidate arithmetic mean and median full pipeline milliseconds are both below control on all retained unprofiled interleaved runs. No outlier exclusion. If inconclusive, retain all samples and repeat unchanged artifacts under the same rule.",
+    "memoryClaim": "Report native and JS RSS and physical footprint separately; no universal memory claim unless all four dimensions improve."
+  },
+  "implementationPins": {
+    "bend2/selfhost/checker.bend": "0ef15fbcd1bb32ea1d91da5769226fdf09a040616f56b772f60e5a4449e0c0b6",
+    "bend2/selfhost/checker_arena.bend": "7be6b80bac49da76928863387dd8a34e9feaaac23383be8401fb26ec062e9cf6",
+    "bend2/selfhost/scope_lookup.bend": "2be9ff35e91d7b2ebf6ef8b6692b2fa5caff360a8e1586507930894bcadb47b7",
+    "bend2/selfhost/backend_lower.bend": "0b7445ffe3746b726bc5b98cec3d36997bedf7d1ecce171a0193ddab95b9c8fc",
+    "evals/checker_core_step_lower.ts": "47eac50c98092562a556869dffa2533379cc8b5344069186b6efba71683dc36a",
+    "evals/selfhost_driver_source.ts": "48f024856cf697ef59d889e759d28559bd5d3afd95c60698c874ac79eb690f9a",
+    "evals/native_check_profile.mjs": "a3498ba31cccec0d8a4060000af0c2f837e97b2c35bd916c5043aef6acb734a1",
+    "evals/c_target_fixtures_run.ts": "72e446b01a42e9c064a400262953d5a01bccca916a8ecee78aab684114615fb1",
+    "evals/scheduler_chunk_smoke.bend": "21986a939adccc86c6580c446242be9feb95703c6eeb820ef939d961f2247140"
+  },
+  "sourceSmoke": {
+    "path": "evals/receipts/producer2039g26_source_smoke.json",
+    "sha256": "a6c4dfcb6d8a1246ee4ef9ae271e22413dc761aa8091154f4d5f6578d7422949"
+  }
+}
