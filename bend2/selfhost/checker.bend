@@ -13265,11 +13265,6 @@ def arena_set_word(store: ArenaStore, +id: U32, value: U32) -> ArenaStore:
   match store:
     case ArenaStore{source, transient}: arena_set_word_region(source, transient, id, value, IR.arena_is_transient(id))
 
-def arena_word_cursor(store: ArenaStore) -> ArenaResult<U32>:
-  match store:
-    case ArenaStore{source, transient}:
-      arena_word_cursor_word_count_result_24(Arena.word_count(transient), source)
-
 def arena_copy_word_range(store: ArenaStore, +source: U32, +destination: U32, remaining: Nat, +offset: U32) -> ArenaStore:
   match remaining:
     case 0n: store
@@ -13572,14 +13567,32 @@ def arena_words_prepend_fast(store: ArenaStore, head: U32, start: U32, +count: U
       {ArenaResult{next, IR.Words{U32.or(index, 1073741824), U32.add(count, 1)}} : ArenaResult<IR.Words>}
     case False{}: arena_words_prepend_copy(store, head, start, count)
 
-def arena_words_prepend_count(store: ArenaStore, head: U32, +start: U32, +count: U32, cursor: U32) -> ArenaResult<IR.Words>:
-  arena_words_prepend_fast(store, head, start, count, Bool.or(U32.is_eq(count, 0), Bool.and(Bool.and(IR.arena_is_transient(start), IR.arena_is_reverse(start)), U32.is_eq(U32.add(IR.arena_tape_offset(start), 1), cursor))))
+# Adjacency is only possible for a reversed transient tail, and an empty tail
+# appends without consulting the lane. Every other tail is copied, so the word
+# metadata is read once at most, and only when the tail can actually abut it.
+def arena_words_cons_tail(store: ArenaStore, head: U32, +start: U32, +count: U32, empty: Bool, reversed: Bool) -> ArenaResult<IR.Words>:
+  match empty:
+    case True{}: arena_words_prepend_fast(store, head, start, count, True{})
+    case False{}:
+      match reversed:
+        case True{}: arena_words_cons_append(store, head, start, count)
+        case False{}: arena_words_prepend_copy(store, head, start, count)
+
+def arena_words_cons_appended(source: Arena.Arena, transient: Arena.Arena, head: U32, +start: U32, +count: U32, +id: U32, missing: Bool) -> ArenaResult<IR.Words>:
+  match missing:
+    case False{}: {ArenaResult{ArenaStore{source, transient}, IR.Words{U32.or(U32.or(id, 2147483648), 1073741824), U32.add(count, 1)}} : ArenaResult<IR.Words>}
+    case True{}: arena_words_prepend_copy(ArenaStore{source, transient}, head, start, count)
+
+def arena_words_cons_append(store: ArenaStore, head: U32, +start: U32, +count: U32) -> ArenaResult<IR.Words>:
+  match store:
+    case ArenaStore{source, transient}:
+      match Arena.put_word_adjacent(transient, head, IR.arena_tape_offset(start)):
+        case Tuple{transient, +id}: arena_words_cons_appended(source, transient, head, start, count, id, U32.is_eq(id, 0))
 
 def arena_words_cons(store: ArenaStore, head: U32, tail: IR.Words) -> ArenaResult<IR.Words>:
   match tail:
-    case IR.Words{start, count}:
-      ArenaResult{next, cursor} = arena_word_cursor(store)
-      arena_words_prepend_count(next, head, start, count, cursor)
+    case IR.Words{+start, +count}:
+      arena_words_cons_tail(store, head, start, count, U32.is_eq(count, 0), Bool.and(IR.arena_is_transient(start), IR.arena_is_reverse(start)))
 
 def arena_words_append_copy(store: ArenaStore, +left: U32, +left_count: U32, +right: U32, +right_count: U32) -> ArenaResult<IR.Words>:
   +count = U32.add(left_count, right_count)
@@ -13652,15 +13665,33 @@ def arena_names_prepend_fast(store: ArenaStore, head: U32, start: U32, +count: U
       {ArenaResult{next, IR.Names{U32.or(index, 1073741824), U32.add(count, 1)}} : ArenaResult<IR.Names>}
     case False{}: arena_names_prepend_copy(store, head, start, count)
 
-def arena_names_prepend_count(store: ArenaStore, head: U32, +start: U32, +count: U32, cursor: U32) -> ArenaResult<IR.Names>:
-  arena_names_prepend_fast(store, head, start, count, Bool.or(U32.is_eq(count, 0), Bool.and(Bool.and(IR.arena_is_transient(start), IR.arena_is_reverse(start)), U32.is_eq(U32.add(IR.arena_tape_offset(start), 1), cursor))))
+# Names resolve in the source lane and prepend into the transient word lane, so
+# the lookup stays first; the cursor is read only for a reversed transient tail
+# that can actually abut it, and that read also performs the append.
+def arena_names_cons_tail(store: ArenaStore, head: U32, +start: U32, +count: U32, empty: Bool, reversed: Bool) -> ArenaResult<IR.Names>:
+  match empty:
+    case True{}: arena_names_prepend_fast(store, head, start, count, True{})
+    case False{}:
+      match reversed:
+        case True{}: arena_names_cons_append(store, head, start, count)
+        case False{}: arena_names_prepend_copy(store, head, start, count)
+
+def arena_names_cons_appended(source: Arena.Arena, transient: Arena.Arena, head: U32, +start: U32, +count: U32, +id: U32, missing: Bool) -> ArenaResult<IR.Names>:
+  match missing:
+    case False{}: {ArenaResult{ArenaStore{source, transient}, IR.Names{U32.or(U32.or(id, 2147483648), 1073741824), U32.add(count, 1)}} : ArenaResult<IR.Names>}
+    case True{}: arena_names_prepend_copy(ArenaStore{source, transient}, head, start, count)
+
+def arena_names_cons_append(store: ArenaStore, head: U32, +start: U32, +count: U32) -> ArenaResult<IR.Names>:
+  match store:
+    case ArenaStore{source, transient}:
+      match Arena.put_word_adjacent(transient, head, IR.arena_tape_offset(start)):
+        case Tuple{transient, +id}: arena_names_cons_appended(source, transient, head, start, count, id, U32.is_eq(id, 0))
 
 def arena_names_cons(store: ArenaStore, head: String, tail: IR.Names) -> ArenaResult<IR.Names>:
   match tail:
-    case IR.Names{start, count}:
+    case IR.Names{+start, +count}:
       ArenaResult{named, raw} = arena_name(store, head)
-      ArenaResult{next, cursor} = arena_word_cursor(named)
-      arena_names_prepend_count(next, raw, start, count, cursor)
+      arena_names_cons_tail(named, raw, start, count, U32.is_eq(count, 0), Bool.and(IR.arena_is_transient(start), IR.arena_is_reverse(start)))
 
 def arena_names_append_copy(store: ArenaStore, +left: U32, +left_count: U32, +right: U32, +right_count: U32) -> ArenaResult<IR.Names>:
   +count = U32.add(left_count, right_count)
@@ -13812,14 +13843,29 @@ def arena_quantities_prepend_fast(store: ArenaStore, head: U32, start: U32, +cou
       {ArenaResult{next, IR.Quantities{U32.or(index, 1073741824), U32.add(count, 1)}} : ArenaResult<IR.Quantities>}
     case False{}: arena_quantities_prepend_copy(store, head, start, count)
 
-def arena_quantities_prepend_count(store: ArenaStore, head: U32, +start: U32, +count: U32, cursor: U32) -> ArenaResult<IR.Quantities>:
-  arena_quantities_prepend_fast(store, head, start, count, Bool.or(U32.is_eq(count, 0), Bool.and(Bool.and(IR.arena_is_transient(start), IR.arena_is_reverse(start)), U32.is_eq(U32.add(IR.arena_tape_offset(start), 1), cursor))))
+def arena_quantities_cons_tail(store: ArenaStore, head: U32, +start: U32, +count: U32, empty: Bool, reversed: Bool) -> ArenaResult<IR.Quantities>:
+  match empty:
+    case True{}: arena_quantities_prepend_fast(store, head, start, count, True{})
+    case False{}:
+      match reversed:
+        case True{}: arena_quantities_cons_append(store, head, start, count)
+        case False{}: arena_quantities_prepend_copy(store, head, start, count)
+
+def arena_quantities_cons_appended(source: Arena.Arena, transient: Arena.Arena, head: U32, +start: U32, +count: U32, +id: U32, missing: Bool) -> ArenaResult<IR.Quantities>:
+  match missing:
+    case False{}: {ArenaResult{ArenaStore{source, transient}, IR.Quantities{U32.or(U32.or(id, 2147483648), 1073741824), U32.add(count, 1)}} : ArenaResult<IR.Quantities>}
+    case True{}: arena_quantities_prepend_copy(ArenaStore{source, transient}, head, start, count)
+
+def arena_quantities_cons_append(store: ArenaStore, head: U32, +start: U32, +count: U32) -> ArenaResult<IR.Quantities>:
+  match store:
+    case ArenaStore{source, transient}:
+      match Arena.put_word_adjacent(transient, head, IR.arena_tape_offset(start)):
+        case Tuple{transient, +id}: arena_quantities_cons_appended(source, transient, head, start, count, id, U32.is_eq(id, 0))
 
 def arena_quantities_cons(store: ArenaStore, head: Ast.Quantity, tail: IR.Quantities) -> ArenaResult<IR.Quantities>:
   match tail:
-    case IR.Quantities{start, count}:
-      ArenaResult{next, cursor} = arena_word_cursor(store)
-      arena_quantities_prepend_count(next, Arena.quantity_word(head), start, count, cursor)
+    case IR.Quantities{+start, +count}:
+      arena_quantities_cons_tail(store, Arena.quantity_word(head), start, count, U32.is_eq(count, 0), Bool.and(IR.arena_is_transient(start), IR.arena_is_reverse(start)))
 
 def arena_quantities_append_copy(store: ArenaStore, +left: U32, +left_count: U32, +right: U32, +right_count: U32) -> ArenaResult<IR.Quantities>:
   +count = U32.add(left_count, right_count)
@@ -15302,11 +15348,6 @@ def arena_reserve_source_words_reserve_words_result_23(v_70000023: Pair(Arena.Ar
   match v_70000023:
     case (v_12, v_13):
       {ArenaResult{ArenaStore{v_12, v_9}, v_13} : ArenaResult<U32>}
-
-def arena_word_cursor_word_count_result_24(v_70000024: Pair(Arena.Arena, U32), v_6: Arena.Arena) -> ArenaResult<U32>:
-  match v_70000024:
-    case (v_10, v_11):
-      {ArenaResult{ArenaStore{v_6, v_10}, v_11} : ArenaResult<U32>}
 
 def arena_reserve_naturals_reserve_naturals_result_25(v_70000025: Pair(Arena.Arena, U32), v_8: Arena.Arena) -> ArenaResult<U32>:
   match v_70000025:
