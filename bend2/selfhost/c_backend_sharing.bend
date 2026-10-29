@@ -734,14 +734,6 @@ def s_primitive_heads(+families: Map<&2, FamilyRow>, +labels: Map<&2, String>, p
     case BIR.PrimArrayAtomicExch{}: s_word_head("Sigma")
     case BIR.PrimArrayAtomicCas{}: s_word_head("Sigma")
     case BIR.PrimArrayAtomicFadd{}: s_word_head("Sigma")
-    # A compiler word tape is one opaque boxed handle with fixed U32 cells: it
-    # has no declared constructor family to expand, and its operations carry no
-    # element Descriptor. get answers the declared `CompilerWords & U32` pair,
-    # the same Sigma head the fixed-scalar array atomics answer.
-    case BIR.PrimCompilerWordsNew{}: s_word_head("CompilerWords")
-    case BIR.PrimCompilerWordsSet{}: s_word_head("CompilerWords")
-    case BIR.PrimCompilerWordsGrow{}: s_word_head("CompilerWords")
-    case BIR.PrimCompilerWordsGet{}: s_word_head("Sigma")
     case BIR.PrimArrayLeafValue{}: s_descriptor_heads(families, labels, s_at_desc(types, 0n))
     case BIR.PrimIsArrayLeaf{}: s_word_head("Bool")
     case BIR.PrimIsArrayNode{}: s_word_head("Bool")

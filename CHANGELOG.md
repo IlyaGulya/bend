@@ -5,24 +5,26 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
-- G27 implements compiler-private affine `CompilerWords` tapes: JS uses
-  `Uint32Array`; C reuses its existing packed BUF allocator and drop path.
-  Only checker source/transient word lanes migrate; public Array, Nat and
-  metadata lanes are unchanged. Sixteen canonical C/JS smoke executions pass,
-  covering growth, zero fill, wrapping, native values, captured-owner disposal,
-  arena rewind and memo/name reuse. Depth 32, computed depth 2^32 and affine
-  duplication are refused. Independent bounded source reviews found no blocker.
-  Early comparable checker-only screening precedes the expensive full gates;
-  it is not compiler/fixedpoint/performance acceptance. R12 remains the baseline.
-  `evals/receipts/producer2039g27_source_smoke.json`,
-  `evals/receipts/producer2039g27_storage_baseline.json`.
-  Its full native root validates 12,468 definitions / 13,067 events with zero
-  exclusions or patches. Actual stage-one/stage-two images are byte-identical:
-  31,824,148 bytes, SHA-256
-  `a38aea910145c1a47f29683965920d467d62b65c687fcf21677a66250b3a6ac2`.
-  Full consumer and paired-performance gates remain pending; measurement now
-  precedes expensive matrices, without weakening final acceptance.
-  `evals/receipts/root2039g27_core_fixedpoint.json`.
+- G27's compiler-private U32 word-tape cutover is rejected under its
+  predeclared performance rule. Full native validation passes 12,468
+  definitions / 13,067 events, with no excluded checks or output patches.
+  Actual stage-one/stage-two images are byte-identical: 31,824,148 bytes,
+  SHA-256 `a38aea910145c1a47f29683965920d467d62b65c687fcf21677a66250b3a6ac2`.
+  All 61 C / 67 JS cases, 285 fixture executions, 130 semantic AST approvals
+  per image and 50 additional consumer checks pass. All twelve unprofiled
+  paired samples are retained: native pipeline median falls 1.90%, but JS
+  median rises 3.45% and mean rises 1.43%. Lower observed JS median RSS
+  (6.80%) and footprint (7.41%) do not satisfy the required timing criterion.
+  Rejected source and frozen inputs are retained in `4cb67526`.
+  The cutover and its obsolete API fixtures are removed; thirteen source
+  files and regenerated checker/template/emitter steps match R12 bytes.
+  Four focused C/JS restoration executions pass; accepted R12 artifacts
+  are unchanged. Early measurement precedes expensive matrices; future
+  mandatory-criterion failures must stop the remaining consumer tail.
+  `evals/receipts/root2039g27_correctness.json`,
+  `evals/receipts/root2039g27_throughput.json`,
+  `evals/receipts/root2039g27_emitted_suites.json`,
+  `evals/receipts/root2039g27_restored_r12.json`.
 
 - G26's combined scheduler/arena/identity/descriptor/publication optimization
   is rejected under its predeclared performance rule. Full native validation

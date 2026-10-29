@@ -4,42 +4,50 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
-### Текущий кандидат G27: compiler-private U32 word tapes
+### Отклонённый G27: compiler-private U32 word tapes; R12 восстановлен
 
-Реализованы opaque affine `CompilerWords` и четыре native primitive: new/get/set/grow.
-Canonical и selfhost C используют существующий packed BUF runtime; JS — `Uint32Array`.
-Перенесены только source/transient word lanes checker; public Array, Nat и metadata
-остаются прежними. Generated runtime и checker/emitter source обновлены.
-16 canonical C/JS smoke executions PASS, включая рост/zero-fill, high-bit/wrap,
-partial/native values, capture drop, rewind и memo/name reuse. Два независимых
-bounded source review не нашли блокера; это не runtime acceptance.
+Source `18a4f65e`, orchestration `24780e82`, rejected checkpoint `4cb67526`.
+Opaque affine `CompilerWords` перенёс только source/transient word tapes checker:
+JS — `Uint32Array`, C — существующий packed BUF allocator/drop path.
+Public Array, Nat, metadata, ABI13, quantum64 и parser fuel8M не менялись.
+16 canonical C/JS smoke executions, depth/affine refusals и независимые
+adversarial source reviews завершились без блокера.
 
-Source `18a4f65e`, orchestration `24780e82`: полный native root PASS,
-**12 468 definitions / 13 067 events**, zero excluded checks/output patches.
-Настоящий native-stage0 → stage1 → stage2 fixedpoint PASS: оба image
-**31 824 148 B**, SHA-256
+Полная квалификация PASS: **12 468 definitions / 13 067 events**, zero excluded
+checks/output patches; настоящий native-stage0 → stage1 → stage2 fixedpoint.
+Оба image — **31 824 148 B**, SHA-256
 `a38aea910145c1a47f29683965920d467d62b65c687fcf21677a66250b3a6ac2`.
-Native build guardian: 288 913 ms, peak RSS 5 201 330 176 B;
-bootstrap: 544 790 ms, peak RSS 2 643 263 488 B. Прежние guards сохранены.
-Core proof и frozen inputs: `evals/receipts/root2039g27_core_fixedpoint.json`.
+Все **61 C / 67 JS** cases, **285 fixture executions**, **130 semantic AST
+approvals на каждом image** и **33 native/library + 12 admission + 5 host**
+checks PASS. Native build: 288 913 ms, peak RSS 5 201 330 176 B;
+bootstrap: 544 790 ms, peak RSS 2 643 263 488 B. Guards — прежние 8 GiB / 600 s.
 
-Полные consumer/performance gates ещё не завершены; G27 не принят.
-Парные замеры теперь выполняются после fixedpoint, до дорогих matrices;
-финальный PASS по-прежнему требует всех gates. Acceptance rule задан до замеров:
-native и JS pipeline mean/median должны снизиться, median peak RSS/footprint
-не должны вырасти; все samples сохраняются. При нарушении — rejected checkpoint
-и восстановление R12.
-Measured R12 source tape: used 2 423 369, capacity 4 194 304; калибровка backing store
-на тех же словах/V8 element kind — 32 MiB Array против 16 MiB Uint32Array.
-Это не измерение общего RSS и не новая C density improvement.
-Negative probes также PASS: C/JS runtime отказывают depth 32 и вычисленному
-Nat depth 2^32; checked source запрещает duplicate affine tape. Exact source
-pins, commands и guards сохранены в
-`evals/receipts/producer2039g27_source_smoke.json`; baseline calibration и
-заранее заданный критерий — в `evals/receipts/producer2039g27_storage_baseline.json`.
-После запроса пользователя об ускорении обратной связи сначала выполняется
-отдельный checker-only A/B на полном frozen corpus. Он не заменяет полный
-compiler/fixedpoint/consumer gate и не считается performance acceptance.
+**Как оптимизация G27 отклонён.** Все 12 unprofiled interleaved samples
+сохранены. Native pipeline median 92 189.570 → 90 439.563 ms (−1.90%),
+mean −2.31%; JS median 295 959.568 → 306 165.665 ms (+3.45%),
+mean +1.43%. Median JS RSS −6.80%, footprint −7.41%, но заранее заданное
+правило требует улучшения mean и median времени на обоих runtime.
+Backing-store calibration source tape 2 423 369 / capacity 4 194 304:
+32 MiB Array против 16 MiB Uint32Array — не доказательство общего RSS
+или нового C density improvement.
+
+Реализация удалена из текущих исходников; 13 восстановленных файлов и
+regenerated checker/template/emitter steps побайтно совпали с R12 control.
+Четыре focused C/JS restoration executions PASS; accepted R12 native/image
+hashes неизменны. Новой полной квалификации восстановленного R12 не заявляется.
+R12 остаётся принятым baseline; frozen inputs G27 сохранены в Git.
+
+Не повторять задержку G27: **все gates нужны для принятия, не для отказа**.
+После провала обязательного performance-критерия сохранить завершённые
+samples, остановить оставшийся consumer-хвост и восстановить baseline.
+
+Доказательства и точные команды/runtime/limits:
+`evals/receipts/root2039g27_correctness.json`,
+`evals/receipts/root2039g27_throughput.json`,
+`evals/receipts/root2039g27_emitted_suites.json`,
+`evals/receipts/root2039g27_restored_r12.json`,
+`evals/receipts/producer2039g27_source_smoke.json`,
+`evals/receipts/producer2039g27_storage_baseline.json`.
 
 
 ### Следующая архитектурная работа: bend-nxf.31

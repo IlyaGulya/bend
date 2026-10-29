@@ -71,6 +71,19 @@ fixtures pass again on C and JS (four executions); the accepted native/image
 hashes are unchanged. Restoration evidence, not a new full qualification:
 `evals/receipts/root2039g26_restored_r12.json`.
 
+G27's physical U32 tape cutover is also rejected: full native root,
+native-stage0 → stage1 → stage2 byte equality and all 61 C / 67 JS cases pass,
+but JS pipeline median/mean rise 3.45%/1.43% in the twelve retained paired
+measurements. Separate lower JS median memory does not meet its joint rule.
+Rejected source/frozen inputs: `4cb67526`; full proof and measurements:
+`evals/receipts/root2039g27_correctness.json`,
+`evals/receipts/root2039g27_throughput.json`.
+R12 source/runtime/steps have been restored and byte-authenticated; four
+focused C/JS executions pass, with accepted native/image hashes unchanged:
+`evals/receipts/root2039g27_restored_r12.json`.
+Mandatory performance failure is sufficient for early rejection; remaining
+consumer gates are required only when the candidate can still be accepted.
+
 ## Historical full native-seed checkpoint: G23
 
 The earlier accepted checkpoint is **remote2039g23**, compiler source

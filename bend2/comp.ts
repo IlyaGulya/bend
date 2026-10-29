@@ -293,29 +293,6 @@ const OPERATIONS: Record<string, Intr> = Object.setPrototypeOf({
       + " blk_at($0, $1, 0)), (u32)$2" + (k === "cmpx" ? ", (u32)$3)" : ")")],
     JS: `array_rmw($0, $1, (o) => ${js})`,
   }])),
-  // A compiler word tape is one packed BUF whose class c holds 2^c U32 words,
-  // the block Array<U32> already stores its cells in. new takes the depth as
-  // that class, get and set address a cell modulo the capacity, and grow takes
-  // the next class, copying the old cells and zeroing the half it adds. get
-  // answers its consumed owner with the word, so the runtime helper returns
-  // only the word and the emitter pairs it below; the helpers resolve a shared
-  // handle themselves, so a tape needs none of Array's hotness.
-  compilerwords_new: {
-    C:  "compiler_words_new(e, $0)",
-    JS: "compiler_words_new($0)",
-  },
-  compilerwords_get: {
-    C:  "compiler_words_get(e, $0, (u32)$1)",
-    JS: "compiler_words_get($0, $1)",
-  },
-  compilerwords_set: {
-    C:  "compiler_words_set(e, $0, (u32)$1, (u32)$2)",
-    JS: "compiler_words_set($0, $1, $2)",
-  },
-  compilerwords_grow: {
-    C:  "compiler_words_grow(e, $0)",
-    JS: "compiler_words_grow($0)",
-  },
 }, null);
 
 // Optimized
@@ -620,35 +597,6 @@ function str_out(s) {
 
 function str_in(s) {
   return s.replace(/\p{Cs}/gu, "\uFFFD");
-}
-
-// A compiler word tape is a Uint32Array of 2^depth words, so a fresh one is
-// zeroed. get answers its owner with the tape and the word; a grown tape
-// copies every old word and its new half is zero by construction.
-
-function compiler_words_new(depth) {
-  if (depth > 31) {
-    throw "bend: ${ERRS[8]}";
-  }
-  return new Uint32Array(2 ** depth);
-}
-
-function compiler_words_get(tape, index) {
-  return {$: "Tuple", fst: tape, snd: tape[index % tape.length]};
-}
-
-function compiler_words_set(tape, index, value) {
-  tape[index % tape.length] = value;
-  return tape;
-}
-
-function compiler_words_grow(tape) {
-  if (tape.length >= 2 ** 31) {
-    throw "bend: ${ERRS[8]}";
-  }
-  const out = new Uint32Array(tape.length * 2);
-  out.set(tape);
-  return out;
 }
 `.slice(1),
 };
@@ -2959,22 +2907,6 @@ function emit_intr(sc: Scope, it: Intr, m: Spine, ty: HTerm | null): Val {
   }
   const ws = args.map((v, i) =>
     val_own(sc, val_to(sc, v, fun_of(k).lays[i]))[0]);
-  // A tape get answers the owner it consumed with the word it read. The pair
-  // is the declared CompilerWords & U32 layout, not the expected type's: a let
-  // value has no type here, and only this pack carries the fields a match on
-  // the pair reads by position.
-  if (op === "compilerwords_get") {
-    if (typeof C !== "string") {
-      die("a compiler word tape get reads one word");
-    }
-    // The tape is the pair's first word and the helper's operand, so it has
-    // to be one value, never an expression read twice (a fresh tape would be
-    // made twice). The index is read once, so only a deep one needs a local.
-    const as = [emit_alias(sc, ws[0], "a"),
-      tpl_deep(ws[1]) ? emit_alias(sc, ws[1], "a") : ws[1]];
-    return val_new([as[0], tpl(C, as)],
-      lay_pack([["Tuple", [BOX, W32]]]));
-  }
   const lay = lay_of(ty);
   const all = Array.isArray(C) || /\$(\d)[^]*\$\1/.test(C);
   const as = ws.map((w) => all || tpl_deep(w) ? emit_alias(sc, w, "a") : w);
@@ -5495,86 +5427,6 @@ OUTLINE Term blk_copy(Env e, Term a) {
   BLK_ALLOC(dst, cls)
   blk_fill(e, dst, blk_loc(e.mem, a), 1ull << cls, arr);
   return term_blk(arr, blk_cls(a), dst);
-}
-
-// Compiler words
-// ==============
-
-// A compiler tape is one packed BUF whose class c holds 2^c U32 words, exactly
-// the block Array<U32> stores its cells in. Its handle can be an rfc cell like
-// any shared block, so these resolve it whole instead of reading BLK_SHR,
-// which the Array paths set for their file: a tape is a general buffer, and
-// the file that uses one need not mention Array at all.
-
-INLINE u64 tape_loc(DEV u64* H, Term t) {
-  return term_rfc(t) ? term_peek(H, t) : term_loc(t);
-}
-
-INLINE void tape_free(Env e, Term t) {
-  if (term_rfc(t)) {
-    term_drop(e, t);
-  } else {
-    heap_free(e, blk_span(t), term_loc(t));
-  }
-}
-
-// The depth is the class and stays a Nat until the array-depth error. A zero
-// depth is one heap word holding one cell, so its high half is only padding.
-INLINE Term compiler_words_new(Env e, u64 depth) {
-  DEV u64* H = e.mem;
-  if (depth > 31) {
-    err_post(H, ERR_ARRS);
-    return 0;
-  }
-  u32 cls = (u32)depth;
-  u32 wc  = blk_wcls(false, cls);
-  u64 loc = heap_alloc(e, wc);
-  if (err_seen(H)) {
-    return term_blk(0, 0, loc);
-  }
-  for (u64 i = 0; i < (1ull << wc); i += 1) {
-    H[loc + i] = 0;
-  }
-  return term_blk(false, cls, loc);
-}
-
-// A cell is the index masked to the capacity, as an Array<U32> cell is.
-INLINE u32 compiler_words_get(Env e, Term tape, u32 index) {
-  return (u32)*blk_ptr(e.mem, tape_loc(e.mem, tape), blk_at(tape, index, 0));
-}
-
-INLINE Term compiler_words_set(Env e, Term tape, u32 index, u32 value) {
-  *blk_ptr(e.mem, tape_loc(e.mem, tape), blk_at(tape, index, 0)) = value;
-  return tape;
-}
-
-// A grow copies the old cells in order and zeroes the half the next class
-// adds. A class 0 word carries its one cell in the low half only: copying it
-// whole would make its padding the second cell.
-INLINE Term compiler_words_grow(Env e, Term tape) {
-  DEV u64* H = e.mem;
-  u32 cls = blk_cls(tape);
-  if (cls >= 31) {
-    err_post(H, ERR_ARRS);
-    return tape;
-  }
-  u64 src = tape_loc(H, tape);
-  u64 dst = heap_alloc(e, blk_wcls(false, cls + 1));
-  if (err_seen(H)) {
-    return tape;
-  }
-  if (cls == 0) {
-    H[dst] = (u64)*blk_ptr(H, src, 0);
-  } else {
-    for (u64 j = 0; j < (1ull << (cls - 1)); j += 1) {
-      H[dst + j] = H[src + j];
-    }
-    for (u64 j = 1ull << (cls - 1); j < (1ull << cls); j += 1) {
-      H[dst + j] = 0;
-    }
-  }
-  tape_free(e, tape);
-  return term_blk(false, cls + 1, dst);
 }
 
 INLINE Term blk_node(Env e, Term l, Term r) {

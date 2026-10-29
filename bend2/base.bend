@@ -78,10 +78,6 @@ type Array<-T: Type> is Type:
   ALeaf{value: T}
   ANode{xs: Array<T>, ys: Array<T>}
 
-# Compiler-private, affine packed words. No constructor exposes an Array.
-law CompilerWords:
-  Type
-
 type Image is Data:
   Pix{color: U32}
   Qua{tl: Image, tr: Image, bl: Image, br: Image}
@@ -2447,28 +2443,6 @@ def List.show(~a: Quant, ~A: Kind(a), ~f: A -> String, xs: List<a, A>) ->
       "[]"
     case h <> t:
       "[" ++ f(h) ++ List.show.go(~a, ~A, ~f, t)
-
-# Compiler words
-# --------------
-
-law CompilerWords.new:
-  for +depth: Nat
-  CompilerWords
-
-law CompilerWords.get:
-  for tape: CompilerWords
-  for +index: U32
-  CompilerWords & U32
-
-law CompilerWords.set:
-  for tape: CompilerWords
-  for +index: U32
-  for +value: U32
-  CompilerWords
-
-law CompilerWords.grow:
-  for tape: CompilerWords
-  CompilerWords
 
 # Array
 # -----

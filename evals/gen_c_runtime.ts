@@ -34,11 +34,9 @@ const FIXTURE = join(ROOT, "evals/c_backend_runtime.bend");
 // G24 adds Map.find's shared read-only traversal and owned-holder promotion;
 // G23 host-only tiny-accessor inlining and String/Map reads remain. Device
 // address-space qualifiers, term/refcount, IO and four-slot ABI are unchanged.
-// G27 adds opaque CompilerWords primitives over the existing packed BUF ABI;
-// allocation, final drop, class-0 padding and shared-handle resolution are explicit.
 // KERNEL_SHA always names the current official release, so a stale working
 // kernel fails closed.
-const COMP_SHA = "7cc08cdbf69fd2e3de9ac40342ac02146d02ec99c2d73b510f2b543621aa86cb";
+const COMP_SHA = "880a9b3b86f273852a39fc664f8c3d7b71e3860b6d365e4321949fc812b6e7cc";
 const KERNEL_SHA = officialKernelSha256(ROOT);
 
 const sha = (bytes: string | Buffer): string =>
