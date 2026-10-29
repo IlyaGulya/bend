@@ -1,0 +1,1118 @@
+{
+  "schemaVersion": 1,
+  "status": "PAIRED_FULL_ROOT_THROUGHPUT_PASS",
+  "measured": true,
+  "diagnosticOnly": true,
+  "acceptanceEvidence": false,
+  "profiledTimingsExcluded": true,
+  "candidateCompilerAccepted": false,
+  "frozen": {
+    "root": "/private/tmp/bend2039g22-tiny-inline/checkpoints/.bootstrap_compiler_root_remote2039g21.bend",
+    "rootSha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+    "repository": "/private/tmp/bend2039g22-tiny-inline",
+    "inputs": 53
+  },
+  "bindings": {
+    "path": "/Users/ilyagulya/Projects/My/bend/evals/receipts/producer2039g25_r12_bindings.json",
+    "sha256": "2b2c1975dc0be1186a5a2f28147f803e4a26837116249246ae9975f4e57329de",
+    "baselineAcceptance": "81be7c8d",
+    "waveBase": "81be7c8d"
+  },
+  "fixedpoint": {
+    "stageOneSha256": "a38aea910145c1a47f29683965920d467d62b65c687fcf21677a66250b3a6ac2",
+    "stageOneBytes": 31824148,
+    "criterion": "exact stage-one/stage-two byte equality was required before measurement"
+  },
+  "outputAuthentication": {
+    "candidateNativeEqualsCandidateJs": true,
+    "candidateSha256": "2613130e2106c6c78055098b5243be04c5e793a8909ff98d753ad983d8e1c348",
+    "controlMatchesAcceptedBaseline": true,
+    "controlSha256": "c33227e028d767df9a9fff75663e42eb7374919dcf8e7dff14936a98d20008fb",
+    "rule": "candidate native and JS lanes are compared to each other; the control is compared to its authenticated accepted baseline"
+  },
+  "control": {
+    "native": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+    "nativeSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+    "image": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+    "imageSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+    "outputSha256": "c33227e028d767df9a9fff75663e42eb7374919dcf8e7dff14936a98d20008fb"
+  },
+  "candidate": {
+    "native": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g27/native",
+    "nativeSha256": "13c7dc639d5e0d8cc0aa9651c5b773c6372ce9b6fc370e5d869f3fa97a83d128",
+    "image": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g27/bootstrap.json.cases/stage-one.js",
+    "imageSha256": "a38aea910145c1a47f29683965920d467d62b65c687fcf21677a66250b3a6ac2",
+    "outputSha256": "2613130e2106c6c78055098b5243be04c5e793a8909ff98d753ad983d8e1c348",
+    "outputBytes": 29949225
+  },
+  "order": [
+    [
+      "control",
+      1
+    ],
+    [
+      "candidate",
+      1
+    ],
+    [
+      "candidate",
+      2
+    ],
+    [
+      "control",
+      2
+    ],
+    [
+      "control",
+      3
+    ],
+    [
+      "candidate",
+      3
+    ]
+  ],
+  "runs": [
+    {
+      "role": "control",
+      "mode": "native",
+      "repetition": 1,
+      "pipelineElapsedMs": 90034.991667,
+      "phases": [
+        {
+          "phase": "parse",
+          "elapsedMs": 6811.632
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 4563.471
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 64130.92
+        },
+        {
+          "phase": "emit",
+          "elapsedMs": 13483.628
+        }
+      ],
+      "outputSha256": "c33227e028d767df9a9fff75663e42eb7374919dcf8e7dff14936a98d20008fb",
+      "peakRssBytes": 1749680128,
+      "peakFootprintBytes": 1745476760,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "peakRssBytes": 1749680128,
+        "peakFootprintBytes": 1745476760,
+        "elapsedMs": 90578,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "commandExitCode": 0,
+        "ownedTreeStopped": true,
+        "reportPhase": "complete"
+      },
+      "report": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g27/throughput/native-control-1.json",
+        "sha256": "15871553e8fad96ade9e0395a40e3c9861d14321ead8c0621728604c3260c8fe"
+      }
+    },
+    {
+      "role": "candidate",
+      "mode": "native",
+      "repetition": 1,
+      "pipelineElapsedMs": 90960.751458,
+      "phases": [
+        {
+          "phase": "parse",
+          "elapsedMs": 6549.307
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 4508.718
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 65139.146
+        },
+        {
+          "phase": "emit",
+          "elapsedMs": 13758.425
+        }
+      ],
+      "outputSha256": "2613130e2106c6c78055098b5243be04c5e793a8909ff98d753ad983d8e1c348",
+      "peakRssBytes": 1739227136,
+      "peakFootprintBytes": 1737661448,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "peakRssBytes": 1739227136,
+        "peakFootprintBytes": 1737661448,
+        "elapsedMs": 91492,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "commandExitCode": 0,
+        "ownedTreeStopped": true,
+        "reportPhase": "complete"
+      },
+      "report": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g27/throughput/native-candidate-1.json",
+        "sha256": "8f0d107fbfb030c7ec2e8b05dd72a8d7aab006741219d011a661cbb8e2053960"
+      }
+    },
+    {
+      "role": "candidate",
+      "mode": "native",
+      "repetition": 2,
+      "pipelineElapsedMs": 90439.56304200001,
+      "phases": [
+        {
+          "phase": "parse",
+          "elapsedMs": 6695.472
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 4436.096
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 64442.972
+        },
+        {
+          "phase": "emit",
+          "elapsedMs": 13847.807
+        }
+      ],
+      "outputSha256": "2613130e2106c6c78055098b5243be04c5e793a8909ff98d753ad983d8e1c348",
+      "peakRssBytes": 1729019904,
+      "peakFootprintBytes": 1737366800,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "peakRssBytes": 1729019904,
+        "peakFootprintBytes": 1737366800,
+        "elapsedMs": 90966,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "commandExitCode": 0,
+        "ownedTreeStopped": true,
+        "reportPhase": "complete"
+      },
+      "report": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g27/throughput/native-candidate-2.json",
+        "sha256": "25a18ae7390564b88b7bffb49c39d54f56e49ce08d6246af5acd7b14d4df0d66"
+      }
+    },
+    {
+      "role": "control",
+      "mode": "native",
+      "repetition": 2,
+      "pipelineElapsedMs": 92189.570208,
+      "phases": [
+        {
+          "phase": "parse",
+          "elapsedMs": 6827.206
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 4410.29
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 65764.713
+        },
+        {
+          "phase": "emit",
+          "elapsedMs": 14149.302
+        }
+      ],
+      "outputSha256": "c33227e028d767df9a9fff75663e42eb7374919dcf8e7dff14936a98d20008fb",
+      "peakRssBytes": 1734508544,
+      "peakFootprintBytes": 1745804392,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "peakRssBytes": 1734508544,
+        "peakFootprintBytes": 1745804392,
+        "elapsedMs": 92711,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "commandExitCode": 0,
+        "ownedTreeStopped": true,
+        "reportPhase": "complete"
+      },
+      "report": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g27/throughput/native-control-2.json",
+        "sha256": "0896fbddb47e129b2efbb6eb8b53a878d6ade8291ff350a1fdb3217f7f0e91d0"
+      }
+    },
+    {
+      "role": "control",
+      "mode": "native",
+      "repetition": 3,
+      "pipelineElapsedMs": 93925.364084,
+      "phases": [
+        {
+          "phase": "parse",
+          "elapsedMs": 6955.832
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 4596.524
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 67556.75
+        },
+        {
+          "phase": "emit",
+          "elapsedMs": 13843.037
+        }
+      ],
+      "outputSha256": "c33227e028d767df9a9fff75663e42eb7374919dcf8e7dff14936a98d20008fb",
+      "peakRssBytes": 1756397568,
+      "peakFootprintBytes": 1737153808,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "peakRssBytes": 1756397568,
+        "peakFootprintBytes": 1737153808,
+        "elapsedMs": 94483,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "commandExitCode": 0,
+        "ownedTreeStopped": true,
+        "reportPhase": "complete"
+      },
+      "report": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g27/throughput/native-control-3.json",
+        "sha256": "39b61c7586a756dcd02307bc7ff2f3ff6f26bef99c894751119de563fb3d0cb6"
+      }
+    },
+    {
+      "role": "candidate",
+      "mode": "native",
+      "repetition": 3,
+      "pipelineElapsedMs": 88381.101666,
+      "phases": [
+        {
+          "phase": "parse",
+          "elapsedMs": 7122.306
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 4427.959
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 62472.931
+        },
+        {
+          "phase": "emit",
+          "elapsedMs": 13358.872
+        }
+      ],
+      "outputSha256": "2613130e2106c6c78055098b5243be04c5e793a8909ff98d753ad983d8e1c348",
+      "peakRssBytes": 1749434368,
+      "peakFootprintBytes": 1739152512,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "peakRssBytes": 1749434368,
+        "peakFootprintBytes": 1739152512,
+        "elapsedMs": 88907,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "commandExitCode": 0,
+        "ownedTreeStopped": true,
+        "reportPhase": "complete"
+      },
+      "report": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g27/throughput/native-candidate-3.json",
+        "sha256": "0d87a6b3034da3509fdcfde1370a6a728100edf88499635819ac2fcc84cb7eda"
+      }
+    },
+    {
+      "role": "control",
+      "mode": "js",
+      "repetition": 1,
+      "pipelineElapsedMs": 295959.5675,
+      "phases": [
+        {
+          "phase": "startup",
+          "elapsedMs": 934.2013750000001
+        },
+        {
+          "phase": "load-parse",
+          "elapsedMs": 9519.132082999999
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 6506.987166999999
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 260660.51629200001
+        },
+        {
+          "phase": "emit",
+          "elapsedMs": 18334.722291000013
+        }
+      ],
+      "outputSha256": "c33227e028d767df9a9fff75663e42eb7374919dcf8e7dff14936a98d20008fb",
+      "peakRssBytes": 2405171200,
+      "peakFootprintBytes": 2591739976,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "peakRssBytes": 2405171200,
+        "peakFootprintBytes": 2591739976,
+        "elapsedMs": 296900,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "commandExitCode": 0,
+        "ownedTreeStopped": true,
+        "reportPhase": "complete"
+      },
+      "report": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g27/throughput/js-control-1.json",
+        "sha256": "bc7bbbe076e052ee97c542d40b4438c1c38fd483256feb2d91ad371109c13489"
+      }
+    },
+    {
+      "role": "candidate",
+      "mode": "js",
+      "repetition": 1,
+      "pipelineElapsedMs": 306165.665041,
+      "phases": [
+        {
+          "phase": "startup",
+          "elapsedMs": 970.653667
+        },
+        {
+          "phase": "load-parse",
+          "elapsedMs": 9145.563583
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 6235.757333000001
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 269624.766708
+        },
+        {
+          "phase": "emit",
+          "elapsedMs": 20181.902207999956
+        }
+      ],
+      "outputSha256": "2613130e2106c6c78055098b5243be04c5e793a8909ff98d753ad983d8e1c348",
+      "peakRssBytes": 2468462592,
+      "peakFootprintBytes": 2789532240,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "peakRssBytes": 2468462592,
+        "peakFootprintBytes": 2789532240,
+        "elapsedMs": 306973,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "commandExitCode": 0,
+        "ownedTreeStopped": true,
+        "reportPhase": "complete"
+      },
+      "report": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g27/throughput/js-candidate-1.json",
+        "sha256": "18db53dbb0e5e3c1e427c6fb21a12e55dface5d2069e6e13031357c513053e50"
+      }
+    },
+    {
+      "role": "candidate",
+      "mode": "js",
+      "repetition": 2,
+      "pipelineElapsedMs": 321318.58379199996,
+      "phases": [
+        {
+          "phase": "startup",
+          "elapsedMs": 930.118083
+        },
+        {
+          "phase": "load-parse",
+          "elapsedMs": 10027.197167
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 9118.588333
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 280870.134083
+        },
+        {
+          "phase": "emit",
+          "elapsedMs": 20367.10954200005
+        }
+      ],
+      "outputSha256": "2613130e2106c6c78055098b5243be04c5e793a8909ff98d753ad983d8e1c348",
+      "peakRssBytes": 2325020672,
+      "peakFootprintBytes": 2403747320,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "peakRssBytes": 2325020672,
+        "peakFootprintBytes": 2403747320,
+        "elapsedMs": 322182,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "commandExitCode": 0,
+        "ownedTreeStopped": true,
+        "reportPhase": "complete"
+      },
+      "report": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g27/throughput/js-candidate-2.json",
+        "sha256": "02c30849dc9b1e33761f2f38e861be3f32930fc8d6918f0bc093d5044379d8ef"
+      }
+    },
+    {
+      "role": "control",
+      "mode": "js",
+      "repetition": 2,
+      "pipelineElapsedMs": 324536.595375,
+      "phases": [
+        {
+          "phase": "startup",
+          "elapsedMs": 1044.098
+        },
+        {
+          "phase": "load-parse",
+          "elapsedMs": 9787.554916000001
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 6444.050125
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 288080.122083
+        },
+        {
+          "phase": "emit",
+          "elapsedMs": 19176.181249999965
+        }
+      ],
+      "outputSha256": "c33227e028d767df9a9fff75663e42eb7374919dcf8e7dff14936a98d20008fb",
+      "peakRssBytes": 2648489984,
+      "peakFootprintBytes": 3012724184,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "peakRssBytes": 2648489984,
+        "peakFootprintBytes": 3012724184,
+        "elapsedMs": 325412,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "commandExitCode": 0,
+        "ownedTreeStopped": true,
+        "reportPhase": "complete"
+      },
+      "report": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g27/throughput/js-control-2.json",
+        "sha256": "2922d73c9bd5b351b5d53a4aedc0ea69f68c73a5c33c9bd60ef7ef786ea0751a"
+      }
+    },
+    {
+      "role": "control",
+      "mode": "js",
+      "repetition": 3,
+      "pipelineElapsedMs": 293870.45908299997,
+      "phases": [
+        {
+          "phase": "startup",
+          "elapsedMs": 919.065834
+        },
+        {
+          "phase": "load-parse",
+          "elapsedMs": 9269.590583000001
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 6304.255332999999
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 259322.202542
+        },
+        {
+          "phase": "emit",
+          "elapsedMs": 18047.931333000015
+        }
+      ],
+      "outputSha256": "c33227e028d767df9a9fff75663e42eb7374919dcf8e7dff14936a98d20008fb",
+      "peakRssBytes": 2681683968,
+      "peakFootprintBytes": 3127562712,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "peakRssBytes": 2681683968,
+        "peakFootprintBytes": 3127562712,
+        "elapsedMs": 294897,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "commandExitCode": 0,
+        "ownedTreeStopped": true,
+        "reportPhase": "complete"
+      },
+      "report": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g27/throughput/js-control-3.json",
+        "sha256": "09a083e158ae2004be79393f71d53c2780b9cc1e25193411c695ab1d90e7def2"
+      }
+    },
+    {
+      "role": "candidate",
+      "mode": "js",
+      "repetition": 3,
+      "pipelineElapsedMs": 299967.90766699996,
+      "phases": [
+        {
+          "phase": "startup",
+          "elapsedMs": 928.590792
+        },
+        {
+          "phase": "load-parse",
+          "elapsedMs": 10963.964584000001
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 11912.661125
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 258392.17720800004
+        },
+        {
+          "phase": "emit",
+          "elapsedMs": 17764.402292000013
+        }
+      ],
+      "outputSha256": "2613130e2106c6c78055098b5243be04c5e793a8909ff98d753ad983d8e1c348",
+      "peakRssBytes": 2529984512,
+      "peakFootprintBytes": 2948041952,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "peakRssBytes": 2529984512,
+        "peakFootprintBytes": 2948041952,
+        "elapsedMs": 300868,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "commandExitCode": 0,
+        "ownedTreeStopped": true,
+        "reportPhase": "complete"
+      },
+      "report": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g27/throughput/js-candidate-3.json",
+        "sha256": "df88995d7de17e45443883a9aa35a71dfaa8228199b298827df2a7a8ded573b5"
+      }
+    }
+  ],
+  "summary": {
+    "native": {
+      "control": {
+        "runs": 3,
+        "pipelineMs": {
+          "n": 3,
+          "min": 90034.991667,
+          "median": 92189.570208,
+          "max": 93925.364084,
+          "relativeRange": 0.043209560471652954
+        },
+        "peakRssBytes": {
+          "n": 3,
+          "min": 1734508544,
+          "median": 1749680128,
+          "max": 1756397568,
+          "relativeRange": 0.012619726824476225
+        },
+        "peakFootprintBytes": {
+          "n": 3,
+          "min": 1737153808,
+          "median": 1745476760,
+          "max": 1745804392,
+          "relativeRange": 0.004979745581630156
+        },
+        "phases": {
+          "parse": {
+            "n": 3,
+            "min": 6811.632,
+            "median": 6827.206,
+            "max": 6955.832,
+            "relativeRange": 0.02116966976489639
+          },
+          "expand": {
+            "n": 3,
+            "min": 4410.29,
+            "median": 4563.471,
+            "max": 4596.524,
+            "relativeRange": 0.042227155130388334
+          },
+          "check": {
+            "n": 3,
+            "min": 64130.92,
+            "median": 65764.713,
+            "max": 67556.75,
+            "relativeRange": 0.05341931785790695
+          },
+          "emit": {
+            "n": 3,
+            "min": 13483.628,
+            "median": 13843.037,
+            "max": 14149.302,
+            "relativeRange": 0.049369057052004034
+          }
+        }
+      },
+      "candidate": {
+        "runs": 3,
+        "pipelineMs": {
+          "n": 3,
+          "min": 88381.101666,
+          "median": 90439.56304200001,
+          "max": 90960.751458,
+          "relativeRange": 0.029187798560700466
+        },
+        "peakRssBytes": {
+          "n": 3,
+          "min": 1729019904,
+          "median": 1739227136,
+          "max": 1749434368,
+          "relativeRange": 0.011806957197411188
+        },
+        "peakFootprintBytes": {
+          "n": 3,
+          "min": 1737366800,
+          "median": 1737661448,
+          "max": 1739152512,
+          "relativeRange": 0.001027826708787114
+        },
+        "phases": {
+          "parse": {
+            "n": 3,
+            "min": 6549.307,
+            "median": 6695.472,
+            "max": 7122.306,
+            "relativeRange": 0.08749001993646043
+          },
+          "expand": {
+            "n": 3,
+            "min": 4427.959,
+            "median": 4436.096,
+            "max": 4508.718,
+            "relativeRange": 0.018238425423541642
+          },
+          "check": {
+            "n": 3,
+            "min": 62472.931,
+            "median": 64442.972,
+            "max": 65139.146,
+            "relativeRange": 0.04267792397958732
+          },
+          "emit": {
+            "n": 3,
+            "min": 13358.872,
+            "median": 13758.425,
+            "max": 13847.807,
+            "relativeRange": 0.03660002131916537
+          }
+        }
+      },
+      "ratio": {
+        "pipelineMs": 0.9810172977045929,
+        "peakRssBytes": 0.9940257697205783,
+        "peakFootprintBytes": 0.9955225344850768
+      }
+    },
+    "js": {
+      "control": {
+        "runs": 3,
+        "pipelineMs": {
+          "n": 3,
+          "min": 293870.45908299997,
+          "median": 295959.5675,
+          "max": 324536.595375,
+          "relativeRange": 0.10435256537078043
+        },
+        "peakRssBytes": {
+          "n": 3,
+          "min": 2405171200,
+          "median": 2648489984,
+          "max": 2681683968,
+          "relativeRange": 0.11496594005449591
+        },
+        "peakFootprintBytes": {
+          "n": 3,
+          "min": 2591739976,
+          "median": 3012724184,
+          "max": 3127562712,
+          "relativeRange": 0.20674247453904304
+        },
+        "phases": {
+          "startup": {
+            "n": 3,
+            "min": 919.065834,
+            "median": 934.2013750000001,
+            "max": 1044.098,
+            "relativeRange": 0.13604266568786405
+          },
+          "load-parse": {
+            "n": 3,
+            "min": 9269.590583000001,
+            "median": 9519.132082999999,
+            "max": 9787.554916000001,
+            "relativeRange": 0.055877800466174035
+          },
+          "expand": {
+            "n": 3,
+            "min": 6304.255332999999,
+            "median": 6444.050125,
+            "max": 6506.987166999999,
+            "relativeRange": 0.032157935123405985
+          },
+          "check": {
+            "n": 3,
+            "min": 259322.202542,
+            "median": 260660.51629200001,
+            "max": 288080.122083,
+            "relativeRange": 0.11089648035957259
+          },
+          "emit": {
+            "n": 3,
+            "min": 18047.931333000015,
+            "median": 18334.722291000013,
+            "max": 19176.181249999965,
+            "relativeRange": 0.0625140851980628
+          }
+        }
+      },
+      "candidate": {
+        "runs": 3,
+        "pipelineMs": {
+          "n": 3,
+          "min": 299967.90766699996,
+          "median": 306165.665041,
+          "max": 321318.58379199996,
+          "relativeRange": 0.07117653448682179
+        },
+        "peakRssBytes": {
+          "n": 3,
+          "min": 2325020672,
+          "median": 2468462592,
+          "max": 2529984512,
+          "relativeRange": 0.08815570651407954
+        },
+        "peakFootprintBytes": {
+          "n": 3,
+          "min": 2403747320,
+          "median": 2789532240,
+          "max": 2948041952,
+          "relativeRange": 0.22643587679590216
+        },
+        "phases": {
+          "startup": {
+            "n": 3,
+            "min": 928.590792,
+            "median": 930.118083,
+            "max": 970.653667,
+            "relativeRange": 0.04529753618319325
+          },
+          "load-parse": {
+            "n": 3,
+            "min": 9145.563583,
+            "median": 10027.197167,
+            "max": 10963.964584000001,
+            "relativeRange": 0.19882875281520004
+          },
+          "expand": {
+            "n": 3,
+            "min": 6235.757333000001,
+            "median": 9118.588333,
+            "max": 11912.661125,
+            "relativeRange": 0.9103792031735238
+          },
+          "check": {
+            "n": 3,
+            "min": 258392.17720800004,
+            "median": 269624.766708,
+            "max": 280870.134083,
+            "relativeRange": 0.08699163077567056
+          },
+          "emit": {
+            "n": 3,
+            "min": 17764.402292000013,
+            "median": 20181.902207999956,
+            "max": 20367.10954200005,
+            "relativeRange": 0.14651251459060538
+          }
+        }
+      },
+      "ratio": {
+        "pipelineMs": 1.0344847697515303,
+        "peakRssBytes": 0.9320264025585985,
+        "peakFootprintBytes": 0.9259169009943461
+      }
+    }
+  },
+  "note": "Unprofiled, same-host, sequentially interleaved clean full-root pairs on the frozen G22 corpus; profiled cost-attribution runs are excluded. Measurements are diagnostic evidence, not a performance acceptance.",
+  "compilerAccepted": false,
+  "performanceAccepted": false,
+  "byteFixedpoint": true,
+  "sourceCheckpoint": "18a4f65e",
+  "orchestrationCheckpoint": "24780e82",
+  "scope": "All twelve unprofiled interleaved complete frozen-root pipeline runs against unchanged R12; final consumer qualification remains separate.",
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "decisionRule": {
+    "schemaVersion": 1,
+    "status": "PREDECLARED_BEFORE_G27_PERFORMANCE_RESULTS",
+    "baseline": "local2039g24r12",
+    "candidate": "local2039g27",
+    "correctnessRequired": [
+      "full native validation, zero exclusions/output patches",
+      "actual native-stage0 -> stage1 -> stage2 exact byte fixedpoint",
+      "complete original fixtures, C/JS matrix and native/admission/host consumers"
+    ],
+    "limits": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 600000
+    },
+    "measurements": {
+      "modes": [
+        "native",
+        "js"
+      ],
+      "pairsPerMode": 3,
+      "order": [
+        "control-1",
+        "candidate-1",
+        "candidate-2",
+        "control-2",
+        "control-3",
+        "candidate-3"
+      ],
+      "allSamplesRetained": true,
+      "profiledSamplesExcluded": true,
+      "frozenRoot": {
+        "path": "/private/tmp/bend2039g22-tiny-inline/checkpoints/.bootstrap_compiler_root_remote2039g21.bend",
+        "sha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+        "bytes": 653895
+      }
+    },
+    "performanceAcceptedIf": "For BOTH native and JS, candidate pipeline mean AND median must be lower than control; candidate median peak RSS AND median footprint must not exceed control. All original samples retained; no post-hoc exclusion. Failing the rule rejects the optimization and restores R12 after checkpointing source/frozen inputs.",
+    "claimsBoundary": "C already has packed U32 blocks; claim only observed measured effects, never a new C density win or per-slice attribution."
+  },
+  "allSampleSummary": {
+    "allSamplesRetained": 12,
+    "profiledSamplesExcluded": true,
+    "modes": {
+      "native": {
+        "control": {
+          "pipelineMs": {
+            "n": 3,
+            "min": 90034.991667,
+            "median": 92189.570208,
+            "mean": 92049.97531966667,
+            "max": 93925.364084,
+            "values": [
+              90034.991667,
+              92189.570208,
+              93925.364084
+            ]
+          },
+          "peakRssBytes": {
+            "n": 3,
+            "min": 1734508544,
+            "median": 1749680128,
+            "mean": 1746862080,
+            "max": 1756397568,
+            "values": [
+              1749680128,
+              1734508544,
+              1756397568
+            ]
+          },
+          "peakFootprintBytes": {
+            "n": 3,
+            "min": 1737153808,
+            "median": 1745476760,
+            "mean": 1742811653.3333333,
+            "max": 1745804392,
+            "values": [
+              1745476760,
+              1745804392,
+              1737153808
+            ]
+          }
+        },
+        "candidate": {
+          "pipelineMs": {
+            "n": 3,
+            "min": 88381.101666,
+            "median": 90439.56304200001,
+            "mean": 89927.138722,
+            "max": 90960.751458,
+            "values": [
+              90960.751458,
+              90439.56304200001,
+              88381.101666
+            ]
+          },
+          "peakRssBytes": {
+            "n": 3,
+            "min": 1729019904,
+            "median": 1739227136,
+            "mean": 1739227136,
+            "max": 1749434368,
+            "values": [
+              1739227136,
+              1729019904,
+              1749434368
+            ]
+          },
+          "peakFootprintBytes": {
+            "n": 3,
+            "min": 1737366800,
+            "median": 1737661448,
+            "mean": 1738060253.3333333,
+            "max": 1739152512,
+            "values": [
+              1737661448,
+              1737366800,
+              1739152512
+            ]
+          }
+        },
+        "checks": {
+          "pipelineMeanLower": true,
+          "pipelineMedianLower": true,
+          "medianRssNotHigher": true,
+          "medianFootprintNotHigher": true
+        },
+        "passed": true,
+        "ratios": {
+          "pipelineMean": 0.976938216547103,
+          "pipelineMedian": 0.9810172977045929,
+          "medianRss": 0.9940257697205783,
+          "medianFootprint": 0.9955225344850768
+        }
+      },
+      "js": {
+        "control": {
+          "pipelineMs": {
+            "n": 3,
+            "min": 293870.45908299997,
+            "median": 295959.5675,
+            "mean": 304788.87398599996,
+            "max": 324536.595375,
+            "values": [
+              295959.5675,
+              324536.595375,
+              293870.45908299997
+            ]
+          },
+          "peakRssBytes": {
+            "n": 3,
+            "min": 2405171200,
+            "median": 2648489984,
+            "mean": 2578448384,
+            "max": 2681683968,
+            "values": [
+              2405171200,
+              2648489984,
+              2681683968
+            ]
+          },
+          "peakFootprintBytes": {
+            "n": 3,
+            "min": 2591739976,
+            "median": 3012724184,
+            "mean": 2910675624,
+            "max": 3127562712,
+            "values": [
+              2591739976,
+              3012724184,
+              3127562712
+            ]
+          }
+        },
+        "candidate": {
+          "pipelineMs": {
+            "n": 3,
+            "min": 299967.90766699996,
+            "median": 306165.665041,
+            "mean": 309150.7188333333,
+            "max": 321318.58379199996,
+            "values": [
+              306165.665041,
+              321318.58379199996,
+              299967.90766699996
+            ]
+          },
+          "peakRssBytes": {
+            "n": 3,
+            "min": 2325020672,
+            "median": 2468462592,
+            "mean": 2441155925.3333335,
+            "max": 2529984512,
+            "values": [
+              2468462592,
+              2325020672,
+              2529984512
+            ]
+          },
+          "peakFootprintBytes": {
+            "n": 3,
+            "min": 2403747320,
+            "median": 2789532240,
+            "mean": 2713773837.3333335,
+            "max": 2948041952,
+            "values": [
+              2789532240,
+              2403747320,
+              2948041952
+            ]
+          }
+        },
+        "checks": {
+          "pipelineMeanLower": false,
+          "pipelineMedianLower": false,
+          "medianRssNotHigher": true,
+          "medianFootprintNotHigher": true
+        },
+        "passed": false,
+        "ratios": {
+          "pipelineMean": 1.0143110369820576,
+          "pipelineMedian": 1.0344847697515303,
+          "medianRss": 0.9320264025585985,
+          "medianFootprint": 0.9259169009943461
+        }
+      }
+    },
+    "performanceRulePassed": false
+  },
+  "decision": "Reject G27 performance under the predeclared rule: JS pipeline arithmetic mean and median are higher. Preserve native time improvements and separate RSS/footprint observations without reclassifying them as joint acceptance."
+}
