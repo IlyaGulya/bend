@@ -5,13 +5,20 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
-- G25 measures the qualified R12 checker and fuses arena word-range copying:
-  only the evolving source/transient word arrays cross each loop iteration;
-  the surrounding arenas and store are reconstructed once per nonempty range.
-  Each element still computes its tagged handle with U32 wrap and reads before
-  writing, preserving overlap and cross-owner behavior. Nine cases execute on
-  both C and JS through admitted checker steps. Full compiler qualification
-  and same-host performance comparison against R12 are pending.
+- G25's arena word-range fusion is rejected as a performance optimization.
+  Its fresh full compiler passes 12,465 definitions / 13,059 validation events,
+  actual native-stage0 → stage1 → stage2 byte fixedpoint, all 59 C / 64 JS
+  matrix cases, 285 fixture executions and 50 additional consumer checks.
+  Both unchanged images are 31,789,695 bytes, SHA-256
+  `51b54bfe2a53c99b0a9dad3fccbda303fe4cacc10589375b17978aae3756f558`.
+  All 24 paired measurements against qualified R12 are retained: pooled native
+  median is 0.14% lower, JS median 0.66% lower, but JS mean is 2.07% higher.
+  RSS and footprint results are mixed; no demonstrated speedup or universal
+  memory reduction is accepted. R12 remains the accepted compiler checkpoint.
+  Nine C/JS regressions preserve sequential overlap, owner selection, reverse
+  ranges, zero count and U32 tag wrap. Rejected implementation source: `53b99143`.
+  `evals/receipts/root2039g25_correctness.json`,
+  `evals/receipts/root2039g25_throughput.json`,
   `evals/receipts/producer2039g25_r12_profile.json`,
   `evals/receipts/producer2039g25_range_smoke.json`.
 

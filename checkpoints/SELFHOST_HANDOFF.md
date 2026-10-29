@@ -3,22 +3,42 @@
 ## 1. Цель и первый шаг
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
-### Текущий кандидат G25: array-level word-range fusion
 
-На принятом R12 выполнены три bounded CPU/allocation окна JS checker и отдельный
+### Отклонённый G25: array-level word-range fusion
+
+Профиль принятого R12: три bounded CPU/allocation окна JS checker и отдельный
 native checker sample на frozen G22 root; оба полных прогона сохранили прежний
-output SHA-256. Выбран только `arena_copy_word_range`: в цикле передаются две
-word arrays, `Arena`/`ArenaStore` восстанавливаются один раз. Каждый элемент
-сохраняет `IR.arena_range_index`, порядок read-before-write и выбор владельца
-после U32 wrap. Другие checker оптимизации и изменения лимитов не входят.
+output SHA-256. Кандидат `53b99143` передаёт в `arena_copy_word_range` только
+word arrays и восстанавливает `Arena`/`ArenaStore` один раз. Каждый элемент
+сохраняет `IR.arena_range_index`, read-before-write и выбор владельца после
+U32 wrap. Девять сценариев через generated checker steps прошли на C и JS.
 
-`evals/checker_word_range_smoke.bend` исполняет девять сценариев через generated
-checker steps; C и JS PASS. Профиль и точные команды:
-`evals/receipts/producer2039g25_r12_profile.json`,
+Свежая полная квалификация G25 PASS: **12 465 определений / 13 059 событий**,
+ноль исключённых проверок и output patches. Настоящий native-stage0 → stage1 →
+stage2 byte fixedpoint: оба неизменённых image **31 789 695 байт**, SHA-256
+`51b54bfe2a53c99b0a9dad3fccbda303fe4cacc10589375b17978aae3756f558`.
+Stage1 использует собственные parser/checker/emitter. PASS: 59 C / 64 JS cases,
+285 fixture executions и 33 native/library + 12 admission + 5 host checks.
+Native build: 285 121 ms, peak RSS 4 952 981 504 B; bootstrap: 536 738 ms,
+peak RSS 2 781 986 816 B. Исходные guards 8 GiB RSS/footprint и 600 000 ms,
+ABI13, quantum64 и parser fuel 8M сохранены.
+
+**Как оптимизация G25 отклонён.** Два unprofiled interleaved batches на тех же
+артефактах дали 24 замера: по шесть на runtime/role. Все исходные результаты,
+включая медленный JS candidate3, сохранены. Pooled median native
+94 380.379 → 94 245.603 ms (−0.14%), JS 310 832.650 → 308 769.638 ms
+(−0.66%), но JS arithmetic mean вырос на 2.07%. Predeclared all-sample rule
+не выполнен; ускорение не доказано. RSS/footprint смешанные, универсальное
+снижение памяти не заявляется. Fusion не принимается в текущий checker;
+принятым baseline остаётся R12 ниже. Source `53b99143` и frozen inputs
+сохраняются как явно отклонённая версия; другие оптимизации не добавлялись.
+
+Точные команды, runtime, source pins, все timings и фиксированный corpus:
+`evals/receipts/root2039g25_correctness.json`,
+`evals/receipts/root2039g25_throughput.json`.
+Профиль: `evals/receipts/producer2039g25_r12_profile.json`.
+Range regression: `evals/checker_word_range_smoke.bend`,
 `evals/receipts/producer2039g25_range_smoke.json`.
-Полная свежая квалификация G25 и paired performance против R12 ещё не выполнены;
-кандидат не принят, новый fixedpoint или ускорение пока не заявляются.
-
 
 ### Принятый checkpoint: local2039g24r12
 
