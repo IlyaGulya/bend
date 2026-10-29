@@ -1062,7 +1062,7 @@ function throughputRun(run, label, {repository, bun, script, frozenRepo, mode, r
 
 function throughputSummaries(runs) {
   const grouped = {control: [], candidate: []};
-  for (const run of runs) grouped[run.role].push(run);
+  for (const run of runs) grouped[run.role].push(run.row);
   const summary = {};
   for (const role of ['control', 'candidate']) {
     const rows = grouped[role];

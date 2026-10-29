@@ -1,0 +1,323 @@
+{
+  "schemaVersion": 1,
+  "status": "G24_R12_ALL_GATES_REAUTHENTICATED_SUMMARY_PASS",
+  "compilerAccepted": false,
+  "byteFixedpoint": true,
+  "scope": "Offline execution of the corrected production summarizer against all twelve completed, unprofiled measured reports; no compiler or timing reruns. Original orchestration FAIL receipt is preserved unchanged.",
+  "original": {
+    "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/receipt.json",
+    "sha256": "e5d30cddf8430c15fc4be1ac201f9424eeeab5c4ce56cc63b90f97c41ba0b6b0",
+    "status": "FAIL",
+    "failure": {
+      "message": "TypeError: undefined is not an object (evaluating 'row.phases.map')\n    at <anonymous> (/Users/ilyagulya/Projects/My/bend/evals/g24_qualification.mjs:1075:55)\n    at throughputSummaries (/Users/ilyagulya/Projects/My/bend/evals/g24_qualification.mjs:1075:36)\n    at runThroughput (/Users/ilyagulya/Projects/My/bend/evals/g24_qualification.mjs:1343:28)\n    at main (/Users/ilyagulya/Projects/My/bend/evals/g24_qualification.mjs:1464:38)",
+      "step": "throughput-js-candidate-3"
+    }
+  },
+  "repair": {
+    "file": "/Users/ilyagulya/Projects/My/bend/evals/g24_qualification.mjs",
+    "sha256": "b86d041dc49de4568ba6b5c469535c2bc113c6608cfb382cc0877e0dcb03998c",
+    "change": "throughputSummaries groups run.row rather than the outer {role,repetition,mode,report,row} wrapper"
+  },
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "--experimental-strip-types",
+    "/private/tmp/bend-g24-wave-evidence-lXWelR/r12-summary-replay.mjs"
+  ],
+  "executedScript": {
+    "sha256": "7cb73e0f547fde2bbc1d030f33977fe773eee42426dbca91e7c8320e31431df6",
+    "bytes": 6818
+  },
+  "correctnessReauthenticated": true,
+  "allTwelveMeasuredCommandsPassed": true,
+  "measurementReruns": 0,
+  "summary": {
+    "native": {
+      "control": {
+        "runs": 3,
+        "pipelineMs": {
+          "n": 3,
+          "min": 94544.452625,
+          "median": 94619.261667,
+          "max": 94629.531375,
+          "relativeRange": 0.0008998809304809868
+        },
+        "peakRssBytes": {
+          "n": 3,
+          "min": 1841086464,
+          "median": 2010791936,
+          "max": 2014543872,
+          "relativeRange": 0.0942146995221187
+        },
+        "peakFootprintBytes": {
+          "n": 3,
+          "min": 1756011720,
+          "median": 1950457104,
+          "max": 1954061536,
+          "relativeRange": 0.11278388050849683
+        },
+        "phases": {
+          "parse": {
+            "n": 3,
+            "min": 6426.664,
+            "median": 6456.216,
+            "max": 6491.053,
+            "relativeRange": 0.010019039426987333
+          },
+          "expand": {
+            "n": 3,
+            "min": 5139.922,
+            "median": 5144.944,
+            "max": 5237.228,
+            "relativeRange": 0.018931415690744042
+          },
+          "check": {
+            "n": 3,
+            "min": 67758.193,
+            "median": 67884.977,
+            "max": 67937.347,
+            "relativeRange": 0.00264401974238001
+          },
+          "emit": {
+            "n": 3,
+            "min": 14115.01,
+            "median": 14160.931,
+            "max": 14326.386,
+            "relativeRange": 0.01497526392117329
+          }
+        }
+      },
+      "candidate": {
+        "runs": 3,
+        "pipelineMs": {
+          "n": 3,
+          "min": 81750.134792,
+          "median": 81992.515625,
+          "max": 82149.679959,
+          "relativeRange": 0.004887394595942648
+        },
+        "peakRssBytes": {
+          "n": 3,
+          "min": 2069282816,
+          "median": 2070953984,
+          "max": 2071461888,
+          "relativeRange": 0.001053056635444461
+        },
+        "peakFootprintBytes": {
+          "n": 3,
+          "min": 2008931768,
+          "median": 2010602936,
+          "max": 2010864936,
+          "relativeRange": 0.0009622865399378761
+        },
+        "phases": {
+          "parse": {
+            "n": 3,
+            "min": 6349.105,
+            "median": 6362.575,
+            "max": 6437.91,
+            "relativeRange": 0.013987010767659425
+          },
+          "expand": {
+            "n": 3,
+            "min": 4115.438,
+            "median": 4210.004,
+            "max": 4325.032,
+            "relativeRange": 0.050928722532085295
+          },
+          "check": {
+            "n": 3,
+            "min": 57825.905,
+            "median": 57912.66,
+            "max": 57979.327,
+            "relativeRange": 0.002653170754525998
+          },
+          "emit": {
+            "n": 3,
+            "min": 12309.94,
+            "median": 12607.649,
+            "max": 12691.135,
+            "relativeRange": 0.03096643850416815
+          }
+        }
+      },
+      "ratio": {
+        "pipelineMs": 0.866552054840185,
+        "peakRssBytes": 1.0299195789096303,
+        "peakFootprintBytes": 1.0308367878876459
+      }
+    },
+    "js": {
+      "control": {
+        "runs": 3,
+        "pipelineMs": {
+          "n": 3,
+          "min": 300252.406583,
+          "median": 305989.907584,
+          "max": 311216.975583,
+          "relativeRange": 0.036517838856918665
+        },
+        "peakRssBytes": {
+          "n": 3,
+          "min": 2813607936,
+          "median": 3538452480,
+          "max": 3837067264,
+          "relativeRange": 0.36375335557768346
+        },
+        "peakFootprintBytes": {
+          "n": 3,
+          "min": 2595091288,
+          "median": 3351492640,
+          "max": 3670136408,
+          "relativeRange": 0.4142610030603286
+        },
+        "phases": {
+          "startup": {
+            "n": 3,
+            "min": 916.7764169999999,
+            "median": 945.4239160000002,
+            "max": 975.5045829999999,
+            "relativeRange": 0.06405942049881502
+          },
+          "load-parse": {
+            "n": 3,
+            "min": 10275.689791,
+            "median": 10284.75525,
+            "max": 10639.952375,
+            "relativeRange": 0.03544896658120613
+          },
+          "expand": {
+            "n": 3,
+            "min": 6809.850625000001,
+            "median": 6877.943916000002,
+            "max": 7164.693209000001,
+            "relativeRange": 0.05210724926877525
+          },
+          "check": {
+            "n": 3,
+            "min": 258027.998959,
+            "median": 262714.012583,
+            "max": 268937.65725,
+            "relativeRange": 0.042280908796775644
+          },
+          "emit": {
+            "n": 3,
+            "min": 24178.63279200002,
+            "median": 24204.647750000004,
+            "max": 24490.00754099997,
+            "relativeRange": 0.012878095783107137
+          }
+        }
+      },
+      "candidate": {
+        "runs": 3,
+        "pipelineMs": {
+          "n": 3,
+          "min": 265666.983708,
+          "median": 266464.503208,
+          "max": 269764.582208,
+          "relativeRange": 0.015423815345092998
+        },
+        "peakRssBytes": {
+          "n": 3,
+          "min": 2750644224,
+          "median": 3018375168,
+          "max": 3049750528,
+          "relativeRange": 0.10874045483244582
+        },
+        "peakFootprintBytes": {
+          "n": 3,
+          "min": 2544898624,
+          "median": 2836595512,
+          "max": 2858459512,
+          "relativeRange": 0.1232115436909443
+        },
+        "phases": {
+          "startup": {
+            "n": 3,
+            "min": 882.2622079999999,
+            "median": 894.964875,
+            "max": 900.5862500000001,
+            "relativeRange": 0.020769383335073322
+          },
+          "load-parse": {
+            "n": 3,
+            "min": 9107.271583,
+            "median": 9205.670917000001,
+            "max": 9500.209625,
+            "relativeRange": 0.04314552810014733
+          },
+          "expand": {
+            "n": 3,
+            "min": 6208.407084,
+            "median": 6296.594458,
+            "max": 6308.733125000001,
+            "relativeRange": 0.016159707255433614
+          },
+          "check": {
+            "n": 3,
+            "min": 232084.247125,
+            "median": 232368.789375,
+            "max": 234985.43533399998,
+            "relativeRange": 0.012500582202106172
+          },
+          "emit": {
+            "n": 3,
+            "min": 17368.26345899998,
+            "median": 17690.262541999982,
+            "max": 18084.009833999997,
+            "relativeRange": 0.04121001369478465
+          }
+        }
+      },
+      "ratio": {
+        "pipelineMs": 0.8708277515161198,
+        "peakRssBytes": 0.8530212529517989,
+        "peakFootprintBytes": 0.8463678177732773
+      }
+    }
+  },
+  "order": [
+    [
+      "control",
+      1
+    ],
+    [
+      "candidate",
+      1
+    ],
+    [
+      "candidate",
+      2
+    ],
+    [
+      "control",
+      2
+    ],
+    [
+      "control",
+      3
+    ],
+    [
+      "candidate",
+      3
+    ]
+  ],
+  "outputAuthentication": {
+    "candidateNativeEqualsJs": true,
+    "candidateSha256": "c33227e028d767df9a9fff75663e42eb7374919dcf8e7dff14936a98d20008fb",
+    "controlMatchesBaseline": true,
+    "controlSha256": "6f3dff55cee825d064b1d2f9d0c3268fd0d629dd93043d90d6fc00f43eba5978"
+  },
+  "reviews": {
+    "proof": {
+      "verdict": "No concrete missing runtime evidence blocking bounded parent acceptance",
+      "scope": "Read-only evidence/source audit, not independent execution",
+      "agent": "R12ProofReview"
+    },
+    "performance": {
+      "verdict": "Same-host pipeline improvement; JS observed memory lower, native memory higher; no isolated-slice attribution",
+      "scope": "Three paired samples per lane, not universal claim",
+      "agent": "R12PerfReview"
+    }
+  }
+}

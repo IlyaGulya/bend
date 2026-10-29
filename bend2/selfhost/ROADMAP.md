@@ -5,9 +5,48 @@ The latest image-bound checkpoints are in §1. Earlier failures remain recorded
 under their original image IDs; a later pass never reclassifies an older run.
 Detailed evidence and reasoning live in the linked receipts and notes.
 This index does not replace a receipt.
-## Current full native-seed checkpoint
 
-The current accepted checkpoint is **remote2039g23**, compiler source
+## Current full native-seed checkpoint: G24 R12
+
+**local2039g24r12**, compiler source `5916d410`, passes full native validation
+(**12,456 definitions / 13,050 events**) and the actual native-stage0 →
+stage1 → stage2 byte fixedpoint. Both unchanged images are **31,758,507 bytes**,
+SHA-256 `85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e`.
+The emitted stage1 supplies its own parser/checker/emitter for the complete root.
+Source checks, ABI13, fuel8M, quantum64 and **8-GiB / 600-s per-guard** limits
+remain unchanged. No host parsing/checking, cached ASTs or output patches.
+
+R12 removes interprocedural result windows, their solver and duplicated
+private/public bodies. Ordinary boxed calls/returns retain local scalar
+replacement, literal fields, unescaped-string reuse and general Map.find.
+Native build: **215,756 ms**, RSS **5,950,488,576 B**, footprint **5,626,714,424 B**.
+Bootstrap: **460,427 ms**, RSS **4,524,212,224 B**, footprint **2,912,600,504 B**.
+All **59 C / 64 JS** cases, **33 native/library + 12 admission + 5 host**
+checks, **285 fixture executions** and **130 semantic AST approvals per image**
+pass. Earlier failures stay failed.
+
+Three interleaved, unprofiled same-host frozen-root pairs give native medians
+**94.619 → 81.993 s** and JS **305.990 → 266.465 s**. JS median RSS is
+**14.70% lower**, native median RSS **2.99% higher**. JS memory ranges overlap;
+no universal memory, isolated-slice, official-TS or cross-host build-speed claim.
+Native-build memory is not lower than the historical G23 observation.
+
+The original orchestration receipt remains **FAIL**: its final summary grouped
+the outer wrapper instead of `run.row`, after all twelve measurement commands
+passed. The one-line fix passed actual offline summary execution and full
+retained-evidence authentication, without rerunning compiler/timing commands.
+This separately recorded parent decision accepts the exercised compiler scope,
+not the original runner exit status or default CLI/GPU/WASM cutover.
+
+Source, frozen root/parser/corpus and compact receipts are committed:
+`evals/receipts/root2039g24r12_native_fixedpoint.json`,
+`evals/receipts/root2039g24r12_emitted_suites.json`,
+`evals/receipts/producer2039g24r12_throughput.json`,
+`evals/receipts/producer2039g24r12_summary_repair.json`.
+
+## Historical full native-seed checkpoint: G23
+
+The earlier accepted checkpoint is **remote2039g23**, compiler source
 `04e0b600`. Full native validation covers **14,096 definitions / 14,686
 events**, with zero excluded checks or output patches. The real native-stage0
 → stage1 → stage2 byte fixedpoint passes: both unchanged files are

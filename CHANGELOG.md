@@ -5,8 +5,8 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
-- G24 is an unaccepted optimization candidate: indexed scope reads share
-  Base's `Map.find` traversal, declaration identities are reused only within
+- G24 R12 is a qualified full native-seed compiler checkpoint. Indexed scope
+  reads share Base's `Map.find` traversal; declaration identities are reused within
   one checked-definition frame, canonical names are derived only when needed,
   and single-use private CPS helpers are inlined
   with scoped binder freshening and quantity checks. JS record-field rendering
@@ -41,9 +41,26 @@ latest one; the GitHub release carries the same notes.
   R12 removes the interprocedural result-window solver, private/public body
   duplication and boxing adapters entirely: calls and returns use one ordinary
   boxed convention. Local scalar replacement, literal-field rendering,
-  unescaped-string reuse and the general Map.find intrinsic remain. Fifteen
-  C/JS smoke cases pass, including 32/33-live-argument calls; independent source
-  review found no concrete lost-behavior defect. Full qualification is pending.
+  unescaped-string reuse and the general Map.find intrinsic remain.
+  Full validation covers 12,456 definitions / 13,050 events; the actual
+  native-stage0 → stage1 → stage2 fixedpoint passes. Both unchanged images are
+  31,758,507 bytes, SHA-256
+  `85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e`.
+  Bootstrap completes in 460.427 s, peak RSS 4,524,212,224 B and footprint
+  2,912,600,504 B, under the unchanged 8-GiB / 600-s guard.
+  All 59 C / 64 JS cases, 285 fixture executions, 130 semantic AST approvals
+  per emitted image, and 33 native/library + 12 admission + 5 host checks pass.
+  Three same-host frozen-root pairs give native medians 94.619 → 81.993 s
+  and JS medians 305.990 → 266.465 s. Observed JS median RSS falls 14.70%;
+  native median RSS rises 2.99%. No isolated-slice or universal memory claim.
+  All twelve timing commands passed; the original orchestration receipt stays
+  FAIL because its final summarizer read the outer wrapper instead of `run.row`.
+  The one-line repair passed offline execution against all authenticated reports,
+  without rerunning measurements. Parent acceptance records that distinction:
+  `evals/receipts/root2039g24r12_native_fixedpoint.json`,
+  `evals/receipts/root2039g24r12_emitted_suites.json`,
+  `evals/receipts/producer2039g24r12_throughput.json`,
+  `evals/receipts/producer2039g24r12_summary_repair.json`.
   R6 passed the full
   native build and 95 seed fixtures, but its 57,228,966-byte stage1 did not
   finish stage2 checking before the original bootstrap deadline.
@@ -76,12 +93,12 @@ latest one; the GitHub release carries the same notes.
   `e9946ab94c33f236dfa1ab51d3145d4ba564fcb61ac399b51800a6d964046e23`).
   Its CPU-profiled 496.083-s run does not pass the original combined bootstrap
   guard or establish full consumer/performance acceptance.
-  Full qualification remains failed: r1/r2/r4/r6/r7/r8/r9/r10 stopped at the original
-  bootstrap deadline. R4 validated all 12,974 definitions / 13,596 events,
-  passed all95 native seed fixtures and produced a53,261,354-byte stage1,
-  but stage2 checking did not finish. R3 exceeded the original8-GiB RSS guard
-  during canonical C generation. No full G24 qualification, speedup or memory
-  reduction is claimed; the isolated R9 fixedpoint is recorded separately.
+  Earlier qualification attempts remain failed: r1/r2/r4/r6/r7/r8/r9/r10
+  stopped at the original bootstrap deadline. R4 validated all 12,974
+  definitions / 13,596 events, passed all 95 native seed fixtures and produced
+  a 53,261,354-byte stage1, but stage2 checking did not finish. R3 exceeded the
+  original 8-GiB RSS guard during canonical C generation. Those attempts are not
+  reclassified by R12; the isolated R9 fixedpoint remains recorded separately.
 
 - G23 completes the full native compiler root and a real native-stage0 →
   stage1 → stage2 byte fixedpoint: 14,096 definitions / 14,686 validation

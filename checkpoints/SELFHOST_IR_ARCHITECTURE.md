@@ -2,40 +2,42 @@
 
 ## Статус и границы
 
-Текущий проверенный compiler source — `04e0b600` (g23). Общий
+Текущий проверенный compiler source — `5916d410` (G24 R12). Общий
 CheckedFIR → Backend IR → JS/C путь завершил полный native compiler root
 и настоящий native-stage0 → stage1 → stage2 byte fixedpoint:
-32 959 574 байта, `6b206ac5b6d84a6d7296837ae8249e49657551ff16eaddc87f44baecef7e42d5`.
-Native validation — 14 096 определений / 14 686 событий, без исключений
-и патчей. Неизменённый stage1 покрывает 52 C / 53 JS cases; последний
-JS case отдельно перекомпилирован после исправления только пробелов
-в `#|` expectations. Исходный failed matrix сохранён. Native/library,
-admission/host consumers и 285 seed/stage1/stage2 fixture executions PASS.
-Каждый emitted image имеет 130 свежих full semantic AST approvals.
+31 758 507 байт, `85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e`.
+Native validation — 12 456 определений / 13 050 событий, без исключений
+и патчей. Неизменённый stage1 покрывает все 59 C / 64 JS cases.
+33 native/library, 12 admission, 5 host consumers и 285 seed/stage1/stage2
+fixture executions PASS; каждый emitted image имеет 130 свежих full semantic
+AST approvals. Stage1 использует собственные parser/checker/emitter.
 Исходные 8-ГиБ / 600-секундные guards, ABI13, quantum64 и fuel8M сохранены.
 
-G23 объединяет native String/Map reads, короткоживущие application/signature
-facts, typed/scoped bounded result fusion, capture/constructor plans и
-lexer/template caches. Source-only affine obligations остаются проверками
-исходного тела; occurrence-only usage witness и global term→type cache
-не вводились. Нормативные контракты и универсальные обязательства:
+G24 сохраняет G23 capture/constructor plans и source-only affine obligations;
+добавляет contextual resolved identities в пределах checked-definition frame,
+typed/scoped private-helper fusion и общий Map.find intrinsic в BIR/C/JS.
+R12 удаляет межпроцедурную result-window машину и private/public дубли:
+ordinary boxed calls/returns — единственный путь; локальная scalar replacement,
+literal fields и unescaped-string reuse сохранены. Нормативные контракты:
 `../bend2/selfhost/FIR_LAWS.md`, `../bend2/selfhost/BIR_LAWS.md`.
-Runtime acceptance не является доказательством этих законов.
+Runtime acceptance не доказывает универсальные законы или GPU/WASM/pure-C cutover.
 
-Парные whole-root G22/G23 measurements дают JS median1.217x с существенной
-вариацией; значимого native выигрыша нет, emission замедлился. Отдельные
-slice gains и снижение памяти не заявляются. Старый canonical-JS seed
-parser имеет large-file stack failure; stage1 использует собственный parser.
-Remote ENOSPC companion завершён после byte-preserving relocation;
-исходные отказы сохранены. Это не pure-C selfhosting и не official-TS win.
+Три same-host frozen-root пары дают native median 94.619 → 81.993 с и
+JS 305.990 → 266.465 с. Наблюдаемый JS median RSS ниже14.70%, native выше2.99%;
+JS memory ranges перекрываются. Отдельные slice gains не заявляются.
+Первоначальный runner остаётся FAIL только из-за финального summary wrapper bug:
+все runtime gates и12 timing commands PASS. Исправленная агрегация реально
+исполнена offline на аутентифицированных reports; parent acceptance записана
+отдельно, без переименования исходного отказа в успешный exit.
 Точные команды и границы:
-`../evals/receipts/root2039g23_native_fixedpoint.json`,
-`../evals/receipts/root2039g23_emitted_suites.json`,
-`../evals/receipts/producer2039g23_throughput.json`.
+`../evals/receipts/root2039g24r12_native_fixedpoint.json`,
+`../evals/receipts/root2039g24r12_emitted_suites.json`,
+`../evals/receipts/producer2039g24r12_throughput.json`,
+`../evals/receipts/producer2039g24r12_summary_repair.json`.
 
 Исторические доказательства standalone C-id helper, 57y/57aa, G21 и прежние
 числа ниже относятся только к собственным pinned source/executable.
-Они не переносятся на изменённый lowering или новый renderer; g23 принят
+Они не переносятся на изменённый lowering или новый renderer; G24 R12 принят
 по собственной полной цепочке, не по старым helper-тестам.
 
 ## История: статус 57ab до cutover (не текущий)

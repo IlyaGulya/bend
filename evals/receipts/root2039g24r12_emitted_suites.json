@@ -1,0 +1,1356 @@
+{
+  "schemaVersion": 1,
+  "status": "EMITTED_SUITES_BEHAVIOR_PASS",
+  "passed": true,
+  "sourceCheckpoint": "5916d410",
+  "scope": "Both unchanged emitted compiler images use their own parser/checker/emitter on original positive/negative fixtures and full semantic AST approvals",
+  "rawEvidence": {
+    "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/emitted-suites.json",
+    "sha256": "ccb164d46b8402d917d2f56b1c2f00cd6960f104761d74a90d6687bf3c699fbb",
+    "bytes": 1632411
+  },
+  "counts": {
+    "existingSeed": 95,
+    "freshStageOne": 95,
+    "freshStageTwo": 95,
+    "freshEmitted": 190,
+    "total": 285
+  },
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 3626156032,
+    "peakFootprintBytes": 1368314992,
+    "elapsedMs": 220110,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/Users/ilyagulya/Projects/My/bend/evals/selfhost_emitted_suites.ts",
+      "--fixedpoint-report=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json",
+      "--stage-sha256=85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "--stage-bytes=31758507",
+      "--report=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/emitted-suites.json",
+      "--worker"
+    ],
+    "label": "Both unchanged emitted compiler semantic suites",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793232775754-2073cb465fcf731d.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "fixtureInputsSha256": "ecc51f930d867111c0c697da1265058cde39a8baabcb50f51c2cbb9fd1871e05",
+  "stages": [
+    {
+      "stage": "stage-one",
+      "image": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+      "imageSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "passed": true,
+      "exitCode": 0,
+      "command": [
+        "node",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_bootstrap_worker.mjs",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/emitted-suites.json.cases/stage-one/request.json"
+      ],
+      "fixtureRows": [
+        {
+          "name": "type-specialization",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "2c23d4dd3809789d8c2d850bb30a6f71ec3b59a8f009de87a7fff594d3bef937"
+        },
+        {
+          "name": "constructor-eliminator-hit",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "14999660fd5f3d8d57bd69e2dfb816e80a224aa959fe300a28c1c45e6dc6982a"
+        },
+        {
+          "name": "constructor-eliminator-default",
+          "accepted": true,
+          "passed": true,
+          "output": "BitZero{}",
+          "sourceSha256": "d4e0e45297075195eed5b457debe85e5941754392a301ac61f44809e27968a29"
+        },
+        {
+          "name": "tag-dispatch-nested-fallthrough",
+          "accepted": true,
+          "passed": true,
+          "output": "Results{BitZero{}, BitOne{}, BitOne{}, BitZero{}, BitOne{}}",
+          "sourceSha256": "a1568e3b35ab5f29d11cfd35331515b0af6fa5eacb2e99a19f41b5330f436391"
+        },
+        {
+          "name": "root-match-local-order",
+          "accepted": true,
+          "passed": true,
+          "output": "Result{BitZero{}, BitOne{}, BitOne{}}",
+          "sourceSha256": "175cba4f8e661b2775244d242f33d0faf43049bab7a18a7b57e79aa4e4cdd676"
+        },
+        {
+          "name": "native-nat-extrema-boundaries",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "4edfd2827a7cad3afc1527f5c3c812455b526e40ef83b2734bd79cd7def4ef94"
+        },
+        {
+          "name": "source-tail-large-recursion",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "50fba9401abf73a3925dc50f089bed4eebfb69a9b2f182547f5e3e3937b63d0f"
+        },
+        {
+          "name": "nullary-array-freshness",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "719016f8be4f6b974a70518c01f585dcde8859be52bccea58ff46a0800555896"
+        },
+        {
+          "name": "aliased-specialization",
+          "accepted": true,
+          "passed": true,
+          "output": "specialization-lib.BitOne{}",
+          "sourceSha256": "ef02d443458970bf0bae0d2a6a0049b7f3bc88da9678b1b659943d16330bc557"
+        },
+        {
+          "name": "callback-specialization",
+          "accepted": true,
+          "passed": true,
+          "output": "BitZero{}",
+          "sourceSha256": "7f51a179d1d28b86a4fc6a9df6932d1aaf620dfa85197d00cbc9fa1fedb27a27"
+        },
+        {
+          "name": "specialized-type-error",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "0213d5a9cbfc9604ea73e33c50257c09c5d5e00f63e721d89a3394494ee46062"
+        },
+        {
+          "name": "runtime-template-capture",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "7ef06d611221e1cd9313f7308e038bcccb0c934294fd512bd45ce91126d915d3"
+        },
+        {
+          "name": "template-generation-rounds",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "cac73a00f3deff0f9867a71abd65fea6aeffdcdc0ffa2d73b53b5919c818bdaf"
+        },
+        {
+          "name": "readonly-index-boundaries",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "a6174d626a1aabe980e6a0e2ddae2dc156c03420b9855f71059ab8ccf1d129db"
+        },
+        {
+          "name": "readonly-index-nonmonotone",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "4d6a68519d094a3ec31e18fefa9c7f17f11b9d63c0bae762a84c547615083d53"
+        },
+        {
+          "name": "dependent-kind-binding",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "d09b89c2a1050453bc6d1639ac84a908a66fcf8413c23b42c7a9e30e36cce3b5"
+        },
+        {
+          "name": "law-completion-binding",
+          "accepted": true,
+          "passed": true,
+          "output": "WNil{}",
+          "sourceSha256": "2aa03a5d2ff7e3d154ab12187b39dd31c7c2a6963698f27948a2a190a8ecf37f"
+        },
+        {
+          "name": "forward-family-definition",
+          "accepted": true,
+          "passed": true,
+          "output": "WNil{}",
+          "sourceSha256": "b33f392b9139c0128990c881413166eb6cf3179444cd95433c565ac082b8fd0a"
+        },
+        {
+          "name": "forward-definition-call",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "97f4da569188c189a8d1457a258eead66de64578baec811b559d3446754333a9"
+        },
+        {
+          "name": "named-entry-separator-collision",
+          "accepted": true,
+          "passed": true,
+          "output": "CSucc{CSucc{CSucc{CZero{}}}}",
+          "sourceSha256": "ce8bf711b87837cbc67a14ed6f3234d9c45715eebf3b4d63e986b214299f867a"
+        },
+        {
+          "name": "forward-definition-invalid-body",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "3796fe01848e130dbffc7ac8dfd6aeae972f1ddc65c193b3ad78ada374bf5006"
+        },
+        {
+          "name": "recursive-neutral-application-equality",
+          "accepted": true,
+          "passed": true,
+          "output": "True{}",
+          "sourceSha256": "d4ebfd86789f77581482c6e5c8f47a17912e5edbbdf6e5a5010fb0cdba4f5e7e"
+        },
+        {
+          "name": "application-order",
+          "accepted": true,
+          "passed": true,
+          "output": "Duo{BitOne{}, BitZero{}}",
+          "sourceSha256": "d515754b349ba4dd3985d977113503d83698838c57282cd142e314471e80aee8"
+        },
+        {
+          "name": "annotated-banged-partial-application",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "265366bfa96b9563845094fb3abf3cec75e042ba6039a440d019d1bbf8bf7f69"
+        },
+        {
+          "name": "annotated-banged-partial-result-mismatch",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "9687ae6f2da883e006915717442cd4df59929576148853c523df3f85ad373454"
+        },
+        {
+          "name": "renamed-dependent-law-completion",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "67efffba57405e11d52be3311441b8c1631557ab61b3b35d1de69b978a0eb71c"
+        },
+        {
+          "name": "law-completion-result-mismatch",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "98d12ef11062ed42b3847e076dbb2fedad576e6ec01f88c89461fcfd2e4e20e8"
+        },
+        {
+          "name": "partial-family-application",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "e4e6414bdb3d9524161585fb007e1557b0815782005884c1e3cb3a4dc87af3fa"
+        },
+        {
+          "name": "affine-duplicate",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "1eab87729494aa38d657d584a655a13923e77f6f463104e08770f00f54facf31"
+        },
+        {
+          "name": "dependent-field-pattern",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "25577204491965929c8a67943fa11e913757bee64dbd7285e5eb9f124700d72d"
+        },
+        {
+          "name": "indexed-family-parameter-mismatch",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "eea3fa552b43e60fcbb733c3a0363dd60529723bdf09256d5d78ee244220dcd7"
+        },
+        {
+          "name": "equality-congruence-rewrite",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "8393197b610d5b39c04ce5884ab0fffeb32936e05ee3a68a4d42bc0bb205510b"
+        },
+        {
+          "name": "rewrite-result-mismatch",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "05749623daac71fc3caa1b955d4796ccf86586856880e6efe10c6d2af96c9497"
+        },
+        {
+          "name": "empty-datatype-match",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "678639d3854a305d0df75c8f933a5e239d24da869ab60f7ea4db2ef69c84d942"
+        },
+        {
+          "name": "nonempty-datatype-empty-match",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "89201d6cade157fa701a59e0537333472c9414671a7365c9386cc6f711fd8b24"
+        },
+        {
+          "name": "abstract-type-empty-match",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "39dacd9a8b695faf64cfee62f2473d2e8ecc66ececb030d6796dd6a45a742024"
+        },
+        {
+          "name": "aliased-constructor-conversion",
+          "accepted": true,
+          "passed": true,
+          "output": "alias-name-lib.BitOne{}",
+          "sourceSha256": "d40bd184d4da826e610f46e5b376470c241bf400c154321e4759906c6de5d397"
+        },
+        {
+          "name": "distinct-imported-family-mismatch",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "52882eabd86c89dc126331b004c59c18e37cd9e1db445b1660407c957b1cb51d"
+        },
+        {
+          "name": "same-module-alias-family-equality",
+          "accepted": true,
+          "passed": true,
+          "output": "scope-left-lib.BitOne{}",
+          "sourceSha256": "1459bb0a523b1a543c7662831722c0d31915fc347cc3d23a88329e69de59a675"
+        },
+        {
+          "name": "same-module-alias-constructor-rows",
+          "accepted": true,
+          "passed": true,
+          "output": "scope-left-lib.BitOne{}",
+          "sourceSha256": "6463a43c6c90eb3f0a047690004df8207430760b2c3710db942248be96464edb"
+        },
+        {
+          "name": "alias-dependent-conversion",
+          "accepted": true,
+          "passed": true,
+          "output": "scope-left-lib.BitOne{}",
+          "sourceSha256": "0918c7e24572c7843e5dc7734d023e42ac961ce74ff34a1b44070d1237df3ca5"
+        },
+        {
+          "name": "stuck-first-row-dependent-conversion",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "2de665221faf52e991a1c11b5676502efd0fbf02716b045958459d10cf6996b9"
+        },
+        {
+          "name": "local-imported-family-mismatch",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "200b4a797c383856a7e369c99486c0ef939ed3bd5a4d14f1758f10a1bc77cd04"
+        },
+        {
+          "name": "datatype-constructor-shared-name",
+          "accepted": true,
+          "passed": true,
+          "output": "Wrapper{BitOne{}}",
+          "sourceSha256": "cf1ff3a9fdaee568fc064d36da3dc8b72093da197515bce5d9ffd11ec62474bd"
+        },
+        {
+          "name": "constructor-args-field",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "ed8d8898dc20d7789a6927d22d39e0613f0ad2975859e0afbd64c4b5ef6b415b"
+        },
+        {
+          "name": "structural-predecessor-recursion",
+          "accepted": true,
+          "passed": true,
+          "output": "CSucc{CSucc{CSucc{CSucc{CZero{}}}}}",
+          "sourceSha256": "2964309f829f1d8139af4aa0bd4ff52e98e8a4f65c8284b92bb6517758d720ea"
+        },
+        {
+          "name": "structural-original-input-recursion",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "3de513ed0101ec41fc3a66d213ee97a4ec46bd6ad4903cf792c1a24671873d97"
+        },
+        {
+          "name": "structural-equal-input-recursion",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "a0ed387e14bff247794e4dc18d811f0bcc62fd8857d920479a2f865b9a8ad0dc"
+        },
+        {
+          "name": "structural-growing-input-recursion",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "c03c61fb6ccafb0c966a22a78bd0694aa0232d37c59ea743bbf77f9b25a76ce0"
+        },
+        {
+          "name": "recursive-matrix-variable-column",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "5d3613ea59c3d9d6e9c2eec23dc4ff345ff69eed791f67ab713c38dd2b2228ef"
+        },
+        {
+          "name": "recursive-matrix-incomplete-variable-column",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "cff0f694f6b404cc19e9aecb446762877b1dfc3d7f3fbd70299a1a4e2bb59e0a"
+        },
+        {
+          "name": "copied-constructor-field-quantity",
+          "accepted": true,
+          "passed": true,
+          "output": "CZero{}",
+          "sourceSha256": "075d740f094cc8913a1184848d7dfe2386ca3b640fbecd54aaec6f39710f099a"
+        },
+        {
+          "name": "affine-constructor-field-quantity",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "8b58221d0ac6a903a8ac44b5b673a1b1c070af5fcd3fe689cc58673f4a11385a"
+        },
+        {
+          "name": "erased-constructor-field-quantity",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "cc25414153fe5ece095d184424a07208d4bb76d31966ea175cab691c0ee604b7"
+        },
+        {
+          "name": "erased-constructor-default-binding",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "c8a3f957effaf0ac6964e1be74624402bdd66eede92d384b6725deed44cf9dd3"
+        },
+        {
+          "name": "long-unicode-string-pattern-tail",
+          "accepted": true,
+          "passed": true,
+          "output": "Results{BitOne{}, BitZero{}, BitOne{}}",
+          "sourceSha256": "fc0b4e09b6e16012d6cef0fb8d796817d5b7b658f48b9837d5fccfce8526c202"
+        },
+        {
+          "name": "compact-string-native-scalars-and-explicit-equivalence",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "4ef313bc46f9dfda39142fd79bfb6910517532c7172e682a4a255a04a1e14b6f"
+        },
+        {
+          "name": "compact-string-imported-template-alias-capture",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "3786bad35796874efd0c4c7dc78f2a97d08b9238f336f6ab2854807e8fd6beaf"
+        },
+        {
+          "name": "compact-string-primitive-like-shadow-fallback",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "fc9ed48a88fecaf6b85f90af46378eb42dc9fc1a2391c4b9ea50403e92fa7530"
+        },
+        {
+          "name": "compact-string-dependent-explicit-constructor-equality",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "6d97d02c58455eba53395d5a626f6b60d19ef5a48deba95618ac0393c92c0f9e"
+        },
+        {
+          "name": "compact-string-template-empty-unused-constructors",
+          "accepted": true,
+          "passed": true,
+          "output": "SNil{}",
+          "sourceSha256": "477e33c81dc909e9449dd36a9aafc8085136d48c350eb31da5eb63d5f48d9b0e"
+        },
+        {
+          "name": "compact-string-template-zero-unused-true",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "b9ec0f2924bfd00ba010a95a0223c711b331d5b665f3e8690566ca4b5e92929d"
+        },
+        {
+          "name": "compact-string-invalid-scalar-custom-constructor-fallback",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "99f41df074e9e17c6c84f960899b1a91ab739f174a1ba89dbd2375bd2b1e7c7b"
+        },
+        {
+          "name": "compact-string-tail120001-callback",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "d1be55f37408a9d5e75670f6ed078bc17b7d690294c6f07e294f38b508ca518e"
+        },
+        {
+          "name": "patricia-selected-branch-unicode",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "d23de8fa40f3547d8f03cdb7c2795cf74872e248b54e44c3cfdaf8dab0ecb753"
+        },
+        {
+          "name": "mixed-named-closure-tail120001",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "8bf7f4602897dc2b8f70b45fea329ff84780faa40214ade087b339303f03db1e"
+        },
+        {
+          "name": "private-tail-register-boundaries",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "95df4b84cf824eee111364977a3d0a5fe3162baa7123e8f5162202cc6a27d6a5"
+        },
+        {
+          "name": "compact-string-invalid-native-scalar-deferred-branch",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "1998de6cbbbcd71224bbb8077b37522dc7d059e2115ca56237c4e884d7f526ea"
+        },
+        {
+          "name": "dependent-match-goal-refinement",
+          "accepted": true,
+          "passed": true,
+          "output": "BCons{BNil{}}",
+          "sourceSha256": "78a54dfd45b2e19b0b8e3616af237b899d34185d125e5fa4625809df43fc964c"
+        },
+        {
+          "name": "dependent-vector-goal-refinement",
+          "accepted": true,
+          "passed": true,
+          "output": "BCons{BNil{}}",
+          "sourceSha256": "030547086f21efffb39fe0e1b6c043d3cd288ecc1de4b4de235c5236f3c5a2e2"
+        },
+        {
+          "name": "dependent-nested-binding-refinement",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "6420d0a0bf70b80e396c28cd4b93f17f7d53d9f8f36b6ad7df07b41e01d79267"
+        },
+        {
+          "name": "dependent-tuple-local-binding",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "8421df1a1f10074e8a03648f33476d7cc399da49589d61301ee627f55ca67759"
+        },
+        {
+          "name": "neutral-tuple-distinct-index",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "5efbb356567f9e598bc28dffac3f5ce045a53058f76b380510b3971a20ffa127"
+        },
+        {
+          "name": "neutral-family-distinct-branches",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "9d91f606818564d9645dce24419b131c6f4adea34c5db29fe80575f4a5e98c9d"
+        },
+        {
+          "name": "nested-constructor-cases-disjoint",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "b63f207d8c0a4f3ac6957211b6b544bd0f9a1d035ec3424f61994ceaad9fe5d9"
+        },
+        {
+          "name": "nested-constructor-case-duplicate",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "6f60f0b20f7fab9f253fdd4d11c951bc051b7433a910290b89f14099a809df00"
+        },
+        {
+          "name": "nested-constructor-ordered-fallback",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "42b753d8c46061341fd80ddf89c4d88a7e53fe6ae99e7d51ee2947ddf151a01f"
+        },
+        {
+          "name": "nested-constructor-unreachable-union",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "6c889cf3ba86533907cc5fe6bf7c6ed5bf98d8d99010f49dafebc8fa25ed2ae4"
+        },
+        {
+          "name": "annotated-constructor-equality",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "50e08b264b7028924b68bdcf40ed4d80fefd74ad4e90916ec08f78d9e57d86f4"
+        },
+        {
+          "name": "annotated-equality-wrong-constructor",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "ad1adf13c133f9a05b3bea7812a9d893bc3c11b23536c1a74afe5037462d40c7"
+        },
+        {
+          "name": "annotated-equality-wrong-type",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "9d5e981d6bf2096e98e6b90155118e6826646d41e865798578c71b63cbb5ce4e"
+        },
+        {
+          "name": "promoted-data-constructor-field",
+          "accepted": true,
+          "passed": true,
+          "output": "CSucc{CZero{}}",
+          "sourceSha256": "438d6597d4292c2037f2feb53824165e3873e6a64d72a9766b03552b58ba24ce"
+        },
+        {
+          "name": "promoted-affine-constructor-field",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "be2ac4f801424bc7b0c0f0b7b0efcffb4bd5f90e36ed127cd32acc9c92701306"
+        },
+        {
+          "name": "promoted-data-tuple-field",
+          "accepted": true,
+          "passed": true,
+          "output": "CSucc{CZero{}}",
+          "sourceSha256": "112ad5dd4a675fff0fb495bc6b27ebf833abdf3e82073c36cca2329022bd61ee"
+        },
+        {
+          "name": "promoted-affine-tuple-field",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "d522f28669c45241563e5053c882c86a38bff97def828ac5692867072dcaf6ec"
+        },
+        {
+          "name": "nested-structural-recursive-calls",
+          "accepted": true,
+          "passed": true,
+          "output": "CSucc{CZero{}}",
+          "sourceSha256": "2b6bfb1b3df52c545b45ea48567b16ebc9b576add2b6bf89763249084c8992f8"
+        },
+        {
+          "name": "nested-structural-invalid-inner-call",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "8ffb4d6934fb1379e57d411735748def930de217baa7b90a0682f71fdfc31ac9"
+        },
+        {
+          "name": "closed-local-annotation-usage",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "73df624518bd65175db9f1137adfbabc27913a6754d00e8364c38ea9490217c7"
+        },
+        {
+          "name": "closed-local-annotation-type-error",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "4841d3e3088fb2a938dcd39f0cde96494de3d1dcb9fc8262b6df3b6c19e7a4ba"
+        },
+        {
+          "name": "parallel-local-outer-scope",
+          "accepted": true,
+          "passed": true,
+          "output": "CSucc{CZero{}}",
+          "sourceSha256": "ebfe60fc09d8faa3b043555d565b00f9703ed4ec71d3fb6dbcc1c79e4f58512e"
+        },
+        {
+          "name": "parallel-local-rhs-independence",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "66141e6efc499c3a50e98d36c7781faab3105a6d6c685d325adaa411c4668ef6"
+        },
+        {
+          "name": "projected-local-erased-domain",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "50fbcb0968610fe942c0a6c8d3cb1cef7192f30fb0b9d225133538f2014d330f"
+        },
+        {
+          "name": "projected-local-affine-domain",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "90c0502e47e94041001d70f1676ea2954e4b479976c01ce85fa5e9b95fd7ad09"
+        },
+        {
+          "name": "projected-local-invalid-annotation",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "80ecec201d2046d02a6c971aaa6366765160b7d38e5f8c4a0cdd221303649707"
+        },
+        {
+          "name": "dependent-match-wrong-index",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "2b738c11d14a879d997dfc072bd32c8e979530cf85c91c75f385086e4c6662bc"
+        }
+      ],
+      "semanticAST": {
+        "count": 130,
+        "allPassed": true,
+        "approvalRowsSha256": "4da5351ba6edaea8e3ecf1cff43bd19c83e4bb8e61798298a395c147a7b9610b"
+      }
+    },
+    {
+      "stage": "stage-two",
+      "image": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-two.js",
+      "imageSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "passed": true,
+      "exitCode": 0,
+      "command": [
+        "node",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_bootstrap_worker.mjs",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/emitted-suites.json.cases/stage-two/request.json"
+      ],
+      "fixtureRows": [
+        {
+          "name": "type-specialization",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "2c23d4dd3809789d8c2d850bb30a6f71ec3b59a8f009de87a7fff594d3bef937"
+        },
+        {
+          "name": "constructor-eliminator-hit",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "14999660fd5f3d8d57bd69e2dfb816e80a224aa959fe300a28c1c45e6dc6982a"
+        },
+        {
+          "name": "constructor-eliminator-default",
+          "accepted": true,
+          "passed": true,
+          "output": "BitZero{}",
+          "sourceSha256": "d4e0e45297075195eed5b457debe85e5941754392a301ac61f44809e27968a29"
+        },
+        {
+          "name": "tag-dispatch-nested-fallthrough",
+          "accepted": true,
+          "passed": true,
+          "output": "Results{BitZero{}, BitOne{}, BitOne{}, BitZero{}, BitOne{}}",
+          "sourceSha256": "a1568e3b35ab5f29d11cfd35331515b0af6fa5eacb2e99a19f41b5330f436391"
+        },
+        {
+          "name": "root-match-local-order",
+          "accepted": true,
+          "passed": true,
+          "output": "Result{BitZero{}, BitOne{}, BitOne{}}",
+          "sourceSha256": "175cba4f8e661b2775244d242f33d0faf43049bab7a18a7b57e79aa4e4cdd676"
+        },
+        {
+          "name": "native-nat-extrema-boundaries",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "4edfd2827a7cad3afc1527f5c3c812455b526e40ef83b2734bd79cd7def4ef94"
+        },
+        {
+          "name": "source-tail-large-recursion",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "50fba9401abf73a3925dc50f089bed4eebfb69a9b2f182547f5e3e3937b63d0f"
+        },
+        {
+          "name": "nullary-array-freshness",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "719016f8be4f6b974a70518c01f585dcde8859be52bccea58ff46a0800555896"
+        },
+        {
+          "name": "aliased-specialization",
+          "accepted": true,
+          "passed": true,
+          "output": "specialization-lib.BitOne{}",
+          "sourceSha256": "ef02d443458970bf0bae0d2a6a0049b7f3bc88da9678b1b659943d16330bc557"
+        },
+        {
+          "name": "callback-specialization",
+          "accepted": true,
+          "passed": true,
+          "output": "BitZero{}",
+          "sourceSha256": "7f51a179d1d28b86a4fc6a9df6932d1aaf620dfa85197d00cbc9fa1fedb27a27"
+        },
+        {
+          "name": "specialized-type-error",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "0213d5a9cbfc9604ea73e33c50257c09c5d5e00f63e721d89a3394494ee46062"
+        },
+        {
+          "name": "runtime-template-capture",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "7ef06d611221e1cd9313f7308e038bcccb0c934294fd512bd45ce91126d915d3"
+        },
+        {
+          "name": "template-generation-rounds",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "cac73a00f3deff0f9867a71abd65fea6aeffdcdc0ffa2d73b53b5919c818bdaf"
+        },
+        {
+          "name": "readonly-index-boundaries",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "a6174d626a1aabe980e6a0e2ddae2dc156c03420b9855f71059ab8ccf1d129db"
+        },
+        {
+          "name": "readonly-index-nonmonotone",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "4d6a68519d094a3ec31e18fefa9c7f17f11b9d63c0bae762a84c547615083d53"
+        },
+        {
+          "name": "dependent-kind-binding",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "d09b89c2a1050453bc6d1639ac84a908a66fcf8413c23b42c7a9e30e36cce3b5"
+        },
+        {
+          "name": "law-completion-binding",
+          "accepted": true,
+          "passed": true,
+          "output": "WNil{}",
+          "sourceSha256": "2aa03a5d2ff7e3d154ab12187b39dd31c7c2a6963698f27948a2a190a8ecf37f"
+        },
+        {
+          "name": "forward-family-definition",
+          "accepted": true,
+          "passed": true,
+          "output": "WNil{}",
+          "sourceSha256": "b33f392b9139c0128990c881413166eb6cf3179444cd95433c565ac082b8fd0a"
+        },
+        {
+          "name": "forward-definition-call",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "97f4da569188c189a8d1457a258eead66de64578baec811b559d3446754333a9"
+        },
+        {
+          "name": "named-entry-separator-collision",
+          "accepted": true,
+          "passed": true,
+          "output": "CSucc{CSucc{CSucc{CZero{}}}}",
+          "sourceSha256": "ce8bf711b87837cbc67a14ed6f3234d9c45715eebf3b4d63e986b214299f867a"
+        },
+        {
+          "name": "forward-definition-invalid-body",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "3796fe01848e130dbffc7ac8dfd6aeae972f1ddc65c193b3ad78ada374bf5006"
+        },
+        {
+          "name": "recursive-neutral-application-equality",
+          "accepted": true,
+          "passed": true,
+          "output": "True{}",
+          "sourceSha256": "d4ebfd86789f77581482c6e5c8f47a17912e5edbbdf6e5a5010fb0cdba4f5e7e"
+        },
+        {
+          "name": "application-order",
+          "accepted": true,
+          "passed": true,
+          "output": "Duo{BitOne{}, BitZero{}}",
+          "sourceSha256": "d515754b349ba4dd3985d977113503d83698838c57282cd142e314471e80aee8"
+        },
+        {
+          "name": "annotated-banged-partial-application",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "265366bfa96b9563845094fb3abf3cec75e042ba6039a440d019d1bbf8bf7f69"
+        },
+        {
+          "name": "annotated-banged-partial-result-mismatch",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "9687ae6f2da883e006915717442cd4df59929576148853c523df3f85ad373454"
+        },
+        {
+          "name": "renamed-dependent-law-completion",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "67efffba57405e11d52be3311441b8c1631557ab61b3b35d1de69b978a0eb71c"
+        },
+        {
+          "name": "law-completion-result-mismatch",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "98d12ef11062ed42b3847e076dbb2fedad576e6ec01f88c89461fcfd2e4e20e8"
+        },
+        {
+          "name": "partial-family-application",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "e4e6414bdb3d9524161585fb007e1557b0815782005884c1e3cb3a4dc87af3fa"
+        },
+        {
+          "name": "affine-duplicate",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "1eab87729494aa38d657d584a655a13923e77f6f463104e08770f00f54facf31"
+        },
+        {
+          "name": "dependent-field-pattern",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "25577204491965929c8a67943fa11e913757bee64dbd7285e5eb9f124700d72d"
+        },
+        {
+          "name": "indexed-family-parameter-mismatch",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "eea3fa552b43e60fcbb733c3a0363dd60529723bdf09256d5d78ee244220dcd7"
+        },
+        {
+          "name": "equality-congruence-rewrite",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "8393197b610d5b39c04ce5884ab0fffeb32936e05ee3a68a4d42bc0bb205510b"
+        },
+        {
+          "name": "rewrite-result-mismatch",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "05749623daac71fc3caa1b955d4796ccf86586856880e6efe10c6d2af96c9497"
+        },
+        {
+          "name": "empty-datatype-match",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "678639d3854a305d0df75c8f933a5e239d24da869ab60f7ea4db2ef69c84d942"
+        },
+        {
+          "name": "nonempty-datatype-empty-match",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "89201d6cade157fa701a59e0537333472c9414671a7365c9386cc6f711fd8b24"
+        },
+        {
+          "name": "abstract-type-empty-match",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "39dacd9a8b695faf64cfee62f2473d2e8ecc66ececb030d6796dd6a45a742024"
+        },
+        {
+          "name": "aliased-constructor-conversion",
+          "accepted": true,
+          "passed": true,
+          "output": "alias-name-lib.BitOne{}",
+          "sourceSha256": "d40bd184d4da826e610f46e5b376470c241bf400c154321e4759906c6de5d397"
+        },
+        {
+          "name": "distinct-imported-family-mismatch",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "52882eabd86c89dc126331b004c59c18e37cd9e1db445b1660407c957b1cb51d"
+        },
+        {
+          "name": "same-module-alias-family-equality",
+          "accepted": true,
+          "passed": true,
+          "output": "scope-left-lib.BitOne{}",
+          "sourceSha256": "1459bb0a523b1a543c7662831722c0d31915fc347cc3d23a88329e69de59a675"
+        },
+        {
+          "name": "same-module-alias-constructor-rows",
+          "accepted": true,
+          "passed": true,
+          "output": "scope-left-lib.BitOne{}",
+          "sourceSha256": "6463a43c6c90eb3f0a047690004df8207430760b2c3710db942248be96464edb"
+        },
+        {
+          "name": "alias-dependent-conversion",
+          "accepted": true,
+          "passed": true,
+          "output": "scope-left-lib.BitOne{}",
+          "sourceSha256": "0918c7e24572c7843e5dc7734d023e42ac961ce74ff34a1b44070d1237df3ca5"
+        },
+        {
+          "name": "stuck-first-row-dependent-conversion",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "2de665221faf52e991a1c11b5676502efd0fbf02716b045958459d10cf6996b9"
+        },
+        {
+          "name": "local-imported-family-mismatch",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "200b4a797c383856a7e369c99486c0ef939ed3bd5a4d14f1758f10a1bc77cd04"
+        },
+        {
+          "name": "datatype-constructor-shared-name",
+          "accepted": true,
+          "passed": true,
+          "output": "Wrapper{BitOne{}}",
+          "sourceSha256": "cf1ff3a9fdaee568fc064d36da3dc8b72093da197515bce5d9ffd11ec62474bd"
+        },
+        {
+          "name": "constructor-args-field",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "ed8d8898dc20d7789a6927d22d39e0613f0ad2975859e0afbd64c4b5ef6b415b"
+        },
+        {
+          "name": "structural-predecessor-recursion",
+          "accepted": true,
+          "passed": true,
+          "output": "CSucc{CSucc{CSucc{CSucc{CZero{}}}}}",
+          "sourceSha256": "2964309f829f1d8139af4aa0bd4ff52e98e8a4f65c8284b92bb6517758d720ea"
+        },
+        {
+          "name": "structural-original-input-recursion",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "3de513ed0101ec41fc3a66d213ee97a4ec46bd6ad4903cf792c1a24671873d97"
+        },
+        {
+          "name": "structural-equal-input-recursion",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "a0ed387e14bff247794e4dc18d811f0bcc62fd8857d920479a2f865b9a8ad0dc"
+        },
+        {
+          "name": "structural-growing-input-recursion",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "c03c61fb6ccafb0c966a22a78bd0694aa0232d37c59ea743bbf77f9b25a76ce0"
+        },
+        {
+          "name": "recursive-matrix-variable-column",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "5d3613ea59c3d9d6e9c2eec23dc4ff345ff69eed791f67ab713c38dd2b2228ef"
+        },
+        {
+          "name": "recursive-matrix-incomplete-variable-column",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "cff0f694f6b404cc19e9aecb446762877b1dfc3d7f3fbd70299a1a4e2bb59e0a"
+        },
+        {
+          "name": "copied-constructor-field-quantity",
+          "accepted": true,
+          "passed": true,
+          "output": "CZero{}",
+          "sourceSha256": "075d740f094cc8913a1184848d7dfe2386ca3b640fbecd54aaec6f39710f099a"
+        },
+        {
+          "name": "affine-constructor-field-quantity",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "8b58221d0ac6a903a8ac44b5b673a1b1c070af5fcd3fe689cc58673f4a11385a"
+        },
+        {
+          "name": "erased-constructor-field-quantity",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "cc25414153fe5ece095d184424a07208d4bb76d31966ea175cab691c0ee604b7"
+        },
+        {
+          "name": "erased-constructor-default-binding",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "c8a3f957effaf0ac6964e1be74624402bdd66eede92d384b6725deed44cf9dd3"
+        },
+        {
+          "name": "long-unicode-string-pattern-tail",
+          "accepted": true,
+          "passed": true,
+          "output": "Results{BitOne{}, BitZero{}, BitOne{}}",
+          "sourceSha256": "fc0b4e09b6e16012d6cef0fb8d796817d5b7b658f48b9837d5fccfce8526c202"
+        },
+        {
+          "name": "compact-string-native-scalars-and-explicit-equivalence",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "4ef313bc46f9dfda39142fd79bfb6910517532c7172e682a4a255a04a1e14b6f"
+        },
+        {
+          "name": "compact-string-imported-template-alias-capture",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "3786bad35796874efd0c4c7dc78f2a97d08b9238f336f6ab2854807e8fd6beaf"
+        },
+        {
+          "name": "compact-string-primitive-like-shadow-fallback",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "fc9ed48a88fecaf6b85f90af46378eb42dc9fc1a2391c4b9ea50403e92fa7530"
+        },
+        {
+          "name": "compact-string-dependent-explicit-constructor-equality",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "6d97d02c58455eba53395d5a626f6b60d19ef5a48deba95618ac0393c92c0f9e"
+        },
+        {
+          "name": "compact-string-template-empty-unused-constructors",
+          "accepted": true,
+          "passed": true,
+          "output": "SNil{}",
+          "sourceSha256": "477e33c81dc909e9449dd36a9aafc8085136d48c350eb31da5eb63d5f48d9b0e"
+        },
+        {
+          "name": "compact-string-template-zero-unused-true",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "b9ec0f2924bfd00ba010a95a0223c711b331d5b665f3e8690566ca4b5e92929d"
+        },
+        {
+          "name": "compact-string-invalid-scalar-custom-constructor-fallback",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "99f41df074e9e17c6c84f960899b1a91ab739f174a1ba89dbd2375bd2b1e7c7b"
+        },
+        {
+          "name": "compact-string-tail120001-callback",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "d1be55f37408a9d5e75670f6ed078bc17b7d690294c6f07e294f38b508ca518e"
+        },
+        {
+          "name": "patricia-selected-branch-unicode",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "d23de8fa40f3547d8f03cdb7c2795cf74872e248b54e44c3cfdaf8dab0ecb753"
+        },
+        {
+          "name": "mixed-named-closure-tail120001",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "8bf7f4602897dc2b8f70b45fea329ff84780faa40214ade087b339303f03db1e"
+        },
+        {
+          "name": "private-tail-register-boundaries",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "95df4b84cf824eee111364977a3d0a5fe3162baa7123e8f5162202cc6a27d6a5"
+        },
+        {
+          "name": "compact-string-invalid-native-scalar-deferred-branch",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "1998de6cbbbcd71224bbb8077b37522dc7d059e2115ca56237c4e884d7f526ea"
+        },
+        {
+          "name": "dependent-match-goal-refinement",
+          "accepted": true,
+          "passed": true,
+          "output": "BCons{BNil{}}",
+          "sourceSha256": "78a54dfd45b2e19b0b8e3616af237b899d34185d125e5fa4625809df43fc964c"
+        },
+        {
+          "name": "dependent-vector-goal-refinement",
+          "accepted": true,
+          "passed": true,
+          "output": "BCons{BNil{}}",
+          "sourceSha256": "030547086f21efffb39fe0e1b6c043d3cd288ecc1de4b4de235c5236f3c5a2e2"
+        },
+        {
+          "name": "dependent-nested-binding-refinement",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "6420d0a0bf70b80e396c28cd4b93f17f7d53d9f8f36b6ad7df07b41e01d79267"
+        },
+        {
+          "name": "dependent-tuple-local-binding",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "8421df1a1f10074e8a03648f33476d7cc399da49589d61301ee627f55ca67759"
+        },
+        {
+          "name": "neutral-tuple-distinct-index",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "5efbb356567f9e598bc28dffac3f5ce045a53058f76b380510b3971a20ffa127"
+        },
+        {
+          "name": "neutral-family-distinct-branches",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "9d91f606818564d9645dce24419b131c6f4adea34c5db29fe80575f4a5e98c9d"
+        },
+        {
+          "name": "nested-constructor-cases-disjoint",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "b63f207d8c0a4f3ac6957211b6b544bd0f9a1d035ec3424f61994ceaad9fe5d9"
+        },
+        {
+          "name": "nested-constructor-case-duplicate",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "6f60f0b20f7fab9f253fdd4d11c951bc051b7433a910290b89f14099a809df00"
+        },
+        {
+          "name": "nested-constructor-ordered-fallback",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "42b753d8c46061341fd80ddf89c4d88a7e53fe6ae99e7d51ee2947ddf151a01f"
+        },
+        {
+          "name": "nested-constructor-unreachable-union",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "6c889cf3ba86533907cc5fe6bf7c6ed5bf98d8d99010f49dafebc8fa25ed2ae4"
+        },
+        {
+          "name": "annotated-constructor-equality",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "50e08b264b7028924b68bdcf40ed4d80fefd74ad4e90916ec08f78d9e57d86f4"
+        },
+        {
+          "name": "annotated-equality-wrong-constructor",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "ad1adf13c133f9a05b3bea7812a9d893bc3c11b23536c1a74afe5037462d40c7"
+        },
+        {
+          "name": "annotated-equality-wrong-type",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "9d5e981d6bf2096e98e6b90155118e6826646d41e865798578c71b63cbb5ce4e"
+        },
+        {
+          "name": "promoted-data-constructor-field",
+          "accepted": true,
+          "passed": true,
+          "output": "CSucc{CZero{}}",
+          "sourceSha256": "438d6597d4292c2037f2feb53824165e3873e6a64d72a9766b03552b58ba24ce"
+        },
+        {
+          "name": "promoted-affine-constructor-field",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "be2ac4f801424bc7b0c0f0b7b0efcffb4bd5f90e36ed127cd32acc9c92701306"
+        },
+        {
+          "name": "promoted-data-tuple-field",
+          "accepted": true,
+          "passed": true,
+          "output": "CSucc{CZero{}}",
+          "sourceSha256": "112ad5dd4a675fff0fb495bc6b27ebf833abdf3e82073c36cca2329022bd61ee"
+        },
+        {
+          "name": "promoted-affine-tuple-field",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "d522f28669c45241563e5053c882c86a38bff97def828ac5692867072dcaf6ec"
+        },
+        {
+          "name": "nested-structural-recursive-calls",
+          "accepted": true,
+          "passed": true,
+          "output": "CSucc{CZero{}}",
+          "sourceSha256": "2b6bfb1b3df52c545b45ea48567b16ebc9b576add2b6bf89763249084c8992f8"
+        },
+        {
+          "name": "nested-structural-invalid-inner-call",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "8ffb4d6934fb1379e57d411735748def930de217baa7b90a0682f71fdfc31ac9"
+        },
+        {
+          "name": "closed-local-annotation-usage",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "73df624518bd65175db9f1137adfbabc27913a6754d00e8364c38ea9490217c7"
+        },
+        {
+          "name": "closed-local-annotation-type-error",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "4841d3e3088fb2a938dcd39f0cde96494de3d1dcb9fc8262b6df3b6c19e7a4ba"
+        },
+        {
+          "name": "parallel-local-outer-scope",
+          "accepted": true,
+          "passed": true,
+          "output": "CSucc{CZero{}}",
+          "sourceSha256": "ebfe60fc09d8faa3b043555d565b00f9703ed4ec71d3fb6dbcc1c79e4f58512e"
+        },
+        {
+          "name": "parallel-local-rhs-independence",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "66141e6efc499c3a50e98d36c7781faab3105a6d6c685d325adaa411c4668ef6"
+        },
+        {
+          "name": "projected-local-erased-domain",
+          "accepted": true,
+          "passed": true,
+          "output": "BitOne{}",
+          "sourceSha256": "50fbcb0968610fe942c0a6c8d3cb1cef7192f30fb0b9d225133538f2014d330f"
+        },
+        {
+          "name": "projected-local-affine-domain",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "90c0502e47e94041001d70f1676ea2954e4b479976c01ce85fa5e9b95fd7ad09"
+        },
+        {
+          "name": "projected-local-invalid-annotation",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "80ecec201d2046d02a6c971aaa6366765160b7d38e5f8c4a0cdd221303649707"
+        },
+        {
+          "name": "dependent-match-wrong-index",
+          "accepted": false,
+          "passed": true,
+          "sourceSha256": "2b738c11d14a879d997dfc072bd32c8e979530cf85c91c75f385086e4c6662bc"
+        }
+      ],
+      "semanticAST": {
+        "count": 130,
+        "allPassed": true,
+        "approvalRowsSha256": "4da5351ba6edaea8e3ecf1cff43bd19c83e4bb8e61798298a395c147a7b9610b"
+      }
+    }
+  ]
+}

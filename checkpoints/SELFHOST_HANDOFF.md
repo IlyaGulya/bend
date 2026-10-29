@@ -4,7 +4,49 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
-G24 остаётся **не принятым**. Попытки `local2039g24`, `r1`–`r4`
+### Принятый checkpoint: local2039g24r12
+
+Compiler source `5916d410`: полный native root проверил **12 456 определений /
+13 050 событий**, без исключений и output patches. Настоящий native-stage0 →
+stage1 → stage2 byte fixedpoint завершён. Оба image — **31 758 507 байт**,
+SHA-256 `85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e`.
+Stage1 использует собственные parser/checker/emitter для полного stage2 root.
+
+R12 удаляет межпроцедурные result windows, solver и private/public дубли:
+единственный путь — ordinary boxed call/return. Local scalar replacement,
+literal fields, unescaped-string reuse и общий Map.find intrinsic сохранены.
+Native build: **215 756 ms**, RSS **5 950 488 576 B**, footprint **5 626 714 424 B**.
+Bootstrap: **460 427 ms**, RSS **4 524 212 224 B**, footprint **2 912 600 504 B**.
+Прежние **8 ГиБ / 600 с на guard**, ABI13, quantum64 и parser fuel8M сохранены.
+Прошли **59 C / 64 JS** cases, **285** fixture executions (31 negative в каждом
+наборе из 95), по **130** свежих semantic AST approvals на emitted image,
+**33 native/library + 12 admission + 5 host** checks.
+
+Три same-host пары на frozen G22 root: native median **94.619 → 81.993 с**,
+JS **305.990 → 266.465 с**. JS median RSS ниже на **14.70%**, native median
+RSS выше на **2.99%**. Диапазоны JS memory перекрываются; это наблюдение на
+данной нагрузке, не universal/retained-memory или isolated-slice claim.
+Исторические G23 build/bootstrap сделаны на другом host и не являются
+контролируемой оценкой разницы с R12.
+
+Все runtime gates и 12 timing commands PASS. Исходный orchestration receipt
+остаётся FAIL: после замеров summarizer прочитал wrapper вместо `run.row`.
+Однострочное исправление реально исполнено offline на сохранённых reports;
+источники, guards, outputs и полная цепочка заново аутентифицированы без
+повторных компиляций/замеров. Это отдельная parent-owned acceptance, не
+ложное утверждение об exit0 исходного runner.
+
+Source/frozen inputs и компактные доказательства:
+`evals/receipts/root2039g24r12_native_fixedpoint.json`,
+`evals/receipts/root2039g24r12_emitted_suites.json`,
+`evals/receipts/producer2039g24r12_throughput.json`,
+`evals/receipts/producer2039g24r12_summary_repair.json`.
+Никакие прежние отказы не переклассифицированы. Default CLI cutover,
+GPU/WASM и универсальные FIR/BIR proofs этой квалификацией не заявляются.
+
+### История отклонённых G24 attempts
+
+Попытки до R12 не приняты. `local2039g24`, `r1`–`r4`
 сохранены как FAIL: r1/r2/r4 достигли прежнего bootstrap deadline при
 stage-two-check; r3 после проверки 12 972 определений / 13 594 событий
 превысил прежний RSS guard при canonical C generation
@@ -78,14 +120,6 @@ C использует существующий owned cursor runtime и обыч
 его до stage2 artifact. Fixedpoint/performance acceptance нет.
 Receipt: `evals/receipts/producer2039g24r11_map_find_smoke.json`.
 `evals/receipts/root2039g24r11_rejected.json`.
-R12 удаляет межпроцедурные result windows, solver, private/public дубли тел
-и boxing adapters: обычный boxed call/return остаётся единственным путём.
-Local scalar replacement, literal fields, unescaped-string reuse и общий
-Map.find intrinsic сохранены. Проверены 15 C/JS consumers и те же 14 JS
-artifacts на JavaScriptCore, включая новую границу 32/33 live arguments.
-Независимый bounded source review PASS; полная квалификация ещё не завершена.
-Receipt: `evals/receipts/producer2039g24r12_boxed_smoke.json`.
-Принятым остаётся G23 ниже.
 Точные команды и границы:
 `evals/receipts/root2039g24_failed_attempts.json`,
 `evals/receipts/root2039g24r3_rejected.json`,
@@ -104,7 +138,7 @@ Receipt: `evals/receipts/producer2039g24r12_boxed_smoke.json`.
 `evals/receipts/producer2039g24_source_smoke.json`.
 
 
-## Актуальный принятый checkpoint: remote2039g23
+## Исторический принятый checkpoint: remote2039g23
 
 Compiler source `04e0b600`: полный native compiler root и настоящий
 native-stage0 → stage1 → stage2 byte fixedpoint завершены. Проверены
