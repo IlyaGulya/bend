@@ -30,21 +30,8 @@ type Instruction is Data:
   Stop{failure: BIR.Block}
 type Frame is Data:
   Frame{owner: U32, instructions: List<&2, Instruction>, captures: List<&2, Capture>, capture_count: U32}
-# One descriptor per definition at a time: the handle this definition described
-# last and the immutable fact it was reduced to. Lowering only reads the arena,
-# so a handle denotes the same published node for the whole pass, and a
-# definition has one global scope and one reduction context, so that handle
-# always denotes that descriptor here. `definition_frame` is the only producer
-# of a definition's scope and the only place a fact is dropped, so no fact ever
-# answers for another definition's scope. A fact is only written beside the
-# context it was reduced with: the pass starts unnormalized and the boundary
-# republishes the same context unnormalized, so no fact is read under another
-# context.
-type Normalization is Data:
-  Unnormalized{context: DescriptorNf.NfContext}
-  Described{context: DescriptorNf.NfContext, handle: U32, descriptor: BIR.Descriptor}
 type State is Type:
-  State{source: Arena.Arena, next_code: U32, next_local: U32, frame: Frame, codes: List<&2, BIR.Code>, failure: Maybe<&2, Problem>, scope: Maybe<&2, Scope.ArenaGlobalScope>, normalizer: Maybe<&2, Normalization>}
+  State{source: Arena.Arena, next_code: U32, next_local: U32, frame: Frame, codes: List<&2, BIR.Code>, failure: Maybe<&2, Problem>, scope: Maybe<&2, Scope.ArenaGlobalScope>, normalizer: Maybe<&2, DescriptorNf.NfContext>}
 type LowerResult<-T: Type> is Type:
   LowerResult{state: State, value: T}
 type CodeRef is Data:
@@ -84,7 +71,7 @@ def native_match_state_problem_0(v_10: LowerResult<BIR.Atom>) -> State:
 def state_problem(v_1: State, v_3: String, v_4: Ast.SourceSpan) -> State:
   native_match_state_problem_0(fail(v_1, v_3, v_4))
 
-def native_match_node_0(v_20: Sigma<&1, &1, Arena.Arena, _ => Arena.Node>, v_12: U32, v_13: U32, v_14: Frame, v_15: List<&2, BIR.Code>, v_16: Maybe<&2, Problem>, scope: Maybe<&2, Scope.ArenaGlobalScope>, normalizer: Maybe<&2, Normalization>) -> LowerResult<Arena.Node>:
+def native_match_node_0(v_20: Sigma<&1, &1, Arena.Arena, _ => Arena.Node>, v_12: U32, v_13: U32, v_14: Frame, v_15: List<&2, BIR.Code>, v_16: Maybe<&2, Problem>, scope: Maybe<&2, Scope.ArenaGlobalScope>, normalizer: Maybe<&2, DescriptorNf.NfContext>) -> LowerResult<Arena.Node>:
   match v_20:
     case (v_18, v_19):
       LowerResult{State{v_18, v_12, v_13, v_14, v_15, v_16, scope, normalizer}, v_19}
@@ -97,7 +84,7 @@ def native_match_node_1(v_1: State, v_3: U32) -> LowerResult<Arena.Node>:
 def node(v_1: State, v_3: U32) -> LowerResult<Arena.Node>:
   native_match_node_1(v_1, v_3)
 
-def native_match_name_0(v_21: Sigma<&1, &1, Arena.Arena, _ => String>, v_13: U32, v_14: U32, v_15: Frame, v_16: List<&2, BIR.Code>, v_17: Maybe<&2, Problem>, scope: Maybe<&2, Scope.ArenaGlobalScope>, normalizer: Maybe<&2, Normalization>) -> LowerResult<String>:
+def native_match_name_0(v_21: Sigma<&1, &1, Arena.Arena, _ => String>, v_13: U32, v_14: U32, v_15: Frame, v_16: List<&2, BIR.Code>, v_17: Maybe<&2, Problem>, scope: Maybe<&2, Scope.ArenaGlobalScope>, normalizer: Maybe<&2, DescriptorNf.NfContext>) -> LowerResult<String>:
   match v_21:
     case (v_19, v_20):
       LowerResult{State{v_19, v_13, v_14, v_15, v_16, v_17, scope, normalizer}, v_20}
@@ -192,7 +179,7 @@ def native_match_resolve_owner_1(v_1: Bool, v_5: Slot, v_3: State) -> LowerResul
 def resolve_owner(v_1: Bool, v_3: State, v_5: Slot) -> LowerResult<BIR.Atom>:
   native_match_resolve_owner_1(v_1, v_5, v_3)
 
-def resolve_capture(found: Maybe<&2, U32>, source: Arena.Arena, code: U32, local: U32, current: U32, instructions: List<&2, Instruction>, captures: List<&2, Capture>, count: U32, codes: List<&2, BIR.Code>, failure: Maybe<&2, Problem>, slot: Slot, scope: Maybe<&2, Scope.ArenaGlobalScope>, normalizer: Maybe<&2, Normalization>) -> LowerResult<BIR.Atom>:
+def resolve_capture(found: Maybe<&2, U32>, source: Arena.Arena, code: U32, local: U32, current: U32, instructions: List<&2, Instruction>, captures: List<&2, Capture>, count: U32, codes: List<&2, BIR.Code>, failure: Maybe<&2, Problem>, slot: Slot, scope: Maybe<&2, Scope.ArenaGlobalScope>, normalizer: Maybe<&2, DescriptorNf.NfContext>) -> LowerResult<BIR.Atom>:
   match found:
     case Some{index}: LowerResult{State{source, code, local, Frame{current, instructions, captures, count}, codes, failure, scope, normalizer}, BIR.Capture{index}}
     case None{}: LowerResult{State{source, code, local, Frame{current, instructions, Capture{slot, count} <> captures, U32.inc(count)}, codes, failure, scope, normalizer}, BIR.Capture{count}}
@@ -202,7 +189,7 @@ def variable_found(state: State, found: Maybe<&2, Slot>, span: Ast.SourceSpan) -
   match found:
     case Some{slot}: resolve(state, slot)
     case None{}: fail(state, "missing checked lexical binding", span)
-def native_match_bind_slot_0(v_19: Frame, v_2: BIR.Atom, v_3: BIR.Use, v_9: U32, v_16: Arena.Arena, v_17: U32, v_18: U32, v_20: List<&2, BIR.Code>, v_21: Maybe<&2, Problem>, scope: Maybe<&2, Scope.ArenaGlobalScope>, normalizer: Maybe<&2, Normalization>) -> LowerResult<Slot>:
+def native_match_bind_slot_0(v_19: Frame, v_2: BIR.Atom, v_3: BIR.Use, v_9: U32, v_16: Arena.Arena, v_17: U32, v_18: U32, v_20: List<&2, BIR.Code>, v_21: Maybe<&2, Problem>, scope: Maybe<&2, Scope.ArenaGlobalScope>, normalizer: Maybe<&2, DescriptorNf.NfContext>) -> LowerResult<Slot>:
   match v_19:
     case Frame{v_26, _, _, _}:
       LowerResult{State{v_16, v_17, v_18, v_19, v_20, v_21, scope, normalizer}, Slot{v_26, v_9, v_2, v_3}}
@@ -303,59 +290,16 @@ def atom_arguments(values: List<&2, BIR.Atom>) -> List<&2, BIR.Arg>:
   match values:
     case Nil{}: Nil{}
     case value <> rest: BIR.Arg{BIR.Affine{}, value} <> atom_arguments(rest)
-
-# A repeated request for the handle this definition described last is answered
-# from memory: no arena read, no descriptor tree and no normal form is rebuilt.
-# The value it returns is the one a fresh read plus reduction produces.
-def descriptor_found(handle: U32, normalization: Normalization) -> Maybe<&2, BIR.Descriptor>:
-  match normalization:
-    case Described{_, known, descriptor}: described_at(U32.is_eq(known, handle), descriptor)
-    case Unnormalized{_}: None{}
-
-def described_at(found: Bool, descriptor: BIR.Descriptor) -> Maybe<&2, BIR.Descriptor>:
-  match found:
-    case True{}: Some{descriptor}
-    case False{}: None{}
-
-def normalization_context(+normalization: Normalization) -> DescriptorNf.NfContext:
-  match normalization:
-    case Described{+context, _, _}: context
-    case Unnormalized{+context}: context
-
-# A definition owns a new scope, so the previous definition's fact is dropped
-# here. Only the pass-wide context crosses the boundary.
-def normalization_scope(normalizer: Maybe<&2, Normalization>) -> Maybe<&2, Normalization>:
-  match normalizer:
-    case Some{+normalization}: Some{normalization_cleared(normalization)}
-    case None{}: None{}
-
-def normalization_cleared(+normalization: Normalization) -> Normalization:
-  Unnormalized{normalization_context(normalization)}
-
 def describe(state: State, handle: U32) -> LowerResult<Maybe<&2, BIR.Descriptor>>:
   match state:
     case State{source, code, local, frame, codes, failure, +scopes, +normalizer}:
       match scopes normalizer:
-        case Some{scope} Some{+normalization}:
-          describe_found(source, code, local, frame, codes, failure, scope, normalization, handle)
+        case Some{scope} Some{+context}:
+          match Catalog.descriptor(source, handle, scope):
+            case Catalog.CatalogResult{source2, value}:
+              LowerResult{State{source2, code, local, frame, codes, failure, Some{scope}, Some{context}}, Some{DescriptorNf.normalize_in(context, value)}}
         case _ _:
           LowerResult{State{source, code, local, frame, codes, problem_first(failure, "missing definition scope for a checked descriptor", no_span()), scopes, normalizer}, None{}}
-
-def describe_found(source: Arena.Arena, code: U32, local: U32, frame: Frame, codes: List<&2, BIR.Code>, failure: Maybe<&2, Problem>, scope: Scope.ArenaGlobalScope, +normalization: Normalization, handle: U32) -> LowerResult<Maybe<&2, BIR.Descriptor>>:
-  match descriptor_found(handle, normalization):
-    case Some{descriptor}: LowerResult{State{source, code, local, frame, codes, failure, Some{scope}, Some{normalization}}, Some{descriptor}}
-    case None{}: describe_reduced(source, code, local, frame, codes, failure, scope, normalization_context(normalization), handle)
-
-def describe_reduced(source: Arena.Arena, code: U32, local: U32, frame: Frame, codes: List<&2, BIR.Code>, failure: Maybe<&2, Problem>, scope: Scope.ArenaGlobalScope, +context: DescriptorNf.NfContext, handle: U32) -> LowerResult<Maybe<&2, BIR.Descriptor>>:
-  match Catalog.descriptor(source, handle, scope):
-    case Catalog.CatalogResult{source2, value}: describe_normalized(source2, code, local, frame, codes, failure, scope, context, handle, value)
-
-# The first request, and every request for another handle, replaces this
-# definition's fact. A reduction that could not be performed stays the
-# DescriptorFailure the uncached path publishes, so a failure is never replaced.
-def describe_normalized(source: Arena.Arena, code: U32, local: U32, frame: Frame, codes: List<&2, BIR.Code>, failure: Maybe<&2, Problem>, scope: Scope.ArenaGlobalScope, +context: DescriptorNf.NfContext, handle: U32, value: BIR.Descriptor) -> LowerResult<Maybe<&2, BIR.Descriptor>>:
-  descriptor = DescriptorNf.normalize_in(context, value)
-  LowerResult{State{source, code, local, frame, codes, failure, Some{scope}, Some{Described{context, handle, descriptor}}}, Some{descriptor}}
 
 def element_value(state: State, handle: U32) -> LowerResult<List<&2, BIR.Descriptor>>:
   match describe(state, handle):
@@ -1805,7 +1749,7 @@ def matcher_fields(v_1: State, v_2: Catalog.Constructor, v_4: List<&2, BIR.Quant
 def native_match_definition_frame_0(v_20: State, v_3: U32, scope: Scope.ArenaGlobalScope) -> State:
   match v_20:
     case State{v_14, v_15, v_16, _, v_18, v_19, _, normalizer}:
-      State{v_14, v_15, v_16, Frame{v_3, [], [], 0}, v_18, v_19, Some{scope}, normalization_scope(normalizer)}
+      State{v_14, v_15, v_16, Frame{v_3, [], [], 0}, v_18, v_19, Some{scope}, normalizer}
 
 def definition_frame(v_1: State, v_3: U32, v_5: U32, scope: Scope.ArenaGlobalScope) -> State:
   native_match_definition_frame_0(reserve(v_1, v_5), v_3, scope)
@@ -2035,7 +1979,7 @@ def lower_catalog(result: Catalog.BuildResult) -> ProgramResult:
   match result:
     case Catalog.BuildFailure{_, message}: LowerFailure{message, no_span()}
     case Catalog.Built{Checked.CheckedProgram{source, _, _, _}, Catalog.Catalog{work, registry, constructors, families, type_functions, next_code, ending}}:
-      state = State{source, next_code, 0, Frame{0, Nil{}, Nil{}, 0}, Nil{}, None{}, None{}, Some{Unnormalized{DescriptorNf.nf_context(families, type_functions)}}}
+      state = State{source, next_code, 0, Frame{0, Nil{}, Nil{}, 0}, Nil{}, None{}, None{}, Some{DescriptorNf.nf_context(families, type_functions)}}
       lower_definitions(definitions(state, work, registry, Nil{}), constructors, families, type_functions, ending)
 def lower_definitions(result: LowerResult<List<&2, BIR.Declaration>>, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>, type_functions: List<&2, BIR.TypeFunction>, ending: BIR.Ending) -> ProgramResult:
   match result:

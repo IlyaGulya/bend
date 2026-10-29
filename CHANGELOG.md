@@ -15,10 +15,14 @@ latest one; the GitHub release carries the same notes.
   native pipeline median rises 1.57%, RSS 8.01%, footprint 8.45%; JS pipeline
   median falls 3.10%, with overlapping timing/memory ranges. No combined
   speedup or universal memory reduction is accepted; R12 remains the baseline.
-  Source `ba2b1f1a` and required frozen inputs are retained before restoration.
+  Rejected source `ba2b1f1a` and frozen inputs are retained in `93f0d279`.
+  The rejected combination is removed; checker/arena/scope and generated
+  checker/template/emitter steps match accepted R12 bytes. Range and scheduler
+  regressions pass again on C and JS; accepted R12 native/image hashes match.
   `evals/receipts/root2039g26_correctness.json`,
   `evals/receipts/root2039g26_throughput.json`,
-  `evals/receipts/producer2039g26_source_smoke.json`.
+  `evals/receipts/producer2039g26_source_smoke.json`,
+  `evals/receipts/root2039g26_restored_r12.json`.
 
 - G25's arena word-range fusion is rejected as a performance optimization.
   Its fresh full compiler passes 12,465 definitions / 13,059 validation events,

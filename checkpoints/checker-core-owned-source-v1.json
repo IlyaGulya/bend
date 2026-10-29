@@ -1,16 +1,16 @@
 {
   "schemaVersion": 2,
   "source": "bend2/selfhost/checker.bend",
-  "sourceSha256": "0ef15fbcd1bb32ea1d91da5769226fdf09a040616f56b772f60e5a4449e0c0b6",
+  "sourceSha256": "fa1d63e8f5de8f8afb9d47bca13104ad43285dcc195589666323bbda675366bc",
   "slice": "checkpoints/checker_core_owned_v1.bend",
-  "sliceSha256": "eef518de648393ae93b40ba034ce480f7b73fe94253dda8ed5724d540a63656e",
+  "sliceSha256": "20c637b53ca033e923a4ec4f2217333679ed8116e3f8950f4bc4b30bb421704b",
   "root": "check_modules",
   "publicRoots": [
     "check_modules",
     "inspect_checked"
   ],
   "closureDiscovery": "Union of fixedpoints of binding-aware authentic sourceOracle Body references from checking and explicit owner-preserving inspection; fresh complete closure, not historical membership.",
-  "definitions": 1177,
+  "definitions": 1161,
   "definitionNames": [
     "inference_keep",
     "inference_child",
@@ -42,7 +42,6 @@
     "definition_explicit",
     "definition_classify",
     "require_checked_definition",
-    "checked_declaration_work",
     "checked_declaration_result",
     "local_occurrence",
     "materialized",
@@ -77,13 +76,6 @@
     "resolved_name_kind_framed",
     "resolved_name",
     "resolved_name_kind",
-    "canonical_name_id_of",
-    "canonical_name_id_store",
-    "canonical_name_id_resolved",
-    "canonical_name_id_hit",
-    "canonical_name_id_framed",
-    "canonical_name_id_plain",
-    "canonical_name_id",
     "occurrence_retype",
     "occurrence_symbol",
     "inference_symbol",
@@ -278,7 +270,6 @@
     "canonicalize_pattern",
     "canonicalize_terms",
     "canonicalize_term",
-    "canonicalize_term_framed",
     "mat_branch_goal_view",
     "mat_branch_goal",
     "check_match_default_result",
@@ -882,6 +873,7 @@
     "arena_reserve_source_words",
     "arena_set_word_region",
     "arena_set_word",
+    "arena_word_cursor",
     "arena_copy_word_range",
     "arena_reserve_source_naturals",
     "arena_set_natural_region",
@@ -927,9 +919,7 @@
     "arena_words_view",
     "arena_words_prepend_copy",
     "arena_words_prepend_fast",
-    "arena_words_cons_tail",
-    "arena_words_cons_appended",
-    "arena_words_cons_append",
+    "arena_words_prepend_count",
     "arena_words_cons",
     "arena_words_append_copy",
     "arena_words_append_select",
@@ -943,10 +933,7 @@
     "arena_names_view",
     "arena_names_prepend_copy",
     "arena_names_prepend_fast",
-    "arena_names_cons_tail",
-    "arena_names_cons_appended",
-    "arena_names_cons_append",
-    "arena_names_cons_id",
+    "arena_names_prepend_count",
     "arena_names_cons",
     "arena_names_append_copy",
     "arena_names_append_select",
@@ -960,9 +947,7 @@
     "arena_quantities_view",
     "arena_quantities_prepend_copy",
     "arena_quantities_prepend_fast",
-    "arena_quantities_cons_tail",
-    "arena_quantities_cons_appended",
-    "arena_quantities_cons_append",
+    "arena_quantities_prepend_count",
     "arena_quantities_cons",
     "arena_publish_terms_copy",
     "arena_publish_terms_select",
@@ -1043,8 +1028,6 @@
     "arena_publication_lookup",
     "arena_publication_uncached",
     "arena_publish_definition",
-    "arena_publish_checked_definition",
-    "declaration_publish",
     "arena_publish_type_decl",
     "arena_publish_law_decl",
     "arena_publish_top_level",
@@ -1123,6 +1106,7 @@
     "arena_get_natural_region_natural_result_19",
     "arena_reserve_words_reserve_words_result_22",
     "arena_reserve_source_words_reserve_words_result_23",
+    "arena_word_cursor_word_count_result_24",
     "arena_reserve_source_naturals_reserve_naturals_result_26",
     "arena_pack_terms_reserve_words_result_28",
     "arena_pack_patterns_reserve_words_result_29",
@@ -1274,9 +1258,6 @@
     "native_match_definition_classify_3",
     "definition_classify",
     "require_checked_definition",
-    "checked_declaration_work",
-    "native_match_checked_declaration_result_0",
-    "native_match_checked_declaration_result_1",
     "checked_declaration_result",
     "local_occurrence",
     "materialized",
@@ -1357,23 +1338,6 @@
     "native_match_resolved_name_kind_0",
     "native_match_resolved_name_kind_1",
     "resolved_name_kind",
-    "native_match_canonical_name_id_of_0",
-    "canonical_name_id_of",
-    "canonical_name_id_store",
-    "native_match_canonical_name_id_resolved_0",
-    "native_match_canonical_name_id_resolved_1",
-    "canonical_name_id_resolved",
-    "native_match_canonical_name_id_hit_0",
-    "native_match_canonical_name_id_hit_1",
-    "canonical_name_id_hit",
-    "native_match_canonical_name_id_framed_0",
-    "native_match_canonical_name_id_framed_1",
-    "canonical_name_id_framed",
-    "native_match_canonical_name_id_plain_0",
-    "canonical_name_id_plain",
-    "native_match_canonical_name_id_0",
-    "native_match_canonical_name_id_1",
-    "canonical_name_id",
     "occurrence_retype",
     "occurrence_symbol",
     "inference_symbol",
@@ -2270,7 +2234,6 @@
     "native_match_canonicalize_strings_1",
     "native_match_canonicalize_strings_2",
     "native_match_canonicalize_strings_3",
-    "native_match_canonicalize_strings_4",
     "canonicalize_strings",
     "native_match_canonicalize_patterns_0",
     "native_match_canonicalize_patterns_1",
@@ -2284,6 +2247,7 @@
     "native_match_canonicalize_pattern_3",
     "native_match_canonicalize_pattern_4",
     "native_match_canonicalize_pattern_5",
+    "native_match_canonicalize_pattern_6",
     "canonicalize_pattern",
     "native_match_canonicalize_terms_0",
     "native_match_canonicalize_terms_1",
@@ -2360,9 +2324,11 @@
     "native_match_canonicalize_term_66",
     "native_match_canonicalize_term_67",
     "native_match_canonicalize_term_68",
+    "native_match_canonicalize_term_69",
+    "native_match_canonicalize_term_70",
+    "native_match_canonicalize_term_71",
+    "native_match_canonicalize_term_72",
     "canonicalize_term",
-    "native_match_canonicalize_term_framed_0",
-    "canonicalize_term_framed",
     "native_match_mat_branch_goal_view_0",
     "native_match_mat_branch_goal_view_1",
     "native_match_mat_branch_goal_view_2",
@@ -5367,6 +5333,7 @@
     "arena_reserve_source_words",
     "arena_set_word_region",
     "arena_set_word",
+    "arena_word_cursor",
     "native_match_arena_copy_word_range_0",
     "native_match_arena_copy_word_range_1",
     "arena_copy_word_range",
@@ -5428,11 +5395,9 @@
     "native_match_arena_words_prepend_fast_0",
     "native_match_arena_words_prepend_fast_1",
     "arena_words_prepend_fast",
-    "arena_words_cons_tail",
-    "arena_words_cons_appended",
-    "native_match_arena_words_cons_append_0",
-    "native_match_arena_words_cons_append_1",
-    "arena_words_cons_append",
+    "arena_words_prepend_count",
+    "native_match_arena_words_cons_0",
+    "native_match_arena_words_cons_1",
     "arena_words_cons",
     "native_match_arena_words_append_copy_0",
     "arena_words_append_copy",
@@ -5453,14 +5418,10 @@
     "native_match_arena_names_prepend_fast_0",
     "native_match_arena_names_prepend_fast_1",
     "arena_names_prepend_fast",
-    "arena_names_cons_tail",
-    "arena_names_cons_appended",
-    "native_match_arena_names_cons_append_0",
-    "native_match_arena_names_cons_append_1",
-    "arena_names_cons_append",
-    "arena_names_cons_id",
+    "arena_names_prepend_count",
     "native_match_arena_names_cons_0",
     "native_match_arena_names_cons_1",
+    "native_match_arena_names_cons_2",
     "arena_names_cons",
     "native_match_arena_names_append_copy_0",
     "arena_names_append_copy",
@@ -5480,11 +5441,9 @@
     "native_match_arena_quantities_prepend_fast_0",
     "native_match_arena_quantities_prepend_fast_1",
     "arena_quantities_prepend_fast",
-    "arena_quantities_cons_tail",
-    "arena_quantities_cons_appended",
-    "native_match_arena_quantities_cons_append_0",
-    "native_match_arena_quantities_cons_append_1",
-    "arena_quantities_cons_append",
+    "arena_quantities_prepend_count",
+    "native_match_arena_quantities_cons_0",
+    "native_match_arena_quantities_cons_1",
     "arena_quantities_cons",
     "native_match_arena_publish_terms_copy_0",
     "native_match_arena_publish_terms_copy_1",
@@ -5801,13 +5760,6 @@
     "native_match_arena_publish_definition_3",
     "native_match_arena_publish_definition_4",
     "arena_publish_definition",
-    "native_match_arena_publish_checked_definition_0",
-    "native_match_arena_publish_checked_definition_1",
-    "native_match_arena_publish_checked_definition_2",
-    "arena_publish_checked_definition",
-    "native_match_declaration_publish_0",
-    "native_match_declaration_publish_1",
-    "declaration_publish",
     "native_match_arena_publish_type_decl_0",
     "native_match_arena_publish_type_decl_1",
     "native_match_arena_publish_type_decl_2",
@@ -6011,6 +5963,7 @@
     "arena_get_natural_region_natural_result_19",
     "arena_reserve_words_reserve_words_result_22",
     "arena_reserve_source_words_reserve_words_result_23",
+    "arena_word_cursor_word_count_result_24",
     "arena_reserve_source_naturals_reserve_naturals_result_26",
     "arena_pack_terms_reserve_words_result_28",
     "arena_pack_patterns_reserve_words_result_29",
@@ -6298,16 +6251,13 @@
     "metadata_scope_value": "b1ff89cf96db127e293809845e9de2a1846833ec8d5a5b526e3cab13fdf7e78f",
     "definition_sort": "201f3e7086ce6c6fc4da6a6f8e1efb9124f5f9b08d540d26b251e4a466b05b61",
     "definition_explicit": "2b4a26dbaebfa6429e7cb0fa208369505e30db14cd4c7a2642520a37630a1982",
-    "native_match_definition_classify_0": "11e9844c5660e544127205f8d5ec2373b1f8e1be4e89a48255735ee3c2903532",
-    "native_match_definition_classify_1": "48d18ea27b747e34a4db4fecbb1af634814be6198eb214f81773341b7d72d6ac",
-    "native_match_definition_classify_2": "bab9e81644da931330e7b5d6f3740879a153509f40d99abb8f324c3aaefadf73",
-    "native_match_definition_classify_3": "1e628fcc469ff2f069ac3224d34a940006edaa3f533575be100f03720809c2ae",
-    "definition_classify": "9d38a9d84223f06ab0f038df76bdea9aea37c06bac6edffd6af0b68ae1ce84d9",
-    "require_checked_definition": "cecb6c95ae571d056a1801de5eaf4c88fde0df9bc07cdfab147c1296dbad352e",
-    "checked_declaration_work": "7e7a98ed3e31a8568fcfe62d8ad641d94329f43dd698b9bf7f08fd6049f3d176",
-    "native_match_checked_declaration_result_0": "5000fc4f11a80eff84e89c33322a776626df1e9abe58b96bd430eb6f09956174",
-    "native_match_checked_declaration_result_1": "0c413ae93967121ba747187c89dce79028d14b2ff0ff4fac40d42427c9af933b",
-    "checked_declaration_result": "10c524bd1a6e512e5d93a6491719190fc0ad10c9be70066d4f81da3027968f71",
+    "native_match_definition_classify_0": "53841f10a74cbf64b74909f0a97c146a1c6bea5d5436400f5bddc32e2040c407",
+    "native_match_definition_classify_1": "0b771632ed273196ac08f755efc69d7dbed37fabecf243098a354cc44ec9bca1",
+    "native_match_definition_classify_2": "ee727d5b2ed15c21079707f4264a1774344d81d75c087cc8b4dfca158de9ee5d",
+    "native_match_definition_classify_3": "f8935adabb996197b140dba24bf8093e315fcbac4883584e84644321bdb7eace",
+    "definition_classify": "0846bfc75446a78e4e5c24c057f94bcca0901a8fbd7ddb4449159df03677dc44",
+    "require_checked_definition": "34274bb380b68080e9b51e694261335c31652285f4cb777b8af5a2af3da42ffb",
+    "checked_declaration_result": "d3707b9a57c92a8f0b3757911c6d88f4a55ca9ce0b03b8f1c02c5fd9ee3f956a",
     "local_occurrence": "b2be6af71475659b3fe12dce86e3e103ca036655c417eea0090efdecffab4222",
     "materialized": "8114ea3eef445718d52c009a18575735244ee7f804b68c6b8d1e5816b23b372e",
     "occurrence_take": "9643c5c8304fc1d2d79a086044b40bf7e8995a662b3c9f0d2f1d178da5cb0e14",
@@ -6356,7 +6306,7 @@
     "typed_leaf": "7bccfe7c7ac5ceb49ac85be81a2b098520245020501fd09569f25cde87cd70ec",
     "checked_binding": "9aa0b28c6265437e581b50090a2e34dbbca653c26b19ca803ac0808dfffdf767",
     "checked_symbol_kind": "543960ae63307def6ef6c44020ceb21b8d10a625dff50a9e09dc44bd4120c75a",
-    "checked_symbol": "afc92a5ac3f85835339842b0209483afe4a42325f622ba36eafa729d610b4c38",
+    "checked_symbol": "591fd02f4451db1cb45f400ca5b074262e87c452becc2fbd17ab818de925294c",
     "resolution_frame_begin": "06962c5a40bd668a586de7f79000ea72650dca2ed8af3c29c47ac0fb89bf83a7",
     "resolution_frame_end": "04ef45d8e7a9b8ef13853f35dd9cb44ef5e1e25824bcbea973b27f735b4429db",
     "resolution_frame_finish": "b8d14192eb3572f24b72b70c06b4782fb109cbd926edd68cf0a0d6865f068617",
@@ -6387,23 +6337,6 @@
     "native_match_resolved_name_kind_0": "d339d4c69e0065fce550827206a02a8b9f877b6d9873f19abb5e974ca4e8cf5b",
     "native_match_resolved_name_kind_1": "9c9bc99c6350d25558c668274ef94717a3d9bde2ae244a26aef0ed8e95db5161",
     "resolved_name_kind": "b91c88bf2038571b00d8535cf6db70abeb6bcc9069f09220a60ba6dae65e2f80",
-    "native_match_canonical_name_id_of_0": "72589b856015904ce194c7682672ac92c0ce28b34a0ae748c937284ec5d53bee",
-    "canonical_name_id_of": "92e55fd2a70c55174ed510522bd225a1046f63d8ac471d576130095143e725b7",
-    "canonical_name_id_store": "79c0cb162c0910419a9dd6e480f96f2d50476bd923497055a926d6b266fac199",
-    "native_match_canonical_name_id_resolved_0": "6e2163efc26bca5c4aafcfbe4593b8775ba139336eb57f78d6958e0b93294fb0",
-    "native_match_canonical_name_id_resolved_1": "05d404f0263e0960a793dae182e2dc4f5375d8575c92d888fe7e5ee82ea909bf",
-    "canonical_name_id_resolved": "cb6f7e971f984a45aff3d0d419f6226f0b098721d2ae84775559f419a0e0f88e",
-    "native_match_canonical_name_id_hit_0": "c45534c19693bd49598832e4aac17fdb50e28e6a0bda270a88445fbacf351f5e",
-    "native_match_canonical_name_id_hit_1": "89bffeb41fe5cc238ec00eb2f130c5c25e7ed56ef1ac9f1b6fdd32c645ab1064",
-    "canonical_name_id_hit": "a495ca6e5ee109ccdf05731878685250e6895fc59da15338e98b8d24b8a493e4",
-    "native_match_canonical_name_id_framed_0": "86078dec3468b3b08306f9cd8281d6583c6a242b7550576b4de2d876be109c06",
-    "native_match_canonical_name_id_framed_1": "53f4a0fd4d43e259782cf328726a879745caa257374468204820941d931d4787",
-    "canonical_name_id_framed": "9d85b21c5f5af96b897dcd9f553b70a769d6c213fa2da877c878a0bb072444fb",
-    "native_match_canonical_name_id_plain_0": "49496e97258b822ccf61902c1ba4d25a6572affd2a251cc9788770f25f26b3ea",
-    "canonical_name_id_plain": "8362f4c718df8c928dc9195f449fc35e1632f7b3912c6dc462f74a47db799f63",
-    "native_match_canonical_name_id_0": "a02579aca2def5d7564b405a1b8f2456cc58f184ba928fee0628f7761b75e86f",
-    "native_match_canonical_name_id_1": "aec7d4e79bbb29da4531a3f43e4dd79c618dc9258cf93adf9a6ca70ef065efe1",
-    "canonical_name_id": "348a247d5557b6f85690c9e6ee934754f759b197163a3a24faaf777b6d1a7804",
     "occurrence_retype": "267761976b733e7ce460913e5471735793185109d69700db3fa66b5014f5513b",
     "occurrence_symbol": "12cf24b16d108c0a3a547876da72c4d553f1f9627b3d20710596b1ce8a5bdebe",
     "inference_symbol": "d6a750a0f2d2a28f7a91fd8c968cd1591e9fd2e81c57b22010a0482ca1b8ef9e",
@@ -7157,10 +7090,10 @@
     "native_match_check_infer_term_sort_3": "c25910ce9150a24cb620b3296042759cb20f57944f792b61f7ef2910c0068194",
     "native_match_check_infer_term_sort_4": "5c11fbb9c5ae5ca0276af05bfb2225eed7497bd988c8555e99433a6171fe9bd7",
     "check_infer_term_sort": "fb73f3b01d0d77efc49a2cf98af95b8a21fcf80dd571d720eef361682aa74bcb",
-    "infer_global_reference": "b18a09b9f9b90ed3a035c268207991b52f28ecd38c15cfb3999ed385b01e9a19",
-    "native_match_infer_global_adt_0": "2646662669ed988cd1d57240a36d53056346eb8270755297dbfaf18e28eaa23c",
-    "native_match_infer_global_adt_1": "c7d6ec6066ad49efcc3a0fe505cee9950bc025a835f9e462a3d00a53df9fc486",
-    "native_match_infer_global_adt_2": "10e8caae3915869f68e48a109971744822a8064ea47152de098cca82229039ed",
+    "infer_global_reference": "1ee4d385f5c60722753c40f11d1fd62353e830cfadfd08862db9baf3256a86bd",
+    "native_match_infer_global_adt_0": "9d79d946e9c1c1ddcd010b467b53e3f8182c59e32b32af367ea7c42f63bd2fa3",
+    "native_match_infer_global_adt_1": "5d5ff7c19d2f1a23e2f6066c0b14d91e3aa352a8e8cdae477d0a3ea399a6d32f",
+    "native_match_infer_global_adt_2": "93d129c8c6f0c6ae09f52b84411cb4332246cbf0a6aa9e60828fffee88429ea6",
     "infer_global_adt": "ac986f04402e637ac5ae56fb68fef9a28409633ebd3996969bb1fe3359c45b9b",
     "native_match_binding_type_at_0": "f109302e58f98064759a3ecf969a4a2aefd75ddfbd380b71c3e6a9df54ed6862",
     "native_match_binding_type_at_1": "d6a1893303c3cab55eed9c74833e2ee8de7d7af381d7c531f738033af3abb6b3",
@@ -7296,103 +7229,105 @@
     "native_match_has_canonical_name_2": "3f0ca87ab1d533ab5dcd18498392276f919ebdcc98adeafdc4ac94ff5a5b90b7",
     "native_match_has_canonical_name_3": "2598093be01fcc363593b127aece2e42382486a1d79860b321b885aec0827436",
     "has_canonical_name": "0bc3aed834bf4a50e3e70688a71b9da760a4ef507a455a7427e16b934c9339b9",
-    "native_match_canonicalize_strings_0": "264be64f20f7e79692c92b1e02d2b5f713f4c271f64047d5b9886e402a69961e",
-    "native_match_canonicalize_strings_1": "1afe8e68d3dd4ce35eee81e4c621aff35a1336ab06ccd097aae6b15209011eb3",
-    "native_match_canonicalize_strings_2": "651a4645cd1abbff3b336caeaa326b0ddcc2643ba614aac05f7c77a078694854",
-    "native_match_canonicalize_strings_3": "a42ddeb74d5dac37df6e2cc677457a2cf1f02160a63f55f359c3cfad04f59bd2",
-    "native_match_canonicalize_strings_4": "edaeadc77d827eb97f4f3e3bac8ac8f1e85dfcd8c9f37df03828ceb16282793d",
-    "canonicalize_strings": "b6cd0342e6329b2c2b05da2919e02b5819234cfe4895055ef0c5f9e471416ca4",
+    "native_match_canonicalize_strings_0": "36334131cd13c99eb405393fc74a001521cc4fd3b165cd44b6c1e9a6246d79b3",
+    "native_match_canonicalize_strings_1": "bbb92e272f84b289ad298b59274c42734bebc95dfffd80de94c0532b29de37dd",
+    "native_match_canonicalize_strings_2": "be73fb5b2ef9c49e92cc85c0988a7ef7a97fde71112e95e06978ebb276280dda",
+    "native_match_canonicalize_strings_3": "a8e74f9f78e0ae61a243c043674c87ddcae44adf0720506ae909e01385eaf793",
+    "canonicalize_strings": "817143c880118668c4422383e6fdaaca0d0ea4cb90eaf9d65545cc94c4026159",
     "native_match_canonicalize_patterns_0": "1945a1f33d8b7834d0d7c38e84f1599a7bf2dab4b2795ced4e4342dd8e939c64",
     "native_match_canonicalize_patterns_1": "3460c1373575216e48dbc91c81b82285b4184181c8a3aaee8d4a55df9caacc4a",
     "native_match_canonicalize_patterns_2": "5377c4ff317d3891b9eb273251a43600b0a2bbccbca08c63be6f4a6ec2e68dc0",
     "native_match_canonicalize_patterns_3": "2fad5f5d5e48b9ea47e7feb505e6852603b34e9d2447dd49a0a60e2e53a7dee0",
     "native_match_canonicalize_patterns_4": "d86a2aa4426e4929bf844159ab28acda0f11521c0b463bb24646a77845b49953",
     "canonicalize_patterns": "536509347a384d34945358e6b622e55906c825825094e0cb2e7fc30f0cb1b088",
-    "native_match_canonicalize_pattern_0": "de241e4280a6ff7796832d69dbdfbaa57f64724dad21cf18c47c2936479f1f09",
-    "native_match_canonicalize_pattern_1": "f5d451e98a59baca02a926ce01745d311bcde772913cc4479706a27d17caa3b6",
-    "native_match_canonicalize_pattern_2": "ebdd947754a9a3e27c60e4b3b5f436c53783df68f7f692d70add020faa6aad65",
-    "native_match_canonicalize_pattern_3": "ed4ec9ceb4b560bb34fa4d119ae34e09fb37202a4baefcef1f8d7eb8f6b27910",
-    "native_match_canonicalize_pattern_4": "ab203b925699e0d4910a69c43182a950f118ddccf152defff18665d81e4542fe",
-    "native_match_canonicalize_pattern_5": "73944e4d1aa8a7c8d12e56de92a1ac92176fd8ba6c52cc73c2964baac55934a5",
-    "canonicalize_pattern": "2a931f0ede9a63034004577f6986af5b9781709ac10e7718d110ef1ae0d83bca",
+    "native_match_canonicalize_pattern_0": "716aa57c11d87d039929b5546ee399c140176f4be8d3c9e03b9906c00690dba2",
+    "native_match_canonicalize_pattern_1": "85762151f3f20bf3002f707624683a7c5ae1137e8451dc3f3c529dab8649aeae",
+    "native_match_canonicalize_pattern_2": "40557b5daadf26b73c77e1d542cd05af64186c3dfe0c6c462a127270bd9c693b",
+    "native_match_canonicalize_pattern_3": "27032015293a27f3bcd8b4e9f417b3c5e443bc36a3969721e7a271152e8e1b28",
+    "native_match_canonicalize_pattern_4": "46380de2c81cba8283215f463b7e45551bbff321be52bd61891f9e423d3cdb7d",
+    "native_match_canonicalize_pattern_5": "8e4edb3db6da9e3e3722490252923bb8c4a14bb649f0bb33d879704414f4dcbe",
+    "native_match_canonicalize_pattern_6": "21f9f76bd5de7a2dcbd1a40791f46a6f4956dba4d31b9e5776bde3bf535e470d",
+    "canonicalize_pattern": "e1b8c0720b192df6faf8a5144aab2a411bc2bd08965499442d8d79970b2f09be",
     "native_match_canonicalize_terms_0": "6e3f09dd55d521150ccd34227794c3547643e71d044ef9e45963f608a26dd901",
     "native_match_canonicalize_terms_1": "8197398e3f2d0cd5472c26d4ed1c85867e3ed63276ff3a2f8ae61ed0df0202af",
     "native_match_canonicalize_terms_2": "9861b7518af1f69c23fd6995a6e69cd6bb49c7bb92175eb5a2878e02598b5170",
     "native_match_canonicalize_terms_3": "3c61d428b96dd51268c4ecb81477707dcf5d68fab7d1586c35a371e9a9225f59",
     "native_match_canonicalize_terms_4": "8da68b734cd910295855cbb6270be1648ee0545e8fc056cc1c72069915c49b67",
     "canonicalize_terms": "1ff325d26bb9000b69eeb7337970321fab9e88c021adaf836f7d95fe7dbdf0cb",
-    "native_match_canonicalize_term_0": "e41210659f59280530016b658c1e309f825a2b2450a0058264d9ed4787b9355f",
-    "native_match_canonicalize_term_1": "46a65776681929cdddbac9f778cd66292b1e6721ed1b01d2a2993686d43dbc6b",
-    "native_match_canonicalize_term_2": "c6f87c506edd4996cd5b705b06d3686000286791c95faa13ea13ba5880373f3c",
-    "native_match_canonicalize_term_3": "0dc6eadf9a317bdf411e3e9be2b9175df29c722f5f0782d39405517537ff3885",
-    "native_match_canonicalize_term_4": "b755cf3d29e9849b0b6e6b7b2d9979989e88ecf5a0482d169037ed756c1df5dc",
-    "native_match_canonicalize_term_5": "eac1ae1056a3f2fe4e98ac3c22955cc24a2424bcc1ecdd6afaedeaf43fbae591",
-    "native_match_canonicalize_term_6": "c7a20f1319a4674231e858940fbdace6e684870f54f13a8b6d557b86e812cd25",
-    "native_match_canonicalize_term_7": "13ca565efeaa2397f44a18e8628a8826aff875533da6135cd15d38dc8f299b39",
-    "native_match_canonicalize_term_8": "81d95ea5db790b76e9e7a93abe9ec088582b75268598d7bad77de0a1fe646123",
-    "native_match_canonicalize_term_9": "14d924d2c8502317999b65efcab1aa37562031842b685415672789072ae5524a",
-    "native_match_canonicalize_term_10": "496bcc796004090c06dfcc71ba3f38840b55364e5a2d0476a97c1641d4835183",
-    "native_match_canonicalize_term_11": "f90510fe4fd487803d0f9cf902d0023bd1b44342cb20c2db5a90a5abb37ca450",
-    "native_match_canonicalize_term_12": "18ed7d3c50a0d58036d82712398867fe36556a55e461bb89b2ae3e5f936a22db",
-    "native_match_canonicalize_term_13": "613720bfab8618922a7647fc157cd06c77f2b2cd2b66ee71850f4517db0181fd",
-    "native_match_canonicalize_term_14": "987c4ff20a479dde91b3163d237d82958391a2c0ed075136c71d1b163badc483",
-    "native_match_canonicalize_term_15": "62734f2bd19222c9815d32e0c31831c716f9932c108398228b33cf01ee42a319",
-    "native_match_canonicalize_term_16": "714d2ef992dd9a6e976c94f7f38e15a795ad2335c4eb4286ec8c2fa810113c6a",
-    "native_match_canonicalize_term_17": "f479151e482571979887ea505a508db7523838bad9ab57a045b81009a4414faa",
-    "native_match_canonicalize_term_18": "383cb75a725f1542db65988253694a545cf85b85316c5662edcfb4b5d0c1dc0d",
-    "native_match_canonicalize_term_19": "5abd17bc95f766c2d1796b9bf64440546076747b4914c97bf715acf07e74bc48",
-    "native_match_canonicalize_term_20": "803ace302bf8d076b319978b122d31c590780b0491b3bd33698a1a7598b9dab8",
-    "native_match_canonicalize_term_21": "78a06254e77c2d485f8caf1d6f167d321b6d3a7bf9d7909ac08504960d0814e9",
-    "native_match_canonicalize_term_22": "d74830ea24f2e066a09c2bec7cc936a488ec27f29ff269ad906d7cdf56a6ebe2",
-    "native_match_canonicalize_term_23": "b766cb0812b9bb79a1fe5ad62bc3223f116a4c17a839894579569fb2a1c8122b",
-    "native_match_canonicalize_term_24": "3b4eb55416186f6606951151e964419feae9756b6f9dd73336f2300b2865d093",
-    "native_match_canonicalize_term_25": "4c0bbe2a05b12d7b440b2f09247c4a361f5af0227d24f4ce1b38c71cb4ef6977",
-    "native_match_canonicalize_term_26": "822f104576413273965a34e1b5d678c0ab90b329fe5ef4b71f82fa25d16fba02",
-    "native_match_canonicalize_term_27": "36c5d0761ce12ba071f7ea9e6ae152a5bfa17bc0fc14c4ea8a35e8cd9c95286c",
-    "native_match_canonicalize_term_28": "9405cf268cc9303805d90aa549a22eda8c7fe5812807ed6e943500e47c8dc7d8",
-    "native_match_canonicalize_term_29": "f9262890562c5b6f6051e25d4e92fbfe00af2a92001055d7ef813a86bf737f86",
-    "native_match_canonicalize_term_30": "d3a1a458beea5ef42c1856b5a76a04efacaa01e403cd104fb4484e9faf6441c7",
-    "native_match_canonicalize_term_31": "154658852c11d52d35e2b6bd431f290f6302db4d6f51ec9864cecf92b96e4c26",
-    "native_match_canonicalize_term_32": "4d0a85af9b7428cf7e123b1e81d82e11c23808ce6d0740ea4095e0ab148296fd",
-    "native_match_canonicalize_term_33": "807f1ae5ed6718b4d6b61eb3ab2ce43c387d49f65a5ed5967401ea5a16444b9c",
-    "native_match_canonicalize_term_34": "9348e2f110019f27bb5409a27a7f567725064056fb4c839b8a44a7ddcae7b590",
-    "native_match_canonicalize_term_35": "870bb9f21636490f456dfc5df2f2ca0ebd7ac3633269b777ff3456ee8f00c826",
-    "native_match_canonicalize_term_36": "2523eab34e48325ae4918bf2035c45d065a34bdd4eee962d39696fcddbf23ec2",
-    "native_match_canonicalize_term_37": "f35c3b87c5126651e652bbde6c271a9df8a81a1cfd20bc8d50955a2a798fc6cc",
-    "native_match_canonicalize_term_38": "105337014dcceb5f4ef378a622e482efc2e02c9ef042014c2931c94d93986d6d",
-    "native_match_canonicalize_term_39": "4d11f071c0f88d5947fbfc4df1007133672e17eb9fca6c1133111d6abb853a88",
-    "native_match_canonicalize_term_40": "f9391089169a3e461990290a71c2cd98944a69d67a3dfe6ff709f6a2a63ec428",
-    "native_match_canonicalize_term_41": "c9b17f8d9d411db44ff079e69f98ee40119d932f075d3fe4d61f78c40323193c",
-    "native_match_canonicalize_term_42": "71aa2379581ade53534ba908376b65ea6e9be4eef582b08264f180a989e3128c",
-    "native_match_canonicalize_term_43": "8ef7a8e0eeb19a3ff03bfb93bdd0ea2793ab79a211c3e4868c7fe09e9b1cad57",
-    "native_match_canonicalize_term_44": "3d5c3ccdab4db30ecd9a59e19ac5253ed1dfb8666e9ba70e2c9d9eec4bf78767",
-    "native_match_canonicalize_term_45": "b9faeab6600c7326a10e01e24bf02d88aa6e13102d483d79af6436688dd834d0",
-    "native_match_canonicalize_term_46": "699ab0f16e344385cbd2f9f899211ee4f5294529348d2831870004d564609c14",
-    "native_match_canonicalize_term_47": "29a4a70a0f8492a1992efb16baf8dfaa9f55b2434baf5e9cde6e8671283b88f1",
-    "native_match_canonicalize_term_48": "35f1810afa6431aeaa316635e1c9c11586e069d349822ccf182a7add3ffc5967",
-    "native_match_canonicalize_term_49": "59229e7b790cd9f8341bd0b2be04be208d0ff5c6ea48a1ff6b33f8d625278cee",
-    "native_match_canonicalize_term_50": "5688955a28c7393865a1e224ad35db445cb063397590f96e3ccca9ac525f7880",
-    "native_match_canonicalize_term_51": "51b2dbe583f2d9945c7143e5e3c335f19b67a03643f876fd7aa1aa29de783630",
-    "native_match_canonicalize_term_52": "009f6d979ddfd2ba0b2508722b897666a7983e98e8a469da7d2e31c9f6c8aa29",
-    "native_match_canonicalize_term_53": "5e82d5aca25fc04dbfea9becca0980f4ff3c72fc236db410cf672ca2efb24827",
-    "native_match_canonicalize_term_54": "0aacdd40722208861ef9c4d73feae61257d1d48c957d608d499ea9d0c8da38c5",
-    "native_match_canonicalize_term_55": "79329ccaff2c923876372e433b7de0ef33c68cb9f8d82648fcf90b872335d013",
-    "native_match_canonicalize_term_56": "8265b4ab6db8dc0e178f97b589e6d966f109e9b18c11fd7b04de47e52ed2857f",
-    "native_match_canonicalize_term_57": "066dc74057a1665fce1c0111c41f7656e0d46263dd87292e324ce6ac8983bc3b",
-    "native_match_canonicalize_term_58": "e2011249d6c4004d1d7601c7cebb54da3e0893cde8ffee5f8144c2ec32c1deb2",
-    "native_match_canonicalize_term_59": "89b208bb644894cfc3aa252a9f498b00cee5e610016b2268cefbd5be1fb6e6af",
-    "native_match_canonicalize_term_60": "038524662573cf6e0512beedf1127c1b77dbd91ed69caa282e465553b4591ca8",
-    "native_match_canonicalize_term_61": "c6f2f7a8dbd82ef5757e4a35d0a429961b28120f3e715fa4f7b61c8525246826",
-    "native_match_canonicalize_term_62": "42674bafefca2588a6a827c2c4249949b71f49975fa3fd7e14584f2ddb09dfc1",
-    "native_match_canonicalize_term_63": "6e03e9c6f5cd66aecd85eb3982a408c4171aba2ce062b1036a63fb0e39e872b4",
-    "native_match_canonicalize_term_64": "125938613bf63d392d8ca7bcb7167813b794daf187f8a4b907b744ddaaeedaa6",
-    "native_match_canonicalize_term_65": "2932037a957e2299d1e8c4f3005d6b7ff813f949cee348e69354fc18b27449be",
-    "native_match_canonicalize_term_66": "3a7f793a192993eea6d902a3a0c13ba3edb44b56319b861a4a7e4184a53b3039",
-    "native_match_canonicalize_term_67": "6f911b09ef2c3261201e7087ba1431c5ce80ef5d20aed85a254ee0ab2cccd981",
-    "native_match_canonicalize_term_68": "580760fdf9b719a05861d2f28293302b951f68fe306ea81c896f118fefcd48b1",
-    "canonicalize_term": "520647e1654d4d01e436b20b85854fbe8d51e36de419fca3c880086f01964faa",
-    "native_match_canonicalize_term_framed_0": "c6bea02f2d92fb6c6fb88ee9c964a35348d34b4162c445a8b9927cb45f5b209d",
-    "canonicalize_term_framed": "d72e3adaa78f91e90d84952aff6767a7766bb0885cdb071b699ecea6292a4178",
+    "native_match_canonicalize_term_0": "d4bec8d3f299c73931c000abc147269513dce3f030b79ffaf2637f1e5636a6d0",
+    "native_match_canonicalize_term_1": "24485b6e1a66ab276a80bf8e1189892d134d8d9d88e1fb90cb43fb20a2953cec",
+    "native_match_canonicalize_term_2": "de33b8a1590d19d8571fe20ddd62f8f097210c4d912f61ad4deeb9e93d4a2919",
+    "native_match_canonicalize_term_3": "8ef1a28d219f4fbeef794e90253b92d4719ac3d23349390143ce44f9ae3606e7",
+    "native_match_canonicalize_term_4": "8bc987cb3430735e37d9f4a4e7f383212be54a5385da17cacde71a2960573f7a",
+    "native_match_canonicalize_term_5": "8c5d1d7f8480ffc225bb6c9affcac240f949046b63f718977c453c34a364355c",
+    "native_match_canonicalize_term_6": "ab1976c325eb5413ba4d1b875ececce2278b2ff6680ed613ecbb888cc3053384",
+    "native_match_canonicalize_term_7": "f44a8500f74aef37b4a397c87a18703fa7c03b504e75f8869012486ab612ec14",
+    "native_match_canonicalize_term_8": "f07b9c04b28eeb2880ea37bf7c20063b6399a2c9b185f08b826c0dda0a061702",
+    "native_match_canonicalize_term_9": "9aad144c7f1ddac9376fb429719cc428aeae50489d91c9bb38831df31d1bf2a4",
+    "native_match_canonicalize_term_10": "70a22833d2345e299162850fdbe7d12ebee85bea2836b0785f3223146c78cdaf",
+    "native_match_canonicalize_term_11": "b8722795d23d7c89cace47ad7666ce1a6473a45f9d5793c4ea9db3aa5f551337",
+    "native_match_canonicalize_term_12": "83f268b0f57f211e09218b545b29bea20dbc31c4d5e2120f67492c798b80990d",
+    "native_match_canonicalize_term_13": "dc76a303ad04a02c8826bc6fc3af674c7ec61f17ecc9e67e98db441f1199b514",
+    "native_match_canonicalize_term_14": "2afd78abc86676df7d38731a9289ad7f76c878bab5d918210de69d413d5ec3e2",
+    "native_match_canonicalize_term_15": "444b28c42b2e0365dd03e606b00170d4178e052dc328e37137b02db3de0d08e0",
+    "native_match_canonicalize_term_16": "ef3cf3a266cdb153df1edabe8176929e3dcd7cbd866c449b8cc971203ce498a1",
+    "native_match_canonicalize_term_17": "a3164287a649dc1129ba1b8a3b62bfcbdb41e1bbe96e3f34e71cc44a1af054ea",
+    "native_match_canonicalize_term_18": "951d4ce2dab86e5d440c6e8842c8f1c7fb12b028f8e4c086cb8e49ea8cd98a8c",
+    "native_match_canonicalize_term_19": "cca308af95f83ec81418964ddc1e3b9e05133b793393804d0725e90fedb43a37",
+    "native_match_canonicalize_term_20": "151106078d0c451ab29db3f97e1182139c92933bfb471e1c61ce4cb9dc70cb9c",
+    "native_match_canonicalize_term_21": "680afc9e25791ce25e9e96c26e383afa0264fa1fa4541a5953d1543da3863b4b",
+    "native_match_canonicalize_term_22": "0ae75f496c52b210eb7f0fbfae97c4d833b3a5493c59ab8e93e1d8a504848955",
+    "native_match_canonicalize_term_23": "f100ad35b0750a194c130a6910b585ab7f0e48a8a05ae575ffd69f6c1bdabc43",
+    "native_match_canonicalize_term_24": "8312a9a52a9e3799698200ff61877dbeb8298cb66781d86d87b465d9abe1b846",
+    "native_match_canonicalize_term_25": "48d16a00a246edd53b28fedfd0d425c99622dcc6e80dc05258f6945d175572fa",
+    "native_match_canonicalize_term_26": "ec16f7eed449cf02dc42f0e7debe366de9ae0819e35fa32b4beae00916aed26b",
+    "native_match_canonicalize_term_27": "68e6df493f6400c9a6e59bf5a1a07af30b03d70da902b7de90ccd6082b8fbf6e",
+    "native_match_canonicalize_term_28": "a7c4c386e6c4e0558680c3ffb87d799e926e2d5b5c4aa9c929f2732744e724f8",
+    "native_match_canonicalize_term_29": "36bcf610fc48720e4aaa30b01439b39fdede86c5782f1a57866b09b08ca6bdf3",
+    "native_match_canonicalize_term_30": "3b48f52477cd57980499a57d109c3fd1ee23ad5ae5e1c533d381b6ad39b63d30",
+    "native_match_canonicalize_term_31": "041bb7c83dc8aeff412129067b642f774e61e17f9a4024bdcf56eced2ed2c5a4",
+    "native_match_canonicalize_term_32": "affb5ee2bbeb257a0194a7065c4418e5dfc070cbdb8207715b80b375f00d1ec9",
+    "native_match_canonicalize_term_33": "24cd932f842dc9f57b159a593a34bc0fd8413497186959981f8182813096c4d7",
+    "native_match_canonicalize_term_34": "b1c7d4eefb69fd771a4e07d4f78ee568db00e1baae84a9c7a3ec9fd178b600b3",
+    "native_match_canonicalize_term_35": "c321555ee7c5faf9989e7e2f988336786ac83f1a9f3e7a920c468ec728c200fb",
+    "native_match_canonicalize_term_36": "609ed7013b2eba9214aa6b383d8b824f95d34731ca9716aa3921717961568295",
+    "native_match_canonicalize_term_37": "98e6c4784d7e8a8fe73f7711ef18daa7070d9fe6ead2bc6a0a01de34550aa501",
+    "native_match_canonicalize_term_38": "e3e4233e29ba1dd0d6df363940486b0395526ca5a1759350fc5a4b3e540df8b1",
+    "native_match_canonicalize_term_39": "fdba4e4c65ac5339cae786ae20a16a2b27865799375c6eee1d112c8e7ccb3b38",
+    "native_match_canonicalize_term_40": "0831fc57f411c378a8fb7044b79880366ae737d784bf1c5f469a1f36997b9b5c",
+    "native_match_canonicalize_term_41": "4d16370f79bc24445e0732b7d1f65e0dcf27daeedc7d620358214dadcefadbc8",
+    "native_match_canonicalize_term_42": "4d624398a1887e3969fe7ac91d442753522f097f3dec67c18c25164fae89e579",
+    "native_match_canonicalize_term_43": "9a85a997b255c3a2c0bf507b6935a961cec840b5461171e93246ee5703ab7bae",
+    "native_match_canonicalize_term_44": "d2947283ec48b377761cb13b60f6b96b001321f9c4a4f7f0ad7f44a7355690ca",
+    "native_match_canonicalize_term_45": "c89988df3d461150379d6e756c5231a4075ee9a5084284e52c67b88a238ec875",
+    "native_match_canonicalize_term_46": "ee8da31d6b058c1ca2af87d337f8e79add3298b44b91a2de7bdb0208c7e095a2",
+    "native_match_canonicalize_term_47": "9edbddead46629dfd907e65961ccdd8da4ac7fe49b037e7e8eb2651f0e68e6a7",
+    "native_match_canonicalize_term_48": "3bf5957711c7e60b505cd2678903009043c20acfd994910dc652cd2efdad0b01",
+    "native_match_canonicalize_term_49": "437faf53f8a6f7220a966453420e3c161b09023345ace76c95badbaca88f7c1a",
+    "native_match_canonicalize_term_50": "493c81fdb5a06e2aa077e3df60b6c218ba7fc3ab26df655130d7f92235025f7d",
+    "native_match_canonicalize_term_51": "6aeeb63ec6b3fafad72de9774aff2d50e448ac4b9767c05b274c68e9783f5ef1",
+    "native_match_canonicalize_term_52": "08b681ec6697a1d8c2ec15b67d8ec3f8bb20d2276b5ef33a0ce867a55972a9b1",
+    "native_match_canonicalize_term_53": "f1f786295b149bcbd2f7120f166d61b7a334f9fe5de5b987ec6a83bf8afdef84",
+    "native_match_canonicalize_term_54": "d4ab119e981c0641a417ed4207cb03a94b0b5a71cd30f15c0fb4dfc3ce3e1889",
+    "native_match_canonicalize_term_55": "763939fce769e1f178457d9b665b22a501da995e9fb27bfb472b4c31d5e88520",
+    "native_match_canonicalize_term_56": "83e51f4b878b1d8ada4dfbd691e8a5015390837b5d38b1fda644b77f2bb14392",
+    "native_match_canonicalize_term_57": "81b9b19393169d744ec11e3a9c5ca0e9bb61b121435b175bf93b796b250d4083",
+    "native_match_canonicalize_term_58": "f627af29ce4d7f9891051ce817aa90c7cb81d61983a6a8d90190682ee90b6d2c",
+    "native_match_canonicalize_term_59": "64a2ab7f9c804783f28d0060664a8e29280d3ead323eb4fda9c516b01299abc4",
+    "native_match_canonicalize_term_60": "df0b5c43307d85a60104b012b1b095e8448cbf594908030beb9d678382c4492c",
+    "native_match_canonicalize_term_61": "605d5da45d784f94a33df68e4e66d0dd10cefd2d3b7188092a7b09e24cad4d99",
+    "native_match_canonicalize_term_62": "cbe2976007a0dcd30267e5ef409861a9136312dbf89770aeebb4fc594fe75942",
+    "native_match_canonicalize_term_63": "d33008935dfdf07dbc60cf9f82edc2f7b045e2ba78f38ece4f698bbe398d7226",
+    "native_match_canonicalize_term_64": "af4643d34e2dffbe9482f763566c3598473a30f9d490917f8200fae4ddb8d147",
+    "native_match_canonicalize_term_65": "d3f7c07fd2cd8096f73a5bd35b5ad62d0f2fe6f4d9dd8823c3c17d2a47f2a110",
+    "native_match_canonicalize_term_66": "31e5fe749ac30887649c0b50315f65a7fbb4f508f7c2189d182c074cfc46c142",
+    "native_match_canonicalize_term_67": "163080e20fa14c8f17323b33df5ac4b083327b058e36bc1129a467020f6649cf",
+    "native_match_canonicalize_term_68": "5a925a6e3f791f5ba0ffba30093c55747ea1a9e2cc4af8d44d176734e6dc93c9",
+    "native_match_canonicalize_term_69": "9735e7f60623780e52e5824320ed47eaf24a6ecbc9ceedd36161a66a1795b687",
+    "native_match_canonicalize_term_70": "7fafda5e089c02dfb4d0d84cde75b373bb60f8d72ab15530e2e9f620687ac667",
+    "native_match_canonicalize_term_71": "ae0301011f0aa6a8594b7770ee484a3d4598240cd6a3df558760c57a9ccae7b8",
+    "native_match_canonicalize_term_72": "e3c142a312d3548b2bd36468cb4ba8786466d2351bf852b692c8a4e98c5454f5",
+    "canonicalize_term": "0a03f2f6cd196e272350c4f504cec652b8d631a0cb3f395572a27de9a93ebf8d",
     "native_match_mat_branch_goal_view_0": "75e0726b1e3761bfb8452c846669699fe4b75a99f9ef53169b4f1e41045c2736",
     "native_match_mat_branch_goal_view_1": "4a42cc75be5b4cf87d57329e137904c221726305680a46392b49d03c5b0d39e5",
     "native_match_mat_branch_goal_view_2": "f2e1c6170d02b942a3db61a87ae631e98707fb51f420b932822c33878f8334e3",
@@ -9170,7 +9105,7 @@
     "native_match_check_constructors_fields_result_3": "21cc42d858a6fee095bd5de3ad264fe3fdde3735d8cdb4610fc56160e0d5943c",
     "native_match_check_constructors_fields_result_4": "05596f8337d26c0ff8195a82aa03b15c11168f0956fd6490db20ea4a409736ab",
     "native_match_check_constructors_fields_result_5": "89c3a29fc902928bd3dd3a13856d1e02baf84c4c307d72cb75928f368e6b2cd7",
-    "native_match_check_constructors_fields_result_6": "d6c3f39e6b4e734730be93eedfa7870db9c0d7bc5412b44869f5e115f193667b",
+    "native_match_check_constructors_fields_result_6": "d3fefe22a9797dc6509f525b86698ec5e94aff436e47381d4dafbd314743edc5",
     "check_constructors_fields_result": "ca292d334d48d41fdd07bebef0f0e8b77140c183385b25de2482c020bf24f25f",
     "native_match_check_constructors_type_result_0": "69aa2e31ccdbd6fc968d3080d17f66294b6d32b98b1172e09e969cdde781241d",
     "native_match_check_constructors_type_result_1": "649b1c7e84cf59d3561396c33afdd73e200141a1d4634130dbfdbda5fd7321d4",
@@ -9206,7 +9141,7 @@
     "native_match_check_import_foreign_head_0": "35592c28b235945c32a83c563b35e6f1410b03aa4c7a42a28ed4007954d986bf",
     "native_match_check_import_foreign_head_1": "4a5a871cd69550c4365b4e074c8c77e09eb6b46c77053563627315140662ebf2",
     "native_match_check_import_foreign_head_2": "251030c623ff086a4304997d9c9e775185f2943884e0e7ba98cb3b9d4290e4eb",
-    "native_match_check_import_foreign_head_3": "db2946c3d8c03b19d65833ef1ee55b61db8ff5e538b054d7bcd1381e56451efd",
+    "native_match_check_import_foreign_head_3": "3047ddd8994fbb513c0981cd2e622b338533c73519cc82572b0cb62cbc2ed2b0",
     "native_match_check_import_foreign_head_4": "a10eb6c1544fcdaa5b3a29792f72419a3977950307c6bd73cc15431b28e66b4b",
     "check_import_foreign_head": "f1ffeb538851ff4ea63e2d98b3bc804ba3fb68d16407488c195af2d188deaea0",
     "native_match_check_import_type_result_0": "9d5e02a8df41003bd1d2929443d5f8070ee3616b6083a608881219ed972c08e2",
@@ -9230,8 +9165,8 @@
     "native_match_check_type_decl_ir_2": "80b3ea5d270685ba2cf726d4c3eebf72d19ab1e0fe7182ec90867f887bdedbbd",
     "native_match_check_type_decl_ir_3": "66720014d17c6d54a5cb6b76b27401c9eab8edcf3cd4e594df8f81c96772a4e3",
     "native_match_check_type_decl_ir_4": "3bf6187aa0ac380e9b0f07fb964bec43054780d8316bd1d8c491883e4e3576b6",
-    "native_match_check_type_decl_ir_5": "3c3e160b3f6c7295fbc701b4b1ac878d79474b1fab73c841c57116dd4566d387",
-    "native_match_check_type_decl_ir_6": "a10fa0788168355410260edf0fe26db4b30c655a549e31886c35c0e9962acfbb",
+    "native_match_check_type_decl_ir_5": "b3c44cfde04019479a64fc8b5df3e43fb584bf053cecd9f77805d399ecbcfbc0",
+    "native_match_check_type_decl_ir_6": "59a6e74c4e8b9f7f53c97f73501d07c33bc2a9e4deff160259e1b2557a8f48a5",
     "native_match_check_type_decl_ir_7": "13b22df14210101444c9fe7ed4dc24d24b18e2b6a08ea8e6ed411bfcc2b46b63",
     "native_match_check_type_decl_ir_8": "88e2e40c3f03952beb1af687f451ec328b2a38439be21ae454d78b03834c639b",
     "native_match_check_type_decl_ir_9": "0837a538b69374123d18dbae2bbe0420408a8999633dfd92054b806c2a2c806b",
@@ -9659,7 +9594,7 @@
     "native_match_store_definition_declared_2": "c57cf2041479ab0d46fbbc39dbbd6101688051152e676560aeb36fb37cdb94f5",
     "native_match_store_definition_declared_3": "ce73018492a597c64e3c837d386d1735085c753c10dcd9f7b81bfb66073eaa92",
     "native_match_store_definition_declared_4": "8220b27271b403e270cc0fe739cae26c437ef4606f2e1662a450e3f7c262cfd5",
-    "native_match_store_definition_declared_5": "32de1fb79e4db6f11405d2aeccc8a2631b1e81d8f3cf942c2676ce35f3a05d4d",
+    "native_match_store_definition_declared_5": "3dc434201410d6972a3e588f8804b1f6de819ea19f6ef31afccc0d6359681878",
     "native_match_store_definition_declared_6": "bd49a3ed6aad1f04a6f627683dfa0a29695530961ad2354589bf2906b89054a6",
     "native_match_store_definition_declared_7": "7a4437d386299d23229b5ff0c64e3c3097ef8758f6b166f6640bb5e348c4b0b1",
     "store_definition_declared": "f342ba8ddc06b7376cb5dba38c248a7c7f4a83b631b1765b5027e6850b0dd371",
@@ -9670,8 +9605,8 @@
     "store_definition_result": "a92fade5825b75d7f032c1ed81d97d7347f56efc680dcc2bcc4c1403d31088e5",
     "native_match_store_definition_0": "bc0e7049ab8d01182faba5e4f4c4383b5404262aed0b3366deb952c3d9ad9c68",
     "native_match_store_definition_1": "29dc0ade28d65f869c02fe2e8ab1324fd7932d68a40181aad46faf4a902fa2ff",
-    "native_match_store_definition_2": "dd21531d5f950286ddc5251966cf093d44642994068c31d587ccd4a170e72a5f",
-    "store_definition": "a6282bc8255fd7ad59996bb1376c2ce62e75534deb12e59e20ce47f38217c0a7",
+    "native_match_store_definition_2": "f117b7fcbd11d9327fba3301b4ee87b3e72fe1a47cde420a169087c67e3db84b",
+    "store_definition": "3da830e844c227f1950efb97d5d6f7b265583e31e5af22a04eb40517c22b565a",
     "native_match_check_definition_declared_type_0": "43e4e2653d1ca1cec91f4691a9995ba2d4e1e9dec4e28e4d4af00937cfbe8c4b",
     "native_match_check_definition_declared_type_1": "56745e5695c2cd9987d6ef43c60012e31b76f8262b0f6e7c92a03d03d93f8ced",
     "native_match_check_definition_declared_type_2": "fe20cf8d337ce3f97802c0510d3455ed9eb39fef806b79f6a84066a333c95e40",
@@ -9762,7 +9697,7 @@
     "native_match_check_law_result_0": "a7fc01b07fe1d193c6ec6ad6bab566b1d202795c55d1fab12a6725e505dc75fd",
     "native_match_check_law_result_1": "2b032a8a364302652572197fbbf4850181ba58f6421db5ffc0236164b27ae772",
     "native_match_check_law_result_2": "ae82c5d1be12cf0cace4d0ada49959d9086e44b50121a9abe08bff7857f6f917",
-    "native_match_check_law_result_3": "9dac80943e09c384f6371a699af88aa52353e28570139e1c51601f7bf0b50a70",
+    "native_match_check_law_result_3": "a3a3f81ba3e4181d21b10fc852bbf9e7bcf07fbcaa2fed95e2f322bc4daa0ae7",
     "check_law_result": "27e86b1655877a1e0b307b5fc8249bcda555901567d1da424c3cc931368d7422",
     "native_match_check_law_0": "90f6fcacbeb06b69de919da879740e4d11d36b20a6f017b2f31c1c16fbb6872d",
     "native_match_check_law_1": "de3a414e30956023336aedf0dbcb909405a2b4b5c0fad36590b4968d9e8e4a52",
@@ -9814,7 +9749,7 @@
     "inherit_law_binders": "602068f435a856618a15a9e0223318ae0546ec294aff9716f1523216429deb2f",
     "native_match_inherit_law_definition_0": "c93e971fe2aff93a94d444a4bf910b7768bd1c4e48aa17b5745dcb4c86fcda44",
     "native_match_inherit_law_definition_1": "413b49cc3ccb40c7bb0074a8f637799db394e857607fe525ebc5965d609ab4c7",
-    "native_match_inherit_law_definition_2": "e0b62661a4f5bca62ab95f29bdb11014ebb8db1793dc25b79be6fd02fb937290",
+    "native_match_inherit_law_definition_2": "21f02ddbf195a28dad3fe3cc4ac269a158f75663fa787328ec4dfc9285a03616",
     "native_match_inherit_law_definition_3": "b4aa71946a1cdf9787524e157ed5e17a56e8e8c2df63e8272f98eb83697a3f41",
     "inherit_law_definition": "8d13baaeb02470c4a73f43b72cff9f92e9ef599d6f99c26e18abeeb3c6e21077",
     "native_match_elaborate_definition_global_0": "20504df1b017b7a62b13502918284521d47f707c512fb44c3c362d23d9a34ed6",
@@ -9830,24 +9765,24 @@
     "native_match_elaborate_definition_0": "b8a21f696c6bd2443b856670ede62bc57aed1afbfec42b703e70f4c06c28ad86",
     "elaborate_definition": "c0cfb9c073ad0e11d3bedd9d1f6c404634c9fa726db54be970baa9d743b96db0",
     "check_declarations_prepend": "5b701187b9d817f0c7eeb6224107e90c5c71af5b9c316a38f80bf6a771f1445c",
-    "native_match_check_declarations_step_0": "36e1e641433e4e3b25ad658909664453923bcf8fddded03f349b19f3bef9e815",
-    "native_match_check_declarations_step_1": "4c6764786181941c0d6bdcd365931b7f169450a51df3ec5e7f1abba9e9a7df08",
-    "native_match_check_declarations_step_2": "e9245de508fc593c09ce24e01d6b63ca557ff8cfb4e0ef8134cdb6021ed7e017",
-    "native_match_check_declarations_step_3": "fed824e01f06498b02724690933be9c8967d76293da3d06978ce1e45519bba9e",
-    "native_match_check_declarations_step_4": "8f26ee0ae1c113051b4a36649dae7e561b7ea98ae93e17efa45e921955e41dfb",
-    "native_match_check_declarations_step_5": "92bff0a6638073ec2879ad691d45b171ad4645a568424d9e07773c6c0b2892ea",
-    "check_declarations_step": "56ec5288924013a47fbc3b6acbee932ca79721612314b3462fe9e8fdf76461cc",
+    "native_match_check_declarations_step_0": "f19abca051eeb6a9d622439b416f6c22568119566864ed1e6e00db8ba6506f95",
+    "native_match_check_declarations_step_1": "9a6fc15a12b05a0d8082e03081685c70cfa15b43827c5eab6c577cd260c915bb",
+    "native_match_check_declarations_step_2": "ada6a518153c97f920897b70eec14490426764afec2f6b528da3ee68b49a2c59",
+    "native_match_check_declarations_step_3": "15f919a7cb43368c5977b3a3f6be7e234d18766df2f2e0f5d298dd896e2947a4",
+    "native_match_check_declarations_step_4": "d37df6e54cc98d8ae0698ffc6c77092fbb4bf66c42bec34fc5c0d7fa955b0065",
+    "native_match_check_declarations_step_5": "5e0bc0763b86e705520b0c295e810c5b9a0dd23ac0c3f66f82c70cd5ff5c859e",
+    "check_declarations_step": "939f0a1073e4c532548721e5032900c921a7df7ee9a1861179d25636170ed498",
     "native_match_check_declarations_definition_0": "15d65e0d48199a0e2e2e80b49b6caf5340cd9b3fac85a52dc5bbce5dfab81d56",
-    "native_match_check_declarations_definition_1": "f7266d29b326b8d64035b1b56852896949eaa5b8081a4a5bb07505f7c5b2cf98",
+    "native_match_check_declarations_definition_1": "703435abea608383b74f06f788215807e5c7de26f9d52225ef9f24200b2e94f5",
     "native_match_check_declarations_definition_2": "535c798d773ea913aa4ada4d6ffa673984457bb0c88a619d32f58713488d5d25",
     "native_match_check_declarations_definition_3": "d04c3261527c555305a3ebe49b201b122a2b755bb070fd15ce4ed057faf20b9c",
     "check_declarations_definition": "5dd9b8d3da6133dfdbdd58c7d7ead121a4bbf57f9744745164ecc8e7b7607ee0",
     "native_match_check_declarations_type_result_0": "b3bb8fa1b849f4ebac1fe8f34c3b1b2d7182bc0897b3ce274754a691d84c5210",
-    "native_match_check_declarations_type_result_1": "d15a17a5afc48dfe6ab6cfd765169d86228f491a496ba538db055fdafb9e4941",
+    "native_match_check_declarations_type_result_1": "0bc1a605de750625715b14019006064b12b56e9fa39ac8214b6dd7f567465fbb",
     "native_match_check_declarations_type_result_2": "08076ae50483b6aef942b95b4ae92b6d328e8d0721179271cef6f887c9d52c32",
     "check_declarations_type_result": "2226a776402a253661c00ef9b4079c632ae0f9e257a2e56569eff7944fc43d9c",
     "native_match_check_declarations_law_result_0": "e95eb44c7dca0d62d0d7d0b447403829ec651976914059fb25b2eb0df46f624e",
-    "native_match_check_declarations_law_result_1": "2e23aff764b4fcc072ed62aa0ae44b17f3028d36736e0d295a51b11dbceb7e09",
+    "native_match_check_declarations_law_result_1": "8481bd2244c5648158d74e403883bcc576f744e4477288435a4ef3bbac0f3fd8",
     "native_match_check_declarations_law_result_2": "9b330bea1e44cd1086915b5b06d510a41080fdedd389cfcf52eaa77509e3660b",
     "native_match_check_declarations_law_result_3": "381476e47eb3cca56b945256dbf9223e997df79372643dfa2bc6fe881a076e92",
     "check_declarations_law_result": "4773bcd6106c1418ebafe0657389cf0eabf8206dad83d801c29a4d68eac11acf",
@@ -10397,6 +10332,7 @@
     "arena_reserve_source_words": "357b88c07a0cd995719b3a270c3c5d34b857c09bc963b352ff554332932c8c8a",
     "arena_set_word_region": "f7a78a69dac30e30135a9dc879b4e3fbaef85c463b39276e9c3eb450a2d21a81",
     "arena_set_word": "c1f3f841b8ff82f02dd709a0c0557648b2b3caf4e5395c4dc8247b6ac4006682",
+    "arena_word_cursor": "4073539b5a5e22bc2e4ef8228613d489b67b05ed657b83f56a7d0c5e92fe4db9",
     "native_match_arena_copy_word_range_0": "e9aca5287efe05d9edb9d6c371cd6ac2bd63fc56816fe027c86bac17f1c7f8b7",
     "native_match_arena_copy_word_range_1": "62503116375aef7496ac96af862ac703dc138801d843c040a1d1244b1deb0c81",
     "arena_copy_word_range": "ad0c317f2c06c43af6b7d4ae13d03978216610d23857841e20458fb725b37ac3",
@@ -10458,12 +10394,10 @@
     "native_match_arena_words_prepend_fast_0": "3123f22c787639a6ce2f55248221af8e9a586a3bbddf5f2496108b314039e9a8",
     "native_match_arena_words_prepend_fast_1": "cf38f2212c5510db669bea849896bee02490c487db4dec6fa1fce7006ea7c682",
     "arena_words_prepend_fast": "488ff127a5891a3784d6160b55a5c2a6f6036022225f596a40d81e7e7e79f8cf",
-    "arena_words_cons_tail": "d388e773384dd37d887d4554955054541864d6c0c7ba84dbf286f07bfe1b2084",
-    "arena_words_cons_appended": "46cf5a4bb0a4c2b7e397ae03db0a9c885f13f2824ff95761ec3ee21f8d734ff9",
-    "native_match_arena_words_cons_append_0": "c80dbe17f71753b38ae8c06b2c365597648de890ad51ad892caab1bfdf72c4f7",
-    "native_match_arena_words_cons_append_1": "ff1ae9339a208f9c2390d6c161df7b926fd44e81d34cf5571f0181f705c09a34",
-    "arena_words_cons_append": "0fbde3cf3576589883c62a15a006829535f431b04f2ff6bf37a96b4e1b8c6b52",
-    "arena_words_cons": "2b49a9a3e68cb28255636bc60d442f4b5626750d50e93d3d3cd194d3f4b9a718",
+    "arena_words_prepend_count": "7a85b4c185b1fd22b94a4e9da33aecafc510574a809a92b813e072b6e5db47e6",
+    "native_match_arena_words_cons_0": "512f2d019ed61afa0996d60b10c734267edcbe0c823c0cb1affcdf806c6c0c5b",
+    "native_match_arena_words_cons_1": "79c2e52c373bdff107b0841f69774695bcd1a22830582e3f1ce0aa5a91055e5c",
+    "arena_words_cons": "ce7aae9d5bdcf7b8c8b0b2aa9878db2704daaa78c0dbe967ced4aacc0be11b52",
     "native_match_arena_words_append_copy_0": "e4571270d46dccb6fd5339bbcce1544dd14a635a464fc8c4e7f564575ff9fa23",
     "arena_words_append_copy": "72675874c54fa492d0a3d977b8bcd5613a4848b52e9c04e64cd5bc59e0a21c94",
     "arena_words_append_select": "eccfd9593506b44786872468f70573cc9eb4dd02f9c76fc204e2dde3c19be0aa",
@@ -10483,15 +10417,11 @@
     "native_match_arena_names_prepend_fast_0": "5868894d855a51e17292d1a35bdcbd11a19744c41d512f0b8d257d9d2484042c",
     "native_match_arena_names_prepend_fast_1": "87243e8847f7b20e1c29173295ae49354d08168ae77f4c731c8c34fac540504d",
     "arena_names_prepend_fast": "be612bcfb0c01a51024e63bd85829608a78ab57d9157ba85a993aad9b6d0be9d",
-    "arena_names_cons_tail": "158176779ddd652481180c342f2c4347a809a5e0095a390cfb0291861e737033",
-    "arena_names_cons_appended": "f2b14c1f2090384c1ea5f8c1a2474a6d403b5c1dde6d91d713f3c2750d0df98b",
-    "native_match_arena_names_cons_append_0": "b38194fb0452cbe62991a19a6812679cc92250381ed116ae55f2adcda8b79115",
-    "native_match_arena_names_cons_append_1": "005a70a942c9af3fee831862ec90f68d465a0f9285ed760e60b9788382b18067",
-    "arena_names_cons_append": "c632d36e314d41b69599dcf402a26c20cf9c8aea31c0e94c380fc44c8dc0e985",
-    "arena_names_cons_id": "fef150271004febace053d81c9579781fd7e309a69767c6a69011ec5f79f518c",
-    "native_match_arena_names_cons_0": "06ff4876fa59ec34e220f4c5794109e52f8e50c63c7de15c5e995b204b0cf0f6",
-    "native_match_arena_names_cons_1": "44ba30097b2e7a404624191d0e4c7a876cf2674a42c554e3dac5df4cc5828b44",
-    "arena_names_cons": "8d83c82d14612f03c04c88a75bbd9526ba80fba3e5665d27ab850e027a90365d",
+    "arena_names_prepend_count": "dc182b9c48c349bd5a35a96798d6a5defd8c120bf45c987affc6c1e5117020cd",
+    "native_match_arena_names_cons_0": "d4b3b3fb8693c19cef68e86e6677ad01fe79d82c410815246be1b01e67daebfd",
+    "native_match_arena_names_cons_1": "430023fa9b5cdfa9fc25802a8eff29f0c4cc5bff0a18379056550ead73d7c681",
+    "native_match_arena_names_cons_2": "fc68f885bdfddbda4f26256c7662bb2504b260fbd010a5d52c9bccb76596d30f",
+    "arena_names_cons": "3f75da890f972b89613bbe5bf24cbde9ebec9fd40b49a74752181abe264df6b7",
     "native_match_arena_names_append_copy_0": "77883bb40f1521d60d096562f01c4592fe351d5f996cca1cee59d15cc177b8d5",
     "arena_names_append_copy": "b0e94b9f3306044b0941762acbbe67bc51272e48ee23f99af2842638703b360e",
     "arena_names_append_select": "b86a03526bc875cc8c0b6f664b88940deaec2cb827beb8775b178b4bad0e854f",
@@ -10510,12 +10440,10 @@
     "native_match_arena_quantities_prepend_fast_0": "8a1cb1e05f97f4baab1c80ccb67cdf6a33d86a31057f4bddb4268797373cf7d6",
     "native_match_arena_quantities_prepend_fast_1": "9c22ae07d7abdec3696c8cf6bdd57c3ad9591075c7fb4e9ddadc18ed36492e87",
     "arena_quantities_prepend_fast": "cf46100da994e78430ee196a9180e5df1efcbf85b04ca83b7226fede2a12a4aa",
-    "arena_quantities_cons_tail": "b0115210cdab16e67cc98dadb8200573740388c7c1d4f0bab33b8675245ed6cb",
-    "arena_quantities_cons_appended": "4c7bef46bd8fcf38ebb017ec58b82c3976f1ec6d78aa9ba0b96fc8b5ad7f3a39",
-    "native_match_arena_quantities_cons_append_0": "344457b1d35cb678a0f6dec6f3e0648abb741ba57f6b68cb7306a846267093a0",
-    "native_match_arena_quantities_cons_append_1": "130b69981ce3e5f7eea9b0787e6fa9740586e0e309ef45d5fb2c2e4205c3f7f9",
-    "arena_quantities_cons_append": "57573708350f2c01db843ef1acd62da9371af20c3f3c2b4be427ed6c90854796",
-    "arena_quantities_cons": "f42cdd4de2c670ad1f7ed5b7d4adfb622a5f52e0de62cc3446a7461ab64b92ca",
+    "arena_quantities_prepend_count": "60fa31b16508f85c94ac0a1b1172670a13ef3355c9504f060b3b2228bbd987b9",
+    "native_match_arena_quantities_cons_0": "5d5cc7582303a43b0e453f4c8eeba5581f507151c28bba436ccd3ad4eaed8621",
+    "native_match_arena_quantities_cons_1": "2a80b6c2ab5dcb88030914533098bd5701a8c29b3fa08a5c64372faf8c0efc48",
+    "arena_quantities_cons": "d2e26d45c4d7443bc8301829a2228f55543eabad6f3a19d95b47709d2ed9951c",
     "native_match_arena_publish_terms_copy_0": "660bbda512699ad9acbcde8ea31eca52c87d1623d03c8924495040b6bd4ac9f1",
     "native_match_arena_publish_terms_copy_1": "b0ff7b5432642ed7cfa1cccfaa0a0479e402e24ff4df1962e2017eb1212ccd14",
     "native_match_arena_publish_terms_copy_2": "e5843adeacaab3f5312a8d3480b0747adf9600158ac3cc5b0858a29a3b9771e4",
@@ -10831,13 +10759,6 @@
     "native_match_arena_publish_definition_3": "af7c63f8d9f5443e03ede1c6568322ce1ced1e05cac4b1b94af8a73897374219",
     "native_match_arena_publish_definition_4": "2110387ceabf0c7023dc543cff4bbfbc093a57272a9dba976529a299973c4ab8",
     "arena_publish_definition": "0e56756c53c8bb6e96e149d967a8c793a8b627b45fd846a3ea79985e2cb2076d",
-    "native_match_arena_publish_checked_definition_0": "8699730d422e53f88062c7240a99beeb207c0da5195d688a2ff8a2e5ed1da79f",
-    "native_match_arena_publish_checked_definition_1": "ff03565b2acc5e07bec9f1b907b6b04b157371850bee44b7e9cd62b18b0d06bd",
-    "native_match_arena_publish_checked_definition_2": "82027605bfa31ebb3e7c9acb2094cae53a896353cfe359addb5ff93941f72ab0",
-    "arena_publish_checked_definition": "c2efa2f12b48f19d972c5dc7a2bb971a8b29c5da2dbbc0027d67e47ee0cf5b81",
-    "native_match_declaration_publish_0": "a4ca89233c5fe48a4813d07c6e5eda3e71296dbe8ffacc078841a50da518484a",
-    "native_match_declaration_publish_1": "4f4f284f55efd36baf36a92029b0ce7d1f86f1573224d420e2092d241c0afbb4",
-    "declaration_publish": "2112f2fa7a1a249104a06bfecfcc7c6071ff40c58763e6ee90ec7d89adc9c5a9",
     "native_match_arena_publish_type_decl_0": "eb64678b786c1923a366792626ec97d205400aec817be8288c2962be20a9e0db",
     "native_match_arena_publish_type_decl_1": "83d9f62da99214c769c87af6b5e53af9c6ccb317c183592c2babbcb257101530",
     "native_match_arena_publish_type_decl_2": "3719929d6effb7027698e8a7f30e74e9c72438b897ffb66b9985005e24641a33",
@@ -11041,6 +10962,7 @@
     "arena_get_natural_region_natural_result_19": "8c141d042e2def00c37c835f116461e132b3175c736b18155f3cd2d68f8e1e94",
     "arena_reserve_words_reserve_words_result_22": "f6ee5b3dd1b591eaddffe04299c1f36cee4c2ef72f8db867d29aa398f28b0397",
     "arena_reserve_source_words_reserve_words_result_23": "aaabf454259d3df530af7bbf0f1bd3f9b5c1686648450cad312be82592c1ee2e",
+    "arena_word_cursor_word_count_result_24": "d4f59b2d50ef250cec64fb8ee17fab9eb72a79fa6c0536cd3646c86ce3ba53e6",
     "arena_reserve_source_naturals_reserve_naturals_result_26": "94e1b0cb87df41ee59359f684aace9b958b574a0d5ad75b72ae282fc88a631b4",
     "arena_pack_terms_reserve_words_result_28": "91c6d339c955bc7be65d8e277ffe304ee3303fad2d932c8d383b040c22c5de96",
     "arena_pack_patterns_reserve_words_result_29": "8c0105a648ef3d3c30c752b4642dad2722ee9e1c1bc9f4646781c647e8e22d8c",
@@ -11304,8 +11226,6 @@
     "native_match_definition_classify_1": "definition_classify",
     "native_match_definition_classify_2": "definition_classify",
     "native_match_definition_classify_3": "definition_classify",
-    "native_match_checked_declaration_result_0": "checked_declaration_result",
-    "native_match_checked_declaration_result_1": "checked_declaration_result",
     "native_match_occurrence_words_equal_0": "occurrence_words_equal",
     "native_match_occurrence_words_equal_1": "occurrence_words_equal",
     "native_match_occurrence_words_equal_2": "occurrence_words_equal",
@@ -11352,16 +11272,6 @@
     "native_match_resolved_name_1": "resolved_name",
     "native_match_resolved_name_kind_0": "resolved_name_kind",
     "native_match_resolved_name_kind_1": "resolved_name_kind",
-    "native_match_canonical_name_id_of_0": "canonical_name_id_of",
-    "native_match_canonical_name_id_resolved_0": "canonical_name_id_resolved",
-    "native_match_canonical_name_id_resolved_1": "canonical_name_id_resolved",
-    "native_match_canonical_name_id_hit_0": "canonical_name_id_hit",
-    "native_match_canonical_name_id_hit_1": "canonical_name_id_hit",
-    "native_match_canonical_name_id_framed_0": "canonical_name_id_framed",
-    "native_match_canonical_name_id_framed_1": "canonical_name_id_framed",
-    "native_match_canonical_name_id_plain_0": "canonical_name_id_plain",
-    "native_match_canonical_name_id_0": "canonical_name_id",
-    "native_match_canonical_name_id_1": "canonical_name_id",
     "native_match_term_span_0": "term_span",
     "native_match_term_span_1": "term_span",
     "native_match_global_index_insert_0": "global_index_insert",
@@ -12069,7 +11979,6 @@
     "native_match_canonicalize_strings_1": "canonicalize_strings",
     "native_match_canonicalize_strings_2": "canonicalize_strings",
     "native_match_canonicalize_strings_3": "canonicalize_strings",
-    "native_match_canonicalize_strings_4": "canonicalize_strings",
     "native_match_canonicalize_patterns_0": "canonicalize_patterns",
     "native_match_canonicalize_patterns_1": "canonicalize_patterns",
     "native_match_canonicalize_patterns_2": "canonicalize_patterns",
@@ -12081,6 +11990,7 @@
     "native_match_canonicalize_pattern_3": "canonicalize_pattern",
     "native_match_canonicalize_pattern_4": "canonicalize_pattern",
     "native_match_canonicalize_pattern_5": "canonicalize_pattern",
+    "native_match_canonicalize_pattern_6": "canonicalize_pattern",
     "native_match_canonicalize_terms_0": "canonicalize_terms",
     "native_match_canonicalize_terms_1": "canonicalize_terms",
     "native_match_canonicalize_terms_2": "canonicalize_terms",
@@ -12155,7 +12065,10 @@
     "native_match_canonicalize_term_66": "canonicalize_term",
     "native_match_canonicalize_term_67": "canonicalize_term",
     "native_match_canonicalize_term_68": "canonicalize_term",
-    "native_match_canonicalize_term_framed_0": "canonicalize_term_framed",
+    "native_match_canonicalize_term_69": "canonicalize_term",
+    "native_match_canonicalize_term_70": "canonicalize_term",
+    "native_match_canonicalize_term_71": "canonicalize_term",
+    "native_match_canonicalize_term_72": "canonicalize_term",
     "native_match_mat_branch_goal_view_0": "mat_branch_goal_view",
     "native_match_mat_branch_goal_view_1": "mat_branch_goal_view",
     "native_match_mat_branch_goal_view_2": "mat_branch_goal_view",
@@ -14573,8 +14486,8 @@
     "native_match_arena_words_prepend_copy_0": "arena_words_prepend_copy",
     "native_match_arena_words_prepend_fast_0": "arena_words_prepend_fast",
     "native_match_arena_words_prepend_fast_1": "arena_words_prepend_fast",
-    "native_match_arena_words_cons_append_0": "arena_words_cons_append",
-    "native_match_arena_words_cons_append_1": "arena_words_cons_append",
+    "native_match_arena_words_cons_0": "arena_words_cons",
+    "native_match_arena_words_cons_1": "arena_words_cons",
     "native_match_arena_words_append_copy_0": "arena_words_append_copy",
     "native_match_arena_names_view_nonempty_0": "arena_names_view_nonempty",
     "native_match_arena_names_view_nonempty_1": "arena_names_view_nonempty",
@@ -14582,18 +14495,17 @@
     "native_match_arena_names_prepend_copy_0": "arena_names_prepend_copy",
     "native_match_arena_names_prepend_fast_0": "arena_names_prepend_fast",
     "native_match_arena_names_prepend_fast_1": "arena_names_prepend_fast",
-    "native_match_arena_names_cons_append_0": "arena_names_cons_append",
-    "native_match_arena_names_cons_append_1": "arena_names_cons_append",
     "native_match_arena_names_cons_0": "arena_names_cons",
     "native_match_arena_names_cons_1": "arena_names_cons",
+    "native_match_arena_names_cons_2": "arena_names_cons",
     "native_match_arena_names_append_copy_0": "arena_names_append_copy",
     "native_match_arena_quantities_view_nonempty_0": "arena_quantities_view_nonempty",
     "native_match_arena_quantities_view_nonempty_1": "arena_quantities_view_nonempty",
     "native_match_arena_quantities_prepend_copy_0": "arena_quantities_prepend_copy",
     "native_match_arena_quantities_prepend_fast_0": "arena_quantities_prepend_fast",
     "native_match_arena_quantities_prepend_fast_1": "arena_quantities_prepend_fast",
-    "native_match_arena_quantities_cons_append_0": "arena_quantities_cons_append",
-    "native_match_arena_quantities_cons_append_1": "arena_quantities_cons_append",
+    "native_match_arena_quantities_cons_0": "arena_quantities_cons",
+    "native_match_arena_quantities_cons_1": "arena_quantities_cons",
     "native_match_arena_publish_terms_copy_0": "arena_publish_terms_copy",
     "native_match_arena_publish_terms_copy_1": "arena_publish_terms_copy",
     "native_match_arena_publish_terms_copy_2": "arena_publish_terms_copy",
@@ -14830,11 +14742,6 @@
     "native_match_arena_publish_definition_2": "arena_publish_definition",
     "native_match_arena_publish_definition_3": "arena_publish_definition",
     "native_match_arena_publish_definition_4": "arena_publish_definition",
-    "native_match_arena_publish_checked_definition_0": "arena_publish_checked_definition",
-    "native_match_arena_publish_checked_definition_1": "arena_publish_checked_definition",
-    "native_match_arena_publish_checked_definition_2": "arena_publish_checked_definition",
-    "native_match_declaration_publish_0": "declaration_publish",
-    "native_match_declaration_publish_1": "declaration_publish",
     "native_match_arena_publish_type_decl_0": "arena_publish_type_decl",
     "native_match_arena_publish_type_decl_1": "arena_publish_type_decl",
     "native_match_arena_publish_type_decl_2": "arena_publish_type_decl",
@@ -15109,7 +15016,7 @@
       "canonical": "bend2/selfhost/emitter.bend",
       "owned": "checkpoints/emitter_owned_v1.bend",
       "canonicalSha256": "47d68ba5f0b54c334e2c940b7bb6aabc7f3bba27142b816f27df8225cf3fae4f",
-      "sourceSha256": "4f874750f013cf973d796c994b6ad6f3ac3c1332117bd19e1e72f215719f4d78",
+      "sourceSha256": "8d82537fa6e02f07e88eb1cbd378223e7d3f75599df34265dc9fb24358e05fac",
       "definitionNames": [
         "emitted_js",
         "emitted_c",
@@ -15175,17 +15082,10 @@
         "cps_provider_1_constructor_id",
         "cps_provider_1_constructor_key",
         "cps_provider_1_atom_arguments",
-        "cps_provider_1_descriptor_found",
-        "cps_provider_1_described_at",
-        "cps_provider_1_normalization_context",
-        "cps_provider_1_normalization_scope",
-        "cps_provider_1_normalization_cleared",
+        "native_match_cps_provider_1_describe_0",
+        "native_match_cps_provider_1_describe_1",
+        "native_match_cps_provider_1_describe_2",
         "cps_provider_1_describe",
-        "native_match_cps_provider_1_describe_found_0",
-        "cps_provider_1_describe_found",
-        "native_match_cps_provider_1_describe_reduced_0",
-        "cps_provider_1_describe_reduced",
-        "cps_provider_1_describe_normalized",
         "native_match_cps_provider_1_element_value_0",
         "cps_provider_1_element_value",
         "cps_provider_1_single_argument",
@@ -18188,10 +18088,10 @@
         "cps_provider_1_fail": "7e295ff533a8fbb8de63fec1c5eb3bd2ae1f8409946b8b3d97bd0fe1bd30b841",
         "cps_provider_1_native_match_state_problem_0": "906828b113ad2de4b5cf93f05a1a861c963e774015683d53d3f029e79275e896",
         "cps_provider_1_state_problem": "8c52eb0dcf752db268b8ec1aed24c125efd1a104acd002458d2bd82fe7eaf967",
-        "cps_provider_1_native_match_node_0": "726abfeb9ecb0b309eb2d31e573fc973221a0a665bd62a4f12783312c00382d6",
+        "cps_provider_1_native_match_node_0": "334d8e72bc06f0ffab50a57efe42b5f0f93c613d9c98386e220b59521e8c4893",
         "cps_provider_1_native_match_node_1": "9b52f0675850561761b6ee18e6b5bf778702811349a2062e7c7e4da1a9f68a0e",
         "cps_provider_1_node": "ac5398a60cb88cfb1d139e1671f05e34fd9f33feb37d792d1e57a5863cc015be",
-        "cps_provider_1_native_match_name_0": "8a717280c148c1244989138c9f38bf5db3e5883bd78a20fe34674e5b54795a43",
+        "cps_provider_1_native_match_name_0": "f4c1f23a7fb60b45ca991e9c7ac17316f46640609e36756e5c608b0c41b0827f",
         "cps_provider_1_native_match_name_1": "19dbff6c88c2adce86200f027fb71cb1c232a62511f8bd7fe8fe125859c8e7d5",
         "cps_provider_1_name": "06373945e308258239284d3ddc843c763f0696ad9b22fd8b12c67dfd466a9fd2",
         "cps_provider_1_fresh": "61e61e59b454149116a48c1ee72336d3ceaad3976a030c3ba250f6da3898b07b",
@@ -18211,10 +18111,10 @@
         "cps_provider_1_native_match_resolve_owner_0": "2cee7e900a291f675ac5ec0f6843c0cf4324e955f455678d42652052e17e29b9",
         "cps_provider_1_native_match_resolve_owner_1": "3c1d86480e73463b9a2cfbaba455bf8f4987cc9c9da42a56b70e421fd7162fe6",
         "cps_provider_1_resolve_owner": "13815a3a73a96042390efca9087121f8c1821e7c29de92a3f16171d3c95be10a",
-        "cps_provider_1_resolve_capture": "f5739ddee7b2ae24e5f42f14241f9c1aa392a9fd7f91dd2fac8dacfda1050de4",
+        "cps_provider_1_resolve_capture": "13a9ac7240ede825183e175b29156a6c5aa67febfefbb8af3db03b22155e7f8d",
         "cps_provider_1_variable": "47fd1a23024db5cdb07cf220b947fdf6b51c21ff4c956ebae8cccc24a850cb59",
         "cps_provider_1_variable_found": "3a65d43e68e73ada735931cf6e27e072e2f98c5af2e682293a3c4351618a7e86",
-        "cps_provider_1_native_match_bind_slot_0": "b7b40000bfc8998a4d221dede0c2c619284a2599769abd9ed2d0d3b987e6308d",
+        "cps_provider_1_native_match_bind_slot_0": "1772c5622e257a798cdc6e2e5c3ccfd56d7058775e1c85fa8b859b6386fc3a1f",
         "cps_provider_1_native_match_bind_slot_1": "aa513a17c08e8cafc5dd72462858d138ba6ed03f8e79c6c4d3cbe75651afb282",
         "cps_provider_1_native_match_bind_slot_2": "8f8dda341c5f9f00b100bbbe42e2d09cf887f8d78752bee428e38503721a6c51",
         "cps_provider_1_bind_slot": "2c6d7a1e23d5dd424947f1b7d6723c7664cfc27b6d5515456c6fafd5f165eea4",
@@ -18237,17 +18137,10 @@
         "cps_provider_1_constructor_id": "b6e43ae4a9666caf90f3da2d060c3268b99bacb5163d5dd58d0bdc64c8f74505",
         "cps_provider_1_constructor_key": "031d753ee32d04f032b2a289d5ba9ae7d94c68dabbfc954266156bbf978c7cf4",
         "cps_provider_1_atom_arguments": "cf0d479c2822fa15c532f51b4504f7a1f92c1de144934887a6e7a0b300ec7701",
-        "cps_provider_1_descriptor_found": "fad49c701b56d08974cb341218c6861bc39588d7f240f68aabe9e08251fff9eb",
-        "cps_provider_1_described_at": "360dd8335643705422bd1b498c5deb4166d0f6fdd64d2d0cc73727932557ad43",
-        "cps_provider_1_normalization_context": "1353777391395d64f40b280d37767445c823aded446c3f5846ecef534e41ec5d",
-        "cps_provider_1_normalization_scope": "ef3c68c736ee02c8c601ce8c5429f14b1812dd70ede2d290eff8f93f633048ec",
-        "cps_provider_1_normalization_cleared": "735b69a4ac575d8ac27d1ca7470f9ecc08187a1f63b94e5db80e198bf900c60a",
-        "cps_provider_1_describe": "9ec33c5153d91d67ff69f89a5f7f7cfe0262f3cb9a3c5da108aba96645d6a260",
-        "native_match_cps_provider_1_describe_found_0": "f0d3ce444c47520225f1f63d1c907d351487660729a3695cc2df183ec5366820",
-        "cps_provider_1_describe_found": "04886510720685db8f7a034ca24b68d9fd03873b366c4dd65688deb921df356c",
-        "native_match_cps_provider_1_describe_reduced_0": "b29e17d28e5d22e3401b02a37edc98263c1371136388c40c558a126f4411d609",
-        "cps_provider_1_describe_reduced": "ebdc795771d75db2ce641404f1b5f7815404ef122725942385597bb677e04a74",
-        "cps_provider_1_describe_normalized": "b5fe869ee93c19e3886d340c3b3977849eba48a036d60365542b94049733d8f0",
+        "native_match_cps_provider_1_describe_0": "5db75ecaa73c01a53be2fb6c98cc0118378e60eb4dd14c34f454d834410b7fea",
+        "native_match_cps_provider_1_describe_1": "3b17149990a2da6bb7748e42131e53a39287fb36b5043e1255c0c19f3b35b55d",
+        "native_match_cps_provider_1_describe_2": "9d32ea5e9b194548fa2fa6a9f60fd05e4681df4ec3f470871cd99588626e3496",
+        "cps_provider_1_describe": "b09f8958a985ba78e17218a03dfe337d0f727e35fff30746c3d521814f12cc0f",
         "native_match_cps_provider_1_element_value_0": "e11ee714d1ae8591a17af12b7dbf48b1f4c6b5e6f5b24c497e42bdcf888eac60",
         "cps_provider_1_element_value": "d8125b2d3f5407408922714f2004f299211ce84af14cadcc8540f7f2ef6315b6",
         "cps_provider_1_single_argument": "e3b15b42e9a0f022bd272c1ccb9e28852a875215be2d7a6b6aa591cac47af716",
@@ -18525,7 +18418,7 @@
         "cps_provider_1_native_match_matcher_fields_1": "e5e717c4f6463a4be244da637ca80d5cb134ff1e74007fc4ccb8be713f1b1518",
         "cps_provider_1_native_match_matcher_fields_2": "31bf160edff5d2235ab30ab232f76247793d3b7f0386976643d4e55d618c9bae",
         "cps_provider_1_matcher_fields": "f8d13122de5243748b7e086a315ccad77649ab1d710b7b1df65c734725a5715c",
-        "cps_provider_1_native_match_definition_frame_0": "b4279eaa21f5506aafad2bcfb7e623055850701ba54b0a2b5b0a659bd34c3e8e",
+        "cps_provider_1_native_match_definition_frame_0": "6e61594bc2b88621674b54c828d643950417516c1d0f6d8baa1a2f2ededd43b2",
         "cps_provider_1_definition_frame": "3eeed516ffbb9f0e981a353c8d4cef54fc7f5fa41ec970081a44fc76b9a69e4c",
         "cps_provider_1_definition_env": "5376a1c1142f1006b07f5ca83952287039ea1b36d300ed5bad4c1e947edfb2a4",
         "cps_provider_1_definitions": "9a353d3d3894e3ebedb3ed957e787cb2e1466b2bb72b6d26bd696e6313429995",
@@ -18571,7 +18464,7 @@
         "cps_provider_1_lower": "970c1c5cf30f042fe7f02402f7a00c8abd721a4cfd74c093508ef0edca571840",
         "cps_provider_1_lower_library": "92dd32a881956d743cc0128cb8418e05304ed7b8c141709480c787414e31e595",
         "cps_provider_1_lower_prepared": "8324d2386be4c0de984128e8a7cd223b4ada83d37f16e3365cd25de2321c35a0",
-        "cps_provider_1_lower_catalog": "a7a871bc013df6463610a477b4d30aa3735c8992c481b72ea5510a39a90a921c",
+        "cps_provider_1_lower_catalog": "6fd25a047112993f03d106ebf4bd6c4c64697a08ae4b69794f5afa296fb8999d",
         "cps_provider_1_lower_definitions": "86284c98f2552da62a2d99ca6ee34475f56b1d9e6369ba9fb023c29619a36b60",
         "cps_provider_1_lower_complete": "78090bf33d482c4d73e18465e37596c9c92c9ae1dd919b2139ac9751b23f2ccc",
         "cps_provider_2_build_new": "3cb07b0367b7f1464e15ffb60f2f6216582fd35accd3206dc4d422e0bfd6cfd4",
@@ -21255,8 +21148,9 @@
         "emit_c_bir": "d39fdb0608f91d98dcecb3565fb4c7aea2714607aec650bd6dc96e5b6686798b"
       },
       "owners": {
-        "native_match_cps_provider_1_describe_found_0": "cps_provider_1_describe_found",
-        "native_match_cps_provider_1_describe_reduced_0": "cps_provider_1_describe_reduced",
+        "native_match_cps_provider_1_describe_0": "cps_provider_1_describe",
+        "native_match_cps_provider_1_describe_1": "cps_provider_1_describe",
+        "native_match_cps_provider_1_describe_2": "cps_provider_1_describe",
         "native_match_cps_provider_1_element_value_0": "cps_provider_1_element_value",
         "native_match_cps_provider_1_element_argument_0": "cps_provider_1_element_argument",
         "native_match_cps_provider_1_element_argument_1": "cps_provider_1_element_argument",
@@ -22176,7 +22070,7 @@
           "bend2/selfhost/js_emit.bend",
           "bend2/selfhost/lower_catalog.bend"
         ],
-        "sourceSha256": "bec5f3cbf0fc76039d7c2a40ca33a18a22c3b145f553ee64458b9df31e8b6449",
+        "sourceSha256": "b97c48a705635a6befe8974c4ced47f5a9ebe1119c04e7511cc338968e6f91b5",
         "sources": [
           {
             "canonical": "bend2/selfhost/emitter.bend",
@@ -22208,7 +22102,7 @@
           },
           {
             "canonical": "bend2/selfhost/backend_lower.bend",
-            "canonicalSha256": "0b7445ffe3746b726bc5b98cec3d36997bedf7d1ecce171a0193ddab95b9c8fc",
+            "canonicalSha256": "d5217f4d2117ff9527474847b53caaa6d881570d6fe4a2c24e0af668cfc75b7f",
             "declarationNames": [
               "ProgramResult",
               "Problem",
@@ -22216,7 +22110,6 @@
               "Capture",
               "Instruction",
               "Frame",
-              "Normalization",
               "State",
               "LowerResult",
               "CodeRef",
@@ -22280,15 +22173,7 @@
               "constructor_id",
               "constructor_key",
               "atom_arguments",
-              "descriptor_found",
-              "described_at",
-              "normalization_context",
-              "normalization_scope",
-              "normalization_cleared",
               "describe",
-              "describe_found",
-              "describe_reduced",
-              "describe_normalized",
               "element_value",
               "single_argument",
               "map_value_argument",
@@ -22607,9 +22492,6 @@
               "Guard": "cps_provider_1_Guard",
               "Stop": "cps_provider_1_Stop",
               "Frame": "cps_provider_1_Frame",
-              "Normalization": "cps_provider_1_Normalization",
-              "Unnormalized": "cps_provider_1_Unnormalized",
-              "Described": "cps_provider_1_Described",
               "State": "cps_provider_1_State",
               "LowerResult": "cps_provider_1_LowerResult",
               "CodeRef": "cps_provider_1_CodeRef",
@@ -22673,15 +22555,7 @@
               "constructor_id": "cps_provider_1_constructor_id",
               "constructor_key": "cps_provider_1_constructor_key",
               "atom_arguments": "cps_provider_1_atom_arguments",
-              "descriptor_found": "cps_provider_1_descriptor_found",
-              "described_at": "cps_provider_1_described_at",
-              "normalization_context": "cps_provider_1_normalization_context",
-              "normalization_scope": "cps_provider_1_normalization_scope",
-              "normalization_cleared": "cps_provider_1_normalization_cleared",
               "describe": "cps_provider_1_describe",
-              "describe_found": "cps_provider_1_describe_found",
-              "describe_reduced": "cps_provider_1_describe_reduced",
-              "describe_normalized": "cps_provider_1_describe_normalized",
               "element_value": "cps_provider_1_element_value",
               "single_argument": "cps_provider_1_single_argument",
               "map_value_argument": "cps_provider_1_map_value_argument",
@@ -27193,24 +27067,16 @@
             "canonicalName": "Frame",
             "name": "cps_provider_1_Frame",
             "kind": "type",
-            "canonicalDeclarationSha256": "81d7ec9373d06b6a151b5637bbe699e2b12ca53eef079541ca40b3123505dc52",
+            "canonicalDeclarationSha256": "12b10f2d2b13d4af49259ee92bb02939c5a546e89fdeea5d94b4f7f91819a53d",
             "composedDeclarationSha256": "73d3218f9557c63d3cdae8e6ce17317bdae34cb5075971c18f78455f8c1c7bde"
-          },
-          {
-            "source": "bend2/selfhost/backend_lower.bend",
-            "canonicalName": "Normalization",
-            "name": "cps_provider_1_Normalization",
-            "kind": "type",
-            "canonicalDeclarationSha256": "7ef825b750dd2712bc307724be2a3e949e0809c62331e7cd3bffb6304153b684",
-            "composedDeclarationSha256": "9c3b79e8b0a249ac10461f7340d45765145d2a80ab6c632b9b0ca571f0d58abf"
           },
           {
             "source": "bend2/selfhost/backend_lower.bend",
             "canonicalName": "State",
             "name": "cps_provider_1_State",
             "kind": "type",
-            "canonicalDeclarationSha256": "1bdae4f19f6ae671bcacd8e38848d8ac0de3775c6a21e28aac5a5697ced77126",
-            "composedDeclarationSha256": "b958a0105bcf4ec6b6537a070080ec52b28161f100f2773d2e0720bbec2caa75"
+            "canonicalDeclarationSha256": "b4fd958ef2a5e8189538f4aac7d044d49864be8aab525e2e2ab03fbd61732e1d",
+            "composedDeclarationSha256": "0b73e7864a63084334d61757e0c00088b3fbd0afa9402bdd3b6274339054923e"
           },
           {
             "source": "bend2/selfhost/backend_lower.bend",
@@ -27321,8 +27187,8 @@
             "canonicalName": "native_match_node_0",
             "name": "cps_provider_1_native_match_node_0",
             "kind": "def",
-            "canonicalDeclarationSha256": "088a39e484e803b6ca9358d3d14c0b83c3faa11c75ca8cb2fc081582354fc2b6",
-            "composedDeclarationSha256": "726abfeb9ecb0b309eb2d31e573fc973221a0a665bd62a4f12783312c00382d6"
+            "canonicalDeclarationSha256": "64c66ebda0335ed06cee1c33d3cabad107131410727982102438d3ec26755f91",
+            "composedDeclarationSha256": "334d8e72bc06f0ffab50a57efe42b5f0f93c613d9c98386e220b59521e8c4893"
           },
           {
             "source": "bend2/selfhost/backend_lower.bend",
@@ -27345,8 +27211,8 @@
             "canonicalName": "native_match_name_0",
             "name": "cps_provider_1_native_match_name_0",
             "kind": "def",
-            "canonicalDeclarationSha256": "f826a7e00f274b8c0fb9ae76b515bfb67b9d396ac6c82e664a883a369dac14e9",
-            "composedDeclarationSha256": "8a717280c148c1244989138c9f38bf5db3e5883bd78a20fe34674e5b54795a43"
+            "canonicalDeclarationSha256": "049514772ab830d5692199162ccd931b58bed494337b642fdb2163b5727efb83",
+            "composedDeclarationSha256": "f4c1f23a7fb60b45ca991e9c7ac17316f46640609e36756e5c608b0c41b0827f"
           },
           {
             "source": "bend2/selfhost/backend_lower.bend",
@@ -27505,8 +27371,8 @@
             "canonicalName": "resolve_capture",
             "name": "cps_provider_1_resolve_capture",
             "kind": "def",
-            "canonicalDeclarationSha256": "6eb9b731e2957f3515d71fb5bb91693d7f1de58f8bd09730a302eb35f9a95037",
-            "composedDeclarationSha256": "f5739ddee7b2ae24e5f42f14241f9c1aa392a9fd7f91dd2fac8dacfda1050de4"
+            "canonicalDeclarationSha256": "6e805e4992b7b59d901ff6d50b910997bd29a484d1a7ccb4285319d01a071434",
+            "composedDeclarationSha256": "13a9ac7240ede825183e175b29156a6c5aa67febfefbb8af3db03b22155e7f8d"
           },
           {
             "source": "bend2/selfhost/backend_lower.bend",
@@ -27529,8 +27395,8 @@
             "canonicalName": "native_match_bind_slot_0",
             "name": "cps_provider_1_native_match_bind_slot_0",
             "kind": "def",
-            "canonicalDeclarationSha256": "e49335210493091ac755a1863044b0c83f2ba6c675742133a757ba54757d4856",
-            "composedDeclarationSha256": "b7b40000bfc8998a4d221dede0c2c619284a2599769abd9ed2d0d3b987e6308d"
+            "canonicalDeclarationSha256": "9d04d7ac00e45efc8423fb175388c29f75cf41cc888a823da225716941dd1b39",
+            "composedDeclarationSha256": "1772c5622e257a798cdc6e2e5c3ccfd56d7058775e1c85fa8b859b6386fc3a1f"
           },
           {
             "source": "bend2/selfhost/backend_lower.bend",
@@ -27705,80 +27571,16 @@
             "canonicalName": "atom_arguments",
             "name": "cps_provider_1_atom_arguments",
             "kind": "def",
-            "canonicalDeclarationSha256": "170690b15982e6c75ccfff9cffacd64d7812a1605af46897ab7f159763249def",
+            "canonicalDeclarationSha256": "3139e363c8d06b6ffe38a8f8f8e644f3a0563d742580d512f2fdc0694abb4e50",
             "composedDeclarationSha256": "cf0d479c2822fa15c532f51b4504f7a1f92c1de144934887a6e7a0b300ec7701"
-          },
-          {
-            "source": "bend2/selfhost/backend_lower.bend",
-            "canonicalName": "descriptor_found",
-            "name": "cps_provider_1_descriptor_found",
-            "kind": "def",
-            "canonicalDeclarationSha256": "994733ebe5d118892a6245c1382f62568e46ef77e52a87062b0b53c844d1fcee",
-            "composedDeclarationSha256": "fad49c701b56d08974cb341218c6861bc39588d7f240f68aabe9e08251fff9eb"
-          },
-          {
-            "source": "bend2/selfhost/backend_lower.bend",
-            "canonicalName": "described_at",
-            "name": "cps_provider_1_described_at",
-            "kind": "def",
-            "canonicalDeclarationSha256": "61f6ab9b035e0adce06a2effa4f700b610ebf8c3f0a6570af6c0f76001ffe65a",
-            "composedDeclarationSha256": "360dd8335643705422bd1b498c5deb4166d0f6fdd64d2d0cc73727932557ad43"
-          },
-          {
-            "source": "bend2/selfhost/backend_lower.bend",
-            "canonicalName": "normalization_context",
-            "name": "cps_provider_1_normalization_context",
-            "kind": "def",
-            "canonicalDeclarationSha256": "27e92a2cd1d55cb2127d224178d540d45cff37646ea0cd4f1f1f9e71ba0aa0d7",
-            "composedDeclarationSha256": "1353777391395d64f40b280d37767445c823aded446c3f5846ecef534e41ec5d"
-          },
-          {
-            "source": "bend2/selfhost/backend_lower.bend",
-            "canonicalName": "normalization_scope",
-            "name": "cps_provider_1_normalization_scope",
-            "kind": "def",
-            "canonicalDeclarationSha256": "2f6a61f0ae979ceed597ad53eab1a054a3b72f3095266d070f1b1a11956c34cc",
-            "composedDeclarationSha256": "ef3c68c736ee02c8c601ce8c5429f14b1812dd70ede2d290eff8f93f633048ec"
-          },
-          {
-            "source": "bend2/selfhost/backend_lower.bend",
-            "canonicalName": "normalization_cleared",
-            "name": "cps_provider_1_normalization_cleared",
-            "kind": "def",
-            "canonicalDeclarationSha256": "81359770aa97b4c54d74449928d5ced74d111de7879949865d96d4e144b9d903",
-            "composedDeclarationSha256": "735b69a4ac575d8ac27d1ca7470f9ecc08187a1f63b94e5db80e198bf900c60a"
           },
           {
             "source": "bend2/selfhost/backend_lower.bend",
             "canonicalName": "describe",
             "name": "cps_provider_1_describe",
             "kind": "def",
-            "canonicalDeclarationSha256": "24b15afb2cab88f062f30034706d06b2d683b8156ff8e95bb01a8b4ae4a7393f",
-            "composedDeclarationSha256": "9ec33c5153d91d67ff69f89a5f7f7cfe0262f3cb9a3c5da108aba96645d6a260"
-          },
-          {
-            "source": "bend2/selfhost/backend_lower.bend",
-            "canonicalName": "describe_found",
-            "name": "cps_provider_1_describe_found",
-            "kind": "def",
-            "canonicalDeclarationSha256": "010e55cb97d6a5c0c7c12472705fae9bd059a7ca997e87242a2fb508cc1c20e2",
-            "composedDeclarationSha256": "ae717f9884dd07790d78c55da35f0b4f43b13a6e454e361b455c635099ff460d"
-          },
-          {
-            "source": "bend2/selfhost/backend_lower.bend",
-            "canonicalName": "describe_reduced",
-            "name": "cps_provider_1_describe_reduced",
-            "kind": "def",
-            "canonicalDeclarationSha256": "0889993fa0fb9f06c87555071acad132bf449639519ea135eceb1e7edda1d05e",
-            "composedDeclarationSha256": "1c162836d93aa326f775e6b0404fea0a85e4bdab2203f24339858b73630722c0"
-          },
-          {
-            "source": "bend2/selfhost/backend_lower.bend",
-            "canonicalName": "describe_normalized",
-            "name": "cps_provider_1_describe_normalized",
-            "kind": "def",
-            "canonicalDeclarationSha256": "32c214d22fa023932835f8abefcafd044d289b7d6e8b358b7cd2c5ad6db1f0fb",
-            "composedDeclarationSha256": "b5fe869ee93c19e3886d340c3b3977849eba48a036d60365542b94049733d8f0"
+            "canonicalDeclarationSha256": "46c20a343cfa193214664599a46332fa99c7a6a49b4dd91938b6806563d767c9",
+            "composedDeclarationSha256": "f0b4660694789a47a1155afeb992a5e4d2bb6b6d195db4cc75842a29a8a3fe9a"
           },
           {
             "source": "bend2/selfhost/backend_lower.bend",
@@ -29825,8 +29627,8 @@
             "canonicalName": "native_match_definition_frame_0",
             "name": "cps_provider_1_native_match_definition_frame_0",
             "kind": "def",
-            "canonicalDeclarationSha256": "d327383f445eb02fbc885103c4488619b4826dd137c1bf0904f088673c6cdad3",
-            "composedDeclarationSha256": "b4279eaa21f5506aafad2bcfb7e623055850701ba54b0a2b5b0a659bd34c3e8e"
+            "canonicalDeclarationSha256": "ccbc7d9797ab5ab2c34ca6221289704e35a331ce6d2cd1eb67ae8a6a8c1c7f0e",
+            "composedDeclarationSha256": "6e61594bc2b88621674b54c828d643950417516c1d0f6d8baa1a2f2ededd43b2"
           },
           {
             "source": "bend2/selfhost/backend_lower.bend",
@@ -30193,8 +29995,8 @@
             "canonicalName": "lower_catalog",
             "name": "cps_provider_1_lower_catalog",
             "kind": "def",
-            "canonicalDeclarationSha256": "9e7ef090ae409bcbcf7b8b155cdc89488eee44ede35b1f5e8f03c9990110d130",
-            "composedDeclarationSha256": "a7a871bc013df6463610a477b4d30aa3735c8992c481b72ea5510a39a90a921c"
+            "canonicalDeclarationSha256": "d0347e1559f24f9c7da04e1d1cd4321c64c3e861b8e4af72fa810356764c7441",
+            "composedDeclarationSha256": "6fd25a047112993f03d106ebf4bd6c4c64697a08ae4b69794f5afa296fb8999d"
           },
           {
             "source": "bend2/selfhost/backend_lower.bend",
@@ -45507,14 +45309,14 @@
           "/Users/ilyagulya/Projects/My/bend/bend2/base.bend": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checked_frontend.bend": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
-          "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_arena.bend": "7be6b80bac49da76928863387dd8a34e9feaaac23383be8401fb26ec062e9cf6",
-          "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/scope_lookup.bend": "2be9ff35e91d7b2ebf6ef8b6692b2fa5caff360a8e1586507930894bcadb47b7",
+          "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_arena.bend": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf",
+          "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/scope_lookup.bend": "e75dc874de6026e2104a7545a19f42fd6995aefecbb1d315c6ae3e097697e590",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_ir.bend": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/index_lookup.bend": "7b7b45946be711d0ba384e15f6823fded5ff97d6a526a6fb74a0448c13d61f84",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/loaded_module.bend": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/backend_ir.bend": "c0286db6b192bf5cc917774b7ea5e393d4416263432eb130fb8393b1dffc1cb3",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/js_emit.bend": "a71920560786084ab9713c4af89f62d2d0e1eaef7cc24e46ea24940d012fded6",
-          "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/backend_lower.bend": "0b7445ffe3746b726bc5b98cec3d36997bedf7d1ecce171a0193ddab95b9c8fc",
+          "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/backend_lower.bend": "d5217f4d2117ff9527474847b53caaa6d881570d6fe4a2c24e0af668cfc75b7f",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/lower_catalog.bend": "e322065c5ccb0a15f2ab81fd9e6dd689fe8b88ad50535e4f70f503e796164f01",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/descriptor_nf.bend": "c727bfe0adf97f86dc44960ca2c46fd890f0d8557157ba883af40d738d3e72dd",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
@@ -45525,7 +45327,7 @@
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_backend_layout.bend": "763dcc07096ff4273dc2354a049316aa622fd7953fd1781973ab88d47f64a43d",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_backend_physical.bend": "b6b3b3b2e0ced250b5b5fdbf4c699cfe1e8867900e3bd7b91ee82bdee3ebc25f",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_backend_sharing.bend": "05adf4ac68b0658425f7fce430709f67bd29c3f1f8a43727412661084c4dbe2c",
-          "bend2/selfhost/backend_lower.bend": "0b7445ffe3746b726bc5b98cec3d36997bedf7d1ecce171a0193ddab95b9c8fc",
+          "bend2/selfhost/backend_lower.bend": "d5217f4d2117ff9527474847b53caaa6d881570d6fe4a2c24e0af668cfc75b7f",
           "bend2/selfhost/c_backend.bend": "71ae3cf1a6d44332d218be095a01fb59bb1b3bdbb606b8ca4e16ead6ca6cd576",
           "bend2/selfhost/c_backend_layout.bend": "763dcc07096ff4273dc2354a049316aa622fd7953fd1781973ab88d47f64a43d",
           "bend2/selfhost/c_backend_link.bend": "f83c270f2b6f094f2bd220e6e750aa0265c93ae90fa0036dd8d92b86c09e26bd",
@@ -45602,15 +45404,7 @@
         "cps_provider_1_constructor_id",
         "cps_provider_1_constructor_key",
         "cps_provider_1_atom_arguments",
-        "cps_provider_1_descriptor_found",
-        "cps_provider_1_described_at",
-        "cps_provider_1_normalization_context",
-        "cps_provider_1_normalization_scope",
-        "cps_provider_1_normalization_cleared",
         "cps_provider_1_describe",
-        "cps_provider_1_describe_found",
-        "cps_provider_1_describe_reduced",
-        "cps_provider_1_describe_normalized",
         "cps_provider_1_element_value",
         "cps_provider_1_single_argument",
         "cps_provider_1_map_value_argument",
@@ -47708,10 +47502,10 @@
         "cps_provider_1_fail": "7e295ff533a8fbb8de63fec1c5eb3bd2ae1f8409946b8b3d97bd0fe1bd30b841",
         "cps_provider_1_native_match_state_problem_0": "906828b113ad2de4b5cf93f05a1a861c963e774015683d53d3f029e79275e896",
         "cps_provider_1_state_problem": "8c52eb0dcf752db268b8ec1aed24c125efd1a104acd002458d2bd82fe7eaf967",
-        "cps_provider_1_native_match_node_0": "726abfeb9ecb0b309eb2d31e573fc973221a0a665bd62a4f12783312c00382d6",
+        "cps_provider_1_native_match_node_0": "334d8e72bc06f0ffab50a57efe42b5f0f93c613d9c98386e220b59521e8c4893",
         "cps_provider_1_native_match_node_1": "9b52f0675850561761b6ee18e6b5bf778702811349a2062e7c7e4da1a9f68a0e",
         "cps_provider_1_node": "ac5398a60cb88cfb1d139e1671f05e34fd9f33feb37d792d1e57a5863cc015be",
-        "cps_provider_1_native_match_name_0": "8a717280c148c1244989138c9f38bf5db3e5883bd78a20fe34674e5b54795a43",
+        "cps_provider_1_native_match_name_0": "f4c1f23a7fb60b45ca991e9c7ac17316f46640609e36756e5c608b0c41b0827f",
         "cps_provider_1_native_match_name_1": "19dbff6c88c2adce86200f027fb71cb1c232a62511f8bd7fe8fe125859c8e7d5",
         "cps_provider_1_name": "06373945e308258239284d3ddc843c763f0696ad9b22fd8b12c67dfd466a9fd2",
         "cps_provider_1_fresh": "61e61e59b454149116a48c1ee72336d3ceaad3976a030c3ba250f6da3898b07b",
@@ -47731,10 +47525,10 @@
         "cps_provider_1_native_match_resolve_owner_0": "2cee7e900a291f675ac5ec0f6843c0cf4324e955f455678d42652052e17e29b9",
         "cps_provider_1_native_match_resolve_owner_1": "3c1d86480e73463b9a2cfbaba455bf8f4987cc9c9da42a56b70e421fd7162fe6",
         "cps_provider_1_resolve_owner": "13815a3a73a96042390efca9087121f8c1821e7c29de92a3f16171d3c95be10a",
-        "cps_provider_1_resolve_capture": "f5739ddee7b2ae24e5f42f14241f9c1aa392a9fd7f91dd2fac8dacfda1050de4",
+        "cps_provider_1_resolve_capture": "13a9ac7240ede825183e175b29156a6c5aa67febfefbb8af3db03b22155e7f8d",
         "cps_provider_1_variable": "47fd1a23024db5cdb07cf220b947fdf6b51c21ff4c956ebae8cccc24a850cb59",
         "cps_provider_1_variable_found": "3a65d43e68e73ada735931cf6e27e072e2f98c5af2e682293a3c4351618a7e86",
-        "cps_provider_1_native_match_bind_slot_0": "b7b40000bfc8998a4d221dede0c2c619284a2599769abd9ed2d0d3b987e6308d",
+        "cps_provider_1_native_match_bind_slot_0": "1772c5622e257a798cdc6e2e5c3ccfd56d7058775e1c85fa8b859b6386fc3a1f",
         "cps_provider_1_native_match_bind_slot_1": "aa513a17c08e8cafc5dd72462858d138ba6ed03f8e79c6c4d3cbe75651afb282",
         "cps_provider_1_native_match_bind_slot_2": "8f8dda341c5f9f00b100bbbe42e2d09cf887f8d78752bee428e38503721a6c51",
         "cps_provider_1_bind_slot": "2c6d7a1e23d5dd424947f1b7d6723c7664cfc27b6d5515456c6fafd5f165eea4",
@@ -47757,15 +47551,7 @@
         "cps_provider_1_constructor_id": "b6e43ae4a9666caf90f3da2d060c3268b99bacb5163d5dd58d0bdc64c8f74505",
         "cps_provider_1_constructor_key": "031d753ee32d04f032b2a289d5ba9ae7d94c68dabbfc954266156bbf978c7cf4",
         "cps_provider_1_atom_arguments": "cf0d479c2822fa15c532f51b4504f7a1f92c1de144934887a6e7a0b300ec7701",
-        "cps_provider_1_descriptor_found": "fad49c701b56d08974cb341218c6861bc39588d7f240f68aabe9e08251fff9eb",
-        "cps_provider_1_described_at": "360dd8335643705422bd1b498c5deb4166d0f6fdd64d2d0cc73727932557ad43",
-        "cps_provider_1_normalization_context": "1353777391395d64f40b280d37767445c823aded446c3f5846ecef534e41ec5d",
-        "cps_provider_1_normalization_scope": "ef3c68c736ee02c8c601ce8c5429f14b1812dd70ede2d290eff8f93f633048ec",
-        "cps_provider_1_normalization_cleared": "735b69a4ac575d8ac27d1ca7470f9ecc08187a1f63b94e5db80e198bf900c60a",
-        "cps_provider_1_describe": "9ec33c5153d91d67ff69f89a5f7f7cfe0262f3cb9a3c5da108aba96645d6a260",
-        "cps_provider_1_describe_found": "ae717f9884dd07790d78c55da35f0b4f43b13a6e454e361b455c635099ff460d",
-        "cps_provider_1_describe_reduced": "1c162836d93aa326f775e6b0404fea0a85e4bdab2203f24339858b73630722c0",
-        "cps_provider_1_describe_normalized": "b5fe869ee93c19e3886d340c3b3977849eba48a036d60365542b94049733d8f0",
+        "cps_provider_1_describe": "f0b4660694789a47a1155afeb992a5e4d2bb6b6d195db4cc75842a29a8a3fe9a",
         "cps_provider_1_element_value": "c8cbce50c2642bcefcef3588bc6bf920056ab64e4d0295cec82aea449ae20641",
         "cps_provider_1_single_argument": "e3b15b42e9a0f022bd272c1ccb9e28852a875215be2d7a6b6aa591cac47af716",
         "cps_provider_1_map_value_argument": "c09960f7c85768c9105e9ddb38d6d746cb738ea66fce60f4d0c74361c93cc396",
@@ -48020,7 +47806,7 @@
         "cps_provider_1_native_match_matcher_fields_1": "e5e717c4f6463a4be244da637ca80d5cb134ff1e74007fc4ccb8be713f1b1518",
         "cps_provider_1_native_match_matcher_fields_2": "31bf160edff5d2235ab30ab232f76247793d3b7f0386976643d4e55d618c9bae",
         "cps_provider_1_matcher_fields": "f8d13122de5243748b7e086a315ccad77649ab1d710b7b1df65c734725a5715c",
-        "cps_provider_1_native_match_definition_frame_0": "b4279eaa21f5506aafad2bcfb7e623055850701ba54b0a2b5b0a659bd34c3e8e",
+        "cps_provider_1_native_match_definition_frame_0": "6e61594bc2b88621674b54c828d643950417516c1d0f6d8baa1a2f2ededd43b2",
         "cps_provider_1_definition_frame": "3eeed516ffbb9f0e981a353c8d4cef54fc7f5fa41ec970081a44fc76b9a69e4c",
         "cps_provider_1_definition_env": "5376a1c1142f1006b07f5ca83952287039ea1b36d300ed5bad4c1e947edfb2a4",
         "cps_provider_1_definitions": "9a353d3d3894e3ebedb3ed957e787cb2e1466b2bb72b6d26bd696e6313429995",
@@ -48066,7 +47852,7 @@
         "cps_provider_1_lower": "970c1c5cf30f042fe7f02402f7a00c8abd721a4cfd74c093508ef0edca571840",
         "cps_provider_1_lower_library": "92dd32a881956d743cc0128cb8418e05304ed7b8c141709480c787414e31e595",
         "cps_provider_1_lower_prepared": "8324d2386be4c0de984128e8a7cd223b4ada83d37f16e3365cd25de2321c35a0",
-        "cps_provider_1_lower_catalog": "a7a871bc013df6463610a477b4d30aa3735c8992c481b72ea5510a39a90a921c",
+        "cps_provider_1_lower_catalog": "6fd25a047112993f03d106ebf4bd6c4c64697a08ae4b69794f5afa296fb8999d",
         "cps_provider_1_lower_definitions": "86284c98f2552da62a2d99ca6ee34475f56b1d9e6369ba9fb023c29619a36b60",
         "cps_provider_1_lower_complete": "78090bf33d482c4d73e18465e37596c9c92c9ae1dd919b2139ac9751b23f2ccc",
         "cps_provider_2_build_new": "3cb07b0367b7f1464e15ffb60f2f6216582fd35accd3206dc4d422e0bfd6cfd4",
@@ -50882,19 +50668,15 @@
     },
     {
       "name": "definition_classify",
-      "exactCanonicalBlockSha256": "92bf0803baff27c70c50da5d4d177704b9d619de29598cebcddff5be5b2c340c"
+      "exactCanonicalBlockSha256": "9285c26ba000b7a53d177ef915e54fa81eeb2dd744a991ff0307a0cf3d0d69a4"
     },
     {
       "name": "require_checked_definition",
-      "exactCanonicalBlockSha256": "cecb6c95ae571d056a1801de5eaf4c88fde0df9bc07cdfab147c1296dbad352e"
-    },
-    {
-      "name": "checked_declaration_work",
-      "exactCanonicalBlockSha256": "7e7a98ed3e31a8568fcfe62d8ad641d94329f43dd698b9bf7f08fd6049f3d176"
+      "exactCanonicalBlockSha256": "34274bb380b68080e9b51e694261335c31652285f4cb777b8af5a2af3da42ffb"
     },
     {
       "name": "checked_declaration_result",
-      "exactCanonicalBlockSha256": "ec8b05173e78bf6ae9cf8d963503077013af6f4294baf61e4aa6801f5aef554b"
+      "exactCanonicalBlockSha256": "d3707b9a57c92a8f0b3757911c6d88f4a55ca9ce0b03b8f1c02c5fd9ee3f956a"
     },
     {
       "name": "local_occurrence",
@@ -50970,7 +50752,7 @@
     },
     {
       "name": "checked_symbol",
-      "exactCanonicalBlockSha256": "afc92a5ac3f85835339842b0209483afe4a42325f622ba36eafa729d610b4c38"
+      "exactCanonicalBlockSha256": "591fd02f4451db1cb45f400ca5b074262e87c452becc2fbd17ab818de925294c"
     },
     {
       "name": "resolution_frame_begin",
@@ -51026,35 +50808,7 @@
     },
     {
       "name": "resolved_name_kind",
-      "exactCanonicalBlockSha256": "ea47d32a8915729a55ac5b20d73a3bd7d440fba260eed29bc5e399b573b1f3bd"
-    },
-    {
-      "name": "canonical_name_id_of",
-      "exactCanonicalBlockSha256": "54b80eea85b7f5a30ccc9e70bc96db06a09f60671ed91be98e420b22818058fd"
-    },
-    {
-      "name": "canonical_name_id_store",
-      "exactCanonicalBlockSha256": "79c0cb162c0910419a9dd6e480f96f2d50476bd923497055a926d6b266fac199"
-    },
-    {
-      "name": "canonical_name_id_resolved",
-      "exactCanonicalBlockSha256": "5d5b7758879bc944e12397f7c4839b6ce0efba1ad86f582298bb4f2c85d5af56"
-    },
-    {
-      "name": "canonical_name_id_hit",
-      "exactCanonicalBlockSha256": "453f9d0c537d2bd2d15ea295a3d53d381e42c0d5267a996af7c95e8548db8f27"
-    },
-    {
-      "name": "canonical_name_id_framed",
-      "exactCanonicalBlockSha256": "98b205d754dc4e1388dcb1ed0ce6772f5ac148eaf7ea4b573afcbe1baf78372e"
-    },
-    {
-      "name": "canonical_name_id_plain",
-      "exactCanonicalBlockSha256": "0ce37c7e160a81ca16d0031a29c5ef417c8565c416373cd5f4303218a646e3d9"
-    },
-    {
-      "name": "canonical_name_id",
-      "exactCanonicalBlockSha256": "86130fb124dfdf18333fb8400be872cab9978aa7771d9b5fdb6a42e728655064"
+      "exactCanonicalBlockSha256": "57cedf52b500c895683e1ab062ad5264c5f3b633a5c17d376a5a61a84041b30b"
     },
     {
       "name": "occurrence_retype",
@@ -51718,11 +51472,11 @@
     },
     {
       "name": "infer_global_reference",
-      "exactCanonicalBlockSha256": "b18a09b9f9b90ed3a035c268207991b52f28ecd38c15cfb3999ed385b01e9a19"
+      "exactCanonicalBlockSha256": "1ee4d385f5c60722753c40f11d1fd62353e830cfadfd08862db9baf3256a86bd"
     },
     {
       "name": "infer_global_adt",
-      "exactCanonicalBlockSha256": "2b24bed341214c2d753d78929cec188b1cac27f21ff65de7bbd2069d05b6dbb3"
+      "exactCanonicalBlockSha256": "1ffc1c56a50112def54dd1b5290f2d2c0cb6f29e07547d4c2bf98dbe00a03f1e"
     },
     {
       "name": "binding_type_at",
@@ -51814,7 +51568,7 @@
     },
     {
       "name": "canonicalize_strings",
-      "exactCanonicalBlockSha256": "7da5badb76a29ada3551bf4afd1e5d9078c3be9633432a1905d2f4066a062016"
+      "exactCanonicalBlockSha256": "cf89689a6fd5a3eab2c56943e1ce9cab54397c3949d770965e135552950f0300"
     },
     {
       "name": "canonicalize_patterns",
@@ -51822,7 +51576,7 @@
     },
     {
       "name": "canonicalize_pattern",
-      "exactCanonicalBlockSha256": "edce629f6b4d01317ead527b8a6e3646d366d4eda18fa4eb147f4fd1f6e69309"
+      "exactCanonicalBlockSha256": "40e20cb1308c83aa99283e064ba330a58c7bd20e9a6db82180568fefee84a066"
     },
     {
       "name": "canonicalize_terms",
@@ -51830,11 +51584,7 @@
     },
     {
       "name": "canonicalize_term",
-      "exactCanonicalBlockSha256": "e19a6e776e55b832bafa3178883f6a9649fda06e08f16d230f53618fd204439e"
-    },
-    {
-      "name": "canonicalize_term_framed",
-      "exactCanonicalBlockSha256": "3a76f02ac1b6471811ff20354e54ddafa2b571c7bcb6a92325c378829ae6307e"
+      "exactCanonicalBlockSha256": "501ce8a97a9e3284edefa087972fb8563447f0c8b5c44f6880d09341f5d074ed"
     },
     {
       "name": "mat_branch_goal_view",
@@ -53146,7 +52896,7 @@
     },
     {
       "name": "check_constructors_fields_result",
-      "exactCanonicalBlockSha256": "eacdb8671f48eb1ceef94818b27b5f46f61cc73476d6e3e676614529ab5330c8"
+      "exactCanonicalBlockSha256": "829ebaa16a69b7424f94fccbdc3c901508dabb04505bacef9685fab68e77654c"
     },
     {
       "name": "check_constructors_type_result",
@@ -53166,7 +52916,7 @@
     },
     {
       "name": "check_import_foreign_head",
-      "exactCanonicalBlockSha256": "133233f62631d7dfc933714de45d2e4150ed4fdd79803d285195b5a8d1b814f7"
+      "exactCanonicalBlockSha256": "5248c95b963e5cd034621b1781e43ba96dfaeef9593efef6971871aed8b97af4"
     },
     {
       "name": "check_import_type_result",
@@ -53182,7 +52932,7 @@
     },
     {
       "name": "check_type_decl_ir",
-      "exactCanonicalBlockSha256": "47455ff604aab33455963ca23f5110fa6f1489a618f985228d1017146ce62441"
+      "exactCanonicalBlockSha256": "4d5c5616eb96c87e83ccbc02bd155e44d739cec656102a6e3ac7460acf323c3a"
     },
     {
       "name": "foreign_head",
@@ -53374,7 +53124,7 @@
     },
     {
       "name": "store_definition_declared",
-      "exactCanonicalBlockSha256": "dc37dadda5e9e27e603a66bf7772554b54f1c677d842dbeca31f7138ed922a97"
+      "exactCanonicalBlockSha256": "f153a1e765eda3b1430b838b4c05a3aa0af1b08d5245fa1396c445e47fc75e89"
     },
     {
       "name": "store_definition_result",
@@ -53382,7 +53132,7 @@
     },
     {
       "name": "store_definition",
-      "exactCanonicalBlockSha256": "cc4803a49fa54f7bc62abe049441b1c8726688f10db7074cfaf29f10b855c96c"
+      "exactCanonicalBlockSha256": "e9b1d31559d046a51587a1a61ca6d082cc6736b5ed5dbc35894859ed59b0725c"
     },
     {
       "name": "check_definition_declared_type",
@@ -53470,7 +53220,7 @@
     },
     {
       "name": "check_law_result",
-      "exactCanonicalBlockSha256": "066f320be66a44b500d40aa72581f32701679a2988ada3baba25009a8fd1f234"
+      "exactCanonicalBlockSha256": "1b3336f9816ea2ddae1bdbb8eef8c631254252114e34cd98506960f9cef1150e"
     },
     {
       "name": "check_law",
@@ -53502,7 +53252,7 @@
     },
     {
       "name": "inherit_law_definition",
-      "exactCanonicalBlockSha256": "095f1f2ce0acff24cfd6ba498f9c01cce88f905909417d7df77ff2238823936f"
+      "exactCanonicalBlockSha256": "ad397b29736a6665716b0c3024072e2159e7bffe00e61a0eca2f4fe8f75e8ef2"
     },
     {
       "name": "elaborate_definition_global",
@@ -53522,7 +53272,7 @@
     },
     {
       "name": "check_declarations_step",
-      "exactCanonicalBlockSha256": "d8e465fcad9d44cd9f13730682cb080a818415ee750a1ad0e41343bb10c10490"
+      "exactCanonicalBlockSha256": "bca151fb08e3df6fdb1840c9de5948fb1146521a4e078b04b94e37c03f17fb52"
     },
     {
       "name": "check_declarations_definition",
@@ -53530,11 +53280,11 @@
     },
     {
       "name": "check_declarations_type_result",
-      "exactCanonicalBlockSha256": "2e3c9902be83367f3378e349a1d1aa2957000d76fecbce5e34d900333f81f175"
+      "exactCanonicalBlockSha256": "ab4800e41d227e258f03a8922141733c5ab0b3c48844a35d215a670dd69c1cc6"
     },
     {
       "name": "check_declarations_law_result",
-      "exactCanonicalBlockSha256": "00af8639c032e2bc99467504e1c3c53a5880ed0f889c6a86315b4181e0ae663b"
+      "exactCanonicalBlockSha256": "b97069a1abf97ef016be41a88b85797b09789b77cc58d249b4e62f0d257ea5c3"
     },
     {
       "name": "check_declarations",
@@ -54249,6 +53999,10 @@
       "exactCanonicalBlockSha256": "c1f3f841b8ff82f02dd709a0c0557648b2b3caf4e5395c4dc8247b6ac4006682"
     },
     {
+      "name": "arena_word_cursor",
+      "exactCanonicalBlockSha256": "4073539b5a5e22bc2e4ef8228613d489b67b05ed657b83f56a7d0c5e92fe4db9"
+    },
+    {
       "name": "arena_copy_word_range",
       "exactCanonicalBlockSha256": "5d71cd6de429786dfbfdb1fc9502ddb94a9260a73b6d73a82169e2ddbcb3a45d"
     },
@@ -54426,23 +54180,15 @@
     },
     {
       "name": "arena_words_prepend_fast",
-      "exactCanonicalBlockSha256": "bf313ec518467d9ab7215b34270c053b9b1b52778a579a00adcf1f4be53d83a1"
+      "exactCanonicalBlockSha256": "91a9dc6de2d06de457bbae7152c5dd831b63c2946f438453d11c2894397dd8d6"
     },
     {
-      "name": "arena_words_cons_tail",
-      "exactCanonicalBlockSha256": "d388e773384dd37d887d4554955054541864d6c0c7ba84dbf286f07bfe1b2084"
-    },
-    {
-      "name": "arena_words_cons_appended",
-      "exactCanonicalBlockSha256": "46cf5a4bb0a4c2b7e397ae03db0a9c885f13f2824ff95761ec3ee21f8d734ff9"
-    },
-    {
-      "name": "arena_words_cons_append",
-      "exactCanonicalBlockSha256": "94c914e616489d1addaadb2780fdb953233882663f9de41cd90ef1db4aa621ae"
+      "name": "arena_words_prepend_count",
+      "exactCanonicalBlockSha256": "7a85b4c185b1fd22b94a4e9da33aecafc510574a809a92b813e072b6e5db47e6"
     },
     {
       "name": "arena_words_cons",
-      "exactCanonicalBlockSha256": "2b49a9a3e68cb28255636bc60d442f4b5626750d50e93d3d3cd194d3f4b9a718"
+      "exactCanonicalBlockSha256": "bbd2ff35eb0a3a657416638720ce5b8c1e0e5e359c4bcb3c5ca597fd494c9d9a"
     },
     {
       "name": "arena_words_append_copy",
@@ -54490,27 +54236,15 @@
     },
     {
       "name": "arena_names_prepend_fast",
-      "exactCanonicalBlockSha256": "ee2f46e399160347d923b624f07f83db2692343f7e01549f3d912a0a421397e6"
+      "exactCanonicalBlockSha256": "0877b56cf543fe5034a7936cc15283fe9cd26f4f53e9aefed970ee130215f357"
     },
     {
-      "name": "arena_names_cons_tail",
-      "exactCanonicalBlockSha256": "158176779ddd652481180c342f2c4347a809a5e0095a390cfb0291861e737033"
-    },
-    {
-      "name": "arena_names_cons_appended",
-      "exactCanonicalBlockSha256": "f2b14c1f2090384c1ea5f8c1a2474a6d403b5c1dde6d91d713f3c2750d0df98b"
-    },
-    {
-      "name": "arena_names_cons_append",
-      "exactCanonicalBlockSha256": "ba594c1b1a4e55374cb1206995fefbd02aac3b9b71df8b9f7a7f290ceaac91e8"
-    },
-    {
-      "name": "arena_names_cons_id",
-      "exactCanonicalBlockSha256": "fef150271004febace053d81c9579781fd7e309a69767c6a69011ec5f79f518c"
+      "name": "arena_names_prepend_count",
+      "exactCanonicalBlockSha256": "dc182b9c48c349bd5a35a96798d6a5defd8c120bf45c987affc6c1e5117020cd"
     },
     {
       "name": "arena_names_cons",
-      "exactCanonicalBlockSha256": "fd16a6ef62e585a2ed3dca1dd48cae06e07f3158900acab4c5148f9d8d96d310"
+      "exactCanonicalBlockSha256": "b6efcbb0fcb735a1473b77263824c2b0ab9f15ea47c308be9fdeb75c32cb97bd"
     },
     {
       "name": "arena_names_append_copy",
@@ -54561,20 +54295,12 @@
       "exactCanonicalBlockSha256": "217e43f35003c47d8d9bfe129f05ad77592afe9695d79dda5794eae0b9a56dbd"
     },
     {
-      "name": "arena_quantities_cons_tail",
-      "exactCanonicalBlockSha256": "b0115210cdab16e67cc98dadb8200573740388c7c1d4f0bab33b8675245ed6cb"
-    },
-    {
-      "name": "arena_quantities_cons_appended",
-      "exactCanonicalBlockSha256": "4c7bef46bd8fcf38ebb017ec58b82c3976f1ec6d78aa9ba0b96fc8b5ad7f3a39"
-    },
-    {
-      "name": "arena_quantities_cons_append",
-      "exactCanonicalBlockSha256": "f0456da2cf35ce5ce9a0e0c1cf6b008e200ccc3de64a637eb77b77d4d5c50ecb"
+      "name": "arena_quantities_prepend_count",
+      "exactCanonicalBlockSha256": "60fa31b16508f85c94ac0a1b1172670a13ef3355c9504f060b3b2228bbd987b9"
     },
     {
       "name": "arena_quantities_cons",
-      "exactCanonicalBlockSha256": "f42cdd4de2c670ad1f7ed5b7d4adfb622a5f52e0de62cc3446a7461ab64b92ca"
+      "exactCanonicalBlockSha256": "b5e46c1f42e1174e0519f8ca2e0a17a7a99a4adf9949d1fb4afa5bc27223b482"
     },
     {
       "name": "arena_publish_terms_copy",
@@ -54890,15 +54616,7 @@
     },
     {
       "name": "arena_publish_definition",
-      "exactCanonicalBlockSha256": "f8f9f2146cd309df0e13422261bf1489b66053a8dc7d7bf2244dd5cebd6c660a"
-    },
-    {
-      "name": "arena_publish_checked_definition",
-      "exactCanonicalBlockSha256": "5dd0246b2fae49a9890addbabf73d7f38841742b99e612dfee7f57001ad1a8c1"
-    },
-    {
-      "name": "declaration_publish",
-      "exactCanonicalBlockSha256": "9224b315b93d81288a5705380634642e31344d4fac205c8ca1cd1cd2338016fd"
+      "exactCanonicalBlockSha256": "d6adef04993ae05a43693f8bc28d113d232050a1f6da9702328c97fafc3fdba7"
     },
     {
       "name": "arena_publish_type_decl",
@@ -55211,6 +54929,10 @@
     {
       "name": "arena_reserve_source_words_reserve_words_result_23",
       "exactCanonicalBlockSha256": "aaabf454259d3df530af7bbf0f1bd3f9b5c1686648450cad312be82592c1ee2e"
+    },
+    {
+      "name": "arena_word_cursor_word_count_result_24",
+      "exactCanonicalBlockSha256": "d4f59b2d50ef250cec64fb8ee17fab9eb72a79fa6c0536cd3646c86ce3ba53e6"
     },
     {
       "name": "arena_reserve_source_naturals_reserve_naturals_result_26",
@@ -56101,27 +55823,6 @@
       "producers": 0
     },
     {
-      "owner": "checked_declaration_result",
-      "helper": "native_match_checked_declaration_result_0",
-      "kind": "local",
-      "captures": [
-        11
-      ],
-      "producers": 1
-    },
-    {
-      "owner": "checked_declaration_result",
-      "helper": "native_match_checked_declaration_result_1",
-      "kind": "match",
-      "captures": [
-        3,
-        1,
-        4,
-        5
-      ],
-      "producers": 0
-    },
-    {
       "owner": "occurrence_words_equal",
       "helper": "native_match_occurrence_words_equal_0",
       "kind": "match",
@@ -56647,123 +56348,6 @@
         3,
         4,
         5
-      ],
-      "producers": 1
-    },
-    {
-      "owner": "canonical_name_id_of",
-      "helper": "native_match_canonical_name_id_of_0",
-      "kind": "match",
-      "captures": [
-        1,
-        3
-      ],
-      "producers": 1
-    },
-    {
-      "owner": "canonical_name_id_resolved",
-      "helper": "native_match_canonical_name_id_resolved_0",
-      "kind": "local",
-      "captures": [
-        3,
-        5,
-        7,
-        8
-      ],
-      "producers": 1
-    },
-    {
-      "owner": "canonical_name_id_resolved",
-      "helper": "native_match_canonical_name_id_resolved_1",
-      "kind": "match",
-      "captures": [
-        1,
-        3,
-        5,
-        7,
-        8
-      ],
-      "producers": 1
-    },
-    {
-      "owner": "canonical_name_id_hit",
-      "helper": "native_match_canonical_name_id_hit_0",
-      "kind": "local",
-      "captures": [
-        5,
-        7,
-        9
-      ],
-      "producers": 1
-    },
-    {
-      "owner": "canonical_name_id_hit",
-      "helper": "native_match_canonical_name_id_hit_1",
-      "kind": "match",
-      "captures": [
-        3,
-        1,
-        5,
-        7,
-        9,
-        10
-      ],
-      "producers": 0
-    },
-    {
-      "owner": "canonical_name_id_framed",
-      "helper": "native_match_canonical_name_id_framed_0",
-      "kind": "match",
-      "captures": [
-        3,
-        5,
-        7,
-        8,
-        13
-      ],
-      "producers": 1
-    },
-    {
-      "owner": "canonical_name_id_framed",
-      "helper": "native_match_canonical_name_id_framed_1",
-      "kind": "match",
-      "captures": [
-        1,
-        3,
-        5,
-        7,
-        8
-      ],
-      "producers": 0
-    },
-    {
-      "owner": "canonical_name_id_plain",
-      "helper": "native_match_canonical_name_id_plain_0",
-      "kind": "local",
-      "captures": [
-        3
-      ],
-      "producers": 1
-    },
-    {
-      "owner": "canonical_name_id",
-      "helper": "native_match_canonical_name_id_0",
-      "kind": "match",
-      "captures": [
-        10,
-        3,
-        4,
-        9
-      ],
-      "producers": 0
-    },
-    {
-      "owner": "canonical_name_id",
-      "helper": "native_match_canonical_name_id_1",
-      "kind": "local",
-      "captures": [
-        3,
-        4
       ],
       "producers": 1
     },
@@ -63350,7 +62934,7 @@
       "helper": "native_match_infer_global_adt_0",
       "kind": "local",
       "captures": [
-        17
+        16
       ],
       "producers": 1
     },
@@ -63359,7 +62943,7 @@
       "helper": "native_match_infer_global_adt_1",
       "kind": "match",
       "captures": [
-        17,
+        16,
         1,
         3,
         5,
@@ -64683,9 +64267,7 @@
       "owner": "canonicalize_strings",
       "helper": "native_match_canonicalize_strings_0",
       "kind": "local",
-      "captures": [
-        17
-      ],
+      "captures": [],
       "producers": 1
     },
     {
@@ -64694,43 +64276,29 @@
       "kind": "local",
       "captures": [
         3,
-        13
+        16
       ],
       "producers": 1
     },
     {
       "owner": "canonicalize_strings",
       "helper": "native_match_canonicalize_strings_2",
-      "kind": "local",
+      "kind": "match",
       "captures": [
+        9,
         3,
-        7,
         8
       ],
-      "producers": 1
+      "producers": 0
     },
     {
       "owner": "canonicalize_strings",
       "helper": "native_match_canonicalize_strings_3",
-      "kind": "match",
+      "kind": "local",
       "captures": [
-        1,
-        3,
-        7,
-        8
-      ],
-      "producers": 1
-    },
-    {
-      "owner": "canonicalize_strings",
-      "helper": "native_match_canonicalize_strings_4",
-      "kind": "match",
-      "captures": [
-        2,
-        1,
         3
       ],
-      "producers": 0
+      "producers": 1
     },
     {
       "owner": "canonicalize_patterns",
@@ -64797,8 +64365,8 @@
       "helper": "native_match_canonicalize_pattern_2",
       "kind": "local",
       "captures": [
-        48,
-        53
+        53,
+        58
       ],
       "producers": 1
     },
@@ -64807,15 +64375,26 @@
       "helper": "native_match_canonicalize_pattern_3",
       "kind": "local",
       "captures": [
-        4,
-        39,
-        48
+        47,
+        53
       ],
       "producers": 1
     },
     {
       "owner": "canonicalize_pattern",
       "helper": "native_match_canonicalize_pattern_4",
+      "kind": "local",
+      "captures": [
+        4,
+        40,
+        41,
+        42
+      ],
+      "producers": 1
+    },
+    {
+      "owner": "canonicalize_pattern",
+      "helper": "native_match_canonicalize_pattern_5",
       "kind": "match",
       "captures": [
         11,
@@ -64826,7 +64405,7 @@
     },
     {
       "owner": "canonicalize_pattern",
-      "helper": "native_match_canonicalize_pattern_5",
+      "helper": "native_match_canonicalize_pattern_6",
       "kind": "local",
       "captures": [
         4
@@ -64898,7 +64477,7 @@
       "helper": "native_match_canonicalize_term_2",
       "kind": "local",
       "captures": [
-        36
+        41
       ],
       "producers": 1
     },
@@ -64906,34 +64485,32 @@
       "owner": "canonicalize_term",
       "helper": "native_match_canonicalize_term_3",
       "kind": "local",
-      "captures": [],
+      "captures": [
+        34
+      ],
       "producers": 1
     },
     {
       "owner": "canonicalize_term",
       "helper": "native_match_canonicalize_term_4",
       "kind": "local",
-      "captures": [
-        56
-      ],
+      "captures": [],
       "producers": 1
     },
     {
       "owner": "canonicalize_term",
       "helper": "native_match_canonicalize_term_5",
       "kind": "local",
-      "captures": [],
+      "captures": [
+        61
+      ],
       "producers": 1
     },
     {
       "owner": "canonicalize_term",
       "helper": "native_match_canonicalize_term_6",
       "kind": "local",
-      "captures": [
-        78,
-        84,
-        89
-      ],
+      "captures": [],
       "producers": 1
     },
     {
@@ -64941,10 +64518,9 @@
       "helper": "native_match_canonicalize_term_7",
       "kind": "local",
       "captures": [
-        4,
-        78,
-        82,
-        84
+        83,
+        89,
+        94
       ],
       "producers": 1
     },
@@ -64952,17 +64528,19 @@
       "owner": "canonicalize_term",
       "helper": "native_match_canonicalize_term_8",
       "kind": "local",
-      "captures": [],
+      "captures": [
+        4,
+        83,
+        87,
+        89
+      ],
       "producers": 1
     },
     {
       "owner": "canonicalize_term",
       "helper": "native_match_canonicalize_term_9",
       "kind": "local",
-      "captures": [
-        113,
-        118
-      ],
+      "captures": [],
       "producers": 1
     },
     {
@@ -64970,9 +64548,8 @@
       "helper": "native_match_canonicalize_term_10",
       "kind": "local",
       "captures": [
-        4,
-        111,
-        113
+        118,
+        123
       ],
       "producers": 1
     },
@@ -64980,36 +64557,34 @@
       "owner": "canonicalize_term",
       "helper": "native_match_canonicalize_term_11",
       "kind": "local",
-      "captures": [],
+      "captures": [
+        4,
+        116,
+        118
+      ],
       "producers": 1
     },
     {
       "owner": "canonicalize_term",
       "helper": "native_match_canonicalize_term_12",
       "kind": "local",
-      "captures": [
-        138
-      ],
+      "captures": [],
       "producers": 1
     },
     {
       "owner": "canonicalize_term",
       "helper": "native_match_canonicalize_term_13",
       "kind": "local",
-      "captures": [],
+      "captures": [
+        143
+      ],
       "producers": 1
     },
     {
       "owner": "canonicalize_term",
       "helper": "native_match_canonicalize_term_14",
       "kind": "local",
-      "captures": [
-        180,
-        182,
-        184,
-        190,
-        195
-      ],
+      "captures": [],
       "producers": 1
     },
     {
@@ -65017,12 +64592,11 @@
       "helper": "native_match_canonicalize_term_15",
       "kind": "local",
       "captures": [
-        4,
-        180,
-        182,
-        184,
-        188,
-        190
+        185,
+        187,
+        189,
+        195,
+        200
       ],
       "producers": 1
     },
@@ -65030,23 +64604,30 @@
       "owner": "canonicalize_term",
       "helper": "native_match_canonicalize_term_16",
       "kind": "local",
-      "captures": [],
+      "captures": [
+        4,
+        185,
+        187,
+        189,
+        193,
+        195
+      ],
       "producers": 1
     },
     {
       "owner": "canonicalize_term",
       "helper": "native_match_canonicalize_term_17",
       "kind": "local",
-      "captures": [
-        239
-      ],
+      "captures": [],
       "producers": 1
     },
     {
       "owner": "canonicalize_term",
       "helper": "native_match_canonicalize_term_18",
       "kind": "local",
-      "captures": [],
+      "captures": [
+        244
+      ],
       "producers": 1
     },
     {
@@ -65060,10 +64641,7 @@
       "owner": "canonicalize_term",
       "helper": "native_match_canonicalize_term_20",
       "kind": "local",
-      "captures": [
-        280,
-        285
-      ],
+      "captures": [],
       "producers": 1
     },
     {
@@ -65071,9 +64649,8 @@
       "helper": "native_match_canonicalize_term_21",
       "kind": "local",
       "captures": [
-        4,
-        278,
-        280
+        285,
+        290
       ],
       "producers": 1
     },
@@ -65081,20 +64658,18 @@
       "owner": "canonicalize_term",
       "helper": "native_match_canonicalize_term_22",
       "kind": "local",
-      "captures": [],
+      "captures": [
+        4,
+        283,
+        285
+      ],
       "producers": 1
     },
     {
       "owner": "canonicalize_term",
       "helper": "native_match_canonicalize_term_23",
       "kind": "local",
-      "captures": [
-        311,
-        313,
-        315,
-        321,
-        326
-      ],
+      "captures": [],
       "producers": 1
     },
     {
@@ -65102,12 +64677,11 @@
       "helper": "native_match_canonicalize_term_24",
       "kind": "local",
       "captures": [
-        4,
-        311,
-        313,
-        315,
-        319,
-        321
+        316,
+        318,
+        320,
+        326,
+        331
       ],
       "producers": 1
     },
@@ -65115,36 +64689,40 @@
       "owner": "canonicalize_term",
       "helper": "native_match_canonicalize_term_25",
       "kind": "local",
-      "captures": [],
+      "captures": [
+        4,
+        316,
+        318,
+        320,
+        324,
+        326
+      ],
       "producers": 1
     },
     {
       "owner": "canonicalize_term",
       "helper": "native_match_canonicalize_term_26",
       "kind": "local",
-      "captures": [
-        350,
-        352,
-        354,
-        358
-      ],
+      "captures": [],
       "producers": 1
     },
     {
       "owner": "canonicalize_term",
       "helper": "native_match_canonicalize_term_27",
       "kind": "local",
-      "captures": [],
+      "captures": [
+        355,
+        357,
+        359,
+        363
+      ],
       "producers": 1
     },
     {
       "owner": "canonicalize_term",
       "helper": "native_match_canonicalize_term_28",
       "kind": "local",
-      "captures": [
-        382,
-        387
-      ],
+      "captures": [],
       "producers": 1
     },
     {
@@ -65152,9 +64730,8 @@
       "helper": "native_match_canonicalize_term_29",
       "kind": "local",
       "captures": [
-        4,
-        380,
-        382
+        387,
+        392
       ],
       "producers": 1
     },
@@ -65162,17 +64739,18 @@
       "owner": "canonicalize_term",
       "helper": "native_match_canonicalize_term_30",
       "kind": "local",
-      "captures": [],
+      "captures": [
+        4,
+        385,
+        387
+      ],
       "producers": 1
     },
     {
       "owner": "canonicalize_term",
       "helper": "native_match_canonicalize_term_31",
       "kind": "local",
-      "captures": [
-        415,
-        420
-      ],
+      "captures": [],
       "producers": 1
     },
     {
@@ -65180,9 +64758,8 @@
       "helper": "native_match_canonicalize_term_32",
       "kind": "local",
       "captures": [
-        4,
-        413,
-        415
+        420,
+        425
       ],
       "producers": 1
     },
@@ -65190,17 +64767,18 @@
       "owner": "canonicalize_term",
       "helper": "native_match_canonicalize_term_33",
       "kind": "local",
-      "captures": [],
+      "captures": [
+        4,
+        418,
+        420
+      ],
       "producers": 1
     },
     {
       "owner": "canonicalize_term",
       "helper": "native_match_canonicalize_term_34",
       "kind": "local",
-      "captures": [
-        454,
-        459
-      ],
+      "captures": [],
       "producers": 1
     },
     {
@@ -65208,9 +64786,8 @@
       "helper": "native_match_canonicalize_term_35",
       "kind": "local",
       "captures": [
-        4,
-        452,
-        454
+        459,
+        464
       ],
       "producers": 1
     },
@@ -65218,18 +64795,18 @@
       "owner": "canonicalize_term",
       "helper": "native_match_canonicalize_term_36",
       "kind": "local",
-      "captures": [],
+      "captures": [
+        4,
+        457,
+        459
+      ],
       "producers": 1
     },
     {
       "owner": "canonicalize_term",
       "helper": "native_match_canonicalize_term_37",
       "kind": "local",
-      "captures": [
-        499,
-        504,
-        509
-      ],
+      "captures": [],
       "producers": 1
     },
     {
@@ -65237,10 +64814,9 @@
       "helper": "native_match_canonicalize_term_38",
       "kind": "local",
       "captures": [
-        4,
-        484,
-        499,
-        504
+        513,
+        518,
+        523
       ],
       "producers": 1
     },
@@ -65250,9 +64826,9 @@
       "kind": "local",
       "captures": [
         4,
-        484,
-        497,
-        499
+        507,
+        513,
+        518
       ],
       "producers": 1
     },
@@ -65260,7 +64836,12 @@
       "owner": "canonicalize_term",
       "helper": "native_match_canonicalize_term_40",
       "kind": "local",
-      "captures": [],
+      "captures": [
+        4,
+        507,
+        511,
+        513
+      ],
       "producers": 1
     },
     {
@@ -65268,8 +64849,12 @@
       "helper": "native_match_canonicalize_term_41",
       "kind": "local",
       "captures": [
-        555,
-        560
+        4,
+        490,
+        491,
+        492,
+        493,
+        494
       ],
       "producers": 1
     },
@@ -65277,18 +64862,17 @@
       "owner": "canonicalize_term",
       "helper": "native_match_canonicalize_term_42",
       "kind": "local",
-      "captures": [
-        4,
-        546,
-        555
-      ],
+      "captures": [],
       "producers": 1
     },
     {
       "owner": "canonicalize_term",
       "helper": "native_match_canonicalize_term_43",
       "kind": "local",
-      "captures": [],
+      "captures": [
+        578,
+        583
+      ],
       "producers": 1
     },
     {
@@ -65296,9 +64880,9 @@
       "helper": "native_match_canonicalize_term_44",
       "kind": "local",
       "captures": [
-        592,
-        597,
-        602
+        4,
+        574,
+        578
       ],
       "producers": 1
     },
@@ -65308,9 +64892,9 @@
       "kind": "local",
       "captures": [
         4,
-        583,
-        592,
-        597
+        561,
+        562,
+        563
       ],
       "producers": 1
     },
@@ -65318,19 +64902,18 @@
       "owner": "canonicalize_term",
       "helper": "native_match_canonicalize_term_46",
       "kind": "local",
-      "captures": [
-        4,
-        583,
-        590,
-        592
-      ],
+      "captures": [],
       "producers": 1
     },
     {
       "owner": "canonicalize_term",
       "helper": "native_match_canonicalize_term_47",
       "kind": "local",
-      "captures": [],
+      "captures": [
+        624,
+        629,
+        634
+      ],
       "producers": 1
     },
     {
@@ -65338,9 +64921,10 @@
       "helper": "native_match_canonicalize_term_48",
       "kind": "local",
       "captures": [
-        634,
-        639,
-        644
+        4,
+        618,
+        624,
+        629
       ],
       "producers": 1
     },
@@ -65350,9 +64934,9 @@
       "kind": "local",
       "captures": [
         4,
-        632,
-        634,
-        639
+        618,
+        622,
+        624
       ],
       "producers": 1
     },
@@ -65362,9 +64946,9 @@
       "kind": "local",
       "captures": [
         4,
-        630,
-        632,
-        634
+        607,
+        608,
+        609
       ],
       "producers": 1
     },
@@ -65380,9 +64964,9 @@
       "helper": "native_match_canonicalize_term_52",
       "kind": "local",
       "captures": [
-        676,
-        681,
-        686
+        666,
+        671,
+        676
       ],
       "producers": 1
     },
@@ -65392,9 +64976,9 @@
       "kind": "local",
       "captures": [
         4,
-        674,
-        676,
-        681
+        664,
+        666,
+        671
       ],
       "producers": 1
     },
@@ -65404,9 +64988,9 @@
       "kind": "local",
       "captures": [
         4,
-        672,
-        674,
-        676
+        662,
+        664,
+        666
       ],
       "producers": 1
     },
@@ -65422,8 +65006,9 @@
       "helper": "native_match_canonicalize_term_56",
       "kind": "local",
       "captures": [
-        724,
-        729
+        708,
+        713,
+        718
       ],
       "producers": 1
     },
@@ -65433,8 +65018,9 @@
       "kind": "local",
       "captures": [
         4,
-        722,
-        724
+        706,
+        708,
+        713
       ],
       "producers": 1
     },
@@ -65442,17 +65028,19 @@
       "owner": "canonicalize_term",
       "helper": "native_match_canonicalize_term_58",
       "kind": "local",
-      "captures": [],
+      "captures": [
+        4,
+        704,
+        706,
+        708
+      ],
       "producers": 1
     },
     {
       "owner": "canonicalize_term",
       "helper": "native_match_canonicalize_term_59",
       "kind": "local",
-      "captures": [
-        769,
-        774
-      ],
+      "captures": [],
       "producers": 1
     },
     {
@@ -65460,9 +65048,8 @@
       "helper": "native_match_canonicalize_term_60",
       "kind": "local",
       "captures": [
-        4,
-        767,
-        769
+        756,
+        761
       ],
       "producers": 1
     },
@@ -65470,19 +65057,18 @@
       "owner": "canonicalize_term",
       "helper": "native_match_canonicalize_term_61",
       "kind": "local",
-      "captures": [],
+      "captures": [
+        4,
+        754,
+        756
+      ],
       "producers": 1
     },
     {
       "owner": "canonicalize_term",
       "helper": "native_match_canonicalize_term_62",
       "kind": "local",
-      "captures": [
-        814,
-        820,
-        825,
-        830
-      ],
+      "captures": [],
       "producers": 1
     },
     {
@@ -65490,11 +65076,8 @@
       "helper": "native_match_canonicalize_term_63",
       "kind": "local",
       "captures": [
-        4,
-        814,
-        818,
-        820,
-        825
+        801,
+        806
       ],
       "producers": 1
     },
@@ -65504,10 +65087,8 @@
       "kind": "local",
       "captures": [
         4,
-        814,
-        816,
-        818,
-        820
+        799,
+        801
       ],
       "producers": 1
     },
@@ -65523,6 +65104,9 @@
       "helper": "native_match_canonicalize_term_66",
       "kind": "local",
       "captures": [
+        846,
+        852,
+        857,
         862
       ],
       "producers": 1
@@ -65530,6 +65114,48 @@
     {
       "owner": "canonicalize_term",
       "helper": "native_match_canonicalize_term_67",
+      "kind": "local",
+      "captures": [
+        4,
+        846,
+        850,
+        852,
+        857
+      ],
+      "producers": 1
+    },
+    {
+      "owner": "canonicalize_term",
+      "helper": "native_match_canonicalize_term_68",
+      "kind": "local",
+      "captures": [
+        4,
+        846,
+        848,
+        850,
+        852
+      ],
+      "producers": 1
+    },
+    {
+      "owner": "canonicalize_term",
+      "helper": "native_match_canonicalize_term_69",
+      "kind": "local",
+      "captures": [],
+      "producers": 1
+    },
+    {
+      "owner": "canonicalize_term",
+      "helper": "native_match_canonicalize_term_70",
+      "kind": "local",
+      "captures": [
+        894
+      ],
+      "producers": 1
+    },
+    {
+      "owner": "canonicalize_term",
+      "helper": "native_match_canonicalize_term_71",
       "kind": "match",
       "captures": [
         11,
@@ -65541,19 +65167,12 @@
     },
     {
       "owner": "canonicalize_term",
-      "helper": "native_match_canonicalize_term_68",
+      "helper": "native_match_canonicalize_term_72",
       "kind": "local",
       "captures": [
         3,
         4
       ],
-      "producers": 1
-    },
-    {
-      "owner": "canonicalize_term_framed",
-      "helper": "native_match_canonicalize_term_framed_0",
-      "kind": "match",
-      "captures": [],
       "producers": 1
     },
     {
@@ -90115,7 +89734,7 @@
       "helper": "native_match_check_declarations_step_0",
       "kind": "local",
       "captures": [
-        40
+        39
       ],
       "producers": 1
     },
@@ -90124,12 +89743,12 @@
       "helper": "native_match_check_declarations_step_1",
       "kind": "local",
       "captures": [
-        7,
-        9,
-        11,
-        23,
-        33,
-        40
+        6,
+        8,
+        10,
+        22,
+        32,
+        39
       ],
       "producers": 1
     },
@@ -90138,14 +89757,14 @@
       "helper": "native_match_check_declarations_step_2",
       "kind": "local",
       "captures": [
-        7,
-        9,
-        11,
+        6,
+        8,
+        10,
+        13,
         14,
-        15,
-        23,
-        28,
-        33
+        22,
+        27,
+        32
       ],
       "producers": 1
     },
@@ -90154,13 +89773,13 @@
       "helper": "native_match_check_declarations_step_3",
       "kind": "local",
       "captures": [
-        7,
-        9,
-        11,
+        6,
+        8,
+        10,
+        13,
         14,
-        15,
-        23,
-        28
+        22,
+        27
       ],
       "producers": 1
     },
@@ -90169,13 +89788,13 @@
       "helper": "native_match_check_declarations_step_4",
       "kind": "local",
       "captures": [
-        7,
-        9,
+        6,
+        8,
+        10,
         11,
-        12,
+        13,
         14,
-        15,
-        23
+        22
       ],
       "producers": 1
     },
@@ -90186,13 +89805,13 @@
       "captures": [
         3,
         1,
-        5,
-        7,
-        9,
+        4,
+        6,
+        8,
+        10,
         11,
-        12,
-        14,
-        15
+        13,
+        14
       ],
       "producers": 0
     },
@@ -94516,26 +94135,24 @@
       "producers": 0
     },
     {
-      "owner": "arena_words_cons_append",
-      "helper": "native_match_arena_words_cons_append_0",
-      "kind": "match",
+      "owner": "arena_words_cons",
+      "helper": "native_match_arena_words_cons_0",
+      "kind": "local",
       "captures": [
         3,
-        5,
-        7,
-        11
+        8,
+        9
       ],
       "producers": 1
     },
     {
-      "owner": "arena_words_cons_append",
-      "helper": "native_match_arena_words_cons_append_1",
+      "owner": "arena_words_cons",
+      "helper": "native_match_arena_words_cons_1",
       "kind": "match",
       "captures": [
+        4,
         1,
-        3,
-        5,
-        7
+        3
       ],
       "producers": 0
     },
@@ -94618,32 +94235,19 @@
       "producers": 0
     },
     {
-      "owner": "arena_names_cons_append",
-      "helper": "native_match_arena_names_cons_append_0",
-      "kind": "match",
+      "owner": "arena_names_cons",
+      "helper": "native_match_arena_names_cons_0",
+      "kind": "local",
       "captures": [
-        3,
-        5,
-        7,
-        11
+        8,
+        9,
+        14
       ],
       "producers": 1
     },
     {
-      "owner": "arena_names_cons_append",
-      "helper": "native_match_arena_names_cons_append_1",
-      "kind": "match",
-      "captures": [
-        1,
-        3,
-        5,
-        7
-      ],
-      "producers": 0
-    },
-    {
       "owner": "arena_names_cons",
-      "helper": "native_match_arena_names_cons_0",
+      "helper": "native_match_arena_names_cons_1",
       "kind": "local",
       "captures": [
         8,
@@ -94653,7 +94257,7 @@
     },
     {
       "owner": "arena_names_cons",
-      "helper": "native_match_arena_names_cons_1",
+      "helper": "native_match_arena_names_cons_2",
       "kind": "match",
       "captures": [
         4,
@@ -94731,26 +94335,24 @@
       "producers": 0
     },
     {
-      "owner": "arena_quantities_cons_append",
-      "helper": "native_match_arena_quantities_cons_append_0",
-      "kind": "match",
+      "owner": "arena_quantities_cons",
+      "helper": "native_match_arena_quantities_cons_0",
+      "kind": "local",
       "captures": [
-        3,
-        5,
+        2,
         7,
-        11
+        8
       ],
       "producers": 1
     },
     {
-      "owner": "arena_quantities_cons_append",
-      "helper": "native_match_arena_quantities_cons_append_1",
+      "owner": "arena_quantities_cons",
+      "helper": "native_match_arena_quantities_cons_1",
       "kind": "match",
       "captures": [
-        1,
         3,
-        5,
-        7
+        1,
+        2
       ],
       "producers": 0
     },
@@ -97312,64 +96914,6 @@
       "kind": "match",
       "captures": [
         2,
-        1
-      ],
-      "producers": 0
-    },
-    {
-      "owner": "arena_publish_checked_definition",
-      "helper": "native_match_arena_publish_checked_definition_0",
-      "kind": "local",
-      "captures": [
-        3,
-        13,
-        16,
-        17,
-        18,
-        20,
-        25
-      ],
-      "producers": 1
-    },
-    {
-      "owner": "arena_publish_checked_definition",
-      "helper": "native_match_arena_publish_checked_definition_1",
-      "kind": "local",
-      "captures": [
-        3,
-        13,
-        15,
-        16,
-        17,
-        18,
-        20
-      ],
-      "producers": 1
-    },
-    {
-      "owner": "arena_publish_checked_definition",
-      "helper": "native_match_arena_publish_checked_definition_2",
-      "kind": "match",
-      "captures": [
-        2,
-        1,
-        3
-      ],
-      "producers": 0
-    },
-    {
-      "owner": "declaration_publish",
-      "helper": "native_match_declaration_publish_0",
-      "kind": "local",
-      "captures": [],
-      "producers": 1
-    },
-    {
-      "owner": "declaration_publish",
-      "helper": "native_match_declaration_publish_1",
-      "kind": "match",
-      "captures": [
-        3,
         1
       ],
       "producers": 0
@@ -100328,16 +99872,16 @@
     },
     {
       "source": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_arena.bend",
-      "sourceSha256": "7be6b80bac49da76928863387dd8a34e9feaaac23383be8401fb26ec062e9cf6",
+      "sourceSha256": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf",
       "output": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_arena.bend",
-      "outputSha256": "7be6b80bac49da76928863387dd8a34e9feaaac23383be8401fb26ec062e9cf6",
+      "outputSha256": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf",
       "extractions": []
     },
     {
       "source": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/scope_lookup.bend",
-      "sourceSha256": "2be9ff35e91d7b2ebf6ef8b6692b2fa5caff360a8e1586507930894bcadb47b7",
+      "sourceSha256": "e75dc874de6026e2104a7545a19f42fd6995aefecbb1d315c6ae3e097697e590",
       "output": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/scope_lookup.bend",
-      "outputSha256": "2be9ff35e91d7b2ebf6ef8b6692b2fa5caff360a8e1586507930894bcadb47b7",
+      "outputSha256": "e75dc874de6026e2104a7545a19f42fd6995aefecbb1d315c6ae3e097697e590",
       "extractions": []
     },
     {
@@ -100393,40 +99937,49 @@
       "source": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/emitter.bend",
       "sourceSha256": "47d68ba5f0b54c334e2c940b7bb6aabc7f3bba27142b816f27df8225cf3fae4f",
       "output": "/Users/ilyagulya/Projects/My/bend/checkpoints/emitter_owned_v1.bend",
-      "outputSha256": "4f874750f013cf973d796c994b6ad6f3ac3c1332117bd19e1e72f215719f4d78",
+      "outputSha256": "8d82537fa6e02f07e88eb1cbd378223e7d3f75599df34265dc9fb24358e05fac",
       "extractions": [
         {
-          "owner": "cps_provider_1_describe_found",
-          "helper": "native_match_cps_provider_1_describe_found_0",
+          "owner": "cps_provider_1_describe",
+          "helper": "native_match_cps_provider_1_describe_0",
           "kind": "match",
           "captures": [
-            0,
-            2,
-            4,
-            6,
-            8,
-            11,
-            12,
-            14,
-            16
+            15,
+            16,
+            17,
+            18,
+            19,
+            24,
+            25
           ],
           "producers": 1
         },
         {
-          "owner": "cps_provider_1_describe_reduced",
-          "helper": "native_match_cps_provider_1_describe_reduced_0",
+          "owner": "cps_provider_1_describe",
+          "helper": "native_match_cps_provider_1_describe_1",
           "kind": "match",
           "captures": [
-            2,
-            4,
-            6,
-            8,
-            11,
-            12,
+            20,
+            21,
+            3,
             14,
-            16
+            15,
+            16,
+            17,
+            18,
+            19
           ],
-          "producers": 1
+          "producers": 0
+        },
+        {
+          "owner": "cps_provider_1_describe",
+          "helper": "native_match_cps_provider_1_describe_2",
+          "kind": "match",
+          "captures": [
+            1,
+            3
+          ],
+          "producers": 0
         },
         {
           "owner": "cps_provider_1_element_value",

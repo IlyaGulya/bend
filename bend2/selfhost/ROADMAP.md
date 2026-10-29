@@ -44,6 +44,33 @@ Source, frozen root/parser/corpus and compact receipts are committed:
 `evals/receipts/producer2039g24r12_throughput.json`,
 `evals/receipts/producer2039g24r12_summary_repair.json`.
 
+## Planned data-oriented cutover: bend-nxf.31
+
+P1 epic **`bend-nxf.31`** inventories all applicable Zig compiler design
+techniques across lexer/parser, expansion, checker, checked IR, scheduler,
+lowering/BIR, C/JS output and storage/lifetimes. Its sixteen groups include
+tag/payload tables, token and operand tapes, source/name/literal pools, scoped
+canonical facts, AIR-like instruction tables, per-analysis-unit lifetimes,
+output builders, stable incremental identities and dependency invalidation.
+Each technique needs an implemented and qualified cutover, an already-present
+mapping, or an explicit non-applicability rationale; no blanket SoA rewrite.
+Dense compiler-private buffers are allowed without silently changing public
+Base.Array semantics. Preserve Nat, UTF-16 diagnostics, affine ownership,
+dependent equality, ABI13 and the original full-root/fixedpoint gates.
+
+G26 is a measured counterexample to accepting fewer source-level wrappers as
+a performance result: full correctness/fixedpoint passes, but the combined
+candidate raises native median time 1.57% and median RSS 8.01% against R12.
+Its rejected source/frozen inputs are checkpoint `93f0d279`; exact evidence:
+`evals/receipts/root2039g26_correctness.json`,
+`evals/receipts/root2039g26_throughput.json`.
+
+R12 checker/arena/scope and generated checker/template/emitter steps have been
+restored and byte-authenticated against accepted evidence. Range/scheduler
+fixtures pass again on C and JS (four executions); the accepted native/image
+hashes are unchanged. Restoration evidence, not a new full qualification:
+`evals/receipts/root2039g26_restored_r12.json`.
+
 ## Historical full native-seed checkpoint: G23
 
 The earlier accepted checkpoint is **remote2039g23**, compiler source

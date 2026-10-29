@@ -4,6 +4,19 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
+### Следующая архитектурная работа: bend-nxf.31
+
+По прямому запросу пользователя после трёх read-only исследований создан P1
+epic **`bend-nxf.31`**: все применимые data-oriented приёмы компилятора Zig на
+всех стадиях. В задаче шестнадцать групп, primary Zig references, исходники Bend,
+точные ограничения и acceptance. Не переносить все данные в SoA механически;
+для каждого приёма нужен результат внедрения или явное обоснование неприменимости.
+Физически плотные compiler-private tables допустимы без молчаливой смены
+публичного Base.Array. Сначала различать логические arena IDs и фактическое
+представление C/JS, сохранять Nat, UTF-16 spans, dependent equality и affine owner.
+G26 ниже — correctness PASS, но optimization rejected; не наследовать его
+предполагаемые gains. Принятой исходной точкой остаётся R12.
+
 ### Отклонённый G26: scheduler / arena / identity / descriptor / publication
 
 Source `ba2b1f1a` интегрировал пять изменений: fuel-threaded scheduler chunk,
@@ -23,13 +36,19 @@ native RSS +8.01%, footprint +8.45%; median JS 304 304.645 → 294 883.291 ms
 (−3.10%), но диапазоны перекрываются. Предварительное правило требовало
 улучшения mean и median на обоих runtimes; native его не выполнил.
 Отдельные gains пяти slices из общего результата не выводятся. Принят R12 ниже.
-Source/frozen inputs сохраняются отдельным rejected checkpoint до восстановления.
+Source/frozen inputs сохранены в rejected checkpoint `93f0d279`.
+Комбинация удалена из текущих исходников. Checker/arena/scope и generated
+checker/template/emitter steps побайтно сверены с принятым R12. Range и scheduler
+fixtures заново прошли на C и JS: четыре запуска, прежние guards.
+Хеши принятых R12 native/image не изменились; новой полной квалификации при
+восстановлении не заявляется.
 
 Точные команды, source pins, runtime и измерения:
 `evals/receipts/root2039g26_correctness.json`,
 `evals/receipts/root2039g26_throughput.json`.
 Changed-path smoke: `evals/receipts/producer2039g26_source_smoke.json`.
 Occurrence census: `evals/receipts/producer2039g26_occurrence_census.json`.
+Восстановление: `evals/receipts/root2039g26_restored_r12.json`.
 
 ### Отклонённый G25: array-level word-range fusion
 

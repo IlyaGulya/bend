@@ -98,7 +98,7 @@ const requestType = protocol + 'Request', progressType = protocol + 'Progress', 
 const finishedType = protocol + 'Finished', pendingType = protocol + 'Pending', directType = protocol + 'Direct', boundType = protocol + 'Bound';
 const stackType = protocol + 'Stack', stackDoneType = protocol + 'StackDone', stackMoreType = protocol + 'StackMore';
 const runType = protocol + 'Run', runFinishedType = protocol + 'RunFinished', runStateType = protocol + 'RunState';
-const castBoxFunction = prefix + '_cast_box', chunkStateFunction = prefix + '_chunk_state';
+const castBoxFunction = prefix + '_cast_box', popFunction = prefix + '_pop', advanceFunction = prefix + '_advance';
 const resultFunction = prefix + '_result', stepFunction = prefix + '_step', startFunction = prefix + '_start';
 const rawStepFunction = prefix + '_step_one', chunkFunction = prefix + '_chunk', nativeChunkQuantum = 64;
 const unboxFunction = prefix + '_unbox';
@@ -107,6 +107,7 @@ const unboxFunction = prefix + '_unbox';
 const traceEventType = 'EmitterTraceEvent', traceBeginConstructor = 'EmitterTraceBegin', traceEndConstructor = 'EmitterTraceEnd';
 const traceSiteType = 'EmitterTraceSite', traceUntracedConstructor = 'EmitterTraceUntraced', traceAtConstructor = 'EmitterTraceAt';
 const traceRunConstructor = 'EmitterRunSpan', traceStackConstructor = 'EmitterStackTraced';
+const traceAdvanceFunction = 'emitter_trace_advance';
 const traced = paths.trace !== undefined;
 const entries: readonly StepEntry[] | undefined = paths.entries ?? (paths.mode === 'emitter'
   ? [{mode: 'emitter', root: paths.root, libraryRoot: 'emit_library'}] : undefined);
@@ -645,9 +646,9 @@ const signatures = new Map(definitions.map(def => [def.name, {parameters: def.pa
 const reserved = new Set([...clean.matchAll(/\b[A-Za-z_]\w*\b/g)].map(match => match[0]));
 function reserve(name: string): string {if (reserved.has(name)) throw Error('Generated name collision ' + name); reserved.add(name); return name;}
 for (const name of [requestType, progressType, valueType, finishedType, pendingType, directType, boundType,
-  resultFunction, stepFunction, rawStepFunction, chunkFunction, chunkStateFunction, unboxFunction, startFunction,
+  resultFunction, stepFunction, rawStepFunction, chunkFunction, unboxFunction, startFunction,
   stackType, stackDoneType, stackMoreType, runType, runFinishedType, runStateType,
-  castBoxFunction]) reserve(name);
+  castBoxFunction, popFunction, advanceFunction]) reserve(name);
 for (const name of startNames) if (name !== startFunction) {
   if (reserved.has(name)) throw Error('Generated name collision ' + name);
   reserved.add(name);
@@ -655,7 +656,7 @@ for (const name of startNames) if (name !== startFunction) {
 // Trace-only ABI names are reserved before every derived request name, so a
 // diagnostic collision fails closed rather than renaming the scheduler.
 if (traced) for (const name of [traceEventType, traceBeginConstructor, traceEndConstructor, traceSiteType,
-  traceUntracedConstructor, traceAtConstructor, traceRunConstructor, traceStackConstructor]) reserve(name);
+  traceUntracedConstructor, traceAtConstructor, traceRunConstructor, traceStackConstructor, traceAdvanceFunction]) reserve(name);
 if (traced) for (const name of tracedSites.keys()) if (pureNames.has(name))
   throw Error('Traced scheduler boundary was erased as a pure projection: ' + name);
 const requestName = new Map(definitions.map(def => [def.name, reserve(requestType + '_' + def.name)]));
@@ -2420,38 +2421,38 @@ for (const group of requestGroups) {
 }
 chunks.push('def ' + rawStepFunction + '(request: ' + requestType + ') -> ' + progressType + '<' + resultFunction + '(request)>:\n  match request:\n');
 for (const group of requestGroups) chunks.push('    case ' + group.constructor + '{inner}: ' + group.step + '(inner)\n');
-// One native transition consumes exactly one operational fuel unit. The inner
-// transition loop threads the current progress and heterogeneous native stack
-// directly, so a public Run is materialized only at the quantum boundary, on
-// StackDone completion, or by a trace pause continuation: no transition packs an
-// intermediate RunState. Source resume/invoke closures are retained without
-// Bound association.
+// Each transition consumes the current progress and heterogeneous native stack
+// once. Source resume/invoke closures are retained without Bound association.
 chunks.push(`
-def ${chunkStateFunction}(-A: Type, -R: Type, fuel: Nat, progress: ${progressType}<A>, stack: ${stackType}<A, R>) -> ${runType}<R>:
-  match fuel:
-    case 0n: ${runStateType}{A, progress, stack}
-    case 1n+rest:
-      match progress:
-        case ${finishedType}{box}:
-          match stack:
-            case ${stackDoneType}{equation}: ${runFinishedType}{${castBoxFunction}(A, R, equation, box)}
-            case ${stackMoreType}{B, resume, remainder}: ${chunkStateFunction}(B, R, rest, resume(box), remainder)${traced ? `
-            case ${traceStackConstructor}{B, site, resume, remainder}: ${traceRunConstructor}{[${traceEndConstructor}{site}], scheduled => ${runStateType}{B, resume(box), remainder}}` : ''}
-        case ${pendingType}{request, ${traced ? 'site, ' : ''}resume}:${traced ? `
-          match site:
-            case ${traceAtConstructor}{+site}: ${traceRunConstructor}{[${traceBeginConstructor}{site}], scheduled => ${runStateType}{${resultFunction}(request), ${rawStepFunction}(request), ${traceStackConstructor}{A, site, resume, stack}}}
-            case ${traceUntracedConstructor}{}: ${chunkStateFunction}(${resultFunction}(request), R, rest, ${rawStepFunction}(request), ${stackMoreType}{A, resume, stack})` : `
-          ${chunkStateFunction}(${resultFunction}(request), R, rest, ${rawStepFunction}(request), ${stackMoreType}{A, resume, stack})`}
-        case ${directType}{T, request, arguments, invoke, resume}:
-          ${chunkStateFunction}(${resultFunction}(request), R, rest, invoke(arguments), ${stackMoreType}{A, resume, stack})
-        case ${boundType}{B, inner, resume}:
-          ${chunkStateFunction}(B, R, rest, inner, ${stackMoreType}{A, resume, stack})
+${traced ? `def ${traceAdvanceFunction}(-A: Type, -R: Type, request: ${requestType}, resume: ${resumeType}, stack: ${stackType}<A, R>, site: ${traceSiteType}) -> ${runType}<R>:
+  match site:
+    case ${traceAtConstructor}{+site}: ${traceRunConstructor}{[${traceBeginConstructor}{site}], scheduled => ${runStateType}{${resultFunction}(request), ${rawStepFunction}(request), ${traceStackConstructor}{A, site, resume, stack}}}
+    case ${traceUntracedConstructor}{}: ${runStateType}{${resultFunction}(request), ${rawStepFunction}(request), ${stackMoreType}{A, resume, stack}}
+
+` : ''}def ${popFunction}(-A: Type, -R: Type, stack: ${stackType}<A, R>, box: ${valueType}<A>) -> ${runType}<R>:
+  match stack:
+    case ${stackDoneType}{equation}: ${runFinishedType}{${castBoxFunction}(A, R, equation, box)}
+    case ${stackMoreType}{B, resume, rest}: ${runStateType}{B, resume(box), rest}${traced ? `
+    case ${traceStackConstructor}{B, site, resume, rest}: ${traceRunConstructor}{[${traceEndConstructor}{site}], scheduled => ${runStateType}{B, resume(box), rest}}` : ''}
+
+def ${advanceFunction}(-A: Type, -R: Type, progress: ${progressType}<A>, stack: ${stackType}<A, R>) -> ${runType}<R>:
+  match progress:
+    case ${finishedType}{box}: ${popFunction}(A, R, stack, box)
+    case ${pendingType}{request, ${traced ? 'site, ' : ''}resume}:${traced ? `
+      ${traceAdvanceFunction}(A, R, request, resume, stack, site)` : `
+      ${runStateType}{${resultFunction}(request), ${rawStepFunction}(request), ${stackMoreType}{A, resume, stack}}`}
+    case ${directType}{T, request, arguments, invoke, resume}:
+      ${runStateType}{${resultFunction}(request), invoke(arguments), ${stackMoreType}{A, resume, stack}}
+    case ${boundType}{B, inner, resume}:
+      ${runStateType}{B, inner, ${stackMoreType}{A, resume, stack}}
 
 def ${chunkFunction}(-R: Type, fuel: Nat, run: ${runType}<R>) -> ${runType}<R>:
-  match run:
-    case ${runFinishedType}{box}: ${runFinishedType}{box}
-    case ${runStateType}{A, progress, stack}: ${chunkStateFunction}(A, R, fuel, progress, stack)${traced ? `
-    case ${traceRunConstructor}{events, next}: ${traceRunConstructor}{events, next}` : ''}
+  match fuel run:
+    case 0n state: state
+    case 1n+rest ${runFinishedType}{box}: ${runFinishedType}{box}
+    case 1n+rest ${runStateType}{A, progress, stack}:
+      ${chunkFunction}(R, rest, ${advanceFunction}(A, R, progress, stack))${traced ? `
+    case 1n+rest ${traceRunConstructor}{events, next}: ${traceRunConstructor}{events, next}` : ''}
 
 def ${stepFunction}(-R: Type, run: ${runType}<R>) -> ${runType}<R>:${traced ? `
   match run:
@@ -2546,9 +2547,9 @@ if (traced) {
 writeChanged(paths.output, output); writeChanged(paths.component, component);
 if (paths.driver && driver !== undefined) writeChanged(paths.driver, driver);
 const manifest = {
-  version: 1, algorithm: 'raw-AST typed boxed-continuation CPS with bounded dependent request groups, dependency-first ordered match, projection values, bounded nonrecursive storage islands, bounded private-helper result deforestation, bounded private-region helper/continuation inlining and quantity-checked alias scalarization, and a fuel-threaded structurally recursive native heterogeneous-stack transition loop that materializes a public Run only at a quantum boundary, on completion, or at a trace pause',
+  version: 1, algorithm: 'raw-AST typed boxed-continuation CPS with bounded dependent request groups, dependency-first ordered match, projection values, bounded nonrecursive storage islands, bounded private-helper result deforestation, bounded private-region helper/continuation inlining and quantity-checked alias scalarization, and structurally recursive native heterogeneous-stack chunks',
   generationConfig, generationEnvironment, generationInputRealpaths,
-  nativeTerminationClaim: 'Generated source handlers and continuation helpers form an acyclic declaration graph. Result-deforested producer and continuation helpers are private, acyclic and emitted before their users; each forwards the same affine fields and captures once. Single-use private helpers are additionally spliced into their sole call site only after alpha-freshening every retained binder and checking every parameter quantity, which removes a call but introduces no new declaration, recursion or effect. Only the inner native chunk transition ' + chunkStateFunction + ' is self-recursive: every progress/stack transition consumes exactly one operational Nat and recurses on its predecessor, and the public ' + chunkFunction + ' boundary unpacks a Run once per chunk. RunState is materialized only at fuel zero or by a trace pause continuation; StackDone completion materializes RunFinished. No transition constructs an intermediate RunState. Zero returns the remaining Run unchanged; RunFinished returns directly.' + (traced ? ' A diagnostic trace build adds one scheduler-boundary span value that a chunk returns unchanged without consuming semantic fuel and without recursion; the site table and traced stack constructor are non-recursive.' : '') + ' Native push/pop transfers affine progress, resume and stack once, never reassociates Bound and never allocates composition closures. This does not alter canonical semantic fuel or claim termination of the complete host-driven computation.',
+  nativeTerminationClaim: 'Generated source handlers and continuation helpers form an acyclic declaration graph. Result-deforested producer and continuation helpers are private, acyclic and emitted before their users; each forwards the same affine fields and captures once. Single-use private helpers are additionally spliced into their sole call site only after alpha-freshening every retained binder and checking every parameter quantity, which removes a call but introduces no new declaration, recursion or effect. Only the native chunk scheduler is self-recursive, structurally decreasing an operational Nat on every RunState transition. Zero returns the remaining Run unchanged; RunFinished returns directly.' + (traced ? ' A diagnostic trace build adds one scheduler-boundary span value that a chunk returns unchanged without consuming semantic fuel and without recursion; the site table and traced stack constructor are non-recursive.' : '') + ' Native push/pop transfers affine progress, resume and stack once, never reassociates Bound and never allocates composition closures. This does not alter canonical semantic fuel or claim termination of the complete host-driven computation.',
   progressABI: 'typed-native-stack-v57t',
   boxedTransport: {
     type: valueType, constructor: valueType, kind: 'Type', parameter: {name: 'A', kind: 'Type', quantity: 'None'},
@@ -2558,7 +2559,7 @@ const manifest = {
     unboxing: 'One generic named parameter-match getter consumes the carrier; a single Let restores each authenticated source result quantity: Many for Data, Lone for affine Type; existing continuation helpers retain named parameter matches; no computed/local native matches or unsafe casts',
   },
   nativeChunk: {
-    function: chunkFunction, stateFunction: chunkStateFunction, rawStep: rawStepFunction, publicStep: stepFunction, start: startFunction,
+    function: chunkFunction, rawStep: rawStepFunction, publicStep: stepFunction, start: startFunction,
     quantum: nativeChunkQuantum, fuelType: 'Nat', recursion: 'structural Nat',
     zeroFuel: 'return remaining Run unchanged', semanticFuelChanged: false,
     boundConstructor: boundType, boundFields: ['inner', 'resume'], boundErasedType: 'B',
@@ -2566,13 +2567,11 @@ const manifest = {
     finishedTransport: 'native stack pop passes whole box to source resume; StackDone consumes checked equality through Value<_> and returns RunFinished',
     runType, runFinishedConstructor: runFinishedType, runStateConstructor: runStateType,
     stackType, stackDoneConstructor: stackDoneType, stackMoreConstructor: stackMoreType,
-    castBoxFunction,
-    innerTransition: 'one fuel unit per progress/stack transition; progress and stack are threaded directly through ' + chunkStateFunction + ', so no transition constructs an intermediate RunState',
-    runMaterialization: ['quantum boundary (fuel zero)', 'StackDone completion', 'trace Begin/End pause continuation'],
+    castBoxFunction, popFunction, advanceFunction,
     stackOwnership: 'Affine heterogeneous native LIFO; no host stack, no Bound reassociation, no Compose nodes, no per-site constructors',
     sourceResumeClosuresUnchanged: true, directInvokeUnchanged: true,
     publicStepType: '-R: Type, Run<R> -> Run<R>', exportedResume: false,
-    selfRecursiveFunctions: [chunkStateFunction],
+    selfRecursiveFunctions: [chunkFunction],
   },
   ffi: false, source: paths.owned, sourceSha256: sha(ownedSource), canonical: paths.canonical, canonicalSha256: sha(canonical),
   loweringSourceSha256: sha(source), loweringSourcePolicy: composition
