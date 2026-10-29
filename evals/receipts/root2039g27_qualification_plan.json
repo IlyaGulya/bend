@@ -1,0 +1,184 @@
+{
+  "schemaVersion": 1,
+  "status": "G27_SOURCE_FROZEN_FOR_QUALIFICATION",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "baseline": "local2039g24r12",
+  "baselineSourceCheckpoint": "5916d410",
+  "restoredSourceCheckpoint": "9b78ea7c",
+  "scope": "Compiler-private dense U32 word tapes only; no rejected G25/G26 source optimizations.",
+  "sourcePins": {
+    "bend2/comp.ts": "7cc08cdbf69fd2e3de9ac40342ac02146d02ec99c2d73b510f2b543621aa86cb",
+    "bend2/base.bend": "4c0b6654e94e62b0a457decfe1df513dda08cf6217fd209d43e45e27cd63351d",
+    "bend2/selfhost/checker_arena.bend": "a9e512fe44e9792380bcd77c8229c4e8fb656a6bf696791fa3a37156974f5062",
+    "bend2/selfhost/backend_ir.bend": "330be13ac09b46a10322287122e657142248c11b2cf955d3bb55f2a0f15b9e73",
+    "bend2/selfhost/lower_catalog.bend": "f20e9b23820030f06ae5cb3d1c2b09f1c99929c97b1a6c1551eec98f20f2a083",
+    "bend2/selfhost/backend_lower.bend": "d5217f4d2117ff9527474847b53caaa6d881570d6fe4a2c24e0af668cfc75b7f",
+    "bend2/selfhost/c_backend_sharing.bend": "849e1c948cd7dec6b17ff37d02b7e60a5a27570b083006b60774c36b715e6cb7",
+    "bend2/selfhost/c_backend_physical.bend": "4667d7f30e85dc99e59cadacb4f0db493723f5103ac35f2f1642cb5825f22cea",
+    "bend2/selfhost/c_backend.bend": "a50b42ae9d574f4a12ab485537bfa6da83b59ae08b96ed9039d6c46766bf0a9f",
+    "bend2/selfhost/js_backend.bend": "9da436fc2c2e9334649ff08ebd8897d853ea31fca4c655e181c08673f6407b8b",
+    "bend2/selfhost/c_runtime.c": "3012eb0c85c2f1aa41360e82a2be22eb864bd35c19597dd5b385a3534d8f0790",
+    "evals/c_backend_runtime.bend": "7814e40dc533b75267b8b836b76f7fed9ac6b7041bedebd68b00d38a7dc57465",
+    "evals/gen_c_runtime.ts": "e7a06b5dbd858928dbd386d3597cea9e3f4bea83d60aa3cf13d8846e373377e3",
+    "evals/c_target_fixtures_run.ts": "a338cdc02d63e3b9efc93ed983d8aff71cc156fbf3a3962f89e85795b73f56f6",
+    "tests/run/compiler_words.bend": "75ba7afec90426ee3b032e4915ab30f593ee5737437f0b6700e594b012a9f6dd",
+    "tests/compile/compiler_words_drop.bend": "d75d0ba4b0c57144752bd56d50d7f49df130190310063262bfca3ae16e3a63da",
+    "tests/compile/compiler_words_drop.c": "1fe48e47782d3625ad799d94c6b4637a8922d6e0c7e66b1555fc655c6a405225",
+    "tests/compile/compiler_words_drop.js": "dfb506f6a68885d9f40c3f24ce44ea17bfc4e0ee0c2c3cf18899f4ac4e30c30a"
+  },
+  "smokeReceipt": {
+    "path": "evals/receipts/producer2039g27_source_smoke.json",
+    "sha256": "e80e2ff7bae702d9a72eda51483781f0c1d70cd1558612c5e954604e98dc9120"
+  },
+  "storageReceipt": {
+    "path": "evals/receipts/producer2039g27_storage_baseline.json",
+    "sha256": "20604a33a752a978e37252a46f3f2c8536c693439818d0244bc3cc5824a032aa"
+  },
+  "screenPlan": {
+    "schemaVersion": 1,
+    "status": "PREDECLARED_CHECKER_ONLY_SCREEN",
+    "compilerAccepted": false,
+    "baselineCommit": "9b78ea7c",
+    "scope": "Compile just the changed checker on both versions with their canonical compilers; use one unchanged R12 parser/expander and the full frozen compiler source corpus. Compare check phase and process-tree memory; no native/full-pipeline/fixedpoint acceptance.",
+    "builds": [
+      {
+        "role": "control",
+        "repository": "/private/tmp/bend-g27-u32-pMbZek/r12-control",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/checker_core_component_build.ts",
+          "--file=checkpoints/checker_core_steps_component_v1.bend",
+          "--exports=check_expanded_start,inspect_checked_start,checker_step",
+          "--artifact=/private/tmp/bend-g27-u32-pMbZek/control-checker.js",
+          "--report=/private/tmp/bend-g27-u32-pMbZek/control-checker-build"
+        ]
+      },
+      {
+        "role": "candidate",
+        "repository": "/Users/ilyagulya/Projects/My/bend",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/checker_core_component_build.ts",
+          "--file=checkpoints/checker_core_steps_component_v1.bend",
+          "--exports=check_expanded_start,inspect_checked_start,checker_step",
+          "--artifact=/private/tmp/bend-g27-u32-pMbZek/candidate-checker.js",
+          "--report=/private/tmp/bend-g27-u32-pMbZek/candidate-checker-build"
+        ]
+      }
+    ],
+    "decision": "One same-host control/candidate diagnostic pair, all outputs preserved. Clear check-time/RSS regression permits early rejection; passing or ambiguous screening requires full original qualification.",
+    "limits": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 600000
+    }
+  },
+  "screenCommands": [
+    {
+      "role": "control",
+      "request": "/private/tmp/bend-g27-u32-pMbZek/control-screen-bridged-request.json",
+      "report": "/private/tmp/bend-g27-u32-pMbZek/control-screen-bridged-result.json",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/private/tmp/bend-g27-u32-pMbZek/checker-screen.mjs",
+        "/private/tmp/bend-g27-u32-pMbZek/control-screen-bridged-request.json",
+        "/private/tmp/bend-g27-u32-pMbZek/control-screen-bridged-result.json"
+      ]
+    },
+    {
+      "role": "candidate",
+      "request": "/private/tmp/bend-g27-u32-pMbZek/candidate-screen-bridged-request.json",
+      "report": "/private/tmp/bend-g27-u32-pMbZek/candidate-screen-bridged-result.json",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/private/tmp/bend-g27-u32-pMbZek/checker-screen.mjs",
+        "/private/tmp/bend-g27-u32-pMbZek/candidate-screen-bridged-request.json",
+        "/private/tmp/bend-g27-u32-pMbZek/candidate-screen-bridged-result.json"
+      ]
+    }
+  ],
+  "fullQualificationCommand": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "evals/g24_qualification.mjs",
+    "--run-id=local2039g27",
+    "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "--bun=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--clang=/usr/bin/clang",
+    "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+    "--phase=all",
+    "--bindings=/Users/ilyagulya/Projects/My/bend/evals/receipts/producer2039g25_r12_bindings.json",
+    "--frozen-repository=/private/tmp/bend2039g22-tiny-inline",
+    "--control-native=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+    "--control-image=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+    "--out=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g27"
+  ],
+  "environment": "env HEAVY_GATE_MEMORY_MIB=8192 HEAVY_GATE_RSS_MIB=8192 HEAVY_GATE_POLL_MS=10 HEAVY_GATE_TIMEOUT_MS=600000 BUN_JSC_forceRAMSize=4294967296 ",
+  "acceptanceRule": {
+    "schemaVersion": 1,
+    "status": "PREDECLARED_BEFORE_G27_PERFORMANCE_RESULTS",
+    "baseline": "local2039g24r12",
+    "candidate": "local2039g27",
+    "correctnessRequired": [
+      "full native validation, zero exclusions/output patches",
+      "actual native-stage0 -> stage1 -> stage2 exact byte fixedpoint",
+      "complete original fixtures, C/JS matrix and native/admission/host consumers"
+    ],
+    "limits": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 600000
+    },
+    "measurements": {
+      "modes": [
+        "native",
+        "js"
+      ],
+      "pairsPerMode": 3,
+      "order": [
+        "control-1",
+        "candidate-1",
+        "candidate-2",
+        "control-2",
+        "control-3",
+        "candidate-3"
+      ],
+      "allSamplesRetained": true,
+      "profiledSamplesExcluded": true,
+      "frozenRoot": {
+        "path": "/private/tmp/bend2039g22-tiny-inline/checkpoints/.bootstrap_compiler_root_remote2039g21.bend",
+        "sha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+        "bytes": 653895
+      }
+    },
+    "performanceAcceptedIf": "For BOTH native and JS, candidate pipeline mean AND median must be lower than control; candidate median peak RSS AND median footprint must not exceed control. All original samples retained; no post-hoc exclusion. Failing the rule rejects the optimization and restores R12 after checkpointing source/frozen inputs.",
+    "claimsBoundary": "C already has packed U32 blocks; claim only observed measured effects, never a new C density win or per-slice attribution."
+  }
+}

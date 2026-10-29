@@ -4,6 +4,33 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
+### Текущий кандидат G27: compiler-private U32 word tapes
+
+Реализованы opaque affine `CompilerWords` и четыре native primitive: new/get/set/grow.
+Canonical и selfhost C используют существующий packed BUF runtime; JS — `Uint32Array`.
+Перенесены только source/transient word lanes checker; public Array, Nat и metadata
+остаются прежними. Generated runtime и checker/emitter source обновлены.
+16 canonical C/JS smoke executions PASS, включая рост/zero-fill, high-bit/wrap,
+partial/native values, capture drop, rewind и memo/name reuse. Два независимых
+bounded source review не нашли блокера; это не runtime acceptance.
+
+Полная native-root/fixedpoint/consumer/performance квалификация ещё не завершена;
+G27 не принят. Acceptance rule задан до замеров: native и JS pipeline mean/median
+должны снизиться, median peak RSS/footprint не должны вырасти; все samples сохраняются.
+При нарушении правила — rejected checkpoint и восстановление R12.
+Measured R12 source tape: used 2 423 369, capacity 4 194 304; калибровка backing store
+на тех же словах/V8 element kind — 32 MiB Array против 16 MiB Uint32Array.
+Это не измерение общего RSS и не новая C density improvement.
+Negative probes также PASS: C/JS runtime отказывают depth 32 и вычисленному
+Nat depth 2^32; checked source запрещает duplicate affine tape. Exact source
+pins, commands и guards сохранены в
+`evals/receipts/producer2039g27_source_smoke.json`; baseline calibration и
+заранее заданный критерий — в `evals/receipts/producer2039g27_storage_baseline.json`.
+После запроса пользователя об ускорении обратной связи сначала выполняется
+отдельный checker-only A/B на полном frozen corpus. Он не заменяет полный
+compiler/fixedpoint/consumer gate и не считается performance acceptance.
+
+
 ### Следующая архитектурная работа: bend-nxf.31
 
 По прямому запросу пользователя после трёх read-only исследований создан P1

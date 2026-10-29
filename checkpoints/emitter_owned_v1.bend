@@ -4491,6 +4491,12 @@ def cps_provider_2_prim_default_owned(v_0: BIR.Primitive, +v_2: Nat) -> Bool:
       Nat.is_eq(v_2, 0n)
     case BIR.PrimNatDivmod{}:
       Nat.is_eq(v_2, 0n)
+    case BIR.PrimCompilerWordsGet{}:
+      Nat.is_eq(v_2, 0n)
+    case BIR.PrimCompilerWordsSet{}:
+      Nat.is_eq(v_2, 0n)
+    case BIR.PrimCompilerWordsGrow{}:
+      Nat.is_eq(v_2, 0n)
     case _:
       False{}
 
@@ -5111,7 +5117,7 @@ def native_match_cps_provider_2_prim_plain_part_0(v_6: Bool, v_0: BIR.Primitive,
 def cps_provider_2_prim_plain_part(v_0: BIR.Primitive, +v_3: List<&2, String>, +v_5: cps_provider_2_Plan) -> cps_provider_2_Part:
   native_match_cps_provider_2_prim_plain_part_0(cps_provider_2_is_atomic_primitive(v_0), v_0, v_3, v_5)
 
-def native_match_cps_provider_2_prim_scalar_part_0(v_0: BIR.Primitive, +v_5: cps_provider_2_Plan, +v_9: String, +v_12: String) -> cps_provider_2_Part:
+def native_match_cps_provider_2_prim_scalar_part_0(v_0: BIR.Primitive, +v_3: List<&2, String>, +v_5: cps_provider_2_Plan, +v_9: String, +v_12: String) -> cps_provider_2_Part:
   match v_0:
     case BIR.PrimU32Add{}:
       cps_provider_2_okp(cps_provider_2_cat(["U32_BIN(", v_9, ", +, ", v_12, ")"]))
@@ -5309,6 +5315,14 @@ def native_match_cps_provider_2_prim_scalar_part_0(v_0: BIR.Primitive, +v_5: cps
       cps_provider_2_okp(cps_provider_2_cat(["term_word(e, ", v_9, ")"]))
     case BIR.PrimF32ToWord{}:
       cps_provider_2_word_part(v_9, v_5)
+    case BIR.PrimCompilerWordsNew{}:
+      cps_provider_2_phys_part(cps_provider_5_compiler_words_part(v_0, v_3, cps_provider_2_phys_world(v_5)))
+    case BIR.PrimCompilerWordsGet{}:
+      cps_provider_2_phys_part(cps_provider_5_compiler_words_part(v_0, v_3, cps_provider_2_phys_world(v_5)))
+    case BIR.PrimCompilerWordsSet{}:
+      cps_provider_2_phys_part(cps_provider_5_compiler_words_part(v_0, v_3, cps_provider_2_phys_world(v_5)))
+    case BIR.PrimCompilerWordsGrow{}:
+      cps_provider_2_phys_part(cps_provider_5_compiler_words_part(v_0, v_3, cps_provider_2_phys_world(v_5)))
     case _:
       cps_provider_2_failp("BIR primitive has no C rendering")
 
@@ -5316,7 +5330,7 @@ def cps_provider_2_prim_scalar_part(v_0: BIR.Primitive, +v_3: List<&2, String>, 
   +v_9 = cps_provider_2_list_at(v_3, 0n)
   +v_12 = cps_provider_2_list_at(v_3, 1n)
   +v_15 = cps_provider_2_list_at(v_3, 2n)
-  native_match_cps_provider_2_prim_scalar_part_0(v_0, v_5, v_9, v_12)
+  native_match_cps_provider_2_prim_scalar_part_0(v_0, v_3, v_5, v_9, v_12)
 
 def cps_provider_2_f32_bin(v_1: String, v_3: String, v_5: String) -> cps_provider_2_Part:
   cps_provider_2_okp(cps_provider_2_cat(["f32_rewrap(f32_unbox(", v_3, ") ", v_1, " f32_unbox(", v_5, "))"]))
@@ -14242,6 +14256,63 @@ def cps_provider_5_atomic_prim_part(+v_0: BIR.Primitive, +v_3: List<&2, String>,
     case _:
       cps_provider_5_atomic_three_regs(v_0, v_3, v_5)
 
+def cps_provider_5_compiler_words_tuple(+v_1: cps_provider_5_World) -> Maybe<&2, String>:
+  cps_provider_5_cid_text("Tuple", v_1)
+
+def cps_provider_5_compiler_words_new_text(+v_1: String) -> String:
+  cps_provider_5_join_text(["compiler_words_new(e, ", v_1, ")"])
+
+def cps_provider_5_compiler_words_grow_text(+v_1: String) -> String:
+  cps_provider_5_join_text(["compiler_words_grow(e, ", v_1, ")"])
+
+def cps_provider_5_compiler_words_set_text(+v_1: String, +v_3: String, +v_5: String) -> String:
+  cps_provider_5_join_text(["compiler_words_set(e, ", v_1, ", (u32)(", v_3, "), (u32)(", v_5, "))"])
+
+def cps_provider_5_compiler_words_get_text(+v_1: String, +v_3: String, +v_5: String) -> String:
+  cps_provider_5_join_text(["bend_tuple(e, ", v_5, ", ", v_1, ", (u64)compiler_words_get(e, ", v_1, ", (u32)(", v_3, ")))"])
+
+def native_match_cps_provider_5_compiler_words_get_part_0(v_18: Maybe<&2, String>, v_8: String, v_9: String) -> cps_provider_5_Part:
+  match v_18:
+    case Some{v_12}:
+      cps_provider_5_PartOk{cps_provider_5_compiler_words_get_text(v_8, v_9, v_12)}
+    case None{}:
+      cps_provider_5_PartFail{"the C runtime contract needs the `Tuple` constructor for a compiler_words_get result"}
+
+def native_match_cps_provider_5_compiler_words_get_part_1(+v_2: List<&2, String>, +v_4: cps_provider_5_World) -> cps_provider_5_Part:
+  match v_2:
+    case [v_8, v_9]:
+      native_match_cps_provider_5_compiler_words_get_part_0(cps_provider_5_compiler_words_tuple(v_4), v_8, v_9)
+    case _:
+      cps_provider_5_PartFail{"compiler_words_get takes the tape and the index"}
+
+def cps_provider_5_compiler_words_get_part(+v_2: List<&2, String>, +v_4: cps_provider_5_World) -> cps_provider_5_Part:
+  native_match_cps_provider_5_compiler_words_get_part_1(v_2, v_4)
+
+def cps_provider_5_compiler_words_part(+v_0: BIR.Primitive, +v_3: List<&2, String>, +v_5: cps_provider_5_World) -> cps_provider_5_Part:
+  match v_0:
+    case BIR.PrimCompilerWordsNew{}:
+      match v_3:
+        case [v_8]:
+          cps_provider_5_PartOk{cps_provider_5_compiler_words_new_text(v_8)}
+        case _:
+          cps_provider_5_PartFail{"compiler_words_new takes the depth"}
+    case BIR.PrimCompilerWordsGrow{}:
+      match v_3:
+        case [v_13]:
+          cps_provider_5_PartOk{cps_provider_5_compiler_words_grow_text(v_13)}
+        case _:
+          cps_provider_5_PartFail{"compiler_words_grow takes the tape"}
+    case BIR.PrimCompilerWordsSet{}:
+      match v_3:
+        case [v_20, v_21, v_22]:
+          cps_provider_5_PartOk{cps_provider_5_compiler_words_set_text(v_20, v_21, v_22)}
+        case _:
+          cps_provider_5_PartFail{"compiler_words_set takes the tape, the index and the value"}
+    case BIR.PrimCompilerWordsGet{}:
+      cps_provider_5_compiler_words_get_part(v_3, v_5)
+    case _:
+      cps_provider_5_PartFail{"the primitive is not a compiler word tape operation"}
+
 def cps_provider_5_array_leaf_ops(+v_2: Maybe<&2, cps_provider_5_Operand>, +v_4: cps_provider_5_World, +v_5: cps_provider_3_Layout, +v_7: Bool, +v_9: Nat, +v_11: Nat) -> cps_provider_5_Part:
   match v_2:
     case Some{v_14}:
@@ -18451,6 +18522,14 @@ def cps_provider_8_primitive_name(v_0: BIR.Primitive) -> String:
       "$p_array_atomic_cas"
     case BIR.PrimArrayAtomicFadd{}:
       "$p_array_atomic_fadd"
+    case BIR.PrimCompilerWordsNew{}:
+      "$p_compiler_words_new"
+    case BIR.PrimCompilerWordsGet{}:
+      "$p_compiler_words_get"
+    case BIR.PrimCompilerWordsSet{}:
+      "$p_compiler_words_set"
+    case BIR.PrimCompilerWordsGrow{}:
+      "$p_compiler_words_grow"
     case BIR.PrimArraySize{}:
       "$p_array_size"
     case BIR.PrimArrayClone{}:
@@ -18696,6 +18775,14 @@ def cps_provider_8_primitive_public(v_0: BIR.Primitive) -> String:
       "(a)=>(i)=>(x)=>(v)=>array_rmw(a,i,(o)=>(o===x?v:o))"
     case BIR.PrimArrayAtomicFadd{}:
       "(a)=>(i)=>(v)=>array_rmw(a,i,(o)=>Math.fround(o+v))"
+    case BIR.PrimCompilerWordsNew{}:
+      "(a)=>compiler_words_new(a)"
+    case BIR.PrimCompilerWordsGet{}:
+      "(a)=>(i)=>compiler_words_get(a,i)"
+    case BIR.PrimCompilerWordsSet{}:
+      "(a)=>(i)=>(v)=>compiler_words_set(a,i,v)"
+    case BIR.PrimCompilerWordsGrow{}:
+      "(a)=>compiler_words_grow(a)"
     case BIR.PrimArraySize{}:
       "(a)=>tuple(a,a.length)"
     case BIR.PrimArrayClone{}:
@@ -18824,7 +18911,7 @@ def cps_provider_8_map_find_text(v_1: String, v_3: String, v_5: String, v_7: Str
   cps_provider_8_cat(["const $p_map_find=(map,key)=>{let node=map,at=0,ci=0;for(;;){const tag=node?.$;", "if(tag===", cps_provider_8_js_quote(v_3), "){const k=node", cps_provider_8_map_find_member(v_5), ",v=node", cps_provider_8_map_find_member(v_7), ";return key===k?{$:", cps_provider_8_js_quote(v_19), ",", cps_provider_8_js_field_text(v_21), "v}:{$:", cps_provider_8_js_quote(v_17), "};}", "if(tag===", cps_provider_8_js_quote(v_1), "){return {$:", cps_provider_8_js_quote(v_17), "};}", "if(tag!==", cps_provider_8_js_quote(v_9), "){throw \"bend: native Map.find reached a node that is not a Map constructor\";}", "const pos=node", cps_provider_8_map_find_member(v_11), ",lo=node", cps_provider_8_map_find_member(v_13), ",hi=node", cps_provider_8_map_find_member(v_15), ",want=Math.floor(pos/33);if(want<ci){at=0;ci=0;}", "while(ci<want&&at<key.length){at+=char_len(key,at);ci+=1;}", "node=(at<key.length&&(pos%33===0||((char_code_at(key,at)>>>(32-pos%33))&1)!==0))?hi:lo;}};\n"])
 
 def cps_provider_8_primitive_runtime() -> String:
-  "const $p_u32_add=(a,b)=>((a+b)>>>0);\nconst $p_u32_sub=(a,b)=>((a-b)>>>0);\nconst $p_u32_mul=(a,b)=>(Math.imul(a,b)>>>0);\nconst $p_u32_div=(a,b)=>(b===0?0:(a/b)>>>0);\nconst $p_nat_add=(a,b)=>nat_chk(a+b);\nconst $p_nat_sub=(a,b)=>(a<b?0:a-b);\nconst $p_nat_mul=(a,b)=>nat_chk(a*b);\nconst $p_nat_cmp=(a,b)=>cmp_new(a,b);\nconst $p_nat_min=(a,b)=>(a<b?a:b);\nconst $p_nat_max=(a,b)=>(a>b?a:b);\nconst $p_string_append=(a,b)=>a+b;\nconst $p_bool_or=(a,b)=>a||b;\nconst $p_bool_xor=(a,b)=>a!==b;\nconst $p_u32_is_zero=(a)=>a===0;\nconst $p_f32_asin=(a)=>Math.fround(Math.asin(a));\nconst $p_f32_acos=(a)=>Math.fround(Math.acos(a));\nconst $p_f32_atan=(a)=>Math.fround(Math.atan(a));\nconst $p_f32_sinh=(a)=>Math.fround(Math.sinh(a));\nconst $p_f32_cosh=(a)=>Math.fround(Math.cosh(a));\nconst $p_f32_tanh=(a)=>Math.fround(Math.tanh(a));\nconst $p_u32_mod=(a,b)=>(b===0?a:a%b);\nconst $p_u32_and=(a,b)=>((a&b)>>>0);\nconst $p_u32_or=(a,b)=>((a|b)>>>0);\nconst $p_u32_xor=(a,b)=>((a^b)>>>0);\nconst $p_u32_is_eq=(a,b)=>a===b;\nconst $p_u32_is_ne=(a,b)=>a!==b;\nconst $p_u32_is_lt=(a,b)=>a<b;\nconst $p_u32_is_le=(a,b)=>a<=b;\nconst $p_u32_is_gt=(a,b)=>a>b;\nconst $p_u32_is_ge=(a,b)=>a>=b;\nconst $p_u32_inc=(a)=>(a+1)>>>0;\nconst $p_u32_not=(a)=>(~a)>>>0;\nconst $p_u32_shl=(a)=>(a<<1)>>>0;\nconst $p_u32_shr=(a)=>a>>>1;\nconst $p_u32_shln=(a,b)=>b>=32?0:(a<<b)>>>0;\nconst $p_u32_shrn=(a,b)=>b>=32?0:a>>>b;\nconst $p_u32_cmp=(a,b)=>cmp_new(a,b);\nconst $p_u32_to_nat=(a)=>a;\nconst $p_u32_from_nat=(a)=>a>>>0;\nconst $p_f32_add=(a,b)=>Math.fround(a+b);\nconst $p_f32_sub=(a,b)=>Math.fround(a-b);\nconst $p_f32_mul=(a,b)=>Math.fround(a*b);\nconst $p_f32_div=(a,b)=>Math.fround(a/b);\nconst $p_f32_mod=(a,b)=>Math.fround(a%b);\nconst $p_f32_neg=(a)=>-a;\nconst $p_f32_sqrt=(a)=>Math.fround(Math.sqrt(a));\nconst $p_f32_abs=(a)=>Math.fround(Math.abs(a));\nconst $p_f32_to_u32=(a)=>(a>=1&&a<4294967296?Math.floor(a):0);\nconst $p_f32_bits=(a)=>f32_bits(a);\nconst $p_f32_show=(a)=>f32_show(a);\nconst $p_f32_read=(a)=>f32_read(a);\nconst $p_f32_is_eq=(a,b)=>a===b;\nconst $p_f32_is_ne=(a,b)=>a!==b;\nconst $p_f32_is_lt=(a,b)=>a<b;\nconst $p_f32_is_le=(a,b)=>a<=b;\nconst $p_f32_is_gt=(a,b)=>a>b;\nconst $p_f32_is_ge=(a,b)=>a>=b;\nconst $p_f32_pow=(a,b)=>f32_pow(a,b);\nconst $p_f32_atan2=(a,b)=>Math.fround(Math.atan2(a,b));\nconst $p_f32_exp=(a)=>Math.fround(Math.exp(a));\nconst $p_f32_log=(a)=>Math.fround(Math.log(a));\nconst $p_f32_log2=(a)=>Math.fround(Math.log2(a));\nconst $p_f32_log10=(a)=>Math.fround(Math.log10(a));\nconst $p_f32_sin=(a)=>Math.fround(Math.sin(a));\nconst $p_f32_cos=(a)=>Math.fround(Math.cos(a));\nconst $p_f32_tan=(a)=>Math.fround(Math.tan(a));\nconst $p_f32_floor=(a)=>Math.fround(Math.floor(a));\nconst $p_f32_ceil=(a)=>Math.fround(Math.ceil(a));\nconst $p_f32_trunc=(a)=>Math.fround(Math.trunc(a));\nconst $p_f32_to_nat=(a)=>Math.floor(a);\nconst $p_u32_to_f32=(a)=>Math.fround(a);\nconst $p_nat_double=(a)=>nat_chk(a+a);\nconst $p_nat_is_lt=(a,b)=>a<b;\nconst $p_nat_divmod=(a,b)=>nat_divmod(a,b);\nconst $p_string_eq=(a,b)=>a===b;\nconst $p_map_bit=(key,position)=>{const character=Math.floor(position/33);if(character>=key.length)return tuple(key,false);const offset=position%33;let at=0;for(let i=0;i<character&&at<key.length;i++)at+=char_len(key,at);return tuple(key,at<key.length&&(offset===0||((char_code_at(key,at)>>>(32-offset))&1)!==0));};\nconst $p_string_cmp=(a,b)=>{let i=0,j=0,order=0;if(a!==b){while(i<a.length&&j<b.length){const x=char_code_at(a,i),y=char_code_at(b,j);if(x!==y){order=x<y?-1:1;break;}i+=char_len(a,i);j+=char_len(b,j);}if(order===0)order=i<a.length?1:j<b.length?-1:0;}return tuple(tuple(a,b),cmp_new(order,0));};\nconst $p_string_to_list=(text)=>{let tail={$:\"Nil\"};for(let i=text.length;i>0;){let n=1;if(i>=4&&text.charCodeAt(i-4)===0xDC00)n=4;else if(i>=2&&text.charCodeAt(i-1)>=0xDC00&&text.charCodeAt(i-1)<=0xDFFF&&text.charCodeAt(i-2)>=0xD800&&text.charCodeAt(i-2)<=0xDBFF)n=2;tail={$:\"Con\",head:text.slice(i-n,i),tail};i-=n;}return tail;};\nconst $p_string_length=(a)=>[...str_out(a)].length;\nconst $p_array_new=(a,b)=>array_new(a,b);\nconst $p_array_set=(a,i,v)=>(a[i%a.length]=v,a);\nconst $p_array_get=(a,i)=>tuple(a,a[i%a.length]);\nconst $p_array_swap=(a,i,v)=>array_swap(a,i,v);\nconst $p_array_atomic_add=(a,i,v)=>array_rmw(a,i,(o)=>((o+v)>>>0));\nconst $p_array_atomic_min=(a,i,v)=>array_rmw(a,i,(o)=>Math.min(o,v));\nconst $p_array_atomic_max=(a,i,v)=>array_rmw(a,i,(o)=>Math.max(o,v));\nconst $p_array_atomic_and=(a,i,v)=>array_rmw(a,i,(o)=>((o&v)>>>0));\nconst $p_array_atomic_or=(a,i,v)=>array_rmw(a,i,(o)=>((o|v)>>>0));\nconst $p_array_atomic_xor=(a,i,v)=>array_rmw(a,i,(o)=>((o^v)>>>0));\nconst $p_array_atomic_exch=(a,i,v)=>array_rmw(a,i,(o)=>v);\nconst $p_array_atomic_cas=(a,i,x,v)=>array_rmw(a,i,(o)=>(o===x?v:o));\nconst $p_array_atomic_fadd=(a,i,v)=>array_rmw(a,i,(o)=>Math.fround(o+v));\nconst $p_array_size=(a)=>tuple(a,a.length);\nconst $p_array_clone=(a)=>tuple(a,a.slice());\nconst $p_nat_predecessor=(a)=>a-1;\nconst $p_nat_successor=(a)=>nat_chk(a+1);\nconst $p_char_new=(a)=>char_new(a);\nconst $p_char_code=(a)=>char_code(a);\nconst $p_string_head=(a)=>a.slice(0,char_len(a));\nconst $p_string_tail=(a)=>a.slice(char_len(a));\nconst $p_word_to_u32=(a)=>word_to_u32(a);\nconst $p_u32_to_word=(a)=>u32_to_word(a);\nconst $p_f32_from_bits=(a)=>f32_from_bits(a);\nconst $p_f32_from_word=(a)=>f32_from_bits(word_to_u32(a));\nconst $p_f32_to_word=(a)=>u32_to_word(f32_bits(a));\nconst $p_array_leaf=(a)=>[a];\nconst $p_array_node=(a,b)=>array_node(a,b);\nconst $p_array_leaf_value=(a)=>a[0];\nconst $p_array_left=(a)=>a.slice(0,a.length>>1);\nconst $p_array_right=(a)=>a.slice(a.length>>1);\nconst $p_is_array_leaf=(a)=>a.length===1;\nconst $p_is_array_node=(a)=>a.length!==1;\nconst $p_is_nat_zero=(a)=>a===0;\nconst $p_is_nat_successor=(a)=>a>0;\nconst $p_is_string_empty=(a)=>a===\"\";\nconst $p_is_string_nonempty=(a)=>a!==\"\";\nconst $p_is_true=(a)=>a===true;\nconst $p_is_false=(a)=>a===false;\nconst $p_same_value=(a,b)=>a===b;\nconst $p_float_bits_equal=(a,b)=>f32_bits(a)===b;\n"
+  "const $p_u32_add=(a,b)=>((a+b)>>>0);\nconst $p_u32_sub=(a,b)=>((a-b)>>>0);\nconst $p_u32_mul=(a,b)=>(Math.imul(a,b)>>>0);\nconst $p_u32_div=(a,b)=>(b===0?0:(a/b)>>>0);\nconst $p_nat_add=(a,b)=>nat_chk(a+b);\nconst $p_nat_sub=(a,b)=>(a<b?0:a-b);\nconst $p_nat_mul=(a,b)=>nat_chk(a*b);\nconst $p_nat_cmp=(a,b)=>cmp_new(a,b);\nconst $p_nat_min=(a,b)=>(a<b?a:b);\nconst $p_nat_max=(a,b)=>(a>b?a:b);\nconst $p_string_append=(a,b)=>a+b;\nconst $p_bool_or=(a,b)=>a||b;\nconst $p_bool_xor=(a,b)=>a!==b;\nconst $p_u32_is_zero=(a)=>a===0;\nconst $p_f32_asin=(a)=>Math.fround(Math.asin(a));\nconst $p_f32_acos=(a)=>Math.fround(Math.acos(a));\nconst $p_f32_atan=(a)=>Math.fround(Math.atan(a));\nconst $p_f32_sinh=(a)=>Math.fround(Math.sinh(a));\nconst $p_f32_cosh=(a)=>Math.fround(Math.cosh(a));\nconst $p_f32_tanh=(a)=>Math.fround(Math.tanh(a));\nconst $p_u32_mod=(a,b)=>(b===0?a:a%b);\nconst $p_u32_and=(a,b)=>((a&b)>>>0);\nconst $p_u32_or=(a,b)=>((a|b)>>>0);\nconst $p_u32_xor=(a,b)=>((a^b)>>>0);\nconst $p_u32_is_eq=(a,b)=>a===b;\nconst $p_u32_is_ne=(a,b)=>a!==b;\nconst $p_u32_is_lt=(a,b)=>a<b;\nconst $p_u32_is_le=(a,b)=>a<=b;\nconst $p_u32_is_gt=(a,b)=>a>b;\nconst $p_u32_is_ge=(a,b)=>a>=b;\nconst $p_u32_inc=(a)=>(a+1)>>>0;\nconst $p_u32_not=(a)=>(~a)>>>0;\nconst $p_u32_shl=(a)=>(a<<1)>>>0;\nconst $p_u32_shr=(a)=>a>>>1;\nconst $p_u32_shln=(a,b)=>b>=32?0:(a<<b)>>>0;\nconst $p_u32_shrn=(a,b)=>b>=32?0:a>>>b;\nconst $p_u32_cmp=(a,b)=>cmp_new(a,b);\nconst $p_u32_to_nat=(a)=>a;\nconst $p_u32_from_nat=(a)=>a>>>0;\nconst $p_f32_add=(a,b)=>Math.fround(a+b);\nconst $p_f32_sub=(a,b)=>Math.fround(a-b);\nconst $p_f32_mul=(a,b)=>Math.fround(a*b);\nconst $p_f32_div=(a,b)=>Math.fround(a/b);\nconst $p_f32_mod=(a,b)=>Math.fround(a%b);\nconst $p_f32_neg=(a)=>-a;\nconst $p_f32_sqrt=(a)=>Math.fround(Math.sqrt(a));\nconst $p_f32_abs=(a)=>Math.fround(Math.abs(a));\nconst $p_f32_to_u32=(a)=>(a>=1&&a<4294967296?Math.floor(a):0);\nconst $p_f32_bits=(a)=>f32_bits(a);\nconst $p_f32_show=(a)=>f32_show(a);\nconst $p_f32_read=(a)=>f32_read(a);\nconst $p_f32_is_eq=(a,b)=>a===b;\nconst $p_f32_is_ne=(a,b)=>a!==b;\nconst $p_f32_is_lt=(a,b)=>a<b;\nconst $p_f32_is_le=(a,b)=>a<=b;\nconst $p_f32_is_gt=(a,b)=>a>b;\nconst $p_f32_is_ge=(a,b)=>a>=b;\nconst $p_f32_pow=(a,b)=>f32_pow(a,b);\nconst $p_f32_atan2=(a,b)=>Math.fround(Math.atan2(a,b));\nconst $p_f32_exp=(a)=>Math.fround(Math.exp(a));\nconst $p_f32_log=(a)=>Math.fround(Math.log(a));\nconst $p_f32_log2=(a)=>Math.fround(Math.log2(a));\nconst $p_f32_log10=(a)=>Math.fround(Math.log10(a));\nconst $p_f32_sin=(a)=>Math.fround(Math.sin(a));\nconst $p_f32_cos=(a)=>Math.fround(Math.cos(a));\nconst $p_f32_tan=(a)=>Math.fround(Math.tan(a));\nconst $p_f32_floor=(a)=>Math.fround(Math.floor(a));\nconst $p_f32_ceil=(a)=>Math.fround(Math.ceil(a));\nconst $p_f32_trunc=(a)=>Math.fround(Math.trunc(a));\nconst $p_f32_to_nat=(a)=>Math.floor(a);\nconst $p_u32_to_f32=(a)=>Math.fround(a);\nconst $p_nat_double=(a)=>nat_chk(a+a);\nconst $p_nat_is_lt=(a,b)=>a<b;\nconst $p_nat_divmod=(a,b)=>nat_divmod(a,b);\nconst $p_string_eq=(a,b)=>a===b;\nconst $p_map_bit=(key,position)=>{const character=Math.floor(position/33);if(character>=key.length)return tuple(key,false);const offset=position%33;let at=0;for(let i=0;i<character&&at<key.length;i++)at+=char_len(key,at);return tuple(key,at<key.length&&(offset===0||((char_code_at(key,at)>>>(32-offset))&1)!==0));};\nconst $p_string_cmp=(a,b)=>{let i=0,j=0,order=0;if(a!==b){while(i<a.length&&j<b.length){const x=char_code_at(a,i),y=char_code_at(b,j);if(x!==y){order=x<y?-1:1;break;}i+=char_len(a,i);j+=char_len(b,j);}if(order===0)order=i<a.length?1:j<b.length?-1:0;}return tuple(tuple(a,b),cmp_new(order,0));};\nconst $p_string_to_list=(text)=>{let tail={$:\"Nil\"};for(let i=text.length;i>0;){let n=1;if(i>=4&&text.charCodeAt(i-4)===0xDC00)n=4;else if(i>=2&&text.charCodeAt(i-1)>=0xDC00&&text.charCodeAt(i-1)<=0xDFFF&&text.charCodeAt(i-2)>=0xD800&&text.charCodeAt(i-2)<=0xDBFF)n=2;tail={$:\"Con\",head:text.slice(i-n,i),tail};i-=n;}return tail;};\nconst $p_string_length=(a)=>[...str_out(a)].length;\nconst $p_array_new=(a,b)=>array_new(a,b);\nconst $p_array_set=(a,i,v)=>(a[i%a.length]=v,a);\nconst $p_array_get=(a,i)=>tuple(a,a[i%a.length]);\nconst $p_array_swap=(a,i,v)=>array_swap(a,i,v);\nconst $p_array_atomic_add=(a,i,v)=>array_rmw(a,i,(o)=>((o+v)>>>0));\nconst $p_array_atomic_min=(a,i,v)=>array_rmw(a,i,(o)=>Math.min(o,v));\nconst $p_array_atomic_max=(a,i,v)=>array_rmw(a,i,(o)=>Math.max(o,v));\nconst $p_array_atomic_and=(a,i,v)=>array_rmw(a,i,(o)=>((o&v)>>>0));\nconst $p_array_atomic_or=(a,i,v)=>array_rmw(a,i,(o)=>((o|v)>>>0));\nconst $p_array_atomic_xor=(a,i,v)=>array_rmw(a,i,(o)=>((o^v)>>>0));\nconst $p_array_atomic_exch=(a,i,v)=>array_rmw(a,i,(o)=>v);\nconst $p_array_atomic_cas=(a,i,x,v)=>array_rmw(a,i,(o)=>(o===x?v:o));\nconst $p_array_atomic_fadd=(a,i,v)=>array_rmw(a,i,(o)=>Math.fround(o+v));\nconst $p_array_size=(a)=>tuple(a,a.length);\nconst $p_array_clone=(a)=>tuple(a,a.slice());\nconst $p_compiler_words_new=(a)=>compiler_words_new(a);\nconst $p_compiler_words_get=(a,i)=>compiler_words_get(a,i);\nconst $p_compiler_words_set=(a,i,v)=>compiler_words_set(a,i,v);\nconst $p_compiler_words_grow=(a)=>compiler_words_grow(a);\nconst $p_nat_predecessor=(a)=>a-1;\nconst $p_nat_successor=(a)=>nat_chk(a+1);\nconst $p_char_new=(a)=>char_new(a);\nconst $p_char_code=(a)=>char_code(a);\nconst $p_string_head=(a)=>a.slice(0,char_len(a));\nconst $p_string_tail=(a)=>a.slice(char_len(a));\nconst $p_word_to_u32=(a)=>word_to_u32(a);\nconst $p_u32_to_word=(a)=>u32_to_word(a);\nconst $p_f32_from_bits=(a)=>f32_from_bits(a);\nconst $p_f32_from_word=(a)=>f32_from_bits(word_to_u32(a));\nconst $p_f32_to_word=(a)=>u32_to_word(f32_bits(a));\nconst $p_array_leaf=(a)=>[a];\nconst $p_array_node=(a,b)=>array_node(a,b);\nconst $p_array_leaf_value=(a)=>a[0];\nconst $p_array_left=(a)=>a.slice(0,a.length>>1);\nconst $p_array_right=(a)=>a.slice(a.length>>1);\nconst $p_is_array_leaf=(a)=>a.length===1;\nconst $p_is_array_node=(a)=>a.length!==1;\nconst $p_is_nat_zero=(a)=>a===0;\nconst $p_is_nat_successor=(a)=>a>0;\nconst $p_is_string_empty=(a)=>a===\"\";\nconst $p_is_string_nonempty=(a)=>a!==\"\";\nconst $p_is_true=(a)=>a===true;\nconst $p_is_false=(a)=>a===false;\nconst $p_same_value=(a,b)=>a===b;\nconst $p_float_bits_equal=(a,b)=>f32_bits(a)===b;\n"
 
 def cps_provider_8_quantity(v_0: BIR.Quantity) -> String:
   match v_0:
@@ -19325,7 +19412,7 @@ def cps_provider_8_js_runtime_extra() -> String:
   "function f32_from_bits(x) { return new Float32Array(new Uint32Array([x]).buffer)[0]; }\nfunction f32_bits(x) { return new Uint32Array(new Float32Array([x]).buffer)[0]; }\nfunction tuple(a,b) { return {$:\"Tuple\",fst:a,snd:b}; }\nfunction f32_show(x) { if(x!==x) return \"nan\"; if(!Number.isFinite(x)||Object.is(x,-0)) return x<0?\"-inf\":x===0?\"-0\":\"inf\"; let s=\"x\"; for(let p=1;p<=9&&Math.fround(Number(s))!==x;p++) s=String(Number(x.toExponential(p-1))); return s; }\nfunction f32_round(s) { const d=Number(s); const a=Math.abs(d); const f=Math.fround(a); const g=2*a-Math.min(f,2**128); if(g===f||Math.fround(g)!==g||g===Infinity) return Math.sign(d)*f; let k=0; while(a*2**k%1!==0) k+=1; const m=/(\\d*)\\.?(\\d*)(?:e([+-]?\\d+))?$/i.exec(s); const n=Number(m[3]??0)-m[2].length; const x=BigInt(m[1]+m[2])*2n**BigInt(k)*10n**BigInt(Math.max(n,0)); const y=BigInt(a*2**k)*10n**BigInt(Math.max(-n,0)); return Math.sign(d)*(x===y||x>y!==g>f?f:g); }\nfunction f32_pow(a,b) { return (a === 1 || a === -1 && Math.abs(b) === Infinity ? 1 : Math.fround(Math.pow(a,b))); }\nfunction f32_read(s) { const re=/^[\\t\\n\\v\\f\\r ]*[+-]?((\\d+(?:\\.\\d*)?|\\.\\d+)(e[+-]?\\d+)?|inf(inity)?|nan)$/i; const v=f32_round(s.replace(/inf\\w*/i,\"Infinity\")); return re.test(s)?{$:\"Some\",value:v}:{$:\"None\"}; }\nfunction nat_divmod(a,b) { return b===0?tuple(0,a):tuple(Math.trunc(a/b),a%b); }\nfunction nat_in(n) { if(!Number.isInteger(n)||n<0||n>9007199254740992)throw \"bend: expected a Nat host number: an integer from 0 to 2^53\"; return n; }\nfunction array_new(n,v) { if(n>31) throw \"bend: an array past the deepest block class 31\"; return Array(2 ** n).fill(v); }\nfunction array_node(a,b) { if(a.length!==b.length) throw \"bend: runtime fail-stop\"; return a.concat(b); }\n"
 
 def cps_provider_8_js_runtime_array() -> String:
-  "function array_swap(a,i,v) { const at=i%a.length, old=a[at]; a[at]=v; return tuple(a,old); }\nfunction array_rmw(a,i,f) { const at=i%a.length, old=a[at]; a[at]=f(old); return tuple(a,old); }\n"
+  "function array_swap(a,i,v) { const at=i%a.length, old=a[at]; a[at]=v; return tuple(a,old); }\nfunction array_rmw(a,i,f) { const at=i%a.length, old=a[at]; a[at]=f(old); return tuple(a,old); }\nfunction compiler_words_new(depth) { if(depth>31) throw \"bend: an array past the deepest block class 31\"; return new Uint32Array(2 ** depth); }\nfunction compiler_words_get(tape,index) { return tuple(tape,tape[index%tape.length]); }\nfunction compiler_words_set(tape,index,value) { tape[index%tape.length]=value; return tape; }\nfunction compiler_words_grow(tape) { if(tape.length>=2147483648) throw \"bend: an array past the deepest block class 31\"; const next=new Uint32Array(tape.length*2); next.set(tape); return next; }\n"
 
 def cps_provider_8_js_runtime_foreign() -> String:
   "const $0eff=Object.create(null);\nfunction io_emit(value) { return {$:\"Emit\",value}; }\nfunction io_eff(k,run) { if(arguments.length>2)throw new Error(\"bend: \"+k+\" takes no need: an effect that waits parks itself\"); if(k in $0eff)throw new Error(\"bend: two effects register \"+k); $0eff[k]=run; }\n"
@@ -20201,6 +20288,14 @@ def cps_provider_10_primitive_named(v_1: String) -> Maybe<&2, BIR.Primitive>:
       Some{BIR.PrimArrayAtomicCas{}}
     case "array_atomic_fadd":
       Some{BIR.PrimArrayAtomicFadd{}}
+    case "compilerwords_new":
+      Some{BIR.PrimCompilerWordsNew{}}
+    case "compilerwords_get":
+      Some{BIR.PrimCompilerWordsGet{}}
+    case "compilerwords_set":
+      Some{BIR.PrimCompilerWordsSet{}}
+    case "compilerwords_grow":
+      Some{BIR.PrimCompilerWordsGrow{}}
     case _:
       None{}
 
@@ -21380,6 +21475,14 @@ def cps_provider_10_primitive_arity(v_0: BIR.Primitive) -> Nat:
       4n
     case BIR.PrimArrayAtomicFadd{}:
       3n
+    case BIR.PrimCompilerWordsNew{}:
+      1n
+    case BIR.PrimCompilerWordsGet{}:
+      2n
+    case BIR.PrimCompilerWordsSet{}:
+      3n
+    case BIR.PrimCompilerWordsGrow{}:
+      1n
     case BIR.PrimNatPredecessor{}:
       1n
     case BIR.PrimNatSuccessor{}:

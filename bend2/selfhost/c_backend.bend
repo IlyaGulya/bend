@@ -1338,6 +1338,13 @@ def prim_default_owned(primitive: BIR.Primitive, +index: Nat) -> Bool:
     case BIR.PrimStringCmp{}: Nat.is_lt(index, 2n)
     case BIR.PrimMapBit{}: Nat.is_eq(index, 0n)
     case BIR.PrimNatDivmod{}: Nat.is_eq(index, 0n)
+    # The tape operand is the one boxed owner of every compiler word tape
+    # operation: the runtime helper consumes it and answers the same or the
+    # grown handle. new's depth and every index/value are scalar words, so
+    # they are read, never sunk.
+    case BIR.PrimCompilerWordsGet{}: Nat.is_eq(index, 0n)
+    case BIR.PrimCompilerWordsSet{}: Nat.is_eq(index, 0n)
+    case BIR.PrimCompilerWordsGrow{}: Nat.is_eq(index, 0n)
     case _: False{}
 
 def array_arg_owned(primitive: BIR.Primitive, +index: Nat) -> Bool:
@@ -1819,6 +1826,13 @@ def prim_scalar_part(primitive: BIR.Primitive, +a: List<&2, String>, +plan: Plan
     case BIR.PrimU32ToWord{}: word_part(a0, plan)
     case BIR.PrimF32FromWord{}: okp(cat(["term_word(e, ", a0, ")"]))
     case BIR.PrimF32ToWord{}: word_part(a0, plan)
+    # A compiler word tape is one opaque boxed handle with fixed U32 cells, so
+    # the physical layer names the runtime helper call and the declared
+    # `CompilerWords & U32` result: no cell layout and no element Descriptor.
+    case BIR.PrimCompilerWordsNew{}: phys_part(Phys.compiler_words_part(primitive, a, phys_world(plan)))
+    case BIR.PrimCompilerWordsGet{}: phys_part(Phys.compiler_words_part(primitive, a, phys_world(plan)))
+    case BIR.PrimCompilerWordsSet{}: phys_part(Phys.compiler_words_part(primitive, a, phys_world(plan)))
+    case BIR.PrimCompilerWordsGrow{}: phys_part(Phys.compiler_words_part(primitive, a, phys_world(plan)))
     case _: failp("BIR primitive has no C rendering")
 
 def f32_bin(op: String, a0: String, a1: String) -> Part:

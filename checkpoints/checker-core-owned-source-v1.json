@@ -15016,7 +15016,7 @@
       "canonical": "bend2/selfhost/emitter.bend",
       "owned": "checkpoints/emitter_owned_v1.bend",
       "canonicalSha256": "47d68ba5f0b54c334e2c940b7bb6aabc7f3bba27142b816f27df8225cf3fae4f",
-      "sourceSha256": "8d82537fa6e02f07e88eb1cbd378223e7d3f75599df34265dc9fb24358e05fac",
+      "sourceSha256": "3e93742f517edad6f85af9fce595c67de7ff6afb972909ad98eaad05eac1a345",
       "definitionNames": [
         "emitted_js",
         "emitted_c",
@@ -17099,6 +17099,15 @@
         "cps_provider_5_atomic_three_regs",
         "cps_provider_5_atomic_cas_regs",
         "cps_provider_5_atomic_prim_part",
+        "cps_provider_5_compiler_words_tuple",
+        "cps_provider_5_compiler_words_new_text",
+        "cps_provider_5_compiler_words_grow_text",
+        "cps_provider_5_compiler_words_set_text",
+        "cps_provider_5_compiler_words_get_text",
+        "native_match_cps_provider_5_compiler_words_get_part_0",
+        "native_match_cps_provider_5_compiler_words_get_part_1",
+        "cps_provider_5_compiler_words_get_part",
+        "cps_provider_5_compiler_words_part",
         "cps_provider_5_array_leaf_ops",
         "cps_provider_5_array_node_ops",
         "cps_provider_5_array_is_cond",
@@ -18699,7 +18708,7 @@
         "native_match_cps_provider_2_symbol_value_3": "a53dfd898799f7edf84253f6d6891903b58f0f9d2450f56b6ca32066a536f9d0",
         "cps_provider_2_symbol_value": "d4d187225276bac4feefe5f5d6fd1078b8dcba10eba18623e98df8a2445c8729",
         "cps_provider_2_args_parts": "5d2a82fcd578088cd10235f80acdd0e5f662c9c61a6c36cf8b031dc5ab8c1d27",
-        "cps_provider_2_prim_default_owned": "c1ca26cac4ed6ba51c601e3932500f50e0a95ef3a37d6193407aa5a07d4d9f49",
+        "cps_provider_2_prim_default_owned": "d966d8ae2c8f65af64e9c7843d9646a5120f67c552fd6616c1cd3f35e67b8bad",
         "cps_provider_2_array_arg_owned": "ab6a3b7f5efc7ca6128911f43feb60ed727a41557827a8202cec3532b1280431",
         "cps_provider_2_descriptor_arg_owned": "e48aa4396db98e6e55b78d57f3870bbbbc48984521f452636e866bd7455caa34",
         "native_match_cps_provider_2_descriptor_step_0": "338a9515d1910757cd7bf766b93a1a314f2715700924e6af6333e17ca6fb2eb8",
@@ -18782,8 +18791,8 @@
         "cps_provider_2_prim_part": "064830e5c5f89ca3ed51e44ffb2a5f4d29d3f07d0b72dc0ddbd3dd3a45546489",
         "native_match_cps_provider_2_prim_plain_part_0": "eeebf1568928fc1e873807a4b38bdcdd4d909eddfc33613c250ec73173712e60",
         "cps_provider_2_prim_plain_part": "27ca7654005391037c6958abf7cff2a479a75d65730af7252c991c1b0d6735f5",
-        "native_match_cps_provider_2_prim_scalar_part_0": "eb7c3884968519cd0e56b01ae47d73b71403ceba5df497898f14bc8296d73b82",
-        "cps_provider_2_prim_scalar_part": "9a942388816bf94d2da3e058b84f22ac05e578bcb3c8ed8a6c4f0bbd36f191ff",
+        "native_match_cps_provider_2_prim_scalar_part_0": "c4d85d91e4c984c6a06b2d06830a3dff8a26464a1549c7049ba7fe7523f2b21e",
+        "cps_provider_2_prim_scalar_part": "d4e59ec22994c00fc576bcc3c5f40f18647cf76cbe23a5d07d93724f6c5a5266",
         "cps_provider_2_f32_bin": "5db14ae6ffb442042f35a5fdf196f3500f65d85d3e5755fabfed5589affad728",
         "cps_provider_2_f32_un": "ab4851d3d4a28aa874dc66faf678881a641b5e1d50833164dbadebdd45822336",
         "cps_provider_2_f32_cmp": "5b12380235c6291880a584da7f3b46661089493f13e6f4288ff52aba3024790a",
@@ -20154,6 +20163,15 @@
         "cps_provider_5_atomic_three_regs": "7d6f87dcc5fad7f5fda851f12cd86df170ee3ce57778f54d623b8797198a570d",
         "cps_provider_5_atomic_cas_regs": "6aa65fc6dacedc52ad78f94819bff5eb54ec0f0da94fe1b2f29e2a9b2ad2f576",
         "cps_provider_5_atomic_prim_part": "a15fc202583a53c60b0221a7b870b9fa45a95db5f2a4d7255eebc96ce6ac6d9f",
+        "cps_provider_5_compiler_words_tuple": "03ecd0ee31c28be3a5af9d678575a0ed5b5df73d87fbcba72c3998fe68cc6643",
+        "cps_provider_5_compiler_words_new_text": "a40a3af09d613c3984508fe38be464484654715f0cafde58cedd4189f24ec3d2",
+        "cps_provider_5_compiler_words_grow_text": "24bd5c12f730b423389e9136bacf73ef7f173ec671d6d63ca5c28074a42f48cd",
+        "cps_provider_5_compiler_words_set_text": "bc7fcc86aa6464db3d878455ff25a54d982e2aa98853d12647f172fc52d9787f",
+        "cps_provider_5_compiler_words_get_text": "848c8be4e98f7ac3c407c145a0aa2e77265da4d457678bfc515b71d1d06688c6",
+        "native_match_cps_provider_5_compiler_words_get_part_0": "84ae6b0e8a3d503e9ddaab6ce482c26f188b5dbd8e0d18497e95b9b38cd67a96",
+        "native_match_cps_provider_5_compiler_words_get_part_1": "e6e424e9712a7bf8da5ba839f22112d8fec292278d361ffb4d8d11081d5346fe",
+        "cps_provider_5_compiler_words_get_part": "f536a411a930f5bf3bdf55bb085026a1b961581b2af0acd8e9aa787c95011c7d",
+        "cps_provider_5_compiler_words_part": "8dfd3804273e4aaf6e1bf22e52247e387627b0bbc82a06348a98cf8d52df4ea4",
         "cps_provider_5_array_leaf_ops": "c0aa35362a4f1873c388b8a004822d439eafb4559225c27c70fc35076cfd5fc0",
         "cps_provider_5_array_node_ops": "43d8f9a60657d85cbc4243684598361ae9b56396962e50b79f7dcb1735f02393",
         "cps_provider_5_array_is_cond": "6529ec1e5151ad4a048c5ae98fd56bfc3ee40ccdae931b1072ac3baddf95e7aa",
@@ -20741,8 +20759,8 @@
         "cps_provider_8_conts_let": "ae58a3ad8e337bcac1b868316194475334437cc8321b8537b65e6e0f5f22fadc",
         "native_match_cps_provider_8_conts_region_0": "871ca026b528b147ae99529a6661e8d22d94d4d5d2086b51cfb40669e793e38e",
         "cps_provider_8_conts_region": "3d7a68521ca3be4e4730d9f47b1fba99eb8b64722c7e641657845997a5901cf9",
-        "cps_provider_8_primitive_name": "ec99a655e7e81bb371840721e95dcca42b646d17bf05750980f807075e35f910",
-        "cps_provider_8_primitive_public": "9abef40bb404c3032358b452f04125831830077a22b288c72db4d2fdfeb598f8",
+        "cps_provider_8_primitive_name": "49886391d340d39dec032095438789e048bf182714da36cd151c2661a94d9f0c",
+        "cps_provider_8_primitive_public": "ddaa36917b281f56007badb69afe7202748892db3f99688f1462d6561e0c090b",
         "cps_provider_8_map_find_roles": "6b05971ddcfd2b6c0ddaaf56890b3b595d5cad27e1eadb22c6162f7086255b73",
         "cps_provider_8_map_find_roles_one": "caeedeec653e4894921bd74ec074c46ec8b7ecf3041138bb457bdf1004d20967",
         "cps_provider_8_map_find_role_used": "84ef6fdddd8e15e4a049b1470d44bf8b79614a04b73d01b8612a39f407b3ccc6",
@@ -20755,7 +20773,7 @@
         "cps_provider_8_map_find_missing": "02f8cf61eba8c6c10788eb70795303b6e4d08b302ec7b927db303a8a93c48f6e",
         "cps_provider_8_map_find_member": "c1f18236c7e0a98006c5c4ceab83b8be4e402f5d29b837c441eaba47783c54eb",
         "cps_provider_8_map_find_text": "f77c7fda9d37af5b7f275912236ff47d4ae3e18a8d0650911d1f2ccad75d9fd4",
-        "cps_provider_8_primitive_runtime": "9fe758c2d429af7676d3b9134c12a18aba2f71d72cf60327d3e6f63af73856d2",
+        "cps_provider_8_primitive_runtime": "9f2de48c2e5c86748a169879709ae070aa5fa48bc77c3928ae3c6cbf096f0b63",
         "cps_provider_8_quantity": "3d243aedb9b8baf46586a5b9121c7ea288f221e8a12a29f57ad03423940e4788",
         "cps_provider_8_optional_quantity": "ea37aa87c00556042da0fe4efcbe44fa9060cbf9e182d9e9b22a62e3e67bcb0c",
         "cps_provider_8_quantities": "de55a6b43dd8d99140206e1fffa3854bd45661722698f22f9663c9873bb315da",
@@ -20835,7 +20853,7 @@
         "cps_provider_8_js_runtime_direct": "13eff4bca43449d90995315384f7e6977c4eed6877ac1560a21d10e23ca39d1d",
         "cps_provider_8_js_runtime": "f40602d1a7acbbd6451a99f6cf6c081938c8bf3a8f476f5ef7123d6a68ad2538",
         "cps_provider_8_js_runtime_extra": "9fb78c4fe2be2b57ed636120793612f839934cba28c5c0eb942abd04dd9dd000",
-        "cps_provider_8_js_runtime_array": "78f2ccdf0f5263a54898c6ce09bbe0ef30f952f65b9221f41e5d468a683831bf",
+        "cps_provider_8_js_runtime_array": "da84dfba1670c7ae999c4f11a1cb3cd53b1f8bc2e44935cd6a9ee042a20b821b",
         "cps_provider_8_js_runtime_foreign": "c5ce8b2a0b2e09cd99bdbcc1d6129f87c1025fd2ce256de4ffb223281247cf0c",
         "cps_provider_8_js_runtime_namespace": "c0cf62319cc805fd5877a8080b450684273725ef18f34bdcd497f275a90f415d",
         "cps_provider_8_js_runtime_cli": "eceabcdb8b9ea802860e58bc6220f150d9358bac448d269dafce9ad3c630642b",
@@ -20957,7 +20975,7 @@
         "cps_provider_10_primitive_name": "5c80a99c96bc1edc4250f447cc275760b68daa92fd249ba78259f60a3d81e846",
         "cps_provider_10_primitive_chars": "010318d4e37c43e165c29795543f6fc069b2c9655d65d16edd9275fbd783a767",
         "cps_provider_10_primitive": "9913eb05fd8b282a8fd73be60f2dcb0988b8c186b88424b19d863151a98bd9cc",
-        "cps_provider_10_primitive_named": "a1709a6aa1718e37416c49195e6832c0eb209a7338723318465f1c8f69603e24",
+        "cps_provider_10_primitive_named": "4787d256fcc28a28dbfac0d0acb4b41088a65d46f9652e1ac987bcf96ee5127a",
         "cps_provider_10_definition_key": "6bcd533573d0f69095e27f2bb23915c2714abd36baf86790fe0b7068b1aef277",
         "cps_provider_10_constructor_key": "64375e36c4290037b67893e13bbc87fffc86fae26e925ee79e3a9f8930414b68",
         "cps_provider_10_lookup_definition": "e02d7b1c36e477d16eae51bf1847e363c5334a184cfa268085d43a2a715f56ee",
@@ -21123,7 +21141,7 @@
         "cps_provider_10_native_match_live_telescope_3": "cac85f4e2793d8fb75b0eac53590cc537b9a406ad8968691f2083d5dfbd25c3e",
         "cps_provider_10_live_telescope": "56e69b14ea11b83ddcd6b2c4f8ec48981c6a5b9664275e593b178fc7bdc35be4",
         "cps_provider_10_live_binder": "ac0d1067b8df02b2ecb3c0947e9bc389e2a16995dedb7f58f9812791fe4c1a8a",
-        "cps_provider_10_primitive_arity": "0cb4071b9fbd5e2dea3435f5a9e0a0457efdc0ef4a84ba5e98952f7837ae489d",
+        "cps_provider_10_primitive_arity": "0976bb771eb854e6de0963fccabea0777dbbd3352604f6643e7fec3fccdc6b4e",
         "cps_provider_10_constructor_field": "78e27ed3f73f2fea65894c585e7ed56f9e3459b328a1493ff22eed6611cec2e3",
         "cps_provider_10_constructor_field_at": "c82ec8d46b82a9c651d6ad9daf279978cb5650be7841084e37a8eee1b10808f6"
       },
@@ -21904,6 +21922,8 @@
         "native_match_cps_provider_5_atomic_three_operands_0": "cps_provider_5_atomic_three_operands",
         "native_match_cps_provider_5_atomic_three_regs_0": "cps_provider_5_atomic_three_regs",
         "native_match_cps_provider_5_atomic_three_regs_1": "cps_provider_5_atomic_three_regs",
+        "native_match_cps_provider_5_compiler_words_get_part_0": "cps_provider_5_compiler_words_get_part",
+        "native_match_cps_provider_5_compiler_words_get_part_1": "cps_provider_5_compiler_words_get_part",
         "native_match_cps_provider_5_array_part_0": "cps_provider_5_array_part",
         "native_match_cps_provider_5_map_offsets_0": "cps_provider_5_map_offsets",
         "native_match_cps_provider_5_map_offsets_1": "cps_provider_5_map_offsets",
@@ -22070,7 +22090,7 @@
           "bend2/selfhost/js_emit.bend",
           "bend2/selfhost/lower_catalog.bend"
         ],
-        "sourceSha256": "b97c48a705635a6befe8974c4ced47f5a9ebe1119c04e7511cc338968e6f91b5",
+        "sourceSha256": "fded3675f88970dfa460d21d16c04b425c60ca29db058bee0f33bbabc7affe0b",
         "sources": [
           {
             "canonical": "bend2/selfhost/emitter.bend",
@@ -22864,7 +22884,7 @@
           },
           {
             "canonical": "bend2/selfhost/c_backend.bend",
-            "canonicalSha256": "71ae3cf1a6d44332d218be095a01fb59bb1b3bdbb606b8ca4e16ead6ca6cd576",
+            "canonicalSha256": "a50b42ae9d574f4a12ab485537bfa6da83b59ae08b96ed9039d6c46766bf0a9f",
             "declarationNames": [
               "EmitResult",
               "CImport",
@@ -24551,7 +24571,7 @@
           },
           {
             "canonical": "bend2/selfhost/c_backend_physical.bend",
-            "canonicalSha256": "b6b3b3b2e0ced250b5b5fdbf4c699cfe1e8867900e3bd7b91ee82bdee3ebc25f",
+            "canonicalSha256": "4667d7f30e85dc99e59cadacb4f0db493723f5103ac35f2f1642cb5825f22cea",
             "declarationNames": [
               "Part",
               "CidSym",
@@ -24812,6 +24832,13 @@
               "atomic_three_regs",
               "atomic_cas_regs",
               "atomic_prim_part",
+              "compiler_words_tuple",
+              "compiler_words_new_text",
+              "compiler_words_grow_text",
+              "compiler_words_set_text",
+              "compiler_words_get_text",
+              "compiler_words_get_part",
+              "compiler_words_part",
               "array_leaf_ops",
               "array_node_ops",
               "array_is_cond",
@@ -25237,6 +25264,13 @@
               "atomic_three_regs": "cps_provider_5_atomic_three_regs",
               "atomic_cas_regs": "cps_provider_5_atomic_cas_regs",
               "atomic_prim_part": "cps_provider_5_atomic_prim_part",
+              "compiler_words_tuple": "cps_provider_5_compiler_words_tuple",
+              "compiler_words_new_text": "cps_provider_5_compiler_words_new_text",
+              "compiler_words_grow_text": "cps_provider_5_compiler_words_grow_text",
+              "compiler_words_set_text": "cps_provider_5_compiler_words_set_text",
+              "compiler_words_get_text": "cps_provider_5_compiler_words_get_text",
+              "compiler_words_get_part": "cps_provider_5_compiler_words_get_part",
+              "compiler_words_part": "cps_provider_5_compiler_words_part",
               "array_leaf_ops": "cps_provider_5_array_leaf_ops",
               "array_node_ops": "cps_provider_5_array_node_ops",
               "array_is_cond": "cps_provider_5_array_is_cond",
@@ -25567,7 +25601,7 @@
           },
           {
             "canonical": "bend2/selfhost/js_backend.bend",
-            "canonicalSha256": "9ad0e83cafd243745d7d1b256d3e053258a801350fc5d0e16dd65fec89a35aa0",
+            "canonicalSha256": "9da436fc2c2e9334649ff08ebd8897d853ea31fca4c655e181c08673f6407b8b",
             "declarationNames": [
               "EmitResult",
               "LinkSource",
@@ -26408,7 +26442,7 @@
           },
           {
             "canonical": "bend2/selfhost/lower_catalog.bend",
-            "canonicalSha256": "e322065c5ccb0a15f2ab81fd9e6dd689fe8b88ad50535e4f70f503e796164f01",
+            "canonicalSha256": "f20e9b23820030f06ae5cb3d1c2b09f1c99929c97b1a6c1551eec98f20f2a083",
             "declarationNames": [
               "BuildResult",
               "Foreign",
@@ -31539,8 +31573,8 @@
             "canonicalName": "prim_default_owned",
             "name": "cps_provider_2_prim_default_owned",
             "kind": "def",
-            "canonicalDeclarationSha256": "952f01c62a13d83a444388cdb00bb90b543ac0bac4db1bfdd0df5bbe3efc224d",
-            "composedDeclarationSha256": "c1ca26cac4ed6ba51c601e3932500f50e0a95ef3a37d6193407aa5a07d4d9f49"
+            "canonicalDeclarationSha256": "9d3d7d2f028ca67200016f28e6e5eca2990e8c06bfdd08ee408dcc549be5c8e1",
+            "composedDeclarationSha256": "d966d8ae2c8f65af64e9c7843d9646a5120f67c552fd6616c1cd3f35e67b8bad"
           },
           {
             "source": "bend2/selfhost/c_backend.bend",
@@ -31835,8 +31869,8 @@
             "canonicalName": "prim_scalar_part",
             "name": "cps_provider_2_prim_scalar_part",
             "kind": "def",
-            "canonicalDeclarationSha256": "657e30e350181ad832a2e350a0b6bedf93c1d0ca0afc13098590f3b20f11126f",
-            "composedDeclarationSha256": "87495e120156030a710a80cbb7f8106bde104e4baa6bf279daf70217a59d062b"
+            "canonicalDeclarationSha256": "06a1c51c6807bf2c26b2c04d9543180b3b9ad2e7f8eb12866c194a7e73c614d1",
+            "composedDeclarationSha256": "c16048453b103ee895fee41b3ea640d02af259dc1cc1e806e8377ff64edd50b7"
           },
           {
             "source": "bend2/selfhost/c_backend.bend",
@@ -38331,8 +38365,64 @@
             "canonicalName": "atomic_prim_part",
             "name": "cps_provider_5_atomic_prim_part",
             "kind": "def",
-            "canonicalDeclarationSha256": "a84d172cb1201d96213c0cbe7743d035907f377774de2442b489f16996eb8ec6",
+            "canonicalDeclarationSha256": "6b15bad13bfcea9dfa98b06765e7e3f5e4ec8747a8a70ab530faf625a5198e55",
             "composedDeclarationSha256": "a15fc202583a53c60b0221a7b870b9fa45a95db5f2a4d7255eebc96ce6ac6d9f"
+          },
+          {
+            "source": "bend2/selfhost/c_backend_physical.bend",
+            "canonicalName": "compiler_words_tuple",
+            "name": "cps_provider_5_compiler_words_tuple",
+            "kind": "def",
+            "canonicalDeclarationSha256": "82fd3267440085179094f0b53722b91dfed9868046fee79a74ae019636d6e06f",
+            "composedDeclarationSha256": "03ecd0ee31c28be3a5af9d678575a0ed5b5df73d87fbcba72c3998fe68cc6643"
+          },
+          {
+            "source": "bend2/selfhost/c_backend_physical.bend",
+            "canonicalName": "compiler_words_new_text",
+            "name": "cps_provider_5_compiler_words_new_text",
+            "kind": "def",
+            "canonicalDeclarationSha256": "ffb980bcb7627700881cb333c73d45e4d2a7125dec71bebffb07ea5a9ee8c5d7",
+            "composedDeclarationSha256": "a40a3af09d613c3984508fe38be464484654715f0cafde58cedd4189f24ec3d2"
+          },
+          {
+            "source": "bend2/selfhost/c_backend_physical.bend",
+            "canonicalName": "compiler_words_grow_text",
+            "name": "cps_provider_5_compiler_words_grow_text",
+            "kind": "def",
+            "canonicalDeclarationSha256": "1dee931dc3f5be5ba9870e774b83e08803dbc2d4f406e73189431ed43a5df97d",
+            "composedDeclarationSha256": "24bd5c12f730b423389e9136bacf73ef7f173ec671d6d63ca5c28074a42f48cd"
+          },
+          {
+            "source": "bend2/selfhost/c_backend_physical.bend",
+            "canonicalName": "compiler_words_set_text",
+            "name": "cps_provider_5_compiler_words_set_text",
+            "kind": "def",
+            "canonicalDeclarationSha256": "1dc665be39071b9bd724b3f709e31ac57feb40937536ffaf88a2fb4da56468d9",
+            "composedDeclarationSha256": "bc7fcc86aa6464db3d878455ff25a54d982e2aa98853d12647f172fc52d9787f"
+          },
+          {
+            "source": "bend2/selfhost/c_backend_physical.bend",
+            "canonicalName": "compiler_words_get_text",
+            "name": "cps_provider_5_compiler_words_get_text",
+            "kind": "def",
+            "canonicalDeclarationSha256": "3ba4a7b66350a8b62c05f07efe6def79be53051fd61d889db678bf7340b3cfc2",
+            "composedDeclarationSha256": "848c8be4e98f7ac3c407c145a0aa2e77265da4d457678bfc515b71d1d06688c6"
+          },
+          {
+            "source": "bend2/selfhost/c_backend_physical.bend",
+            "canonicalName": "compiler_words_get_part",
+            "name": "cps_provider_5_compiler_words_get_part",
+            "kind": "def",
+            "canonicalDeclarationSha256": "1eec93fbd4d6b77bf18e8e9ce60dffc46ffd839804829c98fb237dcd39675ccd",
+            "composedDeclarationSha256": "7a92bc6b76b7c499a4e839a00dd983b65d7afa27222f4060d744eb5e7d92dee7"
+          },
+          {
+            "source": "bend2/selfhost/c_backend_physical.bend",
+            "canonicalName": "compiler_words_part",
+            "name": "cps_provider_5_compiler_words_part",
+            "kind": "def",
+            "canonicalDeclarationSha256": "c8a24ad6d8a286793bcb99ecb8d5fab150013c64f77c7a6b03813fc4a0586f8c",
+            "composedDeclarationSha256": "8dfd3804273e4aaf6e1bf22e52247e387627b0bbc82a06348a98cf8d52df4ea4"
           },
           {
             "source": "bend2/selfhost/c_backend_physical.bend",
@@ -42331,16 +42421,16 @@
             "canonicalName": "primitive_name",
             "name": "cps_provider_8_primitive_name",
             "kind": "def",
-            "canonicalDeclarationSha256": "7134534a44eaae06e7812b33a37d8c052d4792ccb59dafc8b1a169fde4404b7b",
-            "composedDeclarationSha256": "ec99a655e7e81bb371840721e95dcca42b646d17bf05750980f807075e35f910"
+            "canonicalDeclarationSha256": "775a55fc103c5c897dce4c39fdf3f429c4ffb51e35ba7779f6d6ac1d0c58a212",
+            "composedDeclarationSha256": "49886391d340d39dec032095438789e048bf182714da36cd151c2661a94d9f0c"
           },
           {
             "source": "bend2/selfhost/js_backend.bend",
             "canonicalName": "primitive_public",
             "name": "cps_provider_8_primitive_public",
             "kind": "def",
-            "canonicalDeclarationSha256": "84948518776d770efcd477a075a166a23d26dcfcef87714e03a195117c60d602",
-            "composedDeclarationSha256": "9abef40bb404c3032358b452f04125831830077a22b288c72db4d2fdfeb598f8"
+            "canonicalDeclarationSha256": "323314741442c76efcacf00e020337083386be2bddb07ac0ed007bea14c8202f",
+            "composedDeclarationSha256": "ddaa36917b281f56007badb69afe7202748892db3f99688f1462d6561e0c090b"
           },
           {
             "source": "bend2/selfhost/js_backend.bend",
@@ -42451,8 +42541,8 @@
             "canonicalName": "primitive_runtime",
             "name": "cps_provider_8_primitive_runtime",
             "kind": "def",
-            "canonicalDeclarationSha256": "8f39288c930486d3271bcd77d06509e0cfabe6087ebbbe18c347630af4f35e82",
-            "composedDeclarationSha256": "9fe758c2d429af7676d3b9134c12a18aba2f71d72cf60327d3e6f63af73856d2"
+            "canonicalDeclarationSha256": "6d26365ddd1810567a8f59d6bf5f6e2fdbdfe7edc41114ed14af151ebe6411db",
+            "composedDeclarationSha256": "9f2de48c2e5c86748a169879709ae070aa5fa48bc77c3928ae3c6cbf096f0b63"
           },
           {
             "source": "bend2/selfhost/js_backend.bend",
@@ -43035,7 +43125,7 @@
             "canonicalName": "js_runtime_extra",
             "name": "cps_provider_8_js_runtime_extra",
             "kind": "def",
-            "canonicalDeclarationSha256": "b2369c45aa9916dde877f2844180372f6f05753ab489b6b9759a0514ded4b1ac",
+            "canonicalDeclarationSha256": "5b6167fb37dfefce7f631ebdbc1a8966c4e56a8c00595641708333de932323e0",
             "composedDeclarationSha256": "9fb78c4fe2be2b57ed636120793612f839934cba28c5c0eb942abd04dd9dd000"
           },
           {
@@ -43043,8 +43133,8 @@
             "canonicalName": "js_runtime_array",
             "name": "cps_provider_8_js_runtime_array",
             "kind": "def",
-            "canonicalDeclarationSha256": "1cb8d8e681ca48df382590f363898cc35bfcf7d607ec558925f1137f6f935c03",
-            "composedDeclarationSha256": "78f2ccdf0f5263a54898c6ce09bbe0ef30f952f65b9221f41e5d468a683831bf"
+            "canonicalDeclarationSha256": "6c45dd8c7005143a151a494cec20c6579e916b638f4c45d3c4f38f9905a6e4a0",
+            "composedDeclarationSha256": "da84dfba1670c7ae999c4f11a1cb3cd53b1f8bc2e44935cd6a9ee042a20b821b"
           },
           {
             "source": "bend2/selfhost/js_backend.bend",
@@ -44147,8 +44237,8 @@
             "canonicalName": "primitive_named",
             "name": "cps_provider_10_primitive_named",
             "kind": "def",
-            "canonicalDeclarationSha256": "c4236ed72b7fa9b8d5bb6362b79b34a001bd593b7b040c99146a973e169b54c3",
-            "composedDeclarationSha256": "a1709a6aa1718e37416c49195e6832c0eb209a7338723318465f1c8f69603e24"
+            "canonicalDeclarationSha256": "4afe39175fadbf1fc6c45f64c544b8994b325587c73a56e098fdc150774c150a",
+            "composedDeclarationSha256": "4787d256fcc28a28dbfac0d0acb4b41088a65d46f9652e1ac987bcf96ee5127a"
           },
           {
             "source": "bend2/selfhost/lower_catalog.bend",
@@ -45283,8 +45373,8 @@
             "canonicalName": "primitive_arity",
             "name": "cps_provider_10_primitive_arity",
             "kind": "def",
-            "canonicalDeclarationSha256": "cf4829106dff119b9e181c2144279700428b37fa2302e524a8543183499632b4",
-            "composedDeclarationSha256": "0cb4071b9fbd5e2dea3435f5a9e0a0457efdc0ef4a84ba5e98952f7837ae489d"
+            "canonicalDeclarationSha256": "2dcff9c37a4d7d262207240d9fa97ddcf2a94b46fcfc7ba46b5ab5223f2e9fbd",
+            "composedDeclarationSha256": "0976bb771eb854e6de0963fccabea0777dbbd3352604f6643e7fec3fccdc6b4e"
           },
           {
             "source": "bend2/selfhost/lower_catalog.bend",
@@ -45306,37 +45396,37 @@
         "inputs": {
           "bend2/selfhost/emitter.bend": "47d68ba5f0b54c334e2c940b7bb6aabc7f3bba27142b816f27df8225cf3fae4f",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/emitter.bend": "47d68ba5f0b54c334e2c940b7bb6aabc7f3bba27142b816f27df8225cf3fae4f",
-          "/Users/ilyagulya/Projects/My/bend/bend2/base.bend": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+          "/Users/ilyagulya/Projects/My/bend/bend2/base.bend": "4c0b6654e94e62b0a457decfe1df513dda08cf6217fd209d43e45e27cd63351d",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checked_frontend.bend": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
-          "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_arena.bend": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf",
+          "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_arena.bend": "a9e512fe44e9792380bcd77c8229c4e8fb656a6bf696791fa3a37156974f5062",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/scope_lookup.bend": "e75dc874de6026e2104a7545a19f42fd6995aefecbb1d315c6ae3e097697e590",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_ir.bend": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/index_lookup.bend": "7b7b45946be711d0ba384e15f6823fded5ff97d6a526a6fb74a0448c13d61f84",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/loaded_module.bend": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
-          "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/backend_ir.bend": "c0286db6b192bf5cc917774b7ea5e393d4416263432eb130fb8393b1dffc1cb3",
+          "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/backend_ir.bend": "330be13ac09b46a10322287122e657142248c11b2cf955d3bb55f2a0f15b9e73",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/js_emit.bend": "a71920560786084ab9713c4af89f62d2d0e1eaef7cc24e46ea24940d012fded6",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/backend_lower.bend": "d5217f4d2117ff9527474847b53caaa6d881570d6fe4a2c24e0af668cfc75b7f",
-          "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/lower_catalog.bend": "e322065c5ccb0a15f2ab81fd9e6dd689fe8b88ad50535e4f70f503e796164f01",
+          "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/lower_catalog.bend": "f20e9b23820030f06ae5cb3d1c2b09f1c99929c97b1a6c1551eec98f20f2a083",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/descriptor_nf.bend": "c727bfe0adf97f86dc44960ca2c46fd890f0d8557157ba883af40d738d3e72dd",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
-          "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/js_backend.bend": "9ad0e83cafd243745d7d1b256d3e053258a801350fc5d0e16dd65fec89a35aa0",
+          "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/js_backend.bend": "9da436fc2c2e9334649ff08ebd8897d853ea31fca4c655e181c08673f6407b8b",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_emit_core.bend": "f690db5b6054d4f647b5c02e1281923d5cc66b24c8c2fff7859d811efc5ba380",
-          "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_backend.bend": "71ae3cf1a6d44332d218be095a01fb59bb1b3bdbb606b8ca4e16ead6ca6cd576",
+          "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_backend.bend": "a50b42ae9d574f4a12ab485537bfa6da83b59ae08b96ed9039d6c46766bf0a9f",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_backend_link.bend": "f83c270f2b6f094f2bd220e6e750aa0265c93ae90fa0036dd8d92b86c09e26bd",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_backend_layout.bend": "763dcc07096ff4273dc2354a049316aa622fd7953fd1781973ab88d47f64a43d",
-          "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_backend_physical.bend": "b6b3b3b2e0ced250b5b5fdbf4c699cfe1e8867900e3bd7b91ee82bdee3ebc25f",
-          "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_backend_sharing.bend": "05adf4ac68b0658425f7fce430709f67bd29c3f1f8a43727412661084c4dbe2c",
+          "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_backend_physical.bend": "4667d7f30e85dc99e59cadacb4f0db493723f5103ac35f2f1642cb5825f22cea",
+          "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_backend_sharing.bend": "849e1c948cd7dec6b17ff37d02b7e60a5a27570b083006b60774c36b715e6cb7",
           "bend2/selfhost/backend_lower.bend": "d5217f4d2117ff9527474847b53caaa6d881570d6fe4a2c24e0af668cfc75b7f",
-          "bend2/selfhost/c_backend.bend": "71ae3cf1a6d44332d218be095a01fb59bb1b3bdbb606b8ca4e16ead6ca6cd576",
+          "bend2/selfhost/c_backend.bend": "a50b42ae9d574f4a12ab485537bfa6da83b59ae08b96ed9039d6c46766bf0a9f",
           "bend2/selfhost/c_backend_layout.bend": "763dcc07096ff4273dc2354a049316aa622fd7953fd1781973ab88d47f64a43d",
           "bend2/selfhost/c_backend_link.bend": "f83c270f2b6f094f2bd220e6e750aa0265c93ae90fa0036dd8d92b86c09e26bd",
-          "bend2/selfhost/c_backend_physical.bend": "b6b3b3b2e0ced250b5b5fdbf4c699cfe1e8867900e3bd7b91ee82bdee3ebc25f",
+          "bend2/selfhost/c_backend_physical.bend": "4667d7f30e85dc99e59cadacb4f0db493723f5103ac35f2f1642cb5825f22cea",
           "bend2/selfhost/c_emit_core.bend": "f690db5b6054d4f647b5c02e1281923d5cc66b24c8c2fff7859d811efc5ba380",
           "bend2/selfhost/descriptor_nf.bend": "c727bfe0adf97f86dc44960ca2c46fd890f0d8557157ba883af40d738d3e72dd",
-          "bend2/selfhost/js_backend.bend": "9ad0e83cafd243745d7d1b256d3e053258a801350fc5d0e16dd65fec89a35aa0",
+          "bend2/selfhost/js_backend.bend": "9da436fc2c2e9334649ff08ebd8897d853ea31fca4c655e181c08673f6407b8b",
           "bend2/selfhost/js_emit.bend": "a71920560786084ab9713c4af89f62d2d0e1eaef7cc24e46ea24940d012fded6",
-          "bend2/selfhost/lower_catalog.bend": "e322065c5ccb0a15f2ab81fd9e6dd689fe8b88ad50535e4f70f503e796164f01"
+          "bend2/selfhost/lower_catalog.bend": "f20e9b23820030f06ae5cb3d1c2b09f1c99929c97b1a6c1551eec98f20f2a083"
         }
       },
       "loweringDefinitionNames": [
@@ -46665,6 +46755,13 @@
         "cps_provider_5_atomic_three_regs",
         "cps_provider_5_atomic_cas_regs",
         "cps_provider_5_atomic_prim_part",
+        "cps_provider_5_compiler_words_tuple",
+        "cps_provider_5_compiler_words_new_text",
+        "cps_provider_5_compiler_words_grow_text",
+        "cps_provider_5_compiler_words_set_text",
+        "cps_provider_5_compiler_words_get_text",
+        "cps_provider_5_compiler_words_get_part",
+        "cps_provider_5_compiler_words_part",
         "cps_provider_5_array_leaf_ops",
         "cps_provider_5_array_node_ops",
         "cps_provider_5_array_is_cond",
@@ -48016,7 +48113,7 @@
         "cps_provider_2_symbol_part_item": "9224ff95c77d628e9ed8db7e27cf5bc3677eeb21d7023a17f3c4ad40c5968d48",
         "cps_provider_2_symbol_value": "4430695ae146060074fe4a71d0f6c179f98ec610e0685ff83de7a935891d4326",
         "cps_provider_2_args_parts": "5d2a82fcd578088cd10235f80acdd0e5f662c9c61a6c36cf8b031dc5ab8c1d27",
-        "cps_provider_2_prim_default_owned": "c1ca26cac4ed6ba51c601e3932500f50e0a95ef3a37d6193407aa5a07d4d9f49",
+        "cps_provider_2_prim_default_owned": "d966d8ae2c8f65af64e9c7843d9646a5120f67c552fd6616c1cd3f35e67b8bad",
         "cps_provider_2_array_arg_owned": "ab6a3b7f5efc7ca6128911f43feb60ed727a41557827a8202cec3532b1280431",
         "cps_provider_2_descriptor_arg_owned": "e48aa4396db98e6e55b78d57f3870bbbbc48984521f452636e866bd7455caa34",
         "cps_provider_2_descriptor_step": "ce3ebceebd5e17f3217673fe89eaad29fe3bfbffc3f30744ef34e285ef297cd8",
@@ -48053,7 +48150,7 @@
         "cps_provider_2_bool_part": "3ac2afe4b641b6f1d423a865e8ee4db21a9b011e881d5510e6944b0cdaf95d78",
         "cps_provider_2_prim_part": "064830e5c5f89ca3ed51e44ffb2a5f4d29d3f07d0b72dc0ddbd3dd3a45546489",
         "cps_provider_2_prim_plain_part": "7dbd65893f429e339df189f0dd47b5c457d1842e3d8f189da712a4cc797c72d0",
-        "cps_provider_2_prim_scalar_part": "87495e120156030a710a80cbb7f8106bde104e4baa6bf279daf70217a59d062b",
+        "cps_provider_2_prim_scalar_part": "c16048453b103ee895fee41b3ea640d02af259dc1cc1e806e8377ff64edd50b7",
         "cps_provider_2_f32_bin": "5db14ae6ffb442042f35a5fdf196f3500f65d85d3e5755fabfed5589affad728",
         "cps_provider_2_f32_un": "ab4851d3d4a28aa874dc66faf678881a641b5e1d50833164dbadebdd45822336",
         "cps_provider_2_f32_cmp": "5b12380235c6291880a584da7f3b46661089493f13e6f4288ff52aba3024790a",
@@ -48812,6 +48909,13 @@
         "cps_provider_5_atomic_three_regs": "ce3069aa218a9a381e5c2bf1d7512737e546e3c9f6c9af66c868467d4705710c",
         "cps_provider_5_atomic_cas_regs": "6aa65fc6dacedc52ad78f94819bff5eb54ec0f0da94fe1b2f29e2a9b2ad2f576",
         "cps_provider_5_atomic_prim_part": "a15fc202583a53c60b0221a7b870b9fa45a95db5f2a4d7255eebc96ce6ac6d9f",
+        "cps_provider_5_compiler_words_tuple": "03ecd0ee31c28be3a5af9d678575a0ed5b5df73d87fbcba72c3998fe68cc6643",
+        "cps_provider_5_compiler_words_new_text": "a40a3af09d613c3984508fe38be464484654715f0cafde58cedd4189f24ec3d2",
+        "cps_provider_5_compiler_words_grow_text": "24bd5c12f730b423389e9136bacf73ef7f173ec671d6d63ca5c28074a42f48cd",
+        "cps_provider_5_compiler_words_set_text": "bc7fcc86aa6464db3d878455ff25a54d982e2aa98853d12647f172fc52d9787f",
+        "cps_provider_5_compiler_words_get_text": "848c8be4e98f7ac3c407c145a0aa2e77265da4d457678bfc515b71d1d06688c6",
+        "cps_provider_5_compiler_words_get_part": "7a92bc6b76b7c499a4e839a00dd983b65d7afa27222f4060d744eb5e7d92dee7",
+        "cps_provider_5_compiler_words_part": "8dfd3804273e4aaf6e1bf22e52247e387627b0bbc82a06348a98cf8d52df4ea4",
         "cps_provider_5_array_leaf_ops": "c0aa35362a4f1873c388b8a004822d439eafb4559225c27c70fc35076cfd5fc0",
         "cps_provider_5_array_node_ops": "43d8f9a60657d85cbc4243684598361ae9b56396962e50b79f7dcb1735f02393",
         "cps_provider_5_array_is_cond": "6529ec1e5151ad4a048c5ae98fd56bfc3ee40ccdae931b1072ac3baddf95e7aa",
@@ -49277,8 +49381,8 @@
         "cps_provider_8_conts": "8a45723f04a7de16b96f489c6e3c10d4bd2f853c89dd55c528610099cb57586a",
         "cps_provider_8_conts_let": "a7b95b1c17145010d03c9a6c097a0cffcfe72387465bde7577b0e1380a5f3ae7",
         "cps_provider_8_conts_region": "a34ea46779e71451ffd36a9f1c69c14d524befb39d4e578dda26a9da7402aace",
-        "cps_provider_8_primitive_name": "ec99a655e7e81bb371840721e95dcca42b646d17bf05750980f807075e35f910",
-        "cps_provider_8_primitive_public": "9abef40bb404c3032358b452f04125831830077a22b288c72db4d2fdfeb598f8",
+        "cps_provider_8_primitive_name": "49886391d340d39dec032095438789e048bf182714da36cd151c2661a94d9f0c",
+        "cps_provider_8_primitive_public": "ddaa36917b281f56007badb69afe7202748892db3f99688f1462d6561e0c090b",
         "cps_provider_8_map_find_roles": "6b05971ddcfd2b6c0ddaaf56890b3b595d5cad27e1eadb22c6162f7086255b73",
         "cps_provider_8_map_find_roles_one": "caeedeec653e4894921bd74ec074c46ec8b7ecf3041138bb457bdf1004d20967",
         "cps_provider_8_map_find_role_used": "84ef6fdddd8e15e4a049b1470d44bf8b79614a04b73d01b8612a39f407b3ccc6",
@@ -49291,7 +49395,7 @@
         "cps_provider_8_map_find_missing": "02f8cf61eba8c6c10788eb70795303b6e4d08b302ec7b927db303a8a93c48f6e",
         "cps_provider_8_map_find_member": "c1f18236c7e0a98006c5c4ceab83b8be4e402f5d29b837c441eaba47783c54eb",
         "cps_provider_8_map_find_text": "f77c7fda9d37af5b7f275912236ff47d4ae3e18a8d0650911d1f2ccad75d9fd4",
-        "cps_provider_8_primitive_runtime": "9fe758c2d429af7676d3b9134c12a18aba2f71d72cf60327d3e6f63af73856d2",
+        "cps_provider_8_primitive_runtime": "9f2de48c2e5c86748a169879709ae070aa5fa48bc77c3928ae3c6cbf096f0b63",
         "cps_provider_8_quantity": "3d243aedb9b8baf46586a5b9121c7ea288f221e8a12a29f57ad03423940e4788",
         "cps_provider_8_optional_quantity": "ea37aa87c00556042da0fe4efcbe44fa9060cbf9e182d9e9b22a62e3e67bcb0c",
         "cps_provider_8_quantities": "de55a6b43dd8d99140206e1fffa3854bd45661722698f22f9663c9873bb315da",
@@ -49365,7 +49469,7 @@
         "cps_provider_8_js_runtime_direct": "13eff4bca43449d90995315384f7e6977c4eed6877ac1560a21d10e23ca39d1d",
         "cps_provider_8_js_runtime": "f40602d1a7acbbd6451a99f6cf6c081938c8bf3a8f476f5ef7123d6a68ad2538",
         "cps_provider_8_js_runtime_extra": "9fb78c4fe2be2b57ed636120793612f839934cba28c5c0eb942abd04dd9dd000",
-        "cps_provider_8_js_runtime_array": "78f2ccdf0f5263a54898c6ce09bbe0ef30f952f65b9221f41e5d468a683831bf",
+        "cps_provider_8_js_runtime_array": "da84dfba1670c7ae999c4f11a1cb3cd53b1f8bc2e44935cd6a9ee042a20b821b",
         "cps_provider_8_js_runtime_foreign": "c5ce8b2a0b2e09cd99bdbcc1d6129f87c1025fd2ce256de4ffb223281247cf0c",
         "cps_provider_8_js_runtime_namespace": "c0cf62319cc805fd5877a8080b450684273725ef18f34bdcd497f275a90f415d",
         "cps_provider_8_js_runtime_cli": "eceabcdb8b9ea802860e58bc6220f150d9358bac448d269dafce9ad3c630642b",
@@ -49487,7 +49591,7 @@
         "cps_provider_10_primitive_name": "5c80a99c96bc1edc4250f447cc275760b68daa92fd249ba78259f60a3d81e846",
         "cps_provider_10_primitive_chars": "010318d4e37c43e165c29795543f6fc069b2c9655d65d16edd9275fbd783a767",
         "cps_provider_10_primitive": "9913eb05fd8b282a8fd73be60f2dcb0988b8c186b88424b19d863151a98bd9cc",
-        "cps_provider_10_primitive_named": "a1709a6aa1718e37416c49195e6832c0eb209a7338723318465f1c8f69603e24",
+        "cps_provider_10_primitive_named": "4787d256fcc28a28dbfac0d0acb4b41088a65d46f9652e1ac987bcf96ee5127a",
         "cps_provider_10_definition_key": "6bcd533573d0f69095e27f2bb23915c2714abd36baf86790fe0b7068b1aef277",
         "cps_provider_10_constructor_key": "64375e36c4290037b67893e13bbc87fffc86fae26e925ee79e3a9f8930414b68",
         "cps_provider_10_lookup_definition": "e02d7b1c36e477d16eae51bf1847e363c5334a184cfa268085d43a2a715f56ee",
@@ -49629,7 +49733,7 @@
         "cps_provider_10_native_match_live_telescope_3": "cac85f4e2793d8fb75b0eac53590cc537b9a406ad8968691f2083d5dfbd25c3e",
         "cps_provider_10_live_telescope": "56e69b14ea11b83ddcd6b2c4f8ec48981c6a5b9664275e593b178fc7bdc35be4",
         "cps_provider_10_live_binder": "ac0d1067b8df02b2ecb3c0947e9bc389e2a16995dedb7f58f9812791fe4c1a8a",
-        "cps_provider_10_primitive_arity": "0cb4071b9fbd5e2dea3435f5a9e0a0457efdc0ef4a84ba5e98952f7837ae489d",
+        "cps_provider_10_primitive_arity": "0976bb771eb854e6de0963fccabea0777dbbd3352604f6643e7fec3fccdc6b4e",
         "cps_provider_10_constructor_field": "78e27ed3f73f2fea65894c585e7ed56f9e3459b328a1493ff22eed6611cec2e3",
         "cps_provider_10_constructor_field_at": "c82ec8d46b82a9c651d6ad9daf279978cb5650be7841084e37a8eee1b10808f6"
       }
@@ -99872,9 +99976,9 @@
     },
     {
       "source": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_arena.bend",
-      "sourceSha256": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf",
+      "sourceSha256": "a9e512fe44e9792380bcd77c8229c4e8fb656a6bf696791fa3a37156974f5062",
       "output": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_arena.bend",
-      "outputSha256": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf",
+      "outputSha256": "a9e512fe44e9792380bcd77c8229c4e8fb656a6bf696791fa3a37156974f5062",
       "extractions": []
     },
     {
@@ -99921,23 +100025,23 @@
     },
     {
       "source": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/backend_ir.bend",
-      "sourceSha256": "c0286db6b192bf5cc917774b7ea5e393d4416263432eb130fb8393b1dffc1cb3",
+      "sourceSha256": "330be13ac09b46a10322287122e657142248c11b2cf955d3bb55f2a0f15b9e73",
       "output": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/backend_ir.bend",
-      "outputSha256": "c0286db6b192bf5cc917774b7ea5e393d4416263432eb130fb8393b1dffc1cb3",
+      "outputSha256": "330be13ac09b46a10322287122e657142248c11b2cf955d3bb55f2a0f15b9e73",
       "extractions": []
     },
     {
       "source": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_backend_sharing.bend",
-      "sourceSha256": "05adf4ac68b0658425f7fce430709f67bd29c3f1f8a43727412661084c4dbe2c",
+      "sourceSha256": "849e1c948cd7dec6b17ff37d02b7e60a5a27570b083006b60774c36b715e6cb7",
       "output": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_backend_sharing.bend",
-      "outputSha256": "05adf4ac68b0658425f7fce430709f67bd29c3f1f8a43727412661084c4dbe2c",
+      "outputSha256": "849e1c948cd7dec6b17ff37d02b7e60a5a27570b083006b60774c36b715e6cb7",
       "extractions": []
     },
     {
       "source": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/emitter.bend",
       "sourceSha256": "47d68ba5f0b54c334e2c940b7bb6aabc7f3bba27142b816f27df8225cf3fae4f",
       "output": "/Users/ilyagulya/Projects/My/bend/checkpoints/emitter_owned_v1.bend",
-      "outputSha256": "8d82537fa6e02f07e88eb1cbd378223e7d3f75599df34265dc9fb24358e05fac",
+      "outputSha256": "3e93742f517edad6f85af9fce595c67de7ff6afb972909ad98eaad05eac1a345",
       "extractions": [
         {
           "owner": "cps_provider_1_describe",
@@ -101658,6 +101762,7 @@
           "kind": "match",
           "captures": [
             0,
+            3,
             5,
             9,
             12
@@ -108825,6 +108930,26 @@
             3,
             0,
             5
+          ],
+          "producers": 0
+        },
+        {
+          "owner": "cps_provider_5_compiler_words_get_part",
+          "helper": "native_match_cps_provider_5_compiler_words_get_part_0",
+          "kind": "match",
+          "captures": [
+            8,
+            9
+          ],
+          "producers": 1
+        },
+        {
+          "owner": "cps_provider_5_compiler_words_get_part",
+          "helper": "native_match_cps_provider_5_compiler_words_get_part_1",
+          "kind": "match",
+          "captures": [
+            2,
+            4
           ],
           "producers": 0
         },

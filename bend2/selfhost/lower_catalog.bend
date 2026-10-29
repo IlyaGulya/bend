@@ -700,6 +700,10 @@ def primitive_named(name: String) -> Maybe<&2, BIR.Primitive>:
     case "array_atomic_exch": Some{BIR.PrimArrayAtomicExch{}}
     case "array_atomic_cas": Some{BIR.PrimArrayAtomicCas{}}
     case "array_atomic_fadd": Some{BIR.PrimArrayAtomicFadd{}}
+    case "compilerwords_new": Some{BIR.PrimCompilerWordsNew{}}
+    case "compilerwords_get": Some{BIR.PrimCompilerWordsGet{}}
+    case "compilerwords_set": Some{BIR.PrimCompilerWordsSet{}}
+    case "compilerwords_grow": Some{BIR.PrimCompilerWordsGrow{}}
     case _: None{}
 
 def definition_key(registry: Registry, key: String) -> Maybe<&2, DefinitionHeader>:
@@ -1640,6 +1644,10 @@ def primitive_arity(value: BIR.Primitive) -> Nat:
     case BIR.PrimArrayAtomicExch{}: 3n
     case BIR.PrimArrayAtomicCas{}: 4n
     case BIR.PrimArrayAtomicFadd{}: 3n
+    case BIR.PrimCompilerWordsNew{}: 1n
+    case BIR.PrimCompilerWordsGet{}: 2n
+    case BIR.PrimCompilerWordsSet{}: 3n
+    case BIR.PrimCompilerWordsGrow{}: 1n
     case BIR.PrimNatPredecessor{}: 1n
     case BIR.PrimNatSuccessor{}: 1n
     case BIR.PrimCharNew{}: 1n

@@ -5,6 +5,18 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- G27 implements compiler-private affine `CompilerWords` tapes: JS uses
+  `Uint32Array`; C reuses its existing packed BUF allocator and drop path.
+  Only checker source/transient word lanes migrate; public Array, Nat and
+  metadata lanes are unchanged. Sixteen canonical C/JS smoke executions pass,
+  covering growth, zero fill, wrapping, native values, captured-owner disposal,
+  arena rewind and memo/name reuse. Depth 32, computed depth 2^32 and affine
+  duplication are refused. Independent bounded source reviews found no blocker.
+  Early comparable checker-only screening precedes the expensive full gates;
+  it is not compiler/fixedpoint/performance acceptance. R12 remains the baseline.
+  `evals/receipts/producer2039g27_source_smoke.json`,
+  `evals/receipts/producer2039g27_storage_baseline.json`.
+
 - G26's combined scheduler/arena/identity/descriptor/publication optimization
   is rejected under its predeclared performance rule. Full native validation
   passes 12,485 definitions / 13,081 events; actual native-stage0 → stage1 →

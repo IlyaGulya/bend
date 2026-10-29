@@ -126,6 +126,12 @@ type Primitive is Data:
   PrimArrayAtomicExch{}
   PrimArrayAtomicCas{}
   PrimArrayAtomicFadd{}
+  # Checker-private U32 word tapes: one opaque boxed handle, fixed U32 cells,
+  # no element Descriptor and no public Array compatibility.
+  PrimCompilerWordsNew{}
+  PrimCompilerWordsGet{}
+  PrimCompilerWordsSet{}
+  PrimCompilerWordsGrow{}
   PrimNatPredecessor{}
   PrimNatSuccessor{}
   PrimCharNew{}

@@ -2079,6 +2079,70 @@ def atomic_prim_part(+pprimitive: BIR.Primitive, +pargs: List<&2, String>, +pw: 
     case BIR.PrimArrayAtomicCas{}: atomic_cas_regs(pargs, pw)
     case _: atomic_three_regs(pprimitive, pargs, pw)
 
+# ---------------------------------------------------------------------------
+# Compiler word tapes
+# ---------------------------------------------------------------------------
+#
+# A CompilerWords value is one opaque boxed handle over the runtime's packed
+# U32 word block, the Array<U32> storage class, and reaches the target only as
+# a Term register or an owned local. The four trusted runtime helpers own the
+# whole buffer operation: capacity 2^depth with a zero fill, index modulo the
+# capacity, an in-place word write, and a doubling copy that zero-fills the
+# upper half. The target therefore names no cell layout and no element
+# Descriptor: a tape exposes no fields, its cells are always one raw U32 word,
+# and no Array element type is required for these fixed-U32 operations, so
+# PrimitiveCall.types stays empty for every one of them.
+#
+# get's answer is the declared `CompilerWords & U32` pair, built by the same
+# bend_tuple that `Nat.divmod` and the fixed-scalar array atomics use: the tape
+# handle stays its owner in the first word and the read word is the second, so
+# the pair drops through the ordinary constructor path.
+#
+# A direct call passes names prim_texts bound for owned arguments and borrowed
+# scalar text for the rest; a native entry passes the a0.. registers. get names
+# its tape twice, and the tape is always an owned argument first bound to one
+# name, so no operand expression is ever evaluated twice.
+
+def compiler_words_tuple(+pw: World) -> Maybe<&2, String>:
+  cid_text("Tuple", pw)
+
+def compiler_words_new_text(+pdepth: String) -> String:
+  join_text(["compiler_words_new(e, ", pdepth, ")"])
+
+def compiler_words_grow_text(+ptape: String) -> String:
+  join_text(["compiler_words_grow(e, ", ptape, ")"])
+
+def compiler_words_set_text(+ptape: String, +pindex: String, +pvalue: String) -> String:
+  join_text(["compiler_words_set(e, ", ptape, ", (u32)(", pindex, "), (u32)(", pvalue, "))"])
+
+def compiler_words_get_text(+ptape: String, +pindex: String, +ptuple: String) -> String:
+  join_text(["bend_tuple(e, ", ptuple, ", ", ptape, ", (u64)compiler_words_get(e, ", ptape, ", (u32)(", pindex, ")))"])
+
+def compiler_words_get_part(+pargs: List<&2, String>, +pw: World) -> Part:
+  match pargs:
+    case [tape, index]:
+      match compiler_words_tuple(pw):
+        case Some{tuple}: PartOk{compiler_words_get_text(tape, index, tuple)}
+        case None{}: PartFail{"the C runtime contract needs the `Tuple` constructor for a compiler_words_get result"}
+    case _: PartFail{"compiler_words_get takes the tape and the index"}
+
+def compiler_words_part(+pprimitive: BIR.Primitive, +pargs: List<&2, String>, +pw: World) -> Part:
+  match pprimitive:
+    case BIR.PrimCompilerWordsNew{}:
+      match pargs:
+        case [depth]: PartOk{compiler_words_new_text(depth)}
+        case _: PartFail{"compiler_words_new takes the depth"}
+    case BIR.PrimCompilerWordsGrow{}:
+      match pargs:
+        case [tape]: PartOk{compiler_words_grow_text(tape)}
+        case _: PartFail{"compiler_words_grow takes the tape"}
+    case BIR.PrimCompilerWordsSet{}:
+      match pargs:
+        case [tape, index, value]: PartOk{compiler_words_set_text(tape, index, value)}
+        case _: PartFail{"compiler_words_set takes the tape, the index and the value"}
+    case BIR.PrimCompilerWordsGet{}: compiler_words_get_part(pargs, pw)
+    case _: PartFail{"the primitive is not a compiler word tape operation"}
+
 def array_leaf_ops(+pvalue: Maybe<&2, Operand>, +pw: World, +playout: CLay.Layout, +parr: Bool, +pwords: Nat, +plgs: Nat) -> Part:
   match pvalue:
     case Some{value}:
