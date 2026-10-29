@@ -71,6 +71,15 @@ type ScopedState is Data:
 type DefinitionElaboration is Data:
   DefinitionElaborated{definition: IR.Definition}
   DefinitionElaborationFailure{diagnostic: Checked.Diagnostic}
+# Publication work for one checked declaration. A term-bodied definition arrives
+# with the occurrence that check_definition_uses_result already published into
+# source and that its DefTerm body names, so definition publication publishes only
+# the still declaration-local binders and result instead of walking and rebuilding
+# the whole occurrence tree a second time. Every other declaration (datatype, law,
+# import-bodied definition) still needs the ordinary recursive publication.
+type DeclarationWork is Data:
+  DeclarationPending{top_level: IR.TopLevel}
+  DeclarationDefinition{definition: IR.Definition, occurrence: IR.Occurrence}
 type Declarations is Data:
   DeclarationsChecked{globals: List<&2, Scope.ArenaGlobal>, declarations: List<&2, IR.TopLevel>}
   DeclarationsFailure{diagnostic: Checked.Diagnostic}
@@ -336,13 +345,13 @@ def definition_explicit(result: IR.OptionalTerm, ordinary: Bool) -> Bool:
     case IR.SomeTerm{_}: ordinary
     case IR.NoTerm{}: False{}
 
-def definition_classify(store: ArenaStore, definition: IR.Definition, +scope: Scope.ArenaGlobalScope) -> ArenaResult<IR.TopLevel>:
+def definition_classify(store: ArenaStore, definition: IR.Definition, +scope: Scope.ArenaGlobalScope) -> ArenaResult<IR.Definition>:
   match definition:
     case IR.Definition{key, +binders, +result, body, unsafe, span, +occurrence, _}:
       ArenaResult{store, +ordinary} = metadata_ordinary(store, binders)
       ArenaResult{store, type_only} = definition_sort(store, ordinary, result, occurrence, scope)
       ArenaResult{store, prefix} = metadata_prefix(store, binders, scope)
-      {ArenaResult{store, IR.DefTop{IR.Definition{key, binders, result, body, unsafe, span, occurrence, Some{IR.DefinitionFacts{type_only, definition_explicit(result, ordinary), prefix}}}}} : ArenaResult<IR.TopLevel>}
+      {ArenaResult{store, IR.Definition{key, binders, result, body, unsafe, span, occurrence, Some{IR.DefinitionFacts{type_only, definition_explicit(result, ordinary), prefix}}}} : ArenaResult<IR.Definition>}
 
 def require_checked_definition(state: ScopedState, definition: IR.Definition) -> ScopedState:
   match state definition:
@@ -350,10 +359,22 @@ def require_checked_definition(state: ScopedState, definition: IR.Definition) ->
       ScopedStateFailure{Checked.Diagnostic{span_file(span), span, "missing checked definition occurrence", "a checked definition body", "an invalid internal publication state"}}
     case state _: state
 
-def checked_declaration_result(store: ArenaStore, state: ScopedState, definition: IR.Definition, scope: Scope.ArenaGlobalScope) -> ArenaResult<IR.TopLevel>:
+# The checked occurrence is the one check_definition_uses_result published (the only
+# producer of a successful ScopedState's `Some{occurrence}`), and `checked_definition`
+# has already replaced the body with DefTerm{occurrence_term(occurrence)}. Carrying
+# both as DeclarationDefinition is what makes the later publication skip rebuilding
+# them; an import-bodied definition carries no occurrence and stays pending.
+def checked_declaration_work(definition: IR.Definition, occurrence: Maybe<&2, IR.Occurrence>) -> DeclarationWork:
+  match occurrence:
+    case Some{+checked}: DeclarationDefinition{definition, checked}
+    case None{}: DeclarationPending{IR.DefTop{definition}}
+
+def checked_declaration_result(store: ArenaStore, state: ScopedState, definition: IR.Definition, scope: Scope.ArenaGlobalScope) -> ArenaResult<DeclarationWork>:
   match state:
-    case ScopedState{_, occurrence}: definition_classify(store, checked_definition(definition, occurrence), scope)
-    case ScopedStateFailure{_}: {ArenaResult{store, IR.DefTop{definition}} : ArenaResult<IR.TopLevel>}
+    case ScopedState{_, +occurrence}:
+      ArenaResult{store, +checked} = definition_classify(store, checked_definition(definition, occurrence), scope)
+      {ArenaResult{store, checked_declaration_work(checked, occurrence)} : ArenaResult<DeclarationWork>}
+    case ScopedStateFailure{_}: {ArenaResult{store, DeclarationPending{IR.DefTop{definition}}} : ArenaResult<DeclarationWork>}
 
 def local_occurrence(+term: U32, +ty: U32, values: List<&2, IR.Occurrence>, bindings: List<&2, IR.CheckedBinding>, body: IR.Occurrence, patterns: Maybe<&2, List<&2, IR.CheckedPattern>>) -> IR.Occurrence:
   match patterns:
@@ -11064,11 +11085,15 @@ def check_declarations_prepend(v_1: Declarations, v_2: IR.TopLevel) -> Declarati
       v_9 = v_20041640
       DeclarationsFailure{v_9}
 
-def check_declarations_step(v_1: ArenaStore, v_3: ScopedState, v_4: IR.TopLevel, v_6: List<&2, IR.TopLevel>, +v_8: String, +v_10: List<&2, Ast.ModuleImport>, v_11: IR.Names, v_13: Nat, v_14: Scope.ArenaGlobalScope) -> ArenaResult<Declarations>:
+def check_declarations_step(v_1: ArenaStore, v_3: ScopedState, v_4: DeclarationWork, v_6: List<&2, IR.TopLevel>, +v_8: String, +v_10: List<&2, Ast.ModuleImport>, v_11: IR.Names, v_13: Nat, v_14: Scope.ArenaGlobalScope) -> ArenaResult<Declarations>:
   match v_3:
     case ScopedState{+v_19, _}:
       +v_21 = v_19
-      ArenaResult{v_25, +v_26} = arena_publish_top_level(v_1, v_4)
+      # Publication is the single source-ownership boundary for this declaration; it
+      # runs before arena_release so every handle that outlives the frame is already
+      # source-owned. A checked term-bodied definition publishes its occurrence here
+      # only once, because declaration finishing already did it.
+      ArenaResult{v_25, +v_26} = declaration_publish(v_1, v_4)
       # The open-law tape is carried across declarations, so it must survive rewind
       # just like the published declaration and scope entries.
       ArenaResult{retained_store, +retained_laws} = arena_publish_names(v_25, v_11)
@@ -11105,7 +11130,7 @@ def check_declarations_type_result(v_1: ArenaStore, v_3: Maybe<&2, Scope.ArenaGl
       {ArenaResult{v_1, v_50000366} : ArenaResult<Declarations>}
     case None{}:
       ArenaResult{v_26, +v_27} = check_type_decl(v_1, v_4, v_8, v_11, v_12)
-      ArenaResult{v_32, +v_33} = check_declarations_step(v_26, v_27, IR.TypeTop{v_4}, v_6, v_8, v_10, v_13, global_scope_size(v_11), v_12)
+      ArenaResult{v_32, +v_33} = check_declarations_step(v_26, v_27, DeclarationPending{IR.TypeTop{v_4}}, v_6, v_8, v_10, v_13, global_scope_size(v_11), v_12)
       {ArenaResult{v_32, v_33} : ArenaResult<Declarations>}
 
 def check_declarations_law_result(v_1: ArenaStore, v_3: Maybe<&2, Scope.ArenaGlobal>, v_4: IR.LawDecl, v_6: List<&2, IR.TopLevel>, v_8: String, v_10: List<&2, Ast.ModuleImport>, v_11: Scope.ArenaGlobalScope, v_12: Scope.ArenaGlobalScope, v_13: IR.Names, v_15: String, v_16: Ast.SourceSpan) -> ArenaResult<Declarations>:
@@ -11118,7 +11143,7 @@ def check_declarations_law_result(v_1: ArenaStore, v_3: Maybe<&2, Scope.ArenaGlo
     case None{}:
       ArenaResult{v_26, +v_27} = check_law(v_1, v_4, v_8, v_11, v_12)
       ArenaResult{v_31, +v_32} = arena_names_cons(v_26, v_15, v_13)
-      ArenaResult{v_37, +v_38} = check_declarations_step(v_31, v_27, IR.LawTop{v_4}, v_6, v_8, v_10, v_32, global_scope_size(v_11), v_12)
+      ArenaResult{v_37, +v_38} = check_declarations_step(v_31, v_27, DeclarationPending{IR.LawTop{v_4}}, v_6, v_8, v_10, v_32, global_scope_size(v_11), v_12)
       {ArenaResult{v_37, v_38} : ArenaResult<Declarations>}
 
 def check_declarations(v_1: ArenaStore, v_3: List<&2, IR.TopLevel>, v_5: String, v_7: List<&2, Ast.ModuleImport>, v_8: Scope.ArenaGlobalScope, v_9: IR.Names, v_10: Scope.ArenaGlobalScope) -> ArenaResult<Declarations>:
@@ -14574,6 +14599,27 @@ def arena_publish_definition(arena: ArenaStore, value: IR.Definition) -> ArenaRe
       ArenaResult{next_2, result_3} = arena_publish_def_body(next_1, field_3)
       ArenaResult{next_3, occurrence} = arena_publish_optional_occurrence(next_2, definition_occurrence)
       {ArenaResult{next_3, IR.Definition{field_0, result_1, result_2, result_3, field_4, field_5, occurrence, definition_facts}} : ArenaResult<IR.Definition>}
+
+# Definition finishing publishes the checked occurrence once
+# (check_definition_uses_result -> arena_publish_occurrence), and checked_definition
+# stores that occurrence and names its root term as the DefTerm body. Both are
+# therefore already source-owned here, and republishing them would walk and rebuild
+# an entire occurrence tree per definition without writing a single new source slot.
+# What is still declaration-local is exactly the elaborated binder tape and the
+# declared result term, so only those two fields are published.
+def arena_publish_checked_definition(arena: ArenaStore, value: IR.Definition, occurrence: IR.Occurrence) -> ArenaResult<IR.Definition>:
+  match value:
+    case IR.Definition{field_0, field_1, field_2, field_3, field_4, field_5, _, +definition_facts}:
+      ArenaResult{next_0, result_1} = arena_publish_binders(arena, field_1)
+      ArenaResult{next_1, result_2} = arena_publish_optional_term(next_0, field_2)
+      {ArenaResult{next_1, IR.Definition{field_0, result_1, result_2, field_3, field_4, field_5, Some{occurrence}, definition_facts}} : ArenaResult<IR.Definition>}
+
+def declaration_publish(arena: ArenaStore, value: DeclarationWork) -> ArenaResult<IR.TopLevel>:
+  match value:
+    case DeclarationPending{top_level}: arena_publish_top_level(arena, top_level)
+    case DeclarationDefinition{definition, occurrence}:
+      ArenaResult{next, published} = arena_publish_checked_definition(arena, definition, occurrence)
+      {ArenaResult{next, IR.DefTop{published}} : ArenaResult<IR.TopLevel>}
 
 def arena_publish_type_decl(arena: ArenaStore, value: IR.TypeDecl) -> ArenaResult<IR.TypeDecl>:
   match value:
