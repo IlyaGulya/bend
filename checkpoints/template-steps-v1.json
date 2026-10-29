@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "algorithm": "raw-AST typed boxed-continuation CPS with bounded dependent request groups, dependency-first ordered match, projection values, bounded nonrecursive storage islands, bounded private-helper result deforestation, bounded private-region helper/continuation inlining and quantity-checked alias scalarization, and structurally recursive native heterogeneous-stack chunks",
+  "algorithm": "raw-AST typed boxed-continuation CPS with bounded dependent request groups, dependency-first ordered match, projection values, bounded nonrecursive storage islands, bounded private-helper result deforestation, bounded private-region helper/continuation inlining and quantity-checked alias scalarization, and a fuel-threaded structurally recursive native heterogeneous-stack transition loop that materializes a public Run only at a quantum boundary, on completion, or at a trace pause",
   "generationConfig": {
     "base": "bend2/base.bend",
     "canonical": "bend2/selfhost/template.bend",
@@ -104,7 +104,7 @@
     "bend2/selfhost/path.bend": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/path.bend",
     "/Users/ilyagulya/Projects/My/bend/bend2/base.bend": "/Users/ilyagulya/Projects/My/bend/bend2/base.bend"
   },
-  "nativeTerminationClaim": "Generated source handlers and continuation helpers form an acyclic declaration graph. Result-deforested producer and continuation helpers are private, acyclic and emitted before their users; each forwards the same affine fields and captures once. Single-use private helpers are additionally spliced into their sole call site only after alpha-freshening every retained binder and checking every parameter quantity, which removes a call but introduces no new declaration, recursion or effect. Only the native chunk scheduler is self-recursive, structurally decreasing an operational Nat on every RunState transition. Zero returns the remaining Run unchanged; RunFinished returns directly. Native push/pop transfers affine progress, resume and stack once, never reassociates Bound and never allocates composition closures. This does not alter canonical semantic fuel or claim termination of the complete host-driven computation.",
+  "nativeTerminationClaim": "Generated source handlers and continuation helpers form an acyclic declaration graph. Result-deforested producer and continuation helpers are private, acyclic and emitted before their users; each forwards the same affine fields and captures once. Single-use private helpers are additionally spliced into their sole call site only after alpha-freshening every retained binder and checking every parameter quantity, which removes a call but introduces no new declaration, recursion or effect. Only the inner native chunk transition template_chunk_state is self-recursive: every progress/stack transition consumes exactly one operational Nat and recurses on its predecessor, and the public template_chunk boundary unpacks a Run once per chunk. RunState is materialized only at fuel zero or by a trace pause continuation; StackDone completion materializes RunFinished. No transition constructs an intermediate RunState. Zero returns the remaining Run unchanged; RunFinished returns directly. Native push/pop transfers affine progress, resume and stack once, never reassociates Bound and never allocates composition closures. This does not alter canonical semantic fuel or claim termination of the complete host-driven computation.",
   "progressABI": "typed-native-stack-v57t",
   "boxedTransport": {
     "type": "TemplateValue",
@@ -126,6 +126,7 @@
   },
   "nativeChunk": {
     "function": "template_chunk",
+    "stateFunction": "template_chunk_state",
     "rawStep": "template_step_one",
     "publicStep": "template_step",
     "start": "template_start",
@@ -150,15 +151,19 @@
     "stackDoneConstructor": "TemplateStackDone",
     "stackMoreConstructor": "TemplateStackMore",
     "castBoxFunction": "template_cast_box",
-    "popFunction": "template_pop",
-    "advanceFunction": "template_advance",
+    "innerTransition": "one fuel unit per progress/stack transition; progress and stack are threaded directly through template_chunk_state, so no transition constructs an intermediate RunState",
+    "runMaterialization": [
+      "quantum boundary (fuel zero)",
+      "StackDone completion",
+      "trace Begin/End pause continuation"
+    ],
     "stackOwnership": "Affine heterogeneous native LIFO; no host stack, no Bound reassociation, no Compose nodes, no per-site constructors",
     "sourceResumeClosuresUnchanged": true,
     "directInvokeUnchanged": true,
     "publicStepType": "-R: Type, Run<R> -> Run<R>",
     "exportedResume": false,
     "selfRecursiveFunctions": [
-      "template_chunk"
+      "template_chunk_state"
     ]
   },
   "ffi": false,
@@ -18499,8 +18504,8 @@
     "bend2/base.bend": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
     "evals/heavy_gate.ts": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015",
     "evals/validation_profile.ts": "d0bfd8124b334cb1db4792e49675290a971ae82730e57029173b07ff23d6938d",
-    "checkpoints/checker-core-owned-source-v1.json": "3ecb7f9d98a61d58b383e489bbc6195ad0b56c053baebaa3184533d490c29425",
-    "evals/checker_core_step_lower.ts": "21a47855e891ab115fb2ce4c70b7b699b376c6488f2505b7f0d6893f8d66daf9",
+    "checkpoints/checker-core-owned-source-v1.json": "a3a208219356cb63aa6e522194a84a6a06fb5978b799c20991624f7dbdfbd423",
+    "evals/checker_core_step_lower.ts": "47eac50c98092562a556869dffa2533379cc8b5344069186b6efba71683dc36a",
     "evals/checker_core_owned_source.ts": "7b9fc4fb80aa87ef0ce44310031e5bfe909f8abd9672f16609c435daa87eb450",
     "evals/emitter_step_lower.ts": "38c49a093bb91b16d058baba69303a15277e40bbeeb3aff1bf4ec0c1831817b3",
     "evals/template_step_lower.ts": "24bb3b87949f3d68073e2ec407c339b75f5124a877106d24fbc27ca9dbb95de3",
@@ -18512,8 +18517,8 @@
     "evals/bootstrap_source_oracle.ts": "5fb9785388bf42bb5a39596ed4064351a756857f6b7edbda4ab38f482d046789",
     "evals/canonical_cps_source.ts": "58b32128eb80ed0ca99c59914e46ad24694135562919052dca5cf80722adae97",
     "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
-    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_arena.bend": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf",
-    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/scope_lookup.bend": "e75dc874de6026e2104a7545a19f42fd6995aefecbb1d315c6ae3e097697e590",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_arena.bend": "7be6b80bac49da76928863387dd8a34e9feaaac23383be8401fb26ec062e9cf6",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/scope_lookup.bend": "2be9ff35e91d7b2ebf6ef8b6692b2fa5caff360a8e1586507930894bcadb47b7",
     "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_ir.bend": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
     "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/index_lookup.bend": "7b7b45946be711d0ba384e15f6823fded5ff97d6a526a6fb74a0448c13d61f84",
     "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
@@ -18522,7 +18527,7 @@
     "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/backend_ir.bend": "c0286db6b192bf5cc917774b7ea5e393d4416263432eb130fb8393b1dffc1cb3",
     "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_backend_sharing.bend": "05adf4ac68b0658425f7fce430709f67bd29c3f1f8a43727412661084c4dbe2c",
     "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/emitter.bend": "47d68ba5f0b54c334e2c940b7bb6aabc7f3bba27142b816f27df8225cf3fae4f",
-    "/Users/ilyagulya/Projects/My/bend/checkpoints/emitter_owned_v1.bend": "8d82537fa6e02f07e88eb1cbd378223e7d3f75599df34265dc9fb24358e05fac",
+    "/Users/ilyagulya/Projects/My/bend/checkpoints/emitter_owned_v1.bend": "4f874750f013cf973d796c994b6ad6f3ac3c1332117bd19e1e72f215719f4d78",
     "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/core.bend": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
     "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/sha256.bend": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
     "bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
@@ -18533,7 +18538,7 @@
     "/Users/ilyagulya/Projects/My/bend/bend2/base.bend": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614"
   },
   "outputs": {
-    "checkpoints/template_steps_v1.bend": "b9f4d860de0c58a274e1f23e90558191e23d7ac0de18d1fd452914160b9a5ae5",
+    "checkpoints/template_steps_v1.bend": "209eed950600784b103cb98e02af86fe8addb8b5dcab057aab1033b6909da60c",
     "checkpoints/template_steps_component_v1.bend": "86c9e3b009a91b233a314d76ddd65d83ecd66e620231e63121ba625c853b3e39"
   },
   "validation": {
@@ -18541,5 +18546,5 @@
     "nativeBuildRun": false,
     "testsRun": false
   },
-  "generationManifestSha256": "0f7f4922182e1475f285c101085510bea0becbcdb51b06b7b2b0ac1e788f6c3d"
+  "generationManifestSha256": "ffdeda22e5d45dee0f4168b815d3e2f2b184431efca67752159c80330042dbaa"
 }

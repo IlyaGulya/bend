@@ -4,18 +4,32 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
-### Текущий кандидат G26
+### Отклонённый G26: scheduler / arena / identity / descriptor / publication
 
-Интегрированы пять независимых изменений: scheduler chunk передаёт progress и
-typed stack без промежуточного RunState; fused arena reads сохраняют владельца;
-canonical name IDs живут в checking frame; lowering повторно использует последний
-descriptor только внутри одной definition; checked occurrence публикуется один раз.
-Финальный changed-path smoke: все 16 C/JS consumers PASS. Первые исходные ошибки
-сохранены как отказы, не как accepted versions. Полная native/fixedpoint/consumer
-квалификация и paired performance против R12 ещё не завершены; принят R12 ниже.
-Команды, source pins и неизменённые guards:
-`evals/receipts/producer2039g26_source_smoke.json`,
-`evals/receipts/producer2039g26_qualification_plan.json`.
+Source `ba2b1f1a` интегрировал пять изменений: fuel-threaded scheduler chunk,
+fused arena reads, frame-local canonical IDs, one-entry descriptor reuse и
+single occurrence publication. Полная correctness квалификация PASS:
+**12 485 definitions / 13 081 events**, zero excluded checks/output patches;
+настоящий native-stage0 → stage1 → stage2 fixedpoint, оба image **31 891 660 B**,
+SHA-256 `57c612a102fe768ba8a4d648d49dd82bc8ed0effe8e85c0180ae524331f12878`.
+59 C / 65 JS cases, 285 fixture executions и 50 дополнительных consumers PASS.
+Native build: 408 965 ms, peak RSS 4 915 986 432 B; bootstrap: 579 415 ms,
+peak RSS 2 726 264 832 B. Прежние 8-GiB / 600-s guards, ABI13, quantum64,
+parser fuel8M сохранены.
+
+**Как совместная оптимизация G26 отклонён.** Все 12 interleaved unprofiled
+замеров сохранены: median native 85 591.420 → 86 936.038 ms (+1.57%),
+native RSS +8.01%, footprint +8.45%; median JS 304 304.645 → 294 883.291 ms
+(−3.10%), но диапазоны перекрываются. Предварительное правило требовало
+улучшения mean и median на обоих runtimes; native его не выполнил.
+Отдельные gains пяти slices из общего результата не выводятся. Принят R12 ниже.
+Source/frozen inputs сохраняются отдельным rejected checkpoint до восстановления.
+
+Точные команды, source pins, runtime и измерения:
+`evals/receipts/root2039g26_correctness.json`,
+`evals/receipts/root2039g26_throughput.json`.
+Changed-path smoke: `evals/receipts/producer2039g26_source_smoke.json`.
+Occurrence census: `evals/receipts/producer2039g26_occurrence_census.json`.
 
 ### Отклонённый G25: array-level word-range fusion
 

@@ -5,15 +5,20 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
-- G26 integrates a fuel-threaded scheduler chunk, owner-preserving fused arena
-  reads, checking-frame canonical name IDs, last-descriptor reuse within a
-  definition and single publication of checked occurrences. Sixteen actual
-  C/JS changed-path consumers pass, including chunk boundaries, heterogeneous
-  continuations, arena certificates, rewind and tagged word ranges. Initial
-  source-smoke failures are retained; full compiler/fixedpoint and paired
-  R12 performance qualification remain pending.
-  `evals/receipts/producer2039g26_source_smoke.json`,
-  `evals/receipts/producer2039g26_qualification_plan.json`.
+- G26's combined scheduler/arena/identity/descriptor/publication optimization
+  is rejected under its predeclared performance rule. Full native validation
+  passes 12,485 definitions / 13,081 events; actual native-stage0 → stage1 →
+  stage2 images are byte-identical: 31,891,660 bytes, SHA-256
+  `57c612a102fe768ba8a4d648d49dd82bc8ed0effe8e85c0180ae524331f12878`.
+  All 59 C / 65 JS cases, 285 fixture executions and 50 additional consumer
+  checks pass. Twelve unprofiled paired measurements against R12 are retained:
+  native pipeline median rises 1.57%, RSS 8.01%, footprint 8.45%; JS pipeline
+  median falls 3.10%, with overlapping timing/memory ranges. No combined
+  speedup or universal memory reduction is accepted; R12 remains the baseline.
+  Source `ba2b1f1a` and required frozen inputs are retained before restoration.
+  `evals/receipts/root2039g26_correctness.json`,
+  `evals/receipts/root2039g26_throughput.json`,
+  `evals/receipts/producer2039g26_source_smoke.json`.
 
 - G25's arena word-range fusion is rejected as a performance optimization.
   Its fresh full compiler passes 12,465 definitions / 13,059 validation events,
