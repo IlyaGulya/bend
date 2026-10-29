@@ -100,6 +100,23 @@ fixtures are removed and four focused C/JS restoration executions pass.
 Accepted native/image hashes are unchanged; this is restoration, not a new
 full qualification: `evals/receipts/producer2039g28_restored_r12.json`.
 
+G29 profiles the retained R12/G28 checker images on identical bounded windows;
+the sampled GC increase hypothesis is not supported. Logical counters agree on
+53,253,960 Node reads / 8,740,226 appends; G28 decodes 223,267,270 fields.
+A key-preserving Map.bit tail walk improves the isolated canonical checker
+screen, but is rejected by the full twelve-sample performance rule:
+native mean +0.218%; JS mean/median +1.857%/+0.229%. Accepted selfhost C/JS
+already use key-preserving Map.bit primitives; do not extrapolate the screen.
+Fresh full native validation passes 12,455 definitions / 13,049 events with
+zero exclusions/output patches. Actual native-stage0 → stage1 → stage2 byte
+fixedpoint passes: two 31,756,924-byte images. The fail-fast runner stops before
+consumer matrices, which are intentionally not run for the rejected candidate.
+Source: `09a62103`; full-root/frozen inputs: `53cd0f47`.
+`evals/receipts/producer2039g29_paired_profile.json`,
+`evals/receipts/producer2039g29_logical_counts.json`,
+`evals/receipts/producer2039g29_core_fixedpoint.json`,
+`evals/receipts/producer2039g29_throughput.json`.
+
 ## Historical full native-seed checkpoint: G23
 
 The earlier accepted checkpoint is **remote2039g23**, compiler source

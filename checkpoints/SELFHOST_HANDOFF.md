@@ -4,7 +4,7 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
-### G29: измеренный Map.bit experiment; ещё не принят
+### Отклонённый G29: Map.bit tail walk; требуется восстановление R12
 
 Парные CPU/allocation profiles R12/G28 сняты на тех же окнах public checker:
 1M–1.25M, 4M–4.25M, 8M–8.25M. Полный frozen root завершён в обоих случаях:
@@ -34,20 +34,35 @@ excluded checks/output patches. Build guardian: 272 590 ms, peak RSS
 оба image **31 756 924 B**, SHA-256
 `6699085c29e518fd48885ee1ab1dc898078c60e58528a18506d83f4755608bbf`.
 `cmp` тоже подтвердил равенство. Bootstrap: 503 865 ms, peak RSS 3 283 533 824 B.
-Native executable побайтно совпал с R12: C уже использует native `map_bit`;
-изменение относится к JS-пути. Native speedup не заявляется.
-Полные парные performance/consumer gates ещё идут; accepted baseline — R12.
-`evals/g24_qualification.mjs --fail-fast-performance=true` проверяет все 12
-парных samples сразу после fixedpoint/measurement и останавливается до consumer
-matrices при отказе; default/historical режим не меняет. Policy smoke пройден
-на Bun и Node, включая replay прежнего отказа G27 и CLI refusal.
+Native executable побайтно совпал с R12: C уже использует native `map_bit`.
+Все **12 unprofiled paired samples** завершены и сохранены без исключений.
+G29 **отклонён** по заранее заданному правилу: native mean +0.218%;
+JS mean +1.857%, median +0.229%. Native median −0.692% не компенсирует
+нарушение mean. Наблюдаемые JS median RSS −2.87% и footprint −11.94%
+также не компенсируют провал timing-критерия. Принятым остаётся R12.
+
+Изолированный canonical checker screen не переносится на end-to-end результат:
+R12 selfhost JS image уже содержит `$p_map_bit`, возвращающий исходный key без
+пересборки префикса (`bend2/selfhost/js_backend.bend:primitive_runtime`,
+accepted `stage-one.js:268`). Новый source tail walk не является новым
+native/JS primitive в этом image. Причина полного timing-разброса не установлена.
+
+`evals/g24_qualification.mjs --fail-fast-performance=true` реально остановил
+этот запуск сразу после двенадцатого measurement, **до consumer matrices**.
+Полная consumer-квалификация G29 не запускалась и не заявляется.
+Этот флаг обязателен для следующих performance-кандидатов; historical default
+не менялся. Policy smoke пройден на Bun и Node, включая replay отказа G27
+и CLI refusal. Source: `09a62103`; full-root/frozen-input checkpoint: `53cd0f47`.
+Далее сохранить rejected checkpoint, восстановить только G29-owned source
+и подтвердить R12 bytes коротким C/JS restoration smoke; новый full run не нужен.
 
 Доказательства:
 `evals/receipts/producer2039g29_paired_profile.json`,
 `evals/receipts/producer2039g29_logical_counts.json`,
 `evals/receipts/producer2039g29_source_smoke.json`,
 `evals/receipts/producer2039g29_early_screen.json`,
-`evals/receipts/producer2039g29_core_fixedpoint.json`.
+`evals/receipts/producer2039g29_core_fixedpoint.json`,
+`evals/receipts/producer2039g29_throughput.json`.
 
 ### Отклонённый G28: compact checker node rows
 

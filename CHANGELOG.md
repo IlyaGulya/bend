@@ -16,16 +16,21 @@ latest one; the GitHub release carries the same notes.
   supplementary characters, isolated surrogates and embedded NUL.
   The fresh full native root validates 12,455 definitions / 13,049 events;
   actual native-stage0/stage1/stage2 byte fixedpoint passes with two identical
-  31,756,924-byte images. C already uses native Map.bit, so the native executable
-  is unchanged. Full paired performance/consumer qualification is pending;
-  R12 remains accepted.
-  `--fail-fast-performance=true` stops qualification before consumer matrices
-  if the predeclared paired timing/memory rule fails.
+  31,756,924-byte images. The mandatory twelve-sample paired performance gate
+  rejects G29: native mean rises 0.218%; JS mean/median rise 1.857%/0.229%.
+  Lower observed JS median RSS/footprint do not satisfy the timing rule.
+  The runner stops before consumer matrices; full consumer qualification is
+  not claimed. R12 remains accepted. Source/frozen inputs: `09a62103`,
+  `53cd0f47`. The isolated canonical-checker gain is not an end-to-end gain:
+  accepted selfhost C and JS already have key-preserving Map.bit primitives.
+  `--fail-fast-performance=true` was exercised on the real qualification run,
+  not just replayed policy samples.
   `evals/receipts/producer2039g29_paired_profile.json`,
   `evals/receipts/producer2039g29_logical_counts.json`,
   `evals/receipts/producer2039g29_source_smoke.json`,
   `evals/receipts/producer2039g29_early_screen.json`,
-  `evals/receipts/producer2039g29_core_fixedpoint.json`.
+  `evals/receipts/producer2039g29_core_fixedpoint.json`,
+  `evals/receipts/producer2039g29_throughput.json`.
 
 - G28's compact checker node-store cutover is rejected by its predeclared
   early screen. Eighteen focused canonical C/JS executions and depth,
