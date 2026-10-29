@@ -18,6 +18,9 @@
  *     --bindings=PATH --frozen-repository=PATH \
  *     --control-native=PATH --control-image=PATH [--bun=BUN] [--clang=CLANG] \
  *     [--llvm-bin=...] [--out=checkpoints/NAME]
+ *   The full phase measures throughput immediately after the authenticated
+ *   fixedpoint, before expensive consumer matrices. Final PASS still requires
+ *   every consumer gate; early measurements never imply compiler acceptance.
  *
  * Run this runner directly, never inside another heavy_gate: it applies the
  * accepted guard to each heavy step itself, and the matrix runner starts one
@@ -1185,6 +1188,16 @@ async function runCorrectness(run, context) {
       build: fixedpoint.proof.nativeRun.build, buildSha256: fixedpoint.proof.nativeRun.buildSha256,
       corpusSha256: fixedpoint.proof.nativeRun.corpusSha256, sources: fixedpoint.proof.nativeRun.sources}};
   run.publish();
+  if (context.phase === 'all') {
+    context.candidate = {repository,
+      binary: {path: state.native.binary, sha256: state.native.binarySha256},
+      stageOne: fixedpoint.stageOne};
+    run.receipt.correctness = state;
+    run.receipt.throughput = await runThroughput(run, context);
+    run.receipt.throughputMeasured = true;
+    run.publish();
+  }
+
 
   run.runPlain('emitted-suites', [bun, '--smol', 'evals/selfhost_emitted_suites.ts',
     '--fixedpoint-report=' + bootstrapReport, '--stage-sha256=' + fixedpoint.stageOne.sha256,
@@ -1451,7 +1464,8 @@ async function main() {
       const correctness = await runCorrectness(run, context);
       run.receipt.correctness = correctness;
       run.receipt.correctnessPassed = true;
-      run.receipt.status = 'G24_CORRECTNESS_PASS';
+      run.receipt.status = run.receipt.throughputMeasured
+        ? 'G24_QUALIFICATION_PASS' : 'G24_CORRECTNESS_PASS';
       run.publish();
       context.candidate = {
         repository,
@@ -1459,7 +1473,7 @@ async function main() {
         stageOne: correctness.fixedpoint.stageOne,
       };
     }
-    if (phase !== 'correctness') {
+    if (phase !== 'correctness' && !run.receipt.throughputMeasured) {
       run.receipt.throughput = await runThroughput(run, context);
       run.receipt.throughputMeasured = true;
       run.receipt.status = phase === 'throughput' ? 'G24_THROUGHPUT_PASS' : 'G24_QUALIFICATION_PASS';
