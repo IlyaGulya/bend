@@ -4,6 +4,36 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
+### Отклонённый G28: compact checker node rows
+
+G28 заменил только постоянный `Array<Node>` на opaque affine `CompilerRows`:
+JS — packed U32 slot/payload tapes и cold refs; C — существующие ARR/BUF,
+без второго boxed Node tree. Canonical compiler SHA-256:
+`20485e19264c369a49a517b4cb0e5b970aae4f13fef21d98bf072aa7b6757ccc`.
+Два backend-агента и независимые contract/code adversarial reviews завершены.
+Реальный dynamic-recursive C fixture воспроизвёл missing `facts_hot`; исправлен.
+Исправлена также синтаксическая ошибка emitted JS error literals.
+**18 focused canonical C/JS executions PASS**, плюс 17 этапов depth/rewind/affine
+refusals. Это не runtime-квалификация selfhost C/JS renderer и не full compiler.
+
+**Ранний screen отклонил G28:** тот же frozen root, R12 parser/expander, driver,
+runtime и guards; checker **238 130.662 → 256 727.458 ms (+7.81%)**, при заранее
+заданном пороге отказа +5%. Peak RSS **2 406 072 320 → 2 246 524 928 B**,
+footprint **2 841 698 560 → 2 352 855 392 B**. Source hash, check steps
+**10 078 835**, source arena counts и word-tape SHA совпали. Одна пара — не
+доказательство устойчивого speedup, но достаточное основание для заданного отказа.
+Full native build/fixedpoint/full-pipeline timings/consumer matrices **не запускались**.
+Не запускать consumer-хвост после отказа. Принятым baseline остаётся R12.
+
+Физический R12 census: 2 254 791 Node / capacity 4 194 304, 828 514 shared Span.
+Optional full heap snapshot превысил прежний 8-GiB guard и остаётся FAIL;
+actual-object sizes получены отдельным малым R12 sample, не клонами.
+Доказательства: `evals/receipts/producer2039g28_storage_baseline.json`,
+`evals/receipts/producer2039g28_source_smoke.json`,
+`evals/receipts/producer2039g28_early_screen.json`.
+Required frozen source: `checkpoints/.bootstrap_compiler_root_g28_screen.bend`,
+manifest: `checkpoints/local2039g28/root.screen.corpus.json`.
+
 ### Отклонённый G27: compiler-private U32 word tapes; R12 восстановлен
 
 Source `18a4f65e`, orchestration `24780e82`, rejected checkpoint `4cb67526`.

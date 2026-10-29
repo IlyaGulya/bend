@@ -1,0 +1,2009 @@
+{
+  "schemaVersion": 1,
+  "status": "R12_NODE_CENSUS_AND_BOUNDED_OBJECT_LAYOUT",
+  "compilerAccepted": false,
+  "acceptanceEvidence": false,
+  "baseline": {
+    "sourceCheckpoint": "5916d410",
+    "restoredCheckpoint": "3167aea6",
+    "native": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+      "sha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "bytes": 18808824
+    },
+    "image": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+      "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "bytes": 31758507
+    },
+    "acceptance": {
+      "path": "/Users/ilyagulya/Projects/My/bend/evals/receipts/root2039g24r12_native_fixedpoint.json",
+      "sha256": "cb66ed5542e56516f83d2c04fb80f5ab8597130ab137a4128be8491391911d50",
+      "sourceCheckpoint": "5916d410",
+      "byteFixedpoint": true
+    }
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "commands": {
+    "full": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "evals/heavy_gate.ts",
+      "--memory-mib",
+      "8192",
+      "--rss-mib",
+      "8192",
+      "--poll-ms",
+      "10",
+      "--timeout-ms",
+      "600000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "/private/tmp/bend-g28-nodes-a0K3GF/node-storage-probe.mjs",
+      "/private/tmp/bend-g28-nodes-a0K3GF/node-storage-request.json",
+      "/private/tmp/bend-g28-nodes-a0K3GF/node-storage-result.json"
+    ],
+    "small": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "evals/heavy_gate.ts",
+      "--memory-mib",
+      "8192",
+      "--rss-mib",
+      "8192",
+      "--poll-ms",
+      "10",
+      "--timeout-ms",
+      "600000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "/private/tmp/bend-g28-nodes-a0K3GF/node-storage-probe.mjs",
+      "/private/tmp/bend-g28-nodes-a0K3GF/node-sample-request.json",
+      "/private/tmp/bend-g28-nodes-a0K3GF/node-sample-result.json"
+    ],
+    "layout": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "evals/heavy_gate.ts",
+      "--memory-mib",
+      "8192",
+      "--rss-mib",
+      "8192",
+      "--poll-ms",
+      "10",
+      "--timeout-ms",
+      "600000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "/private/tmp/bend-g28-nodes-a0K3GF/node-layout-analyze.mjs",
+      "/private/tmp/bend-g28-nodes-a0K3GF/node-sample-result.json",
+      "/private/tmp/bend-g28-nodes-a0K3GF/node-storage-result.json",
+      "/private/tmp/bend-g28-nodes-a0K3GF/node-layout.json"
+    ]
+  },
+  "full": {
+    "reportPath": "/private/tmp/bend-g28-nodes-a0K3GF/node-storage-result.json",
+    "reportSha256": "acde5795f00c6ba239ea64518ebaf6b6773e6fddda333b749ba9e21187169c44",
+    "status": "RUNNING",
+    "phases": [
+      {
+        "phase": "startup",
+        "elapsedMs": 1067.5128750000001,
+        "memoryEnd": {
+          "rss": 500105216,
+          "heapTotal": 121765888,
+          "heapUsed": 111209904,
+          "external": 34868508,
+          "arrayBuffers": 31783526
+        }
+      },
+      {
+        "phase": "load-parse",
+        "elapsedMs": 9821.344207999999,
+        "memoryEnd": {
+          "rss": 1301020672,
+          "heapTotal": 884621312,
+          "heapUsed": 762431968,
+          "external": 3110041,
+          "arrayBuffers": 25019
+        }
+      },
+      {
+        "phase": "expand",
+        "elapsedMs": 6659.527040999999,
+        "memoryEnd": {
+          "rss": 1458716672,
+          "heapTotal": 1038761984,
+          "heapUsed": 941812456,
+          "external": 3110041,
+          "arrayBuffers": 25019
+        }
+      },
+      {
+        "phase": "check",
+        "elapsedMs": 296205.50075,
+        "memoryEnd": {
+          "rss": 1828470784,
+          "heapTotal": 1540653056,
+          "heapUsed": 1353010552,
+          "external": 3103351,
+          "arrayBuffers": 25019
+        }
+      },
+      {
+        "phase": "node-storage",
+        "elapsedMs": 1092.998332999996,
+        "memoryEnd": {
+          "rss": 1981480960,
+          "heapTotal": 1725513728,
+          "heapUsed": 1368181376,
+          "external": 3103351,
+          "arrayBuffers": 25019
+        }
+      }
+    ],
+    "stepCounts": {
+      "expand": 1004927,
+      "check": 10078835
+    },
+    "storage": {
+      "sourceCounts": [
+        2254791,
+        4194304,
+        447744,
+        524288,
+        69061,
+        131072,
+        2423369,
+        4194304,
+        0,
+        1,
+        64096,
+        65536
+      ],
+      "used": 2254791,
+      "capacity": 4194304,
+      "depth": 22,
+      "distinctNodeObjects": 2254791,
+      "distinctSpanObjects": 828514,
+      "missingSpan": 146,
+      "variants": [
+        {
+          "tag": "TermRef",
+          "count": 373045,
+          "fields": [
+            "$",
+            "key_id",
+            "span"
+          ],
+          "numericFields": {
+            "key_id": {
+              "min": 9,
+              "max": 46586
+            }
+          },
+          "coldFields": {
+            "span": 373045
+          }
+        },
+        {
+          "tag": "TermCtr",
+          "count": 366288,
+          "fields": [
+            "$",
+            "key_id",
+            "args_start",
+            "args_count",
+            "span"
+          ],
+          "numericFields": {
+            "key_id": {
+              "min": 21,
+              "max": 48859
+            },
+            "args_start": {
+              "min": 0,
+              "max": 1971222
+            },
+            "args_count": {
+              "min": 0,
+              "max": 22
+            }
+          },
+          "coldFields": {
+            "span": 366288
+          }
+        },
+        {
+          "tag": "TermVar",
+          "count": 342728,
+          "fields": [
+            "$",
+            "key_id",
+            "index",
+            "span"
+          ],
+          "numericFields": {
+            "key_id": {
+              "min": 0,
+              "max": 32159
+            },
+            "index": {
+              "min": 0,
+              "max": 53
+            }
+          },
+          "coldFields": {
+            "span": 342728
+          }
+        },
+        {
+          "tag": "TermApp",
+          "count": 327391,
+          "fields": [
+            "$",
+            "fn_id",
+            "arg_id",
+            "span"
+          ],
+          "numericFields": {
+            "fn_id": {
+              "min": 33,
+              "max": 2254786
+            },
+            "arg_id": {
+              "min": 34,
+              "max": 2254787
+            }
+          },
+          "coldFields": {
+            "span": 327391
+          }
+        },
+        {
+          "tag": "TermAll",
+          "count": 216180,
+          "fields": [
+            "$",
+            "quantity",
+            "key_id",
+            "index",
+            "ty_id",
+            "body_id",
+            "span"
+          ],
+          "numericFields": {
+            "key_id": {
+              "min": 0,
+              "max": 32156
+            },
+            "index": {
+              "min": 0,
+              "max": 49
+            },
+            "ty_id": {
+              "min": 8,
+              "max": 2254779
+            },
+            "body_id": {
+              "min": 17,
+              "max": 2254782
+            }
+          },
+          "coldFields": {
+            "quantity": 216180,
+            "span": 216180
+          }
+        },
+        {
+          "tag": "TermAdt",
+          "count": 118848,
+          "fields": [
+            "$",
+            "key_id",
+            "args_start",
+            "args_count",
+            "refs_start",
+            "refs_count",
+            "span"
+          ],
+          "numericFields": {
+            "key_id": {
+              "min": 9,
+              "max": 46587
+            },
+            "args_start": {
+              "min": 0,
+              "max": 1971493
+            },
+            "args_count": {
+              "min": 0,
+              "max": 4
+            },
+            "refs_start": {
+              "min": 0,
+              "max": 0
+            },
+            "refs_count": {
+              "min": 0,
+              "max": 0
+            }
+          },
+          "coldFields": {
+            "span": 118848
+          }
+        },
+        {
+          "tag": "TermLam",
+          "count": 90656,
+          "fields": [
+            "$",
+            "quantity",
+            "key_id",
+            "index",
+            "body_id",
+            "span"
+          ],
+          "numericFields": {
+            "key_id": {
+              "min": 0,
+              "max": 32156
+            },
+            "index": {
+              "min": 0,
+              "max": 53
+            },
+            "body_id": {
+              "min": 293,
+              "max": 2254789
+            }
+          },
+          "coldFields": {
+            "quantity": 90656,
+            "span": 90656
+          }
+        },
+        {
+          "tag": "TermFill",
+          "count": 79227,
+          "fields": [
+            "$",
+            "head_id",
+            "args_start",
+            "args_count",
+            "span"
+          ],
+          "numericFields": {
+            "head_id": {
+              "min": 75,
+              "max": 2141875
+            },
+            "args_start": {
+              "min": 32,
+              "max": 1971142
+            },
+            "args_count": {
+              "min": 1,
+              "max": 4
+            }
+          },
+          "coldFields": {
+            "span": 79227
+          }
+        },
+        {
+          "tag": "TermQuantity",
+          "count": 71906,
+          "fields": [
+            "$",
+            "quantity",
+            "span"
+          ],
+          "numericFields": {},
+          "coldFields": {
+            "quantity": 71906,
+            "span": 71906
+          }
+        },
+        {
+          "tag": "BodyCase",
+          "count": 67116,
+          "fields": [
+            "$",
+            "patterns_start",
+            "patterns_count",
+            "body_id",
+            "span"
+          ],
+          "numericFields": {
+            "patterns_start": {
+              "min": 41,
+              "max": 1971154
+            },
+            "patterns_count": {
+              "min": 1,
+              "max": 5
+            },
+            "body_id": {
+              "min": 92,
+              "max": 2254519
+            }
+          },
+          "coldFields": {
+            "span": 67116
+          }
+        },
+        {
+          "tag": "TermAnn",
+          "count": 54682,
+          "fields": [
+            "$",
+            "term_id",
+            "ty_id",
+            "span"
+          ],
+          "numericFields": {
+            "term_id": {
+              "min": 5670,
+              "max": 2243999
+            },
+            "ty_id": {
+              "min": 5448,
+              "max": 2244010
+            }
+          },
+          "coldFields": {
+            "span": 54682
+          }
+        },
+        {
+          "tag": "BodyLocal",
+          "count": 44237,
+          "fields": [
+            "$",
+            "patterns_start",
+            "patterns_count",
+            "quantity",
+            "values_start",
+            "values_count",
+            "body_id",
+            "span"
+          ],
+          "numericFields": {
+            "patterns_start": {
+              "min": 182,
+              "max": 1962497
+            },
+            "patterns_count": {
+              "min": 1,
+              "max": 4
+            },
+            "values_start": {
+              "min": 185,
+              "max": 1962498
+            },
+            "values_count": {
+              "min": 1,
+              "max": 4
+            },
+            "body_id": {
+              "min": 338,
+              "max": 2244011
+            }
+          },
+          "coldFields": {
+            "quantity": 44237,
+            "span": 44237
+          }
+        },
+        {
+          "tag": "BodyReply",
+          "count": 38519,
+          "fields": [
+            "$",
+            "term_id",
+            "span"
+          ],
+          "numericFields": {
+            "term_id": {
+              "min": 92,
+              "max": 1575718
+            }
+          },
+          "coldFields": {
+            "span": 38519
+          }
+        },
+        {
+          "tag": "TermType",
+          "count": 27458,
+          "fields": [
+            "$",
+            "kind_id",
+            "span"
+          ],
+          "numericFields": {
+            "kind_id": {
+              "min": 0,
+              "max": 2254776
+            }
+          },
+          "coldFields": {
+            "span": 27458
+          }
+        },
+        {
+          "tag": "BodyMatch",
+          "count": 23386,
+          "fields": [
+            "$",
+            "scrutinees_start",
+            "scrutinees_count",
+            "cases_start",
+            "cases_count",
+            "span"
+          ],
+          "numericFields": {
+            "scrutinees_start": {
+              "min": 38,
+              "max": 1971146
+            },
+            "scrutinees_count": {
+              "min": 1,
+              "max": 5
+            },
+            "cases_start": {
+              "min": 0,
+              "max": 1971147
+            },
+            "cases_count": {
+              "min": 0,
+              "max": 165
+            }
+          },
+          "coldFields": {
+            "span": 23386
+          }
+        },
+        {
+          "tag": "TermString",
+          "count": 12748,
+          "fields": [
+            "$",
+            "chars",
+            "names",
+            "span"
+          ],
+          "numericFields": {},
+          "coldFields": {
+            "chars": 12748,
+            "names": 12748,
+            "span": 12748
+          }
+        },
+        {
+          "tag": "TermEqual",
+          "count": 188,
+          "fields": [
+            "$",
+            "left_id",
+            "right_id",
+            "ty_id",
+            "span"
+          ],
+          "numericFields": {
+            "left_id": {
+              "min": 1845,
+              "max": 2129165
+            },
+            "right_id": {
+              "min": 1846,
+              "max": 2129166
+            },
+            "ty_id": {
+              "min": 1847,
+              "max": 1586152
+            }
+          },
+          "coldFields": {
+            "span": 188
+          }
+        },
+        {
+          "tag": "TermQuant",
+          "count": 146,
+          "fields": [
+            "$"
+          ],
+          "numericFields": {},
+          "coldFields": {}
+        },
+        {
+          "tag": "TermRewrite",
+          "count": 18,
+          "fields": [
+            "$",
+            "equation_id",
+            "proof_id",
+            "body_id",
+            "span"
+          ],
+          "numericFields": {
+            "equation_id": {
+              "min": 1864,
+              "max": 1586162
+            },
+            "proof_id": {
+              "min": 1874,
+              "max": 1586166
+            },
+            "body_id": {
+              "min": 1875,
+              "max": 1586167
+            }
+          },
+          "coldFields": {
+            "span": 18
+          }
+        },
+        {
+          "tag": "TermRefl",
+          "count": 14,
+          "fields": [
+            "$",
+            "span"
+          ],
+          "numericFields": {},
+          "coldFields": {
+            "span": 14
+          }
+        },
+        {
+          "tag": "TermMin",
+          "count": 8,
+          "fields": [
+            "$",
+            "left_id",
+            "right_id",
+            "span"
+          ],
+          "numericFields": {
+            "left_id": {
+              "min": 14,
+              "max": 735377
+            },
+            "right_id": {
+              "min": 15,
+              "max": 735378
+            }
+          },
+          "coldFields": {
+            "span": 8
+          }
+        },
+        {
+          "tag": "TermBang",
+          "count": 2,
+          "fields": [
+            "$",
+            "term_id",
+            "span"
+          ],
+          "numericFields": {
+            "term_id": {
+              "min": 13781,
+              "max": 771224
+            }
+          },
+          "coldFields": {
+            "span": 2
+          }
+        }
+      ],
+      "sampleTags": [
+        "TermQuantity",
+        "TermType",
+        "TermQuant",
+        "TermVar",
+        "TermMin",
+        "TermAll",
+        "TermApp",
+        "TermRef",
+        "TermFill",
+        "BodyReply",
+        "BodyCase",
+        "BodyMatch",
+        "TermCtr",
+        "TermLam",
+        "BodyLocal",
+        "TermString",
+        "TermEqual",
+        "TermRefl",
+        "TermRewrite",
+        "TermAnn",
+        "TermBang",
+        "TermAdt"
+      ],
+      "limitations": [
+        "Final source arena census, not transient peak or growth history.",
+        "Actual representative Node/Span objects retained for post-check V8 heap-size measurement; no cloned object layout.",
+        "Source algorithm, parser and checker are unchanged; diagnostic traversal/GC/snapshot happen only afterward."
+      ]
+    },
+    "optionalHeapSnapshot": {
+      "status": "RESOURCE_LIMIT",
+      "reason": "physical_footprint_limit",
+      "commandExitCode": -1,
+      "commandSignal": 15,
+      "peakRssBytes": 8512012288,
+      "peakFootprintBytes": 8590281568,
+      "elapsedMs": 333952,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 73,
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/private/tmp/bend-g28-nodes-a0K3GF/node-storage-probe.mjs",
+        "/private/tmp/bend-g28-nodes-a0K3GF/node-storage-request.json",
+        "/private/tmp/bend-g28-nodes-a0K3GF/node-storage-result.json"
+      ],
+      "label": "heavy command",
+      "exitCode": 73,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793286554597-67ec61acd393dfcf.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592,
+      "guardianPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793286554597-67ec61acd393dfcf.json",
+      "guardianSha256": "7819f4e80d582c0c7faef543a8b8e8666fcd9cfa51d5544c767e22ed22a09be5",
+      "limitation": "Completed checker census, but optional full snapshot failed; partial source report remains RUNNING."
+    }
+  },
+  "sample": {
+    "reportPath": "/private/tmp/bend-g28-nodes-a0K3GF/node-sample-result.json",
+    "reportSha256": "31fcd2c4cc8aa3ac521131a0a60fd5574bc1514aae920a3dfdef466668ef3c2e",
+    "status": "R12_NODE_STORAGE_PROBE_PASS",
+    "phases": [
+      {
+        "phase": "startup",
+        "elapsedMs": 939.33325,
+        "memoryEnd": {
+          "rss": 505397248,
+          "heapTotal": 121241600,
+          "heapUsed": 111308056,
+          "external": 34868508,
+          "arrayBuffers": 31783526
+        }
+      },
+      {
+        "phase": "load-parse",
+        "elapsedMs": 405.18441600000006,
+        "memoryEnd": {
+          "rss": 560611328,
+          "heapTotal": 168689664,
+          "heapUsed": 109462872,
+          "external": 3110041,
+          "arrayBuffers": 25019
+        }
+      },
+      {
+        "phase": "expand",
+        "elapsedMs": 224.16216700000018,
+        "memoryEnd": {
+          "rss": 569933824,
+          "heapTotal": 177340416,
+          "heapUsed": 125485192,
+          "external": 3110041,
+          "arrayBuffers": 25019
+        }
+      },
+      {
+        "phase": "check",
+        "elapsedMs": 6721.949041,
+        "memoryEnd": {
+          "rss": 738754560,
+          "heapTotal": 338198528,
+          "heapUsed": 201435080,
+          "external": 3110041,
+          "arrayBuffers": 25019
+        }
+      },
+      {
+        "phase": "node-storage",
+        "elapsedMs": 15.085000000000946,
+        "memoryEnd": {
+          "rss": 741998592,
+          "heapTotal": 341508096,
+          "heapUsed": 238818296,
+          "external": 3110041,
+          "arrayBuffers": 25019
+        }
+      },
+      {
+        "phase": "sample-heap",
+        "elapsedMs": 2051.457290999999,
+        "memoryEnd": {
+          "rss": 1121206272,
+          "heapTotal": 168034304,
+          "heapUsed": 161750200,
+          "external": 124296257,
+          "arrayBuffers": 121219782
+        }
+      }
+    ],
+    "storage": {
+      "sourceCounts": [
+        51890,
+        65536,
+        3220,
+        4096,
+        1133,
+        2048,
+        136946,
+        262144,
+        0,
+        1,
+        1256,
+        2048
+      ],
+      "used": 51890,
+      "capacity": 65536,
+      "depth": 16,
+      "distinctNodeObjects": 51890,
+      "distinctSpanObjects": 15433,
+      "missingSpan": 145,
+      "variants": [
+        {
+          "tag": "TermCtr",
+          "count": 14777,
+          "fields": [
+            "$",
+            "key_id",
+            "args_start",
+            "args_count",
+            "span"
+          ],
+          "numericFields": {
+            "key_id": {
+              "min": 21,
+              "max": 502
+            },
+            "args_start": {
+              "min": 0,
+              "max": 127434
+            },
+            "args_count": {
+              "min": 0,
+              "max": 3
+            }
+          },
+          "coldFields": {
+            "span": 14777
+          }
+        },
+        {
+          "tag": "TermVar",
+          "count": 9649,
+          "fields": [
+            "$",
+            "key_id",
+            "index",
+            "span"
+          ],
+          "numericFields": {
+            "key_id": {
+              "min": 0,
+              "max": 572
+            },
+            "index": {
+              "min": 0,
+              "max": 18
+            }
+          },
+          "coldFields": {
+            "span": 9649
+          }
+        },
+        {
+          "tag": "TermApp",
+          "count": 8468,
+          "fields": [
+            "$",
+            "fn_id",
+            "arg_id",
+            "span"
+          ],
+          "numericFields": {
+            "fn_id": {
+              "min": 33,
+              "max": 51822
+            },
+            "arg_id": {
+              "min": 34,
+              "max": 51888
+            }
+          },
+          "coldFields": {
+            "span": 8468
+          }
+        },
+        {
+          "tag": "TermRef",
+          "count": 5347,
+          "fields": [
+            "$",
+            "key_id",
+            "span"
+          ],
+          "numericFields": {
+            "key_id": {
+              "min": 9,
+              "max": 575
+            }
+          },
+          "coldFields": {
+            "span": 5347
+          }
+        },
+        {
+          "tag": "TermAll",
+          "count": 4795,
+          "fields": [
+            "$",
+            "quantity",
+            "key_id",
+            "index",
+            "ty_id",
+            "body_id",
+            "span"
+          ],
+          "numericFields": {
+            "key_id": {
+              "min": 0,
+              "max": 572
+            },
+            "index": {
+              "min": 0,
+              "max": 6
+            },
+            "ty_id": {
+              "min": 8,
+              "max": 51714
+            },
+            "body_id": {
+              "min": 17,
+              "max": 51723
+            }
+          },
+          "coldFields": {
+            "quantity": 4795,
+            "span": 4795
+          }
+        },
+        {
+          "tag": "BodyCase",
+          "count": 1510,
+          "fields": [
+            "$",
+            "patterns_start",
+            "patterns_count",
+            "body_id",
+            "span"
+          ],
+          "numericFields": {
+            "patterns_start": {
+              "min": 41,
+              "max": 120592
+            },
+            "patterns_count": {
+              "min": 1,
+              "max": 4
+            },
+            "body_id": {
+              "min": 92,
+              "max": 51746
+            }
+          },
+          "coldFields": {
+            "span": 1510
+          }
+        },
+        {
+          "tag": "TermFill",
+          "count": 1444,
+          "fields": [
+            "$",
+            "head_id",
+            "args_start",
+            "args_count",
+            "span"
+          ],
+          "numericFields": {
+            "head_id": {
+              "min": 75,
+              "max": 15932
+            },
+            "args_start": {
+              "min": 32,
+              "max": 120582
+            },
+            "args_count": {
+              "min": 1,
+              "max": 4
+            }
+          },
+          "coldFields": {
+            "span": 1444
+          }
+        },
+        {
+          "tag": "TermAdt",
+          "count": 1280,
+          "fields": [
+            "$",
+            "key_id",
+            "args_start",
+            "args_count",
+            "refs_start",
+            "refs_count",
+            "span"
+          ],
+          "numericFields": {
+            "key_id": {
+              "min": 9,
+              "max": 573
+            },
+            "args_start": {
+              "min": 0,
+              "max": 120597
+            },
+            "args_count": {
+              "min": 0,
+              "max": 4
+            },
+            "refs_start": {
+              "min": 0,
+              "max": 0
+            },
+            "refs_count": {
+              "min": 0,
+              "max": 0
+            }
+          },
+          "coldFields": {
+            "span": 1280
+          }
+        },
+        {
+          "tag": "TermLam",
+          "count": 1182,
+          "fields": [
+            "$",
+            "quantity",
+            "key_id",
+            "index",
+            "body_id",
+            "span"
+          ],
+          "numericFields": {
+            "key_id": {
+              "min": 0,
+              "max": 572
+            },
+            "index": {
+              "min": 0,
+              "max": 8
+            },
+            "body_id": {
+              "min": 293,
+              "max": 51752
+            }
+          },
+          "coldFields": {
+            "quantity": 1182,
+            "span": 1182
+          }
+        },
+        {
+          "tag": "TermQuantity",
+          "count": 760,
+          "fields": [
+            "$",
+            "quantity",
+            "span"
+          ],
+          "numericFields": {},
+          "coldFields": {
+            "quantity": 760,
+            "span": 760
+          }
+        },
+        {
+          "tag": "BodyMatch",
+          "count": 753,
+          "fields": [
+            "$",
+            "scrutinees_start",
+            "scrutinees_count",
+            "cases_start",
+            "cases_count",
+            "span"
+          ],
+          "numericFields": {
+            "scrutinees_start": {
+              "min": 38,
+              "max": 120590
+            },
+            "scrutinees_count": {
+              "min": 1,
+              "max": 4
+            },
+            "cases_start": {
+              "min": 0,
+              "max": 120591
+            },
+            "cases_count": {
+              "min": 0,
+              "max": 8
+            }
+          },
+          "coldFields": {
+            "span": 753
+          }
+        },
+        {
+          "tag": "BodyReply",
+          "count": 700,
+          "fields": [
+            "$",
+            "term_id",
+            "span"
+          ],
+          "numericFields": {
+            "term_id": {
+              "min": 92,
+              "max": 50158
+            }
+          },
+          "coldFields": {
+            "span": 700
+          }
+        },
+        {
+          "tag": "TermType",
+          "count": 640,
+          "fields": [
+            "$",
+            "kind_id",
+            "span"
+          ],
+          "numericFields": {
+            "kind_id": {
+              "min": 0,
+              "max": 51700
+            }
+          },
+          "coldFields": {
+            "span": 640
+          }
+        },
+        {
+          "tag": "BodyLocal",
+          "count": 158,
+          "fields": [
+            "$",
+            "patterns_start",
+            "patterns_count",
+            "quantity",
+            "values_start",
+            "values_count",
+            "body_id",
+            "span"
+          ],
+          "numericFields": {
+            "patterns_start": {
+              "min": 182,
+              "max": 120308
+            },
+            "patterns_count": {
+              "min": 1,
+              "max": 4
+            },
+            "values_start": {
+              "min": 185,
+              "max": 120312
+            },
+            "values_count": {
+              "min": 1,
+              "max": 4
+            },
+            "body_id": {
+              "min": 338,
+              "max": 50970
+            }
+          },
+          "coldFields": {
+            "quantity": 158,
+            "span": 158
+          }
+        },
+        {
+          "tag": "TermEqual",
+          "count": 152,
+          "fields": [
+            "$",
+            "left_id",
+            "right_id",
+            "ty_id",
+            "span"
+          ],
+          "numericFields": {
+            "left_id": {
+              "min": 1845,
+              "max": 26067
+            },
+            "right_id": {
+              "min": 1846,
+              "max": 26072
+            },
+            "ty_id": {
+              "min": 1847,
+              "max": 26073
+            }
+          },
+          "coldFields": {
+            "span": 152
+          }
+        },
+        {
+          "tag": "TermQuant",
+          "count": 145,
+          "fields": [
+            "$"
+          ],
+          "numericFields": {},
+          "coldFields": {}
+        },
+        {
+          "tag": "TermAnn",
+          "count": 96,
+          "fields": [
+            "$",
+            "term_id",
+            "ty_id",
+            "span"
+          ],
+          "numericFields": {
+            "term_id": {
+              "min": 5670,
+              "max": 51398
+            },
+            "ty_id": {
+              "min": 5448,
+              "max": 51401
+            }
+          },
+          "coldFields": {
+            "span": 96
+          }
+        },
+        {
+          "tag": "TermRewrite",
+          "count": 9,
+          "fields": [
+            "$",
+            "equation_id",
+            "proof_id",
+            "body_id",
+            "span"
+          ],
+          "numericFields": {
+            "equation_id": {
+              "min": 1864,
+              "max": 18869
+            },
+            "proof_id": {
+              "min": 1874,
+              "max": 18875
+            },
+            "body_id": {
+              "min": 1875,
+              "max": 18876
+            }
+          },
+          "coldFields": {
+            "span": 9
+          }
+        },
+        {
+          "tag": "TermMin",
+          "count": 8,
+          "fields": [
+            "$",
+            "left_id",
+            "right_id",
+            "span"
+          ],
+          "numericFields": {
+            "left_id": {
+              "min": 14,
+              "max": 15352
+            },
+            "right_id": {
+              "min": 15,
+              "max": 15353
+            }
+          },
+          "coldFields": {
+            "span": 8
+          }
+        },
+        {
+          "tag": "TermString",
+          "count": 8,
+          "fields": [
+            "$",
+            "chars",
+            "names",
+            "span"
+          ],
+          "numericFields": {},
+          "coldFields": {
+            "chars": 8,
+            "names": 8,
+            "span": 8
+          }
+        },
+        {
+          "tag": "TermRefl",
+          "count": 7,
+          "fields": [
+            "$",
+            "span"
+          ],
+          "numericFields": {},
+          "coldFields": {
+            "span": 7
+          }
+        },
+        {
+          "tag": "TermBang",
+          "count": 2,
+          "fields": [
+            "$",
+            "term_id",
+            "span"
+          ],
+          "numericFields": {
+            "term_id": {
+              "min": 13781,
+              "max": 51199
+            }
+          },
+          "coldFields": {
+            "span": 2
+          }
+        }
+      ],
+      "sampleTags": [
+        "TermQuantity",
+        "TermType",
+        "TermQuant",
+        "TermVar",
+        "TermMin",
+        "TermAll",
+        "TermApp",
+        "TermRef",
+        "TermFill",
+        "BodyReply",
+        "BodyCase",
+        "BodyMatch",
+        "TermCtr",
+        "TermLam",
+        "BodyLocal",
+        "TermString",
+        "TermEqual",
+        "TermRefl",
+        "TermRewrite",
+        "TermAnn",
+        "TermBang",
+        "TermAdt"
+      ],
+      "snapshot": "/private/tmp/bend-g28-nodes-a0K3GF/node-sample-result.json.samples.heapsnapshot",
+      "limitations": [
+        "Final source arena census, not transient peak or growth history.",
+        "Actual representative Node/Span objects retained for post-check V8 heap-size measurement; no cloned object layout.",
+        "Source algorithm, parser and checker are unchanged; diagnostic traversal/GC/snapshot happen only afterward."
+      ],
+      "snapshotSha256": "ee320da03c2be56a181f018cf0bc309086d898fcbdda923a586a95e0d00e0985",
+      "snapshotBytes": 121194763
+    },
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 1238073344,
+      "peakFootprintBytes": 921151120,
+      "elapsedMs": 10530,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/private/tmp/bend-g28-nodes-a0K3GF/node-storage-probe.mjs",
+        "/private/tmp/bend-g28-nodes-a0K3GF/node-sample-request.json",
+        "/private/tmp/bend-g28-nodes-a0K3GF/node-sample-result.json"
+      ],
+      "label": "heavy command",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793287017011-5c34dc258540356e.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592,
+      "guardianPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793287017011-5c34dc258540356e.json",
+      "guardianSha256": "5bf12b21bf40d6726e3bd0aea273a4bccf281166214e5de5e15b3668f48322e2"
+    }
+  },
+  "actualV8Layouts": {
+    "schemaVersion": 1,
+    "status": "R12_NODE_OBJECT_LAYOUT_SAMPLE_PASS",
+    "diagnosticOnly": true,
+    "sampleReport": {
+      "path": "/private/tmp/bend-g28-nodes-a0K3GF/node-sample-result.json",
+      "sha256": "31fcd2c4cc8aa3ac521131a0a60fd5574bc1514aae920a3dfdef466668ef3c2e"
+    },
+    "fullCensus": {
+      "path": "/private/tmp/bend-g28-nodes-a0K3GF/node-storage-result.json",
+      "sha256": "acde5795f00c6ba239ea64518ebaf6b6773e6fddda333b749ba9e21187169c44",
+      "status": "RUNNING",
+      "used": 2254791,
+      "capacity": 4194304,
+      "distinctNodes": 2254791,
+      "distinctSpans": 828514
+    },
+    "snapshot": {
+      "sha256": "ee320da03c2be56a181f018cf0bc309086d898fcbdda923a586a95e0d00e0985",
+      "bytes": 121194763
+    },
+    "layouts": [
+      {
+        "tag": "TermQuantity",
+        "nodes": [
+          {
+            "via": "object",
+            "type": "object",
+            "name": "Object",
+            "selfBytes": 48
+          }
+        ],
+        "bytes": 48,
+        "span": {
+          "nodes": [
+            {
+              "via": "object",
+              "type": "object",
+              "name": "Object",
+              "selfBytes": 56
+            }
+          ],
+          "bytes": 56
+        },
+        "fullRootCount": 71906
+      },
+      {
+        "tag": "TermType",
+        "nodes": [
+          {
+            "via": "object",
+            "type": "object",
+            "name": "Object",
+            "selfBytes": 48
+          }
+        ],
+        "bytes": 48,
+        "span": {
+          "nodes": [
+            {
+              "via": "object",
+              "type": "object",
+              "name": "Object",
+              "selfBytes": 56
+            }
+          ],
+          "bytes": 56
+        },
+        "fullRootCount": 27458
+      },
+      {
+        "tag": "TermQuant",
+        "nodes": [
+          {
+            "via": "object",
+            "type": "object",
+            "name": "Object",
+            "selfBytes": 32
+          }
+        ],
+        "bytes": 32,
+        "span": null,
+        "fullRootCount": 146
+      },
+      {
+        "tag": "TermVar",
+        "nodes": [
+          {
+            "via": "object",
+            "type": "object",
+            "name": "Object",
+            "selfBytes": 56
+          }
+        ],
+        "bytes": 56,
+        "span": {
+          "nodes": [
+            {
+              "via": "object",
+              "type": "object",
+              "name": "Object",
+              "selfBytes": 56
+            }
+          ],
+          "bytes": 56
+        },
+        "fullRootCount": 342728
+      },
+      {
+        "tag": "TermMin",
+        "nodes": [
+          {
+            "via": "object",
+            "type": "object",
+            "name": "Object",
+            "selfBytes": 56
+          }
+        ],
+        "bytes": 56,
+        "span": {
+          "nodes": [
+            {
+              "via": "object",
+              "type": "object",
+              "name": "Object",
+              "selfBytes": 56
+            }
+          ],
+          "bytes": 56
+        },
+        "fullRootCount": 8
+      },
+      {
+        "tag": "TermAll",
+        "nodes": [
+          {
+            "via": "object",
+            "type": "object",
+            "name": "Object",
+            "selfBytes": 80
+          }
+        ],
+        "bytes": 80,
+        "span": {
+          "nodes": [
+            {
+              "via": "object",
+              "type": "object",
+              "name": "Object",
+              "selfBytes": 56
+            }
+          ],
+          "bytes": 56
+        },
+        "fullRootCount": 216180
+      },
+      {
+        "tag": "TermApp",
+        "nodes": [
+          {
+            "via": "object",
+            "type": "object",
+            "name": "Object",
+            "selfBytes": 56
+          }
+        ],
+        "bytes": 56,
+        "span": {
+          "nodes": [
+            {
+              "via": "object",
+              "type": "object",
+              "name": "Object",
+              "selfBytes": 56
+            }
+          ],
+          "bytes": 56
+        },
+        "fullRootCount": 327391
+      },
+      {
+        "tag": "TermRef",
+        "nodes": [
+          {
+            "via": "object",
+            "type": "object",
+            "name": "Object",
+            "selfBytes": 48
+          }
+        ],
+        "bytes": 48,
+        "span": {
+          "nodes": [
+            {
+              "via": "object",
+              "type": "object",
+              "name": "Object",
+              "selfBytes": 56
+            }
+          ],
+          "bytes": 56
+        },
+        "fullRootCount": 373045
+      },
+      {
+        "tag": "TermFill",
+        "nodes": [
+          {
+            "via": "object",
+            "type": "object",
+            "name": "Object",
+            "selfBytes": 64
+          }
+        ],
+        "bytes": 64,
+        "span": {
+          "nodes": [
+            {
+              "via": "object",
+              "type": "object",
+              "name": "Object",
+              "selfBytes": 56
+            }
+          ],
+          "bytes": 56
+        },
+        "fullRootCount": 79227
+      },
+      {
+        "tag": "BodyReply",
+        "nodes": [
+          {
+            "via": "object",
+            "type": "object",
+            "name": "Object",
+            "selfBytes": 48
+          }
+        ],
+        "bytes": 48,
+        "span": {
+          "nodes": [
+            {
+              "via": "object",
+              "type": "object",
+              "name": "Object",
+              "selfBytes": 56
+            }
+          ],
+          "bytes": 56
+        },
+        "fullRootCount": 38519
+      },
+      {
+        "tag": "BodyCase",
+        "nodes": [
+          {
+            "via": "object",
+            "type": "object",
+            "name": "Object",
+            "selfBytes": 64
+          }
+        ],
+        "bytes": 64,
+        "span": {
+          "nodes": [
+            {
+              "via": "object",
+              "type": "object",
+              "name": "Object",
+              "selfBytes": 56
+            }
+          ],
+          "bytes": 56
+        },
+        "fullRootCount": 67116
+      },
+      {
+        "tag": "BodyMatch",
+        "nodes": [
+          {
+            "via": "object",
+            "type": "object",
+            "name": "Object",
+            "selfBytes": 72
+          }
+        ],
+        "bytes": 72,
+        "span": {
+          "nodes": [
+            {
+              "via": "object",
+              "type": "object",
+              "name": "Object",
+              "selfBytes": 56
+            }
+          ],
+          "bytes": 56
+        },
+        "fullRootCount": 23386
+      },
+      {
+        "tag": "TermCtr",
+        "nodes": [
+          {
+            "via": "object",
+            "type": "object",
+            "name": "Object",
+            "selfBytes": 64
+          }
+        ],
+        "bytes": 64,
+        "span": {
+          "nodes": [
+            {
+              "via": "object",
+              "type": "object",
+              "name": "Object",
+              "selfBytes": 56
+            }
+          ],
+          "bytes": 56
+        },
+        "fullRootCount": 366288
+      },
+      {
+        "tag": "TermLam",
+        "nodes": [
+          {
+            "via": "object",
+            "type": "object",
+            "name": "Object",
+            "selfBytes": 72
+          }
+        ],
+        "bytes": 72,
+        "span": {
+          "nodes": [
+            {
+              "via": "object",
+              "type": "object",
+              "name": "Object",
+              "selfBytes": 56
+            }
+          ],
+          "bytes": 56
+        },
+        "fullRootCount": 90656
+      },
+      {
+        "tag": "BodyLocal",
+        "nodes": [
+          {
+            "via": "object",
+            "type": "object",
+            "name": "Object",
+            "selfBytes": 88
+          }
+        ],
+        "bytes": 88,
+        "span": {
+          "nodes": [
+            {
+              "via": "object",
+              "type": "object",
+              "name": "Object",
+              "selfBytes": 56
+            }
+          ],
+          "bytes": 56
+        },
+        "fullRootCount": 44237
+      },
+      {
+        "tag": "TermString",
+        "nodes": [
+          {
+            "via": "object",
+            "type": "object",
+            "name": "Object",
+            "selfBytes": 56
+          }
+        ],
+        "bytes": 56,
+        "span": {
+          "nodes": [
+            {
+              "via": "object",
+              "type": "object",
+              "name": "Object",
+              "selfBytes": 56
+            }
+          ],
+          "bytes": 56
+        },
+        "fullRootCount": 12748
+      },
+      {
+        "tag": "TermEqual",
+        "nodes": [
+          {
+            "via": "object",
+            "type": "object",
+            "name": "Object",
+            "selfBytes": 64
+          }
+        ],
+        "bytes": 64,
+        "span": {
+          "nodes": [
+            {
+              "via": "object",
+              "type": "object",
+              "name": "Object",
+              "selfBytes": 56
+            }
+          ],
+          "bytes": 56
+        },
+        "fullRootCount": 188
+      },
+      {
+        "tag": "TermRefl",
+        "nodes": [
+          {
+            "via": "object",
+            "type": "object",
+            "name": "Object",
+            "selfBytes": 40
+          }
+        ],
+        "bytes": 40,
+        "span": {
+          "nodes": [
+            {
+              "via": "object",
+              "type": "object",
+              "name": "Object",
+              "selfBytes": 56
+            }
+          ],
+          "bytes": 56
+        },
+        "fullRootCount": 14
+      },
+      {
+        "tag": "TermRewrite",
+        "nodes": [
+          {
+            "via": "object",
+            "type": "object",
+            "name": "Object",
+            "selfBytes": 64
+          }
+        ],
+        "bytes": 64,
+        "span": {
+          "nodes": [
+            {
+              "via": "object",
+              "type": "object",
+              "name": "Object",
+              "selfBytes": 56
+            }
+          ],
+          "bytes": 56
+        },
+        "fullRootCount": 18
+      },
+      {
+        "tag": "TermAnn",
+        "nodes": [
+          {
+            "via": "object",
+            "type": "object",
+            "name": "Object",
+            "selfBytes": 56
+          }
+        ],
+        "bytes": 56,
+        "span": {
+          "nodes": [
+            {
+              "via": "object",
+              "type": "object",
+              "name": "Object",
+              "selfBytes": 56
+            }
+          ],
+          "bytes": 56
+        },
+        "fullRootCount": 54682
+      },
+      {
+        "tag": "TermBang",
+        "nodes": [
+          {
+            "via": "object",
+            "type": "object",
+            "name": "Object",
+            "selfBytes": 48
+          }
+        ],
+        "bytes": 48,
+        "span": {
+          "nodes": [
+            {
+              "via": "object",
+              "type": "object",
+              "name": "Object",
+              "selfBytes": 56
+            }
+          ],
+          "bytes": 56
+        },
+        "fullRootCount": 2
+      },
+      {
+        "tag": "TermAdt",
+        "nodes": [
+          {
+            "via": "object",
+            "type": "object",
+            "name": "Object",
+            "selfBytes": 80
+          }
+        ],
+        "bytes": 80,
+        "span": {
+          "nodes": [
+            {
+              "via": "object",
+              "type": "object",
+              "name": "Object",
+              "selfBytes": 56
+            }
+          ],
+          "bytes": 56
+        },
+        "fullRootCount": 118848
+      }
+    ],
+    "extrapolation": {
+      "coveredNodes": 2254791,
+      "totalNodes": 2254791,
+      "nodeSelfAndOwnedPropertyBytes": 137560752,
+      "uncoveredTags": []
+    },
+    "limitations": [
+      "Physical sizes measured on actual R12-created sample objects, not cloned records.",
+      "Full-root byte sum is a tag-weighted extrapolation of representative layouts; does not prove all full-root hidden classes equal the sample.",
+      "Shared maps/prototypes and descendants are excluded from node-owned bytes. Span self bytes do not include file-name lists or Nat descendants.",
+      "Full-root census completed but its attempted full heap snapshot hit the unchanged8GiB guard; no success is attributed to that attempt."
+    ]
+  },
+  "limitations": [
+    "Full checker and source census completed; the optional whole-heap snapshot hit the unchanged 8-GiB footprint guard and failed.",
+    "Object sizes are actual representative objects from a separate small R12 run; tag-weighted total is extrapolation, not measured full-root retained bytes or allocation volume.",
+    "Native source layout review is separate from a runtime memory measurement.",
+    "Spans remain shared cold references; no Span-object elimination or performance improvement is claimed."
+  ]
+}

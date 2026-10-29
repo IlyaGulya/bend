@@ -78,6 +78,40 @@ type Array<-T: Type> is Type:
   ALeaf{value: T}
   ANode{xs: Array<T>, ys: Array<T>}
 
+# Compiler-private affine storage. Rows are returned by value, never as views.
+law CompilerRows:
+  for -T: Data
+  Type
+
+law CompilerRows.new:
+  for -T: Data
+  for +depth: Nat
+  for +zero: T
+  CompilerRows(T)
+
+law CompilerRows.get:
+  for -T: Data
+  for rows: CompilerRows(T)
+  for +index: U32
+  CompilerRows(T) & T
+
+law CompilerRows.append:
+  for -T: Data
+  for rows: CompilerRows(T)
+  for value: T
+  CompilerRows(T)
+
+law CompilerRows.grow:
+  for -T: Data
+  for rows: CompilerRows(T)
+  CompilerRows(T)
+
+law CompilerRows.rewind:
+  for -T: Data
+  for rows: CompilerRows(T)
+  for +target: U32
+  CompilerRows(T)
+
 type Image is Data:
   Pix{color: U32}
   Qua{tl: Image, tr: Image, bl: Image, br: Image}

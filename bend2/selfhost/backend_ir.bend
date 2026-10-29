@@ -152,6 +152,13 @@ type Primitive is Data:
   PrimIsFalse{}
   PrimSameValue{}
   PrimFloatBitsEqual{}
+  # Compiler-private append-only row storage. T is erased; the live arguments
+  # are the store's own depth/zero/rows/index/value/grow/rewind targets.
+  PrimCompilerRowsNew{}
+  PrimCompilerRowsGet{}
+  PrimCompilerRowsAppend{}
+  PrimCompilerRowsGrow{}
+  PrimCompilerRowsRewind{}
 
 # Runtime reflection is a separate descriptor language, not executable source
 # syntax. Keys are canonical before reaching this boundary. Metadata retains

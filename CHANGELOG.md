@@ -5,6 +5,20 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- G28's compact checker node-store cutover is rejected by its predeclared
+  early screen. Eighteen focused canonical C/JS executions and depth,
+  rewind and affine refusal scenarios pass after fixing native sharing facts
+  and emitted JS error literals. On the identical frozen corpus/driver,
+  checker time rises 238,130.662 → 256,727.458 ms (+7.81%), exceeding the
+  +5% rejection threshold; peak RSS falls 6.63% and footprint 17.20%.
+  Source hash, check steps, arena counts and word-tape hash match.
+  No full native compiler build, byte fixedpoint or consumer matrix is
+  claimed for G28; rejection stops those gates immediately. R12 remains
+  accepted. Required source corpus and both original samples are retained.
+  `evals/receipts/producer2039g28_storage_baseline.json`,
+  `evals/receipts/producer2039g28_source_smoke.json`,
+  `evals/receipts/producer2039g28_early_screen.json`.
+
 - G27's compiler-private U32 word-tape cutover is rejected under its
   predeclared performance rule. Full native validation passes 12,468
   definitions / 13,067 events, with no excluded checks or output patches.

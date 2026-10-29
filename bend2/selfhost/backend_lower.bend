@@ -397,6 +397,9 @@ def array_element_handle(op: BIR.Primitive, arguments: List<&2, SourceArgument>)
   match op:
     case BIR.PrimArrayNew{}: last_live_argument_type(arguments)
     case BIR.PrimMapFind{}: erased_type_term(arguments)
+    # The row read answers `CompilerRows(T) & T`; its erased T is the element
+    # the pair's second field carries, exactly as Map.find's erased V is.
+    case BIR.PrimCompilerRowsGet{}: erased_type_term(arguments)
     case _: live_argument_type(arguments)
 
 def array_element_is_argument(op: BIR.Primitive) -> Bool:
@@ -434,6 +437,7 @@ def array_primitive(+op: BIR.Primitive) -> Bool:
 def element_primitive(op: BIR.Primitive) -> Bool:
   match op:
     case BIR.PrimMapFind{}: True{}
+    case BIR.PrimCompilerRowsGet{}: True{}
     case _: array_primitive(op)
 
 def primitive(state: State, op: BIR.Primitive, values: List<&2, BIR.Atom>) -> LowerResult<BIR.Atom>:

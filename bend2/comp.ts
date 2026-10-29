@@ -293,6 +293,29 @@ const OPERATIONS: Record<string, Intr> = Object.setPrototypeOf({
       + " blk_at($0, $1, 0)), (u32)$2" + (k === "cmpx" ? ", (u32)$3)" : ")")],
     JS: `array_rmw($0, $1, (o) => ${js})`,
   }])),
+  // Compiler-private append-only rows. T is erased, so every value crosses as
+  // one boxed word; get answers one owned value and the emitter builds the
+  // declared CompilerRows(T) & T words from it, exactly as array_get does.
+  compilerrows_new: {
+    C:  "compiler_rows_new(e, $0, $1)",
+    JS: "compiler_rows_new($0, $1)",
+  },
+  compilerrows_append: {
+    C:  "compiler_rows_append(e, $0, $1)",
+    JS: "compiler_rows_append($0, $1)",
+  },
+  compilerrows_grow: {
+    C:  "compiler_rows_grow(e, $0)",
+    JS: "compiler_rows_grow($0)",
+  },
+  compilerrows_rewind: {
+    C:  "compiler_rows_rewind(e, $0, $1)",
+    JS: "compiler_rows_rewind($0, $1)",
+  },
+  compilerrows_get: {
+    C:  ["$0", "compiler_rows_get(e, $0, $1)"],
+    JS: "{$: \"Tuple\", fst: $0, snd: compiler_rows_get($0, $1)}",
+  },
 }, null);
 
 // Optimized
@@ -2896,6 +2919,23 @@ function emit_intr(sc: Scope, it: Intr, m: Spine, ty: HTerm | null): Val {
   const k = (m.t as Of<"Ref">).k;
   const args = emit_each(sc, m.args);
   const op = op_name(k);
+  // A rows get answers one owned value form of T, and the declared
+  // CompilerRows(T) & T pair takes T's own layout at this call site. The raw
+  // Term is unboxed when T has words of its own; never read as one word.
+  if (op === "compilerrows_get") {
+    if (m.all.length === 0) {
+      die("no type for " + Bend.name_key(k));
+    }
+    facts_hot(sc, m.all[0], true);
+    const ws = args.map((v, i) =>
+      val_own(sc, val_to(sc, v, fun_of(k).lays[i]))[0]);
+    const rows = emit_alias(sc, ws[0], "a");
+    const el = lay_of(m.all[0]);
+    const got = emit_alias(sc,
+      `compiler_rows_get(e, ${rows}, ${ws[1]})`, "g");
+    return val_new([rows, ...val_to(sc, val_new([got], BOX), el).ws],
+      lay_pack([["Tuple", [BOX, el]]]));
+  }
   const C = it.C!;
   if ("array_get array_new array_clone".includes(op)
     && lay_el(m.all[0]).ks.includes("box")
@@ -5495,6 +5535,447 @@ INLINE Term blk_new(Env e, bool arr, u64 d, u32 lgs, u32 n, THR Term* v) {
   return term_blk(arr, c, l);
 }
 
+// Rows
+// ====
+
+// CompilerRows is one compiler-private append-only store: an owned ordinary
+// ARR of eight words that owns the default value, the two u32 slot tapes and
+// the Term payload tape. A slot names the kind of its row and where its words
+// start in the payload, so no constructor box is kept: a get rebuilds an
+// independent one. Every part is an ordinary Term or block, so the container
+// drops through term_drop alone and a captured store releases everything.
+
+#define CR_CLS  3u
+#define CR_DEF  0u
+#define CR_KIND 1u
+#define CR_OFF  2u
+#define CR_PAY  3u
+#define CR_USED 4u
+#define CR_DEP  5u
+#define CR_CUR  6u
+#define CR_MARK 7u
+
+#define CR_MAGIC  0x524f5753ull
+#define CR_NONE  0u
+#define CR_RAW   1u
+#define CR_CTR   2u
+#define CR_PAY0  5u
+
+// A constructor row keeps exactly the words term_drop visits: a padded wide
+// arity names its size class as 240 + log2(words), a narrow one its words.
+INLINE u32 cr_words(u32 ar) {
+  return ar > ${WIDE} ? 1u << (ar - 240) : ar;
+}
+
+INLINE u32 cr_wcls(u32 ar) {
+  return ar > ${WIDE} ? ar - 240 : cls_fit(ar);
+}
+
+INLINE void cr_zero(DEV u64* H, u64 loc, u32 cls) {
+  for (u64 i = 0; i < (1ull << cls); i += 1) {
+    H[loc + i] = 0;
+  }
+}
+
+INLINE Term cr_buf(Env e, u32 d) {
+  DEV u64* H = e.mem;
+  u32 w = blk_wcls(false, d);
+  u64 loc = heap_alloc(e, w);
+  if (err_seen(H)) {
+    return 0;
+  }
+  cr_zero(H, loc, w);
+  return term_blk(false, d, loc);
+}
+
+INLINE Term cr_arr(Env e, u32 cls) {
+  DEV u64* H = e.mem;
+  u64 loc = heap_alloc(e, cls);
+  if (err_seen(H)) {
+    return 0;
+  }
+  cr_zero(H, loc, cls);
+  return term_blk(true, cls, loc);
+}
+
+// The eight-word store a rows term names, or 0 after a fail-stop. The value is
+// opaque, so a term that is not this store is a broken invariant, never a
+// program fallback. A store sealed into a hot constructor still counts alone,
+// and only then is rewriting it in place the one owner's business.
+INLINE u64 cr_at(Env e, Term rows) {
+  DEV u64* H = e.mem;
+  if (term_tag(rows) != TAG_ARR || (u32)term_aux(rows) != CR_CLS) {
+    err_post(H, ERR_TAGS);
+    return 0;
+  }
+  u64 loc = term_loc(rows);
+  if (term_rfc(rows)) {
+    DEV u32* p = a32_at(H, loc);
+    if ((a32_load(p) & RFC_CNT) != 1) {
+      err_post(H, ERR_RFCS);
+      return 0;
+    }
+    a32_acq(p);
+    loc = H[loc] >> 24;
+  }
+  if (loc < HEAP_OFF || H[loc + CR_MARK] != CR_MAGIC) {
+    err_post(H, ERR_TAGS);
+    return 0;
+  }
+  u32 d = (u32)H[loc + CR_DEP];
+  Term kind = H[loc + CR_KIND];
+  Term off = H[loc + CR_OFF];
+  Term pay = H[loc + CR_PAY];
+  if (d > 31 || term_tag(kind) != TAG_BUF || term_tag(off) != TAG_BUF
+    || term_tag(pay) != TAG_ARR || blk_cls(kind) != d || blk_cls(off) != d
+    || H[loc + CR_USED] > (1ull << d)
+    || H[loc + CR_CUR] > (1ull << blk_cls(pay))) {
+    err_post(H, ERR_TAGS);
+    return 0;
+  }
+  return loc;
+}
+
+// A tape this store alone owns: its block loc, or 0 after a fail-stop.
+INLINE u64 cr_tape(Env e, Term t) {
+  if (term_rfc(t)) {
+    err_post(e.mem, ERR_RFCS);
+    return 0;
+  }
+  return term_loc(t);
+}
+
+// Append room, growing the payload geometrically: every live word moves once,
+// and cells the cursor never reached stay zero so the payload drops as an
+// ordinary ARR and a reuse never sees a discarded word.
+INLINE bool cr_room(Env e, u64 c, u64 need) {
+  DEV u64* H = e.mem;
+  Term pay = H[c + CR_PAY];
+  u64 ploc = cr_tape(e, pay);
+  if (ploc == 0) {
+    return false;
+  }
+  u32 cls = blk_cls(pay);
+  u64 curs = H[c + CR_CUR];
+  if (curs > (1ull << cls)) {
+    err_post(H, ERR_TAGS);
+    return false;
+  }
+  if (need <= (1ull << cls)) {
+    return true;
+  }
+  u32 ncls = cls;
+  while (ncls < 31 && (1ull << ncls) < need) {
+    ncls += 1;
+  }
+  if ((1ull << ncls) < need) {
+    err_post(H, ERR_ARRS);
+    return false;
+  }
+  u64 n = heap_alloc(e, ncls);
+  if (err_seen(H)) {
+    return false;
+  }
+  for (u64 i = 0; i < (1ull << ncls); i += 1) {
+    H[n + i] = i < curs ? H[ploc + i] : 0;
+  }
+  heap_free(e, cls, ploc);
+  H[c + CR_PAY] = term_blk(true, ncls, n);
+  return true;
+}
+
+// The two u32 slot tapes, doubled with the depth. Old lanes are copied and the
+// new half is zeroed, so a slot past used still answers the default.
+INLINE bool cr_slots(Env e, u64 c) {
+  DEV u64* H = e.mem;
+  u32 d = (u32)H[c + CR_DEP];
+  if (d >= 31) {
+    err_post(H, ERR_ARRS);
+    return false;
+  }
+  u32 ncls = d + 1;
+  Term kind = H[c + CR_KIND];
+  Term off = H[c + CR_OFF];
+  u64 kold = cr_tape(e, kind);
+  u64 oold = cr_tape(e, off);
+  if (kold == 0 || oold == 0) {
+    return false;
+  }
+  u32 ok = blk_wcls(false, d);
+  u32 nk = blk_wcls(false, ncls);
+  u64 ka = heap_alloc(e, nk);
+  if (err_seen(H)) {
+    return false;
+  }
+  u64 oa = heap_alloc(e, nk);
+  if (err_seen(H)) {
+    return false;
+  }
+  for (u64 i = 0; i < (1ull << d); i += 1) {
+    *blk_ptr(H, ka, (u32)i) = *blk_ptr(H, kold, (u32)i);
+    *blk_ptr(H, oa, (u32)i) = *blk_ptr(H, oold, (u32)i);
+  }
+  for (u64 i = 1ull << d; i < (1ull << ncls); i += 1) {
+    *blk_ptr(H, ka, (u32)i) = 0;
+    *blk_ptr(H, oa, (u32)i) = 0;
+  }
+  heap_free(e, ok, kold);
+  heap_free(e, ok, oold);
+  H[c + CR_KIND] = term_blk(false, ncls, ka);
+  H[c + CR_OFF]  = term_blk(false, ncls, oa);
+  H[c + CR_DEP]  = (u64)ncls;
+  return true;
+}
+
+OUTLINE Term compiler_rows_new(Env e, u64 depth, Term zero) {
+  DEV u64* H = e.mem;
+  if (depth > 31) {
+    err_post(H, ERR_ARRS);
+    return 0;
+  }
+  u32 d = (u32)depth;
+  Term kind = cr_buf(e, d);
+  if (kind == 0) {
+    return 0;
+  }
+  Term off = cr_buf(e, d);
+  if (off == 0) {
+    return 0;
+  }
+  Term pay = cr_arr(e, CR_PAY0);
+  if (pay == 0) {
+    return 0;
+  }
+  u64 c = heap_alloc(e, CR_CLS);
+  if (err_seen(H)) {
+    return 0;
+  }
+  cr_zero(H, c, CR_CLS);
+  H[c + CR_DEF]  = zero;
+  H[c + CR_KIND] = kind;
+  H[c + CR_OFF]  = off;
+  H[c + CR_PAY]  = pay;
+  H[c + CR_USED] = 0;
+  H[c + CR_DEP]  = (u64)d;
+  H[c + CR_CUR]  = 0;
+  H[c + CR_MARK] = CR_MAGIC;
+  return term_blk(true, CR_CLS, c);
+}
+
+// One owned value form of T, and the store keeps its own reference to it. A
+// constructor row rebuilds its original cid and arity with fields kept out of
+// the payload; a raw or default row keeps the whole word it holds.
+OUTLINE Term compiler_rows_get(Env e, Term rows, u64 index) {
+  DEV u64* H = e.mem;
+  u64 c = cr_at(e, rows);
+  if (c == 0) {
+    return 0;
+  }
+  u32 d = (u32)H[c + CR_DEP];
+  u64 at = index % (1ull << d);
+  Term kind = H[c + CR_KIND];
+  Term off = H[c + CR_OFF];
+  Term pay = H[c + CR_PAY];
+  u64 kloc = cr_tape(e, kind);
+  u64 oloc = cr_tape(e, off);
+  u64 ploc = cr_tape(e, pay);
+  if (kloc == 0 || oloc == 0 || ploc == 0) {
+    return 0;
+  }
+  u32 k = *blk_ptr(H, kloc, (u32)at);
+  if (k == CR_NONE) {
+    Term v = H[c + CR_DEF];
+    Term got = term_keep(e, v, 1);
+    H[c + CR_DEF] = got;
+    return got;
+  }
+  u32 o = *blk_ptr(H, oloc, (u32)at);
+  u64 pcap = 1ull << blk_cls(pay);
+  if (k == CR_RAW) {
+    if (o >= pcap) {
+      err_post(H, ERR_TAGS);
+      return 0;
+    }
+    Term v = H[ploc + o];
+    Term got = term_keep(e, v, 1);
+    H[ploc + o] = got;
+    return got;
+  }
+  if (k < CR_CTR) {
+    err_post(H, ERR_TAGS);
+    return 0;
+  }
+  u32 cid = k - CR_CTR;
+  u32 ar = cid_arity(cid);
+  u64 n = cr_words(ar);
+  if (o > pcap || n > pcap - o) {
+    err_post(H, ERR_TAGS);
+    return 0;
+  }
+  u64 nd = heap_alloc(e, cr_wcls(ar));
+  if (err_seen(H)) {
+    return 0;
+  }
+  for (u64 j = 0; j < n; j += 1) {
+    Term v = H[ploc + o + j];
+    Term got = term_keep(e, v, 1);
+    H[ploc + o + j] = got;
+    H[nd + j] = got;
+  }
+  return term_ctr(cid, nd);
+}
+
+// The value is consumed: a heap constructor gives up its fields (and its box
+// only when it was this store's alone), anything else gives up its word.
+OUTLINE Term compiler_rows_append(Env e, Term rows, Term value) {
+  DEV u64* H = e.mem;
+  u64 c = cr_at(e, rows);
+  if (c == 0) {
+    return rows;
+  }
+  u64 used = H[c + CR_USED];
+  u64 cap = 1ull << (u32)H[c + CR_DEP];
+  if (used >= cap) {
+    if (!cr_slots(e, c)) {
+      return rows;
+    }
+    cap = 1ull << (u32)H[c + CR_DEP];
+  }
+  if (used >= cap) {
+    err_post(H, ERR_ARRS);
+    return rows;
+  }
+  bool held = !term_triv(value) && term_tag(value) == TAG_CTR;
+  u32 cid = held ? (u32)term_aux(value) : 0;
+  u32 ar = held ? cid_arity(cid) : 0;
+  u64 n = held ? (u64)cr_words(ar) : 1;
+  u64 curs = H[c + CR_CUR];
+  if (curs > 0x80000000ull || n > 0x80000000ull - curs) {
+    err_post(H, ERR_ARRS);
+    return rows;
+  }
+  if (!cr_room(e, c, curs + n)) {
+    return rows;
+  }
+  u64 ploc = cr_tape(e, H[c + CR_PAY]);
+  Term kind = H[c + CR_KIND];
+  Term off = H[c + CR_OFF];
+  u64 kloc = cr_tape(e, kind);
+  u64 oloc = cr_tape(e, off);
+  if (ploc == 0 || kloc == 0 || oloc == 0) {
+    return rows;
+  }
+  if (held) {
+    // Consume the box exactly as ctr_take would, but copy straight into the
+    // payload: the tape is device memory, and a ctr_take destination is a
+    // thread-local array. A singly owned box gives up its words and its
+    // block; a shared box gives them up only if its fields are sealed.
+    u64 src = term_peek(H, value);
+    bool shared = term_rfc(value);
+    u64 red = shared ? term_loc(value) : 0;
+    bool one = false;
+    if (shared) {
+      DEV u32* p = a32_at(H, red);
+      one = (a32_load(p) & RFC_CNT) == 1;
+      if (one) {
+        a32_acq(p);
+      }
+    }
+    for (u32 j = 0; j < (u32)n; j += 1) {
+      H[ploc + curs + j] = H[src + j];
+    }
+    if (!shared) {
+      spare_free(e, cr_wcls(ar), src);
+    } else if (one) {
+      heap_free(e, 0, red);
+      spare_free(e, cr_wcls(ar), src);
+    } else {
+      span_fade(e, value, src, (u32)n);
+    }
+  } else {
+    H[ploc + curs] = value;
+  }
+  *blk_ptr(H, kloc, (u32)used) = held ? cid + CR_CTR : CR_RAW;
+  *blk_ptr(H, oloc, (u32)used) = (u32)curs;
+  H[c + CR_CUR]  = curs + n;
+  H[c + CR_USED] = used + 1;
+  return rows;
+}
+
+OUTLINE Term compiler_rows_grow(Env e, Term rows) {
+  u64 c = cr_at(e, rows);
+  if (c != 0) {
+    cr_slots(e, c);
+  }
+  return rows;
+}
+
+// Truncation: read a discarded cell, clear it, then drop it, so no cleared
+// word is dropped twice and no stale word can be read again. The slot lanes and
+// the cursors move only after the target is known to be sound.
+OUTLINE Term compiler_rows_rewind(Env e, Term rows, u64 target) {
+  DEV u64* H = e.mem;
+  u64 c = cr_at(e, rows);
+  if (c == 0) {
+    return rows;
+  }
+  u64 used = H[c + CR_USED];
+  if (target > used) {
+    err_post(H, ERR_TAGS);
+    return rows;
+  }
+  if (target == used) {
+    return rows;
+  }
+  u32 d = (u32)H[c + CR_DEP];
+  if (used > (1ull << d)) {
+    err_post(H, ERR_TAGS);
+    return rows;
+  }
+  Term kind = H[c + CR_KIND];
+  Term off = H[c + CR_OFF];
+  Term pay = H[c + CR_PAY];
+  u64 kloc = cr_tape(e, kind);
+  u64 oloc = cr_tape(e, off);
+  u64 ploc = cr_tape(e, pay);
+  if (kloc == 0 || oloc == 0 || ploc == 0) {
+    return rows;
+  }
+  u64 pcap = 1ull << blk_cls(pay);
+  u64 curs = target == 0 ? 0 : (u64)*blk_ptr(H, oloc, (u32)target);
+  if (curs > pcap) {
+    err_post(H, ERR_TAGS);
+    return rows;
+  }
+  for (u64 i = used; i-- > target; ) {
+    u32 k = *blk_ptr(H, kloc, (u32)i);
+    u32 o = *blk_ptr(H, oloc, (u32)i);
+    u64 n = 0;
+    if (k == CR_RAW) {
+      n = 1;
+    } else if (k >= CR_CTR) {
+      n = cr_words(cid_arity(k - CR_CTR));
+    } else {
+      err_post(H, ERR_TAGS);
+      return rows;
+    }
+    if (o > pcap || n > pcap - o) {
+      err_post(H, ERR_TAGS);
+      return rows;
+    }
+    for (u64 j = 0; j < n; j += 1) {
+      Term v = H[ploc + o + j];
+      H[ploc + o + j] = 0;
+      term_sink(e, v);
+    }
+    *blk_ptr(H, kloc, (u32)i) = 0;
+    *blk_ptr(H, oloc, (u32)i) = 0;
+  }
+  H[c + CR_USED] = target;
+  H[c + CR_CUR]  = curs;
+  return rows;
+}
+
 // Ring
 // ====
 
@@ -7376,6 +7857,287 @@ function array_rmw(a, i, f) {
   const old = a[at];
   a[at] = f(old);
   return {$: "Tuple", fst: a, snd: old};
+}
+
+// Compiler rows
+// =============
+
+// One compiler-private append-only store: a flat lane of record schema ids, a
+// flat lane of payload offsets, one u32 payload tape shared by every record,
+// and a cold side array for the values a u32 word cannot hold exactly. A
+// record is its mask words then one word per field: the exact 0..2^32-1
+// integer itself, else an index into the side array. No old constructor
+// object is kept, and a schema (a tag, its ordered fields, its mask) is cached
+// per record variant, never per node.
+
+const $0rowsRaw = {raw: true};
+
+function compiler_rows_u32(n) {
+  try {
+    return new Uint32Array(n);
+  } catch (e) {
+    throw "bend: ${ERRS[3]}";
+  }
+}
+
+// An exact u32 word. -0 is an integer and is not 0 here: its sign is part of
+// the value, so it stays whole in the side array (an F32 field keeps it).
+function compiler_rows_word(v) {
+  return typeof v === "number" && Number.isInteger(v)
+    && v >= 0 && v <= 4294967295 && !Object.is(v, -0);
+}
+
+// The ordered fields of one nominal tag. A variant's mask depends on values,
+// not on the tag, so all variants share this shape and differ by schema.
+function compiler_rows_shape(rows, tag, v) {
+  let s = rows.shapes.get(tag);
+  if (s === undefined) {
+    const keys = Object.keys(v);
+    const fs = [];
+    for (let i = 0; i < keys.length; i += 1) {
+      if (keys[i] !== "$") {
+        fs.push(keys[i]);
+      }
+    }
+    s = {fields: fs, byMask: new Map()};
+    rows.shapes.set(tag, s);
+  }
+  return s;
+}
+
+function compiler_rows_same(s, masks, mw) {
+  for (let j = 0; j < mw; j += 1) {
+    if (s.mask[j] !== masks[j]) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function compiler_rows_bits(w0, masks, mw) {
+  let bits = 0;
+  if (mw === 1) {
+    for (let w = w0; w !== 0; w = w >>> 1) {
+      bits += w & 1;
+    }
+    return bits;
+  }
+  for (let j = 0; j < mw; j += 1) {
+    for (let w = masks[j]; w !== 0; w = w >>> 1) {
+      bits += w & 1;
+    }
+  }
+  return bits;
+}
+
+// Payload room, grown geometrically: the tape is copied once per growth and
+// its offsets stay full u32 words, so a record never packs a tag into one.
+function compiler_rows_room(rows, extra) {
+  const need = rows.payLen + extra;
+  if (need <= rows.pay.length) {
+    return;
+  }
+  if (need > 4294967295) {
+    throw "bend: ${ERRS[3]}";
+  }
+  let n = rows.pay.length;
+  while (n < need) {
+    n = n < 2147483648 ? n * 2 : 4294967295;
+  }
+  const pay = compiler_rows_u32(n);
+  pay.set(rows.pay);
+  rows.pay = pay;
+}
+
+// Append one record at the payload cursor and answer its slot kind: the schema
+// id plus one, or the raw schema for one whole value. A warm tag allocates
+// nothing: its declared fields and its schema buckets are already cached, and
+// a one-word mask is a number, so no field-name or key string is built per row.
+function compiler_rows_put(rows, v) {
+  if (v !== null && typeof v === "object" && typeof v.$ === "string") {
+    const tag = v.$;
+    const shape = compiler_rows_shape(rows, tag, v);
+    const fs = shape.fields;
+    const n = fs.length;
+    const mw = (n + 31) >>> 5;
+    const masks = mw <= 1 ? null : new Array(mw);
+    let w0 = 0;
+    if (masks !== null) {
+      for (let j = 0; j < mw; j += 1) {
+        masks[j] = 0;
+      }
+    }
+    for (let j = 0; j < n; j += 1) {
+      if (compiler_rows_word(v[fs[j]])) {
+        if (mw === 1) {
+          w0 = (w0 | (1 << (j & 31))) >>> 0;
+        } else {
+          masks[j >>> 5] = (masks[j >>> 5] | (1 << (j & 31))) >>> 0;
+        }
+      }
+    }
+    const key = mw === 0 ? 0 : mw === 1 ? w0 : masks[0];
+    let bucket = shape.byMask.get(key);
+    if (bucket === undefined) {
+      bucket = [];
+      shape.byMask.set(key, bucket);
+    }
+    let s = null;
+    for (let i = 0; i < bucket.length; i += 1) {
+      if (mw <= 1 || compiler_rows_same(bucket[i], masks, mw)) {
+        s = bucket[i];
+        break;
+      }
+    }
+    if (s === null) {
+      s = {tag: tag, fields: fs, arity: n, mw: mw, mask: masks,
+        refs: n - compiler_rows_bits(w0, masks, mw),
+        index: rows.schemas.length};
+      rows.schemas.push(s);
+      bucket.push(s);
+    }
+    const off = rows.payLen;
+    compiler_rows_room(rows, mw + n);
+    const pay = rows.pay;
+    if (mw === 1) {
+      pay[off] = w0;
+    } else {
+      for (let j = 0; j < mw; j += 1) {
+        pay[off + j] = masks[j];
+      }
+    }
+    let w = off + mw;
+    for (let j = 0; j < n; j += 1) {
+      const f = v[fs[j]];
+      const bits = mw === 1 ? w0 : masks[j >>> 5];
+      if (((bits >>> (j & 31)) & 1) === 1) {
+        pay[w] = f;
+      } else {
+        pay[w] = rows.refLen;
+        rows.refs[rows.refLen] = f;
+        rows.refLen += 1;
+      }
+      w += 1;
+    }
+    rows.payLen = off + mw + n;
+    return s.index + 1;
+  }
+  const off = rows.payLen;
+  compiler_rows_room(rows, 1);
+  rows.pay[off] = rows.refLen;
+  rows.refs[rows.refLen] = v;
+  rows.refLen += 1;
+  rows.payLen = off + 1;
+  return 1;
+}
+
+function compiler_rows_new(depth, zero) {
+  if (typeof depth !== "number" || !Number.isInteger(depth)
+    || depth < 0 || depth > 31) {
+    throw "bend: ${ERRS[8]}";
+  }
+  const cap = 2 ** depth;
+  const rows = {$: "$CompilerRows", depth: depth, cap: cap, used: 0,
+    kinds: compiler_rows_u32(cap), offs: compiler_rows_u32(cap),
+    pay: compiler_rows_u32(32), payLen: 0, refs: [], refLen: 0,
+    schemas: [$0rowsRaw], shapes: new Map(),
+    zeroKind: 0, zeroOff: 0, zeroEnd: 0};
+  rows.zeroKind = compiler_rows_put(rows, zero);
+  rows.zeroEnd = rows.payLen;
+  return rows;
+}
+
+// One independent value: a constructor record becomes a fresh object with its
+// original nominal tag and fields, a raw record the exact value it kept, and
+// an unwritten slot the decoded default.
+function compiler_rows_read(rows, kind, off) {
+  const s = rows.schemas[kind - 1];
+  const pay = rows.pay;
+  if (s.raw === true) {
+    return rows.refs[pay[off]];
+  }
+  const o = {$: s.tag};
+  const fs = s.fields;
+  const n = s.arity;
+  const mw = s.mw;
+  const refs = rows.refs;
+  let w = off + mw;
+  let j = 0;
+  for (let k = 0; k < mw; k += 1) {
+    const bits = pay[off + k];
+    const end = j + 32 < n ? j + 32 : n;
+    for (; j < end; j += 1) {
+      o[fs[j]] = ((bits >>> (j & 31)) & 1) === 1 ? pay[w] : refs[pay[w]];
+      w += 1;
+    }
+  }
+  return o;
+}
+
+function compiler_rows_get(rows, index) {
+  const at = index % rows.cap;
+  const kind = rows.kinds[at];
+  if (kind === 0) {
+    return compiler_rows_read(rows, rows.zeroKind, rows.zeroOff);
+  }
+  return compiler_rows_read(rows, kind, rows.offs[at]);
+}
+
+function compiler_rows_append(rows, value) {
+  if (rows.used >= rows.cap) {
+    compiler_rows_grow(rows);
+  }
+  const slot = rows.used;
+  const off = rows.payLen;
+  const kind = compiler_rows_put(rows, value);
+  rows.kinds[slot] = kind;
+  rows.offs[slot] = off;
+  rows.used = slot + 1;
+  return rows;
+}
+
+function compiler_rows_grow(rows) {
+  if (rows.depth >= 31) {
+    throw "bend: ${ERRS[8]}";
+  }
+  const cap = rows.cap * 2;
+  const kinds = compiler_rows_u32(cap);
+  kinds.set(rows.kinds);
+  const offs = compiler_rows_u32(cap);
+  offs.set(rows.offs);
+  rows.depth += 1;
+  rows.cap = cap;
+  rows.kinds = kinds;
+  rows.offs = offs;
+  return rows;
+}
+
+// Truncation drops every discarded record's side reference, clears the slot
+// lanes and moves both cursors back, so a later append never reads a stale
+// payload word or keeps a discarded value alive.
+function compiler_rows_rewind(rows, target) {
+  if (!(target >= 0) || !Number.isInteger(target) || target > rows.used) {
+    throw "bend: ${ERRS[2]}";
+  }
+  if (target === rows.used) {
+    return rows;
+  }
+  const to = target === 0 ? rows.zeroEnd : rows.offs[target];
+  let refs = rows.refLen;
+  for (let s = rows.used - 1; s >= target; s -= 1) {
+    const sc = rows.schemas[rows.kinds[s] - 1];
+    refs -= sc.raw === true ? 1 : sc.refs;
+    rows.kinds[s] = 0;
+    rows.offs[s] = 0;
+  }
+  if (refs < 0) {
+    throw "bend: ${ERRS[2]}";
+  }
+  rows.used = target;
+  rows.payLen = to;
+  rows.refLen = refs;
+  rows.refs.length = refs;
+  return rows;
 }
 
 // Run

@@ -84,6 +84,17 @@ focused C/JS executions pass, with accepted native/image hashes unchanged:
 Mandatory performance failure is sufficient for early rejection; remaining
 consumer gates are required only when the candidate can still be accepted.
 
+G28's compact node rows are rejected at the mandatory early screen, before
+full compiler/fixedpoint/matrix qualification. Eighteen focused canonical
+C/JS executions and depth/rewind/affine refusals pass. Identical-driver,
+same-frozen-corpus checker time rises 238,130.662 → 256,727.458 ms (+7.81%),
+past the predeclared +5% threshold; lower RSS/footprint do not override it.
+Source/steps/arena counts/word hash match. This is one diagnostic pair, not
+a complete compiler or selfhost renderer qualification. R12 remains accepted.
+`evals/receipts/producer2039g28_storage_baseline.json`,
+`evals/receipts/producer2039g28_source_smoke.json`,
+`evals/receipts/producer2039g28_early_screen.json`.
+
 ## Historical full native-seed checkpoint: G23
 
 The earlier accepted checkpoint is **remote2039g23**, compiler source

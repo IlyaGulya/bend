@@ -1538,6 +1538,11 @@ def primitive_name(value: BIR.Primitive) -> String:
     case BIR.PrimIsFalse{}: "$p_is_false"
     case BIR.PrimSameValue{}: "$p_same_value"
     case BIR.PrimFloatBitsEqual{}: "$p_float_bits_equal"
+    case BIR.PrimCompilerRowsNew{}: "$p_compilerrows_new"
+    case BIR.PrimCompilerRowsGet{}: "$p_compilerrows_get"
+    case BIR.PrimCompilerRowsAppend{}: "$p_compilerrows_append"
+    case BIR.PrimCompilerRowsGrow{}: "$p_compilerrows_grow"
+    case BIR.PrimCompilerRowsRewind{}: "$p_compilerrows_rewind"
 
 def primitive_public(value: BIR.Primitive) -> String:
   match value:
@@ -1662,6 +1667,11 @@ def primitive_public(value: BIR.Primitive) -> String:
     case BIR.PrimIsFalse{}: "(a)=>a===false"
     case BIR.PrimSameValue{}: "(a)=>(b)=>a===b"
     case BIR.PrimFloatBitsEqual{}: "(a)=>(b)=>f32_bits(a)===b"
+    case BIR.PrimCompilerRowsNew{}: "(a)=>(b)=>$p_compilerrows_new(a,b)"
+    case BIR.PrimCompilerRowsGet{}: "(a)=>(i)=>$p_compilerrows_get(a,i)"
+    case BIR.PrimCompilerRowsAppend{}: "(a)=>(v)=>$p_compilerrows_append(a,v)"
+    case BIR.PrimCompilerRowsGrow{}: "(a)=>$p_compilerrows_grow(a)"
+    case BIR.PrimCompilerRowsRewind{}: "(a)=>(t)=>$p_compilerrows_rewind(a,t)"
 
 # A native Map.find reads the trie where it already lives: the map and the
 # query are consumed, a hit shares the stored value by identity, and a miss
@@ -2056,7 +2066,7 @@ def program_source(+program: BIR.Program, effects: String) -> String:
   +natives = js_native_markers(program)
   match js_scalar_program(program):
     case BIR.Program{bodies, values, +layouts, types, functions, end}:
-      cat([js_runtime(), js_runtime_direct(), js_runtime_extra(), js_runtime_show(), js_runtime_cli(), js_runtime_io(), js_runtime_array(), js_runtime_foreign(), js_runtime_namespace(), primitive_runtime(), map_find_runtime(layouts), constructor_layouts(layouts), families(types), type_functions(functions), effects, codes(bodies), declarations(values, natives, 0n), ending(end, natives)])
+      cat([js_runtime(), js_runtime_direct(), js_runtime_extra(), js_runtime_show(), js_runtime_cli(), js_runtime_io(), js_runtime_array(), js_runtime_compiler_rows(), js_runtime_foreign(), js_runtime_namespace(), primitive_runtime(), map_find_runtime(layouts), constructor_layouts(layouts), families(types), type_functions(functions), effects, codes(bodies), declarations(values, natives, 0n), ending(end, natives)])
 
 # Publish the same continuation frame before a bounded direct call. A pending
 # result or an unpopped region frame belongs to run_base; only an ordinary
@@ -2072,6 +2082,43 @@ def js_runtime_extra() -> String:
   "function f32_from_bits(x) { return new Float32Array(new Uint32Array([x]).buffer)[0]; }\nfunction f32_bits(x) { return new Uint32Array(new Float32Array([x]).buffer)[0]; }\nfunction tuple(a,b) { return {$:\"Tuple\",fst:a,snd:b}; }\nfunction f32_show(x) { if(x!==x) return \"nan\"; if(!Number.isFinite(x)||Object.is(x,-0)) return x<0?\"-inf\":x===0?\"-0\":\"inf\"; let s=\"x\"; for(let p=1;p<=9&&Math.fround(Number(s))!==x;p++) s=String(Number(x.toExponential(p-1))); return s; }\nfunction f32_round(s) { const d=Number(s); const a=Math.abs(d); const f=Math.fround(a); const g=2*a-Math.min(f,2**128); if(g===f||Math.fround(g)!==g||g===Infinity) return Math.sign(d)*f; let k=0; while(a*2**k%1!==0) k+=1; const m=/(\\d*)\\.?(\\d*)(?:e([+-]?\\d+))?$/i.exec(s); const n=Number(m[3]??0)-m[2].length; const x=BigInt(m[1]+m[2])*2n**BigInt(k)*10n**BigInt(Math.max(n,0)); const y=BigInt(a*2**k)*10n**BigInt(Math.max(-n,0)); return Math.sign(d)*(x===y||x>y!==g>f?f:g); }\nfunction f32_pow(a,b) { return (a === 1 || a === -1 && Math.abs(b) === Infinity ? 1 : Math.fround(Math.pow(a,b))); }\nfunction f32_read(s) { const re=/^[\\t\\n\\v\\f\\r ]*[+-]?((\\d+(?:\\.\\d*)?|\\.\\d+)(e[+-]?\\d+)?|inf(inity)?|nan)$/i; const v=f32_round(s.replace(/inf\\w*/i,\"Infinity\")); return re.test(s)?{$:\"Some\",value:v}:{$:\"None\"}; }\nfunction nat_divmod(a,b) { return b===0?tuple(0,a):tuple(Math.trunc(a/b),a%b); }\nfunction nat_in(n) { if(!Number.isInteger(n)||n<0||n>9007199254740992)throw \"bend: expected a Nat host number: an integer from 0 to 2^53\"; return n; }\nfunction array_new(n,v) { if(n>31) throw \"bend: an array past the deepest block class 31\"; return Array(2 ** n).fill(v); }\nfunction array_node(a,b) { if(a.length!==b.length) throw \"bend: runtime fail-stop\"; return a.concat(b); }\n"
 def js_runtime_array() -> String:
   "function array_swap(a,i,v) { const at=i%a.length, old=a[at]; a[at]=v; return tuple(a,old); }\nfunction array_rmw(a,i,f) { const at=i%a.length, old=a[at]; a[at]=f(old); return tuple(a,old); }\n"
+
+# Compiler-private append-only rows
+# --------------------------------
+#
+# Base.CompilerRows is an opaque store. A slot lane holds a tag (0 = default
+# slack, 1..schema id = a declared record, $crRaw = one whole value) and the
+# payload tape offset; the payload tape holds ceil(fields/32) mask words and
+# one word per field, and the reference side keeps every value a U32 word
+# cannot carry. The mask bit says which: an exact U32 (0..2^32-1, and never -0,
+# so an F32 -0 keeps its bits on the reference side) or an index into the
+# references.
+#
+# A nominal tag determines a Bend record's field layout, so the schema is
+# resolved once per tag on first sight from the actual value's own ordered
+# field keys and then indexed by the tag alone: an append does one tagged
+# lookup and writes words, never Object.keys, a schema key or a field-name
+# array per row. A value that is not a tagged record is stored whole on the
+# reference side; no runtime type table is consulted either way.
+#
+# Slots grow geometrically; rewind truncates both cursors and clears the
+# discarded slot headers, so reuse can never see stale payload. A read answers
+# the backend tuple `{$:"Tuple",fst:rows,snd:value}`.
+def js_runtime_compiler_rows() -> String:
+  cat([
+    "const $crByTag = Object.create(null), $crSchemas = [], $crRaw = 4294967295;\n",
+    "function $cr_u32(v) { return typeof v === \"number\" && Number.isInteger(v) && v >= 0 && v <= 4294967295 && !Object.is(v, -0); }\n",
+    "function $cr_record(v) { return v !== null && typeof v === \"object\" && typeof v.$ === \"string\"; }\n",
+    "function $cr_schema(v) { const seen = $crByTag[v.$]; if (seen !== undefined) return seen; const ks = Object.keys(v), names = []; for (let i = 0; i < ks.length; i += 1) if (ks[i] !== \"$\") names.push(ks[i]); const made = { tag: v.$, names, id: $crSchemas.length }; $crSchemas.push(made); $crByTag[v.$] = made; return made; }\n",
+    "function $cr_reserve(r, need) { const want = r.plen + need; if (want <= r.pay.length) return; let len = r.pay.length === 0 ? 32 : r.pay.length; while (len < want) len = len * 2; if (len > 4294967295) throw \"bend: a compiler row payload past its 32-bit tape\"; const next = new Uint32Array(len); next.set(r.pay); r.pay = next; }\n",
+    "function $p_compilerrows_new(depth, zero) { if (depth > 31) throw \"bend: an array past the deepest block class 31\"; const cap = 2 ** depth; return { d: depth, cap, used: 0, tags: new Uint32Array(cap), offs: new Uint32Array(cap), bases: new Uint32Array(cap), pay: new Uint32Array(0), plen: 0, refs: [], zero }; }\n",
+    "function $p_compilerrows_grow(r) { if (r.d >= 31) throw \"bend: an array past the deepest block class 31\"; const cap = r.cap * 2, tags = new Uint32Array(cap), offs = new Uint32Array(cap), bases = new Uint32Array(cap); tags.set(r.tags); offs.set(r.offs); bases.set(r.bases); return { d: r.d + 1, cap, used: r.used, tags, offs, bases, pay: r.pay, plen: r.plen, refs: r.refs, zero: r.zero }; }\n",
+    "function $p_compilerrows_append(r, v) { if (r.used >= r.cap) r = $p_compilerrows_grow(r); const slot = r.used, base = r.refs.length, sc = $cr_record(v) ? $cr_schema(v) : null; let tag = $crRaw, off; if (sc !== null) { const names = sc.names, n = names.length, W = (n + 31) >>> 5; $cr_reserve(r, W + n); off = r.plen; for (let w = 0; w < W; w += 1) r.pay[off + w] = 0; for (let i = 0; i < n; i += 1) { const x = v[names[i]]; if ($cr_u32(x)) { r.pay[off + (i >>> 5)] |= (1 << (i & 31)); r.pay[off + W + i] = x; } else { r.pay[off + W + i] = r.refs.length; r.refs.push(x); } } r.plen = off + W + n; tag = sc.id + 1; } else { $cr_reserve(r, 1); off = r.plen; r.pay[off] = r.refs.length; r.refs.push(v); r.plen = off + 1; } r.tags[slot] = tag; r.offs[slot] = off; r.bases[slot] = base; r.used = slot + 1; return r; }\n",
+    "function $cr_decode(r, tag, off) { const s = $crSchemas[tag - 1], names = s.names, n = names.length, W = (n + 31) >>> 5, v = { $: s.tag }; for (let i = 0; i < n; i += 1) { const direct = (r.pay[off + (i >>> 5)] >>> (i & 31)) & 1, x = direct ? r.pay[off + W + i] : r.refs[r.pay[off + W + i]]; if (names[i] === \"__proto__\") Object.defineProperty(v, names[i], { value: x, enumerable: true, writable: true, configurable: true }); else v[names[i]] = x; } return v; }\n",
+    "function $p_compilerrows_get(r, index) { const slot = (index >>> 0) % r.cap, tag = r.tags[slot]; return tuple(r, tag === 0 ? r.zero : tag === $crRaw ? r.refs[r.pay[r.offs[slot]]] : $cr_decode(r, tag, r.offs[slot])); }\n",
+    "function $p_compilerrows_rewind(r, target) { const t = target >>> 0; if (t > r.used) throw \"bend: runtime fail-stop\"; if (t < r.used) { const base = r.bases[t], end = r.offs[t]; for (let i = t; i < r.used; i += 1) { r.tags[i] = 0; r.offs[i] = 0; r.bases[i] = 0; } r.refs.length = base; r.plen = end; r.used = t; } return r; }\n"
+  ])
+
 def js_runtime_foreign() -> String:
   "const $0eff=Object.create(null);\nfunction io_emit(value) { return {$:\"Emit\",value}; }\nfunction io_eff(k,run) { if(arguments.length>2)throw new Error(\"bend: \"+k+\" takes no need: an effect that waits parks itself\"); if(k in $0eff)throw new Error(\"bend: two effects register \"+k); $0eff[k]=run; }\n"
 def js_runtime_namespace() -> String:
