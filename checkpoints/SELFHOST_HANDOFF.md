@@ -14,10 +14,21 @@ Canonical и selfhost C используют существующий packed BUF
 partial/native values, capture drop, rewind и memo/name reuse. Два независимых
 bounded source review не нашли блокера; это не runtime acceptance.
 
-Полная native-root/fixedpoint/consumer/performance квалификация ещё не завершена;
-G27 не принят. Acceptance rule задан до замеров: native и JS pipeline mean/median
-должны снизиться, median peak RSS/footprint не должны вырасти; все samples сохраняются.
-При нарушении правила — rejected checkpoint и восстановление R12.
+Source `18a4f65e`, orchestration `24780e82`: полный native root PASS,
+**12 468 definitions / 13 067 events**, zero excluded checks/output patches.
+Настоящий native-stage0 → stage1 → stage2 fixedpoint PASS: оба image
+**31 824 148 B**, SHA-256
+`a38aea910145c1a47f29683965920d467d62b65c687fcf21677a66250b3a6ac2`.
+Native build guardian: 288 913 ms, peak RSS 5 201 330 176 B;
+bootstrap: 544 790 ms, peak RSS 2 643 263 488 B. Прежние guards сохранены.
+Core proof и frozen inputs: `evals/receipts/root2039g27_core_fixedpoint.json`.
+
+Полные consumer/performance gates ещё не завершены; G27 не принят.
+Парные замеры теперь выполняются после fixedpoint, до дорогих matrices;
+финальный PASS по-прежнему требует всех gates. Acceptance rule задан до замеров:
+native и JS pipeline mean/median должны снизиться, median peak RSS/footprint
+не должны вырасти; все samples сохраняются. При нарушении — rejected checkpoint
+и восстановление R12.
 Measured R12 source tape: used 2 423 369, capacity 4 194 304; калибровка backing store
 на тех же словах/V8 element kind — 32 MiB Array против 16 MiB Uint32Array.
 Это не измерение общего RSS и не новая C density improvement.

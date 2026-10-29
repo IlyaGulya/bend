@@ -16,6 +16,13 @@ latest one; the GitHub release carries the same notes.
   it is not compiler/fixedpoint/performance acceptance. R12 remains the baseline.
   `evals/receipts/producer2039g27_source_smoke.json`,
   `evals/receipts/producer2039g27_storage_baseline.json`.
+  Its full native root validates 12,468 definitions / 13,067 events with zero
+  exclusions or patches. Actual stage-one/stage-two images are byte-identical:
+  31,824,148 bytes, SHA-256
+  `a38aea910145c1a47f29683965920d467d62b65c687fcf21677a66250b3a6ac2`.
+  Full consumer and paired-performance gates remain pending; measurement now
+  precedes expensive matrices, without weakening final acceptance.
+  `evals/receipts/root2039g27_core_fixedpoint.json`.
 
 - G26's combined scheduler/arena/identity/descriptor/publication optimization
   is rejected under its predeclared performance rule. Full native validation
