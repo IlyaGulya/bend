@@ -1,0 +1,2188 @@
+{
+  "schemaVersion": 1,
+  "status": "R12_G28_PAIRED_CPU_ALLOCATION_PROFILES_COMPLETE",
+  "acceptanceEvidence": false,
+  "compilerAccepted": false,
+  "performanceAccepted": false,
+  "newFixedpointClaim": false,
+  "baseline": {
+    "schemaVersion": 1,
+    "status": "R12_CONTROLS_AUTHENTICATED_BEFORE_G27",
+    "sourceCheckpoint": "5916d410",
+    "restoredCheckpoint": "9b78ea7c",
+    "native": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+      "sha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "bytes": 18808824
+    },
+    "image": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+      "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "bytes": 31758507
+    },
+    "acceptance": {
+      "path": "/Users/ilyagulya/Projects/My/bend/evals/receipts/root2039g24r12_native_fixedpoint.json",
+      "sha256": "cb66ed5542e56516f83d2c04fb80f5ab8597130ab137a4128be8491391911d50",
+      "sourceCheckpoint": "5916d410",
+      "byteFixedpoint": true
+    },
+    "frozenRoot": {
+      "path": "/private/tmp/bend2039g22-tiny-inline/checkpoints/.bootstrap_compiler_root_remote2039g21.bend",
+      "sha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+      "bytes": 653895
+    },
+    "frozenInputs": {
+      "/private/tmp/bend2039g22-tiny-inline/bend2/base.bend": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/args.js": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/audio_close.js": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/audio_open.js": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/audio_write.js": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/chan.js": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/file_close.js": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/file_open.js": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/file_read.js": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/file_size.js": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/file_write.js": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/get_env.js": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/listener_close.js": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/now.js": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/print.js": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/print_err.js": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/process_run.js": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/random_u32.js": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/sleep.js": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/socket_close.js": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/spawn.js": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/tcp_accept.js": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/tcp_connect.js": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/tcp_listen.js": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/tcp_recv.js": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/tcp_send.js": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/thread_count.js": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/udp_bind.js": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/udp_recv_from.js": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/udp_send_to.js": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/window_close.js": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/window_frame.js": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/window_grab.js": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/window_open.js": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/window_set_title.js": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/write.js": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/backend_ir.bend": "162a554cec1c9e1b5edab69b5cfae730c70886548f4f51603a7537845ab5ec48",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/c_backend_sharing.bend": "78992d00aad3a458dd6b9ea424edf0de61c95b54487f92cd53283e705488c35f",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/checked_frontend.bend": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/checker_arena.bend": "2a26c3d8ce66412591030fa2fd6df9f9e53c0fececd9d9ae702def2f475f1752",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/checker_ir.bend": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/core.bend": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/index_lookup.bend": "a178b0d5b135490634e1c85efaa0a8d1e0c34c94610615ecf822da6a2932f31d",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/lexer.bend": "a81265d4ab248c5ea74bf52987e1163773866a01b264ff1a98895d91139d6f53",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/loaded_module.bend": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/scope_lookup.bend": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/sha256.bend": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+      "/private/tmp/bend2039g22-tiny-inline/checkpoints/.bootstrap_compiler_root_remote2039g21.bend": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+      "/private/tmp/bend2039g22-tiny-inline/checkpoints/checker_core_steps_v1.bend": "93e8fd5ce7aafe40084d1b0023eff79de18cb6f00b625cab43b002535cfe288f",
+      "/private/tmp/bend2039g22-tiny-inline/checkpoints/emitter_steps_v1.bend": "e73baadfada36d919619746607593e928e82a338073c5b73e200d66d2d69a05a",
+      "/private/tmp/bend2039g22-tiny-inline/checkpoints/template_steps_v1.bend": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4"
+    },
+    "tools": {
+      "node": {
+        "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5",
+        "bytes": 113935712
+      },
+      "bun": {
+        "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "sha256": "28c7dd0a06916aba284d570ef44a2d70e9c538eaf2ba58dfe0910525563b3f79",
+        "bytes": 70469776
+      }
+    },
+    "limits": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 600000
+    },
+    "expectedBaselineOutput": "c33227e028d767df9a9fff75663e42eb7374919dcf8e7dff14936a98d20008fb"
+  },
+  "windows": [
+    {
+      "start": 1000000,
+      "end": 1250000
+    },
+    {
+      "start": 4000000,
+      "end": 4250000
+    },
+    {
+      "start": 8000000,
+      "end": 8250000
+    }
+  ],
+  "commands": [
+    {
+      "role": "control",
+      "environment": "env HEAVY_GATE_MEMORY_MIB=8192 HEAVY_GATE_RSS_MIB=8192 HEAVY_GATE_POLL_MS=10 HEAVY_GATE_TIMEOUT_MS=600000 BUN_JSC_forceRAMSize=4294967296 ",
+      "argv": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/private/tmp/bend-g29-profile-xWLVIr/profile-checker.mjs",
+        "/private/tmp/bend-g29-profile-xWLVIr/control-request.json",
+        "/private/tmp/bend-g29-profile-xWLVIr/control-profile-result.json"
+      ]
+    },
+    {
+      "role": "candidate",
+      "environment": "env HEAVY_GATE_MEMORY_MIB=8192 HEAVY_GATE_RSS_MIB=8192 HEAVY_GATE_POLL_MS=10 HEAVY_GATE_TIMEOUT_MS=600000 BUN_JSC_forceRAMSize=4294967296 ",
+      "argv": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/private/tmp/bend-g29-profile-xWLVIr/profile-checker.mjs",
+        "/private/tmp/bend-g29-profile-xWLVIr/candidate-request.json",
+        "/private/tmp/bend-g29-profile-xWLVIr/candidate-profile-result.json"
+      ]
+    }
+  ],
+  "instrumentation": {
+    "driver": {
+      "path": "/private/tmp/bend-g29-profile-xWLVIr/profile-checker.mjs",
+      "sha256": "0b3d6e0ba75265e9f0d64c1248e7c4f77b4775b45a1032208b801fbcd848f181"
+    },
+    "profiler": {
+      "path": "evals/selfhost_cpu_profile.mjs",
+      "sha256": "5d5fc8d329a3b600522c58eeac59c49c515109bc7f48845d8177cb520129a1c0"
+    },
+    "cpuIntervalUs": 1000,
+    "allocationIntervalBytes": 4194304,
+    "allocationIncludesCollectedObjects": true
+  },
+  "sourceAuthority": [
+    {
+      "role": "control",
+      "checkpoint": "3167aea6",
+      "expectedDefinitions": 6380,
+      "checkedDefinitions": 6380,
+      "events": 6657,
+      "excluded": 0,
+      "patches": 0,
+      "inputs": [
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/base.bend",
+          "sha256": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/bend.ts",
+          "sha256": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/comp.ts",
+          "sha256": "880a9b3b86f273852a39fc664f8c3d7b71e3860b6d365e4321949fc812b6e7cc",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/checkpoints/checker_core_steps_component_v1.bend",
+          "sha256": "ca15a467e804983f454a63e9db64a38c1077a2d49104d488556d0609557521cf",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/evals/checker_core_component_build.ts",
+          "sha256": "7d42845921aa604c5048068b3613f501efe3e57337fe0ac2cc51917997060415",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/evals/heavy_gate_native.c",
+          "sha256": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/evals/heavy_gate.ts",
+          "sha256": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/effs/args.js",
+          "sha256": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/effs/audio_close.js",
+          "sha256": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/effs/audio_open.js",
+          "sha256": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/effs/audio_write.js",
+          "sha256": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/effs/chan.js",
+          "sha256": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/effs/file_close.js",
+          "sha256": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/effs/file_open.js",
+          "sha256": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/effs/file_read.js",
+          "sha256": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/effs/file_size.js",
+          "sha256": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/effs/file_write.js",
+          "sha256": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/effs/get_env.js",
+          "sha256": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/effs/listener_close.js",
+          "sha256": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/effs/now.js",
+          "sha256": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/effs/print_err.js",
+          "sha256": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/effs/print.js",
+          "sha256": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/effs/process_run.js",
+          "sha256": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/effs/random_u32.js",
+          "sha256": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/effs/sleep.js",
+          "sha256": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/effs/socket_close.js",
+          "sha256": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/effs/spawn.js",
+          "sha256": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/effs/tcp_accept.js",
+          "sha256": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/effs/tcp_connect.js",
+          "sha256": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/effs/tcp_listen.js",
+          "sha256": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/effs/tcp_recv.js",
+          "sha256": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/effs/tcp_send.js",
+          "sha256": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/effs/thread_count.js",
+          "sha256": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/effs/udp_bind.js",
+          "sha256": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/effs/udp_recv_from.js",
+          "sha256": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/effs/udp_send_to.js",
+          "sha256": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/effs/window_close.js",
+          "sha256": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/effs/window_frame.js",
+          "sha256": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/effs/window_grab.js",
+          "sha256": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/effs/window_open.js",
+          "sha256": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/effs/window_set_title.js",
+          "sha256": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/effs/write.js",
+          "sha256": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/selfhost/ast.bend",
+          "sha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/selfhost/checked_frontend.bend",
+          "sha256": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/selfhost/checker_arena.bend",
+          "sha256": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/selfhost/checker_ir.bend",
+          "sha256": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/selfhost/index_lookup.bend",
+          "sha256": "7b7b45946be711d0ba384e15f6823fded5ff97d6a526a6fb74a0448c13d61f84",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/selfhost/loaded_module.bend",
+          "sha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/selfhost/path.bend",
+          "sha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/bend2/selfhost/scope_lookup.bend",
+          "sha256": "e75dc874de6026e2104a7545a19f42fd6995aefecbb1d315c6ae3e097697e590",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/private/tmp/bend-g27-u32-pMbZek/r12-control/checkpoints/checker_core_steps_v1.bend",
+          "sha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+          "authority": "retained-build-input"
+        }
+      ]
+    },
+    {
+      "role": "candidate",
+      "checkpoint": "29dc43a0",
+      "expectedDefinitions": 6377,
+      "checkedDefinitions": 6377,
+      "events": 6660,
+      "excluded": 0,
+      "patches": 0,
+      "inputs": [
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/base.bend",
+          "sha256": "df977cf1d30b15f7051145332d28761cb924f902693afe7c533ade710c94987a",
+          "authority": "git:29dc43a0:bend2/base.bend"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/bend.ts",
+          "sha256": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/comp.ts",
+          "sha256": "20485e19264c369a49a517b4cb0e5b970aae4f13fef21d98bf072aa7b6757ccc",
+          "authority": "git:29dc43a0:bend2/comp.ts"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/checker_core_steps_component_v1.bend",
+          "sha256": "ca15a467e804983f454a63e9db64a38c1077a2d49104d488556d0609557521cf",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/evals/checker_core_component_build.ts",
+          "sha256": "7d42845921aa604c5048068b3613f501efe3e57337fe0ac2cc51917997060415",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate_native.c",
+          "sha256": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "sha256": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/args.js",
+          "sha256": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_close.js",
+          "sha256": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_open.js",
+          "sha256": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_write.js",
+          "sha256": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/chan.js",
+          "sha256": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_close.js",
+          "sha256": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_open.js",
+          "sha256": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_read.js",
+          "sha256": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_size.js",
+          "sha256": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_write.js",
+          "sha256": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/get_env.js",
+          "sha256": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/listener_close.js",
+          "sha256": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/now.js",
+          "sha256": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/print_err.js",
+          "sha256": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/print.js",
+          "sha256": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/process_run.js",
+          "sha256": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/random_u32.js",
+          "sha256": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/sleep.js",
+          "sha256": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/socket_close.js",
+          "sha256": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/spawn.js",
+          "sha256": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_accept.js",
+          "sha256": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_connect.js",
+          "sha256": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_listen.js",
+          "sha256": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_recv.js",
+          "sha256": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_send.js",
+          "sha256": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/thread_count.js",
+          "sha256": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_bind.js",
+          "sha256": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_recv_from.js",
+          "sha256": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_send_to.js",
+          "sha256": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_close.js",
+          "sha256": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_frame.js",
+          "sha256": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_grab.js",
+          "sha256": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_open.js",
+          "sha256": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_set_title.js",
+          "sha256": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/write.js",
+          "sha256": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/ast.bend",
+          "sha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checked_frontend.bend",
+          "sha256": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_arena.bend",
+          "sha256": "a249f495ee543a54795771a07ded838a367bf2b6fe4200914057f0edbad944ef",
+          "authority": "git:29dc43a0:bend2/selfhost/checker_arena.bend"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_ir.bend",
+          "sha256": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/index_lookup.bend",
+          "sha256": "7b7b45946be711d0ba384e15f6823fded5ff97d6a526a6fb74a0448c13d61f84",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/loaded_module.bend",
+          "sha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/path.bend",
+          "sha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/scope_lookup.bend",
+          "sha256": "e75dc874de6026e2104a7545a19f42fd6995aefecbb1d315c6ae3e097697e590",
+          "authority": "retained-build-input"
+        },
+        {
+          "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/checker_core_steps_v1.bend",
+          "sha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+          "authority": "retained-build-input"
+        }
+      ]
+    }
+  ],
+  "roles": [
+    {
+      "role": "control",
+      "image": {
+        "path": "/private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+        "sha256": "c806cc8ef12c6bfa280059e4a067466d4ca0d6ce28e4d4f64bc843cb9a74a00e"
+      },
+      "report": {
+        "path": "/private/tmp/bend-g29-profile-xWLVIr/control-profile-result.json",
+        "sha256": "d4656adccaf6bdc6dff6b4dbdf3e48076e85d4ba323895333b1f063f855381c6"
+      },
+      "result": {
+        "status": "G29_PAIRED_WINDOW_PROFILE_PASS",
+        "stepCounts": {
+          "expand": 1004927,
+          "check": 10078835
+        },
+        "storage": {
+          "sourceNodeUsed": 2254791,
+          "sourceNodeCapacity": 4194304,
+          "sourceNodeCarrier": "Array",
+          "sourceWordUsed": 2423369,
+          "sourceWordCapacity": 4194304,
+          "sourceWordDepth": 22,
+          "sourceCounts": [
+            2254791,
+            4194304,
+            447744,
+            524288,
+            69061,
+            131072,
+            2423369,
+            4194304,
+            0,
+            1,
+            64096,
+            65536
+          ],
+          "carrier": "Array",
+          "byteLength": null,
+          "sha256": "4838cd165d82cebb9831c0ee0c8e3ed34593acebe54fa0dd28be7c6ea6726835",
+          "maxWord": 2254780,
+          "hashEncoding": "host-little-endian-u32",
+          "limitations": [
+            "Final source tape only; no transient peak-capacity claim.",
+            "64-KiB hash scratch is allocated only after the measured check phase.",
+            "CPU/allocation sampling enabled only inside the declared step windows; no heap snapshot."
+          ]
+        }
+      },
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 2321891328,
+        "peakFootprintBytes": 2233442944,
+        "elapsedMs": 266981,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "/private/tmp/bend-g29-profile-xWLVIr/profile-checker.mjs",
+          "/private/tmp/bend-g29-profile-xWLVIr/control-request.json",
+          "/private/tmp/bend-g29-profile-xWLVIr/control-profile-result.json"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793293648544-837363aa0c8705cb.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "windows": [
+        {
+          "steps": {
+            "start": 1000000,
+            "end": 1250000
+          },
+          "wallMs": 7295.9133329999895,
+          "processCpuMs": 8341.968,
+          "cpu": {
+            "path": "/private/tmp/bend-g29-profile-xWLVIr/control-profiles/selfhost-9349-thread-1-0BqJgp/000001-check-window.cpuprofile",
+            "sha256": "80a26ab7df8d886377b1fc562e3e6a4174895a8a94cf45ffeb833adf4150e47f",
+            "samples": 4755,
+            "sampledMs": 7986.75,
+            "gcShare": 0.07319397752527623,
+            "categories": {
+              "map-bit-traversal": 2738.9399999999996,
+              "inspector-control": 690.417,
+              "gc": 584.582,
+              "other-checker-and-runtime": 3356.0700000000047,
+              "scheduler": 588.407,
+              "arena-read-wrapper": 28.334000000000003
+            },
+            "top": [
+              {
+                "functionName": "$Map_bit_go",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 70679,
+                "columnNumber": 20,
+                "selfSamples": 1335,
+                "inclusiveSamples": 2059,
+                "selfSampledMs": 2024.943,
+                "inclusiveSampledMs": 3124.194,
+                "selfShare": 0.2535377969762419,
+                "inclusiveShare": 0.3911721288383886
+              },
+              {
+                "functionName": "$Map_bit_go_rec",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 75314,
+                "columnNumber": 24,
+                "selfSamples": 450,
+                "inclusiveSamples": 450,
+                "selfSampledMs": 691.496,
+                "inclusiveSampledMs": 691.496,
+                "selfShare": 0.08658039878548847,
+                "inclusiveShare": 0.08658039878548847
+              },
+              {
+                "functionName": "post",
+                "url": "node:inspector",
+                "lineNumber": 111,
+                "columnNumber": 6,
+                "selfSamples": 1,
+                "inclusiveSamples": 2,
+                "selfSampledMs": 690.417,
+                "inclusiveSampledMs": 690.708,
+                "selfShare": 0.08644530002817166,
+                "inclusiveShare": 0.08648173537421354
+              },
+              {
+                "functionName": "(garbage collector)",
+                "url": "",
+                "lineNumber": -1,
+                "columnNumber": -1,
+                "selfSamples": 347,
+                "inclusiveSamples": 347,
+                "selfSampledMs": 584.582,
+                "inclusiveSampledMs": 584.582,
+                "selfShare": 0.07319397752527623,
+                "inclusiveShare": 0.07319397752527623
+              },
+              {
+                "functionName": "char_len",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 86,
+                "columnNumber": 17,
+                "selfSamples": 275,
+                "inclusiveSamples": 275,
+                "selfSampledMs": 409.378,
+                "inclusiveSampledMs": 409.378,
+                "selfShare": 0.05125714464581964,
+                "inclusiveShare": 0.05125714464581964
+              },
+              {
+                "functionName": "$checker_core_steps_v1_checker_advance",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 258,
+                "columnNumber": 47,
+                "selfSamples": 201,
+                "inclusiveSamples": 3804,
+                "selfSampledMs": 302.66,
+                "inclusiveSampledMs": 5802.334,
+                "selfShare": 0.03789526403105143,
+                "inclusiveShare": 0.7264950073559333
+              },
+              {
+                "functionName": "$checker_core_steps_v1_checker_step_one",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 309,
+                "columnNumber": 48,
+                "selfSamples": 112,
+                "inclusiveSamples": 883,
+                "selfSampledMs": 167.247,
+                "inclusiveSampledMs": 1327.71,
+                "selfShare": 0.020940557798854353,
+                "inclusiveShare": 0.1662390834820171
+              },
+              {
+                "functionName": "$Map_find",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 40014,
+                "columnNumber": 18,
+                "selfSamples": 100,
+                "inclusiveSamples": 1296,
+                "selfSampledMs": 157.922,
+                "inclusiveSampledMs": 1977.838,
+                "selfShare": 0.019772999029642847,
+                "inclusiveShare": 0.24763990359032148
+              }
+            ]
+          },
+          "allocation": {
+            "path": "/private/tmp/bend-g29-profile-xWLVIr/control-profiles/selfhost-9349-thread-1-0BqJgp/000001-check-window.heapprofile",
+            "sha256": "2fa6f8258516c20ace6ac1e1287f06dc519a11b0a17770b73f0722b8a8dc1e83",
+            "estimatedBytes": 19115076080,
+            "categories": {
+              "other-checker-and-runtime": 7705257736,
+              "scheduler": 1069553664,
+              "map-bit-traversal": 10120925704,
+              "arena-read-wrapper": 213916560,
+              "inspector-control": 5422416
+            },
+            "top": [
+              {
+                "functionName": "$Map_bit_go_rec",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 75314,
+                "columnNumber": 24,
+                "estimatedBytes": 6706739504
+              },
+              {
+                "functionName": "$Map_bit_go",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 70679,
+                "columnNumber": 20,
+                "estimatedBytes": 3326105048
+              },
+              {
+                "functionName": "$checker_core_steps_v1_checker_advance",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 258,
+                "columnNumber": 47,
+                "estimatedBytes": 1069553664
+              },
+              {
+                "functionName": "$Map_find",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 40014,
+                "columnNumber": 18,
+                "estimatedBytes": 624955312
+              },
+              {
+                "functionName": "$Map_get_go",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 53373,
+                "columnNumber": 20,
+                "estimatedBytes": 452992192
+              },
+              {
+                "functionName": "run_clo",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 167,
+                "columnNumber": 16,
+                "estimatedBytes": 167776752
+              },
+              {
+                "functionName": "$checker_core_steps_v1_checker_pure_arena_get_word",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 34336,
+                "columnNumber": 59,
+                "estimatedBytes": 151002112
+              },
+              {
+                "functionName": "$checker_core_steps_v1_checker_step_group_13",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 10283,
+                "columnNumber": 53,
+                "estimatedBytes": 117446688
+              },
+              {
+                "functionName": "$checker_core_steps_v1_checker_pure_arena_get_node",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 25378,
+                "columnNumber": 59,
+                "estimatedBytes": 109055760
+              },
+              {
+                "functionName": "$___bend2_selfhost_checker_arena_get_node",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 37550,
+                "columnNumber": 50,
+                "estimatedBytes": 104860800
+              }
+            ]
+          }
+        },
+        {
+          "steps": {
+            "start": 4000000,
+            "end": 4250000
+          },
+          "wallMs": 3932.292916000006,
+          "processCpuMs": 3939.688,
+          "cpu": {
+            "path": "/private/tmp/bend-g29-profile-xWLVIr/control-profiles/selfhost-9349-thread-1-jIQLtN/000001-check-window.cpuprofile",
+            "sha256": "5010ecf967197df6a054bbb2a8d00f010b9a0a20d016ff6c55503c936f8c5d01",
+            "samples": 2524,
+            "sampledMs": 4943.542,
+            "gcShare": 0.05781219214886816,
+            "categories": {
+              "inspector-control": 1011.834,
+              "map-bit-traversal": 1242.411,
+              "gc": 285.797,
+              "scheduler": 526.41,
+              "other-checker-and-runtime": 1856.715999999996,
+              "arena-read-wrapper": 20.374
+            },
+            "top": [
+              {
+                "functionName": "post",
+                "url": "node:inspector",
+                "lineNumber": 111,
+                "columnNumber": 6,
+                "selfSamples": 1,
+                "inclusiveSamples": 1,
+                "selfSampledMs": 1011.834,
+                "inclusiveSampledMs": 1011.834,
+                "selfShare": 0.2046779414436046,
+                "inclusiveShare": 0.2046779414436046
+              },
+              {
+                "functionName": "$Map_bit_go",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 70679,
+                "columnNumber": 20,
+                "selfSamples": 614,
+                "inclusiveSamples": 900,
+                "selfSampledMs": 938.916,
+                "inclusiveSampledMs": 1383.289,
+                "selfShare": 0.18992778861795853,
+                "inclusiveShare": 0.27981738599570916
+              },
+              {
+                "functionName": "$Map_bit_go_rec",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 75314,
+                "columnNumber": 24,
+                "selfSamples": 183,
+                "inclusiveSamples": 183,
+                "selfSampledMs": 289.369,
+                "inclusiveSampledMs": 289.369,
+                "selfShare": 0.05853475099432755,
+                "inclusiveShare": 0.05853475099432755
+              },
+              {
+                "functionName": "(garbage collector)",
+                "url": "",
+                "lineNumber": -1,
+                "columnNumber": -1,
+                "selfSamples": 188,
+                "inclusiveSamples": 188,
+                "selfSampledMs": 285.797,
+                "inclusiveSampledMs": 285.797,
+                "selfShare": 0.05781219214886816,
+                "inclusiveShare": 0.05781219214886816
+              },
+              {
+                "functionName": "$checker_core_steps_v1_checker_advance",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 258,
+                "columnNumber": 47,
+                "selfSamples": 151,
+                "inclusiveSamples": 2042,
+                "selfSampledMs": 232.831,
+                "inclusiveSampledMs": 3152.127,
+                "selfShare": 0.04709801191129761,
+                "inclusiveShare": 0.6376252088077738
+              },
+              {
+                "functionName": "$checker_core_steps_v1_checker_step_one",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 309,
+                "columnNumber": 48,
+                "selfSamples": 110,
+                "inclusiveSamples": 483,
+                "selfSampledMs": 170.376,
+                "inclusiveSampledMs": 737.374,
+                "selfShare": 0.03446435774187819,
+                "inclusiveShare": 0.1491590442642138
+              },
+              {
+                "functionName": "char_len",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 86,
+                "columnNumber": 17,
+                "selfSamples": 104,
+                "inclusiveSamples": 104,
+                "selfSampledMs": 156.629,
+                "inclusiveSampledMs": 156.629,
+                "selfShare": 0.03168355806423815,
+                "inclusiveShare": 0.03168355806423815
+              },
+              {
+                "functionName": "$Map_find",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 40014,
+                "columnNumber": 18,
+                "selfSamples": 90,
+                "inclusiveSamples": 675,
+                "selfSampledMs": 130.42,
+                "inclusiveSampledMs": 1034.303,
+                "selfShare": 0.026381893791941082,
+                "inclusiveShare": 0.20922306313974878
+              }
+            ]
+          },
+          "allocation": {
+            "path": "/private/tmp/bend-g29-profile-xWLVIr/control-profiles/selfhost-9349-thread-1-jIQLtN/000001-check-window.heapprofile",
+            "sha256": "b7915c17204b9acd93f2c189103f820e135735f28e6aa6346ba7d078c898141d",
+            "estimatedBytes": 13461280728,
+            "categories": {
+              "other-checker-and-runtime": 7784981552,
+              "scheduler": 1145051568,
+              "map-bit-traversal": 4336940312,
+              "arena-read-wrapper": 184555248,
+              "inspector-control": 9752048
+            },
+            "top": [
+              {
+                "functionName": "$Map_bit_go_rec",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 75314,
+                "columnNumber": 24,
+                "estimatedBytes": 2797620512
+              },
+              {
+                "functionName": "$Map_bit_go",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 70679,
+                "columnNumber": 20,
+                "estimatedBytes": 1497376424
+              },
+              {
+                "functionName": "$checker_core_steps_v1_checker_advance",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 258,
+                "columnNumber": 47,
+                "estimatedBytes": 1145051568
+              },
+              {
+                "functionName": "$Map_find",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 40014,
+                "columnNumber": 18,
+                "estimatedBytes": 553651264
+              },
+              {
+                "functionName": "$Map_get_go",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 53373,
+                "columnNumber": 20,
+                "estimatedBytes": 331355672
+              },
+              {
+                "functionName": "$checker_core_steps_v1_checker_pure_arena_get_word",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 34336,
+                "columnNumber": 59,
+                "estimatedBytes": 243279616
+              },
+              {
+                "functionName": "run_clo",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 167,
+                "columnNumber": 16,
+                "estimatedBytes": 134221472
+              },
+              {
+                "functionName": "$checker_core_steps_v1_checker_body_arena_names_append",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 22144,
+                "columnNumber": 63,
+                "estimatedBytes": 130032864
+              },
+              {
+                "functionName": "$checker_core_steps_v1_checker_body_arena_words_cons",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 21995,
+                "columnNumber": 61,
+                "estimatedBytes": 113256800
+              },
+              {
+                "functionName": "$___bend2_selfhost_checker_arena_get_node",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 37550,
+                "columnNumber": 50,
+                "estimatedBytes": 109054848
+              }
+            ]
+          }
+        },
+        {
+          "steps": {
+            "start": 8000000,
+            "end": 8250000
+          },
+          "wallMs": 5909.850292000017,
+          "processCpuMs": 6149.588,
+          "cpu": {
+            "path": "/private/tmp/bend-g29-profile-xWLVIr/control-profiles/selfhost-9349-thread-1-RUDrAG/000001-check-window.cpuprofile",
+            "sha256": "ecd9b228a0528f7c1a9f367b714171e4026cb05c78cff29e4a46d62e9c457010",
+            "samples": 3979,
+            "sampledMs": 6979.792,
+            "gcShare": 0.0718789327819511,
+            "categories": {
+              "map-bit-traversal": 2786.9620000000004,
+              "inspector-control": 1069.542,
+              "gc": 501.7,
+              "other-checker-and-runtime": 2098.9619999999973,
+              "scheduler": 516.501,
+              "arena-read-wrapper": 6.125
+            },
+            "top": [
+              {
+                "functionName": "$Map_bit_go",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 70679,
+                "columnNumber": 20,
+                "selfSamples": 1419,
+                "inclusiveSamples": 2112,
+                "selfSampledMs": 2123.574,
+                "inclusiveSampledMs": 3158.339,
+                "selfShare": 0.3042460291080307,
+                "inclusiveShare": 0.4524975815898239
+              },
+              {
+                "functionName": "post",
+                "url": "node:inspector",
+                "lineNumber": 111,
+                "columnNumber": 6,
+                "selfSamples": 1,
+                "inclusiveSamples": 2,
+                "selfSampledMs": 1069.542,
+                "inclusiveSampledMs": 1069.625,
+                "selfShare": 0.1532340791817292,
+                "inclusiveShare": 0.15324597065356677
+              },
+              {
+                "functionName": "$Map_bit_go_rec",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 75314,
+                "columnNumber": 24,
+                "selfSamples": 414,
+                "inclusiveSamples": 414,
+                "selfSampledMs": 617.429,
+                "inclusiveSampledMs": 617.429,
+                "selfShare": 0.08845951283362026,
+                "inclusiveShare": 0.08845951283362026
+              },
+              {
+                "functionName": "(garbage collector)",
+                "url": "",
+                "lineNumber": -1,
+                "columnNumber": -1,
+                "selfSamples": 337,
+                "inclusiveSamples": 337,
+                "selfSampledMs": 501.7,
+                "inclusiveSampledMs": 501.7,
+                "selfShare": 0.0718789327819511,
+                "inclusiveShare": 0.0718789327819511
+              },
+              {
+                "functionName": "char_len",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 86,
+                "columnNumber": 17,
+                "selfSamples": 305,
+                "inclusiveSamples": 305,
+                "selfSampledMs": 455.794,
+                "inclusiveSampledMs": 455.794,
+                "selfShare": 0.0653019459605673,
+                "inclusiveShare": 0.0653019459605673
+              },
+              {
+                "functionName": "$checker_core_steps_v1_checker_advance",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 258,
+                "columnNumber": 47,
+                "selfSamples": 154,
+                "inclusiveSamples": 3435,
+                "selfSampledMs": 226.08,
+                "inclusiveSampledMs": 5109.263,
+                "selfShare": 0.0323906500365627,
+                "inclusiveShare": 0.7320079165682875
+              },
+              {
+                "functionName": "f",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 168,
+                "columnNumber": 12,
+                "selfSamples": 125,
+                "inclusiveSamples": 2500,
+                "selfSampledMs": 184.203,
+                "inclusiveSampledMs": 3710.294,
+                "selfShare": 0.02639090104690799,
+                "inclusiveShare": 0.5315765856632977
+              },
+              {
+                "functionName": "$checker_core_steps_v1_checker_chunk",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 227,
+                "columnNumber": 45,
+                "selfSamples": 108,
+                "inclusiveSamples": 3577,
+                "selfSampledMs": 158.249,
+                "inclusiveSampledMs": 5320.007,
+                "selfShare": 0.02267245213037867,
+                "inclusiveShare": 0.7622013664590578
+              }
+            ]
+          },
+          "allocation": {
+            "path": "/private/tmp/bend-g29-profile-xWLVIr/control-profiles/selfhost-9349-thread-1-RUDrAG/000001-check-window.heapprofile",
+            "sha256": "e0221da167d4788a03ea24929a0174df7366f9095327300fa6f23e4c1e3a9a76",
+            "estimatedBytes": 20075718000,
+            "categories": {
+              "other-checker-and-runtime": 8590290400,
+              "scheduler": 1170217536,
+              "arena-read-wrapper": 109055664,
+              "map-bit-traversal": 10196423488,
+              "inspector-control": 9730912
+            },
+            "top": [
+              {
+                "functionName": "$Map_bit_go_rec",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 75314,
+                "columnNumber": 24,
+                "estimatedBytes": 6492828784
+              },
+              {
+                "functionName": "$Map_bit_go",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 70679,
+                "columnNumber": 20,
+                "estimatedBytes": 3506460992
+              },
+              {
+                "functionName": "$checker_core_steps_v1_checker_advance",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 258,
+                "columnNumber": 47,
+                "estimatedBytes": 1170217536
+              },
+              {
+                "functionName": "$Map_find",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 40014,
+                "columnNumber": 18,
+                "estimatedBytes": 746590176
+              },
+              {
+                "functionName": "$Map_get_go",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 53373,
+                "columnNumber": 20,
+                "estimatedBytes": 494936848
+              },
+              {
+                "functionName": "$Map_seek_go",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 59848,
+                "columnNumber": 21,
+                "estimatedBytes": 314577224
+              },
+              {
+                "functionName": "$checker_core_steps_v1_checker_pure_arena_get_word",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 34336,
+                "columnNumber": 59,
+                "estimatedBytes": 218113024
+              },
+              {
+                "functionName": "$Map_ins_go",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 78793,
+                "columnNumber": 20,
+                "estimatedBytes": 201331512
+              },
+              {
+                "functionName": "$Map_bit",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 52884,
+                "columnNumber": 17,
+                "estimatedBytes": 197133712
+              },
+              {
+                "functionName": "$Map_diff",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+                "lineNumber": 74214,
+                "columnNumber": 18,
+                "estimatedBytes": 155190152
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "role": "candidate",
+      "image": {
+        "path": "/private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+        "sha256": "777719df6dbdca2fada3b093ebee6d7319ad68b55e65b7fadb5acfc4bb51fdf6"
+      },
+      "report": {
+        "path": "/private/tmp/bend-g29-profile-xWLVIr/candidate-profile-result.json",
+        "sha256": "ed59a84e7e2190819acea04594374f94aed8e0f224f7115e3bb96d54617a8271"
+      },
+      "result": {
+        "status": "G29_PAIRED_WINDOW_PROFILE_PASS",
+        "stepCounts": {
+          "expand": 1004927,
+          "check": 10078835
+        },
+        "storage": {
+          "sourceNodeUsed": 2254791,
+          "sourceNodeCapacity": 4194304,
+          "sourceNodeCarrier": "object",
+          "sourceWordUsed": 2423369,
+          "sourceWordCapacity": 4194304,
+          "sourceWordDepth": 22,
+          "sourceCounts": [
+            2254791,
+            4194304,
+            447744,
+            524288,
+            69061,
+            131072,
+            2423369,
+            4194304,
+            0,
+            1,
+            64096,
+            65536
+          ],
+          "carrier": "Array",
+          "byteLength": null,
+          "sha256": "4838cd165d82cebb9831c0ee0c8e3ed34593acebe54fa0dd28be7c6ea6726835",
+          "maxWord": 2254780,
+          "hashEncoding": "host-little-endian-u32",
+          "limitations": [
+            "Final source tape only; no transient peak-capacity claim.",
+            "64-KiB hash scratch is allocated only after the measured check phase.",
+            "CPU/allocation sampling enabled only inside the declared step windows; no heap snapshot."
+          ]
+        }
+      },
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 2200322048,
+        "peakFootprintBytes": 1964493720,
+        "elapsedMs": 264873,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "/private/tmp/bend-g29-profile-xWLVIr/profile-checker.mjs",
+          "/private/tmp/bend-g29-profile-xWLVIr/candidate-request.json",
+          "/private/tmp/bend-g29-profile-xWLVIr/candidate-profile-result.json"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793293915655-6cab76fc1f763d15.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "windows": [
+        {
+          "steps": {
+            "start": 1000000,
+            "end": 1250000
+          },
+          "wallMs": 7360.079124999989,
+          "processCpuMs": 8811.072,
+          "cpu": {
+            "path": "/private/tmp/bend-g29-profile-xWLVIr/candidate-profiles/selfhost-69017-thread-1-o3qNzu/000001-check-window.cpuprofile",
+            "sha256": "0e81a82de4ac119bd4ec639e2cc3e2a92485a7c32f1ce7785e236b46c3138a9e",
+            "samples": 4898,
+            "sampledMs": 7971.875,
+            "gcShare": 0.06278234417875343,
+            "categories": {
+              "map-bit-traversal": 2607.7390000000005,
+              "inspector-control": 611.375,
+              "gc": 500.493,
+              "other-checker-and-runtime": 3230.7839999999974,
+              "scheduler": 757.606,
+              "row-decode": 113.91900000000001,
+              "arena-read-wrapper": 76.167,
+              "row-encode-and-storage": 73.79200000000002
+            },
+            "top": [
+              {
+                "functionName": "$Map_bit_go",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 70960,
+                "columnNumber": 20,
+                "selfSamples": 1287,
+                "inclusiveSamples": 2029,
+                "selfSampledMs": 1943.2,
+                "inclusiveSampledMs": 3041.865,
+                "selfShare": 0.24375695805566444,
+                "inclusiveShare": 0.3815745981967856
+              },
+              {
+                "functionName": "$Map_bit_go_rec",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 75594,
+                "columnNumber": 24,
+                "selfSamples": 430,
+                "inclusiveSamples": 430,
+                "selfSampledMs": 637.787,
+                "inclusiveSampledMs": 637.787,
+                "selfShare": 0.08000464131713053,
+                "inclusiveShare": 0.08000464131713053
+              },
+              {
+                "functionName": "post",
+                "url": "node:inspector",
+                "lineNumber": 111,
+                "columnNumber": 6,
+                "selfSamples": 1,
+                "inclusiveSamples": 2,
+                "selfSampledMs": 611.375,
+                "inclusiveSampledMs": 611.625,
+                "selfShare": 0.07669149353194825,
+                "inclusiveShare": 0.07672285378283027
+              },
+              {
+                "functionName": "(garbage collector)",
+                "url": "",
+                "lineNumber": -1,
+                "columnNumber": -1,
+                "selfSamples": 318,
+                "inclusiveSamples": 318,
+                "selfSampledMs": 500.493,
+                "inclusiveSampledMs": 500.493,
+                "selfShare": 0.06278234417875343,
+                "inclusiveShare": 0.06278234417875343
+              },
+              {
+                "functionName": "char_len",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 86,
+                "columnNumber": 17,
+                "selfSamples": 310,
+                "inclusiveSamples": 310,
+                "selfSampledMs": 458.46,
+                "inclusiveSampledMs": 458.46,
+                "selfShare": 0.05750968247745982,
+                "inclusiveShare": 0.05750968247745982
+              },
+              {
+                "functionName": "$checker_core_steps_v1_checker_advance",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 539,
+                "columnNumber": 47,
+                "selfSamples": 178,
+                "inclusiveSamples": 4069,
+                "selfSampledMs": 265.633,
+                "inclusiveSampledMs": 6088.662,
+                "selfShare": 0.03332127009016072,
+                "inclusiveShare": 0.7637678714229714
+              },
+              {
+                "functionName": "$checker_core_steps_v1_checker_step_one",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 590,
+                "columnNumber": 48,
+                "selfSamples": 168,
+                "inclusiveSamples": 889,
+                "selfSampledMs": 247.549,
+                "inclusiveSampledMs": 1328.796,
+                "selfShare": 0.03105279498235986,
+                "inclusiveShare": 0.1666855037240298
+              },
+              {
+                "functionName": "$checker_core_steps_v1_checker_chunk",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 508,
+                "columnNumber": 45,
+                "selfSamples": 160,
+                "inclusiveSamples": 4517,
+                "selfSampledMs": 244.424,
+                "inclusiveSampledMs": 6768.296,
+                "selfShare": 0.03066079184633477,
+                "inclusiveShare": 0.8490218424147393
+              }
+            ]
+          },
+          "allocation": {
+            "path": "/private/tmp/bend-g29-profile-xWLVIr/candidate-profiles/selfhost-69017-thread-1-o3qNzu/000001-check-window.heapprofile",
+            "sha256": "8358670adb6f1282dd034343bf19d549f812ddfd2427c33b6063230034e2de77",
+            "estimatedBytes": 18549843760,
+            "categories": {
+              "other-checker-and-runtime": 7722023392,
+              "scheduler": 1111496928,
+              "map-bit-traversal": 9324002288,
+              "arena-read-wrapper": 373300864,
+              "row-encode-and-storage": 8388640,
+              "row-decode": 4194336,
+              "inspector-control": 6437312
+            },
+            "top": [
+              {
+                "functionName": "$Map_bit_go_rec",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 75594,
+                "columnNumber": 24,
+                "estimatedBytes": 5997897320
+              },
+              {
+                "functionName": "$Map_bit_go",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 70960,
+                "columnNumber": 20,
+                "estimatedBytes": 3187691720
+              },
+              {
+                "functionName": "$checker_core_steps_v1_checker_advance",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 539,
+                "columnNumber": 47,
+                "estimatedBytes": 1111496928
+              },
+              {
+                "functionName": "$Map_find",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 40295,
+                "columnNumber": 18,
+                "estimatedBytes": 578817720
+              },
+              {
+                "functionName": "$Map_get_go",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 53654,
+                "columnNumber": 20,
+                "estimatedBytes": 499130296
+              },
+              {
+                "functionName": "$___bend2_selfhost_checker_arena_get_node",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 37831,
+                "columnNumber": 50,
+                "estimatedBytes": 272635856
+              },
+              {
+                "functionName": "run_clo",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 448,
+                "columnNumber": 16,
+                "estimatedBytes": 167776576
+              },
+              {
+                "functionName": "$Map_bit",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 53165,
+                "columnNumber": 17,
+                "estimatedBytes": 138413248
+              },
+              {
+                "functionName": "$checker_core_steps_v1_checker_step_group_13",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 10564,
+                "columnNumber": 53,
+                "estimatedBytes": 113252352
+              },
+              {
+                "functionName": "$___bend2_selfhost_checker_arena_put_node_closed_append",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 69975,
+                "columnNumber": 64,
+                "estimatedBytes": 113248576
+              }
+            ]
+          }
+        },
+        {
+          "steps": {
+            "start": 4000000,
+            "end": 4250000
+          },
+          "wallMs": 4076.068750000006,
+          "processCpuMs": 4391.471,
+          "cpu": {
+            "path": "/private/tmp/bend-g29-profile-xWLVIr/candidate-profiles/selfhost-69017-thread-1-nmtlFA/000001-check-window.cpuprofile",
+            "sha256": "40a16e0edaf040defe4ad3301d635d72023e523d01307b12dc2333fd08042bcc",
+            "samples": 2614,
+            "sampledMs": 4839.917,
+            "gcShare": 0.05179902878499776,
+            "categories": {
+              "map-bit-traversal": 1139.082,
+              "inspector-control": 763.792,
+              "scheduler": 586.422,
+              "gc": 250.703,
+              "other-checker-and-runtime": 1929.0829999999942,
+              "row-decode": 90.289,
+              "arena-read-wrapper": 49.294,
+              "row-encode-and-storage": 31.252
+            },
+            "top": [
+              {
+                "functionName": "$Map_bit_go",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 70960,
+                "columnNumber": 20,
+                "selfSamples": 575,
+                "inclusiveSamples": 873,
+                "selfSampledMs": 859.298,
+                "inclusiveSampledMs": 1313.043,
+                "selfShare": 0.1775439537496201,
+                "inclusiveShare": 0.27129452839790436
+              },
+              {
+                "functionName": "post",
+                "url": "node:inspector",
+                "lineNumber": 111,
+                "columnNumber": 6,
+                "selfSamples": 1,
+                "inclusiveSamples": 1,
+                "selfSampledMs": 763.792,
+                "inclusiveSampledMs": 763.792,
+                "selfShare": 0.15781097072532443,
+                "inclusiveShare": 0.15781097072532443
+              },
+              {
+                "functionName": "$checker_core_steps_v1_checker_advance",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 539,
+                "columnNumber": 47,
+                "selfSamples": 182,
+                "inclusiveSamples": 2180,
+                "selfSampledMs": 274.251,
+                "inclusiveSampledMs": 3364.337,
+                "selfShare": 0.05666440147630631,
+                "inclusiveShare": 0.6951228709087367
+              },
+              {
+                "functionName": "(garbage collector)",
+                "url": "",
+                "lineNumber": -1,
+                "columnNumber": -1,
+                "selfSamples": 157,
+                "inclusiveSamples": 157,
+                "selfSampledMs": 250.703,
+                "inclusiveSampledMs": 250.703,
+                "selfShare": 0.05179902878499776,
+                "inclusiveShare": 0.05179902878499776
+              },
+              {
+                "functionName": "$Map_bit_go_rec",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 75594,
+                "columnNumber": 24,
+                "selfSamples": 167,
+                "inclusiveSamples": 167,
+                "selfSampledMs": 249.411,
+                "inclusiveSampledMs": 249.411,
+                "selfShare": 0.051532082058431995,
+                "inclusiveShare": 0.051532082058431995
+              },
+              {
+                "functionName": "char_len",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 86,
+                "columnNumber": 17,
+                "selfSamples": 130,
+                "inclusiveSamples": 130,
+                "selfSampledMs": 202.793,
+                "inclusiveSampledMs": 202.793,
+                "selfShare": 0.04190009870003969,
+                "inclusiveShare": 0.04190009870003969
+              },
+              {
+                "functionName": "$checker_core_steps_v1_checker_step_one",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 590,
+                "columnNumber": 48,
+                "selfSamples": 127,
+                "inclusiveSamples": 561,
+                "selfSampledMs": 188.502,
+                "inclusiveSampledMs": 838.796,
+                "selfShare": 0.03894736211385443,
+                "inclusiveShare": 0.1733079306938528
+              },
+              {
+                "functionName": "$checker_core_steps_v1_checker_chunk",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 508,
+                "columnNumber": 45,
+                "selfSamples": 82,
+                "inclusiveSamples": 2397,
+                "selfSampledMs": 123.669,
+                "inclusiveSampledMs": 3711.086,
+                "selfShare": 0.025551884464134405,
+                "inclusiveShare": 0.7667664548792882
+              }
+            ]
+          },
+          "allocation": {
+            "path": "/private/tmp/bend-g29-profile-xWLVIr/candidate-profiles/selfhost-69017-thread-1-nmtlFA/000001-check-window.heapprofile",
+            "sha256": "5bbbb292ffee6267314bb4785e92cbfaa1bf47279e5dc61ad1bf7175b8a4d41b",
+            "estimatedBytes": 13187282816,
+            "categories": {
+              "other-checker-and-runtime": 7801757688,
+              "scheduler": 1145051632,
+              "map-bit-traversal": 4005587768,
+              "arena-read-wrapper": 209719792,
+              "row-decode": 12582976,
+              "row-encode-and-storage": 12582960
+            },
+            "top": [
+              {
+                "functionName": "$Map_bit_go_rec",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 75594,
+                "columnNumber": 24,
+                "estimatedBytes": 2583709512
+              },
+              {
+                "functionName": "$Map_bit_go",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 70960,
+                "columnNumber": 20,
+                "estimatedBytes": 1396712224
+              },
+              {
+                "functionName": "$checker_core_steps_v1_checker_advance",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 539,
+                "columnNumber": 47,
+                "estimatedBytes": 1145051632
+              },
+              {
+                "functionName": "$Map_find",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 40295,
+                "columnNumber": 18,
+                "estimatedBytes": 633343368
+              },
+              {
+                "functionName": "$Map_get_go",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 53654,
+                "columnNumber": 20,
+                "estimatedBytes": 411048616
+              },
+              {
+                "functionName": "$checker_core_steps_v1_checker_pure_arena_get_word",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 34617,
+                "columnNumber": 59,
+                "estimatedBytes": 213918976
+              },
+              {
+                "functionName": "$___bend2_selfhost_checker_arena_get_node",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 37831,
+                "columnNumber": 50,
+                "estimatedBytes": 176164640
+              },
+              {
+                "functionName": "$checker_core_steps_v1_checker_step_group_13",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 10564,
+                "columnNumber": 53,
+                "estimatedBytes": 155198304
+              },
+              {
+                "functionName": "$checker_core_steps_v1_checker_body_arena_names_append",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 22425,
+                "columnNumber": 63,
+                "estimatedBytes": 151006128
+              },
+              {
+                "functionName": "string_cmp",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 102,
+                "columnNumber": 19,
+                "estimatedBytes": 138414624
+              }
+            ]
+          }
+        },
+        {
+          "steps": {
+            "start": 8000000,
+            "end": 8250000
+          },
+          "wallMs": 6324.674082999991,
+          "processCpuMs": 6322.219,
+          "cpu": {
+            "path": "/private/tmp/bend-g29-profile-xWLVIr/candidate-profiles/selfhost-69017-thread-1-BVtuHz/000001-check-window.cpuprofile",
+            "sha256": "a4e7047dbc6880920327e1057cb4365bf6dbc6342bbbebd68b449c0079db484d",
+            "samples": 4052,
+            "sampledMs": 7228.916,
+            "gcShare": 0.06760446517845829,
+            "categories": {
+              "map-bit-traversal": 2908.6870000000004,
+              "inspector-control": 904.083,
+              "gc": 488.707,
+              "other-checker-and-runtime": 2195.823999999994,
+              "scheduler": 628.032,
+              "row-decode": 57.584,
+              "arena-read-wrapper": 28.5,
+              "row-encode-and-storage": 17.499
+            },
+            "top": [
+              {
+                "functionName": "$Map_bit_go",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 70960,
+                "columnNumber": 20,
+                "selfSamples": 1356,
+                "inclusiveSamples": 2061,
+                "selfSampledMs": 2179.632,
+                "inclusiveSampledMs": 3275.355,
+                "selfShare": 0.30151574592926517,
+                "inclusiveShare": 0.4530907538557648
+              },
+              {
+                "functionName": "post",
+                "url": "node:inspector",
+                "lineNumber": 111,
+                "columnNumber": 6,
+                "selfSamples": 1,
+                "inclusiveSamples": 1,
+                "selfSampledMs": 904.083,
+                "inclusiveSampledMs": 904.083,
+                "selfShare": 0.12506480916364224,
+                "inclusiveShare": 0.12506480916364224
+              },
+              {
+                "functionName": "$Map_bit_go_rec",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 75594,
+                "columnNumber": 24,
+                "selfSamples": 431,
+                "inclusiveSamples": 431,
+                "selfSampledMs": 668.889,
+                "inclusiveSampledMs": 668.889,
+                "selfShare": 0.0925296406819501,
+                "inclusiveShare": 0.0925296406819501
+              },
+              {
+                "functionName": "(garbage collector)",
+                "url": "",
+                "lineNumber": -1,
+                "columnNumber": -1,
+                "selfSamples": 315,
+                "inclusiveSamples": 315,
+                "selfSampledMs": 488.707,
+                "inclusiveSampledMs": 488.707,
+                "selfShare": 0.06760446517845829,
+                "inclusiveShare": 0.06760446517845829
+              },
+              {
+                "functionName": "char_len",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 86,
+                "columnNumber": 17,
+                "selfSamples": 281,
+                "inclusiveSamples": 281,
+                "selfSampledMs": 436.458,
+                "inclusiveSampledMs": 436.458,
+                "selfShare": 0.060376687182421264,
+                "inclusiveShare": 0.060376687182421264
+              },
+              {
+                "functionName": "$checker_core_steps_v1_checker_advance",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 539,
+                "columnNumber": 47,
+                "selfSamples": 166,
+                "inclusiveSamples": 3504,
+                "selfSampledMs": 245.83,
+                "inclusiveSampledMs": 5483.376,
+                "selfShare": 0.034006481746364184,
+                "inclusiveShare": 0.7585336446017632
+              },
+              {
+                "functionName": "$checker_core_steps_v1_checker_step_one",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 590,
+                "columnNumber": 48,
+                "selfSamples": 137,
+                "inclusiveSamples": 849,
+                "selfSampledMs": 205.285,
+                "inclusiveSampledMs": 1279.295,
+                "selfShare": 0.028397757008104672,
+                "inclusiveShare": 0.1769691334081071
+              },
+              {
+                "functionName": "f",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 449,
+                "columnNumber": 12,
+                "selfSamples": 122,
+                "inclusiveSamples": 2489,
+                "selfSampledMs": 182.497,
+                "inclusiveSampledMs": 3958.251,
+                "selfShare": 0.025245417155213865,
+                "inclusiveShare": 0.5475580294472919
+              }
+            ]
+          },
+          "allocation": {
+            "path": "/private/tmp/bend-g29-profile-xWLVIr/candidate-profiles/selfhost-69017-thread-1-BVtuHz/000001-check-window.heapprofile",
+            "sha256": "647bac7d8e15c8019e0a1d986736081fa3fc2cb476dfc80b1e048f204ca834ed",
+            "estimatedBytes": 20359595272,
+            "categories": {
+              "other-checker-and-runtime": 8850344112,
+              "map-bit-traversal": 10095760392,
+              "scheduler": 1161828864,
+              "arena-read-wrapper": 230690320,
+              "row-encode-and-storage": 16777248,
+              "inspector-control": 4194336
+            },
+            "top": [
+              {
+                "functionName": "$Map_bit_go_rec",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 75594,
+                "columnNumber": 24,
+                "estimatedBytes": 6576715944
+              },
+              {
+                "functionName": "$Map_bit_go",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 70960,
+                "columnNumber": 20,
+                "estimatedBytes": 3296744488
+              },
+              {
+                "functionName": "$checker_core_steps_v1_checker_advance",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 539,
+                "columnNumber": 47,
+                "estimatedBytes": 1161828864
+              },
+              {
+                "functionName": "$Map_find",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 40295,
+                "columnNumber": 18,
+                "estimatedBytes": 788533304
+              },
+              {
+                "functionName": "$Map_get_go",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 53654,
+                "columnNumber": 20,
+                "estimatedBytes": 436214912
+              },
+              {
+                "functionName": "$Map_seek_go",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 60129,
+                "columnNumber": 21,
+                "estimatedBytes": 322966008
+              },
+              {
+                "functionName": "$Map_ins_go",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 79073,
+                "columnNumber": 20,
+                "estimatedBytes": 293607816
+              },
+              {
+                "functionName": "$Map_bit",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 53165,
+                "columnNumber": 17,
+                "estimatedBytes": 222299960
+              },
+              {
+                "functionName": "$___bend2_selfhost_checker_arena_get_node",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 37831,
+                "columnNumber": 50,
+                "estimatedBytes": 188746672
+              },
+              {
+                "functionName": "$checker_core_steps_v1_checker_pure_arena_get_word",
+                "scriptId": "224",
+                "url": "file:///private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+                "lineNumber": 34617,
+                "columnNumber": 59,
+                "estimatedBytes": 167779328
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "conclusions": [
+    "Retained R12/G28 images completed exactly the same frozen corpus: steps, final source arena counts and word-tape hash agree.",
+    "Node row decode is additional sampled work (0.8–1.9% exclusive CPU including the reported profiler denominator), not an established explanation of the previous 7.81% unprofiled slowdown.",
+    "G28 GC share is LOWER in all three windows; the previous inference of increased GC is withdrawn.",
+    "Map.bit helpers dominate both images: 23.5–40.2% exclusive sampled CPU and 30.4–52.9% estimated sampled allocation. This motivates one independent Map.bit key-preserving traversal experiment on restored R12, not reintroduction of the rejected row store.",
+    "Inspector control overhead is separately attributed from node:inspector frames. No speed claim is inferred from profiled wall times."
+  ],
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "limitations": [
+    "Step windows cover identical public checker calls, not whole-pipeline throughput.",
+    "CPU timeDeltas are sample weights, not exact function time; profiler overhead is included.",
+    "Allocation selfSize values are statistical estimates including collected objects, not exact allocation or retained bytes.",
+    "Exclusive categories do not identify every optimized/inlined operation; use function/source locations as evidence.",
+    "Profiled wall time cannot accept or reject a speed optimization."
+  ]
+}

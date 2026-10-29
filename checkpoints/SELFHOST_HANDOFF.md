@@ -4,6 +4,38 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
+### G29: измеренный Map.bit experiment; ещё не принят
+
+Парные CPU/allocation profiles R12/G28 сняты на тех же окнах public checker:
+1M–1.25M, 4M–4.25M, 8M–8.25M. Полный frozen root завершён в обоих случаях:
+10 078 835 check calls; final source counts и word-tape SHA совпали.
+Дополнительные logical-counter runs отдельно подтвердили 53 253 960 Node reads
+и 8 740 226 appends. G28 декодирует 223 267 270 fields; это **операции, не bytes**.
+
+Предыдущая гипотеза о выросшем GC **не подтверждена**: его sampled share у G28
+ниже во всех трёх окнах. Row decode — 0.8–1.9% exclusive sampled CPU; причина
+прежних +7.81% этими окнами не установлена. Inspector overhead выделен отдельно.
+Map.bit helpers занимают 23.5–40.2% sampled CPU и 30.4–52.9% allocation estimates.
+
+Один эксперимент на восстановленном R12: `Map.bit.read` считает только Bool
+tail walk'ом; `Map.bit.go` возвращает исходный shared key, а не восстанавливает
+его префикс и Tuple на каждом символе. Native intrinsics/Node storage не менялись.
+8 actual canonical C/JS executions PASS; независимое source review не нашло
+блокера. Unicode32/astral/isolated-surrogate/NUL cases проходят.
+Component build: 6 379 definitions / 6 656 events, zero exclusions/output patches.
+
+Ранний unprofiled A/B запущен; full native root, fresh byte fixedpoint и полная
+performance/consumer квалификация ещё не объявлены. Accepted baseline — R12.
+`evals/g24_qualification.mjs --fail-fast-performance=true` проверяет все 12
+парных samples сразу после fixedpoint/measurement и останавливается до consumer
+matrices при отказе; default/historical режим не меняет. Policy smoke пройден
+на Bun и Node, включая replay прежнего отказа G27 и CLI refusal.
+
+Доказательства:
+`evals/receipts/producer2039g29_paired_profile.json`,
+`evals/receipts/producer2039g29_logical_counts.json`,
+`evals/receipts/producer2039g29_source_smoke.json`.
+
 ### Отклонённый G28: compact checker node rows
 
 Rejected source/frozen-input checkpoint: **`29dc43a0`**.

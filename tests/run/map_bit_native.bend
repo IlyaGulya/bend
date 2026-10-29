@@ -44,6 +44,15 @@ def main() -> IO(Unit):
     probe("\u{80000000}", 32n, False{})
     probe("\u{7fffffff}", 1n, False{})
     probe("\u{7fffffff}", 32n, True{})
+    probe("\u{1f600}\u{d800}\u{dfff}\u{0}a", 16n, True{})
+    probe("\u{1f600}\u{d800}\u{dfff}\u{0}a", 32n, False{})
+    probe("\u{1f600}\u{d800}\u{dfff}\u{0}a", 33n, True{})
+    probe("\u{1f600}\u{d800}\u{dfff}\u{0}a", 50n, True{})
+    probe("\u{1f600}\u{d800}\u{dfff}\u{0}a", 98n, True{})
+    probe("\u{1f600}\u{d800}\u{dfff}\u{0}a", 99n, True{})
+    probe("\u{1f600}\u{d800}\u{dfff}\u{0}a", 131n, False{})
+    probe("\u{1f600}\u{d800}\u{dfff}\u{0}a", 164n, True{})
+    probe("\u{1f600}\u{d800}\u{dfff}\u{0}a", 165n, False{})
     IO.print("map bit boundaries and keys preserved")
 
 #|map bit boundaries and keys preserved

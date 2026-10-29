@@ -32,6 +32,22 @@
  *     --bindings=PATH --frozen-repository=PATH --control-native=PATH \
  *     --control-image=PATH [--out=checkpoints/NAME-throughput]
  *
+ * Opt-in strict performance rejection (default off; historical and default runs
+ * keep their exact previous behavior):
+ *   add --fail-fast-performance=true to a throughput-measuring invocation
+ *   (full phase or --phase=throughput). After the 12 authenticated measurements
+ *   are published, each runtime (native, js) must satisfy:
+ *     candidate pipeline arithmetic mean AND median strictly less than control;
+ *     candidate median peak RSS AND median peak footprint less than or equal
+ *     to control.
+ *   Exactly three control and three candidate rows per runtime, finite
+ *   nonnegative metrics and every original row are required; rows are never
+ *   excluded. The bounded performanceDecision is published in the receipt
+ *   before a rejection throws through the existing catch path. A rejection
+ *   keeps completed full-root/fixedpoint/measurement evidence, leaves
+ *   correctnessPassed false, and never produces a *_PASS status. This is
+ *   rejection evidence only, never compiler or performance acceptance.
+ *
  * Every heavy child inherits the original 8192 MiB RSS / 8192 MiB footprint /
  * 10 ms / 600000 ms gate. Every child process runs with an explicit cwd. The
  * receipt is published atomically and bounded; child logs stay beside it.
@@ -171,6 +187,13 @@ function required(values, name) {
   const value = values.get(name);
   if (value === undefined) fail('missing required ' + name);
   return value;
+}
+function booleanOption(values, name) {
+  const value = values.get(name);
+  if (value === undefined) return false;
+  if (value === 'true') return true;
+  if (value === 'false') return false;
+  fail(name + ' accepts only true or false, got ' + JSON.stringify(value));
 }
 function assertAbi() {
   if (JSON.stringify(ABI) !== JSON.stringify(EXPECTED_ABI) || ABI.length !== 13)
@@ -350,6 +373,8 @@ function createRun({repository, runId, node, bun, clang, llvmBin, out, phase}) {
     failure: null,
     correctnessPassed: false,
     throughputMeasured: false,
+    failFastPerformance: false,
+    performanceDecision: null,
     compilerAccepted: false,
     acceptanceOwner: 'parent',
     boundedReceiptBytes: MAX_RECEIPT_BYTES,
@@ -369,6 +394,8 @@ function createRun({repository, runId, node, bun, clang, llvmBin, out, phase}) {
       const minimal = {
         schemaVersion: 1, status: receipt.status, runId, phase: receipt.phase,
         repository: receipt.repository, out, failure: receipt.failure,
+        failFastPerformance: receipt.failFastPerformance,
+        performanceDecision: receipt.performanceDecision,
         note: 'Bounded receipt exceeded ' + MAX_RECEIPT_BYTES + ' bytes; child logs and step statuses remain in this directory.',
         stepCount: receipt.steps.length,
         steps: receipt.steps.map(row => ({label: row.label, status: row.status, exitCode: row.exitCode, elapsedMs: row.elapsedMs})),
@@ -1089,6 +1116,133 @@ function throughputSummaries(runs) {
   return summary;
 }
 
+const PERFORMANCE_POLICY = Object.freeze({
+  id: 'g29-paired-full-root-strict-v1',
+  repetitions: Object.freeze({control: 3, candidate: 3}),
+  modes: Object.freeze(['native', 'js']),
+  rules: Object.freeze({
+    pipelineMs: 'candidate arithmetic mean AND median strictly less than control',
+    peakRssBytes: 'candidate median less than or equal to control',
+    peakFootprintBytes: 'candidate median less than or equal to control',
+  }),
+  rows: 'all 12 authenticated measurements are required; original rows are never excluded',
+  scope: 'rejection evidence only; never compiler or performance acceptance',
+});
+
+function mean(values) {
+  return values.reduce((total, value) => total + value, 0) / values.length;
+}
+function validMetric(value) {
+  return Number.isFinite(value) && value >= 0;
+}
+
+/**
+ * Pure decision over an authenticated throughput receipt. Never mutates input
+ * and never throws for absent or malformed measurements; it reports failures
+ * so the caller can publish the decision before rejecting.
+ */
+export function performanceDecision(throughput, policy = PERFORMANCE_POLICY) {
+  const rows = Array.isArray(throughput?.runs) ? throughput.runs : [];
+  const failures = [];
+  const expectedRows = policy.modes.length * (policy.repetitions.control + policy.repetitions.candidate);
+  if (!Array.isArray(throughput?.runs))
+    failures.push('throughput runs are missing');
+  else if (rows.length !== expectedRows)
+    failures.push('expected ' + expectedRows + ' authenticated rows, got ' + rows.length);
+  const metrics = ['pipelineElapsedMs', 'peakRssBytes', 'peakFootprintBytes'];
+  for (const [index, row] of rows.entries()) {
+    if (!['control', 'candidate'].includes(row?.role))
+      failures.push('row ' + index + ' has an unknown role');
+    if (!policy.modes.includes(row?.mode))
+      failures.push('row ' + index + ' has an unknown mode');
+    if (!Number.isSafeInteger(row?.repetition) || row.repetition < 1
+      || row.repetition > policy.repetitions[row.role])
+      failures.push('row ' + index + ' has an invalid repetition');
+    for (const metric of metrics)
+      if (!validMetric(row?.[metric]))
+        failures.push('row ' + index + ' ' + metric + ' is not finite and nonnegative');
+  }
+
+  const modes = {};
+  for (const mode of policy.modes) {
+    const control = rows.filter(row => row?.mode === mode && row?.role === 'control');
+    const candidate = rows.filter(row => row?.mode === mode && row?.role === 'candidate');
+    const counts = {control: control.length, candidate: candidate.length};
+    let countsOk = control.length === policy.repetitions.control
+      && candidate.length === policy.repetitions.candidate;
+    for (const [role, group] of [['control', control], ['candidate', candidate]]) {
+      const repetitions = group.map(row => row?.repetition);
+      if (new Set(repetitions).size !== repetitions.length) {
+        countsOk = false;
+        failures.push(mode + ' ' + role + ' repetitions are not unique');
+      }
+    }
+    if (!countsOk)
+      failures.push(mode + ' requires exactly ' + policy.repetitions.control + ' control and '
+        + policy.repetitions.candidate + ' candidate rows, got ' + counts.control + ' and ' + counts.candidate);
+
+    const rowsValid = [...control, ...candidate].every(row => metrics.every(metric => validMetric(row?.[metric])));
+    let measurements = null, checks = null;
+    if (countsOk && rowsValid) {
+      const aggregate = group => Object.fromEntries(metrics.map(metric => {
+        const values = group.map(row => row[metric]);
+        return [metric, {n: values.length, mean: mean(values), median: median(values)}];
+      }));
+      const left = aggregate(control), right = aggregate(candidate);
+      measurements = {
+        pipelineMs: {control: left.pipelineElapsedMs, candidate: right.pipelineElapsedMs,
+          delta: {mean: left.pipelineElapsedMs.mean - right.pipelineElapsedMs.mean,
+            median: left.pipelineElapsedMs.median - right.pipelineElapsedMs.median}},
+        peakRssBytes: {control: left.peakRssBytes, candidate: right.peakRssBytes,
+          delta: {median: left.peakRssBytes.median - right.peakRssBytes.median}},
+        peakFootprintBytes: {control: left.peakFootprintBytes, candidate: right.peakFootprintBytes,
+          delta: {median: left.peakFootprintBytes.median - right.peakFootprintBytes.median}},
+      };
+      checks = {
+        pipelineMeanStrictlyImproved: right.pipelineElapsedMs.mean < left.pipelineElapsedMs.mean,
+        pipelineMedianStrictlyImproved: right.pipelineElapsedMs.median < left.pipelineElapsedMs.median,
+        peakRssMedianNotIncreased: right.peakRssBytes.median <= left.peakRssBytes.median,
+        peakFootprintMedianNotIncreased: right.peakFootprintBytes.median <= left.peakFootprintBytes.median,
+      };
+      for (const [check, passed] of Object.entries(checks))
+        if (!passed) failures.push(mode + ': ' + check + ' is false');
+    }
+    modes[mode] = {
+      counts,
+      evaluated: measurements !== null,
+      measurements,
+      checks,
+      passed: measurements !== null && Object.values(checks).every(Boolean),
+    };
+  }
+
+  const passed = failures.length === 0 && policy.modes.every(mode => modes[mode].passed);
+  return {
+    policy,
+    evaluated: true,
+    rows: rows.length,
+    expectedRows,
+    counts: Object.fromEntries(policy.modes.map(mode => [mode, modes[mode].counts])),
+    passed,
+    rejected: !passed,
+    failures,
+    modes,
+    note: 'Rejection evidence only. A pass here does not establish compiler or performance acceptance; the parent owns that decision.',
+  };
+}
+
+function applyPerformanceGate(run) {
+  if (run.receipt.failFastPerformance !== true) return null;
+  const decision = performanceDecision(run.receipt.throughput);
+  run.receipt.performanceDecision = decision;
+  // Publish the bounded decision before the rejection propagates so the
+  // existing catch path retains it with the already completed evidence.
+  run.publish();
+  if (!decision.passed)
+    fail('fail-fast performance policy rejected the candidate: ' + (decision.failures.join('; ') || 'unknown reason'));
+  return decision;
+}
+
 // ---------------------------------------------------------------------------
 // Correctness phase
 // ---------------------------------------------------------------------------
@@ -1196,6 +1350,7 @@ async function runCorrectness(run, context) {
     run.receipt.throughput = await runThroughput(run, context);
     run.receipt.throughputMeasured = true;
     run.publish();
+    applyPerformanceGate(run);
   }
 
 
@@ -1403,7 +1558,8 @@ async function runThroughput(run, context) {
 async function main() {
   const {values} = parseOptions(process.argv.slice(2),
     ['--run-id', '--phase', '--repository', '--bun', '--node', '--clang', '--llvm-bin', '--out',
-      '--bindings', '--frozen-repository', '--control-native', '--control-image', '--from-receipt']);
+      '--bindings', '--frozen-repository', '--control-native', '--control-image', '--from-receipt',
+      '--fail-fast-performance']);
   const runId = required(values, '--run-id');
   if (!/^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$/.test(runId)) fail('unsafe --run-id');
   const repository = realpathSync(resolve(values.get('--repository') ?? resolve(dirname(SCRIPT), '..')));
@@ -1413,6 +1569,9 @@ async function main() {
   const llvmBin = resolve(values.get('--llvm-bin') ?? '/opt/homebrew/opt/llvm@21/bin');
   const phase = values.get('--phase') ?? 'all';
   if (!['all', 'correctness', 'throughput'].includes(phase)) fail('--phase must be all, correctness or throughput');
+  const failFastPerformance = booleanOption(values, '--fail-fast-performance');
+  if (failFastPerformance && phase === 'correctness')
+    fail('--fail-fast-performance requires a phase that measures throughput (all or throughput)');
   const out = resolve(values.get('--out') ?? resolve(repository, 'checkpoints', runId));
   if (existsSync(out)) fail('output directory already exists: ' + out);
   const checkpoints = checkpointsFor(repository);
@@ -1427,6 +1586,7 @@ async function main() {
   mkdirSync(out, {recursive: true});
   const run = createRun({repository, runId, node, bun, clang, llvmBin, out, phase});
   run.receipt.launchCwd = launchCwd;
+  run.receipt.failFastPerformance = failFastPerformance;
   run.publish();
 
   try {
@@ -1476,6 +1636,8 @@ async function main() {
     if (phase !== 'correctness' && !run.receipt.throughputMeasured) {
       run.receipt.throughput = await runThroughput(run, context);
       run.receipt.throughputMeasured = true;
+      run.publish();
+      applyPerformanceGate(run);
       run.receipt.status = phase === 'throughput' ? 'G24_THROUGHPUT_PASS' : 'G24_QUALIFICATION_PASS';
       run.publish();
     }
@@ -1502,7 +1664,9 @@ async function suiteEntry() {
   else fail('unknown --suite: ' + options.suite);
 }
 
-if (process.argv.slice(2).some(argument => argument.startsWith('--suite=')))
-  await suiteEntry();
-else
-  await main();
+if (import.meta.main ?? (process.argv[1] !== undefined && realpathSync(process.argv[1]) === realpathSync(SCRIPT))) {
+  if (process.argv.slice(2).some(argument => argument.startsWith('--suite=')))
+    await suiteEntry();
+  else
+    await main();
+}

@@ -2648,31 +2648,28 @@ def Array.map(~T: Data, ~U: Data, ~f: T -> U, a: Array<T>) -> Array<U>:
 def Map.bit.u(x: U32, k: Nat) -> Bool:
   U32.is_ne(U32.and(U32.shrn(x, k), 1), 0)
 
-def Map.bit.chr(c: Char, off: Nat) -> Char & Bool:
+# Read only the selected bit; the caller keeps the original key. Returning a
+# rebuilt prefix at each recursive step would allocate one pair per character.
+def Map.bit.read.chr(c: Char, off: Nat) -> Bool:
   match c off:
-    case Chr{x} 0n:
-      (Chr{x}, True{})
-    case Chr{+x} 1n+b:
-      (Chr{x}, Map.bit.u(x, Nat.sub(31n, b)))
+    case Chr{_} 0n:
+      True{}
+    case Chr{x} 1n+b:
+      Map.bit.u(x, Nat.sub(31n, b))
 
-def Map.bit.go.chr(t: String, r: Char & Bool) -> String & Bool:
-  (c2, b) = r
-  (SCon{c2, t}, b)
-
-def Map.bit.go.rec(c: Char, r: String & Bool) -> String & Bool:
-  (t2, b) = r
-  (SCon{c, t2}, b)
-
-def Map.bit.go(key: String, ci: Nat, off: Nat) -> String & Bool:
+def Map.bit.read(key: String, ci: Nat, off: Nat) -> Bool:
   match key:
     case SNil{}:
-      (SNil{}, False{})
+      False{}
     case SCon{c, t}:
       match ci:
         case 0n:
-          Map.bit.go.chr(t, Map.bit.chr(c, off))
+          Map.bit.read.chr(c, off)
         case 1n+j:
-          Map.bit.go.rec(c, Map.bit.go(t, j, off))
+          Map.bit.read(t, j, off)
+
+def Map.bit.go(+key: String, ci: Nat, off: Nat) -> String & Bool:
+  (key, Map.bit.read(key, ci, off))
 
 def Map.bit.at(key: String, co: Nat & Nat) -> String & Bool:
   (ci, off) = co

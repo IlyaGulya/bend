@@ -1,0 +1,1443 @@
+{
+  "schemaVersion": 1,
+  "status": "R12_G28_LOGICAL_COUNTERS_COMPLETE",
+  "compilerAccepted": false,
+  "performanceAccepted": false,
+  "allocationByteClaim": false,
+  "semantics": {
+    "steps": true,
+    "sourceCounts": true,
+    "wordTape": true,
+    "reads": true,
+    "appends": true,
+    "readTags": true,
+    "appendTags": true
+  },
+  "commands": [
+    {
+      "role": "control",
+      "environment": "env HEAVY_GATE_MEMORY_MIB=8192 HEAVY_GATE_RSS_MIB=8192 HEAVY_GATE_POLL_MS=10 HEAVY_GATE_TIMEOUT_MS=600000 BUN_JSC_forceRAMSize=4294967296 ",
+      "argv": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/private/tmp/bend-g29-profile-xWLVIr/count-checker.mjs",
+        "/private/tmp/bend-g29-profile-xWLVIr/control-count-request.json",
+        "/private/tmp/bend-g29-profile-xWLVIr/control-count-result.json"
+      ]
+    },
+    {
+      "role": "candidate",
+      "environment": "env HEAVY_GATE_MEMORY_MIB=8192 HEAVY_GATE_RSS_MIB=8192 HEAVY_GATE_POLL_MS=10 HEAVY_GATE_TIMEOUT_MS=600000 BUN_JSC_forceRAMSize=4294967296 ",
+      "argv": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/private/tmp/bend-g29-profile-xWLVIr/count-checker.mjs",
+        "/private/tmp/bend-g29-profile-xWLVIr/candidate-count-request.json",
+        "/private/tmp/bend-g29-profile-xWLVIr/candidate-count-result.json"
+      ]
+    }
+  ],
+  "instrumentation": {
+    "module": {
+      "path": "/private/tmp/bend-g29-profile-xWLVIr/logical-instrument.mjs",
+      "sha256": "82715cbcd2cc7223ebf03a6ac60295c4da57c2c6f120e832ff97cd920b705670"
+    },
+    "driver": {
+      "path": "/private/tmp/bend-g29-profile-xWLVIr/count-checker.mjs",
+      "sha256": "b38b2f6a415a057af1e2bd4f0bbbcad8d167f827e0bbf2ff3090757293b46080"
+    },
+    "sites": [
+      {
+        "role": "control",
+        "sites": [
+          {
+            "id": "init.counters",
+            "role": "control",
+            "kind": "init",
+            "insertions": [
+              {
+                "offset": 0,
+                "text": "// ==== g29 logical instrumentation (diagnostic; timings ineligible) ====\nif (globalThis.__g29Counts !== undefined) {\n  throw new Error(\"g29 logical-instrument: counters already installed in this realm; run one instrumented checker image per process\");\n}\nconst __g29c = (globalThis.__g29Counts = {\n  enabled: false,\n  role: \"control\",\n  get_node_calls: 0,\n  node_lane_reads: 0,\n  node_offset_reads: 0,\n  rows_get_calls: 0,\n  node_decodes: 0,\n  node_decode_fields: 0,\n  node_put_calls: 0,\n  node_put_room_calls: 0,\n  node_appends: 0,\n  row_encodes: 0,\n  row_encode_fields: 0,\n  row_width_samples: 0,\n  row_width_fields: 0,\n  row_width_mask_words: 0,\n  row_decode_width_samples: 0,\n  row_decode_width_fields: 0,\n  row_decode_width_mask_words: 0,\n  byTag: Object.create(null),\n});\n\n// Per nominal tag: R12 read/append visits and G28 encode/decode visits with\n// logical field-count histograms. Entries are created only while enabled.\nfunction __g29Slot(tag) {\n  const byTag = __g29c.byTag;\n  let b = byTag[tag];\n  if (b === undefined) {\n    b = {reads: 0, appends: 0, decodes: 0, decodeFields: 0, encodes: 0,\n      encodeFields: 0, widths: Object.create(null),\n      decodeWidths: Object.create(null)};\n    byTag[tag] = b;\n  }\n  return b;\n}\n\nfunction __g29TagOf(v) {\n  return v !== null && typeof v === \"object\" && typeof v.$ === \"string\"\n    ? v.$ : \"<untagged>\";\n}\n\nfunction __g29Count(hist, key, n) {\n  hist[key] = (hist[key] === undefined ? 0 : hist[key]) + n;\n}\n\nfunction __g29GetNode() {\n  if (__g29c.enabled) {\n    __g29c.get_node_calls += 1;\n  }\n}\n\nfunction __g29R12NodeRead(v) {\n  if (!__g29c.enabled) {\n    return v;\n  }\n  __g29c.node_lane_reads += 1;\n  __g29Slot(__g29TagOf(v)).reads += 1;\n  return v;\n}\n\nfunction __g29R12NodeAppend(v) {\n  if (__g29c.enabled) {\n    __g29c.node_appends += 1;\n    __g29Slot(__g29TagOf(v)).appends += 1;\n  }\n}\n\nfunction __g29NodePut() {\n  if (__g29c.enabled) {\n    __g29c.node_put_calls += 1;\n  }\n}\n\nfunction __g29NodePutRoom() {\n  if (__g29c.enabled) {\n    __g29c.node_put_room_calls += 1;\n  }\n}\n\nfunction __g29RowsGet() {\n  if (__g29c.enabled) {\n    __g29c.rows_get_calls += 1;\n  }\n}\n\n// Rows kind lane: one physical kind read always, one physical offset read only\n// when the selected slot is not the zero slot.\nfunction __g29RowKind(kind) {\n  if (__g29c.enabled) {\n    __g29c.node_lane_reads += 1;\n    if (kind !== 0) {\n      __g29c.node_offset_reads += 1;\n    }\n  }\n}\n\n// One decoded row: s.arity fields materialised, s.mw mask words inspected.\nfunction __g29RowDecode(s, n) {\n  if (!__g29c.enabled) {\n    return;\n  }\n  __g29c.node_decodes += 1;\n  __g29c.node_decode_fields += n;\n  __g29c.row_decode_width_samples += 1;\n  __g29c.row_decode_width_fields += n;\n  __g29c.row_decode_width_mask_words += s.mw;\n  const b = __g29Slot(s.tag);\n  b.decodes += 1;\n  b.decodeFields += n;\n  __g29Count(b.decodeWidths, n, 1);\n}\n\n// One decoded raw row: a single reference cell, no nominal tag.\nfunction __g29RowDecodeRaw() {\n  if (!__g29c.enabled) {\n    return;\n  }\n  __g29c.node_decodes += 1;\n  __g29c.node_decode_fields += 1;\n  __g29c.row_decode_width_samples += 1;\n  __g29c.row_decode_width_fields += 1;\n  __g29c.row_decode_width_mask_words += 1;\n  const b = __g29Slot(\"<raw>\");\n  b.decodes += 1;\n  b.decodeFields += 1;\n  __g29Count(b.decodeWidths, 1, 1);\n}\n\n// One encoded row: the selected schema fixes the logical width (arity fields\n// plus mw mask words). Counted only after the payload words are written.\nfunction __g29RowEncode(s) {\n  if (!__g29c.enabled) {\n    return;\n  }\n  __g29c.row_encodes += 1;\n  __g29c.row_encode_fields += s.arity;\n  __g29c.row_width_samples += 1;\n  __g29c.row_width_fields += s.arity;\n  __g29c.row_width_mask_words += s.mw;\n  const b = __g29Slot(s.tag);\n  b.encodes += 1;\n  b.encodeFields += s.arity;\n  __g29Count(b.widths, s.arity, 1);\n}\n\n// One encoded raw value: a single reference word, no nominal tag.\nfunction __g29RowEncodeRaw() {\n  if (!__g29c.enabled) {\n    return;\n  }\n  __g29c.row_encodes += 1;\n  __g29c.row_encode_fields += 1;\n  __g29c.row_width_samples += 1;\n  __g29c.row_width_fields += 1;\n  __g29c.row_width_mask_words += 1;\n  const b = __g29Slot(\"<raw>\");\n  b.encodes += 1;\n  b.encodeFields += 1;\n  __g29Count(b.widths, 1, 1);\n}\n\n// One stored append into the node row store; growth copies never reach here.\nfunction __g29RowAppend(rows) {\n  if (__g29c.enabled) {\n    __g29c.node_appends += 1;\n  }\n  return rows;\n}\n// ==== end g29 instrumentation header ====\n\n"
+              }
+            ],
+            "metrics": [
+              "enabled",
+              "role",
+              "get_node_calls",
+              "node_lane_reads",
+              "node_offset_reads",
+              "rows_get_calls",
+              "node_decodes",
+              "node_decode_fields",
+              "node_put_calls",
+              "node_put_room_calls",
+              "node_appends",
+              "row_encodes",
+              "row_encode_fields",
+              "row_width_samples",
+              "row_width_fields",
+              "row_width_mask_words",
+              "row_decode_width_samples",
+              "row_decode_width_fields",
+              "row_decode_width_mask_words",
+              "byTag"
+            ],
+            "meaning": "installs globalThis.__g29Counts (enabled:false) and the counting helpers at offset 0; all counters stay 0 while enabled is false"
+          },
+          {
+            "id": "r12.get_node.entry",
+            "role": "control",
+            "kind": "wrapper",
+            "insertions": [
+              {
+                "offset": 1755805,
+                "text": "  __g29GetNode();\n"
+              }
+            ],
+            "metrics": [
+              "get_node_calls"
+            ],
+            "meaning": "arena get_node wrapper invocations (entry of the nominal node read)"
+          },
+          {
+            "id": "r12.get_node.lane_read",
+            "role": "control",
+            "kind": "read",
+            "insertions": [
+              {
+                "offset": 1756814,
+                "text": "__g29R12NodeRead("
+              },
+              {
+                "offset": 1756847,
+                "text": ")"
+              }
+            ],
+            "metrics": [
+              "node_lane_reads",
+              "byTag[].reads"
+            ],
+            "meaning": "physical Array<Node> lane read `_nodes_0[_id_0 % _nodes_0.length]` wrapped in place, one existing Node returned (no reconstruction)"
+          },
+          {
+            "id": "r12.node_pool.put.entry",
+            "role": "control",
+            "kind": "wrapper",
+            "insertions": [
+              {
+                "offset": 3586704,
+                "text": "  __g29NodePut();\n"
+              }
+            ],
+            "metrics": [
+              "node_put_calls"
+            ],
+            "meaning": "NodePool put wrapper invocations (room selection plus store)"
+          },
+          {
+            "id": "r12.node_pool.put_room.entry",
+            "role": "control",
+            "kind": "wrapper",
+            "insertions": [
+              {
+                "offset": 3718665,
+                "text": "  __g29NodePutRoom();\n"
+              }
+            ],
+            "metrics": [
+              "node_put_room_calls"
+            ],
+            "meaning": "NodePool put_room invocations after room selection"
+          },
+          {
+            "id": "r12.node_pool.store",
+            "role": "control",
+            "kind": "store",
+            "insertions": [
+              {
+                "offset": 3719001,
+                "text": ", __g29R12NodeAppend(_value_0)"
+              }
+            ],
+            "metrics": [
+              "node_appends",
+              "byTag[].appends"
+            ],
+            "meaning": "physical Node slot store `_items_0[_used_0 % _items_0.length] = _value_0`, counted after the assignment; pool growth copies are elsewhere and uncounted"
+          }
+        ]
+      },
+      {
+        "role": "candidate",
+        "sites": [
+          {
+            "id": "init.counters",
+            "role": "candidate",
+            "kind": "init",
+            "insertions": [
+              {
+                "offset": 0,
+                "text": "// ==== g29 logical instrumentation (diagnostic; timings ineligible) ====\nif (globalThis.__g29Counts !== undefined) {\n  throw new Error(\"g29 logical-instrument: counters already installed in this realm; run one instrumented checker image per process\");\n}\nconst __g29c = (globalThis.__g29Counts = {\n  enabled: false,\n  role: \"candidate\",\n  get_node_calls: 0,\n  node_lane_reads: 0,\n  node_offset_reads: 0,\n  rows_get_calls: 0,\n  node_decodes: 0,\n  node_decode_fields: 0,\n  node_put_calls: 0,\n  node_put_room_calls: 0,\n  node_appends: 0,\n  row_encodes: 0,\n  row_encode_fields: 0,\n  row_width_samples: 0,\n  row_width_fields: 0,\n  row_width_mask_words: 0,\n  row_decode_width_samples: 0,\n  row_decode_width_fields: 0,\n  row_decode_width_mask_words: 0,\n  byTag: Object.create(null),\n});\n\n// Per nominal tag: R12 read/append visits and G28 encode/decode visits with\n// logical field-count histograms. Entries are created only while enabled.\nfunction __g29Slot(tag) {\n  const byTag = __g29c.byTag;\n  let b = byTag[tag];\n  if (b === undefined) {\n    b = {reads: 0, appends: 0, decodes: 0, decodeFields: 0, encodes: 0,\n      encodeFields: 0, widths: Object.create(null),\n      decodeWidths: Object.create(null)};\n    byTag[tag] = b;\n  }\n  return b;\n}\n\nfunction __g29TagOf(v) {\n  return v !== null && typeof v === \"object\" && typeof v.$ === \"string\"\n    ? v.$ : \"<untagged>\";\n}\n\nfunction __g29Count(hist, key, n) {\n  hist[key] = (hist[key] === undefined ? 0 : hist[key]) + n;\n}\n\nfunction __g29GetNode() {\n  if (__g29c.enabled) {\n    __g29c.get_node_calls += 1;\n  }\n}\n\nfunction __g29R12NodeRead(v) {\n  if (!__g29c.enabled) {\n    return v;\n  }\n  __g29c.node_lane_reads += 1;\n  __g29Slot(__g29TagOf(v)).reads += 1;\n  return v;\n}\n\nfunction __g29R12NodeAppend(v) {\n  if (__g29c.enabled) {\n    __g29c.node_appends += 1;\n    __g29Slot(__g29TagOf(v)).appends += 1;\n  }\n}\n\nfunction __g29NodePut() {\n  if (__g29c.enabled) {\n    __g29c.node_put_calls += 1;\n  }\n}\n\nfunction __g29NodePutRoom() {\n  if (__g29c.enabled) {\n    __g29c.node_put_room_calls += 1;\n  }\n}\n\nfunction __g29RowsGet() {\n  if (__g29c.enabled) {\n    __g29c.rows_get_calls += 1;\n  }\n}\n\n// Rows kind lane: one physical kind read always, one physical offset read only\n// when the selected slot is not the zero slot.\nfunction __g29RowKind(kind) {\n  if (__g29c.enabled) {\n    __g29c.node_lane_reads += 1;\n    if (kind !== 0) {\n      __g29c.node_offset_reads += 1;\n    }\n  }\n}\n\n// One decoded row: s.arity fields materialised, s.mw mask words inspected.\nfunction __g29RowDecode(s, n) {\n  if (!__g29c.enabled) {\n    return;\n  }\n  __g29c.node_decodes += 1;\n  __g29c.node_decode_fields += n;\n  __g29c.row_decode_width_samples += 1;\n  __g29c.row_decode_width_fields += n;\n  __g29c.row_decode_width_mask_words += s.mw;\n  const b = __g29Slot(s.tag);\n  b.decodes += 1;\n  b.decodeFields += n;\n  __g29Count(b.decodeWidths, n, 1);\n}\n\n// One decoded raw row: a single reference cell, no nominal tag.\nfunction __g29RowDecodeRaw() {\n  if (!__g29c.enabled) {\n    return;\n  }\n  __g29c.node_decodes += 1;\n  __g29c.node_decode_fields += 1;\n  __g29c.row_decode_width_samples += 1;\n  __g29c.row_decode_width_fields += 1;\n  __g29c.row_decode_width_mask_words += 1;\n  const b = __g29Slot(\"<raw>\");\n  b.decodes += 1;\n  b.decodeFields += 1;\n  __g29Count(b.decodeWidths, 1, 1);\n}\n\n// One encoded row: the selected schema fixes the logical width (arity fields\n// plus mw mask words). Counted only after the payload words are written.\nfunction __g29RowEncode(s) {\n  if (!__g29c.enabled) {\n    return;\n  }\n  __g29c.row_encodes += 1;\n  __g29c.row_encode_fields += s.arity;\n  __g29c.row_width_samples += 1;\n  __g29c.row_width_fields += s.arity;\n  __g29c.row_width_mask_words += s.mw;\n  const b = __g29Slot(s.tag);\n  b.encodes += 1;\n  b.encodeFields += s.arity;\n  __g29Count(b.widths, s.arity, 1);\n}\n\n// One encoded raw value: a single reference word, no nominal tag.\nfunction __g29RowEncodeRaw() {\n  if (!__g29c.enabled) {\n    return;\n  }\n  __g29c.row_encodes += 1;\n  __g29c.row_encode_fields += 1;\n  __g29c.row_width_samples += 1;\n  __g29c.row_width_fields += 1;\n  __g29c.row_width_mask_words += 1;\n  const b = __g29Slot(\"<raw>\");\n  b.encodes += 1;\n  b.encodeFields += 1;\n  __g29Count(b.widths, 1, 1);\n}\n\n// One stored append into the node row store; growth copies never reach here.\nfunction __g29RowAppend(rows) {\n  if (__g29c.enabled) {\n    __g29c.node_appends += 1;\n  }\n  return rows;\n}\n// ==== end g29 instrumentation header ====\n\n"
+              }
+            ],
+            "metrics": [
+              "enabled",
+              "role",
+              "get_node_calls",
+              "node_lane_reads",
+              "node_offset_reads",
+              "rows_get_calls",
+              "node_decodes",
+              "node_decode_fields",
+              "node_put_calls",
+              "node_put_room_calls",
+              "node_appends",
+              "row_encodes",
+              "row_encode_fields",
+              "row_width_samples",
+              "row_width_fields",
+              "row_width_mask_words",
+              "row_decode_width_samples",
+              "row_decode_width_fields",
+              "row_decode_width_mask_words",
+              "byTag"
+            ],
+            "meaning": "installs globalThis.__g29Counts (enabled:false) and the counting helpers at offset 0; all counters stay 0 while enabled is false"
+          },
+          {
+            "id": "g28.get_node.entry",
+            "role": "candidate",
+            "kind": "wrapper",
+            "insertions": [
+              {
+                "offset": 1763997,
+                "text": "  __g29GetNode();\n"
+              }
+            ],
+            "metrics": [
+              "get_node_calls"
+            ],
+            "meaning": "arena get_node wrapper invocations before delegating to compiler_rows_get"
+          },
+          {
+            "id": "g28.rows_get.entry",
+            "role": "candidate",
+            "kind": "wrapper",
+            "insertions": [
+              {
+                "offset": 10472,
+                "text": "  __g29RowsGet();\n"
+              }
+            ],
+            "metrics": [
+              "rows_get_calls"
+            ],
+            "meaning": "compiler_rows_get entries (wrapper/get level); the only caller is the arena node read at get_node"
+          },
+          {
+            "id": "g28.rows_get.kind_read",
+            "role": "candidate",
+            "kind": "read",
+            "insertions": [
+              {
+                "offset": 10534,
+                "text": "  __g29RowKind(kind);\n"
+              }
+            ],
+            "metrics": [
+              "node_lane_reads",
+              "node_offset_reads"
+            ],
+            "meaning": "physical `rows.kinds[at]` read plus the conditional `rows.offs[at]` read (offset counted only when kind !== 0, which is exactly when that read executes)"
+          },
+          {
+            "id": "g28.rows_read.raw_decode",
+            "role": "candidate",
+            "kind": "decoder",
+            "insertions": [
+              {
+                "offset": 9997,
+                "text": "    __g29RowDecodeRaw();\n"
+              }
+            ],
+            "metrics": [
+              "node_decodes",
+              "node_decode_fields",
+              "row_decode_width_*",
+              "byTag[\"<raw>\"].decode*"
+            ],
+            "meaning": "decoded raw row: one reference cell materialised, no nominal tag"
+          },
+          {
+            "id": "g28.rows_read.decode",
+            "role": "candidate",
+            "kind": "decoder",
+            "insertions": [
+              {
+                "offset": 10415,
+                "text": "  __g29RowDecode(s, n);\n"
+              }
+            ],
+            "metrics": [
+              "node_decodes",
+              "node_decode_fields",
+              "row_decode_width_samples",
+              "row_decode_width_fields",
+              "row_decode_width_mask_words",
+              "byTag[tag].decodes",
+              "byTag[tag].decodeFields",
+              "byTag[tag].decodeWidths"
+            ],
+            "meaning": "decoded tagged row after all arity fields are materialised into a fresh ordinary Node; width is arity fields plus mw mask words, keyed by the schema tag"
+          },
+          {
+            "id": "g28.rows_put.encode",
+            "role": "candidate",
+            "kind": "encoder",
+            "insertions": [
+              {
+                "offset": 8820,
+                "text": "    __g29RowEncode(s);\n"
+              }
+            ],
+            "metrics": [
+              "row_encodes",
+              "row_encode_fields",
+              "row_width_samples",
+              "row_width_fields",
+              "row_width_mask_words",
+              "byTag[tag].encodes",
+              "byTag[tag].encodeFields",
+              "byTag[tag].widths"
+            ],
+            "meaning": "encoded tagged row after its payload words are written: selected schema arity + mw logical width, keyed by schema tag"
+          },
+          {
+            "id": "g28.rows_put.encode_raw",
+            "role": "candidate",
+            "kind": "encoder",
+            "insertions": [
+              {
+                "offset": 9019,
+                "text": "  __g29RowEncodeRaw();\n"
+              }
+            ],
+            "metrics": [
+              "row_encodes",
+              "row_encode_fields",
+              "row_width_samples",
+              "row_width_fields",
+              "row_width_mask_words",
+              "byTag[\"<raw>\"].encode*"
+            ],
+            "meaning": "encoded raw value after its single reference word is written"
+          },
+          {
+            "id": "g28.node_pool.put.entry",
+            "role": "candidate",
+            "kind": "wrapper",
+            "insertions": [
+              {
+                "offset": 3594308,
+                "text": "  __g29NodePut();\n"
+              }
+            ],
+            "metrics": [
+              "node_put_calls"
+            ],
+            "meaning": "NodePool put wrapper invocations"
+          },
+          {
+            "id": "g28.node_pool.put_room.entry",
+            "role": "candidate",
+            "kind": "wrapper",
+            "insertions": [
+              {
+                "offset": 3726269,
+                "text": "  __g29NodePutRoom();\n"
+              }
+            ],
+            "metrics": [
+              "node_put_room_calls"
+            ],
+            "meaning": "NodePool put_room invocations after room selection"
+          },
+          {
+            "id": "g28.node_pool.append",
+            "role": "candidate",
+            "kind": "store",
+            "insertions": [
+              {
+                "offset": 3726558,
+                "text": "__g29RowAppend("
+              },
+              {
+                "offset": 3726598,
+                "text": ")"
+              }
+            ],
+            "metrics": [
+              "node_appends"
+            ],
+            "meaning": "physical stored append into the packed node rows (compiler_rows_append return), counted after the append completes; growth copies inside compiler_rows_grow are uncounted"
+          }
+        ]
+      }
+    ]
+  },
+  "roles": [
+    {
+      "role": "control",
+      "originalImage": {
+        "path": "/private/tmp/bend-g28-nodes-a0K3GF/control-checker.js",
+        "sha256": "c806cc8ef12c6bfa280059e4a067466d4ca0d6ce28e4d4f64bc843cb9a74a00e"
+      },
+      "diagnosticImage": {
+        "path": "/private/tmp/bend-g29-profile-xWLVIr/control-counted.js",
+        "sha256": "a228ae88f105a39ca0c97ac6426e12a3c99f4fdd96d189437dd3b1c360965175"
+      },
+      "status": "G29_LOGICAL_COUNTERS_FULL_CORPUS_PASS",
+      "sourceSha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+      "report": {
+        "path": "/private/tmp/bend-g29-profile-xWLVIr/control-count-result.json",
+        "sha256": "60ed038dc8f0597377616109fbc1d7ee5133bd2353a0d89c285880f7635f5d06"
+      },
+      "stepCounts": {
+        "expand": 1004927,
+        "check": 10078835
+      },
+      "counts": {
+        "enabled": false,
+        "role": "control",
+        "get_node_calls": 53253960,
+        "node_lane_reads": 53253960,
+        "node_offset_reads": 0,
+        "rows_get_calls": 0,
+        "node_decodes": 0,
+        "node_decode_fields": 0,
+        "node_put_calls": 8740226,
+        "node_put_room_calls": 8740226,
+        "node_appends": 8740226,
+        "row_encodes": 0,
+        "row_encode_fields": 0,
+        "row_width_samples": 0,
+        "row_width_fields": 0,
+        "row_width_mask_words": 0,
+        "row_decode_width_samples": 0,
+        "row_decode_width_fields": 0,
+        "row_decode_width_mask_words": 0,
+        "byTag": {
+          "TermQuantity": {
+            "reads": 2319652,
+            "appends": 274149,
+            "decodes": 0,
+            "decodeFields": 0,
+            "encodes": 0,
+            "encodeFields": 0,
+            "widths": {},
+            "decodeWidths": {}
+          },
+          "TermType": {
+            "reads": 3167122,
+            "appends": 261600,
+            "decodes": 0,
+            "decodeFields": 0,
+            "encodes": 0,
+            "encodeFields": 0,
+            "widths": {},
+            "decodeWidths": {}
+          },
+          "TermQuant": {
+            "reads": 377553,
+            "appends": 33596,
+            "decodes": 0,
+            "decodeFields": 0,
+            "encodes": 0,
+            "encodeFields": 0,
+            "widths": {},
+            "decodeWidths": {}
+          },
+          "TermVar": {
+            "reads": 3549639,
+            "appends": 1867855,
+            "decodes": 0,
+            "decodeFields": 0,
+            "encodes": 0,
+            "encodeFields": 0,
+            "widths": {},
+            "decodeWidths": {}
+          },
+          "TermMin": {
+            "reads": 2101,
+            "appends": 445,
+            "decodes": 0,
+            "decodeFields": 0,
+            "encodes": 0,
+            "encodeFields": 0,
+            "widths": {},
+            "decodeWidths": {}
+          },
+          "TermAll": {
+            "reads": 12157233,
+            "appends": 752273,
+            "decodes": 0,
+            "decodeFields": 0,
+            "encodes": 0,
+            "encodeFields": 0,
+            "widths": {},
+            "decodeWidths": {}
+          },
+          "TermApp": {
+            "reads": 5248975,
+            "appends": 1221197,
+            "decodes": 0,
+            "decodeFields": 0,
+            "encodes": 0,
+            "encodeFields": 0,
+            "widths": {},
+            "decodeWidths": {}
+          },
+          "TermRef": {
+            "reads": 7078272,
+            "appends": 558688,
+            "decodes": 0,
+            "decodeFields": 0,
+            "encodes": 0,
+            "encodeFields": 0,
+            "widths": {},
+            "decodeWidths": {}
+          },
+          "TermFill": {
+            "reads": 689438,
+            "appends": 172522,
+            "decodes": 0,
+            "decodeFields": 0,
+            "encodes": 0,
+            "encodeFields": 0,
+            "widths": {},
+            "decodeWidths": {}
+          },
+          "BodyReply": {
+            "reads": 190829,
+            "appends": 45699,
+            "decodes": 0,
+            "decodeFields": 0,
+            "encodes": 0,
+            "encodeFields": 0,
+            "widths": {},
+            "decodeWidths": {}
+          },
+          "BodyCase": {
+            "reads": 1407527,
+            "appends": 119199,
+            "decodes": 0,
+            "decodeFields": 0,
+            "encodes": 0,
+            "encodeFields": 0,
+            "widths": {},
+            "decodeWidths": {}
+          },
+          "BodyMatch": {
+            "reads": 593938,
+            "appends": 45813,
+            "decodes": 0,
+            "decodeFields": 0,
+            "encodes": 0,
+            "encodeFields": 0,
+            "widths": {},
+            "decodeWidths": {}
+          },
+          "TermCtr": {
+            "reads": 4649057,
+            "appends": 2315078,
+            "decodes": 0,
+            "decodeFields": 0,
+            "encodes": 0,
+            "encodeFields": 0,
+            "widths": {},
+            "decodeWidths": {}
+          },
+          "TermLam": {
+            "reads": 1925068,
+            "appends": 229669,
+            "decodes": 0,
+            "decodeFields": 0,
+            "encodes": 0,
+            "encodeFields": 0,
+            "widths": {},
+            "decodeWidths": {}
+          },
+          "BodyLocal": {
+            "reads": 139739,
+            "appends": 88067,
+            "decodes": 0,
+            "decodeFields": 0,
+            "encodes": 0,
+            "encodeFields": 0,
+            "widths": {},
+            "decodeWidths": {}
+          },
+          "TermString": {
+            "reads": 44547,
+            "appends": 19713,
+            "decodes": 0,
+            "decodeFields": 0,
+            "encodes": 0,
+            "encodeFields": 0,
+            "widths": {},
+            "decodeWidths": {}
+          },
+          "TermEqual": {
+            "reads": 974,
+            "appends": 678,
+            "decodes": 0,
+            "decodeFields": 0,
+            "encodes": 0,
+            "encodeFields": 0,
+            "widths": {},
+            "decodeWidths": {}
+          },
+          "TermRefl": {
+            "reads": 91,
+            "appends": 20,
+            "decodes": 0,
+            "decodeFields": 0,
+            "encodes": 0,
+            "encodeFields": 0,
+            "widths": {},
+            "decodeWidths": {}
+          },
+          "TermRewrite": {
+            "reads": 48,
+            "appends": 30,
+            "decodes": 0,
+            "decodeFields": 0,
+            "encodes": 0,
+            "encodeFields": 0,
+            "widths": {},
+            "decodeWidths": {}
+          },
+          "TermAnn": {
+            "reads": 186004,
+            "appends": 124520,
+            "decodes": 0,
+            "decodeFields": 0,
+            "encodes": 0,
+            "encodeFields": 0,
+            "widths": {},
+            "decodeWidths": {}
+          },
+          "TermBang": {
+            "reads": 16,
+            "appends": 3,
+            "decodes": 0,
+            "decodeFields": 0,
+            "encodes": 0,
+            "encodeFields": 0,
+            "widths": {},
+            "decodeWidths": {}
+          },
+          "TermAdt": {
+            "reads": 9526137,
+            "appends": 609412,
+            "decodes": 0,
+            "decodeFields": 0,
+            "encodes": 0,
+            "encodeFields": 0,
+            "widths": {},
+            "decodeWidths": {}
+          }
+        }
+      },
+      "windows": [
+        {
+          "steps": 1000000,
+          "counters": {
+            "enabled": true,
+            "role": "control",
+            "get_node_calls": 5194984,
+            "node_lane_reads": 5194984,
+            "node_offset_reads": 0,
+            "rows_get_calls": 0,
+            "node_decodes": 0,
+            "node_decode_fields": 0,
+            "node_put_calls": 1756694,
+            "node_put_room_calls": 1756694,
+            "node_appends": 1756694,
+            "row_encodes": 0,
+            "row_encode_fields": 0,
+            "row_width_samples": 0,
+            "row_width_fields": 0,
+            "row_width_mask_words": 0,
+            "row_decode_width_samples": 0,
+            "row_decode_width_fields": 0,
+            "row_decode_width_mask_words": 0
+          }
+        },
+        {
+          "steps": 1250000,
+          "counters": {
+            "enabled": true,
+            "role": "control",
+            "get_node_calls": 6886700,
+            "node_lane_reads": 6886700,
+            "node_offset_reads": 0,
+            "rows_get_calls": 0,
+            "node_decodes": 0,
+            "node_decode_fields": 0,
+            "node_put_calls": 2055425,
+            "node_put_room_calls": 2055425,
+            "node_appends": 2055425,
+            "row_encodes": 0,
+            "row_encode_fields": 0,
+            "row_width_samples": 0,
+            "row_width_fields": 0,
+            "row_width_mask_words": 0,
+            "row_decode_width_samples": 0,
+            "row_decode_width_fields": 0,
+            "row_decode_width_mask_words": 0
+          }
+        },
+        {
+          "steps": 4000000,
+          "counters": {
+            "enabled": true,
+            "role": "control",
+            "get_node_calls": 22896233,
+            "node_lane_reads": 22896233,
+            "node_offset_reads": 0,
+            "rows_get_calls": 0,
+            "node_decodes": 0,
+            "node_decode_fields": 0,
+            "node_put_calls": 4738964,
+            "node_put_room_calls": 4738964,
+            "node_appends": 4738964,
+            "row_encodes": 0,
+            "row_encode_fields": 0,
+            "row_width_samples": 0,
+            "row_width_fields": 0,
+            "row_width_mask_words": 0,
+            "row_decode_width_samples": 0,
+            "row_decode_width_fields": 0,
+            "row_decode_width_mask_words": 0
+          }
+        },
+        {
+          "steps": 4250000,
+          "counters": {
+            "enabled": true,
+            "role": "control",
+            "get_node_calls": 24246917,
+            "node_lane_reads": 24246917,
+            "node_offset_reads": 0,
+            "rows_get_calls": 0,
+            "node_decodes": 0,
+            "node_decode_fields": 0,
+            "node_put_calls": 4929596,
+            "node_put_room_calls": 4929596,
+            "node_appends": 4929596,
+            "row_encodes": 0,
+            "row_encode_fields": 0,
+            "row_width_samples": 0,
+            "row_width_fields": 0,
+            "row_width_mask_words": 0,
+            "row_decode_width_samples": 0,
+            "row_decode_width_fields": 0,
+            "row_decode_width_mask_words": 0
+          }
+        },
+        {
+          "steps": 8000000,
+          "counters": {
+            "enabled": true,
+            "role": "control",
+            "get_node_calls": 44039290,
+            "node_lane_reads": 44039290,
+            "node_offset_reads": 0,
+            "rows_get_calls": 0,
+            "node_decodes": 0,
+            "node_decode_fields": 0,
+            "node_put_calls": 7609165,
+            "node_put_room_calls": 7609165,
+            "node_appends": 7609165,
+            "row_encodes": 0,
+            "row_encode_fields": 0,
+            "row_width_samples": 0,
+            "row_width_fields": 0,
+            "row_width_mask_words": 0,
+            "row_decode_width_samples": 0,
+            "row_decode_width_fields": 0,
+            "row_decode_width_mask_words": 0
+          }
+        },
+        {
+          "steps": 8250000,
+          "counters": {
+            "enabled": true,
+            "role": "control",
+            "get_node_calls": 45165986,
+            "node_lane_reads": 45165986,
+            "node_offset_reads": 0,
+            "rows_get_calls": 0,
+            "node_decodes": 0,
+            "node_decode_fields": 0,
+            "node_put_calls": 7780480,
+            "node_put_room_calls": 7780480,
+            "node_appends": 7780480,
+            "row_encodes": 0,
+            "row_encode_fields": 0,
+            "row_width_samples": 0,
+            "row_width_fields": 0,
+            "row_width_mask_words": 0,
+            "row_decode_width_samples": 0,
+            "row_decode_width_fields": 0,
+            "row_decode_width_mask_words": 0
+          }
+        }
+      ],
+      "storage": {
+        "sourceNodeUsed": 2254791,
+        "sourceNodeCapacity": 4194304,
+        "sourceNodeCarrier": "Array",
+        "sourceWordUsed": 2423369,
+        "sourceWordCapacity": 4194304,
+        "sourceWordDepth": 22,
+        "sourceCounts": [
+          2254791,
+          4194304,
+          447744,
+          524288,
+          69061,
+          131072,
+          2423369,
+          4194304,
+          0,
+          1,
+          64096,
+          65536
+        ],
+        "carrier": "Array",
+        "byteLength": null,
+        "sha256": "4838cd165d82cebb9831c0ee0c8e3ed34593acebe54fa0dd28be7c6ea6726835",
+        "maxWord": 2254780,
+        "hashEncoding": "host-little-endian-u32",
+        "limitations": [
+          "Final source tape only; no transient peak-capacity claim.",
+          "64-KiB hash scratch is allocated only after the measured check phase.",
+          "Instrumented logical counters enabled; no profiler or heap snapshot. Counts are not allocation bytes."
+        ]
+      },
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 2821013504,
+        "peakFootprintBytes": 2629595776,
+        "elapsedMs": 253940,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "/private/tmp/bend-g29-profile-xWLVIr/count-checker.mjs",
+          "/private/tmp/bend-g29-profile-xWLVIr/control-count-request.json",
+          "/private/tmp/bend-g29-profile-xWLVIr/control-count-result.json"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793294357987-5b8bf7894bf851ac.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "role": "candidate",
+      "originalImage": {
+        "path": "/private/tmp/bend-g28-nodes-a0K3GF/candidate-checker.js",
+        "sha256": "777719df6dbdca2fada3b093ebee6d7319ad68b55e65b7fadb5acfc4bb51fdf6"
+      },
+      "diagnosticImage": {
+        "path": "/private/tmp/bend-g29-profile-xWLVIr/candidate-counted.js",
+        "sha256": "539847cc9f0049b72708a9f42259d344da2a83e6fa5ec6241d630cfa05ad004f"
+      },
+      "status": "G29_LOGICAL_COUNTERS_FULL_CORPUS_PASS",
+      "sourceSha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+      "report": {
+        "path": "/private/tmp/bend-g29-profile-xWLVIr/candidate-count-result.json",
+        "sha256": "c0fe702cc0126b4fd7ed45cd30a2bbf7226a43e1875b11f376d65bf261abc266"
+      },
+      "stepCounts": {
+        "expand": 1004927,
+        "check": 10078835
+      },
+      "counts": {
+        "enabled": false,
+        "role": "candidate",
+        "get_node_calls": 53253960,
+        "node_lane_reads": 53253960,
+        "node_offset_reads": 53253960,
+        "rows_get_calls": 53253960,
+        "node_decodes": 53253960,
+        "node_decode_fields": 223267270,
+        "node_put_calls": 8740226,
+        "node_put_room_calls": 8740226,
+        "node_appends": 8740226,
+        "row_encodes": 8740228,
+        "row_encode_fields": 32575505,
+        "row_width_samples": 8740228,
+        "row_width_fields": 32575505,
+        "row_width_mask_words": 8706630,
+        "row_decode_width_samples": 53253960,
+        "row_decode_width_fields": 223267270,
+        "row_decode_width_mask_words": 52876407,
+        "byTag": {
+          "TermQuant": {
+            "reads": 0,
+            "appends": 0,
+            "decodes": 377553,
+            "decodeFields": 0,
+            "encodes": 33598,
+            "encodeFields": 0,
+            "widths": {
+              "0": 33598
+            },
+            "decodeWidths": {
+              "0": 377553
+            }
+          },
+          "TermQuantity": {
+            "reads": 0,
+            "appends": 0,
+            "decodes": 2319652,
+            "decodeFields": 4639304,
+            "encodes": 274149,
+            "encodeFields": 548298,
+            "widths": {
+              "2": 274149
+            },
+            "decodeWidths": {
+              "2": 2319652
+            }
+          },
+          "TermType": {
+            "reads": 0,
+            "appends": 0,
+            "decodes": 3167122,
+            "decodeFields": 6334244,
+            "encodes": 261600,
+            "encodeFields": 523200,
+            "widths": {
+              "2": 261600
+            },
+            "decodeWidths": {
+              "2": 3167122
+            }
+          },
+          "TermVar": {
+            "reads": 0,
+            "appends": 0,
+            "decodes": 3549639,
+            "decodeFields": 10648917,
+            "encodes": 1867855,
+            "encodeFields": 5603565,
+            "widths": {
+              "3": 1867855
+            },
+            "decodeWidths": {
+              "3": 3549639
+            }
+          },
+          "TermMin": {
+            "reads": 0,
+            "appends": 0,
+            "decodes": 2101,
+            "decodeFields": 6303,
+            "encodes": 445,
+            "encodeFields": 1335,
+            "widths": {
+              "3": 445
+            },
+            "decodeWidths": {
+              "3": 2101
+            }
+          },
+          "TermAll": {
+            "reads": 0,
+            "appends": 0,
+            "decodes": 12157233,
+            "decodeFields": 72943398,
+            "encodes": 752273,
+            "encodeFields": 4513638,
+            "widths": {
+              "6": 752273
+            },
+            "decodeWidths": {
+              "6": 12157233
+            }
+          },
+          "TermApp": {
+            "reads": 0,
+            "appends": 0,
+            "decodes": 5248975,
+            "decodeFields": 15746925,
+            "encodes": 1221197,
+            "encodeFields": 3663591,
+            "widths": {
+              "3": 1221197
+            },
+            "decodeWidths": {
+              "3": 5248975
+            }
+          },
+          "TermRef": {
+            "reads": 0,
+            "appends": 0,
+            "decodes": 7078272,
+            "decodeFields": 14156544,
+            "encodes": 558688,
+            "encodeFields": 1117376,
+            "widths": {
+              "2": 558688
+            },
+            "decodeWidths": {
+              "2": 7078272
+            }
+          },
+          "TermFill": {
+            "reads": 0,
+            "appends": 0,
+            "decodes": 689438,
+            "decodeFields": 2757752,
+            "encodes": 172522,
+            "encodeFields": 690088,
+            "widths": {
+              "4": 172522
+            },
+            "decodeWidths": {
+              "4": 689438
+            }
+          },
+          "BodyReply": {
+            "reads": 0,
+            "appends": 0,
+            "decodes": 190829,
+            "decodeFields": 381658,
+            "encodes": 45699,
+            "encodeFields": 91398,
+            "widths": {
+              "2": 45699
+            },
+            "decodeWidths": {
+              "2": 190829
+            }
+          },
+          "BodyCase": {
+            "reads": 0,
+            "appends": 0,
+            "decodes": 1407527,
+            "decodeFields": 5630108,
+            "encodes": 119199,
+            "encodeFields": 476796,
+            "widths": {
+              "4": 119199
+            },
+            "decodeWidths": {
+              "4": 1407527
+            }
+          },
+          "BodyMatch": {
+            "reads": 0,
+            "appends": 0,
+            "decodes": 593938,
+            "decodeFields": 2969690,
+            "encodes": 45813,
+            "encodeFields": 229065,
+            "widths": {
+              "5": 45813
+            },
+            "decodeWidths": {
+              "5": 593938
+            }
+          },
+          "TermCtr": {
+            "reads": 0,
+            "appends": 0,
+            "decodes": 4649057,
+            "decodeFields": 18596228,
+            "encodes": 2315078,
+            "encodeFields": 9260312,
+            "widths": {
+              "4": 2315078
+            },
+            "decodeWidths": {
+              "4": 4649057
+            }
+          },
+          "TermLam": {
+            "reads": 0,
+            "appends": 0,
+            "decodes": 1925068,
+            "decodeFields": 9625340,
+            "encodes": 229669,
+            "encodeFields": 1148345,
+            "widths": {
+              "5": 229669
+            },
+            "decodeWidths": {
+              "5": 1925068
+            }
+          },
+          "BodyLocal": {
+            "reads": 0,
+            "appends": 0,
+            "decodes": 139739,
+            "decodeFields": 978173,
+            "encodes": 88067,
+            "encodeFields": 616469,
+            "widths": {
+              "7": 88067
+            },
+            "decodeWidths": {
+              "7": 139739
+            }
+          },
+          "TermString": {
+            "reads": 0,
+            "appends": 0,
+            "decodes": 44547,
+            "decodeFields": 133641,
+            "encodes": 19713,
+            "encodeFields": 59139,
+            "widths": {
+              "3": 19713
+            },
+            "decodeWidths": {
+              "3": 44547
+            }
+          },
+          "TermEqual": {
+            "reads": 0,
+            "appends": 0,
+            "decodes": 974,
+            "decodeFields": 3896,
+            "encodes": 678,
+            "encodeFields": 2712,
+            "widths": {
+              "4": 678
+            },
+            "decodeWidths": {
+              "4": 974
+            }
+          },
+          "TermRefl": {
+            "reads": 0,
+            "appends": 0,
+            "decodes": 91,
+            "decodeFields": 91,
+            "encodes": 20,
+            "encodeFields": 20,
+            "widths": {
+              "1": 20
+            },
+            "decodeWidths": {
+              "1": 91
+            }
+          },
+          "TermRewrite": {
+            "reads": 0,
+            "appends": 0,
+            "decodes": 48,
+            "decodeFields": 192,
+            "encodes": 30,
+            "encodeFields": 120,
+            "widths": {
+              "4": 30
+            },
+            "decodeWidths": {
+              "4": 48
+            }
+          },
+          "TermAnn": {
+            "reads": 0,
+            "appends": 0,
+            "decodes": 186004,
+            "decodeFields": 558012,
+            "encodes": 124520,
+            "encodeFields": 373560,
+            "widths": {
+              "3": 124520
+            },
+            "decodeWidths": {
+              "3": 186004
+            }
+          },
+          "TermBang": {
+            "reads": 0,
+            "appends": 0,
+            "decodes": 16,
+            "decodeFields": 32,
+            "encodes": 3,
+            "encodeFields": 6,
+            "widths": {
+              "2": 3
+            },
+            "decodeWidths": {
+              "2": 16
+            }
+          },
+          "TermAdt": {
+            "reads": 0,
+            "appends": 0,
+            "decodes": 9526137,
+            "decodeFields": 57156822,
+            "encodes": 609412,
+            "encodeFields": 3656472,
+            "widths": {
+              "6": 609412
+            },
+            "decodeWidths": {
+              "6": 9526137
+            }
+          }
+        }
+      },
+      "windows": [
+        {
+          "steps": 1000000,
+          "counters": {
+            "enabled": true,
+            "role": "candidate",
+            "get_node_calls": 5194984,
+            "node_lane_reads": 5194984,
+            "node_offset_reads": 5194984,
+            "rows_get_calls": 5194984,
+            "node_decodes": 5194984,
+            "node_decode_fields": 19968540,
+            "node_put_calls": 1756694,
+            "node_put_room_calls": 1756694,
+            "node_appends": 1756694,
+            "row_encodes": 1756696,
+            "row_encode_fields": 6185771,
+            "row_width_samples": 1756696,
+            "row_width_fields": 6185771,
+            "row_width_mask_words": 1749723,
+            "row_decode_width_samples": 5194984,
+            "row_decode_width_fields": 19968540,
+            "row_decode_width_mask_words": 5129153
+          }
+        },
+        {
+          "steps": 1250000,
+          "counters": {
+            "enabled": true,
+            "role": "candidate",
+            "get_node_calls": 6886700,
+            "node_lane_reads": 6886700,
+            "node_offset_reads": 6886700,
+            "rows_get_calls": 6886700,
+            "node_decodes": 6886700,
+            "node_decode_fields": 26425758,
+            "node_put_calls": 2055425,
+            "node_put_room_calls": 2055425,
+            "node_appends": 2055425,
+            "row_encodes": 2055427,
+            "row_encode_fields": 7333198,
+            "row_width_samples": 2055427,
+            "row_width_fields": 7333198,
+            "row_width_mask_words": 2047721,
+            "row_decode_width_samples": 6886700,
+            "row_decode_width_fields": 26425758,
+            "row_decode_width_mask_words": 6814525
+          }
+        },
+        {
+          "steps": 4000000,
+          "counters": {
+            "enabled": true,
+            "role": "candidate",
+            "get_node_calls": 22896233,
+            "node_lane_reads": 22896233,
+            "node_offset_reads": 22896233,
+            "rows_get_calls": 22896233,
+            "node_decodes": 22896233,
+            "node_decode_fields": 91413652,
+            "node_put_calls": 4738964,
+            "node_put_room_calls": 4738964,
+            "node_appends": 4738964,
+            "row_encodes": 4738966,
+            "row_encode_fields": 17496485,
+            "row_width_samples": 4738966,
+            "row_width_fields": 17496485,
+            "row_width_mask_words": 4719231,
+            "row_decode_width_samples": 22896233,
+            "row_decode_width_fields": 91413652,
+            "row_decode_width_mask_words": 22719095
+          }
+        },
+        {
+          "steps": 4250000,
+          "counters": {
+            "enabled": true,
+            "role": "candidate",
+            "get_node_calls": 24246917,
+            "node_lane_reads": 24246917,
+            "node_offset_reads": 24246917,
+            "rows_get_calls": 24246917,
+            "node_decodes": 24246917,
+            "node_decode_fields": 97209602,
+            "node_put_calls": 4929596,
+            "node_put_room_calls": 4929596,
+            "node_appends": 4929596,
+            "row_encodes": 4929598,
+            "row_encode_fields": 18226888,
+            "row_width_samples": 4929598,
+            "row_width_fields": 18226888,
+            "row_width_mask_words": 4908959,
+            "row_decode_width_samples": 24246917,
+            "row_decode_width_fields": 97209602,
+            "row_decode_width_mask_words": 24058634
+          }
+        },
+        {
+          "steps": 8000000,
+          "counters": {
+            "enabled": true,
+            "role": "candidate",
+            "get_node_calls": 44039290,
+            "node_lane_reads": 44039290,
+            "node_offset_reads": 44039290,
+            "rows_get_calls": 44039290,
+            "node_decodes": 44039290,
+            "node_decode_fields": 181032145,
+            "node_put_calls": 7609165,
+            "node_put_room_calls": 7609165,
+            "node_appends": 7609165,
+            "row_encodes": 7609167,
+            "row_encode_fields": 28368517,
+            "row_width_samples": 7609167,
+            "row_width_fields": 28368517,
+            "row_width_mask_words": 7578753,
+            "row_decode_width_samples": 44039290,
+            "row_decode_width_fields": 181032145,
+            "row_decode_width_mask_words": 43701423
+          }
+        },
+        {
+          "steps": 8250000,
+          "counters": {
+            "enabled": true,
+            "role": "candidate",
+            "get_node_calls": 45165986,
+            "node_lane_reads": 45165986,
+            "node_offset_reads": 45165986,
+            "rows_get_calls": 45165986,
+            "node_decodes": 45165986,
+            "node_decode_fields": 186140648,
+            "node_put_calls": 7780480,
+            "node_put_room_calls": 7780480,
+            "node_appends": 7780480,
+            "row_encodes": 7780482,
+            "row_encode_fields": 29040237,
+            "row_width_samples": 7780482,
+            "row_width_fields": 29040237,
+            "row_width_mask_words": 7749218,
+            "row_decode_width_samples": 45165986,
+            "row_decode_width_fields": 186140648,
+            "row_decode_width_mask_words": 44820341
+          }
+        }
+      ],
+      "storage": {
+        "sourceNodeUsed": 2254791,
+        "sourceNodeCapacity": 4194304,
+        "sourceNodeCarrier": "object",
+        "sourceWordUsed": 2423369,
+        "sourceWordCapacity": 4194304,
+        "sourceWordDepth": 22,
+        "sourceCounts": [
+          2254791,
+          4194304,
+          447744,
+          524288,
+          69061,
+          131072,
+          2423369,
+          4194304,
+          0,
+          1,
+          64096,
+          65536
+        ],
+        "carrier": "Array",
+        "byteLength": null,
+        "sha256": "4838cd165d82cebb9831c0ee0c8e3ed34593acebe54fa0dd28be7c6ea6726835",
+        "maxWord": 2254780,
+        "hashEncoding": "host-little-endian-u32",
+        "limitations": [
+          "Final source tape only; no transient peak-capacity claim.",
+          "64-KiB hash scratch is allocated only after the measured check phase.",
+          "Instrumented logical counters enabled; no profiler or heap snapshot. Counts are not allocation bytes."
+        ]
+      },
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 2255781888,
+        "peakFootprintBytes": 2490175984,
+        "elapsedMs": 283504,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "/private/tmp/bend-g29-profile-xWLVIr/count-checker.mjs",
+          "/private/tmp/bend-g29-profile-xWLVIr/candidate-count-request.json",
+          "/private/tmp/bend-g29-profile-xWLVIr/candidate-count-result.json"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793294612024-69ac1b4ddf3f9d9f.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    }
+  ],
+  "interpretation": [
+    "Both images make exactly 53,253,960 Node reads and 8,740,226 stored appends on this source corpus.",
+    "G28 additionally decodes 223,267,270 fields and encodes 32,575,505 fields. Two extra encodes are the source/transient default TermQuant seeds, not appends.",
+    "R12 returns an existing Node; its codec counters are zero. These are logical operations and selected field counts, NOT physical allocations or byte totals.",
+    "Diagnostic instrumentation adds calls and branches; all counter-run times and memory are ineligible for performance acceptance.",
+    "Read tag histograms match exactly; append histograms match after separating the two G28 default row encodes."
+  ],
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  }
+}

@@ -5,6 +5,22 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- G29 profiles the retained R12/G28 checkers on identical bounded windows.
+  Separate logical runs agree on 53,253,960 Node reads and 8,740,226 appends;
+  G28 additionally decodes 223,267,270 fields. These are operations, not bytes.
+  GC share is lower on G28 in all three windows; increased GC is not an
+  established explanation of its earlier slowdown. Map.bit traversal instead
+  dominates both profiles. G29 keeps the original key and computes its bit
+  through a Boolean-only tail walk, without reintroducing packed Node storage.
+  Eight actual C/JS map consumers pass, including full-width characters,
+  supplementary characters, isolated surrogates and embedded NUL.
+  Full qualification is pending; R12 remains accepted.
+  `--fail-fast-performance=true` stops qualification before consumer matrices
+  if the predeclared paired timing/memory rule fails.
+  `evals/receipts/producer2039g29_paired_profile.json`,
+  `evals/receipts/producer2039g29_logical_counts.json`,
+  `evals/receipts/producer2039g29_source_smoke.json`.
+
 - G28's compact checker node-store cutover is rejected by its predeclared
   early screen. Eighteen focused canonical C/JS executions and depth,
   rewind and affine refusal scenarios pass after fixing native sharing facts
