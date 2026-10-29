@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "status": "REJECTED_INTEGRATED_SOURCE_SMOKE",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "scope": "G26 initial integration failed before artifact emission; no full-root or performance acceptance",
+  "sourceCheckpoint": "c45a51fc",
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "timeoutMs": 600000,
+    "pollMs": 10
+  },
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "evals/g24_source_smoke.mjs",
+    "--node",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "--bun",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--clang",
+    "/usr/bin/clang",
+    "--fixtures",
+    "evals/scheduler_chunk_smoke.bend,evals/checker_word_range_smoke.bend,tests/reg/checker_arena_bound.bend,tests/reg/checker_arena_closed.bend,tests/reg/checker_arena_generation.bend,tests/reg/checker_arena_memo.bend,tests/reg/checker_arena_names.bend,tests/reg/checker_arena_quantities.bend",
+    "--targets",
+    "c,js",
+    "--receipt",
+    "/private/tmp/bend-g26-wave-OqMEMI/integrated-path-smoke.json"
+  ],
+  "environment": "env HEAVY_GATE_MEMORY_MIB=8192 HEAVY_GATE_RSS_MIB=8192 HEAVY_GATE_POLL_MS=10 HEAVY_GATE_TIMEOUT_MS=600000 BUN_JSC_forceRAMSize=4294967296",
+  "sourcePins": {
+    "bend2/selfhost/checker.bend": "0ef15fbcd1bb32ea1d91da5769226fdf09a040616f56b772f60e5a4449e0c0b6",
+    "bend2/selfhost/checker_arena.bend": "382f9621b95ecd0a24f2c7cfbb703f83c1b5125a1675863b19f882821aa802c7",
+    "bend2/selfhost/scope_lookup.bend": "2be9ff35e91d7b2ebf6ef8b6692b2fa5caff360a8e1586507930894bcadb47b7",
+    "bend2/selfhost/backend_lower.bend": "0b7445ffe3746b726bc5b98cec3d36997bedf7d1ecce171a0193ddab95b9c8fc",
+    "evals/checker_core_step_lower.ts": "47eac50c98092562a556869dffa2533379cc8b5344069186b6efba71683dc36a",
+    "evals/selfhost_driver_source.ts": "48f024856cf697ef59d889e759d28559bd5d3afd95c60698c874ac79eb690f9a"
+  },
+  "failure": "emission failed for evals/scheduler_chunk_smoke.bend (c): heavy gate FAIL (phase complete, ownedTreeStopped true, commandExitCode 1, exit 1, reason command_exit)",
+  "diagnostic": "(node:99744) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\nError:\n- expected : v_51\n- observed : v_51 (consumed more than once)\nContext:\n- v_50 : Array<U32>\nLocation: native_match_word_bound.word_0\n762 |   match v_52:\n763>|     case (v_50, v_51):\n    |                 ^^^^\n764 |       bound_read.select(v_2, v_5, v_8, v_11, v_14, v_50, v_20, v_23, v_26, v_29, v_32, v_35, v_38, v_41, U32.is_eq(U32.and(v_51, 2147483648), 0), v_45, v_51)\nHEAVY_GATE {\"status\":\"FAIL\",\"reason\":\"command_exit\",\"commandExitCode\":1,\"commandSignal\":0,\"peakRssBytes\":364363776,\"peakFootprintBytes\":339149800,\"elapsedMs\":1063,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":1,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"--experimental-strip-types\",\"/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs\",\"/Users/ilyagulya/Projects/My/bend/evals/scheduler_chunk_smoke.bend\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-oLIYLg/000-scheduler_chunk_smoke.c\"],\"label\":\"heavy command\",\"exitCode\":1,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793265089169-e547c3634b54e4c7.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+  "receipt": {
+    "path": "/private/tmp/bend-g26-wave-OqMEMI/integrated-path-smoke.json",
+    "sha256": "8e88829d3a31d4cd703900b8142b0e4b1d13db7a70f5a317f881a0d0d0a4cff6"
+  },
+  "generatedInputs": {
+    "checkpoints/checker_core_steps_v1.bend": "f587e9905f5ecfa5a1f2ec6cb3be8da97f5140a7bae5445d4b264fb0edd38720",
+    "checkpoints/checker_core_steps_component_v1.bend": "bdc45176a8ecb4fe4aba7ead66129a76d1440e6ab2f0e13975ac1f8a212838a6",
+    "checkpoints/checker_core_steps_driver_v1.bend": "8a86651ffae865d52d0be7df16712a12bb5c130b37628a1692c5a8f0a3da2708",
+    "checkpoints/emitter_steps_v1.bend": "7f7c8d2e57a3fcd3925b4286a8300668ae91b7e11a26317cea6da2df5c9ea425"
+  }
+}

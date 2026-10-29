@@ -733,12 +733,11 @@ def node_bound.used(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<Subst
 # These accessors take owner-local IDs, after the store chooses the region.
 # A trusted read keeps the flag gate and the encoded lane in one destructuring.
 def node_bound(arena: Arena, +id: U32, trusted: Bool) -> Arena & Nat:
-  match trusted:
-    case False{}: bound_read(arena, id, False{})
-    case True{}:
-      match arena:
-        case Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}:
-          node_bound.used(case_prefix, subst_memo, nodes, patterns, binders, words, naturals, names, depths, name_ids, node_closed, node_bounds, pattern_depths, id, counts)
+  match arena:
+    case Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}:
+      match trusted:
+        case False{}: bound_read.node.used(case_prefix, subst_memo, nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, id, True{})
+        case True{}: node_bound.used(case_prefix, subst_memo, nodes, patterns, binders, words, naturals, names, depths, name_ids, node_closed, node_bounds, pattern_depths, id, counts)
 
 def node_certificate_flags.bound(bound: Nat) -> U32:
   match bound:
