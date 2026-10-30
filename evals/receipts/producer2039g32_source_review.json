@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "status": "G32_SOURCE_REVIEW_CORRECTED_RUNTIME_PENDING",
+  "compilerAccepted": false,
+  "performanceAccepted": false,
+  "byteFixedpoint": false,
+  "reviews": [
+    {
+      "agent": "G32NativeReview",
+      "scope": "C transport + sharing",
+      "originalFinding": "WL_TAKE rn guard reads shadowed uninitialized rn inside WL_OPEN",
+      "correction": "wl_take_rows uses the preserved FID_EXIT n; WL_SAVE rn remains before WL_OPEN",
+      "runtimeExecuted": false
+    },
+    {
+      "agent": "G32MailboxReview",
+      "scope": "JS mailbox, captures, reentry and unwind",
+      "verdict": "No concrete source-level blocker found; depends on shared validator",
+      "runtimeExecuted": false
+    },
+    {
+      "agent": "G32WidthReview",
+      "scope": "Width scans and reverse-tail-edge worklist",
+      "originalFindings": [
+        "Ignored Summary.problem",
+        "Absent LetValues target accepted as bottom",
+        "Duplicate LetValues ids accepted",
+        "Unreachable Region.next contributes width"
+      ],
+      "corrections": [
+        "confirmed checks scan_problem",
+        "width map contains all code ids, including zero bottom",
+        "independent binding cardinality/uniqueness checks",
+        "Scan tracks lexical leaves and conditionally includes Region.next",
+        "pending stack insertion is O(1)"
+      ],
+      "finalVerdict": "No remaining concrete blocker under conservative static convention analysis",
+      "limitation": "Strict-call continuations retain a static exit convention even when the callee cannot return. Zero is a sufficient, not complete, bottom classification.",
+      "runtimeExecuted": false
+    },
+    {
+      "agent": "G32EscapeReview",
+      "scope": "Private worker transform, identity, ownership and fresh ids",
+      "originalFindings": [
+        "Consumer workers never emitted",
+        "Producer fresh supply not advanced",
+        "Clones reused global JS continuation ids"
+      ],
+      "corrections": [
+        "Append planned consumer workers",
+        "Store allocated fresh supply",
+        "Alpha-rename cloned binders, local references and region labels; saturating allocation causes no-op on exhaustion"
+      ],
+      "finalVerdict": "No remaining concrete blocker found in correction review",
+      "runtimeExecuted": false
+    }
+  ],
+  "canonicalOwnedBaseline": {
+    "path": "/private/tmp/bend-g32-transport-zJDckJ/owned-baseline-final.json",
+    "status": "SOURCE_CHANGED_PATH_SMOKE_PASS"
+  },
+  "actualAcceptedImageBaseline": [
+    {
+      "target": "c",
+      "pins": "/private/tmp/bend-g32-transport-zJDckJ/r12-owned-c/matrix.pins.json",
+      "summary": 1
+    },
+    {
+      "target": "js",
+      "pins": "/private/tmp/bend-g32-transport-zJDckJ/r12-owned-js/matrix.pins.json",
+      "summary": 1
+    }
+  ],
+  "plannedFullQualification": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "evals/g24_qualification.mjs",
+    "--run-id=local2039g32",
+    "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "--bun=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--clang=/usr/bin/clang",
+    "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+    "--phase=all",
+    "--bindings=/Users/ilyagulya/Projects/My/bend/evals/receipts/producer2039g25_r12_bindings.json",
+    "--frozen-repository=/private/tmp/bend2039g22-tiny-inline",
+    "--control-native=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+    "--control-image=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+    "--out=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32-full",
+    "--fail-fast-performance=true"
+  ]
+}

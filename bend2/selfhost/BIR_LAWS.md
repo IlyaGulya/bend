@@ -285,10 +285,10 @@ ending}` (`backend_ir.bend:233`) is the whole target-neutral program. It has no
 source syntax, no checker environment, no target name, and no separate
 "normalized IR".
 
-- **Code** (`backend_ir.bend:203-204`): a numbered body with capture-use
+- **Code** (`backend_ir.bend:215-216`): a numbered body with capture-use
   metadata and live parameters.
-- **Block** (`194-202`): `Return`, `Let`, `Branch`, `Region`, `LeaveRegion`,
-  `TailDirect`, `TailApply`, `Failure`. There is no unit block.
+- **Block** (`204-214`): `Return`, `ReturnValues`, `Let`, `LetValues`, `Branch`,
+  `Region`, `LeaveRegion`, `TailDirect`, `TailApply`, `Failure`. There is no unit block.
 - **Op** (`178-187`): `Copy`, `PrimitiveCall`, `Closure`, `Direct`, `Apply`,
   `LoadSymbol`, `Construct`, `Project`, `HasTag`.
 - **Atom** (`13-23`): `Local`, `Capture`, `Symbol`, `Word`, `Natural`,
@@ -306,16 +306,50 @@ targets use different halves of each pair.
 
 ## 3. Well-formedness of BIR
 
-Write `WF(B)` for the conjunction of the clauses below. There is **no
-`validate` function** in this tree; `WF` is a specification on producers and
-hand-built programs, not a runtime check. The table at the end of this section
-says which clauses any code checks at all.
+Write `WF(B)` for the conjunction of the clauses below. There is no universal
+`validate` function: most of `WF` remains a specification on producers and
+hand-built programs. `backend_transport.result_widths`, called by both targets,
+checks the private transport conventions below, not all of `WF`.
+
+### 3.0 Private aggregate transport
+
+`LetValues{ids,code,args,next}` calls one known private code and binds its
+components in order; `ReturnValues{values}` returns those components without a
+carrier object. Both vectors have at least two entries; width one uses the
+existing `Direct`/`Return` convention. Binding IDs are distinct. Every component
+is an ordinary BIR value: C passes one canonical `Term` per slot, not untagged
+layout words; JS stores values briefly in a reusable module-local mailbox.
+
+The result-width analysis scans each body and propagates widths through reverse
+`TailDirect` edges. Nonzero exits must agree. Zero proves bottom but is not a
+complete termination classifier: a strict-call continuation retains its static
+exit convention even when the callee cannot return. A region continuation only
+contributes if a matching lexical leave can reach it. Missing vector callees,
+cardinality/width disagreements and duplicate result bindings are rejected.
+Single-value calls, closures, declared functions, lazy values and public exports
+cannot receive an unboxed vector.
+
+`backend_lower.lower_complete` runs the common `backend_transport.optimize`.
+Eligible producers build one nonescaping constructor on a linear prefix and
+return it on every normal path, with one to seven live fields. Private workers
+stage fields at the original construction point, then return the constructor
+discriminator and fields. Projection-only callers or a separately specialized
+consumer receive the components directly. Original boxed identities remain
+available for public, unknown, escaping and unsupported uses. Worker bodies are
+alpha-renamed, allocation counters are overflow-checked, and cloning is bounded
+per producer or consumer-parameter, never per call site.
+
+C stages operands before writing result registers, retains duplicate owners,
+and restores captures plus N results through the existing continuation bank.
+JS drains every result into locals and clears mailbox references before user
+code or capture restoration, on synchronous and scheduled completion. Abort and
+unwind clear the mailbox; values surviving another call use normal captures.
 
 ### 3.1 Codes and identifiers
 
 **WF-1 (code identity).** `Program.codes` contains at most one `Code` per `id`.
-Every code id mentioned by `Direct.code`, `TailDirect.code`, `Closure.code`,
-`FunctionDeclaration.code`, `Entry.code`, or `Export.entry` resolves to exactly
+Every code id mentioned by `Direct.code`, `LetValues.code`, `TailDirect.code`,
+`Closure.code`, `FunctionDeclaration.code`, `Entry.code`, or `Export.entry` resolves to exactly
 one `Code` in `Program.codes`.
 
 - Mechanism: `lower_catalog` allocates code numbers from a monotonically

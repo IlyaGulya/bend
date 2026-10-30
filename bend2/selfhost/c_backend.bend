@@ -1,5 +1,6 @@
 import Base
 import ./backend_ir.bend as BIR
+import ./backend_transport.bend as Transport
 import ./index_lookup.bend as IndexLookup
 import ./c_backend_link.bend as Link
 import ./c_backend_layout.bend as CLay
@@ -134,7 +135,9 @@ type Sig is Data:
     stages: Map<&2, U32>,
     declarations: List<&2, BIR.Declaration>,
     cids: List<&2, CidRow>,
-    apply_fid: U32
+    apply_fid: U32,
+    widths: Map<&2, Nat>,
+    entry_widths: Map<&2, Nat>
   }
 
 type PlanResult is Data:
@@ -980,13 +983,20 @@ def scan_op(op: BIR.Op, +scan: Scan) -> Scan:
 def scan_block(block: BIR.Block, +scan: Scan) -> Scan:
   match block:
     case BIR.Return{value}: scan_atom(value, scan)
+    case BIR.ReturnValues{values}: scan_values(values, scan)
     case BIR.Let{id, op, next}: scan_block(next, scan_op(op, scan))
+    case BIR.LetValues{ids, code, args, next}: scan_block(next, scan_arguments(args, scan))
     case BIR.Branch{condition, yes, no}: scan_block(no, scan_block(yes, scan_atom(condition, scan)))
     case BIR.Region{label, body, next}: scan_block(next, scan_block(body, scan))
     case BIR.LeaveRegion{label}: scan
     case BIR.TailDirect{code, args}: scan_arguments(args, scan)
     case BIR.TailApply{fn, arg}: scan_argument(arg, scan_atom(fn, scan))
     case BIR.Failure{message}: scan
+
+def scan_values(values: List<&2, BIR.Atom>, +scan: Scan) -> Scan:
+  match values:
+    case Nil{}: scan
+    case +value <> rest: scan_values(rest, scan_atom(value, scan))
 
 # ---------------------------------------------------------------------------
 # Cid rows
@@ -1938,8 +1948,10 @@ def word_part(a0: String, +plan: Plan) -> Part:
 # return is r0 plus WL_RETN(1), a tail call is a musttail WL_JMP, a self tail is
 # WL_AGAIN inside the entry's WL_SPIN, and a call that must return here is a
 # synthesized continuation entry. A continuation takes its captured words on
-# the stack (FID_T resw = 1) and its result in r0, so the runtime's own FID_EXIT
-# hands it the result through the task node its caller built.
+# the stack before FID_T resw result words and receives those words in r0.., so
+# the runtime's own FID_EXIT hands the results through the task node its caller
+# built. A single-value continuation is resw = 1; a multi-value one carries its
+# whole result vector that way and stores nothing.
 
 # -- lists of U32 ids -------------------------------------------------------
 
@@ -1994,13 +2006,20 @@ def op_locals(op: BIR.Op, +acc: List<&2, U32>) -> List<&2, U32>:
 def block_locals(block: BIR.Block, +acc: List<&2, U32>) -> List<&2, U32>:
   match block:
     case BIR.Return{value}: atom_locals(value, acc)
+    case BIR.ReturnValues{values}: values_locals(values, acc)
     case BIR.Let{id, op, next}: block_locals(next, op_locals(op, acc))
+    case BIR.LetValues{ids, code, args, next}: block_locals(next, args_locals(args, acc))
     case BIR.Branch{condition, yes, no}: block_locals(no, block_locals(yes, atom_locals(condition, acc)))
     case BIR.Region{label, body, next}: block_locals(next, block_locals(body, acc))
     case BIR.LeaveRegion{label}: acc
     case BIR.TailDirect{code, args}: args_locals(args, acc)
     case BIR.TailApply{fn, arg}: arg_locals(arg, atom_locals(fn, acc))
     case BIR.Failure{message}: acc
+
+def values_locals(values: List<&2, BIR.Atom>, +acc: List<&2, U32>) -> List<&2, U32>:
+  match values:
+    case Nil{}: acc
+    case +value <> rest: values_locals(rest, atom_locals(value, acc))
 
 def atom_slots(atom: BIR.Atom, +acc: List<&2, U32>) -> List<&2, U32>:
   match atom:
@@ -2038,13 +2057,20 @@ def op_slots(op: BIR.Op, +acc: List<&2, U32>) -> List<&2, U32>:
 def block_slots(block: BIR.Block, +acc: List<&2, U32>) -> List<&2, U32>:
   match block:
     case BIR.Return{value}: atom_slots(value, acc)
+    case BIR.ReturnValues{values}: values_slots(values, acc)
     case BIR.Let{id, op, next}: block_slots(next, op_slots(op, acc))
+    case BIR.LetValues{ids, code, args, next}: block_slots(next, args_slots(args, acc))
     case BIR.Branch{condition, yes, no}: block_slots(no, block_slots(yes, atom_slots(condition, acc)))
     case BIR.Region{label, body, next}: block_slots(next, block_slots(body, acc))
     case BIR.LeaveRegion{label}: acc
     case BIR.TailDirect{code, args}: args_slots(args, acc)
     case BIR.TailApply{fn, arg}: arg_slots(arg, atom_slots(fn, acc))
     case BIR.Failure{message}: acc
+
+def values_slots(values: List<&2, BIR.Atom>, +acc: List<&2, U32>) -> List<&2, U32>:
+  match values:
+    case Nil{}: acc
+    case +value <> rest: values_slots(rest, atom_slots(value, acc))
 
 # -- environment and captures ----------------------------------------------
 
@@ -2192,7 +2218,9 @@ def step_at(steps: List<&2, Phys.PathStep>, +index: Nat) -> Maybe<&2, Phys.PathS
 def leave_reach(block: BIR.Block, +label: U32, leaves: List<&2, Leave>) -> Bool:
   match block:
     case BIR.Return{value}: False{}
+    case BIR.ReturnValues{values}: False{}
     case BIR.Let{id, op, next}: leave_reach(next, label, leaves)
+    case BIR.LetValues{ids, code, args, next}: leave_reach(next, label, leaves)
     case BIR.Branch{condition, yes, no}: Bool.or(leave_reach(yes, label, leaves), leave_reach(no, label, leaves))
     case BIR.Region{known, body, next}: leave_reach(body, label, leaves_enter(leaves, known, next))
     case BIR.LeaveRegion{known}:
@@ -2519,6 +2547,13 @@ def atoms_after_fields(fields: List<&2, BIR.Field>, next: BIR.Block) -> BIR.Bloc
       match field:
         case BIR.Field{identity, key, use, value}: BIR.Let{0, BIR.Copy{value}, atoms_after_fields(rest, next)}
 
+# A returned vector's later components are residual uses of the earlier ones,
+# so a duplicated component is kept and only its final appearance moves.
+def atoms_after_values(values: List<&2, BIR.Atom>, next: BIR.Block) -> BIR.Block:
+  match values:
+    case Nil{}: next
+    case +value <> rest: BIR.Let{0, BIR.Copy{value}, atoms_after_values(rest, next)}
+
 def atom_key(atom: BIR.Atom) -> Maybe<&2, FieldRoot>:
   match atom:
     case BIR.Local{id}: Some{FieldLocal{id}}
@@ -2636,6 +2671,11 @@ def conflict_field_list(fields: List<&2, BIR.Field>, target: FieldRef, env: List
       match field:
         case BIR.Field{identity, key, use, value}: Bool.or(atom_conflict(value, target, env), conflict_field_list(rest, target, env))
 
+def values_conflict(values: List<&2, BIR.Atom>, target: FieldRef, env: List<&2, Env>) -> Bool:
+  match values:
+    case Nil{}: False{}
+    case +value <> rest: Bool.or(atom_conflict(value, target, env), values_conflict(rest, target, env))
+
 def conflict_op(op: BIR.Op, target: FieldRef, leaves: List<&2, Leave>, env: List<&2, Env>) -> Bool:
   match op:
     case BIR.Copy{value}: atom_conflict(value, target, env)
@@ -2668,8 +2708,11 @@ def projection_conflict(primitive: BIR.Primitive, args: List<&2, BIR.Arg>, types
 def conflict_block(block: BIR.Block, target: FieldRef, leaves: List<&2, Leave>, env: List<&2, Env>) -> Bool:
   match block:
     case BIR.Return{value}: atom_conflict(value, target, env)
+    case BIR.ReturnValues{values}: values_conflict(values, target, env)
     case BIR.Let{id, op, next}:
       Bool.or(conflict_op(op, target, leaves, env), conflict_block(next, target, leaves, bind_provenance(env, id, op)))
+    case BIR.LetValues{ids, code, args, next}:
+      Bool.or(conflict_atom_list(args, target, env), conflict_block(next, target, leaves, env))
     case BIR.Branch{condition, yes, no}:
       Bool.or(atom_conflict(condition, target, env), Bool.or(conflict_block(yes, target, leaves, env), conflict_block(no, target, leaves, env)))
     case BIR.Region{label, body, next}: conflict_block(body, target, leaves_enter(leaves, label, next), env)
@@ -2726,10 +2769,17 @@ def fields_root_used(fields: List<&2, BIR.Field>, wanted: FieldRoot, +ctx: Ctx) 
       match field:
         case BIR.Field{identity, key, use, value}: Bool.or(atom_root_used(value, wanted, ctx), fields_root_used(rest, wanted, ctx))
 
+def values_root_used(values: List<&2, BIR.Atom>, wanted: FieldRoot, +ctx: Ctx) -> Bool:
+  match values:
+    case Nil{}: False{}
+    case +value <> rest: Bool.or(atom_root_used(value, wanted, ctx), values_root_used(rest, wanted, ctx))
+
 def root_residual(block: BIR.Block, wanted: FieldRoot, leaves: List<&2, Leave>, +ctx: Ctx) -> Bool:
   match block:
     case BIR.Return{value}: atom_root_used(value, wanted, ctx)
+    case BIR.ReturnValues{values}: values_root_used(values, wanted, ctx)
     case BIR.Let{id, op, next}: Bool.or(op_root_used(op, wanted, ctx), root_residual(next, wanted, leaves, ctx))
+    case BIR.LetValues{ids, code, args, next}: Bool.or(args_root_used(args, wanted, ctx), root_residual(next, wanted, leaves, ctx))
     case BIR.Branch{condition, yes, no}: Bool.or(atom_root_used(condition, wanted, ctx), Bool.or(root_residual(yes, wanted, leaves, ctx), root_residual(no, wanted, leaves, ctx)))
     case BIR.Region{label, body, next}: root_residual(body, wanted, leaves_enter(leaves, label, next), ctx)
     case BIR.LeaveRegion{label}:
@@ -2930,39 +2980,58 @@ def ctx_with_leaves(ctx: Ctx, leaves: List<&2, Leave>) -> Ctx:
 
 def sig_entries(s: Sig) -> List<&2, Entry>:
   match s:
-    case Sig{entries, by_code, by_key, by_foreign, by_native, stages, declarations, cids, apply_fid}: entries
+    case Sig{entries, by_code, by_key, by_foreign, by_native, stages, declarations, cids, apply_fid, _, _}: entries
 
 def sig_by_code(s: Sig) -> Map<&2, U32>:
   match s:
-    case Sig{entries, by_code, by_key, by_foreign, by_native, stages, declarations, cids, apply_fid}: by_code
+    case Sig{entries, by_code, by_key, by_foreign, by_native, stages, declarations, cids, apply_fid, _, _}: by_code
 
 def sig_by_key(s: Sig) -> Map<&2, U32>:
   match s:
-    case Sig{entries, by_code, by_key, by_foreign, by_native, stages, declarations, cids, apply_fid}: by_key
+    case Sig{entries, by_code, by_key, by_foreign, by_native, stages, declarations, cids, apply_fid, _, _}: by_key
 
 def sig_by_foreign(s: Sig) -> Map<&2, U32>:
   match s:
-    case Sig{entries, by_code, by_key, by_foreign, by_native, stages, declarations, cids, apply_fid}: by_foreign
+    case Sig{entries, by_code, by_key, by_foreign, by_native, stages, declarations, cids, apply_fid, _, _}: by_foreign
 
 def sig_by_native(s: Sig) -> Map<&2, U32>:
   match s:
-    case Sig{entries, by_code, by_key, by_foreign, by_native, stages, declarations, cids, apply_fid}: by_native
+    case Sig{entries, by_code, by_key, by_foreign, by_native, stages, declarations, cids, apply_fid, _, _}: by_native
 
 def sig_stages(s: Sig) -> Map<&2, U32>:
   match s:
-    case Sig{entries, by_code, by_key, by_foreign, by_native, stages, declarations, cids, apply_fid}: stages
+    case Sig{entries, by_code, by_key, by_foreign, by_native, stages, declarations, cids, apply_fid, _, _}: stages
 
 def sig_decls(s: Sig) -> List<&2, BIR.Declaration>:
   match s:
-    case Sig{entries, by_code, by_key, by_foreign, by_native, stages, declarations, cids, apply_fid}: declarations
+    case Sig{entries, by_code, by_key, by_foreign, by_native, stages, declarations, cids, apply_fid, _, _}: declarations
 
 def sig_cids(s: Sig) -> List<&2, CidRow>:
   match s:
-    case Sig{entries, by_code, by_key, by_foreign, by_native, stages, declarations, cids, apply_fid}: cids
+    case Sig{entries, by_code, by_key, by_foreign, by_native, stages, declarations, cids, apply_fid, _, _}: cids
 
 def sig_apply(s: Sig) -> U32:
   match s:
-    case Sig{entries, by_code, by_key, by_foreign, by_native, stages, declarations, cids, apply_fid}: apply_fid
+    case Sig{entries, by_code, by_key, by_foreign, by_native, stages, declarations, cids, apply_fid, _, _}: apply_fid
+
+# The shared transport analysis' per-code result widths, keyed by U32.show and
+# 0 for a code with no returning exit. Backends carry them so a call site can
+# refuse a vector whose length disagrees with its producer.
+def sig_widths(s: Sig) -> Map<&2, Nat>:
+  match s:
+    case Sig{entries, by_code, by_key, by_foreign, by_native, stages, declarations, cids, apply_fid, widths, _}: widths
+
+# The same widths keyed by the entry (Fid) index of every code entry, so the
+# per-tail-call convention check is one lookup instead of a scan per site.
+def sig_entry_widths(s: Sig) -> Map<&2, Nat>:
+  match s:
+    case Sig{entries, by_code, by_key, by_foreign, by_native, stages, declarations, cids, apply_fid, _, entry_widths}: entry_widths
+
+def ctx_width_of(code: U32, +ctx: Ctx) -> Nat:
+  Transport.width_of(sig_widths(ctx_sig(ctx)), code)
+
+def ctx_entry_width(+index: U32, +ctx: Ctx) -> Nat:
+  map_nat(sig_entry_widths(ctx_sig(ctx)), U32.show(index))
 
 # -- C text helpers ---------------------------------------------------------
 
@@ -3163,7 +3232,9 @@ def spin_close(spin: Bool) -> String:
 def block_ctl(block: BIR.Block, +ctx: Ctx) -> Step:
   match block:
     case BIR.Return{value}: return_ctl(value, ctx)
+    case BIR.ReturnValues{values}: return_values_ctl(values, ctx)
     case BIR.Let{id, op, next}: let_ctl(id, op, next, ctx)
+    case BIR.LetValues{ids, code, args, next}: let_values_ctl(ids, code, args, next, ctx)
     case BIR.Branch{condition, yes, no}: branch_ctl(condition, yes, no, ctx)
     case BIR.Region{label, body, next}: region_ctl(label, body, next, ctx)
     case BIR.LeaveRegion{label}: leave_ctl(label, ctx)
@@ -3177,6 +3248,36 @@ def return_ctl(value: BIR.Atom, +ctx: Ctx) -> Step:
     case WriteFail{message}: StepFail{message}
     case WriteOk{text, vctx}:
       StepOk{cat(["    Term rv = ", text, ";\n", exit_releases(vctx, Nil{}, Nil{}), "    r0 = rv;\n    WL_RETN(1);\n"]), vctx}
+
+# Every component is staged into its own local before any register is written,
+# so a later component's read (or a duplicate component's keep) cannot observe a
+# half-updated result bank. The vector itself is never stored, sealed or boxed:
+# each component is one ordinary Term.
+def values_use(values: List<&2, BIR.Atom>, +ctx: Ctx, +acc: List<&2, String>) -> ArgsStep:
+  match values:
+    case Nil{}: ArgsOk{List.reverse(&2, String, acc), ctx}
+    case +value <> rest:
+      match atom_use(value, BIR.Affine{}, ctx, atoms_after_values(rest, no_remaining())):
+        case WriteFail{message}: ArgsFail{message}
+        case WriteOk{text, vctx}: values_use(rest, vctx, text <> acc)
+
+def return_values_ctl(values: List<&2, BIR.Atom>, +ctx: Ctx) -> Step:
+  match values:
+    case Nil{}: StepFail{"BIR ReturnValues carries an empty vector"}
+    case _:
+      match values_use(values, ctx, Nil{}):
+        case ArgsFail{message}: StepFail{message}
+        case ArgsOk{texts, vctx}:
+          +count = List.length(&2, BIR.Atom, values)
+          StepOk{
+            cat([
+              arg_decls(texts, 0n, ""),
+              exit_releases(vctx, Nil{}, Nil{}),
+              regs_assign(arg_names(count, 0n, Nil{}), 0n),
+              "    WL_RETN(", Nat.show(count), ");\n"
+            ]),
+            vctx
+          }
 
 def failure_ctl(ctx: Ctx) -> Step:
   StepOk{cat([exit_releases(ctx, Nil{}, Nil{}), "    err_post(e.mem, ERR_TAGS);\n    return 0;\n"]), ctx}
@@ -3396,12 +3497,33 @@ def tail_direct_ctl(+code: U32, args: List<&2, BIR.Arg>, +ctx: Ctx) -> Step:
           match Nat.is_eq(List.length(&2, String, values), entry_arity(sig_entries(ctx_sig(actx)), target)):
             case False{}: StepFail{"BIR tail call arity disagrees with its entry"}
             case True{}:
-              match ctx_self(actx):
-                case Some{self}:
-                  match U32.is_eq(self, target):
-                    case True{}: self_tail(target, values, actx)
-                    case False{}: tail_jump(target, values, actx)
-                case None{}: tail_jump(target, values, actx)
+              match tail_width_agrees(code, actx):
+                case False{}: StepFail{cat(["BIR tail call to code ", U32.show(code), " returns a different result width than its caller"])}
+                case True{}:
+                  match ctx_self(actx):
+                    case Some{self}:
+                      match U32.is_eq(self, target):
+                        case True{}: self_tail(target, values, actx)
+                        case False{}: tail_jump(target, values, actx)
+                    case None{}: tail_jump(target, values, actx)
+
+# A tail call reuses the caller's continuation frame, so the callee must return
+# the same number of result words the caller's own continuation expects. A zero
+# width on either side is the no-returning-exit bottom and never disagrees.
+def tail_width_agrees(+code: U32, +ctx: Ctx) -> Bool:
+  +callee = ctx_width_of(code, ctx)
+  +caller = self_width(ctx)
+  match Nat.is_eq(caller, 0n):
+    case True{}: True{}
+    case False{}:
+      match Nat.is_eq(callee, 0n):
+        case True{}: True{}
+        case False{}: Nat.is_eq(caller, callee)
+
+def self_width(+ctx: Ctx) -> Nat:
+  match ctx_self(ctx):
+    case None{}: 0n
+    case Some{index}: ctx_entry_width(index, ctx)
 
 def tail_jump(+target: U32, +values: List<&2, String>, +ctx: Ctx) -> Step:
   +names = arg_names(List.length(&2, String, values), 0n, Nil{})
@@ -3425,6 +3547,11 @@ def tail_apply_ctl(fn: BIR.Atom, arg: BIR.Arg, +ctx: Ctx) -> Step:
               StepOk{cat(["    Term rf = ", fn_text, ";\n    Term ra = ", arg_text, ";\n", exit_releases(actx, Nil{}, Nil{}), "    r0 = rf;\n    r1 = ra;\n    WL_JMP(FID_CLO_APPLY);\n"]), actx}
 
 def direct_ctl(result: U32, +code: U32, args: List<&2, BIR.Arg>, next: BIR.Block, +ctx: Ctx) -> Step:
+  match Nat.is_le(ctx_width_of(code, ctx), 1n):
+    case False{}: StepFail{cat(["BIR single-value call names code ", U32.show(code), " which returns a result vector"])}
+    case True{}: direct_call_ctl(result, code, args, next, ctx)
+
+def direct_call_ctl(result: U32, +code: U32, args: List<&2, BIR.Arg>, next: BIR.Block, +ctx: Ctx) -> Step:
   match IndexLookup.find(U32, sig_by_code(ctx_sig(ctx)), U32.show(code)):
     case None{}: StepFail{cat(["BIR call names code ", U32.show(code), " with no entry"])}
     case Some{target}:
@@ -3462,6 +3589,79 @@ def call_done(target: U32, args: List<&2, String>, +caps: List<&2, Cap>, result:
   +segment = SegText{fid, Nat.add(count, 1n), 1n, case_text(fid, cont_prologue(caps, ctx_caps_n(ctx), result), text, False{}), ctx_forked(cn), ctx_calls(cn)}
   +after = ctx_fork(ctx_after_call(cn, ctx), target, fid)
   StepOk{call_head(fid, count, caps, args, target, sig_entries(ctx_sig(ctx)), releases), ctx_segs_put(after, segment <> ctx_segs(after))}
+
+# A multi-value call is the same continuation frame with a wider result bank:
+# the continuation takes its captures on the stack plus N result words arity,
+# declares resw = N, and its prologue binds one ordinary local per result word
+# before the rest of the block runs. No storage node, seal or boxed vector is
+# created; the N words are the ordinary Terms the callee returned.
+#
+# A target with no returning exit (width 0, bottom) never delivers a word at
+# all, so it may legally inhabit any nonempty requested width; only a nonzero
+# producer width has to agree exactly with the bound vector.
+def let_values_ctl(+ids: List<&2, U32>, +code: U32, args: List<&2, BIR.Arg>, next: BIR.Block, +ctx: Ctx) -> Step:
+  match ids:
+    case Nil{}: StepFail{"BIR LetValues binds no results"}
+    case _:
+      +want = List.length(&2, U32, ids)
+      +got = ctx_width_of(code, ctx)
+      match Nat.is_eq(got, 0n):
+        case True{}: let_values_lookup(ids, code, args, next, ctx)
+        case False{}:
+          match Nat.is_eq(got, want):
+            case False{}: StepFail{cat(["BIR multi-value call binds ", Nat.show(want), " results from a code that returns ", Nat.show(got)])}
+            case True{}: let_values_lookup(ids, code, args, next, ctx)
+
+def let_values_lookup(+ids: List<&2, U32>, +code: U32, args: List<&2, BIR.Arg>, next: BIR.Block, +ctx: Ctx) -> Step:
+  match IndexLookup.find(U32, sig_by_code(ctx_sig(ctx)), U32.show(code)):
+    case None{}: StepFail{cat(["BIR multi-value call names code ", U32.show(code), " with no entry"])}
+    case Some{target}:
+      match args_use(args, ctx, Nil{}, next):
+        case ArgsFail{message}: StepFail{message}
+        case ArgsOk{values, actx}: call_values_ctl(target, values, ids, next, actx)
+
+def call_values_ctl(+target: U32, +args: List<&2, String>, +ids: List<&2, U32>, +next: BIR.Block, +ctx: Ctx) -> Step:
+  match Nat.is_eq(List.length(&2, String, args), entry_arity(sig_entries(ctx_sig(ctx)), target)):
+    case False{}: StepFail{cat(["BIR multi-value call passes ", Nat.show(List.length(&2, String, args)), " arguments to an entry of arity ", Nat.show(entry_arity(sig_entries(ctx_sig(ctx)), target))])}
+    case True{}:
+      match capture_for(next, ctx):
+        case CapsFail{message}: StepFail{cat(["BIR continuation of multi-value call to `", entry_label(target, sig_entries(ctx_sig(ctx)), sig_decls(ctx_sig(ctx))), "` (continuation ", U32.show(ctx_next(ctx)), ") reads a value that is not in scope: ", message, capture_context(next, ctx)])}
+        case CapsOk{caps}: call_values_next(target, args, ids, next, ctx, caps)
+
+def values_env(ids: List<&2, U32>, +acc: List<&2, Env>) -> List<&2, Env>:
+  match ids:
+    case Nil{}: List.reverse(&2, Env, acc)
+    case +id <> rest:
+      values_env(rest, Env{id, lv_name(id), cat(["    term_sink(e, ", lv_name(id), ");\n"]), None{}} <> acc)
+
+def call_values_next(target: U32, args: List<&2, String>, +ids: List<&2, U32>, +next: BIR.Block, +ctx: Ctx, +caps: List<&2, Cap>) -> Step:
+  +width = List.length(&2, U32, ids)
+  env = List.append(&2, Env, values_env(ids, Nil{}), cap_locals_env(caps, Nil{}))
+  match block_ctl(next, Ctx{ctx_sig(ctx), ctx_plan(ctx), env, cap_slots_exprs(caps, ctx_caps_n(ctx), 0n, Nil{}), ctx_caps_n(ctx), ctx_regions(ctx), None{}, U32.inc(ctx_next(ctx)), ctx_segs(ctx), False{}, Nil{}, False{}, nat_max(ctx_max(ctx), Nat.add(cap_count(caps), width)), cap_slots_of(caps), ctx_leaves(ctx)}):
+    case StepFail{message}: StepFail{message}
+    case StepOk{text, cn}: call_values_done(target, args, caps, ids, ctx, text, cn)
+
+def call_values_done(target: U32, args: List<&2, String>, +caps: List<&2, Cap>, +ids: List<&2, U32>, +ctx: Ctx, text: String, +cn: Ctx) -> Step:
+  +fid = ctx_next(ctx)
+  +count = cap_count(caps)
+  +width = List.length(&2, U32, ids)
+  +releases = exit_releases(ctx, caps_ids(caps, Nil{}), caps_slots(caps, Nil{}))
+  +segment = SegText{fid, Nat.add(count, width), width, case_text(fid, values_prologue(caps, ctx_caps_n(ctx), ids), text, False{}), ctx_forked(cn), ctx_calls(cn)}
+  +after = ctx_fork(ctx_after_call(cn, ctx), target, fid)
+  StepOk{call_head(fid, count, caps, args, target, sig_entries(ctx_sig(ctx)), releases), ctx_segs_put(after, segment <> ctx_segs(after))}
+
+def values_prologue(+caps: List<&2, Cap>, caps_n: Nat, ids: List<&2, U32>) -> String:
+  cat([
+    "    WL_POPN(", Nat.show(cap_count(caps)), ");\n",
+    x_decl(caps_n),
+    cap_stk_intro(caps, 0n, "", ""),
+    values_binds(ids, 0n)
+  ])
+
+def values_binds(ids: List<&2, U32>, +index: Nat) -> String:
+  match ids:
+    case Nil{}: ""
+    case +id <> rest: cat(["    Term ", lv_name(id), " = ", r_name(index), ";\n", values_binds(rest, Nat.add(index, 1n))])
 
 def arg_stores(+node: String, args: List<&2, String>, +index: Nat) -> String:
   match args:
@@ -3746,10 +3946,10 @@ def main_jump(index: U32, found: Maybe<&2, U32>, +ctx: Ctx) -> Step:
 
 # -- control plan -----------------------------------------------------------
 
-def control_build(+plan: Plan) -> Control:
+def control_build(+plan: Plan, +widths: Map<&2, Nat>) -> Control:
   match plan:
     case Plan{cids, cid_macros, fid_macros, +entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing, _, _}:
-      match entries_ctl(entries, Ctx{Sig{entries, by_code, by_key, by_foreign, by_native, stages, declarations, cids, rt_entry(entries, 3n)}, plan, Nil{}, Nil{}, 0n, Nil{}, None{}, U32.from_nat(List.length(&2, Entry, entries)), Nil{}, False{}, Nil{}, False{}, max_arity(entries), Nil{}, Nil{}}):
+      match entries_ctl(entries, Ctx{Sig{entries, by_code, by_key, by_foreign, by_native, stages, declarations, cids, rt_entry(entries, 3n), widths, entry_width_index(entries, widths, Map.new(&2, Nat))}, plan, Nil{}, Nil{}, 0n, Nil{}, None{}, U32.from_nat(List.length(&2, Entry, entries)), Nil{}, False{}, Nil{}, False{}, max_arity(entries), Nil{}, Nil{}}):
         case StepFail{message}: ControlFail{message}
         case StepOk{_, +done}:
           ControlOk{segs_text(ctx_segs(done), ""), rows_add_segs(ctx_segs(done), rows_add_entries(entries, Nil{})), ctx_max(done)}
@@ -3911,6 +4111,34 @@ def rows_max_resw(rows: List<&2, SegText>, +acc: Nat) -> Nat:
       match row:
         case SegText{fid, arity, resw, text, forked, calls}: rows_max_resw(rest, Nat.max(acc, resw))
 
+# A code's own result width lives only in the shared transport analysis: its Fid
+# row must keep resw 0, because FID_ENTER reads resw as "these trailing node
+# words are results". The runtime's WL_RESW therefore has to absorb the widest
+# returning code directly, or a dead-but-emitted wide return would index past
+# the result vector FID_EXIT declares.
+def entries_max_width(entries: List<&2, Entry>, +widths: Map<&2, Nat>, +acc: Nat) -> Nat:
+  match entries:
+    case Nil{}: acc
+    case +entry <> rest:
+      match entry:
+        case Entry{index, arity, kind}:
+          match kind:
+            case KindCode{id, captures, params, body}: entries_max_width(rest, widths, Nat.max(acc, Transport.width_of(widths, id)))
+            case _: entries_max_width(rest, widths, acc)
+
+# One pass keyed by the entry index: every code entry's own result width, which
+# the tail-call convention check and the roots of a tail-call chain need.
+def entry_width_index(entries: List<&2, Entry>, +widths: Map<&2, Nat>, +acc: Map<&2, Nat>) -> Map<&2, Nat>:
+  match entries:
+    case Nil{}: acc
+    case +entry <> rest:
+      match entry:
+        case Entry{index, arity, kind}:
+          match kind:
+            case KindCode{id, captures, params, body}:
+              entry_width_index(rest, widths, Map.set(&2, Nat, acc, U32.show(index), Transport.width_of(widths, id)))
+            case _: entry_width_index(rest, widths, acc)
+
 def fid_defines(rows: List<&2, SegText>) -> String:
   match rows:
     case Nil{}: ""
@@ -4023,17 +4251,19 @@ def wl_last_rows(+count: Nat, +index: Nat) -> String:
     case True{}: cat(["    case ", Nat.show(index), ": ", r_name(index), " = (X); \\\n      break; \\\n", wl_last_rows(count, Nat.add(index, 1n))])
     case False{}: ""
 
-# The runtime's FID_EXIT saves exactly WL_RESW result registers and hands them
-# back to a resuming continuation, so both macros cover the plan's own resw
-# instead of r0 alone (equal to r0 when resw is 1, which is today's widest row).
+# The runtime's FID_EXIT saves exactly the words the returning segment named in
+# rn and hands them back to a resuming continuation. WL_RESW is the module's
+# widest vector, so a narrower return must not touch the registers above it:
+# each slot is saved only when rn reaches it. Restoration uses the preserved n:
+# WL_OPEN shadows rn with a new uninitialized machine-call variable.
 def wl_save_rows(+count: Nat, +index: Nat) -> String:
   match Nat.is_lt(index, count):
-    case True{}: cat(["(V)[", Nat.show(index), "] = ", r_name(index), "; ", wl_save_rows(count, Nat.add(index, 1n))])
+    case True{}: cat(["if (rn > ", Nat.show(index), ") (V)[", Nat.show(index), "] = ", r_name(index), "; ", wl_save_rows(count, Nat.add(index, 1n))])
     case False{}: ""
 
 def wl_take_rows(+count: Nat, +index: Nat) -> String:
   match Nat.is_lt(index, count):
-    case True{}: cat([r_name(index), " = (V)[", Nat.show(index), "]; ", wl_take_rows(count, Nat.add(index, 1n))])
+    case True{}: cat(["if (n > ", Nat.show(index), ") ", r_name(index), " = (V)[", Nat.show(index), "]; ", wl_take_rows(count, Nat.add(index, 1n))])
     case False{}: ""
 
 # BIR carries no device-bang facts, so BANGS is the true zero here; WL_RESW is
@@ -4066,7 +4296,7 @@ def table_or_zero(text: String) -> String:
     case True{}: "0"
     case False{}: text
 
-def tables_part(plan: Plan, +rows: List<&2, SegText>, regs: Nat) -> Part:
+def tables_part(plan: Plan, +rows: List<&2, SegText>, regs: Nat, +widths: Map<&2, Nat>) -> Part:
   match plan:
     case Plan{+cids, cid_macros, fid_macros, +entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing, library, _}:
       # A missing NativeCID alias is a plan failure: emitting the tables without
@@ -4078,7 +4308,16 @@ def tables_part(plan: Plan, +rows: List<&2, SegText>, regs: Nat) -> Part:
             case Some{message}: PartFail{message}
             case None{}:
               +forky = forky_rows(rows)
-              +resw = Nat.max(1n, rows_max_resw(rows, 0n))
+              # WL_RESW bounds the runtime's own result vector, and FID_EXIT
+              # writes rn words, so it must cover the widest continuation row
+              # and the widest returning code, which a plain code row cannot
+              # record in Fid.resw.
+              +resw = Nat.max(1n, Nat.max(rows_max_resw(rows, 0n), entries_max_width(entries, widths, 0n)))
+              # WL_SAVE/WL_TAKE name r0..r(WL_RESW-1), so the declared register
+              # bank must cover the widest result vector even if every entry's
+              # arity were narrower (it cannot be, since a continuation's arity
+              # counts its captures plus its results).
+              +regs_wide = Nat.max(regs, resw)
               PartOk{cat([
                 main_suppress(library),
                 aliases,
@@ -4088,7 +4327,7 @@ def tables_part(plan: Plan, +rows: List<&2, SegText>, regs: Nat) -> Part:
                 "CONSTV Cid CID_T[] = { ", cid_table(cids), "\n",
                 "CONSTV Fid FID_T[] = { ", fid_table(rows, forky), "\n",
                 "#define STAT_LEN 0\n\n",
-                wl_macros(regs, resw), "\n",
+                wl_macros(regs_wide, resw), "\n",
                 "#define WL_TABLE ", wl_table_text(rows, entries), "\n",
                 "#define MAIN_FID FID_", U32.show(main_fid_index(library, entries)), "\n",
                 "#define MAIN_PURE ", main_pure_text(main_pure), "\n",
@@ -4409,25 +4648,28 @@ def macro_collision_one(+key: String, +macro: String, cids: List<&2, CidRow>, +s
 # ---------------------------------------------------------------------------
 
 def emit(program: BIR.Program, runtime: String, imports: List<&2, CImport>) -> EmitResult:
-  match plan_make(program, imports):
-    case PlanFail{message}: EmitFailure{message}
-    case PlanOk{plan}: render(plan, runtime)
+  match Transport.result_widths(program):
+    case Transport.WidthsFail{message}: EmitFailure{cat(["BIR aggregate transport is not well formed: ", message])}
+    case Transport.WidthsOk{widths}:
+      match plan_make(program, imports):
+        case PlanFail{message}: EmitFailure{message}
+        case PlanOk{plan}: render(plan, runtime, widths)
 
-def render(+plan: Plan, runtime: String) -> EmitResult:
+def render(+plan: Plan, runtime: String, +widths: Map<&2, Nat>) -> EmitResult:
   match plan:
     case Plan{+cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing, _, _}:
       match macro_collision_cids(cids):
         case Some{message}: EmitFailure{message}
-        case None{}: render_parts(plan, runtime, cid_exact_map(cids), fid_exact_map(declarations, by_code, by_key, by_foreign, by_native))
+        case None{}: render_parts(plan, runtime, cid_exact_map(cids), fid_exact_map(declarations, by_code, by_key, by_foreign, by_native), widths)
 
-def render_parts(+plan: Plan, runtime: String, cid_map: Map<&2, String>, fid_map: Map<&2, String>) -> EmitResult:
-  match control_build(plan):
+def render_parts(+plan: Plan, runtime: String, cid_map: Map<&2, String>, fid_map: Map<&2, String>, +widths: Map<&2, Nat>) -> EmitResult:
+  match control_build(plan, widths):
     case ControlFail{message}: EmitFailure{message}
     case ControlOk{segments, +rows, max_arity}:
       match rows_check(rows):
         case Some{message}: EmitFailure{message}
         case None{}:
-          match tables_part(plan, rows, max_arity) spins_part() requests_part(plan):
+          match tables_part(plan, rows, max_arity, widths) spins_part() requests_part(plan):
             case PartFail{message} _ _: EmitFailure{message}
             case _ PartFail{message} _: EmitFailure{message}
             case _ _ PartFail{message}: EmitFailure{message}

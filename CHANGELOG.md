@@ -5,6 +5,18 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- G32 adds shared BIR private aggregate workers and explicit multi-value
+  returns, without changing the boxed public ABI. Both targets pass ten real
+  executable transport probes; the reachable producer/consumer path removes
+  its intermediate record. Twelve malformed/bottom boundary probes pass.
+  Independent reviews found and corrected worker-ID/continuation collisions,
+  missing consumer code, width validation gaps and a C result-count shadow.
+  The owned regression covers arrays, captures, F32 negative-zero bits and
+  multiple producers. Full compiler/fixedpoint/performance qualification is
+  still pending; R12 remains accepted.
+  `evals/receipts/producer2039g32_plan.json`,
+  `evals/receipts/producer2039g32_source_review.json`.
+
 - G31 reconsiders the unchanged G30 scheduler after withdrawing the
   assistant-chosen 5% relative-memory screen. All six new actual-image checker
   samples are retained: timing is inconclusive; peak RSS and footprint are

@@ -21,6 +21,7 @@ const providers = ['bend2/selfhost/c_backend.bend', 'bend2/selfhost/c_backend_la
   'bend2/selfhost/c_backend_physical.bend', 'bend2/selfhost/descriptor_nf.bend',
   'bend2/selfhost/c_backend_link.bend', 'bend2/selfhost/backend_ir.bend',
   'bend2/selfhost/index_lookup.bend', 'bend2/selfhost/c_backend_sharing.bend',
+  'bend2/selfhost/backend_transport.bend',
   'evals/c_backend_runtime.bend'];
 
 function relocateImports(text: string): string {

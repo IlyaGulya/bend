@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "status": "PREDECLARED_G32_TRANSPORT_IMPLEMENTATION",
+  "compilerAccepted": false,
+  "performanceAccepted": false,
+  "byteFixedpoint": false,
+  "baseline": {
+    "runId": "local2039g24r12",
+    "sourceCheckpoint": "5916d410",
+    "restoredFrom": "72d2964e",
+    "native": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+      "sha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "bytes": 18808824,
+      "matches": true
+    },
+    "image": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+      "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "bytes": 31758507,
+      "matches": true
+    },
+    "acceptance": {
+      "path": "/Users/ilyagulya/Projects/My/bend/evals/receipts/root2039g24r12_native_fixedpoint.json",
+      "sha256": "cb66ed5542e56516f83d2c04fb80f5ab8597130ab137a4128be8491391911d50",
+      "sourceCheckpoint": "5916d410",
+      "byteFixedpoint": true
+    }
+  },
+  "previousRejected": {
+    "sourceCheckpoint": "5a6390ac",
+    "restorationCheckpoint": "18954122",
+    "reason": "G31 completed fresh fixedpoint but scheduler_chunk_smoke C emission exceeded the unchanged 600-second consumer deadline"
+  },
+  "contract": {
+    "path": "local://g32-bir-transport-contract.md",
+    "scope": "Common BIR private aggregate worker/wrapper + canonical-Term LetValues/ReturnValues; no scheduler-name recognition or public ABI change",
+    "hardLimits": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 600000
+    },
+    "relativeMemoryCutoff": null,
+    "quantum": 64,
+    "parserFuel": 8000000,
+    "acceptance": "Complete source ownership-safe semantic gates, fresh full-root native validation and actual native-stage0/stage1/stage2 exact JS-byte fixedpoint; all applicable consumers, including existing scheduler C case. Performance uses the existing paired native/JS pipeline mean-and-median rule on all retained unprofiled measurements. No inference from source shape or profiler timing.",
+    "failureAction": "Preserve a measured rejected version and exact required source inputs before restoring only G32-owned sources; never delete the failing consumer or increase its deadline."
+  },
+  "sourceChange": {
+    "parent": [
+      "bend2/selfhost/backend_ir.bend",
+      "evals/emitter_step_lower.ts",
+      "evals/c_backend_step_smoke.ts",
+      "evals/c_backend_library_run.ts",
+      "evals/c_target_fixtures_run.ts",
+      "tests/compile/bir_transport_owned.bend"
+    ],
+    "slices": [
+      "bend2/selfhost/backend_transport.bend",
+      "bend2/selfhost/backend_lower.bend",
+      "bend2/selfhost/c_backend.bend",
+      "bend2/selfhost/c_backend_sharing.bend",
+      "bend2/selfhost/c_backend_physical.bend",
+      "bend2/selfhost/js_backend.bend"
+    ]
+  },
+  "smoke": {
+    "probe": "checkpoints/.g32_backend_probe.bend",
+    "canonicalOwnedBaseline": "/private/tmp/bend-g32-transport-zJDckJ/owned-baseline-final.json",
+    "actualAcceptedImageCommands": [
+      [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "evals/c_target_fixtures_run.ts",
+        "--driver=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/stage-one-consumer-driver",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--target=c",
+        "--smoke-case=bir_transport_owned",
+        "--logs=/private/tmp/bend-g32-transport-zJDckJ/r12-owned-c",
+        "--keep"
+      ],
+      [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "evals/c_target_fixtures_run.ts",
+        "--driver=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/stage-one-consumer-driver",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--target=js",
+        "--smoke-case=bir_transport_owned",
+        "--logs=/private/tmp/bend-g32-transport-zJDckJ/r12-owned-js",
+        "--keep"
+      ]
+    ]
+  },
+  "limitsOfClaims": [
+    "An actual emitted backend consumer is required; canonical host compilation of the ordinary fixture is baseline behavior only.",
+    "No accepted speed/memory/fixedpoint claim until exercised.",
+    "No per-return array/object carrier in JS; no vector sealing/allocation in C."
+  ]
+}

@@ -1,0 +1,453 @@
+{
+  "schemaVersion": 1,
+  "status": "G32_INTEGRATED_TRANSPORT_PROBE_PASS_FULL_QUALIFICATION_PENDING",
+  "compilerAccepted": false,
+  "performanceAccepted": false,
+  "byteFixedpoint": false,
+  "baseline": {
+    "runId": "local2039g24r12",
+    "sourceCheckpoint": "5916d410",
+    "restoredFrom": "72d2964e",
+    "native": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+      "sha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "bytes": 18808824,
+      "matches": true
+    },
+    "image": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+      "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "bytes": 31758507,
+      "matches": true
+    },
+    "acceptance": {
+      "path": "/Users/ilyagulya/Projects/My/bend/evals/receipts/root2039g24r12_native_fixedpoint.json",
+      "sha256": "cb66ed5542e56516f83d2c04fb80f5ab8597130ab137a4128be8491391911d50",
+      "sourceCheckpoint": "5916d410",
+      "byteFixedpoint": true
+    }
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "abi": 13,
+  "quantum": 64,
+  "parserFuel": 8000000,
+  "sourcePins": {
+    "bend2/selfhost/backend_ir.bend": "3b6faf121e48ab9ba56cb6ebd8af40b7510aea8099686f2ad5d327a3a3ce9b9f",
+    "evals/emitter_step_lower.ts": "01862439887e67998543db742a7614a6e1155e176e01006e7880490375b7939c",
+    "evals/c_backend_step_smoke.ts": "f0032779ded902685bf661dcfe5e1952eab42e8dd454bd87874627794eb1ec29",
+    "evals/c_backend_library_run.ts": "4198438b2eee6c60aa4f9af64e3a841e81928a0c9fdb70936a096aa7f54d3131",
+    "evals/c_target_fixtures_run.ts": "6c5ead2ab36759b68f624d6baaf677e1e6e47ddf1648ee31031b1dbe733ec83e",
+    "tests/compile/bir_transport_owned.bend": "287d5bfb4891ed7282c52ec9e76d2a34e18c8a591d3ddc1a7c04bfd631b86102",
+    "bend2/selfhost/backend_transport.bend": "8889717797bcc9757b15af6aead90bc9e510e43ebeac72b4fe7d6738b2b3eaba",
+    "bend2/selfhost/backend_lower.bend": "f7dfabd56ac871fe0769ec34711912f455ece561d1e9ce7d8d7e92ce5a6ba66d",
+    "bend2/selfhost/c_backend.bend": "ff183a67314ccb466ec1c946413199eb1aee8e97ac181436f71d5ad56598a3e7",
+    "bend2/selfhost/c_backend_sharing.bend": "0f8bfe5ca378e217368e757a4d762002ebe29a62990cc69f5ae35d3d859bbbee",
+    "bend2/selfhost/js_backend.bend": "c135401ed372c10b479e3ef3e881fcbf561ed35f2cd41a277faff48439fb3813",
+    "checkpoints/.g32_backend_probe.bend": "cf1a369119dbad9bf0dcad2de6adac98e3301b4d6e89b4d12a289b96ce20dc2b"
+  },
+  "commands": {
+    "environment": "env HEAVY_GATE_MEMORY_MIB=8192 HEAVY_GATE_RSS_MIB=8192 HEAVY_GATE_POLL_MS=10 HEAVY_GATE_TIMEOUT_MS=600000 BUN_JSC_forceRAMSize=4294967296 PATH=\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools:/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/cmux-cli-shims/1AE884FF-4153-438F-922A-7660D416EB20:/Applications/cmux.app/Contents/Resources/bin:/Users/ilyagulya/.antigravity/antigravity/bin:/opt/homebrew/opt/mysql-client/bin:/opt/homebrew/opt/binutils/bin:/Users/ilyagulya/.depot_tools:/opt/homebrew/opt/whois/bin:/Users/ilyagulya/go/bin:/opt/homebrew/opt/curl/bin:/Users/ilyagulya/Library/pnpm:/Users/ilyagulya/.opam/default/bin:/Users/ilyagulya/.bun/bin:/Users/ilyagulya/.local/bin:/Users/ilyagulya/.local/bin:/Users/ilyagulya/fvm/default/bin:/opt/homebrew/opt/ruby/bin:/Users/ilyagulya/.elan/bin:/Library/Frameworks/Python.framework/Versions/3.12/bin:/opt/homebrew/share/google-cloud-sdk/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/opt/X11/bin:/Library/Apple/usr/bin:/Applications/Wireshark.app/Contents/MacOS:/Applications/VMware Fusion.app/Contents/Public:/opt/homebrew/bin:/Users/ilyagulya/.cargo/bin:/Users/ilyagulya/Library/Application Support/JetBrains/Toolbox/scripts:/Users/ilyagulya/.orbstack/bin:/Users/ilyagulya/Library/Android/sdk/platform-tools:/Users/ilyagulya/Library/Android/sdk/build-tools/34.0.0:/Users/ilyagulya/Library/Android/sdk/tools/proguard/bin:/Users/ilyagulya/Library/Android/sdk/emulator:/Users/ilyagulya/Library/Android/sdk/cmdline-tools/latest/bin:/Users/ilyagulya/.spoof-dpi/bin:/Users/ilyagulya/.pub-cache/bin:/Users/ilyagulya/Library/Android/sdk/ndk/26.3.11579264:/Users/ilyagulya/.lmstudio/bin:/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin\"",
+    "generate": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/heavy_gate.ts",
+      "--memory-mib",
+      "8192",
+      "--rss-mib",
+      "8192",
+      "--poll-ms",
+      "10",
+      "--timeout-ms",
+      "600000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/private/tmp/bend-g32-transport-zJDckJ/generate-probe.ts"
+    ],
+    "build": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/checker_core_component_build.ts",
+      "--file=checkpoints/g32_probe_component.bend",
+      "--exports=expand_modules_start,template_step",
+      "--artifact=/private/tmp/bend-g32-transport-zJDckJ/backend-probe-cps-v4.js",
+      "--report=/private/tmp/bend-g32-transport-zJDckJ/backend-probe-cps-v4-build"
+    ],
+    "run": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/heavy_gate.ts",
+      "--memory-mib",
+      "8192",
+      "--rss-mib",
+      "8192",
+      "--poll-ms",
+      "10",
+      "--timeout-ms",
+      "600000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--max-old-space-size=3072",
+      "/private/tmp/bend-g32-transport-zJDckJ/backend-runtime.mjs",
+      "/private/tmp/bend-g32-transport-zJDckJ/backend-probe-cps-v4.js",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "/private/tmp/bend-g32-transport-zJDckJ"
+    ],
+    "acceptedOwnedFixture": [
+      [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "evals/c_target_fixtures_run.ts",
+        "--driver=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/stage-one-consumer-driver",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--target=c",
+        "--smoke-case=bir_transport_owned",
+        "--logs=/private/tmp/bend-g32-transport-zJDckJ/r12-owned-final-c",
+        "--keep"
+      ],
+      [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "evals/c_target_fixtures_run.ts",
+        "--driver=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/stage-one-consumer-driver",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--target=js",
+        "--smoke-case=bir_transport_owned",
+        "--logs=/private/tmp/bend-g32-transport-zJDckJ/r12-owned-final-js",
+        "--keep"
+      ]
+    ],
+    "plannedQualification": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/g24_qualification.mjs",
+      "--run-id=local2039g32",
+      "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--bun=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--clang=/usr/bin/clang",
+      "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+      "--phase=all",
+      "--bindings=/Users/ilyagulya/Projects/My/bend/evals/receipts/producer2039g25_r12_bindings.json",
+      "--frozen-repository=/private/tmp/bend2039g22-tiny-inline",
+      "--control-native=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+      "--control-image=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+      "--out=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32-full",
+      "--fail-fast-performance=true"
+    ]
+  },
+  "probe": {
+    "path": "checkpoints/.g32_backend_probe.bend",
+    "sha256": "cf1a369119dbad9bf0dcad2de6adac98e3301b4d6e89b4d12a289b96ce20dc2b",
+    "generationHelpers": [
+      {
+        "path": "/private/tmp/bend-g32-transport-zJDckJ/generate-probe.ts",
+        "sha256": "c3e5ba4438670617fc30d6dbaaff058d2de3018d5449cf14dba50da3eef232e8"
+      },
+      {
+        "path": "/private/tmp/bend-g32-transport-zJDckJ/backend-runtime.mjs",
+        "sha256": "7c4d48228e9ffb094c32d5ccef3ecdaab2e1534ad5349bbbb689b3d6fcab1cf3"
+      }
+    ],
+    "artifact": {
+      "path": "/private/tmp/bend-g32-transport-zJDckJ/backend-probe-cps-v4.js",
+      "sha256": "729f11fc10e7f81c7f5eab8e52f08d797e9d08eaad7cce58a55c740ce329a569",
+      "bytes": 6815440
+    },
+    "nativeValidation": {
+      "definitions": 4787,
+      "events": 5204,
+      "checksExcluded": 0,
+      "outputPatches": 0,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 2352103424,
+        "peakFootprintBytes": 2450019664,
+        "elapsedMs": 10967,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "node",
+          "--experimental-strip-types",
+          "--max-old-space-size=3072",
+          "/Users/ilyagulya/Projects/My/bend/evals/checker_core_component_build.ts",
+          "--worker",
+          "--file=/Users/ilyagulya/Projects/My/bend/checkpoints/g32_probe_component.bend",
+          "--exports=expand_modules_start,template_step",
+          "--artifact=/private/tmp/bend-g32-transport-zJDckJ/backend-probe-cps-v4.js",
+          "--report=/private/tmp/bend-g32-transport-zJDckJ/backend-probe-cps-v4-build",
+          "--inputs-sha256=ba69438a5bf431fc3d0e9935b4e55741439f808e119f7d7416b2271aa5efa5e0"
+        ],
+        "label": "Full-native CheckerCore component JS build",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793355485160-3ec8c0238d838f85.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    "validation": [
+      {
+        "mode": 0,
+        "expected": "rejected",
+        "observed": "rejected"
+      },
+      {
+        "mode": 1,
+        "expected": "rejected",
+        "observed": "rejected"
+      },
+      {
+        "mode": 2,
+        "expected": "rejected",
+        "observed": "rejected"
+      },
+      {
+        "mode": 3,
+        "expected": "rejected",
+        "observed": "rejected"
+      },
+      {
+        "mode": 4,
+        "expected": "rejected",
+        "observed": "rejected"
+      },
+      {
+        "mode": 5,
+        "expected": "rejected",
+        "observed": "rejected"
+      },
+      {
+        "mode": 6,
+        "expected": "rejected",
+        "observed": "rejected"
+      },
+      {
+        "mode": 7,
+        "expected": "rejected",
+        "observed": "rejected"
+      },
+      {
+        "mode": 8,
+        "expected": "rejected",
+        "observed": "rejected"
+      },
+      {
+        "mode": 9,
+        "expected": "rejected",
+        "observed": "rejected"
+      },
+      {
+        "mode": 10,
+        "expected": "accepted",
+        "observed": "accepted"
+      },
+      {
+        "mode": 11,
+        "expected": "rejected",
+        "observed": "rejected"
+      }
+    ],
+    "reachableOptimization": {
+      "vectors": 1,
+      "returnedVectors": 1,
+      "pairConstructs": 0
+    },
+    "executions": [
+      {
+        "mode": 0,
+        "target": "c",
+        "expected": "20",
+        "observed": "20",
+        "source": "/private/tmp/bend-g32-transport-zJDckJ/probe-0.c",
+        "sourceSha256": "63311c48731e9f446afa7536d31064296613824585117552696b2fed65ecc776",
+        "bytes": 95628,
+        "command": [
+          "/private/tmp/bend-g32-transport-zJDckJ/probe-0.c.exe"
+        ]
+      },
+      {
+        "mode": 0,
+        "target": "js",
+        "expected": "20",
+        "observed": "20",
+        "source": "/private/tmp/bend-g32-transport-zJDckJ/probe-0.js",
+        "sourceSha256": "22b98b8402c2508f68894cbadfcc12cf680e91099b34f8879024d89dab0d647a",
+        "bytes": 67866,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--max-old-space-size=3072",
+          "/private/tmp/bend-g32-transport-zJDckJ/probe-0.js"
+        ]
+      },
+      {
+        "mode": 1000,
+        "target": "c",
+        "expected": "20",
+        "observed": "20",
+        "source": "/private/tmp/bend-g32-transport-zJDckJ/probe-1000.c",
+        "sourceSha256": "e4a7580e1c4b77d6aaa8fd3d3ff32dd2f3332fda3b07aa757c9e74946fbbea54",
+        "bytes": 95631,
+        "command": [
+          "/private/tmp/bend-g32-transport-zJDckJ/probe-1000.c.exe"
+        ]
+      },
+      {
+        "mode": 1000,
+        "target": "js",
+        "expected": "20",
+        "observed": "20",
+        "source": "/private/tmp/bend-g32-transport-zJDckJ/probe-1000.js",
+        "sourceSha256": "e1d2465f4bc8f875e516e1cc1b88afee6bb027d7b23112d2b57ab2d7d29c08c1",
+        "bytes": 67869,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--max-old-space-size=3072",
+          "/private/tmp/bend-g32-transport-zJDckJ/probe-1000.js"
+        ]
+      },
+      {
+        "mode": 2,
+        "target": "c",
+        "expected": "35",
+        "observed": "35",
+        "source": "/private/tmp/bend-g32-transport-zJDckJ/probe-2.c",
+        "sourceSha256": "9318dbd0725a5e7396de1de34565ad012516617a1971e0b60a5fe7d5aad3dfb0",
+        "bytes": 96210,
+        "command": [
+          "/private/tmp/bend-g32-transport-zJDckJ/probe-2.c.exe"
+        ]
+      },
+      {
+        "mode": 2,
+        "target": "js",
+        "expected": "35",
+        "observed": "35",
+        "source": "/private/tmp/bend-g32-transport-zJDckJ/probe-2.js",
+        "sourceSha256": "0599851d60e1a9ba5d80569338b792df0156305f3da29da29f66d8b5a25be2bb",
+        "bytes": 68013,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--max-old-space-size=3072",
+          "/private/tmp/bend-g32-transport-zJDckJ/probe-2.js"
+        ]
+      },
+      {
+        "mode": 3,
+        "target": "c",
+        "expected": "14",
+        "observed": "14",
+        "source": "/private/tmp/bend-g32-transport-zJDckJ/probe-3.c",
+        "sourceSha256": "2c8db103d3a74bb1d2fd1a11b2ed42d799ad6d18c1c8cc3ef088141931e49291",
+        "bytes": 94487,
+        "command": [
+          "/private/tmp/bend-g32-transport-zJDckJ/probe-3.c.exe"
+        ]
+      },
+      {
+        "mode": 3,
+        "target": "js",
+        "expected": "14",
+        "observed": "14",
+        "source": "/private/tmp/bend-g32-transport-zJDckJ/probe-3.js",
+        "sourceSha256": "70a4a1dfb9cbee26ec37db887c78a1ff78317251bc98f9b9ac959dc14778c0f7",
+        "bytes": 67377,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--max-old-space-size=3072",
+          "/private/tmp/bend-g32-transport-zJDckJ/probe-3.js"
+        ]
+      },
+      {
+        "mode": 9,
+        "target": "c",
+        "expected": "68",
+        "observed": "68",
+        "source": "/private/tmp/bend-g32-transport-zJDckJ/probe-9.c",
+        "sourceSha256": "c245a132185445ddc96cf2f6038038ca2aed63dd365133fa59685ba8f3d0463d",
+        "bytes": 97002,
+        "command": [
+          "/private/tmp/bend-g32-transport-zJDckJ/probe-9.c.exe"
+        ]
+      },
+      {
+        "mode": 9,
+        "target": "js",
+        "expected": "68",
+        "observed": "68",
+        "source": "/private/tmp/bend-g32-transport-zJDckJ/probe-9.js",
+        "sourceSha256": "dd9818badf682079836f4259654b062b98bd606ab511cb103fd6dc8215590ac8",
+        "bytes": 67966,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--max-old-space-size=3072",
+          "/private/tmp/bend-g32-transport-zJDckJ/probe-9.js"
+        ]
+      }
+    ]
+  },
+  "reviews": [
+    {
+      "agent": "G32NativeReview",
+      "scope": "C transport + sharing",
+      "originalFinding": "WL_TAKE rn guard reads shadowed uninitialized rn inside WL_OPEN",
+      "correction": "wl_take_rows uses the preserved FID_EXIT n; WL_SAVE rn remains before WL_OPEN",
+      "runtimeExecuted": false
+    },
+    {
+      "agent": "G32MailboxReview",
+      "scope": "JS mailbox, captures, reentry and unwind",
+      "verdict": "No concrete source-level blocker found; depends on shared validator",
+      "runtimeExecuted": false
+    },
+    {
+      "agent": "G32WidthReview",
+      "scope": "Width scans and reverse-tail-edge worklist",
+      "originalFindings": [
+        "Ignored Summary.problem",
+        "Absent LetValues target accepted as bottom",
+        "Duplicate LetValues ids accepted",
+        "Unreachable Region.next contributes width"
+      ],
+      "corrections": [
+        "confirmed checks scan_problem",
+        "width map contains all code ids, including zero bottom",
+        "independent binding cardinality/uniqueness checks",
+        "Scan tracks lexical leaves and conditionally includes Region.next",
+        "pending stack insertion is O(1)"
+      ],
+      "finalVerdict": "No remaining concrete blocker under conservative static convention analysis",
+      "limitation": "Strict-call continuations retain a static exit convention even when the callee cannot return. Zero is a sufficient, not complete, bottom classification.",
+      "runtimeExecuted": false
+    },
+    {
+      "agent": "G32EscapeReview",
+      "scope": "Private worker transform, identity, ownership and fresh ids",
+      "originalFindings": [
+        "Consumer workers never emitted",
+        "Producer fresh supply not advanced",
+        "Clones reused global JS continuation ids"
+      ],
+      "corrections": [
+        "Append planned consumer workers",
+        "Store allocated fresh supply",
+        "Alpha-rename cloned binders, local references and region labels; saturating allocation causes no-op on exhaustion"
+      ],
+      "finalVerdict": "No remaining concrete blocker found in correction review",
+      "runtimeExecuted": false
+    }
+  ],
+  "limitations": [
+    "Raw BIR probe is a real compiled backend run, not full-root compiler/fixedpoint/performance acceptance.",
+    "The four-output owned fixture passed on accepted R12 C/JS; candidate ordinary-source consumers remain mandatory.",
+    "Original boxed public code remains intentionally available; reachable optimized code census excludes unused wrappers."
+  ]
+}

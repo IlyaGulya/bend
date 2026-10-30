@@ -7,6 +7,7 @@ import ./scope_lookup.bend as Scope
 import ./lower_catalog.bend as Catalog
 import ./descriptor_nf.bend as DescriptorNf
 import ./backend_ir.bend as BIR
+import ./backend_transport.bend as Transport
 
 # Checked FIR to target-neutral backend IR. Nothing here knows a rendering
 # target, reconstructs syntax or re-infers a type: erasure, strict operands,
@@ -1985,8 +1986,13 @@ def lower_definitions(result: LowerResult<List<&2, BIR.Declaration>>, constructo
   match result:
     case LowerResult{State{_, _, _, _, codes, failure, scope, normalizer}, declarations}:
       lower_complete(failure, codes, declarations, constructors, families, type_functions, ending)
+# The single integration point for aggregate transport. Lowering decides the
+# boxed program; the shared pass decides which private producer/consumer pairs
+# exchange a vector instead, and it leaves the program untouched when its own
+# result-width analysis rejects the transport shape. Renderers therefore never
+# form or repair a vector; they only render what arrives here.
 def lower_complete(failure: Maybe<&2, Problem>, codes: List<&2, BIR.Code>, declarations: List<&2, BIR.Declaration>, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>, type_functions: List<&2, BIR.TypeFunction>, ending: BIR.Ending) -> ProgramResult:
   match failure:
     case Some{Problem{message, span}}: LowerFailure{message, span}
     case None{}:
-      Lowered{BIR.Program{List.reverse(&2, BIR.Code, codes), declarations, constructors, families, type_functions, ending}}
+      Lowered{Transport.optimize(BIR.Program{List.reverse(&2, BIR.Code, codes), declarations, constructors, families, type_functions, ending})}

@@ -4,6 +4,22 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
+### G32 в работе: BIR private aggregate transport
+
+Начат от восстановленного R12 (`18954122`), без возврата scheduler rewrite G31.
+`backend_transport.bend` — общий bounded worker/consumer pass; `LetValues` и
+`ReturnValues` передают обычные BIR values, C — через N `Term` registers,
+JS — через немедленно очищаемый mailbox. Public/foreign/closure ABI — boxed.
+Независимый review выявил и исправил коллизии fresh IDs/JS continuations,
+пропущенные consumer workers, ошибки width validation и shadowed `rn` в C.
+Реальный compiled CPS probe: **4 787 definitions / 5 204 events**, zero
+excluded checks/output patches; **10/10 C/JS executions** и **12 boundary
+verdicts PASS**. Достижимый Pair producer→consumer больше не строит record.
+Source width analysis консервативен после strict calls, не termination solver.
+Full root/fixedpoint/performance **ещё не выполнены; G32 не принят**.
+Baseline остаётся R12. `producer2039g32_plan.json` фиксирует прежние 8 GiB /
+600 s, ABI13, quantum64, fuel8M и обязательные gates, включая C scheduler case.
+
 ### Отклонённый G31: fixedpoint PASS, C emission deadline FAIL; R12 восстановлен
 
 Пользователь оспорил порог +5% и согласовал повторные измерения. Этот порог
