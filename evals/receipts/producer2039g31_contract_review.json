@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "status": "BOUNDED_SOURCE_CONTRACT_REVIEW_COMPLETE",
+  "compilerAccepted": false,
+  "performanceAccepted": false,
+  "reviewer": "G31QualificationAudit",
+  "runtimeExecuted": false,
+  "ownedCutoverFiles": [
+    "evals/checker_core_step_lower.ts",
+    "evals/selfhost_driver_source.ts"
+  ],
+  "sourceCheckpoint": "10f1f3a3",
+  "sourcePins": {
+    "evals/checker_core_step_lower.ts": "847b8a73c782c0bd4790f19e7f467bc791efe59028433c46d1e9261a65d052d9",
+    "evals/selfhost_driver_source.ts": "48f024856cf697ef59d889e759d28559bd5d3afd95c60698c874ac79eb690f9a",
+    "evals/c_target_fixtures_run.ts": "82a17ac3a631cf7bec3d9eb7ed2398464affe86d71768df956304e7713c683a8",
+    "evals/scheduler_chunk_smoke.bend": "21986a939adccc86c6580c446242be9feb95703c6eeb820ef939d961f2247140"
+  },
+  "generatedArtifacts": [
+    "checkpoints/template_steps_v1.bend",
+    "checkpoints/template-steps-v1.json",
+    "checkpoints/checker_core_steps_v1.bend",
+    "checkpoints/checker-core-steps-v1.json",
+    "checkpoints/emitter_steps_v1.bend",
+    "checkpoints/emitter-steps-v1.json"
+  ],
+  "recommendation": "Restore only the two producer/composer TS files together; let the existing qualification runner regenerate all canonical artifacts and proofs. Do not copy old manifests, reuse screen evidence as fixedpoint or run concurrent generators.",
+  "fullCommand": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "evals/g24_qualification.mjs",
+    "--run-id=local2039g31",
+    "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "--bun=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--clang=/usr/bin/clang",
+    "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+    "--phase=all",
+    "--bindings=/Users/ilyagulya/Projects/My/bend/evals/receipts/producer2039g25_r12_bindings.json",
+    "--frozen-repository=/private/tmp/bend2039g22-tiny-inline",
+    "--control-native=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+    "--control-image=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+    "--out=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g31-full",
+    "--fail-fast-performance=false"
+  ],
+  "guardEnvironment": "env HEAVY_GATE_MEMORY_MIB=8192 HEAVY_GATE_RSS_MIB=8192 HEAVY_GATE_POLL_MS=10 HEAVY_GATE_TIMEOUT_MS=600000 BUN_JSC_forceRAMSize=4294967296 ",
+  "performanceInterpretation": "--fail-fast-performance=false disables only the optional old aggregate rejection, not correctness or consumers. G24_QUALIFICATION_PASS is completion of orchestration, not automatic compiler/performance acceptance. Parent reports every native/JS sample and explicit time/memory tradeoff.",
+  "screenLimitations": [
+    "Hybrid checker-only screen uses accepted R12 parser/expander, not candidate template/emitter scheduling.",
+    "Guardian peaks include startup/load/expand/check/post-check hashing; endpoint heapUsed is not peak or post-GC live memory.",
+    "Three fixed-order pairs are limited evidence and not perfectly position-balanced. Historical samples remain separate.",
+    "Inherited request.sourceAuthority.checkpoint=3167aea6 is descriptive stale metadata from the original control component; verify authenticates file inputs/pins, not that object. Candidate authority comes from the authenticated native-built G30 image provenance, and fresh full qualification is still required. Do not edit running pinned requests."
+  ],
+  "host": {
+    "model": "MacBookPro18,4",
+    "cpu": "Apple M1 Max",
+    "memoryBytes": 68719476736,
+    "platform": "darwin",
+    "arch": "arm64",
+    "command": [
+      "/usr/sbin/sysctl",
+      "-n",
+      "hw.model",
+      "hw.memsize",
+      "machdep.cpu.brand_string"
+    ]
+  },
+  "fullQualificationStarted": false
+}
