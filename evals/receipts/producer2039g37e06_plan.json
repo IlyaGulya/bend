@@ -1,0 +1,157 @@
+{
+  "schemaVersion": 1,
+  "status": "PREDECLARED_G37_E06_UNQUALIFIED_IMMUTABLE_CONTEXT_HANDOFF",
+  "compilerAccepted": false,
+  "performanceAccepted": false,
+  "byteFixedpoint": false,
+  "baseline": {
+    "native": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+      "sha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "bytes": 18808824,
+      "matches": true
+    },
+    "image": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+      "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "bytes": 31758507,
+      "matches": true
+    }
+  },
+  "priorCheckpoint": "6e6debc2",
+  "restoration": {
+    "path": "/Users/ilyagulya/Projects/My/bend/evals/receipts/producer2039g36e05_restored_r12.json",
+    "sha256": "69516158c7622960951ca5a30e8c27adac88b636284723d5740ad937e04cfeab",
+    "bytes": 72906
+  },
+  "admission": {
+    "path": "/Users/ilyagulya/Projects/My/bend/evals/receipts/producer2039e01e13_coverage.json",
+    "sha256": "2e4797087bd88dfd1d545fb5820c54a3ec834fa356b2d9342875c35c3fae1d76",
+    "bytes": 242496
+  },
+  "changedSources": [
+    "bend2/selfhost/lower_catalog.bend",
+    "bend2/selfhost/backend_lower.bend",
+    "bend2/selfhost/BIR_LAWS.md"
+  ],
+  "priorSources": [
+    {
+      "path": "bend2/selfhost/lower_catalog.bend",
+      "sha256": "e322065c5ccb0a15f2ab81fd9e6dd689fe8b88ad50535e4f70f503e796164f01",
+      "bytes": 99872
+    },
+    {
+      "path": "bend2/selfhost/backend_lower.bend",
+      "sha256": "d5217f4d2117ff9527474847b53caaa6d881570d6fe4a2c24e0af668cfc75b7f",
+      "bytes": 126306
+    },
+    {
+      "path": "bend2/selfhost/BIR_LAWS.md",
+      "sha256": "fb758786872012a34dbe161c42a6e47f458854fdcac32418ad0314e510c1624f",
+      "bytes": 120487
+    },
+    {
+      "path": "bend2/selfhost/.global57j-js_emit.bend",
+      "sha256": "1c3b30f8f65db5a69da84aa107e12106e98ebe35afa2f0b61fe6ae716d51697f",
+      "bytes": 107034
+    }
+  ],
+  "sourcePins": {
+    "bend2/bend.ts": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+    "bend2/base.bend": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+    "bend2/comp.ts": "880a9b3b86f273852a39fc664f8c3d7b71e3860b6d365e4321949fc812b6e7cc",
+    "evals/checker_core_owned_source.ts": "7b9fc4fb80aa87ef0ce44310031e5bfe909f8abd9672f16609c435daa87eb450",
+    "evals/checker_core_step_lower.ts": "21a47855e891ab115fb2ce4c70b7b699b376c6488f2505b7f0d6893f8d66daf9",
+    "evals/emitter_step_lower.ts": "38c49a093bb91b16d058baba69303a15277e40bbeeb3aff1bf4ec0c1831817b3",
+    "evals/template_step_lower.ts": "24bb3b87949f3d68073e2ec407c339b75f5124a877106d24fbc27ca9dbb95de3",
+    "evals/g24_qualification.mjs": "a8212e066d3fadad484a7699a338fa3170a2978403a6dbab5befc0cf6afc353e",
+    "bend2/selfhost/checker.bend": "fa1d63e8f5de8f8afb9d47bca13104ad43285dcc195589666323bbda675366bc",
+    "bend2/selfhost/backend_lower.bend": "67f43045fe282f7ec0dafa3ee00a9b3c7a29f1eefc16a077cca3a7bab707b382",
+    "bend2/selfhost/lower_catalog.bend": "57e61fe62731406ea9642109fd371affaf8c304ddb7fd7f31471f0d32d18fb06",
+    "bend2/selfhost/BIR_LAWS.md": "43f5091c1d96212337af843ee977ea9a2220d8b1ea0261172f4f59ba31d9b126"
+  },
+  "scratchArityMigration": {
+    "path": "bend2/selfhost/.global57j-js_emit.bend",
+    "beforeSha256": "1c3b30f8f65db5a69da84aa107e12106e98ebe35afa2f0b61fe6ae716d51697f",
+    "afterSha256": "f040661d21168e877acea8fc163eee7002bafab247eca3f3ef2eb891c4412f33",
+    "trackedInVersion": false,
+    "scope": "Only ignore the appended Catalog field; no unrelated scratch changes or ownership are claimed. Restore matching old arity on R12 rollback."
+  },
+  "scope": "Carry the already-built descriptor normalizer for the exact immutable family/type-function lists in one transient Catalog field into the existing lowering State. Remove only the second nf_context construction. No result cache, descriptor/fuel/environment/binder/error-order changes, new BIR schema, owner capture or foreign/closure ABI change. Index-map retention across the handoff is an explicit qualification risk.",
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "worker": {
+    "stackMiB": 256,
+    "oldMiB": 6144,
+    "youngMiB": 128
+  },
+  "parserFuel": 8000000,
+  "quantum": 64,
+  "policy": "Existing opt-in fail-fast performance policy unchanged; retain every original sample. No5percent threshold. A passing image alone does not establish acceptance.",
+  "runtime": {
+    "node": {
+      "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5",
+      "bytes": 113935712
+    },
+    "bun": {
+      "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "sha256": "28c7dd0a06916aba284d570ef44a2d70e9c538eaf2ba58dfe0910525563b3f79",
+      "bytes": 70469776
+    }
+  },
+  "preflight": {
+    "status": "NOT_RUN",
+    "prepare": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--experimental-strip-types",
+      "/private/tmp/bend-e01-e13-jbsb4I/reuse-preflight/cli.mjs",
+      "prepare",
+      "--repo=/Users/ilyagulya/Projects/My/bend",
+      "--experiment=e06",
+      "--run-id=local2039g37e06preflight01",
+      "--out=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g37e06preflight01",
+      "--source-commit=<AUTHORED_G37_SOURCE_COMMIT>",
+      "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--bun=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--clang=/usr/bin/clang"
+    ],
+    "run": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--experimental-strip-types",
+      "/private/tmp/bend-e01-e13-jbsb4I/reuse-preflight/cli.mjs",
+      "run",
+      "--repo=/Users/ilyagulya/Projects/My/bend",
+      "--experiment=e06",
+      "--run-id=local2039g37e06preflight01",
+      "--out=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g37e06preflight01",
+      "--source-commit=<AUTHORED_G37_SOURCE_COMMIT>",
+      "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--bun=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--clang=/usr/bin/clang"
+    ],
+    "scope": "Fresh checked full-compiler canonical RootJS, source-derived context identity probes,18 C/JS case rows with36 actual-image emissions and16 consumer executions plus2 exact admission failures. No substitute for native/fixedpoint/paired gates."
+  },
+  "fullCommand": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "evals/g24_qualification.mjs",
+    "--run-id=local2039g37e06full01",
+    "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "--bun=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--clang=/usr/bin/clang",
+    "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+    "--phase=all",
+    "--bindings=/Users/ilyagulya/Projects/My/bend/evals/receipts/producer2039g25_r12_bindings.json",
+    "--frozen-repository=/private/tmp/bend2039g22-tiny-inline",
+    "--control-native=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+    "--control-image=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+    "--out=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g37e06full01",
+    "--fail-fast-performance=true"
+  ],
+  "decision": "No acceptance before successful real native root, genuine byte fixedpoint, all original12 paired samples satisfying every strict mean/median/memory condition and applicable consumers. Preserve rejected versions/source/frozen inputs before any next version."
+}

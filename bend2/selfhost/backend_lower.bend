@@ -1978,8 +1978,8 @@ def lower_prepared(prepared: Prepared, exports: Maybe<&2, List<&2, String>>) -> 
 def lower_catalog(result: Catalog.BuildResult) -> ProgramResult:
   match result:
     case Catalog.BuildFailure{_, message}: LowerFailure{message, no_span()}
-    case Catalog.Built{Checked.CheckedProgram{source, _, _, _}, Catalog.Catalog{work, registry, constructors, families, type_functions, next_code, ending}}:
-      state = State{source, next_code, 0, Frame{0, Nil{}, Nil{}, 0}, Nil{}, None{}, None{}, Some{DescriptorNf.nf_context(families, type_functions)}}
+    case Catalog.Built{Checked.CheckedProgram{source, _, _, _}, Catalog.Catalog{work, registry, constructors, families, type_functions, next_code, ending, normalizer}}:
+      state = State{source, next_code, 0, Frame{0, Nil{}, Nil{}, 0}, Nil{}, None{}, None{}, Some{normalizer}}
       lower_definitions(definitions(state, work, registry, Nil{}), constructors, families, type_functions, ending)
 def lower_definitions(result: LowerResult<List<&2, BIR.Declaration>>, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>, type_functions: List<&2, BIR.TypeFunction>, ending: BIR.Ending) -> ProgramResult:
   match result:
