@@ -5,6 +5,17 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- G39 / E12's retired continuation-argument suffix cleanup is rejected by the
+  original native-codegen RSS cap. Five actual own-frontend C/JS emissions pass
+  split captures, JS reentry and real Arena growth at 63/64/65 nodes; executed
+  JS consumers and separate generic protocol probes preserve lexical captures,
+  nested prefixes, exception identity and argument-array length. Passive
+  observation adds no cleanup. Native book validation checks 12,456 definitions
+  / 13,050 events; `compile_book` stops after 27,343 ms at 9,256,370,176-byte
+  RSS / 9,089,883,360-byte footprint. No native artifact, candidate stage1,
+  fixedpoint or paired throughput exists. C reentry has no source alternative;
+  no retained-byte or engine-allocation benefit is claimed.
+  `checkpoints/local2039g39e12-outcome/outcome.json`.
 - G38 / E10's emission-local native-marker map reuse is rejected by the original
   native-codegen RSS cap. All 16 actual own-frontend C/JS source/admission/export
   rows, 32 clean/probe emissions and 14 consumer executions pass. Every

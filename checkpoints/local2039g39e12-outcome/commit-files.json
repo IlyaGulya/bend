@@ -1,0 +1,23 @@
+[
+  "checkpoints/local2039g39e12-outcome/commit-files.json",
+  "checkpoints/local2039g39e12-outcome/outcome.json",
+  "checkpoints/local2039g39e12-outcome/sources/2450fe761da133b3f63fbb70f8bc43d6e2ac9b47a7fd58fc6511f51842a37ee2-e12-owned-protocol.mjs",
+  "checkpoints/local2039g39e12-outcome/sources/33bdd0e24f087a3792d50d7675ed3085014543623c1794d8cfa73e3184feb488-auth.mjs",
+  "checkpoints/local2039g39e12-outcome/sources/3ef1c6cf98e66531b2290fa2fae7146b756f08d6029d0ab8a81459e8b11fccc5-checker-core-owned-source-v1.json",
+  "checkpoints/local2039g39e12-outcome/sources/52452d694bf5d642e7ffeb4767dd63e998649fc336137b0111bb4795c5fd6201-emitter_owned_v1.bend",
+  "checkpoints/local2039g39e12-outcome/sources/7a5ebd272f4eaec44962fd0119add440d2e6d447426f7e9ff01db434b1e3de31-runtime-worker.mjs",
+  "checkpoints/local2039g39e12-outcome/sources/7f628feb1435e6bf2ca2a90ba38294b86dda1566b7cd792baad096acfd53fd98-e12-owned-suffix.mjs",
+  "checkpoints/local2039g39e12-outcome/sources/840e5a6ef04d8a9e798cfec01d34af01888792cda4093e3697c1aba25d509df5-checker-core-steps-v1.json",
+  "checkpoints/local2039g39e12-outcome/sources/98572dda84f23b08915a8c34b097bb041601416a4fbf1d4a21a5d425399b8ace-root.native.corpus.json",
+  "checkpoints/local2039g39e12-outcome/sources/995c54f42a151eaf8344b022fe837c611ef93590cc6fe9276ebaa1135a9c05bc-lifetime.mjs",
+  "checkpoints/local2039g39e12-outcome/sources/9a8a715c5c490834f3c4543842be0aba8cfe7e40c742861f971277e47c64d48c-prepare-e12-literals.mjs",
+  "checkpoints/local2039g39e12-outcome/sources/a319abc40eda39b7d1f0870623b127ca8a2a67be7df84ef80b2b2d1fca715cc6-emitter-steps-v1.json",
+  "checkpoints/local2039g39e12-outcome/sources/a42e8fb693fe4c9c21bf150153f74ef3342ec2e14b173ebe0091c0fea2001b05-e12-production-literals.json",
+  "checkpoints/local2039g39e12-outcome/sources/a8a582ea4c8510f453959b3bdeb26c64a62023442e4767bd44a08f9fd422f74e-selfhost-root-local2039g39e12full01.json",
+  "checkpoints/local2039g39e12-outcome/sources/b4bb15da77c68fb1dfbac9513632fe244e3322783577a363208d655924bc0fed-census-runner.mjs",
+  "checkpoints/local2039g39e12-outcome/sources/bd4cd08c075217fd3f0518ca10083a4a13f566d2a7e73c0e968106cd54d319f4-arena63-64-65.bend",
+  "checkpoints/local2039g39e12-outcome/sources/c8ccbf57632a9bf7c925db98ba674f9a62c37380da57ab8d345aa36592ba0070-audit.mjs",
+  "checkpoints/local2039g39e12-outcome/sources/dfdba502f511590dd254fa57dcc38ece2875e515902565bee756d4e223cd8574-cli.mjs",
+  "checkpoints/local2039g39e12-outcome/sources/ea0961cb9416dbfe6ae1f4d651c42cea411013336be53a76205797f4d3789691-stage1.mjs",
+  "checkpoints/local2039g39e12-outcome/sources/f24f36cb436bc49214302707c62e9334042261b613610dd7c6682538b77ccd12-emitter_steps_v1.bend"
+]

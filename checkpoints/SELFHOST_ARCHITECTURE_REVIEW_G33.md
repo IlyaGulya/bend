@@ -582,3 +582,39 @@ Rejected source/frozen checkpoint: `7bd06515`. После него R12 восс�
 21 source check, три regenerated-source hashes, два accepted artifacts
 и шесть actual canonical C/JS executions.
 [Restoration proof](local2039g38e10-restored/restored.json).
+
+### E12: G39 actual source runtime и окончательный STOP
+
+Изолированный source checkpoint `62d0ce6e` меняет только два existing JS runtime
+literals. Все пять registration paths, включая `$split_enter`, учитываются
+high-water mark; normal/catch `run_base` очищают `[s0, hi)` без truncation
+argument array и без потери outer prefix/живых lexical captures.
+Source delta получена из authenticated E04/E12 ownership admission, не из
+неизмеренного обещания packed-frame/engine allocation выигрыша.
+
+Actual checked full canonical component построен из этой версии без omissions.
+Его own parser/expander/checker и настоящие C/JS emitters выполнили пять source
+emissions: split-capture chain и настоящий Arena `put_node` growth 63/64/65
+в обоих targets, JS-only foreign reentry — в JS. Два C executions и три
+clean/observed JS pairs дали exact expected output. Три отдельных generic
+protocol probes проверили nested success/error, error identity, lexical
+captures, split/Pending/region boundaries. Cleanup уже содержится в emitted
+runtime; observer добавляет только scalar assertions. После каждого JS main
+`sp = ksp = hi = 0`, полный argument-array scan не находит obsolete edges;
+длина массива сохранена. Generic probes не выдаются за actual candidate
+stage1 compiler-only direct path.
+
+Original full `--phase=all` native book validation:
+**12 456 definitions / 13 050 events**, zero omissions/patches.
+`compile_book` остановлен неизменённым **8192 MiB RSS cap** через **27 343 ms**:
+peak **9 256 370 176 B RSS / 9 089 883 360 B footprint**.
+**STOP / rejected**. Native artifact, candidate stage1/stage2 fixedpoint,
+original paired throughput и late consumers не получены. Candidate stage1
+full-source lifetime proof явно `MISSING_PROOF`; исходный JS foreign reentry
+fixture не имеет C alternative. Это не повод поднять cap, заменить parser
+или объявить baseline prototype новым source qualification.
+
+Required frozen source и compact executed receipt:
+[G39 outcome](local2039g39e12-outcome/outcome.json).
+Гарантии не распространяются на pre-entry throws, другие owner roots,
+retained-byte или engine-allocation savings.

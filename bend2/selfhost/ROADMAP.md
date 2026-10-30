@@ -6,6 +6,24 @@ under their original image IDs; a later pass never reclassifies an older run.
 Detailed evidence and reasoning live in the linked receipts and notes.
 This index does not replace a receipt.
 
+## G39 / E12: retired-suffix cleanup rejected at native codegen
+
+Only the two existing JS runtime source literals change. All five registration
+paths track the written high-water mark; normal/catch exits clear only the
+retired suffix, preserving active outer prefixes and argument-array length.
+Five real own-frontend C/JS emissions pass split-capture and 63/64/65 Arena
+growth consumers; JS-only foreign reentry also passes. Separate generic
+protocol probes cover nested success/error, lexical captures and regions.
+No cleanup is added by the passive observer. This is not a proof of owner
+death through other roots, retained-byte savings or engine allocations.
+
+Original full native book validation checks 12,456 definitions / 13,050 events
+without omissions/patches. Native `compile_book` exceeds the original RSS cap;
+there is no native artifact, candidate stage1/fixedpoint or paired throughput.
+Candidate-stage1 full-source lifetime proof remains **missing**, not a pass;
+the existing JS foreign reentry fixture has no C source alternative.
+**Rejected**: `checkpoints/local2039g39e12-outcome/outcome.json`.
+
 ## G38 / E10: emission-local marker map rejected at native codegen
 
 One native-marker producer and exact original map/list identities are observed

@@ -4,6 +4,26 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
+### G39 / E12 отклонён: actual runtime consumers PASS, native RSS cap FAIL
+
+Authored source: `62d0ce6e`. Изолированная правка двух runtime literals:
+пять registration paths поддерживают high-water mark; normal/catch очищают
+только retired suffix, сохраняя outer prefix и длину argument array.
+Actual own frontend/emitter выполнил пять C/JS emissions: split captures,
+JS reentry и настоящий Arena growth 63/64/65. Два C consumers и три пары
+clean/passively observed JS consumers выдали ожидаемый результат; отдельные
+generic protocol probes проверили nested/error/lexical/region boundaries.
+Observer не добавляет cleanup. Это не candidate-stage1 full-compiler proof.
+
+Original `--phase=all`: **12 456 defs / 13 050 events**, zero omissions/patches;
+native `compile_book` остановлен прежним RSS cap после **27 343 ms**,
+**9 256 370 176 B RSS / 9 089 883 360 B footprint**.
+Native artifact, candidate stage1/fixedpoint и paired throughput отсутствуют.
+Stage1 lifetime proof — `MISSING_PROOF`; C reentry — `MISSING_SOURCE_ALTERNATIVE`,
+поскольку исходный foreign fixture содержит только JS. Ни owner death через
+другие roots, ни retained bytes, ни engine allocations не объявлены доказанными.
+Source/frozen inputs и compact evidence: `local2039g39e12-outcome/outcome.json`.
+
 ### G38 / E10 отклонён: exact marker reuse PASS, native RSS cap FAIL
 
 Authored source: `5346c59a`. Все 16 actual own-frontend C/JS ordinary/admission/
