@@ -5,17 +5,29 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
-- G32 adds shared BIR private aggregate workers and explicit multi-value
-  returns, without changing the boxed public ABI. Both targets pass ten real
-  executable transport probes; the reachable producer/consumer path removes
-  its intermediate record. Twelve malformed/bottom boundary probes pass.
+- G32's shared BIR private aggregate workers and multi-value transport are
+  rejected by the mandatory paired performance gate. Public ABI stayed boxed.
+  Ten executable C/JS transport probes pass; the reachable producer/consumer
+  path removes its intermediate record. Twelve malformed/bottom verdicts pass.
   Independent reviews found and corrected worker-ID/continuation collisions,
   missing consumer code, width validation gaps and a C result-count shadow.
   The owned regression covers arrays, captures, F32 negative-zero bits and
-  multiple producers. Full compiler/fixedpoint/performance qualification is
-  still pending; R12 remains accepted.
-  `evals/receipts/producer2039g32_plan.json`,
-  `evals/receipts/producer2039g32_source_review.json`.
+  multiple producers. Production integration exposed and corrected helper
+  ordering, collector recursion and missing sharing annotations. Complete
+  canonical JS generation passes 12,961 definitions / 13,578 events, zero
+  exclusions/patches. Fresh native-root validation passes 12,991 definitions /
+  13,617 events, zero exclusions/patches. Actual native-stage0/stage1/stage2
+  fixedpoint passes with two identical 33,398,300-byte images, SHA-256
+  `419710b98ee9e765e677c5a411a1299cb728db23e58b12dfad69141d9d1721c5`.
+  All twelve unprofiled samples are retained: native mean/median
+  +4.04%/+7.80%, JS +5.84%/−4.52%. Median peak RSS/footprint rise:
+  native +1.44%/+0.45%, JS +3.90%/+3.89%. Consumer matrices are intentionally
+  not run after rejection. R12 remains accepted and is being restored;
+  the ordinary owned-value regression and its matrix registration remain.
+  `evals/receipts/producer2039g32_probe.json`,
+  `evals/receipts/producer2039g32_integration.json`,
+  `evals/receipts/producer2039g32_core_fixedpoint.json`,
+  `evals/receipts/producer2039g32_throughput.json`.
 
 - G31 reconsiders the unchanged G30 scheduler after withdrawing the
   assistant-chosen 5% relative-memory screen. All six new actual-image checker

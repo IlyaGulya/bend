@@ -171,13 +171,25 @@ in common BIR rather than rewriting scheduler source. Private producer/consumer
 workers use `LetValues`/`ReturnValues`; public/foreign/closure conventions stay
 boxed. Ten actual C/JS transport executions and twelve ABI-boundary verdicts
 pass, including duplicate owners, long tails, captures and wide result banks.
-The initial production-root attempt fails before native build: a new
-`s_reach_atoms` helper follows its first live use. That failed run is retained;
-the helper is moved before `s_reach_block` and production qualification is
-being repeated. No G32 fixedpoint or performance acceptance is claimed.
+Two failed production-root integration attempts are retained. Helper ordering,
+collector recursion and missing explicit sharing annotations are corrected.
+Complete canonical JS generation now passes **12,961 definitions / 13,578
+events**, zero excluded checks/output patches; that image is not yet executed.
+Fresh native-root validation passes **12,991 definitions / 13,617 events**,
+zero exclusions/patches. Actual native-stage0 → stage1 → stage2 byte fixedpoint
+passes: two identical **33,398,300-byte** images, SHA-256
+`419710b98ee9e765e677c5a411a1299cb728db23e58b12dfad69141d9d1721c5`.
+All twelve unprofiled end-to-end samples are retained: native mean/median
+**+4.04%/+7.80%**, JS **+5.84%/−4.52%**. Median RSS/footprint rise in both
+backends. G32 fails the mandatory performance gate; later consumer matrices
+are intentionally not run. R12 remains accepted and is being restored.
 `evals/receipts/producer2039g32_plan.json`,
 `evals/receipts/producer2039g32_probe.json`,
-`evals/receipts/producer2039g32_initial_failure.json`.
+`evals/receipts/producer2039g32_initial_failure.json`,
+`evals/receipts/producer2039g32_second_failure.json`,
+`evals/receipts/producer2039g32_integration.json`,
+`evals/receipts/producer2039g32_core_fixedpoint.json`,
+`evals/receipts/producer2039g32_throughput.json`.
 
 ## Historical full native-seed checkpoint: G23
 

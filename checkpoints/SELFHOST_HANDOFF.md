@@ -4,7 +4,7 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
-### G32 в работе: BIR private aggregate transport
+### Отклонённый G32: BIR transport, полный fixedpoint PASS; performance FAIL
 
 Начат от восстановленного R12 (`18954122`), без возврата scheduler rewrite G31.
 `backend_transport.bend` — общий bounded worker/consumer pass; `LetValues` и
@@ -16,7 +16,29 @@ JS — через немедленно очищаемый mailbox. Public/foreig
 excluded checks/output patches; **10/10 C/JS executions** и **12 boundary
 verdicts PASS**. Достижимый Pair producer→consumer больше не строит record.
 Source width analysis консервативен после strict calls, не termination solver.
-Full root/fixedpoint/performance **ещё не выполнены; G32 не принят**.
+Два initial production-root runs сохранены как FAILED: forward helper uses,
+затем ошибочная взаимная зависимость collector'ов. Исправлены порядок helpers,
+структурная рекурсия и явные `+` на повторно используемых bindings.
+Полный canonical JS build теперь PASS: **12 961/12 961 definitions / 13 578
+events**, zero exclusions/patches, 48 196 ms, RSS 2 978 627 584 B, footprint
+3 243 433 840 B. Этот 15 454 874-byte образ **ещё не исполнен**.
+Свежий `local2039g32c`, `--phase=all`: полный native root PASS — **12 991
+definitions / 13 617 events**, zero exclusions/patches. Build 324 998 ms,
+peak RSS 5 152 833 536 B, footprint 5 448 128 824 B. Настоящий native-stage0 →
+stage1 → stage2 fixedpoint PASS: оба образа **33 398 300 bytes**,
+SHA-256 `419710b98ee9e765e677c5a411a1299cb728db23e58b12dfad69141d9d1721c5`.
+`cmp` подтвердил равенство файлов. Stage2 пользуется собственным stage1 parser.
+Bootstrap 562 386 ms, peak RSS 2 694 479 872 B, footprint 3 238 592 168 B.
+Все **12 unprofiled end-to-end samples** завершены и сохранены. Native
+mean/median **+4.04%/+7.80%**, JS **+5.84%/−4.52%**. Медианные peak RSS /
+footprint: native **+1.44%/+0.45%**, JS **+3.90%/+3.89%**. **G32 отклонён**:
+обязательный прежний performance gate не пройден; consumer-матрицы после него
+НЕ запускались. Это не новый порог +5% и не отказ по source-shape.
+Сохраняется rejected checkpoint и восстанавливается R12; полезный ordinary
+owned-value regression и его matrix registration остаются.
+Evidence: `producer2039g32_initial_failure.json`,
+`producer2039g32_second_failure.json`, `producer2039g32_integration.json`,
+`producer2039g32_core_fixedpoint.json`, `producer2039g32_throughput.json`.
 Baseline остаётся R12. `producer2039g32_plan.json` фиксирует прежние 8 GiB /
 600 s, ABI13, quantum64, fuel8M и обязательные gates, включая C scheduler case.
 
