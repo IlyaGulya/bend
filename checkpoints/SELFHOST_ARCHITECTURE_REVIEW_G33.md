@@ -490,7 +490,7 @@ G36 native hard rejection остаётся отдельным FAIL. Canonical co
 не native-stage1/fixedpoint и не accepted compiler.
 Primary evidence: [all actual lanes, source inputs, counters and JIT](../evals/receipts/experiments_e03_transport.json).
 
-### E10 / E12 — измеренные GO, source qualification ещё впереди
+### E10 / E12 — исторический measured admission перед source qualification
 
 E10 подтвердил два разных Program wrapper'а с одной и той же точной парой
 immutable family/type-function lists: повторён один marker-index build.
@@ -552,3 +552,29 @@ Rejected source/frozen checkpoint: `d8b684ef`. После него R12 восс�
 scratch bytes/arity и шесть canonical C/JS executions подтверждены.
 [Restoration proof](local2039g37e06-restored/restored.json) — не новая full
 qualification или fixedpoint.
+
+### E10 — exact emission-local marker reuse PASS, G38 native source rejected
+
+G38 `5346c59a` удаляет ровно второй marker-index build в одной logical emission
+и передаёт исходную map через прежние export/effect/render boundaries.
+Порядок link → export → effects → rendering и public ABI не меняются.
+
+Все **16 actual own-frontend C/JS rows** выполнены: 32 clean/probe emissions,
+14 ordinary/library/native-export executions и два проверенных admission errors.
+В каждом из семи успешных JS rows `js_native_markers` вызван **один** раз.
+Source-derived probes подтвердили ту же точную immutable list pair и map
+identity у validation, exports/effects, `program_source`, всех наблюдавшихся
+declarations и ending. Clean/probe emitted hashes и expected outputs совпали.
+Никакого Program-identity cache, другого marker precedence или cross-emission
+memoizer нет. Удлинённое удержание map через exports/effects — реальный риск,
+не автоматическая экономия памяти.
+
+Полный original `--phase=all` проверил **12 456 definitions / 13 050 events**
+без exclusions/output patches, затем native `compile_book` остановлен
+неизменным 8-GiB RSS cap: **8 605 351 936 B RSS / 8 700 697 536 B footprint**,
+**25 405 ms**. Native artifact, bootstrap/fixedpoint, original paired series
+и поздние consumer gates отсутствуют. Причина пика внутри codegen не измерена.
+
+**E10 завершён: G38 rejected.** Один удалённый logical build не является
+performance/memory acceptance.
+Primary evidence: [original qualification, exact map probes and frozen inputs](local2039g38e10-outcome/outcome.json).

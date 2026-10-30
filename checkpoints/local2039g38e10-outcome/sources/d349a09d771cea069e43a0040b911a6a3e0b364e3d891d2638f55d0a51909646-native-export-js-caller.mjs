@@ -1,0 +1,3 @@
+import assert from "node:assert/strict";
+import lib from "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g38e10admission01/consumers/native-export-js-clean.js";
+assert.equal(lib["U32.mul"](2,3),6);console.log(6);

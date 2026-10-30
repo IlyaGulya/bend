@@ -6,6 +6,20 @@ under their original image IDs; a later pass never reclassifies an older run.
 Detailed evidence and reasoning live in the linked receipts and notes.
 This index does not replace a receipt.
 
+## G38 / E10: emission-local marker map rejected at native codegen
+
+One native-marker producer and exact original map/list identities are observed
+through export/effect/declaration/ending consumers in every successful JS row.
+All 16 actual own-frontend C/JS ordinary/admission/export rows complete:
+32 emissions, 14 executed consumers and two expected emitter failures.
+No Program-identity cache or cross-emission memoization is introduced.
+
+Full native book validation checks 12,456 definitions / 13,050 events without
+exclusions/patches. `compile_book` exceeds the unchanged 8-GiB RSS cap.
+No native executable, bootstrap/fixedpoint, original paired series or late
+consumer qualification exists. **Rejected**, not an accepted acceleration:
+`checkpoints/local2039g38e10-outcome/outcome.json`.
+
 ## G37 / E06: immutable index handoff rejected at native codegen
 
 The exact immutable family/type-function index maps reach the existing lowering

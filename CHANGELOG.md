@@ -5,6 +5,15 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- G38 / E10's emission-local native-marker map reuse is rejected by the original
+  native-codegen RSS cap. All 16 actual own-frontend C/JS source/admission/export
+  rows, 32 clean/probe emissions and 14 consumer executions pass. Every
+  successful JS row builds one marker map and transports that exact map over
+  the same immutable input lists through validation and rendering. Native
+  validation checks 12,456 definitions / 13,050 events, then `compile_book`
+  reaches 8,605,351,936-byte RSS / 8,700,697,536-byte footprint and is stopped
+  after 25,405 ms. No native executable, fixedpoint or paired throughput exists.
+  `checkpoints/local2039g38e10-outcome/outcome.json`.
 - G37 / E06's immutable descriptor-index handoff is rejected by the original
   native-codegen RSS cap. Actual own-frontend C/JS source, admission and export
   coverage completes 16 rows / 32 emissions / 14 executions, with the same

@@ -4,6 +4,21 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
+### G38 / E10 отклонён: exact marker reuse PASS, native RSS cap FAIL
+
+Authored source: `5346c59a`. Все 16 actual own-frontend C/JS ordinary/admission/
+export rows завершены: 32 clean/probe emissions, 14 actual executions и два
+ожидаемых emitter errors. Каждый успешный JS row строит marker map один раз;
+та же map и immutable family/type-function list pair переданы через export/
+effect/program_source/declarations/ending. Program-identity cache не добавлен.
+
+Original `--phase=all` проверил **12 456 defs / 13 050 events** без exclusions
+или output patches. Native `compile_book` остановлен прежним 8-GiB RSS cap:
+**8 605 351 936 B RSS / 8 700 697 536 B footprint**, **25 405 ms**.
+Native artifact, bootstrap/fixedpoint, paired series и late consumers
+отсутствуют. Source/frozen inputs фиксируются перед восстановлением R12
+и отдельным E12. `checkpoints/local2039g38e10-outcome/outcome.json`.
+
 ### G37 / E06 отклонён: exact context reuse PASS, native RSS cap FAIL
 
 Authored source: `303cc470`. В actual own frontend выполнены 16 C/JS

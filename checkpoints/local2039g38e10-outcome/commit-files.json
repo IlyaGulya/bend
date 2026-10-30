@@ -1,0 +1,15 @@
+[
+  "checkpoints/local2039g38e10-outcome/commit-files.json",
+  "checkpoints/local2039g38e10-outcome/outcome.json",
+  "checkpoints/local2039g38e10-outcome/sources/003ec4d09c914cb40cde9e72ca3a1f4c67190d53e43b2ed0f3d8214891a31a2d-emitter-steps-v1.json",
+  "checkpoints/local2039g38e10-outcome/sources/184e1be235ead795be67ca9bb0de37483d160b561cc7f024b518ef40e627d693-emitter_steps_v1.bend",
+  "checkpoints/local2039g38e10-outcome/sources/1cc8857d32177693a081909eee2c43dd39f38c2c52775dcac4dff6a881a5db67-root.native.corpus.json",
+  "checkpoints/local2039g38e10-outcome/sources/3d2bc2aa101e5d40f5e6e2e76ede00b5d5f5ff1378547a7e86d8dc80b1a573c5-selfhost-root-local2039g38e10full01.json",
+  "checkpoints/local2039g38e10-outcome/sources/5ed2e069fb578e6f99b32e1eb9476d5dfad4631c7219e99c81d06af944a50dec-run-isolated-admission.mjs",
+  "checkpoints/local2039g38e10-outcome/sources/6879f3a925acf04a61cb5aaba57a70e26f6e90db95ae66f3ed7a291bc89f1d22-six-exports-js-caller.mjs",
+  "checkpoints/local2039g38e10-outcome/sources/885b872d33fdf5b77e61205e469c5934b4e80fc00f6489077cdb2cef0e52c42e-emitter_owned_v1.bend",
+  "checkpoints/local2039g38e10-outcome/sources/a1aac5879c68e0fe7f5e7975d554e3281123a30e96ec2dc9f2184ccfa47bb2d5-checker-core-owned-source-v1.json",
+  "checkpoints/local2039g38e10-outcome/sources/cbf82cf9823d9c3add5f0c4f0695e7569c263536042140ebd9c601b89f987337-checker-core-steps-v1.json",
+  "checkpoints/local2039g38e10-outcome/sources/d349a09d771cea069e43a0040b911a6a3e0b364e3d891d2638f55d0a51909646-native-export-js-caller.mjs",
+  "checkpoints/local2039g38e10-outcome/sources/d4fc4f3c66199da779f86678fc4e39ac33ae73290c938d11ab6a9125f790b077-seal-checked-image.mjs"
+]
