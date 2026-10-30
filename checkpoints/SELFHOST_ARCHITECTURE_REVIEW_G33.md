@@ -350,3 +350,67 @@ native allocation/timing saving не заявляется. `get_node` плюс p
 не вводятся без отдельного доказанного ограничения; G28 packing не возвращён.
 Primary evidence:
 [field access](../evals/receipts/experiments_e13_field_access.json).
+
+### E01 / E11 — измерен реальный coverage; новая форма IR не нужна для найденного случая
+
+Полный R12 census завершён с исходным output SHA-256. В фактическом BIR:
+24 025 codes, 13 871 Direct sites; 343 codes входят в 87 recursive SCC.
+Все шесть `metadata_write → *.tables` sites допускают ограниченную
+специализацию: два Affine fields, известный consumer, 13 retained parameters,
+без free Region exits. Это статические свойства настоящего compiler BIR,
+не новые динамические частоты каждого site.
+
+**E01 завершён; E11 — STOP расширению schema.** Для этого случая достаточно
+существующих Code/Let/Direct/TailDirect и shared field continuation.
+Отсутствующий optimizer не является representational blocker. Это не
+доказательство для произвольных finite sums, recursive producers или free
+Region exits; исполнение и квалификация самой специализации относятся к E05.
+Primary evidence:
+[coverage](../evals/receipts/producer2039e01e13_coverage.json),
+[discovery / frozen corpus](../evals/receipts/experiments_e01_e04_e07_e11_discovery.json).
+
+### E02 — исполнены три source cuts на native и JS
+
+Для unchanged / discovery-and-plan / full-rewrite собраны три полных native
+compiler roots с нулевыми exclusions/output patches; все три реально
+скомпилировали неизменный frozen workload. Выходы каждой native/JS пары
+побайтно совпали. Unchanged и analysis передают renderer один исходный BIR:
+SHA-256 `86a411147b9b455fa9af59cdf32d9eddccb1fa6befc68096411bbea9f9f2b287`.
+Full передаёт переписанный BIR; его выход совпал с историческим G32.
+
+| Source cut | Native emit, с | JS initial validation, мс | JS validation-exit → plan-complete, мс | JS plan-complete → backend-entry, мс |
+|---|---:|---:|---:|---:|
+| unchanged | 14.376 | 729.49 | — | — |
+| analysis | 14.501 | 818.82 | 971.60 | 0.44 |
+| full | 14.797 | 755.08 | 761.42 | 180.13 |
+
+Это по одному диагностическому execution на mode/lane, не paired acceptance.
+JS intervals включают instrumentation / fingerprint / completion overhead;
+analysis строит worker bodies и не изолирует «чистый abstract analysis».
+Native subintervals и native BIR object identities не измерялись.
+**E02 завершён; обе width validations сохранены.** Допущен только дальнейший
+ограниченный E05 с обязательными semantic / full-root / fixedpoint /
+performance / consumer gates. G32 не принят повторно.
+Primary evidence: [ablation, commands, guards and required source inputs](../evals/receipts/experiments_e02_ablation.json).
+
+### E04 — живые continuation frames и конкретный устаревший argument root
+
+Полный compiler execution прошёл; birth/pop/capture lifetimes наблюдались
+только в объявленных четырёх окнах. Resume/rest/capture state реально живёт
+через yields: удаление всех StackMore или defunctionalization этим не
+обоснованы. Между окнами lifetime не экстраполируется.
+
+После check runtime quiescent (`sp=0`, `ksp=0`), но argument array длины
+154 206 сохраняет `$stArgs[8].transient` из `check-result-drop-transient`.
+Boundary scan ограничен; положительный retaining path конкретен, отсутствие
+других roots и retained bytes не доказаны. **E04 завершён.** Только этот
+retired suffix передан в E12; native/GPU frame claims не делаются.
+Primary evidence: [lifetimes and declared coverage](../evals/receipts/experiments_e01_e04_e07_e11_discovery.json).
+
+### E07 — STOP hoist: все реальные lookup'и пустые
+
+Все 628 584 измеренных `has_canonical_name` lookup'а завершились на пустом
+списке: ни query, ни element canonicalization в этих walks не вызывались.
+Hoist добавил бы работу вместо её удаления. Empty-list short circuit сохранён;
+это решение для неизменного workload, не утверждение обо всех программах.
+Primary evidence: [queries and exact histogram](../evals/receipts/experiments_e01_e04_e07_e11_discovery.json).
