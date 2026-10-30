@@ -2687,7 +2687,7 @@
   ],
   "interpretation": {
     "allocation": "Estimated allocation totals are lower in all three sampled windows for G30.",
-    "gc": "That particular profiled G30 run has more observed major GC and much larger used/reserved heap and GC duration. This does not establish the cause of unprofiled timing or memory variation.",
+    "gc": "That particular profiled G30 run has more observed major GC, greater recorded GC duration and larger reserved heap. Used-heap endpoints after window shutdown are close in both lanes; they are not formal post-GC live sets. This does not establish the cause of unprofiled timing or memory variation.",
     "profileCardinality": "Heapprofile file sizes are not larger in G30; sampled allocation tree/cardinality and depths are recorded, not assumed to explain the difference."
   },
   "limitations": [

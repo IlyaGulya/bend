@@ -39,15 +39,25 @@ byte fixedpoint PASS: оба image **31 757 877 B**, SHA-256
 `cmp` также подтвердил равенство. Native build guard: 236 658 ms,
 peak RSS 5 584 175 104 B, footprint 5 632 039 128 B.
 Bootstrap: 470 567 ms, peak RSS 2 991 816 704 B, footprint 3 363 838 296 B.
-Это proof самосборки, не performance acceptance. Throughput и consumer gates
-ещё выполняются; `G24_QUALIFICATION_PASS` сам по себе не принимает оптимизацию.
+Самосборка и все **12 unprofiled end-to-end samples** завершены; каждый output
+совпал с R12. JS pipeline mean/median −8.29%/−7.77%, native +2.78%/+2.95%.
+Memory medians смешанные: native RSS +3.40%, footprint −3.25%;
+JS RSS −2.98%, footprint +0.72%. Общий выигрыш памяти не доказан.
+Consumer gates ещё выполняются. G31 не принят; `G24_QUALIFICATION_PASS`
+сам по себе не принимает этот time/backend/memory tradeoff.
+В emitted C у R12 горячий RunState уже возвращается тремя регистрами,
+а emitted JS создаёт объект. Поэтому source-перепись устраняет аллокацию
+лишь в JS; точная причина native timing loss ещё не атрибутирована.
+Следующее предложенное направление — interprocedural aggregate transport
+removal в BIR, не новая реализация и не доказанный выигрыш.
 
 Evidence: `evals/receipts/producer2039g31_reconsideration_plan.json`,
 `evals/receipts/producer2039g31_contract_review.json`,
 `evals/receipts/producer2039g31_repeated_screen.json`,
 `evals/receipts/producer2039g31_paired_diagnostics.json`,
-`evals/receipts/producer2039g31_qualification_plan.json`.
-`evals/receipts/producer2039g31_core_fixedpoint.json`.
+`evals/receipts/producer2039g31_qualification_plan.json`,
+`evals/receipts/producer2039g31_core_fixedpoint.json`,
+`evals/receipts/producer2039g31_throughput.json`.
 Live receipt: `checkpoints/local2039g31-full/receipt.json`.
 
 ### Отклонённый G30: isolated scheduler transport; R12 восстановлен

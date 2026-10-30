@@ -14,10 +14,13 @@ latest one; the GitHub release carries the same notes.
   with zero excluded checks or output patches. Actual native-stage0/stage1/stage2
   byte fixedpoint passes: both images are 31,757,877 bytes, SHA-256
   `04851b115eef16c929858f48224e524873c61606c8e2f59c789be58c452a8dc3`.
-  End-to-end measurements and consumer qualification are running; R12 remains
-  accepted. `evals/receipts/producer2039g31_repeated_screen.json`,
+  All twelve end-to-end samples complete with baseline-identical outputs:
+  JS mean/median −8.29%/−7.77%; native +2.78%/+2.95%. Memory metrics are mixed;
+  no universal reduction is established. Consumer qualification is running;
+  R12 remains accepted. `evals/receipts/producer2039g31_repeated_screen.json`,
   `evals/receipts/producer2039g31_paired_diagnostics.json`,
-  `evals/receipts/producer2039g31_core_fixedpoint.json`.
+  `evals/receipts/producer2039g31_core_fixedpoint.json`,
+  `evals/receipts/producer2039g31_throughput.json`.
 
 - G30's isolated fuel-threaded scheduler transport is rejected at its mandatory
   balanced actual-selfhost screen. Checker time falls 7.97%, but peak RSS rises

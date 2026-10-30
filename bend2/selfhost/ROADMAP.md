@@ -147,10 +147,14 @@ The fresh full native root passes **12,453 definitions / 13,047 events**,
 zero excluded checks/output patches. Actual native-stage0 → stage1 → stage2
 byte fixedpoint passes with two **31,757,877-byte** images, SHA-256
 `04851b115eef16c929858f48224e524873c61606c8e2f59c789be58c452a8dc3`.
-End-to-end measurements and consumer qualification are still running; R12
-remains accepted. `evals/receipts/producer2039g31_repeated_screen.json`,
+All twelve unprofiled end-to-end samples complete with baseline-identical
+outputs: JS mean/median −8.29%/−7.77%; native +2.78%/+2.95%. Memory metrics
+are mixed; no universal reduction is established. Consumer qualification is
+still running; R12 remains accepted.
+`evals/receipts/producer2039g31_repeated_screen.json`,
 `evals/receipts/producer2039g31_paired_diagnostics.json`,
-`evals/receipts/producer2039g31_core_fixedpoint.json`.
+`evals/receipts/producer2039g31_core_fixedpoint.json`,
+`evals/receipts/producer2039g31_throughput.json`.
 
 ## Historical full native-seed checkpoint: G23
 
