@@ -4,7 +4,7 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
-### G31: повторная проверка неизменённого G30; full qualification выполняется
+### Отклонённый G31: full fixedpoint PASS; C consumer emission deadline FAIL
 
 Пользователь оспорил порог +5% и согласовал повторные измерения. Этот порог
 был эвристикой агента, не требованием пользователя и не измеренным noise floor.
@@ -28,7 +28,7 @@ sampling setup/teardown попадает в raw profiles; причина раз�
 Source checkpoint оптимизации — `10f1f3a3`; метод — `15e73d74`.
 В `6135a81a` два G30 TS producer/composer восстановлены для fresh qualification;
 retained scheduler regression/C registration сохранены. Принятый baseline — R12.
-Existing runner выполняется с `--run-id=local2039g31 --phase=all
+Existing runner завершился с FAIL: `--run-id=local2039g31 --phase=all
 --out=checkpoints/local2039g31-full --fail-fast-performance=false`.
 Этот flag отключает только старый optional aggregate rejection, не correctness,
 authentication, fixedpoint, двенадцать throughput measurements или consumers.
@@ -43,8 +43,16 @@ Bootstrap: 470 567 ms, peak RSS 2 991 816 704 B, footprint 3 363 838 296 B.
 совпал с R12. JS pipeline mean/median −8.29%/−7.77%, native +2.78%/+2.95%.
 Memory medians смешанные: native RSS +3.40%, footprint −3.25%;
 JS RSS −2.98%, footprint +0.72%. Общий выигрыш памяти не доказан.
-Consumer gates ещё выполняются. G31 не принят; `G24_QUALIFICATION_PASS`
-сам по себе не принимает этот time/backend/memory tradeoff.
+Все 285 emitted-suite fixture executions и по 130 semantic AST approvals
+на stage1/stage2 — PASS. В C matrix прошли **59/60** cases;
+`scheduler_chunk_smoke` не завершил **эмиссию C** за обязательные 600 s
+(600 274 ms, peak RSS 2 590 621 696 B, footprint 2 625 848 336 B).
+Это failure исходного hard guard, не процентного performance-порога.
+G31 отклонён; JS matrix и последующие native/library/admission/host gates
+после обязательного отказа не запускались. Причина timeout не установлена;
+не заявлять её как регрессию относительно R12 без отдельного сравнения.
+R12 остаётся принятым; восстановление producer/composer и generated steps
+следует выполнить после durable rejected checkpoint.
 В emitted C у R12 горячий RunState уже возвращается тремя регистрами,
 а emitted JS создаёт объект. Поэтому source-перепись устраняет аллокацию
 лишь в JS; точная причина native timing loss ещё не атрибутирована.
@@ -57,8 +65,10 @@ Evidence: `evals/receipts/producer2039g31_reconsideration_plan.json`,
 `evals/receipts/producer2039g31_paired_diagnostics.json`,
 `evals/receipts/producer2039g31_qualification_plan.json`,
 `evals/receipts/producer2039g31_core_fixedpoint.json`,
-`evals/receipts/producer2039g31_throughput.json`.
-Live receipt: `checkpoints/local2039g31-full/receipt.json`.
+`evals/receipts/producer2039g31_throughput.json`,
+`evals/receipts/producer2039g31_emitted_suites.json`,
+`evals/receipts/producer2039g31_qualification_failure.json`.
+Исходный failed receipt: `checkpoints/local2039g31-full/receipt.json`.
 
 ### Отклонённый G30: isolated scheduler transport; R12 восстановлен
 

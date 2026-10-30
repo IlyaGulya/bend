@@ -149,12 +149,17 @@ byte fixedpoint passes with two **31,757,877-byte** images, SHA-256
 `04851b115eef16c929858f48224e524873c61606c8e2f59c789be58c452a8dc3`.
 All twelve unprofiled end-to-end samples complete with baseline-identical
 outputs: JS mean/median −8.29%/−7.77%; native +2.78%/+2.95%. Memory metrics
-are mixed; no universal reduction is established. Consumer qualification is
-still running; R12 remains accepted.
+are mixed; no universal reduction is established. All 285 emitted-suite
+executions and 130 semantic AST approvals per image pass. C consumers pass
+59/60 cases; `scheduler_chunk_smoke` C emission exceeds the unchanged
+600-second guard. G31 is rejected; later consumer gates are not run.
+The timeout cause is unestablished; R12 remains accepted.
 `evals/receipts/producer2039g31_repeated_screen.json`,
 `evals/receipts/producer2039g31_paired_diagnostics.json`,
 `evals/receipts/producer2039g31_core_fixedpoint.json`,
-`evals/receipts/producer2039g31_throughput.json`.
+`evals/receipts/producer2039g31_throughput.json`,
+`evals/receipts/producer2039g31_emitted_suites.json`,
+`evals/receipts/producer2039g31_qualification_failure.json`.
 
 ## Historical full native-seed checkpoint: G23
 

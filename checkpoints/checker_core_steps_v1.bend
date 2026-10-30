@@ -35904,27 +35904,26 @@ def checker_step_one(request: CheckerRequest) -> CheckerProgress<checker_result(
     case CheckerRequestGroup_17{inner}: checker_step_group_17(inner)
     case CheckerRequestGroup_18{inner}: checker_step_group_18(inner)
 
-def checker_pop(-A: Type, -R: Type, stack: CheckerStack<A, R>, box: CheckerValue<A>) -> CheckerRun<R>:
-  match stack:
-    case CheckerStackDone{equation}: CheckerRunFinished{checker_cast_box(A, R, equation, box)}
-    case CheckerStackMore{B, resume, rest}: CheckerRunState{B, resume(box), rest}
-
-def checker_advance(-A: Type, -R: Type, progress: CheckerProgress<A>, stack: CheckerStack<A, R>) -> CheckerRun<R>:
-  match progress:
-    case CheckerFinished{box}: checker_pop(A, R, stack, box)
-    case CheckerPending{request, resume}:
-      CheckerRunState{checker_result(request), checker_step_one(request), CheckerStackMore{A, resume, stack}}
-    case CheckerDirect{T, request, arguments, invoke, resume}:
-      CheckerRunState{checker_result(request), invoke(arguments), CheckerStackMore{A, resume, stack}}
-    case CheckerBound{B, inner, resume}:
-      CheckerRunState{B, inner, CheckerStackMore{A, resume, stack}}
+def checker_chunk_state(-A: Type, -R: Type, fuel: Nat, progress: CheckerProgress<A>, stack: CheckerStack<A, R>) -> CheckerRun<R>:
+  match fuel:
+    case 0n: CheckerRunState{A, progress, stack}
+    case 1n+rest:
+      match progress:
+        case CheckerFinished{box}:
+          match stack:
+            case CheckerStackDone{equation}: CheckerRunFinished{checker_cast_box(A, R, equation, box)}
+            case CheckerStackMore{B, resume, remainder}: checker_chunk_state(B, R, rest, resume(box), remainder)
+        case CheckerPending{request, resume}:
+          checker_chunk_state(checker_result(request), R, rest, checker_step_one(request), CheckerStackMore{A, resume, stack})
+        case CheckerDirect{T, request, arguments, invoke, resume}:
+          checker_chunk_state(checker_result(request), R, rest, invoke(arguments), CheckerStackMore{A, resume, stack})
+        case CheckerBound{B, inner, resume}:
+          checker_chunk_state(B, R, rest, inner, CheckerStackMore{A, resume, stack})
 
 def checker_chunk(-R: Type, fuel: Nat, run: CheckerRun<R>) -> CheckerRun<R>:
-  match fuel run:
-    case 0n state: state
-    case 1n+rest CheckerRunFinished{box}: CheckerRunFinished{box}
-    case 1n+rest CheckerRunState{A, progress, stack}:
-      checker_chunk(R, rest, checker_advance(A, R, progress, stack))
+  match run:
+    case CheckerRunFinished{box}: CheckerRunFinished{box}
+    case CheckerRunState{A, progress, stack}: checker_chunk_state(A, R, fuel, progress, stack)
 
 def checker_step(-R: Type, run: CheckerRun<R>) -> CheckerRun<R>:
   checker_chunk(R, 64n, run)
