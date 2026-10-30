@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "status": "PREDECLARED_G35_E08_CHECKED_OCCURRENCE_CUTOVER",
+  "compilerAccepted": false,
+  "performanceAccepted": false,
+  "byteFixedpoint": false,
+  "baseline": {
+    "native": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+      "sha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "bytes": 18808824,
+      "matches": true
+    },
+    "image": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+      "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "bytes": 31758507,
+      "matches": true
+    }
+  },
+  "restoration": {
+    "path": "/Users/ilyagulya/Projects/My/bend/evals/receipts/producer2039g34_restored_r12.json",
+    "sha256": "d5c7262166994289b72d72867b8cb177e827f0d6f0ca61da9492875ebac6bb61",
+    "bytes": 92706
+  },
+  "census": {
+    "path": "/private/tmp/bend-e01-e13-jbsb4I/query-publication-v1.result.json",
+    "sha256": "8421f7bb858764466c9bd9f11f75f98fd45a72ec5854dbf5c99c9d514cd96a52",
+    "bytes": 294647
+  },
+  "sourcePins": {
+    "bend2/selfhost/checker.bend": "caa5c9ea5a1d8a1bf90c933ca07d910a272888747a54089b86511edc0b7869da",
+    "bend2/bend.ts": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+    "bend2/base.bend": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+    "bend2/comp.ts": "880a9b3b86f273852a39fc664f8c3d7b71e3860b6d365e4321949fc812b6e7cc",
+    "evals/checker_core_owned_source.ts": "7b9fc4fb80aa87ef0ce44310031e5bfe909f8abd9672f16609c435daa87eb450",
+    "evals/checker_core_step_lower.ts": "21a47855e891ab115fb2ce4c70b7b699b376c6488f2505b7f0d6893f8d66daf9",
+    "evals/emitter_step_lower.ts": "38c49a093bb91b16d058baba69303a15277e40bbeeb3aff1bf4ec0c1831817b3",
+    "evals/template_step_lower.ts": "24bb3b87949f3d68073e2ec407c339b75f5124a877106d24fbc27ca9dbb95de3",
+    "evals/g24_qualification.mjs": "a8212e066d3fadad484a7699a338fa3170a2978403a6dbab5befc0cf6afc353e"
+  },
+  "changedSources": [
+    "bend2/selfhost/checker.bend"
+  ],
+  "scope": "Only successful checker declaration publication carries its already-closed occurrence unchanged. Generic publication, binder/result/body closure, globals/open laws, rewind, inspection and errors stay unchanged.",
+  "priorSource": {
+    "checkpoint": "360e326c",
+    "path": "bend2/selfhost/checker.bend",
+    "sha256": "fa1d63e8f5de8f8afb9d47bca13104ad43285dcc195589666323bbda675366bc"
+  },
+  "predictedEffect": {
+    "secondOccurrenceVisitsRemoved": 528012,
+    "secondOccurrenceReconstructionsRemoved": 528012,
+    "alreadyPublishedDefinitionRoots": 12102
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "worker": {
+    "stackMiB": 256,
+    "oldMiB": 6144,
+    "youngMiB": 128
+  },
+  "parserFuel": 8000000,
+  "quantum": 64,
+  "fullCommand": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "evals/g24_qualification.mjs",
+    "--run-id=local2039g35e08",
+    "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "--bun=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--clang=/usr/bin/clang",
+    "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+    "--phase=all",
+    "--bindings=/Users/ilyagulya/Projects/My/bend/evals/receipts/producer2039g25_r12_bindings.json",
+    "--frozen-repository=/private/tmp/bend2039g22-tiny-inline",
+    "--control-native=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+    "--control-image=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+    "--out=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g35e08-full",
+    "--fail-fast-performance=true"
+  ],
+  "policy": "Existing opt-in fail-fast performance policy unchanged; retain every original sample. No5percent threshold. A passing image alone does not establish acceptance.",
+  "runtime": {
+    "node": {
+      "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5",
+      "bytes": 113935712
+    },
+    "bun": {
+      "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "sha256": "28c7dd0a06916aba284d570ef44a2d70e9c538eaf2ba58dfe0910525563b3f79",
+      "bytes": 70469776
+    }
+  },
+  "executionOrder": "Wait for independent frozen R12/G32 diagnostics to release the exclusive guardian, then C/JS semantic source smoke, then fresh complete --phase=all qualification."
+}

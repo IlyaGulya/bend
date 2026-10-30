@@ -5,6 +5,19 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- G35 / E08's private checked-occurrence publication cutover is rejected by
+  the unchanged paired memory rule. The full native root validates 12,452
+  definitions / 13,046 events with zero exclusions/patches. Actual
+  native-stage0/stage1/stage2 byte fixedpoint passes: two 31,751,678-byte
+  images, SHA-256 `105247a5fb11ba9a8318b59c7bf30882e473c7f08109b89fad0e276411adae5b`.
+  Actual stage1 source-handle closure, inspection, dependent/erased/affine
+  consumers and success/failure/recovery pass. All twelve original paired
+  samples remain: pipeline mean/median improve in both lanes, but median
+  native RSS and JS RSS/footprint rise. Later consumer suites are intentionally
+  stopped by fail-fast; legacy canonical-smoke parser failures remain failures.
+  This is a rejected source checkpoint, not compiler/performance acceptance.
+  R12 remains accepted.
+  `evals/receipts/producer2039g35e08_qualification.json`.
 - G34 / E09's used-only arena metadata publication is rejected by the unchanged
   600-second bootstrap deadline. The fresh native root validates all 12,449
   definitions / 13,043 events without exclusions or output patches, and emits

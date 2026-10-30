@@ -4,6 +4,35 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
+### Отклонённый G35 / E08: полный fixedpoint PASS, memory gate FAIL
+
+Успешная декларация переносит уже опубликованный checked occurrence через
+private publisher; общие publisher'ы и закрытие binder/result/body сохранены.
+R12 census установил **12 102** уже опубликованных корня и **528 012**
+повторных occurrence visits на declaration-closure edge. Это счётчики
+выполненного обхода, не измерение снятых allocation bytes.
+Полный native root: **12 452 definitions / 13 046 events**, zero
+exclusions/patches, build **245 889 ms**, peak RSS **5 230 690 304 B**,
+footprint **5 636 102 432 B**. Настоящий native-stage0 → stage1 → stage2
+byte fixedpoint **PASS**: оба файла **31 751 678 bytes**, SHA-256
+`105247a5fb11ba9a8318b59c7bf30882e473c7f08109b89fad0e276411adae5b`.
+Отдельно actual stage1 прошёл source-handle closure (0 transient edges),
+inspection, dependent identity, specialization, erasure, affine pair,
+single evaluation, strict/overapplication order и success → failure → success.
+
+Все **12 исходных unprofiled samples** сохранены. Native pipeline
+mean/median улучшились **0.864% / 0.824%**, JS — **1.812% / 2.733%**.
+Но median RSS вырос: native **5.355%**, JS **10.488%**; JS footprint —
+**7.545%**. Прежнее правило требует неувеличения обеих memory medians;
+G35 **отклонён**, без нового порога и без удаления samples. Последующие
+consumer suites по fail-fast не запускались. Две попытки canonical smoke
+упёрлись в устаревший синтаксис consumer fixture (return types / do);
+это сохранённые failures, не semantic PASS. Независимый actual-stage1
+closure/inspection/emission/consumer proof прошёл.
+R12 остаётся принятой версией; этот checkpoint хранит rejected source.
+Полное доказательство и frozen inputs:
+`evals/receipts/producer2039g35e08_qualification.json`.
+
 ### Отклонённый G34 / E09: native root PASS, stage2 deadline FAIL
 
 Одна правка `checker_arena.bend`: обычный single append пишет только used;

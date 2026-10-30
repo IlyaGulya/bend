@@ -217,6 +217,22 @@ This is restoration proof, not a new full qualification or fixedpoint.
 `evals/receipts/producer2039g34_qualification.json`,
 `evals/receipts/producer2039g34_restored_r12.json`.
 
+G35 isolates E08: a private successful-declaration path carries the already
+published checked occurrence; generic publication and binder/result/body closure
+stay intact. The actual R12 census finds **12,102 published definition roots**
+and **528,012 repeated occurrence visits** on that edge. Fresh full native
+validation passes **12,452 definitions / 13,046 events**, zero exclusions/patches.
+Actual native-stage0/stage1/stage2 byte fixedpoint passes with two identical
+**31,751,678-byte** images, SHA-256
+`105247a5fb11ba9a8318b59c7bf30882e473c7f08109b89fad0e276411adae5b`.
+The actual stage1 closure/inspection/emission/consumer/recovery probe passes.
+All twelve original unprofiled paired samples remain: both lanes improve
+pipeline mean/median, but native median RSS and JS median RSS/footprint violate
+the existing rule. G35 is rejected; R12 remains accepted. Later ordinary
+consumer suites are intentionally not run after fail-fast, and legacy
+canonical-smoke parser failures are retained rather than called semantic PASS.
+`evals/receipts/producer2039g35e08_qualification.json`.
+
 ## Historical full native-seed checkpoint: G23
 
 The earlier accepted checkpoint is **remote2039g23**, compiler source
