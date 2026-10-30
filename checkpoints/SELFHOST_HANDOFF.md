@@ -29,9 +29,13 @@ consumer suites по fail-fast не запускались. Две попытк�
 упёрлись в устаревший синтаксис consumer fixture (return types / do);
 это сохранённые failures, не semantic PASS. Независимый actual-stage1
 closure/inspection/emission/consumer proof прошёл.
-R12 остаётся принятой версией; этот checkpoint хранит rejected source.
-Полное доказательство и frozen inputs:
-`evals/receipts/producer2039g35e08_qualification.json`.
+Rejected source/frozen inputs сохранены в **`914b218c`**; R12 восстановлен.
+Совпали 21 baseline check, все три regenerated step sources, исходный checker
+и оба accepted native/JS artifact hashes. Шесть canonical C/JS consumers
+прошли; это restoration proof, не новый R12 fixedpoint или полная квалификация.
+Доказательства:
+`evals/receipts/producer2039g35e08_qualification.json`,
+`evals/receipts/producer2039g35e08_restored_r12.json`.
 
 ### Отклонённый G34 / E09: native root PASS, stage2 deadline FAIL
 

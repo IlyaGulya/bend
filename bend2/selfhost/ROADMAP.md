@@ -231,7 +231,11 @@ pipeline mean/median, but native median RSS and JS median RSS/footprint violate
 the existing rule. G35 is rejected; R12 remains accepted. Later ordinary
 consumer suites are intentionally not run after fail-fast, and legacy
 canonical-smoke parser failures are retained rather than called semantic PASS.
-`evals/receipts/producer2039g35e08_qualification.json`.
+Rejected source/frozen inputs: `914b218c`. R12 source, all three regenerated
+steps and accepted artifacts are restored and authenticated; six canonical
+C/JS consumers pass. No new R12 full qualification or fixedpoint is claimed.
+`evals/receipts/producer2039g35e08_qualification.json`,
+`evals/receipts/producer2039g35e08_restored_r12.json`.
 
 ## Historical full native-seed checkpoint: G23
 

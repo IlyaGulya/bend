@@ -305,3 +305,48 @@ Hard caps сохраняются: RSS/footprint 8192 MiB, timeout600000 ms, poll
 13 уникальных E01–E13, 21 уникальный source input совпал с G33/R12 authority
 по SHA-256. Это проверка ссылок и неизменности базы, не runtime-проверка
 предложенных оптимизаций.
+
+## 9. Исполненные результаты после консультации
+
+### E08 — G35: fixedpoint пройден, кандидат отклонён по памяти
+
+Реальный census R12 выявил 12 102 уже опубликованных checked-definition roots
+и 528 012 повторных occurrence visits на успешном declaration-closure edge.
+Изолированная реализация сохранила общие publisher'ы, закрытие binder/result/body
+и все обходы на неуспешных/непроверенных путях.
+
+Свежий полный native root проверил **12 452 определения / 13 046 событий**
+без exclusions/output patches. Настоящий native-stage0 → stage1 → stage2
+byte fixedpoint прошёл: оба образа по **31 751 678 байт**, SHA-256
+`105247a5fb11ba9a8318b59c7bf30882e473c7f08109b89fad0e276411adae5b`.
+Actual stage1 отдельно прошёл source-handle closure, inspection, dependent /
+erased / affine consumers, strict order и success → failure → success.
+
+Все двенадцать исходных unprofiled paired samples сохранены. Pipeline mean
+и median улучшились в обеих lanes, но native median RSS и JS median RSS /
+footprint выросли. Прежний строгий memory gate отклонил G35; поздние consumers
+намеренно не запускались после fail-fast. Сбои двух canonical-smoke preparation
+попыток на legacy IO syntax сохранены как failures, не semantic PASS.
+Rejected source/frozen inputs: **914b218c**. R12 восстановлен, совпали исходный
+checker, 21 baseline check, три regenerated sources и accepted artifact hashes;
+шесть canonical C/JS consumers прошли. Это не новый R12 fixedpoint.
+Primary evidence:
+[qualification](../evals/receipts/producer2039g35e08_qualification.json),
+[restoration](../evals/receipts/producer2039g35e08_restored_r12.json).
+
+### E13 — проверен одно-полевой доступ, новая decode-обёртка не оправдана
+
+На настоящем R12 checked program два чтения каждого из **464** nodes вернули
+тот же stored object: **928** чтений, **464** identity matches. Для **99**
+`TermAll` прочитан `body_id` с сохранением полного tagged handle; source closure
+и последующая inspection прошли. Это проверка существующего доступа, не
+доказательство выигрыша новой field-view реализации.
+
+Generated C аутентифицирован через SHA-256 принятого native build: getter
+передаёт один уже хранимый Node `Term` и два ArenaStore words, не декодирует
+packed Node. Arena reconstruction, RC и result/scheduler wrappers остаются;
+native allocation/timing saving не заявляется. `get_node` плюс projection
+не устраняет Node materialization, которой здесь нет. Новые columns/storage
+не вводятся без отдельного доказанного ограничения; G28 packing не возвращён.
+Primary evidence:
+[field access](../evals/receipts/experiments_e13_field_access.json).

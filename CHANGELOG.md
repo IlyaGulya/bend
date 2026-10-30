@@ -15,9 +15,12 @@ latest one; the GitHub release carries the same notes.
   samples remain: pipeline mean/median improve in both lanes, but median
   native RSS and JS RSS/footprint rise. Later consumer suites are intentionally
   stopped by fail-fast; legacy canonical-smoke parser failures remain failures.
-  This is a rejected source checkpoint, not compiler/performance acceptance.
-  R12 remains accepted.
-  `evals/receipts/producer2039g35e08_qualification.json`.
+  Rejected source/frozen inputs are committed as `914b218c`; R12 is restored.
+  All 21 baseline checks, three regenerated steps, the original checker source
+  and both accepted artifact hashes match. Six canonical C/JS consumers pass;
+  this is restoration proof, not a new R12 fixedpoint or full qualification.
+  `evals/receipts/producer2039g35e08_qualification.json`,
+  `evals/receipts/producer2039g35e08_restored_r12.json`.
 - G34 / E09's used-only arena metadata publication is rejected by the unchanged
   600-second bootstrap deadline. The fresh native root validates all 12,449
   definitions / 13,043 events without exclusions or output patches, and emits

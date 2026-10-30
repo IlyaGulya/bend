@@ -1,0 +1,5134 @@
+{
+  "schemaVersion": 1,
+  "status": "E13_EXECUTED_STOP_NEW_DECODE_ELIMINATION_WRAPPER",
+  "compilerAccepted": false,
+  "performanceAccepted": false,
+  "acceptedCompilerUnchanged": true,
+  "measurement": {
+    "report": {
+      "path": "/private/tmp/bend-e01-e13-jbsb4I/e13-boxed-read.result.json",
+      "sha256": "a6c0d858b7a8d6dcf5ebdf8efb2ce6fb62d10d76f53f5f3343ae58b1a722e5c9",
+      "bytes": 5975
+    },
+    "schemaVersion": 1,
+    "status": "PASS",
+    "diagnosticOnly": true,
+    "compilerAccepted": false,
+    "image": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+      "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e"
+    },
+    "fixture": {
+      "path": "/private/tmp/bend-e01-e13-jbsb4I/inspection-probe.bend",
+      "sha256": "db6aa0f0a392648bb3c6a45bc37717d45605739c8ff573212a8e08dcf1c4efb5"
+    },
+    "driver": {
+      "path": "/private/tmp/bend-e01-e13-jbsb4I/e13-boxed-read.mjs",
+      "sha256": "98cfc0b7f17df02f2f0fe7bfdfec78d414016538a7f0a81a06b21dc95d28a44f"
+    },
+    "closureBeforeInspection": {
+      "status": "SOURCE_HANDLE_CLOSURE_PASS",
+      "counts": {
+        "node": 464,
+        "pattern": 8,
+        "binder": 28,
+        "word": 494,
+        "natural": 0,
+        "name": 51
+      },
+      "visited": {
+        "node": 382,
+        "pattern": 8,
+        "binder": 28,
+        "name": 26
+      },
+      "edges": 1074,
+      "kinds": {
+        "node.TermType": 19,
+        "node.TermQuantity": 18,
+        "binder.Binder": 28,
+        "node.TermRef": 111,
+        "node.TermCtr": 8,
+        "node.TermVar": 75,
+        "node.TermQuant": 1,
+        "node.TermAll": 47,
+        "node.TermApp": 52,
+        "node.TermAnn": 12,
+        "pattern.PatternVar": 8,
+        "node.BodyLocal": 8,
+        "node.TermLam": 26,
+        "node.TermAdt": 5
+      },
+      "occurrences": {
+        "TypedOccurrence": 69,
+        "LocalOccurrence": 4,
+        "LocalReferenceOccurrence": 5
+      },
+      "transientRetainedEdges": 0,
+      "scope": "Explicit checked occurrence/binding/symbol/global/declaration/tape and recursively decoded source descriptor edges; not a type-equivalence or retained-byte proof"
+    },
+    "closureAfterInspection": {
+      "status": "SOURCE_HANDLE_CLOSURE_PASS",
+      "counts": {
+        "node": 464,
+        "pattern": 8,
+        "binder": 28,
+        "word": 494,
+        "natural": 0,
+        "name": 51
+      },
+      "visited": {
+        "node": 382,
+        "pattern": 8,
+        "binder": 28,
+        "name": 26
+      },
+      "edges": 1074,
+      "kinds": {
+        "node.TermType": 19,
+        "node.TermQuantity": 18,
+        "binder.Binder": 28,
+        "node.TermRef": 111,
+        "node.TermCtr": 8,
+        "node.TermVar": 75,
+        "node.TermQuant": 1,
+        "node.TermAll": 47,
+        "node.TermApp": 52,
+        "node.TermAnn": 12,
+        "pattern.PatternVar": 8,
+        "node.BodyLocal": 8,
+        "node.TermLam": 26,
+        "node.TermAdt": 5
+      },
+      "occurrences": {
+        "TypedOccurrence": 69,
+        "LocalOccurrence": 4,
+        "LocalReferenceOccurrence": 5
+      },
+      "transientRetainedEdges": 0,
+      "scope": "Explicit checked occurrence/binding/symbol/global/declaration/tape and recursively decoded source descriptor edges; not a type-equivalence or retained-byte proof"
+    },
+    "readbackSha256": "b39be138cd8d286cdabd2238d1e2043834f511713cc90f767a893c7745eae70a",
+    "observation": {
+      "nodeCount": 464,
+      "examined": 464,
+      "repeatedReads": 928,
+      "identicalStoredObjects": 464,
+      "kindCounts": {
+        "TermQuantity": 18,
+        "TermType": 19,
+        "TermRef": 111,
+        "TermCtr": 8,
+        "BodyReply": 14,
+        "TermVar": 75,
+        "TermQuant": 1,
+        "TermApp": 58,
+        "TermAll": 99,
+        "TermAnn": 12,
+        "BodyLocal": 12,
+        "TermLam": 27,
+        "TermAdt": 10
+      },
+      "termAllBodyViews": 99,
+      "examples": [
+        {
+          "id": 49,
+          "bodyHandle": 48,
+          "fullTaggedHandlePreserved": true,
+          "projectedField": "body_id",
+          "sameStoredObject": true
+        },
+        {
+          "id": 78,
+          "bodyHandle": 77,
+          "fullTaggedHandlePreserved": true,
+          "projectedField": "body_id",
+          "sameStoredObject": true
+        },
+        {
+          "id": 93,
+          "bodyHandle": 92,
+          "fullTaggedHandlePreserved": true,
+          "projectedField": "body_id",
+          "sameStoredObject": true
+        },
+        {
+          "id": 96,
+          "bodyHandle": 95,
+          "fullTaggedHandlePreserved": true,
+          "projectedField": "body_id",
+          "sameStoredObject": true
+        }
+      ]
+    },
+    "disposition": {
+      "decision": "STOP_DIRECT_VIEW_AS_DECODE_ELIMINATION_ON_CURRENT_BOXED_STORAGE",
+      "reason": "The real Arena getter returns the already-stored Node object, not a decoded/reconstructed descriptor. A get_node-plus-body_id wrapper cannot remove a Node materialization; new columns require a separately justified storage migration with measured fallback and metadata costs.",
+      "nonClaims": [
+        "No physical load/JIT/allocation-byte claim",
+        "No packed representation introduced",
+        "No direct column field-view candidate claimed"
+      ]
+    },
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128",
+      "/private/tmp/bend-e01-e13-jbsb4I/e13-boxed-read.mjs",
+      "--worker",
+      "/private/tmp/bend-e01-e13-jbsb4I/e13-boxed-read.result.json"
+    ],
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 679575552,
+      "peakFootprintBytes": 649713168,
+      "elapsedMs": 1244,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/private/tmp/bend-e01-e13-jbsb4I/e13-boxed-read.mjs",
+        "--worker",
+        "/private/tmp/bend-e01-e13-jbsb4I/e13-boxed-read.result.json"
+      ],
+      "label": "E13 actual retained Node identity and one-field access contract",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793389783055-993ea41573034348.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "fullCompilerCensus": {
+    "report": {
+      "path": "/private/tmp/bend-e01-e13-jbsb4I/coverage-nf-arena-v1.result.json",
+      "sha256": "3472bbc9d26181f79a09be20a5076a16a9bab67476178e8b013656a879ba6ece",
+      "bytes": 3346417
+    },
+    "output": {
+      "path": "/private/tmp/bend-e01-e13-jbsb4I/coverage-nf-arena-v1.result.json.output.mjs",
+      "sha256": "c33227e028d767df9a9fff75663e42eb7374919dcf8e7dff14936a98d20008fb",
+      "bytes": 29948466
+    },
+    "observation": {
+      "experiment": "E13",
+      "diagnosticOnly": true,
+      "acceptanceEvidence": false,
+      "imageSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "coverage": {
+        "switchCases": 571,
+        "guardedCases": 272,
+        "unsupportedCases": [],
+        "getterSites": 2
+      },
+      "status": "OBSERVED_NOT_QUALIFIED",
+      "fullDescriptorRetrievals": [
+        {
+          "category": "node",
+          "kind": "TermAll",
+          "count": 12157350,
+          "phases": {
+            "check": 12157233,
+            "emit": 117
+          }
+        },
+        {
+          "category": "node",
+          "kind": "TermAdt",
+          "count": 9530750,
+          "phases": {
+            "check": 9526137,
+            "emit": 4613
+          }
+        },
+        {
+          "category": "node",
+          "kind": "TermRef",
+          "count": 7258960,
+          "phases": {
+            "check": 7078272,
+            "emit": 180688
+          }
+        },
+        {
+          "category": "pattern",
+          "kind": "PatternCtr",
+          "count": 5797924,
+          "phases": {
+            "check": 5794497,
+            "emit": 3427
+          }
+        },
+        {
+          "category": "node",
+          "kind": "TermApp",
+          "count": 5358127,
+          "phases": {
+            "check": 5248975,
+            "emit": 109152
+          }
+        },
+        {
+          "category": "node",
+          "kind": "TermCtr",
+          "count": 4716227,
+          "phases": {
+            "check": 4649057,
+            "emit": 67170
+          }
+        },
+        {
+          "category": "node",
+          "kind": "TermVar",
+          "count": 3677060,
+          "phases": {
+            "check": 3549639,
+            "emit": 127421
+          }
+        },
+        {
+          "category": "node",
+          "kind": "TermType",
+          "count": 3167871,
+          "phases": {
+            "check": 3167122,
+            "emit": 749
+          }
+        },
+        {
+          "category": "node",
+          "kind": "TermQuantity",
+          "count": 2343668,
+          "phases": {
+            "check": 2319652,
+            "emit": 24016
+          }
+        },
+        {
+          "category": "pattern",
+          "kind": "PatternVar",
+          "count": 2191531,
+          "phases": {
+            "check": 2179206,
+            "emit": 12325
+          }
+        },
+        {
+          "category": "node",
+          "kind": "TermLam",
+          "count": 1936762,
+          "phases": {
+            "check": 1925068,
+            "emit": 11694
+          }
+        },
+        {
+          "category": "node",
+          "kind": "BodyCase",
+          "count": 1414381,
+          "phases": {
+            "check": 1407527,
+            "emit": 6854
+          }
+        },
+        {
+          "category": "node",
+          "kind": "TermFill",
+          "count": 728548,
+          "phases": {
+            "check": 689438,
+            "emit": 39110
+          }
+        },
+        {
+          "category": "node",
+          "kind": "BodyMatch",
+          "count": 602245,
+          "phases": {
+            "check": 593938,
+            "emit": 8307
+          }
+        },
+        {
+          "category": "node",
+          "kind": "TermQuant",
+          "count": 377634,
+          "phases": {
+            "check": 377553,
+            "emit": 81
+          }
+        },
+        {
+          "category": "node",
+          "kind": "TermAnn",
+          "count": 205842,
+          "phases": {
+            "check": 186004,
+            "emit": 19838
+          }
+        },
+        {
+          "category": "node",
+          "kind": "BodyReply",
+          "count": 190962,
+          "phases": {
+            "check": 190829,
+            "emit": 133
+          }
+        },
+        {
+          "category": "node",
+          "kind": "BodyLocal",
+          "count": 139739,
+          "phases": {
+            "check": 139739
+          }
+        },
+        {
+          "category": "node",
+          "kind": "TermString",
+          "count": 44547,
+          "phases": {
+            "check": 44547
+          }
+        },
+        {
+          "category": "node",
+          "kind": "TermMin",
+          "count": 2105,
+          "phases": {
+            "check": 2101,
+            "emit": 4
+          }
+        },
+        {
+          "category": "node",
+          "kind": "TermEqual",
+          "count": 997,
+          "phases": {
+            "check": 974,
+            "emit": 23
+          }
+        },
+        {
+          "category": "node",
+          "kind": "TermRefl",
+          "count": 105,
+          "phases": {
+            "check": 91,
+            "emit": 14
+          }
+        },
+        {
+          "category": "node",
+          "kind": "TermRewrite",
+          "count": 54,
+          "phases": {
+            "check": 48,
+            "emit": 6
+          }
+        },
+        {
+          "category": "node",
+          "kind": "TermBang",
+          "count": 17,
+          "phases": {
+            "check": 16,
+            "emit": 1
+          }
+        }
+      ],
+      "kindAccess": [
+        {
+          "category": "node",
+          "kind": "TermAll",
+          "matches": 8824803,
+          "declaredFieldExposure": 52948818,
+          "unconditionalProjectionStatements": 52805043,
+          "referencedProjectionStatements": 15764987,
+          "lexicallyUnreferencedProjectionStatements": 37040056,
+          "phases": {
+            "check": 8824686,
+            "emit": 117
+          }
+        },
+        {
+          "category": "node",
+          "kind": "TermApp",
+          "matches": 6260728,
+          "declaredFieldExposure": 18782184,
+          "unconditionalProjectionStatements": 18782184,
+          "referencedProjectionStatements": 12556467,
+          "lexicallyUnreferencedProjectionStatements": 6225717,
+          "phases": {
+            "check": 6151576,
+            "emit": 109152
+          }
+        },
+        {
+          "category": "pattern",
+          "kind": "PatternCtr",
+          "matches": 6249821,
+          "declaredFieldExposure": 24999284,
+          "unconditionalProjectionStatements": 24999284,
+          "referencedProjectionStatements": 19702317,
+          "lexicallyUnreferencedProjectionStatements": 5296967,
+          "phases": {
+            "check": 6246394,
+            "emit": 3427
+          }
+        },
+        {
+          "category": "node",
+          "kind": "TermCtr",
+          "matches": 5780375,
+          "declaredFieldExposure": 23121500,
+          "unconditionalProjectionStatements": 23037596,
+          "referencedProjectionStatements": 14840242,
+          "lexicallyUnreferencedProjectionStatements": 8197354,
+          "phases": {
+            "check": 5713205,
+            "emit": 67170
+          }
+        },
+        {
+          "category": "node",
+          "kind": "TermAdt",
+          "matches": 5588654,
+          "declaredFieldExposure": 33531924,
+          "unconditionalProjectionStatements": 33531924,
+          "referencedProjectionStatements": 16564476,
+          "lexicallyUnreferencedProjectionStatements": 16967448,
+          "phases": {
+            "check": 5584041,
+            "emit": 4613
+          }
+        },
+        {
+          "category": "node",
+          "kind": "TermRef",
+          "matches": 5428403,
+          "declaredFieldExposure": 10856806,
+          "unconditionalProjectionStatements": 10856806,
+          "referencedProjectionStatements": 5177579,
+          "lexicallyUnreferencedProjectionStatements": 5679227,
+          "phases": {
+            "check": 5281313,
+            "emit": 147090
+          }
+        },
+        {
+          "category": "node",
+          "kind": "TermVar",
+          "matches": 4830625,
+          "declaredFieldExposure": 14491875,
+          "unconditionalProjectionStatements": 14476425,
+          "referencedProjectionStatements": 8256723,
+          "lexicallyUnreferencedProjectionStatements": 6219702,
+          "phases": {
+            "check": 4703233,
+            "emit": 127392
+          }
+        },
+        {
+          "category": "pattern",
+          "kind": "PatternVar",
+          "matches": 2357107,
+          "declaredFieldExposure": 9428428,
+          "unconditionalProjectionStatements": 9422248,
+          "referencedProjectionStatements": 2662053,
+          "lexicallyUnreferencedProjectionStatements": 6760195,
+          "phases": {
+            "check": 2344782,
+            "emit": 12325
+          }
+        },
+        {
+          "category": "node",
+          "kind": "TermQuantity",
+          "matches": 1613277,
+          "declaredFieldExposure": 3226554,
+          "unconditionalProjectionStatements": 3203264,
+          "referencedProjectionStatements": 1156633,
+          "lexicallyUnreferencedProjectionStatements": 2046631,
+          "phases": {
+            "check": 1589261,
+            "emit": 24016
+          }
+        },
+        {
+          "category": "node",
+          "kind": "BodyCase",
+          "matches": 1533580,
+          "declaredFieldExposure": 6134320,
+          "unconditionalProjectionStatements": 6134320,
+          "referencedProjectionStatements": 4655961,
+          "lexicallyUnreferencedProjectionStatements": 1478359,
+          "phases": {
+            "check": 1526726,
+            "emit": 6854
+          }
+        },
+        {
+          "category": "node",
+          "kind": "TermType",
+          "matches": 1131153,
+          "declaredFieldExposure": 2262306,
+          "unconditionalProjectionStatements": 2262306,
+          "referencedProjectionStatements": 1134089,
+          "lexicallyUnreferencedProjectionStatements": 1128217,
+          "phases": {
+            "check": 1130404,
+            "emit": 749
+          }
+        },
+        {
+          "category": "node",
+          "kind": "TermLam",
+          "matches": 1034611,
+          "declaredFieldExposure": 5173055,
+          "unconditionalProjectionStatements": 5148335,
+          "referencedProjectionStatements": 1844830,
+          "lexicallyUnreferencedProjectionStatements": 3303505,
+          "phases": {
+            "check": 1022917,
+            "emit": 11694
+          }
+        },
+        {
+          "category": "node",
+          "kind": "TermFill",
+          "matches": 671203,
+          "declaredFieldExposure": 2684812,
+          "unconditionalProjectionStatements": 2684812,
+          "referencedProjectionStatements": 2446821,
+          "lexicallyUnreferencedProjectionStatements": 237991,
+          "phases": {
+            "check": 632093,
+            "emit": 39110
+          }
+        },
+        {
+          "category": "node",
+          "kind": "BodyMatch",
+          "matches": 647617,
+          "declaredFieldExposure": 3238085,
+          "unconditionalProjectionStatements": 3238085,
+          "referencedProjectionStatements": 2610206,
+          "lexicallyUnreferencedProjectionStatements": 627879,
+          "phases": {
+            "check": 639310,
+            "emit": 8307
+          }
+        },
+        {
+          "category": "node",
+          "kind": "TermAnn",
+          "matches": 319584,
+          "declaredFieldExposure": 958752,
+          "unconditionalProjectionStatements": 958752,
+          "referencedProjectionStatements": 741626,
+          "lexicallyUnreferencedProjectionStatements": 217126,
+          "phases": {
+            "check": 299746,
+            "emit": 19838
+          }
+        },
+        {
+          "category": "node",
+          "kind": "TermQuant",
+          "matches": 257305,
+          "declaredFieldExposure": 0,
+          "unconditionalProjectionStatements": 0,
+          "referencedProjectionStatements": 0,
+          "lexicallyUnreferencedProjectionStatements": 0,
+          "phases": {
+            "check": 257224,
+            "emit": 81
+          }
+        },
+        {
+          "category": "node",
+          "kind": "BodyReply",
+          "matches": 236461,
+          "declaredFieldExposure": 472922,
+          "unconditionalProjectionStatements": 472922,
+          "referencedProjectionStatements": 243695,
+          "lexicallyUnreferencedProjectionStatements": 229227,
+          "phases": {
+            "check": 236328,
+            "emit": 133
+          }
+        },
+        {
+          "category": "node",
+          "kind": "BodyLocal",
+          "matches": 227806,
+          "declaredFieldExposure": 1594642,
+          "unconditionalProjectionStatements": 1594642,
+          "referencedProjectionStatements": 1375866,
+          "lexicallyUnreferencedProjectionStatements": 218776,
+          "phases": {
+            "check": 227806
+          }
+        },
+        {
+          "category": "node",
+          "kind": "TermString",
+          "matches": 63704,
+          "declaredFieldExposure": 191112,
+          "unconditionalProjectionStatements": 191112,
+          "referencedProjectionStatements": 61380,
+          "lexicallyUnreferencedProjectionStatements": 129732,
+          "phases": {
+            "check": 63704
+          }
+        },
+        {
+          "category": "node",
+          "kind": "TermEqual",
+          "matches": 1539,
+          "declaredFieldExposure": 6156,
+          "unconditionalProjectionStatements": 6156,
+          "referencedProjectionStatements": 5279,
+          "lexicallyUnreferencedProjectionStatements": 877,
+          "phases": {
+            "check": 1516,
+            "emit": 23
+          }
+        },
+        {
+          "category": "node",
+          "kind": "TermMin",
+          "matches": 1134,
+          "declaredFieldExposure": 3402,
+          "unconditionalProjectionStatements": 3402,
+          "referencedProjectionStatements": 2717,
+          "lexicallyUnreferencedProjectionStatements": 685,
+          "phases": {
+            "check": 1130,
+            "emit": 4
+          }
+        },
+        {
+          "category": "node",
+          "kind": "TermRefl",
+          "matches": 101,
+          "declaredFieldExposure": 101,
+          "unconditionalProjectionStatements": 101,
+          "referencedProjectionStatements": 33,
+          "lexicallyUnreferencedProjectionStatements": 68,
+          "phases": {
+            "check": 87,
+            "emit": 14
+          }
+        },
+        {
+          "category": "node",
+          "kind": "TermRewrite",
+          "matches": 84,
+          "declaredFieldExposure": 336,
+          "unconditionalProjectionStatements": 336,
+          "referencedProjectionStatements": 264,
+          "lexicallyUnreferencedProjectionStatements": 72,
+          "phases": {
+            "check": 78,
+            "emit": 6
+          }
+        },
+        {
+          "category": "node",
+          "kind": "TermBang",
+          "matches": 18,
+          "declaredFieldExposure": 36,
+          "unconditionalProjectionStatements": 36,
+          "referencedProjectionStatements": 20,
+          "lexicallyUnreferencedProjectionStatements": 16,
+          "phases": {
+            "check": 17,
+            "emit": 1
+          }
+        },
+        {
+          "category": "node",
+          "kind": "TermSub",
+          "matches": 0,
+          "declaredFieldExposure": 0,
+          "unconditionalProjectionStatements": 0,
+          "referencedProjectionStatements": 0,
+          "lexicallyUnreferencedProjectionStatements": 0,
+          "phases": {}
+        },
+        {
+          "category": "node",
+          "kind": "TermLet",
+          "matches": 0,
+          "declaredFieldExposure": 0,
+          "unconditionalProjectionStatements": 0,
+          "referencedProjectionStatements": 0,
+          "lexicallyUnreferencedProjectionStatements": 0,
+          "phases": {}
+        },
+        {
+          "category": "node",
+          "kind": "TermTemplate",
+          "matches": 0,
+          "declaredFieldExposure": 0,
+          "unconditionalProjectionStatements": 0,
+          "referencedProjectionStatements": 0,
+          "lexicallyUnreferencedProjectionStatements": 0,
+          "phases": {}
+        },
+        {
+          "category": "node",
+          "kind": "TermPlus",
+          "matches": 0,
+          "declaredFieldExposure": 0,
+          "unconditionalProjectionStatements": 0,
+          "referencedProjectionStatements": 0,
+          "lexicallyUnreferencedProjectionStatements": 0,
+          "phases": {}
+        },
+        {
+          "category": "node",
+          "kind": "TermMat",
+          "matches": 0,
+          "declaredFieldExposure": 0,
+          "unconditionalProjectionStatements": 0,
+          "referencedProjectionStatements": 0,
+          "lexicallyUnreferencedProjectionStatements": 0,
+          "phases": {}
+        },
+        {
+          "category": "node",
+          "kind": "TermAbsurd",
+          "matches": 0,
+          "declaredFieldExposure": 0,
+          "unconditionalProjectionStatements": 0,
+          "referencedProjectionStatements": 0,
+          "lexicallyUnreferencedProjectionStatements": 0,
+          "phases": {}
+        },
+        {
+          "category": "node",
+          "kind": "TermHole",
+          "matches": 0,
+          "declaredFieldExposure": 0,
+          "unconditionalProjectionStatements": 0,
+          "referencedProjectionStatements": 0,
+          "lexicallyUnreferencedProjectionStatements": 0,
+          "phases": {}
+        }
+      ],
+      "topConsumerSites": [
+        {
+          "id": 700,
+          "function": "$b6583",
+          "names": [
+            "checker_core_steps_v1.checker_body_arena_constructor_owner_view"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_arena_constructor_owner_view"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "TermAll",
+          "category": "node",
+          "declaredFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "ty_id",
+            "body_id",
+            "span"
+          ],
+          "projectedFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "ty_id",
+            "body_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "body_id"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 2723727,
+          "phases": {
+            "check": 2723727
+          }
+        },
+        {
+          "id": 631,
+          "function": "$b6039",
+          "names": [
+            "checker_core_steps_v1.checker_match_3226"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_arena_bound_node"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermCtr",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "args_start",
+            "args_count"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 1948790,
+          "phases": {
+            "check": 1948790
+          }
+        },
+        {
+          "id": 701,
+          "function": "$b6583",
+          "names": [
+            "checker_core_steps_v1.checker_body_arena_constructor_owner_view"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_arena_constructor_owner_view"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "TermAdt",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "refs_start",
+            "refs_count",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "refs_start",
+            "refs_count",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "key_id"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 1773142,
+          "phases": {
+            "check": 1773142
+          }
+        },
+        {
+          "id": 123,
+          "function": "$b1949",
+          "names": [
+            "checker_core_steps_v1.checker_match_578"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_deforest_producer_37"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermRef",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "key_id"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 1589682,
+          "phases": {
+            "check": 1589682
+          }
+        },
+        {
+          "id": 614,
+          "function": "$b6039",
+          "names": [
+            "checker_core_steps_v1.checker_match_3226"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_arena_bound_node"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermVar",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "index",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "index",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "index"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 1525127,
+          "phases": {
+            "check": 1525127
+          }
+        },
+        {
+          "id": 113,
+          "function": "$b1874",
+          "names": [
+            "checker_core_steps_v1.checker_deforest_cont_25"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_whnf_pattern"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "PatternCtr",
+          "category": "pattern",
+          "declaredFields": [
+            "key_id",
+            "fields_start",
+            "fields_count",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "fields_start",
+            "fields_count",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "key_id",
+            "fields_start",
+            "fields_count"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 1223362,
+          "phases": {
+            "check": 1223362
+          }
+        },
+        {
+          "id": 111,
+          "function": "$b1864",
+          "names": [
+            "checker_core_steps_v1.checker_deforest_cont_23"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_whnf_pattern_constructor"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "TermCtr",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "key_id",
+            "args_start",
+            "args_count"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 1222880,
+          "phases": {
+            "check": 1222880
+          }
+        },
+        {
+          "id": 108,
+          "function": "$b1826",
+          "names": [
+            "checker_core_steps_v1.checker_match_502"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_whnf_beta_case"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "BodyCase",
+          "category": "node",
+          "declaredFields": [
+            "patterns_start",
+            "patterns_count",
+            "body_id",
+            "span"
+          ],
+          "projectedFields": [
+            "patterns_start",
+            "patterns_count",
+            "body_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "patterns_start",
+            "patterns_count",
+            "body_id"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 1222399,
+          "phases": {
+            "check": 1222399
+          }
+        },
+        {
+          "id": 497,
+          "function": "$b4962",
+          "names": [
+            "checker_core_steps_v1.checker_deforest_cont_342"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_pattern_value"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "PatternCtr",
+          "category": "pattern",
+          "declaredFields": [
+            "key_id",
+            "fields_start",
+            "fields_count",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "fields_start",
+            "fields_count",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "key_id",
+            "fields_start",
+            "fields_count",
+            "span"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 1124888,
+          "phases": {
+            "check": 1124888
+          }
+        },
+        {
+          "id": 124,
+          "function": "$b1949",
+          "names": [
+            "checker_core_steps_v1.checker_match_578"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_deforest_producer_37"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermApp",
+          "category": "node",
+          "declaredFields": [
+            "fn_id",
+            "arg_id",
+            "span"
+          ],
+          "projectedFields": [
+            "fn_id",
+            "arg_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "fn_id",
+            "arg_id"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 1103922,
+          "phases": {
+            "check": 1103922
+          }
+        },
+        {
+          "id": 627,
+          "function": "$b6039",
+          "names": [
+            "checker_core_steps_v1.checker_match_3226"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_arena_bound_node"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermApp",
+          "category": "node",
+          "declaredFields": [
+            "fn_id",
+            "arg_id",
+            "span"
+          ],
+          "projectedFields": [
+            "fn_id",
+            "arg_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "fn_id",
+            "arg_id"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 893806,
+          "phases": {
+            "check": 893806
+          }
+        },
+        {
+          "id": 398,
+          "function": "$b4147",
+          "names": [
+            "checker_core_steps_v1.checker_deforest_cont_257"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_function_type_of_application_view"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "TermAll",
+          "category": "node",
+          "declaredFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "ty_id",
+            "body_id",
+            "span"
+          ],
+          "projectedFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "ty_id",
+            "body_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "body_id"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 723847,
+          "phases": {
+            "check": 723847
+          }
+        },
+        {
+          "id": 404,
+          "function": "$b4159",
+          "names": [
+            "checker_core_steps_v1.checker_match_1996"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_function_type_of"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermApp",
+          "category": "node",
+          "declaredFields": [
+            "fn_id",
+            "arg_id",
+            "span"
+          ],
+          "projectedFields": [
+            "fn_id",
+            "arg_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "fn_id",
+            "arg_id"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 723847,
+          "phases": {
+            "check": 723847
+          }
+        },
+        {
+          "id": 1,
+          "function": "$b658",
+          "names": [
+            "../bend2/selfhost/checker_arena.bound_pattern.value"
+          ],
+          "staticContexts": [
+            "../bend2/selfhost/checker_arena.bound_pattern.value"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "PatternCtr",
+          "category": "pattern",
+          "declaredFields": [
+            "key_id",
+            "fields_start",
+            "fields_count",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "fields_start",
+            "fields_count",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "fields_start",
+            "fields_count"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 681148,
+          "phases": {
+            "check": 681148
+          }
+        },
+        {
+          "id": 536,
+          "function": "$b5524",
+          "names": [
+            "checker_core_steps_v1.checker_match_2914"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_deforest_producer_389"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "PatternCtr",
+          "category": "pattern",
+          "declaredFields": [
+            "key_id",
+            "fields_start",
+            "fields_count",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "fields_start",
+            "fields_count",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "key_id",
+            "fields_start",
+            "fields_count"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 584601,
+          "phases": {
+            "check": 584601
+          }
+        },
+        {
+          "id": 538,
+          "function": "$b5580",
+          "names": [
+            "checker_core_steps_v1.checker_match_2952"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_deforest_producer_394"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "PatternCtr",
+          "category": "pattern",
+          "declaredFields": [
+            "key_id",
+            "fields_start",
+            "fields_count",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "fields_start",
+            "fields_count",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "key_id",
+            "fields_start",
+            "fields_count"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 567401,
+          "phases": {
+            "check": 567401
+          }
+        },
+        {
+          "id": 109,
+          "function": "$b1836",
+          "names": [
+            "checker_core_steps_v1.checker_match_512"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_whnf_application"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "TermLam",
+          "category": "node",
+          "declaredFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "body_id",
+            "span"
+          ],
+          "projectedFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "body_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "body_id"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 561588,
+          "phases": {
+            "check": 561588
+          }
+        },
+        {
+          "id": 31,
+          "function": "$b660",
+          "names": [
+            "../bend2/selfhost/checker_arena.node_closed.leaf"
+          ],
+          "staticContexts": [
+            "../bend2/selfhost/checker_arena.node_closed.leaf"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermRef",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "span"
+          ],
+          "referencedProjectionFields": [],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 558688,
+          "phases": {
+            "check": 558688
+          }
+        },
+        {
+          "id": 112,
+          "function": "$b1874",
+          "names": [
+            "checker_core_steps_v1.checker_deforest_cont_25"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_whnf_pattern"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "PatternVar",
+          "category": "pattern",
+          "declaredFields": [
+            "key_id",
+            "index",
+            "quantity",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "index",
+            "quantity",
+            "span"
+          ],
+          "referencedProjectionFields": [],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 556675,
+          "phases": {
+            "check": 556675
+          }
+        },
+        {
+          "id": 86,
+          "function": "$b1608",
+          "names": [
+            "checker_core_steps_v1.checker_deforest_cont_15"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_term_span"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermApp",
+          "category": "node",
+          "declaredFields": [
+            "fn_id",
+            "arg_id",
+            "span"
+          ],
+          "projectedFields": [
+            "fn_id",
+            "arg_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "span"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 550359,
+          "phases": {
+            "check": 550359
+          }
+        },
+        {
+          "id": 102,
+          "function": "$b1774",
+          "names": [
+            "checker_core_steps_v1.checker_deforest_cont_16"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_whnf_ref_type"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "TermAll",
+          "category": "node",
+          "declaredFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "ty_id",
+            "body_id",
+            "span"
+          ],
+          "projectedFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "ty_id",
+            "body_id",
+            "span"
+          ],
+          "referencedProjectionFields": [],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 543073,
+          "phases": {
+            "check": 543073
+          }
+        },
+        {
+          "id": 110,
+          "function": "$b1836",
+          "names": [
+            "checker_core_steps_v1.checker_match_512"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_whnf_application"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "TermRef",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "key_id"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 542334,
+          "phases": {
+            "check": 542334
+          }
+        },
+        {
+          "id": 328,
+          "function": "$b3286",
+          "names": [
+            "checker_core_steps_v1.checker_deforest_cont_178"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_check_pattern_typed_view"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "TermAdt",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "refs_start",
+            "refs_count",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "refs_start",
+            "refs_count",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "refs_start",
+            "refs_count"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 539563,
+          "phases": {
+            "check": 539563
+          }
+        },
+        {
+          "id": 330,
+          "function": "$b3294",
+          "names": [
+            "checker_core_steps_v1.checker_match_1455"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_check_pattern_typed"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "PatternCtr",
+          "category": "pattern",
+          "declaredFields": [
+            "key_id",
+            "fields_start",
+            "fields_count",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "fields_start",
+            "fields_count",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "key_id",
+            "fields_start",
+            "fields_count",
+            "span"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 539563,
+          "phases": {
+            "check": 539563
+          }
+        },
+        {
+          "id": 625,
+          "function": "$b6039",
+          "names": [
+            "checker_core_steps_v1.checker_match_3226"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_arena_bound_node"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermAll",
+          "category": "node",
+          "declaredFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "ty_id",
+            "body_id",
+            "span"
+          ],
+          "projectedFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "ty_id",
+            "body_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "ty_id",
+            "body_id"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 536093,
+          "phases": {
+            "check": 536093
+          }
+        },
+        {
+          "id": 105,
+          "function": "$b1796",
+          "names": [
+            "checker_core_steps_v1.checker_match_475"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_whnf_beta_body"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "BodyMatch",
+          "category": "node",
+          "declaredFields": [
+            "scrutinees_start",
+            "scrutinees_count",
+            "cases_start",
+            "cases_count",
+            "span"
+          ],
+          "projectedFields": [
+            "scrutinees_start",
+            "scrutinees_count",
+            "cases_start",
+            "cases_count",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "scrutinees_start",
+            "scrutinees_count",
+            "cases_start",
+            "cases_count"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 528152,
+          "phases": {
+            "check": 528152
+          }
+        },
+        {
+          "id": 106,
+          "function": "$b1803",
+          "names": [
+            "checker_core_steps_v1.checker_match_481"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_whnf_beta_variable"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "TermVar",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "index",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "index",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "index"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 527878,
+          "phases": {
+            "check": 527878
+          }
+        },
+        {
+          "id": 441,
+          "function": "$b4653",
+          "names": [
+            "checker_core_steps_v1.checker_deforest_cont_311"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_deforest_producer_311"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "TermAll",
+          "category": "node",
+          "declaredFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "ty_id",
+            "body_id",
+            "span"
+          ],
+          "projectedFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "ty_id",
+            "body_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "body_id"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 525279,
+          "phases": {
+            "check": 525279
+          }
+        },
+        {
+          "id": 628,
+          "function": "$b6039",
+          "names": [
+            "checker_core_steps_v1.checker_match_3226"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_arena_bound_node"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermAdt",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "refs_start",
+            "refs_count",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "refs_start",
+            "refs_count",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "args_start",
+            "args_count"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 490564,
+          "phases": {
+            "check": 490564
+          }
+        },
+        {
+          "id": 496,
+          "function": "$b4962",
+          "names": [
+            "checker_core_steps_v1.checker_deforest_cont_342"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_pattern_value"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "PatternVar",
+          "category": "pattern",
+          "declaredFields": [
+            "key_id",
+            "index",
+            "quantity",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "index",
+            "quantity",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "key_id",
+            "index",
+            "span"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 462200,
+          "phases": {
+            "check": 462200
+          }
+        },
+        {
+          "id": 554,
+          "function": "$b5822",
+          "names": [
+            "checker_core_steps_v1.checker_match_3109"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_core_shift_open"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermVar",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "index",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "index",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "key_id",
+            "index",
+            "span"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 456304,
+          "phases": {
+            "check": 456304
+          }
+        },
+        {
+          "id": 325,
+          "function": "$b3249",
+          "names": [
+            "checker_core_steps_v1.checker_match_1423"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_pattern_result_fits_view"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "TermAdt",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "refs_start",
+            "refs_count",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "refs_start",
+            "refs_count",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "key_id",
+            "args_start",
+            "args_count"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 445028,
+          "phases": {
+            "check": 445028
+          }
+        },
+        {
+          "id": 326,
+          "function": "$b3252",
+          "names": [
+            "checker_core_steps_v1.checker_match_1426"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_pattern_result_fits_view"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "TermAdt",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "refs_start",
+            "refs_count",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "refs_start",
+            "refs_count",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "key_id",
+            "args_start",
+            "args_count"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 445028,
+          "phases": {
+            "check": 445028
+          }
+        },
+        {
+          "id": 203,
+          "function": "$b2321",
+          "names": [
+            "checker_core_steps_v1.checker_deforest_cont_84"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_family_arity_view"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "TermAll",
+          "category": "node",
+          "declaredFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "ty_id",
+            "body_id",
+            "span"
+          ],
+          "projectedFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "ty_id",
+            "body_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "body_id"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 428715,
+          "phases": {
+            "check": 428715
+          }
+        },
+        {
+          "id": 205,
+          "function": "$b2335",
+          "names": [
+            "checker_core_steps_v1.checker_match_814"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_family_quant_prefix_view"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "TermAll",
+          "category": "node",
+          "declaredFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "ty_id",
+            "body_id",
+            "span"
+          ],
+          "projectedFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "ty_id",
+            "body_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "ty_id",
+            "body_id"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 427616,
+          "phases": {
+            "check": 427616
+          }
+        },
+        {
+          "id": 58,
+          "function": "$b1539",
+          "names": [
+            "checker_core_steps_v1.checker_match_272"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_materialize_node"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermApp",
+          "category": "node",
+          "declaredFields": [
+            "fn_id",
+            "arg_id",
+            "span"
+          ],
+          "projectedFields": [
+            "fn_id",
+            "arg_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "fn_id",
+            "arg_id",
+            "span"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 404414,
+          "phases": {
+            "check": 404414
+          }
+        },
+        {
+          "id": 324,
+          "function": "$b3220",
+          "names": [
+            "checker_core_steps_v1.checker_deforest_cont_173"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_check_pattern_fields_view"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "TermAll",
+          "category": "node",
+          "declaredFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "ty_id",
+            "body_id",
+            "span"
+          ],
+          "projectedFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "ty_id",
+            "body_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "quantity",
+            "ty_id",
+            "body_id"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 390659,
+          "phases": {
+            "check": 390659
+          }
+        },
+        {
+          "id": 541,
+          "function": "$b5621",
+          "names": [
+            "checker_core_steps_v1.checker_match_2974"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_scope_pattern_row_subsumes"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "PatternCtr",
+          "category": "pattern",
+          "declaredFields": [
+            "key_id",
+            "fields_start",
+            "fields_count",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "fields_start",
+            "fields_count",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "key_id",
+            "fields_start",
+            "fields_count"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 386246,
+          "phases": {
+            "check": 386246
+          }
+        },
+        {
+          "id": 539,
+          "function": "$b5611",
+          "names": [
+            "checker_core_steps_v1.checker_deforest_cont_397"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_deforest_producer_397"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "PatternCtr",
+          "category": "pattern",
+          "declaredFields": [
+            "key_id",
+            "fields_start",
+            "fields_count",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "fields_start",
+            "fields_count",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "key_id",
+            "fields_start",
+            "fields_count"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 383068,
+          "phases": {
+            "check": 383068
+          }
+        },
+        {
+          "id": 3,
+          "function": "$b659",
+          "names": [
+            "../bend2/selfhost/checker_arena.bound_node.value"
+          ],
+          "staticContexts": [
+            "../bend2/selfhost/checker_arena.bound_node.value"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermRef",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "span"
+          ],
+          "referencedProjectionFields": [],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 373045,
+          "phases": {
+            "check": 373045
+          }
+        },
+        {
+          "id": 417,
+          "function": "$b4500",
+          "names": [
+            "checker_core_steps_v1.checker_match_2231"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_term_usage_map"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermVar",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "index",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "index",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "index"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 367708,
+          "phases": {
+            "check": 367708
+          }
+        },
+        {
+          "id": 19,
+          "function": "$b659",
+          "names": [
+            "../bend2/selfhost/checker_arena.bound_node.value"
+          ],
+          "staticContexts": [
+            "../bend2/selfhost/checker_arena.bound_node.value"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermCtr",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "args_start",
+            "args_count"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 366288,
+          "phases": {
+            "check": 366288
+          }
+        },
+        {
+          "id": 170,
+          "function": "$b2098",
+          "names": [
+            "checker_core_steps_v1.checker_match_688"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_equal_raw_ordinary"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermQuantity",
+          "category": "node",
+          "declaredFields": [
+            "quantity",
+            "span"
+          ],
+          "projectedFields": [
+            "quantity",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "quantity"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 365467,
+          "phases": {
+            "check": 365467
+          }
+        },
+        {
+          "id": 143,
+          "function": "$b2036",
+          "names": [
+            "checker_core_steps_v1.checker_match_637"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_equal_raw_ordinary"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "TermQuantity",
+          "category": "node",
+          "declaredFields": [
+            "quantity",
+            "span"
+          ],
+          "projectedFields": [
+            "quantity",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "quantity"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 365463,
+          "phases": {
+            "check": 365463
+          }
+        },
+        {
+          "id": 0,
+          "function": "$b658",
+          "names": [
+            "../bend2/selfhost/checker_arena.bound_pattern.value"
+          ],
+          "staticContexts": [
+            "../bend2/selfhost/checker_arena.bound_pattern.value"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "PatternVar",
+          "category": "pattern",
+          "declaredFields": [
+            "key_id",
+            "index",
+            "quantity",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "index",
+            "quantity",
+            "span"
+          ],
+          "referencedProjectionFields": [],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 357141,
+          "phases": {
+            "check": 357141
+          }
+        },
+        {
+          "id": 2,
+          "function": "$b659",
+          "names": [
+            "../bend2/selfhost/checker_arena.bound_node.value"
+          ],
+          "staticContexts": [
+            "../bend2/selfhost/checker_arena.bound_node.value"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermVar",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "index",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "index",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "index"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 342728,
+          "phases": {
+            "check": 342728
+          }
+        },
+        {
+          "id": 403,
+          "function": "$b4159",
+          "names": [
+            "checker_core_steps_v1.checker_match_1996"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_function_type_of"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermRef",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "key_id"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 339150,
+          "phases": {
+            "check": 339150
+          }
+        },
+        {
+          "id": 15,
+          "function": "$b659",
+          "names": [
+            "../bend2/selfhost/checker_arena.bound_node.value"
+          ],
+          "staticContexts": [
+            "../bend2/selfhost/checker_arena.bound_node.value"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermApp",
+          "category": "node",
+          "declaredFields": [
+            "fn_id",
+            "arg_id",
+            "span"
+          ],
+          "projectedFields": [
+            "fn_id",
+            "arg_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "fn_id",
+            "arg_id"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 327391,
+          "phases": {
+            "check": 327391
+          }
+        },
+        {
+          "id": 583,
+          "function": "$b5872",
+          "names": [
+            "checker_core_steps_v1.checker_match_3157"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_core_subst_open"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermVar",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "index",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "index",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "key_id",
+            "index",
+            "span"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 321517,
+          "phases": {
+            "check": 321517
+          }
+        },
+        {
+          "id": 483,
+          "function": "$b4876",
+          "names": [
+            "checker_core_steps_v1.checker_match_2471"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_application_head"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermApp",
+          "category": "node",
+          "declaredFields": [
+            "fn_id",
+            "arg_id",
+            "span"
+          ],
+          "projectedFields": [
+            "fn_id",
+            "arg_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "fn_id"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 316387,
+          "phases": {
+            "check": 316387
+          }
+        },
+        {
+          "id": 405,
+          "function": "$b4165",
+          "names": [
+            "checker_core_steps_v1.checker_deforest_cont_259"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_deforest_producer_259"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "TermAll",
+          "category": "node",
+          "declaredFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "ty_id",
+            "body_id",
+            "span"
+          ],
+          "projectedFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "ty_id",
+            "body_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "quantity",
+            "ty_id"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 315250,
+          "phases": {
+            "check": 315250
+          }
+        },
+        {
+          "id": 427,
+          "function": "$b4500",
+          "names": [
+            "checker_core_steps_v1.checker_match_2231"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_term_usage_map"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermApp",
+          "category": "node",
+          "declaredFields": [
+            "fn_id",
+            "arg_id",
+            "span"
+          ],
+          "projectedFields": [
+            "fn_id",
+            "arg_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "fn_id",
+            "arg_id"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 315250,
+          "phases": {
+            "check": 315250
+          }
+        },
+        {
+          "id": 196,
+          "function": "$b2305",
+          "names": [
+            "checker_core_steps_v1.checker_deforest_cont_81"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_family_head_key"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermRef",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "key_id"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 306039,
+          "phases": {
+            "check": 306039
+          }
+        },
+        {
+          "id": 49,
+          "function": "$b1539",
+          "names": [
+            "checker_core_steps_v1.checker_match_272"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_materialize_node"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermRef",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "key_id",
+            "span"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 295666,
+          "phases": {
+            "check": 295666
+          }
+        },
+        {
+          "id": 320,
+          "function": "$b3143",
+          "names": [
+            "checker_core_steps_v1.checker_deforest_cont_164"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_deforest_producer_164"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "PatternVar",
+          "category": "pattern",
+          "declaredFields": [
+            "key_id",
+            "index",
+            "quantity",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "index",
+            "quantity",
+            "span"
+          ],
+          "referencedProjectionFields": [],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 285157,
+          "phases": {
+            "check": 285157
+          }
+        },
+        {
+          "id": 594,
+          "function": "$b5872",
+          "names": [
+            "checker_core_steps_v1.checker_match_3157"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_core_subst_open"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermAll",
+          "category": "node",
+          "declaredFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "ty_id",
+            "body_id",
+            "span"
+          ],
+          "projectedFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "ty_id",
+            "body_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "ty_id",
+            "body_id",
+            "span"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 284706,
+          "phases": {
+            "check": 284706
+          }
+        },
+        {
+          "id": 316,
+          "function": "$b3053",
+          "names": [
+            "checker_core_steps_v1.checker_deforest_cont_153"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_collect_constructor_field_types_view"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "TermAll",
+          "category": "node",
+          "declaredFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "ty_id",
+            "body_id",
+            "span"
+          ],
+          "projectedFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "ty_id",
+            "body_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "key_id",
+            "ty_id",
+            "body_id"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 279364,
+          "phases": {
+            "check": 279364
+          }
+        },
+        {
+          "id": 546,
+          "function": "$b5662",
+          "names": [
+            "checker_core_steps_v1.checker_deforest_cont_404"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_deforest_producer_404"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "TermCtr",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "args_start",
+            "args_count"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 278285,
+          "phases": {
+            "check": 278285
+          }
+        },
+        {
+          "id": 48,
+          "function": "$b1539",
+          "names": [
+            "checker_core_steps_v1.checker_match_272"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_materialize_node"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermVar",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "index",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "index",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "key_id",
+            "index",
+            "span"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 274665,
+          "phases": {
+            "check": 274665
+          }
+        },
+        {
+          "id": 33,
+          "function": "$b660",
+          "names": [
+            "../bend2/selfhost/checker_arena.node_closed.leaf"
+          ],
+          "staticContexts": [
+            "../bend2/selfhost/checker_arena.node_closed.leaf"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermQuantity",
+          "category": "node",
+          "declaredFields": [
+            "quantity",
+            "span"
+          ],
+          "projectedFields": [
+            "quantity",
+            "span"
+          ],
+          "referencedProjectionFields": [],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 274149,
+          "phases": {
+            "check": 274149
+          }
+        },
+        {
+          "id": 317,
+          "function": "$b3071",
+          "names": [
+            "checker_core_steps_v1.checker_deforest_cont_155"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_constructor_field_types_view"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "TermAdt",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "refs_start",
+            "refs_count",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "refs_start",
+            "refs_count",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "span"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 254771,
+          "phases": {
+            "check": 254771
+          }
+        },
+        {
+          "id": 413,
+          "function": "$b4335",
+          "names": [
+            "checker_core_steps_v1.checker_deforest_cont_277"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_term_usage_map_constructor_view"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "TermAll",
+          "category": "node",
+          "declaredFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "ty_id",
+            "body_id",
+            "span"
+          ],
+          "projectedFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "ty_id",
+            "body_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "quantity",
+            "ty_id",
+            "body_id"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 247931,
+          "phases": {
+            "check": 247931
+          }
+        },
+        {
+          "id": 661,
+          "function": "$b6203",
+          "names": [
+            "checker_core_steps_v1.checker_match_3339"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_arena_publish_term_view"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermCtr",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "span"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 243950,
+          "phases": {
+            "check": 243950
+          }
+        },
+        {
+          "id": 474,
+          "function": "$b4860",
+          "names": [
+            "checker_core_steps_v1.checker_deforest_cont_331"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_application_bangs_valid"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermApp",
+          "category": "node",
+          "declaredFields": [
+            "fn_id",
+            "arg_id",
+            "span"
+          ],
+          "projectedFields": [
+            "fn_id",
+            "arg_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "fn_id",
+            "arg_id"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 240386,
+          "phases": {
+            "check": 240386
+          }
+        },
+        {
+          "id": 479,
+          "function": "$b4872",
+          "names": [
+            "checker_core_steps_v1.checker_match_2468"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_application_type_view"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermApp",
+          "category": "node",
+          "declaredFields": [
+            "fn_id",
+            "arg_id",
+            "span"
+          ],
+          "projectedFields": [
+            "fn_id",
+            "arg_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "fn_id",
+            "arg_id",
+            "span"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 239284,
+          "phases": {
+            "check": 239284
+          }
+        },
+        {
+          "id": 621,
+          "function": "$b6039",
+          "names": [
+            "checker_core_steps_v1.checker_match_3226"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_arena_bound_node"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermType",
+          "category": "node",
+          "declaredFields": [
+            "kind_id",
+            "span"
+          ],
+          "projectedFields": [
+            "kind_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "kind_id"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 234142,
+          "phases": {
+            "check": 234142
+          }
+        },
+        {
+          "id": 121,
+          "function": "$b1949",
+          "names": [
+            "checker_core_steps_v1.checker_match_578"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_deforest_producer_37"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermFill",
+          "category": "node",
+          "declaredFields": [
+            "head_id",
+            "args_start",
+            "args_count",
+            "span"
+          ],
+          "projectedFields": [
+            "head_id",
+            "args_start",
+            "args_count",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "head_id",
+            "args_start",
+            "args_count",
+            "span"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 230133,
+          "phases": {
+            "check": 230133
+          }
+        },
+        {
+          "id": 464,
+          "function": "$b4844",
+          "names": [
+            "checker_core_steps_v1.checker_match_2450"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_application_argument_bangs_valid"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermCtr",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "args_start",
+            "args_count"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 229068,
+          "phases": {
+            "check": 229068
+          }
+        },
+        {
+          "id": 70,
+          "function": "$b1565",
+          "names": [
+            "checker_core_steps_v1.checker_match_290"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_restore_named_head"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermApp",
+          "category": "node",
+          "declaredFields": [
+            "fn_id",
+            "arg_id",
+            "span"
+          ],
+          "projectedFields": [
+            "fn_id",
+            "arg_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "fn_id"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 225085,
+          "phases": {
+            "check": 225085
+          }
+        },
+        {
+          "id": 141,
+          "function": "$b2034",
+          "names": [
+            "checker_core_steps_v1.checker_match_635"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_equal_raw_ordinary"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "TermType",
+          "category": "node",
+          "declaredFields": [
+            "kind_id",
+            "span"
+          ],
+          "projectedFields": [
+            "kind_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "kind_id"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 224242,
+          "phases": {
+            "check": 224242
+          }
+        },
+        {
+          "id": 169,
+          "function": "$b2098",
+          "names": [
+            "checker_core_steps_v1.checker_match_688"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_equal_raw_ordinary"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermType",
+          "category": "node",
+          "declaredFields": [
+            "kind_id",
+            "span"
+          ],
+          "projectedFields": [
+            "kind_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "kind_id"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 224242,
+          "phases": {
+            "check": 224242
+          }
+        },
+        {
+          "id": 656,
+          "function": "$b6203",
+          "names": [
+            "checker_core_steps_v1.checker_match_3339"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_arena_publish_term_view"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermApp",
+          "category": "node",
+          "declaredFields": [
+            "fn_id",
+            "arg_id",
+            "span"
+          ],
+          "projectedFields": [
+            "fn_id",
+            "arg_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "fn_id",
+            "arg_id",
+            "span"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 216484,
+          "phases": {
+            "check": 216484
+          }
+        },
+        {
+          "id": 13,
+          "function": "$b659",
+          "names": [
+            "../bend2/selfhost/checker_arena.bound_node.value"
+          ],
+          "staticContexts": [
+            "../bend2/selfhost/checker_arena.bound_node.value"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermAll",
+          "category": "node",
+          "declaredFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "ty_id",
+            "body_id",
+            "span"
+          ],
+          "projectedFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "ty_id",
+            "body_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "ty_id",
+            "body_id"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 216180,
+          "phases": {
+            "check": 216180
+          }
+        },
+        {
+          "id": 654,
+          "function": "$b6203",
+          "names": [
+            "checker_core_steps_v1.checker_match_3339"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_arena_publish_term_view"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermAll",
+          "category": "node",
+          "declaredFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "ty_id",
+            "body_id",
+            "span"
+          ],
+          "projectedFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "ty_id",
+            "body_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "ty_id",
+            "body_id",
+            "span"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 216112,
+          "phases": {
+            "check": 216112
+          }
+        },
+        {
+          "id": 66,
+          "function": "$b1539",
+          "names": [
+            "checker_core_steps_v1.checker_match_272"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_materialize_node"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermAdt",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "refs_start",
+            "refs_count",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "refs_start",
+            "refs_count",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "refs_start",
+            "refs_count",
+            "span"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 209658,
+          "phases": {
+            "check": 209658
+          }
+        },
+        {
+          "id": 643,
+          "function": "$b6203",
+          "names": [
+            "checker_core_steps_v1.checker_match_3339"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_arena_publish_term_view"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermVar",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "index",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "index",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "key_id",
+            "index",
+            "span"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 204138,
+          "phases": {
+            "check": 204138
+          }
+        },
+        {
+          "id": 623,
+          "function": "$b6039",
+          "names": [
+            "checker_core_steps_v1.checker_match_3226"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_arena_bound_node"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermQuantity",
+          "category": "node",
+          "declaredFields": [
+            "quantity",
+            "span"
+          ],
+          "projectedFields": [
+            "quantity",
+            "span"
+          ],
+          "referencedProjectionFields": [],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 202243,
+          "phases": {
+            "check": 202243
+          }
+        },
+        {
+          "id": 216,
+          "function": "$b2539",
+          "names": [
+            "checker_core_steps_v1.checker_match_970"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_infer_raw"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermRef",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "key_id",
+            "span"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 200179,
+          "phases": {
+            "check": 200179
+          }
+        },
+        {
+          "id": 238,
+          "function": "$b2657",
+          "names": [
+            "checker_core_steps_v1.checker_match_1045"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_canonicalize_term"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermRef",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "key_id",
+            "span"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 185643,
+          "phases": {
+            "check": 185643
+          }
+        },
+        {
+          "id": 615,
+          "function": "$b6039",
+          "names": [
+            "checker_core_steps_v1.checker_match_3226"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_arena_bound_node"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermRef",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "span"
+          ],
+          "referencedProjectionFields": [],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 185643,
+          "phases": {
+            "check": 185643
+          }
+        },
+        {
+          "id": 644,
+          "function": "$b6203",
+          "names": [
+            "checker_core_steps_v1.checker_match_3339"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_arena_publish_term_view"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermRef",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "key_id",
+            "span"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 185568,
+          "phases": {
+            "check": 185568
+          }
+        },
+        {
+          "id": 255,
+          "function": "$b2657",
+          "names": [
+            "checker_core_steps_v1.checker_match_1045"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_canonicalize_term"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermCtr",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "span"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 184549,
+          "phases": {
+            "check": 184549
+          }
+        },
+        {
+          "id": 537,
+          "function": "$b5580",
+          "names": [
+            "checker_core_steps_v1.checker_match_2952"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_deforest_producer_394"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "PatternVar",
+          "category": "pattern",
+          "declaredFields": [
+            "key_id",
+            "index",
+            "quantity",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "index",
+            "quantity",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "span"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 174093,
+          "phases": {
+            "check": 174093
+          }
+        },
+        {
+          "id": 214,
+          "function": "$b2539",
+          "names": [
+            "checker_core_steps_v1.checker_match_970"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_infer_raw"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermVar",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "index",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "index",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "key_id",
+            "index",
+            "span"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 164741,
+          "phases": {
+            "check": 164741
+          }
+        },
+        {
+          "id": 174,
+          "function": "$b2098",
+          "names": [
+            "checker_core_steps_v1.checker_match_688"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_equal_raw_ordinary"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermRef",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "key_id"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 164448,
+          "phases": {
+            "check": 164448
+          }
+        },
+        {
+          "id": 518,
+          "function": "$b5175",
+          "names": [
+            "checker_core_steps_v1.checker_match_2671"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_recursion_terminates"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermCtr",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "args_start",
+            "args_count"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 162842,
+          "phases": {
+            "check": 162842
+          }
+        },
+        {
+          "id": 613,
+          "function": "$b6005",
+          "names": [
+            "checker_core_steps_v1.checker_body_arena_bound_pattern_value"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_arena_bound_pattern_value"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "PatternCtr",
+          "category": "pattern",
+          "declaredFields": [
+            "key_id",
+            "fields_start",
+            "fields_count",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "fields_start",
+            "fields_count",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "fields_start",
+            "fields_count"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 160703,
+          "phases": {
+            "check": 160703
+          }
+        },
+        {
+          "id": 151,
+          "function": "$b2050",
+          "names": [
+            "checker_core_steps_v1.checker_match_646"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_equal_raw_ordinary"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "TermRef",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "key_id"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 159900,
+          "phases": {
+            "check": 159900
+          }
+        },
+        {
+          "id": 673,
+          "function": "$b6213",
+          "names": [
+            "checker_core_steps_v1.checker_match_3343"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_arena_publish_pattern_view"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "PatternCtr",
+          "category": "pattern",
+          "declaredFields": [
+            "key_id",
+            "fields_start",
+            "fields_count",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "fields_start",
+            "fields_count",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "key_id",
+            "fields_start",
+            "fields_count",
+            "span"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 157705,
+          "phases": {
+            "check": 157705
+          }
+        },
+        {
+          "id": 236,
+          "function": "$b2583",
+          "names": [
+            "checker_core_steps_v1.checker_match_992"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_canonicalize_pattern"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "PatternCtr",
+          "category": "pattern",
+          "declaredFields": [
+            "key_id",
+            "fields_start",
+            "fields_count",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "fields_start",
+            "fields_count",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "key_id",
+            "fields_start",
+            "fields_count",
+            "span"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 154715,
+          "phases": {
+            "check": 154715
+          }
+        },
+        {
+          "id": 332,
+          "function": "$b3300",
+          "names": [
+            "checker_core_steps_v1.checker_deforest_cont_179"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_pattern_usage_valid"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "PatternCtr",
+          "category": "pattern",
+          "declaredFields": [
+            "key_id",
+            "fields_start",
+            "fields_count",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "fields_start",
+            "fields_count",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "fields_start",
+            "fields_count"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 154715,
+          "phases": {
+            "check": 154715
+          }
+        },
+        {
+          "id": 432,
+          "function": "$b4500",
+          "names": [
+            "checker_core_steps_v1.checker_match_2231"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_term_usage_map"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermCtr",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "key_id",
+            "args_start",
+            "args_count"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 146801,
+          "phases": {
+            "check": 146801
+          }
+        },
+        {
+          "id": 269,
+          "function": "$b2735",
+          "names": [
+            "checker_core_steps_v1.checker_deforest_cont_120"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_scrutinee_variable_index"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "TermVar",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "index",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "index",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "index"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 145721,
+          "phases": {
+            "check": 145721
+          }
+        },
+        {
+          "id": 178,
+          "function": "$b2098",
+          "names": [
+            "checker_core_steps_v1.checker_match_688"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_equal_raw_ordinary"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermAdt",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "refs_start",
+            "refs_count",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "refs_start",
+            "refs_count",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "key_id",
+            "args_start",
+            "args_count",
+            "refs_start",
+            "refs_count"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 144443,
+          "phases": {
+            "check": 144443
+          }
+        },
+        {
+          "id": 237,
+          "function": "$b2657",
+          "names": [
+            "checker_core_steps_v1.checker_match_1045"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_canonicalize_term"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermVar",
+          "category": "node",
+          "declaredFields": [
+            "key_id",
+            "index",
+            "span"
+          ],
+          "projectedFields": [
+            "key_id",
+            "index",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "key_id",
+            "index",
+            "span"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 141984,
+          "phases": {
+            "check": 141984
+          }
+        },
+        {
+          "id": 626,
+          "function": "$b6039",
+          "names": [
+            "checker_core_steps_v1.checker_match_3226"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_arena_bound_node"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "switch",
+          "kind": "TermLam",
+          "category": "node",
+          "declaredFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "body_id",
+            "span"
+          ],
+          "projectedFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "body_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "body_id"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 139013,
+          "phases": {
+            "check": 139013
+          }
+        }
+      ],
+      "activeConsumerSites": 490,
+      "topConsumerSitesTruncated": true,
+      "candidateTermAllBodySites": [
+        {
+          "id": 203,
+          "function": "$b2321",
+          "names": [
+            "checker_core_steps_v1.checker_deforest_cont_84"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_family_arity_view"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "TermAll",
+          "category": "node",
+          "declaredFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "ty_id",
+            "body_id",
+            "span"
+          ],
+          "projectedFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "ty_id",
+            "body_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "body_id"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 428715,
+          "phases": {
+            "check": 428715
+          }
+        },
+        {
+          "id": 501,
+          "function": "$b5010",
+          "names": [
+            "checker_core_steps_v1.checker_deforest_cont_348"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_initial_telescope_count_view"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "TermAll",
+          "category": "node",
+          "declaredFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "ty_id",
+            "body_id",
+            "span"
+          ],
+          "projectedFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "ty_id",
+            "body_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "body_id"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 111384,
+          "phases": {
+            "check": 111384
+          }
+        },
+        {
+          "id": 502,
+          "function": "$b5017",
+          "names": [
+            "checker_core_steps_v1.checker_deforest_cont_349"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_drop_telescope_view"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "matchedDescriptor",
+          "shape": "guard",
+          "kind": "TermAll",
+          "category": "node",
+          "declaredFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "ty_id",
+            "body_id",
+            "span"
+          ],
+          "projectedFields": [
+            "quantity",
+            "key_id",
+            "index",
+            "ty_id",
+            "body_id",
+            "span"
+          ],
+          "referencedProjectionFields": [
+            "body_id"
+          ],
+          "uninstrumentedLaterProjectionSites": 0,
+          "unconditionalProjectionCoverage": true,
+          "count": 0,
+          "phases": {}
+        }
+      ],
+      "semanticInvocations": [
+        {
+          "id": 845,
+          "function": "$b570",
+          "names": [
+            "../bend2/selfhost/checker_arena.metadata_read"
+          ],
+          "staticContexts": [
+            "../bend2/selfhost/checker_arena.metadata_read"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "invocation",
+          "watchedNames": [
+            "../bend2/selfhost/checker_arena.metadata_read"
+          ],
+          "count": 19270925,
+          "phases": {
+            "check": 19270925
+          }
+        },
+        {
+          "id": 846,
+          "function": "$b571",
+          "names": [
+            "../bend2/selfhost/checker_arena.metadata_write"
+          ],
+          "staticContexts": [
+            "../bend2/selfhost/checker_arena.metadata_write"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "invocation",
+          "watchedNames": [
+            "../bend2/selfhost/checker_arena.metadata_write"
+          ],
+          "count": 19258235,
+          "phases": {
+            "check": 19258235
+          }
+        },
+        {
+          "id": 847,
+          "function": "$b602",
+          "names": [
+            "../bend2/selfhost/checker_arena.node_is_closed"
+          ],
+          "staticContexts": [
+            "../bend2/selfhost/checker_arena.node_is_closed"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "invocation",
+          "watchedNames": [
+            "../bend2/selfhost/checker_arena.node_is_closed"
+          ],
+          "count": 0,
+          "phases": {}
+        },
+        {
+          "id": 848,
+          "function": "$b625",
+          "names": [
+            "../bend2/selfhost/checker_arena.bound_read"
+          ],
+          "staticContexts": [
+            "../bend2/selfhost/checker_arena.bound_read"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "invocation",
+          "watchedNames": [
+            "../bend2/selfhost/checker_arena.bound_read"
+          ],
+          "count": 5219332,
+          "phases": {
+            "check": 5219332
+          }
+        },
+        {
+          "id": 849,
+          "function": "$b627",
+          "names": [
+            "../bend2/selfhost/checker_arena.node_bound"
+          ],
+          "staticContexts": [
+            "../bend2/selfhost/checker_arena.node_bound"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "invocation",
+          "watchedNames": [
+            "../bend2/selfhost/checker_arena.node_bound"
+          ],
+          "count": 13690794,
+          "phases": {
+            "check": 13690794
+          }
+        },
+        {
+          "id": 850,
+          "function": "$b740",
+          "names": [
+            "../bend2/selfhost/checker_arena.rewind"
+          ],
+          "staticContexts": [
+            "../bend2/selfhost/checker_arena.rewind"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "invocation",
+          "watchedNames": [
+            "../bend2/selfhost/checker_arena.rewind"
+          ],
+          "count": 12690,
+          "phases": {
+            "check": 12690
+          }
+        },
+        {
+          "id": 851,
+          "function": "$b1390",
+          "names": [
+            "checker_core_steps_v1.checker_pure_arena_words_view"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_pure_arena_words_view"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "invocation",
+          "watchedNames": [
+            "checker_core_steps_v1.checker_pure_arena_words_view"
+          ],
+          "count": 2977209,
+          "phases": {
+            "check": 2977209
+          }
+        },
+        {
+          "id": 852,
+          "function": "$b1394",
+          "names": [
+            "checker_core_steps_v1.checker_pure_arena_names_view"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_pure_arena_names_view"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "invocation",
+          "watchedNames": [
+            "checker_core_steps_v1.checker_pure_arena_names_view"
+          ],
+          "count": 86948,
+          "phases": {
+            "check": 86948
+          }
+        },
+        {
+          "id": 853,
+          "function": "$b1397",
+          "names": [
+            "checker_core_steps_v1.checker_pure_arena_quantities_view"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_pure_arena_quantities_view"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "invocation",
+          "watchedNames": [
+            "checker_core_steps_v1.checker_pure_arena_quantities_view"
+          ],
+          "count": 9077,
+          "phases": {
+            "check": 9077
+          }
+        },
+        {
+          "id": 854,
+          "function": "$b1436",
+          "names": [
+            "checker_core_steps_v1.checker_body_inspect_checked"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_inspect_checked"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "invocation",
+          "watchedNames": [
+            "checker_core_steps_v1.checker_body_inspect_checked"
+          ],
+          "count": 0,
+          "phases": {}
+        },
+        {
+          "id": 855,
+          "function": "$b2325",
+          "names": [
+            "checker_core_steps_v1.checker_body_family_arity_view"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_family_arity_view"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "invocation",
+          "watchedNames": [
+            "checker_core_steps_v1.checker_body_family_arity_view"
+          ],
+          "count": 734754,
+          "phases": {
+            "check": 734754
+          }
+        },
+        {
+          "id": 856,
+          "function": "$b5014",
+          "names": [
+            "checker_core_steps_v1.checker_body_initial_telescope_count_view"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_initial_telescope_count_view"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "invocation",
+          "watchedNames": [
+            "checker_core_steps_v1.checker_body_initial_telescope_count_view"
+          ],
+          "count": 227564,
+          "phases": {
+            "check": 227564
+          }
+        },
+        {
+          "id": 857,
+          "function": "$b5021",
+          "names": [
+            "checker_core_steps_v1.checker_body_drop_telescope_view"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_drop_telescope_view"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "invocation",
+          "watchedNames": [
+            "checker_core_steps_v1.checker_body_drop_telescope_view"
+          ],
+          "count": 0,
+          "phases": {}
+        },
+        {
+          "id": 858,
+          "function": "$b5961",
+          "names": [
+            "checker_core_steps_v1.checker_body_arena_release"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_arena_release"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "invocation",
+          "watchedNames": [
+            "checker_core_steps_v1.checker_body_arena_release"
+          ],
+          "count": 12690,
+          "phases": {
+            "check": 12690
+          }
+        },
+        {
+          "id": 859,
+          "function": "$b6046",
+          "names": [
+            "checker_core_steps_v1.checker_body_arena_words_view"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_arena_words_view"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "invocation",
+          "watchedNames": [
+            "checker_core_steps_v1.checker_body_arena_words_view"
+          ],
+          "count": 0,
+          "phases": {}
+        },
+        {
+          "id": 860,
+          "function": "$b6072",
+          "names": [
+            "checker_core_steps_v1.checker_body_arena_names_view"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_arena_names_view"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "invocation",
+          "watchedNames": [
+            "checker_core_steps_v1.checker_body_arena_names_view"
+          ],
+          "count": 0,
+          "phases": {}
+        },
+        {
+          "id": 861,
+          "function": "$b6100",
+          "names": [
+            "checker_core_steps_v1.checker_body_arena_quantities_view"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_arena_quantities_view"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "invocation",
+          "watchedNames": [
+            "checker_core_steps_v1.checker_body_arena_quantities_view"
+          ],
+          "count": 0,
+          "phases": {}
+        },
+        {
+          "id": 862,
+          "function": "$b6409",
+          "names": [
+            "checker_core_steps_v1.checker_body_arena_publish_occurrence"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_arena_publish_occurrence"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "invocation",
+          "watchedNames": [
+            "checker_core_steps_v1.checker_body_arena_publish_occurrence"
+          ],
+          "count": 1056024,
+          "phases": {
+            "check": 1056024
+          }
+        },
+        {
+          "id": 863,
+          "function": "$b6499",
+          "names": [
+            "checker_core_steps_v1.checker_body_arena_decode_checked_node"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_arena_decode_checked_node"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "invocation",
+          "watchedNames": [
+            "checker_core_steps_v1.checker_body_arena_decode_checked_node"
+          ],
+          "count": 0,
+          "phases": {}
+        },
+        {
+          "id": 864,
+          "function": "$b6517",
+          "names": [
+            "checker_core_steps_v1.checker_body_arena_decode_occurrence"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_arena_decode_occurrence"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "invocation",
+          "watchedNames": [
+            "checker_core_steps_v1.checker_body_arena_decode_occurrence"
+          ],
+          "count": 0,
+          "phases": {}
+        },
+        {
+          "id": 865,
+          "function": "$b6568",
+          "names": [
+            "checker_core_steps_v1.checker_body_arena_decode_term"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_arena_decode_term"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "invocation",
+          "watchedNames": [
+            "checker_core_steps_v1.checker_body_arena_decode_term"
+          ],
+          "count": 0,
+          "phases": {}
+        },
+        {
+          "id": 866,
+          "function": "$b6569",
+          "names": [
+            "checker_core_steps_v1.checker_body_arena_decode_pattern"
+          ],
+          "staticContexts": [
+            "checker_core_steps_v1.checker_body_arena_decode_pattern"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "invocation",
+          "watchedNames": [
+            "checker_core_steps_v1.checker_body_arena_decode_pattern"
+          ],
+          "count": 0,
+          "phases": {}
+        }
+      ],
+      "retrievalSites": [
+        {
+          "id": 843,
+          "function": "$b573",
+          "names": [
+            "../bend2/selfhost/checker_arena.get_node"
+          ],
+          "staticContexts": [
+            "../bend2/selfhost/checker_arena.get_node"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "boxedRetrieval",
+          "accessor": "get_node",
+          "category": "node",
+          "count": 53853951,
+          "phases": {
+            "check": 53253960,
+            "emit": 599991
+          }
+        },
+        {
+          "id": 844,
+          "function": "$b577",
+          "names": [
+            "../bend2/selfhost/checker_arena.get_pattern"
+          ],
+          "staticContexts": [
+            "../bend2/selfhost/checker_arena.get_pattern"
+          ],
+          "contextCount": 1,
+          "contextBounded": false,
+          "metric": "boxedRetrieval",
+          "accessor": "get_pattern",
+          "category": "pattern",
+          "count": 7989455,
+          "phases": {
+            "check": 7973703,
+            "emit": 15752
+          }
+        }
+      ],
+      "decision": "CANDIDATE_OBSERVED: inspect frequency and metadata/wrapper tax before a source field-view probe; no GO for packing/performance."
+    },
+    "scope": "Logical source descriptor requests and selected one-field demands, not materialization/allocation counts"
+  },
+  "nativeSourceEvidence": {
+    "build": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/root-native-build.json",
+      "sha256": "3b41f94b3d60d5a9177452c11b525b371e1c8b17584f388dff61edc071b5886b",
+      "bytes": 3072527
+    },
+    "binary": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+      "sha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "bytes": 18808824
+    },
+    "generatedC": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native.c",
+      "sha256": "2290a096f114201665d4b943db3470889ca700ec205b875612178ea263e27ffb",
+      "bytes": 62113627
+    },
+    "authenticatedCSourceSha256": "2290a096f114201665d4b943db3470889ca700ec205b875612178ea263e27ffb",
+    "nodeWordCount": 1,
+    "arenaStoreAndNodeReturnWords": 3,
+    "functions": [
+      {
+        "function": "spin_79",
+        "line": 42232,
+        "source": "INLINE Term spin_79(Env e, THR Term* o, Term r0, u64 q0, u32 r1) {\n  u32 wpoll = 0;\n  Term h0 = r0;\n  Term _arena_0 = r0;\n  u32 _id_1 = r1;\n  WL_SPIN\n    Term _fb_5[14];\n    u64 _sp_5 = ctr_take(e, _arena_0, 14, _fb_5);\n    Term _f_25 = _fb_5[0];\n    Term _f_26 = _fb_5[1];\n    Term _f_27 = _fb_5[2];\n    Term _f_28 = _fb_5[3];\n    Term _f_29 = _fb_5[4];\n    Term _f_30 = _fb_5[5];\n    Term _f_31 = _fb_5[6];\n    Term _f_32 = _fb_5[7];\n    Term _f_33 = _fb_5[8];\n    Term _f_34 = _fb_5[9];\n    Term _f_35 = _fb_5[10];\n    Term _f_36 = _fb_5[11];\n    Term _f_37 = _fb_5[12];\n    Term _f_38 = _fb_5[13];\n    Term _at_0 = _f_25 == h0 ? q0 : blk_loc(e.mem, _f_25);\n    Term _at_1 = blk_at(_f_25, _id_1, 0);\n    Term _c_0 = blk_keep(e, _at_0 + _at_1 + 0);\n    Term _o_11[2];\n    if (spin_80(e, _o_11, _f_37, _f_37 == h0 ? q0 : blk_loc(e.mem, _f_37), _f_38, _f_38 == h0 ? q0 : blk_loc(e.mem, _f_38), _f_35, _f_35 == h0 ? q0 : blk_loc(e.mem, _f_35), _f_36, _f_36 == h0 ? q0 : blk_loc(e.mem, _f_36), _f_34, _f_34 == h0 ? q0 : blk_loc(e.mem, _f_34), _f_26, _f_26 == h0 ? q0 : blk_loc(e.mem, _f_26), _f_27, _f_27 == h0 ? q0 : blk_loc(e.mem, _f_27), _f_28, _f_28 == h0 ? q0 : blk_loc(e.mem, _f_28), _f_29, _f_29 == h0 ? q0 : blk_loc(e.mem, _f_29), _f_30, _f_30 == h0 ? q0 : blk_loc(e.mem, _f_30), _f_31, _f_31 == h0 ? q0 : blk_loc(e.mem, _f_31), _f_32, _f_32 == h0 ? q0 : blk_loc(e.mem, _f_32), _f_33, _f_33 == h0 ? q0 : blk_loc(e.mem, _f_33), _f_25, _f_25 == h0 ? q0 : blk_loc(e.mem, _f_25), _c_0, _c_0 == h0 ? q0 : blk_loc(e.mem, _c_0)) == 0) {\n      return 0;\n    }\n    o[0] = _o_11[0];\n    o[1] = _o_11[1];\n    spare_free(e, cls_fit(14), _sp_5);\n  break;\n  }\n  return 1;\n}"
+      },
+      {
+        "function": "spin_80",
+        "line": 42177,
+        "source": "INLINE Term spin_80(Env e, THR Term* o, Term r0, u64 q0, Term r1, u64 q1, Term r2, u64 q2, Term r3, u64 q3, Term r4, u64 q4, Term r5, u64 q5, Term r6, u64 q6, Term r7, u64 q7, Term r8, u64 q8, Term r9, u64 q9, Term r10, u64 q10, Term r11, u64 q11, Term r12, u64 q12, Term r13, u64 q13, Term r14, u64 q14) {\n  u32 wpoll = 0;\n  Term h0 = r0;\n  Term h1 = r1;\n  Term h2 = r2;\n  Term h3 = r3;\n  Term h4 = r4;\n  Term h5 = r5;\n  Term h6 = r6;\n  Term h7 = r7;\n  Term h8 = r8;\n  Term h9 = r9;\n  Term h10 = r10;\n  Term h11 = r11;\n  Term h12 = r12;\n  Term h13 = r13;\n  Term h14 = r14;\n  Term _case_prefix_0 = r0;\n  Term _subst_memo_0 = r1;\n  Term _node_bounds_0 = r2;\n  Term _pattern_depths_0 = r3;\n  Term _node_closed_0 = r4;\n  Term _patterns_0 = r5;\n  Term _binders_0 = r6;\n  Term _words_0 = r7;\n  Term _naturals_0 = r8;\n  Term _names_0 = r9;\n  Term _counts_0 = r10;\n  Term _depths_0 = r11;\n  Term _name_ids_0 = r12;\n  Term _result_0 = r13;\n  Term _result_1 = r14;\n  WL_SPIN\n    u64 _nd_2 = heap_alloc(e, cls_fit(14));\n    e.mem[_nd_2 + 0] = rfc_seal(e, _result_0);\n    e.mem[_nd_2 + 1] = rfc_seal(e, _patterns_0);\n    e.mem[_nd_2 + 2] = rfc_seal(e, _binders_0);\n    e.mem[_nd_2 + 3] = rfc_seal(e, _words_0);\n    e.mem[_nd_2 + 4] = rfc_seal(e, _naturals_0);\n    e.mem[_nd_2 + 5] = rfc_seal(e, _names_0);\n    e.mem[_nd_2 + 6] = rfc_seal(e, _counts_0);\n    e.mem[_nd_2 + 7] = rfc_seal(e, _depths_0);\n    e.mem[_nd_2 + 8] = rfc_seal(e, _name_ids_0);\n    e.mem[_nd_2 + 9] = rfc_seal(e, _node_closed_0);\n    e.mem[_nd_2 + 10] = rfc_seal(e, _node_bounds_0);\n    e.mem[_nd_2 + 11] = rfc_seal(e, _pattern_depths_0);\n    e.mem[_nd_2 + 12] = rfc_seal(e, _case_prefix_0);\n    e.mem[_nd_2 + 13] = rfc_seal(e, _subst_memo_0);\n    o[0] = term_ctr(CID____bend2_selfhost_checker_arena_Arena, _nd_2);\n    o[1] = _result_1;\n  break;\n  }\n  return 1;\n}"
+      },
+      {
+        "function": "spin_476",
+        "line": 59436,
+        "source": "INLINE Term spin_476(Env e, THR Term* o, Term r0, u64 q0, Term r1, u64 q1, u32 r2) {\n  u32 wpoll = 0;\n  Term h0 = r0;\n  Term h1 = r1;\n  Term _v_1_6 = r0;\n  Term _v_1_7 = r1;\n  u32 _v_3_1 = r2;\n  WL_SPIN\n    u32 _v_3 = 0;\n    Term _o_2[1];\n    if (spin_45(e, _o_2, _v_3_1) == 0) {\n      return 0;\n    }\n    _v_3 = (u32)_o_2[0];\n    Term _o_9[3];\n    if (spin_477(e, _o_9, _v_1_6, _v_1_6 == h0 ? q0 : blk_loc(e.mem, _v_1_6), _v_1_7, _v_1_7 == h1 ? q1 : blk_loc(e.mem, _v_1_7), _v_3_1, _v_3) == 0) {\n      return 0;\n    }\n    o[0] = _o_9[0];\n    o[1] = _o_9[1];\n    o[2] = _o_9[2];\n  break;\n  }\n  return 1;\n}"
+      },
+      {
+        "function": "spin_477",
+        "line": 59377,
+        "source": "INLINE Term spin_477(Env e, THR Term* o, Term r0, u64 q0, Term r1, u64 q1, u32 r2, u32 r3) {\n  u32 wpoll = 0;\n  Term h0 = r0;\n  Term h1 = r1;\n  Term _v_0_0 = r0;\n  Term _v_1_8 = r1;\n  u32 _v_3_2 = r2;\n  u32 _v_5_0 = r3;\n  WL_SPIN\n    if (_v_5_0 == 0) {\n      Term _v_4 = 0;\n      Term _v_5 = 0;\n      u32 _v_6 = 0;\n      Term _o_3[1];\n      if (spin_78(e, _o_3, _v_3_2) == 0) {\n        return 0;\n      }\n      _v_6 = (u32)_o_3[0];\n      Term _o_4[2];\n      if (spin_79(e, _o_4, _v_0_0, _v_0_0 == h0 ? q0 : blk_loc(e.mem, _v_0_0), _v_6) == 0) {\n        return 0;\n      }\n      _v_4 = _o_4[0];\n      _v_5 = _o_4[1];\n      Term _o_5[3];\n      if (spin_478(e, _o_5, _v_4, _v_4 == h1 ? q1 : _v_4 == h0 ? q0 : blk_loc(e.mem, _v_4), _v_5, _v_5 == h1 ? q1 : _v_5 == h0 ? q0 : blk_loc(e.mem, _v_5), _v_1_8, _v_1_8 == h1 ? q1 : blk_loc(e.mem, _v_1_8)) == 0) {\n        return 0;\n      }\n      o[0] = _o_5[0];\n      o[1] = _o_5[1];\n      o[2] = _o_5[2];\n    } else {\n      Term _v_7 = 0;\n      Term _v_8 = 0;\n      u32 _v_9 = 0;\n      Term _o_6[1];\n      if (spin_78(e, _o_6, _v_3_2) == 0) {\n        return 0;\n      }\n      _v_9 = (u32)_o_6[0];\n      Term _o_7[2];\n      if (spin_79(e, _o_7, _v_1_8, _v_1_8 == h1 ? q1 : blk_loc(e.mem, _v_1_8), _v_9) == 0) {\n        return 0;\n      }\n      _v_7 = _o_7[0];\n      _v_8 = _o_7[1];\n      Term _o_8[3];\n      if (spin_479(e, _o_8, _v_7, _v_7 == h1 ? q1 : _v_7 == h0 ? q0 : blk_loc(e.mem, _v_7), _v_8, _v_8 == h1 ? q1 : _v_8 == h0 ? q0 : blk_loc(e.mem, _v_8), _v_0_0, _v_0_0 == h0 ? q0 : blk_loc(e.mem, _v_0_0)) == 0) {\n        return 0;\n      }\n      o[0] = _o_8[0];\n      o[1] = _o_8[1];\n      o[2] = _o_8[2];\n    }\n  break;\n  }\n  return 1;\n}"
+      },
+      {
+        "function": "spin_478",
+        "line": 59343,
+        "source": "INLINE Term spin_478(Env e, THR Term* o, Term r0, u64 q0, Term r1, u64 q1, Term r2, u64 q2) {\n  u32 wpoll = 0;\n  Term h0 = r0;\n  Term h1 = r1;\n  Term h2 = r2;\n  Term _v_1_9 = r0;\n  Term _v_1_10 = r1;\n  Term _v_2_1 = r2;\n  WL_SPIN\n    o[0] = _v_1_9;\n    o[1] = _v_2_1;\n    o[2] = _v_1_10;\n  break;\n  }\n  return 1;\n}"
+      },
+      {
+        "function": "spin_479",
+        "line": 59360,
+        "source": "INLINE Term spin_479(Env e, THR Term* o, Term r0, u64 q0, Term r1, u64 q1, Term r2, u64 q2) {\n  u32 wpoll = 0;\n  Term h0 = r0;\n  Term h1 = r1;\n  Term h2 = r2;\n  Term _v_1_11 = r0;\n  Term _v_1_12 = r1;\n  Term _v_2_2 = r2;\n  WL_SPIN\n    o[0] = _v_2_2;\n    o[1] = _v_1_11;\n    o[2] = _v_1_12;\n  break;\n  }\n  return 1;\n}"
+      },
+      {
+        "function": "spin_6350",
+        "line": 428246,
+        "source": "INLINE Term spin_6350(Env e, THR Term* o, Term r0, u64 q0, Term r1, u64 q1, u32 r2) {\n  u32 wpoll = 0;\n  Term h0 = r0;\n  Term h1 = r1;\n  Term _v_1_11 = r0;\n  Term _v_1_12 = r1;\n  u32 _v_3_5 = r2;\n  WL_SPIN\n    Term _v_17 = 0;\n    Term _v_18 = 0;\n    Term _v_19 = 0;\n    Term _o_16[3];\n    if (spin_476(e, _o_16, _v_1_11, _v_1_11 == h0 ? q0 : blk_loc(e.mem, _v_1_11), _v_1_12, _v_1_12 == h1 ? q1 : blk_loc(e.mem, _v_1_12), _v_3_5) == 0) {\n      return 0;\n    }\n    _v_17 = _o_16[0];\n    _v_18 = _o_16[1];\n    _v_19 = _o_16[2];\n    u64 _nd_17 = heap_alloc(e, cls_fit(3));\n    e.mem[_nd_17 + 0] = rfc_seal(e, _v_17);\n    e.mem[_nd_17 + 1] = rfc_seal(e, _v_18);\n    e.mem[_nd_17 + 2] = rfc_seal(e, _v_19);\n    u64 _nd_18 = heap_alloc(e, cls_fit(1));\n    e.mem[_nd_18 + 0] = rfc_seal(e, term_ctr(CID_checker_core_steps_v1_ArenaResult, _nd_17));\n    o[0] = term_ctr(CID_checker_core_steps_v1_CheckerFinished, _nd_18);\n  break;\n  }\n  return 1;\n}"
+      }
+    ],
+    "scope": "Static source bound to the accepted native build. Node access reads one existing boxed Term, not a packed Node decode. Arena reconstruction, result/scheduler wrappers and RC work remain; no native allocation/timing claim."
+  },
+  "decision": {
+    "decision": "STOP_DIRECT_VIEW_AS_DECODE_ELIMINATION_ON_CURRENT_BOXED_STORAGE",
+    "reason": "The real Arena getter returns the already-stored Node object, not a decoded/reconstructed descriptor. A get_node-plus-body_id wrapper cannot remove a Node materialization; new columns require a separately justified storage migration with measured fallback and metadata costs.",
+    "nonClaims": [
+      "No physical load/JIT/allocation-byte claim",
+      "No packed representation introduced",
+      "No direct column field-view candidate claimed"
+    ]
+  },
+  "requiredDiagnosticSources": [
+    {
+      "path": "/private/tmp/bend-e01-e13-jbsb4I/e13-boxed-read.mjs",
+      "sha256": "98cfc0b7f17df02f2f0fe7bfdfec78d414016538a7f0a81a06b21dc95d28a44f",
+      "bytes": 6242,
+      "source": "import {readFileSync,writeFileSync,existsSync,watch} from 'node:fs';import {createHash} from 'node:crypto';import {pathToFileURL,fileURLToPath} from 'node:url';import {Worker,isMainThread,workerData} from 'node:worker_threads';import assert from 'node:assert/strict';\nimport {runHeavyGate} from '/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts';import {runTemplateSteps,runCheckerSteps,runCheckedInspectionSteps} from '/Users/ilyagulya/Projects/My/bend/evals/checker_core_step_runtime.mjs';import {bridge,auditChecked} from './checked-closure-oracle.mjs';\nconst root='/Users/ilyagulya/Projects/My/bend',dir='/private/tmp/bend-e01-e13-jbsb4I',tools='/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools',self=fileURLToPath(import.meta.url),sha=x=>createHash('sha256').update(x).digest('hex'),hash=p=>sha(readFileSync(p)),save=(p,x)=>writeFileSync(p,JSON.stringify(x,(_,v)=>typeof v==='bigint'?String(v):v,2)+'\\n'),tag=x=>typeof x?.$==='string'?x.$.split('.').at(-1):null,list=xs=>xs.reduceRight((tail,head)=>({$:'Con',head,tail}),{$:'Nil'}),end=Object.freeze({$:'FeedbackFuelEnd'}),proto={get tail(){return fuel(this.remaining-1);}},fuel=n=>{if(!n)return end;const x=Object.create(proto);x.$='FeedbackFuelCell';x.remaining=n;return x;};\nasync function execute(out){const image=root+'/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js',fixture=dir+'/inspection-probe.bend',report={schemaVersion:1,status:'RUNNING',diagnosticOnly:true,compilerAccepted:false,image:{path:image,sha256:hash(image)},fixture:{path:fixture,sha256:hash(fixture)},driver:{path:self,sha256:hash(self)}};try{\n assert.equal(report.image.sha256,'85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e');const converted=bridge(readFileSync(image,'utf8')),actual=out+'.compiler.mjs';writeFileSync(actual,converted.source,{flag:'wx'});const module=await import(pathToFileURL(actual).href),api=module.default,getters=module.__checkedGetters,parsed=api.parse_with_fuel(fuel(8000000),fixture,readFileSync(fixture,'utf8'));assert.equal(tag(parsed),'FeedbackComplete');assert.equal(tag(parsed.value.result),'ParseSuccess');const expanded=runTemplateSteps(api,list([api.parsed_module('',parsed.value.result.module)]));assert.equal(tag(expanded),'ExpandSuccess');let checked=runCheckerSteps(api,expanded.modules);assert.equal(tag(checked),'CheckSuccess');report.closureBeforeInspection=auditChecked(checked.program,getters);\n let source=checked.program.source;const get=(method,...args)=>{const result=getters[method](source,...args);assert.equal(tag(result),'Tuple');source=result.fst;return result.snd;},count=get('node_count'),kinds={},examples=[];let identical=0,allViews=0;const examined=Math.min(count,1024);\n for(let id=0;id<examined;id++){const first=get('get_node',id),second=get('get_node',id),kind=tag(first);assert.equal(tag(second),kind);kinds[kind]=(kinds[kind]??0)+1;if(first===second)identical++;if(kind==='TermAll'){const view=first.body_id;assert.equal(view,second.body_id);assert.ok(Number.isInteger(view)&&view>=0&&view<=4294967295);allViews++;if(examples.length<4)examples.push({id,bodyHandle:view,fullTaggedHandlePreserved:true,projectedField:'body_id',sameStoredObject:first===second});}}\n assert.ok(allViews>0,'No actual TermAll view exercised');assert.equal(identical,examined,'Descriptor object reconstructed by repeated getter');checked.program.source=source;const inspection=runCheckedInspectionSteps(api,checked.program);assert.equal(tag(inspection),'Inspection');report.closureAfterInspection=auditChecked(inspection.program,getters);report.readbackSha256=sha(JSON.stringify(inspection.modules,(_,v)=>typeof v==='bigint'?String(v):v));assert.equal(report.readbackSha256,'b39be138cd8d286cdabd2238d1e2043834f511713cc90f767a893c7745eae70a');report.observation={nodeCount:count,examined,repeatedReads:2*examined,identicalStoredObjects:identical,kindCounts:kinds,termAllBodyViews:allViews,examples};report.disposition={decision:'STOP_DIRECT_VIEW_AS_DECODE_ELIMINATION_ON_CURRENT_BOXED_STORAGE',reason:'The real Arena getter returns the already-stored Node object, not a decoded/reconstructed descriptor. A get_node-plus-body_id wrapper cannot remove a Node materialization; new columns require a separately justified storage migration with measured fallback and metadata costs.',nonClaims:['No physical load/JIT/allocation-byte claim','No packed representation introduced','No direct column field-view candidate claimed']};report.status='PASS';\n }catch(error){report.status='FAIL';report.error=String(error);report.stack=error?.stack;process.exitCode=1;}save(out,report);console.log(JSON.stringify({status:report.status,report:out,observation:report.observation,error:report.error}));}\nif(!isMainThread)await execute(workerData.out);else if(process.argv[2]==='--worker'){const worker=new Worker(new URL(import.meta.url),{workerData:{out:process.argv[3]},resourceLimits:{stackSizeMb:256,maxOldGenerationSizeMb:6144,maxYoungGenerationSizeMb:128}});await new Promise((done,reject)=>{worker.once('error',reject);worker.once('exit',c=>c===0?done():reject(Error('Boxed read worker '+c)));});}else{const out=dir+'/e13-boxed-read.result.json';if(existsSync(out))throw Error('Fresh report required');const prerequisite=dir+'/e08-version/closure-smoke-v2.json';await new Promise(resolve=>{const watcher=watch(dir+'/e08-version',(_,name)=>{if(name==='closure-smoke-v2.json')inspect();});function inspect(){let value;try{value=JSON.parse(readFileSync(prerequisite,'utf8'));}catch{return;}if(value.guardian||value.status==='BLOCKED_BY_PRECEDING_BUILD_FAILURE'){watcher.close();resolve();}}inspect();});save(out,{status:'STARTING'});const command=[tools+'/node','--experimental-strip-types','--max-old-space-size=6144','--max-semi-space-size=128',self,'--worker',out],guardian=await runHeavyGate(command,{memoryMiB:8192,rssMiB:8192,pollMs:10,timeoutMs:600000,label:'E13 actual retained Node identity and one-field access contract'}),result=JSON.parse(readFileSync(out,'utf8'));result.command=command;result.guardian=guardian;if(result.status!=='PASS'||guardian.status!=='PASS'){result.status='FAIL';process.exitCode=1;}save(out,result);console.log(JSON.stringify({status:result.status,report:out,error:result.error}));}\n"
+    },
+    {
+      "path": "/private/tmp/bend-e01-e13-jbsb4I/checked-closure-oracle.mjs",
+      "sha256": "97f82837882e63187736c05cb26f142050f940afa95a10028ef9be48e0a767a5",
+      "bytes": 7219,
+      "source": "import assert from 'node:assert/strict';\nconst tag=x=>typeof x?.$==='string'?x.$.split('.').at(-1):null;\nconst scalarFields={TermVar:[],TermRef:[],TermBang:['term_id'],TermSub:['value_id','body_id'],TermLet:['body_id'],TermAnn:['term_id','ty_id'],TermTemplate:['term_id'],TermType:['kind_id'],TermQuant:[],TermQuantity:[],TermMin:['left_id','right_id'],TermAll:['ty_id','body_id'],TermLam:['body_id'],TermApp:['fn_id','arg_id'],TermAdt:[],TermFill:['head_id'],TermPlus:['head_id'],TermCtr:[],TermString:[],TermMat:['head_id','matched_id'],TermAbsurd:[],TermEqual:['left_id','right_id','ty_id'],TermRefl:[],TermRewrite:['equation_id','proof_id','body_id'],TermHole:[],BodyMatch:[],BodyCase:['body_id'],BodyLocal:['body_id'],BodyReply:['term_id']};\nconst ranges={TermLet:[['keys','name'],['indexes','natural'],['quantities','quantity'],['values','node']],TermAdt:[['args','node'],['refs','name']],TermFill:[['args','node']],TermPlus:[['args','node']],TermCtr:[['args','node']],BodyMatch:[['scrutinees','node'],['cases','node']],BodyCase:[['patterns','pattern']],BodyLocal:[['patterns','pattern'],['values','node']]};\nexport function bridge(source){\n const names=['get_node','get_pattern','get_binder','word','natural','name_text','node_count','pattern_count','binder_count','word_count','natural_count','name_count'];const rows=[];\n for(const name of names){const key='../bend2/selfhost/checker_arena.'+name,lines=source.split('\\n').filter(line=>line.startsWith('$D['+JSON.stringify(key)+']='));assert.equal(lines.length,1,'Unique authentic Arena getter '+key);const match=/\\?((?:\\$b)\\d+)\\(/.exec(lines[0]);assert.ok(match,'Getter direct entry '+key);const arity=name.endsWith('_count')?1:2;const params=arity===1?'a':'a,i';const definition=new RegExp('^function '+match[1].replace('$','\\\\$')+'\\\\(([^)]*)\\\\)','m').exec(source);assert.ok(definition);assert.equal(definition[1].split(',').length,arity+1);rows.push(JSON.stringify(name)+'('+params+'){const k=$ksp,s=$sp;return run_base('+match[1]+'('+params+'),k,s);}');}\n return {source:source+'\\nexport const __checkedGetters={'+rows.join(',')+'};\\n',names,semanticChange:false,scope:'Diagnostic named read APIs; production default ABI13 untouched'};\n}\nexport function auditChecked(program,getters){\n assert.equal(tag(program),'CheckedProgram');let source=program.source;const seen={node:new Set(),pattern:new Set(),binder:new Set(),name:new Set()},objects=new WeakSet(),pending=[],counts={},kinds={},occurrences={};let edges=0;\n const read=(method,...args)=>{const result=getters[method](source,...args);assert.equal(tag(result),'Tuple',method);source=result.fst;return result.snd;};\n for(const kind of ['node','pattern','binder','word','natural','name'])counts[kind]=read(kind+'_count');\n function id(value,kind,label){assert.ok(Number.isInteger(value)&&value>=0&&value<=4294967295,'Invalid handle '+label);assert.equal(value>>>31,0,'Transient retained handle '+label);assert.ok(value<counts[kind],'Out-of-bounds '+kind+' '+label);edges++;if(!seen[kind].has(value)){seen[kind].add(value);pending.push([kind,value,label]);}}\n function range(start,count,kind,label){assert.ok(Number.isInteger(start)&&start>=0&&start<=4294967295,label);assert.ok(Number.isInteger(count)&&count>=0&&count<=1000000,label);assert.equal(start>>>31,0,'Transient retained tape '+label);const reverse=Boolean(start&1073741824),at=start&1073741823;for(let i=0;i<count;i++){const offset=reverse?at-i:at+i;assert.ok(offset>=0&&offset<counts[kind==='natural'?'natural':'word'],'Tape bounds '+label);const value=read(kind==='natural'?'natural':'word',offset);if(kind==='quantity')assert.ok(Number.isInteger(value)&&value>=0&&value<=3,'Quantity encoding '+label);else if(kind==='natural')assert.ok(typeof value==='number'&&Number.isSafeInteger(value)&&value>=0||typeof value==='bigint'&&value>=0n,'Natural encoding '+label);else id(value,kind,label+'['+i+']');}}\n function optional(value,label){if(tag(value)==='SomeTerm')id(value.term,'node',label);else assert.equal(tag(value),'NoTerm',label);}\n function walkFacts(root){const stack=[root];while(stack.length){const value=stack.pop();if(value===null||typeof value!=='object'||objects.has(value))continue;objects.add(value);const kind=tag(value);\n  if(['TypedOccurrence','LocalReferenceOccurrence','ScalarOccurrence','StringOccurrence','CaseOccurrence','LocalOccurrence'].includes(kind)){occurrences[kind]=(occurrences[kind]??0)+1;id(value.term,'node',kind+'.term');id(value.ty,'node',kind+'.ty');if(kind==='LocalReferenceOccurrence')id(value.value,'node',kind+'.value');}\n  else if(kind==='CheckedBinding'||kind==='ArenaGlobal')id(value.ty,'node',kind+'.ty');else if(kind==='Symbol')id(value.signature,'node','Symbol.signature');else if(kind==='CheckedVariable'||kind==='CheckedConstructor')id(value.pattern,'pattern',kind+'.pattern');\n  else if(kind==='Definition'){range(value.binders.start,value.binders.count,'binder','Definition.binders');optional(value.result,'Definition.result');}\n  else if(kind==='TypeDecl'){range(value.params.start,value.params.count,'binder','TypeDecl.params');id(value.kind,'node','TypeDecl.kind');}\n  else if(kind==='Constructor')range(value.fields.start,value.fields.count,'binder','Constructor.fields');else if(kind==='LawDecl')id(value.body,'node','LawDecl.body');else if(kind==='ClauseFor'){id(value.ty,'node','ClauseFor.ty');if(tag(value.condition)==='Some')id(value.condition.value,'node','ClauseFor.condition');}\n  else if(kind==='DefTerm'||kind==='SomeTerm')id(value.term,'node',kind+'.term');else if(kind==='Names')range(value.start,value.count,'name','Names');\n  for(const [key,child]of Object.entries(value))if(key!=='source'&&child!==null&&typeof child==='object')stack.push(child);\n }}\n walkFacts({modules:program.modules,signatures:program.signatures,metadata:program.metadata});\n while(pending.length){const [kind,value,label]=pending.pop();if(kind==='name'){const text=read('name_text',value);assert.ok(typeof text==='string'||tag(text)==='Con'||tag(text)==='Nil','Name representation '+label);continue;}const node=read(kind==='node'?'get_node':kind==='pattern'?'get_pattern':'get_binder',value),form=tag(node);kinds[kind+'.'+form]=(kinds[kind+'.'+form]??0)+1;\n  if(kind==='node'){assert.ok(Object.hasOwn(scalarFields,form),'Unknown node kind '+form);for(const field of scalarFields[form])id(node[field],'node',form+'.'+field);for(const [field,target]of ranges[form]??[])range(node[field+'_start'],node[field+'_count'],target,form+'.'+field);}\n  else if(kind==='pattern'){assert.ok(form==='PatternVar'||form==='PatternCtr','Pattern kind');if(form==='PatternCtr')range(node.fields_start,node.fields_count,'pattern','PatternCtr.fields');}\n  else{assert.ok(form==='Binder'||form==='TemplateBinder','Binder kind');id(node.ty_id,'node',form+'.ty_id');}\n  if(Object.hasOwn(node,'key_id'))id(node.key_id,'name',form+'.key_id');\n }\n program.source=source;return {status:'SOURCE_HANDLE_CLOSURE_PASS',counts,visited:Object.fromEntries(Object.entries(seen).map(([key,set])=>[key,set.size])),edges,kinds,occurrences,transientRetainedEdges:0,scope:'Explicit checked occurrence/binding/symbol/global/declaration/tape and recursively decoded source descriptor edges; not a type-equivalence or retained-byte proof'};\n}\n"
+    },
+    {
+      "path": "/private/tmp/bend-e01-e13-jbsb4I/inspection-probe.bend",
+      "sha256": "db6aa0f0a392648bb3c6a45bc37717d45605739c8ff573212a8e08dcf1c4efb5",
+      "bytes": 1076,
+      "source": "type Bit is Data:\n  BitZero{}\n  BitOne{}\n\ntype Duo is Type:\n  Duo{-ty: Type, left: Bit, -unused: Type, right: Bit}\n\ndef zero() -> Bit:\n  BitZero{}\n\ndef one() -> Bit:\n  BitOne{}\n\ndef pack(left: Bit, right: Bit) -> Duo:\n  Duo{Bit, left, Bit, right}\n\ndef identity(a, -A: Kind(a), x: A) -> A:\n  x\n\ndef identity_probe(x: Bit) -> Bit:\n  identity(&2, Bit, x)\n\ndef ignore(-ghost: Bit, value: Bit) -> Bit:\n  value\n\ndef erased_probe(f: Bit -> Bit, value: Bit) -> Bit:\n  ignore(f(BitZero{}), value)\n\ndef specialize(~A: Type, x: A) -> A:\n  x\n\ndef specialized_probe(x: Bit) -> Bit:\n  specialize(~Bit, x)\n\ndef local_twice(action: Bit -> Bit, input: Bit) -> Duo:\n  +value = action(input)\n  pack(value, value)\n\ndef local_order(first: Bit -> Bit, second: Bit -> Bit, left: Bit, right: Bit) -> Duo:\n  a = first(left)\n  b = second(right)\n  pack(a, b)\n\ndef make_after(action: Bit -> Bit, input: Bit) -> (Bit -> Duo):\n  value = action(input)\n  rest => pack(value, rest)\n\ndef over_order(first: Bit -> Bit, second: Bit -> Bit, left: Bit, right: Bit) -> Duo:\n  make_after(first, left)(second(right))\n"
+    }
+  ]
+}

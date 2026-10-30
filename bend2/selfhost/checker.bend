@@ -11068,7 +11068,7 @@ def check_declarations_step(v_1: ArenaStore, v_3: ScopedState, v_4: IR.TopLevel,
   match v_3:
     case ScopedState{+v_19, _}:
       +v_21 = v_19
-      ArenaResult{v_25, +v_26} = arena_publish_checked_top_level(v_1, v_4)
+      ArenaResult{v_25, +v_26} = arena_publish_top_level(v_1, v_4)
       # The open-law tape is carried across declarations, so it must survive rewind
       # just like the published declaration and scope entries.
       ArenaResult{retained_store, +retained_laws} = arena_publish_names(v_25, v_11)
@@ -14575,16 +14575,6 @@ def arena_publish_definition(arena: ArenaStore, value: IR.Definition) -> ArenaRe
       ArenaResult{next_3, occurrence} = arena_publish_optional_occurrence(next_2, definition_occurrence)
       {ArenaResult{next_3, IR.Definition{field_0, result_1, result_2, result_3, field_4, field_5, occurrence, definition_facts}} : ArenaResult<IR.Definition>}
 
-# Private success path: check_definition_uses_result fully publishes the occurrence;
-# checked_declaration_result retains it unchanged before check_declarations_step.
-def arena_publish_checked_definition(arena: ArenaStore, value: IR.Definition) -> ArenaResult<IR.Definition>:
-  match value:
-    case IR.Definition{field_0, field_1, field_2, field_3, field_4, field_5, +definition_occurrence, +definition_facts}:
-      ArenaResult{next_0, result_1} = arena_publish_binders(arena, field_1)
-      ArenaResult{next_1, result_2} = arena_publish_optional_term(next_0, field_2)
-      ArenaResult{next_2, result_3} = arena_publish_def_body(next_1, field_3)
-      {ArenaResult{next_2, IR.Definition{field_0, result_1, result_2, result_3, field_4, field_5, definition_occurrence, definition_facts}} : ArenaResult<IR.Definition>}
-
 def arena_publish_type_decl(arena: ArenaStore, value: IR.TypeDecl) -> ArenaResult<IR.TypeDecl>:
   match value:
     case IR.TypeDecl{field_0, field_1, field_2, field_3, field_4}:
@@ -14604,19 +14594,6 @@ def arena_publish_top_level(arena: ArenaStore, value: IR.TopLevel) -> ArenaResul
   match value:
     case IR.DefTop{field_0}:
       ArenaResult{next_0, result_0} = arena_publish_definition(arena, field_0)
-      {ArenaResult{next_0, IR.DefTop{result_0}} : ArenaResult<IR.TopLevel>}
-    case IR.TypeTop{field_0}:
-      ArenaResult{next_0, result_0} = arena_publish_type_decl(arena, field_0)
-      {ArenaResult{next_0, IR.TypeTop{result_0}} : ArenaResult<IR.TopLevel>}
-    case IR.LawTop{field_0}:
-      ArenaResult{next_0, result_0} = arena_publish_law_decl(arena, field_0)
-      {ArenaResult{next_0, IR.LawTop{result_0}} : ArenaResult<IR.TopLevel>}
-
-# Only check_declarations_step's successful arm may use this publication path.
-def arena_publish_checked_top_level(arena: ArenaStore, value: IR.TopLevel) -> ArenaResult<IR.TopLevel>:
-  match value:
-    case IR.DefTop{field_0}:
-      ArenaResult{next_0, result_0} = arena_publish_checked_definition(arena, field_0)
       {ArenaResult{next_0, IR.DefTop{result_0}} : ArenaResult<IR.TopLevel>}
     case IR.TypeTop{field_0}:
       ArenaResult{next_0, result_0} = arena_publish_type_decl(arena, field_0)
