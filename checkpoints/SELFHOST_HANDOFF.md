@@ -4,6 +4,21 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
+### После G33: архитектурная консультация, не новая реализация
+
+Измеренный G33 checkpoint — `cd740cf4`; принятое R12 не менялось.
+Два `thorough-task-executor` разобрали текущие FIR/BIR/lowering/compiler и
+предложенный G34. Полный синтез, 13 различающих экспериментов и roadmap:
+[SELFHOST_ARCHITECTURE_REVIEW_G33.md](SELFHOST_ARCHITECTURE_REVIEW_G33.md).
+Producer→continuation fusion уже есть в source generator; scheduler wrappers
+добавляются после него. Поэтому не начинать новый общий fusion pass без
+доказанного добавочного hot coverage и оценки analysis/capture cost.
+Сначала различить metadata updates (E09), invariant canonical query (E07) и
+добавочное BIR coverage (E01), затем выбрать одну реализацию. Joins, новый
+private ABI и frame/storage migration — условные ветви, не обязательный cutover.
+В консультации source/runtime не менялись, новых compiler runs/fixedpoint нет;
+offline replay прежнего performance policy не является новой квалификацией.
+
 ### Отклонённый G32: fixedpoint PASS, performance FAIL; R12 восстановлен
 
 Начат от восстановленного R12 (`18954122`), без возврата scheduler rewrite G31.
