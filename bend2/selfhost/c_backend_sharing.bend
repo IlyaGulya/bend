@@ -1519,23 +1519,23 @@ def s_defs_put(+out: DefsOut, +key: String, entry: DefEntry) -> DefsOut:
   match out:
     case DefsOut{defs, def_keys}: DefsOut{Map.set(&2, DefEntry, defs, key, entry), key <> def_keys}
 
-def s_defs_block(block: BIR.Block, +bkey: String, +out: DefsOut) -> DefsOut:
-  match block:
-    case BIR.Let{id, op, next}: s_defs_block(next, bkey, s_defs_put(out, s_body_local(bkey, id), DefEntry{bkey, s_op_def(bkey, op)}))
-    case BIR.LetValues{ids, code, args, next}: s_defs_values(ids, code, args, next, bkey, out)
-    case BIR.Branch{condition, yes, no}: s_defs_block(no, bkey, s_defs_block(yes, bkey, out))
-    case BIR.Region{label, body, next}: s_defs_block(next, bkey, s_defs_block(body, bkey, out))
-    case _: out
-
 # Every result word of a multi-value call is a defined local of this body. One
 # component is not the whole callee result, so each is recorded conservatively
 # as a direct-call definition; the shared flow then attributes the callee's
 # merged return may-set to each of them.
-def s_defs_values(ids: List<&2, U32>, +code: U32, args: List<&2, BIR.Arg>, next: BIR.Block, +bkey: String, +out: DefsOut) -> DefsOut:
+def s_defs_values(ids: List<&2, U32>, +code: U32, +args: List<&2, BIR.Arg>, +bkey: String, +out: DefsOut) -> DefsOut:
   match ids:
-    case Nil{}: s_defs_block(next, bkey, out)
+    case Nil{}: out
     case +id <> rest:
-      s_defs_values(rest, code, args, next, bkey, s_defs_put(out, s_body_local(bkey, id), DefEntry{bkey, DefDirect{bkey, code, args}}))
+      s_defs_values(rest, code, args, bkey, s_defs_put(out, s_body_local(bkey, id), DefEntry{bkey, DefDirect{bkey, code, args}}))
+
+def s_defs_block(block: BIR.Block, +bkey: String, +out: DefsOut) -> DefsOut:
+  match block:
+    case BIR.Let{id, op, next}: s_defs_block(next, bkey, s_defs_put(out, s_body_local(bkey, id), DefEntry{bkey, s_op_def(bkey, op)}))
+    case BIR.LetValues{ids, code, args, next}: s_defs_block(next, bkey, s_defs_values(ids, code, args, bkey, out))
+    case BIR.Branch{condition, yes, no}: s_defs_block(no, bkey, s_defs_block(yes, bkey, out))
+    case BIR.Region{label, body, next}: s_defs_block(next, bkey, s_defs_block(body, bkey, out))
+    case _: out
 
 def s_defs_bodies_go(+rows: List<&2, BodyRow>, +out: DefsOut) -> DefsOut:
   match rows:
@@ -1592,6 +1592,11 @@ def s_occ_op(op: BIR.Op, +bkey: String, +out: OccOut) -> OccOut:
     case BIR.HasTag{value, constructor, tag}: s_occ_atom(value, bkey, out)
     case _: out
 
+def s_occ_values(values: List<&2, BIR.Atom>, +bkey: String, +out: OccOut) -> OccOut:
+  match values:
+    case Nil{}: out
+    case +value <> rest: s_occ_values(rest, bkey, s_occ_atom(value, bkey, out))
+
 def s_occ_block(block: BIR.Block, +bkey: String, +out: OccOut) -> OccOut:
   match block:
     case BIR.Return{value}: s_occ_atom(value, bkey, out)
@@ -1604,11 +1609,6 @@ def s_occ_block(block: BIR.Block, +bkey: String, +out: OccOut) -> OccOut:
     case BIR.TailDirect{code, args}: s_occ_args_go(args, bkey, out)
     case BIR.TailApply{fn, arg}: s_occ_arg(arg, bkey, s_occ_atom(fn, bkey, out))
     case BIR.Failure{message}: out
-
-def s_occ_values(values: List<&2, BIR.Atom>, +bkey: String, +out: OccOut) -> OccOut:
-  match values:
-    case Nil{}: out
-    case +value <> rest: s_occ_values(rest, bkey, s_occ_atom(value, bkey, out))
 
 def s_occ_bodies_go(+rows: List<&2, BodyRow>, +out: OccOut) -> OccOut:
   match rows:
@@ -1763,21 +1763,21 @@ def s_sites_op(op: BIR.Op, +bkey: String, +by_code: Map<&2, String>, +out: Sites
     case BIR.Copy{value}: s_sites_symbols_atom(value, out)
     case _: out
 
+def s_sites_values(values: List<&2, BIR.Atom>, +out: SitesOut) -> SitesOut:
+  match values:
+    case Nil{}: out
+    case +value <> rest: s_sites_values(rest, s_sites_symbols_atom(value, out))
+
 def s_sites_block(block: BIR.Block, +bkey: String, +by_code: Map<&2, String>, +out: SitesOut) -> SitesOut:
   match block:
     case BIR.Let{id, op, next}: s_sites_block(next, bkey, by_code, s_sites_op(op, bkey, by_code, out))
-    case BIR.LetValues{ids, code, args, next}: s_sites_block(next, bkey, by_code, s_sites_symbols_args_go(args, s_sites_direct(out, bkey, code, args, by_code)))
+    case BIR.LetValues{ids, code, +args, next}: s_sites_block(next, bkey, by_code, s_sites_symbols_args_go(args, s_sites_direct(out, bkey, code, args, by_code)))
     case BIR.ReturnValues{values}: s_sites_values(values, out)
     case BIR.Branch{condition, yes, no}: s_sites_block(no, bkey, by_code, s_sites_block(yes, bkey, by_code, s_sites_symbols_atom(condition, out)))
     case BIR.Region{label, body, next}: s_sites_block(next, bkey, by_code, s_sites_block(body, bkey, by_code, out))
     case BIR.TailDirect{code, args}: s_sites_direct(out, bkey, code, args, by_code)
     case BIR.TailApply{+fn, +arg}: s_sites_apply_at(s_sites_symbols_atom(fn, out), bkey, fn, arg)
     case _: out
-
-def s_sites_values(values: List<&2, BIR.Atom>, +out: SitesOut) -> SitesOut:
-  match values:
-    case Nil{}: out
-    case +value <> rest: s_sites_values(rest, s_sites_symbols_atom(value, out))
 
 def s_sites_bodies_go(+rows: List<&2, BodyRow>, +by_code: Map<&2, String>, +out: SitesOut) -> SitesOut:
   match rows:
@@ -2359,19 +2359,6 @@ def s_tail_apply_flow(+fn: BIR.Atom, arg: BIR.Arg, +bkey: String, +st: AState, +
     None{}
   }
 
-def s_block_flow(block: BIR.Block, +bkey: String, +st: AState, +catalog: Catalog, +decls: DeclFacts) -> BlockFlow:
-  match block:
-    case BIR.Return{+value}: BlockFlow{s_atom_flow(bkey, value, s_st_flows(st)), s_atom_pay(bkey, value, s_st_pays(st)), None{}}
-    case BIR.ReturnValues{values}: BlockFlow{s_values_flow(values, bkey, s_st_flows(st)), s_values_pay(values, bkey, s_st_pays(st)), None{}}
-    case BIR.Let{id, op, next}: s_block_flow(next, bkey, st, catalog, decls)
-    case BIR.LetValues{ids, code, args, next}: s_block_flow(next, bkey, st, catalog, decls)
-    case BIR.Branch{condition, yes, no}: s_block_merge(s_block_flow(yes, bkey, st, catalog, decls), s_block_flow(no, bkey, st, catalog, decls))
-    case BIR.Region{label, body, next}: s_block_merge(s_block_flow(body, bkey, st, catalog, decls), s_block_flow(next, bkey, st, catalog, decls))
-    case BIR.LeaveRegion{label}: BlockFlow{s_flow_empty(), s_flow_empty(), None{}}
-    case BIR.TailDirect{code, args}: s_tail_direct_flow(code, args, bkey, st, catalog, decls)
-    case BIR.TailApply{fn, arg}: s_tail_apply_flow(fn, arg, bkey, st, catalog, decls)
-    case BIR.Failure{message}: BlockFlow{s_flow_empty(), s_flow_empty(), None{}}
-
 # A vector's runtime value is the union of its components' may-sets: every
 # component reaches the caller, so none of their heads may be dropped.
 def s_values_flow(values: List<&2, BIR.Atom>, +bkey: String, +flows: Map<&2, Flow>) -> Flow:
@@ -2383,6 +2370,19 @@ def s_values_pay(values: List<&2, BIR.Atom>, +bkey: String, +pays: Map<&2, Flow>
   match values:
     case Nil{}: s_flow_empty()
     case +value <> rest: s_flow_merge(s_atom_pay(bkey, value, pays), s_values_pay(rest, bkey, pays))
+
+def s_block_flow(block: BIR.Block, +bkey: String, +st: AState, +catalog: Catalog, +decls: DeclFacts) -> BlockFlow:
+  match block:
+    case BIR.Return{+value}: BlockFlow{s_atom_flow(bkey, value, s_st_flows(st)), s_atom_pay(bkey, value, s_st_pays(st)), None{}}
+    case BIR.ReturnValues{+values}: BlockFlow{s_values_flow(values, bkey, s_st_flows(st)), s_values_pay(values, bkey, s_st_pays(st)), None{}}
+    case BIR.Let{id, op, next}: s_block_flow(next, bkey, st, catalog, decls)
+    case BIR.LetValues{ids, code, args, next}: s_block_flow(next, bkey, st, catalog, decls)
+    case BIR.Branch{condition, yes, no}: s_block_merge(s_block_flow(yes, bkey, st, catalog, decls), s_block_flow(no, bkey, st, catalog, decls))
+    case BIR.Region{label, body, next}: s_block_merge(s_block_flow(body, bkey, st, catalog, decls), s_block_flow(next, bkey, st, catalog, decls))
+    case BIR.LeaveRegion{label}: BlockFlow{s_flow_empty(), s_flow_empty(), None{}}
+    case BIR.TailDirect{code, args}: s_tail_direct_flow(code, args, bkey, st, catalog, decls)
+    case BIR.TailApply{fn, arg}: s_tail_apply_flow(fn, arg, bkey, st, catalog, decls)
+    case BIR.Failure{message}: BlockFlow{s_flow_empty(), s_flow_empty(), None{}}
 
 def s_callees_add_go(+items: List<&2, Resolved>, +st: AState, +key: String) -> AState:
   match items:
