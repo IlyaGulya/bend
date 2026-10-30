@@ -23,9 +23,12 @@ G36 фиксируются перед восстановлением R12 и сл
 
 `evals/receipts/producer2039g36e05_rejected.json`,
 `evals/receipts/producer2039g36e05_plan.json`.
-E03 продолжает отдельную диагностику на одинаково произведённых canonical
-полных compiler RootJS для всех трёх lanes, с обязательным actual JS checker.
-Canonical component — не native-stage1/fixedpoint и не accepted compiler.
+E03 завершён с **STOP**: все три actual affine consumers, common pre-pass BIR,
+полный Word proof, cold/warm, separate counters/JIT исполнены; все 54 probe
+results равны 0. Но все три обязательных full frozen-source checker запуска
+падают в canonical `$String_to_list`: `RangeError`, при прежнем stack 256 MiB.
+PASS summary корректно отказан. Native-stage1/fixedpoint и transport winner
+не заявлены. `evals/receipts/experiments_e03_transport.json`.
 E06 / E10 / E12 ещё требуют отдельных source qualifications; их GO census
 не означает завершённую оптимизацию. E10/E12 admission:
 `evals/receipts/experiments_e10_e12_admission.json`.

@@ -444,16 +444,51 @@ check, тремя regenerated source hashes, удалённым rejected module,
 accepted artifacts и шестью canonical C/JS source executions. Это не новая
 full qualification: [restoration proof](../evals/receipts/producer2039g36e05_restored_r12.json).
 
-### E03 — явно выбран matched canonical executor, не подменён fixedpoint
+### E03 — исполнен: microprobe/JIT PASS, mandatory whole checker STOP
 
-Для отдельной transport/JIT диагностики выбраны canonical полные compiler
-RootJS **во всех трёх lanes** до её измерений. Каждый исполняет настоящий
-Bend frontend/pass/emitter; consumer emissions также производятся настоящим
-selfhost JS backend. Это допускает E03 после отсутствующего native-stage1 G36
-без handwritten tuple loop и без смешивания разных producer backends в
-whole-checker comparison. Authentic source/build/nominal-schema binding и
-actual JS checker остаются обязательны. Результатов E03 здесь ещё нет;
-canonical component не объявляется native-stage1 или accepted compiler.
+До измерений выбран один canonical полный compiler producer **во всех трёх
+lanes**. Source/build/nominal-schema authority аутентифицированы; новый fixture
+зафиксирован на восстановленном R12 source `b2192313`, а не ошибочно приписан
+более раннему R12 checkpoint. Все три исходных BIR дерева побайтно-структурно
+эквивалентны после настоящего typed nominal transport. Direct post-pass BIR
+полностью равен результату compiled Bend E05 pass на том же input. Доказан
+реальный Word edge с 19 worker / 15 shared continuation parameters,
+двумя Affine fields, 13 retained values, тремя ordered `Array.set`,
+нулём новых captures, свежими IDs и сохранёнными Arena/Tuple.
+
+Каждая real emitted library исполняет один cold и пять warm `probe(1)` вызовов;
+clean, scalar-counter и supported-JIT lanes — в отдельных процессах.
+Все **54** actual results — 0. Ни synthetic tuple loop, ни host parser/checker
+не заменяют compiler/consumer:
+
+| Transport | Consumer bytes | Cold, ms | Warm 5 calls, ms | Registered frames / cold | Registered capture slots / cold |
+|---|---:|---:|---:|---:|---:|
+| R12 boxed | 1 058 366 | 12.344 | 7.464 | 3 223 | 19 210 |
+| G32 mailbox | 1 063 794 | 13.401 | 7.858 | 3 223 | 19 210 |
+| G36 direct-field | 1 060 088 | 12.203 | 6.854 | 2 882 | 14 777 |
+
+Счётчики — logical registrations/slots всего probe, **не** machine stores,
+allocation bytes или retained bytes. Generic original producer обслуживает
+также другие metadata edges; его общий entry count не равен Word-only count.
+JIT traces содержат по два matched optimization-text events на наблюдаемую
+функцию; matching inlining/deoptimization events нет. Это не доказательство
+успешного конкретного tier, inline или отсутствия deopt вне окна.
+Single cold/five warm observations не являются paired production acceptance.
+
+Независимый настоящий renderer сначала воспроизвёл полный frozen R12 output,
+затем авторизовал direct-field output SHA-256
+`bfcbde9922b8e431d7126951f383da12ef87008a209e830e8fad19a029543242`.
+Но **все три обязательных actual whole-checker запуска исполнены и FAIL**:
+canonical `$String_to_list` исчерпывает прежний 256-MiB worker stack
+(`RangeError: Maximum call stack size exceeded`). Остальные исходные guards
+сохранены. Unchanged retry, повышение stack и подмена parser не применялись.
+`--summary` реально отказал в PASS из-за failed checker lane.
+
+**E03 завершён: STOP whole-checker comparison / transport promotion.**
+Ограничение canonical executor не скрыто успехом маленького consumer;
+G36 native hard rejection остаётся отдельным FAIL. Canonical component —
+не native-stage1/fixedpoint и не accepted compiler.
+Primary evidence: [all actual lanes, source inputs, counters and JIT](../evals/receipts/experiments_e03_transport.json).
 
 ### E10 / E12 — измеренные GO, source qualification ещё впереди
 
