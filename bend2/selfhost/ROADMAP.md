@@ -154,12 +154,17 @@ executions and 130 semantic AST approvals per image pass. C consumers pass
 59/60 cases; `scheduler_chunk_smoke` C emission exceeds the unchanged
 600-second guard. G31 is rejected; later consumer gates are not run.
 The timeout cause is unestablished; R12 remains accepted.
+Rejected inputs/outcomes: `5a6390ac`. R12 producer/composer and three
+regenerated step sources are restored to accepted bytes; accepted artifacts
+are unchanged and four canonical C/JS restoration executions pass.
+This is restoration evidence, not a new full qualification.
 `evals/receipts/producer2039g31_repeated_screen.json`,
 `evals/receipts/producer2039g31_paired_diagnostics.json`,
 `evals/receipts/producer2039g31_core_fixedpoint.json`,
 `evals/receipts/producer2039g31_throughput.json`,
 `evals/receipts/producer2039g31_emitted_suites.json`,
-`evals/receipts/producer2039g31_qualification_failure.json`.
+`evals/receipts/producer2039g31_qualification_failure.json`,
+`evals/receipts/producer2039g31_restored_r12.json`.
 
 ## Historical full native-seed checkpoint: G23
 

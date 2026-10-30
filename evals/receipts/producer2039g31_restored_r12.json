@@ -1,0 +1,1850 @@
+{
+  "schemaVersion": 1,
+  "status": "R12_RESTORED_BYTE_AUTHENTICATED_C_JS_SCHEDULER_AFFINITY_PASS",
+  "compilerAcceptanceChanged": false,
+  "newFixedpointClaim": false,
+  "acceptedBaseline": {
+    "runId": "local2039g24r12",
+    "sourceCheckpoint": "5916d410",
+    "restoredFrom": "72d2964e",
+    "native": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+      "sha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "bytes": 18808824,
+      "matches": true
+    },
+    "image": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+      "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "bytes": 31758507,
+      "matches": true
+    },
+    "acceptance": {
+      "path": "/Users/ilyagulya/Projects/My/bend/evals/receipts/root2039g24r12_native_fixedpoint.json",
+      "sha256": "cb66ed5542e56516f83d2c04fb80f5ab8597130ab137a4128be8491391911d50",
+      "sourceCheckpoint": "5916d410",
+      "byteFixedpoint": true
+    }
+  },
+  "rejectedCheckpoint": "5a6390ac",
+  "sourceCheckpoint": "10f1f3a3",
+  "restoredFrom": "e59ca0d3",
+  "scope": "Restoration after G31 full qualification failed the unchanged hard deadline during real C consumer emission. Not a new full native build, fixedpoint, performance acceptance or consumer-matrix qualification.",
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000,
+    "workerStackMiB": 256,
+    "workerOldGenerationMiB": 6144,
+    "workerYoungGenerationMiB": 128
+  },
+  "commands": {
+    "environment": "env HEAVY_GATE_MEMORY_MIB=8192 HEAVY_GATE_RSS_MIB=8192 HEAVY_GATE_POLL_MS=10 HEAVY_GATE_TIMEOUT_MS=600000 BUN_JSC_forceRAMSize=4294967296 ",
+    "restore": [
+      "/usr/bin/git",
+      "restore",
+      "--source=e59ca0d3",
+      "--",
+      "evals/checker_core_step_lower.ts",
+      "evals/selfhost_driver_source.ts"
+    ],
+    "regenerate": [
+      [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/checker_core_step_lower.ts"
+      ],
+      [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/template_step_lower.ts"
+      ],
+      [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/emitter_step_lower.ts"
+      ]
+    ],
+    "smoke": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "evals/g24_source_smoke.mjs",
+      "--node",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--bun",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--clang",
+      "/usr/bin/clang",
+      "--fixtures",
+      "evals/scheduler_chunk_smoke.bend,evals/checker_affinity_step_smoke.bend",
+      "--targets",
+      "c,js",
+      "--receipt",
+      "/private/tmp/bend-g31-recheck-F7pWcZ/restored-r12-smoke.json"
+    ]
+  },
+  "restoredCode": [
+    {
+      "path": "evals/checker_core_step_lower.ts",
+      "snapshot": "e59ca0d3:evals/checker_core_step_lower.ts",
+      "sha256": "21a47855e891ab115fb2ce4c70b7b699b376c6488f2505b7f0d6893f8d66daf9",
+      "actualSha256": "21a47855e891ab115fb2ce4c70b7b699b376c6488f2505b7f0d6893f8d66daf9",
+      "matches": true
+    },
+    {
+      "path": "evals/selfhost_driver_source.ts",
+      "snapshot": "e59ca0d3:evals/selfhost_driver_source.ts",
+      "sha256": "be4c39ba888193b85b331955a29f00cabe836420b8d1d5800086fba2c159ac2d",
+      "actualSha256": "be4c39ba888193b85b331955a29f00cabe836420b8d1d5800086fba2c159ac2d",
+      "matches": true
+    }
+  ],
+  "baselineSourceChecks": [
+    {
+      "path": "bend2/base.bend",
+      "sha256": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+      "actualSha256": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+      "matches": true
+    },
+    {
+      "path": "bend2/comp.ts",
+      "sha256": "880a9b3b86f273852a39fc664f8c3d7b71e3860b6d365e4321949fc812b6e7cc",
+      "actualSha256": "880a9b3b86f273852a39fc664f8c3d7b71e3860b6d365e4321949fc812b6e7cc",
+      "matches": true
+    },
+    {
+      "path": "bend2/selfhost/backend_ir.bend",
+      "sha256": "c0286db6b192bf5cc917774b7ea5e393d4416263432eb130fb8393b1dffc1cb3",
+      "actualSha256": "c0286db6b192bf5cc917774b7ea5e393d4416263432eb130fb8393b1dffc1cb3",
+      "matches": true
+    },
+    {
+      "path": "bend2/selfhost/lower_catalog.bend",
+      "sha256": "e322065c5ccb0a15f2ab81fd9e6dd689fe8b88ad50535e4f70f503e796164f01",
+      "actualSha256": "e322065c5ccb0a15f2ab81fd9e6dd689fe8b88ad50535e4f70f503e796164f01",
+      "matches": true
+    },
+    {
+      "path": "bend2/selfhost/backend_lower.bend",
+      "sha256": "d5217f4d2117ff9527474847b53caaa6d881570d6fe4a2c24e0af668cfc75b7f",
+      "actualSha256": "d5217f4d2117ff9527474847b53caaa6d881570d6fe4a2c24e0af668cfc75b7f",
+      "matches": true
+    },
+    {
+      "path": "bend2/selfhost/c_backend.bend",
+      "sha256": "71ae3cf1a6d44332d218be095a01fb59bb1b3bdbb606b8ca4e16ead6ca6cd576",
+      "actualSha256": "71ae3cf1a6d44332d218be095a01fb59bb1b3bdbb606b8ca4e16ead6ca6cd576",
+      "matches": true
+    },
+    {
+      "path": "bend2/selfhost/c_backend_physical.bend",
+      "sha256": "b6b3b3b2e0ced250b5b5fdbf4c699cfe1e8867900e3bd7b91ee82bdee3ebc25f",
+      "actualSha256": "b6b3b3b2e0ced250b5b5fdbf4c699cfe1e8867900e3bd7b91ee82bdee3ebc25f",
+      "matches": true
+    },
+    {
+      "path": "bend2/selfhost/c_backend_sharing.bend",
+      "sha256": "05adf4ac68b0658425f7fce430709f67bd29c3f1f8a43727412661084c4dbe2c",
+      "actualSha256": "05adf4ac68b0658425f7fce430709f67bd29c3f1f8a43727412661084c4dbe2c",
+      "matches": true
+    },
+    {
+      "path": "bend2/selfhost/js_backend.bend",
+      "sha256": "9ad0e83cafd243745d7d1b256d3e053258a801350fc5d0e16dd65fec89a35aa0",
+      "actualSha256": "9ad0e83cafd243745d7d1b256d3e053258a801350fc5d0e16dd65fec89a35aa0",
+      "matches": true
+    },
+    {
+      "path": "bend2/selfhost/checker_arena.bend",
+      "sha256": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf",
+      "actualSha256": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf",
+      "matches": true
+    },
+    {
+      "path": "bend2/selfhost/c_runtime.c",
+      "sha256": "6935fa83c1b20b7f8982f04ad54c4e4dae0b9b0ea66fd00f32d169a1d03ac2bf",
+      "actualSha256": "6935fa83c1b20b7f8982f04ad54c4e4dae0b9b0ea66fd00f32d169a1d03ac2bf",
+      "matches": true
+    },
+    {
+      "path": "evals/c_backend_runtime.bend",
+      "sha256": "e8acf220c10f42a7cd82f99948518f0ea2424e073ec5b90419e02e6b64bb2b5a",
+      "actualSha256": "e8acf220c10f42a7cd82f99948518f0ea2424e073ec5b90419e02e6b64bb2b5a",
+      "matches": true
+    },
+    {
+      "path": "evals/gen_c_runtime.ts",
+      "sha256": "e7df0f20694bd365b66b3faac6d26415c02889fa8aad6c31aa71ca5746158246",
+      "actualSha256": "e7df0f20694bd365b66b3faac6d26415c02889fa8aad6c31aa71ca5746158246",
+      "matches": true
+    },
+    {
+      "path": "tests/run/compiler_rows.bend",
+      "expectedAbsent": true,
+      "absent": true,
+      "matches": true
+    },
+    {
+      "path": "tests/run/compiler_rows_nodes.bend",
+      "expectedAbsent": true,
+      "absent": true,
+      "matches": true
+    },
+    {
+      "path": "tests/compile/compiler_rows_shared.bend",
+      "expectedAbsent": true,
+      "absent": true,
+      "matches": true
+    },
+    {
+      "path": "tests/compile/compiler_rows_drop.bend",
+      "expectedAbsent": true,
+      "absent": true,
+      "matches": true
+    },
+    {
+      "path": "tests/compile/compiler_rows_drop.c",
+      "expectedAbsent": true,
+      "absent": true,
+      "matches": true
+    },
+    {
+      "path": "tests/compile/compiler_rows_drop.js",
+      "expectedAbsent": true,
+      "absent": true,
+      "matches": true
+    },
+    {
+      "path": "checkpoints/checker-core-owned-source-v1.json",
+      "sha256": "3ecb7f9d98a61d58b383e489bbc6195ad0b56c053baebaa3184533d490c29425",
+      "actualSha256": "3ecb7f9d98a61d58b383e489bbc6195ad0b56c053baebaa3184533d490c29425",
+      "matches": true
+    },
+    {
+      "path": "checkpoints/checker-core-steps-v1.json",
+      "sha256": "cd973ad57134f08587515330c65e44a9fb864f41470a4edf32e5c8f48fb767d6",
+      "actualSha256": "cd973ad57134f08587515330c65e44a9fb864f41470a4edf32e5c8f48fb767d6",
+      "matches": true
+    }
+  ],
+  "generatedSources": [
+    {
+      "path": "checkpoints/checker_core_steps_v1.bend",
+      "sha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+      "actualSha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+      "matches": true
+    },
+    {
+      "path": "checkpoints/template_steps_v1.bend",
+      "sha256": "b9f4d860de0c58a274e1f23e90558191e23d7ac0de18d1fd452914160b9a5ae5",
+      "actualSha256": "b9f4d860de0c58a274e1f23e90558191e23d7ac0de18d1fd452914160b9a5ae5",
+      "matches": true
+    },
+    {
+      "path": "checkpoints/emitter_steps_v1.bend",
+      "sha256": "7f7c8d2e57a3fcd3925b4286a8300668ae91b7e11a26317cea6da2df5c9ea425",
+      "actualSha256": "7f7c8d2e57a3fcd3925b4286a8300668ae91b7e11a26317cea6da2df5c9ea425",
+      "matches": true
+    }
+  ],
+  "acceptedArtifacts": {
+    "native": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+      "sha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "bytes": 18808824,
+      "matches": true,
+      "actualSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71"
+    },
+    "image": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+      "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "bytes": 31758507,
+      "matches": true,
+      "actualSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e"
+    }
+  },
+  "generationGuardians": [
+    {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793350124019-78389d745ea4f31e.json",
+      "sha256": "84957bc29b31120f32056b5f9df92ebf35d63f2487f88a40d9860a96dd62a466",
+      "report": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 528908288,
+        "peakFootprintBytes": 350110632,
+        "elapsedMs": 2967,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "evals/checker_core_step_lower.ts"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793350124019-78389d745ea4f31e.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793350127077-55d21caa878ea6df.json",
+      "sha256": "9a25edc1c688d4b07d8d1d2e2d5e738b15f340881a979530151c3b91b3fd994f",
+      "report": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 156663808,
+        "peakFootprintBytes": 133628648,
+        "elapsedMs": 348,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "evals/template_step_lower.ts"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793350127077-55d21caa878ea6df.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793350127519-25f0ed2e7b41a94f.json",
+      "sha256": "1a8677ea9a9b7353cc079a03bef625f3c2e7f4f8a82cb3b7e68ecb842367fdfa",
+      "report": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1049640960,
+        "peakFootprintBytes": 698549544,
+        "elapsedMs": 4373,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "evals/emitter_step_lower.ts"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793350127519-25f0ed2e7b41a94f.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    }
+  ],
+  "retainedRegressions": {
+    "scheduler": {
+      "path": "evals/scheduler_chunk_smoke.bend",
+      "sha256": "21986a939adccc86c6580c446242be9feb95703c6eeb820ef939d961f2247140"
+    },
+    "cRegistration": {
+      "path": "evals/c_target_fixtures_run.ts",
+      "sha256": "82a17ac3a631cf7bec3d9eb7ed2398464affe86d71768df956304e7713c683a8"
+    }
+  },
+  "restorationRun": {
+    "schemaVersion": 1,
+    "status": "SOURCE_CHANGED_PATH_SMOKE_PASS",
+    "scope": "Integrated changed-path Bend source smoke: canonical engine emission, clang -O1 C build, and C/JS consumers matched against exact #| lines. Not selfhost compiler acceptance, not byte fixedpoint, and not a replacement for any existing gate.",
+    "compilerAccepted": false,
+    "byteFixedpoint": false,
+    "fullAcceptance": false,
+    "limits": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 600000
+    },
+    "directory": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1",
+    "receiptPath": "/private/tmp/bend-g31-recheck-F7pWcZ/restored-r12-smoke.json",
+    "repoRoot": "/Users/ilyagulya/Projects/My/bend",
+    "targets": [
+      "c",
+      "js"
+    ],
+    "fixtures": [
+      "evals/scheduler_chunk_smoke.bend",
+      "evals/checker_affinity_step_smoke.bend"
+    ],
+    "runtime": {
+      "node": {
+        "command": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "version": "v23.11.0",
+        "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5"
+      },
+      "bun": {
+        "command": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "version": "1.4.3",
+        "sha256": "28c7dd0a06916aba284d570ef44a2d70e9c538eaf2ba58dfe0910525563b3f79"
+      },
+      "clang": {
+        "command": "/usr/bin/clang",
+        "path": "/usr/bin/clang",
+        "version": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+        "sha256": "b8763cf250e607a778bb4603cecb5b90338814d0a3dfcba0d57b1de242f610e9"
+      }
+    },
+    "harness": {
+      "evals/g24_source_smoke.mjs": "a8331de7ca03df4723ec8e31b34c04f7010ef000d486c855988aafcce2c24c2c",
+      "evals/g24_source_smoke_worker.mjs": "2bc8a7b70399e4bc555f06683c69f1f830ecc42dd15267e51b5239e930083225",
+      "evals/heavy_gate.ts": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015",
+      "evals/heavy_gate_native.c": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b"
+    },
+    "compiler": {
+      "bend2/bend.ts": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+      "bend2/comp.ts": "880a9b3b86f273852a39fc664f8c3d7b71e3860b6d365e4321949fc812b6e7cc",
+      "bend2/base.bend": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614"
+    },
+    "rows": [
+      {
+        "index": 0,
+        "source": "evals/scheduler_chunk_smoke.bend",
+        "absoluteSource": "/Users/ilyagulya/Projects/My/bend/evals/scheduler_chunk_smoke.bend",
+        "target": "c",
+        "sourceSha256": "21986a939adccc86c6580c446242be9feb95703c6eeb820ef939d961f2247140",
+        "expected": "4294967295\n37\n0\n4294967295\n1\n31\n4294967295\n32\n32\n4294967295\n48\n4294967295\n72\n2\n1\n",
+        "stages": {
+          "emit": {
+            "label": "emit c evals/scheduler_chunk_smoke.bend",
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/evals/scheduler_chunk_smoke.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/000-scheduler_chunk_smoke.c"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/evals/scheduler_chunk_smoke.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/000-scheduler_chunk_smoke.c"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "elapsedMs": 13888.200708,
+            "stdout": "{\"status\":\"CANONICAL_PROGRAM_EMITTED\",\"source\":\"/Users/ilyagulya/Projects/My/bend/evals/scheduler_chunk_smoke.bend\",\"output\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/000-scheduler_chunk_smoke.c\",\"events\":6665,\"bytes\":15089868}\n",
+            "stderr": "(node:44840) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\nHEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":2182823936,\"peakFootprintBytes\":2311586872,\"elapsedMs\":13861,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"--experimental-strip-types\",\"/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs\",\"/Users/ilyagulya/Projects/My/bend/evals/scheduler_chunk_smoke.bend\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/000-scheduler_chunk_smoke.c\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793350132436-6b6d0dfffdedae52.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 2182823936,
+              "peakFootprintBytes": 2311586872,
+              "elapsedMs": 13861,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+                "--experimental-strip-types",
+                "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+                "/Users/ilyagulya/Projects/My/bend/evals/scheduler_chunk_smoke.bend",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/000-scheduler_chunk_smoke.c"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793350132436-6b6d0dfffdedae52.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          },
+          "clang": {
+            "label": "clang evals/scheduler_chunk_smoke.bend",
+            "command": [
+              "/usr/bin/clang",
+              "-std=c11",
+              "-O1",
+              "-pthread",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/000-scheduler_chunk_smoke.c",
+              "-lm",
+              "-o",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/000-scheduler_chunk_smoke.c.exe"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/usr/bin/clang",
+              "-std=c11",
+              "-O1",
+              "-pthread",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/000-scheduler_chunk_smoke.c",
+              "-lm",
+              "-o",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/000-scheduler_chunk_smoke.c.exe"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "elapsedMs": 30820.779708000002,
+            "stdout": "",
+            "stderr": "HEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":2467971072,\"peakFootprintBytes\":2356021768,\"elapsedMs\":30793,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/usr/bin/clang\",\"-std=c11\",\"-O1\",\"-pthread\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/000-scheduler_chunk_smoke.c\",\"-lm\",\"-o\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/000-scheduler_chunk_smoke.c.exe\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793350146354-effa61f5f4eeedea.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 2467971072,
+              "peakFootprintBytes": 2356021768,
+              "elapsedMs": 30793,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/usr/bin/clang",
+                "-std=c11",
+                "-O1",
+                "-pthread",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/000-scheduler_chunk_smoke.c",
+                "-lm",
+                "-o",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/000-scheduler_chunk_smoke.c.exe"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793350146354-effa61f5f4eeedea.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          },
+          "consumer": {
+            "label": "run c evals/scheduler_chunk_smoke.bend",
+            "command": [
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/000-scheduler_chunk_smoke.c.exe"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/000-scheduler_chunk_smoke.c.exe"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "outputMatches": true,
+            "elapsedMs": 44.52091699999437,
+            "stdout": "4294967295\n37\n0\n4294967295\n1\n31\n4294967295\n32\n32\n4294967295\n48\n4294967295\n72\n2\n1\n",
+            "stderr": "HEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":180224,\"peakFootprintBytes\":311440,\"elapsedMs\":14,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/000-scheduler_chunk_smoke.c.exe\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793350177181-f1dc61d30c3dca3b.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 180224,
+              "peakFootprintBytes": 311440,
+              "elapsedMs": 14,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/000-scheduler_chunk_smoke.c.exe"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793350177181-f1dc61d30c3dca3b.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          }
+        },
+        "passed": true,
+        "outputSha256": "99c324a3ccac7b9515062715dd75659397ee84f9bd0c588aa5767aee262f5bed",
+        "outputBytes": 15089868,
+        "inputs": [
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/evals/scheduler_chunk_smoke.bend",
+            "sha256": "21986a939adccc86c6580c446242be9feb95703c6eeb820ef939d961f2247140"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/base.bend",
+            "sha256": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_ir.bend",
+            "sha256": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/ast.bend",
+            "sha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/checker_core_steps_v1.bend",
+            "sha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_arena.bend",
+            "sha256": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/scope_lookup.bend",
+            "sha256": "e75dc874de6026e2104a7545a19f42fd6995aefecbb1d315c6ae3e097697e590"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/index_lookup.bend",
+            "sha256": "7b7b45946be711d0ba384e15f6823fded5ff97d6a526a6fb74a0448c13d61f84"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/path.bend",
+            "sha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/loaded_module.bend",
+            "sha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checked_frontend.bend",
+            "sha256": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/print.c",
+            "sha256": "58657b7351daee89121e1df2856f102743c9db7640257e50c6009a0f1080b00e"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/write.c",
+            "sha256": "8807a5f655db452c1d846354560c26fe1e94289e5dc0be231d0b71ecc876d02f"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/print_err.c",
+            "sha256": "f84aa11c8d0d6af6fa2fee28411f95714d6744ad97156990e43e55c292c9c6fb"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/get_env.c",
+            "sha256": "b4903e94681340f9e02187457fabe9461c1b4e43646b7e1573f5d21e954e3a34"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/args.c",
+            "sha256": "7717332d0b8c8ba28d6dbe60b62a23dce99ea6828ada7d1f9b664f4dc388e84e"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/process_run.c",
+            "sha256": "554cfbdf9a6de163f00fc1b23dc8f3df10821cfce336caa1cb5db439b8a55e1f"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/random_u32.c",
+            "sha256": "75429b2b42e00562177fe33a5e18d2730478847f58c4038b048e78131e1b8c0a"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/spawn.c",
+            "sha256": "05e11ae3f1461d9c72440af3b1786c076b418d2faff45639ac25ba464ee73cd5"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/sleep.c",
+            "sha256": "1dde3701026517d5272d2ff5344d3a8643bec264dbad9f266fdae1c4aaf7601c"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/now.c",
+            "sha256": "fc4c1d87a4fb2ace7d5b6c57b434cc3d953a15bdf213020912df6c17aa2352d6"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/thread_count.c",
+            "sha256": "d4889ed7757dccce03729c9568b88188128f2c1576166a3dc184a8707ed44568"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/chan.c",
+            "sha256": "af09b2749741bcc54f56c8f81803073818a165d4cad4c817708e359d677b2a52"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_open.c",
+            "sha256": "b987bcb0f9a89d769714ddf8cbecca211c4392e4098da19b411d09f5c088d360"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_read.c",
+            "sha256": "ab577225fa98a034c09d7eb6326b74808756dc6203b0e2599a459876382f090d"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_size.c",
+            "sha256": "ed0d74fd6b9f14ea471bfe5dd80ecbb2c5abb6a8406519fb2c7e1a1acf3dd5af"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_write.c",
+            "sha256": "da810ad9aa76ad1431622292529fa3edebabc4b6a7ee20ae833097b71bb595e5"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_close.c",
+            "sha256": "033da9beb0b484fbc8784044193bf69004f858f6ad86e0c31b4beb89df1349ca"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_listen.c",
+            "sha256": "efc7528de96abd9f62f299833c1ac7b0e86528292c746b114d2684b5bac52899"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_accept.c",
+            "sha256": "bf7ca1685ed388ce97827ea8379881fbdf5359c7c663ad03eeb8da34bd8584ef"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_connect.c",
+            "sha256": "8d17c097138709d71e9d9e1fbc4255007c5e80c93ee384c4a3510b6ac8d10da3"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_send.c",
+            "sha256": "993cc8ee5b39fd54a4aeace102602ecf2841ce1f402fe6b2407ebaca837383f9"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_recv.c",
+            "sha256": "249c8789cd2f541ad00068882de16a00870c2f81a8168b0ac7a59db1e3cb0c6f"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_bind.c",
+            "sha256": "a1be1bc5c03d430fc6eb43982651073e144872956fadaee98c3700be59352ee3"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_send_to.c",
+            "sha256": "b3a87e56958d8071a368da2edb4748e9496b3eed58b93d6cb4f8af398dd1011a"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_recv_from.c",
+            "sha256": "1ce914be6cd6153732258f06343e5bcf9765a7fac7e3c3f0462facba7060e067"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/socket_close.c",
+            "sha256": "abea115d2928d4942a9d89898d2022c0f1b19c52db48d0b060c2356d261bfa77"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/listener_close.c",
+            "sha256": "11f6bac6342a37e97b9656e96bdca7d052ed0a7a0cab3b05ea87657020cfb7a2"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/window.c",
+            "sha256": "bf8d5779775ba9566d4bbeb8706a9ec993efb724dae7af8a76c38501ab4092c2"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio.c",
+            "sha256": "f0fac2bee02918b4958ad1e7508945824fcd98ce9a2e7ede657304c4f8905b85"
+          }
+        ],
+        "executableSha256": "64bd6a0f180ee01517a11589916ce6d4fbdbcaa20a8d4fba9ed438b9618138bf",
+        "executableBytes": 4441840,
+        "observed": "4294967295\n37\n0\n4294967295\n1\n31\n4294967295\n32\n32\n4294967295\n48\n4294967295\n72\n2\n1\n"
+      },
+      {
+        "index": 0,
+        "source": "evals/scheduler_chunk_smoke.bend",
+        "absoluteSource": "/Users/ilyagulya/Projects/My/bend/evals/scheduler_chunk_smoke.bend",
+        "target": "js",
+        "sourceSha256": "21986a939adccc86c6580c446242be9feb95703c6eeb820ef939d961f2247140",
+        "expected": "4294967295\n37\n0\n4294967295\n1\n31\n4294967295\n32\n32\n4294967295\n48\n4294967295\n72\n2\n1\n",
+        "stages": {
+          "emit": {
+            "label": "emit js evals/scheduler_chunk_smoke.bend",
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/evals/scheduler_chunk_smoke.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/000-scheduler_chunk_smoke.js"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/evals/scheduler_chunk_smoke.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/000-scheduler_chunk_smoke.js"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "elapsedMs": 2507.108666,
+            "stdout": "{\"status\":\"CANONICAL_PROGRAM_EMITTED\",\"source\":\"/Users/ilyagulya/Projects/My/bend/evals/scheduler_chunk_smoke.bend\",\"output\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/000-scheduler_chunk_smoke.js\",\"events\":6665,\"bytes\":5665439}\n",
+            "stderr": "(node:54891) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\nHEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":1007779840,\"peakFootprintBytes\":1026157552,\"elapsedMs\":2480,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"--experimental-strip-types\",\"/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs\",\"/Users/ilyagulya/Projects/My/bend/evals/scheduler_chunk_smoke.bend\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/000-scheduler_chunk_smoke.js\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793350177223-8b9ee287fc011826.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 1007779840,
+              "peakFootprintBytes": 1026157552,
+              "elapsedMs": 2480,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+                "--experimental-strip-types",
+                "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+                "/Users/ilyagulya/Projects/My/bend/evals/scheduler_chunk_smoke.bend",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/000-scheduler_chunk_smoke.js"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793350177223-8b9ee287fc011826.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          },
+          "consumer": {
+            "label": "run js evals/scheduler_chunk_smoke.bend",
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--max-old-space-size=3072",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/000-scheduler_chunk_smoke.js"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--max-old-space-size=3072",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/000-scheduler_chunk_smoke.js"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "outputMatches": true,
+            "elapsedMs": 117.67749999999796,
+            "stdout": "4294967295\n37\n0\n4294967295\n1\n31\n4294967295\n32\n32\n4294967295\n48\n4294967295\n72\n2\n1\n",
+            "stderr": "HEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":79151104,\"peakFootprintBytes\":48711960,\"elapsedMs\":87,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"--max-old-space-size=3072\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/000-scheduler_chunk_smoke.js\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793350179746-1f6b7c703a5f398b.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 79151104,
+              "peakFootprintBytes": 48711960,
+              "elapsedMs": 87,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+                "--max-old-space-size=3072",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/000-scheduler_chunk_smoke.js"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793350179746-1f6b7c703a5f398b.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          }
+        },
+        "passed": true,
+        "outputSha256": "ed3952839d66ff91a8ce48ac4449a05f301a6ee2c256faa0f210209558bdbef4",
+        "outputBytes": 5665439,
+        "inputs": [
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/evals/scheduler_chunk_smoke.bend",
+            "sha256": "21986a939adccc86c6580c446242be9feb95703c6eeb820ef939d961f2247140"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/base.bend",
+            "sha256": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_ir.bend",
+            "sha256": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/ast.bend",
+            "sha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/checker_core_steps_v1.bend",
+            "sha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_arena.bend",
+            "sha256": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/scope_lookup.bend",
+            "sha256": "e75dc874de6026e2104a7545a19f42fd6995aefecbb1d315c6ae3e097697e590"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/index_lookup.bend",
+            "sha256": "7b7b45946be711d0ba384e15f6823fded5ff97d6a526a6fb74a0448c13d61f84"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/path.bend",
+            "sha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/loaded_module.bend",
+            "sha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checked_frontend.bend",
+            "sha256": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/print.js",
+            "sha256": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/write.js",
+            "sha256": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/print_err.js",
+            "sha256": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/get_env.js",
+            "sha256": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/args.js",
+            "sha256": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/process_run.js",
+            "sha256": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/random_u32.js",
+            "sha256": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/spawn.js",
+            "sha256": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/sleep.js",
+            "sha256": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/now.js",
+            "sha256": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/thread_count.js",
+            "sha256": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/chan.js",
+            "sha256": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_open.js",
+            "sha256": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_read.js",
+            "sha256": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_size.js",
+            "sha256": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_write.js",
+            "sha256": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_close.js",
+            "sha256": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_listen.js",
+            "sha256": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_accept.js",
+            "sha256": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_connect.js",
+            "sha256": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_send.js",
+            "sha256": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_recv.js",
+            "sha256": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_bind.js",
+            "sha256": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_send_to.js",
+            "sha256": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_recv_from.js",
+            "sha256": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/socket_close.js",
+            "sha256": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/listener_close.js",
+            "sha256": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_open.js",
+            "sha256": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_frame.js",
+            "sha256": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_set_title.js",
+            "sha256": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_grab.js",
+            "sha256": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_close.js",
+            "sha256": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_open.js",
+            "sha256": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_write.js",
+            "sha256": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_close.js",
+            "sha256": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62"
+          }
+        ],
+        "observed": "4294967295\n37\n0\n4294967295\n1\n31\n4294967295\n32\n32\n4294967295\n48\n4294967295\n72\n2\n1\n"
+      },
+      {
+        "index": 1,
+        "source": "evals/checker_affinity_step_smoke.bend",
+        "absoluteSource": "/Users/ilyagulya/Projects/My/bend/evals/checker_affinity_step_smoke.bend",
+        "target": "c",
+        "sourceSha256": "1ee933e27d7613e660b6654d2324ea378f7bd399151a40e65cab1c85ee41f554",
+        "expected": "checker-application-single-use-ok\nchecker-application-affine-duplicate-rejected\nchecker-cross-namespace-marker-unknown\nchecker-canonical-self-ok\n",
+        "stages": {
+          "emit": {
+            "label": "emit c evals/checker_affinity_step_smoke.bend",
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/evals/checker_affinity_step_smoke.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/001-checker_affinity_step_smoke.c"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/evals/checker_affinity_step_smoke.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/001-checker_affinity_step_smoke.c"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "elapsedMs": 14227.687708999998,
+            "stdout": "{\"status\":\"CANONICAL_PROGRAM_EMITTED\",\"source\":\"/Users/ilyagulya/Projects/My/bend/evals/checker_affinity_step_smoke.bend\",\"output\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/001-checker_affinity_step_smoke.c\",\"events\":6665,\"bytes\":15004704}\n",
+            "stderr": "(node:55434) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\nHEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":2208989184,\"peakFootprintBytes\":2294480896,\"elapsedMs\":14205,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"--experimental-strip-types\",\"/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs\",\"/Users/ilyagulya/Projects/My/bend/evals/checker_affinity_step_smoke.bend\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/001-checker_affinity_step_smoke.c\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793350179862-9f2fc625e5b784f7.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 2208989184,
+              "peakFootprintBytes": 2294480896,
+              "elapsedMs": 14205,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+                "--experimental-strip-types",
+                "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+                "/Users/ilyagulya/Projects/My/bend/evals/checker_affinity_step_smoke.bend",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/001-checker_affinity_step_smoke.c"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793350179862-9f2fc625e5b784f7.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          },
+          "clang": {
+            "label": "clang evals/checker_affinity_step_smoke.bend",
+            "command": [
+              "/usr/bin/clang",
+              "-std=c11",
+              "-O1",
+              "-pthread",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/001-checker_affinity_step_smoke.c",
+              "-lm",
+              "-o",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/001-checker_affinity_step_smoke.c.exe"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/usr/bin/clang",
+              "-std=c11",
+              "-O1",
+              "-pthread",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/001-checker_affinity_step_smoke.c",
+              "-lm",
+              "-o",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/001-checker_affinity_step_smoke.c.exe"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "elapsedMs": 28996.75487499999,
+            "stdout": "",
+            "stderr": "HEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":2653601792,\"peakFootprintBytes\":2026408480,\"elapsedMs\":28969,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/usr/bin/clang\",\"-std=c11\",\"-O1\",\"-pthread\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/001-checker_affinity_step_smoke.c\",\"-lm\",\"-o\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/001-checker_affinity_step_smoke.c.exe\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793350194117-edc9b8b01914378a.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 2653601792,
+              "peakFootprintBytes": 2026408480,
+              "elapsedMs": 28969,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/usr/bin/clang",
+                "-std=c11",
+                "-O1",
+                "-pthread",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/001-checker_affinity_step_smoke.c",
+                "-lm",
+                "-o",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/001-checker_affinity_step_smoke.c.exe"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793350194117-edc9b8b01914378a.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          },
+          "consumer": {
+            "label": "run c evals/checker_affinity_step_smoke.bend",
+            "command": [
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/001-checker_affinity_step_smoke.c.exe"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/001-checker_affinity_step_smoke.c.exe"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "outputMatches": true,
+            "elapsedMs": 44.22950000000128,
+            "stdout": "checker-application-single-use-ok\nchecker-application-affine-duplicate-rejected\nchecker-cross-namespace-marker-unknown\nchecker-canonical-self-ok\n",
+            "stderr": "HEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":770048,\"peakFootprintBytes\":311440,\"elapsedMs\":14,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/001-checker_affinity_step_smoke.c.exe\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793350223123-5dcb0cf633d4dca5.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 770048,
+              "peakFootprintBytes": 311440,
+              "elapsedMs": 14,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/001-checker_affinity_step_smoke.c.exe"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793350223123-5dcb0cf633d4dca5.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          }
+        },
+        "passed": true,
+        "outputSha256": "3917b3636bade785065a9bf65f8cb5b3b979ce47b35b2e7b4815f49f3b20fe27",
+        "outputBytes": 15004704,
+        "inputs": [
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/evals/checker_affinity_step_smoke.bend",
+            "sha256": "1ee933e27d7613e660b6654d2324ea378f7bd399151a40e65cab1c85ee41f554"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/base.bend",
+            "sha256": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/ast.bend",
+            "sha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/loaded_module.bend",
+            "sha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checked_frontend.bend",
+            "sha256": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_arena.bend",
+            "sha256": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/scope_lookup.bend",
+            "sha256": "e75dc874de6026e2104a7545a19f42fd6995aefecbb1d315c6ae3e097697e590"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_ir.bend",
+            "sha256": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/index_lookup.bend",
+            "sha256": "7b7b45946be711d0ba384e15f6823fded5ff97d6a526a6fb74a0448c13d61f84"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/checker_core_steps_v1.bend",
+            "sha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/path.bend",
+            "sha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/print.c",
+            "sha256": "58657b7351daee89121e1df2856f102743c9db7640257e50c6009a0f1080b00e"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/write.c",
+            "sha256": "8807a5f655db452c1d846354560c26fe1e94289e5dc0be231d0b71ecc876d02f"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/print_err.c",
+            "sha256": "f84aa11c8d0d6af6fa2fee28411f95714d6744ad97156990e43e55c292c9c6fb"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/get_env.c",
+            "sha256": "b4903e94681340f9e02187457fabe9461c1b4e43646b7e1573f5d21e954e3a34"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/args.c",
+            "sha256": "7717332d0b8c8ba28d6dbe60b62a23dce99ea6828ada7d1f9b664f4dc388e84e"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/process_run.c",
+            "sha256": "554cfbdf9a6de163f00fc1b23dc8f3df10821cfce336caa1cb5db439b8a55e1f"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/random_u32.c",
+            "sha256": "75429b2b42e00562177fe33a5e18d2730478847f58c4038b048e78131e1b8c0a"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/spawn.c",
+            "sha256": "05e11ae3f1461d9c72440af3b1786c076b418d2faff45639ac25ba464ee73cd5"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/sleep.c",
+            "sha256": "1dde3701026517d5272d2ff5344d3a8643bec264dbad9f266fdae1c4aaf7601c"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/now.c",
+            "sha256": "fc4c1d87a4fb2ace7d5b6c57b434cc3d953a15bdf213020912df6c17aa2352d6"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/thread_count.c",
+            "sha256": "d4889ed7757dccce03729c9568b88188128f2c1576166a3dc184a8707ed44568"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/chan.c",
+            "sha256": "af09b2749741bcc54f56c8f81803073818a165d4cad4c817708e359d677b2a52"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_open.c",
+            "sha256": "b987bcb0f9a89d769714ddf8cbecca211c4392e4098da19b411d09f5c088d360"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_read.c",
+            "sha256": "ab577225fa98a034c09d7eb6326b74808756dc6203b0e2599a459876382f090d"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_size.c",
+            "sha256": "ed0d74fd6b9f14ea471bfe5dd80ecbb2c5abb6a8406519fb2c7e1a1acf3dd5af"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_write.c",
+            "sha256": "da810ad9aa76ad1431622292529fa3edebabc4b6a7ee20ae833097b71bb595e5"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_close.c",
+            "sha256": "033da9beb0b484fbc8784044193bf69004f858f6ad86e0c31b4beb89df1349ca"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_listen.c",
+            "sha256": "efc7528de96abd9f62f299833c1ac7b0e86528292c746b114d2684b5bac52899"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_accept.c",
+            "sha256": "bf7ca1685ed388ce97827ea8379881fbdf5359c7c663ad03eeb8da34bd8584ef"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_connect.c",
+            "sha256": "8d17c097138709d71e9d9e1fbc4255007c5e80c93ee384c4a3510b6ac8d10da3"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_send.c",
+            "sha256": "993cc8ee5b39fd54a4aeace102602ecf2841ce1f402fe6b2407ebaca837383f9"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_recv.c",
+            "sha256": "249c8789cd2f541ad00068882de16a00870c2f81a8168b0ac7a59db1e3cb0c6f"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_bind.c",
+            "sha256": "a1be1bc5c03d430fc6eb43982651073e144872956fadaee98c3700be59352ee3"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_send_to.c",
+            "sha256": "b3a87e56958d8071a368da2edb4748e9496b3eed58b93d6cb4f8af398dd1011a"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_recv_from.c",
+            "sha256": "1ce914be6cd6153732258f06343e5bcf9765a7fac7e3c3f0462facba7060e067"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/socket_close.c",
+            "sha256": "abea115d2928d4942a9d89898d2022c0f1b19c52db48d0b060c2356d261bfa77"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/listener_close.c",
+            "sha256": "11f6bac6342a37e97b9656e96bdca7d052ed0a7a0cab3b05ea87657020cfb7a2"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/window.c",
+            "sha256": "bf8d5779775ba9566d4bbeb8706a9ec993efb724dae7af8a76c38501ab4092c2"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio.c",
+            "sha256": "f0fac2bee02918b4958ad1e7508945824fcd98ce9a2e7ede657304c4f8905b85"
+          }
+        ],
+        "executableSha256": "c3a5805982c86df1bdae86aa81ca8647c23d930d9e179eb9b80491023f6937f1",
+        "executableBytes": 4402728,
+        "observed": "checker-application-single-use-ok\nchecker-application-affine-duplicate-rejected\nchecker-cross-namespace-marker-unknown\nchecker-canonical-self-ok\n"
+      },
+      {
+        "index": 1,
+        "source": "evals/checker_affinity_step_smoke.bend",
+        "absoluteSource": "/Users/ilyagulya/Projects/My/bend/evals/checker_affinity_step_smoke.bend",
+        "target": "js",
+        "sourceSha256": "1ee933e27d7613e660b6654d2324ea378f7bd399151a40e65cab1c85ee41f554",
+        "expected": "checker-application-single-use-ok\nchecker-application-affine-duplicate-rejected\nchecker-cross-namespace-marker-unknown\nchecker-canonical-self-ok\n",
+        "stages": {
+          "emit": {
+            "label": "emit js evals/checker_affinity_step_smoke.bend",
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/evals/checker_affinity_step_smoke.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/001-checker_affinity_step_smoke.js"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/evals/checker_affinity_step_smoke.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/001-checker_affinity_step_smoke.js"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "elapsedMs": 2926.725040999998,
+            "stdout": "{\"status\":\"CANONICAL_PROGRAM_EMITTED\",\"source\":\"/Users/ilyagulya/Projects/My/bend/evals/checker_affinity_step_smoke.bend\",\"output\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/001-checker_affinity_step_smoke.js\",\"events\":6665,\"bytes\":5663756}\n",
+            "stderr": "(node:64632) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\nHEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":1030946816,\"peakFootprintBytes\":1046572568,\"elapsedMs\":2896,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"--experimental-strip-types\",\"/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs\",\"/Users/ilyagulya/Projects/My/bend/evals/checker_affinity_step_smoke.bend\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/001-checker_affinity_step_smoke.js\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793350223164-c504b465560ebcb3.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 1030946816,
+              "peakFootprintBytes": 1046572568,
+              "elapsedMs": 2896,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+                "--experimental-strip-types",
+                "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+                "/Users/ilyagulya/Projects/My/bend/evals/checker_affinity_step_smoke.bend",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/001-checker_affinity_step_smoke.js"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793350223164-c504b465560ebcb3.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          },
+          "consumer": {
+            "label": "run js evals/checker_affinity_step_smoke.bend",
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--max-old-space-size=3072",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/001-checker_affinity_step_smoke.js"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--max-old-space-size=3072",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/001-checker_affinity_step_smoke.js"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "outputMatches": true,
+            "elapsedMs": 199.10050000000047,
+            "stdout": "checker-application-single-use-ok\nchecker-application-affine-duplicate-rejected\nchecker-cross-namespace-marker-unknown\nchecker-canonical-self-ok\n",
+            "stderr": "HEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":85901312,\"peakFootprintBytes\":55692456,\"elapsedMs\":168,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"--max-old-space-size=3072\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/001-checker_affinity_step_smoke.js\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793350226121-8053a1afb720edcb.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 85901312,
+              "peakFootprintBytes": 55692456,
+              "elapsedMs": 168,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+                "--max-old-space-size=3072",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-xAdiH1/001-checker_affinity_step_smoke.js"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793350226121-8053a1afb720edcb.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          }
+        },
+        "passed": true,
+        "outputSha256": "4836b441c91c58ed461e739404f8a212c73852ffe872e61fd4cded59995d1745",
+        "outputBytes": 5663756,
+        "inputs": [
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/evals/checker_affinity_step_smoke.bend",
+            "sha256": "1ee933e27d7613e660b6654d2324ea378f7bd399151a40e65cab1c85ee41f554"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/base.bend",
+            "sha256": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/ast.bend",
+            "sha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/loaded_module.bend",
+            "sha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checked_frontend.bend",
+            "sha256": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_arena.bend",
+            "sha256": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/scope_lookup.bend",
+            "sha256": "e75dc874de6026e2104a7545a19f42fd6995aefecbb1d315c6ae3e097697e590"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_ir.bend",
+            "sha256": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/index_lookup.bend",
+            "sha256": "7b7b45946be711d0ba384e15f6823fded5ff97d6a526a6fb74a0448c13d61f84"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/checker_core_steps_v1.bend",
+            "sha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/path.bend",
+            "sha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/print.js",
+            "sha256": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/write.js",
+            "sha256": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/print_err.js",
+            "sha256": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/get_env.js",
+            "sha256": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/args.js",
+            "sha256": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/process_run.js",
+            "sha256": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/random_u32.js",
+            "sha256": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/spawn.js",
+            "sha256": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/sleep.js",
+            "sha256": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/now.js",
+            "sha256": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/thread_count.js",
+            "sha256": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/chan.js",
+            "sha256": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_open.js",
+            "sha256": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_read.js",
+            "sha256": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_size.js",
+            "sha256": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_write.js",
+            "sha256": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_close.js",
+            "sha256": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_listen.js",
+            "sha256": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_accept.js",
+            "sha256": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_connect.js",
+            "sha256": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_send.js",
+            "sha256": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_recv.js",
+            "sha256": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_bind.js",
+            "sha256": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_send_to.js",
+            "sha256": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_recv_from.js",
+            "sha256": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/socket_close.js",
+            "sha256": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/listener_close.js",
+            "sha256": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_open.js",
+            "sha256": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_frame.js",
+            "sha256": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_set_title.js",
+            "sha256": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_grab.js",
+            "sha256": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_close.js",
+            "sha256": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_open.js",
+            "sha256": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_write.js",
+            "sha256": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_close.js",
+            "sha256": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62"
+          }
+        ],
+        "observed": "checker-application-single-use-ok\nchecker-application-affine-duplicate-rejected\nchecker-cross-namespace-marker-unknown\nchecker-canonical-self-ok\n"
+      }
+    ],
+    "startedAt": "2026-10-30T08:48:52.088Z",
+    "generatedInputs": {
+      "checkpoints/checker_core_steps_v1.bend": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+      "checkpoints/checker_core_steps_component_v1.bend": "ca15a467e804983f454a63e9db64a38c1077a2d49104d488556d0609557521cf",
+      "checkpoints/checker_core_steps_driver_v1.bend": "0a21e90c6eca75d51684c5c75fd52fae28a86d7f369052d7943a7101f9a1bfc8",
+      "checkpoints/emitter_steps_v1.bend": "7f7c8d2e57a3fcd3925b4286a8300668ae91b7e11a26317cea6da2df5c9ea425"
+    },
+    "finishedAt": "2026-10-30T08:50:26.338Z"
+  },
+  "evidence": {
+    "fullRoot": "evals/receipts/producer2039g31_core_fixedpoint.json",
+    "measurements": "evals/receipts/producer2039g31_throughput.json",
+    "failedQualification": "evals/receipts/producer2039g31_qualification_failure.json"
+  },
+  "temporaryTraceProbeRemoved": true
+}

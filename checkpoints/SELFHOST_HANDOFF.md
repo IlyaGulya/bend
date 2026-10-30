@@ -4,7 +4,7 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
-### Отклонённый G31: full fixedpoint PASS; C consumer emission deadline FAIL
+### Отклонённый G31: fixedpoint PASS, C emission deadline FAIL; R12 восстановлен
 
 Пользователь оспорил порог +5% и согласовал повторные измерения. Этот порог
 был эвристикой агента, не требованием пользователя и не измеренным noise floor.
@@ -51,8 +51,14 @@ JS RSS −2.98%, footprint +0.72%. Общий выигрыш памяти не �
 G31 отклонён; JS matrix и последующие native/library/admission/host gates
 после обязательного отказа не запускались. Причина timeout не установлена;
 не заявлять её как регрессию относительно R12 без отдельного сравнения.
-R12 остаётся принятым; восстановление producer/composer и generated steps
-следует выполнить после durable rejected checkpoint.
+Rejected checkpoint **`5a6390ac`** сохранил generated inputs и все outcomes.
+R12 восстановлен из `e59ca0d3`: оба TS producer/composer и три regenerated
+checker/template/emitter step sources совпали с принятыми байтами.
+Accepted native/image hashes не изменились. Четыре canonical C/JS restoration
+executions scheduler/affinity — PASS; это не новая full qualification.
+Temporary trace probe удалён без запуска и без PASS claim.
+Для следующей версии timeout этого реального consumer остаётся открытым:
+не удалять fixture и не повышать guard ради зелёной matrix.
 В emitted C у R12 горячий RunState уже возвращается тремя регистрами,
 а emitted JS создаёт объект. Поэтому source-перепись устраняет аллокацию
 лишь в JS; точная причина native timing loss ещё не атрибутирована.
@@ -67,7 +73,8 @@ Evidence: `evals/receipts/producer2039g31_reconsideration_plan.json`,
 `evals/receipts/producer2039g31_core_fixedpoint.json`,
 `evals/receipts/producer2039g31_throughput.json`,
 `evals/receipts/producer2039g31_emitted_suites.json`,
-`evals/receipts/producer2039g31_qualification_failure.json`.
+`evals/receipts/producer2039g31_qualification_failure.json`,
+`evals/receipts/producer2039g31_restored_r12.json`.
 Исходный failed receipt: `checkpoints/local2039g31-full/receipt.json`.
 
 ### Отклонённый G30: isolated scheduler transport; R12 восстановлен

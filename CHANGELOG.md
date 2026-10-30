@@ -21,12 +21,16 @@ latest one; the GitHub release carries the same notes.
   `scheduler_chunk_smoke` C emission exceeds the unchanged 600-second guard.
   Full qualification fails; G31 is rejected independently of the performance
   tradeoff. Later consumer gates are not run, and R12 remains accepted.
+  R12 producer/composer and three regenerated step sources match accepted
+  bytes; native/image hashes are unchanged. Four canonical C/JS scheduler
+  and affinity restoration executions pass; this is not a new full qualification.
   `evals/receipts/producer2039g31_repeated_screen.json`,
   `evals/receipts/producer2039g31_paired_diagnostics.json`,
   `evals/receipts/producer2039g31_core_fixedpoint.json`,
   `evals/receipts/producer2039g31_throughput.json`,
   `evals/receipts/producer2039g31_emitted_suites.json`,
-  `evals/receipts/producer2039g31_qualification_failure.json`.
+  `evals/receipts/producer2039g31_qualification_failure.json`,
+  `evals/receipts/producer2039g31_restored_r12.json`.
 
 - G30's isolated fuel-threaded scheduler transport is rejected at its mandatory
   balanced actual-selfhost screen. Checker time falls 7.97%, but peak RSS rises
