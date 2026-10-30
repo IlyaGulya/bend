@@ -578,3 +578,7 @@ memoizer нет. Удлинённое удержание map через exports/
 **E10 завершён: G38 rejected.** Один удалённый logical build не является
 performance/memory acceptance.
 Primary evidence: [original qualification, exact map probes and frozen inputs](local2039g38e10-outcome/outcome.json).
+Rejected source/frozen checkpoint: `7bd06515`. После него R12 восстановлен:
+21 source check, три regenerated-source hashes, два accepted artifacts
+и шесть actual canonical C/JS executions.
+[Restoration proof](local2039g38e10-restored/restored.json).

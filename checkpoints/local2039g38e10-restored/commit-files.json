@@ -1,0 +1,11 @@
+[
+  "bend2/selfhost/js_backend.bend",
+  "checkpoints/checker-core-owned-source-v1.json",
+  "checkpoints/checker-core-steps-v1.json",
+  "checkpoints/checker_core_steps_v1.bend",
+  "checkpoints/emitter-steps-v1.json",
+  "checkpoints/emitter_steps_v1.bend",
+  "checkpoints/local2039g38e10-restored/commit-files.json",
+  "checkpoints/local2039g38e10-restored/restored.json",
+  "checkpoints/template_steps_v1.bend"
+]

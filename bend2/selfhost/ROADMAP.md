@@ -19,6 +19,9 @@ exclusions/patches. `compile_book` exceeds the unchanged 8-GiB RSS cap.
 No native executable, bootstrap/fixedpoint, original paired series or late
 consumer qualification exists. **Rejected**, not an accepted acceleration:
 `checkpoints/local2039g38e10-outcome/outcome.json`.
+Rejected source/frozen inputs: `7bd06515`; verified R12 restoration:
+`checkpoints/local2039g38e10-restored/restored.json` (21 source checks,
+three regenerated sources, both artifacts and six canonical C/JS executions).
 
 ## G37 / E06: immutable index handoff rejected at native codegen
 

@@ -14,6 +14,10 @@ latest one; the GitHub release carries the same notes.
   reaches 8,605,351,936-byte RSS / 8,700,697,536-byte footprint and is stopped
   after 25,405 ms. No native executable, fixedpoint or paired throughput exists.
   `checkpoints/local2039g38e10-outcome/outcome.json`.
+  Rejected source/frozen inputs: `7bd06515`. R12 restoration verifies all
+  21 source checks, three regenerated-source hashes, both accepted artifacts
+  and six actual canonical C/JS consumers:
+  `checkpoints/local2039g38e10-restored/restored.json`.
 - G37 / E06's immutable descriptor-index handoff is rejected by the original
   native-codegen RSS cap. Actual own-frontend C/JS source, admission and export
   coverage completes 16 rows / 32 emissions / 14 executions, with the same

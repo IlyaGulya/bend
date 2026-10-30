@@ -19,6 +19,11 @@ Native artifact, bootstrap/fixedpoint, paired series и late consumers
 отсутствуют. Source/frozen inputs фиксируются перед восстановлением R12
 и отдельным E12. `checkpoints/local2039g38e10-outcome/outcome.json`.
 
+Rejected source/frozen checkpoint: **`7bd06515`**. R12 восстановлен с
+21 source checks, тремя regenerated-source hashes, обоими accepted artifacts
+и шестью actual canonical C/JS executions:
+`checkpoints/local2039g38e10-restored/restored.json`.
+
 ### G37 / E06 отклонён: exact context reuse PASS, native RSS cap FAIL
 
 Authored source: `303cc470`. В actual own frontend выполнены 16 C/JS
