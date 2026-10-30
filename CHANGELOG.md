@@ -13,9 +13,14 @@ latest one; the GitHub release carries the same notes.
   or later consumer gates are claimed. The R12 census records 19,258,235
   metadata publications and 158 pool growth branches with unchanged output.
   Six canonical C/JS growth/rewind/name/generation executions pass; the new
-  regression and matrix registration remain. R12 stays accepted.
+  regression and matrix registration remain. Rejected source and frozen inputs
+  are committed as `43c77525`. R12 is restored: 21 baseline checks, all three
+  regenerated step sources and both accepted artifacts match. Six canonical
+  C/JS executions and two actual R12 compiler consumers pass after restoration.
+  This is not a new R12 fixedpoint or full qualification.
   `evals/receipts/producer2039g34_growth_census.json`,
-  `evals/receipts/producer2039g34_qualification.json`.
+  `evals/receipts/producer2039g34_qualification.json`,
+  `evals/receipts/producer2039g34_restored_r12.json`.
 - G32's shared BIR private aggregate workers and multi-value transport are
   rejected by the mandatory paired performance gate. Public ABI stayed boxed.
   Ten executable C/JS transport probes pass; the reachable producer/consumer

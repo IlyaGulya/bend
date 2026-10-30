@@ -29,12 +29,18 @@ footprint **5 304 211 552 B**. Native stage0 выпустил stage1:
 footprint **4 681 375 096 B**. Stage2-файла нет; fixedpoint **НЕ доказан**.
 Парные throughput и дальнейшие consumer gates после этого НЕ запускались.
 Причина timeout не установлена; не приписывать её metadata/GC без измерения.
-Сохранить rejected source/inputs/evidence коммитом, затем восстановить R12.
+Rejected source/inputs/evidence сохранены коммитом **43c77525**.
+**R12 восстановлен**: 21 baseline checks, три regenerated step sources и
+accepted native/JS image совпали по SHA-256. После восстановления прошли
+**6 canonical C/JS executions + 2 actual R12 selfhost C/JS consumers**.
+Регрессия и её matrix registration сохранены. Это restoration proof, не
+новая полная квалификация R12 и не новый byte fixedpoint.
 План/source pins/census/failure:
 `evals/receipts/producer2039g34_plan.json`,
 `evals/receipts/producer2039g34_source.json`,
 `evals/receipts/producer2039g34_growth_census.json`,
-`evals/receipts/producer2039g34_qualification.json`.
+`evals/receipts/producer2039g34_qualification.json`,
+`evals/receipts/producer2039g34_restored_r12.json`.
 **G34 отклонён; baseline остаётся R12**. Guards прежние: 8 GiB RSS/footprint,
 600 s на heavy step, ABI13, quantum64, parser fuel8M; нет порога +5%.
 

@@ -1,0 +1,1797 @@
+{
+  "schemaVersion": 1,
+  "status": "G34_REJECTED_R12_RESTORED_AUTHENTICATED_C_JS_PASS",
+  "compilerAcceptanceChanged": false,
+  "newFixedpointClaim": false,
+  "acceptedCompilerUnchanged": true,
+  "rejectedCheckpoint": "43c77525",
+  "rejectedSourceSha256": "53ca304bcb1ac1ffd89ac77442c414af503d42bc0647bcf71ade8574e942fd6a",
+  "restoredFrom": "852b4387",
+  "restoreCommand": [
+    "/usr/bin/git",
+    "restore",
+    "--source=852b4387",
+    "--",
+    "bend2/selfhost/checker_arena.bend"
+  ],
+  "baselineSourceChecks": [
+    {
+      "path": "bend2/base.bend",
+      "sha256": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+      "actualSha256": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+      "matches": true
+    },
+    {
+      "path": "bend2/comp.ts",
+      "sha256": "880a9b3b86f273852a39fc664f8c3d7b71e3860b6d365e4321949fc812b6e7cc",
+      "actualSha256": "880a9b3b86f273852a39fc664f8c3d7b71e3860b6d365e4321949fc812b6e7cc",
+      "matches": true
+    },
+    {
+      "path": "bend2/selfhost/backend_ir.bend",
+      "sha256": "c0286db6b192bf5cc917774b7ea5e393d4416263432eb130fb8393b1dffc1cb3",
+      "actualSha256": "c0286db6b192bf5cc917774b7ea5e393d4416263432eb130fb8393b1dffc1cb3",
+      "matches": true
+    },
+    {
+      "path": "bend2/selfhost/lower_catalog.bend",
+      "sha256": "e322065c5ccb0a15f2ab81fd9e6dd689fe8b88ad50535e4f70f503e796164f01",
+      "actualSha256": "e322065c5ccb0a15f2ab81fd9e6dd689fe8b88ad50535e4f70f503e796164f01",
+      "matches": true
+    },
+    {
+      "path": "bend2/selfhost/backend_lower.bend",
+      "sha256": "d5217f4d2117ff9527474847b53caaa6d881570d6fe4a2c24e0af668cfc75b7f",
+      "actualSha256": "d5217f4d2117ff9527474847b53caaa6d881570d6fe4a2c24e0af668cfc75b7f",
+      "matches": true
+    },
+    {
+      "path": "bend2/selfhost/c_backend.bend",
+      "sha256": "71ae3cf1a6d44332d218be095a01fb59bb1b3bdbb606b8ca4e16ead6ca6cd576",
+      "actualSha256": "71ae3cf1a6d44332d218be095a01fb59bb1b3bdbb606b8ca4e16ead6ca6cd576",
+      "matches": true
+    },
+    {
+      "path": "bend2/selfhost/c_backend_physical.bend",
+      "sha256": "b6b3b3b2e0ced250b5b5fdbf4c699cfe1e8867900e3bd7b91ee82bdee3ebc25f",
+      "actualSha256": "b6b3b3b2e0ced250b5b5fdbf4c699cfe1e8867900e3bd7b91ee82bdee3ebc25f",
+      "matches": true
+    },
+    {
+      "path": "bend2/selfhost/c_backend_sharing.bend",
+      "sha256": "05adf4ac68b0658425f7fce430709f67bd29c3f1f8a43727412661084c4dbe2c",
+      "actualSha256": "05adf4ac68b0658425f7fce430709f67bd29c3f1f8a43727412661084c4dbe2c",
+      "matches": true
+    },
+    {
+      "path": "bend2/selfhost/js_backend.bend",
+      "sha256": "9ad0e83cafd243745d7d1b256d3e053258a801350fc5d0e16dd65fec89a35aa0",
+      "actualSha256": "9ad0e83cafd243745d7d1b256d3e053258a801350fc5d0e16dd65fec89a35aa0",
+      "matches": true
+    },
+    {
+      "path": "bend2/selfhost/checker_arena.bend",
+      "sha256": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf",
+      "actualSha256": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf",
+      "matches": true
+    },
+    {
+      "path": "bend2/selfhost/c_runtime.c",
+      "sha256": "6935fa83c1b20b7f8982f04ad54c4e4dae0b9b0ea66fd00f32d169a1d03ac2bf",
+      "actualSha256": "6935fa83c1b20b7f8982f04ad54c4e4dae0b9b0ea66fd00f32d169a1d03ac2bf",
+      "matches": true
+    },
+    {
+      "path": "evals/c_backend_runtime.bend",
+      "sha256": "e8acf220c10f42a7cd82f99948518f0ea2424e073ec5b90419e02e6b64bb2b5a",
+      "actualSha256": "e8acf220c10f42a7cd82f99948518f0ea2424e073ec5b90419e02e6b64bb2b5a",
+      "matches": true
+    },
+    {
+      "path": "evals/gen_c_runtime.ts",
+      "sha256": "e7df0f20694bd365b66b3faac6d26415c02889fa8aad6c31aa71ca5746158246",
+      "actualSha256": "e7df0f20694bd365b66b3faac6d26415c02889fa8aad6c31aa71ca5746158246",
+      "matches": true
+    },
+    {
+      "path": "tests/run/compiler_rows.bend",
+      "expectedAbsent": true,
+      "matches": true
+    },
+    {
+      "path": "tests/run/compiler_rows_nodes.bend",
+      "expectedAbsent": true,
+      "matches": true
+    },
+    {
+      "path": "tests/compile/compiler_rows_shared.bend",
+      "expectedAbsent": true,
+      "matches": true
+    },
+    {
+      "path": "tests/compile/compiler_rows_drop.bend",
+      "expectedAbsent": true,
+      "matches": true
+    },
+    {
+      "path": "tests/compile/compiler_rows_drop.c",
+      "expectedAbsent": true,
+      "matches": true
+    },
+    {
+      "path": "tests/compile/compiler_rows_drop.js",
+      "expectedAbsent": true,
+      "matches": true
+    },
+    {
+      "path": "checkpoints/checker-core-owned-source-v1.json",
+      "sha256": "3ecb7f9d98a61d58b383e489bbc6195ad0b56c053baebaa3184533d490c29425",
+      "actualSha256": "3ecb7f9d98a61d58b383e489bbc6195ad0b56c053baebaa3184533d490c29425",
+      "matches": true
+    },
+    {
+      "path": "checkpoints/checker-core-steps-v1.json",
+      "sha256": "cd973ad57134f08587515330c65e44a9fb864f41470a4edf32e5c8f48fb767d6",
+      "actualSha256": "cd973ad57134f08587515330c65e44a9fb864f41470a4edf32e5c8f48fb767d6",
+      "matches": true
+    }
+  ],
+  "generatedSources": [
+    {
+      "path": "checkpoints/checker_core_steps_v1.bend",
+      "sha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+      "actualSha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+      "matches": true
+    },
+    {
+      "path": "checkpoints/template_steps_v1.bend",
+      "sha256": "b9f4d860de0c58a274e1f23e90558191e23d7ac0de18d1fd452914160b9a5ae5",
+      "actualSha256": "b9f4d860de0c58a274e1f23e90558191e23d7ac0de18d1fd452914160b9a5ae5",
+      "matches": true
+    },
+    {
+      "path": "checkpoints/emitter_steps_v1.bend",
+      "sha256": "7f7c8d2e57a3fcd3925b4286a8300668ae91b7e11a26317cea6da2df5c9ea425",
+      "actualSha256": "7f7c8d2e57a3fcd3925b4286a8300668ae91b7e11a26317cea6da2df5c9ea425",
+      "matches": true
+    }
+  ],
+  "acceptedArtifacts": {
+    "native": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+      "sha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "bytes": 18808824,
+      "matches": true
+    },
+    "image": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+      "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "bytes": 31758507,
+      "matches": true
+    }
+  },
+  "canonical": {
+    "report": {
+      "path": "/private/tmp/bend-g34-e09-restored/source-smoke.json",
+      "sha256": "00cc1f2e976de5f539875cdd02278a535cff2a3962cd9e2c7302c9aff7e5457d",
+      "bytes": 105199
+    },
+    "runtime": {
+      "node": {
+        "command": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "version": "v23.11.0",
+        "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5"
+      },
+      "bun": {
+        "command": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "version": "1.4.3",
+        "sha256": "28c7dd0a06916aba284d570ef44a2d70e9c538eaf2ba58dfe0910525563b3f79"
+      },
+      "clang": {
+        "command": "/usr/bin/clang",
+        "path": "/usr/bin/clang",
+        "version": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+        "sha256": "b8763cf250e607a778bb4603cecb5b90338814d0a3dfcba0d57b1de242f610e9"
+      }
+    },
+    "limits": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 600000
+    },
+    "rows": [
+      {
+        "source": "evals/checker_arena_growth_smoke.bend",
+        "target": "c",
+        "sourceSha256": "43f681dfc85ce5a33cb8efdbfc26560b08f88fab1b61a3f5d22b067611c2ac9a",
+        "expected": "mixed-growth-rewind:1\nreserved:1\n",
+        "observed": "mixed-growth-rewind:1\nreserved:1\n",
+        "passed": true,
+        "stages": {
+          "emit": {
+            "label": "emit c evals/checker_arena_growth_smoke.bend",
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/evals/checker_arena_growth_smoke.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/000-checker_arena_growth_smoke.c"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/evals/checker_arena_growth_smoke.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/000-checker_arena_growth_smoke.c"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "elapsedMs": 516.010875,
+            "stdout": "{\"status\":\"CANONICAL_PROGRAM_EMITTED\",\"source\":\"/Users/ilyagulya/Projects/My/bend/evals/checker_arena_growth_smoke.bend\",\"output\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/000-checker_arena_growth_smoke.c\",\"events\":941,\"bytes\":367445}\n",
+            "stderr": "(node:41689) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\nHEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":257064960,\"peakFootprintBytes\":223743944,\"elapsedMs\":491,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"--experimental-strip-types\",\"/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs\",\"/Users/ilyagulya/Projects/My/bend/evals/checker_arena_growth_smoke.bend\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/000-checker_arena_growth_smoke.c\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793380562151-4c1fb9ab023a852a.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 257064960,
+              "peakFootprintBytes": 223743944,
+              "elapsedMs": 491,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+                "--experimental-strip-types",
+                "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+                "/Users/ilyagulya/Projects/My/bend/evals/checker_arena_growth_smoke.bend",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/000-checker_arena_growth_smoke.c"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793380562151-4c1fb9ab023a852a.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          },
+          "clang": {
+            "label": "clang evals/checker_arena_growth_smoke.bend",
+            "command": [
+              "/usr/bin/clang",
+              "-std=c11",
+              "-O1",
+              "-pthread",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/000-checker_arena_growth_smoke.c",
+              "-lm",
+              "-o",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/000-checker_arena_growth_smoke.c.exe"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/usr/bin/clang",
+              "-std=c11",
+              "-O1",
+              "-pthread",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/000-checker_arena_growth_smoke.c",
+              "-lm",
+              "-o",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/000-checker_arena_growth_smoke.c.exe"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "elapsedMs": 975.58075,
+            "stdout": "",
+            "stderr": "HEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":106823680,\"peakFootprintBytes\":58507912,\"elapsedMs\":953,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/usr/bin/clang\",\"-std=c11\",\"-O1\",\"-pthread\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/000-checker_arena_growth_smoke.c\",\"-lm\",\"-o\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/000-checker_arena_growth_smoke.c.exe\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793380562670-9d872051217314c3.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 106823680,
+              "peakFootprintBytes": 58507912,
+              "elapsedMs": 953,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/usr/bin/clang",
+                "-std=c11",
+                "-O1",
+                "-pthread",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/000-checker_arena_growth_smoke.c",
+                "-lm",
+                "-o",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/000-checker_arena_growth_smoke.c.exe"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793380562670-9d872051217314c3.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          },
+          "consumer": {
+            "label": "run c evals/checker_arena_growth_smoke.bend",
+            "command": [
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/000-checker_arena_growth_smoke.c.exe"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/000-checker_arena_growth_smoke.c.exe"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "outputMatches": true,
+            "elapsedMs": 35.84354200000007,
+            "stdout": "mixed-growth-rewind:1\nreserved:1\n",
+            "stderr": "HEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":770048,\"peakFootprintBytes\":311440,\"elapsedMs\":14,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/000-checker_arena_growth_smoke.c.exe\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793380563645-36c99b188dc1e5b1.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 770048,
+              "peakFootprintBytes": 311440,
+              "elapsedMs": 14,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/000-checker_arena_growth_smoke.c.exe"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793380563645-36c99b188dc1e5b1.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          }
+        }
+      },
+      {
+        "source": "evals/checker_arena_growth_smoke.bend",
+        "target": "js",
+        "sourceSha256": "43f681dfc85ce5a33cb8efdbfc26560b08f88fab1b61a3f5d22b067611c2ac9a",
+        "expected": "mixed-growth-rewind:1\nreserved:1\n",
+        "observed": "mixed-growth-rewind:1\nreserved:1\n",
+        "passed": true,
+        "stages": {
+          "emit": {
+            "label": "emit js evals/checker_arena_growth_smoke.bend",
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/evals/checker_arena_growth_smoke.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/000-checker_arena_growth_smoke.js"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/evals/checker_arena_growth_smoke.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/000-checker_arena_growth_smoke.js"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "elapsedMs": 369.8181669999999,
+            "stdout": "{\"status\":\"CANONICAL_PROGRAM_EMITTED\",\"source\":\"/Users/ilyagulya/Projects/My/bend/evals/checker_arena_growth_smoke.bend\",\"output\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/000-checker_arena_growth_smoke.js\",\"events\":941,\"bytes\":170536}\n",
+            "stderr": "(node:42085) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\nHEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":227147776,\"peakFootprintBytes\":191956920,\"elapsedMs\":347,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"--experimental-strip-types\",\"/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs\",\"/Users/ilyagulya/Projects/My/bend/evals/checker_arena_growth_smoke.bend\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/000-checker_arena_growth_smoke.js\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793380563683-680876c5532cba36.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 227147776,
+              "peakFootprintBytes": 191956920,
+              "elapsedMs": 347,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+                "--experimental-strip-types",
+                "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+                "/Users/ilyagulya/Projects/My/bend/evals/checker_arena_growth_smoke.bend",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/000-checker_arena_growth_smoke.js"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793380563683-680876c5532cba36.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          },
+          "consumer": {
+            "label": "run js evals/checker_arena_growth_smoke.bend",
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--max-old-space-size=3072",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/000-checker_arena_growth_smoke.js"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--max-old-space-size=3072",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/000-checker_arena_growth_smoke.js"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "outputMatches": true,
+            "elapsedMs": 62.54729099999986,
+            "stdout": "mixed-growth-rewind:1\nreserved:1\n",
+            "stderr": "HEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":43220992,\"peakFootprintBytes\":12715640,\"elapsedMs\":40,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"--max-old-space-size=3072\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/000-checker_arena_growth_smoke.js\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793380564055-77dad409235089a8.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 43220992,
+              "peakFootprintBytes": 12715640,
+              "elapsedMs": 40,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+                "--max-old-space-size=3072",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/000-checker_arena_growth_smoke.js"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793380564055-77dad409235089a8.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          }
+        }
+      },
+      {
+        "source": "tests/reg/checker_arena_generation.bend",
+        "target": "c",
+        "sourceSha256": "48a5893061a14038bca6e6f662ad2995522b5c7b24cd9006dd682149b7ad1ea2",
+        "expected": "7\n",
+        "observed": "7\n",
+        "passed": true,
+        "stages": {
+          "emit": {
+            "label": "emit c tests/reg/checker_arena_generation.bend",
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/tests/reg/checker_arena_generation.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/001-checker_arena_generation.c"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/tests/reg/checker_arena_generation.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/001-checker_arena_generation.c"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "elapsedMs": 416.26200000000017,
+            "stdout": "{\"status\":\"CANONICAL_PROGRAM_EMITTED\",\"source\":\"/Users/ilyagulya/Projects/My/bend/tests/reg/checker_arena_generation.bend\",\"output\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/001-checker_arena_generation.c\",\"events\":908,\"bytes\":199709}\n",
+            "stderr": "(node:42159) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\nHEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":246661120,\"peakFootprintBytes\":211044232,\"elapsedMs\":393,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"--experimental-strip-types\",\"/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs\",\"/Users/ilyagulya/Projects/My/bend/tests/reg/checker_arena_generation.bend\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/001-checker_arena_generation.c\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793380564119-ebac28b97a6367a3.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 246661120,
+              "peakFootprintBytes": 211044232,
+              "elapsedMs": 393,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+                "--experimental-strip-types",
+                "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+                "/Users/ilyagulya/Projects/My/bend/tests/reg/checker_arena_generation.bend",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/001-checker_arena_generation.c"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793380564119-ebac28b97a6367a3.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          },
+          "clang": {
+            "label": "clang tests/reg/checker_arena_generation.bend",
+            "command": [
+              "/usr/bin/clang",
+              "-std=c11",
+              "-O1",
+              "-pthread",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/001-checker_arena_generation.c",
+              "-lm",
+              "-o",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/001-checker_arena_generation.c.exe"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/usr/bin/clang",
+              "-std=c11",
+              "-O1",
+              "-pthread",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/001-checker_arena_generation.c",
+              "-lm",
+              "-o",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/001-checker_arena_generation.c.exe"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "elapsedMs": 460.1165420000002,
+            "stdout": "",
+            "stderr": "HEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":86114304,\"peakFootprintBytes\":38224544,\"elapsedMs\":437,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/usr/bin/clang\",\"-std=c11\",\"-O1\",\"-pthread\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/001-checker_arena_generation.c\",\"-lm\",\"-o\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/001-checker_arena_generation.c.exe\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793380564541-9bb5ce56582c4101.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 86114304,
+              "peakFootprintBytes": 38224544,
+              "elapsedMs": 437,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/usr/bin/clang",
+                "-std=c11",
+                "-O1",
+                "-pthread",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/001-checker_arena_generation.c",
+                "-lm",
+                "-o",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/001-checker_arena_generation.c.exe"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793380564541-9bb5ce56582c4101.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          },
+          "consumer": {
+            "label": "run c tests/reg/checker_arena_generation.bend",
+            "command": [
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/001-checker_arena_generation.c.exe"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/001-checker_arena_generation.c.exe"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "outputMatches": true,
+            "elapsedMs": 35.50383300000021,
+            "stdout": "7\n",
+            "stderr": "HEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":147456,\"peakFootprintBytes\":311440,\"elapsedMs\":14,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/001-checker_arena_generation.c.exe\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793380565001-884ba1d40ba32f01.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 147456,
+              "peakFootprintBytes": 311440,
+              "elapsedMs": 14,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/001-checker_arena_generation.c.exe"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793380565001-884ba1d40ba32f01.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          }
+        }
+      },
+      {
+        "source": "tests/reg/checker_arena_generation.bend",
+        "target": "js",
+        "sourceSha256": "48a5893061a14038bca6e6f662ad2995522b5c7b24cd9006dd682149b7ad1ea2",
+        "expected": "7\n",
+        "observed": "7\n",
+        "passed": true,
+        "stages": {
+          "emit": {
+            "label": "emit js tests/reg/checker_arena_generation.bend",
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/tests/reg/checker_arena_generation.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/001-checker_arena_generation.js"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/tests/reg/checker_arena_generation.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/001-checker_arena_generation.js"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "elapsedMs": 339.7297080000003,
+            "stdout": "{\"status\":\"CANONICAL_PROGRAM_EMITTED\",\"source\":\"/Users/ilyagulya/Projects/My/bend/tests/reg/checker_arena_generation.bend\",\"output\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/001-checker_arena_generation.js\",\"events\":908,\"bytes\":81541}\n",
+            "stderr": "(node:42340) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\nHEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":208617472,\"peakFootprintBytes\":172574384,\"elapsedMs\":318,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"--experimental-strip-types\",\"/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs\",\"/Users/ilyagulya/Projects/My/bend/tests/reg/checker_arena_generation.bend\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/001-checker_arena_generation.js\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793380565038-4c8f5d479b5c96a6.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 208617472,
+              "peakFootprintBytes": 172574384,
+              "elapsedMs": 318,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+                "--experimental-strip-types",
+                "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+                "/Users/ilyagulya/Projects/My/bend/tests/reg/checker_arena_generation.bend",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/001-checker_arena_generation.js"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793380565038-4c8f5d479b5c96a6.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          },
+          "consumer": {
+            "label": "run js tests/reg/checker_arena_generation.bend",
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--max-old-space-size=3072",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/001-checker_arena_generation.js"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--max-old-space-size=3072",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/001-checker_arena_generation.js"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "outputMatches": true,
+            "elapsedMs": 63.45491700000002,
+            "stdout": "7\n",
+            "stderr": "HEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":43646976,\"peakFootprintBytes\":12830376,\"elapsedMs\":40,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"--max-old-space-size=3072\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/001-checker_arena_generation.js\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793380565382-bf942d42dec014e1.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 43646976,
+              "peakFootprintBytes": 12830376,
+              "elapsedMs": 40,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+                "--max-old-space-size=3072",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/001-checker_arena_generation.js"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793380565382-bf942d42dec014e1.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          }
+        }
+      },
+      {
+        "source": "tests/reg/checker_arena_names.bend",
+        "target": "c",
+        "sourceSha256": "63fc170fe9ba8f6c5ebd53b516e2ea74b84802d0c1f1bc899d250f90be99873d",
+        "expected": "0\n",
+        "observed": "0\n",
+        "passed": true,
+        "stages": {
+          "emit": {
+            "label": "emit c tests/reg/checker_arena_names.bend",
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/tests/reg/checker_arena_names.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/002-checker_arena_names.c"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/tests/reg/checker_arena_names.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/002-checker_arena_names.c"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "elapsedMs": 501.27295799999956,
+            "stdout": "{\"status\":\"CANONICAL_PROGRAM_EMITTED\",\"source\":\"/Users/ilyagulya/Projects/My/bend/tests/reg/checker_arena_names.bend\",\"output\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/002-checker_arena_names.c\",\"events\":918,\"bytes\":287120}\n",
+            "stderr": "(node:42385) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\nHEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":250167296,\"peakFootprintBytes\":220073520,\"elapsedMs\":477,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"--experimental-strip-types\",\"/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs\",\"/Users/ilyagulya/Projects/My/bend/tests/reg/checker_arena_names.bend\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/002-checker_arena_names.c\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793380565449-1fdbcaef3e48ffc3.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 250167296,
+              "peakFootprintBytes": 220073520,
+              "elapsedMs": 477,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+                "--experimental-strip-types",
+                "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+                "/Users/ilyagulya/Projects/My/bend/tests/reg/checker_arena_names.bend",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/002-checker_arena_names.c"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793380565449-1fdbcaef3e48ffc3.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          },
+          "clang": {
+            "label": "clang tests/reg/checker_arena_names.bend",
+            "command": [
+              "/usr/bin/clang",
+              "-std=c11",
+              "-O1",
+              "-pthread",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/002-checker_arena_names.c",
+              "-lm",
+              "-o",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/002-checker_arena_names.c.exe"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/usr/bin/clang",
+              "-std=c11",
+              "-O1",
+              "-pthread",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/002-checker_arena_names.c",
+              "-lm",
+              "-o",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/002-checker_arena_names.c.exe"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "elapsedMs": 750.6825419999996,
+            "stdout": "",
+            "stderr": "HEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":106397696,\"peakFootprintBytes\":58360480,\"elapsedMs\":728,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/usr/bin/clang\",\"-std=c11\",\"-O1\",\"-pthread\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/002-checker_arena_names.c\",\"-lm\",\"-o\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/002-checker_arena_names.c.exe\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793380565955-20fb577ed902273b.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 106397696,
+              "peakFootprintBytes": 58360480,
+              "elapsedMs": 728,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/usr/bin/clang",
+                "-std=c11",
+                "-O1",
+                "-pthread",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/002-checker_arena_names.c",
+                "-lm",
+                "-o",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/002-checker_arena_names.c.exe"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793380565955-20fb577ed902273b.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          },
+          "consumer": {
+            "label": "run c tests/reg/checker_arena_names.bend",
+            "command": [
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/002-checker_arena_names.c.exe"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/002-checker_arena_names.c.exe"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "outputMatches": true,
+            "elapsedMs": 36.59954199999993,
+            "stdout": "0\n",
+            "stderr": "HEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":737280,\"peakFootprintBytes\":295056,\"elapsedMs\":14,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/002-checker_arena_names.c.exe\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793380566706-4209384a1ff89506.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 737280,
+              "peakFootprintBytes": 295056,
+              "elapsedMs": 14,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/002-checker_arena_names.c.exe"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793380566706-4209384a1ff89506.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          }
+        }
+      },
+      {
+        "source": "tests/reg/checker_arena_names.bend",
+        "target": "js",
+        "sourceSha256": "63fc170fe9ba8f6c5ebd53b516e2ea74b84802d0c1f1bc899d250f90be99873d",
+        "expected": "0\n",
+        "observed": "0\n",
+        "passed": true,
+        "stages": {
+          "emit": {
+            "label": "emit js tests/reg/checker_arena_names.bend",
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/tests/reg/checker_arena_names.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/002-checker_arena_names.js"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+              "/Users/ilyagulya/Projects/My/bend/tests/reg/checker_arena_names.bend",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/002-checker_arena_names.js"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "elapsedMs": 371.4554159999998,
+            "stdout": "{\"status\":\"CANONICAL_PROGRAM_EMITTED\",\"source\":\"/Users/ilyagulya/Projects/My/bend/tests/reg/checker_arena_names.bend\",\"output\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/002-checker_arena_names.js\",\"events\":918,\"bytes\":131286}\n",
+            "stderr": "(node:42646) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\nHEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":214286336,\"peakFootprintBytes\":178374536,\"elapsedMs\":348,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"--experimental-strip-types\",\"/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs\",\"/Users/ilyagulya/Projects/My/bend/tests/reg/checker_arena_names.bend\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/002-checker_arena_names.js\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793380566745-e407411941fab6a8.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 214286336,
+              "peakFootprintBytes": 178374536,
+              "elapsedMs": 348,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+                "--experimental-strip-types",
+                "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke_worker.mjs",
+                "/Users/ilyagulya/Projects/My/bend/tests/reg/checker_arena_names.bend",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/002-checker_arena_names.js"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793380566745-e407411941fab6a8.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          },
+          "consumer": {
+            "label": "run js tests/reg/checker_arena_names.bend",
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--max-old-space-size=3072",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/002-checker_arena_names.js"
+            ],
+            "gateCommand": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+              "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+              "--memory-mib",
+              "8192",
+              "--rss-mib",
+              "8192",
+              "--poll-ms",
+              "10",
+              "--timeout-ms",
+              "600000",
+              "--",
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--max-old-space-size=3072",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/002-checker_arena_names.js"
+            ],
+            "limits": {
+              "memoryMiB": 8192,
+              "rssMiB": 8192,
+              "pollMs": 10,
+              "timeoutMs": 600000
+            },
+            "status": "PASS",
+            "outputMatches": true,
+            "elapsedMs": 107.5972499999998,
+            "stdout": "0\n",
+            "stderr": "HEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":42516480,\"peakFootprintBytes\":12174968,\"elapsedMs\":40,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"--max-old-space-size=3072\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/002-checker_arena_names.js\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793380567161-0845d725beb580ab.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+            "gateExitCode": 0,
+            "gateSignal": null,
+            "gate": {
+              "status": "PASS",
+              "reason": "command_exit",
+              "commandExitCode": 0,
+              "commandSignal": 0,
+              "peakRssBytes": 42516480,
+              "peakFootprintBytes": 12174968,
+              "elapsedMs": 40,
+              "timeoutMs": 600000,
+              "reportPhase": "complete",
+              "ownedTreeStopped": true,
+              "supervisorExitCode": 0,
+              "command": [
+                "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+                "--max-old-space-size=3072",
+                "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-g24-source-smoke-fNs9uQ/002-checker_arena_names.js"
+              ],
+              "label": "heavy command",
+              "exitCode": 0,
+              "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793380567161-0845d725beb580ab.json",
+              "memoryLimitBytes": 8589934592,
+              "rssLimitBytes": 8589934592
+            }
+          }
+        }
+      }
+    ]
+  },
+  "actualSelfhost": [
+    {
+      "target": "c",
+      "pins": {
+        "fixture": "/Users/ilyagulya/Projects/My/bend/evals/checker_arena_growth_smoke.bend",
+        "sourceSha256": "43f681dfc85ce5a33cb8efdbfc26560b08f88fab1b61a3f5d22b067611c2ac9a",
+        "expected": "mixed-growth-rewind:1\nreserved:1",
+        "target": "c",
+        "outFile": "/private/tmp/bend-g34-e09-restored/actual-c/checker_arena_growth_smoke.c",
+        "node": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "nodeSha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5",
+        "nodeVersion": "v23.11.0",
+        "v8": "12.9.202.28-node.14|--max-old-space-size=3072,-e,process.stdout.write(process.versions.v8 + \"|\" + process.execArgv.join(\",\"))"
+      },
+      "matrix": {
+        "mode": "diagnostic-smoke",
+        "target": "c",
+        "node": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "nodeVersion": "v23.11.0",
+        "v8": "12.9.202.28-node.14|--max-old-space-size=3072,-e,process.stdout.write(process.versions.v8 + \"|\" + process.execArgv.join(\",\"))",
+        "driver": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/stage-one-consumer-driver",
+        "guardianTs": "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "guardianTsSha256": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015",
+        "guardianNativeC": "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate_native.c",
+        "guardianNativeCSha256": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b",
+        "cwd": "/Users/ilyagulya/Projects/My/bend",
+        "base": "/Users/ilyagulya/Projects/My/bend/bend2/base.bend",
+        "baseSha256": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+        "runtime": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_runtime.c",
+        "runtimeSha256": "6935fa83c1b20b7f8982f04ad54c4e4dae0b9b0ea66fd00f32d169a1d03ac2bf",
+        "logs": "/private/tmp/bend-g34-e09-restored/actual-c",
+        "gate": {
+          "memoryMiB": 8192,
+          "rssMiB": 8192,
+          "pollMs": 10,
+          "timeoutMs": 600000
+        },
+        "fixtures": 1,
+        "smokeCase": "checker_arena_growth_smoke"
+      },
+      "pinsFile": {
+        "path": "/private/tmp/bend-g34-e09-restored/actual-c/checker_arena_growth_smoke.pins.json",
+        "sha256": "12c6f7e15a37e8eabb8ac764e7e9351ef9ca30bb51550dde3203ea8d63d53186",
+        "bytes": 683
+      },
+      "matrixFile": {
+        "path": "/private/tmp/bend-g34-e09-restored/actual-c/matrix.pins.json",
+        "sha256": "f22701ccae20ac99e0d600bb4396a7197b6eaac0c9c1974163fef7c97bb399f2",
+        "bytes": 1338
+      },
+      "observed": "mixed-growth-rewind:1\nreserved:1",
+      "expected": "mixed-growth-rewind:1\nreserved:1",
+      "passed": true,
+      "stages": [
+        {
+          "stage": "emit",
+          "path": "/private/tmp/bend-g34-e09-restored/actual-c/checker_arena_growth_smoke.emit.gate.json",
+          "sha256": "d09a4ca07d1f034670c4833f15a219e310b720ccf520776e42509e6c76b85576",
+          "guardian": {
+            "status": "PASS",
+            "reason": "command_exit",
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "peakRssBytes": 2317434880,
+            "peakFootprintBytes": 2340987952,
+            "elapsedMs": 54662,
+            "timeoutMs": 600000,
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "supervisorExitCode": 0,
+            "command": [
+              "/bin/sh",
+              "-c",
+              "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+              "sh",
+              "/private/tmp/bend-g34-e09-restored/actual-c/checker_arena_growth_smoke.emit.stdout",
+              "/private/tmp/bend-g34-e09-restored/actual-c/checker_arena_growth_smoke.emit.stderr",
+              "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/stage-one-consumer-driver",
+              "/Users/ilyagulya/Projects/My/bend/evals/checker_arena_growth_smoke.bend",
+              "-o",
+              "/private/tmp/bend-g34-e09-restored/actual-c/checker_arena_growth_smoke.c",
+              "--base",
+              "/Users/ilyagulya/Projects/My/bend/bend2/base.bend",
+              "--runtime-c",
+              "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_runtime.c"
+            ],
+            "label": "checker_arena_growth_smoke:emit",
+            "exitCode": 0,
+            "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793380567450-53b7971e51955f3b.json",
+            "memoryLimitBytes": 8589934592,
+            "rssLimitBytes": 8589934592,
+            "argv": [
+              "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/stage-one-consumer-driver",
+              "/Users/ilyagulya/Projects/My/bend/evals/checker_arena_growth_smoke.bend",
+              "-o",
+              "/private/tmp/bend-g34-e09-restored/actual-c/checker_arena_growth_smoke.c",
+              "--base",
+              "/Users/ilyagulya/Projects/My/bend/bend2/base.bend",
+              "--runtime-c",
+              "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_runtime.c"
+            ],
+            "stdoutPath": "/private/tmp/bend-g34-e09-restored/actual-c/checker_arena_growth_smoke.emit.stdout",
+            "stderrPath": "/private/tmp/bend-g34-e09-restored/actual-c/checker_arena_growth_smoke.emit.stderr"
+          }
+        },
+        {
+          "stage": "clang",
+          "path": "/private/tmp/bend-g34-e09-restored/actual-c/checker_arena_growth_smoke.clang.gate.json",
+          "sha256": "40b8c5381acdc23ebc962788cd0b2a51a9fc98c89bda6f4a25236fd1c0e4efc0",
+          "guardian": {
+            "status": "PASS",
+            "reason": "command_exit",
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "peakRssBytes": 334610432,
+            "peakFootprintBytes": 285606704,
+            "elapsedMs": 2702,
+            "timeoutMs": 600000,
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "supervisorExitCode": 0,
+            "command": [
+              "/bin/sh",
+              "-c",
+              "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+              "sh",
+              "/private/tmp/bend-g34-e09-restored/actual-c/checker_arena_growth_smoke.clang.stdout",
+              "/private/tmp/bend-g34-e09-restored/actual-c/checker_arena_growth_smoke.clang.stderr",
+              "clang",
+              "-std=c11",
+              "-O0",
+              "-ferror-limit=0",
+              "-pthread",
+              "-lm",
+              "-o",
+              "/private/tmp/bend-g34-e09-restored/actual-c/checker_arena_growth_smoke",
+              "/private/tmp/bend-g34-e09-restored/actual-c/checker_arena_growth_smoke.c"
+            ],
+            "label": "checker_arena_growth_smoke:clang",
+            "exitCode": 0,
+            "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793380622118-d762b42a2e7efbe6.json",
+            "memoryLimitBytes": 8589934592,
+            "rssLimitBytes": 8589934592,
+            "argv": [
+              "clang",
+              "-std=c11",
+              "-O0",
+              "-ferror-limit=0",
+              "-pthread",
+              "-lm",
+              "-o",
+              "/private/tmp/bend-g34-e09-restored/actual-c/checker_arena_growth_smoke",
+              "/private/tmp/bend-g34-e09-restored/actual-c/checker_arena_growth_smoke.c"
+            ],
+            "stdoutPath": "/private/tmp/bend-g34-e09-restored/actual-c/checker_arena_growth_smoke.clang.stdout",
+            "stderrPath": "/private/tmp/bend-g34-e09-restored/actual-c/checker_arena_growth_smoke.clang.stderr"
+          }
+        },
+        {
+          "stage": "run",
+          "path": "/private/tmp/bend-g34-e09-restored/actual-c/checker_arena_growth_smoke.run.gate.json",
+          "sha256": "e808ab2cc3c174fcf8a760d8b6023223feb8231635028e36d8a0e5f31f465b3f",
+          "guardian": {
+            "status": "PASS",
+            "reason": "command_exit",
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "peakRssBytes": 720896,
+            "peakFootprintBytes": 278648,
+            "elapsedMs": 14,
+            "timeoutMs": 600000,
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "supervisorExitCode": 0,
+            "command": [
+              "/bin/sh",
+              "-c",
+              "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+              "sh",
+              "/private/tmp/bend-g34-e09-restored/actual-c/checker_arena_growth_smoke.run.stdout",
+              "/private/tmp/bend-g34-e09-restored/actual-c/checker_arena_growth_smoke.run.stderr",
+              "/private/tmp/bend-g34-e09-restored/actual-c/checker_arena_growth_smoke"
+            ],
+            "label": "checker_arena_growth_smoke:run",
+            "exitCode": 0,
+            "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793380624824-3b5209f950cf0265.json",
+            "memoryLimitBytes": 8589934592,
+            "rssLimitBytes": 8589934592,
+            "argv": [
+              "/private/tmp/bend-g34-e09-restored/actual-c/checker_arena_growth_smoke"
+            ],
+            "stdoutPath": "/private/tmp/bend-g34-e09-restored/actual-c/checker_arena_growth_smoke.run.stdout",
+            "stderrPath": "/private/tmp/bend-g34-e09-restored/actual-c/checker_arena_growth_smoke.run.stderr"
+          }
+        }
+      ]
+    },
+    {
+      "target": "js",
+      "pins": {
+        "fixture": "/Users/ilyagulya/Projects/My/bend/evals/checker_arena_growth_smoke.bend",
+        "sourceSha256": "43f681dfc85ce5a33cb8efdbfc26560b08f88fab1b61a3f5d22b067611c2ac9a",
+        "expected": "mixed-growth-rewind:1\nreserved:1",
+        "target": "js",
+        "outFile": "/private/tmp/bend-g34-e09-restored/actual-js/checker_arena_growth_smoke.js",
+        "node": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "nodeSha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5",
+        "nodeVersion": "v23.11.0",
+        "v8": "12.9.202.28-node.14|--max-old-space-size=3072,-e,process.stdout.write(process.versions.v8 + \"|\" + process.execArgv.join(\",\"))"
+      },
+      "matrix": {
+        "mode": "diagnostic-smoke",
+        "target": "js",
+        "node": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "nodeVersion": "v23.11.0",
+        "v8": "12.9.202.28-node.14|--max-old-space-size=3072,-e,process.stdout.write(process.versions.v8 + \"|\" + process.execArgv.join(\",\"))",
+        "driver": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/stage-one-consumer-driver",
+        "guardianTs": "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "guardianTsSha256": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015",
+        "guardianNativeC": "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate_native.c",
+        "guardianNativeCSha256": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b",
+        "cwd": "/Users/ilyagulya/Projects/My/bend",
+        "base": "/Users/ilyagulya/Projects/My/bend/bend2/base.bend",
+        "baseSha256": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+        "runtime": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_runtime.c",
+        "runtimeSha256": "6935fa83c1b20b7f8982f04ad54c4e4dae0b9b0ea66fd00f32d169a1d03ac2bf",
+        "logs": "/private/tmp/bend-g34-e09-restored/actual-js",
+        "gate": {
+          "memoryMiB": 8192,
+          "rssMiB": 8192,
+          "pollMs": 10,
+          "timeoutMs": 600000
+        },
+        "fixtures": 1,
+        "smokeCase": "checker_arena_growth_smoke"
+      },
+      "pinsFile": {
+        "path": "/private/tmp/bend-g34-e09-restored/actual-js/checker_arena_growth_smoke.pins.json",
+        "sha256": "ed0445f0d7e08d1fd445a739483bbbf34d76f85df24f8016dfb48c68dc6e5a73",
+        "bytes": 686
+      },
+      "matrixFile": {
+        "path": "/private/tmp/bend-g34-e09-restored/actual-js/matrix.pins.json",
+        "sha256": "823b9e04a99785795aaa0b09616c18d70cf947d9e7317107edb18a2b7a70ace9",
+        "bytes": 1340
+      },
+      "observed": "mixed-growth-rewind:1\nreserved:1",
+      "expected": "mixed-growth-rewind:1\nreserved:1",
+      "passed": true,
+      "stages": [
+        {
+          "stage": "emit",
+          "path": "/private/tmp/bend-g34-e09-restored/actual-js/checker_arena_growth_smoke.emit.gate.json",
+          "sha256": "0b71d77374874732af431ea5e5c93b2b70e723271a7f6afd9dd46bf98d2d22eb",
+          "guardian": {
+            "status": "PASS",
+            "reason": "command_exit",
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "peakRssBytes": 2277556224,
+            "peakFootprintBytes": 2071921736,
+            "elapsedMs": 15418,
+            "timeoutMs": 600000,
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "supervisorExitCode": 0,
+            "command": [
+              "/bin/sh",
+              "-c",
+              "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+              "sh",
+              "/private/tmp/bend-g34-e09-restored/actual-js/checker_arena_growth_smoke.emit.stdout",
+              "/private/tmp/bend-g34-e09-restored/actual-js/checker_arena_growth_smoke.emit.stderr",
+              "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/stage-one-consumer-driver",
+              "/Users/ilyagulya/Projects/My/bend/evals/checker_arena_growth_smoke.bend",
+              "-o",
+              "/private/tmp/bend-g34-e09-restored/actual-js/checker_arena_growth_smoke.js",
+              "--base",
+              "/Users/ilyagulya/Projects/My/bend/bend2/base.bend",
+              "--runtime-c",
+              "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_runtime.c"
+            ],
+            "label": "checker_arena_growth_smoke:emit",
+            "exitCode": 0,
+            "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793380625053-8f34ddcd59f03314.json",
+            "memoryLimitBytes": 8589934592,
+            "rssLimitBytes": 8589934592,
+            "argv": [
+              "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/stage-one-consumer-driver",
+              "/Users/ilyagulya/Projects/My/bend/evals/checker_arena_growth_smoke.bend",
+              "-o",
+              "/private/tmp/bend-g34-e09-restored/actual-js/checker_arena_growth_smoke.js",
+              "--base",
+              "/Users/ilyagulya/Projects/My/bend/bend2/base.bend",
+              "--runtime-c",
+              "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_runtime.c"
+            ],
+            "stdoutPath": "/private/tmp/bend-g34-e09-restored/actual-js/checker_arena_growth_smoke.emit.stdout",
+            "stderrPath": "/private/tmp/bend-g34-e09-restored/actual-js/checker_arena_growth_smoke.emit.stderr"
+          }
+        },
+        {
+          "stage": "run",
+          "path": "/private/tmp/bend-g34-e09-restored/actual-js/checker_arena_growth_smoke.run.gate.json",
+          "sha256": "e7728b2953521bc5171ed099a44bd0b40b369908970028dd2be14df166c6df61",
+          "guardian": {
+            "status": "PASS",
+            "reason": "command_exit",
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "peakRssBytes": 57049088,
+            "peakFootprintBytes": 29378696,
+            "elapsedMs": 76,
+            "timeoutMs": 600000,
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "supervisorExitCode": 0,
+            "command": [
+              "/bin/sh",
+              "-c",
+              "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+              "sh",
+              "/private/tmp/bend-g34-e09-restored/actual-js/checker_arena_growth_smoke.run.stdout",
+              "/private/tmp/bend-g34-e09-restored/actual-js/checker_arena_growth_smoke.run.stderr",
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--max-old-space-size=3072",
+              "/private/tmp/bend-g34-e09-restored/actual-js/checker_arena_growth_smoke.js"
+            ],
+            "label": "checker_arena_growth_smoke:run",
+            "exitCode": 0,
+            "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793380640477-d8bfb727c0510e24.json",
+            "memoryLimitBytes": 8589934592,
+            "rssLimitBytes": 8589934592,
+            "argv": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--max-old-space-size=3072",
+              "/private/tmp/bend-g34-e09-restored/actual-js/checker_arena_growth_smoke.js"
+            ],
+            "stdoutPath": "/private/tmp/bend-g34-e09-restored/actual-js/checker_arena_growth_smoke.run.stdout",
+            "stderrPath": "/private/tmp/bend-g34-e09-restored/actual-js/checker_arena_growth_smoke.run.stderr"
+          }
+        }
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "path": "/private/tmp/bend-g34-e09-restored/generate-checker_core_owned_source.command.json",
+      "sha256": "ef4ff20a2ed47e20ded4f04f9bc988c17e52e6b4fa8d86d804cb5372721d1059",
+      "value": {
+        "schemaVersion": 1,
+        "label": "generate-checker_core_owned_source",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib",
+          "8192",
+          "--rss-mib",
+          "8192",
+          "--poll-ms",
+          "10",
+          "--timeout-ms",
+          "600000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/checker_core_owned_source.ts"
+        ],
+        "cwd": "/Users/ilyagulya/Projects/My/bend",
+        "environment": {
+          "HEAVY_GATE_MEMORY_MIB": 8192,
+          "HEAVY_GATE_RSS_MIB": 8192,
+          "HEAVY_GATE_POLL_MS": 10,
+          "HEAVY_GATE_TIMEOUT_MS": 600000,
+          "BUN_JSC_forceRAMSize": 4294967296
+        },
+        "startedAt": "2026-10-30T17:15:49.600Z",
+        "status": "PASS",
+        "stdout": "/private/tmp/bend-g34-e09-restored/generate-checker_core_owned_source.stdout",
+        "stderr": "/private/tmp/bend-g34-e09-restored/generate-checker_core_owned_source.stderr",
+        "finishedAt": "2026-10-30T17:15:54.047Z",
+        "exitCode": 0,
+        "signal": null,
+        "stdoutSha256": "38cc813d0e9c1ee361477f661350efabd22a5b9f0907f0af418e480bf075b432",
+        "stderrSha256": "a627e936ebee5edb17864ec69b8ea7eb591b581dcc37986339ba9213cfc604d6"
+      }
+    },
+    {
+      "path": "/private/tmp/bend-g34-e09-restored/generate-template_step_lower.command.json",
+      "sha256": "3340659c9e9098f67016858cc066acb924fd9ac411c9cbdf2ab68a818dd82d42",
+      "value": {
+        "schemaVersion": 1,
+        "label": "generate-template_step_lower",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib",
+          "8192",
+          "--rss-mib",
+          "8192",
+          "--poll-ms",
+          "10",
+          "--timeout-ms",
+          "600000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/template_step_lower.ts"
+        ],
+        "cwd": "/Users/ilyagulya/Projects/My/bend",
+        "environment": {
+          "HEAVY_GATE_MEMORY_MIB": 8192,
+          "HEAVY_GATE_RSS_MIB": 8192,
+          "HEAVY_GATE_POLL_MS": 10,
+          "HEAVY_GATE_TIMEOUT_MS": 600000,
+          "BUN_JSC_forceRAMSize": 4294967296
+        },
+        "startedAt": "2026-10-30T17:15:54.048Z",
+        "status": "PASS",
+        "stdout": "/private/tmp/bend-g34-e09-restored/generate-template_step_lower.stdout",
+        "stderr": "/private/tmp/bend-g34-e09-restored/generate-template_step_lower.stderr",
+        "finishedAt": "2026-10-30T17:15:54.346Z",
+        "exitCode": 0,
+        "signal": null,
+        "stdoutSha256": "a0891daeade0b739942d0cd1fb5756fffd3f9785757ef35fce1dda6a639101cb",
+        "stderrSha256": "8bec97a02db8ae0082f29bb0aca1d001e4e5c9d149ac0dbc85fc6ab3cd5836a9"
+      }
+    },
+    {
+      "path": "/private/tmp/bend-g34-e09-restored/generate-checker_core_step_lower.command.json",
+      "sha256": "7a4975b6b51d3a9060a42f751ed2f0d657c7cf844fd54227ee0983dc5fe8faa5",
+      "value": {
+        "schemaVersion": 1,
+        "label": "generate-checker_core_step_lower",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib",
+          "8192",
+          "--rss-mib",
+          "8192",
+          "--poll-ms",
+          "10",
+          "--timeout-ms",
+          "600000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/checker_core_step_lower.ts"
+        ],
+        "cwd": "/Users/ilyagulya/Projects/My/bend",
+        "environment": {
+          "HEAVY_GATE_MEMORY_MIB": 8192,
+          "HEAVY_GATE_RSS_MIB": 8192,
+          "HEAVY_GATE_POLL_MS": 10,
+          "HEAVY_GATE_TIMEOUT_MS": 600000,
+          "BUN_JSC_forceRAMSize": 4294967296
+        },
+        "startedAt": "2026-10-30T17:15:54.346Z",
+        "status": "PASS",
+        "stdout": "/private/tmp/bend-g34-e09-restored/generate-checker_core_step_lower.stdout",
+        "stderr": "/private/tmp/bend-g34-e09-restored/generate-checker_core_step_lower.stderr",
+        "finishedAt": "2026-10-30T17:15:57.080Z",
+        "exitCode": 0,
+        "signal": null,
+        "stdoutSha256": "15106d14cc42f409e885d4eb231d51475190c624fc77818c8e8635ec0772ad65",
+        "stderrSha256": "5f41ba30d81fa74961f280b95ae0f3d0e638660a095254f7416d2a3a7d9bb473"
+      }
+    },
+    {
+      "path": "/private/tmp/bend-g34-e09-restored/generate-emitter_step_lower.command.json",
+      "sha256": "aaf7cb3e338e6dcddc6d66efb69b46eadf28dd017124b2154ad96e05eef6de02",
+      "value": {
+        "schemaVersion": 1,
+        "label": "generate-emitter_step_lower",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib",
+          "8192",
+          "--rss-mib",
+          "8192",
+          "--poll-ms",
+          "10",
+          "--timeout-ms",
+          "600000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/emitter_step_lower.ts"
+        ],
+        "cwd": "/Users/ilyagulya/Projects/My/bend",
+        "environment": {
+          "HEAVY_GATE_MEMORY_MIB": 8192,
+          "HEAVY_GATE_RSS_MIB": 8192,
+          "HEAVY_GATE_POLL_MS": 10,
+          "HEAVY_GATE_TIMEOUT_MS": 600000,
+          "BUN_JSC_forceRAMSize": 4294967296
+        },
+        "startedAt": "2026-10-30T17:15:57.081Z",
+        "status": "PASS",
+        "stdout": "/private/tmp/bend-g34-e09-restored/generate-emitter_step_lower.stdout",
+        "stderr": "/private/tmp/bend-g34-e09-restored/generate-emitter_step_lower.stderr",
+        "finishedAt": "2026-10-30T17:16:01.684Z",
+        "exitCode": 0,
+        "signal": null,
+        "stdoutSha256": "0de0601bbc26244bd3ac5000a8dcbfa78ddbf5f52a192c4c906bfac0799683ce",
+        "stderrSha256": "b760992702136299cf86201d0dba357cc36ee2f739a27c8872213664da29418b"
+      }
+    },
+    {
+      "path": "/private/tmp/bend-g34-e09-restored/source-smoke.command.json",
+      "sha256": "eb1990083a2ed30fc4a2407b018943aa79df75edb3cad627694a816aa389c236",
+      "value": {
+        "schemaVersion": 1,
+        "label": "source-smoke",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke.mjs",
+          "--node",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--bun",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--clang",
+          "/usr/bin/clang",
+          "--fixtures",
+          "evals/checker_arena_growth_smoke.bend,tests/reg/checker_arena_generation.bend,tests/reg/checker_arena_names.bend",
+          "--targets",
+          "c,js",
+          "--receipt",
+          "/private/tmp/bend-g34-e09-restored/source-smoke.json"
+        ],
+        "cwd": "/Users/ilyagulya/Projects/My/bend",
+        "environment": {
+          "HEAVY_GATE_MEMORY_MIB": 8192,
+          "HEAVY_GATE_RSS_MIB": 8192,
+          "HEAVY_GATE_POLL_MS": 10,
+          "HEAVY_GATE_TIMEOUT_MS": 600000,
+          "BUN_JSC_forceRAMSize": 4294967296
+        },
+        "startedAt": "2026-10-30T17:16:01.795Z",
+        "status": "PASS",
+        "stdout": "/private/tmp/bend-g34-e09-restored/source-smoke.stdout",
+        "stderr": "/private/tmp/bend-g34-e09-restored/source-smoke.stderr",
+        "finishedAt": "2026-10-30T17:16:07.231Z",
+        "exitCode": 0,
+        "signal": null,
+        "stdoutSha256": "a0119ebcbc2a30c19e6c6de8fc2445e76d2463a5f2ba88cad200ea0796a9f9d7",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "retainedRegression": {
+    "source": {
+      "path": "/Users/ilyagulya/Projects/My/bend/evals/checker_arena_growth_smoke.bend",
+      "sha256": "43f681dfc85ce5a33cb8efdbfc26560b08f88fab1b61a3f5d22b067611c2ac9a",
+      "bytes": 7729
+    },
+    "matrix": {
+      "path": "/Users/ilyagulya/Projects/My/bend/evals/c_target_fixtures_run.ts",
+      "sha256": "816b857e2fd6051255f4ea8ddcc427fd936c0c6b441d7a4e7e6bfcf9810307d0",
+      "bytes": 13388
+    }
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "limitations": [
+    "Restoration authentication and eight focused executions are not a new full R12 qualification or new byte fixedpoint.",
+    "The G34 stage-two-check deadline failure is retained and is not rerun or rewritten.",
+    "The new behavioral regression and matrix registration remain; compiler metadata optimization is absent."
+  ]
+}

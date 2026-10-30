@@ -208,10 +208,14 @@ zero exclusions/patches, and emits a **31,759,235-byte** actual stage1.
 All 95 seed fixtures pass, but **stage-two-check hits the unchanged
 600-second whole-bootstrap deadline**. No stage2 file or byte fixedpoint,
 paired throughput, or later consumer matrix is claimed. G34 is rejected;
-R12 remains accepted. Preserve the rejected checkpoint before restoration;
-the regression and its matrix registration remain.
+R12 remains accepted. Rejected source/frozen inputs/evidence are committed as
+`43c77525`; R12 source and all three regenerated steps are restored, with 21
+baseline checks and accepted native/image hash equality. Six canonical C/JS
+and two real R12 compiler consumers pass; the regression and matrix row remain.
+This is restoration proof, not a new full qualification or fixedpoint.
 `evals/receipts/producer2039g34_growth_census.json`,
-`evals/receipts/producer2039g34_qualification.json`.
+`evals/receipts/producer2039g34_qualification.json`,
+`evals/receipts/producer2039g34_restored_r12.json`.
 
 ## Historical full native-seed checkpoint: G23
 

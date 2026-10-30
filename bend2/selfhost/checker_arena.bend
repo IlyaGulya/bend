@@ -91,8 +91,7 @@ type CasePrefixEntry is Data:
 # increments it in the source arena, so a reopened frame never reuses a fact.
 # Primitive metadata arrays keep the threaded Arena layout bounded.
 # Metadata lanes share their owning pool capacity/depth, are written on every
-# append, and rewrite capacity/depth only when that append grew the pool; rewind
-# clears the identical discarded suffix. Published nodes,
+# append, and clear the identical discarded suffix on rewind. Published nodes,
 # patterns, binders and their tape ranges are immutable; fill every reserved
 # word/natural before publishing a descriptor. The substitution memo belongs to
 # the transient declaration-local lifetime: each slot records depths[6] at put
@@ -138,15 +137,18 @@ def node_pool.room_select(items: Array<Node>, used: U32, +capacity: U32, +depth:
     case True{}:
       NodePool{node_pool.copy(items, Array.new(Node, Nat.add(depth, 1n), TermQuant{}), U32.to_nat(capacity), 0), used, U32.shl(capacity), Nat.add(depth, 1n)}
 
+def node_pool.room(pool: NodePool) -> NodePool:
+  match pool:
+    case NodePool{items, +used, +capacity, depth}:
+      node_pool.room_select(items, used, capacity, depth, U32.is_eq(used, capacity))
+
 def node_pool.put_room(pool: NodePool, value: Node) -> NodePool & U32:
   match pool:
     case NodePool{items, +used, capacity, depth}:
       (NodePool{Array.set(Node, items, used, value), U32.add(used, 1), capacity, depth}, used)
 
-def node_pool.put(pool: NodePool, value: Node, full: Bool) -> NodePool & U32:
-  match pool:
-    case NodePool{items, +used, +capacity, +depth}:
-      node_pool.put_room(node_pool.room_select(items, used, capacity, depth, full), value)
+def node_pool.put(pool: NodePool, value: Node) -> NodePool & U32:
+  node_pool.put_room(node_pool.room(pool), value)
 
 
 
@@ -181,15 +183,18 @@ def pattern_pool.room_select(items: Array<Pattern>, used: U32, +capacity: U32, +
     case True{}:
       PatternPool{pattern_pool.copy(items, Array.new(Pattern, Nat.add(depth, 1n), PatternVar{0, 0n, Ast.QZero{}, empty_span()}), U32.to_nat(capacity), 0), used, U32.shl(capacity), Nat.add(depth, 1n)}
 
+def pattern_pool.room(pool: PatternPool) -> PatternPool:
+  match pool:
+    case PatternPool{items, +used, +capacity, depth}:
+      pattern_pool.room_select(items, used, capacity, depth, U32.is_eq(used, capacity))
+
 def pattern_pool.put_room(pool: PatternPool, value: Pattern) -> PatternPool & U32:
   match pool:
     case PatternPool{items, +used, capacity, depth}:
       (PatternPool{Array.set(Pattern, items, used, value), U32.add(used, 1), capacity, depth}, used)
 
-def pattern_pool.put(pool: PatternPool, value: Pattern, full: Bool) -> PatternPool & U32:
-  match pool:
-    case PatternPool{items, +used, +capacity, +depth}:
-      pattern_pool.put_room(pattern_pool.room_select(items, used, capacity, depth, full), value)
+def pattern_pool.put(pool: PatternPool, value: Pattern) -> PatternPool & U32:
+  pattern_pool.put_room(pattern_pool.room(pool), value)
 
 
 
@@ -224,15 +229,18 @@ def binder_pool.room_select(items: Array<Binder>, used: U32, +capacity: U32, +de
     case True{}:
       BinderPool{binder_pool.copy(items, Array.new(Binder, Nat.add(depth, 1n), TemplateBinder{0, 0n, 0, empty_span()}), U32.to_nat(capacity), 0), used, U32.shl(capacity), Nat.add(depth, 1n)}
 
+def binder_pool.room(pool: BinderPool) -> BinderPool:
+  match pool:
+    case BinderPool{items, +used, +capacity, depth}:
+      binder_pool.room_select(items, used, capacity, depth, U32.is_eq(used, capacity))
+
 def binder_pool.put_room(pool: BinderPool, value: Binder) -> BinderPool & U32:
   match pool:
     case BinderPool{items, +used, capacity, depth}:
       (BinderPool{Array.set(Binder, items, used, value), U32.add(used, 1), capacity, depth}, used)
 
-def binder_pool.put(pool: BinderPool, value: Binder, full: Bool) -> BinderPool & U32:
-  match pool:
-    case BinderPool{items, +used, +capacity, +depth}:
-      binder_pool.put_room(binder_pool.room_select(items, used, capacity, depth, full), value)
+def binder_pool.put(pool: BinderPool, value: Binder) -> BinderPool & U32:
+  binder_pool.put_room(binder_pool.room(pool), value)
 
 
 
@@ -277,10 +285,8 @@ def word_pool.put_room(pool: WordPool, value: U32) -> WordPool & U32:
     case WordPool{items, +used, capacity, depth}:
       (WordPool{Array.set(U32, items, used, value), U32.add(used, 1), capacity, depth}, used)
 
-def word_pool.put(pool: WordPool, value: U32, full: Bool) -> WordPool & U32:
-  match pool:
-    case WordPool{items, +used, +capacity, +depth}:
-      word_pool.put_room(word_pool.room_select(items, used, capacity, depth, full), value)
+def word_pool.put(pool: WordPool, value: U32) -> WordPool & U32:
+  word_pool.put_room(word_pool.room(pool), value)
 
 
 
@@ -316,15 +322,18 @@ def natural_pool.room_select(items: Array<Nat>, used: U32, +capacity: U32, +dept
     case True{}:
       NaturalPool{natural_pool.copy(items, Array.new(Nat, Nat.add(depth, 1n), 0n), U32.to_nat(capacity), 0), used, U32.shl(capacity), Nat.add(depth, 1n)}
 
+def natural_pool.room(pool: NaturalPool) -> NaturalPool:
+  match pool:
+    case NaturalPool{items, +used, +capacity, depth}:
+      natural_pool.room_select(items, used, capacity, depth, U32.is_eq(used, capacity))
+
 def natural_pool.put_room(pool: NaturalPool, value: Nat) -> NaturalPool & U32:
   match pool:
     case NaturalPool{items, +used, capacity, depth}:
       (NaturalPool{Array.set(Nat, items, used, value), U32.add(used, 1), capacity, depth}, used)
 
-def natural_pool.put(pool: NaturalPool, value: Nat, full: Bool) -> NaturalPool & U32:
-  match pool:
-    case NaturalPool{items, +used, +capacity, +depth}:
-      natural_pool.put_room(natural_pool.room_select(items, used, capacity, depth, full), value)
+def natural_pool.put(pool: NaturalPool, value: Nat) -> NaturalPool & U32:
+  natural_pool.put_room(natural_pool.room(pool), value)
 
 
 
@@ -360,15 +369,18 @@ def name_pool.room_select(items: Array<String>, used: U32, +capacity: U32, +dept
     case True{}:
       NamePool{name_pool.copy(items, Array.new(String, Nat.add(depth, 1n), SNil{}), U32.to_nat(capacity), 0), used, U32.shl(capacity), Nat.add(depth, 1n)}
 
+def name_pool.room(pool: NamePool) -> NamePool:
+  match pool:
+    case NamePool{items, +used, +capacity, depth}:
+      name_pool.room_select(items, used, capacity, depth, U32.is_eq(used, capacity))
+
 def name_pool.put_room(pool: NamePool, value: String) -> NamePool & U32:
   match pool:
     case NamePool{items, +used, capacity, depth}:
       (NamePool{Array.set(String, items, used, value), U32.add(used, 1), capacity, depth}, used)
 
-def name_pool.put(pool: NamePool, value: String, full: Bool) -> NamePool & U32:
-  match pool:
-    case NamePool{items, +used, +capacity, +depth}:
-      name_pool.put_room(name_pool.room_select(items, used, capacity, depth, full), value)
+def name_pool.put(pool: NamePool, value: String) -> NamePool & U32:
+  name_pool.put_room(name_pool.room(pool), value)
 
 def name_pool.get.result_1(used: U32, capacity: U32, depth: Nat, result: Array<String> & String) -> NamePool & String:
   match result:
@@ -412,15 +424,8 @@ def metadata_read.used(depths: Array<Nat>, +slot: U32, result: Array<U32> & U32)
 def metadata_read(counts: Array<U32>, depths: Array<Nat>, +slot: U32) -> MetadataRead:
   metadata_read.used(depths, slot, Array.get(U32, counts, U32.mul(slot, 2)))
 
-# `full` is the pre-append used==capacity decision that already selected pool
-# growth; only a growing append changes capacity/depth, so unchanged lanes are
-# left untouched on the ordinary path.
-def metadata_write(counts: Array<U32>, depths: Array<Nat>, +slot: U32, used: U32, capacity: U32, depth: Nat, full: Bool) -> MetadataTables:
-  match full:
-    case False{}:
-      MetadataTables{Array.set(U32, counts, U32.mul(slot, 2), used), depths}
-    case True{}:
-      MetadataTables{Array.set(U32, Array.set(U32, counts, U32.mul(slot, 2), used), U32.add(U32.mul(slot, 2), 1), capacity), Array.set(Nat, depths, slot, depth)}
+def metadata_write(counts: Array<U32>, depths: Array<Nat>, +slot: U32, used: U32, capacity: U32, depth: Nat) -> MetadataTables:
+  MetadataTables{Array.set(U32, Array.set(U32, counts, U32.mul(slot, 2), used), U32.add(U32.mul(slot, 2), 1), capacity), Array.set(Nat, depths, slot, depth)}
 
 def get_node.result(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, node_closed: Array<U32>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>, result: Array<Node> & Node) -> Arena & Node:
   match result:
@@ -471,18 +476,17 @@ def put_binder.tables(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<Sub
   match result:
     case MetadataTables{counts, depths}: (Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}, id)
 
-def put_binder.result(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, node_closed: Array<U32>, nodes: Array<Node>, patterns: Array<Pattern>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>, full: Bool, result: BinderPool & U32) -> Arena & U32:
+def put_binder.result(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, node_closed: Array<U32>, nodes: Array<Node>, patterns: Array<Pattern>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>, result: BinderPool & U32) -> Arena & U32:
   match result:
     case Tuple{pool, id}:
       match pool:
         case BinderPool{items, used, capacity, depth}:
-          put_binder.tables(case_prefix, subst_memo, node_bounds, pattern_depths, node_closed, nodes, patterns, items, words, naturals, names, name_ids, id, metadata_write(counts, depths, 2, used, capacity, depth, full))
+          put_binder.tables(case_prefix, subst_memo, node_bounds, pattern_depths, node_closed, nodes, patterns, items, words, naturals, names, name_ids, id, metadata_write(counts, depths, 2, used, capacity, depth))
 
 def put_binder.metadata(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, node_closed: Array<U32>, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, name_ids: Map<&2, U32>, value: Binder, result: MetadataRead) -> Arena & U32:
   match result:
-    case MetadataRead{counts, depths, +used, +capacity, depth}:
-      +full = U32.is_eq(used, capacity)
-      put_binder.result(case_prefix, subst_memo, node_bounds, pattern_depths, node_closed, nodes, patterns, words, naturals, names, counts, depths, name_ids, full, binder_pool.put(BinderPool{binders, used, capacity, depth}, value, full))
+    case MetadataRead{counts, depths, used, capacity, depth}:
+      put_binder.result(case_prefix, subst_memo, node_bounds, pattern_depths, node_closed, nodes, patterns, words, naturals, names, counts, depths, name_ids, binder_pool.put(BinderPool{binders, used, capacity, depth}, value))
 
 def put_binder(arena: Arena, value: Binder) -> Arena & U32:
   match arena:
@@ -511,18 +515,17 @@ def put_word.tables(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<Subst
   match result:
     case MetadataTables{counts, depths}: (Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}, id)
 
-def put_word.result(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, node_closed: Array<U32>, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>, full: Bool, result: WordPool & U32) -> Arena & U32:
+def put_word.result(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, node_closed: Array<U32>, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>, result: WordPool & U32) -> Arena & U32:
   match result:
     case Tuple{pool, id}:
       match pool:
         case WordPool{items, used, capacity, depth}:
-          put_word.tables(case_prefix, subst_memo, node_bounds, pattern_depths, node_closed, nodes, patterns, binders, items, naturals, names, name_ids, id, metadata_write(counts, depths, 3, used, capacity, depth, full))
+          put_word.tables(case_prefix, subst_memo, node_bounds, pattern_depths, node_closed, nodes, patterns, binders, items, naturals, names, name_ids, id, metadata_write(counts, depths, 3, used, capacity, depth))
 
 def put_word.metadata(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, node_closed: Array<U32>, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, name_ids: Map<&2, U32>, value: U32, result: MetadataRead) -> Arena & U32:
   match result:
-    case MetadataRead{counts, depths, +used, +capacity, depth}:
-      +full = U32.is_eq(used, capacity)
-      put_word.result(case_prefix, subst_memo, node_bounds, pattern_depths, node_closed, nodes, patterns, binders, naturals, names, counts, depths, name_ids, full, word_pool.put(WordPool{words, used, capacity, depth}, value, full))
+    case MetadataRead{counts, depths, used, capacity, depth}:
+      put_word.result(case_prefix, subst_memo, node_bounds, pattern_depths, node_closed, nodes, patterns, binders, naturals, names, counts, depths, name_ids, word_pool.put(WordPool{words, used, capacity, depth}, value))
 
 def put_word(arena: Arena, value: U32) -> Arena & U32:
   match arena:
@@ -913,22 +916,24 @@ def bound_pool.room.select(items: Array<Nat>, capacity: U32, +depth: Nat, full: 
     case False{}: items
     case True{}: natural_pool.copy(items, Array.new(Nat, Nat.add(depth, 1n), 0n), U32.to_nat(capacity), 0)
 
+def bound_pool.room(items: Array<Nat>, used: U32, +capacity: U32, depth: Nat) -> Array<Nat>:
+  bound_pool.room.select(items, capacity, depth, U32.is_eq(used, capacity))
+
 def put_pattern.tables(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, node_closed: Array<U32>, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, name_ids: Map<&2, U32>, id: U32, result: MetadataTables) -> Arena & U32:
   match result:
     case MetadataTables{counts, depths}: (Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}, id)
 
-def put_pattern.result(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, node_closed: Array<U32>, nodes: Array<Node>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>, full: Bool, result: PatternPool & U32) -> Arena & U32:
+def put_pattern.result(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, node_closed: Array<U32>, nodes: Array<Node>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>, result: PatternPool & U32) -> Arena & U32:
   match result:
     case Tuple{pool, id}:
       match pool:
         case PatternPool{items, used, capacity, depth}:
-          put_pattern.tables(case_prefix, subst_memo, node_bounds, pattern_depths, node_closed, nodes, items, binders, words, naturals, names, name_ids, id, metadata_write(counts, depths, 1, used, capacity, depth, full))
+          put_pattern.tables(case_prefix, subst_memo, node_bounds, pattern_depths, node_closed, nodes, items, binders, words, naturals, names, name_ids, id, metadata_write(counts, depths, 1, used, capacity, depth))
 
 def put_pattern.metadata(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, node_closed: Array<U32>, encoded: Nat, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, name_ids: Map<&2, U32>, value: Pattern, result: MetadataRead) -> Arena & U32:
   match result:
     case MetadataRead{counts, depths, +used, +capacity, +depth}:
-      +full = U32.is_eq(used, capacity)
-      put_pattern.result(case_prefix, subst_memo, node_bounds, Array.set(Nat, bound_pool.room.select(pattern_depths, capacity, depth, full), used, encoded), node_closed, nodes, binders, words, naturals, names, counts, depths, name_ids, full, pattern_pool.put(PatternPool{patterns, used, capacity, depth}, value, full))
+      put_pattern.result(case_prefix, subst_memo, node_bounds, Array.set(Nat, bound_pool.room(pattern_depths, used, capacity, depth), used, encoded), node_closed, nodes, binders, words, naturals, names, counts, depths, name_ids, pattern_pool.put(PatternPool{patterns, used, capacity, depth}, value))
 
 def put_pattern.bound_append(arena: Arena, value: Pattern, encoded: Nat) -> Arena & U32:
   match arena:
@@ -947,22 +952,24 @@ def node_closed.room.select(items: Array<U32>, capacity: U32, +depth: Nat, full:
     case False{}: items
     case True{}: word_pool.copy(items, Array.new(U32, Nat.add(depth, 1n), 0), U32.to_nat(capacity), 0)
 
+def node_closed.room(items: Array<U32>, used: U32, +capacity: U32, depth: Nat) -> Array<U32>:
+  node_closed.room.select(items, capacity, depth, U32.is_eq(used, capacity))
+
 def put_node.tables(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, node_closed: Array<U32>, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, name_ids: Map<&2, U32>, id: U32, result: MetadataTables) -> Arena & U32:
   match result:
     case MetadataTables{counts, depths}: (Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}, id)
 
-def put_node.result(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, node_closed: Array<U32>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>, full: Bool, result: NodePool & U32) -> Arena & U32:
+def put_node.result(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, node_closed: Array<U32>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>, result: NodePool & U32) -> Arena & U32:
   match result:
     case Tuple{pool, id}:
       match pool:
         case NodePool{items, used, capacity, depth}:
-          put_node.tables(case_prefix, subst_memo, node_bounds, pattern_depths, node_closed, items, patterns, binders, words, naturals, names, name_ids, id, metadata_write(counts, depths, 0, used, capacity, depth, full))
+          put_node.tables(case_prefix, subst_memo, node_bounds, pattern_depths, node_closed, items, patterns, binders, words, naturals, names, name_ids, id, metadata_write(counts, depths, 0, used, capacity, depth))
 
 def put_node.metadata(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, node_closed: Array<U32>, flags: U32, encoded: Nat, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, name_ids: Map<&2, U32>, value: Node, result: MetadataRead) -> Arena & U32:
   match result:
     case MetadataRead{counts, depths, +used, +capacity, +depth}:
-      +full = U32.is_eq(used, capacity)
-      put_node.result(case_prefix, subst_memo, Array.set(Nat, bound_pool.room.select(node_bounds, capacity, depth, full), used, encoded), pattern_depths, Array.set(U32, node_closed.room.select(node_closed, capacity, depth, full), used, flags), patterns, binders, words, naturals, names, counts, depths, name_ids, full, node_pool.put(NodePool{nodes, used, capacity, depth}, value, full))
+      put_node.result(case_prefix, subst_memo, Array.set(Nat, bound_pool.room(node_bounds, used, capacity, depth), used, encoded), pattern_depths, Array.set(U32, node_closed.room(node_closed, used, capacity, depth), used, flags), patterns, binders, words, naturals, names, counts, depths, name_ids, node_pool.put(NodePool{nodes, used, capacity, depth}, value))
 
 def put_node.closed_append(arena: Arena, value: Node, flags: U32, encoded: Nat) -> Arena & U32:
   match arena:
@@ -1000,18 +1007,17 @@ def put_natural.tables(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<Su
   match result:
     case MetadataTables{counts, depths}: (Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}, id)
 
-def put_natural.result(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, node_closed: Array<U32>, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, names: Array<String>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>, full: Bool, result: NaturalPool & U32) -> Arena & U32:
+def put_natural.result(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, node_closed: Array<U32>, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, names: Array<String>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>, result: NaturalPool & U32) -> Arena & U32:
   match result:
     case Tuple{pool, id}:
       match pool:
         case NaturalPool{items, used, capacity, depth}:
-          put_natural.tables(case_prefix, subst_memo, node_bounds, pattern_depths, node_closed, nodes, patterns, binders, words, items, names, name_ids, id, metadata_write(counts, depths, 4, used, capacity, depth, full))
+          put_natural.tables(case_prefix, subst_memo, node_bounds, pattern_depths, node_closed, nodes, patterns, binders, words, items, names, name_ids, id, metadata_write(counts, depths, 4, used, capacity, depth))
 
 def put_natural.metadata(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, node_closed: Array<U32>, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, name_ids: Map<&2, U32>, value: Nat, result: MetadataRead) -> Arena & U32:
   match result:
-    case MetadataRead{counts, depths, +used, +capacity, depth}:
-      +full = U32.is_eq(used, capacity)
-      put_natural.result(case_prefix, subst_memo, node_bounds, pattern_depths, node_closed, nodes, patterns, binders, words, names, counts, depths, name_ids, full, natural_pool.put(NaturalPool{naturals, used, capacity, depth}, value, full))
+    case MetadataRead{counts, depths, used, capacity, depth}:
+      put_natural.result(case_prefix, subst_memo, node_bounds, pattern_depths, node_closed, nodes, patterns, binders, words, names, counts, depths, name_ids, natural_pool.put(NaturalPool{naturals, used, capacity, depth}, value))
 
 def put_natural(arena: Arena, value: Nat) -> Arena & U32:
   match arena:
@@ -1044,18 +1050,17 @@ def put_name_value.tables(case_prefix: Array<CasePrefixEntry>, subst_memo: Array
   match result:
     case MetadataTables{counts, depths}: (Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}, id)
 
-def put_name_value.result(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, node_closed: Array<U32>, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>, full: Bool, result: NamePool & U32) -> Arena & U32:
+def put_name_value.result(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, node_closed: Array<U32>, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, counts: Array<U32>, depths: Array<Nat>, name_ids: Map<&2, U32>, result: NamePool & U32) -> Arena & U32:
   match result:
     case Tuple{pool, id}:
       match pool:
         case NamePool{items, used, capacity, depth}:
-          put_name_value.tables(case_prefix, subst_memo, node_bounds, pattern_depths, node_closed, nodes, patterns, binders, words, naturals, items, name_ids, id, metadata_write(counts, depths, 5, used, capacity, depth, full))
+          put_name_value.tables(case_prefix, subst_memo, node_bounds, pattern_depths, node_closed, nodes, patterns, binders, words, naturals, items, name_ids, id, metadata_write(counts, depths, 5, used, capacity, depth))
 
 def put_name_value.metadata(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, node_closed: Array<U32>, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, name_ids: Map<&2, U32>, value: String, result: MetadataRead) -> Arena & U32:
   match result:
-    case MetadataRead{counts, depths, +used, +capacity, depth}:
-      +full = U32.is_eq(used, capacity)
-      put_name_value.result(case_prefix, subst_memo, node_bounds, pattern_depths, node_closed, nodes, patterns, binders, words, naturals, counts, depths, name_ids, full, name_pool.put(NamePool{names, used, capacity, depth}, value, full))
+    case MetadataRead{counts, depths, used, capacity, depth}:
+      put_name_value.result(case_prefix, subst_memo, node_bounds, pattern_depths, node_closed, nodes, patterns, binders, words, naturals, counts, depths, name_ids, name_pool.put(NamePool{names, used, capacity, depth}, value))
 
 def put_name_value(arena: Arena, value: String) -> Arena & U32:
   match arena:
@@ -1107,7 +1112,7 @@ def word_pool.reserve(remaining: Nat, pool: WordPool) -> WordPool:
 def reserve_words.metadata(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, node_closed: Array<U32>, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, name_ids: Map<&2, U32>, count: U32, result: MetadataRead) -> Arena & U32:
   match result:
     case MetadataRead{counts, depths, +used, capacity, depth}:
-      put_word.result(case_prefix, subst_memo, node_bounds, pattern_depths, node_closed, nodes, patterns, binders, naturals, names, counts, depths, name_ids, True{}, (word_pool.reserve(U32.to_nat(count), WordPool{words, used, capacity, depth}), used))
+      put_word.result(case_prefix, subst_memo, node_bounds, pattern_depths, node_closed, nodes, patterns, binders, naturals, names, counts, depths, name_ids, (word_pool.reserve(U32.to_nat(count), WordPool{words, used, capacity, depth}), used))
 
 def reserve_words(arena: Arena, +count: U32) -> Arena & U32:
   match arena:
