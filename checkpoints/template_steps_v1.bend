@@ -2979,26 +2979,27 @@ def template_step_one(request: TemplateRequest) -> TemplateProgress<template_res
     case TemplateRequestGroup_2{inner}: template_step_group_2(inner)
     case TemplateRequestGroup_3{inner}: template_step_group_3(inner)
 
-def template_chunk_state(-A: Type, -R: Type, fuel: Nat, progress: TemplateProgress<A>, stack: TemplateStack<A, R>) -> TemplateRun<R>:
-  match fuel:
-    case 0n: TemplateRunState{A, progress, stack}
-    case 1n+rest:
-      match progress:
-        case TemplateFinished{box}:
-          match stack:
-            case TemplateStackDone{equation}: TemplateRunFinished{template_cast_box(A, R, equation, box)}
-            case TemplateStackMore{B, resume, remainder}: template_chunk_state(B, R, rest, resume(box), remainder)
-        case TemplatePending{request, resume}:
-          template_chunk_state(template_result(request), R, rest, template_step_one(request), TemplateStackMore{A, resume, stack})
-        case TemplateDirect{T, request, arguments, invoke, resume}:
-          template_chunk_state(template_result(request), R, rest, invoke(arguments), TemplateStackMore{A, resume, stack})
-        case TemplateBound{B, inner, resume}:
-          template_chunk_state(B, R, rest, inner, TemplateStackMore{A, resume, stack})
+def template_pop(-A: Type, -R: Type, stack: TemplateStack<A, R>, box: TemplateValue<A>) -> TemplateRun<R>:
+  match stack:
+    case TemplateStackDone{equation}: TemplateRunFinished{template_cast_box(A, R, equation, box)}
+    case TemplateStackMore{B, resume, rest}: TemplateRunState{B, resume(box), rest}
+
+def template_advance(-A: Type, -R: Type, progress: TemplateProgress<A>, stack: TemplateStack<A, R>) -> TemplateRun<R>:
+  match progress:
+    case TemplateFinished{box}: template_pop(A, R, stack, box)
+    case TemplatePending{request, resume}:
+      TemplateRunState{template_result(request), template_step_one(request), TemplateStackMore{A, resume, stack}}
+    case TemplateDirect{T, request, arguments, invoke, resume}:
+      TemplateRunState{template_result(request), invoke(arguments), TemplateStackMore{A, resume, stack}}
+    case TemplateBound{B, inner, resume}:
+      TemplateRunState{B, inner, TemplateStackMore{A, resume, stack}}
 
 def template_chunk(-R: Type, fuel: Nat, run: TemplateRun<R>) -> TemplateRun<R>:
-  match run:
-    case TemplateRunFinished{box}: TemplateRunFinished{box}
-    case TemplateRunState{A, progress, stack}: template_chunk_state(A, R, fuel, progress, stack)
+  match fuel run:
+    case 0n state: state
+    case 1n+rest TemplateRunFinished{box}: TemplateRunFinished{box}
+    case 1n+rest TemplateRunState{A, progress, stack}:
+      template_chunk(R, rest, template_advance(A, R, progress, stack))
 
 def template_step(-R: Type, run: TemplateRun<R>) -> TemplateRun<R>:
   template_chunk(R, 64n, run)

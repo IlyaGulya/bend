@@ -387,11 +387,11 @@ for(const [mode,stem]of [['template','template'],['checker','checker-core'],['em
   ||record.nativeChunk?.publicStep!==mode+'_step'||record.nativeChunk?.start!==mode+'_start'
   ||record.nativeChunk?.quantum!==64||record.nativeChunk?.fuelType!=='Nat'||record.nativeChunk?.recursion!=='structural Nat'
   ||record.nativeChunk?.zeroFuel!=='return remaining Run unchanged'||record.nativeChunk?.semanticFuelChanged!==false
-  ||record.nativeChunk?.castBoxFunction!==mode+'_cast_box'||record.nativeChunk?.stateFunction!==mode+'_chunk_state'
-  ||record.nativeChunk?.exportedResume!==false
+  ||record.nativeChunk?.castBoxFunction!==mode+'_cast_box'||record.nativeChunk?.popFunction!==mode+'_pop'
+  ||record.nativeChunk?.advanceFunction!==mode+'_advance'||record.nativeChunk?.exportedResume!==false
   ||record.nativeChunk?.publicStepType!=='-R: Type, Run<R> -> Run<R>'
   ||record.nativeChunk?.sourceResumeClosuresUnchanged!==true||record.nativeChunk?.directInvokeUnchanged!==true
-  ||JSON.stringify(record.nativeChunk?.selfRecursiveFunctions)!==JSON.stringify([mode+'_chunk_state'])
+  ||JSON.stringify(record.nativeChunk?.selfRecursiveFunctions)!==JSON.stringify([mode+'_chunk'])
   ||['runType','runFinishedConstructor','runStateConstructor','stackType','stackDoneConstructor','stackMoreConstructor'].some((key,index)=>
     record.nativeChunk?.[key]!==({checker:'Checker',emitter:'Emitter',template:'Template'}[mode])+['Run','RunFinished','RunState','Stack','StackDone','StackMore'][index])
   ||!Array.isArray(record.excludedDefinitions)||record.excludedDefinitions.length

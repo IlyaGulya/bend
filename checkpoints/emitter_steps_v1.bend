@@ -31742,26 +31742,27 @@ def emitter_step_one(request: EmitterRequest) -> EmitterProgress<emitter_result(
     case EmitterRequestGroup_32{inner}: emitter_step_group_32(inner)
     case EmitterRequestGroup_33{inner}: emitter_step_group_33(inner)
 
-def emitter_chunk_state(-A: Type, -R: Type, fuel: Nat, progress: EmitterProgress<A>, stack: EmitterStack<A, R>) -> EmitterRun<R>:
-  match fuel:
-    case 0n: EmitterRunState{A, progress, stack}
-    case 1n+rest:
-      match progress:
-        case EmitterFinished{box}:
-          match stack:
-            case EmitterStackDone{equation}: EmitterRunFinished{emitter_cast_box(A, R, equation, box)}
-            case EmitterStackMore{B, resume, remainder}: emitter_chunk_state(B, R, rest, resume(box), remainder)
-        case EmitterPending{request, resume}:
-          emitter_chunk_state(emitter_result(request), R, rest, emitter_step_one(request), EmitterStackMore{A, resume, stack})
-        case EmitterDirect{T, request, arguments, invoke, resume}:
-          emitter_chunk_state(emitter_result(request), R, rest, invoke(arguments), EmitterStackMore{A, resume, stack})
-        case EmitterBound{B, inner, resume}:
-          emitter_chunk_state(B, R, rest, inner, EmitterStackMore{A, resume, stack})
+def emitter_pop(-A: Type, -R: Type, stack: EmitterStack<A, R>, box: EmitterValue<A>) -> EmitterRun<R>:
+  match stack:
+    case EmitterStackDone{equation}: EmitterRunFinished{emitter_cast_box(A, R, equation, box)}
+    case EmitterStackMore{B, resume, rest}: EmitterRunState{B, resume(box), rest}
+
+def emitter_advance(-A: Type, -R: Type, progress: EmitterProgress<A>, stack: EmitterStack<A, R>) -> EmitterRun<R>:
+  match progress:
+    case EmitterFinished{box}: emitter_pop(A, R, stack, box)
+    case EmitterPending{request, resume}:
+      EmitterRunState{emitter_result(request), emitter_step_one(request), EmitterStackMore{A, resume, stack}}
+    case EmitterDirect{T, request, arguments, invoke, resume}:
+      EmitterRunState{emitter_result(request), invoke(arguments), EmitterStackMore{A, resume, stack}}
+    case EmitterBound{B, inner, resume}:
+      EmitterRunState{B, inner, EmitterStackMore{A, resume, stack}}
 
 def emitter_chunk(-R: Type, fuel: Nat, run: EmitterRun<R>) -> EmitterRun<R>:
-  match run:
-    case EmitterRunFinished{box}: EmitterRunFinished{box}
-    case EmitterRunState{A, progress, stack}: emitter_chunk_state(A, R, fuel, progress, stack)
+  match fuel run:
+    case 0n state: state
+    case 1n+rest EmitterRunFinished{box}: EmitterRunFinished{box}
+    case 1n+rest EmitterRunState{A, progress, stack}:
+      emitter_chunk(R, rest, emitter_advance(A, R, progress, stack))
 
 def emitter_step(-R: Type, run: EmitterRun<R>) -> EmitterRun<R>:
   emitter_chunk(R, 64n, run)

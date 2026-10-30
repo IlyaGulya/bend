@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "algorithm": "raw-AST typed boxed-continuation CPS with bounded dependent request groups, dependency-first ordered match, projection values, bounded nonrecursive storage islands, bounded private-helper result deforestation, bounded private-region helper/continuation inlining and quantity-checked alias scalarization, and fuel-threaded structurally recursive native heterogeneous-stack transitions",
+  "algorithm": "raw-AST typed boxed-continuation CPS with bounded dependent request groups, dependency-first ordered match, projection values, bounded nonrecursive storage islands, bounded private-helper result deforestation, bounded private-region helper/continuation inlining and quantity-checked alias scalarization, and structurally recursive native heterogeneous-stack chunks",
   "generationConfig": {
     "base": "bend2/base.bend",
     "canonical": "bend2/selfhost/emitter.bend",
@@ -153,7 +153,7 @@
     "bend2/selfhost/c_backend_sharing.bend": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_backend_sharing.bend",
     "bend2/selfhost/path.bend": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/path.bend"
   },
-  "nativeTerminationClaim": "Generated source handlers and continuation helpers form an acyclic declaration graph. Result-deforested producer and continuation helpers are private, acyclic and emitted before their users; each forwards the same affine fields and captures once. Single-use private helpers are additionally spliced into their sole call site only after alpha-freshening every retained binder and checking every parameter quantity, which removes a call but introduces no new declaration, recursion or effect. Only the inner native scheduler emitter_chunk_state is self-recursive: each progress/stack transition consumes one operational Nat and recurses on its predecessor. The public chunk unpacks a Run once. Fuel zero materializes the remaining progress and stack unchanged; RunFinished returns directly. Native push/pop transfers affine progress, resume and stack once, never reassociates Bound and never allocates composition closures. This does not alter canonical semantic fuel or claim termination of the complete host-driven computation.",
+  "nativeTerminationClaim": "Generated source handlers and continuation helpers form an acyclic declaration graph. Result-deforested producer and continuation helpers are private, acyclic and emitted before their users; each forwards the same affine fields and captures once. Single-use private helpers are additionally spliced into their sole call site only after alpha-freshening every retained binder and checking every parameter quantity, which removes a call but introduces no new declaration, recursion or effect. Only the native chunk scheduler is self-recursive, structurally decreasing an operational Nat on every RunState transition. Zero returns the remaining Run unchanged; RunFinished returns directly. Native push/pop transfers affine progress, resume and stack once, never reassociates Bound and never allocates composition closures. This does not alter canonical semantic fuel or claim termination of the complete host-driven computation.",
   "progressABI": "typed-native-stack-v57t",
   "boxedTransport": {
     "type": "EmitterValue",
@@ -175,7 +175,6 @@
   },
   "nativeChunk": {
     "function": "emitter_chunk",
-    "stateFunction": "emitter_chunk_state",
     "rawStep": "emitter_step_one",
     "publicStep": "emitter_step",
     "start": "emitter_start",
@@ -200,19 +199,15 @@
     "stackDoneConstructor": "EmitterStackDone",
     "stackMoreConstructor": "EmitterStackMore",
     "castBoxFunction": "emitter_cast_box",
-    "innerTransition": "one fuel unit per progress/stack transition; progress and stack pass directly through emitter_chunk_state without intermediate RunState transport",
-    "runMaterialization": [
-      "quantum boundary (fuel zero)",
-      "StackDone completion",
-      "trace Begin/End pause continuation"
-    ],
+    "popFunction": "emitter_pop",
+    "advanceFunction": "emitter_advance",
     "stackOwnership": "Affine heterogeneous native LIFO; no host stack, no Bound reassociation, no Compose nodes, no per-site constructors",
     "sourceResumeClosuresUnchanged": true,
     "directInvokeUnchanged": true,
     "publicStepType": "-R: Type, Run<R> -> Run<R>",
     "exportedResume": false,
     "selfRecursiveFunctions": [
-      "emitter_chunk_state"
+      "emitter_chunk"
     ]
   },
   "ffi": false,
@@ -185403,7 +185398,7 @@
     "evals/heavy_gate.ts": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015",
     "evals/validation_profile.ts": "d0bfd8124b334cb1db4792e49675290a971ae82730e57029173b07ff23d6938d",
     "checkpoints/checker-core-owned-source-v1.json": "3ecb7f9d98a61d58b383e489bbc6195ad0b56c053baebaa3184533d490c29425",
-    "evals/checker_core_step_lower.ts": "847b8a73c782c0bd4790f19e7f467bc791efe59028433c46d1e9261a65d052d9",
+    "evals/checker_core_step_lower.ts": "21a47855e891ab115fb2ce4c70b7b699b376c6488f2505b7f0d6893f8d66daf9",
     "evals/checker_core_owned_source.ts": "7b9fc4fb80aa87ef0ce44310031e5bfe909f8abd9672f16609c435daa87eb450",
     "evals/emitter_step_lower.ts": "38c49a093bb91b16d058baba69303a15277e40bbeeb3aff1bf4ec0c1831817b3",
     "evals/template_step_lower.ts": "24bb3b87949f3d68073e2ec407c339b75f5124a877106d24fbc27ca9dbb95de3",
@@ -185460,7 +185455,7 @@
     "bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8"
   },
   "outputs": {
-    "checkpoints/emitter_steps_v1.bend": "4c79c6855cb84b2e8c7d07e9c0fc35584b4c17fe81e6b14c5ed79af46f9e768c",
+    "checkpoints/emitter_steps_v1.bend": "7f7c8d2e57a3fcd3925b4286a8300668ae91b7e11a26317cea6da2df5c9ea425",
     "checkpoints/emitter_steps_component_v1.bend": "e6bd090dc9b2a0b381e4a896922c91869571445b194a60898d893e1f2ce3b3c8"
   },
   "validation": {
@@ -185468,5 +185463,5 @@
     "nativeBuildRun": false,
     "testsRun": false
   },
-  "generationManifestSha256": "26b638aa0a9bdaf26a9e81b963dd100f1f1878df9e55a723d9ac93196d0845d1"
+  "generationManifestSha256": "b27313be23b7e3e0bbbfa75161be512fc685940a888ef6d9c9c38aea189fc2bb"
 }

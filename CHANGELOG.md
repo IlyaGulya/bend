@@ -16,11 +16,16 @@ latest one; the GitHub release carries the same notes.
   acceptance. Fresh candidate-native build, byte fixedpoint, twelve-sample
   throughput and consumer matrices are intentionally not run after rejection.
   Two source reviews and four changed-path C/JS scheduler/affine executions
-  passed. Rejected source: `10f1f3a3`; R12 remains accepted.
+  passed. Rejected source/frozen-input checkpoint: `e074c22d` (source
+  `10f1f3a3`). The generator and manifest contract are restored to R12;
+  three regenerated step sources match baseline bytes, and accepted native/image
+  hashes are unchanged. Four C/JS restoration executions pass. The heterogeneous
+  scheduler regression and C matrix registration are retained.
   `evals/receipts/producer2039g30_actual_profile.json`,
   `evals/receipts/producer2039g30_source_smoke.json`,
   `evals/receipts/producer2039g30_early_screen_invalid.json`,
-  `evals/receipts/producer2039g30_early_screen.json`.
+  `evals/receipts/producer2039g30_early_screen.json`,
+  `evals/receipts/producer2039g30_restored_r12.json`.
 
 - G29 profiles the retained R12/G28 checkers on identical bounded windows.
   Separate logical runs agree on 53,253,960 Node reads and 8,740,226 appends;

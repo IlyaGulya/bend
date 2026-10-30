@@ -4,7 +4,7 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
-### Отклонённый G30: isolated scheduler transport; восстановить R12
+### Отклонённый G30: isolated scheduler transport; R12 восстановлен
 
 Профили сняты с **неизменённого actual R12 selfhost image**, который сам
 parse/expand/check полный frozen root: 10 078 835 checker calls, окна
@@ -42,17 +42,22 @@ allocations/GC. Превышение 5% достаточно для отказа
 stage1/stage2 fixedpoint, 12 full-pipeline measurements и consumer matrices
 для G30 НЕ ЗАПУСКАЛИСЬ**. Полная qualification не заявляется.
 Source checkpoint `10f1f3a3`; corrected screen contract `6f7a75db`.
-Следующее действие — commit rejected evidence, восстановить только G30-owned
-generator/manifest contract из `f6f02bef`, regenerate checker/template/emitter
-steps и коротко проверить restoration на C/JS. Полезный heterogeneous scheduler
-regression и C matrix registration сохранить. Принятым baseline остаётся R12.
+Rejected source/frozen-input/evidence checkpoint: **`e074c22d`**.
+G30-owned generator и manifest contract восстановлены из `f6f02bef`;
+оба TS sources и три regenerated checker/template/emitter step sources
+побайтно совпали с R12. Accepted native/image SHA-256 не изменились.
+**Четыре C/JS restoration executions PASS**: scheduler fuel/boundary +
+heterogeneous U32→Bool continuation и checker affinity/error precedence.
+Полезный heterogeneous regression и C matrix registration сохранены.
+Это restoration proof, не новая полная qualification. Принятый baseline — R12.
 
 Evidence: `evals/receipts/producer2039g30_actual_profile.json`,
 `evals/receipts/producer2039g30_source_smoke.json`,
 `evals/receipts/producer2039g30_early_screen_invalid.json`,
 `evals/receipts/producer2039g30_balanced_screen_plan.json`,
 `evals/receipts/producer2039g30_early_screen.json`,
-`evals/receipts/producer2039g30_qualification_plan.json`.
+`evals/receipts/producer2039g30_qualification_plan.json`,
+`evals/receipts/producer2039g30_restored_r12.json`.
 Required early root: `checkpoints/.bootstrap_compiler_root_g30_screen.bend`,
 corpus: `checkpoints/local2039g30/root.screen.corpus.json`.
 

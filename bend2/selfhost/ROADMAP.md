@@ -130,10 +130,14 @@ rejects G30: checker −7.97%, peak RSS +11.07%, footprint +13.86%; memory excee
 the predeclared 5% limit. Both original unequal-residency samples are retained,
 not treated as comparative memory evidence. No fresh candidate-native build,
 fixedpoint, twelve-sample throughput or consumer matrix is run after rejection.
-R12 remains accepted; source `10f1f3a3`, corrected screen contract `6f7a75db`.
+R12 remains accepted; rejected checkpoint `e074c22d`, source `10f1f3a3`.
+Generator/manifest contract restored; three regenerated step sources match R12
+bytes, accepted native/image hashes are unchanged, and four C/JS restoration
+executions pass. Heterogeneous scheduler regression and C registration remain.
 `evals/receipts/producer2039g30_actual_profile.json`,
 `evals/receipts/producer2039g30_source_smoke.json`,
-`evals/receipts/producer2039g30_early_screen.json`.
+`evals/receipts/producer2039g30_early_screen.json`,
+`evals/receipts/producer2039g30_restored_r12.json`.
 
 ## Historical full native-seed checkpoint: G23
 
