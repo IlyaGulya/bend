@@ -5,22 +5,22 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
-- G30 isolates fuel-threaded scheduler transport, without G26's other changes.
-  Actual unchanged R12 selfhost-image CPU/allocation windows identify repeated
-  RunState materialization; this is not the canonical-checker Map.bit path.
-  The inner loop threads progress and heterogeneous stack to the quantum
-  boundary, preserving source continuations, trace pauses and quantum64.
-  Two independent source reviews find no blocker; four changed-path C/JS
-  scheduler/affine executions pass after two baseline executions.
-  The first actual-image pair exposed unequal module residency: control shared
-  one parser/checker module; candidate retained two. Both samples are retained,
-  but their memory comparison is invalid. A balanced two-module rerun keeps
-  compiler bytes, limits and the >5% rejection rule unchanged. Full qualification
-  is not started; R12 stays accepted.
+- G30's isolated fuel-threaded scheduler transport is rejected at its mandatory
+  balanced actual-selfhost screen. Checker time falls 7.97%, but peak RSS rises
+  11.07% and footprint 13.86%, exceeding the predeclared 5% limit. Source hash,
+  10,078,835 check steps, source counts and word-tape hash agree.
+  The original pair exposed a control-only module-cache alias; both original
+  samples are retained as invalid for memory comparison. The repaired pair
+  asserts two module instances in each lane without changing compiler bytes,
+  corpus, runtime, limits or rejection rule. Neither pair is full performance
+  acceptance. Fresh candidate-native build, byte fixedpoint, twelve-sample
+  throughput and consumer matrices are intentionally not run after rejection.
+  Two source reviews and four changed-path C/JS scheduler/affine executions
+  passed. Rejected source: `10f1f3a3`; R12 remains accepted.
   `evals/receipts/producer2039g30_actual_profile.json`,
   `evals/receipts/producer2039g30_source_smoke.json`,
   `evals/receipts/producer2039g30_early_screen_invalid.json`,
-  `evals/receipts/producer2039g30_balanced_screen_plan.json`.
+  `evals/receipts/producer2039g30_early_screen.json`.
 
 - G29 profiles the retained R12/G28 checkers on identical bounded windows.
   Separate logical runs agree on 53,253,960 Node reads and 8,740,226 appends;

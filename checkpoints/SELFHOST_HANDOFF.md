@@ -4,7 +4,7 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
-### G30: isolated scheduler transport; ещё не принят
+### Отклонённый G30: isolated scheduler transport; восстановить R12
 
 Профили сняты с **неизменённого actual R12 selfhost image**, который сам
 parse/expand/check полный frozen root: 10 078 835 checker calls, окна
@@ -26,22 +26,33 @@ Accepted R12 native compiler уже собрал actual candidate JS image из 
 source root: 31 757 877 B, SHA-256
 `04851b115eef16c929858f48224e524873c61606c8e2f59c789be58c452a8dc3`.
 Это early image build, **не** fresh candidate-native build и не fixedpoint.
-Первый actual-image A/B завершён, но memory comparison недействителен:
-control импортировал parser/checker по одному URL (один module instance),
-candidate — по двум URL (два instances). Checker 260 379.493 → 230 425.161 ms;
-RSS +21.25%, footprint +24.15% относятся к неравной residency, не к изолированному
-compiler change. Оба исходных samples сохранены; full qualification остановлена.
-Harness исправляется отдельным parser URL query в ОБОИХ lanes, без изменения
-compiler bytes, frozen corpus, limits и >5% rule. До результата balanced A/B
-никакой performance acceptance или source memory regression не заявляется.
-Далее только для жизнеспособного кандидата: fresh full root/fixedpoint и все
-12 paired measurements с `--fail-fast-performance=true`, consumers — лишь
-если mandatory gate не отклонил кандидата. Принятым baseline остаётся R12.
+Первый actual-image A/B имел неравную residency: control разделял один
+parser/checker module instance, candidate держал два. Оба исходных samples
+сохранены как invalid для memory comparison; compiler bytes не менялись.
+Исправление harness — отдельный parser URL query в ОБОИХ lanes, с явным
+assert двух instances. Source, frozen corpus, runtime, limits и >5% rule сохранены.
+
+**Balanced actual-image screen отклонил G30**: checker
+255 616.553 → 235 247.880 ms (−7.97%), peak RSS
+2 157 690 880 → 2 396 553 216 B (+11.07%), footprint
+1 916 419 520 → 2 182 021 176 B (+13.86%). Source hash, все 10 078 835 check
+steps, final source counts и word-tape SHA совпали. Одна diagnostic pair
+не доказывает устойчивое ускорение; memory ratios не атрибутируются отдельным
+allocations/GC. Превышение 5% достаточно для отказа: **fresh native build,
+stage1/stage2 fixedpoint, 12 full-pipeline measurements и consumer matrices
+для G30 НЕ ЗАПУСКАЛИСЬ**. Полная qualification не заявляется.
+Source checkpoint `10f1f3a3`; corrected screen contract `6f7a75db`.
+Следующее действие — commit rejected evidence, восстановить только G30-owned
+generator/manifest contract из `f6f02bef`, regenerate checker/template/emitter
+steps и коротко проверить restoration на C/JS. Полезный heterogeneous scheduler
+regression и C matrix registration сохранить. Принятым baseline остаётся R12.
 
 Evidence: `evals/receipts/producer2039g30_actual_profile.json`,
 `evals/receipts/producer2039g30_source_smoke.json`,
 `evals/receipts/producer2039g30_early_screen_invalid.json`,
-`evals/receipts/producer2039g30_balanced_screen_plan.json`.
+`evals/receipts/producer2039g30_balanced_screen_plan.json`,
+`evals/receipts/producer2039g30_early_screen.json`,
+`evals/receipts/producer2039g30_qualification_plan.json`.
 Required early root: `checkpoints/.bootstrap_compiler_root_g30_screen.bend`,
 corpus: `checkpoints/local2039g30/root.screen.corpus.json`.
 

@@ -123,13 +123,17 @@ runner are retained; the rejected source tail walk is removed.
 `evals/receipts/producer2039g29_restored_r12.json`.
 
 G30 isolates the scheduler fuel-threaded transition loop from G26, with no
-arena/name/descriptor/publication cutover. Actual unmodified R12 selfhost-image
-CPU/allocation windows identify per-transition RunState producers; source review
-and four changed-path C/JS executions pass. Clean actual-image screening precedes
-fresh candidate-native/fixedpoint and twelve paired measurements. Mandatory
-failure stops consumers immediately; the accepted baseline remains R12.
+arena/name/descriptor/publication cutover. Actual R12 selfhost-image profiles
+identify per-transition RunState producers; two source reviews and four
+changed-path C/JS executions pass. The corrected two-module actual-image screen
+rejects G30: checker −7.97%, peak RSS +11.07%, footprint +13.86%; memory exceeds
+the predeclared 5% limit. Both original unequal-residency samples are retained,
+not treated as comparative memory evidence. No fresh candidate-native build,
+fixedpoint, twelve-sample throughput or consumer matrix is run after rejection.
+R12 remains accepted; source `10f1f3a3`, corrected screen contract `6f7a75db`.
 `evals/receipts/producer2039g30_actual_profile.json`,
-`evals/receipts/producer2039g30_source_smoke.json`.
+`evals/receipts/producer2039g30_source_smoke.json`,
+`evals/receipts/producer2039g30_early_screen.json`.
 
 ## Historical full native-seed checkpoint: G23
 

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "status": "PREPARED_NOT_STARTED_PENDING_EARLY_SCREEN",
+  "status": "NOT_STARTED_EARLY_BALANCED_SCREEN_REJECTED",
   "compilerAccepted": false,
   "performanceAccepted": false,
   "byteFixedpoint": false,
@@ -91,5 +91,21 @@
   ],
   "note": "Actual-image screen must pass before this command starts. --fail-fast-performance=true rejects before consumer matrices. Original acceptance contracts, ABI13, quantum64 and fuel8M remain.",
   "invalidOriginalScreen": "evals/receipts/producer2039g30_early_screen_invalid.json",
-  "balancedPlan": "evals/receipts/producer2039g30_balanced_screen_plan.json"
+  "balancedPlan": "evals/receipts/producer2039g30_balanced_screen_plan.json",
+  "decision": {
+    "rejected": true,
+    "failures": [
+      {
+        "metric": "peakRssBytes",
+        "ratio": 1.110702760165534,
+        "threshold": 1.05
+      },
+      {
+        "metric": "peakFootprintBytes",
+        "ratio": 1.1385926480231219,
+        "threshold": 1.05
+      }
+    ],
+    "action": "Stop remaining candidate qualification and restore R12; no full native build, fixedpoint, twelve-sample throughput or consumer matrices for G30."
+  }
 }
