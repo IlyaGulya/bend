@@ -1,0 +1,267 @@
+{
+  "schemaVersion": 1,
+  "status": "PREDECLARED_G30_RECONSIDERATION_BEFORE_REPEATED_RESULTS",
+  "compilerAccepted": false,
+  "performanceAccepted": false,
+  "byteFixedpoint": false,
+  "sourceCheckpoint": "10f1f3a3",
+  "acceptedBaseline": {
+    "runId": "local2039g24r12",
+    "sourceCheckpoint": "5916d410",
+    "restoredFrom": "72d2964e",
+    "native": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+      "sha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "bytes": 18808824,
+      "matches": true
+    },
+    "image": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+      "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "bytes": 31758507,
+      "matches": true
+    },
+    "acceptance": {
+      "path": "/Users/ilyagulya/Projects/My/bend/evals/receipts/root2039g24r12_native_fixedpoint.json",
+      "sha256": "cb66ed5542e56516f83d2c04fb80f5ab8597130ab137a4128be8491391911d50",
+      "sourceCheckpoint": "5916d410",
+      "byteFixedpoint": true
+    }
+  },
+  "acceptedRestorationCheckpoint": "e59ca0d3",
+  "scope": "Reconsider exactly the retained G30 image, not another optimization or patched image. Old G30 rejection under the assistant-chosen 5% heuristic remains historical; this method does not inherit that unsupported relative-memory cutoff.",
+  "hardLimits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000,
+    "workerStackMiB": 256,
+    "workerOldGenerationMiB": 6144,
+    "workerYoungGenerationMiB": 128
+  },
+  "measurement": {
+    "order": [
+      {
+        "role": "control",
+        "repetition": 1
+      },
+      {
+        "role": "candidate",
+        "repetition": 1
+      },
+      {
+        "role": "candidate",
+        "repetition": 2
+      },
+      {
+        "role": "control",
+        "repetition": 2
+      },
+      {
+        "role": "control",
+        "repetition": 3
+      },
+      {
+        "role": "candidate",
+        "repetition": 3
+      }
+    ],
+    "freshWorkerPerSample": true,
+    "modulesPerLane": 2,
+    "inspectorInTimingRuns": false,
+    "allOriginalSamplesRetained": true,
+    "priorPairs": [
+      "evals/receipts/producer2039g30_early_screen_invalid.json",
+      "evals/receipts/producer2039g30_early_screen.json"
+    ],
+    "priorPairsNotPooled": true,
+    "relativeTimeCutoff": null,
+    "relativeMemoryCutoff": null,
+    "decision": "Stop on semantic/provenance failure or the original hard resource guards. Report paired timing, spread, RSS/footprint and used/reserved heap separately. A repeatable checker gain permits full qualification, never compiler acceptance by itself."
+  },
+  "separateDiagnostics": {
+    "windows": [
+      {
+        "start": 1000000,
+        "end": 1250000
+      },
+      {
+        "start": 4000000,
+        "end": 4250000
+      },
+      {
+        "start": 8000000,
+        "end": 8250000
+      }
+    ],
+    "cpuAndAllocationSampling": true,
+    "profiledTimeExcluded": true,
+    "gcEvents": "Observe worker GC entries separately from unprofiled timings; distinguish used/reserved heap and RSS without a full heap snapshot or forced-GC timing."
+  },
+  "fullQualification": {
+    "required": [
+      "Fresh full-root native validation, no excluded checks or output patches",
+      "Actual native-stage0 -> stage1 -> stage2 exact byte fixedpoint",
+      "Original interleaved native/JS full-pipeline samples on the frozen corpus",
+      "Applicable original fixture and consumer suites"
+    ],
+    "memoryPolicy": "Report any time/memory tradeoff explicitly; no acceptance claim solely from the arbitrary old 5% screen. Keep R12 accepted until evidence and disposition are complete."
+  },
+  "requests": [
+    {
+      "role": "control",
+      "repetition": 1,
+      "path": "/private/tmp/bend-g31-recheck-F7pWcZ/control-1.request.json",
+      "sha256": "5d323d700ab78c8c65834427b75e8d7b01c953f83a3c909ba767d1ce8c6e4767",
+      "report": "/private/tmp/bend-g31-recheck-F7pWcZ/control-1.result.json",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/private/tmp/bend-g30-actual-9MbUpo/early-balanced.mjs",
+        "/private/tmp/bend-g31-recheck-F7pWcZ/control-1.request.json",
+        "/private/tmp/bend-g31-recheck-F7pWcZ/control-1.result.json"
+      ]
+    },
+    {
+      "role": "candidate",
+      "repetition": 1,
+      "path": "/private/tmp/bend-g31-recheck-F7pWcZ/candidate-1.request.json",
+      "sha256": "83a2597b8d5e2fd30777be2093cc7d0eecfa69469ce84e8e76db20986144c257",
+      "report": "/private/tmp/bend-g31-recheck-F7pWcZ/candidate-1.result.json",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/private/tmp/bend-g30-actual-9MbUpo/early-balanced.mjs",
+        "/private/tmp/bend-g31-recheck-F7pWcZ/candidate-1.request.json",
+        "/private/tmp/bend-g31-recheck-F7pWcZ/candidate-1.result.json"
+      ]
+    },
+    {
+      "role": "candidate",
+      "repetition": 2,
+      "path": "/private/tmp/bend-g31-recheck-F7pWcZ/candidate-2.request.json",
+      "sha256": "4e965c765d65c127182097d2b4b95910886e1ccbc1653399e36892cbe843c78a",
+      "report": "/private/tmp/bend-g31-recheck-F7pWcZ/candidate-2.result.json",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/private/tmp/bend-g30-actual-9MbUpo/early-balanced.mjs",
+        "/private/tmp/bend-g31-recheck-F7pWcZ/candidate-2.request.json",
+        "/private/tmp/bend-g31-recheck-F7pWcZ/candidate-2.result.json"
+      ]
+    },
+    {
+      "role": "control",
+      "repetition": 2,
+      "path": "/private/tmp/bend-g31-recheck-F7pWcZ/control-2.request.json",
+      "sha256": "3e6cca9cd870f5796e00a2b741be6659337dacc80fd56a34b7a9605d81c5c97d",
+      "report": "/private/tmp/bend-g31-recheck-F7pWcZ/control-2.result.json",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/private/tmp/bend-g30-actual-9MbUpo/early-balanced.mjs",
+        "/private/tmp/bend-g31-recheck-F7pWcZ/control-2.request.json",
+        "/private/tmp/bend-g31-recheck-F7pWcZ/control-2.result.json"
+      ]
+    },
+    {
+      "role": "control",
+      "repetition": 3,
+      "path": "/private/tmp/bend-g31-recheck-F7pWcZ/control-3.request.json",
+      "sha256": "922d134b9c8b87224d61be341f4084adfb8950bc8d4806af4999b1d2ab033851",
+      "report": "/private/tmp/bend-g31-recheck-F7pWcZ/control-3.result.json",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/private/tmp/bend-g30-actual-9MbUpo/early-balanced.mjs",
+        "/private/tmp/bend-g31-recheck-F7pWcZ/control-3.request.json",
+        "/private/tmp/bend-g31-recheck-F7pWcZ/control-3.result.json"
+      ]
+    },
+    {
+      "role": "candidate",
+      "repetition": 3,
+      "path": "/private/tmp/bend-g31-recheck-F7pWcZ/candidate-3.request.json",
+      "sha256": "cfc47ffa8b73f71dfff2909d23b2fe50e238ae30b01c88308361c6136a63a4a4",
+      "report": "/private/tmp/bend-g31-recheck-F7pWcZ/candidate-3.result.json",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/private/tmp/bend-g30-actual-9MbUpo/early-balanced.mjs",
+        "/private/tmp/bend-g31-recheck-F7pWcZ/candidate-3.request.json",
+        "/private/tmp/bend-g31-recheck-F7pWcZ/candidate-3.result.json"
+      ]
+    }
+  ],
+  "driver": {
+    "path": "/private/tmp/bend-g30-actual-9MbUpo/early-balanced.mjs",
+    "sha256": "62dc4c80ac0c7454a7e526899122906ddcd67bbd03a60a133267de7770ec54f8",
+    "sourceInReceipt": "evals/receipts/producer2039g30_balanced_screen_plan.json"
+  },
+  "candidate": {
+    "path": "/private/tmp/bend-g30-actual-9MbUpo/candidate-actual.js",
+    "sha256": "04851b115eef16c929858f48224e524873c61606c8e2f59c789be58c452a8dc3",
+    "bytes": 31757877
+  },
+  "executedTimingCommand": "env HEAVY_GATE_MEMORY_MIB=8192 HEAVY_GATE_RSS_MIB=8192 HEAVY_GATE_POLL_MS=10 HEAVY_GATE_TIMEOUT_MS=600000 BUN_JSC_forceRAMSize=4294967296 \"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun\" \"evals/heavy_gate.ts\" \"--memory-mib\" \"8192\" \"--rss-mib\" \"8192\" \"--poll-ms\" \"10\" \"--timeout-ms\" \"600000\" \"--\" \"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\" \"/private/tmp/bend-g30-actual-9MbUpo/early-balanced.mjs\" \"/private/tmp/bend-g31-recheck-F7pWcZ/control-1.request.json\" \"/private/tmp/bend-g31-recheck-F7pWcZ/control-1.result.json\" && env HEAVY_GATE_MEMORY_MIB=8192 HEAVY_GATE_RSS_MIB=8192 HEAVY_GATE_POLL_MS=10 HEAVY_GATE_TIMEOUT_MS=600000 BUN_JSC_forceRAMSize=4294967296 \"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun\" \"evals/heavy_gate.ts\" \"--memory-mib\" \"8192\" \"--rss-mib\" \"8192\" \"--poll-ms\" \"10\" \"--timeout-ms\" \"600000\" \"--\" \"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\" \"/private/tmp/bend-g30-actual-9MbUpo/early-balanced.mjs\" \"/private/tmp/bend-g31-recheck-F7pWcZ/candidate-1.request.json\" \"/private/tmp/bend-g31-recheck-F7pWcZ/candidate-1.result.json\" && env HEAVY_GATE_MEMORY_MIB=8192 HEAVY_GATE_RSS_MIB=8192 HEAVY_GATE_POLL_MS=10 HEAVY_GATE_TIMEOUT_MS=600000 BUN_JSC_forceRAMSize=4294967296 \"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun\" \"evals/heavy_gate.ts\" \"--memory-mib\" \"8192\" \"--rss-mib\" \"8192\" \"--poll-ms\" \"10\" \"--timeout-ms\" \"600000\" \"--\" \"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\" \"/private/tmp/bend-g30-actual-9MbUpo/early-balanced.mjs\" \"/private/tmp/bend-g31-recheck-F7pWcZ/candidate-2.request.json\" \"/private/tmp/bend-g31-recheck-F7pWcZ/candidate-2.result.json\" && env HEAVY_GATE_MEMORY_MIB=8192 HEAVY_GATE_RSS_MIB=8192 HEAVY_GATE_POLL_MS=10 HEAVY_GATE_TIMEOUT_MS=600000 BUN_JSC_forceRAMSize=4294967296 \"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun\" \"evals/heavy_gate.ts\" \"--memory-mib\" \"8192\" \"--rss-mib\" \"8192\" \"--poll-ms\" \"10\" \"--timeout-ms\" \"600000\" \"--\" \"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\" \"/private/tmp/bend-g30-actual-9MbUpo/early-balanced.mjs\" \"/private/tmp/bend-g31-recheck-F7pWcZ/control-2.request.json\" \"/private/tmp/bend-g31-recheck-F7pWcZ/control-2.result.json\" && env HEAVY_GATE_MEMORY_MIB=8192 HEAVY_GATE_RSS_MIB=8192 HEAVY_GATE_POLL_MS=10 HEAVY_GATE_TIMEOUT_MS=600000 BUN_JSC_forceRAMSize=4294967296 \"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun\" \"evals/heavy_gate.ts\" \"--memory-mib\" \"8192\" \"--rss-mib\" \"8192\" \"--poll-ms\" \"10\" \"--timeout-ms\" \"600000\" \"--\" \"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\" \"/private/tmp/bend-g30-actual-9MbUpo/early-balanced.mjs\" \"/private/tmp/bend-g31-recheck-F7pWcZ/control-3.request.json\" \"/private/tmp/bend-g31-recheck-F7pWcZ/control-3.result.json\" && env HEAVY_GATE_MEMORY_MIB=8192 HEAVY_GATE_RSS_MIB=8192 HEAVY_GATE_POLL_MS=10 HEAVY_GATE_TIMEOUT_MS=600000 BUN_JSC_forceRAMSize=4294967296 \"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun\" \"evals/heavy_gate.ts\" \"--memory-mib\" \"8192\" \"--rss-mib\" \"8192\" \"--poll-ms\" \"10\" \"--timeout-ms\" \"600000\" \"--\" \"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\" \"/private/tmp/bend-g30-actual-9MbUpo/early-balanced.mjs\" \"/private/tmp/bend-g31-recheck-F7pWcZ/candidate-3.request.json\" \"/private/tmp/bend-g31-recheck-F7pWcZ/candidate-3.result.json\""
+}
