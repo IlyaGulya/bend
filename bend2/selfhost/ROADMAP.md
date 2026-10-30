@@ -166,6 +166,19 @@ This is restoration evidence, not a new full qualification.
 `evals/receipts/producer2039g31_qualification_failure.json`,
 `evals/receipts/producer2039g31_restored_r12.json`.
 
+G32 starts from restored R12 (`18954122`) and implements aggregate transport
+in common BIR rather than rewriting scheduler source. Private producer/consumer
+workers use `LetValues`/`ReturnValues`; public/foreign/closure conventions stay
+boxed. Ten actual C/JS transport executions and twelve ABI-boundary verdicts
+pass, including duplicate owners, long tails, captures and wide result banks.
+The initial production-root attempt fails before native build: a new
+`s_reach_atoms` helper follows its first live use. That failed run is retained;
+the helper is moved before `s_reach_block` and production qualification is
+being repeated. No G32 fixedpoint or performance acceptance is claimed.
+`evals/receipts/producer2039g32_plan.json`,
+`evals/receipts/producer2039g32_probe.json`,
+`evals/receipts/producer2039g32_initial_failure.json`.
+
 ## Historical full native-seed checkpoint: G23
 
 The earlier accepted checkpoint is **remote2039g23**, compiler source

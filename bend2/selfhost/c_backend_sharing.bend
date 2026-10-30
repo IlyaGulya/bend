@@ -1346,6 +1346,11 @@ def s_reach_op(op: BIR.Op, reach: Reach) -> Reach:
     case BIR.HasTag{value, constructor, tag}: s_reach_atom(value, reach)
     case _: reach
 
+def s_reach_atoms(values: List<&2, BIR.Atom>, reach: Reach) -> Reach:
+  match values:
+    case Nil{}: reach
+    case +value <> rest: s_reach_atoms(rest, s_reach_atom(value, reach))
+
 def s_reach_block(block: BIR.Block, reach: Reach) -> Reach:
   match block:
     case BIR.Return{value}: s_reach_atom(value, reach)
@@ -1358,11 +1363,6 @@ def s_reach_block(block: BIR.Block, reach: Reach) -> Reach:
     case BIR.TailDirect{code, args}: s_reach_args(args, s_reach_add_code(reach, code))
     case BIR.TailApply{fn, arg}: s_reach_value_arg(arg, s_reach_atom(fn, s_reach_dynamic(reach)))
     case BIR.Failure{message}: reach
-
-def s_reach_atoms(values: List<&2, BIR.Atom>, reach: Reach) -> Reach:
-  match values:
-    case Nil{}: reach
-    case +value <> rest: s_reach_atoms(rest, s_reach_atom(value, reach))
 
 def s_reach_body_if(on: Bool, body: BIR.Block, +reach: Reach) -> Reach:
   match on:
