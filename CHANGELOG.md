@@ -5,6 +5,17 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- G30 isolates fuel-threaded scheduler transport, without G26's other changes.
+  Actual unchanged R12 selfhost-image CPU/allocation windows identify repeated
+  RunState materialization; this is not the canonical-checker Map.bit path.
+  The inner loop threads progress and heterogeneous stack to the quantum
+  boundary, preserving source continuations, trace pauses and quantum64.
+  Two independent source reviews find no blocker; four changed-path C/JS
+  scheduler/affine executions pass after two baseline executions.
+  Actual-image screening and full qualification are pending; R12 stays accepted.
+  `evals/receipts/producer2039g30_actual_profile.json`,
+  `evals/receipts/producer2039g30_source_smoke.json`.
+
 - G29 profiles the retained R12/G28 checkers on identical bounded windows.
   Separate logical runs agree on 53,253,960 Node reads and 8,740,226 appends;
   G28 additionally decodes 223,267,270 fields. These are operations, not bytes.

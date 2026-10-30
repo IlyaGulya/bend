@@ -122,6 +122,15 @@ C/JS restoration executions pass. The useful Unicode regression and fail-fast
 runner are retained; the rejected source tail walk is removed.
 `evals/receipts/producer2039g29_restored_r12.json`.
 
+G30 isolates the scheduler fuel-threaded transition loop from G26, with no
+arena/name/descriptor/publication cutover. Actual unmodified R12 selfhost-image
+CPU/allocation windows identify per-transition RunState producers; source review
+and four changed-path C/JS executions pass. Clean actual-image screening precedes
+fresh candidate-native/fixedpoint and twelve paired measurements. Mandatory
+failure stops consumers immediately; the accepted baseline remains R12.
+`evals/receipts/producer2039g30_actual_profile.json`,
+`evals/receipts/producer2039g30_source_smoke.json`.
+
 ## Historical full native-seed checkpoint: G23
 
 The earlier accepted checkpoint is **remote2039g23**, compiler source

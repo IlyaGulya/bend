@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "algorithm": "raw-AST typed boxed-continuation CPS with bounded dependent request groups, dependency-first ordered match, projection values, bounded nonrecursive storage islands, bounded private-helper result deforestation, bounded private-region helper/continuation inlining and quantity-checked alias scalarization, and structurally recursive native heterogeneous-stack chunks",
+  "algorithm": "raw-AST typed boxed-continuation CPS with bounded dependent request groups, dependency-first ordered match, projection values, bounded nonrecursive storage islands, bounded private-helper result deforestation, bounded private-region helper/continuation inlining and quantity-checked alias scalarization, and fuel-threaded structurally recursive native heterogeneous-stack transitions",
   "generationConfig": {
     "base": "bend2/base.bend",
     "canonical": "bend2/selfhost/checker.bend",
@@ -110,7 +110,7 @@
     "bend2/selfhost/checked_frontend.bend": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checked_frontend.bend",
     "/Users/ilyagulya/Projects/My/bend/bend2/base.bend": "/Users/ilyagulya/Projects/My/bend/bend2/base.bend"
   },
-  "nativeTerminationClaim": "Generated source handlers and continuation helpers form an acyclic declaration graph. Result-deforested producer and continuation helpers are private, acyclic and emitted before their users; each forwards the same affine fields and captures once. Single-use private helpers are additionally spliced into their sole call site only after alpha-freshening every retained binder and checking every parameter quantity, which removes a call but introduces no new declaration, recursion or effect. Only the native chunk scheduler is self-recursive, structurally decreasing an operational Nat on every RunState transition. Zero returns the remaining Run unchanged; RunFinished returns directly. Native push/pop transfers affine progress, resume and stack once, never reassociates Bound and never allocates composition closures. This does not alter canonical semantic fuel or claim termination of the complete host-driven computation.",
+  "nativeTerminationClaim": "Generated source handlers and continuation helpers form an acyclic declaration graph. Result-deforested producer and continuation helpers are private, acyclic and emitted before their users; each forwards the same affine fields and captures once. Single-use private helpers are additionally spliced into their sole call site only after alpha-freshening every retained binder and checking every parameter quantity, which removes a call but introduces no new declaration, recursion or effect. Only the inner native scheduler checker_chunk_state is self-recursive: each progress/stack transition consumes one operational Nat and recurses on its predecessor. The public chunk unpacks a Run once. Fuel zero materializes the remaining progress and stack unchanged; RunFinished returns directly. Native push/pop transfers affine progress, resume and stack once, never reassociates Bound and never allocates composition closures. This does not alter canonical semantic fuel or claim termination of the complete host-driven computation.",
   "progressABI": "typed-native-stack-v57t",
   "boxedTransport": {
     "type": "CheckerValue",
@@ -132,6 +132,7 @@
   },
   "nativeChunk": {
     "function": "checker_chunk",
+    "stateFunction": "checker_chunk_state",
     "rawStep": "checker_step_one",
     "publicStep": "checker_step",
     "start": "checker_start",
@@ -156,15 +157,19 @@
     "stackDoneConstructor": "CheckerStackDone",
     "stackMoreConstructor": "CheckerStackMore",
     "castBoxFunction": "checker_cast_box",
-    "popFunction": "checker_pop",
-    "advanceFunction": "checker_advance",
+    "innerTransition": "one fuel unit per progress/stack transition; progress and stack pass directly through checker_chunk_state without intermediate RunState transport",
+    "runMaterialization": [
+      "quantum boundary (fuel zero)",
+      "StackDone completion",
+      "trace Begin/End pause continuation"
+    ],
     "stackOwnership": "Affine heterogeneous native LIFO; no host stack, no Bound reassociation, no Compose nodes, no per-site constructors",
     "sourceResumeClosuresUnchanged": true,
     "directInvokeUnchanged": true,
     "publicStepType": "-R: Type, Run<R> -> Run<R>",
     "exportedResume": false,
     "selfRecursiveFunctions": [
-      "checker_chunk"
+      "checker_chunk_state"
     ]
   },
   "ffi": false,
@@ -189788,7 +189793,7 @@
     "evals/validation_profile.ts": "d0bfd8124b334cb1db4792e49675290a971ae82730e57029173b07ff23d6938d",
     "checkpoints/checker-core-owned-source-v1.json": "3ecb7f9d98a61d58b383e489bbc6195ad0b56c053baebaa3184533d490c29425",
     "checkpoints/checker_core_owned_driver_v1.bend": "58bfe1831fc56fe479e47076dc22aad608e321f51b51ee3c195d6bb706c6e3df",
-    "evals/checker_core_step_lower.ts": "21a47855e891ab115fb2ce4c70b7b699b376c6488f2505b7f0d6893f8d66daf9",
+    "evals/checker_core_step_lower.ts": "847b8a73c782c0bd4790f19e7f467bc791efe59028433c46d1e9261a65d052d9",
     "evals/checker_core_owned_source.ts": "7b9fc4fb80aa87ef0ce44310031e5bfe909f8abd9672f16609c435daa87eb450",
     "evals/emitter_step_lower.ts": "38c49a093bb91b16d058baba69303a15277e40bbeeb3aff1bf4ec0c1831817b3",
     "evals/template_step_lower.ts": "24bb3b87949f3d68073e2ec407c339b75f5124a877106d24fbc27ca9dbb95de3",
@@ -189824,7 +189829,7 @@
     "/Users/ilyagulya/Projects/My/bend/bend2/base.bend": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614"
   },
   "outputs": {
-    "checkpoints/checker_core_steps_v1.bend": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+    "checkpoints/checker_core_steps_v1.bend": "a363d62be499f0316754768bc6e869467e3624f6f7f280332c5480b2be650982",
     "checkpoints/checker_core_steps_component_v1.bend": "ca15a467e804983f454a63e9db64a38c1077a2d49104d488556d0609557521cf",
     "checkpoints/checker_core_steps_driver_v1.bend": "0a21e90c6eca75d51684c5c75fd52fae28a86d7f369052d7943a7101f9a1bfc8"
   },
@@ -189833,5 +189838,5 @@
     "nativeBuildRun": false,
     "testsRun": false
   },
-  "generationManifestSha256": "3752622b4eb925ba16bba8969789d13d875c018e4fe737f9c60357b19b6ca6aa"
+  "generationManifestSha256": "4d8a32b8a94bb7e3da6af6c741f3f50907f8e86024972cd01df606257dd2c13a"
 }

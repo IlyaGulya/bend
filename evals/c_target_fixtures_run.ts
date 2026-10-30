@@ -79,11 +79,12 @@ const fixtures = ['evals/c_target_wide_record', 'evals/c_target_nested_adt',
   'tests/run/runtime_string_cmp', 'tests/run/native_map_read_positions',
   'tests/run/native_map_read_shapes', 'tests/run/native_map_read_unique',
   'tests/run/native_map_find_shapes', 'tests/run/runtime_string_eq',
+  'evals/scheduler_chunk_smoke',
   'tests/compile/js_split_capture_chain',
   'tests/compile/js_scalar_local_record', 'tests/compile/js_scalar_region_tail',
   'tests/compile/js_record_field_projection',
   'tests/compile/js_multi_chain', 'tests/compile/js_multi_arity',
-  ...(target === 'js' ? ['evals/checker_affinity_step_smoke', 'evals/scheduler_chunk_smoke',
+  ...(target === 'js' ? ['evals/checker_affinity_step_smoke',
     'tests/compile/js_multi_reentrant', 'tests/compile/js_multi_identity',
     'tests/compile/js_multi_boxed_adapter', 'tests/compile/js_map_find_identity'] : [])];
 const selected = smokeCase === undefined ? fixtures : fixtures.filter(name => name.endsWith('/' + smokeCase) || name === smokeCase);

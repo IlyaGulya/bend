@@ -4,6 +4,39 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
+### G30: isolated scheduler transport; ещё не принят
+
+Профили сняты с **неизменённого actual R12 selfhost image**, который сам
+parse/expand/check полный frozen root: 10 078 835 checker calls, окна
+1M–1.25M / 4M–4.25M / 8M–8.25M. Host constructor adaptation отсутствует.
+Actual `Map.bit` — лишь 0.6–2.0% sampled CPU, не canonical 23.5–40.2%.
+Горячие scheduler continuations создают промежуточный RunState на каждом
+переходе; chunk немедленно его разбирает. Профиль — не timing acceptance.
+
+G30 отдельно проверяет fuel-threaded progress/heterogeneous-stack loop из
+старого G26 prototype `49e98524`, **без** arena/name/descriptor/publication
+изменений того отвергнутого пакета. Run материализуется на границе quantum64,
+при завершении или trace pause. Source resume/invoke, ABI13 и fuel8M сохранены.
+Два независимых adversarial source review не нашли блокера. Canonical C/JS
+smoke до изменения: 2 executions; после: 4 executions, включая 0/1/63/64/65
+fuel, Pending/Direct/Bound и heterogeneous/affine continuation results.
+Обычный scheduler fixture теперь зарегистрирован и в C consumer matrix.
+
+Accepted R12 native compiler уже собрал actual candidate JS image из полного
+source root: 31 757 877 B, SHA-256
+`04851b115eef16c929858f48224e524873c61606c8e2f59c789be58c452a8dc3`.
+Это early image build, **не** fresh candidate-native build и не fixedpoint.
+Чистый actual-image checker A/B запущен до дорогой полной квалификации.
+Rule: >5% regression checker time/RSS/footprint или semantic mismatch — отказ.
+Далее только для жизнеспособного кандидата: fresh full root/fixedpoint и все
+12 paired measurements с `--fail-fast-performance=true`, consumers — лишь
+если mandatory gate не отклонил кандидата. Принятым baseline остаётся R12.
+
+Evidence: `evals/receipts/producer2039g30_actual_profile.json`,
+`evals/receipts/producer2039g30_source_smoke.json`.
+Required early root: `checkpoints/.bootstrap_compiler_root_g30_screen.bend`,
+corpus: `checkpoints/local2039g30/root.screen.corpus.json`.
+
 ### Отклонённый G29: Map.bit tail walk; R12 восстановлен
 
 Парные CPU/allocation profiles R12/G28 сняты на тех же окнах public checker:
