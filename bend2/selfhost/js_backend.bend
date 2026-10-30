@@ -2043,17 +2043,17 @@ def emit_linked_plan(planned: LinkResult, program: BIR.Program, loaded: List<&2,
 def emit_checked(+program: BIR.Program, sources: List<&2, LinkSource>, loaded: List<&2, BIR.SourceFile>) -> EmitResult:
   match program:
     case BIR.Program{_, _, _, _, _, end}:
-      emit_checked_exports(ending_check(end, js_native_markers(program)), program, sources, loaded)
-def emit_checked_exports(check: Maybe<&2, String>, program: BIR.Program, sources: List<&2, LinkSource>, loaded: List<&2, BIR.SourceFile>) -> EmitResult:
+      +natives = js_native_markers(program)
+      emit_checked_exports(ending_check(end, natives), program, sources, loaded, natives)
+def emit_checked_exports(check: Maybe<&2, String>, program: BIR.Program, sources: List<&2, LinkSource>, loaded: List<&2, BIR.SourceFile>, +natives: Map<&2, String>) -> EmitResult:
   match check:
     case Some{message}: EmitFailure{message, Ast.SpanOf{"", 0n, 0n}}
-    case None{}: emit_effects(program, js_effect_sources(sources, loaded, js_known_keys(program), Nil{}))
-def emit_effects(program: BIR.Program, effects: JSEffects) -> EmitResult:
+    case None{}: emit_effects(program, js_effect_sources(sources, loaded, js_known_keys(program), Nil{}), natives)
+def emit_effects(program: BIR.Program, effects: JSEffects, +natives: Map<&2, String>) -> EmitResult:
   match effects:
     case JSEffectsFailure{message, span}: EmitFailure{message, span}
-    case JSEffectsReady{text}: EmitSuccess{program_source(program, text)}
-def program_source(+program: BIR.Program, effects: String) -> String:
-  +natives = js_native_markers(program)
+    case JSEffectsReady{text}: EmitSuccess{program_source(program, text, natives)}
+def program_source(+program: BIR.Program, effects: String, +natives: Map<&2, String>) -> String:
   match js_scalar_program(program):
     case BIR.Program{bodies, values, +layouts, types, functions, end}:
       cat([js_runtime(), js_runtime_direct(), js_runtime_extra(), js_runtime_show(), js_runtime_cli(), js_runtime_io(), js_runtime_array(), js_runtime_foreign(), js_runtime_namespace(), primitive_runtime(), map_find_runtime(layouts), constructor_layouts(layouts), families(types), type_functions(functions), effects, codes(bodies), declarations(values, natives, 0n), ending(end, natives)])
