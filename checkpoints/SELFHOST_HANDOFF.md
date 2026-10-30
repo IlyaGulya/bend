@@ -23,6 +23,11 @@ Native artifact, bootstrap/fixedpoint, paired series и late consumer gates
 Rejected source/frozen inputs/evidence фиксируются перед восстановлением R12
 и отдельным E10. `checkpoints/local2039g37e06-outcome/outcome.json`.
 
+Rejected source/frozen checkpoint: **`d8b684ef`**. R12 восстановлен:
+21 source check, три regenerated-source hashes, два accepted artifacts,
+полный прежний scratch SHA/arity и шесть actual canonical C/JS consumers PASS.
+`checkpoints/local2039g37e06-restored/restored.json`.
+
 ### Отклонённый G36 / E05: semantic preflight PASS, native hard cap FAIL
 
 Bounded existing-BIR pass проверен на **52** original/optimized C/JS executions,

@@ -86,12 +86,6 @@ FIR obligations listed in `FIR_LAWS.md`, in particular:
 - FIR contains no type descriptors; descriptor construction and normalization
   are BIR responsibilities (`lower_catalog.descriptor`, `DescriptorNf`).
 
-The catalog carries the descriptor normalizer built from its exact immutable
-family and type-function lists into runtime lowering. Lowering reuses those
-indexes, not normalization answers: environment, binder level, fuel and failure
-behavior remain properties of each normalization call. This context lives only
-in the transient catalog/lowering state and is not stored in `BIR.Program`.
-
 Lowering re-checks only the facts it needs (for example namespace/path identity
 in `Catalog.prepare_modules`, `lower_catalog.bend:1411-1441`); it is not a
 second checker.

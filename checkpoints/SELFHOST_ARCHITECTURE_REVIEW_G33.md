@@ -547,3 +547,8 @@ Native artifact, bootstrap/fixedpoint, paired performance и поздние cons
 
 **E06 завершён: G37 rejected, broad result cache STOP.**
 Primary evidence: [original native outcome, source corpus and separate authorities](local2039g37e06-outcome/outcome.json).
+Rejected source/frozen checkpoint: `d8b684ef`. После него R12 восстановлен:
+21 source check, три regenerated sources, два accepted artifacts, исходные
+scratch bytes/arity и шесть canonical C/JS executions подтверждены.
+[Restoration proof](local2039g37e06-restored/restored.json) — не новая full
+qualification или fixedpoint.

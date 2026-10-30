@@ -20,6 +20,10 @@ cap; no native executable/bootstrap/fixedpoint/throughput exists. The source
 version is **rejected**. Broad result caching also remains STOP: the measured
 full workload had no exact-identity normalization-result repeats.
 Evidence: `checkpoints/local2039g37e06-outcome/outcome.json`.
+Rejected source/frozen inputs: `d8b684ef`; verified R12 restoration:
+`checkpoints/local2039g37e06-restored/restored.json`. All 21 source checks,
+three regenerated sources, two artifacts, original scratch arity and six
+canonical C/JS executions pass; no new full qualification is inferred.
 
 ## G36 / E05: bounded pass rejected at native codegen
 

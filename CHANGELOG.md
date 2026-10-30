@@ -16,6 +16,10 @@ latest one; the GitHub release carries the same notes.
   performance exists. Failed source-wrapper/admission setups remain failures;
   they are not relabeled as own-frontend normalizer coverage.
   `checkpoints/local2039g37e06-outcome/outcome.json`.
+  Rejected source/frozen inputs: `d8b684ef`. R12 is restored with all 21 source
+  checks, three regenerated-source hashes, two accepted artifacts, original
+  scratch arity and six actual canonical C/JS consumers verified:
+  `checkpoints/local2039g37e06-restored/restored.json`.
 - G36 / E05's bounded existing-BIR direct-field continuation pass is rejected
   by the original 8-GiB native-codegen limit. All 52 original/optimized C/JS
   diagnostic executions, six actual full-compiler metadata sites, and four

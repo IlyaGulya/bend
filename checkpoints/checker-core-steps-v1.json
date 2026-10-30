@@ -189786,7 +189786,7 @@
     "bend2/base.bend": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
     "evals/heavy_gate.ts": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015",
     "evals/validation_profile.ts": "d0bfd8124b334cb1db4792e49675290a971ae82730e57029173b07ff23d6938d",
-    "checkpoints/checker-core-owned-source-v1.json": "6a253392a7334ac62105d924baa50caf669198199d4599f1360f5ede0e869850",
+    "checkpoints/checker-core-owned-source-v1.json": "3ecb7f9d98a61d58b383e489bbc6195ad0b56c053baebaa3184533d490c29425",
     "checkpoints/checker_core_owned_driver_v1.bend": "58bfe1831fc56fe479e47076dc22aad608e321f51b51ee3c195d6bb706c6e3df",
     "evals/checker_core_step_lower.ts": "21a47855e891ab115fb2ce4c70b7b699b376c6488f2505b7f0d6893f8d66daf9",
     "evals/checker_core_owned_source.ts": "7b9fc4fb80aa87ef0ce44310031e5bfe909f8abd9672f16609c435daa87eb450",
@@ -189810,7 +189810,7 @@
     "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/backend_ir.bend": "c0286db6b192bf5cc917774b7ea5e393d4416263432eb130fb8393b1dffc1cb3",
     "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_backend_sharing.bend": "05adf4ac68b0658425f7fce430709f67bd29c3f1f8a43727412661084c4dbe2c",
     "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/emitter.bend": "47d68ba5f0b54c334e2c940b7bb6aabc7f3bba27142b816f27df8225cf3fae4f",
-    "/Users/ilyagulya/Projects/My/bend/checkpoints/emitter_owned_v1.bend": "6ac5349419769fed1c276f862870ef34ef23ded7f2a3023860f50c95d7990fda",
+    "/Users/ilyagulya/Projects/My/bend/checkpoints/emitter_owned_v1.bend": "8d82537fa6e02f07e88eb1cbd378223e7d3f75599df34265dc9fb24358e05fac",
     "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/core.bend": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
     "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/sha256.bend": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
     "bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
@@ -189833,5 +189833,5 @@
     "nativeBuildRun": false,
     "testsRun": false
   },
-  "generationManifestSha256": "bc1469f97ad8c72cb68ce05973a31afa81e219e3a3eaa629ca2df095a9a630b7"
+  "generationManifestSha256": "3752622b4eb925ba16bba8969789d13d875c018e4fe737f9c60357b19b6ca6aa"
 }

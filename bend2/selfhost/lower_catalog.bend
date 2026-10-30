@@ -24,11 +24,8 @@ type Constructor is Data:
   Constructor{layout: BIR.ConstructorLayout, quantities: List<&2, BIR.Quantity>, parameters: Nat, family: String}
 type Registry is Data:
   Registry{definitions: Map<&2, DefinitionHeader>, constructors: Map<&2, Constructor>}
-# The normalizer indexes exactly these immutable family/type-function lists.
-# Carry it into runtime lowering; it is pass-local metadata, never part of BIR.
-# Normalization still evaluates every descriptor with its original budget.
 type Catalog is Data:
-  Catalog{definitions: List<&2, Definition>, registry: Registry, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>, type_functions: List<&2, BIR.TypeFunction>, next_code: U32, ending: BIR.Ending, normalizer: DescriptorNf.NfContext}
+  Catalog{definitions: List<&2, Definition>, registry: Registry, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>, type_functions: List<&2, BIR.TypeFunction>, next_code: U32, ending: BIR.Ending}
 type CatalogResult<-T: Type> is Type:
   CatalogResult{source: Arena.Arena, value: T}
 type Telescope is Data:
@@ -717,25 +714,25 @@ def lookup_constructor(registry: Registry, symbol: IR.Symbol) -> Maybe<&2, Const
   constructor_key(registry, symbol_key(symbol))
 def get_definitions(catalog: Catalog) -> List<&2, Definition>:
   match catalog:
-    case Catalog{values, _, _, _, _, _, _, _}: values
+    case Catalog{values, _, _, _, _, _, _}: values
 def get_registry(catalog: Catalog) -> Registry:
   match catalog:
-    case Catalog{_, value, _, _, _, _, _, _}: value
+    case Catalog{_, value, _, _, _, _, _}: value
 def get_constructors(catalog: Catalog) -> List<&2, BIR.ConstructorLayout>:
   match catalog:
-    case Catalog{_, _, values, _, _, _, _, _}: values
+    case Catalog{_, _, values, _, _, _, _}: values
 def get_families(catalog: Catalog) -> List<&2, BIR.Family>:
   match catalog:
-    case Catalog{_, _, _, values, _, _, _, _}: values
+    case Catalog{_, _, _, values, _, _, _}: values
 def get_type_functions(catalog: Catalog) -> List<&2, BIR.TypeFunction>:
   match catalog:
-    case Catalog{_, _, _, _, values, _, _, _}: values
+    case Catalog{_, _, _, _, values, _, _}: values
 def get_next_code(catalog: Catalog) -> U32:
   match catalog:
-    case Catalog{_, _, _, _, _, value, _, _}: value
+    case Catalog{_, _, _, _, _, value, _}: value
 def get_ending(catalog: Catalog) -> BIR.Ending:
   match catalog:
-    case Catalog{_, _, _, _, _, _, value, _}: value
+    case Catalog{_, _, _, _, _, _, value}: value
 def native_match_insert_definition_0(v_13: Maybe<&2, Definition>, +v_1: String, v_3: Definition, +v_6: Map<&2, Definition>) -> Map<&2, Definition>:
   match v_13:
     case Some{_}:
@@ -1479,7 +1476,7 @@ def native_match_build_finish_0(v_74: CatalogResult<Needed>, v_2: List<&2, IR.Lo
       v_46 = normalize_foreign_definitions(v_25, v_47)
       match ending(v_10, v_34, v_44, v_40, v_46, v_4, v_47):
         case CatalogResult{v_42, v_43}:
-          v_48 = Catalog{List.reverse(&2, Definition, v_46), v_44, List.reverse(&2, BIR.ConstructorLayout, v_28), v_45, v_41, v_31, v_43, v_47}
+          v_48 = Catalog{List.reverse(&2, Definition, v_46), v_44, List.reverse(&2, BIR.ConstructorLayout, v_28), v_45, v_41, v_31, v_43}
           Built{Checked.CheckedProgram{v_42, v_2, v_4, v_6}, v_48}
 
 def native_match_build_finish_2(admitted: Bool, v_0: Arena.Arena, v_2: List<&2, IR.LoadedModule>, v_4: List<&2, Scope.ArenaGlobal>, v_6: List<&2, Checked.ModuleMetadata>, v_10: Maybe<&2, List<&2, String>>, v_25: List<&2, Definition>, v_26: Map<&2, Definition>, v_27: Map<&2, DefinitionHeader>, v_28: List<&2, BIR.ConstructorLayout>, v_29: Map<&2, Constructor>, v_30: List<&2, BIR.Family>, v_31: U32, v_33: List<&2, Root>, v_34: Maybe<&2, BIR.Descriptor>) -> BuildResult:
