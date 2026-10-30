@@ -23,6 +23,17 @@ there is no native artifact, candidate stage1/fixedpoint or paired throughput.
 Candidate-stage1 full-source lifetime proof remains **missing**, not a pass;
 the existing JS foreign reentry fixture has no C source alternative.
 **Rejected**: `checkpoints/local2039g39e12-outcome/outcome.json`.
+Rejected source/frozen-input checkpoint: `df25e286`. R12 restoration verifies
+21 source checks, three regenerated-source hashes, both accepted artifacts
+and six actual canonical C/JS executions:
+`checkpoints/local2039g39e12-restored/restored.json`.
+
+**E01–E13 complete.** No new compiler candidate is accepted. Diagnostics that
+admitted source changes were followed by the original qualification chain;
+mandatory cap/performance failures stop later gates rather than becoming
+passes. Final per-experiment ledger:
+`evals/receipts/experiments_e01_e13_completed.json`;
+`checkpoints/SELFHOST_ARCHITECTURE_REVIEW_G33.md`, §10.
 
 ## G38 / E10: emission-local marker map rejected at native codegen
 

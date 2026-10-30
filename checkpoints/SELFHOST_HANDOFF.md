@@ -23,6 +23,17 @@ Stage1 lifetime proof — `MISSING_PROOF`; C reentry — `MISSING_SOURCE_ALTERNA
 поскольку исходный foreign fixture содержит только JS. Ни owner death через
 другие roots, ни retained bytes, ни engine allocations не объявлены доказанными.
 Source/frozen inputs и compact evidence: `local2039g39e12-outcome/outcome.json`.
+Rejected source/frozen checkpoint: **`df25e286`**. R12 восстановлен:
+21 source checks, три regenerated-source hashes, оба accepted artifacts
+и шесть actual canonical C/JS executions:
+`local2039g39e12-restored/restored.json`.
+
+**E01–E13 завершены; незакрытых опытов в этом каталоге нет.** GO diagnostics
+доведены до source versions и исходного fail-fast qualification. Ни один
+кандидат не принят; accepted baseline — G24R12. Failed/missing later gates
+не объявляются пройденными. Общий ledger:
+`../evals/receipts/experiments_e01_e13_completed.json`;
+итоговая таблица — `SELFHOST_ARCHITECTURE_REVIEW_G33.md`, §10.
 
 ### G38 / E10 отклонён: exact marker reuse PASS, native RSS cap FAIL
 

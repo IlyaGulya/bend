@@ -2,9 +2,9 @@
 
 ## 1. Решение и статус
 
-Это запрошенная архитектурная консультация, не реализация G34, не новая версия компилятора и не acceptance. Два независимых `thorough-task-executor` исследовали архитектуру и программу опытов; родитель сверил ключевые контракты по текущему коду, оспорил первоначальный приоритет fusion и объединил результаты. Production sources, fixtures, runtime и существующие receipts не изменялись. Новые compiler runs, профили и fixedpoint здесь не выполнялись.
+Первоначальная консультация и программа опытов сохранены в §§2–8 как исторический план. После неё **E01–E13 исполнены до явных GO/STOP dispositions**; результаты — §9, итоговый каталог — §10. Диагностики, давшие GO, доведены до изолированных source versions и исходной полной qualification chain с fail-fast на mandatory failure. Это не означает, что все опыты прошли: ни один новый compiler candidate не принят.
 
-**Решение: не начинать общий G34 fusion pass по умолчанию.** Сначала различить три конкретные возможности: уменьшить реально выполняемую checker metadata-work; убрать повторную работу под неизменным контекстом; найти дополнительное безопасное BIR-покрытие поверх уже существующего fusion. Затем выбрать **одну** реализацию, а не пакет улучшений. R12 остаётся принятой базой.
+**Текущее решение: оставить принятую G24R12.** Все source candidates G34–G39 отклонены по исходным deadline/memory/performance gates; исходники, regression/frozen inputs и compact evidence каждого зафиксированы до отката. После G39 R12 восстановлен и проверен: 21 source checks, три regenerated-source hashes, оба accepted artifacts и шесть actual canonical C/JS executions. Новый общий fusion/cache/layout pass не объявляется принятой оптимизацией.
 
 Метки: **ФАКТ** — наблюдение source/receipt; **ВЫВОД** — интерпретация; **ПРЕДЛОЖЕНИЕ** — ещё не выполненный опыт/контракт; **НЕИЗВЕСТНО** — не измерено или не доказано. Законы FIR/BIR — спецификация с открытыми proof obligations, не сертификат любого преобразования. Их внутренние номера строк местами исторические; при реализации проверять актуальные символы.
 
@@ -618,3 +618,38 @@ Required frozen source и compact executed receipt:
 [G39 outcome](local2039g39e12-outcome/outcome.json).
 Гарантии не распространяются на pre-entry throws, другие owner roots,
 retained-byte или engine-allocation savings.
+
+## 10. E01–E13: окончательный исполненный каталог
+
+Все опыты закрыты в исходном scope. **Complete не означает PASS или accepted.**
+Провал mandatory prerequisite останавливает последующие fixedpoint/performance/
+consumer gates; ни один такой пропуск не перекрашен в успешный результат.
+
+| Опыт | Исполненный результат | Окончательный disposition |
+|---|---|---|
+| E01 — fusion coverage | Шесть bounded metadata sites выражаются existing BIR | GO реализован в E05; новый generic optimizer не принят |
+| E02 — analysis/rewrite/validation | Три native и три JS source cuts; обе width validations сохранены | GO реализован в E05; диагностические timings не acceptance |
+| E03 — boxed/mailbox/direct | 54 probe outputs пройдены; все три mandatory full checkers упали в canonical `String_to_list` | STOP; transport winner не выбран |
+| E04 — retaining paths | Живые captures нужны; найден конкретный obsolete argument suffix | GO ограничен E12; live frames целиком не удаляются |
+| E05 — known continuation | Actual transform/source proofs пройдены | G36 rejected: native footprint cap |
+| E06 — normalization/index reuse | Exact NF repeats отсутствуют; узкий immutable index handoff проверен | Memoization STOP; G37 rejected: native RSS cap |
+| E07 — canonical query | Все измеренные walks пустые; hoist добавляет работу | STOP без source cutover |
+| E08 — publication walk | Genuine native/stage1/stage2 byte fixedpoint; все 12 original paired samples сохранены | G35 rejected: native RSS и JS RSS/footprint memory rules |
+| E09 — metadata updates | Native и actual stage1 пройдены | G34 rejected: stage-two-check bootstrap deadline |
+| E10 — emission analyses | One exact marker map; полный own-source/admission/export proof | G38 rejected: native RSS cap |
+| E11 — result shapes/joins | Для доказанного bounded target достаточно existing Code/Let/Direct/TailDirect | STOP новой IR schema |
+| E12 — frame layout/lifetime | Actual source-emitted runtime consumers и отдельный generic protocol пройдены | G39 rejected: native RSS cap; candidate stage1 proof отсутствует |
+| E13 — arena field views | Getter возвращает existing stored Node, не decoded copy | STOP decode-elimination wrapper |
+
+Machine-readable primary receipt/hash для каждого опыта, исходные runtime/
+limits/policy, source/rejection/restoration checkpoints и final proof:
+[completed ledger](../evals/receipts/experiments_e01_e13_completed.json).
+Все 12 E08 rows остаются в original qualification receipt, без удаления
+неудобных измерений и без нового процента tolerance.
+
+G39 rejected source/frozen checkpoint — **`df25e286`**. Финальный
+[R12 restoration proof](local2039g39e12-restored/restored.json) подтверждает
+исходники, regenerated sources, accepted native/image hashes и реальные C/JS
+executions. Это восстановление уже принятой R12, не новый fixedpoint или
+performance acceptance. Generated images, AST transports, profiles и bulk
+logs в Git не включены; required source corpus и compact receipts включены.

@@ -1,0 +1,614 @@
+{
+  "schemaVersion": 1,
+  "status": "E01_E13_COMPLETE_ALL_SOURCE_CANDIDATES_REJECTED_R12_RESTORED",
+  "allExperimentsComplete": true,
+  "completedExperiments": 13,
+  "pendingExperiments": [],
+  "acceptedCompiler": "G24R12",
+  "compilerAcceptanceChanged": false,
+  "performanceAccepted": false,
+  "newFixedpointClaim": false,
+  "experiments": [
+    {
+      "id": "E01",
+      "title": "Incremental fusion coverage",
+      "complete": true,
+      "decision": "GO implemented as E05; six bounded sites fit existing BIR, not a generic fusion acceptance",
+      "primary": {
+        "path": "evals/receipts/experiments_e01_e04_e07_e11_discovery.json",
+        "sha256": "c4bf69126619dd4e901f20c16b4c3e79c3a0ef12a1faad7c4ab63a919689b13f",
+        "status": "DISCOVERY_COMPLETE_E01_E04_E07_E11_DIAGNOSTIC_ONLY"
+      }
+    },
+    {
+      "id": "E02",
+      "title": "Analysis/rewrite/validation ablation",
+      "complete": true,
+      "decision": "COMPLETE; three native and three JS cuts; retain both width validations; GO to E05, no timing acceptance",
+      "primary": {
+        "path": "evals/receipts/experiments_e02_ablation.json",
+        "sha256": "f0bef409a2bb447eefc934b3401f065bd53534fee2e9024d466487ff60d38f8e",
+        "status": "E02_COMPLETE_NATIVE_AND_JS_DIAGNOSTIC_ONLY"
+      }
+    },
+    {
+      "id": "E03",
+      "title": "Boxed/mailbox/direct transport and JIT",
+      "complete": true,
+      "decision": "STOP; 54 real probe outputs pass, all three mandatory full checkers fail canonical String_to_list stack; no transport winner",
+      "primary": {
+        "path": "evals/receipts/experiments_e03_transport.json",
+        "sha256": "c3070e35ec6cf9f04d5d639afa3ce9e08700df805291f076c3a3e44b5c75f280",
+        "status": "E03_COMPLETE_STOP_MANDATORY_MATCHED_CANONICAL_FULL_CHECKER_STACK_OVERFLOW"
+      }
+    },
+    {
+      "id": "E04",
+      "title": "Continuation/source retaining paths",
+      "complete": true,
+      "decision": "COMPLETE; preserve live captures; concrete obsolete retired argument suffix admits E12 only",
+      "primary": {
+        "path": "evals/receipts/experiments_e01_e04_e07_e11_discovery.json",
+        "sha256": "c4bf69126619dd4e901f20c16b4c3e79c3a0ef12a1faad7c4ab63a919689b13f",
+        "status": "DISCOVERY_COMPLETE_E01_E04_E07_E11_DIAGNOSTIC_ONLY"
+      }
+    },
+    {
+      "id": "E05",
+      "title": "Bounded known-continuation specialization",
+      "complete": true,
+      "decision": "REJECTED G36: actual transform/source proofs pass; full native compile_book footprint cap fails",
+      "primary": {
+        "path": "evals/receipts/producer2039g36e05_rejected.json",
+        "sha256": "ebf7188a51a161b8fb82f48be37b81c51f886d80c4475ee2f1436b1c048383c3",
+        "status": "G36_E05_REJECTED_FULL_NATIVE_CODEGEN_FOOTPRINT_LIMIT"
+      },
+      "sourceVersion": "G36"
+    },
+    {
+      "id": "E06",
+      "title": "Exact normalization repetition and immutable index reuse",
+      "complete": true,
+      "decision": "STOP broad memoization: no exact repeats; narrowed index handoff implemented, REJECTED G37 at original native RSS cap",
+      "primary": {
+        "path": "checkpoints/local2039g37e06-outcome/outcome.json",
+        "sha256": "80ef4c5e69602ab8081dd9775ea1b71ca05bbeba28a7238842a5c9f7ad33371c",
+        "status": "G37E06_REJECTED_ORIGINAL_G24_OUTCOME"
+      },
+      "sourceVersion": "G37"
+    },
+    {
+      "id": "E07",
+      "title": "Canonical query hoist",
+      "complete": true,
+      "decision": "STOP: all 628584 measured lookups short-circuit on empty lists; hoist would add work",
+      "primary": {
+        "path": "evals/receipts/experiments_e01_e04_e07_e11_discovery.json",
+        "sha256": "c4bf69126619dd4e901f20c16b4c3e79c3a0ef12a1faad7c4ab63a919689b13f",
+        "status": "DISCOVERY_COMPLETE_E01_E04_E07_E11_DIAGNOSTIC_ONLY"
+      }
+    },
+    {
+      "id": "E08",
+      "title": "Repeated publication walk",
+      "complete": true,
+      "decision": "REJECTED G35: genuine native/stage1/stage2 fixedpoint and all twelve original samples; strict paired memory gate fails",
+      "primary": {
+        "path": "evals/receipts/producer2039g35e08_qualification.json",
+        "sha256": "ae5f3353834d3be9556047d33edeb1e14dcd5430f7a21d11d3feec4bc55c319c",
+        "status": "G35_E08_REJECTED_STRICT_PAIRED_MEMORY_GATE"
+      },
+      "sourceVersion": "G35"
+    },
+    {
+      "id": "E09",
+      "title": "Avoid unchanged metadata updates",
+      "complete": true,
+      "decision": "REJECTED G34: native and actual stage1 complete; stage-two-check exceeds original 600000ms bootstrap deadline",
+      "primary": {
+        "path": "evals/receipts/producer2039g34_qualification.json",
+        "sha256": "e780bc1e31ceba7791675dc2e0a9ea91209c5ce9e18280c3ee7b6ecceda6130d",
+        "status": "G34_REJECTED_REAL_STAGE_TWO_CHECK_BOOTSTRAP_DEADLINE"
+      },
+      "sourceVersion": "G34"
+    },
+    {
+      "id": "E10",
+      "title": "Emission-local analysis reuse",
+      "complete": true,
+      "decision": "REJECTED G38: exact marker-map reuse passes complete own-source/admission/export proof, full native RSS cap fails",
+      "primary": {
+        "path": "checkpoints/local2039g38e10-outcome/outcome.json",
+        "sha256": "8275377e77e11c582824c840ae9320733fc3247bb3325c4f6e66a6a3ec180b2c",
+        "status": "G38E10_REJECTED_ORIGINAL_G24_OUTCOME"
+      },
+      "sourceVersion": "G38"
+    },
+    {
+      "id": "E11",
+      "title": "New result shapes and local joins",
+      "complete": true,
+      "decision": "STOP schema extension: existing Code/Let/Direct/TailDirect express demonstrated target; bounded proof, not arbitrary recursive/free-region claim",
+      "primary": {
+        "path": "evals/receipts/experiments_e01_e04_e07_e11_discovery.json",
+        "sha256": "c4bf69126619dd4e901f20c16b4c3e79c3a0ef12a1faad7c4ab63a919689b13f",
+        "status": "DISCOVERY_COMPLETE_E01_E04_E07_E11_DIAGNOSTIC_ONLY"
+      }
+    },
+    {
+      "id": "E12",
+      "title": "Live continuation layout/lifetime",
+      "complete": true,
+      "decision": "REJECTED G39: actual source-emitted runtime consumers/protocol pass, full native RSS cap fails; candidate stage1 proof missing",
+      "primary": {
+        "path": "checkpoints/local2039g39e12-outcome/outcome.json",
+        "sha256": "ba81dedd6d426f7a09b82d01bd3b32b4eb28d1de1d48c5289f50e1eb81f31913",
+        "status": "G39E12_REJECTED_ORIGINAL_G24_OUTCOME"
+      },
+      "sourceVersion": "G39"
+    },
+    {
+      "id": "E13",
+      "title": "Arena field views before packing",
+      "complete": true,
+      "decision": "STOP decode-elimination wrapper: real getter returns the existing stored object; no decoded Node materialization to remove",
+      "primary": {
+        "path": "evals/receipts/experiments_e13_field_access.json",
+        "sha256": "393a020f689f47c63b106a8454210790476618c35d870bd4abb2568d3c81b974",
+        "status": "E13_EXECUTED_STOP_NEW_DECODE_ELIMINATION_WRAPPER"
+      }
+    }
+  ],
+  "stoppingRule": "Each diagnostic reaches its declared GO/STOP. Every admitted production source candidate attempts original full qualification; failed mandatory prerequisites stop later native/fixedpoint/performance/consumer gates, never substitute or fabricate them. Completion does not mean every experiment passed.",
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "runtime": {
+    "node": {
+      "command": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "version": "v23.11.0",
+      "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5"
+    },
+    "bun": {
+      "command": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "version": "1.4.3",
+      "sha256": "28c7dd0a06916aba284d570ef44a2d70e9c538eaf2ba58dfe0910525563b3f79"
+    },
+    "clang": {
+      "command": "/usr/bin/clang",
+      "path": "/usr/bin/clang",
+      "version": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+      "sha256": "b8763cf250e607a778bb4603cecb5b90338814d0a3dfcba0d57b1de242f610e9"
+    }
+  },
+  "policy": {
+    "id": "g29-paired-full-root-strict-v1",
+    "repetitions": {
+      "control": 3,
+      "candidate": 3
+    },
+    "modes": [
+      "native",
+      "js"
+    ],
+    "rules": {
+      "pipelineMs": "candidate arithmetic mean AND median strictly less than control",
+      "peakRssBytes": "candidate median less than or equal to control",
+      "peakFootprintBytes": "candidate median less than or equal to control"
+    },
+    "rows": "all 12 authenticated measurements are required; original rows are never excluded",
+    "scope": "rejection evidence only; never compiler or performance acceptance"
+  },
+  "E08": {
+    "primary": {
+      "path": "evals/receipts/producer2039g35e08_qualification.json",
+      "sha256": "ae5f3353834d3be9556047d33edeb1e14dcd5430f7a21d11d3feec4bc55c319c"
+    },
+    "genuineByteFixedpoint": true,
+    "originalPairedRows": 12,
+    "failedMemoryRules": [
+      "native: peakRssMedianNotIncreased is false",
+      "js: peakRssMedianNotIncreased is false",
+      "js: peakFootprintMedianNotIncreased is false"
+    ],
+    "laterConsumers": "NOT_RUN_AFTER_MANDATORY_PERFORMANCE_REJECTION"
+  },
+  "candidateCheckpoints": [
+    {
+      "version": "G34",
+      "rejectedSourceAndEvidence": "43c77525",
+      "restoredR12": "360e326c"
+    },
+    {
+      "version": "G35",
+      "rejectedSourceAndEvidence": "914b218c",
+      "restoredR12": "44bd0353"
+    },
+    {
+      "version": "G36",
+      "rejectedSourceAndEvidence": "ce28d3c0",
+      "restoredR12": "6e6debc2"
+    },
+    {
+      "version": "G37",
+      "rejectedSourceAndEvidence": "d8b684ef",
+      "restoredR12": "b780d484"
+    },
+    {
+      "version": "G38",
+      "rejectedSourceAndEvidence": "7bd06515",
+      "restoredR12": "feb9b072"
+    },
+    {
+      "version": "G39",
+      "authored": "62d0ce6e",
+      "rejectedSourceAndEvidence": "df25e286",
+      "restoration": {
+        "path": "checkpoints/local2039g39e12-restored/restored.json",
+        "sha256": "684a6b73715f041659220d4a0b4e210ed4345e1a4009ae7bcc38f7ac972df661"
+      }
+    }
+  ],
+  "finalRestoration": {
+    "receipt": {
+      "path": "checkpoints/local2039g39e12-restored/restored.json",
+      "sha256": "684a6b73715f041659220d4a0b4e210ed4345e1a4009ae7bcc38f7ac972df661"
+    },
+    "status": "G39E12_R12_RESTORED_SOURCE_GENERATION_C_JS_PASS",
+    "baselineSourceChecks": 21,
+    "regeneratedSourceHashes": 3,
+    "acceptedArtifactHashes": 2,
+    "actualCanonicalCJSExecutions": 6,
+    "acceptedArtifacts": {
+      "native": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+        "sha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "bytes": 18808824,
+        "matches": true
+      },
+      "image": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+        "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+        "bytes": 31758507,
+        "matches": true
+      }
+    },
+    "commands": [
+      {
+        "label": "generate-checker_core_owned_source",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib",
+          "8192",
+          "--rss-mib",
+          "8192",
+          "--poll-ms",
+          "10",
+          "--timeout-ms",
+          "600000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/checker_core_owned_source.ts"
+        ],
+        "guardianOwner": "existing heavy_gate.ts",
+        "cwd": "/Users/ilyagulya/Projects/My/bend",
+        "environment": {
+          "HEAVY_GATE_MEMORY_MIB": "8192",
+          "HEAVY_GATE_RSS_MIB": "8192",
+          "HEAVY_GATE_POLL_MS": "10",
+          "HEAVY_GATE_TIMEOUT_MS": "600000",
+          "BUN_JSC_forceRAMSize": "4294967296"
+        },
+        "started": 1793402082864,
+        "finished": 1793402087170,
+        "elapsedMs": 4306,
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "error": null,
+        "stdout": {
+          "path": "/private/tmp/bend-e01-e13-jbsb4I/version-outcomes/g39-restored/generate-checker_core_owned_source.stdout",
+          "sha256": "38cc813d0e9c1ee361477f661350efabd22a5b9f0907f0af418e480bf075b432",
+          "bytes": 70
+        },
+        "stderr": {
+          "path": "/private/tmp/bend-e01-e13-jbsb4I/version-outcomes/g39-restored/generate-checker_core_owned_source.stderr",
+          "sha256": "a3e9317c913eb01e8ff406da58be324e648c725394457dd96bf3f3ad40c66cb1",
+          "bytes": 651
+        },
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 965394432,
+          "peakFootprintBytes": 477185272,
+          "elapsedMs": 4277,
+          "timeoutMs": 600000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "supervisorExitCode": 0,
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+            "--smol",
+            "/Users/ilyagulya/Projects/My/bend/evals/checker_core_owned_source.ts"
+          ],
+          "label": "heavy command",
+          "exitCode": 0,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793402082886-77ac4dae36d84047.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        }
+      },
+      {
+        "label": "generate-template_step_lower",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib",
+          "8192",
+          "--rss-mib",
+          "8192",
+          "--poll-ms",
+          "10",
+          "--timeout-ms",
+          "600000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/template_step_lower.ts"
+        ],
+        "guardianOwner": "existing heavy_gate.ts",
+        "cwd": "/Users/ilyagulya/Projects/My/bend",
+        "environment": {
+          "HEAVY_GATE_MEMORY_MIB": "8192",
+          "HEAVY_GATE_RSS_MIB": "8192",
+          "HEAVY_GATE_POLL_MS": "10",
+          "HEAVY_GATE_TIMEOUT_MS": "600000",
+          "BUN_JSC_forceRAMSize": "4294967296"
+        },
+        "started": 1793402087171,
+        "finished": 1793402087453,
+        "elapsedMs": 282,
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "error": null,
+        "stdout": {
+          "path": "/private/tmp/bend-e01-e13-jbsb4I/version-outcomes/g39-restored/generate-template_step_lower.stdout",
+          "sha256": "a0891daeade0b739942d0cd1fb5756fffd3f9785757ef35fce1dda6a639101cb",
+          "bytes": 273
+        },
+        "stderr": {
+          "path": "/private/tmp/bend-e01-e13-jbsb4I/version-outcomes/g39-restored/generate-template_step_lower.stderr",
+          "sha256": "f300fbbb1f17a7771d4dfcbad6103af55a0d68b671ec1081f5188a0d88308cbd",
+          "bytes": 644
+        },
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 160514048,
+          "peakFootprintBytes": 137757392,
+          "elapsedMs": 262,
+          "timeoutMs": 600000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "supervisorExitCode": 0,
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+            "--smol",
+            "/Users/ilyagulya/Projects/My/bend/evals/template_step_lower.ts"
+          ],
+          "label": "heavy command",
+          "exitCode": 0,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793402087186-a4c32b7431b64edd.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        }
+      },
+      {
+        "label": "generate-checker_core_step_lower",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib",
+          "8192",
+          "--rss-mib",
+          "8192",
+          "--poll-ms",
+          "10",
+          "--timeout-ms",
+          "600000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/checker_core_step_lower.ts"
+        ],
+        "guardianOwner": "existing heavy_gate.ts",
+        "cwd": "/Users/ilyagulya/Projects/My/bend",
+        "environment": {
+          "HEAVY_GATE_MEMORY_MIB": "8192",
+          "HEAVY_GATE_RSS_MIB": "8192",
+          "HEAVY_GATE_POLL_MS": "10",
+          "HEAVY_GATE_TIMEOUT_MS": "600000",
+          "BUN_JSC_forceRAMSize": "4294967296"
+        },
+        "started": 1793402087454,
+        "finished": 1793402090115,
+        "elapsedMs": 2661,
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "error": null,
+        "stdout": {
+          "path": "/private/tmp/bend-e01-e13-jbsb4I/version-outcomes/g39-restored/generate-checker_core_step_lower.stdout",
+          "sha256": "15106d14cc42f409e885d4eb231d51475190c624fc77818c8e8635ec0772ad65",
+          "bytes": 289
+        },
+        "stderr": {
+          "path": "/private/tmp/bend-e01-e13-jbsb4I/version-outcomes/g39-restored/generate-checker_core_step_lower.stderr",
+          "sha256": "39598a2afdf8a20d581742c558edbd0f11e794f13df46a2ea034b2a298ec6ecf",
+          "bytes": 649
+        },
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 473153536,
+          "peakFootprintBytes": 317555672,
+          "elapsedMs": 2641,
+          "timeoutMs": 600000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "supervisorExitCode": 0,
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+            "--smol",
+            "/Users/ilyagulya/Projects/My/bend/evals/checker_core_step_lower.ts"
+          ],
+          "label": "heavy command",
+          "exitCode": 0,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793402087468-cfa757725c53ac25.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        }
+      },
+      {
+        "label": "generate-emitter_step_lower",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib",
+          "8192",
+          "--rss-mib",
+          "8192",
+          "--poll-ms",
+          "10",
+          "--timeout-ms",
+          "600000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/emitter_step_lower.ts"
+        ],
+        "guardianOwner": "existing heavy_gate.ts",
+        "cwd": "/Users/ilyagulya/Projects/My/bend",
+        "environment": {
+          "HEAVY_GATE_MEMORY_MIB": "8192",
+          "HEAVY_GATE_RSS_MIB": "8192",
+          "HEAVY_GATE_POLL_MS": "10",
+          "HEAVY_GATE_TIMEOUT_MS": "600000",
+          "BUN_JSC_forceRAMSize": "4294967296"
+        },
+        "started": 1793402090116,
+        "finished": 1793402094434,
+        "elapsedMs": 4318,
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "error": null,
+        "stdout": {
+          "path": "/private/tmp/bend-e01-e13-jbsb4I/version-outcomes/g39-restored/generate-emitter_step_lower.stdout",
+          "sha256": "0de0601bbc26244bd3ac5000a8dcbfa78ddbf5f52a192c4c906bfac0799683ce",
+          "bytes": 277
+        },
+        "stderr": {
+          "path": "/private/tmp/bend-e01-e13-jbsb4I/version-outcomes/g39-restored/generate-emitter_step_lower.stderr",
+          "sha256": "8fa5afed6656d528b9bf1b94e1e1d93a9e26879c051eb261c36381264e67a0eb",
+          "bytes": 645
+        },
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 1042743296,
+          "peakFootprintBytes": 689964352,
+          "elapsedMs": 4293,
+          "timeoutMs": 600000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "supervisorExitCode": 0,
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+            "--smol",
+            "/Users/ilyagulya/Projects/My/bend/evals/emitter_step_lower.ts"
+          ],
+          "label": "heavy command",
+          "exitCode": 0,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793402090135-dd9cc24383140622.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        }
+      },
+      {
+        "label": "source-smoke",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "/Users/ilyagulya/Projects/My/bend/evals/g24_source_smoke.mjs",
+          "--node",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--bun",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--clang",
+          "/usr/bin/clang",
+          "--fixtures",
+          "evals/checker_arena_growth_smoke.bend,tests/reg/checker_arena_generation.bend,tests/reg/checker_arena_names.bend",
+          "--targets",
+          "c,js",
+          "--receipt",
+          "/private/tmp/bend-e01-e13-jbsb4I/version-outcomes/g39-restored/source-smoke.json"
+        ],
+        "guardianOwner": "g24_source_smoke.mjs internal per-stage guardians; no outer guardian",
+        "cwd": "/Users/ilyagulya/Projects/My/bend",
+        "environment": {
+          "HEAVY_GATE_MEMORY_MIB": "8192",
+          "HEAVY_GATE_RSS_MIB": "8192",
+          "HEAVY_GATE_POLL_MS": "10",
+          "HEAVY_GATE_TIMEOUT_MS": "600000",
+          "BUN_JSC_forceRAMSize": "4294967296"
+        },
+        "started": 1793402094434,
+        "finished": 1793402099414,
+        "elapsedMs": 4980,
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "error": null,
+        "stdout": {
+          "path": "/private/tmp/bend-e01-e13-jbsb4I/version-outcomes/g39-restored/source-smoke.stdout",
+          "sha256": "6fb056e8a29236b120c6ef914a56b9411199568af8989c4aeaad0e65e2b7ca61",
+          "bytes": 146
+        },
+        "stderr": {
+          "path": "/private/tmp/bend-e01-e13-jbsb4I/version-outcomes/g39-restored/source-smoke.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      }
+    ]
+  },
+  "nonClaims": [
+    "No new accepted optimization or performance win",
+    "Native hard-cap failures are not an established causal regression versus a new paired R12 build",
+    "E03 microprobe/JIT results are not full-checker transport qualification",
+    "G39 consumer cleanup is not candidate stage1/full-compiler owner-death, retained-byte or engine-allocation proof",
+    "G39 JS-only foreign reentry has no C source alternative",
+    "Failed/set-up or fail-fast-unexecuted paths remain failures/missing, not PASS",
+    "Generated images, AST transports, profiles and bulk logs remain outside Git; required frozen source inputs and compact receipts are committed"
+  ]
+}

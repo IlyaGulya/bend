@@ -16,6 +16,13 @@ latest one; the GitHub release carries the same notes.
   fixedpoint or paired throughput exists. C reentry has no source alternative;
   no retained-byte or engine-allocation benefit is claimed.
   `checkpoints/local2039g39e12-outcome/outcome.json`.
+  Rejected source/frozen inputs: `df25e286`. R12 is restored and verified:
+  21 source checks, three regenerated-source hashes, both accepted artifacts
+  and six actual canonical C/JS executions.
+  `checkpoints/local2039g39e12-restored/restored.json`.
+- E01–E13 are complete with executed GO/STOP dispositions; no candidate is
+  promoted. The accepted compiler remains G24R12. Full closure index:
+  `evals/receipts/experiments_e01_e13_completed.json`.
 - G38 / E10's emission-local native-marker map reuse is rejected by the original
   native-codegen RSS cap. All 16 actual own-frontend C/JS source/admission/export
   rows, 32 clean/probe emissions and 14 consumer executions pass. Every
