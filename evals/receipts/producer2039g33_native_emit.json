@@ -1,0 +1,874 @@
+{
+  "schemaVersion": 1,
+  "status": "PAIRED_NATIVE_EMIT_SAMPLES_COMPLETED",
+  "diagnosticOnly": true,
+  "compilerAccepted": false,
+  "performanceAccepted": false,
+  "commands": [
+    [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/heavy_gate.ts",
+      "--memory-mib",
+      "8192",
+      "--rss-mib",
+      "8192",
+      "--poll-ms",
+      "10",
+      "--timeout-ms",
+      "600000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "/private/tmp/bend-g33-diagnostics-gSUmym/native-emit-profile.mjs",
+      "--out-dir=/private/tmp/bend-g33-diagnostics-gSUmym/control-native-emit",
+      "--timeout-ms=600000",
+      "--sample-interval-ms=1",
+      "--source-map=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native.c",
+      "--",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+      "+RTS",
+      "--threads",
+      "1",
+      "--gpu",
+      "off",
+      "--RTS",
+      "/private/tmp/bend2039g22-tiny-inline/checkpoints/.bootstrap_compiler_root_remote2039g21.bend",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/base.bend",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/throughput/native-control-1.json.runtime.tsv",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/throughput/native-control-1.json.exports.txt",
+      "compile",
+      "/private/tmp/bend-g33-diagnostics-gSUmym/control-native-emit.output.mjs"
+    ],
+    [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/heavy_gate.ts",
+      "--memory-mib",
+      "8192",
+      "--rss-mib",
+      "8192",
+      "--poll-ms",
+      "10",
+      "--timeout-ms",
+      "600000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "/private/tmp/bend-g33-diagnostics-gSUmym/native-emit-profile.mjs",
+      "--out-dir=/private/tmp/bend-g33-diagnostics-gSUmym/candidate-native-emit",
+      "--timeout-ms=600000",
+      "--sample-interval-ms=1",
+      "--source-map=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/native.c",
+      "--",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/native",
+      "+RTS",
+      "--threads",
+      "1",
+      "--gpu",
+      "off",
+      "--RTS",
+      "/private/tmp/bend2039g22-tiny-inline/checkpoints/.bootstrap_compiler_root_remote2039g21.bend",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/base.bend",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/throughput/native-candidate-1.json.runtime.tsv",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/throughput/native-candidate-1.json.exports.txt",
+      "compile",
+      "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-native-emit.output.mjs"
+    ]
+  ],
+  "driver": {
+    "path": "/private/tmp/bend-g33-diagnostics-gSUmym/native-emit-profile.mjs",
+    "sha256": "5e9da8ee509b778068f2f89bb9dcfc867a6a5623f578cbcdaedf169ddc6429e0"
+  },
+  "roles": [
+    {
+      "role": "control",
+      "summary": {
+        "path": "/private/tmp/bend-g33-diagnostics-gSUmym/control-native-emit/summary.json",
+        "sha256": "2834be60a61c4c49aecb1ce05233a62edff7e58d80d18a0d740676e317fc1f30"
+      },
+      "status": "complete",
+      "child": {
+        "binary": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+        "binaryArgument": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "binaryUuid": "2317B82C-F715-388C-9CD2-64208CBEAD24",
+        "machO": {
+          "fileType": 2,
+          "segments": [
+            "__PAGEZERO",
+            "__TEXT",
+            "__DATA_CONST",
+            "__DATA",
+            "__LINKEDIT"
+          ],
+          "symbolCount": 24126,
+          "dwarfSegments": []
+        },
+        "pid": 96829,
+        "cwd": "/Users/ilyagulya/Projects/My/bend",
+        "spawnMs": 17.888125000000002,
+        "exitCode": 0,
+        "signal": null,
+        "timedOut": false,
+        "elapsedMs": 96565.54129200001,
+        "stdout": {
+          "path": "/private/tmp/bend-g33-diagnostics-gSUmym/control-native-emit/child.stdout",
+          "bytes": 69,
+          "sha256": "3583fa905367a04e4e49bf82ecc60043be4b30b044b7e765149a189f0883f3e2"
+        },
+        "stderr": {
+          "path": "/private/tmp/bend-g33-diagnostics-gSUmym/control-native-emit/child.stderr",
+          "bytes": 3423,
+          "sha256": "fb61d5d33699d4cb2f46da459d2ece0e6a4d1ab31eeab911f027b61da8643e67"
+        },
+        "protocol": {
+          "begin": {
+            "computeThreads": 1,
+            "parserFuel": 8000000,
+            "phase": "compile",
+            "phaseTraceVersion": 3
+          },
+          "fuelRows": 18,
+          "checkStart": {
+            "phase": "emit"
+          },
+          "checkEnd": {
+            "phase": "emit",
+            "elapsedMs": 16877.54,
+            "userCpuMs": 13986.771,
+            "systemCpuMs": 406.917,
+            "chunkAdvances": 1225492,
+            "chunkQuantum": 64
+          },
+          "errors": []
+        }
+      },
+      "phase": {
+        "name": "emit",
+        "identification": "native_compiler_host.c stderr protocol: NATIVE_PHASE_START {\"phase\":\"emit\"} ... NATIVE_PHASE {\"phase\":\"emit\",...}",
+        "startHelperMs": 78654.415,
+        "endHelperMs": 95530.958,
+        "helperObservedWallMs": 16876.543,
+        "hostElapsedMs": 16877.54,
+        "hostUserCpuMs": 13986.771,
+        "hostSystemCpuMs": 406.917,
+        "hostChunkAdvances": 1225492,
+        "hostChunkQuantum": 64,
+        "attribution": "hostElapsedMs/userCpuMs/systemCpuMs are the native host getrusage(RUSAGE_SELF)+monotonic receipt for the emit span; the external sampler perturbs that span by an unmeasured amount"
+      },
+      "output": {
+        "path": "/private/tmp/bend-g33-diagnostics-gSUmym/control-native-emit.output.mjs",
+        "bytes": 29948466,
+        "sha256": "c33227e028d767df9a9fff75663e42eb7374919dcf8e7dff14936a98d20008fb",
+        "expected": "c33227e028d767df9a9fff75663e42eb7374919dcf8e7dff14936a98d20008fb"
+      },
+      "sampling": {
+        "tool": "/usr/bin/sample",
+        "command": [
+          "/usr/bin/sample",
+          "96829",
+          "720",
+          "1",
+          "-mayDie",
+          "-fullPaths",
+          "-file",
+          "/private/tmp/bend-g33-diagnostics-gSUmym/control-native-emit/emit.sample.txt"
+        ],
+        "intervalMs": 1,
+        "ceilingSeconds": 720,
+        "startReason": "phase-emit-start",
+        "startHelperMs": 78654.97,
+        "attachObservedMs": 67.891,
+        "attachLineAt": "2026-10-30T13:21:18.087Z",
+        "stop": {
+          "reason": "phase-emit-end",
+          "at": "2026-10-30T13:21:34.895Z",
+          "helperMs": 95531.08883400001
+        },
+        "stopHelperMs": 95531.089,
+        "windowMs": 16876.119,
+        "exit": {
+          "code": 0,
+          "signal": null,
+          "at": "2026-10-30T13:21:35.023Z",
+          "helperMs": 95659.006209
+        },
+        "forcedKill": false,
+        "coveredCheckEnd": true,
+        "processElapsedMs": 17004.13,
+        "report": {
+          "path": "/private/tmp/bend-g33-diagnostics-gSUmym/control-native-emit/emit.sample.txt",
+          "bytes": 406899,
+          "sha256": "1b6ff4ae2831639ea95fb07d15a1623bf074c07ba0615bda77e23326876366d8"
+        },
+        "stderrPath": "/private/tmp/bend-g33-diagnostics-gSUmym/control-native-emit/emit.sample.stderr.txt",
+        "stdoutPath": "/private/tmp/bend-g33-diagnostics-gSUmym/control-native-emit/emit.sample.stdout.txt",
+        "stderrText": "Sampling process 96829 for 720 seconds with 1 millisecond of run time between samples\n [Interrupted]\nSampling completed, processing symbols...\nSample analysis of process 96829 written to file /private/tmp/bend-g33-diagnostics-gSUmym/control-native-emit/emit.sample.txt\n",
+        "attachLatencyNote": "sample attach latency is observed only from its own \"Sampling process\" line; the first sampled stack can lag the check start by that interval"
+      },
+      "sample": {
+        "totalSamples": 13405,
+        "selfCountSum": 13405,
+        "parseWarnings": [],
+        "topSelf": [
+          {
+            "symbol": "WL_FID_String_append",
+            "image": "native",
+            "detail": "+ 260  [0x104b184b8]",
+            "selfSamples": 1695,
+            "inclusiveSamples": 2538,
+            "nodes": 6
+          },
+          {
+            "symbol": "term_drop",
+            "image": "native",
+            "detail": "+ 884  [0x104412b54]",
+            "selfSamples": 1664,
+            "inclusiveSamples": 1725,
+            "nodes": 187
+          },
+          {
+            "symbol": "heap_free",
+            "image": "native",
+            "detail": "+ 44,52  [0x104150c40,0x104150c48]",
+            "selfSamples": 1277,
+            "inclusiveSamples": 1277,
+            "nodes": 278
+          },
+          {
+            "symbol": "rfc_wrap",
+            "image": "native",
+            "detail": "+ 140  [0x104fc6a84]",
+            "selfSamples": 1271,
+            "inclusiveSamples": 1808,
+            "nodes": 329
+          },
+          {
+            "symbol": "heap_alloc",
+            "image": "native",
+            "detail": "+ 12,44  [0x104412580,0x1044125a0]",
+            "selfSamples": 1106,
+            "inclusiveSamples": 1106,
+            "nodes": 274
+          },
+          {
+            "symbol": "ctr_take",
+            "image": "native",
+            "detail": "+ 156  [0x104a6353c]",
+            "selfSamples": 982,
+            "inclusiveSamples": 1552,
+            "nodes": 508
+          },
+          {
+            "symbol": "WL_FID_Clo_apply",
+            "image": "native",
+            "detail": "+ 368  [0x104e413dc]",
+            "selfSamples": 699,
+            "inclusiveSamples": 737,
+            "nodes": 5
+          },
+          {
+            "symbol": "WL_FID_String_append_k27861",
+            "image": "native",
+            "detail": "+ 92,96  [0x1047e61b0,0x1047e61b4]",
+            "selfSamples": 461,
+            "inclusiveSamples": 1331,
+            "nodes": 4
+          },
+          {
+            "symbol": "rfc_seal",
+            "image": "native",
+            "detail": "+ 12,0,...  [0x10474a79c,0x10474a790,...]",
+            "selfSamples": 309,
+            "inclusiveSamples": 309,
+            "nodes": 229
+          },
+          {
+            "symbol": "WL_FID_emitter_steps_v1_emitter_advance",
+            "image": "native",
+            "detail": "+ 764  [0x10432e804]",
+            "selfSamples": 298,
+            "inclusiveSamples": 641,
+            "nodes": 10
+          },
+          {
+            "symbol": "span_fade",
+            "image": "native",
+            "detail": "+ 76  [0x104fc6d58]",
+            "selfSamples": 294,
+            "inclusiveSamples": 535,
+            "nodes": 191
+          },
+          {
+            "symbol": "string_cmp_read",
+            "image": "native",
+            "detail": "+ 100  [0x104641408]",
+            "selfSamples": 261,
+            "inclusiveSamples": 261,
+            "nodes": 9
+          }
+        ],
+        "topInclusive": [
+          {
+            "symbol": "native_drive",
+            "image": "native",
+            "detail": "+ 228  [0x1041507b8]",
+            "inclusiveSamples": 13409,
+            "nodes": 6
+          },
+          {
+            "symbol": "io_loop",
+            "image": "native",
+            "detail": "+ 356  [0x104fc6870]",
+            "inclusiveSamples": 13405,
+            "nodes": 1
+          },
+          {
+            "symbol": "io_step",
+            "image": "native",
+            "detail": "+ 340  [0x104fd0084]",
+            "inclusiveSamples": 13405,
+            "nodes": 1
+          },
+          {
+            "symbol": "main",
+            "image": "native",
+            "detail": "+ 1072  [0x10474a13c]",
+            "inclusiveSamples": 13405,
+            "nodes": 1
+          },
+          {
+            "symbol": "main.cold.1",
+            "image": "native",
+            "detail": "+ 28  [0x104fd0148]",
+            "inclusiveSamples": 13405,
+            "nodes": 1
+          },
+          {
+            "symbol": "native_experiment_run",
+            "image": "native",
+            "detail": "+ 1524  [0x104fc79a4]",
+            "inclusiveSamples": 13405,
+            "nodes": 2
+          },
+          {
+            "symbol": "start",
+            "image": "dyld",
+            "detail": "+ 6992  [0x1861604e4]",
+            "inclusiveSamples": 13405,
+            "nodes": 1
+          },
+          {
+            "symbol": "Thread_838868747   DispatchQueue_1: com.apple.main-thread  (serial)",
+            "image": null,
+            "detail": null,
+            "inclusiveSamples": 13405,
+            "nodes": 1
+          },
+          {
+            "symbol": "corpus_eval",
+            "image": "native",
+            "detail": "+ 76,128  [0x104fc6e30,0x104fc6e64]",
+            "inclusiveSamples": 13398,
+            "nodes": 12
+          },
+          {
+            "symbol": "work_loop",
+            "image": "native",
+            "detail": "+ 20  [0x10474a948]",
+            "inclusiveSamples": 13322,
+            "nodes": 5
+          },
+          {
+            "symbol": "WL_FID_String_append",
+            "image": "native",
+            "detail": "+ 260  [0x104b184b8]",
+            "inclusiveSamples": 2538,
+            "nodes": 6
+          },
+          {
+            "symbol": "WL_FID_emitter_steps_v1_emitter_step_one",
+            "image": "native",
+            "detail": "+ 356952  [0x104d0ccc0]",
+            "inclusiveSamples": 2314,
+            "nodes": 159
+          },
+          {
+            "symbol": "rfc_wrap",
+            "image": "native",
+            "detail": "+ 140  [0x104fc6a84]",
+            "inclusiveSamples": 1808,
+            "nodes": 329
+          },
+          {
+            "symbol": "term_drop",
+            "image": "native",
+            "detail": "+ 884  [0x104412b54]",
+            "inclusiveSamples": 1725,
+            "nodes": 187
+          },
+          {
+            "symbol": "ctr_take",
+            "image": "native",
+            "detail": "+ 156  [0x104a6353c]",
+            "inclusiveSamples": 1552,
+            "nodes": 508
+          },
+          {
+            "symbol": "WL_FID_String_append_k27861",
+            "image": "native",
+            "detail": "+ 92,96  [0x1047e61b0,0x1047e61b4]",
+            "inclusiveSamples": 1331,
+            "nodes": 4
+          },
+          {
+            "symbol": "heap_free",
+            "image": "native",
+            "detail": "+ 44,52  [0x104150c40,0x104150c48]",
+            "inclusiveSamples": 1277,
+            "nodes": 278
+          },
+          {
+            "symbol": "heap_alloc",
+            "image": "native",
+            "detail": "+ 12,44  [0x104412580,0x1044125a0]",
+            "inclusiveSamples": 1106,
+            "nodes": 274
+          },
+          {
+            "symbol": "WL_FID_Clo_apply",
+            "image": "native",
+            "detail": "+ 368  [0x104e413dc]",
+            "inclusiveSamples": 737,
+            "nodes": 5
+          },
+          {
+            "symbol": "WL_FID_emitter_steps_v1_emitter_advance",
+            "image": "native",
+            "detail": "+ 764  [0x10432e804]",
+            "inclusiveSamples": 641,
+            "nodes": 10
+          }
+        ]
+      },
+      "limitations": [
+        "Attribution is symbol-level only: the accepted image has no __DWARF segments (see child.machO.dwarfSegments), so sample cannot report source lines, inlined frames or variables.",
+        "Sample counts are sampled thread stacks (including blocked/sleeping threads) at a nominal 1-ms run-time interval; they are not CPU time and must not be rescaled to hostElapsedMs or treated as CPU shares.",
+        "Per-thread totals are separate sample populations. Only the main-thread subtree is the compiler compute thread for --threads 1; other threads are runtime threads and may be blocked. waitingSamples counts only conservative wait primitives; nonWaitingSamples is not CPU.",
+        "No allocation attribution: this helper observes stacks only. Per-object allocation or byte attribution would require a separately instrumented diagnostic rebuild and is explicitly not claimed here.",
+        "External sampling suspends the target per sample; the resulting slowdown of the emit span is not measured by an A/B run, so hostElapsedMs and host CPU are perturbed by an unknown amount.",
+        "Only the emit window is sampled. Parse, expand, check and fixedpoint comparison are outside the sample window.",
+        "sample reports physical footprint at its own attach/report time; that is not an allocation measure and not a phase peak.",
+        "The sampler attaches by pid to the child this helper spawned; if attach failed, status is profile_incomplete rather than a silent fallback."
+      ]
+    },
+    {
+      "role": "candidate",
+      "summary": {
+        "path": "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-native-emit/summary.json",
+        "sha256": "b4162e393811b9e2bb1c8b4a501c650e0bccfc4743479e31341ac78284a65cec"
+      },
+      "status": "complete",
+      "child": {
+        "binary": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/native",
+        "binaryArgument": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/native",
+        "binarySha256": "3bc801c1729ae747298f2b7099d198dedc51cc8cb2e3a9503786f645d7ecd859",
+        "binaryUuid": "59DF138C-5EE0-32C5-A3B0-1AC2BFDFD2E3",
+        "machO": {
+          "fileType": 2,
+          "segments": [
+            "__PAGEZERO",
+            "__TEXT",
+            "__DATA_CONST",
+            "__DATA",
+            "__LINKEDIT"
+          ],
+          "symbolCount": 25587,
+          "dwarfSegments": []
+        },
+        "pid": 19610,
+        "cwd": "/Users/ilyagulya/Projects/My/bend",
+        "spawnMs": 17.946958,
+        "exitCode": 0,
+        "signal": null,
+        "timedOut": false,
+        "elapsedMs": 97933.305209,
+        "stdout": {
+          "path": "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-native-emit/child.stdout",
+          "bytes": 69,
+          "sha256": "eeb985f4217af00498b4554fd4b4e105ec12d1e075a5d918683d7dd5dc220c9b"
+        },
+        "stderr": {
+          "path": "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-native-emit/child.stderr",
+          "bytes": 3420,
+          "sha256": "a53970e8855d698b46f8f600cdd22ae731f6cde8d69929826e00d9598903dba8"
+        },
+        "protocol": {
+          "begin": {
+            "computeThreads": 1,
+            "parserFuel": 8000000,
+            "phase": "compile",
+            "phaseTraceVersion": 3
+          },
+          "fuelRows": 18,
+          "checkStart": {
+            "phase": "emit"
+          },
+          "checkEnd": {
+            "phase": "emit",
+            "elapsedMs": 21369.797,
+            "userCpuMs": 17308.572,
+            "systemCpuMs": 488.023,
+            "chunkAdvances": 1407874,
+            "chunkQuantum": 64
+          },
+          "errors": []
+        }
+      },
+      "phase": {
+        "name": "emit",
+        "identification": "native_compiler_host.c stderr protocol: NATIVE_PHASE_START {\"phase\":\"emit\"} ... NATIVE_PHASE {\"phase\":\"emit\",...}",
+        "startHelperMs": 75370.616,
+        "endHelperMs": 96736.082,
+        "helperObservedWallMs": 21365.467,
+        "hostElapsedMs": 21369.797,
+        "hostUserCpuMs": 17308.572,
+        "hostSystemCpuMs": 488.023,
+        "hostChunkAdvances": 1407874,
+        "hostChunkQuantum": 64,
+        "attribution": "hostElapsedMs/userCpuMs/systemCpuMs are the native host getrusage(RUSAGE_SELF)+monotonic receipt for the emit span; the external sampler perturbs that span by an unmeasured amount"
+      },
+      "output": {
+        "path": "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-native-emit.output.mjs",
+        "bytes": 29954418,
+        "sha256": "6ea91c1edba906dfae61eabe44377e9ed88102fa6eda73687be152882c20d490",
+        "expected": "6ea91c1edba906dfae61eabe44377e9ed88102fa6eda73687be152882c20d490"
+      },
+      "sampling": {
+        "tool": "/usr/bin/sample",
+        "command": [
+          "/usr/bin/sample",
+          "19610",
+          "720",
+          "1",
+          "-mayDie",
+          "-fullPaths",
+          "-file",
+          "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-native-emit/emit.sample.txt"
+        ],
+        "intervalMs": 1,
+        "ceilingSeconds": 720,
+        "startReason": "phase-emit-start",
+        "startHelperMs": 75371.011,
+        "attachObservedMs": 50.898,
+        "attachLineAt": "2026-10-30T13:22:54.333Z",
+        "stop": {
+          "reason": "phase-emit-end",
+          "at": "2026-10-30T13:23:15.652Z",
+          "helperMs": 96736.36929199999
+        },
+        "stopHelperMs": 96736.369,
+        "windowMs": 21365.359,
+        "exit": {
+          "code": 0,
+          "signal": null,
+          "at": "2026-10-30T13:23:15.842Z",
+          "helperMs": 96926.798667
+        },
+        "forcedKill": false,
+        "coveredCheckEnd": true,
+        "processElapsedMs": 21555.896,
+        "report": {
+          "path": "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-native-emit/emit.sample.txt",
+          "bytes": 497810,
+          "sha256": "16b1ac82c4dedfc7bea25e1b18879e0a4d4d124a62d64ab8d4e34470e8136d9b"
+        },
+        "stderrPath": "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-native-emit/emit.sample.stderr.txt",
+        "stdoutPath": "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-native-emit/emit.sample.stdout.txt",
+        "stderrText": "Sampling process 19610 for 720 seconds with 1 millisecond of run time between samples\n [Interrupted]\nSampling completed, processing symbols...\nSample analysis of process 19610 written to file /private/tmp/bend-g33-diagnostics-gSUmym/candidate-native-emit/emit.sample.txt\n",
+        "attachLatencyNote": "sample attach latency is observed only from its own \"Sampling process\" line; the first sampled stack can lag the check start by that interval"
+      },
+      "sample": {
+        "totalSamples": 16984,
+        "selfCountSum": 16984,
+        "parseWarnings": [],
+        "topSelf": [
+          {
+            "symbol": "term_drop",
+            "image": "native",
+            "detail": "+ 672  [0x1028776d4]",
+            "selfSamples": 2388,
+            "inclusiveSamples": 2486,
+            "nodes": 230
+          },
+          {
+            "symbol": "WL_FID_String_append",
+            "image": "native",
+            "detail": "+ 260  [0x103068e90]",
+            "selfSamples": 1982,
+            "inclusiveSamples": 2954,
+            "nodes": 6
+          },
+          {
+            "symbol": "rfc_wrap",
+            "image": "native",
+            "detail": "+ 124  [0x1034b3b9c]",
+            "selfSamples": 1624,
+            "inclusiveSamples": 2178,
+            "nodes": 371
+          },
+          {
+            "symbol": "heap_free",
+            "image": "native",
+            "detail": "+ 44  [0x102564c40]",
+            "selfSamples": 1514,
+            "inclusiveSamples": 1514,
+            "nodes": 294
+          },
+          {
+            "symbol": "heap_alloc",
+            "image": "native",
+            "detail": "+ 44  [0x1028771f4]",
+            "selfSamples": 1182,
+            "inclusiveSamples": 1182,
+            "nodes": 313
+          },
+          {
+            "symbol": "ctr_take",
+            "image": "native",
+            "detail": "+ 52  [0x102facd0c]",
+            "selfSamples": 1173,
+            "inclusiveSamples": 1886,
+            "nodes": 612
+          },
+          {
+            "symbol": "WL_FID_Clo_apply",
+            "image": "native",
+            "detail": "+ 368  [0x1033c5720]",
+            "selfSamples": 976,
+            "inclusiveSamples": 1033,
+            "nodes": 5
+          },
+          {
+            "symbol": "WL_FID_String_append_k29249",
+            "image": "native",
+            "detail": "+ 96,92  [0x102ce4c90,0x102ce4c8c]",
+            "selfSamples": 512,
+            "inclusiveSamples": 1466,
+            "nodes": 4
+          },
+          {
+            "symbol": "WL_FID_emitter_steps_v1_emitter_advance",
+            "image": "native",
+            "detail": "+ 744  [0x10275f454]",
+            "selfSamples": 494,
+            "inclusiveSamples": 971,
+            "nodes": 10
+          },
+          {
+            "symbol": "rfc_seal",
+            "image": "native",
+            "detail": "+ 12,20  [0x102c449e8,0x102c449f0]",
+            "selfSamples": 434,
+            "inclusiveSamples": 434,
+            "nodes": 316
+          },
+          {
+            "symbol": "span_fade",
+            "image": "native",
+            "detail": "+ 160  [0x1034b3ed4]",
+            "selfSamples": 422,
+            "inclusiveSamples": 739,
+            "nodes": 278
+          },
+          {
+            "symbol": "map_find_read",
+            "image": "native",
+            "detail": "+ 532,540  [0x10341f030,0x10341f038]",
+            "selfSamples": 397,
+            "inclusiveSamples": 948,
+            "nodes": 6
+          }
+        ],
+        "topInclusive": [
+          {
+            "symbol": "native_drive",
+            "image": "native",
+            "detail": "+ 228  [0x1025647b8]",
+            "inclusiveSamples": 16988,
+            "nodes": 7
+          },
+          {
+            "symbol": "io_loop",
+            "image": "native",
+            "detail": "+ 356  [0x1034b3998]",
+            "inclusiveSamples": 16984,
+            "nodes": 1
+          },
+          {
+            "symbol": "io_step",
+            "image": "native",
+            "detail": "+ 336  [0x1034bd6c0]",
+            "inclusiveSamples": 16984,
+            "nodes": 1
+          },
+          {
+            "symbol": "main",
+            "image": "native",
+            "detail": "+ 1072  [0x102c44388]",
+            "inclusiveSamples": 16984,
+            "nodes": 1
+          },
+          {
+            "symbol": "main.cold.1",
+            "image": "native",
+            "detail": "+ 28  [0x1034bd784]",
+            "inclusiveSamples": 16984,
+            "nodes": 1
+          },
+          {
+            "symbol": "native_experiment_run",
+            "image": "native",
+            "detail": "+ 1520  [0x1034b4ac8]",
+            "inclusiveSamples": 16984,
+            "nodes": 2
+          },
+          {
+            "symbol": "start",
+            "image": "dyld",
+            "detail": "+ 6992  [0x1861604e4]",
+            "inclusiveSamples": 16984,
+            "nodes": 1
+          },
+          {
+            "symbol": "Thread_838912380   DispatchQueue_1: com.apple.main-thread  (serial)",
+            "image": null,
+            "detail": null,
+            "inclusiveSamples": 16984,
+            "nodes": 1
+          },
+          {
+            "symbol": "corpus_eval",
+            "image": "native",
+            "detail": "+ 84  [0x1034b3f60]",
+            "inclusiveSamples": 16979,
+            "nodes": 16
+          },
+          {
+            "symbol": "work_loop",
+            "image": "native",
+            "detail": "+ 20,120  [0x102c44b94,0x102c44bf8]",
+            "inclusiveSamples": 16885,
+            "nodes": 6
+          },
+          {
+            "symbol": "WL_FID_String_append",
+            "image": "native",
+            "detail": "+ 260  [0x103068e90]",
+            "inclusiveSamples": 2954,
+            "nodes": 6
+          },
+          {
+            "symbol": "WL_FID_emitter_steps_v1_emitter_step_one",
+            "image": "native",
+            "detail": "+ 537884  [0x1032a1a0c]",
+            "inclusiveSamples": 2783,
+            "nodes": 163
+          },
+          {
+            "symbol": "term_drop",
+            "image": "native",
+            "detail": "+ 672  [0x1028776d4]",
+            "inclusiveSamples": 2486,
+            "nodes": 230
+          },
+          {
+            "symbol": "rfc_wrap",
+            "image": "native",
+            "detail": "+ 124  [0x1034b3b9c]",
+            "inclusiveSamples": 2178,
+            "nodes": 371
+          },
+          {
+            "symbol": "ctr_take",
+            "image": "native",
+            "detail": "+ 52  [0x102facd0c]",
+            "inclusiveSamples": 1886,
+            "nodes": 612
+          },
+          {
+            "symbol": "heap_free",
+            "image": "native",
+            "detail": "+ 44  [0x102564c40]",
+            "inclusiveSamples": 1514,
+            "nodes": 294
+          },
+          {
+            "symbol": "WL_FID_String_append_k29249",
+            "image": "native",
+            "detail": "+ 96,92  [0x102ce4c90,0x102ce4c8c]",
+            "inclusiveSamples": 1466,
+            "nodes": 4
+          },
+          {
+            "symbol": "heap_alloc",
+            "image": "native",
+            "detail": "+ 44  [0x1028771f4]",
+            "inclusiveSamples": 1182,
+            "nodes": 313
+          },
+          {
+            "symbol": "WL_FID_Clo_apply",
+            "image": "native",
+            "detail": "+ 368  [0x1033c5720]",
+            "inclusiveSamples": 1033,
+            "nodes": 5
+          },
+          {
+            "symbol": "WL_FID_emitter_steps_v1_emitter_advance",
+            "image": "native",
+            "detail": "+ 744  [0x10275f454]",
+            "inclusiveSamples": 971,
+            "nodes": 10
+          }
+        ]
+      },
+      "limitations": [
+        "Attribution is symbol-level only: the accepted image has no __DWARF segments (see child.machO.dwarfSegments), so sample cannot report source lines, inlined frames or variables.",
+        "Sample counts are sampled thread stacks (including blocked/sleeping threads) at a nominal 1-ms run-time interval; they are not CPU time and must not be rescaled to hostElapsedMs or treated as CPU shares.",
+        "Per-thread totals are separate sample populations. Only the main-thread subtree is the compiler compute thread for --threads 1; other threads are runtime threads and may be blocked. waitingSamples counts only conservative wait primitives; nonWaitingSamples is not CPU.",
+        "No allocation attribution: this helper observes stacks only. Per-object allocation or byte attribution would require a separately instrumented diagnostic rebuild and is explicitly not claimed here.",
+        "External sampling suspends the target per sample; the resulting slowdown of the emit span is not measured by an A/B run, so hostElapsedMs and host CPU are perturbed by an unknown amount.",
+        "Only the emit window is sampled. Parse, expand, check and fixedpoint comparison are outside the sample window.",
+        "sample reports physical footprint at its own attach/report time; that is not an allocation measure and not a phase peak.",
+        "The sampler attaches by pid to the child this helper spawned; if attach failed, status is profile_incomplete rather than a silent fallback."
+      ]
+    }
+  ],
+  "guardians": [
+    {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793366399294-d44955d6fbff30fd.json",
+      "sha256": "1b6d0c5d5710c70992181214cfaa24b4025a1a9616aacbb61fc78c894368fad5",
+      "status": "PASS",
+      "elapsedMs": 99394,
+      "peakRssBytes": 1636204544,
+      "peakFootprintBytes": 1696845592,
+      "ownedTreeStopped": true
+    },
+    {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793366498862-c8a20059319f8343.json",
+      "sha256": "cf8ce6f5050cdf1914802cf5545df7f6d1965988026687a41ae7d036d2a9bd4b",
+      "status": "PASS",
+      "elapsedMs": 100969,
+      "peakRssBytes": 1618870272,
+      "peakFootprintBytes": 1698910024,
+      "ownedTreeStopped": true
+    }
+  ],
+  "interpretation": [
+    "Native compiler is generated by canonical comp.ts, not by the BIR C renderer under evaluation: native checking cannot exercise G32 vector workers.",
+    "Native emit executes the new BIR pass, but most CPS case work is in one giant emitter_step_one and heap/RC/runtime helpers; without DWARF or request attribution, provider symbol counts cannot partition the complete phase.",
+    "These are sampled stacks, not function CPU or allocation counts; elapsed/CPU are sampler-perturbed.",
+    "SourceMap is heuristic ownership locator only.",
+    "Both emitted output byte hashes equal their corresponding authenticated original throughput result."
+  ]
+}

@@ -1,0 +1,186 @@
+{
+  "schemaVersion": 1,
+  "status": "PREDECLARED_COMPLETE_CPS_PHASE_INTERVALS",
+  "diagnosticOnly": true,
+  "compilerAccepted": false,
+  "performanceAccepted": false,
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "worker": {
+    "stackSizeMb": 256,
+    "maxOldGenerationSizeMb": 6144,
+    "maxYoungGenerationSizeMb": 128
+  },
+  "environment": {
+    "HEAVY_GATE_MEMORY_MIB": 8192,
+    "HEAVY_GATE_RSS_MIB": 8192,
+    "HEAVY_GATE_POLL_MS": 10,
+    "HEAVY_GATE_TIMEOUT_MS": 600000,
+    "BUN_JSC_forceRAMSize": 4294967296
+  },
+  "commands": [
+    [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/heavy_gate.ts",
+      "--memory-mib",
+      "8192",
+      "--rss-mib",
+      "8192",
+      "--poll-ms",
+      "10",
+      "--timeout-ms",
+      "600000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128",
+      "/private/tmp/bend-g33-diagnostics-gSUmym/stage-markers.mjs",
+      "--worker",
+      "js",
+      "/private/tmp/bend-g33-diagnostics-gSUmym/control-stage.request.json",
+      "7fc11ce8a1ae1fabc02d2351d21c524fefff3ef62c01b682ba2dbbee527d0ca9",
+      "/private/tmp/bend-g33-diagnostics-gSUmym/control-stage.result.json"
+    ],
+    [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/heavy_gate.ts",
+      "--memory-mib",
+      "8192",
+      "--rss-mib",
+      "8192",
+      "--poll-ms",
+      "10",
+      "--timeout-ms",
+      "600000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128",
+      "/private/tmp/bend-g33-diagnostics-gSUmym/stage-markers.mjs",
+      "--worker",
+      "js",
+      "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-stage.request.json",
+      "0a641c6d08c7fbca7b67b7d3fbb4c7d9263c8d85142fc43246e500036313c50e",
+      "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-stage.result.json"
+    ]
+  ],
+  "driver": {
+    "path": "/private/tmp/bend-g33-diagnostics-gSUmym/stage-markers.mjs",
+    "sha256": "6be3855b7dca75b2d60e62320b82708c059f2cb1c15a88352f28097c2f32e694"
+  },
+  "preparation": {
+    "path": "/private/tmp/bend-g33-diagnostics-gSUmym/prepare-stage.mjs",
+    "sha256": "081a4c46dff0f437c6bf0d16b53d26fc22989d179b1a0919e20647580433a3a2"
+  },
+  "images": {
+    "control": {
+      "original": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+        "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+        "bytes": 31758507
+      },
+      "instrumented": {
+        "path": "/private/tmp/bend-g33-diagnostics-gSUmym/control-stage-marked.mjs",
+        "sha256": "d72bf58e497b5733ff58e788b3ba8f2989f11689b7186fa3b198329b47aeabc1",
+        "bytes": 31758661
+      },
+      "prelude": "const $g33StageMark = globalThis.__g33StageMark;\n",
+      "insertions": [
+        {
+          "label": "backend-enter",
+          "key": "emitter_steps_v1.emitter_body_cps_provider_8_emit_linked",
+          "code": "$b10853",
+          "offset": 20611853,
+          "insertion": "$g33StageMark(\"backend-enter\");"
+        },
+        {
+          "label": "source-assembly-enter",
+          "key": "emitter_steps_v1.emitter_body_cps_provider_8_program_source",
+          "code": "$b10861",
+          "offset": 20661093,
+          "insertion": "$g33StageMark(\"source-assembly-enter\");"
+        },
+        {
+          "label": "scalar-pass-enter",
+          "key": "emitter_steps_v1.emitter_body_cps_provider_8_js_scalar_program",
+          "code": "$b10649",
+          "offset": 19996979,
+          "insertion": "$g33StageMark(\"scalar-pass-enter\");"
+        }
+      ],
+      "exactOriginalReconstruction": true
+    },
+    "candidate": {
+      "original": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+        "sha256": "419710b98ee9e765e677c5a411a1299cb728db23e58b12dfad69141d9d1721c5",
+        "bytes": 33398300
+      },
+      "instrumented": {
+        "path": "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-stage-marked.mjs",
+        "sha256": "b6dd170bee17d12c0e86da60c4153f6ae05cc4beeb94312d1141483b0bbef410",
+        "bytes": 33398525
+      },
+      "prelude": "const $g33StageMark = globalThis.__g33StageMark;\n",
+      "insertions": [
+        {
+          "label": "optimizer-enter",
+          "key": "emitter_steps_v1.emitter_body_cps_provider_2_optimize",
+          "code": "$b8331",
+          "offset": 15249559,
+          "insertion": "$g33StageMark(\"optimizer-enter\");"
+        },
+        {
+          "label": "backend-enter",
+          "key": "emitter_steps_v1.emitter_body_cps_provider_9_emit_linked",
+          "code": "$b11374",
+          "offset": 21853608,
+          "insertion": "$g33StageMark(\"backend-enter\");"
+        },
+        {
+          "label": "source-assembly-enter",
+          "key": "emitter_steps_v1.emitter_body_cps_provider_9_program_source",
+          "code": "$b11385",
+          "offset": 21910352,
+          "insertion": "$g33StageMark(\"source-assembly-enter\");"
+        },
+        {
+          "label": "width-analysis-enter",
+          "key": "emitter_steps_v1.emitter_body_cps_provider_2_result_widths",
+          "code": "$b8032",
+          "offset": 14694980,
+          "insertion": "$g33StageMark(\"width-analysis-enter\");"
+        },
+        {
+          "label": "scalar-pass-enter",
+          "key": "emitter_steps_v1.emitter_body_cps_provider_9_js_scalar_program",
+          "code": "$b11152",
+          "offset": 21182717,
+          "insertion": "$g33StageMark(\"scalar-pass-enter\");"
+        }
+      ],
+      "exactOriginalReconstruction": true
+    }
+  },
+  "boundaries": [
+    "emit-start to optimizer-enter: BIR/catalog construction (control continues to backend-enter because no optimizer exists).",
+    "optimizer-enter to backend-enter: complete transport CPS work including lower-result handoff, not synchronous entry-function return.",
+    "backend-enter to source-assembly-enter: JS linking, width validation and effect preparation.",
+    "source-assembly-enter to emit-success: source assembly including scalar preparation; scalar-pass-enter is an additional landmark, not an end marker."
+  ],
+  "limitations": [
+    "Diagnostic copies only; original expected output SHA is required.",
+    "Markers observe actual runtime entry of the selected CPS source-body functions.",
+    "Wall intervals include scheduler/runtime and JIT/GC; process.cpuUsage covers all process threads.",
+    "Only a handful of marker entry hooks; no per-step timestamps.",
+    "No speedup or memory acceptance follows from these timings."
+  ]
+}

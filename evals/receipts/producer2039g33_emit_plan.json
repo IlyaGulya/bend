@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "status": "PREDECLARED_PAIRED_REAL_EMIT_DIAGNOSTIC",
+  "diagnosticOnly": true,
+  "compilerAccepted": false,
+  "performanceAccepted": false,
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "worker": {
+    "stackSizeMb": 256,
+    "maxOldGenerationSizeMb": 6144,
+    "maxYoungGenerationSizeMb": 128
+  },
+  "driver": {
+    "path": "/private/tmp/bend-g33-diagnostics-gSUmym/emit-profile.mjs",
+    "sha256": "6829835e9592cc25c469cb16dc3cdbbf8be7bf852c23783ad4c1d85e15db2ed8"
+  },
+  "requestCommands": [
+    [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "/private/tmp/bend-g33-diagnostics-gSUmym/emit-profile.mjs",
+      "--from-manifest",
+      "/private/tmp/bend-g33-diagnostics-gSUmym/manifest.json",
+      "control",
+      "/private/tmp/bend-g33-diagnostics-gSUmym/control-emit.request.json",
+      "/private/tmp/bend-g33-diagnostics-gSUmym/control-emit-profiles"
+    ],
+    [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "/private/tmp/bend-g33-diagnostics-gSUmym/emit-profile.mjs",
+      "--from-manifest",
+      "/private/tmp/bend-g33-diagnostics-gSUmym/manifest.json",
+      "candidate",
+      "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-emit.request.json",
+      "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-emit-profiles",
+      "--reference=control"
+    ]
+  ],
+  "requests": [
+    {
+      "role": "control",
+      "path": "/private/tmp/bend-g33-diagnostics-gSUmym/control-emit.request.json",
+      "sha256": "de4be3eceea1b24c39406fb74a03ea167e0d5ca25f0d0cf7c80d044759de3596"
+    },
+    {
+      "role": "candidate",
+      "path": "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-emit.request.json",
+      "sha256": "98b6a742d58ba8ff2199948af70c243268f58794f1702e82278ad0e5352f6b28"
+    }
+  ],
+  "commands": [
+    [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/heavy_gate.ts",
+      "--memory-mib",
+      "8192",
+      "--rss-mib",
+      "8192",
+      "--poll-ms",
+      "10",
+      "--timeout-ms",
+      "600000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128",
+      "/private/tmp/bend-g33-diagnostics-gSUmym/emit-profile.mjs",
+      "/private/tmp/bend-g33-diagnostics-gSUmym/control-emit.request.json",
+      "/private/tmp/bend-g33-diagnostics-gSUmym/control-emit.result.json"
+    ],
+    [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/heavy_gate.ts",
+      "--memory-mib",
+      "8192",
+      "--rss-mib",
+      "8192",
+      "--poll-ms",
+      "10",
+      "--timeout-ms",
+      "600000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128",
+      "/private/tmp/bend-g33-diagnostics-gSUmym/emit-profile.mjs",
+      "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-emit.request.json",
+      "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-emit.result.json"
+    ]
+  ],
+  "environment": "env HEAVY_GATE_MEMORY_MIB=8192 HEAVY_GATE_RSS_MIB=8192 HEAVY_GATE_POLL_MS=10 HEAVY_GATE_TIMEOUT_MS=600000 BUN_JSC_forceRAMSize=4294967296 ",
+  "execution": "Serial after worker-count run; no concurrent heavy execution.",
+  "method": "Profile full real library-emit start through EmitSuccess. Observe pending request constructor at each 64-step chunk and retain provider/module attribution separately from CPU/allocation. Join keyed CPU functions through declared $D source names, not guessed numeric ID differences.",
+  "preExecutionCorrections": [
+    "Requests resolve Base from the frozen input repository rather than the working checkout.",
+    "The profiler helper and actual diagnostic driver are pinned in both requests.",
+    "Declared-key joins are restricted to the same column-zero assignment line; provider matching recognizes emitter_body_cps_provider_N keys.",
+    "Initial generated requests were corrected before any target execution; recorded hashes are the executed request/driver bytes."
+  ],
+  "limitations": [
+    "Chunk provider histograms are not exact substage timings or call counts.",
+    "Reference image is text-scanned only, not imported; same single image module supplies all stages in each role.",
+    "Compared images are different program source closures; above-reference-max IDs are not evidence of generated transport workers.",
+    "No RunSpan exists in the measured images; unknown CPS continuations and runtime samples must remain unassigned."
+  ]
+}

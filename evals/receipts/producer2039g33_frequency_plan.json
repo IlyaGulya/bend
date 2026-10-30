@@ -1,0 +1,185 @@
+{
+  "schemaVersion": 1,
+  "status": "PREDECLARED_LOGICAL_FREQUENCY_DIAGNOSTIC",
+  "compilerAccepted": false,
+  "performanceAccepted": false,
+  "diagnosticOnly": true,
+  "sourceUnchanged": true,
+  "scope": "Candidate-only logical entry counts on all seven statically verified vector workers. Actual original image remains unchanged; isolated counted copy preserves every original byte plus seven entry increments and one shared counter binding. One module supplies parse/expand/check/emit. Full frozen root and expected exact output hash are retained. Entry instrumentation is not a timing sample.",
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "worker": {
+    "stackSizeMb": 256,
+    "maxOldGenerationSizeMb": 6144,
+    "maxYoungGenerationSizeMb": 128
+  },
+  "transformation": {
+    "schemaVersion": 1,
+    "diagnosticOnly": true,
+    "timingAcceptance": false,
+    "original": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+      "sha256": "419710b98ee9e765e677c5a411a1299cb728db23e58b12dfad69141d9d1721c5",
+      "bytes": 33398300
+    },
+    "instrumented": {
+      "path": "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-counted.mjs",
+      "sha256": "058c2a01d14109ccdc774fabb89c7b704dcc98bc97ee7fe8ea40bd01a5526cd5",
+      "bytes": 33398437
+    },
+    "prelude": "const $g33Hits = globalThis.__g33Hits;\n",
+    "insertions": [
+      {
+        "id": "$b26346",
+        "index": 0,
+        "offset": 25807265,
+        "insertion": "$g33Hits[0]++;"
+      },
+      {
+        "id": "$b26345",
+        "index": 1,
+        "offset": 25807870,
+        "insertion": "$g33Hits[1]++;"
+      },
+      {
+        "id": "$b26347",
+        "index": 2,
+        "offset": 25808611,
+        "insertion": "$g33Hits[2]++;"
+      },
+      {
+        "id": "$b26348",
+        "index": 3,
+        "offset": 25809352,
+        "insertion": "$g33Hits[3]++;"
+      },
+      {
+        "id": "$b26349",
+        "index": 4,
+        "offset": 25810093,
+        "insertion": "$g33Hits[4]++;"
+      },
+      {
+        "id": "$b26350",
+        "index": 5,
+        "offset": 25810834,
+        "insertion": "$g33Hits[5]++;"
+      },
+      {
+        "id": "$b26351",
+        "index": 6,
+        "offset": 25811575,
+        "insertion": "$g33Hits[6]++;"
+      }
+    ],
+    "exactOriginalReconstruction": true
+  },
+  "commands": {
+    "environment": "env HEAVY_GATE_MEMORY_MIB=8192 HEAVY_GATE_RSS_MIB=8192 HEAVY_GATE_POLL_MS=10 HEAVY_GATE_TIMEOUT_MS=600000 BUN_JSC_forceRAMSize=4294967296 ",
+    "count": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/heavy_gate.ts",
+      "--memory-mib",
+      "8192",
+      "--rss-mib",
+      "8192",
+      "--poll-ms",
+      "10",
+      "--timeout-ms",
+      "600000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128",
+      "/private/tmp/bend-g33-diagnostics-gSUmym/worker-count.mjs",
+      "--worker",
+      "js",
+      "/private/tmp/bend-g33-diagnostics-gSUmym/worker-count.request.json",
+      "bc937e3d74151a10b226ccd964aee657dc9a437a4edd349e2b190e80dcacc2e5",
+      "/private/tmp/bend-g33-diagnostics-gSUmym/worker-count.result.json"
+    ],
+    "nativeEmit": [
+      [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/private/tmp/bend-g33-diagnostics-gSUmym/native-emit-profile.mjs",
+        "--out-dir=/private/tmp/bend-g33-diagnostics-gSUmym/control-native-emit",
+        "--timeout-ms=600000",
+        "--sample-interval-ms=1",
+        "--source-map=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native.c",
+        "--",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+        "+RTS",
+        "--threads",
+        "1",
+        "--gpu",
+        "off",
+        "--RTS",
+        "/private/tmp/bend2039g22-tiny-inline/checkpoints/.bootstrap_compiler_root_remote2039g21.bend",
+        "/private/tmp/bend2039g22-tiny-inline/bend2/base.bend",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/throughput/native-control-1.json.runtime.tsv",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/throughput/native-control-1.json.exports.txt",
+        "compile",
+        "/private/tmp/bend-g33-diagnostics-gSUmym/control-native-emit.output.mjs"
+      ],
+      [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/private/tmp/bend-g33-diagnostics-gSUmym/native-emit-profile.mjs",
+        "--out-dir=/private/tmp/bend-g33-diagnostics-gSUmym/candidate-native-emit",
+        "--timeout-ms=600000",
+        "--sample-interval-ms=1",
+        "--source-map=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/native.c",
+        "--",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/native",
+        "+RTS",
+        "--threads",
+        "1",
+        "--gpu",
+        "off",
+        "--RTS",
+        "/private/tmp/bend2039g22-tiny-inline/checkpoints/.bootstrap_compiler_root_remote2039g21.bend",
+        "/private/tmp/bend2039g22-tiny-inline/bend2/base.bend",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/throughput/native-candidate-1.json.runtime.tsv",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/throughput/native-candidate-1.json.exports.txt",
+        "compile",
+        "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-native-emit.output.mjs"
+      ]
+    ]
+  },
+  "execution": "Serial after paired checker profiling; native emission sampling serial before logical frequency run; no concurrent heavy runs.",
+  "interpretation": [
+    "Protocol step counts do not measure physical work.",
+    "No frequency is inferred from static site counts or absence of CPU samples.",
+    "The consumer retains Arena construction; only MetadataTables return packaging is removed.",
+    "Changed diagnostic images cannot establish compiler acceptance or fixedpoint."
+  ]
+}

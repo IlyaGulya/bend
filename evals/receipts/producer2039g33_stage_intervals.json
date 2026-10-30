@@ -1,0 +1,450 @@
+{
+  "schemaVersion": 1,
+  "status": "G33_COMPLETE_LOGICAL_EMIT_INTERVALS_PASS",
+  "diagnosticOnly": true,
+  "compilerAccepted": false,
+  "performanceAccepted": false,
+  "newFixedpointClaim": false,
+  "plan": {
+    "path": "/Users/ilyagulya/Projects/My/bend/evals/receipts/producer2039g33_stage_plan.json",
+    "sha256": "631c664586652286fe455d8f23da2452e43cdd5f2b517945d7e64f7fd1af70bf"
+  },
+  "roles": [
+    {
+      "role": "control",
+      "report": {
+        "path": "/private/tmp/bend-g33-diagnostics-gSUmym/control-stage.result.json",
+        "sha256": "195d39320131e6aa1361e74f9597b9f681275bb4d25474bbda6105ef4ffd7e5e"
+      },
+      "request": {
+        "path": "/private/tmp/bend-g33-diagnostics-gSUmym/control-stage.request.json",
+        "sha256": "7fc11ce8a1ae1fabc02d2351d21c524fefff3ef62c01b682ba2dbbee527d0ca9"
+      },
+      "runtime": {
+        "execPath": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "versions": {
+          "node": "23.11.0",
+          "acorn": "8.14.1",
+          "ada": "3.2.1",
+          "amaro": "0.4.1",
+          "ares": "1.34.4",
+          "brotli": "1.1.0",
+          "cjs_module_lexer": "2.1.0",
+          "cldr": "46.0",
+          "icu": "76.1",
+          "llhttp": "9.2.1",
+          "modules": "131",
+          "napi": "10",
+          "nbytes": "0.1.1",
+          "ncrypto": "0.0.1",
+          "nghttp2": "1.64.0",
+          "openssl": "3.0.16",
+          "simdjson": "3.12.2",
+          "simdutf": "6.0.3",
+          "sqlite": "3.49.1",
+          "tz": "2025a",
+          "undici": "6.21.2",
+          "unicode": "16.0",
+          "uv": "1.50.0",
+          "uvwasi": "0.0.21",
+          "v8": "12.9.202.28-node.14",
+          "zlib": "1.3.0.1-motley-788cb3c",
+          "zstd": "1.5.6"
+        },
+        "execArgv": [
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128"
+        ],
+        "heapLimitBytes": 6845104128
+      },
+      "stepCounts": {
+        "expand": 1004927,
+        "check": 10078835,
+        "emit": 1225480
+      },
+      "events": [
+        {
+          "stage": "emit-start",
+          "elapsedMs": 280454.300875,
+          "cpu": {
+            "user": 300538402,
+            "system": 4173445
+          }
+        },
+        {
+          "stage": "backend-enter",
+          "elapsedMs": 285423.564458,
+          "cpu": {
+            "user": 307389082,
+            "system": 4306970
+          }
+        },
+        {
+          "stage": "source-assembly-enter",
+          "elapsedMs": 285774.665292,
+          "cpu": {
+            "user": 307876613,
+            "system": 4313245
+          }
+        },
+        {
+          "stage": "scalar-pass-enter",
+          "elapsedMs": 285779.086042,
+          "cpu": {
+            "user": 307881469,
+            "system": 4313436
+          }
+        },
+        {
+          "stage": "emit-success",
+          "elapsedMs": 298737.589792,
+          "cpu": {
+            "user": 322426463,
+            "system": 4480267
+          }
+        }
+      ],
+      "intervals": [
+        {
+          "name": "construction",
+          "from": "emit-start",
+          "to": "backend-enter",
+          "wallMs": 4969.263582999993,
+          "userCpuMs": 6850.68,
+          "systemCpuMs": 133.525
+        },
+        {
+          "name": "link-validation-effects",
+          "from": "backend-enter",
+          "to": "source-assembly-enter",
+          "wallMs": 351.10083399998257,
+          "userCpuMs": 487.531,
+          "systemCpuMs": 6.275
+        },
+        {
+          "name": "source-assembly-including-scalar",
+          "from": "source-assembly-enter",
+          "to": "emit-success",
+          "wallMs": 12962.924500000023,
+          "userCpuMs": 14549.85,
+          "systemCpuMs": 167.022
+        }
+      ],
+      "totalEmitWallMs": 18283.288916999998,
+      "partitionSumMatches": true,
+      "output": {
+        "path": "/private/tmp/bend-g33-diagnostics-gSUmym/control-stage.result.json.output.mjs",
+        "bytes": 29948466,
+        "sha256": "c33227e028d767df9a9fff75663e42eb7374919dcf8e7dff14936a98d20008fb"
+      },
+      "transformation": {
+        "original": {
+          "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+          "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+          "bytes": 31758507
+        },
+        "instrumented": {
+          "path": "/private/tmp/bend-g33-diagnostics-gSUmym/control-stage-marked.mjs",
+          "sha256": "d72bf58e497b5733ff58e788b3ba8f2989f11689b7186fa3b198329b47aeabc1",
+          "bytes": 31758661
+        },
+        "prelude": "const $g33StageMark = globalThis.__g33StageMark;\n",
+        "insertions": [
+          {
+            "label": "backend-enter",
+            "key": "emitter_steps_v1.emitter_body_cps_provider_8_emit_linked",
+            "code": "$b10853",
+            "offset": 20611853,
+            "insertion": "$g33StageMark(\"backend-enter\");"
+          },
+          {
+            "label": "source-assembly-enter",
+            "key": "emitter_steps_v1.emitter_body_cps_provider_8_program_source",
+            "code": "$b10861",
+            "offset": 20661093,
+            "insertion": "$g33StageMark(\"source-assembly-enter\");"
+          },
+          {
+            "label": "scalar-pass-enter",
+            "key": "emitter_steps_v1.emitter_body_cps_provider_8_js_scalar_program",
+            "code": "$b10649",
+            "offset": 19996979,
+            "insertion": "$g33StageMark(\"scalar-pass-enter\");"
+          }
+        ],
+        "exactOriginalReconstruction": true
+      },
+      "guardian": {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793368375768-ee17d7986fc6825b.json",
+        "sha256": "f4efbfb86788b4c061e11439f055e0b47a5b702d732dbf9614ec22a295c6d4b5",
+        "status": "PASS",
+        "elapsedMs": 299316,
+        "peakRssBytes": 2367291392,
+        "peakFootprintBytes": 2557365672,
+        "ownedTreeStopped": true
+      },
+      "widthAnalysisEntries": 0
+    },
+    {
+      "role": "candidate",
+      "report": {
+        "path": "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-stage.result.json",
+        "sha256": "e50f818ce2aeb4cfe9df9ac31c269118da05abac7c7df8327ab00088ee5dc154"
+      },
+      "request": {
+        "path": "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-stage.request.json",
+        "sha256": "0a641c6d08c7fbca7b67b7d3fbb4c7d9263c8d85142fc43246e500036313c50e"
+      },
+      "runtime": {
+        "execPath": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "versions": {
+          "node": "23.11.0",
+          "acorn": "8.14.1",
+          "ada": "3.2.1",
+          "amaro": "0.4.1",
+          "ares": "1.34.4",
+          "brotli": "1.1.0",
+          "cjs_module_lexer": "2.1.0",
+          "cldr": "46.0",
+          "icu": "76.1",
+          "llhttp": "9.2.1",
+          "modules": "131",
+          "napi": "10",
+          "nbytes": "0.1.1",
+          "ncrypto": "0.0.1",
+          "nghttp2": "1.64.0",
+          "openssl": "3.0.16",
+          "simdjson": "3.12.2",
+          "simdutf": "6.0.3",
+          "sqlite": "3.49.1",
+          "tz": "2025a",
+          "undici": "6.21.2",
+          "unicode": "16.0",
+          "uv": "1.50.0",
+          "uvwasi": "0.0.21",
+          "v8": "12.9.202.28-node.14",
+          "zlib": "1.3.0.1-motley-788cb3c",
+          "zstd": "1.5.6"
+        },
+        "execArgv": [
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128"
+        ],
+        "heapLimitBytes": 6845104128
+      },
+      "stepCounts": {
+        "expand": 1004927,
+        "check": 10078835,
+        "emit": 1407862
+      },
+      "events": [
+        {
+          "stage": "emit-start",
+          "elapsedMs": 300581.934209,
+          "cpu": {
+            "user": 307265021,
+            "system": 3981254
+          }
+        },
+        {
+          "stage": "optimizer-enter",
+          "elapsedMs": 305431.550542,
+          "cpu": {
+            "user": 313937670,
+            "system": 4109412
+          }
+        },
+        {
+          "stage": "width-analysis-enter",
+          "elapsedMs": 305431.652959,
+          "cpu": {
+            "user": 313937750,
+            "system": 4109431
+          }
+        },
+        {
+          "stage": "backend-enter",
+          "elapsedMs": 306980.802459,
+          "cpu": {
+            "user": 316407116,
+            "system": 4146501
+          }
+        },
+        {
+          "stage": "width-analysis-enter",
+          "elapsedMs": 307051.776959,
+          "cpu": {
+            "user": 316524471,
+            "system": 4148428
+          }
+        },
+        {
+          "stage": "source-assembly-enter",
+          "elapsedMs": 308004.092625,
+          "cpu": {
+            "user": 317699221,
+            "system": 4165029
+          }
+        },
+        {
+          "stage": "scalar-pass-enter",
+          "elapsedMs": 308083.814709,
+          "cpu": {
+            "user": 317830344,
+            "system": 4166337
+          }
+        },
+        {
+          "stage": "emit-success",
+          "elapsedMs": 321091.139917,
+          "cpu": {
+            "user": 332707470,
+            "system": 4328513
+          }
+        }
+      ],
+      "intervals": [
+        {
+          "name": "construction",
+          "from": "emit-start",
+          "to": "optimizer-enter",
+          "wallMs": 4849.6163329999545,
+          "userCpuMs": 6672.649,
+          "systemCpuMs": 128.158
+        },
+        {
+          "name": "transport-and-lower-handoff",
+          "from": "optimizer-enter",
+          "to": "backend-enter",
+          "wallMs": 1549.251917000045,
+          "userCpuMs": 2469.446,
+          "systemCpuMs": 37.089
+        },
+        {
+          "name": "link-validation-effects",
+          "from": "backend-enter",
+          "to": "source-assembly-enter",
+          "wallMs": 1023.2901659999625,
+          "userCpuMs": 1292.105,
+          "systemCpuMs": 18.528
+        },
+        {
+          "name": "source-assembly-including-scalar",
+          "from": "source-assembly-enter",
+          "to": "emit-success",
+          "wallMs": 13087.047292000032,
+          "userCpuMs": 15008.249,
+          "systemCpuMs": 163.484
+        }
+      ],
+      "totalEmitWallMs": 20509.205707999994,
+      "partitionSumMatches": true,
+      "output": {
+        "path": "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-stage.result.json.output.mjs",
+        "bytes": 29954418,
+        "sha256": "6ea91c1edba906dfae61eabe44377e9ed88102fa6eda73687be152882c20d490"
+      },
+      "transformation": {
+        "original": {
+          "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+          "sha256": "419710b98ee9e765e677c5a411a1299cb728db23e58b12dfad69141d9d1721c5",
+          "bytes": 33398300
+        },
+        "instrumented": {
+          "path": "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-stage-marked.mjs",
+          "sha256": "b6dd170bee17d12c0e86da60c4153f6ae05cc4beeb94312d1141483b0bbef410",
+          "bytes": 33398525
+        },
+        "prelude": "const $g33StageMark = globalThis.__g33StageMark;\n",
+        "insertions": [
+          {
+            "label": "optimizer-enter",
+            "key": "emitter_steps_v1.emitter_body_cps_provider_2_optimize",
+            "code": "$b8331",
+            "offset": 15249559,
+            "insertion": "$g33StageMark(\"optimizer-enter\");"
+          },
+          {
+            "label": "backend-enter",
+            "key": "emitter_steps_v1.emitter_body_cps_provider_9_emit_linked",
+            "code": "$b11374",
+            "offset": 21853608,
+            "insertion": "$g33StageMark(\"backend-enter\");"
+          },
+          {
+            "label": "source-assembly-enter",
+            "key": "emitter_steps_v1.emitter_body_cps_provider_9_program_source",
+            "code": "$b11385",
+            "offset": 21910352,
+            "insertion": "$g33StageMark(\"source-assembly-enter\");"
+          },
+          {
+            "label": "width-analysis-enter",
+            "key": "emitter_steps_v1.emitter_body_cps_provider_2_result_widths",
+            "code": "$b8032",
+            "offset": 14694980,
+            "insertion": "$g33StageMark(\"width-analysis-enter\");"
+          },
+          {
+            "label": "scalar-pass-enter",
+            "key": "emitter_steps_v1.emitter_body_cps_provider_9_js_scalar_program",
+            "code": "$b11152",
+            "offset": 21182717,
+            "insertion": "$g33StageMark(\"scalar-pass-enter\");"
+          }
+        ],
+        "exactOriginalReconstruction": true
+      },
+      "guardian": {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793368675112-7f3a080b4d9b4764.json",
+        "sha256": "23426f83245c117e2bb0d18f8992cbfb1642ebf92a1b9441ff315d7b8e59782a",
+        "status": "PASS",
+        "elapsedMs": 321701,
+        "peakRssBytes": 2796699648,
+        "peakFootprintBytes": 3038217352,
+        "ownedTreeStopped": true
+      },
+      "widthAnalysisEntries": 2
+    }
+  ],
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "worker": {
+    "stackSizeMb": 256,
+    "maxOldGenerationSizeMb": 6144,
+    "maxYoungGenerationSizeMb": 128
+  },
+  "boundaries": [
+    "emit-start to optimizer-enter: BIR/catalog construction (control continues to backend-enter because no optimizer exists).",
+    "optimizer-enter to backend-enter: complete transport CPS work including lower-result handoff, not synchronous entry-function return.",
+    "backend-enter to source-assembly-enter: JS linking, width validation and effect preparation.",
+    "source-assembly-enter to emit-success: source assembly including scalar preparation; scalar-pass-enter is an additional landmark, not an end marker."
+  ],
+  "limitations": [
+    "Diagnostic copies only; original expected output SHA is required.",
+    "Markers observe actual runtime entry of the selected CPS source-body functions.",
+    "Wall intervals include scheduler/runtime and JIT/GC; process.cpuUsage covers all process threads.",
+    "Only a handful of marker entry hooks; no per-step timestamps.",
+    "No speedup or memory acceptance follows from these timings."
+  ],
+  "requiredDiagnosticSources": [
+    {
+      "path": "/private/tmp/bend-g33-diagnostics-gSUmym/prepare-stage.mjs",
+      "sha256": "081a4c46dff0f437c6bf0d16b53d26fc22989d179b1a0919e20647580433a3a2",
+      "source": "import {readFileSync,writeFileSync,existsSync} from 'node:fs';\nimport {createHash} from 'node:crypto';\nimport {spawn} from 'node:child_process';\nconst root='/Users/ilyagulya/Projects/My/bend',dir='/private/tmp/bend-g33-diagnostics-gSUmym';\nconst json=path=>JSON.parse(readFileSync(path,'utf8'));\nconst sha=bytes=>createHash('sha256').update(bytes).digest('hex');\nconst hash=path=>sha(readFileSync(path));\nconst manifest=json(dir+'/manifest.json'),planPath=root+'/evals/receipts/producer2039g33_stage_plan.json';\nconst fresh=(path,bytes)=>{if(existsSync(path)){if(hash(path)!==sha(bytes))throw Error('Existing generated file differs: '+path);}else writeFileSync(path,bytes,{flag:'wx'});};\nif(process.argv[2]==='--run'){\n const plan=json(planPath);\n for(const command of plan.commands){\n  await new Promise((resolve,reject)=>{const child=spawn(command[0],command.slice(1),{cwd:root,stdio:'inherit',env:{...process.env,HEAVY_GATE_MEMORY_MIB:'8192',HEAVY_GATE_RSS_MIB:'8192',HEAVY_GATE_POLL_MS:'10',HEAVY_GATE_TIMEOUT_MS:'600000',BUN_JSC_forceRAMSize:'4294967296'}});child.once('error',reject);child.once('exit',(code,signal)=>code===0?resolve():reject(Error('Diagnostic failed: '+code+' '+signal)));});\n }\n}else{\n const specs={control:[['backend-enter',8,'emit_linked'],['source-assembly-enter',8,'program_source'],['scalar-pass-enter',8,'js_scalar_program']],candidate:[['optimizer-enter',2,'optimize'],['backend-enter',9,'emit_linked'],['source-assembly-enter',9,'program_source'],['width-analysis-enter',2,'result_widths'],['scalar-pass-enter',9,'js_scalar_program']]};\n const images={};\n for(const role of ['control','candidate']){\n  const input=manifest.roles[role].image;if(hash(input.path)!==input.sha256)throw Error('Original image drift');\n  let source=readFileSync(input.path,'utf8'),instrumented=source;\n  const attribution=json(dir+'/'+role+'-emit.result.json.attribution.json').map,sites=[];\n  for(const [label,provider,fn]of specs[role]){\n   const key='emitter_steps_v1.emitter_body_cps_provider_'+provider+'_'+fn;\n   const entries=Object.entries(attribution).filter(([,value])=>value===key);if(entries.length!==1)throw Error('Marker key cardinality '+key);\n   const id=entries[0][0],pattern=new RegExp('function \\\\'+id+'\\\\([^)]*\\\\)\\\\{','g'),matches=[...source.matchAll(pattern)];if(matches.length!==1)throw Error('Function cardinality '+id);\n   const opener=matches[0][0],insertion='$g33StageMark('+JSON.stringify(label)+');';instrumented=instrumented.replace(opener,opener+insertion);sites.push({label,key,code:id,offset:matches[0].index+opener.length,insertion});\n  }\n  const prelude='const $g33StageMark = globalThis.__g33StageMark;\\n';instrumented=prelude+instrumented;\n  let restored=instrumented.slice(prelude.length);for(const site of sites)restored=restored.replace(site.insertion,'');if(restored!==source)throw Error('Original byte preservation failed');\n  const path=dir+'/'+role+'-stage-marked.mjs';fresh(path,instrumented);\n  images[role]={original:input,instrumented:{path,sha256:hash(path),bytes:Buffer.byteLength(instrumented)},prelude,insertions:sites,exactOriginalReconstruction:true};\n  fresh(dir+'/'+role+'-stage-transform.json',JSON.stringify(images[role],null,2)+'\\n');\n }\n let driver=readFileSync(root+'/evals/selfhost_throughput.mjs','utf8');\n for(const file of ['heavy_gate.ts','native_seed_runtime.mjs','checker_core_step_runtime.mjs'])driver=driver.replace(\"'./\"+file+\"'\",JSON.stringify(root+'/evals/'+file));\n const replacements=[\n  ['const script=fileURLToPath(import.meta.url);',\"const G33_STAGE_EVENTS=[];globalThis.__g33StageMark=stage=>G33_STAGE_EVENTS.push({stage,elapsedMs:performance.now(),cpu:process.cpuUsage()});\\nconst script=fileURLToPath(import.meta.url);\"],\n  ['const before=performance.now(),cpu=process.cpuUsage();report.activePhase=name;save(reportPath,report);',\"const before=performance.now(),cpu=process.cpuUsage();if(name==='emit')globalThis.__g33StageMark('emit-start');report.activePhase=name;save(reportPath,report);\"],\n  ['const result=await action(),used=process.cpuUsage(cpu);',\"const result=await action();if(name==='emit')globalThis.__g33StageMark('emit-success');const used=process.cpuUsage(cpu);\"],\n  ['(await import(pathToFileURL(request.image).href)).default','(await import(pathToFileURL(request.stageImage.path).href)).default'],\n  ['report.pipelineElapsedMs=performance.now()-started;','report.stageEvents=G33_STAGE_EVENTS;report.instrumentation=request.instrumentation;report.pipelineElapsedMs=performance.now()-started;']\n ];\n for(const [before,after]of replacements){if(driver.split(before).length!==2)throw Error('Driver anchor '+before);driver=driver.replace(before,after);}\n const driverPath=dir+'/stage-markers.mjs';fresh(driverPath,driver);\n const guard=[manifest.tools.bun,'--smol','evals/heavy_gate.ts','--memory-mib','8192','--rss-mib','8192','--poll-ms','10','--timeout-ms','600000','--'],commands=[];\n for(const role of ['control','candidate']){\n  const request=json(dir+'/'+role+'-check.request.json');request.stageImage=images[role].instrumented;request.instrumentation=images[role];request.pins[request.stageImage.path]=request.stageImage.sha256;request.pins[driverPath]=hash(driverPath);\n  const path=dir+'/'+role+'-stage.request.json';fresh(path,JSON.stringify(request,null,2)+'\\n');\n  commands.push([...guard,manifest.tools.node,'--experimental-strip-types','--max-old-space-size=6144','--max-semi-space-size=128',driverPath,'--worker','js',path,hash(path),dir+'/'+role+'-stage.result.json']);\n }\n const plan={schemaVersion:1,status:'PREDECLARED_COMPLETE_CPS_PHASE_INTERVALS',diagnosticOnly:true,compilerAccepted:false,performanceAccepted:false,limits:manifest.limits,worker:manifest.worker,environment:{HEAVY_GATE_MEMORY_MIB:8192,HEAVY_GATE_RSS_MIB:8192,HEAVY_GATE_POLL_MS:10,HEAVY_GATE_TIMEOUT_MS:600000,BUN_JSC_forceRAMSize:4294967296},commands,driver:{path:driverPath,sha256:hash(driverPath)},preparation:{path:process.argv[1],sha256:hash(process.argv[1])},images,boundaries:['emit-start to optimizer-enter: BIR/catalog construction (control continues to backend-enter because no optimizer exists).','optimizer-enter to backend-enter: complete transport CPS work including lower-result handoff, not synchronous entry-function return.','backend-enter to source-assembly-enter: JS linking, width validation and effect preparation.','source-assembly-enter to emit-success: source assembly including scalar preparation; scalar-pass-enter is an additional landmark, not an end marker.'],limitations:['Diagnostic copies only; original expected output SHA is required.','Markers observe actual runtime entry of the selected CPS source-body functions.','Wall intervals include scheduler/runtime and JIT/GC; process.cpuUsage covers all process threads.','Only a handful of marker entry hooks; no per-step timestamps.','No speedup or memory acceptance follows from these timings.']};\n fresh(planPath,JSON.stringify(plan,null,2)+'\\n');console.log(JSON.stringify({status:plan.status,images,commands}));\n}\n"
+    }
+  ],
+  "interpretation": [
+    "These boundaries bracket complete logical CPS intervals between selected source-body entries. They do not use the first return from emit_library_start as a construction endpoint.",
+    "The transport interval includes lower-result handoff; source assembly includes scalar preparation. No narrower pure-transform or pure-render claim is made.",
+    "Candidate width analysis is entered separately before optimization and again during renderer validation; entry count is not duration.",
+    "Every interval uses the same process clock and contributes exactly once to the complete emit span.",
+    "Marked copies preserve original bytes plus only the recorded hooks. Both original emitted-output hashes must match."
+  ]
+}

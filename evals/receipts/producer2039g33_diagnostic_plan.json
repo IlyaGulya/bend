@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "status": "PREDECLARED_G33_R12_G32_EFFECTIVENESS_DIAGNOSTICS",
+  "compilerAccepted": false,
+  "performanceAccepted": false,
+  "byteFixedpoint": false,
+  "acceptedSource": "53f3e772",
+  "rejectedSource": "cf7e173b",
+  "manifest": {
+    "path": "/private/tmp/bend-g33-diagnostics-gSUmym/manifest.json",
+    "sha256": "b3f91c3a98296465c5d65b9aa4ae2e7ac68fbb7fb0f1d0496c9638b289526e3d"
+  },
+  "artifactIdentity": {
+    "control": {
+      "image": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+        "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+        "bytes": 31758507
+      },
+      "native": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+        "sha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71"
+      },
+      "root": "/private/tmp/bend2039g22-tiny-inline/checkpoints/.bootstrap_compiler_root_remote2039g21.bend",
+      "rootSha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed"
+    },
+    "candidate": {
+      "image": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+        "sha256": "419710b98ee9e765e677c5a411a1299cb728db23e58b12dfad69141d9d1721c5",
+        "bytes": 33398300
+      },
+      "native": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/native",
+        "sha256": "3bc801c1729ae747298f2b7099d198dedc51cc8cb2e3a9503786f645d7ecd859"
+      },
+      "root": "/private/tmp/bend2039g22-tiny-inline/checkpoints/.bootstrap_compiler_root_remote2039g21.bend",
+      "rootSha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed"
+    }
+  },
+  "scope": [
+    "Actual real compiler image coverage/reachability of G32 private workers, separate from runtime frequency.",
+    "Attribute full emit cost to construction, transport, subsequent passes and rendering with true CPS boundaries or explicitly sampled source attribution.",
+    "Paired checker CPU/allocation/GC on identical logical windows and one actual module per role.",
+    "Choose only a measured bounded correction; no production R12 edits or new native build before diagnosis."
+  ],
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "worker": {
+    "stackSizeMb": 256,
+    "maxOldGenerationSizeMb": 6144,
+    "maxYoungGenerationSizeMb": 128
+  },
+  "windows": [
+    {
+      "start": 1000000,
+      "end": 1250000
+    },
+    {
+      "start": 4000000,
+      "end": 4250000
+    },
+    {
+      "start": 8000000,
+      "end": 8250000
+    }
+  ],
+  "commands": {
+    "environment": "env HEAVY_GATE_MEMORY_MIB=8192 HEAVY_GATE_RSS_MIB=8192 HEAVY_GATE_POLL_MS=10 HEAVY_GATE_TIMEOUT_MS=600000 BUN_JSC_forceRAMSize=4294967296 ",
+    "check": [
+      [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/private/tmp/bend-g33-diagnostics-gSUmym/check-profile.mjs",
+        "/private/tmp/bend-g33-diagnostics-gSUmym/control-check.request.json",
+        "/private/tmp/bend-g33-diagnostics-gSUmym/control-check.result.json"
+      ],
+      [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/private/tmp/bend-g33-diagnostics-gSUmym/check-profile.mjs",
+        "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-check.request.json",
+        "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-check.result.json"
+      ]
+    ]
+  },
+  "policy": {
+    "unprofiledTimingAcceptance": false,
+    "relativeMemoryCutoff": null,
+    "allocationBytes": "statistical sampled estimates, not exact allocation or retained live bytes",
+    "gc": "worker GC durations and CPU profile GC samples are not interchangeable; preserve setup/teardown and asynchronous delivery limits",
+    "qualification": "If a correction is justified: changed-path runtime proof, then actual-image screen and full native/fixedpoint/applicable consumer qualification under unchanged hard guards. Keep every original sample. If not justified, record measured findings and leave R12 accepted."
+  }
+}

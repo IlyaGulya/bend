@@ -1,0 +1,1557 @@
+{
+  "schemaVersion": 1,
+  "status": "G33_PAIRED_REAL_EMIT_DIAGNOSTIC_PASS",
+  "diagnosticOnly": true,
+  "compilerAccepted": false,
+  "performanceAccepted": false,
+  "newFixedpointClaim": false,
+  "plan": {
+    "path": "/Users/ilyagulya/Projects/My/bend/evals/receipts/producer2039g33_emit_plan.json",
+    "sha256": "d900293f01983ac77eba5b752a2033574003a46682eaf3d063b1d42cc5098748"
+  },
+  "method": {
+    "continuationOwnership": "js_backend.code emits code function then conts(body,ctx) before next code; verified source anchors bend2/selfhost/js_backend.bend:847-856 and 1386-1392. Only named declarations and their emitted continuations are joined through the same-line $D sidecar.",
+    "cpu": "Unweighted V8 CPU sample counts for both roles; nearest source provider present on a sampled synchronous stack. One recorded negative interval makes duration-weighted attribution unsuitable; no interval is clamped and no sample is dropped. Unkeyed code and CPS-erased ancestry stay unassigned.",
+    "allocation": "Sum sampled selfSize once per allocation tree node; nearest source provider on the retained allocation stack. Not exact allocated bytes or retained memory.",
+    "chunks": "Pending request constructor at 64-step boundaries; not durations, per-definition calls or precise stage boundaries."
+  },
+  "analysis": {
+    "path": "/private/tmp/bend-g33-diagnostics-gSUmym/analyze-emit.mjs",
+    "sha256": "1fd9a87ffe3870c9c7f016d664ab6e7e3771adf70dc61ed9e8cea58834a7402c",
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "/private/tmp/bend-g33-diagnostics-gSUmym/analyze-emit.mjs",
+      "/private/tmp/bend-g33-diagnostics-gSUmym"
+    ]
+  },
+  "roles": [
+    {
+      "role": "control",
+      "report": {
+        "path": "/private/tmp/bend-g33-diagnostics-gSUmym/control-emit.result.json",
+        "sha256": "7523d8004a93f3f1b0bfc7320689cc9683116285b0f9e6e04ad15001a6c9576a"
+      },
+      "driver": {
+        "path": "/private/tmp/bend-g33-diagnostics-gSUmym/emit-profile.mjs",
+        "sha256": "6829835e9592cc25c469cb16dc3cdbbf8be7bf852c23783ad4c1d85e15db2ed8"
+      },
+      "moduleResidency": {
+        "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+        "moduleInstances": 1,
+        "search": null,
+        "policy": "One actual image instance for parse/expand/check/emit; no per-stage, per-role or per-lane module alias.",
+        "imageSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+        "role": "control"
+      },
+      "target": {
+        "image": {
+          "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+          "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+          "bytes": 31758507,
+          "declaredSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+          "declaredBytes": 31758507,
+          "match": true
+        },
+        "root": {
+          "path": "/private/tmp/bend2039g22-tiny-inline/checkpoints/.bootstrap_compiler_root_remote2039g21.bend",
+          "sha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed"
+        },
+        "referenceImage": null
+      },
+      "runtime": {
+        "execPath": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "versions": {
+          "node": "23.11.0",
+          "acorn": "8.14.1",
+          "ada": "3.2.1",
+          "amaro": "0.4.1",
+          "ares": "1.34.4",
+          "brotli": "1.1.0",
+          "cjs_module_lexer": "2.1.0",
+          "cldr": "46.0",
+          "icu": "76.1",
+          "llhttp": "9.2.1",
+          "modules": "131",
+          "napi": "10",
+          "nbytes": "0.1.1",
+          "ncrypto": "0.0.1",
+          "nghttp2": "1.64.0",
+          "openssl": "3.0.16",
+          "simdjson": "3.12.2",
+          "simdutf": "6.0.3",
+          "sqlite": "3.49.1",
+          "tz": "2025a",
+          "undici": "6.21.2",
+          "unicode": "16.0",
+          "uv": "1.50.0",
+          "uvwasi": "0.0.21",
+          "v8": "12.9.202.28-node.14",
+          "zlib": "1.3.0.1-motley-788cb3c",
+          "zstd": "1.5.6"
+        },
+        "execArgv": [
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128"
+        ],
+        "heapLimitBytes": 6845104128
+      },
+      "stepCounts": {
+        "expand": 1004927,
+        "check": 10078835,
+        "emit": 1225480
+      },
+      "phases": [
+        {
+          "phase": "startup",
+          "elapsedMs": 1253.8806249999998,
+          "userCpuMs": 954.38,
+          "systemCpuMs": 111.698
+        },
+        {
+          "phase": "load-parse",
+          "elapsedMs": 10444.752041,
+          "userCpuMs": 13389.694,
+          "systemCpuMs": 392.208
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 6453.119500000001,
+          "userCpuMs": 7648.975,
+          "systemCpuMs": 165.671
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 348677.07025,
+          "userCpuMs": 472415.345,
+          "systemCpuMs": 11965.505
+        },
+        {
+          "phase": "emit",
+          "elapsedMs": 21219.26033399999,
+          "userCpuMs": 28140.73,
+          "systemCpuMs": 846.919
+        },
+        {
+          "phase": "output",
+          "elapsedMs": 182.4403750000056,
+          "userCpuMs": 114.044,
+          "systemCpuMs": 28.501
+        },
+        {
+          "phase": "attribution",
+          "elapsedMs": 59.39054200000828,
+          "userCpuMs": 55.338,
+          "systemCpuMs": 15.576
+        }
+      ],
+      "output": {
+        "path": "/private/tmp/bend-g33-diagnostics-gSUmym/control-emit.result.json.output.mjs",
+        "bytes": 29948466,
+        "sha256": "c33227e028d767df9a9fff75663e42eb7374919dcf8e7dff14936a98d20008fb",
+        "expectedSha256": "c33227e028d767df9a9fff75663e42eb7374919dcf8e7dff14936a98d20008fb",
+        "matchesExpected": true
+      },
+      "guardian": {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793366987741-2e346ced49634560.json",
+        "sha256": "1aa9f8925f1c1f6413ee7661447e029c9c759e5e49ec679d2c98674527b6e930",
+        "status": "PASS",
+        "elapsedMs": 391262,
+        "peakRssBytes": 2456797184,
+        "peakFootprintBytes": 2556789816,
+        "ownedTreeStopped": true
+      },
+      "providerModules": [
+        "backend_lower",
+        "c_backend",
+        "c_backend_layout",
+        "c_backend_link",
+        "c_backend_physical",
+        "c_emit_core",
+        "descriptor_nf",
+        "js_backend",
+        "js_emit",
+        "lower_catalog"
+      ],
+      "cpu": {
+        "path": "/private/tmp/bend-g33-diagnostics-gSUmym/control-emit-profiles/selfhost-29556-thread-1-TlUnfA/000001-emit.cpuprofile",
+        "sha256": "32dafa0ac0ef8e07806a807c6a18498d8312c2343f5f3b27d5a30865df871f81",
+        "samples": 16723,
+        "negativeDeltas": [],
+        "weighting": "Unweighted sample counts in both roles; no sample dropped or interval clamped. Original timeDeltas retained in raw profiles; candidate has a negative interval, so duration-weighted attribution is not used.",
+        "selfBySource": {
+          "inspector": 1,
+          "unassigned": 14380,
+          "backend_lower": 256,
+          "gc": 1319,
+          "lower_catalog": 80,
+          "descriptor_nf": 2,
+          "js_backend": 685
+        },
+        "nearestSourceOnStack": {
+          "inspector": {
+            "samples": 1,
+            "share": 0.00005979788315493632
+          },
+          "unassigned": {
+            "samples": 13440,
+            "share": 0.8036835496023441
+          },
+          "backend_lower": {
+            "samples": 446,
+            "share": 0.026669855887101596
+          },
+          "gc": {
+            "samples": 1319,
+            "share": 0.078873407881361
+          },
+          "lower_catalog": {
+            "samples": 307,
+            "share": 0.018357950128565448
+          },
+          "descriptor_nf": {
+            "samples": 2,
+            "share": 0.00011959576630987264
+          },
+          "js_backend": {
+            "samples": 1208,
+            "share": 0.07223584285116307
+          }
+        },
+        "topSelf": [
+          {
+            "frame": {
+              "functionName": "(garbage collector)",
+              "scriptId": "0",
+              "url": "",
+              "lineNumber": -1,
+              "columnNumber": -1
+            },
+            "selfSamples": 1319
+          },
+          {
+            "frame": {
+              "functionName": "$k242815",
+              "scriptId": "233",
+              "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+              "lineNumber": 48247,
+              "columnNumber": 17
+            },
+            "selfSamples": 1235
+          },
+          {
+            "frame": {
+              "functionName": "$b11232",
+              "scriptId": "233",
+              "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+              "lineNumber": 48243,
+              "columnNumber": 16
+            },
+            "selfSamples": 1040
+          },
+          {
+            "frame": {
+              "functionName": "run_base",
+              "scriptId": "233",
+              "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+              "lineNumber": 19,
+              "columnNumber": 17
+            },
+            "selfSamples": 731
+          },
+          {
+            "frame": {
+              "functionName": "$b385",
+              "scriptId": "233",
+              "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+              "lineNumber": 12285,
+              "columnNumber": 14
+            },
+            "selfSamples": 695
+          },
+          {
+            "frame": {
+              "functionName": "$b381",
+              "scriptId": "233",
+              "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+              "lineNumber": 12277,
+              "columnNumber": 14
+            },
+            "selfSamples": 674
+          },
+          {
+            "frame": {
+              "functionName": "",
+              "scriptId": "233",
+              "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+              "lineNumber": 64135,
+              "columnNumber": 1959
+            },
+            "selfSamples": 531
+          },
+          {
+            "frame": {
+              "functionName": "$b11231",
+              "scriptId": "233",
+              "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+              "lineNumber": 48240,
+              "columnNumber": 16
+            },
+            "selfSamples": 343
+          },
+          {
+            "frame": {
+              "functionName": "$b375",
+              "scriptId": "233",
+              "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+              "lineNumber": 12268,
+              "columnNumber": 14
+            },
+            "selfSamples": 337
+          },
+          {
+            "frame": {
+              "functionName": "$split_done",
+              "scriptId": "233",
+              "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+              "lineNumber": 103,
+              "columnNumber": 20
+            },
+            "selfSamples": 327
+          }
+        ]
+      },
+      "allocation": {
+        "path": "/private/tmp/bend-g33-diagnostics-gSUmym/control-emit-profiles/selfhost-29556-thread-1-TlUnfA/000001-emit.heapprofile",
+        "sha256": "650ae8ead2d311ed1084a9b5bee62f2b69086ef2cc0266924f41b02f639ac203",
+        "estimatedBytes": 31426256728,
+        "selfBySource": {
+          "unassigned": 23851135864,
+          "js_backend": 5939295168,
+          "backend_lower": 1241550800,
+          "lower_catalog": 394274896,
+          "descriptor_nf": 0
+        },
+        "nearestSourceOnStack": {
+          "unassigned": {
+            "estimatedBytes": 22836100360,
+            "share": 0.7266567112224223
+          },
+          "js_backend": {
+            "estimatedBytes": 6597807664,
+            "share": 0.20994570626419914
+          },
+          "backend_lower": {
+            "estimatedBytes": 1468046952,
+            "share": 0.04671402530394297
+          },
+          "lower_catalog": {
+            "estimatedBytes": 520107408,
+            "share": 0.01655009097970607
+          },
+          "descriptor_nf": {
+            "estimatedBytes": 4194344,
+            "share": 0.0001334662297295798
+          }
+        },
+        "top": [
+          {
+            "frame": {
+              "functionName": "$k242773",
+              "scriptId": "233",
+              "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+              "lineNumber": 48244,
+              "columnNumber": 17
+            },
+            "estimatedBytes": 1975539648
+          },
+          {
+            "frame": {
+              "functionName": "$k242760",
+              "scriptId": "233",
+              "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+              "lineNumber": 48242,
+              "columnNumber": 17
+            },
+            "estimatedBytes": 1941973872
+          },
+          {
+            "frame": {
+              "functionName": "$k242784",
+              "scriptId": "233",
+              "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+              "lineNumber": 48245,
+              "columnNumber": 17
+            },
+            "estimatedBytes": 1673557120
+          },
+          {
+            "frame": {
+              "functionName": "$b10431",
+              "scriptId": "233",
+              "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+              "lineNumber": 44615,
+              "columnNumber": 16
+            },
+            "estimatedBytes": 1635828776
+          },
+          {
+            "frame": {
+              "functionName": "$b385",
+              "scriptId": "233",
+              "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+              "lineNumber": 12285,
+              "columnNumber": 14
+            },
+            "estimatedBytes": 1560312384
+          },
+          {
+            "frame": {
+              "functionName": "$b10430",
+              "scriptId": "233",
+              "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+              "lineNumber": 44609,
+              "columnNumber": 16
+            },
+            "estimatedBytes": 1514180832
+          },
+          {
+            "frame": {
+              "functionName": "$k197981",
+              "scriptId": "233",
+              "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+              "lineNumber": 44607,
+              "columnNumber": 17
+            },
+            "estimatedBytes": 1342220816
+          },
+          {
+            "frame": {
+              "functionName": "$b381",
+              "scriptId": "233",
+              "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+              "lineNumber": 12277,
+              "columnNumber": 14
+            },
+            "estimatedBytes": 1040195472
+          }
+        ]
+      },
+      "gc": [
+        {
+          "startElapsedMs": 368916.422542,
+          "endElapsedMs": 390136.328125,
+          "summary": {
+            "containedCount": 242,
+            "overlapCount": 242,
+            "durationMs": 1284.6351292133331,
+            "overlapDurationMs": 1284.6351292133331,
+            "byKind": {
+              "1": 238,
+              "4": 2,
+              "8": 2
+            },
+            "byFlags": {
+              "0": 240,
+              "64": 2
+            }
+          }
+        }
+      ],
+      "chunkAttribution": {
+        "usable": false,
+        "reason": "Request-group wrappers were not unwrapped by the diagnostic observer; pending provider counts cannot be recovered from its aggregate. CPU/allocation source ownership is analyzed separately.",
+        "observed": {
+          "clock": "host chunk boundaries of the emit Run; counts only, never durations",
+          "chunkSize": 64,
+          "chunks": 1225480,
+          "distinctSamples": 20,
+          "truncated": false,
+          "sampleLimit": 4096,
+          "byProgressShape": {
+            "EmitterFinished": 613374,
+            "EmitterDirect": 271153,
+            "EmitterPending": 340953
+          },
+          "byProvider": [],
+          "byStageClass": {},
+          "topTags": [],
+          "unattributed": {
+            "noRequest": 884527,
+            "unreadable": 340953
+          },
+          "limitation": "A tag is the pending constructor after a 64-step chunk; it names a composed-source definition on the chunk, not proof that the private transform ran and not a duration."
+        }
+      },
+      "attribution": {
+        "path": "/private/tmp/bend-g33-diagnostics-gSUmym/control-emit.result.json.attribution.json",
+        "bytes": 793013,
+        "sha256": "b18e25eed91daf35470baf62f7770e03eb27bc23e88439593d7c6ba5c41287d3",
+        "method": "emit-profile.mjs static text scan: /^function (\\$bN)\\(/ for code ids; the first $bN inside each $D[\"<key>\"]= assignment segment (bounded 2000 chars) is that declaration's entry code. No disassembly, no heap snapshot, no execution.",
+        "codeFunctions": 24625,
+        "declaredCodes": 12226,
+        "imageMaxCodeId": 24892,
+        "classes": {
+          "declaredKey": 12226,
+          "unmappedTotal": 12399,
+          "presentInReference": null,
+          "absentFromReference": null,
+          "aboveReferenceMaxUnkeyed": null,
+          "undetermined": 12399
+        },
+        "unmappedRanges": {
+          "ranges": [
+            {
+              "start": 8743,
+              "end": 8748,
+              "count": 6
+            },
+            {
+              "start": 8948,
+              "end": 8948,
+              "count": 1
+            },
+            {
+              "start": 10723,
+              "end": 10723,
+              "count": 1
+            },
+            {
+              "start": 11111,
+              "end": 11112,
+              "count": 2
+            },
+            {
+              "start": 11124,
+              "end": 11125,
+              "count": 2
+            },
+            {
+              "start": 12506,
+              "end": 24892,
+              "count": 12387
+            }
+          ],
+          "truncated": false
+        },
+        "byKeyNamespace": {
+          "Pair": 2,
+          "IO": 9,
+          "IO.fork": 1,
+          "IO.join": 1,
+          "Equal": 3,
+          "Empty": 1,
+          "Bool": 7,
+          "Cmp": 5,
+          "Nat.divmod": 1,
+          "Nat": 13,
+          "Maybe": 7,
+          "Result": 6,
+          "List": 15,
+          "List.reverse": 1,
+          "List.last": 1,
+          "List.range": 1,
+          "List.filter": 1,
+          "List.any": 1,
+          "List.all": 1,
+          "List.find": 1,
+          "List.merge": 1,
+          "List.sort": 1,
+          "Word": 15,
+          "Word.shl": 2,
+          "Word.shl.out": 1,
+          "Word.shr": 1,
+          "Word.cmp": 1,
+          "Word.adc": 1,
+          "Word.add_comm": 2,
+          "Word.mul": 1,
+          "U32": 9,
+          "U32.log2": 1,
+          "U32.divmod.go": 3,
+          "U32.divmod": 1,
+          "U32.div": 2,
+          "U32.mod": 2,
+          "F32": 9,
+          "F32.lerp": 2,
+          "F32.round": 1,
+          "F32.to_nat": 1,
+          "Char": 12,
+          "String.cmp": 2,
+          "String": 24,
+          "String.reverse": 1,
+          "String.order": 1,
+          "String.starts_with.go": 1,
+          "String.starts_with": 1,
+          "String.contains": 1,
+          "String.join": 1,
+          "String.split": 2,
+          "String.trim_start": 1,
+          "Nat.show": 3,
+          "Nat.read": 5,
+          "U32.show": 3,
+          "U32.read": 2,
+          "Array.size": 1,
+          "Array.swap": 4,
+          "Array.clone": 1,
+          "Array": 2,
+          "Array.set": 1,
+          "Array.get": 2,
+          "Map.bit": 4,
+          "Map.bit.go": 2,
+          "Map.msb.u": 1,
+          "Map.msb": 1,
+          "Map.diff": 3,
+          "Map": 17,
+          "Map.put": 1,
+          "Map.ins.splice": 1,
+          "Map.ins": 2,
+          "Map.seek": 1,
+          "Map.set.fin": 1,
+          "Map.set": 2,
+          "Map.has": 2,
+          "Map.get": 2,
+          "Map.find": 2,
+          "Map.pop": 4,
+          "Map.del": 1,
+          "Map.to_list": 1,
+          "Map.keys": 1,
+          "Map.from_list": 1,
+          "Map.values": 1,
+          "Set": 6,
+          "Set.from_list": 1,
+          "Image": 3,
+          "Image.drop": 1,
+          "App": 6,
+          "../bend2/selfhost/ast": 5,
+          "../bend2/selfhost/lexer": 39,
+          "../bend2/selfhost/core": 10,
+          "../bend2/selfhost/checker_ir": 8,
+          "../bend2/selfhost/index_lookup": 2,
+          "../bend2/selfhost/scope_lookup": 19,
+          "../bend2/selfhost/checker_arena.node_pool.copy": 1,
+          "../bend2/selfhost/checker_arena.node_pool": 6,
+          "../bend2/selfhost/checker_arena.pattern_pool.copy": 1,
+          "../bend2/selfhost/checker_arena.pattern_pool": 6,
+          "../bend2/selfhost/checker_arena.binder_pool.copy": 1,
+          "../bend2/selfhost/checker_arena.binder_pool": 6,
+          "../bend2/selfhost/checker_arena.word_pool.copy": 1,
+          "../bend2/selfhost/checker_arena.word_pool": 7,
+          "../bend2/selfhost/checker_arena.natural_pool.copy": 1,
+          "../bend2/selfhost/checker_arena.natural_pool": 6,
+          "../bend2/selfhost/checker_arena.name_pool.copy": 1,
+          "../bend2/selfhost/checker_arena.name_pool": 8,
+          "../bend2/selfhost/checker_arena.name_pool.get": 1,
+          "../bend2/selfhost/checker_arena.metadata_read": 3,
+          "../bend2/selfhost/checker_arena": 83,
+          "../bend2/selfhost/checker_arena.get_node": 1,
+          "../bend2/selfhost/checker_arena.node_count": 1,
+          "../bend2/selfhost/checker_arena.get_pattern": 1,
+          "../bend2/selfhost/checker_arena.pattern_count": 1,
+          "../bend2/selfhost/checker_arena.get_binder": 1,
+          "../bend2/selfhost/checker_arena.put_binder": 3,
+          "../bend2/selfhost/checker_arena.binder_count": 1,
+          "../bend2/selfhost/checker_arena.word": 1,
+          "../bend2/selfhost/checker_arena.put_word": 3,
+          "../bend2/selfhost/checker_arena.word_count": 1,
+          "../bend2/selfhost/checker_arena.node_is_closed.mask": 1,
+          "../bend2/selfhost/checker_arena.node_is_closed": 4,
+          "../bend2/selfhost/checker_arena.node_is_closed.count": 1,
+          "../bend2/selfhost/checker_arena.node_has_flag": 3,
+          "../bend2/selfhost/checker_arena.node_ctor_certify": 5,
+          "../bend2/selfhost/checker_arena.bound_max": 1,
+          "../bend2/selfhost/checker_arena.bound_read.node": 1,
+          "../bend2/selfhost/checker_arena.bound_read": 7,
+          "../bend2/selfhost/checker_arena.bound_read.pattern": 1,
+          "../bend2/selfhost/checker_arena.node_bound": 1,
+          "../bend2/selfhost/checker_arena.node_certificate_flags": 1,
+          "../bend2/selfhost/checker_arena.node_certify": 4,
+          "../bend2/selfhost/checker_arena.bound_merge": 1,
+          "../bend2/selfhost/checker_arena.bound_node": 5,
+          "../bend2/selfhost/checker_arena.bound_node.binder": 1,
+          "../bend2/selfhost/checker_arena.bound_range.combine": 1,
+          "../bend2/selfhost/checker_arena.bound_range": 11,
+          "../bend2/selfhost/checker_arena.bound_range.forward": 1,
+          "../bend2/selfhost/checker_arena.bound_range.reverse": 1,
+          "../bend2/selfhost/checker_arena.bound_pattern": 2,
+          "../bend2/selfhost/checker_arena.bound_pattern.local": 1,
+          "../bend2/selfhost/checker_arena.node_closed": 3,
+          "../bend2/selfhost/checker_arena.node_closed.flags": 1,
+          "../bend2/selfhost/checker_arena.bound_pool.room": 1,
+          "../bend2/selfhost/checker_arena.bound_pool": 1,
+          "../bend2/selfhost/checker_arena.put_pattern": 5,
+          "../bend2/selfhost/checker_arena.node_closed.room": 1,
+          "../bend2/selfhost/checker_arena.put_node": 5,
+          "../bend2/selfhost/checker_arena.natural": 1,
+          "../bend2/selfhost/checker_arena.put_natural": 3,
+          "../bend2/selfhost/checker_arena.natural_count": 1,
+          "../bend2/selfhost/checker_arena.name_text": 1,
+          "../bend2/selfhost/checker_arena.put_name_value": 3,
+          "../bend2/selfhost/checker_arena.name_count": 1,
+          "../bend2/selfhost/checker_arena.name": 3,
+          "../bend2/selfhost/checker_arena.word_pool.reserve": 1,
+          "../bend2/selfhost/checker_arena.reserve_words": 1,
+          "../bend2/selfhost/checker_arena.reserve_naturals": 3,
+          "../bend2/selfhost/checker_arena.word_quantity": 1,
+          "../bend2/selfhost/checker_arena.mark": 6,
+          "../bend2/selfhost/checker_arena.names.forget": 1,
+          "../bend2/selfhost/checker_arena.names": 2,
+          "../bend2/selfhost/checker_arena.names.rewind": 1,
+          "../bend2/selfhost/checker_arena.rewind.natural": 1,
+          "../bend2/selfhost/checker_arena.rewind": 7,
+          "../bend2/selfhost/checker_arena.rewind.word": 1,
+          "../bend2/selfhost/checker_arena.rewind.binder": 1,
+          "../bend2/selfhost/checker_arena.rewind.pattern": 1,
+          "../bend2/selfhost/checker_arena.rewind.node": 1,
+          "../bend2/selfhost/checker_arena.rewind.names": 2,
+          "../bend2/selfhost/checker_arena.rewind.depths": 1,
+          "../bend2/selfhost/checker_arena.rewind.case_prefix": 1,
+          "../bend2/selfhost/checker_arena.subst_memo_get": 1,
+          "../bend2/selfhost/checker_arena.subst_memo_put": 1,
+          "../bend2/selfhost/checker_arena.publication_memo_put": 1,
+          "../bend2/selfhost/checker_arena.resolution_frame_serial": 1,
+          "../bend2/selfhost/checker_arena.resolution_frame_get": 1,
+          "../bend2/selfhost/checker_arena.resolved_ref_put": 1,
+          "../bend2/selfhost/checker_arena.resolved_ref_get": 1,
+          "../bend2/selfhost/checker_arena.generation": 1,
+          "../bend2/selfhost/checker_arena.case_prefix_get": 1,
+          "../bend2/selfhost/checker_arena.case_prefix_range_valid": 3,
+          "../bend2/selfhost/checker_arena.case_prefix_id_valid": 1,
+          "../bend2/selfhost/checker_arena.case_prefix_head": 9,
+          "../bend2/selfhost/checker_arena.case_prefix_first": 2,
+          "../bend2/selfhost/checker_arena.ctor_source_range_valid": 2,
+          "../bend2/selfhost/checked_frontend": 2,
+          "../bend2/selfhost/sha256": 30,
+          "../bend2/selfhost/path": 28,
+          "template_steps_v1": 313,
+          "checker_core_steps_v1": 5644,
+          "../bend2/selfhost/c_backend_sharing": 436,
+          "emitter_steps_v1": 3864,
+          "<bare>": 1264
+        },
+        "byProvider": {
+          "1": 359,
+          "2": 553,
+          "3": 96,
+          "4": 65,
+          "5": 360,
+          "6": 10,
+          "7": 55,
+          "8": 354,
+          "9": 5,
+          "10": 250
+        },
+        "byStageClass": {
+          "emitter-entry": 1757,
+          "bir-construction": 359,
+          "bir-transport": 553,
+          "render-c": 96,
+          "other-pass-c-layouts": 65,
+          "other-pass-c-link-planning": 360,
+          "render-c-physical": 10,
+          "render-c-entry": 55,
+          "other-pass-descriptor-nf": 354,
+          "render-js": 5,
+          "render-js-entry": 250
+        },
+        "reference": null,
+        "limitation": "Only $D-declared entry codes are keyed. Nested lambdas and transform-created worker bodies have no declared key in the image and stay unmapped rather than being guessed; join CPU-profile functionName \"$bN\" through the sidecar map."
+      }
+    },
+    {
+      "role": "candidate",
+      "report": {
+        "path": "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-emit.result.json",
+        "sha256": "af74932350311defe156493cca6d8446c496c2e59ab8233c2b8f09ecb0ba64d8"
+      },
+      "driver": {
+        "path": "/private/tmp/bend-g33-diagnostics-gSUmym/emit-profile.mjs",
+        "sha256": "6829835e9592cc25c469cb16dc3cdbbf8be7bf852c23783ad4c1d85e15db2ed8"
+      },
+      "moduleResidency": {
+        "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+        "moduleInstances": 1,
+        "search": null,
+        "policy": "One actual image instance for parse/expand/check/emit; no per-stage, per-role or per-lane module alias.",
+        "imageSha256": "419710b98ee9e765e677c5a411a1299cb728db23e58b12dfad69141d9d1721c5",
+        "role": "candidate"
+      },
+      "target": {
+        "image": {
+          "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+          "sha256": "419710b98ee9e765e677c5a411a1299cb728db23e58b12dfad69141d9d1721c5",
+          "bytes": 33398300,
+          "declaredSha256": "419710b98ee9e765e677c5a411a1299cb728db23e58b12dfad69141d9d1721c5",
+          "declaredBytes": 33398300,
+          "match": true
+        },
+        "root": {
+          "path": "/private/tmp/bend2039g22-tiny-inline/checkpoints/.bootstrap_compiler_root_remote2039g21.bend",
+          "sha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed"
+        },
+        "referenceImage": {
+          "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+          "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+          "bytes": 31758507,
+          "declaredSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+          "declaredBytes": 31758507,
+          "match": true
+        }
+      },
+      "runtime": {
+        "execPath": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "versions": {
+          "node": "23.11.0",
+          "acorn": "8.14.1",
+          "ada": "3.2.1",
+          "amaro": "0.4.1",
+          "ares": "1.34.4",
+          "brotli": "1.1.0",
+          "cjs_module_lexer": "2.1.0",
+          "cldr": "46.0",
+          "icu": "76.1",
+          "llhttp": "9.2.1",
+          "modules": "131",
+          "napi": "10",
+          "nbytes": "0.1.1",
+          "ncrypto": "0.0.1",
+          "nghttp2": "1.64.0",
+          "openssl": "3.0.16",
+          "simdjson": "3.12.2",
+          "simdutf": "6.0.3",
+          "sqlite": "3.49.1",
+          "tz": "2025a",
+          "undici": "6.21.2",
+          "unicode": "16.0",
+          "uv": "1.50.0",
+          "uvwasi": "0.0.21",
+          "v8": "12.9.202.28-node.14",
+          "zlib": "1.3.0.1-motley-788cb3c",
+          "zstd": "1.5.6"
+        },
+        "execArgv": [
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128"
+        ],
+        "heapLimitBytes": 6845104128
+      },
+      "stepCounts": {
+        "expand": 1004927,
+        "check": 10078835,
+        "emit": 1407862
+      },
+      "phases": [
+        {
+          "phase": "startup",
+          "elapsedMs": 963.112167,
+          "userCpuMs": 910.214,
+          "systemCpuMs": 66.434
+        },
+        {
+          "phase": "load-parse",
+          "elapsedMs": 9223.798959,
+          "userCpuMs": 12502.148,
+          "systemCpuMs": 326.072
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 6058.956167000002,
+          "userCpuMs": 6933.658,
+          "systemCpuMs": 81.419
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 271958.75141599996,
+          "userCpuMs": 308411.471,
+          "systemCpuMs": 4761.683
+        },
+        {
+          "phase": "emit",
+          "elapsedMs": 22522.982750000025,
+          "userCpuMs": 30416.336,
+          "systemCpuMs": 853.289
+        },
+        {
+          "phase": "output",
+          "elapsedMs": 147.66762500000186,
+          "userCpuMs": 105.646,
+          "systemCpuMs": 18.286
+        },
+        {
+          "phase": "attribution",
+          "elapsedMs": 86.71270800003549,
+          "userCpuMs": 74.839,
+          "systemCpuMs": 24.336
+        }
+      ],
+      "output": {
+        "path": "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-emit.result.json.output.mjs",
+        "bytes": 29954418,
+        "sha256": "6ea91c1edba906dfae61eabe44377e9ed88102fa6eda73687be152882c20d490",
+        "expectedSha256": "6ea91c1edba906dfae61eabe44377e9ed88102fa6eda73687be152882c20d490",
+        "matchesExpected": true
+      },
+      "guardian": {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793367379108-c8308b2aa3f6728d.json",
+        "sha256": "468417e4a4fa03275b3370a27f6274074789ec833d33495abe4d8b355629ca08",
+        "status": "PASS",
+        "elapsedMs": 313388,
+        "peakRssBytes": 2133573632,
+        "peakFootprintBytes": 2187612752,
+        "ownedTreeStopped": true
+      },
+      "providerModules": [
+        "backend_lower",
+        "backend_transport",
+        "c_backend",
+        "c_backend_layout",
+        "c_backend_link",
+        "c_backend_physical",
+        "c_emit_core",
+        "descriptor_nf",
+        "js_backend",
+        "js_emit",
+        "lower_catalog"
+      ],
+      "cpu": {
+        "path": "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-emit-profiles/selfhost-18547-thread-1-zTGtKH/000001-emit.cpuprofile",
+        "sha256": "2f62bc03e3472f67ca2a9530126412e7efd7a70760b5c24edf317c988bf27bb6",
+        "samples": 15547,
+        "negativeDeltas": [
+          {
+            "index": 71,
+            "deltaUs": -42
+          }
+        ],
+        "weighting": "Unweighted sample counts in both roles; no sample dropped or interval clamped. Original timeDeltas retained in raw profiles; candidate has a negative interval, so duration-weighted attribution is not used.",
+        "selfBySource": {
+          "inspector": 1,
+          "unassigned": 13557,
+          "backend_lower": 200,
+          "gc": 1005,
+          "lower_catalog": 58,
+          "descriptor_nf": 1,
+          "backend_transport": 140,
+          "js_emit": 1,
+          "js_backend": 584
+        },
+        "nearestSourceOnStack": {
+          "inspector": {
+            "samples": 1,
+            "share": 0.00006432109088570143
+          },
+          "unassigned": {
+            "samples": 12295,
+            "share": 0.790827812439699
+          },
+          "backend_lower": {
+            "samples": 343,
+            "share": 0.022062134173795586
+          },
+          "gc": {
+            "samples": 1005,
+            "share": 0.06464269634012992
+          },
+          "lower_catalog": {
+            "samples": 263,
+            "share": 0.016916446902939475
+          },
+          "descriptor_nf": {
+            "samples": 1,
+            "share": 0.00006432109088570143
+          },
+          "backend_transport": {
+            "samples": 578,
+            "share": 0.03717759053193542
+          },
+          "js_emit": {
+            "samples": 1,
+            "share": 0.00006432109088570143
+          },
+          "js_backend": {
+            "samples": 1060,
+            "share": 0.0681803563388435
+          }
+        },
+        "topSelf": [
+          {
+            "frame": {
+              "functionName": "$k256672",
+              "scriptId": "233",
+              "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+              "lineNumber": 51172,
+              "columnNumber": 17
+            },
+            "selfSamples": 1149
+          },
+          {
+            "frame": {
+              "functionName": "$b11767",
+              "scriptId": "233",
+              "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+              "lineNumber": 51168,
+              "columnNumber": 16
+            },
+            "selfSamples": 1029
+          },
+          {
+            "frame": {
+              "functionName": "(garbage collector)",
+              "scriptId": "0",
+              "url": "",
+              "lineNumber": -1,
+              "columnNumber": -1
+            },
+            "selfSamples": 1005
+          },
+          {
+            "frame": {
+              "functionName": "run_base",
+              "scriptId": "233",
+              "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+              "lineNumber": 19,
+              "columnNumber": 17
+            },
+            "selfSamples": 763
+          },
+          {
+            "frame": {
+              "functionName": "$b385",
+              "scriptId": "233",
+              "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+              "lineNumber": 12889,
+              "columnNumber": 14
+            },
+            "selfSamples": 699
+          },
+          {
+            "frame": {
+              "functionName": "$b381",
+              "scriptId": "233",
+              "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+              "lineNumber": 12881,
+              "columnNumber": 14
+            },
+            "selfSamples": 510
+          },
+          {
+            "frame": {
+              "functionName": "",
+              "scriptId": "233",
+              "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+              "lineNumber": 67598,
+              "columnNumber": 1959
+            },
+            "selfSamples": 409
+          },
+          {
+            "frame": {
+              "functionName": "$b11766",
+              "scriptId": "233",
+              "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+              "lineNumber": 51165,
+              "columnNumber": 16
+            },
+            "selfSamples": 394
+          },
+          {
+            "frame": {
+              "functionName": "$b11765",
+              "scriptId": "233",
+              "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+              "lineNumber": 51164,
+              "columnNumber": 16
+            },
+            "selfSamples": 336
+          },
+          {
+            "frame": {
+              "functionName": "$b373",
+              "scriptId": "233",
+              "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+              "lineNumber": 12867,
+              "columnNumber": 14
+            },
+            "selfSamples": 279
+          }
+        ]
+      },
+      "allocation": {
+        "path": "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-emit-profiles/selfhost-18547-thread-1-zTGtKH/000001-emit.heapprofile",
+        "sha256": "f259d121a029f53abdabe9898b9a95623bbd4238c68947ba6b392830410cf0ca",
+        "estimatedBytes": 36780634600,
+        "selfBySource": {
+          "unassigned": 29536856088,
+          "backend_transport": 1002481208,
+          "backend_lower": 1195412576,
+          "js_backend": 4580307984,
+          "lower_catalog": 461382400,
+          "descriptor_nf": 4194344
+        },
+        "nearestSourceOnStack": {
+          "unassigned": {
+            "estimatedBytes": 26961507160,
+            "share": 0.7330353990140236
+          },
+          "backend_transport": {
+            "estimatedBytes": 2407588472,
+            "share": 0.0654580460120718
+          },
+          "backend_lower": {
+            "estimatedBytes": 1455463160,
+            "share": 0.03957145317987526
+          },
+          "js_backend": {
+            "estimatedBytes": 5352085592,
+            "share": 0.1455136826812662
+          },
+          "lower_catalog": {
+            "estimatedBytes": 599795872,
+            "share": 0.016307382363652857
+          },
+          "descriptor_nf": {
+            "estimatedBytes": 4194344,
+            "share": 0.00011403674911035929
+          }
+        },
+        "top": [
+          {
+            "frame": {
+              "functionName": "$k256630",
+              "scriptId": "233",
+              "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+              "lineNumber": 51169,
+              "columnNumber": 17
+            },
+            "estimatedBytes": 2214617760
+          },
+          {
+            "frame": {
+              "functionName": "$k256617",
+              "scriptId": "233",
+              "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+              "lineNumber": 51167,
+              "columnNumber": 17
+            },
+            "estimatedBytes": 2113951344
+          },
+          {
+            "frame": {
+              "functionName": "$b385",
+              "scriptId": "233",
+              "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+              "lineNumber": 12889,
+              "columnNumber": 14
+            },
+            "estimatedBytes": 1904248880
+          },
+          {
+            "frame": {
+              "functionName": "$k256641",
+              "scriptId": "233",
+              "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+              "lineNumber": 51170,
+              "columnNumber": 17
+            },
+            "estimatedBytes": 1761627840
+          },
+          {
+            "frame": {
+              "functionName": "$b10921",
+              "scriptId": "233",
+              "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+              "lineNumber": 47249,
+              "columnNumber": 16
+            },
+            "estimatedBytes": 1694549416
+          },
+          {
+            "frame": {
+              "functionName": "$b11755",
+              "scriptId": "233",
+              "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+              "lineNumber": 51154,
+              "columnNumber": 16
+            },
+            "estimatedBytes": 1598070096
+          },
+          {
+            "frame": {
+              "functionName": "$k208300",
+              "scriptId": "233",
+              "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+              "lineNumber": 47241,
+              "columnNumber": 17
+            },
+            "estimatedBytes": 1300276224
+          },
+          {
+            "frame": {
+              "functionName": "$k2677",
+              "scriptId": "233",
+              "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+              "lineNumber": 12891,
+              "columnNumber": 15
+            },
+            "estimatedBytes": 973088792
+          }
+        ]
+      },
+      "gc": [
+        {
+          "startElapsedMs": 289842.683708,
+          "endElapsedMs": 312366.120167,
+          "summary": {
+            "containedCount": 280,
+            "overlapCount": 280,
+            "durationMs": 1360.8647091388702,
+            "overlapDurationMs": 1360.8647091388702,
+            "byKind": {
+              "1": 276,
+              "4": 2,
+              "8": 2
+            },
+            "byFlags": {
+              "0": 278,
+              "64": 2
+            }
+          }
+        }
+      ],
+      "chunkAttribution": {
+        "usable": false,
+        "reason": "Request-group wrappers were not unwrapped by the diagnostic observer; pending provider counts cannot be recovered from its aggregate. CPU/allocation source ownership is analyzed separately.",
+        "observed": {
+          "clock": "host chunk boundaries of the emit Run; counts only, never durations",
+          "chunkSize": 64,
+          "chunks": 1407862,
+          "distinctSamples": 23,
+          "truncated": false,
+          "sampleLimit": 4096,
+          "byProgressShape": {
+            "EmitterFinished": 703812,
+            "EmitterDirect": 310129,
+            "EmitterPending": 393921
+          },
+          "byProvider": [],
+          "byStageClass": {},
+          "topTags": [],
+          "unattributed": {
+            "noRequest": 1013941,
+            "unreadable": 393921
+          },
+          "limitation": "A tag is the pending constructor after a 64-step chunk; it names a composed-source definition on the chunk, not proof that the private transform ran and not a duration."
+        }
+      },
+      "attribution": {
+        "path": "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-emit.result.json.attribution.json",
+        "bytes": 828258,
+        "sha256": "b1b1252e53d8249558aa60174f0a964a9e08e099339ab46eba9673cba6a1883a",
+        "method": "emit-profile.mjs static text scan: /^function (\\$bN)\\(/ for code ids; the first $bN inside each $D[\"<key>\"]= assignment segment (bounded 2000 chars) is that declaration's entry code. No disassembly, no heap snapshot, no execution.",
+        "codeFunctions": 26079,
+        "declaredCodes": 12756,
+        "imageMaxCodeId": 26351,
+        "classes": {
+          "declaredKey": 12756,
+          "unmappedTotal": 13323,
+          "presentInReference": 11864,
+          "absentFromReference": 1459,
+          "aboveReferenceMaxUnkeyed": 1459,
+          "undetermined": null
+        },
+        "unmappedRanges": {
+          "ranges": [
+            {
+              "start": 9225,
+              "end": 9230,
+              "count": 6
+            },
+            {
+              "start": 9437,
+              "end": 9437,
+              "count": 1
+            },
+            {
+              "start": 11244,
+              "end": 11244,
+              "count": 1
+            },
+            {
+              "start": 11642,
+              "end": 11643,
+              "count": 2
+            },
+            {
+              "start": 11655,
+              "end": 11656,
+              "count": 2
+            },
+            {
+              "start": 13041,
+              "end": 26351,
+              "count": 13311
+            }
+          ],
+          "truncated": false
+        },
+        "byKeyNamespace": {
+          "Pair": 2,
+          "IO": 9,
+          "IO.fork": 1,
+          "IO.join": 1,
+          "Equal": 3,
+          "Empty": 1,
+          "Bool": 7,
+          "Cmp": 5,
+          "Nat.divmod": 1,
+          "Nat": 13,
+          "Maybe": 7,
+          "Result": 6,
+          "List": 15,
+          "List.reverse": 1,
+          "List.last": 1,
+          "List.range": 1,
+          "List.filter": 1,
+          "List.any": 1,
+          "List.all": 1,
+          "List.find": 1,
+          "List.merge": 1,
+          "List.sort": 1,
+          "Word": 15,
+          "Word.shl": 2,
+          "Word.shl.out": 1,
+          "Word.shr": 1,
+          "Word.cmp": 1,
+          "Word.adc": 1,
+          "Word.add_comm": 2,
+          "Word.mul": 1,
+          "U32": 9,
+          "U32.log2": 1,
+          "U32.divmod.go": 3,
+          "U32.divmod": 1,
+          "U32.div": 2,
+          "U32.mod": 2,
+          "F32": 9,
+          "F32.lerp": 2,
+          "F32.round": 1,
+          "F32.to_nat": 1,
+          "Char": 12,
+          "String.cmp": 2,
+          "String": 24,
+          "String.reverse": 1,
+          "String.order": 1,
+          "String.starts_with.go": 1,
+          "String.starts_with": 1,
+          "String.contains": 1,
+          "String.join": 1,
+          "String.split": 2,
+          "String.trim_start": 1,
+          "Nat.show": 3,
+          "Nat.read": 5,
+          "U32.show": 3,
+          "U32.read": 2,
+          "Array.size": 1,
+          "Array.swap": 4,
+          "Array.clone": 1,
+          "Array": 2,
+          "Array.set": 1,
+          "Array.get": 2,
+          "Map.bit": 4,
+          "Map.bit.go": 2,
+          "Map.msb.u": 1,
+          "Map.msb": 1,
+          "Map.diff": 3,
+          "Map": 17,
+          "Map.put": 1,
+          "Map.ins.splice": 1,
+          "Map.ins": 2,
+          "Map.seek": 1,
+          "Map.set.fin": 1,
+          "Map.set": 2,
+          "Map.has": 2,
+          "Map.get": 2,
+          "Map.find": 2,
+          "Map.pop": 4,
+          "Map.del": 1,
+          "Map.to_list": 1,
+          "Map.keys": 1,
+          "Map.from_list": 1,
+          "Map.values": 1,
+          "Set": 6,
+          "Set.from_list": 1,
+          "Image": 3,
+          "Image.drop": 1,
+          "App": 6,
+          "../bend2/selfhost/ast": 5,
+          "../bend2/selfhost/lexer": 39,
+          "../bend2/selfhost/core": 10,
+          "../bend2/selfhost/checker_ir": 8,
+          "../bend2/selfhost/index_lookup": 2,
+          "../bend2/selfhost/scope_lookup": 19,
+          "../bend2/selfhost/checker_arena.node_pool.copy": 1,
+          "../bend2/selfhost/checker_arena.node_pool": 6,
+          "../bend2/selfhost/checker_arena.pattern_pool.copy": 1,
+          "../bend2/selfhost/checker_arena.pattern_pool": 6,
+          "../bend2/selfhost/checker_arena.binder_pool.copy": 1,
+          "../bend2/selfhost/checker_arena.binder_pool": 6,
+          "../bend2/selfhost/checker_arena.word_pool.copy": 1,
+          "../bend2/selfhost/checker_arena.word_pool": 7,
+          "../bend2/selfhost/checker_arena.natural_pool.copy": 1,
+          "../bend2/selfhost/checker_arena.natural_pool": 6,
+          "../bend2/selfhost/checker_arena.name_pool.copy": 1,
+          "../bend2/selfhost/checker_arena.name_pool": 8,
+          "../bend2/selfhost/checker_arena.name_pool.get": 1,
+          "../bend2/selfhost/checker_arena.metadata_read": 3,
+          "../bend2/selfhost/checker_arena": 83,
+          "../bend2/selfhost/checker_arena.get_node": 1,
+          "../bend2/selfhost/checker_arena.node_count": 1,
+          "../bend2/selfhost/checker_arena.get_pattern": 1,
+          "../bend2/selfhost/checker_arena.pattern_count": 1,
+          "../bend2/selfhost/checker_arena.get_binder": 1,
+          "../bend2/selfhost/checker_arena.put_binder": 3,
+          "../bend2/selfhost/checker_arena.binder_count": 1,
+          "../bend2/selfhost/checker_arena.word": 1,
+          "../bend2/selfhost/checker_arena.put_word": 3,
+          "../bend2/selfhost/checker_arena.word_count": 1,
+          "../bend2/selfhost/checker_arena.node_is_closed.mask": 1,
+          "../bend2/selfhost/checker_arena.node_is_closed": 4,
+          "../bend2/selfhost/checker_arena.node_is_closed.count": 1,
+          "../bend2/selfhost/checker_arena.node_has_flag": 3,
+          "../bend2/selfhost/checker_arena.node_ctor_certify": 5,
+          "../bend2/selfhost/checker_arena.bound_max": 1,
+          "../bend2/selfhost/checker_arena.bound_read.node": 1,
+          "../bend2/selfhost/checker_arena.bound_read": 7,
+          "../bend2/selfhost/checker_arena.bound_read.pattern": 1,
+          "../bend2/selfhost/checker_arena.node_bound": 1,
+          "../bend2/selfhost/checker_arena.node_certificate_flags": 1,
+          "../bend2/selfhost/checker_arena.node_certify": 4,
+          "../bend2/selfhost/checker_arena.bound_merge": 1,
+          "../bend2/selfhost/checker_arena.bound_node": 5,
+          "../bend2/selfhost/checker_arena.bound_node.binder": 1,
+          "../bend2/selfhost/checker_arena.bound_range.combine": 1,
+          "../bend2/selfhost/checker_arena.bound_range": 11,
+          "../bend2/selfhost/checker_arena.bound_range.forward": 1,
+          "../bend2/selfhost/checker_arena.bound_range.reverse": 1,
+          "../bend2/selfhost/checker_arena.bound_pattern": 2,
+          "../bend2/selfhost/checker_arena.bound_pattern.local": 1,
+          "../bend2/selfhost/checker_arena.node_closed": 3,
+          "../bend2/selfhost/checker_arena.node_closed.flags": 1,
+          "../bend2/selfhost/checker_arena.bound_pool.room": 1,
+          "../bend2/selfhost/checker_arena.bound_pool": 1,
+          "../bend2/selfhost/checker_arena.put_pattern": 5,
+          "../bend2/selfhost/checker_arena.node_closed.room": 1,
+          "../bend2/selfhost/checker_arena.put_node": 5,
+          "../bend2/selfhost/checker_arena.natural": 1,
+          "../bend2/selfhost/checker_arena.put_natural": 3,
+          "../bend2/selfhost/checker_arena.natural_count": 1,
+          "../bend2/selfhost/checker_arena.name_text": 1,
+          "../bend2/selfhost/checker_arena.put_name_value": 3,
+          "../bend2/selfhost/checker_arena.name_count": 1,
+          "../bend2/selfhost/checker_arena.name": 3,
+          "../bend2/selfhost/checker_arena.word_pool.reserve": 1,
+          "../bend2/selfhost/checker_arena.reserve_words": 1,
+          "../bend2/selfhost/checker_arena.reserve_naturals": 3,
+          "../bend2/selfhost/checker_arena.word_quantity": 1,
+          "../bend2/selfhost/checker_arena.mark": 6,
+          "../bend2/selfhost/checker_arena.names.forget": 1,
+          "../bend2/selfhost/checker_arena.names": 2,
+          "../bend2/selfhost/checker_arena.names.rewind": 1,
+          "../bend2/selfhost/checker_arena.rewind.natural": 1,
+          "../bend2/selfhost/checker_arena.rewind": 7,
+          "../bend2/selfhost/checker_arena.rewind.word": 1,
+          "../bend2/selfhost/checker_arena.rewind.binder": 1,
+          "../bend2/selfhost/checker_arena.rewind.pattern": 1,
+          "../bend2/selfhost/checker_arena.rewind.node": 1,
+          "../bend2/selfhost/checker_arena.rewind.names": 2,
+          "../bend2/selfhost/checker_arena.rewind.depths": 1,
+          "../bend2/selfhost/checker_arena.rewind.case_prefix": 1,
+          "../bend2/selfhost/checker_arena.subst_memo_get": 1,
+          "../bend2/selfhost/checker_arena.subst_memo_put": 1,
+          "../bend2/selfhost/checker_arena.publication_memo_put": 1,
+          "../bend2/selfhost/checker_arena.resolution_frame_serial": 1,
+          "../bend2/selfhost/checker_arena.resolution_frame_get": 1,
+          "../bend2/selfhost/checker_arena.resolved_ref_put": 1,
+          "../bend2/selfhost/checker_arena.resolved_ref_get": 1,
+          "../bend2/selfhost/checker_arena.generation": 1,
+          "../bend2/selfhost/checker_arena.case_prefix_get": 1,
+          "../bend2/selfhost/checker_arena.case_prefix_range_valid": 3,
+          "../bend2/selfhost/checker_arena.case_prefix_id_valid": 1,
+          "../bend2/selfhost/checker_arena.case_prefix_head": 9,
+          "../bend2/selfhost/checker_arena.case_prefix_first": 2,
+          "../bend2/selfhost/checker_arena.ctor_source_range_valid": 2,
+          "../bend2/selfhost/checked_frontend": 2,
+          "../bend2/selfhost/sha256": 30,
+          "../bend2/selfhost/path": 28,
+          "template_steps_v1": 313,
+          "checker_core_steps_v1": 5644,
+          "../bend2/selfhost/c_backend_sharing": 442,
+          "emitter_steps_v1": 4388,
+          "<bare>": 1264
+        },
+        "byProvider": {
+          "1": 359,
+          "2": 177,
+          "3": 578,
+          "4": 96,
+          "5": 65,
+          "6": 360,
+          "7": 10,
+          "8": 55,
+          "9": 380,
+          "10": 5,
+          "11": 250
+        },
+        "byStageClass": {
+          "emitter-entry": 2053,
+          "bir-construction": 359,
+          "bir-transport": 177,
+          "render-c": 578,
+          "other-pass-c-layouts": 96,
+          "other-pass-c-link-planning": 65,
+          "render-c-physical": 360,
+          "render-c-entry": 10,
+          "other-pass-descriptor-nf": 55,
+          "render-js": 380,
+          "render-js-entry": 5,
+          "other-pass-catalog": 250
+        },
+        "reference": {
+          "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+          "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+          "codes": 24625,
+          "maxCodeId": 24892,
+          "direction": "absentFromReference means \"this unkeyed code id does not exist in the supplied reference image\"; aboveReferenceMaxUnkeyed is the subset above the reference maximum code id. Absence is NOT proof of transform-created bodies: a regenerated step module can add keyed definitions whose private bodies land here. Only the census counters attest the vector workers. Text scan only; the reference is never imported or executed."
+        },
+        "limitation": "Only $D-declared entry codes are keyed. Nested lambdas and transform-created worker bodies have no declared key in the image and stay unmapped rather than being guessed; join CPU-profile functionName \"$bN\" through the sidecar map."
+      }
+    }
+  ],
+  "sourcePreservationIncident": {
+    "schemaVersion": 1,
+    "status": "EXECUTED_DRIVER_RESTORED_BYTE_EXACT",
+    "acceptedCompilerChanged": false,
+    "scope": "Temporary diagnostic script path only; no image, frozen source, helper or request was changed.",
+    "executedDriverSha256": "6829835e9592cc25c469cb16dc3cdbbf8be7bf852c23783ad4c1d85e15db2ed8",
+    "lateUnexecutedEditSha256": "6d52bf034bb7f203081a4850a195e288e4914f139b39124b2b0985e9e496c433",
+    "restoredSha256": "6829835e9592cc25c469cb16dc3cdbbf8be7bf852c23783ad4c1d85e15db2ed8",
+    "restoredAt": "2026-10-30T13:35:16.212Z",
+    "backup": {
+      "path": "/tmp/g33-emit-restore/emit-profile-executed.mjs",
+      "sha256": "6829835e9592cc25c469cb16dc3cdbbf8be7bf852c23783ad4c1d85e15db2ed8"
+    },
+    "cause": "Delegated author applied follow-up driver validation edits after parent launched the pinned original module. Parent stopped further edits and restored the loaded source bytes before original post-run pin check and before the second serial role starts.",
+    "qualification": "Accept diagnostic only if both role reports record original own driver hash, all pins pass, both exact expected output hashes match and guardians PASS. Otherwise retain failed run and rerun fresh; never suppress a pin failure."
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "limitations": [
+    "Both roles ran the original unmodified images with exactly one imported module; the original driver source was restored byte-exact before post-run pin checks and the second serial role.",
+    "The pending-request histogram is unusable: it did not unwrap request-group constructors. No provider counts from that histogram are used.",
+    "Role-specific provider numbering is required: js_backend is provider 8 in R12 and 9 in G32. Corrected CPU/allocation attribution uses each role's authenticated composition order.",
+    "79-80% of CPU samples remain unattributed by synchronous source-stack ownership. Complete logical intervals are measured separately, not fabricated from those samples.",
+    "One candidate CPU timeDelta is -42 microseconds. Both roles use all unweighted samples; no negative value is clamped and no sample is dropped.",
+    "Sampled allocation selfSize estimates are neither exact allocated bytes nor retained heap; profiler timing is not unprofiled acceptance."
+  ]
+}

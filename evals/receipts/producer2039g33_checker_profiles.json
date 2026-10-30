@@ -1,0 +1,1365 @@
+{
+  "schemaVersion": 1,
+  "status": "G33_PAIRED_ACTUAL_CHECKER_DIAGNOSTIC_PASS",
+  "compilerAccepted": false,
+  "performanceAccepted": false,
+  "newFixedpointClaim": false,
+  "diagnosticOnly": true,
+  "commands": [
+    [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/heavy_gate.ts",
+      "--memory-mib",
+      "8192",
+      "--rss-mib",
+      "8192",
+      "--poll-ms",
+      "10",
+      "--timeout-ms",
+      "600000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128",
+      "/private/tmp/bend-g33-diagnostics-gSUmym/check-profile.mjs",
+      "/private/tmp/bend-g33-diagnostics-gSUmym/control-check.request.json",
+      "/private/tmp/bend-g33-diagnostics-gSUmym/control-check.result.json"
+    ],
+    [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/heavy_gate.ts",
+      "--memory-mib",
+      "8192",
+      "--rss-mib",
+      "8192",
+      "--poll-ms",
+      "10",
+      "--timeout-ms",
+      "600000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128",
+      "/private/tmp/bend-g33-diagnostics-gSUmym/check-profile.mjs",
+      "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-check.request.json",
+      "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-check.result.json"
+    ]
+  ],
+  "environment": "env HEAVY_GATE_MEMORY_MIB=8192 HEAVY_GATE_RSS_MIB=8192 HEAVY_GATE_POLL_MS=10 HEAVY_GATE_TIMEOUT_MS=600000 BUN_JSC_forceRAMSize=4294967296 ",
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "worker": {
+    "stackSizeMb": 256,
+    "maxOldGenerationSizeMb": 6144,
+    "maxYoungGenerationSizeMb": 128
+  },
+  "windows": [
+    {
+      "start": 1000000,
+      "end": 1250000
+    },
+    {
+      "start": 4000000,
+      "end": 4250000
+    },
+    {
+      "start": 8000000,
+      "end": 8250000
+    }
+  ],
+  "driver": {
+    "path": "/private/tmp/bend-g33-diagnostics-gSUmym/check-profile.mjs",
+    "sha256": "a673ac3e360a733edb43e6d4d4a6da510ec6df75ac9dc29430d840d025ba603f"
+  },
+  "semanticAgreement": {
+    "expandSteps": 1004927,
+    "checkSteps": 10078835,
+    "sourceCounts": [
+      2254791,
+      4194304,
+      447744,
+      524288,
+      69061,
+      131072,
+      2423369,
+      4194304,
+      0,
+      1,
+      64096,
+      65536
+    ],
+    "wordTapeSha256": "4838cd165d82cebb9831c0ee0c8e3ed34593acebe54fa0dd28be7c6ea6726835",
+    "equalBothRoles": true
+  },
+  "roles": [
+    {
+      "role": "control",
+      "report": {
+        "path": "/private/tmp/bend-g33-diagnostics-gSUmym/control-check.result.json",
+        "sha256": "bdf004a42c045b2037baba9242371b978fe16374a16ebf3a45537e22d43c016b"
+      },
+      "moduleResidency": {
+        "parserURL": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+        "checkerURL": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+        "parserSearch": "",
+        "checkerSearch": null,
+        "sameConfiguredPath": true,
+        "distinctAPI": false,
+        "moduleInstances": 1,
+        "lane": "control",
+        "policy": "One actual compiler image supplies parsing, expansion and checking in each role, matching original throughput residency.",
+        "parserImageSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+        "checkerImageSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e"
+      },
+      "phases": [
+        {
+          "phase": "startup",
+          "elapsedMs": 940.8225,
+          "userCpuMs": 854.657,
+          "systemCpuMs": 87.487,
+          "memoryEnd": {
+            "rss": 503087104,
+            "heapTotal": 120717312,
+            "heapUsed": 110687688,
+            "external": 34864062,
+            "arrayBuffers": 31783542
+          }
+        },
+        {
+          "phase": "load-parse",
+          "elapsedMs": 9995.671209,
+          "userCpuMs": 12936.776,
+          "systemCpuMs": 403.294,
+          "memoryEnd": {
+            "rss": 1174601728,
+            "heapTotal": 1022509056,
+            "heapUsed": 761861736,
+            "external": 3098865,
+            "arrayBuffers": 25035
+          }
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 7887.353334000001,
+          "userCpuMs": 12258.332,
+          "systemCpuMs": 428.202,
+          "memoryEnd": {
+            "rss": 1601028096,
+            "heapTotal": 1434189824,
+            "heapUsed": 1271582160,
+            "external": 3098865,
+            "arrayBuffers": 25035
+          }
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 308942.473166,
+          "userCpuMs": 325545.068,
+          "systemCpuMs": 6331.093,
+          "memoryEnd": {
+            "rss": 1755463680,
+            "heapTotal": 1671725056,
+            "heapUsed": 1357320960,
+            "external": 3098865,
+            "arrayBuffers": 25035
+          }
+        },
+        {
+          "phase": "storage",
+          "elapsedMs": 28.23762499995064,
+          "userCpuMs": 33.146,
+          "systemCpuMs": 0.422,
+          "memoryEnd": {
+            "rss": 1755840512,
+            "heapTotal": 1671725056,
+            "heapUsed": 1357463208,
+            "external": 3164401,
+            "arrayBuffers": 90571
+          }
+        }
+      ],
+      "guardian": {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793365692636-e38a57c5655507c0.json",
+        "sha256": "a2a16cceeb86416e4c07bcca3e97ea695aa6a28d671337f15036ef773a2fe225",
+        "status": "PASS",
+        "elapsedMs": 329154,
+        "peakRssBytes": 1940340736,
+        "peakFootprintBytes": 2397283096,
+        "ownedTreeStopped": true
+      },
+      "windows": [
+        {
+          "start": 1000000,
+          "end": 1250000,
+          "cpu": {
+            "path": "/private/tmp/bend-g33-diagnostics-gSUmym/control-check-profiles/selfhost-36698-thread-1-ci1Fd3/000001-check-window.cpuprofile",
+            "sha256": "246c0042743177a0db47e6fcceaf19924a3ecab6c400293b271ce182fa953243",
+            "sampledMs": 10338.125,
+            "samples": 7322,
+            "gcShare": 0.01594824980351853,
+            "inspectorShare": 0.10331099691675232,
+            "topSelf": [
+              {
+                "functionName": "post",
+                "url": "node:inspector",
+                "lineNumber": 111,
+                "selfMs": 1068.042,
+                "inclusiveMs": 1068.042,
+                "selfShare": 0.10331099691675232
+              },
+              {
+                "functionName": "run_base",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 19,
+                "selfMs": 259.456,
+                "inclusiveMs": 7728.545,
+                "selfShare": 0.025097007436067954
+              },
+              {
+                "functionName": "$k118912",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 30597,
+                "selfMs": 251.295,
+                "inclusiveMs": 2203.596,
+                "selfShare": 0.02430759929871229
+              },
+              {
+                "functionName": "$b6850",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 30593,
+                "selfMs": 243.289,
+                "inclusiveMs": 1323.926,
+                "selfShare": 0.02353318420893537
+              },
+              {
+                "functionName": "(garbage collector)",
+                "url": "",
+                "lineNumber": -1,
+                "selfMs": 164.875,
+                "inclusiveMs": 164.875,
+                "selfShare": 0.01594824980351853
+              },
+              {
+                "functionName": "",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 64135,
+                "selfMs": 160.746,
+                "inclusiveMs": 9079.166,
+                "selfShare": 0.01554885436188864
+              },
+              {
+                "functionName": "$b6849",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 30590,
+                "selfMs": 76.541,
+                "inclusiveMs": 76.541,
+                "selfShare": 0.007403760353062088
+              },
+              {
+                "functionName": "$b6848",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 30589,
+                "selfMs": 68.748,
+                "inclusiveMs": 965.719,
+                "selfShare": 0.006649948612538541
+              }
+            ]
+          },
+          "allocation": {
+            "path": "/private/tmp/bend-g33-diagnostics-gSUmym/control-check-profiles/selfhost-36698-thread-1-ci1Fd3/000001-check-window.heapprofile",
+            "sha256": "1a40786f3c57353e53ff5fd458b07069f8a9754f93ca210b011c555b6a4ac1cb",
+            "estimatedBytes": 7874849920,
+            "sites": 1744,
+            "top": [
+              {
+                "functionName": "$k118881",
+                "scriptId": "226",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 30595,
+                "columnNumber": 17,
+                "estimatedBytes": 444602208,
+                "contexts": 1
+              },
+              {
+                "functionName": "$k118857",
+                "scriptId": "226",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 30592,
+                "columnNumber": 17,
+                "estimatedBytes": 415240000,
+                "contexts": 1
+              },
+              {
+                "functionName": "$k118870",
+                "scriptId": "226",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 30594,
+                "columnNumber": 17,
+                "estimatedBytes": 293604576,
+                "contexts": 8
+              },
+              {
+                "functionName": "$b395",
+                "scriptId": "226",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 12307,
+                "columnNumber": 14,
+                "estimatedBytes": 180356680,
+                "contexts": 298
+              },
+              {
+                "functionName": "$k3054",
+                "scriptId": "226",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 12311,
+                "columnNumber": 15,
+                "estimatedBytes": 138413184,
+                "contexts": 23
+              }
+            ]
+          },
+          "gc": {
+            "count": 59,
+            "overlapCount": 59,
+            "durationMs": 129.4504177570343,
+            "byKind": {
+              "1": 59
+            },
+            "byFlags": {
+              "0": 59
+            }
+          },
+          "heap": {
+            "outerStart": {
+              "rss": 1570521088,
+              "heapTotal": 1423605760,
+              "heapUsed": 754794512,
+              "external": 3098865,
+              "arrayBuffers": 25035
+            },
+            "outerEnd": {
+              "rss": 1701052416,
+              "heapTotal": 1238269952,
+              "heapUsed": 629633008,
+              "external": 7096901,
+              "arrayBuffers": 4023071
+            },
+            "profilerStart": {
+              "rss": 1713913856,
+              "heapTotal": 1424130048,
+              "heapUsed": 755730976,
+              "external": 3107057,
+              "arrayBuffers": 33227
+            },
+            "profilerEnd": {
+              "rss": 1678606336,
+              "heapTotal": 1474510848,
+              "heapUsed": 767165264,
+              "external": 3107057,
+              "arrayBuffers": 33227
+            }
+          }
+        },
+        {
+          "start": 4000000,
+          "end": 4250000,
+          "cpu": {
+            "path": "/private/tmp/bend-g33-diagnostics-gSUmym/control-check-profiles/selfhost-36698-thread-1-U1vKvP/000001-check-window.cpuprofile",
+            "sha256": "49ea969872d120ce4eaca86dc2f3009a6c9e4cd3950f7fbdc6037061f93c176a",
+            "sampledMs": 8299.791,
+            "samples": 5463,
+            "gcShare": 0.014393133513843902,
+            "inspectorShare": 0.13287479166644076,
+            "topSelf": [
+              {
+                "functionName": "post",
+                "url": "node:inspector",
+                "lineNumber": 111,
+                "selfMs": 1102.833,
+                "inclusiveMs": 1102.833,
+                "selfShare": 0.13287479166644076
+              },
+              {
+                "functionName": "run_base",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 19,
+                "selfMs": 361.93,
+                "inclusiveMs": 6091.88,
+                "selfShare": 0.043607122155244635
+              },
+              {
+                "functionName": "",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 64135,
+                "selfMs": 280.922,
+                "inclusiveMs": 7038.498,
+                "selfShare": 0.03384687638520054
+              },
+              {
+                "functionName": "$b6850",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 30593,
+                "selfMs": 243.79,
+                "inclusiveMs": 1173.416,
+                "selfShare": 0.02937302879072497
+              },
+              {
+                "functionName": "$k118912",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 30597,
+                "selfMs": 211.296,
+                "inclusiveMs": 2017.749,
+                "selfShare": 0.025457990448193215
+              },
+              {
+                "functionName": "(garbage collector)",
+                "url": "",
+                "lineNumber": -1,
+                "selfMs": 119.46,
+                "inclusiveMs": 119.46,
+                "selfShare": 0.014393133513843902
+              },
+              {
+                "functionName": "$b6848",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 30589,
+                "selfMs": 67.752,
+                "inclusiveMs": 826.458,
+                "selfShare": 0.00816309711895155
+              },
+              {
+                "functionName": "$b6849",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 30590,
+                "selfMs": 64.168,
+                "inclusiveMs": 64.168,
+                "selfShare": 0.007731279016543911
+              }
+            ]
+          },
+          "allocation": {
+            "path": "/private/tmp/bend-g33-diagnostics-gSUmym/control-check-profiles/selfhost-36698-thread-1-U1vKvP/000001-check-window.heapprofile",
+            "sha256": "6fbcfa1cba15a25561ab53400e282b1a7e22bf52043d9a638c243078c5e372dd",
+            "estimatedBytes": 7149446544,
+            "sites": 1465,
+            "top": [
+              {
+                "functionName": "$k118881",
+                "scriptId": "226",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 30595,
+                "columnNumber": 17,
+                "estimatedBytes": 461378688,
+                "contexts": 1
+              },
+              {
+                "functionName": "$k118857",
+                "scriptId": "226",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 30592,
+                "columnNumber": 17,
+                "estimatedBytes": 423627120,
+                "contexts": 1
+              },
+              {
+                "functionName": "$k118870",
+                "scriptId": "226",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 30594,
+                "columnNumber": 17,
+                "estimatedBytes": 327159456,
+                "contexts": 8
+              },
+              {
+                "functionName": "$b395",
+                "scriptId": "226",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 12307,
+                "columnNumber": 14,
+                "estimatedBytes": 171967952,
+                "contexts": 158
+              },
+              {
+                "functionName": "$b6842",
+                "scriptId": "226",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 30583,
+                "columnNumber": 15,
+                "estimatedBytes": 104862336,
+                "contexts": 3
+              }
+            ]
+          },
+          "gc": {
+            "count": 55,
+            "overlapCount": 55,
+            "durationMs": 102.17962145805359,
+            "byKind": {
+              "1": 55
+            },
+            "byFlags": {
+              "0": 55
+            }
+          },
+          "heap": {
+            "outerStart": {
+              "rss": 1337458688,
+              "heapTotal": 1234255872,
+              "heapUsed": 948627160,
+              "external": 3098865,
+              "arrayBuffers": 25035
+            },
+            "outerEnd": {
+              "rss": 1407270912,
+              "heapTotal": 1221246976,
+              "heapUsed": 831679056,
+              "external": 5934369,
+              "arrayBuffers": 2860539
+            },
+            "profilerStart": {
+              "rss": 1380237312,
+              "heapTotal": 1234255872,
+              "heapUsed": 948685408,
+              "external": 3098865,
+              "arrayBuffers": 25035
+            },
+            "profilerEnd": {
+              "rss": 1385594880,
+              "heapTotal": 1234255872,
+              "heapUsed": 997738696,
+              "external": 3098865,
+              "arrayBuffers": 25035
+            }
+          }
+        },
+        {
+          "start": 8000000,
+          "end": 8250000,
+          "cpu": {
+            "path": "/private/tmp/bend-g33-diagnostics-gSUmym/control-check-profiles/selfhost-36698-thread-1-SGA03K/000001-check-window.cpuprofile",
+            "sha256": "30acea4ad7824c3aeb2b7f6a13d5d8833113ef1b2ebf9644491cc2b32dc35c3f",
+            "sampledMs": 9614.292,
+            "samples": 6289,
+            "gcShare": 0.02139554321836699,
+            "inspectorShare": 0.13669326872951226,
+            "topSelf": [
+              {
+                "functionName": "post",
+                "url": "node:inspector",
+                "lineNumber": 111,
+                "selfMs": 1314.209,
+                "inclusiveMs": 1314.209,
+                "selfShare": 0.13669326872951226
+              },
+              {
+                "functionName": "run_base",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 19,
+                "selfMs": 834.64,
+                "inclusiveMs": 7106.577,
+                "selfShare": 0.08681242466944004
+              },
+              {
+                "functionName": "",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 64135,
+                "selfMs": 607.51,
+                "inclusiveMs": 8054.213,
+                "selfShare": 0.0631882202038382
+              },
+              {
+                "functionName": "$b6850",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 30593,
+                "selfMs": 268.092,
+                "inclusiveMs": 1310.402,
+                "selfShare": 0.027884736598389148
+              },
+              {
+                "functionName": "$k118912",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 30597,
+                "selfMs": 264.832,
+                "inclusiveMs": 2214.657,
+                "selfShare": 0.02754565806821761
+              },
+              {
+                "functionName": "(garbage collector)",
+                "url": "",
+                "lineNumber": -1,
+                "selfMs": 205.703,
+                "inclusiveMs": 205.703,
+                "selfShare": 0.02139554321836699
+              },
+              {
+                "functionName": "$b6849",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 30590,
+                "selfMs": 76.036,
+                "inclusiveMs": 76.036,
+                "selfShare": 0.007908642674884432
+              },
+              {
+                "functionName": "$b6848",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 30589,
+                "selfMs": 59.208,
+                "inclusiveMs": 910.528,
+                "selfShare": 0.006158331783557229
+              }
+            ]
+          },
+          "allocation": {
+            "path": "/private/tmp/bend-g33-diagnostics-gSUmym/control-check-profiles/selfhost-36698-thread-1-SGA03K/000001-check-window.heapprofile",
+            "sha256": "2e463cba1f5857fe65cb2733d69ef812438e0e20304620de67a77a57cb3f90df",
+            "estimatedBytes": 8025964896,
+            "sites": 1402,
+            "top": [
+              {
+                "functionName": "$k118881",
+                "scriptId": "226",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 30595,
+                "columnNumber": 17,
+                "estimatedBytes": 385880352,
+                "contexts": 1
+              },
+              {
+                "functionName": "$k118857",
+                "scriptId": "226",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 30592,
+                "columnNumber": 17,
+                "estimatedBytes": 348129216,
+                "contexts": 1
+              },
+              {
+                "functionName": "$k118870",
+                "scriptId": "226",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 30594,
+                "columnNumber": 17,
+                "estimatedBytes": 251661216,
+                "contexts": 6
+              },
+              {
+                "functionName": "$p_string_tail",
+                "scriptId": "226",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 291,
+                "columnNumber": 21,
+                "estimatedBytes": 234882192,
+                "contexts": 29
+              },
+              {
+                "functionName": "$b395",
+                "scriptId": "226",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 12307,
+                "columnNumber": 14,
+                "estimatedBytes": 171967960,
+                "contexts": 113
+              }
+            ]
+          },
+          "gc": {
+            "count": 61,
+            "overlapCount": 61,
+            "durationMs": 177.92092084884644,
+            "byKind": {
+              "1": 61
+            },
+            "byFlags": {
+              "0": 61
+            }
+          },
+          "heap": {
+            "outerStart": {
+              "rss": 1772732416,
+              "heapTotal": 1668661248,
+              "heapUsed": 1406634880,
+              "external": 3098865,
+              "arrayBuffers": 25035
+            },
+            "outerEnd": {
+              "rss": 1824866304,
+              "heapTotal": 1589952512,
+              "heapUsed": 1153315160,
+              "external": 5972973,
+              "arrayBuffers": 2899143
+            },
+            "profilerStart": {
+              "rss": 1816395776,
+              "heapTotal": 1668661248,
+              "heapUsed": 1406706376,
+              "external": 3107057,
+              "arrayBuffers": 33227
+            },
+            "profilerEnd": {
+              "rss": 1775665152,
+              "heapTotal": 1709555712,
+              "heapUsed": 1546778736,
+              "external": 3107057,
+              "arrayBuffers": 33227
+            }
+          }
+        }
+      ]
+    },
+    {
+      "role": "candidate",
+      "report": {
+        "path": "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-check.result.json",
+        "sha256": "028d6ae83f823b92143b368a5f11e97de5196c332a9a8ed69e592a6a236a2f63"
+      },
+      "moduleResidency": {
+        "parserURL": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+        "checkerURL": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+        "parserSearch": "",
+        "checkerSearch": null,
+        "sameConfiguredPath": true,
+        "distinctAPI": false,
+        "moduleInstances": 1,
+        "lane": "candidate",
+        "policy": "One actual compiler image supplies parsing, expansion and checking in each role, matching original throughput residency.",
+        "parserImageSha256": "419710b98ee9e765e677c5a411a1299cb728db23e58b12dfad69141d9d1721c5",
+        "checkerImageSha256": "419710b98ee9e765e677c5a411a1299cb728db23e58b12dfad69141d9d1721c5"
+      },
+      "phases": [
+        {
+          "phase": "startup",
+          "elapsedMs": 1422.023,
+          "userCpuMs": 1120.675,
+          "systemCpuMs": 80.764,
+          "memoryEnd": {
+            "rss": 530563072,
+            "heapTotal": 146046976,
+            "heapUsed": 115684376,
+            "external": 36503855,
+            "arrayBuffers": 33423335
+          }
+        },
+        {
+          "phase": "load-parse",
+          "elapsedMs": 15532.001166999999,
+          "userCpuMs": 18122.243,
+          "systemCpuMs": 511.887,
+          "memoryEnd": {
+            "rss": 1301168128,
+            "heapTotal": 770490368,
+            "heapUsed": 403860272,
+            "external": 3098865,
+            "arrayBuffers": 25035
+          }
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 10959.040125000003,
+          "userCpuMs": 10539.663,
+          "systemCpuMs": 142.369,
+          "memoryEnd": {
+            "rss": 1019314176,
+            "heapTotal": 760528896,
+            "heapUsed": 440577192,
+            "external": 3098865,
+            "arrayBuffers": 25035
+          }
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 312463.142833,
+          "userCpuMs": 331525.974,
+          "systemCpuMs": 5229.737,
+          "memoryEnd": {
+            "rss": 1838022656,
+            "heapTotal": 1678622720,
+            "heapUsed": 1339434032,
+            "external": 3098865,
+            "arrayBuffers": 25035
+          }
+        },
+        {
+          "phase": "storage",
+          "elapsedMs": 25.194583000033163,
+          "userCpuMs": 30.938,
+          "systemCpuMs": 0.259,
+          "memoryEnd": {
+            "rss": 1838071808,
+            "heapTotal": 1678622720,
+            "heapUsed": 1339586160,
+            "external": 3164401,
+            "arrayBuffers": 90571
+          }
+        }
+      ],
+      "guardian": {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793366021882-cc5074e77114bc4f.json",
+        "sha256": "bdfb9e93f68162b3d8b6f0bc6a9c798326f7c37149a55acfd701953a3b702036",
+        "status": "PASS",
+        "elapsedMs": 341248,
+        "peakRssBytes": 2019606528,
+        "peakFootprintBytes": 2133266944,
+        "ownedTreeStopped": true
+      },
+      "windows": [
+        {
+          "start": 1000000,
+          "end": 1250000,
+          "cpu": {
+            "path": "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-check-profiles/selfhost-10934-thread-1-bxuVH6/000001-check-window.cpuprofile",
+            "sha256": "18ac71b5ec9eabe6f72b64e8d7ef49057ba2daf5b240aec56b868ee08afcda94",
+            "sampledMs": 11095.417,
+            "samples": 7919,
+            "gcShare": 0.012407825681540405,
+            "inspectorShare": 0.08863272105951493,
+            "topSelf": [
+              {
+                "functionName": "post",
+                "url": "node:inspector",
+                "lineNumber": 111,
+                "selfMs": 983.417,
+                "inclusiveMs": 983.417,
+                "selfShare": 0.08863272105951493
+              },
+              {
+                "functionName": "$b6850",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 31197,
+                "selfMs": 279.456,
+                "inclusiveMs": 1366.116,
+                "selfShare": 0.025186615338567267
+              },
+              {
+                "functionName": "run_base",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 19,
+                "selfMs": 234.545,
+                "inclusiveMs": 8378.294,
+                "selfShare": 0.02113890807348656
+              },
+              {
+                "functionName": "$k118912",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 31201,
+                "selfMs": 217.085,
+                "inclusiveMs": 2325.361,
+                "selfShare": 0.019565285378638764
+              },
+              {
+                "functionName": "",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 67598,
+                "selfMs": 155.668,
+                "inclusiveMs": 9921.04,
+                "selfShare": 0.014029936864923598
+              },
+              {
+                "functionName": "(garbage collector)",
+                "url": "",
+                "lineNumber": -1,
+                "selfMs": 137.67,
+                "inclusiveMs": 137.67,
+                "selfShare": 0.012407825681540405
+              },
+              {
+                "functionName": "$b6849",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 31194,
+                "selfMs": 77.669,
+                "inclusiveMs": 77.669,
+                "selfShare": 0.007000097427613581
+              },
+              {
+                "functionName": "$b6848",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 31193,
+                "selfMs": 67.794,
+                "inclusiveMs": 968.739,
+                "selfShare": 0.0061100903192732635
+              }
+            ]
+          },
+          "allocation": {
+            "path": "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-check-profiles/selfhost-10934-thread-1-bxuVH6/000001-check-window.heapprofile",
+            "sha256": "6b26d2bff2cb1f9e54d4cdc3157f918aafc227640f045930282cf673552fbef1",
+            "estimatedBytes": 7839375720,
+            "sites": 1610,
+            "top": [
+              {
+                "functionName": "$k118857",
+                "scriptId": "226",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 31196,
+                "columnNumber": 17,
+                "estimatedBytes": 369100848,
+                "contexts": 1
+              },
+              {
+                "functionName": "$k118881",
+                "scriptId": "226",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 31199,
+                "columnNumber": 17,
+                "estimatedBytes": 352325568,
+                "contexts": 1
+              },
+              {
+                "functionName": "$k118870",
+                "scriptId": "226",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 31198,
+                "columnNumber": 17,
+                "estimatedBytes": 276827136,
+                "contexts": 8
+              },
+              {
+                "functionName": "$b395",
+                "scriptId": "226",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 12911,
+                "columnNumber": 14,
+                "estimatedBytes": 176162320,
+                "contexts": 300
+              },
+              {
+                "functionName": "$k25869",
+                "scriptId": "226",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 16171,
+                "columnNumber": 16,
+                "estimatedBytes": 134221920,
+                "contexts": 23
+              }
+            ]
+          },
+          "gc": {
+            "count": 59,
+            "overlapCount": 59,
+            "durationMs": 108.75108528137207,
+            "byKind": {
+              "1": 59
+            },
+            "byFlags": {
+              "0": 59
+            }
+          },
+          "heap": {
+            "outerStart": {
+              "rss": 1182367744,
+              "heapTotal": 946388992,
+              "heapUsed": 762206264,
+              "external": 3098865,
+              "arrayBuffers": 25035
+            },
+            "outerEnd": {
+              "rss": 1217937408,
+              "heapTotal": 1014202368,
+              "heapUsed": 633775408,
+              "external": 7254562,
+              "arrayBuffers": 4180732
+            },
+            "profilerStart": {
+              "rss": 1240989696,
+              "heapTotal": 946946048,
+              "heapUsed": 763176848,
+              "external": 3107057,
+              "arrayBuffers": 33227
+            },
+            "profilerEnd": {
+              "rss": 1186660352,
+              "heapTotal": 1027637248,
+              "heapUsed": 749882080,
+              "external": 3107057,
+              "arrayBuffers": 33227
+            }
+          }
+        },
+        {
+          "start": 4000000,
+          "end": 4250000,
+          "cpu": {
+            "path": "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-check-profiles/selfhost-10934-thread-1-UxUPVW/000001-check-window.cpuprofile",
+            "sha256": "3e0b2450c23ef93b86d6da4bb1533a25c8037727cf299d2794e83888c4d160be",
+            "sampledMs": 8063,
+            "samples": 5451,
+            "gcShare": 0.012701847947414115,
+            "inspectorShare": 0.1316869651494481,
+            "topSelf": [
+              {
+                "functionName": "post",
+                "url": "node:inspector",
+                "lineNumber": 111,
+                "selfMs": 1061.792,
+                "inclusiveMs": 1061.792,
+                "selfShare": 0.1316869651494481
+              },
+              {
+                "functionName": "run_base",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 19,
+                "selfMs": 344.376,
+                "inclusiveMs": 5871.343,
+                "selfShare": 0.04271065360287734
+              },
+              {
+                "functionName": "",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 67598,
+                "selfMs": 313.241,
+                "inclusiveMs": 6868.709,
+                "selfShare": 0.03884918764727769
+              },
+              {
+                "functionName": "$b6850",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 31197,
+                "selfMs": 229.038,
+                "inclusiveMs": 1009.495,
+                "selfShare": 0.028406052337839514
+              },
+              {
+                "functionName": "$k118912",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 31201,
+                "selfMs": 227.034,
+                "inclusiveMs": 1907.657,
+                "selfShare": 0.02815750961180702
+              },
+              {
+                "functionName": "(garbage collector)",
+                "url": "",
+                "lineNumber": -1,
+                "selfMs": 102.415,
+                "inclusiveMs": 102.415,
+                "selfShare": 0.012701847947414115
+              },
+              {
+                "functionName": "$b6849",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 31194,
+                "selfMs": 64.708,
+                "inclusiveMs": 64.708,
+                "selfShare": 0.00802530075654223
+              },
+              {
+                "functionName": "$b6848",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 31193,
+                "selfMs": 57.293,
+                "inclusiveMs": 690.708,
+                "selfShare": 0.007105667865558725
+              }
+            ]
+          },
+          "allocation": {
+            "path": "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-check-profiles/selfhost-10934-thread-1-UxUPVW/000001-check-window.heapprofile",
+            "sha256": "09b44c8c14f37725942f20ba3fe2de86ee6215090dff65f87c049ef6da885a81",
+            "estimatedBytes": 6990134952,
+            "sites": 1457,
+            "top": [
+              {
+                "functionName": "$k118881",
+                "scriptId": "226",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 31199,
+                "columnNumber": 17,
+                "estimatedBytes": 398463456,
+                "contexts": 1
+              },
+              {
+                "functionName": "$k118857",
+                "scriptId": "226",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 31196,
+                "columnNumber": 17,
+                "estimatedBytes": 352323552,
+                "contexts": 1
+              },
+              {
+                "functionName": "$k118870",
+                "scriptId": "226",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 31198,
+                "columnNumber": 17,
+                "estimatedBytes": 297798912,
+                "contexts": 11
+              },
+              {
+                "functionName": "$k25983",
+                "scriptId": "226",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 16207,
+                "columnNumber": 16,
+                "estimatedBytes": 117444720,
+                "contexts": 20
+              },
+              {
+                "functionName": "$k25978",
+                "scriptId": "226",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 16205,
+                "columnNumber": 16,
+                "estimatedBytes": 96472560,
+                "contexts": 15
+              }
+            ]
+          },
+          "gc": {
+            "count": 55,
+            "overlapCount": 55,
+            "durationMs": 91.40874409675598,
+            "byKind": {
+              "1": 55
+            },
+            "byFlags": {
+              "0": 55
+            }
+          },
+          "heap": {
+            "outerStart": {
+              "rss": 1318944768,
+              "heapTotal": 1220706304,
+              "heapUsed": 959792360,
+              "external": 3098865,
+              "arrayBuffers": 25035
+            },
+            "outerEnd": {
+              "rss": 1387675648,
+              "heapTotal": 1216512000,
+              "heapUsed": 835496472,
+              "external": 6000760,
+              "arrayBuffers": 2926930
+            },
+            "profilerStart": {
+              "rss": 1362395136,
+              "heapTotal": 1220706304,
+              "heapUsed": 959851112,
+              "external": 3098865,
+              "arrayBuffers": 25035
+            },
+            "profilerEnd": {
+              "rss": 1366261760,
+              "heapTotal": 1220706304,
+              "heapUsed": 987032312,
+              "external": 3098865,
+              "arrayBuffers": 25035
+            }
+          }
+        },
+        {
+          "start": 8000000,
+          "end": 8250000,
+          "cpu": {
+            "path": "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-check-profiles/selfhost-10934-thread-1-YCkO9p/000001-check-window.cpuprofile",
+            "sha256": "7b2e8486df0b554128d5a9f707f117e1ae86be69884f6c1486abedc68b705f58",
+            "sampledMs": 8905.25,
+            "samples": 5924,
+            "gcShare": 0.01753145616349906,
+            "inspectorShare": 0.14920041548524746,
+            "topSelf": [
+              {
+                "functionName": "post",
+                "url": "node:inspector",
+                "lineNumber": 111,
+                "selfMs": 1328.667,
+                "inclusiveMs": 1328.667,
+                "selfShare": 0.14920041548524746
+              },
+              {
+                "functionName": "run_base",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 19,
+                "selfMs": 700.217,
+                "inclusiveMs": 6446.916,
+                "selfShare": 0.07862968473653183
+              },
+              {
+                "functionName": "",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 67598,
+                "selfMs": 613.92,
+                "inclusiveMs": 7391.127,
+                "selfShare": 0.06893910895258415
+              },
+              {
+                "functionName": "$k118912",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 31201,
+                "selfMs": 246.92,
+                "inclusiveMs": 2089.634,
+                "selfShare": 0.027727464136324077
+              },
+              {
+                "functionName": "$b6850",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 31197,
+                "selfMs": 231.746,
+                "inclusiveMs": 1177.661,
+                "selfShare": 0.026023525448471408
+              },
+              {
+                "functionName": "(garbage collector)",
+                "url": "",
+                "lineNumber": -1,
+                "selfMs": 156.122,
+                "inclusiveMs": 156.122,
+                "selfShare": 0.01753145616349906
+              },
+              {
+                "functionName": "$b6848",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 31193,
+                "selfMs": 72.377,
+                "inclusiveMs": 833.626,
+                "selfShare": 0.008127452906993066
+              },
+              {
+                "functionName": "$b6849",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 31194,
+                "selfMs": 70.708,
+                "inclusiveMs": 70.708,
+                "selfShare": 0.00794003537239269
+              }
+            ]
+          },
+          "allocation": {
+            "path": "/private/tmp/bend-g33-diagnostics-gSUmym/candidate-check-profiles/selfhost-10934-thread-1-YCkO9p/000001-check-window.heapprofile",
+            "sha256": "2fb547885c6ac6bf65f7b498f2524527eefd3293c2ac215412f2670f9c0a610f",
+            "estimatedBytes": 8267200520,
+            "sites": 1412,
+            "top": [
+              {
+                "functionName": "$k118881",
+                "scriptId": "226",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 31199,
+                "columnNumber": 17,
+                "estimatedBytes": 364908672,
+                "contexts": 1
+              },
+              {
+                "functionName": "$k118857",
+                "scriptId": "226",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 31196,
+                "columnNumber": 17,
+                "estimatedBytes": 356517888,
+                "contexts": 1
+              },
+              {
+                "functionName": "$k118870",
+                "scriptId": "226",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 31198,
+                "columnNumber": 17,
+                "estimatedBytes": 352325472,
+                "contexts": 12
+              },
+              {
+                "functionName": "$p_string_tail",
+                "scriptId": "226",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 291,
+                "columnNumber": 21,
+                "estimatedBytes": 188744648,
+                "contexts": 23
+              },
+              {
+                "functionName": "$b385",
+                "scriptId": "226",
+                "url": "file:///Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+                "lineNumber": 12889,
+                "columnNumber": 14,
+                "estimatedBytes": 138414072,
+                "contexts": 135
+              }
+            ]
+          },
+          "gc": {
+            "count": 62,
+            "overlapCount": 62,
+            "durationMs": 137.46687412261963,
+            "byKind": {
+              "1": 62
+            },
+            "byFlags": {
+              "0": 62
+            }
+          },
+          "heap": {
+            "outerStart": {
+              "rss": 1726791680,
+              "heapTotal": 1644068864,
+              "heapUsed": 1407851400,
+              "external": 3098865,
+              "arrayBuffers": 25035
+            },
+            "outerEnd": {
+              "rss": 1797357568,
+              "heapTotal": 1594507264,
+              "heapUsed": 1156877256,
+              "external": 5953949,
+              "arrayBuffers": 2880119
+            },
+            "profilerStart": {
+              "rss": 1773633536,
+              "heapTotal": 1644068864,
+              "heapUsed": 1407923656,
+              "external": 3107057,
+              "arrayBuffers": 33227
+            },
+            "profilerEnd": {
+              "rss": 1763295232,
+              "heapTotal": 1685749760,
+              "heapUsed": 1393262176,
+              "external": 3107057,
+              "arrayBuffers": 33227
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "observations": [
+    "All seven vector workers are absent from candidate CPU samples in the three windows; this is not evidence of nonexecution: the separate entry counters prove 19,258,235 calls. V8 inlining/sample granularity can hide a hot small function.",
+    "The same scheduler continuations k118857/k118870/k118881 dominate sampled allocation in both actual images; they still allocate CheckerRunState and CheckerStackMore.",
+    "Estimated allocation decreases in the first two paired windows and increases in the third; no stable whole-check allocation reduction is established.",
+    "Observed GC time/share and heap endpoints do not explain unprofiled performance variation.",
+    "All measurements are diagnostic, not new unprofiled timing samples or memory acceptance."
+  ],
+  "sourceEvidence": {
+    "control": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+      "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "schedulerLines": [
+        30593,
+        30595,
+        30596
+      ]
+    },
+    "candidate": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/bootstrap.json.cases/stage-one.js",
+      "sha256": "419710b98ee9e765e677c5a411a1299cb728db23e58b12dfad69141d9d1721c5",
+      "schedulerLines": [
+        31197,
+        31199,
+        31200
+      ]
+    }
+  },
+  "limitations": [
+    "Diagnostic perturbed runs, not unprofiled timing acceptance.",
+    "Exactly one image module per role, matching throughput.",
+    "CPU timeDelta weights are sample time, not measured per-function CPU; allocation selfSize estimates include collected objects, not retained heap.",
+    "CPU/allocation sampling and summary/outer/GC interval boundaries differ; raw reports retain each boundary.",
+    "No full heap snapshot or forced collection; heapUsed endpoints are not formal post-GC live sets.",
+    "Transport sample absence is not proof of non-execution; logical frequency run is separate."
+  ]
+}
