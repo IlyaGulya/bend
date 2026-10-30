@@ -1,0 +1,1657 @@
+{
+  "schemaVersion": 1,
+  "status": "E10_E12_MEASURED_ADMISSION_ONLY_SOURCE_VERSIONS_NOT_QUALIFIED",
+  "compilerAccepted": false,
+  "performanceAccepted": false,
+  "newFixedpointClaim": false,
+  "authority": {
+    "census": {
+      "path": "/private/tmp/bend-e01-e13-jbsb4I/e05-capture-e10-e12-owned-v1.result.json",
+      "sha256": "ebf7a5db9349e420c4e48fc1811b8ee0133a2f3c3e9d76de559c33ed9b622065"
+    },
+    "baselineDiscovery": {
+      "path": "/Users/ilyagulya/Projects/My/bend/evals/receipts/experiments_e01_e04_e07_e11_discovery.json",
+      "sha256": "c4bf69126619dd4e901f20c16b4c3e79c3a0ef12a1faad7c4ab63a919689b13f"
+    },
+    "protocol": {
+      "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-owned-protocol.result.json",
+      "sha256": "8db9550ddb1496e1e3fb7a45b72a47e97294e70d9412a22f26aac971d6f7cb57"
+    },
+    "consumers": {
+      "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-consumers-v3.result.json",
+      "sha256": "16eda17edc41aadd2de665aacd9beaa7a78aa18a5b2df34b29cba682f8f11e0d"
+    }
+  },
+  "execution": {
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128",
+      "/private/tmp/bend-e01-e13-jbsb4I/census-runner.mjs",
+      "--worker",
+      "/private/tmp/bend-e01-e13-jbsb4I/e05-capture-e10-e12-owned-v1.config.json",
+      "/private/tmp/bend-e01-e13-jbsb4I/e05-capture-e10-e12-owned-v1.result.json"
+    ],
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 3333799936,
+      "peakFootprintBytes": 3907956096,
+      "elapsedMs": 373414,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/private/tmp/bend-e01-e13-jbsb4I/census-runner.mjs",
+        "--worker",
+        "/private/tmp/bend-e01-e13-jbsb4I/e05-capture-e10-e12-owned-v1.config.json",
+        "/private/tmp/bend-e01-e13-jbsb4I/e05-capture-e10-e12-owned-v1.result.json"
+      ],
+      "label": "Complete E01-E13 compiler census",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793393453242-40ff97055c80e41a.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "runtime": {
+      "execPath": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "versions": {
+        "node": "23.11.0",
+        "acorn": "8.14.1",
+        "ada": "3.2.1",
+        "amaro": "0.4.1",
+        "ares": "1.34.4",
+        "brotli": "1.1.0",
+        "cjs_module_lexer": "2.1.0",
+        "cldr": "46.0",
+        "icu": "76.1",
+        "llhttp": "9.2.1",
+        "modules": "131",
+        "napi": "10",
+        "nbytes": "0.1.1",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.64.0",
+        "openssl": "3.0.16",
+        "simdjson": "3.12.2",
+        "simdutf": "6.0.3",
+        "sqlite": "3.49.1",
+        "tz": "2025a",
+        "undici": "6.21.2",
+        "unicode": "16.0",
+        "uv": "1.50.0",
+        "uvwasi": "0.0.21",
+        "v8": "12.9.202.28-node.14",
+        "zlib": "1.3.0.1-motley-788cb3c",
+        "zstd": "1.5.6"
+      },
+      "execArgv": [
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128"
+      ],
+      "heapSizeLimit": 6845104128
+    },
+    "worker": {
+      "stackMiB": 256,
+      "oldMiB": 6144,
+      "youngMiB": 128
+    },
+    "limits": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 600000
+    },
+    "request": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/throughput/control-js.request.json",
+      "sha256": "7141d8d73f9470013cd2b42be7613e7c96b496e5cf4c0329e4ba58759e738ffb"
+    },
+    "inputPins": {
+      "/private/tmp/bend2039g22-tiny-inline/bend2/base.bend": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/args.js": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/audio_close.js": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/audio_open.js": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/audio_write.js": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/chan.js": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/file_close.js": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/file_open.js": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/file_read.js": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/file_size.js": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/file_write.js": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/get_env.js": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/listener_close.js": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/now.js": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/print.js": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/print_err.js": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/process_run.js": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/random_u32.js": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/sleep.js": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/socket_close.js": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/spawn.js": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/tcp_accept.js": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/tcp_connect.js": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/tcp_listen.js": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/tcp_recv.js": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/tcp_send.js": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/thread_count.js": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/udp_bind.js": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/udp_recv_from.js": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/udp_send_to.js": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/window_close.js": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/window_frame.js": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/window_grab.js": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/window_open.js": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/window_set_title.js": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/effs/write.js": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/backend_ir.bend": "162a554cec1c9e1b5edab69b5cfae730c70886548f4f51603a7537845ab5ec48",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/c_backend_sharing.bend": "78992d00aad3a458dd6b9ea424edf0de61c95b54487f92cd53283e705488c35f",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/checked_frontend.bend": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/checker_arena.bend": "2a26c3d8ce66412591030fa2fd6df9f9e53c0fececd9d9ae702def2f475f1752",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/checker_ir.bend": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/core.bend": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/index_lookup.bend": "a178b0d5b135490634e1c85efaa0a8d1e0c34c94610615ecf822da6a2932f31d",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/lexer.bend": "a81265d4ab248c5ea74bf52987e1163773866a01b264ff1a98895d91139d6f53",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/loaded_module.bend": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/scope_lookup.bend": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
+      "/private/tmp/bend2039g22-tiny-inline/bend2/selfhost/sha256.bend": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+      "/private/tmp/bend2039g22-tiny-inline/checkpoints/.bootstrap_compiler_root_remote2039g21.bend": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+      "/private/tmp/bend2039g22-tiny-inline/checkpoints/checker_core_steps_v1.bend": "93e8fd5ce7aafe40084d1b0023eff79de18cb6f00b625cab43b002535cfe288f",
+      "/private/tmp/bend2039g22-tiny-inline/checkpoints/emitter_steps_v1.bend": "e73baadfada36d919619746607593e928e82a338073c5b73e200d66d2d69a05a",
+      "/private/tmp/bend2039g22-tiny-inline/checkpoints/template_steps_v1.bend": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4"
+    },
+    "plugins": [
+      {
+        "path": "/private/tmp/bend-e01-e13-jbsb4I/frame-lifetime-bounded.mjs",
+        "sha256": "b72e2daeacc840d164e6befef63b8c38822ebe7bfb03c151fb5ce8ee4e98ffbe",
+        "inputSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+        "outputSha256": "c242835eaeb6b7f975f3b9ac9a0e8d4a2757481056f7f9b96c9aa01dbc804191",
+        "metadata": {
+          "experiment": [
+            "E04",
+            "E12"
+          ],
+          "image": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+          "imageSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+          "incomingSourceSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+          "mapping": [
+            {
+              "key": "template_steps_v1.template_pop",
+              "function": "$b1184",
+              "line": 15339,
+              "sha256": "fc48ac1d5805efc8970b04412ae1d882ae119bdb5265dd537b1428dabf4bfd2c"
+            },
+            {
+              "key": "template_steps_v1.template_advance",
+              "function": "$b1185",
+              "line": 15342,
+              "sha256": "a93a973553979f490e0a20f335f94e48dbafef4467864e62c16295fc9d670b45"
+            },
+            {
+              "key": "template_steps_v1.template_chunk",
+              "function": "$b1186",
+              "line": 15345,
+              "sha256": "52a3009942c8837e9307bdb95f526043ee0045b169e00c7a949f64cba5de1a19"
+            },
+            {
+              "key": "template_steps_v1.template_step",
+              "function": "$b1187",
+              "line": 15347,
+              "sha256": "e9ca092c8c02181dd7b53bf0ace9eaa826b675ef8d974bb3bd7bb8f5de5fb73e"
+            },
+            {
+              "key": "checker_core_steps_v1.checker_pop",
+              "function": "$b6849",
+              "line": 30591,
+              "sha256": "b1f114d3adcc4c8d3dc24fc8c0bdd9924c59c95b2bed9113aee0a2b3ea2cd09b"
+            },
+            {
+              "key": "checker_core_steps_v1.checker_advance",
+              "function": "$b6850",
+              "line": 30594,
+              "sha256": "e4d61388a1b16b1f774925b8aea5ebe933e958f1b8f0b6d330bac541e5929ee7"
+            },
+            {
+              "key": "checker_core_steps_v1.checker_chunk",
+              "function": "$b6851",
+              "line": 30597,
+              "sha256": "b04c5f252ec85013e026a04bca324472c070a318608a2229a466f193934bdbcc"
+            },
+            {
+              "key": "checker_core_steps_v1.checker_step",
+              "function": "$b6852",
+              "line": 30599,
+              "sha256": "8aabda201ab66bb5077307270baf854cd0c57a5b10947e56cbd28749fc36b2af"
+            },
+            {
+              "key": "emitter_steps_v1.emitter_pop",
+              "function": "$b11231",
+              "line": 48241,
+              "sha256": "f92be47b5f8f6a1d84871d735ba893da0749d46084151f05ae146f310fea0a06"
+            },
+            {
+              "key": "emitter_steps_v1.emitter_advance",
+              "function": "$b11232",
+              "line": 48244,
+              "sha256": "09ae6a32c2ea8b7410451635140fe7ac95f2a79302cc8524ce33b00d8ddbff59"
+            },
+            {
+              "key": "emitter_steps_v1.emitter_chunk",
+              "function": "$b11233",
+              "line": 48247,
+              "sha256": "17bfcfbb8845fa350a34fe1fcc38d3543515f0aab1a986a40a030e3c4c52c952"
+            },
+            {
+              "key": "emitter_steps_v1.emitter_step",
+              "function": "$b11234",
+              "line": 48249,
+              "sha256": "5724af169cf3eb59e37adf224ea70490e8ca85464be14e6e059380bfc36d17de"
+            },
+            {
+              "key": "checker_core_steps_v1.checker_pure_arena_check_result",
+              "function": "$b1334",
+              "line": 15534,
+              "sha256": "bf346a048c878f87bc328189c5071d582f67cf4ffbcc43012ed7ac0e555c7a5d"
+            },
+            {
+              "key": "checker_core_steps_v1.checker_body_arena_release",
+              "function": "$b5961",
+              "line": 27765,
+              "sha256": "6b4a7f071a7d7450474c209b8d9e324fbb4fc37df0c3c6a8a4b8a2db71f0ec03"
+            },
+            {
+              "key": "emitter_steps_v1.emitter_body_cps_provider_1_prepare",
+              "function": "$b7894",
+              "line": 33400,
+              "sha256": "63a52f6c7ac702a2497dd056f7aa438f23a92b2f3c875f2437a157a5f2a22b80"
+            },
+            {
+              "key": "emitter_steps_v1.emitter_body_cps_provider_1_lower_catalog",
+              "function": "$b7900",
+              "line": 33430,
+              "sha256": "a9b81c57b7d1bf18c6a4949c3c7d6af8a571b4ecf0f4c855a72c09978ae7ec73"
+            },
+            {
+              "key": "emitter_steps_v1.emitter_body_cps_provider_1_lower_definitions",
+              "function": "$b7901",
+              "line": 33433,
+              "sha256": "8d0b65b92ed1cdc01eac73cd32903cacdfc0af00e249ac6a7401f94f882dfb31"
+            },
+            {
+              "key": "emitter_steps_v1.emitter_library_start",
+              "function": "$b11236",
+              "line": 48253,
+              "sha256": "666f8aac735ae2c78078f6d7c0ad17aaad0cc9c1e74ede0098d8b78b775c9388"
+            }
+          ],
+          "sourceWitnesses": [
+            {
+              "path": "evals/checker_core_step_lower.ts",
+              "sha256": "21a47855e891ab115fb2ce4c70b7b699b376c6488f2505b7f0d6893f8d66daf9"
+            },
+            {
+              "path": "checkpoints/checker_core_steps_v1.bend",
+              "sha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4"
+            },
+            {
+              "path": "checkpoints/emitter_steps_v1.bend",
+              "sha256": "7f7c8d2e57a3fcd3925b4286a8300668ae91b7e11a26317cea6da2df5c9ea425"
+            },
+            {
+              "path": "evals/checker_core_step_runtime.mjs",
+              "sha256": "00cd400ac0452a3681bf6491db08be51f9ae3a33ff2baf88654a9763eb5073ed"
+            },
+            {
+              "path": "bend2/selfhost/js_backend.bend",
+              "sha256": "9ad0e83cafd243745d7d1b256d3e053258a801350fc5d0e16dd65fec89a35aa0"
+            }
+          ],
+          "captureSites": 4767,
+          "captureSlots": 20478,
+          "zeroCaptureSites": 2755,
+          "originalQuantum": 64,
+          "readOnly": true,
+          "closureWrapping": false,
+          "status": "READY_FOR_PARENT_SERIAL_EXECUTION_NOT_EXECUTED",
+          "limits": {
+            "framePathLinks": 16,
+            "framePathStride": 1024,
+            "ownerCaptureStride": 64,
+            "runtimeSlotPrefix": 2048,
+            "runtimeSlotSuffix": 64
+          },
+          "mode": "declared-host-step-windows",
+          "declaredWindows": [
+            [
+              0,
+              65536
+            ],
+            [
+              4000000,
+              4065536
+            ],
+            [
+              8000000,
+              8065536
+            ]
+          ],
+          "selectedProtocols": [
+            "Checker",
+            "Emitter"
+          ],
+          "selectedRuns": "first host-index sequence per protocol only",
+          "fullScalarCounters": [
+            "native advance entries",
+            "host onStep entries"
+          ],
+          "hooks": {
+            "pop": 3,
+            "advance": 3,
+            "birth": 9,
+            "fuelZero": 3,
+            "resumeReturn": 3
+          },
+          "captureGuards": 7517,
+          "forcedCaptureSites": 5,
+          "pinnedInstrumenterSha256": "12b6540839ca3ea47b31e7d537672893f2014f09fd6750087f560eb66eb78c84",
+          "maxWindows": 6,
+          "maxObservedHostEntries": 393216,
+          "windowBaselineStackLimit": 4096,
+          "ownerCaptureStride": 64,
+          "retirementAndPhaseEndProbes": "always enabled"
+        }
+      },
+      {
+        "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-owned-audit.mjs",
+        "sha256": "979e66523e402616a86f3de75e1abe73cb77150e7c995493600cf2bda84df42e",
+        "inputSha256": "c242835eaeb6b7f975f3b9ac9a0e8d4a2757481056f7f9b96c9aa01dbc804191",
+        "outputSha256": "21ac7b6bccf30c736249366e4f38bb563318616903d27f20b79d6b8cb447eb47",
+        "metadata": {
+          "retirement": {
+            "experiment": "E12",
+            "diagnosticOnly": true,
+            "compilerAccepted": false,
+            "changesEmittedRuntimeLiteral": false,
+            "originalSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+            "incomingSha256": "c242835eaeb6b7f975f3b9ac9a0e8d4a2757481056f7f9b96c9aa01dbc804191",
+            "outputSha256": "e07a5de2948fca0437d3dc865cec3dbeb53f2c62cfc37bddcafe20d0b876ed86",
+            "changes": [
+              "scalar written-suffix bound",
+              "capture registration function $split",
+              "capture registration function $splitm",
+              "capture registration function $split1",
+              "capture registration function $frame",
+              "capture registration function $split_enter",
+              "ordinary owned suffix release",
+              "exception owned suffix release"
+            ],
+            "scope": "One scalar tracks written capture suffix at the five existing registration sites, including bounded-direct split_enter. Release clears only [saved entry prefix, written suffix) without source-level array truncation. Admission requires complete generated-write/registration correspondence and actual nested/reentrant/failure/runtime proof.",
+            "quantum": 64,
+            "cleanupConstructsNoArrays": true,
+            "retainsArrayLength": true,
+            "engineAllocationSavingMeasured": false
+          },
+          "outputSha256": "21ac7b6bccf30c736249366e4f38bb563318616903d27f20b79d6b8cb447eb47",
+          "audit": "Scalar counts plus complete argument-array nonundefined-slot scan at phase boundaries; no owner retention or physical byte inference",
+          "statisticsOnly": true
+        }
+      },
+      {
+        "path": "/private/tmp/bend-e01-e13-jbsb4I/e05-candidate/capture-bir.mjs",
+        "sha256": "47ec4a74ab5581d5ccffb1b7ff1554062044a473c6a835731b7ca0b225cc586e",
+        "inputSha256": "21ac7b6bccf30c736249366e4f38bb563318616903d27f20b79d6b8cb447eb47",
+        "outputSha256": "157f5af0380fd30356aa0a2f6463aef7dd728045d91bad5621699192f6852476",
+        "metadata": {
+          "imageSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+          "boundary": {
+            "key": "emitter_steps_v1.emitter_body_cps_provider_8_js_scalar_program",
+            "function": "$b10649",
+            "declarationSha256": "f5c42b04d8ba5b5cd4dc64f3356782262f964862bb9bb8c4c602ad67ec99dfd8",
+            "bodySha256": "cc83161b91765744324d48a5117ab86e25a7844ccad623fde77e58e3b8c205a7"
+          },
+          "snapshot": "/private/tmp/bend-e01-e13-jbsb4I/e05-candidate/capture/original-bir.v8",
+          "semantics": "passive synchronous BIR snapshot before original JS scalarization; arguments and result unchanged"
+        }
+      },
+      {
+        "path": "/private/tmp/bend-e01-e13-jbsb4I/e10-native-inputs.mjs",
+        "sha256": "9289e642f06174b137347f5dee40f40c5df9bf83294b9e5813cbb9b164e4430f",
+        "inputSha256": "157f5af0380fd30356aa0a2f6463aef7dd728045d91bad5621699192f6852476",
+        "outputSha256": "ded31278794905ae2ca45c3e715aebf9acc0e4baac1d662af7fbc6f6682bd236",
+        "metadata": {
+          "sourceKey": "emitter_steps_v1.emitter_body_cps_provider_8_js_native_markers",
+          "function": "$b10375",
+          "originalSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+          "declarationSha256": "9dc58a08e13f37b5aff377aad3dcd64d5ac58ebf20cd564b7be20e129768f64a",
+          "classification": "Read-only immutable marker-index input identity; no cache or algorithm change"
+        }
+      }
+    ],
+    "stepCounts": {
+      "Template": 1004927,
+      "Checker": 10078835,
+      "Emitter": 1225480
+    },
+    "output": {
+      "path": "/private/tmp/bend-e01-e13-jbsb4I/e05-capture-e10-e12-owned-v1.result.json.output.mjs",
+      "sha256": "c33227e028d767df9a9fff75663e42eb7374919dcf8e7dff14936a98d20008fb",
+      "bytes": 29948466
+    },
+    "phases": [
+      {
+        "phase": "startup",
+        "elapsedMs": 551.8842090000035,
+        "userCpuMs": 498.179,
+        "systemCpuMs": 53.761,
+        "memoryEnd": {
+          "rss": 716505088,
+          "heapTotal": 437829632,
+          "heapUsed": 181246968,
+          "external": 44290839,
+          "arrayBuffers": 33755845
+        }
+      },
+      {
+        "phase": "load-parse",
+        "elapsedMs": 8810.046791000008,
+        "userCpuMs": 11849.196,
+        "systemCpuMs": 250.708,
+        "memoryEnd": {
+          "rss": 1382744064,
+          "heapTotal": 877035520,
+          "heapUsed": 522903104,
+          "external": 10560033,
+          "arrayBuffers": 25039
+        }
+      },
+      {
+        "phase": "expand",
+        "elapsedMs": 6322.293791000004,
+        "userCpuMs": 7224.536,
+        "systemCpuMs": 57.978,
+        "memoryEnd": {
+          "rss": 1397948416,
+          "heapTotal": 940736512,
+          "heapUsed": 697701984,
+          "external": 10560033,
+          "arrayBuffers": 25039
+        }
+      },
+      {
+        "phase": "check",
+        "elapsedMs": 269361.00575,
+        "userCpuMs": 293890.45,
+        "systemCpuMs": 2150.377,
+        "memoryEnd": {
+          "rss": 2405318656,
+          "heapTotal": 2742648832,
+          "heapUsed": 2491787848,
+          "external": 10559975,
+          "arrayBuffers": 25039
+        }
+      },
+      {
+        "phase": "emit",
+        "elapsedMs": 22974.115333000023,
+        "userCpuMs": 28298.568,
+        "systemCpuMs": 593.082,
+        "memoryEnd": {
+          "rss": 3166011392,
+          "heapTotal": 2590507008,
+          "heapUsed": 1718786664,
+          "external": 10574985,
+          "arrayBuffers": 40049
+        }
+      }
+    ]
+  },
+  "E10": {
+    "decision": "GO one emission-local immutable marker-index hoist; not a Program-identity cache or broad scan memoizer. The two distinct wrappers carry the same exact ordered family/type-function lists.",
+    "observation": {
+      "schemaVersion": 1,
+      "diagnosticOnly": true,
+      "calls": 2,
+      "distinctPrograms": 2,
+      "distinctImmutableListPairs": 1,
+      "repeatedImmutableListPairs": 1,
+      "evidence": [
+        {
+          "phase": "emit",
+          "objectId": 1,
+          "families": 2,
+          "functions": 3,
+          "pair": "2:3"
+        },
+        {
+          "phase": "emit",
+          "objectId": 4,
+          "families": 2,
+          "functions": 3,
+          "pair": "2:3"
+        }
+      ],
+      "reason": "The marker index depends only on exact family/type-function lists, not code bodies or Program wrapper identity",
+      "ownerRetention": false
+    },
+    "qualification": "Separate source version, full native root, real fixedpoint, all original paired rows and applicable consumers remain required."
+  },
+  "E12": {
+    "decision": "GO terminal written-suffix release with one scalar high-water bound, tracking all five existing registration paths including bounded-direct split_enter. No live scheduler frame deletion or wholesale defunctionalization.",
+    "observation": {
+      "schemaVersion": 1,
+      "diagnosticOnly": true,
+      "counters": {
+        "normal": 14511424,
+        "caught": 0,
+        "nestedNormal": 2202143,
+        "nestedCaught": 0,
+        "clearedSlots": 320149690,
+        "maxWrittenEnd": 154206,
+        "maxPreservedPrefix": 154169
+      },
+      "boundaries": [
+        {
+          "phase": "startup",
+          "sp": 0,
+          "ksp": 0,
+          "hi": 0,
+          "argumentLength": 0,
+          "nonnull": 0,
+          "nonnullSuffix": 0
+        },
+        {
+          "phase": "load-parse",
+          "sp": 0,
+          "ksp": 0,
+          "hi": 0,
+          "argumentLength": 154206,
+          "nonnull": 0,
+          "nonnullSuffix": 0
+        },
+        {
+          "phase": "expand",
+          "sp": 0,
+          "ksp": 0,
+          "hi": 0,
+          "argumentLength": 154206,
+          "nonnull": 0,
+          "nonnullSuffix": 0
+        },
+        {
+          "phase": "check",
+          "sp": 0,
+          "ksp": 0,
+          "hi": 0,
+          "argumentLength": 154206,
+          "nonnull": 0,
+          "nonnullSuffix": 0
+        },
+        {
+          "phase": "emit",
+          "sp": 0,
+          "ksp": 0,
+          "hi": 0,
+          "argumentLength": 154206,
+          "nonnull": 0,
+          "nonnullSuffix": 0
+        }
+      ],
+      "meaning": "Complete remaining argument-slot count and scalar retirement counts, not allocation or retained-byte measurements"
+    },
+    "boundedRetainingPaths": {
+      "phase": "check",
+      "label": "phase-check",
+      "sp": 0,
+      "ksp": 0,
+      "quiescent": true,
+      "argumentCapacity": 154206,
+      "continuationCapacity": 38684,
+      "tailCount": 0,
+      "scanned": 2112,
+      "truncated": true,
+      "slots": [],
+      "ownerPaths": [],
+      "retiredOwnerPaths": []
+    },
+    "protocol": {
+      "schemaVersion": 1,
+      "status": "PASS_DIAGNOSTIC_ONLY",
+      "diagnosticOnly": true,
+      "compilerAccepted": false,
+      "performanceAccepted": false,
+      "driver": {
+        "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-owned-protocol.mjs",
+        "sha256": "2450fe761da133b3f63fbb70f8bc43d6e2ac9b47a7fd58fc6511f51842a37ee2"
+      },
+      "rows": [
+        {
+          "variant": "original",
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--experimental-strip-types",
+            "--max-old-space-size=6144",
+            "--max-semi-space-size=128",
+            "/private/tmp/bend-e01-e13-jbsb4I/e12-owned-protocol.mjs",
+            "--worker",
+            "original",
+            "/private/tmp/bend-e01-e13-jbsb4I/e12-owned-protocol-original.json"
+          ],
+          "guardian": {
+            "status": "PASS",
+            "reason": "command_exit",
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "peakRssBytes": 554434560,
+            "peakFootprintBytes": 515169312,
+            "elapsedMs": 924,
+            "timeoutMs": 600000,
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "supervisorExitCode": 0,
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "--max-old-space-size=6144",
+              "--max-semi-space-size=128",
+              "/private/tmp/bend-e01-e13-jbsb4I/e12-owned-protocol.mjs",
+              "--worker",
+              "original",
+              "/private/tmp/bend-e01-e13-jbsb4I/e12-owned-protocol-original.json"
+            ],
+            "label": "E12 concrete direct and owned suffix original",
+            "exitCode": 0,
+            "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793392877265-08fc5fce3195f66e.json",
+            "memoryLimitBytes": 8589934592,
+            "rssLimitBytes": 8589934592
+          },
+          "result": {
+            "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-owned-protocol-original.json",
+            "sha256": "707fd68fb28e3d7296c4c416c21d32b9bacdbe2e6857a4c7dd5e87b35fb9dfb1"
+          }
+        },
+        {
+          "variant": "four-hooks",
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--experimental-strip-types",
+            "--max-old-space-size=6144",
+            "--max-semi-space-size=128",
+            "/private/tmp/bend-e01-e13-jbsb4I/e12-owned-protocol.mjs",
+            "--worker",
+            "four-hooks",
+            "/private/tmp/bend-e01-e13-jbsb4I/e12-owned-protocol-four-hooks.json"
+          ],
+          "guardian": {
+            "status": "PASS",
+            "reason": "command_exit",
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "peakRssBytes": 747880448,
+            "peakFootprintBytes": 730033056,
+            "elapsedMs": 1029,
+            "timeoutMs": 600000,
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "supervisorExitCode": 0,
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "--max-old-space-size=6144",
+              "--max-semi-space-size=128",
+              "/private/tmp/bend-e01-e13-jbsb4I/e12-owned-protocol.mjs",
+              "--worker",
+              "four-hooks",
+              "/private/tmp/bend-e01-e13-jbsb4I/e12-owned-protocol-four-hooks.json"
+            ],
+            "label": "E12 concrete direct and owned suffix four-hooks",
+            "exitCode": 0,
+            "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793392878200-ced22e1c663beeec.json",
+            "memoryLimitBytes": 8589934592,
+            "rssLimitBytes": 8589934592
+          },
+          "result": {
+            "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-owned-protocol-four-hooks.json",
+            "sha256": "9d8a0fd744682576e25218a72233cf4735488737a183efa62c6e201663844d80"
+          }
+        },
+        {
+          "variant": "owned",
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--experimental-strip-types",
+            "--max-old-space-size=6144",
+            "--max-semi-space-size=128",
+            "/private/tmp/bend-e01-e13-jbsb4I/e12-owned-protocol.mjs",
+            "--worker",
+            "owned",
+            "/private/tmp/bend-e01-e13-jbsb4I/e12-owned-protocol-owned.json"
+          ],
+          "guardian": {
+            "status": "PASS",
+            "reason": "command_exit",
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "peakRssBytes": 797655040,
+            "peakFootprintBytes": 789393424,
+            "elapsedMs": 978,
+            "timeoutMs": 600000,
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "supervisorExitCode": 0,
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "--max-old-space-size=6144",
+              "--max-semi-space-size=128",
+              "/private/tmp/bend-e01-e13-jbsb4I/e12-owned-protocol.mjs",
+              "--worker",
+              "owned",
+              "/private/tmp/bend-e01-e13-jbsb4I/e12-owned-protocol-owned.json"
+            ],
+            "label": "E12 concrete direct and owned suffix owned",
+            "exitCode": 0,
+            "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793392879234-7a7a494196935d70.json",
+            "memoryLimitBytes": 8589934592,
+            "rssLimitBytes": 8589934592
+          },
+          "result": {
+            "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-owned-protocol-owned.json",
+            "sha256": "c51e3a72b6c3627119255fbd24d5e4563dfc7c21109cabc5dfd481d4fa9a26d2"
+          }
+        }
+      ],
+      "observations": [
+        {
+          "status": "PASS",
+          "variant": "original",
+          "image": {
+            "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+            "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e"
+          },
+          "artifact": {
+            "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-owned-protocol-original.json.mjs",
+            "sha256": "024d8deeb3975f32b9369eba5de2b1de4b3f0e2ddb6ac679a884930af6fa6144"
+          },
+          "transformation": {
+            "unalteredR12": true
+          },
+          "observed": {
+            "direct": {
+              "requestTag": "template_steps_v1.TemplateRequest_first_invalid",
+              "sameCapturedObject": true,
+              "value": 37,
+              "capturedSlotCleared": false,
+              "sp": 0,
+              "ksp": 0
+            },
+            "resume": {
+              "tag": "template_steps_v1.TemplateFinished",
+              "value": 71
+            },
+            "actualFailure": {
+              "error": "bend: runtime fail-stop",
+              "restored": true,
+              "slotCleared": false
+            },
+            "nested": 175,
+            "lexical": true,
+            "prefixNormal": true,
+            "prefixFailure": true,
+            "sameError": true,
+            "reentry": 101,
+            "outerResult": 135,
+            "split1": 10,
+            "splitm": 16,
+            "skipped": 17,
+            "left": 28,
+            "missing": "bend: a region leave reached no private frame",
+            "final": {
+              "sp": 0,
+              "ksp": 0,
+              "nonnullSuffix": 3,
+              "length": 3
+            }
+          },
+          "scope": "Actual authenticated b13348/b877/k20777 direct path plus additional synthetic runtime-protocol boundary witnesses; not a checked source-program semantic proof or engine allocation measurement"
+        },
+        {
+          "status": "PASS",
+          "variant": "four-hooks",
+          "image": {
+            "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+            "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e"
+          },
+          "artifact": {
+            "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-owned-protocol-four-hooks.json.mjs",
+            "sha256": "1fd3efedf445008596f170274285b779682c9e89bbb65835db6942f419d27678"
+          },
+          "transformation": {
+            "experiment": "E12",
+            "diagnosticOnly": true,
+            "compilerAccepted": false,
+            "changesEmittedRuntimeLiteral": false,
+            "originalSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+            "incomingSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+            "outputSha256": "1518090ad3b2b5cfc98017a476e3f97834191546e3a461de39d958ba5ea0e818",
+            "changes": [
+              "scalar written-suffix bound",
+              "capture registration function $split",
+              "capture registration function $splitm",
+              "capture registration function $split1",
+              "capture registration function $frame",
+              "capture registration function $split_enter",
+              "ordinary owned suffix release",
+              "exception owned suffix release"
+            ],
+            "scope": "One scalar tracks written capture suffix at the five existing registration sites, including bounded-direct split_enter. Release clears only [saved entry prefix, written suffix) without source-level array truncation. Admission requires complete generated-write/registration correspondence and actual nested/reentrant/failure/runtime proof.",
+            "quantum": 64,
+            "cleanupConstructsNoArrays": true,
+            "retainsArrayLength": true,
+            "engineAllocationSavingMeasured": false,
+            "omittedDirectRegistrationHook": true
+          },
+          "observed": {
+            "direct": {
+              "requestTag": "template_steps_v1.TemplateRequest_first_invalid",
+              "sameCapturedObject": true,
+              "value": 37,
+              "capturedSlotCleared": false,
+              "sp": 0,
+              "ksp": 0
+            },
+            "resume": {
+              "tag": "template_steps_v1.TemplateFinished",
+              "value": 71
+            },
+            "actualFailure": {
+              "error": "bend: runtime fail-stop",
+              "restored": true,
+              "slotCleared": false
+            },
+            "nested": 175,
+            "lexical": true,
+            "prefixNormal": true,
+            "prefixFailure": true,
+            "sameError": true,
+            "reentry": 101,
+            "outerResult": 135,
+            "split1": 10,
+            "splitm": 16,
+            "skipped": 17,
+            "left": 28,
+            "missing": "bend: a region leave reached no private frame",
+            "final": {
+              "sp": 0,
+              "ksp": 0,
+              "nonnullSuffix": 0,
+              "length": 3
+            }
+          },
+          "scope": "Actual authenticated b13348/b877/k20777 direct path plus additional synthetic runtime-protocol boundary witnesses; not a checked source-program semantic proof or engine allocation measurement"
+        },
+        {
+          "status": "PASS",
+          "variant": "owned",
+          "image": {
+            "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+            "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e"
+          },
+          "artifact": {
+            "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-owned-protocol-owned.json.mjs",
+            "sha256": "2d0513aff38cc7e70889000a79acaf45b1db66eef38c5b83cc7e80bcb548c636"
+          },
+          "transformation": {
+            "experiment": "E12",
+            "diagnosticOnly": true,
+            "compilerAccepted": false,
+            "changesEmittedRuntimeLiteral": false,
+            "originalSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+            "incomingSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+            "outputSha256": "1518090ad3b2b5cfc98017a476e3f97834191546e3a461de39d958ba5ea0e818",
+            "changes": [
+              "scalar written-suffix bound",
+              "capture registration function $split",
+              "capture registration function $splitm",
+              "capture registration function $split1",
+              "capture registration function $frame",
+              "capture registration function $split_enter",
+              "ordinary owned suffix release",
+              "exception owned suffix release"
+            ],
+            "scope": "One scalar tracks written capture suffix at the five existing registration sites, including bounded-direct split_enter. Release clears only [saved entry prefix, written suffix) without source-level array truncation. Admission requires complete generated-write/registration correspondence and actual nested/reentrant/failure/runtime proof.",
+            "quantum": 64,
+            "cleanupConstructsNoArrays": true,
+            "retainsArrayLength": true,
+            "engineAllocationSavingMeasured": false
+          },
+          "observed": {
+            "direct": {
+              "requestTag": "template_steps_v1.TemplateRequest_first_invalid",
+              "sameCapturedObject": true,
+              "value": 37,
+              "capturedSlotCleared": true,
+              "sp": 0,
+              "ksp": 0
+            },
+            "resume": {
+              "tag": "template_steps_v1.TemplateFinished",
+              "value": 71
+            },
+            "actualFailure": {
+              "error": "bend: runtime fail-stop",
+              "restored": true,
+              "slotCleared": true
+            },
+            "nested": 175,
+            "lexical": true,
+            "prefixNormal": true,
+            "prefixFailure": true,
+            "sameError": true,
+            "reentry": 101,
+            "outerResult": 135,
+            "split1": 10,
+            "splitm": 16,
+            "skipped": 17,
+            "left": 28,
+            "missing": "bend: a region leave reached no private frame",
+            "final": {
+              "sp": 0,
+              "ksp": 0,
+              "nonnullSuffix": 0,
+              "length": 3
+            }
+          },
+          "scope": "Actual authenticated b13348/b877/k20777 direct path plus additional synthetic runtime-protocol boundary witnesses; not a checked source-program semantic proof or engine allocation measurement"
+        }
+      ]
+    },
+    "consumers": {
+      "schemaVersion": 1,
+      "status": "PASS_DIAGNOSTIC_ONLY",
+      "diagnosticOnly": true,
+      "compilerAccepted": false,
+      "performanceAccepted": false,
+      "driver": {
+        "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-consumers-v3.mjs",
+        "sha256": "099534c83bda9f447f1cdc805564cc7889e0cbfd98ae8d08cdcb38e10f8a9a5d"
+      },
+      "setupCorrection": "Previous imported .mjs did not enter the actual generated argv[1] .js CLI. Each worker now sets argv to exactly the fresh .js artifact before import; actual source IO/foreign code must run and print the original fixture output.",
+      "rows": [
+        {
+          "label": "js_split_capture_chain-original",
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+            "--smol",
+            "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+            "--memory-mib",
+            "8192",
+            "--rss-mib",
+            "8192",
+            "--poll-ms",
+            "10",
+            "--timeout-ms",
+            "600000",
+            "--",
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--experimental-strip-types",
+            "--max-old-space-size=6144",
+            "--max-semi-space-size=128",
+            "/private/tmp/bend-e01-e13-jbsb4I/e12-consumers-v3.mjs",
+            "--worker",
+            "/private/tmp/bend-e01-e13-jbsb4I/e12-v2-js_split_capture_chain.original.js",
+            "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_split_capture_chain-original.json",
+            "original"
+          ],
+          "exitCode": 0,
+          "stdout": {
+            "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_split_capture_chain-original.stdout",
+            "sha256": "42b36623b19bdf490b30fcc488fd527ca81adcf8cbd54fa189182d29bd0934fa"
+          },
+          "stderr": {
+            "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_split_capture_chain-original.stderr",
+            "sha256": "d8f2c5fceb6a4e6ac7442d2f39dfba8f6c7ecd0a31239089a0c9e01bc71780af"
+          },
+          "guardian": {
+            "status": "PASS",
+            "reason": "command_exit",
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "peakRssBytes": 68993024,
+            "peakFootprintBytes": 31295744,
+            "elapsedMs": 91,
+            "timeoutMs": 600000,
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "supervisorExitCode": 0,
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "--max-old-space-size=6144",
+              "--max-semi-space-size=128",
+              "/private/tmp/bend-e01-e13-jbsb4I/e12-consumers-v3.mjs",
+              "--worker",
+              "/private/tmp/bend-e01-e13-jbsb4I/e12-v2-js_split_capture_chain.original.js",
+              "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_split_capture_chain-original.json",
+              "original"
+            ],
+            "label": "heavy command",
+            "exitCode": 0,
+            "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793392319730-72dc93cce140e028.json",
+            "memoryLimitBytes": 8589934592,
+            "rssLimitBytes": 8589934592
+          },
+          "fixture": {
+            "path": "/Users/ilyagulya/Projects/My/bend/tests/compile/js_split_capture_chain.bend",
+            "sha256": "b1c34e1766f5d8aad4bb6ca31593c82dc16b893ebfdaeef5800ad5bd1bab4327"
+          },
+          "expected": "206\n45\n32\n24\n",
+          "observed": "206\n45\n32\n24\n",
+          "result": {
+            "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_split_capture_chain-original.json",
+            "sha256": "2b90ab9a4c9ff159f8f01b571fb07fdf81b7bcaf117123bec102b2c4bfcfc350",
+            "state": {
+              "sp": 0,
+              "ksp": 0,
+              "argumentLength": 6,
+              "nonnullSuffix": 6,
+              "continuations": 0
+            },
+            "statistics": {
+              "status": "NOT_INSTRUMENTED"
+            }
+          }
+        },
+        {
+          "label": "js_split_capture_chain-truncated",
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+            "--smol",
+            "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+            "--memory-mib",
+            "8192",
+            "--rss-mib",
+            "8192",
+            "--poll-ms",
+            "10",
+            "--timeout-ms",
+            "600000",
+            "--",
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--experimental-strip-types",
+            "--max-old-space-size=6144",
+            "--max-semi-space-size=128",
+            "/private/tmp/bend-e01-e13-jbsb4I/e12-consumers-v3.mjs",
+            "--worker",
+            "/private/tmp/bend-e01-e13-jbsb4I/e12-v2-js_split_capture_chain.original.js",
+            "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_split_capture_chain-truncated.json",
+            "truncated"
+          ],
+          "exitCode": 0,
+          "stdout": {
+            "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_split_capture_chain-truncated.stdout",
+            "sha256": "42b36623b19bdf490b30fcc488fd527ca81adcf8cbd54fa189182d29bd0934fa"
+          },
+          "stderr": {
+            "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_split_capture_chain-truncated.stderr",
+            "sha256": "7a87c3e064284bc6f2464d2d87d4aaec18b175406256d7e39b2074bf3fd60656"
+          },
+          "guardian": {
+            "status": "PASS",
+            "reason": "command_exit",
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "peakRssBytes": 199491584,
+            "peakFootprintBytes": 162106272,
+            "elapsedMs": 144,
+            "timeoutMs": 600000,
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "supervisorExitCode": 0,
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "--max-old-space-size=6144",
+              "--max-semi-space-size=128",
+              "/private/tmp/bend-e01-e13-jbsb4I/e12-consumers-v3.mjs",
+              "--worker",
+              "/private/tmp/bend-e01-e13-jbsb4I/e12-v2-js_split_capture_chain.original.js",
+              "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_split_capture_chain-truncated.json",
+              "truncated"
+            ],
+            "label": "heavy command",
+            "exitCode": 0,
+            "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793392319844-d2333e95b2335a64.json",
+            "memoryLimitBytes": 8589934592,
+            "rssLimitBytes": 8589934592
+          },
+          "fixture": {
+            "path": "/Users/ilyagulya/Projects/My/bend/tests/compile/js_split_capture_chain.bend",
+            "sha256": "b1c34e1766f5d8aad4bb6ca31593c82dc16b893ebfdaeef5800ad5bd1bab4327"
+          },
+          "expected": "206\n45\n32\n24\n",
+          "observed": "206\n45\n32\n24\n",
+          "result": {
+            "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_split_capture_chain-truncated.json",
+            "sha256": "adcca111ae5dd7704ee827a7aa6f4bf2cbd25b64fa5b86493e046b6198c9be2f",
+            "state": {
+              "sp": 0,
+              "ksp": 0,
+              "argumentLength": 0,
+              "nonnullSuffix": 0,
+              "continuations": 0
+            },
+            "statistics": {
+              "schemaVersion": 1,
+              "diagnosticOnly": true,
+              "counters": {
+                "normal": 6,
+                "caught": 0,
+                "nestedNormal": 0,
+                "nestedCaught": 0,
+                "retiredSlots": 17,
+                "maxPriorCapacity": 6,
+                "maxPreservedPrefix": 0
+              },
+              "phases": {
+                "consumer": {
+                  "normal": 6,
+                  "caught": 0,
+                  "nestedNormal": 0,
+                  "nestedCaught": 0,
+                  "retiredSlots": 17,
+                  "maxPriorCapacity": 6,
+                  "maxPreservedPrefix": 0
+                }
+              },
+              "meaning": "Retired array slots, not owner count or allocated bytes; compare actual roots with the separate bounded lifetime observer"
+            }
+          }
+        },
+        {
+          "label": "js_split_capture_chain-owned",
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+            "--smol",
+            "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+            "--memory-mib",
+            "8192",
+            "--rss-mib",
+            "8192",
+            "--poll-ms",
+            "10",
+            "--timeout-ms",
+            "600000",
+            "--",
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--experimental-strip-types",
+            "--max-old-space-size=6144",
+            "--max-semi-space-size=128",
+            "/private/tmp/bend-e01-e13-jbsb4I/e12-consumers-v3.mjs",
+            "--worker",
+            "/private/tmp/bend-e01-e13-jbsb4I/e12-v2-js_split_capture_chain.original.js",
+            "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_split_capture_chain-owned.json",
+            "owned"
+          ],
+          "exitCode": 0,
+          "stdout": {
+            "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_split_capture_chain-owned.stdout",
+            "sha256": "42b36623b19bdf490b30fcc488fd527ca81adcf8cbd54fa189182d29bd0934fa"
+          },
+          "stderr": {
+            "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_split_capture_chain-owned.stderr",
+            "sha256": "7a248e824e0a2edd7613c2561bfc11e946fbcf57fdb32e2bce21719cf0fb61e1"
+          },
+          "guardian": {
+            "status": "PASS",
+            "reason": "command_exit",
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "peakRssBytes": 204374016,
+            "peakFootprintBytes": 167169168,
+            "elapsedMs": 154,
+            "timeoutMs": 600000,
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "supervisorExitCode": 0,
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "--max-old-space-size=6144",
+              "--max-semi-space-size=128",
+              "/private/tmp/bend-e01-e13-jbsb4I/e12-consumers-v3.mjs",
+              "--worker",
+              "/private/tmp/bend-e01-e13-jbsb4I/e12-v2-js_split_capture_chain.original.js",
+              "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_split_capture_chain-owned.json",
+              "owned"
+            ],
+            "label": "heavy command",
+            "exitCode": 0,
+            "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793392320016-2ee9bb5157d1f005.json",
+            "memoryLimitBytes": 8589934592,
+            "rssLimitBytes": 8589934592
+          },
+          "fixture": {
+            "path": "/Users/ilyagulya/Projects/My/bend/tests/compile/js_split_capture_chain.bend",
+            "sha256": "b1c34e1766f5d8aad4bb6ca31593c82dc16b893ebfdaeef5800ad5bd1bab4327"
+          },
+          "expected": "206\n45\n32\n24\n",
+          "observed": "206\n45\n32\n24\n",
+          "result": {
+            "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_split_capture_chain-owned.json",
+            "sha256": "3d4f0a93f25e21ec173661b728af27975564a155e208f55eec455108b56391d2",
+            "state": {
+              "sp": 0,
+              "ksp": 0,
+              "argumentLength": 6,
+              "nonnullSuffix": 0,
+              "continuations": 0
+            },
+            "statistics": {
+              "status": "NOT_INSTRUMENTED"
+            }
+          }
+        },
+        {
+          "label": "js_multi_reentrant-emit",
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+            "--smol",
+            "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+            "--memory-mib",
+            "8192",
+            "--rss-mib",
+            "8192",
+            "--poll-ms",
+            "10",
+            "--timeout-ms",
+            "600000",
+            "--",
+            "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/stage-one-consumer-driver",
+            "/Users/ilyagulya/Projects/My/bend/tests/compile/js_multi_reentrant.bend",
+            "-o",
+            "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_multi_reentrant.original.js"
+          ],
+          "exitCode": 0,
+          "stdout": {
+            "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_multi_reentrant-emit.stdout",
+            "sha256": "aa3fe91f105f456012594d1e33d65a4eb47146ef1974d5d99e1e156c65003633"
+          },
+          "stderr": {
+            "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_multi_reentrant-emit.stderr",
+            "sha256": "a02b14db53762076c79e4d9641dd9fa4aa3052434bb21997fee4b2991a73143c"
+          },
+          "guardian": {
+            "status": "PASS",
+            "reason": "command_exit",
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "peakRssBytes": 1388331008,
+            "peakFootprintBytes": 1128354280,
+            "elapsedMs": 8661,
+            "timeoutMs": 600000,
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "supervisorExitCode": 0,
+            "command": [
+              "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/stage-one-consumer-driver",
+              "/Users/ilyagulya/Projects/My/bend/tests/compile/js_multi_reentrant.bend",
+              "-o",
+              "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_multi_reentrant.original.js"
+            ],
+            "label": "heavy command",
+            "exitCode": 0,
+            "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793392320192-4c2b07b053d30631.json",
+            "memoryLimitBytes": 8589934592,
+            "rssLimitBytes": 8589934592
+          }
+        },
+        {
+          "label": "js_multi_reentrant-original",
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+            "--smol",
+            "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+            "--memory-mib",
+            "8192",
+            "--rss-mib",
+            "8192",
+            "--poll-ms",
+            "10",
+            "--timeout-ms",
+            "600000",
+            "--",
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--experimental-strip-types",
+            "--max-old-space-size=6144",
+            "--max-semi-space-size=128",
+            "/private/tmp/bend-e01-e13-jbsb4I/e12-consumers-v3.mjs",
+            "--worker",
+            "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_multi_reentrant.original.js",
+            "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_multi_reentrant-original.json",
+            "original"
+          ],
+          "exitCode": 0,
+          "stdout": {
+            "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_multi_reentrant-original.stdout",
+            "sha256": "8af69c26f41b45d3abef00c235eb29af89f049a57f80b528868011a358158791"
+          },
+          "stderr": {
+            "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_multi_reentrant-original.stderr",
+            "sha256": "558161c044b8f659d83f55d9684c77c1d9cde0c9708446c8286726f34956817b"
+          },
+          "guardian": {
+            "status": "PASS",
+            "reason": "command_exit",
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "peakRssBytes": 73957376,
+            "peakFootprintBytes": 36309296,
+            "elapsedMs": 104,
+            "timeoutMs": 600000,
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "supervisorExitCode": 0,
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "--max-old-space-size=6144",
+              "--max-semi-space-size=128",
+              "/private/tmp/bend-e01-e13-jbsb4I/e12-consumers-v3.mjs",
+              "--worker",
+              "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_multi_reentrant.original.js",
+              "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_multi_reentrant-original.json",
+              "original"
+            ],
+            "label": "heavy command",
+            "exitCode": 0,
+            "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793392328880-5ec6f56370e6af83.json",
+            "memoryLimitBytes": 8589934592,
+            "rssLimitBytes": 8589934592
+          },
+          "fixture": {
+            "path": "/Users/ilyagulya/Projects/My/bend/tests/compile/js_multi_reentrant.bend",
+            "sha256": "28b72182afd669d46528d8361d5b1921cb721a9c70c4ab6f3d6b169a4ffdf3c6"
+          },
+          "expected": "10109\n76\n",
+          "observed": "10109\n76\n",
+          "result": {
+            "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_multi_reentrant-original.json",
+            "sha256": "7ee8998bd0d24c66216158db320e5c6540add8dc3d214a6ee58cc837f0a43813",
+            "state": {
+              "sp": 0,
+              "ksp": 0,
+              "argumentLength": 2,
+              "nonnullSuffix": 2,
+              "continuations": 0
+            },
+            "statistics": {
+              "status": "NOT_INSTRUMENTED"
+            }
+          }
+        },
+        {
+          "label": "js_multi_reentrant-truncated",
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+            "--smol",
+            "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+            "--memory-mib",
+            "8192",
+            "--rss-mib",
+            "8192",
+            "--poll-ms",
+            "10",
+            "--timeout-ms",
+            "600000",
+            "--",
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--experimental-strip-types",
+            "--max-old-space-size=6144",
+            "--max-semi-space-size=128",
+            "/private/tmp/bend-e01-e13-jbsb4I/e12-consumers-v3.mjs",
+            "--worker",
+            "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_multi_reentrant.original.js",
+            "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_multi_reentrant-truncated.json",
+            "truncated"
+          ],
+          "exitCode": 0,
+          "stdout": {
+            "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_multi_reentrant-truncated.stdout",
+            "sha256": "8af69c26f41b45d3abef00c235eb29af89f049a57f80b528868011a358158791"
+          },
+          "stderr": {
+            "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_multi_reentrant-truncated.stderr",
+            "sha256": "c811e0bb1feaab6a9a837af79886b91cf72fa141b839fb26d97087cb615d506a"
+          },
+          "guardian": {
+            "status": "PASS",
+            "reason": "command_exit",
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "peakRssBytes": 200097792,
+            "peakFootprintBytes": 162712480,
+            "elapsedMs": 156,
+            "timeoutMs": 600000,
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "supervisorExitCode": 0,
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "--max-old-space-size=6144",
+              "--max-semi-space-size=128",
+              "/private/tmp/bend-e01-e13-jbsb4I/e12-consumers-v3.mjs",
+              "--worker",
+              "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_multi_reentrant.original.js",
+              "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_multi_reentrant-truncated.json",
+              "truncated"
+            ],
+            "label": "heavy command",
+            "exitCode": 0,
+            "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793392329005-fff6908d2e4b8fc3.json",
+            "memoryLimitBytes": 8589934592,
+            "rssLimitBytes": 8589934592
+          },
+          "fixture": {
+            "path": "/Users/ilyagulya/Projects/My/bend/tests/compile/js_multi_reentrant.bend",
+            "sha256": "28b72182afd669d46528d8361d5b1921cb721a9c70c4ab6f3d6b169a4ffdf3c6"
+          },
+          "expected": "10109\n76\n",
+          "observed": "10109\n76\n",
+          "result": {
+            "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_multi_reentrant-truncated.json",
+            "sha256": "1499048c9ebb7c779ab0231431072e899e6b21f4473bb3af4f0b750d3adafabd",
+            "state": {
+              "sp": 0,
+              "ksp": 0,
+              "argumentLength": 0,
+              "nonnullSuffix": 0,
+              "continuations": 0
+            },
+            "statistics": {
+              "schemaVersion": 1,
+              "diagnosticOnly": true,
+              "counters": {
+                "normal": 9,
+                "caught": 0,
+                "nestedNormal": 2,
+                "nestedCaught": 0,
+                "retiredSlots": 9,
+                "maxPriorCapacity": 2,
+                "maxPreservedPrefix": 1
+              },
+              "phases": {
+                "consumer": {
+                  "normal": 9,
+                  "caught": 0,
+                  "nestedNormal": 2,
+                  "nestedCaught": 0,
+                  "retiredSlots": 9,
+                  "maxPriorCapacity": 2,
+                  "maxPreservedPrefix": 1
+                }
+              },
+              "meaning": "Retired array slots, not owner count or allocated bytes; compare actual roots with the separate bounded lifetime observer"
+            }
+          }
+        },
+        {
+          "label": "js_multi_reentrant-owned",
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+            "--smol",
+            "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+            "--memory-mib",
+            "8192",
+            "--rss-mib",
+            "8192",
+            "--poll-ms",
+            "10",
+            "--timeout-ms",
+            "600000",
+            "--",
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--experimental-strip-types",
+            "--max-old-space-size=6144",
+            "--max-semi-space-size=128",
+            "/private/tmp/bend-e01-e13-jbsb4I/e12-consumers-v3.mjs",
+            "--worker",
+            "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_multi_reentrant.original.js",
+            "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_multi_reentrant-owned.json",
+            "owned"
+          ],
+          "exitCode": 0,
+          "stdout": {
+            "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_multi_reentrant-owned.stdout",
+            "sha256": "8af69c26f41b45d3abef00c235eb29af89f049a57f80b528868011a358158791"
+          },
+          "stderr": {
+            "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_multi_reentrant-owned.stderr",
+            "sha256": "ff1e4d992516b1262e4bc5f2123ee49b084528ac046c1a0dae70e649b98f4b7f"
+          },
+          "guardian": {
+            "status": "PASS",
+            "reason": "command_exit",
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "peakRssBytes": 203931648,
+            "peakFootprintBytes": 166530168,
+            "elapsedMs": 211,
+            "timeoutMs": 600000,
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "supervisorExitCode": 0,
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "--experimental-strip-types",
+              "--max-old-space-size=6144",
+              "--max-semi-space-size=128",
+              "/private/tmp/bend-e01-e13-jbsb4I/e12-consumers-v3.mjs",
+              "--worker",
+              "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_multi_reentrant.original.js",
+              "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_multi_reentrant-owned.json",
+              "owned"
+            ],
+            "label": "heavy command",
+            "exitCode": 0,
+            "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793392329181-7c3f8c4cf43fdc5c.json",
+            "memoryLimitBytes": 8589934592,
+            "rssLimitBytes": 8589934592
+          },
+          "fixture": {
+            "path": "/Users/ilyagulya/Projects/My/bend/tests/compile/js_multi_reentrant.bend",
+            "sha256": "28b72182afd669d46528d8361d5b1921cb721a9c70c4ab6f3d6b169a4ffdf3c6"
+          },
+          "expected": "10109\n76\n",
+          "observed": "10109\n76\n",
+          "result": {
+            "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-c3-js_multi_reentrant-owned.json",
+            "sha256": "ae4007f161343a0d8155403bf47f317235234390949237693845154a45ed5f07",
+            "state": {
+              "sp": 0,
+              "ksp": 0,
+              "argumentLength": 2,
+              "nonnullSuffix": 0,
+              "continuations": 0
+            },
+            "statistics": {
+              "status": "NOT_INSTRUMENTED"
+            }
+          }
+        }
+      ],
+      "finished": "2026-10-30T20:32:09.399Z"
+    },
+    "scope": [
+      "Only completed/abandoned run_base boundaries release owned suffix, retaining every saved outer prefix and lexical capture.",
+      "A throwing expression before entering a new run_base can bypass that boundary; total pre-entry failure cleanup is not claimed.",
+      "The four-hook prototype was source-rejected and its direct-slot gap was actually reproduced by a controlled omitted-hook cut. The five-hook variant clears that exact actual generated path.",
+      "Additional synthetic protocol checks cover nonzero prefix, eager lexical loads, active catch/error identity/reentry, split1/splitm, skipped/left/missing region. They are not a substitute for checked source consumers.",
+      "Actual source fixtures printed original outputs in all six original/truncated/owned executions; no import-only not-throw pass.",
+      "The complete argument-array scan found no remaining nonundefined slots at every quiescent phase, while array length154206 was retained. Other runtime roots, physical backing allocation, reclaimed bytes and performance improvement are not established."
+    ],
+    "qualification": "Separate permanent emitter source integration and full original qualification remain required; no E12 source accepted."
+  },
+  "supportingSources": [
+    {
+      "path": "/private/tmp/bend-e01-e13-jbsb4I/e10-native-inputs.mjs",
+      "sha256": "9289e642f06174b137347f5dee40f40c5df9bf83294b9e5813cbb9b164e4430f",
+      "source": "import {readFileSync} from 'node:fs';import {createHash} from 'node:crypto';import assert from 'node:assert/strict';\nconst KEY='__allE10NativeInputs',SOURCE_KEY='emitter_steps_v1.emitter_body_cps_provider_8_js_native_markers',hash=x=>createHash('sha256').update(x).digest('hex');\nexport function instrument(source,context){\n assert.equal(globalThis[KEY],undefined);const original=readFileSync(context.image,'utf8');assert.equal(hash(original),'85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e');const rows=original.split('\\n').filter(line=>line.startsWith('$D['+JSON.stringify(SOURCE_KEY)+']='));assert.equal(rows.length,1);const match=/\\?(\\$b\\d+)\\(/.exec(rows[0]);assert.ok(match);const entry=new RegExp('^function '+match[1].replace('$','\\\\$')+'\\\\(\\\\$v0,\\\\$td=0\\\\)\\\\{','gm'),entries=[...source.matchAll(entry)];assert.equal(entries.length,1);const ids=new WeakMap(),pairs=new Set(),programs=new Set(),evidence=[];let next=1,calls=0,repeatedPairs=0;function id(x){assert.ok(x&&typeof x==='object');let value=ids.get(x);if(value===undefined){value=next++;ids.set(x,value);}return value;}\n globalThis[KEY]={observe(program){assert.equal(program?.$,'../bend2/selfhost/backend_ir.Program');calls++;const objectId=id(program),families=id(program.families),functions=id(program.type_functions),pair=families+':'+functions;programs.add(objectId);if(pairs.has(pair))repeatedPairs++;pairs.add(pair);if(evidence.length<8)evidence.push({phase:String(globalThis.__allExperimentPhase??'unknown'),objectId,families,functions,pair});},snapshot(){return {schemaVersion:1,diagnosticOnly:true,calls,distinctPrograms:programs.size,distinctImmutableListPairs:pairs.size,repeatedImmutableListPairs:repeatedPairs,evidence,reason:'The marker index depends only on exact family/type-function lists, not code bodies or Program wrapper identity',ownerRetention:false};}};\n const at=entries[0].index+entries[0][0].length;return {source:source.slice(0,at)+'globalThis.'+KEY+'.observe($v0);'+source.slice(at),metadata:{sourceKey:SOURCE_KEY,function:match[1],originalSha256:hash(original),declarationSha256:hash(rows[0]),classification:'Read-only immutable marker-index input identity; no cache or algorithm change'}};\n}\nexport function snapshot(){return globalThis[KEY]?.snapshot()??{status:'NOT_INSTALLED'};}\n"
+    },
+    {
+      "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-owned-suffix.mjs",
+      "sha256": "7f628feb1435e6bf2ca2a90ba38294b86dda1566b7cd792baad096acfd53fd98",
+      "source": "import {readFileSync} from 'node:fs';import {createHash} from 'node:crypto';const sha=x=>createHash('sha256').update(x).digest('hex');\nexport function instrument(incoming,context){const original=readFileSync(context.image,'utf8');if(sha(original)!=='85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e')throw Error('Authenticated R12 required');let source=incoming;const changes=[];function once(before,after,label){if(source.split(before).length!==2)throw Error('Unique '+label+' boundary required');source=source.replace(before,after);changes.push(label);}\n once('\\nlet $sp = 0, $ksp = 0, $leaveThunk;','\\nlet $sp = 0, $ksp = 0, $leaveThunk, $stHi = 0;','scalar written-suffix bound');\n for(const header of ['function $split(f,count,k,base) {','function $splitm(f,a,k,base) {','function $split1(f,x,k,base) {','function $frame(t,base) {','function $split_enter(k,b) {'])once('\\n'+header,'\\n'+header+' if($sp>$stHi)$stHi=$sp;','capture registration '+header.split('(')[0]);\n const runtime=source.match(/^function run_base\\(x,k0,s0\\) \\{[^\\n]*$/gm);if(runtime?.length!==1)throw Error('One executable run_base required');let line=runtime[0];\n for(const [before,after,label]of [['if ($ksp===k0) { $sp=s0; return x; }','if ($ksp===k0) { $sp=s0; if($stHi>s0){$stArgs.fill(undefined,s0,$stHi);$stHi=s0;} return x; }','ordinary owned suffix release'],['$ksp=k0; $sp=s0; $tailFn=undefined; $tailCount=0; throw e;','$ksp=k0; $sp=s0; if($stHi>s0){$stArgs.fill(undefined,s0,$stHi);$stHi=s0;} $tailFn=undefined; $tailCount=0; throw e;','exception owned suffix release']]){if(line.split(before).length!==2)throw Error('Unique '+label+' boundary required');line=line.replace(before,after);changes.push(label);}\n source=source.replace(runtime[0],()=>line);\n return {source,metadata:{experiment:'E12',diagnosticOnly:true,compilerAccepted:false,changesEmittedRuntimeLiteral:false,originalSha256:sha(original),incomingSha256:sha(incoming),outputSha256:sha(source),changes,scope:'One scalar tracks written capture suffix at the five existing registration sites, including bounded-direct split_enter. Release clears only [saved entry prefix, written suffix) without source-level array truncation. Admission requires complete generated-write/registration correspondence and actual nested/reentrant/failure/runtime proof.',quantum:64,cleanupConstructsNoArrays:true,retainsArrayLength:true,engineAllocationSavingMeasured:false}};\n}\n"
+    },
+    {
+      "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-owned-audit.mjs",
+      "sha256": "979e66523e402616a86f3de75e1abe73cb77150e7c995493600cf2bda84df42e",
+      "source": "import {instrument as retire} from './e12-owned-suffix.mjs';import {createHash} from 'node:crypto';const KEY='__allE12OwnedAudit';let boundaries=[];const sha=s=>createHash('sha256').update(s).digest('hex');\nexport function instrument(source,context){\n if(globalThis[KEY])throw Error('Duplicate owned-suffix audit');\n const counters={normal:0,caught:0,nestedNormal:0,nestedCaught:0,clearedSlots:0,maxWrittenEnd:0,maxPreservedPrefix:0};\n globalThis[KEY]={observe(hi,base,caught){counters[caught?'caught':'normal']++;if(base>0)counters[caught?'nestedCaught':'nestedNormal']++;counters.clearedSlots+=Math.max(0,hi-base);counters.maxWrittenEnd=Math.max(counters.maxWrittenEnd,hi);counters.maxPreservedPrefix=Math.max(counters.maxPreservedPrefix,base);},read:null,counters};\n const result=retire(source,context),lines=result.source.match(/^function run_base\\(x,k0,s0\\) \\{[^\\n]*$/gm);if(lines?.length!==1)throw Error('Executable run_base required');let line=lines[0];\n for(const [before,after]of [\n  ['if ($ksp===k0) { $sp=s0; if($stHi>s0)','if ($ksp===k0) { $sp=s0; globalThis.'+KEY+'.observe($stHi,s0,false); if($stHi>s0)'],\n  ['$ksp=k0; $sp=s0; if($stHi>s0)','$ksp=k0; $sp=s0; globalThis.'+KEY+'.observe($stHi,s0,true); if($stHi>s0)']\n ]){if(line.split(before).length!==2)throw Error('Unique owned audit boundary');line=line.replace(before,after);}\n const output=result.source.replace(lines[0],()=>line)+'\\nglobalThis.'+KEY+'.read=()=>{let nonnull=0,nonnullSuffix=0;for(let i=0;i<$stArgs.length;i++)if($stArgs[i]!==undefined){nonnull++;if(i>=$sp)nonnullSuffix++;}return {sp:$sp,ksp:$ksp,hi:$stHi,argumentLength:$stArgs.length,nonnull,nonnullSuffix};};\\n';\n return {source:output,metadata:{retirement:result.metadata,outputSha256:sha(output),audit:'Scalar counts plus complete argument-array nonundefined-slot scan at phase boundaries; no owner retention or physical byte inference',statisticsOnly:true}};\n}\nexport function onPhase(name){const state=globalThis[KEY]?.read?.();if(state)boundaries.push({phase:name,...state});}\nexport function snapshot(){const state=globalThis[KEY];return {schemaVersion:1,diagnosticOnly:true,counters:state?{...state.counters}:null,boundaries:[...boundaries],meaning:'Complete remaining argument-slot count and scalar retirement counts, not allocation or retained-byte measurements'};}\n"
+    },
+    {
+      "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-owned-protocol.mjs",
+      "sha256": "2450fe761da133b3f63fbb70f8bc43d6e2ac9b47a7fd58fc6511f51842a37ee2",
+      "source": "import assert from 'node:assert/strict';import {readFileSync,writeFileSync,existsSync} from 'node:fs';import {createHash} from 'node:crypto';import {pathToFileURL,fileURLToPath} from 'node:url';import {runHeavyGate} from '/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts';import {instrument} from './e12-owned-suffix.mjs';\nconst root='/Users/ilyagulya/Projects/My/bend',dir='/private/tmp/bend-e01-e13-jbsb4I',node='/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node',self=fileURLToPath(import.meta.url),image=root+'/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js',sha=s=>createHash('sha256').update(s).digest('hex'),hash=p=>sha(readFileSync(p)),save=(p,v)=>writeFileSync(p,JSON.stringify(v,null,2)+'\\n',{flag:'wx'});\nconst probe=`\nexport function __e12OwnedProtocol(){const rootK=$ksp,rootS=$sp,marker={$:'Nil'},value=n=>({$:'template_steps_v1.TemplateValue',value:n});const pending=run_base($b13348(marker,value(37),0),rootK,rootS);const direct={requestTag:pending.request.request.$,sameCapturedObject:pending.request.request.v_1===marker,value:pending.request.request.v_3,capturedSlotCleared:$stArgs[rootS]===undefined,sp:$sp,ksp:$ksp};const resumed=pending.resume(value(71));const resume={tag:resumed.$,value:resumed.box.value};let actualThrow=null;try{$tailArgs[0]={$:'None'};run_base(tail_named(x=>$b13348(marker,x,0),1),rootK,rootS);}catch(e){actualThrow=e;}const actualFailure={error:actualThrow,restored:$sp===rootS&&$ksp===rootK,slotCleared:$stArgs[rootS]===undefined};const a={$:'Some',value:11},b={$:'Some',value:23},c={$:'Some',value:41},exactError={token:'error-identity'};function outer(v,base){const x=$stArgs[base],y=$stArgs[base+1];return v+x.value+y.value;}$stArgs[$sp++]=a;$stArgs[$sp++]=b;$split_enter(outer,rootS);const k0=$ksp,s0=$sp;let lexical=false;function inner(v,base){const saved=$stArgs[base];const n=run_base(97,$ksp,$sp);lexical=saved===c&&saved.value===41;return v+n+saved.value;}$stArgs[$sp++]=c;$tailArgs[0]=37;const nested=run_base($split(v=>v,1,inner,s0),k0,s0);const prefixNormal=$stArgs[rootS]===a&&$stArgs[rootS+1]===b;let sameError=false;try{$stArgs[$sp++]=c;$tailArgs[0]=0;run_base($split(_=>{throw exactError;},1,inner,s0),k0,s0);}catch(e){sameError=e===exactError;}const prefixFailure=$stArgs[rootS]===a&&$stArgs[rootS+1]===b;const reentry=run_base(101,$ksp,$sp),outerResult=run_base(101,rootK,rootS);function plain(v){return v*2;}function id(v){return v;}const split1=run_base($split1(plain,5,id,$sp),$ksp-1,$sp),splitm=run_base($splitm((x,y)=>x+y,[7,9],id,$sp),$ksp-1,$sp);function thunk(_,base){const saved=$stArgs[base];return saved.value+run_base(5,$ksp,$sp);}const rk=$ksp,rs=$sp;$stArgs[$sp++]=b;$frame(thunk,rs);const skipped=run_base(17,rk,rs);$stArgs[$sp++]=b;$frame(thunk,rs);$leaveThunk=thunk;const left=run_base($LEAVE_PENDING,rk,rs);let missing=null;$stArgs[$sp++]=b;$frame(thunk,rs);$leaveThunk=()=>0;try{run_base($LEAVE_PENDING,rk,rs);}catch(e){missing=e;}let nonnullSuffix=0;for(let i=rootS;i<$stArgs.length;i++)if($stArgs[i]!==undefined)nonnullSuffix++;return {direct,resume,actualFailure,nested,lexical,prefixNormal,prefixFailure,sameError,reentry,outerResult,split1,splitm,skipped,left,missing,final:{sp:$sp,ksp:$ksp,nonnullSuffix,length:$stArgs.length}};}\n`;\nif(process.argv[2]==='--worker'){const [variant,out]=process.argv.slice(3),original=readFileSync(image,'utf8');assert.equal(sha(original),'85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e');assert.ok(['original','four-hooks','owned'].includes(variant));const transformed=variant==='original'?{source:original,metadata:{unalteredR12:true}}:instrument(original,{image,repository:root});if(variant==='four-hooks'){const before='\\nfunction $split_enter(k,b) { if($sp>$stHi)$stHi=$sp;';assert.equal(transformed.source.split(before).length,2);transformed.source=transformed.source.replace(before,'\\nfunction $split_enter(k,b) {');transformed.metadata.omittedDirectRegistrationHook=true;}const artifact=out+'.mjs';writeFileSync(artifact,transformed.source+probe,{flag:'wx'});const api=await import(pathToFileURL(artifact).href),v=api.__e12OwnedProtocol();assert.equal(v.direct.sameCapturedObject,true);assert.equal(v.direct.value,37);assert.equal(v.direct.capturedSlotCleared,variant==='owned');assert.equal(v.resume.value,71);assert.equal(v.resume.tag,'template_steps_v1.TemplateFinished');assert.equal(v.actualFailure.error,'bend: runtime fail-stop');assert.equal(v.actualFailure.restored,true);assert.equal(v.actualFailure.slotCleared,variant==='owned');for(const key of ['lexical','prefixNormal','prefixFailure','sameError'])assert.equal(v[key],true,key);for(const [key,value]of Object.entries({nested:175,reentry:101,outerResult:135,split1:10,splitm:16,skipped:17,left:28}))assert.equal(v[key],value,key);assert.equal(v.missing,'bend: a region leave reached no private frame');assert.equal(v.final.sp,0);assert.equal(v.final.ksp,0);if(variant!=='original')assert.equal(v.final.nonnullSuffix,0);save(out,{status:'PASS',variant,image:{path:image,sha256:hash(image)},artifact:{path:artifact,sha256:hash(artifact)},transformation:transformed.metadata,observed:v,scope:'Actual authenticated b13348/b877/k20777 direct path plus additional synthetic runtime-protocol boundary witnesses; not a checked source-program semantic proof or engine allocation measurement'});console.log(JSON.stringify({variant,status:'PASS',directSlotCleared:v.direct.capturedSlotCleared}));}else{const out=dir+'/e12-owned-protocol.result.json';assert.ok(!existsSync(out));const rows=[];for(const variant of ['original','four-hooks','owned']){const target=dir+'/e12-owned-protocol-'+variant+'.json',command=[node,'--experimental-strip-types','--max-old-space-size=6144','--max-semi-space-size=128',self,'--worker',variant,target],guardian=await runHeavyGate(command,{memoryMiB:8192,rssMiB:8192,pollMs:10,timeoutMs:600000,label:'E12 concrete direct and owned suffix '+variant});rows.push({variant,command,guardian,result:existsSync(target)?{path:target,sha256:hash(target)}:null});if(guardian.status!=='PASS')break;}const status=rows.length===3&&rows.every(x=>x.guardian.status==='PASS')?'PASS_DIAGNOSTIC_ONLY':'FAIL';save(out,{schemaVersion:1,status,diagnosticOnly:true,compilerAccepted:false,performanceAccepted:false,driver:{path:self,sha256:hash(self)},rows});if(status==='FAIL')process.exitCode=1;console.log(JSON.stringify({status,report:out}));}\n"
+    },
+    {
+      "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-consumers-v3.mjs",
+      "sha256": "099534c83bda9f447f1cdc805564cc7889e0cbfd98ae8d08cdcb38e10f8a9a5d",
+      "source": "import assert from 'node:assert/strict';import {readFileSync,writeFileSync,existsSync,openSync,closeSync} from 'node:fs';import {createHash} from 'node:crypto';import {fileURLToPath,pathToFileURL} from 'node:url';import {spawn} from 'node:child_process';import {instrument as truncate,snapshot} from './e12-retired-stats.mjs';import {instrument as owned} from './e12-owned-suffix.mjs';\nconst root='/Users/ilyagulya/Projects/My/bend',dir='/private/tmp/bend-e01-e13-jbsb4I',tools='/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools',node=tools+'/node',bun=tools+'/bun',self=fileURLToPath(import.meta.url),image=root+'/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js',sha=x=>createHash('sha256').update(x).digest('hex'),hash=p=>sha(readFileSync(p)),save=(p,v)=>writeFileSync(p,JSON.stringify(v,null,2)+'\\n',{flag:'wx'});\nif(process.argv[2]==='--worker'){\n const [original,out,variant]=process.argv.slice(3);assert.ok(['original','truncated','owned'].includes(variant));const text=readFileSync(original,'utf8'),changed=variant==='original'?{source:text,metadata:{unalteredConsumer:true}}:(variant==='truncated'?truncate:owned)(text,{image,repository:root}),artifact=out+'.js';const audit='\\nglobalThis.__e12FinalRuntimeState=()=>({sp:$sp,ksp:$ksp,argumentLength:$stArgs.length,nonnullSuffix:$stArgs.slice($sp).filter(x=>x!==undefined).length,continuations:$kFn.slice($ksp).filter(x=>x!==undefined).length});\\n';writeFileSync(artifact,changed.source+audit,{flag:'wx'});let failure=null;process.once('uncaughtExceptionMonitor',e=>{failure=String(e);});process.once('exit',code=>{const state=globalThis.__e12FinalRuntimeState?.();save(out,{status:code===0?'PASS':'FAIL',variant,driverSha256:hash(self),original:{path:original,sha256:hash(original)},artifact:{path:artifact,sha256:hash(artifact)},transformation:changed.metadata,statistics:variant==='truncated'?snapshot():{status:'NOT_INSTRUMENTED'},state,failure});});process.argv=[node,artifact];await import(pathToFileURL(artifact).href);\n}else{\n const reportPath=dir+'/e12-consumers-v3.result.json',report={schemaVersion:1,status:'RUNNING',diagnosticOnly:true,compilerAccepted:false,performanceAccepted:false,driver:{path:self,sha256:hash(self)},setupCorrection:'Previous imported .mjs did not enter the actual generated argv[1] .js CLI. Each worker now sets argv to exactly the fresh .js artifact before import; actual source IO/foreign code must run and print the original fixture output.',rows:[]};save(reportPath,report);\n async function run(label,args){const stdout=dir+'/e12-c3-'+label+'.stdout',stderr=dir+'/e12-c3-'+label+'.stderr',command=[bun,'--smol',root+'/evals/heavy_gate.ts','--memory-mib','8192','--rss-mib','8192','--poll-ms','10','--timeout-ms','600000','--',...args],o=openSync(stdout,'wx'),e=openSync(stderr,'wx');let exitCode;try{exitCode=await new Promise((resolve,reject)=>{const child=spawn(command[0],command.slice(1),{cwd:root,env:{...process.env,PATH:tools+':'+process.env.PATH},stdio:['ignore',o,e]});child.once('error',reject);child.once('close',resolve);});}finally{closeSync(o);closeSync(e);}const text=readFileSync(stderr,'utf8'),matches=[...text.matchAll(/^HEAVY_GATE (\\{[^\\n]*\\})$/gm)];assert.ok(matches.length,'guardian record required');const guardian=JSON.parse(matches.at(-1)[1]),row={label,command,exitCode,stdout:{path:stdout,sha256:hash(stdout)},stderr:{path:stderr,sha256:hash(stderr)},guardian};report.rows.push(row);writeFileSync(reportPath,JSON.stringify(report,null,2)+'\\n');assert.equal(exitCode,0,text);assert.equal(guardian.status,'PASS');return row;}\n try{for(const name of ['js_split_capture_chain','js_multi_reentrant']){const fixture=root+'/tests/compile/'+name+'.bend',expected=readFileSync(fixture,'utf8').split('\\n').filter(x=>x.startsWith('#|')).map(x=>x.slice(2).trimStart()).join('\\n')+'\\n',prior=dir+'/e12-v2-'+name+'.original.js',original=existsSync(prior)?prior:dir+'/e12-c3-'+name+'.original.js';if(!existsSync(original))await run(name+'-emit',[root+'/checkpoints/local2039g24r12/stage-one-consumer-driver',fixture,'-o',original]);for(const variant of ['original','truncated','owned']){const out=dir+'/e12-c3-'+name+'-'+variant+'.json',row=await run(name+'-'+variant,[node,'--experimental-strip-types','--max-old-space-size=6144','--max-semi-space-size=128',self,'--worker',original,out,variant]);const actual=readFileSync(row.stdout.path,'utf8');assert.equal(actual,expected);const result=JSON.parse(readFileSync(out,'utf8'));assert.equal(result.status,'PASS');assert.ok(result.state,'actual CLI runtime must execute');assert.equal(result.state.sp,0);assert.equal(result.state.ksp,0);if(variant!=='original')assert.equal(result.state.nonnullSuffix,0,'all retired capture slots clear at actual source return');if(variant==='truncated')assert.ok(result.statistics.counters.normal>0,'must actually exercise modified run_base');row.fixture={path:fixture,sha256:hash(fixture)};row.expected=expected;row.observed=actual;row.result={path:out,sha256:hash(out),state:result.state,statistics:result.statistics};writeFileSync(reportPath,JSON.stringify(report,null,2)+'\\n');}}report.status='PASS_DIAGNOSTIC_ONLY';}catch(e){report.status='FAIL';report.error=String(e);report.stack=e?.stack;process.exitCode=1;}report.finished=new Date().toISOString();writeFileSync(reportPath,JSON.stringify(report,null,2)+'\\n');console.log(JSON.stringify({status:report.status,report:reportPath,error:report.error}));\n}\n"
+    },
+    {
+      "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-retired-suffix.mjs",
+      "sha256": "647c99fa06f941b9631fcaa9f96886a4b94e4d9d87bdf0bf7de8c27946cdd2d6",
+      "source": "import {readFileSync} from 'node:fs';import {createHash} from 'node:crypto';\nconst hash=text=>createHash('sha256').update(text).digest('hex');\nexport function instrument(incoming,context){const original=readFileSync(context.image,'utf8');if(hash(original)!=='85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e')throw Error('Authenticated R12 required');const lines=incoming.match(/^function run_base\\(x,k0,s0\\) \\{[^\\n]*$/gm);if(lines?.length!==1)throw Error('Unique actual run_base required');let line=lines[0];function once(a,b){if(line.split(a).length!==2)throw Error('Unique retirement boundary required');line=line.replace(a,b);}once('if ($ksp===k0) { $sp=s0; return x; }','if ($ksp===k0) { $sp=s0; $stArgs.length=s0; return x; }');once('$ksp=k0; $sp=s0; $tailFn=undefined; $tailCount=0; throw e;','$ksp=k0; $sp=s0; $stArgs.length=s0; $tailFn=undefined; $tailCount=0; throw e;');const source=incoming.replace(lines[0],()=>line);return {source,metadata:{experiment:'E12',diagnosticOnly:true,compilerAccepted:false,originalSha256:hash(original),incomingSha256:hash(incoming),outputSha256:hash(source),edits:['normal run_base suffix retirement','exception run_base suffix retirement'],changesEmittedRuntimeLiteral:false,clearsOnlyOwnedSuffix:true,quantum:64,sourceProof:'local://all-frame-lifetime.md:110-250',observationPrerequisite:{report:'/private/tmp/bend-e01-e13-jbsb4I/frame-lifetime-bounded-v1.result.json',path:'$stArgs[8].transient',retiredOwnerId:11265}}};}\n"
+    },
+    {
+      "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-retired-stats.mjs",
+      "sha256": "e6b3b64bf01613fd8dc8e0a65e1b3c9a954b0a8625cb47327718164f2b080d35",
+      "source": "import {instrument as retire} from './e12-retired-suffix.mjs';\nimport {createHash} from 'node:crypto';\nconst KEY='__allE12RetirementStats';\nexport function instrument(source,context){\n if(globalThis[KEY])throw Error('Duplicate E12 runtime diagnostic');\n const counters={normal:0,caught:0,nestedNormal:0,nestedCaught:0,retiredSlots:0,maxPriorCapacity:0,maxPreservedPrefix:0},phases={};\n globalThis[KEY]={\n  observe(capacity,base,caught){\n   const phase=String(globalThis.__allExperimentPhase??'consumer'),row=phases[phase]??=Object.fromEntries(Object.keys(counters).map(k=>[k,0]));\n   for(const target of [counters,row]){\n    target[caught?'caught':'normal']++;\n    if(base>0)target[caught?'nestedCaught':'nestedNormal']++;\n    target.retiredSlots+=Math.max(0,capacity-base);\n    target.maxPriorCapacity=Math.max(target.maxPriorCapacity,capacity);\n    target.maxPreservedPrefix=Math.max(target.maxPreservedPrefix,base);\n   }\n  },\n  snapshot(){return {schemaVersion:1,diagnosticOnly:true,counters:{...counters},phases:JSON.parse(JSON.stringify(phases)),meaning:'Retired array slots, not owner count or allocated bytes; compare actual roots with the separate bounded lifetime observer'};}\n };\n const result=retire(source,context),lines=result.source.match(/^function run_base\\(x,k0,s0\\) \\{[^\\n]*$/gm);\n if(lines?.length!==1)throw Error('Unique run_base required');let line=lines[0];\n for(const [needle,replacement]of [\n  ['$sp=s0; $stArgs.length=s0; return x;','$sp=s0; globalThis.'+KEY+'.observe($stArgs.length,s0,false); $stArgs.length=s0; return x;'],\n  ['$ksp=k0; $sp=s0; $stArgs.length=s0; $tailFn=undefined;','$ksp=k0; $sp=s0; globalThis.'+KEY+'.observe($stArgs.length,s0,true); $stArgs.length=s0; $tailFn=undefined;']\n ]){if(line.split(needle).length!==2)throw Error('Unique retirement statistics boundary');line=line.replace(needle,replacement);}\n const output=result.source.replace(lines[0],()=>line);\n return {source:output,metadata:{retirement:result.metadata,outputSha256:createHash('sha256').update(output).digest('hex'),statisticsOnly:true,ownerRetention:false}};\n}\nexport function snapshot(){return globalThis[KEY]?.snapshot()??{status:'NOT_INSTALLED'};}\n"
+    },
+    {
+      "path": "/private/tmp/bend-e01-e13-jbsb4I/studies-v4.mjs",
+      "sha256": "c24ea7e50aead88a00c79cddc11ddb80b35e005d0662a3faab4ccd9bd987b891",
+      "source": "import {spawn} from 'node:child_process';import {readFileSync,writeFileSync,openSync,closeSync,existsSync} from 'node:fs';import {createHash} from 'node:crypto';\nconst root='/Users/ilyagulya/Projects/My/bend',dir='/private/tmp/bend-e01-e13-jbsb4I',tools='/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools',node=tools+'/node',bun=tools+'/bun',home=dir+'/e05-candidate',fresh=dir+'/e05-candidate-v4',path=dir+'/studies-v4.result.json',sha=p=>createHash('sha256').update(readFileSync(p)).digest('hex');if(existsSync(path))throw Error('Fresh report required');const report={schemaVersion:1,status:'RUNNING',diagnosticOnly:true,compilerAccepted:false,performanceAccepted:false,steps:[]};const save=()=>writeFileSync(path,JSON.stringify(report,null,2)+'\\n');save();\nasync function run(label,command){const stdout=dir+'/'+label+'.stdout',stderr=dir+'/'+label+'.stderr',row={label,command,cwd:root,stdout,stderr,started:new Date().toISOString()},o=openSync(stdout,'wx'),e=openSync(stderr,'wx');report.steps.push(row);save();const start=performance.now();try{row.exitCode=await new Promise((done,reject)=>{const p=spawn(command[0],command.slice(1),{cwd:root,env:{...process.env,PATH:tools+':'+process.env.PATH,HEAVY_GATE_MEMORY_MIB:'8192',HEAVY_GATE_RSS_MIB:'8192',HEAVY_GATE_TIMEOUT_MS:'600000',HEAVY_GATE_POLL_MS:'10',BUN_JSC_forceRAMSize:'4294967296'},stdio:['ignore',o,e]});p.once('error',reject);p.once('close',done);});row.status=row.exitCode===0?'PASS':'FAIL';}catch(error){row.status='FAIL';row.error=String(error);}finally{closeSync(o);closeSync(e);}row.elapsedMs=performance.now()-start;row.finished=new Date().toISOString();row.stdoutSha256=sha(stdout);row.stderrSha256=sha(stderr);save();console.log(JSON.stringify({label,status:row.status,elapsedMs:row.elapsedMs,stderr}));return row.status==='PASS';}\nconst gen=[bun,'--smol',root+'/evals/heavy_gate.ts','--memory-mib','8192','--rss-mib','8192','--poll-ms','10','--timeout-ms','600000','--',bun,'--smol',home+'/generate-probe.ts',fresh];\ntry{if(await run('e05-v4-generate',gen))if(await run('e05-v4-build',[bun,'--smol',root+'/evals/checker_core_component_build.ts','--file='+fresh+'/checkpoints/e05_probe_bridge.bend','--exports=suite_start,schema_start,inspect_start,render_case_start,template_step','--artifact='+fresh+'/probe.js','--report='+fresh+'/probe-build']))await run('e05-v4-suite',[node,'--experimental-strip-types',home+'/run-probe.mjs','suite',fresh+'/probe.js',home+'/suite-v4-output']);\nconst name='e05-capture-e10-e12-owned-v1',config=dir+'/'+name+'.config.json';if(await run('prepare-'+name,[node,dir+'/prepare.mjs',name,dir+'/frame-lifetime-bounded.mjs',dir+'/e12-owned-audit.mjs',home+'/capture-bir.mjs',dir+'/e10-native-inputs.mjs'])){const value=JSON.parse(readFileSync(config,'utf8'));for(const source of [dir+'/frame-lifetime.mjs',dir+'/e12-owned-suffix.mjs'])value.pins[source]=sha(source);writeFileSync(config,JSON.stringify(value,null,2)+'\\n');await run('census-'+name,[bun,'--smol',dir+'/census-runner.mjs',config,dir+'/'+name+'.result.json']);}\nreport.status=report.steps.every(x=>x.status==='PASS')?'PASS_DIAGNOSTIC_ONLY':'COMPLETED_WITH_FAILURES';}catch(e){report.status='FAIL';report.error=String(e);process.exitCode=1;}report.finished=new Date().toISOString();save();console.log(JSON.stringify({status:report.status,report:path,error:report.error}));\n"
+    }
+  ],
+  "preservedFailures": [
+    {
+      "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-diagnostics.result.json",
+      "sha256": "7115112d4893f70251388c34864b99c393c472616f25ed73adeb0988d87bfdae"
+    },
+    {
+      "path": "/private/tmp/bend-e01-e13-jbsb4I/e12-diagnostics-v2.result.json",
+      "sha256": "78e453ed977fcd7bbc34d332d5e4c81a02fe4bee2e0b3d724483c8ea593b4c19"
+    }
+  ],
+  "limits": "Original resource caps, parser fuel and quantum unchanged; diagnostic measurements do not replace the strict original acceptance series."
+}

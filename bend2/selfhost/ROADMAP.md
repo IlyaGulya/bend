@@ -6,6 +6,24 @@ under their original image IDs; a later pass never reclassifies an older run.
 Detailed evidence and reasoning live in the linked receipts and notes.
 This index does not replace a receipt.
 
+## G36 / E05: bounded pass rejected at native codegen
+
+The existing-IR private producer/shared-field-continuation pass passes all
+52 original/optimized C/JS diagnostic executions and the real full compiler's
+six metadata sites. An ordinary source consumer runs the real own frontend,
+compiled Bend pass and both renderers; all four C/JS executions print zero.
+Strict effects, affine fields, thirteen retained parameters, fresh IDs, original
+public references, Arena and Tuple construction remain covered.
+
+The full qualification stops at the unchanged native hard cap: book validation
+checks 12,648 definitions / 13,263 events, then `compile_book` exceeds 8 GiB
+physical footprint. No native executable, fixedpoint, throughput or subsequent
+consumer acceptance is claimed. This source version is **rejected**, not an
+accepted acceleration. Preserve its source/frozen inputs before restoring R12.
+The complete canonical RootJS component can support E03's separately declared,
+matched canonical-executor diagnostics; it is not a native-stage1 substitute.
+Evidence: `evals/receipts/producer2039g36e05_rejected.json`.
+
 ## Current full native-seed checkpoint: G24 R12
 
 **local2039g24r12**, compiler source `5916d410`, passes full native validation

@@ -5,6 +5,16 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- G36 / E05's bounded existing-BIR direct-field continuation pass is rejected
+  by the original 8-GiB native-codegen limit. All 52 original/optimized C/JS
+  diagnostic executions, six actual full-compiler metadata sites, and four
+  ordinary-source C/JS executions pass. Native book validation checks 12,648
+  definitions / 13,263 events, then `compile_book` reaches 9,093,225,672-byte
+  footprint and is stopped. No native executable, bootstrap/fixedpoint or
+  performance series exists; R12 remains the accepted baseline. The checked
+  canonical compiler component is diagnostic evidence, not a replacement
+  native-stage1 or an accepted image.
+  `evals/receipts/producer2039g36e05_rejected.json`.
 - G35 / E08's private checked-occurrence publication cutover is rejected by
   the unchanged paired memory rule. The full native root validates 12,452
   definitions / 13,046 events with zero exclusions/patches. Actual

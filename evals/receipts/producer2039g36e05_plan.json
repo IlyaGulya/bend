@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "status": "PREDECLARED_G36_E05_BOUNDED_DIRECT_FIELD_SOURCE_VERSION",
+  "compilerAccepted": false,
+  "performanceAccepted": false,
+  "byteFixedpoint": false,
+  "baseline": {
+    "native": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+      "sha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "bytes": 18808824,
+      "matches": true
+    },
+    "image": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+      "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "bytes": 31758507,
+      "matches": true
+    }
+  },
+  "restoration": {
+    "path": "/Users/ilyagulya/Projects/My/bend/evals/receipts/producer2039g35e08_restored_r12.json",
+    "sha256": "1d9356abb1299253ea6bceb65db80411a5e42ec215a272f80c8e4f57b5ac6217",
+    "bytes": 72718
+  },
+  "priorCheckpoint": "b2192313",
+  "changedSources": [
+    "bend2/selfhost/backend_continuation.bend",
+    "bend2/selfhost/backend_lower.bend",
+    "evals/emitter_step_lower.ts"
+  ],
+  "sourcePins": {
+    "bend2/bend.ts": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+    "bend2/base.bend": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+    "bend2/comp.ts": "880a9b3b86f273852a39fc664f8c3d7b71e3860b6d365e4321949fc812b6e7cc",
+    "evals/checker_core_owned_source.ts": "7b9fc4fb80aa87ef0ce44310031e5bfe909f8abd9672f16609c435daa87eb450",
+    "evals/checker_core_step_lower.ts": "21a47855e891ab115fb2ce4c70b7b699b376c6488f2505b7f0d6893f8d66daf9",
+    "evals/emitter_step_lower.ts": "4f38154a5c14bf3694064712e73febd24bc0c4a08f0a552a78902ed756294e3e",
+    "evals/template_step_lower.ts": "24bb3b87949f3d68073e2ec407c339b75f5124a877106d24fbc27ca9dbb95de3",
+    "evals/g24_qualification.mjs": "a8212e066d3fadad484a7699a338fa3170a2978403a6dbab5befc0cf6afc353e",
+    "bend2/selfhost/checker.bend": "fa1d63e8f5de8f8afb9d47bca13104ad43285dcc195589666323bbda675366bc",
+    "bend2/selfhost/backend_continuation.bend": "198b49b7bfd8f4956378c13c02836c2cbb79890514b2a67f86d739733b5009fa",
+    "bend2/selfhost/backend_lower.bend": "f726899fc99d78052983eccba809ffa01032165abf82784ddc339682c783df3b"
+  },
+  "scope": "One bounded existing-BIR producer/known shared field-continuation pass at the sole neutral lower_complete. Public entries/foreign/closure ABI, ordinary return forms, both backends, all source checks, runtime, parser fuel and quantum remain unchanged. Only admitted local temporary records are removed, no replacement mailbox or packed storage.",
+  "preflight": {
+    "suite": {
+      "path": "/private/tmp/bend-e01-e13-jbsb4I/e05-candidate/suite-v5-output/report.json",
+      "sha256": "74cd1f1bf2c0fabfc21f49799af61c9b15cbe7bc93f385355f6b28970a2a8f5f",
+      "bytes": 42748
+    },
+    "actual": {
+      "path": "/private/tmp/bend-e01-e13-jbsb4I/e05-candidate/actual-v5-output/report.json",
+      "sha256": "7523be1a21689cc46a8cfb0d3959f6a6f8c1682c5bc27993b89a61319f174c83",
+      "bytes": 678588
+    },
+    "sourceS": {
+      "path": "/private/tmp/bend-e01-e13-jbsb4I/e05-candidate/source-s-v2-output/report.json",
+      "sha256": "17360051d648bd4130b668a9ff2513106d00dae6eea9d26d4c520871a5213435",
+      "bytes": 62593
+    },
+    "generation": {
+      "path": "/private/tmp/bend-e01-e13-jbsb4I/e05-candidate-v5/generation.json",
+      "sha256": "59549be25c41063754d34330084897b1b4cf493f764d462749ba2216e7963e7c",
+      "bytes": 6520
+    },
+    "sourceInput": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/.e05_source_s_v1.bend",
+      "sha256": "267cd40446cdacc8046a2c27933b406df63836ab1f16c5e676ea87291444d684",
+      "bytes": 284
+    },
+    "semantics": "13 modes /52 original-optimized C-JS executions; actual full compiler6 metadata sites /Word19 worker args15 continuation args; ordinary checked source through real selfhost frontend and compiled Bend pass, all4 original-optimized C-JS source executions print0. Strict operations/3 Array.set, two Affine fields,13 retained parameters, Arena/Tuple and original public references preserved.",
+    "newAcceptanceClaim": false
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "worker": {
+    "stackMiB": 256,
+    "oldMiB": 6144,
+    "youngMiB": 128
+  },
+  "parserFuel": 8000000,
+  "quantum": 64,
+  "fullCommand": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "evals/g24_qualification.mjs",
+    "--run-id=local2039g36e05",
+    "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "--bun=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--clang=/usr/bin/clang",
+    "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+    "--phase=all",
+    "--bindings=/Users/ilyagulya/Projects/My/bend/evals/receipts/producer2039g25_r12_bindings.json",
+    "--frozen-repository=/private/tmp/bend2039g22-tiny-inline",
+    "--control-native=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+    "--control-image=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+    "--out=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g36e05-full",
+    "--fail-fast-performance=true"
+  ],
+  "policy": "Existing opt-in fail-fast performance policy unchanged; retain every original sample. No5percent threshold. A passing image alone does not establish acceptance.",
+  "runtime": {
+    "node": {
+      "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5",
+      "bytes": 113935712
+    },
+    "bun": {
+      "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "sha256": "28c7dd0a06916aba284d570ef44a2d70e9c538eaf2ba58dfe0910525563b3f79",
+      "bytes": 70469776
+    }
+  },
+  "executionOrder": "Preflight complete. Fresh complete --phase=all with original strict fail-fast policy. Never promote a partial run or discard any original paired row. Full source/frozen corpus and compact receipt must be committed before another source version."
+}

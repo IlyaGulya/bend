@@ -414,3 +414,60 @@ Primary evidence: [lifetimes and declared coverage](../evals/receipts/experiment
 Hoist добавил бы работу вместо её удаления. Empty-list short circuit сохранён;
 это решение для неизменного workload, не утверждение обо всех программах.
 Primary evidence: [queries and exact histogram](../evals/receipts/experiments_e01_e04_e07_e11_discovery.json).
+
+### E05 — G36: actual transform и source S пройдены, native build отклонён
+
+Compiled Bend pass прошёл всю матрицу: **13 modes / 52 C/JS executions**,
+включая сохранение strict allocation failure, captures, collision/overflow
+refusals, shared continuation и живые public originals. На настоящем полном
+compiler BIR применены все шесть metadata sites. Word worker принимает
+19 parameters, общий field continuation — 15: два Affine fields плюс
+13 retained values. Все три `Array.set` и их operands/descriptors/order
+сохранены; MetadataTables temporary отсутствует, Arena/Tuple остаются.
+
+Отдельный ordinary source S проходит настоящий parser/expander/checker,
+compiled Bend pass и C/JS renderer'ы. Все четыре original/optimized executions
+печатают 0; original JS побайтно совпадает с настоящей selfhost emission.
+Сохранены failures ранних diagnostic setups, а не переименованы в PASS.
+
+Полный маршрут остановлен на неизменном hard cap. Book validation проверила
+12 648 definitions / 13 263 events без exclusions/output patches, но native
+`compile_book` превысил 8 GiB footprint: **9 093 225 672 B** при RSS
+**9 085 878 272 B**, guardian **24 079 ms**. Native executable,
+bootstrap/fixedpoint, performance series и поздние consumers не получены.
+**E05 завершён: G36 rejected.** Compiler-acceleration claim — STOP.
+Причина роста внутри codegen не измерена; успешный маленький pass не заменяет
+полную native qualification и не разрешает повысить cap.
+Primary evidence: [G36 rejected source / frozen inputs / preflight](../evals/receipts/producer2039g36e05_rejected.json).
+
+### E03 — явно выбран matched canonical executor, не подменён fixedpoint
+
+Для отдельной transport/JIT диагностики выбраны canonical полные compiler
+RootJS **во всех трёх lanes** до её измерений. Каждый исполняет настоящий
+Bend frontend/pass/emitter; consumer emissions также производятся настоящим
+selfhost JS backend. Это допускает E03 после отсутствующего native-stage1 G36
+без handwritten tuple loop и без смешивания разных producer backends в
+whole-checker comparison. Authentic source/build/nominal-schema binding и
+actual JS checker остаются обязательны. Результатов E03 здесь ещё нет;
+canonical component не объявляется native-stage1 или accepted compiler.
+
+### E10 / E12 — измеренные GO, source qualification ещё впереди
+
+E10 подтвердил два разных Program wrapper'а с одной и той же точной парой
+immutable family/type-function lists: повторён один marker-index build.
+Допущен только emission-local reuse этой карты, не Program-identity cache
+или широкая memoization.
+
+E12 actual image correction отслеживает все **пять** capture registration
+paths, включая `$split_enter`. Пропуск пятого hook реально воспроизведён:
+direct capture остаётся; исправленный вариант удаляет его. Nested prefix,
+lexical capture, exact error/reentry и region protocol сохранены. Два настоящих
+source consumers исполнены во всех original/truncated/owned вариантах, а не
+только импортированы.
+
+Полный compiler census сохранил прежние output bytes. Полный scan argument
+array на всех пяти quiescent phase boundaries нашёл 0 nonundefined slots при
+сохранённой длине 154 206; конкретный retired transient path E04 отсутствует.
+Это не retained-byte / engine-allocation / performance proof и не утверждение
+о любых других roots или pre-entry throws. Обе source версии ещё не приняты.
+Primary evidence: [measured admission and limits](../evals/receipts/experiments_e10_e12_admission.json).

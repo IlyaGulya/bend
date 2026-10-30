@@ -4,6 +4,32 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
+### Отклонённый G36 / E05: semantic preflight PASS, native hard cap FAIL
+
+Bounded existing-BIR pass проверен на **52** original/optimized C/JS executions,
+на всех шести реальных metadata sites полного compiler BIR и на ordinary source
+S через настоящий selfhost frontend, compiled Bend pass и оба renderer'а:
+все четыре source executions печатают 0. Word worker имеет 19 parameters,
+shared continuation — 15; сохранены два Affine arrays, 13 retained values,
+три ordered `Array.set`, Arena/Tuple, strict failure и public entries.
+
+Полная qualification G36 не принята. Native book validation проверила
+**12 648 definitions / 13 263 events**, затем `compile_book` превысил прежний
+8-GiB cap: peak footprint **9 093 225 672 B**, RSS **9 085 878 272 B**,
+guardian **24 079 ms**. Native executable, bootstrap/fixedpoint, throughput
+и поздние consumer gates отсутствуют. Не увеличивать лимит и не повторять
+неизменённый failing run. Принятой базой остаётся R12; source/frozen inputs
+G36 фиксируются перед восстановлением R12 и следующей source version.
+
+`evals/receipts/producer2039g36e05_rejected.json`,
+`evals/receipts/producer2039g36e05_plan.json`.
+E03 продолжает отдельную диагностику на одинаково произведённых canonical
+полных compiler RootJS для всех трёх lanes, с обязательным actual JS checker.
+Canonical component — не native-stage1/fixedpoint и не accepted compiler.
+E06 / E10 / E12 ещё требуют отдельных source qualifications; их GO census
+не означает завершённую оптимизацию. E10/E12 admission:
+`evals/receipts/experiments_e10_e12_admission.json`.
+
 ### Отклонённый G35 / E08: полный fixedpoint PASS, memory gate FAIL
 
 Успешная декларация переносит уже опубликованный checked occurrence через
