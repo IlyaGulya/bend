@@ -6,6 +6,21 @@ under their original image IDs; a later pass never reclassifies an older run.
 Detailed evidence and reasoning live in the linked receipts and notes.
 This index does not replace a receipt.
 
+## G37 / E06: immutable index handoff rejected at native codegen
+
+The exact immutable family/type-function index maps reach the existing lowering
+State after one context construction. Sixteen actual own-frontend C/JS source,
+admission and library-export rows complete; separate production-CPS C/JS
+normalizer kernels verify the existing 38-bit semantic result. Raw/non-CPS
+normalizer-source admission failures remain explicit, not rewritten as passes.
+
+Full native validation checks 12,455 definitions / 13,049 events without
+exclusions or output patches. `compile_book` exceeds the unchanged 8-GiB RSS
+cap; no native executable/bootstrap/fixedpoint/throughput exists. The source
+version is **rejected**. Broad result caching also remains STOP: the measured
+full workload had no exact-identity normalization-result repeats.
+Evidence: `checkpoints/local2039g37e06-outcome/outcome.json`.
+
 ## G36 / E05: bounded pass rejected at native codegen
 
 The existing-IR private producer/shared-field-continuation pass passes all

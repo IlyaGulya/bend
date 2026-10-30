@@ -4,6 +4,25 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
+### G37 / E06 отклонён: exact context reuse PASS, native RSS cap FAIL
+
+Authored source: `303cc470`. В actual own frontend выполнены 16 C/JS
+source/admission/export rows, 32 clean/probe emissions, 14 actual executions
+и два проверенных admission errors. Во всех успешных rows та же immutable
+list pair и index-map identities доходят Catalog → State → describe после
+одного `nf_context` до lowering. C layout вправе строить свой поздний context.
+Отдельный настоящий production-CPS normalizer kernel исполняет все **38**
+result bits в C и JS; это не own admission raw NF implementation.
+Raw/normalized fixture, filename и bad-quantity setup failures сохранены.
+
+Original `--phase=all` проверил **12 455 defs / 13 049 events** без exclusions
+или output patches. Затем native `compile_book` остановлен прежним 8-GiB
+RSS cap: **9 114 025 984 B RSS / 8 875 809 992 B footprint**, **24 738 ms**.
+Native artifact, bootstrap/fixedpoint, paired series и late consumer gates
+отсутствуют. Не повышать лимиты и не повторять unchanged failing run.
+Rejected source/frozen inputs/evidence фиксируются перед восстановлением R12
+и отдельным E10. `checkpoints/local2039g37e06-outcome/outcome.json`.
+
 ### Отклонённый G36 / E05: semantic preflight PASS, native hard cap FAIL
 
 Bounded existing-BIR pass проверен на **52** original/optimized C/JS executions,

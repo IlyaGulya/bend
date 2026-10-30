@@ -449,8 +449,8 @@ full qualification: [restoration proof](../evals/receipts/producer2039g36e05_res
 До измерений выбран один canonical полный compiler producer **во всех трёх
 lanes**. Source/build/nominal-schema authority аутентифицированы; новый fixture
 зафиксирован на восстановленном R12 source `b2192313`, а не ошибочно приписан
-более раннему R12 checkpoint. Все три исходных BIR дерева побайтно-структурно
-эквивалентны после настоящего typed nominal transport. Direct post-pass BIR
+более раннему R12 checkpoint. Все три исходных BIR дерева структурно равны
+после настоящего typed nominal transport. Direct post-pass BIR
 полностью равен результату compiled Bend E05 pass на том же input. Доказан
 реальный Word edge с 19 worker / 15 shared continuation parameters,
 двумя Affine fields, 13 retained values, тремя ordered `Array.set`,
@@ -510,3 +510,40 @@ array на всех пяти quiescent phase boundaries нашёл 0 nonundefine
 Это не retained-byte / engine-allocation / performance proof и не утверждение
 о любых других roots или pre-entry throws. Обе source версии ещё не приняты.
 Primary evidence: [measured admission and limits](../evals/receipts/experiments_e10_e12_admission.json).
+
+### E06 — bounded index handoff проверен, G37 native source отклонён
+
+Exact-identity NF result repeats в полном measured R12 workload не было:
+общая memoization результатов — **STOP**. Два index-context requests имели
+ту же точную immutable family/type-function list pair. Проверена только более
+узкая миграция: хранить уже построенный context в transient Catalog и передать
+его в существующий lowering State, без result cache, новых budgets, env/binder
+semantics или BIR fields.
+
+Authored G37 `303cc470` прошёл actual source-derived identity probes: та же
+list pair, те же index maps, один `nf_context` до первого lowering consumer;
+каждый наблюдавшийся `describe` использует исходные maps. Выполнены 16
+ordinary/admission/library C/JS rows, 32 clean/probe emissions и 14 actual
+consumer executions; два ожидаемых no-main errors проверены на emitter boundary.
+Успешные executable/library outputs и clean/probe hashes совпадают.
+
+Normalizer edge suite исполнен отдельно по **существующему production CPS**
+admission: `descriptor_nf_step_smoke.ts` и typed Run driver до Finished.
+Оба настоящих C/JS kernels возвращают все **38** ожидаемых bits: aliases,
+open/binder relocation, erased quantities, IO/type functions, match/application
+errors, cycles и source budget. Это canonical-producer kernel proof, не
+own-frontend admission raw/non-CPS implementation. Прямые/raw-root normalized
+попытки действительно отклонены; последующая full-closure source-only extraction
+получила quantity error. Все failures и input corpus сохранены; алгоритмы NF,
+expected string, quantum 64 и source normalization budget не менялись.
+
+Полный original `--phase=all` проверил 12 455 definitions / 13 049 events
+с нулём exclusions/output patches, но `compile_book` превысил прежний 8-GiB
+RSS cap: **9 114 025 984 B RSS / 8 875 809 992 B footprint**, **24 738 ms**.
+Native artifact, bootstrap/fixedpoint, paired performance и поздние consumers
+не получены. Удержание index maps через handoff было явным риском; причина
+пика внутри codegen не установлена. Сокращение logical builds не доказывает
+снижение peak memory.
+
+**E06 завершён: G37 rejected, broad result cache STOP.**
+Primary evidence: [original native outcome, source corpus and separate authorities](local2039g37e06-outcome/outcome.json).

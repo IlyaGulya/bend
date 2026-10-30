@@ -15016,7 +15016,7 @@
       "canonical": "bend2/selfhost/emitter.bend",
       "owned": "checkpoints/emitter_owned_v1.bend",
       "canonicalSha256": "47d68ba5f0b54c334e2c940b7bb6aabc7f3bba27142b816f27df8225cf3fae4f",
-      "sourceSha256": "8d82537fa6e02f07e88eb1cbd378223e7d3f75599df34265dc9fb24358e05fac",
+      "sourceSha256": "6ac5349419769fed1c276f862870ef34ef23ded7f2a3023860f50c95d7990fda",
       "definitionNames": [
         "emitted_js",
         "emitted_c",
@@ -18464,7 +18464,7 @@
         "cps_provider_1_lower": "970c1c5cf30f042fe7f02402f7a00c8abd721a4cfd74c093508ef0edca571840",
         "cps_provider_1_lower_library": "92dd32a881956d743cc0128cb8418e05304ed7b8c141709480c787414e31e595",
         "cps_provider_1_lower_prepared": "8324d2386be4c0de984128e8a7cd223b4ada83d37f16e3365cd25de2321c35a0",
-        "cps_provider_1_lower_catalog": "6fd25a047112993f03d106ebf4bd6c4c64697a08ae4b69794f5afa296fb8999d",
+        "cps_provider_1_lower_catalog": "54aefce4b31095bc7aeb28e50c7063cde18d9473f5ab14a333f04b4e9ae7695e",
         "cps_provider_1_lower_definitions": "86284c98f2552da62a2d99ca6ee34475f56b1d9e6369ba9fb023c29619a36b60",
         "cps_provider_1_lower_complete": "78090bf33d482c4d73e18465e37596c9c92c9ae1dd919b2139ac9751b23f2ccc",
         "cps_provider_2_build_new": "3cb07b0367b7f1464e15ffb60f2f6216582fd35accd3206dc4d422e0bfd6cfd4",
@@ -20962,13 +20962,13 @@
         "cps_provider_10_constructor_key": "64375e36c4290037b67893e13bbc87fffc86fae26e925ee79e3a9f8930414b68",
         "cps_provider_10_lookup_definition": "e02d7b1c36e477d16eae51bf1847e363c5334a184cfa268085d43a2a715f56ee",
         "cps_provider_10_lookup_constructor": "33995decb55b153370e1c6dc541fdf08b59e8ae4ea714a05f57122636556a668",
-        "cps_provider_10_get_definitions": "72082ca0aeaee35e8a08de3a06802ac9d1a32320d787f7a944b43db2bbc9587d",
-        "cps_provider_10_get_registry": "4f4902aa6ec60eedd3d6cd153faa05a9cf41e1aadea36acc3a7dfa7ca117f012",
-        "cps_provider_10_get_constructors": "9b13d92518d47e79cd884b985ed5e252c6d912a84fa1efac6e223b8bb05b0960",
-        "cps_provider_10_get_families": "fbba488bff3f1686891f60be1ed76944cb4bab9904b37f308b238d1ee9a4c150",
-        "cps_provider_10_get_type_functions": "3049fa0dcea95c1449c00e67622a1fec7f38a0df5043cf764783c480d5a59127",
-        "cps_provider_10_get_next_code": "ab0bafcfd04ace575dada8c6c7dff4203a73b954f34323b5cae12668673c4eee",
-        "cps_provider_10_get_ending": "0c2729a073dbd2d62505f0a06151fa5ed3e67c12288711e803681948072924d6",
+        "cps_provider_10_get_definitions": "87166d3a376b21194c7c6523da589685edac7fd0a7652660ff86fc5e8d7aa3b9",
+        "cps_provider_10_get_registry": "0f19c3a26275729c3a49cb344b2fed67a9b9b5d6eef0696bb1747f693a51a28e",
+        "cps_provider_10_get_constructors": "84b1ce300089993accff0647adb04d302c82fd7c01d171626955c5d95c149453",
+        "cps_provider_10_get_families": "dfeca96abe4b6b5074bcc1a8ceafefda51d9cfec40759260a06aac62fbc51238",
+        "cps_provider_10_get_type_functions": "4a4a324a4a568b885ef629625f24d7453a6c47f99586a5de5c943231b13211c7",
+        "cps_provider_10_get_next_code": "81e789057e397080bcf1da47f4476dd86bbe2a6665f519faf2671a27a77b7ccf",
+        "cps_provider_10_get_ending": "122c39b00b5f7859adc10762ef1c8842d7dace7f38a0bc6b4c661665d6f7e5cb",
         "cps_provider_10_native_match_insert_definition_0": "7a115201e4b5c2c16613a16bfecda24b64d4a54eadcaaac2931827c70601aefb",
         "cps_provider_10_insert_definition": "596005b1641d7bd89280fa7602096e3541193a778d1261e4e0b839f642709b8b",
         "cps_provider_10_native_match_insert_constructor_0": "ed96134653a01bbb6e1f6bbb5496f1111cf807155a3389e440755e7ee44af385",
@@ -21108,8 +21108,8 @@
         "cps_provider_10_root_main_runnable": "e6f60c620ed72a4ab71d3990ad38350839742188def144f8d729017531ea636d",
         "cps_provider_10_root_main_admitted": "5950bf8af12479064932e4bab2e97472971d6b25709b6088ee610fbe738ff306",
         "cps_provider_10_executable_admitted": "52906cd6bbbc79f7735500ceef2fcbf5f39cbfa932cea189d0c7260834f3f270",
-        "native_match_cps_provider_10_native_match_build_finish_0_0": "56f394dd86451e7a167d0ecf08ce1069c5e691602c1c232f2b5dde6ca89a3f00",
-        "native_match_cps_provider_10_native_match_build_finish_0_1": "821877243cc01bf5b9a822c547710af866575f9f15f074bc1f902393eb33c2f4",
+        "native_match_cps_provider_10_native_match_build_finish_0_0": "e606112b4cdd29e1379619fb7c47f508c541ad18a2a1271e54dcdf6b62c19bf9",
+        "native_match_cps_provider_10_native_match_build_finish_0_1": "843d8e267ff4bdc5c58065e91f115a265fcda9a70b6e9b2d4d5ac52f05841b35",
         "cps_provider_10_native_match_build_finish_0": "1329c1f90cd4949b82d15e5390d973b9a90d619657ea938ed1ef7c1143eb58be",
         "cps_provider_10_native_match_build_finish_2": "2c8420904a1d914c85b50144ce23432d1409a1cd49c382b0fdea6cba22dd4375",
         "cps_provider_10_native_match_build_finish_1": "ae446e2056f5bd7bbdd366caf7fe5f0538c661ed9202630d0d02d2dbbfda9ca9",
@@ -22070,7 +22070,7 @@
           "bend2/selfhost/js_emit.bend",
           "bend2/selfhost/lower_catalog.bend"
         ],
-        "sourceSha256": "b97c48a705635a6befe8974c4ced47f5a9ebe1119c04e7511cc338968e6f91b5",
+        "sourceSha256": "64247980d36233124a250ff28b1234e98e8542db1ba09eeb7ac6de4c76e566e5",
         "sources": [
           {
             "canonical": "bend2/selfhost/emitter.bend",
@@ -22102,7 +22102,7 @@
           },
           {
             "canonical": "bend2/selfhost/backend_lower.bend",
-            "canonicalSha256": "d5217f4d2117ff9527474847b53caaa6d881570d6fe4a2c24e0af668cfc75b7f",
+            "canonicalSha256": "67f43045fe282f7ec0dafa3ee00a9b3c7a29f1eefc16a077cca3a7bab707b382",
             "declarationNames": [
               "ProgramResult",
               "Problem",
@@ -26408,7 +26408,7 @@
           },
           {
             "canonical": "bend2/selfhost/lower_catalog.bend",
-            "canonicalSha256": "e322065c5ccb0a15f2ab81fd9e6dd689fe8b88ad50535e4f70f503e796164f01",
+            "canonicalSha256": "57e61fe62731406ea9642109fd371affaf8c304ddb7fd7f31471f0d32d18fb06",
             "declarationNames": [
               "BuildResult",
               "Foreign",
@@ -29995,8 +29995,8 @@
             "canonicalName": "lower_catalog",
             "name": "cps_provider_1_lower_catalog",
             "kind": "def",
-            "canonicalDeclarationSha256": "d0347e1559f24f9c7da04e1d1cd4321c64c3e861b8e4af72fa810356764c7441",
-            "composedDeclarationSha256": "6fd25a047112993f03d106ebf4bd6c4c64697a08ae4b69794f5afa296fb8999d"
+            "canonicalDeclarationSha256": "49c63c8124cff4bda3805d0a5d7f127838b9cee35583c23c5e25a9219e63914f",
+            "composedDeclarationSha256": "54aefce4b31095bc7aeb28e50c7063cde18d9473f5ab14a333f04b4e9ae7695e"
           },
           {
             "source": "bend2/selfhost/backend_lower.bend",
@@ -43227,7 +43227,7 @@
             "canonicalName": "Registry",
             "name": "cps_provider_10_Registry",
             "kind": "type",
-            "canonicalDeclarationSha256": "c11584212508bc9ef3d6a21ce6e31447b482c8721686aedc5f5d15e94d21eede",
+            "canonicalDeclarationSha256": "ba666ccb940e9b5f17284bfa483cddc85909392ce9cb713e947558cb453a469e",
             "composedDeclarationSha256": "e4a718cd6481fc6ee012a46d90c2f01c0a99df02d20fbb9362036a320d875eb5"
           },
           {
@@ -43235,8 +43235,8 @@
             "canonicalName": "Catalog",
             "name": "cps_provider_10_Catalog",
             "kind": "type",
-            "canonicalDeclarationSha256": "8a682ecd51b718c74382b102cf891a09262dcb7ea5857b7e29ea6767ac0b6052",
-            "composedDeclarationSha256": "038ea97661ad27f58d5fd6c29ec2afbb279512c469520d3fa85f3a4243e972e9"
+            "canonicalDeclarationSha256": "37ee4257a29d9f2902ddc795f8d6505b03cff553dcbaa0d103c8679dd8ef1206",
+            "composedDeclarationSha256": "3e3d2c0a440b0e629181b07759754f273344ff389e940906a8c4f9114448dd41"
           },
           {
             "source": "bend2/selfhost/lower_catalog.bend",
@@ -44187,56 +44187,56 @@
             "canonicalName": "get_definitions",
             "name": "cps_provider_10_get_definitions",
             "kind": "def",
-            "canonicalDeclarationSha256": "98cac8e5efc5919394d43f8856300c9fc09edb977f5b7d1f53248ba54704d88e",
-            "composedDeclarationSha256": "72082ca0aeaee35e8a08de3a06802ac9d1a32320d787f7a944b43db2bbc9587d"
+            "canonicalDeclarationSha256": "cea7b779a75ad0930583218bafded7c54ef4eb6a10f49cc4fe7e7126f71ecbac",
+            "composedDeclarationSha256": "87166d3a376b21194c7c6523da589685edac7fd0a7652660ff86fc5e8d7aa3b9"
           },
           {
             "source": "bend2/selfhost/lower_catalog.bend",
             "canonicalName": "get_registry",
             "name": "cps_provider_10_get_registry",
             "kind": "def",
-            "canonicalDeclarationSha256": "ebc42ae6bc91289f832e91c939bf4bfe4ed8d573f7abead5c93cb094749686ec",
-            "composedDeclarationSha256": "4f4902aa6ec60eedd3d6cd153faa05a9cf41e1aadea36acc3a7dfa7ca117f012"
+            "canonicalDeclarationSha256": "bea3f24eeec958404ffba614eb3b8717eb879e74c148253c607003178bff9570",
+            "composedDeclarationSha256": "0f19c3a26275729c3a49cb344b2fed67a9b9b5d6eef0696bb1747f693a51a28e"
           },
           {
             "source": "bend2/selfhost/lower_catalog.bend",
             "canonicalName": "get_constructors",
             "name": "cps_provider_10_get_constructors",
             "kind": "def",
-            "canonicalDeclarationSha256": "db8f1a8efb6d8f2d8688d514236f9a6b3893b508a2bd2deab25e7c7b0eeeaba0",
-            "composedDeclarationSha256": "9b13d92518d47e79cd884b985ed5e252c6d912a84fa1efac6e223b8bb05b0960"
+            "canonicalDeclarationSha256": "e58a3295a2a8c99dfaea369cc4e5ac91e8af118d3a3a37889116798c22e1394c",
+            "composedDeclarationSha256": "84b1ce300089993accff0647adb04d302c82fd7c01d171626955c5d95c149453"
           },
           {
             "source": "bend2/selfhost/lower_catalog.bend",
             "canonicalName": "get_families",
             "name": "cps_provider_10_get_families",
             "kind": "def",
-            "canonicalDeclarationSha256": "7672d4f8ee21f251643d9275600b592e359a6a2f95fcc0b0bc9e0cd6fcd03756",
-            "composedDeclarationSha256": "fbba488bff3f1686891f60be1ed76944cb4bab9904b37f308b238d1ee9a4c150"
+            "canonicalDeclarationSha256": "3720a03e9803d17ae93638c44b34b2c40ed44cbfe3b55c8709e18e08cdb94b78",
+            "composedDeclarationSha256": "dfeca96abe4b6b5074bcc1a8ceafefda51d9cfec40759260a06aac62fbc51238"
           },
           {
             "source": "bend2/selfhost/lower_catalog.bend",
             "canonicalName": "get_type_functions",
             "name": "cps_provider_10_get_type_functions",
             "kind": "def",
-            "canonicalDeclarationSha256": "efd17587728fdb3bbaa7c2b7cad38e05a299a088b9d0f1f80ea29c2bd7c46770",
-            "composedDeclarationSha256": "3049fa0dcea95c1449c00e67622a1fec7f38a0df5043cf764783c480d5a59127"
+            "canonicalDeclarationSha256": "4cf8d8690f5cf0668310323ceeb5d1edafc111069d3f2782b82652f31d698da1",
+            "composedDeclarationSha256": "4a4a324a4a568b885ef629625f24d7453a6c47f99586a5de5c943231b13211c7"
           },
           {
             "source": "bend2/selfhost/lower_catalog.bend",
             "canonicalName": "get_next_code",
             "name": "cps_provider_10_get_next_code",
             "kind": "def",
-            "canonicalDeclarationSha256": "6f3e2a7a40e8e0b2be6cb9bb4df41553dbf345cdacab7c53dedceadbea0094ef",
-            "composedDeclarationSha256": "ab0bafcfd04ace575dada8c6c7dff4203a73b954f34323b5cae12668673c4eee"
+            "canonicalDeclarationSha256": "cf7b5bb83b6021c9e0abc6f67edc3961df203e05a16862a738af42a376fcecb4",
+            "composedDeclarationSha256": "81e789057e397080bcf1da47f4476dd86bbe2a6665f519faf2671a27a77b7ccf"
           },
           {
             "source": "bend2/selfhost/lower_catalog.bend",
             "canonicalName": "get_ending",
             "name": "cps_provider_10_get_ending",
             "kind": "def",
-            "canonicalDeclarationSha256": "7836d5255f208fa05eee03d7e5de20cce7fb4323d125f385fadacb288bfd1271",
-            "composedDeclarationSha256": "0c2729a073dbd2d62505f0a06151fa5ed3e67c12288711e803681948072924d6"
+            "canonicalDeclarationSha256": "f4b2cc001b7d614392e34e049c992ba86c4b04c19a09e7c23baf9effe79affe9",
+            "composedDeclarationSha256": "122c39b00b5f7859adc10762ef1c8842d7dace7f38a0bc6b4c661665d6f7e5cb"
           },
           {
             "source": "bend2/selfhost/lower_catalog.bend",
@@ -45179,8 +45179,8 @@
             "canonicalName": "native_match_build_finish_0",
             "name": "cps_provider_10_native_match_build_finish_0",
             "kind": "def",
-            "canonicalDeclarationSha256": "8ef8c3ad080a72d0e3781ac2b2c4593dff02297f40dbe48180e281510797c429",
-            "composedDeclarationSha256": "f8a6142bf711cca4ec3eb4f92252df6473214954aba756fd4b8b667bc92bdbbb"
+            "canonicalDeclarationSha256": "d98a449d82a698b8993d0c6b86d440ede5eb7623d12fccd52f0a4cd30cbb66c5",
+            "composedDeclarationSha256": "8ce01ebacca8abfac7460d9b493937ae4657ba62a36e9ac296fad2a4d0fc5bd6"
           },
           {
             "source": "bend2/selfhost/lower_catalog.bend",
@@ -45316,8 +45316,8 @@
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/loaded_module.bend": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/backend_ir.bend": "c0286db6b192bf5cc917774b7ea5e393d4416263432eb130fb8393b1dffc1cb3",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/js_emit.bend": "a71920560786084ab9713c4af89f62d2d0e1eaef7cc24e46ea24940d012fded6",
-          "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/backend_lower.bend": "d5217f4d2117ff9527474847b53caaa6d881570d6fe4a2c24e0af668cfc75b7f",
-          "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/lower_catalog.bend": "e322065c5ccb0a15f2ab81fd9e6dd689fe8b88ad50535e4f70f503e796164f01",
+          "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/backend_lower.bend": "67f43045fe282f7ec0dafa3ee00a9b3c7a29f1eefc16a077cca3a7bab707b382",
+          "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/lower_catalog.bend": "57e61fe62731406ea9642109fd371affaf8c304ddb7fd7f31471f0d32d18fb06",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/descriptor_nf.bend": "c727bfe0adf97f86dc44960ca2c46fd890f0d8557157ba883af40d738d3e72dd",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/js_backend.bend": "9ad0e83cafd243745d7d1b256d3e053258a801350fc5d0e16dd65fec89a35aa0",
@@ -45327,7 +45327,7 @@
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_backend_layout.bend": "763dcc07096ff4273dc2354a049316aa622fd7953fd1781973ab88d47f64a43d",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_backend_physical.bend": "b6b3b3b2e0ced250b5b5fdbf4c699cfe1e8867900e3bd7b91ee82bdee3ebc25f",
           "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_backend_sharing.bend": "05adf4ac68b0658425f7fce430709f67bd29c3f1f8a43727412661084c4dbe2c",
-          "bend2/selfhost/backend_lower.bend": "d5217f4d2117ff9527474847b53caaa6d881570d6fe4a2c24e0af668cfc75b7f",
+          "bend2/selfhost/backend_lower.bend": "67f43045fe282f7ec0dafa3ee00a9b3c7a29f1eefc16a077cca3a7bab707b382",
           "bend2/selfhost/c_backend.bend": "71ae3cf1a6d44332d218be095a01fb59bb1b3bdbb606b8ca4e16ead6ca6cd576",
           "bend2/selfhost/c_backend_layout.bend": "763dcc07096ff4273dc2354a049316aa622fd7953fd1781973ab88d47f64a43d",
           "bend2/selfhost/c_backend_link.bend": "f83c270f2b6f094f2bd220e6e750aa0265c93ae90fa0036dd8d92b86c09e26bd",
@@ -45336,7 +45336,7 @@
           "bend2/selfhost/descriptor_nf.bend": "c727bfe0adf97f86dc44960ca2c46fd890f0d8557157ba883af40d738d3e72dd",
           "bend2/selfhost/js_backend.bend": "9ad0e83cafd243745d7d1b256d3e053258a801350fc5d0e16dd65fec89a35aa0",
           "bend2/selfhost/js_emit.bend": "a71920560786084ab9713c4af89f62d2d0e1eaef7cc24e46ea24940d012fded6",
-          "bend2/selfhost/lower_catalog.bend": "e322065c5ccb0a15f2ab81fd9e6dd689fe8b88ad50535e4f70f503e796164f01"
+          "bend2/selfhost/lower_catalog.bend": "57e61fe62731406ea9642109fd371affaf8c304ddb7fd7f31471f0d32d18fb06"
         }
       },
       "loweringDefinitionNames": [
@@ -47852,7 +47852,7 @@
         "cps_provider_1_lower": "970c1c5cf30f042fe7f02402f7a00c8abd721a4cfd74c093508ef0edca571840",
         "cps_provider_1_lower_library": "92dd32a881956d743cc0128cb8418e05304ed7b8c141709480c787414e31e595",
         "cps_provider_1_lower_prepared": "8324d2386be4c0de984128e8a7cd223b4ada83d37f16e3365cd25de2321c35a0",
-        "cps_provider_1_lower_catalog": "6fd25a047112993f03d106ebf4bd6c4c64697a08ae4b69794f5afa296fb8999d",
+        "cps_provider_1_lower_catalog": "54aefce4b31095bc7aeb28e50c7063cde18d9473f5ab14a333f04b4e9ae7695e",
         "cps_provider_1_lower_definitions": "86284c98f2552da62a2d99ca6ee34475f56b1d9e6369ba9fb023c29619a36b60",
         "cps_provider_1_lower_complete": "78090bf33d482c4d73e18465e37596c9c92c9ae1dd919b2139ac9751b23f2ccc",
         "cps_provider_2_build_new": "3cb07b0367b7f1464e15ffb60f2f6216582fd35accd3206dc4d422e0bfd6cfd4",
@@ -49492,13 +49492,13 @@
         "cps_provider_10_constructor_key": "64375e36c4290037b67893e13bbc87fffc86fae26e925ee79e3a9f8930414b68",
         "cps_provider_10_lookup_definition": "e02d7b1c36e477d16eae51bf1847e363c5334a184cfa268085d43a2a715f56ee",
         "cps_provider_10_lookup_constructor": "33995decb55b153370e1c6dc541fdf08b59e8ae4ea714a05f57122636556a668",
-        "cps_provider_10_get_definitions": "72082ca0aeaee35e8a08de3a06802ac9d1a32320d787f7a944b43db2bbc9587d",
-        "cps_provider_10_get_registry": "4f4902aa6ec60eedd3d6cd153faa05a9cf41e1aadea36acc3a7dfa7ca117f012",
-        "cps_provider_10_get_constructors": "9b13d92518d47e79cd884b985ed5e252c6d912a84fa1efac6e223b8bb05b0960",
-        "cps_provider_10_get_families": "fbba488bff3f1686891f60be1ed76944cb4bab9904b37f308b238d1ee9a4c150",
-        "cps_provider_10_get_type_functions": "3049fa0dcea95c1449c00e67622a1fec7f38a0df5043cf764783c480d5a59127",
-        "cps_provider_10_get_next_code": "ab0bafcfd04ace575dada8c6c7dff4203a73b954f34323b5cae12668673c4eee",
-        "cps_provider_10_get_ending": "0c2729a073dbd2d62505f0a06151fa5ed3e67c12288711e803681948072924d6",
+        "cps_provider_10_get_definitions": "87166d3a376b21194c7c6523da589685edac7fd0a7652660ff86fc5e8d7aa3b9",
+        "cps_provider_10_get_registry": "0f19c3a26275729c3a49cb344b2fed67a9b9b5d6eef0696bb1747f693a51a28e",
+        "cps_provider_10_get_constructors": "84b1ce300089993accff0647adb04d302c82fd7c01d171626955c5d95c149453",
+        "cps_provider_10_get_families": "dfeca96abe4b6b5074bcc1a8ceafefda51d9cfec40759260a06aac62fbc51238",
+        "cps_provider_10_get_type_functions": "4a4a324a4a568b885ef629625f24d7453a6c47f99586a5de5c943231b13211c7",
+        "cps_provider_10_get_next_code": "81e789057e397080bcf1da47f4476dd86bbe2a6665f519faf2671a27a77b7ccf",
+        "cps_provider_10_get_ending": "122c39b00b5f7859adc10762ef1c8842d7dace7f38a0bc6b4c661665d6f7e5cb",
         "cps_provider_10_native_match_insert_definition_0": "7a115201e4b5c2c16613a16bfecda24b64d4a54eadcaaac2931827c70601aefb",
         "cps_provider_10_insert_definition": "596005b1641d7bd89280fa7602096e3541193a778d1261e4e0b839f642709b8b",
         "cps_provider_10_native_match_insert_constructor_0": "ed96134653a01bbb6e1f6bbb5496f1111cf807155a3389e440755e7ee44af385",
@@ -49616,7 +49616,7 @@
         "cps_provider_10_root_main_runnable": "e6f60c620ed72a4ab71d3990ad38350839742188def144f8d729017531ea636d",
         "cps_provider_10_root_main_admitted": "5950bf8af12479064932e4bab2e97472971d6b25709b6088ee610fbe738ff306",
         "cps_provider_10_executable_admitted": "52906cd6bbbc79f7735500ceef2fcbf5f39cbfa932cea189d0c7260834f3f270",
-        "cps_provider_10_native_match_build_finish_0": "f8a6142bf711cca4ec3eb4f92252df6473214954aba756fd4b8b667bc92bdbbb",
+        "cps_provider_10_native_match_build_finish_0": "8ce01ebacca8abfac7460d9b493937ae4657ba62a36e9ac296fad2a4d0fc5bd6",
         "cps_provider_10_native_match_build_finish_2": "2c8420904a1d914c85b50144ce23432d1409a1cd49c382b0fdea6cba22dd4375",
         "cps_provider_10_native_match_build_finish_1": "ae446e2056f5bd7bbdd366caf7fe5f0538c661ed9202630d0d02d2dbbfda9ca9",
         "cps_provider_10_build_finish": "1bbd6bebdf8e16259e9c392f9689dae4eb8fe7235ce34ec803449241a9880892",
@@ -99937,7 +99937,7 @@
       "source": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/emitter.bend",
       "sourceSha256": "47d68ba5f0b54c334e2c940b7bb6aabc7f3bba27142b816f27df8225cf3fae4f",
       "output": "/Users/ilyagulya/Projects/My/bend/checkpoints/emitter_owned_v1.bend",
-      "outputSha256": "8d82537fa6e02f07e88eb1cbd378223e7d3f75599df34265dc9fb24358e05fac",
+      "outputSha256": "6ac5349419769fed1c276f862870ef34ef23ded7f2a3023860f50c95d7990fda",
       "extractions": [
         {
           "owner": "cps_provider_1_describe",
@@ -110545,6 +110545,7 @@
             35,
             38,
             40,
+            43,
             46
           ],
           "producers": 1

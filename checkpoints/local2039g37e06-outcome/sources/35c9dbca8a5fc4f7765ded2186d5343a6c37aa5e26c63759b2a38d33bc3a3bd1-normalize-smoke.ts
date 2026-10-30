@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import {readFileSync,writeFileSync} from 'node:fs';
+import {resolve,dirname} from 'node:path';
+import {createHash} from 'node:crypto';
+import {normalizeNativeMatchSource} from '/Users/ilyagulya/Projects/My/bend/evals/native_match_source.ts';
+const [repo,suite]=process.argv.slice(2);assert.ok(repo&&suite);
+const sha=(s:string|Uint8Array)=>createHash('sha256').update(s).digest('hex');
+const original=resolve(repo,'evals/descriptor_nf_smoke.bend'),source=readFileSync(original,'utf8');
+const rebased=source.replace(/^import (\S+)(.*)$/gm,(_line,path,suffix)=>'import '+(path==='Base'?path:resolve(dirname(original),path))+suffix);
+const implementation=resolve(suite,'descriptor-nf-native-matches.bend');
+writeFileSync(implementation,rebased,{flag:'wx'});
+const normalized=await normalizeNativeMatchSource(implementation,rebased);
+writeFileSync(implementation,normalized.source);
+const wrapper=resolve(suite,'descriptor-semantics.bend');
+writeFileSync(wrapper,'import Base\nimport '+implementation+' as Smoke\n\ndef print_smoke(value: Smoke.NfSmoke) -> IO(Unit):\n  match value:\n    case Smoke.NfSmoke{bits}: IO.print(bits)\n\ndef main() -> IO(Unit):\n  print_smoke(Smoke.main(Nil{}))\n\n#|11111111111111111111111111111111111111\n',{flag:'wx'});
+const report={original,originalSha256:sha(source),rebasedSha256:sha(rebased),implementation,implementationSha256:sha(normalized.source),wrapper,wrapperSha256:sha(readFileSync(wrapper)),normalizer:resolve(repo,'evals/native_match_source.ts'),normalizerSha256:sha(readFileSync(resolve(repo,'evals/native_match_source.ts'))),extractions:normalized.extractions,scope:'The existing source-only native-match extraction, not changed descriptor algorithms or expected bits. The wrapper matches only its parameter. Real own frontend/checker/renderers and C/JS execution remain mandatory.'};
+writeFileSync(resolve(suite,'descriptor-generation.json'),JSON.stringify(report,null,2)+'\n',{flag:'wx'});
+console.log(JSON.stringify(report));

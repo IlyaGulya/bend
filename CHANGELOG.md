@@ -5,6 +5,17 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- G37 / E06's immutable descriptor-index handoff is rejected by the original
+  native-codegen RSS cap. Actual own-frontend C/JS source, admission and export
+  coverage completes 16 rows / 32 emissions / 14 executions, with the same
+  original index maps and one context build before lowering. Separate
+  production-CPS normalizer kernels pass all 38 result bits in C and JS.
+  Full native validation checks 12,455 definitions / 13,049 events, then
+  `compile_book` reaches 9,114,025,984-byte RSS / 8,875,809,992-byte footprint
+  and is stopped after 24,738 ms. No native executable, fixedpoint or paired
+  performance exists. Failed source-wrapper/admission setups remain failures;
+  they are not relabeled as own-frontend normalizer coverage.
+  `checkpoints/local2039g37e06-outcome/outcome.json`.
 - G36 / E05's bounded existing-BIR direct-field continuation pass is rejected
   by the original 8-GiB native-codegen limit. All 52 original/optimized C/JS
   diagnostic executions, six actual full-compiler metadata sites, and four

@@ -1,0 +1,42 @@
+{
+  "original": "/Users/ilyagulya/Projects/My/bend/evals/descriptor_nf_smoke.bend",
+  "originalSha256": "0cc2299c516d28d582509445c2fdd8376266d5f07ec25d8e5575dabd37f829d6",
+  "rebasedSha256": "c9b2dc4f80b50f761c393d444a132fd8888c95617f64c76d07b6177d74c7755d",
+  "implementation": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g37e06preflight03/consumers/descriptor-nf-native-matches.bend",
+  "implementationSha256": "887a3413e8b60beb7fea0db6da13739311a6e10a3f88a04a7276eab0484bd265",
+  "wrapper": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g37e06preflight03/consumers/descriptor-semantics.bend",
+  "wrapperSha256": "7983e2b971ca431c7769456ee0ffc7a893e6f2e5f4c92c3ecf375ffd01912556",
+  "normalizer": "/Users/ilyagulya/Projects/My/bend/evals/native_match_source.ts",
+  "normalizerSha256": "ef744c5b0c22f50bf5a659dd81836136f5a488fdc62de895ef3cd22b04a34bb6",
+  "extractions": [
+    {
+      "owner": "is_app_tick",
+      "helper": "native_match_is_app_tick_0",
+      "kind": "match",
+      "captures": [
+        9
+      ],
+      "producers": 2
+    },
+    {
+      "owner": "is_app_tick",
+      "helper": "native_match_is_app_tick_1",
+      "kind": "match",
+      "captures": [
+        5,
+        4
+      ],
+      "producers": 0
+    },
+    {
+      "owner": "is_app_tick",
+      "helper": "native_match_is_app_tick_2",
+      "kind": "match",
+      "captures": [
+        0
+      ],
+      "producers": 0
+    }
+  ],
+  "scope": "The existing source-only native-match extraction, not changed descriptor algorithms or expected bits. The wrapper matches only its parameter. Real own frontend/checker/renderers and C/JS execution remain mandatory."
+}
