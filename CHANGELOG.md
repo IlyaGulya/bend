@@ -5,6 +5,20 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- G31 reconsiders the unchanged G30 scheduler after withdrawing the
+  assistant-chosen 5% relative-memory screen. All six new actual-image checker
+  samples are retained: timing is inconclusive; peak RSS and footprint are
+  lower in each new pair. Separate CPU/allocation/GC diagnostics are not
+  acceptance evidence or a demonstrated cause of the timing variation.
+  Fresh full native validation passes 12,453 definitions / 13,047 events,
+  with zero excluded checks or output patches. Actual native-stage0/stage1/stage2
+  byte fixedpoint passes: both images are 31,757,877 bytes, SHA-256
+  `04851b115eef16c929858f48224e524873c61606c8e2f59c789be58c452a8dc3`.
+  End-to-end measurements and consumer qualification are running; R12 remains
+  accepted. `evals/receipts/producer2039g31_repeated_screen.json`,
+  `evals/receipts/producer2039g31_paired_diagnostics.json`,
+  `evals/receipts/producer2039g31_core_fixedpoint.json`.
+
 - G30's isolated fuel-threaded scheduler transport is rejected at its mandatory
   balanced actual-selfhost screen. Checker time falls 7.97%, but peak RSS rises
   11.07% and footprint 13.86%, exceeding the predeclared 5% limit. Source hash,

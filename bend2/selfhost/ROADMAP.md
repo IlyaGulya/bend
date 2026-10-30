@@ -139,6 +139,19 @@ executions pass. Heterogeneous scheduler regression and C registration remain.
 `evals/receipts/producer2039g30_early_screen.json`,
 `evals/receipts/producer2039g30_restored_r12.json`.
 
+G31 reconsiders exactly G30 after withdrawing the assistant-chosen 5% relative
+memory screen. Three new balanced actual-image pairs retain all six samples:
+checker timing is inconclusive, but peak RSS/footprint fall in every pair.
+Separate CPU/allocation/GC diagnostics do not establish a timing cause.
+The fresh full native root passes **12,453 definitions / 13,047 events**,
+zero excluded checks/output patches. Actual native-stage0 → stage1 → stage2
+byte fixedpoint passes with two **31,757,877-byte** images, SHA-256
+`04851b115eef16c929858f48224e524873c61606c8e2f59c789be58c452a8dc3`.
+End-to-end measurements and consumer qualification are still running; R12
+remains accepted. `evals/receipts/producer2039g31_repeated_screen.json`,
+`evals/receipts/producer2039g31_paired_diagnostics.json`,
+`evals/receipts/producer2039g31_core_fixedpoint.json`.
+
 ## Historical full native-seed checkpoint: G23
 
 The earlier accepted checkpoint is **remote2039g23**, compiler source

@@ -4,6 +4,52 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
+### G31: повторная проверка неизменённого G30; full qualification выполняется
+
+Пользователь оспорил порог +5% и согласовал повторные измерения. Этот порог
+был эвристикой агента, не требованием пользователя и не измеренным noise floor.
+Исторический отказ G30 ниже сохранён; G31 не вводит другую source optimization.
+Hard guards 8 GiB / 600 s, ABI13, quantum64 и fuel8M не менялись.
+
+Три новые serial interleaved пары на тех же actual images и frozen corpus
+с двумя module instances в каждом lane завершены: все шесть samples сохранены,
+CheckSuccess, 10 078 835 checker steps, source counts и word-tape SHA совпали.
+Checker time: mean +0.92%, median −0.31%; устойчивого ускорения не доказано.
+Peak RSS/footprint ниже во всех трёх парах; role medians −8.36% / −13.06%.
+Исторические пары не подмешивались. Это ограниченный screen, не acceptance.
+
+Отдельная парная CPU/allocation/GC диагностика завершена на тех же трёх окнах:
+estimated allocation volume ниже во всех окнах, но в этом instrumented G30 run
+больше recorded GC duration/major GC и reserved heap. Used heap после остановки
+окон близок у обеих версий; это не измерение post-GC live set и не объяснение
+unprofiled variation. CPU/allocation и summary-GC intervals не полностью совпадают:
+sampling setup/teardown попадает в raw profiles; причина различий не установлена.
+
+Source checkpoint оптимизации — `10f1f3a3`; метод — `15e73d74`.
+В `6135a81a` два G30 TS producer/composer восстановлены для fresh qualification;
+retained scheduler regression/C registration сохранены. Принятый baseline — R12.
+Existing runner выполняется с `--run-id=local2039g31 --phase=all
+--out=checkpoints/local2039g31-full --fail-fast-performance=false`.
+Этот flag отключает только старый optional aggregate rejection, не correctness,
+authentication, fixedpoint, двенадцать throughput measurements или consumers.
+Fresh full native root PASS: **12 453 definitions / 13 047 events**,
+zero excluded checks/output patches. Настоящий native-stage0 → stage1 → stage2
+byte fixedpoint PASS: оба image **31 757 877 B**, SHA-256
+`04851b115eef16c929858f48224e524873c61606c8e2f59c789be58c452a8dc3`;
+`cmp` также подтвердил равенство. Native build guard: 236 658 ms,
+peak RSS 5 584 175 104 B, footprint 5 632 039 128 B.
+Bootstrap: 470 567 ms, peak RSS 2 991 816 704 B, footprint 3 363 838 296 B.
+Это proof самосборки, не performance acceptance. Throughput и consumer gates
+ещё выполняются; `G24_QUALIFICATION_PASS` сам по себе не принимает оптимизацию.
+
+Evidence: `evals/receipts/producer2039g31_reconsideration_plan.json`,
+`evals/receipts/producer2039g31_contract_review.json`,
+`evals/receipts/producer2039g31_repeated_screen.json`,
+`evals/receipts/producer2039g31_paired_diagnostics.json`,
+`evals/receipts/producer2039g31_qualification_plan.json`.
+`evals/receipts/producer2039g31_core_fixedpoint.json`.
+Live receipt: `checkpoints/local2039g31-full/receipt.json`.
+
 ### Отклонённый G30: isolated scheduler transport; R12 восстановлен
 
 Профили сняты с **неизменённого actual R12 selfhost image**, который сам
