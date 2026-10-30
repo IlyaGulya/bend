@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "status": "PREDECLARED_BEFORE_BALANCED_SCREEN_RESULTS",
+  "compilerAccepted": false,
+  "performanceAccepted": false,
+  "byteFixedpoint": false,
+  "sourceCheckpoint": "10f1f3a3",
+  "compilerSourceUnchanged": true,
+  "sourcePins": {
+    "evals/checker_core_step_lower.ts": "847b8a73c782c0bd4790f19e7f467bc791efe59028433c46d1e9261a65d052d9",
+    "evals/selfhost_driver_source.ts": "48f024856cf697ef59d889e759d28559bd5d3afd95c60698c874ac79eb690f9a",
+    "evals/c_target_fixtures_run.ts": "82a17ac3a631cf7bec3d9eb7ed2398464affe86d71768df956304e7713c683a8",
+    "evals/scheduler_chunk_smoke.bend": "21986a939adccc86c6580c446242be9feb95703c6eeb820ef939d961f2247140"
+  },
+  "policy": {
+    "schemaVersion": 1,
+    "status": "PREDECLARED_BEFORE_G30_CANDIDATE_RESULTS",
+    "baseline": {
+      "runId": "local2039g24r12",
+      "sourceCheckpoint": "5916d410",
+      "restoredCheckpoint": "f6f02bef"
+    },
+    "profile": {
+      "image": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+        "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+        "bytes": 31758507,
+        "matches": true
+      },
+      "windows": [
+        {
+          "start": 1000000,
+          "end": 1250000
+        },
+        {
+          "start": 4000000,
+          "end": 4250000
+        },
+        {
+          "start": 8000000,
+          "end": 8250000
+        }
+      ],
+      "scope": "Actual selfhost image provides its own parse/expand/check. No canonical-checker substitution, host AST-tag adaptation, or target-code instrumentation."
+    },
+    "limits": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 600000,
+      "workerStackMiB": 256,
+      "workerOldGenerationMiB": 6144,
+      "workerYoungGenerationMiB": 128
+    },
+    "screen": {
+      "scope": "One serial unprofiled control/candidate checker pair using actual selfhost images, identical accepted parser/expander, frozen full compiler corpus, driver and runtime. Candidate image must come through actual native or emitted selfhost compilation, never patched output.",
+      "rejectIf": "Candidate checker elapsed time, guardian peak RSS or guardian peak footprint exceeds control by more than 5%, or semantic/source/ownership check fails.",
+      "allSamplesRetained": true,
+      "passMeaning": "Permits full qualification only; not performance or compiler acceptance."
+    },
+    "qualification": {
+      "required": "Fresh full native validation with zero exclusions/output patches, native-stage0 to stage1 to stage2 byte equality, all existing consumers if still viable.",
+      "performanceAcceptedOnlyIf": "Both native and JS pipeline arithmetic mean and median improve in twelve retained original unprofiled serial interleaved samples; median peak RSS and footprint must not increase.",
+      "failureAction": "Use --fail-fast-performance=true; stop remaining qualification/consumer work at mandatory failure. Commit rejected source/frozen inputs/evidence before restoring R12."
+    }
+  },
+  "driver": {
+    "path": "/private/tmp/bend-g30-actual-9MbUpo/early-balanced.mjs",
+    "sha256": "62dc4c80ac0c7454a7e526899122906ddcd67bbd03a60a133267de7770ec54f8",
+    "source": "import {readFileSync,writeFileSync,realpathSync} from 'node:fs';\nimport {createHash} from 'node:crypto';\nimport {dirname,resolve,isAbsolute,posix} from 'node:path';\nimport {pathToFileURL} from 'node:url';\nimport {Worker,isMainThread,workerData} from 'node:worker_threads';\nimport {runTemplateSteps,runCheckerSteps} from \"/Users/ilyagulya/Projects/My/bend/evals/checker_core_step_runtime.mjs\";\nconst hash=path=>createHash('sha256').update(readFileSync(path)).digest('hex'),tag=value=>typeof value?.$==='string'?value.$.split('.').at(-1):null;\nconst items=value=>{const out=[];while(tag(value)==='Con'){out.push(value.head);value=value.tail;}if(tag(value)!=='Nil')throw Error('Malformed native list');return out;};\nconst list=values=>values.reduceRight((tail,head)=>({$:'Con',head,tail}),{$:'Nil'});\nconst fuelEnd=Object.freeze({$:'FeedbackFuelEnd'}),fuelPrototype={get tail(){return fuel(this.remaining-1);}};\nfunction fuel(remaining){if(remaining===0)return fuelEnd;const node=Object.create(fuelPrototype);node.$='FeedbackFuelCell';node.remaining=remaining;return node;}\nfunction verify(request){for(const [path,digest]of Object.entries({...request.inputs,...request.pins}))if(realpathSync(path)!==path||hash(path)!==digest)throw Error('Pinned input drift '+path);}\nasync function screen(requestPath,reportPath){\n const request=JSON.parse(readFileSync(requestPath,'utf8'));verify(request);\n const report={schemaVersion:1,status:'RUNNING',diagnosticOnly:true,acceptanceEvidence:false,compilerAccepted:false,byteFixedpoint:false,role:request.role,scope:'Actual selfhost checker image with identical accepted R12 parser/expander on the unchanged frozen root. No host constructor adaptation; one unprofiled diagnostic sample, not acceptance.',request:requestPath,requestSha256:hash(requestPath),parserImage:request.parserImage,checkerImage:request.checkerImage,root:request.root,sourceSha256:hash(request.root),runtime:{execPath:process.execPath,versions:process.versions,execArgv:process.execArgv},phases:[],stepCounts:{}};\n const save=()=>writeFileSync(reportPath,JSON.stringify(report,null,2)+String.fromCharCode(10));save();\n const phase=async(name,action)=>{const start=performance.now(),cpu=process.cpuUsage();const result=await action();const used=process.cpuUsage(cpu);report.phases.push({phase:name,elapsedMs:performance.now()-start,userCpuMs:used.user/1000,systemCpuMs:used.system/1000,memoryEnd:process.memoryUsage()});save();return result;};\n const {api,checker}=await phase('startup',async()=>{\n  const parserURL=pathToFileURL(request.parserImage.path).href+'?g30-role=parser',checkerURL=pathToFileURL(request.checkerImage.path).href;\n  const api=(await import(parserURL)).default,checker=(await import(checkerURL)).default;\n  if(api===checker)throw Error('Screen requires distinct parser/checker module instances in BOTH lanes');\n  report.moduleResidency={parserURL,checkerURL,distinctAPI:true,moduleInstances:2,policy:'Same parser URL role in both lanes; no control-only module-cache alias.'};\n  return {api,checker};\n });\n for(const key of ['check_expanded_start','inspect_checked_start','checker_step'])if(typeof checker[key]!=='function')throw Error('Checker ABI incomplete '+key);\n let modules=[];await phase('load-parse',()=>{\n  const seen=new Map(),active=new Set(),observed=new Set();\n  const observe=path=>{const real=realpathSync(path);if(!Object.hasOwn(request.inputs,real))throw Error('Unexpected input '+real);observed.add(real);return real;};\n  const namespace=(scope,path)=>path==='Base'?'':posix.normalize(isAbsolute(path)?path.replace(/\\.bend$/,''):posix.dirname(scope)+'/'+path.replace(/\\.bend$/,''));\n  const visit=(file,scope)=>{const real=observe(file);if(active.has(real))throw Error('Import cycle');if(seen.has(real)){if(seen.get(real)!==scope)throw Error('Namespace conflict');return;}seen.set(real,scope);active.add(real);\n   const parsed=api.parse_with_fuel(fuel(8000000),real,readFileSync(real,'utf8'));if(tag(parsed)!=='FeedbackComplete'||tag(parsed.value.result)!=='ParseSuccess')throw Error('Own parser rejected '+real);const module=parsed.value.result.module;\n   for(const top of items(module.declarations))if(tag(top)==='DefTop'&&tag(top.definition.body)==='DefImports')for(const path of items(top.definition.body.paths))if(path.endsWith('.js'))observe(resolve(dirname(real),path));\n   for(const imported of items(module.imports)){const path=imported.path;if(path.endsWith('.js'))observe(resolve(dirname(real),path));else if(!path.endsWith('.c'))visit(path==='Base'?resolve(request.repository,'bend2/base.bend'):resolve(dirname(real),path),namespace(scope,path));}\n   modules.push(api.parsed_module(scope,module));active.delete(real);\n  };visit(request.root,'');if(observed.size!==Object.keys(request.inputs).length)throw Error('Own parser omitted frozen input');report.moduleCount=seen.size;modules=list(modules);\n });\n let expanded=await phase('expand',()=>runTemplateSteps({...api,expand_modules_start:input=>{modules=undefined;return api.expand_modules_start(input);}},modules,{onFinish(_,steps){report.stepCounts.expand=steps;}}));\n if(tag(expanded)!=='ExpandSuccess')throw Error('Own expansion failed');\n const checked=await phase('check',()=>runCheckerSteps({...checker,check_expanded_start:input=>{expanded=undefined;return checker.check_expanded_start(input);}},expanded.modules,{onFinish(_,steps){report.stepCounts.check=steps;}}));\n if(tag(checked)!=='CheckSuccess')throw Error('Own checking failed '+JSON.stringify(checked));\n await phase('storage',()=>{\n  const source=checked.program.source,words=source.words;if((!Array.isArray(words)&&!(words instanceof Uint32Array))||!Array.isArray(source.counts))throw Error('Unknown word-tape carrier');\n  const used=source.counts[6],capacity=source.counts[7];if(words.length!==capacity||used>capacity)throw Error('Source word capacity mismatch');\n  const digest=createHash('sha256'),chunk=new Uint32Array(16384),bytes=new Uint8Array(chunk.buffer);let maxWord=0;\n  for(let offset=0;offset<capacity;offset+=chunk.length){const count=Math.min(chunk.length,capacity-offset);for(let i=0;i<count;i++){const value=words[offset+i];if(!Number.isInteger(value)||value<0||value>4294967295)throw Error('Non-U32 word');chunk[i]=value;if(value>maxWord)maxWord=value;}digest.update(count===chunk.length?bytes:bytes.subarray(0,count*4));}\n  report.storage={sourceNodeUsed:source.counts[0],sourceNodeCapacity:source.counts[1],sourceNodeCarrier:Array.isArray(source.nodes)?\"Array\":typeof source.nodes,sourceWordUsed:used,sourceWordCapacity:capacity,sourceWordDepth:source.depths[3],sourceCounts:source.counts.slice(0,12),carrier:Array.isArray(words)?'Array':'Uint32Array',byteLength:words instanceof Uint32Array?words.byteLength:null,sha256:digest.digest('hex'),maxWord,hashEncoding:'host-little-endian-u32',limitations:['Final source tape only; no transient peak-capacity claim.','64-KiB hash scratch is allocated only after the measured check phase.','No inspector, profiling, or heap snapshot is enabled.']};\n });verify(request);report.status='G30_ACTUAL_SELFHOST_SCREEN_PASS';save();console.log(JSON.stringify({status:report.status,role:report.role,phases:report.phases.map(({phase,elapsedMs,memoryEnd})=>({phase,elapsedMs,memoryEnd})),stepCounts:report.stepCounts,storage:report.storage}));\n}\nif(isMainThread){const [requestPath,reportPath]=process.argv.slice(2);if(!requestPath||!reportPath)throw Error('Expected request/report');const worker=new Worker(new URL(import.meta.url),{workerData:{requestPath,reportPath},resourceLimits:{stackSizeMb:256,maxOldGenerationSizeMb:6144,maxYoungGenerationSizeMb:128}});worker.on('error',error=>{console.error(error);process.exitCode=1;});worker.on('exit',code=>{if(code!==0)process.exitCode=code;});}else await screen(workerData.requestPath,workerData.reportPath);\n"
+  },
+  "originalPair": "evals/receipts/producer2039g30_early_screen_invalid.json",
+  "requests": [
+    {
+      "role": "control",
+      "path": "/private/tmp/bend-g30-actual-9MbUpo/control-balanced-request.json",
+      "sha256": "e8c7c73b81121acf1ed478094c074c286041499ecd690c73d9956bde182de992",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/private/tmp/bend-g30-actual-9MbUpo/early-balanced.mjs",
+        "/private/tmp/bend-g30-actual-9MbUpo/control-balanced-request.json",
+        "/private/tmp/bend-g30-actual-9MbUpo/control-balanced-result.json"
+      ]
+    },
+    {
+      "role": "candidate",
+      "path": "/private/tmp/bend-g30-actual-9MbUpo/candidate-balanced-request.json",
+      "sha256": "34cda50ed795bc0f8cce150d0e85413c00f19d3f3ebc119d39c0c23f4d24aeb0",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "evals/heavy_gate.ts",
+        "--memory-mib",
+        "8192",
+        "--rss-mib",
+        "8192",
+        "--poll-ms",
+        "10",
+        "--timeout-ms",
+        "600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/private/tmp/bend-g30-actual-9MbUpo/early-balanced.mjs",
+        "/private/tmp/bend-g30-actual-9MbUpo/candidate-balanced-request.json",
+        "/private/tmp/bend-g30-actual-9MbUpo/candidate-balanced-result.json"
+      ]
+    }
+  ],
+  "ruleUnchanged": "Reject if checker time, guardian peak RSS or footprint exceeds control by >5%, or semantic/source/ownership mismatch. No profiler/snapshot. Each lane asserts two independently instantiated modules."
+}

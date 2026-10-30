@@ -26,14 +26,22 @@ Accepted R12 native compiler уже собрал actual candidate JS image из 
 source root: 31 757 877 B, SHA-256
 `04851b115eef16c929858f48224e524873c61606c8e2f59c789be58c452a8dc3`.
 Это early image build, **не** fresh candidate-native build и не fixedpoint.
-Чистый actual-image checker A/B запущен до дорогой полной квалификации.
-Rule: >5% regression checker time/RSS/footprint или semantic mismatch — отказ.
+Первый actual-image A/B завершён, но memory comparison недействителен:
+control импортировал parser/checker по одному URL (один module instance),
+candidate — по двум URL (два instances). Checker 260 379.493 → 230 425.161 ms;
+RSS +21.25%, footprint +24.15% относятся к неравной residency, не к изолированному
+compiler change. Оба исходных samples сохранены; full qualification остановлена.
+Harness исправляется отдельным parser URL query в ОБОИХ lanes, без изменения
+compiler bytes, frozen corpus, limits и >5% rule. До результата balanced A/B
+никакой performance acceptance или source memory regression не заявляется.
 Далее только для жизнеспособного кандидата: fresh full root/fixedpoint и все
 12 paired measurements с `--fail-fast-performance=true`, consumers — лишь
 если mandatory gate не отклонил кандидата. Принятым baseline остаётся R12.
 
 Evidence: `evals/receipts/producer2039g30_actual_profile.json`,
-`evals/receipts/producer2039g30_source_smoke.json`.
+`evals/receipts/producer2039g30_source_smoke.json`,
+`evals/receipts/producer2039g30_early_screen_invalid.json`,
+`evals/receipts/producer2039g30_balanced_screen_plan.json`.
 Required early root: `checkpoints/.bootstrap_compiler_root_g30_screen.bend`,
 corpus: `checkpoints/local2039g30/root.screen.corpus.json`.
 

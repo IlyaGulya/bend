@@ -12,9 +12,15 @@ latest one; the GitHub release carries the same notes.
   boundary, preserving source continuations, trace pauses and quantum64.
   Two independent source reviews find no blocker; four changed-path C/JS
   scheduler/affine executions pass after two baseline executions.
-  Actual-image screening and full qualification are pending; R12 stays accepted.
+  The first actual-image pair exposed unequal module residency: control shared
+  one parser/checker module; candidate retained two. Both samples are retained,
+  but their memory comparison is invalid. A balanced two-module rerun keeps
+  compiler bytes, limits and the >5% rejection rule unchanged. Full qualification
+  is not started; R12 stays accepted.
   `evals/receipts/producer2039g30_actual_profile.json`,
-  `evals/receipts/producer2039g30_source_smoke.json`.
+  `evals/receipts/producer2039g30_source_smoke.json`,
+  `evals/receipts/producer2039g30_early_screen_invalid.json`,
+  `evals/receipts/producer2039g30_balanced_screen_plan.json`.
 
 - G29 profiles the retained R12/G28 checkers on identical bounded windows.
   Separate logical runs agree on 53,253,960 Node reads and 8,740,226 appends;

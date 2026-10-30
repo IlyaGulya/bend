@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "status": "PREPARED_NOT_STARTED_PENDING_EARLY_SCREEN",
+  "compilerAccepted": false,
+  "performanceAccepted": false,
+  "byteFixedpoint": false,
+  "sourceCheckpoint": "10f1f3a3",
+  "sourcePins": {
+    "evals/checker_core_step_lower.ts": "847b8a73c782c0bd4790f19e7f467bc791efe59028433c46d1e9261a65d052d9",
+    "evals/selfhost_driver_source.ts": "48f024856cf697ef59d889e759d28559bd5d3afd95c60698c874ac79eb690f9a",
+    "evals/c_target_fixtures_run.ts": "82a17ac3a631cf7bec3d9eb7ed2398464affe86d71768df956304e7713c683a8",
+    "evals/scheduler_chunk_smoke.bend": "21986a939adccc86c6580c446242be9feb95703c6eeb820ef939d961f2247140"
+  },
+  "policy": {
+    "schemaVersion": 1,
+    "status": "PREDECLARED_BEFORE_G30_CANDIDATE_RESULTS",
+    "baseline": {
+      "runId": "local2039g24r12",
+      "sourceCheckpoint": "5916d410",
+      "restoredCheckpoint": "f6f02bef"
+    },
+    "profile": {
+      "image": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+        "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+        "bytes": 31758507,
+        "matches": true
+      },
+      "windows": [
+        {
+          "start": 1000000,
+          "end": 1250000
+        },
+        {
+          "start": 4000000,
+          "end": 4250000
+        },
+        {
+          "start": 8000000,
+          "end": 8250000
+        }
+      ],
+      "scope": "Actual selfhost image provides its own parse/expand/check. No canonical-checker substitution, host AST-tag adaptation, or target-code instrumentation."
+    },
+    "limits": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 600000,
+      "workerStackMiB": 256,
+      "workerOldGenerationMiB": 6144,
+      "workerYoungGenerationMiB": 128
+    },
+    "screen": {
+      "scope": "One serial unprofiled control/candidate checker pair using actual selfhost images, identical accepted parser/expander, frozen full compiler corpus, driver and runtime. Candidate image must come through actual native or emitted selfhost compilation, never patched output.",
+      "rejectIf": "Candidate checker elapsed time, guardian peak RSS or guardian peak footprint exceeds control by more than 5%, or semantic/source/ownership check fails.",
+      "allSamplesRetained": true,
+      "passMeaning": "Permits full qualification only; not performance or compiler acceptance."
+    },
+    "qualification": {
+      "required": "Fresh full native validation with zero exclusions/output patches, native-stage0 to stage1 to stage2 byte equality, all existing consumers if still viable.",
+      "performanceAcceptedOnlyIf": "Both native and JS pipeline arithmetic mean and median improve in twelve retained original unprofiled serial interleaved samples; median peak RSS and footprint must not increase.",
+      "failureAction": "Use --fail-fast-performance=true; stop remaining qualification/consumer work at mandatory failure. Commit rejected source/frozen inputs/evidence before restoring R12."
+    }
+  },
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "evals/g24_qualification.mjs",
+    "--run-id=local2039g30",
+    "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "--bun=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--clang=/usr/bin/clang",
+    "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+    "--phase=all",
+    "--bindings=/Users/ilyagulya/Projects/My/bend/evals/receipts/producer2039g25_r12_bindings.json",
+    "--frozen-repository=/private/tmp/bend2039g22-tiny-inline",
+    "--control-native=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+    "--control-image=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+    "--out=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g30-full",
+    "--fail-fast-performance=true"
+  ],
+  "environment": "env HEAVY_GATE_MEMORY_MIB=8192 HEAVY_GATE_RSS_MIB=8192 HEAVY_GATE_POLL_MS=10 HEAVY_GATE_TIMEOUT_MS=600000 BUN_JSC_forceRAMSize=4294967296 ",
+  "earlyReports": [
+    "/private/tmp/bend-g30-actual-9MbUpo/control-balanced-result.json",
+    "/private/tmp/bend-g30-actual-9MbUpo/candidate-balanced-result.json"
+  ],
+  "requiredFrozenScreenInputs": [
+    "checkpoints/.bootstrap_compiler_root_g30_screen.bend",
+    "checkpoints/local2039g30/root.screen.corpus.json"
+  ],
+  "note": "Actual-image screen must pass before this command starts. --fail-fast-performance=true rejects before consumer matrices. Original acceptance contracts, ABI13, quantum64 and fuel8M remain.",
+  "invalidOriginalScreen": "evals/receipts/producer2039g30_early_screen_invalid.json",
+  "balancedPlan": "evals/receipts/producer2039g30_balanced_screen_plan.json"
+}
