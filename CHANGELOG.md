@@ -15,6 +15,11 @@ latest one; the GitHub release carries the same notes.
   canonical compiler component is diagnostic evidence, not a replacement
   native-stage1 or an accepted image.
   `evals/receipts/producer2039g36e05_rejected.json`.
+  Rejected source/frozen inputs are committed as `ce28d3c0`. R12 is restored:
+  all 21 baseline checks, three regenerated sources and both accepted artifact
+  hashes match; the rejected pass is removed and six actual canonical C/JS
+  consumers pass. This is restoration proof, not a new full qualification:
+  `evals/receipts/producer2039g36e05_restored_r12.json`.
 - G35 / E08's private checked-occurrence publication cutover is rejected by
   the unchanged paired memory rule. The full native root validates 12,452
   definitions / 13,046 events with zero exclusions/patches. Actual

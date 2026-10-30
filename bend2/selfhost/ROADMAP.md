@@ -23,6 +23,11 @@ accepted acceleration. Preserve its source/frozen inputs before restoring R12.
 The complete canonical RootJS component can support E03's separately declared,
 matched canonical-executor diagnostics; it is not a native-stage1 substitute.
 Evidence: `evals/receipts/producer2039g36e05_rejected.json`.
+Rejected source/frozen inputs: `ce28d3c0`. R12 restoration passes all 21 baseline
+checks, three regenerated-source hashes, removal of the rejected module, both
+accepted-artifact hashes and six actual canonical C/JS consumers. No new full
+qualification/fixedpoint is inferred:
+`evals/receipts/producer2039g36e05_restored_r12.json`.
 
 ## Current full native-seed checkpoint: G24 R12
 

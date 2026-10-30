@@ -7,7 +7,6 @@ import ./scope_lookup.bend as Scope
 import ./lower_catalog.bend as Catalog
 import ./descriptor_nf.bend as DescriptorNf
 import ./backend_ir.bend as BIR
-import ./backend_continuation.bend as Continuation
 
 # Checked FIR to target-neutral backend IR. Nothing here knows a rendering
 # target, reconstructs syntax or re-infers a type: erasure, strict operands,
@@ -1990,4 +1989,4 @@ def lower_complete(failure: Maybe<&2, Problem>, codes: List<&2, BIR.Code>, decla
   match failure:
     case Some{Problem{message, span}}: LowerFailure{message, span}
     case None{}:
-      Lowered{Continuation.optimize(BIR.Program{List.reverse(&2, BIR.Code, codes), declarations, constructors, families, type_functions, ending})}
+      Lowered{BIR.Program{List.reverse(&2, BIR.Code, codes), declarations, constructors, families, type_functions, ending}}

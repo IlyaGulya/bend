@@ -30,6 +30,12 @@ E06 / E10 / E12 ещё требуют отдельных source qualifications; 
 не означает завершённую оптимизацию. E10/E12 admission:
 `evals/receipts/experiments_e10_e12_admission.json`.
 
+G36 rejected checkpoint: **`ce28d3c0`**. После него R12 фактически восстановлен:
+21 baseline source check, три regenerated source hashes, оба accepted artifact
+hashes совпали; rejected module удалён; шесть настоящих canonical C/JS consumers
+прошли. Новая full qualification/fixedpoint этим не заявляется.
+`evals/receipts/producer2039g36e05_restored_r12.json`.
+
 ### Отклонённый G35 / E08: полный fixedpoint PASS, memory gate FAIL
 
 Успешная декларация переносит уже опубликованный checked occurrence через

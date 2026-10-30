@@ -439,6 +439,10 @@ bootstrap/fixedpoint, performance series и поздние consumers не пол
 Причина роста внутри codegen не измерена; успешный маленький pass не заменяет
 полную native qualification и не разрешает повысить cap.
 Primary evidence: [G36 rejected source / frozen inputs / preflight](../evals/receipts/producer2039g36e05_rejected.json).
+Rejected source/frozen inputs: `ce28d3c0`. R12 восстановлен с 21 baseline source
+check, тремя regenerated source hashes, удалённым rejected module, прежними
+accepted artifacts и шестью canonical C/JS source executions. Это не новая
+full qualification: [restoration proof](../evals/receipts/producer2039g36e05_restored_r12.json).
 
 ### E03 — явно выбран matched canonical executor, не подменён fixedpoint
 
