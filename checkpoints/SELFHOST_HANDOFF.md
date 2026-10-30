@@ -4,6 +4,40 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
+### Отклонённый G34 / E09: native root PASS, stage2 deadline FAIL
+
+Одна правка `checker_arena.bend`: обычный single append пишет только used;
+существующий growth Bool передаётся в pool и metadata publication. При росте
+и bulk `reserve_words` сохраняются used/capacity/depth updates. Arena/Pool
+layouts, Array, BIR, foreign ABI и правила приёмки не меняются.
+Реальный R12 census на frozen root: **19 258 235 metadata publications**,
+**158 pool growth branches**; итоговый JS побайтно совпал с baseline
+(`c33227e028d767df9a9fff75663e42eb7374919dcf8e7dff14936a98d20008fb`).
+Word growth-счётчики включают внутренние шаги bulk reserve; это не точное
+число снятых metadata-записей. Source Array.set не объявляется machine store.
+`checker_arena_growth_smoke`, arena generation и names прошли C/JS, 6/6.
+Новый fixture зарегистрирован в обеих actual-image consumer matrices.
+Полный запуск: `local2039g34-full`, `--phase=all --fail-fast-performance=true`.
+Полный native root: **12 449/12 449 definitions / 13 043 events**, zero
+excluded checks/output patches; build **252 980 ms**, peak RSS **5 460 656 128 B**,
+footprint **5 304 211 552 B**. Native stage0 выпустил stage1:
+**31 759 235 bytes**, SHA-256
+`2c8fdb7f33d6895b552aff45318542cb387ac4dfb5ebd603c6586512ee0ff7fc`.
+Все **95 seed fixtures** прошли; stage1 разобрал все 18 модулей.
+На **stage-two-check** сработал исходный whole-bootstrap deadline:
+**600 013 ms** при лимите **600 000 ms**. Peak RSS **4 255 645 696 B**,
+footprint **4 681 375 096 B**. Stage2-файла нет; fixedpoint **НЕ доказан**.
+Парные throughput и дальнейшие consumer gates после этого НЕ запускались.
+Причина timeout не установлена; не приписывать её metadata/GC без измерения.
+Сохранить rejected source/inputs/evidence коммитом, затем восстановить R12.
+План/source pins/census/failure:
+`evals/receipts/producer2039g34_plan.json`,
+`evals/receipts/producer2039g34_source.json`,
+`evals/receipts/producer2039g34_growth_census.json`,
+`evals/receipts/producer2039g34_qualification.json`.
+**G34 отклонён; baseline остаётся R12**. Guards прежние: 8 GiB RSS/footprint,
+600 s на heavy step, ABI13, quantum64, parser fuel8M; нет порога +5%.
+
 ### После G33: архитектурная консультация, не новая реализация
 
 Измеренный G33 checkpoint — `cd740cf4`; принятое R12 не менялось.

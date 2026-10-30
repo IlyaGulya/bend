@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "status": "PREDECLARED_G34_E09_METADATA_WORK",
+  "compilerAccepted": false,
+  "performanceAccepted": false,
+  "byteFixedpoint": false,
+  "baseline": {
+    "native": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+      "sha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "matches": true
+    },
+    "image": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+      "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "matches": true
+    }
+  },
+  "baselineSource": {
+    "checkpoint": "852b4387",
+    "path": "bend2/selfhost/checker_arena.bend",
+    "sha256": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf",
+    "snapshot": "/private/tmp/bend-g34-e09-parent/checker_arena.r12.bend"
+  },
+  "pins": {
+    "bend2/selfhost/checker_arena.bend": "2abe90611b24eb9304a3ad1e87d5a56363e5479159dd3b7c0b5616f5502ad149",
+    "evals/checker_core_owned_source.ts": "7b9fc4fb80aa87ef0ce44310031e5bfe909f8abd9672f16609c435daa87eb450",
+    "evals/checker_core_step_lower.ts": "21a47855e891ab115fb2ce4c70b7b699b376c6488f2505b7f0d6893f8d66daf9",
+    "evals/template_step_lower.ts": "24bb3b87949f3d68073e2ec407c339b75f5124a877106d24fbc27ca9dbb95de3",
+    "evals/emitter_step_lower.ts": "38c49a093bb91b16d058baba69303a15277e40bbeeb3aff1bf4ec0c1831817b3",
+    "evals/selfhost_driver_source.ts": "be4c39ba888193b85b331955a29f00cabe836420b8d1d5800086fba2c159ac2d",
+    "evals/g24_qualification.mjs": "a8212e066d3fadad484a7699a338fa3170a2978403a6dbab5befc0cf6afc353e",
+    "evals/c_target_fixtures_run.ts": "6c5ead2ab36759b68f624d6baaf677e1e6e47ddf1648ee31031b1dbe733ec83e",
+    "bend2/base.bend": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+    "bend2/bend.ts": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+    "bend2/comp.ts": "880a9b3b86f273852a39fc664f8c3d7b71e3860b6d365e4321949fc812b6e7cc"
+  },
+  "runtime": {
+    "node": {
+      "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5",
+      "bytes": 113935712
+    },
+    "bun": {
+      "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "sha256": "28c7dd0a06916aba284d570ef44a2d70e9c538eaf2ba58dfe0910525563b3f79",
+      "bytes": 70469776
+    }
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "quantum": 64,
+  "parserFuel": 8000000,
+  "experiment": "Reuse the existing growth decision; write used only for non-growing single appends, keep full metadata update on growth and bulk reserve_words. No Array/IR/foreign ABI change.",
+  "qualification": {
+    "diagnostic": "Count growth and metadata writes on an instrumented copy of actual R12 image over authenticated frozen full compiler workload; exact expected output hash required. Not performance evidence.",
+    "sourceSmoke": "Canonical C/JS regressions followed by complete qualification; no arbitrary relative-memory cutoff.",
+    "fullCommand": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/g24_qualification.mjs",
+      "--run-id=local2039g34",
+      "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--bun=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--clang=/usr/bin/clang",
+      "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+      "--phase=all",
+      "--bindings=/Users/ilyagulya/Projects/My/bend/evals/receipts/producer2039g25_r12_bindings.json",
+      "--frozen-repository=/private/tmp/bend2039g22-tiny-inline",
+      "--control-native=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+      "--control-image=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+      "--out=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g34-full",
+      "--fail-fast-performance=true"
+    ],
+    "performancePolicy": "Existing g24 strict paired native/JS pipeline arithmetic mean AND median improve; median peak RSS AND footprint do not increase; all twelve original samples retained. --fail-fast-performance=true.",
+    "failureAction": "Preserve rejected source, frozen inputs and compact original evidence in a committed checkpoint before restoring only experiment-owned production files to R12. Never raise guard, omit failing consumer or call a rejected version accepted."
+  },
+  "fullCommand": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "evals/g24_qualification.mjs",
+    "--run-id=local2039g34",
+    "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "--bun=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--clang=/usr/bin/clang",
+    "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+    "--phase=all",
+    "--bindings=/Users/ilyagulya/Projects/My/bend/evals/receipts/producer2039g25_r12_bindings.json",
+    "--frozen-repository=/private/tmp/bend2039g22-tiny-inline",
+    "--control-native=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+    "--control-image=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+    "--out=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g34-full",
+    "--fail-fast-performance=true"
+  ]
+}

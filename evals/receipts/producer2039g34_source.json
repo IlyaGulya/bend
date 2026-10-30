@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "status": "G34_SOURCE_FROZEN_BEFORE_QUALIFICATION",
+  "compilerAccepted": false,
+  "performanceAccepted": false,
+  "byteFixedpoint": false,
+  "planSha256": "cad8c6848b22c4d78bcc9cd2b3d2ad0ff4656fb8cffc06ba343ef40c333acc25",
+  "sourcePins": {
+    "bend2/selfhost/checker_arena.bend": "53ca304bcb1ac1ffd89ac77442c414af503d42bc0647bcf71ade8574e942fd6a",
+    "evals/checker_arena_growth_smoke.bend": "43f681dfc85ce5a33cb8efdbfc26560b08f88fab1b61a3f5d22b067611c2ac9a",
+    "evals/c_target_fixtures_run.ts": "816b857e2fd6051255f4ea8ddcc427fd936c0c6b441d7a4e7e6bfcf9810307d0"
+  }
+}

@@ -5,6 +5,17 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- G34 / E09's used-only arena metadata publication is rejected by the unchanged
+  600-second bootstrap deadline. The fresh native root validates all 12,449
+  definitions / 13,043 events without exclusions or output patches, and emits
+  a real 31,759,235-byte stage1. All 95 seed fixtures pass, but stage-two-check
+  does not finish; stage2 and byte fixedpoint are absent. No paired throughput
+  or later consumer gates are claimed. The R12 census records 19,258,235
+  metadata publications and 158 pool growth branches with unchanged output.
+  Six canonical C/JS growth/rewind/name/generation executions pass; the new
+  regression and matrix registration remain. R12 stays accepted.
+  `evals/receipts/producer2039g34_growth_census.json`,
+  `evals/receipts/producer2039g34_qualification.json`.
 - G32's shared BIR private aggregate workers and multi-value transport are
   rejected by the mandatory paired performance gate. Public ABI stayed boxed.
   Ten executable C/JS transport probes pass; the reachable producer/consumer

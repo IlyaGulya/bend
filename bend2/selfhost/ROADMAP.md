@@ -197,6 +197,22 @@ evidence, not a new full R12 qualification.
 `evals/receipts/producer2039g32_throughput.json`,
 `evals/receipts/producer2039g32_restored_r12.json`.
 
+G34 isolates E09: ordinary appends publish used only, sharing the existing
+growth decision; growth and bulk reservation keep the full metadata update.
+Actual R12 frozen-root census: **19,258,235 metadata calls**, **158 pool
+growth branches**, byte-identical output. Word growth counts include reserve
+iterations; source Array.set counts are not measured machine stores.
+Six canonical C/JS growth/rewind/name/generation executions pass.
+The fresh full native root passes **12,449 definitions / 13,043 events**,
+zero exclusions/patches, and emits a **31,759,235-byte** actual stage1.
+All 95 seed fixtures pass, but **stage-two-check hits the unchanged
+600-second whole-bootstrap deadline**. No stage2 file or byte fixedpoint,
+paired throughput, or later consumer matrix is claimed. G34 is rejected;
+R12 remains accepted. Preserve the rejected checkpoint before restoration;
+the regression and its matrix registration remain.
+`evals/receipts/producer2039g34_growth_census.json`,
+`evals/receipts/producer2039g34_qualification.json`.
+
 ## Historical full native-seed checkpoint: G23
 
 The earlier accepted checkpoint is **remote2039g23**, compiler source
