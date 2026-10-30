@@ -33,7 +33,6 @@ const manifest = 'checkpoints/c-backend-steps-v1.json';
 const providers = ['bend2/selfhost/c_backend.bend', 'bend2/selfhost/c_backend_layout.bend',
   'bend2/selfhost/c_backend_physical.bend', 'bend2/selfhost/descriptor_nf.bend',
   'bend2/selfhost/c_backend_link.bend',
-  'bend2/selfhost/backend_transport.bend',
   'evals/c_backend_runtime.bend'];
 const expected = '26';
 const sha = (text: string) => createHash('sha256').update(text).digest('hex');

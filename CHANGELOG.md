@@ -22,12 +22,16 @@ latest one; the GitHub release carries the same notes.
   All twelve unprofiled samples are retained: native mean/median
   +4.04%/+7.80%, JS +5.84%/−4.52%. Median peak RSS/footprint rise:
   native +1.44%/+0.45%, JS +3.90%/+3.89%. Consumer matrices are intentionally
-  not run after rejection. R12 remains accepted and is being restored;
-  the ordinary owned-value regression and its matrix registration remain.
+  not run after rejection. Rejected inputs/evidence: `e3c6e132`. R12 is
+  restored: compiler source/provenance and three regenerated step sources
+  match baseline bytes; accepted artifacts are unchanged. Eight C/JS
+  restoration executions pass, including two real R12 selfhost consumers.
+  The ordinary owned-value regression and its matrix registration remain.
   `evals/receipts/producer2039g32_probe.json`,
   `evals/receipts/producer2039g32_integration.json`,
   `evals/receipts/producer2039g32_core_fixedpoint.json`,
-  `evals/receipts/producer2039g32_throughput.json`.
+  `evals/receipts/producer2039g32_throughput.json`,
+  `evals/receipts/producer2039g32_restored_r12.json`.
 
 - G31 reconsiders the unchanged G30 scheduler after withdrawing the
   assistant-chosen 5% relative-memory screen. All six new actual-image checker

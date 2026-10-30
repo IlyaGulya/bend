@@ -4,7 +4,7 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
-### Отклонённый G32: BIR transport, полный fixedpoint PASS; performance FAIL
+### Отклонённый G32: fixedpoint PASS, performance FAIL; R12 восстановлен
 
 Начат от восстановленного R12 (`18954122`), без возврата scheduler rewrite G31.
 `backend_transport.bend` — общий bounded worker/consumer pass; `LetValues` и
@@ -34,11 +34,19 @@ mean/median **+4.04%/+7.80%**, JS **+5.84%/−4.52%**. Медианные peak R
 footprint: native **+1.44%/+0.45%**, JS **+3.90%/+3.89%**. **G32 отклонён**:
 обязательный прежний performance gate не пройден; consumer-матрицы после него
 НЕ запускались. Это не новый порог +5% и не отказ по source-shape.
-Сохраняется rejected checkpoint и восстанавливается R12; полезный ordinary
-owned-value regression и его matrix registration остаются.
+Rejected source/input/evidence checkpoint — **`e3c6e132`**, production source
+**`cf7e173b`**. R12 восстановлен: все baseline source/runtime/metadata checks,
+восемь G32-owned source files и три regenerated step sources побайтно совпали.
+Новый transport module/API и его актуальная документация удалены. Useful
+ordinary owned-value regression и его matrix registration оставлены.
+**8 restoration executions PASS**: шесть canonical C/JS owned/scheduler/affinity
+прогонов и два C/JS owned-прогона реального принятого R12 selfhost compiler.
+Accepted native/image hashes неизменны. Это restoration proof, не новая полная
+квалификация R12 и не новый fixedpoint.
 Evidence: `producer2039g32_initial_failure.json`,
 `producer2039g32_second_failure.json`, `producer2039g32_integration.json`,
-`producer2039g32_core_fixedpoint.json`, `producer2039g32_throughput.json`.
+`producer2039g32_core_fixedpoint.json`, `producer2039g32_throughput.json`,
+`producer2039g32_restored_r12.json`.
 Baseline остаётся R12. `producer2039g32_plan.json` фиксирует прежние 8 GiB /
 600 s, ABI13, quantum64, fuel8M и обязательные gates, включая C scheduler case.
 

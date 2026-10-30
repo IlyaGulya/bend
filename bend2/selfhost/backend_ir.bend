@@ -203,9 +203,7 @@ type Op is Data:
 # A failed nested pattern exits one case; the remaining cases are emitted once.
 type Block is Data:
   Return{value: Atom}
-  ReturnValues{values: List<&2, Atom>}
   Let{id: U32, op: Op, next: Block}
-  LetValues{ids: List<&2, U32>, code: U32, args: List<&2, Arg>, next: Block}
   Branch{condition: Atom, yes: Block, no: Block}
   Region{label: U32, body: Block, next: Block}
   LeaveRegion{label: U32}

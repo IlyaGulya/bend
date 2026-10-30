@@ -182,14 +182,20 @@ passes: two identical **33,398,300-byte** images, SHA-256
 All twelve unprofiled end-to-end samples are retained: native mean/median
 **+4.04%/+7.80%**, JS **+5.84%/−4.52%**. Median RSS/footprint rise in both
 backends. G32 fails the mandatory performance gate; later consumer matrices
-are intentionally not run. R12 remains accepted and is being restored.
+are intentionally not run. Rejected inputs/evidence: `e3c6e132`. R12 is
+restored: source/provenance and three regenerated step sources match baseline
+bytes; accepted native/image hashes are unchanged. Six canonical C/JS
+restoration runs and two real R12 selfhost consumers pass. The owned-value
+semantic regression and matrix registration remain. This is restoration
+evidence, not a new full R12 qualification.
 `evals/receipts/producer2039g32_plan.json`,
 `evals/receipts/producer2039g32_probe.json`,
 `evals/receipts/producer2039g32_initial_failure.json`,
 `evals/receipts/producer2039g32_second_failure.json`,
 `evals/receipts/producer2039g32_integration.json`,
 `evals/receipts/producer2039g32_core_fixedpoint.json`,
-`evals/receipts/producer2039g32_throughput.json`.
+`evals/receipts/producer2039g32_throughput.json`,
+`evals/receipts/producer2039g32_restored_r12.json`.
 
 ## Historical full native-seed checkpoint: G23
 
