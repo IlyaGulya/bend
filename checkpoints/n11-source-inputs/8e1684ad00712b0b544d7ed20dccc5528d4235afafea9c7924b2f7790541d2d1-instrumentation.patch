@@ -1,0 +1,60 @@
+*** Begin Patch
+[/private/tmp/bend-n11-complete-fpZQph/inputs/R12/bend2/comp.ts#8B35]
+PUT >3823:
++  if (options.observe) file_observe("c-graphs-before", "main", undefined, true);
+PUT >3838:
++  if (options.observe) file_observe("c-graphs-after", "main", undefined, true);
++  if (options.observe) file_observe("c-metadata-before", "main");
+PUT >3910:
++  if (options.observe) file_observe("c-metadata-after", "main");
++  if (options.observe) file_observe("c-tabs-before", "main");
+PUT >3912:
++  if (options.observe) file_observe("c-tabs-after", "main", [tabs]);
++  if (options.observe) file_observe("c-spins-before", "main");
+PUT >3914:
++  if (options.observe) file_observe("c-spins-after", "main", [spins]);
++  if (options.observe) file_observe("c-segs-before", "main");
+PUT >3921:
++  if (options.observe) file_observe("c-segs-after", "main", [segs]);
++  if (options.observe) file_observe("c-runtime-before", "main");
+PUT 3922.=3923:
++  const runtime = runtime_c([tabs, ...desc].join("\n\n"), spins, segs,
++    [...FL.effs.values()].map(([m, src]) => c_ids(src, m)).join(""));
++  if (options.observe) file_observe("c-runtime-after", "main", [runtime]);
++  if (options.observe) file_observe("c-ids-before", "main");
++  const c = c_ids(runtime);
++  if (options.observe) file_observe("c-ids-after", "main", [c]);
+PUT <3925:
++  if (options.observe) file_observe("c-reset-before", "main");
+PUT >3925:
++  if (options.observe) file_observe("c-reset-after", "main", [c]);
+[/private/tmp/bend-n11-complete-fpZQph/inputs/G39/bend2/comp.ts#8B35]
+PUT >3823:
++  if (options.observe) file_observe("c-graphs-before", "main", undefined, true);
+PUT >3838:
++  if (options.observe) file_observe("c-graphs-after", "main", undefined, true);
++  if (options.observe) file_observe("c-metadata-before", "main");
+PUT >3910:
++  if (options.observe) file_observe("c-metadata-after", "main");
++  if (options.observe) file_observe("c-tabs-before", "main");
+PUT >3912:
++  if (options.observe) file_observe("c-tabs-after", "main", [tabs]);
++  if (options.observe) file_observe("c-spins-before", "main");
+PUT >3914:
++  if (options.observe) file_observe("c-spins-after", "main", [spins]);
++  if (options.observe) file_observe("c-segs-before", "main");
+PUT >3921:
++  if (options.observe) file_observe("c-segs-after", "main", [segs]);
++  if (options.observe) file_observe("c-runtime-before", "main");
+PUT 3922.=3923:
++  const runtime = runtime_c([tabs, ...desc].join("\n\n"), spins, segs,
++    [...FL.effs.values()].map(([m, src]) => c_ids(src, m)).join(""));
++  if (options.observe) file_observe("c-runtime-after", "main", [runtime]);
++  if (options.observe) file_observe("c-ids-before", "main");
++  const c = c_ids(runtime);
++  if (options.observe) file_observe("c-ids-after", "main", [c]);
+PUT <3925:
++  if (options.observe) file_observe("c-reset-before", "main");
+PUT >3925:
++  if (options.observe) file_observe("c-reset-after", "main", [c]);
+*** End Patch
