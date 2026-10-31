@@ -1,0 +1,9 @@
+{
+  "rows": [{
+    "name": "n08-retained-string-descriptors-v3",
+    "source": "/private/tmp/bend-n01-n08-HL7Pt3/lowering-census/string-v3.bend",
+    "targets": ["c", "js"],
+    "expected": "4\n",
+    "plugins": ["/private/tmp/bend-n01-n08-HL7Pt3/lowering-census/plugin.mjs"]
+  }]
+}

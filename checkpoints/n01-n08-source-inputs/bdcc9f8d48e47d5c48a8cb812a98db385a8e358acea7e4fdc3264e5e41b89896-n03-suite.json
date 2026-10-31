@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "status": "PREPARED_NOT_EXECUTED",
+  "rows": [
+    {
+      "name": "n03-existing-public-callback",
+      "source": "/Users/ilyagulya/Projects/My/bend/tests/io/foreign_runtime_apply.bend",
+      "targets": ["c", "js"],
+      "expected": "42\n"
+    },
+    {
+      "name": "n03-affine-reentry-63-64-65",
+      "source": "/private/tmp/bend-n01-n08-HL7Pt3/source-witness/reentry.bend",
+      "targets": ["c", "js"],
+      "expected": "callback-before\nnested-call:70\ncallback-after\n1070\ncallback-before\nnested-call:71\ncallback-after\n2071\ncallback-before\nnested-call:72\ncallback-after\n3072\n"
+    },
+    {
+      "name": "n03-existing-js-exception-reentry",
+      "source": "/Users/ilyagulya/Projects/My/bend/tests/compile/js_multi_reentrant.bend",
+      "targets": ["js"],
+      "expected": "10109\n76\n"
+    },
+    {
+      "name": "n03-arena-control",
+      "source": "/Users/ilyagulya/Projects/My/bend/evals/checker_arena_growth_smoke.bend",
+      "targets": ["c", "js"],
+      "expected": "mixed-growth-rewind:1\nreserved:1\n"
+    }
+  ]
+}

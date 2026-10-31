@@ -5,6 +5,17 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- N01–N08 architecture experiments are complete; no production candidate is
+  admitted and G24R12 remains accepted. Genuine own-frontend C/JS consumers
+  complete 30 target executions, including normal callback reentry at
+  63/64/65. Full-workload capture lookup, descriptor-prefix and string-route
+  measurements stop the proposed index/spine/string migrations. Actual shared
+  FIR annotation occurrences are discarded before lowering; this is not a
+  positive contextual-preservation witness. Matched construction prefixes do
+  not establish a later native-memory cause. All setup failures and proof
+  limits are preserved, without weakening the original qualification gates:
+  `checkpoints/SELFHOST_EXPERIMENTS_N01_N08.md`;
+  `evals/receipts/experiments_n01_n08_completed.json`.
 - G39 / E12's retired continuation-argument suffix cleanup is rejected by the
   original native-codegen RSS cap. Five actual own-frontend C/JS emissions pass
   split captures, JS reentry and real Arena growth at 63/64/65 nodes; executed

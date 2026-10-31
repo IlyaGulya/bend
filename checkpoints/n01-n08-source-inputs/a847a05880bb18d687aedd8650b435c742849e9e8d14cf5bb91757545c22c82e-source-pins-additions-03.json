@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 3,
+  "status": "OFFLINE_PREPARED_NOT_EXECUTED",
+  "extends": ["source-pins.json", "source-pins-update-02.json"],
+  "workspacePins": {
+    "inspection-main.bend": "165b204892399adb92a82cf45a57eecc400b14bb5f8e2c74775c65a3a5bdbd5a",
+    "n07-remaining-suite-02.json": "8a205e88b95b4ac3567918489a96276107b165dfe5ade5cd8f73864e9ca9b886",
+    "remaining-runner.mjs": "5313cabe968bc1744d93b4c93f4bab761c2dd4cfc2d8604bc891f27c2d3e468e"
+  },
+  "patternSource": {"path": "/private/tmp/bend-e01-e13-jbsb4I/inspection-probe.bend", "sha256": "db6aa0f0a392648bb3c6a45bc37717d45605739c8ff573212a8e08dcf1c4efb5", "authority": "Parent reports this source passed genuine G35 with the same checker. Source read by slice; prior execution receipt not independently audited here. New main is unexecuted."},
+  "preservation": "Original N07 suite and rejected source remain untouched; prior failed producer is absent from remaining suite; all remaining attempts receive distinct per-source/per-target suites, directories, raw launcher logs and compilation/guardian evidence.",
+  "executionPolicy": "Parent only; serial; reuse existing source-suite heavy guard, no doubleguard. Actual check rejection skips only the same source's remaining target, never claims target execution. C emission failure leaves JS runnable as a different target question."
+}

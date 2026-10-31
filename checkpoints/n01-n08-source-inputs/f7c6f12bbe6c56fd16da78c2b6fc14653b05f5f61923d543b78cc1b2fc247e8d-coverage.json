@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "status": "AUTHENTICATED_OFFLINE_GAP_INVENTORY",
+  "sourceRevisions": "source-pins.json (SHA256 per source; no unobserved Git provenance claim)",
+  "requiredCompilerAuthority": {
+    "class": "GENUINE_R12_NATIVE_SEED_STAGE1",
+    "imageSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+    "nativeSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+    "bootstrapSha256": "3311a3dcadb637197261534bc2ba4cb4b9c2ac9b65be5615a45293367a652785",
+    "carrier": "../bend2/selfhost/backend_ir.SourceFile"
+  },
+  "cells": [
+    {"source": "tests/compile/js_split_capture_chain.bend", "authority": "genuine-R12", "target": "c", "scenario": "existing split capture control", "observedExecution": "PARENT_RECEIPT_PASS", "actual": "206\n45\n32\n24\n", "emittedSha256": "168ab7fef24b91e52a30e3ad0e9b91f10603bb257fce8cd270a0a15e0fad64f0", "binarySha256": "abce8ce72efd093c3a9873c00a884545b36ed4dd3ce48c9b41a248a4d1df60b1"},
+    {"source": "tests/compile/js_split_capture_chain.bend", "authority": "genuine-R12", "target": "js", "scenario": "existing split capture control", "observedExecution": "PARENT_RECEIPT_PASS", "actual": "206\n45\n32\n24\n", "emittedSha256": "26b7bf1ffe4b828ccdf8465acc2cb3add035d68ba32a154273a4fdbdfe524cb7"},
+    {"source": "tests/io/foreign_runtime_apply.bend", "authority": "genuine-R12-required", "targets": ["c", "js"], "scenario": "existing supported callback ABI", "observedExecution": "UNEXECUTED_BY_SLICE", "request": "n03-suite.json#n03-existing-public-callback"},
+    {"source": "reentry.bend + reentry.c + reentry.js", "authority": "genuine-R12-required", "targets": ["c", "js"], "scenario": "normal-return callback-before / nested-call / callback-after; live affine outer Owner and 63/64/65 nested continuations", "observedExecution": "UNEXECUTED", "request": "n03-suite.json#n03-affine-reentry-63-64-65"},
+    {"source": "tests/compile/js_multi_reentrant.bend + .js", "authority": "genuine-R12-required", "target": "js", "scenario": "existing throw then second callback", "observedExecution": "UNEXECUTED_BY_SLICE", "request": "n03-suite.json#n03-existing-js-exception-reentry"},
+    {"source": "tests/compile/js_multi_reentrant.bend", "authority": "any", "target": "c", "scenario": "recoverable overflow exception then second callback", "observedExecution": "MISSING_EQUIVALENT_ERROR_CONTRACT", "reason": "No .c foreign implementation; runtime err_fail uses _exit(1), not catch/reentry. Normal callback ABI does exist and is covered separately."},
+    {"source": "evals/checker_arena_growth_smoke.bend", "authority": "genuine-R12-required", "targets": ["c", "js"], "scenario": "existing arena growth/rewind control", "observedExecution": "UNEXECUTED_BY_SLICE", "request": "n03-suite.json#n03-arena-control"},
+    {"source": "n07-suite.json", "authority": "genuine-R12-required", "targets": ["c", "js"], "scenario": "six exact source roots, occurrence scan and actual semantic outputs", "observedExecution": "UNEXECUTED", "sharedHandleWitness": "NOT_YET_OBSERVED", "diagnosticCollapse": "STOP_NO_ACTUAL_LOWERING_HOOK"},
+    {"source": "unaccepted later compiler candidate", "authority": "candidate-stage1", "targets": ["c", "js"], "scenario": "all N03/N07 cells", "observedExecution": "MISSING_CANDIDATE_AUTHORITY", "reason": "This slice cannot qualify or retroactively accept rejected G35/G39 images."}
+  ],
+  "parentControlEvidence": "source-pins.json#observedParentEvidence",
+  "n03Go": "Both normal-return source-emitted targets execute exact declared stdout, input/artifact/guardian pins complete; retain exceptional C gap separately.",
+  "n07Go": "Actual producer shared term with distinct contextual facts AND actual lexical-resolution invariant distinguishes term-only diagnostic collapse AND both source-emitted targets execute exact expected output. Field serialization differences alone are STOP.",
+  "nonClaims": ["No compiler execution by slice", "No performance acceptance", "No candidate compiler acceptance", "No malformed FIR admitted", "No C throw emulation", "63/64/65 are source recursion lengths; exact emitted split counts require runtime evidence", "No retained-byte/GC claim"]
+}

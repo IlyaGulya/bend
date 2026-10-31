@@ -1,0 +1,50 @@
+{
+  "controlManifest": {
+    "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/emitter-steps-v1.json",
+    "exists": true,
+    "sha256": "0e46d9df5aa4ae5c589a83aa115d0376a05b203d58c564f9fc01f5c271fe21ee",
+    "bytes": 6801548
+  },
+  "candidateManifest": {
+    "version": "G39",
+    "role": "receipt-source-input",
+    "logicalPath": "checkpoints/emitter-steps-v1.json",
+    "expectedSha256": "a319abc40eda39b7d1f0870623b127ca8a2a67be7df84ef80b2b2d1fca715cc6",
+    "authenticated": true,
+    "authority": {
+      "kind": "file",
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g39e12-outcome/sources/a319abc40eda39b7d1f0870623b127ca8a2a67be7df84ef80b2b2d1fca715cc6-emitter-steps-v1.json",
+      "sha256": "a319abc40eda39b7d1f0870623b127ca8a2a67be7df84ef80b2b2d1fca715cc6"
+    },
+    "bytes": 6801549
+  },
+  "changedNormalizedDeclarations": [
+    {
+      "name": "cps_provider_8_js_runtime",
+      "R12": "f40602d1a7acbbd6451a99f6cf6c081938c8bf3a8f476f5ef7123d6a68ad2538",
+      "G39": "c9a22707e8a73334147f09bd388409794702d794dec702c804ca49fccc38f24f",
+      "origin": {
+        "source": "bend2/selfhost/js_backend.bend",
+        "canonicalName": "js_runtime",
+        "name": "cps_provider_8_js_runtime",
+        "kind": "def",
+        "canonicalDeclarationSha256": "d64ec9d74a60bd0b918e06ea2b8a3259738d6c4e7f83d1b3c74c508e1a408425",
+        "composedDeclarationSha256": "c9a22707e8a73334147f09bd388409794702d794dec702c804ca49fccc38f24f"
+      }
+    },
+    {
+      "name": "cps_provider_8_js_runtime_direct",
+      "R12": "13eff4bca43449d90995315384f7e6977c4eed6877ac1560a21d10e23ca39d1d",
+      "G39": "83a8419cee90d1188d8f3373f94b4d37e4bc5995f4c5bf56a8364f83e66b53ce",
+      "origin": {
+        "source": "bend2/selfhost/js_backend.bend",
+        "canonicalName": "js_runtime_direct",
+        "name": "cps_provider_8_js_runtime_direct",
+        "kind": "def",
+        "canonicalDeclarationSha256": "0ac1afc428c52d8edb4db3fedfb80b5000e5a0c2a516355aeb23c983fddbe02a",
+        "composedDeclarationSha256": "83a8419cee90d1188d8f3373f94b4d37e4bc5995f4c5bf56a8364f83e66b53ce"
+      }
+    }
+  ],
+  "warning": "Restored R12 generated output is raw-identical to accepted construction input; restored manifest bytes are not claimed historic-identical."
+}

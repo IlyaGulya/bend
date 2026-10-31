@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "diagnosticOnly": true,
+  "coverage": "Direct source API semantics, NOT checker-produced collision evidence. Imports actual backend_lower, so parent must account for its larger source closure separately.",
+  "rows": [
+    {
+      "name": "n05-composite-owner-key-api",
+      "source": "/private/tmp/bend-n01-n08-HL7Pt3/lowering-census/owner-key.bend",
+      "targets": ["c", "js"],
+      "expected": "2\n1\n0\n99\n"
+    }
+  ]
+}

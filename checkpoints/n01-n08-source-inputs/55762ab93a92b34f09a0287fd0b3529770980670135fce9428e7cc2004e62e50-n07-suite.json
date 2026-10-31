@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "status": "PREPARED_NOT_EXECUTED",
+  "rows": [
+    {
+      "name": "n07-minimal-dependent-pair",
+      "source": "/Users/ilyagulya/Projects/My/bend/tests/check/dependent_pair_destructure.bend",
+      "targets": ["c", "js"],
+      "expected": "3\n",
+      "plugins": ["/private/tmp/bend-n01-n08-HL7Pt3/source-witness/occurrences.mjs"]
+    },
+    {
+      "name": "n07-contextual-candidate",
+      "source": "/private/tmp/bend-n01-n08-HL7Pt3/source-witness/contextual.bend",
+      "targets": ["c", "js"],
+      "expected": "31\n47\n",
+      "plugins": ["/private/tmp/bend-n01-n08-HL7Pt3/source-witness/occurrences.mjs"]
+    },
+    {
+      "name": "n07-existing-convoy",
+      "source": "/Users/ilyagulya/Projects/My/bend/tests/check/convoy_dependent.bend",
+      "targets": ["c", "js"],
+      "expected": "45n\n",
+      "plugins": ["/private/tmp/bend-n01-n08-HL7Pt3/source-witness/occurrences.mjs"]
+    },
+    {
+      "name": "n07-group-returned-dependent",
+      "source": "/Users/ilyagulya/Projects/My/bend/tests/proof/group_returned_dependent.bend",
+      "targets": ["c", "js"],
+      "expected": "U1{}\n",
+      "plugins": ["/private/tmp/bend-n01-n08-HL7Pt3/source-witness/occurrences.mjs"]
+    },
+    {
+      "name": "n07-alias-erased-scalar-roles",
+      "source": "/private/tmp/bend-n01-n08-HL7Pt3/source-witness/roles.bend",
+      "targets": ["c", "js"],
+      "expected": "1129\n2147483648\n4294967295\n",
+      "plugins": ["/private/tmp/bend-n01-n08-HL7Pt3/source-witness/occurrences.mjs"]
+    },
+    {
+      "name": "n07-existing-scalar-record",
+      "source": "/Users/ilyagulya/Projects/My/bend/tests/compile/js_scalar_local_record.bend",
+      "targets": ["c", "js"],
+      "expected": "7\n8\n16\n27\n18\n",
+      "plugins": ["/private/tmp/bend-n01-n08-HL7Pt3/source-witness/occurrences.mjs"]
+    }
+  ]
+}

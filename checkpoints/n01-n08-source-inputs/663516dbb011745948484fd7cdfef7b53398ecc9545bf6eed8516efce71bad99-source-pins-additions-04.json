@@ -1,0 +1,17 @@
+{
+  "revision": 4,
+  "executionStatus": "UNEXECUTED",
+  "adds": {
+    "/private/tmp/bend-n01-n08-HL7Pt3/source-witness/reachability-04.mjs": "2fea4a5802bace51d434741a70b962aafcff8b38a73e6be7afde682474e4a428",
+    "/private/tmp/bend-n01-n08-HL7Pt3/source-witness/n07-reachability-suite-04.json": "76ae314ed2bbf19ecebcb24b56cb48b65ad94652d1969cc3fbe9b0ad54cb7e55",
+    "/private/tmp/bend-n01-n08-HL7Pt3/source-witness/REACHABILITY-04.md": "72a61e1c68bb429d908e71424146d200d54c8ec02844a646999ee635d19fa5cc"
+  },
+  "inheritedImmutableDependency": {
+    "/private/tmp/bend-n01-n08-HL7Pt3/source-witness/occurrences.mjs": "2505b8f82b3c46ff309ae82cff12f1bfbc0bbf5fbe0cdc287781035c5cf0038a"
+  },
+  "actualProducerBaseline": {
+    "sourceSha256": "46ba702d1f940c6ec527541c23dbbc0154b0b0591a531c7d9bcd13e2f10b6f50",
+    "rowsSha256": "73d8a0c49975e93771b19fbbc8a7b4756cd4ff5316f19d685e1a76ded5639aeb",
+    "imageSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e"
+  }
+}

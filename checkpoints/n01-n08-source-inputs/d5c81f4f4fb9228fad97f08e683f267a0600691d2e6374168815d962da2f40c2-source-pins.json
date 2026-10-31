@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "status": "OFFLINE_SOURCE_HASHES_OBSERVED_NOT_EXECUTION",
+  "repository": "/Users/ilyagulya/Projects/My/bend",
+  "workspace": "/private/tmp/bend-n01-n08-HL7Pt3/source-witness",
+  "hashCommand": "shasum -a 256 (explicit source files and source-witness/*)",
+  "scope": "All authored runnable inputs, suite roots, ABI/occurrence authority sources and source runners. Full per-target imported closure is produced by inventory.mjs and must match actual source-worker inputs; these static source pins are not a compiler-provenance proof.",
+  "workspacePins": {
+    "contextual.bend": "809cd09601a4039b50817bc1b79a6f87f8d1b15a30d800adbf7d071d53529e0f",
+    "oracle.mjs": "97b28857416818831a2f08393e9528dafb93283f2c45b38f8c3a025e8c8ff1b9",
+    "coverage.json": "f7c6f12bbe6c56fd16da78c2b6fc14653b05f5f61923d543b78cc1b2fc247e8d",
+    "inventory.mjs": "4c602902a3260d138094c6561bb1222c3b0c271b8518f2dd5b66c70a14a262e9",
+    "left.bend": "3ef4f1ffe9880bf76ae1aba9349f5efbbd5a77e71f33f3002c13cfef59dc352c",
+    "n03-suite.json": "bdcc9f8d48e47d5c48a8cb812a98db385a8e358acea7e4fdc3264e5e41b89896",
+    "n07-suite.json": "55762ab93a92b34f09a0287fd0b3529770980670135fce9428e7cc2004e62e50",
+    "occurrences.mjs": "2ae6bce32a9d6ec864e548c6a31c596d34891ee51b252b4c8315f941d72ffd13",
+    "reentry.bend": "cc976b96aebde37f6bce8bb720595c4d4c3e69048c0ed7d3dad8fa2ed3c7f2ac",
+    "reentry.c": "e7fe811ac9660cc899694d64a7b9d80d4d9d203b7b001296d8e612abda407dc5",
+    "reentry.js": "436cb542d7771e8041f98598415ac53483b89f08def9d915badb6cc58fbc9e61",
+    "right.bend": "e586d7ec7dab63bb77f8ca45f10c6e1aefd49007b5fc9c51154a962ba9cae950",
+    "roles.bend": "a7c88559106ff4a44f53d4ff1afab921e65b78fcfa4c0cd03036d13db2d4a577"
+  },
+  "repositoryPins": {
+    "bend2/selfhost/FIR_LAWS.md": "6478ab383ddf7f1bb726890b3f09513f98135b6518bd1701a0fbae2dae2579c0",
+    "bend2/selfhost/checker_ir.bend": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+    "bend2/selfhost/checked_frontend.bend": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+    "bend2/selfhost/checker.bend": "fa1d63e8f5de8f8afb9d47bca13104ad43285dcc195589666323bbda675366bc",
+    "bend2/selfhost/checker_arena.bend": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf",
+    "bend2/selfhost/backend_lower.bend": "d5217f4d2117ff9527474847b53caaa6d881570d6fe4a2c24e0af668cfc75b7f",
+    "bend2/selfhost/c_backend.bend": "71ae3cf1a6d44332d218be095a01fb59bb1b3bdbb606b8ca4e16ead6ca6cd576",
+    "bend2/selfhost/c_runtime.c": "6935fa83c1b20b7f8982f04ad54c4e4dae0b9b0ea66fd00f32d169a1d03ac2bf",
+    "bend2/selfhost/js_backend.bend": "9ad0e83cafd243745d7d1b256d3e053258a801350fc5d0e16dd65fec89a35aa0",
+    "bend2/base.bend": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+    "tests/io/foreign_runtime_apply.bend": "282719d8ea2e0343af518f138374c01ec24d0e67fcc59826972ca0cfb4ab7ace",
+    "tests/io/foreign_runtime_apply.c": "da77ef6f78c58ed44e4e9beaf277ad93d1cf22e269d59cbc4bb8055cd049ae26",
+    "tests/io/foreign_runtime_apply.js": "e5d846e9f15bcbe7f887d79fbca7338107ab6556e1215a59c5d044aabe97a7d1",
+    "tests/compile/js_multi_reentrant.bend": "28b72182afd669d46528d8361d5b1921cb721a9c70c4ab6f3d6b169a4ffdf3c6",
+    "tests/compile/js_multi_reentrant.js": "759b0833e94678d9b03e3358b3460bd9e3cbfa0cd5a4d9b643d6bb5e09e135db",
+    "tests/check/dependent_pair_destructure.bend": "a2fadfb548050f7d693fbca4a98661ab6eb9576dbb617c22ae6da4f9d1f19eb0",
+    "tests/check/convoy_dependent.bend": "a55f18eae54e685115ab16a9afc7ead7cab181b815f1f23700546d17ded37f73",
+    "tests/proof/group_returned_dependent.bend": "44ee28f849990be8085bef5ed4109589d5edabad612bb07513a6720b35e2626c",
+    "tests/compile/js_scalar_local_record.bend": "46ba702d1f940c6ec527541c23dbbc0154b0b0591a531c7d9bcd13e2f10b6f50",
+    "tests/compile/js_split_capture_chain.bend": "b1c34e1766f5d8aad4bb6ca31593c82dc16b893ebfdaeef5800ad5bd1bab4327",
+    "evals/checker_arena_growth_smoke.bend": "43f681dfc85ce5a33cb8efdbfc26560b08f88fab1b61a3f5d22b067611c2ac9a",
+    "evals/c_target_fixtures_run.ts": "816b857e2fd6051255f4ea8ddcc427fd936c0c6b441d7a4e7e6bfcf9810307d0",
+    "evals/g24_qualification.mjs": "a8212e066d3fadad484a7699a338fa3170a2978403a6dbab5befc0cf6afc353e"
+  },
+  "observedParentEvidence": {
+    "path": "/private/tmp/bend-n01-n08-HL7Pt3/authority-smoke-01/receipt.json",
+    "sha256": "a473e784dcc48c82b3b7a37b7e30685039c4a33057d7056de17085a988d11764",
+    "scope": "Parent-produced genuine R12 split-capture control receipt, not execution of any new witness"
+  }
+}

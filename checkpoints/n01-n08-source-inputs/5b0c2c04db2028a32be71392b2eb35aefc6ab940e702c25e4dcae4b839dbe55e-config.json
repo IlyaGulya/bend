@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "request": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/throughput/control-js.request.json",
+  "plugins": ["/private/tmp/bend-n01-n08-HL7Pt3/lowering-census/plugin.mjs"],
+  "expectedSteps": {"Template": 1004927, "Checker": 10078835, "Emitter": 1225480},
+  "expectedOutput": {"sha256": "c33227e028d767df9a9fff75663e42eb7374919dcf8e7dff14936a98d20008fb", "bytes": 29948466},
+  "pins": {
+    "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g32c-full/throughput/control-js.request.json": "7141d8d73f9470013cd2b42be7613e7c96b496e5cf4c0329e4ba58759e738ffb",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/backend_lower.bend": "d5217f4d2117ff9527474847b53caaa6d881570d6fe4a2c24e0af668cfc75b7f",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/lower_catalog.bend": "e322065c5ccb0a15f2ab81fd9e6dd689fe8b88ad50535e4f70f503e796164f01",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/descriptor_nf.bend": "c727bfe0adf97f86dc44960ca2c46fd890f0d8557157ba883af40d738d3e72dd",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/backend_ir.bend": "c0286db6b192bf5cc917774b7ea5e393d4416263432eb130fb8393b1dffc1cb3",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_ir.bend": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+    "/private/tmp/bend-e01-e13-jbsb4I/normalization-assembly.mjs": "1dd1564b58187202b80ad2478275816db20ea1cabb35fb27c8832d37b15740ee",
+    "/Users/ilyagulya/Projects/My/bend/checkpoints/SELFHOST_ARCHITECTURE_AFTER_E13.md": "57ab5d34a822199eb92e27bf21bd6824e8bc397f52062ca35bcb194853826862",
+    "/private/tmp/bend-e01-e13-jbsb4I/census-runner.mjs": "b4bb15da77c68fb1dfbac9513632fe244e3322783577a363208d655924bc0fed",
+    "/private/tmp/bend-e01-e13-jbsb4I/e05-capture-e10-e12-owned-v1.result.json": "ebf7a5db9349e420c4e48fc1811b8ee0133a2f3c3e9d76de559c33ed9b622065",
+    "/private/tmp/bend-n01-n08-HL7Pt3/lowering-census/plugin.mjs": "1d908cac8b7ffeb57961d1dc422e7a87771acf92e59acff114c65273b0611093",
+    "/private/tmp/bend-n01-n08-HL7Pt3/lowering-census/inventory.mjs": "f05361b62a77b23a1fbb966b6fedbc154794eb00557bbf4f6ce63b513b0668d3",
+    "/private/tmp/bend-n01-n08-HL7Pt3/lowering-census/decide.mjs": "0b0f9003a047c304f0c4f562da01654edfc9e31d90c012a02fc82b46f612dac5",
+    "/private/tmp/bend-n01-n08-HL7Pt3/lowering-census/capture.bend": "350de1f7c77febaaddf1ae0acb43d6c5e99dfa88d656488a321ce09b868d153f",
+    "/private/tmp/bend-n01-n08-HL7Pt3/lowering-census/application.bend": "0d838cf382bbcf1ec76a4d04b40924b507d4f3446a0092251a2760fa77deabb2",
+    "/private/tmp/bend-n01-n08-HL7Pt3/lowering-census/string.bend": "3da9c34ccf94323abfeb1fe474f0735e8f81f23071e1e6481e02e4e02bf45bfe",
+    "/private/tmp/bend-n01-n08-HL7Pt3/lowering-census/owner-key.bend": "62ccc99d5c8b951a052879fb6386e1db1502e2816d48a62b6b6ae77d132b74ea",
+    "/private/tmp/bend-n01-n08-HL7Pt3/lowering-census/fixtures.json": "ba8ae5644663a0b32147d2d849168b84c94639ba2dc67fc9e899b983561c4646",
+    "/private/tmp/bend-n01-n08-HL7Pt3/lowering-census/owner-key-suite.json": "ab4d66f00cc78866535bd6da84c02753754843d31ece16840d815fad17fa975e"
+  }
+}

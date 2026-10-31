@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "diagnosticOnly": true,
+  "revision": "Family and Alias Type parameters are affine, not erased: their definition bodies consume Type values. No compiler/checker changes.",
+  "priorEvidence": "Parent reports capture C+JS passed in fixtures-01; application C failed checking with invalid use quantity for a, Template=19299 Checker=144320. This suite intentionally omits capture.",
+  "expectedOutputAuthority": "Source-derived expectations; revised application and string not executed by slice author",
+  "rows": [
+    {
+      "name": "n06-descriptor-applications-v2",
+      "source": "/private/tmp/bend-n01-n08-HL7Pt3/lowering-census/application-v2.bend",
+      "targets": ["c", "js"],
+      "plugins": ["/private/tmp/bend-n01-n08-HL7Pt3/lowering-census/plugin.mjs"],
+      "expected": "17\n23\n"
+    },
+    {
+      "name": "n08-descriptor-strings",
+      "source": "/private/tmp/bend-n01-n08-HL7Pt3/lowering-census/string.bend",
+      "targets": ["c", "js"],
+      "plugins": ["/private/tmp/bend-n01-n08-HL7Pt3/lowering-census/plugin.mjs"],
+      "expected": "4\n"
+    }
+  ]
+}

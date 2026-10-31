@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 2,
+  "status": "OFFLINE_ROLE_SPECIFIC_DECODER_REVISION_NOT_EXECUTED",
+  "baseManifest": {
+    "path": "/private/tmp/bend-n01-n08-HL7Pt3/source-witness/source-pins.json",
+    "sha256": "d5c81f4f4fb9228fad97f08e683f267a0600691d2e6374168815d962da2f40c2",
+    "policy": "Retain original manifest as revision 1; apply only the explicit replacement below when verifying current sources. All other pins remain unchanged."
+  },
+  "replacements": [
+    {
+      "path": "/private/tmp/bend-n01-n08-HL7Pt3/source-witness/occurrences.mjs",
+      "previousSha256": "2ae6bce32a9d6ec864e548c6a31c596d34891ee51b252b4c8315f941d72ffd13",
+      "sha256": "2505b8f82b3c46ff309ae82cff12f1bfbc0bbf5fbe0cdc287781035c5cf0038a",
+      "change": "Explicit number-only unsigned U32 checks; separate Nat decoder for CheckedBinding.type_depth and actual lexical index. Nat accepts nonnegative exact number or bigint only through 2^48-1; only those declared Nat roles permit bounded bigint-to-number conversion."
+    }
+  ],
+  "evidence": [
+    {"path": "checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js", "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e", "lines": [61, 114, 197, 198, 199, 200, 982, 9883], "observed": "Pinned genuine image identifies CheckedBinding.type_depth as Nat; its Nat runtime uses native numbers, nat_chk bound 281474976710655, and number operators. No claim that current observed binding values are bigint."},
+    {"path": "/private/tmp/bend-e01-e13-jbsb4I/checked-closure-oracle.mjs", "sha256": "97f82837882e63187736c05cb26f142050f940afa95a10028ef9be48e0a767a5", "lines": [14, 15], "observed": "Existing observer keeps handles as unsigned number U32 and separately allows number or bigint natural tape entries."}
+  ],
+  "execution": "None; parent stated first N07 execution had not started. No tests, compiler runs, generators or formatters invoked."
+}

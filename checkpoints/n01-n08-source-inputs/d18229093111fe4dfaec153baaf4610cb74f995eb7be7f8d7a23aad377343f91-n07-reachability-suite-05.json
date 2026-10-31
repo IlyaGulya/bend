@@ -1,0 +1,16 @@
+{
+  "rows": [
+    {
+      "name": "n07-focal-shared-annotations-05",
+      "source": "/Users/ilyagulya/Projects/My/bend/tests/compile/js_scalar_local_record.bend",
+      "targets": [
+        "c",
+        "js"
+      ],
+      "expected": "7\n8\n16\n27\n18\n",
+      "plugins": [
+        "/private/tmp/bend-n01-n08-HL7Pt3/source-witness/reachability-05.mjs"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "rows": [
+    {
+      "name": "n02-split-capture-authority",
+      "source": "/Users/ilyagulya/Projects/My/bend/tests/compile/js_split_capture_chain.bend",
+      "targets": ["c", "js"],
+      "expected": "206\n45\n32\n24\n"
+    }
+  ]
+}

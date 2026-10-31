@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "diagnosticOnly": true,
+  "expectedOutputAuthority": "Source-derived expectations only; no execution by slice author",
+  "rows": [
+    {
+      "name": "n05-wide-nested-captures",
+      "source": "/private/tmp/bend-n01-n08-HL7Pt3/lowering-census/capture.bend",
+      "targets": ["c", "js"],
+      "plugins": ["/private/tmp/bend-n01-n08-HL7Pt3/lowering-census/plugin.mjs"],
+      "expected": "39\n37\n7\n12\n11\n12\n"
+    },
+    {
+      "name": "n06-descriptor-applications",
+      "source": "/private/tmp/bend-n01-n08-HL7Pt3/lowering-census/application.bend",
+      "targets": ["c", "js"],
+      "plugins": ["/private/tmp/bend-n01-n08-HL7Pt3/lowering-census/plugin.mjs"],
+      "expected": "17\n23\n"
+    },
+    {
+      "name": "n08-descriptor-strings",
+      "source": "/private/tmp/bend-n01-n08-HL7Pt3/lowering-census/string.bend",
+      "targets": ["c", "js"],
+      "plugins": ["/private/tmp/bend-n01-n08-HL7Pt3/lowering-census/plugin.mjs"],
+      "expected": "4\n"
+    }
+  ]
+}

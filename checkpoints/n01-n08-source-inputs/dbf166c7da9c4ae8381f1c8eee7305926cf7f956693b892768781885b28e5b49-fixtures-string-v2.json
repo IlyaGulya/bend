@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "diagnosticOnly": true,
+  "revision": "Replace the aggregate of four zero-field indexed Label records with one U32-field indexed Label family and four ordinary parameter-type literal paths. No backend changes.",
+  "priorEvidence": "Parent reports original string fixture observed 4 TermString routes, 5 chars including astral/NUL, 344 constructors with conservation PASS; C emission then failed: constructor Labels has inconsistent packed node. This proves observer relevance, not consumer correctness. Capture and application-v2 already passed and are not repeated here.",
+  "expectedOutputAuthority": "Source-derived 4 newline; revised fixture unexecuted by author",
+  "coverageRequired": {
+    "descriptorString.termStringRoutes": 4,
+    "descriptorString.chars": 5,
+    "descriptorString.astralChars": 1,
+    "descriptorString.nulChars": 1,
+    "descriptorString.constructedDescriptors": 344
+  },
+  "rows": [
+    {
+      "name": "n08-descriptor-strings-v2",
+      "source": "/private/tmp/bend-n01-n08-HL7Pt3/lowering-census/string-v2.bend",
+      "targets": ["c", "js"],
+      "plugins": ["/private/tmp/bend-n01-n08-HL7Pt3/lowering-census/plugin.mjs"],
+      "expected": "4\n"
+    }
+  ]
+}

@@ -6,6 +6,28 @@ under their original image IDs; a later pass never reclassifies an older run.
 Detailed evidence and reasoning live in the linked receipts and notes.
 This index does not replace a receipt.
 
+## N01–N08: executed diagnostics, no production candidate admitted
+
+All eight follow-up experiments are complete. Genuine R12 native/bootstrap
+authority is authenticated; 30 actual own-frontend C/JS target executions
+include supported normal callback reentry at 63/64/65. Recoverable C exception
+equivalence and rejected G39 candidate-stage1 proof remain absent.
+
+Full-workload measurements stop production capture-map, application-spine
+and descriptor-string changes. The observed shared FIR occurrences are
+discarded annotations, not a consumer-sensitive contextual witness.
+Matched 50,000-event construction prefixes contain no structural divergence;
+they do not diagnose the later native working-set limit. Keep contextual FIR,
+existing BIR and lowering boundaries; no speculative semantic IR cutover.
+
+All 21 baseline source checks and three generated-source hashes match.
+G24R12 remains accepted; no new native build/fixedpoint/performance pass is
+claimed. Exact commands, failures, original limits and source authorities:
+`evals/receipts/experiments_n01_n08_completed.json`;
+`checkpoints/SELFHOST_EXPERIMENTS_N01_N08.md`.
+The original advisory plan remains byte-fixed:
+`checkpoints/SELFHOST_ARCHITECTURE_AFTER_E13.md`.
+
 ## G39 / E12: retired-suffix cleanup rejected at native codegen
 
 Only the two existing JS runtime source literals change. All five registration

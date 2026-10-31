@@ -4,6 +4,32 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
+### N01–N08 исполнены: diagnostic STOP, production compiler неизменён
+
+Все восемь опытов после E13 завершены; ни один production-кандидат не допущен.
+Accepted baseline — G24R12 (`9beb95e4`), без изменения compiler source.
+Genuine native/bootstrap authority проверена; 30 actual own-frontend C/JS
+target executions включают новый нормальный C/JS callback reentry 63/64/65.
+Это не закрывает задним числом missing G39 candidate-stage1 proof или
+recoverable C exception semantics.
+
+Full-workload census не оправдывает capture index, descriptor spine или
+compact strings. N07 нашёл shared FIR annotations, но actual lowering их
+стирает: consumer-sensitive contextual witness не получен. Контекстный FIR,
+существующий BIR и границы lowering сохраняются. Совпадение bounded
+construction prefixes не доказывает причину более позднего native memory cap.
+Отказы fixtures, coverage misses и неполнота broad observer сохранены явно.
+
+Повторная проверка: все 21 baseline source checks и три generated hashes
+совпадают; restore не требовался. Новые native/fixedpoint/performance gates
+не объявляются PASS без кандидата. Итог и точные команды:
+`SELFHOST_EXPERIMENTS_N01_N08.md`;
+`../evals/receipts/experiments_n01_n08_completed.json`.
+Исходный план `SELFHOST_ARCHITECTURE_AFTER_E13.md` не переписан.
+Следующий construction вопрос — локализация divergence на более поздней
+конкретной prepare boundary при matched source/runtime/environment,
+не повтор unchanged failed full build и не повышение caps.
+
 ### G39 / E12 отклонён: actual runtime consumers PASS, native RSS cap FAIL
 
 Authored source: `62d0ce6e`. Изолированная правка двух runtime literals:
