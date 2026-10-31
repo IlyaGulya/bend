@@ -1,0 +1,285 @@
+{
+  "schemaVersion": 1,
+  "status": "LLVM8_DEFAULT_PROMOTION_REJECTED_DEFAULT4_RETAINED",
+  "authoredCommit": "d6df4c3b",
+  "outcome": {
+    "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g41llvm-outcome/outcome.json",
+    "sha256": "3fbaed6de246cf1b1c72dc78da6534b4dbe68ea88f0001b50ff7ad80366a74ca",
+    "bytes": 1301095
+  },
+  "constructionTooling": {
+    "selectablePartitions": [
+      4,
+      8
+    ],
+    "defaultPartitions": 4,
+    "maxBackendChildren": 3,
+    "fourWayExactAcceptedC": true,
+    "fourWayExactAcceptedNative": true,
+    "realBackendSmoke": {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g41/backend-smoke/report.json",
+      "sha256": "cfc8cd5bad347a8146f48c2e4c1ed51e84fe38c27f6e07356505db554cda2976",
+      "bytes": 797227
+    },
+    "successfulFixtureExecutions": 2,
+    "expectedCompilerChildFailures": 1,
+    "invalidRequestsRejectedBeforeWork": 6
+  },
+  "observedSingleBuildsNotRepeatedBenchmark": {
+    "control4": {
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 4965269504,
+        "peakFootprintBytes": 5316909128,
+        "elapsedMs": 274845,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_experiment.ts",
+          "--mode=build",
+          "--corpus=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/root.native.corpus.json",
+          "--artifact=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g41/parts4/native",
+          "--report=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g41/parts4/build.json",
+          "--cc-pipeline=llvm-split",
+          "--cc-opt=1",
+          "--cc-partitions=4",
+          "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+          "--internal=build"
+        ],
+        "label": "Native CPU compiler build",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793447429067-8b0b8b882ca7a894.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "cSha256": "2290a096f114201665d4b943db3470889ca700ec205b875612178ea263e27ffb",
+      "nativeSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "backendElapsedMs": 103062.401
+    },
+    "candidate8": {
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 4877647872,
+        "peakFootprintBytes": 5311371384,
+        "elapsedMs": 242383,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_experiment.ts",
+          "--mode=build",
+          "--corpus=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g41llvm8-full/root.native.corpus.json",
+          "--artifact=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g41llvm8-full/native",
+          "--report=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g41llvm8-full/root-native-build.json",
+          "--cc-pipeline=llvm-split",
+          "--cc-partitions=8",
+          "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+          "--internal=build"
+        ],
+        "label": "Native CPU compiler build",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793448174496-71ca6f2ddaf988a7.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "cSha256": "2290a096f114201665d4b943db3470889ca700ec205b875612178ea263e27ffb",
+      "nativeSha256": "b5b06e42e33602f688d5fa83aa24beed43bbef525b27b03a83026e0fb1c28d03",
+      "backendElapsedMs": 88099.88241600001
+    }
+  },
+  "eightPartitionRuntimeRejection": {
+    "policy": {
+      "id": "g29-paired-full-root-strict-v1",
+      "repetitions": {
+        "control": 3,
+        "candidate": 3
+      },
+      "modes": [
+        "native",
+        "js"
+      ],
+      "rules": {
+        "pipelineMs": "candidate arithmetic mean AND median strictly less than control",
+        "peakRssBytes": "candidate median less than or equal to control",
+        "peakFootprintBytes": "candidate median less than or equal to control"
+      },
+      "rows": "all 12 authenticated measurements are required; original rows are never excluded",
+      "scope": "rejection evidence only; never compiler or performance acceptance"
+    },
+    "evaluated": true,
+    "rows": 12,
+    "expectedRows": 12,
+    "counts": {
+      "native": {
+        "control": 3,
+        "candidate": 3
+      },
+      "js": {
+        "control": 3,
+        "candidate": 3
+      }
+    },
+    "passed": false,
+    "rejected": true,
+    "failures": [
+      "native: pipelineMeanStrictlyImproved is false",
+      "native: pipelineMedianStrictlyImproved is false",
+      "native: peakRssMedianNotIncreased is false",
+      "js: pipelineMeanStrictlyImproved is false",
+      "js: peakRssMedianNotIncreased is false"
+    ],
+    "modes": {
+      "native": {
+        "counts": {
+          "control": 3,
+          "candidate": 3
+        },
+        "evaluated": true,
+        "measurements": {
+          "pipelineMs": {
+            "control": {
+              "n": 3,
+              "mean": 89845.224292,
+              "median": 90159.92879199999
+            },
+            "candidate": {
+              "n": 3,
+              "mean": 96132.255514,
+              "median": 95973.364875
+            },
+            "delta": {
+              "mean": -6287.031222000005,
+              "median": -5813.436083000008
+            }
+          },
+          "peakRssBytes": {
+            "control": {
+              "n": 3,
+              "mean": 1647777109.3333333,
+              "median": 1621868544
+            },
+            "candidate": {
+              "n": 3,
+              "mean": 1638405461.3333333,
+              "median": 1647345664
+            },
+            "delta": {
+              "median": -25477120
+            }
+          },
+          "peakFootprintBytes": {
+            "control": {
+              "n": 3,
+              "mean": 1743510744,
+              "median": 1745231096
+            },
+            "candidate": {
+              "n": 3,
+              "mean": 1738437197.3333333,
+              "median": 1737481440
+            },
+            "delta": {
+              "median": 7749656
+            }
+          }
+        },
+        "checks": {
+          "pipelineMeanStrictlyImproved": false,
+          "pipelineMedianStrictlyImproved": false,
+          "peakRssMedianNotIncreased": false,
+          "peakFootprintMedianNotIncreased": true
+        },
+        "passed": false
+      },
+      "js": {
+        "counts": {
+          "control": 3,
+          "candidate": 3
+        },
+        "evaluated": true,
+        "measurements": {
+          "pipelineMs": {
+            "control": {
+              "n": 3,
+              "mean": 314051.82324999996,
+              "median": 315487.122125
+            },
+            "candidate": {
+              "n": 3,
+              "mean": 315222.17754133337,
+              "median": 315278.49266600003
+            },
+            "delta": {
+              "mean": -1170.3542913334095,
+              "median": 208.62945899995975
+            }
+          },
+          "peakRssBytes": {
+            "control": {
+              "n": 3,
+              "mean": 2150028629.3333335,
+              "median": 2160328704
+            },
+            "candidate": {
+              "n": 3,
+              "mean": 2255186602.6666665,
+              "median": 2274607104
+            },
+            "delta": {
+              "median": -114278400
+            }
+          },
+          "peakFootprintBytes": {
+            "control": {
+              "n": 3,
+              "mean": 2952844618.6666665,
+              "median": 2945391336
+            },
+            "candidate": {
+              "n": 3,
+              "mean": 2898162141.3333335,
+              "median": 2921650776
+            },
+            "delta": {
+              "median": 23740560
+            }
+          }
+        },
+        "checks": {
+          "pipelineMeanStrictlyImproved": false,
+          "pipelineMedianStrictlyImproved": true,
+          "peakRssMedianNotIncreased": false,
+          "peakFootprintMedianNotIncreased": true
+        },
+        "passed": false
+      }
+    },
+    "note": "Rejection evidence only. A pass here does not establish compiler or performance acceptance; the parent owns that decision."
+  },
+  "compilerAlgorithmsUnchanged": true,
+  "candidateJsEqualsAcceptedR12": true,
+  "sameJsBytesTimingDifferenceNotAttributedToLlvm": true,
+  "compilerAcceptanceChanged": false,
+  "performanceAcceptanceChanged": false,
+  "noLateConsumerPassClaim": true,
+  "sourceVersionsRemainIsolated": true,
+  "sourcePins": {
+    "evals/native_compiler_experiment.ts": "5f952045eb0dc22444cce4941c359ff6d8e1851f5a720e9c776c111cf97b0ed4",
+    "evals/native_compiler_llvm.ts": "1adbf5da5b9535aee9e4cd9c62d9396c742a22ebf187d72672fa22de21f6abaf",
+    "evals/g24_qualification.mjs": "4914c7febdda6807c5fc34905eb594bcb9c39d31a9e3d08608503a279c2f62ec"
+  },
+  "next": "Facts separation remains a private unadmitted candidate; compiler caps are not changed."
+}

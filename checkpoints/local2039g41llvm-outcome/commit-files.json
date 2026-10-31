@@ -1,0 +1,9 @@
+[
+  "checkpoints/local2039g41llvm-outcome/commit-files.json",
+  "checkpoints/local2039g41llvm-outcome/outcome.json",
+  "checkpoints/local2039g41llvm-outcome/sources/300366e535696d8ac1bdc5e9c005370b52b772a4954406b9a2d97d1a0f67e66c-root.native.corpus.json",
+  "checkpoints/local2039g41llvm-outcome/sources/8ffed3352a5dd623e0cd948e429cb7f8fef5e332a02151981e58161ef7b2b86d-selfhost-root-local2039g41llvm8.json",
+  "checkpoints/local2039g41llvm-outcome/sources/a21023b521b557e0e106f9bd5713f2c4d0879083590b8a61d9456e9016d1af22-deliberate-failure-cc.mjs",
+  "checkpoints/local2039g41llvm-outcome/sources/b1baa72a88af5b1491495b0a3a8e86d024181f8b800d9d9396f3a9e04208fff2-record.mjs",
+  "checkpoints/local2039g41llvm-outcome/sources/fa95559c05c9138ccbf7df764431c89ffaeecef1ba5825b6608a093724c2d50a-restore.mjs"
+]
