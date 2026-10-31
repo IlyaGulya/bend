@@ -389,3 +389,41 @@ before and after every leg; runtime paths/versions are recorded, but binaries
 are not hashed. This is diagnostic evidence, not a new compiler acceptance or
 a producer `compile_book` overhead measurement. The unprofiled native build
 and stage1/stage2 acceptance remain in their separate g8 receipt.
+
+## Immutable qualification placement (experimental, currently blocked)
+
+`evals/g24_qualification.mjs --distributed-plan=PATH` selects the explicit
+protocol described at the top of `evals/g24_distributed.mjs`. Omit it to retain
+the original serial path. The plan pins actual physical hosts, runtimes/tools,
+environment and job placement. Obtain SSH pins through independently trusted
+access; a first-contact probe is not authentication. The existing
+`gates/_lib.ts` cluster proxy or BEND_HOC bastion must already be configured.
+
+The snapshot inventory follows operational modules, actual consumer/matrix
+closures, selected real producer evidence/artifacts and frozen workload inputs.
+It never walks an entire checkout/output/history tree. Unsupported dependencies
+and relocation-unsafe absolute Bend imports fail before transport. Bun's scanner
+receives source after its ignored first-line hashbang; the captured source/hash
+is unchanged. Extraction seals its precreated root to 0555 before OS checks and
+snapshot JS loading; exact nested modes/content remain independently checked.
+
+`local-single-host` serializes on exactly one machine. Independent SSH hosts may
+run independent correctness queues; every current supervisor, including
+correctness, requires an otherwise idle dedicated host. Lease/watchdog/tree
+reaping and the original heavy guardian remain mandatory. Never unlink a
+poisoned reservation or override the guardian to force a run.
+
+Each performance lane owns one host lease for all six original interleaved rows.
+Native output is authenticated before JS dispatch. No row exclusions, imported
+receipts, relaxed means/medians, tolerance or parallel samples are introduced.
+Do not run producer builds alongside measurement hosts.
+
+G43's actual local snapshot/transfer/authentication path reaches the idle check
+but refuses 105 unrelated existing Bun/Node services. This does not measure
+their CPU activity. No consumer-worker/performance completion or multi-machine
+speedup is claimed; no unrelated process is stopped. Nine invariant tests and
+the guarded 295-file real-producer freeze/verify diagnostic pass, but neither
+replaces the missing consumers, running-native cancellation, twelve-row lanes
+or final full qualification. The exact source/commands/failures and clean-host
+prerequisite are in `checkpoints/local2039g43r4-outcome/outcome.json`.
+

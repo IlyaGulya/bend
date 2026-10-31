@@ -5,6 +5,16 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- G43 adds an experimental opt-in immutable-snapshot qualification scheduler,
+  isolated output trees and whole-lane placement through the existing SSH route.
+  Default serial execution and the strict twelve-row performance decision remain
+  unchanged. The new mode is not qualified: real local transfer/authentication
+  reaches the dedicated-host check and correctly refuses unrelated Bun/Node
+  services. No consumer-worker or performance row has completed in this mode.
+  Coordinator self-import deadlock, CLI hashbang scanning and extraction-root
+  permission defects were reproduced and checkpointed before their fixes.
+  Latest source: `2d5d7601`;
+  `checkpoints/local2039g43r4-outcome/outcome.json`.
 - Build acceleration experiments G41/G42 preserve G24R12 as the accepted
   compiler. LLVM splitting now has an explicit `--cc-partitions=4|8` experiment
   with at most three backend children; four remains the default. Real eight-way

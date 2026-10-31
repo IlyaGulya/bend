@@ -4,6 +4,49 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
+### G43: текущий opt-in scheduler упёрся в dedicated-host prerequisite
+
+Последний source checkpoint — **`2d5d7601`**. Код нового
+`--distributed-plan` реализован, но **не qualified и не accepted**.
+Default serial, original 8/8-GiB / poll10ms / timeout600s per-step guardian
+и strict twelve-row performance policy не менялись. Local mode — одна
+реальная машина, без multi-machine speedup claim.
+
+Последовательность failures/fixes сохранена до каждой следующей версии:
+`ea87e019` — original top-level-await self-import stall до dispatch;
+`77358367` — scanner отвергал CLI hashbang;
+`be8124eb` — tar оставлял precreated transport root writable.
+Теперь fixtures передаются явно, scanner пропускает только ignored hashbang
+без изменения captured bytes, transport root получает 0555 после extraction.
+Остальные modes/content и OS-side code/tool checks не ослаблены.
+
+R3 fresh native C/executable равны R12; genuine stage1/stage2 равны accepted
+`85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e`.
+Полный emitted-suite producer PASS не выдаётся за complete correctness.
+Девять invariant tests PASS; guarded real-producer freeze/verify — 295 files,
+170,103,359 bytes. Реальный R4 transfer/supervisor проходит source/host/tool
+authentication и **отказывает на strict idle check**: 105 сторонних Bun/Node,
+включая ChatGPT services. Не утверждать, что все они грузят CPU.
+Durable supervisor FAIL / reaped=true сохранён; чужие процессы не тронуты,
+guardian/lease bypass и poisoned-lock cleanup не применялись.
+
+Текущий итог — **BLOCKED_DEDICATED_HOST_REQUIRED**:
+`local2039g43r4-outcome/outcome.json`. Actual consumer workers = 0, новых
+performance rows = 0. Ещё нужны все пять consumers, running-native
+cancellation/reaping, обе шестистрочные lanes и fresh complete final run.
+Не запускать их заново на том же busy host и не импортировать manufactured
+correctness: нужен clean authenticated mini либо явное решение пользователя
+по текущим локальным services. SSH tool hosts отсутствуют, BEND_HOC unset,
+обязательный `cluster` proxy не разрешается. Чужие Bun/Node/ChatGPT процессы
+не убивать и idle check ради PASS не отключать.
+
+Required diagnostic sources уже frozen в `local2039g43r2-source` и
+`local2039g43r4-source`; они используют individually passed real producers,
+но не создают prior full correctness authority. Prepared cancellation driver
+в temporary experiment directory ещё **не исполнен**; его нельзя считать
+доказательством. Production compiler/R12 artifacts и N12/G41 constructor
+остаются без algorithmic promotion.
+
 ### G41/G42 завершены: parallel LLVM opt-in, recipes rejected, R12 unchanged
 
 G41 source/outcome — **`0197c2a2`**. Native constructor поддерживает

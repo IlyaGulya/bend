@@ -6,6 +6,54 @@ under their original image IDs; a later pass never reclassifies an older run.
 Detailed evidence and reasoning live in the linked receipts and notes.
 This index does not replace a receipt.
 
+## G43: opt-in scheduler implemented; completion requires a dedicated idle host
+
+Current source is `2d5d7601`, with explicit `--distributed-plan=PATH`.
+The default stays serial. Snapshots use an explicit closed source/input
+inventory, original producer authority, OS-side code/tool authentication,
+read-only transport trees, and separate declared-input execution trees.
+One physical host runs at most one scheduler job. All six samples of a lane
+remain on one pinned host; native authenticates output before JS starts.
+The original twelve-row time/RSS/footprint decision and per-step guard remain.
+`local-single-host` is one real machine with serialized jobs, not a multi-node
+performance claim. SSH still requires the existing cluster/BEND_HOC route.
+
+Failed versions remain explicit: `ea87e019` records the original coordinator
+top-level-await self-import stall before any dispatch; `77358367` records
+Bun import scanning rejecting CLI hashbangs; `be8124eb` records the real tar
+transfer preserving a precreated writable root. The fixes pass consumer
+fixtures explicitly, skip only the lexically ignored hashbang for scanning
+while preserving original bytes, and seal only the transport root after
+successful extraction. All nested content/mode checks stay enabled.
+
+The fresh R3 producer path independently passes with accepted C/native bytes,
+genuine accepted stage1/stage2 byte equality, and the complete emitted suites:
+
+| Observed R3 phase | Elapsed seconds |
+| --- | ---: |
+| Native construction | 238.679 |
+| Genuine native-seeded fixedpoint | 453.650 |
+| Emitted suites | 219.091 |
+
+These producer passes are not a complete distributed correctness receipt.
+Nine filesystem/lease/row-invariant tests pass. A guarded real-producer
+packaging diagnostic freezes/verifies 295 files, 170,103,359 bytes. The R4
+actual transfer and supervisor then pass snapshot/host/tool authentication
+and fail at the unchanged dedicated-host idle check: 105 unrelated existing
+Bun/Node processes. This is a named-process refusal, not proof that all 105
+are using CPU. The supervisor publishes durable FAIL/reaped=true; no user
+process is stopped and no lease/guardian override is used.
+
+Current disposition is **BLOCKED_DEDICATED_HOST_REQUIRED**, not acceptance.
+Zero actual consumer workers and zero new performance rows have completed.
+Running-native cancellation, all five consumers, both original six-row lanes
+and a fresh complete final qualification still require an idle dedicated host.
+SSH inventory has no configured hosts, BEND_HOC is unset, and the required
+cluster proxy name does not resolve here. Do not bypass the idle check or
+rewrite an old receipt to claim progress. Finish through an authenticated
+clean mini, or obtain the user's explicit decision about existing local
+services. Evidence: `checkpoints/local2039g43r4-outcome/outcome.json`.
+
 ## G41–G42: backend partition experiment and deferred recipes do not earn promotion
 
 G41 source/outcome is committed at `0197c2a2`. The real LLVM pipeline accepts
