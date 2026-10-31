@@ -6,6 +6,31 @@ under their original image IDs; a later pass never reclassifies an older run.
 Detailed evidence and reasoning live in the linked receipts and notes.
 This index does not replace a receipt.
 
+## N11–N12: full construction localized; canonical Bun startup default fixed
+
+Both hint-enabled R12/G39 cells complete all four C fact passes and final
+translation-unit assembly. Both explicitly unset cells hit the original
+8-GiB guard in pass 2, before final C rendering. This is operational dependence
+in a new controlled matrix, not a recovered historical G36–G39 environment.
+The diagnostic source/evidence checkpoint is `56dcb468`.
+
+The canonical launcher now defaults an undefined `BUN_JSC_forceRAMSize` to the
+accepted-control value before ordinary Bun child startup. Explicit overrides
+and Node profiling policy are preserved; guard quotas are not increased.
+An actual uninstrumented canonical C/LLVM/native build with caller hint unset
+passes, then its native executable parses/checks/emits the entire frozen corpus.
+All three C/native/JS artifacts equal accepted R12 bytes. Fresh build metadata
+authenticates the changed launcher; historical protected pins are not rewritten.
+
+The construction reproducibility gap is closed without a FIR/BIR rewrite.
+G24R12 compiler source/artifacts remain unchanged. No new stage1→stage2
+fixedpoint, paired performance win or retroactive G39 acceptance is claimed.
+Exact commands, source authorities, original limits and resource outcomes:
+`checkpoints/SELFHOST_CONSTRUCTION_N11.md`;
+`checkpoints/SELFHOST_CONSTRUCTION_N12.md`;
+`evals/receipts/construction_n11_completed.json`;
+`evals/receipts/construction_n12_launcher_fixed.json`.
+
 ## N09–N10: construction divergence localized, no source fix admitted
 
 The first scalar-state divergence is event 129879, pass-1 emission of the

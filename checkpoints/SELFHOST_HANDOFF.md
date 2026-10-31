@@ -4,6 +4,31 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
+### N11–N12 завершены: полный construction и исправленный startup default
+
+Больше не ранний prefix: с accepted-control RAM hint оба R12/G39 проходят все
+четыре C fact passes и финальную сборку translation unit. Без hint оба
+останавливаются прежним 8-GiB guard внутри pass 2, до финального C rendering.
+Причина historical G36–G39 не реконструирована; их environment остаётся UNKNOWN.
+Диагноз/source/evidence зафиксированы до исправления: **`56dcb468`**,
+`SELFHOST_CONSTRUCTION_N11.md`.
+
+В canonical native launcher обычный Bun build теперь получает startup hint
+`4294967296`, только если caller оставил его undefined. Это GC heuristic,
+не memory quota; explicit overrides и Node profiling policy сохранены.
+Штатный build с `env -u BUN_JSC_forceRAMSize`, без diagnostic compiler copy,
+успешно завершил C/LLVM/native build под исходным guardian. Свежий native
+реально выполнил полный frozen compiler workload и воспроизвёл accepted JS.
+C, native executable и compiler JS **все байт-в-байт равны R12**.
+
+Compiler algorithms, FIR/BIR, ABI13, fuel8M и quantum64 не менялись.
+Accepted compiler — G24R12; это operational launcher fix, не performance win
+или fresh stage1→stage2 fixedpoint. Historical protected-source receipts
+не переписывались: новые проверки используют fresh build authority с новым
+launcher hash. Для дальнейшей работы нельзя обходить старые source pins.
+Итог: `SELFHOST_CONSTRUCTION_N12.md`;
+`../evals/receipts/construction_n12_launcher_fixed.json`.
+
 ### N09–N10 исполнены: literal delta локализован, hint necessity STOP
 
 Matched construction пройден до 250000 events на R12/G39. Первое scalar-state

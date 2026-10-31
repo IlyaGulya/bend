@@ -32,9 +32,9 @@
  * Both commands acquire the existing heavy_gate lease. Build uses the unchanged
  * canonical kernel, validates every body in the compiler root and host bridge,
  * then calls compile_book and clang (official CPU flags by default).
- * Ordinary code generation runs on Bun's main thread with its default stack
- * and automatic GC; the guardian bounds actual tree memory. V8-only sampling
- * explicitly selects the separate Node worker (3072 MiB heap / 256 MiB stack).
+ * Ordinary Bun codegen uses its default stack and automatic GC, with a 4-GiB
+ * startup RAM hint unless explicitly set by the caller. V8-only sampling uses
+ * the separate Node worker (3072 MiB heap / 256 MiB stack), unchanged.
  * Run freshly reads the entire frozen corpus and uses only Bend parsing/expansion/
  * checking/emission. C owns IO/import loading and opaque native Run chunk
  * orchestration, outside Bend's totality proof. No ASTs are serialized or cached.
@@ -664,6 +664,12 @@ async function main(o:Options){
     throw Error('--profile-dir must not overlap the report or artifact paths');
   if(o.profileDir&&existsSync(o.profileDir))throw Error('Use a fresh --profile-dir; profile runs are not appended or mixed');
   if(o.profileDir)mkdirSync(o.profileDir,{recursive:true});
+  // Apply before spawning Bun: changing the variable inside codegen is too late.
+  // Match the accepted construction policy without overriding an explicit hint.
+  if(o.mode==='build'&&process.versions.bun&&!o.v8LogDir&&!o.profileSampling
+    &&process.env.BUN_JSC_forceRAMSize===undefined){
+    process.env.BUN_JSC_forceRAMSize='4294967296';
+  }
   const settings={...guard,timeoutMs:o.mode==='build'?o.buildTimeoutMs:300000};
   create(o.report,JSON.stringify({status:'IN_PROGRESS',mode:o.mode,boundary,startedAtUnixMs:Date.now(),guard:settings},null,2)+'\n');
   reportWritable=true;

@@ -5,6 +5,18 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- Native selfhost construction now supplies the accepted 4-GiB Bun startup RAM
+  hint when the caller leaves it unset, preserving explicit values and the
+  separate Node profiling policy. The original 8-GiB RSS/footprint guard is
+  unchanged. Complete source × hint diagnostics locate both unset failures
+  inside pass 2; hint cells finish all four passes and final C assembly.
+  An ordinary uninstrumented build with an unset caller now completes C/LLVM/
+  native construction, and its actual native compiler reproduces the accepted
+  full JS image. C, executable and JS bytes all equal G24R12; no algorithmic
+  speedup, new fixedpoint or new compiler acceptance is claimed.
+  Diagnosis checkpoint: `56dcb468`; `checkpoints/SELFHOST_CONSTRUCTION_N11.md`;
+  `checkpoints/SELFHOST_CONSTRUCTION_N12.md`;
+  `evals/receipts/construction_n12_launcher_fixed.json`.
 - N09/N10 construction diagnostics localize the first R12/G39 scalar-state
   difference to the changed runtime string's static literal image. All other
   observed state fields match through the bounded later-pass window. A

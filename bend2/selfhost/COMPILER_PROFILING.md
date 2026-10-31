@@ -37,6 +37,18 @@ or heap-statistics snapshots. The report records cumulative process CPU
 The external guardian remains the hard memory/deadline boundary. `--bridge`
 explicitly adds a second validated root; omit it for a standalone program.
 
+The canonical native constructor (`native_compiler_experiment.ts --mode=build`)
+defaults an unset `BUN_JSC_forceRAMSize` to `4294967296` for ordinary Bun
+codegen, before spawning the guarded process. This matches the accepted-control
+startup policy; it is a GC heuristic, not a 4-GiB quota. Explicit caller values
+are preserved. The 8-GiB RSS/footprint guardian and Node profiling's
+3072-MiB heap / 256-MiB stack policy are unchanged. The bounded probe above is a
+different entrypoint and still needs its explicit environment prefix.
+
+Native-build receipts pin the constructor source as well as the compiler.
+After changing the constructor, create fresh build authority for new runs;
+never rewrite historical receipts or relax their protected source pins.
+
 `PROBE_STOPPED` is a deliberate diagnostic cutoff, never a semantic failure,
 completed compilation or PASS. `CODEGEN_SETTLED` means codegen returned within
 the probe budget, not compiler acceptance. Neither status publishes an image,

@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "experiment": "N12",
+  "kind": "canonical constructor startup-default fix, compiler source unchanged",
+  "diagnosisCheckpoint": "56dcb468",
+  "beforeLauncher": {
+    "sha256": "9108d727d3a46add61f672be9a96095c2cd7a65dbe6a3e7108e2964a90ef7d46",
+    "authority": {
+      "gitCommit": "9beb95e4",
+      "path": "evals/native_compiler_experiment.ts",
+      "sha256": "9108d727d3a46add61f672be9a96095c2cd7a65dbe6a3e7108e2964a90ef7d46"
+    }
+  },
+  "afterLauncher": {
+    "path": "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_experiment.ts",
+    "sha256": "4e1260a72e7fa23739c1f4aaaea66f3dca53418353b1867f7bb4e32616f832cc",
+    "bytes": 52364
+  },
+  "buildCommand": [
+    "/usr/bin/env",
+    "-u",
+    "BUN_JSC_forceRAMSize",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_experiment.ts",
+    "--mode=build",
+    "--corpus=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/root.native.corpus.json",
+    "--artifact=/private/tmp/bend-n12-launcher-J3JWO7/native",
+    "--report=/private/tmp/bend-n12-launcher-J3JWO7/build.json",
+    "--cc-pipeline=llvm-split",
+    "--cc-opt=1",
+    "--llvm-bin=/opt/homebrew/opt/llvm@21/bin"
+  ],
+  "callerHint": "explicitly absent via env -u",
+  "expectedChildHint": "4294967296",
+  "expectedC": {
+    "receipt": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/root-native-build.json",
+      "sha256": "3b41f94b3d60d5a9177452c11b525b371e1c8b17584f388dff61edc071b5886b",
+      "bytes": 3072527
+    },
+    "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native.c",
+    "sha256": "2290a096f114201665d4b943db3470889ca700ec205b875612178ea263e27ffb"
+  },
+  "expectedCompilerSha256": "880a9b3b86f273852a39fc664f8c3d7b71e3860b6d365e4321949fc812b6e7cc",
+  "guard": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000,
+    "termGraceMs": 1000
+  },
+  "corpus": {
+    "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/root.native.corpus.json",
+    "sha256": "7f8ba3038ff9437304b8e373eafe133dde97b7fceacacd85dd296df6f4a8f7a0",
+    "bytes": 9591
+  },
+  "note": "Fresh build metadata binds current launcher source. Historical native-build receipts remain pinned to their original launcher checkout; do not weaken or overwrite their protected source pins. No compiler optimization/fixedpoint acceptance implied."
+}

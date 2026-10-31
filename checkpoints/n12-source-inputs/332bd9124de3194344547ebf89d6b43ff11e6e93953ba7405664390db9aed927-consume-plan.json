@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "build": "/private/tmp/bend-n12-launcher-J3JWO7/build.json",
+  "command": [
+    "/usr/bin/env",
+    "-u",
+    "BUN_JSC_forceRAMSize",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_experiment.ts",
+    "--mode=run",
+    "--corpus=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/root.native.corpus.json",
+    "--build=/private/tmp/bend-n12-launcher-J3JWO7/build.json",
+    "--report=/private/tmp/bend-n12-launcher-J3JWO7/native-consume.json",
+    "--phase=compile",
+    "--threads=1"
+  ],
+  "authority": "fresh build metadata, not historical protectedPins rewritten",
+  "expectedJS": {
+    "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+    "bytes": 31758507
+  },
+  "sourceCorpus": {
+    "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/root.native.corpus.json",
+    "sha256": "7f8ba3038ff9437304b8e373eafe133dde97b7fceacacd85dd296df6f4a8f7a0",
+    "bytes": 9591
+  },
+  "abiExports": 13,
+  "parserFuel": 8000000,
+  "quantum": 64,
+  "noNewFixedpointClaim": true,
+  "note": "Run native-produced source image on the original full compiler corpus. Compare with accepted R12 stage1 bytes; this is not a fresh stage1->stage2 fixedpoint run."
+}
