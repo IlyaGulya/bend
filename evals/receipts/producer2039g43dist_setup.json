@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "sourceVersion": "G43DIST",
+  "sourceCommit": "b69cff6d",
+  "status": "PROBE_INPUT_SETUP_FAILURE_CORRECTED",
+  "sourceUnchanged": true,
+  "originalTools": {
+    "bun": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "node": {
+      "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5",
+      "version": "v23.11.0"
+    },
+    "clang": "/usr/bin/clang",
+    "llvmBin": "/opt/homebrew/opt/llvm@21/bin"
+  },
+  "failedCommand": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "evals/g24_distributed.mjs",
+    "probe",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43/tools.json"
+  ],
+  "actualFailure": {
+    "text": "87 |   } else if (os.platform() === 'linux') machine = readFileSync('/etc/machine-id', 'utf8').trim();\n88 |   need(machine, 'physical machine identity unavailable');\n89 |   const pins = {};\n90 |   for (const [name, path] of Object.entries({bun: tools.bun, node: tools.node, clang: tools.clang,\n91 |     opt: resolve(tools.llvmBin, 'opt'), split: resolve(tools.llvmBin, 'llvm-split')})) {\n92 |     need(isAbsolute(path), 'tool path must be absolute: ' + name);\n              ^\nTypeError: The \"path\" property must be of type string, got object\n code: \"ERR_INVALID_ARG_TYPE\"\n\n      at hostPin (/Users/ilyagulya/Projects/My/bend/evals/g24_distributed.mjs:92:10)\n      at /Users/ilyagulya/Projects/My/bend/evals/g24_distributed.mjs:486:54\n\nBun v1.4.3 (macOS arm64)\n\n\nCommand exited with code 1",
+    "details": {
+      "wallTimeNoticeEmitted": false,
+      "timeoutSeconds": 30,
+      "wallTimeMs": 172.38791698217392,
+      "exitCode": 1
+    },
+    "hasError": true
+  },
+  "cause": "Parent passed the historical tool-pin object as tools.node instead of the documented absolute path string. Host probe rejected it before any snapshot, build, worker or qualification.",
+  "correctedTools": {
+    "bun": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "node": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "clang": "/usr/bin/clang",
+    "llvmBin": "/opt/homebrew/opt/llvm@21/bin"
+  },
+  "correctedProbe": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "evals/g24_distributed.mjs",
+    "probe",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43/tools-v2.json"
+  ]
+}
