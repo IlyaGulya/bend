@@ -268,7 +268,8 @@ export async function dispatch(context, snapshot, job, extra = {}) {
       need(r.code === 0, 'snapshot chunk upload failed: ' + r.err); offset += bytes;
     }
   } finally { closeSync(fd); }
-  r = await transport(plan, host, 'umask 022; tar -xzf ' + quote(resolve(remote, 'snapshot.tar.gz')) + ' -C ' + quote(root), undefined, 600000);
+  r = await transport(plan, host, 'umask 022; tar -xzf ' + quote(resolve(remote, 'snapshot.tar.gz')) + ' -C ' + quote(root)
+    + ' && /bin/chmod 0555 ' + quote(root), undefined, 600000);
   need(r.code === 0, 'snapshot extraction failed: ' + r.err);
   r = await transport(plan, host, 'cat > ' + quote(resolve(remote, 'job.json')), readFileSync(localEnvelope));
   need(r.code === 0, 'job upload failed: ' + r.err);
