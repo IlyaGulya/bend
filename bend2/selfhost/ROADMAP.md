@@ -6,6 +6,24 @@ under their original image IDs; a later pass never reclassifies an older run.
 Detailed evidence and reasoning live in the linked receipts and notes.
 This index does not replace a receipt.
 
+## N09–N10: construction divergence localized, no source fix admitted
+
+The first scalar-state divergence is event 129879, pass-1 emission of the
+changed `js_runtime` literal. Literal/image/constant counts grow with its
+payload; all other observed state fields match through 250000 events.
+Pass 1 completes, but the pass-2 event-budget cutoff is not pass-2 completion.
+
+All four R12/G39 × RAM-hint/unset cells reach the same literal boundary.
+Same-source structural streams are identical across the environment axis.
+Observed RSS differs; absence of the hint does not force failure at this
+boundary. Historical failed environments remain UNKNOWN. No GC-cause proof,
+IR rewrite, new native qualification, fixedpoint or acceptance is inferred.
+
+G24R12 remains unchanged; all baseline sources/generated hashes and both
+accepted artifacts are verified. Exact commands, limits and source authorities:
+`checkpoints/SELFHOST_CONSTRUCTION_N09_N10.md`;
+`evals/receipts/construction_n09_n10_completed.json`.
+
 ## N01–N08: executed diagnostics, no production candidate admitted
 
 All eight follow-up experiments are complete. Genuine R12 native/bootstrap

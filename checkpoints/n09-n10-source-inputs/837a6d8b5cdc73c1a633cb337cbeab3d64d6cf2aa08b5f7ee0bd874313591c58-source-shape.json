@@ -1,0 +1,83 @@
+{
+  "status": "SOURCE_ONLY_EXECUTED",
+  "logicalRootNormalization": "historical explicit run IDs only",
+  "sourceChanges": [
+    {
+      "logicalPath": "checkpoints/emitter_steps_v1.bend",
+      "R12": "7f7c8d2e57a3fcd3925b4286a8300668ae91b7e11a26317cea6da2df5c9ea425",
+      "G39": "f24f36cb436bc49214302707c62e9334042261b613610dd7c6682538b77ccd12",
+      "byteDelta": 245
+    }
+  ],
+  "runtimeLiterals": {
+    "R12": {
+      "input": {
+        "path": "/private/tmp/bend-n01-n08-HL7Pt3/construction/inputs/R12/checkpoints/emitter_steps_v1.bend",
+        "sha256": "7f7c8d2e57a3fcd3925b4286a8300668ae91b7e11a26317cea6da2df5c9ea425",
+        "bytes": 3401742
+      },
+      "literals": {
+        "emitter_body_cps_provider_8_js_runtime_direct": {
+          "sourceLine": 27212,
+          "utf8Bytes": 396,
+          "utf16Units": 396,
+          "unicodeScalars": 396,
+          "sha256": "69c38c49974fbed22d59a11cfb94b0231a9d55000bcb38d2a5d7c2c5bc5d510e",
+          "nonAsciiScalars": 0
+        },
+        "emitter_body_cps_provider_8_js_runtime": {
+          "sourceLine": 27215,
+          "utf8Bytes": 38542,
+          "utf16Units": 38542,
+          "unicodeScalars": 38542,
+          "sha256": "7641044afa1cda684a6e555f35141fea3d19bd386cf8499d3bfe6050f9e575ee",
+          "nonAsciiScalars": 0
+        }
+      }
+    },
+    "G39": {
+      "input": {
+        "path": "/private/tmp/bend-n01-n08-HL7Pt3/construction/inputs/G39/checkpoints/emitter_steps_v1.bend",
+        "sha256": "f24f36cb436bc49214302707c62e9334042261b613610dd7c6682538b77ccd12",
+        "bytes": 3401987
+      },
+      "literals": {
+        "emitter_body_cps_provider_8_js_runtime_direct": {
+          "sourceLine": 27212,
+          "utf8Bytes": 420,
+          "utf16Units": 420,
+          "unicodeScalars": 420,
+          "sha256": "439b70e8b6c4a4d52a4ddf8de295a883f3696b0b93607351f365f1bfc71286bf",
+          "nonAsciiScalars": 0
+        },
+        "emitter_body_cps_provider_8_js_runtime": {
+          "sourceLine": 27215,
+          "utf8Bytes": 38763,
+          "utf16Units": 38763,
+          "unicodeScalars": 38763,
+          "sha256": "876b3dd34d64872b176aa91a03f9aa34583b70ae674ebd947436268780059c04",
+          "nonAsciiScalars": 0
+        }
+      }
+    }
+  },
+  "notAllocationEvidence": true,
+  "protocolErratum": {
+    "field": "cutoff",
+    "inheritedText": "First completed canonical pass OR 50000 total observer/progress events OR 120000 codegen ms at next existing observer seam. External 600000ms deadline and both8192MiB guards remain authoritative even while a definition is uninterruptible.",
+    "actualAuthoritativeFields": {
+      "prefix": {
+        "passes": 2,
+        "events": 250000,
+        "codegenMs": 120000
+      },
+      "stopBeforeCRender": true
+    },
+    "implementation": {
+      "path": "/private/tmp/bend-n09-construction-D6asDJ/worker.mjs",
+      "sha256": "0425c761090c77da3af4d89375d573d1cde2b067331b86bcd6a1993cb327c234",
+      "bytes": 7453
+    },
+    "reason": "N04 prose was copied into the N09 immutable plan. It is not read by either executable. The new numeric prefix and pinned callback implement pass-2 or earlier convergence. Do not edit the already executed plan or relabel its text."
+  }
+}

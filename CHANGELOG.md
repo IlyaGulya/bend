@@ -5,6 +5,15 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- N09/N10 construction diagnostics localize the first R12/G39 scalar-state
+  difference to the changed runtime string's static literal image. All other
+  observed state fields match through the bounded later-pass window. A
+  source × Bun RAM-hint matrix reaches the same literal boundary in all four
+  cells, with identical same-source structural streams across hint settings.
+  The hint changes observed RSS, but neither a historical OOM cause nor a new
+  compiler acceptance is established. G24R12 source/artifacts remain unchanged:
+  `checkpoints/SELFHOST_CONSTRUCTION_N09_N10.md`;
+  `evals/receipts/construction_n09_n10_completed.json`.
 - N01–N08 architecture experiments are complete; no production candidate is
   admitted and G24R12 remains accepted. Genuine own-frontend C/JS consumers
   complete 30 target executions, including normal callback reentry at

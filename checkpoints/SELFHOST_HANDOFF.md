@@ -4,6 +4,26 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
+### N09–N10 исполнены: literal delta локализован, hint necessity STOP
+
+Matched construction пройден до 250000 events на R12/G39. Первое scalar-state
+расхождение — event 129879, pass-1 `js_runtime`: expected literal image growth.
+Все прочие наблюдаемые state fields равны. Pass 1 завершён, pass 2 только
+частично; event-budget stop не означает завершение второго прохода.
+
+Отдельная R12/G39 × Bun RAM-hint/unset матрица: все четыре cells достигают той
+же literal boundary. Для каждого source structural streams одинаковы между
+environment conditions. Sampled RSS с hint ниже, но unset не вызывает
+обязательный cap failure здесь. Historical failed environment остаётся UNKNOWN;
+причина historical OOM не установлена. Hint не hard quota.
+
+Все шесть heavy children и streaming integrity verifier исполнены. R12 source
+и artifacts неизменны; новый native/fixedpoint/performance acceptance отсутствует.
+Итог: `SELFHOST_CONSTRUCTION_N09_N10.md`;
+`../evals/receipts/construction_n09_n10_completed.json`.
+Продолжать можно только с конкретной более поздней pass-2/rendering working-set
+boundary, не с необоснованной заменой FIR/BIR или повышением limits.
+
 ### N01–N08 исполнены: diagnostic STOP, production compiler неизменён
 
 Все восемь опытов после E13 завершены; ни один production-кандидат не допущен.
