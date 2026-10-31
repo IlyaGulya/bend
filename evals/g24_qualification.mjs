@@ -115,7 +115,7 @@ const HOST_CONSUMER_FILES = Object.freeze([
   'tests/io/shadowed_nat_export.bend', 'tests/io/generic_export_identity.bend',
   'tests/io/text_host_export.bend',
 ]);
-export function distributedConsumerFiles() {
+function distributedConsumerFiles() {
   return [...NATIVE_SUITE_FILES, ...HOST_CONSUMER_FILES, 'evals/c_step_library_fixture.bend'];
 }
 const ADMISSION_INPUTS = Object.freeze({
@@ -1390,7 +1390,7 @@ async function runCorrectness(run, context) {
     (total, name) => total + 2 + (name === 'mainless' ? 2 : 0), 0);
   const expectedHostRows = HOST_CONSUMER_FILES.length;
   if (context.distributed) {
-    await distributedConsumers(run, context, state);
+    await distributedConsumers(run, context, state, distributedConsumerFiles());
   } else {
 
   for (const target of ['c', 'js']) {
@@ -1779,7 +1779,7 @@ export async function runDistributedConsumersFromReceipt(distributed, priorPath,
   const run = createRun({...context, phase: 'distributed-consumers'});
   const state = {...previous.correctness, matrix: {}, consumers: {}};
   try {
-    await distributedConsumers(run, context, state);
+    await distributedConsumers(run, context, state, distributedConsumerFiles());
     run.receipt.correctness = state;
     run.receipt.status = 'DISTRIBUTED_CONSUMERS_PASS';
     run.receipt.sourceReceipt = {path: resolve(priorPath), sha256: fileSha(priorPath)};

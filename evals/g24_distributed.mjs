@@ -329,11 +329,11 @@ export async function dispatch(context, snapshot, job, extra = {}) {
     clearInterval(beat); process.off('SIGINT', cancel); process.off('SIGTERM', cancel); process.off('SIGHUP', cancel);
   }
 }
-export async function distributedConsumers(run, context, state) {
+export async function distributedConsumers(run, context, state, fixtures) {
   context.candidate = {repository: context.repository, binary: {path: state.native.binary, sha256: state.native.binarySha256}, stageOne: state.fixedpoint.stageOne};
   context.evidence = state;
-  const {distributedConsumerFiles} = await import('./g24_qualification.mjs');
-  context.snapshotFixtures = distributedConsumerFiles();
+  need(Array.isArray(fixtures) && fixtures.length > 0, 'consumer fixture inventory is required');
+  context.snapshotFixtures = fixtures;
   const snapshot = makeSnapshot(context, resolve(context.out, 'consumer-snapshot'));
   const results = {}, failures = [];
   // One sequential queue per pinned physical host; independent hosts run real SSH workers concurrently.
