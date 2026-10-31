@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "version": "G43DIST_R2",
+  "sourceCommit": "3df6d1f7",
+  "status": "FAILED_REAL_SNAPSHOT_SHEBANG_SCANNING",
+  "scope": "Bounded snapshot-only preflight from individually authenticated actual G43 producer artifacts; no full correctness/worker/runtime claim",
+  "compilerAccepted": false,
+  "performanceAccepted": false,
+  "fullCorrectnessExecuted": false,
+  "actualWorkersDispatched": 0,
+  "sourceParentOutcome": "ea87e019",
+  "tests": {
+    "passed": 9,
+    "failed": 0,
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "test",
+      "evals/g24_distributed.test.mjs"
+    ]
+  },
+  "actualPreflight": {
+    "command": [
+      "/usr/bin/env",
+      "HEAVY_GATE_MEMORY_MIB=8192",
+      "HEAVY_GATE_RSS_MIB=8192",
+      "HEAVY_GATE_POLL_MS=10",
+      "HEAVY_GATE_TIMEOUT_MS=600000",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r2-source/snapshot-preflight.mjs",
+      "/Users/ilyagulya/Projects/My/bend",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43dist-correctness",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r2/snapshot-preflight"
+    ],
+    "guardian": {
+      "status": "FAIL",
+      "reason": "command_exit",
+      "commandExitCode": 1,
+      "commandSignal": 0,
+      "peakRssBytes": 147865600,
+      "peakFootprintBytes": 130777808,
+      "elapsedMs": 235,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 1,
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r2-source/snapshot-preflight.mjs",
+        "/Users/ilyagulya/Projects/My/bend",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43dist-correctness",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r2/snapshot-preflight"
+      ],
+      "label": "G43R2 actual-producer snapshot-only diagnostic",
+      "exitCode": 1,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793474615331-47062fce7ec541f4.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "error": "Bun.Transpiler.scan rejects the valid CLI hashbang at input.js:1:1: Unexpected #!/usr/bin/env bun"
+  },
+  "rejectedHypothesis": {
+    "claim": "Reverse CLI consumers entry necessarily deadlocks while importing the qualifier",
+    "actualCommand": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "evals/g24_distributed.mjs",
+      "consumers",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43/placement.json",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r2/missing-prior.json",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r2/no-consumer-output"
+    ],
+    "actualOutcome": "Exited 1 with ENOENT for the missing prior receipt before the 3-second external deadline. No CLI-entry rewrite is justified by this observation."
+  },
+  "nextVersionFix": "Strip only the lexically ignored first-line hashbang from scanner input; preserve original source bytes/hash/mode and all imports. Keep explicit fixture passing; no unrelated CLI refactor.",
+  "sources": {
+    "evals/g24_qualification.mjs": "d5c7359240ad29805fbfb8313efda90f6aed6918a3c51235e41774bf16d52ad1",
+    "evals/g24_distributed.mjs": "011336893a27f7fd174d96012c272df75d0524da0d7106e265166b418ffc7804",
+    "evals/g24_snapshot.mjs": "9211d34a8c72a8b3c1d04c2258af66f442f8592bab6d7f6bca53f980a2f1f61a",
+    "evals/g24_distributed.test.mjs": "81619827e22c8358c24b947e3b1bea208b69c7aed8f8e8c03c04ec6ed42e66fb"
+  },
+  "requiredSource": {
+    "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r2-source/snapshot-preflight.mjs",
+    "sha256": "fa18338e4a7cda279e7fc2a65de63b6a40aa5ce26862ca331f87301e17eb7d97",
+    "bytes": 2978
+  },
+  "actualProducerInputsAlreadyFrozenAt": "ea87e019",
+  "artifactsAndBulkLogsCommitted": false
+}
