@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "version": "G43DIST_R3",
+  "status": "AUTHORED_NOT_EXECUTED",
+  "priorFailedCheckpoint": "77358367",
+  "fix": "Normalize only the lexically ignored first-line CLI hashbang before Bun import scanning; original captured source bytes/hash/mode remain unchanged. Explicit consumer fixture contract from R2 remains.",
+  "sources": {
+    "evals/g24_qualification.mjs": "d5c7359240ad29805fbfb8313efda90f6aed6918a3c51235e41774bf16d52ad1",
+    "evals/g24_distributed.mjs": "011336893a27f7fd174d96012c272df75d0524da0d7106e265166b418ffc7804",
+    "evals/g24_snapshot.mjs": "5a22a7ade628f8e44ff86f76233aeecb98f49ad1908bead3d19f2859497a060b",
+    "evals/g24_distributed.test.mjs": "81619827e22c8358c24b947e3b1bea208b69c7aed8f8e8c03c04ec6ed42e66fb"
+  },
+  "sourcePreflight": {
+    "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r2-source/snapshot-preflight.mjs",
+    "sha256": "fa18338e4a7cda279e7fc2a65de63b6a40aa5ce26862ca331f87301e17eb7d97",
+    "bytes": 2978
+  },
+  "commands": {
+    "tests": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "test",
+      "evals/g24_distributed.test.mjs"
+    ],
+    "snapshotPreflight": [
+      "/usr/bin/env",
+      "HEAVY_GATE_MEMORY_MIB=8192",
+      "HEAVY_GATE_RSS_MIB=8192",
+      "HEAVY_GATE_POLL_MS=10",
+      "HEAVY_GATE_TIMEOUT_MS=600000",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r2-source/snapshot-preflight.mjs",
+      "/Users/ilyagulya/Projects/My/bend",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43dist-correctness",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r3/snapshot-preflight"
+    ],
+    "freshCompleteCorrectness": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/g24_qualification.mjs",
+      "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--bun=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--clang=/usr/bin/clang",
+      "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+      "--phase=correctness",
+      "--cc-partitions=4",
+      "--run-id=local2039g43r3",
+      "--distributed-plan=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43/placement.json",
+      "--out=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r3-correctness"
+    ]
+  },
+  "originalPerStepLimits": {
+    "rssMiB": 8192,
+    "footprintMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "externalCoordinatorDeadlineSeconds": 3600,
+  "newPermanentTestAdded": false,
+  "regressionVerification": "Actual failed real-producer snapshot before; rerun the same boundary with this source fix and fresh isolated outputs. Full fresh correctness remains mandatory."
+}

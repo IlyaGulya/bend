@@ -182,7 +182,12 @@ export function snapshotInventory(context) {
     path = resolve(repository, path);
     if (scanned.has(path)) return;
     scanned.add(path); source(path, undefined, 'worker-code');
-    const code = readFileSync(path, 'utf8');
+    let code = readFileSync(path, 'utf8');
+    // Bun's scanner rejects CLI hashbangs; the captured source bytes stay intact.
+    if (code.startsWith('#!')) {
+      const newline = code.indexOf('\n');
+      code = newline < 0 ? '' : code.slice(newline + 1);
+    }
     const scanner = new Bun.Transpiler({loader: path.endsWith('.ts') ? 'ts' : 'js'});
     for (const imported of [...scanner.scan(code).imports, ...scanner.scanImports(code)]) {
       if (isBuiltin(imported.path) || imported.path === 'bun') continue;
