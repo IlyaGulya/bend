@@ -17,7 +17,7 @@
  * emitter-steps-trace-v1.json) and its own pin set
  * (checkpoints/emitter_trace_owned_v1.bend,
  * checkpoints/emitter-trace-owned-source-v1.json) so no ordinary byte moves.
- * The trace closure adds c_backend_sharing to the ordinary providers, which
+ * The trace closure is the ordinary ten providers plus c_backend_sharing, which
  * is what gives emit-sharing a real boundary; its composition is regenerated,
  * never patched, and the derived pin set fails closed if the ordinary pin set
  * is stale. Every root is resolved to its composed declaration through
@@ -43,7 +43,6 @@ export const emitterStepConfig: StepConfig = {
     'bend2/selfhost/c_emit_core.bend', 'bend2/selfhost/c_backend.bend',
     'bend2/selfhost/c_backend_link.bend', 'bend2/selfhost/c_backend_layout.bend',
     'bend2/selfhost/c_backend_physical.bend',
-    'bend2/selfhost/backend_continuation.bend',
   ],
   entries: [
     {mode: 'emitter', root: 'emit', libraryRoot: 'emit_library'},

@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "sourceVersion": "G40E05R2",
+  "status": "PREEXEC_SOURCE_PIN_REJECTED_CORRECTED_BEFORE_HEAVY_WORK",
+  "attempt": "bg_1122",
+  "observedSource": "evals/emitter_step_lower.ts",
+  "observedSha256": "25578c02a202c08c3eb6829aec82c45e10ce2ca930b37532bea96c01ce4df3fb",
+  "expectedSha256": "38c49a093bb91b16d058baba69303a15277e40bbeeb3aff1bf4ec0c1831817b3",
+  "cause": "Historical E05 donor also changed one trace-provider comment; initial parent rollback removed provider entry but missed this owned comment. Guard rejected before started.json, generators or smoke.",
+  "correction": "Restored the exact original baseline comment; no guard, quota, semantic expectation or sample changed.",
+  "heavyWorkStarted": false,
+  "compilerSemanticFailure": false,
+  "unchangedRetry": false
+}

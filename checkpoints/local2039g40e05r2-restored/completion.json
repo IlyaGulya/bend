@@ -1,0 +1,302 @@
+{
+  "schemaVersion": 1,
+  "status": "G40E05R2_REJECTED_CHECKPOINTED_R12_RESTORED_VERIFIED",
+  "sourceVersion": "G40E05R2",
+  "authoredSourceCommit": "8cae3fcf",
+  "rejectedSourceEvidenceCommit": "8c269924",
+  "outcome": {
+    "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g40e05r2-outcome/outcome.json",
+    "sha256": "2d6374bc94bd22431300e04d2396736dc7cb7b9ff28835079d1397ddfa107ee7",
+    "bytes": 2370556
+  },
+  "qualification": {
+    "status": "FAIL",
+    "executionCount": 1,
+    "phase": "all",
+    "elapsedMs": 3326131,
+    "nativeBuildPassed": true,
+    "genuineByteFixedpointPassed": true,
+    "pairedSamples": 12,
+    "excludedSamples": 0,
+    "performanceDecision": {
+      "policy": {
+        "id": "g29-paired-full-root-strict-v1",
+        "repetitions": {
+          "control": 3,
+          "candidate": 3
+        },
+        "modes": [
+          "native",
+          "js"
+        ],
+        "rules": {
+          "pipelineMs": "candidate arithmetic mean AND median strictly less than control",
+          "peakRssBytes": "candidate median less than or equal to control",
+          "peakFootprintBytes": "candidate median less than or equal to control"
+        },
+        "rows": "all 12 authenticated measurements are required; original rows are never excluded",
+        "scope": "rejection evidence only; never compiler or performance acceptance"
+      },
+      "evaluated": true,
+      "rows": 12,
+      "expectedRows": 12,
+      "counts": {
+        "native": {
+          "control": 3,
+          "candidate": 3
+        },
+        "js": {
+          "control": 3,
+          "candidate": 3
+        }
+      },
+      "passed": false,
+      "rejected": true,
+      "failures": [
+        "native: pipelineMeanStrictlyImproved is false",
+        "native: pipelineMedianStrictlyImproved is false",
+        "native: peakRssMedianNotIncreased is false",
+        "js: pipelineMeanStrictlyImproved is false",
+        "js: pipelineMedianStrictlyImproved is false",
+        "js: peakRssMedianNotIncreased is false"
+      ],
+      "modes": {
+        "native": {
+          "counts": {
+            "control": 3,
+            "candidate": 3
+          },
+          "evaluated": true,
+          "measurements": {
+            "pipelineMs": {
+              "control": {
+                "n": 3,
+                "mean": 87832.293486,
+                "median": 87947.136833
+              },
+              "candidate": {
+                "n": 3,
+                "mean": 90112.79758299999,
+                "median": 89972.91916599999
+              },
+              "delta": {
+                "mean": -2280.5040969999973,
+                "median": -2025.7823329999956
+              }
+            },
+            "peakRssBytes": {
+              "control": {
+                "n": 3,
+                "mean": 1745108992,
+                "median": 1745911808
+              },
+              "candidate": {
+                "n": 3,
+                "mean": 1751089152,
+                "median": 1750548480
+              },
+              "delta": {
+                "median": -4636672
+              }
+            },
+            "peakFootprintBytes": {
+              "control": {
+                "n": 3,
+                "mean": 1745536906.6666667,
+                "median": 1745575016
+              },
+              "candidate": {
+                "n": 3,
+                "mean": 1740020952,
+                "median": 1737743704
+              },
+              "delta": {
+                "median": 7831312
+              }
+            }
+          },
+          "checks": {
+            "pipelineMeanStrictlyImproved": false,
+            "pipelineMedianStrictlyImproved": false,
+            "peakRssMedianNotIncreased": false,
+            "peakFootprintMedianNotIncreased": true
+          },
+          "passed": false
+        },
+        "js": {
+          "counts": {
+            "control": 3,
+            "candidate": 3
+          },
+          "evaluated": true,
+          "measurements": {
+            "pipelineMs": {
+              "control": {
+                "n": 3,
+                "mean": 303390.20318,
+                "median": 302136.917458
+              },
+              "candidate": {
+                "n": 3,
+                "mean": 303785.1676113333,
+                "median": 304170.983875
+              },
+              "delta": {
+                "mean": -394.9644313332974,
+                "median": -2034.0664169999654
+              }
+            },
+            "peakRssBytes": {
+              "control": {
+                "n": 3,
+                "mean": 2246950912,
+                "median": 2240692224
+              },
+              "candidate": {
+                "n": 3,
+                "mean": 2338957994.6666665,
+                "median": 2354151424
+              },
+              "delta": {
+                "median": -113459200
+              }
+            },
+            "peakFootprintBytes": {
+              "control": {
+                "n": 3,
+                "mean": 3119402554.6666665,
+                "median": 3045229032
+              },
+              "candidate": {
+                "n": 3,
+                "mean": 3005429808,
+                "median": 2980817000
+              },
+              "delta": {
+                "median": 64412032
+              }
+            }
+          },
+          "checks": {
+            "pipelineMeanStrictlyImproved": false,
+            "pipelineMedianStrictlyImproved": false,
+            "peakRssMedianNotIncreased": false,
+            "peakFootprintMedianNotIncreased": true
+          },
+          "passed": false
+        }
+      },
+      "note": "Rejection evidence only. A pass here does not establish compiler or performance acceptance; the parent owns that decision."
+    },
+    "lateConsumerGatesExecuted": false,
+    "compilerAccepted": false,
+    "performanceAccepted": false
+  },
+  "restoration": {
+    "receipt": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g40e05r2-restored/restored.json",
+      "sha256": "67a27da21f38a08cd1bb31436b50f1b3476ee432ac40f97e50b5579e8963310f",
+      "bytes": 133282
+    },
+    "baselineCommit": "bcdbe6f40ec95e0028a2234dd0ea834ba62bc663",
+    "sourceChecksPassed": 21,
+    "generatedSourceHashesPassed": 3,
+    "acceptedArtifacts": {
+      "native": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+        "sha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "bytes": 18808824,
+        "matches": true
+      },
+      "image": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+        "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+        "bytes": 31758507,
+        "matches": true
+      }
+    },
+    "actualCanonicalSourceExecutions": 6,
+    "newR12FixedpointClaim": false,
+    "launcher": {
+      "path": "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_experiment.ts",
+      "sha256": "4e1260a72e7fa23739c1f4aaaea66f3dca53418353b1867f7bb4e32616f832cc",
+      "bytes": 52364,
+      "authority": {
+        "gitCommit": "bcdbe6f40ec95e0028a2234dd0ea834ba62bc663",
+        "path": "evals/native_compiler_experiment.ts"
+      },
+      "unchangedFromN12": true
+    },
+    "toolingSource": [
+      {
+        "original": {
+          "path": "/private/tmp/bend-g40-e05-4MmVDa/restoration40/restore.mjs",
+          "sha256": "b3e50b8aa81357a6d8f196a01048d2bd8052cd027601cd22a21da901db8ea7d6",
+          "bytes": 14126
+        },
+        "checkpointSource": "checkpoints/local2039g40e05r2-restored/sources/b3e50b8aa81357a6d8f196a01048d2bd8052cd027601cd22a21da901db8ea7d6-restore.mjs",
+        "sourceOnly": true,
+        "purpose": "Executed restoration tool/config; validates owned pre/post generator bytes and preserves N12 launcher"
+      },
+      {
+        "original": {
+          "path": "/private/tmp/bend-g40-e05-4MmVDa/restoration40/common.mjs",
+          "sha256": "cd684adf42a93e30a22f598030990a5cc5d77c0a3d5ec5a693db4c4c176aa829",
+          "bytes": 4947
+        },
+        "checkpointSource": "checkpoints/local2039g40e05r2-restored/sources/cd684adf42a93e30a22f598030990a5cc5d77c0a3d5ec5a693db4c4c176aa829-common.mjs",
+        "sourceOnly": true,
+        "purpose": "Executed restoration tool/config; validates owned pre/post generator bytes and preserves N12 launcher"
+      },
+      {
+        "original": {
+          "path": "/private/tmp/bend-g40-e05-4MmVDa/restore.config.json",
+          "sha256": "91a9c6b92e17d20051e7ca426e382905a634e641292271774d333b6e1e9acc28",
+          "bytes": 5172
+        },
+        "checkpointSource": "checkpoints/local2039g40e05r2-restored/sources/91a9c6b92e17d20051e7ca426e382905a634e641292271774d333b6e1e9acc28-restore.config.json",
+        "sourceOnly": true,
+        "purpose": "Executed restoration tool/config; validates owned pre/post generator bytes and preserves N12 launcher"
+      }
+    ],
+    "preexecutionFailure": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g40e05r2-restored/restoration-setup.json",
+      "sha256": "07c23848607049b6bacd481691b010dfb1b80bb81d6b6d57871adca34550ded6",
+      "bytes": 803
+    },
+    "preexecutionFailureClassification": "Missed owned donor comment, caught by exact source pin before generators or smoke; corrected input, no unchanged target replay",
+    "adapterChanges": [
+      "Checks predeclared owned generator source against candidate SHA at prepare and exact baseline SHA at execute; no source guard skipped.",
+      "Adds N12 launcher to protected baseline source checks."
+    ]
+  },
+  "documentation": [
+    "CHANGELOG.md",
+    "bend2/selfhost/ROADMAP.md",
+    "bend2/selfhost/COMPILER_PROFILING.md",
+    "checkpoints/SELFHOST_HANDOFF.md"
+  ],
+  "bulkPolicy": "No emitted compiler images, AST/BIR transports, caches, profiles or bulk logs in Git. Required source/config and compact evidence only.",
+  "commitFiles": [
+    "CHANGELOG.md",
+    "bend2/selfhost/COMPILER_PROFILING.md",
+    "bend2/selfhost/ROADMAP.md",
+    "bend2/selfhost/backend_continuation.bend",
+    "bend2/selfhost/backend_lower.bend",
+    "checkpoints/SELFHOST_HANDOFF.md",
+    "checkpoints/checker-core-owned-source-v1.json",
+    "checkpoints/checker-core-steps-v1.json",
+    "checkpoints/checker_core_steps_v1.bend",
+    "checkpoints/emitter-steps-v1.json",
+    "checkpoints/emitter_steps_v1.bend",
+    "checkpoints/local2039g40e05r2-restored/commit-files.json",
+    "checkpoints/local2039g40e05r2-restored/completion.json",
+    "checkpoints/local2039g40e05r2-restored/restoration-setup.json",
+    "checkpoints/local2039g40e05r2-restored/restored.json",
+    "checkpoints/local2039g40e05r2-restored/sources/91a9c6b92e17d20051e7ca426e382905a634e641292271774d333b6e1e9acc28-restore.config.json",
+    "checkpoints/local2039g40e05r2-restored/sources/b3e50b8aa81357a6d8f196a01048d2bd8052cd027601cd22a21da901db8ea7d6-restore.mjs",
+    "checkpoints/local2039g40e05r2-restored/sources/cd684adf42a93e30a22f598030990a5cc5d77c0a3d5ec5a693db4c4c176aa829-common.mjs",
+    "checkpoints/template_steps_v1.bend",
+    "evals/emitter_step_lower.ts"
+  ]
+}

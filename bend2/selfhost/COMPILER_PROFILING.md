@@ -69,6 +69,29 @@ run stopped cooperatively after 65.5 s of codegen (73.8 s guarded total), with
 no compiler image. These are diagnostic observations, not acceptance or a
 controlled performance comparison.
 
+## Measured build latency and safe parallelism
+
+Do not call a complete qualification a build. The completed N12 R12 native
+build takes 297.044 s: C generation 183.800 s, LLVM 106.283 s, the remaining
+time is validation/startup/publication. Its LLVM backend already has four
+partitions and at most three concurrent compilers. The longest partition
+finishes after all others, so a fourth worker alone cannot shorten that
+observed critical path. Evidence: `construction_n12_launcher_fixed.json`.
+
+G40's settled phase=all takes 3326.131 s to performance rejection; 2366.819 s
+is the 12 serial measurements. Native build and genuine byte fixedpoint pass,
+but this is neither compiler acceptance nor a completed all-consumer run.
+Evidence: `checkpoints/local2039g40e05r2-outcome/outcome.json`.
+
+Keep heavy execution and paired measurements exclusive on their host.
+The existing guardian lock rejects contention; do not bypass it with another
+lock path. A unique run ID does not isolate the shared generated source files.
+Distributed correctness branches require an immutable full source/tool closure
+and isolated outputs, not just a copied root file or rewritten provenance.
+Stage1 must precede stage2; root.js never substitutes for native stage1.
+Changing scheduling, partitioning or measurement placement needs a separate
+declared experiment, not a mid-run change to the original gate.
+
 ## Collector
 
 `evals/compiler_profile.mjs` exports:

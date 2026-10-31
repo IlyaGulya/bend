@@ -4,6 +4,40 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
+### G40 / E05R2 завершён: native/fixedpoint PASS, paired time/RSS FAIL, R12 restored
+
+После N12 выполнена новая qualification exact historical E05 pass, без
+E06/E10/E12 или schema/runtime cutover. Authored source — `8cae3fcf`;
+полный source/frozen-input rejection checkpoint до rollback — **`8c269924`**.
+Historical G36 остаётся rejected.
+
+Свежий native build проверил все 12,648 definitions. Genuine native-seeded
+stage1/stage2 дают одинаковые 32,411,776 bytes, SHA256
+`2223ce2f81bc30276de44b5738a0330fe8f592426f4f2c2f25da5385e8ecf6cb`.
+Все 12 исходных serial unprofiled paired samples исполнены. Native mean/median
+time хуже на 2.596%/2.303%, JS — на 0.130%/0.673%. Median RSS выше на
+4.422 MiB / 108.203 MiB. Footprint median ниже в обеих lanes, но это не
+компенсирует обязательные time/RSS gates. Original fail-fast остановил поздние
+consumers; full correctness/qualification и acceptance не объявлены PASS.
+
+Отдельный свежий preflight: 52 synthetic C/JS executions, четыре actual source
+executions и шесть преобразований original R12 compiler BIR новым pass.
+R12 frontend/BIR input не выдаётся за новый candidate stage1.
+
+После committed rejection возвращены R12 lowerer/generator, удалён только
+новый owned pass, заново выполнены четыре generators и шесть C/JS consumers.
+Все 21 baseline checks, три generated hashes и оба accepted artifacts совпали.
+N12 launcher hash `4e1260a72e7fa23739c1f4aaaea66f3dca53418353b1867f7bb4e32616f832cc`
+сохранён. Guard сначала поймал пропущенный при rollback donor-comment;
+до исправления generators/smoke ещё не запускались. Этот setup failure сохранён.
+Новый R12 fixedpoint не заявляется.
+
+Итог: `local2039g40e05r2-outcome/outcome.json`;
+`local2039g40e05r2-restored/restored.json`;
+`local2039g40e05r2-restored/completion.json`.
+Construction blocker закрыт, но E05 не ускорил compiler. Не повторять pass
+unchanged; новая гипотеза требует отдельного checkpoint и тех же gates.
+
 ### N11–N12 завершены: полный construction и исправленный startup default
 
 Больше не ранний prefix: с accepted-control RAM hint оба R12/G39 проходят все

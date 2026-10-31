@@ -6,6 +6,37 @@ under their original image IDs; a later pass never reclassifies an older run.
 Detailed evidence and reasoning live in the linked receipts and notes.
 This index does not replace a receipt.
 
+## G40 / E05R2: fresh fixedpoint passes, paired time/RSS rejects the pass
+
+This is a new qualification of the exact historical E05 source on top of N12,
+not a retroactive G36 acceptance. Authored source: `8cae3fcf`; rejected source,
+required frozen inputs and compact evidence: `8c269924`.
+
+Fresh native construction validates all 12,648 definitions with no omissions
+or patches. Native-seeded stage1 and stage2 emit identical 32,411,776-byte JS,
+SHA256 `2223ce2f81bc30276de44b5738a0330fe8f592426f4f2c2f25da5385e8ecf6cb`.
+The original phase=all then completes every one of its 12 serial unprofiled
+paired samples. Native mean/median time increase 2.596%/2.303%; JS increase
+0.130%/0.673%. Median RSS increases 4.422 MiB native and 108.203 MiB JS.
+Both footprint medians decrease, but all strict criteria are mandatory.
+The original fail-fast performance gate rejects the candidate and stops later
+consumer suites. Full correctness/qualification and performance are not PASS.
+
+The fresh preflight separately executes 52 synthetic C/JS rows and four
+ordinary-source rows; the new compiled pass transforms six original R12 BIR
+sites. These diagnostics are not substituted for candidate stage1 authority.
+Construction is no longer the blocker; the measured optimization is not a win.
+Do not repeat the unchanged pass or widen FIR/BIR on this result.
+
+After committing rejection, R12 source is restored and all four generators
+run again. The 21 baseline checks, three generated hashes, both accepted
+artifacts and six actual C/JS consumers pass. N12's launcher stays unchanged;
+no fresh R12 fixedpoint is claimed. Commands, guards, measurements and the
+pre-execution rollback-comment pin correction are retained in:
+`checkpoints/local2039g40e05r2-outcome/outcome.json`;
+`checkpoints/local2039g40e05r2-restored/restored.json`;
+`checkpoints/local2039g40e05r2-restored/completion.json`.
+
 ## N11–N12: full construction localized; canonical Bun startup default fixed
 
 Both hint-enabled R12/G39 cells complete all four C fact passes and final

@@ -5,6 +5,18 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- G40 / E05R2 newly qualifies the historical bounded private-producer/shared-field
+  continuation pass under the fixed N12 launcher, and is rejected. Fresh native
+  construction and genuine native-seeded stage1/stage2 byte fixedpoint pass;
+  all 12 serial paired samples complete, but both lanes fail strict mean/median
+  runtime improvement and increase median RSS. Lower median footprint does not
+  compensate. Later consumers are not run after the original fail-fast gate.
+  Source/frozen-input evidence is committed before rollback: `8c269924`;
+  `checkpoints/local2039g40e05r2-outcome/outcome.json`. G24R12 is restored:
+  21 source checks, three regenerated hashes, both accepted artifacts and six
+  actual C/JS consumers pass. The N12 launcher fix is preserved; G36 remains
+  rejected and no compiler/performance acceptance changes.
+  `checkpoints/local2039g40e05r2-restored/restored.json`.
 - Native selfhost construction now supplies the accepted 4-GiB Bun startup RAM
   hint when the caller leaves it unset, preserving explicit values and the
   separate Node profiling policy. The original 8-GiB RSS/footprint guard is
