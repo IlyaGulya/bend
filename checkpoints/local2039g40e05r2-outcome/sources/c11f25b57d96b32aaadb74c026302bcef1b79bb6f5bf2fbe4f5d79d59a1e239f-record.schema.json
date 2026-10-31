@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Original G37/G38/G39 outcome preparation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "repo", "out", "destination", "sourceVersion", "authoredCommit", "plan", "g24Out", "decision", "reason", "sourceInventoryComplete", "evidenceInventoryComplete", "preflightReports", "legacyReports", "sources"],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "repo": {"type": "string"},
+    "out": {"type": "string", "description": "Fresh temporary staging directory, not the g24 out directory"},
+    "destination": {"type": "string", "pattern": "^checkpoints/", "description": "Fresh repository-relative source checkpoint namespace; CLI stages but does not install"},
+    "sourceVersion": {"enum": ["G37E06", "G38E10", "G39E12", "G40E05R2"]},
+    "authoredCommit": {"$ref": "#/$defs/commit"},
+    "plan": {"type": "string", "description": "Actual predeclared plan with sourcePins, changedSources, fullCommand, limits, worker, parserFuel, quantum"},
+    "g24Out": {"type": "string", "description": "Settled original phase=all out directory; FAIL or G24_QUALIFICATION_PASS receipt required"},
+    "decision": {"enum": ["rejected", "accepted"]},
+    "reason": {"type": "string", "minLength": 1},
+    "sourceInventoryComplete": {"const": true},
+    "evidenceInventoryComplete": {"const": true},
+    "preflightReports": {"type": "array", "items": {"$ref": "#/$defs/report"}},
+    "legacyReports": {"type": "array", "items": {"$ref": "#/$defs/report"}},
+    "provenances": {"type": "array", "items": {"type": "string"}, "description": "Additional existing canonical provenance JSONs with loadedInputs and protectedPins"},
+    "sources": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["path", "logicalPath", "sha256", "kind", "purpose", "sourceOnly"], "properties": {"path": {"type": "string"}, "logicalPath": {"type": "string"}, "sha256": {"$ref": "#/$defs/hash"}, "kind": {"enum": ["source", "manifest", "tooling"]}, "purpose": {"type": "string", "minLength": 1}, "sourceOnly": {"const": true}}}},
+    "authorityCommits": {"type": "array", "items": {"$ref": "#/$defs/commit"}, "description": "Additional Git source authorities; default 6e6debc2. Authored commit is always first"},
+    "existingFrozen": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["commit", "path", "sha256"], "properties": {"commit": {"$ref": "#/$defs/commit"}, "path": {"type": "string"}, "sha256": {"$ref": "#/$defs/hash"}, "kind": {"enum": ["source", "manifest", "tooling"]}}}}
+  },
+  "$defs": {
+    "commit": {"type": "string", "pattern": "^[0-9a-f]{7,40}$"},
+    "hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "report": {"type": "object", "additionalProperties": false, "required": ["path", "classification"], "properties": {"path": {"type": "string"}, "classification": {"type": "string", "minLength": 1}}}
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "One-shot parent-owned R12 restore preparation and regeneration",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "repo", "out", "destination", "sourceVersion", "sourceCommit", "baselineReceipt", "changedCanonicalFiles", "removeOwnedObsolete", "checkpointProof", "node", "bun", "clang"],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "repo": {"type": "string"},
+    "out": {"type": "string", "description": "Fresh for prepare; identical prepared directory for execute"},
+    "destination": {"type": "string", "pattern": "^checkpoints/", "description": "New repository-relative restoration receipt namespace"},
+    "sourceVersion": {"enum": ["G37E06", "G38E10", "G39E12", "G40E05R2"]},
+    "sourceCommit": {"$ref": "#/$defs/commit", "description": "Original authored source commit, not the later outcome checkpoint"},
+    "baselineCommit": {"$ref": "#/$defs/commit", "default": "6e6debc2"},
+    "baselineReceipt": {"type": "string", "description": "Repository-relative verified R12 receipt committed at baseline; 21 source checks, 3 generated sources, 2 artifacts, canonical.runtime required"},
+    "verifiedR12Base": {"type": "object", "required": ["commit", "receiptSha256", "parentVerified"], "properties": {"commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"}, "receiptSha256": {"$ref": "#/$defs/hash"}, "parentVerified": {"const": true}}, "additionalProperties": false},
+    "changedCanonicalFiles": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+    "removeOwnedObsolete": {"type": "array", "uniqueItems": true, "items": {"type": "string"}, "description": "Only predeclared newly owned files present at sourceCommit and absent at baseline"},
+    "checkpointProof": {"type": "object", "additionalProperties": false, "required": ["commit", "receiptPath", "commitFiles"], "properties": {"commit": {"$ref": "#/$defs/commit"}, "receiptPath": {"type": "string"}, "commitFiles": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}}},
+    "priorE06Source": {"type": "string", "description": "Required only for G37E06: e06-prior-source.json original full-byte snapshot"},
+    "node": {"type": "string"},
+    "bun": {"type": "string"},
+    "clang": {"type": "string"}
+  },
+  "allOf": [{"if": {"properties": {"sourceVersion": {"const": "G37E06"}}}, "then": {"required": ["priorE06Source"]}, "else": {"not": {"required": ["priorE06Source"]}}}],
+  "$defs": {
+    "commit": {"type": "string", "pattern": "^[0-9a-f]{7,40}$"},
+    "hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

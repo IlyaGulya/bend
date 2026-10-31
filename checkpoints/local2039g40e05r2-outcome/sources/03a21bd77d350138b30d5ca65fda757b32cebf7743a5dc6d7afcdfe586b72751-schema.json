@@ -1,0 +1,1931 @@
+{
+  "version": 1,
+  "bir": {
+    "path": "/private/tmp/bend-g40-e05-4MmVDa/e05-candidate-v5/bend2/selfhost/backend_ir.bend",
+    "sha256": "c0286db6b192bf5cc917774b7ea5e393d4416263432eb130fb8393b1dffc1cb3"
+  },
+  "ast": {
+    "path": "/private/tmp/bend-g40-e05-4MmVDa/e05-candidate-v5/bend2/selfhost/ast.bend",
+    "sha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83"
+  },
+  "witness": {
+    "path": "/private/tmp/bend-g40-e05-4MmVDa/e05-candidate-v5/checkpoints/e05_schema.bend",
+    "sha256": "b09ce95f85b95c3d6f03d080a4e2eabc0f5d0e7b7439f5d30c14e2a1eeaacc53"
+  },
+  "arms": [
+    {
+      "type": "BIR.Use",
+      "name": "Affine",
+      "source": "../bend2/selfhost/backend_ir.Affine",
+      "fields": []
+    },
+    {
+      "type": "BIR.Use",
+      "name": "Many",
+      "source": "../bend2/selfhost/backend_ir.Many",
+      "fields": []
+    },
+    {
+      "type": "BIR.Quantity",
+      "name": "Erased",
+      "source": "../bend2/selfhost/backend_ir.Erased",
+      "fields": []
+    },
+    {
+      "type": "BIR.Quantity",
+      "name": "Once",
+      "source": "../bend2/selfhost/backend_ir.Once",
+      "fields": []
+    },
+    {
+      "type": "BIR.Quantity",
+      "name": "Unrestricted",
+      "source": "../bend2/selfhost/backend_ir.Unrestricted",
+      "fields": []
+    },
+    {
+      "type": "BIR.Atom",
+      "name": "Local",
+      "source": "../bend2/selfhost/backend_ir.Local",
+      "fields": [
+        {
+          "name": "id",
+          "type": "U32"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Atom",
+      "name": "Capture",
+      "source": "../bend2/selfhost/backend_ir.Capture",
+      "fields": [
+        {
+          "name": "slot",
+          "type": "U32"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Atom",
+      "name": "Symbol",
+      "source": "../bend2/selfhost/backend_ir.Symbol",
+      "fields": [
+        {
+          "name": "id",
+          "type": "U32"
+        },
+        {
+          "name": "key",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Atom",
+      "name": "Word",
+      "source": "../bend2/selfhost/backend_ir.Word",
+      "fields": [
+        {
+          "name": "value",
+          "type": "U32"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Atom",
+      "name": "Natural",
+      "source": "../bend2/selfhost/backend_ir.Natural",
+      "fields": [
+        {
+          "name": "value",
+          "type": "Nat"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Atom",
+      "name": "FloatBits",
+      "source": "../bend2/selfhost/backend_ir.FloatBits",
+      "fields": [
+        {
+          "name": "bits",
+          "type": "U32"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Atom",
+      "name": "TextValue",
+      "source": "../bend2/selfhost/backend_ir.TextValue",
+      "fields": [
+        {
+          "name": "value",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Atom",
+      "name": "Boolean",
+      "source": "../bend2/selfhost/backend_ir.Boolean",
+      "fields": [
+        {
+          "name": "value",
+          "type": "Bool"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Atom",
+      "name": "Null",
+      "source": "../bend2/selfhost/backend_ir.Null",
+      "fields": []
+    },
+    {
+      "type": "BIR.Atom",
+      "name": "Undefined",
+      "source": "../bend2/selfhost/backend_ir.Undefined",
+      "fields": []
+    },
+    {
+      "type": "BIR.Arg",
+      "name": "Arg",
+      "source": "../bend2/selfhost/backend_ir.Arg",
+      "fields": [
+        {
+          "name": "use",
+          "type": "Use"
+        },
+        {
+          "name": "value",
+          "type": "Atom"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Parameter",
+      "name": "Parameter",
+      "source": "../bend2/selfhost/backend_ir.Parameter",
+      "fields": [
+        {
+          "name": "id",
+          "type": "U32"
+        },
+        {
+          "name": "use",
+          "type": "Use"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Field",
+      "name": "Field",
+      "source": "../bend2/selfhost/backend_ir.Field",
+      "fields": [
+        {
+          "name": "identity",
+          "type": "U32"
+        },
+        {
+          "name": "key",
+          "type": "String"
+        },
+        {
+          "name": "use",
+          "type": "Use"
+        },
+        {
+          "name": "value",
+          "type": "Atom"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimU32Add",
+      "source": "../bend2/selfhost/backend_ir.PrimU32Add",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimU32Sub",
+      "source": "../bend2/selfhost/backend_ir.PrimU32Sub",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimU32Mul",
+      "source": "../bend2/selfhost/backend_ir.PrimU32Mul",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimU32Div",
+      "source": "../bend2/selfhost/backend_ir.PrimU32Div",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimNatAdd",
+      "source": "../bend2/selfhost/backend_ir.PrimNatAdd",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimNatSub",
+      "source": "../bend2/selfhost/backend_ir.PrimNatSub",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimNatMul",
+      "source": "../bend2/selfhost/backend_ir.PrimNatMul",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimNatCmp",
+      "source": "../bend2/selfhost/backend_ir.PrimNatCmp",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimNatMin",
+      "source": "../bend2/selfhost/backend_ir.PrimNatMin",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimNatMax",
+      "source": "../bend2/selfhost/backend_ir.PrimNatMax",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimStringAppend",
+      "source": "../bend2/selfhost/backend_ir.PrimStringAppend",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimBoolOr",
+      "source": "../bend2/selfhost/backend_ir.PrimBoolOr",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimBoolXor",
+      "source": "../bend2/selfhost/backend_ir.PrimBoolXor",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimU32IsZero",
+      "source": "../bend2/selfhost/backend_ir.PrimU32IsZero",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32Asin",
+      "source": "../bend2/selfhost/backend_ir.PrimF32Asin",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32Acos",
+      "source": "../bend2/selfhost/backend_ir.PrimF32Acos",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32Atan",
+      "source": "../bend2/selfhost/backend_ir.PrimF32Atan",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32Sinh",
+      "source": "../bend2/selfhost/backend_ir.PrimF32Sinh",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32Cosh",
+      "source": "../bend2/selfhost/backend_ir.PrimF32Cosh",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32Tanh",
+      "source": "../bend2/selfhost/backend_ir.PrimF32Tanh",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimU32Mod",
+      "source": "../bend2/selfhost/backend_ir.PrimU32Mod",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimU32And",
+      "source": "../bend2/selfhost/backend_ir.PrimU32And",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimU32Or",
+      "source": "../bend2/selfhost/backend_ir.PrimU32Or",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimU32Xor",
+      "source": "../bend2/selfhost/backend_ir.PrimU32Xor",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimU32IsEq",
+      "source": "../bend2/selfhost/backend_ir.PrimU32IsEq",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimU32IsNe",
+      "source": "../bend2/selfhost/backend_ir.PrimU32IsNe",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimU32IsLt",
+      "source": "../bend2/selfhost/backend_ir.PrimU32IsLt",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimU32IsLe",
+      "source": "../bend2/selfhost/backend_ir.PrimU32IsLe",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimU32IsGt",
+      "source": "../bend2/selfhost/backend_ir.PrimU32IsGt",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimU32IsGe",
+      "source": "../bend2/selfhost/backend_ir.PrimU32IsGe",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimU32Inc",
+      "source": "../bend2/selfhost/backend_ir.PrimU32Inc",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimU32Not",
+      "source": "../bend2/selfhost/backend_ir.PrimU32Not",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimU32Shl",
+      "source": "../bend2/selfhost/backend_ir.PrimU32Shl",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimU32Shr",
+      "source": "../bend2/selfhost/backend_ir.PrimU32Shr",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimU32Shln",
+      "source": "../bend2/selfhost/backend_ir.PrimU32Shln",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimU32Shrn",
+      "source": "../bend2/selfhost/backend_ir.PrimU32Shrn",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimU32Cmp",
+      "source": "../bend2/selfhost/backend_ir.PrimU32Cmp",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimU32ToNat",
+      "source": "../bend2/selfhost/backend_ir.PrimU32ToNat",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimU32FromNat",
+      "source": "../bend2/selfhost/backend_ir.PrimU32FromNat",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32Add",
+      "source": "../bend2/selfhost/backend_ir.PrimF32Add",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32Sub",
+      "source": "../bend2/selfhost/backend_ir.PrimF32Sub",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32Mul",
+      "source": "../bend2/selfhost/backend_ir.PrimF32Mul",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32Div",
+      "source": "../bend2/selfhost/backend_ir.PrimF32Div",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32Mod",
+      "source": "../bend2/selfhost/backend_ir.PrimF32Mod",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32Neg",
+      "source": "../bend2/selfhost/backend_ir.PrimF32Neg",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32Sqrt",
+      "source": "../bend2/selfhost/backend_ir.PrimF32Sqrt",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32Abs",
+      "source": "../bend2/selfhost/backend_ir.PrimF32Abs",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32ToU32",
+      "source": "../bend2/selfhost/backend_ir.PrimF32ToU32",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32Bits",
+      "source": "../bend2/selfhost/backend_ir.PrimF32Bits",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32Show",
+      "source": "../bend2/selfhost/backend_ir.PrimF32Show",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32Read",
+      "source": "../bend2/selfhost/backend_ir.PrimF32Read",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32IsEq",
+      "source": "../bend2/selfhost/backend_ir.PrimF32IsEq",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32IsNe",
+      "source": "../bend2/selfhost/backend_ir.PrimF32IsNe",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32IsLt",
+      "source": "../bend2/selfhost/backend_ir.PrimF32IsLt",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32IsLe",
+      "source": "../bend2/selfhost/backend_ir.PrimF32IsLe",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32IsGt",
+      "source": "../bend2/selfhost/backend_ir.PrimF32IsGt",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32IsGe",
+      "source": "../bend2/selfhost/backend_ir.PrimF32IsGe",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32Pow",
+      "source": "../bend2/selfhost/backend_ir.PrimF32Pow",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32Atan2",
+      "source": "../bend2/selfhost/backend_ir.PrimF32Atan2",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32Exp",
+      "source": "../bend2/selfhost/backend_ir.PrimF32Exp",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32Log",
+      "source": "../bend2/selfhost/backend_ir.PrimF32Log",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32Log2",
+      "source": "../bend2/selfhost/backend_ir.PrimF32Log2",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32Log10",
+      "source": "../bend2/selfhost/backend_ir.PrimF32Log10",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32Sin",
+      "source": "../bend2/selfhost/backend_ir.PrimF32Sin",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32Cos",
+      "source": "../bend2/selfhost/backend_ir.PrimF32Cos",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32Tan",
+      "source": "../bend2/selfhost/backend_ir.PrimF32Tan",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32Floor",
+      "source": "../bend2/selfhost/backend_ir.PrimF32Floor",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32Ceil",
+      "source": "../bend2/selfhost/backend_ir.PrimF32Ceil",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32Trunc",
+      "source": "../bend2/selfhost/backend_ir.PrimF32Trunc",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32ToNat",
+      "source": "../bend2/selfhost/backend_ir.PrimF32ToNat",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimU32ToF32",
+      "source": "../bend2/selfhost/backend_ir.PrimU32ToF32",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimNatDouble",
+      "source": "../bend2/selfhost/backend_ir.PrimNatDouble",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimNatIsLt",
+      "source": "../bend2/selfhost/backend_ir.PrimNatIsLt",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimNatDivmod",
+      "source": "../bend2/selfhost/backend_ir.PrimNatDivmod",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimStringEq",
+      "source": "../bend2/selfhost/backend_ir.PrimStringEq",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimMapBit",
+      "source": "../bend2/selfhost/backend_ir.PrimMapBit",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimMapFind",
+      "source": "../bend2/selfhost/backend_ir.PrimMapFind",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimStringCmp",
+      "source": "../bend2/selfhost/backend_ir.PrimStringCmp",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimStringToList",
+      "source": "../bend2/selfhost/backend_ir.PrimStringToList",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimStringLength",
+      "source": "../bend2/selfhost/backend_ir.PrimStringLength",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimArrayNew",
+      "source": "../bend2/selfhost/backend_ir.PrimArrayNew",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimArraySet",
+      "source": "../bend2/selfhost/backend_ir.PrimArraySet",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimArrayGet",
+      "source": "../bend2/selfhost/backend_ir.PrimArrayGet",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimArraySwap",
+      "source": "../bend2/selfhost/backend_ir.PrimArraySwap",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimArraySize",
+      "source": "../bend2/selfhost/backend_ir.PrimArraySize",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimArrayClone",
+      "source": "../bend2/selfhost/backend_ir.PrimArrayClone",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimArrayAtomicAdd",
+      "source": "../bend2/selfhost/backend_ir.PrimArrayAtomicAdd",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimArrayAtomicMin",
+      "source": "../bend2/selfhost/backend_ir.PrimArrayAtomicMin",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimArrayAtomicMax",
+      "source": "../bend2/selfhost/backend_ir.PrimArrayAtomicMax",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimArrayAtomicAnd",
+      "source": "../bend2/selfhost/backend_ir.PrimArrayAtomicAnd",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimArrayAtomicOr",
+      "source": "../bend2/selfhost/backend_ir.PrimArrayAtomicOr",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimArrayAtomicXor",
+      "source": "../bend2/selfhost/backend_ir.PrimArrayAtomicXor",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimArrayAtomicExch",
+      "source": "../bend2/selfhost/backend_ir.PrimArrayAtomicExch",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimArrayAtomicCas",
+      "source": "../bend2/selfhost/backend_ir.PrimArrayAtomicCas",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimArrayAtomicFadd",
+      "source": "../bend2/selfhost/backend_ir.PrimArrayAtomicFadd",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimNatPredecessor",
+      "source": "../bend2/selfhost/backend_ir.PrimNatPredecessor",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimNatSuccessor",
+      "source": "../bend2/selfhost/backend_ir.PrimNatSuccessor",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimCharNew",
+      "source": "../bend2/selfhost/backend_ir.PrimCharNew",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimCharCode",
+      "source": "../bend2/selfhost/backend_ir.PrimCharCode",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimStringHead",
+      "source": "../bend2/selfhost/backend_ir.PrimStringHead",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimStringTail",
+      "source": "../bend2/selfhost/backend_ir.PrimStringTail",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimWordToU32",
+      "source": "../bend2/selfhost/backend_ir.PrimWordToU32",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimU32ToWord",
+      "source": "../bend2/selfhost/backend_ir.PrimU32ToWord",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32FromBits",
+      "source": "../bend2/selfhost/backend_ir.PrimF32FromBits",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32FromWord",
+      "source": "../bend2/selfhost/backend_ir.PrimF32FromWord",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimF32ToWord",
+      "source": "../bend2/selfhost/backend_ir.PrimF32ToWord",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimArrayLeaf",
+      "source": "../bend2/selfhost/backend_ir.PrimArrayLeaf",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimArrayNode",
+      "source": "../bend2/selfhost/backend_ir.PrimArrayNode",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimArrayLeafValue",
+      "source": "../bend2/selfhost/backend_ir.PrimArrayLeafValue",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimArrayLeft",
+      "source": "../bend2/selfhost/backend_ir.PrimArrayLeft",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimArrayRight",
+      "source": "../bend2/selfhost/backend_ir.PrimArrayRight",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimIsArrayLeaf",
+      "source": "../bend2/selfhost/backend_ir.PrimIsArrayLeaf",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimIsArrayNode",
+      "source": "../bend2/selfhost/backend_ir.PrimIsArrayNode",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimIsNatZero",
+      "source": "../bend2/selfhost/backend_ir.PrimIsNatZero",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimIsNatSuccessor",
+      "source": "../bend2/selfhost/backend_ir.PrimIsNatSuccessor",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimIsStringEmpty",
+      "source": "../bend2/selfhost/backend_ir.PrimIsStringEmpty",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimIsStringNonempty",
+      "source": "../bend2/selfhost/backend_ir.PrimIsStringNonempty",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimIsTrue",
+      "source": "../bend2/selfhost/backend_ir.PrimIsTrue",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimIsFalse",
+      "source": "../bend2/selfhost/backend_ir.PrimIsFalse",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimSameValue",
+      "source": "../bend2/selfhost/backend_ir.PrimSameValue",
+      "fields": []
+    },
+    {
+      "type": "BIR.Primitive",
+      "name": "PrimFloatBitsEqual",
+      "source": "../bend2/selfhost/backend_ir.PrimFloatBitsEqual",
+      "fields": []
+    },
+    {
+      "type": "BIR.DescriptorPattern",
+      "name": "DescriptorBinder",
+      "source": "../bend2/selfhost/backend_ir.DescriptorBinder",
+      "fields": [
+        {
+          "name": "quantity",
+          "type": "Quantity"
+        }
+      ]
+    },
+    {
+      "type": "BIR.DescriptorPattern",
+      "name": "DescriptorConstructorPattern",
+      "source": "../bend2/selfhost/backend_ir.DescriptorConstructorPattern",
+      "fields": [
+        {
+          "name": "key",
+          "type": "String"
+        },
+        {
+          "name": "fields",
+          "type": "List<&2, DescriptorPattern>"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Descriptor",
+      "name": "DescriptorNull",
+      "source": "../bend2/selfhost/backend_ir.DescriptorNull",
+      "fields": []
+    },
+    {
+      "type": "BIR.Descriptor",
+      "name": "DescriptorRef",
+      "source": "../bend2/selfhost/backend_ir.DescriptorRef",
+      "fields": [
+        {
+          "name": "key",
+          "type": "String"
+        },
+        {
+          "name": "args",
+          "type": "List<&2, Descriptor>"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Descriptor",
+      "name": "DescriptorParameter",
+      "source": "../bend2/selfhost/backend_ir.DescriptorParameter",
+      "fields": [
+        {
+          "name": "index",
+          "type": "Nat"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Descriptor",
+      "name": "DescriptorQuantityKind",
+      "source": "../bend2/selfhost/backend_ir.DescriptorQuantityKind",
+      "fields": []
+    },
+    {
+      "type": "BIR.Descriptor",
+      "name": "DescriptorQuantity",
+      "source": "../bend2/selfhost/backend_ir.DescriptorQuantity",
+      "fields": [
+        {
+          "name": "quantity",
+          "type": "Quantity"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Descriptor",
+      "name": "DescriptorKind",
+      "source": "../bend2/selfhost/backend_ir.DescriptorKind",
+      "fields": [
+        {
+          "name": "quantity",
+          "type": "Descriptor"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Descriptor",
+      "name": "DescriptorMinimum",
+      "source": "../bend2/selfhost/backend_ir.DescriptorMinimum",
+      "fields": [
+        {
+          "name": "left",
+          "type": "Descriptor"
+        },
+        {
+          "name": "right",
+          "type": "Descriptor"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Descriptor",
+      "name": "DescriptorArrow",
+      "source": "../bend2/selfhost/backend_ir.DescriptorArrow",
+      "fields": [
+        {
+          "name": "quantity",
+          "type": "Quantity"
+        },
+        {
+          "name": "domain",
+          "type": "Descriptor"
+        },
+        {
+          "name": "body",
+          "type": "Descriptor"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Descriptor",
+      "name": "DescriptorLambda",
+      "source": "../bend2/selfhost/backend_ir.DescriptorLambda",
+      "fields": [
+        {
+          "name": "quantity",
+          "type": "Maybe<&2, Quantity>"
+        },
+        {
+          "name": "body",
+          "type": "Descriptor"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Descriptor",
+      "name": "DescriptorConstructor",
+      "source": "../bend2/selfhost/backend_ir.DescriptorConstructor",
+      "fields": [
+        {
+          "name": "key",
+          "type": "String"
+        },
+        {
+          "name": "args",
+          "type": "List<&2, Descriptor>"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Descriptor",
+      "name": "DescriptorApplication",
+      "source": "../bend2/selfhost/backend_ir.DescriptorApplication",
+      "fields": [
+        {
+          "name": "fn",
+          "type": "Descriptor"
+        },
+        {
+          "name": "arg",
+          "type": "Descriptor"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Descriptor",
+      "name": "DescriptorSubstitution",
+      "source": "../bend2/selfhost/backend_ir.DescriptorSubstitution",
+      "fields": [
+        {
+          "name": "index",
+          "type": "Nat"
+        },
+        {
+          "name": "value",
+          "type": "Descriptor"
+        },
+        {
+          "name": "body",
+          "type": "Descriptor"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Descriptor",
+      "name": "DescriptorLet",
+      "source": "../bend2/selfhost/backend_ir.DescriptorLet",
+      "fields": [
+        {
+          "name": "values",
+          "type": "List<&2, Descriptor>"
+        },
+        {
+          "name": "body",
+          "type": "Descriptor"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Descriptor",
+      "name": "DescriptorLocal",
+      "source": "../bend2/selfhost/backend_ir.DescriptorLocal",
+      "fields": [
+        {
+          "name": "patterns",
+          "type": "List<&2, DescriptorPattern>"
+        },
+        {
+          "name": "values",
+          "type": "List<&2, Descriptor>"
+        },
+        {
+          "name": "body",
+          "type": "Descriptor"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Descriptor",
+      "name": "DescriptorMatch",
+      "source": "../bend2/selfhost/backend_ir.DescriptorMatch",
+      "fields": [
+        {
+          "name": "values",
+          "type": "List<&2, Descriptor>"
+        },
+        {
+          "name": "cases",
+          "type": "List<&2, Descriptor>"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Descriptor",
+      "name": "DescriptorCase",
+      "source": "../bend2/selfhost/backend_ir.DescriptorCase",
+      "fields": [
+        {
+          "name": "patterns",
+          "type": "List<&2, DescriptorPattern>"
+        },
+        {
+          "name": "body",
+          "type": "Descriptor"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Descriptor",
+      "name": "DescriptorBind",
+      "source": "../bend2/selfhost/backend_ir.DescriptorBind",
+      "fields": [
+        {
+          "name": "value",
+          "type": "Descriptor"
+        },
+        {
+          "name": "body",
+          "type": "Descriptor"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Descriptor",
+      "name": "DescriptorEquality",
+      "source": "../bend2/selfhost/backend_ir.DescriptorEquality",
+      "fields": [
+        {
+          "name": "left",
+          "type": "Descriptor"
+        },
+        {
+          "name": "right",
+          "type": "Descriptor"
+        },
+        {
+          "name": "ty",
+          "type": "Descriptor"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Descriptor",
+      "name": "DescriptorReflexivity",
+      "source": "../bend2/selfhost/backend_ir.DescriptorReflexivity",
+      "fields": []
+    },
+    {
+      "type": "BIR.Descriptor",
+      "name": "DescriptorFailure",
+      "source": "../bend2/selfhost/backend_ir.DescriptorFailure",
+      "fields": [
+        {
+          "name": "message",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Descriptor",
+      "name": "DescriptorFill",
+      "source": "../bend2/selfhost/backend_ir.DescriptorFill",
+      "fields": [
+        {
+          "name": "head",
+          "type": "Descriptor"
+        },
+        {
+          "name": "args",
+          "type": "List<&2, Descriptor>"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Descriptor",
+      "name": "DescriptorPlus",
+      "source": "../bend2/selfhost/backend_ir.DescriptorPlus",
+      "fields": [
+        {
+          "name": "head",
+          "type": "Descriptor"
+        },
+        {
+          "name": "args",
+          "type": "List<&2, Descriptor>"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Descriptor",
+      "name": "DescriptorNamedFill",
+      "source": "../bend2/selfhost/backend_ir.DescriptorNamedFill",
+      "fields": [
+        {
+          "name": "key",
+          "type": "String"
+        },
+        {
+          "name": "head",
+          "type": "Descriptor"
+        },
+        {
+          "name": "args",
+          "type": "List<&2, Descriptor>"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Descriptor",
+      "name": "DescriptorNamedPlus",
+      "source": "../bend2/selfhost/backend_ir.DescriptorNamedPlus",
+      "fields": [
+        {
+          "name": "key",
+          "type": "String"
+        },
+        {
+          "name": "head",
+          "type": "Descriptor"
+        },
+        {
+          "name": "args",
+          "type": "List<&2, Descriptor>"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Op",
+      "name": "Copy",
+      "source": "../bend2/selfhost/backend_ir.Copy",
+      "fields": [
+        {
+          "name": "value",
+          "type": "Atom"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Op",
+      "name": "PrimitiveCall",
+      "source": "../bend2/selfhost/backend_ir.PrimitiveCall",
+      "fields": [
+        {
+          "name": "primitive",
+          "type": "Primitive"
+        },
+        {
+          "name": "args",
+          "type": "List<&2, Arg>"
+        },
+        {
+          "name": "types",
+          "type": "List<&2, Descriptor>"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Op",
+      "name": "Closure",
+      "source": "../bend2/selfhost/backend_ir.Closure",
+      "fields": [
+        {
+          "name": "code",
+          "type": "U32"
+        },
+        {
+          "name": "captures",
+          "type": "List<&2, Arg>"
+        },
+        {
+          "name": "parameters",
+          "type": "List<&2, Parameter>"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Op",
+      "name": "Direct",
+      "source": "../bend2/selfhost/backend_ir.Direct",
+      "fields": [
+        {
+          "name": "code",
+          "type": "U32"
+        },
+        {
+          "name": "args",
+          "type": "List<&2, Arg>"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Op",
+      "name": "Apply",
+      "source": "../bend2/selfhost/backend_ir.Apply",
+      "fields": [
+        {
+          "name": "fn",
+          "type": "Atom"
+        },
+        {
+          "name": "arg",
+          "type": "Arg"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Op",
+      "name": "LoadSymbol",
+      "source": "../bend2/selfhost/backend_ir.LoadSymbol",
+      "fields": [
+        {
+          "name": "id",
+          "type": "U32"
+        },
+        {
+          "name": "key",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Op",
+      "name": "Construct",
+      "source": "../bend2/selfhost/backend_ir.Construct",
+      "fields": [
+        {
+          "name": "constructor",
+          "type": "U32"
+        },
+        {
+          "name": "tag",
+          "type": "String"
+        },
+        {
+          "name": "fields",
+          "type": "List<&2, Field>"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Op",
+      "name": "Project",
+      "source": "../bend2/selfhost/backend_ir.Project",
+      "fields": [
+        {
+          "name": "value",
+          "type": "Atom"
+        },
+        {
+          "name": "constructor",
+          "type": "U32"
+        },
+        {
+          "name": "field",
+          "type": "U32"
+        },
+        {
+          "name": "key",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Op",
+      "name": "HasTag",
+      "source": "../bend2/selfhost/backend_ir.HasTag",
+      "fields": [
+        {
+          "name": "value",
+          "type": "Atom"
+        },
+        {
+          "name": "constructor",
+          "type": "U32"
+        },
+        {
+          "name": "tag",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Block",
+      "name": "Return",
+      "source": "../bend2/selfhost/backend_ir.Return",
+      "fields": [
+        {
+          "name": "value",
+          "type": "Atom"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Block",
+      "name": "Let",
+      "source": "../bend2/selfhost/backend_ir.Let",
+      "fields": [
+        {
+          "name": "id",
+          "type": "U32"
+        },
+        {
+          "name": "op",
+          "type": "Op"
+        },
+        {
+          "name": "next",
+          "type": "Block"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Block",
+      "name": "Branch",
+      "source": "../bend2/selfhost/backend_ir.Branch",
+      "fields": [
+        {
+          "name": "condition",
+          "type": "Atom"
+        },
+        {
+          "name": "yes",
+          "type": "Block"
+        },
+        {
+          "name": "no",
+          "type": "Block"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Block",
+      "name": "Region",
+      "source": "../bend2/selfhost/backend_ir.Region",
+      "fields": [
+        {
+          "name": "label",
+          "type": "U32"
+        },
+        {
+          "name": "body",
+          "type": "Block"
+        },
+        {
+          "name": "next",
+          "type": "Block"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Block",
+      "name": "LeaveRegion",
+      "source": "../bend2/selfhost/backend_ir.LeaveRegion",
+      "fields": [
+        {
+          "name": "label",
+          "type": "U32"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Block",
+      "name": "TailDirect",
+      "source": "../bend2/selfhost/backend_ir.TailDirect",
+      "fields": [
+        {
+          "name": "code",
+          "type": "U32"
+        },
+        {
+          "name": "args",
+          "type": "List<&2, Arg>"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Block",
+      "name": "TailApply",
+      "source": "../bend2/selfhost/backend_ir.TailApply",
+      "fields": [
+        {
+          "name": "fn",
+          "type": "Atom"
+        },
+        {
+          "name": "arg",
+          "type": "Arg"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Block",
+      "name": "Failure",
+      "source": "../bend2/selfhost/backend_ir.Failure",
+      "fields": [
+        {
+          "name": "message",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Code",
+      "name": "Code",
+      "source": "../bend2/selfhost/backend_ir.Code",
+      "fields": [
+        {
+          "name": "id",
+          "type": "U32"
+        },
+        {
+          "name": "captures",
+          "type": "List<&2, Use>"
+        },
+        {
+          "name": "parameters",
+          "type": "List<&2, Parameter>"
+        },
+        {
+          "name": "body",
+          "type": "Block"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Declaration",
+      "name": "FunctionDeclaration",
+      "source": "../bend2/selfhost/backend_ir.FunctionDeclaration",
+      "fields": [
+        {
+          "name": "key",
+          "type": "String"
+        },
+        {
+          "name": "code",
+          "type": "U32"
+        },
+        {
+          "name": "parameters",
+          "type": "List<&2, Parameter>"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Declaration",
+      "name": "LazyDeclaration",
+      "source": "../bend2/selfhost/backend_ir.LazyDeclaration",
+      "fields": [
+        {
+          "name": "key",
+          "type": "String"
+        },
+        {
+          "name": "body",
+          "type": "Block"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Declaration",
+      "name": "NativeDeclaration",
+      "source": "../bend2/selfhost/backend_ir.NativeDeclaration",
+      "fields": [
+        {
+          "name": "key",
+          "type": "String"
+        },
+        {
+          "name": "primitive",
+          "type": "Primitive"
+        },
+        {
+          "name": "quantities",
+          "type": "List<&2, Quantity>"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Declaration",
+      "name": "ForeignDeclaration",
+      "source": "../bend2/selfhost/backend_ir.ForeignDeclaration",
+      "fields": [
+        {
+          "name": "key",
+          "type": "String"
+        },
+        {
+          "name": "namespace",
+          "type": "String"
+        },
+        {
+          "name": "imported",
+          "type": "String"
+        },
+        {
+          "name": "arity",
+          "type": "Nat"
+        },
+        {
+          "name": "sources",
+          "type": "List<&2, String>"
+        },
+        {
+          "name": "quantities",
+          "type": "List<&2, Quantity>"
+        },
+        {
+          "name": "span",
+          "type": "Ast.SourceSpan"
+        },
+        {
+          "name": "parameter_types",
+          "type": "List<&2, Descriptor>"
+        },
+        {
+          "name": "result",
+          "type": "Descriptor"
+        }
+      ]
+    },
+    {
+      "type": "BIR.ConstructorLayout",
+      "name": "ConstructorLayout",
+      "source": "../bend2/selfhost/backend_ir.ConstructorLayout",
+      "fields": [
+        {
+          "name": "id",
+          "type": "U32"
+        },
+        {
+          "name": "key",
+          "type": "String"
+        },
+        {
+          "name": "native",
+          "type": "Maybe<&2, String>"
+        },
+        {
+          "name": "fields",
+          "type": "List<&2, Maybe<&2, String>>"
+        }
+      ]
+    },
+    {
+      "type": "BIR.DescriptorField",
+      "name": "DescriptorField",
+      "source": "../bend2/selfhost/backend_ir.DescriptorField",
+      "fields": [
+        {
+          "name": "key",
+          "type": "Maybe<&2, String>"
+        },
+        {
+          "name": "quantity",
+          "type": "Quantity"
+        },
+        {
+          "name": "ty",
+          "type": "Descriptor"
+        }
+      ]
+    },
+    {
+      "type": "BIR.DescriptorArm",
+      "name": "DescriptorArm",
+      "source": "../bend2/selfhost/backend_ir.DescriptorArm",
+      "fields": [
+        {
+          "name": "key",
+          "type": "String"
+        },
+        {
+          "name": "fields",
+          "type": "List<&2, DescriptorField>"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Family",
+      "name": "Family",
+      "source": "../bend2/selfhost/backend_ir.Family",
+      "fields": [
+        {
+          "name": "key",
+          "type": "String"
+        },
+        {
+          "name": "name",
+          "type": "String"
+        },
+        {
+          "name": "native",
+          "type": "Maybe<&2, String>"
+        },
+        {
+          "name": "quantity_prefix",
+          "type": "Nat"
+        },
+        {
+          "name": "arity",
+          "type": "Nat"
+        },
+        {
+          "name": "arms",
+          "type": "List<&2, DescriptorArm>"
+        }
+      ]
+    },
+    {
+      "type": "BIR.TypeFunction",
+      "name": "TypeFunction",
+      "source": "../bend2/selfhost/backend_ir.TypeFunction",
+      "fields": [
+        {
+          "name": "key",
+          "type": "String"
+        },
+        {
+          "name": "native",
+          "type": "Maybe<&2, String>"
+        },
+        {
+          "name": "quantity_prefix",
+          "type": "Nat"
+        },
+        {
+          "name": "arity",
+          "type": "Nat"
+        },
+        {
+          "name": "body",
+          "type": "Descriptor"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Entry",
+      "name": "Entry",
+      "source": "../bend2/selfhost/backend_ir.Entry",
+      "fields": [
+        {
+          "name": "code",
+          "type": "U32"
+        },
+        {
+          "name": "arity",
+          "type": "Nat"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Export",
+      "name": "Export",
+      "source": "../bend2/selfhost/backend_ir.Export",
+      "fields": [
+        {
+          "name": "key",
+          "type": "String"
+        },
+        {
+          "name": "entry",
+          "type": "Maybe<&2, Entry>"
+        },
+        {
+          "name": "parameter_types",
+          "type": "List<&2, Descriptor>"
+        },
+        {
+          "name": "result",
+          "type": "Descriptor"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Ending",
+      "name": "Executable",
+      "source": "../bend2/selfhost/backend_ir.Executable",
+      "fields": [
+        {
+          "name": "main_type",
+          "type": "Descriptor"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Ending",
+      "name": "Library",
+      "source": "../bend2/selfhost/backend_ir.Library",
+      "fields": [
+        {
+          "name": "exports",
+          "type": "List<&2, Export>"
+        }
+      ]
+    },
+    {
+      "type": "BIR.Program",
+      "name": "Program",
+      "source": "../bend2/selfhost/backend_ir.Program",
+      "fields": [
+        {
+          "name": "codes",
+          "type": "List<&2, Code>"
+        },
+        {
+          "name": "declarations",
+          "type": "List<&2, Declaration>"
+        },
+        {
+          "name": "constructors",
+          "type": "List<&2, ConstructorLayout>"
+        },
+        {
+          "name": "families",
+          "type": "List<&2, Family>"
+        },
+        {
+          "name": "type_functions",
+          "type": "List<&2, TypeFunction>"
+        },
+        {
+          "name": "ending",
+          "type": "Ending"
+        }
+      ]
+    },
+    {
+      "type": "BIR.SourceFile",
+      "name": "SourceFile",
+      "source": "../bend2/selfhost/backend_ir.SourceFile",
+      "fields": [
+        {
+          "name": "path",
+          "type": "String"
+        },
+        {
+          "name": "source",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "type": "Ast.SourceSpan",
+      "name": "SpanOf",
+      "source": "../bend2/selfhost/ast.SpanOf",
+      "fields": [
+        {
+          "name": "file",
+          "type": "String"
+        },
+        {
+          "name": "beg",
+          "type": "Nat"
+        },
+        {
+          "name": "end",
+          "type": "Nat"
+        }
+      ]
+    }
+  ]
+}
