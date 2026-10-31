@@ -5,6 +5,21 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- Build acceleration experiments G41/G42 preserve G24R12 as the accepted
+  compiler. LLVM splitting now has an explicit `--cc-partitions=4|8` experiment
+  with at most three backend children; four remains the default. Real eight-way
+  construction and native-seeded byte fixedpoint pass, but all 12 paired samples
+  reject promotion under the unchanged strict runtime/RSS gate. Backend child
+  failure drains existing children without starting replacements or linking.
+  Source/outcome: `0197c2a2`; `checkpoints/local2039g41llvm-outcome/outcome.json`.
+- The isolated G42 facts/final-emission prototype executes 17 actual C/JS
+  consumer cases and reproduces the accepted 62,113,627-byte full-root C
+  exactly in both modes. Deferred primitive recipes take 187.5 s versus
+  eager 153.4 s in one unprofiled pair, so they are not promoted. This is not
+  native/fixedpoint or runtime qualification. The preexisting `comp.ts` token
+  overage is also recorded without changing caps or moving production code.
+  Source/frozen-input/rejection checkpoint: `fd709500`;
+  `checkpoints/local2039g42defer-outcome/outcome.json`.
 - G40 / E05R2 newly qualifies the historical bounded private-producer/shared-field
   continuation pass under the fixed N12 launcher, and is rejected. Fresh native
   construction and genuine native-seeded stage1/stage2 byte fixedpoint pass;

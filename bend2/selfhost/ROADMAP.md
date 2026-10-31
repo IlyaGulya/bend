@@ -6,6 +6,49 @@ under their original image IDs; a later pass never reclassifies an older run.
 Detailed evidence and reasoning live in the linked receipts and notes.
 This index does not replace a receipt.
 
+## G41–G42: backend partition experiment and deferred recipes do not earn promotion
+
+G41 source/outcome is committed at `0197c2a2`. The real LLVM pipeline accepts
+four or eight partitions, always at most three concurrent backend children.
+Four remains the default. In the observed new-source pair, backend time is
+103.062 s for four and 88.100 s for eight; different C-generation times and
+single construction samples do not establish a causal total-build speedup.
+The eight-way native compiler completes genuine native-seeded stage1/stage2
+with accepted 31,758,507-byte JS, SHA256
+`85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e`.
+All 12 original paired samples complete, but strict native time and both
+lanes' median RSS reject promotion. Later consumers stop at the original
+fail-fast boundary; complete correctness/performance is not claimed.
+
+G42's isolated source is `7aa1f38b`; required sources and compact outcomes
+are committed on integration at `fd709500`. Primitive statement recipes
+separate final materialization from converging C facts without parallelizing
+mutable FL, adding a fifth traversal, or deferring deterministic ID allocation.
+Seventeen actual C/JS consumer cases pass under the original guardian.
+Both full-root modes validate all 12,456 definitions and emit exactly the
+accepted C SHA256 `2290a096f114201665d4b943db3470889ca700ec205b875612178ea263e27ffb`.
+
+| Unprofiled full-root C measurement | Eager | Deferred recipes |
+| --- | ---: | ---: |
+| Code generation, ms | 153438.607 | 187497.215 |
+| Peak RSS, bytes | 4692082688 | 4609703936 |
+| Peak footprint, bytes | 4774220024 | 4803449104 |
+
+This is one pair, not statistical runtime qualification. Reject the recipe
+representation rather than attributing a speedup to architectural separation.
+A later facts-only analysis must avoid per-statement recipe allocation;
+stable-ID finalization is an invariant, not a measured acceleration.
+Keep contextual FIR, current BIR/lowering and the accepted eager compiler.
+
+The `gpt-3.5-turbo` / `cl100k_base` count is 78,642 tokens before G42 and
+80,571 for its private prototype, above the actual current 66,000-token gate.
+The gate itself was not executed and no cap compliance is claimed. Caps are
+unchanged; the prototype is not installed in production `bend2/comp.ts`.
+Setup failures, corrected original 8-GiB RSS/footprint / 10-ms / 600-s
+protocol, exact commands and scope limitations remain in
+`checkpoints/local2039g41llvm-outcome/outcome.json` and
+`checkpoints/local2039g42defer-outcome/outcome.json`.
+
 ## G40 / E05R2: fresh fixedpoint passes, paired time/RSS rejects the pass
 
 This is a new qualification of the exact historical E05 source on top of N12,

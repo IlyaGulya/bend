@@ -4,6 +4,45 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
+### G41/G42 завершены: parallel LLVM opt-in, recipes rejected, R12 unchanged
+
+G41 source/outcome — **`0197c2a2`**. Native constructor поддерживает
+`--cc-partitions=4|8` с прежним максимумом трёх backend children; default — 4.
+Реальный восьмичастный native завершил genuine stage1/stage2 с accepted JS
+SHA256 `85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e`.
+Все 12 original paired samples выполнены; strict native time и median RSS
+обеих lanes запрещают promotion. Поздние consumers остановлены прежним
+fail-fast, не считаются PASS. Более быстрый backend в одиночной паре не
+доказывает общего build/runtime выигрыша.
+
+G42 prototype source — `7aa1f38b`; frozen source/outcome checkpoint на
+integration — **`fd709500`**. 17 actual C/JS cases PASS; обе full-root modes
+проверили 12,456 definitions и дали одинаковый accepted C SHA256
+`2290a096f114201665d4b943db3470889ca700ec205b875612178ea263e27ffb`.
+Но primitive recipes заняли 187.5 s против 153.4 s eager в одной unprofiled
+паре, с более высоким footprint. Promotion rejected; нового native,
+fixedpoint и runtime acceptance нет. Не повторять recipes unchanged.
+Будущий facts-only analysis должен исключить per-statement recipe allocation;
+не распараллеливать mutable FL и не менять FIR/BIR по одному факту разделения.
+
+Production `bend2/comp.ts` остаётся R12
+`880a9b3b86f273852a39fc664f8c3d7b71e3860b6d365e4321949fc812b6e7cc`.
+Текущий constructor после G41 — hash
+`5f952045eb0dc22444cce4941c359ff6d8e1851f5a720e9c776c111cf97b0ed4`;
+N12 startup default сохранён, но старый N12 source hash ниже исторический.
+Не требовать его для новой build authority и не переписывать старые pins.
+Исходный token overage также не скрыт: count 78,642 до G42 и 80,571 у
+private candidate против actual cap 66,000. Cap не изменён; prototype
+не установлен в production. Direct count — не выполненный repo gate.
+
+Сохранены неудачные harness attempts: неверная координата второго root без
+`err_show` дала deadline до известного output; следующий parent запуск ошибочно
+использовал generic 3/2-GiB guard. Исправлены только harness input/environment.
+Стандартные успешные runs используют original 8/8-GiB, poll10ms, timeout600s;
+это не повтор проигравшего compiler target с повышенными limits.
+Evidence: `local2039g41llvm-outcome/outcome.json`;
+`local2039g42defer-outcome/outcome.json`.
+
 ### G40 / E05R2 завершён: native/fixedpoint PASS, paired time/RSS FAIL, R12 restored
 
 После N12 выполнена новая qualification exact historical E05 pass, без

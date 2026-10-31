@@ -1,0 +1,3444 @@
+{
+  "status": "NATIVE_SEED_BOOTSTRAP_FIXEDPOINT",
+  "passed": true,
+  "selfhostGreen": false,
+  "criterion": "Accepted native parser + full natively checked compiler root built by the unchanged canonical kernel/compiler under the original memory/deadline limits and an explicitly recorded native optimization policy; native stage0 parses/checks/emits real stage-one JS from the exact same root and executes the original seed fixtures; stage one uses its own parser and steps to emit stage two; require byte-identical JS and full semantic AST oracle parity.",
+  "boundary": {
+    "host": "trusted C file/import loader and serial opaque native Run chunk driver",
+    "sourceAlgorithms": "unchanged canonical Bend parser/expansion/checker/JS library emitter compiled by the canonical kernel/compiler",
+    "hostChecking": false,
+    "hostParsing": false,
+    "embeddedSource": false,
+    "cachedAst": false,
+    "seed": "native stage0 executable built from this exact root",
+    "stageTwoParser": "stage-one emitted parse_with_fuel, never the seed parser",
+    "outputPatches": 0,
+    "checksExcluded": 0
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000,
+    "workerStackMiB": 256,
+    "workerOldGenerationMiB": 6144,
+    "workerYoungGenerationMiB": 128,
+    "parserFuel": 8000000,
+    "maxHeavyChildren": 1
+  },
+  "root": "/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_compiler_root_local2039g43dist.bend",
+  "requiredExports": [
+    "parsed_module",
+    "parse_with_fuel",
+    "expand_modules_start",
+    "template_step",
+    "check_expanded_start",
+    "inspect_checked_start",
+    "checker_step",
+    "emit_modules_start",
+    "emit_library_start",
+    "emitter_step",
+    "emit_c_modules_start",
+    "emit_c_library_start",
+    "c_emitter_step"
+  ],
+  "artifacts": {
+    "stageOne": {
+      "event": "artifact",
+      "phase": "native-stage-zero-emit",
+      "stage": "stageOne",
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43dist-correctness/bootstrap.json.cases/stage-one.js",
+      "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "bytes": 31758507,
+      "sourceHashes": [
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/base.bend",
+          "sha256": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+          "sourceBytesSha256": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+          "namespace": ""
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/args.js",
+          "sha256": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82",
+          "sourceBytesSha256": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_close.js",
+          "sha256": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+          "sourceBytesSha256": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_open.js",
+          "sha256": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9",
+          "sourceBytesSha256": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_write.js",
+          "sha256": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6",
+          "sourceBytesSha256": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/chan.js",
+          "sha256": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f",
+          "sourceBytesSha256": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_close.js",
+          "sha256": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+          "sourceBytesSha256": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_open.js",
+          "sha256": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694",
+          "sourceBytesSha256": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_read.js",
+          "sha256": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+          "sourceBytesSha256": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_size.js",
+          "sha256": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+          "sourceBytesSha256": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_write.js",
+          "sha256": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0",
+          "sourceBytesSha256": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/get_env.js",
+          "sha256": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4",
+          "sourceBytesSha256": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/listener_close.js",
+          "sha256": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+          "sourceBytesSha256": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/now.js",
+          "sha256": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+          "sourceBytesSha256": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/print_err.js",
+          "sha256": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+          "sourceBytesSha256": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/print.js",
+          "sha256": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+          "sourceBytesSha256": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/process_run.js",
+          "sha256": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729",
+          "sourceBytesSha256": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/random_u32.js",
+          "sha256": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+          "sourceBytesSha256": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/sleep.js",
+          "sha256": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+          "sourceBytesSha256": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/socket_close.js",
+          "sha256": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+          "sourceBytesSha256": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/spawn.js",
+          "sha256": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+          "sourceBytesSha256": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_accept.js",
+          "sha256": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+          "sourceBytesSha256": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_connect.js",
+          "sha256": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb",
+          "sourceBytesSha256": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_listen.js",
+          "sha256": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+          "sourceBytesSha256": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_recv.js",
+          "sha256": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+          "sourceBytesSha256": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_send.js",
+          "sha256": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6",
+          "sourceBytesSha256": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/thread_count.js",
+          "sha256": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+          "sourceBytesSha256": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_bind.js",
+          "sha256": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+          "sourceBytesSha256": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_recv_from.js",
+          "sha256": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad",
+          "sourceBytesSha256": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_send_to.js",
+          "sha256": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+          "sourceBytesSha256": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_close.js",
+          "sha256": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+          "sourceBytesSha256": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_frame.js",
+          "sha256": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+          "sourceBytesSha256": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_grab.js",
+          "sha256": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+          "sourceBytesSha256": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_open.js",
+          "sha256": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+          "sourceBytesSha256": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_set_title.js",
+          "sha256": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+          "sourceBytesSha256": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/write.js",
+          "sha256": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+          "sourceBytesSha256": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/ast.bend",
+          "sha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+          "sourceBytesSha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+          "namespace": "../bend2/selfhost/ast"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/backend_ir.bend",
+          "sha256": "c0286db6b192bf5cc917774b7ea5e393d4416263432eb130fb8393b1dffc1cb3",
+          "sourceBytesSha256": "c0286db6b192bf5cc917774b7ea5e393d4416263432eb130fb8393b1dffc1cb3",
+          "namespace": "../bend2/selfhost/backend_ir"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_backend_sharing.bend",
+          "sha256": "05adf4ac68b0658425f7fce430709f67bd29c3f1f8a43727412661084c4dbe2c",
+          "sourceBytesSha256": "05adf4ac68b0658425f7fce430709f67bd29c3f1f8a43727412661084c4dbe2c",
+          "namespace": "../bend2/selfhost/c_backend_sharing"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checked_frontend.bend",
+          "sha256": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+          "sourceBytesSha256": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+          "namespace": "../bend2/selfhost/checked_frontend"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_arena.bend",
+          "sha256": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf",
+          "sourceBytesSha256": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf",
+          "namespace": "../bend2/selfhost/checker_arena"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_ir.bend",
+          "sha256": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+          "sourceBytesSha256": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+          "namespace": "../bend2/selfhost/checker_ir"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/core.bend",
+          "sha256": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+          "sourceBytesSha256": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+          "namespace": "../bend2/selfhost/core"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/index_lookup.bend",
+          "sha256": "7b7b45946be711d0ba384e15f6823fded5ff97d6a526a6fb74a0448c13d61f84",
+          "sourceBytesSha256": "7b7b45946be711d0ba384e15f6823fded5ff97d6a526a6fb74a0448c13d61f84",
+          "namespace": "../bend2/selfhost/index_lookup"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/lexer.bend",
+          "sha256": "342901897b30afc8ec7587718b1eb0b30150d46b01c1ea498ce369af26d1394d",
+          "sourceBytesSha256": "342901897b30afc8ec7587718b1eb0b30150d46b01c1ea498ce369af26d1394d",
+          "namespace": "../bend2/selfhost/lexer"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/loaded_module.bend",
+          "sha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+          "sourceBytesSha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+          "namespace": "../bend2/selfhost/loaded_module"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/path.bend",
+          "sha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+          "sourceBytesSha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+          "namespace": "../bend2/selfhost/path"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/scope_lookup.bend",
+          "sha256": "e75dc874de6026e2104a7545a19f42fd6995aefecbb1d315c6ae3e097697e590",
+          "sourceBytesSha256": "e75dc874de6026e2104a7545a19f42fd6995aefecbb1d315c6ae3e097697e590",
+          "namespace": "../bend2/selfhost/scope_lookup"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/sha256.bend",
+          "sha256": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+          "sourceBytesSha256": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+          "namespace": "../bend2/selfhost/sha256"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_compiler_root_local2039g43dist.bend",
+          "sha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+          "sourceBytesSha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+          "namespace": ""
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/checkpoints/checker_core_steps_v1.bend",
+          "sha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+          "sourceBytesSha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+          "namespace": "checker_core_steps_v1"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/checkpoints/emitter_steps_v1.bend",
+          "sha256": "7f7c8d2e57a3fcd3925b4286a8300668ae91b7e11a26317cea6da2df5c9ea425",
+          "sourceBytesSha256": "7f7c8d2e57a3fcd3925b4286a8300668ae91b7e11a26317cea6da2df5c9ea425",
+          "namespace": "emitter_steps_v1"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/checkpoints/template_steps_v1.bend",
+          "sha256": "b9f4d860de0c58a274e1f23e90558191e23d7ac0de18d1fd452914160b9a5ae5",
+          "sourceBytesSha256": "b9f4d860de0c58a274e1f23e90558191e23d7ac0de18d1fd452914160b9a5ae5",
+          "namespace": "template_steps_v1"
+        }
+      ]
+    },
+    "stageTwo": {
+      "event": "artifact",
+      "phase": "stage-two-emit",
+      "stage": "stageTwo",
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43dist-correctness/bootstrap.json.cases/stage-two.js",
+      "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "bytes": 31758507,
+      "sourceHashes": [
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_compiler_root_local2039g43dist.bend",
+          "sha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+          "sourceBytesSha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+          "namespace": ""
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/base.bend",
+          "sha256": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+          "sourceBytesSha256": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+          "namespace": ""
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/print.js",
+          "sha256": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+          "sourceBytesSha256": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/write.js",
+          "sha256": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+          "sourceBytesSha256": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/print_err.js",
+          "sha256": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+          "sourceBytesSha256": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/get_env.js",
+          "sha256": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4",
+          "sourceBytesSha256": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/args.js",
+          "sha256": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82",
+          "sourceBytesSha256": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/process_run.js",
+          "sha256": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729",
+          "sourceBytesSha256": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/random_u32.js",
+          "sha256": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+          "sourceBytesSha256": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/spawn.js",
+          "sha256": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+          "sourceBytesSha256": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/sleep.js",
+          "sha256": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+          "sourceBytesSha256": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/now.js",
+          "sha256": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+          "sourceBytesSha256": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/thread_count.js",
+          "sha256": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+          "sourceBytesSha256": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/chan.js",
+          "sha256": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f",
+          "sourceBytesSha256": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_open.js",
+          "sha256": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694",
+          "sourceBytesSha256": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_read.js",
+          "sha256": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+          "sourceBytesSha256": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_size.js",
+          "sha256": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+          "sourceBytesSha256": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_write.js",
+          "sha256": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0",
+          "sourceBytesSha256": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_close.js",
+          "sha256": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+          "sourceBytesSha256": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_listen.js",
+          "sha256": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+          "sourceBytesSha256": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_accept.js",
+          "sha256": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+          "sourceBytesSha256": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_connect.js",
+          "sha256": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb",
+          "sourceBytesSha256": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_send.js",
+          "sha256": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6",
+          "sourceBytesSha256": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_recv.js",
+          "sha256": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+          "sourceBytesSha256": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_bind.js",
+          "sha256": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+          "sourceBytesSha256": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_send_to.js",
+          "sha256": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+          "sourceBytesSha256": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_recv_from.js",
+          "sha256": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad",
+          "sourceBytesSha256": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/socket_close.js",
+          "sha256": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+          "sourceBytesSha256": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/listener_close.js",
+          "sha256": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+          "sourceBytesSha256": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_open.js",
+          "sha256": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+          "sourceBytesSha256": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_frame.js",
+          "sha256": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+          "sourceBytesSha256": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_set_title.js",
+          "sha256": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+          "sourceBytesSha256": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_grab.js",
+          "sha256": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+          "sourceBytesSha256": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_close.js",
+          "sha256": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+          "sourceBytesSha256": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_open.js",
+          "sha256": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9",
+          "sourceBytesSha256": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_write.js",
+          "sha256": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6",
+          "sourceBytesSha256": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_close.js",
+          "sha256": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+          "sourceBytesSha256": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/ast.bend",
+          "sha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+          "sourceBytesSha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+          "namespace": "../bend2/selfhost/ast"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/lexer.bend",
+          "sha256": "342901897b30afc8ec7587718b1eb0b30150d46b01c1ea498ce369af26d1394d",
+          "sourceBytesSha256": "342901897b30afc8ec7587718b1eb0b30150d46b01c1ea498ce369af26d1394d",
+          "namespace": "../bend2/selfhost/lexer"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/core.bend",
+          "sha256": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+          "sourceBytesSha256": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+          "namespace": "../bend2/selfhost/core"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/loaded_module.bend",
+          "sha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+          "sourceBytesSha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+          "namespace": "../bend2/selfhost/loaded_module"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/backend_ir.bend",
+          "sha256": "c0286db6b192bf5cc917774b7ea5e393d4416263432eb130fb8393b1dffc1cb3",
+          "sourceBytesSha256": "c0286db6b192bf5cc917774b7ea5e393d4416263432eb130fb8393b1dffc1cb3",
+          "namespace": "../bend2/selfhost/backend_ir"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checked_frontend.bend",
+          "sha256": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+          "sourceBytesSha256": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+          "namespace": "../bend2/selfhost/checked_frontend"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_arena.bend",
+          "sha256": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf",
+          "sourceBytesSha256": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf",
+          "namespace": "../bend2/selfhost/checker_arena"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/scope_lookup.bend",
+          "sha256": "e75dc874de6026e2104a7545a19f42fd6995aefecbb1d315c6ae3e097697e590",
+          "sourceBytesSha256": "e75dc874de6026e2104a7545a19f42fd6995aefecbb1d315c6ae3e097697e590",
+          "namespace": "../bend2/selfhost/scope_lookup"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_ir.bend",
+          "sha256": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+          "sourceBytesSha256": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+          "namespace": "../bend2/selfhost/checker_ir"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/index_lookup.bend",
+          "sha256": "7b7b45946be711d0ba384e15f6823fded5ff97d6a526a6fb74a0448c13d61f84",
+          "sourceBytesSha256": "7b7b45946be711d0ba384e15f6823fded5ff97d6a526a6fb74a0448c13d61f84",
+          "namespace": "../bend2/selfhost/index_lookup"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/checkpoints/template_steps_v1.bend",
+          "sha256": "b9f4d860de0c58a274e1f23e90558191e23d7ac0de18d1fd452914160b9a5ae5",
+          "sourceBytesSha256": "b9f4d860de0c58a274e1f23e90558191e23d7ac0de18d1fd452914160b9a5ae5",
+          "namespace": "template_steps_v1"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/sha256.bend",
+          "sha256": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+          "sourceBytesSha256": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+          "namespace": "../bend2/selfhost/sha256"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/path.bend",
+          "sha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+          "sourceBytesSha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+          "namespace": "../bend2/selfhost/path"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/checkpoints/checker_core_steps_v1.bend",
+          "sha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+          "sourceBytesSha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+          "namespace": "checker_core_steps_v1"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/checkpoints/emitter_steps_v1.bend",
+          "sha256": "7f7c8d2e57a3fcd3925b4286a8300668ae91b7e11a26317cea6da2df5c9ea425",
+          "sourceBytesSha256": "7f7c8d2e57a3fcd3925b4286a8300668ae91b7e11a26317cea6da2df5c9ea425",
+          "namespace": "emitter_steps_v1"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_backend_sharing.bend",
+          "sha256": "05adf4ac68b0658425f7fce430709f67bd29c3f1f8a43727412661084c4dbe2c",
+          "sourceBytesSha256": "05adf4ac68b0658425f7fce430709f67bd29c3f1f8a43727412661084c4dbe2c",
+          "namespace": "../bend2/selfhost/c_backend_sharing"
+        }
+      ]
+    }
+  },
+  "inputs": {
+    "/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_compiler_root_local2039g43dist.bend": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+    "/Users/ilyagulya/Projects/My/bend/checkpoints/selfhost-root-local2039g43dist.json": "359d91484784b859b80182c5587614fb3e58f0fa56fd5a79be817b0aab234cce",
+    "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43dist-correctness/root-native-build.json": "244388e3f2985ecdf710fe14a42ca060ef1150c3b5758600046a709efb488d4a",
+    "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43dist-correctness/root.native.corpus.json": "d840653653293dbef98cb24ef5946d35c10a4f805ae9269e2f20e110a4e98c47",
+    "/Users/ilyagulya/Projects/My/bend/checkpoints/bootstrap-parser-rebuild-local2039g43dist.js": "c9b99c34f53815aad35ed80ac09b8988a391a83964b4b3fa1f0323b96b2d2d3a",
+    "/Users/ilyagulya/Projects/My/bend/checkpoints/bootstrap-parser-rebuild-local2039g43dist.native-build.result.json": "9eb4597c3cef7cf6265cae27c92b9a9ce20f0691f5df2c3add9cbd13e93e7fd3",
+    "/Users/ilyagulya/Projects/My/bend/evals/selfhost_driver_source.ts": "be4c39ba888193b85b331955a29f00cabe836420b8d1d5800086fba2c159ac2d",
+    "/Users/ilyagulya/Projects/My/bend/evals/checker_core_step_runtime.mjs": "00cd400ac0452a3681bf6491db08be51f9ae3a33ff2baf88654a9763eb5073ed",
+    "/Users/ilyagulya/Projects/My/bend/evals/bootstrap_source_oracle.ts": "5fb9785388bf42bb5a39596ed4064351a756857f6b7edbda4ab38f482d046789",
+    "/Users/ilyagulya/Projects/My/bend/evals/bootstrap_ast_transport.ts": "67a5ca2cf64b50053f0f05fcd4f189b3fbdf9589257ae4f4540127cfc12d23e5",
+    "/Users/ilyagulya/Projects/My/bend/evals/parser_full_semantic_normalize.ts": "22e314d9d989f24342819ba31541976b9bab6fde225875e193a42ad4508a269d",
+    "/Users/ilyagulya/Projects/My/bend/evals/selfhost_parser_parity.ts": "f5dd9524d821366a5f291b646c863de77a973c48dfbe6f9731a716913b29a404",
+    "/Users/ilyagulya/Projects/My/bend/evals/native_seed_runtime.mjs": "7f81a9b9013853355910b93bf59586b2acbcda4de7bcaa08d7942ebf45c0147a",
+    "/Users/ilyagulya/Projects/My/bend/evals/selfhost_bootstrap_gate.ts": "8d0779b916c52853b5c1f9a184b80c658598bf52d4155cf1f8992afdd17c45b8",
+    "/Users/ilyagulya/Projects/My/bend/evals/selfhost_bootstrap_worker.mjs": "907803a7e936ce6532c25eb986867ed076e578d659e8d57630b2cafe64d483e6",
+    "/Users/ilyagulya/Projects/My/bend/evals/selfhost_cpu_profile.mjs": "5d5fc8d329a3b600522c58eeac59c49c515109bc7f48845d8177cb520129a1c0",
+    "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_experiment.ts": "5f952045eb0dc22444cce4941c359ff6d8e1851f5a720e9c776c111cf97b0ed4",
+    "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_llvm.ts": "1adbf5da5b9535aee9e4cd9c62d9396c742a22ebf187d72672fa22de21f6abaf",
+    "/Users/ilyagulya/Projects/My/bend/bend2/bend.ts": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+    "/Users/ilyagulya/Projects/My/bend/bend2/comp.ts": "880a9b3b86f273852a39fc664f8c3d7b71e3860b6d365e4321949fc812b6e7cc",
+    "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_driver.bend": "768203e900f53cdf8d90b50966631ca3a3964dd50003658b07a28b39395f3ec3",
+    "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_host.c": "7d75edf7c7b8ac045df772b242e885801b9ab3fae5fc346957489a35847d66fe",
+    "/Users/ilyagulya/Projects/My/bend/bend2/base.bend": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+    "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015",
+    "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate_native.c": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/lexer.bend": "342901897b30afc8ec7587718b1eb0b30150d46b01c1ea498ce369af26d1394d",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/core.bend": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/loaded_module.bend": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/backend_ir.bend": "c0286db6b192bf5cc917774b7ea5e393d4416263432eb130fb8393b1dffc1cb3",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checked_frontend.bend": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_arena.bend": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/scope_lookup.bend": "e75dc874de6026e2104a7545a19f42fd6995aefecbb1d315c6ae3e097697e590",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_ir.bend": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/index_lookup.bend": "7b7b45946be711d0ba384e15f6823fded5ff97d6a526a6fb74a0448c13d61f84",
+    "/Users/ilyagulya/Projects/My/bend/checkpoints/template_steps_v1.bend": "b9f4d860de0c58a274e1f23e90558191e23d7ac0de18d1fd452914160b9a5ae5",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/sha256.bend": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+    "/Users/ilyagulya/Projects/My/bend/checkpoints/checker_core_steps_v1.bend": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+    "/Users/ilyagulya/Projects/My/bend/checkpoints/emitter_steps_v1.bend": "7f7c8d2e57a3fcd3925b4286a8300668ae91b7e11a26317cea6da2df5c9ea425",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_backend_sharing.bend": "05adf4ac68b0658425f7fce430709f67bd29c3f1f8a43727412661084c4dbe2c",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/print.c": "58657b7351daee89121e1df2856f102743c9db7640257e50c6009a0f1080b00e",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/print.js": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/write.c": "8807a5f655db452c1d846354560c26fe1e94289e5dc0be231d0b71ecc876d02f",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/write.js": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/print_err.c": "f84aa11c8d0d6af6fa2fee28411f95714d6744ad97156990e43e55c292c9c6fb",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/print_err.js": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/get_env.c": "b4903e94681340f9e02187457fabe9461c1b4e43646b7e1573f5d21e954e3a34",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/get_env.js": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/args.c": "7717332d0b8c8ba28d6dbe60b62a23dce99ea6828ada7d1f9b664f4dc388e84e",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/args.js": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/process_run.c": "554cfbdf9a6de163f00fc1b23dc8f3df10821cfce336caa1cb5db439b8a55e1f",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/process_run.js": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/random_u32.c": "75429b2b42e00562177fe33a5e18d2730478847f58c4038b048e78131e1b8c0a",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/random_u32.js": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/spawn.c": "05e11ae3f1461d9c72440af3b1786c076b418d2faff45639ac25ba464ee73cd5",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/spawn.js": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/sleep.c": "1dde3701026517d5272d2ff5344d3a8643bec264dbad9f266fdae1c4aaf7601c",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/sleep.js": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/now.c": "fc4c1d87a4fb2ace7d5b6c57b434cc3d953a15bdf213020912df6c17aa2352d6",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/now.js": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/thread_count.c": "d4889ed7757dccce03729c9568b88188128f2c1576166a3dc184a8707ed44568",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/thread_count.js": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/chan.c": "af09b2749741bcc54f56c8f81803073818a165d4cad4c817708e359d677b2a52",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/chan.js": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_open.c": "b987bcb0f9a89d769714ddf8cbecca211c4392e4098da19b411d09f5c088d360",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_open.js": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_read.c": "ab577225fa98a034c09d7eb6326b74808756dc6203b0e2599a459876382f090d",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_read.js": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_size.c": "ed0d74fd6b9f14ea471bfe5dd80ecbb2c5abb6a8406519fb2c7e1a1acf3dd5af",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_size.js": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_write.c": "da810ad9aa76ad1431622292529fa3edebabc4b6a7ee20ae833097b71bb595e5",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_write.js": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_close.c": "033da9beb0b484fbc8784044193bf69004f858f6ad86e0c31b4beb89df1349ca",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_close.js": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_listen.c": "efc7528de96abd9f62f299833c1ac7b0e86528292c746b114d2684b5bac52899",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_listen.js": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_accept.c": "bf7ca1685ed388ce97827ea8379881fbdf5359c7c663ad03eeb8da34bd8584ef",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_accept.js": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_connect.c": "8d17c097138709d71e9d9e1fbc4255007c5e80c93ee384c4a3510b6ac8d10da3",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_connect.js": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_send.c": "993cc8ee5b39fd54a4aeace102602ecf2841ce1f402fe6b2407ebaca837383f9",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_send.js": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_recv.c": "249c8789cd2f541ad00068882de16a00870c2f81a8168b0ac7a59db1e3cb0c6f",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_recv.js": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_bind.c": "a1be1bc5c03d430fc6eb43982651073e144872956fadaee98c3700be59352ee3",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_bind.js": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_send_to.c": "b3a87e56958d8071a368da2edb4748e9496b3eed58b93d6cb4f8af398dd1011a",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_send_to.js": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_recv_from.c": "1ce914be6cd6153732258f06343e5bcf9765a7fac7e3c3f0462facba7060e067",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_recv_from.js": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/socket_close.c": "abea115d2928d4942a9d89898d2022c0f1b19c52db48d0b060c2356d261bfa77",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/socket_close.js": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/listener_close.c": "11f6bac6342a37e97b9656e96bdca7d052ed0a7a0cab3b05ea87657020cfb7a2",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/listener_close.js": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/window.c": "bf8d5779775ba9566d4bbeb8706a9ec993efb724dae7af8a76c38501ab4092c2",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_open.js": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_frame.js": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_set_title.js": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_grab.js": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_close.js": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio.c": "f0fac2bee02918b4958ad1e7508945824fcd98ce9a2e7ede657304c4f8905b85",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_open.js": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_write.js": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_close.js": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+    "/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_parser_rebuild_local2039g43dist_generated_fuel.bend": "1f87959ff0030b21d5d5add2b3c9f30a5868875bf115e9358a0c68bfb56de4cd",
+    "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43dist-correctness/bootstrap.json.cases/stage-one.js": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+    "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43dist-correctness/bootstrap.json.cases/stage-two.js": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e"
+  },
+  "sourceFileTag": "SourceFile",
+  "nativeSeed": {
+    "build": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43dist-correctness/root-native-build.json",
+    "buildSha256": "244388e3f2985ecdf710fe14a42ca060ef1150c3b5758600046a709efb488d4a",
+    "binary": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43dist-correctness/native",
+    "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+    "corpus": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43dist-correctness/root.native.corpus.json",
+    "corpusSha256": "d840653653293dbef98cb24ef5946d35c10a4f805ae9269e2f20e110a4e98c47",
+    "checkedDefinitions": 12456,
+    "expectedSourceDefinitions": 12456,
+    "eventsFullyValidated": 13050,
+    "cPath": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43dist-correctness/native.c",
+    "cSha256": "2290a096f114201665d4b943db3470889ca700ec205b875612178ea263e27ffb",
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 4833148928,
+      "peakFootprintBytes": 5202220888,
+      "elapsedMs": 268211,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_experiment.ts",
+        "--mode=build",
+        "--corpus=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43dist-correctness/root.native.corpus.json",
+        "--artifact=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43dist-correctness/native",
+        "--report=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43dist-correctness/root-native-build.json",
+        "--cc-pipeline=llvm-split",
+        "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+        "--cc-partitions=4",
+        "--internal=build"
+      ],
+      "label": "Native CPU compiler build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793454615284-ecbc2eb813081e74.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "workload": {
+      "target": "js",
+      "sources": 18,
+      "externals": 35
+    }
+  },
+  "nativeBuildInputs": {
+    "/Users/ilyagulya/Projects/My/bend/bend2/base.bend": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/backend_ir.bend": "c0286db6b192bf5cc917774b7ea5e393d4416263432eb130fb8393b1dffc1cb3",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_backend_sharing.bend": "05adf4ac68b0658425f7fce430709f67bd29c3f1f8a43727412661084c4dbe2c",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checked_frontend.bend": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_arena.bend": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_ir.bend": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/core.bend": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/index_lookup.bend": "7b7b45946be711d0ba384e15f6823fded5ff97d6a526a6fb74a0448c13d61f84",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/lexer.bend": "342901897b30afc8ec7587718b1eb0b30150d46b01c1ea498ce369af26d1394d",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/loaded_module.bend": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/scope_lookup.bend": "e75dc874de6026e2104a7545a19f42fd6995aefecbb1d315c6ae3e097697e590",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/sha256.bend": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+    "/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_compiler_root_local2039g43dist.bend": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+    "/Users/ilyagulya/Projects/My/bend/checkpoints/checker_core_steps_v1.bend": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+    "/Users/ilyagulya/Projects/My/bend/checkpoints/emitter_steps_v1.bend": "7f7c8d2e57a3fcd3925b4286a8300668ae91b7e11a26317cea6da2df5c9ea425",
+    "/Users/ilyagulya/Projects/My/bend/checkpoints/template_steps_v1.bend": "b9f4d860de0c58a274e1f23e90558191e23d7ac0de18d1fd452914160b9a5ae5",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/args.js": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_close.js": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_open.js": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_write.js": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/chan.js": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_close.js": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_open.js": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_read.js": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_size.js": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_write.js": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/get_env.js": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/listener_close.js": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/now.js": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/print_err.js": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/print.js": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/process_run.js": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/random_u32.js": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/sleep.js": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/socket_close.js": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/spawn.js": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_accept.js": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_connect.js": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_listen.js": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_recv.js": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_send.js": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/thread_count.js": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_bind.js": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_recv_from.js": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_send_to.js": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_close.js": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_frame.js": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_grab.js": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_open.js": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_set_title.js": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/write.js": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb"
+  },
+  "nativeSeedInputs": {
+    "/Users/ilyagulya/Projects/My/bend/bend2/base.bend": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/backend_ir.bend": "c0286db6b192bf5cc917774b7ea5e393d4416263432eb130fb8393b1dffc1cb3",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_backend_sharing.bend": "05adf4ac68b0658425f7fce430709f67bd29c3f1f8a43727412661084c4dbe2c",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checked_frontend.bend": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_arena.bend": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_ir.bend": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/core.bend": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/index_lookup.bend": "7b7b45946be711d0ba384e15f6823fded5ff97d6a526a6fb74a0448c13d61f84",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/lexer.bend": "342901897b30afc8ec7587718b1eb0b30150d46b01c1ea498ce369af26d1394d",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/loaded_module.bend": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/scope_lookup.bend": "e75dc874de6026e2104a7545a19f42fd6995aefecbb1d315c6ae3e097697e590",
+    "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/sha256.bend": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+    "/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_compiler_root_local2039g43dist.bend": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+    "/Users/ilyagulya/Projects/My/bend/checkpoints/checker_core_steps_v1.bend": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+    "/Users/ilyagulya/Projects/My/bend/checkpoints/emitter_steps_v1.bend": "7f7c8d2e57a3fcd3925b4286a8300668ae91b7e11a26317cea6da2df5c9ea425",
+    "/Users/ilyagulya/Projects/My/bend/checkpoints/template_steps_v1.bend": "b9f4d860de0c58a274e1f23e90558191e23d7ac0de18d1fd452914160b9a5ae5",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/args.js": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_close.js": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_open.js": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_write.js": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/chan.js": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_close.js": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_open.js": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_read.js": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_size.js": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_write.js": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/get_env.js": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/listener_close.js": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/now.js": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/print_err.js": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/print.js": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/process_run.js": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/random_u32.js": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/sleep.js": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/socket_close.js": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/spawn.js": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_accept.js": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_connect.js": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_listen.js": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_recv.js": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_send.js": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/thread_count.js": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_bind.js": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_recv_from.js": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_send_to.js": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_close.js": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_frame.js": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_grab.js": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_open.js": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_set_title.js": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/write.js": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb"
+  },
+  "nativeSourceFileTag": "../bend2/selfhost/backend_ir.SourceFile",
+  "parserSource": {
+    "file": "/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_parser_rebuild_local2039g43dist_generated_fuel.bend",
+    "sha256": "1f87959ff0030b21d5d5add2b3c9f30a5868875bf115e9358a0c68bfb56de4cd"
+  },
+  "rootComposition": {
+    "manifest": "/Users/ilyagulya/Projects/My/bend/checkpoints/selfhost-root-local2039g43dist.json",
+    "manifestSha256": "359d91484784b859b80182c5587614fb3e58f0fa56fd5a79be817b0aab234cce",
+    "rootSha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+    "parserSourceSha256": "1f87959ff0030b21d5d5add2b3c9f30a5868875bf115e9358a0c68bfb56de4cd",
+    "parserDeclarationSha256": "34f567f57e82944211c7e60eff953b82d35aaa9ba90a776add47e6d77f8f35d6",
+    "embedding": {
+      "start": 492,
+      "chars": 651497,
+      "sha256": "34f567f57e82944211c7e60eff953b82d35aaa9ba90a776add47e6d77f8f35d6"
+    },
+    "exactParserDeclarations": true
+  },
+  "nativeRun": {
+    "binary": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43dist-correctness/native",
+    "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+    "build": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43dist-correctness/root-native-build.json",
+    "buildSha256": "244388e3f2985ecdf710fe14a42ca060ef1150c3b5758600046a709efb488d4a",
+    "corpus": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43dist-correctness/root.native.corpus.json",
+    "corpusSha256": "d840653653293dbef98cb24ef5946d35c10a4f805ae9269e2f20e110a4e98c47",
+    "phases": [
+      {
+        "phase": "parse",
+        "elapsedMs": 6919.44,
+        "userCpuMs": 6529.435,
+        "systemCpuMs": 103.933,
+        "modules": 18,
+        "sourceBytes": 7870746,
+        "foreignBytes": 78415,
+        "eagerFuelCells": 144000000,
+        "fuelBuildMs": 1035.956
+      },
+      {
+        "phase": "expand",
+        "elapsedMs": 4695.295,
+        "userCpuMs": 4606.523,
+        "systemCpuMs": 26.423,
+        "chunkAdvances": 1069406,
+        "chunkQuantum": 64
+      },
+      {
+        "phase": "check",
+        "elapsedMs": 66661.538,
+        "userCpuMs": 64806.185,
+        "systemCpuMs": 455.508,
+        "chunkAdvances": 10405401,
+        "chunkQuantum": 64
+      },
+      {
+        "phase": "emit",
+        "elapsedMs": 13987.462,
+        "userCpuMs": 13590.902,
+        "systemCpuMs": 222.868,
+        "chunkAdvances": 1284300,
+        "chunkQuantum": 64
+      }
+    ],
+    "phaseStarts": [
+      {
+        "phase": "parse"
+      },
+      {
+        "phase": "expand"
+      },
+      {
+        "phase": "check"
+      },
+      {
+        "phase": "emit"
+      }
+    ],
+    "fuel": [
+      {
+        "sourceOrdinal": 1,
+        "cells": 8000000,
+        "elapsedMs": 69.088,
+        "processPeakRssBeforeBytes": 5767168,
+        "processPeakRssAfterBytes": 133791744
+      },
+      {
+        "sourceOrdinal": 2,
+        "cells": 8000000,
+        "elapsedMs": 46.912,
+        "processPeakRssBeforeBytes": 176455680,
+        "processPeakRssAfterBytes": 176455680
+      },
+      {
+        "sourceOrdinal": 3,
+        "cells": 8000000,
+        "elapsedMs": 46.651,
+        "processPeakRssBeforeBytes": 177209344,
+        "processPeakRssAfterBytes": 177209344
+      },
+      {
+        "sourceOrdinal": 4,
+        "cells": 8000000,
+        "elapsedMs": 46.977,
+        "processPeakRssBeforeBytes": 177242112,
+        "processPeakRssAfterBytes": 177242112
+      },
+      {
+        "sourceOrdinal": 5,
+        "cells": 8000000,
+        "elapsedMs": 46.959,
+        "processPeakRssBeforeBytes": 177307648,
+        "processPeakRssAfterBytes": 177307648
+      },
+      {
+        "sourceOrdinal": 6,
+        "cells": 8000000,
+        "elapsedMs": 46.666,
+        "processPeakRssBeforeBytes": 177307648,
+        "processPeakRssAfterBytes": 177307648
+      },
+      {
+        "sourceOrdinal": 7,
+        "cells": 8000000,
+        "elapsedMs": 46.194,
+        "processPeakRssBeforeBytes": 177307648,
+        "processPeakRssAfterBytes": 177307648
+      },
+      {
+        "sourceOrdinal": 8,
+        "cells": 8000000,
+        "elapsedMs": 47.441,
+        "processPeakRssBeforeBytes": 177307648,
+        "processPeakRssAfterBytes": 177307648
+      },
+      {
+        "sourceOrdinal": 9,
+        "cells": 8000000,
+        "elapsedMs": 46.31,
+        "processPeakRssBeforeBytes": 177356800,
+        "processPeakRssAfterBytes": 177356800
+      },
+      {
+        "sourceOrdinal": 10,
+        "cells": 8000000,
+        "elapsedMs": 46.35,
+        "processPeakRssBeforeBytes": 179830784,
+        "processPeakRssAfterBytes": 179830784
+      },
+      {
+        "sourceOrdinal": 11,
+        "cells": 8000000,
+        "elapsedMs": 47.243,
+        "processPeakRssBeforeBytes": 179863552,
+        "processPeakRssAfterBytes": 179863552
+      },
+      {
+        "sourceOrdinal": 12,
+        "cells": 8000000,
+        "elapsedMs": 46.657,
+        "processPeakRssBeforeBytes": 179863552,
+        "processPeakRssAfterBytes": 179863552
+      },
+      {
+        "sourceOrdinal": 13,
+        "cells": 8000000,
+        "elapsedMs": 47.04,
+        "processPeakRssBeforeBytes": 179879936,
+        "processPeakRssAfterBytes": 179879936
+      },
+      {
+        "sourceOrdinal": 14,
+        "cells": 8000000,
+        "elapsedMs": 46.485,
+        "processPeakRssBeforeBytes": 192823296,
+        "processPeakRssAfterBytes": 192823296
+      },
+      {
+        "sourceOrdinal": 15,
+        "cells": 8000000,
+        "elapsedMs": 46.499,
+        "processPeakRssBeforeBytes": 192823296,
+        "processPeakRssAfterBytes": 192823296
+      },
+      {
+        "sourceOrdinal": 16,
+        "cells": 8000000,
+        "elapsedMs": 46.275,
+        "processPeakRssBeforeBytes": 196018176,
+        "processPeakRssAfterBytes": 196018176
+      },
+      {
+        "sourceOrdinal": 17,
+        "cells": 8000000,
+        "elapsedMs": 210.71,
+        "processPeakRssBeforeBytes": 371294208,
+        "processPeakRssAfterBytes": 371294208
+      },
+      {
+        "sourceOrdinal": 18,
+        "cells": 8000000,
+        "elapsedMs": 55.499,
+        "processPeakRssBeforeBytes": 470712320,
+        "processPeakRssAfterBytes": 470712320
+      }
+    ],
+    "begins": [
+      {
+        "computeThreads": 1,
+        "parserFuel": 8000000,
+        "phase": "compile",
+        "phaseTraceVersion": 3
+      }
+    ],
+    "result": {
+      "result": "EmitSuccess",
+      "bytes": 31758507,
+      "modules": 18
+    },
+    "elapsedMs": 93264,
+    "sources": 18,
+    "foreign": 35,
+    "workload": {
+      "target": "js",
+      "sources": 18,
+      "externals": 35
+    },
+    "stageOne": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43dist-correctness/bootstrap.json.cases/stage-one.js",
+      "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "bytes": 31758507
+    }
+  },
+  "seedMode": "native",
+  "compilerBootstrapGreen": true,
+  "fixedpoint": {
+    "criterion": "Exact emitted UTF-8 JS bytes; no normalization or patching",
+    "equal": true,
+    "stageOneSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+    "stageTwoSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e"
+  },
+  "stageTwoParser": "stage-one emitted parse_with_fuel, not seed parser",
+  "stageOneProducer": "native stage0 executable",
+  "fullCompilerRoot": "/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_compiler_root_local2039g43dist.bend",
+  "legacyFullIODriver": false,
+  "fixtureExecutions": 95,
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 3027763200,
+    "peakFootprintBytes": 3390941448,
+    "elapsedMs": 509768,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/Users/ilyagulya/Projects/My/bend/evals/selfhost_bootstrap_gate.ts",
+      "--native-build=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43dist-correctness/root-native-build.json",
+      "--native-corpus=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43dist-correctness/root.native.corpus.json",
+      "--root=/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_compiler_root_local2039g43dist.bend",
+      "--root-manifest=/Users/ilyagulya/Projects/My/bend/checkpoints/selfhost-root-local2039g43dist.json",
+      "--parser=/Users/ilyagulya/Projects/My/bend/checkpoints/bootstrap-parser-rebuild-local2039g43dist.js",
+      "--parser-build=/Users/ilyagulya/Projects/My/bend/checkpoints/bootstrap-parser-rebuild-local2039g43dist.native-build.result.json",
+      "--report=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43dist-correctness/bootstrap.json",
+      "--worker"
+    ],
+    "label": "Real full selfhost step bootstrap",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793454883697-7c2b54e58735cbfe.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "diagnosticOnly": false,
+  "bootstrapAcceptance": true,
+  "broaderSelfhostGreen": "Not established: legacy IO/C driver and product-wide backend/differential gates are outside this compiler-root acceptance",
+  "originalReceipt": {
+    "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43dist-correctness/bootstrap.json",
+    "sha256": "19193447cbccff3b3e3e23145f210b53f1319b14ba42b268d89a244b615b7a9e",
+    "bytes": 456391
+  },
+  "fixtureRows": [
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-type-specialization-execute",
+      "stage": "seed",
+      "name": "type-specialization",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "2c23d4dd3809789d8c2d850bb30a6f71ec3b59a8f009de87a7fff594d3bef937",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "8198a5326fc034a4f780a6cffba7ac5f5ed143d5ae94a99eef9172a023c68f34",
+        "artifactSha256": "01dfd29a0712e15713aafec716105d9628fdbcd65d6baa71223025706a6ebfd2",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-constructor-eliminator-hit-execute",
+      "stage": "seed",
+      "name": "constructor-eliminator-hit",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "14999660fd5f3d8d57bd69e2dfb816e80a224aa959fe300a28c1c45e6dc6982a",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "fbe9fdf4d25d4f3f0d3a6f5f96074bb967483d2b1832f9a0d195f1f24cabea04",
+        "artifactSha256": "d8abcfef7c7e0b42437ab3f89f1943de43169e2615762c4ac5f882f8cea3575b",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-constructor-eliminator-default-execute",
+      "stage": "seed",
+      "name": "constructor-eliminator-default",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "d4e0e45297075195eed5b457debe85e5941754392a301ac61f44809e27968a29",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "f08a795303698156bb2c34fc465bf9f985b0b3946a0dc3ced65c4dadda125e2d",
+        "artifactSha256": "20c131ffdc5f7d4b841930607129d318ff0c66a3337d0d7e30870e3f36dc478a",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-tag-dispatch-nested-fallthrough-execute",
+      "stage": "seed",
+      "name": "tag-dispatch-nested-fallthrough",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "a1568e3b35ab5f29d11cfd35331515b0af6fa5eacb2e99a19f41b5330f436391",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "9933e1215cd55970c6f9f208cca6fc68c4d9cd50fffda2c2b706e877305bdd0a",
+        "artifactSha256": "8e017502be5f264a0e44c24668d65a89917e5428a6a095f3489ed268d08ed501",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-root-match-local-order-execute",
+      "stage": "seed",
+      "name": "root-match-local-order",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "175cba4f8e661b2775244d242f33d0faf43049bab7a18a7b57e79aa4e4cdd676",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "38d99b55b7a1d744eda5e15e5741c21c8fe4798d1d40b023609b16164fc3ed97",
+        "artifactSha256": "1976ddcfb0c0dfc997ec490a1925cca40936543dcf0b25a7d7c8433bbe3f54d5",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-native-nat-extrema-boundaries-execute",
+      "stage": "seed",
+      "name": "native-nat-extrema-boundaries",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "4edfd2827a7cad3afc1527f5c3c812455b526e40ef83b2734bd79cd7def4ef94",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "ef87835c52ff7eee48e10a4b08c724ce84c51cdb31f96870ee80576e1b2d8bc9",
+        "artifactSha256": "c1f9e41f06c2ea57d6220edc571a5f63fcf90f14aa30b4732abe110c47303dba",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-source-tail-large-recursion-execute",
+      "stage": "seed",
+      "name": "source-tail-large-recursion",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "50fba9401abf73a3925dc50f089bed4eebfb69a9b2f182547f5e3e3937b63d0f",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "b456d16f7c4d57615647154447c4723539809e1ab0bae17eba54b3a924fd15dc",
+        "artifactSha256": "cef932198fa1fe48d705ef573c2da2704407cead9f55e6b53b13175055e53653",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-nullary-array-freshness-execute",
+      "stage": "seed",
+      "name": "nullary-array-freshness",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "719016f8be4f6b974a70518c01f585dcde8859be52bccea58ff46a0800555896",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "8520a39c88f007437e208f4ce59834256f66f02386d727001cbbb277fa0ae77d",
+        "artifactSha256": "9a20d1d182eacde86c9f5f68f74abbce102c8ccce1a6281a7165c4ce79e47281",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-aliased-specialization-execute",
+      "stage": "seed",
+      "name": "aliased-specialization",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "ef02d443458970bf0bae0d2a6a0049b7f3bc88da9678b1b659943d16330bc557",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "7ebd4d98ad304682a485035c129d7831ea6ce60108bd81893e4501ba1c32d674",
+        "artifactSha256": "034236031a72ee59e80fa4768378d41d34497ab08fe2609678654fbb5dd98f68",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-callback-specialization-execute",
+      "stage": "seed",
+      "name": "callback-specialization",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "7f51a179d1d28b86a4fc6a9df6932d1aaf620dfa85197d00cbc9fa1fedb27a27",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "9b547540dbff11ac3496ea49e5900c24e6cd0b0f84011bbe09e915d5611e13fe",
+        "artifactSha256": "d917d0b690554d16de3781704fd56ee56404ad82b95058c9bb8346398b0fce13",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-specialized-type-error",
+      "stage": "seed",
+      "name": "specialized-type-error",
+      "passed": true,
+      "accepted": false,
+      "sourceSha256": "0213d5a9cbfc9604ea73e33c50257c09c5d5e00f63e721d89a3394494ee46062",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "5ffa5bd3b38a3f6763bae7e47700b1469c714d1d6593e1dcc04b28b59518e986",
+        "artifactSha256": null,
+        "phases": [
+          "parse",
+          "expand",
+          "check"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-runtime-template-capture",
+      "stage": "seed",
+      "name": "runtime-template-capture",
+      "passed": true,
+      "accepted": false,
+      "sourceSha256": "7ef06d611221e1cd9313f7308e038bcccb0c934294fd512bd45ce91126d915d3",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "49adec6a91e45be6f93af6966c213effd28568c855e406f9e92e2e823d617320",
+        "artifactSha256": null,
+        "phases": [
+          "parse",
+          "expand"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-template-generation-rounds-execute",
+      "stage": "seed",
+      "name": "template-generation-rounds",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "cac73a00f3deff0f9867a71abd65fea6aeffdcdc0ffa2d73b53b5919c818bdaf",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "7d535543ec33ad1ca2a9b0bacbe9b40ed92a0601b9add7e35570dd731030e90a",
+        "artifactSha256": "4d59d79b51b2b1eb3bb183b4ca2668cf0d302f34fd29d760450db5c7dfc3d7cf",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-readonly-index-boundaries-execute",
+      "stage": "seed",
+      "name": "readonly-index-boundaries",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "a6174d626a1aabe980e6a0e2ddae2dc156c03420b9855f71059ab8ccf1d129db",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "6bca7c44e34a7e8bca43c38a789e3d66d02c2966762ef7c6df1642ca53277df6",
+        "artifactSha256": "0069462bc99cc7e9e759b40bf652a453abfc3f2515c5a1b2199a4a562f9cd77a",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-readonly-index-nonmonotone-execute",
+      "stage": "seed",
+      "name": "readonly-index-nonmonotone",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "4d6a68519d094a3ec31e18fefa9c7f17f11b9d63c0bae762a84c547615083d53",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "2f6032be253ef72796cd39c48c837c3fe89c1b18d284cdee3e3c780101947a22",
+        "artifactSha256": "0e60f3095d04f8936eb18c5fa5557023aa3568f41b4874903218db02de286789",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-dependent-kind-binding-execute",
+      "stage": "seed",
+      "name": "dependent-kind-binding",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "d09b89c2a1050453bc6d1639ac84a908a66fcf8413c23b42c7a9e30e36cce3b5",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "9cf955c917ff1d4316678e8d87be9008208116dbba2929ebda8cbc99961c9746",
+        "artifactSha256": "1b406d8ccad1b0e9a2e241d8b2c021ff9b9b8ccabb6b235ac0ee5a11a64bef79",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-law-completion-binding-execute",
+      "stage": "seed",
+      "name": "law-completion-binding",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "2aa03a5d2ff7e3d154ab12187b39dd31c7c2a6963698f27948a2a190a8ecf37f",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "b222a9571e7855e48ce7f5a027707b8d85d0d5c8bb366c119fa5b200657dab55",
+        "artifactSha256": "26d9e8709fac572b571600a9ef6fa41df61d0582d93197dabba8011b3baf9ec5",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-forward-family-definition-execute",
+      "stage": "seed",
+      "name": "forward-family-definition",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "b33f392b9139c0128990c881413166eb6cf3179444cd95433c565ac082b8fd0a",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "cfd542c7b532ae381602849f0f09bba190efdc4ba34e834a3dd5ce2502032c6f",
+        "artifactSha256": "26d9e8709fac572b571600a9ef6fa41df61d0582d93197dabba8011b3baf9ec5",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-forward-definition-call-execute",
+      "stage": "seed",
+      "name": "forward-definition-call",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "97f4da569188c189a8d1457a258eead66de64578baec811b559d3446754333a9",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "3a43d88175ad15f0fe2ab7a89c80b72c21c187f7ae5f688d48d2629f0359aada",
+        "artifactSha256": "b06ad8bdab7072f7e8db72a57e50b0eded5184fac5aa09ef7814db1302b12603",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-named-entry-separator-collision-execute",
+      "stage": "seed",
+      "name": "named-entry-separator-collision",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "ce8bf711b87837cbc67a14ed6f3234d9c45715eebf3b4d63e986b214299f867a",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "7c65fd12e8e61ac8137e440e3cc0cae36aa0ed1cbcfdaea2a125cb69d4401f28",
+        "artifactSha256": "7b0c2eb8c533d1e84e2426d3c48ce3f012e57d8b22e66bd7a25a6b9d33052c56",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-forward-definition-invalid-body",
+      "stage": "seed",
+      "name": "forward-definition-invalid-body",
+      "passed": true,
+      "accepted": false,
+      "sourceSha256": "3796fe01848e130dbffc7ac8dfd6aeae972f1ddc65c193b3ad78ada374bf5006",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "6ea00edd2cb054ce373967c0302f26d59a2270950d6c8030555fb9a9188561f7",
+        "artifactSha256": null,
+        "phases": [
+          "parse",
+          "expand",
+          "check"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-recursive-neutral-application-equality-execute",
+      "stage": "seed",
+      "name": "recursive-neutral-application-equality",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "d4ebfd86789f77581482c6e5c8f47a17912e5edbbdf6e5a5010fb0cdba4f5e7e",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "aabcb3166378e65c7e42a6c8ea821fc0be4f075d3fc384af5d9bbdcf3d2116c3",
+        "artifactSha256": "c4cd75191def532a8a06d4c46aa70240541481d1d9a4c003f2e6489677fcb5c6",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-application-order-execute",
+      "stage": "seed",
+      "name": "application-order",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "d515754b349ba4dd3985d977113503d83698838c57282cd142e314471e80aee8",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "0bfc2090efcf8309fd15968f6f137b96b42c06c2907773e53a40f2dfaeb0ed89",
+        "artifactSha256": "b84e8c84857693275e6c5307fcdf295b6cf2adf483d0cf040676ba533e113933",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-annotated-banged-partial-application-execute",
+      "stage": "seed",
+      "name": "annotated-banged-partial-application",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "265366bfa96b9563845094fb3abf3cec75e042ba6039a440d019d1bbf8bf7f69",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "39fdfcb09742bf558a1b7dab7200a86b0d23e981d1b319705f149b7ded8c3d61",
+        "artifactSha256": "fa5295a480ee96e382c973e1dd204799c40ec26dbfc4a0fe6be3f5508a78f4db",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-annotated-banged-partial-result-mismatch",
+      "stage": "seed",
+      "name": "annotated-banged-partial-result-mismatch",
+      "passed": true,
+      "accepted": false,
+      "sourceSha256": "9687ae6f2da883e006915717442cd4df59929576148853c523df3f85ad373454",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "d6301b6f44d2b44247817ea84988dad8114436547a440fc942e1978c65bcfc46",
+        "artifactSha256": null,
+        "phases": [
+          "parse",
+          "expand",
+          "check"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-renamed-dependent-law-completion-execute",
+      "stage": "seed",
+      "name": "renamed-dependent-law-completion",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "67efffba57405e11d52be3311441b8c1631557ab61b3b35d1de69b978a0eb71c",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "8a0e3b1676a7eac98149582d0147ef72ff6b4f15412d78102db435882a26df0f",
+        "artifactSha256": "6c745d06273b6beec8b6e20aa9dec07ebb91a90d76db02f7805a46683251b4bc",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-law-completion-result-mismatch",
+      "stage": "seed",
+      "name": "law-completion-result-mismatch",
+      "passed": true,
+      "accepted": false,
+      "sourceSha256": "98d12ef11062ed42b3847e076dbb2fedad576e6ec01f88c89461fcfd2e4e20e8",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "a0fab317f6e6cde51c0bb86589fd1b0891df7385265bc5c486ce0b588bc22ecb",
+        "artifactSha256": null,
+        "phases": [
+          "parse",
+          "expand",
+          "check"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-partial-family-application-execute",
+      "stage": "seed",
+      "name": "partial-family-application",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "e4e6414bdb3d9524161585fb007e1557b0815782005884c1e3cb3a4dc87af3fa",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "faf7f28d1965027ab1dffea4b491e6efc54b1f867c79b6d9e5128f9f2e833e1c",
+        "artifactSha256": "c15d141534c72356af6408e5a33465332ecf73d4c4bee0d9219b9860fae022ff",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-affine-duplicate",
+      "stage": "seed",
+      "name": "affine-duplicate",
+      "passed": true,
+      "accepted": false,
+      "sourceSha256": "1eab87729494aa38d657d584a655a13923e77f6f463104e08770f00f54facf31",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "773c5f14991e0d98e36d039eb679bd813d4b1a6aac02eab4083e42d3b50b9f84",
+        "artifactSha256": null,
+        "phases": [
+          "parse",
+          "expand",
+          "check"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-dependent-field-pattern-execute",
+      "stage": "seed",
+      "name": "dependent-field-pattern",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "25577204491965929c8a67943fa11e913757bee64dbd7285e5eb9f124700d72d",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "6ce069bfa7587cc78b8fcdd26e7412a680bf19b27a312de45d43078d55bdf4db",
+        "artifactSha256": "2efd8172e827332fcbfb8e6cd9615ec5d459fe3ba4e56165be73dbbb3a0b46c0",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-indexed-family-parameter-mismatch",
+      "stage": "seed",
+      "name": "indexed-family-parameter-mismatch",
+      "passed": true,
+      "accepted": false,
+      "sourceSha256": "eea3fa552b43e60fcbb733c3a0363dd60529723bdf09256d5d78ee244220dcd7",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "65aaba938a9948f3f2bc3e14d887176daacc482654a0fa6e0361e82e2f9e3008",
+        "artifactSha256": null,
+        "phases": [
+          "parse",
+          "expand",
+          "check"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-equality-congruence-rewrite-execute",
+      "stage": "seed",
+      "name": "equality-congruence-rewrite",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "8393197b610d5b39c04ce5884ab0fffeb32936e05ee3a68a4d42bc0bb205510b",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "43aad035495632627b27d2d19a36f6199f918fe13760d29cac20e185b867329a",
+        "artifactSha256": "3bcd2f7fe573ddc9c2a929705babc6bee3b718f472c939bf2466309c15a63b2a",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-rewrite-result-mismatch",
+      "stage": "seed",
+      "name": "rewrite-result-mismatch",
+      "passed": true,
+      "accepted": false,
+      "sourceSha256": "05749623daac71fc3caa1b955d4796ccf86586856880e6efe10c6d2af96c9497",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "275aaa56d0180661f63c2d70ad1b24039dae1f323d3d5fae328de9eeef8a5393",
+        "artifactSha256": null,
+        "phases": [
+          "parse",
+          "expand",
+          "check"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-empty-datatype-match-execute",
+      "stage": "seed",
+      "name": "empty-datatype-match",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "678639d3854a305d0df75c8f933a5e239d24da869ab60f7ea4db2ef69c84d942",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "6afd04fd90359ca679b44f15bb0ffe04fd273b7928b5d3e40772eca2ffefd672",
+        "artifactSha256": "88b0a6149a4b5b049d1a167eb0b4ea3c9aab3fbe661ea37655cc57a66e7b5ec5",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-nonempty-datatype-empty-match",
+      "stage": "seed",
+      "name": "nonempty-datatype-empty-match",
+      "passed": true,
+      "accepted": false,
+      "sourceSha256": "89201d6cade157fa701a59e0537333472c9414671a7365c9386cc6f711fd8b24",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "3203fbe17e89ed60565ecfa4581ac03313a227d8edaa685340b2befe218943d1",
+        "artifactSha256": null,
+        "phases": [
+          "parse",
+          "expand",
+          "check"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-abstract-type-empty-match",
+      "stage": "seed",
+      "name": "abstract-type-empty-match",
+      "passed": true,
+      "accepted": false,
+      "sourceSha256": "39dacd9a8b695faf64cfee62f2473d2e8ecc66ececb030d6796dd6a45a742024",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "8ee3f4a3f653da8ef74b2d9e4d205644b65b46f31133cc1acfaf80f899081f53",
+        "artifactSha256": null,
+        "phases": [
+          "parse",
+          "expand",
+          "check"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-aliased-constructor-conversion-execute",
+      "stage": "seed",
+      "name": "aliased-constructor-conversion",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "d40bd184d4da826e610f46e5b376470c241bf400c154321e4759906c6de5d397",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "12bc60744294c02eedd6c99b82fef1c561dc6d5ee16e0f2d197895f5c92ea640",
+        "artifactSha256": "30092ce37a48e5dd3bcaee3b71385d656827a0c536b9d3b13b06e9c12dd2c1c8",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-distinct-imported-family-mismatch",
+      "stage": "seed",
+      "name": "distinct-imported-family-mismatch",
+      "passed": true,
+      "accepted": false,
+      "sourceSha256": "52882eabd86c89dc126331b004c59c18e37cd9e1db445b1660407c957b1cb51d",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "afc5b312d9c33d738465bfa118c1f9f3eb426882295af08de8104381e73491d7",
+        "artifactSha256": null,
+        "phases": [
+          "parse",
+          "expand",
+          "check"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-same-module-alias-family-equality-execute",
+      "stage": "seed",
+      "name": "same-module-alias-family-equality",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "1459bb0a523b1a543c7662831722c0d31915fc347cc3d23a88329e69de59a675",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "b2cba8d564bbbc039b3857ee56ba3c7063704bd2fd6b1aa6fc0f2cbee7d0b5f5",
+        "artifactSha256": "a0d1fbd0ce081a9ed461639a9cc8ae967aa6fac91bc6022256ab3f9c2df39830",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-same-module-alias-constructor-rows-execute",
+      "stage": "seed",
+      "name": "same-module-alias-constructor-rows",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "6463a43c6c90eb3f0a047690004df8207430760b2c3710db942248be96464edb",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "d8b558bcf506230587f40791d11a934e252f269c42f233d3c7576b1d0cac030a",
+        "artifactSha256": "b3a37b619886cec633e4e27e002e84645f4fddb3517750bd41c555316e294820",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-alias-dependent-conversion-execute",
+      "stage": "seed",
+      "name": "alias-dependent-conversion",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "0918c7e24572c7843e5dc7734d023e42ac961ce74ff34a1b44070d1237df3ca5",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "261a5c86ccbfc143b82749b12e4e03c1b7e5f321ff53ba4e0c4332c44d57644d",
+        "artifactSha256": "95d8ff42a5508c54c4e72548db575c98fafc31f569752015c481c05f968ed6aa",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-stuck-first-row-dependent-conversion",
+      "stage": "seed",
+      "name": "stuck-first-row-dependent-conversion",
+      "passed": true,
+      "accepted": false,
+      "sourceSha256": "2de665221faf52e991a1c11b5676502efd0fbf02716b045958459d10cf6996b9",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "84b344b29037574861d04abbafeeea7811ba25af96d6e00e79b8c71195e18cbc",
+        "artifactSha256": null,
+        "phases": [
+          "parse",
+          "expand",
+          "check"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-local-imported-family-mismatch",
+      "stage": "seed",
+      "name": "local-imported-family-mismatch",
+      "passed": true,
+      "accepted": false,
+      "sourceSha256": "200b4a797c383856a7e369c99486c0ef939ed3bd5a4d14f1758f10a1bc77cd04",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "8bd6b339df2d983cbe8abb78e5480abfc8ada95c7f1925327e06fd07037e82a5",
+        "artifactSha256": null,
+        "phases": [
+          "parse",
+          "expand",
+          "check"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-datatype-constructor-shared-name-execute",
+      "stage": "seed",
+      "name": "datatype-constructor-shared-name",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "cf1ff3a9fdaee568fc064d36da3dc8b72093da197515bce5d9ffd11ec62474bd",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "1efafb4878c4ea186c8a0ec4e5fcde0f3ebc03e4974ec76b580848e01e0b5483",
+        "artifactSha256": "b259296f477cac96f5e675f390c2faa7bf6227b6f700abae11f4962d1cd90bae",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-constructor-args-field-execute",
+      "stage": "seed",
+      "name": "constructor-args-field",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "ed8d8898dc20d7789a6927d22d39e0613f0ad2975859e0afbd64c4b5ef6b415b",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "b9a142b041da5f62cdfc960879c89f8affb29775edb4eb999424927d0a6c2b89",
+        "artifactSha256": "b0a1251bd39b9d64d830269fbc6016138e7de939c8e82aaf47660a47bcf8ce74",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-structural-predecessor-recursion-execute",
+      "stage": "seed",
+      "name": "structural-predecessor-recursion",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "2964309f829f1d8139af4aa0bd4ff52e98e8a4f65c8284b92bb6517758d720ea",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "5722047502ed343e2662bc247fb9a0a4ae238740bc340a1dbdb51f85d342613c",
+        "artifactSha256": "50cfb0be18da5d94beec3af77368b264c011a94c2c07b468085da9d6ffea6e67",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-structural-original-input-recursion",
+      "stage": "seed",
+      "name": "structural-original-input-recursion",
+      "passed": true,
+      "accepted": false,
+      "sourceSha256": "3de513ed0101ec41fc3a66d213ee97a4ec46bd6ad4903cf792c1a24671873d97",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "ae5d17774a393a27bfc598d241992457e0fa8b45d556419d90a5686647ba6c90",
+        "artifactSha256": null,
+        "phases": [
+          "parse",
+          "expand",
+          "check"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-structural-equal-input-recursion",
+      "stage": "seed",
+      "name": "structural-equal-input-recursion",
+      "passed": true,
+      "accepted": false,
+      "sourceSha256": "a0ed387e14bff247794e4dc18d811f0bcc62fd8857d920479a2f865b9a8ad0dc",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "ae5e02ddc0b535890c07d22376c828be2d47ff6049d2f2d972f5af8f86aba9a0",
+        "artifactSha256": null,
+        "phases": [
+          "parse",
+          "expand",
+          "check"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-structural-growing-input-recursion",
+      "stage": "seed",
+      "name": "structural-growing-input-recursion",
+      "passed": true,
+      "accepted": false,
+      "sourceSha256": "c03c61fb6ccafb0c966a22a78bd0694aa0232d37c59ea743bbf77f9b25a76ce0",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "10b2c78eda47063e7d1ec3e9ba480fb29f68ad6b2a84835ad77cb8aa5d4c130f",
+        "artifactSha256": null,
+        "phases": [
+          "parse",
+          "expand",
+          "check"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-recursive-matrix-variable-column-execute",
+      "stage": "seed",
+      "name": "recursive-matrix-variable-column",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "5d3613ea59c3d9d6e9c2eec23dc4ff345ff69eed791f67ab713c38dd2b2228ef",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "1801ce8db3de8afa0067f2082711e57fb37adf75db1730c82c503e8d7ed6cae8",
+        "artifactSha256": "6d32f93c5ccf98eb59555ffa41b4dd722ded2c855a98504d9ee0a7f23082f2db",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-recursive-matrix-incomplete-variable-column",
+      "stage": "seed",
+      "name": "recursive-matrix-incomplete-variable-column",
+      "passed": true,
+      "accepted": false,
+      "sourceSha256": "cff0f694f6b404cc19e9aecb446762877b1dfc3d7f3fbd70299a1a4e2bb59e0a",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "455fa078f9e094bb0f9141395369e9982c3e0c6beecd33d8a7378dda92b04467",
+        "artifactSha256": null,
+        "phases": [
+          "parse",
+          "expand",
+          "check"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-copied-constructor-field-quantity-execute",
+      "stage": "seed",
+      "name": "copied-constructor-field-quantity",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "075d740f094cc8913a1184848d7dfe2386ca3b640fbecd54aaec6f39710f099a",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "e0fb5db631fda5340d0457f09d8060fdd3288498d6e7dae7ce574dbe33e9dfe7",
+        "artifactSha256": "f18f76d3df826f92b806c4b9b8d26cba2135aed7cc28f2a23aadda2a3b7a3e4a",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-affine-constructor-field-quantity",
+      "stage": "seed",
+      "name": "affine-constructor-field-quantity",
+      "passed": true,
+      "accepted": false,
+      "sourceSha256": "8b58221d0ac6a903a8ac44b5b673a1b1c070af5fcd3fe689cc58673f4a11385a",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "b0d9765a4a3fa148420f51f4da2279b54e70746fc46c7ea23e6dc69862bf7629",
+        "artifactSha256": null,
+        "phases": [
+          "parse",
+          "expand",
+          "check"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-erased-constructor-field-quantity",
+      "stage": "seed",
+      "name": "erased-constructor-field-quantity",
+      "passed": true,
+      "accepted": false,
+      "sourceSha256": "cc25414153fe5ece095d184424a07208d4bb76d31966ea175cab691c0ee604b7",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "538d99224b4886188eec5cf663db9a84bcd039d2f30715e66d5b24b4b681083f",
+        "artifactSha256": null,
+        "phases": [
+          "parse",
+          "expand",
+          "check"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-erased-constructor-default-binding-execute",
+      "stage": "seed",
+      "name": "erased-constructor-default-binding",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "c8a3f957effaf0ac6964e1be74624402bdd66eede92d384b6725deed44cf9dd3",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "754d97c4f9e5e4d5a3a944447f651cca80a9a24a9a295c89898945a2fb3700bb",
+        "artifactSha256": "1b7beafef7759763a8ffef5445bce35fe28147f9b4a25fde513728a75f1d0cf0",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-long-unicode-string-pattern-tail-execute",
+      "stage": "seed",
+      "name": "long-unicode-string-pattern-tail",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "fc0b4e09b6e16012d6cef0fb8d796817d5b7b658f48b9837d5fccfce8526c202",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "e7776648fa49c6ed7576332ebecfd930b95df0980dc3838a5a71f2f551834867",
+        "artifactSha256": "2eac18eeec66eac2ff1209e5da65e75e8ca4dc11fc22b7498268a4693b696ebd",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-compact-string-native-scalars-and-explicit-equivalence-execute",
+      "stage": "seed",
+      "name": "compact-string-native-scalars-and-explicit-equivalence",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "4ef313bc46f9dfda39142fd79bfb6910517532c7172e682a4a255a04a1e14b6f",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "4a3d6e4139425b4e6c378af23905e200779af9b63e7c877395af36515554029d",
+        "artifactSha256": "70218d1688a9647ffb321724ac82ff4ca54ee7a50c85345187ec201fb8b5abdf",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-compact-string-imported-template-alias-capture-execute",
+      "stage": "seed",
+      "name": "compact-string-imported-template-alias-capture",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "3786bad35796874efd0c4c7dc78f2a97d08b9238f336f6ab2854807e8fd6beaf",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "84973ca6f1c96768fd2bd569b8caf52327f033c6d6bc3a4f086e7370d86a55ab",
+        "artifactSha256": "4d8bb8588aec97213736c81ce1d7c905bfffc555b9d288d2e5117748d2607f60",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-compact-string-primitive-like-shadow-fallback-execute",
+      "stage": "seed",
+      "name": "compact-string-primitive-like-shadow-fallback",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "fc9ed48a88fecaf6b85f90af46378eb42dc9fc1a2391c4b9ea50403e92fa7530",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "8dc82e13e58d63e06f8246e5dafbf467d3681f35ff1c109fae14a1bef76670b1",
+        "artifactSha256": "f96d5a8ac2fd134f85573863cc5694c68e7fd8412e272ad459b80640694c95ea",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-compact-string-dependent-explicit-constructor-equality-execute",
+      "stage": "seed",
+      "name": "compact-string-dependent-explicit-constructor-equality",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "6d97d02c58455eba53395d5a626f6b60d19ef5a48deba95618ac0393c92c0f9e",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "aa784b19fd43c6d35c864242707655937b095dbffe007c5f1dc443c14b5c736a",
+        "artifactSha256": "c62bbdc0d48d1975c6dad1a54281af37e3a61972bdf049c1a230791d4af9202c",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-compact-string-template-empty-unused-constructors-execute",
+      "stage": "seed",
+      "name": "compact-string-template-empty-unused-constructors",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "477e33c81dc909e9449dd36a9aafc8085136d48c350eb31da5eb63d5f48d9b0e",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "fb079a7a4e7f07881914224b35d9e029d463909f192c531ef1c9d4d17bcd3442",
+        "artifactSha256": "20cb6afd86aafc7194007bb5d2719635ae8584558784bdf3abb9f062adfffa10",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-compact-string-template-zero-unused-true-execute",
+      "stage": "seed",
+      "name": "compact-string-template-zero-unused-true",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "b9ec0f2924bfd00ba010a95a0223c711b331d5b665f3e8690566ca4b5e92929d",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "3d82990a58febc766c6b893155fc101dd20bec2babe47fe029e4acdd06b4fd4b",
+        "artifactSha256": "8f7899ebe66ce9ab83a2edc9b25fc073016e8bccb947ce49757470fa76c6d5ca",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-compact-string-invalid-scalar-custom-constructor-fallback-execute",
+      "stage": "seed",
+      "name": "compact-string-invalid-scalar-custom-constructor-fallback",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "99f41df074e9e17c6c84f960899b1a91ab739f174a1ba89dbd2375bd2b1e7c7b",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "179b639ac833dd07e15577cfd988581968f876e91179c2d0652022c16d4a83cc",
+        "artifactSha256": "debb95750de64698e32fe0d1563ecc4fe08ec629af417efb93047dc1eb7abbed",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-compact-string-tail120001-callback-execute",
+      "stage": "seed",
+      "name": "compact-string-tail120001-callback",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "d1be55f37408a9d5e75670f6ed078bc17b7d690294c6f07e294f38b508ca518e",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "a22780e54119b596eab9c0acbad9b67b5b24d416e00e86d374dcc5abccc36f30",
+        "artifactSha256": "6dc6c383ac0e05e975a7b7686b28d5c3575b461e7df334022b805da9bf284531",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-patricia-selected-branch-unicode-execute",
+      "stage": "seed",
+      "name": "patricia-selected-branch-unicode",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "d23de8fa40f3547d8f03cdb7c2795cf74872e248b54e44c3cfdaf8dab0ecb753",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "eaba6e90a7752e33978ee015d53d121b6c97d78db214383ffc80eb100ef42661",
+        "artifactSha256": "1e0141586ecaa6c0094814733d32e664056934b0e144254ee333c09e6fb1d425",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-mixed-named-closure-tail120001-execute",
+      "stage": "seed",
+      "name": "mixed-named-closure-tail120001",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "8bf7f4602897dc2b8f70b45fea329ff84780faa40214ade087b339303f03db1e",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "3bcfe94fe0e5b43bdf3077360144e00810f744def6b167a052f3b2ff037e0f12",
+        "artifactSha256": "cd4866541896888e6e69acbfebcca1ac165ce59f1e444eacfcceee915430f278",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-private-tail-register-boundaries-execute",
+      "stage": "seed",
+      "name": "private-tail-register-boundaries",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "95df4b84cf824eee111364977a3d0a5fe3162baa7123e8f5162202cc6a27d6a5",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "69907dfad97704362c2214330557e01795c53853c121ce5b2869150a29d24fa2",
+        "artifactSha256": "ec8319893ba3e7d3678c1b4d582a0cd7c015ebfb4ea89f1aed5197f6267bc4de",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-compact-string-invalid-native-scalar-deferred-branch-execute",
+      "stage": "seed",
+      "name": "compact-string-invalid-native-scalar-deferred-branch",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "1998de6cbbbcd71224bbb8077b37522dc7d059e2115ca56237c4e884d7f526ea",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "ab384bb8a21160354437f1de5b778eb5033e6159f73a94c1b71055ae50662071",
+        "artifactSha256": "9a579ca0451e57f962eaa0c8c61f93c59749513030c879fb2d2529077a90cb63",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-dependent-match-goal-refinement-execute",
+      "stage": "seed",
+      "name": "dependent-match-goal-refinement",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "78a54dfd45b2e19b0b8e3616af237b899d34185d125e5fa4625809df43fc964c",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "8270c92136c81c4248d490194c1a387c70ee46ee1dd6fe430bdb4e62f7bbd9e3",
+        "artifactSha256": "90e72723b95a1913179e3c3751fbe6f3b225120886a7ef3bbf00b0a6afd33b4b",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-dependent-vector-goal-refinement-execute",
+      "stage": "seed",
+      "name": "dependent-vector-goal-refinement",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "030547086f21efffb39fe0e1b6c043d3cd288ecc1de4b4de235c5236f3c5a2e2",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "1b3e83eb54db2b085e6ce6cc3f4fedc562880e8bf748668ac8886cc3cc5bafec",
+        "artifactSha256": "c0ebaa577f4a45ed96abd0ab40b72d48cec05fed75dd55d1969963034e239c77",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-dependent-nested-binding-refinement-execute",
+      "stage": "seed",
+      "name": "dependent-nested-binding-refinement",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "6420d0a0bf70b80e396c28cd4b93f17f7d53d9f8f36b6ad7df07b41e01d79267",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "499d9a0471aedab48f786910d752d5151696da0fc8b55a1dafb9b3ebee571fde",
+        "artifactSha256": "6c36603d691084ad1a2fad54c7ecff7a504596ccce496569ac5e0fe63b5cf1f7",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-dependent-tuple-local-binding-execute",
+      "stage": "seed",
+      "name": "dependent-tuple-local-binding",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "8421df1a1f10074e8a03648f33476d7cc399da49589d61301ee627f55ca67759",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "504eec5560a281aecb4fc29604ddb6336571aeb5fc500bd15cf3ae08dba17f84",
+        "artifactSha256": "f5694ad05e24a9c85db87d72eb34c9876c559cf305d3089b794dfeae1a717b81",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-neutral-tuple-distinct-index",
+      "stage": "seed",
+      "name": "neutral-tuple-distinct-index",
+      "passed": true,
+      "accepted": false,
+      "sourceSha256": "5efbb356567f9e598bc28dffac3f5ce045a53058f76b380510b3971a20ffa127",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "91deccc0bbd6939056e11ed9e77790d4414384b93937510dc50887eed38f409f",
+        "artifactSha256": null,
+        "phases": [
+          "parse",
+          "expand",
+          "check"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-neutral-family-distinct-branches",
+      "stage": "seed",
+      "name": "neutral-family-distinct-branches",
+      "passed": true,
+      "accepted": false,
+      "sourceSha256": "9d91f606818564d9645dce24419b131c6f4adea34c5db29fe80575f4a5e98c9d",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "d9707d4db7722ea49bf41ef4f053aa89b5db219ea995bc8cfa8f1efc1abe10ac",
+        "artifactSha256": null,
+        "phases": [
+          "parse",
+          "expand",
+          "check"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-nested-constructor-cases-disjoint-execute",
+      "stage": "seed",
+      "name": "nested-constructor-cases-disjoint",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "b63f207d8c0a4f3ac6957211b6b544bd0f9a1d035ec3424f61994ceaad9fe5d9",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "7872f4cbe0931522d848a318eeb48d444b2ea1731c254d5a10d9f0a808cdc5b1",
+        "artifactSha256": "708c40fe28768cdcfa11f77c6a55fb90b86d8fff98a1d33240addf9c6a6f7c4e",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-nested-constructor-case-duplicate-execute",
+      "stage": "seed",
+      "name": "nested-constructor-case-duplicate",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "6f60f0b20f7fab9f253fdd4d11c951bc051b7433a910290b89f14099a809df00",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "6a4c97538810b70f4c985988c91152b88ed76897244508f5c00f7572dd1a1dad",
+        "artifactSha256": "2fc88c4d37f56a20559dafe8f5aaf5f77b759f818f9d53c136a1a6149c4d5b7b",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-nested-constructor-ordered-fallback-execute",
+      "stage": "seed",
+      "name": "nested-constructor-ordered-fallback",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "42b753d8c46061341fd80ddf89c4d88a7e53fe6ae99e7d51ee2947ddf151a01f",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "01049954a6e23d47d9189041dc164dd8c19edb51b2977f339343101a52d8307f",
+        "artifactSha256": "47aba911e1def15b127708c2d48cf4cc5ad11fe1654b219e8d7bcd59b13e6f6e",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-nested-constructor-unreachable-union-execute",
+      "stage": "seed",
+      "name": "nested-constructor-unreachable-union",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "6c889cf3ba86533907cc5fe6bf7c6ed5bf98d8d99010f49dafebc8fa25ed2ae4",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "2bfea1407581258379377ad66e01b0b09b9d098de7de1c8fb52ee0f6e7d97f12",
+        "artifactSha256": "2fc88c4d37f56a20559dafe8f5aaf5f77b759f818f9d53c136a1a6149c4d5b7b",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-annotated-constructor-equality-execute",
+      "stage": "seed",
+      "name": "annotated-constructor-equality",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "50e08b264b7028924b68bdcf40ed4d80fefd74ad4e90916ec08f78d9e57d86f4",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "100c58ca122034db2447ba0ef5805fd849cfe44aeaa2d37d3cdd33287f8a5acd",
+        "artifactSha256": "ba6eb8cf6fde631c4206cb884d44e22315f38e1e8268275395694eec3903a18a",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-annotated-equality-wrong-constructor",
+      "stage": "seed",
+      "name": "annotated-equality-wrong-constructor",
+      "passed": true,
+      "accepted": false,
+      "sourceSha256": "ad1adf13c133f9a05b3bea7812a9d893bc3c11b23536c1a74afe5037462d40c7",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "342a701336f0803a0c286c0df2349da5fe6a4cc79df48794c727d7f58ea5ef82",
+        "artifactSha256": null,
+        "phases": [
+          "parse",
+          "expand",
+          "check"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-annotated-equality-wrong-type",
+      "stage": "seed",
+      "name": "annotated-equality-wrong-type",
+      "passed": true,
+      "accepted": false,
+      "sourceSha256": "9d5e981d6bf2096e98e6b90155118e6826646d41e865798578c71b63cbb5ce4e",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "c1d600f070d7209bb6c6ebbd6da5f422f20de144fe6ff6016470d1cfab18ff88",
+        "artifactSha256": null,
+        "phases": [
+          "parse",
+          "expand",
+          "check"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-promoted-data-constructor-field-execute",
+      "stage": "seed",
+      "name": "promoted-data-constructor-field",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "438d6597d4292c2037f2feb53824165e3873e6a64d72a9766b03552b58ba24ce",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "38d20e989ff963d295cec4489110711da4231716b28addcc2be8dc076b0adc4e",
+        "artifactSha256": "bc37e17d0fb642e06d0b9df79ee0df5703c3fe45b2c01ee39916f2c2b69e8b9c",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-promoted-affine-constructor-field",
+      "stage": "seed",
+      "name": "promoted-affine-constructor-field",
+      "passed": true,
+      "accepted": false,
+      "sourceSha256": "be2ac4f801424bc7b0c0f0b7b0efcffb4bd5f90e36ed127cd32acc9c92701306",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "8c8be5817c20b266870750ebd402406fdd72df7b03ae35d38f9478f05492867e",
+        "artifactSha256": null,
+        "phases": [
+          "parse",
+          "expand",
+          "check"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-promoted-data-tuple-field-execute",
+      "stage": "seed",
+      "name": "promoted-data-tuple-field",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "112ad5dd4a675fff0fb495bc6b27ebf833abdf3e82073c36cca2329022bd61ee",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "99acb91905ddf73d87a38e48b0ac8b0ba4403d951c7ae1796c712f6da3559425",
+        "artifactSha256": "a0e608cd7b151c63681835891651d36bfba6651981990dcf94229a98c065e388",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-promoted-affine-tuple-field",
+      "stage": "seed",
+      "name": "promoted-affine-tuple-field",
+      "passed": true,
+      "accepted": false,
+      "sourceSha256": "d522f28669c45241563e5053c882c86a38bff97def828ac5692867072dcaf6ec",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "8a3008db57d7b310bbc1e2d040ee7db6bd4af2d14070b004c10f25cf737a826f",
+        "artifactSha256": null,
+        "phases": [
+          "parse",
+          "expand",
+          "check"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-nested-structural-recursive-calls-execute",
+      "stage": "seed",
+      "name": "nested-structural-recursive-calls",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "2b6bfb1b3df52c545b45ea48567b16ebc9b576add2b6bf89763249084c8992f8",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "9bfbd4768250e33bfb985f529655de2d9c01936de6cdf2ee7699d7abb54b8bbd",
+        "artifactSha256": "cdefd3bc7d0b5b46e99d93584cae11f0a2123d1c05dccd45f4ea81b49f2e0a87",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-nested-structural-invalid-inner-call",
+      "stage": "seed",
+      "name": "nested-structural-invalid-inner-call",
+      "passed": true,
+      "accepted": false,
+      "sourceSha256": "8ffb4d6934fb1379e57d411735748def930de217baa7b90a0682f71fdfc31ac9",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "3bb2160a1dcafab2446e67448c006865d04df78d025f077d34d4d9371bd166b5",
+        "artifactSha256": null,
+        "phases": [
+          "parse",
+          "expand",
+          "check"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-closed-local-annotation-usage-execute",
+      "stage": "seed",
+      "name": "closed-local-annotation-usage",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "73df624518bd65175db9f1137adfbabc27913a6754d00e8364c38ea9490217c7",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "923573ba8df481e8d69bd6be06f4540cf78c320511d119638a0a09c89c45049a",
+        "artifactSha256": "6be295e7c3670bbefb11e25684b3bde058ced00a5e7677499ed8dd45f2633346",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-closed-local-annotation-type-error",
+      "stage": "seed",
+      "name": "closed-local-annotation-type-error",
+      "passed": true,
+      "accepted": false,
+      "sourceSha256": "4841d3e3088fb2a938dcd39f0cde96494de3d1dcb9fc8262b6df3b6c19e7a4ba",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "bd373717c4783ce4402e76f45b967ca973d8680efccacf11910c87a7243fb48d",
+        "artifactSha256": null,
+        "phases": [
+          "parse",
+          "expand",
+          "check"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-parallel-local-outer-scope-execute",
+      "stage": "seed",
+      "name": "parallel-local-outer-scope",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "ebfe60fc09d8faa3b043555d565b00f9703ed4ec71d3fb6dbcc1c79e4f58512e",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "fcdd955d4d68658e51c1bcc470c0f3f8e4dc0569751fe57552d261dce7e8b506",
+        "artifactSha256": "1e7ebd256a463fffde97746c8687a6cb54e6c27e7664cac4d448758723010b31",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-parallel-local-rhs-independence",
+      "stage": "seed",
+      "name": "parallel-local-rhs-independence",
+      "passed": true,
+      "accepted": false,
+      "sourceSha256": "66141e6efc499c3a50e98d36c7781faab3105a6d6c685d325adaa411c4668ef6",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "210581252a75d175b17c784a453c8d0777c4f19399d0d4c2bad3db7ab3c6670a",
+        "artifactSha256": null,
+        "phases": [
+          "parse",
+          "expand",
+          "check"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-projected-local-erased-domain-execute",
+      "stage": "seed",
+      "name": "projected-local-erased-domain",
+      "passed": true,
+      "accepted": true,
+      "sourceSha256": "50fbcb0968610fe942c0a6c8d3cb1cef7192f30fb0b9d225133538f2014d330f",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "044e13f11bee0be3a7ab4c9acd234ba9058313e8750f43db99419cc277c975fe",
+        "artifactSha256": "5f7ba4b6aacfab3a1e6d7461c653b083343c86c123d0c9818aa55126f7d73197",
+        "phases": [
+          "parse",
+          "expand",
+          "check",
+          "emit"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-projected-local-affine-domain",
+      "stage": "seed",
+      "name": "projected-local-affine-domain",
+      "passed": true,
+      "accepted": false,
+      "sourceSha256": "90c0502e47e94041001d70f1676ea2954e4b479976c01ce85fa5e9b95fd7ad09",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "65e9ef5aa8c768fc72531cc7213f5a2c321caf2b96e7701578e8bad6cbf6db11",
+        "artifactSha256": null,
+        "phases": [
+          "parse",
+          "expand",
+          "check"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-projected-local-invalid-annotation",
+      "stage": "seed",
+      "name": "projected-local-invalid-annotation",
+      "passed": true,
+      "accepted": false,
+      "sourceSha256": "80ecec201d2046d02a6c971aaa6366765160b7d38e5f8c4a0cdd221303649707",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "61055b7bed49b58d8a37f3d4be5c6d700ce860423789e6a6f230c8d069f9950d",
+        "artifactSha256": null,
+        "phases": [
+          "parse",
+          "expand",
+          "check"
+        ]
+      }
+    },
+    {
+      "event": "fixture",
+      "phase": "seed-fixture-dependent-match-wrong-index",
+      "stage": "seed",
+      "name": "dependent-match-wrong-index",
+      "passed": true,
+      "accepted": false,
+      "sourceSha256": "2b738c11d14a879d997dfc072bd32c8e979530cf85c91c75f385086e4c6662bc",
+      "parserSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "compilerSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+      "native": {
+        "binarySha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+        "manifestSha256": "813dd4ac579187ce70f25926df7697f27e09cd84ac409ac44d5477b5406f3584",
+        "artifactSha256": null,
+        "phases": [
+          "parse",
+          "expand",
+          "check"
+        ]
+      }
+    }
+  ],
+  "parseRows": [
+    {
+      "phase": "stage-two-parse",
+      "sourceSha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+      "sourceBytesSha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+      "parserSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "transportSha256": "9b594bdedf170ebaac4b73a8332fb1dfa72b8ecea86bbb798459dd5d576fde1a"
+    },
+    {
+      "phase": "stage-two-parse",
+      "sourceSha256": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+      "sourceBytesSha256": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+      "parserSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "transportSha256": "5dc69c369ac8f74308773c0b7fc51e7b75ea02781ed8970203d277fb4196c7e0"
+    },
+    {
+      "phase": "stage-two-parse",
+      "sourceSha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+      "sourceBytesSha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+      "parserSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "transportSha256": "6e7a84f1a95c62f2159ce7e5839579ed564974a57d19fa11463c078a8c80bad5"
+    },
+    {
+      "phase": "stage-two-parse",
+      "sourceSha256": "342901897b30afc8ec7587718b1eb0b30150d46b01c1ea498ce369af26d1394d",
+      "sourceBytesSha256": "342901897b30afc8ec7587718b1eb0b30150d46b01c1ea498ce369af26d1394d",
+      "parserSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "transportSha256": "b0df54fb6a4c95d6539ef9928b970042b77f1023b139247dd0181865866b3dc6"
+    },
+    {
+      "phase": "stage-two-parse",
+      "sourceSha256": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+      "sourceBytesSha256": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+      "parserSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "transportSha256": "f2152b73564010f3eefb7d554f25e575302f66690aea2147c2595a0d49fc5c58"
+    },
+    {
+      "phase": "stage-two-parse",
+      "sourceSha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+      "sourceBytesSha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+      "parserSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "transportSha256": "cacf3dc915a375e2f79c68ba3db8ae41b7e4db6a5a10f3be897d6d8a20d40ba0"
+    },
+    {
+      "phase": "stage-two-parse",
+      "sourceSha256": "c0286db6b192bf5cc917774b7ea5e393d4416263432eb130fb8393b1dffc1cb3",
+      "sourceBytesSha256": "c0286db6b192bf5cc917774b7ea5e393d4416263432eb130fb8393b1dffc1cb3",
+      "parserSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "transportSha256": "49ce9429eb8a72ab8fd17edb99580bcc11e5f1278111c929ad58286858406286"
+    },
+    {
+      "phase": "stage-two-parse",
+      "sourceSha256": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+      "sourceBytesSha256": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+      "parserSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "transportSha256": "4bed64397f26798527fba477083a6b5d674c8a2875679c3909754f9e1f6f429a"
+    },
+    {
+      "phase": "stage-two-parse",
+      "sourceSha256": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf",
+      "sourceBytesSha256": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf",
+      "parserSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "transportSha256": "3b734f748e8af96996a8659d4c10dac0193d6fea30db85147991c80fc2b9e110"
+    },
+    {
+      "phase": "stage-two-parse",
+      "sourceSha256": "e75dc874de6026e2104a7545a19f42fd6995aefecbb1d315c6ae3e097697e590",
+      "sourceBytesSha256": "e75dc874de6026e2104a7545a19f42fd6995aefecbb1d315c6ae3e097697e590",
+      "parserSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "transportSha256": "c1fabed7d5c3a34a58f97b05dd148ab6a2a252d0df7140a4cbf1c852e602e2a7"
+    },
+    {
+      "phase": "stage-two-parse",
+      "sourceSha256": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+      "sourceBytesSha256": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+      "parserSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "transportSha256": "51a92192c00c659a4e22184ba5e62fb769ce8f1d7c5c47a8d5ce7e92e6cc74b8"
+    },
+    {
+      "phase": "stage-two-parse",
+      "sourceSha256": "7b7b45946be711d0ba384e15f6823fded5ff97d6a526a6fb74a0448c13d61f84",
+      "sourceBytesSha256": "7b7b45946be711d0ba384e15f6823fded5ff97d6a526a6fb74a0448c13d61f84",
+      "parserSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "transportSha256": "70a603d4d928ac153a4b33c9197d17e0acd6523d3af9d73a314700f7af3f27b2"
+    },
+    {
+      "phase": "stage-two-parse",
+      "sourceSha256": "b9f4d860de0c58a274e1f23e90558191e23d7ac0de18d1fd452914160b9a5ae5",
+      "sourceBytesSha256": "b9f4d860de0c58a274e1f23e90558191e23d7ac0de18d1fd452914160b9a5ae5",
+      "parserSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "transportSha256": "f22a34411825fa867255add18139ff96d2a8628525e6f75be09fad91f6377f5b"
+    },
+    {
+      "phase": "stage-two-parse",
+      "sourceSha256": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+      "sourceBytesSha256": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+      "parserSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "transportSha256": "9dc218daa1ee7cdfe88040a1e7e1c4577306f443d14c30869d9292c2b269757a"
+    },
+    {
+      "phase": "stage-two-parse",
+      "sourceSha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+      "sourceBytesSha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+      "parserSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "transportSha256": "8919d85b8a18953f76b0247a03256dd47c81b8a64f77d54bbecc24f12b8cb07f"
+    },
+    {
+      "phase": "stage-two-parse",
+      "sourceSha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+      "sourceBytesSha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+      "parserSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "transportSha256": "26aac8671e79a7528dcad0756e4861deaf27694c328046a50b61d080aa835051"
+    },
+    {
+      "phase": "stage-two-parse",
+      "sourceSha256": "7f7c8d2e57a3fcd3925b4286a8300668ae91b7e11a26317cea6da2df5c9ea425",
+      "sourceBytesSha256": "7f7c8d2e57a3fcd3925b4286a8300668ae91b7e11a26317cea6da2df5c9ea425",
+      "parserSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "transportSha256": "6361d2c082c2462c13b969533b0db9988783e8efa9513d094a57bb71a0f84f77"
+    },
+    {
+      "phase": "stage-two-parse",
+      "sourceSha256": "05adf4ac68b0658425f7fce430709f67bd29c3f1f8a43727412661084c4dbe2c",
+      "sourceBytesSha256": "05adf4ac68b0658425f7fce430709f67bd29c3f1f8a43727412661084c4dbe2c",
+      "parserSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+      "transportSha256": "33189971d4e1f0407973d09fb9e1dab278c173c85640c35c98e7727aa1c404d7"
+    }
+  ]
+}

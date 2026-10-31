@@ -49,6 +49,32 @@ Native-build receipts pin the constructor source as well as the compiler.
 After changing the constructor, create fresh build authority for new runs;
 never rewrite historical receipts or relax their protected source pins.
 
+The LLVM constructor additionally accepts `--cc-partitions=4|8` only with
+`--cc-pipeline=llvm-split`; default four and maximum three concurrent backend
+children are unchanged. The full qualifier forwards it only when constructing
+a new native compiler, never for throughput-only build reuse. Bitcode identity
+and each partition's bytes, hash, object and stage are recorded using bounded
+streaming hashing. A deliberately failing real clang partition demonstrated
+child draining, no replacement dispatch after observed failure, and no link.
+
+G41 exercised both complete builds and the eight-way genuine fixedpoint plus
+all twelve strict paired samples. Faster observed backend construction did not
+earn runtime promotion: default four remains. Do not rerun that failed target
+unchanged or describe the stopped later correctness suites as PASS.
+`checkpoints/local2039g41llvm-outcome/outcome.json`.
+
+G42 is an isolated facts/final-C-materialization diagnostic, not a production
+option. Its 17 actual C/JS cases and two unprofiled full-root modes execute
+under the original 8192-MiB RSS/footprint, 10-ms poll, 600-s protocol with the
+explicit accepted Bun hint. Both modes reproduce independent accepted C bytes,
+but primitive recipes are slower in the observed pair and are rejected.
+Full C byte equality is not a native-seeded fixedpoint or runtime claim.
+The canonical second `book_load` root uses the same source coordinate via its
+sixth argument; structured Bend errors must be rendered with `err_show`, never
+dumped with the shared book. Earlier harness-coordinate/default-guard failures
+remain separate setup evidence, not compiler failures or cap relaxation.
+`checkpoints/local2039g42defer-outcome/outcome.json`.
+
 `PROBE_STOPPED` is a deliberate diagnostic cutoff, never a semantic failure,
 completed compilation or PASS. `CODEGEN_SETTLED` means codegen returned within
 the probe budget, not compiler acceptance. Neither status publishes an image,
