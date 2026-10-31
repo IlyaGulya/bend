@@ -1,0 +1,1271 @@
+{
+  "schemaVersion": 1,
+  "version": "G42DEFER",
+  "sourceCommit": "7aa1f38b",
+  "driverCorrectionCommits": [
+    "7c59549a",
+    "eb44d62a"
+  ],
+  "status": "REJECTED_FOR_PROMOTION",
+  "scope": "Actual C/JS consumers plus unprofiled full-root C emission; not a native/fixedpoint or runtime qualification",
+  "evidence": {
+    "consumerSmoke": "consumer-smoke.json",
+    "eager": "eager.json",
+    "deferred": "deferred.json",
+    "guards": "guards.json"
+  },
+  "limits": {
+    "rssMiB": 8192,
+    "footprintMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000,
+    "bunRamHint": 4294967296
+  },
+  "commands": {
+    "smoke": [
+      "/usr/bin/env",
+      "BUN_JSC_forceRAMSize=4294967296",
+      "HEAVY_GATE_MEMORY_MIB=8192",
+      "HEAVY_GATE_RSS_MIB=8192",
+      "HEAVY_GATE_POLL_MS=10",
+      "HEAVY_GATE_TIMEOUT_MS=600000",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/compiler_emission_smoke.ts",
+      "--output=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g42/smoke-standard"
+    ],
+    "eager": [
+      "/usr/bin/env",
+      "BUN_JSC_forceRAMSize=4294967296",
+      "HEAVY_GATE_MEMORY_MIB=8192",
+      "HEAVY_GATE_RSS_MIB=8192",
+      "HEAVY_GATE_POLL_MS=10",
+      "HEAVY_GATE_TIMEOUT_MS=600000",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/full-emission-v2.mjs",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_compiler_root_local2039g24r12.bend",
+      "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_driver.bend",
+      "eager",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g42/eager-standard"
+    ],
+    "deferred": [
+      "/usr/bin/env",
+      "BUN_JSC_forceRAMSize=4294967296",
+      "HEAVY_GATE_MEMORY_MIB=8192",
+      "HEAVY_GATE_RSS_MIB=8192",
+      "HEAVY_GATE_POLL_MS=10",
+      "HEAVY_GATE_TIMEOUT_MS=600000",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/full-emission-v2.mjs",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_compiler_root_local2039g24r12.bend",
+      "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_driver.bend",
+      "deferred",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g42/deferred-standard"
+    ]
+  },
+  "fullRoot": {
+    "checkedDefinitions": 12456,
+    "cBytes": 62113627,
+    "independentAcceptedCSha256": "2290a096f114201665d4b943db3470889ca700ec205b875612178ea263e27ffb",
+    "eagerSha256": "2290a096f114201665d4b943db3470889ca700ec205b875612178ea263e27ffb",
+    "deferredSha256": "2290a096f114201665d4b943db3470889ca700ec205b875612178ea263e27ffb",
+    "byteEqual": true,
+    "eagerCodegenMs": 153438.606584,
+    "deferredCodegenMs": 187497.214625,
+    "observedCodegenDeltaPercent": 22.196896074101534,
+    "repetitionsPerMode": 1,
+    "observerEnabled": false
+  },
+  "disposition": {
+    "compilerAccepted": false,
+    "performanceAccepted": false,
+    "nativeFixedpointClaim": false,
+    "newRuntimeClaim": false,
+    "mainCompilerUnchanged": true,
+    "reason": "Full-root primitive recipe prototype is 22.196896% slower in this one unprofiled pair; no time win and footprint does not improve. Preserve exact eager compiler and reject promotion. Independent preexisting source-cap violation also blocks admission.",
+    "architectureConclusion": "Do not parallelize mutable FL or promote per-statement primitive recipes. A later facts-only analysis must avoid recipe allocation; stable-ID finalization remains an invariant, not a speedup claim."
+  },
+  "sourceCap": {
+    "model": "gpt-3.5-turbo",
+    "encoding": "cl100k_base",
+    "baselineTokens": 78642,
+    "candidateTokens": 80571,
+    "actualGateCap": 66000,
+    "capChanged": false,
+    "repoGateExecuted": false,
+    "candidateAdmitted": false,
+    "preexistingOverage": true
+  },
+  "setupFailures": {
+    "v1": "full-v1-failure.json",
+    "v2": "guard-correction.json",
+    "smallSmokeOutputParentMissing": true,
+    "smallSmokeBeforeCorrectionWasLowerGenericGuard": true,
+    "noCompilerFailureInferredFromFailedHarnesses": true
+  },
+  "sources": [
+    {
+      "originalPath": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/ast.bend",
+      "sha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+      "bytes": 5813,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/selfhost/ast.bend"
+      }
+    },
+    {
+      "originalPath": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/backend_ir.bend",
+      "sha256": "c0286db6b192bf5cc917774b7ea5e393d4416263432eb130fb8393b1dffc1cb3",
+      "bytes": 8283,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/selfhost/backend_ir.bend"
+      }
+    },
+    {
+      "originalPath": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_backend_sharing.bend",
+      "sha256": "05adf4ac68b0658425f7fce430709f67bd29c3f1f8a43727412661084c4dbe2c",
+      "bytes": 126918,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/selfhost/c_backend_sharing.bend"
+      }
+    },
+    {
+      "originalPath": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checked_frontend.bend",
+      "sha256": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+      "bytes": 1707,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/selfhost/checked_frontend.bend"
+      }
+    },
+    {
+      "originalPath": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_arena.bend",
+      "sha256": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf",
+      "bytes": 110842,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/selfhost/checker_arena.bend"
+      }
+    },
+    {
+      "originalPath": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_ir.bend",
+      "sha256": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+      "bytes": 5209,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/selfhost/checker_ir.bend"
+      }
+    },
+    {
+      "originalPath": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/core.bend",
+      "sha256": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+      "bytes": 9777,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/selfhost/core.bend"
+      }
+    },
+    {
+      "originalPath": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/index_lookup.bend",
+      "sha256": "7b7b45946be711d0ba384e15f6823fded5ff97d6a526a6fb74a0448c13d61f84",
+      "bytes": 960,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/selfhost/index_lookup.bend"
+      }
+    },
+    {
+      "originalPath": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/lexer.bend",
+      "sha256": "342901897b30afc8ec7587718b1eb0b30150d46b01c1ea498ce369af26d1394d",
+      "bytes": 14416,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/selfhost/lexer.bend"
+      }
+    },
+    {
+      "originalPath": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/loaded_module.bend",
+      "sha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+      "bytes": 119,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/selfhost/loaded_module.bend"
+      }
+    },
+    {
+      "originalPath": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/path.bend",
+      "sha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+      "bytes": 6171,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/selfhost/path.bend"
+      }
+    },
+    {
+      "originalPath": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/scope_lookup.bend",
+      "sha256": "e75dc874de6026e2104a7545a19f42fd6995aefecbb1d315c6ae3e097697e590",
+      "bytes": 5851,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/selfhost/scope_lookup.bend"
+      }
+    },
+    {
+      "originalPath": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/sha256.bend",
+      "sha256": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+      "bytes": 7975,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/selfhost/sha256.bend"
+      }
+    },
+    {
+      "originalPath": "/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_compiler_root_local2039g24r12.bend",
+      "sha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+      "bytes": 653895,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "checkpoints/.bootstrap_compiler_root_local2039g24r12.bend"
+      }
+    },
+    {
+      "originalPath": "/Users/ilyagulya/Projects/My/bend/checkpoints/checker_core_steps_v1.bend",
+      "sha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+      "bytes": 3102607,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "checkpoints/checker_core_steps_v1.bend"
+      }
+    },
+    {
+      "originalPath": "/Users/ilyagulya/Projects/My/bend/checkpoints/emitter_steps_v1.bend",
+      "sha256": "7f7c8d2e57a3fcd3925b4286a8300668ae91b7e11a26317cea6da2df5c9ea425",
+      "bytes": 3401742,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "checkpoints/emitter_steps_v1.bend"
+      }
+    },
+    {
+      "originalPath": "/Users/ilyagulya/Projects/My/bend/checkpoints/template_steps_v1.bend",
+      "sha256": "b9f4d860de0c58a274e1f23e90558191e23d7ac0de18d1fd452914160b9a5ae5",
+      "bytes": 327235,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "checkpoints/template_steps_v1.bend"
+      }
+    },
+    {
+      "originalPath": "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_driver.bend",
+      "sha256": "768203e900f53cdf8d90b50966631ca3a3964dd50003658b07a28b39395f3ec3",
+      "bytes": 11892,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "evals/native_compiler_driver.bend"
+      }
+    },
+    {
+      "originalPath": "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_host.c",
+      "sha256": "7d75edf7c7b8ac045df772b242e885801b9ab3fae5fc346957489a35847d66fe",
+      "bytes": 21314,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "evals/native_compiler_host.c"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/base.bend",
+      "sha256": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+      "bytes": 81226,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/base.bend"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/bend.ts",
+      "sha256": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+      "bytes": 138252,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/bend.ts"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/comp.ts",
+      "sha256": "ba730d8b1100768aa9a38c4fe9d5343c3b10f883cd77c5e3d48259f6f02fdbb4",
+      "bytes": 241505,
+      "authority": {
+        "kind": "required-frozen-source",
+        "path": "sources/ba730d8b1100768aa9a38c4fe9d5343c3b10f883cd77c5e3d48259f6f02fdbb4-comp.ts"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/args.c",
+      "sha256": "7717332d0b8c8ba28d6dbe60b62a23dce99ea6828ada7d1f9b664f4dc388e84e",
+      "bytes": 841,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/args.c"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/args.js",
+      "sha256": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82",
+      "bytes": 630,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/args.js"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/audio.c",
+      "sha256": "f0fac2bee02918b4958ad1e7508945824fcd98ce9a2e7ede657304c4f8905b85",
+      "bytes": 6953,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/audio.c"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/audio_close.js",
+      "sha256": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+      "bytes": 118,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/audio_close.js"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/audio_open.js",
+      "sha256": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9",
+      "bytes": 351,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/audio_open.js"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/audio_write.js",
+      "sha256": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6",
+      "bytes": 835,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/audio_write.js"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/chan.c",
+      "sha256": "af09b2749741bcc54f56c8f81803073818a165d4cad4c817708e359d677b2a52",
+      "bytes": 7438,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/chan.c"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/chan.js",
+      "sha256": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f",
+      "bytes": 4239,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/chan.js"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/file_close.c",
+      "sha256": "033da9beb0b484fbc8784044193bf69004f858f6ad86e0c31b4beb89df1349ca",
+      "bytes": 242,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/file_close.c"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/file_close.js",
+      "sha256": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+      "bytes": 192,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/file_close.js"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/file_open.c",
+      "sha256": "b987bcb0f9a89d769714ddf8cbecca211c4392e4098da19b411d09f5c088d360",
+      "bytes": 1770,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/file_open.c"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/file_open.js",
+      "sha256": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694",
+      "bytes": 826,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/file_open.js"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/file_read.c",
+      "sha256": "ab577225fa98a034c09d7eb6326b74808756dc6203b0e2599a459876382f090d",
+      "bytes": 1913,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/file_read.c"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/file_read.js",
+      "sha256": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+      "bytes": 783,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/file_read.js"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/file_size.c",
+      "sha256": "ed0d74fd6b9f14ea471bfe5dd80ecbb2c5abb6a8406519fb2c7e1a1acf3dd5af",
+      "bytes": 719,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/file_size.c"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/file_size.js",
+      "sha256": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+      "bytes": 734,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/file_size.js"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/file_write.c",
+      "sha256": "da810ad9aa76ad1431622292529fa3edebabc4b6a7ee20ae833097b71bb595e5",
+      "bytes": 1348,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/file_write.c"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/file_write.js",
+      "sha256": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0",
+      "bytes": 793,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/file_write.js"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/get_env.c",
+      "sha256": "b4903e94681340f9e02187457fabe9461c1b4e43646b7e1573f5d21e954e3a34",
+      "bytes": 507,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/get_env.c"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/get_env.js",
+      "sha256": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4",
+      "bytes": 460,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/get_env.js"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/listener_close.c",
+      "sha256": "11f6bac6342a37e97b9656e96bdca7d052ed0a7a0cab3b05ea87657020cfb7a2",
+      "bytes": 266,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/listener_close.c"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/listener_close.js",
+      "sha256": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+      "bytes": 164,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/listener_close.js"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/now.c",
+      "sha256": "fc4c1d87a4fb2ace7d5b6c57b434cc3d953a15bdf213020912df6c17aa2352d6",
+      "bytes": 196,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/now.c"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/now.js",
+      "sha256": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+      "bytes": 105,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/now.js"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/print.c",
+      "sha256": "58657b7351daee89121e1df2856f102743c9db7640257e50c6009a0f1080b00e",
+      "bytes": 317,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/print.c"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/print.js",
+      "sha256": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+      "bytes": 138,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/print.js"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/print_err.c",
+      "sha256": "f84aa11c8d0d6af6fa2fee28411f95714d6744ad97156990e43e55c292c9c6fb",
+      "bytes": 235,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/print_err.c"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/print_err.js",
+      "sha256": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+      "bytes": 131,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/print_err.js"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/process_run.c",
+      "sha256": "554cfbdf9a6de163f00fc1b23dc8f3df10821cfce336caa1cb5db439b8a55e1f",
+      "bytes": 8189,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/process_run.c"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/process_run.js",
+      "sha256": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729",
+      "bytes": 3563,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/process_run.js"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/random_u32.c",
+      "sha256": "75429b2b42e00562177fe33a5e18d2730478847f58c4038b048e78131e1b8c0a",
+      "bytes": 703,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/random_u32.c"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/random_u32.js",
+      "sha256": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+      "bytes": 581,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/random_u32.js"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/sleep.c",
+      "sha256": "1dde3701026517d5272d2ff5344d3a8643bec264dbad9f266fdae1c4aaf7601c",
+      "bytes": 381,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/sleep.c"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/sleep.js",
+      "sha256": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+      "bytes": 214,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/sleep.js"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/socket_close.c",
+      "sha256": "abea115d2928d4942a9d89898d2022c0f1b19c52db48d0b060c2356d261bfa77",
+      "bytes": 254,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/socket_close.c"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/socket_close.js",
+      "sha256": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+      "bytes": 150,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/socket_close.js"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/spawn.c",
+      "sha256": "05e11ae3f1461d9c72440af3b1786c076b418d2faff45639ac25ba464ee73cd5",
+      "bytes": 217,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/spawn.c"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/spawn.js",
+      "sha256": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+      "bytes": 160,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/spawn.js"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/tcp_accept.c",
+      "sha256": "bf7ca1685ed388ce97827ea8379881fbdf5359c7c663ad03eeb8da34bd8584ef",
+      "bytes": 1409,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/tcp_accept.c"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/tcp_accept.js",
+      "sha256": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+      "bytes": 1413,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/tcp_accept.js"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/tcp_connect.c",
+      "sha256": "8d17c097138709d71e9d9e1fbc4255007c5e80c93ee384c4a3510b6ac8d10da3",
+      "bytes": 1292,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/tcp_connect.c"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/tcp_connect.js",
+      "sha256": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb",
+      "bytes": 1122,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/tcp_connect.js"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/tcp_listen.c",
+      "sha256": "efc7528de96abd9f62f299833c1ac7b0e86528292c746b114d2684b5bac52899",
+      "bytes": 875,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/tcp_listen.c"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/tcp_listen.js",
+      "sha256": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+      "bytes": 671,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/tcp_listen.js"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/tcp_recv.c",
+      "sha256": "249c8789cd2f541ad00068882de16a00870c2f81a8168b0ac7a59db1e3cb0c6f",
+      "bytes": 2508,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/tcp_recv.c"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/tcp_recv.js",
+      "sha256": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+      "bytes": 1680,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/tcp_recv.js"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/tcp_send.c",
+      "sha256": "993cc8ee5b39fd54a4aeace102602ecf2841ce1f402fe6b2407ebaca837383f9",
+      "bytes": 2757,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/tcp_send.c"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/tcp_send.js",
+      "sha256": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6",
+      "bytes": 1949,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/tcp_send.js"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/thread_count.c",
+      "sha256": "d4889ed7757dccce03729c9568b88188128f2c1576166a3dc184a8707ed44568",
+      "bytes": 343,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/thread_count.c"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/thread_count.js",
+      "sha256": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+      "bytes": 137,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/thread_count.js"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/udp_bind.c",
+      "sha256": "a1be1bc5c03d430fc6eb43982651073e144872956fadaee98c3700be59352ee3",
+      "bytes": 744,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/udp_bind.c"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/udp_bind.js",
+      "sha256": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+      "bytes": 502,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/udp_bind.js"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/udp_recv_from.c",
+      "sha256": "1ce914be6cd6153732258f06343e5bcf9765a7fac7e3c3f0462facba7060e067",
+      "bytes": 3070,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/udp_recv_from.c"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/udp_recv_from.js",
+      "sha256": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad",
+      "bytes": 2198,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/udp_recv_from.js"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/udp_send_to.c",
+      "sha256": "b3a87e56958d8071a368da2edb4748e9496b3eed58b93d6cb4f8af398dd1011a",
+      "bytes": 3484,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/udp_send_to.c"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/udp_send_to.js",
+      "sha256": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+      "bytes": 2168,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/udp_send_to.js"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/window.c",
+      "sha256": "bf8d5779775ba9566d4bbeb8706a9ec993efb724dae7af8a76c38501ab4092c2",
+      "bytes": 32131,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/window.c"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/window_close.js",
+      "sha256": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+      "bytes": 124,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/window_close.js"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/window_frame.js",
+      "sha256": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+      "bytes": 153,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/window_frame.js"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/window_grab.js",
+      "sha256": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+      "bytes": 115,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/window_grab.js"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/window_open.js",
+      "sha256": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+      "bytes": 344,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/window_open.js"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/window_set_title.js",
+      "sha256": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+      "bytes": 133,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/window_set_title.js"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/write.c",
+      "sha256": "8807a5f655db452c1d846354560c26fe1e94289e5dc0be231d0b71ecc876d02f",
+      "bytes": 295,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/write.c"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/bend2/effs/write.js",
+      "sha256": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+      "bytes": 131,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "bend2/effs/write.js"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/evals/compiler_codegen_probe.ts",
+      "sha256": "161ceb410878d89c46c8a47302c52857e37cccd822087eab95eeb13e0a4147e5",
+      "bytes": 8835,
+      "authority": {
+        "kind": "required-frozen-source",
+        "path": "sources/161ceb410878d89c46c8a47302c52857e37cccd822087eab95eeb13e0a4147e5-compiler_codegen_probe.ts"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/evals/compiler_emission_smoke.ts",
+      "sha256": "695d8912520a40213830a7f2416ee2ab75c516507608ec87f1557ca9162b25cd",
+      "bytes": 12453,
+      "authority": {
+        "kind": "required-frozen-source",
+        "path": "sources/695d8912520a40213830a7f2416ee2ab75c516507608ec87f1557ca9162b25cd-compiler_emission_smoke.ts"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/evals/heavy_gate.ts",
+      "sha256": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015",
+      "bytes": 13538,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "evals/heavy_gate.ts"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/evals/heavy_gate_native.c",
+      "sha256": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b",
+      "bytes": 15936,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "evals/heavy_gate_native.c"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/tests/compile/ctor_dedup_grow.bend",
+      "sha256": "03b5547965523b1e6957d6b971df999f66078ff60a3c92cbb3f58d324c0b41e7",
+      "bytes": 673,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "tests/compile/ctor_dedup_grow.bend"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/tests/compile/ctor_name_collision.bend",
+      "sha256": "184f2c3ccbc0554a319cf5c21bb877d7b97b4fa8a16982e5f3d2d7a8d56f6b15",
+      "bytes": 628,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "tests/compile/ctor_name_collision.bend"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/tests/import/has-hyphen/lib.bend",
+      "sha256": "bac2f535ebea59151c9e2012b782595209c93f9767f4c5dfebff8b37fa1635b3",
+      "bytes": 155,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "tests/import/has-hyphen/lib.bend"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/tests/import/hyphen_dir.bend",
+      "sha256": "f1e89fa65be8fb5d2d4d56c2fc05f88d0479dcd1e3d4df08fae9a0bacf9f9926",
+      "bytes": 310,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "tests/import/hyphen_dir.bend"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/tests/reg/array_open_element.bend",
+      "sha256": "8587c942801ad3e4f01f1505dbd302dbef047fea4dd4277249335601e610d453",
+      "bytes": 657,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "tests/reg/array_open_element.bend"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/tests/reg/borrow_field_request.bend",
+      "sha256": "01ce42477c9bcc11940f033b4dd3e0e0d38bac7936717c59e23584264fcfc400",
+      "bytes": 1395,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "tests/reg/borrow_field_request.bend"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/tests/reg/borrow_fork_hold.bend",
+      "sha256": "017baeb39fbc0433e1d87b4da82120c3aa4d443ab62ea94a39b3f593e21c5004",
+      "bytes": 1083,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "tests/reg/borrow_fork_hold.bend"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/tests/reg/borrow_nested_call.bend",
+      "sha256": "d109731fa4d958de9c33b161b2d4cc03d682ceb1ee4629c21b1918f9c54a29cf",
+      "bytes": 1143,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "tests/reg/borrow_nested_call.bend"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/tests/reg/borrow_spin_sink.bend",
+      "sha256": "b42595a7d39f352ca58e5efeb657c5582660233a1710642a03b1f10ae383866c",
+      "bytes": 1214,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "tests/reg/borrow_spin_sink.bend"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/tests/reg/borrow_two_readers.bend",
+      "sha256": "c34dfddf24a0baf9ce9ea77483d83ea4d856e2b311dfaa807d388601d4764e2a",
+      "bytes": 1142,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "tests/reg/borrow_two_readers.bend"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/tests/reg/brw_closure_capture.bend",
+      "sha256": "bedc4e6f37f5c094e63cd99ea6cfcd1649be5f60d5da17a89631f2dddc3744f2",
+      "bytes": 1073,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "tests/reg/brw_closure_capture.bend"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/tests/reg/closure_capture_once.bend",
+      "sha256": "cf0a373e19800dcc94c2c9d12cc5dd5f72fabfb5dad8327d589ba973c6216ac9",
+      "bytes": 1133,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "tests/reg/closure_capture_once.bend"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/tests/reg/closure_keep_generic.bend",
+      "sha256": "bb9ef6045f65e4e6ec8bbc3e7d4c586cc24f26158a8863c059300773a68a6e74",
+      "bytes": 878,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "tests/reg/closure_keep_generic.bend"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/tests/reg/closure_value_owns.bend",
+      "sha256": "b05d443dfed6b25891d2d94ca9fe07d7b38b3f3a31aa73e0f8711c8fdae5877b",
+      "bytes": 1506,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "tests/reg/closure_value_owns.bend"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/tests/reg/closure_value_owns.c",
+      "sha256": "7ad83cc2bae1df54a960b75c2284eb5e8a0997c8023f569f3b4fd6c6c4ba42ea",
+      "bytes": 439,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "tests/reg/closure_value_owns.c"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/tests/reg/closure_value_owns.js",
+      "sha256": "265a625906b5f32d57d214d877ff617362b178f66f14ccf57a812d715ce922be",
+      "bytes": 153,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "tests/reg/closure_value_owns.js"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/tests/reg/spin_array_hold.bend",
+      "sha256": "810d63f42ff4ca2f967fc55ecb432bd3b6d10002b8a16c9c010d2f68590df2d9",
+      "bytes": 2463,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "tests/reg/spin_array_hold.bend"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/tests/reg/spin_refs_dead_seg.bend",
+      "sha256": "c659470fb8f406f31fbd558d6531b1eba284feb6e72b86cccd7108f1a6627666",
+      "bytes": 1050,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "tests/reg/spin_refs_dead_seg.bend"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/tests/reg/static_lent_literal.bend",
+      "sha256": "f9af33099e4d09a53590e76c8a6a8b83dbef3b090b1157979a693e217f1a1844",
+      "bytes": 1168,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "tests/reg/static_lent_literal.bend"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts/tests/reg/static_shared_cell.bend",
+      "sha256": "b3fdff160c20edddec6983c22a620a0b919e1f9ac380358b0202642f03328c1d",
+      "bytes": 982,
+      "authority": {
+        "kind": "immutable-git-source",
+        "commit": "0197c2a2",
+        "path": "tests/reg/static_shared_cell.bend"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/full-emission-v2.mjs",
+      "sha256": "d4dbf7ef69bfb0969b69124c7a9cc6b3081804d6770cdf6ae7f5a8315e8dc505",
+      "bytes": 3914,
+      "authority": {
+        "kind": "required-frozen-source",
+        "path": "sources/d4dbf7ef69bfb0969b69124c7a9cc6b3081804d6770cdf6ae7f5a8315e8dc505-full-emission-v2.mjs"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/full-emission.mjs",
+      "sha256": "13d0c4ea0a8b91961ed76891037077355736b406e653b268a202e4f6ee16c009",
+      "bytes": 3157,
+      "authority": {
+        "kind": "required-frozen-source",
+        "path": "sources/13d0c4ea0a8b91961ed76891037077355736b406e653b268a202e4f6ee16c009-full-emission.mjs"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g42/smoke-standard/bad_ids.bend",
+      "sha256": "79244182f7fca53d03d4b068d7148738000a6378e357df99944a0a925f9cb5d2",
+      "bytes": 170,
+      "authority": {
+        "kind": "required-frozen-source",
+        "path": "sources/79244182f7fca53d03d4b068d7148738000a6378e357df99944a0a925f9cb5d2-bad_ids.bend"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g42/smoke-standard/bad_ids.c",
+      "sha256": "7c585a7301195011206931d5064bc95124e80d985e79e3801fd75d108bba5151",
+      "bytes": 176,
+      "authority": {
+        "kind": "required-frozen-source",
+        "path": "sources/7c585a7301195011206931d5064bc95124e80d985e79e3801fd75d108bba5151-bad_ids.c"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g42/smoke-standard/collision.bend",
+      "sha256": "a829e647fc5cd79553e71d50aaab54074bd3c7e2654ff36e90542f0b616f5389",
+      "bytes": 316,
+      "authority": {
+        "kind": "required-frozen-source",
+        "path": "sources/a829e647fc5cd79553e71d50aaab54074bd3c7e2654ff36e90542f0b616f5389-collision.bend"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g42/smoke-standard/collision.c",
+      "sha256": "5b0c7f3efb87feeb3bee4cc40908b2e9a56cfadeba75d68783e16bd0b49844db",
+      "bytes": 243,
+      "authority": {
+        "kind": "required-frozen-source",
+        "path": "sources/5b0c7f3efb87feeb3bee4cc40908b2e9a56cfadeba75d68783e16bd0b49844db-collision.c"
+      }
+    },
+    {
+      "originalPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g42/smoke-standard/collision.js",
+      "sha256": "b604b0f0628f95cbe5f3f90915f73333c95f3292c15d60c840b0c992b777a3c1",
+      "bytes": 40,
+      "authority": {
+        "kind": "required-frozen-source",
+        "path": "sources/b604b0f0628f95cbe5f3f90915f73333c95f3292c15d60c840b0c992b777a3c1-collision.js"
+      }
+    }
+  ],
+  "generatedImagesAndBulkLogsCommitted": false
+}

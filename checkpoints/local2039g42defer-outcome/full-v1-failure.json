@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "sourceVersion": "G42DEFER",
+  "status": "FULL_ROOT_HARNESS_V1_FAILED_NO_C_RESULT",
+  "attempt": "bg_1132",
+  "guardian": {
+    "status": "FAIL",
+    "reason": "deadline_exceeded",
+    "commandExitCode": -1,
+    "commandSignal": 15,
+    "peakRssBytes": 1127579648,
+    "peakFootprintBytes": 1115260344,
+    "elapsedMs": 600105,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/full-emission.mjs",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_compiler_root_local2039g24r12.bend",
+      "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_driver.bend",
+      "eager",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g42/eager"
+    ],
+    "label": "Full unprofiled C emission eager",
+    "exitCode": 1,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793452427320-3ce128d4b49b0e52.json",
+    "memoryLimitBytes": 3221225472,
+    "rssLimitBytes": 2147483648
+  },
+  "publishedC": false,
+  "publishedReport": false,
+  "actualPhase": "Unrecorded by v1; no eager/deferred codegen result may be inferred",
+  "sourceDifferenceFromCanonical": "The second K.book_load call omitted undefined,dirname(source)+slash arguments required by the actual native constructor/probe.",
+  "diagnosticFailure": "Unhandled structured Bend Err expanded its shared Book while printing until the original600s deadline; 88.8GB middle stream was not retained by tool. No huge logs in Git.",
+  "correction": "v2 uses exact canonical second-root coordinates and the existing K.err_show formatter, records failure phase, and propagates nonzero status. No compiler source, guard or output oracle changed."
+}

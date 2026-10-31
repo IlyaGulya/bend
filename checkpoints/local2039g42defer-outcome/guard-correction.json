@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "sourceVersion": "G42DEFER",
+  "status": "CORRECTING_OMITTED_STANDARD_GUARD_ENV_NOT_RAISING_ORIGINAL_LIMITS",
+  "sourceCommit": "7aa1f38b",
+  "driverCommit": "7c59549a",
+  "originalRequiredLimits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "actualFailedV2Guardian": {
+    "status": "RESOURCE_LIMIT",
+    "reason": "rss_limit",
+    "commandExitCode": -1,
+    "commandSignal": 15,
+    "peakRssBytes": 2385887232,
+    "peakFootprintBytes": 2280982808,
+    "elapsedMs": 5366,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 73,
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/full-emission-v2.mjs",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_compiler_root_local2039g24r12.bend",
+      "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_driver.bend",
+      "eager",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g42/eager-v2"
+    ],
+    "label": "Full unprofiled C emission eager",
+    "exitCode": 73,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793453258474-48a341b7ad89c275.json",
+    "memoryLimitBytes": 3221225472,
+    "rssLimitBytes": 2147483648
+  },
+  "cause": "Self-guard label-only call used generic helper defaults3GiB footprint/2GiB RSS/poll100ms because parent omitted original guard environment; canonical constructor normally supplies8/8GiB,poll10ms. No full C result was produced.",
+  "correction": "Supply every original standard guard variable explicitly. Compiler/driver semantics unchanged; no unchanged failed configuration replay.",
+  "priorSmallSmoke": "17cases PASS under generic smaller resource quotas, not claimed as exact standard-guard qualification. Repeat once with exact original protocol and a fresh output.",
+  "commands": {
+    "consumers": [
+      "/usr/bin/env",
+      "BUN_JSC_forceRAMSize=4294967296",
+      "HEAVY_GATE_MEMORY_MIB=8192",
+      "HEAVY_GATE_RSS_MIB=8192",
+      "HEAVY_GATE_POLL_MS=10",
+      "HEAVY_GATE_TIMEOUT_MS=600000",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/compiler_emission_smoke.ts",
+      "--output=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g42/smoke-standard"
+    ],
+    "unprofiledFullEmission": {
+      "eager": [
+        "/usr/bin/env",
+        "BUN_JSC_forceRAMSize=4294967296",
+        "HEAVY_GATE_MEMORY_MIB=8192",
+        "HEAVY_GATE_RSS_MIB=8192",
+        "HEAVY_GATE_POLL_MS=10",
+        "HEAVY_GATE_TIMEOUT_MS=600000",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/full-emission-v2.mjs",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_compiler_root_local2039g24r12.bend",
+        "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_driver.bend",
+        "eager",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g42/eager-standard"
+      ],
+      "deferred": [
+        "/usr/bin/env",
+        "BUN_JSC_forceRAMSize=4294967296",
+        "HEAVY_GATE_MEMORY_MIB=8192",
+        "HEAVY_GATE_RSS_MIB=8192",
+        "HEAVY_GATE_POLL_MS=10",
+        "HEAVY_GATE_TIMEOUT_MS=600000",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/full-emission-v2.mjs",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_compiler_root_local2039g24r12.bend",
+        "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_driver.bend",
+        "deferred",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g42/deferred-standard"
+      ]
+    }
+  },
+  "compilerAccepted": false,
+  "performanceAccepted": false
+}

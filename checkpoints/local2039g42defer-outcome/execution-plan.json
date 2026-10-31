@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "sourceVersion": "G42DEFER",
+  "status": "UNADMITTED_CONSTRUCTION_EXPERIMENT_CAP_BLOCKS_PROMOTION",
+  "mainPrecedingOutcome": "0197c2a2",
+  "sourceWorktreeBase": "3294466b",
+  "sourcePins": {
+    "bend2/comp.ts": "ba730d8b1100768aa9a38c4fe9d5343c3b10f883cd77c5e3d48259f6f02fdbb4",
+    "evals/compiler_codegen_probe.ts": "161ceb410878d89c46c8a47302c52857e37cccd822087eab95eeb13e0a4147e5",
+    "evals/compiler_emission_smoke.ts": "695d8912520a40213830a7f2416ee2ab75c516507608ec87f1557ca9162b25cd"
+  },
+  "constructorAlgorithms": "Same semantic lowering/fact convergence, deferred statement materialization and final rendering with frozen IDs. Eager/JS native formatting retained in prototype; no real worker parallelism claimed.",
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "commands": {
+    "realConsumers": [
+      "/usr/bin/env",
+      "BUN_JSC_forceRAMSize=4294967296",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/compiler_emission_smoke.ts",
+      "--output=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g42/smoke"
+    ],
+    "unprofiledFullEmission": {
+      "eager": [
+        "/usr/bin/env",
+        "BUN_JSC_forceRAMSize=4294967296",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/full-emission.mjs",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_compiler_root_local2039g24r12.bend",
+        "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_driver.bend",
+        "eager",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g42/eager"
+      ],
+      "deferred": [
+        "/usr/bin/env",
+        "BUN_JSC_forceRAMSize=4294967296",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/full-emission.mjs",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/facts",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_compiler_root_local2039g24r12.bend",
+        "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_driver.bend",
+        "deferred",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g42/deferred"
+      ]
+    }
+  },
+  "expectedFullRootC": "2290a096f114201665d4b943db3470889ca700ec205b875612178ea263e27ffb",
+  "independentAuthority": {
+    "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/baseline/build.json",
+    "sha256": "b1e4afa6e396c72547577481fa6a520a27099f183a83610b4b48f9138bfda19c",
+    "bytes": 3074830
+  },
+  "sourceDriver": "checkpoints/local2039g42defer-source/13d0c4ea0a8b91961ed76891037077355736b406e653b268a202e4f6ee16c009-full-emission.mjs",
+  "capObservation": {
+    "model": "gpt-3.5-turbo",
+    "encoding": "cl100k_base",
+    "method": "Installed tiktoken; external ttok unavailable; repo-wide gate not run",
+    "baselineTokens": 78642,
+    "candidateTokens": 80571,
+    "configuredGateCap": 66000,
+    "contextDescriptionCap": 64000,
+    "capUnchanged": true,
+    "preexistingOverage": true,
+    "noProductionPromotionAsCapCompliant": true
+  },
+  "scope": "Execute all reachable actual consumer and full-root byte/time/resource diagnostics; no compiler/runtime acceptance, no cap increase, no unrelated cleanup, no speculative FIR/BIR migration. This is a private prototype, not a shipped source cutover.",
+  "sourceVersionPolicy": "Commit this source before execution; source/evidence verdict before next version. Main comp.ts stays baseline unchanged."
+}
