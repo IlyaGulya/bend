@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "version": "G43DIST",
+  "status": "AUTHORED_NOT_EXECUTED",
+  "parentOutcomeCheckpoint": "fd709500",
+  "sources": {
+    "evals/g24_qualification.mjs": "7b0eaaa2e2e3332e7068394d8c7600de4a890b104778b9d563944e7b4b25411e",
+    "evals/g24_distributed.mjs": "fd155b52b12d60d6ed3b7fdb4b1fa5097d2863440b4bdb3ee3cd6c4b52c8e89f",
+    "evals/g24_snapshot.mjs": "9211d34a8c72a8b3c1d04c2258af66f442f8592bab6d7f6bca53f980a2f1f61a",
+    "evals/g24_distributed.test.mjs": "81619827e22c8358c24b947e3b1bea208b69c7aed8f8e8c03c04ec6ed42e66fb"
+  },
+  "mainCompilerSha256": "880a9b3b86f273852a39fc664f8c3d7b71e3860b6d365e4321949fc812b6e7cc",
+  "mode": "local-single-host",
+  "claims": {
+    "remoteSshExecuted": false,
+    "multimachineSpeedup": false,
+    "compilerAccepted": false,
+    "performanceAccepted": false
+  },
+  "limits": {
+    "rssMiB": 8192,
+    "footprintMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "tools": {
+    "bun": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "node": {
+      "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5",
+      "version": "v23.11.0"
+    },
+    "clang": "/usr/bin/clang",
+    "llvmBin": "/opt/homebrew/opt/llvm@21/bin"
+  },
+  "commands": {
+    "tests": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "test",
+      "evals/g24_distributed.test.mjs"
+    ],
+    "probe": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "evals/g24_distributed.mjs",
+      "probe",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43/tools.json"
+    ],
+    "correctness": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/g24_qualification.mjs",
+      "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--bun=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--clang=/usr/bin/clang",
+      "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+      "--phase=correctness",
+      "--cc-partitions=4",
+      "--run-id=local2039g43dist",
+      "--distributed-plan=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43/placement.json",
+      "--out=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43dist-correctness"
+    ]
+  },
+  "originalPerformancePolicyUnchanged": true,
+  "performanceLaneOrder": [
+    "control1",
+    "candidate1",
+    "candidate2",
+    "control2",
+    "control3",
+    "candidate3"
+  ],
+  "remotePrerequisite": "Reachable configured authenticated cluster Macs and dedicated idle performance hosts; no SSH hosts/BEND_HOC configured here; cluster name resolution actually failed",
+  "snapshotLimitations": [
+    "Relocation-unsafe absolute Bend imports are rejected before transfer; none silently excluded.",
+    "Host/operator trust required; dedicated host idle scan is not hardware attestation."
+  ],
+  "requiredVerification": [
+    "Snapshot/authority/lease/row-consistency tests",
+    "Actual frozen complete-root native\u2192stage1\u2192stage2 and unchanged emitted suites",
+    "All five real post-fixedpoint correctness jobs through local snapshot/supervisor workers",
+    "Cancellation and owned-tree reaping",
+    "Both six-row performance lanes under original strict decision; no exclusions or tolerance"
+  ]
+}

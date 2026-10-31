@@ -12,8 +12,6 @@
  *   bun --smol evals/g24_qualification.mjs --run-id=NAME --node=NODE \
  *     --phase=correctness [--bun=BUN] [--clang=CLANG] \
  *     [--llvm-bin=/opt/homebrew/opt/llvm@21/bin] [--out=checkpoints/NAME]
- *   [--cc-partitions=4|8] selects native LLVM partitions (default4).
- *   An explicit selection is invalid for throughput-only reuse of a build.
  *
  * Full phase (default: correctness + paired frozen-corpus throughput):
  *   bun --smol evals/g24_qualification.mjs --run-id=NAME --node=NODE \
@@ -50,6 +48,16 @@
  *   correctnessPassed false, and never produces a *_PASS status. This is
  *   rejection evidence only, never compiler or performance acceptance.
  *
+ * Explicit distributed transport (default remains serial):
+ *   add --distributed-plan=PLAN.json. See g24_distributed.mjs for the pinned
+ *   SSH/local-single-host plan, complete snapshot and cancellation protocol.
+ *   The native->stage1->stage2 chain and emitted-image gate stay serial;
+ *   all C/JS matrices and native/admission/host consumers remain mandatory.
+ *   Performance lanes keep six rows on one pinned dedicated physical host,
+ *   native before JS, and do not claim global same-host serial execution.
+ * Native build experiment: --cc-partitions=4|8 (default 4), forbidden for
+ * throughput-only runs; backend children remain bounded by the native helper.
+ *
  * Every heavy child inherits the original 8192 MiB RSS / 8192 MiB footprint /
  * 10 ms / 600000 ms gate. Every child process runs with an explicit cwd. The
  * receipt is published atomically and bounded; child logs stay beside it.
@@ -73,6 +81,8 @@ import {
 } from './native_seed_runtime.mjs';
 import {runHeavyGate} from './heavy_gate.ts';
 import {SELFHOST_SOURCE_FILE_TAG, sourceFileTagFromRoot, verifySourceFileCarrier} from './checker_core_step_runtime.mjs';
+import {loadPlan, distributedConsumers, distributedMeasurements} from './g24_distributed.mjs';
+import {hashFile} from './g24_snapshot.mjs';
 
 const SCRIPT = fileURLToPath(import.meta.url);
 const LIMITS = Object.freeze({memoryMiB: 8192, rssMiB: 8192, pollMs: 10, timeoutMs: 600000});
@@ -105,6 +115,9 @@ const HOST_CONSUMER_FILES = Object.freeze([
   'tests/io/shadowed_nat_export.bend', 'tests/io/generic_export_identity.bend',
   'tests/io/text_host_export.bend',
 ]);
+export function distributedConsumerFiles() {
+  return [...NATIVE_SUITE_FILES, ...HOST_CONSUMER_FILES, 'evals/c_step_library_fixture.bend'];
+}
 const ADMISSION_INPUTS = Object.freeze({
   template: 'import Base\n\ntype Box<~a: Type> is Data:\n\ndef main() -> U32:\n  1\n',
   mainless: 'import Base\n\ndef twice(+x: U32) -> U32:\n  U32.add(x, x)\n',
@@ -124,7 +137,7 @@ function hash(bytes) {
   return createHash('sha256').update(bytes).digest('hex');
 }
 function fileSha(path) {
-  return hash(readFileSync(path));
+  return hashFile(realpathSync(path));
 }
 function readJson(path) {
   return JSON.parse(readFileSync(path, 'utf8'));
@@ -724,7 +737,7 @@ function validateMatrix(target, logs, driver) {
 
 function suiteOptions(argv) {
   const {values} = parseOptions(argv, ['--suite', '--repository', '--node', '--bun', '--clang', '--out',
-    '--binary', '--driver']);
+    '--binary', '--driver', '--execution-cwd']);
   return {
     suite: required(values, '--suite'),
     repository: realpathSync(required(values, '--repository')),
@@ -734,6 +747,7 @@ function suiteOptions(argv) {
     out: resolve(required(values, '--out')),
     binary: values.get('--binary') ? realpathSync(values.get('--binary')) : undefined,
     driver: values.get('--driver') ? realpathSync(values.get('--driver')) : undefined,
+    executionCwd: values.get('--execution-cwd') ? realpathSync(values.get('--execution-cwd')) : undefined,
   };
 }
 
@@ -757,7 +771,7 @@ function suiteBase(options) {
 function executeSuite(options, command, extra = {}) {
   const started = Date.now();
   const result = spawnSync(command[0], command.slice(1), {
-    cwd: options.repository, encoding: 'utf8', timeout: LIMITS.timeoutMs, killSignal: 'SIGKILL',
+    cwd: extra.cwd ?? options.repository, encoding: 'utf8', timeout: LIMITS.timeoutMs, killSignal: 'SIGKILL',
     maxBuffer: 1 << 24,
     env: {...process.env, BEND_NO_TELEMETRY: '1', ...(extra.env ?? {})},
   });
@@ -991,7 +1005,7 @@ function hostSuite(options) {
       row.compile = executeSuite(options, [options.driver, resolve(options.repository, file), '-o', output], {env});
       if (row.compile.status !== 0) fail(file + ' host-consumer compile failed: ' + row.compile.stderr);
       row.outputSha256 = fileSha(output);
-      row.execute = executeSuite(options, [options.node, output], {env});
+      row.execute = executeSuite(options, [options.node, output], {env, cwd: options.executionCwd});
       row.passed = row.execute.status === 0 && row.execute.signal === null && row.execute.stdout.trimEnd() === expected;
       publish();
       if (!row.passed) fail(file + ' host consumer output differs: ' + JSON.stringify(row.execute.stdout));
@@ -1250,7 +1264,7 @@ function applyPerformanceGate(run) {
 // ---------------------------------------------------------------------------
 
 async function runCorrectness(run, context) {
-  const {repository, runId, node, bun, clang, llvmBin, ccPartitions, out} = context;
+  const {repository, runId, node, bun, clang, llvmBin, out} = context;
   const checkpoints = checkpointsFor(repository);
   const stem = resolve(checkpoints, 'bootstrap-parser-rebuild-' + runId);
   const parserSource = resolve(checkpoints, '.bootstrap_parser_rebuild_' + runId + '_source.bend');
@@ -1324,7 +1338,7 @@ async function runCorrectness(run, context) {
 
   run.runPlain('native-build', [bun, '--smol', 'evals/native_compiler_experiment.ts', '--mode=build',
     '--corpus=' + nativeCorpus, '--artifact=' + nativeBinary, '--report=' + nativeBuild,
-    '--cc-pipeline=llvm-split', '--cc-partitions=' + ccPartitions, '--llvm-bin=' + llvmBin]);
+    '--cc-pipeline=llvm-split', '--llvm-bin=' + llvmBin, '--cc-partitions=' + context.ccPartitions]);
   const authenticated = authenticateNativeSeedBuild(nativeBuild, {root: compilerRoot, corpusPath: nativeCorpus, limits: LIMITS});
   Object.assign(state.native, validateNativeBuildAuthenticated(authenticated, {root: compilerRoot, corpusPath: nativeCorpus}));
   state.native.build = {path: nativeBuild, sha256: fileSha(nativeBuild)};
@@ -1344,6 +1358,7 @@ async function runCorrectness(run, context) {
       build: fixedpoint.proof.nativeRun.build, buildSha256: fixedpoint.proof.nativeRun.buildSha256,
       corpusSha256: fixedpoint.proof.nativeRun.corpusSha256, sources: fixedpoint.proof.nativeRun.sources}};
   run.publish();
+  context.evidence = state;
   if (context.phase === 'all') {
     context.candidate = {repository,
       binary: {path: state.native.binary, sha256: state.native.binarySha256},
@@ -1370,6 +1385,14 @@ async function runCorrectness(run, context) {
   state.driver = buildStageDriver({repository, node, stageOne: fixedpoint.stageOne.path, out});
   run.publish();
 
+  const expectedNativeRows = NATIVE_SUITE_FILES.length * 2 + 1 + 2;
+  const expectedAdmissionRows = Object.keys(ADMISSION_INPUTS).reduce(
+    (total, name) => total + 2 + (name === 'mainless' ? 2 : 0), 0);
+  const expectedHostRows = HOST_CONSUMER_FILES.length;
+  if (context.distributed) {
+    await distributedConsumers(run, context, state);
+  } else {
+
   for (const target of ['c', 'js']) {
     const logs = resolve(out, 'matrix-' + target);
     run.runPlain('matrix-' + target, [bun, 'evals/c_target_fixtures_run.ts', '--driver=' + state.driver.path,
@@ -1388,10 +1411,6 @@ async function runCorrectness(run, context) {
   await run.runGuarded('nested-host-consumers', [bun, SCRIPT, '--suite=host', '--repository=' + repository,
     '--node=' + node, '--bun=' + bun, '--clang=' + clang, '--out=' + resolve(out, 'host-consumers'),
     '--driver=' + state.driver.path]);
-  const expectedNativeRows = NATIVE_SUITE_FILES.length * 2 + 1 + 2;
-  const expectedAdmissionRows = Object.keys(ADMISSION_INPUTS).reduce(
-    (total, name) => total + 2 + (name === 'mainless' ? 2 : 0), 0);
-  const expectedHostRows = HOST_CONSUMER_FILES.length;
   for (const [key, directory, status, count] of [
     ['native', 'native-consumers', 'NATIVE_FOREIGN_AND_LIBRARY_SMOKE_PASS', expectedNativeRows],
     ['admission', 'native-admission', 'NATIVE_DATATYPE_AND_EXECUTABLE_ADMISSION_PASS', expectedAdmissionRows],
@@ -1403,6 +1422,7 @@ async function runCorrectness(run, context) {
       fail(directory + ' suite did not publish ' + count + ' passing rows: ' + report.status);
     state.consumers[key] = {receipt: {path, sha256: fileSha(path)}, status, rows: count,
       counts: report.counts};
+  }
   }
   state.consumers.total = expectedNativeRows + expectedAdmissionRows + expectedHostRows;
   state.consumers.rows = {nativeLibrary: expectedNativeRows, admission: expectedAdmissionRows, host: expectedHostRows};
@@ -1438,6 +1458,7 @@ async function runThroughput(run, context) {
   const {repository, node, bun, out, bindings, candidate} = context;
   if (!bindings) fail('throughput phase requires --bindings');
   if (!candidate) fail('throughput phase requires a prior correctness receipt via --from-receipt');
+  const measurementMode = context.measurementMode;
   const stageOne = candidate.stageOne;
   if (!existsSync(stageOne.path)) fail('unreachable candidate stage-one image: ' + stageOne.path);
   if (fileSha(stageOne.path) !== stageOne.sha256 || statSync(stageOne.path).size !== stageOne.bytes)
@@ -1477,9 +1498,10 @@ async function runThroughput(run, context) {
     producer: {...producer, lane: 'candidate-native'}}));
 
   const order = [['control', 1], ['candidate', 1], ['candidate', 2], ['control', 2], ['control', 3], ['candidate', 3]];
-  const runs = [];
-  let candidateExpected;
-  for (const mode of ['native', 'js']) {
+  const distributed = context.distributed ? await distributedMeasurements(context) : null;
+  const runs = distributed?.runs ?? [];
+  let candidateExpected = distributed?.candidateExpected ?? context.candidateExpected;
+  for (const mode of distributed ? [] : (measurementMode ? [measurementMode] : ['native', 'js'])) {
     if (mode === 'js') {
       if (candidateExpected === undefined) fail('candidate native lane produced no authenticated output');
       writeJsonFresh(candidateJsRequest, buildThroughputRequest({
@@ -1510,6 +1532,7 @@ async function runThroughput(run, context) {
       run.publish();
     }
   }
+  if (measurementMode) return {runs, candidateExpected};
   const summary = {native: throughputSummaries(runs.filter(entry => entry.mode === 'native')),
     js: throughputSummaries(runs.filter(entry => entry.mode === 'js'))};
   const candidateReport = runs.find(entry => entry.role === 'candidate' && entry.mode === 'native' && entry.repetition === 1).report;
@@ -1547,9 +1570,13 @@ async function runThroughput(run, context) {
       pipelineElapsedMs: entry.report.pipelineElapsedMs, phases: entry.row.phases,
       outputSha256: entry.report.output.sha256, peakRssBytes: entry.report.guardian.peakRssBytes,
       peakFootprintBytes: entry.report.guardian.peakFootprintBytes,
+      ...(distributed ? {physical: entry.physical} : {}),
       guardian: entry.row.guardian, report: entry.row.report})),
     summary,
-    note: 'Unprofiled, same-host, sequentially interleaved clean full-root pairs on the frozen G22 corpus; profiled cost-attribution runs are excluded. Measurements are diagnostic evidence, not a performance acceptance.',
+    ...(distributed ? {placement: distributed.placement} : {}),
+    note: distributed
+      ? 'Explicit distributed transport: each six-row lane is sequential on its dedicated pinned physical host; native output is authenticated before JS. No global same-host claim. Diagnostic evidence only.'
+      : 'Unprofiled, same-host, sequentially interleaved clean full-root pairs on the frozen G22 corpus; profiled cost-attribution runs are excluded. Measurements are diagnostic evidence, not a performance acceptance.',
   };
 }
 
@@ -1561,7 +1588,7 @@ async function main() {
   const {values} = parseOptions(process.argv.slice(2),
     ['--run-id', '--phase', '--repository', '--bun', '--node', '--clang', '--llvm-bin', '--out',
       '--bindings', '--frozen-repository', '--control-native', '--control-image', '--from-receipt',
-      '--fail-fast-performance', '--cc-partitions']);
+      '--fail-fast-performance', '--distributed-plan', '--cc-partitions']);
   const runId = required(values, '--run-id');
   if (!/^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$/.test(runId)) fail('unsafe --run-id');
   const repository = realpathSync(resolve(values.get('--repository') ?? resolve(dirname(SCRIPT), '..')));
@@ -1571,11 +1598,12 @@ async function main() {
   const llvmBin = resolve(values.get('--llvm-bin') ?? '/opt/homebrew/opt/llvm@21/bin');
   const phase = values.get('--phase') ?? 'all';
   if (!['all', 'correctness', 'throughput'].includes(phase)) fail('--phase must be all, correctness or throughput');
-  const partitionValue = values.get('--cc-partitions') ?? '4';
-  if (!['4', '8'].includes(partitionValue)) fail('--cc-partitions must be 4 or 8');
+  const ccPartitionsValue = values.get('--cc-partitions') ?? '4';
+  if (!['4', '8'].includes(ccPartitionsValue)) fail('--cc-partitions must be exactly 4 or 8');
   if (phase === 'throughput' && values.has('--cc-partitions'))
-    fail('--cc-partitions cannot change a reused throughput-only build');
-  const ccPartitions = Number(partitionValue);
+    fail('--cc-partitions is not valid for throughput-only runs');
+  const ccPartitions = Number(ccPartitionsValue);
+  const distributed = values.has('--distributed-plan') ? loadPlan(resolve(values.get('--distributed-plan'))) : undefined;
   const failFastPerformance = booleanOption(values, '--fail-fast-performance');
   if (failFastPerformance && phase === 'correctness')
     fail('--fail-fast-performance requires a phase that measures throughput (all or throughput)');
@@ -1587,14 +1615,19 @@ async function main() {
 
   const launchCwd = process.cwd();
   process.chdir(repository);
-  const context = {repository, runId, bun, node, clang, llvmBin, ccPartitions, out, phase, launchCwd,
-    bindings: undefined, candidate: undefined};
+  const context = {repository, runId, bun, node, clang, llvmBin, out, phase, launchCwd,
+    bindings: undefined, candidate: undefined, ccPartitions, distributed};
 
   mkdirSync(out, {recursive: true});
   const run = createRun({repository, runId, node, bun, clang, llvmBin, out, phase});
   run.receipt.launchCwd = launchCwd;
   run.receipt.failFastPerformance = failFastPerformance;
   if (phase !== 'throughput') run.receipt.requestedCcPartitions = ccPartitions;
+  if (distributed) {
+    run.receipt.distributed = {protocol: 1, mode: context.distributed.mode,
+      planSha256: context.distributed.planSha256, placement: context.distributed.placement,
+      hosts: context.distributed.hosts};
+  }
   run.publish();
 
   try {
@@ -1625,6 +1658,7 @@ async function main() {
     }
     if (phase === 'throughput') {
       const prior = resolve(required(values, '--from-receipt'));
+      context.evidence = readJson(prior).correctness;
       context.candidate = authenticatePriorCorrectness(prior, repository);
       context.bindings.candidateCarriedFrom = context.candidate.receipt;
     }
@@ -1660,6 +1694,99 @@ async function main() {
     run.publish();
     console.error(JSON.stringify({status: 'FAIL', receipt: resolve(out, 'receipt.json'), error: run.receipt.failure.message}));
     process.exitCode = 1;
+  }
+}
+
+// Worker entry points are called only by the explicit authenticated transport.
+// Original validators run on the execution host; absolute upstream provenance
+// stays untouched in the snapshot and coordinator receipt.
+export async function runDistributedWorker(job, snapshot, out, executionRepository) {
+  const repository = realpathSync(executionRepository), tools = job.pin.tools;
+  const {node, bun, clang, llvmBin} = tools;
+  process.chdir(repository);
+  Object.assign(process.env, childEnv({repository, ...tools}));
+  assertAbi();
+  preflightTools({repository, ...tools});
+  const run = createRun({repository, ...tools, out, runId: job.context.runId, phase: job.job});
+  const binary = resolve(snapshot, 'artifacts/binary'), image = resolve(snapshot, 'artifacts/image');
+  const candidate = job.context.candidate;
+  if (fileSha(binary) !== candidate.binary.sha256 || fileSha(image) !== candidate.stageOne.sha256
+    || statSync(image).size !== candidate.stageOne.bytes) fail('transport candidate artifact drift');
+  try {
+    let value;
+    if (job.job.startsWith('performance-')) {
+      const original = job.context.bindings;
+      const bindings = validateBindings(resolve(snapshot, 'artifacts/bindings'), {
+        repository, frozenRepository: resolve(snapshot, 'frozen'),
+        controlNative: resolve(snapshot, 'artifacts/controlNative'), controlImage: resolve(snapshot, 'artifacts/controlImage'),
+      });
+      if (bindings.sha256 !== original.sha256) fail('transport baseline bindings changed');
+      const mode = job.job.slice('performance-'.length);
+      if (!['native', 'js'].includes(mode)) fail('unknown performance lane');
+      if (mode === 'js' && (!job.extra.nativeTransport || !/^[a-f0-9]{64}$/.test(job.extra.candidateExpected ?? '')))
+        fail('JS lane requires authenticated native predecessor');
+      value = await runThroughput(run, {repository, ...tools, out, runId: job.context.runId,
+        bindings, candidate: {...candidate, binary: {...candidate.binary, path: binary},
+          stageOne: {...candidate.stageOne, path: image}},
+        measurementMode: mode, candidateExpected: job.extra.candidateExpected});
+      for (const row of value.runs) row.physical = job.pin.physical;
+    } else {
+      const driver = buildStageDriver({repository, node, stageOne: image, out});
+      if (job.job.startsWith('matrix-')) {
+        const target = job.job.slice(7);
+        if (!['c', 'js'].includes(target)) fail('unknown matrix target');
+        const logs = resolve(out, 'matrix-' + target);
+        run.runPlain('matrix-' + target, [bun, 'evals/c_target_fixtures_run.ts', '--driver=' + driver.path,
+          '--node=' + node, '--target=' + target, '--logs=' + logs, '--keep'], {timeoutMs: MATRIX_TIMEOUT_MS});
+        value = {matrix: validateMatrix(target, logs, driver)};
+      } else {
+        const specifications = {
+          native: ['NATIVE_FOREIGN_AND_LIBRARY_SMOKE_PASS', NATIVE_SUITE_FILES.length * 2 + 1 + 2],
+          admission: ['NATIVE_DATATYPE_AND_EXECUTABLE_ADMISSION_PASS',
+            Object.keys(ADMISSION_INPUTS).reduce((n, key) => n + 2 + (key === 'mainless' ? 2 : 0), 0)],
+          host: ['ACTUAL_ALIAS_AND_HOST_EXPORT_CONSUMERS_PASS', HOST_CONSUMER_FILES.length],
+        };
+        const spec = specifications[job.job];
+        if (!spec) fail('unknown distributed consumer');
+        const directory = resolve(out, job.job);
+        await run.runGuarded(job.job, [bun, resolve(repository, 'evals/g24_qualification.mjs'),
+          '--suite=' + job.job, '--repository=' + repository, '--node=' + node, '--bun=' + bun,
+          '--clang=' + clang, '--out=' + directory,
+          ...(job.job === 'host' ? ['--driver=' + driver.path, '--execution-cwd=' + out] : ['--binary=' + binary])]);
+        const path = resolve(directory, 'receipt.json'), report = readJson(path), [status, count] = spec;
+        if (report.status !== status || report.passed !== true || report.rows.length !== count)
+          fail(job.job + ' did not publish all passing rows');
+        value = {consumer: {receipt: {path, sha256: fileSha(path)}, status, rows: count, counts: report.counts}};
+      }
+    }
+    run.receipt.status = 'DISTRIBUTED_BRANCH_PASS';
+    run.publish();
+    return value;
+  } catch (error) {
+    run.receipt.status = 'FAIL'; run.receipt.failure = {message: String(error?.stack ?? error)}; run.publish();
+    throw error;
+  }
+}
+
+export async function runDistributedConsumersFromReceipt(distributed, priorPath, output) {
+  const prior = resolve(priorPath), previous = readJson(prior), repository = realpathSync(previous.repository);
+  const candidate = withCwd(repository, () => authenticatePriorCorrectness(prior, repository));
+  const out = resolve(output);
+  if (existsSync(out)) fail('output directory already exists');
+  mkdirSync(out, {recursive: true});
+  const tools = distributed.hosts[0].pin.tools;
+  const context = {repository, out, runId: previous.runId + '-consumers', ...tools, distributed, candidate};
+  const run = createRun({...context, phase: 'distributed-consumers'});
+  const state = {...previous.correctness, matrix: {}, consumers: {}};
+  try {
+    await distributedConsumers(run, context, state);
+    run.receipt.correctness = state;
+    run.receipt.status = 'DISTRIBUTED_CONSUMERS_PASS';
+    run.receipt.sourceReceipt = {path: resolve(priorPath), sha256: fileSha(priorPath)};
+    run.publish();
+  } catch (error) {
+    run.receipt.status = 'FAIL'; run.receipt.failure = {message: String(error?.stack ?? error)}; run.publish();
+    throw error;
   }
 }
 
