@@ -1,0 +1,47 @@
+{
+  "nonce": "4535cb7310d284a72a6c9e4d65658ef730fa4a5847109615",
+  "jobSha256": "cfb9e787bbc9648ec5ba9b2f01977a960c441853a976f16815a5960da90f2e7c",
+  "job": "matrix-c",
+  "snapshotSha256": "458c28c78cc3b8480d2364419c1f4d49b397604d4890eb1da216643d4e429f89",
+  "planSha256": "8192a5cc7c569bbdd19fcd977fcfbb10cad0cd9a0038eb95b73896c78420e3b4",
+  "status": "FAIL",
+  "reaped": true,
+  "pin": {
+    "physical": "6beb0f3c1e3c440c619b8ee27cfb246ced9ee15b744f9f234edc8e2a5d81736e",
+    "platform": "darwin",
+    "arch": "arm64",
+    "release": "25.6.0",
+    "cpu": "Apple M1 Max",
+    "memoryBytes": 68719476736,
+    "tools": {
+      "bun": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "node": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "clang": "/usr/bin/clang",
+      "llvmBin": "/opt/homebrew/Cellar/llvm@21/21.1.8/bin"
+    },
+    "pins": {
+      "bun": {
+        "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "sha256": "28c7dd0a06916aba284d570ef44a2d70e9c538eaf2ba58dfe0910525563b3f79"
+      },
+      "node": {
+        "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5"
+      },
+      "clang": {
+        "path": "/usr/bin/clang",
+        "sha256": "b8763cf250e607a778bb4603cecb5b90338814d0a3dfcba0d57b1de242f610e9"
+      },
+      "opt": {
+        "path": "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/opt",
+        "sha256": "df9cd5f276b4a14b9f876aff8acc34cce15a869897fdaaf90fd2c12dd619d4f0"
+      },
+      "split": {
+        "path": "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/llvm-split",
+        "sha256": "2503aba489923af7ecbdfbbb72c756724ac0ed0179b4dbad2cfac37a716cca73"
+      }
+    },
+    "environment": {}
+  },
+  "error": "Error: snapshot directory is writable\n    at need (/private/tmp/bend-g24-4535cb7310d284a72a6c9e4d65658ef730fa4a5847109615/snapshot/repository/evals/g24_distributed.mjs:76:45)\n    at verifySnapshot (/private/tmp/bend-g24-4535cb7310d284a72a6c9e4d65658ef730fa4a5847109615/snapshot/repository/evals/g24_distributed.mjs:178:5)\n    at supervise (/private/tmp/bend-g24-4535cb7310d284a72a6c9e4d65658ef730fa4a5847109615/snapshot/repository/evals/g24_distributed.mjs:395:5)\n    at /private/tmp/bend-g24-4535cb7310d284a72a6c9e4d65658ef730fa4a5847109615/snapshot/repository/evals/g24_distributed.mjs:496:44"
+}
