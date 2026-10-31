@@ -12,6 +12,8 @@
  *   bun --smol evals/g24_qualification.mjs --run-id=NAME --node=NODE \
  *     --phase=correctness [--bun=BUN] [--clang=CLANG] \
  *     [--llvm-bin=/opt/homebrew/opt/llvm@21/bin] [--out=checkpoints/NAME]
+ *   [--cc-partitions=4|8] selects native LLVM partitions (default4).
+ *   An explicit selection is invalid for throughput-only reuse of a build.
  *
  * Full phase (default: correctness + paired frozen-corpus throughput):
  *   bun --smol evals/g24_qualification.mjs --run-id=NAME --node=NODE \
@@ -1248,7 +1250,7 @@ function applyPerformanceGate(run) {
 // ---------------------------------------------------------------------------
 
 async function runCorrectness(run, context) {
-  const {repository, runId, node, bun, clang, llvmBin, out} = context;
+  const {repository, runId, node, bun, clang, llvmBin, ccPartitions, out} = context;
   const checkpoints = checkpointsFor(repository);
   const stem = resolve(checkpoints, 'bootstrap-parser-rebuild-' + runId);
   const parserSource = resolve(checkpoints, '.bootstrap_parser_rebuild_' + runId + '_source.bend');
@@ -1322,7 +1324,7 @@ async function runCorrectness(run, context) {
 
   run.runPlain('native-build', [bun, '--smol', 'evals/native_compiler_experiment.ts', '--mode=build',
     '--corpus=' + nativeCorpus, '--artifact=' + nativeBinary, '--report=' + nativeBuild,
-    '--cc-pipeline=llvm-split', '--llvm-bin=' + llvmBin]);
+    '--cc-pipeline=llvm-split', '--cc-partitions=' + ccPartitions, '--llvm-bin=' + llvmBin]);
   const authenticated = authenticateNativeSeedBuild(nativeBuild, {root: compilerRoot, corpusPath: nativeCorpus, limits: LIMITS});
   Object.assign(state.native, validateNativeBuildAuthenticated(authenticated, {root: compilerRoot, corpusPath: nativeCorpus}));
   state.native.build = {path: nativeBuild, sha256: fileSha(nativeBuild)};
@@ -1559,7 +1561,7 @@ async function main() {
   const {values} = parseOptions(process.argv.slice(2),
     ['--run-id', '--phase', '--repository', '--bun', '--node', '--clang', '--llvm-bin', '--out',
       '--bindings', '--frozen-repository', '--control-native', '--control-image', '--from-receipt',
-      '--fail-fast-performance']);
+      '--fail-fast-performance', '--cc-partitions']);
   const runId = required(values, '--run-id');
   if (!/^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$/.test(runId)) fail('unsafe --run-id');
   const repository = realpathSync(resolve(values.get('--repository') ?? resolve(dirname(SCRIPT), '..')));
@@ -1569,6 +1571,11 @@ async function main() {
   const llvmBin = resolve(values.get('--llvm-bin') ?? '/opt/homebrew/opt/llvm@21/bin');
   const phase = values.get('--phase') ?? 'all';
   if (!['all', 'correctness', 'throughput'].includes(phase)) fail('--phase must be all, correctness or throughput');
+  const partitionValue = values.get('--cc-partitions') ?? '4';
+  if (!['4', '8'].includes(partitionValue)) fail('--cc-partitions must be 4 or 8');
+  if (phase === 'throughput' && values.has('--cc-partitions'))
+    fail('--cc-partitions cannot change a reused throughput-only build');
+  const ccPartitions = Number(partitionValue);
   const failFastPerformance = booleanOption(values, '--fail-fast-performance');
   if (failFastPerformance && phase === 'correctness')
     fail('--fail-fast-performance requires a phase that measures throughput (all or throughput)');
@@ -1580,13 +1587,14 @@ async function main() {
 
   const launchCwd = process.cwd();
   process.chdir(repository);
-  const context = {repository, runId, bun, node, clang, llvmBin, out, phase, launchCwd,
+  const context = {repository, runId, bun, node, clang, llvmBin, ccPartitions, out, phase, launchCwd,
     bindings: undefined, candidate: undefined};
 
   mkdirSync(out, {recursive: true});
   const run = createRun({repository, runId, node, bun, clang, llvmBin, out, phase});
   run.receipt.launchCwd = launchCwd;
   run.receipt.failFastPerformance = failFastPerformance;
+  if (phase !== 'throughput') run.receipt.requestedCcPartitions = ccPartitions;
   run.publish();
 
   try {

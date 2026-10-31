@@ -1,0 +1,34 @@
+#include <stdio.h>
+__attribute__((noinline)) unsigned step0(unsigned x) { return x + 1u; }
+__attribute__((noinline)) unsigned step1(unsigned x) { return step0(x) + 2u; }
+__attribute__((noinline)) unsigned step2(unsigned x) { return step1(x) + 3u; }
+__attribute__((noinline)) unsigned step3(unsigned x) { return step2(x) + 4u; }
+__attribute__((noinline)) unsigned step4(unsigned x) { return step3(x) + 5u; }
+__attribute__((noinline)) unsigned step5(unsigned x) { return step4(x) + 6u; }
+__attribute__((noinline)) unsigned step6(unsigned x) { return step5(x) + 7u; }
+__attribute__((noinline)) unsigned step7(unsigned x) { return step6(x) + 8u; }
+__attribute__((noinline)) unsigned step8(unsigned x) { return step7(x) + 9u; }
+__attribute__((noinline)) unsigned step9(unsigned x) { return step8(x) + 10u; }
+__attribute__((noinline)) unsigned step10(unsigned x) { return step9(x) + 11u; }
+__attribute__((noinline)) unsigned step11(unsigned x) { return step10(x) + 12u; }
+__attribute__((noinline)) unsigned step12(unsigned x) { return step11(x) + 13u; }
+__attribute__((noinline)) unsigned step13(unsigned x) { return step12(x) + 14u; }
+__attribute__((noinline)) unsigned step14(unsigned x) { return step13(x) + 15u; }
+__attribute__((noinline)) unsigned step15(unsigned x) { return step14(x) + 16u; }
+__attribute__((noinline)) unsigned step16(unsigned x) { return step15(x) + 17u; }
+__attribute__((noinline)) unsigned step17(unsigned x) { return step16(x) + 18u; }
+__attribute__((noinline)) unsigned step18(unsigned x) { return step17(x) + 19u; }
+__attribute__((noinline)) unsigned step19(unsigned x) { return step18(x) + 20u; }
+__attribute__((noinline)) unsigned step20(unsigned x) { return step19(x) + 21u; }
+__attribute__((noinline)) unsigned step21(unsigned x) { return step20(x) + 22u; }
+__attribute__((noinline)) unsigned step22(unsigned x) { return step21(x) + 23u; }
+__attribute__((noinline)) unsigned step23(unsigned x) { return step22(x) + 24u; }
+__attribute__((noinline)) unsigned step24(unsigned x) { return step23(x) + 25u; }
+__attribute__((noinline)) unsigned step25(unsigned x) { return step24(x) + 26u; }
+__attribute__((noinline)) unsigned step26(unsigned x) { return step25(x) + 27u; }
+__attribute__((noinline)) unsigned step27(unsigned x) { return step26(x) + 28u; }
+__attribute__((noinline)) unsigned step28(unsigned x) { return step27(x) + 29u; }
+__attribute__((noinline)) unsigned step29(unsigned x) { return step28(x) + 30u; }
+__attribute__((noinline)) unsigned step30(unsigned x) { return step29(x) + 31u; }
+__attribute__((noinline)) unsigned step31(unsigned x) { return step30(x) + 32u; }
+int main(int argc, char **argv) { (void)argv; printf("%u\n", step31((unsigned)argc)); return 0; }

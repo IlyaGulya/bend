@@ -6,6 +6,7 @@
  *   [--build-timeout-ms=90000] (build-only downward bound; default/max600000)
  *   [--trace-c=true] (per-pass/definition/spin/cache profiling; off by default)
  *   [--cc-pipeline=direct|llvm-split] (build-only; direct by default, no fallback)
+ *   [--cc-partitions=4|8] (split-only; default4, always at most3 backend children)
  *   [--llvm-bin=PATH] (split-only opt/llvm-split directory; otherwise use PATH)
  *   [--cc-opt=0|1|2|3] (direct defaults3; split defaults/requires1)
  *   [--profile-dir=FRESH_DIR] (opt-in diagnostic scoped profile)
@@ -15,9 +16,10 @@
  * llvm-split requires Darwin arm64, Apple clang21 selected by CC, matching
  * LLVM21 opt/llvm-split and the macOS SDK (SDKROOT or xcrun). It emits raw
  * bitcode at O1 without LLVM passes, runs mem2reg/always-inline, splits four
- * ways, then optimizes/compiles at most three partitions at O1 concurrently
- * and links normally. Source/ABI/target/tool facts and Darwin time -lp
- * CPU/maxRSS receipts are preserved per stage. The same outer8GiB/10ms/600s
+ * ways by default (eight is an explicit, unqualified experiment), then
+ * optimizes/compiles at most three partitions at O1 concurrently and links
+ * every object. Partition bitcode sizes/hashes and Darwin time -lp CPU/maxRSS
+ * receipts are preserved per stage. The same outer8GiB/10ms/600s
  * guardian includes all children; separate codegen exits before the backend.
  * The whole-build guardian timer includes fresh validation/codegen. Pipeline
  * and per-stage timers cover only the backend, not a complete producer cycle.
@@ -83,7 +85,7 @@ type CorpusFile = {path:string;sha256:string;namespace?:string;external?:boolean
 type Corpus = {directory:string;root:string;exports:string[];files:CorpusFile[]};
 type Options = {mode:string;corpus:string;report:string;artifact?:string;build?:string;
   phase:string;threads:number;exports?:string;runtimeC?:string;expectJs?:string;internal?:string;v8LogDir?:string;buildTimeoutMs:number;traceC:boolean;ccOpt:number;
-  ccPipeline:'direct'|'llvm-split';llvmBin?:string;profileDir?:string;profileRaw:boolean;profileSampling:boolean};
+  ccPipeline:'direct'|'llvm-split';ccPartitions:4|8;llvmBin?:string;profileDir?:string;profileRaw:boolean;profileSampling:boolean};
 type ProfileToken = {id:number;name:string};
 type ProfileSpan = {id:number;name:string;status:string;wallMs:number;parentId:number|null};
 type CompileBookObserver = {observe:(stage:string,name:string,state:Record<string,unknown>)=>void;readonly passes:number;readonly releases:number};
@@ -99,7 +101,7 @@ function options():Options {
   const flags = new Map<string,string>();
   for (const arg of process.argv.slice(2)) {
     const at=arg.indexOf('='), key=arg.slice(0,at), value=arg.slice(at+1);
-    if(at<0||!['--mode','--corpus','--report','--artifact','--build','--phase','--threads','--exports','--runtime-c','--expect-js','--internal','--v8-log-dir','--build-timeout-ms','--trace-c','--cc-opt','--cc-pipeline','--llvm-bin','--profile-dir','--profile-raw','--profile-sampling'].includes(key)||!value||flags.has(key))throw Error('Expected unique documented --option=value');
+    if(at<0||!['--mode','--corpus','--report','--artifact','--build','--phase','--threads','--exports','--runtime-c','--expect-js','--internal','--v8-log-dir','--build-timeout-ms','--trace-c','--cc-opt','--cc-pipeline','--cc-partitions','--llvm-bin','--profile-dir','--profile-raw','--profile-sampling'].includes(key)||!value||flags.has(key))throw Error('Expected unique documented --option=value');
     flags.set(key,value);
   }
   for(const key of ['--mode','--corpus','--report'])if(!flags.has(key))throw Error('Missing '+key);
@@ -121,10 +123,12 @@ function options():Options {
   const ccPipeline=flags.get('--cc-pipeline')??'direct';
   if(!['direct','llvm-split'].includes(ccPipeline)||flags.has('--cc-pipeline')&&mode!=='build')throw Error('--cc-pipeline=direct|llvm-split is build-only');
   if(flags.has('--llvm-bin')&&(mode!=='build'||ccPipeline!=='llvm-split'))throw Error('--llvm-bin requires a build with --cc-pipeline=llvm-split');
+  if(flags.has('--cc-partitions')&&(mode!=='build'||ccPipeline!=='llvm-split'||!/^(4|8)$/.test(flags.get('--cc-partitions')!)))throw Error('--cc-partitions=4|8 requires a build with --cc-pipeline=llvm-split');
+  const ccPartitions=Number(flags.get('--cc-partitions')??'4') as 4|8;
   const ccOpt=Number(flags.get('--cc-opt')??(ccPipeline==='llvm-split'?'1':'3'));
   if(ccPipeline==='llvm-split'&&ccOpt!==1)throw Error('--cc-pipeline=llvm-split requires --cc-opt=1');
   const path=(name:string)=>flags.has(name)?resolve(flags.get(name)!):undefined;
-  return {mode,corpus:path('--corpus')!,report:path('--report')!,artifact:path('--artifact'),build:path('--build'),phase,threads,exports:path('--exports'),runtimeC:path('--runtime-c'),expectJs:path('--expect-js'),internal:flags.get('--internal'),v8LogDir:path('--v8-log-dir'),buildTimeoutMs,traceC:flags.has('--trace-c'),ccOpt,ccPipeline:ccPipeline as Options['ccPipeline'],llvmBin:path('--llvm-bin'),profileDir,profileRaw:flags.get('--profile-raw')==='true',profileSampling:flags.get('--profile-sampling')==='true'};
+  return {mode,corpus:path('--corpus')!,report:path('--report')!,artifact:path('--artifact'),build:path('--build'),phase,threads,exports:path('--exports'),runtimeC:path('--runtime-c'),expectJs:path('--expect-js'),internal:flags.get('--internal'),v8LogDir:path('--v8-log-dir'),buildTimeoutMs,traceC:flags.has('--trace-c'),ccOpt,ccPipeline:ccPipeline as Options['ccPipeline'],ccPartitions,llvmBin:path('--llvm-bin'),profileDir,profileRaw:flags.get('--profile-raw')==='true',profileSampling:flags.get('--profile-sampling')==='true'};
 }
 function corpus(path:string):Corpus {
   const manifest=json(path) as Corpus;
@@ -413,6 +417,7 @@ async function compileBody(o:Options,profile?:CompilerProfile){
     source,sourceSha256:hash(source),bridge,eventsFullyValidated:book.order.length,
     codegenTrace:o.traceC,diagnosticOnlyCodegenTiming:o.traceC||!!o.v8LogDir||!!o.profileDir,
     ccOptimization:{level:o.ccOpt,flag:'-O'+o.ccOpt,officialDefault:o.ccOpt===3,diagnosticTradeoff:o.ccOpt!==3},
+    ccPipelineRequest:o.ccPipeline==='llvm-split'?{kind:o.ccPipeline,partitions:o.ccPartitions,maxBackendChildren:3}:{kind:o.ccPipeline},
     checkedDefinitions:definitions,expectedSourceDefinitions:definitions,
     checksExcluded:0,outputPatches:0,kernelSha256,compilerSha256:hash(compilerPath),
     cPath:o.artifact+'.c',cSha256:sha(c),artifact:o.artifact,
@@ -469,15 +474,19 @@ async function buildWorkerBody(o:Options,profile?:CompilerProfile){
     details:{childCpu:null,reason:'spawn exposes the pid but not child rusage; the child writes its own profile'}});
   progress(o,'codegen-process','complete');
   const report=json(o.report),cc=process.env.CC??'clang';
+  verify(report.protectedPins);verify(report.loadedInputs);
+  if(report.status!=='C_GENERATED_NOT_YET_BUILT'||report.ccPipelineRequest?.kind!==o.ccPipeline
+    ||o.ccPipeline==='llvm-split'&&(report.ccPipelineRequest.partitions!==o.ccPartitions||report.ccPipelineRequest.maxBackendChildren!==3))throw Error('Codegen pipeline selection changed before backend');
   if(o.ccPipeline==='llvm-split'){
     // Backend-only code runs in its own guarded Bun process, never in the
     // Node codegen workers. Its source is included in the protected pins.
     progress(o,'llvm-pipeline','start');
-    const pipelineSpan=profile?.begin('llvm-pipeline',{cc,llvmBin:o.llvmBin??null});
+    const pipelineSpan=profile?.begin('llvm-pipeline',{cc,llvmBin:o.llvmBin??null,partitions:o.ccPartitions,maxBackendChildren:3});
     let pipelineChild:{pid:number|undefined};
-    try{pipelineChild=await child(process.execPath,['--smol',join(root,'evals/native_compiler_llvm.ts'),o.report,cc,o.llvmBin??'']);}
+    try{pipelineChild=await child(process.execPath,['--smol',join(root,'evals/native_compiler_llvm.ts'),o.report,cc,o.llvmBin??'',String(o.ccPartitions)]);}
     catch(error){endSpan(profile,pipelineSpan,'failed',{error:diagnosticText(error)});throw error;}
     const pipeline=json(o.report).ccPipeline;
+    if(pipeline?.status!=='PASS'||pipeline.kind!=='llvm-split'||pipeline.partitions!==o.ccPartitions||pipeline.maxBackendChildren!==3)throw Error('LLVM backend receipt does not match requested pipeline');
     endSpan(profile,pipelineSpan,'completed',{childPid:pipelineChild.pid,elapsedMs:pipeline.elapsedMs,status:pipeline.status});
     if(profile){
       for(const stage of pipeline.stages as Array<{name:string;status:string;wallMs?:number;userSeconds:number|null;systemSeconds:number|null;maxRssBytes:number|null;timedRealSeconds:number|null}>){
@@ -671,7 +680,8 @@ async function main(o:Options){
     process.env.BUN_JSC_forceRAMSize='4294967296';
   }
   const settings={...guard,timeoutMs:o.mode==='build'?o.buildTimeoutMs:300000};
-  create(o.report,JSON.stringify({status:'IN_PROGRESS',mode:o.mode,boundary,startedAtUnixMs:Date.now(),guard:settings},null,2)+'\n');
+  create(o.report,JSON.stringify({status:'IN_PROGRESS',mode:o.mode,boundary,startedAtUnixMs:Date.now(),guard:settings,
+    ...(o.mode==='build'?{ccPipelineRequest:o.ccPipeline==='llvm-split'?{kind:o.ccPipeline,partitions:o.ccPartitions,maxBackendChildren:3}:{kind:o.ccPipeline}}:{})},null,2)+'\n');
   reportWritable=true;
   progress(o,'prerequisites','start');
   corpus(o.corpus);const protectedPins=pins(o);create(o.report+'.inputs.json',JSON.stringify(protectedPins,null,2)+'\n');

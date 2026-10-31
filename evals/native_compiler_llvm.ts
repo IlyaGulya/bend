@@ -1,6 +1,6 @@
 import {spawn} from 'node:child_process';
 import {createHash} from 'node:crypto';
-import {accessSync,constants,mkdtempSync,readFileSync,realpathSync,rmSync,writeFileSync} from 'node:fs';
+import {accessSync,closeSync,constants,mkdtempSync,openSync,readFileSync,readSync,realpathSync,rmSync,writeFileSync} from 'node:fs';
 import {delimiter,dirname,isAbsolute,join,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {guardHeavyGate} from './heavy_gate.ts';
@@ -8,10 +8,14 @@ import {guardHeavyGate} from './heavy_gate.ts';
 type LlvmStage={name:string;command:string[];timingCommand:string[];status:'RUNNING'|'PASS'|'FAIL';
  startedMs:number;wallMs?:number;exitCode?:number|null;signal?:string|null;stdout:string;stderr:string;
  timedRealSeconds:number|null;userSeconds:number|null;systemSeconds:number|null;maxRssBytes:number|null;error?:string};
-type LlvmPipeline={kind:'llvm-split';status:'RUNNING'|'PASS'|'FAIL';optimization:'-O1';partitions:4;maxBackendChildren:3;
+type BitcodeIdentity={path:string;sha256:string;bytes:number};
+type LlvmPartition=BitcodeIdentity&{id:number;object:string;stage:string};
+type LlvmPipeline={kind:'llvm-split';status:'RUNNING'|'PASS'|'FAIL';optimization:'-O1';partitions:4|8;maxBackendChildren:3;
  source:string;sourceSha256:string;artifact:string;temporaryDirectory?:string;temporaryFilesRemoved:boolean;
  elapsedMs:number;stages:LlvmStage[];toolPins:Record<string,string>;versions:Record<string,string>;sdk?:string;
  abi?:{preprocessorCommand:string[];macros:string[];driverCommand:string[];driverOutput:string};
+ rawBitcode?:BitcodeIdentity;preparedBitcode?:BitcodeIdentity;partitionInputs:LlvmPartition[];
+ originalFunctionCount:null;functionCountAccounting:string;
  accounting:string;failure?:string};
 
 function executable(command:string):string{
@@ -28,11 +32,13 @@ function executable(command:string):string{
  * has already terminated the separate canonical validation/codegen process.
  * Darwin time -lp supplies real wait4 CPU/maxRSS, not Node's parent-only usage.
  */
-async function buildLlvmSplit(source:string,sourceSha256:string,artifact:string,cc:string,llvmBin:string|undefined,
+async function buildLlvmSplit(source:string,sourceSha256:string,artifact:string,cc:string,llvmBin:string|undefined,partitions:4|8,
  update:(pipeline:LlvmPipeline)=>void):Promise<LlvmPipeline>{
  const started=performance.now();
- const pipeline:LlvmPipeline={kind:'llvm-split',status:'RUNNING',optimization:'-O1',partitions:4,maxBackendChildren:3,
-  source,sourceSha256,artifact,temporaryFilesRemoved:false,elapsedMs:0,stages:[],toolPins:{},versions:{},
+ const pipeline:LlvmPipeline={kind:'llvm-split',status:'RUNNING',optimization:'-O1',partitions,maxBackendChildren:3,
+  source,sourceSha256,artifact,temporaryFilesRemoved:false,elapsedMs:0,stages:[],toolPins:{},versions:{},partitionInputs:[],
+  originalFunctionCount:null,
+  functionCountAccounting:'The unchanged frontend/opt/llvm-split commands do not emit original LLVM function counts. Null means unavailable, not zero; no additional IR disassembly or analysis pass is run. Partition bitcode byte sizes include declarations/metadata and are not function counts or estimates of optimization work.',
   accounting:'Darwin /usr/bin/time -lp wait4 user/system CPU and maxRSS bytes per command; stage wallMs includes launch/reap. The unchanged outer guardian samples the complete build process tree, including concurrent compiler descendants. Interrupted stages may have null resource fields.'};
  const publish=()=>{pipeline.elapsedMs=performance.now()-started;update(pipeline);};
  const run=async(name:string,command:string[],quiet=false):Promise<LlvmStage>=>{
@@ -68,6 +74,16 @@ async function buildLlvmSplit(source:string,sourceSha256:string,artifact:string,
   return stage;
  };
  let temporary:string|undefined;
+ const hashBuffer=Buffer.allocUnsafe(65536);
+ const bitcodeIdentity=(path:string):BitcodeIdentity=>{
+  const fd=openSync(path,'r'),digest=createHash('sha256');let bytes=0;
+  try{
+   for(let size;(size=readSync(fd,hashBuffer,0,hashBuffer.length,null))!==0;){
+    digest.update(size===hashBuffer.length?hashBuffer:hashBuffer.subarray(0,size));bytes+=size;
+   }
+  }finally{closeSync(fd);}
+  return {path,sha256:digest.digest('hex'),bytes};
+ };
  try{
   publish();
   if(process.platform!=='darwin'||process.arch!=='arm64')throw Error('llvm-split currently requires the measured Darwin arm64 Apple clang21 backend; use direct explicitly on other platforms');
@@ -95,19 +111,31 @@ async function buildLlvmSplit(source:string,sourceSha256:string,artifact:string,
   await requireStage('mem2reg-always-inline',[opt,'-passes=function(mem2reg),always-inline',raw,'-o',prepared]);
   // Keep mandatory helper inlining above; ordinary O1 optimization belongs to
   // each partition, not an expanding whole-module inliner before the split.
-  await requireStage('split',[split,'-j4',prepared,'-o',join(temporary,'part.bc')]);
-  const objects=Array.from({length:4},(_,i)=>join(temporary!,'part'+i+'.o'));
-  const pending=[3,2,1,0],running=new Map<number,Promise<{id:number;stage:LlvmStage}>>();
-  let firstFailure:LlvmStage|undefined;
-  while(pending.length||running.size){
-   while(pending.length&&running.size<pipeline.maxBackendChildren&&!firstFailure){
-    const id=pending.shift()!;
-    const command=[clang,'-O1','-x','ir','-c',join(temporary,'part.bc'+id),'-isysroot',sdk,'-o',objects[id]!];
-    running.set(id,run('opt-codegen-'+id,command).then(stage=>({id,stage})));
+  await requireStage('split',[split,'-j'+partitions,prepared,'-o',join(temporary,'part.bc')]);
+  pipeline.rawBitcode=bitcodeIdentity(raw);pipeline.preparedBitcode=bitcodeIdentity(prepared);
+  const objects=Array.from({length:partitions},(_,i)=>join(temporary!,'part'+i+'.o'));
+  pipeline.partitionInputs=objects.map((object,id)=>({...bitcodeIdentity(join(temporary!,'part.bc'+id)),id,object,stage:'opt-codegen-'+id}));
+  publish();
+  // Preserve the original descending 3,2,1,0 order for the four-way path.
+  const pending=objects.map((_,id)=>id).reverse(),running=new Map<number,Promise<{id:number;stage:LlvmStage}>>();
+  let firstFailure:LlvmStage|undefined,launchFailed=false;
+  try{
+   while(pending.length||running.size){
+    while(pending.length&&running.size<pipeline.maxBackendChildren&&!firstFailure&&!launchFailed){
+     const id=pending.shift()!;
+     const command=[clang,'-O1','-x','ir','-c',pipeline.partitionInputs[id]!.path,'-isysroot',sdk,'-o',objects[id]!];
+     running.set(id,run('opt-codegen-'+id,command).then(stage=>{
+      // Observe failures before a different completed job can refill a slot.
+      if(stage.status!=='PASS'&&!firstFailure)firstFailure=stage;
+      return {id,stage};
+     },error=>{launchFailed=true;throw error;}));
+    }
+    if(!running.size)break;
+    const completed=await Promise.race(running.values());running.delete(completed.id);
    }
-   if(!running.size)break;
-   const completed=await Promise.race(running.values());running.delete(completed.id);
-   if(completed.stage.status!=='PASS'&&!firstFailure)firstFailure=completed.stage;
+  }finally{
+   // Also drain on unexpected receipt/publication errors, not only CC exits.
+   await Promise.allSettled(running.values());
   }
   // Do not launch replacement jobs or link after failure. Reap every already
   // started timed child under the same guardian before reporting the first error.
@@ -128,12 +156,21 @@ async function buildLlvmSplit(source:string,sourceSha256:string,artifact:string,
 // protected pins and starts it only after the entire codegen process exits.
 // The inherited authenticated lease retains the original8GiB build deadline.
 try{
+ if(process.argv.length!==6||!/^(4|8)$/.test(process.argv[5]!))throw Error('Expected internal build-report, CC, LLVM-bin and partition count (4|8) arguments');
+ const partitions=Number(process.argv[5]) as 4|8;
+ const reportPath=resolve(process.argv[2]!);
  await guardHeavyGate(fileURLToPath(import.meta.url),{label:'Native LLVM split backend'});
- if(process.argv.length!==5)throw Error('Expected internal build-report, CC and LLVM-bin arguments');
- const reportPath=resolve(process.argv[2]!),report=JSON.parse(readFileSync(reportPath,'utf8'));
- if(report.status!=='C_GENERATED_NOT_YET_BUILT'||report.ccOptimization?.flag!=='-O1')throw Error('LLVM worker requires a freshly generated O1 public build report');
+ const report=JSON.parse(readFileSync(reportPath,'utf8'));
+ if(report.status!=='C_GENERATED_NOT_YET_BUILT'||report.ccOptimization?.flag!=='-O1'
+   ||report.ccPipelineRequest?.kind!=='llvm-split'||report.ccPipelineRequest.partitions!==partitions
+   ||report.ccPipelineRequest.maxBackendChildren!==3)throw Error('LLVM worker requires a freshly generated O1 public build report with matching partition selection');
+ const protectedPins=JSON.parse(readFileSync(reportPath+'.inputs.json','utf8')) as Record<string,string>;
+ if(!protectedPins[realpathSync(fileURLToPath(import.meta.url))])throw Error('LLVM worker source is not protected');
+ for(const [path,expected] of Object.entries(protectedPins)){
+  if(report.protectedPins?.[path]!==expected||createHash('sha256').update(readFileSync(path)).digest('hex')!==expected)throw Error('Protected input changed before LLVM backend: '+path);
+ }
  if(createHash('sha256').update(readFileSync(report.cPath)).digest('hex')!==report.cSha256)throw Error('Generated C changed before LLVM backend');
- await buildLlvmSplit(report.cPath,report.cSha256,report.artifact,process.argv[3]!,process.argv[4]||undefined,pipeline=>{
+ await buildLlvmSplit(report.cPath,report.cSha256,report.artifact,process.argv[3]!,process.argv[4]||undefined,partitions,pipeline=>{
   writeFileSync(reportPath,JSON.stringify({...report,ccPipeline:pipeline},null,2)+'\n');
  });
 }catch(error){console.error(String(error));process.exitCode=2;}

@@ -1,0 +1,163 @@
+{
+  "schemaVersion": 1,
+  "version": "G41LLVM",
+  "status": "AUTHORED_UNQUALIFIED_CONSTRUCTION_EXPERIMENT",
+  "baselineCommit": "3294466b",
+  "sourcePins": {
+    "evals/native_compiler_experiment.ts": "5f952045eb0dc22444cce4941c359ff6d8e1851f5a720e9c776c111cf97b0ed4",
+    "evals/native_compiler_llvm.ts": "1adbf5da5b9535aee9e4cd9c62d9396c742a22ebf187d72672fa22de21f6abaf",
+    "evals/g24_qualification.mjs": "4914c7febdda6807c5fc34905eb594bcb9c39d31a9e3d08608503a279c2f62ec"
+  },
+  "sourceChanges": [
+    "evals/native_compiler_experiment.ts",
+    "evals/native_compiler_llvm.ts",
+    "evals/g24_qualification.mjs"
+  ],
+  "scope": "Real explicit4/8 LLVM partition selection with fixed3children; default4 unchanged; scheduler and facts changes remain isolated. Constructor-only evidence, no new compiler-algorithm/runtime-performance acceptance inferred.",
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "abi": [
+    "parsed_module",
+    "parse_with_fuel",
+    "expand_modules_start",
+    "template_step",
+    "check_expanded_start",
+    "inspect_checked_start",
+    "checker_step",
+    "emit_modules_start",
+    "emit_library_start",
+    "emitter_step",
+    "emit_c_modules_start",
+    "emit_c_library_start",
+    "c_emitter_step"
+  ],
+  "parserFuel": 8000000,
+  "quantum": 64,
+  "originalBaseline": {
+    "report": {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/baseline/build.json",
+      "sha256": "b1e4afa6e396c72547577481fa6a520a27099f183a83610b4b48f9138bfda19c",
+      "bytes": 3074830
+    },
+    "status": "NATIVE_EXECUTABLE_BUILT_NOT_YET_RUN",
+    "cSha256": "2290a096f114201665d4b943db3470889ca700ec205b875612178ea263e27ffb",
+    "nativeSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 5056151552,
+      "peakFootprintBytes": 5321709664,
+      "elapsedMs": 252099,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_experiment.ts",
+        "--mode=build",
+        "--corpus=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/root.native.corpus.json",
+        "--artifact=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/baseline/native",
+        "--report=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/baseline/build.json",
+        "--cc-pipeline=llvm-split",
+        "--cc-opt=1",
+        "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+        "--internal=build"
+      ],
+      "label": "Native CPU compiler build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793446711138-d5a7415d800e0207.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "sourceAuthority": "3294466b"
+  },
+  "corpus": {
+    "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/root.native.corpus.json",
+    "sha256": "7f8ba3038ff9437304b8e373eafe133dde97b7fceacacd85dd296df6f4a8f7a0",
+    "bytes": 9591
+  },
+  "runtime": {
+    "bun": {
+      "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "sha256": "28c7dd0a06916aba284d570ef44a2d70e9c538eaf2ba58dfe0910525563b3f79",
+      "version": "1.4.3"
+    },
+    "node": {
+      "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5",
+      "version": "v23.11.0"
+    },
+    "qualification": {
+      "path": "/Users/ilyagulya/Projects/My/bend/evals/g24_qualification.mjs",
+      "sha256": "a8212e066d3fadad484a7699a338fa3170a2978403a6dbab5befc0cf6afc353e",
+      "bytes": 92115
+    }
+  },
+  "commands": {
+    "backendSmoke": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/llvm-backend-smoke.mjs",
+      "/Users/ilyagulya/Projects/My/bend",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "/usr/bin/clang",
+      "/opt/homebrew/opt/llvm@21/bin",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g41/backend-smoke",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/backend-smoke.c"
+    ],
+    "parts4": [
+      "/usr/bin/env",
+      "-u",
+      "BUN_JSC_forceRAMSize",
+      "CC=/usr/bin/clang",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/native_compiler_experiment.ts",
+      "--mode=build",
+      "--corpus=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/root.native.corpus.json",
+      "--artifact=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g41/parts4/native",
+      "--report=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g41/parts4/build.json",
+      "--cc-pipeline=llvm-split",
+      "--cc-opt=1",
+      "--cc-partitions=4",
+      "--llvm-bin=/opt/homebrew/opt/llvm@21/bin"
+    ],
+    "parts8": [
+      "/usr/bin/env",
+      "-u",
+      "BUN_JSC_forceRAMSize",
+      "CC=/usr/bin/clang",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/native_compiler_experiment.ts",
+      "--mode=build",
+      "--corpus=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/root.native.corpus.json",
+      "--artifact=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g41/parts8/native",
+      "--report=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g41/parts8/build.json",
+      "--cc-pipeline=llvm-split",
+      "--cc-opt=1",
+      "--cc-partitions=8",
+      "--llvm-bin=/opt/homebrew/opt/llvm@21/bin"
+    ]
+  },
+  "sourceOnlyInputs": [
+    "checkpoints/local2039g41llvm-source/17f48a160e51a2320148eb38d9301a4848b8247793fa962e9966362d9716c919-backend-smoke.c",
+    "checkpoints/local2039g41llvm-source/56a259622803f2810af361b911a57eb793fed91b9e5c07e0cfb36398f523dba0-llvm-backend-smoke.mjs"
+  ],
+  "criteria": [
+    "Default/explicit4 must preserve accepted generated C and native bytes.",
+    "Explicit8 must actually split/compile/link all8objects with no more than3children; record size/identity and measured timing, never a presumed win.",
+    "Real native candidate must consume full compiler source; exact accepted selfhost JS bytes expected.",
+    "Real stage1/stage2 and full qualification remain distinct authorities; preserve all original gate requirements for any compiler/runtime acceptance.",
+    "Freeze source/evidence and classify accepted/rejected/limited scope before next source version."
+  ],
+  "defaultPromotion": "No automatic8default; measurements and complete applicable correctness evidence first.",
+  "bulkPolicy": "No generated C, compiler images, bitcode/object files, AST transports or raw bulk logs in Git."
+}
