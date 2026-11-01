@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "version": "2039g43r13-admission2",
+  "status": "REJECTED_STALE_PHYSICAL_SMOKE_TAG_DECODER_BEFORE_FIRST_STEP",
+  "compilerSourceCommit": "af6f7466",
+  "authorCheckpoint": "c8b63553",
+  "frozenRuntimeSourceCheckpoint": "e1f71ccf",
+  "generation": {
+    "status": "PASS",
+    "definitions": 549,
+    "sourceCalls": 1485,
+    "helpers": 1232,
+    "elapsedMs": 1622,
+    "peakRssBytes": 404389888,
+    "peakFootprintBytes": 249873344,
+    "ownedTreeStopped": true,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793547695758-4951275192850880.json"
+  },
+  "executedCommand": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "evals/heavy_gate.ts",
+    "--memory-mib=8192",
+    "--rss-mib=8192",
+    "--poll-ms=10",
+    "--timeout-ms=600000",
+    "--",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "--preload",
+    "./bend2/main.ts",
+    "evals/physical_step_smoke.ts",
+    "--run=checkpoints/physical_steps_component_v1.bend"
+  ],
+  "observedFailure": {
+    "message": "Unexpected Run tag TemplateRunState",
+    "file": "evals/physical_step_smoke.ts",
+    "line": 138,
+    "guardElapsedMs": 1024,
+    "peakRssBytes": 464683008,
+    "peakFootprintBytes": 405734312,
+    "ownedTreeStopped": true,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793547797788-87e7b5a0c19c00e0.json"
+  },
+  "sourceContractEvidence": [
+    "evals/checker_core_step_runtime.mjs:4-8,21-29",
+    "evals/clay_layout_step_smoke.ts:136-142",
+    "evals/descriptor_nf_step_smoke.ts:132-138"
+  ],
+  "finding": "Canonical comp.ts-loaded root constructors have bare tags. The stale physical smoke demanded a dot-qualified suffix, unlike both existing working step smokes and shared constructor-leaf semantics. The source program has not been stepped yet.",
+  "decision": "Normalize the constructor leaf once using the existing runtime rule, then continue rejecting all unexpected constructors. Change only the smoke decoder, preserve compiler/owned-source bytes and original limits.",
+  "fullQualificationExecuted": false,
+  "nativeSeededFixedpointClaim": false,
+  "compilerAccepted": false,
+  "performanceClaim": false
+}
