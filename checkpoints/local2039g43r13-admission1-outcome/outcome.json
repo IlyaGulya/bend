@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "version": "2039g43r13-admission1",
+  "status": "REJECTED_RAW_ADMISSION_HARNESS_FULL_COMPILER_NOT_EXECUTED",
+  "sourceCommit": "af6f7466",
+  "authorCheckpoint": "8bd1c86d",
+  "executedCommand": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "evals/heavy_gate.ts",
+    "--memory-mib=8192",
+    "--rss-mib=8192",
+    "--poll-ms=10",
+    "--timeout-ms=600000",
+    "--",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "-e",
+    "import * as K from \"/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/show-nf-e80899cb/bend2/bend.ts\"; const book=K.book_nil(); try { await K.book_load(book,\"/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/show-nf-e80899cb/evals/physical_show_smoke.bend\",\"\",new Map()); K.book_valid(book); console.log(\"PHYSICAL_SOURCE_CHECK_PASS\"); } catch (error) { console.error(K.err_show(error)); process.exitCode=1; }"
+  ],
+  "cwd": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/show-nf-e80899cb",
+  "observedFailure": {
+    "module": "descriptor_nf.bend",
+    "definition": "native_of",
+    "sourceLine": 181,
+    "computedScrutinee": "family_of(key, families)",
+    "message": "a parameter or field scrutinee (a match cannot scrutinize a computed value: give it its own def)",
+    "guardElapsedMs": 232,
+    "peakRssBytes": 55787520,
+    "peakFootprintBytes": 37159536,
+    "ownedTreeStopped": true
+  },
+  "sourceAuthority": "descriptor_nf.bend was unchanged and pinned in the authored source manifest. Raw provider modules deliberately contain computed matches; the documented existing physical_step_smoke.ts composes/normalizes/factors them before kernel admission.",
+  "decision": "Use the existing owned-step physical source pipeline as the preflight. Do not change native_of, kernel, limits or any semantic case. The original g24 full qualification itself has not run and will be invoked unchanged.",
+  "fullQualificationExecuted": false,
+  "nativeSeededFixedpointClaim": false,
+  "compilerAccepted": false,
+  "performanceClaim": false
+}
