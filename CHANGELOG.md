@@ -49,6 +49,12 @@ latest one; the GitHub release carries the same notes.
   Required native/seed source inputs and compact outcomes are frozen:
   `checkpoints/local2039g43r12-outcome/outcome.json`,
   `checkpoints/local2039g43r12-remaining-outcome/outcome.json`.
+- The physical owned-step probe decodes canonical constructor leaves, matching
+  the shared runtime instead of refusing the official loader's bare Run tag.
+  Unexpected constructors still fail. The actual changed-source program reaches
+  its finished state after844700 chunks; this is probe execution, not a native
+  compiler or performance acceptance claim.
+  `checkpoints/local2039g43r13-admission3-outcome/outcome.json`.
 - Build acceleration experiments G41/G42 preserve G24R12 as the accepted
   compiler. LLVM splitting now has an explicit `--cc-partitions=4|8` experiment
   with at most three backend children; four remains the default. Real eight-way

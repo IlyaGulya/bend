@@ -129,13 +129,14 @@ async function run(artifact: string): Promise<void> {
   for (;;) {
     const chunk = chunkOf(current);
     if (!chunk) throw Error('Unexpected Run value ' + String(current));
-    if (chunk.tag.endsWith('.TemplateRunState')) {
+    const tag = chunk.tag.slice(chunk.tag.lastIndexOf('.') + 1);
+    if (tag === 'TemplateRunState') {
       current = undefined;
       current = step(chunk.fields);
       steps += 1;
       continue;
     }
-    if (!chunk.tag.endsWith('.TemplateRunFinished')) throw Error('Unexpected Run tag ' + chunk.tag);
+    if (tag !== 'TemplateRunFinished') throw Error('Unexpected Run tag ' + chunk.tag);
     const box = chunkOf(chunk.fields['box']);
     const value = box ? chunkOf(box.fields['value']) : null;
     const desc = value?.fields['desc'], names = value?.fields['names'], slots = value?.fields['names'];

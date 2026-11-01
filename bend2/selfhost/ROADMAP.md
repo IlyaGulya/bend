@@ -127,6 +127,16 @@ The original C FAIL is preserved; no strict12 or promotion is authorized.
 `checkpoints/local2039g43r12-outcome/outcome.json`.
 `checkpoints/local2039g43r12-remaining-outcome/outcome.json`.
 
+G43R13 now implements the first hypothesis in isolated source`af6f7466`, from
+the accepted-source baseline without the rejected R12 graph. The expanded
+captured-alias/mixed-instance/recursive-arm/generic-field witness actually
+passes C and JS through genuine G24R12. The changed owned-step physical
+program executes844700 chunks after correcting a stale probe tag decoder.
+Neither observation is a new native fixedpoint or compiler acceptance; the
+original full qualification remains required.
+`checkpoints/local2039g43r13-admission3-outcome/outcome.json`.
+
+
 
 Two independent thorough-task-executor source reviews recommend preserving
 FIR→BIR→target. Publish only already-accepted checker decisions before arena

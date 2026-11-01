@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "version": "2039g43r13-admission3",
+  "status": "ACTUAL_OWNED_STEP_PHYSICAL_PROGRAM_EXECUTED_AFTER_ABI_FIX",
+  "sourceCommit": "457305e2",
+  "compilerPatchCommit": "af6f7466",
+  "authorCheckpoint": "95f9b899",
+  "runtimeInputCheckpoint": "e1f71ccf",
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "evals/heavy_gate.ts",
+    "--memory-mib=8192",
+    "--rss-mib=8192",
+    "--poll-ms=10",
+    "--timeout-ms=600000",
+    "--",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "--preload",
+    "./bend2/main.ts",
+    "evals/physical_step_smoke.ts",
+    "--run=checkpoints/physical_steps_component_v1.bend"
+  ],
+  "cwd": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/show-nf-e80899cb",
+  "guard": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "peakRssBytes": 710459392,
+    "peakFootprintBytes": 621331608,
+    "elapsedMs": 6280,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "observed": {
+    "chunks": 844700,
+    "desc": "7,1,1,0,CID_16,3,0,0,13,2,13,4,25,7,0,1,1,CID_17,2,0,0,24,1,24,0,7,0,1,2,CID_18,1,0,0,24",
+    "namesSha256": "f423d9cb4fbe2c22552298ad7636af0ee3f2ae95abbc80fb5d02be4c793de7b1",
+    "artifactSha256": "7cae73e52b34f6c29a01686bbba773aff286ae0037264364ba4ec825b60d19ee"
+  },
+  "scope": "Actual canonical-loader owned-step execution of changed SHOW source through finished state, producing structured CID/offset descriptor data. The old probe PASS label only checks string shape; this is not treated as native/compiler/C-runtime equivalence or performance acceptance. The independent genuine G24R12 C/JS consumer baseline passed; candidate genuine-image consumers still require original full qualification.",
+  "permanentHostFix": "physical_step_smoke decoder now uses the existing shared constructor-leaf rule; main code matches exercised private decoder. Unknown constructors still throw.",
+  "fullQualificationExecutedAtCheckpoint": false,
+  "nativeSeededFixedpointClaim": false,
+  "compilerAccepted": false,
+  "performanceClaim": false,
+  "acceptedCompiler": "G24R12 unchanged"
+}
