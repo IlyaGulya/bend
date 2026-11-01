@@ -756,3 +756,183 @@ The owned one-off remaining-target controller is removed after proof.
 `checkpoints/local2039g43r13-outcome/outcome.json`.
 `checkpoints/local2039g43r13-remaining-outcome/outcome.json`.
 
+### После G43R13: радикальные архитектурные варианты, а не ещё один NF-патч
+
+**Статус:** только исследование; компилятор/runtime/генераторы/тесты не изменены, новых запусков и acceptance нет.
+`[ФАКТ]` — исходник/receipt; проекты и ожидаемый выигрыш — гипотезы. Baseline — принятый G24R12, не R10–R13.
+Короткие `.bend` — `bend2/selfhost/`; `FrozenChecker` — исключительно
+`checkpoints/local2039g43r13-inputs/repository/checkpoints/checker_core_steps_v1.bend`.
+
+#### Диагноз и граница наблюдения
+
+- `[ФАКТ]` R13: `scheduler_chunk_smoke`, stage=`emit`, 600092 ms, RSS 2709798912 B
+  (`checkpoints/local2039g43r13-outcome/outcome.json:246-258`): незавершённое время, не полная стоимость.
+- `[ФАКТ]` matrix-driver запускает Node Worker с **native-produced stage-one** как candidate и parser,
+  не TS/root.js (`evals/g24_qualification.mjs:684-698,1385-1401`; `evals/candidate_consumer_worker.mjs:10-13`).
+  `emit` включает загрузку/parse/expand/check/emit; clang лишь после успеха
+  (`evals/candidate_host.ts:223-258,283-292`; `evals/c_target_fixtures_run.ts:136-149`).
+- `[ФАКТ]` `main()->IO(Unit)`, 15 печатей (`evals/scheduler_chunk_smoke.bend:50-82`):
+  `plan_executable_io` обходит SHOW, но sharing/CID нужны раньше (`c_backend.bend:466-478,518-544`).
+- `[ФАКТ]` `CLay.context:290-300` передаёт bare-context с пустой node-map в `plan_node_index:903-919`;
+  тот проходит весь inventory без лимита числа конструкторов. Fuel1024 — на выражение (`layout_fuel:410-418`).
+  Независимо от строгости map, `c_backend.cid_ctor_rows:1042-1051` требует layout **каждой** строки
+  ради WORD-arity: отложить построение без устранения потребителя — не устранить работу.
+- `[ФАКТ]` erased-поля уже пропускаются, сохраняя сдвиг env (`c_backend_layout.bend:543-561,606-622`).
+  Это не liveness конструкторов. План только при своём fuel, instantiated layout отдельно (`node_at:847-886`).
+- `[ФАКТ]` R11D2 видело Sigma/String/U32/Word через Scope/Arena при пустой node-map (выше:597-612).
+  Это поддерживает node-planning гипотезу, но не даёт CPU-долей, call-count или нового профиля R13.
+  Слишком широкие/повторные обязательства — рабочий диагноз; их относительная стоимость неизвестна.
+
+#### Ранжирование: пять разных механизмов
+
+Ранг учитывает критический путь, возможность опровержения и риск контракта, не обещанную скорость.
+
+| Ранг | Изменение | Какой класс работы исчезает / меняет масштаб | C62 IO / unchanged strict12 | Цена |
+| --- | --- | --- | --- | --- |
+| 1 / A | Проекция исполняемого спроса + специализация request-dispatch по потоку тегов | Недостижимые тела и физические обязательства; зависимость от востребованного замыкания, не всего импорта | Прямо C; общий BIR может помочь JS, но неизвестно сколько останется в полном compiler-root | Высокая: liveness, foreign roots, внутренние specialised sums |
+| 2 / B | Типизированная first-order машина продолжений | Внутренние closure/Value/Run промежуточные объекты на переходах | Весь настоящий stage1 emit и оба strict12 runtime-lane | Высокая: генератор трёх компонентов, ownership и точная семантика шага |
+| 3 / C | Один владелец семантического descriptor-DAG между фазами | Quote→дерево→повторная интерпретация и повторная материализация окружений | NF/layout на C; общий Catalog/Lower даёт возможный JS-эффект | Высокая: BIR schema, scope/fuel simulation; без смены C value ABI |
+| 4 / D | Delta-worklist вместо полных rounds sharing | Повторные обходы неизменившихся facts: обработка зависимых изменений | Прямо C `plan_make`; само по себе не доказывает ускорение JS-target | Средняя: solver, обратные зависимости, диагностический порядок |
+| 5 / E | Нерекурсивное хранение полей: один Term на live-field | Flatten/reentry/Fill-Unfill для вложенных data перестают определять storage | Прямо C; strict12 JS не следует | Очень высокая: C representation/FFI/runtime/heap, отдельное разрешение |
+
+`strict12` компилирует **JS-library в обоих runtime-lane**: `evals/g24_qualification.mjs:1031-1061`
+выбирает `workloadRows(...,'js')`; native `phase:'compile'` и JS `emit_library_start` —
+`evals/selfhost_throughput.mjs:44-51,97-99`. C-only части A и варианты D/E не доказывают strict12.
+
+#### A — спрос должен принадлежать исполняемой проекции, не всему каталогу
+
+`[ФАКТ]` Catalog сохраняет конструкторы/семейства (`lower_catalog.bend:1269-1309,1470-1480`);
+Lower передаёт их в BIR (`backend_lower.bend:1978-1992`), а `scan_program` не доказывает liveness (`c_backend.bend:892-920`).
+В authentic `FrozenChecker:2565-2578,35912-35927` Pending содержит общий Request и вызывает общий dispatcher.
+Прямая DCE оставит все handlers (`FrozenChecker:35885-35905`), хотя fixture создаёт один pending-request.
+
+**Дизайн.** После полного checking сохранить исходную семантическую таблицу first-declaration,
+но отдельно вычислить demand от main/exports, closure-значений, callback/foreign/runtime roots.
+Для известных конечных множеств тегов специализировать private dispatch и его result-index;
+unknown-call/escaping request сохраняет общий dispatcher, а не трактуется как пустой поток.
+Сначала удалять только недостижимые runtime bodies/constructor rows, сохраняя исходные family arms
+для семантики layout. Если этого мало, следующий, явно отдельный шаг — private specialised sum
+с доказанным множеством обитателей и согласованными construct/project/conversion consumers.
+Обрезать arms исходного семейства нельзя: это меняет tag/packing/reentry даже у оставшихся значений.
+CID/FID foreign-ссылки и runtime-конструкторы — обязательные roots, не только BIR.Construct
+(`c_backend.bend:1088-1091,4220-4238`); numbering/remapping должен быть детерминированным.
+
+**Решающий дешёвый опыт:** на новом диагностическом stage1 вычислить demand-census для неизменённого
+frozen scheduler: inventory, reachable bodies, request-tag sets и обязательные node/layout roots;
+затем один общий finite-tag dispatch transform, без hardcode имени fixture, и тот же census.
+Если общий Pending/foreign closure оставляет почти все дорогие roots, A опровергнут как следующий ход.
+**Consumer-фальсификатор:** request, пришедший через неизвестное higher-order resume/FFI callback,
+плюс duplicate-first declaration и erased→dependent field; поведение/ошибка обязаны сохраниться.
+**Контракт/heap:** проверять весь исходник по-прежнему; не скрывать ошибки в «мёртвых» декларациях.
+Если сохранение существующих layout diagnostics требует прежнего полного анализа, это реальный
+предел A, не разрешение ослабить admission. Private sum specialization меняет внутреннюю representation;
+нужны relation/conversion proof и решение о допустимости, а не незаметная смена ABI.
+**Масштаб правок:** BIR demand pass, Catalog/Lower boundary, оба renderer, C layout/sharing/link;
+генератору нужна provenance-aware специализация result-index, не просто новая разбивка на группы.
+Выигрыш возможен только при существенно меньшем востребованном замыкании; cloning может увеличить heap/code.
+
+#### B — исполнять продолжения как типизированные кадры, а не заново строить башню closure-объектов
+
+`[ФАКТ]` генератор создаёт зависимые Request→result, Value, Progress, Stack и Run
+(`evals/checker_core_step_lower.ts:2347-2393,2424-2461`); Template использует тот же lowerer
+(`evals/template_step_lower.ts:6-19`), Emitter объединяет JS/C и общие providers
+(`evals/emitter_step_lower.ts:35-55`). Это путь исполнения самого компилятора, не только сборка.
+Существующие private-helper fusion/deforestation уже описаны в lowerer:13-32,584-595;
+предложение **не** расширить очередной whitelist inline.
+
+**Дизайн.** Генерировать instruction/control labels и first-order continuation frames,
+типизированные входным/выходным результатом и конкретными affine captures; один owner машины
+несёт control, environment и stack. Внутренние returns передают результат следующему кадру
+без обязательных промежуточных Value+Run; публичная граница сохраняет существующие наблюдения.
+Общий engine не должен превращать dependent frame в unchecked `(tag, Any[])`.
+Публичный host считает Run непрозрачным, но проверяет state/finished/value tags
+(`evals/checker_core_step_runtime.mjs:175-192`); экспортов13 недостаточно для ABI-совместимости.
+Исходные typed closures, в том числе пользовательские callbacks, сохраняют обычную семантику;
+заменяется представление конечного множества **генерируемых** продолжений.
+
+**Решающий дешёвый опыт:** сначала измерить реально создаваемые administrative objects/переходы
+в bounded новом diagnostic stage1; затем один замкнутый typed control-region Emitter выполнить
+кадровым engine с покадровой симуляцией прежних Pending/Direct/Bound/Finished переходов.
+Нельзя просто считать один frame-инструктаж одним старым переходом: сохранить промежуточные
+состояния и точки остановки при любом fuel, особенно 0/1/63/64/65.
+**Consumer-фальсификатор:** все 15 строк scheduler, особенно heterogeneous U32→Bool и
+Pending/Direct при 31 Bound (`evals/scheduler_chunk_smoke.bend:23-43,50-82`); дополнительно
+affine capture, два шага с паузой и callback должны не дублировать и не терять owner.
+**Контракт/heap:** новые внутренние frame carriers требуют миграции генераторов/bridges/provenance;
+public result/tag/quantum64 остаются. Если без изменения наблюдаемого Run это невозможно —
+нужно явное разрешение, не «совместимый» cast. Семантический fuel checker/NF не пересчитывается.
+**Риск:** frame-union может стать шире и сделать C layout ещё дороже; меньший source wrapper count
+не является доказательством меньшего allocation. При малой admin-доле B отвергается.
+
+#### C — семантический descriptor как IR-объект с владельцем и областью
+
+`[ФАКТ]` `backend_lower.describe:293-306` создаёт descriptor и нормализует его;
+`descriptor_nf.normalize:729-742` материализует NfVal обратно в дерево;
+`CLay.layout_of_desc:417-432` снова вызывает NF. Closure сохраняет body/env, а quotation
+создаёт DescriptorLet и переносит уровни binder (`descriptor_nf.bend:95-104,292-328`).
+Это настоящий межфазный round-trip, но его доля в deadline пока неизвестна.
+**Дизайн.** Разделить raw descriptor code и scoped semantic value: immutable DAG handles,
+persistent environment frames и явная quotation на границе, где действительно нужен descriptor.
+Catalog/Lower/NF/physical consumers работают с одним отдельным backend-owner, не с FIR Arena;
+source handles/Scope туда не уходят (`checked_frontend.bend:16-19`; `BIR_LAWS.md:65-87`).
+Construction sharing сохраняет общие подвыражения; это смена IR/lifetime, не blanket query cache.
+**Главный proof-cost:** `nf(materialize(v))` нельзя объявить бесплатным/idempotent.
+Нужна scoped simulation прежнего запроса, включая расход **его** fuel, failure/opaque и
+quantity-prefix insertion (`descriptor_nf.bend:407-438,648-703`); при невозможности доказать
+shortcut остаётся обычное вычисление над новым IR, а не выдуманный «уже нормализован» флаг.
+**Дешёвый опыт:** один путь `PrimitiveCall.types` от describe до array-cell, с подсчётом
+materialize/reparse/NF work и differential result/fuel на малой таблице исходных запросов.
+**Consumer-фальсификатор:** captured alias под дополнительным arrow binder, два generic-instance,
+under/over-application и fuel0/1/1024; сравнить C/JS array get/project и реальные ошибки.
+**Цена:** backend_ir/NF/Catalog/Lower/JS/C physical и hand-built BIR fixtures; норматив дерева
+`backend_ir.bend:4-5` меняется на well-founded DAG. C value ABI не меняется, но arena retention
+может увеличить peak heap; нужен срок жизни до последнего consumer, не глобальная таблица.
+
+#### D и E — независимые альтернативы, не запасные объяснения старого профиля
+
+**D, delta sharing.** `s_analysis_round` перечитывает девять наборов, затем повторяет round
+(`c_backend_sharing.bend:2726-2753`); bound выводится из lattice-size (`2787-2811`).
+Обратные зависимости value/pay/callee/hot позволяют запускать transfer только после изменения:
+вместо `R × полный facts-scan` — сумма затронутых edges по lattice deltas, плюс построение индекса.
+Это улучшение алгоритма при разреженном распространении, не гарантированное O(V+E) для всех inputs.
+**Опыт/фальсификатор:** сравнить полные SharingPlan и transfer-count на длинной call/capture цепи,
+цикле Apply и IO.bind с поздно известным payload; потеря hot/array_shared либо иной failure отвергает D.
+`forced/note` сбрасываются между rounds (`2753`): нельзя монотонно «зафиксировать unknown»;
+нужны финальная стабилизация diagnostics и прежняя authority ошибок. Схема результата/ABI прежняя,
+но reverse-edge heap новый. Правки в sharing/facts и fixtures; сначала доказать, что sharing заметен.
+
+**E, shallow storage.** Нынешняя ABI разворачивает поля, пакует 0/1-w32 node и inline ≤8 words
+(`c_backend_layout.bend:15-42,563-578`), поэтому и нужны recursive layout/conversion obligations.
+Один Term на live-field устраняет целый класс flatten/reentry для storage, но не NF для SHOW/IO/types.
+**Опыт/фальсификатор:** отдельно разрешённый alternate-representation compiler, nested record/array,
+foreign C round-trip и shared projection/drop; несовпадение payload/keep/drop либо рост памяти против
+исходных ограничений отвергает вариант. Измерять и compile, и runtime, не только более быстрый emitter.
+Меняются Cid arity, packed nodes, arrays, foreign sources и runtime walkers; C/JS relation и ownership
+нужно доказать заново. **Не рекомендован без отдельного решения пользователя об ABI/representation.**
+
+#### Общие инварианты и следующий эксперимент
+
+Для A–E сохраняются first-declaration authority, generic args/closure env, quantity prefixes,
+dependent/erased ordinals, unknown/missing/failure, target+path-sensitive seen. `reaches` при fuel0/NfFail
+возвращает False (`c_backend_layout.bend:624-654`), **не** сертификат отсутствия пути для другого бюджета.
+FIR-факты per-invocation, publication до rewind: backend-owner не разрешает term-handle-only memo (`FIR_LAWS.md:148-183,208-215`; `BIR_LAWS.md:68-87`).
+
+1. **Лучший следующий опыт — discriminating demand-census A**, предварённый bounded diagnostic
+   нового аутентичного stage1: parent получает phase entry/exit parse/expand/check/lower/catalog/
+   context/cid/render и счётчики node_declared/NF/reentry плюс machine transitions/allocations.
+   SHOW=0 — проверяемое ожидание из IO-ветки. Хранить вложенность; inclusive spans не складывать
+   как exclusive CPU, heap snapshots не выдавать за allocations. Не повторять неизменённый failed target.
+2. Если A действительно сокращает дорогой demand, реализовывать coherent projection/dispatch cutover,
+   затем неизменённый original consumer. Если union не сужается, **fallback B** допускается только
+   при заметной измеренной admin-стоимости; иначе рассматривать C по его собственному round-trip census.
+   D имеет смысл при подтверждённом sharing-bottleneck. E не является автоматическим fallback.
+3. Любой кандидат проходит исходные native build + настоящий native fixedpoint +95 seed/190 fresh,
+   C62/JS67/native33/admission12/host5; только затем все original strict12: mean и median времени
+   строго ниже в каждом lane, оба memory median не выше. 8/8 GiB, 600000 ms, poll10 ms,
+   ABI13, parser fuel8M/module и quantum64 не меняются; diagnostic subset не заменяет acceptance.
+
+`RadicalCostReviewer` независимо подтвердил IO/CID-path, приоритет protocol specialization и fallback typed frames.
+Его ограничения включены: общий Pending может сохранить весь demand, frame-union — ухудшить layout.
+«Достаточно lazy context» отвергнуто по двум consumers; semantic-work против CPS-admin остаётся неизвестным.
+Общий rewrite «всё boxed / новый runtime» требует ABI/heap-решения; ещё больше LLVM partitions — не лечение stage1 emit.
+Рекомендация: сначала убрать **обязательство обрабатывать ненужное**, а не ускорять ещё один NF-вызов; кратный выигрыш не обещан.
