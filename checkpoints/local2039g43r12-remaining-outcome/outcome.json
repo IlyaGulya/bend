@@ -1,0 +1,147 @@
+{
+  "schemaVersion": 1,
+  "version": "2039g43r12-remaining",
+  "status": "PASS_ALL_FOUR_ORIGINAL_PREVIOUSLY_UNREACHED_TARGETS",
+  "sourceCommit": "146ec560",
+  "authorCheckpoint": "c25a4e2b",
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r12-remaining.mjs",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r6/placement.json",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r12-correctness/consumer-snapshot",
+    "3abc196b7f2084cef95f8468c5ad9ecb98d834ffe2aabc0ee6f94fd7f683a059",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r12-correctness/snapshot-3abc196b7f2084cef95f8468c5ad9ecb98d834ffe2aabc0ee6f94fd7f683a059.tar.gz",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r12-correctness/dispatch-e9328d9c8a10df4f44b0f8db69cc2826f8f6ac317427029c.json",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r12-remaining-63aee352a4fe"
+  ],
+  "scriptSha256": "81c7155f0f72bcc7a86691640da9a171c8d37b799a7c7010d421799580aca555",
+  "observedCommandWallSeconds": 1030.78,
+  "jobs": [
+    {
+      "job": "matrix-js",
+      "status": "PASS",
+      "reaped": true,
+      "nonce": "cf654fd4e118870154b55df8fd56488eeb8b6f870961013c",
+      "physical": "4613c60b990a84a1d3484370a8bb68887aa6b616ef55f96ff8802a1107f7a84b",
+      "planSha256": "c1751625b9145a3a186d9288d35db5ef2270fddb9510b5f05d429c1e5d0203c1",
+      "snapshotSha256": "3abc196b7f2084cef95f8468c5ad9ecb98d834ffe2aabc0ee6f94fd7f683a059",
+      "wallMs": 667022,
+      "durableEvidence": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r12-remaining-63aee352a4fe/result-cf654fd4e118870154b55df8fd56488eeb8b6f870961013c.json",
+        "sha256": "37cb4bef3b04bae86af77efaf6740b45328267a484bf048b16d1bd81679c342c",
+        "bytes": 12321
+      },
+      "target": "js",
+      "fixtures": 67,
+      "cases": 67
+    },
+    {
+      "job": "native",
+      "status": "PASS",
+      "reaped": true,
+      "nonce": "d9d363ebd41d0cbd60299800386df2ea7b2c5561fb8d8d16",
+      "physical": "4613c60b990a84a1d3484370a8bb68887aa6b616ef55f96ff8802a1107f7a84b",
+      "planSha256": "c1751625b9145a3a186d9288d35db5ef2270fddb9510b5f05d429c1e5d0203c1",
+      "snapshotSha256": "3abc196b7f2084cef95f8468c5ad9ecb98d834ffe2aabc0ee6f94fd7f683a059",
+      "wallMs": 151373,
+      "durableEvidence": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r12-remaining-63aee352a4fe/result-d9d363ebd41d0cbd60299800386df2ea7b2c5561fb8d8d16.json",
+        "sha256": "89ecf0ef65275eb09e1f8e164409df1d783b7204518359c6214865b99b45d06e",
+        "bytes": 2724
+      },
+      "consumerStatus": "NATIVE_FOREIGN_AND_LIBRARY_SMOKE_PASS",
+      "counts": {
+        "fixtures": 30,
+        "library": 1,
+        "nativeExports": 2,
+        "total": 33
+      }
+    },
+    {
+      "job": "admission",
+      "status": "PASS",
+      "reaped": true,
+      "nonce": "ac04a52c817f0442412d5a121ccfe30c5a150b66974fa457",
+      "physical": "4613c60b990a84a1d3484370a8bb68887aa6b616ef55f96ff8802a1107f7a84b",
+      "planSha256": "c1751625b9145a3a186d9288d35db5ef2270fddb9510b5f05d429c1e5d0203c1",
+      "snapshotSha256": "3abc196b7f2084cef95f8468c5ad9ecb98d834ffe2aabc0ee6f94fd7f683a059",
+      "wallMs": 43085,
+      "durableEvidence": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r12-remaining-63aee352a4fe/result-ac04a52c817f0442412d5a121ccfe30c5a150b66974fa457.json",
+        "sha256": "6b1b3e2bc04eac8ee6cd173caabecf63f680e9df3a19f8dece841c694cd13e3c",
+        "bytes": 2684
+      },
+      "consumerStatus": "NATIVE_DATATYPE_AND_EXECUTABLE_ADMISSION_PASS",
+      "counts": {
+        "inputs": 5,
+        "rows": 12
+      }
+    },
+    {
+      "job": "host",
+      "status": "PASS",
+      "reaped": true,
+      "nonce": "2df8fbeb5086f77aa9c239e29f20e6c2728e6f849eef3c1d",
+      "physical": "4613c60b990a84a1d3484370a8bb68887aa6b616ef55f96ff8802a1107f7a84b",
+      "planSha256": "c1751625b9145a3a186d9288d35db5ef2270fddb9510b5f05d429c1e5d0203c1",
+      "snapshotSha256": "3abc196b7f2084cef95f8468c5ad9ecb98d834ffe2aabc0ee6f94fd7f683a059",
+      "wallMs": 142460,
+      "durableEvidence": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r12-remaining-63aee352a4fe/result-2df8fbeb5086f77aa9c239e29f20e6c2728e6f849eef3c1d.json",
+        "sha256": "33ad0eb5fea5ecb6ec28bec32bb2718f156cbc262ff54be706f282d2fc47402f",
+        "bytes": 2654
+      },
+      "consumerStatus": "ACTUAL_ALIAS_AND_HOST_EXPORT_CONSUMERS_PASS",
+      "counts": {
+        "consumers": 5
+      }
+    }
+  ],
+  "originalCMatrix": "REJECTED: original62 fixtures executed, sole failure scheduler_chunk_smoke emit deadline600066ms; no failed-target retry.",
+  "genuineNativeFixedpoint": {
+    "criterion": "Exact emitted UTF-8 JS bytes; no normalization or patching",
+    "equal": true,
+    "stageOneSha256": "066e40c85d26237f4f6c5b3579938b0df7cb4e6df384d322ee498e2cc4b85d3e",
+    "stageTwoSha256": "066e40c85d26237f4f6c5b3579938b0df7cb4e6df384d322ee498e2cc4b85d3e"
+  },
+  "coverage": {
+    "nativeSeed": 95,
+    "freshEmittedStageOne": 95,
+    "freshEmittedStageTwo": 95,
+    "fullCFixtures": 62,
+    "fullCFailures": 1,
+    "fullJSFixturesPassed": 67,
+    "nativeForeignLibraryPassed": 33,
+    "admissionRowsPassed": 12,
+    "hostConsumersPassed": 5
+  },
+  "originalQualificationReceiptUnchanged": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r12-correctness/receipt.json",
+    "sha256": "969609cb12728d89f8aae9e32e0cb88a9b431153fb01cd9ebf972f20443fdf51",
+    "bytes": 33911
+  },
+  "rawRemainingReceipt": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r12-remaining-63aee352a4fe/outcome.json",
+    "sha256": "18cb34736d791070e4de17ada60d75c3d83e5688fb15c5402208283f1d50a0fe",
+    "bytes": 16359
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "perStepTimeoutMs": 600000,
+    "abiExports": 13,
+    "parserFuelCellsPerModule": 8000000,
+    "nativeQuantum": 64
+  },
+  "globalCompilerOutcome": "REJECTED; no compiler promotion. Full original correctness failure is retained despite all four additional targets passing.",
+  "strict12": "Not authorized forG43R12 after full C failure. Prior distributed lane protocol exercise is not optimization evidence for this candidate.",
+  "acceptedCompiler": "G24R12 unchanged",
+  "compilerAccepted": false,
+  "fullCorrectness": false,
+  "performanceAccepted": false,
+  "bbAppUntouched": true,
+  "idleAdmissionRemoved": true,
+  "allFourRemoteWorkersReaped": true
+}

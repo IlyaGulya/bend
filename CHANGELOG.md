@@ -42,6 +42,13 @@ latest one; the GitHub release carries the same notes.
   Fifty affected semantic tests and the real composed CLay step smoke pass;
   the private C-graph experiment is not thereby promoted.
   `checkpoints/local2039g43r12l1-unit-outcome/outcome.json`.
+- Isolated G43R12 completes genuine native-seeded exact-byte fixedpoint and
+  95+190 seed/emitted executions, plus full JS67/native33/admission12/host5
+  under authenticated remote ownership. Original C62 still rejects it at the
+  scheduler emission deadline; no compiler promotion or strict12 claim.
+  Required native/seed source inputs and compact outcomes are frozen:
+  `checkpoints/local2039g43r12-outcome/outcome.json`,
+  `checkpoints/local2039g43r12-remaining-outcome/outcome.json`.
 - Build acceleration experiments G41/G42 preserve G24R12 as the accepted
   compiler. LLVM splitting now has an explicit `--cc-partitions=4|8` experiment
   with at most three backend children; four remains the default. Real eight-way

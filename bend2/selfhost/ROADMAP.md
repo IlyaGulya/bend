@@ -121,9 +121,11 @@ The old helper reproduces the error and all50 affected semantic tests pass
 with the correction. Only that host fix is integrated. Private G43R12 now
 completes genuine native-seeded byte fixedpoint and95+190 fixtures, but the
 original C62 still rejects it: scheduler emission exceeds600s, tree reaped.
-Remaining previously unexecuted consumers run separately; no strict12 or
-promotion is authorized by this partial success.
+Fresh nonces then complete all originally unreached targets:
+JS67/native33/admission12/host5 PASS, all remote trees reaped.
+The original C FAIL is preserved; no strict12 or promotion is authorized.
 `checkpoints/local2039g43r12-outcome/outcome.json`.
+`checkpoints/local2039g43r12-remaining-outcome/outcome.json`.
 
 
 Two independent thorough-task-executor source reviews recommend preserving

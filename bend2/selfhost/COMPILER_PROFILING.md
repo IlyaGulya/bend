@@ -689,7 +689,7 @@ different versions or paired performance evidence:
 | Canonical JS build | 39.190 | PASS; not the native stage1 image |
 | Native build | 244.748 | PASS,12509 checked definitions |
 | Genuine native bootstrap | 528.152 | PASS, exact native-stage1/stage2 bytes |
-| Emitted suites | 255.534 | PASS,95 seed+190 fresh executions |
+| Emitted suites | 255.534 | PASS,190 fresh;95 seed already passed in bootstrap |
 | Full remote C62 worker | 1648.074 | FAIL, scheduler emit alone exceeds600s |
 | Complete CLI attempt | 2854.480 | Rejected; later consumers not reached |
 
@@ -706,7 +706,10 @@ Native check in this run is66.885s wall/65.609s process CPU. The earlier R11
 off-CPU gap is not reproduced under this changed source; causation remains
 unknown. All53 native-execution sources and84 seed-loaded sources are frozen
 as84 unique source files/8057977 bytes; no images, ASTs or bulk logs in Git.
-Separate fresh nonces run only unreached JS67/native33/admission12/host5;
-failed C is not retried and the original FAIL receipt is not rewritten.
+Separate fresh nonces actually complete JS67/native33/admission12/host5 in
+1030.780s. Every durable remote result is PASS/reaped=true. Failed C is not
+retried; the original FAIL receipt is unchanged and strict12 remains
+unauthorized. The owned one-off controller is removed after proof.
 `checkpoints/local2039g43r12-outcome/outcome.json`.
+`checkpoints/local2039g43r12-remaining-outcome/outcome.json`.
 
