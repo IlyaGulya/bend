@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "version": "G43R11",
+  "sourceCommit": "b7c49cf0",
+  "status": "GENERATED_SOURCE_PASS_NOT_SEMANTIC_EXECUTION",
+  "inputs": [
+    {
+      "file": "checkpoints/clay_layout_steps_v1.bend",
+      "source": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/clay_layout_steps_v1.bend",
+        "sha256": "1beda756aed31e55deb513bd6d982b863fb556568608ae5ed4d75f47f4778fd2",
+        "bytes": 602280
+      },
+      "frozen": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r11-semantic-inputs/repository/checkpoints/clay_layout_steps_v1.bend",
+        "sha256": "1beda756aed31e55deb513bd6d982b863fb556568608ae5ed4d75f47f4778fd2",
+        "bytes": 602280
+      }
+    },
+    {
+      "file": "checkpoints/clay_layout_steps_component_v1.bend",
+      "source": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/clay_layout_steps_component_v1.bend",
+        "sha256": "1ee737e70778932c88db4443fa4aabf596c314c6eca005ffd164aa3c91cef37d",
+        "bytes": 415
+      },
+      "frozen": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r11-semantic-inputs/repository/checkpoints/clay_layout_steps_component_v1.bend",
+        "sha256": "1ee737e70778932c88db4443fa4aabf596c314c6eca005ffd164aa3c91cef37d",
+        "bytes": 415
+      }
+    },
+    {
+      "file": "checkpoints/clay_layout_smoke_owned.bend",
+      "source": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/clay_layout_smoke_owned.bend",
+        "sha256": "e629d4b00b1a2c1920bec6d9bc6ce1e831ea836d82adfded4a3ae0f1bf243c81",
+        "bytes": 178589
+      },
+      "frozen": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r11-semantic-inputs/repository/checkpoints/clay_layout_smoke_owned.bend",
+        "sha256": "e629d4b00b1a2c1920bec6d9bc6ce1e831ea836d82adfded4a3ae0f1bf243c81",
+        "bytes": 178589
+      }
+    }
+  ],
+  "unchangedCanonicalDependencies": "Remaining imports are canonical tracked source under isolated commit b7c49cf0; the generated step source imports only Base, loaded_module.bend, backend_ir.bend and index_lookup.bend.",
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "evals/heavy_gate.ts",
+    "--memory-mib=8192",
+    "--rss-mib=8192",
+    "--poll-ms=10",
+    "--timeout-ms=600000",
+    "--",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "evals/clay_layout_step_smoke.ts"
+  ],
+  "cwd": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257",
+  "guard": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 317800448,
+    "peakFootprintBytes": 250348384,
+    "elapsedMs": 823,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/clay_layout_step_smoke.ts"
+    ],
+    "label": "heavy command",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793530838227-63d0c041afb9784f.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "generator": {
+    "definitions": 284,
+    "sourceCalls": 1045,
+    "pendingSites": 326,
+    "helpers": 770,
+    "reused": false,
+    "regionInlinedHelpers": 40,
+    "eliminatedAliasBindings": 356
+  },
+  "semanticResultClaim": false,
+  "compilerAcceptanceClaim": false
+}
