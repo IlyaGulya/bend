@@ -123,6 +123,17 @@ pack); not a complete history or remote producer claim. No remote producer
 launched: ordinary SSH can orphan runPlain children. Safe lease/sentinel/
 PID-identity/reap ownership remains required; no failed snapshot is spoofed.
 `checkpoints/local2039g43-producer-portability/next-experiments.json`.
+R12 first comparator generation FAILED before behavior: strict lexical indexer
+в explicit_recursion_check lost fresh binder96 `"a"`, not a source-body variable.
+Generation rejection **`e3243d16`**; original exception preserved and bounded
+provenance observed **`12268ac1`**. Это не desired cache-regression red proof.
+inferConstructor propagates solved type-argument kinds only after all payloads:
+standalone List head determines element type, but its dependent Nil tail sees
+unresolved outer quantity. ConstructorKinds corrects that boundary in private
+parser_full_type_env.ts + real-source tests; ConstructorKindsReview checks
+partial/dependent solutions. Они ничего не запускают/коммитят. Не аннотировать
+и не удалять semantic fixture, не suppress MissingType.
+Error-only observer source frozen, completed working copy removed.
 
 
 

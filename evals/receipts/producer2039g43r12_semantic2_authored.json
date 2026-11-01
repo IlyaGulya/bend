@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "version": "G43R12-SEMANTIC2",
+  "status": "AUTHORED_NOT_EXECUTED",
+  "candidateCompilerSource": "42139224",
+  "candidateHead": "94940509",
+  "beforeHead": "d660940b",
+  "beforeCompilerSource": "b7c49cf0",
+  "sharedHostSolver": "15c22e74",
+  "hostSolverSha256": "5b38164f297e9c275185519b6a815547b89f16a205b9b1c24c52ce4f907508df",
+  "sameFixtureSha256": "7d629ffbc79078399ecbe466635ed43ca9a2f1699e5b139faa2524560f1c1aa6",
+  "priorInvalidGeneration": "e3243d16",
+  "hostUnitProof": "checkpoints/local2039g43r12l1-unit-outcome/outcome.json",
+  "before": {
+    "cwd": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/reach-before-42139224",
+    "generate": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/heavy_gate.ts",
+      "--memory-mib=8192",
+      "--rss-mib=8192",
+      "--poll-ms=10",
+      "--timeout-ms=600000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/clay_layout_step_smoke.ts"
+    ],
+    "run": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/heavy_gate.ts",
+      "--memory-mib=8192",
+      "--rss-mib=8192",
+      "--poll-ms=10",
+      "--timeout-ms=600000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "--preload",
+      "./bend2/main.ts",
+      "evals/clay_layout_step_smoke.ts",
+      "--run=checkpoints/clay_layout_steps_component_v1.bend"
+    ],
+    "criterion": "Generation must pass with the verified host solver, then the unchanged old R11 CLay algorithm must fail the new explicit-declaration semantic invariant."
+  },
+  "after": {
+    "cwd": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257",
+    "generate": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/heavy_gate.ts",
+      "--memory-mib=8192",
+      "--rss-mib=8192",
+      "--poll-ms=10",
+      "--timeout-ms=600000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/clay_layout_step_smoke.ts"
+    ],
+    "run": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/heavy_gate.ts",
+      "--memory-mib=8192",
+      "--rss-mib=8192",
+      "--poll-ms=10",
+      "--timeout-ms=600000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "--preload",
+      "./bend2/main.ts",
+      "evals/clay_layout_step_smoke.ts",
+      "--run=checkpoints/clay_layout_steps_component_v1.bend"
+    ],
+    "criterion": "Byte-identical full fixture and host solver; new R12 guarded arbitrary-target CLay algorithm must return failures0."
+  },
+  "scope": "Original composed/normalized/owned step pipeline, canonical Bend module loader, original8/8GiB10ms600s guardian. No direct canonical-provider shortcut, no removed coverage, native/fixedpoint/C/JS acceptance or performance claim."
+}
