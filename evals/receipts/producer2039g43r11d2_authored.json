@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "version": "G43R11D2",
+  "status": "AUTHORED_NOT_EXECUTED",
+  "sourceCommit": "491c7d0f",
+  "compilerSourceCommit": "b7c49cf0",
+  "priorCompilerAndOriginalCRejection": "c9607d22",
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/scheduler-timeout-5140e57d/evals/scheduler_emit_diagnostic.ts",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/bootstrap.json.cases/stage-one.js",
+    "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r11d2/phase-window",
+    "--nf-progress"
+  ],
+  "sourcePins": [
+    {
+      "source": {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/scheduler-timeout-5140e57d/evals/scheduler_nf_progress.mjs",
+        "sha256": "17e8f8b73a831138333024fcd1058ab871fed2e516217b888bbfd60a841b3ded",
+        "bytes": 4287
+      },
+      "frozen": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r11d2-source/scheduler_nf_progress.mjs",
+        "sha256": "17e8f8b73a831138333024fcd1058ab871fed2e516217b888bbfd60a841b3ded",
+        "bytes": 4287
+      }
+    },
+    {
+      "source": {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/scheduler-timeout-5140e57d/evals/scheduler_emit_diagnostic.ts",
+        "sha256": "0009920fa01451a22833c3113bcc241884f1b74617866f2626e45db386a48a55",
+        "bytes": 5322
+      },
+      "frozen": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r11d2-source/scheduler_emit_diagnostic.ts",
+        "sha256": "0009920fa01451a22833c3113bcc241884f1b74617866f2626e45db386a48a55",
+        "bytes": 5322
+      }
+    }
+  ],
+  "inputPins": [
+    {
+      "path": "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/evals/scheduler_chunk_smoke.bend",
+      "sha256": "21986a939adccc86c6580c446242be9feb95703c6eeb820ef939d961f2247140",
+      "bytes": 3636
+    },
+    {
+      "path": "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/checkpoints/checker_core_steps_v1.bend",
+      "sha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+      "bytes": 3102607
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/bootstrap.json.cases/stage-one.js",
+      "sha256": "146b191bbcb7e85bc5115e086dcc08b24ce860ee110ae03d0312ec4f5ec585e4",
+      "bytes": 31894945
+    }
+  ],
+  "goal": "Distinguish actual program dependency-fact construction from remaining semantic reachability. One20s sampled Pending-boundary window after60 emit seconds, followed by deliberate command failure; no C output, complete-cost or acceptance claim.",
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "perStepTimeoutMs": 600000,
+    "workerStackMiB": 256,
+    "workerOldGenerationMiB": 3072,
+    "abiExports": 13,
+    "parserFuelCellsPerModule": 8000000,
+    "nativeQuantum": 64
+  },
+  "instrumentation": "Readonly bounded payload descriptions and histogram; no normalizer invocation, fact/graph evaluation, image/program mutation, AST input cache or narrowed import closure. Counts are samples, never source-call counts or exclusiveCPU.",
+  "acceptanceEvidence": false,
+  "byteFixedpointClaim": false,
+  "fullCorrectnessClaim": false,
+  "compilerAccepted": false
+}
