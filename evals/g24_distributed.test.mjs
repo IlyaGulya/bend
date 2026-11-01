@@ -1,5 +1,5 @@
 // Run with: bun test evals/g24_distributed.test.mjs
-// Safety properties only: actual filesystem snapshots/leases and receipt shape.
+// Safety properties only: filesystem snapshots/leases, plan selectors and receipt shape.
 import {test} from 'bun:test';
 import assert from 'node:assert/strict';
 import {chmodSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, realpathSync, renameSync, rmSync, statSync, symlinkSync, writeFileSync} from 'node:fs';
@@ -90,14 +90,56 @@ test('a successful row from a different physical host cannot enter a lane', () =
   const result = lane(); result.runs[3].physical = 'physical-B';
   assert.throws(() => validateLane(result, 'native', 'physical-A'), /host substitution/);
 });
+function selectorPlan(action) {
+  const temp = mkdtempSync(resolve(os.tmpdir(), 'g24-selector-test-')), path = resolve(temp, 'plan.json');
+  try {
+    action((selector, mode = 'ssh') => {
+      writeFileSync(path, JSON.stringify({schemaVersion: 1, mode,
+        hosts: [{id: 'remote', pin: {physical: 'a'.repeat(64)}, ...selector}],
+        placement: Object.fromEntries(['matrix-c', 'matrix-js', 'native', 'admission', 'host',
+          'performance-native', 'performance-js'].map(job => [job, 'remote']))}));
+      return loadPlan(path);
+    });
+  } finally { rmSync(temp, {recursive: true}); }
+}
+
+test('SSH selectors reject options, control characters and malformed destinations', () => selectorPlan(load => {
+  for (const ssh of [
+    null, false, 2, [], {}, '', '-misakaindrive', '--', '-oProxyCommand=id',
+    ' misakaindrive', 'misakaindrive ', 'misakaindrive\n', 'misakaindrive\r',
+    'misaka\tindrive', 'misaka\0indrive', 'misaka\x1bindrive', 'misaka\x7findrive',
+    'misaka\u0085indrive', 'user@misakaindrive', 'ssh://misakaindrive', 'misakaindrive:22',
+    '/misakaindrive', 'misaka\\indrive', 'misaka;id', '$(id)', '`id`', '"misakaindrive"',
+  ]) assert.throws(() => load({ssh}), /invalid SSH selector/, JSON.stringify(ssh));
+}));
+
+test('SSH plans reject missing or ambiguous transport selectors instead of choosing a fallback', () => selectorPlan(load => {
+  for (const selector of [{}, {node: 2, ssh: 'misakaindrive'},
+    {node: null, ssh: 'misakaindrive'}, {node: 2, ssh: null}])
+    assert.throws(() => load(selector), /exactly one of node or ssh/);
+}));
+
+test('local plans reject any supplied SSH selector instead of silently executing locally', () => selectorPlan(load => {
+  for (const ssh of ['misakaindrive', '', null])
+    assert.throws(() => load({ssh}, 'local-single-host'), /local mode/);
+}));
+
 test('aliases cannot schedule independent jobs on one unrecognized physical host', () => {
   const temp = mkdtempSync(resolve(os.tmpdir(), 'g24-plan-test-')), path = resolve(temp, 'plan.json');
   try {
-    writeFileSync(path, JSON.stringify({schemaVersion: 1, mode: 'ssh', hosts: [
-      {id: 'first', node: 2, pin: {physical: 'a'.repeat(64)}},
-      {id: 'alias', node: 3, pin: {physical: 'a'.repeat(64)}},
-    ]}));
-    assert.throws(() => loadPlan(path), /duplicate physical host/);
+    for (const [first, alias] of [
+      [{node: 2}, {node: 3}],
+      [{ssh: 'misakaindrive'}, {ssh: 'misakaindrive-alias'}],
+      [{node: 2}, {ssh: 'misakaindrive'}],
+      [{ssh: 'misakaindrive'}, {node: 2}],
+    ]) {
+      writeFileSync(path, JSON.stringify({schemaVersion: 1, mode: 'ssh', hosts: [
+        {id: 'first', ...first, pin: {physical: 'a'.repeat(64)}},
+        {id: 'alias', ...alias, pin: {physical: 'a'.repeat(64)}},
+      ], placement: Object.fromEntries(['matrix-c', 'matrix-js', 'native', 'admission', 'host',
+        'performance-native', 'performance-js'].map(job => [job, 'first']))}));
+      assert.throws(() => loadPlan(path), /duplicate physical host/);
+    }
   } finally { rmSync(temp, {recursive: true}); }
 });
 

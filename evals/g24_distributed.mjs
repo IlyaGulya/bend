@@ -13,10 +13,18 @@
  *   "placement":{"matrix-c":"mini2","matrix-js":"mini2","native":"mini2",
  *     "admission":"mini2","host":"mini2","performance-native":"mini2",
  *     "performance-js":"mini2"}}.
- * Local mode has exactly ONE host, with no node field; never parallel machines.
- * SSH uses gates/_lib.ts ssh (cluster-NN or BEND_HOC / sudo hoc-ssh), including
- * its existing host-key policy. Obtain pins over an independently trusted SSH
- * session; an unreviewed first-contact pin is not host authentication.
+ * Local mode has exactly ONE host, with neither node nor ssh; never parallel machines.
+ * SSH hosts select exactly one of node (integer 0..255) or ssh, for example
+ * {"id":"remote","ssh":"misakaindrive","pin":<probe JSON>}.
+ * The ssh selector is an SSH config alias/hostname: ASCII alphanumeric first,
+ * then ASCII alphanumeric, dot, underscore or hyphen; no user/port/option syntax.
+ * Numeric nodes retain gates/_lib.ts ssh (cluster-NN or BEND_HOC / sudo hoc-ssh)
+ * and its existing host-key policy. Direct selectors use /usr/bin/ssh argv with
+ * BatchMode=yes, ConnectTimeout=8, normal host-key policy and no added retries.
+ * Both selectors share streaming input/capture/deadlines and the worker protocol;
+ * distinct aliases for the same pinned physical host are rejected.
+ * Obtain pins over an independently trusted SSH session; an unreviewed
+ * first-contact pin is not host authentication.
  *
  * Snapshot uses g24_snapshot.mjs's explicit closed inventory, never a repository,
  * output, checkpoint or frozen-tree walk: operational module imports; complete
@@ -49,7 +57,7 @@
  * accepted runtimes/LLVM and sufficient disk. Operators must avoid competing
  * heavy workloads during measurements; process names do not prove CPU activity
  * or host idleness. The protocol does not claim to detect arbitrary external work.
- * Transfer uses bounded 4MiB positional chunks through the existing SSH adapter.
+ * Transfer uses bounded 4MiB positional chunks through the selected SSH transport.
  * Keep /tmp/bend-g24-<nonce> evidence until the parent archives it; a poisoned
  * /tmp/bend-g24-dedicated-host.lock requires operator investigation, never unlink
  * it to bypass an unconfirmed tree stop.
@@ -61,7 +69,7 @@ import {dirname, isAbsolute, relative, resolve} from 'node:path';
 import {spawn, spawnSync} from 'node:child_process';
 import os from 'node:os';
 import {fileURLToPath} from 'node:url';
-import {ssh} from '../gates/_lib.ts';
+import {exec, ssh} from '../gates/_lib.ts';
 import {copyPinnedInput, hashFile, pinFile, snapshotInventory} from './g24_snapshot.mjs';
 
 const SCRIPT = fileURLToPath(import.meta.url);
@@ -114,8 +122,13 @@ export function loadPlan(path) {
   for (const host of plan.hosts) {
     need(/^[A-Za-z0-9_-]+$/.test(host.id) && !ids.has(host.id), 'duplicate/invalid host id');
     need(/^[a-f0-9]{64}$/.test(host.pin?.physical) && !machines.has(host.pin.physical), 'duplicate physical host or missing pin');
-    if (plan.mode === 'ssh') need(Number.isInteger(host.node) && host.node >= 0 && host.node < 256, 'invalid cluster node');
-    else need(plan.hosts.length === 1 && host.node === undefined, 'local mode is exactly one physical host');
+    const hasNode = Object.hasOwn(host, 'node'), hasSsh = Object.hasOwn(host, 'ssh');
+    if (plan.mode === 'ssh') {
+      need(hasNode !== hasSsh, 'SSH host requires exactly one of node or ssh');
+      if (hasNode) need(Number.isInteger(host.node) && host.node >= 0 && host.node < 256, 'invalid cluster node');
+      else need(typeof host.ssh === 'string' && /^[A-Za-z0-9]/.test(host.ssh)
+        && !/[^A-Za-z0-9._-]/.test(host.ssh), 'invalid SSH selector');
+    } else need(plan.hosts.length === 1 && !hasNode && !hasSsh, 'local mode is exactly one physical host without node or ssh');
     ids.add(host.id); machines.add(host.pin.physical);
   }
   for (const job of [...JOBS, 'performance-native', 'performance-js']) need(ids.has(plan.placement?.[job]), 'missing placement: ' + job);
@@ -211,7 +224,11 @@ function descendants(rows, pid) {
   return ids;
 }
 async function transport(plan, host, script, input, timeout = 60000) {
-  if (plan.mode === 'ssh') return ssh(host.node, script, input, timeout);
+  if (plan.mode === 'ssh') {
+    if (host.ssh !== undefined) return exec('/usr/bin/ssh',
+      ['-o', 'BatchMode=yes', '-o', 'ConnectTimeout=8', '--', host.ssh, script], input, timeout);
+    return ssh(host.node, script, input, timeout);
+  }
   return new Promise(resolveResult => {
     const child = spawn('/bin/sh', ['-c', script], {stdio: ['pipe', 'pipe', 'pipe']});
     const out = [], err = []; const timer = setTimeout(() => child.kill('SIGTERM'), timeout);
@@ -250,7 +267,7 @@ export async function dispatch(context, snapshot, job, extra = {}) {
     let bytes, offset = 0;
     while ((bytes = readSync(fd, chunk, 0, chunk.length, offset)) > 0) {
       need(!context.distributionCancelled, 'distribution cancelled before execution');
-      // Positional writes are idempotent under the existing SSH reconnect policy.
+      // Positional writes remain idempotent under the numeric adapter's existing reconnect policy.
       r = await transport(plan, host, 'dd of=' + quote(resolve(remote, 'snapshot.tar.gz'))
         + ' bs=4194304 seek=' + (offset / chunk.length) + ' conv=notrunc 2>/dev/null', chunk.subarray(0, bytes), 600000);
       need(r.code === 0, 'snapshot chunk upload failed: ' + r.err); offset += bytes;
