@@ -1,0 +1,402 @@
+{
+  "schemaVersion": 1,
+  "version": "G43R10R3",
+  "isolatedSourceCommit": "91698b3a",
+  "authorCheckpoint": "a137ffcc",
+  "status": "REJECTED_C_EMISSION_DEADLINE_ON_BOTH_ORIGINAL_M1_AND_PINNED_M3",
+  "compilerAccepted": false,
+  "performanceAccepted": false,
+  "fullCorrectnessClaim": false,
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "evals/g24_qualification.mjs",
+    "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "--bun=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--clang=/usr/bin/clang",
+    "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+    "--bindings=/Users/ilyagulya/Projects/My/bend/evals/receipts/producer2039g25_r12_bindings.json",
+    "--frozen-repository=/private/tmp/bend2039g22-tiny-inline",
+    "--control-native=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+    "--control-image=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+    "--phase=correctness",
+    "--cc-partitions=4",
+    "--run-id=local2039g43r10r3",
+    "--distributed-plan=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r6/placement.json",
+    "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r10r3-correctness"
+  ],
+  "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257",
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "abiExports": 13,
+  "fuel": 8000000,
+  "quantum": 64,
+  "elapsedMs": 3320741,
+  "steps": [
+    {
+      "label": "checker_core_owned_source.ts",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 4583,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "peakRssBytes": 1364918272,
+        "peakFootprintBytes": 859457120,
+        "elapsedMs": 4567,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "commandExitCode": 0,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "label": "template_step_lower.ts",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 110,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "peakRssBytes": 96960512,
+        "peakFootprintBytes": 79807208,
+        "elapsedMs": 105,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "commandExitCode": 0,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "label": "checker_core_step_lower.ts",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 230,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "peakRssBytes": 197885952,
+        "peakFootprintBytes": 174818048,
+        "elapsedMs": 225,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "commandExitCode": 0,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "label": "emitter_step_lower.ts",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 1589,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "peakRssBytes": 1005027328,
+        "peakFootprintBytes": 779126056,
+        "elapsedMs": 1585,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "commandExitCode": 0,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "label": "parser-source",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 19606,
+      "guardian": null
+    },
+    {
+      "label": "parser-public-source",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 3554,
+      "guardian": null
+    },
+    {
+      "label": "parser-source-gate",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 13560,
+      "guardian": null
+    },
+    {
+      "label": "parser-prepare",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 17934,
+      "guardian": null
+    },
+    {
+      "label": "parser-build",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 8504,
+      "guardian": null
+    },
+    {
+      "label": "parser-public-native",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 1727,
+      "guardian": null
+    },
+    {
+      "label": "parser-native-gate",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 58111,
+      "guardian": null
+    },
+    {
+      "label": "parser-accept",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 1843,
+      "guardian": null
+    },
+    {
+      "label": "compose",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 356,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "peakRssBytes": 177160192,
+        "peakFootprintBytes": 144622288,
+        "elapsedMs": 351,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "commandExitCode": 0,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "label": "js-build",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 65258,
+      "guardian": null
+    },
+    {
+      "label": "native-build",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 271225,
+      "guardian": null
+    },
+    {
+      "label": "bootstrap",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 535474,
+      "guardian": null
+    },
+    {
+      "label": "emitted-suites",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 267037,
+      "guardian": null
+    }
+  ],
+  "fixedpoint": {
+    "report": {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r10r3-correctness/bootstrap.json",
+      "sha256": "6056c308fb9eb83b4f63482ea0fbe9c35b781873c2a6be324777b43750870a3d",
+      "bytes": 516487
+    },
+    "status": "NATIVE_SEED_BOOTSTRAP_FIXEDPOINT",
+    "passed": true,
+    "fixedpoint": {
+      "criterion": "Exact emitted UTF-8 JS bytes; no normalization or patching",
+      "equal": true,
+      "stageOneSha256": "f5151acbd83e51ef32fa618b175b31cc18d91fd71677b2b5a60dfc5b0ac807eb",
+      "stageTwoSha256": "f5151acbd83e51ef32fa618b175b31cc18d91fd71677b2b5a60dfc5b0ac807eb"
+    },
+    "originalSeedRows": 95,
+    "nativePhases": [
+      {
+        "phase": "parse",
+        "elapsedMs": 6731.494,
+        "userCpuMs": 6562.389,
+        "systemCpuMs": 82.149,
+        "modules": 18,
+        "sourceBytes": 7874269,
+        "foreignBytes": 78415,
+        "eagerFuelCells": 144000000,
+        "fuelBuildMs": 895.985
+      },
+      {
+        "phase": "expand",
+        "elapsedMs": 4843.654,
+        "userCpuMs": 4791.375,
+        "systemCpuMs": 16.206,
+        "chunkAdvances": 1069777,
+        "chunkQuantum": 64
+      },
+      {
+        "phase": "check",
+        "elapsedMs": 67516.898,
+        "userCpuMs": 65387.942,
+        "systemCpuMs": 320.153,
+        "chunkAdvances": 10394977,
+        "chunkQuantum": 64
+      },
+      {
+        "phase": "emit",
+        "elapsedMs": 15199.475,
+        "userCpuMs": 14032.786,
+        "systemCpuMs": 281.273,
+        "chunkAdvances": 1284858,
+        "chunkQuantum": 64
+      }
+    ]
+  },
+  "emitted": {
+    "report": {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r10r3-correctness/emitted-suites.json",
+      "sha256": "d32ec6c01fd408af5ef1a9b3016f090ff5dd6031ad8b1451c81e637afb307107",
+      "bytes": 1749183
+    },
+    "status": "EMITTED_SUITES_BEHAVIOR_PASS",
+    "passed": true,
+    "stages": [
+      {
+        "stage": "stage-one",
+        "passed": true,
+        "fixtures": 95
+      },
+      {
+        "stage": "stage-two",
+        "passed": true,
+        "fixtures": 95
+      }
+    ]
+  },
+  "remoteMatrix": {
+    "target": "c",
+    "fixtures": 62,
+    "failures": [
+      {
+        "fixture": "scheduler_chunk_smoke",
+        "stage": "emit",
+        "reason": "deadline_exceeded"
+      }
+    ],
+    "workerElapsedMs": 2027903,
+    "supervisor": {
+      "nonce": "1e9d23827584491ccb29626e3698fcd27b6bf98a63067dd2",
+      "jobSha256": "b308a389e9d985e89cadcc66605afe80ebfad4abc8475d4304eeab1604d34cc9",
+      "job": "matrix-c",
+      "snapshotSha256": "55002a77a6d333b6a10549074cfe1f991da0adf248e37f4d3318da7cde63a75f",
+      "planSha256": "c1751625b9145a3a186d9288d35db5ef2270fddb9510b5f05d429c1e5d0203c1",
+      "status": "FAIL",
+      "reaped": true,
+      "pin": {
+        "physical": "4613c60b990a84a1d3484370a8bb68887aa6b616ef55f96ff8802a1107f7a84b",
+        "platform": "darwin",
+        "arch": "arm64",
+        "release": "25.5.0",
+        "cpu": "Apple M3 Pro",
+        "memoryBytes": 38654705664,
+        "tools": {
+          "bun": "/private/tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/bun",
+          "node": "/private/tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/node",
+          "clang": "/usr/bin/clang",
+          "llvmBin": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin"
+        },
+        "pins": {
+          "bun": {
+            "path": "/private/tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/bun",
+            "sha256": "28c7dd0a06916aba284d570ef44a2d70e9c538eaf2ba58dfe0910525563b3f79"
+          },
+          "node": {
+            "path": "/private/tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/node",
+            "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5"
+          },
+          "clang": {
+            "path": "/usr/bin/clang",
+            "sha256": "179301dcb41ea78accc3fa0048a7e6f6710d891945a751a34addd622020c1818"
+          },
+          "opt": {
+            "path": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/opt",
+            "sha256": "f0c47819a5c4bccebc4fde8494977ec0bb223e2d47a62c376372942445708e14"
+          },
+          "split": {
+            "path": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/llvm-split",
+            "sha256": "548df9b6333fe8a7a9931962a4ca87d89d2c5a13ba48909dd77c8b8984cdab57"
+          }
+        },
+        "environment": {}
+      },
+      "error": "Error: worker exit 1\n    at need (/private/tmp/bend-g24-1e9d23827584491ccb29626e3698fcd27b6bf98a63067dd2/snapshot/repository/evals/g24_distributed.mjs:83:45)\n    at supervise (/private/tmp/bend-g24-1e9d23827584491ccb29626e3698fcd27b6bf98a63067dd2/snapshot/repository/evals/g24_distributed.mjs:438:5)\n    at processTicksAndRejections (native:7:39)"
+    },
+    "failureGuardSource": "ssh://misakaindrive/tmp/bend-g24-1e9d23827584491ccb29626e3698fcd27b6bf98a63067dd2/execution/repository/checkpoints/.g24-1e9d23827584491ccb29626e3698fcd27b6bf98a63067dd2/matrix-c/scheduler_chunk_smoke.emit.gate.json:1-100:raw",
+    "failureGuard": {
+      "status": "FAIL",
+      "reason": "deadline_exceeded",
+      "commandExitCode": -1,
+      "commandSignal": 15,
+      "peakRssBytes": 2471428096,
+      "peakFootprintBytes": 2527243376,
+      "elapsedMs": 600090,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 1,
+      "command": [
+        "/bin/sh",
+        "-c",
+        "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+        "sh",
+        "/tmp/bend-g24-1e9d23827584491ccb29626e3698fcd27b6bf98a63067dd2/execution/repository/checkpoints/.g24-1e9d23827584491ccb29626e3698fcd27b6bf98a63067dd2/matrix-c/scheduler_chunk_smoke.emit.stdout",
+        "/tmp/bend-g24-1e9d23827584491ccb29626e3698fcd27b6bf98a63067dd2/execution/repository/checkpoints/.g24-1e9d23827584491ccb29626e3698fcd27b6bf98a63067dd2/matrix-c/scheduler_chunk_smoke.emit.stderr",
+        "/tmp/bend-g24-1e9d23827584491ccb29626e3698fcd27b6bf98a63067dd2/execution/repository/checkpoints/.g24-1e9d23827584491ccb29626e3698fcd27b6bf98a63067dd2/stage-one-consumer-driver",
+        "/private/tmp/bend-g24-1e9d23827584491ccb29626e3698fcd27b6bf98a63067dd2/execution/repository/evals/scheduler_chunk_smoke.bend",
+        "-o",
+        "/tmp/bend-g24-1e9d23827584491ccb29626e3698fcd27b6bf98a63067dd2/execution/repository/checkpoints/.g24-1e9d23827584491ccb29626e3698fcd27b6bf98a63067dd2/matrix-c/scheduler_chunk_smoke.c",
+        "--base",
+        "/private/tmp/bend-g24-1e9d23827584491ccb29626e3698fcd27b6bf98a63067dd2/execution/repository/bend2/base.bend",
+        "--runtime-c",
+        "/private/tmp/bend-g24-1e9d23827584491ccb29626e3698fcd27b6bf98a63067dd2/execution/repository/bend2/selfhost/c_runtime.c"
+      ],
+      "label": "scheduler_chunk_smoke:emit",
+      "exitCode": 1,
+      "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1793527997451-2b7e4e4afc24d824.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592,
+      "argv": [
+        "/tmp/bend-g24-1e9d23827584491ccb29626e3698fcd27b6bf98a63067dd2/execution/repository/checkpoints/.g24-1e9d23827584491ccb29626e3698fcd27b6bf98a63067dd2/stage-one-consumer-driver",
+        "/private/tmp/bend-g24-1e9d23827584491ccb29626e3698fcd27b6bf98a63067dd2/execution/repository/evals/scheduler_chunk_smoke.bend",
+        "-o",
+        "/tmp/bend-g24-1e9d23827584491ccb29626e3698fcd27b6bf98a63067dd2/execution/repository/checkpoints/.g24-1e9d23827584491ccb29626e3698fcd27b6bf98a63067dd2/matrix-c/scheduler_chunk_smoke.c",
+        "--base",
+        "/private/tmp/bend-g24-1e9d23827584491ccb29626e3698fcd27b6bf98a63067dd2/execution/repository/bend2/base.bend",
+        "--runtime-c",
+        "/private/tmp/bend-g24-1e9d23827584491ccb29626e3698fcd27b6bf98a63067dd2/execution/repository/bend2/selfhost/c_runtime.c"
+      ],
+      "stdoutPath": "/tmp/bend-g24-1e9d23827584491ccb29626e3698fcd27b6bf98a63067dd2/execution/repository/checkpoints/.g24-1e9d23827584491ccb29626e3698fcd27b6bf98a63067dd2/matrix-c/scheduler_chunk_smoke.emit.stdout",
+      "stderrPath": "/tmp/bend-g24-1e9d23827584491ccb29626e3698fcd27b6bf98a63067dd2/execution/repository/checkpoints/.g24-1e9d23827584491ccb29626e3698fcd27b6bf98a63067dd2/matrix-c/scheduler_chunk_smoke.emit.stderr"
+    }
+  },
+  "sameM1Regression": "checkpoints/local2039g43r10r3-local-outcome/outcome.json",
+  "interpretation": "Output/report canonicalization crosses original full95 seed and190 emitted-fixture authentication successfully, without weakening identity/hash checks. The ordering-only compiler candidate does not fix the full scheduler C timeout on either Mac; no unchanged replay or promotion. Full canonical failure stops remaining queued consumer branches and no candidate throughput is eligible. The generic dispatch error and stale failure.step=emitted-suites do not identify the underlying problem; durable matrix worker evidence proves the actual C emit deadline."
+}
