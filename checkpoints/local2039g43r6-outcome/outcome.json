@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "version": "G43DIST_R6",
+  "sourceCommit": "5606e791",
+  "status": "REAL_DIRECT_SSH_NATIVE_BRANCH_PASS_NOT_FULL_QUALIFICATION",
+  "compilerAccepted": false,
+  "performanceAccepted": false,
+  "fullCorrectnessPassed": false,
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r6-source/native-ssh-diagnostic.mjs",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r6/native-config.json"
+  ],
+  "tests": {
+    "text": "bun test v1.4.3 (c6da4a4d3)\n\n 12 pass\n 0 fail\nRan 12 tests across 1 file. [278.00ms]\n",
+    "details": {
+      "wallTimeNoticeEmitted": false,
+      "timeoutSeconds": 180,
+      "wallTimeMs": 352.20545798540115
+    }
+  },
+  "actualRemotePhysical": "4613c60b990a84a1d3484370a8bb68887aa6b616ef55f96ff8802a1107f7a84b",
+  "nativeConsumerStatus": "NATIVE_FOREIGN_AND_LIBRARY_SMOKE_PASS",
+  "nativeRows": 33,
+  "counts": {
+    "fixtures": 30,
+    "library": 1,
+    "nativeExports": 2,
+    "total": 33
+  },
+  "actualSupervisorStatus": "PASS",
+  "actualReaped": true,
+  "originalLimits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "remoteReceiptSha256": "12e4e08342805c90aa70c046ec7cf9bff8fca3b982b8bf09e1a5751e1f0198d8",
+  "remoteReceiptByteAuthenticated": true,
+  "privateAcceptedTools": "evals/receipts/producer2039g43r5_misaka_setup.json",
+  "bbAppStoppedOrPaused": false,
+  "systemToolsReplaced": false,
+  "nameBasedIdleGateAddedBack": false,
+  "scope": "Complete33-row native/foreign/library branch executed on authorized remote M3Pro through the actual new direct SSH transport. This proves native image execution there, not complete matrices, other branches, cancellation or performance qualification.",
+  "remainingRealFailure": "R5 C-matrix scheduler_chunk_smoke emission at original600s; preserved in9aed57bf. Do not hide it behind this selected-branch diagnostic.",
+  "sources": {
+    "evals/g24_distributed.mjs": "d88b32e106514afad1960b180f1b1fe6e31ca9023551bd768d057f42e914e542",
+    "evals/g24_distributed.test.mjs": "fe56e2d08f4efcad9715e46c28860d8fa1133bc032062c24d0cf01773cce0844"
+  },
+  "generatedCompilerImagesAstTransportsAndBulkLogsCommitted": false
+}
