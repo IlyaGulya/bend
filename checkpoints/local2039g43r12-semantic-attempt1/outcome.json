@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "version": "G43R12-SEMANTIC-ATTEMPT1",
+  "status": "GENERATION_REJECTED_BEFORE_BEHAVIORAL_EXECUTION",
+  "authorCheckpoint": "74252581",
+  "candidateSourceCommit": "42139224",
+  "oldCompilerWithSameFixtureCommit": "63e7ec47",
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "evals/heavy_gate.ts",
+    "--memory-mib=8192",
+    "--rss-mib=8192",
+    "--poll-ms=10",
+    "--timeout-ms=600000",
+    "--",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "evals/clay_layout_step_smoke.ts"
+  ],
+  "cwd": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/reach-before-42139224",
+  "guard": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "commandExitCode": 1,
+    "commandSignal": 0,
+    "peakRssBytes": 281673728,
+    "peakFootprintBytes": 224871216,
+    "elapsedMs": 798,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/clay_layout_step_smoke.ts"
+    ],
+    "label": "heavy command",
+    "exitCode": 1,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793536211702-1e47d2161c10f005.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "observedFailure": "explicit_recursion_check: Original lexical type indexing failed: MissingType: Missing lexical type: variable is not bound (binder96)",
+  "scope": "The new meaningful fixture was accepted by composition/normalization but strict step generation failed during original lexical type indexing. This is not the desired failing-before explicit-declaration behavior proof, and no candidate semantic/C/fixedpoint acceptance follows. The strict failure must be diagnosed, not suppressed or worked around by deleting coverage.",
+  "ownedNormalizedSource": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/reach-before-42139224/checkpoints/clay_layout_smoke_owned.bend",
+    "sha256": "ce445c476f684626c7a1baff62b8df458603d4b7231619fab414bf44ffdb4b14",
+    "bytes": 182185
+  },
+  "candidateNotExecuted": true,
+  "behavioralRegressionReproduced": false
+}
