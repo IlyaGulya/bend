@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "version": "G43R10R2",
+  "status": "AUTHORED_NOT_EXECUTED",
+  "previousOutcomeCommit": "490dee7f",
+  "isolatedSourceCommit": "fb208cad",
+  "semanticOrderingCommit": "6cf47100",
+  "sourcePins": [
+    {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/evals/selfhost_bootstrap_gate.ts",
+      "sha256": "1ecdd45629e393953e5f7d1545485fb50238fcdc06b984db274e65f64c0355d7",
+      "bytes": 76323
+    },
+    {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/bend2/selfhost/c_backend_layout.bend",
+      "sha256": "7debc83cbb3351a82406c111973adfb645d20843c5ef701bd400eaf2841271da",
+      "bytes": 54172
+    }
+  ],
+  "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257",
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "evals/g24_qualification.mjs",
+    "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "--bun=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--clang=/usr/bin/clang",
+    "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+    "--bindings=/Users/ilyagulya/Projects/My/bend/evals/receipts/producer2039g25_r12_bindings.json",
+    "--frozen-repository=/private/tmp/bend2039g22-tiny-inline",
+    "--control-native=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+    "--control-image=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+    "--phase=correctness",
+    "--cc-partitions=4",
+    "--run-id=local2039g43r10r2",
+    "--distributed-plan=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r6/placement.json",
+    "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r10r2-correctness"
+  ],
+  "requiredFrozenProgramCorpus": "checkpoints/local2039g43r10r1-inputs/corpus.json (53 complete frozen source inputs; no images)",
+  "change": "Canonicalize the existing report parent after mkdir, then derive report sidecars and both diagnostic/full fixture imports from those real coordinates. Generic symlink fix, no /var special case, no fixture exclusion, no original case-source edits. Traversal candidate is unchanged.",
+  "regressionProof": "Run the actual full bootstrap through the original /var alias output path that generated /private/private before; every original fixture and genuine byte fixedpoint remain required. A heavy permanent full-bootstrap regression is not added; this real integration run proves the changed boundary.",
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "abiExports": 13,
+  "fuel": 8000000,
+  "quantum": 64,
+  "compilerAccepted": false,
+  "performanceAccepted": false,
+  "performancePolicy": "Correctness-only phase uses original API; any subsequent throughput keeps original all12 strict rows and fail-fast=true. No acceptance shortcut."
+}
