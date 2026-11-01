@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "version": "2039g43r13t2",
+  "status": "AUTHORED_BEFORE_EXECUTION",
+  "sourceCheckpoint": "dad6aa45",
+  "sourceBaseline": "f2e8358a",
+  "compilerPatchPresent": false,
+  "consumerSeam": "Actual production pure-main C/JS stdout compared to independent literal #|, through genuine accepted native-produced stage1.",
+  "fixture": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/show-nf-e80899cb/evals/c_target_show_data.bend",
+    "sha256": "eb552eefcb695245434efa70f3ec8b6d6650dade1a9e24ca7a2066af6f1d83f4",
+    "bytes": 1026
+  },
+  "acceptedImage": {
+    "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+    "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+    "bytes": 31758507
+  },
+  "acceptedImageFixedpoint": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+  "driverSource": "#!/bin/sh\nexec /Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node --experimental-strip-types /private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/show-nf-e80899cb/evals/candidate_consumer_worker.mjs /private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/show-nf-e80899cb/evals/candidate_host.ts --candidate=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js --parser=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js \"$@\"\n",
+  "commands": [
+    [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/heavy_gate.ts",
+      "--memory-mib=8192",
+      "--rss-mib=8192",
+      "--poll-ms=10",
+      "--timeout-ms=600000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "-e",
+      "import * as K from \"/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/show-nf-e80899cb/bend2/bend.ts\"; const book=K.book_nil(); try { await K.book_load(book,\"/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/show-nf-e80899cb/evals/c_target_show_data.bend\",\"\",new Map()); K.book_valid(book); console.log(\"REFERENCE_CHECK_PASS\"); } catch (error) { console.error(K.err_show(error)); process.exitCode=1; }"
+    ],
+    [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/c_target_fixtures_run.ts",
+      "--driver=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r13-cases/accepted-stage1-driver",
+      "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--target=c",
+      "--logs=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r13-cases/baseline-t2-c",
+      "--smoke-case=c_target_show_data",
+      "--keep"
+    ],
+    [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/c_target_fixtures_run.ts",
+      "--driver=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r13-cases/accepted-stage1-driver",
+      "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--target=js",
+      "--logs=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r13-cases/baseline-t2-js",
+      "--smoke-case=c_target_show_data",
+      "--keep"
+    ]
+  ],
+  "cwd": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/show-nf-e80899cb",
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "perStepTimeoutMs": 600000,
+    "abiExports": 13,
+    "parserFuelCellsPerModule": 8000000,
+    "nativeQuantum": 64
+  },
+  "scope": "Only a development semantic smoke of the expanded existing fixture. Baseline should PASS; no manufactured failing-before claim for a semantics-preserving optimization. Original full C62 scheduler deadline is the existing measured performance failure and is not retried unchanged. Full gates remain required after new compiler source.",
+  "priorRejectedInputCheckpoint": "35cda6fc",
+  "correction": "Only explicit &2 quantity on ShowPair.rest; same cases, captured alias and expected stdout. Compiler still unchanged."
+}
