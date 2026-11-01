@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "version": "G43R12L1",
+  "status": "AUTHORED_NOT_EXECUTED",
+  "implementationCommit": "15c22e74",
+  "afterCommit": "94940509",
+  "oldHelperWithSameTestsCommit": "67cc41d4",
+  "sourcePins": [
+    {
+      "file": "evals/parser_full_type_env.ts",
+      "source": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/evals/parser_full_type_env.ts",
+        "sha256": "5b38164f297e9c275185519b6a815547b89f16a205b9b1c24c52ce4f907508df",
+        "bytes": 26372
+      },
+      "frozen": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r12l1-source/evals/parser_full_type_env.ts",
+        "sha256": "5b38164f297e9c275185519b6a815547b89f16a205b9b1c24c52ce4f907508df",
+        "bytes": 26372
+      }
+    },
+    {
+      "file": "evals/parser_full_type_env.test.ts",
+      "source": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/evals/parser_full_type_env.test.ts",
+        "sha256": "d1544c234112bd93d12991e5208e701862049dfe0180a41a15773242552c7b81",
+        "bytes": 12053
+      },
+      "frozen": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r12l1-source/evals/parser_full_type_env.test.ts",
+        "sha256": "d1544c234112bd93d12991e5208e701862049dfe0180a41a15773242552c7b81",
+        "bytes": 12053
+      }
+    }
+  ],
+  "oldHelper": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/reach-before-42139224/evals/parser_full_type_env.ts",
+    "sha256": "975ff4f63f610320b3de3ef820c65966ef19d3338e6166e43ee5a6032d0913c7",
+    "bytes": 25112
+  },
+  "priorFailure": "12268ac1",
+  "decision": "Direct nested constructor payloads share real inference parameters/solutions, collect all hard payload constraints first, then fit kinds/quantities to fixed point and reject undetermined parameters. Transitive solutions and cycles are checked; no fallback/guessed type or suppressed MissingType.",
+  "rejectedSourceStrategy": "EarlyData-head quantity commitment rejected by independent review because a later lexical List<&1,Nat> tail must retain its explicit compatible quantity. This strategy was never runtime-qualified.",
+  "independentReview": "ConstructorKindsReview final shared-collector source verdict: no actionable introduced defect; no runtime acceptance claim.",
+  "red": {
+    "cwd": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/reach-before-42139224",
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/heavy_gate.ts",
+      "--memory-mib=8192",
+      "--rss-mib=8192",
+      "--poll-ms=10",
+      "--timeout-ms=600000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "test",
+      "evals/parser_full_type_env.test.ts",
+      "-t",
+      "a standalone list infers its element and quantity through the empty tail"
+    ],
+    "criterion": "Original lexical helper must fail the real standalone singleton/dependent-empty-tail test. This is a host-lowering regression reproduction, not C acceptance."
+  },
+  "green": {
+    "cwd": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257",
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/heavy_gate.ts",
+      "--memory-mib=8192",
+      "--rss-mib=8192",
+      "--poll-ms=10",
+      "--timeout-ms=600000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "test",
+      "evals/parser_full_type_env.test.ts",
+      "evals/parser_full_capture.test.ts",
+      "evals/parser_full_body_capture.test.ts",
+      "evals/parser_full_product.test.ts",
+      "evals/parser_full_pattern_quantity.test.ts"
+    ],
+    "criterion": "Full affected semantic type/capture/product/quantity suite, including singleton, explicit weakened quantity, nested later constraint and incompatible type rejection."
+  },
+  "next": "Port only the verified helper to old CLay comparator, preserving old CLay code and same fixture. Then original composed CLay semantic red/green must actually execute; native/fixedpoint/fullC/JS and strict12 remain required.",
+  "compilerAccepted": false,
+  "acceptedCompiler": "G24R12 unchanged"
+}
