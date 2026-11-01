@@ -365,7 +365,7 @@ if(o.workCensus!==undefined){
   const trace=table.traceTables.find((row:any)=>row.status==='verified');
   if(!trace||typeof trace.namespace!=='string'||!Array.isArray(querySpecs)||querySpecs.length!==2)fail('query census needs one verified native trace and both query schemas');
   const {createQueryCensus}=await import('./compiler_query_census.mjs');
-  queryCensus=createQueryCensus({immutableData:true,maxNodes:500000,maxQueries:100000,maxBytes:134217728,maxWorkPerQuery:2000000});
+  queryCensus=createQueryCensus({immutableData:true,maxNodes:500000,maxQueries:100000,maxBytes:134217728,maxWorkPerQuery:32000000});
   queryRunTag=trace.constructors.run;queryCaptures=new Map();
   const kinds=new Set<string>();
   for(const capture of querySpecs){
