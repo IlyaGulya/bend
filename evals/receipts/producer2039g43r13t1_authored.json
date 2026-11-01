@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "version": "2039g43r13t1",
+  "status": "AUTHORED_BEFORE_EXECUTION",
+  "sourceCheckpoint": "6d8c2aa3",
+  "sourceBaseline": "f2e8358a",
+  "compilerPatchPresent": false,
+  "consumerSeam": "Actual production pure-main C/JS stdout compared to independent literal #|, through genuine accepted native-produced stage1.",
+  "fixture": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/show-nf-e80899cb/evals/c_target_show_data.bend",
+    "sha256": "17326ed179493c683be37b87fdb01cfaa7bf486d0e2019b28a32f1f242c7f2e0",
+    "bytes": 1022
+  },
+  "acceptedImage": {
+    "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+    "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+    "bytes": 31758507
+  },
+  "acceptedImageFixedpoint": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+  "driverSource": "#!/bin/sh\nexec /Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node --experimental-strip-types /private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/show-nf-e80899cb/evals/candidate_consumer_worker.mjs /private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/show-nf-e80899cb/evals/candidate_host.ts --candidate=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js --parser=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js \"$@\"\n",
+  "commands": [
+    [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/c_target_fixtures_run.ts",
+      "--driver=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r13-cases/accepted-stage1-driver",
+      "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--target=c",
+      "--logs=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r13-cases/baseline-c",
+      "--smoke-case=c_target_show_data",
+      "--keep"
+    ],
+    [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/c_target_fixtures_run.ts",
+      "--driver=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r13-cases/accepted-stage1-driver",
+      "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--target=js",
+      "--logs=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r13-cases/baseline-js",
+      "--smoke-case=c_target_show_data",
+      "--keep"
+    ]
+  ],
+  "cwd": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/show-nf-e80899cb",
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "perStepTimeoutMs": 600000,
+    "abiExports": 13,
+    "parserFuelCellsPerModule": 8000000,
+    "nativeQuantum": 64
+  },
+  "scope": "Only a development semantic smoke of the expanded existing fixture. Baseline should PASS; no manufactured failing-before claim for a semantics-preserving optimization. Original full C62 scheduler deadline is the existing measured performance failure and is not retried unchanged. Full gates remain required after new compiler source."
+}
