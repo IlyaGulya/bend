@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "version": "G43R10R3",
+  "status": "REJECTED_AS_SAME_M1_C_EMISSION_FIX",
+  "compilerAccepted": false,
+  "performanceAccepted": false,
+  "fullCorrectnessClaim": false,
+  "semanticSourceCommit": "6cf47100",
+  "hostSourceCommit": "91698b3a",
+  "command": [
+    "/usr/bin/env",
+    "PATH=/usr/bin:/bin:/usr/sbin:/sbin:/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/evals/c_target_fixtures_run.ts",
+    "--target=c",
+    "--driver=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r10r3-correctness/stage-one-consumer-driver",
+    "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "--logs=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r10r3-local-scheduler",
+    "--smoke-case=scheduler_chunk_smoke",
+    "--keep"
+  ],
+  "cwd": "/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository",
+  "genuineImage": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r10r3-correctness/bootstrap.json.cases/stage-one.js",
+    "sha256": "f5151acbd83e51ef32fa618b175b31cc18d91fd71677b2b5a60dfc5b0ac807eb",
+    "bytes": 31772597
+  },
+  "individualProducerProofs": {
+    "fixedpoint": {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r10r3-correctness/bootstrap.json",
+      "sha256": "6056c308fb9eb83b4f63482ea0fbe9c35b781873c2a6be324777b43750870a3d",
+      "bytes": 516487
+    },
+    "emitted": {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r10r3-correctness/emitted-suites.json",
+      "sha256": "d32ec6c01fd408af5ef1a9b3016f090ff5dd6031ad8b1451c81e637afb307107",
+      "bytes": 1749183
+    }
+  },
+  "localMatrix": {
+    "mode": "diagnostic-smoke",
+    "target": "c",
+    "node": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "nodeVersion": "v23.11.0",
+    "v8": "12.9.202.28-node.14|--max-old-space-size=3072,-e,process.stdout.write(process.versions.v8 + \"|\" + process.execArgv.join(\",\"))",
+    "driver": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r10r3-correctness/stage-one-consumer-driver",
+    "guardianTs": "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/evals/heavy_gate.ts",
+    "guardianTsSha256": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015",
+    "guardianNativeC": "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/evals/heavy_gate_native.c",
+    "guardianNativeCSha256": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b",
+    "cwd": "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository",
+    "base": "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/bend2/base.bend",
+    "baseSha256": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+    "runtime": "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/bend2/selfhost/c_runtime.c",
+    "runtimeSha256": "6935fa83c1b20b7f8982f04ad54c4e4dae0b9b0ea66fd00f32d169a1d03ac2bf",
+    "logs": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r10r3-local-scheduler",
+    "gate": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 600000
+    },
+    "fixtures": 1,
+    "smokeCase": "scheduler_chunk_smoke"
+  },
+  "casePins": {
+    "fixture": "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/evals/scheduler_chunk_smoke.bend",
+    "sourceSha256": "21986a939adccc86c6580c446242be9feb95703c6eeb820ef939d961f2247140",
+    "expected": "4294967295\n37\n0\n4294967295\n1\n31\n4294967295\n32\n32\n4294967295\n48\n4294967295\n72\n2\n1",
+    "target": "c",
+    "outFile": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r10r3-local-scheduler/scheduler_chunk_smoke.c",
+    "node": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "nodeSha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5",
+    "nodeVersion": "v23.11.0",
+    "v8": "12.9.202.28-node.14|--max-old-space-size=3072,-e,process.stdout.write(process.versions.v8 + \"|\" + process.execArgv.join(\",\"))"
+  },
+  "emitGuard": {
+    "status": "FAIL",
+    "reason": "deadline_exceeded",
+    "commandExitCode": -1,
+    "commandSignal": 15,
+    "peakRssBytes": 2306375680,
+    "peakFootprintBytes": 2560438464,
+    "elapsedMs": 600225,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "command": [
+      "/bin/sh",
+      "-c",
+      "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+      "sh",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r10r3-local-scheduler/scheduler_chunk_smoke.emit.stdout",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r10r3-local-scheduler/scheduler_chunk_smoke.emit.stderr",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r10r3-correctness/stage-one-consumer-driver",
+      "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/evals/scheduler_chunk_smoke.bend",
+      "-o",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r10r3-local-scheduler/scheduler_chunk_smoke.c",
+      "--base",
+      "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/bend2/base.bend",
+      "--runtime-c",
+      "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/bend2/selfhost/c_runtime.c"
+    ],
+    "label": "scheduler_chunk_smoke:emit",
+    "exitCode": 1,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793527487269-133a850bcebe8850.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592,
+    "argv": [
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r10r3-correctness/stage-one-consumer-driver",
+      "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/evals/scheduler_chunk_smoke.bend",
+      "-o",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r10r3-local-scheduler/scheduler_chunk_smoke.c",
+      "--base",
+      "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/bend2/base.bend",
+      "--runtime-c",
+      "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/bend2/selfhost/c_runtime.c"
+    ],
+    "stdoutPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r10r3-local-scheduler/scheduler_chunk_smoke.emit.stdout",
+    "stderrPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r10r3-local-scheduler/scheduler_chunk_smoke.emit.stderr"
+  },
+  "canonicalFullRun": {
+    "status": "PENDING_REMOTE_WORKERS",
+    "job": "bg_1158",
+    "receipt": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r10r3-correctness/receipt.json",
+    "unchangedAndNotRewritten": true
+  },
+  "interpretation": "The pure-OR ordering candidate builds natively and passes genuine fixedpoint plus95+190 original fixture executions, but the original full scheduler input on the original M1 still exceeds original600s. This rejects it as a demonstrated fix; no unchanged replay or speedup claim. Remote full matrices continue for their actual evidence. Inspect the actual BIR family/arm descriptor metadata before another semantic optimization; source declaration order alone was insufficient evidence."
+}
