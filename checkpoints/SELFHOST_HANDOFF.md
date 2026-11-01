@@ -75,13 +75,20 @@ Scope maps, String, Char/U32, env empty. Диагностика намеренн
 после observation, не C compile/run PASS.
 Завершённый one-off scheduler diagnostic удалён из main evals после proof;
 точные source/команды/observation сохранены в соответствующих checkpoints и Git.
-Следующий private experiment — conservative program-scoped negative named-ref
-facts только для closed zero-arity/empty-args families; unknowns fail closed,
-positive/maybe/generic cases сохраняют NF/env/fuel/seen. ClosedFamilyFacts
-редактирует private c_backend_layout/semantic fixture; ClosedNamesProof
-независимо проверяет source soundness. Они ничего не запускают и не коммитят.
-После actual full correctness PASS для нового image всё ещё нужны исходные12
-strict paired rows и same-M1 regression. Никаких fake prior receipts.
+G43R11 private source **`b7c49cf0`**, contract **`42d1735d`**, main author
+**`9ec3dfb7`**: conservative program-scoped negative named-ref facts только для
+closed zero-arity/empty-args families. Unknowns fail closed; positive/maybe/
+generic cases сохраняют NF/env/fuel/seen. Independent source review found no
+name-provenance counterexample; это source argument, не formal kernel theorem.
+Required generated semantic Bend inputs frozen **`53fb6bd3`**. Реальный
+composed owned-step CLay fixture через canonical Bend loader PASS:
+failures0,7144 chunks,1143ms, RSS438992896B, footprint379782080B,
+ownedTreeStopped=true; original8/8-GiB,10-ms,600-s guardian.
+`checkpoints/local2039g43r11-semantic-outcome/outcome.json`.
+Это не genuine image/fixedpoint/C62/JS67/throughput acceptance. Exact fresh
+full-correctness command: `evals/receipts/producer2039g43r11_authored.json`.
+Нужны реальные full correctness, same-M1 full scheduler и исходные12 strict
+paired rows. Main compiler/backend и accepted R12 images пока не заменены.
 
 
 

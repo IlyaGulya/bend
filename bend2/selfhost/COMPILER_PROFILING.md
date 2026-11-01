@@ -550,3 +550,22 @@ fuel/env/seen-sensitive positive queries retain the original semantics.
 `checkpoints/local2039g43r10r3-outcome/outcome.json`.
 `checkpoints/local2039g43r10d1-outcome/outcome.json`.
 
+### Conservative closed-family candidate: semantic smoke only (G43R11)
+
+The isolated candidate builds one syntactic dependency graph per CLay context
+and retains proved negative facts only for authoritative zero-arity families.
+Edges union all family fields and indexed function bodies, including nested
+arguments and unevaluated descriptor children. Unknown forms prevent a proof;
+opaque names are terminal with arguments still collected. Applied/generic
+environments and every positive/maybe case keep the original normalizer,
+path-local seen set and fuel. No normal form or failed reduction is cached.
+
+The existing composed/normalized/owned CLay fixture actually executed through
+the canonical Bend module loader: zero failures,7144 chunks,1143ms,
+RSS438992896B, footprint379782080B; guardian PASS and owned tree stopped.
+Its artifact hash identifies generated Bend source, not a selfhost JS image.
+This exercises semantic boundaries, not native-seeded byte fixedpoint,
+C62/JS67 completeness, scheduler deadline improvement or strict throughput.
+Source `b7c49cf0`, private contract `42d1735d`, frozen generated inputs
+`53fb6bd3`; `checkpoints/local2039g43r11-semantic-outcome/outcome.json`.
+
