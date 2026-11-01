@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "af6f7466",
+  "authorCheckpoint": "c8b63553",
+  "generatorCommand": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "evals/heavy_gate.ts",
+    "--memory-mib=8192",
+    "--rss-mib=8192",
+    "--poll-ms=10",
+    "--timeout-ms=600000",
+    "--",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "evals/physical_step_smoke.ts"
+  ],
+  "generator": {
+    "status": "PASS",
+    "definitions": 549,
+    "sourceCalls": 1485,
+    "helpers": 1232,
+    "elapsedMs": 1622,
+    "peakRssBytes": 404389888,
+    "peakFootprintBytes": 249873344,
+    "ownedTreeStopped": true,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793547695758-4951275192850880.json"
+  },
+  "runtimeCommand": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "evals/heavy_gate.ts",
+    "--memory-mib=8192",
+    "--rss-mib=8192",
+    "--poll-ms=10",
+    "--timeout-ms=600000",
+    "--",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "--preload",
+    "./bend2/main.ts",
+    "evals/physical_step_smoke.ts",
+    "--run=checkpoints/physical_steps_component_v1.bend"
+  ],
+  "files": [
+    {
+      "path": "checkpoints/physical_show_smoke_owned.bend",
+      "source": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/show-nf-e80899cb/checkpoints/physical_show_smoke_owned.bend",
+        "sha256": "f3768e6153888d99778b7ec30e2345bbd234ce3a6a5f0e2c2f30cda4fd119ba5",
+        "bytes": 376839
+      },
+      "frozen": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r13-physical-inputs/repository/checkpoints/physical_show_smoke_owned.bend",
+        "sha256": "f3768e6153888d99778b7ec30e2345bbd234ce3a6a5f0e2c2f30cda4fd119ba5",
+        "bytes": 376839
+      }
+    },
+    {
+      "path": "checkpoints/physical_steps_v1.bend",
+      "source": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/show-nf-e80899cb/checkpoints/physical_steps_v1.bend",
+        "sha256": "30455d0d30a5f1645794a67bd452b1b878b6404020269209bc82fa46c8fe4ca6",
+        "bytes": 983788
+      },
+      "frozen": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r13-physical-inputs/repository/checkpoints/physical_steps_v1.bend",
+        "sha256": "30455d0d30a5f1645794a67bd452b1b878b6404020269209bc82fa46c8fe4ca6",
+        "bytes": 983788
+      }
+    },
+    {
+      "path": "checkpoints/physical_steps_component_v1.bend",
+      "source": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/show-nf-e80899cb/checkpoints/physical_steps_component_v1.bend",
+        "sha256": "7cae73e52b34f6c29a01686bbba773aff286ae0037264364ba4ec825b60d19ee",
+        "bytes": 412
+      },
+      "frozen": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r13-physical-inputs/repository/checkpoints/physical_steps_component_v1.bend",
+        "sha256": "7cae73e52b34f6c29a01686bbba773aff286ae0037264364ba4ec825b60d19ee",
+        "bytes": 412
+      }
+    }
+  ],
+  "runtimeNotExecutedAtCheckpoint": true,
+  "nativeFixedpointClaim": false,
+  "compilerAccepted": false,
+  "performanceClaim": false
+}
