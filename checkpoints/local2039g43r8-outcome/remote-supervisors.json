@@ -1,0 +1,102 @@
+[
+  {
+    "source": "ssh://misakaindrive/tmp/bend-g24-8779b3efc48a4cd28e968fa4035b8d902cfe0110d08b9df9/result.json:1-45:raw",
+    "projectionOnly": true,
+    "fields": {
+      "nonce": "8779b3efc48a4cd28e968fa4035b8d902cfe0110d08b9df9",
+      "jobSha256": "219c4bfd3ebb32eadba782e5b02788dbe64eff475e1fb2703f763a666fdbfddb",
+      "job": "performance-native",
+      "snapshotSha256": "033e2e1198c5a29527c2d8a1130cbacdcb5f6679608ca3f1f54a3676f3eb0930",
+      "planSha256": "c1751625b9145a3a186d9288d35db5ef2270fddb9510b5f05d429c1e5d0203c1",
+      "status": "PASS",
+      "reaped": true,
+      "pin": {
+        "physical": "4613c60b990a84a1d3484370a8bb68887aa6b616ef55f96ff8802a1107f7a84b",
+        "platform": "darwin",
+        "arch": "arm64",
+        "release": "25.5.0",
+        "cpu": "Apple M3 Pro",
+        "memoryBytes": 38654705664,
+        "tools": {
+          "bun": "/private/tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/bun",
+          "node": "/private/tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/node",
+          "clang": "/usr/bin/clang",
+          "llvmBin": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin"
+        },
+        "pins": {
+          "bun": {
+            "path": "/private/tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/bun",
+            "sha256": "28c7dd0a06916aba284d570ef44a2d70e9c538eaf2ba58dfe0910525563b3f79"
+          },
+          "node": {
+            "path": "/private/tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/node",
+            "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5"
+          },
+          "clang": {
+            "path": "/usr/bin/clang",
+            "sha256": "179301dcb41ea78accc3fa0048a7e6f6710d891945a751a34addd622020c1818"
+          },
+          "opt": {
+            "path": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/opt",
+            "sha256": "f0c47819a5c4bccebc4fde8494977ec0bb223e2d47a62c376372942445708e14"
+          },
+          "split": {
+            "path": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/llvm-split",
+            "sha256": "548df9b6333fe8a7a9931962a4ca87d89d2c5a13ba48909dd77c8b8984cdab57"
+          }
+        },
+        "environment": {}
+      }
+    }
+  },
+  {
+    "source": "ssh://misakaindrive/tmp/bend-g24-cb15b5b1c760057bcaa27a192ebc8f0e8e8257e512a6422e/result.json:1-45:raw",
+    "projectionOnly": true,
+    "fields": {
+      "nonce": "cb15b5b1c760057bcaa27a192ebc8f0e8e8257e512a6422e",
+      "jobSha256": "07260b17446c59b506c31ee97da0e336d2f8502b1f5ebaf203fdf9f8ac4b201e",
+      "job": "performance-js",
+      "snapshotSha256": "033e2e1198c5a29527c2d8a1130cbacdcb5f6679608ca3f1f54a3676f3eb0930",
+      "planSha256": "c1751625b9145a3a186d9288d35db5ef2270fddb9510b5f05d429c1e5d0203c1",
+      "status": "PASS",
+      "reaped": true,
+      "pin": {
+        "physical": "4613c60b990a84a1d3484370a8bb68887aa6b616ef55f96ff8802a1107f7a84b",
+        "platform": "darwin",
+        "arch": "arm64",
+        "release": "25.5.0",
+        "cpu": "Apple M3 Pro",
+        "memoryBytes": 38654705664,
+        "tools": {
+          "bun": "/private/tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/bun",
+          "node": "/private/tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/node",
+          "clang": "/usr/bin/clang",
+          "llvmBin": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin"
+        },
+        "pins": {
+          "bun": {
+            "path": "/private/tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/bun",
+            "sha256": "28c7dd0a06916aba284d570ef44a2d70e9c538eaf2ba58dfe0910525563b3f79"
+          },
+          "node": {
+            "path": "/private/tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/node",
+            "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5"
+          },
+          "clang": {
+            "path": "/usr/bin/clang",
+            "sha256": "179301dcb41ea78accc3fa0048a7e6f6710d891945a751a34addd622020c1818"
+          },
+          "opt": {
+            "path": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/opt",
+            "sha256": "f0c47819a5c4bccebc4fde8494977ec0bb223e2d47a62c376372942445708e14"
+          },
+          "split": {
+            "path": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/llvm-split",
+            "sha256": "548df9b6333fe8a7a9931962a4ca87d89d2c5a13ba48909dd77c8b8984cdab57"
+          }
+        },
+        "environment": {}
+      }
+    }
+  }
+]

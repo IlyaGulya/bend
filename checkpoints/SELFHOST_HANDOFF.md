@@ -23,10 +23,21 @@ Direct SSH source **`5606e791`**, runtime outcome **`b6e58bc2`**: полная
 native/foreign/library branch — 33 rows PASS, supervisor reaped=true.
 12 safety tests PASS; bb-app и system runtimes не менялись. Это selected
 branch diagnostic, не manufactured prior full correctness.
-R7 **`24b3b5e8`** добавляет только opt-in fuel/parser phase spans и запускает
-full-input фазовую диагностику локально; admission/host branches идут на
-отдельной remote машине. Пока их результаты и hotspot не наблюдались.
-Evidence: `local2039g43r6-outcome/outcome.json`.
+R7 **`24b3b5e8`**, outcome **`b4cf79c3`**: admission12 и host5 rows PASS;
+actual remote native PID41046 прерван через coordinator, same-nonce supervisor
+FAIL/reaped=true и отсутствие прежней native identity подтверждены. bb-app
+не тронут. Legacy cancelReason «full-root» неточен: это native consumer input,
+не полный frozen throughput workload.
+Фазовая диагностика сохраняет original600s: parse/expand/check завершены,
+emit остаётся открыт, последний observed host-step34005165 с raw NF/descriptor/
+reach requests. Это boundary samples, не exclusive CPU attribution и не deadlock.
+R8 source **`e04f5a03`**: fresh native/genuine byte fixedpoint PASS; все12
+исходных paired rows действительно выполнены через SSH, оба supervisor
+PASS/reaped=true. Strict gate отверг native mean/median time и median RSS.
+Control/candidate native и JS bytes совпадают: это вариация, не оптимизация.
+Original fail-fast остановил прогон до emitted suites и correctness matrices;
+full correctness/performance acceptance не заявляется, R12 остаётся принятым.
+Evidence: `local2039g43r8-outcome/outcome.json`.
 
 R5 source checkpoint — **`37006316`**. Код нового
 `--distributed-plan` реализован, но **не qualified и не accepted**.

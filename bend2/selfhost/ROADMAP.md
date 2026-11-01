@@ -62,11 +62,20 @@ The C matrix announces all 62 cases and reports exactly one failure:
 `evals/scheduler_chunk_smoke.bend`, emit stage, original 600-second deadline.
 The matrix worker runs 2,115,621 ms; the supervisor confirms reaped=true.
 No fixture is filtered, no input/import is narrowed, and no deadline is raised.
-Investigate actual own-frontend/check/C-emitter progression before another run;
-do not replay the unchanged failing target or substitute a seed producer.
-The mode remains unqualified. All five complete consumers, running-native
-cancellation, twelve-row performance and final full qualification are still
-required; the current obstruction is a real emission budget, not process names.
+R7's full-input diagnostic completes parse/expansion/checking and remains in
+C emission until the unchanged deadline, with advancing NF/descriptor/reach
+boundaries. It does not establish exclusive CPU attribution or repeated keys.
+All33 native,12 admission and5 host rows pass on the authorized SSH Mac;
+actual running-native cancellation also proves owned-tree reaping, bb-app untouched.
+R8 freshly rebuilds the accepted native bytes and genuine byte fixedpoint,
+then executes all12 original paired rows through direct SSH. The unchanged
+strict gate rejects native mean/median time and median RSS. Control/candidate
+native binaries and JS images are identical, so numerical variation is not a
+compiler improvement. Both actual lane supervisors PASS/reaped=true.
+JS matrix completion, the C-matrix budget and full correctness still remain;
+the mode is not fully qualified and G24R12 remains the accepted compiler.
+`checkpoints/local2039g43r7-outcome/outcome.json`.
+`checkpoints/local2039g43r8-outcome/outcome.json`.
 Evidence: `checkpoints/local2039g43r5-outcome/outcome.json`.
 
 ## G41–G42: backend partition experiment and deferred recipes do not earn promotion

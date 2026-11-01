@@ -1,0 +1,912 @@
+{
+  "status": "PAIRED_FULL_ROOT_THROUGHPUT_PASS",
+  "measured": true,
+  "diagnosticOnly": true,
+  "acceptanceEvidence": false,
+  "profiledTimingsExcluded": true,
+  "candidateCompilerAccepted": false,
+  "frozen": {
+    "root": "/private/tmp/bend2039g22-tiny-inline/checkpoints/.bootstrap_compiler_root_remote2039g21.bend",
+    "rootSha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+    "repository": "/private/tmp/bend2039g22-tiny-inline",
+    "inputs": 53
+  },
+  "bindings": {
+    "path": "/Users/ilyagulya/Projects/My/bend/evals/receipts/producer2039g25_r12_bindings.json",
+    "sha256": "2b2c1975dc0be1186a5a2f28147f803e4a26837116249246ae9975f4e57329de",
+    "baselineAcceptance": "81be7c8d",
+    "waveBase": "81be7c8d"
+  },
+  "fixedpoint": {
+    "stageOneSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+    "stageOneBytes": 31758507,
+    "criterion": "exact stage-one/stage-two byte equality was required before measurement"
+  },
+  "outputAuthentication": {
+    "candidateNativeEqualsCandidateJs": true,
+    "candidateSha256": "c33227e028d767df9a9fff75663e42eb7374919dcf8e7dff14936a98d20008fb",
+    "controlMatchesAcceptedBaseline": true,
+    "controlSha256": "c33227e028d767df9a9fff75663e42eb7374919dcf8e7dff14936a98d20008fb",
+    "rule": "candidate native and JS lanes are compared to each other; the control is compared to its authenticated accepted baseline"
+  },
+  "control": {
+    "native": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+    "nativeSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+    "image": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+    "imageSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+    "outputSha256": "c33227e028d767df9a9fff75663e42eb7374919dcf8e7dff14936a98d20008fb"
+  },
+  "candidate": {
+    "native": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r8-all-ssh/native",
+    "nativeSha256": "b3459184f37d3159f44e9b7f67642ad6c3850dc806ae5f7837f348fc842b3f71",
+    "image": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r8-all-ssh/bootstrap.json.cases/stage-one.js",
+    "imageSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+    "outputSha256": "c33227e028d767df9a9fff75663e42eb7374919dcf8e7dff14936a98d20008fb",
+    "outputBytes": 29948466
+  },
+  "order": [
+    [
+      "control",
+      1
+    ],
+    [
+      "candidate",
+      1
+    ],
+    [
+      "candidate",
+      2
+    ],
+    [
+      "control",
+      2
+    ],
+    [
+      "control",
+      3
+    ],
+    [
+      "candidate",
+      3
+    ]
+  ],
+  "runs": [
+    {
+      "role": "control",
+      "mode": "native",
+      "repetition": 1,
+      "pipelineElapsedMs": 60430.175707999995,
+      "phases": [
+        {
+          "phase": "parse",
+          "elapsedMs": 3890.672
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 3286.755
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 42258.651
+        },
+        {
+          "phase": "emit",
+          "elapsedMs": 9249.394
+        }
+      ],
+      "outputSha256": "c33227e028d767df9a9fff75663e42eb7374919dcf8e7dff14936a98d20008fb",
+      "peakRssBytes": 1761771520,
+      "peakFootprintBytes": 1737628800,
+      "physical": "4613c60b990a84a1d3484370a8bb68887aa6b616ef55f96ff8802a1107f7a84b",
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "peakRssBytes": 1761771520,
+        "peakFootprintBytes": 1737628800,
+        "elapsedMs": 61038,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "commandExitCode": 0,
+        "ownedTreeStopped": true,
+        "reportPhase": "complete"
+      },
+      "report": {
+        "path": "/private/tmp/bend-g24-8779b3efc48a4cd28e968fa4035b8d902cfe0110d08b9df9/execution/repository/checkpoints/.g24-8779b3efc48a4cd28e968fa4035b8d902cfe0110d08b9df9/throughput/native-control-1.json",
+        "sha256": "6d84e62b0308ca5aba5d5f866fe5b0dfeb76aae2f4abd5a8d462d8539e130197"
+      }
+    },
+    {
+      "role": "candidate",
+      "mode": "native",
+      "repetition": 1,
+      "pipelineElapsedMs": 61402.606999999996,
+      "phases": [
+        {
+          "phase": "parse",
+          "elapsedMs": 3950.403
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 3400.145
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 43111.763
+        },
+        {
+          "phase": "emit",
+          "elapsedMs": 9400.642
+        }
+      ],
+      "outputSha256": "c33227e028d767df9a9fff75663e42eb7374919dcf8e7dff14936a98d20008fb",
+      "peakRssBytes": 1821540352,
+      "peakFootprintBytes": 1737596032,
+      "physical": "4613c60b990a84a1d3484370a8bb68887aa6b616ef55f96ff8802a1107f7a84b",
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "peakRssBytes": 1821540352,
+        "peakFootprintBytes": 1737596032,
+        "elapsedMs": 61925,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "commandExitCode": 0,
+        "ownedTreeStopped": true,
+        "reportPhase": "complete"
+      },
+      "report": {
+        "path": "/private/tmp/bend-g24-8779b3efc48a4cd28e968fa4035b8d902cfe0110d08b9df9/execution/repository/checkpoints/.g24-8779b3efc48a4cd28e968fa4035b8d902cfe0110d08b9df9/throughput/native-candidate-1.json",
+        "sha256": "31c78bc09798168465b2e4ee4316c4e7e8a0f9b9040effb20d2cd51dbdc4eb98"
+      }
+    },
+    {
+      "role": "candidate",
+      "mode": "native",
+      "repetition": 2,
+      "pipelineElapsedMs": 60544.973833,
+      "phases": [
+        {
+          "phase": "parse",
+          "elapsedMs": 3919.235
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 3369
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 43045.543
+        },
+        {
+          "phase": "emit",
+          "elapsedMs": 9451.601
+        }
+      ],
+      "outputSha256": "c33227e028d767df9a9fff75663e42eb7374919dcf8e7dff14936a98d20008fb",
+      "peakRssBytes": 1820540928,
+      "peakFootprintBytes": 1736531096,
+      "physical": "4613c60b990a84a1d3484370a8bb68887aa6b616ef55f96ff8802a1107f7a84b",
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "peakRssBytes": 1820540928,
+        "peakFootprintBytes": 1736531096,
+        "elapsedMs": 61068,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "commandExitCode": 0,
+        "ownedTreeStopped": true,
+        "reportPhase": "complete"
+      },
+      "report": {
+        "path": "/private/tmp/bend-g24-8779b3efc48a4cd28e968fa4035b8d902cfe0110d08b9df9/execution/repository/checkpoints/.g24-8779b3efc48a4cd28e968fa4035b8d902cfe0110d08b9df9/throughput/native-candidate-2.json",
+        "sha256": "2a4b09176dae395459deb7b3977f5dcc441fb82e9fbf1239fef0b6b60cbcec0e"
+      }
+    },
+    {
+      "role": "control",
+      "mode": "native",
+      "repetition": 2,
+      "pipelineElapsedMs": 60794.91675,
+      "phases": [
+        {
+          "phase": "parse",
+          "elapsedMs": 3932.247
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 3435.572
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 43219.487
+        },
+        {
+          "phase": "emit",
+          "elapsedMs": 9465.516
+        }
+      ],
+      "outputSha256": "c33227e028d767df9a9fff75663e42eb7374919dcf8e7dff14936a98d20008fb",
+      "peakRssBytes": 1820655616,
+      "peakFootprintBytes": 1737071768,
+      "physical": "4613c60b990a84a1d3484370a8bb68887aa6b616ef55f96ff8802a1107f7a84b",
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "peakRssBytes": 1820655616,
+        "peakFootprintBytes": 1737071768,
+        "elapsedMs": 61325,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "commandExitCode": 0,
+        "ownedTreeStopped": true,
+        "reportPhase": "complete"
+      },
+      "report": {
+        "path": "/private/tmp/bend-g24-8779b3efc48a4cd28e968fa4035b8d902cfe0110d08b9df9/execution/repository/checkpoints/.g24-8779b3efc48a4cd28e968fa4035b8d902cfe0110d08b9df9/throughput/native-control-2.json",
+        "sha256": "57b9dc472e0ef6dafd28e0273382ee9ff5431ac16171775ecb93a524f13daf82"
+      }
+    },
+    {
+      "role": "control",
+      "mode": "native",
+      "repetition": 3,
+      "pipelineElapsedMs": 61272.6625,
+      "phases": [
+        {
+          "phase": "parse",
+          "elapsedMs": 3920.472
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 3442.151
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 43640.395
+        },
+        {
+          "phase": "emit",
+          "elapsedMs": 9520.104
+        }
+      ],
+      "outputSha256": "c33227e028d767df9a9fff75663e42eb7374919dcf8e7dff14936a98d20008fb",
+      "peakRssBytes": 1820999680,
+      "peakFootprintBytes": 1741085776,
+      "physical": "4613c60b990a84a1d3484370a8bb68887aa6b616ef55f96ff8802a1107f7a84b",
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "peakRssBytes": 1820999680,
+        "peakFootprintBytes": 1741085776,
+        "elapsedMs": 61799,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "commandExitCode": 0,
+        "ownedTreeStopped": true,
+        "reportPhase": "complete"
+      },
+      "report": {
+        "path": "/private/tmp/bend-g24-8779b3efc48a4cd28e968fa4035b8d902cfe0110d08b9df9/execution/repository/checkpoints/.g24-8779b3efc48a4cd28e968fa4035b8d902cfe0110d08b9df9/throughput/native-control-3.json",
+        "sha256": "99d7fbe8cf81ab4b90daf8b76e7dce62c50938631d4aee1a65e845d40ef11e9b"
+      }
+    },
+    {
+      "role": "candidate",
+      "mode": "native",
+      "repetition": 3,
+      "pipelineElapsedMs": 60972.250208,
+      "phases": [
+        {
+          "phase": "parse",
+          "elapsedMs": 3935.636
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 3428.613
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 43427.973
+        },
+        {
+          "phase": "emit",
+          "elapsedMs": 9444.853
+        }
+      ],
+      "outputSha256": "c33227e028d767df9a9fff75663e42eb7374919dcf8e7dff14936a98d20008fb",
+      "peakRssBytes": 1822408704,
+      "peakFootprintBytes": 1750424704,
+      "physical": "4613c60b990a84a1d3484370a8bb68887aa6b616ef55f96ff8802a1107f7a84b",
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "peakRssBytes": 1822408704,
+        "peakFootprintBytes": 1750424704,
+        "elapsedMs": 61473,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "commandExitCode": 0,
+        "ownedTreeStopped": true,
+        "reportPhase": "complete"
+      },
+      "report": {
+        "path": "/private/tmp/bend-g24-8779b3efc48a4cd28e968fa4035b8d902cfe0110d08b9df9/execution/repository/checkpoints/.g24-8779b3efc48a4cd28e968fa4035b8d902cfe0110d08b9df9/throughput/native-candidate-3.json",
+        "sha256": "5ff01e0e48c4ac5dbaaf4e79aea4e99caea580a0ebf030daea3c897e094b5b05"
+      }
+    },
+    {
+      "role": "control",
+      "mode": "js",
+      "repetition": 1,
+      "pipelineElapsedMs": 193282.843792,
+      "phases": [
+        {
+          "phase": "startup",
+          "elapsedMs": 696.7453750000001
+        },
+        {
+          "phase": "load-parse",
+          "elapsedMs": 7237.132334
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 5535.355583999999
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 165226.199959
+        },
+        {
+          "phase": "emit",
+          "elapsedMs": 14582.016999999993
+        }
+      ],
+      "outputSha256": "c33227e028d767df9a9fff75663e42eb7374919dcf8e7dff14936a98d20008fb",
+      "peakRssBytes": 2569748480,
+      "peakFootprintBytes": 3004745656,
+      "physical": "4613c60b990a84a1d3484370a8bb68887aa6b616ef55f96ff8802a1107f7a84b",
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "peakRssBytes": 2569748480,
+        "peakFootprintBytes": 3004745656,
+        "elapsedMs": 194089,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "commandExitCode": 0,
+        "ownedTreeStopped": true,
+        "reportPhase": "complete"
+      },
+      "report": {
+        "path": "/private/tmp/bend-g24-cb15b5b1c760057bcaa27a192ebc8f0e8e8257e512a6422e/execution/repository/checkpoints/.g24-cb15b5b1c760057bcaa27a192ebc8f0e8e8257e512a6422e/throughput/js-control-1.json",
+        "sha256": "9ec89b6926f2a89cd6395f94230136b1e0ab6152803899ed6dd8555d2b68629f"
+      }
+    },
+    {
+      "role": "candidate",
+      "mode": "js",
+      "repetition": 1,
+      "pipelineElapsedMs": 188529.711042,
+      "phases": [
+        {
+          "phase": "startup",
+          "elapsedMs": 697.2914579999999
+        },
+        {
+          "phase": "load-parse",
+          "elapsedMs": 7231.256166
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 5067.999916
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 161792.14254099998
+        },
+        {
+          "phase": "emit",
+          "elapsedMs": 13736.552874999994
+        }
+      ],
+      "outputSha256": "c33227e028d767df9a9fff75663e42eb7374919dcf8e7dff14936a98d20008fb",
+      "peakRssBytes": 2385313792,
+      "peakFootprintBytes": 2571013568,
+      "physical": "4613c60b990a84a1d3484370a8bb68887aa6b616ef55f96ff8802a1107f7a84b",
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "peakRssBytes": 2385313792,
+        "peakFootprintBytes": 2571013568,
+        "elapsedMs": 189335,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "commandExitCode": 0,
+        "ownedTreeStopped": true,
+        "reportPhase": "complete"
+      },
+      "report": {
+        "path": "/private/tmp/bend-g24-cb15b5b1c760057bcaa27a192ebc8f0e8e8257e512a6422e/execution/repository/checkpoints/.g24-cb15b5b1c760057bcaa27a192ebc8f0e8e8257e512a6422e/throughput/js-candidate-1.json",
+        "sha256": "cfb57cc5c7892cd5212abb33b335c44ee8329049cd5f6aff00b91e5bdb6c712c"
+      }
+    },
+    {
+      "role": "candidate",
+      "mode": "js",
+      "repetition": 2,
+      "pipelineElapsedMs": 186677.97733300002,
+      "phases": [
+        {
+          "phase": "startup",
+          "elapsedMs": 707.350333
+        },
+        {
+          "phase": "load-parse",
+          "elapsedMs": 6813.8393750000005
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 5061.627417000001
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 160311.52575
+        },
+        {
+          "phase": "emit",
+          "elapsedMs": 13778.991500000004
+        }
+      ],
+      "outputSha256": "c33227e028d767df9a9fff75663e42eb7374919dcf8e7dff14936a98d20008fb",
+      "peakRssBytes": 2264432640,
+      "peakFootprintBytes": 2396643784,
+      "physical": "4613c60b990a84a1d3484370a8bb68887aa6b616ef55f96ff8802a1107f7a84b",
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "peakRssBytes": 2264432640,
+        "peakFootprintBytes": 2396643784,
+        "elapsedMs": 187414,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "commandExitCode": 0,
+        "ownedTreeStopped": true,
+        "reportPhase": "complete"
+      },
+      "report": {
+        "path": "/private/tmp/bend-g24-cb15b5b1c760057bcaa27a192ebc8f0e8e8257e512a6422e/execution/repository/checkpoints/.g24-cb15b5b1c760057bcaa27a192ebc8f0e8e8257e512a6422e/throughput/js-candidate-2.json",
+        "sha256": "b688a0fe6a204d52d902c1eca86f0b14a773c58fefe092ab2a90f7298f514c19"
+      }
+    },
+    {
+      "role": "control",
+      "mode": "js",
+      "repetition": 2,
+      "pipelineElapsedMs": 189182.576792,
+      "phases": [
+        {
+          "phase": "startup",
+          "elapsedMs": 693.1135409999999
+        },
+        {
+          "phase": "load-parse",
+          "elapsedMs": 7091.810792
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 5191.141542
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 162446.56141700002
+        },
+        {
+          "phase": "emit",
+          "elapsedMs": 13755.564332999988
+        }
+      ],
+      "outputSha256": "c33227e028d767df9a9fff75663e42eb7374919dcf8e7dff14936a98d20008fb",
+      "peakRssBytes": 2506833920,
+      "peakFootprintBytes": 2959205976,
+      "physical": "4613c60b990a84a1d3484370a8bb68887aa6b616ef55f96ff8802a1107f7a84b",
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "peakRssBytes": 2506833920,
+        "peakFootprintBytes": 2959205976,
+        "elapsedMs": 189998,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "commandExitCode": 0,
+        "ownedTreeStopped": true,
+        "reportPhase": "complete"
+      },
+      "report": {
+        "path": "/private/tmp/bend-g24-cb15b5b1c760057bcaa27a192ebc8f0e8e8257e512a6422e/execution/repository/checkpoints/.g24-cb15b5b1c760057bcaa27a192ebc8f0e8e8257e512a6422e/throughput/js-control-2.json",
+        "sha256": "1ae776dc926a1f85a345f5f3dd42a1ef052db3a02be2feb62af01254d7f62b09"
+      }
+    },
+    {
+      "role": "control",
+      "mode": "js",
+      "repetition": 3,
+      "pipelineElapsedMs": 188261.86725,
+      "phases": [
+        {
+          "phase": "startup",
+          "elapsedMs": 703.069333
+        },
+        {
+          "phase": "load-parse",
+          "elapsedMs": 7163.242833
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 5048.123250000001
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 161837.534916
+        },
+        {
+          "phase": "emit",
+          "elapsedMs": 13505.903250000003
+        }
+      ],
+      "outputSha256": "c33227e028d767df9a9fff75663e42eb7374919dcf8e7dff14936a98d20008fb",
+      "peakRssBytes": 2493710336,
+      "peakFootprintBytes": 2626837336,
+      "physical": "4613c60b990a84a1d3484370a8bb68887aa6b616ef55f96ff8802a1107f7a84b",
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "peakRssBytes": 2493710336,
+        "peakFootprintBytes": 2626837336,
+        "elapsedMs": 189027,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "commandExitCode": 0,
+        "ownedTreeStopped": true,
+        "reportPhase": "complete"
+      },
+      "report": {
+        "path": "/private/tmp/bend-g24-cb15b5b1c760057bcaa27a192ebc8f0e8e8257e512a6422e/execution/repository/checkpoints/.g24-cb15b5b1c760057bcaa27a192ebc8f0e8e8257e512a6422e/throughput/js-control-3.json",
+        "sha256": "1e54cd192e310182b28a68bced2050837c33ca1a0908a42756451d8d99ff1658"
+      }
+    },
+    {
+      "role": "candidate",
+      "mode": "js",
+      "repetition": 3,
+      "pipelineElapsedMs": 183015.012583,
+      "phases": [
+        {
+          "phase": "startup",
+          "elapsedMs": 703.71625
+        },
+        {
+          "phase": "load-parse",
+          "elapsedMs": 6794.573208000001
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 4868.204333000001
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 157220.623334
+        },
+        {
+          "phase": "emit",
+          "elapsedMs": 13422.674042000028
+        }
+      ],
+      "outputSha256": "c33227e028d767df9a9fff75663e42eb7374919dcf8e7dff14936a98d20008fb",
+      "peakRssBytes": 2706817024,
+      "peakFootprintBytes": 3115343584,
+      "physical": "4613c60b990a84a1d3484370a8bb68887aa6b616ef55f96ff8802a1107f7a84b",
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "peakRssBytes": 2706817024,
+        "peakFootprintBytes": 3115343584,
+        "elapsedMs": 183867,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "commandExitCode": 0,
+        "ownedTreeStopped": true,
+        "reportPhase": "complete"
+      },
+      "report": {
+        "path": "/private/tmp/bend-g24-cb15b5b1c760057bcaa27a192ebc8f0e8e8257e512a6422e/execution/repository/checkpoints/.g24-cb15b5b1c760057bcaa27a192ebc8f0e8e8257e512a6422e/throughput/js-candidate-3.json",
+        "sha256": "9f5d3dba3a83367b0a7ecde27221d5a2b23fbeaecaa70e901b44dfdd291d920c"
+      }
+    }
+  ],
+  "summary": {
+    "native": {
+      "control": {
+        "runs": 3,
+        "pipelineMs": {
+          "n": 3,
+          "min": 60430.175707999995,
+          "median": 60794.91675,
+          "max": 61272.6625,
+          "relativeRange": 0.013941491682415735
+        },
+        "peakRssBytes": {
+          "n": 3,
+          "min": 1761771520,
+          "median": 1820655616,
+          "max": 1820999680,
+          "relativeRange": 0.03361852506277318
+        },
+        "peakFootprintBytes": {
+          "n": 3,
+          "min": 1737071768,
+          "median": 1737628800,
+          "max": 1741085776,
+          "relativeRange": 0.002310789959255155
+        },
+        "phases": {
+          "parse": {
+            "n": 3,
+            "min": 3890.672,
+            "median": 3920.472,
+            "max": 3932.247,
+            "relativeRange": 0.010685814687025742
+          },
+          "expand": {
+            "n": 3,
+            "min": 3286.755,
+            "median": 3435.572,
+            "max": 3442.151,
+            "relativeRange": 0.04727945952771038
+          },
+          "check": {
+            "n": 3,
+            "min": 42258.651,
+            "median": 43219.487,
+            "max": 43640.395,
+            "relativeRange": 0.03269730498496033
+          },
+          "emit": {
+            "n": 3,
+            "min": 9249.394,
+            "median": 9465.516,
+            "max": 9520.104,
+            "relativeRange": 0.029267863386509333
+          }
+        }
+      },
+      "candidate": {
+        "runs": 3,
+        "pipelineMs": {
+          "n": 3,
+          "min": 60544.973833,
+          "median": 60972.250208,
+          "max": 61402.606999999996,
+          "relativeRange": 0.014165224835435433
+        },
+        "peakRssBytes": {
+          "n": 3,
+          "min": 1820540928,
+          "median": 1821540352,
+          "max": 1822408704,
+          "relativeRange": 0.0010259456248818812
+        },
+        "peakFootprintBytes": {
+          "n": 3,
+          "min": 1736531096,
+          "median": 1737596032,
+          "max": 1750424704,
+          "relativeRange": 0.008000782728281187
+        },
+        "phases": {
+          "parse": {
+            "n": 3,
+            "min": 3919.235,
+            "median": 3935.636,
+            "max": 3950.403,
+            "relativeRange": 0.007952572377007161
+          },
+          "expand": {
+            "n": 3,
+            "min": 3369,
+            "median": 3400.145,
+            "max": 3428.613,
+            "relativeRange": 0.017694568121104134
+          },
+          "check": {
+            "n": 3,
+            "min": 43045.543,
+            "median": 43111.763,
+            "max": 43427.973,
+            "relativeRange": 0.008884311204995145
+          },
+          "emit": {
+            "n": 3,
+            "min": 9400.642,
+            "median": 9444.853,
+            "max": 9451.601,
+            "relativeRange": 0.00542079998366077
+          }
+        }
+      },
+      "ratio": {
+        "pipelineMs": 1.0029169125887487,
+        "peakRssBytes": 1.0004859436305389,
+        "peakFootprintBytes": 0.9999811421173498
+      }
+    },
+    "js": {
+      "control": {
+        "runs": 3,
+        "pipelineMs": {
+          "n": 3,
+          "min": 188261.86725,
+          "median": 189182.576792,
+          "max": 193282.843792,
+          "relativeRange": 0.026670172857323496
+        },
+        "peakRssBytes": {
+          "n": 3,
+          "min": 2493710336,
+          "median": 2506833920,
+          "max": 2569748480,
+          "relativeRange": 0.030491971301674067
+        },
+        "peakFootprintBytes": {
+          "n": 3,
+          "min": 2626837336,
+          "median": 2959205976,
+          "max": 3004745656,
+          "relativeRange": 0.14386437820906622
+        },
+        "phases": {
+          "startup": {
+            "n": 3,
+            "min": 693.1135409999999,
+            "median": 696.7453750000001,
+            "max": 703.069333,
+            "relativeRange": 0.014363868848437471
+          },
+          "load-parse": {
+            "n": 3,
+            "min": 7091.810792,
+            "median": 7163.242833,
+            "max": 7237.132334,
+            "relativeRange": 0.020491457860654056
+          },
+          "expand": {
+            "n": 3,
+            "min": 5048.123250000001,
+            "median": 5191.141542,
+            "max": 5535.355583999999,
+            "relativeRange": 0.09651751945636398
+          },
+          "check": {
+            "n": 3,
+            "min": 161837.534916,
+            "median": 162446.56141700002,
+            "max": 165226.199959,
+            "relativeRange": 0.020938684247500654
+          },
+          "emit": {
+            "n": 3,
+            "min": 13505.903250000003,
+            "median": 13755.564332999988,
+            "max": 14582.016999999993,
+            "relativeRange": 0.0796772885219646
+          }
+        }
+      },
+      "candidate": {
+        "runs": 3,
+        "pipelineMs": {
+          "n": 3,
+          "min": 183015.012583,
+          "median": 186677.97733300002,
+          "max": 188529.711042,
+          "relativeRange": 0.03013249230851491
+        },
+        "peakRssBytes": {
+          "n": 3,
+          "min": 2264432640,
+          "median": 2385313792,
+          "max": 2706817024,
+          "relativeRange": 0.19536213009188916
+        },
+        "peakFootprintBytes": {
+          "n": 3,
+          "min": 2396643784,
+          "median": 2571013568,
+          "max": 3115343584,
+          "relativeRange": 0.2998776058411524
+        },
+        "phases": {
+          "startup": {
+            "n": 3,
+            "min": 697.2914579999999,
+            "median": 703.71625,
+            "max": 707.350333,
+            "relativeRange": 0.014425639213839414
+          },
+          "load-parse": {
+            "n": 3,
+            "min": 6794.573208000001,
+            "median": 6813.8393750000005,
+            "max": 7231.256166,
+            "relativeRange": 0.06426937272319685
+          },
+          "expand": {
+            "n": 3,
+            "min": 4868.204333000001,
+            "median": 5061.627417000001,
+            "max": 5067.999916,
+            "relativeRange": 0.04104091967661439
+          },
+          "check": {
+            "n": 3,
+            "min": 157220.623334,
+            "median": 160311.52575,
+            "max": 161792.14254099998,
+            "relativeRange": 0.02907709631253799
+          },
+          "emit": {
+            "n": 3,
+            "min": 13422.674042000028,
+            "median": 13736.552874999994,
+            "max": 13778.991500000004,
+            "relativeRange": 0.026545936888957133
+          }
+        }
+      },
+      "ratio": {
+        "pipelineMs": 0.9867609401379827,
+        "peakRssBytes": 0.9515244599849678,
+        "peakFootprintBytes": 0.8688187266623714
+      }
+    }
+  },
+  "placement": {
+    "protocol": 1,
+    "mode": "ssh",
+    "native": {
+      "nonce": "8779b3efc48a4cd28e968fa4035b8d902cfe0110d08b9df9",
+      "job": "performance-native",
+      "physical": "4613c60b990a84a1d3484370a8bb68887aa6b616ef55f96ff8802a1107f7a84b",
+      "planSha256": "c1751625b9145a3a186d9288d35db5ef2270fddb9510b5f05d429c1e5d0203c1",
+      "snapshotSha256": "033e2e1198c5a29527c2d8a1130cbacdcb5f6679608ca3f1f54a3676f3eb0930",
+      "remote": "/tmp/bend-g24-8779b3efc48a4cd28e968fa4035b8d902cfe0110d08b9df9",
+      "started": 1793518177880,
+      "finished": 1793518553086,
+      "mode": "ssh"
+    },
+    "js": {
+      "nonce": "cb15b5b1c760057bcaa27a192ebc8f0e8e8257e512a6422e",
+      "job": "performance-js",
+      "physical": "4613c60b990a84a1d3484370a8bb68887aa6b616ef55f96ff8802a1107f7a84b",
+      "planSha256": "c1751625b9145a3a186d9288d35db5ef2270fddb9510b5f05d429c1e5d0203c1",
+      "snapshotSha256": "033e2e1198c5a29527c2d8a1130cbacdcb5f6679608ca3f1f54a3676f3eb0930",
+      "remote": "/tmp/bend-g24-cb15b5b1c760057bcaa27a192ebc8f0e8e8257e512a6422e",
+      "started": 1793518561115,
+      "finished": 1793519701343,
+      "mode": "ssh"
+    }
+  },
+  "note": "Explicit distributed transport: each six-row lane is sequential on its dedicated pinned physical host; native output is authenticated before JS. No global same-host claim. Diagnostic evidence only."
+}

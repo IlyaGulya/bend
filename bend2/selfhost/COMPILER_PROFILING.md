@@ -443,3 +443,56 @@ observed; other branches, matrices, cancellation and full performance
 qualification are not inferred from that selected-branch proof.
 `checkpoints/local2039g43r6-outcome/outcome.json`.
 
+
+### Scheduler fixture phase attribution (G43R7)
+
+The full original scheduler fixture/import closure and genuine accepted image
+were observed through the existing Node consumer worker, with unchanged 8/8-GiB,
+10-ms, 600-s rails, ABI13, fuel8M and quantum64. These instrumented timings are
+diagnostic observations, not uninstrumented performance evidence:
+
+| Phase | Observed wall seconds | Completion |
+| --- | ---: | --- |
+| Image startup | 0.959 | Completed |
+| Parse/import/fuel | 6.152 | Completed |
+| Template expansion | 5.455 | Completed |
+| Signatures/bodies/publication | 111.034 | Completed |
+| C emission | — | Still open at the total 600-second deadline |
+
+The last observed emit boundary reports host-step34,005,165 and raw NF,
+descriptor and reach requests. The producer kept crossing observable boundaries;
+this is not proof of a deadlock. Once-per-second request-tag samples are not
+exclusive CPU shares or per-request invocation counts. Parser/fuel spans now
+rule out attributing the entire timeout to input parsing, but do not identify
+the precise NF descriptor/key algorithm that needs changing.
+
+Independent actual SSH runs pass all12 datatype/admission and all5 nested-host
+rows. A genuine owned native compiler PID was interrupted through its coordinator;
+the authenticated same-nonce supervisor reports FAIL/reaped=true and that native
+identity is absent afterward. The cancellation is an intentional diagnostic PASS,
+not a completed workload. Its legacy “full-root” label must not be interpreted
+as full frozen-corpus throughput. Source, commands and compact actual evidence:
+`checkpoints/local2039g43r7-outcome/outcome.json`.
+
+
+### Complete direct-SSH paired lanes (G43R8)
+
+The canonical `phase=all` run freshly constructs the accepted native bytes,
+proves genuine stage-one/stage-two equality, then executes every original paired
+sample on the pinned M3 Pro host. Both authenticated supervisors PASS/reaped=true;
+all12 original guards PASS with owned trees stopped. No background service is
+stopped, paused or restarted.
+
+| Lane | Control mean s | Candidate mean s | Control median s | Candidate median s | Strict decision |
+| --- | ---: | ---: | ---: | ---: | --- |
+| Native | 60.833 | 60.973 | 60.795 | 60.972 | Reject time and median RSS |
+| JS | 190.242 | 186.074 | 189.183 | 186.678 | Pass this lane only |
+
+The two native executables and the two genuine JS images are byte-identical.
+These differences are measured variation, not a compiler optimization. The
+original strict decision is still rejection: no tolerance or row exclusion is
+introduced. Canonical fail-fast stops before emitted suites and correctness
+matrices; a successful transport does not manufacture full qualification.
+All exact rows, commands, memory figures, producer proofs and the rejection:
+`checkpoints/local2039g43r8-outcome/outcome.json` and `throughput.json`.
+

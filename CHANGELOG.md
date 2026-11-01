@@ -17,9 +17,13 @@ latest one; the GitHub release carries the same notes.
   `checkpoints/local2039g43r5-outcome/outcome.json`.
   Direct `ssh: "misakaindrive"` targets execute a complete 33-row native/foreign/
   library branch with accepted private runtimes and bb-app unchanged; 12 safety
-  tests pass. This selected-branch proof does not replace the outstanding matrix
-  failure, cancellation, other consumers or full performance qualification:
-  `checkpoints/local2039g43r6-outcome/outcome.json`.
+  tests pass. R7 also passes admission12, host5 and actual running-native
+  cancellation/reaping diagnostics. R8 executes every original paired sample
+  through direct SSH, but the unchanged strict policy rejects native time and
+  median RSS. Control/candidate compiler bytes are identical; this is transport
+  evidence, not a speedup. The remaining matrix failure and full correctness
+  qualification are not replaced by these selected proofs:
+  `checkpoints/local2039g43r8-outcome/outcome.json`.
 - Build acceleration experiments G41/G42 preserve G24R12 as the accepted
   compiler. LLVM splitting now has an explicit `--cc-partitions=4|8` experiment
   with at most three backend children; four remains the default. Real eight-way
