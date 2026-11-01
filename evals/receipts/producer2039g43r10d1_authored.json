@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "version": "G43R10D1",
+  "status": "AUTHORED_NOT_EXECUTED",
+  "previousRejectedVersionCommit": "15d5d640",
+  "isolatedObserverSourceCommit": "121d977d",
+  "observerBaseCommit": "bf88255d",
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/scheduler-timeout-5140e57d/evals/scheduler_emit_diagnostic.ts",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r10r3-correctness/bootstrap.json.cases/stage-one.js",
+    "/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r10d1/family-observation",
+    "--nf-progress"
+  ],
+  "cwd": "/Users/ilyagulya/Projects/My/bend",
+  "sourcePins": [
+    {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/scheduler-timeout-5140e57d/evals/scheduler_nf_progress.mjs",
+      "sha256": "a5479877abc711dbeaed1ceae90a03485617ce7c138de3c315721fd86256badc",
+      "bytes": 5759
+    },
+    {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/scheduler-timeout-5140e57d/evals/scheduler_emit_diagnostic.ts",
+      "sha256": "1bcd6e8a5e57014eb59c87e24e696d19e44bdc2c0ad5ff5d4cd512c4f3c0a44e",
+      "bytes": 5269
+    },
+    {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/scheduler-timeout-5140e57d/evals/candidate_host.ts",
+      "sha256": "34552b3f9bc40483c8258b3f0a63be54209522a4e5d904f16eee2bce69c24073",
+      "bytes": 19150
+    }
+  ],
+  "imageAuthority": {
+    "bootstrap": {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r10r3-correctness/bootstrap.json",
+      "sha256": "6056c308fb9eb83b4f63482ea0fbe9c35b781873c2a6be324777b43750870a3d",
+      "bytes": 516487
+    },
+    "emitted": {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r10r3-correctness/emitted-suites.json",
+      "sha256": "d32ec6c01fd408af5ef1a9b3016f090ff5dd6031ad8b1451c81e637afb307107",
+      "bytes": 1749183
+    },
+    "image": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r10r3-correctness/bootstrap.json.cases/stage-one.js",
+      "sha256": "f5151acbd83e51ef32fa618b175b31cc18d91fd71677b2b5a60dfc5b0ac807eb",
+      "bytes": 31772597
+    }
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "abiExports": 13,
+  "fuel": 8000000,
+  "quantum": 64,
+  "compilerAccepted": false,
+  "performanceAccepted": false,
+  "scope": "Actual original full input parsed/expanded/checked with exact genuine f515 image. After five emission seconds, a repeatedly sampled reach_arms target selects its actual BIR family from the genuine layout Context; bounded original arm order, quantities, descriptor wrappers, current arms/env/seen are recorded. No descriptor normalization, program mutation, reduced fixture, AST/book/image retention or semantic optimization.",
+  "expectedStop": "NF_LAYOUT_FAMILY_OBSERVATION_COMPLETE is an intentional command failure after recording metadata, owned tree reaped; never claim emitted C or workload completion. If absent, report actual failure/deadline, not a successful observation.",
+  "serialization": "All previous local and remote heavy jobs have ended/reaped. One new local guarded observation only."
+}
