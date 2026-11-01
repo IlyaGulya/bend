@@ -569,3 +569,20 @@ C62/JS67 completeness, scheduler deadline improvement or strict throughput.
 Source `b7c49cf0`, private contract `42d1735d`, frozen generated inputs
 `53fb6bd3`; `checkpoints/local2039g43r11-semantic-outcome/outcome.json`.
 
+The full G43R11 qualification is now rejected, not pending. Native build passes
+with12502 checked definitions and produces a genuine31894945-byte stage-one
+image (`146b191b…`); all95 native seed fixtures pass. The unchanged600-s
+bootstrap guardian stops during stage-two-check, with no stage-two artifact
+or byte-fixedpoint result. C62, JS67 and new strict paired rows are unreached.
+The complete53-file source corpus and compact failed outcome are retained.
+
+| Native check, single run | Wall seconds | User + system CPU seconds |
+| --- | ---: | ---: |
+| R10R3 | 67.516898 | 65.708095 |
+| R11 | 167.470081 | 80.770741 |
+
+Source differs and these are not paired acceptance rows. The observed time
+outside CPU does not identify scheduling, I/O or another cause; no process-name
+heuristic, utilization admission rule or retry of the unchanged failure follows.
+`checkpoints/local2039g43r11-outcome/outcome.json`.
+

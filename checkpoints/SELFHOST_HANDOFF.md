@@ -89,6 +89,17 @@ ownedTreeStopped=true; original8/8-GiB,10-ms,600-s guardian.
 full-correctness command: `evals/receipts/producer2039g43r11_authored.json`.
 Нужны реальные full correctness, same-M1 full scheduler и исходные12 strict
 paired rows. Main compiler/backend и accepted R12 images пока не заменены.
+Full G43R11 теперь **REJECTED**, не awaiting: native build312779ms,
+12502 checked definitions; genuine native-emitted stage1 **`146b191b`**,
+31894945B и все95 seed fixtures PASS. Bootstrap FAIL на original600015ms,
+во время stage-two-check; stage2/fixedpoint отсутствуют, C62/JS67 не начались.
+Guardian ownedTreeStopped=true. Все53 required source inputs frozen в
+`checkpoints/local2039g43r11-inputs/`; compact outcome:
+`checkpoints/local2039g43r11-outcome/outcome.json`.
+Native-check CPU/wall80.771/167.470s против65.708/67.517s в R10R3:
+причина разницы вне CPU не установлена; это не idle/admission predicate.
+Новый C-путь image146 ещё можно проверить на unchanged full scheduler как
+явно diagnostic-only, но без claims о byte fixedpoint/full acceptance.
 
 
 

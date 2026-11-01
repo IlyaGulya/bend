@@ -1,0 +1,1269 @@
+{
+  "schemaVersion": 1,
+  "version": "G43R11",
+  "status": "REJECTED_BOOTSTRAP_DEADLINE_NO_BYTE_FIXEDPOINT",
+  "sourceCommit": "b7c49cf0",
+  "contractCommit": "42d1735d",
+  "authorCheckpoint": "9ec3dfb7",
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "evals/g24_qualification.mjs",
+    "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "--bun=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--clang=/usr/bin/clang",
+    "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+    "--bindings=/Users/ilyagulya/Projects/My/bend/evals/receipts/producer2039g25_r12_bindings.json",
+    "--frozen-repository=/private/tmp/bend2039g22-tiny-inline",
+    "--control-native=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+    "--control-image=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+    "--phase=correctness",
+    "--cc-partitions=4",
+    "--run-id=2039g43r11",
+    "--distributed-plan=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r6/placement.json",
+    "--out=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness"
+  ],
+  "cwd": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257",
+  "observedCommandWallSeconds": 1078.18,
+  "nativeBuild": {
+    "status": "NATIVE_EXECUTABLE_BUILT_NOT_YET_RUN",
+    "checkedDefinitions": 12502,
+    "eventsFullyValidated": 13097,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "kernelSha256": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+    "compilerSha256": "880a9b3b86f273852a39fc664f8c3d7b71e3860b6d365e4321949fc812b6e7cc",
+    "cSha256": "da7fa32230fbc77de4b29954b57d40fead69f27b05bb99ec257e15d1a172ddee",
+    "artifactSha256": "4447eb7699f149b512af8572a9ba6d7e7c4bbfaaccf97bd5eea47840b071bbb9",
+    "runtime": {
+      "name": "bun",
+      "executable": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "execArgv": [],
+      "bun": "1.4.3",
+      "revision": "c6da4a4d3010e5553438c60f6bd76d981976867c",
+      "heapLimitMiB": null,
+      "stackMiB": null,
+      "stack": "Bun main-thread default",
+      "automaticGcRamHint": {
+        "source": "BUN_JSC_forceRAMSize",
+        "bytes": "4294967296",
+        "hardLimit": false
+      },
+      "manualGC": false,
+      "profiling": null
+    },
+    "compilerProfile": null,
+    "ccOptimization": {
+      "level": 1,
+      "flag": "-O1",
+      "officialDefault": false,
+      "diagnosticTradeoff": true
+    },
+    "ccPipelineRequest": {
+      "kind": "llvm-split",
+      "partitions": 4,
+      "maxBackendChildren": 3
+    },
+    "ccPipeline": {
+      "kind": "llvm-split",
+      "status": "PASS",
+      "optimization": "-O1",
+      "partitions": 4,
+      "maxBackendChildren": 3,
+      "source": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/native.c",
+      "sourceSha256": "da7fa32230fbc77de4b29954b57d40fead69f27b05bb99ec257e15d1a172ddee",
+      "artifact": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/native",
+      "temporaryFilesRemoved": true,
+      "elapsedMs": 156717.567542,
+      "stages": [
+        {
+          "name": "clang-version",
+          "command": [
+            "/usr/bin/clang",
+            "--version"
+          ],
+          "timingCommand": [
+            "/usr/bin/time",
+            "-lp",
+            "/usr/bin/clang",
+            "--version"
+          ],
+          "status": "PASS",
+          "startedMs": 3.9594999999999914,
+          "stdout": "Apple clang version 21.0.0 (clang-2100.4.1.1)\nTarget: arm64-apple-darwin25.6.0\nThread model: posix\nInstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin\n",
+          "stderr": "real 0.03\nuser 0.00\nsys 0.00\n            14548992  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                1612  page reclaims\n                  63  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   1  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  70  involuntary context switches\n           106579582  instructions retired\n            50638373  cycles elapsed\n             2474320  peak memory footprint\n",
+          "timedRealSeconds": 0.03,
+          "userSeconds": 0,
+          "systemSeconds": 0,
+          "maxRssBytes": 14548992,
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 47.955832999999984
+        },
+        {
+          "name": "opt-version",
+          "command": [
+            "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/opt",
+            "--version"
+          ],
+          "timingCommand": [
+            "/usr/bin/time",
+            "-lp",
+            "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/opt",
+            "--version"
+          ],
+          "status": "PASS",
+          "startedMs": 52.203584000000035,
+          "stdout": "Homebrew LLVM version 21.1.8\n  Optimized build.\n  Default target: arm64-apple-darwin25.6.0\n  Host CPU: apple-m1\n",
+          "stderr": "real 0.11\nuser 0.01\nsys 0.03\n            23986176  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 357  page reclaims\n                1315  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   1  messages sent\n                   0  messages received\n                   0  signals received\n                   6  voluntary context switches\n                 775  involuntary context switches\n           228383168  instructions retired\n           132126158  cycles elapsed\n             2883968  peak memory footprint\n",
+          "timedRealSeconds": 0.11,
+          "userSeconds": 0.01,
+          "systemSeconds": 0.03,
+          "maxRssBytes": 23986176,
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 117.30312499999997
+        },
+        {
+          "name": "llvm-split-version",
+          "command": [
+            "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/llvm-split",
+            "--version"
+          ],
+          "timingCommand": [
+            "/usr/bin/time",
+            "-lp",
+            "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/llvm-split",
+            "--version"
+          ],
+          "status": "PASS",
+          "startedMs": 169.804667,
+          "stdout": "Homebrew LLVM version 21.1.8\n  Optimized build.\n",
+          "stderr": "real 0.01\nuser 0.00\nsys 0.00\n            19922944  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                1363  page reclaims\n                  58  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   1  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   9  involuntary context switches\n            96163976  instructions retired\n            36806372  cycles elapsed\n             2474368  peak memory footprint\n",
+          "timedRealSeconds": 0.01,
+          "userSeconds": 0,
+          "systemSeconds": 0,
+          "maxRssBytes": 19922944,
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 21.032958000000008
+        },
+        {
+          "name": "sdk",
+          "command": [
+            "/usr/bin/xcrun",
+            "--show-sdk-path"
+          ],
+          "timingCommand": [
+            "/usr/bin/time",
+            "-lp",
+            "/usr/bin/xcrun",
+            "--show-sdk-path"
+          ],
+          "status": "PASS",
+          "startedMs": 191.224917,
+          "stdout": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk\n",
+          "stderr": "real 0.01\nuser 0.00\nsys 0.00\n             8601600  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 703  page reclaims\n                   1  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   1  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  19  involuntary context switches\n            65303831  instructions retired\n            27201761  cycles elapsed\n             3227984  peak memory footprint\n",
+          "timedRealSeconds": 0.01,
+          "userSeconds": 0,
+          "systemSeconds": 0,
+          "maxRssBytes": 8601600,
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 17.377250000000004
+        },
+        {
+          "name": "abi-macros",
+          "command": [
+            "/usr/bin/clang",
+            "-std=c11",
+            "-O1",
+            "-E",
+            "-dM",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/native.c",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
+          ],
+          "timingCommand": [
+            "/usr/bin/time",
+            "-lp",
+            "/usr/bin/clang",
+            "-std=c11",
+            "-O1",
+            "-E",
+            "-dM",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/native.c",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
+          ],
+          "status": "PASS",
+          "startedMs": 208.874792,
+          "stdout": {
+            "omittedBulkUtf8Bytes": 2998095,
+            "sha256": "05b56b544cabeea9d7a1e98cd7b13029c6c5be3f8711c972e5e3ff99894086f8",
+            "bulkCommitted": false
+          },
+          "stderr": "real 2.52\nuser 1.68\nsys 0.12\n           623362048  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n               43177  page reclaims\n                 416  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   6  messages sent\n                   0  messages received\n                   0  signals received\n                 419  voluntary context switches\n                1479  involuntary context switches\n           114094281  instructions retired\n            53025763  cycles elapsed\n             2703648  peak memory footprint\n",
+          "timedRealSeconds": 2.52,
+          "userSeconds": 1.68,
+          "systemSeconds": 0.12,
+          "maxRssBytes": 623362048,
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 2530.9744579999997
+        },
+        {
+          "name": "abi-driver",
+          "command": [
+            "/usr/bin/clang",
+            "-std=c11",
+            "-O1",
+            "-c",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/native.c",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-o",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/native",
+            "-###"
+          ],
+          "timingCommand": [
+            "/usr/bin/time",
+            "-lp",
+            "/usr/bin/clang",
+            "-std=c11",
+            "-O1",
+            "-c",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/native.c",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-o",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/native",
+            "-###"
+          ],
+          "status": "PASS",
+          "startedMs": 2746.6817920000003,
+          "stdout": "",
+          "stderr": "Apple clang version 21.0.0 (clang-2100.4.1.1)\nTarget: arm64-apple-darwin25.6.0\nThread model: posix\nInstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin\n \"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang\" \"-cc1\" \"-triple\" \"arm64-apple-macosx26.0.0\" \"-O1\" \"-Wundef-prefix=TARGET_OS_\" \"-Wdeprecated-objc-isa-usage\" \"-Werror=deprecated-objc-isa-usage\" \"-Werror=implicit-function-declaration\" \"-emit-obj\" \"-disable-free\" \"-clear-ast-before-backend\" \"-disable-llvm-verifier\" \"-discard-value-names\" \"-main-file-name\" \"native.c\" \"-mrelocation-model\" \"pic\" \"-pic-level\" \"2\" \"-mframe-pointer=non-leaf\" \"-fno-strict-return\" \"-ffp-contract=on\" \"-fno-rounding-math\" \"-funwind-tables=1\" \"-fobjc-msgsend-selector-stubs\" \"-fno-sized-deallocation\" \"-target-sdk-version=27.2\" \"-fdepfile-entry=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/SDKSettings.json\" \"-fvisibility-inlines-hidden-static-local-var\" \"-fno-modulemap-allow-subdirectory-search\" \"-fdefine-target-os-macros\" \"-fno-assume-unique-vtables\" \"-fno-modulemap-allow-subdirectory-search\" \"-enable-tlsdesc\" \"-target-cpu\" \"apple-m1\" \"-target-feature\" \"+v8.5a\" \"-target-feature\" \"+aes\" \"-target-feature\" \"+altnzcv\" \"-target-feature\" \"+ccdp\" \"-target-feature\" \"+ccpp\" \"-target-feature\" \"+complxnum\" \"-target-feature\" \"+crc\" \"-target-feature\" \"+dotprod\" \"-target-feature\" \"+flagm\" \"-target-feature\" \"+fp-armv8\" \"-target-feature\" \"+fp16fml\" \"-target-feature\" \"+fptoint\" \"-target-feature\" \"+fullfp16\" \"-target-feature\" \"+jsconv\" \"-target-feature\" \"+lse\" \"-target-feature\" \"+neon\" \"-target-feature\" \"+pauth\" \"-target-feature\" \"+perfmon\" \"-target-feature\" \"+predres\" \"-target-feature\" \"+ras\" \"-target-feature\" \"+rcpc\" \"-target-feature\" \"+rdm\" \"-target-feature\" \"+sb\" \"-target-feature\" \"+sha2\" \"-target-feature\" \"+sha3\" \"-target-feature\" \"+specrestrict\" \"-target-feature\" \"+ssbs\" \"-target-abi\" \"darwinpcs\" \"-debugger-tuning=lldb\" \"-fdebug-compilation-dir=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257\" \"-target-linker-version\" \"27033.1\" \"-fcoverage-compilation-dir=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257\" \"-resource-dir\" \"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/21\" \"-isysroot\" \"/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk\" \"-internal-isystem\" \"/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/local/include\" \"-internal-isystem\" \"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/21/include\" \"-internal-externc-isystem\" \"/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include\" \"-internal-externc-isystem\" \"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include\" \"-internal-iframework\" \"/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks\" \"-internal-iframework\" \"/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/SubFrameworks\" \"-internal-iframework\" \"/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/Library/Frameworks\" \"-Wno-elaborated-enum-base\" \"-std=c11\" \"-ferror-limit\" \"19\" \"-stack-protector\" \"1\" \"-fstack-check\" \"-mdarwin-stkchk-strong-link\" \"-fblocks\" \"-fencode-extended-block-signature\" \"-fregister-global-dtors-with-atexit\" \"-fgnuc-version=4.2.1\" \"-fskip-odr-check-in-gmf\" \"-fmax-type-align=16\" \"-fcommon\" \"-clang-vendor-feature=+disableNonDependentMemberExprInCurrentInstantiation\" \"-fno-odr-hash-protocols\" \"-clang-vendor-feature=+enableAggressiveVLAFolding\" \"-clang-vendor-feature=+revert09abecef7bbf\" \"-clang-vendor-feature=+thisNoAlignAttr\" \"-clang-vendor-feature=+thisNoNullAttr\" \"-clang-vendor-feature=+disableAtImportPrivateFrameworkInImplementationError\" \"-Wno-error=allocator-wrappers\" \"-fdwarf2-cfi-asm\" \"-o\" \"/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/native\" \"-x\" \"c\" \"/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/native.c\"\nreal 0.02\nuser 0.00\nsys 0.01\n            15548416  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                1667  page reclaims\n                  69  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                4354  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  41  involuntary context switches\n           126174555  instructions retired\n            57778753  cycles elapsed\n             2621728  peak memory footprint\n",
+          "timedRealSeconds": 0.02,
+          "userSeconds": 0,
+          "systemSeconds": 0.01,
+          "maxRssBytes": 15548416,
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 30.454666999999972
+        },
+        {
+          "name": "frontend",
+          "command": [
+            "/usr/bin/clang",
+            "-std=c11",
+            "-O1",
+            "-Xclang",
+            "-disable-llvm-passes",
+            "-emit-llvm",
+            "-c",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/native.c",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-o",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/raw.bc"
+          ],
+          "timingCommand": [
+            "/usr/bin/time",
+            "-lp",
+            "/usr/bin/clang",
+            "-std=c11",
+            "-O1",
+            "-Xclang",
+            "-disable-llvm-passes",
+            "-emit-llvm",
+            "-c",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/native.c",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-o",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/raw.bc"
+          ],
+          "status": "PASS",
+          "startedMs": 2807.1352920000004,
+          "stdout": "",
+          "stderr": "real 40.62\nuser 25.82\nsys 2.15\n          4902436864  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n              584841  page reclaims\n                 565  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                2170  voluntary context switches\n               33104  involuntary context switches\n           109215462  instructions retired\n            52584171  cycles elapsed\n             2588960  peak memory footprint\n",
+          "timedRealSeconds": 40.62,
+          "userSeconds": 25.82,
+          "systemSeconds": 2.15,
+          "maxRssBytes": 4902436864,
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 40627.644958
+        },
+        {
+          "name": "mem2reg-always-inline",
+          "command": [
+            "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/opt",
+            "-passes=function(mem2reg),always-inline",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/raw.bc",
+            "-o",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/prepared.bc"
+          ],
+          "timingCommand": [
+            "/usr/bin/time",
+            "-lp",
+            "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/opt",
+            "-passes=function(mem2reg),always-inline",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/raw.bc",
+            "-o",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/prepared.bc"
+          ],
+          "status": "PASS",
+          "startedMs": 43443.676792,
+          "stdout": "",
+          "stderr": "real 24.86\nuser 16.01\nsys 1.00\n          3287875584  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n              248993  page reclaims\n                1609  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                 337  voluntary context switches\n               14363  involuntary context switches\n        142765378946  instructions retired\n         50886532777  cycles elapsed\n          3141569296  peak memory footprint\n",
+          "timedRealSeconds": 24.86,
+          "userSeconds": 16.01,
+          "systemSeconds": 1,
+          "maxRssBytes": 3287875584,
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 24868.320332999996
+        },
+        {
+          "name": "split",
+          "command": [
+            "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/llvm-split",
+            "-j4",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/prepared.bc",
+            "-o",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part.bc"
+          ],
+          "timingCommand": [
+            "/usr/bin/time",
+            "-lp",
+            "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/llvm-split",
+            "-j4",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/prepared.bc",
+            "-o",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part.bc"
+          ],
+          "status": "PASS",
+          "startedMs": 68320.337,
+          "stdout": "",
+          "stderr": "real 14.51\nuser 9.01\nsys 0.65\n          2028240896  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n              151309  page reclaims\n                 124  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                 508  voluntary context switches\n                8107  involuntary context switches\n         70953024471  instructions retired\n         28741151159  cycles elapsed\n          1840383872  peak memory footprint\n",
+          "timedRealSeconds": 14.51,
+          "userSeconds": 9.01,
+          "systemSeconds": 0.65,
+          "maxRssBytes": 2028240896,
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 14514.814458000008
+        },
+        {
+          "name": "opt-codegen-3",
+          "command": [
+            "/usr/bin/clang",
+            "-O1",
+            "-x",
+            "ir",
+            "-c",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part.bc3",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-o",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part3.o"
+          ],
+          "timingCommand": [
+            "/usr/bin/time",
+            "-lp",
+            "/usr/bin/clang",
+            "-O1",
+            "-x",
+            "ir",
+            "-c",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part.bc3",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-o",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part3.o"
+          ],
+          "status": "PASS",
+          "startedMs": 83036.831209,
+          "stdout": "",
+          "stderr": "real 72.74\nuser 44.69\nsys 0.97\n          1866334208  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n              202943  page reclaims\n                 196  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                 103  voluntary context switches\n               42726  involuntary context switches\n           117602926  instructions retired\n            56575261  cycles elapsed\n             2638112  peak memory footprint\n",
+          "timedRealSeconds": 72.74,
+          "userSeconds": 44.69,
+          "systemSeconds": 0.97,
+          "maxRssBytes": 1866334208,
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 72755.32325
+        },
+        {
+          "name": "opt-codegen-2",
+          "command": [
+            "/usr/bin/clang",
+            "-O1",
+            "-x",
+            "ir",
+            "-c",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part.bc2",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-o",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part2.o"
+          ],
+          "timingCommand": [
+            "/usr/bin/time",
+            "-lp",
+            "/usr/bin/clang",
+            "-O1",
+            "-x",
+            "ir",
+            "-c",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part.bc2",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-o",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part2.o"
+          ],
+          "status": "PASS",
+          "startedMs": 83040.759084,
+          "stdout": "",
+          "stderr": "real 44.65\nuser 23.43\nsys 0.90\n          1732771840  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n              205085  page reclaims\n                 190  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                  71  voluntary context switches\n               25983  involuntary context switches\n           109263614  instructions retired\n            50590216  cycles elapsed\n             2638136  peak memory footprint\n",
+          "timedRealSeconds": 44.65,
+          "userSeconds": 23.43,
+          "systemSeconds": 0.9,
+          "maxRssBytes": 1732771840,
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 44663.3005
+        },
+        {
+          "name": "opt-codegen-1",
+          "command": [
+            "/usr/bin/clang",
+            "-O1",
+            "-x",
+            "ir",
+            "-c",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part.bc1",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-o",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part1.o"
+          ],
+          "timingCommand": [
+            "/usr/bin/time",
+            "-lp",
+            "/usr/bin/clang",
+            "-O1",
+            "-x",
+            "ir",
+            "-c",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part.bc1",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-o",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part1.o"
+          ],
+          "status": "PASS",
+          "startedMs": 83045.14758399999,
+          "stdout": "",
+          "stderr": "real 32.97\nuser 17.12\nsys 0.54\n          1186283520  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n              117745  page reclaims\n                 478  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                  78  voluntary context switches\n               17095  involuntary context switches\n           109069098  instructions retired\n            45827231  cycles elapsed\n             2670904  peak memory footprint\n",
+          "timedRealSeconds": 32.97,
+          "userSeconds": 17.12,
+          "systemSeconds": 0.54,
+          "maxRssBytes": 1186283520,
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 32983.438375
+        },
+        {
+          "name": "opt-codegen-0",
+          "command": [
+            "/usr/bin/clang",
+            "-O1",
+            "-x",
+            "ir",
+            "-c",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part.bc0",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-o",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part0.o"
+          ],
+          "timingCommand": [
+            "/usr/bin/time",
+            "-lp",
+            "/usr/bin/clang",
+            "-O1",
+            "-x",
+            "ir",
+            "-c",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part.bc0",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-o",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part0.o"
+          ],
+          "status": "PASS",
+          "startedMs": 116039.662084,
+          "stdout": "",
+          "stderr": "real 25.59\nuser 15.90\nsys 0.52\n          1189724160  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n              104248  page reclaims\n                 806  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   3  voluntary context switches\n               16920  involuntary context switches\n           107935126  instructions retired\n            48069355  cycles elapsed\n             2605368  peak memory footprint\n",
+          "timedRealSeconds": 25.59,
+          "userSeconds": 15.9,
+          "systemSeconds": 0.52,
+          "maxRssBytes": 1189724160,
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 25608.078125
+        },
+        {
+          "name": "link",
+          "command": [
+            "/usr/bin/clang",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part0.o",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part1.o",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part2.o",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part3.o",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-lpthread",
+            "-lm",
+            "-o",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/native"
+          ],
+          "timingCommand": [
+            "/usr/bin/time",
+            "-lp",
+            "/usr/bin/clang",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part0.o",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part1.o",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part2.o",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part3.o",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-lpthread",
+            "-lm",
+            "-o",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/native"
+          ],
+          "status": "PASS",
+          "startedMs": 155800.232542,
+          "stdout": "",
+          "stderr": "real 0.19\nuser 0.14\nsys 0.05\n           134840320  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                9343  page reclaims\n                1119  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                 215  voluntary context switches\n                1384  involuntary context switches\n           108869351  instructions retired\n            50324786  cycles elapsed\n             2703672  peak memory footprint\n",
+          "timedRealSeconds": 0.19,
+          "userSeconds": 0.14,
+          "systemSeconds": 0.05,
+          "maxRssBytes": 134840320,
+          "exitCode": 0,
+          "signal": null,
+          "wallMs": 197.30379199999152
+        }
+      ],
+      "toolPins": {
+        "/usr/bin/clang": "b8763cf250e607a778bb4603cecb5b90338814d0a3dfcba0d57b1de242f610e9",
+        "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/opt": "df9cd5f276b4a14b9f876aff8acc34cce15a869897fdaaf90fd2c12dd619d4f0",
+        "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/llvm-split": "2503aba489923af7ecbdfbbb72c756724ac0ed0179b4dbad2cfac37a716cca73",
+        "/usr/bin/time": "e1e98e68fd988f353cc51842f5a576bc2cb4c341ae24fd2ca4f625f33b38f23a"
+      },
+      "versions": {
+        "clang": "Apple clang version 21.0.0 (clang-2100.4.1.1)\nTarget: arm64-apple-darwin25.6.0\nThread model: posix\nInstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin",
+        "opt": "Homebrew LLVM version 21.1.8\n  Optimized build.\n  Default target: arm64-apple-darwin25.6.0\n  Host CPU: apple-m1",
+        "llvm-split": "Homebrew LLVM version 21.1.8\n  Optimized build."
+      },
+      "partitionInputs": [
+        {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part.bc0",
+          "sha256": "38ce8557c646eb78cb2aafdcd8687f835436d3a3f6e070d8c9dc04da8b8168e0",
+          "bytes": 12070192,
+          "id": 0,
+          "object": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part0.o",
+          "stage": "opt-codegen-0"
+        },
+        {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part.bc1",
+          "sha256": "f9150f7351bbf73af902823292fff90b711c07c770dcfb66b0b0f0ecee803b6a",
+          "bytes": 10575792,
+          "id": 1,
+          "object": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part1.o",
+          "stage": "opt-codegen-1"
+        },
+        {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part.bc2",
+          "sha256": "1fdd2e6e334d7db0812eafb481ba144b3085cef5ac8a15bbc8315aea57166f42",
+          "bytes": 11557696,
+          "id": 2,
+          "object": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part2.o",
+          "stage": "opt-codegen-2"
+        },
+        {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part.bc3",
+          "sha256": "6b9bcaa9729f5422c7c54295e21e8f54c957d4a8d6b1e14b59d8367148385797",
+          "bytes": 18959584,
+          "id": 3,
+          "object": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part3.o",
+          "stage": "opt-codegen-3"
+        }
+      ],
+      "originalFunctionCount": null,
+      "functionCountAccounting": "The unchanged frontend/opt/llvm-split commands do not emit original LLVM function counts. Null means unavailable, not zero; no additional IR disassembly or analysis pass is run. Partition bitcode byte sizes include declarations/metadata and are not function counts or estimates of optimization work.",
+      "accounting": "Darwin /usr/bin/time -lp wait4 user/system CPU and maxRSS bytes per command; stage wallMs includes launch/reap. The unchanged outer guardian samples the complete build process tree, including concurrent compiler descendants. Interrupted stages may have null resource fields.",
+      "sdk": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+      "abi": {
+        "preprocessorCommand": [
+          "/usr/bin/clang",
+          "-std=c11",
+          "-O1",
+          "-E",
+          "-dM",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/native.c",
+          "-isysroot",
+          "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
+        ],
+        "macros": [
+          "#define OUTLINE FAR __attribute__((cold)) PRESERVE(preserve_most)",
+          "#define PRESERVE(A) __attribute__((A))",
+          "#define WL_DYN(F) __attribute__((musttail)) return wl_tab[F](WL_ALL)",
+          "#define WL_FN FAR PRESERVE(preserve_none) Term",
+          "#define WL_JMP(F) __attribute__((musttail)) return WL_##F(WL_ALL)",
+          "#define __ARM_ARCH 8",
+          "#define __ARM_ARCH_8_2__ 1",
+          "#define __ARM_ARCH_8_3__ 1",
+          "#define __ARM_ARCH_8_4__ 1",
+          "#define __ARM_ARCH_8_5__ 1",
+          "#define __ARM_ARCH_ISA_A64 1",
+          "#define __ARM_ARCH_PROFILE 'A'",
+          "#define __ARM_FEATURE_AES 1",
+          "#define __ARM_FEATURE_ATOMICS 1",
+          "#define __ARM_FEATURE_BTI 1",
+          "#define __ARM_FEATURE_CLZ 1",
+          "#define __ARM_FEATURE_COMPLEX 1",
+          "#define __ARM_FEATURE_CRC32 1",
+          "#define __ARM_FEATURE_CRYPTO 1",
+          "#define __ARM_FEATURE_DIRECTED_ROUNDING 1",
+          "#define __ARM_FEATURE_DIV 1",
+          "#define __ARM_FEATURE_DOTPROD 1",
+          "#define __ARM_FEATURE_FMA 1",
+          "#define __ARM_FEATURE_FP16_FML 1",
+          "#define __ARM_FEATURE_FP16_SCALAR_ARITHMETIC 1",
+          "#define __ARM_FEATURE_FP16_VECTOR_ARITHMETIC 1",
+          "#define __ARM_FEATURE_FRINT 1",
+          "#define __ARM_FEATURE_IDIV 1",
+          "#define __ARM_FEATURE_JCVT 1",
+          "#define __ARM_FEATURE_LDREX 0xF",
+          "#define __ARM_FEATURE_NUMERIC_MAXMIN 1",
+          "#define __ARM_FEATURE_PAUTH 1",
+          "#define __ARM_FEATURE_QRDMX 1",
+          "#define __ARM_FEATURE_RCPC 1",
+          "#define __ARM_FEATURE_SHA2 1",
+          "#define __ARM_FEATURE_SHA3 1",
+          "#define __ARM_FEATURE_SHA512 1",
+          "#define __ARM_FEATURE_UNALIGNED 1",
+          "#define __OPTIMIZE__ 1",
+          "#define __apple_build_version__ 21000401",
+          "#define __clang_version__ \"21.0.0 (clang-2100.4.1.1)\""
+        ],
+        "driverCommand": [
+          "/usr/bin/clang",
+          "-std=c11",
+          "-O1",
+          "-c",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/native.c",
+          "-isysroot",
+          "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+          "-o",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/native",
+          "-###"
+        ],
+        "driverOutput": "Apple clang version 21.0.0 (clang-2100.4.1.1)\nTarget: arm64-apple-darwin25.6.0\nThread model: posix\nInstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin\n \"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang\" \"-cc1\" \"-triple\" \"arm64-apple-macosx26.0.0\" \"-O1\" \"-Wundef-prefix=TARGET_OS_\" \"-Wdeprecated-objc-isa-usage\" \"-Werror=deprecated-objc-isa-usage\" \"-Werror=implicit-function-declaration\" \"-emit-obj\" \"-disable-free\" \"-clear-ast-before-backend\" \"-disable-llvm-verifier\" \"-discard-value-names\" \"-main-file-name\" \"native.c\" \"-mrelocation-model\" \"pic\" \"-pic-level\" \"2\" \"-mframe-pointer=non-leaf\" \"-fno-strict-return\" \"-ffp-contract=on\" \"-fno-rounding-math\" \"-funwind-tables=1\" \"-fobjc-msgsend-selector-stubs\" \"-fno-sized-deallocation\" \"-target-sdk-version=27.2\" \"-fdepfile-entry=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/SDKSettings.json\" \"-fvisibility-inlines-hidden-static-local-var\" \"-fno-modulemap-allow-subdirectory-search\" \"-fdefine-target-os-macros\" \"-fno-assume-unique-vtables\" \"-fno-modulemap-allow-subdirectory-search\" \"-enable-tlsdesc\" \"-target-cpu\" \"apple-m1\" \"-target-feature\" \"+v8.5a\" \"-target-feature\" \"+aes\" \"-target-feature\" \"+altnzcv\" \"-target-feature\" \"+ccdp\" \"-target-feature\" \"+ccpp\" \"-target-feature\" \"+complxnum\" \"-target-feature\" \"+crc\" \"-target-feature\" \"+dotprod\" \"-target-feature\" \"+flagm\" \"-target-feature\" \"+fp-armv8\" \"-target-feature\" \"+fp16fml\" \"-target-feature\" \"+fptoint\" \"-target-feature\" \"+fullfp16\" \"-target-feature\" \"+jsconv\" \"-target-feature\" \"+lse\" \"-target-feature\" \"+neon\" \"-target-feature\" \"+pauth\" \"-target-feature\" \"+perfmon\" \"-target-feature\" \"+predres\" \"-target-feature\" \"+ras\" \"-target-feature\" \"+rcpc\" \"-target-feature\" \"+rdm\" \"-target-feature\" \"+sb\" \"-target-feature\" \"+sha2\" \"-target-feature\" \"+sha3\" \"-target-feature\" \"+specrestrict\" \"-target-feature\" \"+ssbs\" \"-target-abi\" \"darwinpcs\" \"-debugger-tuning=lldb\" \"-fdebug-compilation-dir=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257\" \"-target-linker-version\" \"27033.1\" \"-fcoverage-compilation-dir=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257\" \"-resource-dir\" \"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/21\" \"-isysroot\" \"/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk\" \"-internal-isystem\" \"/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/local/include\" \"-internal-isystem\" \"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/21/include\" \"-internal-externc-isystem\" \"/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include\" \"-internal-externc-isystem\" \"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include\" \"-internal-iframework\" \"/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks\" \"-internal-iframework\" \"/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/SubFrameworks\" \"-internal-iframework\" \"/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/Library/Frameworks\" \"-Wno-elaborated-enum-base\" \"-std=c11\" \"-ferror-limit\" \"19\" \"-stack-protector\" \"1\" \"-fstack-check\" \"-mdarwin-stkchk-strong-link\" \"-fblocks\" \"-fencode-extended-block-signature\" \"-fregister-global-dtors-with-atexit\" \"-fgnuc-version=4.2.1\" \"-fskip-odr-check-in-gmf\" \"-fmax-type-align=16\" \"-fcommon\" \"-clang-vendor-feature=+disableNonDependentMemberExprInCurrentInstantiation\" \"-fno-odr-hash-protocols\" \"-clang-vendor-feature=+enableAggressiveVLAFolding\" \"-clang-vendor-feature=+revert09abecef7bbf\" \"-clang-vendor-feature=+thisNoAlignAttr\" \"-clang-vendor-feature=+thisNoNullAttr\" \"-clang-vendor-feature=+disableAtImportPrivateFrameworkInImplementationError\" \"-Wno-error=allocator-wrappers\" \"-fdwarf2-cfi-asm\" \"-o\" \"/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/native\" \"-x\" \"c\" \"/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/native.c\"\nreal 0.02\nuser 0.00\nsys 0.01\n            15548416  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                1667  page reclaims\n                  69  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                4354  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  41  involuntary context switches\n           126174555  instructions retired\n            57778753  cycles elapsed\n             2621728  peak memory footprint\n"
+      },
+      "temporaryDirectory": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F",
+      "rawBitcode": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/raw.bc",
+        "sha256": "dbb6fef9e12eb7d212ecf7517b5d65c8ef4663bbd7aa97071c2ae3e264aa387f",
+        "bytes": 151390128
+      },
+      "preparedBitcode": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/prepared.bc",
+        "sha256": "bf23078c6fee35fb8a012f8ec770315508fcbfcc15cce3b02361e0346bad4067",
+        "bytes": 46423776
+      }
+    },
+    "buildCommands": [
+      [
+        "/usr/bin/clang",
+        "--version"
+      ],
+      [
+        "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/opt",
+        "--version"
+      ],
+      [
+        "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/llvm-split",
+        "--version"
+      ],
+      [
+        "/usr/bin/xcrun",
+        "--show-sdk-path"
+      ],
+      [
+        "/usr/bin/clang",
+        "-std=c11",
+        "-O1",
+        "-E",
+        "-dM",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/native.c",
+        "-isysroot",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
+      ],
+      [
+        "/usr/bin/clang",
+        "-std=c11",
+        "-O1",
+        "-c",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/native.c",
+        "-isysroot",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+        "-o",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/native",
+        "-###"
+      ],
+      [
+        "/usr/bin/clang",
+        "-std=c11",
+        "-O1",
+        "-Xclang",
+        "-disable-llvm-passes",
+        "-emit-llvm",
+        "-c",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/native.c",
+        "-isysroot",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+        "-o",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/raw.bc"
+      ],
+      [
+        "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/opt",
+        "-passes=function(mem2reg),always-inline",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/raw.bc",
+        "-o",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/prepared.bc"
+      ],
+      [
+        "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/llvm-split",
+        "-j4",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/prepared.bc",
+        "-o",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part.bc"
+      ],
+      [
+        "/usr/bin/clang",
+        "-O1",
+        "-x",
+        "ir",
+        "-c",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part.bc3",
+        "-isysroot",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+        "-o",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part3.o"
+      ],
+      [
+        "/usr/bin/clang",
+        "-O1",
+        "-x",
+        "ir",
+        "-c",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part.bc2",
+        "-isysroot",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+        "-o",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part2.o"
+      ],
+      [
+        "/usr/bin/clang",
+        "-O1",
+        "-x",
+        "ir",
+        "-c",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part.bc1",
+        "-isysroot",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+        "-o",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part1.o"
+      ],
+      [
+        "/usr/bin/clang",
+        "-O1",
+        "-x",
+        "ir",
+        "-c",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part.bc0",
+        "-isysroot",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+        "-o",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part0.o"
+      ],
+      [
+        "/usr/bin/clang",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part0.o",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part1.o",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part2.o",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/.native-llvm-eLgI9F/part3.o",
+        "-isysroot",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+        "-lpthread",
+        "-lm",
+        "-o",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/native"
+      ]
+    ],
+    "validationMs": 2118.4189159999996,
+    "codegenMs": 150344.570125,
+    "elapsedMs": 155311.21291700003,
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 4961927168,
+      "peakFootprintBytes": 5241345904,
+      "elapsedMs": 312691,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/evals/native_compiler_experiment.ts",
+        "--mode=build",
+        "--corpus=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/root.native.corpus.json",
+        "--artifact=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/native",
+        "--report=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/root-native-build.json",
+        "--cc-pipeline=llvm-split",
+        "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+        "--cc-partitions=4",
+        "--internal=build"
+      ],
+      "label": "Native CPU compiler build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793531528880-6cf2dfd7a12b7ce8.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "steps": [
+    {
+      "label": "checker_core_owned_source.ts",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 4485,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "peakRssBytes": 1569980416,
+        "peakFootprintBytes": 903562968,
+        "elapsedMs": 4478,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "commandExitCode": 0,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "label": "template_step_lower.ts",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 303,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "peakRssBytes": 184860672,
+        "peakFootprintBytes": 163349296,
+        "elapsedMs": 299,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "commandExitCode": 0,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "label": "checker_core_step_lower.ts",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 2721,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "peakRssBytes": 651509760,
+        "peakFootprintBytes": 429212704,
+        "elapsedMs": 2718,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "commandExitCode": 0,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "label": "emitter_step_lower.ts",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 4990,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "peakRssBytes": 1496121344,
+        "peakFootprintBytes": 857671288,
+        "elapsedMs": 4986,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "commandExitCode": 0,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "label": "parser-source",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 18054,
+      "guardian": null
+    },
+    {
+      "label": "parser-public-source",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 3075,
+      "guardian": null
+    },
+    {
+      "label": "parser-source-gate",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 13491,
+      "guardian": null
+    },
+    {
+      "label": "parser-prepare",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 16600,
+      "guardian": null
+    },
+    {
+      "label": "parser-build",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 6818,
+      "guardian": null
+    },
+    {
+      "label": "parser-public-native",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 1761,
+      "guardian": null
+    },
+    {
+      "label": "parser-native-gate",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 50907,
+      "guardian": null
+    },
+    {
+      "label": "parser-accept",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 1226,
+      "guardian": null
+    },
+    {
+      "label": "compose",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 335,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "peakRssBytes": 181338112,
+        "peakFootprintBytes": 161923792,
+        "elapsedMs": 331,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "commandExitCode": 0,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "label": "js-build",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 39357,
+      "guardian": null
+    },
+    {
+      "label": "native-build",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 312779,
+      "guardian": null
+    },
+    {
+      "label": "bootstrap",
+      "status": "FAIL",
+      "exitCode": 2,
+      "elapsedMs": 600282,
+      "guardian": null
+    }
+  ],
+  "bootstrap": {
+    "status": "FAIL",
+    "guardian": {
+      "status": "FAIL",
+      "reason": "deadline_exceeded",
+      "commandExitCode": -1,
+      "commandSignal": 15,
+      "peakRssBytes": 2976890880,
+      "peakFootprintBytes": 2425470560,
+      "elapsedMs": 600015,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 1,
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/evals/selfhost_bootstrap_gate.ts",
+        "--native-build=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/root-native-build.json",
+        "--native-corpus=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/root.native.corpus.json",
+        "--root=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/.bootstrap_compiler_root_2039g43r11.bend",
+        "--root-manifest=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/selfhost-root-2039g43r11.json",
+        "--parser=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/bootstrap-parser-rebuild-2039g43r11.js",
+        "--parser-build=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/bootstrap-parser-rebuild-2039g43r11.native-build.result.json",
+        "--report=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/bootstrap.json",
+        "--worker"
+      ],
+      "label": "Real full selfhost step bootstrap",
+      "exitCode": 1,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793531842012-3ccddf4a4d2470c1.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "seedFixturePass": 95,
+    "genuineNativeEmittedStageOne": {
+      "phase": "native-stage-zero-emit",
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/bootstrap.json.cases/stage-one.js",
+      "sha256": "146b191bbcb7e85bc5115e086dcc08b24ce860ee110ae03d0312ec4f5ec585e4",
+      "bytes": 31894945
+    },
+    "stageTwoProduced": false,
+    "byteFixedpoint": false,
+    "lastPhases": [
+      {
+        "event": "phase",
+        "phase": "stage-two-parse",
+        "elapsedMs": 424431.545416,
+        "rssBytes": 1442643968,
+        "heapUsedBytes": 648317632,
+        "heapLimitBytes": 6643777536,
+        "file": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/bend2/selfhost/c_backend_sharing.bend",
+        "parserBoundary": "retained-input-complete"
+      },
+      {
+        "event": "phase",
+        "phase": "stage-two-parse",
+        "elapsedMs": 424434.50575,
+        "rssBytes": 1446117376,
+        "heapUsedBytes": 648320136,
+        "heapLimitBytes": 6643777536,
+        "file": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/emitter_steps_v1.bend",
+        "parserBoundary": "retained-input-before"
+      },
+      {
+        "event": "phase",
+        "phase": "stage-two-parse",
+        "elapsedMs": 424593.819541,
+        "rssBytes": 1450721280,
+        "heapUsedBytes": 648312424,
+        "heapLimitBytes": 6643777536,
+        "file": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/emitter_steps_v1.bend",
+        "parserBoundary": "retained-input-complete"
+      },
+      {
+        "event": "phase",
+        "phase": "stage-two-parse",
+        "elapsedMs": 424594.840166,
+        "rssBytes": 1450721280,
+        "heapUsedBytes": 648314928,
+        "heapLimitBytes": 6643777536,
+        "file": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/.bootstrap_compiler_root_2039g43r11.bend",
+        "parserBoundary": "retained-input-before"
+      },
+      {
+        "event": "phase",
+        "phase": "stage-two-parse",
+        "elapsedMs": 424629.235541,
+        "rssBytes": 1450721280,
+        "heapUsedBytes": 648514848,
+        "heapLimitBytes": 6643777536,
+        "file": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/.bootstrap_compiler_root_2039g43r11.bend",
+        "parserBoundary": "retained-input-complete"
+      },
+      {
+        "event": "phase",
+        "phase": "stage-two",
+        "elapsedMs": 424629.737625,
+        "rssBytes": 1450803200,
+        "heapUsedBytes": 648579440,
+        "heapLimitBytes": 6643777536
+      },
+      {
+        "event": "phase",
+        "phase": "stage-two-expand",
+        "elapsedMs": 424630.138833,
+        "rssBytes": 1450868736,
+        "heapUsedBytes": 648604864,
+        "heapLimitBytes": 6643777536
+      },
+      {
+        "event": "phase",
+        "phase": "stage-two-check",
+        "elapsedMs": 433591.71675,
+        "rssBytes": 1339899904,
+        "heapUsedBytes": 461119864,
+        "heapLimitBytes": 6643777536
+      }
+    ],
+    "nativeRunPhases": [
+      {
+        "phase": "parse",
+        "elapsedMs": 9446.557,
+        "userCpuMs": 7323.591,
+        "systemCpuMs": 133.012,
+        "modules": 18,
+        "sourceBytes": 7908768,
+        "foreignBytes": 78415,
+        "eagerFuelCells": 144000000,
+        "fuelBuildMs": 1311.899
+      },
+      {
+        "phase": "expand",
+        "elapsedMs": 7144.612,
+        "userCpuMs": 5029.623,
+        "systemCpuMs": 35.084,
+        "chunkAdvances": 1073007,
+        "chunkQuantum": 64
+      },
+      {
+        "phase": "check",
+        "elapsedMs": 167470.081,
+        "userCpuMs": 79682.873,
+        "systemCpuMs": 1087.868,
+        "chunkAdvances": 10403974,
+        "chunkQuantum": 64
+      },
+      {
+        "phase": "emit",
+        "elapsedMs": 43129.578,
+        "userCpuMs": 16705.427,
+        "systemCpuMs": 601.547,
+        "chunkAdvances": 1289874,
+        "chunkQuantum": 64
+      }
+    ]
+  },
+  "singlePairTimingContext": {
+    "r10r3BootstrapReport": {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r10r3-correctness/bootstrap.json",
+      "sha256": "6056c308fb9eb83b4f63482ea0fbe9c35b781873c2a6be324777b43750870a3d",
+      "bytes": 516487
+    },
+    "r10r3NativePhases": [
+      {
+        "phase": "parse",
+        "elapsedMs": 6731.494,
+        "userCpuMs": 6562.389,
+        "systemCpuMs": 82.149,
+        "modules": 18,
+        "sourceBytes": 7874269,
+        "foreignBytes": 78415,
+        "eagerFuelCells": 144000000,
+        "fuelBuildMs": 895.985
+      },
+      {
+        "phase": "expand",
+        "elapsedMs": 4843.654,
+        "userCpuMs": 4791.375,
+        "systemCpuMs": 16.206,
+        "chunkAdvances": 1069777,
+        "chunkQuantum": 64
+      },
+      {
+        "phase": "check",
+        "elapsedMs": 67516.898,
+        "userCpuMs": 65387.942,
+        "systemCpuMs": 320.153,
+        "chunkAdvances": 10394977,
+        "chunkQuantum": 64
+      },
+      {
+        "phase": "emit",
+        "elapsedMs": 15199.475,
+        "userCpuMs": 14032.786,
+        "systemCpuMs": 281.273,
+        "chunkAdvances": 1284858,
+        "chunkQuantum": 64
+      }
+    ],
+    "limitation": "Source differs and these are single runs, not paired performance acceptance. Native CPU/wall separation changed substantially; this does not identify scheduling, I/O or another cause and must not become an idle/admission predicate."
+  },
+  "requiredFrozenSourceCorpus": "checkpoints/local2039g43r11-inputs/corpus.json",
+  "semanticSmoke": "checkpoints/local2039g43r11-semantic-outcome/outcome.json",
+  "unreached": [
+    "emitted95-on-stage1",
+    "emitted95-on-stage2",
+    "full-C62",
+    "full-JS67",
+    "native33",
+    "admission12",
+    "host5",
+    "strict12-paired-rows"
+  ],
+  "rawEvidence": {
+    "receipt.json": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/receipt.json",
+      "sha256": "d76b66b277e5f9bfc3f06aa09c44dd3a7b8b69637db5cbd065e476ac2dcfe64a",
+      "bytes": 37320
+    },
+    "bootstrap.json": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/bootstrap.json",
+      "sha256": "1805960d479670db65ade3cec6a87db9a7020309721fa98d46b8f4ab398b605b",
+      "bytes": 492659
+    },
+    "root-native-build.json": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/root-native-build.json",
+      "sha256": "c508edf9aac77ec6c3c12a5998b83b8f95fa032dbaec70d1e6f8737a53387ab6",
+      "bytes": 3107747
+    },
+    "root.native.corpus.json": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/root.native.corpus.json",
+      "sha256": "c6bfc404a3ae0fc62267b5a286c0c0e7799595cd93c9bd9692ee6e20079f5615",
+      "bytes": 9661
+    }
+  },
+  "acceptedCompiler": "G24R12 unchanged",
+  "compilerAccepted": false,
+  "fullCorrectness": false,
+  "performanceAccepted": false,
+  "policy": "No timeout extension, unchanged failed-target retry, seed replacement, fake prior correctness, body/input exclusion or service stop."
+}
