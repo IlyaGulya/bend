@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "version": "2039g43r13-test-integration",
+  "status": "EXACT_EXERCISED_CONSUMER_REGRESSION_INTEGRATED",
+  "fixture": {
+    "path": "/Users/ilyagulya/Projects/My/bend/evals/c_target_show_data.bend",
+    "sha256": "69e9de774c75f37ad414007cfa96f234e460657f9a4fbac59a7d4b0aa983a7f3",
+    "bytes": 1034
+  },
+  "samePrivateFixtureSourceCommit": "091be91e",
+  "baselineActualCAndJS": "checkpoints/local2039g43r13t3-outcome/outcome.json",
+  "candidateActualFullC": "checkpoints/local2039g43r13-outcome/outcome.json",
+  "scope": "Semantic output regression at existing pure-main C/JS seam. Same captured alias at different type arguments, recursive/empty/multiple arms, shifted generic second field. Expected literal unchanged after explicit Data quantities; original case remains in the unchanged62/67 inventory.",
+  "compilerPatchIntegrated": false,
+  "acceptedCompiler": "G24R12 unchanged",
+  "performanceClaim": false
+}

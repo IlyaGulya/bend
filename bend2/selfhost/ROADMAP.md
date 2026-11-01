@@ -132,9 +132,14 @@ the accepted-source baseline without the rejected R12 graph. The expanded
 captured-alias/mixed-instance/recursive-arm/generic-field witness actually
 passes C and JS through genuine G24R12. The changed owned-step physical
 program executes844700 chunks after correcting a stale probe tag decoder.
-Neither observation is a new native fixedpoint or compiler acceptance; the
-original full qualification remains required.
-`checkpoints/local2039g43r13-admission3-outcome/outcome.json`.
+Actual native build, genuine stage1/stage2 exact bytes and95+190 fixtures now
+pass, including the expanded witness in full C62. The original scheduler
+emission still exceeds600s, so G43R13 is rejected and stays isolated.
+Fresh nonces complete only the other previously unreached targets; no failed
+C retry, strict12 or compiler promotion. Source corpus84 files is frozen.
+`checkpoints/local2039g43r13-outcome/outcome.json`.
+The stronger consumer regression and canonical smoke decoder are integrated
+independently of the rejected compiler patch.
 
 
 

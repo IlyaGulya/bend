@@ -713,3 +713,42 @@ unauthorized. The owned one-off controller is removed after proof.
 `checkpoints/local2039g43r12-outcome/outcome.json`.
 `checkpoints/local2039g43r12-remaining-outcome/outcome.json`.
 
+### G43R13: request-local SHOW NF reuse is insufficient
+
+Source`af6f7466`, run-head`457305e2`, starts from accepted-source`f2e8358a`
+without the rejected G43R12 graph. One original descriptor/context/empty-env/
+output-level0/fuel1024 query feeds the data-arm traversal's existing
+`head_value`/`arm_fields_value`. Field instantiation, layout/native rules,
+SHOW-kind classification and independent key normalization stay unchanged.
+This is local semantic-value reuse, not a global cache or idempotence claim.
+
+The new captured-alias/mixed-instance/recursive/shifted-field consumer executes
+the same literal stdout in genuine G24R12 C/JS and actual candidate full C62.
+The original owned-step physical program also really finishes844700 chunks;
+its printed desc/names alone are not treated as full compiler equivalence.
+
+| Original correctness boundary | Wall seconds | Outcome |
+| --- | ---: | --- |
+| Canonical JS build | 35.092 | PASS, not native stage1 |
+| Native build | 284.447 | PASS,12457 checked definitions |
+| Genuine native bootstrap | 487.209 | PASS, exact native-stage1/stage2 bytes |
+| Fresh emitted suites | 241.593 | PASS,190 fresh plus prior95 native seed |
+| Full remote C62 worker | 2442.098 | FAIL, only scheduler emit exceeds600s |
+| Complete CLI attempt | 3632.870 | Rejected; later targets initially unreached |
+
+Stage1/stage2 are31762498 bytes, SHA256
+`59feaa3a527a304f8bdeed849ee7274badb3d92db98700528a8938e1a27d0f4b`.
+Native binary SHA256
+`fc08bd801b665726e0ec0750581ff11b165d85821ca4395beeecca3e6566b078`.
+The scheduler guard fails at600092ms, RSS2709798912/
+footprint2643039688 bytes, owned tree stopped and remote reaped.
+The generic dispatch error does not establish an SSH loss. Neither the
+cross-version C-worker durations nor this semantic success prove speedup or
+slowdown. The original full correctness failure forbids strict12/promotion.
+
+All53 native-execution and84 seed-loaded inputs are frozen as84 unique
+source files/8014587 bytes; images/ASTs/caches/bulk logs stay outside Git.
+Only previously unexecuted JS67/native33/admission12/host5 run separately
+with fresh authenticated nonces; original C FAIL is not rewritten or retried.
+`checkpoints/local2039g43r13-outcome/outcome.json`.
+

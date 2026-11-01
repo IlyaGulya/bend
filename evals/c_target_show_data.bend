@@ -1,12 +1,28 @@
-# SHOW data-kind regression for the C target: a pure main whose value is Base
-# data, not a word. Base marks List native for its representation, and the
-# reference show still prints it as data (kind 7, one arm record per
-# constructor) because only U32, F32, Nat, Char, String, Eql and Array have a
-# fixed kind. The C descriptor must carry the two List arms, their CIDs, the
-# Con field offsets and each arm's bracket, so this run prints the list itself.
+# SHOW must keep each applied family's own semantic arguments across all arms.
+# The same recursive sum is reached through a captured type alias at two
+# representations; the second generic field must retain its shifted scope.
+# Base List still prints as data, including both constructor arms and brackets.
 import Base
 
-def main() -> List<U32>:
-  [1, 2]
+type ShowChoice<-A: Data> is Data:
+  ShowEmpty{}
+  ShowOne{value: A}
+  ShowTwo{left: A, right: A}
+  ShowAgain{next: ShowChoice<A>}
 
-#|[1, 2]
+def apply_type(F: Data -> Data) -> Data:
+  F(Unit)
+
+def ShowAlias(A: Data) -> Data:
+  apply_type(Ignored => ShowChoice<A>)
+
+type ShowPair<-A: Data> is Data:
+  ShowPair{first: A, rest: List<&2, A>}
+
+type ShowReport is Data:
+  ShowReport{list: List<&2, U32>, words: ShowAlias(U32), nested: ShowAlias(List<&2, U32>), empty: ShowAlias(U32), pair: ShowPair<U32>}
+
+def main() -> ShowReport:
+  ShowReport{[1, 2], ShowTwo{3, 4}, ShowAgain{ShowOne{[5, 6]}}, ShowEmpty{}, ShowPair{7, [8, 9]}}
+
+#|ShowReport{[1, 2], ShowTwo{3, 4}, ShowAgain{ShowOne{[5, 6]}}, ShowEmpty{}, ShowPair{7, [8, 9]}}
