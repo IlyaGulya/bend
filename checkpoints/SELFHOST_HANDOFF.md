@@ -98,8 +98,12 @@ Guardian ownedTreeStopped=true. Все53 required source inputs frozen в
 `checkpoints/local2039g43r11-outcome/outcome.json`.
 Native-check CPU/wall80.771/167.470s против65.708/67.517s в R10R3:
 причина разницы вне CPU не установлена; это не idle/admission predicate.
-Новый C-путь image146 ещё можно проверить на unchanged full scheduler как
-явно diagnostic-only, но без claims о byte fixedpoint/full acceptance.
+R11 C diagnostic на unchanged full scheduler теперь также **REJECTED**:
+600238ms emit deadline, RSS2587623424B, footprint2636219720B,
+ownedTreeStopped=true; C/clang/run не завершены.
+`checkpoints/local2039g43r11-local-outcome/outcome.json`.
+Следующий bounded readonly observer должен отличить dependency-fact build от
+оставшегося semantic reachability; новую реализацию вслепую не выбирать.
 
 
 

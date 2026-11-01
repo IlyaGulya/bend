@@ -1,0 +1,143 @@
+{
+  "schemaVersion": 1,
+  "version": "G43R11-C-DIAGNOSTIC",
+  "status": "REJECTED_AS_SCHEDULER_C_FIX_ORIGINAL_EMIT_DEADLINE",
+  "authorCheckpoint": "c27d3263",
+  "compilerSourceCommit": "b7c49cf0",
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "/Users/ilyagulya/Projects/My/bend/evals/c_target_fixtures_run.ts",
+    "--driver=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r11-local-scheduler-driver",
+    "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "--target=c",
+    "--smoke-case=scheduler_chunk_smoke",
+    "--logs=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r11-local-scheduler",
+    "--keep"
+  ],
+  "cwd": "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository",
+  "observedCommandWallSeconds": 600.63,
+  "mode": "diagnostic-smoke",
+  "acceptanceEvidence": false,
+  "byteFixedpointClaim": false,
+  "fullCorrectnessClaim": false,
+  "gate": {
+    "status": "FAIL",
+    "reason": "deadline_exceeded",
+    "commandExitCode": -1,
+    "commandSignal": 15,
+    "peakRssBytes": 2587623424,
+    "peakFootprintBytes": 2636219720,
+    "elapsedMs": 600238,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "command": [
+      "/bin/sh",
+      "-c",
+      "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+      "sh",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r11-local-scheduler/scheduler_chunk_smoke.emit.stdout",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r11-local-scheduler/scheduler_chunk_smoke.emit.stderr",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r11-local-scheduler-driver",
+      "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/evals/scheduler_chunk_smoke.bend",
+      "-o",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r11-local-scheduler/scheduler_chunk_smoke.c",
+      "--base",
+      "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/bend2/base.bend",
+      "--runtime-c",
+      "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/bend2/selfhost/c_runtime.c"
+    ],
+    "label": "scheduler_chunk_smoke:emit",
+    "exitCode": 1,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793533269888-b71325e1b21b5834.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592,
+    "argv": [
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r11-local-scheduler-driver",
+      "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/evals/scheduler_chunk_smoke.bend",
+      "-o",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r11-local-scheduler/scheduler_chunk_smoke.c",
+      "--base",
+      "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/bend2/base.bend",
+      "--runtime-c",
+      "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/bend2/selfhost/c_runtime.c"
+    ],
+    "stdoutPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r11-local-scheduler/scheduler_chunk_smoke.emit.stdout",
+    "stderrPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r11-local-scheduler/scheduler_chunk_smoke.emit.stderr"
+  },
+  "inputs": [
+    {
+      "path": "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/evals/scheduler_chunk_smoke.bend",
+      "sha256": "21986a939adccc86c6580c446242be9feb95703c6eeb820ef939d961f2247140",
+      "bytes": 3636
+    },
+    {
+      "path": "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/checkpoints/checker_core_steps_v1.bend",
+      "sha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+      "bytes": 3102607
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/bootstrap.json.cases/stage-one.js",
+      "sha256": "146b191bbcb7e85bc5115e086dcc08b24ce860ee110ae03d0312ec4f5ec585e4",
+      "bytes": 31894945
+    }
+  ],
+  "actualMatrixPins": {
+    "mode": "diagnostic-smoke",
+    "target": "c",
+    "node": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "nodeVersion": "v23.11.0",
+    "v8": "12.9.202.28-node.14|--max-old-space-size=3072,-e,process.stdout.write(process.versions.v8 + \"|\" + process.execArgv.join(\",\"))",
+    "driver": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r11-local-scheduler-driver",
+    "guardianTs": "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/evals/heavy_gate.ts",
+    "guardianTsSha256": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015",
+    "guardianNativeC": "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/evals/heavy_gate_native.c",
+    "guardianNativeCSha256": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b",
+    "cwd": "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository",
+    "base": "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/bend2/base.bend",
+    "baseSha256": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+    "runtime": "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/bend2/selfhost/c_runtime.c",
+    "runtimeSha256": "6935fa83c1b20b7f8982f04ad54c4e4dae0b9b0ea66fd00f32d169a1d03ac2bf",
+    "logs": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r11-local-scheduler",
+    "gate": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 600000
+    },
+    "fixtures": 1,
+    "smokeCase": "scheduler_chunk_smoke"
+  },
+  "scope": "Exact original full scheduler and import closure with new actual native-emitted image146, no profiler. It again fails C emission before clang/run; zero CLay semantic failures did not establish this budget fix.",
+  "raw": {
+    "scheduler_chunk_smoke.emit.gate.json": {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r11-local-scheduler/scheduler_chunk_smoke.emit.gate.json",
+      "sha256": "8eef915248ffc3fbc9ab428e5f2724ff55a329ada9f6a1ccfbd62514f58c9b12",
+      "bytes": 2639
+    },
+    "scheduler_chunk_smoke.emit.stderr": {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r11-local-scheduler/scheduler_chunk_smoke.emit.stderr",
+      "sha256": "5fee0e00360ef4010e230a6599f9877a863a5f7938e9d24429a1e9b5edef9035",
+      "bytes": 177
+    },
+    "scheduler_chunk_smoke.emit.stdout": {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r11-local-scheduler/scheduler_chunk_smoke.emit.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "scheduler_chunk_smoke.pins.json": {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r11-local-scheduler/scheduler_chunk_smoke.pins.json",
+      "sha256": "b144960eb51b5638e77da0d48144f3af6a190e6f3b3001d33f9ceda50774e1c7",
+      "bytes": 853
+    },
+    "matrix.pins.json": {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r11-local-scheduler/matrix.pins.json",
+      "sha256": "e9116b95ed11623844be2923f60fe3d53a4a5c4e60196067be8b55cd9f03b0fc",
+      "bytes": 1708
+    }
+  },
+  "compilerAccepted": false,
+  "acceptedCompiler": "G24R12 unchanged",
+  "next": "New bounded actual-state observation must distinguish program-wide dependency-fact construction from still-active semantic reachability before selecting another algorithm. Do not rerun the unchanged failed emit."
+}

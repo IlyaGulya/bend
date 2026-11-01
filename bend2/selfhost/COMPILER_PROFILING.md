@@ -586,3 +586,11 @@ outside CPU does not identify scheduling, I/O or another cause; no process-name
 heuristic, utilization admission rule or retry of the unchanged failure follows.
 `checkpoints/local2039g43r11-outcome/outcome.json`.
 
+The genuine R11 stage-one image also fails the unchanged original full scheduler
+C-emission diagnostic at600238ms, RSS2587623424B, footprint2636219720B,
+owned tree stopped. No C/clang/runtime result or acceptance-matrix claim.
+The closed-family implementation is therefore rejected as a demonstrated
+deadline fix. A new bounded actual-state sample must distinguish dependency
+fact construction from remaining semantic reachability before another change.
+`checkpoints/local2039g43r11-local-outcome/outcome.json`.
+
