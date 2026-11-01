@@ -1058,3 +1058,132 @@ First-order continuation rewrite остаётся условным: эта тр�
 strict12 сохраняются. C-only улучшение всё ещё не означает ускорения JS-library
 throughput в обоих strict12 runtime-lane.
 
+### G45D1–D3: точные scoped запросы NF/reach
+
+G45 — диагностический carrier и измерение, **не ускоренный компилятор**.
+Accepted compiler остаётся G24R12; stage2/fixedpoint и strict12 здесь не заявлены.
+Исходники carrier — `ad77692a`, regression tests — `2400219d`, итоговый host
+budget — `faad7519`. Frozen Bend/foreign input corpus — `3623bddf`;
+G45D3 contract — `1dc90599`.
+
+#### Реализация и проверка carrier
+
+- `emitter_step_lower.ts --trace-queries` создаёт отдельный typed emitter engine,
+  сохраняя 24 census roots. На Begin NF передаётся Data
+  `context/descriptor/env/level/fuel`, reach —
+  `context/descriptor/env/target/seen/fuel`. Типы и количества берутся из
+  canonical source declarations; non-variable arguments получают typed ANF
+  bindings без повторного вычисления. End сохраняет пустой payload.
+- `compiler_query_census.mjs` интернирует полную структуру аргументов без hash
+  collisions: qualified tags, quantity prefixes, binders, closure bodies/env,
+  порядок списков, дубликаты и дерево Base.Map участвуют в ключе. Контекст
+  дополнительно разделён по object identity: это консервативное пере-разбиение,
+  а не критерий семантической эквивалентности. Getters/proxies/closures не
+  исполняются. Неполный ключ никогда не увеличивает число distinct queries.
+- Host аутентифицирует raw native producer receipts, artifact, generation
+  manifest, canonical sites и обе полные argument schemas. Immutable Data
+  carrier позволяет bounded weak identity memoization; нативные аргументы
+  не сохраняются в отчёте.
+- Ordinary, `--trace` и `--trace-census` engine + component outputs совпали
+  с предыдущими байтами: **6/6**. **35 tests PASS**: 16 новых consumer-visible
+  identity/censor regressions и 19 прежних stage/native contract tests.
+
+Genuine native producer `e014f680…` с неизменённым ordinary compiler corpus
+собрал новый stage1, не TS/root.js: **95.329 s**, RSS **1851424768 B**,
+footprint **1847167520 B**, guardian PASS, owned tree stopped.
+Image **33811672 B**, SHA-256
+`35f3ff8662664a7961aecf46fa8bf1d2dff26450521b1778ade158bc3c4ed1ec`.
+Parse/expand/check/emit прошли полностью. ABI13, parser8M/module, quantum64,
+native threads1 сохранены. D2/D3 меняли только внешний observer, поэтому
+переиспользовали этот же образ с повторной аутентификацией всех raw pins.
+
+Этот stage1 через Node Worker действительно скомпилировал
+`c_target_show_data.bend` в C; clang `-O0` собрал C, executable напечатал прежний
+`ShowReport`. Emitted C побайтово совпал с G44D2:
+`8c9e0eebd03aeaa4036a8556376d9ee2d5a3de9287738a397b126815aaaeb8f5`.
+Actual BIR capture и positive SHOW-entry control сработали. Все 4781 query
+observations этого маленького consumer классифицированы, без unsupported
+или censored observations.
+
+#### Отклонённые измерения не переименованы в успешные
+
+| Версия | Результат | Причина |
+|---|---|---|
+| G45D1 | Rejected scoped census | Per-query observer work2M оборвал первый полный NF context; classified prefix0. Command/guardian PASS не означают ответ на вопрос об уникальности |
+| G45D2 | Rejected command | Host передал work32M выше разрешённого module ceiling16M; initialization завершилась ошибкой, query report отсутствует |
+| G45D3 | Observed bounded prefix | Поддерживаемый work16M; prefix завершился на cumulative weak-entry cap1M, не на ошибке компилятора |
+
+D1 checkpoint `81ba8747 / selfhost/g45d1-rejected`, D2 —
+`0e12fd6b / selfhost/g45d2-rejected`. Перед D3 отдельный synthetic observer
+smoke выполнил cold query с **6977964** work units: старый work2M censor,
+work16M дал точные distinct/repeat/fuel различия. Это проверка измерителя,
+не дополнительный compiler workload и не performance evidence.
+
+#### Исходный scheduler: полностью классифицированный префикс
+
+Тот же `scheduler_chunk_smoke.bend`, исходный checker engine, полный source
+closure, `IO(Unit)` и Node Worker. Guard **8192 MiB RSS + 8192 MiB footprint**,
+poll10ms, timeout600000ms; bounded emitter window20000ms. Whole command
+**156556 ms**, RSS **2408398848 B**, footprint **2744527456 B**;
+guardian PASS, owned tree stopped, finalizer `aborted` по intentional stop.
+Startup659.537ms, parse/import/fuel10940.752ms, expand5871.434ms,
+check115378.441ms, emit22705.635ms до остановки. Это не завершённая C build.
+
+| Query | Classified calls | Exact distinct keys | Exact repeats | Repeats / classified |
+|---|---:|---:|---:|---:|
+| NF | 306286 | 28769 | 277517 | 90.607% |
+| Reach | 44360 | 2996 | 41364 | 93.246% |
+
+Это **весь последовательный префикс350646**, не sampled estimate.
+После cap оставшиеся **822676** observations censored; весь Run-window
+содержит1173322 queries. Их нельзя приписывать ни новым, ни повторным ключам
+или экстраполировать на них проценты таблицы. Unsupported0.
+
+NF: descriptor239, env75, level1, fuel51; **13642 context objects имеют одну
+полную структурную форму**. У reach: context1, descriptor62, env43, target1,
+ordered seen1402, fuel18. Дополнительное разделение NF по object identity
+намеренно завышает distinct count. Projection без context даёт1559 ключей,
+без seen у reach —516, но эти projections **не разрешение удалять поля ключа**
+и не доказательство безопасности кэша.
+
+Observer retained accounting **75435672 B**, interned nodes21526, weak
+insertions1000000; peak work/query3778190 объясняет D1 failure.
+Weak count — cumulative insertions, не live heap. Callback wall11565.721ms
+перекрывается с phase spans и включает census: его нельзя вычитать и объявлять
+остаток baseline CPU или speedup.
+
+Actual BIR снова прошёл полный validator:1339502 nodes,10469 code rows,
+6442 declaration rows,1445 constructors,145 families,26 type functions.
+`node_declared`1 Begin/0 End; `CBackend.render`, `cid_rows`, SHOW и link rewrite
+не вошли. Первый layout всё ещё не завершён; wrapper `CEmit.render` уже вошёл.
+
+#### Решение: sharing мотивирован; большой IR rewrite ещё не оправдан
+
+Первый falsifier пройден: точные повторные NF и reach запросы существуют
+массово **даже с полным env/fuel/seen и консервативным context identity**.
+Следующий кандидат — bounded backend-owned semantic query store/DAG, а не
+ещё один plain DCE, глобальный pretty-name cache или запуск всех обходов
+одновременно.
+
+1. Оставить FIR/checker binding semantics неизменными. На границе
+   lowering/catalog/layout дать immutable scoped context, descriptors и env
+   spines стабильные IDs; canonical declaration authority и quantity/erasure
+   metadata не теряются. Не начинать с полной смены FIR/BIR representation.
+2. Первый exact-query прототип сохраняет ключи
+   `NF(contextId, descriptorId, envId, level, fuel)` и
+   `reach(layoutContextId, descriptorId, envId, targetId, seenId, fuel)`.
+   Store принадлежит одной compilation; результаты сохраняют прежние Nf/Bool,
+   errors и budget behavior. NfFail/fuel0 не становятся отрицательными
+   сертификатами при другом budget. Никакой NF-idempotence не предполагается.
+3. Только после устранения повторов планировать независимые ready DAG nodes
+   параллельно; финальные node/Cid rows сохраняют исходный порядок. Сам этот
+   census не доказал ни экономию wall time, ни weighted стоимость повторов,
+   ни допустимость такого scheduler cutover.
+
+Риск: measurement локализует C layout/reentry, но не устраняет измеренные
+115.378s frontend checking и не доказывает ускорение JS-library. Любой кандидат
+всё ещё обязан пройти genuine fixedpoint,95+190,C62/JS67/native33/admission12/
+host5 и исходный strict12 в обоих native+JS runtime lanes. Без этого accepted
+compiler не меняется. Exact commands, guards, image/source hashes и scope
+ограничения сохранены в `checkpoints/local2039g45d{1,2,3}-outcome/`.
+
