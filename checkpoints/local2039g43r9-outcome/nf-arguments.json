@@ -1,0 +1,293 @@
+{
+  "scope": "sampled host-boundary arguments only; neither invocation counts nor exclusive CPU shares nor cache-soundness proof",
+  "samples": 3836,
+  "selectedSamples": 622,
+  "completeSamples": 484,
+  "requests": {
+    "<Direct-or-unselected>": 2385,
+    "cps_provider_1_resolve_live": 1,
+    "cps_provider_1_application_direct": 1,
+    "cps_provider_7_nf_descriptor_step": 224,
+    "cps_provider_3_reaches": 28,
+    "cps_provider_7_nf": 26,
+    "cps_provider_3_str_member": 234,
+    "cps_provider_7_nf_descriptor": 207,
+    "cps_provider_7_nf_all": 350,
+    "cps_provider_7_bind_status": 23,
+    "cps_provider_7_nf_cases": 18,
+    "cps_provider_3_args_reach": 19,
+    "cps_provider_7_nf_reduce_body": 18,
+    "cps_provider_7_nf_family": 28,
+    "cps_provider_7_nf_named": 38,
+    "cps_provider_3_reaches_val": 29,
+    "cps_provider_3_fields_reach": 27,
+    "cps_provider_7_val_at_choose": 30,
+    "cps_provider_3_reach_arms": 48,
+    "cps_provider_7_nf_family_apply": 26,
+    "cps_provider_7_bind_values": 26,
+    "cps_provider_7_nf_reduce_apply": 5,
+    "cps_provider_7_family_of": 17,
+    "cps_provider_3_family_reach": 11,
+    "cps_provider_7_val_nth": 5,
+    "cps_provider_7_append_vals": 4,
+    "cps_provider_7_nf_reduce": 8
+  },
+  "completeDistinctKeys": 313,
+  "sampledCompleteKeyRecurrences": 171,
+  "nonemptyCompleteSamples": 329,
+  "nonemptyDistinctKeys": 255,
+  "sampledNonemptyKeyRecurrences": 74,
+  "incompleteReasons": {
+    "depth-limit": 138
+  },
+  "identicalInputsExceptFuelGroups": 62,
+  "nonemptyRecurrentExamples": [
+    {
+      "key": "6821f194c3ee2930d0576c88656006e060e2ccc115025269e8c64f9a57ee3b1a",
+      "sampleCount": 4,
+      "request": "cps_provider_7_nf_all",
+      "firstHostStep": 5591040,
+      "lastHostStep": 35000320,
+      "headKey": "Succ",
+      "headKeyTruncated": false,
+      "fuel": "977",
+      "level": "0",
+      "target": null,
+      "targetTruncated": null,
+      "termList": {
+        "length": 1,
+        "complete": true
+      },
+      "envList": {
+        "length": 0,
+        "complete": true
+      },
+      "seenList": null
+    },
+    {
+      "key": "37e52f41d6c582f4abf401bcca8fc9e6419940f5c0ac3c75993bee06bd5148c3",
+      "sampleCount": 4,
+      "request": "cps_provider_7_nf_all",
+      "firstHostStep": 13545472,
+      "lastHostStep": 45277184,
+      "headKey": "Succ",
+      "headKeyTruncated": false,
+      "fuel": "1002",
+      "level": "0",
+      "target": null,
+      "targetTruncated": null,
+      "termList": {
+        "length": 1,
+        "complete": true
+      },
+      "envList": {
+        "length": 0,
+        "complete": true
+      },
+      "seenList": null
+    },
+    {
+      "key": "8bb73ec9972ac02a995abec53c36222a1fd8417073b05264904e5b8ed74b03e5",
+      "sampleCount": 4,
+      "request": "cps_provider_7_nf_descriptor_step",
+      "firstHostStep": 20094976,
+      "lastHostStep": 39006208,
+      "headKey": "Succ",
+      "headKeyTruncated": false,
+      "fuel": "1007",
+      "level": "0",
+      "target": null,
+      "targetTruncated": null,
+      "termList": null,
+      "envList": {
+        "length": 0,
+        "complete": true
+      },
+      "seenList": null
+    },
+    {
+      "key": "ef168ab7239d4c77ade32839a339ebbe0a8821a52c355d1bdaa78b85fc64dc05",
+      "sampleCount": 4,
+      "request": "cps_provider_7_nf_descriptor_step",
+      "firstHostStep": 36339712,
+      "lastHostStep": 45719552,
+      "headKey": "Succ",
+      "headKeyTruncated": false,
+      "fuel": "995",
+      "level": "0",
+      "target": null,
+      "targetTruncated": null,
+      "termList": null,
+      "envList": {
+        "length": 0,
+        "complete": true
+      },
+      "seenList": null
+    },
+    {
+      "key": "92a5ee9eb3ac828cb6f7e29caad3451198c67308c2e07f1f8ae92d6f5e73d664",
+      "sampleCount": 3,
+      "request": "cps_provider_7_nf_descriptor_step",
+      "firstHostStep": 1777664,
+      "lastHostStep": 25878528,
+      "headKey": "Succ",
+      "headKeyTruncated": false,
+      "fuel": "987",
+      "level": "0",
+      "target": null,
+      "targetTruncated": null,
+      "termList": null,
+      "envList": {
+        "length": 0,
+        "complete": true
+      },
+      "seenList": null
+    },
+    {
+      "key": "0f14e8b812ae936e978925ac30894b2ddecc21caae1c90619a91b6f06d7373f3",
+      "sampleCount": 3,
+      "request": "cps_provider_7_nf_descriptor_step",
+      "firstHostStep": 2441216,
+      "lastHostStep": 24399872,
+      "headKey": "Char",
+      "headKeyTruncated": false,
+      "fuel": "1012",
+      "level": "0",
+      "target": null,
+      "targetTruncated": null,
+      "termList": null,
+      "envList": {
+        "length": 0,
+        "complete": true
+      },
+      "seenList": null
+    },
+    {
+      "key": "ac4c08e9d880f57a9ddd232c98bc145fd7307944ff08afdbfd94f5cbce223f2f",
+      "sampleCount": 3,
+      "request": "cps_provider_7_nf_all",
+      "firstHostStep": 2777088,
+      "lastHostStep": 28696576,
+      "headKey": "Succ",
+      "headKeyTruncated": false,
+      "fuel": "981",
+      "level": "0",
+      "target": null,
+      "targetTruncated": null,
+      "termList": {
+        "length": 1,
+        "complete": true
+      },
+      "envList": {
+        "length": 0,
+        "complete": true
+      },
+      "seenList": null
+    },
+    {
+      "key": "e0f740af49a08bb6883b180994cdd6b9718fb5430052df7c560e63ac908b52da",
+      "sampleCount": 3,
+      "request": "cps_provider_7_nf_descriptor_step",
+      "firstHostStep": 4964352,
+      "lastHostStep": 26898432,
+      "headKey": "Succ",
+      "headKeyTruncated": false,
+      "fuel": "991",
+      "level": "0",
+      "target": null,
+      "targetTruncated": null,
+      "termList": null,
+      "envList": {
+        "length": 0,
+        "complete": true
+      },
+      "seenList": null
+    },
+    {
+      "key": "a289b2e1e90d86eca0b96b510b1c2f83941761e320b35c76cb3b9fbb09ea5a31",
+      "sampleCount": 3,
+      "request": "cps_provider_7_nf_all",
+      "firstHostStep": 5087232,
+      "lastHostStep": 13180928,
+      "headKey": "Succ",
+      "headKeyTruncated": false,
+      "fuel": "1009",
+      "level": "0",
+      "target": null,
+      "targetTruncated": null,
+      "termList": {
+        "length": 1,
+        "complete": true
+      },
+      "envList": {
+        "length": 0,
+        "complete": true
+      },
+      "seenList": null
+    },
+    {
+      "key": "84adc0c269a527660a0b8548ceaa14aa7cde22ecd069f4a9ed29e4a0e067d467",
+      "sampleCount": 3,
+      "request": "cps_provider_7_nf_all",
+      "firstHostStep": 5677056,
+      "lastHostStep": 40001536,
+      "headKey": "Succ",
+      "headKeyTruncated": false,
+      "fuel": "996",
+      "level": "0",
+      "target": null,
+      "targetTruncated": null,
+      "termList": {
+        "length": 1,
+        "complete": true
+      },
+      "envList": {
+        "length": 0,
+        "complete": true
+      },
+      "seenList": null
+    },
+    {
+      "key": "476df9612469f770a9d45debd087c81b352ba63d0966758573c4901837212c91",
+      "sampleCount": 3,
+      "request": "cps_provider_7_nf_all",
+      "firstHostStep": 14479360,
+      "lastHostStep": 44654592,
+      "headKey": "Succ",
+      "headKeyTruncated": false,
+      "fuel": "981",
+      "level": "0",
+      "target": null,
+      "targetTruncated": null,
+      "termList": {
+        "length": 1,
+        "complete": true
+      },
+      "envList": {
+        "length": 0,
+        "complete": true
+      },
+      "seenList": null
+    },
+    {
+      "key": "4d9188a0bed46d0fe6d2f965859ef5104c405b0404bd73727da4f2299d6a8071",
+      "sampleCount": 3,
+      "request": "cps_provider_7_nf_descriptor_step",
+      "firstHostStep": 31830016,
+      "lastHostStep": 41893888,
+      "headKey": "Succ",
+      "headKeyTruncated": false,
+      "fuel": "980",
+      "level": "0",
+      "target": null,
+      "targetTruncated": null,
+      "termList": null,
+      "envList": {
+        "length": 0,
+        "complete": true
+      },
+      "seenList": null
+    }
+  ],
+  "limits": "Context table identity is not a structural map-content fingerprint. Incomplete walks are non-comparable. Once-per-100ms/4096-step samples, erased Direct payloads and bounded repeat tracking limit coverage; no recurrence absence proof."
+}

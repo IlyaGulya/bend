@@ -24,6 +24,11 @@ latest one; the GitHub release carries the same notes.
   evidence, not a speedup. The remaining matrix failure and full correctness
   qualification are not replaced by these selected proofs:
   `checkpoints/local2039g43r8-outcome/outcome.json`.
+  R9 executes the complete 67-fixture JS matrix over SSH, including the full
+  scheduler fixture. A separate original-budget NF-argument probe reaches the
+  C deadline and identifies CheckerProgress as the sampled reachability target;
+  a semantic fix and full C qualification are not yet claimed:
+  `checkpoints/local2039g43r9-outcome/outcome.json`.
 - Build acceleration experiments G41/G42 preserve G24R12 as the accepted
   compiler. LLVM splitting now has an explicit `--cc-partitions=4|8` experiment
   with at most three backend children; four remains the default. Real eight-way

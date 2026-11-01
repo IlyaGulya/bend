@@ -1,0 +1,230 @@
+{
+  "schemaVersion": 1,
+  "version": "G43R9",
+  "sourceCommit": "71191633",
+  "isolatedProbeCommit": "bf88255d",
+  "status": "COMPLETE_JS_MATRIX_PASS_AND_FULL_INPUT_NF_ARGUMENT_DIAGNOSTIC_DEADLINE",
+  "compilerAccepted": false,
+  "performanceAccepted": false,
+  "fullCorrectnessClaim": false,
+  "commands": {
+    "localFullInputNfProbe": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/scheduler-timeout-5140e57d/evals/scheduler_emit_diagnostic.ts",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/snapshot/artifacts/image",
+      "/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r9/scheduler-nf",
+      "--nf-progress"
+    ],
+    "remoteFullJsMatrix": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r9-source/js-matrix-ssh.mjs",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r9/js-config.json"
+    ]
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "abiExports": 13,
+  "fuel": 8000000,
+  "quantum": 64,
+  "jsMatrix": {
+    "target": "js",
+    "fixtures": 67,
+    "cases": [
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/evals/c_target_alias_paths.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/evals/c_target_array_nat.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/evals/c_target_array_nested.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/evals/c_target_array_u32.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/evals/c_target_array_wide.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/evals/c_target_bool_fields.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/evals/c_target_bool_prims.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/evals/c_target_bool_xor.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/evals/c_target_branch_arms.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/evals/c_target_char_head.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/evals/c_target_char_to_list.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/evals/c_target_clo_field.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/evals/c_target_disjoint_type_cells.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/evals/c_target_drop_fields.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/evals/c_target_multiarm.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/evals/c_target_nested_adt.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/evals/c_target_region_leave_repeat.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/evals/c_target_region_tail_capture.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/evals/c_target_repeat_capture.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/evals/c_target_repeat_data.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/evals/c_target_show_data.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/evals/c_target_string_from_list.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/evals/c_target_trigraph_literal.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/evals/c_target_user_ctor_show.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/evals/c_target_utf8_astral.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/evals/c_target_utf8_literal.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/evals/c_target_wide_node.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/evals/c_target_wide_record.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/evals/checker_affinity_step_smoke.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/evals/checker_arena_growth_smoke.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/evals/repro_js_non_tail_reclaim.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/evals/repro_js_non_tail_stack.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/evals/scheduler_chunk_smoke.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/tests/base/map_prefix_keys.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/tests/base/text_ops.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/tests/compile/bir_transport_owned.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/tests/compile/js_map_find_identity.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/tests/compile/js_multi_arity.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/tests/compile/js_multi_boxed_adapter.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/tests/compile/js_multi_chain.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/tests/compile/js_multi_identity.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/tests/compile/js_multi_reentrant.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/tests/compile/js_record_field_projection.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/tests/compile/js_scalar_local_record.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/tests/compile/js_scalar_region_tail.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/tests/compile/js_split_capture_chain.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/tests/io/args.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/tests/io/args_bytes.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/tests/reg/generic_ctor_domains.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/tests/reg/phys_storage_paths.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/tests/run/array_atomic_edges.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/tests/run/array_atomic_fadd.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/tests/run/array_fork.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/tests/run/f32_pow_unit_base.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/tests/run/f32_read_round_once.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/tests/run/f32_read_whitespace.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/tests/run/index_lookup_cursor.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/tests/run/map_bit_native.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/tests/run/nat_successor_boundaries.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/tests/run/native_map_find_shapes.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/tests/run/native_map_read_positions.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/tests/run/native_map_read_shapes.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/tests/run/native_map_read_unique.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/tests/run/native_string_borrow.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/tests/run/runtime_string_cmp.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/tests/run/runtime_string_eq.bend",
+      "/private/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/tests/run/word_float_roundtrip.bend"
+    ],
+    "logs": "/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/checkpoints/.g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/matrix-js",
+    "pinsPath": "/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/checkpoints/.g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/matrix-js/matrix.pins.json",
+    "pinsSha256": "6bc414f5e15dc4365dc70ff8b4b0dfbbb331bf6c30ba97983011d4b25d046bc4",
+    "driver": "/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/execution/repository/checkpoints/.g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/stage-one-consumer-driver",
+    "driverSha256": "910d9dfad1c2cfb24e3a61e42042ddeb0425a959cb2481f83fe2865196df9f9f",
+    "node": "/private/tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/node"
+  },
+  "jsTransport": {
+    "nonce": "d8985b43c63418bd981abba53444f2f8e41947f2026e6b61",
+    "job": "matrix-js",
+    "physical": "4613c60b990a84a1d3484370a8bb68887aa6b616ef55f96ff8802a1107f7a84b",
+    "planSha256": "c1751625b9145a3a186d9288d35db5ef2270fddb9510b5f05d429c1e5d0203c1",
+    "snapshotSha256": "f4021a6577bf028949f31b6f70197c5902ee95679f2a4a8eb57d3b03e2800181",
+    "remote": "/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61",
+    "started": 1793520344096,
+    "finished": 1793521240853,
+    "mode": "ssh"
+  },
+  "jsSupervisor": {
+    "source": "ssh://misakaindrive/tmp/bend-g24-d8985b43c63418bd981abba53444f2f8e41947f2026e6b61/result.json:1-45:raw",
+    "projectionOnly": true,
+    "fields": {
+      "nonce": "d8985b43c63418bd981abba53444f2f8e41947f2026e6b61",
+      "jobSha256": "c6907d9aed590a0d8a759984866185bfce089bf7b1d052e1b164f9694c669f5a",
+      "job": "matrix-js",
+      "snapshotSha256": "f4021a6577bf028949f31b6f70197c5902ee95679f2a4a8eb57d3b03e2800181",
+      "planSha256": "c1751625b9145a3a186d9288d35db5ef2270fddb9510b5f05d429c1e5d0203c1",
+      "status": "PASS",
+      "reaped": true,
+      "pin": {
+        "physical": "4613c60b990a84a1d3484370a8bb68887aa6b616ef55f96ff8802a1107f7a84b",
+        "platform": "darwin",
+        "arch": "arm64",
+        "release": "25.5.0",
+        "cpu": "Apple M3 Pro",
+        "memoryBytes": 38654705664,
+        "tools": {
+          "bun": "/private/tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/bun",
+          "node": "/private/tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/node",
+          "clang": "/usr/bin/clang",
+          "llvmBin": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin"
+        },
+        "pins": {
+          "bun": {
+            "path": "/private/tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/bun",
+            "sha256": "28c7dd0a06916aba284d570ef44a2d70e9c538eaf2ba58dfe0910525563b3f79"
+          },
+          "node": {
+            "path": "/private/tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/node",
+            "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5"
+          },
+          "clang": {
+            "path": "/usr/bin/clang",
+            "sha256": "179301dcb41ea78accc3fa0048a7e6f6710d891945a751a34addd622020c1818"
+          },
+          "opt": {
+            "path": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/opt",
+            "sha256": "f0c47819a5c4bccebc4fde8494977ec0bb223e2d47a62c376372942445708e14"
+          },
+          "split": {
+            "path": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/llvm-split",
+            "sha256": "548df9b6333fe8a7a9931962a4ca87d89d2c5a13ba48909dd77c8b8984cdab57"
+          }
+        },
+        "environment": {}
+      }
+    }
+  },
+  "nfGuard": {
+    "status": "FAIL",
+    "reason": "deadline_exceeded",
+    "commandExitCode": -1,
+    "commandSignal": 15,
+    "peakRssBytes": 2353725440,
+    "peakFootprintBytes": 2657798744,
+    "elapsedMs": 600246,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "command": [
+      "/bin/sh",
+      "-c",
+      "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+      "sh",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r9/scheduler-nf/emit.stdout",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r9/scheduler-nf/emit.stderr",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--experimental-strip-types",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/scheduler-timeout-5140e57d/evals/candidate_consumer_worker.mjs",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/scheduler-timeout-5140e57d/evals/candidate_host.ts",
+      "--candidate=/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/snapshot/artifacts/image",
+      "--parser=/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/snapshot/artifacts/image",
+      "--stage-profile=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r9/scheduler-nf/stages",
+      "--stage-progress",
+      "--stage-nf-progress",
+      "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/evals/scheduler_chunk_smoke.bend",
+      "-o",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r9/scheduler-nf/scheduler_chunk_smoke.c",
+      "--base",
+      "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/bend2/base.bend",
+      "--runtime-c",
+      "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/bend2/selfhost/c_runtime.c"
+    ],
+    "label": "scheduler_chunk_smoke:diagnostic-emit",
+    "exitCode": 1,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793520332798-d6dcb0210d535a37.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "nfArguments": "nf-arguments.json",
+  "rawEvents": {
+    "pin": {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r9/scheduler-nf/stages/profile-89251-thread-1-wbe9JX/events.jsonl",
+      "sha256": "b5946efc29b3ee4987b282a59b48f92a3dfd708460d744416b6bf09b6ebfb0c3",
+      "bytes": 3237144
+    },
+    "retainedOutsideGit": true,
+    "records": 4515,
+    "truncatedFinalEvent": false
+  },
+  "evidenceDirectedFinding": "All48 sampled reach_arms targets are checker_core_steps_v1.CheckerProgress. The unchanged generated declaration has Finished/Pending/Direct before Bound, whose live inner field directly references CheckerProgress<B>. Existing layout reenters searches earlier arms transitively before reaching that direct witness. A direct-witness-first ordering is the next source-supported candidate; no memoization or semantic optimization has been applied or qualified.",
+  "caveats": "NF fingerprints record boundary observations, not source-call counts or exclusive CPU. Context map identity is not structural map contents. Equal nonempty sampled tuples recur, often Succ numerals, with fuel-sensitive variation. The original C-matrix deadline is unresolved; no shorter fixture, higher limit, seed substitution, performance replay or compiler promotion."
+}

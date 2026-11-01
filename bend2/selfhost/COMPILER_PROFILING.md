@@ -496,3 +496,31 @@ matrices; a successful transport does not manufacture full qualification.
 All exact rows, commands, memory figures, producer proofs and the rejection:
 `checkpoints/local2039g43r8-outcome/outcome.json` and `throughput.json`.
 
+### Full JS matrix and bounded NF arguments (G43R9)
+
+The complete accepted JS-target matrix passes all67 fixtures on the pinned SSH
+host, including scheduler_chunk_smoke; the actual supervisor PASS/reaped=true.
+In parallel on the separately owned local host, the original full C input remains
+inside emission at600s with owned tree stopped. Neither input nor guard is reduced.
+
+| Argument-probe boundary observation | Count |
+| --- | ---: |
+| All samples | 3836 |
+| Selected NF/reach samples | 622 |
+| Complete argument tuples | 484 |
+| Complete nonempty tuples | 329 |
+| Distinct complete nonempty keys | 255 |
+| Recurrent nonempty tuple observations | 74 |
+
+These are samples, not invocation counts or exclusive CPU shares. Context map
+identity is not a structural map-content fingerprint; depth-limited walks do not
+yield comparable keys. Equal descriptors with different fuel remain distinct.
+All48 sampled reach_arms targets identify CheckerProgress. Its original
+Finished/Pending/Direct arms precede Bound, whose live inner field directly
+references CheckerProgress. The existing depth-first search explores those
+earlier graphs before visiting this direct witness. A direct-witness-first
+ordering with the same normalizer/environment/fuel is evidence-directed; it is
+not yet implemented, measured or qualified. No cache keyed only by family name
+is justified. Compact actual evidence and exact probe source:
+`checkpoints/local2039g43r9-outcome/outcome.json`.
+

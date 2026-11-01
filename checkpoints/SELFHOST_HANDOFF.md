@@ -39,6 +39,17 @@ Original fail-fast остановил прогон до emitted suites и correc
 full correctness/performance acceptance не заявляется, R12 остаётся принятым.
 Evidence: `local2039g43r8-outcome/outcome.json`.
 
+R9 **`71191633`**, isolated probe **`bf88255d`**: complete JS matrix67/67 PASS
+на misaka, scheduler_chunk_smoke включён; supervisor PASS/reaped=true.
+Локальная новая NF-argument диагностика остаётся в original600s, stopped=true.
+Из3836 boundary samples622 выбранных,484 complete;74 nonempty sampled tuple
+recurrences. Все48 sampled reach targets — CheckerProgress. В исходном типе
+прямой recursive Bound стоит после Finished/Pending/Direct; текущий DFS сначала
+обходит их графы. Следующий кандидат — проверять прямой witness до глубокого
+обхода с теми же env/fuel/normalizer, не family-name cache. Это ещё не fix.
+Evidence: `local2039g43r9-outcome/outcome.json`.
+
+
 R5 source checkpoint — **`37006316`**. Код нового
 `--distributed-plan` реализован, но **не qualified и не accepted**.
 Default serial, original 8/8-GiB / poll10ms / timeout600s per-step guardian

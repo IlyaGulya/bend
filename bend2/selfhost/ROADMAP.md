@@ -72,8 +72,15 @@ then executes all12 original paired rows through direct SSH. The unchanged
 strict gate rejects native mean/median time and median RSS. Control/candidate
 native binaries and JS images are identical, so numerical variation is not a
 compiler improvement. Both actual lane supervisors PASS/reaped=true.
-JS matrix completion, the C-matrix budget and full correctness still remain;
-the mode is not fully qualified and G24R12 remains the accepted compiler.
+R9 passes the entire67-fixture JS matrix, including scheduler_chunk_smoke, on
+the pinned remote host; supervisor PASS/reaped=true. A separate full-input,
+original600s C diagnostic observes equal nonempty NF argument tuples at
+different boundaries and all48 sampled reach targets name CheckerProgress.
+Its direct recursive Bound arm follows the transitive Finished/Pending/Direct
+searches in the unchanged declaration. Direct-witness-first traversal is the
+next source-supported candidate, not a measured fix or caching correctness claim.
+The C-matrix budget and full correctness remain unresolved; G24R12 stays accepted.
+`checkpoints/local2039g43r9-outcome/outcome.json`.
 `checkpoints/local2039g43r7-outcome/outcome.json`.
 `checkpoints/local2039g43r8-outcome/outcome.json`.
 Evidence: `checkpoints/local2039g43r5-outcome/outcome.json`.
