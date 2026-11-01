@@ -6,7 +6,7 @@ latest one; the GitHub release carries the same notes.
 ## Unreleased
 
 - G43 adds an experimental opt-in immutable-snapshot qualification scheduler,
-  isolated output trees and whole-lane placement through the existing SSH route.
+  isolated output trees and whole-lane placement through cluster or direct SSH.
   Default serial execution and the strict twelve-row performance decision remain
   unchanged. R5 removes an incorrect process-name idle heuristic rather than
   requiring unrelated Bun/Node services to stop. The actual worker now runs
@@ -15,6 +15,11 @@ latest one; the GitHub release carries the same notes.
   Leases, authentication, guardians and owned-tree reaping remain enabled.
   The mode is still unqualified; no new performance acceptance is claimed.
   `checkpoints/local2039g43r5-outcome/outcome.json`.
+  Direct `ssh: "misakaindrive"` targets execute a complete 33-row native/foreign/
+  library branch with accepted private runtimes and bb-app unchanged; 12 safety
+  tests pass. This selected-branch proof does not replace the outstanding matrix
+  failure, cancellation, other consumers or full performance qualification:
+  `checkpoints/local2039g43r6-outcome/outcome.json`.
 - Build acceleration experiments G41/G42 preserve G24R12 as the accepted
   compiler. LLVM splitting now has an explicit `--cc-partitions=4|8` experiment
   with at most three backend children; four remains the default. Real eight-way

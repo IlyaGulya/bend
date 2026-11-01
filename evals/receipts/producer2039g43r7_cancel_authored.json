@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "version": "G43DIST_R7_CANCEL_DIAGNOSTIC",
+  "status": "AUTHORED_NOT_EXECUTED",
+  "sameProductionSourcesAs": "24b3b5e8",
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r7-source/cancel-running-remote-native.mjs",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r7/cancel-driver-config.json",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r7/cancel-running-native.json"
+  ],
+  "driver": {
+    "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r7-source/cancel-running-remote-native.mjs",
+    "sha256": "c50a0edd1474561b9a261be5ef59a08ed993922552d7dd8daa305a0c1239095f",
+    "bytes": 4418
+  },
+  "configuration": {
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r6-source/native-ssh-diagnostic.mjs",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r7/cancel-native-config.json"
+    ],
+    "cwd": "/Users/ilyagulya/Projects/My/bend",
+    "out": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r7-ssh-cancel",
+    "remoteTarget": "misakaindrive"
+  },
+  "scope": "Actual13-second-class owned native compilation observed through SSH/ps using fresh job nonce, then only local coordinator receives SIGTERM. Production control/lease/supervisor must cancel and reap the remote tree. No arbitrary process or bb-app signal.",
+  "expected": "Diagnostic PASS requires observed actual native PID, coordinator nonzero, authenticated same-nonce supervisor FAIL/reaped=true and observed native identity absent. Not a completed consumer/performance qualification.",
+  "originalLimits": {
+    "rssMiB": 8192,
+    "footprintMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "nativeObservationPriorEvidence": "R6 remote first native compile13262ms, checker_arena_names13234ms; exact33-row proof in b6e58bc2.",
+  "bbAppStoppedOrPaused": false,
+  "noNewCompilerAlgorithmOrRuntimeVersion": true
+}

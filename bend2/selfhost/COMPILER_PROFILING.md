@@ -396,8 +396,13 @@ and stage1/stage2 acceptance remain in their separate g8 receipt.
 protocol described at the top of `evals/g24_distributed.mjs`. Omit it to retain
 the original serial path. The plan pins actual physical hosts, runtimes/tools,
 environment and job placement. Obtain SSH pins through independently trusted
-access; a first-contact probe is not authentication. The existing
-`gates/_lib.ts` cluster proxy or BEND_HOC bastion must already be configured.
+access; a first-contact probe is not authentication. SSH hosts select exactly
+one of `node: 2` (existing cluster/BEND_HOC route) or `ssh: "misakaindrive"`
+(direct SSH config alias/hostname). Direct targets are ASCII alphanumeric-first
+aliases with only alphanumeric/dot/underscore/hyphen, not user/port/option syntax.
+They use argv-based `/usr/bin/ssh`, BatchMode, an 8-second connect timeout and
+normal host-key checks. Local mode rejects either selector. The plan rejects
+two aliases for one physical host; they cannot count as independent machines.
 
 The snapshot inventory follows operational modules, actual consumer/matrix
 closures, selected real producer evidence/artifacts and frozen workload inputs.
@@ -429,4 +434,12 @@ reaped=true. No test is excluded and no producer substituted. Nine invariant
 tests and real authenticated packaging/transport pass; complete consumers,
 cancellation, twelve-row lanes and final qualification are not yet PASS.
 `checkpoints/local2039g43r5-outcome/outcome.json`.
+
+The direct-SSH path has executed all 33 native/foreign/library rows on the
+authorized remote Mac with byte-identical accepted private Bun/Node tools,
+without stopping bb-app. Twelve selector/lease/snapshot/row safety tests pass.
+Native execution, source/host/tool authentication and owned-tree reaping are
+observed; other branches, matrices, cancellation and full performance
+qualification are not inferred from that selected-branch proof.
+`checkpoints/local2039g43r6-outcome/outcome.json`.
 

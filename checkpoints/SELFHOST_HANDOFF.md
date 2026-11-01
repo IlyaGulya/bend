@@ -16,11 +16,17 @@ guardians, точная authentication и owned-tree tracking/reaping.
 На authorized M3 Pro / 36-GiB / macOS26.5.1 / LLVM21.1.8 реально размещены
 isolated accepted Bun1.4.3 / Node23.11.0; SHA и actual execution versions проверены.
 System Bun/Node не заменены. После OS-side проверки immutable bootstrap получен
-actual host pin; environment {}. Native compiler там ещё не исполнялся.
+actual host pin; environment {}. R6 native image execution на misaka подтверждён.
 Workspace `/tmp/bend-g43-b276ca3a9c897fbf51b6df71`, canonical `/private/tmp`.
 Evidence: `../evals/receipts/producer2039g43r5_misaka_setup.json`.
-Direct SSH alias transport ещё не интегрирован; отдельный source slice идёт
-параллельно исследованию настоящего compiler emission deadline.
+Direct SSH source **`5606e791`**, runtime outcome **`b6e58bc2`**: полная
+native/foreign/library branch — 33 rows PASS, supervisor reaped=true.
+12 safety tests PASS; bb-app и system runtimes не менялись. Это selected
+branch diagnostic, не manufactured prior full correctness.
+R7 **`24b3b5e8`** добавляет только opt-in fuel/parser phase spans и запускает
+full-input фазовую диагностику локально; admission/host branches идут на
+отдельной remote машине. Пока их результаты и hotspot не наблюдались.
+Evidence: `local2039g43r6-outcome/outcome.json`.
 
 R5 source checkpoint — **`37006316`**. Код нового
 `--distributed-plan` реализован, но **не qualified и не accepted**.

@@ -14,11 +14,12 @@ must not be stopped, paused or restarted. The M3 Pro / 36-GiB Mac has LLVM21.1.8
 and private byte-identical accepted Bun1.4.3 / Node23.11.0 in a unique temporary
 workspace; system tools remain unchanged. Actual runtime versions and an actual
 protocol host pin were acquired after OS-side bootstrap/source/tool verification.
-The accepted native image has not yet been executed remotely. Direct alias
-transport is the next independent source change; the current plan is cluster-only.
+R6 executes the accepted native image over the new validated direct-SSH target:
+all 33 native/foreign/library rows pass on misaka; the supervisor confirms reaped.
 `evals/receipts/producer2039g43r5_misaka_setup.json`.
+`checkpoints/local2039g43r6-outcome/outcome.json` (`b6e58bc2`).
 
-R5 source is `37006316`, with explicit `--distributed-plan=PATH`.
+Heuristic-removal source is `37006316`; direct-SSH source is `5606e791`.
 The default stays serial. Snapshots use an explicit closed source/input
 inventory, original producer authority, OS-side code/tool authentication,
 read-only transport trees, and separate declared-input execution trees.
@@ -26,7 +27,8 @@ One physical host runs at most one scheduler job. All six samples of a lane
 remain on one pinned host; native authenticates output before JS starts.
 The original twelve-row time/RSS/footprint decision and per-step guard remain.
 `local-single-host` is one real machine with serialized jobs, not a multi-node
-performance claim. SSH still requires the existing cluster/BEND_HOC route.
+performance claim. SSH supports either the original cluster/BEND_HOC route or
+an explicit validated direct alias, never both selectors for one host.
 
 Failed versions remain explicit: `ea87e019` records the original coordinator
 top-level-await self-import stall before any dispatch; `77358367` records
