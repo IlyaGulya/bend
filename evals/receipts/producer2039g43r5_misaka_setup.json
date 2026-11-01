@@ -1,0 +1,183 @@
+{
+  "schemaVersion": 1,
+  "status": "PRIVATE_ACCEPTED_TOOLS_AND_AUTHENTICATED_BOOTSTRAP_READY",
+  "sourceVersion": "G43DIST_R5",
+  "sourceCommit": "37006316",
+  "host": "misakaindrive",
+  "privateWorkspace": "/tmp/bend-g43-b276ca3a9c897fbf51b6df71",
+  "tools": {
+    "bun": "/tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/bun",
+    "node": "/tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/node",
+    "clang": "/usr/bin/clang",
+    "llvmBin": "/opt/homebrew/opt/llvm@21/bin"
+  },
+  "actualHostPin": {
+    "physical": "4613c60b990a84a1d3484370a8bb68887aa6b616ef55f96ff8802a1107f7a84b",
+    "platform": "darwin",
+    "arch": "arm64",
+    "release": "25.5.0",
+    "cpu": "Apple M3 Pro",
+    "memoryBytes": 38654705664,
+    "tools": {
+      "bun": "/private/tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/bun",
+      "node": "/private/tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/node",
+      "clang": "/usr/bin/clang",
+      "llvmBin": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin"
+    },
+    "pins": {
+      "bun": {
+        "path": "/private/tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/bun",
+        "sha256": "28c7dd0a06916aba284d570ef44a2d70e9c538eaf2ba58dfe0910525563b3f79"
+      },
+      "node": {
+        "path": "/private/tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/node",
+        "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5"
+      },
+      "clang": {
+        "path": "/usr/bin/clang",
+        "sha256": "179301dcb41ea78accc3fa0048a7e6f6710d891945a751a34addd622020c1818"
+      },
+      "opt": {
+        "path": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/opt",
+        "sha256": "f0c47819a5c4bccebc4fde8494977ec0bb223e2d47a62c376372942445708e14"
+      },
+      "split": {
+        "path": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/llvm-split",
+        "sha256": "548df9b6333fe8a7a9931962a4ca87d89d2c5a13ba48909dd77c8b8984cdab57"
+      }
+    },
+    "environment": {}
+  },
+  "runtimeDeploymentCompatibility": {
+    "bun": {
+      "text": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun:\nLoad command 12\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 13.0\n      sdk 26.5\n   ntools 1\n     tool 4\n  version 23.1.2\n",
+      "details": {
+        "wallTimeNoticeEmitted": false,
+        "timeoutSeconds": 15,
+        "wallTimeMs": 115.38654202222824
+      }
+    },
+    "node": {
+      "text": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node:\nLoad command 10\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 11.0\n      sdk 15.0\n   ntools 1\n     tool LD\n  version 1115.7.3\n",
+      "details": {
+        "wallTimeNoticeEmitted": false,
+        "timeoutSeconds": 15,
+        "wallTimeMs": 103.7517499923706
+      }
+    }
+  },
+  "setupCommands": [
+    [
+      "/usr/bin/ssh",
+      "-o",
+      "BatchMode=yes",
+      "-o",
+      "ConnectTimeout=8",
+      "misakaindrive",
+      "/bin/mkdir -m 700 /tmp/bend-g43-b276ca3a9c897fbf51b6df71 && /bin/mkdir -m 700 /tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools"
+    ],
+    [
+      "/usr/bin/scp",
+      "-p",
+      "-o",
+      "BatchMode=yes",
+      "-o",
+      "ConnectTimeout=8",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "misakaindrive:/tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/"
+    ]
+  ],
+  "setupResults": [
+    {
+      "text": "(no output)",
+      "details": {
+        "wallTimeNoticeEmitted": false,
+        "timeoutSeconds": 120,
+        "wallTimeMs": 563.9681249856949
+      }
+    },
+    {
+      "text": "(no output)\n\nWall time: 28.54 seconds",
+      "details": {
+        "wallTimeNoticeEmitted": true,
+        "timeoutSeconds": 120,
+        "wallTimeMs": 28535.35866701603
+      }
+    }
+  ],
+  "actualRuntimeCommand": [
+    "/usr/bin/ssh",
+    "-o",
+    "BatchMode=yes",
+    "-o",
+    "ConnectTimeout=8",
+    "misakaindrive",
+    "/usr/bin/shasum -a 256 /tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/bun /tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/node && /bin/chmod 0555 /tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/bun /tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/node && /tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/bun --version && /tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/node --version && /opt/homebrew/opt/llvm@21/bin/opt --version"
+  ],
+  "actualRuntimeResult": {
+    "text": "28c7dd0a06916aba284d570ef44a2d70e9c538eaf2ba58dfe0910525563b3f79  /tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/bun\nead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5  /tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/node\n1.4.3\nv23.11.0\nHomebrew LLVM version 21.1.8\n  Optimized build.\n  Default target: arm64-apple-darwin25.5.0\n  Host CPU: apple-m3\n\n\nWall time: 5.17 seconds",
+    "details": {
+      "wallTimeNoticeEmitted": true,
+      "timeoutSeconds": 30,
+      "wallTimeMs": 5170.338999986649
+    }
+  },
+  "bootstrapCommands": [
+    [
+      "/usr/bin/ssh",
+      "-o",
+      "BatchMode=yes",
+      "-o",
+      "ConnectTimeout=8",
+      "misakaindrive",
+      "/bin/mkdir -m 700 /tmp/bend-g43-b276ca3a9c897fbf51b6df71/bootstrap"
+    ],
+    [
+      "/usr/bin/scp",
+      "-p",
+      "-o",
+      "BatchMode=yes",
+      "-o",
+      "ConnectTimeout=8",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r5-consumer-diagnostic/snapshot-e8a4b4cb5d838c9ffcb44796e88ed81fb4b914215b426aa46834fd0dc91789fa.tar.gz",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r5/tools-misaka.json",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r5/bootstrap-sums.sha256",
+      "misakaindrive:/tmp/bend-g43-b276ca3a9c897fbf51b6df71/"
+    ]
+  ],
+  "bootstrapResults": [
+    {
+      "text": "(no output)",
+      "details": {
+        "wallTimeNoticeEmitted": false,
+        "timeoutSeconds": 180,
+        "wallTimeMs": 761.4167090058327
+      }
+    },
+    {
+      "text": "(no output)\n\nWall time: 2.72 seconds",
+      "details": {
+        "wallTimeNoticeEmitted": true,
+        "timeoutSeconds": 180,
+        "wallTimeMs": 2717.9502920508385
+      }
+    }
+  ],
+  "actualProbeCommand": [
+    "/usr/bin/ssh",
+    "-o",
+    "BatchMode=yes",
+    "-o",
+    "ConnectTimeout=8",
+    "misakaindrive",
+    "umask 022; /usr/bin/tar -xzf /tmp/bend-g43-b276ca3a9c897fbf51b6df71/snapshot-e8a4b4cb5d838c9ffcb44796e88ed81fb4b914215b426aa46834fd0dc91789fa.tar.gz -C /tmp/bend-g43-b276ca3a9c897fbf51b6df71/bootstrap && /bin/chmod 0555 /tmp/bend-g43-b276ca3a9c897fbf51b6df71/bootstrap && /usr/bin/shasum -a 256 -q -c /tmp/bend-g43-b276ca3a9c897fbf51b6df71/bootstrap-sums.sha256 && /tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/bun /tmp/bend-g43-b276ca3a9c897fbf51b6df71/bootstrap/repository/evals/g24_distributed.mjs probe /tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools-misaka.json"
+  ],
+  "bootstrapSha256": "e8a4b4cb5d838c9ffcb44796e88ed81fb4b914215b426aa46834fd0dc91789fa",
+  "bootstrapSourceSnapshot": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r5-consumer-diagnostic/consumer-snapshot/manifest.json",
+  "sourceCompilerImagesIncludedOnlyOutsideGit": true,
+  "systemBunNodeReplaced": false,
+  "bbAppStoppedOrPaused": false,
+  "actualNativeCompilerExecutedOnRemote": false,
+  "scope": "Accepted runtime SHA/version execution and actual protocol host pin after OS-side verification. No consumer, cancellation or performance acceptance claim."
+}

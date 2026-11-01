@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "version": "G43DIST_R5",
+  "sourceCommit": "37006316",
+  "status": "HEURISTIC_REGRESSION_FIXED_REAL_MATRIX_EMISSION_TIMEOUT",
+  "compilerAccepted": false,
+  "performanceAccepted": false,
+  "fullCorrectnessPassed": false,
+  "actualWorkerExecution": true,
+  "previousNameBasedRefusalGone": true,
+  "sourceOrGuardianProtectionDisabled": false,
+  "userServicesStoppedOrPaused": false,
+  "tests": {
+    "text": "bun test v1.4.3 (c6da4a4d3)\n\n 9 pass\n 0 fail\nRan 9 tests across 1 file. [442.00ms]\n",
+    "details": {
+      "wallTimeNoticeEmitted": false,
+      "timeoutSeconds": 180,
+      "wallTimeMs": 525.4797499775887
+    }
+  },
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r4-source/consumer-diagnostic.mjs",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r5/consumer-config.json"
+  ],
+  "actualSupervisor": {
+    "nonce": "441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8",
+    "jobSha256": "769396330df981502fec1ccf160d7c2bc7287d74c2c221ba9e4319fea9b32713",
+    "job": "matrix-c",
+    "snapshotSha256": "e8a4b4cb5d838c9ffcb44796e88ed81fb4b914215b426aa46834fd0dc91789fa",
+    "planSha256": "8192a5cc7c569bbdd19fcd977fcfbb10cad0cd9a0038eb95b73896c78420e3b4",
+    "status": "FAIL",
+    "reaped": true,
+    "pin": {
+      "physical": "6beb0f3c1e3c440c619b8ee27cfb246ced9ee15b744f9f234edc8e2a5d81736e",
+      "platform": "darwin",
+      "arch": "arm64",
+      "release": "25.6.0",
+      "cpu": "Apple M1 Max",
+      "memoryBytes": 68719476736,
+      "tools": {
+        "bun": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "node": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "clang": "/usr/bin/clang",
+        "llvmBin": "/opt/homebrew/Cellar/llvm@21/21.1.8/bin"
+      },
+      "pins": {
+        "bun": {
+          "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "sha256": "28c7dd0a06916aba284d570ef44a2d70e9c538eaf2ba58dfe0910525563b3f79"
+        },
+        "node": {
+          "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5"
+        },
+        "clang": {
+          "path": "/usr/bin/clang",
+          "sha256": "b8763cf250e607a778bb4603cecb5b90338814d0a3dfcba0d57b1de242f610e9"
+        },
+        "opt": {
+          "path": "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/opt",
+          "sha256": "df9cd5f276b4a14b9f876aff8acc34cce15a869897fdaaf90fd2c12dd619d4f0"
+        },
+        "split": {
+          "path": "/opt/homebrew/Cellar/llvm@21/21.1.8/bin/llvm-split",
+          "sha256": "2503aba489923af7ecbdfbbb72c756724ac0ed0179b4dbad2cfac37a716cca73"
+        }
+      },
+      "environment": {}
+    },
+    "error": "Error: worker exit 1\n    at need (/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/snapshot/repository/evals/g24_distributed.mjs:75:45)\n    at supervise (/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/snapshot/repository/evals/g24_distributed.mjs:421:5)\n    at processTicksAndRejections (native:7:39)"
+  },
+  "actualMatrixFailure": {
+    "target": "c",
+    "fixturesAnnounced": 62,
+    "failureCount": 1,
+    "fixture": "evals/scheduler_chunk_smoke.bend",
+    "sourceSha256": "21986a939adccc86c6580c446242be9feb95703c6eeb820ef939d961f2247140",
+    "stage": "emit",
+    "reason": "deadline_exceeded",
+    "originalTimeoutMs": 600000,
+    "ownedTreeStopped": true,
+    "matrixRoot": "/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/checkpoints/.g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/matrix-c",
+    "workerElapsedMs": 2115621,
+    "excludedCases": 0,
+    "limitRaised": false
+  },
+  "sourceProducerScope": "Individually authenticated real G43R3 source/native/fixedpoint/emitted-suite artifacts, not manufactured prior full correctness.",
+  "next": "Investigate actual scheduler fixture emission cost; do not rerun the unchanged failed target, raise its deadline, skip the case or replace the stage-one producer. Direct SSH to the authorized remote host remains separate source work.",
+  "privateRemoteSetup": "evals/receipts/producer2039g43r5_misaka_setup.json",
+  "source": {
+    "path": "/Users/ilyagulya/Projects/My/bend/evals/g24_distributed.mjs",
+    "sha256": "645978acfc132e2bc2fb63dcc009ad53cc8c68776b223025d92e98f6b59f0efc",
+    "bytes": 30741
+  },
+  "generatedImagesAstTransportsAndBulkLogsCommitted": false
+}
