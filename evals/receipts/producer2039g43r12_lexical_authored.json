@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "status": "AUTHORED_NOT_EXECUTED",
+  "priorGenerationFailure": "e3243d16",
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/reach-before-42139224/evals/heavy_gate.ts",
+    "--memory-mib=8192",
+    "--rss-mib=8192",
+    "--poll-ms=10",
+    "--timeout-ms=600000",
+    "--",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r12-observe-indexer.mjs"
+  ],
+  "cwd": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/reach-before-42139224",
+  "observer": {
+    "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r12-observe-indexer.mjs",
+    "sha256": "8de39ce9e59ca11b1ec2dc035f1569037f75d025da76cd269470d5dd5b8b3827",
+    "bytes": 2449
+  },
+  "scope": "Error-only host observer calls the unmodified original LexicalTypes.indexBody, records bounded binder identity/source/scope metadata and rethrows. No fallback, checker bypass, fixture reduction or semantic acceptance.",
+  "acceptanceEvidence": false
+}
