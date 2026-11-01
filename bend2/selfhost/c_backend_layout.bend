@@ -97,6 +97,7 @@ import Base
 import ./descriptor_nf.bend as NF
 import ./index_lookup.bend as IndexLookup
 import ./backend_ir.bend as BIR
+import ./descriptor_key.bend as Key
 
 # ---------------------------------------------------------------------------
 # Physical words and layouts
@@ -241,7 +242,7 @@ type CellResult is Data:
 # ---------------------------------------------------------------------------
 
 type Context is Data:
-  Context{context: NF.NfContext, families: List<&2, BIR.Family>, plan: Plan}
+  Context{context: NF.NfContext, families: List<&2, BIR.Family>, plan: Plan, scope: String}
 
 # The canonical plan of one program, built once by `context`:
 #
@@ -287,6 +288,90 @@ type FormArmResult is Data:
   FormArmFail{message: String}
 
 
+def context_make(+context: NF.NfContext, +families: List<&2, BIR.Family>, +plan: Plan) -> Context:
+  Context{context, families, plan, Key.finish("L;" <> Key.string_chunks(nf_scope(context), Key.families_chunks(families, plan_chunks(plan, Nil{}))))}
+
+def nf_scope(context: NF.NfContext) -> String:
+  match context:
+    case NF.NfContext{families, type_functions, scope}: scope
+
+# The scope encodes the plan itself, including map tree shape and failure
+# messages; neither an empty plan nor a completed plan is a dummy identity.
+def plan_chunks(plan: Plan, tail: List<&2, String>) -> List<&2, String>:
+  match plan:
+    case Plan{nodes, arms}: "P;" <> node_map_chunks(nodes, arm_map_chunks(arms, tail))
+
+def node_map_chunks(nodes: Map<&2, NodeResult>, tail: List<&2, String>) -> List<&2, String>:
+  match nodes:
+    case MTip{}: "t" <> tail
+    case MLeaf{key, val}: "l" <> Key.string_chunks(key, node_result_chunks(val, tail))
+    case MNode{pos, lo, hi}: "b" <> Key.nat_chunks(pos, node_map_chunks(lo, node_map_chunks(hi, tail)))
+
+def arm_map_chunks(arms: Map<&2, BIR.DescriptorArm>, tail: List<&2, String>) -> List<&2, String>:
+  match arms:
+    case MTip{}: "t" <> tail
+    case MLeaf{key, val}: "l" <> Key.string_chunks(key, Key.arm_chunks(val, tail))
+    case MNode{pos, lo, hi}: "b" <> Key.nat_chunks(pos, arm_map_chunks(lo, arm_map_chunks(hi, tail)))
+
+def node_result_chunks(result: NodeResult, tail: List<&2, String>) -> List<&2, String>:
+  match result:
+    case NodeFailed{message}: "e" <> Key.string_chunks(message, tail)
+    case NodeFound{node}: "v" <> node_chunks(node, tail)
+
+def node_chunks(node: Node, tail: List<&2, String>) -> List<&2, String>:
+  match node:
+    case Node{words, slots, packed}: words_chunks(words, slots_chunks(slots, Key.bool_chunks(packed, tail)))
+
+def words_chunks(words: List<&2, CWord>, tail: List<&2, String>) -> List<&2, String>:
+  match words:
+    case Nil{}: "z" <> tail
+    case word <> rest: "c" <> word_chunks(word, words_chunks(rest, tail))
+
+def word_chunks(word: CWord, tail: List<&2, String>) -> List<&2, String>:
+  match word:
+    case CWord32{}: "0" <> tail
+    case CWord64{}: "1" <> tail
+    case CWordBox{}: "2" <> tail
+
+def slots_chunks(slots: List<&2, NodeSlot>, tail: List<&2, String>) -> List<&2, String>:
+  match slots:
+    case Nil{}: "z" <> tail
+    case slot <> rest: "c" <> slot_chunks(slot, slots_chunks(rest, tail))
+
+def slot_chunks(slot: NodeSlot, tail: List<&2, String>) -> List<&2, String>:
+  match slot:
+    case NodeSlot{ordinal, offset, layout}:
+      Key.nat_chunks(U32.to_nat(ordinal), Key.nat_chunks(offset, layout_chunks(layout, tail)))
+
+def layout_chunks(layout: Layout, tail: List<&2, String>) -> List<&2, String>:
+  match layout:
+    case LayoutWord{word}: "w" <> word_chunks(word, tail)
+    case LayoutBox{reason}: "b" <> reason_chunks(reason, tail)
+    case LayoutData{words, arms}: "d" <> words_chunks(words, lay_arms_chunks(arms, tail))
+
+def reason_chunks(reason: BoxReason, tail: List<&2, String>) -> List<&2, String>:
+  match reason:
+    case BoxOpen{}: "0" <> tail
+    case BoxUnresolved{key}: "1" <> Key.string_chunks(key, tail)
+    case BoxArray{}: "2" <> tail
+    case BoxIo{}: "3" <> tail
+    case BoxRecursive{key}: "4" <> Key.string_chunks(key, tail)
+    case BoxWide{words}: "5" <> Key.nat_chunks(words, tail)
+
+def lay_arms_chunks(arms: List<&2, LayArm>, tail: List<&2, String>) -> List<&2, String>:
+  match arms:
+    case Nil{}: "z" <> tail
+    case arm <> rest: "c" <> lay_arm_chunks(arm, lay_arms_chunks(rest, tail))
+
+def lay_arm_chunks(arm: LayArm, tail: List<&2, String>) -> List<&2, String>:
+  match arm:
+    case LayArm{key, fields}: Key.string_chunks(key, layouts_chunks(fields, tail))
+
+def layouts_chunks(layouts: List<&2, Layout>, tail: List<&2, String>) -> List<&2, String>:
+  match layouts:
+    case Nil{}: "z" <> tail
+    case layout <> rest: "c" <> layout_chunks(layout, layouts_chunks(rest, tail))
+
 def context(+program: BIR.Program) -> Context:
   match program:
     case BIR.Program{+codes, +declarations, +constructors, +families, +type_functions, +ending}:
@@ -296,22 +381,22 @@ def context(+program: BIR.Program) -> Context:
       # the arm index and no node: `plan_node_index` reads the arm index and the
       # normalizer only, so the plan it returns is complete and no entry is ever
       # computed against a half-built table.
-      +bare = {Context{index, families, Plan{Map.new(&2, NodeResult), arms}} : Context}
-      Context{index, families, Plan{plan_node_index(bare, constructors), arms}}
+      +bare = context_make(index, families, Plan{Map.new(&2, NodeResult), arms})
+      context_make(index, families, Plan{plan_node_index(bare, constructors), arms})
 
 def context_nf(+ctx: Context) -> NF.NfContext:
   match ctx:
-    case Context{+index, +families, +plan}:
+    case Context{+index, +families, +plan, +scope}:
       index
 
 def context_families(+ctx: Context) -> List<&2, BIR.Family>:
   match ctx:
-    case Context{+index, +families, +plan}:
+    case Context{+index, +families, +plan, +scope}:
       families
 
 def context_plan(+ctx: Context) -> Plan:
   match ctx:
-    case Context{+index, +families, +plan}:
+    case Context{+index, +families, +plan, +scope}:
       plan
 
 def context_nodes(+ctx: Context) -> Map<&2, NodeResult>:
@@ -326,12 +411,12 @@ def context_arms(+ctx: Context) -> Map<&2, BIR.DescriptorArm>:
 
 def nf_families(+context: NF.NfContext) -> Map<&2, BIR.Family>:
   match context:
-    case NF.NfContext{+families, +type_functions}:
+    case NF.NfContext{+families, +type_functions, +scope}:
       families
 
 def nf_functions(+context: NF.NfContext) -> Map<&2, BIR.TypeFunction>:
   match context:
-    case NF.NfContext{+families, +type_functions}:
+    case NF.NfContext{+families, +type_functions, +scope}:
       type_functions
 
 # Family and type-function lookup read the normalizer's own indices: the one

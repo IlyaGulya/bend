@@ -17,6 +17,8 @@
 //   Opt-in diagnostic stage report: [--stage-profile=DIR] [--stage-progress]
 //   [--stage-manifest=PATH ...] [--stage-receipt=PATH ...]. Ordinary output and
 //   diagnostics are unchanged.
+//   Memo candidates can publish their explicit native Data counters with
+//   [--memo-report=PATH --memo-binding=AUTHENTICATED_STAGE1_BINDING].
 import {createHash} from 'node:crypto';
 import {readFileSync,realpathSync,writeFileSync} from 'node:fs';
 import {dirname,isAbsolute,posix,resolve} from 'node:path';
@@ -31,6 +33,7 @@ import {createStageProfile,createStepAttribution,stageParentDeclaration,loadStag
 const ROOT=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 
 let stage:any;
+let memoProfile:any,memoSaved=false;
 function fail(message:string):never{
  try{stage?.fail(message);}catch(error){console.error('candidate: stage profile close failed: '+String(error));}
  console.error('candidate: '+message);
@@ -74,7 +77,7 @@ function args_parse(){
     (name==='--stage-manifest'?manifests:receipts).push(resolve(value));
     continue;
    }
-   if(!['--candidate','--candidate-build','--parser','--base','--exports','--runtime-c','--source-tag','--stage-profile','--checked-out','--sources-out','--work-census','--work-census-binding','--work-census-ms'].includes(name)||value===undefined||values.has(name))fail('unknown or duplicate option '+arg);
+   if(!['--candidate','--candidate-build','--parser','--base','--exports','--runtime-c','--source-tag','--stage-profile','--checked-out','--sources-out','--work-census','--work-census-binding','--work-census-ms','--memo-report','--memo-binding'].includes(name)||value===undefined||values.has(name))fail('unknown or duplicate option '+arg);
    values.set(name,value);
    continue;
   }
@@ -87,6 +90,8 @@ function args_parse(){
  if(flags.has('--stage-progress')&&!values.has('--stage-profile'))fail('--stage-progress needs --stage-profile=DIR');
  if(values.has('--work-census')&&(!values.has('--stage-profile')||!values.has('--work-census-binding')||manifests.length===0))fail('--work-census needs --stage-profile, --work-census-binding and --stage-manifest');
  if((values.has('--work-census-binding')||values.has('--work-census-ms'))&&!values.has('--work-census'))fail('work census options need --work-census');
+ if(values.has('--memo-report')&&(!values.has('--stage-profile')||!values.has('--memo-binding')||manifests.length===0))fail('--memo-report needs --stage-profile, --memo-binding and --stage-manifest');
+ if(values.has('--memo-binding')&&!values.has('--memo-report'))fail('--memo-binding needs --memo-report');
  const workCensusMs=Number(values.get('--work-census-ms')??80000);
  if(!Number.isSafeInteger(workCensusMs)||workCensusMs<1||workCensusMs>120000)fail('--work-census-ms must be 1..120000');
  const output=values.get('-o')!;
@@ -102,6 +107,8 @@ function args_parse(){
   workCensus:values.has('--work-census')?resolve(values.get('--work-census')!):undefined,
   workCensusBinding:values.has('--work-census-binding')?resolve(values.get('--work-census-binding')!):undefined,
   workCensusMs,
+  memoReport:values.has('--memo-report')?resolve(values.get('--memo-report')!):undefined,
+  memoBinding:values.has('--memo-binding')?resolve(values.get('--memo-binding')!):undefined,
   stageManifests:manifests,stageReceipts:receipts,stageProgress:flags.has('--stage-progress')};
 }
 
@@ -173,6 +180,7 @@ if(candidate===undefined||typeof candidate.parsed_module!=='function'||typeof ca
 const parserModule=o.parser===undefined?candidate:objectOf((await import(pathToFileURL(o.parser).href)).default);
 if(typeof parserModule?.parse_with_fuel!=='function')fail('no compiled parser: pass --parser=PATH or export parse_with_fuel');
 stage?.end(importSpan!,'completed',{target,library:o.library,parserModule:o.parser===undefined?'candidate':'separate'});
+if(o.memoReport!==undefined)await initializeMemoObserver();
 
 let parsedSources=0,fuelCells=0,sourceBytes=0;
 function parse(file:string,source:string):Record<string,unknown>{
@@ -275,6 +283,47 @@ function workObserver(attributes:any){
  };
 }
 
+async function initializeMemoObserver(){
+ const {authenticateCensusBinding}=await import('./compiler_demand_diagnostic.mjs');
+ const binding=authenticateCensusBinding(o.memoBinding!);
+ if(binding.artifactPath!==realpathSync(o.candidate)||binding.artifactSha256!==fileSha(o.candidate))fail('memo binding belongs to another native compiler image');
+ const manifests=o.stageManifests.map(path=>({path,document:JSON.parse(readFileSync(path,'utf8'))}))
+  .filter(row=>row.document.semanticMemo!==undefined);
+ if(manifests.length!==1)fail('memo report requires exactly one semantic-memo generation manifest');
+ const {path,document}=manifests[0]!,{generationManifestSha256,...proof}=document;
+ if(generationManifestSha256!==createHash('sha256').update(JSON.stringify(proof)).digest('hex'))fail('memo generation manifest self-authentication failed');
+ const output=document.generationConfig?.output,hash=document.outputs?.[output];
+ if(typeof output!=='string'||typeof hash!=='string'||fileSha(output)!==hash||binding.loadedInputs[realpathSync(output)]!==hash)fail('memo engine source is not bound to the native-produced image');
+ const memo=document.semanticMemo,report=memo.report;
+ const fields=['nf_hits','nf_misses','reach_hits','reach_misses','nf_entries','reach_entries','interned','scopes','disabled'];
+ if(document.progressABI!=='typed-native-stack-v58m'||memo.protocolVersion!==1||memo.quantum!==64
+  ||report?.runField!=='memo'||report.runConstructor!==document.nativeChunk.runFinishedConstructor
+  ||report.kind!=='Data'||report.retainsStore!==false||typeof report.constructor!=='string'
+  ||!Array.isArray(report.fields)||report.fields.length!==fields.length
+  ||report.fields.some((row:any,index:number)=>row.name!==fields[index]||row.type!=='Nat'))fail('memo report native Data schema drift');
+ memoProfile={artifactSha256:binding.artifactSha256,bindingPath:o.memoBinding,bindingSha256:fileSha(o.memoBinding!),
+  manifestPath:path,manifestSha256:fileSha(path),generationManifestSha256,constructor:report.constructor,fields};
+}
+
+function memoObserver(attributes:any){
+ if(o.memoReport===undefined)return attributes;
+ return {...attributes,onMemo(report:unknown,steps:number){
+  if(memoSaved)fail('memo engine published more than one final report');
+  const value=objectOf(report),constructor=value?.$;
+  if(typeof constructor!=='string'||!(constructor===memoProfile.constructor||constructor.endsWith('.'+memoProfile.constructor)))fail('memo report constructor differs from the authenticated native schema');
+  const counts:Record<string,string>={};
+  for(const field of memoProfile.fields){
+   const descriptor=Object.getOwnPropertyDescriptor(value!,field),count=descriptor?.value;
+   if(!descriptor||!Object.hasOwn(descriptor,'value')
+    ||!(typeof count==='bigint'&&count>=0n||typeof count==='number'&&Number.isSafeInteger(count)&&count>=0))fail('memo report counter is not native Nat Data: '+field);
+   counts[field]=String(count);
+  }
+  writeFileSync(o.memoReport!,JSON.stringify({schemaVersion:1,kind:'native-owned-semantic-query-report',acceptanceEvidence:false,
+   ...memoProfile,constructor,steps,counts},null,2)+'\n',{flag:'wx'});
+  memoSaved=true;
+ }};
+}
+
 // One attributed phase: a real span plus exact host-step counters and sampled
 // typed progress. A thrown step error still closes the span failed and records
 // the samples observed before it.
@@ -286,7 +335,7 @@ function attributedPhase(name:string,protocol:string,inputs:Record<string,unknow
  const token=stage.span(name,inputs);
  if(protocol==='Emitter')workCpu?.mark('emit',inputs);
  let value:unknown;
- try{value=run(protocol==='Emitter'?workObserver(attributes):attributes);}
+ try{value=run(protocol==='Emitter'?memoObserver(workObserver(attributes)):attributes);}
  catch(error){
   if(protocol==='Emitter')workCpu?.finish(error);
   stage.end(token,isWorkCensusStop(error)?'aborted':'failed',{error:String(error)});attributes?.record(stage.profile);saveWorkCensus(error);
@@ -402,6 +451,7 @@ const emitted=attributedPhase('emit','Emitter',{target,library:o.library,exports
    : runEmitterSteps(candidate,program,bag,observe),
  value=>tag(value)==='EmitSuccess');
 if(tag(emitted)!=='EmitSuccess')fail('emission failed: '+String(objectOf(emitted)?.message??''));
+if(o.memoReport!==undefined&&!memoSaved)fail('memo engine finished without its declared Data report');
 saveWorkCensus();
 const source=objectOf(emitted)?.source;
 if(typeof source!=='string')fail('emission returned no source');

@@ -4,11 +4,10 @@
  * Native 0.37 matches are factored from authentic ASTs, never core patches.
  * Regenerate only after parser admission: bun evals/checker_core_owned_source.ts
  *
- * `generateDiagnosticEmitterTracePins` is the only other entry: it derives the
- * opt-in scheduler-boundary trace pin set (its own owned/ownedManifest paths,
- * regenerated composition proof and lowering hashes) from the same producer,
- * and refuses a stale base pin set instead of patching one. The base outputs
- * are untouched by that path; the ordinary CLI stays the base generation.
+ * The opt-in trace and semantic-memo pin producers derive their own source and
+ * provenance without editing base artifacts. Trace requires a current ordinary
+ * composition; a memo source candidate records its explicit baseline/current
+ * composition boundary while authenticating the frozen baseline owned bytes.
  */
 import {readFileSync,writeFileSync,mkdirSync,realpathSync} from 'node:fs';
 import {createHash} from 'node:crypto';
@@ -174,6 +173,37 @@ export async function generateDiagnosticEmitterTracePins(options:{
   if(JSON.stringify(baseRow.composition?.providers)!==JSON.stringify(baseComposition.proof.providers)
     ||baseRow.composition?.sourceSha256!==baseComposition.proof.sourceSha256)
     throw Error('Base owned pin set composition is stale; run bun evals/checker_core_owned_source.ts first');
+  return deriveEmitterPin(options,original,composition,base);
+}
+
+/** An explicit source candidate may change canonical providers while the
+ * successful native producer still reads its frozen ordinary engine. Preserve
+ * and authenticate that baseline rather than regenerating its input in place. */
+export async function generateCandidateEmitterMemoPins(options:{
+  mode:string;canonical:string;output:string;ownedManifest:string;baseManifest:string;
+  closure:readonly string[];
+}){
+  const original=readFileSync(options.canonical,'utf8');
+  const baseText=readFileSync(options.baseManifest,'utf8'),base=JSON.parse(baseText);
+  const row=base.componentSources?.find((row:ComponentSource)=>row.mode===options.mode) as ComponentSource|undefined;
+  if(!row||row.canonical!==options.canonical||row.canonicalSha256!==sha(original)
+    ||sha(readFileSync(row.owned,'utf8'))!==row.sourceSha256)
+    throw Error('Semantic memo candidate requires the unchanged authenticated baseline root and owned bytes');
+  const composition=await composeCanonicalCPSSource(options.canonical,options.closure);
+  return deriveEmitterPin(options,original,composition,{...base,semanticMemoCandidate:{
+    kind:'explicit-canonical-provider-source-candidate',
+    baselineManifest:options.baseManifest,baselineManifestSha256:sha(baseText),
+    baselineOwned:row.owned,baselineOwnedSha256:row.sourceSha256,
+    baselineCompositionSha256:row.composition?.sourceSha256,
+    candidateCompositionSha256:composition.proof.sourceSha256,
+  }});
+}
+
+async function deriveEmitterPin(options:{
+  mode:string;canonical:string;output:string;ownedManifest:string;
+},original:string,composition:{source:string;proof:CPSCompositionProof},
+base:Record<string,unknown>&{componentSources:ComponentSource[]}){
+  const{canonical,output,ownedManifest}=options;
   const normalized=await normalizeOwnedSource(canonical,composition.source);
   const modules=new Map<string,OwnedModule>();
   const text=await ownImports(canonical,output,normalized.source,modules);

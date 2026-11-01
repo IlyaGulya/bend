@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "version": "G46R1",
+  "kind": "real-opt-in-owned-exact-semantic-query-sharing",
+  "previousCompleteCheckpoint": "f7000537 / selfhost/g45d3-diagnostic",
+  "acceptedCompiler": "G24R12 unchanged",
+  "compilerPromoted": false,
+  "acceptanceEvidence": false,
+  "sourceProtocol": "typed-native-stack-v58m; separate candidate engine, root exports13 unchanged; native source adapters must use memo-specific constructor fields",
+  "sourceDesign": {
+    "scope": "Real full collision-free scope encoding computed in factories; native Run interns to disjoint compact tokens and preserves all semantic fields",
+    "nfKey": [
+      "scope",
+      "descriptor",
+      "env",
+      "level",
+      "fuel"
+    ],
+    "reachKey": [
+      "scope",
+      "descriptor",
+      "env",
+      "target",
+      "orderedSeen",
+      "fuel"
+    ],
+    "storeOwner": "one typed native root Run; persistent typed source Data; no JS/global/foreign memo",
+    "capacity": {
+      "combinedResultEntries": 100000,
+      "eachScopeDescriptorEnvInternEntries": 100000,
+      "atCapacity": "compute original source results without storing; no guessed answer"
+    },
+    "semantics": "Full Nf/Bool/errors and exact semantic fuel preserved; no NF-idempotence or cross-budget failures",
+    "parallelism": "not yet; source-store and typed scheduler implementation slices were independent"
+  },
+  "candidateOutputs": {
+    "owned": "checkpoints/emitter_memo_owned_v1.bend",
+    "engine": "checkpoints/emitter_steps_memo_v1.bend",
+    "component": "checkpoints/emitter_steps_memo_component_v1.bend",
+    "manifest": "checkpoints/emitter-steps-memo-v1.json",
+    "root": "checkpoints/.bootstrap_compiler_root_g46r1_memo.bend"
+  },
+  "limits": {
+    "rssMiB": 8192,
+    "footprintMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000,
+    "nativeProductionTimeoutMs": 300000,
+    "parserFuelPerModule": 8000000,
+    "quantum": 64,
+    "threads": 1,
+    "rootABIExports": 13
+  },
+  "baseline": {
+    "sourceContractCommit": "2f20e9cc",
+    "status": "NATIVE_FULL_COMPILE_PASS",
+    "outputSha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+    "outputBytes": 31758507,
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 1728806912,
+      "peakFootprintBytes": 1769048560,
+      "elapsedMs": 89858,
+      "timeoutMs": 300000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/evals/native_compiler_experiment.ts",
+        "--mode=run",
+        "--corpus=checkpoints/local2039g44d1-native.corpus.json",
+        "--build=checkpoints/local2039g44d1-native-build.json",
+        "--report=checkpoints/local2039g46r1-baseline-stage1.json",
+        "--phase=compile",
+        "--threads=1",
+        "--internal=run"
+      ],
+      "label": "Native CPU compiler run",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793564570233-983f7ac0b54c2a9b.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "phases": [
+      {
+        "phase": "parse",
+        "elapsedMs": 6576.683,
+        "userCpuMs": 6469.482,
+        "systemCpuMs": 88.134,
+        "modules": 18,
+        "sourceBytes": 7870746,
+        "foreignBytes": 78415,
+        "eagerFuelCells": 144000000,
+        "fuelBuildMs": 874.3
+      },
+      {
+        "phase": "expand",
+        "elapsedMs": 4682.929,
+        "userCpuMs": 4575.141,
+        "systemCpuMs": 17.884,
+        "chunkAdvances": 1069406,
+        "chunkQuantum": 64
+      },
+      {
+        "phase": "check",
+        "elapsedMs": 63384.035,
+        "userCpuMs": 62692.97,
+        "systemCpuMs": 275.071,
+        "chunkAdvances": 10405401,
+        "chunkQuantum": 64
+      },
+      {
+        "phase": "emit",
+        "elapsedMs": 13717.222,
+        "userCpuMs": 13406.057,
+        "systemCpuMs": 186.193,
+        "chunkAdvances": 1284300,
+        "chunkQuantum": 64
+      }
+    ],
+    "producerBuild": "checkpoints/local2039g44d1-native-build.json",
+    "sourceCorpus": "checkpoints/local2039g44d1-native.corpus.json"
+  },
+  "requiredVerification": [
+    "native-produced full candidate stage1, not TS image or patched emitted bytes",
+    "small real C/JS programs, exact expected outputs and old artifact comparison",
+    "typed source query probes for full NF/reach results, closures, binders, fuel0/1/default, failures, target/seen/context isolation, false caching, capacity and nested updates",
+    "unchanged original scheduler under original process gates; no unchanged failed baseline retry",
+    "genuine fixedpoint and full original correctness/strict12 gates before any promotion"
+  ],
+  "rejectionPolicy": "Save every source/input/outcome checkpoint before next version; label failures explicitly; if rejected do not leave canonical accepted compiler sources changed or broken opt-in callers."
+}

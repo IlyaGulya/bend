@@ -13,6 +13,7 @@
  *   bun evals/emitter_step_lower.ts --trace    diagnostic scheduler-boundary build
  *   bun evals/emitter_step_lower.ts --trace-census  bounded work-census roots
  *   bun evals/emitter_step_lower.ts --trace-queries  passive scoped-query census
+ *   bun evals/emitter_step_lower.ts --memo-queries  owned exact NF/reentry sharing candidate
  *
  * `--trace` is opt-in and diagnostic only. It writes its own artifacts
  * (checkpoints/emitter_steps_trace_v1.bend, ..._component_v1.bend,
@@ -36,6 +37,9 @@
  * `--trace-queries` retains the census boundaries and Program carrier, adding
  * passive typed NF/reentry arguments in its own artifacts. It never evaluates
  * semantic closures or changes the scheduler's Begin/End event protocol.
+ * `--memo-queries` is an untraced source candidate with its own owned source,
+ * engine, component and provenance. Its Store belongs to the typed native Run;
+ * it never rewrites the successful native producer's frozen ordinary inputs.
  */
 import {checkerStepConfig, generateNativeSteps} from './checker_core_step_lower.ts';
 import type {StepConfig, StepTraceRoot} from './checker_core_step_lower.ts';
@@ -154,31 +158,47 @@ export const emitterTraceQueriesStepConfig: StepConfig = {
     ],
   },
 };
-async function prepareTracePins(config: StepConfig = emitterTraceStepConfig) {
-  // A static import cannot work: checker_core_owned_source.ts imports
-  // emitterStepConfig from this module, so it must load after this module has
-  // fully evaluated. The specifier is a constant; nothing else is dynamic.
-  const {generateDiagnosticEmitterTracePins} = await import('./checker_core_owned_source.ts');
-  return generateDiagnosticEmitterTracePins({
+export const emitterMemoStepConfig: StepConfig = {
+  ...emitterStepConfig,
+  providerClosure: [...emitterStepConfig.providerClosure!,
+    'bend2/selfhost/descriptor_key.bend', 'bend2/selfhost/semantic_query.bend'],
+  owned: 'checkpoints/emitter_memo_owned_v1.bend',
+  ownedManifest: 'checkpoints/emitter-memo-owned-source-v1.json',
+  output: 'checkpoints/emitter_steps_memo_v1.bend',
+  component: 'checkpoints/emitter_steps_memo_component_v1.bend',
+  manifest: 'checkpoints/emitter-steps-memo-v1.json',
+  semanticMemo: {maxEntries: 100000},
+};
+async function prepareEmitterPins(config: StepConfig) {
+  // The producer imports emitterStepConfig, so load it only after this module
+  // has finished initializing both ordinary and opt-in configurations.
+  const producers = await import('./checker_core_owned_source.ts');
+  const options = {
     mode: config.mode, canonical: config.canonical,
     output: config.owned, ownedManifest: config.ownedManifest,
     baseManifest: emitterStepConfig.ownedManifest,
-    closure: config.providerClosure!, baseClosure: emitterStepConfig.providerClosure!,
-  });
+    closure: config.providerClosure!,
+  };
+  return config.semanticMemo
+    ? producers.generateCandidateEmitterMemoPins(options)
+    : producers.generateDiagnosticEmitterTracePins({...options, baseClosure: emitterStepConfig.providerClosure!});
 }
 if (import.meta.main) {
   const arguments_ = process.argv.slice(2);
   const census = arguments_.includes('--trace-census');
   const queries = arguments_.includes('--trace-queries');
-  const unknown = arguments_.filter(argument => argument !== '--trace' && argument !== '--trace-census' && argument !== '--trace-queries');
-  if (unknown.length || ((census || queries) && arguments_.length !== 1))
-    throw Error('Unknown or conflicting emitter CLI arguments: ' + arguments_.join(' ') + ' (expected no arguments, --trace, --trace-census or --trace-queries)');
+  const memo = arguments_.includes('--memo-queries');
+  const unknown = arguments_.filter(argument => argument !== '--trace' && argument !== '--trace-census' && argument !== '--trace-queries' && argument !== '--memo-queries');
+  if (unknown.length || ((census || queries || memo) && arguments_.length !== 1))
+    throw Error('Unknown or conflicting emitter CLI arguments: ' + arguments_.join(' ') + ' (expected no arguments, --trace, --trace-census, --trace-queries or --memo-queries)');
   if (arguments_.length === 0) {
     await generateNativeSteps(emitterStepConfig);
   } else {
-    const config = queries ? emitterTraceQueriesStepConfig : census ? emitterTraceCensusStepConfig : emitterTraceStepConfig;
-    const pins = await prepareTracePins(config);
-    console.log(JSON.stringify({traceOwned: pins.owned, traceOwnedManifest: pins.manifest, traceSourceSha256: pins.sourceSha256}));
+    const config = memo ? emitterMemoStepConfig : queries ? emitterTraceQueriesStepConfig : census ? emitterTraceCensusStepConfig : emitterTraceStepConfig;
+    const pins = await prepareEmitterPins(config);
+    console.log(JSON.stringify(memo
+      ? {memoOwned: pins.owned, memoOwnedManifest: pins.manifest, sourceSha256: pins.sourceSha256}
+      : {traceOwned: pins.owned, traceOwnedManifest: pins.manifest, traceSourceSha256: pins.sourceSha256}));
     await generateNativeSteps(config);
   }
 }
