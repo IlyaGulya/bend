@@ -1,0 +1,806 @@
+{
+  "imageSha": "f5151acbd83e51ef32fa618b175b31cc18d91fd71677b2b5a60dfc5b0ac807eb",
+  "hostStepOrdinal": 4349952,
+  "emitObservedElapsedMs": 47195.37570800001,
+  "observations": 3,
+  "targetSamples": 3,
+  "target": {
+    "value": "../checkpoints/checker_core_steps_v1.CheckerRequest",
+    "truncated": false
+  },
+  "fuel": "1010",
+  "contextTag": "emitter_steps_v1.cps_provider_3_Context",
+  "root": {
+    "found": true,
+    "visited": 141,
+    "complete": true,
+    "family": {
+      "tag": "../bend2/selfhost/backend_ir.Family",
+      "key": {
+        "value": "../checkpoints/checker_core_steps_v1.CheckerRequest",
+        "truncated": false
+      },
+      "name": {
+        "value": "CheckerRequest",
+        "truncated": false
+      },
+      "native": {
+        "tag": "None"
+      },
+      "arity": "0",
+      "quantityPrefix": "0",
+      "arms": {
+        "items": [
+          {
+            "key": {
+              "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup_0",
+              "truncated": false
+            },
+            "fields": {
+              "items": [
+                {
+                  "tag": "../bend2/selfhost/backend_ir.DescriptorField",
+                  "key": {
+                    "tag": "Some",
+                    "value": {
+                      "string": {
+                        "value": "request",
+                        "truncated": false
+                      }
+                    }
+                  },
+                  "quantity": "../bend2/selfhost/backend_ir.Once",
+                  "type": {
+                    "tag": "../bend2/selfhost/backend_ir.DescriptorRef",
+                    "key": {
+                      "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup0",
+                      "truncated": false
+                    },
+                    "args": {
+                      "items": [],
+                      "complete": true
+                    }
+                  }
+                }
+              ],
+              "complete": true
+            }
+          },
+          {
+            "key": {
+              "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup_1",
+              "truncated": false
+            },
+            "fields": {
+              "items": [
+                {
+                  "tag": "../bend2/selfhost/backend_ir.DescriptorField",
+                  "key": {
+                    "tag": "Some",
+                    "value": {
+                      "string": {
+                        "value": "request",
+                        "truncated": false
+                      }
+                    }
+                  },
+                  "quantity": "../bend2/selfhost/backend_ir.Once",
+                  "type": {
+                    "tag": "../bend2/selfhost/backend_ir.DescriptorRef",
+                    "key": {
+                      "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup1",
+                      "truncated": false
+                    },
+                    "args": {
+                      "items": [],
+                      "complete": true
+                    }
+                  }
+                }
+              ],
+              "complete": true
+            }
+          },
+          {
+            "key": {
+              "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup_2",
+              "truncated": false
+            },
+            "fields": {
+              "items": [
+                {
+                  "tag": "../bend2/selfhost/backend_ir.DescriptorField",
+                  "key": {
+                    "tag": "Some",
+                    "value": {
+                      "string": {
+                        "value": "request",
+                        "truncated": false
+                      }
+                    }
+                  },
+                  "quantity": "../bend2/selfhost/backend_ir.Once",
+                  "type": {
+                    "tag": "../bend2/selfhost/backend_ir.DescriptorRef",
+                    "key": {
+                      "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup2",
+                      "truncated": false
+                    },
+                    "args": {
+                      "items": [],
+                      "complete": true
+                    }
+                  }
+                }
+              ],
+              "complete": true
+            }
+          },
+          {
+            "key": {
+              "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup_3",
+              "truncated": false
+            },
+            "fields": {
+              "items": [
+                {
+                  "tag": "../bend2/selfhost/backend_ir.DescriptorField",
+                  "key": {
+                    "tag": "Some",
+                    "value": {
+                      "string": {
+                        "value": "request",
+                        "truncated": false
+                      }
+                    }
+                  },
+                  "quantity": "../bend2/selfhost/backend_ir.Once",
+                  "type": {
+                    "tag": "../bend2/selfhost/backend_ir.DescriptorRef",
+                    "key": {
+                      "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup3",
+                      "truncated": false
+                    },
+                    "args": {
+                      "items": [],
+                      "complete": true
+                    }
+                  }
+                }
+              ],
+              "complete": true
+            }
+          },
+          {
+            "key": {
+              "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup_4",
+              "truncated": false
+            },
+            "fields": {
+              "items": [
+                {
+                  "tag": "../bend2/selfhost/backend_ir.DescriptorField",
+                  "key": {
+                    "tag": "Some",
+                    "value": {
+                      "string": {
+                        "value": "request",
+                        "truncated": false
+                      }
+                    }
+                  },
+                  "quantity": "../bend2/selfhost/backend_ir.Once",
+                  "type": {
+                    "tag": "../bend2/selfhost/backend_ir.DescriptorRef",
+                    "key": {
+                      "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup4",
+                      "truncated": false
+                    },
+                    "args": {
+                      "items": [],
+                      "complete": true
+                    }
+                  }
+                }
+              ],
+              "complete": true
+            }
+          },
+          {
+            "key": {
+              "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup_5",
+              "truncated": false
+            },
+            "fields": {
+              "items": [
+                {
+                  "tag": "../bend2/selfhost/backend_ir.DescriptorField",
+                  "key": {
+                    "tag": "Some",
+                    "value": {
+                      "string": {
+                        "value": "request",
+                        "truncated": false
+                      }
+                    }
+                  },
+                  "quantity": "../bend2/selfhost/backend_ir.Once",
+                  "type": {
+                    "tag": "../bend2/selfhost/backend_ir.DescriptorRef",
+                    "key": {
+                      "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup5",
+                      "truncated": false
+                    },
+                    "args": {
+                      "items": [],
+                      "complete": true
+                    }
+                  }
+                }
+              ],
+              "complete": true
+            }
+          },
+          {
+            "key": {
+              "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup_6",
+              "truncated": false
+            },
+            "fields": {
+              "items": [
+                {
+                  "tag": "../bend2/selfhost/backend_ir.DescriptorField",
+                  "key": {
+                    "tag": "Some",
+                    "value": {
+                      "string": {
+                        "value": "request",
+                        "truncated": false
+                      }
+                    }
+                  },
+                  "quantity": "../bend2/selfhost/backend_ir.Once",
+                  "type": {
+                    "tag": "../bend2/selfhost/backend_ir.DescriptorRef",
+                    "key": {
+                      "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup6",
+                      "truncated": false
+                    },
+                    "args": {
+                      "items": [],
+                      "complete": true
+                    }
+                  }
+                }
+              ],
+              "complete": true
+            }
+          },
+          {
+            "key": {
+              "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup_7",
+              "truncated": false
+            },
+            "fields": {
+              "items": [
+                {
+                  "tag": "../bend2/selfhost/backend_ir.DescriptorField",
+                  "key": {
+                    "tag": "Some",
+                    "value": {
+                      "string": {
+                        "value": "request",
+                        "truncated": false
+                      }
+                    }
+                  },
+                  "quantity": "../bend2/selfhost/backend_ir.Once",
+                  "type": {
+                    "tag": "../bend2/selfhost/backend_ir.DescriptorRef",
+                    "key": {
+                      "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup7",
+                      "truncated": false
+                    },
+                    "args": {
+                      "items": [],
+                      "complete": true
+                    }
+                  }
+                }
+              ],
+              "complete": true
+            }
+          },
+          {
+            "key": {
+              "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup_8",
+              "truncated": false
+            },
+            "fields": {
+              "items": [
+                {
+                  "tag": "../bend2/selfhost/backend_ir.DescriptorField",
+                  "key": {
+                    "tag": "Some",
+                    "value": {
+                      "string": {
+                        "value": "request",
+                        "truncated": false
+                      }
+                    }
+                  },
+                  "quantity": "../bend2/selfhost/backend_ir.Once",
+                  "type": {
+                    "tag": "../bend2/selfhost/backend_ir.DescriptorRef",
+                    "key": {
+                      "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup8",
+                      "truncated": false
+                    },
+                    "args": {
+                      "items": [],
+                      "complete": true
+                    }
+                  }
+                }
+              ],
+              "complete": true
+            }
+          },
+          {
+            "key": {
+              "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup_9",
+              "truncated": false
+            },
+            "fields": {
+              "items": [
+                {
+                  "tag": "../bend2/selfhost/backend_ir.DescriptorField",
+                  "key": {
+                    "tag": "Some",
+                    "value": {
+                      "string": {
+                        "value": "request",
+                        "truncated": false
+                      }
+                    }
+                  },
+                  "quantity": "../bend2/selfhost/backend_ir.Once",
+                  "type": {
+                    "tag": "../bend2/selfhost/backend_ir.DescriptorRef",
+                    "key": {
+                      "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup9",
+                      "truncated": false
+                    },
+                    "args": {
+                      "items": [],
+                      "complete": true
+                    }
+                  }
+                }
+              ],
+              "complete": true
+            }
+          },
+          {
+            "key": {
+              "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup_10",
+              "truncated": false
+            },
+            "fields": {
+              "items": [
+                {
+                  "tag": "../bend2/selfhost/backend_ir.DescriptorField",
+                  "key": {
+                    "tag": "Some",
+                    "value": {
+                      "string": {
+                        "value": "request",
+                        "truncated": false
+                      }
+                    }
+                  },
+                  "quantity": "../bend2/selfhost/backend_ir.Once",
+                  "type": {
+                    "tag": "../bend2/selfhost/backend_ir.DescriptorRef",
+                    "key": {
+                      "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup10",
+                      "truncated": false
+                    },
+                    "args": {
+                      "items": [],
+                      "complete": true
+                    }
+                  }
+                }
+              ],
+              "complete": true
+            }
+          },
+          {
+            "key": {
+              "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup_11",
+              "truncated": false
+            },
+            "fields": {
+              "items": [
+                {
+                  "tag": "../bend2/selfhost/backend_ir.DescriptorField",
+                  "key": {
+                    "tag": "Some",
+                    "value": {
+                      "string": {
+                        "value": "request",
+                        "truncated": false
+                      }
+                    }
+                  },
+                  "quantity": "../bend2/selfhost/backend_ir.Once",
+                  "type": {
+                    "tag": "../bend2/selfhost/backend_ir.DescriptorRef",
+                    "key": {
+                      "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup11",
+                      "truncated": false
+                    },
+                    "args": {
+                      "items": [],
+                      "complete": true
+                    }
+                  }
+                }
+              ],
+              "complete": true
+            }
+          },
+          {
+            "key": {
+              "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup_12",
+              "truncated": false
+            },
+            "fields": {
+              "items": [
+                {
+                  "tag": "../bend2/selfhost/backend_ir.DescriptorField",
+                  "key": {
+                    "tag": "Some",
+                    "value": {
+                      "string": {
+                        "value": "request",
+                        "truncated": false
+                      }
+                    }
+                  },
+                  "quantity": "../bend2/selfhost/backend_ir.Once",
+                  "type": {
+                    "tag": "../bend2/selfhost/backend_ir.DescriptorRef",
+                    "key": {
+                      "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup12",
+                      "truncated": false
+                    },
+                    "args": {
+                      "items": [],
+                      "complete": true
+                    }
+                  }
+                }
+              ],
+              "complete": true
+            }
+          },
+          {
+            "key": {
+              "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup_13",
+              "truncated": false
+            },
+            "fields": {
+              "items": [
+                {
+                  "tag": "../bend2/selfhost/backend_ir.DescriptorField",
+                  "key": {
+                    "tag": "Some",
+                    "value": {
+                      "string": {
+                        "value": "request",
+                        "truncated": false
+                      }
+                    }
+                  },
+                  "quantity": "../bend2/selfhost/backend_ir.Once",
+                  "type": {
+                    "tag": "../bend2/selfhost/backend_ir.DescriptorRef",
+                    "key": {
+                      "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup13",
+                      "truncated": false
+                    },
+                    "args": {
+                      "items": [],
+                      "complete": true
+                    }
+                  }
+                }
+              ],
+              "complete": true
+            }
+          },
+          {
+            "key": {
+              "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup_14",
+              "truncated": false
+            },
+            "fields": {
+              "items": [
+                {
+                  "tag": "../bend2/selfhost/backend_ir.DescriptorField",
+                  "key": {
+                    "tag": "Some",
+                    "value": {
+                      "string": {
+                        "value": "request",
+                        "truncated": false
+                      }
+                    }
+                  },
+                  "quantity": "../bend2/selfhost/backend_ir.Once",
+                  "type": {
+                    "tag": "../bend2/selfhost/backend_ir.DescriptorRef",
+                    "key": {
+                      "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup14",
+                      "truncated": false
+                    },
+                    "args": {
+                      "items": [],
+                      "complete": true
+                    }
+                  }
+                }
+              ],
+              "complete": true
+            }
+          },
+          {
+            "key": {
+              "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup_15",
+              "truncated": false
+            },
+            "fields": {
+              "items": [
+                {
+                  "tag": "../bend2/selfhost/backend_ir.DescriptorField",
+                  "key": {
+                    "tag": "Some",
+                    "value": {
+                      "string": {
+                        "value": "request",
+                        "truncated": false
+                      }
+                    }
+                  },
+                  "quantity": "../bend2/selfhost/backend_ir.Once",
+                  "type": {
+                    "tag": "../bend2/selfhost/backend_ir.DescriptorRef",
+                    "key": {
+                      "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup15",
+                      "truncated": false
+                    },
+                    "args": {
+                      "items": [],
+                      "complete": true
+                    }
+                  }
+                }
+              ],
+              "complete": true
+            }
+          },
+          {
+            "key": {
+              "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup_16",
+              "truncated": false
+            },
+            "fields": {
+              "items": [
+                {
+                  "tag": "../bend2/selfhost/backend_ir.DescriptorField",
+                  "key": {
+                    "tag": "Some",
+                    "value": {
+                      "string": {
+                        "value": "request",
+                        "truncated": false
+                      }
+                    }
+                  },
+                  "quantity": "../bend2/selfhost/backend_ir.Once",
+                  "type": {
+                    "tag": "../bend2/selfhost/backend_ir.DescriptorRef",
+                    "key": {
+                      "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup16",
+                      "truncated": false
+                    },
+                    "args": {
+                      "items": [],
+                      "complete": true
+                    }
+                  }
+                }
+              ],
+              "complete": true
+            }
+          },
+          {
+            "key": {
+              "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup_17",
+              "truncated": false
+            },
+            "fields": {
+              "items": [
+                {
+                  "tag": "../bend2/selfhost/backend_ir.DescriptorField",
+                  "key": {
+                    "tag": "Some",
+                    "value": {
+                      "string": {
+                        "value": "request",
+                        "truncated": false
+                      }
+                    }
+                  },
+                  "quantity": "../bend2/selfhost/backend_ir.Once",
+                  "type": {
+                    "tag": "../bend2/selfhost/backend_ir.DescriptorRef",
+                    "key": {
+                      "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup17",
+                      "truncated": false
+                    },
+                    "args": {
+                      "items": [],
+                      "complete": true
+                    }
+                  }
+                }
+              ],
+              "complete": true
+            }
+          },
+          {
+            "key": {
+              "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup_18",
+              "truncated": false
+            },
+            "fields": {
+              "items": [
+                {
+                  "tag": "../bend2/selfhost/backend_ir.DescriptorField",
+                  "key": {
+                    "tag": "Some",
+                    "value": {
+                      "string": {
+                        "value": "request",
+                        "truncated": false
+                      }
+                    }
+                  },
+                  "quantity": "../bend2/selfhost/backend_ir.Once",
+                  "type": {
+                    "tag": "../bend2/selfhost/backend_ir.DescriptorRef",
+                    "key": {
+                      "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup18",
+                      "truncated": false
+                    },
+                    "args": {
+                      "items": [],
+                      "complete": true
+                    }
+                  }
+                }
+              ],
+              "complete": true
+            }
+          }
+        ],
+        "complete": true
+      }
+    }
+  },
+  "currentArms": {
+    "items": [
+      {
+        "key": {
+          "value": "Chr",
+          "truncated": false
+        },
+        "fields": {
+          "items": [
+            {
+              "tag": "../bend2/selfhost/backend_ir.DescriptorField",
+              "key": {
+                "tag": "Some",
+                "value": {
+                  "string": {
+                    "value": "code",
+                    "truncated": false
+                  }
+                }
+              },
+              "quantity": "../bend2/selfhost/backend_ir.Once",
+              "type": {
+                "tag": "../bend2/selfhost/backend_ir.DescriptorRef",
+                "key": {
+                  "value": "U32",
+                  "truncated": false
+                },
+                "args": {
+                  "items": [],
+                  "complete": true
+                }
+              }
+            }
+          ],
+          "complete": true
+        }
+      }
+    ],
+    "complete": true
+  },
+  "seen": {
+    "items": [
+      {
+        "value": "Char",
+        "truncated": false
+      },
+      {
+        "value": "String",
+        "truncated": false
+      },
+      {
+        "value": "../bend2/selfhost/scope_lookup.ArenaGlobal",
+        "truncated": false
+      },
+      {
+        "value": "Maybe",
+        "truncated": false
+      },
+      {
+        "value": "../bend2/selfhost/scope_lookup.ArenaGlobalBucket",
+        "truncated": false
+      },
+      {
+        "value": "Map",
+        "truncated": false
+      },
+      {
+        "value": "../bend2/selfhost/scope_lookup.ArenaGlobalIndex",
+        "truncated": false
+      },
+      {
+        "value": "../bend2/selfhost/scope_lookup.ArenaGlobalSegment",
+        "truncated": false
+      },
+      {
+        "value": "List",
+        "truncated": false
+      },
+      {
+        "value": "../bend2/selfhost/scope_lookup.ArenaGlobalScope",
+        "truncated": false
+      },
+      {
+        "value": "../bend2/selfhost/checker_arena.SubstMemoEntry",
+        "truncated": false
+      },
+      {
+        "value": "../bend2/selfhost/checker_arena.Arena",
+        "truncated": false
+      },
+      {
+        "value": "../checkpoints/checker_core_steps_v1.CheckerRequestGroup16",
+        "truncated": false
+      }
+    ],
+    "complete": true
+  },
+  "env": {
+    "items": [],
+    "complete": true
+  },
+  "coverage": "Lists, strings and descriptor recursion are explicitly bounded. No raw AST/book/image is retained. The target is sampled after five emit seconds, not assumed to be CheckerProgress."
+}
