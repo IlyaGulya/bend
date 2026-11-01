@@ -93,15 +93,39 @@ The complete remote C62 matrix still fails only scheduler_chunk_smoke at600s;
 the original full input also fails at600s on the original M1. This compiler
 candidate is rejected as a demonstrated fix, not promoted.
 
-The new bounded actual-BIR observation deliberately stops without emitted C:
-the slow root is now zero-arity CheckerRequest with19 group-wrapper arms,
-inside Char/U32 through String/Scope maps/Arena, env empty. A conservative
-program-scoped negative named-reference fact for genuinely closed families is
-the next experiment; unknown descriptors must fail closed, and generic/env/
-fuel-sensitive normalization must retain the original rules. No family-name NF
-cache or successful C qualification is claimed.
+The bounded D1 observation stops without emitted C and finds zero-arity
+CheckerRequest with19 group-wrapper arms inside Char/U32, String/Scope
+maps/Arena. R11 tests a conservative program-scoped no-self-reentry fact.
+Its composed semantic fixture passes, but full bootstrap and the original
+full scheduler C diagnostic still fail the unchanged600s budgets. Rejected
+as a demonstrated fix; no family-name NF cache or C qualification is claimed.
 `checkpoints/local2039g43r10r3-outcome/outcome.json`.
 `checkpoints/local2039g43r10d1-outcome/outcome.json`.
+
+The R11D2 late boundary window instead captures generic Sigma as the semantic
+reach goal; String/U32/Word still traverse Scope/Arena after the closed table
+has already been built. It does not establish total cost or exclusive CPU.
+G43R12 therefore keeps the conservative declaration graph and tests an
+arbitrary-target negative cut at the actual named-family reach boundary, only
+for authoritative zero-arity families with empty applied arguments. A no-self
+bit is not an arbitrary-target proof; positive/maybe/generic cases keep NF,
+environment, seen and fuel. This remains isolated, with independent review.
+`checkpoints/local2039g43r11d2-outcome/outcome.json`.
+
+Bounded next experiments, not implemented promises:
+1. Exercise that semantic cut through the composed CLay fixture, then fresh
+   native-seeded byte fixedpoint and the original full scheduler/C62/JS67.
+   Keep facts scoped to the existing immutable BIR/CLay context; do not add a
+   second IR, AST cache or context-free substitute for parameterized NF.
+2. Separate native off-CPU causes with the already-sampled rusage fault/
+   context-switch counters in a diagnostic-only host variant. No idle or CPU
+   utilization admission rule, service stop, or acceptance-timing claim.
+3. Before a fresh M3 producer, authenticate its ignored seed prerequisites and
+   original Git release objects and reuse group-owned lease/sentinel/reaping.
+   A source-only archive and ordinary SSH exit are insufficient. Four genuine
+   original objects already satisfy the unchanged release-kernel lookup locally;
+   that is not a remote producer or complete Git history claim.
+
 
 
 ## G41–G42: backend partition experiment and deferred recipes do not earn promotion

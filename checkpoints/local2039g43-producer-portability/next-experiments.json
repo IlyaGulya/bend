@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "status": "SOURCE_REVIEWED_BOUNDED_EXPERIMENTS_NOT_IMPLEMENTATION_OR_ACCEPTANCE",
+  "basis": [
+    "checkpoints/local2039g43r11-outcome/outcome.json",
+    "checkpoints/local2039g43r11-local-outcome/outcome.json",
+    "checkpoints/local2039g43r11d2-outcome/outcome.json"
+  ],
+  "semanticBoundary": {
+    "decision": "G43R12 retains the conservative BIR declaration graph and queries arbitrary-target exclusion only for authoritative zero-arity families with empty actual args at the semantic named-family boundary. Positive/maybe/generic/seen/fuel/native rules remain original.",
+    "actualTarget": "Sigma",
+    "implementation": "R12ReachBoundary is editing the isolated source; R12CutProof independently reviews; no execution or acceptance yet."
+  },
+  "nativeOffCpu": {
+    "review": "NativeOffCpu read-only source audit",
+    "sourceEvidence": [
+      "evals/native_compiler_host.c:31-44,86-125,397-425",
+      "evals/native_seed_runtime.mjs:190-217",
+      "bend2/selfhost/c_runtime.c:1739-1743,1810-1818,1865-1877,2330-2411"
+    ],
+    "finding": "RUSAGE_SELF covers the native process, computeThreads1 is enforced. The check drive has no interactive parent/stdin/stdout/progress callback or work-thread join. Memory growth/page faults and OS scheduling remain possible; actual cause is not demonstrated.",
+    "notExecutedNextObservation": [
+      "Reuse existing two rusage samples to emit process-wide context-switch/fault/block-I/O deltas in a diagnostic-only host variant.",
+      "Compare those data without process-name/CPU-utilization admission, service stops, tolerance, or unchanged failed-target retry."
+    ],
+    "limitation": "Counters do not by themselves identify a responsible process or prove one exclusive cause."
+  },
+  "producerPortability": {
+    "review": "ProducerCapsule read-only source audit",
+    "sourceEvidence": [
+      "evals/release_identity.ts:20-23",
+      "evals/g24_qualification.mjs:295-353,424-505,1640-1660",
+      "evals/g24_distributed.mjs:373-447"
+    ],
+    "actualProof": "checkpoints/local2039g43-producer-portability/release-helper-proof.json",
+    "notRemoteExecuted": true,
+    "sourceOnlyArchiveIncomplete": true,
+    "additionalSource": "gates/_lib.ts and original parser baseline Bend source/scorecard",
+    "ignoredPrerequisites": [
+      "checkpoints/checker-core-dependency.json",
+      "checkpoints/checker_core_slice.bend",
+      "checkpoints/checker_core_driver.bend",
+      "checkpoints/bootstrap-real-source-corpus.json",
+      "checkpoints/bootstrap-minimized-stage0-oracle.json",
+      "checkpoints/bootstrap-new-minimized-stage0-oracle.json",
+      "checkpoints/bootstrap-natural-expression-fixtures.json",
+      "checkpoints/bootstrap-binder-identity-fixtures.json",
+      "checkpoints/bootstrap-local-pattern-fixtures.json",
+      "checkpoints/bootstrap-signature-fixtures.json",
+      "checkpoints/bootstrap-empty-match-fixtures.json",
+      "checkpoints/bootstrap-newline-expression-fixtures.json"
+    ],
+    "ownership": "Ordinary foreground SSH is insufficient: coordinator has no child-tree signal handlers. Reuse dedicated-host lease, owner sentinel, PID+start-identity tracking, cancellation/watchdog and fresh nonce-bound result with reaped=true before release. Do not spoof a consumer snapshot requiring fixedpoint.",
+    "phase": "Fresh correctness-only producer does not need throughput bindings/frozen/control artifacts; later all/throughput keeps original bindings bytes and existing mapped path checks."
+  },
+  "acceptedCompiler": "G24R12 unchanged",
+  "idleCheckRemoved": true,
+  "bbAppUntouched": true
+}

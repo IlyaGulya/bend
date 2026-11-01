@@ -594,3 +594,21 @@ deadline fix. A new bounded actual-state sample must distinguish dependency
 fact construction from remaining semantic reachability before another change.
 `checkpoints/local2039g43r11-local-outcome/outcome.json`.
 
+### Remaining generic goal at the semantic boundary (G43R11D2)
+
+The actual60–80-emit-second readonly window has132 boundary samples. Captured
+reach_arms/family_reach/fields_reach/reaches requests all target Sigma, with
+String/U32/Word through Scope/Arena. The context's closed table is nonempty
+and its node table still empty: this is consistent with node-plan construction
+after the eager fact pass. No dependency-builder request is sampled in that
+window; no whole-run or exclusiveCPU attribution follows.
+
+EmitterFinished samples here are completed inner continuations under Bound,
+not a whole-program EmitSuccess or emitted C. The probe deliberately stops
+at80039 emit milliseconds (213880ms guarded command), owned tree stopped.
+The next isolated candidate retains the graph and asks whether an eligible
+closed named family can reach the actual arbitrary target at the semantic
+boundary. It must not confuse absence of a self-cycle with absence of a path
+to a generic parent's target. No native/fixedpoint/C acceptance is claimed.
+`checkpoints/local2039g43r11d2-outcome/outcome.json`.
+

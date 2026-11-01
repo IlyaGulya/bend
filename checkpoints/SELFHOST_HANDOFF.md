@@ -102,8 +102,27 @@ R11 C diagnostic на unchanged full scheduler теперь также **REJECTE
 600238ms emit deadline, RSS2587623424B, footprint2636219720B,
 ownedTreeStopped=true; C/clang/run не завершены.
 `checkpoints/local2039g43r11-local-outcome/outcome.json`.
-Следующий bounded readonly observer должен отличить dependency-fact build от
-оставшегося semantic reachability; новую реализацию вслепую не выбирать.
+D2 actual window теперь frozen **`089dabae`**:60–80 emit seconds,132
+boundary samples; captured reach goals Sigma, nested String/U32/Word through
+Scope/Arena, closed table уже MNode, nodesMTip. No dependency-builder samples
+в этом окне; это не total/exclusiveCPU claim. Intentional abort213880ms,
+ownedTreeStopped=true. `checkpoints/local2039g43r11d2-outcome/outcome.json`.
+G43R12 source **`42139224`**, old-source same-fixture comparator **`63e7ec47`**:
+Plan.dependencies retains graph; only authoritative arity0/argsNil may exclude
+an arbitrary target at semantic context-family reach. Generic/positive/maybe/
+seen/fuel/nativeArray rules original. Explicit family/arm reference APIs do not
+borrow context root facts. Independent R12CutProof review done; execution not
+yet claimed. Source/commands: `evals/receipts/producer2039g43r12_authored.json`.
+Next: composed smoke failing-before on private R11 explicit-declaration bug,
+same fixture passing-after, then fresh native/fixedpoint/full C62/JS67 and12
+strict paired rows. Main accepted compiler is still G24R12.
+Producer portability review found mandatory original Git objects, twelve ignored
+checkpoint prerequisites and parser baseline/scorecard. Four original objects
+actually satisfy the unchanged officialKernelSha256 helper locally (41-KiB
+pack); not a complete history or remote producer claim. No remote producer
+launched: ordinary SSH can orphan runPlain children. Safe lease/sentinel/
+PID-identity/reap ownership remains required; no failed snapshot is spoofed.
+`checkpoints/local2039g43-producer-portability/next-experiments.json`.
 
 
 

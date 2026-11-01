@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "status": "UNCHANGED_RELEASE_IDENTITY_HELPER_ACTUALLY_PASSED",
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "-e",
+    "import {officialKernelSha256} from \"/Users/ilyagulya/Projects/My/bend/evals/release_identity.ts\"; console.log(officialKernelSha256(process.argv[1]));",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r11-m3/provenance-check-99f50ca7"
+  ],
+  "environmentDelta": {
+    "PATH": "/usr/bin:/bin"
+  },
+  "scope": "Only this subprocess uses the explicit system-Git PATH; no global tool/config repair. Original helper source and release object checks are unchanged. Not a producer run or Git-history completeness claim.",
+  "helper": {
+    "path": "/Users/ilyagulya/Projects/My/bend/evals/release_identity.ts",
+    "sha256": "ee065f58c821c741c8e79d1fc056c1b0931eb02806652e9e9ac7808e36839039",
+    "bytes": 1281
+  },
+  "originalObjectProof": "checkpoints/local2039g43-producer-portability/release-object-proof.json",
+  "actualKernelSha256": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+  "matchesActualNativeBuild": true,
+  "runtime": "Accepted Bun1.4.3 c6da4a4d3"
+}
