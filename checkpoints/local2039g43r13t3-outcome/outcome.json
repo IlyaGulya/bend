@@ -1,0 +1,150 @@
+{
+  "schemaVersion": 1,
+  "version": "2039g43r13t3",
+  "status": "GENUINE_ACCEPTED_IMAGE_C_AND_JS_BEHAVIOR_PASS_BEFORE_COMPILER_CHANGE",
+  "sourceCommit": "091be91e",
+  "authorCheckpoint": "3ce45af5",
+  "compilerChanged": false,
+  "acceptedNativeProducedImage": {
+    "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+    "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e",
+    "bytes": 31758507
+  },
+  "commands": [
+    [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/heavy_gate.ts",
+      "--memory-mib=8192",
+      "--rss-mib=8192",
+      "--poll-ms=10",
+      "--timeout-ms=600000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "-e",
+      "import * as K from \"/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/show-nf-e80899cb/bend2/bend.ts\"; const book=K.book_nil(); try { await K.book_load(book,\"/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/show-nf-e80899cb/evals/c_target_show_data.bend\",\"\",new Map()); K.book_valid(book); console.log(\"REFERENCE_CHECK_PASS\"); } catch (error) { console.error(K.err_show(error)); process.exitCode=1; }"
+    ],
+    [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/c_target_fixtures_run.ts",
+      "--driver=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r13-cases/accepted-stage1-driver",
+      "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--target=c",
+      "--logs=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r13-cases/baseline-t3-c",
+      "--smoke-case=c_target_show_data",
+      "--keep"
+    ],
+    [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/c_target_fixtures_run.ts",
+      "--driver=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r13-cases/accepted-stage1-driver",
+      "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--target=js",
+      "--logs=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r13-cases/baseline-t3-js",
+      "--smoke-case=c_target_show_data",
+      "--keep"
+    ]
+  ],
+  "cwd": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/show-nf-e80899cb",
+  "observedCommandWallSeconds": 31.19,
+  "canonicalAdmission": {
+    "status": "PASS",
+    "elapsedMs": 297,
+    "peakRssBytes": 71532544,
+    "peakFootprintBytes": 52740720,
+    "ownedTreeStopped": true
+  },
+  "targets": {
+    "c": {
+      "observed": "ShowReport{[1, 2], ShowTwo{3, 4}, ShowAgain{ShowOne{[5, 6]}}, ShowEmpty{}, ShowPair{7, [8, 9]}}",
+      "guards": [
+        {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "peakRssBytes": 1982988288,
+          "peakFootprintBytes": 1756962376,
+          "elapsedMs": 20014,
+          "timeoutMs": 600000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        },
+        {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "peakRssBytes": 151552000,
+          "peakFootprintBytes": 107561704,
+          "elapsedMs": 1173,
+          "timeoutMs": 600000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        },
+        {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "peakRssBytes": 180224,
+          "peakFootprintBytes": 327824,
+          "elapsedMs": 15,
+          "timeoutMs": 600000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        }
+      ],
+      "pins": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r13-cases/baseline-t3-c/c_target_show_data.pins.json",
+        "sha256": "6b687563711e4736cb37ae5014fc17e5cb4b315889c929e948b58782804096e3",
+        "bytes": 875
+      }
+    },
+    "js": {
+      "observed": "ShowReport{[1, 2], ShowTwo{3, 4}, ShowAgain{ShowOne{[5, 6]}}, ShowEmpty{}, ShowPair{7, [8, 9]}}",
+      "guards": [
+        {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "peakRssBytes": 1386217472,
+          "peakFootprintBytes": 1128632928,
+          "elapsedMs": 8782,
+          "timeoutMs": 600000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        },
+        {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "peakRssBytes": 43892736,
+          "peakFootprintBytes": 17450640,
+          "elapsedMs": 52,
+          "timeoutMs": 600000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        }
+      ],
+      "pins": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r13-cases/baseline-t3-js/c_target_show_data.pins.json",
+        "sha256": "930fbb79bd0587bafee4db1885ca5fdde4d3b587bb8c67f6aa5895fb1e3374e3",
+        "bytes": 878
+      }
+    }
+  },
+  "scope": "Actual compiled C and executed JS preserve the same independently specified constructor/list stdout for captured alias, different applied arguments, recursive/empty arms and shifted generic fields. This is baseline semantic coverage, not measured candidate speedup or fabricated red.",
+  "compilerAccepted": false,
+  "performanceClaim": false
+}
