@@ -936,3 +936,125 @@ FIR-факты per-invocation, publication до rewind: backend-owner не ра�
 «Достаточно lazy context» отвергнуто по двум consumers; semantic-work против CPS-admin остаётся неизвестным.
 Общий rewrite «всё boxed / новый runtime» требует ABI/heap-решения; ещё больше LLVM partitions — не лечение stage1 emit.
 Рекомендация: сначала убрать **обязательство обрабатывать ненужное**, а не ускорять ещё один NF-вызов; кратный выигрыш не обещан.
+
+### G44D1–D3: выполненный work/demand census и пересмотр приоритета
+
+**Статус:** диагностический эксперимент выполнен; ускорение компилятора и новая
+acceptance **не заявлены**. Принятый compiler остаётся G24R12. Реализация:
+`evals/compiler_work_census.mjs`, `compiler_demand_census.mjs`,
+`compiler_demand_diagnostic.mjs`; opt-in интеграция в `candidate_host.ts`.
+Компактный результат: `checkpoints/local2039g44d3-outcome/outcome.json`.
+
+#### Настоящий producer и наблюдаемый carrier
+
+Свежий ordinary native producer построен с LLVM split4/max3 children:
+252515 ms, RSS5665619968 B, footprint5654124016 B, 12456 checked definitions.
+Он действительно parse/expand/check/emit диагностический compiler-root:
+95292 ms, 33752735 B, SHA256
+`b49b2633c30e59e3372d302e2aa39dbb8779750ca235311fc62ba5a4c6d47202`.
+Это native-produced stage1, **не** TS/root.js; stage2/fixedpoint/95+190 не запускались.
+Native run использует прежний CLI300000 ms; scheduler — исходный guard600000 ms.
+Оба сохраняют RSS/footprint8192 MiB, parser8M/module и quantum64.
+
+`emitter_step_lower.ts --trace-census` генерирует отдельные source/manifest paths
+и24 canonically authenticated sites. Обычные no-flag и `--trace` пути не
+получают Program payload. Свежая ordinary-генерация после исправлений сохранила
+точные байты `emitter_steps_v1.bend`: SHA256
+`7f7c8d2e57a3fcd3925b4286a8300668ae91b7e11a26317cea6da2df5c9ea425`.
+
+Passive samples не гарантируют BIR: Direct прячет arguments в invoke, а
+RunSpan.next — request; quantum может проскочить Pending. Поэтому census-only
+TraceSite/RunSpan передаёт настоящий immutable `BIR.Program` на Begin
+`c_backend.plan_make`. Никакой observer не вызывает next/invoke/resume,
+не обходит FIR Arena и не сохраняет native Run/Program в отчёте.
+Derived binding проверяет исходные native build/run receipts и runtime source
+corpus; это не поддельный `JS_GENERATED` receipt. Public exports остаются13.
+
+#### Реально упражнённые проверки и отвергнутые версии
+
+- G44D1 **отвергнут**: native checking нашёл пропущенный payload в двух
+  RunSpan patterns; образ не произведён. Source+inputs+failure:
+  `selfhost/g44d1-rejected`, checkpoint `eb9c2d72`.
+- G44D2 произвёл настоящий образ. Existing `c_target_show_data.bend` прошёл
+  stage1→C→clang→execution с буквальным ожидаемым stdout; реальный BIR захвачен,
+  SHOW Begin положителен. Семантический контроль включает captured alias,
+  recursive sum, два generic instances и shifted field scope.
+- Длинный scheduler census G44D2 сохранил валидный120-second prefix, но команда
+  **отвергнута**: caller передал collector неподдерживаемый status
+  `diagnostic-stopped`. Failure не переписан в PASS:
+  `selfhost/g44d2-rejected`, checkpoint `5485d2fe`.
+- G44D3 использует поддерживаемый `aborted` только для tagged diagnostic stop;
+  прочие ошибки пробрасываются. Actual short-stop smoke подтвердил exit0,
+  reaping, непродвинутую stop-boundary и отсутствие частичного C.
+- Затем исходный scheduler, полный импорт checker, genuine image и original
+  Node Worker прошли новый20-second observation: `DIAGNOSTIC_OBSERVED`,
+  guardian PASS149781 ms, RSS2507538432 B, footprint2685647296 B, tree stopped.
+  Это **намеренная остановка**, не завершённая C-компиляция.
+- Existing stage/native contracts:19 PASS; throwaway demand consumer smoke:
+  7 PASS — roots/exports, first declaration, unresolved Apply/reference,
+  cyclic input и getter non-execution. Это не замена compiler acceptance.
+
+#### Где действительно тратится работа
+
+В G44D3 host-phase spans: import577.819 ms, parse6119.344 ms,
+expand5886.220 ms, check113400.198 ms, emit22830.677 ms до abort.
+В20-second emit observation `lower` завершён за3387.469 ms (inclusive).
+Затем context вошёл в первый `node_declared` и до cutoff его не закончил.
+Последняя constructor row — `CheckerRunState`; generated CPS сначала
+вычисляет tail (`emitter_continuation_1464`/`emitter_match_1465`), поэтому
+именно её canonical layout — первый узел планирования, не догадка по имени fixture.
+
+| Marked boundary | G44D3 Begin, 20 s | G44D2 Begin, 120 s (finalizer rejected) |
+| --- | ---: | ---: |
+| descriptor `nf` | 2496106 | 19222273 |
+| `family_reach` | 273853 | 2113374 |
+| `reach_arms` | 677560 | 5224234 |
+| `reaches` | 363935 | 2806392 |
+| `node_declared` | 1, End0 | 1, End0 |
+| `cid_rows` | 0 | 0 |
+| `CBackend.render` | 0 | 0 |
+| `show_build` | 0 | 0 |
+
+Это counts движка данной instrumented composition, не CPU-доли и не времена
+обычного compiler. Begin предшествует callee; открытые вызовы не получают
+выдуманный End. NF End2496094/19222264 соответственно. Observer callback wall
+6483.633/39395.938 ms перекрывает spans; trace/inspector имеют и другие расходы,
+поэтому вычитать эти числа и «восстанавливать baseline» нельзя. Нельзя
+складывать recursive inclusive spans. Host samples не считают все internal64
+transitions или allocations. Новый census не читает reach-target: Sigma
+известна из старого R11D2, не объявляется заново измеренной целью G44.
+
+#### Решение по архитектуре
+
+Actual BIR полностью структурно проверен: 1339502 visited nodes, 10469 code
+rows, 6442 declaration rows (один duplicate), 1445 constructors,145 families.
+Conservative analysis оставляет все10469 bodies и1445 layout roots из-за
+Apply/foreign unknown flow. Manifest точно сопоставляет1161 request tags;
+общий dispatcher статически достигает1159 handlers и4132 code bodies.
+370 tags конструируются в may-reach code; отсутствие конструкции остальных
+**не** сертификат невозможности, ветви не удалены.
+
+**Обычная DCE/lazy-context не принимается как следующий cutover.** Нужный
+runtime `CheckerRunState` нельзя просто удалить, а его type closure всё ещё
+содержит общий протокол. Полная private-protocol specialization не опровергнута,
+но требует constructor-tag/closure-flow proof и согласованной representation,
+а не обрезания исходных family arms. Existing sharing Flow хранит family heads,
+не точные constructor tags (`c_backend_sharing.bend:2218-2224`); он не готовый
+сертификат для такого pruning.
+
+Следующее приоритетное направление — **backend-owned semantic descriptor/query
+DAG для layout/reentry**, вместо разворачивания повторных instantiated обходов.
+Первый falsifier: число различных полностью scoped запросов против всех
+вычислений. NF identity включает context/descriptor/env/output level/fuel;
+reach также target и seen. Если повторов мало, мотивация sharing отвергается
+до большого IR rewrite. Никаких term-handle-only/pretty-name caches,
+свидетельств отсутствия из NfFail/fuel0 или предположений NF-idempotence.
+Storage-directed projection должна отдельно доказать прежние Bool/error
+результаты; полная нормализация для других consumers остаётся обязательной.
+First-order continuation rewrite остаётся условным: эта трасса меняет CPS/yields
+и не доказывает administrative share обычного образа.
+
+Все original native fixedpoint,95+190, C62/JS67/native33/admission12/host5 и
+strict12 сохраняются. C-only улучшение всё ещё не означает ускорения JS-library
+throughput в обоих strict12 runtime-lane.
+
