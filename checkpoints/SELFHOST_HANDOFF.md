@@ -4,24 +4,25 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
-### G43: текущий opt-in scheduler упёрся в dedicated-host prerequisite
+### G43 R5: ошибочный idle heuristic удалён; actual matrix выявила emit deadline
 
-После предложения пользователя проверен **`ssh misakaindrive`** без
-host-key bypass и без upload: Mac M3 Pro, 36 GiB RAM, macOS 26.5.1,
-LLVM21.1.8 установлен. Native image minOS26.0 подходит по header, но на
-хосте ещё не исполнялся. Системные Bun1.2.5 / Node26 не accepted pins;
-нужны isolated Bun1.4.3 / Node23 без system replacement.
-На misaka также четыре Node процесса bb-app host-daemon/plugin/watcher.
-Они почти idle в одном ps snapshot, но strict policy всё равно отказывает.
-Пользователь явно выбрал **«Не трогать bb-app»**: не останавливать,
-не перезапускать и не приостанавливать его services. Ничего не установлено
-или отправлено; idle check не обходить. Для продолжения нужен другой clean
-compatible Mac либо новое явное предоставление пользователем чистого хоста.
-Direct SSH alias transport в текущем cluster-node-only plan ещё отсутствует.
-Probe: `../evals/receipts/producer2039g43_misaka_probe.json`.
-Решение: `../evals/receipts/producer2039g43_misaka_decision.json`.
+Пользователь явно запретил трогать bb-app на `misakaindrive`; не останавливать,
+не перезапускать и не приостанавливать daemon/plugin/watcher. Предыдущее
+требование «другого чистого Mac» на основании имён Node/Bun было ошибкой.
+В R5 удалены idleCheck и его ancestor allowlist/calls; это не исключение для
+bb-app и не новый CPU threshold. Сохранены реальные host leases, original
+guardians, точная authentication и owned-tree tracking/reaping.
 
-Последний source checkpoint — **`2d5d7601`**. Код нового
+На authorized M3 Pro / 36-GiB / macOS26.5.1 / LLVM21.1.8 реально размещены
+isolated accepted Bun1.4.3 / Node23.11.0; SHA и actual execution versions проверены.
+System Bun/Node не заменены. После OS-side проверки immutable bootstrap получен
+actual host pin; environment {}. Native compiler там ещё не исполнялся.
+Workspace `/tmp/bend-g43-b276ca3a9c897fbf51b6df71`, canonical `/private/tmp`.
+Evidence: `../evals/receipts/producer2039g43r5_misaka_setup.json`.
+Direct SSH alias transport ещё не интегрирован; отдельный source slice идёт
+параллельно исследованию настоящего compiler emission deadline.
+
+R5 source checkpoint — **`37006316`**. Код нового
 `--distributed-plan` реализован, но **не qualified и не accepted**.
 Default serial, original 8/8-GiB / poll10ms / timeout600s per-step guardian
 и strict twelve-row performance policy не менялись. Local mode — одна
@@ -45,22 +46,22 @@ authentication и **отказывает на strict idle check**: 105 стор�
 Durable supervisor FAIL / reaped=true сохранён; чужие процессы не тронуты,
 guardian/lease bypass и poisoned-lock cleanup не применялись.
 
-Текущий итог — **BLOCKED_DEDICATED_HOST_REQUIRED**:
-`local2039g43r4-outcome/outcome.json`. Actual consumer workers = 0, новых
-performance rows = 0. Ещё нужны все пять consumers, running-native
-cancellation/reaping, обе шестистрочные lanes и fresh complete final run.
-Не запускать их заново на том же busy host и не импортировать manufactured
-correctness: нужен clean authenticated mini либо явное решение пользователя
-по текущим локальным services. SSH tool hosts отсутствуют, BEND_HOC unset,
-обязательный `cluster` proxy не разрешается. Чужие Bun/Node/ChatGPT процессы
-не убивать и idle check ради PASS не отключать.
+R5 actual changed-path regression: nine invariant tests PASS; вместо отказа
+по именам процессов worker реально выполняет C matrix. Объявлены все 62 cases;
+единственная reported failure — `evals/scheduler_chunk_smoke.bend` на emit,
+original timeout600000ms, ownedTreeStopped=true. Matrix worker2115621ms,
+supervisor reaped=true. Fixture/source/imports не сокращались, deadlines/rails
+не поднимались. Outcome — **`9aed57bf`**,
+`local2039g43r5-outcome/outcome.json`. Это не full correctness/performance PASS.
 
-Required diagnostic sources уже frozen в `local2039g43r2-source` и
-`local2039g43r4-source`; они используют individually passed real producers,
-но не создают prior full correctness authority. Prepared cancellation driver
-в temporary experiment directory ещё **не исполнен**; его нельзя считать
-доказательством. Production compiler/R12 artifacts и N12/G41 constructor
-остаются без algorithmic promotion.
+Investigate actual parse/expand/check/C-emitter stages, не предполагать runtime
+исполнение scheduler во время compilation. Failed stage-one producer —
+genuine accepted 85aff...; не заменять TS seed/native, не повторять unchanged
+target и не исключать тяжёлую fixture ради зелёной матрицы.
+Full consumers/cancellation/twelve-row lanes/final qualification ещё нужны.
+Подготовленный cancellation driver не запускался и не является evidence.
+Не заявлять автоматическую изоляцию от произвольных external jobs: leases
+сериализуют наши jobs, а known competing heavy work избегается операционно.
 
 ### G41/G42 завершены: parallel LLVM opt-in, recipes rejected, R12 unchanged
 

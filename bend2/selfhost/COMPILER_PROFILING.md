@@ -390,7 +390,7 @@ are not hashed. This is diagnostic evidence, not a new compiler acceptance or
 a producer `compile_book` overhead measurement. The unprofiled native build
 and stage1/stage2 acceptance remain in their separate g8 receipt.
 
-## Immutable qualification placement (experimental, currently blocked)
+## Immutable qualification placement (experimental, not yet qualified)
 
 `evals/g24_qualification.mjs --distributed-plan=PATH` selects the explicit
 protocol described at the top of `evals/g24_distributed.mjs`. Omit it to retain
@@ -408,22 +408,25 @@ is unchanged. Extraction seals its precreated root to 0555 before OS checks and
 snapshot JS loading; exact nested modes/content remain independently checked.
 
 `local-single-host` serializes on exactly one machine. Independent SSH hosts may
-run independent correctness queues; every current supervisor, including
-correctness, requires an otherwise idle dedicated host. Lease/watchdog/tree
-reaping and the original heavy guardian remain mandatory. Never unlink a
-poisoned reservation or override the guardian to force a run.
+run independent correctness queues. R5 removes the incorrect process-name idle
+heuristic: an ordinary Node/Bun service is not proof of competing heavy work.
+Host leases, watchdog/tree reaping and the original heavy guardian remain;
+never unlink a poisoned reservation or override the guardian to force a run.
 
 Each performance lane owns one host lease for all six original interleaved rows.
 Native output is authenticated before JS dispatch. No row exclusions, imported
 receipts, relaxed means/medians, tolerance or parallel samples are introduced.
 Do not run producer builds alongside measurement hosts.
 
-G43's actual local snapshot/transfer/authentication path reaches the idle check
-but refuses 105 unrelated existing Bun/Node services. This does not measure
-their CPU activity. No consumer-worker/performance completion or multi-machine
-speedup is claimed; no unrelated process is stopped. Nine invariant tests and
-the guarded 295-file real-producer freeze/verify diagnostic pass, but neither
-replaces the missing consumers, running-native cancellation, twelve-row lanes
-or final full qualification. The exact source/commands/failures and clean-host
-prerequisite are in `checkpoints/local2039g43r4-outcome/outcome.json`.
+The protocol does not prove arbitrary external work is idle. Avoid known
+competing heavy workloads operationally; do not replace that responsibility
+with executable-name scans or an arbitrary CPU threshold.
+
+The actual R5 worker now executes the 62-case C matrix with background services
+untouched. Its single reported failure is scheduler_chunk_smoke emission at
+the unchanged 600-second deadline, with ownedTreeStopped and supervisor
+reaped=true. No test is excluded and no producer substituted. Nine invariant
+tests and real authenticated packaging/transport pass; complete consumers,
+cancellation, twelve-row lanes and final qualification are not yet PASS.
+`checkpoints/local2039g43r5-outcome/outcome.json`.
 

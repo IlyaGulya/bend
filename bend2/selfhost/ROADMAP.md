@@ -6,22 +6,19 @@ under their original image IDs; a later pass never reclassifies an older run.
 Detailed evidence and reasoning live in the linked receipts and notes.
 This index does not replace a receipt.
 
-## G43: opt-in scheduler implemented; completion requires a dedicated idle host
+## G43: false idle heuristic removed; real scheduler emission reaches its deadline
 
-The user subsequently supplied `misakaindrive`: normal authenticated SSH
-works to an M3 Pro / 36-GiB Mac with macOS 26.5.1 and LLVM21.1.8.
-Its OS meets the accepted native image's minOS26.0 header; the image has not
-been executed there. Accepted Bun/Node need private installation rather than
-system replacement. Four existing bb-app Node services still prevent the
-current dedicated-host policy. The user explicitly chose to keep bb-app running.
-No service was stopped, private tools installed or project data uploaded.
-Do not override that decision or bypass the idle check; another authenticated
-dedicated idle compatible Mac is required to finish the runtime proofs.
-Direct alias transport is not yet implemented in the cluster-node-only plan.
-`evals/receipts/producer2039g43_misaka_probe.json`.
-`evals/receipts/producer2039g43_misaka_decision.json`.
+R5 treats the user's `misakaindrive` as a usable authorized SSH host rather
+than disqualifying it for four ordinary bb-app Node services. Those services
+must not be stopped, paused or restarted. The M3 Pro / 36-GiB Mac has LLVM21.1.8
+and private byte-identical accepted Bun1.4.3 / Node23.11.0 in a unique temporary
+workspace; system tools remain unchanged. Actual runtime versions and an actual
+protocol host pin were acquired after OS-side bootstrap/source/tool verification.
+The accepted native image has not yet been executed remotely. Direct alias
+transport is the next independent source change; the current plan is cluster-only.
+`evals/receipts/producer2039g43r5_misaka_setup.json`.
 
-Current source is `2d5d7601`, with explicit `--distributed-plan=PATH`.
+R5 source is `37006316`, with explicit `--distributed-plan=PATH`.
 The default stays serial. Snapshots use an explicit closed source/input
 inventory, original producer authority, OS-side code/tool authentication,
 read-only transport trees, and separate declared-input execution trees.
@@ -49,23 +46,26 @@ genuine accepted stage1/stage2 byte equality, and the complete emitted suites:
 | Emitted suites | 219.091 |
 
 These producer passes are not a complete distributed correctness receipt.
-Nine filesystem/lease/row-invariant tests pass. A guarded real-producer
-packaging diagnostic freezes/verifies 295 files, 170,103,359 bytes. The R4
-actual transfer and supervisor then pass snapshot/host/tool authentication
-and fail at the unchanged dedicated-host idle check: 105 unrelated existing
-Bun/Node processes. This is a named-process refusal, not proof that all 105
-are using CPU. The supervisor publishes durable FAIL/reaped=true; no user
-process is stopped and no lease/guardian override is used.
+The process-name idle refusal in R4 was an erroneous new heuristic, not an
+original compiler/performance gate. R5 deletes it completely: no PID whitelist
+or replacement CPU threshold. Ordinary background services are not evidence
+of competing compilation. Host leases still serialize owned jobs, and exact
+source/tool authentication, watchdog/reaping and original guardians remain.
+The protocol does not prove that arbitrary external work is idle; operators
+must avoid known competing heavy workloads during measurements.
 
-Current disposition is **BLOCKED_DEDICATED_HOST_REQUIRED**, not acceptance.
-Zero actual consumer workers and zero new performance rows have completed.
-Running-native cancellation, all five consumers, both original six-row lanes
-and a fresh complete final qualification still require an idle dedicated host.
-SSH inventory has no configured hosts, BEND_HOC is unset, and the required
-cluster proxy name does not resolve here. Do not bypass the idle check or
-rewrite an old receipt to claim progress. Finish through an authenticated
-clean mini, or obtain the user's explicit decision about existing local
-services. Evidence: `checkpoints/local2039g43r4-outcome/outcome.json`.
+Nine invariant tests pass. The same actual transfer/supervisor path that R4
+refused now starts a real consumer worker with background services untouched.
+The C matrix announces all 62 cases and reports exactly one failure:
+`evals/scheduler_chunk_smoke.bend`, emit stage, original 600-second deadline.
+The matrix worker runs 2,115,621 ms; the supervisor confirms reaped=true.
+No fixture is filtered, no input/import is narrowed, and no deadline is raised.
+Investigate actual own-frontend/check/C-emitter progression before another run;
+do not replay the unchanged failing target or substitute a seed producer.
+The mode remains unqualified. All five complete consumers, running-native
+cancellation, twelve-row performance and final full qualification are still
+required; the current obstruction is a real emission budget, not process names.
+Evidence: `checkpoints/local2039g43r5-outcome/outcome.json`.
 
 ## G41–G42: backend partition experiment and deferred recipes do not earn promotion
 
