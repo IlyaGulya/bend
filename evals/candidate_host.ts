@@ -277,9 +277,9 @@ function attributedPhase(name:string,protocol:string,inputs:Record<string,unknow
  try{value=run(protocol==='Emitter'?workObserver(attributes):attributes);}
  catch(error){
   if(protocol==='Emitter')workCpu?.finish(error);
-  stage.end(token,'failed',{error:String(error)});attributes?.record(stage.profile);saveWorkCensus(error);
+  stage.end(token,isWorkCensusStop(error)?'aborted':'failed',{error:String(error)});attributes?.record(stage.profile);saveWorkCensus(error);
   if(isWorkCensusStop(error)){
-   stage.finish('diagnostic-stopped');
+   stage.finish('aborted',error);
    console.log(JSON.stringify({status:'INTENTIONAL_DIAGNOSTIC_STOP',acceptanceEvidence:false,report:o.workCensus}));
    process.exit(0);
   }

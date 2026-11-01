@@ -129,14 +129,17 @@ export function analyzeDemand(program, options = {}) {
 
   const codes = new Map(), declarations = new Map(), constructors = new Map(), constructorIds = new Map(), families = new Map(), typeFunctions = new Map(), arms = new Map();
   const inventory = {codeRows: 0, declarationRows: 0, constructorRows: 0, familyRows: 0, typeFunctionRows: 0, familyArmRows: 0, duplicateCodeIds: 0, duplicateDeclarations: 0, duplicateConstructorKeys: 0, duplicateConstructorIds: 0, duplicateFamilyKeys: 0, duplicateTypeFunctionKeys: 0, duplicateArmKeys: 0};
-  let rowCount = 0, rowCensored = false;
+  let rowCount = 0, rowCensored = false, firstConstructorKey = null, lastConstructorKey = null;
   const first = (map, key, row, duplicate) => { if (map.has(key)) inventory[duplicate] += 1; else map.set(key, row); };
   const tables = [['codes', codes, 'id', 'codeRows', 'duplicateCodeIds'], ['declarations', declarations, 'key', 'declarationRows', 'duplicateDeclarations'], ['constructors', constructors, 'key', 'constructorRows', 'duplicateConstructorKeys'], ['families', families, 'key', 'familyRows', 'duplicateFamilyKeys'], ['type_functions', typeFunctions, 'key', 'typeFunctionRows', 'duplicateTypeFunctionKeys']];
   for (const [field, map, key, count, duplicate] of tables) {
     for (const row of list(own(program, field))) {
       if (++rowCount > bound.rows) { rowCensored = true; break; }
       inventory[count] += 1; first(map, own(row, key), row, duplicate);
-      if (field === 'constructors') first(constructorIds, own(row, 'id'), row, 'duplicateConstructorIds');
+      if (field === 'constructors') {
+        first(constructorIds, own(row, 'id'), row, 'duplicateConstructorIds');
+        firstConstructorKey ??= own(row, 'key'); lastConstructorKey = own(row, 'key');
+      }
       if (field === 'families') for (const arm of list(own(row, 'arms'))) {
         if (++rowCount > bound.rows) { rowCensored = true; break; }
         inventory.familyArmRows += 1;
@@ -384,7 +387,8 @@ export function analyzeDemand(program, options = {}) {
   return {...common, status: scanCensored ? 'censored' : blockers.size ? 'conservative-with-blockers' : 'complete-conservative',
     completeness: {inventory: true, executableReachability: !scanCensored, executableReachabilityMeaning: 'conservative may-reach upper bound, not exact liveness', layoutObligations: !scanCensored,
       layoutObligationsMeaning: 'conservative symbolic obligations, not evaluated physical layouts', relationships: !edgeCensored && !scanCensored, exactRuntimeTagFlow: false},
-    inventory: {...inventory, codes: summary([...codes.keys()].map(label), bound.examples), declarations: summary(declarations.keys(), bound.examples), constructors: summary(constructors.keys(), bound.examples), families: summary(families.keys(), bound.examples), typeFunctions: summary(typeFunctions.keys(), bound.examples)},
+    inventory: {...inventory, constructorRowEndpoints: {first: firstConstructorKey, last: lastConstructorKey},
+      codes: summary([...codes.keys()].map(label), bound.examples), declarations: summary(declarations.keys(), bound.examples), constructors: summary(constructors.keys(), bound.examples), families: summary(families.keys(), bound.examples), typeFunctions: summary(typeFunctions.keys(), bound.examples)},
     roots: summary(roots, bound.examples),
     reachable: {codes: summary([...reachedCodes].map(label), bound.examples), declarations: summary(reachedDeclarations, bound.examples), executableConstructorRoots: summary(codeConstructors, bound.examples), constructed: summary(constructed, bound.examples), tested: summary(tested, bound.examples), widenedToAllCode: allCode},
     relationships: {basis: 'actual BIR Direct/TailDirect/Closure/Symbol operands; no host-boundary inference',

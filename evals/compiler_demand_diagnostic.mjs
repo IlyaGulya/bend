@@ -91,7 +91,7 @@ async function main(){
  const stdout=join(output,'emit.stdout'),stderr=join(output,'emit.stderr');
  const guarded=['/bin/sh','-c','out=$1; err=$2; shift 2; exec "$@" >"$out" 2>"$err"','sh',stdout,stderr,...command];
  save(join(output,'diagnostic.json'),{schemaVersion:1,kind:'compiler-demand-work-census',acceptanceEvidence:false,byteFixedpointClaim:false,startedAt:new Date().toISOString(),command,limits,windowMs,abiExports:13,parserFuelCellsPerModule:8000000,quantum:64,inputPins,observedPins,bindingSha256:hashPath(bindingPath)});
- const guard=await runHeavyGate(guarded,{...limits,label:'G44D1 original scheduler diagnostic'});
+ const guard=await runHeavyGate(guarded,{...limits,label:'original scheduler demand diagnostic'});
  save(join(output,'guard.json'),guard);
  for(const row of [...inputPins,...observedPins])requireThat(hashPath(row.path)===row.sha256,'Diagnostic input changed: '+row.path);
  const report=existsSync(workPath)?load(workPath):null;
