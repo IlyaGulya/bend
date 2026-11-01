@@ -135,9 +135,12 @@ program executes844700 chunks after correcting a stale probe tag decoder.
 Actual native build, genuine stage1/stage2 exact bytes and95+190 fixtures now
 pass, including the expanded witness in full C62. The original scheduler
 emission still exceeds600s, so G43R13 is rejected and stays isolated.
-Fresh nonces complete only the other previously unreached targets; no failed
-C retry, strict12 or compiler promotion. Source corpus84 files is frozen.
+Fresh nonces then complete all other original targets:
+JS67/native33/admission12/host5 PASS, every remote tree reaped.
+Original C FAIL is byte-unchanged; no retry, strict12 or compiler promotion.
+Source corpus84 files is frozen and the one-off controller removed.
 `checkpoints/local2039g43r13-outcome/outcome.json`.
+`checkpoints/local2039g43r13-remaining-outcome/outcome.json`.
 The stronger consumer regression and canonical smoke decoder are integrated
 independently of the rejected compiler patch.
 

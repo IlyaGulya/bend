@@ -748,7 +748,11 @@ slowdown. The original full correctness failure forbids strict12/promotion.
 
 All53 native-execution and84 seed-loaded inputs are frozen as84 unique
 source files/8014587 bytes; images/ASTs/caches/bulk logs stay outside Git.
-Only previously unexecuted JS67/native33/admission12/host5 run separately
-with fresh authenticated nonces; original C FAIL is not rewritten or retried.
+All originally unreached JS67/native33/admission12/host5 actually complete in
+910.850s under fresh authenticated nonces, each durable result PASS/reaped=true.
+The candidate C/JS mixed-instance witness matches its literal output.
+Original C FAIL is byte-unchanged and not retried; strict12 remains unauthorized.
+The owned one-off remaining-target controller is removed after proof.
 `checkpoints/local2039g43r13-outcome/outcome.json`.
+`checkpoints/local2039g43r13-remaining-outcome/outcome.json`.
 

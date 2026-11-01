@@ -57,8 +57,8 @@ latest one; the GitHub release carries the same notes.
   `checkpoints/local2039g43r13-admission3-outcome/outcome.json`.
 - The existing pure-main SHOW consumer now covers captured type aliases,
   different instances of the same recursive sum, empty/multiple arms and
-  shifted generic field scopes. Genuine G24R12 C/JS and the isolated G43R13
-  full C matrix execute its literal expected output. The G43R13 NF-sharing
+  shifted generic field scopes. Genuine G24R12 and isolated G43R13 C/JS
+  consumers execute its literal expected output. The G43R13 NF-sharing
   compiler itself still fails the original scheduler deadline and is not
   promoted: `checkpoints/local2039g43r13-outcome/outcome.json`.
 - Build acceleration experiments G41/G42 preserve G24R12 as the accepted

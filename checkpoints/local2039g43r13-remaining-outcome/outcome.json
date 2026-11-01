@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "version": "2039g43r13-remaining",
+  "status": "PASS_ALL_FOUR_ORIGINAL_PREVIOUSLY_UNREACHED_TARGETS",
+  "sourceCommit": "457305e2",
+  "compilerPatchCommit": "af6f7466",
+  "authorCheckpoint": "fb665610",
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r13-remaining.mjs",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r6/placement.json",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/show-nf-e80899cb/checkpoints/local2039g43r13-correctness/consumer-snapshot",
+    "bc68e2f46eda7ff6b1c87bcbf217d96ef4e624d96f6752bcb8091ec40c64a61a",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/show-nf-e80899cb/checkpoints/local2039g43r13-correctness/snapshot-bc68e2f46eda7ff6b1c87bcbf217d96ef4e624d96f6752bcb8091ec40c64a61a.tar.gz",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/show-nf-e80899cb/checkpoints/local2039g43r13-correctness/dispatch-6adae5517d5daf7650d5782d65f60f0dccfed7e8a438c39d.json",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r13-remaining-dff603a64d09"
+  ],
+  "scriptSha256": "a8e89ff83395a022426626618836153e66e90ca65c352e1c51c03d5dea605290",
+  "observedCommandWallSeconds": 910.85,
+  "jobs": [
+    {
+      "job": "matrix-js",
+      "status": "PASS",
+      "reaped": true,
+      "nonce": "3ea23dd1b6bcf2ecb59fc5031e7cca27dfdd728cbe7a6c6d",
+      "physical": "4613c60b990a84a1d3484370a8bb68887aa6b616ef55f96ff8802a1107f7a84b",
+      "planSha256": "c1751625b9145a3a186d9288d35db5ef2270fddb9510b5f05d429c1e5d0203c1",
+      "snapshotSha256": "bc68e2f46eda7ff6b1c87bcbf217d96ef4e624d96f6752bcb8091ec40c64a61a",
+      "wallMs": 637135,
+      "durableEvidence": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r13-remaining-dff603a64d09/result-3ea23dd1b6bcf2ecb59fc5031e7cca27dfdd728cbe7a6c6d.json",
+        "sha256": "dd84ebedf8f0c10dafbbce17809b7d87f32201d46f45db2e4201792e013058f7",
+        "bytes": 12321
+      },
+      "target": "js",
+      "fixtures": 67,
+      "cases": 67
+    },
+    {
+      "job": "native",
+      "status": "PASS",
+      "reaped": true,
+      "nonce": "ad9769427ee65a66392aac193d4f150f8ee68d60068eba02",
+      "physical": "4613c60b990a84a1d3484370a8bb68887aa6b616ef55f96ff8802a1107f7a84b",
+      "planSha256": "c1751625b9145a3a186d9288d35db5ef2270fddb9510b5f05d429c1e5d0203c1",
+      "snapshotSha256": "bc68e2f46eda7ff6b1c87bcbf217d96ef4e624d96f6752bcb8091ec40c64a61a",
+      "wallMs": 147477,
+      "durableEvidence": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r13-remaining-dff603a64d09/result-ad9769427ee65a66392aac193d4f150f8ee68d60068eba02.json",
+        "sha256": "ff368e0387c07e9d5f9ebe6b861a121d1341b42b4f48b8032a42cd5508e04003",
+        "bytes": 2724
+      },
+      "consumerStatus": "NATIVE_FOREIGN_AND_LIBRARY_SMOKE_PASS",
+      "counts": {
+        "fixtures": 30,
+        "library": 1,
+        "nativeExports": 2,
+        "total": 33
+      }
+    },
+    {
+      "job": "admission",
+      "status": "PASS",
+      "reaped": true,
+      "nonce": "a615150ba89b54e75b42b8f288c4b7d8ccf18c5dd8457e23",
+      "physical": "4613c60b990a84a1d3484370a8bb68887aa6b616ef55f96ff8802a1107f7a84b",
+      "planSha256": "c1751625b9145a3a186d9288d35db5ef2270fddb9510b5f05d429c1e5d0203c1",
+      "snapshotSha256": "bc68e2f46eda7ff6b1c87bcbf217d96ef4e624d96f6752bcb8091ec40c64a61a",
+      "wallMs": 29822,
+      "durableEvidence": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r13-remaining-dff603a64d09/result-a615150ba89b54e75b42b8f288c4b7d8ccf18c5dd8457e23.json",
+        "sha256": "31898f44b5ab7f43b6e890129f7154c01c905ce7bd998c39a4cf47a811f7e3a0",
+        "bytes": 2684
+      },
+      "consumerStatus": "NATIVE_DATATYPE_AND_EXECUTABLE_ADMISSION_PASS",
+      "counts": {
+        "inputs": 5,
+        "rows": 12
+      }
+    },
+    {
+      "job": "host",
+      "status": "PASS",
+      "reaped": true,
+      "nonce": "00a33e828c2995e18314dd7b2d19522410fe263ec0cfdbb9",
+      "physical": "4613c60b990a84a1d3484370a8bb68887aa6b616ef55f96ff8802a1107f7a84b",
+      "planSha256": "c1751625b9145a3a186d9288d35db5ef2270fddb9510b5f05d429c1e5d0203c1",
+      "snapshotSha256": "bc68e2f46eda7ff6b1c87bcbf217d96ef4e624d96f6752bcb8091ec40c64a61a",
+      "wallMs": 65459,
+      "durableEvidence": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r13-remaining-dff603a64d09/result-00a33e828c2995e18314dd7b2d19522410fe263ec0cfdbb9.json",
+        "sha256": "fdcda3fe967829a6429e497a8a128f9fdf0f984f4ccf29660a22a5214ccaec1c",
+        "bytes": 2654
+      },
+      "consumerStatus": "ACTUAL_ALIAS_AND_HOST_EXPORT_CONSUMERS_PASS",
+      "counts": {
+        "consumers": 5
+      }
+    }
+  ],
+  "originalCMatrix": "REJECTED: original62 fixtures executed, sole failure scheduler_chunk_smoke emit deadline600092ms. No failed-target retry.",
+  "genuineNativeFixedpoint": {
+    "criterion": "Exact emitted UTF-8 JS bytes; no normalization or patching",
+    "equal": true,
+    "stageOneSha256": "59feaa3a527a304f8bdeed849ee7274badb3d92db98700528a8938e1a27d0f4b",
+    "stageTwoSha256": "59feaa3a527a304f8bdeed849ee7274badb3d92db98700528a8938e1a27d0f4b"
+  },
+  "coverage": {
+    "nativeSeed": 95,
+    "freshEmittedStageOne": 95,
+    "freshEmittedStageTwo": 95,
+    "fullCFixtures": 62,
+    "fullCFailures": 1,
+    "fullJSFixturesPassed": 67,
+    "nativeForeignLibraryPassed": 33,
+    "admissionRowsPassed": 12,
+    "hostConsumersPassed": 5
+  },
+  "newCapturedAliasConsumer": "Literal expected output passed in actual candidate C and full candidate JS, and before compiler changes in genuine accepted G24R12 C/JS. Same exact test source integrated.",
+  "originalQualificationReceiptUnchanged": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/show-nf-e80899cb/checkpoints/local2039g43r13-correctness/receipt.json",
+    "sha256": "8f99cf6e525e39ec471757b6b4cd9052681c0a3a326f936e0c48e0b3cf4afdc1",
+    "bytes": 33296
+  },
+  "rawRemainingReceipt": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r13-remaining-dff603a64d09/outcome.json",
+    "sha256": "fb932e786526904fd728f26ea6a4e2366e7537aef5edb998fd1e2c2c3658daf6",
+    "bytes": 16359
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "perStepTimeoutMs": 600000,
+    "abiExports": 13,
+    "parserFuelCellsPerModule": 8000000,
+    "nativeQuantum": 64
+  },
+  "globalCompilerOutcome": "REJECTED; local SHOW NF reuse is insufficient to eliminate original C deadline. Do not infer a paired speedup/slowdown.",
+  "strict12": "Not authorized forG43R13 after original full C failure. No compiler promotion or performance claim.",
+  "acceptedCompiler": "G24R12 unchanged",
+  "compilerAccepted": false,
+  "fullCorrectness": false,
+  "performanceAccepted": false,
+  "bbAppUntouched": true,
+  "idleAdmissionRemoved": true,
+  "allFourRemoteWorkersReaped": true
+}
