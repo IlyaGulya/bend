@@ -329,33 +329,26 @@ export class LexicalTypes {
     }
   }
   private inferConstructor(term: Extract<LTerm, { $: "Ctr" }>, scope: Scope, expected?: LTerm): LTerm {
-    const constructor = this.book.ctrs[term.k];
-    const declaration = Object.entries(this.book.tlds).find(([, tld]) => tld.$ === "ADT" && tld.c.some(ctr => ctr.k === term.k));
-    const datatype = declaration?.[1];
-    if (!constructor || datatype?.$ !== "ADT") throw new MissingType("constructor has no datatype declaration", term);
-    let telescope = this.lowerFresh(constructor.T);
     const parameters = new Map<number, Extract<LTerm, { $: "All" }>>();
     const solutions = new Map<number, LTerm>();
-    for (let i = 0; i < datatype.n; i++) {
-      if (telescope.$ !== "All") throw new MissingType("constructor parameter telescope is incomplete", term);
-      parameters.set(telescope.i, telescope);
-      telescope = telescope.B;
-    }
+    const resolving = new Set<number>();
     const resolved = (type: LTerm): LTerm => {
-      for (const [id, value] of solutions) type = substitute(type, id, value);
+      for (const id of freeBinderIds(type)) {
+        const value = solutions.get(id);
+        if (!value) continue;
+        if (resolving.has(id)) throw new MissingType("recursive constructor type argument", term);
+        resolving.add(id);
+        type = substitute(type, id, resolved(value));
+        resolving.delete(id);
+      }
       return this.normalize(type);
     };
-    if (expected) {
-      const goal = this.normalize(expected);
-      if (goal.$ === "ADT" && goal.k === declaration![0] && goal.x.length === datatype.n) {
-        [...parameters.keys()].forEach((id, index) => solutions.set(id, goal.x[index]!));
-      }
-    }
     const unify = (template: LTerm, actual: LTerm, kindFit = false): void => {
       const left = resolved(template), right = resolved(actual);
       if (left.$ === "Lit" && right.$ === "Ctr") return unify(lit_step(left), right, kindFit);
       if (right.$ === "Lit" && left.$ === "Ctr") return unify(left, lit_step(right), kindFit);
       if (left.$ === "Var" && parameters.has(left.i)) {
+        if (right.$ === "Var" && right.i === left.i) return;
         if (freeBinderIds(right).includes(left.i)) throw new MissingType("recursive constructor type argument", term);
         solutions.set(left.i, right); return;
       }
@@ -389,32 +382,61 @@ export class LexicalTypes {
         }
       }
     };
-    for (const value of term.x) {
-      const head = resolved(telescope);
-      if (head.$ !== "All") throw new MissingType("constructor value field arity mismatch", term);
-      unify(head.A, this.infer(value, scope, head.A));
-      telescope = substitute(head.B, head.i, value);
-    }
-    // Inferred type parameters also determine their kind/quantity parameters.
-    for (let pass = 0; pass < parameters.size; pass++) {
-      const before = solutions.size;
+    // Direct constructor payloads share constraints with their parent. An empty
+    // dependent payload can retain an unsolved argument without mistaking it for
+    // a lexical variable. Later payloads constrain quantities before kind fitting
+    // supplies defaults (Data also fits Type, so those defaults are not equalities).
+    const collect = (value: Extract<LTerm, { $: "Ctr" }>, goal?: LTerm): LTerm => {
+      const constructor = this.book.ctrs[value.k];
+      const declaration = Object.entries(this.book.tlds).find(([, tld]) => tld.$ === "ADT" && tld.c.some(ctr => ctr.k === value.k));
+      const datatype = declaration?.[1];
+      if (!constructor || datatype?.$ !== "ADT") throw new MissingType("constructor has no datatype declaration", value);
+      let telescope = this.lowerFresh(constructor.T);
+      const expectedType = goal && resolved(goal);
+      for (let i = 0; i < datatype.n; i++) {
+        if (telescope.$ !== "All") throw new MissingType("constructor parameter telescope is incomplete", value);
+        parameters.set(telescope.i, telescope);
+        if (expectedType?.$ === "ADT" && expectedType.k === declaration![0] && expectedType.x.length === datatype.n) {
+          unify({ $: "Var", k: telescope.k, i: telescope.i }, expectedType.x[i]!);
+        }
+        telescope = telescope.B;
+      }
+      for (const payload of value.x) {
+        const head = resolved(telescope);
+        if (head.$ !== "All") throw new MissingType("constructor value field arity mismatch", value);
+        unify(head.A, payload.$ === "Ctr" ? collect(payload, head.A) : this.infer(payload, scope, head.A));
+        telescope = substitute(head.B, head.i, payload);
+      }
+      const result = resolved(telescope);
+      if (result.$ === "All") throw new MissingType("constructor value has too few fields", value);
+      return result;
+    };
+    const result = collect(term, expected);
+    const checked = new Set<number>();
+    let propagated = 0;
+    // Validate each closed solution once; only new solutions can unblock the
+    // remaining dependent arguments, including function-valued parameters.
+    while (propagated !== solutions.size) {
+      propagated = solutions.size;
       for (const [id, parameter] of parameters) {
-        const value = solutions.get(id);
-        if (!value) continue;
+        if (checked.has(id)) continue;
+        const solution = solutions.get(id);
+        if (!solution) continue;
+        const value = resolved(solution);
+        if (freeBinderIds(value).some(id => parameters.has(id))) continue;
         const domain = resolved(parameter.A);
         let kind: LTerm;
         if (value.$ === "Lam" && domain.$ === "All") {
+          if (freeBinderIds(domain.A).some(id => parameters.has(id))) continue;
           const inner = scope.extend(value.i, value.k, domain.A, domain.q);
           kind = { ...domain, i: value.i, k: value.k, B: this.infer(value.f, inner) };
         } else kind = this.infer(value, scope);
         unify(domain, kind, true);
+        checked.add(id);
       }
-      if (before === solutions.size) break;
     }
-    const result = resolved(telescope);
-    if (result.$ === "All") throw new MissingType("constructor value has too few fields", term);
-    if (freeBinderIds(result).some(id => parameters.has(id) && !solutions.has(id))) throw new MissingType("constructor has undetermined datatype arguments; annotate its RHS", term);
-    return result;
+    if (checked.size !== parameters.size) throw new MissingType("constructor has undetermined datatype arguments; annotate its RHS", term);
+    return resolved(result);
   }
   private infer(term: LTerm, scope: Scope, expected?: LTerm): LTerm {
     switch (term.$) {

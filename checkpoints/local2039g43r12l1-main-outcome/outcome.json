@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "version": "2039g43r12l1-main",
+  "status": "HOST_FIX_INTEGRATED_FROM_EXACT_EXERCISED_SOURCE",
+  "sourceVersion": "15c22e74",
+  "semanticTestVersion": "94940509",
+  "files": [
+    {
+      "file": "evals/parser_full_type_env.ts",
+      "sha256": "5b38164f297e9c275185519b6a815547b89f16a205b9b1c24c52ce4f907508df",
+      "bytes": 26372
+    },
+    {
+      "file": "evals/parser_full_type_env.test.ts",
+      "sha256": "d1544c234112bd93d12991e5208e701862049dfe0180a41a15773242552c7b81",
+      "bytes": 12053
+    }
+  ],
+  "unitProof": "checkpoints/local2039g43r12l1-unit-outcome/outcome.json",
+  "programSmokeProof": "checkpoints/local2039g43r12-semantic-outcome/outcome.json",
+  "verificationScope": "Actual 50/0 semantic tests and composed owned-step red/green executed in the isolated worktrees; main helper and semantic test module are byte-identical to that exercised source. No new main-compiler qualification is claimed.",
+  "compilerGraphIntegrated": false,
+  "acceptedCompiler": "G24R12",
+  "compilerAccepted": false,
+  "performanceClaim": false
+}

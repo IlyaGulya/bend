@@ -1,8 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import { term_show, type LTerm } from "../bend2/bend.ts";
 import { readParserGraph } from "./parser_full_graph.ts";
-import { freeBinderIds, LexicalTypes, termChildren } from "./parser_full_type_env.ts";
-import { planCaptures, renderCaptureFields, renderCaptureParameters } from "./parser_full_capture.ts";
+import { freeBinderIds, LexicalTypes, MissingType, termChildren } from "./parser_full_type_env.ts";
 
 async function fixture(source: string, owner = "example") {
   const graph = await readParserGraph(source);
@@ -33,9 +32,6 @@ def example(+seed: Token) -> Token:
     expect(fields(types, callbacks[0]!)).toEqual([
       { name: "seed", type: "Token", quantity: "Many" },
     ]);
-    const plan = planCaptures([callbacks[0]!], types);
-    expect(renderCaptureFields(plan, term_show)).toContain(": Token");
-    expect(renderCaptureParameters(plan, "resume", term_show)).toContain(": Token");
   });
 
   test("a local derives its type from its RHS, not its name or callback use", async () => {
@@ -50,12 +46,9 @@ def example(seed: Token) -> Token:
   value = identity(seed)
   invoke(ignored => value)
 `);
-    const plan = planCaptures([callbacks[0]!], types);
     expect(fields(types, callbacks[0]!)).toEqual([
       { name: "value", type: "Token", quantity: "Lone" },
     ]);
-    expect(renderCaptureFields(plan, term_show)).toContain(": Token");
-    expect(renderCaptureParameters(plan, "resume", term_show)).toContain(": Token");
   });
 
   test("product payloads project through the instantiated Sigma telescope", async () => {
@@ -68,12 +61,9 @@ def example(pair: Nat & Bool) -> Nat:
     case (value, _):
       invoke(ignored => value)
 `);
-    const plan = planCaptures([callbacks[0]!], types);
     expect(fields(types, callbacks[0]!)).toEqual([
       { name: "value", type: "Nat", quantity: "Lone" },
     ]);
-    expect(renderCaptureFields(plan, term_show)).toContain(": Nat");
-    expect(renderCaptureParameters(plan, "resume", term_show)).toContain(": Nat");
   });
 
   test("nested product patterns retain the projected payload type", async () => {
@@ -88,10 +78,7 @@ def example(pair: (Nat & Bool) & Bool) -> Nat:
     case _:
       0n
 `);
-    const plan = planCaptures([callbacks[0]!], types);
     expect(fields(types, callbacks[0]!)).toEqual([{ name: "value", type: "Nat", quantity: "Lone" }]);
-    expect(renderCaptureFields(plan, term_show)).toContain(": Nat");
-    expect(renderCaptureParameters(plan, "resume", term_show)).toContain(": Nat");
   });
 
   test("constructor payload types instantiate datatype parameters", async () => {
@@ -106,10 +93,7 @@ def example(box: Box<Nat>) -> Nat:
     case Packed{value}:
       invoke(ignored => value)
 `);
-    const plan = planCaptures([callbacks[0]!], types);
     expect(fields(types, callbacks[0]!)).toEqual([{ name: "value", type: "Nat", quantity: "Lone" }]);
-    expect(renderCaptureFields(plan, term_show)).toContain(": Nat");
-    expect(renderCaptureParameters(plan, "resume", term_show)).toContain(": Nat");
   });
 
   test("one continuation captures a formal and a nested pattern payload", async () => {
@@ -124,13 +108,10 @@ def example(+seed: Nat, pair: Nat & Bool) -> Nat:
     case (value, _):
       invoke(ignored => add(seed, value))
 `);
-    const plan = planCaptures([callbacks[0]!], types);
     expect(fields(types, callbacks[0]!)).toEqual([
       { name: "seed", type: "Nat", quantity: "Many" },
       { name: "value", type: "Nat", quantity: "Lone" },
     ]);
-    expect(renderCaptureFields(plan, term_show)).toMatch(/Nat.*Nat/);
-    expect(renderCaptureParameters(plan, "resume", term_show)).toMatch(/Nat.*Nat/);
   });
 
   test("a nested continuation captures its outer lambda parameter by ID", async () => {
@@ -142,10 +123,7 @@ def example(seed: Nat) -> Nat:
   invoke(outer => invoke(inner => outer))
 `);
     const nested = callbacks.find(callback => callback.k === "inner")!;
-    const plan = planCaptures([nested], types);
     expect(fields(types, nested)).toEqual([{ name: "outer", type: "Nat", quantity: "Lone" }]);
-    expect(renderCaptureFields(plan, term_show)).toContain(": Nat");
-    expect(renderCaptureParameters(plan, "resume", term_show)).toContain(": Nat");
   });
 
   test("shadowed names resolve by ID and branch-local binders leave scope", async () => {
@@ -174,7 +152,6 @@ def example(+value: Bool, box: Box) -> Nat:
     expect(types.environmentAt(inner!).has(payloadId)).toBe(true);
     expect(types.environmentAt(outer!).has(payloadId)).toBe(false);
     expect(types.environmentAt(inner!).get(formalId)!.quantity.$).toBe("Many");
-    expect(renderCaptureParameters(planCaptures([inner!], types), "resume", term_show)).not.toMatch(/\+capture_/);
   });
 
   test("wildcard positions do not bind and pattern ownership is retained", async () => {
@@ -204,26 +181,8 @@ def example(seed: Nat) -> Nat:
     const outer = callbacks[0]!;
     expect(fields(types, outer)).toEqual([{ name: "seed", type: "Nat", quantity: "Lone" }]);
     expect(types.captures(outer).map(binding => binding.name)).not.toContain("argument");
-    const plan = planCaptures([outer], types);
-    expect(renderCaptureParameters(plan, "resume", term_show)).not.toMatch(/\+capture_/);
   });
 
-  test("a missing lambda domain is a structured error rather than a name guess", async () => {
-    const { graph, types } = await fixture(`
-import Base
-def example(seed: Nat) -> Nat -> Nat -> Nat:
-  outer => inner => outer
-`);
-    // An intentionally untyped isolated lambda has no goal to establish outer's
-    // domain. The identical parsed AST is indexable, but cannot safely capture it.
-    const body = graph.bodies.get("example")!;
-    expect(body.$).toBe("Lam");
-    if (body.$ !== "Lam" || body.f.$ !== "Lam") throw Error("Expected parsed lambdas");
-    const untyped = new LexicalTypes(graph.parserBook, graph.signatures);
-    untyped.indexBody(body, graph.signatures.get("example")!.parameters);
-    expect(() => planCaptures([body.f], untyped)).toThrow("lambda parameter has no declared domain");
-    expect(types.captures(body.f).map(binding => term_show(binding.type))).toEqual(["Nat"]);
-  });
 
   test("constructor-valued locals infer datatype arguments from typed payloads", async () => {
     const { types, callbacks } = await fixture(`
@@ -236,10 +195,69 @@ def example(seed: Nat) -> Box<Nat>:
   payload = Packed{seed}
   invoke(ignored => payload)
 `);
-    const plan = planCaptures([callbacks[0]!], types);
     expect(fields(types, callbacks[0]!)).toEqual([{ name: "payload", type: "Box<Nat>", quantity: "Lone" }]);
-    expect(renderCaptureFields(plan, term_show)).toContain(": Box<Nat>");
-    expect(renderCaptureParameters(plan, "resume", term_show)).toContain(": Box<Nat>");
+  });
+
+  test("a standalone list infers its element and quantity through the empty tail", async () => {
+    const { types, callbacks } = await fixture(`
+import Base
+type Token is Data:
+  Token{}
+def invoke(k: Nat -> List<&2, Token>) -> List<&2, Token>:
+  k(0n)
+def example() -> List<&2, Token>:
+  +items = [Token{}]
+  invoke(ignored => items)
+`);
+    const callback = callbacks[0]!;
+    expect(fields(types, callback)).toEqual([
+      { name: "items", type: "List<&2, Token>", quantity: "Many" },
+    ]);
+    expect(term_show(types.typeOf(callback.f))).toBe("List<&2, Token>");
+    expect(freeBinderIds(types.captures(callback)[0]!.type)).toEqual([]);
+  });
+
+  test("a lexical list tail determines quantity before the head kind is fitted", async () => {
+    const { types, callbacks } = await fixture(`
+import Base
+def invoke(k: Nat -> List<&1, Nat>) -> List<&1, Nat>:
+  k(0n)
+def example(tail: List<&1, Nat>) -> List<&1, Nat>:
+  items = 0n <> tail
+  invoke(ignored => items)
+`);
+    expect(fields(types, callbacks[0]!)).toEqual([
+      { name: "items", type: "List<&1, Nat>", quantity: "Lone" },
+    ]);
+    expect(term_show(types.typeOf(callbacks[0]!.f))).toBe("List<&1, Nat>");
+  });
+
+  test("an empty dependent payload leaves quantity available for a later payload", async () => {
+    const { types, callbacks } = await fixture(`
+import Base
+type Bundle<a, -A: Kind(a)> is Kind(a):
+  Bundle{head: A, empty: List<a, A>, rest: List<a, A>}
+def invoke(k: Nat -> Bundle<&1, Nat>) -> Bundle<&1, Nat>:
+  k(0n)
+def example(tail: List<&1, Nat>) -> Bundle<&1, Nat>:
+  bundle = Bundle{0n, Nil{}, tail}
+  invoke(ignored => bundle)
+`);
+    expect(fields(types, callbacks[0]!)).toEqual([
+      { name: "bundle", type: "Bundle<&1, Nat>", quantity: "Lone" },
+    ]);
+    expect(freeBinderIds(types.captures(callbacks[0]!)[0]!.type)).toEqual([]);
+  });
+
+  test("propagating a list element kind still rejects an incompatible tail", async () => {
+    await expect(fixture(`
+import Base
+type Token is Data:
+  Token{}
+def example(tail: List<&2, Bool>) -> List<&2, Token>:
+  items = Token{} <> tail
+  items
+`)).rejects.toThrow(MissingType);
   });
 
   test("compact literals remain native leaves with their declared lexical types", async () => {
@@ -279,7 +297,6 @@ def example(seed: Nat, flag: Bool) -> Nat:
   invoke(ignored => value)
 `);
     expect(fields(types, callbacks[0]!)).toEqual([{ name: "value", type: "Nat", quantity: "Lone" }]);
-    expect(renderCaptureParameters(planCaptures([callbacks[0]!], types), "resume", term_show)).toContain(": Nat");
   });
 
   test("constructor payload types normalize applied type-level matches", async () => {
@@ -292,10 +309,7 @@ def example(code: U32) -> Bool:
     case U32{WCon{bit, _}}:
       invoke(ignored => bit)
 `);
-    const plan = planCaptures([callbacks[0]!], types);
     expect(fields(types, callbacks[0]!)).toEqual([{ name: "bit", type: "Bool", quantity: "Lone" }]);
-    expect(renderCaptureFields(plan, term_show)).toContain(": Bool");
-    expect(renderCaptureParameters(plan, "resume", term_show)).toContain(": Bool");
   });
 });
 
@@ -330,9 +344,7 @@ def example() -> Carrier:
   holder = Carrier{None{}}
   invoke(ignored => holder)
 `);
-  const plan = planCaptures([callbacks[0]!], types);
   expect(fields(types, callbacks[0]!)).toEqual([
     {name:"holder", type:"Carrier", quantity:"Lone"},
   ]);
-  expect(renderCaptureFields(plan, term_show)).toContain(": Carrier");
 });

@@ -612,3 +612,25 @@ boundary. It must not confuse absence of a self-cycle with absence of a path
 to a generic parent's target. No native/fixedpoint/C acceptance is claimed.
 `checkpoints/local2039g43r11d2-outcome/outcome.json`.
 
+### Strict source-lowering prerequisite corrected (G43R12L1)
+
+The meaningful explicit-declaration fixture exposes an independent host defect:
+a standalone constructor list passes an unresolved outer quantity to its empty
+tail, and the old lexical indexer mistakes it for an unbound source variable.
+Eagerly committing the Data head's quantity is also incorrect: a later explicit
+List<&1,Nat> tail must retain that compatible quantity.
+
+Direct nested constructors now share inference constraints; all payload
+equalities precede fixed-point kind fitting. Genuine lexical/type errors,
+recursive solutions and undetermined parameters still fail. The old helper
+actually fails the new real-source singleton regression; the corrected helper
+passes all50 affected type/capture/product/quantity tests.
+
+The original full composed CLay step pipeline now also executes, with the same
+fixture and host helper: old private R11 reports one behavioral failure, R12
+reports zero failures/7181 chunks. The canonical loader smoke is real program
+execution, not only unit tests. Only the host-lowering correction is integrated
+in main; native/fixedpoint/C deadline/strict-throughput claims remain pending.
+`checkpoints/local2039g43r12l1-unit-outcome/outcome.json`.
+`checkpoints/local2039g43r12-semantic-outcome/outcome.json`.
+

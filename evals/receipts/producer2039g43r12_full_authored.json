@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "version": "2039g43r12-full",
+  "status": "AUTHORED_AFTER_ACTUAL_SEMANTIC_RED_GREEN",
+  "sourceCommit": "146ec560",
+  "beforeCompilerSourceCommit": "b7c49cf0",
+  "beforeSameFixtureCommit": "63e7ec47",
+  "sourcePins": [
+    {
+      "file": "bend2/selfhost/c_backend_layout.bend",
+      "source": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/bend2/selfhost/c_backend_layout.bend",
+        "sha256": "58bdf49b74c8646b5d6e7badb1801a52c3a68d6f35062067d9b6cf41c7b639e8",
+        "bytes": 67451
+      },
+      "frozen": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r12-source/bend2/selfhost/c_backend_layout.bend",
+        "sha256": "58bdf49b74c8646b5d6e7badb1801a52c3a68d6f35062067d9b6cf41c7b639e8",
+        "bytes": 67451
+      }
+    },
+    {
+      "file": "evals/clay_layout_smoke.bend",
+      "source": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/evals/clay_layout_smoke.bend",
+        "sha256": "7d629ffbc79078399ecbe466635ed43ca9a2f1699e5b139faa2524560f1c1aa6",
+        "bytes": 47728
+      },
+      "frozen": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r12-source/evals/clay_layout_smoke.bend",
+        "sha256": "7d629ffbc79078399ecbe466635ed43ca9a2f1699e5b139faa2524560f1c1aa6",
+        "bytes": 47728
+      }
+    },
+    {
+      "file": "evals/parser_full_type_env.ts",
+      "source": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/evals/parser_full_type_env.ts",
+        "sha256": "5b38164f297e9c275185519b6a815547b89f16a205b9b1c24c52ce4f907508df",
+        "bytes": 26372
+      },
+      "frozen": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r12l1-source/evals/parser_full_type_env.ts",
+        "sha256": "5b38164f297e9c275185519b6a815547b89f16a205b9b1c24c52ce4f907508df",
+        "bytes": 26372
+      }
+    },
+    {
+      "file": "evals/parser_full_type_env.test.ts",
+      "source": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/evals/parser_full_type_env.test.ts",
+        "sha256": "d1544c234112bd93d12991e5208e701862049dfe0180a41a15773242552c7b81",
+        "bytes": 12053
+      },
+      "frozen": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r12l1-source/evals/parser_full_type_env.test.ts",
+        "sha256": "d1544c234112bd93d12991e5208e701862049dfe0180a41a15773242552c7b81",
+        "bytes": 12053
+      }
+    }
+  ],
+  "priorOutcomeCheckpoint": "089dabae",
+  "decision": "Retain conservative program graph in CLay.Plan.dependencies; remove eager no-self Bool table. Only authoritative arity0 + actual argsNil may exclude the actual arbitrary target at reaches_val context-family boundary; positive/maybe/generic/nativeArray/target/seen/fuel semantics remain original. Explicit layout_family/layout_native/layout_data/family_reach/reenters preserve supplied declarations.",
+  "independentSourceReview": {
+    "reviewer": "R12CutProof",
+    "runtimeClaim": false,
+    "formalKernelProofClaim": false,
+    "counterexample": "Generic Wrap<closedBridge> can be recursive even when Bridge has no self-cycle; explicit recursive arms cannot borrow a nonrecursive context declaration fact."
+  },
+  "semanticComparison": {
+    "outcome": "checkpoints/local2039g43r12-semantic-outcome/outcome.json",
+    "beforeFailures": 1,
+    "afterFailures": 0,
+    "afterChunks": 7181,
+    "sameFixture": true,
+    "sameHostSolver": true
+  },
+  "plannedFullCorrectness": {
+    "cwd": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257",
+    "argv": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/g24_qualification.mjs",
+      "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--bun=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--clang=/usr/bin/clang",
+      "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+      "--bindings=/Users/ilyagulya/Projects/My/bend/evals/receipts/producer2039g25_r12_bindings.json",
+      "--frozen-repository=/private/tmp/bend2039g22-tiny-inline",
+      "--control-native=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+      "--control-image=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+      "--phase=correctness",
+      "--cc-partitions=4",
+      "--run-id=2039g43r12",
+      "--distributed-plan=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r6/placement.json",
+      "--out=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r12-correctness"
+    ],
+    "command": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun --smol evals/g24_qualification.mjs --node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node --bun=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun --clang=/usr/bin/clang --llvm-bin=/opt/homebrew/opt/llvm@21/bin --bindings=/Users/ilyagulya/Projects/My/bend/evals/receipts/producer2039g25_r12_bindings.json --frozen-repository=/private/tmp/bend2039g22-tiny-inline --control-native=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native --control-image=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js --phase=correctness --cc-partitions=4 --run-id=2039g43r12 --distributed-plan=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r6/placement.json --out=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r12-correctness",
+    "output": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r12-correctness",
+    "freshSourceVersion": true,
+    "nativeSeededByteFixedpointRequired": true,
+    "originalConsumerMatricesRequired": true
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "perStepTimeoutMs": 600000,
+    "abiExports": 13,
+    "parserFuelCellsPerModule": 8000000,
+    "nativeQuantum": 64
+  },
+  "acceptedCompiler": "G24R12 unchanged",
+  "compilerAccepted": false,
+  "fullCorrectnessClaim": false,
+  "performanceClaim": false,
+  "compilerSourceCommit": "42139224",
+  "hostSolverCommit": "15c22e74",
+  "semanticTestCommit": "94940509"
+}

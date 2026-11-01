@@ -112,6 +112,17 @@ bit is not an arbitrary-target proof; positive/maybe/generic cases keep NF,
 environment, seen and fuel. This remains isolated, with independent review.
 `checkpoints/local2039g43r11d2-outcome/outcome.json`.
 
+The same complete composed CLay fixture now executes: old private R11 fails
+one explicit-declaration authority invariant; guarded R12 passes with zero
+failures/7181 chunks. A real host-lowering defect uncovered by that fixture is
+also corrected: nested constructor payloads share quantity/type constraints
+before final kind fitting, preserving later explicit weaker quantities.
+The old helper reproduces the error and all50 affected semantic tests pass
+with the correction. Only that host fix is integrated; the Bend graph candidate
+still needs fresh native/fixedpoint/full C62/JS67 and original strict12 rows.
+`checkpoints/local2039g43r12-semantic-outcome/outcome.json`.
+
+
 Bounded next experiments, not implemented promises:
 1. Exercise that semantic cut through the composed CLay fixture, then fresh
    native-seeded byte fixedpoint and the original full scheduler/C62/JS67.

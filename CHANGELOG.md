@@ -35,6 +35,13 @@ latest one; the GitHub release carries the same notes.
   guards. The isolated recursion-order candidate still hits the unchanged C
   deadline on both M1 and M3 and is not promoted:
   `checkpoints/local2039g43r10r3-outcome/outcome.json`.
+- Source-step lexical indexing now shares nested constructor constraints before
+  fitting inferred kinds. Unannotated singleton lists no longer treat an outer
+  quantity inference variable as an unbound lexical name; later explicit
+  compatible quantities still win, and incompatible payloads remain errors.
+  Fifty affected semantic tests and the real composed CLay step smoke pass;
+  the private C-graph experiment is not thereby promoted.
+  `checkpoints/local2039g43r12l1-unit-outcome/outcome.json`.
 - Build acceleration experiments G41/G42 preserve G24R12 as the accepted
   compiler. LLVM splitting now has an explicit `--cc-partitions=4|8` experiment
   with at most three backend children; four remains the default. Real eight-way

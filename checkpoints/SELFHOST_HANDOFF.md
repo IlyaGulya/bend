@@ -123,17 +123,22 @@ pack); not a complete history or remote producer claim. No remote producer
 launched: ordinary SSH can orphan runPlain children. Safe lease/sentinel/
 PID-identity/reap ownership remains required; no failed snapshot is spoofed.
 `checkpoints/local2039g43-producer-portability/next-experiments.json`.
-R12 first comparator generation FAILED before behavior: strict lexical indexer
-в explicit_recursion_check lost fresh binder96 `"a"`, not a source-body variable.
-Generation rejection **`e3243d16`**; original exception preserved and bounded
-provenance observed **`12268ac1`**. Это не desired cache-regression red proof.
-inferConstructor propagates solved type-argument kinds only after all payloads:
-standalone List head determines element type, but its dependent Nil tail sees
-unresolved outer quantity. ConstructorKinds corrects that boundary in private
-parser_full_type_env.ts + real-source tests; ConstructorKindsReview checks
-partial/dependent solutions. Они ничего не запускают/коммитят. Не аннотировать
-и не удалять semantic fixture, не suppress MissingType.
-Error-only observer source frozen, completed working copy removed.
+R12 first comparator generation failed before behavior (**`e3243d16`**);
+bounded original-error observation **`12268ac1`** finds fresh implicit quantity
+`"a"`, not a source-body variable. Не считать это behavioral red proof.
+Final R12L1 host correction **`15c22e74`**, semantic-test cleanup **`94940509`**:
+nested Ctr payloads share constraints; final kind fitting follows all payload
+equalities. Eager Data-head quantity strategy rejected by reviewer; lexical
+List<&1,Nat> and later payload constraints retained. Strict errors не suppress.
+Actual old-helper unit red1; corrected full semantic suite50PASS/0FAIL.
+Before CLay **`d660940b`**, after **`94940509`**, identical full fixture/helper:
+both generators PASS, real composed step behavior before failures1, after0,
+7181 chunks/1055ms, guardian PASS/reaped. Required generated source inputs
+frozen **`303e8bb0`**; `checkpoints/local2039g43r12-semantic-outcome/outcome.json`.
+Only verified host solver/tests integrated into main; Bend graph remains
+private, accepted compiler/images stillG24R12. Next fresh original R12 full
+native/fixedpoint/C62/JS67 qualification; no new throughput without genuine
+full correctness. Error-only observer completed working copy removed.
 
 
 
