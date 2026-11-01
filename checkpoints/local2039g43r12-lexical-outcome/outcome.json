@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "status": "MISSING_IMPLICIT_CONSTRUCTOR_PARAMETER_OBSERVED_ORIGINAL_ERROR_PRESERVED",
+  "authorCheckpoint": "07a95c8c",
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/reach-before-42139224/evals/heavy_gate.ts",
+    "--memory-mib=8192",
+    "--rss-mib=8192",
+    "--poll-ms=10",
+    "--timeout-ms=600000",
+    "--",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r12-observe-indexer.mjs"
+  ],
+  "cwd": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/reach-before-42139224",
+  "guard": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "commandExitCode": 1,
+    "commandSignal": 0,
+    "peakRssBytes": 202817536,
+    "peakFootprintBytes": 178094824,
+    "elapsedMs": 413,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r12-observe-indexer.mjs"
+    ],
+    "label": "heavy command",
+    "exitCode": 1,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793536975580-9dfb01a64919877d.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "observed": {
+    "error": "MissingType",
+    "reason": "variable is not bound",
+    "binderId": 96,
+    "variableName": "a",
+    "span": {
+      "beg": 934,
+      "end": 935
+    },
+    "indexedBodyMatches": [],
+    "scope": null,
+    "parameters": [],
+    "stackSites": [
+      "parser_full_type_env.ts:423 infer",
+      "parser_full_type_env.ts:409 inferConstructor kind inference",
+      "parser_full_type_env.ts:395 nested inferConstructor payload",
+      "parser_full_type_env.ts:181 visitBody"
+    ]
+  },
+  "sourceFinding": "The missing quantity parameter is fresh constructor-inference metadata, not a variable in explicit_recursion_check. inferConstructor defers kind/quantity solution propagation until after every payload, so a standalone List cons can pass an unresolved outer quantity to its dependent Nil tail before the head element kind closes it.",
+  "nextDecision": "Propagate solved constructor type-argument kinds before inferring a later dependent payload; retain the same strict missing-type and compatibility validation. Diagnose partial/dependent solutions conservatively rather than suppressing errors or annotating away the fixture.",
+  "rawObservation": "artifact://30046:1:raw",
+  "acceptanceEvidence": false,
+  "behavioralRegressionReproduced": false,
+  "candidateRuntimeClaim": false
+}
