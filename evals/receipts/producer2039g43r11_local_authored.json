@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "version": "G43R11-C-DIAGNOSTIC",
+  "status": "AUTHORED_NOT_EXECUTED",
+  "compilerSourceCommit": "b7c49cf0",
+  "fullRejectedOutcomeCheckpoint": "37890d03",
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "/Users/ilyagulya/Projects/My/bend/evals/c_target_fixtures_run.ts",
+    "--driver=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r11-local-scheduler-driver",
+    "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "--target=c",
+    "--smoke-case=scheduler_chunk_smoke",
+    "--logs=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r11-local-scheduler",
+    "--keep"
+  ],
+  "cwd": "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository",
+  "inputPins": [
+    {
+      "path": "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/evals/scheduler_chunk_smoke.bend",
+      "sha256": "21986a939adccc86c6580c446242be9feb95703c6eeb820ef939d961f2247140",
+      "bytes": 3636
+    },
+    {
+      "path": "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/checkpoints/checker_core_steps_v1.bend",
+      "sha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+      "bytes": 3102607
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/bootstrap.json.cases/stage-one.js",
+      "sha256": "146b191bbcb7e85bc5115e086dcc08b24ce860ee110ae03d0312ec4f5ec585e4",
+      "bytes": 31894945
+    }
+  ],
+  "driver": {
+    "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r11-local-scheduler-driver",
+    "sha256": "2f5355a0bee78fdbf792005e57dca09d1dfa6b26658821404423b9bc50644545",
+    "bytes": 814,
+    "source": "#!/bin/sh\nexec /Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node --experimental-strip-types /private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/evals/candidate_consumer_worker.mjs /private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/evals/candidate_host.ts --candidate=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/bootstrap.json.cases/stage-one.js --parser=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness/bootstrap.json.cases/stage-one.js \"$@\"\n"
+  },
+  "worker": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/evals/candidate_consumer_worker.mjs",
+    "sha256": "6bc1b639d83a96c49060dda8b562a078d5603e1e2fecac58ad8977758a507819",
+    "bytes": 700
+  },
+  "host": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/evals/candidate_host.ts",
+    "sha256": "3ab4f809f7dccbe7f4ed04a53bc335025742d1a5bc6c3c098156acd8274535b0",
+    "bytes": 18460
+  },
+  "scope": "Diagnostic-only original full scheduler source and original entire import closure on the original M1. New actual native-emitted image146 has not run this C path before. Not an acceptance matrix: full bootstrap was rejected and no stage2/fixedpoint exists. No fake prior receipt or seed substitution.",
+  "criterion": "Existing harness must actually emit C, clang under original-O0 flags, execute and exactly match original#| output. No timeout increase, fixture/import reduction or service stop. Every step retains8192/8192MiB,poll10ms,600000ms, Node23.11.0 worker stack256MiB/old-generation3072MiB, ABI13,fuel8M/module,quantum64.",
+  "priorFailure": "Same original full scheduler timed out at original600s using ordering-only genuinef515. This run changes compiler algorithm/image, not the target program or limits.",
+  "acceptanceEvidence": false,
+  "byteFixedpointClaim": false,
+  "fullCorrectnessClaim": false
+}
