@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "version": "G43R10",
+  "status": "AUTHORED_NOT_EXECUTED",
+  "sourceCommit": "6cf47100",
+  "baseOutcomeCommit": "e8bebb03",
+  "sourceWorktree": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257",
+  "canonicalSource": {
+    "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/bend2/selfhost/c_backend_layout.bend",
+    "sha256": "7debc83cbb3351a82406c111973adfb645d20843c5ef701bd400eaf2841271da",
+    "bytes": 54172
+  },
+  "commands": {
+    "canonicalLayoutSmoke": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "-e",
+      "import {writeFileSync} from \"node:fs\"; const {runHeavyGate}=await import(\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/evals/heavy_gate.ts\"); const result=await runHeavyGate([\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun\", \"--smol\", \"-e\", \"await import(\\\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/bend2/main.ts\\\"); const m=await import(\\\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/evals/clay_layout_smoke.bend\\\"); const result=m.default.main({$:\\\"Nil\\\"}); console.log(JSON.stringify({fixture:\\\"clay_layout_smoke\\\",result},(_key,value)=>typeof value===\\\"bigint\\\"?value.toString():value)); if(result.failures!==0)throw Error(\\\"layout smoke failures: \\\"+String(result.failures));\"],{memoryMiB:8192,rssMiB:8192,pollMs:10,timeoutMs:600000,label:\"G43R10 actual canonical layout smoke\"}); writeFileSync(\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r10/clay-smoke.guard.json\",JSON.stringify(result,null,2),{flag:\"wx\"}); process.exitCode=result.exitCode;"
+    ],
+    "freshFullCorrectness": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/g24_qualification.mjs",
+      "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--bun=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--clang=/usr/bin/clang",
+      "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+      "--bindings=/Users/ilyagulya/Projects/My/bend/evals/receipts/producer2039g25_r12_bindings.json",
+      "--frozen-repository=/private/tmp/bend2039g22-tiny-inline",
+      "--control-native=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+      "--control-image=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+      "--phase=correctness",
+      "--cc-partitions=4",
+      "--run-id=local2039g43r10",
+      "--distributed-plan=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r6/placement.json",
+      "--fail-fast-performance=true",
+      "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r10-correctness"
+    ]
+  },
+  "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257",
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "abiExports": 13,
+  "fuel": 8000000,
+  "quantum": 64,
+  "change": "Prioritize arms having a live top-level self DescriptorRef, using that syntax only as an ordering hint. Original fields_reach/nf, environment, arity/failure/fuel and path-sensitive seen checks remain authoritative. Nonhint arms are deferred to unwind; argument reach moves before those deferred arms. This reorders a pure independently budgeted OR without family-name cache, scalar special case, extra context, AST copies or a new representation.",
+  "risk": "More pending arm continuations for wide nonhint families; full original wide/layout and scheduler consumers must run. Raw syntax never establishes recursion by itself.",
+  "acceptance": "Correctness-only phase first uses the existing canonical API and all original producer/fixedpoint/emitted/consumer/matrix criteria. If genuinely PASS, run original all12 strict throughput via --phase=throughput --from-receipt; no fabricated prior correctness, no promotion unless required evidence passes. Main compiler source and accepted R12 images remain unchanged while isolated candidate is evaluated."
+}
