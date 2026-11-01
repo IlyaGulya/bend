@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "version": "G43R9",
+  "status": "AUTHORED_NOT_EXECUTED",
+  "previousOutcomeCommit": "ba494640",
+  "isolatedProbeCommit": "bf88255d",
+  "isolatedBaseCommit": "9aed57bf",
+  "mainCompilerAlgorithm": "unchanged G24R12; main candidate_host/distributed code unchanged",
+  "sourcePins": [
+    {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/scheduler-timeout-5140e57d/evals/candidate_host.ts",
+      "sha256": "34552b3f9bc40483c8258b3f0a63be54209522a4e5d904f16eee2bce69c24073",
+      "bytes": 19150
+    },
+    {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/scheduler-timeout-5140e57d/evals/scheduler_emit_diagnostic.ts",
+      "sha256": "6cb9fe93444821660d64641e90ed4588f17bf587d3872e698769aa90bd0975f7",
+      "bytes": 5245
+    },
+    {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/scheduler-timeout-5140e57d/evals/scheduler_nf_progress.mjs",
+      "sha256": "67922b6f1e1289531481c49a6abb12223999ea10a52d297e65ba3541285a461b",
+      "bytes": 8364
+    },
+    {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r9-source/js-matrix-ssh.mjs",
+      "sha256": "082c5f12700b822a930fb1869047323dac0d25507aff67a3670587e7cfd61261",
+      "bytes": 3840
+    }
+  ],
+  "commands": {
+    "localFullInputNfProbe": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/scheduler-timeout-5140e57d/evals/scheduler_emit_diagnostic.ts",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/snapshot/artifacts/image",
+      "/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r9/scheduler-nf",
+      "--nf-progress"
+    ],
+    "remoteFullJsMatrix": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r9-source/js-matrix-ssh.mjs",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r9/js-config.json"
+    ]
+  },
+  "configuration": {
+    "repository": "/Users/ilyagulya/Projects/My/bend",
+    "producer": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r3-correctness",
+    "manifest": "/Users/ilyagulya/Projects/My/bend/checkpoints/selfhost-root-local2039g43r3.json",
+    "plan": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r6/placement.json",
+    "out": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r9-ssh-js",
+    "fixtures": [
+      "tests/run/c_backend_link.bend",
+      "tests/run/family_field_hot.bend",
+      "tests/run/list_rebox_sum.bend",
+      "tests/run/array_fork.bend",
+      "tests/run/array_atomic_fadd.bend",
+      "tests/run/array_atomic_edges.bend",
+      "tests/run/f32_read_round_once.bend",
+      "tests/run/f32_read_whitespace.bend",
+      "tests/run/f32_pow_unit_base.bend",
+      "tests/run/word_float_roundtrip.bend",
+      "tests/base/map_prefix_keys.bend",
+      "tests/base/text_ops.bend",
+      "tests/run/native_string_borrow.bend",
+      "tests/reg/checker_arena_names.bend",
+      "tests/reg/phys_storage_paths.bend",
+      "tests/io/nat_host_export.bend",
+      "tests/io/nat_alias_export.bend",
+      "tests/io/shadowed_nat_export.bend",
+      "tests/io/generic_export_identity.bend",
+      "tests/io/text_host_export.bend",
+      "evals/c_step_library_fixture.bend"
+    ],
+    "producerPins": {
+      "root-native-build.json": "eede003bb35c7ab7d413c39d3bae44d8851655188e58a1f8f82e033bad9e0f8b",
+      "bootstrap.json": "a358287d3a14caec7dadc64a7feb88ba9e6f62f8320f0c167aed78c9e313ed72",
+      "emitted-suites.json": "31ba52bd7423ab5fcc5154906fda32ed9dae7a05b015208461b07b387650c85f",
+      "root.native.corpus.json": "7a66614ded9dc39d2e11d1cf236e4b06dfe0a738d71b86d35f8194fba86dc854"
+    },
+    "jobs": [
+      "matrix-js"
+    ]
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "abiExports": 13,
+  "fuel": 8000000,
+  "quantum": 64,
+  "compilerAccepted": false,
+  "fullCorrectnessClaim": false,
+  "hostSerialization": "One local guarded full-input diagnostic; one complete JS matrix on pinned misaka M3. R8 finished and both lane supervisors reaped. No heavy jobs compete on one physical host.",
+  "scope": "New bounded NF argument observation after completed phase diagnosis, not an unchanged retry or semantic optimization. Exact original full scheduler input/import closure and accepted genuine image. Complete existing JS branch with independently authenticated actual R3 native/fixedpoint/emitted producer receipts; no manufactured prior full correctness. No performance replay, cap changes, fixture filtering, generated images, AST transports or bulk logs in Git."
+}
