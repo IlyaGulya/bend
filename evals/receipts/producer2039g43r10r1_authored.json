@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "version": "G43R10R1",
+  "status": "AUTHORED_NOT_EXECUTED",
+  "previousOutcomeCommit": "65c234dc",
+  "isolatedSemanticSourceCommit": "6cf47100",
+  "source": {
+    "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/bend2/selfhost/c_backend_layout.bend",
+    "sha256": "7debc83cbb3351a82406c111973adfb645d20843c5ef701bd400eaf2841271da",
+    "bytes": 54172
+  },
+  "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257",
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "evals/g24_qualification.mjs",
+    "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "--bun=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--clang=/usr/bin/clang",
+    "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+    "--bindings=/Users/ilyagulya/Projects/My/bend/evals/receipts/producer2039g25_r12_bindings.json",
+    "--frozen-repository=/private/tmp/bend2039g22-tiny-inline",
+    "--control-native=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+    "--control-image=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+    "--phase=correctness",
+    "--cc-partitions=4",
+    "--run-id=local2039g43r10r1",
+    "--distributed-plan=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r6/placement.json",
+    "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r10r1-correctness"
+  ],
+  "scope": "Documented canonical full correctness path, including owned-source/CPS factoring, fresh native construction, genuine byte fixedpoint, emitted suites, complete C and JS matrices, native/admission/host consumers. No direct import of untransformed canonical provider source.",
+  "performancePolicy": "The throughput-only fail-fast option is absent only in this correctness-only invocation, as required by the existing CLI. If this actual receipt passes, original all12 strict throughput runs separately with fail-fast=true and without forbidden throughput-only cc-partitions. No performance acceptance is claimed or relaxed.",
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "abiExports": 13,
+  "fuel": 8000000,
+  "quantum": 64,
+  "compilerAccepted": false,
+  "performanceAccepted": false
+}
