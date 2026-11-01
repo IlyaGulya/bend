@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "version": "2039g43r13t2",
+  "status": "REJECTED_ILL_TYPED_DATA_RECORD_BEFORE_BACKEND",
+  "sourceCommit": "dad6aa45",
+  "authorCheckpoint": "9f405f66",
+  "compilerChanged": false,
+  "executedCommand": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "evals/heavy_gate.ts",
+    "--memory-mib=8192",
+    "--rss-mib=8192",
+    "--poll-ms=10",
+    "--timeout-ms=600000",
+    "--",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "-e",
+    "import * as K from \"/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/show-nf-e80899cb/bend2/bend.ts\"; const book=K.book_nil(); try { await K.book_load(book,\"/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/show-nf-e80899cb/evals/c_target_show_data.bend\",\"\",new Map()); K.book_valid(book); console.log(\"REFERENCE_CHECK_PASS\"); } catch (error) { console.error(K.err_show(error)); process.exitCode=1; }"
+  ],
+  "canonicalDiagnostic": {
+    "expected": "Data",
+    "observed": "Type",
+    "definition": "ShowReport",
+    "span": "list: List<U32>",
+    "elapsedMs": 317,
+    "peakRssBytes": 65241088,
+    "peakFootprintBytes": 45810312,
+    "ownedTreeStopped": true
+  },
+  "CAndJSCommands": "NOT_EXECUTED: canonical admission is first and failed.",
+  "decision": "Use explicit &2 on every List stored in the Data report or passed as its Data type argument, matching existing generic_ctor_domains convention. Preserve all witnesses and expected stdout. No backend change, acceptance fixture removal or compiler fix claim.",
+  "compilerAccepted": false,
+  "performanceClaim": false
+}
