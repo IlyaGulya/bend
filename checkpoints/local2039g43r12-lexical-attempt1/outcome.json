@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "status": "OBSERVER_FORMATTING_FAILED_NO_BINDER_PROVENANCE",
+  "authorCheckpoint": "7fcd5090",
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/reach-before-42139224/evals/heavy_gate.ts",
+    "--memory-mib=8192",
+    "--rss-mib=8192",
+    "--poll-ms=10",
+    "--timeout-ms=600000",
+    "--",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r12-observe-indexer.mjs"
+  ],
+  "cwd": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/reach-before-42139224",
+  "observer": {
+    "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r12-observe-indexer.mjs",
+    "sha256": "8de39ce9e59ca11b1ec2dc035f1569037f75d025da76cd269470d5dd5b8b3827",
+    "bytes": 2449
+  },
+  "guard": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "commandExitCode": 1,
+    "commandSignal": 0,
+    "peakRssBytes": 212041728,
+    "peakFootprintBytes": 177701632,
+    "elapsedMs": 397,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r12-observe-indexer.mjs"
+    ],
+    "label": "heavy command",
+    "exitCode": 1,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793536736684-e0b3847b26672c6b.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "observedError": "JSON.stringify cannot serialize cyclic structures: original SourceSpan retains parser/book context. Observer must project scalar span coordinates and always rethrow the original exception.",
+  "acceptanceEvidence": false,
+  "binderProvenanceClaim": false
+}

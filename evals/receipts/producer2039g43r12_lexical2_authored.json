@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "status": "AUTHORED_NOT_EXECUTED",
+  "priorFailedObserver": "checkpoints/local2039g43r12-lexical-attempt1/outcome.json",
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/reach-before-42139224/evals/heavy_gate.ts",
+    "--memory-mib=8192",
+    "--rss-mib=8192",
+    "--poll-ms=10",
+    "--timeout-ms=600000",
+    "--",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r12-observe-indexer.mjs"
+  ],
+  "cwd": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/reach-before-42139224",
+  "observer": {
+    "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r12-observe-indexer.mjs",
+    "sha256": "fcd858ac7fffdb54c6981cc85176c12b7bf08938f3823af8225b3836a2d15c00",
+    "bytes": 2609
+  },
+  "scope": "Scalar source-span coordinates only, at most16 matching nodes, original indexBody called unchanged and original exception rethrown in finally even if logging fails.",
+  "acceptanceEvidence": false
+}
