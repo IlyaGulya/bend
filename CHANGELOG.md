@@ -29,6 +29,12 @@ latest one; the GitHub release carries the same notes.
   C deadline and identifies CheckerProgress as the sampled reachability target;
   a semantic fix and full C qualification are not yet claimed:
   `checkpoints/local2039g43r9-outcome/outcome.json`.
+  Qualification/report roots now use real filesystem coordinates before making
+  relative fixture imports and proof paths. A full symlink-parent bootstrap and
+  both original 95-fixture emitted suites pass without weakening identity/hash
+  guards. The isolated recursion-order candidate still hits the unchanged C
+  deadline on both M1 and M3 and is not promoted:
+  `checkpoints/local2039g43r10r3-outcome/outcome.json`.
 - Build acceleration experiments G41/G42 preserve G24R12 as the accepted
   compiler. LLVM splitting now has an explicit `--cc-partitions=4|8` experiment
   with at most three backend children; four remains the default. Real eight-way

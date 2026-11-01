@@ -77,13 +77,32 @@ the pinned remote host; supervisor PASS/reaped=true. A separate full-input,
 original600s C diagnostic observes equal nonempty NF argument tuples at
 different boundaries and all48 sampled reach targets name CheckerProgress.
 Its direct recursive Bound arm follows the transitive Finished/Pending/Direct
-searches in the unchanged declaration. Direct-witness-first traversal is the
-next source-supported candidate, not a measured fix or caching correctness claim.
+searches in the unchanged declaration. R10 tested ordering as a pure-OR
+scheduling hint, not a positive recursion assertion, and did not fix the budget.
 The C-matrix budget and full correctness remain unresolved; G24R12 stays accepted.
 `checkpoints/local2039g43r9-outcome/outcome.json`.
 `checkpoints/local2039g43r7-outcome/outcome.json`.
 `checkpoints/local2039g43r8-outcome/outcome.json`.
 Evidence: `checkpoints/local2039g43r5-outcome/outcome.json`.
+
+R10's isolated candidate constructs natively, reaches genuine exact f5151acb
+stage1/stage2 equality and passes all95 seed plus95 fixtures on each emitted
+image. Host-side /var and /private/var coordinate mismatches are fixed at report/
+qualification-root creation, without relaxing any identity/hash proof guard.
+The complete remote C62 matrix still fails only scheduler_chunk_smoke at600s;
+the original full input also fails at600s on the original M1. This compiler
+candidate is rejected as a demonstrated fix, not promoted.
+
+The new bounded actual-BIR observation deliberately stops without emitted C:
+the slow root is now zero-arity CheckerRequest with19 group-wrapper arms,
+inside Char/U32 through String/Scope maps/Arena, env empty. A conservative
+program-scoped negative named-reference fact for genuinely closed families is
+the next experiment; unknown descriptors must fail closed, and generic/env/
+fuel-sensitive normalization must retain the original rules. No family-name NF
+cache or successful C qualification is claimed.
+`checkpoints/local2039g43r10r3-outcome/outcome.json`.
+`checkpoints/local2039g43r10d1-outcome/outcome.json`.
+
 
 ## G41–G42: backend partition experiment and deferred recipes do not earn promotion
 

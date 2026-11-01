@@ -21,7 +21,7 @@ import {decodeNativeAst} from './bootstrap_ast_transport.ts';
 import {readAcceptedParserBuild} from './selfhost_driver_source.ts';
 import {createHash} from 'node:crypto';
 import {readFileSync,writeFileSync,existsSync,mkdirSync,realpathSync,copyFileSync} from 'node:fs';
-import {resolve,dirname,join,relative} from 'node:path';
+import {resolve,dirname,join,relative,basename} from 'node:path';
 import {spawn} from 'node:child_process';
 import type {ChildProcess} from 'node:child_process';
 import {createInterface} from 'node:readline';
@@ -59,7 +59,11 @@ function argumentsOf(){
  const parserBuild=resolve(options.get('--parser-build')!);
  return {worker,component:options.has('--component')?resolve(options.get('--component')!):undefined,componentBuild:options.has('--component-build')?resolve(options.get('--component-build')!):undefined,nativeBuild:options.has('--native-build')?resolve(options.get('--native-build')!):undefined,nativeCorpus:options.has('--native-corpus')?resolve(options.get('--native-corpus')!):undefined,root:resolve(options.get('--root')!),rootManifest:options.has('--root-manifest')?resolve(options.get('--root-manifest')!):undefined,report:resolve(options.get('--report')!),parser:resolve(options.get('--parser')!),parserBuild,fixture:options.get('--fixture'),parseOnly:options.has('--parse-only'),profileRoot:options.has('--profile-root')};
 }
-const o=argumentsOf(),sidecars=o.report+'.cases';mkdirSync(dirname(o.report),{recursive:true});
+const o=argumentsOf();mkdirSync(dirname(o.report),{recursive:true});
+// Relative fixture imports and repository inputs must share real coordinates,
+// even when the caller spells the fresh report parent through a symlink.
+o.report=join(realpathSync(dirname(o.report)),basename(o.report));
+const sidecars=o.report+'.cases';
 // Persistent inputs/results exist only for --fixture diagnostics. Full compiler
 // bootstrap always creates fresh sources and executes every parser/oracle.
 const diagnosticCache=o.fixture?join(dirname(o.report),'.bootstrap-diagnostic-cache-v1'):undefined;

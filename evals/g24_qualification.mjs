@@ -1607,7 +1607,7 @@ async function main() {
   const failFastPerformance = booleanOption(values, '--fail-fast-performance');
   if (failFastPerformance && phase === 'correctness')
     fail('--fail-fast-performance requires a phase that measures throughput (all or throughput)');
-  const out = resolve(values.get('--out') ?? resolve(repository, 'checkpoints', runId));
+  let out = resolve(values.get('--out') ?? resolve(repository, 'checkpoints', runId));
   if (existsSync(out)) fail('output directory already exists: ' + out);
   const checkpoints = checkpointsFor(repository);
   assertFreshNamespace(checkpoints, runId, out);
@@ -1615,10 +1615,12 @@ async function main() {
 
   const launchCwd = process.cwd();
   process.chdir(repository);
+  mkdirSync(out, {recursive: true});
+  // Every downstream proof and relative input uses the same real output root.
+  out = realpathSync(out);
   const context = {repository, runId, bun, node, clang, llvmBin, out, phase, launchCwd,
     bindings: undefined, candidate: undefined, ccPartitions, distributed};
 
-  mkdirSync(out, {recursive: true});
   const run = createRun({repository, runId, node, bun, clang, llvmBin, out, phase});
   run.receipt.launchCwd = launchCwd;
   run.receipt.failFastPerformance = failFastPerformance;

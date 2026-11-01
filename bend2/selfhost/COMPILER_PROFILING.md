@@ -524,3 +524,29 @@ not yet implemented, measured or qualified. No cache keyed only by family name
 is justified. Compact actual evidence and exact probe source:
 `checkpoints/local2039g43r9-outcome/outcome.json`.
 
+### Rejected ordering candidate and actual closed-family search (G43R10)
+
+The isolated arm-ordering hint preserves the original normalizer, environment,
+arity/failure/fuel and path-sensitive seen rules. It reaches genuine native-seeded
+byte fixedpoint and all95 seed plus190 emitted-fixture checks, but is not a
+demonstrated C-emission fix: the complete remote C62 matrix and the same original
+full input on the original M1 both still reach the unchanged600s deadline.
+No compiler promotion or candidate paired-throughput acceptance follows.
+
+Real report/qualification-root coordinate fixes separately eliminate mixed
+symlink spellings before relative fixture imports and downstream proof paths.
+The exact identity/hash guards remain unchanged; the actual full bootstrap and
+both emitted suites cross those formerly failing boundaries.
+
+One new bounded readonly actual-BIR observation, followed by intentional abort
+without C output, identifies zero-arity CheckerRequest with19 group-wrapper
+arms. Its sampled walk is in Char/U32 through String/Scope maps/Arena with an
+empty environment. This directs investigation toward repeated negative graph
+search, not a claim of exclusive CPU share or complete graph cost.
+A conservative closed-family negative named-reference fact must first prove
+that every possible normalized family name is in the collected closed dependency
+set. Unknown forms prevent a negative proof; generic root arguments and
+fuel/env/seen-sensitive positive queries retain the original semantics.
+`checkpoints/local2039g43r10r3-outcome/outcome.json`.
+`checkpoints/local2039g43r10d1-outcome/outcome.json`.
+

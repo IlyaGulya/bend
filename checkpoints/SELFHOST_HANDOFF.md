@@ -60,13 +60,26 @@ R10R2 **`fb208cad`** canonicalizes report parent: original95 seed rows и
 genuine stage1/stage2 bytes **f5151acb…**,31772597B PASS; emitted suites затем
 правильно отвергли неканонический caller proof path. Outcome **`d86a855b`**,
 не full correctness. Ни один failed receipt не переписан.
-Сейчас R10R3 **`91698b3a`**, main author **`a137ffcc`**, canonicalizes fresh
+R10R3 **`91698b3a`**, main author **`a137ffcc`**, canonicalizes fresh
 coordinator output до создания context/artifact paths. Original identity/hash
-guard не менялся. Полный fresh correctness run `bg_1158` ещё не завершён;
-его out — worktree `checkpoints/local2039g43r10r3-correctness`.
-Main compiler/backend и принятые R12 images не заменены; после реального полного
-correctness PASS ещё нужны исходные12 strict paired rows для нового image и
-same-M1 full scheduler regression через existing diagnostic-smoke selector.
+guard не менялся. Fresh native/genuine fixedpoint/95+190 original rows PASS.
+Remote C62 matrix на M3 и same-M1 full scheduler regression оба всё ещё
+FAIL на original600s; remote supervisor reaped=true. Outcome **`15d5d640`**,
+M1 rejection **`125f69c8`**. Ordering-only candidate не является исправлением
+и не promoted; full correctness false, новые paired rows не eligible.
+Проверенные host path fixes перенесены в main, но main compiler/backend и
+принятые R12 images не заменены.
+R10D1 source **`121d977d`**, outcome **`8a04d1d1`**: actual BIR root теперь
+CheckerRequest, arity0,19 group-wrapper arms; seen path идёт через Arena,
+Scope maps, String, Char/U32, env empty. Диагностика намеренно остановлена
+после observation, не C compile/run PASS.
+Следующий private experiment — conservative program-scoped negative named-ref
+facts только для closed zero-arity/empty-args families; unknowns fail closed,
+positive/maybe/generic cases сохраняют NF/env/fuel/seen. ClosedFamilyFacts
+редактирует private c_backend_layout/semantic fixture; ClosedNamesProof
+независимо проверяет source soundness. Они ничего не запускают и не коммитят.
+После actual full correctness PASS для нового image всё ещё нужны исходные12
+strict paired rows и same-M1 regression. Никаких fake prior receipts.
 
 
 
