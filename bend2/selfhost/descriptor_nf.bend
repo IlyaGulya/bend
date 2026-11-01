@@ -74,7 +74,6 @@
 import Base
 import ./backend_ir.bend as BIR
 import ./index_lookup.bend as IndexLookup
-import ./descriptor_key.bend as Key
 
 # A normalized type expression. NfType is a named type applied to the
 # arguments it has so far; NfCtor is a value constructor applied to values,
@@ -132,7 +131,7 @@ type NfList is Data:
   NfListFail{message: String}
 
 type NfContext is Data:
-  NfContext{families: Map<&2, BIR.Family>, type_functions: Map<&2, BIR.TypeFunction>, scope: String}
+  NfContext{families: Map<&2, BIR.Family>, type_functions: Map<&2, BIR.TypeFunction>}
 
 # An outer named application: the key and the arguments applied to it.
 type NfApp is Data:
@@ -162,8 +161,8 @@ def function_index(functions: List<&2, BIR.TypeFunction>) -> Map<&2, BIR.TypeFun
         case BIR.TypeFunction{key, native, quantity_prefix, arity, body}:
           Map.set(&2, BIR.TypeFunction, function_index(rest), key, function)
 
-def nf_context(+families: List<&2, BIR.Family>, +type_functions: List<&2, BIR.TypeFunction>) -> NfContext:
-  NfContext{family_index(families), function_index(type_functions), Key.context_key(families, type_functions)}
+def nf_context(families: List<&2, BIR.Family>, type_functions: List<&2, BIR.TypeFunction>) -> NfContext:
+  NfContext{family_index(families), function_index(type_functions)}
 
 def default_fuel() -> Nat:
   1024n
@@ -631,7 +630,7 @@ def nf_named_io(is_io: Bool, +context: NfContext, function: BIR.TypeFunction, ar
 
 def nf_named(+context: NfContext, +key: String, args: List<&2, NfVal>, +level: Nat, +fuel: Nat) -> Nf:
   match context:
-    case NfContext{families, type_functions, scope}:
+    case NfContext{families, type_functions}:
       match function_of(key, type_functions):
         case Some{function}:
           +work = function
@@ -802,7 +801,7 @@ def answer_normalized(+context: NfContext, +result: BIR.Descriptor) -> BIR.Descr
 
 def is_io_head_in(+context: NfContext, +key: String) -> Bool:
   match context:
-    case NfContext{families, type_functions, scope}:
+    case NfContext{families, type_functions}:
       is_io_head(key, families, type_functions)
 
 def is_io_head(+key: String, +families: Map<&2, BIR.Family>, +type_functions: Map<&2, BIR.TypeFunction>) -> Bool:

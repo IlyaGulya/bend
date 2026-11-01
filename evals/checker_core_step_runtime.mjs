@@ -219,16 +219,9 @@ function runSteps(component,startArguments,kind,startExport,stepExport,validateR
     const box=run.box,boxTag=box?.$;
     if(box===null||typeof box!=='object'||Array.isArray(box)||typeof boxTag!=='string'||!(boxTag===knownValueTag||boxTag===valueTag||boxTag.endsWith(valueSuffix))||!Object.hasOwn(box,'value'))invalid(kind,finishedTag+' requires '+valueTag+' box with value');
     knownValueTag=boxTag;
-    // A memo engine may return an explicit Data report. The observer receives
-    // only that declared field, never a Store, continuation or hidden state.
-    const memo=observe?.onMemo===undefined?undefined:Object.getOwnPropertyDescriptor(run,'memo');
     run=undefined;
     const value=box.value;
     validateResult(value);
-    if(memo!==undefined){
-     if(!Object.hasOwn(memo,'value'))invalid(kind,'memo requires an own Data value');
-     observe.onMemo(memo.value,steps);
-    }
     if(observe!==undefined)observe.onFinish?.(value,steps);
     return value;
    }else invalid(kind,'expected '+stateTag+' or '+finishedTag+', observed '+String(tag));
