@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "version": "2039g43r13-remaining",
+  "status": "AUTHORED_BEFORE_EXECUTION",
+  "sourceCheckpoint": "457305e2",
+  "compilerPatchCommit": "af6f7466",
+  "sourceOutcome": "REJECTED_FULL_C_SCHEDULER_DEADLINE",
+  "jobs": [
+    "matrix-js",
+    "native",
+    "admission",
+    "host"
+  ],
+  "notRetried": [
+    "matrix-c",
+    "scheduler_chunk_smoke C emit",
+    "full native/bootstrap"
+  ],
+  "snapshotSha256": "bc68e2f46eda7ff6b1c87bcbf217d96ef4e624d96f6752bcb8091ec40c64a61a",
+  "genuineNativeSeededFixedpoint": {
+    "criterion": "Exact emitted UTF-8 JS bytes; no normalization or patching",
+    "equal": true,
+    "stageOneSha256": "59feaa3a527a304f8bdeed849ee7274badb3d92db98700528a8938e1a27d0f4b",
+    "stageTwoSha256": "59feaa3a527a304f8bdeed849ee7274badb3d92db98700528a8938e1a27d0f4b"
+  },
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r13-remaining.mjs",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r6/placement.json",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/show-nf-e80899cb/checkpoints/local2039g43r13-correctness/consumer-snapshot",
+    "bc68e2f46eda7ff6b1c87bcbf217d96ef4e624d96f6752bcb8091ec40c64a61a",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/show-nf-e80899cb/checkpoints/local2039g43r13-correctness/snapshot-bc68e2f46eda7ff6b1c87bcbf217d96ef4e624d96f6752bcb8091ec40c64a61a.tar.gz",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/show-nf-e80899cb/checkpoints/local2039g43r13-correctness/dispatch-6adae5517d5daf7650d5782d65f60f0dccfed7e8a438c39d.json",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r13-remaining-dff603a64d09"
+  ],
+  "script": {
+    "sha256": "a8e89ff83395a022426626618836153e66e90ca65c352e1c51c03d5dea605290",
+    "source": "import {readFileSync,writeFileSync,mkdirSync,realpathSync} from 'node:fs';\nimport {dispatch,loadPlan,verifySnapshot} from '/Users/ilyagulya/Projects/My/bend/evals/g24_distributed.mjs';\nconst [planPath,root,sha256,archive,envelopePath,destination]=process.argv.slice(2);\nconst envelope=JSON.parse(readFileSync(envelopePath,'utf8'));\nmkdirSync(destination,{mode:0o700});\nconst out=realpathSync(destination);\nconst context={...envelope.context,repository:envelope.context.candidate.repository,out,distributed:loadPlan(planPath)};\nconst snapshot={path:root,sha256,archive,manifest:verifySnapshot(root,sha256)};\nconst results={},failures=[];let cancelled=false;\nconst cancel=()=>{cancelled=true;context.distributionCancelled=true;};\nfor(const signal of ['SIGINT','SIGTERM','SIGHUP'])process.on(signal,cancel);\nfor(const job of ['matrix-js','native','admission','host']){\n if(cancelled)break;\n console.log(JSON.stringify({job,status:'RUNNING'}));\n try{results[job]=await dispatch(context,snapshot,job);console.log(JSON.stringify({job,status:'PASS',transport:results[job].transport}));}\n catch(error){failures.push({job,error:String(error)});console.error(JSON.stringify({job,status:'FAIL',error:String(error)}));}\n}\nconst report={schemaVersion:1,status:!cancelled&&failures.length===0&&Object.keys(results).length===4?'PASS_REMAINING_ONLY':'FAIL',scope:'Only four original previously unexecuted consumer targets. Original full C62 remains FAIL; qualification receipt is not rewritten and strict12/promotion are not authorized.',sourceCheckpoint:'457305e2',originalRunId:envelope.context.runId,snapshotSha256:sha256,results,failures,cancelled,compilerAccepted:false,fullCorrectnessClaim:false,performanceClaim:false};\nwriteFileSync(out+'/outcome.json',JSON.stringify(report,null,2)+'\\n',{flag:'wx'});\nconsole.log(JSON.stringify({status:report.status,report:out+'/outcome.json'}));\nif(report.status!=='PASS_REMAINING_ONLY')process.exitCode=1;\n"
+  },
+  "out": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r13-remaining-dff603a64d09",
+  "scope": "Only original targets not reached after full C62 rejection, new authenticated nonces and the actual genuine-fixedpoint snapshot; no qualification receipt rewrite or performance/promotion authorization.",
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "perStepTimeoutMs": 600000,
+    "abiExports": 13,
+    "parserFuelCellsPerModule": 8000000,
+    "nativeQuantum": 64
+  }
+}
