@@ -13,10 +13,13 @@ LLVM21.1.8 установлен. Native image minOS26.0 подходит по he
 нужны isolated Bun1.4.3 / Node23 без system replacement.
 На misaka также четыре Node процесса bb-app host-daemon/plugin/watcher.
 Они почти idle в одном ps snapshot, но strict policy всё равно отказывает.
-Пока ничего не остановлено/установлено/отправлено. Нужен явный выбор
-пользователя по временной недоступности bb-app; затем потребуется direct
-SSH alias transport (текущий plan SSH поддерживает только cluster node).
+Пользователь явно выбрал **«Не трогать bb-app»**: не останавливать,
+не перезапускать и не приостанавливать его services. Ничего не установлено
+или отправлено; idle check не обходить. Для продолжения нужен другой clean
+compatible Mac либо новое явное предоставление пользователем чистого хоста.
+Direct SSH alias transport в текущем cluster-node-only plan ещё отсутствует.
 Probe: `../evals/receipts/producer2039g43_misaka_probe.json`.
+Решение: `../evals/receipts/producer2039g43_misaka_decision.json`.
 
 Последний source checkpoint — **`2d5d7601`**. Код нового
 `--distributed-plan` реализован, но **не qualified и не accepted**.

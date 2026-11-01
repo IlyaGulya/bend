@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "status": "BLOCKED_USER_KEEPS_BB_APP_RUNNING",
+  "userSelection": "\u041d\u0435 \u0442\u0440\u043e\u0433\u0430\u0442\u044c bb-app",
+  "sourceCheckpoint": "979c1b9c",
+  "host": "misakaindrive",
+  "restriction": "Do not stop/restart/pause the bb-app daemon or its Node/plugin/watcher children. Do not bypass the strict dedicated-host idle check.",
+  "remoteHostReadOnlyInspectionCompleted": true,
+  "projectDataOrCompilerImagesUploaded": false,
+  "systemRuntimesReplaced": false,
+  "acceptedPrivateToolsInstalled": false,
+  "nativeImageExecutedOnRemote": false,
+  "consumerOrPerformanceRowsCompletedInNewMode": 0,
+  "requiredExternalPrerequisite": "Another authenticated dedicated idle compatible Mac, or a later explicit user-provided clean-host state. Current local host has the separately recorded unrelated runtimes; misaka remains non-dedicated under current policy.",
+  "compilerAccepted": false,
+  "performanceAccepted": false,
+  "priorEvidence": "evals/receipts/producer2039g43_misaka_probe.json; checkpoints/local2039g43r4-outcome/outcome.json"
+}
