@@ -49,6 +49,26 @@ recurrences. Все48 sampled reach targets — CheckerProgress. В исходн
 обхода с теми же env/fuel/normalizer, не family-name cache. Это ещё не fix.
 Evidence: `local2039g43r9-outcome/outcome.json`.
 
+R10 semantic candidate **`6cf47100`** остаётся только в isolated worktree
+`/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257`.
+Он меняет порядок pure independently budgeted OR: live top-level self refs —
+лишь hint, полные прежние fields_reach/env/arity/fuel/seen остаются authority.
+R10 invalid direct-loader/phase-flag recipes явно rejected в **`65c234dc`**.
+R10R1 native build и stage1 PASS, но mixed /var/private fixture import FAIL
+зафиксирован с полным53-file source corpus в **`490dee7f`**.
+R10R2 **`fb208cad`** canonicalizes report parent: original95 seed rows и
+genuine stage1/stage2 bytes **f5151acb…**,31772597B PASS; emitted suites затем
+правильно отвергли неканонический caller proof path. Outcome **`d86a855b`**,
+не full correctness. Ни один failed receipt не переписан.
+Сейчас R10R3 **`91698b3a`**, main author **`a137ffcc`**, canonicalizes fresh
+coordinator output до создания context/artifact paths. Original identity/hash
+guard не менялся. Полный fresh correctness run `bg_1158` ещё не завершён;
+его out — worktree `checkpoints/local2039g43r10r3-correctness`.
+Main compiler/backend и принятые R12 images не заменены; после реального полного
+correctness PASS ещё нужны исходные12 strict paired rows для нового image и
+same-M1 full scheduler regression через existing diagnostic-smoke selector.
+
+
 
 R5 source checkpoint — **`37006316`**. Код нового
 `--distributed-plan` реализован, но **не qualified и не accepted**.
