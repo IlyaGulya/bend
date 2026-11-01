@@ -1,0 +1,1316 @@
+{
+  "imageSha": "146b191bbcb7e85bc5115e086dcc08b24ce860ee110ae03d0312ec4f5ec585e4",
+  "hostStepOrdinal": 6258688,
+  "emitObservedElapsedMs": 80039.229625,
+  "samples": 132,
+  "unrepresentedSamples": 0,
+  "kinds": [
+    {
+      "name": "emitter_steps_v1.EmitterFinished",
+      "count": 69
+    },
+    {
+      "name": "emitter_steps_v1.EmitterDirect",
+      "count": 18
+    },
+    {
+      "name": "emitter_steps_v1.EmitterRequest_cps_provider_7_nf_reduce_apply",
+      "count": 2
+    },
+    {
+      "name": "emitter_steps_v1.EmitterRequest_cps_provider_7_nf_family_apply",
+      "count": 1
+    },
+    {
+      "name": "emitter_steps_v1.EmitterRequest_cps_provider_7_nf_all",
+      "count": 13
+    },
+    {
+      "name": "emitter_steps_v1.EmitterRequest_cps_provider_7_nf_descriptor",
+      "count": 5
+    },
+    {
+      "name": "emitter_steps_v1.EmitterRequest_cps_provider_7_nf_reduce",
+      "count": 1
+    },
+    {
+      "name": "emitter_steps_v1.EmitterRequest_cps_provider_7_nf_descriptor_step",
+      "count": 7
+    },
+    {
+      "name": "emitter_steps_v1.EmitterRequest_cps_provider_7_bind_status",
+      "count": 1
+    },
+    {
+      "name": "emitter_steps_v1.EmitterRequest_cps_provider_3_str_member",
+      "count": 5
+    },
+    {
+      "name": "emitter_steps_v1.EmitterRequest_cps_provider_3_reach_arms",
+      "count": 3
+    },
+    {
+      "name": "emitter_steps_v1.EmitterRequest_cps_provider_3_family_reach",
+      "count": 1
+    },
+    {
+      "name": "emitter_steps_v1.EmitterRequest_cps_provider_3_fields_reach",
+      "count": 1
+    },
+    {
+      "name": "emitter_steps_v1.EmitterRequest_cps_provider_7_nf",
+      "count": 1
+    },
+    {
+      "name": "emitter_steps_v1.EmitterRequest_cps_provider_3_reaches",
+      "count": 1
+    },
+    {
+      "name": "emitter_steps_v1.EmitterRequest_cps_provider_7_family_of",
+      "count": 1
+    },
+    {
+      "name": "emitter_steps_v1.EmitterRequest_cps_provider_7_nf_family",
+      "count": 1
+    },
+    {
+      "name": "emitter_steps_v1.EmitterRequest_cps_provider_7_nf_cases",
+      "count": 1
+    }
+  ],
+  "representatives": [
+    {
+      "name": "emitter_steps_v1.EmitterFinished",
+      "hostStepOrdinal": 5410816,
+      "emitObservedElapsedMs": 60048.125833,
+      "unwrapLimitReached": false,
+      "request": {
+        "tag": "emitter_steps_v1.EmitterFinished",
+        "fields": {
+          "box": {
+            "tag": "emitter_steps_v1.EmitterValue",
+            "fields": {
+              "value": {
+                "tag": "None",
+                "fields": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "emitter_steps_v1.EmitterDirect",
+      "hostStepOrdinal": 5423104,
+      "emitObservedElapsedMs": 60297.615500000014,
+      "unwrapLimitReached": false,
+      "request": {
+        "tag": "emitter_steps_v1.EmitterDirect",
+        "fields": {
+          "arguments": {
+            "scalar": "false"
+          },
+          "invoke": {
+            "type": "function"
+          },
+          "resume": {
+            "type": "function"
+          }
+        }
+      }
+    },
+    {
+      "name": "emitter_steps_v1.EmitterRequest_cps_provider_7_nf_reduce_apply",
+      "hostStepOrdinal": 5451776,
+      "emitObservedElapsedMs": 61041.030333,
+      "unwrapLimitReached": false,
+      "request": {
+        "tag": "emitter_steps_v1.EmitterRequest_cps_provider_7_nf_reduce_apply",
+        "fields": {
+          "v_1": {
+            "tag": "emitter_steps_v1.cps_provider_7_NfArity",
+            "fields": {
+              "complete": {
+                "scalar": "true"
+              },
+              "exact": {
+                "scalar": "true"
+              },
+              "under": {
+                "scalar": "false"
+              }
+            }
+          },
+          "v_3": {
+            "tag": "emitter_steps_v1.cps_provider_7_NfContext",
+            "fields": {
+              "families": {
+                "tag": "MNode",
+                "fields": {
+                  "pos": {
+                    "scalar": "26"
+                  },
+                  "lo": {
+                    "tag": "MNode",
+                    "truncated": true
+                  },
+                  "hi": {
+                    "tag": "MNode",
+                    "truncated": true
+                  }
+                }
+              },
+              "type_functions": {
+                "tag": "MNode",
+                "fields": {
+                  "pos": {
+                    "scalar": "26"
+                  },
+                  "lo": {
+                    "tag": "MNode",
+                    "truncated": true
+                  },
+                  "hi": {
+                    "tag": "MNode",
+                    "truncated": true
+                  }
+                }
+              }
+            }
+          },
+          "v_5": {
+            "string": {
+              "value": "Word",
+              "truncated": false
+            }
+          },
+          "v_7": {
+            "scalar": "0"
+          },
+          "v_9": {
+            "scalar": "1"
+          },
+          "v_10": {
+            "tag": "../bend2/selfhost/backend_ir.DescriptorMatch",
+            "fields": {
+              "values": {
+                "tag": "Con",
+                "fields": {
+                  "head": {
+                    "tag": "../bend2/selfhost/backend_ir.DescriptorParameter",
+                    "truncated": true
+                  },
+                  "tail": {
+                    "tag": "Nil",
+                    "truncated": true
+                  }
+                }
+              },
+              "cases": {
+                "tag": "Con",
+                "fields": {
+                  "head": {
+                    "tag": "../bend2/selfhost/backend_ir.DescriptorCase",
+                    "truncated": true
+                  },
+                  "tail": {
+                    "tag": "Con",
+                    "truncated": true
+                  }
+                }
+              }
+            }
+          },
+          "v_13": {
+            "tag": "Con",
+            "fields": {
+              "head": {
+                "tag": "emitter_steps_v1.cps_provider_7_NfCtor",
+                "fields": {
+                  "key": {
+                    "string": {
+                      "value": "Succ",
+                      "truncated": false
+                    }
+                  },
+                  "args": {
+                    "tag": "Con",
+                    "truncated": true
+                  }
+                }
+              },
+              "tail": {
+                "tag": "Nil",
+                "fields": {}
+              }
+            }
+          },
+          "v_15": {
+            "scalar": "0"
+          },
+          "v_17": {
+            "scalar": "1010"
+          }
+        }
+      }
+    },
+    {
+      "name": "emitter_steps_v1.EmitterRequest_cps_provider_7_nf_family_apply",
+      "hostStepOrdinal": 5459968,
+      "emitObservedElapsedMs": 61303.169041999994,
+      "unwrapLimitReached": false,
+      "request": {
+        "tag": "emitter_steps_v1.EmitterRequest_cps_provider_7_nf_family_apply",
+        "fields": {
+          "v_1": {
+            "tag": "emitter_steps_v1.cps_provider_7_NfArity",
+            "fields": {
+              "complete": {
+                "scalar": "true"
+              },
+              "exact": {
+                "scalar": "true"
+              },
+              "under": {
+                "scalar": "false"
+              }
+            }
+          },
+          "v_3": {
+            "string": {
+              "value": "String",
+              "truncated": false
+            }
+          },
+          "v_5": {
+            "scalar": "0"
+          },
+          "v_8": {
+            "tag": "Nil",
+            "fields": {}
+          }
+        }
+      }
+    },
+    {
+      "name": "emitter_steps_v1.EmitterRequest_cps_provider_7_nf_all",
+      "hostStepOrdinal": 5484544,
+      "emitObservedElapsedMs": 61807.561583,
+      "unwrapLimitReached": false,
+      "request": {
+        "tag": "emitter_steps_v1.EmitterRequest_cps_provider_7_nf_all",
+        "fields": {
+          "v_1": {
+            "tag": "emitter_steps_v1.cps_provider_7_NfContext",
+            "fields": {
+              "families": {
+                "tag": "MNode",
+                "fields": {
+                  "pos": {
+                    "scalar": "26"
+                  },
+                  "lo": {
+                    "tag": "MNode",
+                    "truncated": true
+                  },
+                  "hi": {
+                    "tag": "MNode",
+                    "truncated": true
+                  }
+                }
+              },
+              "type_functions": {
+                "tag": "MNode",
+                "fields": {
+                  "pos": {
+                    "scalar": "26"
+                  },
+                  "lo": {
+                    "tag": "MNode",
+                    "truncated": true
+                  },
+                  "hi": {
+                    "tag": "MNode",
+                    "truncated": true
+                  }
+                }
+              }
+            }
+          },
+          "v_3": {
+            "tag": "Nil",
+            "fields": {}
+          },
+          "v_6": {
+            "tag": "Nil",
+            "fields": {}
+          },
+          "v_8": {
+            "scalar": "0"
+          },
+          "v_10": {
+            "scalar": "998"
+          }
+        }
+      }
+    },
+    {
+      "name": "emitter_steps_v1.EmitterRequest_cps_provider_7_nf_descriptor",
+      "hostStepOrdinal": 5509120,
+      "emitObservedElapsedMs": 62291.317083,
+      "unwrapLimitReached": false,
+      "request": {
+        "tag": "emitter_steps_v1.EmitterRequest_cps_provider_7_nf_descriptor",
+        "fields": {
+          "v_1": {
+            "tag": "emitter_steps_v1.cps_provider_7_NfContext",
+            "fields": {
+              "families": {
+                "tag": "MNode",
+                "fields": {
+                  "pos": {
+                    "scalar": "26"
+                  },
+                  "lo": {
+                    "tag": "MNode",
+                    "truncated": true
+                  },
+                  "hi": {
+                    "tag": "MNode",
+                    "truncated": true
+                  }
+                }
+              },
+              "type_functions": {
+                "tag": "MNode",
+                "fields": {
+                  "pos": {
+                    "scalar": "26"
+                  },
+                  "lo": {
+                    "tag": "MNode",
+                    "truncated": true
+                  },
+                  "hi": {
+                    "tag": "MNode",
+                    "truncated": true
+                  }
+                }
+              }
+            }
+          },
+          "v_2": {
+            "tag": "../bend2/selfhost/backend_ir.DescriptorParameter",
+            "fields": {
+              "index": {
+                "scalar": "1"
+              }
+            }
+          },
+          "v_5": {
+            "tag": "Con",
+            "fields": {
+              "head": {
+                "tag": "emitter_steps_v1.cps_provider_7_NfCtor",
+                "fields": {
+                  "key": {
+                    "string": {
+                      "value": "Succ",
+                      "truncated": false
+                    }
+                  },
+                  "args": {
+                    "tag": "Con",
+                    "truncated": true
+                  }
+                }
+              },
+              "tail": {
+                "tag": "Con",
+                "fields": {
+                  "head": {
+                    "tag": "emitter_steps_v1.cps_provider_7_NfMissing",
+                    "truncated": true
+                  },
+                  "tail": {
+                    "tag": "Nil",
+                    "truncated": true
+                  }
+                }
+              }
+            }
+          },
+          "v_7": {
+            "scalar": "0"
+          },
+          "v_9": {
+            "scalar": "1011"
+          }
+        }
+      }
+    },
+    {
+      "name": "emitter_steps_v1.EmitterRequest_cps_provider_7_nf_reduce",
+      "hostStepOrdinal": 5566464,
+      "emitObservedElapsedMs": 63275.81387499999,
+      "unwrapLimitReached": false,
+      "request": {
+        "tag": "emitter_steps_v1.EmitterRequest_cps_provider_7_nf_reduce",
+        "fields": {
+          "v_1": {
+            "tag": "emitter_steps_v1.cps_provider_7_NfContext",
+            "fields": {
+              "families": {
+                "tag": "MNode",
+                "fields": {
+                  "pos": {
+                    "scalar": "26"
+                  },
+                  "lo": {
+                    "tag": "MNode",
+                    "truncated": true
+                  },
+                  "hi": {
+                    "tag": "MNode",
+                    "truncated": true
+                  }
+                }
+              },
+              "type_functions": {
+                "tag": "MNode",
+                "fields": {
+                  "pos": {
+                    "scalar": "26"
+                  },
+                  "lo": {
+                    "tag": "MNode",
+                    "truncated": true
+                  },
+                  "hi": {
+                    "tag": "MNode",
+                    "truncated": true
+                  }
+                }
+              }
+            }
+          },
+          "v_2": {
+            "tag": "../bend2/selfhost/backend_ir.TypeFunction",
+            "fields": {
+              "key": {
+                "string": {
+                  "value": "Word",
+                  "truncated": false
+                }
+              },
+              "native": {
+                "tag": "Some",
+                "fields": {
+                  "value": {
+                    "string": {
+                      "value": "Word",
+                      "truncated": false
+                    }
+                  }
+                }
+              },
+              "quantity_prefix": {
+                "scalar": "0"
+              },
+              "arity": {
+                "scalar": "1"
+              },
+              "body": {
+                "tag": "../bend2/selfhost/backend_ir.DescriptorMatch",
+                "fields": {
+                  "values": {
+                    "tag": "Con",
+                    "truncated": true
+                  },
+                  "cases": {
+                    "tag": "Con",
+                    "truncated": true
+                  }
+                }
+              }
+            }
+          },
+          "v_5": {
+            "tag": "Con",
+            "fields": {
+              "head": {
+                "tag": "emitter_steps_v1.cps_provider_7_NfCtor",
+                "fields": {
+                  "key": {
+                    "string": {
+                      "value": "Succ",
+                      "truncated": false
+                    }
+                  },
+                  "args": {
+                    "tag": "Con",
+                    "truncated": true
+                  }
+                }
+              },
+              "tail": {
+                "tag": "Nil",
+                "fields": {}
+              }
+            }
+          },
+          "v_7": {
+            "scalar": "0"
+          },
+          "v_9": {
+            "scalar": "1010"
+          }
+        }
+      }
+    },
+    {
+      "name": "emitter_steps_v1.EmitterRequest_cps_provider_7_nf_descriptor_step",
+      "hostStepOrdinal": 5582848,
+      "emitObservedElapsedMs": 63548.27708299999,
+      "unwrapLimitReached": false,
+      "request": {
+        "tag": "emitter_steps_v1.EmitterRequest_cps_provider_7_nf_descriptor_step",
+        "fields": {
+          "v_1": {
+            "tag": "emitter_steps_v1.cps_provider_7_NfContext",
+            "fields": {
+              "families": {
+                "tag": "MNode",
+                "fields": {
+                  "pos": {
+                    "scalar": "26"
+                  },
+                  "lo": {
+                    "tag": "MNode",
+                    "truncated": true
+                  },
+                  "hi": {
+                    "tag": "MNode",
+                    "truncated": true
+                  }
+                }
+              },
+              "type_functions": {
+                "tag": "MNode",
+                "fields": {
+                  "pos": {
+                    "scalar": "26"
+                  },
+                  "lo": {
+                    "tag": "MNode",
+                    "truncated": true
+                  },
+                  "hi": {
+                    "tag": "MNode",
+                    "truncated": true
+                  }
+                }
+              }
+            }
+          },
+          "v_2": {
+            "tag": "../bend2/selfhost/backend_ir.DescriptorParameter",
+            "fields": {
+              "index": {
+                "scalar": "1"
+              }
+            }
+          },
+          "v_5": {
+            "tag": "Con",
+            "fields": {
+              "head": {
+                "tag": "emitter_steps_v1.cps_provider_7_NfCtor",
+                "fields": {
+                  "key": {
+                    "string": {
+                      "value": "Succ",
+                      "truncated": false
+                    }
+                  },
+                  "args": {
+                    "tag": "Con",
+                    "truncated": true
+                  }
+                }
+              },
+              "tail": {
+                "tag": "Con",
+                "fields": {
+                  "head": {
+                    "tag": "emitter_steps_v1.cps_provider_7_NfMissing",
+                    "truncated": true
+                  },
+                  "tail": {
+                    "tag": "Nil",
+                    "truncated": true
+                  }
+                }
+              }
+            }
+          },
+          "v_7": {
+            "scalar": "0"
+          },
+          "v_9": {
+            "scalar": "1007"
+          }
+        }
+      }
+    },
+    {
+      "name": "emitter_steps_v1.EmitterRequest_cps_provider_7_bind_status",
+      "hostStepOrdinal": 5640192,
+      "emitObservedElapsedMs": 64494.735000000015,
+      "unwrapLimitReached": false,
+      "request": {
+        "tag": "emitter_steps_v1.EmitterRequest_cps_provider_7_bind_status",
+        "fields": {
+          "v_1": {
+            "tag": "Nil",
+            "fields": {}
+          },
+          "v_4": {
+            "tag": "Nil",
+            "fields": {}
+          }
+        }
+      }
+    },
+    {
+      "name": "emitter_steps_v1.EmitterRequest_cps_provider_3_str_member",
+      "hostStepOrdinal": 5656576,
+      "emitObservedElapsedMs": 64721.88625000001,
+      "unwrapLimitReached": false,
+      "request": {
+        "tag": "emitter_steps_v1.EmitterRequest_cps_provider_3_str_member",
+        "fields": {
+          "v_2": {
+            "tag": "Con",
+            "fields": {
+              "head": {
+                "string": {
+                  "value": "List",
+                  "truncated": false
+                }
+              },
+              "tail": {
+                "tag": "Con",
+                "fields": {
+                  "head": {
+                    "string": {
+                      "value": "../bend2/selfhost/scope_lookup.ArenaGlobalScope",
+                      "truncated": false
+                    }
+                  },
+                  "tail": {
+                    "tag": "Con",
+                    "truncated": true
+                  }
+                }
+              }
+            }
+          },
+          "v_4": {
+            "string": {
+              "value": "U32",
+              "truncated": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "emitter_steps_v1.EmitterRequest_cps_provider_3_reach_arms",
+      "hostStepOrdinal": 5705728,
+      "emitObservedElapsedMs": 65439.85541700001,
+      "unwrapLimitReached": false,
+      "request": {
+        "tag": "emitter_steps_v1.EmitterRequest_cps_provider_3_reach_arms",
+        "fields": {
+          "v_1": {
+            "tag": "emitter_steps_v1.cps_provider_3_Context",
+            "plan": {
+              "tag": "emitter_steps_v1.cps_provider_3_Plan",
+              "fields": {
+                "closed": {
+                  "tag": "MNode",
+                  "truncated": true
+                },
+                "nodes": {
+                  "tag": "MTip",
+                  "truncated": true
+                },
+                "arms": {
+                  "tag": "MNode",
+                  "truncated": true
+                }
+              }
+            }
+          },
+          "v_3": {
+            "tag": "Con",
+            "fields": {
+              "head": {
+                "tag": "../bend2/selfhost/backend_ir.DescriptorArm",
+                "fields": {
+                  "key": {
+                    "string": {
+                      "value": "WCon",
+                      "truncated": false
+                    }
+                  },
+                  "fields": {
+                    "tag": "Con",
+                    "truncated": true
+                  }
+                }
+              },
+              "tail": {
+                "tag": "Nil",
+                "fields": {}
+              }
+            }
+          },
+          "v_6": {
+            "tag": "Con",
+            "fields": {
+              "head": {
+                "tag": "emitter_steps_v1.cps_provider_7_NfCtor",
+                "fields": {
+                  "key": {
+                    "string": {
+                      "value": "Succ",
+                      "truncated": false
+                    }
+                  },
+                  "args": {
+                    "tag": "Con",
+                    "truncated": true
+                  }
+                }
+              },
+              "tail": {
+                "tag": "Nil",
+                "fields": {}
+              }
+            }
+          },
+          "v_8": {
+            "string": {
+              "value": "Sigma",
+              "truncated": false
+            }
+          },
+          "v_11": {
+            "tag": "Con",
+            "fields": {
+              "head": {
+                "string": {
+                  "value": "Word.Con",
+                  "truncated": false
+                }
+              },
+              "tail": {
+                "tag": "Con",
+                "fields": {
+                  "head": {
+                    "string": {
+                      "value": "U32",
+                      "truncated": false
+                    }
+                  },
+                  "tail": {
+                    "tag": "Con",
+                    "truncated": true
+                  }
+                }
+              }
+            }
+          },
+          "v_13": {
+            "scalar": "1013"
+          }
+        }
+      }
+    },
+    {
+      "name": "emitter_steps_v1.EmitterRequest_cps_provider_3_family_reach",
+      "hostStepOrdinal": 5763072,
+      "emitObservedElapsedMs": 66406.769542,
+      "unwrapLimitReached": false,
+      "request": {
+        "tag": "emitter_steps_v1.EmitterRequest_cps_provider_3_family_reach",
+        "fields": {
+          "v_1": {
+            "tag": "emitter_steps_v1.cps_provider_3_Context",
+            "plan": {
+              "tag": "emitter_steps_v1.cps_provider_3_Plan",
+              "fields": {
+                "closed": {
+                  "tag": "MNode",
+                  "truncated": true
+                },
+                "nodes": {
+                  "tag": "MTip",
+                  "truncated": true
+                },
+                "arms": {
+                  "tag": "MNode",
+                  "truncated": true
+                }
+              }
+            }
+          },
+          "v_2": {
+            "tag": "../bend2/selfhost/backend_ir.Family",
+            "fields": {
+              "key": {
+                "string": {
+                  "value": "U32",
+                  "truncated": false
+                }
+              },
+              "name": {
+                "string": {
+                  "value": "U32",
+                  "truncated": false
+                }
+              },
+              "native": {
+                "tag": "Some",
+                "fields": {
+                  "value": {
+                    "string": {
+                      "value": "U32",
+                      "truncated": false
+                    }
+                  }
+                }
+              },
+              "quantity_prefix": {
+                "scalar": "0"
+              },
+              "arity": {
+                "scalar": "0"
+              },
+              "arms": {
+                "tag": "Con",
+                "fields": {
+                  "head": {
+                    "tag": "../bend2/selfhost/backend_ir.DescriptorArm",
+                    "truncated": true
+                  },
+                  "tail": {
+                    "tag": "Nil",
+                    "truncated": true
+                  }
+                }
+              }
+            }
+          },
+          "v_5": {
+            "tag": "Nil",
+            "fields": {}
+          },
+          "v_7": {
+            "string": {
+              "value": "Sigma",
+              "truncated": false
+            }
+          },
+          "v_10": {
+            "tag": "Con",
+            "fields": {
+              "head": {
+                "string": {
+                  "value": "U32",
+                  "truncated": false
+                }
+              },
+              "tail": {
+                "tag": "Con",
+                "fields": {
+                  "head": {
+                    "string": {
+                      "value": "../bend2/selfhost/checker_ir.OptionalTerm",
+                      "truncated": false
+                    }
+                  },
+                  "tail": {
+                    "tag": "Con",
+                    "truncated": true
+                  }
+                }
+              }
+            }
+          },
+          "v_12": {
+            "scalar": "1011"
+          }
+        }
+      }
+    },
+    {
+      "name": "emitter_steps_v1.EmitterRequest_cps_provider_3_fields_reach",
+      "hostStepOrdinal": 5824512,
+      "emitObservedElapsedMs": 67465.002625,
+      "unwrapLimitReached": false,
+      "request": {
+        "tag": "emitter_steps_v1.EmitterRequest_cps_provider_3_fields_reach",
+        "fields": {
+          "v_1": {
+            "tag": "emitter_steps_v1.cps_provider_3_Context",
+            "plan": {
+              "tag": "emitter_steps_v1.cps_provider_3_Plan",
+              "fields": {
+                "closed": {
+                  "tag": "MNode",
+                  "truncated": true
+                },
+                "nodes": {
+                  "tag": "MTip",
+                  "truncated": true
+                },
+                "arms": {
+                  "tag": "MNode",
+                  "truncated": true
+                }
+              }
+            }
+          },
+          "v_3": {
+            "tag": "Nil",
+            "fields": {}
+          },
+          "v_6": {
+            "tag": "Con",
+            "fields": {
+              "head": {
+                "tag": "emitter_steps_v1.cps_provider_7_NfMissing",
+                "fields": {
+                  "source": {
+                    "tag": "../bend2/selfhost/backend_ir.DescriptorNull",
+                    "truncated": true
+                  }
+                }
+              },
+              "tail": {
+                "tag": "Nil",
+                "fields": {}
+              }
+            }
+          },
+          "v_8": {
+            "string": {
+              "value": "Sigma",
+              "truncated": false
+            }
+          },
+          "v_11": {
+            "tag": "Con",
+            "fields": {
+              "head": {
+                "string": {
+                  "value": "Char",
+                  "truncated": false
+                }
+              },
+              "tail": {
+                "tag": "Con",
+                "fields": {
+                  "head": {
+                    "string": {
+                      "value": "String",
+                      "truncated": false
+                    }
+                  },
+                  "tail": {
+                    "tag": "Con",
+                    "truncated": true
+                  }
+                }
+              }
+            }
+          },
+          "v_13": {
+            "scalar": "1011"
+          }
+        }
+      }
+    },
+    {
+      "name": "emitter_steps_v1.EmitterRequest_cps_provider_7_nf",
+      "hostStepOrdinal": 5898240,
+      "emitObservedElapsedMs": 68667.55825,
+      "unwrapLimitReached": false,
+      "request": {
+        "tag": "emitter_steps_v1.EmitterRequest_cps_provider_7_nf",
+        "fields": {
+          "v_1": {
+            "tag": "emitter_steps_v1.cps_provider_7_NfContext",
+            "fields": {
+              "families": {
+                "tag": "MNode",
+                "fields": {
+                  "pos": {
+                    "scalar": "26"
+                  },
+                  "lo": {
+                    "tag": "MNode",
+                    "truncated": true
+                  },
+                  "hi": {
+                    "tag": "MNode",
+                    "truncated": true
+                  }
+                }
+              },
+              "type_functions": {
+                "tag": "MNode",
+                "fields": {
+                  "pos": {
+                    "scalar": "26"
+                  },
+                  "lo": {
+                    "tag": "MNode",
+                    "truncated": true
+                  },
+                  "hi": {
+                    "tag": "MNode",
+                    "truncated": true
+                  }
+                }
+              }
+            }
+          },
+          "v_2": {
+            "tag": "../bend2/selfhost/backend_ir.DescriptorRef",
+            "fields": {
+              "key": {
+                "string": {
+                  "value": "Word",
+                  "truncated": false
+                }
+              },
+              "args": {
+                "tag": "Con",
+                "fields": {
+                  "head": {
+                    "tag": "../bend2/selfhost/backend_ir.DescriptorParameter",
+                    "truncated": true
+                  },
+                  "tail": {
+                    "tag": "Nil",
+                    "truncated": true
+                  }
+                }
+              }
+            }
+          },
+          "v_5": {
+            "tag": "Con",
+            "fields": {
+              "head": {
+                "tag": "emitter_steps_v1.cps_provider_7_NfCtor",
+                "fields": {
+                  "key": {
+                    "string": {
+                      "value": "Succ",
+                      "truncated": false
+                    }
+                  },
+                  "args": {
+                    "tag": "Con",
+                    "truncated": true
+                  }
+                }
+              },
+              "tail": {
+                "tag": "Con",
+                "fields": {
+                  "head": {
+                    "tag": "emitter_steps_v1.cps_provider_7_NfMissing",
+                    "truncated": true
+                  },
+                  "tail": {
+                    "tag": "Nil",
+                    "truncated": true
+                  }
+                }
+              }
+            }
+          },
+          "v_7": {
+            "scalar": "0"
+          },
+          "v_9": {
+            "scalar": "1013"
+          }
+        }
+      }
+    },
+    {
+      "name": "emitter_steps_v1.EmitterRequest_cps_provider_3_reaches",
+      "hostStepOrdinal": 5967872,
+      "emitObservedElapsedMs": 70159.01570799999,
+      "unwrapLimitReached": false,
+      "request": {
+        "tag": "emitter_steps_v1.EmitterRequest_cps_provider_3_reaches",
+        "fields": {
+          "v_1": {
+            "tag": "emitter_steps_v1.cps_provider_3_Context",
+            "plan": {
+              "tag": "emitter_steps_v1.cps_provider_3_Plan",
+              "fields": {
+                "closed": {
+                  "tag": "MNode",
+                  "truncated": true
+                },
+                "nodes": {
+                  "tag": "MTip",
+                  "truncated": true
+                },
+                "arms": {
+                  "tag": "MNode",
+                  "truncated": true
+                }
+              }
+            }
+          },
+          "v_2": {
+            "tag": "../bend2/selfhost/backend_ir.DescriptorRef",
+            "fields": {
+              "key": {
+                "string": {
+                  "value": "String",
+                  "truncated": false
+                }
+              },
+              "args": {
+                "tag": "Nil",
+                "fields": {}
+              }
+            }
+          },
+          "v_5": {
+            "tag": "Con",
+            "fields": {
+              "head": {
+                "tag": "emitter_steps_v1.cps_provider_7_NfMissing",
+                "fields": {
+                  "source": {
+                    "tag": "../bend2/selfhost/backend_ir.DescriptorNull",
+                    "truncated": true
+                  }
+                }
+              },
+              "tail": {
+                "tag": "Nil",
+                "fields": {}
+              }
+            }
+          },
+          "v_7": {
+            "string": {
+              "value": "Sigma",
+              "truncated": false
+            }
+          },
+          "v_10": {
+            "tag": "Con",
+            "fields": {
+              "head": {
+                "string": {
+                  "value": "String",
+                  "truncated": false
+                }
+              },
+              "tail": {
+                "tag": "Con",
+                "fields": {
+                  "head": {
+                    "string": {
+                      "value": "../bend2/selfhost/scope_lookup.ArenaGlobalSegment",
+                      "truncated": false
+                    }
+                  },
+                  "tail": {
+                    "tag": "Con",
+                    "truncated": true
+                  }
+                }
+              }
+            }
+          },
+          "v_12": {
+            "scalar": "1016"
+          }
+        }
+      }
+    },
+    {
+      "name": "emitter_steps_v1.EmitterRequest_cps_provider_7_family_of",
+      "hostStepOrdinal": 6066176,
+      "emitObservedElapsedMs": 73628.677708,
+      "unwrapLimitReached": false,
+      "request": {
+        "tag": "emitter_steps_v1.EmitterRequest_cps_provider_7_family_of",
+        "fields": {
+          "v_1": {
+            "string": {
+              "value": "Bool",
+              "truncated": false
+            }
+          },
+          "v_3": {
+            "tag": "MNode",
+            "fields": {
+              "pos": {
+                "scalar": "26"
+              },
+              "lo": {
+                "tag": "MNode",
+                "fields": {
+                  "pos": {
+                    "scalar": "131"
+                  },
+                  "lo": {
+                    "tag": "MNode",
+                    "truncated": true
+                  },
+                  "hi": {
+                    "tag": "MNode",
+                    "truncated": true
+                  }
+                }
+              },
+              "hi": {
+                "tag": "MNode",
+                "fields": {
+                  "pos": {
+                    "scalar": "28"
+                  },
+                  "lo": {
+                    "tag": "MNode",
+                    "truncated": true
+                  },
+                  "hi": {
+                    "tag": "MNode",
+                    "truncated": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "coverage": "One late finite boundary window. Request payloads, fields, depth, nodes and strings are explicitly bounded. No raw AST/book/image is retained."
+}

@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "status": "ORIGINAL_RELEASE_OBJECT_LOOKUP_ACTUALLY_PROVEN",
+  "release": "a3efe8a3801f423827424227172eed9802c5e6cb",
+  "objects": [
+    "a3efe8a3801f423827424227172eed9802c5e6cb",
+    "1f31a558cec9b99614e6e33f5f2b21503845f7f5",
+    "344d95d86abf1602a95a89d100839622d7f09f1e",
+    "edadb284afa7da3c1ab491426231d9f9cb4e7269"
+  ],
+  "pack": {
+    "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r11-m3/release-objects-8b06324896c305a834b7ccf0f44d787aef8bcccb.pack",
+    "sha256": "cca5fa5c7d0ee79a4ca4b4d1b298075d26ec19a5a276c7f44e70363cf9c2d6fb",
+    "bytes": 41020
+  },
+  "freshPrivateRepository": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r11-m3/provenance-check-99f50ca7",
+  "originalGitShowCommand": [
+    "/usr/bin/git",
+    "show",
+    "a3efe8a3801f423827424227172eed9802c5e6cb:bend2/bend.ts"
+  ],
+  "observedKernelSha256": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+  "expectedActualNativeBuildKernelSha256": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+  "scope": "Four original immutable Git objects, not fabricated history, satisfy the unchanged explicit officialKernelSource lookup in a fresh private Git repository. Not a full clone/history/HEAD claim, remote producer launch or compiler acceptance. Generated Git packs stay outside Git."
+}
