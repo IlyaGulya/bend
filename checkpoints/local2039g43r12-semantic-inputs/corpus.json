@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 1,
+  "status": "BOTH_ORIGINAL_GENERATORS_PASS_BEHAVIOR_NOT_EXECUTED",
+  "authorCheckpoint": "076bcf6b",
+  "beforeCommit": "d660940b",
+  "afterCommit": "94940509",
+  "inputs": [
+    {
+      "point": "before",
+      "file": "checkpoints/clay_layout_steps_v1.bend",
+      "source": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/reach-before-42139224/checkpoints/clay_layout_steps_v1.bend",
+        "sha256": "568225e25c735616f7ffd7dbd089290e5bdc5cd4f63abb343f64318540a57c98",
+        "bytes": 641506
+      },
+      "frozen": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r12-semantic-inputs/before/repository/checkpoints/clay_layout_steps_v1.bend",
+        "sha256": "568225e25c735616f7ffd7dbd089290e5bdc5cd4f63abb343f64318540a57c98",
+        "bytes": 641506
+      }
+    },
+    {
+      "point": "before",
+      "file": "checkpoints/clay_layout_steps_component_v1.bend",
+      "source": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/reach-before-42139224/checkpoints/clay_layout_steps_component_v1.bend",
+        "sha256": "1ee737e70778932c88db4443fa4aabf596c314c6eca005ffd164aa3c91cef37d",
+        "bytes": 415
+      },
+      "frozen": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r12-semantic-inputs/before/repository/checkpoints/clay_layout_steps_component_v1.bend",
+        "sha256": "1ee737e70778932c88db4443fa4aabf596c314c6eca005ffd164aa3c91cef37d",
+        "bytes": 415
+      }
+    },
+    {
+      "point": "before",
+      "file": "checkpoints/clay_layout_smoke_owned.bend",
+      "source": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/reach-before-42139224/checkpoints/clay_layout_smoke_owned.bend",
+        "sha256": "ce445c476f684626c7a1baff62b8df458603d4b7231619fab414bf44ffdb4b14",
+        "bytes": 182185
+      },
+      "frozen": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r12-semantic-inputs/before/repository/checkpoints/clay_layout_smoke_owned.bend",
+        "sha256": "ce445c476f684626c7a1baff62b8df458603d4b7231619fab414bf44ffdb4b14",
+        "bytes": 182185
+      }
+    },
+    {
+      "point": "after",
+      "file": "checkpoints/clay_layout_steps_v1.bend",
+      "source": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/clay_layout_steps_v1.bend",
+        "sha256": "e035a6df101463e10db6ef05f2b30a71dfadc26f13f61dd545a3685be960cd0d",
+        "bytes": 648180
+      },
+      "frozen": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r12-semantic-inputs/after/repository/checkpoints/clay_layout_steps_v1.bend",
+        "sha256": "e035a6df101463e10db6ef05f2b30a71dfadc26f13f61dd545a3685be960cd0d",
+        "bytes": 648180
+      }
+    },
+    {
+      "point": "after",
+      "file": "checkpoints/clay_layout_steps_component_v1.bend",
+      "source": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/clay_layout_steps_component_v1.bend",
+        "sha256": "1ee737e70778932c88db4443fa4aabf596c314c6eca005ffd164aa3c91cef37d",
+        "bytes": 415
+      },
+      "frozen": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r12-semantic-inputs/after/repository/checkpoints/clay_layout_steps_component_v1.bend",
+        "sha256": "1ee737e70778932c88db4443fa4aabf596c314c6eca005ffd164aa3c91cef37d",
+        "bytes": 415
+      }
+    },
+    {
+      "point": "after",
+      "file": "checkpoints/clay_layout_smoke_owned.bend",
+      "source": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/clay_layout_smoke_owned.bend",
+        "sha256": "5b8c61063e0fc0a4f133820768350dc60ee402b3af73269d84a1fb0bc7d40109",
+        "bytes": 185658
+      },
+      "frozen": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r12-semantic-inputs/after/repository/checkpoints/clay_layout_smoke_owned.bend",
+        "sha256": "5b8c61063e0fc0a4f133820768350dc60ee402b3af73269d84a1fb0bc7d40109",
+        "bytes": 185658
+      }
+    }
+  ],
+  "beforeGuard": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 352370688,
+    "peakFootprintBytes": 289555296,
+    "elapsedMs": 852,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/clay_layout_step_smoke.ts"
+    ],
+    "label": "heavy command",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793538571836-0aa1cae3c68683e8.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "afterGuard": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 328204288,
+    "peakFootprintBytes": 261129032,
+    "elapsedMs": 813,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/clay_layout_step_smoke.ts"
+    ],
+    "label": "heavy command",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793538590243-84df26911bbb0ff1.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "note": "The thin component wrapper has identical source bytes at both points; this is not a byte-fixedpoint or equal compiler/program proof. Distinct generated step/owned source hashes bind the actual code."
+}
