@@ -123,19 +123,38 @@ still needs fresh native/fixedpoint/full C62/JS67 and original strict12 rows.
 `checkpoints/local2039g43r12-semantic-outcome/outcome.json`.
 
 
-Bounded next experiments, not implemented promises:
-1. Exercise that semantic cut through the composed CLay fixture, then fresh
-   native-seeded byte fixedpoint and the original full scheduler/C62/JS67.
-   Keep facts scoped to the existing immutable BIR/CLay context; do not add a
-   second IR, AST cache or context-free substitute for parameterized NF.
-2. Separate native off-CPU causes with the already-sampled rusage fault/
-   context-switch counters in a diagnostic-only host variant. No idle or CPU
-   utilization admission rule, service stop, or acceptance-timing claim.
-3. Before a fresh M3 producer, authenticate its ignored seed prerequisites and
-   original Git release objects and reuse group-owned lease/sentinel/reaping.
-   A source-only archive and ordinary SSH exit are insufficient. Four genuine
-   original objects already satisfy the unchanged release-kernel lookup locally;
-   that is not a remote producer or complete Git history claim.
+Two independent thorough-task-executor source reviews recommend preserving
+FIR→BIR→target. Publish only already-accepted checker decisions before arena
+rewind; do not move descriptors/layout or context-free normalized-type facts
+into FIR. Keep BIR free of arena/occurrence/scope ownership.
+
+After the current R12 outcome, separate source checkpoints, in order:
+1. Request-local NF reuse in SHOW: `show_advance_data/show_data_arms` can use
+   one original applied-type value through existing `head_value` and
+   `arm_fields_value`. Keep field instantiation scopes, explicit declarations,
+   independent SHOW-key normalization and original fuel unchanged. Test
+   multi-arm captured/generic/dependent/recursive values in actual C and JS.
+2. Pass the final `NfContext` from Catalog's existing build-result boundary
+   into `State.normalizer`, instead of rebuilding identical declaration indexes.
+   Preserve first-wins order; neither serialize this context in BIR nor extend
+   the lifetime of transient checker state.
+3. Hoist `nf_arity`'s repeated argument length into one local scalar query.
+   Only after an independent result consider `val_at/val_at_choose`; no new
+   generic Env carrier or evaluator-transition rewrite.
+
+Independent operational experiments: reuse the existing two native rusage
+samples for fault/context-switch/block-I/O deltas; use no per-chunk observer or
+idle/CPU admission. Before moving a producer to M3, reuse the common physical
+host lock, nonce/sentinel/PID identity, lease/cancel and durable reap result.
+The complete source capsule/release-input smoke now passes locally; ordinary
+foreground SSH still lacks that owner. Only then overlap emitted suites with
+consumers on another physical host after genuine fixedpoint; JS/native build
+fork is lower priority than the measured C/bootstrapping critical path.
+
+These are hypotheses, not accepted speedups. Every candidate still needs fresh
+native→stage1→stage2 exact bytes,95+190 fixtures, original C62/JS67/33/12/5 and
+unchanged strict12. Do not repeat eager self-tables, deferred recipes or blanket
+NF caches. Diagnostic observations never replace full runtime acceptance.
 
 
 

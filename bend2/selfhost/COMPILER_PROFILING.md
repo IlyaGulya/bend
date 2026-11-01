@@ -647,3 +647,33 @@ qualification. Coordinator tree ownership/lease/cancellation/reap proof still
 blocks an ordinary foreground SSH launch.
 `checkpoints/local2039g43-producer-portability/r12-source-capsule-proof.json`.
 
+### Build wall time is not one compiler phase
+
+Actual R11 single-run M1 accounting; rejected candidate, not an accepted
+baseline or paired performance result:
+
+| Boundary | Wall seconds | Meaning |
+| --- | ---: | --- |
+| Native construction before CC | 155.311 | Includes validation2.118 and TS-seeded C generation150.345 |
+| LLVM/clang construction | 156.718 | Separate from native-build.json elapsedMs |
+| Guarded native build | 312.779 | Complete construction, including orchestration |
+| Genuine bootstrap attempt | 600.015 | Timed out in stage-two-check; not fixedpoint |
+
+LLVM already runs up to three backend children. Its critical path here includes
+frontend40.628s, preparation24.868s, split14.515s, the slowest backend72.755s,
+then link0.197s. Adding those to a total that already includes CC double-counts.
+Independent host consumer suites can overlap across physical M1/M3; genuine
+native→stage1→stage2 ordering cannot.
+
+The observed native check wall167.470s versus process CPU80.771s does not
+identify a culprit. Existing source audit rules out an interactive parent
+handshake inside that check drive, not scheduling/page-fault/memory effects.
+No idle predicate, process-name exclusion or daemon intervention follows.
+
+Concrete Mac integration faults were software coordinates/tool selection:
+symlink-parent imports/proof paths now use real coordinates; private accepted
+Bun/Node avoid changing M3 system installs; `/usr/bin/git` bypasses a broken
+Homebrew wrapper. Full C deadlines occurred on both physical Macs. Those facts
+do not establish a defective Mac or prove that bb-app caused the delay.
+`checkpoints/local2039g43r11-outcome/outcome.json`.
+
